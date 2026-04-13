@@ -1,0 +1,34 @@
+[project]
+name = "ai-trade"
+version = "0.1.0"
+description = "ai-trade Phase 0 — knowledge base pipeline (PDFs → structured summaries → Claude Skill)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Victor Noleto" }]
+
+# NOTE: No `anthropic` / `openai` / any LLM SDK here. All LLM work runs inside
+# Claude Code (subagents + slash commands). These Python scripts are strictly
+# deterministic: PDF extraction, validation, aggregation.
+dependencies = [
+    "pymupdf>=1.24",      # Primary PDF → text (fast, preserves layout cues)
+    "pdfplumber>=0.11",   # Fallback for tables/math-heavy pages
+    "rich>=13.7",         # CLI output (progress bars, formatted errors)
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["scripts"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

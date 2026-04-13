@@ -1,0 +1,30 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+
+# Extracted text is derivable via scripts/extract_pdfs.py (PDFs in books/raw/ ARE committed).
+books/extracted/
+
+# Partial summaries generated during map-reduce (only final summaries are versioned)
+books/summaries/.partials/
+
+# Secrets (none expected, but just in case)
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+books/summaries/.validation/
