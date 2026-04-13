@@ -1,6 +1,6 @@
 # books/ — Knowledge Base dos Livros
 
-Esta pasta contém os 31 livros que alimentam o "especialista em trade" do ai-trade
+Esta pasta contém os 33 livros que alimentam o "especialista em trade" do ai-trade
 (Fase 0 do `TRADING_SYSTEM_PLAN.md`): 22 originais + 9 adicionados conforme
 `ai-trade-library-audit.md`.
 
@@ -8,7 +8,7 @@ Esta pasta contém os 31 livros que alimentam o "especialista em trade" do ai-tr
 
 ```
 books/
-├── raw/              # 31 PDFs com slugs canônicos (gitignored)
+├── raw/              # 33 PDFs com slugs canônicos
 ├── extracted/        # texto extraído + capítulos + metadata (gitignored, cache)
 ├── summaries/        # 1 MD validado por livro, saída do subagente book-reader (versionado)
 ├── code/             # código C++ complementar dos zips do Timothy Masters (versionado)
@@ -18,7 +18,7 @@ books/
 └── README.md         # este arquivo
 ```
 
-Para a lista completa dos 31 livros com autor/ano/tier, veja `MAPPING.md`.
+Para a lista completa dos 33 livros com autor/ano/tier, veja `MAPPING.md`.
 
 ---
 

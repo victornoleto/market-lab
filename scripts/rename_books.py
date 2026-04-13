@@ -167,13 +167,6 @@ MAPPINGS: tuple[BookMapping, ...] = (
         notes="Initial download was a 17pp preview; replaced with full 165pp edition (ISBN 978-0-367-53628-2).",
     ),
     BookMapping(
-        "trading_on_sentiment",
-        "L-G-0007665089-0013629476.pdf",
-        "Trading on Sentiment",
-        "Richard L. Peterson",
-        2016,
-    ),
-    BookMapping(
         "evidence_based_ta",
         "Evidence-Based Technical Analysis - Applying the Scientific Method and Statistical Inference to Trading Signals 2007.pdf",
         "Evidence-Based Technical Analysis",
@@ -274,6 +267,31 @@ MAPPINGS: tuple[BookMapping, ...] = (
         2017,
         notes="Deployment-focused: Bayesian hyperparam opt, factor models, intraday mean reversion.",
     ),
+    # --- 3 books replacing Peterson (trading_on_sentiment PDF unavailable) ---
+    BookMapping(
+        "big_data_ml_quant",
+        "Big Data and Machine Learning in Quantitative Investment.pdf",
+        "Big Data and Machine Learning in Quantitative Investment",
+        "Tony Guida (ed.)",
+        2019,
+        notes="Edited volume with practitioner chapters (Two Sigma, Man AHL) covering ML, NLP/sentiment and alt-data in quant investing.",
+    ),
+    BookMapping(
+        "sentiment_analysis_handbook",
+        "Handbook of Sentiment Analysis in Finance.pdf",
+        "Handbook of Sentiment Analysis in Finance",
+        "Gautam Mitra & Xiang Yu (eds.)",
+        2016,
+        notes="Academic handbook: news/Twitter sentiment, Tetlock-style event studies, NLP pipelines. Primary sentiment reference (replaces Peterson 2016).",
+    ),
+    BookMapping(
+        "adaptive_markets",
+        "Adaptive Markets Financial Evolution at the Speed of Thought.pdf",
+        "Adaptive Markets: Financial Evolution at the Speed of Thought",
+        "Andrew W. Lo",
+        2017,
+        notes="Adaptive Markets Hypothesis — behavioral/evolutionary framework for regime shifts. Complements regime_change with theoretical backbone.",
+    ),
 )
 
 # Zips to extract into books/code/
@@ -303,6 +321,10 @@ IGNORED_FILES: tuple[tuple[str, str], ...] = (
     (
         "[ALGO-TRADING][Algorithmic Trading & DMA- An introduction to direct access trading strategies].pdf",
         "Johnson 2010 — scan-only PDF with no text layer (pdftotext returns empty). Audit §4.7 documents removal. L1 microstructure covered by Harris (trading_exchanges) instead.",
+    ),
+    (
+        "L-G-0007665089-0013629476.pdf",
+        "Peterson 2016 (Trading on Sentiment) — complete PDF unavailable (only a 30pp preview). Topic is covered by sentiment_analysis_handbook (Mitra & Yu 2016), big_data_ml_quant (Guida 2019) and adaptive_markets (Lo 2017).",
     ),
 )
 
