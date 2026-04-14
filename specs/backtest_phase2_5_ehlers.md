@@ -100,12 +100,13 @@ multi-ticker (top-10 SPX constituents por liquidez) e comparar.
     `c2 = b1`, `c3 = -a1²`, `c1 = 1 - c2 - c3`,
     `SS[t] = c1·(P[t]+P[t-1])/2 + c2·SS[t-1] + c3·SS[t-2]`
 
-- [ ] **High-pass filter** — `src/ai_trade/backtest/indicators/ehlers_hp.py`
+- [x] **High-pass filter** — `src/ai_trade/backtest/indicators/ehlers_hp.py`
   - Função pura: `high_pass(series, period) → pd.Series`
-  - Fonte: `[cycle_analytics, ch.7, p.81-82]`
+  - Fonte: `[cycle_analytics, Code Listing 7-3, p.81-82, ch.7]` (two-pole,
+    K=.707; não a versão single-pole de Code Listing 7-1)
   - Usado na combinação HP + SuperSmoother = **roofing filter**
 
-- [ ] **Roofing filter** — `src/ai_trade/backtest/indicators/ehlers_roofing.py`
+- [x] **Roofing filter** — `src/ai_trade/backtest/indicators/ehlers_roofing.py`
   - `roofing_filter(series, hp_period, lp_period) → pd.Series`
   - Fonte: `[cycle_analytics, ch.7, p.88-89]` — **preprocessing obrigatório**
     antes de qualquer indicador Ehlers (regra p.88: sem ele, indicadores
@@ -143,6 +144,15 @@ verdes. Docstrings citam o livro+página de cada fórmula.
   Ehlers). `242 passed` total. Preexisting: fix `pythonpath = ["."]`
   em `pyproject.toml` destravou `from scripts import ...` nos testes
   de book-reader (3 fails + 1 collection error → 0).
+
+- **Commit 2 — High-pass + Roofing filter:**
+  `indicators/ehlers_hp.py` (two-pole, K=.707) + `indicators/ehlers_roofing.py`
+  (composição HP→SS). 10 novos testes: HP shape/index, DC rejection,
+  fast-cycle passthrough, slow-cycle rejeitado, invalid period,
+  closed-form t=2; Roofing shape/index, DC annihilated, Nyquist noise
+  killed, mid-band cycle survives. Decisão: two-pole HP (Code Listing
+  7-3) em vez de single-pole (Code Listing 7-1), conforme recomendação
+  explícita [p.82, ch.7]. `252 passed`.
 
 ---
 

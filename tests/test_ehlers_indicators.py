@@ -157,3 +157,172 @@ class TestSuperSmoother:
         assert out.iloc[1] == pytest.approx(0.0)
         # Closed form at t=2.
         assert out.iloc[2] == pytest.approx(c3, rel=1e-9)
+
+
+# ---------------------------------------------------------------------------
+# Two-pole high-pass filter — [cycle_analytics, Code Listing 7-3, p.81-82, ch.7]
+# ---------------------------------------------------------------------------
+
+
+class TestHighPass:
+    """``high_pass(series, period)`` — two-pole HP, ``.707`` K factor."""
+
+    def test_shape_and_index_preserved(self):
+        from ai_trade.backtest.indicators.ehlers_hp import high_pass
+
+        idx = pd.date_range("2024-01-01", periods=50, freq="B")
+        series = pd.Series(np.linspace(100.0, 110.0, 50), index=idx)
+
+        out = high_pass(series, period=48)
+
+        assert isinstance(out, pd.Series)
+        assert len(out) == len(series)
+        assert out.index.equals(series.index)
+
+    def test_rejects_dc_after_warmup(self):
+        """Constant input (DC) is zero-mean at the HP output after transient.
+
+        High-pass transfer function has zero at DC by construction.
+        """
+        from ai_trade.backtest.indicators.ehlers_hp import high_pass
+
+        series = pd.Series([42.0] * 300)
+        out = high_pass(series, period=48)
+
+        # Transient dies out within a couple of cutoff periods.
+        tail = out.iloc[200:]
+        assert tail.abs().max() < 1e-6
+
+    def test_passes_fast_cycle(self):
+        """Cycle well shorter than HP cutoff is in the passband → passes."""
+        from ai_trade.backtest.indicators.ehlers_hp import high_pass
+
+        n = 400
+        period = 10  # much shorter than 48-bar HP cutoff
+        t = np.arange(n)
+        series = pd.Series(np.sin(2 * np.pi * t / period))
+
+        out = high_pass(series, period=48)
+
+        tail = out.iloc[100:]
+        input_tail = series.iloc[100:]
+        rms_in = float(np.sqrt((input_tail**2).mean()))
+        rms_out = float(np.sqrt((tail**2).mean()))
+        # Fast component mostly passes (some attenuation at the corner is OK).
+        assert rms_out / rms_in > 0.7
+
+    def test_attenuates_slow_cycle(self):
+        """Cycle well longer than HP cutoff is attenuated by the HP."""
+        from ai_trade.backtest.indicators.ehlers_hp import high_pass
+
+        n = 800
+        period = 200  # much longer than 48-bar HP cutoff
+        t = np.arange(n)
+        series = pd.Series(np.sin(2 * np.pi * t / period))
+
+        out = high_pass(series, period=48)
+
+        tail = out.iloc[300:]
+        input_tail = series.iloc[300:]
+        rms_in = float(np.sqrt((input_tail**2).mean()))
+        rms_out = float(np.sqrt((tail**2).mean()))
+        # Slow component is strongly suppressed.
+        assert rms_out / rms_in < 0.3
+
+    def test_rejects_invalid_period(self):
+        from ai_trade.backtest.indicators.ehlers_hp import high_pass
+
+        series = pd.Series([1.0] * 10)
+        with pytest.raises(ValueError):
+            high_pass(series, period=1)
+
+    def test_formula_matches_closed_form_first_step(self):
+        """Hand-computed first non-trivial output sample.
+
+        With ``Close = [1, 0, 0]`` and HP[0]=HP[1]=0::
+
+            HP[2] = (1 - α/2)² · (Close[2] - 2·Close[1] + Close[0])
+                  = (1 - α/2)² · 1
+        """
+        from ai_trade.backtest.indicators.ehlers_hp import high_pass
+
+        period = 48
+        angle = math.sqrt(2) * math.pi / period
+        alpha = (math.cos(angle) + math.sin(angle) - 1) / math.cos(angle)
+        expected = (1 - alpha / 2) ** 2
+
+        series = pd.Series([1.0, 0.0, 0.0])
+        out = high_pass(series, period=period)
+
+        assert out.iloc[0] == pytest.approx(0.0)
+        assert out.iloc[1] == pytest.approx(0.0)
+        assert out.iloc[2] == pytest.approx(expected, rel=1e-9)
+
+
+# ---------------------------------------------------------------------------
+# Roofing filter = HP + SuperSmoother — [cycle_analytics, p.88-89, ch.7]
+# ---------------------------------------------------------------------------
+
+
+class TestRoofingFilter:
+    """``roofing_filter(series, hp_period, lp_period)`` — preprocessing
+    mandatory before any Ehlers indicator [p.88-89, ch.7].
+    """
+
+    def test_shape_and_index_preserved(self):
+        from ai_trade.backtest.indicators.ehlers_roofing import roofing_filter
+
+        idx = pd.date_range("2024-01-01", periods=100, freq="B")
+        series = pd.Series(np.linspace(100.0, 110.0, 100), index=idx)
+
+        out = roofing_filter(series, hp_period=48, lp_period=10)
+
+        assert isinstance(out, pd.Series)
+        assert len(out) == len(series)
+        assert out.index.equals(series.index)
+
+    def test_removes_dc_component(self):
+        """DC is annihilated by the HP stage."""
+        from ai_trade.backtest.indicators.ehlers_roofing import roofing_filter
+
+        series = pd.Series([100.0] * 300)
+        out = roofing_filter(series, hp_period=48, lp_period=10)
+
+        tail = out.iloc[200:]
+        assert tail.abs().max() < 1e-6
+
+    def test_removes_nyquist_noise(self):
+        """Bar-by-bar alternation (Nyquist) is killed by the SS stage."""
+        from ai_trade.backtest.indicators.ehlers_roofing import roofing_filter
+
+        n = 300
+        series = pd.Series([1.0 if i % 2 == 0 else -1.0 for i in range(n)])
+
+        out = roofing_filter(series, hp_period=48, lp_period=10)
+
+        tail = out.iloc[100:]
+        # SS numerator zero collapses pair-alternation; IIR residues are tiny.
+        assert tail.abs().max() < 0.05
+
+    def test_passes_mid_band_cycle(self):
+        """Cycle with period between LP cutoff and HP cutoff survives.
+
+        With HP=48 and LP=10, the passband is roughly 10-48 bars
+        [cycle_analytics, p.77, ch.7] — a 20-bar cycle sits squarely in it.
+        """
+        from ai_trade.backtest.indicators.ehlers_roofing import roofing_filter
+
+        n = 600
+        period = 20
+        t = np.arange(n)
+        series = pd.Series(100.0 + np.sin(2 * np.pi * t / period))  # DC + cycle
+
+        out = roofing_filter(series, hp_period=48, lp_period=10)
+
+        tail = out.iloc[200:]
+        # The DC 100 is gone; the cycle amplitude (~1) should survive at
+        # least halfway — two cascaded filters each impose some roll-off.
+        rms_out = float(np.sqrt((tail**2).mean()))
+        assert rms_out > 0.4
+        # And the mean after warmup is near-zero (zero-mean preprocessor).
+        assert abs(tail.mean()) < 0.05
