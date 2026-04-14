@@ -1,35 +1,92 @@
-# ai-trade — Fase 0: Knowledge Base a partir dos Livros
+# ai-trade — Systematic Swing-Trading para Pepperstone CFD
 
-Pipeline que absorve 23 livros de trading algorítmico/ML quantitativa em uma
-**Claude Skill** (`knowledge/SKILL.md`) consumível pelo Claude Code. Esta é a
-Fase 0 do `TRADING_SYSTEM_PLAN.md` — pré-requisito das Fases 1-7 (data pipeline,
-strategy engine, backtest, paper, live).
+Sistema automatizado de trading sistemático para **CFDs Pepperstone via cTrader
+Open API**, fundamentado em **33 livros de trading quantitativo/ML absorvidos**
+como uma Claude Skill (knowledge base citável). Todo código é determinístico e
+toda decisão remete a `[livro.slug, p.X]`.
 
-**Regra de ouro:** nenhuma afirmação sem referência ao livro (`[p.X]` ou
-`[ch.Y]`). Alucinação destrói o valor da knowledge base.
+**Regra de ouro:** nenhuma afirmação, estratégia, parâmetro ou gate sem
+referência ao livro. Alucinação destrói o valor da knowledge base — e, em
+live, destrói capital.
 
 ---
 
-## Arquitetura
+## Status
+
+| Fase | Escopo | Estado |
+|---|---|---|
+| 0 | Knowledge base — 33 livros → summaries validados | ✅ Concluída |
+| 0.5 | `build_skill.py` + gate de sanidade da skill | ✅ Concluída |
+| 1 | Infra Pepperstone/cTrader + Postgres/Grafana | 🔄 Scaffold (aguarda aprovação Spotware para OAuth) |
+| 2 | Universe Selector + Strategy Engine | ⏳ |
+| 3 | Backtest rigoroso (CPCV/PBO/DSR) | ⏳ |
+| 4 | Paper trading (conta demo cTrader) | ⏳ |
+| 5 | Live trading ($1000 inicial) | ⏳ |
+| 6 | Monitoring + governança | ⏳ |
+| 7 | Scaling | ⏳ |
+
+Detalhes por fase em [`ROADMAP.md`](ROADMAP.md). Plano geral do sistema em
+[`TRADING_SYSTEM_PLAN.md`](TRADING_SYSTEM_PLAN.md).
+
+---
+
+## Arquitetura em alto nível
 
 ```
-Python (determinístico)         Claude Code (LLM)           Python (agrega)
-┌─────────────────┐            ┌──────────────────┐        ┌────────────────┐
-│ rename_books.py │            │  book-reader     │        │ build_skill.py │
-│ extract_pdfs.py │ ──────────▶│  subagente       │───────▶│                │
-│                 │   texto     │  (.claude/       │ summary│ knowledge/     │
-│                 │   +         │   agents/)       │        │  SKILL.md      │
-│                 │   chapters  │                  │        │  books/        │
-│                 │             │  9 seções,       │        │  strategies/   │
-│                 │             │  cite [p.X]      │        │  indicators/   │
-│                 │             │                  │        │  validation/   │
-└─────────────────┘            └──────────────────┘        └────────────────┘
-      ↓                                                            ↑
-validate_summary.py ─────────────────────────────────────────────────┘
-(gate: rejeita summary sem citações)
+         Phase 0 — knowledge base (concluída)              Phase 1+ — runtime (parcial)
+
+books/raw/    ─▶ summaries/    ─▶ knowledge/               cTrader Open API ◀──▶ src/ai_trade/
+(33 PDFs)        (33 MD, 9 sec)    SKILL.md                (Protobuf/OAuth2)      (Python/Twisted)
+                                   + books/                                             │
+                                   + strategies/                                        ▼
+                                   + indicators/                                  Postgres + Grafana
+                                   + validation/                                  (docker-compose)
 ```
 
-Python NÃO usa Claude API. Toda inteligência LLM roda dentro do **Claude Code CLI**.
+- Python NÃO usa nenhum LLM SDK. Toda inteligência LLM roda dentro do
+  **Claude Code CLI** (subagentes + slash commands).
+- Scripts em `scripts/` e módulos em `src/ai_trade/` são determinísticos.
+
+---
+
+## Estrutura do repositório
+
+```
+ai-trade/
+├── books/                           # Knowledge base bruta (Fase 0)
+│   ├── raw/                         # 33 PDFs com slugs canônicos
+│   ├── summaries/                   # 1 MD validado por livro
+│   ├── code/                        # Código C++ complementar (Timothy Masters)
+│   ├── MAPPING.md                   # Inventário "nome original → slug"
+│   └── README.md                    # Catálogo + qualidade + pipeline de absorção
+├── knowledge/                       # Claude Skill agregada (Fase 0.5)
+│   ├── SKILL.md                     # Entry point + inviolable rules
+│   ├── books/                       # Per-book summaries (cópia validada)
+│   ├── strategies/                  # Agregações temáticas (momentum, cycles, ...)
+│   ├── indicators/                  # Ehlers DSP, momentum, HMM
+│   └── validation/                  # CPCV, permutation, DSR, walk-forward
+├── src/ai_trade/                    # Runtime Python (Fase 1+)
+│   ├── __init__.py
+│   └── config.py                    # Typed config (pydantic-settings)
+├── scripts/                         # Utilitários determinísticos (sem LLM)
+│   ├── extract_pdfs.py              # PDF → texto + capítulos + metadata
+│   ├── validate_summary.py          # Gate estrutural de summaries
+│   ├── check_citations.py           # Verifica offset PDF↔printed + citações
+│   ├── build_page_index.py          # Gera _page_index.json por livro
+│   ├── aggregate_judges.py          # Agrega juízes adversariais (Layer-3)
+│   ├── build_skill.py               # Summaries → knowledge/
+│   ├── compress_pdfs.py             # Ghostscript compressor (reversível)
+│   ├── rename_books.py              # Normaliza slugs em books/raw/
+│   └── ctrader_oauth_bootstrap.py   # OAuth2 one-time bootstrap (browser local)
+├── db/
+│   └── init.sql                     # Schemas Postgres: market_data, trades, ...
+├── docker-compose.yml               # Postgres 16 + Grafana 11
+├── .env.example                     # Template de credenciais/tokens
+├── pyproject.toml                   # Deps + hatch config
+├── ROADMAP.md                       # Mapa de fases
+├── TRADING_SYSTEM_PLAN.md           # Plano geral com justificativa por decisão
+└── README.md                        # este arquivo
+```
 
 ---
 
@@ -37,160 +94,67 @@ Python NÃO usa Claude API. Toda inteligência LLM roda dentro do **Claude Code 
 
 - Python 3.11+
 - [`uv`](https://docs.astral.sh/uv/) (recomendado) ou `pip`
-- Claude Code CLI instalado com o plugin `superpowers` (para
-  `dispatching-parallel-agents`)
+- Docker + Docker Compose (para Postgres/Grafana locais)
+- Claude Code CLI (para expandir a knowledge base ou re-absorver livros via
+  `/absorb-book`; não é necessário para o runtime da Fase 1+)
 
 ---
 
 ## Setup
 
-```bash
-cd /var/www/pessoal/ai-trade
+### Python
 
-# Instala deps Python (apenas pymupdf, pdfplumber, rich)
+```bash
 uv sync
 # ou: python -m venv .venv && .venv/bin/pip install -e .
 ```
 
----
-
-## Pipeline (ordem de execução)
-
-### 1. Preparar PDFs
+### Infra local (Postgres + Grafana)
 
 ```bash
-# Os PDFs originais já estão em books/ (nomes inconsistentes).
-# rename_books.py mapeia cada arquivo ao seu slug canônico e move para books/raw/
-python scripts/rename_books.py
-
-# Gera também books/MAPPING.md (inventário human-readable)
+docker compose up -d postgres grafana
+docker compose exec postgres psql -U ai_trade -d ai_trade -c "\dn"
+# deve listar: market_data, trades, features, logs, backtest_runs
 ```
 
-### 2. Extrair companion code dos zips
+**Portas:**
+- Postgres: `localhost:5435` (mapeia → container 5432; `5432` local fica para o Postgres nativo, se houver)
+- Grafana: `http://localhost:3000` (login `admin` / `ai_trade`)
+
+Parar sem apagar dados: `docker compose down`. Zerar tudo: `docker compose down -v`.
+
+### cTrader OAuth (one-time, após aprovação Spotware do app)
 
 ```bash
-python scripts/rename_books.py --unzip-only
-# Cria books/code/masters-assessing/ e books/code/masters-testing-tuning/
+cp .env.example .env
+# preencha CTRADER_CLIENT_ID e CTRADER_CLIENT_SECRET (do portal Spotware)
+python scripts/ctrader_oauth_bootstrap.py
+# abre browser → consent screen → captura refresh_token → escreve no .env
 ```
 
-### 3. Extrair texto dos PDFs
-
-```bash
-python scripts/extract_pdfs.py
-# Gera books/extracted/<slug>/_full.txt + chapters/NN.txt + _metadata.json
-#
-# Se detectar PDF escaneado (>20% das páginas com <100 palavras),
-# aborta com ScannedPDFError listando páginas problemáticas.
-# Substitua o PDF e re-execute.
-```
-
-### 4. Absorver um livro (via Claude Code)
-
-Abra o Claude Code neste projeto e rode:
-
-```
-/absorb-book systematic_trading
-```
-
-O subagente `book-reader` vai ler `books/extracted/systematic_trading/` e
-produzir `books/summaries/systematic_trading.md` com o template de 9 seções.
-
-**Valide manualmente o primeiro livro** antes de processar os outros em batch —
-é o gate human-in-the-loop.
-
-### 5. Validar summary
-
-```bash
-python scripts/validate_summary.py systematic_trading
-# Rejeita se <80% das asserções faltam citação [p.X]/[ch.Y]
-# ou se faltar alguma das 9 seções (sem N/A justificado)
-```
-
-### 6. Absorver todos os livros em batch
-
-No Claude Code:
-
-```
-/absorb-all-books
-```
-
-Dispara os 22 restantes em ondas de 4-6 paralelos
-(via `superpowers:dispatching-parallel-agents`). Cada summary é validado
-automaticamente após o agente terminar.
-
-### 7. Agregar em knowledge/
-
-```bash
-python scripts/build_skill.py
-# Copia summaries/ → knowledge/books/
-# Agrega por tema em knowledge/{strategies,indicators,validation}/
-# Inclui cross-refs para books/code/*.cpp onde relevante
-# Gera knowledge/SKILL.md com frontmatter
-```
-
-### 8. Testar a Skill
-
-No Claude Code, invoque:
-
-```
-Skill trading-knowledge
-```
-
-e pergunte, por exemplo:
-> "Qual é o PBO (Probability of Backtest Overfitting) e quando descartar uma estratégia?"
-
-A resposta deve citar `advances_fin_ml.md` e `validation/cpcv.md`.
+O app precisa estar aprovado pela Spotware (manual, horas a dias após submissão
+em `openapi.ctrader.com`). Enquanto não aprovado, o bootstrap falha com
+*"OA client is not in active state"*.
 
 ---
 
-## Lista dos 23 Livros
+## Livros
 
-| # | Slug | Título | Autor | Ano |
-|---|---|---|---|---|
-| 1 | `systematic_trading` | Systematic Trading | Carver | 2015 |
-| 2 | `trading_systems_methods` | Trading Systems and Methods (5th ed) | Kaufman | 2013 |
-| 3 | `advances_fin_ml` | Advances in Financial Machine Learning | López de Prado | 2018 |
-| 4 | `leverage_space` | The Leverage Space Trading Model | Vince | 2009 |
-| 5 | `math_money_mgmt` | The Mathematics of Money Management | Vince | 1992 |
-| 6 | `rocket_science` | Rocket Science for Traders | Ehlers | 2001 |
-| 7 | `cybernetic_analysis` | Cybernetic Analysis for Stocks and Futures | Ehlers | 2004 |
-| 8 | `cycle_analytics` | Cycle Analytics for Traders | Ehlers | 2013 |
-| 9 | `stat_sound_indicators` | Statistically Sound Machine Learning for Algorithmic Trading | Aronson & Masters | 2013 |
-| 10 | `universal_trend_tactics` | Universal Tactics of Successful Trend Trading | Penfold | 2020 |
-| 11 | `stocks_on_the_move` | Stocks on the Move | Clenow | 2015 |
-| 12 | `cybernetic_trading` | Cybernetic Trading Strategies | Ruggiero | 1997 |
-| 13 | `testing_tuning` | Testing and Tuning Market Trading Systems | Masters | 2018 |
-| 14 | `numerical_recipes` | Numerical Recipes in C (2nd ed) | Press et al. | 1992 |
-| 15 | `data_driven_science` | Data-Driven Science and Engineering | Brunton & Kutz | 2021 |
-| 16 | `tech_analysis_patterns` | Technical Analysis for Algorithmic Pattern Recognition | Tsinaslanidis | 2016 |
-| 17 | `regime_change` | Detecting Regime Change in Computational Finance | Chen & Tsang | 2020 |
-| 18 | `trading_on_sentiment` | Trading on Sentiment | Peterson | 2016 |
-| 19 | `evidence_based_ta` | Evidence-Based Technical Analysis | Aronson | 2007 |
-| 20 | `trading_evolved` | Trading Evolved | Clenow | 2019 |
-| 21 | `ml_for_asset_managers` | Machine Learning for Asset Managers | López de Prado | 2020 |
-| 22 | `ml_for_algo_trading` | Machine Learning for Algorithmic Trading | Jansen | 2020 |
+**33 livros absorvidos** como Claude Skill (Fase 0 concluída). Importância por
+livro (⭐⭐⭐ crítico, ⭐⭐ importante, ⭐ complementar) e qualidade de absorção
+(🌟 perfeita, ✅ boa, ⚠️ borderline) estão no catálogo completo em
+[`books/README.md`](books/README.md#catálogo-dos-livros-3333-absorvidos).
 
-Código C++ complementar:
-- `books/code/masters-assessing/` — Assessing and Improving Prediction (Masters 2013, PDF indisponível; código é a fonte primária)
-- `books/code/masters-testing-tuning/` — Testing and Tuning (Masters 2018, complementa o PDF)
+**Inventário canônico** (slug → título/autor/ano): [`books/MAPPING.md`](books/MAPPING.md).
 
----
+Para re-absorver um livro ou adicionar novo:
 
-## Troubleshooting
+```
+# dentro do Claude Code
+/absorb-book <slug>
+```
 
-**`extract_pdfs.py` lança `ScannedPDFError`:**
-- Significa que o PDF não tem camada de texto (é imagem escaneada).
-- Substitua por uma versão com OCR ou cópia digital. O pipeline **não** tenta OCR automaticamente (evita degradar qualidade silenciosamente).
-
-**`validate_summary.py` rejeita o summary:**
-- Leia o diagnóstico. Causas comuns:
-  - Asserções sem `[p.X]` — ajuste o prompt do book-reader para ser mais rigoroso.
-  - Seção faltando — agente precisa escrever `N/A — <razão>`, não omitir.
-- Depois de ajustar o prompt, re-rode `/absorb-book <slug>`.
-
-**Book-reader estoura contexto em livro grande:**
-- `_metadata.json` deveria ter marcado `recommended_mode: "map_reduce"`.
-- Se não marcou, ajuste o threshold em `extract_pdfs.py` (atualmente 400K tokens estimados).
+Pipeline completo documentado em [`books/README.md#pipeline`](books/README.md#pipeline-como-reproduzir--re-absorver).
 
 ---
 
@@ -275,6 +239,8 @@ Ref: `advances_fin_ml.md`, ch.14 `[p.261-270]`.
 
 ## Referências
 
-- Plano geral do sistema: `TRADING_SYSTEM_PLAN.md`
-- Plano da Fase 0: `/home/victor/.claude/plans/synthetic-snuggling-wren.md`
-- Plano aprovado anterior (base): `/home/victor/.claude/plans/mighty-mixing-porcupine.md`
+- **Roadmap / estado das fases:** [`ROADMAP.md`](ROADMAP.md)
+- **Plano geral com justificativa por decisão:** [`TRADING_SYSTEM_PLAN.md`](TRADING_SYSTEM_PLAN.md)
+- **Catálogo dos livros + pipeline de absorção:** [`books/README.md`](books/README.md)
+- **Claude Skill gerada:** [`knowledge/SKILL.md`](knowledge/SKILL.md)
+- **Plano ativo (Fase 0):** `/home/victor/.claude/plans/synthetic-snuggling-wren.md`
