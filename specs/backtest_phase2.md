@@ -71,7 +71,7 @@ coisa a ler é este arquivo + `ROADMAP.md`.
 
 **O que fazer:**
 
-- [ ] **Portfolio** — `src/ai_trade/backtest/engine/portfolio.py`
+- [x] **Portfolio** — `src/ai_trade/backtest/engine/portfolio.py`
   - Rastreia posições (long/short, volume, `avg_entry_price`, `mark_price`).
   - P&L realizado e unrealizado por símbolo e total.
   - Eventos: `open_position`, `close_position`, `update_mark`, `apply_cash_flow`.
@@ -79,20 +79,20 @@ coisa a ler é este arquivo + `ROADMAP.md`.
   - Operar em moeda base (USD por simplicidade agora; CFD multi-moeda vira
     depois que cTrader destravar).
 
-- [ ] **Execution simulator** — `src/ai_trade/backtest/engine/execution.py`
+- [x] **Execution simulator** — `src/ai_trade/backtest/engine/execution.py`
   - CFD-aware: aplica spread bid/ask (fill = quote ± spread/2) + slippage.
   - Swap/overnight: `SwapModel` debita pct/dia por posição aberta no rollover.
   - Interface: `simulate_fill(order, bar) → Fill | None`.
   - Config via `ExecutionConfig(spread_pips, slippage_pips, commission_per_lot)`.
 
-- [ ] **Runner** — `src/ai_trade/backtest/engine/runner.py`
+- [x] **Runner** — `src/ai_trade/backtest/engine/runner.py`
   - Bar-by-bar event loop.
   - Protocolo `Strategy`: `on_bar(bar, portfolio, context) → list[Order]`.
   - Orquestra: para cada timestamp, feed bars → strategy → orders →
     execution → portfolio update → mark update.
   - Emite `BacktestResult` (equity curve, trades, fills, orders rejeitados).
 
-- [ ] **Testes** — `tests/test_backtest_engine.py`
+- [x] **Testes** — `tests/test_backtest_engine.py`
   - Portfolio: open/close trade em cenário sintético, verifica P&L.
   - Execution: fill com spread conhecido → verifica custo embutido.
   - Runner: strategy "buy-and-hold" → equity curve bate com return bruto − custos.
@@ -101,7 +101,27 @@ coisa a ler é este arquivo + `ROADMAP.md`.
 (e.g., compra 100 AAPL em 2020-01-02, marca por 10 dias, fecha) end-to-end
 sem erros e com números verificáveis a mão.
 
-**Conclusão:** _(preencher ao finalizar)_
+**Conclusão:** Engine core completo em `src/ai_trade/backtest/engine/`
+(`portfolio.py`, `execution.py`, `runner.py`, `__init__.py`) com 29 testes novos
+em `tests/test_backtest_engine.py` (`62 passed` total). Desenvolvido em TDD
+estrito: testes falharam por `ModuleNotFoundError` antes de cada implementação.
+
+Decisões não-óbvias:
+- **Equity formula correta:** durante TDD a fórmula ingênua `cash + Σ unrealized_pnl`
+  revelou-se errada (ignora o cost basis de posições abertas); corrigida para
+  `cash + Σ signed_market_value` onde signed_market_value = ±volume×mark
+  (+long, −short). Dois testes do Portfolio tiveram expectativas ajustadas.
+- **Spread em unidades de preço absoluto, não pips:** `ExecutionConfig.half_spread`/
+  `slippage` como preço direto (caller converte pips/bps), mantém o engine
+  agnóstico a símbolo — AAPL $0.005 e EURUSD 0.0001 usam a mesma interface.
+- **Mark-to-close em duas passadas:** Runner marca antes e depois da strategy
+  (antes: equity fresca pra sizing; depois: remove o prêmio de spread do
+  mark de posições recém-abertas, reflete o custo imediato no equity).
+- **Order dispatch mínimo:** buy vira open_long OU close_short; sell vira
+  close_long OU open_short. Long-only (Clenow) exercita metade dos caminhos;
+  shorts têm cobertura via testes unitários do Portfolio.
+- **Equity = 10_200 verificável a mão:** buy 10 @ 100, mark→120, cash 9_000 +
+  position 1_200 = 10_200 ✓ (test_buy_and_hold_no_costs_equity_matches_position_value).
 
 ---
 
