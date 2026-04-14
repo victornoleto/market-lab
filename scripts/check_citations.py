@@ -51,11 +51,30 @@ SUMMARIES_DIR = ROOT / "books" / "summaries"
 #   [cap. 4, p.89]    → same, Portuguese variant (used in book-reader template)
 CITATION_RE = re.compile(
     r"\["
-    r"(?:(?:ch|cap)\.?\s*(?P<ch>\d+)\s*,?\s*)?"
-    r"(?:p\.?\s*(?P<p1>\d+|\?)\s*(?:-\s*(?P<p2>\d+))?)?"
+    r"(?:"
+        # Branch A — chapter-first (legacy): [ch.Y, p.X-Y]
+        r"(?:ch|cap)\.?\s*(?P<ch_a>\d+)\s*,?\s*"
+        r"(?:p\.?\s*(?P<p1_a>\d+|\?)(?:\s*[-\u2013\u2014]\s*(?P<p2_a>\d+))?)?"
+      r"|"
+        # Branch B — page-first with optional chapter via comma OR parens:
+        # [p.X-Y], [p.X, ch.Y], [p.X (ch.Y)], [p.X\u20133, ch.Y]
+        r"p\.?\s*(?P<p1_b>\d+|\?)(?:\s*[-\u2013\u2014]\s*(?P<p2_b>\d+))?"
+        r"(?:\s*[,(]\s*(?:ch|cap)\.?\s*(?P<ch_b>\d+)\s*\)?)?"
+    r")"
     r"\]",
     re.IGNORECASE,
 )
+
+
+def _coalesce_citation(m: re.Match) -> tuple[str | None, str | None, str | None]:
+    """Return (ch, p1, p2) from a CITATION_RE match, coalescing branch-specific
+    groups. Also accepts legacy hand-rolled matches that use the plain names
+    `ch`, `p1`, `p2` (see test_chapter_intro_terms_are_warn_not_fail)."""
+    groups = m.groupdict()
+    ch = groups.get("ch_a") or groups.get("ch_b") or groups.get("ch")
+    p1 = groups.get("p1_a") or groups.get("p1_b") or groups.get("p1")
+    p2 = groups.get("p2_a") or groups.get("p2_b") or groups.get("p2")
+    return ch, p1, p2
 
 PAGE_MARKER_RE = re.compile(r"\[PAGE\s+(\d+)\]", re.IGNORECASE)
 
@@ -491,7 +510,8 @@ def extract_citations(summary_md: str) -> list[tuple[str, re.Match]]:
 
     out: list[tuple[str, re.Match]] = []
     for m in CITATION_RE.finditer(summary_md):
-        if not (m.group("ch") or m.group("p1")):
+        _ch, _p1, _p2 = _coalesce_citation(m)
+        if not (_ch or _p1):
             continue
         if meta_span and meta_span[0] <= m.start() < meta_span[1]:
             continue  # skip bibliographic citations in Metadata section
@@ -516,9 +536,7 @@ def check_one(
     canonical: dict | None = None,
 ) -> CitationCheck:
     raw = m.group(0)
-    ch_raw = m.group("ch")
-    p1_raw = m.group("p1")
-    p2_raw = m.group("p2")
+    ch_raw, p1_raw, p2_raw = _coalesce_citation(m)
 
     chk = CitationCheck(
         assertion=line[:200],

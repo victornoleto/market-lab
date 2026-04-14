@@ -103,6 +103,48 @@ def test_systemic_offset_not_detected_when_failures_scattered():
     assert result.detected is False
 
 
+def test_citation_re_accepts_page_first_with_chapter():
+    """[p.X, ch.Y] format used by algo_trading_chan and others."""
+    from scripts.check_citations import CITATION_RE, _coalesce_citation
+    m = CITATION_RE.search("[p.5-6, ch.1]")
+    assert m is not None
+    ch, p1, p2 = _coalesce_citation(m)
+    assert p1 == "5"
+    assert p2 == "6"
+    assert ch == "1"
+
+
+def test_citation_re_accepts_en_dash_range():
+    """[p.1–3, ch.1] with U+2013 en-dash — used by regime_change, risk_parity."""
+    from scripts.check_citations import CITATION_RE, _coalesce_citation
+    m = CITATION_RE.search("[p.1\u20133, ch.1]")
+    assert m is not None
+    ch, p1, p2 = _coalesce_citation(m)
+    assert p1 == "1"
+    assert p2 == "3"
+
+
+def test_citation_re_accepts_paren_chapter():
+    """[p.X (ch.Y)] with parens — used by systematic_trading."""
+    from scripts.check_citations import CITATION_RE, _coalesce_citation
+    m = CITATION_RE.search("[p.40 (ch.2)]")
+    assert m is not None
+    ch, p1, p2 = _coalesce_citation(m)
+    assert p1 == "40"
+    assert ch == "2"
+
+
+def test_citation_re_still_accepts_legacy_chapter_first():
+    """Regression: [ch.6, p.71-74] legacy format must keep working."""
+    from scripts.check_citations import CITATION_RE, _coalesce_citation
+    m = CITATION_RE.search("[ch.6, p.71-74]")
+    assert m is not None
+    ch, p1, p2 = _coalesce_citation(m)
+    assert ch == "6"
+    assert p1 == "71"
+    assert p2 == "74"
+
+
 def test_chapter_intro_terms_are_warn_not_fail():
     """When assertion tokens match ONLY in the chapter heading
     (first 5 non-empty lines) and not in the body, verdict is 'warn'."""
