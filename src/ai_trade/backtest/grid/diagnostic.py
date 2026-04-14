@@ -13,7 +13,7 @@ failure mode and surfaces the numbers.
 from __future__ import annotations
 
 import logging
-from dataclasses import dataclass, field
+from dataclasses import MISSING, dataclass, field, fields
 
 import numpy as np
 import pandas as pd
@@ -21,6 +21,21 @@ import pandas as pd
 from ai_trade.backtest.grid.gates import GateVerdict
 from ai_trade.backtest.grid.result import GridResult, TrialResult
 from ai_trade.backtest.grid.walk_forward import WFResult
+
+
+def _varied_field_names(config) -> tuple[str, ...]:
+    """Field names of a grid-config dataclass that are swept (no default).
+
+    Convention used across ``ai_trade.backtest.grid``: grid axes are
+    declared as fields WITHOUT a default (so callers have to set them),
+    and fixed literature constants are declared WITH defaults. This
+    helper lets the diagnostic/report layer be strategy-agnostic.
+    """
+    return tuple(
+        f.name
+        for f in fields(config)
+        if f.default is MISSING and f.default_factory is MISSING
+    )
 
 
 _log = logging.getLogger("ai_trade.grid.diagnostic")
@@ -149,11 +164,10 @@ def _per_config_metrics(
             if trial.config_id in verdict.dsr_results
             else float("nan")
         )
-        rows.append({
-            "config_id": trial.config_id,
-            "lookback_regression": trial.config.lookback_regression,
-            "top_pct": trial.config.top_pct,
-            "risk_factor": trial.config.risk_factor,
+        row = {"config_id": trial.config_id}
+        for name in _varied_field_names(trial.config):
+            row[name] = getattr(trial.config, name)
+        row.update({
             "sharpe": trial.sharpe if trial.status == "ok" else float("nan"),
             "cagr": trial.cagr if trial.status == "ok" else float("nan"),
             "max_drawdown": trial.max_drawdown if trial.status == "ok" else float("nan"),
@@ -165,6 +179,7 @@ def _per_config_metrics(
             ).verdict if trial.config_id in wf_results else "n/a",
             "status": trial.status,
         })
+        rows.append(row)
     return pd.DataFrame(rows)
 
 

@@ -312,7 +312,7 @@ report gerado, integration test passa, notas escritas.
   - Se mudança for grande, criar `GridRunner` genérico + helpers
     específicos por estratégia.
 
-- [ ] **CLI** — `scripts/run_grid_ehlers.py`
+- [x] **CLI** — `scripts/run_grid_ehlers.py`
   - Clone estrutural de `scripts/run_grid_clenow.py`
   - Fetch data via `YFinanceSource.fetch_many` (cache reusado do Clenow)
   - trial_fn builds `EhlersBPSwing` + runs `Runner.run`
@@ -327,7 +327,19 @@ report gerado, integration test passa, notas escritas.
 **Aceito quando:** grid config dá 24 combos sem duplicatas; CLI roda
 end-to-end com `--dry-run` em 3 configs × 1 ano; tests passam.
 
-**Conclusão:** _(preencher)_
+**Conclusão:**
+
+- **Commit 7** — `grid/ehlers_config.py` + 9 testes (acima).
+- **Commit 8** — GridRunner generic via TypeVar `ConfigT`; +4 testes
+  mostrando config Ehlers aceita sem quebrar API Clenow.
+- **Commit 9** — `scripts/run_grid_ehlers.py` (248 LOC, clone-estrutural
+  do Clenow) + generalização do `diagnostic.py` (`_varied_field_names`
+  via `dataclasses.fields`) e `report.py` (`_varied_field_names` +
+  `_fmt_value` + heatmap usando primeiros 2 varied fields). Dry-run
+  smoke ^GSPC 2022-2023 × 3 configs: 0.5s wallclock, gates
+  FAIL=esperado (DSR_ALL_FAIL + WF_INSUFFICIENT + COMBINED),
+  diagnostic.md rendeiriza corretamente com campos dinâmicos
+  (`hp_period`, `lp_period`, `pct_of_dcp`, `stop_pct`). `290 passed`.
 
 ---
 

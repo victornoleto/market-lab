@@ -16,7 +16,7 @@ contract as :mod:`ai_trade.backtest.metrics.report`).
 from __future__ import annotations
 
 import logging
-from dataclasses import dataclass
+from dataclasses import MISSING, dataclass, fields
 from datetime import datetime
 from pathlib import Path
 
@@ -36,6 +36,30 @@ from ai_trade.backtest.metrics._fmt import (  # noqa: E402
     _fmt_num,
     _fmt_pct,
 )
+
+
+def _varied_field_names(config) -> tuple[str, ...]:
+    """Names of the grid-varied (no-default) fields of a config dataclass.
+
+    Same convention as :mod:`ai_trade.backtest.grid.diagnostic` — grid
+    axes have no default; fixed literature constants have defaults.
+    """
+    return tuple(
+        f.name
+        for f in fields(config)
+        if f.default is MISSING and f.default_factory is MISSING
+    )
+
+
+def _fmt_value(name: str, raw) -> str:
+    """Format a grid-varied value for Markdown display.
+
+    Fields whose name contains ``pct`` or ``rate`` are rendered as
+    percentages; other floats with 4 decimals; everything else via ``str``.
+    """
+    if isinstance(raw, float):
+        return _fmt_pct(raw) if "pct" in name else _fmt_num(raw, 4)
+    return str(raw)
 
 
 _log = logging.getLogger("ai_trade.grid.report")
@@ -107,7 +131,7 @@ class GridReportGenerator:
                 if best_equity_path is not None
                 else "_not available_\n"
             ),
-            "## Sharpe heatmap (lookback × top_pct × risk_factor)\n\n"
+            "## Sharpe heatmap\n\n"
             + f"![sharpe heatmap](assets/{heatmap_path.name})\n",
             "## Per-config metrics\n\n" + _per_config_table(grid, verdict, wf_results),
             "## Next step\n\n"
@@ -212,16 +236,15 @@ def _best_config_section(
         return "_Best config unavailable._\n"
     cfg = trial.config
     wf = wf_results.get(trial.config_id)
-    rows = [
-        ("config_id", str(trial.config_id)),
-        ("lookback_regression", str(cfg.lookback_regression)),
-        ("top_pct", _fmt_pct(cfg.top_pct)),
-        ("risk_factor", _fmt_num(cfg.risk_factor, 4)),
+    rows: list[tuple[str, str]] = [("config_id", str(trial.config_id))]
+    for name in _varied_field_names(cfg):
+        rows.append((name, _fmt_value(name, getattr(cfg, name))))
+    rows.extend([
         ("Sharpe (annualized)", _fmt_num(trial.sharpe, 3)),
         ("CAGR", _fmt_pct(trial.cagr)),
         ("Max drawdown", _fmt_pct(trial.max_drawdown)),
         ("Final equity", f"${trial.result.final_equity:,.2f}"),
-    ]
+    ])
     if trial.config_id in verdict.dsr_results:
         dr = verdict.dsr_results[trial.config_id]
         rows.append(("DSR p-value", _fmt_num(float(dr.p_value), 4)))
@@ -241,15 +264,14 @@ def _best_config_section_from_diag(
         return "_Best config unavailable (all trials errored)._\n"
     cfg = trial.config
     wf = wf_results.get(trial.config_id)
-    rows = [
-        ("config_id", str(trial.config_id)),
-        ("lookback_regression", str(cfg.lookback_regression)),
-        ("top_pct", _fmt_pct(cfg.top_pct)),
-        ("risk_factor", _fmt_num(cfg.risk_factor, 4)),
+    rows: list[tuple[str, str]] = [("config_id", str(trial.config_id))]
+    for name in _varied_field_names(cfg):
+        rows.append((name, _fmt_value(name, getattr(cfg, name))))
+    rows.extend([
         ("Sharpe (annualized)", _fmt_num(trial.sharpe, 3)),
         ("CAGR", _fmt_pct(trial.cagr)),
         ("Max drawdown", _fmt_pct(trial.max_drawdown)),
-    ]
+    ])
     if wf is not None:
         rows.append(("Walk-forward", f"{wf.n_profitable}/{wf.n_windows} profitable"))
     md = "| Field | Value |\n|---|---|\n" + "\n".join(
@@ -280,11 +302,11 @@ def _per_config_table(
             else float("nan")
         )
         wf = wf_results.get(trial.config_id)
-        rows.append({
-            "config_id": trial.config_id,
-            "lookback": trial.config.lookback_regression,
-            "top_pct": _fmt_pct(trial.config.top_pct),
-            "risk": _fmt_num(trial.config.risk_factor, 4),
+        row: dict = {"config_id": trial.config_id}
+        for name in _varied_field_names(trial.config):
+            raw = getattr(trial.config, name)
+            row[name] = _fmt_value(name, raw)
+        row.update({
             "Sharpe": _fmt_num(trial.sharpe, 3) if trial.status == "ok" else "—",
             "CAGR": _fmt_pct(trial.cagr) if trial.status == "ok" else "—",
             "DD": _fmt_pct(trial.max_drawdown) if trial.status == "ok" else "—",
@@ -292,6 +314,7 @@ def _per_config_table(
             "WF": wf.verdict if wf is not None else "—",
             "status": trial.status,
         })
+        rows.append(row)
     df = pd.DataFrame(rows)
     return _dataframe_to_markdown(df) + "\n"
 
@@ -326,18 +349,14 @@ def _wf_breakdown_section(wf_results: dict[int, WFResult]) -> str:
 
 
 def _write_sharpe_heatmap(grid: GridResult, path: Path) -> None:
-    """2D heatmap: Sharpe over (lookback_regression × top_pct), risk_factor
-    aggregated by max (takes the best risk_factor per cell).
+    """2D Sharpe heatmap over the first two varied config axes.
+
+    For strategies with >2 varied dims (Clenow has 3, Ehlers has 4),
+    additional axes are aggregated via ``max`` — the cell shows the
+    best Sharpe achieved across any value of the other axes.
     """
-    rows = []
-    for trial in grid.ok_trials:
-        rows.append({
-            "lookback": trial.config.lookback_regression,
-            "top_pct": trial.config.top_pct,
-            "risk": trial.config.risk_factor,
-            "sharpe": trial.sharpe,
-        })
-    if not rows:
+    ok = grid.ok_trials
+    if not ok:
         # Empty placeholder so downstream ``![...](path)`` links still resolve
         fig, ax = plt.subplots(figsize=(4, 2))
         ax.text(0.5, 0.5, "no OK trials", ha="center", va="center")
@@ -346,23 +365,60 @@ def _write_sharpe_heatmap(grid: GridResult, path: Path) -> None:
         plt.close(fig)
         return
 
+    varied = _varied_field_names(ok[0].config)
+    if len(varied) < 2:
+        # Degenerate — only one grid axis. Fall back to a bar chart by
+        # that axis; still produces a usable PNG.
+        axis = varied[0] if varied else "config_id"
+        rows = [
+            {"x": getattr(t.config, axis, t.config_id), "sharpe": t.sharpe}
+            for t in ok
+        ]
+        df = pd.DataFrame(rows).sort_values("x")
+        fig, ax = plt.subplots(figsize=(6, 4))
+        ax.bar(range(len(df)), df["sharpe"].to_numpy())
+        ax.set_xticks(range(len(df)))
+        ax.set_xticklabels([str(v) for v in df["x"]], rotation=45)
+        ax.set_xlabel(axis)
+        ax.set_ylabel("Sharpe")
+        ax.set_title(f"Sharpe by {axis}")
+        fig.tight_layout()
+        fig.savefig(path, dpi=120)
+        plt.close(fig)
+        return
+
+    y_axis, x_axis = varied[0], varied[1]
+    rows = [
+        {
+            y_axis: getattr(t.config, y_axis),
+            x_axis: getattr(t.config, x_axis),
+            "sharpe": t.sharpe,
+        }
+        for t in ok
+    ]
     df = pd.DataFrame(rows)
     pivot = df.pivot_table(
-        index="lookback", columns="top_pct", values="sharpe", aggfunc="max",
+        index=y_axis, columns=x_axis, values="sharpe", aggfunc="max",
     )
 
     fig, ax = plt.subplots(figsize=(6, 4))
     im = ax.imshow(pivot.values, cmap="viridis", aspect="auto")
     ax.set_xticks(range(len(pivot.columns)))
-    ax.set_xticklabels([f"{c:.2f}" for c in pivot.columns])
+    ax.set_xticklabels([str(c) for c in pivot.columns])
     ax.set_yticks(range(len(pivot.index)))
     ax.set_yticklabels([str(i) for i in pivot.index])
-    ax.set_xlabel("top_pct")
-    ax.set_ylabel("lookback_regression")
-    ax.set_title("Max Sharpe across risk_factor")
+    ax.set_xlabel(x_axis)
+    ax.set_ylabel(y_axis)
+    extra_axes = varied[2:]
+    title = (
+        f"Max Sharpe across {', '.join(extra_axes)}"
+        if extra_axes
+        else f"Sharpe ({y_axis} × {x_axis})"
+    )
+    ax.set_title(title)
     fig.colorbar(im, ax=ax, label="Sharpe")
-    for i, lb in enumerate(pivot.index):
-        for j, tp in enumerate(pivot.columns):
+    for i in range(len(pivot.index)):
+        for j in range(len(pivot.columns)):
             val = pivot.values[i, j]
             if np.isfinite(val):
                 ax.text(j, i, f"{val:.2f}", ha="center", va="center", color="white")
