@@ -416,3 +416,122 @@ class TestDominantCyclePeriod:
 
         assert out.min() >= 10.0 - 1e-9
         assert out.max() <= 30.0 + 1e-9
+
+
+# ---------------------------------------------------------------------------
+# Band-pass filter — [cycle_analytics, eq. 5-2 p.48, ch.5;
+# tuning rule p.152-153, ch.11]
+# ---------------------------------------------------------------------------
+
+
+class TestBandPass:
+    """``band_pass(series, dcp, pct_of_dcp=0.90, bandwidth=0.3)``.
+
+    Ehlers's IIR band-pass is a detrender + smoother in one pass. Tuned to
+    90% of the dominant cycle period, it yields ~60° of phase lead
+    [p.152-153, ch.11]. Bandwidth 0.3 is Ehlers's recommended compromise
+    between selectivity and transient response [p.53, ch.5].
+    """
+
+    def test_shape_and_index_preserved(self):
+        from ai_trade.backtest.indicators.ehlers_bp import band_pass
+
+        idx = pd.date_range("2024-01-01", periods=100, freq="B")
+        series = pd.Series(np.linspace(0, 1, 100), index=idx)
+
+        out = band_pass(series, dcp=20.0)
+
+        assert isinstance(out, pd.Series)
+        assert len(out) == len(series)
+        assert out.index.equals(series.index)
+
+    def test_passes_sine_at_tuned_period(self):
+        """Sinusoid at the tuned period (``dcp·pct``) passes with amplitude
+        close to the input — the filter is narrow-band centered on it.
+        """
+        from ai_trade.backtest.indicators.ehlers_bp import band_pass
+
+        n = 1000
+        dcp = 20.0
+        pct = 1.0  # tune exactly on the test sine
+        tuned_period = dcp * pct  # = 20
+        t = np.arange(n)
+        series = pd.Series(np.sin(2 * np.pi * t / tuned_period))
+
+        out = band_pass(series, dcp=dcp, pct_of_dcp=pct)
+
+        tail = out.iloc[400:]
+        input_tail = series.iloc[400:]
+        rms_in = float(np.sqrt((input_tail**2).mean()))
+        rms_out = float(np.sqrt((tail**2).mean()))
+        assert rms_out / rms_in > 0.5
+
+    def test_rejects_sine_far_from_tuned_period(self):
+        """Off-band sinusoid (period ≫ 2·tuned) is strongly attenuated."""
+        from ai_trade.backtest.indicators.ehlers_bp import band_pass
+
+        n = 1200
+        dcp = 20.0
+        t = np.arange(n)
+        series = pd.Series(np.sin(2 * np.pi * t / 80))
+
+        out = band_pass(series, dcp=dcp, pct_of_dcp=0.9)
+
+        tail = out.iloc[400:]
+        input_tail = series.iloc[400:]
+        rms_in = float(np.sqrt((input_tail**2).mean()))
+        rms_out = float(np.sqrt((tail**2).mean()))
+        assert rms_out / rms_in < 0.3
+
+    def test_accepts_series_dcp_for_adaptive_mode(self):
+        """``dcp`` may be a ``pd.Series`` so the filter re-tunes bar-by-bar."""
+        from ai_trade.backtest.indicators.ehlers_bp import band_pass
+
+        n = 400
+        t = np.arange(n)
+        series = pd.Series(np.sin(2 * np.pi * t / 20))
+        dcp_series = pd.Series([20.0] * n)
+
+        out = band_pass(series, dcp=dcp_series, pct_of_dcp=1.0)
+
+        assert len(out) == n
+        out_scalar = band_pass(series, dcp=20.0, pct_of_dcp=1.0)
+        pd.testing.assert_series_equal(out, out_scalar, check_names=False)
+
+    def test_rejects_invalid_pct(self):
+        from ai_trade.backtest.indicators.ehlers_bp import band_pass
+
+        series = pd.Series([1.0] * 50)
+        with pytest.raises(ValueError):
+            band_pass(series, dcp=20.0, pct_of_dcp=0.0)
+        with pytest.raises(ValueError):
+            band_pass(series, dcp=20.0, pct_of_dcp=-0.1)
+
+    def test_rejects_invalid_bandwidth(self):
+        from ai_trade.backtest.indicators.ehlers_bp import band_pass
+
+        series = pd.Series([1.0] * 50)
+        with pytest.raises(ValueError):
+            band_pass(series, dcp=20.0, bandwidth=0.0)
+        with pytest.raises(ValueError):
+            band_pass(series, dcp=20.0, bandwidth=1.5)
+
+    def test_adaptive_mode_tracks_changing_dcp(self):
+        """DCP change mid-series: filter re-tunes and still passes cycles."""
+        from ai_trade.backtest.indicators.ehlers_bp import band_pass
+
+        n = 1000
+        t = np.arange(n)
+        first = np.sin(2 * np.pi * t[: n // 2] / 15)
+        second = np.sin(2 * np.pi * t[n // 2 :] / 30)
+        series = pd.Series(np.concatenate([first, second]))
+        dcp_series = pd.Series([15.0] * (n // 2) + [30.0] * (n // 2))
+
+        out = band_pass(series, dcp=dcp_series, pct_of_dcp=1.0)
+
+        first_tail_rms = float(np.sqrt((out.iloc[200 : n // 2] ** 2).mean()))
+        second_tail_rms = float(
+            np.sqrt((out.iloc[n // 2 + 200 :] ** 2).mean())
+        )
+        assert first_tail_rms > 0.3
+        assert second_tail_rms > 0.3

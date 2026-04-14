@@ -118,9 +118,11 @@ multi-ticker (top-10 SPX constituents por liquidez) e comparar.
   - Algoritmo: Homodyne Discriminator `[rocket_science, ch.6 p.59 + ch.8 p.82-83]`
   - Output clampado em `[6, 50]` bars por regra `[p.82-83]` (configurável)
 
-- [ ] **Band-pass filter** — `src/ai_trade/backtest/indicators/ehlers_bp.py`
-  - `band_pass(series, dcp, pct_of_dcp=0.90) → pd.Series`
+- [x] **Band-pass filter** — `src/ai_trade/backtest/indicators/ehlers_bp.py`
+  - `band_pass(series, dcp, pct_of_dcp=0.90, bandwidth=0.30) → pd.Series`
   - Tuned a 90% do DCP para ~60° de phase lead `[cycle_analytics, p.152-153]`
+  - Aceita `dcp` scalar (fixed-tuning) ou Series (adaptive — modo usado
+    pela strategy downstream)
 
 - [ ] **Testes** — `tests/test_ehlers_indicators.py`
   - Verificação numérica contra exemplos do livro quando disponíveis
@@ -165,6 +167,16 @@ verdes. Docstrings citam o livro+página de cada fórmula.
   5 testes: shape/index, converge em seno puro período 20 (±2) e 30
   (±3), clamp absoluto mantido em regime mixto, clamp customizável
   [10,30]. `257 passed`.
+
+- **Commit 4 — Band-pass filter:**
+  `indicators/ehlers_bp.py` — eq. 5-2 com coefs (β, γ, σ) derivados por
+  bar de `period = dcp · pct_of_dcp`, `bandwidth=0.30` default
+  [p.53, ch.5]. Scalar e adaptive (Series dcp) ambos suportados — forma
+  adaptiva é a que a strategy downstream usa. Guard Nyquist (period<2
+  hold), guard cos_bw≈0 (hold), guard disc<0 (hold). 7 testes: shape,
+  sine at tuned passes (>50% RMS), sine far rejected (<30%), dcp scalar
+  ≡ dcp series constante, invalid pct, invalid bandwidth, adaptive mode
+  segue mudança 15→30. `264 passed`.
 
 ---
 
