@@ -7,6 +7,142 @@ coisa a ler é este arquivo + `ROADMAP.md`.
 
 ---
 
+## 📊 Resumo da Fase 2 (concluída 2026-04-14)
+
+**Status:** ✅ Todas as 5 tasks concluídas. 173 testes passando. 6 commits
+(`517c221` → `f971c70`).
+
+### O que foi entregue
+
+Módulo de backtest completo em `src/ai_trade/backtest/` — 5 camadas
+independentes, cada uma com seus próprios testes verificados numericamente
+contra a fonte citada (AFML, Masters, Clenow).
+
+| Camada | Arquivos (LOC) | Testes (LOC) | Fonte citada |
+|---|---|---|---|
+| **Data** — `data/` | `yfinance_source.py` (150), `wikipedia_spx.py` (180) | 2 arquivos (191) | — |
+| **Engine** — `engine/` | `portfolio.py` (206), `execution.py` (120), `runner.py` (170) | `test_backtest_engine.py` (537) | `[advances_fin_ml]` generic |
+| **Validation** — `validation/` | `cpcv.py` (127), `pbo.py` (118), `dsr.py` (136), `walk_forward.py` (89), `permutation.py` (106) | `test_validation.py` (596) | `[advances_fin_ml, ch.7/11/14]`, `[testing_tuning]`, `[stat_sound_indicators]` |
+| **Metrics** — `metrics/` | `performance.py` (125), `report.py` (297) | `test_metrics.py` (469) | `[advances_fin_ml]`, Sortino (Estrada) |
+| **Strategies** — `strategies/` | `base.py` (93), `clenow_momentum.py` (390) | 3 arquivos (851) | `[stocks_on_the_move]` |
+
+Total ≈ **2.3k LOC de implementação + 2.6k LOC de testes**. Além: CLI
+`scripts/run_clenow_replication.py` (250 LOC), doc
+`reports/clenow_replication_notes.md`.
+
+### Commits
+
+| SHA | Conteúdo |
+|---|---|
+| `517c221` | Data sources — `yfinance_source` + `wikipedia_spx` (pré-Task 1) |
+| `d8b43a4` | Task 1 — Engine core (portfolio + execution + runner) |
+| `5d91212` | Task 2 — Validation framework (CPCV / PBO / DSR / WF / MCPT) |
+| `d172ebe` | Task 3 — Métricas + report generator (Sharpe/Sortino/Calmar/CAGR/DD/VaR + MD+PNG) |
+| `415e205` | Task 4 — Clenow momentum replication (strategies + CLI) |
+| `f971c70` | Task 5 — Fechamento (ROADMAP/README + reavaliação decisões adiadas) |
+
+### Replicação Clenow — números reais
+
+Rodado em 2026-04-14 (commit `415e205`):
+
+- **Universo:** SPX 500 point-in-time via Wikipedia, janela
+  2023-07-01 → 2023-12-31 (6 meses)
+- **503 tickers** na composição point-in-time; **17 pulados** (3.4%) por
+  survivorship residual (rename/delisting que `yfinance` não resolve)
+- **Cash:** $100k → $93 965 final
+- **CAGR:** −11.79% · **Sharpe:** −0.79 · **Max DD:** 13.55%
+- Resultado **dentro do ruído esperado** para H2 2023 choppy; composição de
+  winners/losers (LLY/GOOG/AMGN vs NCLH/CMG/BKR) confirma lógica de
+  ranking + regime filter operando corretamente. **Não é medida de edge** —
+  single-trial com parametrização fixa, sem grid, sem gates ativos.
+
+### Decisões-chave transferíveis (pegadinhas que um futuro dev precisa saber)
+
+**Engine:**
+- **Equity = `cash + Σ signed_market_value`**, não `cash + Σ unrealized_pnl`
+  (este último ignora o cost basis de posições abertas).
+- **Spread em preço absoluto**, não pips — caller converte; engine fica
+  agnóstico a símbolo.
+- **Mark-to-close em duas passadas no Runner** (antes + depois da strategy):
+  antes dá equity fresca pra sizing, depois remove o prêmio de spread do
+  mark de posições recém-abertas.
+
+**Validation:**
+- **Purge usa contrato `pd.Series[t0→t1]`** (index=t0, values=t1). Para
+  labels sem overlap: `pd.Series(idx, index=idx)`.
+- **Embargo em posições, não tempo** — `h = int(embargo_pct · len(times))`
+  (AFML p.151), estável com sampling irregular.
+- **CPCV: purge/embargo por bloco**, não pela união — cada bloco disjunto
+  no test gera seu próprio purge+embargo (replica mlfinlab, evita sub-purga).
+- **E[SR_max] (AFML p.222-223) retorna Z-score units**; multiplicar por
+  `√V = 1/√(T-1)` sob iid-null antes de comparar com PSR. Sem essa escala,
+  DSR rejeita todo Sharpe > 0 para N > 5.
+- **Gumbel `√(2 ln N)` é assintótica DO LIMITE SUPERIOR, não da média** —
+  testes usam Monte Carlo direto contra `mean(max(N_normals))`.
+- **PBO single-seed é ruidoso** (std ≈ 0.19 com N=50, T=500, 8 blocos); teste
+  null-case usa média de 20 matrizes independentes.
+- **MCPT (Masters):** shuffle das `n-1` changes preservando `prices[0]` e
+  `prices[-1]` (invariante), re-ancorando `prices[-1]` após cumsum pra
+  apagar drift floating-point.
+
+**Metrics:**
+- **Sortino com downside-dev populacional** (denominador = todas as
+  observações, não só downside). Fórmula Estrada; retorna `+inf` quando sem
+  retornos abaixo do target.
+- **Disclaimer de survivorship é obrigatório por contrato** — `_needs_disclaimer`
+  marca `yfinance`, `wikipedia`, `yahoo` + qualquer fonte sem marker
+  explícito survivorship-free. Cita ROADMAP §"Decisões adiadas".
+- **VaR floor at 0** — se a quantile 5% dos retornos for positiva
+  (estratégia que não perde), VaR = 0 por convenção.
+- **Chart PNG em 2 painéis** (equity + underwater DD), `matplotlib.use("Agg")`
+  headless (~70 KB).
+
+**Strategy (Clenow):**
+- **`self.data` carrega histórico completo; Runner itera slice bounded.**
+  Estratégia precisa 200d (MA SPX) + 90d (regressão) de warmup antes do
+  `--start`. CLI passa `data_bounded` ao Runner mas `data` completa à
+  estratégia.
+- **Sells antes de buys na mesma lista** — Runner executa orders na ordem
+  de inserção; cash liberado vira disponível pra buys do mesmo bar.
+- **Buy gated por regime ON, sell NÃO** — Clenow p.94-95: *"Do not sell a
+  holding just because the index drops below the 200d MA."*
+- **Sizing = `floor(equity × 0.001 / ATR20)` com `equity`** (não cash) —
+  Clenow p.88 fala em "account value".
+- **CPCV/PBO/DSR pulados no CLI Clenow** — single-trial (N=1) não exercita
+  os gates que comparam N≥2. Walk-forward sobre equity realized é a única
+  validação meaningful.
+
+### Fora de escopo (por quê)
+
+- **Grid search de parâmetros Clenow:** é a dor da Fase 2.5 / 3. Hoje
+  executa single-trial (1 configuração fixa).
+- **CPCV/PBO/DSR "em produção":** os módulos existem e têm testes; o que
+  falta é exercitá-los sobre um grid real. Destravar da Fase 2.5 / 3.
+- **Universe Selector + candidatas fundamentadas (Ehlers, AFML meta, Chan):**
+  escopo original da "Fase 2 — Strategy Engine" do ROADMAP, agora Fase 2.5.
+- **Migração para dados pagos (Tiingo/EOD/Norgate):** adiada até primeira
+  estratégia sobreviver a grid + gates em yfinance+Wikipedia (detalhe em
+  §"Reavaliação pós-Fase 2").
+- **vectorbt sandbox:** adiado até atrito de iteração virar gargalo
+  mensurável (>30 min por variação).
+- **`knowledge/SKILL.md` não alterada:** insights da Fase 2 são engenharia,
+  não regras de trading citáveis; ficam nas Conclusões deste spec.
+
+### Próximo passo
+
+**Fase 2.5 / 3 — backtest rigoroso em grid com gates ativos.** Rodar
+Clenow em grid de parâmetros (lookback 60/90/120, top 10%/20%/30%, ATR
+risk budget 0.001/0.002) exercitando CPCV/PBO/DSR com N≥20, para obter
+distribuição honesta de Sharpe + PBO + DSR. **Gate para avançar:**
+PBO < 0.5 e DSR p-value < 0.05 e walk-forward ≥6/8 lucrativas em dados
+yfinance+Wikipedia. Só então fazem sentido (a) migração para dados pagos
+como ablation study, (b) segunda estratégia, (c) vectorbt como sandbox.
+
+Racional completo das 3 decisões adiadas: §"Reavaliação pós-Fase 2" no
+final deste arquivo.
+
+---
+
 ## 📖 Como usar este arquivo
 
 1. **Ao iniciar uma sessão**, leia este arquivo inteiro + `ROADMAP.md` §"Backtest em duas etapas".
