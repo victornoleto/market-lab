@@ -129,12 +129,12 @@ Decisões não-óbvias:
 
 **O que fazer:**
 
-- [ ] **CPCV** — `src/ai_trade/backtest/validation/cpcv.py`
+- [x] **CPCV** — `src/ai_trade/backtest/validation/cpcv.py`
   - Algoritmo de `[advances_fin_ml, ch.7, p.104-117]`: gera C(K, N_test) combinações.
   - `purge(labels, train_idx, test_idx, embargo_pct)` remove overlap.
   - Retorna `Iterator[tuple[train_idx, test_idx]]` — compatível com sklearn API.
 
-- [ ] **PBO** — `src/ai_trade/backtest/validation/pbo.py`
+- [x] **PBO** — `src/ai_trade/backtest/validation/pbo.py`
   - CSCV (Combinatorially Symmetric Cross-Validation) de
     `[advances_fin_ml, ch.11, p.208-211]`.
   - Input: matriz de retornos (T × N_strategies).
@@ -142,26 +142,26 @@ Decisões não-óbvias:
   - **Gate**: `pbo > 0.5 → reject` (rule #3).
   - Cross-check contra `books/code/masters-testing-tuning/CSCV_MKT/CSCV.CPP`.
 
-- [ ] **DSR** — `src/ai_trade/backtest/validation/dsr.py`
+- [x] **DSR** — `src/ai_trade/backtest/validation/dsr.py`
   - Deflated Sharpe de `[advances_fin_ml, ch.14, p.261-270]`.
   - Input: SR observado, N tentativas, skew, kurt, sample size, variância cross-sec dos SRs.
   - Output: `(dsr_value, p_value)`.
   - **Gate**: reportar sempre que N > 1 (rule #4).
 
-- [ ] **Walk-forward** — `src/ai_trade/backtest/validation/walk_forward.py`
+- [x] **Walk-forward** — `src/ai_trade/backtest/validation/walk_forward.py`
   - Splits deslizantes com reotimização (`[eval_opt_strategies]` +
     `[testing_tuning]`).
   - Config: tamanho in-sample, tamanho out-of-sample, step.
   - Retorna `list[tuple[train_range, test_range]]`.
   - **Gate**: ≥8 janelas, ≥6 lucrativas, DD ≤ 25% em todas (rule #5).
 
-- [ ] **Permutation tests** — `src/ai_trade/backtest/validation/permutation.py`
+- [x] **Permutation tests** — `src/ai_trade/backtest/validation/permutation.py`
   - Monte Carlo Permutation Test de `[stat_sound_indicators]`.
   - Cross-check contra `books/code/masters-testing-tuning/MCPT_BARS/` e
     `MCPT_TRN/`.
   - p-value: frac. de permutações com Sharpe ≥ observado.
 
-- [ ] **Testes com verificação numérica** — `tests/test_validation.py`
+- [x] **Testes com verificação numérica** — `tests/test_validation.py`
   - Exemplos toy do AFML (capítulos citados) onde o número esperado é conhecido.
   - Fixtures de matriz de retornos controlada.
   - Testar gates: matrix com overfit evidente → PBO > 0.5; SR inflado →
@@ -170,7 +170,46 @@ Decisões não-óbvias:
 **Aceito quando:** 5 módulos implementados, verificados numericamente
 contra pelo menos 1 exemplo canônico da fonte, testes passam, gates documentados.
 
-**Conclusão:** _(preencher ao finalizar)_
+**Conclusão:** Framework anti-overfit completo em
+`src/ai_trade/backtest/validation/` (`cpcv.py`, `pbo.py`, `dsr.py`,
+`walk_forward.py`, `permutation.py`, `__init__.py`) com 52 testes novos em
+`tests/test_validation.py` (`114 passed` total). Adicionado `scipy>=1.11` em
+`pyproject.toml` para `norm.cdf/ppf` via `scipy.special.ndtr/ndtri`. TDD
+estrito: cada módulo teve seus testes criados + verificados RED antes da
+implementação.
+
+Decisões não-óbvias:
+- **Purge usa contrato `pd.Series[t0→t1]`:** index = t0, values = t1. Para
+  labels sem overlap basta `pd.Series(idx, index=idx)`; para triple-barrier
+  com overlap o caller passa a t1-series do `getEvents` (AFML p.50). Purge
+  mantém train obs *i* se `t1_i < test_t0_min` ou `t0_i > test_t1_max`.
+- **Embargo em posições, não tempo:** `h = int(embargo_pct · len(times))`,
+  replicando a fórmula de `getEmbargoTimes` em AFML p.151 — mais estável do
+  que embargo-por-duração quando o sampling é irregular.
+- **CPCV: purge/embargo por bloco, não pela união:** combinações tipo (0, 5)
+  têm dois blocos disjuntos → cada um gera seu próprio purge+embargo. Isso
+  replica a impl de referência do mlfinlab, evita sub-purga de treino.
+- **CSCV: PBO para matriz iid SINGLE trial é ruidoso.** Com N=50, T=500, 8
+  blocos, std(PBO) ≈ 0.19 entre seeds (constatado empiricamente). Teste de
+  null-case agora usa média de 20 matrizes independentes. Decisão pragmática
+  para ter teste determinístico sem perder significância estatística.
+- **PBO caso "espelho" dá PBO≈0.91, não 1.0:** Com
+  `returns[T/2:] = -returns[:T/2]` e 8 blocos, 6 das 70 partições são uniões
+  de pares-espelho (IS mean = 0 para todos) → não contribuem. 64/70 = 0.914,
+  verificado a mão. Teste usa `>= 0.90`.
+- **E[SR_max] tem ESCALA, não só valor:** formula AFML p.222-223 retorna
+  Z-score units (Var(SR)=1). Para comparar com `sharpe_periodic` do PSR, é
+  preciso multiplicar por `√V = 1/√(T-1)` sob iid-null. Sem essa escala, DSR
+  rejeita todo Sharpe >0 para N>5. `expected_max_sharpe(n, var_sharpe=…)`
+  carrega o parâmetro explicitamente; `dsr()` default aplica `1/(T-1)`.
+- **Gumbel √(2 ln N) é assintótica DO LIMITE SUPERIOR, não da média.**
+  Substituído teste original (tolerância ±15% contra √(2 ln N)) por
+  verificação Monte Carlo direta: formula casa com mean(max(N_normals))
+  dentro de ±5% para N ∈ {5, 10, 100, 1000}.
+- **MCPT usa Masters `prepare_permute`/`do_permute`:** shuffle das `n-1`
+  changes preservando prices[0] e prices[-1] (invariante), re-ancorando
+  prices[-1] após o cumsum para apagar drift floating-point. Teste AR(1) com
+  φ=0.5 confirma que a permutação destrói a auto-correlação como esperado.
 
 ---
 
