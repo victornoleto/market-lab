@@ -190,10 +190,10 @@ Só após os dois acima. Hint cirúrgico derivado das 9 hallucinations detectada
 
 ---
 
-## 1. Cross-refs quebrados (alta prioridade)
+## 1. Cross-refs quebrados (alta prioridade) ✅ RESOLVIDO
 
 Pointers entre summaries que apontam para arquivos inexistentes ou com nome errado.
-Detectados por `scripts/validate_summary.py --all`.
+Detectados por `scripts/validate_summary.py --all` + scan case-insensitive de `<slug>.md` nas seções 9.
 
 ### `books/summaries/cycle_analytics.md`
 - [x] Linha 314: `trading_systems_methods.md` ✅ (corrigido na re-absorção 2026-04-13)
@@ -203,6 +203,11 @@ Detectados por `scripts/validate_summary.py --all`.
 ### `books/summaries/time_series_hamilton.md`
 - [x] Linha 383 (seção Cross-references): `analysis_financial_time_series.md` → renomear para `fin_time_series_tsay.md` *(corrigido na re-absorção 2026-04-13 retry 3 — agora linha 468 usa `fin_time_series_tsay.md`)*
 - [x] Revisar nota "primeiro livro do pipeline; cross-refs serão adicionados em passes subsequentes" *(re-absorção 2026-04-13 retry 3 já enriqueceu cross-refs com `fin_time_series_tsay.md`, `numerical_recipes.md`, `advances_fin_ml.md`)*
+
+### `books/summaries/trading_evolved.md`
+- [x] Linha 314: `Systematic_trading.md` (S maiúsculo) → `systematic_trading.md` *(surfaced pelo scan case-insensitive em 2026-04-14; fix aplicado)*
+
+**Scan final (2026-04-14):** `for s in books/summaries/*.md` + extract refs de seção 9 → 0 MISSING, 0 CASE MISMATCH. Todos os cross-refs resolvem para arquivos existentes.
 
 **Regra:** preferir re-dispatch do `book-reader` a Edit manual, mesmo em cross-refs. Strings de pointer ainda são parte do summary; o rule-of-thumb "nunca modifique summary manualmente" reduz risco de introduzir drift silencioso.
 
@@ -216,49 +221,49 @@ Detectados por `scripts/validate_summary.py --all`.
 
 ---
 
-## 3. Verificações determinísticas finais
+## 3. Verificações determinísticas finais ✅ EXECUTADO 2026-04-14
 
 Rodar antes do build para confirmar que nada regrediu desde a última absorção:
 
-- [ ] `python scripts/validate_summary.py --all` → todos **PASS**, nenhum summary com `notes` não-vazios exceto os já conhecidos acima.
-- [ ] `for s in books/summaries/*.md; do python scripts/check_citations.py "$(basename $s .md)" | tail -1; done` → todos **PASS**.
-- [ ] Conferir `ls books/extracted/ | wc -l == ls books/summaries/*.md | wc -l` (atualmente 33 = 33).
-- [ ] Confirmar que `books/summaries/.progress.json` não existe (indica que nenhuma wave está pendente/interrompida).
+- [x] `python scripts/validate_summary.py --all` → **33/33 PASS**, 10/10 seções em todos, nenhum `notes` não-vazio fora dos conhecidos.
+- [x] `for s in books/summaries/*.md; do python scripts/check_citations.py "$(basename $s .md)" | tail -1; done` → **33/33 PASS** (0 fails, ~40 warns, ~15 softs esperados).
+- [x] Paridade: `ls books/extracted/` = `ls books/summaries/*.md` = **33 = 33**.
+- [x] `books/summaries/.progress.json` não existe — nenhuma wave pendente/interrompida.
 
 ---
 
-## 4. Sanity checks de conteúdo
+## 4. Sanity checks de conteúdo ✅ VERIFICADO 2026-04-14
 
-- [ ] Cada summary tem **10/10 seções obrigatórias** preenchidas (Metadata + 9 seções de conteúdo). Nenhuma seção `N/A` sem justificativa explícita.
-- [ ] Citation ratio mínimo por livro: **80%** (threshold do `validate_summary.py`). Hoje o pior é `testing_tuning` com 80% — marginal; considerar re-dispatch para enriquecer citações antes de publicar a skill.
-- [ ] Detectar summaries com ratio <85% e avaliar re-dispatch:
-  - `testing_tuning` 80% *(re-abs 2026-04-13 — ratio estável)*
-  - `eval_opt_strategies` 82%
-  - `ml_for_asset_managers` 82%
-  - `big_data_ml_quant` 83%
-  - `time_series_hamilton` 85%
-  - `volatility_trading` 85%
-
----
-
-## 5. Higiene de repositório
-
-- [ ] `.gitignore` já cobre `books/summaries/.validation/` e `books/summaries/.progress*`? Confirmar.
-- [ ] Arquivar `books/summaries/.progress.*.json.done` de runs antigos (mover para `books/summaries/.archive/` ou apagar).
-- [ ] `books/README.md` reflete a lista atual de 33 livros (adicionei `numerical_recipes`, `trading_systems_methods` na última wave).
-- [ ] `.claude/commands/absorb-all-books.md` e `.claude/commands/absorb-book.md` estão alinhados com a pipeline de 3 camadas.
+- [x] Cada summary tem **10/10 seções obrigatórias** preenchidas (Metadata + 9 seções). Nenhum N/A sem justificativa.
+- [x] Citation ratio mínimo por livro: **80%** (threshold do `validate_summary.py`). Todos os 33 passam o threshold.
+- [ ] **Ratios <85% (8 livros; opcional — não bloqueiam o build, são "considerar re-dispatch para enriquecer"):**
+  - `testing_tuning` 80% *(re-abs 2026-04-13 — ratio estável; aceito)*
+  - `volatility_trading` 80% *(re-abs corretiva 2026-04-13 zerou 9 halluc; ratio estável aceito)*
+  - `eval_opt_strategies` 82% *(PASS retry3 com 100% J1, 92% J2, 0 halluc; aceito)*
+  - `ml_for_asset_managers` 82% *(J1/J2 100%, 0 halluc; ratio baixo por ser livro enxuto 45p; aceito)*
+  - `big_data_ml_quant` 83% *(J1 PASS 100%, 0 halluc; aceito)*
+  - `regime_change` 83% *(Glattfelder 2008→2011 fix 2026-04-14; aceito)*
 
 ---
 
-## 6. Metadados para o build_skill
+## 5. Higiene de repositório ✅ EXECUTADO 2026-04-14
+
+- [x] `.gitignore` cobre `books/summaries/.validation/`, `.logs/`, `.progress.json`, `.progress.log`, `.progress.*.json.done`.
+- [x] `.progress.1776077609.json.done` (runtime antigo de 2026-04-13) removido.
+- [x] `books/README.md` reflete os 33 livros atuais (commit de hoje).
+- [x] `.claude/commands/absorb-all-books.md` e `.claude/commands/validate-summary.md` alinhados com a pipeline de 3 camadas.
+
+---
+
+## 6. Metadados para o build_skill ✅ VERIFICADO 2026-04-14
 
 Antes de gerar a skill, confirmar que cada summary expõe os campos esperados pelo `build_skill.py`:
 
-- [ ] `title`, `authors`, `year`, `slug` no frontmatter/Metadata.
-- [ ] Seção `Cross-references` referencia apenas slugs existentes (depois do item 1).
-- [ ] Índice/TOC da skill não precisa entradas para livros externos não absorvidos.
+- [x] `Autor` e `Ano` no bloco `## Metadata` — scan em todos os 33 summaries: 0 missing.
+- [x] Seção `Cross-references` referencia apenas slugs existentes (scan case-insensitive: 0 MISSING, 0 CASE MISMATCH pós fix de `trading_evolved`).
+- [x] Índice/TOC da skill não precisa entradas para livros externos não absorvidos (ex.: `new_tech_trader.md` marcado como N/A in-situ).
 
-Rodar `python scripts/build_skill.py --dry-run` se suportado, ou inspecionar o output em `knowledge/` antes de commitar.
+`build_skill.py` não oferece `--dry-run` (suporta `--skip-validation`), mas é determinístico e não faz LLM calls — efeito é reprodutível. Inspecionar output em `knowledge/` após o run e commitar.
 
 ---
 
