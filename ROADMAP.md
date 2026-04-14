@@ -155,7 +155,7 @@ e entrar na Fase 1 (infra Pepperstone/cTrader).
 
 ## 📚 Livros da knowledge base (33/33 absorvidos e validados)
 
-Status resumido — detalhes completos em `books/TODO.md` (colunas Review + Tarefas pendentes por livro):
+Status resumido — detalhes completos em `books/README.md` (tabela "Catálogo dos livros" com colunas Review por livro):
 
 | # | Livro | Slug | Importância | Qualidade |
 |---|---|---|---|---|
@@ -210,7 +210,7 @@ Pipeline é idempotente: PDFs faltando são pulados sem quebrar a execução.
 - Plano geral: `TRADING_SYSTEM_PLAN.md`
 - Plano aprovado Fase 0: `/home/victor/.claude/plans/mighty-mixing-porcupine.md`
 - Plano ativo: `/home/victor/.claude/plans/synthetic-snuggling-wren.md`
-- **Status detalhado por livro:** `books/TODO.md` (tabela Status Geral com Review + Tarefas pendentes)
+- **Status detalhado por livro:** `books/README.md` (seção "Catálogo dos livros" com tabela Review)
 - Summaries validados: `books/summaries/*.md`
 - Auditoria de validação: `books/summaries/.validation/` (gitignored)
 - Logs de absorção: `books/summaries/.logs/` (gitignored)

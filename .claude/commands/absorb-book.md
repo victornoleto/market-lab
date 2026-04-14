@@ -130,7 +130,7 @@ Reporte ao usuário no início qual modelo foi escolhido e por quê.
    - Hallucinations corrigidas durante retries (se houve)
    - Caminho do summary e dos JSONs de auditoria
 
-7. **Atualizar `books/TODO.md`** (apenas se PASS ou BORDERLINE — nunca atualizar em FAIL):
+7. **Atualizar `books/README.md`** (apenas se PASS ou BORDERLINE — nunca atualizar em FAIL):
 
    a. Colete os dados frescos rodando:
       ```bash
@@ -145,20 +145,11 @@ Reporte ao usuário no início qual modelo foi escolhido e por quê.
       - ⚠️ **Regular** — ratio ≥80% mas fora dos limiares acima
       - 🔴 **Sub-minerada** — densidade < 0.05 cit/p (menos de 1 cit/20p)
 
-   c. Determine as **Tarefas pendentes** atualizadas:
-      - Remova `Re-abs P*` se a nova qualidade não for Sub-minerada.
-      - Mantenha `X-refs` se o `validate_summary` ainda reportar cross-ref issues (campo `notes`).
-      - Mantenha flags de ratio (`<85%`, `~85%`, etc.) se ainda aplicáveis.
-      - Se todas as tarefas foram resolvidas → `—`.
+   c. Atualize o campo **Review (absorção)**: verdict e ratio de J1/J2, contagem de hallucinations após retries, densidade (ex: `J1 PASS 100% / J2 BORDER 88%, 0 halluc, dens 0.24/p`).
 
-   d. Localize a linha do `<slug>` na tabela "Status Geral dos Livros" de `books/TODO.md` e **substitua os campos** `Cit`, `Ratio`, `Qualidade` e `Tarefas pendentes` pelos valores novos. Não altere os campos `Importância`, `Autor` ou `pp`.
+   d. Localize a linha do `<slug>` na tabela "Catálogo dos livros" de `books/README.md` e **substitua os campos** `Cit`, `Ratio`, `Qualidade` e `Review (absorção)` pelos valores novos. Não altere os campos `Importância`, `Autor` ou `pp`.
 
-   e. Atualize a **linha de resumo** ao final da tabela contando os totais reais por categoria de qualidade após a edição.
-
-   f. Se o `<slug>` aparecer na tabela do **item 0** com status `☐`, troque para `✅` e substitua o campo `Sintoma` por:
-      ```
-      Concluída: <cit_total> cit / <n_pages>p, <ratio> ratio
-      ```
+   e. Atualize a **linha de resumo** logo abaixo da tabela (contagem por categoria de qualidade + cit-check global).
 
 **Observações:**
 - **Nunca reporte sucesso se `/validate-summary` falhou.**

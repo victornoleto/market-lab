@@ -1,24 +1,26 @@
 # books/ — Knowledge Base dos Livros
 
-Esta pasta contém os 33 livros/artigos absorvidos + 1 pendente que alimentam o "especialista em trade" do ai-trade
-(Fase 0 do `TRADING_SYSTEM_PLAN.md`): 22 originais + 9 adicionados conforme
-`ai-trade-library-audit.md` + 2 artigos técnicos adicionados posteriormente.
+Esta pasta contém os **33 livros absorvidos** que alimentam o "especialista em
+trade" do ai-trade (Fase 0 do `TRADING_SYSTEM_PLAN.md`, **concluída**).
+
+Pipeline:
+`raw/<slug>.pdf` → `extracted/<slug>/` → `summaries/<slug>.md` (9 seções com
+citação obrigatória `[p.X]`/`[ch.Y]`) → `../knowledge/SKILL.md` (Claude Skill
+agregadora, gerada por `../scripts/build_skill.py`).
 
 ## Estrutura
 
 ```
 books/
-├── raw/              # 34 PDFs/artigos com slugs canônicos (33 absorvidos + 1 pendente)
-├── extracted/        # texto extraído + capítulos + metadata (gitignored, cache)
-├── summaries/        # 1 MD validado por livro, saída do subagente book-reader (versionado)
-├── code/             # código C++ complementar dos zips do Timothy Masters (versionado)
+├── raw/              # PDFs com slugs canônicos (inventário em MAPPING.md)
+├── extracted/        # texto extraído + capítulos + metadata (gitignored)
+├── summaries/        # 1 MD validado por livro (versionado; gate via validate_summary)
+├── code/             # código C++ complementar dos zips do Timothy Masters
 │   ├── masters-assessing/         # Assessing and Improving Prediction (sem PDF)
 │   └── masters-testing-tuning/    # complementa testing_tuning.pdf
-├── MAPPING.md        # inventário "nome original → slug" (gerado por rename_books.py)
+├── MAPPING.md        # inventário canônico "nome original → slug" (gerado por rename_books.py)
 └── README.md         # este arquivo
 ```
-
-Para a lista completa dos 33 livros com autor/ano/tier, veja `MAPPING.md`.
 
 > **Compressão dos PDFs em `raw/`:** existe `../scripts/compress_pdfs.py` que
 > tenta encolher os PDFs via Ghostscript, mas **só substitui o original se o
@@ -31,113 +33,131 @@ Para a lista completa dos 33 livros com autor/ano/tier, veja `MAPPING.md`.
 
 ---
 
-## Passo a passo (do zero ao knowledge base pronto)
+## Catálogo dos livros (33/33 absorvidos)
 
-Pré-requisito: `.venv/` ativo com deps instaladas (`uv sync` na raiz). Os
-scripts referenciados estão em `../scripts/`.
+Estado pós-pipeline completo (2026-04-14): **33/33 summaries PASS**
+estrutural + `check_citations.py` (0 fails), com validação adversarial por
+dois juízes LLM (Layer-3). Detalhes do pipeline em
+`/home/victor/.claude/plans/synthetic-snuggling-wren.md`.
 
-### 1. (Opcional) Substituir o livro incompleto restante
+**Legenda de importância** (para swing trading CFD — Pepperstone/cTrader):
+- `⭐⭐⭐` **Crítico** — no critical path do sistema; citado no plano ou impacta múltiplos módulos-chave
+- `⭐⭐` **Importante** — impacta fortemente um módulo específico (strategy, sizing, validation, signals)
+- `⭐` **Complementar** — background teórico, referência numérica, ou módulo periférico
 
-Falta **apenas 1** livro com PDF incompleto (front matter de 30pp):
+**Legenda de qualidade:**
+- 🌟 **Perfeita** — ratio ≥95% e densidade ≥0.10 cit/p
+- ✅ **Boa** — ratio ≥87% e densidade adequada, sem re-absorção pendente
+- ⚠️ **Regular** — ratio 80–86% ou densidade suspeita; re-absorção futura opcional
+- 🔴 **Sub-minerada** — citações absolutas muito baixas (nenhum livro nesse estado)
 
-- `trading_on_sentiment.pdf` (Peterson 2016, precisa ~400pp)
-  - **Título completo:** *Trading on Sentiment: The Power of Minds Over Markets*
-  - **Editora:** Wiley Finance
-  - **ISBN:** 978-1-119-12276-0
-  - Onde procurar: Wiley, archive.org, libraries acadêmicas
+| Slug | Importância | Autor | pp | Cit | Ratio | Qualidade | Review (absorção) |
+|---|---|---|---|---|---|---|---|
+| `adaptive_markets` | `⭐` | Lo | 503 | 10 | 89% | ⚠️ | J1 PASS 100%, 0 halluc, dens 0.02/p — sub-minerado; 3 mis-cit Ch.8 CAPM/Khandani fixadas. Flag futuro: considerar re-absorção enriquecida |
+| `advances_fin_ml` | `⭐⭐⭐` | López de Prado | 489 | 119 | 96% | 🌟 | J1 PASS 92% / J2 BORDER 88%, 0 halluc, dens 0.24/p |
+| `algo_trading_chan` | `⭐⭐` | Chan | 225 | 131 | 100% | 🌟 | J1 PASS 92% / J2 BORDER 75%, 0 halluc, dens 0.58/p, 4 mis-cit fixadas |
+| `big_data_ml_quant` | `⭐` | Guida (ed.) | 285 | 95 | 83% | ✅ | J1 PASS 100%, 0 halluc, dens 0.33/p — sólido |
+| `cybernetic_analysis` | `⭐⭐` | Ehlers | 274 | 72 | 92% | ✅ | J1 PASS 79%, 0 halluc, dens 0.26/p |
+| `cybernetic_trading` | `⭐` | Ruggiero | 163 | 95 | 100% | ⚠️ | J1 BORDER 33% (amostra pequena, 0 halluc), dens 0.58/p |
+| `cycle_analytics` | `⭐` | Ehlers | 252 | 59 | 88% | ✅ | J1/J2 PASS 92%, 0 halluc, dens 0.23/p; EMA lag fixado |
+| `data_driven_science` | `⭐` | Brunton | 76 | 47 | 93% | 🌟 | 100% cit-check, dens 0.62/p |
+| `eval_opt_strategies` | `⭐⭐⭐` | Pardo | 367 | 97 | 100% | 🌟 | J1 PASS 100% / J2 PASS 92%, 0 halluc, dens 0.26/p, 5 mis-cit fixadas |
+| `evidence_based_ta` | `⭐⭐` | Aronson | 544 | 105 | 100% | 🌟 | J1 PASS 100% / J2 PASS 97%, 0 halluc, dens 0.19/p |
+| `fin_time_series_tsay` | `⭐⭐` | Tsay | 714 | 36 | 88% | ✅ | J1 PASS 100%, 0 halluc, dens 0.05/p — referência técnica enxuta |
+| `leverage_space` | `⭐⭐` | Vince | 206 | 46 | 100% | 🌟 | J1 PASS 100%, 0 halluc, dens 0.22/p |
+| `machine_trading` | `⭐⭐` | Chan | 267 | 75 | 88% | ✅ | J1 PASS 100%, 0 halluc, dens 0.28/p |
+| `math_money_mgmt` | `⭐⭐` | Vince | 109 | 16 | 97% | ✅ | J1 PASS 100% / J2 BORDER 72%, 0 halluc; 2 mis-cit fixadas pós FU-1 |
+| `ml_for_algo_trading` | `⭐⭐⭐` | Jansen | 821 | 190 | 93% | ✅ | J1/J2 PASS 100%, 0 halluc, dens 0.23/p |
+| `ml_for_asset_managers` | `⭐` | López de Prado | 45 | 39 | 82% | ✅ | J1/J2 PASS 100%, 0 halluc, dens 0.87/p — muito denso |
+| `numerical_recipes` | `⭐` | Press et al. | 1018 | 91 | 99% | ✅ | J1/J2 PASS 100%, 0 halluc, dens 0.09/p — referência tomo |
+| `quant_trading_chan` | `⭐⭐⭐` | Chan | 204 | 94 | 99% | 🌟 | J1 PASS 100%, 0 halluc, dens 0.46/p |
+| `regime_change` | `⭐⭐⭐` | Chen | 165 | 63 | 83% | ✅ | J1 PASS 92%; Glattfelder 2008→2011 fixado; 0 halluc reais |
+| `risk_parity` | `⭐` | Qian | 245 | 51 | 91% | ✅ | J1/J2 BORDER 89%/86%, 0 halluc; paráfrases HY bonds ambíguas |
+| `rocket_science` | `⭐` | Ehlers | 265 | 86 | 90% | ✅ | J1 PASS 100%, 0 halluc, dens 0.32/p |
+| `sentiment_analysis_handbook` | `⭐` | Mitra & Yu | 893 | 101 | 100% | 🌟 | J1 PASS 100% / J2 PASS 92%, 0 halluc |
+| `stat_sound_indicators` | `⭐⭐` | Aronson | 519 | 116 | 100% | 🌟 | J1 PASS 100%, 0 halluc, dens 0.22/p |
+| `stocks_on_the_move` | `⭐⭐⭐` | Clenow | 249 | 61 | 97% | 🌟 | J1 PASS 100%, 0 halluc, dens 0.24/p |
+| `systematic_trading` | `⭐⭐⭐` | Carver | 326 | 91 | 99% | 🌟 | J1/J2 PASS 92%, 0 halluc, dens 0.28/p, 4 mis-cit fixadas |
+| `tech_analysis_patterns` | `⭐` | Tsinaslanidis | 213 | 75 | 100% | ✅ | J1/J2 BORDER 88%/83%, 0 halluc; 6 page-offs ≤13p não-bloqueantes |
+| `testing_tuning` | `⭐⭐` | Masters | 353 | 119 | 80% | ✅ | J1 PASS 90% / J2 BORDER 87%, 0 halluc; 6 ambíguas page-off ≤6p |
+| `time_series_hamilton` | `⭐` | Hamilton | 814 | 87 | 98% | 🌟 | J1/J2 BORDER 88%/88%, 0 halluc, dens 0.107/p |
+| `trading_evolved` | `⭐⭐` | Clenow | 467 | 111 | 91% | ✅ | J1 PASS 100%, 0 halluc, dens 0.24/p |
+| `trading_exchanges` | `⭐⭐` | Harris | 113 | 129 | 91% | ✅ | J1 PASS 92%, 0 halluc, dens 1.14/p — extremamente denso |
+| `trading_systems_methods` | `⭐⭐⭐` | Kaufman | 1232 | 277 | 97% | 🌟 | J1 PASS 92% / J2 BORDER 75%, 0 halluc pós fix Market Profile |
+| `universal_trend_tactics` | `⭐` | Penfold | 409 | 75 | 100% | ✅ | J1 PASS 90% / J2 BORDER 86%, 0 halluc, dens 0.18/p |
+| `volatility_trading` | `⭐⭐` | Sinclair | 298 | 130 | 80% | ✅ | J1 BORDER 93% / J2 PASS 93%, 0 halluc pós re-abs corretiva, dens 0.44/p |
 
-Quando conseguir o PDF completo: substitua em `raw/trading_on_sentiment.pdf` e
-rode `../.venv/bin/python ../scripts/extract_pdfs.py --slug trading_on_sentiment --force`.
+**Resumo:** 🌟 12 × Perfeita · ✅ 20 × Boa · ⚠️ 1 × Border (`cybernetic_trading` — só ambíguas, 0 halluc) · 🔴 0 × Sub-minerada.
+**Importância:** `⭐⭐⭐` 7 · `⭐⭐` 12 · `⭐` 14.
+**Cit-check global:** 33/33 PASS (0 fails).
 
-O pipeline é idempotente — pode rodar agora sem ele e adicionar depois.
+**Notas sobre a coluna Review:**
+- `J1/J2 <verdict> Xx%` = support_ratio dos juízes adversariais (Layer-3); halluc = claims marcadas `unsupported`.
+- `dens 0.Xy/p` = densidade de citações por página (referência: >0.20 denso, <0.10 enxuto, <0.05 mineração superficial).
+- "mis-cit fixadas" = mis-citations corrigidas cirurgicamente durante re-absorções.
+- BORDERLINE adversarial com 0 halluc e ratio ≥80% **não** bloqueia `build_skill` — são paráfrases/page-offs documentados.
 
-**Histórico:** 3 outros livros (`cybernetic_analysis`, `cycle_analytics`,
-`regime_change`) tinham o mesmo problema e já foram substituídos pelas
-versões completas.
+**Livros deliberadamente não absorvidos** (registrados em `MAPPING.md`):
+- `permutation_tests` (Masters) — coberto por `stat_sound_indicators` + `testing_tuning` (mesmo autor).
+- `assessing_prediction` (Masters) — idem; código C++ está em `code/masters-assessing/`.
+- `trading_on_sentiment` (Peterson) — substituído por `sentiment_analysis_handbook` (Mitra & Yu 2016).
+- `new_tech_trader` (LeBeau & Lucas) — referenciado por `cycle_analytics` como origem do VIDYA; cross-ref mantida com nota `N/A`.
 
-### 2. Absorver o PRIMEIRO livro como calibração ⭐
+---
 
-Abra o Claude Code no diretório raiz do projeto e execute:
+## Pipeline (como reproduzir / re-absorver)
+
+Pré-requisito: `.venv/` ativo com deps (`uv sync` na raiz). Scripts em `../scripts/`.
+
+### Re-absorver UM livro
 
 ```
-/absorb-book systematic_trading
+/absorb-book <slug>
 ```
 
-Isso dispara o subagente `book-reader` (em `../.claude/agents/book-reader.md`),
-que lê `extracted/systematic_trading/` e produz `summaries/systematic_trading.md`
-seguindo o template de 9 seções com **citações obrigatórias** (`[p.X]` / `[ch.Y]`).
+Dispara o subagente `book-reader` (em `../.claude/agents/book-reader.md`) sobre
+`extracted/<slug>/`, reescreve `summaries/<slug>.md` e valida via 3 camadas
+(estrutural + determinística + 2 juízes adversariais com self-consistency).
 
-Ao final o agente auto-valida via `validate_summary.py`.
-
-### 3. REVISAR manualmente o primeiro summary (gate human-in-the-loop)
-
-Abra `summaries/systematic_trading.md` e verifique:
-
-- [ ] Título correto da capa
-- [ ] Metadata preenchida com autor/ano/páginas reais (nada chutado)
-- [ ] Fórmulas em LaTeX com `[p.X]`
-- [ ] Regras de trading com `[p.X]`
-- [ ] Nenhuma fórmula/regra que você sabe que não existe no Carver
-- [ ] Seções vazias marcadas `N/A — <razão>`, não omitidas
-
-**Se algo estiver errado**: reporte ao Claude Code e peça para re-disparar o
-agente com o feedback específico. Não edite o summary manualmente — o
-valor do pipeline está na reprodutibilidade.
-
-### 4. Absorver 1-2 livros com cross-refs
-
-Depois que o primeiro passar, rode mais um para validar que cross-refs (seção 9)
-funcionam corretamente:
-
-```
-/absorb-book advances_fin_ml
-```
-
-Esse deve referenciar `systematic_trading.md` ao falar de parcimônia/design.
-Se referenciar livros que ainda não foram processados → bug no agente.
-
-### 5. Batch dos 15 restantes
+### Absorver em massa
 
 ```
 /absorb-all-books
 ```
 
-Dispara em ondas paralelas de 4-6 agentes (via
-`superpowers:dispatching-parallel-agents`). Os 4 livros incompletos são
-pulados automaticamente (não têm `_metadata.json`).
+Dispara em ondas paralelas de 2-3 agentes (via
+`superpowers:dispatching-parallel-agents`). Livros com PDF incompleto são
+pulados automaticamente (sem `_metadata.json`).
 
-### 6. Validar o conjunto
+### Validar
 
 ```bash
 ../.venv/bin/python ../scripts/validate_summary.py --all
+../.venv/bin/python ../scripts/check_citations.py <slug>    # por livro
 ```
 
-Tabela com PASS/FAIL por livro. Regras:
-- ≥80% das asserções precisam ter citação `[p.X]` ou `[ch.Y]`.
-- 9 seções presentes (com `N/A — <razão>` contando como presente).
-- Metadata com autor e ano.
+Regras: ≥80% das asserções com `[p.X]`/`[ch.Y]`; 9 seções presentes
+(`N/A — <razão>` conta como presente); metadata com autor e ano.
 
-### 7. Construir o knowledge base final
+### Regerar a Skill
 
 ```bash
 ../.venv/bin/python ../scripts/build_skill.py
 ```
 
-Popula `../knowledge/`:
-- `SKILL.md` (mestre, com frontmatter + regras invioláveis)
-- `books/` (1 MD por livro, cópia dos summaries)
-- `strategies/`, `indicators/`, `validation/` (agregações temáticas com
-  cross-refs para os summaries + `books/code/*.cpp` quando relevante)
+Determinístico (zero LLM calls). Popula `../knowledge/`:
+- `SKILL.md` (mestre — frontmatter + regras invioláveis + índice)
+- `books/` (cópia dos 33 summaries validados)
+- `strategies/`, `indicators/`, `validation/` (agregações temáticas)
 
-### 8. Testar
+### Antes de qualquer re-absorção: Tier 2
 
-No Claude Code, invoque a skill e pergunte algo canônico:
+Rodar **uma vez por livro** para gerar `_page_index.json` (offset PDF↔impresso
+determinístico — elimina a maior classe de retries do book-reader):
 
-> "Qual é o PBO (Probability of Backtest Overfitting) e quando devo descartar
-> uma estratégia?"
-
-Resposta boa cita `books/advances_fin_ml.md#cpcv` + `validation/cpcv.md` +
-limiar PBO > 50%.
+```bash
+../.venv/bin/python ../scripts/build_page_index.py <slug>
+```
 
 ---
 
@@ -151,23 +171,14 @@ Os arquivos abaixo ficaram na raiz de `books/` após a migração para `raw/`.
 | `assessing-and-improving-prediction-and-classification-master.zip` | Já extraído em `code/masters-assessing/` |
 | `testing-and-tuning-market-trading-systems-master.zip` | Já extraído em `code/masters-testing-tuning/` |
 | `brent-penfold-the-universal-principles-of-successful-tradingpdf_compress.pdf` | Livro **diferente** do que está na lista (Universal *Principles* 2010, não Universal *Tactics* 2020). Fora de escopo |
-| `pdfcoffee.com_brent-penfold-the-universal-principles-of-successful-tradingpdf-pdf-free.pdf` | Duplicata exata do anterior (mesmos 61MB) |
-| `The Universal Tactics of Successful Trend Trading - 2020 - Penfold - Front Matter.pdf` | Apenas front matter, substituído pelo PDF completo em `raw/universal_trend_tactics.pdf` |
-| `Permutation Tests (Masters 2020).pdf` | **Não é** o livro do Masters — é uma Bachelor Thesis da Univ. de Sevilla (2021). Tópico coberto por AFML + Testing & Tuning + código C++ em `code/` |
-| `Statistically_Sound_Machine_Learning_for.pdf` | Preview pequeno (454KB) — o livro completo já está em `raw/stat_sound_indicators.pdf` |
+| `pdfcoffee.com_brent-penfold-the-universal-principles-of-successful-tradingpdf-pdf-free.pdf` | Duplicata exata do anterior |
+| `The Universal Tactics of Successful Trend Trading - 2020 - Penfold - Front Matter.pdf` | Front matter apenas — substituído pelo PDF completo em `raw/universal_trend_tactics.pdf` |
+| `Permutation Tests (Masters 2020).pdf` | **Não é** o livro do Masters — é Bachelor Thesis da Univ. Sevilla (2021). Tópico coberto por AFML + Testing & Tuning + código C++ |
+| `Statistically_Sound_Machine_Learning_for.pdf` | Preview pequeno (454KB) — livro completo em `raw/stat_sound_indicators.pdf` |
 
-Para limpar de uma vez:
-
-```bash
-cd books/
-rm assessing-and-improving-prediction-and-classification-master.zip \
-   testing-and-tuning-market-trading-systems-master.zip \
-   brent-penfold-the-universal-principles-of-successful-tradingpdf_compress.pdf \
-   pdfcoffee.com_brent-penfold-the-universal-principles-of-successful-tradingpdf-pdf-free.pdf \
-   "The Universal Tactics of Successful Trend Trading - 2020 - Penfold - Front Matter.pdf" \
-   "Permutation Tests (Masters 2020).pdf" \
-   Statistically_Sound_Machine_Learning_for.pdf
-```
+Em `raw/` também há uma duplicata de edição anterior: `volatility_trading_2008.pdf`
+(1ª ed, 2008) — o canônico absorvido é `volatility_trading.pdf` (2ª ed, 2013).
+Pode ser removido.
 
 ---
 
@@ -183,8 +194,13 @@ rm assessing-and-improving-prediction-and-classification-master.zip \
 
 **`validate_summary.py` retorna FAIL**
 - Leia a saída: citation ratio baixo ou seção faltando.
-- NÃO edite o summary manualmente. Re-dispare o agente com feedback
+- **NÃO edite o summary manualmente.** Re-dispare o agente com feedback
   específico (ex: "seção 3 com 4 fórmulas sem citação, corrija").
+
+**`check_citations.py` reporta mis-citations**
+- Quase sempre é offset PDF↔impresso. Rode `build_page_index.py <slug>`
+  primeiro; depois re-dispare `/absorb-book <slug>` se o índice ficar muito
+  diferente do usado na absorção original.
 
 **Book-reader estoura contexto em livro grande**
 - `_metadata.json` deveria ter marcado `recommended_mode: "map_reduce"`.
@@ -196,6 +212,10 @@ rm assessing-and-improving-prediction-and-classification-master.zip \
 ## Referências
 
 - Plano geral do sistema: `../TRADING_SYSTEM_PLAN.md`
-- Plano desta fase: `/home/victor/.claude/plans/synthetic-snuggling-wren.md`
-- README do projeto: `../README.md`
-- Mapa dos 22 livros: `MAPPING.md`
+- Roadmap / estado das fases: `../ROADMAP.md`
+- Plano da Fase 0: `/home/victor/.claude/plans/synthetic-snuggling-wren.md`
+- Inventário canônico dos livros: `MAPPING.md`
+- Summaries validados: `summaries/*.md`
+- Auditoria de validação: `summaries/.validation/` (gitignored)
+- Logs de absorção: `summaries/.logs/` (gitignored)
+- Skill gerada: `../knowledge/SKILL.md`
