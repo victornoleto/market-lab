@@ -28,3 +28,7 @@ Thumbs.db
 .idea/
 *.swp
 books/summaries/.validation/
+books/summaries/.logs/
+books/summaries/.progress.json
+books/summaries/.progress.log
+books/summaries/.progress.*.json.done

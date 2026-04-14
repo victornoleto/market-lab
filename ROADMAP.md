@@ -24,30 +24,31 @@ Rodar `scripts/build_skill.py` — agrega todos os 24 summaries em uma **Claude 
 
 **Gate:** validar a skill carregando via `Skill` tool e fazendo queries de sanidade (e.g., "qual posição sizing López de Prado recomenda?" → deve responder com citação).
 
-### Fase 1 — Infraestrutura MT5/XM + dados (VPS Ubuntu 24/7)
+### Fase 1 — Infraestrutura Pepperstone/cTrader + dados (VPS Ubuntu 24/7)
 
-**Decisão:** corretora = **XM via MetaTrader5**. Alpaca descartado (não aceita residência fiscal BR; workarounds via LLC/ITIN não compensam no estágio atual). Demo e live centralizados no mesmo broker/API.
+**Decisão:** broker = **Pepperstone**; plataforma = **cTrader**; API = **cTrader Open API** (Protobuf sobre TCP com OAuth2, SDK Python oficial Spotware `ctrader_open_api`). Alpaca, OANDA, IBKR e XM/MT5 descartados — ver `/home/victor/.claude/plans/delightful-bubbling-crab.md` para rationale completo. Demo e live usam o mesmo protocolo, só muda endpoint.
 
 **Stack:**
-- VPS Ubuntu (2 vCPU / 4 GB RAM, Frankfurt ou Londres pra latência com XM). Opções: Hetzner CX22, Contabo VPS S.
-- `docker-compose` com 4 serviços:
-  - `mt5` — Ubuntu + Wine + terminal MT5 XM + `mt5linux` RPC server (porta 8001). Imagem base: `gmag11/metatrader5_vnc` ou build próprio. VNC (5900) exposto só pra debug via SSH tunnel.
-  - `app` — Python 3.12 com cliente `mt5linux` (API idêntica ao pacote `MetaTrader5` oficial). Hospeda estratégias, scheduler, logging.
+- VPS Ubuntu (2 vCPU / 4 GB RAM, Frankfurt ou Londres pra latência com servidores Spotware na Europa). Opções: Hetzner CX22, Contabo VPS S.
+- `docker-compose` com 3 serviços (zero Wine, zero VNC):
+  - `app` — Python 3.12 com `ctrader_open_api` (Twisted-based). Hospeda estratégias, scheduler, logging, cliente cTrader Open API, Universe Selector.
   - `postgres` — schemas: `trades`, `features`, `logs`, `backtest_runs`, `market_data` (OHLCV cache).
   - `grafana` — dashboards de equity curve, drawdown, degradação.
-- Auto-login MT5: script de init injeta credenciais XM (`login`, `password`, `server`) no start do container.
-- `restart: always` + healthcheck verificando se terminal MT5 está logado e `symbol_info_tick` responde.
-- `.env` com `XM_LOGIN`, `XM_PASSWORD`, `XM_SERVER` (ex: `XMGlobal-MT5 7`), `DATABASE_URL`.
+- **OAuth bootstrap one-time (fora da VPS porque exige browser pra consent screen do cTID):** registrar app no `openapi.ctrader.com` → rodar script de auth na máquina local do dev → browser abre consent → callback em `localhost:8080` captura `authorization_code` → trocar por `access_token` + `refresh_token` → persistir `refresh_token` no `.env` → copiar pra VPS via rsync/scp. Alternativa: SSH tunnel de `localhost:8080` da VPS pra local durante o consent.
+- **VPS runtime:** `app` usa `refresh_token` pra obter novo `access_token` quando expira (~30 dias). Comportamento de rotação (se é rotativo ou estático) a confirmar no smoke test da Fase 1.
+- `restart: always` + healthcheck: TCP ping em `demo.ctraderapi.com:5035` + validação de `ProtoOAApplicationAuthReq` bem-sucedido.
+- `.env` com `CTRADER_CLIENT_ID`, `CTRADER_CLIENT_SECRET`, `CTRADER_REFRESH_TOKEN`, `CTRADER_DEMO_ACCOUNT_ID`, `CTRADER_LIVE_ACCOUNT_ID`, `DATABASE_URL`.
+- Conta recomendada na Pepperstone: **Razor** (raw spread + comissão transparente $3.50/lado — melhor para backtest preciso de custos). Standard é fallback aceitável.
 
-**Pipeline de market data:** MT5 `copy_rates_range` / `copy_ticks_from` → Postgres. Cobrir timeframes M1/M5/H1/D1 para instrumentos selecionados na Fase 2.
+**Pipeline de market data:** cTrader Open API Protobuf → Postgres. Mensagens-chave: `ProtoOASymbolsListReq` (lista de símbolos), `ProtoOAGetTrendbarsReq` (OHLCV histórico por timeframe M1/M5/H1/D1), `ProtoOASubscribeSpotsReq` (stream de ticks bid/ask em tempo real). Cobrir timeframes M1/M5/H1/D1 para instrumentos selecionados na Fase 2.
 
 ### Fase 2 — Strategy Engine (fundamentada na literatura)
 
-**Restrição de design #1 — holding curto:** XM opera tudo como **CFD**, com swap/overnight cobrado diariamente. Estratégias devem ter holding típico de **minutos a poucos dias** (idealmente fechando posição antes do rollover das 22h GMT). Buy-and-hold multi-mês está fora de escopo — o swap vira drag material sobre o alpha.
+**Restrição de design #1 — holding curto:** Pepperstone opera tudo como **CFD**, com swap/overnight cobrado diariamente. Estratégias devem ter holding típico de **minutos a poucos dias** (idealmente fechando posição antes do rollover — horário exato da Pepperstone a confirmar no bootstrap da Fase 1; provável 22h GMT como na maioria dos brokers CFD). Buy-and-hold multi-mês está fora de escopo — o swap vira drag material sobre o alpha.
 
-**Restrição de design #2 — universo dinâmico e limitado:** em vez de varrer centenas de CFDs, o app opera sobre um **universo ativo de 5-15 instrumentos re-selecionado periodicamente** pelo Universe Selector (sub-fase 2.0). Candidatos naturais: SPX500, NAS100, US30, XAUUSD, BTCUSD, ETHUSD, EURUSD, GBPUSD, USDJPY + stock CFDs de alta liquidez (AAPL, TSLA, NVDA, etc.).
+**Restrição de design #2 — universo dinâmico e limitado:** em vez de varrer centenas de CFDs, o app opera sobre um **universo ativo de 5-15 instrumentos re-selecionado periodicamente** pelo Universe Selector (sub-fase 2.0). Candidatos naturais: SPX500, NAS100, US30, XAUUSD, BTCUSD, ETHUSD, EURUSD, GBPUSD, USDJPY + share CFDs de alta liquidez (AAPL, TSLA, NVDA, etc.).
 
-**Instrumentos disponíveis na XM (para referência):** índices (SPX500, NAS100, US30, GER40, UK100, JP225), stock CFDs (~1000 tickers incluindo AAPL/TSLA/NVDA/SPY/QQQ), crypto CFDs (BTC, ETH, SOL, etc.), forex (~55 pares), commodities (ouro, prata, petróleo). Lista exata: `Market Watch → Symbols` no terminal MT5.
+**Instrumentos disponíveis na Pepperstone cTrader (para referência):** forex (~90 pares), índices CFDs (SPX500, NAS100, US30, GER40, UK100, JP225 etc.), share CFDs (majors globais — coverage menor que XM mas suficiente pra universo curado), crypto CFDs (BTC, ETH, SOL, etc.), commodities (ouro, prata, petróleo, gás). **Lista exata obtida via `ProtoOASymbolsListReq`** na primeira conexão de dev (abertura da Fase 2) — documentar em `docs/instruments_pepperstone.md` quando disponível.
 
 #### Sub-fase 2.0 — Universe Selector (dynamic universe selection / tradability screening)
 
@@ -68,7 +69,7 @@ Rodar `scripts/build_skill.py` — agrega todos os 24 summaries em uma **Claude 
 
 ```
 ┌─ Universe Selector (roda a cada N dias) ────────────┐
-│ Input:  pool candidato (~30-50 instrumentos XM)      │
+│ Input:  pool candidato (~30-50 instrs Pepperstone)   │
 │         pré-aprovados por liquidez mínima            │
 │ Output: top K instrumentos ativos + score,           │
 │         válidos até próxima rodada                   │
@@ -83,13 +84,13 @@ Rodar `scripts/build_skill.py` — agrega todos os 24 summaries em uma **Claude 
 - **N (período de re-seleção):** semanal é o default da literatura (Clenow). Diário tende a virar ruído; mensal é lento demais pra adaptar.
 - **K (tamanho do universo ativo):** 5-15. Capital $1k + risk budget limitam K pra cima.
 - **Regra de transição:** posições abertas em instrumentos que saíram do ranking — manter até stop/target (Clenow, evita churn) ou fechar imediato? Default: manter.
-- **Pool candidato:** definir lista fixa de ~30-50 instrumentos XM pré-filtrados por liquidez absoluta (não muda toda rodada; só é revisada trimestralmente).
+- **Pool candidato:** definir lista fixa de ~30-50 instrumentos Pepperstone pré-filtrados por liquidez absoluta (obtidos via `ProtoOASymbolsListReq` e filtragem por spread/ATR/volume). Não muda toda rodada; só é revisada trimestralmente.
 
 **⚠️ Gate anti-overfit:** o Universe Selector é ele próprio uma estratégia. Precisa passar pelo **mesmo framework de 7 camadas da Fase 3** (CPCV, PBO, DSR, permutation). Sem isso, só empurra o overfit de nível — em vez de otimizar parâmetros da estratégia, otimiza parâmetros do selector. `TRADING_SYSTEM_PLAN.md §14.5` cobre esse tipo de armadilha.
 
-Cada estratégia implementada deve citar o livro/seção de origem. Candidatas priorizadas pro universo XM (filtradas pela restrição de holding curto):
+Cada estratégia implementada deve citar o livro/seção de origem. Candidatas priorizadas pro universo Pepperstone (filtradas pela restrição de holding curto):
 
-| Estratégia | Livro-fonte | Holding típico | Fit XM |
+| Estratégia | Livro-fonte | Holding típico | Fit CFD |
 |---|---|---|---|
 | Cycle analysis / DSP (intraday e swing curto) | Ehlers — `rocket_science`, `cycle_analytics`, `cybernetic_analysis` | horas a 2-3 dias | ⭐⭐⭐ nativo |
 | Regime detection (filtro sobre outras estratégias) | Chen — `regime_change` | overlay | ⭐⭐⭐ agnóstico |
@@ -98,7 +99,7 @@ Cada estratégia implementada deve citar o livro/seção de origem. Candidatas p
 | Position sizing / Kelly fractional | Vince — `leverage_space`, `math_money_mgmt` | overlay | ⭐⭐⭐ agnóstico |
 | Sentiment overlay (news/social) | Peterson — `trading_on_sentiment` | overlay | ⭐⭐ requer data feed extra |
 
-**Estratégias de holding longo (buy-and-hold, rebalance mensal puro) ficam fora de escopo** enquanto o broker for XM/CFD.
+**Estratégias de holding longo (buy-and-hold, rebalance mensal puro) ficam fora de escopo** enquanto o broker for CFD-based (Pepperstone ou similar).
 
 ### Fase 3 — Backtest rigoroso (framework anti-overfit de 7 camadas)
 
@@ -112,11 +113,11 @@ Coração do plano (§6.3 do `TRADING_SYSTEM_PLAN.md`). Cada camada vem de um li
 6. **Parsimônia de parâmetros** (máx 2-3, cada um justificado) — Aronson / Carver
 7. **Monitoring de degradação em produção** — Aronson (`evidence_based_ta`!)
 
-### Fase 4 — Paper trading via conta demo XM (validação em tempo real)
-30-90 dias rodando na **conta demo XM** (MT5 nativo, execução idêntica à real — mesma API, mesmo server, só muda credencial). Logar todos os trades em Postgres, comparar distribuição de retornos vs backtest esperado, detectar divergência (slippage, spreads, gaps de execução).
+### Fase 4 — Paper trading via conta demo cTrader (validação em tempo real)
+30-90 dias rodando na **conta demo cTrader da Pepperstone**, linkada ao cTID do usuário. Execução idêntica à real — mesmo SDK, mesmo protocolo Protobuf, só muda `CTRADER_DEMO_ACCOUNT_ID` e endpoint (`demo.ctraderapi.com:5035`). Paridade com live é nativa ao design do cTrader Open API. Logar todos os trades em Postgres, comparar distribuição de retornos vs backtest esperado, detectar divergência (slippage, spreads, gaps de execução).
 
-### Fase 5 — Live trading na XM ($1000 inicial)
-Troca de credenciais no `.env` (demo → real), mesma infra, mesmos containers. Gate de produção: estratégia só passa se vencer o checklist anti-overfit (§6.4 do plano). Se PBO > 50% → descartar. Se DSR < 1.0 → descartar.
+### Fase 5 — Live trading na Pepperstone ($1000 inicial)
+Troca de `CTRADER_LIVE_ACCOUNT_ID` e endpoint (`live.ctraderapi.com:5035`) no `.env`, mesma infra, mesmos containers. Funding via PIX (Pepperstone suporta desde 2024 para clientes BR). Gate de produção: estratégia só passa se vencer o checklist anti-overfit (§6.4 do plano). Se PBO > 50% → descartar. Se DSR < 1.0 → descartar.
 
 ### Fase 6 — Monitoring + governança
 Claude recebe métricas semanais, detecta degradação, recomenda pausa/re-otimização/descontinuação.

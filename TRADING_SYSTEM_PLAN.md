@@ -7,61 +7,57 @@
 
 ---
 
-## 1. Problema Central: MetaTrader 5 no Ubuntu
+## 1. Execução: Pepperstone via cTrader Open API
 
-O MT5 não tem suporte nativo para Linux. Existem 3 caminhos viáveis:
+O broker escolhido é **Pepperstone**, usando a **cTrader Open API** (Protobuf sobre TCP persistente com OAuth2). Essa decisão substitui o plano anterior de usar MetaTrader 5 no XM (inviável em VPS Ubuntu headless — exigia Wine + VNC + `mt5linux` RPC, frágil na operação).
 
-### Opção A — mt5linux via Docker (Recomendada se precisar de MT5)
+Histórico de alternativas descartadas:
 
-O pacote `mt5linux` (PyPI, v1.0.3, fev/2026) roda o MT5 dentro de um container Docker com Wine e expõe uma API RPyC para o Python nativo do Ubuntu. A arquitetura é:
+| Broker/API | Por que foi descartado |
+|---|---|
+| **Alpaca** | Não aceita residência fiscal BR. Workarounds via LLC US / ITIN+W-8BEN desproporcionais ao capital de $1k. |
+| **OANDA** | Encerrou cadastros para residentes BR. |
+| **Interactive Brokers** | API não é REST nativa — exige IB Gateway ou Client Portal Gateway rodando como processo intermediário, 2FA recorrente, IBC para manter login. Comissões pesam mais em capital pequeno. |
+| **XM via MetaTrader 5** | MT5 não tem cliente Linux nativo. Única via é Docker+Wine+VNC (imagem `gmag11/MetaTrader5-Docker` + `mt5linux`). Wine é historicamente frágil; VNC complica bootstrap e recovery numa VPS headless; falha de login = downtime manual. |
+
+### Stack Pepperstone/cTrader
 
 ```
-[Ubuntu Host - Python nativo]
-        │ socket (RPyC)
+[Ubuntu Host - Python 3.12 nativo]
+        │ TCP persistente (Protobuf)
         ▼
-[Docker Container: Wine + MT5 Terminal + rpyc_classic.exe]
+[cTrader Open API (Spotware)  :5035]
         │
         ▼
-[Broker via MT5]
+[Pepperstone — conta cTrader demo ou live]
 ```
 
 **Setup resumido:**
-1. Container Docker com Wine + MT5 + supervisor (rpyc na porta 1234)
-2. No host Ubuntu: `pip install mt5linux`
-3. Código no host: `from mt5linux import MetaTrader5; mt5 = MetaTrader5(host="localhost", port=1234)`
-4. Toda a API oficial do MT5 Python fica disponível transparentemente
+1. Registrar app no portal `openapi.ctrader.com` (cTID) → obter `client_id` + `client_secret`.
+2. OAuth2 bootstrap one-time na máquina local do dev (browser abre consent cTID; callback em `localhost:8080` captura `authorization_code`; troca por `access_token` + `refresh_token`).
+3. Persistir `refresh_token` no `.env`; copiar pra VPS via rsync/scp.
+4. No host Ubuntu: `pip install ctrader-open-api`.
+5. Código no host: `from ctrader_open_api import Client, EndPoints, Protobuf` (SDK oficial Spotware, Twisted-based, async).
+6. VPS usa `refresh_token` pra obter `access_token` novo (~30 dias de validade). Comportamento de rotação (se o refresh também rotaciona) a confirmar no smoke test.
 
-**Refs:** github.com/lucas-campagna/mt5linux · github.com/hpdeandrade/pymt5linux
+**Refs:** `help.ctrader.com/open-api/` · `github.com/spotware/OpenApiPy` · `pepperstone.com/en-eu/platforms/integrations/ctrader-automate/`
 
-### Opção B — Bypass total do MT5 com Alpaca API (⭐ RECOMENDADA)
+### Cobertura de asset classes
 
-Alpaca é um broker API-first, commission-free, com suporte nativo a Linux/Python. Cobre:
-- Ações e ETFs americanos (SPY, QQQ, etc.) — commission-free
-- Crypto (BTC, ETH, etc.) — 24/7
-- Options
-- Paper trading gratuito e ilimitado
-- SDK Python oficial (`alpaca-py`)
-- WebSocket para streaming em tempo real
-- Dados históricos de 6+ anos
+Pepperstone via cTrader oferece, tudo como CFD:
+- **Forex:** ~90 pares (majors, minors, exóticos).
+- **Índices:** SPX500, NAS100, US30, GER40, UK100, JP225, etc.
+- **Share CFDs:** majors globais (AAPL, TSLA, NVDA, MSFT, GOOG, etc. — coverage menor que XM mas suficiente pra universo curado de 5-15 instrumentos).
+- **Crypto CFDs:** BTC, ETH, SOL, etc.
+- **Commodities:** ouro, prata, petróleo (WTI/Brent), gás natural.
 
-**Vantagens para o seu caso:**
-- Roda nativamente no Ubuntu, sem Wine/Docker
-- Paper trading para testar estratégias sem risco
-- Commission-free para capital pequeno ($1000)
-- API REST + WebSocket bem documentada
-- Integração nativa com VectorBT, Backtrader, StrateQueue
+Lista exata é obtida via `ProtoOASymbolsListReq` na primeira conexão de dev e documentada em `docs/instruments_pepperstone.md` quando a Fase 2 abrir.
 
-**Limitação:** Não oferece Forex puro (pares como EUR/USD). Para Forex, veja Opção C.
+### Restrição estrutural: tudo é CFD
 
-### Opção C — Abordagem Híbrida (Melhor dos dois mundos)
+Como na XM, todos os instrumentos são CFDs — há swap/overnight cobrado diariamente. Isso impõe uma restrição de design sobre **toda** a camada de estratégia: holding típico de minutos a poucos dias, fechando posição antes do rollover (provavelmente 22h GMT, a confirmar com Pepperstone). Buy-and-hold multi-mês está **fora de escopo** enquanto o broker for CFD — o swap vira drag material sobre o alpha.
 
-| Asset Class | Solução | API |
-|---|---|---|
-| Ações/ETFs (SPY) | Alpaca | alpaca-py |
-| Crypto | CCXT (107+ exchanges) | ccxt |
-| Forex | MT5 via Docker OU OANDA API | mt5linux / oandapyV20 |
-
-**CCXT** é a biblioteca universal para crypto, suporta Binance, Bybit, OKX e 100+ exchanges com uma API unificada. Open-source, MIT license, Python nativo.
+Essa restrição informa a sub-fase 2.0 (Universe Selector) e a seleção das estratégias candidatas (ver ROADMAP.md Fase 2).
 
 ---
 
@@ -75,11 +71,12 @@ Alpaca é um broker API-first, commission-free, com suporte nativo a Linux/Pytho
 │  ┌──────────────┐   ┌──────────────────────┐    │
 │  │ DATA LAYER   │   │ STRATEGY ENGINE      │    │
 │  │              │   │                      │    │
-│  │ Alpha Vantage│──▶│ Signal Generator     │    │
-│  │ Alpaca Data  │   │ (indicators, ML,     │    │
-│  │ CCXT (crypto)│   │  regime detection)   │    │
-│  │ yfinance     │   │                      │    │
-│  │ Twelve Data  │   └──────────┬───────────┘    │
+│  │ cTrader Open │──▶│ Universe Selector    │    │
+│  │ API (OHLCV + │   │ Signal Generator     │    │
+│  │ tick stream) │   │ (indicators, ML,     │    │
+│  │              │   │  regime detection)   │    │
+│  │ Alpha Vantage│   │                      │    │
+│  │ (enriquec.)  │   └──────────┬───────────┘    │
 │  └──────────────┘              │                 │
 │                                ▼                 │
 │  ┌──────────────┐   ┌──────────────────────┐    │
@@ -95,37 +92,42 @@ Alpaca é um broker API-first, commission-free, com suporte nativo a Linux/Pytho
 │  ┌──────────────┐   ┌──────────────────────┐    │
 │  │ STORAGE      │   │ EXECUTION LAYER      │    │
 │  │              │   │                      │    │
-│  │ PostgreSQL   │   │ Alpaca (stocks)      │    │
-│  │ (timeseries, │   │ CCXT (crypto)        │    │
-│  │  trades,     │   │ MT5/Docker (forex)   │    │
-│  │  signals)    │   │                      │    │
+│  │ PostgreSQL   │   │ cTrader Open API     │    │
+│  │ (market_data,│   │ (Pepperstone demo    │    │
+│  │  trades,     │   │  ou live — Protobuf  │    │
+│  │  signals,    │   │  sobre TCP, OAuth2)  │    │
+│  │  features)   │   │                      │    │
 │  └──────────────┘   └──────────────────────┘    │
 │                                                  │
 │  ┌──────────────────────────────────────────┐   │
 │  │ MONITORING & ALERTS                       │   │
-│  │ Telegram Bot · Dashboard Web · Logs       │   │
+│  │ Telegram Bot · Grafana · Logs             │   │
 │  └──────────────────────────────────────────┘   │
 │                                                  │
 └─────────────────────────────────────────────────┘
 ```
 
+A mesma conexão cTrader Open API serve para **market data** (histórico OHLCV + stream de ticks) e **execução** (ordens, posições, account info). Não há dependência de brokers adicionais (CCXT, MT5, Alpaca) — tudo converge num único fornecedor.
+
 ---
 
 ## 3. APIs de Dados de Mercado
 
-### APIs REST/WebSocket (dados de preço)
+### Primária: cTrader Open API (mesma conexão da execução)
+
+Histórico OHLCV via `ProtoOAGetTrendbarsReq` (timeframes M1/M5/H1/D1+), stream de ticks via `ProtoOASubscribeSpotsReq`. Suficiente para os 5-15 instrumentos do universo curado. Latência baixa (servidor Spotware em Londres), sem rate limits relevantes para o caso de uso.
+
+### APIs de enriquecimento (opcionais, para análise macro/contextual)
 
 | API | Cobertura | Free Tier | MCP Server |
 |---|---|---|---|
-| **Alpha Vantage** | Stocks, Forex, Crypto, 60+ indicadores | 25 req/dia (free) | ✅ Oficial |
+| **Alpha Vantage** | Stocks, Forex, Crypto, 60+ indicadores, fundamentals | 25 req/dia (free) | ✅ Oficial |
 | **Finnhub** | Stocks, Forex, Crypto, Sentiment | 60 req/min | ✅ Community |
-| **Twelve Data** | Stocks, Forex, Crypto | 800 req/dia | ❌ |
-| **Alpaca Data** | US Stocks, Crypto | Incluso na conta | ❌ |
 | **EODHD** | 70+ exchanges globais | Limitado | ✅ 77 tools |
 | **FCS API** | Forex (2000+ pares), Crypto | Limitado | ❌ |
 | **yfinance** | Stocks, ETFs (Yahoo Finance) | Ilimitado* | ❌ |
 
-*yfinance é não-oficial e pode ter instabilidade.
+*yfinance é não-oficial e pode ter instabilidade. Essas APIs entram apenas quando o Claude precisa de contexto macro/fundamentalista que o cTrader não fornece (earnings, sentiment, macro regime). Não são dependência da infraestrutura de execução.
 
 ### MCP Servers para AI-Assisted Trading
 
@@ -149,15 +151,15 @@ Para usar com Claude Desktop/Claude Code e criar workflows de análise:
 
 | Framework | Velocidade | Live Trading | Melhor para |
 |---|---|---|---|
-| **VectorBT** | ⚡ Extrema | Via StrateQueue | Otimização massiva de parâmetros |
-| **Backtesting.py** | ⚡ Rápida | Via StrateQueue | Simplicidade, prototipagem |
-| **Backtrader** | 🔵 Média | Nativo (Alpaca/IB) | Swing traders, evento-driven |
-| **StrateQueue** | — | ✅ Bridge universal | Deploy de qualquer framework p/ live |
+| **VectorBT** | ⚡ Extrema | Via adapter custom | Otimização massiva de parâmetros |
+| **Backtesting.py** | ⚡ Rápida | Via adapter custom | Simplicidade, prototipagem |
+| **Backtrader** | 🔵 Média | Via adapter custom | Swing traders, evento-driven |
+| **Custom loop** | — | Nativo | Loop Python direto com `ctrader_open_api` |
 
 **Recomendação para swing trade com $1000:**
 1. **Prototipar** com Backtesting.py (simples, rápido)
 2. **Otimizar parâmetros** com VectorBT (testar milhares de combinações)
-3. **Deploy para live** com StrateQueue → Alpaca (paper primeiro!)
+3. **Deploy para live** via loop Python custom que consome sinais do framework e envia ordens pela cTrader Open API (paper/demo primeiro!). StrateQueue não tem adapter oficial para cTrader em 2026; fazer o adapter direto é mais simples que integrar um bridge genérico.
 
 ---
 
@@ -615,22 +617,23 @@ Claude Code conecta-se diretamente a MCP servers de dados financeiros e ao broke
 │              CLAUDE CODE (terminal)          │
 │                                              │
 │  MCP Servers conectados:                     │
-│  ├── Alpha Vantage MCP (preços, indicadores) │
+│  ├── Alpha Vantage MCP (contexto macro)      │
 │  ├── TradingView MCP (screening, backtest)   │
 │  ├── Financial Datasets MCP (fundamentals)   │
-│  ├── Alpaca MCP (portfolio, ordens)          │
+│  ├── cTrader (via ctrader_open_api Python,   │
+│  │   não MCP — portfolio + execução)         │
 │  └── Trading Skills (custom knowledge)       │
 │                                              │
 │  Você pergunta:                              │
-│  "Analise SPY e BTC. Devo entrar agora?"     │
+│  "Analise SPX500 e BTCUSD. Devo entrar?"     │
 │                                              │
 │  Claude:                                     │
-│  1. Puxa dados em tempo real via MCP         │
-│  2. Calcula indicadores (RSI, MACD, Ehlers)  │
+│  1. Puxa OHLCV via cTrader Open API          │
+│  2. Calcula indicadores (Ehlers, regime)     │
 │  3. Detecta regime de mercado                │
 │  4. Avalia risk/reward                       │
 │  5. Recomenda: BUY/HOLD/SELL + sizing        │
-│  6. Você aprova → Claude executa via Alpaca  │
+│  6. Você aprova → app executa via cTrader    │
 │                                              │
 └─────────────────────────────────────────────┘
 ```
@@ -649,15 +652,15 @@ claude mcp add tradingview \
 claude mcp add financial-datasets \
   --url "https://mcp.financialdatasets.ai/mcp"
 
-# Adicionar Alpaca MCP (portfolio + execução)
-# (verificar disponibilidade no marketplace)
+# Execução (não há MCP para cTrader em 2026 — integração direta):
+# pip install ctrader-open-api  (no container `app`)
 ```
 
-**Já existe um projeto pronto:** O repositório `tradermonty/claude-trading-skills` no GitHub contém skills prontas para Claude Code incluindo:
+**Projeto como referência conceitual:** O repositório `tradermonty/claude-trading-skills` no GitHub contém skills para Claude Code que podem inspirar nossa knowledge base:
 - Market Environment Analysis (quanto capital alocar agora?)
 - Position Sizing (Kelly Criterion, ATR-based)
 - Technical Analyst (análise técnica completa)
-- Portfolio Manager (integração Alpaca para holdings)
+- Portfolio Manager (adaptar de Alpaca para cTrader holdings)
 - Sector Analysis, Macro Regime Detection
 - Trade Journal (registra e analisa resultados)
 
@@ -668,18 +671,19 @@ Um script Python que roda continuamente, chama a API do Claude com tool_use, e t
 ```python
 # PSEUDOCÓDIGO — Agente de Trading com Claude API
 import anthropic
-from alpaca.trading.client import TradingClient
+from ctrader_open_api import Client, EndPoints
 
 client = anthropic.Anthropic()
-alpaca = TradingClient(api_key, secret_key)
+ctrader = Client(EndPoints.PROTOBUF_DEMO_HOST, EndPoints.PROTOBUF_DEMO_PORT)
+# autenticar app e conta via ProtoOAApplicationAuthReq + ProtoOAAccountAuthReq
 
 # Tools disponíveis para o Claude
 tools = [
-    {"name": "get_market_data",    "description": "Busca OHLCV + indicadores"},
-    {"name": "get_portfolio",      "description": "Retorna posições atuais"},
+    {"name": "get_market_data",    "description": "OHLCV via ProtoOAGetTrendbarsReq"},
+    {"name": "get_portfolio",      "description": "Posições atuais via ProtoOAReconcileReq"},
     {"name": "analyze_regime",     "description": "Detecta bull/bear/sideways"},
     {"name": "calculate_signals",  "description": "Gera sinais de entrada/saída"},
-    {"name": "execute_trade",      "description": "Envia ordem para Alpaca"},
+    {"name": "execute_trade",      "description": "ProtoOANewOrderReq pela cTrader"},
     {"name": "get_news_sentiment", "description": "Analisa sentimento de notícias"},
 ]
 
@@ -738,14 +742,14 @@ Para swing trade com capital real, a arquitetura segura é:
 ```
 CLAUDE ANALISA → CLAUDE RECOMENDA → VICTOR APROVA → SISTEMA EXECUTA
       │                 │                  │               │
-  (automático)    (com justificativa)  (manual/Telegram) (Alpaca API)
+  (automático)  (com justificativa) (manual/Telegram) (cTrader Open API)
 ```
 
 **Fluxo prático diário:**
 1. **6h (pré-mercado):** Script roda análise automática com Claude API
-2. **Claude envia via Telegram:** "📊 SPY: Regime BULL, Cyber Cycle cruzou oversold. Sugiro LONG com 5% do capital. Stop: $XXX, TP: $YYY. R:R 2.1:1. Aprovar?"
+2. **Claude envia via Telegram:** "📊 SPX500: Regime BULL, Cyber Cycle cruzou oversold. Sugiro LONG com 5% do capital. Stop: $XXX, TP: $YYY. R:R 2.1:1. Aprovar?"
 3. **Victor responde:** "✅ Aprovado" ou "❌ Não, explique mais"
-4. **Se aprovado:** Sistema executa via Alpaca API automaticamente
+4. **Se aprovado:** Sistema executa via cTrader Open API automaticamente
 5. **Fim do dia:** Claude gera relatório de performance
 
 ### Sobre Execução Automática Total (Sem Humano)
@@ -835,18 +839,23 @@ O sistema que estamos construindo vai te dar as ferramentas para maximizar suas 
 ## 11. Roadmap de Implementação
 
 ### Fase 1 — Setup (Semana 1-2)
-- [ ] Criar conta Alpaca (paper trading)
-- [ ] Obter API key Alpha Vantage (grátis)
-- [ ] Setup projeto Python com poetry/uv
-- [ ] Instalar: alpaca-py, ccxt, vectorbt, backtesting, pandas-ta, scikit-learn
-- [ ] Setup PostgreSQL para armazenar dados e trades
-- [ ] Configurar Alpha Vantage MCP no Claude Desktop
+- [ ] Confirmar conta Pepperstone com plataforma cTrader (demo + live linkadas ao cTID)
+- [ ] Registrar app no portal `openapi.ctrader.com` → `client_id` + `client_secret`
+- [ ] OAuth bootstrap one-time na máquina local → persistir `refresh_token` no `.env`
+- [ ] Obter API key Alpha Vantage (grátis, apenas para enriquecimento macro opcional)
+- [ ] Setup projeto Python com uv
+- [ ] Instalar: ctrader-open-api, vectorbt, backtesting, pandas-ta, scikit-learn
+- [ ] Setup PostgreSQL (Docker) para armazenar market_data, trades, features
+- [ ] Provisionar VPS Ubuntu (Hetzner CX22 ou Contabo VPS S, região Frankfurt/Londres)
+- [ ] Configurar `docker-compose.yml` com 3 serviços: `app`, `postgres`, `grafana`
+- [ ] Smoke test: `ProtoOAApplicationAuthReq` + `ProtoOAAccountAuthReq` + `ProtoOAGetTrendbarsReq` (EURUSD D1) + `ProtoOASubscribeSpotsReq` na VPS headless
 
 ### Fase 2 — Data Pipeline (Semana 2-3)
-- [ ] Módulo de ingestão: Alpaca (stocks), CCXT (crypto), Alpha Vantage (forex)
+- [ ] Módulo de ingestão via cTrader Open API: `ProtoOASymbolsListReq` (universo), `ProtoOAGetTrendbarsReq` (OHLCV histórico), `ProtoOASubscribeSpotsReq` (ticks em tempo real)
 - [ ] Armazenamento de OHLCV em PostgreSQL (TimescaleDB opcional)
-- [ ] Scheduler para atualização periódica (cron ou APScheduler)
-- [ ] Cache local para reduzir chamadas de API
+- [ ] Scheduler para atualização periódica (APScheduler)
+- [ ] Cache local para reduzir round-trips desnecessários à API
+- [ ] Documentar instrumentos disponíveis da Pepperstone em `docs/instruments_pepperstone.md`
 
 ### Fase 3 — Claude como Agente (Semana 3-4)
 - [ ] Instalar e configurar Claude Code com MCPs (Alpha Vantage, TradingView, Financial Datasets)
@@ -871,11 +880,11 @@ O sistema que estamos construindo vai te dar as ferramentas para maximizar suas 
 - [ ] Análise de drawdown e risk-of-ruin
 
 ### Fase 6 — Paper Trading com Claude Agent (Semana 8-14)
-- [ ] Deploy em Alpaca paper trading via StrateQueue ou custom
-- [ ] Monitoramento via Telegram bot
-- [ ] Dashboard web simples (React/Flask)
+- [ ] Deploy em conta demo cTrader da Pepperstone (mesmo SDK, endpoint `demo.ctraderapi.com:5035`)
+- [ ] Monitoramento via Telegram bot + Grafana
+- [ ] Dashboard web simples (FastAPI + WebSocket)
 - [ ] Logging detalhado de todas as decisões
-- [ ] Análise semanal de performance
+- [ ] Análise semanal de performance vs backtest esperado (detecção de drift)
 
 ### Fase 7 — Live Trading (Após 3+ meses de paper)
 - [ ] Transição gradual para live (começar com % pequena)
@@ -890,26 +899,26 @@ O sistema que estamos construindo vai te dar as ferramentas para maximizar suas 
 ```
 # Ambiente
 Python 3.11+
-Ubuntu 24.04
-PostgreSQL 16 (+ TimescaleDB extension)
-Docker (para MT5 se necessário)
-Poetry ou uv (gerenciamento de deps)
+Ubuntu 24.04 (VPS headless — Hetzner CX22 ou Contabo VPS S)
+PostgreSQL 16 (+ TimescaleDB extension) em container Docker
+Docker + docker-compose
+uv (gerenciamento de deps)
 
 # Brokers/Execution
-alpaca-py          # Stocks, ETFs, Crypto (principal)
-ccxt               # Crypto multi-exchange
-mt5linux           # Forex via MT5 (Docker/Wine)
+ctrader-open-api   # Pepperstone via cTrader Open API (Protobuf/TCP, OAuth2)
+                   # Fornece: market data (OHLCV + ticks) + execução + portfolio
+                   # Substitui todos os brokers anteriores (Alpaca, MT5, OANDA)
 
-# Data
-alpha_vantage      # Market data + indicadores técnicos
-yfinance           # Dados históricos (backup)
+# Data (enriquecimento opcional — não crítico)
+alpha_vantage      # Contexto macro + fundamentals (25 req/dia free)
 pandas-ta          # 130+ indicadores técnicos
 ta-lib             # Indicadores high-performance (C)
 
 # Backtesting
 vectorbt           # Backtesting vetorizado ultra-rápido
 backtesting.py     # Backtesting simples e visual
-stratequeue        # Bridge backtest → live
+                   # Nota: deploy para live é via loop Python custom + ctrader_open_api
+                   # (sem StrateQueue — não há adapter cTrader em 2026)
 
 # ML/Stats
 scikit-learn       # ML clássico
@@ -941,7 +950,7 @@ mkdir -p ~/projects/trading-system && cd ~/projects/trading-system
 python -m venv .venv && source .venv/bin/activate
 
 # 2. Instalar dependências principais
-pip install alpaca-py ccxt vectorbt backtesting pandas-ta \
+pip install ctrader-open-api vectorbt backtesting pandas-ta \
     scikit-learn hmmlearn statsmodels scipy \
     sqlalchemy psycopg2-binary apscheduler \
     python-telegram-bot fastapi uvicorn \
@@ -958,17 +967,19 @@ sudo -u postgres createuser trading_user -P
 
 # 5. Criar .env
 cat > .env << 'EOF'
-ALPACA_API_KEY=your_key_here
-ALPACA_SECRET_KEY=your_secret_here
-ALPACA_BASE_URL=https://paper-api.alpaca.markets
-ALPHA_VANTAGE_KEY=your_key_here
-DATABASE_URL=postgresql://trading_user:password@localhost/trading_system
+CTRADER_CLIENT_ID=your_app_client_id
+CTRADER_CLIENT_SECRET=your_app_client_secret
+CTRADER_REFRESH_TOKEN=your_refresh_token_from_oauth_bootstrap
+CTRADER_DEMO_ACCOUNT_ID=0000000
+CTRADER_LIVE_ACCOUNT_ID=0000000
+ALPHA_VANTAGE_KEY=your_key_here  # opcional — enriquecimento macro
+DATABASE_URL=postgresql://trading_user:password@postgres:5432/trading_system
 TELEGRAM_BOT_TOKEN=your_token_here
 TELEGRAM_CHAT_ID=your_chat_id_here
 EOF
 
-# 6. (Opcional) Setup MT5 via Docker para Forex
-# docker-compose up -d mt5  (ver docker-compose.yml separado)
+# 6. Subir a stack inteira
+docker-compose up -d  # containers: app, postgres, grafana
 ```
 
 ---

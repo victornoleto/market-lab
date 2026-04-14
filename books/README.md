@@ -1,14 +1,14 @@
 # books/ — Knowledge Base dos Livros
 
-Esta pasta contém os 33 livros que alimentam o "especialista em trade" do ai-trade
+Esta pasta contém os 33 livros/artigos absorvidos + 1 pendente que alimentam o "especialista em trade" do ai-trade
 (Fase 0 do `TRADING_SYSTEM_PLAN.md`): 22 originais + 9 adicionados conforme
-`ai-trade-library-audit.md`.
+`ai-trade-library-audit.md` + 2 artigos técnicos adicionados posteriormente.
 
 ## Estrutura
 
 ```
 books/
-├── raw/              # 33 PDFs com slugs canônicos
+├── raw/              # 34 PDFs/artigos com slugs canônicos (33 absorvidos + 1 pendente)
 ├── extracted/        # texto extraído + capítulos + metadata (gitignored, cache)
 ├── summaries/        # 1 MD validado por livro, saída do subagente book-reader (versionado)
 ├── code/             # código C++ complementar dos zips do Timothy Masters (versionado)
@@ -19,6 +19,15 @@ books/
 ```
 
 Para a lista completa dos 33 livros com autor/ano/tier, veja `MAPPING.md`.
+
+> **Compressão dos PDFs em `raw/`:** existe `../scripts/compress_pdfs.py` que
+> tenta encolher os PDFs via Ghostscript, mas **só substitui o original se o
+> texto extraído (via pymupdf) for equivalente palavra-a-palavra**. Na prática
+> o Ghostscript re-renderiza streams de texto (normaliza caixa alta, junta
+> espaços, troca ligaduras) e o script rejeita. Se precisar de ganho real em
+> arquivos grandes (ex.: `evidence_based_ta.pdf`, `cycle_analytics.pdf`),
+> o próximo passo é um recompressor baseado em `pikepdf` que toca apenas
+> nos XObjects de imagem — fora de escopo até ser necessário.
 
 ---
 
