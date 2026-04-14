@@ -7,6 +7,7 @@ exercises the PBO/DSR/walk-forward gates in production. See
 """
 
 from ai_trade.backtest.grid.config import ClenowGridConfig, grid_configs
+from ai_trade.backtest.grid.gates import GateEvaluator, GateVerdict
 from ai_trade.backtest.grid.observers import (
     JsonlTrialObserver,
     StatusFileObserver,
@@ -23,6 +24,8 @@ from ai_trade.backtest.grid.runner import GridRunner
 
 __all__ = [
     "ClenowGridConfig",
+    "GateEvaluator",
+    "GateVerdict",
     "GridResult",
     "GridRunner",
     "JsonlTrialObserver",
