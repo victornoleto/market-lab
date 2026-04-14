@@ -13,6 +13,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable
 
+from joblib import Parallel, delayed
+
 from ai_trade.backtest.engine.runner import BacktestResult
 from ai_trade.backtest.grid.config import ClenowGridConfig
 from ai_trade.backtest.grid.result import (
@@ -60,25 +62,72 @@ class GridRunner:
         run_dir = Path(self.checkpoint_dir) / run_id
         run_dir.mkdir(parents=True, exist_ok=True)
 
-        trials: list[TrialResult] = []
         total = len(configs)
 
+        # Load any pre-existing checkpoints first so resume skips re-run.
+        # Compute which configs still need to run.
+        preloaded: dict[int, TrialResult] = {}
+        pending: list[tuple[int, ClenowGridConfig]] = []
         for idx, config in enumerate(configs):
             trial_dir = run_dir / f"trial_{idx}"
             if (trial_dir / "meta.json").exists():
-                trial = trial_from_dir(trial_dir)
+                preloaded[idx] = trial_from_dir(trial_dir)
                 _log.info(
-                    "trial %d resumed from checkpoint (status=%s)", idx, trial.status,
+                    "trial %d resumed from checkpoint (status=%s)",
+                    idx, preloaded[idx].status,
                 )
             else:
-                trial = self._run_trial(idx, config, trial_fn)
-                trial_to_dir(trial, trial_dir)
+                pending.append((idx, config))
 
+        if self.n_jobs == 1 or len(pending) <= 1:
+            new_trials = self._run_sequential(pending, trial_fn)
+        else:
+            new_trials = self._run_parallel(pending, trial_fn)
+
+        # Merge preloaded + newly computed, persist new ones, and invoke
+        # progress_cb in config-order so observers see a stable sequence.
+        trials: list[TrialResult] = []
+        completed_count = 0
+        for idx, _cfg in enumerate(configs):
+            if idx in preloaded:
+                trial = preloaded[idx]
+            else:
+                trial = new_trials[idx]
+                trial_to_dir(trial, run_dir / f"trial_{idx}")
             trials.append(trial)
+            completed_count += 1
             if progress_cb is not None:
-                progress_cb(idx + 1, total, trial)
+                progress_cb(completed_count, total, trial)
 
         return GridResult(trials=trials, run_id=run_id)
+
+    def _run_sequential(
+        self,
+        pending: list[tuple[int, ClenowGridConfig]],
+        trial_fn: TrialFn,
+    ) -> dict[int, TrialResult]:
+        return {
+            idx: self._run_trial(idx, config, trial_fn)
+            for idx, config in pending
+        }
+
+    def _run_parallel(
+        self,
+        pending: list[tuple[int, ClenowGridConfig]],
+        trial_fn: TrialFn,
+    ) -> dict[int, TrialResult]:
+        """Dispatch pending trials across ``n_jobs`` workers via joblib.
+
+        Backend ``loky`` (default) uses processes, which is safe for CPU-bound
+        strategy runs under the GIL. The trial_fn closure must be picklable —
+        callers usually pass a top-level function or a closure over picklable
+        objects.
+        """
+        results = Parallel(n_jobs=self.n_jobs, backend="loky", return_as="list")(
+            delayed(self._run_trial)(idx, config, trial_fn)
+            for idx, config in pending
+        )
+        return {idx: trial for (idx, _cfg), trial in zip(pending, results)}
 
     def _run_trial(
         self,

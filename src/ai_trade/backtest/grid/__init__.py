@@ -7,8 +7,30 @@ exercises the PBO/DSR/walk-forward gates in production. See
 """
 
 from ai_trade.backtest.grid.config import ClenowGridConfig, grid_configs
+from ai_trade.backtest.grid.observers import (
+    JsonlTrialObserver,
+    StatusFileObserver,
+    compose_observers,
+    setup_grid_logging,
+)
+from ai_trade.backtest.grid.result import (
+    GridResult,
+    TrialResult,
+    trial_from_dir,
+    trial_to_dir,
+)
+from ai_trade.backtest.grid.runner import GridRunner
 
 __all__ = [
     "ClenowGridConfig",
+    "GridResult",
+    "GridRunner",
+    "JsonlTrialObserver",
+    "StatusFileObserver",
+    "TrialResult",
+    "compose_observers",
     "grid_configs",
+    "setup_grid_logging",
+    "trial_from_dir",
+    "trial_to_dir",
 ]

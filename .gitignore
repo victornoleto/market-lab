@@ -29,6 +29,12 @@ prints/
 # Hand-written docs under reports/ (e.g. clenow_replication_notes.md) are committed.
 reports/*_[0-9]*.md
 reports/assets/
+reports/grid_*/
+
+# Live script logs (Fase 2.5 grid + future long-running jobs).
+# Single unified log at logs/grid.log captures every run; per-run detail
+# stays under .cache/grid_runs/ (already covered by .cache/ above).
+logs/
 
 # OS
 .DS_Store

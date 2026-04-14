@@ -199,6 +199,41 @@ def test_grid_runner_invokes_progress_callback_after_each_trial(tmp_path: Path):
     assert first_call_args[1] == 2   # total
 
 
+def test_grid_runner_parallel_produces_same_results_as_sequential(tmp_path: Path):
+    """n_jobs=2 must yield the same TrialResult set as n_jobs=1.
+
+    joblib workers serialize the trial_fn via its loky backend; results come
+    back in completion order but we re-sort by config_id downstream. Checkpoint
+    dir differs between runs so outputs are independent.
+    """
+    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.runner import GridRunner
+
+    configs = [
+        ClenowGridConfig(lookback_regression=60, top_pct=0.10, risk_factor=0.001),
+        ClenowGridConfig(lookback_regression=90, top_pct=0.20, risk_factor=0.001),
+        ClenowGridConfig(lookback_regression=120, top_pct=0.30, risk_factor=0.002),
+    ]
+
+    def _trial_fn(cfg):
+        return _fake_result(periods=50 + cfg.lookback_regression)
+
+    seq_grid = GridRunner(checkpoint_dir=tmp_path / "seq", n_jobs=1).run(
+        configs=configs, trial_fn=_trial_fn, run_id="r",
+    )
+    par_grid = GridRunner(checkpoint_dir=tmp_path / "par", n_jobs=2).run(
+        configs=configs, trial_fn=_trial_fn, run_id="r",
+    )
+
+    seq_sorted = sorted(seq_grid.trials, key=lambda t: t.config_id)
+    par_sorted = sorted(par_grid.trials, key=lambda t: t.config_id)
+    for a, b in zip(seq_sorted, par_sorted):
+        assert a.config_id == b.config_id
+        assert a.status == b.status
+        assert a.sharpe == pytest.approx(b.sharpe)
+        assert a.cagr == pytest.approx(b.cagr)
+
+
 def test_grid_runner_resumes_with_error_checkpoint(tmp_path: Path):
     """Pre-existing error checkpoint loads as error trial, no retry."""
     from ai_trade.backtest.grid.config import ClenowGridConfig
