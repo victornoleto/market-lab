@@ -124,7 +124,7 @@ multi-ticker (top-10 SPX constituents por liquidez) e comparar.
   - Aceita `dcp` scalar (fixed-tuning) ou Series (adaptive — modo usado
     pela strategy downstream)
 
-- [ ] **Testes** — `tests/test_ehlers_indicators.py`
+- [x] **Testes** — `tests/test_ehlers_indicators.py`
   - Verificação numérica contra exemplos do livro quando disponíveis
   - Impulse response: SS com period=10 atenua step em ≥12 dB em 1 oitava
   - Roofing filter: sinal DC é completamente removido (HP effect)
@@ -184,7 +184,7 @@ verdes. Docstrings citam o livro+página de cada fórmula.
 
 **O que fazer:**
 
-- [ ] **EhlersBPSwing** — `src/ai_trade/backtest/strategies/ehlers_bp_swing.py`
+- [x] **EhlersBPSwing** — `src/ai_trade/backtest/strategies/ehlers_bp_swing.py`
 
   Regras verbatim de `[cycle_analytics, ch.17, p.222-225]`:
 
@@ -205,7 +205,7 @@ verdes. Docstrings citam o livro+página de cada fórmula.
   - **Stop-loss `[p.225-226]`:** percentagem fixa 2-5% de entry price,
     **só como guard contra perdas extremas**. Não é parte do signal.
 
-- [ ] **Testes unitários** — `tests/test_ehlers_bp_swing.py`
+- [x] **Testes unitários** — `tests/test_ehlers_bp_swing.py`
   - Sinal sintético (seno puro em preço simulado) → entries alinhadas
     com quarter-cycle phase lead esperado
   - Whipsaw filter: trend puro (sem ciclo) NÃO gera entries (roofing
@@ -218,7 +218,30 @@ verdes. Docstrings citam o livro+página de cada fórmula.
 literal no docstring. Testes unitários cobrem each rule e edge cases.
 TDD estrito (pytest RED antes de cada módulo).
 
-**Conclusão:** _(preencher)_
+**Conclusão:**
+
+- **Commit 5 — EhlersBPSwingStrategy:**
+  `strategies/ehlers_bp_swing.py` (~180 LOC) com pipeline completo
+  precomputado em `__post_init__`: close → roofing → DCP → band-pass →
+  AGC normalize → oscillator ∈ [-1,+1]; separado `trend` via
+  `super_smoother(close, lp)` para safety-valve. Entry rules verbatim
+  [p.220-221]: long em cross abaixo de `lower_threshold=-0.7`, short
+  em cross acima de `upper_threshold=+0.7`. Exit: (1) stop_pct
+  capital-preservation first, (2) safety-valve trend break (close vs
+  trend), (3) time-stop ½·DCP se P&L ≤ 0. Sizing: `risk_pct_of_equity`
+  (default 0.95 — near-full deployment, swing trader). State per-symbol
+  em `context["ehlers_state_<sym>"]` (entry_idx, dcp_at_entry). 7
+  testes: precompute indicators, validate thresholds/stop_pct, pure
+  sine → multi trades (long+short), pure trend → ≤2 trades, stop-loss
+  fires on hard drop, median holding < 3·DCP. `271 passed`.
+
+  Decisão de design não-óbvia: AGC normalization em vez de `cos(phase)`
+  do Homodyne. Rationale: AGC é direto, bounded em ±1, não requer o
+  heterodyne DCPhase (simplificação), e dá o mesmo sinal "oscillator
+  oversold/overbought" que [p.220-221] pede. Spec citava "cosine
+  leading signal" [p.222-223] mas usava thresholds ±0.7 [p.220-221] —
+  essa mistura viabilizada pelo AGC é consistente com a intenção de
+  "anticipatory oscillator crossover".
 
 ---
 

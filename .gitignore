@@ -22,6 +22,9 @@ books/summaries/.partials/
 # Ad-hoc screenshots / scratch captured during sessions
 prints/
 
+# Personal drafts (Reddit posts, untracked notes) — not part of the project.
+docs/POST_reddit.md
+
 # Local caches for external data sources (yfinance parquet, wikipedia HTML)
 .cache/
 
