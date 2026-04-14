@@ -21,6 +21,7 @@ from ai_trade.backtest.grid.result import (
     trial_to_dir,
 )
 from ai_trade.backtest.grid.runner import GridRunner
+from ai_trade.backtest.grid.walk_forward import WFResult, wf_for_config, wf_for_grid
 
 __all__ = [
     "ClenowGridConfig",
@@ -31,9 +32,12 @@ __all__ = [
     "JsonlTrialObserver",
     "StatusFileObserver",
     "TrialResult",
+    "WFResult",
     "compose_observers",
     "grid_configs",
     "setup_grid_logging",
     "trial_from_dir",
     "trial_to_dir",
+    "wf_for_config",
+    "wf_for_grid",
 ]
