@@ -145,6 +145,67 @@ def test_citation_re_still_accepts_legacy_chapter_first():
     assert p2 == "74"
 
 
+def test_compute_n_chapters_effective_uses_summary_floor():
+    """When meta says n_chapters=10 but summary cites [ch.20],
+    effective bound must be at least 20 (book has >=20 chapters)."""
+    from scripts.check_citations import compute_n_chapters_effective
+    meta = {
+        "n_chapters": 10,
+        "chapter_index": [{"index": i, "title": f"Part {i}"} for i in range(10)],
+    }
+    summary = (
+        "## Seção\n"
+        "Claim about backtesting [ch.12, p.150].\n"
+        "Another claim [ch.20, p.400].\n"
+    )
+    assert compute_n_chapters_effective(meta, summary) == 20
+
+
+def test_compute_n_chapters_effective_handles_full_text_fallback():
+    """When PDF extraction falls back to single 'Full Text' chapter (n=1)
+    but summary cites [ch.3]..[ch.8], bound must follow the summary."""
+    from scripts.check_citations import compute_n_chapters_effective
+    meta = {
+        "n_chapters": 1,
+        "chapter_index": [{"index": 1, "title": "Full Text"}],
+    }
+    summary = (
+        "## Seção\n"
+        "Chapter reference [ch.3, p.40].\n"
+        "Later [ch.8, p.100].\n"
+    )
+    assert compute_n_chapters_effective(meta, summary) == 8
+
+
+def test_compute_n_chapters_effective_respects_declared_max():
+    """When chapter_index is non-contiguous (Hamilton-style [0,5,9,10,20,22]),
+    declared_max+1 must win over the stored n_chapters."""
+    from scripts.check_citations import compute_n_chapters_effective
+    meta = {
+        "n_chapters": 6,  # len(chapter_index), low because non-contiguous
+        "chapter_index": [
+            {"index": 0}, {"index": 5}, {"index": 9},
+            {"index": 10}, {"index": 20}, {"index": 22},
+        ],
+    }
+    assert compute_n_chapters_effective(meta, "") == 23
+
+
+def test_compute_n_chapters_effective_ignores_metadata_citations():
+    """[ch.N] inside the Metadata section is bibliographic and must NOT
+    inflate the effective bound."""
+    from scripts.check_citations import compute_n_chapters_effective
+    meta = {"n_chapters": 5, "chapter_index": []}
+    summary = (
+        "## Metadata\n"
+        "Reference to [ch.99, p.1] in bibliography.\n\n"
+        "## Resumo\n"
+        "Body claim [ch.3, p.20].\n"
+    )
+    # Metadata's ch.99 must not count; body's ch.3 < declared 5, so bound=5
+    assert compute_n_chapters_effective(meta, summary) == 5
+
+
 def test_chapter_intro_terms_are_warn_not_fail():
     """When assertion tokens match ONLY in the chapter heading
     (first 5 non-empty lines) and not in the body, verdict is 'warn'."""

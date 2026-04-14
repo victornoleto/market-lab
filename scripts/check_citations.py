@@ -492,6 +492,37 @@ def local_offset(
     return offset_table[nearest]
 
 
+def compute_n_chapters_effective(meta: dict, summary_md: str) -> int:
+    """Effective upper bound for chapter numbers in citations.
+
+    Why: ``meta["n_chapters"]`` is derived at PDF-extraction time from the TOC
+    or regex heuristic (see ``scripts/extract_pdfs.py``). When that detector
+    misses chapters — e.g. the fallback ``Chapter(index=1, title="Full Text")``
+    for books without parseable markers (``math_money_mgmt``), or a TOC that
+    only captures top-level Parts (``advances_fin_ml`` reports 10 parts while
+    the book has ~22 chapters) — legitimate ``[ch.N]`` citations get rejected
+    as ``chapter N > n_chapters``.
+
+    Fix: take the max of three signals:
+      1. ``meta["n_chapters"]`` (the declared count).
+      2. ``declared_max + 1`` from ``chapter_index`` (handles non-contiguous
+         parsing like Hamilton ``[0,5,9,10,20,22]`` — 6 indices but max=22).
+      3. Max ``ch.N`` actually cited in the summary — the summary author read
+         the book; if they wrote ``[ch.20]`` the book has ≥20 chapters.
+
+    Scan (3) only covers citations outside the Metadata section (bibliographic
+    ``ch.N`` in Metadata is not trustworthy), mirroring ``extract_citations``.
+    """
+    ch_idx = meta.get("chapter_index") or []
+    declared_max = max((c.get("index", 0) for c in ch_idx), default=0)
+    max_cited_ch = 0
+    for _line, m in extract_citations(summary_md):
+        ch, _p1, _p2 = _coalesce_citation(m)
+        if ch is not None:
+            max_cited_ch = max(max_cited_ch, int(ch))
+    return max(meta.get("n_chapters", 0), declared_max + 1, max_cited_ch)
+
+
 def extract_citations(summary_md: str) -> list[tuple[str, re.Match]]:
     """Return [(assertion_line, match), ...] pairs — one per citation.
     Skips the Metadata section (citations there are bibliographic, not factual).
@@ -726,13 +757,7 @@ def check_summary(
         offset = detect_printed_pdf_offset(pages)
         off_table = build_offset_table(pages)
 
-    # Effective chapter bound: when chapter_index indices are non-contiguous
-    # (e.g. Hamilton shows [0,5,9,10,20,22] — parser detected only 6 headings
-    # in a 22-chapter book), trust the max declared index as the real upper
-    # bound so [ch.13] and [ch.22] citations aren't rejected as "> n_chapters".
-    ch_idx = meta.get("chapter_index") or []
-    declared_max = max((c.get("index", 0) for c in ch_idx), default=0)
-    n_chapters_effective = max(meta["n_chapters"], declared_max + 1)
+    n_chapters_effective = compute_n_chapters_effective(meta, md)
 
     rep = Report(slug=slug)
     rep.offset = offset
