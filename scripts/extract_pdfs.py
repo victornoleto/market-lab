@@ -133,21 +133,82 @@ def check_quality(
     return is_scanned, is_incomplete, sparse_pages, ratio
 
 
-def detect_chapters(pages: list[str], toc: list[tuple[int, str, int]]) -> list[Chapter]:
-    """Detect chapter boundaries. Prefers the PDF outline (most accurate);
-    falls back to regex heuristics if no outline exists.
+def detect_chapters(
+    pages: list[str],
+    toc: list[tuple[int, str, int]],
+    override_path: Path | None = None,
+) -> list[Chapter]:
+    """Detect chapter boundaries. Resolution order:
+    1. `_chapter_overrides.json` next to the PDF (manually curated; wins over TOC).
+    2. PDF outline/bookmarks (most accurate when present).
+    3. Regex heuristics (books without outline).
+    4. Single-chapter fallback (whole book).
 
     Returns chapters sorted by start_page ascending.
     """
-    chapters = _chapters_from_toc(pages, toc) if toc else []
+    chapters: list[Chapter] = []
+    if override_path and override_path.exists():
+        chapters = _chapters_from_overrides(pages, override_path)
+    if not chapters and toc:
+        chapters = _chapters_from_toc(pages, toc)
     if not chapters:
         chapters = _chapters_from_regex(pages)
     if not chapters:
-        # Last resort: single chapter = whole book
         full = "\n".join(f"[PAGE {i + 1}]\n{t}" for i, t in enumerate(pages))
         return [
             Chapter(index=1, title="Full Text", start_page=1, end_page=len(pages), text=full)
         ]
+    return chapters
+
+
+def _chapters_from_overrides(pages: list[str], override_path: Path) -> list[Chapter]:
+    """Build chapters from a manually curated `_chapter_overrides.json`.
+
+    Schema:
+        {"chapters": [{"index": int, "title": str, "start_page": int}, ...]}
+
+    `start_page` is the 1-based PDF page where the chapter begins. End pages
+    are derived automatically (next chapter start - 1; last chapter ends at
+    the last page). A synthetic Frontmatter entry covers pages before the
+    first listed chapter.
+    """
+    data = json.loads(override_path.read_text(encoding="utf-8"))
+    entries = sorted(data["chapters"], key=lambda e: e["start_page"])
+    if not entries:
+        return []
+
+    chapters: list[Chapter] = []
+    first_page = entries[0]["start_page"]
+    if first_page > 1:
+        fm_parts = [_page_text_with_marker(pages, p) for p in range(1, first_page)]
+        fm_text = "\n".join(filter(None, fm_parts)).strip()
+        if fm_text:
+            chapters.append(
+                Chapter(
+                    index=0,
+                    title="Frontmatter",
+                    start_page=1,
+                    end_page=first_page - 1,
+                    text=fm_text,
+                )
+            )
+
+    for i, entry in enumerate(entries):
+        start = entry["start_page"]
+        end = entries[i + 1]["start_page"] - 1 if i + 1 < len(entries) else len(pages)
+        if end < start:
+            end = start
+        text_parts = [_page_text_with_marker(pages, p) for p in range(start, end + 1)]
+        text = "\n".join(filter(None, text_parts)).strip()
+        chapters.append(
+            Chapter(
+                index=entry["index"],
+                title=entry["title"],
+                start_page=start,
+                end_page=end,
+                text=text,
+            )
+        )
     return chapters
 
 
@@ -371,6 +432,9 @@ def write_extraction(
     out_dir = EXTRACTED_DIR / slug
     out_dir.mkdir(parents=True, exist_ok=True)
     chapters_dir = out_dir / "chapters"
+    if chapters_dir.exists():
+        for old in chapters_dir.glob("*.txt"):
+            old.unlink()
     chapters_dir.mkdir(exist_ok=True)
 
     # _full.txt: all pages with page markers (kept identical to what detect_chapters saw)
@@ -467,9 +531,15 @@ def extract_one(pdf_path: Path, skip_existing: bool) -> BookMetadata | None:
             f"expected for technical books). Proceeding."
         )
 
-    chapters = detect_chapters(pages, toc)
+    override_path = EXTRACTED_DIR / slug / "_chapter_overrides.json"
+    chapters = detect_chapters(pages, toc, override_path=override_path)
     meta = write_extraction(slug, pdf_path.name, pages, chapters, is_scanned, sparse, ratio)
-    source_label = "TOC" if toc else "regex-fallback"
+    if override_path.exists():
+        source_label = "overrides"
+    elif toc:
+        source_label = "TOC"
+    else:
+        source_label = "regex-fallback"
     console.print(
         f"         [dim]└─ chapter source: {source_label}[/dim]",
         highlight=False,
