@@ -292,7 +292,7 @@ report gerado, integration test passa, notas escritas.
 
 **O que fazer:**
 
-- [ ] **Grid config** — `src/ai_trade/backtest/grid/ehlers_config.py`
+- [x] **Grid config** — `src/ai_trade/backtest/grid/ehlers_config.py`
   ```python
   @dataclass(frozen=True)
   class EhlersGridConfig:
@@ -319,7 +319,7 @@ report gerado, integration test passa, notas escritas.
   - Mesmas observers (JSONL, status.md, unified log em `logs/grid.log`)
   - Mesmas gates (PBO < 0.5, DSR p < 0.05, WF ≥ 6/8)
 
-- [ ] **Testes do grid config** — `tests/test_ehlers_grid_config.py`
+- [x] **Testes do grid config** — `tests/test_ehlers_grid_config.py`
   - `grid_configs() == 24` únicos
   - Cobre todos os valores em cada dimensão
   - Stable iteration order (checkpoint resume-friendly)
