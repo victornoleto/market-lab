@@ -113,10 +113,10 @@ multi-ticker (top-10 SPX constituents por liquidez) e comparar.
     convencionais produzem sinais errôneos durante trending por Spectral
     Dilation)
 
-- [ ] **Dominant Cycle Period (DCP)** — `src/ai_trade/backtest/indicators/ehlers_dcp.py`
-  - `dominant_cycle_period(series) → pd.Series`
-  - Algoritmo: Homodyne Discriminator `[rocket_science, ch.7]`
-  - Output clampado em `[6, 50]` bars por regra `[p.82-83]`
+- [x] **Dominant Cycle Period (DCP)** — `src/ai_trade/backtest/indicators/ehlers_dcp.py`
+  - `dominant_cycle_period(series, period_min=6, period_max=50) → pd.Series`
+  - Algoritmo: Homodyne Discriminator `[rocket_science, ch.6 p.59 + ch.8 p.82-83]`
+  - Output clampado em `[6, 50]` bars por regra `[p.82-83]` (configurável)
 
 - [ ] **Band-pass filter** — `src/ai_trade/backtest/indicators/ehlers_bp.py`
   - `band_pass(series, dcp, pct_of_dcp=0.90) → pd.Series`
@@ -153,6 +153,18 @@ verdes. Docstrings citam o livro+página de cada fórmula.
   killed, mid-band cycle survives. Decisão: two-pole HP (Code Listing
   7-3) em vez de single-pole (Code Listing 7-1), conforme recomendação
   explícita [p.82, ch.7]. `252 passed`.
+
+- **Commit 3 — Dominant Cycle Period (Homodyne):**
+  `indicators/ehlers_dcp.py` — transcreve EasyLanguage de [rocket_science,
+  ch.6 p.59 + ch.8 p.82-83]: 4-bar WMA → Detrender Hilbert → I1/Q1 →
+  jI/jQ → phasor I2/Q2 → EMA 0.2/0.8 → homodyne Re/Im → EMA 0.2/0.8 →
+  atan2 → rate clamp (0.67×/1.5×) → abs clamp [6,50] → EMA 0.2/0.8 →
+  SmoothPeriod EMA 0.33/0.67. Decisões: (a) atan2 quadrant-safe em vez
+  de ArcTangent simples; (b) `period`/`smooth_period` seeded com
+  `period_min` ao invés de 0 pra garantir clamp durante warmup 6-bar.
+  5 testes: shape/index, converge em seno puro período 20 (±2) e 30
+  (±3), clamp absoluto mantido em regime mixto, clamp customizável
+  [10,30]. `257 passed`.
 
 ---
 

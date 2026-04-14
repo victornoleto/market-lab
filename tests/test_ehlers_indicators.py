@@ -326,3 +326,93 @@ class TestRoofingFilter:
         assert rms_out > 0.4
         # And the mean after warmup is near-zero (zero-mean preprocessor).
         assert abs(tail.mean()) < 0.05
+
+
+# ---------------------------------------------------------------------------
+# Dominant Cycle Period — Homodyne Discriminator
+# [rocket_science, ch.6 p.59 + ch.8 p.82-83, EasyLanguage listing]
+# ---------------------------------------------------------------------------
+
+
+class TestDominantCyclePeriod:
+    """``dominant_cycle_period(series, period_min=6, period_max=50)`` —
+    Homodyne Discriminator from Ehlers, *Rocket Science for Traders*.
+    """
+
+    def test_shape_and_index_preserved(self):
+        from ai_trade.backtest.indicators.ehlers_dcp import dominant_cycle_period
+
+        n = 300
+        idx = pd.date_range("2024-01-01", periods=n, freq="B")
+        series = pd.Series(100.0 + np.sin(2 * np.pi * np.arange(n) / 20), index=idx)
+
+        out = dominant_cycle_period(series)
+
+        assert isinstance(out, pd.Series)
+        assert len(out) == len(series)
+        assert out.index.equals(series.index)
+
+    def test_converges_on_pure_sine_period_20(self):
+        """Pure 20-bar sinusoid → DCP settles in the 18-22 band.
+
+        The heterodyne measures phase change per bar; with noise-free input
+        the steady-state estimate is the true period. Tolerance accounts
+        for the 0.2/0.8 and 0.33/0.67 EMA smoothing in the algorithm.
+        """
+        from ai_trade.backtest.indicators.ehlers_dcp import dominant_cycle_period
+
+        n = 600
+        t = np.arange(n)
+        series = pd.Series(np.sin(2 * np.pi * t / 20))
+
+        out = dominant_cycle_period(series)
+
+        tail = out.iloc[400:]
+        assert tail.mean() == pytest.approx(20.0, abs=2.0)
+
+    def test_converges_on_pure_sine_period_30(self):
+        from ai_trade.backtest.indicators.ehlers_dcp import dominant_cycle_period
+
+        n = 800
+        t = np.arange(n)
+        series = pd.Series(np.sin(2 * np.pi * t / 30))
+
+        out = dominant_cycle_period(series)
+
+        tail = out.iloc[500:]
+        assert tail.mean() == pytest.approx(30.0, abs=3.0)
+
+    def test_output_always_within_absolute_clamp(self):
+        """``[period_min, period_max]`` clamp is enforced unconditionally.
+
+        [rocket_science, ch.8 p.82-83]: ``If Period<6 Then Period=6;
+        If Period>50 Then Period=50``.
+        """
+        from ai_trade.backtest.indicators.ehlers_dcp import dominant_cycle_period
+
+        # Mix of regimes — trend then fast noise then cycle — to stress the
+        # clamp logic.
+        n = 500
+        rng = np.random.default_rng(seed=42)
+        trend = np.linspace(100.0, 120.0, 150)
+        noise = 100.0 + rng.normal(scale=2.0, size=200)
+        cycle = 110.0 + np.sin(2 * np.pi * np.arange(150) / 15)
+        series = pd.Series(np.concatenate([trend, noise, cycle]))
+
+        out = dominant_cycle_period(series)
+
+        assert out.min() >= 6.0 - 1e-9
+        assert out.max() <= 50.0 + 1e-9
+
+    def test_respects_custom_clamp_range(self):
+        """``period_min / period_max`` parameters override defaults."""
+        from ai_trade.backtest.indicators.ehlers_dcp import dominant_cycle_period
+
+        n = 400
+        rng = np.random.default_rng(seed=7)
+        series = pd.Series(100.0 + rng.normal(scale=1.0, size=n))
+
+        out = dominant_cycle_period(series, period_min=10, period_max=30)
+
+        assert out.min() >= 10.0 - 1e-9
+        assert out.max() <= 30.0 + 1e-9
