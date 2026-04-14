@@ -194,6 +194,85 @@ Código C++ complementar:
 
 ---
 
+## Conceitos-chave de anti-overfit (CPCV / PBO / DSR)
+
+Três testes do López de Prado (`advances_fin_ml`) que funcionam como **gates
+obrigatórios** de qualquer backtest neste projeto. Aparecem nas inviolable
+rules #3-5 de `knowledge/SKILL.md` e serão portados para
+`src/ai_trade/backtest/validation/` nas Fases 2/3. Juntos, fecham o cerco
+contra "estratégia com Sharpe alto que morre em live":
+
+- **CPCV** → você tem uma *distribuição* honesta de performance, não um ponto.
+- **PBO** → você sabe se o *processo de seleção* está viciado.
+- **DSR** → você sabe se o Sharpe observado sobrevive ao teste de múltiplas hipóteses.
+
+**Nenhum está em lib aberta mantida** (mlfinlab tinha, virou comercial).
+Implementação será custom porém direta — referência cruzada em
+`knowledge/validation/cpcv.md`, `knowledge/validation/deflated_sharpe.md` e
+`knowledge/validation/permutation.md`.
+
+### CPCV — Combinatorial Purged Cross-Validation
+
+**O quê:** validação cruzada adaptada para séries temporais financeiras.
+
+**Por que importa:** k-fold padrão **vaza informação** em séries temporais —
+features de treino e teste se sobrepõem no tempo. Sharpe parece bom; em
+produção colapsa.
+
+**Três componentes:**
+1. **Purged**: remove amostras de treino cujos rótulos se sobrepõem ao período de teste.
+2. **Embargo**: insere um *buffer* após cada bloco de teste (serial correlation não respeita fronteiras de fold).
+3. **Combinatorial**: em vez de K folds → K test sets, gera C(K, N) combinações. K=10 com N=2 = 45 caminhos. Você passa a ter uma **distribuição** de Sharpes, não um número isolado.
+
+**Saída útil:** *"em 45 simulações, Sharpe foi 1.2 ± 0.4 — pior caso 0.3"*.
+Muito mais honesto que *"Sharpe = 1.5 no backtest"*.
+
+Ref: `advances_fin_ml.md`, ch.7 `[p.104-117]`.
+
+### PBO — Probability of Backtest Overfitting
+
+**O quê:** probabilidade de que o **processo de seleção da estratégia**
+(escolher a que teve melhor in-sample) produza uma que perde out-of-sample.
+
+**Como calcula:** embaralha várias partições IS/OOS. Para cada partição, pega
+a estratégia com melhor Sharpe IS e vê se ela ficou acima ou abaixo da
+mediana OOS. Se **frequentemente** fica abaixo da mediana → seu processo de
+backtest está viciado.
+
+**Gate prático (inviolable rule #3):** PBO > 0.5 ⇒ **descartar**. Sua
+"estratégia vencedora" tem mais chance de ser overfit que válida.
+
+**Intuição:** se você testa 100 combinações de parâmetros, alguma vai ter
+Sharpe 2 **por puro azar**. PBO quantifica esse risco.
+
+Ref: `advances_fin_ml.md`, ch.11 `[p.208-211]`. Implementação de referência:
+`books/code/masters-testing-tuning/CSCV_MKT/CSCV.CPP` (C++ do Masters).
+
+### DSR — Deflated Sharpe Ratio
+
+**O quê:** Sharpe "desinflado" pelo número de estratégias testadas.
+
+**Por que importa:** se você tentou **1 estratégia** e obteve Sharpe 2, é
+impressionante. Se tentou **1000 estratégias** e a melhor teve Sharpe 2, é
+esperado **por puro acaso** — a cauda da distribuição de Sharpes em N
+tentativas concentra valores altos.
+
+**Fórmula (alto nível):** deflaciona o Sharpe observado por:
+- N (número de tentativas)
+- skewness e kurtosis dos retornos
+- tamanho da amostra
+- variância cross-sectional dos Sharpes testados
+
+Gera um p-value: *"dado que testei N estratégias, qual a probabilidade desse
+SR ser > 0 de verdade?"*
+
+**Gate prático (inviolable rule #4):** reporta DSR sempre que N > 1. Nunca
+cite Sharpe cru num PR sem o DSR ao lado.
+
+Ref: `advances_fin_ml.md`, ch.14 `[p.261-270]`.
+
+---
+
 ## Referências
 
 - Plano geral do sistema: `TRADING_SYSTEM_PLAN.md`
