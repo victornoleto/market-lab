@@ -219,7 +219,7 @@ class ClenowMomentumStrategy(StrategyBase):
 
         orders: list[Order] = []
         orders.extend(
-            self._sell_orders(ts, portfolio, universe, rank_of, max_rank)
+            self._sell_orders(ts, bars, portfolio, universe, rank_of, max_rank)
         )
 
         if self._regime_on(ts):
@@ -291,6 +291,7 @@ class ClenowMomentumStrategy(StrategyBase):
     def _sell_orders(
         self,
         ts: pd.Timestamp,
+        bars: dict[str, Bar],
         portfolio: Portfolio,
         universe: set[str],
         rank_of: dict[str, int],
@@ -300,6 +301,13 @@ class ClenowMomentumStrategy(StrategyBase):
         for symbol, pos in list(portfolio.positions.items()):
             if pos.side != "long":
                 continue  # Clenow is long-only
+            if symbol not in bars:
+                # Symbol has no bar today — delisted or data gap. Can't submit
+                # a market order without a fill price; skip and retry next
+                # rebalance. Permanently-delisted positions will stay open
+                # at their last mark until data returns (Clenow universe is
+                # point-in-time, so re-entry into SPX revives the bars).
+                continue
             if self._should_sell(ts, symbol, universe, rank_of, max_rank):
                 orders.append(Order(symbol=symbol, side="sell", volume=pos.volume))
         return orders

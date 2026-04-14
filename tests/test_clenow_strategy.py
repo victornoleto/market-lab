@@ -383,6 +383,56 @@ class TestSellCriteria:
 
         assert any(o.symbol == "AAPL" and o.side == "sell" for o in orders)
 
+    def test_skips_sell_for_delisted_symbol_with_no_bar_today(self):
+        """Regression: a held position whose symbol has no bar at `ts`
+        (delisted within the backtest window, e.g. ANDV merged into MPC
+        in 2018-10) must NOT emit a sell order — Runner would crash
+        trying to fill an order with no bar. The position waits until
+        data returns or the backtest ends.
+
+        The bug manifests when ``_should_sell`` returns True for a delisted
+        holding (universe membership lost, MA broken, etc.) and the strategy
+        previously emitted an Order without checking ``bars``.
+        """
+        from ai_trade.backtest.engine.portfolio import Portfolio
+        from ai_trade.backtest.strategies.clenow_momentum import (
+            ClenowMomentumStrategy,
+        )
+
+        # SPX has full 300 bars; ANDV has 200 bars then stops.
+        index_close = _linear_log_prices(1000.0, 0.0008, 300)
+        andv_close = _linear_log_prices(100.0, 0.001, 200)
+        data = {
+            "SPX": _build_ohlcv_from_close(index_close),
+            "ANDV": _build_ohlcv_from_close(andv_close),
+        }
+
+        strat = ClenowMomentumStrategy(
+            data=data,
+            # ANDV no longer in SPX (delisted — universe reflects that).
+            # Without universe membership, _should_sell returns True.
+            constituents_provider=lambda d: set(),
+            index_symbol="SPX",
+            top_pct=1.0,
+        )
+
+        # Rebalance Wednesday AFTER ANDV's last bar — no bar for ANDV today.
+        last_wed = max(ts for ts in data["SPX"].index if ts.weekday() == 2)
+        assert last_wed not in data["ANDV"].index  # sanity: ANDV delisted
+
+        portfolio = Portfolio(initial_cash=10_000.0)
+        portfolio.open_position(
+            "ANDV", side="long", volume=10, price=100.0,
+            timestamp=pd.Timestamp("2023-01-03"),
+        )
+
+        bars = {"SPX": _bar_at(data["SPX"], "SPX", last_wed)}
+        orders = strat.on_rebalance(last_wed, bars, portfolio, {})
+
+        # No sell order for ANDV — can't trade a symbol without a bar.
+        andv_sells = [o for o in orders if o.symbol == "ANDV" and o.side == "sell"]
+        assert andv_sells == []
+
 
 class TestBuyLogic:
     def test_buys_top_ranked_when_regime_on(self):
