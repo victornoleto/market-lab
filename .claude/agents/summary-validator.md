@@ -146,12 +146,26 @@ Formato EXATO:
     }
   ],
   "hallucinations_found": [
-    "<descrição curta de cada claim 'unsupported' com página real quando conhecida>"
+    {
+      "claim": "<frase do summary que é unsupported, ≤200 chars>",
+      "cited_page": "[p.X] | [ch.Y, p.X] | null",
+      "actual_page": "<número da página onde a afirmação realmente aparece, ou null se inexistente no livro>",
+      "evidence_quote": "<citação literal ≤300 chars do livro, ou null se inexistente>",
+      "action": "remove | relocate_to_p_X | rewrite_with_quote | verify_formula"
+    }
   ],
   "overall_verdict": "PASS|FAIL|BORDERLINE",
   "overall_reasoning": "<1 parágrafo — sua sentença final; seja duro se achou mesmo 1 hallucination factual crítica>"
 }
 ```
+
+**Campo `action` — valores permitidos:**
+- `remove` — afirmação não existe no livro; summary deve remover a frase inteira.
+- `relocate_to_p_X` — afirmação existe, mas na página Y (não X como citado). Summary deve mudar a citação.
+- `rewrite_with_quote` — afirmação distorce o que o livro diz; summary deve reescrever aderente ao `evidence_quote`.
+- `verify_formula` — fórmula parece incorreta (sinal/variável/expoente); exige recheck literal do bloco `[PAGE N]`.
+
+**Priorize `action` mais específica possível.** `remove` só quando `evidence_quote` é null e você NÃO encontrou a afirmação em nenhuma página.
 
 ### Passo 5 — Regras de veredito final
 
@@ -183,20 +197,20 @@ Formato EXATO:
 
 ## Output final para o orquestrador
 
-Ao terminar, escreva o JSON em `books/summaries/.validation/<slug>_judge_<N>.json` e reporte ao chamador:
+Ao terminar, escreva o JSON em `books/summaries/.validation/<slug>_judge_<N>.json` e reporte ao chamador com este formato **ENXUTO** (≤1 KB de texto):
 
 ```
-Judge #<N> complete:
-  - Frame: <frame>
-  - Claims checked: <N>
-  - Verdicts: supported=X, unsupported=Y, ambiguous=Z, unverifiable=W
-  - Support ratio: <R>%
-  - Overall: PASS|FAIL|BORDERLINE
-  - Hallucinations: <count>
-  - Report: books/summaries/.validation/<slug>_judge_<N>.json
+Judge #<N>: <PASS|FAIL|BORDERLINE> ratio=<R>% halluc=<count> report=books/summaries/.validation/<slug>_judge_<N>.json
 ```
 
-Se FAIL, liste explicitamente as 3 piores hallucinations no texto de resposta para o orquestrador poder fazer feedback ao book-reader.
+**REGRAS RÍGIDAS de output (para evitar bater o cap de 32K tokens do subagent):**
+
+1. **NUNCA** inclua `evidence_quote`, `reasoning`, descrições de hallucinations, snippets do livro, ou qualquer texto extraído do source no retorno textual.
+2. **NUNCA** liste as "3 piores hallucinations" no texto. Toda essa informação JÁ ESTÁ no JSON em disco — o orquestrador lê de lá.
+3. O retorno textual tem 1 (uma) linha no formato acima. Pode adicionar até 1 linha extra com path do JSON se necessário, mas nada além disso.
+4. Se você precisar comunicar algo extraordinário (ex.: erro ao escrever o JSON), faça-o em ≤200 chars.
+
+**Por quê:** Bug conhecido do Claude Code (issue #25569) faz o cap de output do subagent ficar em 32K tokens mesmo com `CLAUDE_CODE_MAX_OUTPUT_TOKENS` setado. Quando o juiz analisa livros grandes (≥400k tokens) com 12-20 claims e quotes de até 300 chars cada, o reasoning textual chega no cap e a tool result inteira é perdida em trânsito. JSON em disco continua íntegro, mas o orquestrador não recebe a resposta — pipeline trava. Output ≤1 KB elimina esse risco.
 
 ---
 
