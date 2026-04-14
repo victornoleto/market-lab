@@ -39,15 +39,56 @@ Livros têm duas numerações:
 - **Printed page** — número impresso no topo/rodapé da página (ex: "25" no cabeçalho). É o que leitores e autores citam. Começa em 1 *depois* do frontmatter.
 - **PDF page** — índice bruto 1-based do PDF, usado pelos marcadores `[PAGE N]` na extração. Inclui frontmatter.
 
-**Você DEVE citar usando o PRINTED page number** (consistente com a convenção do livro). Para identificá-lo, olhe as primeiras/últimas linhas de cada `[PAGE N]` block — o número solto (ex: linha com só `"25"`) é o printed. Use ESSE número em `[p.X]`.
+**Você DEVE citar usando o PRINTED page number** (consistente com a convenção do livro).
 
-Exemplo: se você vê `[PAGE 42]` cujo corpo começa com linha `"25"` e depois "Chapter Two", cite a ideia dessa página como `[p.25]`, não `[p.42]`. O validador downstream aplica o offset automaticamente.
+### Fonte-de-verdade preferencial: `_page_index.json`
+
+Antes de citar qualquer `[p.X]`, verifique se existe `books/extracted/<slug>/_page_index.json`. Se existir, **ele é a fonte de verdade determinística** (gerada por `scripts/build_page_index.py` a partir do mesmo algoritmo que o validador downstream usa — zero drift entre você e o validador).
+
+Formato:
+```json
+{
+  "pdf_to_printed": {"15": 1, "16": 2, ...},
+  "printed_to_pdf": {"1": 15, "2": 16, ...},
+  "unmapped_pdf_pages": [1, 2, 3, ...],
+  "global_mode_offset": 14
+}
+```
+
+Regra de uso:
+1. Você viu conteúdo no bloco `[PAGE N]` que quer citar.
+2. Leia `pdf_to_printed[N]` (com N como string, ex: `pdf_to_printed["42"]`). Use esse valor em `[p.X]`.
+3. Se N ∈ `unmapped_pdf_pages` OU `N` não está em `pdf_to_printed`, **use `[p.?]`**. **NÃO** extrapole do vizinho, **NÃO** use o `global_mode_offset`. Páginas unmapped são tipicamente frontmatter, figuras de página inteira, ou páginas em branco — nenhuma é boa âncora de citação.
+
+### Fallback quando `_page_index.json` não existir
+
+Livros antigos ainda não têm o índice gerado. Nesse caso, use a heurística manual:
+1. Leia as primeiras 3 ou últimas 3 linhas do bloco `[PAGE N]`.
+2. Localize o número impresso isolado nessas linhas — esse é o printed page real para aquele bloco.
+3. Use esse número na citação. Offset pode variar ao longo do livro (folhas em branco, figuras de página inteira, apêndices) — nunca assuma que é constante.
+4. Se as primeiras/últimas linhas não tiverem um número isolado claro, use `[p.?]`.
+
+**ARMADILHA CRÍTICA — Nunca use o ToC/Índice como fonte de página:**
+O sumário lista "Kelly Formula — p.27". Isso é apenas um ponto de partida para navegar, **não uma citação válida**. Passos obrigatórios:
+1. Use o ToC apenas para localizar o `[PAGE N]` aproximado onde o conteúdo começa.
+2. Leia o bloco `[PAGE N]` real onde a fórmula/regra/conceito aparece no corpo do texto.
+3. Extraia o printed number do corpo daquele bloco (linha isolada com o número).
+4. Cite ESSE número — não o do ToC.
+
+Por quê? O ToC aponta para o header do capítulo/seção, mas a fórmula real pode estar 1-3 páginas adiante. Além disso, erros de detalhe em fórmulas (coeficiente errado, sinal trocado, variável incorreta) ocorrem invariavelmente quando o conteúdo é "lembrado" do índice ao invés de copiado do bloco de texto.
 
 ---
 
 ## Fluxo
 
-### Passo 1 — Ler metadata
+### Passo 0 — Inicializar log
+
+```bash
+mkdir -p books/summaries/.logs
+echo "[$(date '+%H:%M:%S')] book-reader START — slug: <slug>" >> books/summaries/.logs/<slug>.log
+```
+
+### Passo 1 — Ler metadata e índice de páginas
 
 ```
 Read: books/extracted/<slug>/_metadata.json
@@ -55,36 +96,129 @@ Read: books/extracted/<slug>/_metadata.json
 
 Anote `recommended_mode`, `n_pages`, `chapter_index`. Esses valores determinam a estratégia.
 
+Em seguida, verifique se existe `books/extracted/<slug>/_page_index.json` — se sim, leia-o. É a fonte-de-verdade determinística para todas as citações `[p.X]` deste livro (ver seção "Convenção de páginas" acima). Mantenha `pdf_to_printed` e `unmapped_pdf_pages` carregados em memória ao longo de toda a extração. Se o arquivo não existir, siga o fallback manual.
+
+```bash
+echo "[$(date '+%H:%M:%S')] metadata: <n_pages>pp, <n_chapters>ch, ~<est_tokens>tok, mode=<recommended_mode>" >> books/summaries/.logs/<slug>.log
+echo "[$(date '+%H:%M:%S')] page_index: <mapped>/<total> pp mapped, offset=<global>, fallback=<none|manual>" >> books/summaries/.logs/<slug>.log
+```
+
 ### Passo 2 — Branch por modo
 
 #### Modo A — Single-pass (livros pequenos, `recommended_mode == "single_pass"`)
 
-1. `Read: books/extracted/<slug>/_full.txt` — livro inteiro.
+1. ```bash
+   echo "[$(date '+%H:%M:%S')] reading _full.txt (single_pass)..." >> books/summaries/.logs/<slug>.log
+   ```
+   `Read: books/extracted/<slug>/_full.txt` — livro inteiro.
 2. Produza o summary seguindo o **Template Obrigatório** (abaixo) em uma única passada.
-3. `Write: books/summaries/<slug>.md`.
+3. ```bash
+   echo "[$(date '+%H:%M:%S')] writing summary..." >> books/summaries/.logs/<slug>.log
+   ```
+   `Write: books/summaries/<slug>.md`.
 
 #### Modo B — Map-Reduce (livros grandes, `recommended_mode == "map_reduce"`)
 
-1. Para cada capítulo N em `chapter_index`:
+**Antes de iterar — filtro de capítulos não-conteúdo.** Passe pelo `chapter_index` e marque como `skip` os capítulos cujo título casa (case-insensitive, substring) com qualquer um:
+- `frontmatter`, `contents`, `preface`, `foreword`, `dedication`, `acknowledgments`, `copyright`
+- `about the author`, `about the companion`
+- `bibliography`, `references` (quando o título é exatamente "References" — não quando é parte de "References and Further Reading" dentro de um capítulo de conteúdo)
+- `glossary`, `greek letters`, `notation` (apenas quando o título inteiro é sobre notação/símbolos, não quando "notation" aparece em um capítulo de conteúdo)
+- `index` (em "Author Index", "Subject Index", "Name Index")
+- `statistical tables` (tabelas numéricas puras — e.g., "Appendix B Statistical Tables")
+- `mathematical review` (apêndice de matemática básica — álgebra linear, cálculo — que re-ensina fundamentos)
+- `answers to selected exercises`, `answers to exercises`, `solutions to exercises`
+
+**Não skip** (processa normalmente) apêndices com derivação matemática relevante ao conteúdo (títulos tipo "Appendix: Proofs of Chapter X Propositions", "Matrix Solution to…", "Trigonometric Identities for Fourier Analysis"). Esses trazem fórmulas citáveis.
+
+Para cada `skip`, não leia o arquivo e não gere partial. Logue:
+```bash
+echo "[$(date '+%H:%M:%S')] skip chapter <N>: <title> (non-content)" >> books/summaries/.logs/<slug>.log
+```
+
+1. Para cada capítulo N em `chapter_index` **não marcado como skip**:
+   - ```bash
+     echo "[$(date '+%H:%M:%S')] chapter <N>/<total>: <title> (p.<start>-<end>)" >> books/summaries/.logs/<slug>.log
+     ```
    - `Read: books/extracted/<slug>/chapters/<NN>_<title>.txt`.
-   - Se N > 0: `Read: books/summaries/.partials/<slug>/partial_<prev>.md` como **memória acumulada**.
-   - Gere `partial_<N>.md` em `books/summaries/.partials/<slug>/`:
-     - Extraia apenas o que este capítulo adiciona ao que já está na memória.
+   - Se N > 0 e existe partial anterior: `Read: books/summaries/.partials/<slug>/partial_<prev>.md` como **memória acumulada** (para evitar duplicação, não re-citação).
+   - Gere `partial_<N>.md` em `books/summaries/.partials/<slug>/` contendo **APENAS o conteúdo NOVO deste capítulo** (delta, não acumulado):
+     - **Cap de tamanho: ≤ 3.000 tokens (~12KB)** por partial. Se seu delta exceder, reduza a granularidade — agregue conceitos similares, mantenha só fórmulas/regras/pitfalls de alto valor para o pipeline de trading.
      - Mantenha TODAS as citações `[p.X]`.
-     - Marque quais das 9 seções do template este capítulo toca (pode tocar 1-2, não todas).
-2. **Reduce final**: leia todos os `partial_*.md`, consolide no summary completo em `books/summaries/<slug>.md`:
+     - Marque quais das 9 seções do template este capítulo toca (tipicamente 1-3, raramente todas).
+     - Se o capítulo genuinamente não adicionar nada às 9 seções (ex: derivação matemática que já apareceu), escreva apenas:
+       ```markdown
+       # partial_<N>.md — <title>
+
+       Nothing new to add — material already captured in partial_<prev>.md.
+       ```
+       e siga para o próximo capítulo.
+
+2. **Reduce final**:
+   ```bash
+   echo "[$(date '+%H:%M:%S')] reduce: consolidating <N> partials..." >> books/summaries/.logs/<slug>.log
+   ```
+   Leia todos os `partial_*.md`, consolide no summary completo em `books/summaries/<slug>.md`:
    - Una listas, deduplique conceitos, reorganize nas 9 seções.
    - Preserve todas as citações originais.
-3. Mantenha os `.partials/<slug>/` para inspeção (gitignored).
+   - Ignore partials marcados "Nothing new to add".
+
+3. ```bash
+   echo "[$(date '+%H:%M:%S')] writing summary..." >> books/summaries/.logs/<slug>.log
+   ```
+   Mantenha os `.partials/<slug>/` para inspeção (gitignored).
 
 ### Passo 3 — Self-check obrigatório antes de encerrar
 
-Execute via `Bash`:
+**3.1 Validação estrutural (Layer 1):**
+
 ```bash
+echo "[$(date '+%H:%M:%S')] running validate_summary.py..." >> books/summaries/.logs/<slug>.log
 python scripts/validate_summary.py <slug>
 ```
 
-Se retornar `FAIL`, leia os erros e **corrija o summary antes de reportar completion**. Não reporte sucesso se o validator não passou.
+Se retornar `FAIL`, leia os erros e corrija o summary antes de prosseguir para 3.2.
+
+**3.2 Validação de citações (Layer 2 — CRÍTICA, obrigatória):**
+
+```bash
+echo "[$(date '+%H:%M:%S')] running check_citations.py..." >> books/summaries/.logs/<slug>.log
+python scripts/check_citations.py <slug> --json > /tmp/self_audit_<slug>.json
+python scripts/check_citations.py <slug>  # human-readable output para o log
+```
+
+Leia `/tmp/self_audit_<slug>.json`. Três casos possíveis:
+
+**Caso A — `systemic_offset.detected: true`:**
+Você emitiu todas as citações com offset errado — provavelmente usou `pdf_block` number em vez de `printed` page. Correção obrigatória:
+
+1. Leia `books/extracted/<slug>/_page_index.json` — `printed_to_pdf` é fonte de verdade.
+2. Para cada citação `[p.X]` no summary, compute a página correta: `new_printed = X - systemic_offset.value`.
+3. Reescreva TODAS as citações do summary com os valores corrigidos.
+4. Re-rode `python scripts/check_citations.py <slug>` até `systemic_offset.detected: false`.
+5. Se após 2 tentativas o offset persiste, reporte ao orchestrator — pode haver bug no `_page_index.json`.
+
+**Caso B — `n_fail > 0` sem systemic offset:**
+Falhas individuais. Para cada failure:
+1. Releia o bloco `[PAGE N]` correspondente em `books/extracted/<slug>/chapters/` ou `_full.txt`.
+2. Localize onde o conteúdo realmente aparece; confirme a printed page via `_page_index.json.pdf_to_printed[N]`.
+3. Corrija a citação ou remova a afirmação se não encontrar apoio literal.
+4. Re-rode `check_citations.py`.
+
+**Caso C — `n_fail == 0`:** prossiga para 3.3.
+
+**3.3 Log final:**
+
+```bash
+echo "[$(date '+%H:%M:%S')] self-audit: L1 <PASS|FAIL>, L2 fail=<N>, systemic_offset=<True|False>" >> books/summaries/.logs/<slug>.log
+```
+
+**Não reporte completion se:**
+- Layer 1 (validate_summary.py) FAIL
+- Layer 2 (check_citations.py) tem `systemic_offset.detected == true`
+- Layer 2 `n_fail > 0` e você não eliminou todas as falhas em até 2 rodadas de correção
+
+Se após 2 correções ainda há falhas, reporte ao orchestrator com o JSON de `/tmp/self_audit_<slug>.json` — pode ser problema sistêmico no PDF ou no `_page_index.json`.
 
 ---
 
@@ -221,6 +355,9 @@ certeza, omita. Formato: "Tópico X também tratado em `outro_livro.md#seção`"
 - ❌ Traduzir fórmulas para ASCII se o original é LaTeX.
 - ❌ Resumir capítulos inteiros em uma frase perdida — seja específico, extraia conteúdo.
 - ❌ Reportar sucesso sem rodar `validate_summary.py` primeiro.
+- ❌ **Usar o ToC/Índice para inferir a página de uma fórmula ou regra sem ler o bloco `[PAGE N]` onde ela aparece.** O ToC é navegação, não citação.
+- ❌ **Reconstruir uma fórmula de memória** (mesmo que você a conheça da literatura). Copie letra por letra do bloco `[PAGE N]` citado. Erros de detalhe (G vs G-1, N² espúrio no denominador, sinal trocado) são indistinguíveis de hallucination pelo validador adversarial.
+- ❌ Citar uma passagem literal ("asymptotically dominates") sem ter lido essa sequência exata de palavras no texto extraído. Se você não viu a string no arquivo, não é citação literal — é paráfrase, e deve ser marcada como tal ou removida.
 
 ---
 
@@ -236,6 +373,10 @@ Antes de chamar `Write` final para `books/summaries/<slug>.md`:
 - [ ] Título é o título exato da capa.
 - [ ] LaTeX usado para matemática.
 - [ ] Cross-refs (seção 9) apontam só para livros que realmente processei.
+- [ ] **Nenhuma página foi inferida do ToC/Índice** — toda citação foi verificada lendo o bloco `[PAGE N]` onde o conteúdo aparece no corpo do texto.
+- [ ] **Toda fórmula foi copiada literalmente** do bloco `[PAGE N]` correspondente, não reconstruída de memória ou conhecimento prévio.
+- [ ] **Toda citação literal** (seção 8) foi verificada como sequência exata de palavras presente no arquivo extraído.
+- [ ] **O printed page number de cada citação veio de `_page_index.json` quando disponível**. Se a página estava em `unmapped_pdf_pages`, citei `[p.?]` (nunca extrapolei). Se o índice não existe, li o número solto nas primeiras/últimas linhas do bloco `[PAGE N]` — nunca calculei de um offset global.
 
 Depois execute:
 ```bash
