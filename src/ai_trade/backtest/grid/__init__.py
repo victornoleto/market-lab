@@ -7,6 +7,11 @@ exercises the PBO/DSR/walk-forward gates in production. See
 """
 
 from ai_trade.backtest.grid.config import ClenowGridConfig, grid_configs
+from ai_trade.backtest.grid.diagnostic import (
+    DiagnosticAnalyzer,
+    DiagnosticReport,
+    FailureMode,
+)
 from ai_trade.backtest.grid.gates import GateEvaluator, GateVerdict
 from ai_trade.backtest.grid.observers import (
     JsonlTrialObserver,
@@ -25,6 +30,9 @@ from ai_trade.backtest.grid.walk_forward import WFResult, wf_for_config, wf_for_
 
 __all__ = [
     "ClenowGridConfig",
+    "DiagnosticAnalyzer",
+    "DiagnosticReport",
+    "FailureMode",
     "GateEvaluator",
     "GateVerdict",
     "GridResult",
