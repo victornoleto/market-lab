@@ -198,6 +198,8 @@ para rodar um grid de configurações de estratégia com gates anti-overfit
 ativos (PBO / DSR / walk-forward). Um novo CLI orquestra fetch + grid
 paralelo (joblib) + walk-forward + gate evaluation + report/diagnóstico:
 
+**Clenow momentum grid** (SPX point-in-time, 30 configs):
+
 ```bash
 .venv/bin/python scripts/run_grid_clenow.py \
     --start 2015-01-01 --end 2023-12-31 \
@@ -205,8 +207,17 @@ paralelo (joblib) + walk-forward + gate evaluation + report/diagnóstico:
     --n-jobs 4
 ```
 
+**Ehlers Band-Pass Swing grid** (^GSPC single-instrument, 24 configs):
+
+```bash
+.venv/bin/python scripts/run_grid_ehlers.py \
+    --start 2015-01-01 --end 2023-12-31 \
+    --cash 100000 --output-dir reports/ \
+    --n-jobs 4
+```
+
 Acompanhar execução em tempo real (log unificado — um único `tail -f`
-para qualquer run, presente ou futura):
+para qualquer run, presente ou futura, Clenow OU Ehlers):
 
 ```bash
 tail -f logs/grid.log
@@ -216,19 +227,25 @@ cat logs/grid_latest_status.md  # snapshot high-level da última run
 **Saídas:**
 - `reports/grid_<YYYYMMDD-HHMM>/summary.md` (se gates passam) OU
   `diagnostic.md` (se falham) — incluem disclaimer de survivorship
-- `reports/grid_<YYYYMMDD-HHMM>/assets/heatmap_sharpe.png` — Sharpe por
-  `(lookback_regression × top_pct)` agregado por `max(risk_factor)`
+- `reports/grid_<YYYYMMDD-HHMM>/assets/heatmap_sharpe.png` — Sharpe sobre
+  as 2 primeiras dimensões variadas do grid, agregado por max nos demais
 - `.cache/grid_runs/<run_id>/trial_*/` — checkpoints per-trial (parquet
   + JSON, humano-inspecionáveis, resume-friendly)
 - `.cache/grid_runs/<run_id>/trials.jsonl` — machine-readable por trial
 
-**Execução 1 (2026-04-14):** gates falham marginalmente — PBO=0.524,
-DSR 0/30, WF 4/30. Best config #15 (lookback=90, top=20%, risk=0.2%)
-com Sharpe 0.58, CAGR 8.87%, DD 20%, WF 6/8. Clenow em yfinance SPX
-2015-2023 não demonstra edge estatístico após correção para múltiplas
-hipóteses. Fork de decisão aberto: paid-data ablation vs pivot vs
-universe shift — ver `specs/backtest_phase2.md` §"Fase 2.5/3 —
-Execução 1" para análise completa.
+**Execução 1 — Clenow (2026-04-14):** gates falham marginalmente —
+PBO=0.524, DSR 0/30, WF 4/30. Best #15 (lookback=90, top=20%, risk=0.2%)
+Sharpe 0.58 CAGR 8.87%. Ver `specs/backtest_phase2.md` §"Fase 2.5/3 —
+Execução 1".
+
+**Execução 2 — Ehlers Band-Pass Swing (2026-04-14):** **PBO passa**
+(0.468) mas DSR 0/24 reject. Best #6 (hp=48, lp=20, pct=0.80) Sharpe
+0.31 CAGR 2.17% DD 14.65%. **Cross-correlation Clenow × Ehlers =
+−0.0108** — estratégias ortogonais (candidato a portfolio regime-aware).
+Ver `specs/backtest_phase2_5_ehlers.md` §"Execução — resultados e fork".
+
+Fork aberto em ambas as execuções: paid-data ablation (recommended),
+3ª estratégia, regime-aware portfolio, ou parar e reavaliar.
 
 ---
 

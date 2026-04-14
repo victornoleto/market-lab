@@ -363,11 +363,11 @@ end-to-end com `--dry-run` em 3 configs × 1 ano; tests passam.
   returns comuns) → estratégias ortogonais, portfolio combination
   plausível em opção 3 do fork.
 
-- [ ] **Docs finais:**
-  - `ROADMAP.md` — marcar Fase 2.5 Execução 2 com verdict
-  - `README.md` — seção "Como rodar o grid Ehlers" + link pro diagnostic
-  - `knowledge/SKILL.md` — atualizar se descobrir regra ou pegadinha
-    citável (caso contrário, insights ficam neste spec)
+- [x] **Docs finais:**
+  - `ROADMAP.md` — bullet Execução 2 com verdict + fork mesclado
+  - `README.md` — seção "Como rodar o grid Ehlers" + cross-corr
+  - `knowledge/SKILL.md` — não tocado; nenhuma regra nova citável
+    descoberta (insights permanecem neste spec)
 
 **Gate para avançar (mesmo da Execução 1):**
 > PBO < 0.5 AND DSR p-value < 0.05 AND walk-forward ≥ 6/8 profitable
