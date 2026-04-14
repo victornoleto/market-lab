@@ -34,7 +34,9 @@ Limitations — document in every backtest report that uses this source:
 
 from __future__ import annotations
 
+import io
 import logging
+import urllib.request
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
@@ -42,6 +44,10 @@ from pathlib import Path
 import pandas as pd
 
 log = logging.getLogger(__name__)
+
+_USER_AGENT = (
+    "ai-trade/0.1 (+https://github.com/VictorNoleto/ai-trade; research use)"
+)
 
 _PROJECT_ROOT = Path(__file__).resolve().parents[4]
 DEFAULT_CACHE_DIR = _PROJECT_ROOT / ".cache" / "wikipedia"
@@ -68,9 +74,11 @@ def _flatten_changes_table(raw: pd.DataFrame) -> pd.DataFrame:
             "Wikipedia table structure may have changed."
         )
 
-    date_cols = [c for c in df.columns if c[0].lower().startswith("date")]
-    added_cols = [c for c in df.columns if c[0].lower().startswith("added")]
-    removed_cols = [c for c in df.columns if c[0].lower().startswith("removed")]
+    # Wikipedia has used both "Date" and "Effective Date" over time; match
+    # anything whose top-level header *contains* "date".
+    date_cols = [c for c in df.columns if "date" in c[0].lower()]
+    added_cols = [c for c in df.columns if "added" in c[0].lower()]
+    removed_cols = [c for c in df.columns if "removed" in c[0].lower()]
     if not date_cols or not added_cols or not removed_cols:
         raise ValueError(
             "Expected Date/Added/Removed groups in changes table; got "
@@ -150,8 +158,14 @@ class WikipediaSPX:
             )
 
         log.info("fetching Wikipedia SPX tables: %s", WIKIPEDIA_URL)
-        current_tables = pd.read_html(WIKIPEDIA_URL, header=0)
-        changes_tables = pd.read_html(WIKIPEDIA_URL, header=[0, 1])
+        # Wikipedia returns 403 to the default urllib User-Agent, so we fetch
+        # the HTML once with a descriptive UA and feed the cached string to
+        # read_html twice (cheaper than two round-trips anyway).
+        req = urllib.request.Request(WIKIPEDIA_URL, headers={"User-Agent": _USER_AGENT})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            html = resp.read().decode("utf-8")
+        current_tables = pd.read_html(io.StringIO(html), header=0)
+        changes_tables = pd.read_html(io.StringIO(html), header=[0, 1])
 
         current = current_tables[0]
         changes = _flatten_changes_table(changes_tables[1])

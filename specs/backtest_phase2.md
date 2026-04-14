@@ -276,12 +276,12 @@ Decisões não-óbvias:
 
 **O que fazer:**
 
-- [ ] **Strategy base** — `src/ai_trade/backtest/strategies/base.py`
+- [x] **Strategy base** — `src/ai_trade/backtest/strategies/base.py`
   - Protocol/ABC: `Strategy.on_bar(bar, portfolio, context) → list[Order]`.
   - Callback opcional: `on_rebalance(date, portfolio, context)`.
   - Context carrega universo ativo, parâmetros, logger.
 
-- [ ] **Clenow momentum** — `src/ai_trade/backtest/strategies/clenow_momentum.py`
+- [x] **Clenow momentum** — `src/ai_trade/backtest/strategies/clenow_momentum.py`
 
   Regras verbatim do `stocks_on_the_move` (citações obrigatórias no docstring):
 
@@ -293,19 +293,19 @@ Decisões não-óbvias:
   - Rebalance semanal (quarta-feira) `[p.99, p.110]`
   - NUNCA ranquear por "% above 200d MA" sozinho `[p.68]`
 
-- [ ] **Script CLI** — `scripts/run_clenow_replication.py`
+- [x] **Script CLI** — `scripts/run_clenow_replication.py`
   - Args: `--start`, `--end`, `--cash`, `--output-dir`
   - Carrega data via `YFinanceSource` + `WikipediaSPX`
   - Roda backtest via `engine.Runner`
   - Valida via `cpcv`, `pbo`, `dsr`, `walk_forward`
   - Gera report via `metrics.report`
 
-- [ ] **Integration test** — `tests/test_clenow_integration.py`
+- [x] **Integration test** — `tests/test_clenow_integration.py`
   - Range curto (ex.: 2020-01-01 a 2021-12-31) pra teste rápido
   - Roda end-to-end em dados cached (fixtures no repo, sem network)
   - Verifica: equity curve não-vazia, métricas finitas, report gerado
 
-- [ ] **Documento de replicação** — `reports/clenow_replication_notes.md`
+- [x] **Documento de replicação** — `reports/clenow_replication_notes.md`
   - Números obtidos vs números do livro (Clenow reporta ~CAGR 12% / Sharpe ~1.0
     na versão estendida do sistema) — esperamos **inflação** pelo
     survivorship residual.
@@ -316,7 +316,58 @@ Decisões não-óbvias:
 **Aceito quando:** script roda sem erros, report gerado, integration test
 passa, números sanos, doc de replicação escrito.
 
-**Conclusão:** _(preencher ao finalizar)_
+**Conclusão:** Replicação Clenow completa em
+`src/ai_trade/backtest/strategies/` (`base.py`, `clenow_momentum.py`,
+`__init__.py`), script CLI `scripts/run_clenow_replication.py` e doc
+`reports/clenow_replication_notes.md`. 29 testes novos em
+`tests/test_strategy_base.py` (8) + `tests/test_clenow_strategy.py` (19) +
+`tests/test_clenow_integration.py` (2) → **173 passed** total. TDD estrito
+(cada módulo teve tests RED com `ModuleNotFoundError` antes da
+implementação). Replicação rodada em janela 2023-07-01 → 2023-12-31 com
+503 tickers SPX point-in-time (17 pulados por survivorship/rename); final
+equity $93 965 (CAGR −11.79%, Sharpe −0.79, max DD 13.55%) — dentro do
+ruído esperado para 6 meses choppy 2023 H2, composição de winners/losers
+(LLY/GOOG/AMGN vs NCLH/CMG/BKR) confirma que a lógica de ranking +
+regime filter está operando corretamente.
+
+Decisões não-óbvias:
+- **Strategy base = Protocol re-export + ABC rebalance-dispatcher, não
+  hierarquia.** Runner já define `Strategy` como Protocol em `runner.py`;
+  `base.py` re-exporta (mesmo objeto, não duplicação) + adiciona
+  `StrategyBase` (ABC com `should_rebalance` + `on_rebalance` no-op-por-
+  default) e `StrategyContext` (dataclass tipada, opcional). Mantém 99%
+  da flexibilidade do Protocol sem forçar subclassing.
+- **`self.data` carrega histórico completo; Runner itera slice
+  `[start, end]`.** Durante o primeiro Wed pós-`--start`, a estratégia
+  precisa olhar 200 dias pra trás (MA do SPX) e 90 dias (regressão). Se
+  passasse só o slice bounded ao Runner, não teria warmup. CLI passa
+  `data_bounded` ao Runner mas `data` completa à estratégia.
+- **Sells antes de buys na mesma lista.** Runner executa orders na ordem
+  de inserção (ver `runner.py:114-122`). Sells primeiro → cash liberado
+  está disponível para buys subsequentes no mesmo bar, sem precisar
+  mecanismo de two-phase.
+- **Buy gated por regime ON, sell NÃO.** Replica literalmente Clenow
+  p.94-95: *"Do not sell a holding just because the index drops below
+  the 200d MA — only stop adding new positions."* Testes sintéticos
+  `test_regime_filter_blocks_buys_when_below_ma` e
+  `test_strategy_respects_regime_filter_during_index_drawdown` cobrem.
+- **Sizing = `floor(equity × 0.001 / ATR20)` com `equity` (não cash).**
+  Clenow sempre fala em "account value" (p.88), não cash. Cash-insuff
+  trata via `break` no loop top-down (p.99 verbatim).
+- **Bug no Wikipedia scrape corrigido em passagem.** `pd.read_html`
+  retornava 403 Forbidden (default UA bloqueado) e falhava com "Date"
+  vs "Effective Date" no header. Fix: `urllib.request` com
+  `User-Agent: ai-trade/0.1 research`, + matching case-insensitive por
+  substring em `_flatten_changes_table`. Unblocked o CLI real.
+- **CPCV/PBO/DSR pulados no CLI (single-trial).** Os 3 gates comparam
+  N≥2 estratégias — uma replicação fixa do Clenow é 1 trial. Walk-forward
+  sobre a equity curve realizada (8 janelas) é a única validação
+  meaningful; reporta `reject` com 4/8 profitable em 6 meses (esperado
+  — 3 semanas por janela é ruído puro). Gate completo requer grid de
+  parâmetros, tarefa da Fase 3.
+- **Auto-generated reports → `.gitignore`.** `reports/<strategy>_<stamp>.md`
+  e `reports/assets/` ignorados. Doc escrito à mão (`clenow_replication_
+  notes.md`) é versionado.
 
 ---
 

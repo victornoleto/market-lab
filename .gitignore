@@ -25,6 +25,11 @@ prints/
 # Local caches for external data sources (yfinance parquet, wikipedia HTML)
 .cache/
 
+# Auto-generated backtest reports (regenerate via scripts/run_*_replication.py).
+# Hand-written docs under reports/ (e.g. clenow_replication_notes.md) are committed.
+reports/*_[0-9]*.md
+reports/assets/
+
 # OS
 .DS_Store
 Thumbs.db
@@ -33,6 +38,9 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Claude Code local session state (ScheduleWakeup locks, etc.)
+.claude/
 books/summaries/.validation/
 books/summaries/.logs/
 books/summaries/.progress.json
