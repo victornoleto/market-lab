@@ -9,7 +9,9 @@ dist/
 .pytest_cache/
 .ruff_cache/
 
-# Extracted text is derivable via scripts/extract_pdfs.py (PDFs in books/raw/ ARE committed).
+# Books — raw PDFs are NOT committed (copyright + size).
+# Extracted text is derivable via scripts/extract_pdfs.py.
+books/raw/
 books/extracted/
 
 # Partial summaries generated during map-reduce (only final summaries are versioned)
@@ -55,3 +57,33 @@ books/summaries/.logs/
 books/summaries/.progress.json
 books/summaries/.progress.log
 books/summaries/.progress.*.json.done
+
+# Defensive — secrets
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.json
+credentials.json
+*.token
+
+# Defensive — heavy data artefacts
+*.parquet
+*.pkl
+*.joblib
+*.h5
+*.npz
+*.sqlite
+*.sqlite3
+db/*.sqlite*
+db/*.db
+
+# Defensive — Jupyter (se surgir)
+*.ipynb
+.ipynb_checkpoints/
+
+# Defensive — Python extras
+.mypy_cache/
+.tox/
+.coverage
+htmlcov/
