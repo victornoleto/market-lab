@@ -249,7 +249,7 @@ TDD estrito (pytest RED antes de cada módulo).
 
 **O que fazer:**
 
-- [ ] **CLI de replicação** — `scripts/run_ehlers_replication.py`
+- [x] **CLI de replicação** — `scripts/run_ehlers_replication.py`
   - Clone estrutural de `scripts/run_clenow_replication.py`
   - Args: `--start`, `--end`, `--symbol` (default `^GSPC`), `--cash`,
     `--output-dir`, `--warmup-days`
@@ -257,11 +257,11 @@ TDD estrito (pytest RED antes de cada módulo).
     hp_period=48, lp_period=10, pct_of_dcp=0.90, stop_pct=0.05)
   - Gera report via `metrics.report.generate_report` (infra existente)
 
-- [ ] **Integration test** — `tests/test_ehlers_integration.py`
+- [x] **Integration test** — `tests/test_ehlers_integration.py`
   - Range curto sintético (fixtures, sem network)
   - Verifica: equity curve não-vazia, métricas finitas, report gerado
 
-- [ ] **Doc de replicação** — `reports/ehlers_replication_notes.md`
+- [x] **Doc de replicação** — `reports/ehlers_replication_notes.md`
   - Número obtido vs benchmark do livro `[cycle_analytics, ch.19]` onde
     Ehlers aplica o sistema a EUR/USD e outros
   - Se Sharpe positivo + DD razoável → engine correto, avançar
@@ -270,7 +270,21 @@ TDD estrito (pytest RED antes de cada módulo).
 **Aceito quando:** script roda sem erros em `^GSPC 2015-01-01 → 2023-12-31`,
 report gerado, integration test passa, notas escritas.
 
-**Conclusão:** _(preencher)_
+**Conclusão:**
+
+- **Commit 6 — Replication CLI + integration + notes:**
+  `scripts/run_ehlers_replication.py` (clone estrutural do Clenow, 216
+  LOC), `tests/test_ehlers_integration.py` (6 testes: engine contract,
+  report gen com walk-forward, CLI argparse), `reports/ehlers_replication_notes.md`
+  (gitignored — comitado em `reports/ehlers_replication_notes.md` como
+  doc hand-written, excluído do glob `reports/*_[0-9]*.md`).
+  Replication real ^GSPC 2022-01-01→2023-12-31: $100k→$97,472 (-2.53%),
+  27 trades, max DD 6.51%, WF 3/8 reject. Verdict: **engine OK, signal
+  fraco** — consistente com os riscos documentados (Ehlers calibrou em
+  EUR/USD/T-Bonds intraday, não equity daily). Síntese de pure-sine
+  é pior (-86%) mas é esperado — anticipatory entry em seno puro entra
+  cedo demais e whipsaws + risk_pct_of_equity=0.95 compostam. Avançar
+  para o grid. `277 passed`.
 
 ---
 
