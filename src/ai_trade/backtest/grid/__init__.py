@@ -13,6 +13,7 @@ from ai_trade.backtest.grid.diagnostic import (
     FailureMode,
 )
 from ai_trade.backtest.grid.gates import GateEvaluator, GateVerdict
+from ai_trade.backtest.grid.report import GridReportGenerator
 from ai_trade.backtest.grid.observers import (
     JsonlTrialObserver,
     StatusFileObserver,
@@ -35,6 +36,7 @@ __all__ = [
     "FailureMode",
     "GateEvaluator",
     "GateVerdict",
+    "GridReportGenerator",
     "GridResult",
     "GridRunner",
     "JsonlTrialObserver",
