@@ -12,10 +12,35 @@ Status da base em `2026-04-14`: **33/33 livros com summary, 100% PASS estrutural
 - ⚠️ Item D: `algo_trading_chan` → BORDERLINE (4 mis-citations de página corrigidas, 0 halluc).
 - ✅ Item G: `time_series_hamilton` → ratio 95%→98% pós-pipeline-hardening (chapter_intro warn verdict limpou 2 false-positives).
 
-**Follow-ups conhecidos fora de escopo (regex novo expôs):**
-- `math_money_mgmt`: 60 fails tipo `chapter > n_chapters` — bug de detecção de `n_chapters` (livro tem 8+ caps, detector acha 2).
-- `adaptive_markets`, `data_driven_science`, `sentiment_analysis_handbook`: fails diversos antes mascarados pelo regex restrito.
-- Todos NÃO são hallucinations factuais; são limitação do detector determinístico.
+**Follow-ups conhecidos fora de escopo (regex novo expôs — ação pendente):**
+
+### FU-1 — Bug detector `n_chapters` em `scripts/check_citations.py`
+**Sintoma:** `math_money_mgmt` retorna 60 fails tipo `chapter X > n_chapters (2)` para citações `[ch.3..ch.8]` legítimas; `advances_fin_ml` mesmo padrão (4 fails `> n_chapters (10)` para ch.12/13/16/20). Livros têm 8+ e 22 capítulos respectivamente.
+
+**Ação:**
+1. TDD: em `tests/test_check_citations.py`, adicionar teste com fixture de livro com 8 capítulos cuja função `_detect_n_chapters` (ou equivalente) retorna 2. Asserir ≥8.
+2. Investigar a heurística atual (provavelmente parsing de TOC para Parts em vez de Chapters, ou regex que para na primeira "Part I" / "Section 1").
+3. Fix candidato: usar `printed_to_pdf` keys + grep por `Chapter \d+` no `_full.txt`, pegando o max.
+4. Re-rodar audit: `math_money_mgmt` deve cair de 60 fails para ≤5; `advances_fin_ml` para 0.
+
+**Bloqueia:** revalidação adversarial honesta de `math_money_mgmt` (juízes nunca foram dispatchados pós-fix porque Layer-2 estava cego para essas citações).
+
+### FU-2 — Audit dos 4 livros com fails recém-expostos
+Após FU-1 corrigir o detector, rodar `check_citations.py` em cada um e classificar fails restantes:
+
+| Livro | Fails atuais (audit v2) | Origem provável |
+|---|---|---|
+| `adaptive_markets` | 3 fails | tokens 'capm', 'sharpe' não bateram em p.249-250 — verificar conteúdo |
+| `data_driven_science` | 1 fail | investigar |
+| `sentiment_analysis_handbook` | 2 fails | investigar |
+| `cycle_analytics` | 1 fail (EMA lag formula p.35) | possível mis-cit real ou ruído de tokens |
+
+**Ação:** para cada fail genuíno, dispatchar juízes adversariais (frame_1a/1b) e aplicar fix cirúrgico no padrão estabelecido na sessão 2026-04-14 (ver Items B/C/D/E/F).
+
+### FU-3 — Layer-2 ruído tokens PT/EN
+**Sintoma:** `eval_opt_strategies [p.273]` claim em PT ("RRR anualizado deve ser ≥ 3") foi flaggada por Layer-2 mesmo sendo correta — tokens PT não batem com source EN. Resolvido inline adicionando keyword EN; mas o problema é estrutural.
+
+**Ação (opcional, baixa prioridade):** documentar convenção no `book-reader.md` skill: claims em PT devem incluir keyword EN inline (ex.: "Annualized RRR ≥ 3" em vez de "RRR anualizado ≥ 3"). Alternativa: estender STOPWORDS para incluir PT comuns + adicionar tradução automática inline ao processar tokens.
 
 ---
 
