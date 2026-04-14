@@ -99,7 +99,7 @@ THEMES: tuple[ThematicMap, ...] = (
         description="HMM e outros métodos para identificar bull/bear/sideways e trocar estratégia dinamicamente.",
         source_slugs=(
             "regime_change",
-            "trading_on_sentiment",
+            "sentiment_analysis_handbook",
             "data_driven_science",
         ),
     ),
@@ -219,28 +219,43 @@ class BookEntry:
 
 
 BOOK_INDEX: tuple[BookEntry, ...] = (
+    # Tier S — Essentials
     BookEntry("advances_fin_ml", "S", "Framework anti-overfit completo; CPCV, meta-labeling, DSR."),
     BookEntry("systematic_trading", "S", "Parcimônia + position sizing robusto; design de sistemas."),
     BookEntry("trading_systems_methods", "S", "Referência enciclopédica de métodos clássicos."),
     BookEntry("testing_tuning", "S", "Validação estatística prática em C++."),
     BookEntry("stocks_on_the_move", "S", "Momentum com 2 parâmetros — baseline."),
+    BookEntry("eval_opt_strategies", "S", "Pardo — walk-forward clássico; framework de otimização anti-overfit."),
+    BookEntry("quant_trading_chan", "S", "Chan — baseline prático de mean-reversion/momentum e infra."),
+    # Tier A — Technical foundation
     BookEntry("rocket_science", "A", "DSP para trading; Hilbert transform, MAMA."),
     BookEntry("cybernetic_analysis", "A", "Continuação DSP; Fisher transform, Cyber Cycle."),
     BookEntry("cycle_analytics", "A", "Ciclos adaptativos — últimos refinements de Ehlers."),
     BookEntry("math_money_mgmt", "A", "Optimal f, risk of ruin, Kelly adaptado."),
     BookEntry("trading_evolved", "A", "Sistemas em Python — ponte direta para o stack."),
     BookEntry("ml_for_algo_trading", "A", "Guia pragmático ML + Python (Jansen)."),
+    BookEntry("algo_trading_chan", "A", "Chan — mean-reversion, momentum e execução prática."),
+    BookEntry("machine_trading", "A", "Chan — estratégias ML/quant com foco em execução."),
+    # Tier B — Depth and complement
     BookEntry("stat_sound_indicators", "B", "Aronson+Masters TSSB; rigor em indicadores."),
-    BookEntry("evidence_based_ta", "B", "Base estatística de Aronson; vies de data mining."),
+    BookEntry("evidence_based_ta", "B", "Base estatística de Aronson; viés de data mining."),
     BookEntry("ml_for_asset_managers", "B", "AFML condensado para portfolio management."),
     BookEntry("leverage_space", "B", "Sizing multi-asset — extensão Kelly para portfolios."),
     BookEntry("regime_change", "B", "HMM + regime change em finanças computacionais."),
+    BookEntry("volatility_trading", "B", "Sinclair — modelagem de vol, options e sizing por vol."),
+    BookEntry("trading_exchanges", "B", "Harris — microestrutura de mercado, custos, liquidez."),
+    BookEntry("fin_time_series_tsay", "B", "Tsay — referência acadêmica de séries temporais financeiras."),
+    BookEntry("big_data_ml_quant", "B", "Coletânea Guida — aplicações de ML em quant."),
+    # Tier C — Reference
     BookEntry("cybernetic_trading", "C", "Intermarket + NN (Ruggiero 1997)."),
     BookEntry("numerical_recipes", "C", "Referência numérica (SVD, FFT, otimização)."),
     BookEntry("data_driven_science", "C", "Brunton & Kutz — PCA, SVD, dynamical systems."),
     BookEntry("tech_analysis_patterns", "C", "Padrões de TA tratados algoritmicamente."),
-    BookEntry("trading_on_sentiment", "C", "Filtros de sentimento como complemento."),
     BookEntry("universal_trend_tactics", "C", "Penfold — táticas de trend trading."),
+    BookEntry("sentiment_analysis_handbook", "C", "Mitra & Yu — sentimento em finanças como overlay."),
+    BookEntry("time_series_hamilton", "C", "Hamilton — referência clássica de séries temporais."),
+    BookEntry("adaptive_markets", "C", "Lo — hipótese de mercados adaptativos; contexto teórico."),
+    BookEntry("risk_parity", "C", "Qian — construção de portfolio por paridade de risco."),
 )
 
 
@@ -365,7 +380,7 @@ def build_skill_md(copied_slugs: list[str]) -> None:
     lines = [
         "---",
         "name: trading-knowledge",
-        'description: Knowledge base for algorithmic swing trading built from 22 absorbed books. '
+        'description: Knowledge base for algorithmic swing trading built from 33 absorbed books. '
         'Use when designing strategies, selecting indicators, sizing positions, validating backtests, '
         'or reviewing any trading decision for the ai-trade project. '
         'Every recommendation MUST cite its source summary (knowledge/books/<slug>.md#section).',
