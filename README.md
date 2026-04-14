@@ -258,6 +258,24 @@ livro (⭐⭐⭐ crítico, ⭐⭐ importante, ⭐ complementar) e qualidade de a
 
 **Inventário canônico** (slug → título/autor/ano): [`books/MAPPING.md`](books/MAPPING.md).
 
+### PDFs brutos não são versionados
+
+Os PDFs-fonte **não estão no repositório** (copyright + tamanho). Se você
+clonou este repo e quer rodar a pipeline de extração
+(`scripts/extract_pdfs.py`) localmente, precisa prover os arquivos
+manualmente em `books/raw/<slug>.pdf` com os slugs listados em
+[`books/MAPPING.md`](books/MAPPING.md). Os summaries markdown já
+versionados em `books/summaries/` cobrem a maior parte do uso
+(knowledge base + citações); a extração bruta só é necessária pra
+re-absorver ou validar. Tree esperado:
+
+```
+books/
+├── raw/              # seus PDFs (gitignored)
+├── extracted/        # saída de extract_pdfs.py (gitignored)
+└── summaries/        # markdown versionado (no repo)
+```
+
 Para re-absorver um livro ou adicionar novo:
 
 ```
