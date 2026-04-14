@@ -18,8 +18,9 @@ live, destrói capital.
 | 0 | Knowledge base — 33 livros → summaries validados | ✅ Concluída |
 | 0.5 | `build_skill.py` + gate de sanidade da skill | ✅ Concluída |
 | 1 | Infra Pepperstone/cTrader + Postgres/Grafana | 🔄 Scaffold (aguarda aprovação Spotware para OAuth) |
-| 2 | Universe Selector + Strategy Engine | ⏳ |
-| 3 | Backtest rigoroso (CPCV/PBO/DSR) | ⏳ |
+| 2 | Backtest Module — engine + validation + métricas + Clenow replication | ✅ Concluída |
+| 2.5 | Strategy Engine (Universe Selector + candidatas fundamentadas) | ⏳ |
+| 3 | Backtest rigoroso (grid de parâmetros + gates CPCV/PBO/DSR em produção) | ⏳ |
 | 4 | Paper trading (conta demo cTrader) | ⏳ |
 | 5 | Live trading ($1000 inicial) | ⏳ |
 | 6 | Monitoring + governança | ⏳ |
@@ -67,7 +68,13 @@ ai-trade/
 │   └── validation/                  # CPCV, permutation, DSR, walk-forward
 ├── src/ai_trade/                    # Runtime Python (Fase 1+)
 │   ├── __init__.py
-│   └── config.py                    # Typed config (pydantic-settings)
+│   ├── config.py                    # Typed config (pydantic-settings)
+│   └── backtest/                    # Fase 2 — módulo de backtest (173 tests)
+│       ├── data/                    #   yfinance + Wikipedia SPX point-in-time
+│       ├── engine/                  #   portfolio + execução CFD-aware + runner
+│       ├── validation/              #   CPCV / PBO / DSR / walk-forward / MCPT
+│       ├── metrics/                 #   Sharpe/Sortino/Calmar + report MD+PNG
+│       └── strategies/              #   base + Clenow momentum replication
 ├── scripts/                         # Utilitários determinísticos (sem LLM)
 │   ├── extract_pdfs.py              # PDF → texto + capítulos + metadata
 │   ├── validate_summary.py          # Gate estrutural de summaries
@@ -77,7 +84,8 @@ ai-trade/
 │   ├── build_skill.py               # Summaries → knowledge/
 │   ├── compress_pdfs.py             # Ghostscript compressor (reversível)
 │   ├── rename_books.py              # Normaliza slugs em books/raw/
-│   └── ctrader_oauth_bootstrap.py   # OAuth2 one-time bootstrap (browser local)
+│   ├── ctrader_oauth_bootstrap.py   # OAuth2 one-time bootstrap (browser local)
+│   └── run_clenow_replication.py    # CLI de replicação Clenow momentum (Fase 2)
 ├── db/
 │   └── init.sql                     # Schemas Postgres: market_data, trades, ...
 ├── docker-compose.yml               # Postgres 16 + Grafana 11
@@ -135,6 +143,51 @@ python scripts/ctrader_oauth_bootstrap.py
 O app precisa estar aprovado pela Spotware (manual, horas a dias após submissão
 em `openapi.ctrader.com`). Enquanto não aprovado, o bootstrap falha com
 *"OA client is not in active state"*.
+
+---
+
+## Como rodar um backtest
+
+Fase 2 entregou o módulo completo de backtest em `src/ai_trade/backtest/`:
+engine (portfolio + execução CFD-aware + runner bar-by-bar), validation
+framework (CPCV / PBO / DSR / walk-forward / MCPT), métricas (Sharpe /
+Sortino / Calmar / CAGR / max DD / VaR) e gerador de report em markdown +
+PNG. Replicação de referência: Andreas Clenow `stocks_on_the_move` no
+universo SPX 500 point-in-time (yfinance + Wikipedia scrape).
+
+```bash
+.venv/bin/python scripts/run_clenow_replication.py \
+    --start 2023-07-01 \
+    --end 2023-12-31 \
+    --cash 100000 \
+    --output-dir reports/
+```
+
+Saídas:
+- `reports/clenow_momentum_<YYYYMMDD-HHMM>.md` — relatório estruturado com
+  disclaimer obrigatório de survivorship bias, métricas anualizadas,
+  walk-forward summary e lista de trades (top winners/losers)
+- `reports/assets/*.png` — equity curve + underwater drawdown (2 painéis,
+  backend Agg headless)
+
+Componentes (cobertos por 173 testes com verificação numérica contra os
+livros-fonte):
+- `backtest/engine/` — `portfolio.py` / `execution.py` / `runner.py`
+- `backtest/validation/` — `cpcv.py` / `pbo.py` / `dsr.py` /
+  `walk_forward.py` / `permutation.py`
+- `backtest/metrics/` — `performance.py` / `report.py`
+- `backtest/strategies/` — `base.py` / `clenow_momentum.py`
+
+Notas da replicação (performance vs livro, limitações, decisões de design):
+[`reports/clenow_replication_notes.md`](reports/clenow_replication_notes.md).
+Spec executável da Fase 2 com campo Conclusão por task:
+[`specs/backtest_phase2.md`](specs/backtest_phase2.md).
+
+**Gate crítico:** todo report gerado de fonte `yfinance`/`wikipedia` inclui
+disclaimer de survivorship bias obrigatório (inviolable rule do ROADMAP).
+Migração para fonte paga (Tiingo/EOD/Norgate) é decisão adiada até a
+primeira estratégia sobreviver a um grid com PBO < 0.5 e DSR p-value < 0.05
+— ver [`specs/backtest_phase2.md`](specs/backtest_phase2.md#reavaliação-pós-fase-2-decisões-adiadas-do-roadmap).
 
 ---
 

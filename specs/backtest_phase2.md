@@ -375,13 +375,13 @@ Decisões não-óbvias:
 
 **O que fazer:**
 
-- [ ] **ROADMAP.md** — marcar Fase 2 ✅ Concluída na tabela de status.
-- [ ] **README.md** raiz — adicionar seção "Como rodar um backtest" com
+- [x] **ROADMAP.md** — marcar Fase 2 ✅ Concluída na tabela de status.
+- [x] **README.md** raiz — adicionar seção "Como rodar um backtest" com
       exemplo do `run_clenow_replication.py`.
-- [ ] **knowledge/SKILL.md** — se descobrirmos regra ou pegadinha durante o
+- [x] **knowledge/SKILL.md** — se descobrirmos regra ou pegadinha durante o
       trabalho que fortaleceria a skill, registrar (via re-absorção do livro
       relevante ou atualização manual justificada).
-- [ ] **Reavaliar** (em seção nova aqui no spec ou em `specs/backtest_phase3.md`):
+- [x] **Reavaliar** (em seção nova aqui no spec ou em `specs/backtest_phase3.md`):
       as 3 decisões adiadas do ROADMAP §"Decisões adiadas" — dados pagos?
       vectorbt? próxima estratégia? — agora informadas pelos achados do Clenow.
 
@@ -389,7 +389,112 @@ Decisões não-óbvias:
 Fase 3 (backtest rigoroso / validation em produção) começa com decisões novas
 tomadas.
 
-**Conclusão:** _(preencher ao finalizar)_
+**Conclusão:** Fase 2 fechada — `ROADMAP.md` §Status marca Fase 2 ✅ e
+renomeia o escopo para "Backtest Module" (realidade entregue) com preâmbulo
+explicando que o Strategy Engine original (Universe Selector + candidatas
+fundamentadas) fica para Fase 2.5. README.md raiz ganhou seção "Como rodar
+um backtest" com exemplo do CLI + layout de saídas + link para as notas de
+replicação. `knowledge/SKILL.md` **não foi alterada** — os insights das
+Tasks 1-4 são de engenharia/implementação (equity formula, mark-to-close
+two-pass, E[SR_max] Z-score units, PBO ruidoso em single-seed), não regras
+de trading citáveis; ficam nas Conclusões deste spec por design (knowledge
+= regras de livro com citação `[slug, p.X]`; spec = decisões de engenharia).
+Reavaliação das 3 decisões adiadas abaixo — todas **mantidas adiadas** com
+gates atualizados à luz do que o Clenow mostrou.
+
+---
+
+### Reavaliação pós-Fase 2: decisões adiadas do ROADMAP
+
+Informada pelos achados da replicação Clenow (Task 4). Referência original:
+`ROADMAP.md` §"Decisões adiadas para reavaliação".
+
+#### 1. Fonte de dados (yfinance → Tiingo/EOD/Norgate)
+
+**Gate original:** "Reavaliar quando primeira estratégia passar pelos gates
+anti-overfit (CPCV + PBO + DSR)."
+
+**Achados Clenow:** engine rodou em 503 tickers SPX point-in-time na janela
+2023-07-01 → 2023-12-31; 17 tickers pulados por survivorship/rename = **3.4%**
+do universo. Nesse regime (H2 2023 choppy), o viés residual foi *amostrável*
+mas não dominante — bias residual de 3-4% não explica CAGR de −11.79%; a
+composição de winners/losers (LLY/GOOG/AMGN vs NCLH/CMG/BKR) é coerente com
+o regime. Gate original ainda não atingido: CPCV/PBO/DSR não têm poder
+discriminatório em single-trial (um Clenow com parametrização fixa = N=1).
+
+**Decisão: mantida adiada.** Gate atualizado:
+
+> Migrar para fonte paga quando **existir ao menos uma estratégia cujo
+> edge tenha sobrevivido a um grid de parâmetros no engine custom com
+> PBO < 0.5, DSR p-value < 0.05 e walk-forward com ≥6/8 janelas lucrativas
+> em dados yfinance+Wikipedia**. Migração exerce como *ablation study* do
+> próprio edge: se o edge sobrevive na fonte paga, a Fase 4 prossegue;
+> se morre ao remover survivorship, o edge era artefato.
+
+#### 2. vectorbt (sandbox de triagem rápida)
+
+**Gate original:** "Reavaliar quando iteração sobre hipóteses de
+indicador/parâmetro tiver atrito mensurável (>30 min para testar uma
+variação simples)."
+
+**Achados Clenow:** engine custom rodou o Clenow end-to-end em minutos
+(bounded por fetch de dados, não compute). **Grid search ainda não foi
+tentado** — Task 4 foi single-trial com parametrização fixa. Atrito de
+iteração ainda não virou gargalo porque não iteramos.
+
+**Decisão: mantida adiada.** Gate atualizado:
+
+> Reavaliar quando o primeiro grid search no engine custom (mínimo:
+> 20 combinações de parâmetros do Clenow ou próxima estratégia) levar
+> >30 min por variação OU o fluxo de prototipar uma variação de indicador
+> exigir >3 arquivos de código novos. Nesses cenários vectorbt entra
+> como sandbox; engine custom continua sendo a fonte de verdade para
+> o backtest final.
+
+#### 3. Segunda estratégia após Clenow
+
+**Gate original:** "Reavaliar quando Clenow rodar e engine passar pelos
+gates. Candidatas: AFML meta-label, Ehlers DSP, Chan mean-reversion."
+
+**Achados Clenow:** Clenow rodou. Engine entregou: portfolio, execução
+CFD-aware, validation framework com 5 módulos (CPCV/PBO/DSR/walk-forward/
+MCPT), métricas + report com survivorship disclaimer obrigatório. 173 testes
+verdes. **Mas o engine não passou pelos gates no sentido que o ROADMAP
+imaginava** — porque gates medem distribuição sobre múltiplos trials, e
+single-trial Clenow não os exercita. O problema da Fase 2 **não foi
+detectar edge**; foi construir e validar a infra. Fase 3 precisa **fechar
+o ciclo Clenow com grid + gates reais** antes de adicionar estratégia nova.
+
+**Decisão: mantida adiada.** Revisão:
+
+> Primeiro pagar o débito técnico do Clenow: grid search sobre parâmetros
+> defensáveis (lookback 60/90/120, top 10%/20%/30%, ATR risk budget
+> 0.001/0.002), exercitar CPCV/PBO/DSR com N≥20, reportar distribuição
+> real. **Só então** escolher a segunda estratégia, informada por:
+> (a) qual failure mode o Clenow expôs (entrada? saída? regime?);
+> (b) se queremos diversificar por mecânica (mean-reversion vs trend)
+> ou por timeframe (swing vs intraday).
+>
+> Candidatas ainda válidas (ordenadas por compatibilidade CFD):
+> 1. **Ehlers DSP** `[rocket_science, cycle_analytics]` — holding curto,
+>    nativo CFD, ataca entrada/saída (complementa o Clenow cujo
+>    rebalance semanal é ritmo fixo).
+> 2. **AFML meta-labeling** `[advances_fin_ml, ch.3]` — overlay sobre o
+>    Clenow (primary) com ML confidence (secondary); ataca overfitting
+>    por seleção de trade, não por parâmetros.
+> 3. **Chan mean-reversion / pairs** `[algo_trading_chan]` — oposto do
+>    Clenow, bom para diversificar regime; mas cointegração em CFD exige
+>    cuidado com custos de carry.
+
+#### Síntese estratégica
+
+As 3 decisões foram adiadas com o **mesmo racional**: o que destrava
+cada uma é **rodar Clenow em grid de parâmetros com gates ativos**. Isso
+define o escopo natural da **Fase 2.5** (ou início da Fase 3 do ROADMAP,
+se preferir numeração linear): operar os gates anti-overfit sobre o
+próprio Clenow, em múltiplos trials, para obter distribuição honesta
+de Sharpe e PBO. A Fase 2 entregou a **munição** (engine + validação);
+a Fase 2.5 vai **usá-la**.
 
 ---
 

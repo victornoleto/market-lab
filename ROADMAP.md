@@ -4,29 +4,17 @@
 
 ---
 
-## 📍 Estado atual
+## 📍 Estado atual (2026-04-14)
 
-**Fase 0 — Knowledge Base (concluída, pronto para consolidação).**
-
-Pipeline: `books/raw/*.pdf` → `books/extracted/<slug>/` → `books/summaries/<slug>.md` (9 seções, citação obrigatória `[p.X]`/`[ch.Y]` ou `N/A —`) → `knowledge/SKILL.md` (agregador final, **próximo passo**).
-
-- ✅ Pipeline de extração/validação funcional (`scripts/extract_pdfs.py`, `scripts/validate_summary.py`, `scripts/check_citations.py`, `scripts/build_page_index.py`).
-- ✅ Validação autônoma em 3 camadas (estrutural + determinística + 2 juízes adversariais com self-consistency) substitui revisão humana.
-- ✅ **Tier 2 pipeline hardening:** `_page_index.json` determinístico por livro elimina retry-hell por offset drift; detector `n_chapters_effective` (FU-1) deriva bound de citações do próprio summary; convenção PT/EN documentada no book-reader skill (FU-3).
-- ✅ **33/33 livros absorvidos e validados:** 🌟 12 Perfeita · ✅ 20 Boa · ⚠️ 1 Border (0 halluc reais). `check_citations.py` global: **33/33 PASS** (0 fails). `validate_summary.py`: 33/33 PASS estrutural, 10/10 seções em todos.
-- ✅ **Strict halluc audit:** 5 livros com J2 BORDERLINE revalidados — 1 fix real aplicado (`regime_change`: Glattfelder 2008→2011 per bibliografia Quantitative Finance 11:4). Demais BORDERLINEs são paráfrases ambíguas com 0 unsupported claims.
-- ⏳ **Próximo comando:** `python scripts/build_skill.py` (determinístico, sem LLM calls — agrega os 33 summaries em `knowledge/`).
+- ✅ **Fase 0 — Knowledge Base.** 33/33 livros absorvidos e validados (pipeline `books/raw/*.pdf` → `extracted/` → `summaries/<slug>.md`, validação autônoma em 3 camadas substituindo revisão humana). `check_citations.py` global: 33/33 PASS. Qualidade: 🌟 12 Perfeita · ✅ 20 Boa · ⚠️ 1 Border, 0 alucinações reais.
+- ✅ **Fase 0.5 — `knowledge/SKILL.md`.** `build_skill.py` agrega os 33 summaries em uma Claude Skill temática (`knowledge/SKILL.md` + `books/`, `strategies/`, `indicators/`, `validation/`). Skill carregável via `Skill` tool, inviolable rules #1-7 em produção.
+- 🔄 **Fase 1 — Infra Pepperstone/cTrader.** Scaffold pronto (docker-compose com Postgres 5435 + Grafana; `ctrader_oauth_bootstrap.py`; schemas). Bloqueada aguardando aprovação Spotware do app OAuth.
+- ✅ **Fase 2 — Backtest Module** (escopo reescrito — ver preâmbulo abaixo). Entregue 2026-04-14 via `specs/backtest_phase2.md`: data layer (yfinance + Wikipedia SPX point-in-time), engine (portfolio + execução CFD-aware + runner), validation framework (CPCV / PBO / DSR / walk-forward / MCPT), métricas + report (survivorship disclaimer obrigatório), Clenow `stocks_on_the_move` replicado end-to-end. **173 testes passando**.
+- ⏳ **Próximo passo:** Fase 2.5 / 3 — rodar Clenow em grid de parâmetros exercitando CPCV/PBO/DSR com N≥20. Gate: distribuição honesta de Sharpe + PBO < 0.5 antes de migrar para dados pagos ou adicionar segunda estratégia (ver `specs/backtest_phase2.md` §"Reavaliação pós-Fase 2").
 
 ---
 
-## 🛤️ Depois do `/absorb-all-books`
-
-### Fase 0.5 — Consolidação do `knowledge/SKILL.md` (imediato)
-Rodar `scripts/build_skill.py` — agrega os **33 summaries validados** em uma **Claude Skill temática** em `knowledge/SKILL.md` + árvore `knowledge/books/<slug>.md`, `knowledge/strategies/*.md`, `knowledge/indicators/*.md`, `knowledge/validation/*.md`. Essa skill vira o "especialista de trading" — toda decisão futura consulta ela e exige citação `[livro.slug, p.X]`.
-
-Script é determinístico (zero LLM calls). Aceita `--skip-validation` (não recomendado); roda `validate_summary.py` como gate antes de agregar.
-
-**Gate:** validar a skill carregando via `Skill` tool e fazendo queries de sanidade (e.g., "qual posição sizing López de Prado recomenda?" → deve responder com citação `[advances_fin_ml, p.X]`).
+## 🛤️ Fases — detalhamento
 
 ### Fase 1 — Infraestrutura Pepperstone/cTrader + dados (VPS Ubuntu 24/7)
 
@@ -46,7 +34,23 @@ Script é determinístico (zero LLM calls). Aceita `--skip-validation` (não rec
 
 **Pipeline de market data:** cTrader Open API Protobuf → Postgres. Mensagens-chave: `ProtoOASymbolsListReq` (lista de símbolos), `ProtoOAGetTrendbarsReq` (OHLCV histórico por timeframe M1/M5/H1/D1), `ProtoOASubscribeSpotsReq` (stream de ticks bid/ask em tempo real). Cobrir timeframes M1/M5/H1/D1 para instrumentos selecionados na Fase 2.
 
-### Fase 2 — Strategy Engine (fundamentada na literatura)
+### Fase 2 — Backtest Module ✅ Concluída (2026-04-14) + Strategy Engine (2.5, pendente)
+
+**⚠️ Escopo reescrito.** O plano original da Fase 2 era "Strategy Engine (Universe Selector + estratégias candidatas)". Na prática, detectou-se que **não dava para calibrar estratégia sem antes ter o módulo de backtest rigoroso** — CPCV/PBO/DSR são input do Universe Selector, não output. A Fase 2 foi então re-escopada para entregar o **módulo de backtest** (`src/ai_trade/backtest/`), com Clenow `stocks_on_the_move` como estratégia-calibração (exercita point-in-time universe, ATR sizing, regime filter, survivorship). Spec executável com campo Conclusão por task: [`specs/backtest_phase2.md`](specs/backtest_phase2.md).
+
+**Entrega da Fase 2 (commits `517c221` → `415e205`):**
+- `backtest/data/` — `yfinance_source` + `wikipedia_spx` point-in-time
+- `backtest/engine/` — portfolio + execução CFD-aware + runner bar-by-bar
+- `backtest/validation/` — CPCV / PBO / DSR / walk-forward / MCPT (5 módulos)
+- `backtest/metrics/` — Sharpe/Sortino/Calmar/CAGR/DD/VaR + report MD+PNG
+- `backtest/strategies/` — base + Clenow momentum replicado end-to-end
+- **173 testes passando.** Survivorship disclaimer obrigatório em todo report.
+
+**Fase 2.5 (pendente) — Strategy Engine + Universe Selector:** o conteúdo original desta seção (Restrição de design / Universe Selector / candidatas fundamentadas) permanece como trabalho futuro, agora **muito mais bem equipado** — com engine validado, não há mais "montar infra + projetar estratégia" misturados. Fase 2.5 abre depois que Clenow rodar em grid (ver §"Reavaliação pós-Fase 2" em `specs/backtest_phase2.md`).
+
+---
+
+#### Conteúdo original da Fase 2 (agora Fase 2.5 — Strategy Engine + Universe Selector)
 
 **Restrição de design #1 — holding curto:** Pepperstone opera tudo como **CFD**, com swap/overnight cobrado diariamente. Estratégias devem ter holding típico de **minutos a poucos dias** (idealmente fechando posição antes do rollover — horário exato da Pepperstone a confirmar no bootstrap da Fase 1; provável 22h GMT como na maioria dos brokers CFD). Buy-and-hold multi-mês está fora de escopo — o swap vira drag material sobre o alpha.
 
@@ -233,10 +237,11 @@ Cole este prompt ao abrir o Claude Code:
 
 ```
 Estou retomando o desenvolvimento do projeto ai-trade.
-Leia o ROADMAP.md para estado atual e próximos passos.
-Leia TRADING_SYSTEM_PLAN.md se precisar do plano geral do sistema.
-Fase 0 (knowledge base, 33 livros) concluída. Próximo: rodar build_skill.py
-e entrar na Fase 1 (infra Pepperstone/cTrader).
+Leia ROADMAP.md para estado das fases e próximos passos.
+Leia specs/backtest_phase2.md para contexto do módulo de backtest
+(Fase 2 concluída 2026-04-14 — engine + validation + métricas + Clenow).
+Próximo passo: Fase 2.5 / 3 — grid search Clenow + gates CPCV/PBO/DSR
+em produção. Ver §"Reavaliação pós-Fase 2" no spec.
 ```
 
 ---
