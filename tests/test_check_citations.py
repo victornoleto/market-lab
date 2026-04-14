@@ -62,3 +62,42 @@ def test_check_summary_prefers_canonical_map_over_heuristic(monkeypatch):
     rep = check_citations.check_summary("cybernetic_trading")  # known-passing slug
     assert "detect_called" not in calls, "should have used canonical map"
     assert rep.offset >= 0
+
+
+def test_detect_systemic_offset_reports_single_finding():
+    """Given 10 failures where all actual-pages differ from cited-pages
+    by exactly +20, the report should surface SYSTEMIC_OFFSET=+20, not 10 errors."""
+    from scripts.check_citations import detect_systemic_offset, CitationCheck
+
+    failures = []
+    for printed, pdf_found in [(10, 30), (20, 40), (50, 70), (100, 120),
+                                (150, 170), (200, 220), (250, 270),
+                                (300, 320), (400, 420), (500, 520)]:
+        c = CitationCheck(
+            assertion="dummy",
+            raw=f"[p.{printed}]",
+            p_start=printed,
+            p_end=printed,
+            verdict="fail",
+            reason=f"token match found at pdf_page {pdf_found}",
+        )
+        c.actual_pdf_page = pdf_found
+        failures.append(c)
+
+    result = detect_systemic_offset(failures)
+    assert result.detected is True
+    assert result.offset == 20
+    assert result.coverage >= 0.70
+
+
+def test_systemic_offset_not_detected_when_failures_scattered():
+    from scripts.check_citations import detect_systemic_offset, CitationCheck
+
+    failures = []
+    for printed, pdf_found in [(10, 30), (20, 25), (50, 120), (100, 105), (150, 200)]:
+        c = CitationCheck(assertion="x", raw=f"[p.{printed}]", p_start=printed, p_end=printed, verdict="fail")
+        c.actual_pdf_page = pdf_found
+        failures.append(c)
+
+    result = detect_systemic_offset(failures)
+    assert result.detected is False

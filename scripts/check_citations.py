@@ -207,6 +207,46 @@ class CitationCheck:
     soft: bool = False       # [p.?]
     verdict: str = "pending"  # pending|ok|fail|warn
     reason: str = ""
+    actual_pdf_page: int | None = None  # where tokens cluster if initial match failed
+
+
+@dataclass
+class SystemicOffsetFinding:
+    detected: bool
+    offset: int | None = None
+    coverage: float | None = None
+    n_failures_explained: int = 0
+
+
+def detect_systemic_offset(failures: list["CitationCheck"]) -> "SystemicOffsetFinding":
+    """Given failures with `actual_pdf_page` recorded (wide search match),
+    compute offset = actual_pdf_page - p_start.
+
+    If ≥70% of failures with recorded actual_pdf_page share the same offset,
+    declare SYSTEMIC_OFFSET.
+    """
+    from collections import Counter
+
+    diffs = []
+    for f in failures:
+        actual = getattr(f, "actual_pdf_page", None)
+        if actual is None or f.p_start is None:
+            continue
+        diffs.append(actual - f.p_start)
+
+    if len(diffs) < 5:
+        return SystemicOffsetFinding(detected=False)
+
+    mode, count = Counter(diffs).most_common(1)[0]
+    coverage = count / len(diffs)
+    if coverage >= 0.70:
+        return SystemicOffsetFinding(
+            detected=True,
+            offset=mode,
+            coverage=coverage,
+            n_failures_explained=count,
+        )
+    return SystemicOffsetFinding(detected=False)
 
 
 @dataclass
@@ -221,6 +261,10 @@ class Report:
     failures: list[CitationCheck] = field(default_factory=list)
     warnings: list[CitationCheck] = field(default_factory=list)
     soft_refs: list[CitationCheck] = field(default_factory=list)
+    systemic_offset_detected: bool = False
+    systemic_offset_value: int | None = None
+    systemic_offset_coverage: float | None = None
+    systemic_offset_n_explained: int = 0
 
     @property
     def ok(self) -> bool:
@@ -590,14 +634,29 @@ def check_one(
             f"{len(overlap)}/{len(assertion_tokens)} tokens "
             f"({ratio:.0%}) in cited window"
         )
-    else:
-        chk.verdict = "fail"
-        chk.reason = (
-            f"0/{len(assertion_tokens)} assertion tokens found in printed "
-            f"pages {chk.p_start}-{chk.p_end} (PDF {pdf_start}-{pdf_end}, "
-            f"±{page_tolerance}) — possible mis-citation. "
-            f"Tokens looked for: {sorted(assertion_tokens)[:8]}"
-        )
+        return chk
+
+    # No immediate overlap — wide search (±30 pages) to record where the
+    # assertion tokens actually cluster. Enables systemic offset detection.
+    wide_match_page: int | None = None
+    best_overlap_count = 0
+    for q in range(max(1, pdf_start - 30), min(n_pages, pdf_end + 30) + 1):
+        if q in pages:
+            q_tokens = _tokens(pages[q])
+            q_overlap = len(assertion_tokens & q_tokens)
+            if q_overlap > best_overlap_count:
+                best_overlap_count = q_overlap
+                wide_match_page = q
+    if wide_match_page is not None and best_overlap_count >= 2:
+        chk.actual_pdf_page = wide_match_page
+
+    chk.verdict = "fail"
+    chk.reason = (
+        f"0/{len(assertion_tokens)} assertion tokens found in printed "
+        f"pages {chk.p_start}-{chk.p_end} (PDF {pdf_start}-{pdf_end}, "
+        f"±{page_tolerance}) — possible mis-citation. "
+        f"Tokens looked for: {sorted(assertion_tokens)[:8]}"
+    )
     return chk
 
 
@@ -658,6 +717,15 @@ def check_summary(
             else:
                 rep.warnings.append(chk)
 
+    # Systemic offset detection: re-frame bulk failures as 1 root cause
+    if rep.n_fail >= 5:
+        finding = detect_systemic_offset(rep.failures)
+        if finding.detected:
+            rep.systemic_offset_detected = True
+            rep.systemic_offset_value = finding.offset
+            rep.systemic_offset_coverage = finding.coverage
+            rep.systemic_offset_n_explained = finding.n_failures_explained
+
     if max_soft is not None and rep.n_soft > max_soft:
         # Promote to failure: too many soft [p.?] is abuse
         fake = CitationCheck(
@@ -679,6 +747,15 @@ def print_report(rep: Report) -> None:
         f"  printed→PDF offset={rep.offset}  total={rep.n_total}  ok={rep.n_ok}  "
         f"fail={rep.n_fail}  warn={rep.n_warn}  soft[p.?]={rep.n_soft}"
     )
+    if rep.systemic_offset_detected:
+        console.print(
+            f"[bold yellow]⚠ SYSTEMIC_OFFSET detected[/bold yellow] "
+            f"offset={rep.systemic_offset_value:+d} "
+            f"coverage={rep.systemic_offset_coverage:.0%} "
+            f"({rep.systemic_offset_n_explained}/{rep.n_fail} failures explained). "
+            f"Root cause: book-reader emitted wrong page numbers; "
+            f"suggest re-running self-audit or patch-offset."
+        )
     if rep.failures:
         from rich.markup import escape
         console.print("[bold red]Failures:[/bold red]")
@@ -720,6 +797,12 @@ def main() -> int:
             "n_soft": rep.n_soft,
             "failures": [asdict(f) for f in rep.failures],
             "warnings": [asdict(w) for w in rep.warnings],
+            "systemic_offset": {
+                "detected": rep.systemic_offset_detected,
+                "value": rep.systemic_offset_value,
+                "coverage": rep.systemic_offset_coverage,
+                "n_explained": rep.systemic_offset_n_explained,
+            },
         }
         print(json.dumps(out, indent=2, ensure_ascii=False))
     else:
