@@ -6,23 +6,27 @@
 
 ## 📍 Estado atual
 
-**Fase 0 — Knowledge Base (em andamento).**
+**Fase 0 — Knowledge Base (concluída, pronto para consolidação).**
 
-Pipeline: `books/raw/*.pdf` → `books/extracted/<slug>/` → `books/summaries/<slug>.md` (9 seções, citação obrigatória `[p.X]`/`[ch.Y]` ou `N/A —`) → `knowledge/SKILL.md` (agregador final).
+Pipeline: `books/raw/*.pdf` → `books/extracted/<slug>/` → `books/summaries/<slug>.md` (9 seções, citação obrigatória `[p.X]`/`[ch.Y]` ou `N/A —`) → `knowledge/SKILL.md` (agregador final, **próximo passo**).
 
-- ✅ Pipeline de extração/validação funcional (`scripts/extract_pdfs.py`, `scripts/validate_summary.py`, `scripts/check_citations.py`).
-- ✅ Validação autônoma em 3 camadas (estrutural + determinística + 2 juízes adversariais) substitui revisão humana.
-- ✅ **1 livro absorvido e validado:** `evidence_based_ta` (Aronson). PASS em todas as camadas.
-- ⏳ **~23 livros restantes.** Próximo comando: `/absorb-all-books` (dispara book-reader em paralelo, ondas de 4-6).
+- ✅ Pipeline de extração/validação funcional (`scripts/extract_pdfs.py`, `scripts/validate_summary.py`, `scripts/check_citations.py`, `scripts/build_page_index.py`).
+- ✅ Validação autônoma em 3 camadas (estrutural + determinística + 2 juízes adversariais com self-consistency) substitui revisão humana.
+- ✅ **Tier 2 pipeline hardening:** `_page_index.json` determinístico por livro elimina retry-hell por offset drift; detector `n_chapters_effective` (FU-1) deriva bound de citações do próprio summary; convenção PT/EN documentada no book-reader skill (FU-3).
+- ✅ **33/33 livros absorvidos e validados:** 🌟 12 Perfeita · ✅ 20 Boa · ⚠️ 1 Border (0 halluc reais). `check_citations.py` global: **33/33 PASS** (0 fails). `validate_summary.py`: 33/33 PASS estrutural, 10/10 seções em todos.
+- ✅ **Strict halluc audit:** 5 livros com J2 BORDERLINE revalidados — 1 fix real aplicado (`regime_change`: Glattfelder 2008→2011 per bibliografia Quantitative Finance 11:4). Demais BORDERLINEs são paráfrases ambíguas com 0 unsupported claims.
+- ⏳ **Próximo comando:** `python scripts/build_skill.py` (determinístico, sem LLM calls — agrega os 33 summaries em `knowledge/`).
 
 ---
 
 ## 🛤️ Depois do `/absorb-all-books`
 
-### Fase 0.5 — Consolidação do `knowledge/SKILL.md`
-Rodar `scripts/build_skill.py` — agrega todos os 24 summaries em uma **Claude Skill temática** em `knowledge/SKILL.md`. Essa skill vira o "especialista de trading" — toda decisão futura consulta ela e exige citação `[livro.slug, p.X]`.
+### Fase 0.5 — Consolidação do `knowledge/SKILL.md` (imediato)
+Rodar `scripts/build_skill.py` — agrega os **33 summaries validados** em uma **Claude Skill temática** em `knowledge/SKILL.md` + árvore `knowledge/books/<slug>.md`, `knowledge/strategies/*.md`, `knowledge/indicators/*.md`, `knowledge/validation/*.md`. Essa skill vira o "especialista de trading" — toda decisão futura consulta ela e exige citação `[livro.slug, p.X]`.
 
-**Gate:** validar a skill carregando via `Skill` tool e fazendo queries de sanidade (e.g., "qual posição sizing López de Prado recomenda?" → deve responder com citação).
+Script é determinístico (zero LLM calls). Aceita `--skip-validation` (não recomendado); roda `validate_summary.py` como gate antes de agregar.
+
+**Gate:** validar a skill carregando via `Skill` tool e fazendo queries de sanidade (e.g., "qual posição sizing López de Prado recomenda?" → deve responder com citação `[advances_fin_ml, p.X]`).
 
 ### Fase 1 — Infraestrutura Pepperstone/cTrader + dados (VPS Ubuntu 24/7)
 
@@ -143,36 +147,59 @@ Cole este prompt ao abrir o Claude Code:
 Estou retomando o desenvolvimento do projeto ai-trade.
 Leia o ROADMAP.md para estado atual e próximos passos.
 Leia TRADING_SYSTEM_PLAN.md se precisar do plano geral do sistema.
-Estou na Fase 0 (absorção de livros); Fases 1-7 ficam para depois.
+Fase 0 (knowledge base, 33 livros) concluída. Próximo: rodar build_skill.py
+e entrar na Fase 1 (infra Pepperstone/cTrader).
 ```
 
 ---
 
-## 📚 Livros da knowledge base (24 slugs esperados em `books/raw/`)
+## 📚 Livros da knowledge base (33/33 absorvidos e validados)
 
-| Livro | Slug |
-|---|---|
-| Evidence-Based Technical Analysis (Aronson) ✅ | `evidence_based_ta` |
-| Systematic Trading (Carver) | `systematic_trading` |
-| Trading Systems and Methods (Kaufman) | `trading_systems_methods` |
-| Advances in Financial Machine Learning (López de Prado) | `advances_fin_ml` |
-| Leverage Space Trading Model (Vince) | `leverage_space` |
-| Mathematics of Money Management (Vince) | `math_money_mgmt` |
-| Rocket Science for Traders (Ehlers) | `rocket_science` |
-| Cybernetic Analysis for Stocks and Futures (Ehlers) | `cybernetic_analysis` |
-| Cycle Analytics for Traders (Ehlers) | `cycle_analytics` |
-| Statistically Sound Indicators (Masters) | `stat_sound_indicators` |
-| Universal Tactics of Successful Trend Trading | `universal_trend_tactics` |
-| Stocks on the Move (Clenow) | `stocks_on_the_move` |
-| Cybernetic Trading Strategies (Ruggiero) | `cybernetic_trading` |
-| Testing and Tuning Market Trading Systems (Masters) | `testing_tuning` |
-| Permutation and Randomization Tests (Masters) | `permutation_tests` |
-| Numerical Recipes | `numerical_recipes` |
-| Assessing and Improving Prediction and Classification (Masters) | `assessing_prediction` |
-| Data-Driven Science and Engineering (Brunton/Kutz) | `data_driven_science` |
-| Technical Analysis for Algorithmic Pattern Recognition | `tech_analysis_patterns` |
-| Detecting Regime Change in Computational Finance (Chen) | `regime_change` |
-| Trading on Sentiment (Peterson) | `trading_on_sentiment` |
+Status resumido — detalhes completos em `books/TODO.md` (colunas Review + Tarefas pendentes por livro):
+
+| # | Livro | Slug | Importância | Qualidade |
+|---|---|---|---|---|
+| 1 | Adaptive Markets (Lo) | `adaptive_markets` | ⭐ | ⚠️ |
+| 2 | Advances in Financial Machine Learning (López de Prado) | `advances_fin_ml` | ⭐⭐⭐ | 🌟 |
+| 3 | Algorithmic Trading (Chan) | `algo_trading_chan` | ⭐⭐ | 🌟 |
+| 4 | Big Data and ML in Quantitative Investment (Guida ed.) | `big_data_ml_quant` | ⭐ | ✅ |
+| 5 | Cybernetic Analysis for Stocks and Futures (Ehlers) | `cybernetic_analysis` | ⭐⭐ | ✅ |
+| 6 | Cybernetic Trading Strategies (Ruggiero) | `cybernetic_trading` | ⭐ | ⚠️ |
+| 7 | Cycle Analytics for Traders (Ehlers) | `cycle_analytics` | ⭐ | ✅ |
+| 8 | Data-Driven Science and Engineering (Brunton/Kutz) | `data_driven_science` | ⭐ | 🌟 |
+| 9 | The Evaluation and Optimization of Trading Strategies (Pardo) | `eval_opt_strategies` | ⭐⭐⭐ | 🌟 |
+| 10 | Evidence-Based Technical Analysis (Aronson) | `evidence_based_ta` | ⭐⭐ | 🌟 |
+| 11 | Financial Time Series Analysis (Tsay) | `fin_time_series_tsay` | ⭐⭐ | ✅ |
+| 12 | Leverage Space Trading Model (Vince) | `leverage_space` | ⭐⭐ | 🌟 |
+| 13 | Machine Trading (Chan) | `machine_trading` | ⭐⭐ | ✅ |
+| 14 | Mathematics of Money Management (Vince) | `math_money_mgmt` | ⭐⭐ | ✅ |
+| 15 | ML for Algorithmic Trading (Jansen) | `ml_for_algo_trading` | ⭐⭐⭐ | ✅ |
+| 16 | ML for Asset Managers (López de Prado) | `ml_for_asset_managers` | ⭐ | ✅ |
+| 17 | Numerical Recipes (Press et al.) | `numerical_recipes` | ⭐ | ✅ |
+| 18 | Quantitative Trading (Chan) | `quant_trading_chan` | ⭐⭐⭐ | 🌟 |
+| 19 | Detecting Regime Change in Computational Finance (Chen) | `regime_change` | ⭐⭐⭐ | ✅ |
+| 20 | Risk Parity Fundamentals (Qian) | `risk_parity` | ⭐ | ✅ |
+| 21 | Rocket Science for Traders (Ehlers) | `rocket_science` | ⭐ | ✅ |
+| 22 | Handbook of Sentiment Analysis in Finance (Mitra & Yu) | `sentiment_analysis_handbook` | ⭐ | 🌟 |
+| 23 | Statistically Sound Indicators (Aronson/Masters) | `stat_sound_indicators` | ⭐⭐ | 🌟 |
+| 24 | Stocks on the Move (Clenow) | `stocks_on_the_move` | ⭐⭐⭐ | 🌟 |
+| 25 | Systematic Trading (Carver) | `systematic_trading` | ⭐⭐⭐ | 🌟 |
+| 26 | Technical Analysis for Algorithmic Pattern Recognition (Tsinaslanidis) | `tech_analysis_patterns` | ⭐ | ✅ |
+| 27 | Testing and Tuning Market Trading Systems (Masters) | `testing_tuning` | ⭐⭐ | ✅ |
+| 28 | Time Series Analysis (Hamilton) | `time_series_hamilton` | ⭐ | 🌟 |
+| 29 | Trading Evolved (Clenow) | `trading_evolved` | ⭐⭐ | ✅ |
+| 30 | Trading and Exchanges (Harris) | `trading_exchanges` | ⭐⭐ | ✅ |
+| 31 | Trading Systems and Methods (Kaufman) | `trading_systems_methods` | ⭐⭐⭐ | 🌟 |
+| 32 | Universal Tactics of Successful Trend Trading (Penfold) | `universal_trend_tactics` | ⭐ | ✅ |
+| 33 | Volatility Trading (Sinclair) | `volatility_trading` | ⭐⭐ | ✅ |
+
+**Legenda:** ⭐⭐⭐ Crítico (7) · ⭐⭐ Importante (12) · ⭐ Complementar (14). 🌟 Perfeita (12) · ✅ Boa (20) · ⚠️ Border (1).
+
+**Não absorvidos (fora do escopo atual, anotação histórica):**
+- `permutation_tests` (Masters) — conteúdo relevante já coberto por `stat_sound_indicators` + `testing_tuning` (mesmo autor, overlap forte).
+- `assessing_prediction` (Masters) — idem.
+- `trading_on_sentiment` (Peterson) — substituído por `sentiment_analysis_handbook` (Mitra & Yu, cobertura mais ampla).
+- `new_tech_trader` (LeBeau & Lucas) — referenciado por `cycle_analytics` como origem do VIDYA; decisão documentada de não absorver, cross-ref mantida com N/A.
 
 Pipeline é idempotente: PDFs faltando são pulados sem quebrar a execução.
 
@@ -183,5 +210,7 @@ Pipeline é idempotente: PDFs faltando são pulados sem quebrar a execução.
 - Plano geral: `TRADING_SYSTEM_PLAN.md`
 - Plano aprovado Fase 0: `/home/victor/.claude/plans/mighty-mixing-porcupine.md`
 - Plano ativo: `/home/victor/.claude/plans/synthetic-snuggling-wren.md`
+- **Status detalhado por livro:** `books/TODO.md` (tabela Status Geral com Review + Tarefas pendentes)
 - Summaries validados: `books/summaries/*.md`
 - Auditoria de validação: `books/summaries/.validation/` (gitignored)
+- Logs de absorção: `books/summaries/.logs/` (gitignored)
