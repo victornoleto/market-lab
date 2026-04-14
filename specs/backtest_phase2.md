@@ -139,7 +139,166 @@ yfinance+Wikipedia. Só então fazem sentido (a) migração para dados pagos
 como ablation study, (b) segunda estratégia, (c) vectorbt como sandbox.
 
 Racional completo das 3 decisões adiadas: §"Reavaliação pós-Fase 2" no
-final deste arquivo.
+final deste arquivo. **Execução 1 concluída 2026-04-14** — ver §"Fase
+2.5/3 — Execução 1" abaixo para números e fork de decisão.
+
+---
+
+## 🔬 Fase 2.5/3 — Execução 1 (grid Clenow, 2026-04-14)
+
+**Status:** 🔄 Grid executado. **Gates falham**. Fork de decisão aberto
+(paid data / universe shift / pivot). Artefatos em
+`reports/grid_20260414-1813/diagnostic.md`.
+
+### O que foi entregue (Commits 0-9 + fix)
+
+Novo módulo `src/ai_trade/backtest/grid/` (6 arquivos + CLI +
+regression fix na strategy). 11 commits pequenos em TDD estrito
+(`082a41f` → `8d25e65`), 62 novos testes (235/235 verdes).
+
+| Camada | Arquivo | LOC | Testes |
+|---|---|---|---|
+| **Config** | `grid/config.py` | 57 | 8 |
+| **Result + I/O** | `grid/result.py` | 244 | 10 |
+| **Runner** | `grid/runner.py` | 151 | 7 |
+| **Observers + log** | `grid/observers.py` | 161 | 6 |
+| **Gates** | `grid/gates.py` | 127 | 8 |
+| **Walk-forward** | `grid/walk_forward.py` | 111 | 7 |
+| **Diagnostic** | `grid/diagnostic.py` | 188 | 8 |
+| **Report** | `grid/report.py` | 280 | 6 |
+| **CLI** | `scripts/run_grid_clenow.py` | 283 | — (smoke) |
+| **Strategy fix** | `strategies/clenow_momentum.py` | +11 | 1 (regression) |
+
+**Fix pré-existente descoberto durante a 1ª run real (28/30 trials
+falharam):** `_sell_orders` criava `Order(side="sell")` para posições
+em tickers delistados mid-backtest (ex.: ANDV→MPC em 2018-10-03). No
+single-trial Clenow (janela 2023-H2) isso não disparava porque todas
+as deslistagens relevantes eram anteriores. Em 9 anos, ANDV/KR/WBA/
+PXD/MRO/etc. disparam o crash. Fix: `_sell_orders` recebe `bars` e
+pula posições sem bar hoje — órfãs esperam dados retornarem ou o
+backtest acabar (equity tracking o último mark). Commit `8d25e65`.
+
+### Grid executado
+
+- **Janela:** 2015-01-01 → 2023-12-31 (9 anos ≈ 2267 dias úteis)
+- **Universo:** SPX 500 point-in-time via Wikipedia, 506 tickers em
+  2015-01-01. 97 pulados (19%) por survivorship residual (delistings
+  que yfinance não resolve). Dados disponíveis: 410 tickers.
+- **Grid:** 30 configs =
+  `lookback_regression ∈ {60,75,90,105,120}` ×
+  `top_pct ∈ {0.10, 0.20, 0.30}` ×
+  `risk_factor ∈ {0.001, 0.002}`. Fixos: `rebalance_weekday=2`,
+  `lookback_trend=100`, `lookback_index_trend=200`, `lookback_atr=20`,
+  `lookback_gap=90`, `gap_threshold=0.15`.
+- **Paralelismo:** joblib `Parallel(n_jobs=4, backend="loky")` ≈ 15
+  min wallclock pra 30 configs após data fetch (7 min).
+- **Walk-forward:** 8 janelas contíguas na equity curve (não
+  re-otimização — fixed-config strategy).
+
+### Veredicto dos gates
+
+| Gate | Valor | Limite | Verdict |
+|---|---|---|---|
+| **PBO** | **0.524** | < 0.5 | ❌ reject (margin 2.4%) |
+| **DSR** | 0/30 configs p < 0.05 | any | ❌ reject |
+| **Walk-forward** | 4/30 configs pass | any | ✅ (4 passam) |
+
+**Overall: FAIL.** Falha composta: PBO e DSR, não WF (4 configs
+clearam walk-forward individualmente). Failure modes:
+`PBO_HIGH + DSR_ALL_FAIL + COMBINED`.
+
+### Melhor config (ignorando gates)
+
+**`config_id=15`** — `lookback_regression=90, top_pct=0.20,
+risk_factor=0.002`:
+- **Sharpe (annualized):** 0.583
+- **CAGR:** 8.87%
+- **Max drawdown:** 19.86%
+- **Walk-forward:** 6/8 profitable (passa rule #5)
+- **DSR p-value:** 0.627 (falha rule #4 por larga margem)
+- **Dentro do gate só se tirar PBO e DSR.**
+
+### Interpretação
+
+**Clenow na janela yfinance SPX 2015-2023 NÃO exibe edge estatístico**
+após correção para múltiplas hipóteses. Três evidências:
+
+1. **CAGR 8.87% do best config underperforma SPY buy-and-hold** na
+   mesma janela (~11-12%). Contra benchmark survivorship-biased.
+2. **DSR para N=30 trials, T=2267 bars:** E[SR_max] sob null
+   iid ≈ 0.054 periódico (= Sharpe annualized ~0.86). Best observed
+   Sharpe 0.583 annualized = 0.037 periódico. **Observado < benchmark
+   → não rejeita H0 (sem edge).**
+3. **PBO 0.524** (logits mean −0.20, std 1.94): IS-best configs não
+   mantêm rank OOS → overfit inherent no grid.
+
+**Duas leituras do resultado:**
+
+- **Literal:** yfinance SPX 2015-2023 não tem edge Clenow após gates.
+  O que parece alpha (Sharpe 0.58) é indistinguível do best-of-30
+  sob null hipótese.
+- **Data-hypothesis:** yfinance infla o benchmark SPY (survivorship
+  bias inclui só sobreviventes, nenhum falido — SPY real teria tido
+  CAGR menor). Remover o viés pode baixar SPY a ~9% e elevar Clenow
+  a um edge relativo. **Precisa paid-data ablation pra saber.**
+
+### Fork de decisão (aberto)
+
+O plano prevê: NÃO pivotar automaticamente. O diagnostic surface-ou
+os dados, o usuário decide. Quatro opções plausíveis:
+
+1. **Paid-data ablation.** Tiingo SF / Norgate / EOD. Re-rodar o
+   mesmo grid em dados survivorship-free. **Resposta direta:** o
+   edge é real e mascarado pelo viés, ou não existe. Custo: setup
+   + free-trial ou compra ($30-50/mês Tiingo SF). Tempo: 2-3 dias
+   de integração + 1-2h de re-run.
+2. **Pivot para 2ª estratégia** (Ehlers DSP, AFML meta-label, Chan
+   mean-reversion). Clenow semanal é ritmo lento; Ehlers é
+   complementar (holding curto, nativo CFD). Custo: 1-2 semanas.
+3. **Universe shift** (Nasdaq100 em vez de SPX500). Menos tickers =
+   menos configs necessárias = DSR benchmark menor. Mas introduz
+   viés setorial (tech). Custo: baixo (reusar infra).
+4. **Aceitar resultado como é** — Clenow não funciona no regime
+   2015-2023 yfinance. Documentar e seguir pro próximo experimento.
+
+**Recomendação (minha, não pré-decidida):** opção **1 (paid data)**
+primeiro. É a **resposta mais informativa** — se edge aparece no
+Norgate, todo o resto destrava. Se não aparece, o pivot fica mais
+bem-fundamentado (Clenow ainda fail após tirar a incerteza dos
+dados; agora faz sentido ir pra Ehlers/AFML).
+
+### Referências do grid run
+
+- **Diagnostic report:** `reports/grid_20260414-1813/diagnostic.md`
+  (versionado? não — diretório em `.gitignore`; números materiais
+  inline neste spec)
+- **Heatmap PNG:** `reports/grid_20260414-1813/assets/heatmap_sharpe.png`
+- **Per-trial checkpoints:** `.cache/grid_runs/grid_20260414-1813/trial_*/`
+  (parquet + JSON; humano-inspecionável)
+- **Log unificado:** `logs/grid.log`
+- **JSONL machine-readable:** `.cache/grid_runs/grid_20260414-1813/trials.jsonl`
+
+### Decisões-chave transferíveis (Fase 2.5)
+
+- **`return_as="list"` em `Parallel` bloqueia observers até TODAS as
+  tasks terminarem.** Usuário não vê progresso durante parallel run
+  mesmo com tqdm — trocar pra `return_as="generator_unordered"` numa
+  próxima iteração se UX for gargalo.
+- **Survivorship residual 3% (6m 2023) → 19% (9y 2015-2023).** Escala
+  aprox. linear no tempo de backtest. Quanto mais velho o início, mais
+  tickers ficam órfãos da Wikipedia scrape.
+- **Delisted-ticker sell crash** (ANDV 2018): latent bug que só
+  aparecia em windows que atravessavam delistings. Fix: `_sell_orders`
+  filtra por `bars`. Regression test em
+  `tests/test_clenow_strategy.py::TestSellCriteria::test_skips_sell_for_delisted_symbol_with_no_bar_today`.
+- **DSR p-value under null com N=30, T=2267:** E[SR_max] ≈ 0.054
+  periódico (≈ 0.86 annualized). Estratégias abaixo desse bar não
+  passam DSR mesmo com Sharpe absoluto positivo.
+- **Checkpoint I/O via parquet + JSON** funciona: 30 trials gravados
+  em ~10 MB, humano-inspecionável, robusto a rename/schema changes.
+- **Joblib workers `loky`: 4 workers × ~150 MB data = ~600 MB RSS
+  total.** Sem pressão de memória em máquina com 16 GB. `n_jobs=-1`
+  seguro.
 
 ---
 

@@ -191,6 +191,47 @@ primeira estratégia sobreviver a um grid com PBO < 0.5 e DSR p-value < 0.05
 
 ---
 
+## Como rodar o grid (Fase 2.5/3)
+
+Módulo `src/ai_trade/backtest/grid/` estende a Fase 2 com infraestrutura
+para rodar um grid de configurações de estratégia com gates anti-overfit
+ativos (PBO / DSR / walk-forward). Um novo CLI orquestra fetch + grid
+paralelo (joblib) + walk-forward + gate evaluation + report/diagnóstico:
+
+```bash
+.venv/bin/python scripts/run_grid_clenow.py \
+    --start 2015-01-01 --end 2023-12-31 \
+    --cash 100000 --output-dir reports/ \
+    --n-jobs 4
+```
+
+Acompanhar execução em tempo real (log unificado — um único `tail -f`
+para qualquer run, presente ou futura):
+
+```bash
+tail -f logs/grid.log
+cat logs/grid_latest_status.md  # snapshot high-level da última run
+```
+
+**Saídas:**
+- `reports/grid_<YYYYMMDD-HHMM>/summary.md` (se gates passam) OU
+  `diagnostic.md` (se falham) — incluem disclaimer de survivorship
+- `reports/grid_<YYYYMMDD-HHMM>/assets/heatmap_sharpe.png` — Sharpe por
+  `(lookback_regression × top_pct)` agregado por `max(risk_factor)`
+- `.cache/grid_runs/<run_id>/trial_*/` — checkpoints per-trial (parquet
+  + JSON, humano-inspecionáveis, resume-friendly)
+- `.cache/grid_runs/<run_id>/trials.jsonl` — machine-readable por trial
+
+**Execução 1 (2026-04-14):** gates falham marginalmente — PBO=0.524,
+DSR 0/30, WF 4/30. Best config #15 (lookback=90, top=20%, risk=0.2%)
+com Sharpe 0.58, CAGR 8.87%, DD 20%, WF 6/8. Clenow em yfinance SPX
+2015-2023 não demonstra edge estatístico após correção para múltiplas
+hipóteses. Fork de decisão aberto: paid-data ablation vs pivot vs
+universe shift — ver `specs/backtest_phase2.md` §"Fase 2.5/3 —
+Execução 1" para análise completa.
+
+---
+
 ## Livros
 
 **33 livros absorvidos** como Claude Skill (Fase 0 concluída). Importância por
