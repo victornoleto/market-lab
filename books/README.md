@@ -1,7 +1,7 @@
 # books/ — Knowledge Base dos Livros
 
 Esta pasta contém os **33 livros absorvidos** que alimentam o "especialista em
-trade" do ai-trade (Fase 0 do `TRADING_SYSTEM_PLAN.md`, **concluída**).
+trade" do ai-trade (Fase 0 do [`../ROADMAP.md`](../ROADMAP.md), **concluída**).
 
 Pipeline:
 `raw/<slug>.pdf` → `extracted/<slug>/` → `summaries/<slug>.md` (9 seções com
@@ -211,7 +211,6 @@ Pode ser removido.
 
 ## Referências
 
-- Plano geral do sistema: `../TRADING_SYSTEM_PLAN.md`
 - Roadmap / estado das fases: `../ROADMAP.md`
 - Plano da Fase 0: `/home/victor/.claude/plans/synthetic-snuggling-wren.md`
 - Inventário canônico dos livros: `MAPPING.md`

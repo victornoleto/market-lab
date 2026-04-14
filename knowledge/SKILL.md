@@ -37,7 +37,7 @@ justification citing a source:
    is mandated by this skill — the factor is a per-strategy parameter, defended in backtest.
    See `strategies/money_management.md`.
 7. **Paper trade ≥3 months** before any live capital, regardless of backtest quality.
-   See `TRADING_SYSTEM_PLAN.md` section 11.
+   See `../ROADMAP.md` §Fase 4 (paper trading gate).
 
 ## Navigation
 

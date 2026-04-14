@@ -52,7 +52,7 @@ class ThematicMap:
     code_refs: tuple[str, ...] = ()  # optional links to books/code/ paths
 
 
-# Theme → sources mapping (from the approved plan, seção 6.5 de TRADING_SYSTEM_PLAN.md)
+# Theme → sources mapping (one file per theme, each citing the books that back it)
 THEMES: tuple[ThematicMap, ...] = (
     # Strategies
     ThematicMap(
@@ -420,7 +420,7 @@ def build_skill_md(copied_slugs: list[str]) -> None:
         "   is mandated by this skill — the factor is a per-strategy parameter, defended in backtest.",
         "   See `strategies/money_management.md`.",
         "7. **Paper trade ≥3 months** before any live capital, regardless of backtest quality.",
-        "   See `TRADING_SYSTEM_PLAN.md` section 11.",
+        "   See `../ROADMAP.md` §Fase 4 (paper trading gate).",
         "",
         "## Navigation",
         "",

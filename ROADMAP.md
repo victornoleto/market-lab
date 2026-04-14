@@ -96,7 +96,7 @@
 - **Regra de transição:** posições abertas em instrumentos que saíram do ranking — manter até stop/target (Clenow, evita churn) ou fechar imediato? Default: manter.
 - **Pool candidato:** definir lista fixa de ~30-50 instrumentos Pepperstone pré-filtrados por liquidez absoluta (obtidos via `ProtoOASymbolsListReq` e filtragem por spread/ATR/volume). Não muda toda rodada; só é revisada trimestralmente.
 
-**⚠️ Gate anti-overfit:** o Universe Selector é ele próprio uma estratégia. Precisa passar pelo **mesmo framework de 7 camadas da Fase 3** (CPCV, PBO, DSR, permutation). Sem isso, só empurra o overfit de nível — em vez de otimizar parâmetros da estratégia, otimiza parâmetros do selector. `TRADING_SYSTEM_PLAN.md §14.5` cobre esse tipo de armadilha.
+**⚠️ Gate anti-overfit:** o Universe Selector é ele próprio uma estratégia. Precisa passar pelo **mesmo framework de 7 camadas da Fase 3** (CPCV, PBO, DSR, permutation). Sem isso, só empurra o overfit de nível — em vez de otimizar parâmetros da estratégia, otimiza parâmetros do selector.
 
 Cada estratégia implementada deve citar o livro/seção de origem. Candidatas priorizadas pro universo Pepperstone (filtradas pela restrição de holding curto):
 
@@ -113,15 +113,15 @@ Cada estratégia implementada deve citar o livro/seção de origem. Candidatas p
 
 ### Fase 3 — Backtest rigoroso (framework anti-overfit de 7 camadas)
 
-Coração do plano (§6.3 do `TRADING_SYSTEM_PLAN.md`). Cada camada vem de um livro:
+Coração do plano anti-overfit. Cada camada vem de um livro; implementação real em `src/ai_trade/backtest/validation/` e síntese em `knowledge/validation/`:
 
-1. **CPCV** (Combinatorial Purged Cross-Validation) — López de Prado
-2. **PBO** (Probability of Backtest Overfitting) — López de Prado
-3. **DSR** (Deflated Sharpe Ratio) — López de Prado
-4. **Permutation tests** — Masters (`permutation_tests`)
-5. **Walk-forward multi-regime** — Kaufman / Masters
-6. **Parsimônia de parâmetros** (máx 2-3, cada um justificado) — Aronson / Carver
-7. **Monitoring de degradação em produção** — Aronson (`evidence_based_ta`!)
+1. **CPCV** (Combinatorial Purged Cross-Validation) — López de Prado. Distribuição de Sharpes, não ponto único.
+2. **PBO** (Probability of Backtest Overfitting) — López de Prado. PBO > 0.5 ⇒ reject.
+3. **DSR** (Deflated Sharpe Ratio) — López de Prado. Corrige Sharpe pelo N de tentativas (obrigatório quando N > 1).
+4. **Permutation tests** — Masters (`permutation_tests`). Testa se edge ≠ acaso; p < 0.05.
+5. **Walk-forward multi-regime** — Kaufman / Masters. ≥ 8 janelas, ≥ 6 lucrativas, DD ≤ 25% em cada.
+6. **Parsimônia de parâmetros** (máx 2-4, cada um justificado economicamente) — Aronson / Carver.
+7. **Monitoring de degradação em produção** — Aronson (`evidence_based_ta`). Auditoria contínua live vs backtest.
 
 ### Fase 4 — Paper trading via conta demo cTrader (validação em tempo real)
 30-90 dias rodando na **conta demo cTrader da Pepperstone**, linkada ao cTID do usuário. Execução idêntica à real — mesmo SDK, mesmo protocolo Protobuf, só muda `CTRADER_DEMO_ACCOUNT_ID` e endpoint (`demo.ctraderapi.com:5035`). Paridade com live é nativa ao design do cTrader Open API. Logar todos os trades em Postgres, comparar distribuição de retornos vs backtest esperado, detectar divergência (slippage, spreads, gaps de execução).
@@ -227,7 +227,7 @@ seleção (broker-específico) e de histórico (profundidade variável).
 
 ## 🔑 Princípio-chave (não negociável)
 
-`TRADING_SYSTEM_PLAN.md §14.5` **rejeita explicitamente "vibes-based LLM trading"**. Toda decisão (indicador, parâmetro, sizing, gate de produção) exige citação `[livro.slug, p.X]` do knowledge base. Por isso a Fase 0 vem primeiro — sem ela, o agente opera sem fundamentação.
+Este sistema trata trading como problema de **estatística e processamento de sinais** — algoritmos quantificáveis que passam por validação rigorosa (CPCV/PBO/DSR/permutation). LLM entra como camada de **julgamento qualitativo complementar** (auditoria de racionalidade, detecção de drift em live, second-opinion contextual), nunca como raciocinador primário de trade. Toda decisão (indicador, parâmetro, sizing, gate de produção) exige citação `[livro.slug, p.X]` do knowledge base — "vibes-based LLM trading" é explicitamente rejeitado. Por isso a Fase 0 vem primeiro: sem ela, o agente opera sem fundamentação.
 
 **Resumo:** Fase 0 = munição intelectual. Fases 1-7 = construir e operar o sistema usando essa munição.
 
@@ -302,7 +302,6 @@ Pipeline é idempotente: PDFs faltando são pulados sem quebrar a execução.
 
 ## 📎 Referências rápidas
 
-- Plano geral: `TRADING_SYSTEM_PLAN.md`
 - Plano aprovado Fase 0: `/home/victor/.claude/plans/mighty-mixing-porcupine.md`
 - Plano ativo: `/home/victor/.claude/plans/synthetic-snuggling-wren.md`
 - **Status detalhado por livro:** `books/README.md` (seção "Catálogo dos livros" com tabela Review)

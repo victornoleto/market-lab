@@ -26,8 +26,7 @@ live, destrói capital.
 | 6 | Monitoring + governança | ⏳ |
 | 7 | Scaling | ⏳ |
 
-Detalhes por fase em [`ROADMAP.md`](ROADMAP.md). Plano geral do sistema em
-[`TRADING_SYSTEM_PLAN.md`](TRADING_SYSTEM_PLAN.md).
+Detalhes por fase em [`ROADMAP.md`](ROADMAP.md).
 
 ---
 
@@ -91,8 +90,7 @@ ai-trade/
 ├── docker-compose.yml               # Postgres 16 + Grafana 11
 ├── .env.example                     # Template de credenciais/tokens
 ├── pyproject.toml                   # Deps + hatch config
-├── ROADMAP.md                       # Mapa de fases
-├── TRADING_SYSTEM_PLAN.md           # Plano geral com justificativa por decisão
+├── ROADMAP.md                       # Mapa de fases + princípios não-negociáveis
 └── README.md                        # este arquivo
 ```
 
@@ -425,7 +423,6 @@ universo (e os dados) evoluem entre pesquisa e calibração Pepperstone.
 ## Referências
 
 - **Roadmap / estado das fases:** [`ROADMAP.md`](ROADMAP.md)
-- **Plano geral com justificativa por decisão:** [`TRADING_SYSTEM_PLAN.md`](TRADING_SYSTEM_PLAN.md)
 - **Catálogo dos livros + pipeline de absorção:** [`books/README.md`](books/README.md)
 - **Claude Skill gerada:** [`knowledge/SKILL.md`](knowledge/SKILL.md)
 - **Plano ativo (Fase 0):** `/home/victor/.claude/plans/synthetic-snuggling-wren.md`
