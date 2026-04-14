@@ -1,9 +1,15 @@
 """ai_trade.backtest.grid — parameter-grid backtest + gate evaluation.
 
-Fase 2.5/3 module: runs a Clenow momentum grid across N≥20 configs and
+Fase 2.5/3 module: runs a strategy grid across N≥20 configs and
 exercises the PBO/DSR/walk-forward gates in production. See
-``specs/backtest_phase2.md`` §"Reavaliação pós-Fase 2" for the motivation
-(single-trial Clenow never activates the gates; a grid does).
+``specs/backtest_phase2.md`` §"Reavaliação pós-Fase 2" and
+``specs/backtest_phase2_5_ehlers.md`` for motivation (single-trial
+strategies never activate the gates; a grid does).
+
+The runner/result layer is generic over the config dataclass —
+:class:`ClenowGridConfig` for Execução 1, :class:`EhlersGridConfig` for
+Execução 2, future strategies plug in by adding their own frozen
+dataclass.
 """
 
 from ai_trade.backtest.grid.config import ClenowGridConfig, grid_configs
@@ -11,6 +17,10 @@ from ai_trade.backtest.grid.diagnostic import (
     DiagnosticAnalyzer,
     DiagnosticReport,
     FailureMode,
+)
+from ai_trade.backtest.grid.ehlers_config import (
+    EhlersGridConfig,
+    ehlers_grid_configs,
 )
 from ai_trade.backtest.grid.gates import GateEvaluator, GateVerdict
 from ai_trade.backtest.grid.report import GridReportGenerator
@@ -33,6 +43,7 @@ __all__ = [
     "ClenowGridConfig",
     "DiagnosticAnalyzer",
     "DiagnosticReport",
+    "EhlersGridConfig",
     "FailureMode",
     "GateEvaluator",
     "GateVerdict",
@@ -44,6 +55,7 @@ __all__ = [
     "TrialResult",
     "WFResult",
     "compose_observers",
+    "ehlers_grid_configs",
     "grid_configs",
     "setup_grid_logging",
     "trial_from_dir",

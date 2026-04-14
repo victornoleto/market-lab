@@ -1,12 +1,19 @@
 """Trial + grid containers + safe serialization (parquet + JSON).
 
-A :class:`TrialResult` bundles a :class:`ClenowGridConfig` with the
-:class:`BacktestResult` it produced. Scalar metrics (Sharpe, CAGR, max DD)
-are cached so gate evaluation doesn't re-compute them per trial.
+A :class:`TrialResult` bundles a strategy-parameter config (any frozen
+``@dataclass``) with the :class:`BacktestResult` it produced. Scalar
+metrics (Sharpe, CAGR, max DD) are cached so gate evaluation doesn't
+re-compute them per trial.
 
 A :class:`GridResult` stacks trials and exposes ``returns_matrix`` (T, N)
 — the input format :func:`ai_trade.backtest.validation.pbo.pbo` expects.
 Error trials are excluded from the matrix.
+
+The config type is generic (``ConfigT``) — ``TrialResult`` and
+``GridResult`` don't know or care what strategy they were built for.
+``trial_to_dir`` serialises ``config.__dict__`` (works for any frozen
+dataclass); ``trial_from_dir`` takes ``config_cls`` to rebuild the
+correct type.
 
 Checkpoint layout for crash-resume:
 
@@ -22,6 +29,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any, Generic, TypeVar
 
 import numpy as np
 import pandas as pd
@@ -32,8 +40,11 @@ from ai_trade.backtest.engine.runner import BacktestResult
 from ai_trade.backtest.grid.config import ClenowGridConfig
 
 
+ConfigT = TypeVar("ConfigT")
+
+
 @dataclass
-class TrialResult:
+class TrialResult(Generic[ConfigT]):
     """One grid cell's outcome.
 
     ``result`` is ``None`` iff ``status == "error"`` (the backtest crashed or
@@ -43,7 +54,7 @@ class TrialResult:
     """
 
     config_id: int
-    config: ClenowGridConfig
+    config: ConfigT
     result: BacktestResult | None
     sharpe: float
     cagr: float
@@ -53,14 +64,14 @@ class TrialResult:
 
 
 @dataclass
-class GridResult:
+class GridResult(Generic[ConfigT]):
     """Collection of trials for one grid run."""
 
-    trials: list[TrialResult]
+    trials: list[TrialResult[ConfigT]]
     run_id: str
 
     @property
-    def configs(self) -> list[ClenowGridConfig]:
+    def configs(self) -> list[ConfigT]:
         return [t.config for t in self.trials]
 
     @property
@@ -218,11 +229,25 @@ def trial_to_dir(trial: TrialResult, directory: Path) -> None:
         )
 
 
-def trial_from_dir(directory: Path) -> TrialResult:
-    """Reconstruct a TrialResult from ``directory``."""
+def trial_from_dir(
+    directory: Path,
+    config_cls: type[ConfigT] = ClenowGridConfig,  # type: ignore[assignment]
+) -> TrialResult[Any]:
+    """Reconstruct a TrialResult from ``directory``.
+
+    Parameters
+    ----------
+    directory : Path
+        Path to the ``trial_{id}/`` directory.
+    config_cls : type, optional
+        Dataclass to rebuild the config with. Defaults to
+        :class:`ClenowGridConfig` for backward compatibility with the
+        Clenow pipeline; pass e.g. :class:`EhlersGridConfig` for the
+        Ehlers execution.
+    """
     directory = Path(directory)
     meta = json.loads((directory / "meta.json").read_text())
-    config = ClenowGridConfig(**meta["config"])
+    config = config_cls(**meta["config"])
 
     if meta["status"] == "error":
         return TrialResult(

@@ -303,7 +303,7 @@ report gerado, integration test passa, notas escritas.
       # 2×2×3×2 = 24 configs; respeita Rule #2 (4 params)
   ```
 
-- [ ] **Grid runner adaptation** — `src/ai_trade/backtest/grid/runner.py`
+- [x] **Grid runner adaptation** — `src/ai_trade/backtest/grid/runner.py`
   - **Generalizar** `GridRunner` para aceitar qualquer `@dataclass`
     frozen como config (atualmente hardcoded em `ClenowGridConfig`).
     Opção: trocar anotação `list[ClenowGridConfig]` por

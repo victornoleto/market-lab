@@ -1,9 +1,14 @@
 """GridRunner — iterates configs, runs trials, persists checkpoints.
 
-Single-threaded in this commit; parallelism lands in the next commit along
-with logging/progress UX. The ``trial_fn`` contract isolates GridRunner from
-strategy-construction details: callers pass a closure that knows how to
-build and run one trial given a config.
+Generic over the config type: the ``config_cls`` field is the dataclass
+used for both *trial_fn* typing (implicit) and checkpoint rehydration
+(explicit — ``trial_from_dir`` needs the class to reconstruct instances).
+Default ``ClenowGridConfig`` preserves backward compatibility; pass
+``EhlersGridConfig`` (or any other frozen dataclass) for other strategies.
+
+The ``trial_fn`` contract isolates GridRunner from strategy-construction
+details: callers pass a closure that knows how to build and run one
+trial given a config.
 """
 
 from __future__ import annotations
@@ -11,7 +16,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Generic, TypeVar
 
 from joblib import Parallel, delayed
 
@@ -34,31 +39,39 @@ from ai_trade.backtest.metrics.performance import (
 _log = logging.getLogger("ai_trade.grid.runner")
 
 
-TrialFn = Callable[[ClenowGridConfig], BacktestResult]
+ConfigT = TypeVar("ConfigT")
+
+TrialFn = Callable[[ConfigT], BacktestResult]
 ProgressCb = Callable[[int, int, TrialResult], None]
 
 
 @dataclass
-class GridRunner:
+class GridRunner(Generic[ConfigT]):
     """Run a list of grid configs, checkpointing each trial to disk.
 
     ``checkpoint_dir`` is the root under which run-specific subdirectories
     appear as ``{checkpoint_dir}/{run_id}/trial_{id}/``. A re-run with the
     same ``run_id`` reuses any trial directories already present.
+
+    ``config_cls`` is the dataclass used to rehydrate checkpoints from
+    disk. It defaults to :class:`ClenowGridConfig` so pre-existing
+    Clenow call sites don't need to change; new strategies (Ehlers,
+    future AFML/Chan) pass their own config class.
     """
 
     checkpoint_dir: Path = field(default_factory=lambda: Path(".cache/grid_runs"))
-    n_jobs: int = 1           # parallelism enabled in the next commit
+    n_jobs: int = 1
     periods_per_year: int = 252
+    config_cls: type = ClenowGridConfig
 
     def run(
         self,
         *,
-        configs: list[ClenowGridConfig],
-        trial_fn: TrialFn,
+        configs: list[ConfigT],
+        trial_fn: TrialFn[ConfigT],
         run_id: str,
         progress_cb: ProgressCb | None = None,
-    ) -> GridResult:
+    ) -> GridResult[ConfigT]:
         run_dir = Path(self.checkpoint_dir) / run_id
         run_dir.mkdir(parents=True, exist_ok=True)
 
@@ -66,12 +79,12 @@ class GridRunner:
 
         # Load any pre-existing checkpoints first so resume skips re-run.
         # Compute which configs still need to run.
-        preloaded: dict[int, TrialResult] = {}
-        pending: list[tuple[int, ClenowGridConfig]] = []
+        preloaded: dict[int, TrialResult[ConfigT]] = {}
+        pending: list[tuple[int, ConfigT]] = []
         for idx, config in enumerate(configs):
             trial_dir = run_dir / f"trial_{idx}"
             if (trial_dir / "meta.json").exists():
-                preloaded[idx] = trial_from_dir(trial_dir)
+                preloaded[idx] = trial_from_dir(trial_dir, config_cls=self.config_cls)
                 _log.info(
                     "trial %d resumed from checkpoint (status=%s)",
                     idx, preloaded[idx].status,
@@ -86,7 +99,7 @@ class GridRunner:
 
         # Merge preloaded + newly computed, persist new ones, and invoke
         # progress_cb in config-order so observers see a stable sequence.
-        trials: list[TrialResult] = []
+        trials: list[TrialResult[ConfigT]] = []
         completed_count = 0
         for idx, _cfg in enumerate(configs):
             if idx in preloaded:
@@ -103,9 +116,9 @@ class GridRunner:
 
     def _run_sequential(
         self,
-        pending: list[tuple[int, ClenowGridConfig]],
-        trial_fn: TrialFn,
-    ) -> dict[int, TrialResult]:
+        pending: list[tuple[int, ConfigT]],
+        trial_fn: TrialFn[ConfigT],
+    ) -> dict[int, TrialResult[ConfigT]]:
         return {
             idx: self._run_trial(idx, config, trial_fn)
             for idx, config in pending
@@ -113,9 +126,9 @@ class GridRunner:
 
     def _run_parallel(
         self,
-        pending: list[tuple[int, ClenowGridConfig]],
-        trial_fn: TrialFn,
-    ) -> dict[int, TrialResult]:
+        pending: list[tuple[int, ConfigT]],
+        trial_fn: TrialFn[ConfigT],
+    ) -> dict[int, TrialResult[ConfigT]]:
         """Dispatch pending trials across ``n_jobs`` workers via joblib.
 
         Backend ``loky`` (default) uses processes, which is safe for CPU-bound
@@ -132,9 +145,9 @@ class GridRunner:
     def _run_trial(
         self,
         config_id: int,
-        config: ClenowGridConfig,
-        trial_fn: TrialFn,
-    ) -> TrialResult:
+        config: ConfigT,
+        trial_fn: TrialFn[ConfigT],
+    ) -> TrialResult[ConfigT]:
         try:
             result = trial_fn(config)
         except Exception as exc:  # noqa: BLE001 — we want the stringified error
