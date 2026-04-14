@@ -58,7 +58,7 @@ class Settings(BaseSettings):
     ctrader_mode: CTraderMode = CTraderMode.DEMO
 
     # Postgres.
-    database_url: str = "postgresql://ai_trade:ai_trade@localhost:5432/ai_trade"
+    database_url: str = "postgresql://ai_trade:ai_trade@localhost:5435/ai_trade"
 
     @property
     def ctrader_host(self) -> str:
