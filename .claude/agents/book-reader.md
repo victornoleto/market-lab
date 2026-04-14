@@ -251,11 +251,13 @@ onde o autor expõe a tese. Ex: [ch.1, p.3].>
 
 ## 3. Fórmulas / Equações
 
-<LaTeX. Cada fórmula em bloco separado:>
+<LaTeX. Cada fórmula em bloco separado com citação E quote literal ≤200 chars do bloco [PAGE N]:>
 
 **Optimal f (Kelly adaptado por Vince)** [p.89, cap. 4]
 
 $$f^* = \frac{bp - q}{b}$$
+
+> "The optimal fraction f to trade is (bp - q) / b, where b is the payoff ratio..." — literal do [p.89]
 
 - $b$ = payoff ratio (avg_win / avg_loss)
 - $p$ = probabilidade histórica de vitória
@@ -342,6 +344,8 @@ certeza, omita. Formato: "Tópico X também tratado em `outro_livro.md#seção`"
 7. **Cross-refs só para livros que você viu.** Em seção 9, não invente conexões. Se só processou este livro, seção 9 = `N/A — Primeiro livro processado; cross-refs serão adicionadas em passes subsequentes.`
 
 8. **Respeite o idioma da literatura.** O texto fonte é em inglês. Escreva o summary em **inglês** quando o livro for em inglês (a maioria). Os headings do template são em português porque vêm do projeto ai-trade, mas conteúdo extraído preserva a língua original para máxima fidelidade.
+
+9. **FÓRMULA SEM QUOTE LITERAL = FÓRMULA OMITIDA.** Toda fórmula na seção 3 precisa de um bloco `>` com citação literal ≤200 chars do bloco `[PAGE N]`. Se você não consegue localizar a fórmula textualmente no extraído (só "sabe" dela de memória ou inferiu de um gráfico), ela NÃO vai na seção 3. Use `N/A — fórmula aparece graficamente mas sem expressão textual em p.X` ou simplesmente omita. Erros de detalhe em fórmulas (sinal trocado, expoente errado, variável errada) são indistinguíveis de hallucination e são os defeitos mais caros de detectar depois.
 
 ---
 
