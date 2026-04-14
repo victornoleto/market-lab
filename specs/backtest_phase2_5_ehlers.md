@@ -92,7 +92,7 @@ multi-ticker (top-10 SPX constituents por liquidez) e comparar.
 
 **O que fazer:**
 
-- [ ] **SuperSmoother** — `src/ai_trade/backtest/indicators/ehlers_ss.py`
+- [x] **SuperSmoother** — `src/ai_trade/backtest/indicators/ehlers_ss.py`
   - Função pura: `super_smoother(series: pd.Series, period: int) → pd.Series`
   - Filtro IIR de 2 polos com cutoff em `period` bars
   - Fonte: `[cycle_analytics, ch.3, p.36]` — 12 dB/octave attenuation
@@ -132,7 +132,17 @@ multi-ticker (top-10 SPX constituents por liquidez) e comparar.
 cada uma com teste numérico verificável. Pytest roda ≥25 testes novos
 verdes. Docstrings citam o livro+página de cada fórmula.
 
-**Conclusão:** _(preencher)_
+**Conclusão (parcial — 1/5 primitivas):**
+
+- **Commit 1 — SuperSmoother** (`c95621c` preexisting fix + novo commit):
+  `indicators/__init__.py` + `indicators/ehlers_ss.py` (49 LOC) +
+  `tests/test_ehlers_indicators.py::TestSuperSmoother` com 7 testes
+  (shape/index, DC passthrough, Nyquist zero, slow passthrough, invalid
+  period, rolloff por oitava, fórmula closed-form t=2). Warm-up seed:
+  `Output[0]=Input[0]`, `Output[1]=Input[1]` (padrão EasyLanguage
+  Ehlers). `242 passed` total. Preexisting: fix `pythonpath = ["."]`
+  em `pyproject.toml` destravou `from scripts import ...` nos testes
+  de book-reader (3 fails + 1 collection error → 0).
 
 ---
 
