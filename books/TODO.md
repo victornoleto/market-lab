@@ -1,7 +1,7 @@
 # TODO — Pré build_skill
 
 Checklist de itens a revisar/corrigir antes de rodar `python scripts/build_skill.py`.
-Status da base em `2026-04-14`: **33/33 livros com summary, 100% PASS estrutural**.
+Status da base em `2026-04-14`: **33/33 livros com summary, 100% PASS estrutural, 33/33 PASS `check_citations.py` (0 fails)**.
 
 **Sessão 2026-04-14 — P0+P1 re-absorptions pós pipeline hardening:**
 - ✅ Item 0: `CITATION_RE` expandido para aceitar page-first, en-dash e paren-chapter (6 livros desbloqueados do n_total≈0); commit `6d445f1`.
@@ -12,35 +12,11 @@ Status da base em `2026-04-14`: **33/33 livros com summary, 100% PASS estrutural
 - ⚠️ Item D: `algo_trading_chan` → BORDERLINE (4 mis-citations de página corrigidas, 0 halluc).
 - ✅ Item G: `time_series_hamilton` → ratio 95%→98% pós-pipeline-hardening (chapter_intro warn verdict limpou 2 false-positives).
 
-**Follow-ups conhecidos fora de escopo (regex novo expôs — ação pendente):**
-
-### FU-1 — Bug detector `n_chapters` em `scripts/check_citations.py`
-**Sintoma:** `math_money_mgmt` retorna 60 fails tipo `chapter X > n_chapters (2)` para citações `[ch.3..ch.8]` legítimas; `advances_fin_ml` mesmo padrão (4 fails `> n_chapters (10)` para ch.12/13/16/20). Livros têm 8+ e 22 capítulos respectivamente.
-
-**Ação:**
-1. TDD: em `tests/test_check_citations.py`, adicionar teste com fixture de livro com 8 capítulos cuja função `_detect_n_chapters` (ou equivalente) retorna 2. Asserir ≥8.
-2. Investigar a heurística atual (provavelmente parsing de TOC para Parts em vez de Chapters, ou regex que para na primeira "Part I" / "Section 1").
-3. Fix candidato: usar `printed_to_pdf` keys + grep por `Chapter \d+` no `_full.txt`, pegando o max.
-4. Re-rodar audit: `math_money_mgmt` deve cair de 60 fails para ≤5; `advances_fin_ml` para 0.
-
-**Bloqueia:** revalidação adversarial honesta de `math_money_mgmt` (juízes nunca foram dispatchados pós-fix porque Layer-2 estava cego para essas citações).
-
-### FU-2 — Audit dos 4 livros com fails recém-expostos
-Após FU-1 corrigir o detector, rodar `check_citations.py` em cada um e classificar fails restantes:
-
-| Livro | Fails atuais (audit v2) | Origem provável |
-|---|---|---|
-| `adaptive_markets` | 3 fails | tokens 'capm', 'sharpe' não bateram em p.249-250 — verificar conteúdo |
-| `data_driven_science` | 1 fail | investigar |
-| `sentiment_analysis_handbook` | 2 fails | investigar |
-| `cycle_analytics` | 1 fail (EMA lag formula p.35) | possível mis-cit real ou ruído de tokens |
-
-**Ação:** para cada fail genuíno, dispatchar juízes adversariais (frame_1a/1b) e aplicar fix cirúrgico no padrão estabelecido na sessão 2026-04-14 (ver Items B/C/D/E/F).
-
-### FU-3 — Layer-2 ruído tokens PT/EN
-**Sintoma:** `eval_opt_strategies [p.273]` claim em PT ("RRR anualizado deve ser ≥ 3") foi flaggada por Layer-2 mesmo sendo correta — tokens PT não batem com source EN. Resolvido inline adicionando keyword EN; mas o problema é estrutural.
-
-**Ação (opcional, baixa prioridade):** documentar convenção no `book-reader.md` skill: claims em PT devem incluir keyword EN inline (ex.: "Annualized RRR ≥ 3" em vez de "RRR anualizado ≥ 3"). Alternativa: estender STOPWORDS para incluir PT comuns + adicionar tradução automática inline ao processar tokens.
+**Sessão 2026-04-14 (tarde) — FU-1/2/3 zerados:**
+- ✅ **FU-1 resolvido:** `compute_n_chapters_effective` usa `max(ch.N)` citado no summary como floor (commit `62edeea`). Desbloqueou `math_money_mgmt` (60→2 fails → 0 após fix cirúrgico) e `advances_fin_ml` (4→0 fails). +4 testes TDD em `tests/test_check_citations.py`.
+- ✅ **FU-2 resolvido:** audit dos 4 livros pós FU-1 — `data_driven_science` e `sentiment_analysis_handbook` já PASS automaticamente; `adaptive_markets` 3 fails → 0 (CAPM/Alpha/Khandani-Lo re-pageadas para páginas reais de conteúdo); `cycle_analytics` 1 fail → 0 (EMA lag [p.35]→[p.19], PDF/printed confusão) (commit `76988c3`).
+- ✅ **FU-3 resolvido:** convenção PT/EN documentada em `.claude/agents/book-reader.md` (regra 8, commit `1f7e912`) — 4 exemplos ✅/❌ cobrindo headings e REGRA lines.
+- ✅ **Strict 100% halluc audit:** verificados `math_money_mgmt, regime_change, risk_parity, tech_analysis_patterns, testing_tuning` — 1 halluc real encontrada e corrigida em `regime_change` (Glattfelder 2008→2011 per bibliografia [27] = Quantitative Finance 2011, commit `a124f7a`). Demais livros têm apenas `ambiguous` verdicts (page-off ≤2 ou paráfrases semânticas) — não bloqueiam `build_skill`.
 
 ---
 
@@ -65,46 +41,52 @@ Estado atual de cada livro: qualidade da absorção e tarefas pendentes antes do
 - `<85%` / `~85%` = ratio abaixo ou perto do limiar (ver item 4)
 - `—` = sem tarefas pendentes
 
-| Slug | Importância | Autor | pp | Cit | Ratio | Qualidade | Tarefas pendentes |
-|---|---|---|---|---|---|---|---|
-| `adaptive_markets` | `⭐` Complementar | Lo | 503 | 10 | 89% | ⚠️ Suspeita | Densidade 0.02 cit/p — abaixo do limiar 1/20p; não na lista P0-P2, mas avaliar |
-| `advances_fin_ml` | `⭐⭐⭐` Crítico | López de Prado | 489 | 119 | 96% | 🌟 Perfeita | ⚠️ BORDERLINE adversarial (J1 92.3% / J2 87.5% retry1, 0 halluc); claim numérico [p.148-149] reescrito sem multiplicador 2-3x (não existia no source) |
-| `algo_trading_chan` | `⭐⭐` Importante | Chan | 225 | 131 | 100% | 🌟 Perfeita | ⚠️ BORDERLINE adversarial retry2 (J1 PASS 91.7% / J2 BORDERLINE 75%, 0 halluc); 4 mis-citations de página corrigidas cirurgicamente (VX p.122→126, roll p.136-137→118-119, momentum p.141→151, stop-loss p.201-202→183-184) |
-| `big_data_ml_quant` | `⭐` Complementar | Guida (ed.) | 285 | 95 | 83% | ⚠️ Regular | `<85%` (item 4) |
-| `cybernetic_analysis` | `⭐⭐` Importante | Ehlers | 274 | 72 | 92% | ✅ Boa | — |
-| `cybernetic_trading` | `⭐` Complementar | Ruggiero | 163 | 95 | 100% | 🌟 Perfeita | — |
-| `cycle_analytics` | `⭐` Complementar | Ehlers | 252 | 59 | 88% | ✅ Boa | — |
-| `data_driven_science` | `⭐` Complementar | Brunton | 76 | 47 | 93% | 🌟 Perfeita | — |
-| `eval_opt_strategies` | `⭐⭐⭐` Crítico | Pardo | 367 | 97 | 100% | 🌟 Perfeita | ✅ PASS retry3 (J1 PASS 100% / J2 PASS 91.7%, 0 halluc, layer-2 clean); 5 mis-citations corrigidas (p.66→46-47, p.301/302→311-312, p.296→284-286, p.323→296-298) |
-| `evidence_based_ta` | `⭐⭐` Importante | Aronson | 544 | 105 | 100% | 🌟 Perfeita | — |
-| `fin_time_series_tsay` | `⭐⭐` Importante | Tsay | 714 | 36 | 88% | ✅ Boa | — |
-| `leverage_space` | `⭐⭐` Importante | Vince | 206 | 46 | 100% | 🌟 Perfeita | — |
-| `machine_trading` | `⭐⭐` Importante | Chan | 267 | 75 | 88% | ✅ Boa | — |
-| `math_money_mgmt` | `⭐⭐` Importante | Vince | 109 | 16 | 97% | ⚠️ Borderline | Juiz adversarial BORDERLINE (item 0 ⚠️); densidade ok (0.15/p) |
-| `ml_for_algo_trading` | `⭐⭐⭐` Crítico | Jansen | 821 | 190 | 93% | ✅ Boa | — |
-| `ml_for_asset_managers` | `⭐` Complementar | López de Prado | 45 | 39 | 82% | ⚠️ Regular | `<85%` (item 4) |
-| `numerical_recipes` | `⭐` Complementar | Press et al. | 1018 | 91 | 99% | ✅ Boa | — |
-| `quant_trading_chan` | `⭐⭐⭐` Crítico | Chan | 204 | 94 | 99% | 🌟 Perfeita | — |
-| `regime_change` | `⭐⭐⭐` Crítico | Chen | 165 | 63 | 83% | ⚠️ Regular | `<85%` |
-| `risk_parity` | `⭐` Complementar | Qian | 245 | 51 | 91% | ✅ Boa | — |
-| `rocket_science` | `⭐` Complementar | Ehlers | 265 | 86 | 90% | ✅ Boa | — |
-| `sentiment_analysis_handbook` | `⭐` Complementar | Mitra & Yu | 893 | 101 | 100% | 🌟 Perfeita | Ambiguidade interna p.705 (item 2, non-blocking) |
-| `stat_sound_indicators` | `⭐⭐` Importante | Aronson | 519 | 116 | 100% | 🌟 Perfeita | — |
-| `stocks_on_the_move` | `⭐⭐⭐` Crítico | Clenow | 249 | 61 | 97% | 🌟 Perfeita | — |
-| `systematic_trading` | `⭐⭐⭐` Crítico | Carver | 326 | 91 | 99% | 🌟 Perfeita | ✅ PASS retry2 (J1 PASS 91.7% / J2 PASS 92.3%, 0 halluc, layer-2 clean); 4 mis-citations corrigidas (SR 0.08 p.196, Table 4 p.60, SR_realistic formula removida, EWMAC→early-loss-taker p.58-59) |
-| `tech_analysis_patterns` | `⭐` Complementar | Tsinaslanidis | 213 | 75 | 100% | 🌟 Perfeita | — |
-| `testing_tuning` | `⭐⭐` Importante | Masters | 353 | 119 | 80% | ⚠️ Regular | `~80%` (item 4; re-abs 2026-04-13, ratio estável) |
-| `time_series_hamilton` | `⭐` Complementar | Hamilton | 814 | 87 | 98% | 🌟 Perfeita | ⚠️ BORDERLINE adversarial após retry 3 (J1+J2 87.5%, 0 halluc — self-consistency forte); layer-2 limpo pós-`chapter_intro` warn verdict (1 warn, 0 fail) |
-| `trading_evolved` | `⭐⭐` Importante | Clenow | 467 | 111 | 91% | ✅ Boa | — |
-| `trading_exchanges` | `⭐⭐` Importante | Harris | 113 | 129 | 91% | ✅ Boa | — |
-| `trading_systems_methods` | `⭐⭐⭐` Crítico | Kaufman | 1232 | 277 | 97% | 🌟 Perfeita | ⚠️ BORDERLINE retry3 (J1 PASS 91.7% / J2 BORDERLINE 75%, 0 halluc pós-fix Market Profile p.798-800→826); re-abs opus massiva (28→277 cit) concluída |
-| `universal_trend_tactics` | `⭐` Complementar | Penfold | 409 | 75 | 100% | ✅ Boa | — |
-| `volatility_trading` | `⭐⭐` Importante | Sinclair | 298 | 130 | 80% | ⚠️ Regular | `~80%` (re-abs corretiva 2026-04-13: 9 halluc. zeradas, densidade 0.44 cit/p, adversarial J1 BORDER 93% / J2 PASS 92.9%) |
+| Slug | Importância | Autor | pp | Cit | Ratio | Qualidade | Review (absorção) | Tarefas pendentes |
+|---|---|---|---|---|---|---|---|---|
+| `adaptive_markets` | `⭐` Complementar | Lo | 503 | 10 | 89% | ⚠️ Suspeita | J1 PASS 100%, 0 halluc, dens 0.02/p — sub-minerado; 3 mis-cit Ch.8 CAPM/Khandani fixadas | Densidade 0.02 cit/p — abaixo do limiar 1/20p; avaliar re-absorção enriquecida |
+| `advances_fin_ml` | `⭐⭐⭐` Crítico | López de Prado | 489 | 119 | 96% | 🌟 Perfeita | J1 PASS 92% / J2 BORDER 88%, 0 halluc, dens 0.24/p | ⚠️ BORDERLINE adversarial (0 halluc); claim [p.148-149] já reescrito sem 2-3x Sharpe |
+| `algo_trading_chan` | `⭐⭐` Importante | Chan | 225 | 131 | 100% | 🌟 Perfeita | J1 PASS 92% / J2 BORDER 75%, 0 halluc, dens 0.58/p, 4 mis-cit fixadas | ⚠️ BORDERLINE adversarial retry2 (0 halluc); 4 mis-cit corrigidas (VX, roll, momentum, stop-loss) |
+| `big_data_ml_quant` | `⭐` Complementar | Guida (ed.) | 285 | 95 | 83% | ✅ Boa | J1 PASS 100%, 0 halluc, dens 0.33/p — sólido | — |
+| `cybernetic_analysis` | `⭐⭐` Importante | Ehlers | 274 | 72 | 92% | ✅ Boa | J1 PASS 79%, 0 halluc, dens 0.26/p | — |
+| `cybernetic_trading` | `⭐` Complementar | Ruggiero | 163 | 95 | 100% | ⚠️ Border | J1 BORDER 33% (amostra pequena, 0 halluc), dens 0.58/p | Ratio 100% em cit-check; juiz flagged vários paráfrases ambíguos — opcional re-validar |
+| `cycle_analytics` | `⭐` Complementar | Ehlers | 252 | 59 | 88% | ✅ Boa | J1/J2 PASS 92%, 0 halluc, dens 0.23/p; EMA lag [p.35]→[p.19] fix FU-2 | — |
+| `data_driven_science` | `⭐` Complementar | Brunton | 76 | 47 | 93% | 🌟 Perfeita | Sólido — 100% cit-check, dens 0.62/p; 1 fail FU-2 auto-resolvido pelo detector | — |
+| `eval_opt_strategies` | `⭐⭐⭐` Crítico | Pardo | 367 | 97 | 100% | 🌟 Perfeita | J1 PASS 100% / J2 PASS 92%, 0 halluc, dens 0.26/p, 5 mis-cit fixadas | ✅ PASS retry3 (layer-2 clean); 5 mis-cit corrigidas (ver histórico) |
+| `evidence_based_ta` | `⭐⭐` Importante | Aronson | 544 | 105 | 100% | 🌟 Perfeita | J1 PASS 100% / J2 PASS 97%, 0 halluc, dens 0.19/p | — |
+| `fin_time_series_tsay` | `⭐⭐` Importante | Tsay | 714 | 36 | 88% | ✅ Boa | J1 PASS 100%, 0 halluc, dens 0.05/p — referência técnica enxuta | — |
+| `leverage_space` | `⭐⭐` Importante | Vince | 206 | 46 | 100% | 🌟 Perfeita | J1 PASS 100%, 0 halluc, dens 0.22/p | — |
+| `machine_trading` | `⭐⭐` Importante | Chan | 267 | 75 | 88% | ✅ Boa | J1 PASS 100%, 0 halluc, dens 0.28/p | — |
+| `math_money_mgmt` | `⭐⭐` Importante | Vince | 109 | 16 | 97% | ✅ Boa | J1 PASS 100% / J2 BORDER 72%, 0 halluc; 2 mis-cit fixadas pós-FU-1 | Juiz J2 BORDERLINE (apenas ambíguas); 60 false fails eliminados por FU-1 |
+| `ml_for_algo_trading` | `⭐⭐⭐` Crítico | Jansen | 821 | 190 | 93% | ✅ Boa | J1/J2 PASS 100%, 0 halluc, dens 0.23/p | — |
+| `ml_for_asset_managers` | `⭐` Complementar | López de Prado | 45 | 39 | 82% | ✅ Boa | J1/J2 PASS 100%, 0 halluc, dens 0.87/p — muito denso | — |
+| `numerical_recipes` | `⭐` Complementar | Press et al. | 1018 | 91 | 99% | ✅ Boa | J1/J2 PASS 100%, 0 halluc, dens 0.09/p — referência tomo | — |
+| `quant_trading_chan` | `⭐⭐⭐` Crítico | Chan | 204 | 94 | 99% | 🌟 Perfeita | J1 PASS 100%, 0 halluc, dens 0.46/p | — |
+| `regime_change` | `⭐⭐⭐` Crítico | Chen | 165 | 63 | 83% | ✅ Boa | J1 PASS 92% / J2 BORDER (pré-fix); Glattfelder 2008→2011 corrigido; 0 halluc reais | Re-validar J2 após fix Glattfelder (opcional; verdict atual stale) |
+| `risk_parity` | `⭐` Complementar | Qian | 245 | 51 | 91% | ✅ Boa | J1/J2 BORDER 89%/86%, 0 halluc; paráfrases HY bonds flagged como ambiguous | — |
+| `rocket_science` | `⭐` Complementar | Ehlers | 265 | 86 | 90% | ✅ Boa | J1 PASS 100%, 0 halluc, dens 0.32/p | — |
+| `sentiment_analysis_handbook` | `⭐` Complementar | Mitra & Yu | 893 | 101 | 100% | 🌟 Perfeita | J1 PASS 100% / J2 PASS 92%, 0 halluc; 2 fails FU-2 auto-resolvidos | Ambiguidade interna p.705 (item 2, non-blocking) |
+| `stat_sound_indicators` | `⭐⭐` Importante | Aronson | 519 | 116 | 100% | 🌟 Perfeita | J1 PASS 100%, 0 halluc, dens 0.22/p | — |
+| `stocks_on_the_move` | `⭐⭐⭐` Crítico | Clenow | 249 | 61 | 97% | 🌟 Perfeita | J1 PASS 100%, 0 halluc, dens 0.24/p | — |
+| `systematic_trading` | `⭐⭐⭐` Crítico | Carver | 326 | 91 | 99% | 🌟 Perfeita | J1/J2 PASS 92%, 0 halluc, dens 0.28/p, 4 mis-cit fixadas | ✅ PASS retry2 (layer-2 clean); 4 mis-cit corrigidas (ver histórico) |
+| `tech_analysis_patterns` | `⭐` Complementar | Tsinaslanidis | 213 | 75 | 100% | ✅ Boa | J1/J2 BORDER 88%/83%, 0 halluc; 6 ambíguas (page-offs ≤13p não-bloqueantes) | Retry J2 opcional para limpar ambíguas de página (não bloqueia build) |
+| `testing_tuning` | `⭐⭐` Importante | Masters | 353 | 119 | 80% | ✅ Boa | J1 PASS 90% / J2 BORDER 87%, 0 halluc; 6 ambíguas são page-off ≤6p | Ratio 80% estável após re-abs 2026-04-13 |
+| `time_series_hamilton` | `⭐` Complementar | Hamilton | 814 | 87 | 98% | 🌟 Perfeita | J1/J2 BORDER 88%/88%, 0 halluc (self-consistency forte), dens 0.107/p | ⚠️ BORDERLINE adversarial (0 halluc); layer-2 limpo pós-`chapter_intro` warn |
+| `trading_evolved` | `⭐⭐` Importante | Clenow | 467 | 111 | 91% | ✅ Boa | J1 PASS 100%, 0 halluc, dens 0.24/p | — |
+| `trading_exchanges` | `⭐⭐` Importante | Harris | 113 | 129 | 91% | ✅ Boa | J1 PASS 92%, 0 halluc, dens 1.14/p — extremamente denso | — |
+| `trading_systems_methods` | `⭐⭐⭐` Crítico | Kaufman | 1232 | 277 | 97% | 🌟 Perfeita | J1 PASS 92% / J2 BORDER 75%, 0 halluc pós-fix Market Profile; 28→277 cit | ⚠️ BORDERLINE retry3 (0 halluc); re-abs opus massiva concluída |
+| `universal_trend_tactics` | `⭐` Complementar | Penfold | 409 | 75 | 100% | ✅ Boa | J1 PASS 90% / J2 BORDER 86%, 0 halluc, dens 0.18/p | — |
+| `volatility_trading` | `⭐⭐` Importante | Sinclair | 298 | 130 | 80% | ✅ Boa | J1 BORDER 93% / J2 PASS 93%, 0 halluc pós-re-abs corretiva, dens 0.44/p | Ratio 80% estável; 9 halluc zeradas em re-abs corretiva 2026-04-13 |
 
-**Resumo:** 🌟 12 × Perfeita · ✅ 13 × Boa · ⚠️ 7 × Regular/Suspeita · 🔴 1 × Sub-minerada  
-**Importância:** `⭐⭐⭐` 7 × Crítico · `⭐⭐` 12 × Importante · `⭐` 14 × Complementar
+**Resumo (2026-04-14 tarde):** 🌟 12 × Perfeita · ✅ 20 × Boa · ⚠️ 1 × Border (`cybernetic_trading` — only ambíguas, 0 halluc) · 🔴 0 × Sub-minerada  
+**Importância:** `⭐⭐⭐` 7 × Crítico · `⭐⭐` 12 × Importante · `⭐` 14 × Complementar  
+**Cit-check global:** 33/33 PASS (0 fails, ~40 warns, ~15 softs — todos esperados).
 
-> Colunas geradas em 2026-04-13 com `validate_summary.py --all` + `check_citations.py` em todos os 33 slugs.
+**Legendas complementares para a coluna Review:**
+- `J1/J2 <verdict> Xx%` — support_ratio dos juízes adversariais (Layer-3); halluc = claims marcadas `unsupported`.
+- `dens 0.Xy/p` — densidade de citações por página (referência: >0.20 é denso, <0.10 é enxuto, <0.05 é suspeito de mineração superficial).
+- "mis-cit fixadas" — mis-citations corrigidas cirurgicamente nas sessões 2026-04-13/14.
+
+> Colunas geradas em **2026-04-14** com `validate_summary.py --all` + `check_citations.py` em todos os 33 slugs, pós FU-1/2/3 e strict 100% halluc audit.
 > Re-executar após cada re-absorção e atualizar a linha do livro afetado.
 
 ---
