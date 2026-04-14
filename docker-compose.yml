@@ -1,0 +1,52 @@
+# ai-trade — Phase 1 local stack.
+#
+# Services:
+#   postgres  — persistent store for market data, trades, features, logs, backtests.
+#   grafana   — dashboards (equity curve, drawdown, live-vs-backtest divergence).
+#
+# The `app` service (Python runtime with ctrader_open_api) will be added once
+# the OAuth client and first pipeline module land.
+#
+# Local dev:  docker compose up -d
+# Local stop: docker compose down          # keeps volumes
+#             docker compose down -v       # wipes DB + grafana state
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ai_trade_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ai_trade
+      POSTGRES_PASSWORD: ai_trade
+      POSTGRES_DB: ai_trade
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "ai_trade", "-d", "ai_trade"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  grafana:
+    image: grafana/grafana:11.3.0
+    container_name: ai_trade_grafana
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ai_trade
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+volumes:
+  postgres_data:
+  grafana_data:

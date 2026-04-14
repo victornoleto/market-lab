@@ -1,19 +1,29 @@
 [project]
 name = "ai-trade"
 version = "0.1.0"
-description = "ai-trade Phase 0 — knowledge base pipeline (PDFs → structured summaries → Claude Skill)"
+description = "ai-trade — knowledge base + systematic swing-trading pipeline (Pepperstone/cTrader)"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "Victor Noleto" }]
 
 # NOTE: No `anthropic` / `openai` / any LLM SDK here. All LLM work runs inside
-# Claude Code (subagents + slash commands). These Python scripts are strictly
-# deterministic: PDF extraction, validation, aggregation.
+# Claude Code (subagents + slash commands). These Python scripts/modules are
+# strictly deterministic: PDF extraction, validation, aggregation, market data,
+# strategy execution.
 dependencies = [
-    "pymupdf>=1.24",      # Primary PDF → text (fast, preserves layout cues)
-    "pdfplumber>=0.11",   # Fallback for tables/math-heavy pages
-    "rich>=13.7",         # CLI output (progress bars, formatted errors)
+    # Phase 0 — knowledge base pipeline (PDFs → summaries → Claude Skill)
+    "pymupdf>=1.24",            # Primary PDF → text
+    "pdfplumber>=0.11",         # Fallback for tables/math-heavy pages
+    "rich>=13.7",               # CLI output
+    # Phase 1 — Pepperstone/cTrader infra + market data
+    "ctrader-open-api>=0.9",    # Spotware official Protobuf SDK (Twisted-based)
+    "twisted>=24.0",            # Event loop backing the cTrader SDK
+    "protobuf>=5.0",            # Message format for the Open API
+    "psycopg[binary]>=3.2",     # Postgres driver (sync; Twisted uses threadPool)
+    "pydantic>=2.6",            # Typed models + validation
+    "pydantic-settings>=2.2",   # .env → typed Settings
+    "tenacity>=8.2",            # Retry logic (reconnects, backoff)
 ]
 
 [dependency-groups]
@@ -27,7 +37,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["scripts"]
+packages = ["src/ai_trade"]
 
 [tool.ruff]
 line-length = 100

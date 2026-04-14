@@ -15,9 +15,12 @@ books/extracted/
 # Partial summaries generated during map-reduce (only final summaries are versioned)
 books/summaries/.partials/
 
-# Secrets (none expected, but just in case)
+# Secrets
 .env
 .env.local
+
+# Ad-hoc screenshots / scratch captured during sessions
+prints/
 
 # OS
 .DS_Store
