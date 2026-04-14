@@ -131,6 +131,52 @@ Só após Fase 6 estar sólida por meses.
 
 ---
 
+## 🔖 Decisões adiadas para reavaliação (Fase 2-3)
+
+Escolhas **intencionalmente minimalistas** no módulo de backtest, registradas
+aqui para não se perderem quando chegar a hora de reavaliar.
+
+### Fonte de dados de mercado (daily OHLCV)
+
+**Decisão inicial:** `yfinance` + Wikipedia (scrape de constituintes históricos
+SPX). Grátis, com **survivorship bias documentado explicitamente em cada
+relatório de backtest**.
+
+**Reavaliar quando:** primeira estratégia passar pelos gates anti-overfit
+(CPCV + PBO + DSR). Migrar para fonte survivorship-free paga (Tiingo ~$10/mo,
+EOD Historical ~$20/mo, Norgate $85/mo se quiser replicar Clenow com rigor).
+Migração é apenas um adapter novo em `src/ai_trade/backtest/data/`; não quebra
+código existente.
+
+### Laboratório de prototipagem rápida (vectorbt)
+
+**Decisão inicial:** não adicionar. Engine rigoroso custom é suficiente enquanto
+o aprendizado do próprio engine for a principal fonte de atrito.
+
+**Reavaliar quando:** iteração sobre hipóteses de indicador/parâmetro tiver
+atrito mensurável (ex.: >30 min para testar uma variação simples). Nesse
+momento, `vectorbt` entra como **sandbox para triagem de ideias antes** de
+serem levadas ao engine rigoroso — não substitui o rigoroso.
+
+### Segunda estratégia a replicar (após Clenow)
+
+**Decisão inicial:** não pré-selecionar. Clenow `stocks_on_the_move` é o target
+único da Fase 2/3 inicial — já força o engine a cobrir point-in-time universe,
+ATR sizing, ranking cross-sectional, regime filter de índice e survivorship
+bias.
+
+**Reavaliar quando:** Clenow rodar e o engine passar pelos gates. Candidatas
+documentadas:
+- **AFML meta-labeling** `[advances_fin_ml, ch.3]` — primário de direção + secundário ML de confiança
+- **Ehlers DSP** `[rocket_science, cycle_analytics]` — MAMA/Fisher/Cyber Cycle como filtros/timing
+- **Chan mean-reversion / pairs** `[algo_trading_chan]` — cointegração, pairs trading
+
+A escolha vira informada pelos achados do Clenow (ex.: se o problema for regime
+change → AFML meta-label; se for entrada/saída → Ehlers DSP; se for timing em
+trend-follow → Chan mean-reversion como overlay).
+
+---
+
 ## 🔑 Princípio-chave (não negociável)
 
 `TRADING_SYSTEM_PLAN.md §14.5` **rejeita explicitamente "vibes-based LLM trading"**. Toda decisão (indicador, parâmetro, sizing, gate de produção) exige citação `[livro.slug, p.X]` do knowledge base. Por isso a Fase 0 vem primeiro — sem ela, o agente opera sem fundamentação.
