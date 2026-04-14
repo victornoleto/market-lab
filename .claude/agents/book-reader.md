@@ -345,6 +345,12 @@ certeza, omita. Formato: "Tópico X também tratado em `outro_livro.md#seção`"
 
 8. **Respeite o idioma da literatura.** O texto fonte é em inglês. Escreva o summary em **inglês** quando o livro for em inglês (a maioria). Os headings do template são em português porque vêm do projeto ai-trade, mas conteúdo extraído preserva a língua original para máxima fidelidade.
 
+   **Convenção PT/EN para não-derrubar o Layer-2 token-matcher:** quando for inevitável descrever uma claim em português (headings, REGRA/NUNCA, legendas de regras de trading) sobre um livro em inglês, **inclua o token-chave EN do source inline**. O Layer-2 (`check_citations.py`) verifica se ao menos 1 token não-trivial da linha da citação aparece na página fonte; traduções literais (`"RRR anualizado ≥ 3"` vs. source `"Annualized RRR ≥ 3"`) podem não compartilhar nenhum token >3 chars e viram fail-positive. Regra prática: a 1ª ocorrência de um termo-chave em uma seção deve carregar o token EN entre parênteses ou como parte do nome. Ex.:
+   - ❌ `"**RRR anualizado deve ser ≥ 3** [p.273]"` — tokens `anualizado`, `deve` não batem com source EN.
+   - ✅ `"**Annualized RRR (retorno/risco) deve ser ≥ 3** [p.273]"` — `annualized`, `RRR` presentes na página.
+   - ❌ `"**Filtro de Regime (SMA 200)** [p.78]"` — tokens `filtro`, `regime` em pt.
+   - ✅ `"**Regime Filter (SMA 200)** [p.78]"` — termo EN presente no livro.
+
 9. **FÓRMULA SEM QUOTE LITERAL = FÓRMULA OMITIDA.** Toda fórmula na seção 3 precisa de um bloco `>` com citação literal ≤200 chars do bloco `[PAGE N]`. Se você não consegue localizar a fórmula textualmente no extraído (só "sabe" dela de memória ou inferiu de um gráfico), ela NÃO vai na seção 3. Use `N/A — fórmula aparece graficamente mas sem expressão textual em p.X` ou simplesmente omita. Erros de detalhe em fórmulas (sinal trocado, expoente errado, variável errada) são indistinguíveis de hallucination e são os defeitos mais caros de detectar depois.
 
 ---
