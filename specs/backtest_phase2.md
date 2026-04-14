@@ -217,12 +217,12 @@ Decisões não-óbvias:
 
 **O que fazer:**
 
-- [ ] **Performance metrics** — `src/ai_trade/backtest/metrics/performance.py`
+- [x] **Performance metrics** — `src/ai_trade/backtest/metrics/performance.py`
   - Funções puras: `sharpe`, `sortino`, `calmar`, `cagr`, `max_drawdown`, `volatility`, `var`.
   - Input: `pd.Series` de retornos ou equity curve.
   - Anualização por fator configurável (252 daily, 52 weekly, etc.).
 
-- [ ] **Report generator** — `src/ai_trade/backtest/metrics/report.py`
+- [x] **Report generator** — `src/ai_trade/backtest/metrics/report.py`
   - Recebe `BacktestResult` + saídas de validação.
   - Emite markdown em `reports/<strategy>_<YYYYMMDD-HHMM>.md` com seções:
     - Header + data run
@@ -238,7 +238,37 @@ Decisões não-óbvias:
 **Aceito quando:** um `BacktestResult` sintético gera um report markdown válido,
 com todas as seções, sem crashs, PNG gerado, survivorship disclaimer presente.
 
-**Conclusão:** _(preencher ao finalizar)_
+**Conclusão:** Métricas + report generator em
+`src/ai_trade/backtest/metrics/` (`performance.py`, `report.py`, `__init__.py`)
+com 30 testes novos em `tests/test_metrics.py` (`144 passed` total). TDD
+estrito — cada módulo teve tests criados e verificados RED (ModuleNotFoundError)
+antes da implementação. Adicionado `matplotlib>=3.8` em `pyproject.toml` para
+os charts PNG do report.
+
+Decisões não-óbvias:
+- **Disclaimer de survivorship é obrigatório por contrato, não opcional.**
+  `_needs_disclaimer(source)` inclui `yfinance`, `wikipedia`, `yahoo` como
+  *biased* e **qualquer outra fonte** que não contenha marcador explícito de
+  survivorship-free. Regra replica o inviolable rule do ROADMAP (*nunca
+  esconder o bias do relatório*). O texto do disclaimer inclui "bias",
+  "overstated", e cita ROADMAP §"Decisões adiadas" para rastreabilidade.
+- **Sortino com downside-dev populacional (denominador = todas as observações),
+  não só as downside.** Fórmula Estrada: `√(mean(min(r−target, 0)²))`. Quando
+  não há retorno abaixo do target, retorna `+inf` em vez de raise — report
+  surface precisa imprimir algo sempre. Teste específico verifica.
+- **`_dataframe_to_markdown` inline** em vez de `pd.DataFrame.to_markdown()` —
+  este último requer `tabulate` como dep opcional. Escrever ~10 linhas de GFM
+  writer evita adicionar dependency só pra formatar tabela de trades.
+- **Duas passadas de `max_drawdown`: positive magnitude sempre.** Fórmula
+  `(peak − equity) / peak` garante que DD=0 quando monotone e DD=0.5 quando
+  preço cai metade. Calmar recebe esse valor cru (não `abs()`), e divide
+  CAGR por ele — sem risco de divisão por negativo.
+- **VaR com `alpha=0.05` retorna positive magnitude floor at 0.** Se a 5%
+  quantile dos retornos for positiva (estratégia que não perde), VaR = 0 por
+  convenção — evita reportar "gain of 1.7%" como VaR negativo, que confunde.
+- **Chart PNG em 2 painéis (equity + underwater DD)**, `matplotlib.use("Agg")`
+  para backend headless (VPS). Dimensões 1200×720 RGBA, ~70KB por chart.
+  Pillow-free (PNG direto do Agg backend).
 
 ---
 
