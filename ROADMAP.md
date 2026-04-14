@@ -177,6 +177,48 @@ trend-follow → Chan mean-reversion como overlay).
 
 ---
 
+## 🧪 Backtest em duas etapas: pesquisa vs calibração
+
+Princípio de design (não é decisão adiada — é como o backtest funciona em
+todas as fases):
+
+### Etapa 1 — Pesquisa / edge detection (Fase 2-3)
+
+- **Pergunta:** a estratégia tem edge em dados de equity limpos?
+- **Dados:** fontes externas survivorship-aware — `yfinance`+Wikipedia (inicial, grátis, bias documentado), depois Tiingo/EOD/Norgate.
+- **Por quê externo:** cTrader/Pepperstone só fornece dados do próprio broker, histórico limitado e **sem** constituintes point-in-time. Detecção de edge exige dados cross-broker de qualidade acadêmica.
+- **Gates:** CPCV + PBO + DSR + permutation + walk-forward. ~80% das ideias ruins morrem aqui.
+
+### Etapa 2 — Calibração na realidade Pepperstone (pré-Fase 4)
+
+- **Pergunta:** esse edge sobrevive aos custos reais de CFD da Pepperstone?
+- **Dados:** histórico de trendbars via `ProtoOAGetTrendbarsReq` (cTrader Open API, disponível quando a Spotware aprovar o app).
+- **Ajustes aplicados:**
+  - Spread real por símbolo (medido, não estimado)
+  - Swap/overnight por símbolo
+  - Universo reduzido (Pepperstone não lista as 500; oferece índice CFD + share CFDs selecionados + forex/crypto/commodities)
+- **Resultado esperado:** Sharpe menor que na Etapa 1. Se o edge evapora aqui, estratégia morre antes de paper trading.
+
+### O que muda no código quando cTrader destravar
+
+**Nada na arquitetura do engine** (CPCV/PBO/DSR/strategy logic). Só entra um
+adapter novo:
+
+```
+src/ai_trade/backtest/data/
+├── yfinance_source.py            # Etapa 1 (início, grátis)
+├── wikipedia_spx.py              # constituintes SPX (Etapa 1)
+├── tiingo_source.py              # (futuro) Etapa 1 survivorship-free
+└── ctrader_historical_source.py  # (futuro) Etapa 2, calibração Pepperstone
+```
+
+**Princípio subjacente:** nunca usar dados do broker como única fonte de
+pesquisa — só como validação final contra a execução real. Broker data tem
+viés de sobrevivência (só os produtos que o broker ainda oferece), de
+seleção (broker-específico) e de histórico (profundidade variável).
+
+---
+
 ## 🔑 Princípio-chave (não negociável)
 
 `TRADING_SYSTEM_PLAN.md §14.5` **rejeita explicitamente "vibes-based LLM trading"**. Toda decisão (indicador, parâmetro, sizing, gate de produção) exige citação `[livro.slug, p.X]` do knowledge base. Por isso a Fase 0 vem primeiro — sem ela, o agente opera sem fundamentação.

@@ -237,6 +237,62 @@ Ref: `advances_fin_ml.md`, ch.14 `[p.261-270]`.
 
 ---
 
+## Universo Clenow e survivorship bias
+
+Conceito complementar aos 3 acima — ataca a mesma doença (backtest mentiroso)
+por outro ângulo: os **dados**, não os testes estatísticos.
+
+### O que é o "universo Clenow"
+
+A estratégia momentum de Andreas Clenow (`stocks_on_the_move`) opera sobre
+**SPX 500**, reranqueando semanalmente. Mas "SPX 500" **depende da data
+histórica sendo simulada** — não é a lista atual.
+
+Entre 2005 e 2026, dezenas de empresas entraram no índice (NVDA em 2001, TSLA
+em 2020) e saíram (Lehman Brothers, Enron pré-colapso, Washington Mutual,
+General Motors 2009, Sears, etc.). Backtest que usa a lista **atual** do SPX
+500 está testando numa realidade que nunca existiu.
+
+### Survivorship bias
+
+Erro sistemático de backtest causado por usar **apenas os sobreviventes
+atuais** no lugar dos constituintes históricos.
+
+Testar momentum 2000-2020 com a lista SPX atual é trapacear: você retirou
+todas as empresas que quebraram, foram rebaixadas ou fundiram. O backtest
+mostra Sharpe alto porque a amostra já está **filtrada pelos vencedores**.
+Equivale a entrevistar bilionários sobre "as regras do sucesso" — o sampling
+é viciado por construção.
+
+Clenow é explícito sobre o tamanho do efeito `[stocks_on_the_move, p.238-239]`:
+
+> *"Survivorship bias kills simulations. Using current S&P 500 constituents
+> for a 10-year backtest creates fake outperformance because current members
+> are selected BECAUSE they rose. You MUST use point-in-time membership and
+> include delisted stocks."*
+
+### Solução correta
+
+**Point-in-time constituents + delisted stocks.** Fontes:
+- **Norgate Data** (~US$85/mo) — fonte recomendada pelo próprio Clenow
+- **EOD Historical Data** (~US$20/mo) — survivorship-free daily
+- **Tiingo** (plano pago ~US$10/mo) — acessível
+- **CRSP** — padrão-ouro acadêmico, mas licença cara
+- **Wikipedia scrape** — brittle mas grátis; é onde vamos começar
+
+### Como tratamos nesta fase
+
+Fase inicial do backtest usa `yfinance` + Wikipedia scrape (grátis, bias
+residual). **Cada relatório de backtest documenta explicitamente o caveat** —
+resultados são otimistas até migrar para fonte paga. Quando a primeira
+estratégia passar pelos gates CPCV/PBO/DSR, aí o investimento em dados
+survivorship-free se justifica.
+
+Ver [`ROADMAP.md`](ROADMAP.md) seção "Backtest em duas etapas" para como o
+universo (e os dados) evoluem entre pesquisa e calibração Pepperstone.
+
+---
+
 ## Referências
 
 - **Roadmap / estado das fases:** [`ROADMAP.md`](ROADMAP.md)
