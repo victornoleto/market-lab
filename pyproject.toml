@@ -61,6 +61,12 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/ai_trade"]
 
+[tool.pytest.ini_options]
+# Put repo root on sys.path so `from scripts import ...` works in tests
+# (scripts/ is a directory of CLI entrypoints, not a distributed package).
+# src/ai_trade is importable as `ai_trade` via `pip install -e .` (hatch layout).
+pythonpath = ["."]
+
 [tool.ruff]
 line-length = 100
 target-version = "py311"
