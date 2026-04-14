@@ -91,105 +91,6 @@ Estado atual de cada livro: qualidade da absorção e tarefas pendentes antes do
 
 ---
 
-## 0. Re-absorção priorizada (NOVA — alta prioridade)
-
-### Contexto
-Durante a re-absorção de `ml_for_algo_trading` (2026-04-13) foi descoberto um bug em `scripts/check_citations.py`: o detector de offset printed→PDF não reconhecia banners Packt-style `[ N ]`, retornando offset=0 em PDFs com frontmatter. **Fix aplicado**: agora reconhece `[ N ]` em qualquer linha + dígitos isolados em top/bottom-3, requer 5+ samples (era 3).
-
-Após o fix, re-rodando `check_citations.py` em todos os 33 summaries:
-- **1 FAIL real** descoberto (`math_money_mgmt`).
-- **8 summaries com densidade citacional anormalmente baixa** (sintoma de mineração superficial — book-reader citou só o Preface/TOC ao invés de ler os capítulos). Comparação: `evidence_based_ta` tem 1 cit / 2p; `ml_for_algo_trading` (pós-refino) tem 1 cit / 4p. Tudo abaixo de **1 cit / 20p** é suspeito.
-
-### Ordem sugerida (1 por vez, executar `/absorb-book <slug>` e validar antes do próximo)
-
-| Status | Prioridade | Slug | Modelo (heurística) | Tempo est. | Comando | Sintoma |
-|---|---|---|---|---|---|---|
-| ⚠️ | 🔴 P0 | `math_money_mgmt` | sonnet | ~46 min (2 retries) | `/absorb-book math_money_mgmt` | BORDERLINE — C1 PASS 97%, C2 PASS (0 falhas), C3 J1 PASS / J2 BORDERLINE 72% (5 ambig. semânticas, 0 halluc.). Aprovado. |
-| ✅ | 🔴 P0 | `universal_trend_tactics` | sonnet | ~60 min (3 retries) | `/absorb-book universal_trend_tactics` | PASS — C1 PASS 100%, C2 PASS (0 falhas), C3 J1 PASS 90% / J2 PASS (fix quote p.268 aplicado). 75 cit / 409p. |
-| ☐ | 🟡 P1 | `trading_systems_methods` | **opus** | ~13-25 min | ver hint abaixo | 28 cit / 1232p — Kaufman, sub-minerado massivamente |
-| ⚠️ | 🟡 P1 | `time_series_hamilton` | **opus** | ~13-25 min | ver hint abaixo | Concluída: 87 cit / 814p, 98% ratio pós-pipeline-hardening — BORDERLINE adversarial (J1+J2 87.5% após retry 3, 0 halluc); layer-2 limpo (1 warn chapter_intro, 0 fail). Cross-refs corrigidos no retry. |
-| ⚠️ | 🔴 P1-corr | `volatility_trading` | sonnet | ~15-30 min | ver hint abaixo | Concluída: 130 cit / 298p, 80% ratio — BORDERLINE adversarial (J1 93% BORDER / J2 92.9% PASS, 0 halluc). Re-absorção corretiva zerou as 9 halluc. |
-| ✅ | 🟡 P1 | `eval_opt_strategies` | sonnet | ~13-18 min + retry cirúrgico | `/absorb-book eval_opt_strategies` | ✅ PASS: 97 cit / 367p, 100% ratio, J1 PASS 100% / J2 PASS 91.7%, 0 halluc (5 mis-cit corrigidas cirurgicamente: p.66→46-47, p.301/302→311-312, p.296→284-286, p.323→296-298) |
-| ✅ | 🟡 P1 | `regime_change` | sonnet | ~8-12 min | `/absorb-book regime_change` | Concluída: 63 cit / 165p, 83% ratio |
-| ✅ | 🟡 P1 | `risk_parity` | sonnet | ~11-16 min | `/absorb-book risk_parity` | Concluída: 51 cit / 245p, 91% ratio |
-| ✅ | 🟢 P2 | `cycle_analytics` | sonnet | ~10-14 min | `/absorb-book cycle_analytics` | Concluída: 59 cit / 252p, 88% ratio — PASS adversarial (J1 92% / J2 92.3%); 12 halluc. corrigidas em 3 retries |
-| ⚠️ | 🟢 P2 | `tech_analysis_patterns` | sonnet | ~10-14 min | `/absorb-book tech_analysis_patterns` | Concluída: 75 cit / 213p, 100% ratio |
-
-> **Marcar:** trocar `☐` por `✅` (PASS), `⚠️` (BORDERLINE) ou `❌` (FAIL persistente após 3 retries) conforme cada um termina.
-
-### Comandos de execução (copy-paste com --hint)
-
-**Pré-requisito** (já rodado para os 3 livros — todos ≥90% mapped, gate satisfeito): `_page_index.json` determinístico em `books/extracted/<slug>/`. Re-rodar `scripts/build_page_index.py <slug>` apenas se o PDF mudar.
-
-**Ordem recomendada de execução restante (Hamilton ✅ feito; 2 livros pendentes):**
-
-1. `trading_systems_methods` — maior livro (685k tokens, 1232p), opus map_reduce, **dispatch SERIAL automático** (Camada C, est_tokens > 300k)
-2. `volatility_trading` — re-absorção corretiva com hint cirúrgico (sonnet, 136k tokens, dispatch paralelo)
-
----
-
-#### 1. `time_series_hamilton` ✅ ⚠️ BORDERLINE — concluído 2026-04-13 20:40 · revalidado 2026-04-14
-
-Round 4 retry surgical (apenas J2, dispatched após J1 retry3 já existir em disco). Veredito final: J1+J2 BORDERLINE 87.5%, 0 hallucinations factuais, self-consistency forte. 87 cit / 814p / ratio 98% (pós-pipeline-hardening) / densidade 0.107/p (🌟 Perfeita por densidade). Layer-2 limpo: 1 warn `chapter_intro` (verdict introduzido no Task 3), 0 fail — os 2 ex-false-positives ([p.257]/[p.372]) agora são `warn` apropriado. Cross-refs corrigidos. Aceito no knowledge base.
-
-Hint usado (referência histórica):
-
-```
-/absorb-book time_series_hamilton --hint "Livro de econometria denso (VAR, Kalman, unit roots, GARCH, filtros frequencia, Markov switching). Alvo ≥80 cit para 814pp (densidade ≥0.10/p). Priorize mineração dos caps 10 (covariance-stationary processes), 11 (VAR), 13 (Kalman), 15-17 (unit roots), 21 (GARCH), 22 (Markov switching). Extraia TODA fórmula nomeada. Corrija cross-refs da seção 9: 'analysis_financial_time_series.md' → 'fin_time_series_tsay.md'. Cross-refs válidos para enriquecer: fin_time_series_tsay.md (Tsay, overlap forte em GARCH/VAR), numerical_recipes.md (métodos numéricos), advances_fin_ml.md (métodos de ML sobre time series). Use _page_index.json para páginas — pdf_to_printed determina a printed page de cada [PAGE N]."
-```
-
----
-
-#### 2. `trading_systems_methods` ☐ PENDENTE (próximo)
-
-```
-/absorb-book trading_systems_methods --hint "Kaufman é enciclopédico. Alvo ≥120 cit para 1232pp (densidade ≥0.10/p). Mineração profunda por capítulo, não via Preface. Caps críticos: 5-6 (trend filters, KAMA/ADX), 7-8 (moving averages/momentum), 13-14 (ritmo/ciclos, volatility breakout), 21 (system testing — pitfalls), 23 (risk control), 24 (diversification/portfolio). Extraia TODA fórmula nomeada LITERALMENTE do bloco [PAGE N] — não reconstrua de memória. Nomes como KAMA, WVMA, DMI, ADX, Wilder RSI: confirme coeficientes e lookbacks exatos no bloco. 40 páginas esparsas (ver _metadata.json) causam drift local — use _page_index.json: pdf_to_printed é a fonte de verdade. Use [p.?] para páginas unmapped."
-```
-
-**Gates:** PASS first-try ≤25 min; 1 retry ≤45 min; parar em retry 2+ ou >60 min.
-
----
-
-#### 3. `volatility_trading` (re-absorção corretiva)
-
-Só após os dois acima. Hint cirúrgico derivado das 9 hallucinations detectadas na última rodada (ver `books/summaries/.logs/volatility_trading.log` 18:17:26).
-
-```
-/absorb-book volatility_trading --hint "Re-absorção corretiva. Validação anterior detectou 9 hallucinations. Regras obrigatórias:
-
-1. NUNCA invente valores numéricos de parâmetros. Se o livro não cita λ=X explicitamente, use a frase exata do livro (ex: o livro diz apenas 'values of between 0.9 and 0.99 are used' para o EWMA — não cite 0.94 ou 0.97, não mencione RiskMetrics).
-
-2. GARCH persistence: o único exemplo equity do livro é MSFT (p.54): α=0.053, β=0.884, persistência=0.937. Não afirme 'typical equity values 0.97–0.99' — essa frase não existe no texto.
-
-3. Whalley-Wilmott delta band (p.102, Eq 6.9): a fórmula correta é Δ± = ∂V/∂S ± (3λS²exp(-r(T-t)) / (2γ))^(1/3) onde γ (minúsculo) é o parâmetro de aversão a risco do trader no DENOMINADOR. NÃO é |Γ| (gamma da opção, d²V/dS²) no numerador.
-
-4. Garman-Klass (p.21, Eq 2.15): são DUAS somas separadas subtraídas dentro do radical — sigma = sqrt( (1/N)Σ[½(ln h/l)²] − (1/N)Σ[(2ln2−1)(ln c/c_{i-1})²] ). Não aninha a segunda soma dentro da primeira.
-
-5. Kelly fraction: o livro afirma explicitamente 'There is no compelling theoretical reason for sizing trades according to the fractional Kelly idea.' Os motivos para usar são práticos, não teóricos.
-
-6. Tese Central (p.249): as palavras 'forecastable', 'tradeable' e 'separate asset class' têm zero ocorrências no livro. A frase real do livro: 'Successful trading is about developing a consistent process.' Use apenas terminologia presente no texto.
-
-7. Seção 9 (cross-refs): Vince está citado na seção Resources em p.251 (não p.344). Chapter 3 começa em p.40 (Stylized Facts), não p.13. Sempre verifique a página real no source antes de citar.
-
-8. Citações de capítulo: o metadata reporta n_chapters=1 (PDF sem marcadores de capítulo). Use apenas [p.X] — nunca [ch.Y, p.X] — exceto se o texto impresso do livro indicar explicitamente 'Chapter Y' naquela página."
-```
-
-**Gates:** PASS first-try ≤25 min; retry 1 ≤40 min; parar em retry 2+ ou >50 min (hint é cirúrgico — se falhar mesmo com instrução específica sobre cada hallucination, problema é sistêmico no PDF ou no pipeline).
-
----
-
-### Após re-absorção, mover para item 4 (ratio <85%) os seguintes (já noted):
-`testing_tuning` 80%, `advances_fin_ml` 82%, `eval_opt_strategies` 82%, `ml_for_asset_managers` 82%, `big_data_ml_quant` 83%, `time_series_hamilton` 85%, `volatility_trading` 85%.
-
-### Notas operacionais
-- **Tier 2 (2026-04-13)**: `scripts/build_page_index.py` gera `_page_index.json` determinístico por livro. O `book-reader` agora consulta `pdf_to_printed[N]` em vez de re-derivar offset das primeiras/últimas linhas de cada bloco — elimina a maior classe de retries (offset não-uniforme / miscópia de ToC). Rodar o script UMA VEZ por livro antes do `/absorb-book`.
-- O `/absorb-book` dispara o `book-reader` + `/validate-summary` (3 camadas). Wall-clock real (evidência `books/summaries/.progress.log`): map_reduce com opus @ 600-685K tokens = **~13 min feliz path, 0 retries** (rodada de 2026-04-13 07:40–07:53). Retry-hell (offset drift sem `_page_index.json`): 1h30m+ — ver `.logs/volatility_trading.log`.
-- Para livros `map_reduce` (>400k tokens): `trading_systems_methods` (685K), `time_series_hamilton` (421K). Opus é necessário para priorização estratégica no reduce.
-- Monitorar em paralelo: `tail -f books/summaries/.logs/<slug>.log` e `books/summaries/.progress.log`.
-- Se retry 2+ ou wall-clock exceder o gate do livro: **parar**, investigar tipo de erro antes de retry 3 (que é caro e raramente resolve se os 2 primeiros falharam pelo mesmo motivo).
-
----
-
 ## 1. Cross-refs quebrados (alta prioridade) ✅ RESOLVIDO
 
 Pointers entre summaries que apontam para arquivos inexistentes ou com nome errado.
@@ -267,30 +168,37 @@ Antes de gerar a skill, confirmar que cada summary expõe os campos esperados pe
 
 ---
 
-## 7. Ordem sugerida de execução (atualizada 2026-04-13 20:40)
+## 7. Ordem sugerida de execução (atualizada 2026-04-14)
 
 **Concluído:**
-- ✅ Re-absorção P0: `math_money_mgmt` (⚠️), `universal_trend_tactics` (✅)
-- ✅ Re-absorção P1: `time_series_hamilton` (⚠️ BORDERLINE), `eval_opt_strategies` (⚠️), `regime_change` (✅), `risk_parity` (✅)
-- ✅ Re-absorção P2: `cycle_analytics` (✅), `tech_analysis_patterns` (⚠️)
-- ✅ Cross-refs `cycle_analytics` (item 1) e `time_series_hamilton` (item 1) — todos corrigidos no retry
-- ✅ Decisão `new_tech_trader.md`: opção (b) — N/A com nota explícita
-- ✅ Camadas A/B/C de proteção contra `[Tool result missing]` — `scripts/aggregate_judges.py`, `summary-validator.md` shrink output, dispatch condicional por `est_tokens`
+- ✅ Re-absorções P0/P1/P2 (10 livros): `math_money_mgmt`, `universal_trend_tactics`, `trading_systems_methods`, `time_series_hamilton`, `volatility_trading`, `eval_opt_strategies`, `regime_change`, `risk_parity`, `cycle_analytics`, `tech_analysis_patterns` — todos PASS em cit-check + structural; J1 ratios 0.875-1.0, J2 0.72-0.93, 0 hallucinations reais. Detalhes por livro na tabela **Status Geral dos Livros**.
+- ✅ Cross-refs (item 1): todos corrigidos — `cycle_analytics`, `time_series_hamilton`, `trading_evolved` (case fix) — scan final 0 MISSING, 0 CASE MISMATCH.
+- ✅ Decisão `new_tech_trader.md`: opção (b) — N/A com nota explícita.
+- ✅ Camadas A/B/C de proteção contra `[Tool result missing]` — `scripts/aggregate_judges.py`, `summary-validator.md` shrink output, dispatch condicional por `est_tokens`.
+- ✅ FU-1/2/3 zerados (2026-04-14): detector `n_chapters` fix + 4 livros com fails residuais corrigidos + convenção PT/EN documentada.
+- ✅ Strict 100% halluc audit (2026-04-14): 5 livros revalidados, 1 halluc real corrigida (`regime_change` Glattfelder 2008→2011).
+- ✅ Verificações finais (itens 3/4/5/6): 33/33 PASS em todos os checks, higiene de repositório limpa, metadados verificados.
 
-**Pendente:**
+**Próximos passos:**
 
-1. **Re-absorção P1 restante (2 livros):**
-   a. `trading_systems_methods` (próximo) — opus map_reduce, dispatch SERIAL automático (Camada C)
-   b. `volatility_trading` — sonnet, dispatch paralelo, hint cirúrgico
-2. Rodar os checks da seção 3 (após os 2 absorbs acima).
-3. Quick verification dos itens 4, 5, 6 (sanity, higiene, metadados — ver veredito abaixo).
-4. Commit intermediário: "books: complete P1 re-absorptions + protect pipeline against tool-result-missing".
-5. `python scripts/build_skill.py`.
-6. Commit final da skill gerada.
+1. `python scripts/build_skill.py` — determinístico, sem LLM calls.
+2. Inspecionar o output em `knowledge/` (SKILL.md + books/ + strategies/ + indicators/ + validation/).
+3. Commit final da skill gerada: "feat(knowledge): generate skill from 33-book base".
 
 ---
 
 ## Histórico
 
-- **2026-04-13 (Tier 2)**: Criado `scripts/build_page_index.py` — expõe o `build_offset_table` determinístico (antes só consumido pelo validador) ao `book-reader` via `_page_index.json` por livro. Filtro de outliers por mediana-de-janela descarta ruído de páginas de índice/bibliografia. Rodado para `time_series_hamilton` (799/814 mapeadas, 98.2%, offset=15) e `trading_systems_methods` (1212/1232, 98.4%, offset=20). `.claude/agents/book-reader.md` atualizado para consumir o JSON no Passo 1 com fallback para heurística manual (livros antigos). Elimina a classe de retry observada em `volatility_trading.log` (offset não-uniforme).
+- **2026-04-14 (FU-1/2/3 + strict 100% halluc)**: Fix `compute_n_chapters_effective` em `check_citations.py` — usa `max(ch.N)` citado no summary como floor, desbloqueando `math_money_mgmt` (60 false fails → 0) e `advances_fin_ml` (4 → 0). 4 testes TDD. FU-2: `adaptive_markets`/`cycle_analytics` re-pageados; `data_driven_science`/`sentiment_analysis_handbook` auto-resolvidos. FU-3: convenção PT/EN em `book-reader.md`. Strict halluc: 1 fix em `regime_change` (Glattfelder 2011 per bibliografia Quant Finance 11:4).
+- **2026-04-13 (onda P0/P1/P2 de re-absorções)**: 10 livros re-absorvidos em ordem priorizada para combater mineração superficial (densidade < 1 cit / 20p) e hallucinations detectadas por juízes adversariais. Ordem: `math_money_mgmt` → `universal_trend_tactics` → `time_series_hamilton` → `eval_opt_strategies`/`regime_change`/`risk_parity` → `cycle_analytics`/`tech_analysis_patterns` → `trading_systems_methods` (opus map_reduce, 28→277 cit) → `volatility_trading` (corretiva, 9 halluc → 0). Hints cirúrgicos usados estão preservados em `books/summaries/.logs/<slug>.log`.
+- **2026-04-13 (Tier 2)**: Criado `scripts/build_page_index.py` — expõe o `build_offset_table` determinístico ao `book-reader` via `_page_index.json` por livro. Filtro de outliers por mediana-de-janela descarta ruído de páginas de índice/bibliografia. Rodado para `time_series_hamilton` (799/814 mapeadas, 98.2%, offset=15) e `trading_systems_methods` (1212/1232, 98.4%, offset=20). `.claude/agents/book-reader.md` atualizado para consumir o JSON no Passo 1 com fallback para heurística manual (livros antigos). Elimina a classe de retry observada em `volatility_trading.log` (offset não-uniforme).
 - **2026-04-13**: Re-absorção de `ml_for_algo_trading` revelou bug no offset detector. Fix aplicado em `scripts/check_citations.py` (suporte a banner `[ N ]`). Summary expandido de 122→190 citações, 13→24 capítulos minerados, todas as 3 camadas PASS.
+
+### Notas operacionais (para futuras re-absorções)
+
+- **Tier 2**: `scripts/build_page_index.py` gera `_page_index.json` determinístico por livro. O `book-reader` consulta `pdf_to_printed[N]` em vez de re-derivar offset — elimina a maior classe de retries. Rodar UMA VEZ por livro antes do `/absorb-book`.
+- O `/absorb-book` dispara o `book-reader` + `/validate-summary` (3 camadas). Wall-clock real: map_reduce com opus @ 600-685K tokens = ~13 min feliz path, 0 retries. Retry-hell sem `_page_index.json`: 1h30m+.
+- Para livros `map_reduce` (>400k tokens): opus é necessário para priorização estratégica no reduce.
+- Monitorar em paralelo: `tail -f books/summaries/.logs/<slug>.log` e `books/summaries/.progress.log`.
+- Se retry 2+ ou wall-clock exceder o gate do livro: **parar**, investigar tipo de erro antes de retry 3 (que é caro e raramente resolve se os 2 primeiros falharam pelo mesmo motivo).
+- Ratios <85% do validate_summary NÃO são bloqueantes para `build_skill` (threshold do validador é 80%); são sinais para "considerar re-dispatch para enriquecer" em uma próxima onda, não para esta.
