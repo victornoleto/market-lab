@@ -101,3 +101,34 @@ def test_systemic_offset_not_detected_when_failures_scattered():
 
     result = detect_systemic_offset(failures)
     assert result.detected is False
+
+
+def test_chapter_intro_terms_are_warn_not_fail():
+    """When assertion tokens match ONLY in the chapter heading
+    (first 5 non-empty lines) and not in the body, verdict is 'warn'."""
+    from scripts.check_citations import check_one
+    import re
+
+    # Page 50: "GARCH Models" in heading (lines 1-2), body discusses
+    # something unrelated. Assertion mentions GARCH → should warn.
+    pages = {
+        50: "Chapter 21: GARCH Models\n\n\n\n\nIntroduction\n\n"
+            "This discussion develops ideas about heteroscedasticity, "
+            "related statistical processes applied to financial series.\n"
+            "Further paragraphs about autocovariance structures.",
+        51: "Unrelated content about regime switching.",
+    }
+    line = "GARCH models apply to volatility clustering [ch.21, p.50]"
+    m = re.search(
+        r"\[ch\.(?P<ch>\d+),\s*p\.(?P<p1>\d+)(?:-(?P<p2>\d+))?\]", line
+    )
+
+    chk = check_one(
+        line, m, pages,
+        n_pages=100,
+        n_chapters=25,
+        page_tolerance=0,  # exact page, no wide tolerance
+        offset=0,
+    )
+    assert chk.verdict == "warn", f"got verdict={chk.verdict}, reason={chk.reason}"
+    assert chk.reason.startswith("chapter_intro"), f"reason={chk.reason}"

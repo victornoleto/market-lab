@@ -629,6 +629,31 @@ def check_one(
     # Accept if at least 1 token OR >= 20% of assertion tokens appear in window
     ratio = len(overlap) / max(1, len(assertion_tokens))
     if overlap:
+        # Chapter-intro softener: if ALL overlapping tokens appear only in
+        # the first 5 non-empty lines (chapter heading) of the cited pages
+        # and none in the body, downgrade verdict from "ok" to "warn". This
+        # reduces false-positives in books where chapter titles echo cited
+        # terms but the page body discusses tangential content.
+        body_tokens: set[str] = set()
+        heading_tokens_all: set[str] = set()
+        for p in range(pdf_start, pdf_end + 1):
+            body = pages.get(p, "")
+            non_empty = [ln for ln in body.split("\n") if ln.strip()]
+            heading_text = "\n".join(non_empty[:5])
+            body_text = "\n".join(non_empty[5:])
+            heading_tokens_all |= _tokens(heading_text)
+            body_tokens |= _tokens(body_text)
+
+        body_matches = overlap & body_tokens
+        heading_matches = overlap & heading_tokens_all
+        if not body_matches and heading_matches:
+            chk.verdict = "warn"
+            chk.reason = (
+                f"chapter_intro — {len(overlap)} tokens match in chapter "
+                f"heading of p.{chk.p_start}-{chk.p_end} only, not body"
+            )
+            return chk
+
         chk.verdict = "ok"
         chk.reason = (
             f"{len(overlap)}/{len(assertion_tokens)} tokens "
