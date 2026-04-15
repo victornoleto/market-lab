@@ -537,3 +537,24 @@ def test_adjust_ohlc_applied_to_both_legs():
     assert abs(strat._beta - 2.5) < 0.2, (
         f"β without adjust would diverge after shock; got {strat._beta}"
     )
+
+
+def test_diagnostic_counters_tracked_in_context():
+    """Run a few manufactured entries+exits; verify counters land in context."""
+    strat, idx, tail_start = _make_strategy_with_z([-1.1, -3.1], entry_z=1.0)
+    entry_pos = tail_start - 3
+    ts_entry = strat._indicators.index[entry_pos]
+    ts_now = strat._indicators.index[tail_start + 1]
+    strat._indicators.iloc[tail_start + 1, strat._indicators.columns.get_loc("zscore")] = -3.1
+    pf = Portfolio(initial_cash=100_000.0)
+    ctx, _, _ = _seed_position(strat, pf, ts_entry, side="long_spread")
+    bar_long = Bar("GLD", ts_now, 180.0, 180.5, 179.5, 180.0, 1e6)
+    bar_short = Bar("SLV", ts_now, 72.0, 72.3, 71.7, 72.0, 1e6)
+    orders = strat.on_bar({"GLD": bar_long, "SLV": bar_short}, pf, ctx)
+    assert len(orders) == 2
+    diag = ctx.get("chan_pairs_diagnostics", {})
+    reasons = diag.get("exit_reasons", [])
+    assert reasons == ["spread_stop"], f"expected ['spread_stop'], got {reasons}"
+    holds = diag.get("hold_hours", [])
+    assert len(holds) == 1
+    assert holds[0] >= 0.0
