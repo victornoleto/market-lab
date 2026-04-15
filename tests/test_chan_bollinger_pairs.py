@@ -497,3 +497,43 @@ def test_exit_precedence_spread_stop_beats_mean_revert():
     bar_short = Bar("SLV", ts_now, 72.0, 72.3, 71.7, 72.0, 1e6)
     orders = strat.on_bar({"GLD": bar_long, "SLV": bar_short}, pf, ctx)
     assert len(orders) == 2
+
+
+def test_adjust_ohlc_applied_to_both_legs():
+    """If adj_close differs from close, strategy must use adj_close.
+
+    Uses a synthetic ex-dividend-like scenario where close has a discontinuity
+    but adj_close is smooth.
+    """
+    rng = np.random.default_rng(42)
+    n = 2000
+    idx = pd.date_range("2022-01-03 09:30", periods=n, freq="1h")
+    x = 50 + np.cumsum(rng.normal(0, 0.05, n))
+    eps = np.zeros(n)
+    lam = -np.log(2) / 20.0
+    for t in range(1, n):
+        eps[t] = eps[t - 1] * np.exp(lam) + rng.normal(0, 0.3)
+    y = 2.5 * x + eps
+    # Inject a "dividend" shock to close at mid-point (not adj_close)
+    shock_idx = n // 2
+    close_shock = y.copy()
+    close_shock[shock_idx:] -= 5.0  # $5 dividend
+    df_long = pd.DataFrame(
+        {
+            "open": close_shock, "high": close_shock, "low": close_shock,
+            "close": close_shock, "volume": 1e6, "adj_close": y,
+        },
+        index=idx,
+    )
+    df_short = pd.DataFrame(
+        {"open": x, "high": x, "low": x, "close": x, "volume": 1e6, "adj_close": x},
+        index=idx,
+    )
+    strat = ChanBollingerPairsStrategy(
+        data={"GLD": df_long, "SLV": df_short},
+    )
+    # After adjust_ohlc, close should now match adj_close — so _beta recovered
+    # should still be ~2.5 (the shock was eliminated by adjustment).
+    assert abs(strat._beta - 2.5) < 0.2, (
+        f"β without adjust would diverge after shock; got {strat._beta}"
+    )

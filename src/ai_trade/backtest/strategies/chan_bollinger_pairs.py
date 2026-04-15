@@ -71,6 +71,9 @@ class ChanBollingerPairsStrategy:
             raise KeyError(f"long_symbol {self.long_symbol!r} not in data")
         if self.short_symbol not in self.data:
             raise KeyError(f"short_symbol {self.short_symbol!r} not in data")
+        # Rescale OHLC to the adjusted-close base — regression guard for
+        # bug commit 5ca9410 (raw close triggered false z-crossings on ex-div bars).
+        self.data = {sym: adjust_ohlc(df) for sym, df in self.data.items()}
         df_long = self.data[self.long_symbol]
         df_short = self.data[self.short_symbol]
         if not df_long.index.equals(df_short.index):
