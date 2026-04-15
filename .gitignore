@@ -35,6 +35,18 @@ data/tiingo/*.tar.gz
 data/tiingo/bulk_summary_*.json
 !data/tiingo/manifest.json
 
+# Tiingo backups land under data/ directly (scripts/tiingo_backup.py default
+# out-dir). Heavy (~150 MB) — never commit.
+data/tiingo_backup_*.tar.gz
+data/*.tar.gz
+
+# Isolated Tiingo cache used by ad-hoc grid runs while the bulk is active
+# (avoids manifest race condition). Recreated on demand.
+data/tiingo_adhoc/
+
+# Self-improvement loop live state — template is committed, memory.md is local.
+docs/self_improvement/memory.md
+
 # Local caches for external data sources (yfinance parquet, wikipedia HTML)
 .cache/
 

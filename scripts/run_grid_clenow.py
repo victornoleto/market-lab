@@ -48,7 +48,7 @@ from tqdm import tqdm
 log = logging.getLogger("ai_trade.grid")
 
 
-def _build_source(name: str):
+def _build_source(name: str, storage_root: Path):
     """Construct a fetch_many-compatible source by name."""
     if name == "yfinance":
         from ai_trade.backtest.data.yfinance_source import YFinanceSource
@@ -56,7 +56,7 @@ def _build_source(name: str):
     if name == "tiingo":
         from ai_trade.backtest.data.tiingo_source import TiingoSource
         from ai_trade.backtest.data.tiingo_storage import TiingoStorage
-        return TiingoSource(storage=TiingoStorage(root=Path("data/tiingo")))
+        return TiingoSource(storage=TiingoStorage(root=storage_root))
     raise ValueError(f"unknown data_source: {name!r}")
 
 
@@ -95,8 +95,16 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--data-source",
         choices=["yfinance", "tiingo"],
         default="yfinance",
-        help="OHLCV source. tiingo reads from data/tiingo/ (storage-first; "
+        help="OHLCV source. tiingo reads from --storage-root (storage-first; "
         "fetches API only on miss); yfinance hits Yahoo each cold run.",
+    )
+    ap.add_argument(
+        "--storage-root", type=Path, default=Path("data/tiingo"),
+        help="Tiingo parquet+manifest root. Default: data/tiingo (shared with "
+        "the bulk download script). To run safely while tiingo_bulk_download "
+        "is active, point this to an isolated path (e.g. data/tiingo_adhoc) — "
+        "TiingoStorage uses single-writer manifests, so concurrent writes to "
+        "the same root corrupt entries.",
     )
     ap.add_argument(
         "--log-level", default="INFO",
@@ -169,7 +177,7 @@ def main(argv: list[str] | None = None) -> int:
     fetch_start = args.start - timedelta(days=args.warmup_days)
     log.info("Fetching %d tickers %s → %s via %s",
              len(tickers), fetch_start, args.end, args.data_source)
-    src = _build_source(args.data_source)
+    src = _build_source(args.data_source, args.storage_root)
     raw = src.fetch_many(tickers, fetch_start, args.end)
     data = {t: df for t, df in raw.items() if not df.empty}
     dropped = len(raw) - len(data)

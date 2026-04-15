@@ -78,6 +78,13 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "(Tiingo does not serve raw indices — SPY is the standard ETF proxy).",
     )
     ap.add_argument(
+        "--asset-class", default="equity",
+        choices=["equity", "etf", "index", "crypto", "forex"],
+        help="Tiingo endpoint family. Required for crypto (e.g. btcusd) and "
+        "forex (e.g. eurusd) since their URLs differ from the equity/etf "
+        "/tiingo/daily/<ticker>/prices route. Ignored when --data-source=yfinance.",
+    )
+    ap.add_argument(
         "--warmup-days", type=int, default=500,
         help="Calendar days of history before --start (default: 500).",
     )
@@ -85,8 +92,16 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--data-source",
         choices=["yfinance", "tiingo"],
         default="yfinance",
-        help="OHLCV source. tiingo reads from data/tiingo/ (storage-first; "
+        help="OHLCV source. tiingo reads from --storage-root (storage-first; "
         "fetches API only on miss); yfinance hits Yahoo each cold run.",
+    )
+    ap.add_argument(
+        "--storage-root", type=Path, default=Path("data/tiingo"),
+        help="Tiingo parquet+manifest root. Default: data/tiingo (shared with "
+        "the bulk download script). To run safely while tiingo_bulk_download "
+        "is active, point this to an isolated path (e.g. data/tiingo_adhoc) — "
+        "TiingoStorage uses single-writer manifests, so concurrent writes to "
+        "the same root corrupt entries.",
     )
     ap.add_argument(
         "--log-level", default="INFO",
@@ -95,14 +110,14 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return ap.parse_args(argv)
 
 
-def _build_source(name: str):
+def _build_source(name: str, storage_root: Path):
     if name == "yfinance":
         from ai_trade.backtest.data.yfinance_source import YFinanceSource
         return YFinanceSource()
     if name == "tiingo":
         from ai_trade.backtest.data.tiingo_source import TiingoSource
         from ai_trade.backtest.data.tiingo_storage import TiingoStorage
-        return TiingoSource(storage=TiingoStorage(root=Path("data/tiingo")))
+        return TiingoSource(storage=TiingoStorage(root=storage_root))
     raise ValueError(f"unknown data_source: {name!r}")
 
 
@@ -160,8 +175,11 @@ def main(argv: list[str] | None = None) -> int:
     fetch_start = args.start - timedelta(days=args.warmup_days)
     log.info("Fetching %s %s → %s via %s",
              args.symbol, fetch_start, args.end, args.data_source)
-    src = _build_source(args.data_source)
-    raw = src.fetch_many([args.symbol], fetch_start, args.end)
+    src = _build_source(args.data_source, args.storage_root)
+    fetch_kwargs = (
+        {"asset_class": args.asset_class} if args.data_source == "tiingo" else {}
+    )
+    raw = src.fetch_many([args.symbol], fetch_start, args.end, **fetch_kwargs)
     if args.symbol not in raw or raw[args.symbol].empty:
         log.error("No data for %s — abort", args.symbol)
         return 1
