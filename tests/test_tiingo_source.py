@@ -355,3 +355,32 @@ class TestErrors:
             tiingo_source.TiingoSource(storage=storage).fetch(
                 "SPY", date(2023, 12, 1), date(2023, 12, 4),
             )
+
+    def test_404_not_found_returns_empty_frame(
+        self, tiingo_env, storage, monkeypatch
+    ):
+        """Delisted/renamed tickers (Tiingo returns 404) must not crash a
+        bulk universe fetch — graceful empty-frame return matches yfinance.
+        """
+        from ai_trade.backtest.data import tiingo_source
+
+        def fake_get(*args, **kwargs):
+            mock = MagicMock()
+            mock.status_code = 404
+            mock.text = "Not Found"
+            # raise_for_status would raise — but the code path checks
+            # status_code first and returns early, so this should never fire.
+            mock.raise_for_status.side_effect = AssertionError(
+                "should not raise on 404"
+            )
+            return mock
+
+        monkeypatch.setattr(tiingo_source.requests, "get", fake_get)
+
+        df = tiingo_source.TiingoSource(storage=storage).fetch(
+            "ESV", date(2023, 1, 1), date(2023, 12, 4),
+        )
+        assert df.empty
+        assert list(df.columns) == [
+            "open", "high", "low", "close", "adj_close", "volume",
+        ]

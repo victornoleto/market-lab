@@ -169,6 +169,16 @@ class TiingoSource:
         }
         log.info("HTTP fetch %s [%s..%s] (%s)", ticker, start, end, asset_class)
         resp = requests.get(url, params=params, headers=headers, timeout=self.timeout)
+        # 404 = Tiingo doesn't serve this ticker (delisted, renamed, or never
+        # covered). Return an empty frame so the caller can skip the ticker
+        # — this matches yfinance's behaviour for missing symbols, and
+        # keeps long-running universe fetches resilient.
+        if resp.status_code == 404:
+            log.warning(
+                "tiingo 404 for %s (%s) — returning empty frame",
+                ticker, asset_class,
+            )
+            return _normalize([])
         resp.raise_for_status()
         body = resp.json()
 
