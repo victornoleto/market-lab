@@ -65,8 +65,13 @@ Spec é executável em v1 se:
   #2 probe antes do impl — §5.1 do plan abaixo). Entre 3 e 5 anos é OK; < 3
   anos aborta CPCV N=6 por fold magro.
 - OU regression no training split (~9 meses = 1250 bars) passa `t_stat(λ) <
-  -2.0` (cointegração estatisticamente confirmável). Se não passa, pair é
-  inválido **antes de qualquer backtest** — RuntimeError claro.
+  -3.4` (CADF / Phillips-Ouliaris 5% critical value pra cointegração
+  bivariada, `[algo_trading_chan, p.43-45, ch.2]`). **Nota**: versão
+  anterior deste spec usava -2.0 (ADF univariate); corrigido durante
+  implementação Task 3 após observar que o threshold -2.0 aceita random
+  walks espúrios (t≈-3.17). CADF é o threshold correto porque o fit do
+  hedge ratio β adiciona um parâmetro estimado à regressão. Se não passa,
+  pair é inválido **antes de qualquer backtest** — RuntimeError claro.
 - `half_life_bars ∈ [4, 60]` no training. Fora desse range, pair não
   mean-reverte no timeframe 1h (clamp defensivo).
 
