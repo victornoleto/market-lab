@@ -29,6 +29,7 @@ import logging
 import os
 from dataclasses import dataclass
 from datetime import date
+from pathlib import Path
 
 import pandas as pd
 import requests
@@ -40,6 +41,26 @@ log = logging.getLogger(__name__)
 _BASE = "https://api.tiingo.com/tiingo"
 
 _CANONICAL_COLUMNS = ["open", "high", "low", "close", "adj_close", "volume"]
+
+
+def _read_env_file(name: str) -> str:
+    """Best-effort .env reader for callers that didn't ``source .env``.
+
+    Looks for the project-root .env (4 levels up from this file) and parses
+    ``KEY=VALUE`` lines, stripping quotes. Returns "" if the file is absent
+    or the key is missing — the caller is responsible for raising.
+    """
+    env_path = Path(__file__).resolve().parents[4] / ".env"
+    if not env_path.exists():
+        return ""
+    for line in env_path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, _, v = line.partition("=")
+        if k.strip() == name:
+            return v.strip().strip('"').strip("'")
+    return ""
 
 
 def _normalize(payload: list[dict]) -> pd.DataFrame:
@@ -108,10 +129,10 @@ class TiingoSource:
     timeout: float = 30.0
 
     def _api_key(self) -> str:
-        key = os.environ.get("TIINGO_API_KEY", "")
+        key = os.environ.get("TIINGO_API_KEY", "") or _read_env_file("TIINGO_API_KEY")
         if not key:
             raise RuntimeError(
-                "TIINGO_API_KEY not set in environment. Add it to .env or export it."
+                "TIINGO_API_KEY not set (env or .env file at project root)."
             )
         return key
 

@@ -136,6 +136,8 @@ class TestAuth:
         from ai_trade.backtest.data import tiingo_source
 
         monkeypatch.delenv("TIINGO_API_KEY", raising=False)
+        # Also bypass the .env-file fallback so the test is hermetic.
+        monkeypatch.setattr(tiingo_source, "_read_env_file", lambda _name: "")
 
         with pytest.raises(RuntimeError, match="TIINGO_API_KEY"):
             tiingo_source.TiingoSource(storage=storage).fetch(

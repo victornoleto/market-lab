@@ -1,0 +1,72 @@
+{
+  "A": {
+    "asset_class": "equity",
+    "fetched_at": "2026-04-14T22:02:50",
+    "first_date": "2024-01-02",
+    "last_date": "2024-02-01",
+    "n_bars": 22
+  },
+  "AAL": {
+    "asset_class": "equity",
+    "fetched_at": "2026-04-14T22:02:51",
+    "first_date": "2024-01-02",
+    "last_date": "2024-02-01",
+    "n_bars": 22
+  },
+  "AAPL": {
+    "asset_class": "equity",
+    "fetched_at": "2026-04-14T22:02:52",
+    "first_date": "2024-01-02",
+    "last_date": "2024-02-01",
+    "n_bars": 22
+  },
+  "ABBV": {
+    "asset_class": "equity",
+    "fetched_at": "2026-04-14T22:02:52",
+    "first_date": "2024-01-02",
+    "last_date": "2024-02-01",
+    "n_bars": 22
+  },
+  "ABNB": {
+    "asset_class": "equity",
+    "fetched_at": "2026-04-14T22:02:54",
+    "first_date": "2024-01-02",
+    "last_date": "2024-02-01",
+    "n_bars": 22
+  },
+  "IVV": {
+    "asset_class": "etf",
+    "fetched_at": "2026-04-14T22:02:18",
+    "first_date": "2024-01-02",
+    "last_date": "2024-02-01",
+    "n_bars": 22
+  },
+  "IWM": {
+    "asset_class": "etf",
+    "fetched_at": "2026-04-14T22:02:20",
+    "first_date": "2024-01-02",
+    "last_date": "2024-02-01",
+    "n_bars": 22
+  },
+  "QQQ": {
+    "asset_class": "etf",
+    "fetched_at": "2026-04-14T22:02:19",
+    "first_date": "2024-01-02",
+    "last_date": "2024-02-01",
+    "n_bars": 22
+  },
+  "SPY": {
+    "asset_class": "etf",
+    "fetched_at": "2026-04-14T22:02:18",
+    "first_date": "2024-01-02",
+    "last_date": "2024-02-01",
+    "n_bars": 22
+  },
+  "VOO": {
+    "asset_class": "etf",
+    "fetched_at": "2026-04-14T22:02:19",
+    "first_date": "2024-01-02",
+    "last_date": "2024-02-01",
+    "n_bars": 22
+  }
+}

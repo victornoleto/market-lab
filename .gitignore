@@ -32,6 +32,7 @@ docs/POST_reddit.md
 data/tiingo/prices/
 data/tiingo/meta/
 data/tiingo/*.tar.gz
+data/tiingo/bulk_summary_*.json
 !data/tiingo/manifest.json
 
 # Local caches for external data sources (yfinance parquet, wikipedia HTML)
