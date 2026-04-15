@@ -1,5 +1,13 @@
 # Why migrate to Tiingo — data-ablation rationale
 
+> ⏸️ **On hold — waiting for Tiingo evaluation.** The Reddit post
+> (`docs/POST_reddit.md`) and any fork decision are paused until the
+> Tiingo SF subscription lands and the re-runs of Run 1 (Clenow) and
+> Run 2 (Ehlers) complete. Rationale: the post will inevitably draw
+> "why didn't you use survivorship-free data?" — answering with actual
+> results beats answering with a plan. Resume this doc's §6 execution
+> plan once the subscription is active.
+
 **Status:** planned. Tiingo SF subscription pending; once signed, re-run
 Run 1 (Clenow) and Run 2 (Ehlers) with survivorship-free data keeping
 everything else constant.

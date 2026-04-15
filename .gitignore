@@ -27,6 +27,13 @@ prints/
 # Personal drafts (Reddit posts, untracked notes) — not part of the project.
 docs/POST_reddit.md
 
+# Tiingo bulk dataset (Phase 2.5 Run 3) — heavy parquet files NOT committed,
+# but the manifest IS committed so collaborators see what's been downloaded.
+data/tiingo/prices/
+data/tiingo/meta/
+data/tiingo/*.tar.gz
+!data/tiingo/manifest.json
+
 # Local caches for external data sources (yfinance parquet, wikipedia HTML)
 .cache/
 
