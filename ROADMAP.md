@@ -18,20 +18,26 @@
   - **Clenow momentum, Tiingo SPX 506 tickers 2015-2023, post-fix:** PBO=0.603 fail (worsened vs 0.524), DSR 0/30 reject, WF 9/30 pass (from 4/30), best Sharpe 0.618 (from 0.583). Survivorship-honest universe is stricter than yfinance's filtered one. Verdict: FAIL (PBO + DSR).
   - **Code-level bugs fixed along the way:** (i) both strategies read raw `close` instead of `adj_close` — splits triggered Clenow's 15% gap filter and dividends spiked Ehlers' oscillator; new `adjust_ohlc` utility rebases OHLC to the total-return base (commit `5ca9410`). (ii) `TiingoSource._http_fetch` now returns an empty frame on 404 instead of crashing long universe fetches (commit `75f80de`). (iii) Tiingo bulk default `--start 1990-01-01` to capture widest history per ticker (commit `e0c95f1`). **351 tests green (+64 net vs Run 2 baseline 290).**
 
-- 🔄 **Phase 2.5 — Run 4 Step 2 (F3.D Portfolio Clenow+Ehlers, 2026-04-15) — FAIL v1.** v1 on SPY 2015-2023: PBO 0.849 ❌ (worsened from Ehlers 0.496 / Clenow 0.603 — diversification made 9 configs so uniform that PBO's IS/OOS rank-swap test explodes), DSR 0/9 reject (best p=0.190, improved vs 0.332 baseline), **walk-forward 9/9 pass** ✅ (huge gain — Clenow regime filter subsidizes Ehlers DD in crises, confirming the diversification sub-hypothesis). Best Sharpe 0.804 (config_id=1: clenow=8 × ehlers=18), CAGR 10.84%, DD 18.02%. Per spec §6.2 go/no-go: v2 (2005-2023) SKIPPED. Commits: `872a9cf` (core utility) + `c99bca3` (citation fix) + `36c0f57` (CLI) + `ac00d6e` (code review fixes — observers, SPY asset_class). Diagnostic: `reports/grid_portfolio_20260415-1541/diagnostic.md`. Spec: `docs/superpowers/specs/2026-04-15-f3d-portfolio-clenow-ehlers-design.md`. Plan: `docs/superpowers/plans/2026-04-15-f3d-portfolio-clenow-ehlers.md`.
+- 🔄 **Phase 2.5 — Run 4 Step 2 (F3.D Portfolio Clenow+Ehlers, 2026-04-15) — FAIL v1.** v1 on SPY 2015-2023 (daily bars): PBO 0.849 ❌ (diversification uniformity paradox), DSR 0/9 reject (best p=0.190), **walk-forward 9/9 pass** ✅ (huge gain — Clenow regime filter subsidizes Ehlers DD in crises). Best Sharpe 0.804, CAGR 10.84%, DD 18.02%. v2 SKIPPED per go/no-go. Commits `872a9cf`/`c99bca3`/`36c0f57`/`ac00d6e`. Diagnostic: `reports/grid_portfolio_20260415-1541/diagnostic.md`. Spec+plan under `docs/superpowers/{specs,plans}/2026-04-15-f3d-portfolio-clenow-ehlers*.md`.
 
-  Sub-result to keep: diversification solved the WF gate entirely (9/9 from Ehlers 7/24 / Clenow 9/30). Any future strategy that mixes orthogonal signals inherits this win.
+  Sub-result to keep: diversification solves the WF gate (9/9 from Ehlers 7/24 / Clenow 9/30). The `src/ai_trade/backtest/portfolio/` package is timeframe-agnostic — reusable for any future combination.
+
+- ⚠️ **2026-04-15 (noite) — PIVOT: intraday short-hold + `tiingo_service` lazy-cache.** All five Phase 2.5 cycles above ran on **daily bars**, with actual trade durations (from the F3.D run's persisted trades): Clenow median **56-63 days** (max 378), Ehlers BP Swing median 1-22 days but with outlier positions held up to 4 years. This is fundamentally incompatible with the project's real goal — **short, punctual CFD trades on Pepperstone**. Even while swap is ignored in the backtest for now, strategy *selection* must respect "short and punctual" going forward, otherwise we're optimizing the wrong thing. Two decisions:
+
+  1. **`tiingo_service` lazy-cache** replaces the eager bulk download as primary data path. Each API call memoized by `(endpoint, params)` hash: cache-hit returns immediately, cache-miss fetches + persists + returns. Unlocks intraday endpoints (Tiingo IEX 1min/5m/1h) without needing a pre-bulk. Existing `TiingoStorage`/`manifest.json` becomes a special case of this layer, not the primary protocol.
+  2. **Strategy catalog re-prioritized** around short-hold intraday. Clenow leaves the production path (keeps its role as "engine exerciser" in the historical record). Incoming: Chan mean-reversion / cointegration pairs `[algo_trading_chan]`, Ehlers BP Swing on 1h bars (same logic, new timeframe), volatility breakouts `[volatility_trading, Sinclair]`. **AFML sophisticated** — previously promoted as "path B" — is DEFERRED: it re-enters later as a secondary filter over an intraday strategy that shows edge.
 
 - 🔄 **Phase 2.5 — Run 4 Step 1 (AFML meta-labeling simple, 2026-04-15) — FAIL.** See JORNADA.md changelog.
 - ✅ **Phase 2.5 — Run 4 Step 1 prep (long-history Ehlers, 2026-04-15) — FAIL** (mixed signals). See JORNADA.md changelog.
 
-- ⏳ **Next steps (in order):**
-    1. **AFML sophisticated (path B)** — now the primary. The simple Run 4 Step 1 AFML failed at ~80 events in 9 years. Rebuild with (a) walk-forward CV with purge/embargo `[advances_fin_ml, ch.7]` (not the naive 50/50 temporal split), (b) rich features `[osc, dcp, hp, ss_trend, atr20, regime_flag, vix_proxy, volume_z]`, (c) asymmetric triple-barrier labeling, (d) training universe long-history 1993-2026 (Tiingo widest bulk — re-run `tiingo_bulk_download.py --start 1990-01-01` first, ~30-60 min).
-    2. **Reuse the F3.D portfolio infrastructure** — the `src/ai_trade/backtest/portfolio/` package is agnostic; `Portfolio(Clenow, EhlersMeta)` drops in when the AFML-sophisticated `EhlersMeta` is ready. No new combination code needed.
-    3. **Cancel Tiingo subscription** once widest bulk + backup verified.
-    4. **Carver multi-asset trend / Chan cointegration (path D)** — only if (1) fails.
+- ⏳ **Next steps (in order, post-pivot):**
+    1. **`tiingo_service` (lazy-cache)** — new module `src/ai_trade/backtest/data/tiingo_service.py` (or similar). Design: cache key = hash of (endpoint, asset_class, ticker, start, end, frequency, ...); cache root `data/cache/`; on miss hit Tiingo API, persist (parquet), return. Must co-exist with the current `TiingoSource`/`TiingoStorage` bulk layer (used for historical daily data already on disk). Brainstorm → spec → plan → subagent-driven-development, same loop as F3.D.
+    2. **Intraday strategy catalog — 1h first** (sweet spot between noise and frequency). Chan mean-reversion pairs is the strongest fit `[algo_trading_chan]`; Ehlers BP Swing ported to 1h (recalibrate thresholds); Sinclair-style volatility breakouts `[volatility_trading]`. Each strategy gets the same anti-overfit gate battery (CPCV/PBO/DSR/WF). Expand to 15m / 5m only after 1h gives useful signal.
+    3. **AFML sophisticated** — re-enters here, as a meta-label layer over whichever intraday strategy shows edge in (2). Same plan as the deferred path: walk-forward CV with purge/embargo `[advances_fin_ml, ch.7]`, rich features, asymmetric triple-barrier.
+    4. **Carver multi-asset trend / other multi-day families** — only if nothing intraday delivers. These don't fit the short-hold goal either, so they're effectively a last-resort pivot.
+    5. **Cancel Tiingo subscription** — pushed out until `tiingo_service` is verified working against live endpoints (can't evaluate without fresh intraday data).
 
-  Diagnostics from this session: `reports/grid_portfolio_20260415-1541/diagnostic.md` (F3.D v1 FAIL — PBO paradox + WF 9/9 win) + `reports/grid_ehlers_spy_postfix_20260415-0958/diagnostic.md` + `reports/grid_clenow_tiingo_postfix_20260415-1005/diagnostic.md` + `reports/grid_ehlers_20260415-1353/diagnostic.md`.
+  Diagnostics still relevant: `reports/grid_portfolio_20260415-1541/diagnostic.md` (F3.D v1), `reports/grid_ehlers_spy_postfix_20260415-0958/diagnostic.md`, `reports/grid_clenow_tiingo_postfix_20260415-1005/diagnostic.md`, `reports/grid_ehlers_20260415-1353/diagnostic.md`.
 
 ---
 
@@ -268,28 +274,45 @@ Paste this prompt when opening Claude Code:
 ```
 Resuming development of the ai-trade project at /var/www/pessoal/ai-trade.
 
-Current state (2026-04-15):
-- Phase 2 (backtest engine) + Phase 2.5 Runs 1-3 complete.
-- Both strategies (Clenow + Ehlers) FAIL gates on Tiingo survivorship-
-  free data even after the adj_close fix that lifted raw Sharpe 2-4×.
-- AFML meta-labeling primitives shipped at src/ai_trade/backtest/meta/
-  but NOT yet wired to Ehlers/Clenow event streams.
-- 352 tests green.
+Current state (2026-04-15, post-pivot):
+- Phase 2 (backtest engine) + Phase 2.5 Runs 1-4 complete (all on daily
+  bars). Last cycle F3.D Portfolio Clenow+Ehlers: FAIL v1 (PBO 0.849 —
+  diversification uniformity paradox, DSR 0/9 best p=0.190) but
+  WF 9/9 ✅ as a genuine sub-result. Commits 872a9cf/c99bca3/36c0f57/
+  ac00d6e/e7c2254 + pivot commit on main.
+- Pivot decided 2026-04-15 noite: all Phase 2.5 strategies had
+  multi-day holds (Clenow median 56-63d, Ehlers median 1-22d w/ 4y
+  outliers) — incompatible with CFD short-hold goal. Going forward:
+  intraday bars (1h primary, 15m/5m later) + tiingo_service lazy-cache
+  replaces bulk download. AFML sophisticated DEFERRED (re-enters as
+  meta-layer over intraday strategy later).
+- src/ai_trade/backtest/portfolio/ package is timeframe-agnostic —
+  reusable for intraday combinations.
+- 377 tests green (375 passed + 2 skipped).
 
 Read first:
-1. ROADMAP.md §"Current status" + §"Next steps" (Phase 2.5 Run 4 prep).
-2. specs/backtest_phase2.md §"Phase 2.5 — Run 3" (Clenow Run 3 verdict).
-3. specs/backtest_phase2_5_ehlers.md §"Run 3" (Ehlers Run 3 verdicts).
-4. reports/ehlers_multi_asset_summary.md (16-asset post-fix table).
-5. docs/self_improvement/README.md if you'll run the overnight loop.
+1. JORNADA.md — top sections ("Onde estamos hoje", "O que vem a seguir")
+   + last two changelog entries (pivô + F3.D v1 FAIL).
+2. ROADMAP.md §"Current status" (has the pivot block marked ⚠️) +
+   §"Next steps (post-pivot)".
+3. reports/grid_portfolio_20260415-1541/diagnostic.md (F3.D v1 — PBO
+   paradox; useful to understand why diversification alone isn't enough
+   when configs are too uniform).
+4. src/ai_trade/backtest/data/{tiingo_source.py,tiingo_storage.py} —
+   starting points for the new tiingo_service lazy-cache layer.
+5. docs/superpowers/specs/2026-04-15-f3d-portfolio-clenow-ehlers-design.md
+   — the F3.D spec shows the brainstorm→spec→plan→SDD pattern to mirror.
 
-Next step per ROADMAP: AFML rescue on Ehlers SPY — create
-src/ai_trade/backtest/strategies/ehlers_meta.py wrapping the existing
-EhlersBPSwingStrategy with the MetaLabeler primitive from
-src/ai_trade/backtest/meta/ (sklearn RandomForest secondary, p_act>0.55
-threshold, grid on (hp,lp,pct,stop,p_act_threshold)). Add scikit-learn
-to pyproject.toml first. TDD, ≥351 tests must stay green, commit only
-when asked.
+Next step per ROADMAP: brainstorming of tiingo_service (lazy-cache
+layer). Cache key = hash(endpoint, asset_class, ticker, start, end,
+frequency, ...); cache root data/cache/; on miss hit Tiingo API,
+persist (parquet), return. Must co-exist with current
+TiingoSource/TiingoStorage (daily bulk is already on disk). Unlocks
+intraday endpoints (Tiingo IEX 1min/5m/1h) on demand. Use the loop:
+superpowers:brainstorming → writing-plans → subagent-driven-development,
+same pattern as this session's F3.D. Citation rule inviolable
+([book.slug, p.X]). JORNADA.md updated on each meaningful progress.
+Commit only when asked.
 ```
 
 ---

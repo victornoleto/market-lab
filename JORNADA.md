@@ -41,17 +41,25 @@ trading: palpite disfarçado de análise.
 - **Fase 2 — Motor de backtest** ✅ 2.3 mil linhas de código, 351 testes
   passando. Inclui os 5 testes anti-overfit mais sérios da literatura
   (CPCV, PBO, DSR, Walk-forward, Permutação).
-- **Fase 2.5 — Testar estratégias no motor** 🔄 4 ciclos executados:
-  - **Clenow momentum** — comprar ações que subiram, vender as que
-    caíram (cross-sectional momentum).
-  - **Ehlers BP Swing** — usar filtros de frequência de sinal digital
-    pra identificar ciclos curtos de oscilação.
-  - **Ehlers + AFML meta-labeling** (Run 4 Step 1, 2026-04-15) —
-    tentativa de "salvar" o Ehlers com um RandomForest secundário que
-    filtra trades ruins. **Piorou** as métricas (PBO 0.647 vs 0.496
-    baseline).
-  - **Todas falham os filtros estatísticos.** Mas não por serem ruins.
-    Continue lendo na próxima seção.
+- **Fase 2.5 — Testar estratégias no motor** 🔄 5 ciclos executados (todos
+  em bars diários):
+  - **Clenow momentum** — cross-sectional momentum.
+  - **Ehlers BP Swing** — DSP swing trader em oscilador band-pass.
+  - **Ehlers + AFML meta-labeling simples** (Run 4 Step 1) — piorou
+    (PBO 0.647 vs 0.496 baseline).
+  - **Long-history Ehlers 2005-2023** (Run 4 F3.C) — PBO melhorou, WF
+    quebrou em crises.
+  - **F3.D Portfolio Clenow + Ehlers 50/50** (Run 4 Step 2) — PBO
+    disparou pra 0.849 (paradoxo da uniformidade), mas **WF foi pra
+    9/9** — diversificação *resolveu* o problema de crise. Sub-result
+    que fica.
+- **Pivô arquitetural (decidido 2026-04-15 noite)** ⚠️ Todos os ciclos
+  acima rodaram em **bars diários**, com trades que duraram 1-60+ dias
+  em média. Isso é incompatível com o objetivo real do projeto:
+  **trades curtas e pontuais via CFDs na Pepperstone**. A partir de
+  agora, toda backtest opera em bars intraday (1h/15m/5m, 1min se
+  latência permitir) e o catálogo de estratégias muda pra quem
+  comporta short-hold. Detalhe na próxima seção e no changelog.
 - **Fases 3-7** ⏳ Ainda à frente (rigor + paper + live + governança +
   escala).
 
@@ -97,21 +105,34 @@ Duas coisas estão acontecendo:
 
 ## O que vem a seguir (ordem de prioridade)
 
-1. ~~AFML rescue na Ehlers SPY~~ **2026-04-15 — FAIL.** Ver changelog.
-2. ~~Janela longa 2005-2023 (SPY)~~ **2026-04-15 — FAIL** (mas com
-   sinais positivos: PBO melhorou, DSR p-value caiu de 0.332 → 0.213).
-   Ver changelog.
-3. ~~Portfolio combinado Clenow + Ehlers~~ **2026-04-15 — FAIL v1
-   (2015-2023)**, v2 (2005-2023) não executado por spec go/no-go. Ver
-   changelog. Paradoxo interessante: WF saltou pra 9/9 mas PBO disparou
-   pra 0.849 (diversificação tornou configs uniformes — o "melhor" é
-   essencialmente aleatório).
-4. **AFML mais sofisticado** ← **próximo passo**. Versão séria precisa
-   walk-forward CV com purge/embargo, feature engineering (volume,
-   regime, dados de outros ativos), labeling triple-barrier agressivo.
-   Universo de treino: long-history 1993-2026 (Tiingo widest bulk).
-5. **Último recurso:** pivô pra classe nova (Carver multi-asset trend,
-   Chan cointegration pairs). Só se 4 falhar.
+**Direção nova pós-pivô 2026-04-15 noite.** Todos os cinco ciclos
+anteriores ficam no histórico como "pesquisa em bars diários"; daqui
+pra frente a agulha gira em torno de short-hold intraday.
+
+1. **`tiingo_service` lazy-cache** ← **próximo passo imediato**.
+   Substituir/complementar o bulk diário atual por uma camada onde
+   cada chamada de API é memoizada por `(endpoint, params)` — se já
+   está em `data/cache/`, retorna; senão, requisita, salva e retorna.
+   Destrava intraday (endpoints Tiingo IEX 1min/5m/1h) sem pre-bulk.
+2. **Catálogo de estratégias intraday short-hold** — começar em 1h
+   (sweet spot entre ruído e frequência) e depois 15m/5m:
+   - **Chan mean-reversion / cointegration pairs**
+     `[algo_trading_chan]` — natural pra intraday, minutos-horas.
+   - **Ehlers BP Swing em 1h** — recalibrar thresholds, a infra já
+     suporta.
+   - **Volatility breakouts / range trading** `[volatility_trading,
+     Sinclair]`.
+3. **AFML sofisticado** — DEFERRED. Se uma estratégia intraday
+   mostrar edge, aí entra como filtro secundário meta-labeling.
+4. **Clenow** — descartado como estratégia de produção (cross-
+   sectional momentum é inerentemente multi-day). Fica como "exercise
+   do motor" no histórico.
+5. **Último recurso** — Carver multi-asset trend (também multi-day,
+   só se nada intraday der edge).
+
+A infra `src/ai_trade/backtest/portfolio/` construída em F3.D é
+**timeframe-agnostic** — reusável pra combinar estratégias intraday
+no futuro (`Portfolio(ChanPairs, EhlersBP1h)` drop-in).
 
 O sonho com ouro fica anotado, mas GLD foi o pior ativo do último survey
 (Sharpe 0.21, falha todos os gates). Criar estratégia 1-ativo pra ouro
@@ -152,6 +173,60 @@ Termos que aparecem ao longo das entradas do changelog:
 ---
 
 # Changelog (entradas datadas)
+
+## 2026-04-15 (noite, final) — Pivô: intraday short-hold + `tiingo_service` lazy-cache
+
+**Gatilho:** conversa pós-F3.D sobre tempo real de trade. Checando os
+trades persistidos dos 9 portfolios (`grid_portfolio_20260415-1541`):
+
+- **Clenow:** duração mediana 56-63 dias, média 65-74, máximo 287-378.
+- **Ehlers BP Swing:** mediana 1-22 dias, mas média inflada (129-146
+  dias) por posições presas por até 4 anos em trends sem hit de stop.
+
+Isso é **fundamentalmente incompatível** com o objetivo do projeto:
+operar CFDs na Pepperstone, que cobra swap/overnight diário. Mesmo
+ignorando swap por ora no backtest, a *seleção* de estratégias tem
+que respeitar "curto e pontual" desde já, senão estamos otimizando a
+coisa errada.
+
+**Duas decisões derivadas:**
+
+1. **`tiingo_service` (lazy-cache) substitui o bulk diário.** Camada
+   nova que, em vez de pre-baixar todos os tickers numa única shot,
+   memoiza chamadas por `(endpoint, params)`: se o dado já existe em
+   `data/cache/`, retorna; senão, requisita, persiste, retorna. Isso:
+   (a) permite intraday (endpoints Tiingo IEX 1min/5m/1h) sem bulk
+   prévio; (b) ainda funciona pra daily quando necessário; (c) o
+   `TiingoStorage`/`manifest.json` atual vira um caso especial dessa
+   camada, não o protocolo primário.
+2. **Catálogo de estratégias re-prioritizado em torno de short-hold.**
+   Clenow sai do caminho de produção (fica como histórico). Entram:
+   Chan mean-reversion/pairs `[algo_trading_chan]`, Ehlers BP em 1h
+   (mesma lógica, timeframe novo), volatility breakouts `[volatility_
+   trading, Sinclair]`. AFML sofisticado — antes priorizado como
+   "caminho B" — fica deferred pra entrar depois como filtro
+   secundário sobre uma estratégia intraday que mostre edge.
+
+**O que NÃO muda:**
+- F3.D sub-result (diversificação resolve WF) continua valioso. O
+  pacote `src/ai_trade/backtest/portfolio/` é timeframe-agnostic —
+  será reusado pra combinar estratégias intraday.
+- Gates anti-overfit (CPCV/PBO/DSR/WF) continuam os mesmos — o que
+  muda é o que alimenta eles.
+- Regra da citação `[book.slug, p.X]` continua inviolável.
+- Stage 1 (edge em dados limpos) vs Stage 2 (custos Pepperstone reais)
+  continua como estruturado no ROADMAP §"Two-stage backtest".
+
+**Arquivos afetados nesse commit:**
+- `JORNADA.md` (seções "Onde estamos hoje" + "O que vem a seguir" +
+  este changelog).
+- `ROADMAP.md` §"Current status" + §"Next steps" (pivô documentado).
+
+**Próximo passo concreto** (pra nova sessão): brainstorming do
+`tiingo_service` — design da chave de cache, relação com
+`TiingoStorage` existente, migração dos backtests existentes.
+
+---
 
 ## 2026-04-15 (noite) — F3.D Portfolio Clenow+Ehlers — FAIL v1 (paradoxo WF 9/9 + PBO 0.849)
 
