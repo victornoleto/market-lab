@@ -263,6 +263,29 @@ class TestFetchMany:
 
 
 class TestAssetClass:
+    def test_dotted_equity_ticker_swapped_to_dash_in_url(
+        self, tiingo_env, storage, monkeypatch
+    ):
+        """Yahoo BF.B → Tiingo BF-B in the outbound URL; storage key stays."""
+        from ai_trade.backtest.data import tiingo_source
+
+        captured: dict = {}
+
+        def fake_get(url, params=None, headers=None, timeout=None):
+            captured["url"] = url
+            return _mock_response(_TIINGO_SAMPLE)
+
+        monkeypatch.setattr(tiingo_source.requests, "get", fake_get)
+
+        src = tiingo_source.TiingoSource(storage=storage)
+        src.fetch("BF.B", date(2023, 12, 1), date(2023, 12, 4),
+                  asset_class="equity")
+
+        assert "/daily/BF-B/prices" in captured["url"]
+        # Storage entry still under the original (Yahoo-style) key.
+        assert "BF.B" in storage.manifest
+        assert "BF-B" not in storage.manifest
+
     def test_crypto_asset_class_uses_crypto_endpoint(
         self, tiingo_env, storage, monkeypatch
     ):

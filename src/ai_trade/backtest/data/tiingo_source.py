@@ -88,14 +88,32 @@ def _normalize(payload: list[dict]) -> pd.DataFrame:
     return canonical
 
 
+def _normalize_ticker(ticker: str, asset_class: str) -> str:
+    """Map Yahoo-style ticker → Tiingo-style for the URL.
+
+    Tiingo follows the Bloomberg class-share convention (``BF-B``,
+    ``BRK-B``); Yahoo uses dots (``BF.B``, ``BRK.B``). Only equities
+    need the swap — ETFs, indices, crypto and forex have no dotted
+    tickers.
+
+    The local storage key remains the ORIGINAL (Yahoo-style) ticker
+    so it stays consistent with WikipediaSPX and the rest of the
+    pipeline; only the outbound HTTP URL uses the swapped form.
+    """
+    if asset_class == "equity" and "." in ticker:
+        return ticker.replace(".", "-")
+    return ticker
+
+
 def _build_url(ticker: str, asset_class: str) -> str:
     """Pick the Tiingo endpoint for the given asset class."""
+    api_ticker = _normalize_ticker(ticker, asset_class)
     if asset_class in ("equity", "etf", "index"):
-        return f"{_BASE}/daily/{ticker}/prices"
+        return f"{_BASE}/daily/{api_ticker}/prices"
     if asset_class == "crypto":
         return f"{_BASE}/crypto/prices"
     if asset_class == "forex":
-        return f"{_BASE}/fx/{ticker}/prices"
+        return f"{_BASE}/fx/{api_ticker}/prices"
     raise ValueError(f"unknown asset_class: {asset_class!r}")
 
 
@@ -108,7 +126,7 @@ def _build_params(
     }
     if asset_class == "crypto":
         # Crypto endpoint takes a `tickers` query param, not a path segment.
-        params["tickers"] = ticker
+        params["tickers"] = _normalize_ticker(ticker, asset_class)
         params["resampleFreq"] = "1day"
     return params
 
