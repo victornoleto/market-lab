@@ -512,6 +512,65 @@ first), then Option 3 (regime-aware portfolio)**. Rationale:
 
 ---
 
+## 🔬 Run 3 — Tiingo ablation (Ehlers grid on survivorship-free data)
+
+**Status:** 🔄 _Tiingo Power $30 subscribed 2026-04-14; bulk download in
+progress; re-run pending._
+
+### What's different vs Run 2
+
+Same Ehlers Band-Pass Swing strategy, same 24-config grid, same window
+(2015-01-01 → 2023-12-31), same gates — only the data source changes:
+yfinance → Tiingo (storage at `data/tiingo/`).
+
+For a single-instrument SPX backtest, the survivorship effect is
+mostly cosmetic on the index series itself (^GSPC vs SPY differ in
+dividend treatment but tracking is ≥99%). The interesting comparison
+is the **DSR null distribution**: with Tiingo serving the full
+constituent universe across all 12 years, the null variance is closer
+to the real population, so any apparent edge is benchmarked against
+the honest bar instead of the inflated yfinance benchmark.
+
+### Verdict (template — fill after re-run)
+
+| Gate | Run 2 (yfinance ^GSPC) | Run 3 (tiingo SPY) | Δ |
+|---|---|---|---|
+| PBO | 0.468 pass | _tbd_ | _tbd_ |
+| DSR best p | 0.852 (cfg #6) | _tbd_ | _tbd_ |
+| WF pass | 2/24 | _tbd_ | _tbd_ |
+| Best Sharpe | 0.310 | _tbd_ | _tbd_ |
+| Best CAGR | 2.17% | _tbd_ | _tbd_ |
+| Best max DD | 14.65% | _tbd_ | _tbd_ |
+| Cross-corr w/ Clenow Run 3 | — | _tbd_ | — |
+| Overall | FAIL (DSR only) | _tbd_ | _tbd_ |
+
+### Fork resolution (template)
+
+* If Run 3 **passes DSR** → the strategy did have edge; yfinance
+  background variance was the bar that masked it. Phase 3 unblocks.
+* If Run 3 **still fails DSR** but PBO holds → confirms the edge is
+  small relative to N=24 trials; option 3 (regime-aware portfolio
+  with Clenow Run 3) becomes the rational follow-up.
+* If Run 3 **fails PBO** (worsens vs Run 2) → the apparent signal
+  structure was an artefact of yfinance bias. Pivot strategy.
+
+### Reused infra
+
+Identical to the Clenow Run 3 plumbing — see
+`specs/backtest_phase2.md` §"Phase 2.5 — Run 3" for the full inventory.
+The Ehlers CLI invocation is a one-flag change:
+
+```bash
+.venv/bin/python scripts/run_grid_ehlers.py \
+    --start 2015-01-01 --end 2023-12-31 \
+    --cash 100000 --output-dir reports/ \
+    --n-jobs 4 --data-source tiingo
+```
+
+`--symbol` defaults to `SPY` automatically when `--data-source=tiingo`.
+
+---
+
 ## 📌 References
 
 - `specs/backtest_phase2.md` — Phase 2 spec + Phase 2.5 Run 1

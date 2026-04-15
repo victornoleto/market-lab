@@ -306,6 +306,65 @@ now it makes sense to move to Ehlers/AFML).
 
 ---
 
+## 🔬 Phase 2.5 — Run 3 (Clenow grid on Tiingo, 2026-04-?)
+
+**Status:** 🔄 _data layer ready (Tiingo Power $30 subscribed
+2026-04-14); bulk download in progress; re-run pending._
+
+### What's different vs Run 1
+
+Same Clenow grid (30 configs), same window (2015-01-01 → 2023-12-31),
+same gates, same checkpoint/observer plumbing — **only the data source
+changes**: yfinance → Tiingo (storage-backed at `data/tiingo/`).
+Survivorship-free coverage confirmed empirically — `ANDV` (delisted
+2018-10-03) returned 42 OHLCV bars up to the delisting date in the
+smoke test; the same will hold for the ~97 SPX 500 tickers that
+yfinance silently dropped in Run 1.
+
+Index proxy: Tiingo does not serve `^GSPC`. The CLI auto-swaps to
+`SPY` when `--data-source=tiingo`. SPY tracks SPX with ≥99% return
+correlation — material for absolute SPX 200-day MA values, not
+material for the regime-mode boolean (above/below MA) used by Clenow.
+
+### Verdict (template — fill after re-run)
+
+| Gate | Run 1 (yfinance) | Run 3 (tiingo) | Δ |
+|---|---|---|---|
+| PBO | 0.524 fail | _tbd_ | _tbd_ |
+| DSR best p | 0.627 (cfg #15) | _tbd_ | _tbd_ |
+| WF pass | 4/30 | _tbd_ | _tbd_ |
+| Best Sharpe | 0.583 | _tbd_ | _tbd_ |
+| Best CAGR | 8.87% | _tbd_ | _tbd_ |
+| Universe (avg per rebal) | 410 (after 19% drops) | _tbd_ | _tbd_ |
+| Tickers with delisted history served | 0 | _tbd_ | _tbd_ |
+| Overall | FAIL | _tbd_ | _tbd_ |
+
+### Fork resolution (template)
+
+* If Run 3 **passes** all 3 gates → Run 1 verdict was data-mediated;
+  yfinance survivorship masked a real edge. Phase 3 unblocks for
+  Clenow.
+* If Run 3 **fails on DSR alone** but **passes PBO** → similar profile
+  to Run 2 (Ehlers); the edge is small but the structure is sound;
+  consider Option 3 (regime-aware Clenow+Ehlers portfolio) given the
+  cross-corr ≈ 0 already established.
+* If Run 3 **fails on PBO too** → confirms Run 1's structural reading;
+  the edge is absent in the SPX 2015-2023 window irrespective of data
+  bias. Pivot to a 3rd strategy or universe shift.
+
+### Reused infra
+
+- `src/ai_trade/backtest/data/tiingo_storage.py` — parquet+manifest
+  layer (`data/tiingo/`).
+- `src/ai_trade/backtest/data/tiingo_source.py` — storage-first;
+  Tiingo API on miss; ticker `BF.B` ↔ `BF-B` Bloomberg/Yahoo mapping.
+- `scripts/tiingo_bulk_download.py` — one-time bulk, idempotent.
+- `scripts/tiingo_backup.py` — tar.gz the dataset for portability.
+- `scripts/run_grid_clenow.py --data-source tiingo` — single-flag
+  re-route, no other changes.
+
+---
+
 ## 📖 How to use this file
 
 1. **When starting a session**, read this entire file + `ROADMAP.md` §"Two-stage backtest".
