@@ -18,21 +18,20 @@
   - **Clenow momentum, Tiingo SPX 506 tickers 2015-2023, post-fix:** PBO=0.603 fail (worsened vs 0.524), DSR 0/30 reject, WF 9/30 pass (from 4/30), best Sharpe 0.618 (from 0.583). Survivorship-honest universe is stricter than yfinance's filtered one. Verdict: FAIL (PBO + DSR).
   - **Code-level bugs fixed along the way:** (i) both strategies read raw `close` instead of `adj_close` — splits triggered Clenow's 15% gap filter and dividends spiked Ehlers' oscillator; new `adjust_ohlc` utility rebases OHLC to the total-return base (commit `5ca9410`). (ii) `TiingoSource._http_fetch` now returns an empty frame on 404 instead of crashing long universe fetches (commit `75f80de`). (iii) Tiingo bulk default `--start 1990-01-01` to capture widest history per ticker (commit `e0c95f1`). **351 tests green (+64 net vs Run 2 baseline 290).**
 
-- 🔄 **Phase 2.5 — Run 4 prep (post-mortem + AFML rescue attempt, 2026-04-15).** Both primary strategies have "small-but-real" edge on the survivorship-honest data but do not clear DSR at the trial counts used. Four candidate paths forward, ranked by strength of evidence × feasibility × differentiation:
-  1. **AFML meta-labeling rescue** (Option A — cheap). `src/ai_trade/backtest/meta/` shipped with triple-barrier labeling, concurrent-event sample weights and a sklearn-compatible `MetaLabeler` (commit `7030d41`, 21 unit tests). Wire to Ehlers' cross-±0.7 events on SPY; fit RandomForest on `[osc, dcp, hp, ss_trend, atr20, regime]`; filter trades by `p_act > 0.55`. If precision rises enough to lift deflated Sharpe > 0, DSR passes.
-  2. **Long-history SPY 1993-2026** (Option B — also cheap). Re-bulk Tiingo at `--start 1990-01-01` (default is now widest). T×3.6 shrinks the DSR null proportionally; may rescue the Ehlers p-value without any code change.
-  3. **Regime-aware Clenow + Ehlers portfolio** (Option C). Cross-correlation of best equity curves ≈ −0.01 — orthogonal. A volatility-scaled 50/50 blend may clear DSR where neither component alone does.
-  4. **Carver multi-asset trend / Chan cointegration pairs** (Option D — bigger investment). Separate strategy surface; deferred until 1-3 are exhausted.
+- 🔄 **Phase 2.5 — Run 4 Step 2 (F3.D Portfolio Clenow+Ehlers, 2026-04-15) — FAIL v1.** v1 on SPY 2015-2023: PBO 0.849 ❌ (worsened from Ehlers 0.496 / Clenow 0.603 — diversification made 9 configs so uniform that PBO's IS/OOS rank-swap test explodes), DSR 0/9 reject (best p=0.190, improved vs 0.332 baseline), **walk-forward 9/9 pass** ✅ (huge gain — Clenow regime filter subsidizes Ehlers DD in crises, confirming the diversification sub-hypothesis). Best Sharpe 0.804 (config_id=1: clenow=8 × ehlers=18), CAGR 10.84%, DD 18.02%. Per spec §6.2 go/no-go: v2 (2005-2023) SKIPPED. Commits: `872a9cf` (core utility) + `c99bca3` (citation fix) + `36c0f57` (CLI) + `ac00d6e` (code review fixes — observers, SPY asset_class). Diagnostic: `reports/grid_portfolio_20260415-1541/diagnostic.md`. Spec: `docs/superpowers/specs/2026-04-15-f3d-portfolio-clenow-ehlers-design.md`. Plan: `docs/superpowers/plans/2026-04-15-f3d-portfolio-clenow-ehlers.md`.
+
+  Sub-result to keep: diversification solved the WF gate entirely (9/9 from Ehlers 7/24 / Clenow 9/30). Any future strategy that mixes orthogonal signals inherits this win.
+
+- 🔄 **Phase 2.5 — Run 4 Step 1 (AFML meta-labeling simple, 2026-04-15) — FAIL.** See JORNADA.md changelog.
+- ✅ **Phase 2.5 — Run 4 Step 1 prep (long-history Ehlers, 2026-04-15) — FAIL** (mixed signals). See JORNADA.md changelog.
 
 - ⏳ **Next steps (in order):**
-    1. **AFML rescue on Ehlers SPY** — scaffold `src/ai_trade/backtest/strategies/ehlers_meta.py`; add `scikit-learn` to `pyproject`; wire event generator + feature extractor; grid on `p_act_threshold`.
-    2. **AFML rescue on Clenow SPX** — same pipeline; event = each Wednesday rebalance buy.
-    3. **Long-history SPY run** — widest Tiingo bulk (re-run `tiingo_bulk_download.py --bucket all`, ~30-60 min) then Ehlers single-asset on 1993-2026.
-    4. **Cancel Tiingo subscription** once widest bulk + backup verified.
-    5. **Combined regime-aware portfolio** if (1)+(2) fail individually.
-    6. **Pivot to Option D** (new strategy class) only after 1-5 are conclusively exhausted.
+    1. **AFML sophisticated (path B)** — now the primary. The simple Run 4 Step 1 AFML failed at ~80 events in 9 years. Rebuild with (a) walk-forward CV with purge/embargo `[advances_fin_ml, ch.7]` (not the naive 50/50 temporal split), (b) rich features `[osc, dcp, hp, ss_trend, atr20, regime_flag, vix_proxy, volume_z]`, (c) asymmetric triple-barrier labeling, (d) training universe long-history 1993-2026 (Tiingo widest bulk — re-run `tiingo_bulk_download.py --start 1990-01-01` first, ~30-60 min).
+    2. **Reuse the F3.D portfolio infrastructure** — the `src/ai_trade/backtest/portfolio/` package is agnostic; `Portfolio(Clenow, EhlersMeta)` drops in when the AFML-sophisticated `EhlersMeta` is ready. No new combination code needed.
+    3. **Cancel Tiingo subscription** once widest bulk + backup verified.
+    4. **Carver multi-asset trend / Chan cointegration (path D)** — only if (1) fails.
 
-  Diagnostics delivered today: `reports/grid_ehlers_spy_postfix_20260415-0958/diagnostic.md` + `reports/grid_clenow_tiingo_postfix_20260415-1005/diagnostic.md` + `reports/ehlers_multi_asset_summary.md`. Rationale doc: `docs/tiingo_ablation_rationale.md`. Plan file for the current session: `/home/victor/.claude/plans/compiled-waddling-comet.md`.
+  Diagnostics from this session: `reports/grid_portfolio_20260415-1541/diagnostic.md` (F3.D v1 FAIL — PBO paradox + WF 9/9 win) + `reports/grid_ehlers_spy_postfix_20260415-0958/diagnostic.md` + `reports/grid_clenow_tiingo_postfix_20260415-1005/diagnostic.md` + `reports/grid_ehlers_20260415-1353/diagnostic.md`.
 
 ---
 
