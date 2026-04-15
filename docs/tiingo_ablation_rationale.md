@@ -1,169 +1,173 @@
-# Por que migrar para Tiingo — rationale da ablação de dados
+# Why migrate to Tiingo — data-ablation rationale
 
-**Status:** planejado. Assinatura Tiingo SF pendente; após assinar, re-rodar
-as Execuções 1 (Clenow) e 2 (Ehlers) com dados survivorship-free mantendo
-todo o resto constante.
+**Status:** planned. Tiingo SF subscription pending; once signed, re-run
+Run 1 (Clenow) and Run 2 (Ehlers) with survivorship-free data keeping
+everything else constant.
 
-**Contexto:** este doc explica por que a migração de `yfinance` + Wikipedia
-scrape para Tiingo (produto SF — survivorship-free) é o próximo experimento
-necessário antes de pivotar de estratégia, mudar universe ou declarar
-ausência de edge. Consolidado a partir de `specs/backtest_phase2.md`,
-`specs/backtest_phase2_5_ehlers.md` e dos dois diagnostic reports em
+**Context:** this doc explains why migrating from `yfinance` + Wikipedia
+scrape to Tiingo (SF product — survivorship-free) is the necessary next
+experiment before pivoting strategies, changing universe, or declaring
+absence of edge. Consolidated from `specs/backtest_phase2.md`,
+`specs/backtest_phase2_5_ehlers.md`, and the two diagnostic reports in
 `reports/grid_*/`.
 
 ---
 
-## 1. O que os gates estão dizendo hoje
+## 1. What the gates are saying today
 
-As duas execuções do grid (Clenow e Ehlers) falharam **pelo mesmo motivo**,
-DSR, e **não** por PBO:
+Both grid runs (Clenow and Ehlers) failed **for the same reason** — DSR —
+and **not** via PBO:
 
-| Métrica | Clenow (Execução 1) | Ehlers (Execução 2) |
+| Metric | Clenow (Run 1) | Ehlers (Run 2) |
 |---|---|---|
-| PBO | 0.524 (falha marginal) | **0.468 (passa)** |
+| PBO | 0.524 (marginal fail) | **0.468 (pass)** |
 | DSR p-value | 0/30 < 0.05 | 0/24 < 0.05 |
 | Best Sharpe annualized | 0.583 | 0.310 |
-| E[SR_max] sob null (N≈25, T≈2267) | ~0.86 | ~0.86 |
+| E[SR_max] under null (N≈25, T≈2267) | ~0.86 | ~0.86 |
 | Walk-forward | 4/30 pass | 2/24 pass |
 
-O Sharpe máximo observado é **menor que o benchmark do null hypothesis**.
-É isso que o DSR está rejeitando.
+The maximum observed Sharpe is **below the null-hypothesis benchmark**.
+That is what DSR is rejecting.
 
-**Ponto chave:** PBO mede *overfit ao grid* (rankings IS↔OOS). Ehlers passa
-PBO folgado — o signal estrutural não é artefato do grid. O que falha é o
-teste contra o benchmark-de-acaso. E esse benchmark depende diretamente da
-**distribuição dos retornos do dataset**.
-
----
-
-## 2. Por que a fonte de dados vira variável confundidora
-
-O pipeline atual (`yfinance` + Wikipedia point-in-time) tem dois problemas
-documentados nos próprios specs:
-
-### 2.1 Survivorship bias residual (escala linear com o horizonte)
-
-- Janela 6 meses (H2 2023): **17/503 = 3.4%** dos tickers sumiram
-  silenciosamente (`reports/clenow_replication_notes.md`).
-- Janela 9 anos (2015-2023): **97/506 = 19%**
-  (`specs/backtest_phase2.md` §"Grid executado").
-- `yfinance` **não serve tickers deslistados** — retorna frame vazio, eles
-  saem do universo sem aviso.
-- Bug ANDV→MPC 2018 (commit `8d25e65`) só apareceu porque a janela longa
-  atravessou uma delistagem real — evidência direta de que o pipeline
-  atual trata deslistagens como "ticker nunca existiu".
-
-### 2.2 Efeito composto no DSR
-
-O null hypothesis do DSR (AFML p.222-223) é `E[SR_max(N)] sob iid-null`. Mas
-**o "null" é estimado a partir da variância dos retornos observados**. Se
-os retornos estão inflados por survivorship (os losers reais sumiram), o
-null sobe junto — e o Sharpe "real" fica abaixo dele mesmo quando há edge.
-
-Isto é dito literal em `specs/backtest_phase2.md`:
-
-> **Literal:** yfinance SPX 2015-2023 não tem edge Clenow após gates.
-> **Data-hypothesis:** yfinance infla o benchmark SPY... Remover o viés
-> pode baixar SPY a ~9% e elevar Clenow a um edge relativo. **Precisa
-> paid-data ablation pra saber.**
+**Key point:** PBO measures *overfit to the grid* (IS↔OOS rankings).
+Ehlers passes PBO comfortably — the structural signal is not a grid
+artefact. What fails is the test against the chance benchmark. And that
+benchmark depends directly on the **return distribution of the dataset**.
 
 ---
 
-## 3. O que especificamente o Tiingo destrava
+## 2. Why the data source becomes a confounding variable
 
-Tiingo tem produto **"SF" (Survivorship-Free)** com preço point-in-time de
-tickers **incluindo deslistados**. Três coisas mudam mensuravelmente:
+The current pipeline (`yfinance` + Wikipedia point-in-time) has two
+problems documented in the specs themselves:
 
-1. **O universo a cada rebalance inclui os ~97 tickers perdidos.** No
-   Clenow, esses entrariam no ranking momentum nas suas épocas boas *e*
-   estariam disponíveis para evitar nas suas quedas pré-delisting. Hoje
-   são invisíveis.
+### 2.1 Residual survivorship bias (scales linearly with horizon)
 
-2. **A distribuição de retornos OOS ganha a cauda esquerda real.** O
-   `E[SR_max]` sob null cai (variância similar, média retorna real) e vira
-   um benchmark honesto. Estratégias que hoje empatam com o null podem
-   passá-lo.
+- 6-month window (H2 2023): **17/503 = 3.4%** of tickers vanished
+  silently (`reports/clenow_replication_notes.md`).
+- 9-year window (2015-2023): **97/506 = 19%**
+  (`specs/backtest_phase2.md` §"Grid executed").
+- `yfinance` **does not serve delisted tickers** — it returns an empty
+  frame, and they drop out of the universe without warning.
+- Bug ANDV→MPC 2018 (commit `8d25e65`) only surfaced because the long
+  window crossed an actual delisting — direct evidence that the current
+  pipeline treats delistings as "ticker never existed".
 
-3. **O benchmark buy-and-hold (SPY) vira comparável.** Hoje Clenow
-   (~8.87% CAGR) é comparado contra SPY inflado (~11-12%). Com dados
-   clean, SPY real fica ~9% e o edge relativo reaparece.
+### 2.2 Compound effect on DSR
+
+The DSR null hypothesis (AFML p.222-223) is `E[SR_max(N)] under iid-null`.
+But **the "null" is estimated from the variance of observed returns**. If
+returns are inflated by survivorship (the real losers are gone), the null
+rises with them — and the "real" Sharpe lands below it even when an edge
+exists.
+
+This is stated literally in `specs/backtest_phase2.md`:
+
+> **Literal:** yfinance SPX 2015-2023 has no Clenow edge after gates.
+> **Data-hypothesis:** yfinance inflates the SPY benchmark... Removing
+> the bias might drop SPY to ~9% and lift Clenow to a relative edge.
+> **Paid-data ablation is required to know.**
 
 ---
 
-## 4. Por que isso é a ablação certa, não um "seria legal ter"
+## 3. What Tiingo specifically unlocks
 
-O **teste científico** aqui é isolar a variável "dados" mantendo tudo o
-resto fixo:
+Tiingo has an **"SF" (Survivorship-Free)** product with point-in-time
+prices for tickers **including delistings**. Three things change
+measurably:
 
-- Mesma estratégia (código idêntico)
-- Mesmo grid (24 ou 30 configs)
-- Mesma janela (2015-2023)
-- Mesmos gates (PBO/DSR/WF, thresholds idênticos)
-- **Só troca:** `data/yfinance_source.py` → `data/tiingo_source.py`
+1. **The universe at every rebalance includes the ~97 missing tickers.**
+   In Clenow, they would enter the momentum ranking in their good
+   epochs *and* be available for exclusion in their pre-delisting
+   drops. Today they are invisible.
 
-Resultados possíveis e o que cada um prova:
+2. **OOS return distribution gets the real left tail.** The `E[SR_max]`
+   under null drops (variance similar, mean returns to real) and
+   becomes an honest benchmark. Strategies that tie with the null
+   today may beat it.
 
-| Resultado em Tiingo | Conclusão |
+3. **The buy-and-hold benchmark (SPY) becomes comparable.** Today
+   Clenow (~8.87% CAGR) is compared against an inflated SPY
+   (~11-12%). With clean data, real SPY lands around ~9% and the
+   relative edge reappears.
+
+---
+
+## 4. Why this is the right ablation, not a "nice-to-have"
+
+The **scientific test** here is to isolate the "data" variable keeping
+everything else fixed:
+
+- Same strategy (identical code)
+- Same grid (24 or 30 configs)
+- Same window (2015-2023)
+- Same gates (PBO/DSR/WF, identical thresholds)
+- **Only change:** `data/yfinance_source.py` → `data/tiingo_source.py`
+
+Possible results and what each one proves:
+
+| Result on Tiingo | Conclusion |
 |---|---|
-| Ehlers e/ou Clenow passam DSR | Edge **era real**, yfinance mascarava. Fase 3 destrava. |
-| Ambos ainda falham DSR | Edge **não existe** nessa janela/universo. Pivot para 3ª estratégia (AFML, Chan) ou universe shift fica bem-fundamentado. |
-| PBO piora no Ehlers | A estrutura aparente do signal vinha do bias — insight importante por si só. |
+| Ehlers and/or Clenow pass DSR | Edge **was real**, yfinance was masking it. Phase 3 unlocks. |
+| Both still fail DSR | Edge **does not exist** in this window/universe. Pivot to a 3rd strategy (AFML, Chan) or universe shift becomes well-grounded. |
+| PBO worsens on Ehlers | The apparent signal structure came from the bias — an important insight on its own. |
 
-Sem a ablação, **é impossível distinguir essas três hipóteses**. Com ela,
-qualquer decisão-fork fica defensável.
+Without the ablation, **these three hypotheses are indistinguishable**.
+With it, any decision fork becomes defensible.
 
 ---
 
-## 5. Custo do experimento vs. alternativas
+## 5. Cost of the experiment vs. alternatives
 
-Forks mapeados em `specs/backtest_phase2_5_ehlers.md` §Task 5, comparados
-concretamente:
+Forks mapped in `specs/backtest_phase2_5_ehlers.md` §Task 5, compared
+concretely:
 
-| Fork | Custo | Informação ganha |
+| Fork | Cost | Information gained |
 |---|---|---|
-| **1. Tiingo SF ablation** | 2-3 dias integração + free-trial/assinatura | **Decisiva**: resolve ambiguidade dados-vs-edge |
-| 2. 3ª estratégia (AFML/Chan) | 1-2 semanas | Baixa — N-penalty cumulativo (4 estratégias × 25 configs = DSR pior) |
-| 3. Regime-aware portfolio Clenow+Ehlers | Baixo (reuso) | Limitada — se cada um é null, a soma também é |
-| 4. Parar | Zero | Nenhuma |
+| **1. Tiingo SF ablation** | 2-3 days integration + free-trial/subscription | **Decisive**: resolves data-vs-edge ambiguity |
+| 2. 3rd strategy (AFML/Chan) | 1-2 weeks | Low — cumulative N-penalty (4 strategies × 25 configs = worse DSR) |
+| 3. Regime-aware Clenow+Ehlers portfolio | Low (reuse) | Limited — if each is null, the sum is too |
+| 4. Stop | Zero | None |
 
-**A opção 1 é a única que muda a pergunta**, não a tentativa-n-de-responder
-à mesma. Todas as outras três assumem que os dados atuais são verdade-solo;
-a 1 questiona a premissa.
-
----
-
-## 6. Plano de execução pós-assinatura
-
-1. **Integração do data source.** Criar
-   `src/ai_trade/backtest/data/tiingo_source.py` replicando a interface de
-   `YFinanceSource` (`fetch_many(symbols, start, end) → dict[str, pd.DataFrame]`
-   OHLCV + cache parquet). Manter marker survivorship-free para que o
-   disclaimer do report se ajuste automaticamente.
-2. **Universe point-in-time.** Tiingo expõe constituintes históricos
-   próprios — substituir `wikipedia_spx` por fonte nativa Tiingo. Pular
-   o algoritmo undo-changes-walking-backwards.
-3. **Re-rodar Clenow grid** (mesmos 30 configs, `2015-01-01 → 2023-12-31`,
-   `scripts/run_grid_clenow.py`) apontando para o novo source. Wallclock
-   esperado: similar à Execução 1 (~15min com n_jobs=4).
-4. **Re-rodar Ehlers grid** (mesmos 24 configs, mesma janela,
-   `scripts/run_grid_ehlers.py`). Wallclock esperado: ~3s (single-instrument).
-5. **Registrar resultados inline** em `specs/backtest_phase2_5_ehlers.md`
-   §"Execução — resultados e fork" (criar sub-seção "Execução 3 — Tiingo
-   ablation") e `specs/backtest_phase2.md` §"Fase 2.5/3 — Execução 1"
-   (sub-seção análoga).
-6. **Decidir o fork** baseado no resultado — as três branches em §4 deste
-   doc são mutuamente exclusivas.
+**Option 1 is the only one that changes the question**, not the n-th
+attempt to answer the same one. The other three assume current data is
+ground truth; option 1 challenges the premise.
 
 ---
 
-## 7. Referências
+## 6. Post-subscription execution plan
 
-- `specs/backtest_phase2.md` — spec da Fase 2 + Execução 1 (Clenow grid)
-- `specs/backtest_phase2_5_ehlers.md` — spec da Execução 2 (Ehlers grid)
-- `reports/clenow_replication_notes.md` — single-trial H2 2023, 17 pulados
+1. **Data source integration.** Create
+   `src/ai_trade/backtest/data/tiingo_source.py` replicating the
+   `YFinanceSource` interface (`fetch_many(symbols, start, end) → dict[str, pd.DataFrame]`
+   OHLCV + parquet cache). Keep the survivorship-free marker so the
+   report disclaimer adjusts automatically.
+2. **Point-in-time universe.** Tiingo exposes its own historical
+   constituents — replace `wikipedia_spx` with a native Tiingo source.
+   Skip the undo-changes-walking-backwards algorithm.
+3. **Re-run the Clenow grid** (same 30 configs, `2015-01-01 → 2023-12-31`,
+   `scripts/run_grid_clenow.py`) pointing at the new source. Expected
+   wallclock: similar to Run 1 (~15 min with n_jobs=4).
+4. **Re-run the Ehlers grid** (same 24 configs, same window,
+   `scripts/run_grid_ehlers.py`). Expected wallclock: ~3s
+   (single-instrument).
+5. **Log results inline** in `specs/backtest_phase2_5_ehlers.md`
+   §"Run — results and fork" (create sub-section "Run 3 — Tiingo
+   ablation") and `specs/backtest_phase2.md` §"Phase 2.5/3 — Run 1"
+   (analogous sub-section).
+6. **Decide the fork** based on the outcome — the three branches in §4
+   of this doc are mutually exclusive.
+
+---
+
+## 7. References
+
+- `specs/backtest_phase2.md` — Phase 2 spec + Run 1 (Clenow grid)
+- `specs/backtest_phase2_5_ehlers.md` — Run 2 spec (Ehlers grid)
+- `reports/clenow_replication_notes.md` — single-trial H2 2023, 17 skipped
 - `reports/ehlers_replication_notes.md` — single-instrument ^GSPC 2022-2023
-- `reports/grid_20260414-1813/diagnostic.md` — Execução 1 fail (PBO+DSR)
-- `reports/grid_ehlers_20260414-1944/diagnostic.md` — Execução 2 fail (DSR)
-- `src/ai_trade/backtest/data/yfinance_source.py` — data source a ser
-  espelhado pelo `tiingo_source.py`
-- `src/ai_trade/backtest/validation/dsr.py` — implementação AFML p.222-223
+- `reports/grid_20260414-1813/diagnostic.md` — Run 1 fail (PBO+DSR)
+- `reports/grid_ehlers_20260414-1944/diagnostic.md` — Run 2 fail (DSR)
+- `src/ai_trade/backtest/data/yfinance_source.py` — data source to be
+  mirrored by `tiingo_source.py`
+- `src/ai_trade/backtest/validation/dsr.py` — AFML p.222-223 implementation
