@@ -141,6 +141,20 @@ class TestRangeQuery:
         storage = TiingoStorage(root=tmp_path)
         assert not storage.has("BOGUS", date(2023, 1, 1), date(2023, 12, 31))
 
+    def test_has_tolerates_weekend_holiday_slack(self, tmp_path: Path):
+        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+
+        storage = TiingoStorage(root=tmp_path)
+        # Data begins 2014-01-02 (first trading day; 2014-01-01 is New Year).
+        # 20 business days → last = 2014-01-29.
+        storage.write("AAPL", _mk_df(start="2014-01-02", n=20), "equity")
+
+        # Request [2014-01-01, 2014-01-30] — both edges fall on non-trading
+        # days but are within the 7-day slack → should be covered.
+        assert storage.has("AAPL", date(2014, 1, 1), date(2014, 1, 30))
+        # Beyond the 7-day slack — must still miss.
+        assert not storage.has("AAPL", date(2014, 1, 1), date(2014, 2, 10))
+
     def test_read_with_date_range_slices(self, tmp_path: Path):
         from ai_trade.backtest.data.tiingo_storage import TiingoStorage
 

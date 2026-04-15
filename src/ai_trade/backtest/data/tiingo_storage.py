@@ -27,7 +27,7 @@ from __future__ import annotations
 import json
 import logging
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 import pandas as pd
@@ -92,14 +92,23 @@ class TiingoStorage:
 
     # -- query --------------------------------------------------------------
 
+    _COVERAGE_SLACK = timedelta(days=7)
+
     def has(self, ticker: str, start: date, end: date) -> bool:
-        """True iff the manifest range for ``ticker`` covers ``[start, end]``."""
+        """True iff the manifest range for ``ticker`` covers ``[start, end]``.
+
+        A 7-day slack is applied on each edge so requests bracketed by
+        weekends/holidays (e.g. ``start=2014-01-01``, New Year's Day) are
+        still considered covered by data that begins on the next trading
+        day. Without this, a ``--start 2014-01-01`` bulk run would re-fetch
+        every ticker on resume because ``first_date=2014-01-02``.
+        """
         entry = self._manifest.get(ticker)
         if entry is None:
             return False
         first = date.fromisoformat(entry["first_date"])
         last = date.fromisoformat(entry["last_date"])
-        return first <= start and last >= end
+        return first <= start + self._COVERAGE_SLACK and last + self._COVERAGE_SLACK >= end
 
     def list_tickers(self, asset_class: str | None = None) -> list[str]:
         if asset_class is None:
