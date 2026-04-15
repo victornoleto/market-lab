@@ -193,3 +193,39 @@ def test_half_life_clamp_rejects_too_slow():
         ChanBollingerPairsStrategy(
             data={"GLD": df_long, "SLV": df_short},
         )
+
+
+def test_precomputed_indicators_present_and_shaped():
+    """After __post_init__, indicators must be precomputed with shape = len(data)."""
+    rng = np.random.default_rng(42)
+    n = 2000
+    idx = pd.date_range("2022-01-03 09:30", periods=n, freq="1h")
+    x = 50 + np.cumsum(rng.normal(0, 0.05, n))
+    eps = np.zeros(n)
+    lam = -np.log(2) / 20.0
+    for t in range(1, n):
+        eps[t] = eps[t - 1] * np.exp(lam) + rng.normal(0, 0.3)
+    y = 2.5 * x + eps
+    df_long = pd.DataFrame(
+        {"open": y, "high": y, "low": y, "close": y, "volume": 1e6, "adj_close": y},
+        index=idx,
+    )
+    df_short = pd.DataFrame(
+        {"open": x, "high": x, "low": x, "close": x, "volume": 1e6, "adj_close": x},
+        index=idx,
+    )
+    strat = ChanBollingerPairsStrategy(
+        data={"GLD": df_long, "SLV": df_short},
+        lookback_multiplier=2,
+    )
+    ind = strat._indicators
+    for col in ("spread", "spread_ma", "spread_std", "zscore"):
+        assert col in ind.columns, f"missing column {col}"
+        assert len(ind) == n, f"indicator len={len(ind)} != data len={n}"
+    # After enough warmup (2× half_life + 1), z-score must be finite and centered
+    warmup = 2 * strat._half_life_bars + 1
+    z_tail = ind["zscore"].iloc[warmup:].dropna()
+    assert len(z_tail) > 0
+    assert abs(z_tail.mean()) < 0.5, f"z-score mean = {z_tail.mean()}"
+    # z-score std on well-formed pair should be close to 1 (by construction)
+    assert 0.5 < z_tail.std() < 1.5, f"z-score std = {z_tail.std()}"

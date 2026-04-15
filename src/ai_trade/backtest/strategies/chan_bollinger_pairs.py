@@ -62,6 +62,9 @@ class ChanBollingerPairsStrategy:
     _half_life_bars: int = field(init=False, default=0)
     _t_stat_ou: float = field(init=False, default=float("nan"))
     _hedge_ordering: str = field(init=False, default="")
+    _indicators: pd.DataFrame = field(init=False, default_factory=pd.DataFrame)
+    _lookback_bars: int = field(init=False, default=0)
+    _time_stop_bars: int = field(init=False, default=0)
 
     def __post_init__(self) -> None:
         if self.long_symbol not in self.data:
@@ -76,6 +79,28 @@ class ChanBollingerPairsStrategy:
                 f"must be aligned (len {len(df_long)} vs {len(df_short)})"
             )
         self._fit_hedge_and_half_life()
+        self._precompute_indicators()
+
+    def _precompute_indicators(self) -> None:
+        """Compute spread, rolling mean/std, z-score on the full data index."""
+        self._lookback_bars = self.lookback_multiplier * self._half_life_bars
+        self._time_stop_bars = min(3 * self._half_life_bars, 24)
+
+        df_long = self.data[self.long_symbol]
+        df_short = self.data[self.short_symbol]
+        spread = df_long["close"] - self._beta * df_short["close"]
+        spread_ma = spread.rolling(self._lookback_bars, min_periods=self._lookback_bars).mean()
+        spread_std = spread.rolling(self._lookback_bars, min_periods=self._lookback_bars).std()
+        zscore = (spread - spread_ma) / spread_std
+        self._indicators = pd.DataFrame(
+            {
+                "spread": spread,
+                "spread_ma": spread_ma,
+                "spread_std": spread_std,
+                "zscore": zscore,
+            },
+            index=df_long.index,
+        )
 
     def _fit_beta_single(
         self, y: np.ndarray, x: np.ndarray
