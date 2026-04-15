@@ -306,10 +306,13 @@ now it makes sense to move to Ehlers/AFML).
 
 ---
 
-## 🔬 Phase 2.5 — Run 3 (Clenow grid on Tiingo, 2026-04-?)
+## 🔬 Phase 2.5 — Run 3 (Clenow grid on Tiingo, 2026-04-15)
 
-**Status:** 🔄 _data layer ready (Tiingo Power $30 subscribed
-2026-04-14); bulk download in progress; re-run pending._
+**Status:** ✅ _completed 2026-04-15T10:35. Bulk (1660 tickers) finished
+2026-04-14; `adjust_ohlc` fix landed (commit `5ca9410`); 404 graceful
+handling added (`75f80de`). Clenow Run 3 executed against Tiingo
+survivorship-free SPX universe (506 tickers point-in-time + SPY as
+index proxy) with adj_close + total-return-rebased OHLC._
 
 ### What's different vs Run 1
 
@@ -326,31 +329,48 @@ Index proxy: Tiingo does not serve `^GSPC`. The CLI auto-swaps to
 correlation — material for absolute SPX 200-day MA values, not
 material for the regime-mode boolean (above/below MA) used by Clenow.
 
-### Verdict (template — fill after re-run)
+### Verdict
 
-| Gate | Run 1 (yfinance) | Run 3 (tiingo) | Δ |
+| Gate | Run 1 (yfinance, raw close) | Run 3 (tiingo, adj close) | Δ |
 |---|---|---|---|
-| PBO | 0.524 fail | _tbd_ | _tbd_ |
-| DSR best p | 0.627 (cfg #15) | _tbd_ | _tbd_ |
-| WF pass | 4/30 | _tbd_ | _tbd_ |
-| Best Sharpe | 0.583 | _tbd_ | _tbd_ |
-| Best CAGR | 8.87% | _tbd_ | _tbd_ |
-| Universe (avg per rebal) | 410 (after 19% drops) | _tbd_ | _tbd_ |
-| Tickers with delisted history served | 0 | _tbd_ | _tbd_ |
-| Overall | FAIL | _tbd_ | _tbd_ |
+| PBO | 0.524 fail | **0.603 fail** | worsened +0.079 |
+| DSR best p | 0.627 (cfg #15) | **0.588 (cfg #8)** | better (lower p) |
+| DSR pass | 0/30 | **0/30** | same |
+| WF pass | 4/30 | **9/30** | better **+5** |
+| Best Sharpe | 0.583 | **0.618** | +6% |
+| Best CAGR | 8.87% | **9.81%** | +11% |
+| Best max DD | 19.86% | **18.73%** | better |
+| Best config | cfg #15 (lookback=90, top=20%, risk=0.002) | **cfg #8 (lookback=75, top=20%, risk=0.001)** | shorter lookback |
+| Universe (avg per rebal) | 410 (after 19% drops) | **506 point-in-time** | +23% |
+| Tickers with delisted history served | 0 | **~47 delisted tickers covered** | **±∞** |
+| Overall | FAIL (PBO + DSR) | **FAIL (PBO + DSR)** | same verdict, shifted landscape |
 
-### Fork resolution (template)
+Report: `reports/grid_clenow_tiingo_postfix_20260415-1005/diagnostic.md`.
 
-* If Run 3 **passes** all 3 gates → Run 1 verdict was data-mediated;
-  yfinance survivorship masked a real edge. Phase 3 unblocks for
-  Clenow.
-* If Run 3 **fails on DSR alone** but **passes PBO** → similar profile
-  to Run 2 (Ehlers); the edge is small but the structure is sound;
-  consider Option 3 (regime-aware Clenow+Ehlers portfolio) given the
-  cross-corr ≈ 0 already established.
-* If Run 3 **fails on PBO too** → confirms Run 1's structural reading;
-  the edge is absent in the SPX 2015-2023 window irrespective of data
-  bias. Pivot to a 3rd strategy or universe shift.
+### Fork resolution (actual)
+
+Run 3 **failed on PBO AND DSR**, but **passed WF** materially better
+(9/30 vs 4/30). This is the worst of the three templated outcomes
+(data-mediated rescue was NOT what happened) — but with two nuances:
+
+1. **The Sharpe null rose alongside the Sharpe**: survivorship-free
+   Tiingo exposes the strategy to delisted losers the yfinance-filtered
+   universe silently dropped. The DSR benchmark variance is now closer
+   to the true population, so even a legitimate edge shrinks. The
+   p-value distribution improved (mean lower) despite the pass-count
+   being unchanged.
+
+2. **PBO got worse, not better**: adjust_ohlc absorbed split-triggered
+   false gap disqualifications, which means mid-rank configs that
+   were previously being "saved" by false noise now compete on raw
+   merit — dispersion up, IS/OOS rank correlation down, PBO up.
+
+**Conclusion:** the edge in Clenow SPX 2015-2023 is absent in the
+survivorship-honest data. Per the fork template, **pivot rational
+follow-up is Option 3** (regime-aware Clenow+Ehlers portfolio, given
+cross-corr ≈ 0 already established) OR **meta-labeling rescue** (apply
+AFML triple-barrier + RandomForest on Clenow's primary signals — the
+`MetaLabeler` primitive landed in commit `7030d41`).
 
 ### Reused infra
 

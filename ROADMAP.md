@@ -4,7 +4,7 @@
 
 ---
 
-## 📍 Current status (2026-04-14)
+## 📍 Current status (2026-04-15)
 
 - ✅ **Phase 0 — Knowledge Base.** 33/33 books absorbed and validated (pipeline `books/raw/*.pdf` → `extracted/` → `summaries/<slug>.md`, autonomous 3-layer validation replacing human review). Global `check_citations.py`: 33/33 PASS. Quality: 🌟 12 Perfect · ✅ 20 Good · ⚠️ 1 Border, 0 real hallucinations.
 - ✅ **Phase 0.5 — `knowledge/SKILL.md`.** `build_skill.py` aggregates the 33 summaries into a thematic Claude Skill (`knowledge/SKILL.md` + `books/`, `strategies/`, `indicators/`, `validation/`). Skill loadable via the `Skill` tool, inviolable rules #1-7 in production.
@@ -12,28 +12,27 @@
 - ✅ **Phase 2 — Backtest Module** (scope rewritten — see preamble below). Delivered 2026-04-14 via `specs/backtest_phase2.md`: data layer (yfinance + Wikipedia SPX point-in-time), engine (portfolio + CFD-aware execution + runner), validation framework (CPCV / PBO / DSR / walk-forward / MCPT), metrics + report (mandatory survivorship disclaimer), Clenow `stocks_on_the_move` replicated end-to-end. **173 tests passing**.
 - 🔄 **Phase 2.5/3 — Run 1 (Clenow grid, 2026-04-14).** New `backtest/grid/` module + `scripts/run_grid_clenow.py` CLI ran 30 Clenow configs over 2015-2023 SPX point-in-time (410 tickers after 19% residual survivorship). **Gates fail:** PBO=0.524 (limit 0.5), DSR 0/30 p<0.05, walk-forward 4/30. Best config: `#15` (lookback=90, top=20%, risk=0.2%) with Sharpe 0.58, CAGR 8.87%, DD 19.86%, but underperforms SPY buy-and-hold and does not pass DSR. Bug fix along the way: `_sell_orders` for tickers delisted mid-backtest (regression test added). **235/235 tests green**. Details: `specs/backtest_phase2.md` §"Phase 2.5/3 — Run 1".
 - 🔄 **Phase 2.5 — Run 2 (Ehlers Band-Pass Swing grid, 2026-04-14).** Pivot to a 2nd DSP-based strategy. New Ehlers primitives (SuperSmoother, HP, Roofing, Homodyne DCP, Band-pass) in `backtest/indicators/`. New `EhlersBPSwingStrategy` (anticipatory ±0.7 thresholds over AGC-normalised BPF). GridRunner generalised to `TypeVar ConfigT` — Clenow and Ehlers share the runner. Grid of 24 configs (hp_period × lp_period × pct_of_dcp × stop_pct = 2×2×3×2) over ^GSPC 2015-2023 (~3s wallclock n_jobs=4). **Mixed verdict:** PBO=0.468 **passes** (Ehlers is structurally less overfit than Clenow), DSR 0/24 reject, WF 2/24 pass. Best #6 Sharpe 0.31 CAGR 2.17% DD 14.65%. **Cross-correlation Clenow × Ehlers best equity curves = −0.0108** — orthogonal strategies → regime-aware portfolio is a candidate. **55 new tests (290/290 green).** Details: `specs/backtest_phase2_5_ehlers.md` §"Run — results and fork".
-- 🔄 **Phase 2.5 — Run 3 prep (Tiingo paid-data ablation, 2026-04-14).** User subscribed Tiingo Power $30/mo specifically to bulk-download a broad survivorship-free dataset, then cancel and run all subsequent backtests against the local cache (one-month-only API access policy). Infra delivered: `TiingoStorage` (parquet+manifest in `data/tiingo/`), `TiingoSource` (storage-first, API on miss), `scripts/tiingo_bulk_download.py` (`--bucket {spx500,spx400,spx600,etf,crypto,forex,all}`), `scripts/tiingo_backup.py` (tar.gz archive), CLIs `run_grid_clenow.py` + `run_grid_ehlers.py` accept `--data-source tiingo` (auto-swaps `^GSPC` → `SPY` since Tiingo doesn't license raw indices). Smoke confirmed survivorship-free coverage: ANDV (delisted 2018-10-03) returned 42 OHLCV bars to delisting date. **Bulk download in progress** — 1678 unique tickers, ~4.5s/ticker (12y daily history per call), ETA ~2h from 22:05 kickoff on 2026-04-14. Templates for §"Run 3" verdict tables already committed in both phase-2 specs.
+- ✅ **Phase 2.5 — Run 3 (Tiingo survivorship-free ablation, 2026-04-15).** Bulk 1660 tickers delivered (backup `data/tiingo_backup_20260415-0958.tar.gz`, 145.7 MB). Three concrete hypotheses tested on the same gate framework:
+  - **Ehlers BP Swing, SPY 2015-2023, post-fix:** PBO=0.496 pass, DSR 0/24 reject (best p=0.332, from 0.852), WF 7/24 pass (from 2/24), best Sharpe 0.806 (from 0.310 yfinance Run 2). Verdict: FAIL (DSR only) — edge real but small vs N=24 trials.
+  - **Ehlers multi-asset 2005-2023, post-fix:** 0/N PASS. Longer window kills WF across all ETFs (2008/2011/2015/2020 regime collision). Crypto barely clears WF intermittently. See `reports/ehlers_multi_asset_summary.md`.
+  - **Clenow momentum, Tiingo SPX 506 tickers 2015-2023, post-fix:** PBO=0.603 fail (worsened vs 0.524), DSR 0/30 reject, WF 9/30 pass (from 4/30), best Sharpe 0.618 (from 0.583). Survivorship-honest universe is stricter than yfinance's filtered one. Verdict: FAIL (PBO + DSR).
+  - **Code-level bugs fixed along the way:** (i) both strategies read raw `close` instead of `adj_close` — splits triggered Clenow's 15% gap filter and dividends spiked Ehlers' oscillator; new `adjust_ohlc` utility rebases OHLC to the total-return base (commit `5ca9410`). (ii) `TiingoSource._http_fetch` now returns an empty frame on 404 instead of crashing long universe fetches (commit `75f80de`). (iii) Tiingo bulk default `--start 1990-01-01` to capture widest history per ticker (commit `e0c95f1`). **351 tests green (+64 net vs Run 2 baseline 290).**
 
-- ⏳ **Next steps (in order, post-bulk):**
-    1. **Ehlers Run 3 can run NOW** — single-instrument on SPY which is already in the manifest since the smoke. No conflict with the bulk (read-only on a cached ticker). `~5s` wallclock.
-       ```bash
-       .venv/bin/python scripts/run_grid_ehlers.py --data-source tiingo \
-           --start 2015-01-01 --end 2023-12-31 --cash 100000 --output-dir reports/ --n-jobs 4
-       ```
-    2. **Wait for bulk to finish** (~2h). Confirmation: `pgrep -af tiingo_bulk_download` empty + `data/tiingo/manifest.json` has ~1670+ entries.
-    3. **`scripts/tiingo_backup.py`** — produces `data/tiingo_backup_<YYYYMMDD-HHMM>.tar.gz` (~150-200MB), portable cache that survives subscription cancellation.
-    4. **Re-run `--bucket spx500`** to retry dot-class tickers (BF.B, BRK.B confirmed; ESV may be a delistment-rename case under VAL — investigate). Fix `899f1c7` (Bloomberg dash mapping) makes the re-run idempotent.
-    5. **Clenow Run 3** — full SPX historical universe via Tiingo, same window/grid as Run 1 for direct comparability. ~15-20 min wallclock with `n_jobs=4`.
-       ```bash
-       .venv/bin/python scripts/run_grid_clenow.py --data-source tiingo \
-           --start 2015-01-01 --end 2023-12-31 --cash 100000 --output-dir reports/ --n-jobs 4
-       ```
-    6. **Fill verdict tables** in `specs/backtest_phase2.md` §"Phase 2.5 — Run 3" + `specs/backtest_phase2_5_ehlers.md` §"Run 3 — Tiingo ablation" (templates already committed at `138b055`). Update this ROADMAP bullet with the verdict.
-    7. **Optional Run 4 — Ehlers SPY long-history (1993-2026)** — SPY's 33y of daily data gives DSR much more statistical power (T~8000 vs T~2200) and exposes the strategy to dot-com bubble + 2008 + COVID regimes. Cheap (~10s wallclock); decisive if the strategy's edge is regime-dependent.
-    8. **Cancel Tiingo subscription** once the backup tar.gz is verified — backtests run from local parquet thereafter; only universe expansion or a new asset class needs a fresh month.
-    9. **Resolve fork** based on Run 3 verdicts (paid-data vs original). Branches: Phase 3 (regime-aware Clenow+Ehlers portfolio if both edges materialise), 3rd strategy (if both still fail), or universe shift.
+- 🔄 **Phase 2.5 — Run 4 prep (post-mortem + AFML rescue attempt, 2026-04-15).** Both primary strategies have "small-but-real" edge on the survivorship-honest data but do not clear DSR at the trial counts used. Four candidate paths forward, ranked by strength of evidence × feasibility × differentiation:
+  1. **AFML meta-labeling rescue** (Option A — cheap). `src/ai_trade/backtest/meta/` shipped with triple-barrier labeling, concurrent-event sample weights and a sklearn-compatible `MetaLabeler` (commit `7030d41`, 21 unit tests). Wire to Ehlers' cross-±0.7 events on SPY; fit RandomForest on `[osc, dcp, hp, ss_trend, atr20, regime]`; filter trades by `p_act > 0.55`. If precision rises enough to lift deflated Sharpe > 0, DSR passes.
+  2. **Long-history SPY 1993-2026** (Option B — also cheap). Re-bulk Tiingo at `--start 1990-01-01` (default is now widest). T×3.6 shrinks the DSR null proportionally; may rescue the Ehlers p-value without any code change.
+  3. **Regime-aware Clenow + Ehlers portfolio** (Option C). Cross-correlation of best equity curves ≈ −0.01 — orthogonal. A volatility-scaled 50/50 blend may clear DSR where neither component alone does.
+  4. **Carver multi-asset trend / Chan cointegration pairs** (Option D — bigger investment). Separate strategy surface; deferred until 1-3 are exhausted.
 
-  Diagnostics so far: `reports/grid_20260414-1813/diagnostic.md` (Clenow Run 1, fail) + `reports/grid_ehlers_20260414-1944/diagnostic.md` (Ehlers Run 2, fail-DSR-only). Rationale doc: `docs/tiingo_ablation_rationale.md`.
+- ⏳ **Next steps (in order):**
+    1. **AFML rescue on Ehlers SPY** — scaffold `src/ai_trade/backtest/strategies/ehlers_meta.py`; add `scikit-learn` to `pyproject`; wire event generator + feature extractor; grid on `p_act_threshold`.
+    2. **AFML rescue on Clenow SPX** — same pipeline; event = each Wednesday rebalance buy.
+    3. **Long-history SPY run** — widest Tiingo bulk (re-run `tiingo_bulk_download.py --bucket all`, ~30-60 min) then Ehlers single-asset on 1993-2026.
+    4. **Cancel Tiingo subscription** once widest bulk + backup verified.
+    5. **Combined regime-aware portfolio** if (1)+(2) fail individually.
+    6. **Pivot to Option D** (new strategy class) only after 1-5 are conclusively exhausted.
+
+  Diagnostics delivered today: `reports/grid_ehlers_spy_postfix_20260415-0958/diagnostic.md` + `reports/grid_clenow_tiingo_postfix_20260415-1005/diagnostic.md` + `reports/ehlers_multi_asset_summary.md`. Rationale doc: `docs/tiingo_ablation_rationale.md`. Plan file for the current session: `/home/victor/.claude/plans/compiled-waddling-comet.md`.
 
 ---
 
