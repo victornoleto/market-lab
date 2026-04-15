@@ -267,12 +267,30 @@ operate the system using that ammunition.
 Paste this prompt when opening Claude Code:
 
 ```
-Resuming development of the ai-trade project.
-Read ROADMAP.md for phase status and next steps.
-Read specs/backtest_phase2.md for context on the backtest module
-(Phase 2 done 2026-04-14 — engine + validation + metrics + Clenow).
-Next step: Phase 2.5 / 3 — Clenow grid search + CPCV/PBO/DSR gates
-in production. See §"Post-Phase 2 reassessment" in the spec.
+Resuming development of the ai-trade project at /var/www/pessoal/ai-trade.
+
+Current state (2026-04-15):
+- Phase 2 (backtest engine) + Phase 2.5 Runs 1-3 complete.
+- Both strategies (Clenow + Ehlers) FAIL gates on Tiingo survivorship-
+  free data even after the adj_close fix that lifted raw Sharpe 2-4×.
+- AFML meta-labeling primitives shipped at src/ai_trade/backtest/meta/
+  but NOT yet wired to Ehlers/Clenow event streams.
+- 352 tests green.
+
+Read first:
+1. ROADMAP.md §"Current status" + §"Next steps" (Phase 2.5 Run 4 prep).
+2. specs/backtest_phase2.md §"Phase 2.5 — Run 3" (Clenow Run 3 verdict).
+3. specs/backtest_phase2_5_ehlers.md §"Run 3" (Ehlers Run 3 verdicts).
+4. reports/ehlers_multi_asset_summary.md (16-asset post-fix table).
+5. docs/self_improvement/README.md if you'll run the overnight loop.
+
+Next step per ROADMAP: AFML rescue on Ehlers SPY — create
+src/ai_trade/backtest/strategies/ehlers_meta.py wrapping the existing
+EhlersBPSwingStrategy with the MetaLabeler primitive from
+src/ai_trade/backtest/meta/ (sklearn RandomForest secondary, p_act>0.55
+threshold, grid on (hp,lp,pct,stop,p_act_threshold)). Add scikit-learn
+to pyproject.toml first. TDD, ≥351 tests must stay green, commit only
+when asked.
 ```
 
 ---
