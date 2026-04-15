@@ -1,8 +1,17 @@
 """combine equity curves + compute metrics + build synthetic trial.
 
 Weighted-returns offline combination — zero engine changes.
-Citations: `[systematic_trading, Carver — capital allocation]`,
-`[risk_parity, Qian — risk-parity math]`.
+
+Citations:
+- `[systematic_trading, p.170-171 (ch.11)]` — IDM (instrument
+  diversification multiplier). Applies here because we combine two
+  independent sub-strategies (Clenow on SPX cross-section + Ehlers on
+  SPY) as separate "instruments" in Carver's taxonomy.
+- `[systematic_trading, p.131 (ch.8)]` — The "2 uncorrelated forecasts
+  at ρ=0: multiplier = 1.41" table entry that motivates F3.D's
+  expected Sharpe ~1.0 under ρ ≈ 0.
+- `[risk_parity, Qian]` — Risk-parity math (σ_portfolio ≈ σ̄/√2 when
+  ρ=0 and weights are volatility-scaled).
 """
 
 from __future__ import annotations
