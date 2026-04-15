@@ -23,9 +23,12 @@ Typical invocation:
         --cash 100000 \\
         --output-dir reports/
 
-Logs: unified append-only log at ``logs/grid.log`` + per-session log
-at ``logs/f3d.log``. Per-run checkpoint detail under
-``.cache/grid_runs/{run_id}/``.
+Logs: unified append-only log at ``logs/grid.log`` shared with
+``run_grid_clenow.py`` / ``run_grid_ehlers.py``. Per-run detail under
+``.cache/grid_runs/{run_id}/`` and ``.cache/grid_runs/{run_id}_clenow/``
+and ``.cache/grid_runs/{run_id}_ehlers/``. ``logs/f3d.log`` is a
+session-level artifact the orchestrator shell appends to — NOT written
+by this script.
 """
 
 from __future__ import annotations
@@ -91,6 +94,50 @@ def _build_tiingo_source(storage_root: Path):
     return TiingoSource(storage=TiingoStorage(root=storage_root))
 
 
+def _build_subgrid_observer(sub_run_id: str, n_configs: int, checkpoint_dir: Path):
+    """Compose the standard observer bundle used by both sub-grids.
+
+    Matches the peer pattern in ``scripts/run_grid_clenow.py`` (§Observers)
+    and ``scripts/run_grid_ehlers.py``: JsonlTrialObserver + StatusFileObserver
+    (per-sub-run + shared ``logs/grid_latest_status.md``) + tqdm progress bar.
+    """
+    from tqdm import tqdm
+
+    from ai_trade.backtest.grid import (
+        JsonlTrialObserver,
+        StatusFileObserver,
+        compose_observers,
+    )
+
+    sub_dir = checkpoint_dir / sub_run_id
+    sub_dir.mkdir(parents=True, exist_ok=True)
+    pbar = tqdm(total=n_configs, desc=f"grid {sub_run_id}", unit="cfg")
+
+    def tqdm_observer(completed: int, total: int, trial) -> None:
+        pbar.update(1)
+        pbar.set_postfix({
+            "cfg_id": trial.config_id,
+            "status": trial.status,
+            "sharpe": (
+                f"{trial.sharpe:.2f}" if trial.status == "ok" else "—"
+            ),
+        })
+
+    observer = compose_observers(
+        JsonlTrialObserver(
+            path=sub_dir / "trials.jsonl", run_id=sub_run_id,
+        ),
+        StatusFileObserver(
+            path=sub_dir / "status.md", run_id=sub_run_id,
+        ),
+        StatusFileObserver(
+            path=Path("logs/grid_latest_status.md"), run_id=sub_run_id,
+        ),
+        tqdm_observer,
+    )
+    return observer, pbar
+
+
 def _load_data(
     start: date,
     end: date,
@@ -131,31 +178,42 @@ def _load_data(
         start, len(universe_at_start),
     )
 
-    tickers = sorted(universe_at_start)
-    if index_symbol not in tickers:
-        tickers.append(index_symbol)
+    spx_tickers = sorted(t for t in universe_at_start if t != index_symbol)
 
+    # Fetch SPX constituents as equity (taxonomy correct for the ~500 stocks).
     log.info(
-        "Fetching %d tickers %s → %s via Tiingo",
-        len(tickers), fetch_start, end,
+        "Fetching %d SPX tickers %s → %s via Tiingo (asset_class=equity)",
+        len(spx_tickers), fetch_start, end,
     )
-    raw = src.fetch_many(tickers, fetch_start, end, asset_class="equity")
-    clenow_data = {t: df for t, df in raw.items() if not df.empty}
-    dropped = len(raw) - len(clenow_data)
+    raw_spx = src.fetch_many(
+        spx_tickers, fetch_start, end, asset_class="equity",
+    )
+    clenow_data = {t: df for t, df in raw_spx.items() if not df.empty}
+    dropped = len(raw_spx) - len(clenow_data)
     if dropped:
         log.warning(
-            "Tiingo returned no data for %d tickers (survivorship-honest: "
-            "these are absent from the manifest on purpose)",
+            "Tiingo returned no data for %d SPX tickers (survivorship-"
+            "honest: these are absent from the manifest on purpose)",
             dropped,
         )
-    if index_symbol not in clenow_data:
+
+    # Fetch index proxy (SPY) as ETF. Passing asset_class="equity" here
+    # would silently overwrite SPY's manifest entry from "etf" to "equity"
+    # on cold rebuild (TiingoStorage.write mutates the taxonomy). See
+    # code review of commit 36c0f57 issue I2.
+    log.info(
+        "Fetching index proxy %s %s → %s via Tiingo (asset_class=etf)",
+        index_symbol, fetch_start, end,
+    )
+    raw_index = src.fetch_many(
+        [index_symbol], fetch_start, end, asset_class="etf",
+    )
+    if index_symbol not in raw_index or raw_index[index_symbol].empty:
         raise RuntimeError(
             f"No Tiingo data for index proxy {index_symbol} — abort"
         )
-
-    # SPY used by Ehlers as its sole instrument. It's in clenow_data already
-    # because it's also the Clenow index proxy.
-    spy_df = clenow_data[index_symbol]
+    spy_df = raw_index[index_symbol]
+    clenow_data[index_symbol] = spy_df
 
     available = set(clenow_data.keys())
 
@@ -171,7 +229,7 @@ def _load_data(
 
 def _run_clenow_top3(
     data: dict[str, pd.DataFrame],
-    constituents_provider,
+    constituents_provider: "Callable[[date], set[str]]",
     index_symbol: str,
     start: date,
     end: date,
@@ -223,14 +281,21 @@ def _run_clenow_top3(
         )
 
     log.info("Running Clenow top-3 grid (3 configs)")
-    grid = GridRunner(
-        checkpoint_dir=checkpoint_dir,
-        n_jobs=n_jobs,
-        config_cls=ClenowGridConfig,
-    ).run(
-        configs=clenow_configs, trial_fn=trial_fn,
-        run_id=f"{run_id}_clenow",
+    sub_run_id = f"{run_id}_clenow"
+    observer, pbar = _build_subgrid_observer(
+        sub_run_id, len(clenow_configs), checkpoint_dir,
     )
+    try:
+        grid = GridRunner(
+            checkpoint_dir=checkpoint_dir,
+            n_jobs=n_jobs,
+            config_cls=ClenowGridConfig,
+        ).run(
+            configs=clenow_configs, trial_fn=trial_fn,
+            run_id=sub_run_id, progress_cb=observer,
+        )
+    finally:
+        pbar.close()
     ok = grid.ok_trials
     if len(ok) != 3:
         raise RuntimeError(
@@ -254,11 +319,11 @@ def _run_ehlers_top3(
         ExecutionConfig, ExecutionSimulator, Runner,
     )
     from ai_trade.backtest.grid import EhlersGridConfig, GridRunner
+    from ai_trade.backtest.portfolio.configs import ehlers_top3_grid_configs
     from ai_trade.backtest.strategies.ehlers_bp_swing import (
         EhlersBPSwingStrategy,
     )
 
-    from ai_trade.backtest.portfolio.configs import ehlers_top3_grid_configs
     ehlers_configs = ehlers_top3_grid_configs()
 
     data = {"SPY": spy_data}
@@ -287,14 +352,21 @@ def _run_ehlers_top3(
         )
 
     log.info("Running Ehlers top-3 grid (3 configs)")
-    grid = GridRunner(
-        checkpoint_dir=checkpoint_dir,
-        n_jobs=n_jobs,
-        config_cls=EhlersGridConfig,
-    ).run(
-        configs=ehlers_configs, trial_fn=trial_fn,
-        run_id=f"{run_id}_ehlers",
+    sub_run_id = f"{run_id}_ehlers"
+    observer, pbar = _build_subgrid_observer(
+        sub_run_id, len(ehlers_configs), checkpoint_dir,
     )
+    try:
+        grid = GridRunner(
+            checkpoint_dir=checkpoint_dir,
+            n_jobs=n_jobs,
+            config_cls=EhlersGridConfig,
+        ).run(
+            configs=ehlers_configs, trial_fn=trial_fn,
+            run_id=sub_run_id, progress_cb=observer,
+        )
+    finally:
+        pbar.close()
     ok = grid.ok_trials
     if len(ok) != 3:
         raise RuntimeError(
