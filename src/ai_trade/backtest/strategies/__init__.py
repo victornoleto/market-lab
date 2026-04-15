@@ -15,9 +15,11 @@ from ai_trade.backtest.strategies.base import (
     StrategyBase,
     StrategyContext,
 )
+from ai_trade.backtest.strategies.chan_bollinger_pairs import ChanBollingerPairsStrategy
 from ai_trade.backtest.strategies.clenow_momentum import ClenowMomentumStrategy
 
 __all__ = [
+    "ChanBollingerPairsStrategy",
     "ClenowMomentumStrategy",
     "Strategy",
     "StrategyBase",
