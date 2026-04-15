@@ -220,6 +220,59 @@ class ChanBollingerPairsStrategy:
         short_leg = self._beta * long_leg
         return long_leg, short_leg
 
+    def _maybe_exit(
+        self,
+        ts: pd.Timestamp,
+        idx: int,
+        zscore_now: float,
+        portfolio: Portfolio,
+        state: dict,
+    ) -> list[Order]:
+        """Return a pair of closing orders if any exit rule fires; else []."""
+        pos_long = portfolio.positions.get(self.long_symbol)
+        pos_short = portfolio.positions.get(self.short_symbol)
+        if pos_long is None or pos_short is None:
+            return []
+        side = state.get("side", "long_spread")
+        entry_ts: pd.Timestamp = state.get("entry_wall_clock_ts", ts)
+        entry_idx: int = state.get("entry_idx", idx)
+        bars_held = idx - entry_idx
+        wall_clock_h = (ts - entry_ts).total_seconds() / 3600.0
+
+        def close_orders() -> list[Order]:
+            close_long_side = "sell" if pos_long.side == "long" else "buy"
+            close_short_side = "sell" if pos_short.side == "long" else "buy"
+            return [
+                Order(self.long_symbol, close_long_side, pos_long.volume),
+                Order(self.short_symbol, close_short_side, pos_short.volume),
+            ]
+
+        # 1. Spread blow-out stop [p.293-294, ch.8]
+        if side == "long_spread" and zscore_now <= -self.spread_stop_z:
+            return close_orders()
+        if side == "short_spread" and zscore_now >= self.spread_stop_z:
+            return close_orders()
+
+        # 2. Friday weekend-flat (CFD adaptation)
+        if ts.weekday() == 4 and ts.hour >= self.friday_flat_hour:
+            return close_orders()
+
+        # 3. Wall-clock 48h hard cap [spec §1.4]
+        if wall_clock_h >= self.max_hold_hours:
+            return close_orders()
+
+        # 4. Time-stop in trading bars [p.47, ch.2]
+        if bars_held >= self._time_stop_bars:
+            return close_orders()
+
+        # 5. Mean-reversion exit [p.71-72, ch.3]
+        if side == "long_spread" and zscore_now >= self.exit_z:
+            return close_orders()
+        if side == "short_spread" and zscore_now <= -self.exit_z:
+            return close_orders()
+
+        return []
+
     def on_bar(
         self,
         bars: dict[str, Bar],
@@ -247,7 +300,14 @@ class ChanBollingerPairsStrategy:
         in_position = pos_long is not None and pos_short is not None
 
         if in_position:
-            return []  # exits implemented in Task 6
+            state = context.setdefault(self._state_key(), {})
+            exit_orders = self._maybe_exit(
+                ts=ts, idx=idx, zscore_now=zscore_now,
+                portfolio=portfolio, state=state,
+            )
+            if exit_orders:
+                context[self._state_key()] = {}  # clear state after exit
+            return exit_orders
         if self._should_skip_entry_session(ts):
             return []
 

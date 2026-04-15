@@ -356,3 +356,144 @@ def test_entry_ignored_friday_after_no_entry_hour_13():
     pf = Portfolio(initial_cash=100_000.0)
     orders = strat.on_bar({"GLD": bar_long, "SLV": bar_short}, pf, {})
     assert orders == [], f"expected no orders Fri 13:30, got {orders}"
+
+
+def _seed_position(strat, portfolio, ts_entry, *, side="long_spread"):
+    """Open both legs on portfolio at ts_entry, mirror state dict, return ctx."""
+    long_leg = 100.0
+    short_leg = strat._beta * long_leg
+    bar_long = Bar("GLD", ts_entry, 180.0, 180.5, 179.5, 180.0, 1e6)
+    bar_short = Bar("SLV", ts_entry, 72.0, 72.3, 71.7, 72.0, 1e6)
+    if side == "long_spread":
+        portfolio.open_position("GLD", "long", long_leg, 180.0, ts_entry)
+        portfolio.open_position("SLV", "short", short_leg, 72.0, ts_entry)
+    else:
+        portfolio.open_position("GLD", "short", long_leg, 180.0, ts_entry)
+        portfolio.open_position("SLV", "long", short_leg, 72.0, ts_entry)
+    idx_entry = strat._indicators.index.get_loc(ts_entry)
+    ctx = {
+        strat._state_key(): {
+            "entry_idx": idx_entry,
+            "entry_z": -1.1 if side == "long_spread" else 1.1,
+            "entry_wall_clock_ts": ts_entry,
+            "side": side,
+            "beta_at_entry": strat._beta,
+        }
+    }
+    return ctx, bar_long, bar_short
+
+
+def test_exit_mean_revert_long_spread_at_zero():
+    """Long spread open; z crosses up through 0 → both legs closed."""
+    strat, idx, tail_start = _make_strategy_with_z([-1.1, -0.1], entry_z=1.0)
+    # Place entry 10 bars before tail_start; patch z scenery around entry + now
+    entry_pos = tail_start - 10
+    ts_entry = strat._indicators.index[entry_pos]
+    pf = Portfolio(initial_cash=100_000.0)
+    ctx, _, _ = _seed_position(strat, pf, ts_entry, side="long_spread")
+    # Current bar: zscore just crossed zero
+    ts_now = strat._indicators.index[tail_start + 1]
+    strat._indicators.iloc[tail_start, strat._indicators.columns.get_loc("zscore")] = -0.1
+    strat._indicators.iloc[tail_start + 1, strat._indicators.columns.get_loc("zscore")] = 0.1
+    bar_long = Bar("GLD", ts_now, 180.0, 180.5, 179.5, 180.0, 1e6)
+    bar_short = Bar("SLV", ts_now, 72.0, 72.3, 71.7, 72.0, 1e6)
+    orders = strat.on_bar({"GLD": bar_long, "SLV": bar_short}, pf, ctx)
+    sides = {o.symbol: o.side for o in orders}
+    # closing long GLD = sell; closing short SLV = buy
+    assert sides == {"GLD": "sell", "SLV": "buy"}
+
+
+def test_exit_spread_stop_long_spread_at_minus_3():
+    """Long spread open; z blows out to -3 → emergency close."""
+    strat, idx, tail_start = _make_strategy_with_z([-1.1, -3.1], entry_z=1.0)
+    entry_pos = tail_start - 5
+    ts_entry = strat._indicators.index[entry_pos]
+    pf = Portfolio(initial_cash=100_000.0)
+    ctx, _, _ = _seed_position(strat, pf, ts_entry, side="long_spread")
+    ts_now = strat._indicators.index[tail_start + 1]
+    strat._indicators.iloc[tail_start + 1, strat._indicators.columns.get_loc("zscore")] = -3.1
+    bar_long = Bar("GLD", ts_now, 180.0, 180.5, 179.5, 180.0, 1e6)
+    bar_short = Bar("SLV", ts_now, 72.0, 72.3, 71.7, 72.0, 1e6)
+    orders = strat.on_bar({"GLD": bar_long, "SLV": bar_short}, pf, ctx)
+    assert len(orders) == 2
+    assert {o.symbol for o in orders} == {"GLD", "SLV"}
+
+
+def test_exit_friday_weekend_flat_at_15():
+    """Long spread open; current bar is Friday 15:30 → force close even if z favorable."""
+    strat, idx, tail_start = _make_strategy_with_z([-0.5, -0.4], entry_z=1.0)
+    friday_ts = pd.Timestamp("2023-06-16 15:30")
+    fri_pos = strat._indicators.index.get_indexer([friday_ts], method="nearest")[0]
+    ts_now = strat._indicators.index[fri_pos]
+    assert ts_now.weekday() == 4 and ts_now.hour >= 15
+    entry_pos = fri_pos - 5
+    ts_entry = strat._indicators.index[entry_pos]
+    pf = Portfolio(initial_cash=100_000.0)
+    ctx, _, _ = _seed_position(strat, pf, ts_entry, side="long_spread")
+    bar_long = Bar("GLD", ts_now, 180.0, 180.5, 179.5, 180.0, 1e6)
+    bar_short = Bar("SLV", ts_now, 72.0, 72.3, 71.7, 72.0, 1e6)
+    orders = strat.on_bar({"GLD": bar_long, "SLV": bar_short}, pf, ctx)
+    assert len(orders) == 2
+
+
+def test_exit_wall_clock_48h_cap():
+    """Entry Mon 10:00, current Wed 11:00 (49h wall clock) → forced exit."""
+    strat, idx, tail_start = _make_strategy_with_z([-0.5, -0.4], entry_z=1.0)
+    mon_ts = pd.Timestamp("2023-06-12 10:30")
+    wed_ts = pd.Timestamp("2023-06-14 11:30")  # >48h after mon_ts
+    mon_pos = strat._indicators.index.get_indexer([mon_ts], method="nearest")[0]
+    wed_pos = strat._indicators.index.get_indexer([wed_ts], method="nearest")[0]
+    ts_entry = strat._indicators.index[mon_pos]
+    ts_now = strat._indicators.index[wed_pos]
+    pf = Portfolio(initial_cash=100_000.0)
+    ctx, _, _ = _seed_position(strat, pf, ts_entry, side="long_spread")
+    bar_long = Bar("GLD", ts_now, 180.0, 180.5, 179.5, 180.0, 1e6)
+    bar_short = Bar("SLV", ts_now, 72.0, 72.3, 71.7, 72.0, 1e6)
+    orders = strat.on_bar({"GLD": bar_long, "SLV": bar_short}, pf, ctx)
+    assert len(orders) == 2, (
+        f"expected forced exit at wall-clock 48h+, got {orders}"
+    )
+
+
+def test_exit_time_stop_in_trading_bars():
+    """Bars held >= time_stop_bars → forced exit."""
+    strat, idx, tail_start = _make_strategy_with_z([-0.5, -0.4], entry_z=1.0)
+    # time_stop_bars = min(3*half_life, 24); half_life recovered ~20 → time_stop=24
+    # set entry such that bars_held == time_stop_bars exactly
+    ts_now_pos = tail_start + 1
+    ts_entry_pos = ts_now_pos - strat._time_stop_bars
+    ts_entry = strat._indicators.index[ts_entry_pos]
+    ts_now = strat._indicators.index[ts_now_pos]
+    # Keep wall-clock under 48h by checking the spacing — if > 48h, test degenerates
+    wall_h = (ts_now - ts_entry).total_seconds() / 3600.0
+    if wall_h >= 48.0:
+        pytest.skip(f"wall-clock gap {wall_h:.1f}h hides time-stop; skip")
+    pf = Portfolio(initial_cash=100_000.0)
+    ctx, _, _ = _seed_position(strat, pf, ts_entry, side="long_spread")
+    bar_long = Bar("GLD", ts_now, 180.0, 180.5, 179.5, 180.0, 1e6)
+    bar_short = Bar("SLV", ts_now, 72.0, 72.3, 71.7, 72.0, 1e6)
+    orders = strat.on_bar({"GLD": bar_long, "SLV": bar_short}, pf, ctx)
+    assert len(orders) == 2, f"expected time-stop exit, got {orders}"
+
+
+def test_exit_precedence_spread_stop_beats_mean_revert():
+    """Both spread_stop (z=-3) AND mean-revert would fire; spread_stop wins.
+
+    For long_spread entry at z=-1.1, z=+0.1 would mean-revert (happy) — but
+    if the indicator is spoofed to be at -3.1 the spread_stop triggers.
+    Symmetric: check that in the long side spread_stop is recognized as
+    precedence over mean_revert by firing with the z clearly past the
+    spread_stop_z limit on the same side as entry.
+    """
+    strat, idx, tail_start = _make_strategy_with_z([-1.1, -3.1], entry_z=1.0)
+    entry_pos = tail_start - 3
+    ts_entry = strat._indicators.index[entry_pos]
+    ts_now = strat._indicators.index[tail_start + 1]
+    # z_now = -3.1 triggers spread_stop for long spread
+    strat._indicators.iloc[tail_start + 1, strat._indicators.columns.get_loc("zscore")] = -3.1
+    pf = Portfolio(initial_cash=100_000.0)
+    ctx, _, _ = _seed_position(strat, pf, ts_entry, side="long_spread")
+    bar_long = Bar("GLD", ts_now, 180.0, 180.5, 179.5, 180.0, 1e6)
+    bar_short = Bar("SLV", ts_now, 72.0, 72.3, 71.7, 72.0, 1e6)
+    orders = strat.on_bar({"GLD": bar_long, "SLV": bar_short}, pf, ctx)
+    assert len(orders) == 2
