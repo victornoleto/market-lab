@@ -1,21 +1,19 @@
 # Machine Trading: Deploying Computer Algorithms to Conquer the Markets
 
 ## Metadata
-- **Autor:** Ernest P. Chan [copyright p.6]
-- **Ano:** 2017 [p.6]
-- **Editora:** John Wiley & Sons, Inc. [p.6]
-- **Páginas:** 267 (PDF), printed body ends around p.242
+- **Author:** Ernest P. Chan [copyright p.6]
+- **Year:** 2017 [p.6]
+- **Publisher:** John Wiley & Sons, Inc. [p.6]
+- **Pages:** 267 (PDF), printed body ends around p.242
 - **ISBN:** 978-1-119-21960-6 (Hardcover) [p.6]; 978-1-119-21967-5 (ePDF); 978-1-119-21965-1 (ePub)
-- **Foco principal:** Third book in Chan's trilogy; applies factor models, time-series techniques, AI/ML, options, intraday microstructure and bitcoin strategies with MATLAB examples.
+- **Main focus:** Third book in Chan's trilogy; applies factor models, time-series techniques, AI/ML, options, intraday microstructure and bitcoin strategies with MATLAB examples.
 
-## 1. Tese Central
-
-Chan's thesis in this volume [Preface, p.ix-xii] is that quantitative traders should augment classical hypothesis-driven strategy development with data-driven techniques (factor models, state-space models, and ML), but constantly guard against overfitting because "financial data are not only quite limited (unless we use tick data), they are also not very stationary in the statistical sense. That is, the probability distribution of returns does not stay constant forever. If we just turn our machine learning algorithms loose on these data, it is very easy to come up with trading rules that worked extremely well in certain past periods, but fail terribly going forward" [p.83-84, ch.4]. The book is a continuation of *Quantitative Trading* (Chan 2009) and *Algorithmic Trading* (Chan 2013), covering topics omitted there: factor models, time-series (ARIMA/VAR/SSM), AI techniques with overfit reduction, options strategies, intraday microstructure, and bitcoins [Preface, p.ix-x].
+## 1. Core Thesis
+Chan's thesis in this volume [Preface, p.ix-xii] is that quantitative traders must augment classical hypothesis-driven strategy development with data-driven techniques (factor models, state-space models, and ML), but constantly guard against overfitting because "financial data are not only quite limited (unless we use tick data), they are also not very stationary in the statistical sense. That is, the probability distribution of returns does not stay constant forever. If we just turn our machine learning algorithms loose on these data, it is very easy to come up with trading rules that worked extremely well in certain past periods, but fail terribly going forward" [p.83-84, ch.4]. The book is a continuation of *Quantitative Trading* (Chan 2009) and *Algorithmic Trading* (Chan 2013), covering topics omitted there: factor models, time-series (ARIMA/VAR/SSM), AI techniques with overfit reduction, options strategies, intraday microstructure, and bitcoins [Preface, p.ix-x].
 
 Recurring principle: "in trading, complexity doesn't pay" [p.115, ch.4 summary] — start with the simplest technique (stepwise regression) and only escalate (neural nets, deep SVM kernels) if simpler approaches fail.
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **CAGR (Compound Annual Growth Rate)** — return assuming constant leverage, profits re-compounded; contrasts with average annualized return [p.12]
 - **Calmar ratio** — CAGR divided by absolute value of the max drawdown over the most recent **three years**; preferred by Chan over MAR (which uses entire-history max DD) [p.13-14]. Chan trades strategies with backtest Calmar ≥ 1 [p.14]
 - **Kelly optimal leverage** — mean of excess returns / variance of excess returns [p.13]; equivalently, for a portfolio: $F^* = C^{-1}M$ [p.19-20]
@@ -52,8 +50,7 @@ Recurring principle: "in trading, complexity doesn't pay" [p.115, ch.4 summary] 
 - **Hide-and-Light / ISO order types** — specialized limit order modifiers used by HFTs to secure queue priority and rebates [p.164-165]
 - **Primary-exchange auction price vs consolidated close** — backtests using SIP-consolidated close can inflate mean-reversion PnL by ~8bps white noise [Box 6.2, p.183]
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Kelly optimal leverage (single strategy)** [p.13]
 
 $$\text{Optimal leverage} = \frac{\text{Mean of Excess Returns}}{\text{Variance of Excess Returns}}$$
@@ -145,8 +142,7 @@ $$r_t = \sigma_t \epsilon_t, \quad \sigma_t^2 = \omega + \sum_{i=1}^p \alpha_i \
 
 Chan reports sign-of-vol-change accuracy of 66% on SPY, 67% USO, 59% GLD, 60% AAPL, 62% EURUSD [p.127].
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **BIC-based model selection (AR/ARMA)** [p.61, ch.3]
 
 ```
@@ -248,34 +244,32 @@ per bar (equal-volume buckets):
 order_flow = buy_vol - sell_vol
 ```
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.14]**: trade strategies with backtest **Calmar ratio ≥ 1** (CAGR / |3-year max DD|).
+- **RULE [p.13]**: "lower the leverage until you are comfortable with the maximum drawdown in the backtest over a period that includes several financial crises." Kelly optimal leverage is typically too aggressive.
+- **RULE [p.12]**: in backtests, set **leverage = 1**; measure returns as P&L divided by gross market value.
+- **RULE [p.60-61, ch.3]**: test on **midprices** (not trade prices) to avoid phantom mean-reversion from bid-ask bounce.
+- **RULE [p.115]**: "start with the simplest technique (such as stepwise regression) and proceed to the most complicated (such as neural network) if the simpler techniques do not yield good performance. In trading, complexity doesn't pay."
+- **RULE [p.86-87, ch.4]**: always split data into training/test halves; never use the entire set for fitting.
+- **RULE [p.93, ch.4]**: when using cross-validation on ~1,000-row financial datasets, prefer **K=5** over K=10 (small out-of-sample folds yield large statistical errors).
+- **RULE [p.94, ch.4]**: for bagging on limited financial data, avoid large K (e.g., K>5-10); averaging many bags converges to the same overfit as a single full-data model.
+- **RULE [p.108, ch.4]**: for a feed-forward NN on small financial data (SPY, ~1000 rows × 4 features) use only **one hidden layer with one neuron**; more layers/neurons degrade OOS.
+- **RULE [p.109-110]**: when aggregating stocks for ML, **normalize predictors AND response by volatility** first (dividing by recent vol); omission drops Sharpe from 0.9 to -0.4.
+- **RULE [p.14, Chan 2013 convention]**: fix the Calmar-ratio DD window to the **most recent 3 years** to avoid dependence on backtest length.
+- **RULE [p.197-198, ch.5 options]**: prefer **delta-neutral** options strategies; if you want delta exposure, trade the underlying (lower transaction cost).
+- **RULE [ch.6, p.183, Box 6.2]**: when backtesting open/close stock strategies, use **primary-exchange auction prices**, not SIP-consolidated open/close; the ~8bps white-noise difference can inflate mean-reversion PnL fictitiously.
+- **RULE [p.159-160, ch.6]**: for intraday strategies use **compiled languages (C++, C#, Java)**, not scripting (MATLAB/R/Python), due to ~10x latency difference.
+- **RULE [p.161, ch.6]**: reduce all three latencies: order-submission, order-status, market-data. Rent VPS at Equinix NY4 or NJ1 colocated with broker; use direct exchange feeds where budget allows.
+- **RULE [p.183, ch.6]**: to avoid slippage/market-impact blow-up, order size must respect NBBO size (AAPL's is typically only ~189 shares).
+- **RULE [p.12 Chan 2013 + p.202, ch.7]**: for bitcoin trading, remember ~45% of exchanges fail due to thefts/hacks — credit risk, not just market risk.
+- **RULE [p.12, p.196]**: to avoid catastrophic leverage loss (e.g., CHF flash 2015), trade via a **limited-liability vehicle** (LLC, S-corp, LP) not personal name.
+- **RULE [p.3-4, ch.1]**: use **survivorship-bias-free data** (CRSP, CSI delisted, Bloomberg) — ordinary Yahoo/Quandl default daily stock series will embed survivorship bias.
+- **NEVER [p.13]**: use naive Kelly leverage on financial assets — the Gaussian assumption breaks under tail events.
+- **NEVER [p.22]**: target equal **volatility** per asset in a risk-parity portfolio without considering that "volatility isn't what we should be afraid of — tail risk is." Target equal **max drawdown** instead.
+- **NEVER [p.108, ch.4]**: use large numbers of hidden layers and neurons for small financial datasets — overfitting dominates.
+- **NEVER [p.97, ch.4]**: rely on boosting to fight overfitting — Chan shows boosting increases training-set Sharpe dramatically while test-set Sharpe stays insignificant.
 
-- **REGRA [p.14]**: trade strategies with backtest **Calmar ratio ≥ 1** (CAGR / |3-year max DD|).
-- **REGRA [p.13]**: "lower the leverage until you are comfortable with the maximum drawdown in the backtest over a period that includes several financial crises." Kelly optimal leverage is typically too aggressive.
-- **REGRA [p.12]**: in backtests, set **leverage = 1**; measure returns as P&L divided by gross market value.
-- **REGRA [p.60-61, ch.3]**: test on **midprices** (not trade prices) to avoid phantom mean-reversion from bid-ask bounce.
-- **REGRA [p.115]**: "start with the simplest technique (such as stepwise regression) and proceed to the most complicated (such as neural network) if the simpler techniques do not yield good performance. In trading, complexity doesn't pay."
-- **REGRA [p.86-87, ch.4]**: always split data into train/test halves; never use the entire set for fitting.
-- **REGRA [p.93, ch.4]**: when using cross-validation on ~1,000-row financial datasets, prefer **K=5** over K=10 (small out-of-sample folds yield large statistical errors).
-- **REGRA [p.94, ch.4]**: for bagging on limited financial data, avoid large K (e.g., K>5-10); averaging many bags converges to same overfit as single full-data model.
-- **REGRA [p.108, ch.4]**: for a feed-forward NN on small financial data (SPY, ~1000 rows × 4 features) use only **one hidden layer with one neuron**; more layers/neurons degrade OOS.
-- **REGRA [p.109-110]**: when aggregating stocks for ML, **normalize predictors AND response by volatility** first (dividing by recent vol); omission drops Sharpe from 0.9 to -0.4.
-- **REGRA [p.14, Chan 2013 convention]**: fix Calmar-ratio DD window to **most recent 3 years** to avoid dependence on backtest length.
-- **REGRA [p.197-198, ch.5 options]**: prefer **delta-neutral** options strategies; if you want delta exposure, trade the underlying (lower transaction cost).
-- **REGRA [ch.6, p.183, Box 6.2]**: when backtesting open/close stock strategies, use **primary-exchange auction prices**, not SIP-consolidated open/close; the ~8bps white-noise difference can inflate mean-reversion PnL fictitiously.
-- **REGRA [p.159-160, ch.6]**: for intraday strategies use **compiled languages (C++, C#, Java)**, not scripting (MATLAB/R/Python), due to ~10x latency difference.
-- **REGRA [p.161, ch.6]**: reduce all three latencies: order-submission, order-status, market-data. Rent VPS at Equinix NY4 or NJ1 colocated with broker; use direct exchange feeds where budget allows.
-- **REGRA [p.183, ch.6]**: to avoid slippage/market-impact blow-up, order size must respect NBBO size (AAPL's is typically only ~189 shares).
-- **REGRA [p.12 Chan 2013 + p.202, ch.7]**: for bitcoin trading, remember ~45% of exchanges fail due to thefts/hacks — credit risk, not just market risk.
-- **REGRA [p.12, p.196]**: to avoid catastrophic leverage loss (e.g., CHF flash 2015), trade via **limited-liability vehicle** (LLC, S-corp, LP) not personal name.
-- **REGRA [p.3-4, ch.1]**: use **survivorship-bias-free data** (CRSP, CSI delisted, Bloomberg) — ordinary Yahoo/Quandl default daily stock series will embed survivorship bias.
-- **NUNCA [p.13]**: use naive Kelly leverage on financial assets — Gaussian assumption breaks under tail events.
-- **NUNCA [p.22]**: target equal **volatility** per asset in a risk-parity portfolio without considering that "volatility isn't what we should be afraid of — tail risk is." Target equal **max drawdown** instead.
-- **NUNCA [p.108, ch.4]**: use large numbers of hidden layers and neurons for small financial datasets — overfitting dominates.
-- **NUNCA [p.97, ch.4]**: rely on boosting to fight overfitting — Chan shows boosting increases trainset Sharpe dramatically while test-set Sharpe stays insignificant.
-
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - **[p.32, Example 2.1]** Fama-French factors fit in-sample with CAGR 242% / Sharpe 3.7 but produce NEGATIVE OOS returns — classic overfit of explanatory factors used as predictors.
 - **[p.37, Example 2.2]** Throwing all 112 fundamental factors blindly yields in-sample $R^2 = 0.96$ and CAGR 48%, but NEGATIVE test-set CAGR. Using only 27 size-independent factors yields 12% OOS CAGR.
 - **[p.43, Example 2.4]** Out-of-sample results do NOT replicate for published strategies (Bali 2015 obtained 9.68% CAGR on all optionable stocks; Chan reports ~0% on SPX subset) — small/restricted universes kill many factor strategies.
@@ -293,8 +287,7 @@ order_flow = buy_vol - sell_vol
 - **[p.181-182, ch.6 dark pools]** Dark pools can be toxic: informed traders quote-ping on primary exchange to drive midprice, then execute in dark pool against stale resting orders. Even IEX-style speed-bump pools don't fully eliminate this.
 - **[p.125-128, ch.5 vol prediction]** Being able to predict direction of realized-vol change doesn't yield profits on VXX/XIV — VXX has negative theta and reflects a rolling options portfolio, not pure implied vol.
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **Calmar ratio lookback = 3 years** [p.14]: economic justification, normalizes max DD across backtest lengths. Not curve-fit.
 - **K=5 for K-fold CV on 1000-row financial data** [p.93]: not curve-fit — justified by trade-off between train size and OOS statistical robustness.
 - **MinLeafSize=100 in regression tree on SPY** [p.90]: chosen "to avoid overfitting"; Chan explicitly states smaller values hurt OOS.
@@ -312,8 +305,7 @@ order_flow = buy_vol - sell_vol
 - **Kelly fractional leverage = Chan explicitly recommends LESS than full Kelly** [p.13]: economically justified.
 - **Calmar ratio target for 1-factor ROE small-caps = 0.97** [p.141, example 5.1 XIV/SPY Kalman]: reported, not parameter.
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "If we just turn our machine learning algorithms loose on these data, it is very easy to come up with trading rules that worked extremely well in certain past periods, but fail terribly going forward." — [p.83-84, ch.4]
 
 > "Start with the simplest technique (such as stepwise regression) and proceed to the most complicated (such as neural network) if the simpler techniques do not yield good performance. In trading, complexity doesn't pay." — [p.115, ch.4]
@@ -326,8 +318,7 @@ order_flow = buy_vol - sell_vol
 
 > "I have found that Kelly's leverage is typically too high to be of practical use." — [p.13, ch.1]
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - **Kelly leverage and portfolio optimization** — core formula $F^* = C^{-1}M$ [p.19-20] is also treated in `leverage_space.md` (Ralph Vince, with 2D drawdown-geometric-mean surface) and `quant_trading_chan.md` (Chan's own introduction to Kelly in book 1).
 - **CPCV and purging techniques for overfit reduction** — Chan's K-fold CV treatment [p.92-94] is less rigorous than the Combinatorial Purged CV and Deflated Sharpe described in `advances_fin_ml.md#cpcv`. Use López de Prado for leakage control.
 - **Kalman filter / state-space models** — SSM treatment [ch.3, p.71-79] extends Chan (2013) and complements `time_series_hamilton.md` (which gives the theoretical derivation of the Kalman recursions) and `rocket_science.md` / `cybernetic_analysis.md` (Ehlers uses similar linear adaptive filters for DSP-style indicators).

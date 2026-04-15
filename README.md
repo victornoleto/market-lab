@@ -1,39 +1,39 @@
-# ai-trade — Systematic Swing-Trading para Pepperstone CFD
+# ai-trade — Systematic Swing-Trading for Pepperstone CFD
 
-Sistema automatizado de trading sistemático para **CFDs Pepperstone via cTrader
-Open API**, fundamentado em **33 livros de trading quantitativo/ML absorvidos**
-como uma Claude Skill (knowledge base citável). Todo código é determinístico e
-toda decisão remete a `[livro.slug, p.X]`.
+Automated systematic trading system for **Pepperstone CFDs via cTrader
+Open API**, grounded in **33 absorbed quantitative trading / ML books**
+exposed as a Claude Skill (citable knowledge base). All code is deterministic
+and every decision refers back to `[book.slug, p.X]`.
 
-**Regra de ouro:** nenhuma afirmação, estratégia, parâmetro ou gate sem
-referência ao livro. Alucinação destrói o valor da knowledge base — e, em
-live, destrói capital.
+**Golden rule:** no claim, strategy, parameter, or gate without a book
+reference. Hallucination destroys the value of the knowledge base — and,
+in live, destroys capital.
 
 ---
 
 ## Status
 
-| Fase | Escopo | Estado |
+| Phase | Scope | Status |
 |---|---|---|
-| 0 | Knowledge base — 33 livros → summaries validados | ✅ Concluída |
-| 0.5 | `build_skill.py` + gate de sanidade da skill | ✅ Concluída |
-| 1 | Infra Pepperstone/cTrader + Postgres/Grafana | 🔄 Scaffold (aguarda aprovação Spotware para OAuth) |
-| 2 | Backtest Module — engine + validation + métricas + Clenow replication | ✅ Concluída |
-| 2.5 | Strategy Engine (Universe Selector + candidatas fundamentadas) | ⏳ |
-| 3 | Backtest rigoroso (grid de parâmetros + gates CPCV/PBO/DSR em produção) | ⏳ |
-| 4 | Paper trading (conta demo cTrader) | ⏳ |
-| 5 | Live trading ($1000 inicial) | ⏳ |
-| 6 | Monitoring + governança | ⏳ |
+| 0 | Knowledge base — 33 books → validated summaries | ✅ Done |
+| 0.5 | `build_skill.py` + skill sanity gate | ✅ Done |
+| 1 | Pepperstone/cTrader infra + Postgres/Grafana | 🔄 Scaffold (awaiting Spotware OAuth approval) |
+| 2 | Backtest Module — engine + validation + metrics + Clenow replication | ✅ Done |
+| 2.5 | Strategy Engine (Universe Selector + grounded candidates) | ⏳ |
+| 3 | Rigorous backtest (parameter grid + CPCV/PBO/DSR gates in production) | ⏳ |
+| 4 | Paper trading (cTrader demo account) | ⏳ |
+| 5 | Live trading ($1000 initial) | ⏳ |
+| 6 | Monitoring + governance | ⏳ |
 | 7 | Scaling | ⏳ |
 
-Detalhes por fase em [`ROADMAP.md`](ROADMAP.md).
+Phase-by-phase details in [`ROADMAP.md`](ROADMAP.md).
 
 ---
 
-## Arquitetura em alto nível
+## High-level architecture
 
 ```
-         Phase 0 — knowledge base (concluída)              Phase 1+ — runtime (parcial)
+         Phase 0 — knowledge base (done)                   Phase 1+ — runtime (partial)
 
 books/raw/    ─▶ summaries/    ─▶ knowledge/               cTrader Open API ◀──▶ src/ai_trade/
 (33 PDFs)        (33 MD, 9 sec)    SKILL.md                (Protobuf/OAuth2)      (Python/Twisted)
@@ -43,66 +43,66 @@ books/raw/    ─▶ summaries/    ─▶ knowledge/               cTrader Open 
                                    + validation/                                  (docker-compose)
 ```
 
-- Python NÃO usa nenhum LLM SDK. Toda inteligência LLM roda dentro do
-  **Claude Code CLI** (subagentes + slash commands).
-- Scripts em `scripts/` e módulos em `src/ai_trade/` são determinísticos.
+- Python does NOT use any LLM SDK. All LLM intelligence runs inside the
+  **Claude Code CLI** (subagents + slash commands).
+- Scripts in `scripts/` and modules in `src/ai_trade/` are deterministic.
 
 ---
 
-## Estrutura do repositório
+## Repository structure
 
 ```
 ai-trade/
-├── books/                           # Knowledge base bruta (Fase 0)
-│   ├── raw/                         # 33 PDFs com slugs canônicos
-│   ├── summaries/                   # 1 MD validado por livro
-│   ├── code/                        # Código C++ complementar (Timothy Masters)
-│   ├── MAPPING.md                   # Inventário "nome original → slug"
-│   └── README.md                    # Catálogo + qualidade + pipeline de absorção
-├── knowledge/                       # Claude Skill agregada (Fase 0.5)
+├── books/                           # Raw knowledge base (Phase 0)
+│   ├── raw/                         # 33 PDFs with canonical slugs
+│   ├── summaries/                   # 1 validated MD per book
+│   ├── code/                        # Complementary C++ code (Timothy Masters)
+│   ├── MAPPING.md                   # "Original name → slug" inventory
+│   └── README.md                    # Catalog + quality + absorption pipeline
+├── knowledge/                       # Aggregated Claude Skill (Phase 0.5)
 │   ├── SKILL.md                     # Entry point + inviolable rules
-│   ├── books/                       # Per-book summaries (cópia validada)
-│   ├── strategies/                  # Agregações temáticas (momentum, cycles, ...)
+│   ├── books/                       # Per-book summaries (validated copy)
+│   ├── strategies/                  # Thematic aggregations (momentum, cycles, ...)
 │   ├── indicators/                  # Ehlers DSP, momentum, HMM
 │   └── validation/                  # CPCV, permutation, DSR, walk-forward
-├── src/ai_trade/                    # Runtime Python (Fase 1+)
+├── src/ai_trade/                    # Python runtime (Phase 1+)
 │   ├── __init__.py
 │   ├── config.py                    # Typed config (pydantic-settings)
-│   └── backtest/                    # Fase 2 — módulo de backtest (173 tests)
+│   └── backtest/                    # Phase 2 — backtest module (173 tests)
 │       ├── data/                    #   yfinance + Wikipedia SPX point-in-time
-│       ├── engine/                  #   portfolio + execução CFD-aware + runner
+│       ├── engine/                  #   portfolio + CFD-aware execution + runner
 │       ├── validation/              #   CPCV / PBO / DSR / walk-forward / MCPT
-│       ├── metrics/                 #   Sharpe/Sortino/Calmar + report MD+PNG
+│       ├── metrics/                 #   Sharpe/Sortino/Calmar + MD+PNG report
 │       └── strategies/              #   base + Clenow momentum replication
-├── scripts/                         # Utilitários determinísticos (sem LLM)
-│   ├── extract_pdfs.py              # PDF → texto + capítulos + metadata
-│   ├── validate_summary.py          # Gate estrutural de summaries
-│   ├── check_citations.py           # Verifica offset PDF↔printed + citações
-│   ├── build_page_index.py          # Gera _page_index.json por livro
-│   ├── aggregate_judges.py          # Agrega juízes adversariais (Layer-3)
+├── scripts/                         # Deterministic utilities (no LLM)
+│   ├── extract_pdfs.py              # PDF → text + chapters + metadata
+│   ├── validate_summary.py          # Structural gate for summaries
+│   ├── check_citations.py           # Check PDF↔printed offset + citations
+│   ├── build_page_index.py          # Generate per-book _page_index.json
+│   ├── aggregate_judges.py          # Aggregate adversarial judges (Layer-3)
 │   ├── build_skill.py               # Summaries → knowledge/
-│   ├── compress_pdfs.py             # Ghostscript compressor (reversível)
-│   ├── rename_books.py              # Normaliza slugs em books/raw/
-│   ├── ctrader_oauth_bootstrap.py   # OAuth2 one-time bootstrap (browser local)
-│   └── run_clenow_replication.py    # CLI de replicação Clenow momentum (Fase 2)
+│   ├── compress_pdfs.py             # Ghostscript compressor (reversible)
+│   ├── rename_books.py              # Normalize slugs in books/raw/
+│   ├── ctrader_oauth_bootstrap.py   # OAuth2 one-time bootstrap (local browser)
+│   └── run_clenow_replication.py    # Clenow momentum replication CLI (Phase 2)
 ├── db/
-│   └── init.sql                     # Schemas Postgres: market_data, trades, ...
+│   └── init.sql                     # Postgres schemas: market_data, trades, ...
 ├── docker-compose.yml               # Postgres 16 + Grafana 11
-├── .env.example                     # Template de credenciais/tokens
+├── .env.example                     # Credentials/tokens template
 ├── pyproject.toml                   # Deps + hatch config
-├── ROADMAP.md                       # Mapa de fases + princípios não-negociáveis
-└── README.md                        # este arquivo
+├── ROADMAP.md                       # Phase map + non-negotiable principles
+└── README.md                        # this file
 ```
 
 ---
 
-## Requisitos
+## Requirements
 
 - Python 3.11+
-- [`uv`](https://docs.astral.sh/uv/) (recomendado) ou `pip`
-- Docker + Docker Compose (para Postgres/Grafana locais)
-- Claude Code CLI (para expandir a knowledge base ou re-absorver livros via
-  `/absorb-book`; não é necessário para o runtime da Fase 1+)
+- [`uv`](https://docs.astral.sh/uv/) (recommended) or `pip`
+- Docker + Docker Compose (for local Postgres/Grafana)
+- Claude Code CLI (to expand the knowledge base or re-absorb books via
+  `/absorb-book`; not required for the Phase 1+ runtime)
 
 ---
 
@@ -112,46 +112,46 @@ ai-trade/
 
 ```bash
 uv sync
-# ou: python -m venv .venv && .venv/bin/pip install -e .
+# or: python -m venv .venv && .venv/bin/pip install -e .
 ```
 
-### Infra local (Postgres + Grafana)
+### Local infra (Postgres + Grafana)
 
 ```bash
 docker compose up -d postgres grafana
 docker compose exec postgres psql -U ai_trade -d ai_trade -c "\dn"
-# deve listar: market_data, trades, features, logs, backtest_runs
+# should list: market_data, trades, features, logs, backtest_runs
 ```
 
-**Portas:**
-- Postgres: `localhost:5435` (mapeia → container 5432; `5432` local fica para o Postgres nativo, se houver)
+**Ports:**
+- Postgres: `localhost:5435` (maps → container 5432; `5432` local is left for a native Postgres, if any)
 - Grafana: `http://localhost:3000` (login `admin` / `ai_trade`)
 
-Parar sem apagar dados: `docker compose down`. Zerar tudo: `docker compose down -v`.
+Stop without wiping data: `docker compose down`. Wipe everything: `docker compose down -v`.
 
-### cTrader OAuth (one-time, após aprovação Spotware do app)
+### cTrader OAuth (one-time, after Spotware approves the app)
 
 ```bash
 cp .env.example .env
-# preencha CTRADER_CLIENT_ID e CTRADER_CLIENT_SECRET (do portal Spotware)
+# fill in CTRADER_CLIENT_ID and CTRADER_CLIENT_SECRET (from the Spotware portal)
 python scripts/ctrader_oauth_bootstrap.py
-# abre browser → consent screen → captura refresh_token → escreve no .env
+# opens browser → consent screen → captures refresh_token → writes to .env
 ```
 
-O app precisa estar aprovado pela Spotware (manual, horas a dias após submissão
-em `openapi.ctrader.com`). Enquanto não aprovado, o bootstrap falha com
+The app must be approved by Spotware (manual, hours to days after submission
+at `openapi.ctrader.com`). Until approved, the bootstrap fails with
 *"OA client is not in active state"*.
 
 ---
 
-## Como rodar um backtest
+## How to run a backtest
 
-Fase 2 entregou o módulo completo de backtest em `src/ai_trade/backtest/`:
-engine (portfolio + execução CFD-aware + runner bar-by-bar), validation
-framework (CPCV / PBO / DSR / walk-forward / MCPT), métricas (Sharpe /
-Sortino / Calmar / CAGR / max DD / VaR) e gerador de report em markdown +
-PNG. Replicação de referência: Andreas Clenow `stocks_on_the_move` no
-universo SPX 500 point-in-time (yfinance + Wikipedia scrape).
+Phase 2 delivered the complete backtest module in `src/ai_trade/backtest/`:
+engine (portfolio + CFD-aware execution + bar-by-bar runner), validation
+framework (CPCV / PBO / DSR / walk-forward / MCPT), metrics (Sharpe /
+Sortino / Calmar / CAGR / max DD / VaR) and a markdown + PNG report
+generator. Reference replication: Andreas Clenow `stocks_on_the_move` on
+the SPX 500 point-in-time universe (yfinance + Wikipedia scrape).
 
 ```bash
 .venv/bin/python scripts/run_clenow_replication.py \
@@ -161,40 +161,41 @@ universo SPX 500 point-in-time (yfinance + Wikipedia scrape).
     --output-dir reports/
 ```
 
-Saídas:
-- `reports/clenow_momentum_<YYYYMMDD-HHMM>.md` — relatório estruturado com
-  disclaimer obrigatório de survivorship bias, métricas anualizadas,
-  walk-forward summary e lista de trades (top winners/losers)
-- `reports/assets/*.png` — equity curve + underwater drawdown (2 painéis,
-  backend Agg headless)
+Outputs:
+- `reports/clenow_momentum_<YYYYMMDD-HHMM>.md` — structured report with
+  mandatory survivorship-bias disclaimer, annualized metrics,
+  walk-forward summary, and trade list (top winners/losers)
+- `reports/assets/*.png` — equity curve + underwater drawdown (2 panels,
+  headless Agg backend)
 
-Componentes (cobertos por 173 testes com verificação numérica contra os
-livros-fonte):
+Components (covered by 173 tests with numerical verification against the
+source books):
 - `backtest/engine/` — `portfolio.py` / `execution.py` / `runner.py`
 - `backtest/validation/` — `cpcv.py` / `pbo.py` / `dsr.py` /
   `walk_forward.py` / `permutation.py`
 - `backtest/metrics/` — `performance.py` / `report.py`
 - `backtest/strategies/` — `base.py` / `clenow_momentum.py`
 
-Notas da replicação (performance vs livro, limitações, decisões de design):
+Replication notes (performance vs. book, limitations, design decisions):
 [`reports/clenow_replication_notes.md`](reports/clenow_replication_notes.md).
-Spec executável da Fase 2 com campo Conclusão por task:
+Executable Phase 2 spec with a Conclusion field per task:
 [`specs/backtest_phase2.md`](specs/backtest_phase2.md).
 
-**Gate crítico:** todo report gerado de fonte `yfinance`/`wikipedia` inclui
-disclaimer de survivorship bias obrigatório (inviolable rule do ROADMAP).
-Migração para fonte paga (Tiingo/EOD/Norgate) é decisão adiada até a
-primeira estratégia sobreviver a um grid com PBO < 0.5 e DSR p-value < 0.05
-— ver [`specs/backtest_phase2.md`](specs/backtest_phase2.md#reavaliação-pós-fase-2-decisões-adiadas-do-roadmap).
+**Critical gate:** every report generated from `yfinance`/`wikipedia`
+sources includes a mandatory survivorship-bias disclaimer (inviolable
+rule from the ROADMAP). Migration to a paid source (Tiingo/EOD/Norgate)
+is deferred until the first strategy survives a grid with PBO < 0.5 and
+DSR p-value < 0.05 — see
+[`specs/backtest_phase2.md`](specs/backtest_phase2.md#post-phase-2-reassessment-deferred-decisions-from-the-roadmap).
 
 ---
 
-## Como rodar o grid (Fase 2.5/3)
+## How to run the grid (Phase 2.5/3)
 
-Módulo `src/ai_trade/backtest/grid/` estende a Fase 2 com infraestrutura
-para rodar um grid de configurações de estratégia com gates anti-overfit
-ativos (PBO / DSR / walk-forward). Um novo CLI orquestra fetch + grid
-paralelo (joblib) + walk-forward + gate evaluation + report/diagnóstico:
+The `src/ai_trade/backtest/grid/` module extends Phase 2 with infrastructure
+to run a grid of strategy configurations with anti-overfit gates active
+(PBO / DSR / walk-forward). A new CLI orchestrates fetch + parallel grid
+(joblib) + walk-forward + gate evaluation + report/diagnostic:
 
 **Clenow momentum grid** (SPX point-in-time, 30 configs):
 
@@ -214,215 +215,217 @@ paralelo (joblib) + walk-forward + gate evaluation + report/diagnóstico:
     --n-jobs 4
 ```
 
-Acompanhar execução em tempo real (log unificado — um único `tail -f`
-para qualquer run, presente ou futura, Clenow OU Ehlers):
+Follow execution in real time (unified log — a single `tail -f`
+for any run, present or future, Clenow OR Ehlers):
 
 ```bash
 tail -f logs/grid.log
-cat logs/grid_latest_status.md  # snapshot high-level da última run
+cat logs/grid_latest_status.md  # high-level snapshot of the last run
 ```
 
-**Saídas:**
-- `reports/grid_<YYYYMMDD-HHMM>/summary.md` (se gates passam) OU
-  `diagnostic.md` (se falham) — incluem disclaimer de survivorship
-- `reports/grid_<YYYYMMDD-HHMM>/assets/heatmap_sharpe.png` — Sharpe sobre
-  as 2 primeiras dimensões variadas do grid, agregado por max nos demais
-- `.cache/grid_runs/<run_id>/trial_*/` — checkpoints per-trial (parquet
-  + JSON, humano-inspecionáveis, resume-friendly)
-- `.cache/grid_runs/<run_id>/trials.jsonl` — machine-readable por trial
+**Outputs:**
+- `reports/grid_<YYYYMMDD-HHMM>/summary.md` (if gates pass) OR
+  `diagnostic.md` (if they fail) — both include survivorship disclaimer
+- `reports/grid_<YYYYMMDD-HHMM>/assets/heatmap_sharpe.png` — Sharpe over
+  the first 2 varied grid dimensions, aggregated by max over the rest
+- `.cache/grid_runs/<run_id>/trial_*/` — per-trial checkpoints (parquet
+  + JSON, human-inspectable, resume-friendly)
+- `.cache/grid_runs/<run_id>/trials.jsonl` — machine-readable per-trial
 
-**Execução 1 — Clenow (2026-04-14):** gates falham marginalmente —
+**Run 1 — Clenow (2026-04-14):** gates fail marginally —
 PBO=0.524, DSR 0/30, WF 4/30. Best #15 (lookback=90, top=20%, risk=0.2%)
-Sharpe 0.58 CAGR 8.87%. Ver `specs/backtest_phase2.md` §"Fase 2.5/3 —
-Execução 1".
+Sharpe 0.58 CAGR 8.87%. See `specs/backtest_phase2.md` §"Phase 2.5/3 —
+Run 1".
 
-**Execução 2 — Ehlers Band-Pass Swing (2026-04-14):** **PBO passa**
-(0.468) mas DSR 0/24 reject. Best #6 (hp=48, lp=20, pct=0.80) Sharpe
+**Run 2 — Ehlers Band-Pass Swing (2026-04-14):** **PBO passes**
+(0.468) but DSR 0/24 reject. Best #6 (hp=48, lp=20, pct=0.80) Sharpe
 0.31 CAGR 2.17% DD 14.65%. **Cross-correlation Clenow × Ehlers =
-−0.0108** — estratégias ortogonais (candidato a portfolio regime-aware).
-Ver `specs/backtest_phase2_5_ehlers.md` §"Execução — resultados e fork".
+−0.0108** — orthogonal strategies (candidate for regime-aware
+portfolio). See `specs/backtest_phase2_5_ehlers.md` §"Run — results
+and fork".
 
-Fork aberto em ambas as execuções: paid-data ablation (recommended),
-3ª estratégia, regime-aware portfolio, ou parar e reavaliar.
+Fork open on both runs: paid-data ablation (recommended), 3rd strategy,
+regime-aware portfolio, or stop and reassess.
 
 ---
 
-## Livros
+## Books
 
-**33 livros absorvidos** como Claude Skill (Fase 0 concluída). Importância por
-livro (⭐⭐⭐ crítico, ⭐⭐ importante, ⭐ complementar) e qualidade de absorção
-(🌟 perfeita, ✅ boa, ⚠️ borderline) estão no catálogo completo em
-[`books/README.md`](books/README.md#catálogo-dos-livros-3333-absorvidos).
+**33 books absorbed** as a Claude Skill (Phase 0 done). Per-book importance
+(⭐⭐⭐ critical, ⭐⭐ important, ⭐ complementary) and absorption quality
+(🌟 perfect, ✅ good, ⚠️ borderline) are in the full catalog at
+[`books/README.md`](books/README.md#book-catalog-3333-absorbed).
 
-**Inventário canônico** (slug → título/autor/ano): [`books/MAPPING.md`](books/MAPPING.md).
+**Canonical inventory** (slug → title/author/year): [`books/MAPPING.md`](books/MAPPING.md).
 
-### PDFs brutos não são versionados
+### Raw PDFs are not versioned
 
-Os PDFs-fonte **não estão no repositório** (copyright + tamanho). Se você
-clonou este repo e quer rodar a pipeline de extração
-(`scripts/extract_pdfs.py`) localmente, precisa prover os arquivos
-manualmente em `books/raw/<slug>.pdf` com os slugs listados em
-[`books/MAPPING.md`](books/MAPPING.md). Os summaries markdown já
-versionados em `books/summaries/` cobrem a maior parte do uso
-(knowledge base + citações); a extração bruta só é necessária pra
-re-absorver ou validar. Tree esperado:
+The source PDFs **are not in the repository** (copyright + size). If you
+cloned this repo and want to run the extraction pipeline
+(`scripts/extract_pdfs.py`) locally, you have to provide the files
+manually under `books/raw/<slug>.pdf` using the slugs listed in
+[`books/MAPPING.md`](books/MAPPING.md). The markdown summaries already
+versioned in `books/summaries/` cover most use cases (knowledge base +
+citations); raw extraction is only needed to re-absorb or validate.
+Expected tree:
 
 ```
 books/
-├── raw/              # seus PDFs (gitignored)
-├── extracted/        # saída de extract_pdfs.py (gitignored)
-└── summaries/        # markdown versionado (no repo)
+├── raw/              # your PDFs (gitignored)
+├── extracted/        # output of extract_pdfs.py (gitignored)
+└── summaries/        # versioned markdown (in repo)
 ```
 
-Para re-absorver um livro ou adicionar novo:
+To re-absorb a book or add a new one:
 
 ```
-# dentro do Claude Code
+# inside Claude Code
 /absorb-book <slug>
 ```
 
-Pipeline completo documentado em [`books/README.md#pipeline`](books/README.md#pipeline-como-reproduzir--re-absorver).
+Full pipeline documented in [`books/README.md#pipeline`](books/README.md#pipeline-como-reproduzir--re-absorver).
 
 ---
 
-## Conceitos-chave de anti-overfit (CPCV / PBO / DSR)
+## Anti-overfit key concepts (CPCV / PBO / DSR)
 
-Três testes do López de Prado (`advances_fin_ml`) que funcionam como **gates
-obrigatórios** de qualquer backtest neste projeto. Aparecem nas inviolable
-rules #3-5 de `knowledge/SKILL.md` e serão portados para
-`src/ai_trade/backtest/validation/` nas Fases 2/3. Juntos, fecham o cerco
-contra "estratégia com Sharpe alto que morre em live":
+Three tests from López de Prado (`advances_fin_ml`) that act as **mandatory
+gates** for every backtest in this project. They appear in inviolable
+rules #3-5 of `knowledge/SKILL.md` and will be ported into
+`src/ai_trade/backtest/validation/` in Phases 2/3. Together, they close
+the loop against "high-Sharpe strategy that dies in live":
 
-- **CPCV** → você tem uma *distribuição* honesta de performance, não um ponto.
-- **PBO** → você sabe se o *processo de seleção* está viciado.
-- **DSR** → você sabe se o Sharpe observado sobrevive ao teste de múltiplas hipóteses.
+- **CPCV** → you get an honest *distribution* of performance, not a point.
+- **PBO** → you know whether the *selection process* is biased.
+- **DSR** → you know whether the observed Sharpe survives multiple-hypothesis testing.
 
-**Nenhum está em lib aberta mantida** (mlfinlab tinha, virou comercial).
-Implementação será custom porém direta — referência cruzada em
-`knowledge/validation/cpcv.md`, `knowledge/validation/deflated_sharpe.md` e
-`knowledge/validation/permutation.md`.
+**None are available in a maintained open library** (mlfinlab had them,
+went commercial). Implementation will be custom but direct — cross-reference
+in `knowledge/validation/cpcv.md`, `knowledge/validation/deflated_sharpe.md`
+and `knowledge/validation/permutation.md`.
 
 ### CPCV — Combinatorial Purged Cross-Validation
 
-**O quê:** validação cruzada adaptada para séries temporais financeiras.
+**What:** cross-validation adapted for financial time series.
 
-**Por que importa:** k-fold padrão **vaza informação** em séries temporais —
-features de treino e teste se sobrepõem no tempo. Sharpe parece bom; em
-produção colapsa.
+**Why it matters:** standard k-fold **leaks information** in time series —
+training and test features overlap in time. Sharpe looks good; in
+production it collapses.
 
-**Três componentes:**
-1. **Purged**: remove amostras de treino cujos rótulos se sobrepõem ao período de teste.
-2. **Embargo**: insere um *buffer* após cada bloco de teste (serial correlation não respeita fronteiras de fold).
-3. **Combinatorial**: em vez de K folds → K test sets, gera C(K, N) combinações. K=10 com N=2 = 45 caminhos. Você passa a ter uma **distribuição** de Sharpes, não um número isolado.
+**Three components:**
+1. **Purged**: removes training samples whose labels overlap the test period.
+2. **Embargo**: inserts a *buffer* after each test block (serial correlation does not respect fold boundaries).
+3. **Combinatorial**: instead of K folds → K test sets, generates C(K, N) combinations. K=10 with N=2 = 45 paths. You now get a **distribution** of Sharpes, not an isolated number.
 
-**Saída útil:** *"em 45 simulações, Sharpe foi 1.2 ± 0.4 — pior caso 0.3"*.
-Muito mais honesto que *"Sharpe = 1.5 no backtest"*.
+**Useful output:** *"over 45 simulations, Sharpe was 1.2 ± 0.4 — worst case 0.3"*.
+Much more honest than *"Sharpe = 1.5 in backtest"*.
 
 Ref: `advances_fin_ml.md`, ch.7 `[p.104-117]`.
 
 ### PBO — Probability of Backtest Overfitting
 
-**O quê:** probabilidade de que o **processo de seleção da estratégia**
-(escolher a que teve melhor in-sample) produza uma que perde out-of-sample.
+**What:** probability that the **strategy selection process**
+(pick the best in-sample) produces one that underperforms out-of-sample.
 
-**Como calcula:** embaralha várias partições IS/OOS. Para cada partição, pega
-a estratégia com melhor Sharpe IS e vê se ela ficou acima ou abaixo da
-mediana OOS. Se **frequentemente** fica abaixo da mediana → seu processo de
-backtest está viciado.
+**How it's computed:** shuffles multiple IS/OOS partitions. For each
+partition, takes the strategy with the best IS Sharpe and checks whether
+it ended above or below the OOS median. If it **frequently** ends below
+the median → your backtest process is biased.
 
-**Gate prático (inviolable rule #3):** PBO > 0.5 ⇒ **descartar**. Sua
-"estratégia vencedora" tem mais chance de ser overfit que válida.
+**Practical gate (inviolable rule #3):** PBO > 0.5 ⇒ **discard**. Your
+"winning strategy" is more likely to be overfit than valid.
 
-**Intuição:** se você testa 100 combinações de parâmetros, alguma vai ter
-Sharpe 2 **por puro azar**. PBO quantifica esse risco.
+**Intuition:** if you test 100 parameter combinations, some will hit
+Sharpe 2 **by pure luck**. PBO quantifies that risk.
 
-Ref: `advances_fin_ml.md`, ch.11 `[p.208-211]`. Implementação de referência:
-`books/code/masters-testing-tuning/CSCV_MKT/CSCV.CPP` (C++ do Masters).
+Ref: `advances_fin_ml.md`, ch.11 `[p.208-211]`. Reference implementation:
+`books/code/masters-testing-tuning/CSCV_MKT/CSCV.CPP` (Masters' C++).
 
 ### DSR — Deflated Sharpe Ratio
 
-**O quê:** Sharpe "desinflado" pelo número de estratégias testadas.
+**What:** Sharpe "deflated" by the number of strategies tested.
 
-**Por que importa:** se você tentou **1 estratégia** e obteve Sharpe 2, é
-impressionante. Se tentou **1000 estratégias** e a melhor teve Sharpe 2, é
-esperado **por puro acaso** — a cauda da distribuição de Sharpes em N
-tentativas concentra valores altos.
+**Why it matters:** if you tried **1 strategy** and got Sharpe 2, it's
+impressive. If you tried **1000 strategies** and the best got Sharpe 2,
+that's expected **by pure chance** — the tail of the Sharpe distribution
+over N trials concentrates high values.
 
-**Fórmula (alto nível):** deflaciona o Sharpe observado por:
-- N (número de tentativas)
-- skewness e kurtosis dos retornos
-- tamanho da amostra
-- variância cross-sectional dos Sharpes testados
+**Formula (high-level):** deflates the observed Sharpe by:
+- N (number of trials)
+- skewness and kurtosis of returns
+- sample size
+- cross-sectional variance of tested Sharpes
 
-Gera um p-value: *"dado que testei N estratégias, qual a probabilidade desse
-SR ser > 0 de verdade?"*
+Produces a p-value: *"given I tested N strategies, what is the probability
+that this SR is genuinely > 0?"*
 
-**Gate prático (inviolable rule #4):** reporta DSR sempre que N > 1. Nunca
-cite Sharpe cru num PR sem o DSR ao lado.
+**Practical gate (inviolable rule #4):** report DSR whenever N > 1. Never
+cite raw Sharpe in a PR without the DSR alongside.
 
 Ref: `advances_fin_ml.md`, ch.14 `[p.261-270]`.
 
 ---
 
-## Universo Clenow e survivorship bias
+## Clenow universe and survivorship bias
 
-Conceito complementar aos 3 acima — ataca a mesma doença (backtest mentiroso)
-por outro ângulo: os **dados**, não os testes estatísticos.
+Concept complementary to the 3 above — attacks the same disease (lying
+backtest) from another angle: the **data**, not the statistical tests.
 
-### O que é o "universo Clenow"
+### What the "Clenow universe" is
 
-A estratégia momentum de Andreas Clenow (`stocks_on_the_move`) opera sobre
-**SPX 500**, reranqueando semanalmente. Mas "SPX 500" **depende da data
-histórica sendo simulada** — não é a lista atual.
+Andreas Clenow's momentum strategy (`stocks_on_the_move`) operates over
+**SPX 500**, re-ranking weekly. But "SPX 500" **depends on the historical
+date being simulated** — it is not the current list.
 
-Entre 2005 e 2026, dezenas de empresas entraram no índice (NVDA em 2001, TSLA
-em 2020) e saíram (Lehman Brothers, Enron pré-colapso, Washington Mutual,
-General Motors 2009, Sears, etc.). Backtest que usa a lista **atual** do SPX
-500 está testando numa realidade que nunca existiu.
+Between 2005 and 2026, dozens of companies entered the index (NVDA in
+2001, TSLA in 2020) and left (Lehman Brothers, Enron pre-collapse,
+Washington Mutual, General Motors 2009, Sears, etc.). A backtest using
+the **current** SPX 500 list is testing a reality that never existed.
 
 ### Survivorship bias
 
-Erro sistemático de backtest causado por usar **apenas os sobreviventes
-atuais** no lugar dos constituintes históricos.
+Systematic backtest error caused by using **only current survivors**
+instead of historical constituents.
 
-Testar momentum 2000-2020 com a lista SPX atual é trapacear: você retirou
-todas as empresas que quebraram, foram rebaixadas ou fundiram. O backtest
-mostra Sharpe alto porque a amostra já está **filtrada pelos vencedores**.
-Equivale a entrevistar bilionários sobre "as regras do sucesso" — o sampling
-é viciado por construção.
+Testing momentum 2000-2020 with the current SPX list is cheating: you
+removed every company that went bankrupt, was demoted, or merged. The
+backtest shows a high Sharpe because the sample is already **filtered by
+winners**. Equivalent to interviewing billionaires about "the rules of
+success" — the sampling is biased by construction.
 
-Clenow é explícito sobre o tamanho do efeito `[stocks_on_the_move, p.238-239]`:
+Clenow is explicit about the size of the effect `[stocks_on_the_move, p.238-239]`:
 
 > *"Survivorship bias kills simulations. Using current S&P 500 constituents
 > for a 10-year backtest creates fake outperformance because current members
 > are selected BECAUSE they rose. You MUST use point-in-time membership and
 > include delisted stocks."*
 
-### Solução correta
+### Correct solution
 
-**Point-in-time constituents + delisted stocks.** Fontes:
-- **Norgate Data** (~US$85/mo) — fonte recomendada pelo próprio Clenow
+**Point-in-time constituents + delisted stocks.** Sources:
+- **Norgate Data** (~US$85/mo) — Clenow's own recommended source
 - **EOD Historical Data** (~US$20/mo) — survivorship-free daily
-- **Tiingo** (plano pago ~US$10/mo) — acessível
-- **CRSP** — padrão-ouro acadêmico, mas licença cara
-- **Wikipedia scrape** — brittle mas grátis; é onde vamos começar
+- **Tiingo** (paid plan ~US$10/mo) — affordable
+- **CRSP** — academic gold standard, but expensive license
+- **Wikipedia scrape** — brittle but free; this is where we start
 
-### Como tratamos nesta fase
+### How we handle it in this phase
 
-Fase inicial do backtest usa `yfinance` + Wikipedia scrape (grátis, bias
-residual). **Cada relatório de backtest documenta explicitamente o caveat** —
-resultados são otimistas até migrar para fonte paga. Quando a primeira
-estratégia passar pelos gates CPCV/PBO/DSR, aí o investimento em dados
-survivorship-free se justifica.
+The initial backtest phase uses `yfinance` + Wikipedia scrape (free,
+residual bias). **Every backtest report explicitly documents the caveat** —
+results are optimistic until we migrate to a paid source. When the first
+strategy passes the CPCV/PBO/DSR gates, the investment in survivorship-free
+data becomes justified.
 
-Ver [`ROADMAP.md`](ROADMAP.md) seção "Backtest em duas etapas" para como o
-universo (e os dados) evoluem entre pesquisa e calibração Pepperstone.
+See [`ROADMAP.md`](ROADMAP.md) section "Backtest em duas etapas" for how
+the universe (and the data) evolve between research and Pepperstone
+calibration.
 
 ---
 
-## Referências
+## References
 
-- **Roadmap / estado das fases:** [`ROADMAP.md`](ROADMAP.md)
-- **Catálogo dos livros + pipeline de absorção:** [`books/README.md`](books/README.md)
-- **Claude Skill gerada:** [`knowledge/SKILL.md`](knowledge/SKILL.md)
-- **Plano ativo (Fase 0):** `/home/victor/.claude/plans/synthetic-snuggling-wren.md`
+- **Roadmap / phase status:** [`ROADMAP.md`](ROADMAP.md)
+- **Book catalog + absorption pipeline:** [`books/README.md`](books/README.md)
+- **Generated Claude Skill:** [`knowledge/SKILL.md`](knowledge/SKILL.md)
+- **Active plan (Phase 0):** `/home/victor/.claude/plans/synthetic-snuggling-wren.md`

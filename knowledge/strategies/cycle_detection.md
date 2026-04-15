@@ -1,6 +1,6 @@
 # Cycle Detection (DSP-based)
 
-Indicadores de Ehlers baseados em processamento de sinais para detectar ciclos dominantes.
+Ehlers indicators based on signal processing to detect dominant cycles.
 
 ## Sources
 
@@ -11,26 +11,26 @@ Indicadores de Ehlers baseados em processamento de sinais para detectar ciclos d
 
 ## From `books/rocket_science.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.114]**: Assuma Trend Mode por padrão; o Cycle Mode exige critérios específicos (two conditions only).
-- **REGRA [p.114]**: Cycle Mode está ativo durante half-dominant-cycle após o cruzamento das linhas Sinewave/LeadSine.
-- **REGRA [p.114]**: Cycle Mode se phase rate of change estiver entre 0.67× e 1.5× do rate dominante (360/Period).
-- **REGRA [p.114]**: Override → Trend Mode quando |SmoothPrice − Trendline|/Trendline ≥ 1.5% (price "widely separated").
-- **REGRA [p.122]**: Em Trend Mode, buy quando SmoothPrice cruza acima de Trendline; sell quando cruza abaixo.
-- **REGRA [p.123]**: Em Cycle Mode, buy quando LeadSine cruza acima de Sine; sell quando cruza abaixo.
-- **REGRA [p.108]**: Um trend está "em força" se o SmoothPrice não cruzou a Instantaneous Trendline no último half-dominant-cycle.
-- **REGRA [p.108]**: Trend antecipado declarado se SmoothPrice não cruzou no último quarter-cycle e não aparenta retornar.
-- **REGRA [p.108]**: Trend terminou quando SmoothPrice cruza novamente a Instantaneous Trendline.
-- **REGRA [p.93]**: Evite Cycle Mode trading quando SNR < 6 dB — abaixo disso o sinal é menor que 2× noise e profit vira crapshoot.
-- **REGRA [p.82-83]**: Clampar Period em [6, 50] bars; também limitar rate de mudança a [0.67×, 1.5×] bar-a-bar para estabilizar medição.
-- **REGRA [p.125]**: Em T-Bonds (1984-2000), CycPart=1.15 e money-management stop de $1,100 otimizam SineTrend (profit $113k, 44.5% win, DD $8,137).
-- **REGRA [p.128]**: Em Swiss Franc (1975-2000), CycPart=1.10 e stop de $2,200 — ratio avg_win/avg_loss = 1.56:1.
-- **NUNCA [p.3-4]**: Tradar cycle periods < 2 bars (Nyquist) ou na prática < 5-8 bars — aliasing inviabiliza.
-- **NUNCA [p.4]**: Operar sobre dados não-smoothed — alta-frequência aliasing contamina toda análise downstream.
-- **NUNCA [Preface p.ix]**: Usar FFT para medir spectra de mercado — ch.19 é dedicado a explicar que FFT é inadequado para trading.
+- **RULE [p.114]**: Assume Trend Mode by default; Cycle Mode requires specific criteria (two conditions only).
+- **RULE [p.114]**: Cycle Mode is active for a half-dominant-cycle after the Sinewave/LeadSine lines cross.
+- **RULE [p.114]**: Cycle Mode if the phase rate of change is between 0.67× and 1.5× the dominant rate (360/Period).
+- **RULE [p.114]**: Override → Trend Mode when |SmoothPrice − Trendline|/Trendline ≥ 1.5% (price "widely separated").
+- **RULE [p.122]**: In Trend Mode, buy when SmoothPrice crosses above Trendline; sell when it crosses below.
+- **RULE [p.123]**: In Cycle Mode, buy when LeadSine crosses above Sine; sell when it crosses below.
+- **RULE [p.108]**: A trend is "in force" if SmoothPrice has not crossed the Instantaneous Trendline in the last half-dominant-cycle.
+- **RULE [p.108]**: Trend is declared early if SmoothPrice has not crossed in the last quarter-cycle and does not appear to return.
+- **RULE [p.108]**: Trend has ended when SmoothPrice crosses the Instantaneous Trendline again.
+- **RULE [p.93]**: Avoid Cycle Mode trading when SNR < 6 dB — below this the signal is less than 2× noise and profit becomes a crapshoot.
+- **RULE [p.82-83]**: Clamp Period to [6, 50] bars; also limit the bar-to-bar rate of change to [0.67×, 1.5×] to stabilize the measurement.
+- **RULE [p.125]**: On T-Bonds (1984-2000), CycPart=1.15 and a $1,100 money-management stop optimize SineTrend (profit $113k, 44.5% win, DD $8,137).
+- **RULE [p.128]**: On Swiss Franc (1975-2000), CycPart=1.10 and a $2,200 stop — avg_win/avg_loss ratio = 1.56:1.
+- **NEVER [p.3-4]**: Trade cycle periods < 2 bars (Nyquist) or in practice < 5-8 bars — aliasing makes it unworkable.
+- **NEVER [p.4]**: Operate on non-smoothed data — high-frequency aliasing contaminates all downstream analysis.
+- **NEVER [Preface p.ix]**: Use FFT to measure market spectra — ch.19 is dedicated to explaining why FFT is unsuitable for trading.
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **SMA lag** [p.18-19, ch.3]
 
@@ -40,7 +40,7 @@ $$\text{Lag}_{SMA} = \frac{n - 1}{2}$$
 
 $$\text{SMA}(P) = \frac{\sin(\pi W / P)}{\pi W / P}$$
 
-- $W$ = window width; $P$ = cycle period; nulls quando $W/P$ é inteiro
+- $W$ = window width; $P$ = cycle period; nulls when $W/P$ is integer
 
 **WMA lag (center of gravity of triangle)** [p.27]
 
@@ -48,7 +48,7 @@ $$\text{Lag}_{WMA} = \frac{n - 1}{3}$$
 
 **EMA alpha → lag** [p.29]
 
-$$\alpha = \frac{1}{L + 1}, \quad \alpha = \frac{2}{n + 1} \text{ (equivalente a n-bar SMA)}$$
+$$\alpha = \frac{1}{L + 1}, \quad \alpha = \frac{2}{n + 1} \text{ (equivalent to n-bar SMA)}$$
 
 **EMA cutoff period** [p.30, proved in ch.13]
 
@@ -59,6 +59,7 @@ $$P = \frac{-2\pi}{\ln(1 - \alpha)} \approx \frac{4\pi}{\alpha(2 + \alpha)}$$
 $$\frac{d}{dt}\sin(\omega t) = \omega \cos(\omega t)$$
 
 **3-bar detrend filter (odd-order, rejects 2-bar cycle)** [p.37]
+
 
 $$MO = 0.5 \cdot P - 0.5 \cdot P[2]$$
 
@@ -96,7 +97,7 @@ $$\phi_{lag} = \frac{360 \cdot 7}{\text{Period}} - 90^{\circ}$$
 
 $$\text{SNR} = 10 \log_{10}\left(\frac{I_1^2 + Q_1^2}{\text{Range}^2}\right) + 6 \text{ dB}$$
 
-— +6 dB bias compensa definição de "0 dB SNR = signal amp = half the daily range".
+— +6 dB bias compensates for the definition of "0 dB SNR = signal amp = half the daily range".
 
 **Enhanced SNR amplitude correction terms** (derived from chirp 10-40 bar) [p.88-89]
 
@@ -104,21 +105,21 @@ $$Q_3 = 0.5(\text{Smooth} - \text{Smooth}[2]) \cdot (0.1759 \cdot \text{SmoothPe
 
 $$I_3 = \frac{\pi}{2} \cdot \frac{1}{N/2}\sum_{k=0}^{N/2-1} Q_3[k]$$
 
-(o 1.57 ≈ π/2 compensa amplitude do half-cycle moving average)
+(the 1.57 ≈ π/2 compensates the half-cycle moving average amplitude)
 
 **Ehlers filter (general form)** [p.188]
 
 $$y = \frac{\sum_{i=1}^{n} c_i \cdot x_i}{\sum_{i=1}^{n} c_i}$$
 
-onde $c_i$ é uma estatística (momentum absoluto, distância², SNR, volume, etc.) ordenada na janela.
+where $c_i$ is a statistic (absolute momentum, squared distance, SNR, volume, etc.) ordered over the window.
 
 **Distance-coefficient Ehlers filter** [p.193]
 
 $$c_i = \sum_{k=1}^{n-1} (P_i - P_{i+k})^2$$
 
-(coeficiente = "distância" quadrática ao longo da janela → resposta não-linear que detecta edges)
+(coefficient = squared "distance" across the window → nonlinear edge-detecting response)
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Hilbert Transform + Homodyne Discriminator (cycle period)** [ch.6, p.59; ch.8 p.82-83, EasyLanguage]
 
@@ -242,54 +243,54 @@ For count = 0 to Length - 1:
 Filt = Num / SumCoef
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
-- [p.17] Moving averages induzem lag que "quase sempre é característica ruim"; smoothing é sempre trade-off contra lag.
-- [p.20] Janela muito larga (SMA): "sluggish" — só útil para longest trends. Janela muito estreita: whipsaws por inadequate smoothing.
-- [p.28-29] EMA programming error comum: atribuir α=0.2 e (1-α)=0.9 (não somam 1) → recursão diverge / travamento. Sempre use α como variável global, escreva EMA em função de α.
-- [p.33] Momentum NUNCA antecipa o evento em uma price action real — a antecipação de 90° é ilusão que SÓ existe se o preço for sine wave puro (Cycle Mode).
-- [p.33] Momentum é sempre mais noisy/descontínuo que a função original (successive derivatives aumentam disjointedness).
-- [p.35] A antecipação via momentum depende de PRIMEIRO identificar o market mode — em Trend Mode atribuir capacidade preditiva ao momentum é erro.
-- [p.37-39] "More of a good thing" não funciona: aumentar comprimento do high-pass filter além de ~5 bars adiciona lag que destrói qualquer phase lead.
-- [p.58] Hilbert Transformer ideal exige coeficientes de −∞ a +∞; na prática precisa ser severamente truncado. Lag de um Hilbert não-truncado a 40-bar cycle = 21 bars, inviável.
-- [p.82] Primary SNR tem lag de 10 bars; Alternate SNR lag adicional de 7.5 bars (total 17.5) — "unthinkable for practical trading". Use Enhanced SNR (4 bars lag).
-- [Preface p.ix] FFT é tool inadequado para trading porque ignora mathematical constraints (short data window, nonstationarity).
-- [p.95] Fase calculada diretamente do Hilbert Transform é inutilizável: lag de 7 bars é "substantial portion of most tradable cycles" e medição é ruidosa.
-- [p.125] Atenção: a mudança de CycPart + money-management stop é apresentada como "not curve fitting" porque testado em 16 anos — mas é claramente uma otimização pós-hoc de 2 parâmetros. Trade-to-parameter ratio citado como justificativa.
-- [p.124] O Trend-Mode-only performance (sem Cycle) é "simply awful" (avg trade negativo) — o sistema depende fortemente das Cycle trades → risco se regime muda.
-- [p.185] Linear filters (SMA/EMA) são ÓTIMOS apenas para sinais stationary slowly-varying + high-freq noise — market data não é nenhum dos dois; requer nonlinear.
-- [p.194-195] Aumentar nonlinearidade dos coeficientes (cube, Gaussian) faz o Ehlers filter degenerar para algo indistinguível de median filter (perde gray-area resolution).
-- [p.117] Trying to automate mode decision "often leads to great deal of chatter and rapid back-and-forth switching" — é por isso que Trend é default.
+- [p.17] Moving averages induce lag that is "almost always a bad characteristic"; smoothing is always a trade-off against lag.
+- [p.20] Too-wide SMA window: "sluggish" — useful only for the longest trends. Too-narrow window: whipsaws from inadequate smoothing.
+- [p.28-29] Common EMA programming error: assigning α=0.2 and (1-α)=0.9 (does not sum to 1) → recursion diverges / blows up. Always use α as a global variable and write the EMA as a function of α.
+- [p.33] Momentum NEVER leads the event on real price action — the 90° anticipation is an illusion that ONLY exists if price is a pure sine wave (Cycle Mode).
+- [p.33] Momentum is always noisier/more discontinuous than the original function (successive derivatives increase disjointedness).
+- [p.35] Momentum-based anticipation depends on FIRST identifying the market mode — in Trend Mode, assigning predictive capability to momentum is an error.
+- [p.37-39] "More of a good thing" does not work: increasing the high-pass filter length beyond ~5 bars adds lag that destroys any phase lead.
+- [p.58] An ideal Hilbert Transformer requires coefficients from −∞ to +∞; in practice it must be severely truncated. Non-truncated Hilbert lag at a 40-bar cycle = 21 bars, unworkable.
+- [p.82] Primary SNR has 10-bar lag; Alternate SNR adds 7.5 bars of lag (total 17.5) — "unthinkable for practical trading". Use Enhanced SNR (4-bar lag).
+- [Preface p.ix] FFT is an unsuitable tool for trading because it ignores mathematical constraints (short data window, non-stationarity).
+- [p.95] Phase computed directly from the Hilbert Transform is unusable: 7-bar lag is a "substantial portion of most tradable cycles" and the measurement is noisy.
+- [p.125] Caveat: the change to CycPart + money-management stop is presented as "not curve fitting" because tested over 16 years — but it is clearly a post-hoc optimization of 2 parameters. The trade-to-parameter ratio is cited as justification.
+- [p.124] Trend-Mode-only performance (no Cycle) is "simply awful" (negative avg trade) — the system relies heavily on Cycle trades → risk if regime changes.
+- [p.185] Linear filters (SMA/EMA) are OPTIMAL only for slowly-varying stationary signals + high-freq noise — market data is neither; requires nonlinear.
+- [p.194-195] Increasing coefficient nonlinearity (cube, Gaussian) degenerates the Ehlers filter into something indistinguishable from a median filter (loses gray-area resolution).
+- [p.117] Trying to automate mode decision "often leads to great deal of chatter and rapid back-and-forth switching" — which is why Trend is the default.
 
 ---
 
 ## From `books/cybernetic_analysis.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.4-5]** (Fisher Transform usage): após normalizar preços ao range [-1,+1] numa janela de 10 bars e aplicar Fisher transform, cruzamentos entre Fish e Fish[1] identificam turning points cíclicos com lag essencialmente zero.
-- **REGRA [p.23-24]** (ITrend trend strategy): Long quando Trigger cruza acima de ITrend; Short quando cruza abaixo. Entry **sempre via limit order** a Close ± 35% do range do bar (RngFrac=0.35).
-- **REGRA [p.25]** (ITrend reversal protection): Se a posição estiver perdendo mais de 1.5% (RevPct=1.015), reverter para o lado oposto no open do próximo bar — "major losses are avoided by recognizing when a trade is on the wrong side."
-- **REGRA [p.26]** ($2,500 money-management stop): para currency futures, stop adicional de $2,500 independente da regra técnica.
-- **NUNCA [p.24]**: usar stop orders ou market orders como entrada primária — limit orders capturam slippage como profit em vez de como custo.
-- **REGRA [p.35-36]** (Cyber Cycle strategy, contrarian): como o lag total (1.5 smooth + ~0.5 cycle + 1 trigger + 1 execução = 4 bars) faz o signal ser "exatamente errado" em um ciclo de 8 bars, **usar o sinal invertido** com um EMA de lag adicional. Cross-under ⇒ Buy; cross-over ⇒ Sell Short.
-- **REGRA [p.38]** (Cyber Cycle escape): se após 8 bars na trade ainda tiver open loss, sair imediatamente (reverte).
-- **REGRA [p.57]** (RVI): indicador é cycle-mode apenas; comprar quando RVI cruza acima do Trigger (RVI[1]), vender quando cruza abaixo.
-- **REGRA [p.152-153]** (Sinewave): cruzamento LeadSine-acima-de-Sine = entry ~1/16 ciclo antes do topo/fundo; **NÃO operar** quando as linhas não têm forma sinusoidal clara (sinaliza Trend Mode — filtro natural de whipsaw).
-- **REGRA [p.221-223]** (Laguerre RSI): comprar quando RSI cruza acima de 20%, vender quando cruza abaixo de 80%.
-- **REGRA [p.123-124]** (Adaptive indicators): sempre que possível, substituir length fixo pelo Dominant Cycle medido, via $\alpha_1 = 2/(\text{Period}+1)$.
-- **NUNCA [p.1-2]**: atribuir significado estatístico a bandas ±1σ / ±2σ sobre price data assumindo Normal PDF — a suposição é comprovadamente falsa em Treasury Bond futures sobre 15 anos (1988-2003).
-- **NUNCA [p.189, p.210]**: usar filtros de ordem superior a 2 (sem justificativa forte) para Gaussian, ou superior a 3 para Butterworth — o ringing e o lag crescem mais do que o benefício de atenuação.
+- **RULE [p.4-5]** (Fisher Transform usage): after normalizing prices to the range [-1,+1] over a 10-bar window and applying the Fisher transform, crossovers between Fish and Fish[1] identify cyclic turning points with essentially zero lag.
+- **RULE [p.23-24]** (ITrend trend strategy): Long when Trigger crosses above ITrend; Short when it crosses below. Entry **always via limit order** at Close ± 35% of the bar's range (RngFrac=0.35).
+- **RULE [p.25]** (ITrend reversal protection): If the position is losing more than 1.5% (RevPct=1.015), reverse to the opposite side at the next bar's open — "major losses are avoided by recognizing when a trade is on the wrong side."
+- **RULE [p.26]** ($2,500 money-management stop): for currency futures, an additional $2,500 stop independent of the technical rule.
+- **NEVER [p.24]**: use stop orders or market orders as primary entry — limit orders capture slippage as profit rather than as cost.
+- **RULE [p.35-36]** (Cyber Cycle strategy, contrarian): because total lag (1.5 smooth + ~0.5 cycle + 1 trigger + 1 execution = 4 bars) makes the signal "exactly wrong" on an 8-bar cycle, **use the inverted signal** with an additional-lag EMA. Cross-under ⇒ Buy; cross-over ⇒ Sell Short.
+- **RULE [p.38]** (Cyber Cycle escape): if the trade still has an open loss after 8 bars, exit immediately (reverse).
+- **RULE [p.57]** (RVI): indicator is cycle-mode only; buy when RVI crosses above Trigger (RVI[1]), sell when it crosses below.
+- **RULE [p.152-153]** (Sinewave): LeadSine-crosses-above-Sine = entry ~1/16 cycle before top/bottom; **do NOT trade** when the lines do not have a clear sinusoidal shape (signals Trend Mode — natural whipsaw filter).
+- **RULE [p.221-223]** (Laguerre RSI): buy when RSI crosses above 20%, sell when it crosses below 80%.
+- **RULE [p.123-124]** (Adaptive indicators): whenever possible, replace fixed length with the measured Dominant Cycle, via $\alpha_1 = 2/(\text{Period}+1)$.
+- **NEVER [p.1-2]**: attribute statistical meaning to ±1σ / ±2σ bands over price data assuming a Normal PDF — the assumption is demonstrably false on Treasury Bond futures over 15 years (1988-2003).
+- **NEVER [p.189, p.210]**: use filters of order higher than 2 (without strong justification) for Gaussian, or higher than 3 for Butterworth — ringing and lag grow more than the attenuation benefit.
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Fisher Transform** [p.3, Eq. 1.2]
 
 $$y = 0.5 \cdot \ln\!\left(\frac{1+x}{1-x}\right)$$
 
-- $x$ = input restrito a $-1 < x < 1$ (senão equação "explode")
-- $y$ = output com PDF aproximadamente Gaussiana
-- Na implementação, autor usa $y = 0.25 \cdot \ln((1+v)/(1-v)) + 0.5 \cdot y[1]$ (smoothing EMA α=0.5) [p.7]
+- $x$ = input constrained to $-1 < x < 1$ (otherwise the equation "blows up")
+- $y$ = output with approximately Gaussian PDF
+- In the implementation the author uses $y = 0.25 \cdot \ln((1+v)/(1-v)) + 0.5 \cdot y[1]$ (smoothing EMA α=0.5) [p.7]
 
 **EMA transfer response (Z-transform)** [p.12, Eq. 2.2]
 
@@ -308,7 +309,7 @@ $$HPF_t = (1-\tfrac{\alpha}{2})^2 (P_t - 2P_{t-1} + P_{t-2}) + 2(1-\alpha)HPF_{t
 $$IT_t = (\alpha - \tfrac{\alpha^2}{4})P_t + \tfrac{\alpha^2}{2}P_{t-1} - (\alpha - \tfrac{3\alpha^2}{4})P_{t-2} + 2(1-\alpha)IT_{t-1} - (1-\alpha)^2 IT_{t-2}$$
 
 - Default α=0.07 (≈ 28-bar equivalent) [p.24]
-- Inicialização: for first 7 bars, $IT = (P + 2P[1] + P[2])/4$ [p.24]
+- Initialization: for the first 7 bars, $IT = (P + 2P[1] + P[2])/4$ [p.24]
 
 **Trigger (2-bar leading momentum of ITrend)** [p.24]
 
@@ -318,7 +319,7 @@ $$\text{Trigger}_t = 2 IT_t - IT_{t-2}$$
 
 $$\text{Smooth}_t = (P_t + 2P_{t-1} + 2P_{t-2} + P_{t-3}) / 6$$
 
-- Lag constante de 1.5 barras em todas as frequências.
+- Constant lag of 1.5 bars at all frequencies.
 
 **Cyber Cycle (applied to Smooth)** [p.34]
 
@@ -330,13 +331,13 @@ $$Q_t = (0.0962\, C_t + 0.5769\, C_{t-2} - 0.5769\, C_{t-4} - 0.0962\, C_{t-6}) 
 
 $$I_t = C_{t-3}$$
 
-- Fator (0.5 + 0.08·InstPeriod) é compensação de amplitude dependente do período medido [p.110].
+- The factor (0.5 + 0.08·InstPeriod) is an amplitude compensation dependent on the measured period [p.110].
 
 **DeltaPhase (via arctangent subtraction identity)** [p.117, Eq. 9.3]
 
 $$\Delta\Phi_t = \frac{I_t/Q_t - I_{t-1}/Q_{t-1}}{1 + I_t I_{t-1}/(Q_t Q_{t-1})}$$
 
-- Limites: $0.1 \le \Delta\Phi \le 1.1$ radians (evita períodos <6 bars e >63 bars) [p.117]
+- Bounds: $0.1 \le \Delta\Phi \le 1.1$ radians (avoids periods <6 bars and >63 bars) [p.117]
 
 **Dominant Cycle period** [p.117-118]
 
@@ -350,7 +351,7 @@ $$\text{Period}_t = 0.15 \cdot \text{InstPeriod}_t + 0.85 \cdot \text{Period}_{t
 
 $$CG_t = -\frac{\sum_{i=0}^{N-1} (i+1) \cdot P_{t-i}}{\sum_{i=0}^{N-1} P_{t-i}} + \frac{N+1}{2}$$
 
-- Length ótima = metade do Dominant Cycle [p.53]
+- Optimal length = half the Dominant Cycle [p.53]
 
 **Relative Vigor Index** [p.55, Eq. 6.1]
 
@@ -378,13 +379,13 @@ $$\text{Butter}_t = \frac{(1-b+c)(1-c)}{8}(P_t + 3P_{t-1} + 3P_{t-3} + P_{t-4}) 
 
 $$\lambda = \exp(0.16/\alpha)$$
 
-- Ex: α=0.33 → λ=1.624 (resposta quase plana até 0.05 cycles/day) [p.188]
+- E.g., α=0.33 → λ=1.624 (nearly flat response up to 0.05 cycles/day) [p.188]
 
 **Iterative SMA** [p.242, Eq. 17.5]
 
 $$SMA_t = \frac{P_t - P_{t-N} + SMA_{t-1}}{N+1}$$
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Fisher Transform Indicator** [p.7, Figure 1.7, EasyLanguage]
 
@@ -489,48 +490,48 @@ plot equity (line chart)
 # Press F9 to re-randomize; repeat until distribution of outcomes is visualised
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
-- [p.1-2] **Gaussian PDF assumption**: CCI, Bollinger Bands e qualquer indicador com "sigma boundary" são baseados em premissa falsa. PDF real de preços parece mais com sinewave do que bell curve.
-- [p.188] **Regularized filter com λ arbitrário**: λ=10 com α=0.33 amplifica em +6 dB ciclos de 33 bars (faz exatamente o oposto do smoothing desejado). Usar sempre $\lambda = e^{0.16/\alpha}$.
-- [p.15, p.19] **Higher-order Gaussian filters têm transient "bell-ringing"**: "the ringing is more a function of the bell itself rather than a filtered response of a driving force" — evitar ordem > 2.
-- [p.36] **Trading cycles diretamente gera signals sistematicamente atrasados**: lag cumulativo de smooth + cycle + trigger + execução = ~4 bars, o que para um ciclo de 8 bars inverte totalmente o sinal.
-- [p.51, p.53] **CG length errada destrói o indicador**: se window = full dominant cycle, a CG fica estática no meio (metade dos dados puxa p/ direita, metade p/ esquerda). Sempre usar ~ ½ do Dominant Cycle.
-- [p.152] **Sinewave em Trend Mode**: quando há tendência, a fase não avança e as linhas não cruzam — **isso é feature, não bug**. Forçar signals de sinewave em trend gera whipsaws fabricados.
-- [p.227-229] **Single equity curve é enganoso**: a mesma combinação {% winners=45, PF=1.5} produz curvas dramaticamente diferentes a cada Monte Carlo run. Vendor que mostra uma curva sem Profit Factor e % winners está escondendo informação.
-- [p.232-233] **Leading indicators têm noise gain obrigatório**: não existe causal filter que antecipe transients sem amplificar ruído — "you cannot get something for nothing; there is no magic predictor" [p.234].
-- [p.26, p.32] **Falsa robustez de muitos parâmetros**: Ehlers defende sua Instantaneous Trend Strategy dizendo "highly unlikely that the strategy has been curve fitted" por ter **poucos parâmetros independentes** e grande número de trades em 25 anos — a contrapositiva sendo o pitfall.
-- [p.220] **RSI = 14 é arbitrário**: "When Welles Wilder first introduced the RSI, I was curious as to why he selected 14 bars" — motivação para indicadores adaptativos em vez de constantes tradicionais.
-- [p.117-118] **DeltaPhase pode ir a zero ou negativo** por ruído / ambiguidade de quadrante → necessita clip em [0.1, 1.1] rad + median filter de 5 amostras antes de ser usado.
-- [p.119] **FFT é inadequado para mercados**: não consegue simultaneamente atender constraint de estacionariedade e produzir resolução suficiente; requer 16 full cycles para medida com resolução comparável ao Hilbert discriminator.
+- [p.1-2] **Gaussian PDF assumption**: CCI, Bollinger Bands, and any indicator with a "sigma boundary" are built on a false premise. The real price PDF looks more like a sinewave than a bell curve.
+- [p.188] **Regularized filter with arbitrary λ**: λ=10 with α=0.33 amplifies 33-bar cycles by +6 dB (the exact opposite of the desired smoothing). Always use $\lambda = e^{0.16/\alpha}$.
+- [p.15, p.19] **Higher-order Gaussian filters have transient "bell-ringing"**: "the ringing is more a function of the bell itself rather than a filtered response of a driving force" — avoid order > 2.
+- [p.36] **Trading cycles directly produces systematically delayed signals**: cumulative lag of smooth + cycle + trigger + execution = ~4 bars, which for an 8-bar cycle completely inverts the signal.
+- [p.51, p.53] **Wrong CG length destroys the indicator**: if window = full dominant cycle, the CG sits static in the middle (half the data pulls right, half pulls left). Always use ~ ½ of the Dominant Cycle.
+- [p.152] **Sinewave in Trend Mode**: during a trend, phase does not advance and the lines do not cross — **this is a feature, not a bug**. Forcing sinewave signals in a trend generates fabricated whipsaws.
+- [p.227-229] **A single equity curve is misleading**: the same combination {% winners=45, PF=1.5} produces dramatically different curves on each Monte Carlo run. A vendor showing one curve without Profit Factor and % winners is hiding information.
+- [p.232-233] **Leading indicators carry mandatory noise gain**: there is no causal filter that anticipates transients without amplifying noise — "you cannot get something for nothing; there is no magic predictor" [p.234].
+- [p.26, p.32] **False robustness from many parameters**: Ehlers defends his Instantaneous Trend Strategy by saying it is "highly unlikely that the strategy has been curve fitted" because it has **few independent parameters** and a large number of trades over 25 years — the contrapositive being the pitfall.
+- [p.220] **RSI = 14 is arbitrary**: "When Welles Wilder first introduced the RSI, I was curious as to why he selected 14 bars" — motivation for adaptive indicators over traditional constants.
+- [p.117-118] **DeltaPhase can go to zero or negative** due to noise / quadrant ambiguity → requires clipping to [0.1, 1.1] rad + a 5-sample median filter before use.
+- [p.119] **FFT is unsuitable for markets**: cannot simultaneously satisfy stationarity constraints and produce sufficient resolution; requires 16 full cycles for measurement resolution comparable to the Hilbert discriminator.
 
 ---
 
 ## From `books/cycle_analytics.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.36, ch.3]**: Apply a SuperSmoother filter with a cutoff period of 10 bars universally to all price data before any indicator computation. The SuperSmoother attenuates aliasing noise at 12 dB per octave; aliasing noise grows at 6 dB per octave, so the net effect is effective noise gating.
+- **RULE [p.36, ch.3]**: Apply a SuperSmoother filter with a cutoff period of 10 bars universally to all price data before any indicator computation. The SuperSmoother attenuates aliasing noise at 12 dB per octave; aliasing noise grows at 6 dB per octave, so the net effect is effective noise gating.
 
-- **REGRA [p.88-89, ch.7]**: Precede every technical indicator with a roofing filter (two-pole HP + SuperSmoother). Without this, conventional indicators produce erroneous signals during trending markets due to Spectral Dilation. The text example uses 48-bar HP and 10-bar SuperSmoother; Code Listing 7-3 implements the generalized indicator with defaults HPPeriod=80 and LPPeriod=40 [p.81-82, ch.7].
+- **RULE [p.88-89, ch.7]**: Precede every technical indicator with a roofing filter (two-pole HP + SuperSmoother). Without this, conventional indicators produce erroneous signals during trending markets due to Spectral Dilation. The text example uses 48-bar HP and 10-bar SuperSmoother; Code Listing 7-3 implements the generalized indicator with defaults HPPeriod=80 and LPPeriod=40 [p.81-82, ch.7].
 
-- **REGRA [p.137, ch.11]**: Set the Adaptive RSI lookback to half the measured dominant cycle. At this setting, the RSI reaches 0 or 1 only when prices complete a genuine cyclic swing.
+- **RULE [p.137, ch.11]**: Set the Adaptive RSI lookback to half the measured dominant cycle. At this setting, the RSI reaches 0 or 1 only when prices complete a genuine cyclic swing.
 
-- **REGRA [p.142, ch.11]**: Set the Adaptive Stochastic lookback to the *full* measured dominant cycle period to guarantee that both highest and lowest closes are included in the range.
+- **RULE [p.142, ch.11]**: Set the Adaptive Stochastic lookback to the *full* measured dominant cycle period to guarantee that both highest and lowest closes are included in the range.
 
-- **REGRA [p.152-153, ch.11]**: Tune the Adaptive Band-Pass Filter to 90% of the dominant cycle period to obtain approximately 60 degrees of phase lead. Buy/sell signals trigger when indicator and trigger lines cross outside the ±0.7 reference lines.
+- **RULE [p.152-153, ch.11]**: Tune the Adaptive Band-Pass Filter to 90% of the dominant cycle period to obtain approximately 60 degrees of phase lead. Buy/sell signals trigger when indicator and trigger lines cross outside the ±0.7 reference lines.
 
-- **REGRA [p.220-221, ch.17]**: For oscillator-based swing trading, anticipate rather than confirm turning points. Generate long entry when oscillator crosses *below* the lower threshold (e.g., 20%), short entry when crosses *above* the upper threshold (e.g., 80%). Recovers approximately 4 bars of lag vs. the confirmation rule.
+- **RULE [p.220-221, ch.17]**: For oscillator-based swing trading, anticipate rather than confirm turning points. Generate long entry when oscillator crosses *below* the lower threshold (e.g., 20%), short entry when crosses *above* the upper threshold (e.g., 80%). Recovers approximately 4 bars of lag vs. the confirmation rule.
 
-- **REGRA [p.222-223, ch.17]**: For band-pass swing trading, use the cosine-wave leading signal. Buy when Cosine crosses over its 1-bar delayed version; sell when crosses under. Produces a quarter-cycle phase lead.
+- **RULE [p.222-223, ch.17]**: For band-pass swing trading, use the cosine-wave leading signal. Buy when Cosine crosses over its 1-bar delayed version; sell when crosses under. Produces a quarter-cycle phase lead.
 
-- **REGRA [p.224-225, ch.17]**: Safety valve exit: if long and price closes below a SuperSmoother-smoothed lower channel, exit immediately. If trade is not profitable within half the expected trade duration, exit. "If you even think about hoping a trade will turn around, exit the trade immediately."
+- **RULE [p.224-225, ch.17]**: Safety valve exit: if long and price closes below a SuperSmoother-smoothed lower channel, exit immediately. If trade is not profitable within half the expected trade duration, exit. "If you even think about hoping a trade will turn around, exit the trade immediately."
 
-- **REGRA [p.225-226, ch.17]**: Stop-loss: use only as a guard against extreme losses. A simple percentage of entry price (2–5% for stocks) is sufficient. Do not build stop-loss logic into the core strategy signal.
+- **RULE [p.225-226, ch.17]**: Stop-loss: use only as a guard against extreme losses. A simple percentage of entry price (2–5% for stocks) is sufficient. Do not build stop-loss logic into the core strategy signal.
 
-- **NUNCA [p.218, ch.17]**: Do not optimize strategy parameters without requiring at least 30 trades per parameter. Apply sensitivity analysis: if the performance surface does not form a gentle hill across a range of parameter values, the strategy is not robust.
+- **NEVER [p.218, ch.17]**: Do not optimize strategy parameters without requiring at least 30 trades per parameter. Apply sensitivity analysis: if the performance surface does not form a gentle hill across a range of parameter values, the strategy is not robust.
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Unified two-pole filter coefficient (eq. 1-15)** [p.11-12, ch.1]
 
@@ -583,7 +584,7 @@ $$\text{Cosine} = \frac{\text{Period}}{2\pi} \cdot (\text{BP} - \text{BP}[1])$$
 
 Produces a quarter-cycle phase lead relative to the band-pass filter.
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **SuperSmoother Filter (eq. 3-3)** [p.33, ch.3]
 
@@ -699,7 +700,7 @@ Adaptive CCI       : lookback = DominantCycle
 Adaptive BPF       : period   = 0.9 * DominantCycle  (→ ~60° phase lead)
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - **[p.xi-xii]**: Cycles cannot be the basis of trades all the time. When cyclic swings are swamped by trends, using cycle tools is "folly." The framework explicitly requires identifying the market mode first.
 
@@ -723,27 +724,27 @@ Adaptive BPF       : period   = 0.9 * DominantCycle  (→ ~60° phase lead)
 
 ## From `books/cybernetic_trading.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.13]**: Operar long S&P500 somente quando T-Bonds está acima da média móvel de 26 dias (filtro de regime positive-correlation); fora do mercado caso contrário — fica no mercado 59% do tempo e supera buy-and-hold.
-- **REGRA [p.23]**: Intermarket divergence short-term — se T-Bonds[5]−T-Bonds[10] positivo e S&P500−S&P500[5] negativo (ou inverso), entrar na divergência; testar horizonte 10–30 dias.
-- **REGRA [p.25, Table 1.6]**: T-Bonds usando Eurodollars — quando T-Bonds fecha abaixo da sua SMA(24) e Eurodollars acima da sua SMA(32), comprar T-Bonds no open; 59% win, avg trade $1,447.
-- **REGRA [p.34]**: Day-of-week S&P500 — comprar segunda-feira se T-Bonds acima da SMA(26); $249/trade desde 1982.
-- **REGRA [p.40, Table 3.1]**: Usar inflação (ratio CPI/Yield) para prever juros de curto prazo — 86% acerto desde 1971.
-- **REGRA [p.48, Table 4.9]**: Só operar breakouts quando ADX(14) > 25 ou ADX subindo de <10 por 3 dos últimos 4; sair do trend quando 5-day diff(ADX) < 0.
-- **REGRA [p.53-54]**: Sistema COT — se COT Index Commercials[Lag] > Ctrigger e COT Index Small < Strigger → comprar (Ruggiero recommends Lag=1-3 weeks, Ctrigger=30-55, Strigger=35-50 por mercado).
-- **REGRA [p.65]**: Adaptive Channel Breakout — comprar em `Highest(High, DCycle)` onde DCycle vem do MEM com window=30, poles=6; D-Mark, Yen, Swiss Franc: win rate 44-49%, drawdown <$12,500.
-- **REGRA [p.66-67]**: Usar Pearson correlation 40-day entre intermarket e traded market com threshold |ρ|>0.5 como filtro on/off — reduz drawdown ~50% e dobra average trade.
-- **REGRA [p.105]**: Se PTI > 35 após wave 4 → esperar novo high em wave 5; se PTI < 35 → assumir double top / failed fifth.
-- **REGRA [p.115-116]**: Nunca selecionar o set de parâmetros mais lucrativo; escolher aquele cercado por vizinhos com performance similar (flat profit surface).
-- **REGRA [p.118-119]**: Distribuição de trades tem que permanecer similar entre dev set e live trading; mudança de distribuição precede a falha de um sistema mesmo que P&L corrente pareça bom.
-- **REGRA [p.125]**: Stop trading imediatamente se drawdown live > 150% do dev set OR consecutive losers > 150% do dev set.
-- **REGRA [p.134]**: Desenvolver modelos com pelo menos 30 casos por input; >30:1 ratio é mais robusto.
-- **NUNCA [p.157]**: Usar profit factor puro como função de fitness em GA — evolui soluções curve-fit de 5 trades.
-- **NUNCA [p.60]**: Tentar usar MEM diretamente em dados de preço brutos — precisa detrend (ex.: Butterworth(6) − Butterworth(20)).
-- **NUNCA [p.62]**: Usar estocástico/RSI com período fixo — Lane ajusta ao dominant cycle (metade do ciclo).
+- **RULE [p.13]**: Go long S&P500 only when T-Bonds are above their 26-day moving average (positive-correlation regime filter); stay out of the market otherwise — stays in the market 59% of the time and beats buy-and-hold.
+- **RULE [p.23]**: Short-term intermarket divergence — if T-Bonds[5]−T-Bonds[10] is positive and S&P500−S&P500[5] is negative (or vice versa), enter the divergence; test horizons 10–30 days.
+- **RULE [p.25, Table 1.6]**: T-Bonds using Eurodollars — when T-Bonds close below their SMA(24) and Eurodollars are above their SMA(32), buy T-Bonds at the open; 59% win, avg trade $1,447.
+- **RULE [p.34]**: Day-of-week S&P500 — buy Monday if T-Bonds are above the SMA(26); $249/trade since 1982.
+- **RULE [p.40, Table 3.1]**: Use inflation (CPI/Yield ratio) to forecast short-term rates — 86% accuracy since 1971.
+- **RULE [p.48, Table 4.9]**: Only trade breakouts when ADX(14) > 25 or ADX is rising from <10 on 3 of the last 4 days; exit the trend when 5-day diff(ADX) < 0.
+- **RULE [p.53-54]**: COT system — if COT Index Commercials[Lag] > Ctrigger and COT Index Small < Strigger → buy (Ruggiero recommends Lag=1-3 weeks, Ctrigger=30-55, Strigger=35-50 per market).
+- **RULE [p.65]**: Adaptive Channel Breakout — buy at `Highest(High, DCycle)` where DCycle comes from MEM with window=30, poles=6; D-Mark, Yen, Swiss Franc: win rate 44-49%, drawdown <$12,500.
+- **RULE [p.66-67]**: Use 40-day Pearson correlation between the intermarket and the traded market with threshold |ρ|>0.5 as an on/off filter — cuts drawdown ~50% and doubles the average trade.
+- **RULE [p.105]**: If PTI > 35 after wave 4 → expect a new high in wave 5; if PTI < 35 → assume double top / failed fifth.
+- **RULE [p.115-116]**: Never select the most profitable parameter set; choose one surrounded by neighbors with similar performance (flat profit surface).
+- **RULE [p.118-119]**: The trade distribution must remain similar between the dev set and live trading; distribution shift precedes system failure even if current P&L still looks good.
+- **RULE [p.125]**: Stop trading immediately if live drawdown > 150% of the dev set OR consecutive losers > 150% of the dev set.
+- **RULE [p.134]**: Build models with at least 30 cases per input; >30:1 ratio is more robust.
+- **NEVER [p.157]**: Use pure profit factor as a GA fitness function — it evolves curve-fit 5-trade solutions.
+- **NEVER [p.60]**: Apply MEM directly on raw price data — it needs detrending (e.g., Butterworth(6) − Butterworth(20)).
+- **NEVER [p.62]**: Use Stochastic/RSI with a fixed period — Lane tunes it to the dominant cycle (half the cycle).
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **COT Index (Briese)** [p.53]
 
@@ -817,13 +818,13 @@ where $R_A$ = average returns, $R_F$ = risk-free returns, $S$ = stdev of returns
 
 $$\text{Fitness} = \text{NetProfit} - 2 \times \text{MaxIDDrawDown}$$
 
-Ruggiero warns against using profit factor alone — it would yield 5-trade curve-fit winners [p.157].
+Ruggiero warns against using profit factor alone — it would produce 5-trade curve-fit winners [p.157].
 
 **Alternative Fitness (Net Profit / Drawdown × Win %)** [p.89]
 
 $$\text{Fitness} = \frac{\text{NetProfit}}{\text{Drawdown}} \times \text{Winning\%}$$
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Adaptive Channel Breakout (MEM-driven)** [p.65]
 
@@ -942,23 +943,23 @@ for each rule-candidate in induced decision tree:
         discard as statistical artifact
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
-- [p.32] **Seasonal reliability**: Day-of-year seasonality com apenas 10-20 ocorrências é quase curve-fit; exigir 80%+ accuracy ou não operar.
-- [p.60] Fourier analysis falha em dados financeiros porque requer séries longas e estacionárias; usar MEM (Burg 1967) em vez disso.
-- [p.73-74] Usar o otimizador do TradeStation direto para definir stops pode derrubar win rate — analisar scatter charts da adverse movement trade-by-trade.
-- [p.77-78] Trading um sistema sem monitorar a equity curve é "como dirigir à noite sem faróis".
-- [p.93] Rough sets / machine induction em financial data — markets não são gaussianos; métodos que não assumem distribuição são preferíveis (C4.5 / rough sets).
-- [p.111-112] Definir time-frame sem considerar capital: sistema S&P500 overnight com $10,000 é suicídio; preferir T-Bonds.
-- [p.111] Usar apenas um bull market nos dados; precisa pelo menos 1 bull + 1 bear em dev e test sets; mínimo 10 anos daily.
-- [p.65, p.115] Reversal-stop-and-reverse systems produzem large losers ocasionais; mitigar com target profit ou time-based exit (early-trade tighter stop).
-- [p.29] Não usar o par de parâmetros mais "profitable"; o "flatter the profit surface" e "robust" parameters são melhores — mesmo em intermarket, the most profitable set of parameters is surrounded by similarly profitable neighbors.
-- [p.121-122] A **distribuição** de trade P&L precede falha do sistema em vários meses; se a forma da curva muda, parar mesmo com P&L ainda positivo.
-- [p.125] Aumento de 150% no max drawdown vs dev set = DANGER, parar o sistema.
-- [p.125-126] Neural network com life-span curto (semanas) para em padrões transitórios e morre sem aviso por falta de testing set estatisticamente significante.
+- [p.32] **Seasonal reliability**: day-of-year seasonality with only 10-20 occurrences is nearly curve-fit; require 80%+ accuracy or do not trade.
+- [p.60] Fourier analysis fails on financial data because it requires long stationary series; use MEM (Burg 1967) instead.
+- [p.73-74] Using the TradeStation optimizer directly to set stops can tank the win rate — analyze adverse-movement scatter plots trade by trade.
+- [p.77-78] Trading a system without monitoring the equity curve is "like driving at night without headlights."
+- [p.93] Rough sets / machine induction on financial data — markets are non-Gaussian; distribution-free methods are preferable (C4.5 / rough sets).
+- [p.111-112] Choosing a timeframe without regard to capital: an overnight S&P500 system on $10,000 is suicide; prefer T-Bonds.
+- [p.111] Using only one bull market in the data; need at least 1 bull + 1 bear in dev and test sets; minimum 10 years daily.
+- [p.65, p.115] Reversal-stop-and-reverse systems produce occasional large losers; mitigate with profit target or time-based exit (early-trade tighter stop).
+- [p.29] Do not use the most "profitable" parameter pair; "flatter the profit surface" and "robust" parameters are better — even in intermarket, the most profitable set of parameters is surrounded by similarly profitable neighbors.
+- [p.121-122] The trade P&L **distribution** precedes system failure by several months; if the curve's shape changes, stop trading even while P&L is still positive.
+- [p.125] A 150% increase in max drawdown vs. dev set = DANGER, shut the system down.
+- [p.125-126] A neural network with a short life-span (weeks) stops on transient patterns and dies without warning because of an insufficient testing set.
 - [p.144-145] Train a neural network multiple times with different initial weights; if results diverge, the model is not robust (similar results across trainings = reliable network).
-- [p.146] Raw output de NN com regras primitivas (long > 0, short < 0) gera drawdown muito alto; sempre usar threshold (ex: ±0.10) e filtro de predictive correlation.
-- [p.151] Error function padrão (RMSE) em neural networks produz large losing trades em trading; evoluir pesos via GA com função de fitness customizada é melhor.
-- [p.157] Profit factor sozinho como fitness function em GA converge em soluções curve-fit de 5 trades ganhadores — usar `NetProfit − 2×MaxIDDrawDown`.
+- [p.146] Raw NN output with primitive rules (long > 0, short < 0) produces very large drawdowns; always use a threshold (e.g., ±0.10) and a predictive-correlation filter.
+- [p.151] The default RMSE error function in neural networks produces large losing trades in trading; evolving weights via GA with a custom fitness function is better.
+- [p.157] Profit factor alone as a GA fitness function converges on curve-fit 5-winning-trade solutions — use `NetProfit − 2×MaxIDDrawDown`.
 
 ---

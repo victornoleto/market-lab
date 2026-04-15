@@ -1,25 +1,23 @@
 # Detecting Regime Change in Computational Finance: Data Science, Machine Learning and Algorithmic Trading
 
 ## Metadata
-- **Autor:** Jun Chen, Edward P K Tsang [p.4]
-- **Ano:** 2021 [p.5]
-- **Editora:** CRC Press (Taylor & Francis Group) [p.5]
-- **Páginas:** 165
+- **Authors:** Jun Chen, Edward P K Tsang [p.4]
+- **Year:** 2021 [p.5]
+- **Publisher:** CRC Press (Taylor & Francis Group) [p.5]
+- **Pages:** 165
 - **ISBN:** 978-0-367-53628-2 (hbk) [p.5]
-- **Foco principal:** Detecting and tracking regime changes in financial markets using Directional Change (event-based sampling) combined with Hidden Markov Models and Naive Bayes classifiers, as an alternative and complement to time-series analysis.
+- **Main focus:** Detecting and tracking regime changes in financial markets using Directional Change (event-based sampling) combined with Hidden Markov Models and Naive Bayes classifiers, as an alternative and complement to time-series analysis.
 
 ---
 
-## 1. Tese Central
-
+## 1. Core Thesis
 The book argues that financial market regime changes — significant shifts in the collective trading behaviour of market participants — can be detected, classified, and tracked more effectively by using Directional Change (DC), a data-driven event-based sampling framework, rather than or alongside conventional time series analysis [p.1–3, ch.1]. Rather than sampling prices at fixed time intervals, DC samples only when the market has moved by a pre-defined threshold percentage from its last extreme point, capturing only "significant" price movements and filtering noise [p.8–9, ch.2].
 
 The central operational claim is that DC, combined with Hidden Markov Models (HMM) for retrospective regime detection and Naive Bayes classifiers for real-time tracking, provides a complementary lens to time series: together they give a richer picture of when markets transition between normal (low-volatility) and abnormal (high-volatility) regimes — and that this information can be operationalised to consistently reduce maximum drawdown in algorithmic trading, even if total profitability is not improved by naive implementations [p.89–91, ch.6].
 
 ---
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Regime Change (RC)** — a significant change in the collective trading behaviour of market participants, observable through changes in statistical properties of price movements (mean, volatility, correlation); not directly observable, but inferred from price dynamics [p.5–6, ch.2]
 
 - **Directional Change (DC)** — an event-based, data-driven approach to sampling price movements; a price point is recorded only when the market reverses direction by at least a pre-defined threshold θ. Introduced by Guillaume et al. (1997). Known in technical analysis as the "Zigzag indicator" [p.8–9, ch.2]
@@ -52,8 +50,7 @@ The central operational claim is that DC, combined with Hidden Markov Models (HM
 
 ---
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **DC Event Condition** [p.10, ch.2 eq. 2.1]
 
 $$\frac{|P_t - P_{EXT}|}{P_{EXT}} \geq \theta$$
@@ -165,8 +162,7 @@ Applied so that regimes from markets with different absolute TMV/T scales can be
 
 ---
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Algorithm 1 — Naive Bayes Classifier training and testing** [p.65, ch.5]
 
 ```
@@ -276,28 +272,26 @@ Rule 3: When next DCC point confirmed: CLOSE
 
 ---
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.82, ch.6]**: Under normal regime, enter contrarian when |TMV| reaches 2: short in uptrend (TMV ≥ 2), long in downtrend (TMV ≤ -2). Rationale: mean reversion is observed in normal market regimes.
 
-- **REGRA [p.82, ch.6]**: Under normal regime, enter contrarian when |TMV| reaches 2: short in uptrend (TMV ≥ 2), long in downtrend (TMV ≤ -2). Rationale: mean reversion is observed in normal market regimes.
+- **RULE [p.83, ch.6]**: Under abnormal regime, JC1 switches to trend-following on the same |TMV| ≥ 2 trigger. Rationale: in abnormal regimes, margin calls cascade and drive the prevailing trend further.
 
-- **REGRA [p.83, ch.6]**: Under abnormal regime, JC1 switches to trend-following on the same |TMV| ≥ 2 trigger. Rationale: in abnormal regimes, margin calls cascade and drive the prevailing trend further.
+- **RULE [p.82, ch.6]**: Close position at the next DC Confirmation (DCC) point under both normal and abnormal regimes.
 
-- **REGRA [p.82, ch.6]**: Close position at the next DC Confirmation (DCC) point under both normal and abnormal regimes.
+- **RULE [p.82–83, ch.6]**: Close ALL open positions immediately when a regime change is detected by the Bayes tracker. This is the primary stop-loss mechanism and the source of drawdown reduction.
 
-- **REGRA [p.82–83, ch.6]**: Close ALL open positions immediately when a regime change is detected by the Bayes tracker. This is the primary stop-loss mechanism and the source of drawdown reduction.
+- **RULE [p.83, ch.6]** (JC2 — more conservative): Hold NO positions during abnormal regime; wait for return to normal regime before re-entering.
 
-- **REGRA [p.83, ch.6]** (JC2 — more conservative): Hold NO positions during abnormal regime; wait for return to normal regime before re-entering.
+- **RULE [p.71, ch.5]**: Use B-Strict rule: only conclude Regime 2 if $p(C_2|x) > p(C_1|x)$ AND $p(C_2|x) > 0.8$. Reduces false alarms from 52 to 10 across DJIA/FTSE/S&P 500 test period [p.76, ch.5].
 
-- **REGRA [p.71, ch.5]**: Use B-Strict rule: only conclude Regime 2 if $p(C_2|x) > p(C_1|x)$ AND $p(C_2|x) > 0.8$. Reduces false alarms from 52 to 10 across DJIA/FTSE/S&P 500 test period [p.76, ch.5].
+- **RULE [p.58, ch.4]**: If the current market is moving away from the normal regime cluster in the T-TMV indicator space, consider closing positions or switching strategy.
 
-- **REGRA [p.58, ch.4]**: If the current market is moving away from the normal regime cluster in the T-TMV indicator space, consider closing positions or switching strategy.
-
-- **NUNCA [p.77, ch.5]**: Treat regime tracking output as a forecast of future prices — the method is purely data-led and tells only the current regime state. "No forecasting is attempted."
+- **NEVER [p.77, ch.5]**: Treat regime tracking output as a forecast of future prices — the method is purely data-led and tells only the current regime state. "No forecasting is attempted."
 
 ---
 
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - [p.94, ch.7] Using only time-series analysis for regime detection — this misses intra-day regime changes that DC captures (e.g., the 14 July 2016 EUR-GBP regime change linked to Theresa May becoming PM was not detected under time series) [p.29, ch.3].
 
 - [p.1, ch.1; p.94, ch.7] Assuming fixed-interval sampling captures all significant market shifts — in 24h FX markets, important events occur within intervals and are diluted in daily closes.
@@ -318,8 +312,7 @@ Rule 3: When next DCC point confirmed: CLOSE
 
 ---
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **Threshold θ = 0.4%** (Chapter 3, FX second-by-second) [p.25, ch.3]: set "arbitrarily." Justified by DC scaling law from Glattfelder et al. — "the same stylised facts can be observed under different thresholds." Curve-fit risk: low, as scaling invariance is empirically established.
 
 - **Threshold grid 0.1%–1.0%** (Chapter 4, classification) [p.51, ch.4]: ten evenly spaced values used to demonstrate that regime separability holds across thresholds. Good anti-overfit practice — the result (separability) does not depend on any single θ.
@@ -340,8 +333,7 @@ Rule 3: When next DCC point confirmed: CLOSE
 
 ---
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "If no one buys and sells in the market, or the price never changes, whether one takes a daily, hourly or minute approach, time series as a concept does not matter. Time series is only useful if it records price changes. And if that is the case, then why don't we simply record only significant price changes in the market? That is the basic concept behind Directional Change." — [p.20, Preface]
 
 > "Being able to see with two eyes (time series and directional change) is better than seeing with one (time series alone)." — [p.1, ch.1]
@@ -362,8 +354,7 @@ Rule 3: When next DCC point confirmed: CLOSE
 
 ---
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - **Hamilton's regime-switching model** [p.6–7, ch.2] is the direct precursor to the HMM framework used here. `time_series_hamilton.md` covers the statistical foundations; this book extends it by replacing the time-series observable (returns/volatility) with DC indicator R.
 
 - **Anti-overfit / threshold robustness** [p.56–57, ch.4]: the demonstration that regime separability holds across 10 thresholds (0.1%–1.0%) resonates with the parsimony principle in `systematic_trading.md` — a valid result should be insensitive to parameter choices within an economically reasonable range.

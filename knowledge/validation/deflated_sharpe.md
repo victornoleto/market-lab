@@ -1,6 +1,6 @@
 # Deflated Sharpe Ratio (DSR)
 
-Correção do Sharpe observado pelo número de estratégias testadas — protege contra selection bias.
+Correction of the observed Sharpe by the number of strategies tested — guards against selection bias.
 
 ## Sources
 
@@ -9,37 +9,37 @@ Correção do Sharpe observado pelo número de estratégias testadas — protege
 
 ## From `books/advances_fin_ml.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.71-72]**: Apply the CUSUM filter to price series before applying triple-barrier labeling. Sampling at every tick creates serially correlated, non-IID labels. The CUSUM filter triggers observations only when cumulative price change exceeds $\pm h$, dramatically reducing label overlap.
+- **RULE [p.71-72]**: Apply the CUSUM filter to price series before applying triple-barrier labeling. Sampling at every tick creates serially correlated, non-IID labels. The CUSUM filter triggers observations only when cumulative price change exceeds $\pm h$, dramatically reducing label overlap.
 
-- **REGRA [p.78-80]**: Use the triple-barrier method with dynamically computed barriers (ATR-based or volatility-based), not fixed-price barriers. This ensures the barrier width adapts to the market regime and is not dominated by the vertical barrier.
+- **RULE [p.78-80]**: Use the triple-barrier method with dynamically computed barriers (ATR-based or volatility-based), not fixed-price barriers. This ensures the barrier width adapts to the market regime and is not dominated by the vertical barrier.
 
-- **REGRA [p.84-89]**: Separate the side prediction task from the sizing task using meta-labeling. Build a primary model for direction (recall-optimized), then a secondary model to learn when to trust it (precision-optimized). Do not conflate the two tasks.
+- **RULE [p.84-89]**: Separate the side prediction task from the sizing task using meta-labeling. Build a primary model for direction (recall-optimized), then a secondary model to learn when to trust it (precision-optimized). Do not conflate the two tasks.
 
-- **REGRA [p.98-99, p.103-106]**: Weight training samples by $\tilde{u}_i \cdot d_i$ where $\tilde{u}_i$ is average uniqueness and $d_i$ is a time-decay weight. Never train a financial ML model on equal-weighted overlapping labels — this artificially inflates effective sample size.
+- **RULE [p.98-99, p.103-106]**: Weight training samples by $\tilde{u}_i \cdot d_i$ where $\tilde{u}_i$ is average uniqueness and $d_i$ is a time-decay weight. Never train a financial ML model on equal-weighted overlapping labels — this artificially inflates effective sample size.
 
-- **REGRA [p.121-125]**: Apply FFD with the minimum $d^*$ that passes the ADF stationarity test. For E-mini S&P 500, this is approximately $d^* \approx 0.35$ [p.126-127], retaining 99.5% correlation with the original price series. Do not blindly apply $d=1$ (first difference) which destroys memory.
+- **RULE [p.121-125]**: Apply FFD with the minimum $d^*$ that passes the ADF stationarity test. For E-mini S&P 500, this is approximately $d^* \approx 0.35$ [p.126-127], retaining 99.5% correlation with the original price series. Do not blindly apply $d=1$ (first difference) which destroys memory.
 
-- **REGRA [p.149-154]**: Always use Purged K-Fold CV with embargo for financial ML. Embargo of $h \approx 0.01T$ prevents performance inflation from serial correlation not covered by purging alone.
+- **RULE [p.149-154]**: Always use Purged K-Fold CV with embargo for financial ML. Embargo of $h \approx 0.01T$ prevents performance inflation from serial correlation not covered by purging alone.
 
-- **REGRA [p.160-167]**: Use all three feature importance methods (MDI, MDA, SFI) and report only features ranked important by at least two methods. MDI is biased toward high-cardinality features; SFI ignores substitution effects. Their overlap is the reliable signal.
+- **RULE [p.160-167]**: Use all three feature importance methods (MDI, MDA, SFI) and report only features ranked important by at least two methods. MDI is biased toward high-cardinality features; SFI ignores substitution effects. Their overlap is the reliable signal.
 
-- **REGRA [p.167]**: Use weighted Kendall's $\tau$ to assess concordance between MDI feature importance rankings and their associated PCA eigenvalue rankings (not MDI vs MDA). The book's E-mini example gives $\tau = 0.8133$ between MDI importances and inverse PCA rankings [p.167]. A high $\tau$ confirms that PCA-identified features and ML-identified features agree on relative importance.
+- **RULE [p.167]**: Use weighted Kendall's $\tau$ to assess concordance between MDI feature importance rankings and their associated PCA eigenvalue rankings (not MDI vs MDA). The book's E-mini example gives $\tau = 0.8133$ between MDI importances and inverse PCA rankings [p.167]. A high $\tau$ confirms that PCA-identified features and ML-identified features agree on relative importance.
 
-- **REGRA [p.192-196]**: Use bet sizing (continuous position in $(-1,1)$) rather than binary signals. Discretize to $\{-1, -0.5, 0, +0.5, +1\}$ if necessary for execution, but avoid all-or-nothing signals that maximize turnover.
+- **RULE [p.192-196]**: Use bet sizing (continuous position in $(-1,1)$) rather than binary signals. Discretize to $\{-1, -0.5, 0, +0.5, +1\}$ if necessary for execution, but avoid all-or-nothing signals that maximize turnover.
 
-- **REGRA [p.208-211]**: Estimate PBO via CSCV before finalizing any strategy. A PBO > 0.5 means the strategy is more likely overfit than valid. Do not deploy until PBO is demonstrably below 0.5.
+- **RULE [p.208-211]**: Estimate PBO via CSCV before finalizing any strategy. A PBO > 0.5 means the strategy is more likely overfit than valid. Do not deploy until PBO is demonstrably below 0.5.
 
-- **REGRA [p.219-222]**: Use CPCV (not simple walk-forward) to generate a full distribution of $\phi[N,k]$ backtest paths. Report the distribution of Sharpe ratios, not just the mean. Strategies with high variance across paths have uncertain real-world performance.
+- **RULE [p.219-222]**: Use CPCV (not simple walk-forward) to generate a full distribution of $\phi[N,k]$ backtest paths. Report the distribution of Sharpe ratios, not just the mean. Strategies with high variance across paths have uncertain real-world performance.
 
-- **REGRA [p.276]**: Before declaring a strategy live-tradeable, verify it passes the DSR threshold. A single Sharpe ratio, however large, is uninformative without correction for the number of configurations tested.
+- **RULE [p.276]**: Before declaring a strategy live-tradeable, verify it passes the DSR threshold. A single Sharpe ratio, however large, is uninformative without correction for the number of configurations tested.
 
-- **REGRA [p.302-308]**: For portfolio construction, prefer HRP over Markowitz/CLA. HRP's Monte Carlo result shows $\sigma^2_{\text{HRP}} = 0.0671$ vs $\sigma^2_{\text{CLA}} = 0.1157$ vs $\sigma^2_{\text{IVP}} = 0.0928$ out-of-sample [p.313].
+- **RULE [p.302-308]**: For portfolio construction, prefer HRP over Markowitz/CLA. HRP's Monte Carlo result shows $\sigma^2_{\text{HRP}} = 0.0671$ vs $\sigma^2_{\text{CLA}} = 0.1157$ vs $\sigma^2_{\text{IVP}} = 0.0928$ out-of-sample [p.313].
 
-- **REGRA [p.383-384]**: Monitor VPIN as an intraday risk indicator. VPIN spiked anomalously before the 2010 Flash Crash, providing early warning. Treat a VPIN CDF > 0.99 as a signal to reduce exposure or widen spreads [p.448-449].
+- **RULE [p.383-384]**: Monitor VPIN as an intraday risk indicator. VPIN spiked anomalously before the 2010 Flash Crash, providing early warning. Treat a VPIN CDF > 0.99 as a signal to reduce exposure or widen spreads [p.448-449].
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Tick imbalance bar (TIB) threshold** [p.59-62]
 
@@ -215,7 +215,7 @@ $$S_t = \max(0,\; S_{t-1} + y_t - E_{t-1}[y_t])$$
 
 with the symmetric extension triggering on run-ups or run-downs. The only user-set parameter is the threshold $h$ (the filter size). No parameter $k$ appears in the Ch.2 CUSUM filter [p.71-72]. (Note: a separate `k` parameter appears in the Ch.17 Brown-Durbin-Evans CUSUM structural break test [p.333-334], where it denotes the number of regression features — a different context entirely.)
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Triple-barrier labeling** [p.78-80, ch.3]
 
@@ -430,7 +430,7 @@ Step 3: Apply trading rule on each path, compute SR per path
 Step 4: Report SR distribution; test if real SR is in top tail
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - **[p.29, p.39-40]** The Sisyphus paradigm — solo researcher who loops backtest until satisfied — is the root cause of most quantitative failure. It is structurally equivalent to p-hacking. The fix is a team-based pipeline with audited steps.
 
@@ -460,7 +460,7 @@ Step 4: Report SR distribution; test if real SR is in top tail
 
 ## From `books/ml_for_asset_managers.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
 This book is deliberately NOT a strategy cookbook [p.22]. Section 1 does not provide trading rules in an "if X then Y" imperative form. Still, several explicit methodological injunctions function as trading-research rules:
 
@@ -473,11 +473,11 @@ This book is deliberately NOT a strategy cookbook [p.22]. Section 1 does not pro
 - **RULE [p.21, §1.9 FAQ]**: In finance, prefer classifiers over regression methods: "failing to predict the size is an opportunity loss, but failing to predict the sign is an actual loss" [p.21]. Sign and size often depend on different features.
 - **RULE [p.18, §1.9 FAQ "What Are Some of the Ways..."]**: Use meta-labeling to let a secondary model decide bet size/timing, leaving buy/sell to a primary model — particularly valuable when primary model is fundamental or traditional [also referenced §5.5, body N/A in extract].
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 N/A — The Introduction (Section 1), which is the only substantive chapter present in the extracted text, is prose-level exposition and contains no numbered equations or closed-form formulas. The mathematical content of the book (Marcenko-Pastur density for denoising, variation of information, ONC, HRP, Deflated Sharpe Ratio formula, False Strategy Theorem bound, etc.) lives in Sections 2-8 and Appendices A-B, which are NOT in the extracted source file for this pipeline run. See `advances_fin_ml.md` (López de Prado 2018a, AFML) — the author's prior book, referenced throughout [p.1] — for Deflated Sharpe Ratio and CPCV formulas.
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Mean-Decrease Accuracy (MDA) — feature importance** [p.5]
 
@@ -522,7 +522,7 @@ The extracted text only *references* CPCV and attributes the full specification 
 
 Bodies of algorithms announced in the TOC — kernel-density-estimator denoising (§2), information-theoretic distance metrics (§3), ONC (§4), triple-barrier labeling and meta-labeling (§5), clustered feature importance (§6), Nested Clustered Optimization (§7), False Strategy Theorem / DSR testing (§8) — are N/A here because those sections are not in the extracted text. See `advances_fin_ml.md` for overlapping algorithms when available.
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - [p.3] Treating backtests as research tools. They are risk-of-overfit meters at best; at worst, false-positive generators.
 - [p.7] Running the backtest-tweak-backtest loop until the strategy "looks good." Guaranteed overfit.

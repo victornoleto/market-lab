@@ -6,7 +6,7 @@ Known limitations — document in every backtest report that uses this source:
   Combined with a current-only universe this produces severe survivorship bias.
   See README §"Universo Clenow e survivorship bias". Migrate to Tiingo/EOD/
   Norgate when edge detection from research justifies the cost (ROADMAP
-  §"Decisões adiadas").
+  §"Deferred decisions").
 * **Yahoo ToS gray zone.** yfinance README states "intended for personal
   use only" — this is research infrastructure, not a redistributable service.
 * **Unofficial rate limit.** The parquet cache in this module prevents

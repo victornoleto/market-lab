@@ -1,21 +1,19 @@
 # Cycle Analytics for Traders
 
 ## Metadata
-- **Autor:** John F. Ehlers [p.iv]
-- **Ano:** 2013
-- **Editora:** John Wiley & Sons
-- **Páginas:** 252
+- **Author:** John F. Ehlers [p.iv]
+- **Year:** 2013
+- **Publisher:** John Wiley & Sons
+- **Pages:** 252
 - **ISBN:** 978-1-118-72851-2
-- **Foco principal:** Digital signal processing (DSP) techniques adapted from electrical engineering to extract cyclic structure from market data and build adaptive, low-lag trading indicators.
+- **Main focus:** Digital signal processing (DSP) techniques adapted from electrical engineering to extract cyclic structure from market data and build adaptive, low-lag trading indicators.
 
-## 1. Tese Central
-
+## 1. Core Thesis
 Market data possesses measurable cyclic structure arising from the constrained random walk physics of trader behavior, and digital signal processing (DSP) techniques developed in electrical engineering can be adapted to extract this structure and create superior trading indicators [ch.6, p.71-74]. The central argument is that thinking of prices in the *frequency domain* — not just the time domain — reveals which indicator parameters are appropriate and why, replacing arbitrary fixed lookback periods with adaptive ones tuned to the measured dominant cycle [p.xi-xii].
 
 A key empirical obstacle is *Spectral Dilation*: market data's spectral power density is proportional to $1/F^\alpha$, meaning longer cycles have proportionally larger amplitude swings. Traditional indicators embed this distortion without compensation, producing erroneous overbought/oversold signals during trends. Ehlers argues that a *roofing filter* (two-pole high-pass filter + SuperSmoother) must precede any indicator computation to create a zero-mean, Spectral-Dilation-corrected data stream [p.77-89, ch.7]. The book's second thesis is that market cycles are *evanescent* — they come and go — and therefore the *autocorrelation periodogram* is the preferred spectral estimator because it has the least latency, requires no Spectral Dilation compensation, and automatically estimates cyclic power as a function of time [p.102-103, ch.8].
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Transfer Response** — The ratio Output/Input that completely describes any linear filter. Written as a ratio of two polynomials in the Z-transform domain; the only thing differentiating filters is coefficient selection [p.1-2, ch.1].
 
 - **Nonrecursive (FIR) Filter** — Output depends only on input samples; also called finite impulse response, moving average, tapped delay line. Lag = $(N-1)/2$ bars for symmetric coefficients, constant at all frequencies [p.3-4, ch.1].
@@ -54,8 +52,7 @@ A key empirical obstacle is *Spectral Dilation*: market data's spectral power de
 
 - **Even Better Sinewave Indicator** — Roofing filter variant using a single-pole high-pass filter to equalize the spectrum and retain trend components. Wave amplitude is normalized to the square root of average power; swings between −1 and +1. Hold long when near +1, short when near −1. Default duration input = 40 bars [p.159-163, ch.12].
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Unified two-pole filter coefficient (eq. 1-15)** [p.11-12, ch.1]
 
 $$\alpha = \frac{\cos(K \cdot 360°/\text{Period}) + \sin(K \cdot 360°/\text{Period}) - 1}{\cos(K \cdot 360°/\text{Period})}$$
@@ -107,8 +104,7 @@ $$\text{Cosine} = \frac{\text{Period}}{2\pi} \cdot (\text{BP} - \text{BP}[1])$$
 
 Produces a quarter-cycle phase lead relative to the band-pass filter.
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **SuperSmoother Filter (eq. 3-3)** [p.33, ch.3]
 
 ```easylanguage
@@ -223,30 +219,28 @@ Adaptive CCI       : lookback = DominantCycle
 Adaptive BPF       : period   = 0.9 * DominantCycle  (→ ~60° phase lead)
 ```
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.36, ch.3]**: Apply a SuperSmoother filter with a cutoff period of 10 bars universally to all price data before any indicator computation. The SuperSmoother attenuates aliasing noise at 12 dB per octave; aliasing noise grows at 6 dB per octave, so the net effect is effective noise gating.
 
-- **REGRA [p.36, ch.3]**: Apply a SuperSmoother filter with a cutoff period of 10 bars universally to all price data before any indicator computation. The SuperSmoother attenuates aliasing noise at 12 dB per octave; aliasing noise grows at 6 dB per octave, so the net effect is effective noise gating.
+- **RULE [p.88-89, ch.7]**: Precede every technical indicator with a roofing filter (two-pole HP + SuperSmoother). Without this, conventional indicators produce erroneous signals during trending markets due to Spectral Dilation. The text example uses 48-bar HP and 10-bar SuperSmoother; Code Listing 7-3 implements the generalized indicator with defaults HPPeriod=80 and LPPeriod=40 [p.81-82, ch.7].
 
-- **REGRA [p.88-89, ch.7]**: Precede every technical indicator with a roofing filter (two-pole HP + SuperSmoother). Without this, conventional indicators produce erroneous signals during trending markets due to Spectral Dilation. The text example uses 48-bar HP and 10-bar SuperSmoother; Code Listing 7-3 implements the generalized indicator with defaults HPPeriod=80 and LPPeriod=40 [p.81-82, ch.7].
+- **RULE [p.137, ch.11]**: Set the Adaptive RSI lookback to half the measured dominant cycle. At this setting, the RSI reaches 0 or 1 only when prices complete a genuine cyclic swing.
 
-- **REGRA [p.137, ch.11]**: Set the Adaptive RSI lookback to half the measured dominant cycle. At this setting, the RSI reaches 0 or 1 only when prices complete a genuine cyclic swing.
+- **RULE [p.142, ch.11]**: Set the Adaptive Stochastic lookback to the *full* measured dominant cycle period to guarantee that both highest and lowest closes are included in the range.
 
-- **REGRA [p.142, ch.11]**: Set the Adaptive Stochastic lookback to the *full* measured dominant cycle period to guarantee that both highest and lowest closes are included in the range.
+- **RULE [p.152-153, ch.11]**: Tune the Adaptive Band-Pass Filter to 90% of the dominant cycle period to obtain approximately 60 degrees of phase lead. Buy/sell signals trigger when indicator and trigger lines cross outside the ±0.7 reference lines.
 
-- **REGRA [p.152-153, ch.11]**: Tune the Adaptive Band-Pass Filter to 90% of the dominant cycle period to obtain approximately 60 degrees of phase lead. Buy/sell signals trigger when indicator and trigger lines cross outside the ±0.7 reference lines.
+- **RULE [p.220-221, ch.17]**: For oscillator-based swing trading, anticipate rather than confirm turning points. Generate long entry when oscillator crosses *below* the lower threshold (e.g., 20%), short entry when crosses *above* the upper threshold (e.g., 80%). Recovers approximately 4 bars of lag vs. the confirmation rule.
 
-- **REGRA [p.220-221, ch.17]**: For oscillator-based swing trading, anticipate rather than confirm turning points. Generate long entry when oscillator crosses *below* the lower threshold (e.g., 20%), short entry when crosses *above* the upper threshold (e.g., 80%). Recovers approximately 4 bars of lag vs. the confirmation rule.
+- **RULE [p.222-223, ch.17]**: For band-pass swing trading, use the cosine-wave leading signal. Buy when Cosine crosses over its 1-bar delayed version; sell when crosses under. Produces a quarter-cycle phase lead.
 
-- **REGRA [p.222-223, ch.17]**: For band-pass swing trading, use the cosine-wave leading signal. Buy when Cosine crosses over its 1-bar delayed version; sell when crosses under. Produces a quarter-cycle phase lead.
+- **RULE [p.224-225, ch.17]**: Safety valve exit: if long and price closes below a SuperSmoother-smoothed lower channel, exit immediately. If trade is not profitable within half the expected trade duration, exit. "If you even think about hoping a trade will turn around, exit the trade immediately."
 
-- **REGRA [p.224-225, ch.17]**: Safety valve exit: if long and price closes below a SuperSmoother-smoothed lower channel, exit immediately. If trade is not profitable within half the expected trade duration, exit. "If you even think about hoping a trade will turn around, exit the trade immediately."
+- **RULE [p.225-226, ch.17]**: Stop-loss: use only as a guard against extreme losses. A simple percentage of entry price (2–5% for stocks) is sufficient. Do not build stop-loss logic into the core strategy signal.
 
-- **REGRA [p.225-226, ch.17]**: Stop-loss: use only as a guard against extreme losses. A simple percentage of entry price (2–5% for stocks) is sufficient. Do not build stop-loss logic into the core strategy signal.
+- **NEVER [p.218, ch.17]**: Do not optimize strategy parameters without requiring at least 30 trades per parameter. Apply sensitivity analysis: if the performance surface does not form a gentle hill across a range of parameter values, the strategy is not robust.
 
-- **NUNCA [p.218, ch.17]**: Do not optimize strategy parameters without requiring at least 30 trades per parameter. Apply sensitivity analysis: if the performance surface does not form a gentle hill across a range of parameter values, the strategy is not robust.
-
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - **[p.xi-xii]**: Cycles cannot be the basis of trades all the time. When cyclic swings are swamped by trends, using cycle tools is "folly." The framework explicitly requires identifying the market mode first.
 
 - **[p.74-75, ch.6]**: The Hurst coefficient has *no direct predictive value* and no direct trading usefulness. Its result changes dramatically depending on input length (30 bars vs. 200 bars on the same price series give opposite conclusions).
@@ -265,8 +259,7 @@ Adaptive BPF       : period   = 0.9 * DominantCycle  (→ ~60° phase lead)
 
 - **[p.219-220, ch.17]**: Using oscillator confirmation (waiting to cross *above* 20% to buy) produces a deeply negative equity curve (approximately −$50,000 on S&P Futures over 10 years, 2003–2013). Computational lag causes entries approximately 8 bars late on a 10-bar cycle.
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **SuperSmoother cutoff period = 10 bars** [p.36, ch.3]: Ehlers does not optimize this value; it is chosen on signal processing grounds — short enough to eliminate aliasing noise from cycles below 10 bars (Nyquist-induced), long enough to preserve 10-bar and longer cycle content. The book recommends universally applying this value without asset-specific tuning.
 
 - **Roofing filter HP cutoff: 48 bars (conceptual default) vs. HPPeriod=80 (Code Listing 7-3 default)** [p.77-82, ch.7]: The descriptive text in Ch.7 uses 48 bars as the HP cutoff example, capturing the tradeable 10–48 bar band. Code Listing 7-3 (the generalized indicator) defaults to HPPeriod=80 and LPPeriod=40 — Ehlers notes these are set "rather arbitrarily" in the example [p.82, ch.7]. The 48-bar value is hardcoded (not an optimized parameter) in the conceptual examples (Code Listings 7-1, 7-2, 7-4, 7-5); the Code Listing 7-3 defaults are illustrative, not prescriptive.
@@ -283,8 +276,7 @@ Adaptive BPF       : period   = 0.9 * DominantCycle  (→ ~60° phase lead)
 
 - **30-trades-per-parameter rule** [p.218, ch.17]: Ehlers explicitly states this as the minimum sample size for statistical confidence in any single parameter. This is a practitioner heuristic, not derived from a specific distribution assumption, but it aligns with statistical power considerations.
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "It is important to remember that no filter is predictive — filter responses are computed on the basis of historical data samples." — [p.1, ch.1]
 
 > "Minimizing lag in trading filters is almost more important than the smoothing that is realized by using the filter. Therefore, filters used for trading best use a relatively small amount of input data and should not be complex." — [p.2, ch.1]
@@ -303,8 +295,7 @@ Adaptive BPF       : period   = 0.9 * DominantCycle  (→ ~60° phase lead)
 
 > "There is one unmistakable psychological signal to exit a trade. That is, if you even think about hoping a trade will turn around and move in your favor, then exit the trade immediately. Hope has a negative value in trading." — [p.224, ch.17]
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - **`rocket_science.md`** — Ehlers's direct predecessor book (2001). The Even Better Sinewave Indicator evolved from the original Sinewave Indicator first introduced in 1996 and developed further there [p.164, ch.12]. The MESA algorithm originates in *Rocket Science for Traders*. The current book extends the DSP framework to autocorrelation-based spectral analysis not present in the earlier work. Both books share the roofing filter concept and use of SuperSmoother as a universal noise reducer.
 
 - **`cybernetic_analysis.md`** — Ehlers's intermediate book (*Cybernetic Analysis for Stocks and Futures*). The current book supersedes many of its spectral analysis techniques, replacing earlier dominant cycle methods with the autocorrelation periodogram. Adaptive indicators in Chapter 11 are extensions of the cybernetic framework. Both books share the foundational DSP vocabulary (HP filters, IIR/FIR distinction, lag minimization). The Even Better Sinewave Indicator represents a further evolution of the Sinewave Indicator approach used in both prior books.

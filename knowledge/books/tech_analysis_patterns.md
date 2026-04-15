@@ -1,63 +1,60 @@
 # Technical Analysis for Algorithmic Pattern Recognition
 
 ## Metadata
-- **Autor:** Prodromos E. Tsinaslanidis, Achilleas D. Zapranis [p.i, cover]
-- **Ano:** 2016
-- **Editora:** Springer International Publishing Switzerland [p.i]
-- **Páginas:** 213 (PDF); ~204 printed
+- **Authors:** Prodromos E. Tsinaslanidis, Achilleas D. Zapranis [p.i, cover]
+- **Year:** 2016
+- **Publisher:** Springer International Publishing Switzerland [p.i]
+- **Pages:** 213 (PDF); ~204 printed
 - **ISBN:** 978-3-319-23635-3 (print); 978-3-319-23636-0 (eBook) [p.i]
-- **Foco principal:** Rule-based algorithmic recognition of classical technical patterns (horizontal, zigzag, circular) with rigorous statistical assessment (t-tests, Bernoulli trials, bootstrap with GARCH-m/E-GARCH null models).
+- **Primary focus:** Rule-based algorithmic recognition of classical technical patterns (horizontal, zigzag, circular) with rigorous statistical assessment (t-tests, Bernoulli trials, bootstrap with GARCH-m/E-GARCH null models).
 
-## 1. Tese Central
+## 1. Core Thesis
+The authors argue that the technical-pattern analysis literature suffers from critical problems: descriptive and theoretical approaches instead of quantitative ones, illustrations only of "best-case" examples, inherent subjectivity in visual identification, and cognitive biases (clustering illusion) [Preface, p.vii-viii]. The book proposes systematic treatment via rule-based recognition mechanisms (algorithmic and therefore non-subjective) and a robust statistical framework (parametric tests + bootstrap with GARCH null models) to evaluate whether patterns generate abnormal returns [p.2, ch.1; p.25-26]. **The authors' empirical conclusion**: "overall TA does not generate systematically, statistically significant abnormal returns" [p.2]. The book's strongest result: the Head-and-Shoulders pattern can be identified in 21.77% (normal) and 22.94% (inverse) of simulated series under pure GBM — so it appears in pure randomness [p.93, ch.5].
 
-Os autores sustentam que a bibliografia sobre análise técnica de padrões sofre de problemas críticos: abordagens descritivas e teóricas em vez de quantitativas, ilustrações apenas de casos "ótimos", subjetividade inerente na identificação visual e vieses cognitivos (clustering illusion) [Preface, p.vii-viii]. O livro propõe tratamento sistemático via mecanismos de reconhecimento rule-based (algorítmicos e, portanto, não subjetivos) e um framework estatístico robusto (testes paramétricos + bootstrap com modelos nulos GARCH) para avaliar se padrões geram retornos anormais [p.2, ch.1; p.25-26]. **Conclusão empírica dos autores**: "overall TA does not generate systematically, statistically significant abnormal returns" [p.2]. O resultado mais forte do livro: o padrão Head-and-Shoulders pode ser identificado em 21.77% (normal) e 22.94% (inversa) das séries simuladas com GBM puro — logo aparece em pura aleatoriedade [p.93, ch.5].
-
-## 2. Conceitos-Chave
-
-- **Weak-form EMH** — preços atuais refletem toda a informação contida em preços históricos; invalida a predição baseada em TA no limite [p.4-5, ch.1]
-- **Random Walk RW1/RW2/RW3** — três versões hierárquicas (IID / INID / uncorrelated but dependent); RW2 é o usual em finanças pois permite heteroskedasticidade condicional [p.7-8]
-- **Self-fulfilling prophecy vs self-destructive** — duas teses opostas sobre como crenças coletivas dos técnicos afetam preços [p.20-21, §1.5.2]
-- **Clustering illusion** — viés cognitivo que faz humanos perceberem padrões onde não existem; explica persistência irracional da TA [p.21, §1.6]
-- **Regional local (peak/trough)** — observação que é máxima (mínima) numa janela de 2w+1 centrada nela; base de todo reconhecimento de padrões [p.32, ch.2]
-- **Perceptually Important Points (PIPs)** — método alternativo de identificar pontos salientes via distância máxima (ED, PD ou VD) a PIPs adjacentes [p.33-36, §2.3.2]
-- **HSAR (Horizontal Support/Resistance)** — zona horizontal de preços onde clustering de locals forma banda de suporte/resistência, não nível único [p.61-63, ch.4]
-- **Bounce frequency** — razão bounces/hits; mede poder de reversão de um HSAR [p.66]
-- **Trading Range Breakout (TRB)** — versão simples de SAR: mín/máx das últimas w barras [p.61, §4.2.4]
+## 2. Main Concepts
+- **Weak-form EMH** — current prices reflect all information contained in historical prices; in the limit, this invalidates prediction based on TA [p.4-5, ch.1]
+- **Random Walk RW1/RW2/RW3** — three hierarchical versions (IID / INID / uncorrelated but dependent); RW2 is the usual one in finance because it allows conditional heteroskedasticity [p.7-8]
+- **Self-fulfilling prophecy vs. self-destructive** — two opposing theses on how collective technician beliefs affect prices [p.20-21, §1.5.2]
+- **Clustering illusion** — cognitive bias that makes humans perceive patterns where none exist; explains the irrational persistence of TA [p.21, §1.6]
+- **Regional local (peak/trough)** — an observation that is a maximum (minimum) within a 2w+1 window centered on it; the basis for all pattern recognition [p.32, ch.2]
+- **Perceptually Important Points (PIPs)** — alternative method of identifying salient points via maximum distance (ED, PD, or VD) to adjacent PIPs [p.33-36, §2.3.2]
+- **HSAR (Horizontal Support/Resistance)** — horizontal price zone where clustering of locals forms a support/resistance band, not a single level [p.61-63, ch.4]
+- **Bounce frequency** — ratio of bounces/hits; measures an HSAR's reversal strength [p.66]
+- **Trading Range Breakout (TRB)** — simple SAR version: min/max of the last w bars [p.61, §4.2.4]
 - **Fibonacci retracement levels** — 0%, 23.6%, 38.2%, 50%, 61.8%, 100%, 161.8%, 261.8%, 423.6% [p.59, §4.2.1]
-- **Neckline (HS pattern)** — linha conectando os dois troughs intervenientes; age como suporte antes da penetração e resistência depois [p.57, ch.4; p.87, ch.5]
-- **Geometric Brownian Motion (discrete)** — $\Delta P/P = \mu\Delta t + \sigma\varepsilon\sqrt{\Delta t}$, usado como null model para simulação [p.92, eq.5.14]
-- **Savitzky-Golay smoothing** — filtro polinomial local; pré-processamento para estimar derivadas antes de DDTW [p.200, eq.9.10]
-- **DTW / DDTW / Subsequence DDTW** — Dynamic Time Warping e variantes para alinhar séries de comprimentos diferentes; DDTW usa derivadas locais (robustas a níveis de preço distintos) [ch.9, p.193-202]
-- **GARCH-m e E-GARCH null models** — modelos nulos bootstrap que capturam leptocurtose, autocorrelação e heteroskedasticidade condicional [ch.8, p.161]
-- **Joint hypothesis problem** — ao testar retornos excessivos é preciso escolher um modelo de asset pricing (CAPM, APT); ambos com limitações; os autores preferem raw returns [p.164, ch.8]
-- **"Trader's remorse"** — após penetração de SAR, preços retornam ao nível que inverte papel (S→R ou R→S) [p.62, ch.4]
-- **Whipsaw** — reversões rápidas em direções opostas sobre a mesma média móvel, geram custos altos [p.149, ch.7]
+- **Neckline (HS pattern)** — line connecting the two intervening troughs; acts as support before penetration and resistance afterward [p.57, ch.4; p.87, ch.5]
+- **Geometric Brownian Motion (discrete)** — $\Delta P/P = \mu\Delta t + \sigma\varepsilon\sqrt{\Delta t}$, used as the null simulation model [p.92, eq.5.14]
+- **Savitzky-Golay smoothing** — local polynomial filter; preprocessing step to estimate derivatives before DDTW [p.200, eq.9.10]
+- **DTW / DDTW / Subsequence DDTW** — Dynamic Time Warping and variants to align series of different lengths; DDTW uses local derivatives (robust to different price levels) [ch.9, p.193-202]
+- **GARCH-m and E-GARCH null models** — bootstrap null models that capture leptokurtosis, autocorrelation, and conditional heteroskedasticity [ch.8, p.161]
+- **Joint hypothesis problem** — when testing excess returns you must choose an asset-pricing model (CAPM, APT); both have limitations; the authors prefer raw returns [p.164, ch.8]
+- **"Trader's remorse"** — after SAR penetration, prices return to the level that reverses roles (S→R or R→S) [p.62, ch.4]
+- **Whipsaw** — rapid reversals in opposite directions over the same moving average, generating high costs [p.149, ch.7]
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Regional peak/trough (rolling window)** [p.32, eq.2.1-2.2]
 
 $$\text{Local Peak if } p_t > \max\{p_{[t-w:t-1]}\} \;\&\; p_t > \max\{p_{[t+1:t+w]}\}$$
 
 $$\text{Local Trough if } p_t < \min\{p_{[t-w:t-1]}\} \;\&\; p_t < \min\{p_{[t+1:t+w]}\}$$
 
-**Perpendicular distance para PIP** [p.34, eq.2.4]
+**Perpendicular distance for PIP** [p.34, eq.2.4]
 
 $$d_P(x_i; x_t, x_{t+T}) = \frac{|s \cdot i + c - p_i|}{\sqrt{s^2 + 1}}$$
 
-onde $s=(p_{t+T}-p_t)/T$, $c=p_t - t(p_{t+T}-p_t)/T$.
+where $s=(p_{t+T}-p_t)/T$, $c=p_t - t(p_{t+T}-p_t)/T$.
 
 **HSAR bin number (logarithmic spacing)** [p.63, eq.4.13]
 
 $$n = \frac{\ln(L_2^*/L_1^*)}{\ln(1+x)}$$
 
-onde $L_1^* = \min(L)(1+x/2)$, $L_2^* = \max(L)(1+x/2)$, $x$ = percentual desejado por bin.
+where $L_1^* = \min(L)(1+x/2)$, $L_2^* = \max(L)(1+x/2)$, $x$ = desired percentage per bin.
 
 **TRB levels** [p.61, eq.4.4-4.5]
 
 $$\text{Support}_t = \min\{p_{t-1}, \dots, p_{t-w}\}, \quad \text{Resistance}_t = \max\{p_{t-1}, \dots, p_{t-w}\}$$
 
-**HS tops — 5 condições (Osler & Chang 1995, adotadas por Lucke 2003)** [p.87-88, ch.5, eq.5.1-5.7]
+**HS tops — 5 conditions (Osler & Chang 1995, adopted by Lucke 2003)** [p.87-88, ch.5, eq.5.1-5.7]
 
 - C1 (head higher) [p.87, eq.5.1]: $P_2 > \max(P_1, P_3)$
 - C3 (balance) [p.88, eq.5.4]: $P_1 \geq 0.5(P_3+T_2)$ & $P_3 \geq 0.5(P_1+T_1)$
@@ -69,9 +66,9 @@ $$\text{Support}_t = \min\{p_{t-1}, \dots, p_{t-w}\}, \quad \text{Resistance}_t 
 
 $$|P_1-P_2|/\min(P_1,P_2) \leq 0.04, \quad (T_1-P_1)/P_1 \leq -0.1$$
 
-(i.e. 4% tolerância lateral, 10% de recuo mínimo entre topos; valores de Bulkowski 2000)
+(i.e. 4% lateral tolerance, 10% minimum pullback between tops; values from Bulkowski 2000)
 
-**Rounding Bottom — radius do círculo circunscrito** [p.129, eq.6.1]
+**Rounding Bottom — radius of the circumscribed circle** [p.129, eq.6.1]
 
 $$R_1 = \frac{a}{2\sin(A)}$$
 
@@ -127,19 +124,18 @@ Default $w=12$.
 
 $$z = \frac{x - pN}{\sqrt{Np(1-p)}}$$
 
-onde $x$ = número de sucessos (ex: estimated bounce > artificial), $p=0.5$ (fair), $N$ = trials.
+where $x$ = number of successes (e.g., estimated bounce > artificial), $p=0.5$ (fair), $N$ = trials.
 
 **DTW accumulated cost recursion** [p.195, eq.9.3]
 
 $$\tilde{d}(n,m) = d(n,m) + \min\{\tilde{d}(n-1,m), \tilde{d}(n,m-1), \tilde{d}(n-1,m-1)\}$$
 
-**Forecast-accuracy metrics (MSE, RMSE, NRMSE, NPRMSE, MAE, MAPE, Theil U1, U2)** [p.49-51, ch.3, eq.3.6-3.13] — todas padrão e definidas no texto.
+**Forecast-accuracy metrics (MSE, RMSE, NRMSE, NPRMSE, MAE, MAPE, Theil U1, U2)** [p.49-51, ch.3, eq.3.6-3.13] — all standard and defined in the text.
 
 **POCID / IPOCID / POS** (directional accuracy) [p.52, eq.3.14-3.17]
 
-## 4. Algoritmos e Pseudocódigo
-
-**RW() — identificar regional locals** [p.32, ch.2, Appendix 1]
+## 4. Algorithms and Pseudocode
+**RW() — identify regional locals** [p.32, ch.2, Appendix 1]
 
 ```
 Input: ys (price vector), w (half-window), pflag
@@ -225,57 +221,53 @@ Input: query Q (length N), longer Y (length M), threshold tau, rolling window om
 (9) Backtrack each b* to starting point a*
 ```
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.57, ch.4]**: In HSARz, if price hits and returns from the same side → bounce (trend-reversal signal); if it penetrates → failure (trend-continuation signal). Go long on bounce-from-support, short on bounce-from-resistance. TR2 inverts: long after resistance breach.
+- **RULE [p.66, ch.4]**: Trade signal with 1-day lag after confirmation (avoids non-synchronous trading); close after fixed holding periods HPs = {1:1:20} days or HPm = {22:2:40} days.
+- **RULE [p.106, ch.5 — HS tops closure]**: Short on the neckline penetration; close when (1) price reaches target = neckline − head_height (case 1), OR (2) time exceeds shoulder width (case 2), OR (3) price rises above the neckline for $t_n$ consecutive days or causes loss >= $t_{sl}$ (case 3). The authors use $t_n=2$, $t_{sl}=-0.04$ [p.109-110, Tables 5.4-5.5].
+- **RULE [p.95, ch.5 — DT balance]**: Tolerance between the two tops ≤ 4%; minimum pullback ≥ 10% (Bulkowski 2000).
+- **RULE [p.134, ch.6 — RB params]**: Bounds=0.3, min width=15, min fit=0.9, w=10.
+- **RULE [p.148, ch.7 — SMA]**: Go long when $P_t > \text{SMA}$ & $P_{t-1} < \text{SMA}$; short on the inverse.
+- **RULE [p.153, ch.7 — RSI]**: Buy when RSI crosses the lower (30) from below; sell when it crosses the upper (70) from above (Wilder 1978).
+- **RULE [p.153, ch.7 — BB]**: Buy if price exits through BB_upper OR crosses BB_lower from below; sell on the inverse (Leung & Chong 2003; Lim et al. 2013).
+- **RULE [p.105, ch.5 — choice of w]**: Choose w in RW() for zigzag patterns based on expected mean duration: HS -> w=7, TT/TB -> 15, DT/DB -> 15, Flags -> 3, Pennants -> 2, Wedges -> 7 (via GBM simulation matching the median local-to-local spacing) [Table 5.2, p.104].
+- **NEVER [p.65, ch.4]**: Use "estimated" HSARs with future data for backtesting — that is look-ahead bias. Use HSARsim() with a warmup of ~500 days and recompute daily using only data up to t-1.
+- **PREFER [p.172, ch.8]**: Short holding periods. TA performs best at HP=1 day; increasing HP degrades performance.
+- **RULE [p.164, ch.8]**: Use raw logarithmic returns (not excess returns) for short-term testing — avoids the joint hypothesis problem with CAPM/APT.
 
-- **REGRA [p.57, ch.4]**: Em HSARz, se preço bate e retorna do mesmo lado → bounce (trend reversal signal); se penetra → failure (trend continuation signal). Long em bounce-de-support, short em bounce-de-resistance. TR2 inverte: long após breach de resistance.
-- **REGRA [p.66, ch.4]**: Sinal de trade com 1 dia de lag após a confirmação (evita non-synchronous trading); fechamento após holding periods fixos HPs = {1:1:20} dias ou HPm = {22:2:40} dias.
-- **REGRA [p.106, ch.5 — HS tops closure]**: Short na penetração da neckline; fecha quando (1) preço atinge target = neckline - head_height (case 1), OU (2) tempo excede shoulder-width (case 2), OU (3) preço sobe acima da neckline por $t_n$ dias consecutivos ou causa perda >= $t_{sl}$ (case 3). Autores usam $t_n=2$, $t_{sl}=-0.04$ [p.109-110, Tables 5.4-5.5].
-- **REGRA [p.95, ch.5 — DT balance]**: Tolerância entre dois tops <= 4%; recuo mínimo >= 10% (Bulkowski 2000).
-- **REGRA [p.134, ch.6 — RB params]**: Bounds=0.3, min width=15, min fit=0.9, w=10.
-- **REGRA [p.148, ch.7 — SMA]**: Long quando $P_t > \text{SMA}$ & $P_{t-1} < \text{SMA}$; short no inverso.
-- **REGRA [p.153, ch.7 — RSI]**: Buy quando RSI cruza lower (30) de baixo; sell quando cruza upper (70) de cima (Wilder 1978).
-- **REGRA [p.153, ch.7 — BB]**: Buy se preço sai pelo BB_upper OU cruza BB_lower de baixo; sell no inverso (Leung & Chong 2003; Lim et al. 2013).
-- **REGRA [p.105, ch.5 — choice of w]**: Escolher w em RW() para zigzag patterns baseado em duração média esperada: HS -> w=7, TT/TB -> 15, DT/DB -> 15, Flags -> 3, Pennants -> 2, Wedges -> 7 (via simulação GBM matching mediana de espaçamento entre locals) [Table 5.2, p.104].
-- **NUNCA [p.65, ch.4]**: Usar HSARs "estimados" com dados futuros para backtesting — é look-ahead bias. Use HSARsim() com warmup de ~500 dias e recompute a cada dia só com dados até t-1.
-- **PREFIRA [p.172, ch.8]**: Holding periods curtos. TA performa melhor em HP=1 dia; aumentando HP degrada a performance.
-- **REGRA [p.164, ch.8]**: Usar raw logarithmic returns (não excess returns) para short-term testing — evita joint hypothesis problem com CAPM/APT.
+## 6. Pitfalls and Anti-patterns
+- **[p.93, ch.5] HS can be identified in 21.77% / 22.94% of simulated GBM series** — "if GBM is considered an accurate representation of the price stock generating mechanism then the HS pattern has no predictive power at all" [p.11, ch.1]. Clustering illusion explains the persistence of the belief.
+- **[p.190, ch.8] Parameter optimization was deliberately NOT performed in the book** — "parameters' values used in defining each trading rule were the most commonly used in the literature" to avoid data-snooping. Readers should NOT optimize parameters in-sample and report results as if they were out-of-sample.
+- **[p.18, §1.5.3] Overfitting via backtesting**: in-sample optimal rules capture both signal and noise; noise does not repeat out-of-sample → performance degrades. A validation set is mandatory.
+- **[p.66, ch.4] Look-ahead bias** in classical HSAR: any method using future locals to define a current level is invalid. Use rolling/expanding window with $t-1$ information only.
+- **[p.13, p.68, p.190] "Self-destructive" TA**: rules that were publicly effective tend to disappear (Sullivan et al. 1999; Olson 2004; Zapranis & Tsinaslanidis 2012b).
+- **[p.168-169, Table 8.5] Low-frequency patterns generate few signals**: although patterns have larger absolute returns than indicators, they produce few signals — pulling average returns toward the unconditional mean. Do not generalize from a single effective pattern.
+- **[p.190, ch.8] Transaction costs NOT included** — "transaction costs were not considered in this study, which would exacerbate even further the predictive performance of TA".
+- **[p.190, ch.8] Volume confirmation NOT included** — difficult to embed in simulated bootstrap, but TA assumes volume confirms the signal.
+- **[p.21, §1.6] Clustering illusion**: humans see patterns in random sequences (De Bondt 1998; Gilovich 1993).
+- **[p.22, §1.6] Overconfidence + self-attribution + hindsight bias + confirmation bias + neglect of probability** — all justify traders' irrational perseverance in TA.
+- **[p.165, ch.8] Distributional assumptions of ordinary t-tests are violated** in financial series (leptokurtosis, autocorrelation, conditional heteroskedasticity) → use bootstrap with a GARCH null model.
+- **[p.158, ch.7 "Whipsaw"]**: in volatile markets with a sensitive MA, long/short signals oscillate at the same level, generating transaction losses. Use filters (time, price-percentage) or MAC.
+- **[p.109, ch.5] In zigzag patterns, f3 >= f1 > f2 is the empirical pattern** — i.e., stop-loss (case 3) triggers MORE frequently than the price target (case 1) or neutral expiration (case 2). TA fails more often than it succeeds.
+- **[p.188-189, ch.8] The AR(1) null model failed the IID test** on real series — do not use a null model without checking residual independence.
+- **[p.201-202, ch.9] DDTW is computationally expensive** — hard to combine with bootstrap, which is already heavy.
+- **[p.202, ch.9] Pathological alignment in DTW**: the optimal path can deviate strongly from the diagonal; use a Sakoe-Chiba band or Itakura parallelogram as global constraint.
 
-## 6. Pitfalls e Anti-patterns
-
-- **[p.93, ch.5] HS pode ser identificado em 21.77% / 22.94% das séries GBM simuladas** — "if GBM is considered an accurate representation of the price stock generating mechanism then the HS pattern has no predictive power at all" [p.11, ch.1]. Clustering illusion explica persistência da crença.
-- **[p.190, ch.8] Parameter optimization NÃO foi feita no livro deliberadamente** — "parameters' values used in defining each trading rule were the most commonly used in the literature" para evitar data-snooping. Readers devem NÃO otimizar parâmetros em in-sample e relatar resultados como se fossem out-of-sample.
-- **[p.18, §1.5.3] Overfitting via backtesting**: rules ótimas in-sample capturam tanto sinal quanto ruído; ruído não se repete out-of-sample → performance degrada. Validation set obrigatório.
-- **[p.66, ch.4] Look-ahead bias** em HSAR clássico: qualquer método que use locals futuros para definir um nível corrente é inválido. Use rolling/expanding window apenas com informação $t-1$.
-- **[p.13, p.68, p.190] "Self-destructive" TA**: regras que já foram publicamente eficazes tendem a desaparecer (Sullivan et al. 1999; Olson 2004; Zapranis & Tsinaslanidis 2012b).
-- **[p.168-169, Table 8.5] Low-frequency patterns geram poucos sinais**: embora patterns tenham retornos absolutos maiores que indicators, produzem poucos sinais — empurra retornos médios para a média incondicional. Não generalizar de um único pattern eficaz.
-- **[p.190, ch.8] Transaction costs NÃO incluídos** — "transaction costs were not considered in this study, which would exacerbate even further the predictive performance of TA".
-- **[p.190, ch.8] Volume confirmation NÃO incluída** — difícil embutir em bootstrap simulado, mas TA assume que volume confirma sinal.
-- **[p.21, §1.6] Clustering illusion**: humanos veem padrões em sequências aleatórias (De Bondt 1998; Gilovich 1993).
-- **[p.22, §1.6] Overconfidence + self-attribution + hindsight bias + confirmation bias + neglect of probability** — todos justificam a perseverança irracional de traders em TA.
-- **[p.165, ch.8] Distributional assumptions de t-tests ordinários são violadas** em séries financeiras (leptocurtose, autocorrelação, heteroskedasticidade condicional) → use bootstrap com GARCH null model.
-- **[p.158, ch.7 "Whipsaw"]**: em mercados voláteis com MA sensível, long/short signals oscilam no mesmo nível, gerando perdas de transação. Use filtros (time, price-percentage) ou MAC.
-- **[p.109, ch.5] Em zigzag patterns, f3 >= f1 > f2 é o padrão empírico** — ou seja, stop-loss (case 3) dispara MAIS frequentemente que o price target (case 1) ou expiração neutra (case 2). TA falha mais vezes do que acerta.
-- **[p.188-189, ch.8] AR(1) null model falhou no teste IID** em séries reais — não use modelo nulo sem checar independência dos resíduos.
-- **[p.201-202, ch.9] DDTW é computacionalmente caro** — complicado combinar com bootstrap que já é pesado.
-- **[p.202, ch.9] Pathological alignment em DTW**: caminho ótimo pode deviar fortemente da diagonal; use Sakoe-Chiba band ou Itakura parallelogram como constraint global.
-
-## 7. Parâmetros Sensíveis
-
-- **Rolling window w em RW()** [p.104-105, Table 5.2]: escolhido via simulação GBM com 100 combinações de (mu, sigma), encontrando w cuja mediana de espaçamento entre locals bate com duração média do pattern na literatura. Justificativa econômica: captura a duração teórica média reportada por Bulkowski/Pring/Murphy. **NÃO é otimizado em backtest**.
-- **HSAR bin percent x=3% (empirical results), 5% (example)** [p.68, p.63]: valor logarítmico mantém distância percentual constante entre bins. x=3% e w=50 usados nos empirical results.
-- **RB thresholds Bounds=0.3, tWidth=15, tFit=0.9** [p.134]: width=15 vem de Pring (2002) "as little as 3 weeks". Bounds e fit são arbitrários mas justificados como conservadores.
-- **HS 2.5x symmetry ratio** [p.88]: vem diretamente de Osler & Chang (1995); não otimizado. Autores aplicam como-é.
-- **DT/DB 4% balance, 10% depth** [p.97]: vêm de Bulkowski (2000). Autores admitem "maximum price variations of 3% and 4% for DT and DB respectively" no Bulkowski original.
-- **RSI(14)**: [p.153] tradição de Wilder (1978); autores apenas usam.
-- **MACD (12, 26, 9)** [p.151]: "technicians usually set $w_L=26, w_S=12, w_{signal}=9$" (Murphy 1999) — pura convenção.
-- **BB (20, 2)** [p.154]: "common length of time span used is 20 days". Pura tradição.
+## 7. Sensitive Parameters
+- **Rolling window w in RW()** [p.104-105, Table 5.2]: chosen via GBM simulation with 100 combinations of (mu, sigma), finding w whose median local-to-local spacing matches the average pattern duration reported in the literature. Economic justification: captures the theoretical average duration reported by Bulkowski/Pring/Murphy. **NOT optimized in backtest**.
+- **HSAR bin percent x=3% (empirical results), 5% (example)** [p.68, p.63]: logarithmic value keeps percentage distance constant between bins. x=3% and w=50 used in the empirical results.
+- **RB thresholds Bounds=0.3, tWidth=15, tFit=0.9** [p.134]: width=15 comes from Pring (2002) "as little as 3 weeks". Bounds and fit are arbitrary but justified as conservative.
+- **HS 2.5x symmetry ratio** [p.88]: comes directly from Osler & Chang (1995); not optimized. The authors apply it as-is.
+- **DT/DB 4% balance, 10% depth** [p.97]: from Bulkowski (2000). The authors acknowledge "maximum price variations of 3% and 4% for DT and DB respectively" in the original Bulkowski.
+- **RSI(14)**: [p.153] Wilder (1978) tradition; the authors simply use it.
+- **MACD (12, 26, 9)** [p.151]: "technicians usually set $w_L=26, w_S=12, w_{signal}=9$" (Murphy 1999) — pure convention.
+- **BB (20, 2)** [p.154]: "common length of time span used is 20 days". Pure tradition.
 - **MOM w=12, ROC w=12** [p.156-157]: "setting w with 12 is a common choice among technicians" (Rosillo et al. 2013).
-- **Stop-loss thresholds $t_n=2$, $t_{sl}=-0.04$** [p.109, Table 5.4]: escolhidos como representativos; autores apresentam figuras com sensibilidade (Fig 5.16) mostrando como variação muda frequências relativas e retornos médios — é exploração paramétrica, não otimização.
+- **Stop-loss thresholds $t_n=2$, $t_{sl}=-0.04$** [p.109, Table 5.4]: chosen as representative; the authors present figures with sensitivity (Fig 5.16) showing how variation changes relative frequencies and mean returns — this is parameter exploration, not optimization.
 - **SMA long-term w=200** [p.163, ch.8, Table 8.2]: "long term" benchmark. Medium w=50, short w=10.
-- **Holding period HP**: testado para múltiplos valores; Fig 8.1 mostra que HP=1 dá melhor performance [p.171-172].
+- **Holding period HP**: tested for multiple values; Fig 8.1 shows HP=1 gives best performance [p.171-172].
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "Our empirical evidences suggest that overall TA does not generate systematically, statistically significant abnormal returns." — [p.2, ch.1]
 
 > "The HS pattern is successfully identified in random price series and this indicates that it is possible the pattern to be identified in real price series too. The main conclusion is that if the geometric Brownian motion is considered an accurate representation of the price stock generating mechanism then the HS pattern has no predictive power at all." — [p.11, ch.1]
@@ -286,12 +278,11 @@ Input: query Q (length N), longer Y (length M), threshold tau, rolling window om
 
 > "After taking trading costs into account, none of the thirty-two patterns showed any evidence of profitable forecasting ability in either [bullish or bearish] direction... Moreover, the most bullish results tended to be generated by those patterns which are classified as bearish in the standard textbooks on charting, and vice versa." — Levy (1971, p.318), cited [p.14, Table 1.1]
 
-## 9. Conexões com Outros Livros Desta Base
-
-- **Ceticismo sobre TA clássica** [p.2, ch.1]: `algo_trading_chan.md` e `quant_trading_chan.md` (Chan) documentam empiricamente estratégias com performance marginal — alinhado com a conclusão central deste livro. Ambos enfatizam validação out-of-sample.
-- **Regional peaks / pattern recognition via PIPs** [ch.2, p.32-36]: sobrepõe parcialmente com técnicas de swing-point detection em `cycle_analytics.md` e `rocket_science.md` (Ehlers). Ehlers usa DSP filters e Hilbert transform; Tsinaslanidis usa RW + PIPs discretos.
-- **Bootstrap methodology com GARCH null model** [ch.8, p.161, p.173-189]: metodologia similar discutida em `ml_for_algo_trading.md` (Lopez de Prado) sob outro nome (Monte Carlo / purged cross-validation).
-- **GBM como null model de séries de preço** [ch.5, p.92, eq.5.14]: também em `fin_time_series_tsay.md` (modelos ARIMA/GARCH) e `time_series_hamilton.md`.
-- **Technical indicators (SMA, EMA, MACD, RSI, BB, MOM, ROC)** [ch.7, p.147-159]: definições padrão alinhadas com `cybernetic_analysis.md` e `quant_trading_chan.md`.
-- **Head-and-Shoulders in GBM noise (clustering illusion)** [p.93, ch.5; p.21, §1.6]: reforça alerta de `systematic_trading.md` (Carver) sobre cherry-picking e confirmation bias, e alinha com framework anti-overfit do projeto ai-trade.
-- **Overfitting warning via in-sample vs out-of-sample** [p.18, §1.5.3]: presente em `ml_for_algo_trading.md` e `testing_tuning.md`; o capítulo 1.5.3 aqui é introdutório em comparação com o tratamento de Lopez de Prado.
+## 9. Cross-references to Other Books in This Knowledge Base
+- **Skepticism about classical TA** [p.2, ch.1]: `algo_trading_chan.md` and `quant_trading_chan.md` (Chan) empirically document strategies with marginal performance — aligned with this book's central conclusion. Both emphasize out-of-sample validation.
+- **Regional peaks / pattern recognition via PIPs** [ch.2, p.32-36]: partially overlaps with swing-point detection techniques in `cycle_analytics.md` and `rocket_science.md` (Ehlers). Ehlers uses DSP filters and the Hilbert transform; Tsinaslanidis uses discrete RW + PIPs.
+- **Bootstrap methodology with GARCH null model** [ch.8, p.161, p.173-189]: similar methodology discussed in `ml_for_algo_trading.md` (Lopez de Prado) under a different name (Monte Carlo / purged cross-validation).
+- **GBM as null model for price series** [ch.5, p.92, eq.5.14]: also in `fin_time_series_tsay.md` (ARIMA/GARCH models) and `time_series_hamilton.md`.
+- **Technical indicators (SMA, EMA, MACD, RSI, BB, MOM, ROC)** [ch.7, p.147-159]: standard definitions aligned with `cybernetic_analysis.md` and `quant_trading_chan.md`.
+- **Head-and-Shoulders in GBM noise (clustering illusion)** [p.93, ch.5; p.21, §1.6]: reinforces the warning in `systematic_trading.md` (Carver) about cherry-picking and confirmation bias, and aligns with the ai-trade project's anti-overfit framework.
+- **Overfitting warning via in-sample vs. out-of-sample** [p.18, §1.5.3]: present in `ml_for_algo_trading.md` and `testing_tuning.md`; chapter 1.5.3 here is introductory compared with Lopez de Prado's treatment.

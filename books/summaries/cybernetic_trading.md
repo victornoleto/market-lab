@@ -3,25 +3,23 @@
 > **Extraction Scope Notice.** The source PDF used for this summary has **163 pages** (the `[PAGE N]` markers in `books/extracted/cybernetic_trading/_full.txt` run from 1 to 163). All citations `[p.N]` in this summary refer to **PDF-page indices of the extracted file**, NOT the printed page numbers of the physical book (which run 1–315). The offset between PDF page and printed page is non-linear — it grows from ~+5 in the opening chapters to ~+150 at the index. To verify any citation, open `_full.txt` and search for `[PAGE N]`. Printed-page citations from an earlier draft have been discarded.
 
 ## Metadata
-- **Autor:** Murray A. Ruggiero, Jr. [p.1, p.2]
-- **Ano:** 1997 [p.2]
-- **Editora:** John Wiley & Sons, Inc. (Wiley Trading Advantage) [p.1, p.2]
-- **Páginas:** 315 printed (163 in extracted PDF) [p.2, metadata]
+- **Author:** Murray A. Ruggiero, Jr. [p.1, p.2]
+- **Year:** 1997 [p.2]
+- **Publisher:** John Wiley & Sons, Inc. (Wiley Trading Advantage) [p.1, p.2]
+- **Pages:** 315 printed (163 in extracted PDF) [p.2, metadata]
 - **ISBN:** 0-471-14920-9 (cloth) [p.2]
-- **Foco principal:** Applying advanced technologies (intermarket analysis, neural networks, genetic algorithms, machine induction, cycles via MEM, fuzzy logic, system feedback) to build mechanical trading systems grounded in a sound market premise.
+- **Main focus:** Applying advanced technologies (intermarket analysis, neural networks, genetic algorithms, machine induction, cycles via MEM, fuzzy logic, system feedback) to build mechanical trading systems grounded in a sound market premise.
 
-## 1. Tese Central
-
+## 1. Core Thesis
 Advanced technologies (neural networks, genetic algorithms, maximum-entropy spectral analysis, fuzzy logic, machine induction, statistical pattern recognition) are tools — not magic — that turn a **sound premise** (intermarket linkage, seasonality, cycles, fundamental cause-effect, mechanized subjective analysis) into a measurable, testable, robust mechanical trading system [p.5, p.10]. Ruggiero is explicit that "if I didn't have a clear understanding of the markets I was attempting to trade, the applications would prove fruitless" — so he spent three years studying markets before applying ML [p.5]. His thesis: raw price-only models and curve-fit indicator tweaks fail out-of-sample; the edge comes from (a) a defensible premise, (b) rigorous preprocessing of multiple data series, (c) small, parsimonious rule sets, and (d) validation via correlation/predictive-correlation filters, walk-forward seasonality, system feedback on the equity curve, and strict development/testing/out-of-sample splits [p.117-122, p.125-126].
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Intermarket Analysis** — study of how markets interrelate (e.g., S&P500↔T-Bonds positive, CRB↔T-Bonds negative, Gold↔XAU positive, Crude↔Dollar negative) to confirm signals and predict direction [p.13-22].
 - **Intermarket Divergence** — traded market moving opposite to what intermarket linkage would predict; used as entry trigger [p.23-24].
 - **Ruggiero/Barna Seasonal Index** — walk-forward seasonal that combines Win% and average N-day return scaled to [-1,1]; avoids hindsight [p.31, Table 2.2].
 - **COT Index (Briese)** — `100 × (Current Net − Lowest(Net,N)) / (Highest(Net,N) − Lowest(Net,N))`, LookBack 1.5–4 years; commercials high = bullish [p.53].
 - **Predictive Correlation** — correlation between a lagged indicator/intermarket and the forward change of the traded market, measuring whether the link is currently predictive [p.68].
-- **MEM (Maximum Entropy Method)** — Burg 1967 autoregressive spectral analysis; applied after detrending (Butterworth 6 − Butterworth 20) to find dominant cycle and phase of financial data [p.60].
+- **MEM (Maximum Entropy Method)** — Burg 1967 autoregressive spectral analysis; applied after detrending (Butterworth 6 − Butterworth 20) to find the dominant cycle and phase of financial data [p.60].
 - **Adaptive Channel Breakout** — buy/sell at highest high/lowest low of the past *dominant-cycle* bars (length derived from MEM), not a fixed 20 [p.65].
 - **Signal-to-Noise Ratio (cycles)** — amplitude of dominant cycle divided by average spectral strength; higher → more reliable cycle trading [p.63].
 - **Elliott Wave Oscillator (Tom Joseph)** — `Average((H+L)/2, 5) − Average((H+L)/2, 35)` used to mechanize wave-3/4/5 counting [p.104-105].
@@ -34,8 +32,7 @@ Advanced technologies (neural networks, genetic algorithms, maximum-entropy spec
 - **Fuzzy Candle "Long"** — membership = max(0, min(1, (CRange − OneTrig)/(OneTrig − ZeroTrig))) where triggers are multiples of average body over LBack [p.106, Table 14.2].
 - **Predictive Correlation (TradeCycles / RACorrel)** — Pearson correlation used as lookahead filter on intermarket oscillator [p.68-69].
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **COT Index (Briese)** [p.53]
 
 $$\text{COT Index} = 100 \times \frac{\text{Current Net} - \text{Lowest(Net, } N\text{)}}{\text{Highest(Net, } N\text{)} - \text{Lowest(Net, } N\text{)}}$$
@@ -108,14 +105,13 @@ where $R_A$ = average returns, $R_F$ = risk-free returns, $S$ = stdev of returns
 
 $$\text{Fitness} = \text{NetProfit} - 2 \times \text{MaxIDDrawDown}$$
 
-Ruggiero warns against using profit factor alone — it would yield 5-trade curve-fit winners [p.157].
+Ruggiero warns against using profit factor alone — it would produce 5-trade curve-fit winners [p.157].
 
 **Alternative Fitness (Net Profit / Drawdown × Win %)** [p.89]
 
 $$\text{Fitness} = \frac{\text{NetProfit}}{\text{Drawdown}} \times \text{Winning\%}$$
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Adaptive Channel Breakout (MEM-driven)** [p.65]
 
 ```
@@ -233,60 +229,56 @@ for each rule-candidate in induced decision tree:
         discard as statistical artifact
 ```
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.13]**: Go long S&P500 only when T-Bonds are above their 26-day moving average (positive-correlation regime filter); stay out of the market otherwise — stays in the market 59% of the time and beats buy-and-hold.
+- **RULE [p.23]**: Short-term intermarket divergence — if T-Bonds[5]−T-Bonds[10] is positive and S&P500−S&P500[5] is negative (or vice versa), enter the divergence; test horizons 10–30 days.
+- **RULE [p.25, Table 1.6]**: T-Bonds using Eurodollars — when T-Bonds close below their SMA(24) and Eurodollars are above their SMA(32), buy T-Bonds at the open; 59% win, avg trade $1,447.
+- **RULE [p.34]**: Day-of-week S&P500 — buy Monday if T-Bonds are above the SMA(26); $249/trade since 1982.
+- **RULE [p.40, Table 3.1]**: Use inflation (CPI/Yield ratio) to forecast short-term rates — 86% accuracy since 1971.
+- **RULE [p.48, Table 4.9]**: Only trade breakouts when ADX(14) > 25 or ADX is rising from <10 on 3 of the last 4 days; exit the trend when 5-day diff(ADX) < 0.
+- **RULE [p.53-54]**: COT system — if COT Index Commercials[Lag] > Ctrigger and COT Index Small < Strigger → buy (Ruggiero recommends Lag=1-3 weeks, Ctrigger=30-55, Strigger=35-50 per market).
+- **RULE [p.65]**: Adaptive Channel Breakout — buy at `Highest(High, DCycle)` where DCycle comes from MEM with window=30, poles=6; D-Mark, Yen, Swiss Franc: win rate 44-49%, drawdown <$12,500.
+- **RULE [p.66-67]**: Use 40-day Pearson correlation between the intermarket and the traded market with threshold |ρ|>0.5 as an on/off filter — cuts drawdown ~50% and doubles the average trade.
+- **RULE [p.105]**: If PTI > 35 after wave 4 → expect a new high in wave 5; if PTI < 35 → assume double top / failed fifth.
+- **RULE [p.115-116]**: Never select the most profitable parameter set; choose one surrounded by neighbors with similar performance (flat profit surface).
+- **RULE [p.118-119]**: The trade distribution must remain similar between the dev set and live trading; distribution shift precedes system failure even if current P&L still looks good.
+- **RULE [p.125]**: Stop trading immediately if live drawdown > 150% of the dev set OR consecutive losers > 150% of the dev set.
+- **RULE [p.134]**: Build models with at least 30 cases per input; >30:1 ratio is more robust.
+- **NEVER [p.157]**: Use pure profit factor as a GA fitness function — it evolves curve-fit 5-trade solutions.
+- **NEVER [p.60]**: Apply MEM directly on raw price data — it needs detrending (e.g., Butterworth(6) − Butterworth(20)).
+- **NEVER [p.62]**: Use Stochastic/RSI with a fixed period — Lane tunes it to the dominant cycle (half the cycle).
 
-- **REGRA [p.13]**: Operar long S&P500 somente quando T-Bonds está acima da média móvel de 26 dias (filtro de regime positive-correlation); fora do mercado caso contrário — fica no mercado 59% do tempo e supera buy-and-hold.
-- **REGRA [p.23]**: Intermarket divergence short-term — se T-Bonds[5]−T-Bonds[10] positivo e S&P500−S&P500[5] negativo (ou inverso), entrar na divergência; testar horizonte 10–30 dias.
-- **REGRA [p.25, Table 1.6]**: T-Bonds usando Eurodollars — quando T-Bonds fecha abaixo da sua SMA(24) e Eurodollars acima da sua SMA(32), comprar T-Bonds no open; 59% win, avg trade $1,447.
-- **REGRA [p.34]**: Day-of-week S&P500 — comprar segunda-feira se T-Bonds acima da SMA(26); $249/trade desde 1982.
-- **REGRA [p.40, Table 3.1]**: Usar inflação (ratio CPI/Yield) para prever juros de curto prazo — 86% acerto desde 1971.
-- **REGRA [p.48, Table 4.9]**: Só operar breakouts quando ADX(14) > 25 ou ADX subindo de <10 por 3 dos últimos 4; sair do trend quando 5-day diff(ADX) < 0.
-- **REGRA [p.53-54]**: Sistema COT — se COT Index Commercials[Lag] > Ctrigger e COT Index Small < Strigger → comprar (Ruggiero recommends Lag=1-3 weeks, Ctrigger=30-55, Strigger=35-50 por mercado).
-- **REGRA [p.65]**: Adaptive Channel Breakout — comprar em `Highest(High, DCycle)` onde DCycle vem do MEM com window=30, poles=6; D-Mark, Yen, Swiss Franc: win rate 44-49%, drawdown <$12,500.
-- **REGRA [p.66-67]**: Usar Pearson correlation 40-day entre intermarket e traded market com threshold |ρ|>0.5 como filtro on/off — reduz drawdown ~50% e dobra average trade.
-- **REGRA [p.105]**: Se PTI > 35 após wave 4 → esperar novo high em wave 5; se PTI < 35 → assumir double top / failed fifth.
-- **REGRA [p.115-116]**: Nunca selecionar o set de parâmetros mais lucrativo; escolher aquele cercado por vizinhos com performance similar (flat profit surface).
-- **REGRA [p.118-119]**: Distribuição de trades tem que permanecer similar entre dev set e live trading; mudança de distribuição precede a falha de um sistema mesmo que P&L corrente pareça bom.
-- **REGRA [p.125]**: Stop trading imediatamente se drawdown live > 150% do dev set OR consecutive losers > 150% do dev set.
-- **REGRA [p.134]**: Desenvolver modelos com pelo menos 30 casos por input; >30:1 ratio é mais robusto.
-- **NUNCA [p.157]**: Usar profit factor puro como função de fitness em GA — evolui soluções curve-fit de 5 trades.
-- **NUNCA [p.60]**: Tentar usar MEM diretamente em dados de preço brutos — precisa detrend (ex.: Butterworth(6) − Butterworth(20)).
-- **NUNCA [p.62]**: Usar estocástico/RSI com período fixo — Lane ajusta ao dominant cycle (metade do ciclo).
-
-## 6. Pitfalls e Anti-patterns
-
-- [p.32] **Seasonal reliability**: Day-of-year seasonality com apenas 10-20 ocorrências é quase curve-fit; exigir 80%+ accuracy ou não operar.
-- [p.60] Fourier analysis falha em dados financeiros porque requer séries longas e estacionárias; usar MEM (Burg 1967) em vez disso.
-- [p.73-74] Usar o otimizador do TradeStation direto para definir stops pode derrubar win rate — analisar scatter charts da adverse movement trade-by-trade.
-- [p.77-78] Trading um sistema sem monitorar a equity curve é "como dirigir à noite sem faróis".
-- [p.93] Rough sets / machine induction em financial data — markets não são gaussianos; métodos que não assumem distribuição são preferíveis (C4.5 / rough sets).
-- [p.111-112] Definir time-frame sem considerar capital: sistema S&P500 overnight com $10,000 é suicídio; preferir T-Bonds.
-- [p.111] Usar apenas um bull market nos dados; precisa pelo menos 1 bull + 1 bear em dev e test sets; mínimo 10 anos daily.
-- [p.65, p.115] Reversal-stop-and-reverse systems produzem large losers ocasionais; mitigar com target profit ou time-based exit (early-trade tighter stop).
-- [p.29] Não usar o par de parâmetros mais "profitable"; o "flatter the profit surface" e "robust" parameters são melhores — mesmo em intermarket, the most profitable set of parameters is surrounded by similarly profitable neighbors.
-- [p.121-122] A **distribuição** de trade P&L precede falha do sistema em vários meses; se a forma da curva muda, parar mesmo com P&L ainda positivo.
-- [p.125] Aumento de 150% no max drawdown vs dev set = DANGER, parar o sistema.
-- [p.125-126] Neural network com life-span curto (semanas) para em padrões transitórios e morre sem aviso por falta de testing set estatisticamente significante.
+## 6. Pitfalls and Anti-patterns
+- [p.32] **Seasonal reliability**: day-of-year seasonality with only 10-20 occurrences is nearly curve-fit; require 80%+ accuracy or do not trade.
+- [p.60] Fourier analysis fails on financial data because it requires long stationary series; use MEM (Burg 1967) instead.
+- [p.73-74] Using the TradeStation optimizer directly to set stops can tank the win rate — analyze adverse-movement scatter plots trade by trade.
+- [p.77-78] Trading a system without monitoring the equity curve is "like driving at night without headlights."
+- [p.93] Rough sets / machine induction on financial data — markets are non-Gaussian; distribution-free methods are preferable (C4.5 / rough sets).
+- [p.111-112] Choosing a timeframe without regard to capital: an overnight S&P500 system on $10,000 is suicide; prefer T-Bonds.
+- [p.111] Using only one bull market in the data; need at least 1 bull + 1 bear in dev and test sets; minimum 10 years daily.
+- [p.65, p.115] Reversal-stop-and-reverse systems produce occasional large losers; mitigate with profit target or time-based exit (early-trade tighter stop).
+- [p.29] Do not use the most "profitable" parameter pair; "flatter the profit surface" and "robust" parameters are better — even in intermarket, the most profitable set of parameters is surrounded by similarly profitable neighbors.
+- [p.121-122] The trade P&L **distribution** precedes system failure by several months; if the curve's shape changes, stop trading even while P&L is still positive.
+- [p.125] A 150% increase in max drawdown vs. dev set = DANGER, shut the system down.
+- [p.125-126] A neural network with a short life-span (weeks) stops on transient patterns and dies without warning because of an insufficient testing set.
 - [p.144-145] Train a neural network multiple times with different initial weights; if results diverge, the model is not robust (similar results across trainings = reliable network).
-- [p.146] Raw output de NN com regras primitivas (long > 0, short < 0) gera drawdown muito alto; sempre usar threshold (ex: ±0.10) e filtro de predictive correlation.
-- [p.151] Error function padrão (RMSE) em neural networks produz large losing trades em trading; evoluir pesos via GA com função de fitness customizada é melhor.
-- [p.157] Profit factor sozinho como fitness function em GA converge em soluções curve-fit de 5 trades ganhadores — usar `NetProfit − 2×MaxIDDrawDown`.
+- [p.146] Raw NN output with primitive rules (long > 0, short < 0) produces very large drawdowns; always use a threshold (e.g., ±0.10) and a predictive-correlation filter.
+- [p.151] The default RMSE error function in neural networks produces large losing trades in trading; evolving weights via GA with a custom fitness function is better.
+- [p.157] Profit factor alone as a GA fitness function converges on curve-fit 5-winning-trade solutions — use `NetProfit − 2×MaxIDDrawDown`.
 
-## 7. Parâmetros Sensíveis
+## 7. Sensitive Parameters
+- **ADX period = 14** [p.48]: Wilder's default; Ruggiero keeps it but modifies thresholds (25/20/45/10 instead of just 25). Economic rationale: 14 ≈ 2-3 trading weeks = natural institutional-momentum cycle. Not optimized per market.
+- **Breakout channel → dominant-cycle** [p.65]: Ruggiero replaces Donchian 20 with MEM's `DCycle` for adaptivity.
+- **MEM window=30, poles=6** [p.65]: chosen because the shortest detectable cycles are 6 bars and the longest are 50; more poles = sharper but noisier spectra (6 poles is best for trend-following; 12 poles is best for forecasting).
+- **Elliott Wave Oscillator 5 & 35** [p.104]: Tom Joseph's empirical discovery (1987); not optimized, robust across markets.
+- **Moving-average length for intermarket divergence S&P/T-Bonds = 12-16 / 26-30** [p.25, Table 1.4]: 12-16 ≈ 2-3 trading weeks (short), 26-30 ≈ 5-6 weeks (medium); wide cluster of profitable neighbor pairs.
+- **Seasonal calculation window** [p.32]: fixed fundamentals (corn) → use all data; mutable (T-Bonds) → rolling window starting 1986 (market dynamics changed pre-86).
+- **Correlation filter threshold ≈ ±0.50** [p.66-67]: gold only trends sustainably when 50-day ρ(CRB,Gold) > 0.50; a higher threshold filters too aggressively (few trades).
+- **GA population=500, mutation=0.30, crossover=0.30, generations=3000** [p.157]: evolving a 12-parameter problem; Ruggiero claims it produces stable clusters.
+- **COT LookBack N = 1.5–4 years** [p.53]: Briese's range; reflects the commercials' positioning cycle.
+- **RSI period ≈ half dominant cycle (Lane)** [p.62]: explicitly cycle-tuned; fixed length is an anti-pattern per the author.
 
-- **ADX period = 14** [p.48]: default de Wilder; Ruggiero mantém mas modifica thresholds (25/20/45/10 em vez de só 25). Justificativa econômica: 14 ≈ 2-3 semanas de trading = ciclo natural de institucional momentum. Não otimiza por market.
-- **Breakout channel → dominant-cycle** [p.65]: Ruggiero substitui o Donchian 20 por `DCycle` do MEM para adaptividade.
-- **MEM window=30, poles=6** [p.65]: escolhidos porque ciclos mais curtos detectáveis são 6 bars e mais longos são 50; mais poles = spectra mais afiada mas mais ruidosa (6 poles produz melhor trend-following; 12 poles melhor para forecast).
-- **Elliott Wave Oscillator 5 & 35** [p.104]: descoberta empírica de Tom Joseph (1987); não otimizado, robusto across markets.
-- **Moving-average length for intermarket divergence S&P/T-Bonds = 12-16 / 26-30** [p.25, Table 1.4]: 12-16 ≈ 2-3 trading weeks (short), 26-30 ≈ 5-6 weeks (medium); cluster largo de pares vizinhos profitable.
-- **Seasonal calculation window** [p.32]: fixed fundamentals (corn) → usar todos os dados; mutable (T-Bonds) → janela móvel a partir de 1986 (dinâmica do mercado mudou pré-86).
-- **Correlation filter threshold ≈ ±0.50** [p.66-67]: gold só tem trend sustentado quando ρ(CRB,Gold) 50-day > 0.50; threshold mais alto filtra demais (poucos trades).
-- **GA population=500, mutation=0.30, crossover=0.30, generations=3000** [p.157]: evolving 12-parameter problem; Ruggiero afirma produz clusters estáveis.
-- **COT LookBack N = 1.5–4 years** [p.53]: Briese's range; reflete ciclo de posicionamento dos commercials.
-- **RSI period ≈ half dominant cycle (Lane)** [p.62]: explicitly cycle-tuned; fixed-length é anti-padrão segundo o autor.
-
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "I realized that regardless of how well I knew the advanced technologies, if I didn't have a clear understanding of the markets I was attempting to trade, the applications would prove fruitless." — [p.5]
 
 > "Trading a system without at least being aware of the equity curve is like driving a car at night without lights—possible, but dangerous." — paraphrasing the recurring equity-curve-monitoring theme [p.77-78]
@@ -297,8 +289,7 @@ for each rule-candidate in induced decision tree:
 
 > "If we use a measure such as profit factor, the genetic algorithm might have evolved a solution with five or fewer trades, all of which are winners and have a profit factor of 100. These systems have too few trades and most likely will not be profitable in the future because they are curve-fitted systems." — [p.157]
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - **MEM / maximum entropy spectral analysis / dominant cycle**: Ruggiero credits John Ehlers (`rocket_science.md`, `cybernetic_analysis.md`, `cycle_analytics.md`) — same Burg 1967 method, applied to trading. Ehlers' adaptive filters (Butterworth, super-smoother) are the *detrending* step Ruggiero uses before MEM [p.60]. Ruggiero complements Ehlers' pure-signal view with intermarket and fundamental premises.
 - **Channel breakout / Donchian / Turtle**: `systematic_trading.md` (Carver) and `quant_trading_chan.md` (Chan) treat the same family; Ruggiero extends it with MEM-adaptive channel length [p.65].
 - **Statistical validation / hypothesis testing**: Z-test, Chi-square, student-t in `evidence_based_ta.md` (Aronson) are developed in deeper theoretical depth; Ruggiero applies the same tests at system-evaluation scope [p.57-58].

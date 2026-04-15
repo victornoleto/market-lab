@@ -1,25 +1,23 @@
 # Systematic Trading: A unique new method for designing trading and investing systems
 
 ## Metadata
-- **Autor:** Robert Carver [p.2 (frontmatter)]
-- **Ano:** 2015
-- **Editora:** Harriman House Ltd
-- **Páginas:** 326
+- **Author:** Robert Carver [p.2 (frontmatter)]
+- **Year:** 2015
+- **Publisher:** Harriman House Ltd
+- **Pages:** 326
 - **ISBN:** 9780857194459 (hardback); 9780857195005 (eBook) [p.5 (copyright page)]
-- **Foco principal:** A modular, volatility-standardised framework for designing systematic trading and investing systems for futures, ETFs and spread bets, covering forecasting, position sizing, portfolio construction and cost control.
+- **Main focus:** A modular, volatility-standardised framework for designing systematic trading and investing systems for futures, ETFs and spread bets, covering forecasting, position sizing, portfolio construction and cost control.
 
 ---
 
-## 1. Tese Central
-
+## 1. Core Thesis
 The book's central thesis is that the most important source of underperformance — for amateurs and professionals alike — is not a failure to find better trading rules, but a failure to design the surrounding system correctly: wrong position sizing, overtrading, and over-fitting kill more accounts than bad forecasts do [ch.1, p.7].
 
 Carver's solution is a modular, volatility-standardised framework that separates (i) the trading rule/forecast, (ii) the volatility target, and (iii) the position sizing arithmetic. Because all three layers are volatility-standardised, the same framework works for any rule, any instrument and any account size. The book is structured around three archetypal users: the *asset allocating investor* (static portfolio, no forecasts, ETFs), the *semi-automatic trader* (discretionary forecasts within a systematic risk framework, spread bets), and the *staunch systems trader* (fully systematic rules, futures) — all sharing the same core pipeline [p.9–11 (preface)].
 
 ---
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Volatility standardisation** — Adjusting the returns (and forecasts) of different assets so they have the same expected risk (daily standard deviation). The single most powerful technique in the framework, enabling the same trading rule to be applied generically across all instruments [p.40 (ch.2)].
 - **Forecast** — A scaled number, positive meaning buy and negative meaning sell, proportional to the expected risk-adjusted return (i.e., the expected Sharpe ratio). Expected average absolute value is **10**; hard-capped at **±20** [p.112–114 (ch.7)].
 - **Combined forecast** — A weighted average of individual rule forecasts using *forecast weights*, then multiplied by a *forecast diversification multiplier* (FDM) to restore the expected absolute value to 10, and then capped at ±20 [p.129–133 (ch.8)].
@@ -42,8 +40,7 @@ Carver's solution is a modular, volatility-standardised framework that separates
 
 ---
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Annualising volatility** [p.21 (ch.1)]
 
 Daily to annual: multiply by $\sqrt{256} = 16$.
@@ -139,8 +136,7 @@ Carry forecast scalar is **30**; the raw carry is effectively an annualised Shar
 
 ---
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Full modular framework pipeline** [p.98–100 (ch.5)]
 
 ```python
@@ -233,26 +229,24 @@ NOTE: The action on stop trigger is to CLOSE the position only [p.212 (ch.13)]. 
 
 ---
 
-## 5. Regras de Trading Explícitas
-
-- **REGRA [p.160, ch.10]**: Subsystem position = (volatility_scalar × forecast) / 10. Apply to every instrument, every day.
-- **REGRA [p.173, ch.11]**: Portfolio position = subsystem_position × instrument_weight × IDM. IDM must never exceed 2.5 [p.170–171 (ch.11)].
-- **REGRA [p.174, ch.11]**: Apply position inertia — do not trade if the rounded target position is within 10% of the current held position.
-- **REGRA [p.133, ch.8]**: Cap combined forecast at ±20 after applying FDM. Never allow a combined forecast above +20 or below −20.
-- **REGRA [p.144, ch.9]**: Set percentage volatility target = SR_realistic / 2 (Half-Kelly). For negative-skew strategies: SR_realistic / 4 [p.146 (ch.9)].
-- **REGRA [p.146, ch.9]**: SR_realistic must be capped at 1.0 for staunch systems traders, regardless of how good the back-test looks. For semi-automatic traders, the maximum safe achievable SR is 0.5, so the volatility target must not exceed 25% [p.146 (ch.9)].
-- **REGRA [p.187–188, p.196, ch.12]**: Accept a new instrument only if its annual cost ≤ 0.13 SR/year (systems traders, p.187–188) or ≤ 0.08 SR/year (asset allocators and semi-auto traders, p.196).
-- **REGRA [p.212, ch.13]**: Semi-automatic stop loss uses X = 4 sigma_price_points from tracking extreme. On trigger: close the position only (no automatic reversal). Never modify the forecast after entering a trade [p.222 (ch.13)].
-- **REGRA [p.222, ch.13]**: Do NOT use profit targets for semi-automatic trading — no consistent evidence they improve performance.
-- **REGRA [p.122, ch.7]**: Prune any two trading rule variations with correlation > 0.95 — they add no independent information.
-- **REGRA [p.116, ch.7]**: Asset allocating investor always uses forecast = +10 (constant buy). Never short via this archetype.
-- **REGRA [p.201–202, ch.12]**: If maximum portfolio position < 4 blocks for any instrument at maximum forecast: increase instrument weight, reduce portfolio size, or remove the instrument.
-- **REGRA [p.196–197, ch.12]**: Use 20-week volatility look-back for asset allocators (instead of 25-day) to reduce volatility-estimate-driven turnover.
+## 5. Explicit Trading Rules
+- **RULE [p.160, ch.10]**: Subsystem position = (volatility_scalar × forecast) / 10. Apply to every instrument, every day.
+- **RULE [p.173, ch.11]**: Portfolio position = subsystem_position × instrument_weight × IDM. IDM must never exceed 2.5 [p.170–171 (ch.11)].
+- **RULE [p.174, ch.11]**: Apply position inertia — do not trade if the rounded target position is within 10% of the current held position.
+- **RULE [p.133, ch.8]**: Cap combined forecast at ±20 after applying FDM. Never allow a combined forecast above +20 or below −20.
+- **RULE [p.144, ch.9]**: Set percentage volatility target = SR_realistic / 2 (Half-Kelly). For negative-skew strategies: SR_realistic / 4 [p.146 (ch.9)].
+- **RULE [p.146, ch.9]**: SR_realistic must be capped at 1.0 for staunch systems traders, regardless of how good the back-test looks. For semi-automatic traders, the maximum safe achievable SR is 0.5, so the volatility target must not exceed 25% [p.146 (ch.9)].
+- **RULE [p.187–188, p.196, ch.12]**: Accept a new instrument only if its annual cost ≤ 0.13 SR/year (systems traders, p.187–188) or ≤ 0.08 SR/year (asset allocators and semi-auto traders, p.196).
+- **RULE [p.212, ch.13]**: Semi-automatic stop loss uses X = 4 sigma_price_points from tracking extreme. On trigger: close the position only (no automatic reversal). Never modify the forecast after entering a trade [p.222 (ch.13)].
+- **RULE [p.222, ch.13]**: Do NOT use profit targets for semi-automatic trading — no consistent evidence they improve performance.
+- **RULE [p.122, ch.7]**: Prune any two trading rule variations with correlation > 0.95 — they add no independent information.
+- **RULE [p.116, ch.7]**: Asset allocating investor always uses forecast = +10 (constant buy). Never short via this archetype.
+- **RULE [p.201–202, ch.12]**: If maximum portfolio position < 4 blocks for any instrument at maximum forecast: increase instrument weight, reduce portfolio size, or remove the instrument.
+- **RULE [p.196–197, ch.12]**: Use 20-week volatility look-back for asset allocators (instead of 25-day) to reduce volatility-estimate-driven turnover.
 
 ---
 
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - **[p.60, p.68–70, ch.3]**: Testing > 5 rule variations per idea with < 10 years of data almost guarantees selecting spurious rules. Table 4 (printed p.60): 50 rules, 5 years data → required SR threshold of 1.5 to keep false-positive rate below 5%; p.68–70 discusses the implications.
 - **[p.58–59, ch.3]**: Selecting the best of 90 "early loss taker" system variations (stop-loss B and profit-target A parameters) on 1-year rolling windows gave SR = 0.07 (worse than random). Using all 90 equally weighted gave SR = 0.33. Over-selection destroys performance.
 - **[p.47, ch.2]**: Negative-skew strategies appear to have very high Sharpe ratios until catastrophic loss. An imaginary strategy returning 100%/65% alternating had SR = 4.6 pre-blowup; even after losing 100% in year 21, the 21-year SR was still 1.7 — masking extreme negative skew. The SR of LTCM (which blew up in 1998) was also around 4.6 pre-blowup [p.47 (ch.2)].
@@ -266,8 +260,7 @@ NOTE: The action on stop trigger is to CLOSE the position only [p.212 (ch.13)]. 
 
 ---
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **Volatility look-back: 25 business days (default)** [p.155–157, ch.10]: 25-day simple moving average of daily returns. Trade-off between responsiveness and stability, equivalent to 36-day EWMA half-life. Justified economically, not optimised in backtest.
 - **ETF / asset allocator look-back: 20 weeks** [p.196–197, ch.12]: Table 36 shows turnover drops from 1.6 to 0.4 round trips/year vs 25-day look-back. Chosen to reduce turnover-driven costs, not for performance.
 - **Forecast cap: ±20** [p.114, ch.7]: Forecasts beyond ±20 add little information and increase turnover and risk unnecessarily. Not data-mined.
@@ -282,8 +275,7 @@ NOTE: The action on stop trigger is to CLOSE the position only [p.212 (ch.13)]. 
 
 ---
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "I call this process of interference by our internal monologue meddling. Meddling is due to the biggest cognitive bias of all: overconfidence." — [p.17 (ch.1)]
 
 > "I also believe finding the best trading rules is less important than designing your trading system in the correct way. In particular you need to avoid the serious crime of over-fitting." — [p.48 (ch.2)]
@@ -296,8 +288,7 @@ NOTE: The action on stop trigger is to CLOSE the position only [p.212 (ch.13)]. 
 
 ---
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 N/A — This summary was produced as the primary detailed extraction of this book. Cross-references to other summaries in this knowledge base will be validated and added in subsequent passes.
 
 Connections anticipated for future validation:

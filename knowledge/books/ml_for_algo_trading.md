@@ -1,21 +1,19 @@
 # Machine Learning for Algorithmic Trading (Second Edition)
 
 ## Metadata
-- **Autor:** Stefan Jansen [p.i, capa]
-- **Ano:** 2020 [preface, p.xv]
-- **Editora:** Packt Publishing [p.iii]
-- **Páginas:** 821 (PDF) / ~770 printed [metadata]
+- **Author:** Stefan Jansen [p.i, cover]
+- **Year:** 2020 [preface, p.xv]
+- **Publisher:** Packt Publishing [p.iii]
+- **Pages:** 821 (PDF) / ~770 printed [metadata]
 - **ISBN:** 978-1-83921-771-5 [p.xxi]
-- **Foco principal:** End-to-end ML4T workflow — sourcing data, engineering alpha factors, training/tuning supervised & unsupervised models, deep learning and reinforcement learning agents, and backtesting with Zipline/backtrader [preface p.xiii-xx].
+- **Main focus:** End-to-end ML4T workflow — sourcing data, engineering alpha factors, training/tuning supervised & unsupervised models, deep learning and reinforcement learning agents, and backtesting with Zipline/backtrader [preface p.xiii-xx].
 
-## 1. Tese Central
-
+## 1. Core Thesis
 ML for trading is not a standalone exercise but an integrated workflow: **source → features → model → portfolio → backtest** [preface p.xiii-xiv; ch.1 p.13]. The book's recurring claim is that ML adds value to *multiple* steps of strategy design, but requires careful domain expertise and anti-overfit discipline because (a) financial data has low signal-to-noise ratio, (b) competitive markets make factor alpha decay — published anomalies lose ~25% excess return from discovery to publication and >50% after publication [ch.1 p.15-16], and (c) backtest overfitting from multiple testing is the field's dominant pitfall [ch.8 p.227; ch.23 p.718].
 
 The practical synthesis: the **Fundamental Law of Active Management** frames skill (information coefficient) × breadth (independent bets) as the route to a positive information ratio [ch.5 p.124], while López de Prado's purged CV, embargoing, deflated Sharpe, and combinatorial walk-forward address the overfitting problem [ch.6 p.169; ch.8 p.227].
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Alpha factor** — transformation of raw market/fundamental/alternative data that outputs a single predictive value per asset at each evaluation time [ch.4 p.82]. 250+ published factors as of 2015, growing ~40/year [ch.4 p.83].
 - **Information Coefficient (IC)** — Spearman rank correlation between factor predictions and forward returns; values of 0.05–0.15 allow significant outperformance with sufficient breadth [ch.4 p.115-116; ch.5 p.124].
 - **Information Ratio (IR)** — alpha ÷ tracking error; Fundamental Law approximates IR ≈ IC × √breadth [ch.5 p.124].
@@ -54,8 +52,7 @@ The practical synthesis: the **Fundamental Law of Active Management** frames ski
 - **Conditional autoencoder (Gu-Kelly-Xiu 2020)** — left FFNN maps P asset characteristics → K factor loadings (β); right AE maps returns → K latent factors; product predicts next-period returns [ch.20 p.658-660].
 - **TimeGAN (Yoon et al. 2019)** — combines 4 networks (embedder, recovery, generator, discriminator) + supervisor and a moment-matching loss to generate synthetic multivariate financial time series [ch.21 p.668-670].
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Sharpe Ratio** [ch.5 p.123]
 
 $$\text{SR} \equiv \frac{\mu(R^e)}{\sigma(R^e)}, \quad R^e = R - R_f$$
@@ -132,8 +129,7 @@ $$v_\pi(s) = \mathbb{E}_\pi[R_{t+1} + \gamma v_\pi(S_{t+1}) | S_t=s]$$
 
 Figure 22.2 illustrates the recursive relationship. For continuing (non-episodic) tasks the discount factor γ must be strictly < 1 to avoid infinite returns [ch.22 p.685-686].
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **ML4T Workflow** [preface p.xiii; ch.1 p.12-15; ch.6 p.153]
 
 Step A — Frame problem: define target metric (return forecast, direction, class) [ch.6 p.155].
@@ -353,35 +349,33 @@ Demonstrated on 15 years of Google OHLCV (6 features, 24 timesteps) [ch.21 p.668
 
 Define environment via OpenAI Gym with state = features (prices, technicals, position), actions = {buy, hold, sell}, reward = incremental PnL (optionally risk-adjusted) [ch.22 p.681-682]. Build deep Q-network approximating Q(s, a) [ch.22 p.680]. Train with experience replay plus target network [ch.22 p.680]. Use epsilon-greedy exploration decaying over training [ch.22 p.680]. Backtest on unseen period before deploying [ch.22 p.680; ch.23 p.719].
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [ch.1 p.13; ch.8 p.223-224]**: Use ONLY point-in-time (PIT) data; synchronize reported financials with actual publication dates (e.g., EPS quarterly vs. prices daily). Failure produces positive backtests that collapse in live trading.
+- **RULE [ch.2 p.55]**: When joining fundamentals with adjusted prices, back-adjust pre-split EPS by the split ratio (e.g., Apple pre-2014-06-04 EPS ÷ 7); use 4-quarter rolling sums for TTM metrics.
+- **RULE [ch.2 p.39]**: Prefer **dollar bars** (or volume bars) over time bars in backtests; tick-return normality tests fail at vanishingly small p-values, and dollar bars remain comparable across splits and price-regime changes.
+- **RULE [ch.3 p.66-67]**: Score every alternative dataset on (1) signal content / alpha, (2) data quality (gaps, biases), (3) latency between event and delivery, (4) legal/reputational risk including GDPR. Skip datasets that fail any dimension.
+- **RULE [ch.3 p.66]**: Prefer alt-data whose signals show low (< 5%) correlation with traditional risk premia (value, momentum, quality); they add diversification value even when standalone Sharpe is weak.
+- **RULE [ch.8 p.224]**: Include delisted/bankrupt/acquired tickers in backtest universe. Excluding them is survivorship bias and inflates results.
+- **RULE [ch.5 p.133]**: Use fractional Kelly (typically Half-Kelly) for position sizing. Full Kelly is optimal only with perfect parameter knowledge; real estimates have noise.
+- **RULE [ch.4 p.86]**: For momentum, use 12-month return EXCLUDING the most recent month (skip-a-month) to avoid short-term reversal contamination.
+- **RULE [ch.5 p.124]**: Target IC of 0.05–0.15 combined with high breadth. A single high-IC signal with low breadth underperforms many weak uncorrelated signals.
+- **RULE [ch.6 p.167-169]**: Use `TimeSeriesSplit` (walk-forward), not random K-fold, for time-series data. For overlapping labels, add purging + embargoing.
+- **RULE [ch.8 p.227]**: Report the number of trials run during strategy search; adjust Sharpe via the deflated SR formula before concluding.
+- **RULE [ch.8 p.227]**: 2 years of daily data supports conclusions about at most ~7 strategy variants; 5 years supports ~45. Running more trials without more data equals overfitting.
+- **RULE [ch.9 p.274]**: For volatility models, jointly estimate mean + GARCH structure rather than sequentially — sequential estimation understates uncertainty.
+- **RULE [ch.10 p.318-319]**: Compare strategies via posterior distribution of the **difference** in Sharpe ratios (Bayesian SR), not point-estimate Sharpe differences; it gives a probability that one strategy is truly superior.
+- **RULE [ch.11 p.327-334]**: For random-forest trading models, control `max_depth`, `min_samples_split`, `min_samples_leaf`. Default trees overfit financial data.
+- **RULE [ch.12 p.373]**: When using early stopping with gradient boosting or deep networks, keep a separate hold-out test set; never use the test set as the stopping-criterion validation set or you leak information.
+- **RULE [ch.12 p.373]**: Even with a proper validation set, running a large number of early-stopped trials overfits to the validation set itself — keep trial counts modest.
+- **RULE [ch.13 p.438]**: HRP typically underperforms MV in Sharpe (0.83 vs 1.16 in the book's ML benchmark) but is robust to correlation-matrix estimation error; prefer HRP when return forecasts are unreliable.
+- **RULE [ch.17 p.514-515]**: Neural networks require combined regularization (L1/L2 + dropout + early stopping) — deep models overfit low-signal financial data easily.
+- **RULE [ch.15 p.476]**: When interpreting LDA topics with pyLDAvis, set relevance λ ≈ 0.6 (user-study optimum); stop increasing topic count when coherence plateaus (typically 25–30 for financial news).
+- **RULE [ch.16 p.502]**: For word2vec on financial corpora, use skip-gram + negative sampling, `min_count ≥ 50`, window ≥ 5, and embedding size 300–600; CBOW and hierarchical softmax underperform.
+- **RULE [ch.23 p.719]**: Before going live, always run paper-trading in a staged manner. Never go straight from backtest to capital deployment.
+- **NEVER [ch.8 p.225-226]**: Backtest trades executing at the close-price of the same bar that generated the signal. Use next-bar open (or intraday with latency).
+- **NEVER [ch.23 p.716]**: Design strategies by "letting the data speak" (pure data mining). Prioritize economically-motivated hypotheses; test a limited set.
 
-- **REGRA [ch.1 p.13; ch.8 p.223-224]**: Use ONLY point-in-time (PIT) data; synchronize reported financials with actual publication dates (e.g., EPS quarterly vs. prices daily). Failure produces positive backtests that collapse in live trading.
-- **REGRA [ch.2 p.55]**: When joining fundamentals with adjusted prices, back-adjust pre-split EPS by the split ratio (e.g., Apple pre-2014-06-04 EPS ÷ 7); use 4-quarter rolling sums for TTM metrics.
-- **REGRA [ch.2 p.39]**: Prefer **dollar bars** (or volume bars) over time bars in backtests; tick-return normality tests fail at vanishingly small p-values, and dollar bars remain comparable across splits and price-regime changes.
-- **REGRA [ch.3 p.66-67]**: Score every alternative dataset on (1) signal content / alpha, (2) data quality (gaps, biases), (3) latency between event and delivery, (4) legal/reputational risk including GDPR. Skip datasets that fail any dimension.
-- **REGRA [ch.3 p.66]**: Prefer alt-data whose signals show low (< 5%) correlation with traditional risk premia (value, momentum, quality); they add diversification value even when standalone Sharpe is weak.
-- **REGRA [ch.8 p.224]**: Include delisted/bankrupt/acquired tickers in backtest universe. Excluding them is survivorship bias and inflates results.
-- **REGRA [ch.5 p.133]**: Use fractional Kelly (typically Half-Kelly) for position sizing. Full Kelly is optimal only with perfect parameter knowledge; real estimates have noise.
-- **REGRA [ch.4 p.86]**: For momentum, use 12-month return EXCLUDING the most recent month (skip-a-month) to avoid short-term reversal contamination.
-- **REGRA [ch.5 p.124]**: Target IC of 0.05–0.15 combined with high breadth. A single high-IC signal with low breadth underperforms many weak uncorrelated signals.
-- **REGRA [ch.6 p.167-169]**: Use `TimeSeriesSplit` (walk-forward), not random K-fold, for time-series data. For overlapping labels, add purging + embargoing.
-- **REGRA [ch.8 p.227]**: Report the number of trials run during strategy search; adjust Sharpe via the deflated SR formula before concluding.
-- **REGRA [ch.8 p.227]**: 2 years of daily data supports conclusions about at most ~7 strategy variants; 5 years supports ~45. Running more trials without more data equals overfitting.
-- **REGRA [ch.9 p.274]**: For volatility models, jointly estimate mean + GARCH structure rather than sequentially — sequential estimation understates uncertainty.
-- **REGRA [ch.10 p.318-319]**: Compare strategies via posterior distribution of the **difference** in Sharpe ratios (Bayesian SR), not point-estimate Sharpe differences; it gives a probability that one strategy is truly superior.
-- **REGRA [ch.11 p.327-334]**: For random-forest trading models, control `max_depth`, `min_samples_split`, `min_samples_leaf`. Default trees overfit financial data.
-- **REGRA [ch.12 p.373]**: When using early stopping with gradient boosting or deep networks, keep a separate hold-out test set; never use the test set as the stopping-criterion validation set or you leak information.
-- **REGRA [ch.12 p.373]**: Even with a proper validation set, running a large number of early-stopped trials overfits to the validation set itself — keep trial counts modest.
-- **REGRA [ch.13 p.438]**: HRP typically underperforms MV in Sharpe (0.83 vs 1.16 in the book's ML benchmark) but is robust to correlation-matrix estimation error; prefer HRP when return forecasts are unreliable.
-- **REGRA [ch.17 p.514-515]**: Neural networks require combined regularization (L1/L2 + dropout + early stopping) — deep models overfit low-signal financial data easily.
-- **REGRA [ch.15 p.476]**: When interpreting LDA topics with pyLDAvis, set relevance λ ≈ 0.6 (user-study optimum); stop increasing topic count when coherence plateaus (typically 25–30 for financial news).
-- **REGRA [ch.16 p.502]**: For word2vec on financial corpora, use skip-gram + negative sampling, `min_count ≥ 50`, window ≥ 5, and embedding size 300–600; CBOW and hierarchical softmax underperform.
-- **REGRA [ch.23 p.719]**: Before going live, always run paper-trading in a staged manner. Never go straight from backtest to capital deployment.
-- **NUNCA [ch.8 p.225-226]**: Backtest trades executing at the close-price of the same bar that generated the signal. Use next-bar open (or intraday with latency).
-- **NUNCA [ch.23 p.716]**: Design strategies by "letting the data speak" (pure data mining). Prioritize economically-motivated hypotheses; test a limited set.
-
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - [ch.8 p.223-224] **Look-ahead bias** from restated fundamentals, retroactive splits, incorrect EPS/price alignment.
 - [ch.8 p.224] **Survivorship bias** — only using currently-tradable universe.
 - [ch.8 p.225] **Outlier mis-treatment** — winsorizing extreme values that are actually realistic market events.
@@ -401,8 +395,7 @@ Define environment via OpenAI Gym with state = features (prices, technicals, pos
 - [ch.23 p.716] **Torturing the data** — "if you torture the data long enough, it will confess" (López de Prado critique).
 - [ch.23 p.720] **Treating DL/ensemble as black box** — absent SHAP/interpretability, can't distinguish spurious vs. economic signal.
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **Momentum lookback: 12 months minus last month** — [ch.4 p.86] justified economically by behavioral underreaction and positive feedback between economy and risk assets; skipping the last month avoids short-term reversal. NOT curve-fit; standard in academic literature (Jegadeesh & Titman 1993).
 - **RSI timeperiod = 14** — [ch.4 p.86] tradition/arbitrary; reasonable values 10–20 perform equivalently. Low curve-fit risk if not optimized.
 - **Bollinger timeperiod = 21 (approx. 1 month of trading days), 2σ bands** — [ch.4 p.99] derived from Bollinger's original rules, motivated by normal-distribution 2σ containment.
@@ -417,8 +410,7 @@ Define environment via OpenAI Gym with state = features (prices, technicals, pos
 - **Dropout probability 0.2–0.5 in NNs** [ch.17 p.515-520] — standard range; tune via validation.
 - **Discount factor γ (RL)** — [ch.22 p.685] must be strictly <1 to avoid infinite rewards in continuing tasks (specific numeric conventions such as 0.95–0.99 are not stated by the author; source only mandates γ<1).
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "The use of powerful models with a high capacity to learn patterns requires particular care to avoid overfitting when the signal-to-noise ratio is as low as is often the case with financial data. Furthermore, the competitive nature of trading implies that patterns evolve quickly as signals decay." — [ch.23 p.713]
 
 > "Two years of daily backtesting data does not support conclusions about more than seven strategies. 5 years of data expands this number to 45 strategy variations." — [ch.8 p.227]
@@ -433,8 +425,7 @@ Define environment via OpenAI Gym with state = features (prices, technicals, pos
 
 > "Keep in mind that using early stopping with the same validation set for a large number of trials will also lead to overfitting, but just for the particular validation set rather than the training set. It is best to avoid running a large number of experiments when developing a trading strategy as the risk of false discoveries increases significantly." — [ch.12 p.373]
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - **CPCV, purging, embargoing, deflated Sharpe** — explicitly credited to López de Prado 2018 [ch.6 p.169; ch.8 p.227]; this book provides the hands-on Python implementation complementing López de Prado's theory.
 - **Kelly criterion / Half-Kelly** — also treated in `math_money_mgmt.md` (Vince) and `leverage_space.md` with multi-asset extensions [ch.5 p.133].
 - **Stat-sound indicators, walk-forward** — `stat_sound_indicators.md` and `testing_tuning.md` cover similar anti-overfit methodology for classical TA [ch.6 p.169].

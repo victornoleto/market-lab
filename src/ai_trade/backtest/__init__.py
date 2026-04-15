@@ -1,6 +1,6 @@
 """ai_trade.backtest — backtest engine, data sources, validation, metrics.
 
-See ROADMAP.md §"Backtest em duas etapas: pesquisa vs calibração" for the
+See ROADMAP.md §"Two-stage backtest: research vs. calibration" for the
 architectural principle: research uses external survivorship-aware data,
 calibration uses cTrader historical; the engine itself is source-agnostic.
 

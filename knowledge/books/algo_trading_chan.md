@@ -1,23 +1,21 @@
 # Algorithmic Trading: Winning Strategies and Their Rationale
 
 ## Metadata
-- **Autor:** Ernest P. Chan [p.i, capa]
-- **Ano:** 2013 [capa]
-- **Editora:** John Wiley & Sons (Wiley Trading series) [p.iv]
-- **Páginas:** 225 [p.iv]
+- **Author:** Ernest P. Chan [p.i, cover]
+- **Year:** 2013 [cover]
+- **Publisher:** John Wiley & Sons (Wiley Trading series) [p.iv]
+- **Pages:** 225 [p.iv]
 - **ISBN:** 978-1-118-46014-6 [p.iv]
-- **Foco principal:** Strategies for mean reversion and momentum trading across stocks, ETFs, currencies, and futures, grounded in economic rationale and backed by statistical tests and Kelly-based risk management. [p.xi, preface]
+- **Main focus:** Strategies for mean reversion and momentum trading across stocks, ETFs, currencies, and futures, grounded in economic rationale and backed by statistical tests and Kelly-based risk management. [p.xi, preface]
 
-## 1. Tese Central
-
+## 1. Core Thesis
 Chan argues that profitable algorithmic trading strategies must be grounded in a fundamental understanding of *why* a market inefficiency exists — not discovered via exhaustive data-mining of technical indicators [p.xi, preface]. The book's unifying thesis is that simple, linear models exploiting identifiable market inefficiencies are superior to complex nonlinear models, because complexity invites data-snooping bias while linearity yields parsimony and interpretability [p.5-6, ch.1].
 
 A second pillar is the scientific method applied to trading: form a hypothesis about the source of a market inefficiency, build the simplest model that captures it, validate with out-of-sample data, and diagnose failures by looking for regime changes rather than blindly adding parameters [p.188, conclusion]. Chan explicitly warns that "true out-of-sample testing cannot really begin until a strategy is published and cast in stone" [p.3, ch.1], because any re-optimization on a supposedly held-out dataset turns it into in-sample data.
 
 The book covers two broad strategy families — mean reversion and momentum — each with distinct risk-return signatures: mean-reverting strategies have capped upside but potentially unbounded drawdown, while momentum strategies have limited downside (via natural stop loss) but unlimited upside, making them complementary in a diversified portfolio [p.153-154, ch.6].
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Look-ahead bias** — using future information (e.g., intraday high/low before bar close) to generate a backtest signal; a programming error that inflates returns [p.4, ch.1]
 - **Data-snooping bias** — overfitting a model to random historical patterns via too many free parameters or complex trading rules; minimized by keeping models as simple and linear as possible [p.5, ch.1]
 - **Survivorship bias** — using stock databases that exclude delisted companies; especially dangerous for long-only mean-reversion strategies [p.9, ch.1]
@@ -37,8 +35,7 @@ The book covers two broad strategy families — mean reversion and momentum — 
 - **Constant Proportion Portfolio Insurance (CPPI)** — sets aside a fraction D of capital for active trading with Kelly leverage, guaranteeing a maximum drawdown of −D while maximizing compounded growth [p.180-181, ch.8]
 - **Crack spread** — portfolio of long three CL (crude oil) contracts, short two RB (gasoline) contracts, short one HO (heating oil) contract; NYMEX offers this as a ready-made basket with lower margin requirements [p.128, ch.5]
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **ADF Test Linear Model** [p.42-44, ch.2]
 
 $$\Delta y(t) = \lambda y(t-1) + \mu + \beta t + \alpha_1 \Delta y(t-1) + \ldots + \alpha_k \Delta y(t-k) + \epsilon_t \tag{2.1}$$
@@ -167,8 +164,7 @@ $$\hat{p} = \frac{F - L_1}{F - L_2}$$
 
 - If $p < \hat{p}$: all-in at $L_1$ is most profitable; if $p > \hat{p}$: all-in at $L_2$ is most profitable; averaging-in is never optimal in backtest (Schoenberg and Corwin 2010) [p.73-74, ch.3]
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Buy-on-Gap (Intraday Mean Reversion)** [p.94, ch.4]
 
 ```
@@ -267,38 +263,36 @@ daily_return = sum(positions × (cl - op) / op, axis=stocks) / 30
 
 Result: APR 6.7%, Sharpe 1.5 (Jan 3, 2011–April 24, 2012); leverage 4× → ~27% annualized [p.161-162, ch.7]
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.20-21, ch.1]**: Perform walk-forward test as the final out-of-sample validation. Live trading with minimal leverage is preferred over paper trading — it tests execution details paper trading misses. Most traders would be happy with live Sharpe ratio > half of backtest value.
 
-- **REGRA [p.20-21, ch.1]**: Perform walk-forward test as the final out-of-sample validation. Live trading with minimal leverage is preferred over paper trading — it tests execution details paper trading misses. Most traders would be happy with live Sharpe ratio > half of backtest value.
+- **RULE [p.47, ch.2]**: Set the lookback for moving average and standard deviation in a mean-reversion strategy to a small multiple of the half-life of mean reversion. This avoids brute-force parameter optimization and provides economic justification for the parameter.
 
-- **REGRA [p.47, ch.2]**: Set the lookback for moving average and standard deviation in a mean-reversion strategy to a small multiple of the half-life of mean reversion. This avoids brute-force parameter optimization and provides economic justification for the parameter.
+- **RULE [p.54, ch.2]**: When using CADF, try both orderings of dependent/independent variable and use the one that gives the most negative t-statistic and the economically sensible hedge ratio.
 
-- **REGRA [p.54, ch.2]**: When using CADF, try both orderings of dependent/independent variable and use the one that gives the most negative t-statistic and the economically sensible hedge ratio.
+- **RULE [p.65-66, ch.3]**: Use price spreads when you want a fixed number of shares per trade; use log price spreads when you want fixed capital weights (requires constant rebalancing). Use ratios (price1/price2) when the pair is not truly cointegrated — especially for currencies.
 
-- **REGRA [p.65-66, ch.3]**: Use price spreads when you want a fixed number of shares per trade; use log price spreads when you want fixed capital weights (requires constant rebalancing). Use ratios (price1/price2) when the pair is not truly cointegrated — especially for currencies.
+- **RULE [p.95, ch.4]**: Apply a momentum filter (price above long-term moving average) as a gate on a mean-reversion entry signal. Drops caused by negative news are less likely to revert than those caused by liquidity demands [p.95, ch.4].
 
-- **REGRA [p.95, ch.4]**: Apply a momentum filter (price above long-term moving average) as a gate on a mean-reversion entry signal. Drops caused by negative news are less likely to revert than those caused by liquidity demands [p.95, ch.4].
+- **RULE [p.94, ch.4]**: Buy-on-gap rules: (1) select stocks where return from prior day's low to today's open is below −1 standard deviation (90-day close-to-close std); (2) restrict to stocks with open above 20-day MA; (3) buy the 10 stocks with the lowest gap returns; (4) liquidate all positions at market close.
 
-- **REGRA [p.94, ch.4]**: Buy-on-gap rules: (1) select stocks where return from prior day's low to today's open is below −1 standard deviation (90-day close-to-close std); (2) restrict to stocks with open above 20-day MA; (3) buy the 10 stocks with the lowest gap returns; (4) liquidate all positions at market close.
+- **RULE [p.116-117, ch.5]**: Use settlement prices (not last-traded prices) for futures spread backtesting — they are contemporaneous. For intermarket spreads across different exchanges, obtain synchronized intraday bid-ask data.
 
-- **REGRA [p.116-117, ch.5]**: Use settlement prices (not last-traded prices) for futures spread backtesting — they are contemporaneous. For intermarket spreads across different exchanges, obtain synchronized intraday bid-ask data.
+- **RULE [p.31-32, ch.1]**: For futures continuous contracts: use additive (price) back-adjustment for spread-signal strategies; use multiplicative (return) back-adjustment for ratio-signal strategies. You cannot have both P&L and return correct simultaneously with a continuous contract series.
 
-- **REGRA [p.31-32, ch.1]**: For futures continuous contracts: use additive (price) back-adjustment for spread-signal strategies; use multiplicative (return) back-adjustment for ratio-signal strategies. You cannot have both P&L and return correct simultaneously with a continuous contract series.
+- **RULE [p.139-140, ch.6]**: For roll-return persistence momentum in futures, use the sign of roll return as a signal rather than lagged total return. On TU with 3% annualized threshold: APR 2.5%, Sharpe 2.1.
 
-- **REGRA [p.139-140, ch.6]**: For roll-return persistence momentum in futures, use the sign of roll return as a signal rather than lagged total return. On TU with 3% annualized threshold: APR 2.5%, Sharpe 2.1.
+- **RULE [p.163-164, ch.7]**: Leveraged ETF near-close momentum: enter long in a leveraged ETF if the return from previous close to 15 minutes before close exceeds +2%; enter short if below −2%; exit at market close. APR 15%, Sharpe 1.8 on DRN [p.163-164, ch.7].
 
-- **REGRA [p.163-164, ch.7]**: Leveraged ETF near-close momentum: enter long in a leveraged ETF if the return from previous close to 15 minutes before close exceeds +2%; enter short if below −2%; exit at market close. APR 15%, Sharpe 1.8 on DRN [p.163-164, ch.7].
+- **RULE [p.172, ch.8]**: Use Kelly leverage $f = m/s^2$ as an *upper bound*, not as the leverage to deploy. Given estimation errors and non-Gaussian returns, half-Kelly is the standard prudent choice.
 
-- **REGRA [p.172, ch.8]**: Use Kelly leverage $f = m/s^2$ as an *upper bound*, not as the leverage to deploy. Given estimation errors and non-Gaussian returns, half-Kelly is the standard prudent choice.
+- **RULE [p.172-173, ch.8]**: When facing a broker-imposed maximum leverage much lower than Kelly, it is often optimal to allocate all buying power to the strategy with the highest growth rate rather than scaling all strategies proportionally.
 
-- **REGRA [p.172-173, ch.8]**: When facing a broker-imposed maximum leverage much lower than Kelly, it is often optimal to allocate all buying power to the strategy with the highest growth rate rather than scaling all strategies proportionally.
+- **RULE [p.180-181, ch.8]**: CPPI: trade only fraction D of total equity (Kelly leverage on that sub-account), keeping 1−D in cash. Reset sub-account equity to D × total at each new high watermark. Growth rate CPPI ≈ half-Kelly alternative (0.002484 vs. 0.002525 per day), but max drawdown limited to −D by design [p.181, ch.8].
 
-- **REGRA [p.180-181, ch.8]**: CPPI: trade only fraction D of total equity (Kelly leverage on that sub-account), keeping 1−D in cash. Reset sub-account equity to D × total at each new high watermark. Growth rate CPPI ≈ half-Kelly alternative (0.002484 vs. 0.002525 per day), but max drawdown limited to −D by design [p.181, ch.8].
+- **NEVER [p.183-184, ch.8]**: Do not impose stop losses on mean-reversion strategies at levels that would be triggered during backtest — they always lower backtest performance. Set stop loss above the maximum intraday backtest drawdown to protect against regime change without degrading the backtested model.
 
-- **NUNCA [p.183-184, ch.8]**: Do not impose stop losses on mean-reversion strategies at levels that would be triggered during backtest — they always lower backtest performance. Set stop loss above the maximum intraday backtest drawdown to protect against regime change without degrading the backtested model.
-
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - **[p.xi-xii, preface]** The example strategies deliberately omit transaction costs and sometimes use in-sample data for both parameter optimization and performance measurement. They are "prototype strategies" meant to illustrate techniques, not ready-to-trade systems.
 
 - **[p.3, ch.1]** Backtests done before a regime shift are worthless for predicting post-shift performance. Key shifts: decimalization (April 9, 2001), Reg NMS (July 2007), 2008 financial crisis, uptick rule changes (2007, 2010).
@@ -327,8 +321,7 @@ Result: APR 6.7%, Sharpe 1.5 (Jan 3, 2011–April 24, 2012); leverage 4× → ~2
 
 - **[p.23, ch.1]** Always choose the appropriate benchmark: a long-only strategy must be compared to buy-and-hold return (information ratio), not the Sharpe ratio alone. Example: a long-only crude oil strategy returning 20% in 2007 underperformed simple buy-and-hold (47%) despite Sharpe 1.5.
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **ADF lag k** [p.43, ch.2]: Start with $k=0$, but setting $k=1$ often allows rejecting the null hypothesis because price changes have serial correlations. The value is not optimized but guided by testing. Economic justification: allows the test to account for autocorrelated residuals.
 
 - **Half-life as lookback** [p.47, ch.2]: Set moving average and standard deviation lookback to the half-life (or a small multiple). Economic justification: the half-life is the natural time scale of mean reversion derived from the data, not fitted to backtest performance. Avoids brute-force optimization.
@@ -347,8 +340,7 @@ Result: APR 6.7%, Sharpe 1.5 (Jan 3, 2011–April 24, 2012); leverage 4× → ~2
 
 - **Cross-sectional momentum lookback=252, holddays=25** [p.164, ch.6]: Based on Moskowitz, Yao, and Pedersen (2012); the 12-month lookback has academic support across many asset classes. Curve-fit risk: low (published, replicated across many markets).
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "Backtesting a published strategy allows you to conduct true out-of-sample testing in the period following publication. [...] true out-of-sample testing cannot really begin until a strategy is published and cast in stone." — [p.3, ch.1]
 
 > "There is a general approach to trading strategy construction that can minimize data-snooping bias: make the model as simple as possible, with as few parameters as possible." — [p.5, ch.1]
@@ -363,8 +355,7 @@ Result: APR 6.7%, Sharpe 1.5 (Jan 3, 2011–April 24, 2012); leverage 4× → ~2
 
 > "formulas that assign equal weights to all the predictors are often superior, because they are not affected by accidents of sampling" — Kahneman (2011), cited at [p.7, ch.1]
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - Kelly formula ($f = m/s^2$) and optimal capital allocation across strategies are treated in greater mathematical depth in `math_money_mgmt.md` and `leverage_space.md`. Chan's treatment [p.172-173, ch.8] is a practical introduction; those books provide the full derivation and extensions to non-Gaussian cases.
 
 - ADF test, Hurst exponent, and stationarity concepts connect to the time series econometrics treatment in `fin_time_series_tsay.md` and `time_series_hamilton.md`, which provide the full distributional theory behind the critical values Chan applies here.

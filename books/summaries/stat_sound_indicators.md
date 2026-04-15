@@ -5,24 +5,22 @@
 This book's PDF pagination aligns such that the printed page number visible at the bottom of each text page equals `[PAGE N] - 16` for chapters (the first 16 PDF pages are unnumbered front matter: title, bio, TOC). Verified by cross-reference: the chapter "Introduction" starts at printed page 1 = `[PAGE 17]`, and the author's own in-text cross-reference "See Page 185 for the definition of profit factor" (seen at printed page 4 = `[PAGE 20]`) resolves to `[PAGE 201]` of the extraction, which in this book displays the printed number `185`. Therefore, all `[p.X]` citations in this summary refer to the **printed page number** (the one the author himself uses when cross-referencing). When a citation says `[p.96]`, the extracted text will show the content under `[PAGE 112]`. The TSSB program referenced throughout is Aronson & Masters' "Trading System Synthesis and Boosting" software, whose syntax conventions dominate the book. File names use the filename slug `stat_sound_indicators` despite the full title being mostly authored by Aronson — see Metadata.
 
 ## Metadata
-- **Autor:** David Aronson (primary author), with Timothy Masters, Ph.D. (Technical Advisor) [p.i, p.iii — [PAGE 1], [PAGE 3]]
-- **Ano:** 2013 [p.ii — [PAGE 2]]
-- **Editora:** Self-published / CreateSpace (the companion Masters volume "Assessing and Improving Prediction and Classification" is published by CreateSpace 2013 [p.iii]); ISBN registry implies CreateSpace/Amazon.
+- **Authors:** David Aronson (primary author), with Timothy Masters, Ph.D. (Technical Advisor) [p.i, p.iii — [PAGE 1], [PAGE 3]]
+- **Year:** 2013 [p.ii — [PAGE 2]]
+- **Publisher:** Self-published / CreateSpace (the companion Masters volume "Assessing and Improving Prediction and Classification" is published by CreateSpace 2013 [p.iii]); ISBN registry implies CreateSpace/Amazon.
 - **Edition:** 1.20 [p.i]
-- **Páginas:** 519 (PDF) / ~503 printed content pages (p.1-503) [metadata.json]
+- **Pages:** 519 (PDF) / ~503 printed content pages (p.1-503) [metadata.json]
 - **ISBN:** 978-1-4895-0771-6 [p.ii]
-- **Foco principal:** [p.1-4] Design and statistical validation of market-prediction indicators and predictive models in the TSSB program. The book is simultaneously (a) a taxonomy of statistically sound indicators (trend, volatility, volume, entropy, wavelets, FTI, Mahalanobis, absorption ratio) and (b) a rigorous pipeline (MCPT, permutation training, walkforward, OOS portfolios) for isolating genuine Skill from Trend and Bias components of backtest returns.
+- **Main focus:** [p.1-4] Design and statistical validation of market-prediction indicators and predictive models in the TSSB program. The book is simultaneously (a) a taxonomy of statistically sound indicators (trend, volatility, volume, entropy, wavelets, FTI, Mahalanobis, absorption ratio) and (b) a rigorous pipeline (MCPT, permutation training, walkforward, OOS portfolios) for isolating genuine Skill from Trend and Bias components of backtest returns.
 - **TSSB download (at time of writing):** http://tssbsoftware.com/ [p.ii]
 - **Note on title attribution:** [p.iii] This is Aronson's third book (after 2007 *Evidence-Based Technical Analysis*), produced jointly with Masters. Whereas *Evidence-Based TA* is pure theory and *Testing and Tuning* (Masters 2018) is pure C++ methodology, this volume is the practitioner's manual that bridges the two via the TSSB software.
 
-## 1. Tese Central
-
+## 1. Core Thesis
 The central claim is stated on [PAGE 17] (printed p.1) and reinforced at [p.43 — [PAGE 59]]: **"Intelligently designed automated trading systems can and often do outperform human-driven systems"** [p.1], but only when (i) indicators and targets are statistically sound (stationary, low-redundancy, high-entropy), (ii) model selection is protected against selection bias by Monte-Carlo Permutation Tests, and (iii) the total apparent return of any trained system is decomposed into Skill + Trend + Bias so that only the Skill component is claimed as edge. Aronson frames the entire TSSB program as the operational answer to the question posed in *Evidence-Based TA*: "how do we data-mine without being fooled by data-mining bias?" The answer he operationalizes is a two-part pipeline: indicator purification (PURIFY transform, cross-market normalization, pooled variables, historical adjustment) followed by TRAIN PERMUTED, which shuffles the underlying market bar-changes and retrains the entire system hundreds of times in order to read out Bias directly as an estimate rather than a hand-waved correction [ch. "Permutation Training", p.299-310].
 
 Aronson's working principle, stated at [p.1] and reiterated across chapters: "Intelligent modeling software can discover patterns that are so complex or buried under random noise that no human could ever see them" [p.2] — but this discovery *requires* statistical infrastructure, not just computation. Indicator selection without MCPT "can be severe, causing worthless predictors to be selected" [p.170].
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Indicator** — variable that looks strictly backwards in time; must be computable in realtime at every bar from available history [p.3].
 - **Target (dependent variable)** — variable that looks strictly forward in time; known only for historical bars and never for the current trading bar [p.3].
 - **Threshold-based trade decision** — "If prediction ≥ long threshold, go long; if prediction ≤ short threshold, go short." TSSB auto-chooses thresholds by maximizing long-PF and short-PF separately subject to a min-trade-count constraint [p.4].
@@ -66,8 +64,7 @@ Aronson's working principle, stated at [p.1] and reiterated across chapters: "In
 - **IS vs. OOS Portfolio** — IS (in-sample) selects component models using training-set performance; OOS uses walkforward OOS performance. IS is dangerous because over-powerful models are preferentially picked on their overfit [p.306].
 - **Pure VIX** — Aronson's applied case of PURIFY: VIX purified of its predictable component due to market price, leaving the residual "pure" volatility signal [p.iii, demonstrated at p.350-352].
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Aronson Decomposition of Trading System Performance** [p.302, Eq. 9]
 
 $$\text{Total Return} = \text{Skill} + \text{Trend} + \text{Bias}$$
@@ -151,8 +148,7 @@ Returns +Up if the price moves up at least Up × ATR before moving down Down × 
 
 Applied after centering and/or scaling by IQR to compress outliers and fix range; Φ is the standard normal CDF, F25/F50/F75 are historical 25th/50th/75th percentiles of the indicator. Form is proprietary to TSSB but the design goal is explicit: range-fix + outlier-compress while preserving monotonicity.
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Nonredundant Predictor Screening (stepwise with MCPT)** [p.167-170, 173-178]
 
 ```
@@ -301,35 +297,33 @@ Step 3: Select the best-fit linear model M*.
 Step 4: For each bar t, purified_X(t) = X(t) - M*(Y)(t)
 ```
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.4]**: "Predictions of large magnitude are more likely to signal profitable market moves than predictions of small magnitude." Use threshold-based trade conversion: long if prediction ≥ upper threshold, short if ≤ lower threshold.
+- **RULE [p.4, p.189]**: Always specify a `MIN CRITERION FRACTION` (minimum fraction of bars that trade) when letting TSSB auto-optimize thresholds. Without it, the optimizer may converge on a single lucky trade.
+- **RULE [p.87]**: When an indicator's absolute level is meaningful but secular drift ruins stationarity, apply `CENTER <lookback>`. When volatility varies across epochs, apply `SCALE <lookback>`. When both matter, apply `NORMALIZE <lookback>`. Use median/IQR rather than mean/std because of outlier robustness [p.87-88].
+- **RULE [p.92]**: In multi-market systems, add `! <min_fraction>` (e.g., `! 0.6`) to require at least 60% of markets be present before computing the cross-market rank; otherwise the rank is meaningless.
+- **RULE [p.94]**: Use `CLUMP60` pooling when the question is "are markets moving together?" It returns 0 in a mixed regime and a signed measure of conformity otherwise.
+- **RULE [p.98]**: For Absorption Ratio computation, keep `CLEAN RAW DATA` threshold as small as possible (0.4 or less) — a single cleaned bar in any market anywhere in the lookback voids the computation for the current bar.
+- **RULE [p.108]**: Never use `CLOSE TO CLOSE` as a direct predictor in a prediction model — it is extremely unstable, nonstationary, and has poor cross-market conformity. Use it only as input to Mahalanobis Distance or Absorption Ratio [p.108].
+- **RULE [p.135-137]**: Prefer Morlet wavelets over Daubechies for financial applications: Morlet has best time-period localization, which is what traders need. Daubechies has zero redundancy but terrible localization — use only when maximal compression of a full time series is the goal.
+- **RULE [p.137]**: Budget Morlet wavelet indicators parsimoniously — they are "seriously redundant." Using many Morlet wavelets as predictors will create massive overfitting via the curse of dimensionality.
+- **RULE [p.141]**: For Daubechies wavelet indicators, set HistLength ≈ 3 × prediction horizon and Level = 2 (Li, Shi & Li recommendation). HistLength must be a power of two; 2^(Level+1) ≤ HistLength.
+- **RULE [p.144-145]**: FTI parameter choice order: (1) pick Period from the trading cycle; (2) set HalfLength somewhat greater than Period/2; (3) set BlockSize = 2 × HalfLength, increasing if channel length < 20, decreasing if channel length > 20 and long-history memory is undesired.
+- **RULE [p.156-157]**: For targets, prefer `NEXT DAY ATR RETURN` (or its multi-bar variant `SUBSEQUENT DAY ATR RETURN`) over raw log-ratio in multi-market settings — ATR-normalization equalizes across markets so high-volatility markets do not dominate training.
+- **RULE [p.158]**: Use `HIT OR MISS` target whenever the real trading plan includes stops and profit targets — it mimics order execution and its distribution has no outliers, which helps training.
+- **RULE [p.170, p.172]**: When ranking predictors with Nonredundant Predictor Screening, always append `MCPT = Nreps` (≥100, preferably 1000). The solo p-value grossly underestimates the true p-value because selection bias is ignored.
+- **RULE [p.170]**: When using `TAILS`, keep tail fraction ≥ 0.05 and typically 0.10 — smaller fractions cause mean cell count to plummet, rendering tests unreliable. "Keeping more than ten percent of each tail usually results in significant loss of predictive power. The majority of predictive power in most indicators lies in the most extreme values" [p.166].
+- **RULE [p.168, p.175]**: Use **Uncertainty Reduction** as the default selection criterion, not Cramer's V or Lambda. UReduc is one-sided, proportional, and uses all cells. TSSB hard-codes it as default "because it is an excellent choice" [p.169].
+- **RULE [p.175]**: When the printed output contains the line `"Results below this line are suspect due to small mean cell count"`, do not trust any p-values or measures printed below that line.
+- **RULE [p.178]**: When indicator tail-only screening disagrees with full-distribution screening on predictor ordering, trust the tails-only ordering for model-based trading systems — the tails usually carry more of the actionable signal.
+- **RULE [p.280, p.290]**: Prefer PRESCREEN over TRIGGER when you have strong a-priori belief that a particular regime split is appropriate; the PRESCREEN+oracle combination gives higher net OOS PF because it lets models vote jointly over all regimes rather than dropping entire regimes [p.294-295, empirical comparison].
+- **RULE [p.306]**: Never use `IS` (in-sample) portfolios in production — they select preferentially over-powerful overfitted component models. Use only `OOS` portfolios, which require WALK FORWARD.
+- **RULE [p.44-45] (paraphrasing from context)**: The `PROFIT FACTOR` criterion has good generalizability; other performance statistics (e.g., model R² or ROC area) do not translate well to financial performance [p.44].
+- **NEVER [p.299, p.306]**: Do not mix TRAIN PERMUTED with APPEND DATABASE or precomputed indicator databases — permutation requires the system to be able to *recompute* indicators and targets from raw permuted bar changes. A precomputed database cannot be shuffled at the bar level.
+- **NEVER [p.307]**: Do not interpret a low IS-portfolio p-value from TRAIN PERMUTED as evidence of edge — it detects training bias but not OOS-specific selection bias. Only WALK FORWARD on OOS portfolios gives the honest answer.
+- **NEVER [p.175]**: Do not compare p-values to 0.05 as if that alone validates an indicator — "if the null hypothesis is true, you will still obtain a p-value less than 0.1 ten percent of the time, and a p-value less than 0.01 one percent of the time" [p.174].
 
-- **REGRA [p.4]**: "Predictions of large magnitude are more likely to signal profitable market moves than predictions of small magnitude." Use threshold-based trade conversion: long if prediction ≥ upper threshold, short if ≤ lower threshold.
-- **REGRA [p.4, p.189]**: Always specify a `MIN CRITERION FRACTION` (minimum fraction of bars that trade) when letting TSSB auto-optimize thresholds. Without it, the optimizer may converge on a single lucky trade.
-- **REGRA [p.87]**: When an indicator's absolute level is meaningful but secular drift ruins stationarity, apply `CENTER <lookback>`. When volatility varies across epochs, apply `SCALE <lookback>`. When both matter, apply `NORMALIZE <lookback>`. Use median/IQR rather than mean/std because of outlier robustness [p.87-88].
-- **REGRA [p.92]**: In multi-market systems, add `! <min_fraction>` (e.g., `! 0.6`) to require at least 60% of markets be present before computing the cross-market rank; otherwise the rank is meaningless.
-- **REGRA [p.94]**: Use `CLUMP60` pooling when the question is "are markets moving together?" It returns 0 in a mixed regime and a signed measure of conformity otherwise.
-- **REGRA [p.98]**: For Absorption Ratio computation, keep `CLEAN RAW DATA` threshold as small as possible (0.4 or less) — a single cleaned bar in any market anywhere in the lookback voids the computation for the current bar.
-- **REGRA [p.108]**: Never use `CLOSE TO CLOSE` as a direct predictor in a prediction model — it is extremely unstable, nonstationary, and has poor cross-market conformity. Use it only as input to Mahalanobis Distance or Absorption Ratio [p.108].
-- **REGRA [p.135-137]**: Prefer Morlet wavelets over Daubechies for financial applications: Morlet has best time-period localization, which is what traders need. Daubechies has zero redundancy but terrible localization — use only when maximal compression of a full time series is the goal.
-- **REGRA [p.137]**: Budget Morlet wavelet indicators parsimoniously — they are "seriously redundant." Using many Morlet wavelets as predictors will create massive overfitting via the curse of dimensionality.
-- **REGRA [p.141]**: For Daubechies wavelet indicators, set HistLength ≈ 3 × prediction horizon and Level = 2 (Li, Shi & Li recommendation). HistLength must be a power of two; 2^(Level+1) ≤ HistLength.
-- **REGRA [p.144-145]**: FTI parameter choice order: (1) pick Period from the trading cycle; (2) set HalfLength somewhat greater than Period/2; (3) set BlockSize = 2 × HalfLength, increasing if channel length < 20, decreasing if channel length > 20 and long-history memory is undesired.
-- **REGRA [p.156-157]**: For targets, prefer `NEXT DAY ATR RETURN` (or its multi-bar variant `SUBSEQUENT DAY ATR RETURN`) over raw log-ratio in multi-market settings — ATR-normalization equalizes across markets so high-volatility markets do not dominate training.
-- **REGRA [p.158]**: Use `HIT OR MISS` target whenever the real trading plan includes stops and profit targets — it mimics order execution and its distribution has no outliers, which helps training.
-- **REGRA [p.170, p.172]**: When ranking predictors with Nonredundant Predictor Screening, always append `MCPT = Nreps` (≥100, preferably 1000). The solo p-value grossly underestimates the true p-value because selection bias is ignored.
-- **REGRA [p.170]**: When using `TAILS`, keep tail fraction ≥ 0.05 and typically 0.10 — smaller fractions cause mean cell count to plummet, rendering tests unreliable. "Keeping more than ten percent of each tail usually results in significant loss of predictive power. The majority of predictive power in most indicators lies in the most extreme values" [p.166].
-- **REGRA [p.168, p.175]**: Use **Uncertainty Reduction** as the default selection criterion, not Cramer's V or Lambda. UReduc is one-sided, proportional, and uses all cells. TSSB hard-codes it as default "because it is an excellent choice" [p.169].
-- **REGRA [p.175]**: When the printed output contains the line `"Results below this line are suspect due to small mean cell count"`, do not trust any p-values or measures printed below that line.
-- **REGRA [p.178]**: When indicator tail-only screening disagrees with full-distribution screening on predictor ordering, trust the tails-only ordering for model-based trading systems — the tails usually carry more of the actionable signal.
-- **REGRA [p.280, p.290]**: Prefer PRESCREEN over TRIGGER when you have strong a-priori belief that a particular regime split is appropriate; the PRESCREEN+oracle combination gives higher net OOS PF because it lets models vote jointly over all regimes rather than dropping entire regimes [p.294-295, empirical comparison].
-- **REGRA [p.306]**: Never use `IS` (in-sample) portfolios in production — they select preferentially over-powerful overfitted component models. Use only `OOS` portfolios, which require WALK FORWARD.
-- **REGRA [p.44-45] (paraphrasing from context)**: The `PROFIT FACTOR` criterion has good generalizability; other performance statistics (e.g., model R² or ROC area) do not translate well to financial performance [p.44].
-- **NUNCA [p.299, p.306]**: Do not mix TRAIN PERMUTED with APPEND DATABASE or precomputed indicator databases — permutation requires the system to be able to *recompute* indicators and targets from raw permuted bar changes. A precomputed database cannot be shuffled at the bar level.
-- **NUNCA [p.307]**: Do not interpret a low IS-portfolio p-value from TRAIN PERMUTED as evidence of edge — it detects training bias but not OOS-specific selection bias. Only WALK FORWARD on OOS portfolios gives the honest answer.
-- **NUNCA [p.175]**: Do not compare p-values to 0.05 as if that alone validates an indicator — "if the null hypothesis is true, you will still obtain a p-value less than 0.1 ten percent of the time, and a p-value less than 0.01 one percent of the time" [p.174].
-
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - [p.137, p.152] **Over-using redundant wavelet families**: a battery of Morlet wavelets at neighboring periods conveys nearly the same information repeatedly, driving overfitting via the curse of dimensionality. Use at most a small handful across well-separated periods, or switch to Daubechies when many scales are needed.
 - [p.148] **Trusting automated FTI period selection**: `FTI MINOR`, `FTI MAJOR`, and related auto-period variants are "highly unstable and of limited utility"; the chosen period can jump by large amounts from one bar to the next, producing non-stationary indicator behavior. Prefer `FTI FTI` with a fixed user-specified period.
 - [p.162] **Using many predictor bins with little data**: chi-square and related contingency tests degrade catastrophically when mean cells per bin drop below ~5. Always watch the mean-cell-count column in TSSB output; ignore everything below the "results below this line are suspect" warning.
@@ -346,8 +340,7 @@ Step 4: For each bar t, purified_X(t) = X(t) - M*(Y)(t)
 - [p.98] **Universe-composition bias in Absorption Ratio**: many current S&P 100 components did not exist years ago, so the first usable date is the birth date of the youngest market. This can silently truncate training sets by years. Check market start/end dates before computing ratios.
 - [p.107 context] **Treating CLOSE TO CLOSE as a tradable indicator**: raw bar-to-bar log returns are extremely noisy with wide distributional variation across markets. Using them as direct model inputs yields unstable, non-conforming features — use them only through aggregation (Mahalanobis, Absorption).
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **MCPT replications (`MCPT = Nreps`)** [p.170, p.172]: the smallest achievable p-value is 1/Nreps. Aronson: "If this is done, at least 100 replications should be used, and 1000 is not unreasonable." Trading off test precision against runtime — 1000 is the defensible default for production; 100 for exploratory work. Economic justification: MCPT precision, not curve-fit.
 - **Maximum predictors in Nonredundant Screening (default 8)** [p.169]: "Nearly always more than enough, as cell count reduction will render the tests meaningless before even 8 are reached." Hard-coded in script mode; only overridable via the menu. Economic justification: practical cell-count limits, not curve-fit.
 - **MIN CRITERION FRACTION (e.g., 0.1)** [p.4, p.189]: minimum fraction of bars that must produce a trade. A floor against degenerate solutions. Default of 0.1 is a deliberate compromise between statistical reliability (more trades) and edge concentration (fewer, better trades). Example scripts throughout the book use 0.1.
@@ -363,8 +356,7 @@ Step 4: For each bar t, purified_X(t) = X(t) - M*(Y)(t)
 - **MAX STEPWISE (1 to 4 predictors)** [p.307 example]: examples show 1-2 for conservative models and 4 as deliberately excessive ("almost certainly excessive … a strong model"). Higher stepwise counts encode higher overfit risk that TRAIN PERMUTED will then quantify.
 - **TSSB compressions to [-50, 50]** [p.88-89]: nearly all TSSB indicators are passed through a final nonlinear squashing function to a fixed range. The author explicitly notes that because of this, MINUS INDEX differences may not equal exact raw differences — transformations happen after the arithmetic [p.85].
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "Intelligent modeling software can discover patterns that are so complex or buried under random noise that no human could ever see them." — [p.2]
 
 > "Predictions of large magnitude are more likely to signal profitable market moves than predictions of small magnitude." — [p.4]
@@ -385,8 +377,7 @@ Step 4: For each bar t, purified_X(t) = X(t) - M*(Y)(t)
 
 > "If the reader just skims through the entire text, hoping to gain an idea of how to use the TSSB program, the reader will be hopelessly dismayed by the vast complexity of options." — [p.ii]
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 This is the third Masters/Aronson volume in the base. Cross-references are deliberate and non-redundant — this book is the *applied manual* that overlaps least with the other two on methodology and most on *concrete indicator definitions*.
 
 - **Evidence-Based Technical Analysis** (`evidence_based_ta.md`) [p.ii; ch. Introduction] — Aronson 2007 is the **theoretical foundation** for the entire statistical worldview here. Data-mining bias [`evidence_based_ta.md#data-mining-bias`], Monte Carlo Permutation Method [`evidence_based_ta.md#monte-carlo-permutation`], detrending [`evidence_based_ta.md#detrending`], and the position-bias / Binary Reversal Rule concept are all presupposed in this 2013 volume. The MCPT and TRAIN PERMUTED mechanisms here are direct operationalizations of the Reality Check / Monte Carlo Permutation methods introduced in Chapter 6-7 of the 2007 book. Channel Breakout Operator (CBO) and Channel Normalization (CN) from the 2007 case study [`evidence_based_ta.md#channel-breakout-operator`] reappear here as parametrizable TSSB indicators (`N DAY HIGH`, `N DAY LOW`, `STOCHASTIC K/D`).

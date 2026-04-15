@@ -1,21 +1,19 @@
 # Trading Systems and Methods (5th Edition)
 
 ## Metadata
-- **Autor:** Perry J. Kaufman [p.?]
-- **Ano:** 2013 (5th ed.) [p.?]
-- **Editora:** John Wiley & Sons [p.?]
-- **Páginas:** ~1,170 (printed; 1232 PDF pages incl. frontmatter/appendices) [p.?]
+- **Author:** Perry J. Kaufman [p.?]
+- **Year:** 2013 (5th ed.) [p.?]
+- **Publisher:** John Wiley & Sons [p.?]
+- **Pages:** ~1,170 (printed; 1232 PDF pages incl. frontmatter/appendices) [p.?]
 - **ISBN:** 978-1-118-04356-1 [p.?]
-- **Foco principal:** Encyclopedic reference on systematic/algorithmic trading — methodology, indicators, system construction, testing, risk, and portfolio allocation. [p.?]
+- **Main focus:** Encyclopedic reference on systematic/algorithmic trading — methodology, indicators, system construction, testing, risk, and portfolio allocation. [p.?]
 
-## 1. Tese Central
-
+## 1. Core Thesis
 Technical analysis is the systematic, clear-rule evaluation of price, volume, breadth, and open interest for the purpose of price forecasting [p.1]. Successful systematic trading rests on three co-equal pillars: (1) building strategies on sound fundamental or price premises — not on patterns discovered through unconstrained optimization [p.939]; (2) testing with enough representative data (bull, bear, sideways, price shocks) and with rigorous in-sample/out-of-sample discipline such that four-or-fewer-parameter strategies survive [p.939]; and (3) controlling risk through volatility-normalized position sizing, portfolio diversification across uncorrelated strategies, and capped leverage [p.1085-1091].
 
 Kaufman's recurring empirical finding ties the three together: the suitability of a strategy depends on market noise [ch.1, p.13]. Low-noise markets (short-rates, long-rate bonds) favor trend-following; high-noise markets (equity indices) favor mean-reversion. This forces honest strategy-market matching and is measured via the Efficiency Ratio (ER), which is also the engine of KAMA [ch.17, p.780-781].
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Technical analysis (redefined)** — systematic evaluation of price, volume, breadth, and open interest with clear and complete rules [p.1].
 - **Efficiency Ratio (fractal efficiency)** — noise measurement; ER=1 when prices move uniformly in one direction, ER=0 for zero net change across wide swings [p.10-11, p.781].
 - **Fat tail** — price data shows runs longer than normal distribution predicts; non-Gaussian, non-symmetric [p.7, p.35].
@@ -50,8 +48,7 @@ Kaufman's recurring empirical finding ties the three together: the suitability o
 - **Survivorship bias** — hedge fund benchmarks omit funds that blew up [p.941].
 - **Three tail-risk-avoidance rules** — be out of market, cap leverage, use uncorrelated strategies [p.1085].
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Efficiency Ratio** [p.10-11, p.781]:
 $$ER_t = \frac{|P_t - P_{t-n}|}{\sum_{i=t-n+1}^{t} |P_i - P_{i-1}|}$$
 
@@ -229,8 +226,7 @@ $$\text{optimal } f = \arg\max_{f \in [0.01, 1]} \left( \prod_{i=1}^{n} \left(1 
 
 **Portfolio variance** [p.1088]: $\sigma^2_R = \sum w_i^2 \sigma_i^2 + \sum\sum_{i\ne j} w_i w_j \text{cov}_{ij}$ where $\text{cov}_{ij} = \text{corr}_{ij} \sigma_i \sigma_j$.
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **KAMA (Kaufman Adaptive Moving Average)** [p.780-781]:
 ```
 Input: close series, ER_period=10, fast=2, slow=30
@@ -371,73 +367,71 @@ Stop-loss (long):
 ```
 (Kaufman's Ch 24 later contrasts this traditional mean-variance approach with his GASP Genetic Algorithm Solution to Portfolios, arguing mean-variance breaks when strategy returns include many zero-days from being out of the market.)
 
-## 5. Regras de Trading Explícitas
-
+## 5. Explicit Trading Rules
 **Market selection by noise**:
-- **REGRA [p.13]**: Low-noise markets (short-rates, long-maturity bonds, USD crossrates, energy, metals) -> trend-following.
-- **REGRA [p.13]**: High-noise markets (equity indices) -> mean-reverting / countertrend.
-- **REGRA [p.13-14]**: Long-term traders use low-frequency (weekly/monthly) + long-term trends. Short-term traders use high-frequency + mean-reverting.
+- **RULE [p.13]**: Low-noise markets (short-rates, long-maturity bonds, USD crossrates, energy, metals) -> trend-following.
+- **RULE [p.13]**: High-noise markets (equity indices) -> mean-reverting / countertrend.
+- **RULE [p.13-14]**: Long-term traders use low-frequency (weekly/monthly) + long-term trends. Short-term traders use high-frequency + mean-reverting.
 
 **Swing / Event-Driven Trend Rules**:
-- **REGRA [p.168]**: Conservative swing entry -- buy when current upswing high exceeds previous upswing high; sell short when current downswing low falls below previous downswing low.
-- **REGRA [p.191]** (Livermore): Enter only in direction of major trend (higher highs+higher lows, or lower lows+lower highs); add each penetration confirmation; stop-loss at penetration beyond prior pivot.
-- **REGRA [p.172]** (Keltner Minor Trend): Buy when daily trades above most recent high; stay long until trades below most recent low. Always reverse.
-- **REGRA [p.195]** (Wilder Swing Index): Long when ASI_t > HSP_{t-2}; short when ASI_t < LSP_{t-2}; SAR at most recent opposite swing point.
+- **RULE [p.168]**: Conservative swing entry -- buy when current upswing high exceeds previous upswing high; sell short when current downswing low falls below previous downswing low.
+- **RULE [p.191]** (Livermore): Enter only in direction of major trend (higher highs+higher lows, or lower lows+lower highs); add each penetration confirmation; stop-loss at penetration beyond prior pivot.
+- **RULE [p.172]** (Keltner Minor Trend): Buy when daily trades above most recent high; stay long until trades below most recent low. Always reverse.
+- **RULE [p.195]** (Wilder Swing Index): Long when ASI_t > HSP_{t-2}; short when ASI_t < LSP_{t-2}; SAR at most recent opposite swing point.
 
 **Point-and-Figure**:
-- **REGRA [p.199]**: Buy when X one box above highest X of last X column. Sell when O below lowest O of last O column.
-- **REGRA [p.201]**: Filter signals with 45-degree trendlines -- only take longs when 45-degree trendline up, shorts when down.
+- **RULE [p.199]**: Buy when X one box above highest X of last X column. Sell when O below lowest O of last O column.
+- **RULE [p.201]**: Filter signals with 45-degree trendlines -- only take longs when 45-degree trendline up, shorts when down.
 
 **Moving-average and trend systems**:
-- **REGRA [p.285]**: Use MA length < half the cycle period to preserve cycle visibility.
-- **REGRA [p.285]**: Match MA period to trading horizon -- 63-day = quarterly; 252-day = annual; 200-day = stock-market macro benchmark.
-- **REGRA [p.352-353]** (Donchian 5/20): Buy if not long AND $C_t > MA5_{t-1} + ATR_{t-1}$ AND $C_t > MA20_{t-1} + ATR_{t-1}$. Exit long if either MA band violated.
-- **REGRA [p.353]**: Position Size = Investment / (ATR * Big Point Value).
-- **REGRA [p.353]** (Donchian 20/40 = Turtle basis): Buy when high > max high 40 days; exit long when low < min low 20 days.
-- **REGRA [p.354]**: Golden Cross (50 crosses above 200) -- buy SPY; when 50 crosses below 200 (Death Cross) -> short/flat. Yielded 66.7% return over 1999-2010 vs. passive -7.8%.
-- **REGRA [p.355]** (Woodshedder ROC): Buy when 5-day ROC below 252-day ROC for 2 consecutive days; exit long when 5-day > 252-day for 2 consecutive days.
-- **REGRA [p.326-327]** (Bollinger reversal): Buy on close > upper band; short on close < lower band. Exit at center trendline -> cuts order size 50%.
-- **REGRA [p.333]** (Volatility System): $V_t = \frac{1}{n}\sum TR_i$; sell if close drops by $k \cdot V_{t-1}$ (k approx 3).
+- **RULE [p.285]**: Use MA length < half the cycle period to preserve cycle visibility.
+- **RULE [p.285]**: Match MA period to trading horizon -- 63-day = quarterly; 252-day = annual; 200-day = stock-market macro benchmark.
+- **RULE [p.352-353]** (Donchian 5/20): Buy if not long AND $C_t > MA5_{t-1} + ATR_{t-1}$ AND $C_t > MA20_{t-1} + ATR_{t-1}$. Exit long if either MA band violated.
+- **RULE [p.353]**: Position Size = Investment / (ATR * Big Point Value).
+- **RULE [p.353]** (Donchian 20/40 = Turtle basis): Buy when high > max high 40 days; exit long when low < min low 20 days.
+- **RULE [p.354]**: Golden Cross (50 crosses above 200) -- buy SPY; when 50 crosses below 200 (Death Cross) -> short/flat. Yielded 66.7% return over 1999-2010 vs. passive -7.8%.
+- **RULE [p.355]** (Woodshedder ROC): Buy when 5-day ROC below 252-day ROC for 2 consecutive days; exit long when 5-day > 252-day for 2 consecutive days.
+- **RULE [p.326-327]** (Bollinger reversal): Buy on close > upper band; short on close < lower band. Exit at center trendline -> cuts order size 50%.
+- **RULE [p.333]** (Volatility System): $V_t = \frac{1}{n}\sum TR_i$; sell if close drops by $k \cdot V_{t-1}$ (k approx 3).
 
 **Oscillators / Momentum**:
-- **REGRA [p.383]** (MACD): Buy when MACD crosses up through signal; require MACD to have first penetrated opposite threshold (e.g. +/-2.00) to filter whipsaws.
-- **REGRA [p.386-387]** (RSI): Wilder 70/30 overbought/oversold; per Aan (1985) [p.387-388] prefer 80/20 (1.5 sigma).
-- **REGRA [p.388]**: For sustained moves of 14+ days, RSI stays saturated -- do not fade blindly.
-- **REGRA [p.392]** (Stochastic): Buy when %D below 20 and cross back up; sell when %D above 80 and cross back down. Always confirm with longer-term trend direction.
-- **REGRA [p.640]** (Ruggiero COT): Buy when COT Index Commercials [lag 1+ week] > trigger AND COT Index Small Traders < trigger. Commercials' actions lead.
-- **REGRA [p.640]**: Exit mean-reverting trade at neutral (50), not opposite extreme.
+- **RULE [p.383]** (MACD): Buy when MACD crosses up through signal; require MACD to have first penetrated opposite threshold (e.g. +/-2.00) to filter whipsaws.
+- **RULE [p.386-387]** (RSI): Wilder 70/30 overbought/oversold; per Aan (1985) [p.387-388] prefer 80/20 (1.5 sigma).
+- **RULE [p.388]**: For sustained moves of 14+ days, RSI stays saturated -- do not fade blindly.
+- **RULE [p.392]** (Stochastic): Buy when %D below 20 and cross back up; sell when %D above 80 and cross back down. Always confirm with longer-term trend direction.
+- **RULE [p.640]** (Ruggiero COT): Buy when COT Index Commercials [lag 1+ week] > trigger AND COT Index Small Traders < trigger. Commercials' actions lead.
+- **RULE [p.640]**: Exit mean-reverting trade at neutral (50), not opposite extreme.
 
 **KAMA (trading)**:
-- **REGRA [p.783]**: Trade KAMA via trendline direction -- buy when it turns up, sell when it turns down.
-- **REGRA [p.783]**: Keep ER period <= 14 days (default 10); leave slowest = 30 fixed; raise fastest from 2 to reduce sensitivity; use small threshold filter (~0.1 SD of trendline changes) to prevent false flips.
+- **RULE [p.783]**: Trade KAMA via trendline direction -- buy when it turns up, sell when it turns down.
+- **RULE [p.783]**: Keep ER period <= 14 days (default 10); leave slowest = 30 fixed; raise fastest from 2 to reduce sensitivity; use small threshold filter (~0.1 SD of trendline changes) to prevent false flips.
 
 **Risk Control**:
-- **REGRA [p.53]**: Target volatility for book default = 12% annualized.
-- **REGRA [p.1037]**: Initial stop below low of entry day OR previous day's low, whichever is lower. Move to break-even ASAP; trail to protect 50% of peak profit.
-- **REGRA [p.1057-1059]**: Size position inversely proportional to ATR for equal-risk allocation across markets.
-- **REGRA [p.1091]**: Use optimal f as UPPER BOUND; never size larger, or if you get average results you can expect to go broke eventually.
-- **REGRA [p.1091]**: Simpler alternative -- trade constant position size with reserve large enough to absorb extreme moves.
-- **REGRA [p.942]**: Investor capitalization = 3 * maximum drawdown.
-- **REGRA [p.942]**: Require >= 400 trades to reduce sample error to ~5%.
+- **RULE [p.53]**: Target volatility for book default = 12% annualized.
+- **RULE [p.1037]**: Initial stop below low of entry day OR previous day's low, whichever is lower. Move to break-even ASAP; trail to protect 50% of peak profit.
+- **RULE [p.1057-1059]**: Size position inversely proportional to ATR for equal-risk allocation across markets.
+- **RULE [p.1091]**: Use optimal f as UPPER BOUND; never size larger, or if you get average results you can expect to go broke eventually.
+- **RULE [p.1091]**: Simpler alternative -- trade constant position size with reserve large enough to absorb extreme moves.
+- **RULE [p.942]**: Investor capitalization = 3 * maximum drawdown.
+- **RULE [p.942]**: Require >= 400 trades to reduce sample error to ~5%.
 
 **Seasonal / Calendar**:
-- **REGRA [p.480]** (Holiday -- Kaeppel): Buy on close 3 days before an exchange holiday; sell on close 2 days later.
-- **REGRA [p.480]** (Hirsch): Buy first trading day of November; sell last trading day of April.
-- **REGRA [p.482]** (McGinley January): If first 5 trading days of January are up >= 4%, year has always been up. Buy, hold full year.
-- **REGRA [p.480]** (Month-End): Buy last (or 2nd-to-last) day of month; sell 4th trading day of next month.
+- **RULE [p.480]** (Holiday -- Kaeppel): Buy on close 3 days before an exchange holiday; sell on close 2 days later.
+- **RULE [p.480]** (Hirsch): Buy first trading day of November; sell last trading day of April.
+- **RULE [p.482]** (McGinley January): If first 5 trading days of January are up >= 4%, year has always been up. Buy, hold full year.
+- **RULE [p.480]** (Month-End): Buy last (or 2nd-to-last) day of month; sell 4th trading day of next month.
 
 **Day Trading**:
-- **REGRA [p.741]**: Prefer mean-reverting day strategies -- passive entry orders have near-zero slippage and may earn liquidity rebate.
-- **REGRA [p.740]**: Favor markets with highest volume AND highest volatility simultaneously.
+- **RULE [p.741]**: Prefer mean-reverting day strategies -- passive entry orders have near-zero slippage and may earn liquidity rebate.
+- **RULE [p.740]**: Favor markets with highest volume AND highest volatility simultaneously.
 
 **NUNCA**:
-- **NUNCA [p.1091]** (Elder): Never average down. Never meet margin calls. Liquidate worst position first.
-- **NUNCA [p.27]**: Never reuse out-of-sample data after the first validation run -- feedback contaminates.
-- **NUNCA [p.919]**: Never iterate step-forward test design after seeing results -- recreates overfitting.
-- **NUNCA [p.941]**: Never change test ranges after tests started -- prevents data-snooping bias.
+- **NEVER [p.1091]** (Elder): Never average down. Never meet margin calls. Liquidate worst position first.
+- **NEVER [p.27]**: Never reuse out-of-sample data after the first validation run -- feedback contaminates.
+- **NEVER [p.919]**: Never iterate step-forward test design after seeing results -- recreates overfitting.
+- **NEVER [p.941]**: Never change test ranges after tests started -- prevents data-snooping bias.
 
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - [p.27] "All testing is overfitting the data." In-sample/out-of-sample discipline is mandatory; OOS can only be used once.
 - [p.43] Kurtosis on daily returns > 7-8 -> "it begins to look as though the trading method is overfitted."
 - [p.132-133] Backtesting over periods with price shocks (2001, 2008) produces apparent predictive power -- your system may "profit" from events it never could have forecast in real time.
@@ -470,8 +464,7 @@ Stop-loss (long):
 - [p.1091] If you trade above optimal f and get average results, you eventually go broke. If below, risk drops arithmetically while profits drop geometrically.
 - [p.1091] Theory of Runs (Ch 22): 100 trades expect 1 run of 6. Sequential losing runs of 4-5 are not pathological -- plan for them.
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 **Justified by fundamentals / structural reasons**:
 - **14-day RSI** [p.386]: Wilder's 14 = one-half of a natural 1-month cycle. Economic justification is a monthly cycle in human behavior; Kaufman notes 14 "may not be" the true half-cycle for every market.
 - **20-day Bollinger, 2 sigma** [p.323-324]: "If it's not 20-day and 2 sigma, it's not a Bollinger band" -- established convention; 2 sigma approx 87% coverage in skewed distributions.
@@ -488,8 +481,7 @@ Stop-loss (long):
 - **Turtle 20/40** [p.353]: Has survived multiple decades in published form but has been heavily over-emulated -- edge likely decayed post-publication.
 - **COT Index lag 1-several weeks** [p.640]: Depends on market; requires recalibration per asset.
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "The market reflects all the jobber knows about the condition of the textile trade; all the banker knows about the money market... the market reduces to a bloodless verdict all knowledge bearing on finance, both domestic and foreign." -- Charles Dow, cited [p.4-5]
 
 > "Most men make money in their own business and lose it in some other fellow's." -- Richard Wyckoff, cited [p.5]
@@ -508,8 +500,7 @@ Stop-loss (long):
 
 > "To be uncertain is to be uncomfortable, but to be certain is to be ridiculous." -- Chinese proverb, cited [p.44]
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - **Optimization / Overfit** (Ch 21) connects with López de Prado's CPCV and 7-layer anti-overfit framework in `advances_fin_ml.md`. Kaufman arrives at "4 parameters or fewer" [p.939] via Futures Truth empirical evidence; López de Prado derives similar parsimony via Sharpe-deflation math.
 - **Parsimony in trend systems** connects with `systematic_trading.md#design-principles` (Carver), who also advocates <= 4 parameters and explicit economic justification. [p.?]
 - **Kelly / Optimal f** connects with `math_money_mgmt.md` (Vince's own book) and `leverage_space.md`. Kaufman presents Kelly / optimal f as an upper bound [p.1091] -- same conclusion as other money-management texts.

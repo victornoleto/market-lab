@@ -1,50 +1,47 @@
 # Cybernetic Analysis for Stocks and Futures: Cutting-Edge DSP Technology to Improve Your Trading
 
 ## Metadata
-- **Autor:** John F. Ehlers [cover, p.i]
-- **Ano:** 2004 [copyright page, p.iv]
-- **Editora:** John Wiley & Sons, Inc., Hoboken, New Jersey [p.iv]
-- **Páginas:** 274 (PDF) / body numbered ~246 printed pages [metadata]
+- **Author:** John F. Ehlers [cover, p.i]
+- **Year:** 2004 [copyright page, p.iv]
+- **Publisher:** John Wiley & Sons, Inc., Hoboken, New Jersey [p.iv]
+- **Pages:** 274 (PDF) / body numbered ~246 printed pages [metadata]
 - **ISBN:** 0-471-46307-8 [p.iv]
-- **Foco principal:** Aplicação de técnicas de Digital Signal Processing (DSP) — Fisher transform, Hilbert transform, filtros IIR/Butterworth, Laguerre polynomials — para criar indicadores e sistemas de trading com lag próximo de zero e adaptativos ao ciclo dominante do mercado.
+- **Main focus:** Application of Digital Signal Processing (DSP) techniques — Fisher transform, Hilbert transform, IIR/Butterworth filters, Laguerre polynomials — to build trading indicators and systems with near-zero lag and adaptive to the market's dominant cycle.
 
-## 1. Tese Central
+## 1. Core Thesis
+Ehlers argues that conventional technical analysis is crippled by two fallacies: (1) the assumption that prices have a Gaussian PDF, which invalidates any indicator based on standard deviations (Bollinger Bands, CCI, z-scores) [ch.1, p.1-2]; and (2) the use of primitive filters (SMA, EMA) whose lag, proportional to length, destroys any useful signal. The solution is to treat price as a signal composed of a trend component (low frequency) plus a cyclic component (high frequency), decompose it via DSP filters, measure the dominant cycle in real time with the Hilbert transform, and adapt indicator length to the measured cycle [Introduction, p.xi-xiii; ch.2, p.11-19].
 
-Ehlers argumenta que a análise técnica convencional é paralisada por duas falácias: (1) a suposição de que preços têm PDF Gaussiana, que invalida qualquer indicador baseado em desvios padrão (Bollinger Bands, CCI, z-scores) [ch.1, p.1-2]; e (2) o uso de filtros primitivos (SMA, EMA) cujo lag proporcional ao comprimento destrói qualquer sinal útil. A solução é tratar preços como um sinal composto por componente de tendência (baixa frequência) + componente cíclico (alta frequência), decompor via filtros DSP, medir o ciclo dominante em tempo real com o Hilbert transform, e adaptar o comprimento de indicadores a esse ciclo medido [Introduction, p.xi-xiii; ch.2, p.11-19].
+The operational thesis: a complementary pair "Instantaneous Trendline + Cyber Cycle" is mathematically dual (sum = unity in the frequency domain) and both have zero low-frequency lag. This allows oscillators to be overlaid on price exactly as moving averages were used before, unifying trend and cycle analysis [ch.2, p.15-19; ch.4, p.36].
 
-A tese operacional: um par complementar "Instantaneous Trendline + Cyber Cycle" é matematicamente dual (soma = unidade no domínio frequência) e ambos têm lag zero de baixa frequência. Isso permite construir oscillators sobrepostos a preços exatamente como se usava moving averages antes, unificando análise de tendência e de ciclo [ch.2, p.15-19; ch.4, p.36].
+## 2. Main Concepts
+- **Gaussian PDF fallacy** — prices almost never have a normal distribution; real PDFs (e.g., T-Bond futures 1988-2003) look more like those of a cyclic signal than a bell curve [p.5-6]
+- **Fisher Transform** — nonlinear transformation that converts any PDF to approximately Gaussian, enabling "razor-sharp" entry/exit signals [p.3-4]
+- **Trend Mode vs Cycle Mode** — mutually exclusive modes defined by frequency content; trend = low lag, cycle = high lag [p.11]
+- **Instantaneous Trendline (ITrend)** — second-order low-pass filter with **zero lag** at low frequency, obtained by subtracting the high-pass response from unity [p.16-17]
+- **Cyber Cycle** — second-order Gaussian high-pass filter (α=0.07), cyclic component complementary to ITrend [p.15, p.33]
+- **Dominant Cycle** — the single tradeable cycle predominant in the data set, measured via the Hilbert transform discriminator [p.108]
+- **Hilbert Transform (truncated 4-tap)** — decomposes the analytic signal into InPhase and Quadrature components, allowing phase and cycle period measurement within ~4 samples [p.109]
+- **Phasor / DeltaPhase** — rotational vector representation of the cycle; phase difference between successive samples yields the period measure (2π/ΔΦ) [p.108, p.117]
+- **Center of Gravity (CG)** — balance point of prices within a FIR window; moves opposite to price swings → zero-lag oscillator [p.47-48]
+- **Relative Vigor Index (RVI)** — ratio (Close−Open) / (High−Low), smoothed by a 4-bar symmetric FIR; prices close above the open in up-markets [p.55-57]
+- **Stochasticization** — apply the Stochastic function to an indicator to normalize it to the range [0,1]; cancels lag via numerator/denominator ratio [p.67-68]
+- **Fisherization** — apply Fisher transform after stochasticizing → sharp binary crossover signals [p.73]
+- **Adaptive indicators** — adjust length (via α=2/(Period+1)) to the measured Dominant Cycle; turns a good indicator into an excellent one [ch.10, p.123-124]
+- **Sinewave Indicator (noncausal)** — synthesizes the dominant cycle as a pure sine, advances phase by 45° → anticipates turning points by 1/16 of the cycle [p.151-152]
+- **Super Smoother / Butterworth digital filter** — 2- or 3-pole filters with configurable cutoff period, nearly flat passband response [ch.13, p.191-192]
+- **Regularized filter (Satchwell)** — EMA + curvature penalty term; requires λ = exp(0.16/α) to avoid frequency amplification [p.188]
+- **Laguerre filter / transform** — "time-warp": substitutes unit delays by all-pass networks with damping γ; enables strong smoothing with little data [ch.14, p.215-216]
+- **Leading indicator (causal)** — adds (price − EMA) to the price → lead = EMA lag; incurs mandatory noise gain [p.231-232]
+- **Profit Factor** — ratio Gross Winnings / Gross Losses; together with % winners, sufficient to simulate a Monte Carlo equity curve [p.228]
 
-## 2. Conceitos-Chave
-
-- **Gaussian PDF fallacy** — preços quase nunca têm distribuição normal; PDFs reais (ex: T-Bond futures 1988-2003) parecem-se com a de um sinal cíclico, não bell curve [p.5-6]
-- **Fisher Transform** — transformação não-linear que converte qualquer PDF em aproximadamente Gaussian, permitindo sinais de entrada/saída "razor-sharp" [p.3-4]
-- **Trend Mode vs Cycle Mode** — modos mutuamente exclusivos definidos por conteúdo de frequência; tendência = lag baixo, ciclo = lag alto [p.11]
-- **Instantaneous Trendline (ITrend)** — low-pass filter de segunda ordem com **lag zero** em baixa frequência, obtido subtraindo high-pass response de unity [p.16-17]
-- **Cyber Cycle** — high-pass filter de segunda ordem Gaussian (α=0.07), componente cíclica complementar ao ITrend [p.15, p.33]
-- **Dominant Cycle** — único ciclo tradeable predominante no data set, medido via Hilbert transform discriminator [p.108]
-- **Hilbert Transform (truncated 4-tap)** — decompõe sinal analítico em componentes InPhase e Quadrature, permitindo medir fase e período do ciclo em apenas ~4 amostras [p.109]
-- **Phasor / DeltaPhase** — representação vetorial rotacional do ciclo; diferença de fase entre amostras sucessivas produz medida de período (2π/ΔΦ) [p.108, p.117]
-- **Center of Gravity (CG)** — ponto de balanço das prices numa janela FIR; move-se em oposição às swings de preço → oscilador com lag zero [p.47-48]
-- **Relative Vigor Index (RVI)** — razão (Close−Open) / (High−Low), suavizada por FIR simétrico de 4 barras; prices fecham acima da abertura em up-markets [p.55-57]
-- **Stochasticization** — aplicar a função Stochastic a um indicador para normalizá-lo ao range [0,1]; cancela lag via razão numerador/denominador [p.67-68]
-- **Fisherization** — aplicar Fisher transform após stochasticizar → sinais binários-nítidos de cruzamento [p.73]
-- **Adaptive indicators** — ajustar comprimento (via α=2/(Period+1)) ao Dominant Cycle medido; transforma bom indicador em excelente [ch.10, p.123-124]
-- **Sinewave Indicator (noncausal)** — sintetiza o ciclo dominante como sine puro, adianta fase em 45° → antecipa turning points em 1/16 do ciclo [p.151-152]
-- **Super Smoother / Butterworth digital filter** — filtros de 2 ou 3 pólos com cutoff period configurável, resposta quase plana em passband [ch.13, p.191-192]
-- **Regularized filter (Satchwell)** — EMA + penalty term de curvatura; requer λ = exp(0.16/α) para evitar amplificação de frequências [p.188]
-- **Laguerre filter / transform** — "time-warp": substitui unit delays por all-pass networks com damping γ; permite smoothing forte com pouco data [ch.14, p.215-216]
-- **Leading indicator (causal)** — adiciona (preço − EMA) ao preço → lead = lag do EMA; tem noise gain obrigatório [p.231-232]
-- **Profit Factor** — razão Gross Winnings / Gross Losses; junto com % winners, suficientes para Monte-Carlo equity simulation [p.228]
-
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Fisher Transform** [p.3, Eq. 1.2]
 
 $$y = 0.5 \cdot \ln\!\left(\frac{1+x}{1-x}\right)$$
 
-- $x$ = input restrito a $-1 < x < 1$ (senão equação "explode")
-- $y$ = output com PDF aproximadamente Gaussiana
-- Na implementação, autor usa $y = 0.25 \cdot \ln((1+v)/(1-v)) + 0.5 \cdot y[1]$ (smoothing EMA α=0.5) [p.7]
+- $x$ = input constrained to $-1 < x < 1$ (otherwise the equation "blows up")
+- $y$ = output with approximately Gaussian PDF
+- In the implementation the author uses $y = 0.25 \cdot \ln((1+v)/(1-v)) + 0.5 \cdot y[1]$ (smoothing EMA α=0.5) [p.7]
 
 **EMA transfer response (Z-transform)** [p.12, Eq. 2.2]
 
@@ -63,7 +60,7 @@ $$HPF_t = (1-\tfrac{\alpha}{2})^2 (P_t - 2P_{t-1} + P_{t-2}) + 2(1-\alpha)HPF_{t
 $$IT_t = (\alpha - \tfrac{\alpha^2}{4})P_t + \tfrac{\alpha^2}{2}P_{t-1} - (\alpha - \tfrac{3\alpha^2}{4})P_{t-2} + 2(1-\alpha)IT_{t-1} - (1-\alpha)^2 IT_{t-2}$$
 
 - Default α=0.07 (≈ 28-bar equivalent) [p.24]
-- Inicialização: for first 7 bars, $IT = (P + 2P[1] + P[2])/4$ [p.24]
+- Initialization: for the first 7 bars, $IT = (P + 2P[1] + P[2])/4$ [p.24]
 
 **Trigger (2-bar leading momentum of ITrend)** [p.24]
 
@@ -73,7 +70,7 @@ $$\text{Trigger}_t = 2 IT_t - IT_{t-2}$$
 
 $$\text{Smooth}_t = (P_t + 2P_{t-1} + 2P_{t-2} + P_{t-3}) / 6$$
 
-- Lag constante de 1.5 barras em todas as frequências.
+- Constant lag of 1.5 bars at all frequencies.
 
 **Cyber Cycle (applied to Smooth)** [p.34]
 
@@ -85,13 +82,13 @@ $$Q_t = (0.0962\, C_t + 0.5769\, C_{t-2} - 0.5769\, C_{t-4} - 0.0962\, C_{t-6}) 
 
 $$I_t = C_{t-3}$$
 
-- Fator (0.5 + 0.08·InstPeriod) é compensação de amplitude dependente do período medido [p.110].
+- The factor (0.5 + 0.08·InstPeriod) is an amplitude compensation dependent on the measured period [p.110].
 
 **DeltaPhase (via arctangent subtraction identity)** [p.117, Eq. 9.3]
 
 $$\Delta\Phi_t = \frac{I_t/Q_t - I_{t-1}/Q_{t-1}}{1 + I_t I_{t-1}/(Q_t Q_{t-1})}$$
 
-- Limites: $0.1 \le \Delta\Phi \le 1.1$ radians (evita períodos <6 bars e >63 bars) [p.117]
+- Bounds: $0.1 \le \Delta\Phi \le 1.1$ radians (avoids periods <6 bars and >63 bars) [p.117]
 
 **Dominant Cycle period** [p.117-118]
 
@@ -105,7 +102,7 @@ $$\text{Period}_t = 0.15 \cdot \text{InstPeriod}_t + 0.85 \cdot \text{Period}_{t
 
 $$CG_t = -\frac{\sum_{i=0}^{N-1} (i+1) \cdot P_{t-i}}{\sum_{i=0}^{N-1} P_{t-i}} + \frac{N+1}{2}$$
 
-- Length ótima = metade do Dominant Cycle [p.53]
+- Optimal length = half the Dominant Cycle [p.53]
 
 **Relative Vigor Index** [p.55, Eq. 6.1]
 
@@ -133,14 +130,13 @@ $$\text{Butter}_t = \frac{(1-b+c)(1-c)}{8}(P_t + 3P_{t-1} + 3P_{t-3} + P_{t-4}) 
 
 $$\lambda = \exp(0.16/\alpha)$$
 
-- Ex: α=0.33 → λ=1.624 (resposta quase plana até 0.05 cycles/day) [p.188]
+- E.g., α=0.33 → λ=1.624 (nearly flat response up to 0.05 cycles/day) [p.188]
 
 **Iterative SMA** [p.242, Eq. 17.5]
 
 $$SMA_t = \frac{P_t - P_{t-N} + SMA_{t-1}}{N+1}$$
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Fisher Transform Indicator** [p.7, Figure 1.7, EasyLanguage]
 
 ```
@@ -244,53 +240,49 @@ plot equity (line chart)
 # Press F9 to re-randomize; repeat until distribution of outcomes is visualised
 ```
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.4-5]** (Fisher Transform usage): after normalizing prices to the range [-1,+1] over a 10-bar window and applying the Fisher transform, crossovers between Fish and Fish[1] identify cyclic turning points with essentially zero lag.
+- **RULE [p.23-24]** (ITrend trend strategy): Long when Trigger crosses above ITrend; Short when it crosses below. Entry **always via limit order** at Close ± 35% of the bar's range (RngFrac=0.35).
+- **RULE [p.25]** (ITrend reversal protection): If the position is losing more than 1.5% (RevPct=1.015), reverse to the opposite side at the next bar's open — "major losses are avoided by recognizing when a trade is on the wrong side."
+- **RULE [p.26]** ($2,500 money-management stop): for currency futures, an additional $2,500 stop independent of the technical rule.
+- **NEVER [p.24]**: use stop orders or market orders as primary entry — limit orders capture slippage as profit rather than as cost.
+- **RULE [p.35-36]** (Cyber Cycle strategy, contrarian): because total lag (1.5 smooth + ~0.5 cycle + 1 trigger + 1 execution = 4 bars) makes the signal "exactly wrong" on an 8-bar cycle, **use the inverted signal** with an additional-lag EMA. Cross-under ⇒ Buy; cross-over ⇒ Sell Short.
+- **RULE [p.38]** (Cyber Cycle escape): if the trade still has an open loss after 8 bars, exit immediately (reverse).
+- **RULE [p.57]** (RVI): indicator is cycle-mode only; buy when RVI crosses above Trigger (RVI[1]), sell when it crosses below.
+- **RULE [p.152-153]** (Sinewave): LeadSine-crosses-above-Sine = entry ~1/16 cycle before top/bottom; **do NOT trade** when the lines do not have a clear sinusoidal shape (signals Trend Mode — natural whipsaw filter).
+- **RULE [p.221-223]** (Laguerre RSI): buy when RSI crosses above 20%, sell when it crosses below 80%.
+- **RULE [p.123-124]** (Adaptive indicators): whenever possible, replace fixed length with the measured Dominant Cycle, via $\alpha_1 = 2/(\text{Period}+1)$.
+- **NEVER [p.1-2]**: attribute statistical meaning to ±1σ / ±2σ bands over price data assuming a Normal PDF — the assumption is demonstrably false on Treasury Bond futures over 15 years (1988-2003).
+- **NEVER [p.189, p.210]**: use filters of order higher than 2 (without strong justification) for Gaussian, or higher than 3 for Butterworth — ringing and lag grow more than the attenuation benefit.
 
-- **REGRA [p.4-5]** (Fisher Transform usage): após normalizar preços ao range [-1,+1] numa janela de 10 bars e aplicar Fisher transform, cruzamentos entre Fish e Fish[1] identificam turning points cíclicos com lag essencialmente zero.
-- **REGRA [p.23-24]** (ITrend trend strategy): Long quando Trigger cruza acima de ITrend; Short quando cruza abaixo. Entry **sempre via limit order** a Close ± 35% do range do bar (RngFrac=0.35).
-- **REGRA [p.25]** (ITrend reversal protection): Se a posição estiver perdendo mais de 1.5% (RevPct=1.015), reverter para o lado oposto no open do próximo bar — "major losses are avoided by recognizing when a trade is on the wrong side."
-- **REGRA [p.26]** ($2,500 money-management stop): para currency futures, stop adicional de $2,500 independente da regra técnica.
-- **NUNCA [p.24]**: usar stop orders ou market orders como entrada primária — limit orders capturam slippage como profit em vez de como custo.
-- **REGRA [p.35-36]** (Cyber Cycle strategy, contrarian): como o lag total (1.5 smooth + ~0.5 cycle + 1 trigger + 1 execução = 4 bars) faz o signal ser "exatamente errado" em um ciclo de 8 bars, **usar o sinal invertido** com um EMA de lag adicional. Cross-under ⇒ Buy; cross-over ⇒ Sell Short.
-- **REGRA [p.38]** (Cyber Cycle escape): se após 8 bars na trade ainda tiver open loss, sair imediatamente (reverte).
-- **REGRA [p.57]** (RVI): indicador é cycle-mode apenas; comprar quando RVI cruza acima do Trigger (RVI[1]), vender quando cruza abaixo.
-- **REGRA [p.152-153]** (Sinewave): cruzamento LeadSine-acima-de-Sine = entry ~1/16 ciclo antes do topo/fundo; **NÃO operar** quando as linhas não têm forma sinusoidal clara (sinaliza Trend Mode — filtro natural de whipsaw).
-- **REGRA [p.221-223]** (Laguerre RSI): comprar quando RSI cruza acima de 20%, vender quando cruza abaixo de 80%.
-- **REGRA [p.123-124]** (Adaptive indicators): sempre que possível, substituir length fixo pelo Dominant Cycle medido, via $\alpha_1 = 2/(\text{Period}+1)$.
-- **NUNCA [p.1-2]**: atribuir significado estatístico a bandas ±1σ / ±2σ sobre price data assumindo Normal PDF — a suposição é comprovadamente falsa em Treasury Bond futures sobre 15 anos (1988-2003).
-- **NUNCA [p.189, p.210]**: usar filtros de ordem superior a 2 (sem justificativa forte) para Gaussian, ou superior a 3 para Butterworth — o ringing e o lag crescem mais do que o benefício de atenuação.
+## 6. Pitfalls and Anti-patterns
+- [p.1-2] **Gaussian PDF assumption**: CCI, Bollinger Bands, and any indicator with a "sigma boundary" are built on a false premise. The real price PDF looks more like a sinewave than a bell curve.
+- [p.188] **Regularized filter with arbitrary λ**: λ=10 with α=0.33 amplifies 33-bar cycles by +6 dB (the exact opposite of the desired smoothing). Always use $\lambda = e^{0.16/\alpha}$.
+- [p.15, p.19] **Higher-order Gaussian filters have transient "bell-ringing"**: "the ringing is more a function of the bell itself rather than a filtered response of a driving force" — avoid order > 2.
+- [p.36] **Trading cycles directly produces systematically delayed signals**: cumulative lag of smooth + cycle + trigger + execution = ~4 bars, which for an 8-bar cycle completely inverts the signal.
+- [p.51, p.53] **Wrong CG length destroys the indicator**: if window = full dominant cycle, the CG sits static in the middle (half the data pulls right, half pulls left). Always use ~ ½ of the Dominant Cycle.
+- [p.152] **Sinewave in Trend Mode**: during a trend, phase does not advance and the lines do not cross — **this is a feature, not a bug**. Forcing sinewave signals in a trend generates fabricated whipsaws.
+- [p.227-229] **A single equity curve is misleading**: the same combination {% winners=45, PF=1.5} produces dramatically different curves on each Monte Carlo run. A vendor showing one curve without Profit Factor and % winners is hiding information.
+- [p.232-233] **Leading indicators carry mandatory noise gain**: there is no causal filter that anticipates transients without amplifying noise — "you cannot get something for nothing; there is no magic predictor" [p.234].
+- [p.26, p.32] **False robustness from many parameters**: Ehlers defends his Instantaneous Trend Strategy by saying it is "highly unlikely that the strategy has been curve fitted" because it has **few independent parameters** and a large number of trades over 25 years — the contrapositive being the pitfall.
+- [p.220] **RSI = 14 is arbitrary**: "When Welles Wilder first introduced the RSI, I was curious as to why he selected 14 bars" — motivation for adaptive indicators over traditional constants.
+- [p.117-118] **DeltaPhase can go to zero or negative** due to noise / quadrant ambiguity → requires clipping to [0.1, 1.1] rad + a 5-sample median filter before use.
+- [p.119] **FFT is unsuitable for markets**: cannot simultaneously satisfy stationarity constraints and produce sufficient resolution; requires 16 full cycles for measurement resolution comparable to the Hilbert discriminator.
 
-## 6. Pitfalls e Anti-patterns
+## 7. Sensitive Parameters
+- **α = 0.07 (Cyber Cycle / ITrend default)** [p.24, p.34]: equivalent to ~28-bar SMA via α=2/(L+1). Ehlers uses this value in **every** indicator in the book; it is not optimized per market — it is a design choice that isolates the ~40+ bar band as trend and <40 bars as cycle. Low curve-fit risk.
+- **RngFrac = 0.35 (limit order offset)** [p.24, p.26]: "optimizable parameter"; author states it is the only parameter tuned via backtest, the rest being fixed by design.
+- **RevPct = 1.015 (reversal threshold)** [p.25]: "relatively robust number"; 1.5% by design (not optimized).
+- **BarsSinceEntry > 8 (Cyber Cycle escape)** [p.38]: chosen as a "typical half cycle" to allow natural reversal; derived from the 16-bar dominant cycle assumption.
+- **Hilbert truncation = 4 taps** [p.109]: truncates the infinite series; the amplitude feedback correction $(0.5 + 0.08 \cdot InstPeriod_{t-1})$ is empirical but explicitly justified as superior to the trigonometric identity $\sin^2+\cos^2=1$ in the presence of noise [p.117].
+- **Smoothing EMA on measurement** [p.118]: α=0.33 (InstPeriod) and α=0.15 (Period) — derived from the requirement "full cycle measurement in one cycle of 20-bar signal starting from 0".
+- **DeltaPhase clips [0.1, 1.1] rad** [p.117]: mathematical justification — corresponds to cycles between 6 and 63 bars (2π/0.1 and 2π/1.1). Not a curve-fit; it is a physical bound.
+- **γ (Laguerre damping) ∈ [0.6, 0.8]** [p.215]: low parsimony — the author shows curves for both and leaves the choice to the reader. Default in code = 0.8 [p.216].
+- **Cutoff period (Super Smoother)** [p.191-192]: Table 13.2 lists coefficients for cutoffs of 10, 15, 20, 25, 30 bars; should be selected by timeframe, not optimized in backtest.
+- **Fisher normalization window = 10 bars** [p.7]: arbitrary; EasyLanguage `Len` input.
+- **RVI summation length = 8 bars** [p.57]: "nominal value ... approximately half the period of most cycles of interest" — economic, not statistical, justification.
 
-- [p.1-2] **Gaussian PDF assumption**: CCI, Bollinger Bands e qualquer indicador com "sigma boundary" são baseados em premissa falsa. PDF real de preços parece mais com sinewave do que bell curve.
-- [p.188] **Regularized filter com λ arbitrário**: λ=10 com α=0.33 amplifica em +6 dB ciclos de 33 bars (faz exatamente o oposto do smoothing desejado). Usar sempre $\lambda = e^{0.16/\alpha}$.
-- [p.15, p.19] **Higher-order Gaussian filters têm transient "bell-ringing"**: "the ringing is more a function of the bell itself rather than a filtered response of a driving force" — evitar ordem > 2.
-- [p.36] **Trading cycles diretamente gera signals sistematicamente atrasados**: lag cumulativo de smooth + cycle + trigger + execução = ~4 bars, o que para um ciclo de 8 bars inverte totalmente o sinal.
-- [p.51, p.53] **CG length errada destrói o indicador**: se window = full dominant cycle, a CG fica estática no meio (metade dos dados puxa p/ direita, metade p/ esquerda). Sempre usar ~ ½ do Dominant Cycle.
-- [p.152] **Sinewave em Trend Mode**: quando há tendência, a fase não avança e as linhas não cruzam — **isso é feature, não bug**. Forçar signals de sinewave em trend gera whipsaws fabricados.
-- [p.227-229] **Single equity curve é enganoso**: a mesma combinação {% winners=45, PF=1.5} produz curvas dramaticamente diferentes a cada Monte Carlo run. Vendor que mostra uma curva sem Profit Factor e % winners está escondendo informação.
-- [p.232-233] **Leading indicators têm noise gain obrigatório**: não existe causal filter que antecipe transients sem amplificar ruído — "you cannot get something for nothing; there is no magic predictor" [p.234].
-- [p.26, p.32] **Falsa robustez de muitos parâmetros**: Ehlers defende sua Instantaneous Trend Strategy dizendo "highly unlikely that the strategy has been curve fitted" por ter **poucos parâmetros independentes** e grande número de trades em 25 anos — a contrapositiva sendo o pitfall.
-- [p.220] **RSI = 14 é arbitrário**: "When Welles Wilder first introduced the RSI, I was curious as to why he selected 14 bars" — motivação para indicadores adaptativos em vez de constantes tradicionais.
-- [p.117-118] **DeltaPhase pode ir a zero ou negativo** por ruído / ambiguidade de quadrante → necessita clip em [0.1, 1.1] rad + median filter de 5 amostras antes de ser usado.
-- [p.119] **FFT é inadequado para mercados**: não consegue simultaneamente atender constraint de estacionariedade e produzir resolução suficiente; requer 16 full cycles para medida com resolução comparável ao Hilbert discriminator.
-
-## 7. Parâmetros Sensíveis
-
-- **α = 0.07 (Cyber Cycle / ITrend default)** [p.24, p.34]: equivalente a SMA ~28 barras via α=2/(L+1). Ehlers usa este valor em **todos** os indicadores do livro; não é otimizado por market, é escolha de design que isola banda ~40+ bars como trend e <40 bars como cycle. Baixo risco de curve-fit.
-- **RngFrac = 0.35 (limit order offset)** [p.24, p.26]: "optimizable parameter"; autor declara que é o único parâmetro tunado via backtest, restante é fixo por design.
-- **RevPct = 1.015 (reversal threshold)** [p.25]: "relativamente robust number"; 1.5% por design (não otimizado).
-- **BarsSinceEntry > 8 (Cyber Cycle escape)** [p.38]: escolhido como "meio ciclo típico" para permitir reversão natural; derivado da assunção de 16-bar dominant cycle.
-- **Hilbert truncation = 4 taps** [p.109]: trunca série infinita; compensação de amplitude feedback $(0.5 + 0.08 \cdot InstPeriod_{t-1})$ é empírica mas explicitamente justificada como melhor que identidade trigonométrica $\sin^2+\cos^2=1$ em presença de ruído [p.117].
-- **Smoothing EMA na measurement** [p.118]: α=0.33 (InstPeriod) e α=0.15 (Period) — derivados de requisito "full cycle measurement in one cycle of 20-bar signal starting from 0".
-- **DeltaPhase clips [0.1, 1.1] rad** [p.117]: justificativa matemática — corresponde a ciclos entre 6 e 63 bars (2π/0.1 e 2π/1.1). Não é curve-fit; é bound físico.
-- **γ (Laguerre damping) ∈ [0.6, 0.8]** [p.215]: baixa parsimônia — autor mostra curvas para ambos e deixa ao leitor escolher. Valor default no código = 0.8 [p.216].
-- **Cutoff period (Super Smoother)** [p.191-192]: Table 13.2 lista coeficientes para cutoffs de 10, 15, 20, 25, 30 bars; deve ser escolhido conforme timeframe, não otimizado no backtest.
-- **Fisher normalization window = 10 bars** [p.7]: arbitrário; EasyLanguage `Len` input.
-- **RVI summation length = 8 bars** [p.57]: "nominal value ... approximately half the period of most cycles of interest" — justificativa econômica, não estatística.
-
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "Prices almost never have a Gaussian, or Normal, probability distribution. Statistical measures based on Gaussian probability distributions, such as standard deviations, are in error because the probability distribution assumption underlying the calculation is in error." — [p.10]
 
 > "The Instantaneous Trendline has zero lag. That's right—zero lag!" — [p.17]
@@ -303,10 +295,9 @@ plot equity (line chart)
 
 > "Profit Factor and Percentage Winners of a trading system are all you need to create a Monte Carlo equity curve of that system. A real equity curve is only one of the possibilities that can be produced by a Monte Carlo equity curve." — [p.230]
 
-## 9. Conexões com Outros Livros Desta Base
-
-- **Parsimônia de parâmetros** — Ehlers argumenta "few independent parameters + many trades over long span ⇒ not curve-fit" [p.26], alinhado com o princípio de Carver em `systematic_trading.md#design-principles` de evitar overfitting via robust defaults e handcrafted weights. Ambos chegam à mesma conclusão por caminhos diferentes (engenharia vs. Bayesian prior).
-- **Monte Carlo para avaliação de sistema** [p.227-230] — simulação via {% winners, profit factor} complementa, mas é muito mais simples que, o CPCV/walk-forward framework descrito em `advances_fin_ml.md`. Ehlers fornece um simulador parametrizado mínimo; López de Prado fornece a teoria de backtesting robusto.
-- **Crítica à PDF Gaussiana** [ch.1, p.1-10] — conecta-se à discussão empírica em `evidence_based_ta.md` sobre distribuições fat-tailed; Ehlers propõe a Fisher transform como *workaround* para reaproveitar ferramentas baseadas em Normal.
-- **Cycle-based filters vs. ML features** — os oscillators de lag zero (Cyber Cycle, CG, RVI, adaptive versions) são candidatos diretos a features numéricas para modelos em `ml_for_asset_managers.md` e `advances_fin_ml.md`; particularmente o Dominant Cycle period como feature macro-regime.
-- **Time series theory** — a análise Z-transform de Ehlers [ch.2, p.12-16] e as derivações de lag/response são rigorosamente o aparato de `time_series_hamilton.md` cap. 3 (filtros lineares, ARMA como filtros de funcão de transferência). Ehlers aplica DSP onde Hamilton aplica econometria; mesmo formalismo matemático.
+## 9. Cross-references to Other Books in This Knowledge Base
+- **Parameter parsimony** — Ehlers argues "few independent parameters + many trades over long span ⇒ not curve-fit" [p.26], aligned with Carver's principle in `systematic_trading.md#design-principles` of avoiding overfitting via robust defaults and handcrafted weights. Both reach the same conclusion by different routes (engineering vs. Bayesian prior).
+- **Monte Carlo for system evaluation** [p.227-230] — simulation via {% winners, profit factor} complements, but is much simpler than, the CPCV/walk-forward framework in `advances_fin_ml.md`. Ehlers provides a minimal parameterized simulator; López de Prado provides the theory of robust backtesting.
+- **Critique of the Gaussian PDF** [ch.1, p.1-10] — connects to the empirical discussion of fat-tailed distributions in `evidence_based_ta.md`; Ehlers proposes the Fisher transform as a *workaround* to reuse Normal-based tools.
+- **Cycle-based filters vs. ML features** — the zero-lag oscillators (Cyber Cycle, CG, RVI, adaptive versions) are direct candidates for numerical features in models from `ml_for_asset_managers.md` and `advances_fin_ml.md`; particularly the Dominant Cycle period as a macro-regime feature.
+- **Time series theory** — Ehlers's Z-transform analysis [ch.2, p.12-16] and lag/response derivations are rigorously the apparatus of `time_series_hamilton.md` ch. 3 (linear filters, ARMA as transfer-function filters). Ehlers applies DSP where Hamilton applies econometrics; the same mathematical formalism.

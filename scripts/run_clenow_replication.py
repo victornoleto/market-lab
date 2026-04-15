@@ -26,7 +26,7 @@ Notes
   survivorship-biased (current-ticker-only fetch, missing delistings). The
   generated report carries a mandatory disclaimer; migrate to a paid
   survivorship-free feed before trusting any gate decision (ROADMAP
-  §"Decisões adiadas").
+  §"Deferred decisions").
 * **Validation coverage.** A single-trial replication (fixed Clenow
   parameters) produces one equity curve. Walk-forward stats on that curve
   are reported as a sanity check. CPCV/PBO/DSR require a grid of strategy

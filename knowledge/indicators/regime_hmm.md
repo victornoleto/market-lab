@@ -1,6 +1,6 @@
 # Hidden Markov Models for Regime
 
-HMM como classificador de regime (bull, bear, high-vol, low-vol).
+HMM as a regime classifier (bull, bear, high-vol, low-vol).
 
 ## Sources
 
@@ -10,27 +10,27 @@ HMM como classificador de regime (bull, bear, high-vol, low-vol).
 
 ## From `books/regime_change.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.82, ch.6]**: Under normal regime, enter contrarian when |TMV| reaches 2: short in uptrend (TMV ≥ 2), long in downtrend (TMV ≤ -2). Rationale: mean reversion is observed in normal market regimes.
+- **RULE [p.82, ch.6]**: Under normal regime, enter contrarian when |TMV| reaches 2: short in uptrend (TMV ≥ 2), long in downtrend (TMV ≤ -2). Rationale: mean reversion is observed in normal market regimes.
 
-- **REGRA [p.83, ch.6]**: Under abnormal regime, JC1 switches to trend-following on the same |TMV| ≥ 2 trigger. Rationale: in abnormal regimes, margin calls cascade and drive the prevailing trend further.
+- **RULE [p.83, ch.6]**: Under abnormal regime, JC1 switches to trend-following on the same |TMV| ≥ 2 trigger. Rationale: in abnormal regimes, margin calls cascade and drive the prevailing trend further.
 
-- **REGRA [p.82, ch.6]**: Close position at the next DC Confirmation (DCC) point under both normal and abnormal regimes.
+- **RULE [p.82, ch.6]**: Close position at the next DC Confirmation (DCC) point under both normal and abnormal regimes.
 
-- **REGRA [p.82–83, ch.6]**: Close ALL open positions immediately when a regime change is detected by the Bayes tracker. This is the primary stop-loss mechanism and the source of drawdown reduction.
+- **RULE [p.82–83, ch.6]**: Close ALL open positions immediately when a regime change is detected by the Bayes tracker. This is the primary stop-loss mechanism and the source of drawdown reduction.
 
-- **REGRA [p.83, ch.6]** (JC2 — more conservative): Hold NO positions during abnormal regime; wait for return to normal regime before re-entering.
+- **RULE [p.83, ch.6]** (JC2 — more conservative): Hold NO positions during abnormal regime; wait for return to normal regime before re-entering.
 
-- **REGRA [p.71, ch.5]**: Use B-Strict rule: only conclude Regime 2 if $p(C_2|x) > p(C_1|x)$ AND $p(C_2|x) > 0.8$. Reduces false alarms from 52 to 10 across DJIA/FTSE/S&P 500 test period [p.76, ch.5].
+- **RULE [p.71, ch.5]**: Use B-Strict rule: only conclude Regime 2 if $p(C_2|x) > p(C_1|x)$ AND $p(C_2|x) > 0.8$. Reduces false alarms from 52 to 10 across DJIA/FTSE/S&P 500 test period [p.76, ch.5].
 
-- **REGRA [p.58, ch.4]**: If the current market is moving away from the normal regime cluster in the T-TMV indicator space, consider closing positions or switching strategy.
+- **RULE [p.58, ch.4]**: If the current market is moving away from the normal regime cluster in the T-TMV indicator space, consider closing positions or switching strategy.
 
-- **NUNCA [p.77, ch.5]**: Treat regime tracking output as a forecast of future prices — the method is purely data-led and tells only the current regime state. "No forecasting is attempted."
+- **NEVER [p.77, ch.5]**: Treat regime tracking output as a forecast of future prices — the method is purely data-led and tells only the current regime state. "No forecasting is attempted."
 
 ---
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **DC Event Condition** [p.10, ch.2 eq. 2.1]
 
@@ -143,7 +143,7 @@ Applied so that regimes from markets with different absolute TMV/T scales can be
 
 ---
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Algorithm 1 — Naive Bayes Classifier training and testing** [p.65, ch.5]
 
@@ -254,7 +254,7 @@ Rule 3: When next DCC point confirmed: CLOSE
 
 ---
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - [p.94, ch.7] Using only time-series analysis for regime detection — this misses intra-day regime changes that DC captures (e.g., the 14 July 2016 EUR-GBP regime change linked to Theresa May becoming PM was not detected under time series) [p.29, ch.3].
 
@@ -280,11 +280,11 @@ Rule 3: When next DCC point confirmed: CLOSE
 
 ## From `books/data_driven_science.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
 N/A — This chapter is a pedagogical treatment of Reinforcement Learning for general dynamical systems, control, robotics, and board/video games. It does NOT discuss trading, asset pricing, portfolio optimization, execution, or any financial-market application. No trading rule ("if X then Y") is stated anywhere in the extracted pages. Applying RL to trading would require additional domain knowledge (reward function design, state/action spaces for markets, transaction costs, non-stationarity) that is not covered here. For explicit trading rules see `systematic_trading.md` or `evidence_based_ta.md`.
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Policy as conditional probability** [p.3, eq.11.1]
 
@@ -402,7 +402,7 @@ $$V(x) = \min_{u}\bigl( L(x, u) + V(F(x, u)) \bigr)$$
 
 $$\pi(x) = \arg\min_{u}\bigl( L(x, u) + V(F(x, u)) \bigr)$$
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Policy Iteration** [p.12-13, §policy iteration]
 
@@ -509,7 +509,7 @@ Loop:
    d. Actor update: θ ← θ + α ∇_θ[ log π_θ(s,a) · Q_{θ₂}(s,a) ]
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - **Curse of dimensionality in dynamic programming** [p.11-12]: "For even moderately large problems, [Bellman backup] suffers from the curse of dimensionality, and approximate solution methods must be employed" [p.12]. Chess has combinatorially large state spaces (Shannon number ≈ 10^120 [p.25]) that make tabular Q infeasible.
 - **Policy iteration is expensive and prone to local minima** [p.13]: "This procedure is both expensive and prone to finding local minima. It also resembles the alternating descent method."
@@ -529,34 +529,34 @@ Loop:
 
 ## From `books/ml_for_algo_trading.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [ch.1 p.13; ch.8 p.223-224]**: Use ONLY point-in-time (PIT) data; synchronize reported financials with actual publication dates (e.g., EPS quarterly vs. prices daily). Failure produces positive backtests that collapse in live trading.
-- **REGRA [ch.2 p.55]**: When joining fundamentals with adjusted prices, back-adjust pre-split EPS by the split ratio (e.g., Apple pre-2014-06-04 EPS ÷ 7); use 4-quarter rolling sums for TTM metrics.
-- **REGRA [ch.2 p.39]**: Prefer **dollar bars** (or volume bars) over time bars in backtests; tick-return normality tests fail at vanishingly small p-values, and dollar bars remain comparable across splits and price-regime changes.
-- **REGRA [ch.3 p.66-67]**: Score every alternative dataset on (1) signal content / alpha, (2) data quality (gaps, biases), (3) latency between event and delivery, (4) legal/reputational risk including GDPR. Skip datasets that fail any dimension.
-- **REGRA [ch.3 p.66]**: Prefer alt-data whose signals show low (< 5%) correlation with traditional risk premia (value, momentum, quality); they add diversification value even when standalone Sharpe is weak.
-- **REGRA [ch.8 p.224]**: Include delisted/bankrupt/acquired tickers in backtest universe. Excluding them is survivorship bias and inflates results.
-- **REGRA [ch.5 p.133]**: Use fractional Kelly (typically Half-Kelly) for position sizing. Full Kelly is optimal only with perfect parameter knowledge; real estimates have noise.
-- **REGRA [ch.4 p.86]**: For momentum, use 12-month return EXCLUDING the most recent month (skip-a-month) to avoid short-term reversal contamination.
-- **REGRA [ch.5 p.124]**: Target IC of 0.05–0.15 combined with high breadth. A single high-IC signal with low breadth underperforms many weak uncorrelated signals.
-- **REGRA [ch.6 p.167-169]**: Use `TimeSeriesSplit` (walk-forward), not random K-fold, for time-series data. For overlapping labels, add purging + embargoing.
-- **REGRA [ch.8 p.227]**: Report the number of trials run during strategy search; adjust Sharpe via the deflated SR formula before concluding.
-- **REGRA [ch.8 p.227]**: 2 years of daily data supports conclusions about at most ~7 strategy variants; 5 years supports ~45. Running more trials without more data equals overfitting.
-- **REGRA [ch.9 p.274]**: For volatility models, jointly estimate mean + GARCH structure rather than sequentially — sequential estimation understates uncertainty.
-- **REGRA [ch.10 p.318-319]**: Compare strategies via posterior distribution of the **difference** in Sharpe ratios (Bayesian SR), not point-estimate Sharpe differences; it gives a probability that one strategy is truly superior.
-- **REGRA [ch.11 p.327-334]**: For random-forest trading models, control `max_depth`, `min_samples_split`, `min_samples_leaf`. Default trees overfit financial data.
-- **REGRA [ch.12 p.373]**: When using early stopping with gradient boosting or deep networks, keep a separate hold-out test set; never use the test set as the stopping-criterion validation set or you leak information.
-- **REGRA [ch.12 p.373]**: Even with a proper validation set, running a large number of early-stopped trials overfits to the validation set itself — keep trial counts modest.
-- **REGRA [ch.13 p.438]**: HRP typically underperforms MV in Sharpe (0.83 vs 1.16 in the book's ML benchmark) but is robust to correlation-matrix estimation error; prefer HRP when return forecasts are unreliable.
-- **REGRA [ch.17 p.514-515]**: Neural networks require combined regularization (L1/L2 + dropout + early stopping) — deep models overfit low-signal financial data easily.
-- **REGRA [ch.15 p.476]**: When interpreting LDA topics with pyLDAvis, set relevance λ ≈ 0.6 (user-study optimum); stop increasing topic count when coherence plateaus (typically 25–30 for financial news).
-- **REGRA [ch.16 p.502]**: For word2vec on financial corpora, use skip-gram + negative sampling, `min_count ≥ 50`, window ≥ 5, and embedding size 300–600; CBOW and hierarchical softmax underperform.
-- **REGRA [ch.23 p.719]**: Before going live, always run paper-trading in a staged manner. Never go straight from backtest to capital deployment.
-- **NUNCA [ch.8 p.225-226]**: Backtest trades executing at the close-price of the same bar that generated the signal. Use next-bar open (or intraday with latency).
-- **NUNCA [ch.23 p.716]**: Design strategies by "letting the data speak" (pure data mining). Prioritize economically-motivated hypotheses; test a limited set.
+- **RULE [ch.1 p.13; ch.8 p.223-224]**: Use ONLY point-in-time (PIT) data; synchronize reported financials with actual publication dates (e.g., EPS quarterly vs. prices daily). Failure produces positive backtests that collapse in live trading.
+- **RULE [ch.2 p.55]**: When joining fundamentals with adjusted prices, back-adjust pre-split EPS by the split ratio (e.g., Apple pre-2014-06-04 EPS ÷ 7); use 4-quarter rolling sums for TTM metrics.
+- **RULE [ch.2 p.39]**: Prefer **dollar bars** (or volume bars) over time bars in backtests; tick-return normality tests fail at vanishingly small p-values, and dollar bars remain comparable across splits and price-regime changes.
+- **RULE [ch.3 p.66-67]**: Score every alternative dataset on (1) signal content / alpha, (2) data quality (gaps, biases), (3) latency between event and delivery, (4) legal/reputational risk including GDPR. Skip datasets that fail any dimension.
+- **RULE [ch.3 p.66]**: Prefer alt-data whose signals show low (< 5%) correlation with traditional risk premia (value, momentum, quality); they add diversification value even when standalone Sharpe is weak.
+- **RULE [ch.8 p.224]**: Include delisted/bankrupt/acquired tickers in backtest universe. Excluding them is survivorship bias and inflates results.
+- **RULE [ch.5 p.133]**: Use fractional Kelly (typically Half-Kelly) for position sizing. Full Kelly is optimal only with perfect parameter knowledge; real estimates have noise.
+- **RULE [ch.4 p.86]**: For momentum, use 12-month return EXCLUDING the most recent month (skip-a-month) to avoid short-term reversal contamination.
+- **RULE [ch.5 p.124]**: Target IC of 0.05–0.15 combined with high breadth. A single high-IC signal with low breadth underperforms many weak uncorrelated signals.
+- **RULE [ch.6 p.167-169]**: Use `TimeSeriesSplit` (walk-forward), not random K-fold, for time-series data. For overlapping labels, add purging + embargoing.
+- **RULE [ch.8 p.227]**: Report the number of trials run during strategy search; adjust Sharpe via the deflated SR formula before concluding.
+- **RULE [ch.8 p.227]**: 2 years of daily data supports conclusions about at most ~7 strategy variants; 5 years supports ~45. Running more trials without more data equals overfitting.
+- **RULE [ch.9 p.274]**: For volatility models, jointly estimate mean + GARCH structure rather than sequentially — sequential estimation understates uncertainty.
+- **RULE [ch.10 p.318-319]**: Compare strategies via posterior distribution of the **difference** in Sharpe ratios (Bayesian SR), not point-estimate Sharpe differences; it gives a probability that one strategy is truly superior.
+- **RULE [ch.11 p.327-334]**: For random-forest trading models, control `max_depth`, `min_samples_split`, `min_samples_leaf`. Default trees overfit financial data.
+- **RULE [ch.12 p.373]**: When using early stopping with gradient boosting or deep networks, keep a separate hold-out test set; never use the test set as the stopping-criterion validation set or you leak information.
+- **RULE [ch.12 p.373]**: Even with a proper validation set, running a large number of early-stopped trials overfits to the validation set itself — keep trial counts modest.
+- **RULE [ch.13 p.438]**: HRP typically underperforms MV in Sharpe (0.83 vs 1.16 in the book's ML benchmark) but is robust to correlation-matrix estimation error; prefer HRP when return forecasts are unreliable.
+- **RULE [ch.17 p.514-515]**: Neural networks require combined regularization (L1/L2 + dropout + early stopping) — deep models overfit low-signal financial data easily.
+- **RULE [ch.15 p.476]**: When interpreting LDA topics with pyLDAvis, set relevance λ ≈ 0.6 (user-study optimum); stop increasing topic count when coherence plateaus (typically 25–30 for financial news).
+- **RULE [ch.16 p.502]**: For word2vec on financial corpora, use skip-gram + negative sampling, `min_count ≥ 50`, window ≥ 5, and embedding size 300–600; CBOW and hierarchical softmax underperform.
+- **RULE [ch.23 p.719]**: Before going live, always run paper-trading in a staged manner. Never go straight from backtest to capital deployment.
+- **NEVER [ch.8 p.225-226]**: Backtest trades executing at the close-price of the same bar that generated the signal. Use next-bar open (or intraday with latency).
+- **NEVER [ch.23 p.716]**: Design strategies by "letting the data speak" (pure data mining). Prioritize economically-motivated hypotheses; test a limited set.
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Sharpe Ratio** [ch.5 p.123]
 
@@ -634,7 +634,7 @@ $$v_\pi(s) = \mathbb{E}_\pi[R_{t+1} + \gamma v_\pi(S_{t+1}) | S_t=s]$$
 
 Figure 22.2 illustrates the recursive relationship. For continuing (non-episodic) tasks the discount factor γ must be strictly < 1 to avoid infinite returns [ch.22 p.685-686].
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **ML4T Workflow** [preface p.xiii; ch.1 p.12-15; ch.6 p.153]
 
@@ -855,7 +855,7 @@ Demonstrated on 15 years of Google OHLCV (6 features, 24 timesteps) [ch.21 p.668
 
 Define environment via OpenAI Gym with state = features (prices, technicals, position), actions = {buy, hold, sell}, reward = incremental PnL (optionally risk-adjusted) [ch.22 p.681-682]. Build deep Q-network approximating Q(s, a) [ch.22 p.680]. Train with experience replay plus target network [ch.22 p.680]. Use epsilon-greedy exploration decaying over training [ch.22 p.680]. Backtest on unseen period before deploying [ch.22 p.680; ch.23 p.719].
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - [ch.8 p.223-224] **Look-ahead bias** from restated fundamentals, retroactive splits, incorrect EPS/price alignment.
 - [ch.8 p.224] **Survivorship bias** — only using currently-tradable universe.

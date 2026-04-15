@@ -1,25 +1,23 @@
 # The Universal Tactics of Successful Trend Trading: Finding Opportunity in Uncertainty
 
 ## Metadata
-- **Autor:** Brent Penfold [p.i]
-- **Ano:** 2021
-- **Editora:** John Wiley & Sons, Ltd.
-- **Páginas:** 409
+- **Author:** Brent Penfold [p.i]
+- **Year:** 2021
+- **Publisher:** John Wiley & Sons, Ltd.
+- **Pages:** 409
 - **ISBN:** N/A — not printed in extracted pages
-- **Foco principal:** A complete practical system for developing, reviewing, and trading robust trend-following strategies, with survival (0% Risk of Ruin) as the paramount objective above all performance metrics.
+- **Main focus:** A complete practical system for developing, reviewing, and trading robust trend-following strategies, with survival (0% Risk of Ruin) as the paramount objective above all performance metrics.
 
 ---
 
-## 1. Tese Central
-
+## 1. Core Thesis
 The book's central thesis is that successful trend trading rests on three inviolable "golden tenets" — follow the trend, cut losses short, and let profits run — two of which (cut losses short, let profits run) Penfold traces to David Ricardo circa 1800 and documented in print in 1838 [p.68-69]; the third (follow the trend) is attributed to Dow Theory and others [p.69-70]. These tenets are not folklore: the author demonstrates empirically that fat tails in market return distributions make them mathematically profitable across all timeframes [p.87-99].
 
 The deeper organizing principle is that survival must come before profits. Before seeking returns, every trader must achieve and maintain a Risk of Ruin (ROR) of exactly 0% — any positive ROR guarantees eventual account destruction [p.13-14]. Every tool in the book — portfolio construction, robustness analysis, equity curve stability review, the Ulcer Performance Index — exists to serve this survival constraint first and profitability second [p.13-14]. A companion thesis is that traders should look backward (to pre-2000 published strategies with decades of out-of-sample data) rather than forward (to novel indicators and curve-fitted systems) in order to obtain verifiable evidence of robustness [p.301, p.304].
 
 ---
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Risk of Ruin (ROR)** — the probability of losing one's entire trading account; must be maintained at exactly 0% for a trading career to survive; calculated via simulation combining a strategy's expectancy with a money management rule [p.13-14]
 - **CAGR (Compound Annual Growth Rate)** — preferred performance metric; "CAGR is Queen" because it exposes the impact of large stops that single-contract net profit can hide; the real measure of a strategy's efficiency in making money [p.14, p.272]
 - **Expectancy** — the average percentage gain/loss per trade; the mathematical engine behind whether a strategy has a positive edge; must be positive and combined with correct money management to produce 0% ROR [p.12, p.22]
@@ -49,8 +47,7 @@ The deeper organizing principle is that survival must come before profits. Befor
 
 ---
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Expectancy** — N/A (algebraic formula not presented in this book)
 
 N/A — This book defines expectancy conceptually as the average percentage gain or loss per trade and uses it throughout in narrative and tabular form [p.13-14]. The algebraic derivation ($E[R] = (W \times P_w) - (L \times P_l)$) and worked numerical examples (e.g., "21 cents per dollar risked") are presented in Penfold's prior book *UPST*, which this book explicitly defers to for the mathematical treatment [p.12-13]. The formula is not verifiable from the extracted text of this volume.
@@ -77,8 +74,7 @@ Variables [p.271]: $R_{\text{capital}}$ = total risk capital; $f$ = fixed fracti
 
 ---
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Equity Curve Stability Review** [p.140, p.145-157, p.274-279]
 
 ```
@@ -188,42 +184,40 @@ P24 backtest performance (40 years out-of-sample, 1979-2019):
 
 ---
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.13-14]**: Begin trading only when ROR = 0%. Any ROR above 0% guarantees eventual ruin over sufficient time. Do not compromise this requirement for any performance metric.
 
-- **REGRA [p.13-14]**: Begin trading only when ROR = 0%. Any ROR above 0% guarantees eventual ruin over sufficient time. Do not compromise this requirement for any performance metric.
+- **RULE [p.68-69]**: Mechanically follow the Three Golden Tenets at all times: (1) Follow the trend, (2) Cut losses short, (3) Let profits run.
 
-- **REGRA [p.68-69]**: Mechanically follow the Three Golden Tenets at all times: (1) Follow the trend, (2) Cut losses short, (3) Let profits run.
+- **RULE [p.261-262]**: Construct the research portfolio using only diversity and average daily volume as selection criteria. Select the 3 most liquid futures contracts per market segment across 8 segments. This fully eliminates data mining from portfolio construction.
 
-- **REGRA [p.261-262]**: Construct the research portfolio using only diversity and average daily volume as selection criteria. Select the 3 most liquid futures contracts per market segment across 8 segments. This fully eliminates data mining from portfolio construction.
+- **RULE [p.267, p.285]**: Always benchmark your own strategy against Turtle Trading (or the best available robust benchmark with ample out-of-sample evidence). If your strategy cannot surpass it, trade the benchmark, not your own design. Self-esteem must be tied to account balance, not development effort.
 
-- **REGRA [p.267, p.285]**: Always benchmark your own strategy against Turtle Trading (or the best available robust benchmark with ample out-of-sample evidence). If your strategy cannot surpass it, trade the benchmark, not your own design. Self-esteem must be tied to account balance, not development effort.
+- **RULE [p.266-267]**: Limit strategies to few rules, few indicators, few variables. Variables must have the same value for buy and sell setups AND the same value across all markets. Any asymmetry is a curve-fitting warning sign.
 
-- **REGRA [p.266-267]**: Limit strategies to few rules, few indicators, few variables. Variables must have the same value for buy and sell setups AND the same value across all markets. Any asymmetry is a curve-fitting warning sign.
+- **RULE [p.272]**: Always examine strategy performance with money management applied (CAGR). Never rely on single-contract net profit alone — it hides the impact of large stops.
 
-- **REGRA [p.272]**: Always examine strategy performance with money management applied (CAGR). Never rely on single-contract net profit alone — it hides the impact of large stops.
+- **RULE [p.274-279]**: Before trading any new strategy, complete an equity curve stability review. Adjust each variable ±10% (4 adjustments). If ANY combination produces ROR > 0%, the equity curve is fragile — do not trade it.
 
-- **REGRA [p.274-279]**: Before trading any new strategy, complete an equity curve stability review. Adjust each variable ±10% (4 adjustments). If ANY combination produces ROR > 0%, the equity curve is fragile — do not trade it.
+- **RULE [p.291]**: Use fixed-percentage money management at 2% risk per trade (author's standard benchmark test). Starting capital $50,000, point of ruin = 100% loss. All book backtests use these parameters for comparability.
 
-- **REGRA [p.291]**: Use fixed-percentage money management at 2% risk per trade (author's standard benchmark test). Starting capital $50,000, point of ruin = 100% loss. All book backtests use these parameters for comparability.
+- **RULE [p.301]**: Prefer strategies published before 2000. These automatically provide 20+ years of out-of-sample data, giving hard evidence of robustness rather than hope.
 
-- **REGRA [p.301]**: Prefer strategies published before 2000. These automatically provide 20+ years of out-of-sample data, giving hard evidence of robustness rather than hope.
+- **RULE [p.309-312]**: Dow Theory implementation: uptrend = higher swing highs; downtrend = lower swing lows. Entry on break of prior swing high (long) or prior swing low (short). Model is always in market (stop-and-reverse).
 
-- **REGRA [p.309-312]**: Dow Theory implementation: uptrend = higher swing highs; downtrend = lower swing lows. Entry on break of prior swing high (long) or prior swing low (short). Model is always in market (stop-and-reverse).
+- **RULE [p.323-326]**: Loss filter (borrowed from Turtle Trading 1983): only take a Dow trend change signal if the PREVIOUS Dow signal was a loss. On DDT this improved UPI from 1.4 to 2.4, CAGR from 23% to 31%, and cut drawdown 40%.
 
-- **REGRA [p.323-326]**: Loss filter (borrowed from Turtle Trading 1983): only take a Dow trend change signal if the PREVIOUS Dow signal was a loss. On DDT this improved UPI from 1.4 to 2.4, CAGR from 23% to 31%, and cut drawdown 40%.
+- **RULE [p.338-343]**: Two-stop trade plan: use an INITIAL stop at the high/low of the setup or entry bar (whichever is further) to cut losses short immediately; use a TRAILING swing stop to let winners run. Smaller initial stop reduces average risk, enabling larger position sizes and higher CAGR.
 
-- **REGRA [p.338-343]**: Two-stop trade plan: use an INITIAL stop at the high/low of the setup or entry bar (whichever is further) to cut losses short immediately; use a TRAILING swing stop to let winners run. Smaller initial stop reduces average risk, enabling larger position sizes and higher CAGR.
+- **NEVER [p.32-35]**: Do not develop strategies with more indicator variables than necessary. Four or more variables optimized on the same dataset create the Four Horsemen of the Strategy Apocalypse (data mining + curve fitting + novelty + no equity curve).
 
-- **NUNCA [p.32-35]**: Do not develop strategies with more indicator variables than necessary. Four or more variables optimized on the same dataset create the Four Horsemen of the Strategy Apocalypse (data mining + curve fitting + novelty + no equity curve).
+- **NEVER [p.271-272]**: Never accept a strategy with ROR > 0% regardless of its other metrics. ROR is the first gate, not the last.
 
-- **NUNCA [p.271-272]**: Never accept a strategy with ROR > 0% regardless of its other metrics. ROR is the first gate, not the last.
-
-- **NUNCA [p.285]**: Do not retain a strategy in the candidate pool solely because of compelling net profit — if it has ROR > 0% (Ricardo Rules, Donchian 5/20, Elder TSTS, Livermore Reaction) it is excluded regardless of historical profit.
+- **NEVER [p.285]**: Do not retain a strategy in the candidate pool solely because of compelling net profit — if it has ROR > 0% (Ricardo Rules, Donchian 5/20, Elder TSTS, Livermore Reaction) it is excluded regardless of historical profit.
 
 ---
 
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - **[p.32-33]** Data mining: selecting markets, timeframes, or entry/exit rules specifically because they worked on the training data. Eliminated by using an objectively constructed universal portfolio (diversity + volume only) — never cherry-pick markets after seeing results.
 
 - **[p.34, p.145-157]** Excessive curve fitting: the RTT demo strategy showed that allowing 4 variables × 4 adjustments produces 256 alternative equity curves, with 81% variation in performance and ROR rising from 0% to 32% — the strategy is unfit to trade despite looking excellent on original parameters [p.142, p.147].
@@ -250,8 +244,7 @@ P24 backtest performance (40 years out-of-sample, 1979-2019):
 
 ---
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **Turtle Trading channel lengths (4-week entry, 2-week stop)** [p.295-299]: Published in 1983 by Richard Dennis/Bill Eckhardt; never re-optimized. Equity curve stability review across all 17 valid combinations (entry 2-6 weeks; stop 1-4 weeks) produces 0% ROR for every combination, with expectancy ranging 8%-25%. Low curve-fit risk — the parameters are fixed by historical publication and the strategy remains profitable across the entire variable space.
 
 - **Bollinger Band parameters (length=80, StdDev multiplier=1)** [p.274-278]: Author explicitly states these values "were made up" [p.274]. All 25 combinations (lengths 64-96 in 8-day steps; multiplier 0.8-1.2) produce 0% ROR, expectancy 21%-29%. The strategy is insensitive to the StdDev multiplier. Curve-fit risk: low for any value in the tested range, but the specific values lack out-of-sample validation — which is why author ultimately excluded them from benchmark selection.
@@ -268,8 +261,7 @@ P24 backtest performance (40 years out-of-sample, 1979-2019):
 
 ---
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "a trader is still guaranteed to go bust—it'll just be a matter of time." — [p.14]
 
 > "If 0% ROR is king, then CAGR is queen." — [p.14]
@@ -286,8 +278,7 @@ P24 backtest performance (40 years out-of-sample, 1979-2019):
 
 ---
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - **Turtle Trading** is referenced as the benchmark strategy throughout [p.210-217, p.294-299, p.323-326]. The Donchian Four-Week Rule (1960) is the direct predecessor. Penfold's MWDT borrows the loss filter from Turtle Trading. Cross-reference with `trading_systems_methods.md` (Kaufman) for the full CTA context.
 
 - **Behavioural finance** underpinning for trend persistence (anchoring, herding, disposition effect) [p.120-126] overlaps with `adaptive_markets.md` — Lo's Adaptive Markets Hypothesis provides the complementary evolutionary framework explaining why these biases persist and why trend following continues to work despite being documented.

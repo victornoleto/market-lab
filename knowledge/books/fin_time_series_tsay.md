@@ -1,19 +1,17 @@
 # Analysis of Financial Time Series, Third Edition
 
 ## Metadata
-- **Autor:** Ruey S. Tsay [p.i, cover]
-- **Ano:** 2010 [p.iv]
-- **Editora:** John Wiley & Sons, Inc., Hoboken, New Jersey
-- **Páginas:** 677 (body) + frontmatter; 714 PDF pages total
+- **Author:** Ruey S. Tsay [p.i, cover]
+- **Year:** 2010 [p.iv]
+- **Publisher:** John Wiley & Sons, Inc., Hoboken, New Jersey
+- **Pages:** 677 (body) + frontmatter; 714 PDF pages total
 - **ISBN:** 978-0-470-41435-4 [p.iv, N/A for exact location but on copyright page]
-- **Foco principal:** Applied, empirical treatment of financial time series — volatility (GARCH family, SV), nonlinear (TAR/MSA), high-frequency microstructure, extreme-value VaR, multivariate VAR/cointegration, multivariate volatility (DCC/BEKK), state-space/Kalman, MCMC — aimed at practitioners of risk management and quant finance.
+- **Main focus:** Applied, empirical treatment of financial time series — volatility (GARCH family, SV), nonlinear (TAR/MSA), high-frequency microstructure, extreme-value VaR, multivariate VAR/cointegration, multivariate volatility (DCC/BEKK), state-space/Kalman, MCMC — aimed at practitioners of risk management and quant finance.
 
-## 1. Tese Central
-
+## 1. Core Thesis
 Tsay's organizing claim is that *financial time series differs fundamentally from generic time series because its "signal" is uncertainty itself* — volatility is unobservable, tails are heavy, serial dependence shows up mostly in squared/absolute returns, and microstructure contaminates naive variance estimates [ch.1, p.1-2; ch.3.1, p.109-110]. The book therefore devotes more than half its volume to methods that model second-moment and tail behaviour: ARCH/GARCH/EGARCH/TGARCH/SV for conditional variance [ch.3, p.109-155], extreme-value theory and POT for VaR [ch.7, p.325-415], and multivariate volatility with time-varying correlations for portfolio risk [ch.10, p.505-568]. A secondary thesis: high-frequency transactional data requires its own apparatus (duration models, microstructure corrections, realized volatility) [ch.5, p.231-286], and long-run cross-asset relations are best handled by cointegration and error-correction models, with pairs trading as the canonical financial application [ch.8.6-8.8, p.428-455].
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Simple net return** — $R_t = P_t/P_{t-1} - 1$ [p.3, ch.1.1, eq.1.2].
 - **Log return (continuously compounded)** — $r_t = \ln(1+R_t) = p_t - p_{t-1}$; multiperiod log returns simply sum: $r_t[k] = r_t + r_{t-1} + \cdots + r_{t-k+1}$ [p.5, eq.1.6].
 - **Excess return** — $Z_t = R_t - R_{0t}$, $z_t = r_t - r_{0t}$ where 0 subscript is risk-free [p.6, eq.1.7].
@@ -32,8 +30,7 @@ Tsay's organizing claim is that *financial time series differs fundamentally fro
 - **ACD (autoregressive conditional duration)** — volatility-style model for inter-trade time gaps in high-frequency data [p.256-266, ch.5.5, referenced in TOC].
 - **Stochastic Volatility (SV)** model — volatility has its own innovation $v_t$ beyond the return shock [p.153-154, §3.12, eq.3.40].
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **ARCH(m)** [p.115-116, §3.4, eq.3.5]
 
 $$a_t = \sigma_t \epsilon_t, \qquad \sigma_t^2 = \alpha_0 + \sum_{i=1}^{m} \alpha_i a_{t-i}^2$$
@@ -164,8 +161,7 @@ $$x_t = \phi_0^{(j)} + \phi_1^{(j)} x_{t-1} + \cdots + \phi_p^{(j)} x_{t-p} + a_
 
 Ergodicity for 2-regime AR(1): $\phi_1^{(1)} < 1$, $\phi_1^{(2)} < 1$, $\phi_1^{(1)}\phi_1^{(2)} < 1$ [p.179].
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **ARCH-effect test (build volatility model)** [p.113-115, §3.3]
 
 ```
@@ -266,24 +262,22 @@ rho_t = J_t * Q_t * J_t
 Sigma_t = D_t * rho_t * D_t
 ```
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.115, §3.3]**: Before modeling volatility, remove the sample mean if statistically different from zero; test BOTH the residual series AND its square via Ljung–Box / Engle LM. No ARCH effect → no GARCH model.
+- **RULE [p.132, eq.3.16]**: GARCH(1,1) parameters must satisfy $\alpha_1 + \beta_1 < 1$ for covariance-stationarity. If estimation returns $\alpha_1 + \beta_1 \ge 0.97$, you have IGARCH — shocks to variance are permanent, forecast horizon matters. Tsay explicitly flags IGARCH as common: S&P 500 fit gives 0.9727 [p.137].
+- **RULE [p.330]**: Under RiskMetrics (IGARCH, mean 0, Gaussian), $k$-day VaR = $\sqrt{k} \times$ 1-day VaR. This rule FAILS if mean ≠ 0 or volatility is not random-walk IGARCH [p.331-332, §7.2.1].
+- **RULE [p.333, §7.2.1]**: Square-root-of-time rule is invalid when $\mu \ne 0$: correct $k$-period 95% quantile is $k\mu + 1.65\sqrt{k}\sigma_{t+1}$, not $\sqrt{k}(1.65\sigma_{t+1})$.
+- **RULE [p.360, §7.7]**: For POT / GPD-based VaR, choose threshold $\eta$ so exceedances ≈ 5% of sample. For stable series, $\eta = 2.5\%$; for volatile (dot-com-like) returns, up to 10%.
+- **RULE [p.389, §7.7.2]**: Use the mean-excess plot $e_T(\eta)$ vs $\eta$; pick $\eta_0$ at the lower bound of the linear region (GPD is valid only where the plot is linear).
+- **RULE [p.449, §8.8.2]**: Pairs trade only if $2\Delta > \eta_{\text{cost}}$ where $\Delta$ is the target deviation and $\eta_{\text{cost}}$ is the round-trip cost (commissions + bid-ask). Otherwise the strategy is EV-negative.
+- **RULE [p.449, eq.8.45]**: Enter pairs trade only when the two ECM loadings have opposite signs ($\alpha_1 \alpha_2 < 0$) — this is the empirical signature of mean-reversion toward the cointegration equilibrium. BHP/VALE: $\alpha_1 = -0.067$, $\alpha_2 = +0.026$ [p.451].
+- **RULE [p.452]**: Common practical choice for $\Delta$ = one standard deviation of the spread $\sigma_w$ (BHP/VALE: 0.045). Under Gaussian assumption, $P(|w_t - \mu_w| > \sigma_w) \approx 30\%$, ensuring sufficient trade frequency.
+- **RULE [ch.3.15.1, p.162]**: When building daily realized volatility, use 4–15-minute returns (not 1-minute) to avoid microstructure bias from bid-ask bounce. Overnight return must be added for stocks (not ignored); for indices / FX it is less critical.
+- **NEVER [p.331]**: Trust RiskMetrics VaR on heavy-tailed returns — the normality assumption systematically underestimates VaR for stocks. Use Student-$t$ innovations or EVT/POT instead.
+- **NEVER [p.360, §7.7]**: Use "block maxima" extreme-value with a fixed block length $n$ when $n$ is arbitrary. Prefer POT/GPD; it is threshold-based and uses more data.
+- **RULE [p.146-147]**: Expect $\gamma_i < 0$ in EGARCH (leverage effect). If estimate is positive, reconsider model or data issues. IBM: $\gamma = -0.264$, $t=-2.09$, significant at 5% [p.147].
 
-- **REGRA [p.115, §3.3]**: Before modeling volatility, remove the sample mean if statistically different from zero; test BOTH the residual series AND its square via Ljung–Box / Engle LM. No ARCH effect → no GARCH model.
-- **REGRA [p.132, eq.3.16]**: GARCH(1,1) parameters must satisfy $\alpha_1 + \beta_1 < 1$ for covariance-stationarity. If estimation returns $\alpha_1 + \beta_1 \ge 0.97$, you have IGARCH — shocks to variance are permanent, forecast horizon matters. Tsay explicitly flags IGARCH as common: S&P 500 fit gives 0.9727 [p.137].
-- **REGRA [p.330]**: Under RiskMetrics (IGARCH, mean 0, Gaussian), $k$-day VaR = $\sqrt{k} \times$ 1-day VaR. This rule FAILS if mean ≠ 0 or volatility is not random-walk IGARCH [p.331-332, §7.2.1].
-- **REGRA [p.333, §7.2.1]**: Square-root-of-time rule is invalid when $\mu \ne 0$: correct $k$-period 95% quantile is $k\mu + 1.65\sqrt{k}\sigma_{t+1}$, not $\sqrt{k}(1.65\sigma_{t+1})$.
-- **REGRA [p.360, §7.7]**: For POT / GPD-based VaR, choose threshold $\eta$ so exceedances ≈ 5% of sample. For stable series, $\eta = 2.5\%$; for volatile (dot-com-like) returns, up to 10%.
-- **REGRA [p.389, §7.7.2]**: Use the mean-excess plot $e_T(\eta)$ vs $\eta$; pick $\eta_0$ at the lower bound of the linear region (GPD is valid only where the plot is linear).
-- **REGRA [p.449, §8.8.2]**: Pairs trade only if $2\Delta > \eta_{\text{cost}}$ where $\Delta$ is the target deviation and $\eta_{\text{cost}}$ is the round-trip cost (commissions + bid-ask). Otherwise the strategy is EV-negative.
-- **REGRA [p.449, eq.8.45]**: Enter pairs trade only when the two ECM loadings have opposite signs ($\alpha_1 \alpha_2 < 0$) — this is the empirical signature of mean-reversion toward the cointegration equilibrium. BHP/VALE: $\alpha_1 = -0.067$, $\alpha_2 = +0.026$ [p.451].
-- **REGRA [p.452]**: Common practical choice for $\Delta$ = one standard deviation of the spread $\sigma_w$ (BHP/VALE: 0.045). Under Gaussian assumption, $P(|w_t - \mu_w| > \sigma_w) \approx 30\%$, ensuring sufficient trade frequency.
-- **REGRA [ch.3.15.1, p.162]**: When building daily realized volatility, use 4–15-minute returns (not 1-minute) to avoid microstructure bias from bid-ask bounce. Overnight return must be added for stocks (not ignored); for indices / FX it is less critical.
-- **NUNCA [p.331]**: Trust RiskMetrics VaR on heavy-tailed returns — the normality assumption systematically underestimates VaR for stocks. Use Student-$t$ innovations or EVT/POT instead.
-- **NUNCA [p.360, §7.7]**: Use "block maxima" extreme-value with a fixed block length $n$ when $n$ is arbitrary. Prefer POT/GPD; it is threshold-based and uses more data.
-- **REGRA [p.146-147]**: Expect $\gamma_i < 0$ in EGARCH (leverage effect). If estimate is positive, reconsider model or data issues. IBM: $\gamma = -0.264$, $t=-2.09$, significant at 5% [p.147].
-
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - [p.110-111, ch.3.1] **Implied volatility ≠ statistical volatility.** Implied vol (from Black-Scholes) is systematically higher than GARCH estimates; don't mix them.
 - [p.112, ch.3.1] **Volatility is unobservable** — you cannot directly "validate" a GARCH forecast against a single realized return. Use proxies (squared return, realized variance) and understand they are noisy.
 - [p.131, §3.5] **Higher-order GARCH(p,q) with p,q > 1 rarely improves fit.** Only lower-order models (1,1), (2,1), (1,2) are used in practice.
@@ -300,8 +294,7 @@ Sigma_t = D_t * rho_t * D_t
 - [p.436, §8.6] **Cointegration tests are fragile** — Tsay explicitly writes: "While I have some misgivings on the practical value of cointegration tests, the idea of cointegration is highly relevant in financial study." Tests ignore parameter uncertainty in the error-correction term. Use the idea, but stress-test statistical significance.
 - [p.361, §7.7.1] **VaR from POT depends on threshold $\eta$**; different thresholds → different tail index $\xi$. Sensitivity analysis is mandatory.
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **RiskMetrics decay $\alpha \approx 0.94$** [p.329, §7.2]. Tsay attributes this to J. P. Morgan/Longerstaey & More (1995); justification is empirical for daily equity/FX, not theoretical. Typical range $(0.9, 1)$. Not optimized per asset in original RiskMetrics — treat as anchored prior, not free parameter.
 - **GARCH lag orders (p,q)** [p.131, §3.5]. Tsay's practical rule: use only GARCH(1,1), (2,1), (1,2). Anything larger is overfit-prone. GARCH(1,1) is almost always chosen; justification is parsimony + empirical consensus.
 - **POT threshold $\eta$** [p.360, §7.7]. Not statistically determined — depends on institutional risk tolerance and on sample volatility. Tsay recommends ~5% of observations as exceedances; stable series $\eta=2.5\%$, volatile $\eta$ up to 10%. Sensitivity: VaR estimate is "not sensitive to choice of $\eta$" for IBM [p.360].
@@ -312,8 +305,7 @@ Sigma_t = D_t * rho_t * D_t
 - **EWMA vs IGARCH** [p.329]. RiskMetrics is IGARCH(1,1) with $\alpha_0=0, \alpha_1+\beta_1=1, \mu=0$. These are THREE restrictions — each is falsifiable. The $\mu=0$ assumption is the one most often violated for stocks [p.331].
 - **Markov-switching expected duration** $1/w_i$ [p.187, §4.1.4]. McCulloch-Tsay GNP example: $1/w_1 = 1/0.118 \approx 8.5$ quarters (expansion), $1/w_2 = 1/0.286 \approx 3.5$ quarters (contraction). Driven by data, not chosen ex-ante.
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "A special feature of stock volatility is that it is not directly observable." — [p.110, §3.1]
 
 > "While I have some misgivings on the practical value of cointegration tests, the idea of cointegration is highly relevant in financial study." — [p.436, §8.6]
@@ -326,8 +318,7 @@ Sigma_t = D_t * rho_t * D_t
 
 > "The problem of choosing an optimal time interval for constructing realized volatility has attracted much research lately. For heavily traded assets in the United States, a time interval of 4–15 minutes is often used." — [p.162, §3.15.1]
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - **Overlap with `time_series_hamilton.md` (major)**: Both cover ARMA, unit roots, cointegration, VAR, Kalman filter, GARCH, Markov switching. Hamilton is the theoretical/proof-oriented treatment (Wold, MLE asymptotics, spectral analysis); Tsay is the empirical/financial-application treatment. Use Hamilton for "why" and Tsay for "how to estimate on real data."
 - **GARCH family**: Hamilton ch.21 covers ARCH/GARCH briefly; Tsay ch.3 is the canonical financial treatment (IGARCH, EGARCH, TGARCH, SV, LMSV). **Novelty in Tsay**: full EGARCH derivation with leverage asymmetry [p.144-146], TGARCH/GJR [p.149-150], realized volatility + O/H/L/C estimators [p.162-164] — not in Hamilton.
 - **Cointegration & pairs trading**: Hamilton ch.19 treats cointegration theory; Tsay ch.8.8 gives the explicit pairs-trading ECM recipe with BHP/VALE worked example [p.446-455]. Also in `algo_trading_chan.md` and `quant_trading_chan.md` which provide complementary practical strategies — Chan emphasizes half-life and z-score entry rules, Tsay emphasizes the statistical test chain (cointegration → ECM → threshold).

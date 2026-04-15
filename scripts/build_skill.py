@@ -59,7 +59,7 @@ THEMES: tuple[ThematicMap, ...] = (
         filename="anti_overfitting.md",
         category="strategies",
         title="Anti-Overfitting Framework",
-        description="Práticas obrigatórias para evitar que estratégias passem em backtest mas falhem em live.",
+        description="Mandatory practices to prevent strategies that pass in backtest from failing in live.",
         source_slugs=(
             "advances_fin_ml",
             "testing_tuning",
@@ -72,7 +72,7 @@ THEMES: tuple[ThematicMap, ...] = (
         filename="momentum.md",
         category="strategies",
         title="Momentum Strategies",
-        description="Trend-following e momentum cross-sectional, com filtro de regime.",
+        description="Trend-following and cross-sectional momentum, with regime filter.",
         source_slugs=(
             "systematic_trading",
             "stocks_on_the_move",
@@ -84,7 +84,7 @@ THEMES: tuple[ThematicMap, ...] = (
         filename="cycle_detection.md",
         category="strategies",
         title="Cycle Detection (DSP-based)",
-        description="Indicadores de Ehlers baseados em processamento de sinais para detectar ciclos dominantes.",
+        description="Ehlers indicators based on signal processing to detect dominant cycles.",
         source_slugs=(
             "rocket_science",
             "cybernetic_analysis",
@@ -96,7 +96,7 @@ THEMES: tuple[ThematicMap, ...] = (
         filename="regime_change.md",
         category="strategies",
         title="Regime Detection",
-        description="HMM e outros métodos para identificar bull/bear/sideways e trocar estratégia dinamicamente.",
+        description="HMM and other methods to identify bull/bear/sideways and switch strategy dynamically.",
         source_slugs=(
             "regime_change",
             "sentiment_analysis_handbook",
@@ -107,7 +107,7 @@ THEMES: tuple[ThematicMap, ...] = (
         filename="money_management.md",
         category="strategies",
         title="Money Management & Position Sizing",
-        description="Kelly, fractional Kelly, optimal f, risk of ruin — sizing sob incerteza.",
+        description="Kelly, fractional Kelly, optimal f, risk of ruin — sizing under uncertainty.",
         source_slugs=(
             "math_money_mgmt",
             "leverage_space",
@@ -120,7 +120,7 @@ THEMES: tuple[ThematicMap, ...] = (
         filename="ehlers_indicators.md",
         category="indicators",
         title="Ehlers Indicators (DSP)",
-        description="MAMA, Cyber Cycle, Fisher Transform, Hilbert Transform — todos com fundamentação em DSP.",
+        description="MAMA, Cyber Cycle, Fisher Transform, Hilbert Transform — all grounded in DSP.",
         source_slugs=(
             "rocket_science",
             "cybernetic_analysis",
@@ -131,7 +131,7 @@ THEMES: tuple[ThematicMap, ...] = (
         filename="custom_momentum.md",
         category="indicators",
         title="Custom Momentum Indicators",
-        description="Ranking de momentum relativo à la Clenow, com ATR-based sizing.",
+        description="Clenow-style relative momentum ranking, with ATR-based sizing.",
         source_slugs=(
             "stocks_on_the_move",
             "trading_evolved",
@@ -142,7 +142,7 @@ THEMES: tuple[ThematicMap, ...] = (
         filename="regime_hmm.md",
         category="indicators",
         title="Hidden Markov Models for Regime",
-        description="HMM como classificador de regime (bull, bear, high-vol, low-vol).",
+        description="HMM as a regime classifier (bull, bear, high-vol, low-vol).",
         source_slugs=(
             "regime_change",
             "data_driven_science",
@@ -155,7 +155,7 @@ THEMES: tuple[ThematicMap, ...] = (
         filename="cpcv.md",
         category="validation",
         title="Combinatorial Purged Cross-Validation (CPCV)",
-        description="Validação cruzada adaptada para séries temporais financeiras, com purging e embargo.",
+        description="Cross-validation adapted for financial time series, with purging and embargo.",
         source_slugs=(
             "advances_fin_ml",
             "ml_for_asset_managers",
@@ -169,7 +169,7 @@ THEMES: tuple[ThematicMap, ...] = (
         filename="permutation.md",
         category="validation",
         title="Permutation & Monte Carlo Tests",
-        description="Testes de permutação para validar que edge é estatisticamente significativo (não sorte).",
+        description="Permutation tests to validate that an edge is statistically significant (not luck).",
         source_slugs=(
             "advances_fin_ml",
             "testing_tuning",
@@ -187,7 +187,7 @@ THEMES: tuple[ThematicMap, ...] = (
         filename="deflated_sharpe.md",
         category="validation",
         title="Deflated Sharpe Ratio (DSR)",
-        description="Correção do Sharpe observado pelo número de estratégias testadas — protege contra selection bias.",
+        description="Correction of the observed Sharpe by the number of strategies tested — guards against selection bias.",
         source_slugs=(
             "advances_fin_ml",
             "ml_for_asset_managers",
@@ -197,7 +197,7 @@ THEMES: tuple[ThematicMap, ...] = (
         filename="walk_forward.md",
         category="validation",
         title="Walk-Forward Analysis",
-        description="Treino/teste deslizante — simula operação real com re-otimização periódica.",
+        description="Sliding train/test — simulates real operation with periodic re-optimization.",
         source_slugs=(
             "testing_tuning",
             "stat_sound_indicators",
@@ -220,42 +220,42 @@ class BookEntry:
 
 BOOK_INDEX: tuple[BookEntry, ...] = (
     # Tier S — Essentials
-    BookEntry("advances_fin_ml", "S", "Framework anti-overfit completo; CPCV, meta-labeling, DSR."),
-    BookEntry("systematic_trading", "S", "Parcimônia + position sizing robusto; design de sistemas."),
-    BookEntry("trading_systems_methods", "S", "Referência enciclopédica de métodos clássicos."),
-    BookEntry("testing_tuning", "S", "Validação estatística prática em C++."),
-    BookEntry("stocks_on_the_move", "S", "Momentum com 2 parâmetros — baseline."),
-    BookEntry("eval_opt_strategies", "S", "Pardo — walk-forward clássico; framework de otimização anti-overfit."),
-    BookEntry("quant_trading_chan", "S", "Chan — baseline prático de mean-reversion/momentum e infra."),
+    BookEntry("advances_fin_ml", "S", "Complete anti-overfit framework; CPCV, meta-labeling, DSR."),
+    BookEntry("systematic_trading", "S", "Parsimony + robust position sizing; systems design."),
+    BookEntry("trading_systems_methods", "S", "Encyclopedic reference of classical methods."),
+    BookEntry("testing_tuning", "S", "Practical statistical validation in C++."),
+    BookEntry("stocks_on_the_move", "S", "Momentum with 2 parameters — baseline."),
+    BookEntry("eval_opt_strategies", "S", "Pardo — classical walk-forward; anti-overfit optimization framework."),
+    BookEntry("quant_trading_chan", "S", "Chan — practical mean-reversion/momentum baseline and infra."),
     # Tier A — Technical foundation
-    BookEntry("rocket_science", "A", "DSP para trading; Hilbert transform, MAMA."),
-    BookEntry("cybernetic_analysis", "A", "Continuação DSP; Fisher transform, Cyber Cycle."),
-    BookEntry("cycle_analytics", "A", "Ciclos adaptativos — últimos refinements de Ehlers."),
-    BookEntry("math_money_mgmt", "A", "Optimal f, risk of ruin, Kelly adaptado."),
-    BookEntry("trading_evolved", "A", "Sistemas em Python — ponte direta para o stack."),
-    BookEntry("ml_for_algo_trading", "A", "Guia pragmático ML + Python (Jansen)."),
-    BookEntry("algo_trading_chan", "A", "Chan — mean-reversion, momentum e execução prática."),
-    BookEntry("machine_trading", "A", "Chan — estratégias ML/quant com foco em execução."),
+    BookEntry("rocket_science", "A", "DSP for trading; Hilbert transform, MAMA."),
+    BookEntry("cybernetic_analysis", "A", "DSP continuation; Fisher transform, Cyber Cycle."),
+    BookEntry("cycle_analytics", "A", "Adaptive cycles — Ehlers' latest refinements."),
+    BookEntry("math_money_mgmt", "A", "Optimal f, risk of ruin, adapted Kelly."),
+    BookEntry("trading_evolved", "A", "Systems in Python — direct bridge to the stack."),
+    BookEntry("ml_for_algo_trading", "A", "Pragmatic ML + Python guide (Jansen)."),
+    BookEntry("algo_trading_chan", "A", "Chan — mean-reversion, momentum and practical execution."),
+    BookEntry("machine_trading", "A", "Chan — ML/quant strategies focused on execution."),
     # Tier B — Depth and complement
-    BookEntry("stat_sound_indicators", "B", "Aronson+Masters TSSB; rigor em indicadores."),
-    BookEntry("evidence_based_ta", "B", "Base estatística de Aronson; viés de data mining."),
-    BookEntry("ml_for_asset_managers", "B", "AFML condensado para portfolio management."),
-    BookEntry("leverage_space", "B", "Sizing multi-asset — extensão Kelly para portfolios."),
-    BookEntry("regime_change", "B", "HMM + regime change em finanças computacionais."),
-    BookEntry("volatility_trading", "B", "Sinclair — modelagem de vol, options e sizing por vol."),
-    BookEntry("trading_exchanges", "B", "Harris — microestrutura de mercado, custos, liquidez."),
-    BookEntry("fin_time_series_tsay", "B", "Tsay — referência acadêmica de séries temporais financeiras."),
-    BookEntry("big_data_ml_quant", "B", "Coletânea Guida — aplicações de ML em quant."),
+    BookEntry("stat_sound_indicators", "B", "Aronson+Masters TSSB; rigor in indicators."),
+    BookEntry("evidence_based_ta", "B", "Aronson's statistical foundation; data-mining bias."),
+    BookEntry("ml_for_asset_managers", "B", "AFML condensed for portfolio management."),
+    BookEntry("leverage_space", "B", "Multi-asset sizing — Kelly extension for portfolios."),
+    BookEntry("regime_change", "B", "HMM + regime change in computational finance."),
+    BookEntry("volatility_trading", "B", "Sinclair — vol modeling, options and vol-based sizing."),
+    BookEntry("trading_exchanges", "B", "Harris — market microstructure, costs, liquidity."),
+    BookEntry("fin_time_series_tsay", "B", "Tsay — academic reference for financial time series."),
+    BookEntry("big_data_ml_quant", "B", "Guida collection — ML applications in quant."),
     # Tier C — Reference
     BookEntry("cybernetic_trading", "C", "Intermarket + NN (Ruggiero 1997)."),
-    BookEntry("numerical_recipes", "C", "Referência numérica (SVD, FFT, otimização)."),
+    BookEntry("numerical_recipes", "C", "Numerical reference (SVD, FFT, optimization)."),
     BookEntry("data_driven_science", "C", "Brunton & Kutz — PCA, SVD, dynamical systems."),
-    BookEntry("tech_analysis_patterns", "C", "Padrões de TA tratados algoritmicamente."),
-    BookEntry("universal_trend_tactics", "C", "Penfold — táticas de trend trading."),
-    BookEntry("sentiment_analysis_handbook", "C", "Mitra & Yu — sentimento em finanças como overlay."),
-    BookEntry("time_series_hamilton", "C", "Hamilton — referência clássica de séries temporais."),
-    BookEntry("adaptive_markets", "C", "Lo — hipótese de mercados adaptativos; contexto teórico."),
-    BookEntry("risk_parity", "C", "Qian — construção de portfolio por paridade de risco."),
+    BookEntry("tech_analysis_patterns", "C", "TA patterns handled algorithmically."),
+    BookEntry("universal_trend_tactics", "C", "Penfold — trend-trading tactics."),
+    BookEntry("sentiment_analysis_handbook", "C", "Mitra & Yu — sentiment in finance as overlay."),
+    BookEntry("time_series_hamilton", "C", "Hamilton — classical time-series reference."),
+    BookEntry("adaptive_markets", "C", "Lo — adaptive markets hypothesis; theoretical context."),
+    BookEntry("risk_parity", "C", "Qian — portfolio construction by risk parity."),
 )
 
 
@@ -333,10 +333,10 @@ def build_theme_file(theme: ThematicMap, available_slugs: set[str]) -> None:
         ]
         # Pull the three most actionable sections
         for section_name in (
-            "Regras de Trading Explícitas",
-            "Fórmulas / Equações",
-            "Algoritmos e Pseudocódigo",
-            "Pitfalls e Anti-patterns",
+            "Explicit Trading Rules",
+            "Formulas / Equations",
+            "Algorithms and Pseudocode",
+            "Pitfalls and Anti-patterns",
         ):
             body = extract_section(md, section_name)
             if not body:
@@ -420,7 +420,7 @@ def build_skill_md(copied_slugs: list[str]) -> None:
         "   is mandated by this skill — the factor is a per-strategy parameter, defended in backtest.",
         "   See `strategies/money_management.md`.",
         "7. **Paper trade ≥3 months** before any live capital, regardless of backtest quality.",
-        "   See `../ROADMAP.md` §Fase 4 (paper trading gate).",
+        "   See `../ROADMAP.md` §Phase 4 (paper trading gate).",
         "",
         "## Navigation",
         "",

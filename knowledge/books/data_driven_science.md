@@ -1,21 +1,19 @@
 # Data-Driven Science & Engineering: Machine Learning, Dynamical Systems, and Control
 
 ## Metadata
-- **Autor:** Steven L. Brunton (Mechanical Engineering, University of Washington) & J. Nathan Kutz (Applied Mathematics, University of Washington) [p.1 title page of extract]
-- **Ano:** 2021 (second edition / 2021 copyright notice on every page footer) [p.2, p.3, and throughout — "Copyright © 2021 Brunton & Kutz, Cambridge University Press"]
-- **Editora:** Cambridge University Press [p.2 footer]
-- **Páginas:** The extracted PDF contains Chapter 11 (pp.499-535) plus the opening of the bibliography (pp.663-664). Full book N/A — only this chapter was delivered to the pipeline.
+- **Author:** Steven L. Brunton (Mechanical Engineering, University of Washington) & J. Nathan Kutz (Applied Mathematics, University of Washington) [p.1 title page of extract]
+- **Year:** 2021 (second edition / 2021 copyright notice on every page footer) [p.2, p.3, and throughout — "Copyright © 2021 Brunton & Kutz, Cambridge University Press"]
+- **Publisher:** Cambridge University Press [p.2 footer]
+- **Pages:** The extracted PDF contains Chapter 11 (pp.499-535) plus the opening of the bibliography (pp.663-664). Full book N/A — only this chapter was delivered to the pipeline.
 - **ISBN:** N/A — not present in the extracted pages (title page p.1 of PDF only shows title/authors).
-- **Foco principal:** Reinforcement learning (RL) as the intersection of control theory and machine learning — model-based (policy/value iteration, HJB), model-free (Q-learning, SARSA, TD), policy gradients, and deep RL (DQN, DDQN, A2C) — with physical-systems/control bent rather than finance.
+- **Main focus:** Reinforcement learning (RL) as the intersection of control theory and machine learning — model-based (policy/value iteration, HJB), model-free (Q-learning, SARSA, TD), policy gradients, and deep RL (DQN, DDQN, A2C) — with a physical-systems/control bent rather than finance.
 
 > **Extraction scope notice:** The PDF delivered to this pipeline contains ONLY Chapter 11 (Reinforcement Learning) — printed pages 499-535 — plus the opening bibliography pages 663-664. The other 10 chapters of the book (SVD, Fourier/Wavelet transforms, Sparsity & Compressed Sensing, Regression, Data-Driven Dynamical Systems, Koopman, SINDy, Neural Networks, Control Theory, Dimensionality Reduction, etc.) are NOT in the source file and are not summarized here. Any claims made about those chapters would be fabrication. **Page citations below use PDF-page indices [p.1-76] of the extracted file** (which corresponds to printed pages 499-535 of the full book; offset = printed − 498). This matches the `[PAGE N]` markers in `books/extracted/data_driven_science/_full.txt` and what the deterministic citation checker validates against.
 
-## 1. Tese Central
-
+## 1. Core Thesis
 Reinforcement learning is a biologically-inspired third branch of machine learning (alongside supervised and unsupervised learning) in which an agent learns control policies through trial-and-error interaction with an environment, sensing states, taking actions, and receiving sparse/delayed rewards [p.2, ch.11]. The entire chapter is organized around a unifying optimization framework: learn either the policy π(s,a), the value function V(s), or the quality function Q(s,a), all of which satisfy Bellman's recursive equation of optimality [p.6, eq.11.11]. The "major dichotomies" that structure the field are model-based vs. model-free, gradient-based vs. gradient-free, and on-policy vs. off-policy [p.10, Fig.11.3]. RL connects mathematically to optimal nonlinear control via the Hamilton-Jacobi-Bellman (HJB) equation, the continuous-time generalization of Bellman's principle [p.32, §11.6].
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Agent / Environment / State / Action / Reward / Policy** — canonical RL five-tuple. Agent observes state s ∈ S, takes action a ∈ A via policy π, receives reward r [p.3, Fig.11.1].
 - **Policy π(s,a)** — probability distribution Pr(a=a | s=s); may be a lookup table (discrete) or a parameterized approximator π(s, a, θ) such as a deep neural network ("deep policy network") [p.3-4, eq.11.1-11.2].
 - **Markov Decision Process (MDP)** — tuple (S, A, R) with transition P(s', s, a) = Pr(s_{k+1}=s' | s_k=s, a_k=a) and reward function R; defining property is that future depends only on current state, not history [p.4-5, eq.11.3-11.4].
@@ -49,8 +47,7 @@ Reinforcement learning is a biologically-inspired third branch of machine learni
 - **Hamilton-Jacobi-Bellman (HJB) equation** — PDE generalization of the Bellman equation to continuous-time nonlinear optimal control [p.33, eq.11.45].
 - **Cost-to-go** — control-theory name for the value function: integrated remaining cost from state x(t) under optimal control until t_f [p.33].
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Policy as conditional probability** [p.3, eq.11.1]
 
 $$\pi(s, a) = \Pr(a = a \mid s = s)$$
@@ -167,8 +164,7 @@ $$V(x) = \min_{u}\bigl( L(x, u) + V(F(x, u)) \bigr)$$
 
 $$\pi(x) = \arg\min_{u}\bigl( L(x, u) + V(F(x, u)) \bigr)$$
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Policy Iteration** [p.12-13, §policy iteration]
 
 ```
@@ -274,12 +270,10 @@ Loop:
    d. Actor update: θ ← θ + α ∇_θ[ log π_θ(s,a) · Q_{θ₂}(s,a) ]
 ```
 
-## 5. Regras de Trading Explícitas
-
+## 5. Explicit Trading Rules
 N/A — This chapter is a pedagogical treatment of Reinforcement Learning for general dynamical systems, control, robotics, and board/video games. It does NOT discuss trading, asset pricing, portfolio optimization, execution, or any financial-market application. No trading rule ("if X then Y") is stated anywhere in the extracted pages. Applying RL to trading would require additional domain knowledge (reward function design, state/action spaces for markets, transaction costs, non-stationarity) that is not covered here. For explicit trading rules see `systematic_trading.md` or `evidence_based_ta.md`.
 
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - **Curse of dimensionality in dynamic programming** [p.11-12]: "For even moderately large problems, [Bellman backup] suffers from the curse of dimensionality, and approximate solution methods must be employed" [p.12]. Chess has combinatorially large state spaces (Shannon number ≈ 10^120 [p.25]) that make tabular Q infeasible.
 - **Policy iteration is expensive and prone to local minima** [p.13]: "This procedure is both expensive and prone to finding local minima. It also resembles the alternating descent method."
 - **Monte Carlo learning is sample-inefficient for sparse rewards** [p.15]: "For this reason, Monte Carlo learning is typically quite sample inefficient, especially for problems with sparse rewards."
@@ -294,8 +288,7 @@ N/A — This chapter is a pedagogical treatment of Reinforcement Learning for ge
 - **HJB curse of dimensionality** [p.34-35]: "A nonlinear control problem with a three-dimensional state vector x ∈ R^3 will result in a three-dimensional PDE. Thus, optimal nonlinear control based on the HJB equation typically suffers from the curse of dimensionality."
 - **Double-DQN target-network instability** [p.24]: "It may be necessary to fix the target network for multiple training iterations of the prediction network before updating to improve stability and convergence" [ref. 264].
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **Discount factor γ** [p.6, eq.11.8]: economic-principle justification — "current rewards are more valuable than future rewards." No numeric recommendation; treated as problem-specific.
 - **Learning rate α ∈ [0, 1]** [p.16, eq.11.22]: used in MC, TD, SARSA, Q-learning updates. Explicit author comment: "Larger learning rates α > 1/n will favor more recent experience" [p.16]. Set per task; no universal optimum given.
 - **Exploration ε ∈ [0, 1]** in ε-greedy [p.20-21]: "Typically, the value of ε will be initialized to a large value, often ε = 1. Throughout the course of training, ε decays so that as the Q function improves, the agent increasingly takes the current optimal action. This is closely related to simulated annealing from optimization" [p.21]. Explicit schedule guidance: anneal from 1 toward 0.
@@ -305,8 +298,7 @@ N/A — This chapter is a pedagogical treatment of Reinforcement Learning for ge
 - **n in TD(n) / SARSA(n)** [p.17-18]: controls bias-variance tradeoff. As n → ∞ (full episode), TD(n) → Monte Carlo (high variance, no bias). As n = 0, lowest variance, highest bias. No numeric recommendation.
 - **Neural-network architecture parameters for DQN** [p.23, Fig.11.5]: convolutional layers + fully-connected layers used in Mnih et al. 2015 [ref. 519]. Exact layer sizes N/A — not in extract; see original Mnih et al. paper.
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "In reinforcement learning, an agent senses the state of its environment and learns take appropriate actions to optimize future rewards. The ultimate goal in RL is to learn an effective control strategy or set of actions through positive or negative reinforcement." — [p.2]
 
 > "This expression, known as Bellman's equation, is a statement of Bellman's principle of optimality, and it is a central result that underpins modern RL." — [p.6]
@@ -319,8 +311,7 @@ N/A — This chapter is a pedagogical treatment of Reinforcement Learning for ge
 
 > "Reward shaping is quite common and can be very effective. However, these rewards require expert human guidance to design, and this requires customized effort for each new task. Thus, reward shaping is not a viable strategy for a generalized artificial intelligence agent capable of learning multiple games or tasks. In addition, reward shaping generally limits the upper end of the agent's performance to that of the human expert." — [p.26]
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - **Bellman equation & dynamic programming**: mentioned but not developed in any of the previously-processed trading/quant books. Closest conceptual neighbor is the optimal-control background assumed in `advances_fin_ml.md` (López de Prado uses cross-validation / purged splits but does not treat RL).
 - **Bias-variance tradeoff** [p.18]: same concept discussed in `ml_for_asset_managers.md#generalization-error` as the root cause of overfitting in financial ML — Brunton & Kutz treat it from the TD-vs-Monte-Carlo angle [p.18]; López de Prado treats it from the number-of-trials / Deflated Sharpe angle.
 - **Curse of dimensionality** [p.11, p.35]: the motivation for approximate methods (neural nets, Koopman, SINDy) — same theme appears implicitly in the parsimony / parameter-budget discussions of `systematic_trading.md` (Carver) and in López de Prado's anti-backtest-overfit framework in `advances_fin_ml.md` and `ml_for_asset_managers.md`.

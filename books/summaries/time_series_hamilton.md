@@ -1,19 +1,17 @@
 # Time Series Analysis
 
 ## Metadata
-- **Autor:** James D. Hamilton [p.iii, cover]
-- **Ano:** 1994 [p.iv]
-- **Editora:** Princeton University Press, Princeton, New Jersey [p.iv]
-- **Páginas:** 799 (numbered body) + frontmatter; 814 PDF pages total
+- **Author:** James D. Hamilton [p.iii, cover]
+- **Year:** 1994 [p.iv]
+- **Publisher:** Princeton University Press, Princeton, New Jersey [p.iv]
+- **Pages:** 799 (numbered body) + frontmatter; 814 PDF pages total
 - **ISBN:** 0-691-04289-6 [p.iv]
-- **Foco principal:** Unified graduate-level treatment of time-series econometrics — ARMA, VAR, Kalman, GMM, unit roots, cointegration, GARCH, regime switching — with full asymptotic theory.
+- **Main focus:** Unified graduate-level treatment of time-series econometrics — ARMA, VAR, Kalman, GMM, unit roots, cointegration, GARCH, regime switching — with full asymptotic theory.
 
-## 1. Tese Central
-
+## 1. Core Thesis
 Every dynamic econometric model must be analyzed both as a computational device (how to estimate and forecast) and as a statistical object (what the sampling distribution of its estimates looks like). Hamilton argues [ch.1, p.1; preface] that the practical researcher needs BOTH the Kalman/state-space machinery for handling latent states and the asymptotic theory (functional CLT, Brownian motion functionals) for unit-root and cointegration inference, because naive application of Gaussian-OLS distribution theory to I(1) regressors produces invalid inference — spurious regressions, wrong critical values [ch.17, p.487-488; ch.18, p.557-561]. The book is organized to build from deterministic difference equations (Ch 1-2) through stationary ARMA (Ch 3-6) and asymptotic theory (Ch 7-8) to the nonstationary / cointegration / regime-switching extensions (Ch 15-22) needed for real financial and macro data.
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Covariance stationarity** — first two moments independent of t [p.45]
 - **White noise** — zero-mean, constant variance, uncorrelated over time [p.47]
 - **MA(q) process** — $y_t = \mu + \varepsilon_t + \theta_1\varepsilon_{t-1} + \cdots + \theta_q\varepsilon_{t-q}$ [p.50, eq 3.3.8]
@@ -53,8 +51,7 @@ Every dynamic econometric model must be analyzed both as a computational device 
 - **Hamilton filter** — iterative optimal inference on hidden regime state [p.692]
 - **Kim smoother** — backward pass for smoothed regime probabilities [p.694]
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 ### Stationary ARMA
 
 **AR(1) autocovariance** [p.53, eq 3.4.5]
@@ -291,8 +288,7 @@ $$\hat\xi_{t|T} = \hat\xi_{t|t} \odot \{P' \cdot [\hat\xi_{t+1|T} (\div) \hat\xi
 **MLE of transition probability** [p.694, Hamilton 1990]
 $$\hat p_{ij} = \frac{\sum_{t=2}^T P\{s_t = j, s_{t-1} = i | \mathcal{Y}_T; \theta\}}{\sum_{t=2}^T P\{s_{t-1} = i | \mathcal{Y}_T; \theta\}}$$
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Kalman Filter (forward pass)** [ch.13, p.381-384]
 ```
 Input: F, Q, A, H, R; data {y_t, x_t} for t = 1..T
@@ -402,24 +398,22 @@ max_stat(h)   = -T * log(1 - lambda_{h+1})                   # H0: rank = h vs r
 Compare to Osterwald-Lenum (1992) critical values
 ```
 
-## 5. Regras de Trading Explícitas
-
+## 5. Explicit Trading Rules
 This is an econometrics textbook — "rules" are methodological imperatives for valid inference that downstream protect trading:
 
-- **REGRA [p.307-308]**: NEVER interpret Granger-causality as structural causality when forward-looking variables (stock prices, interest rates, FX rates) are involved. Hamilton's stock-price example: prices Granger-cause dividends even though dividends causally determine prices — forward-looking expectations reverse the sign.
-- **REGRA [p.527, p.513]**: For ADF test, use UNCHANGED Case-2 t-critical values (−2.89 at 5%) regardless of how many lagged Δy are included. For Phillips-Perron Newey-West lag use $q \approx \lambda T^{1/5}$.
-- **REGRA [p.668]**: For equity return volatility modeling, prefer EGARCH(1,1) or GJR-GARCH over plain GARCH(1,1) — the leverage effect (λ < 0) is empirically robust.
-- **REGRA [p.666, p.671]**: GARCH(1,1) is typically parsimonious enough for financial returns; higher-order (r, m) rarely improves out-of-sample forecasts. Engle-Hong-Kane-Noh (1991), West-Edison-Cho (1993) confirm.
-- **REGRA [p.671]**: Compare ARCH/GARCH specifications out-of-sample via squared-residual loss — Pagan-Schwert (1990) show parametric models (GARCH, EGARCH) beat nonparametric kernels for forecasting despite worse in-sample fit.
-- **REGRA [p.561, p.591]**: Do NOT run OLS of one I(1) series on another without first testing for cointegration — spurious regression gives divergent t-statistics.
-- **REGRA [p.386]**: For ARMA(p,q) MLE use Kalman filter for EXACT likelihood evaluation (eq 13.4.1-2). Works even when MA part is non-invertible; avoids bias of conditional likelihood.
-- **REGRA [p.386, p.389]**: Always parameterize variance-covariance Ω in MLE via its Cholesky factor for numerical stability.
+- **RULE [p.307-308]**: NEVER interpret Granger-causality as structural causality when forward-looking variables (stock prices, interest rates, FX rates) are involved. Hamilton's stock-price example: prices Granger-cause dividends even though dividends causally determine prices — forward-looking expectations reverse the sign.
+- **RULE [p.527, p.513]**: For ADF test, use UNCHANGED Case-2 t-critical values (−2.89 at 5%) regardless of how many lagged Δy are included. For Phillips-Perron Newey-West lag use $q \approx \lambda T^{1/5}$.
+- **RULE [p.668]**: For equity return volatility modeling, prefer EGARCH(1,1) or GJR-GARCH over plain GARCH(1,1) — the leverage effect (λ < 0) is empirically robust.
+- **RULE [p.666, p.671]**: GARCH(1,1) is typically parsimonious enough for financial returns; higher-order (r, m) rarely improves out-of-sample forecasts. Engle-Hong-Kane-Noh (1991), West-Edison-Cho (1993) confirm.
+- **RULE [p.671]**: Compare ARCH/GARCH specifications out-of-sample via squared-residual loss — Pagan-Schwert (1990) show parametric models (GARCH, EGARCH) beat nonparametric kernels for forecasting despite worse in-sample fit.
+- **RULE [p.561, p.591]**: Do NOT run OLS of one I(1) series on another without first testing for cointegration — spurious regression gives divergent t-statistics.
+- **RULE [p.386]**: For ARMA(p,q) MLE use Kalman filter for EXACT likelihood evaluation (eq 13.4.1-2). Works even when MA part is non-invertible; avoids bias of conditional likelihood.
+- **RULE [p.386, p.389]**: Always parameterize variance-covariance Ω in MLE via its Cholesky factor for numerical stability.
 - **NEVER [p.322]**: Report a single orthogonalized IRF without declaring the Cholesky ordering — IRFs depend on ordering, and a theory-free ordering is indefensible.
 - **NEVER [p.660]**: Assume fourth moments exist when α₁ < 1 in Gaussian ARCH(1) — need α₁² < 1/4 (equivalently α₁ < 1/2) for 4th moment finiteness — Hamilton [p.660]: "This equation has no real solution for A whenever α₁² ≥ ¼".
 - **NEVER [p.659, p.663]**: Report Gaussian MLE standard errors for GARCH without checking whether v_t is actually Gaussian. Financial returns are not. Use QMLE sandwich variance (D⁻¹SD⁻¹).
 
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - [p.487-488] Under H₀: p = 1, √T(p̂ − 1) → 0 in probability (not a normal distribution). Must scale by T. Applying stationary-AR inference to unit-root data is INVALID.
 - [p.516] Phillips-Perron tests have POOR SIZE when the true process has negative MA (θ ≈ −0.8); Schwert (1989), Kim-Schmidt (1990) document false rejections of unit-root null.
 - [p.513] No unique rule for Newey-West lag q: too small underestimates long-run variance; too large loses power. Andrews (1991) data-driven rules may help.
@@ -439,8 +433,7 @@ This is an econometrics textbook — "rules" are methodological imperatives for 
 - [p.660] Imposing stationarity (Σα < 1) and nonnegativity (α_j ≥ 0) simultaneously in ARCH estimation is hard — typically use small m or ad-hoc parametric structure.
 - [p.689] Mixture-density log-likelihood has singularities (µ_j = y_i with σ²_j → 0 makes L → ∞) and multiple local maxima. Standard practice: ignore the singularity and try again with different starting values.
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **Newey-West truncation q** [p.513]: Phillips's result requires $q_T \to \infty$ with $q_T/T^{1/4} \to 0$ (e.g., $q_T = \lambda T^{1/5}$). Under- or over-smoothing both degrade test size/power.
 - **VAR lag order p** [p.297]: Sims (T − k) correction reduces small-sample bias. Hamilton's examples use 4 lags for quarterly data; 6-12 for monthly. Economic theory should inform lower bound.
 - **GARCH orders (r, m)** [p.666]: Empirical consensus — (1, 1) nearly always adequate for financial returns. Higher-order GARCH rarely improves out-of-sample forecasts [p.671].
@@ -451,8 +444,7 @@ This is an econometrics textbook — "rules" are methodological imperatives for 
 - **Kalman initial state covariance P_{1|0}** [p.378]: For stationary models, use unconditional variance vec(P_{1|0}) = [I − F⊗F]⁻¹ vec(Q). For nonstationary / unknown initial state, use large diagonal "diffuse" prior.
 - **ARCH lag length m** [p.660]: Typically small (1-5) for financial returns. Too large m → nonnegativity constraints bind, likelihood surface becomes degenerate.
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "Granger's reason for proposing this definition was that if an event Y is the cause of another event X, then the event Y should precede the event X. Although one might agree with this position philosophically, there can be serious obstacles to practical implementation of this idea using aggregate time series data" — [p.303]
 
 > "A VAR can be viewed as the reduced form of a general dynamic structural model." — [p.327]
@@ -463,8 +455,7 @@ This is an econometrics textbook — "rules" are methodological imperatives for 
 
 > "Granger-causality tests for such series may be useful for assessing the efficient markets view or investigating whether markets are concerned with or are able to forecast GNP or inflation, but should not be used to infer a direction of causation." — [p.307]
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - **GARCH / VAR overlap with `fin_time_series_tsay.md`** — Tsay (*Analysis of Financial Time Series*, 3rd ed.) covers the same GARCH family (ARCH, GARCH, EGARCH, GJR) and VAR estimation with substantially more applied R-code examples and recent financial applications. Use Tsay for applied implementation and empirical insight, Hamilton for theoretical foundation (asymptotics, proofs, identification theory). Hamilton Ch 21 ≈ Tsay Ch 3; Hamilton Ch 11 ≈ Tsay Ch 8; Hamilton Ch 10 overlaps Tsay's multivariate chapters.
 - **Kalman Filter / Numerical methods in `numerical_recipes.md`** — Numerical Recipes gives practical implementations of matrix factorizations (Cholesky, QR, SVD) and numerical optimization (BFGS, Nelder-Mead, Levenberg-Marquardt) needed to turn Hamilton's MLE equations into running code. The steady-state Riccati equation (eq 13.5.3) and nonlinear search algorithms referenced in Hamilton Ch 5 and Ch 21 for ARCH MLE benefit from NR-style solvers; Kalman propagation benefits from NR's numerically stable triangular solves.
 - **ML methods on time series in `advances_fin_ml.md`** — López de Prado addresses many of the same concerns as Hamilton (nonstationarity, overfitting on financial data, spurious correlation) but from a machine-learning perspective: fractional differentiation (preserving memory while achieving stationarity) directly responds to Hamilton's Ch 15-17 dilemma between trend-stationary and unit-root treatment. Hamilton Ch 17 unit-root tests are López de Prado's classical benchmark for his fractionally-differentiated stationarity procedure. CPCV / purged cross-validation handle the dependency issues raised by Hamilton's asymptotic theory in a way agnostic to specific parametric models — complementary, not redundant.

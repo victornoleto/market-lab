@@ -1,6 +1,6 @@
 # Ehlers Band-Pass Swing Trader — replication notes
 
-Replication baseline for the **Fase 2.5 Execução 2** Ehlers Band-Pass
+Replication baseline for the **Phase 2.5 Run 2** Ehlers Band-Pass
 Swing strategy. Single-instrument run on `^GSPC` daily from Yahoo Finance
 before launching the 24-config grid. Purpose: catch engine-level bugs
 while still on known ground, and set sensible expectations for the grid.
@@ -69,7 +69,7 @@ full equity per trade. Engine supports fractional share sizes.
    SPX daily is consistent with the *a priori* risk that the system is
    tuned for faster, more persistently cyclic instruments than a
    broad-market equity index. This is one of the documented risks in
-   `specs/backtest_phase2_5_ehlers.md` §"Riscos conhecidos" (bullet 1).
+   `specs/backtest_phase2_5_ehlers.md` §"Known risks" (bullet 1).
 
 ## Synthetic pure-sine counter-test
 
@@ -94,7 +94,7 @@ bounded") rather than a profitability claim.
 
 The engine check passes on both synthetic and real data. We advance to
 `Commit 9 — scripts/run_grid_ehlers.py` to run the full 24-config grid
-over the same 2015-2023 SPX window used by the Clenow Execução 1,
+over the same 2015-2023 SPX window used by Clenow Run 1,
 enabling direct comparability.
 
 If the grid also rejects (PBO ≥ 0.5 or DSR p ≥ 0.05), the fork in
@@ -104,6 +104,6 @@ with Clenow, or stop.
 
 > ⚠️ **Survivorship bias warning.** `^GSPC` is an index price — less
 > affected by single-constituent survivorship than individual-stock
-> backtests (Execução 1), but the index itself is maintained with
+> backtests (Run 1), but the index itself is maintained with
 > continuous-constituent weighting that still tilts the series. The
 > auto-generated report carries the standard `yfinance` disclaimer.

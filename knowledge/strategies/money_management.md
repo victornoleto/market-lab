@@ -1,6 +1,6 @@
 # Money Management & Position Sizing
 
-Kelly, fractional Kelly, optimal f, risk of ruin — sizing sob incerteza.
+Kelly, fractional Kelly, optimal f, risk of ruin — sizing under uncertainty.
 
 ## Sources
 
@@ -10,41 +10,41 @@ Kelly, fractional Kelly, optimal f, risk of ruin — sizing sob incerteza.
 
 ## From `books/math_money_mgmt.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.13]**: Never use money management to salvage a system with negative mathematical expectation. Money management only amplifies what is already there — positive or negative.
+- **RULE [p.13]**: Never use money management to salvage a system with negative mathematical expectation. Money management only amplifies what is already there — positive or negative.
 
-- **REGRA [p.17]**: Always use the biggest historical loss (not average loss) as the denominator in HPR calculations. Using average loss underestimates real risk.
+- **RULE [p.17]**: Always use the biggest historical loss (not average loss) as the denominator in HPR calculations. Using average loss underestimates real risk.
 
-- **REGRA [p.16]**: Do NOT equate optimal f with Kelly Criterion unless the trading system has exactly two outcomes of fixed sizes (pure Bernoulli).
+- **RULE [p.16]**: Do NOT equate optimal f with Kelly Criterion unless the trading system has exactly two outcomes of fixed sizes (pure Bernoulli).
 
-- **REGRA [p.16]**: Do not use Kelly Criterion on systems with variable win/loss sizes. Produces incorrect f values and can lead to ruin.
+- **RULE [p.16]**: Do not use Kelly Criterion on systems with variable win/loss sizes. Produces incorrect f values and can lead to ruin.
 
-- **REGRA [p.34]**: Expect the **longest** drawdown to occupy 35-55% of trading life at optimal f. The arc sine laws apply to duration of drawdown, not its depth. This is a mathematical consequence, not a tail risk.
+- **RULE [p.34]**: Expect the **longest** drawdown to occupy 35-55% of trading life at optimal f. The arc sine laws apply to duration of drawdown, not its depth. This is a mathematical consequence, not a tail risk.
 
-- **REGRA [p.26, ch.2]**: Do NOT switch to fixed-fraction trading until equity surpasses the Threshold to Geometric (T). Below T, constant-contract trading has a higher expected outcome.
+- **RULE [p.26, ch.2]**: Do NOT switch to fixed-fraction trading until equity surpasses the Threshold to Geometric (T). Below T, constant-contract trading has a higher expected outcome.
 
-- **REGRA [p.44-48, ch.3]**: When using parametric optimal f with the Normal distribution, use at minimum M = 100 discrete points to discretize the distribution.
+- **RULE [p.44-48, ch.3]**: When using parametric optimal f with the Normal distribution, use at minimum M = 100 discrete points to discretize the distribution.
 
-- **REGRA [p.76-80, ch.6]**: Compute optimal f for each market system individually first, then construct the portfolio using those HPR streams. Do NOT optimize portfolio weights and f simultaneously.
+- **RULE [p.76-80, ch.6]**: Compute optimal f for each market system individually first, then construct the portfolio using those HPR streams. Do NOT optimize portfolio weights and f simultaneously.
 
-- **REGRA [p.82-84, ch.7]**: Use unconstrained portfolio weights (sum > 1 is allowed and expected). The constraint sum(w) = 1 artificially limits growth.
+- **RULE [p.82-84, ch.7]**: Use unconstrained portfolio weights (sum > 1 is allowed and expected). The constraint sum(w) = 1 artificially limits growth.
 
-- **REGRA [p.89-93, ch.8]**: Prefer dynamic fractional f over static fractional f. Dynamic is asymptotically superior: it compounds the active portion at full optimal f while inactive equity provides a floor.
+- **RULE [p.89-93, ch.8]**: Prefer dynamic fractional f over static fractional f. Dynamic is asymptotically superior: it compounds the active portion at full optimal f while inactive equity provides a floor.
 
-- **REGRA [p.96-97, ch.8]**: Before trading an unconstrained portfolio, compute margin upper limit U via Eq. (8.08). Set maximum active equity percentage to min(U, 1.0).
+- **RULE [p.96-97, ch.8]**: Before trading an unconstrained portfolio, compute margin upper limit U via Eq. (8.08). Set maximum active equity percentage to min(U, 1.0).
 
-- **REGRA [p.97, ch.8]**: When a component's portfolio weight exceeds 1.0, set the active equity upper limit to 1 / (highest weighting) to prevent a single worst-case loss from wiping the account.
+- **RULE [p.97, ch.8]**: When a component's portfolio weight exceeds 1.0, set the active equity upper limit to 1 / (highest weighting) to prevent a single worst-case loss from wiping the account.
 
-- **REGRA [p.97-98, ch.8]**: When managing a rotating portfolio, always recalculate the unconstrained geometric optimal portfolio after each composition change. Keep the inactive equity dollar amount constant.
+- **RULE [p.97-98, ch.8]**: When managing a rotating portfolio, always recalculate the unconstrained geometric optimal portfolio after each composition change. Keep the inactive equity dollar amount constant.
 
-- **NUNCA [p.16]**: Do not use the Kelly Criterion on trading systems with variable win/loss sizes.
+- **NEVER [p.16]**: Do not use the Kelly Criterion on trading systems with variable win/loss sizes.
 
-- **NUNCA [p.24]**: Do not use the Fundamental Equation of Trading as a real-time trading signal. Use it only for scenario analysis and only when distribution is stationary.
+- **NEVER [p.24]**: Do not use the Fundamental Equation of Trading as a real-time trading signal. Use it only for scenario analysis and only when distribution is stationary.
 
 ---
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **HPR (Holding Period Return)** [p.16, ch.1; eq.1.11]
 
@@ -212,7 +212,7 @@ $$N'(X) = \frac{N!}{X!(N-X)!} \cdot P^X \cdot Q^{N-X}$$
 
 ---
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Algorithm: Empirical Optimal f Search** [p.16-17, ch.1]
 
@@ -321,7 +321,7 @@ for each system i:
 
 ---
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - **[p.13]** Attempting to use money management on a system with negative expectation. No position sizing technique converts a losing strategy into a winner.
 
@@ -353,21 +353,21 @@ for each system i:
 
 ## From `books/leverage_space.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.15-18, eqs.1.06-1.10]:** Position-size via `Number of Units = Equity / f$` where `f$ = |BiggestLoss| / f_optimal`. Do NOT size by margin — margin "has nothing to do with the optimal amount to finance a trade by" [p.19].
-- **REGRA [p.25]:** The chosen BiggestLoss parameter only *bounds f between 0 and 1*; it does NOT change the optimal number of units (Table 2.1). You can use an arbitrary worst case if true worst case is unknown, as long as you are consistent.
-- **REGRA [p.63, ch.4]:** For multi-component portfolios, do NOT use pairwise correlation as an input. Instead, bin empirical history into a joint-scenarios table of combinations with probabilities — that is the only input the Leverage Space Model requires.
-- **NUNCA [p.43, Fig.3.8]:** Operate to the right of the peak of the f curve. Even in a cash account with no borrowing, there is a point (f > peak) where GHPR<1 and ruin is certain with probability → 1 as q → ∞. In the 2:1 coin toss that point is f = 0.5 (one bet per $2 in stake).
-- **NUNCA [p.44, p.150]:** Use ad-hoc heuristics like "half Kelly" or "never risk more than 1% / 2%" as primary position-sizing rules. They are arbitrary stationary points that do not migrate with holding-period count; the nature of the curve renders them incorrect.
-- **NUNCA [p.65]:** Rely on low historical correlation to size multiple simultaneous positions. Vince's empirical finding: crude-gold r = 0.18 all-days → 0.61 on crude 3σ days; Ford-Pfizer r = 0.15 all-days → 0.75 on S&P 500 3σ days. Correlation fails precisely when needed.
-- **REGRA [p.89, ch.5]:** Remove from the N+1-dimensional surface all coordinates where the expected drawdown RD(b) violates your constraint (GHPR at those points is set to 0). Operate only on the remaining terrain.
-- **REGRA [p.92]:** When the drawdown-admissible terrain has multiple equal-altitude optima, pick the coordinate with the smallest `sum(f_i)` — closer to origin means smaller minimum expected drawdown among ties.
-- **REGRA [p.33-37, Ch.3]:** When you can know your horizon q, the growth-maximizing f is *slightly greater* than the asymptotic optimal f, and converges to optimal f from above as q → ∞ (e.g., for the 2:1 coin toss: q=1→f=1.0, q=2→0.5, q=3→0.37868, q=8→0.2871, q=∞→0.25). In practice, trading at asymptotic optimal f is always slightly sub-optimal — this is acceptable.
-- **REGRA [p.157-167, ch.7]:** If your criterion is *probability of profit at horizon* rather than growth, use two Martingale exponents (z−, z+) in eq.7.03. z+ in (−0.5, 0] for above-start equity (take profit more slowly), z− < −0.5 for below-start (press harder). Optimize (z−, z+, f_1…f_N) to maximize PP(r) subject to RD(b) ≤ constraint.
-- **REGRA [p.69]:** If trading in integer units (one contract, one lot) constrains you below the continuous optimum (e.g., 21 bets instead of 21.85), always *round down*, never up — rounding up places you to the right of the peak on some axis.
+- **RULE [p.15-18, eqs.1.06-1.10]:** Position-size via `Number of Units = Equity / f$` where `f$ = |BiggestLoss| / f_optimal`. Do NOT size by margin — margin "has nothing to do with the optimal amount to finance a trade by" [p.19].
+- **RULE [p.25]:** The chosen BiggestLoss parameter only *bounds f between 0 and 1*; it does NOT change the optimal number of units (Table 2.1). You can use an arbitrary worst case if the true worst case is unknown, as long as you are consistent.
+- **RULE [p.63, ch.4]:** For multi-component portfolios, do NOT use pairwise correlation as an input. Instead, bin empirical history into a joint-scenarios table of combinations with probabilities — that is the only input the Leverage Space Model requires.
+- **NEVER [p.43, Fig.3.8]:** Operate to the right of the peak of the f curve. Even in a cash account with no borrowing, there is a point (f > peak) where GHPR<1 and ruin is certain with probability → 1 as q → ∞. In the 2:1 coin toss that point is f = 0.5 (one bet per $2 in stake).
+- **NEVER [p.44, p.150]:** Use ad-hoc heuristics like "half Kelly" or "never risk more than 1% / 2%" as primary position-sizing rules. They are arbitrary stationary points that do not migrate with holding-period count; the shape of the curve makes them incorrect.
+- **NEVER [p.65]:** Rely on low historical correlation to size multiple simultaneous positions. Vince's empirical finding: crude-gold r = 0.18 all-days → 0.61 on crude 3σ days; Ford-Pfizer r = 0.15 all-days → 0.75 on S&P 500 3σ days. Correlation fails precisely when needed.
+- **RULE [p.89, ch.5]:** Remove from the N+1-dimensional surface all coordinates where the expected drawdown RD(b) violates your constraint (GHPR at those points is set to 0). Operate only on the remaining terrain.
+- **RULE [p.92]:** When the drawdown-admissible terrain has multiple equal-altitude optima, pick the coordinate with the smallest `sum(f_i)` — closer to the origin means smaller minimum expected drawdown among ties.
+- **RULE [p.33-37, Ch.3]:** When you can know your horizon q, the growth-maximizing f is *slightly greater* than the asymptotic optimal f, and converges to optimal f from above as q → ∞ (e.g., for the 2:1 coin toss: q=1→f=1.0, q=2→0.5, q=3→0.37868, q=8→0.2871, q=∞→0.25). In practice, trading at the asymptotic optimal f is always slightly sub-optimal — this is acceptable.
+- **RULE [p.157-167, ch.7]:** If your criterion is *probability of profit at horizon* rather than growth, use two Martingale exponents (z−, z+) in eq.7.03. z+ in (−0.5, 0] for above-start equity (take profit more slowly), z− < −0.5 for below-start (press harder). Optimize (z−, z+, f_1…f_N) to maximize PP(r) subject to RD(b) ≤ constraint.
+- **RULE [p.69]:** If trading in integer units (one contract, one lot) constrains you below the continuous optimum (e.g., 21 bets instead of 21.85), always *round down*, never up — rounding up places you to the right of the peak on some axis.
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Mathematical Expectation (ME) / scenario expected value** [p.2, Introduction]
 
@@ -465,7 +465,7 @@ $$TWR(f_1 \ldots f_N) - 1 \geq r \;\Rightarrow\; \text{branch is "profitable"}$$
 
 - Maximize the fraction of q-deep permutation branches satisfying (7.06) over (z−, z+, f_1…f_N) subject to an RD(b) constraint. [p.166, eq.7.06]
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Optimal-f for a single scenario spectrum** [ch.3, p.47-48]
 
@@ -509,7 +509,7 @@ RX(b, q) = 1 - count_surviving / n^q
 # Asymptotes as q grows; start the analysis at q=1 to resolve the asymptote [p.103]
 ```
 
-Vince supplies bare-bones Java reference code reproducing this loop for one or more scenario spectrums, with a `usedrawdowninsteadofruin` flag [p.106-110]. The inner kernel is eq.5.03a, not a closed-form.
+Vince supplies bare-bones Java reference code reproducing this loop for one or more scenario spectrums, with a `usedrawdowninsteadofruin` flag [p.106-110]. The inner kernel is eq.5.03a, not a closed form.
 
 **Small-Martingale probability-of-profit search (Ch.7)** [p.165-167]
 
@@ -531,16 +531,16 @@ function PP(z_minus, z_plus, f_1..f_N):
 (z-*, z+*, f_1..f_N*) = argmax PP  subject to RD(b) <= maxProbRD
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - [p.43, Fig.3.8] Believing a "cash account, no margin" is safe. Even with zero borrowing, every market system has an f > peak where GHPR < 1 and ruin is certain. Leverage is fundamentally the f value, not the borrow ratio.
-- [p.44-45, p.150] Using "half-Kelly" as a safety dilution. It is a stationary heuristic oblivious to the migration of inflection points toward the peak as q grows. The claim that "half Kelly gives ¾ of the return with much less volatility" is "patently false" [p.44].
+- [p.44-45, p.150] Using "half-Kelly" as a safety dilution. It is a stationary heuristic oblivious to the migration of inflection points toward the peak as q grows. The claim that "half Kelly gives 3/4 of the return with much less volatility" is "patently false" [p.44].
 - [p.61-62, ch.4] Using Modern Portfolio Theory / mean-variance: four failure modes — assumes normality (fails on fat tails), uses variance-as-risk instead of drawdown, ignores leverage, and relies on correlation which fails on tail-event days.
-- [p.65] Overallocating when pairwise correlation between components looks low on *all days* — correlations spike on big-move days. Build joint-scenarios tables from empirical data instead.
+- [p.65] Over-allocating when pairwise correlation between components looks low on *all days* — correlations spike on big-move days. Build joint-scenarios tables from empirical data instead.
 - [p.68] Being optimal on 99 of 100 component axes yet far-off on a single axis, so the GHPR drops below 1 and the whole portfolio loses money. One wrong quantity on one axis can negate N winning propositions [p.149].
 - [p.92-93] Tucking "deeply toward 0…0" on all axes as a conservative safety play. You decrease returns geometrically while decreasing drawdowns only arithmetically; ignorance of the curve's shape leads to the mistaken belief that going from 1% to 2% "just doubles" drawdowns.
 - [p.69-70] Using margin requirements to determine position size. They have no relationship to optimal f$.
-- [p.49-51] Using the arithmetic mean HPR as the base of `(1+r)^q` for compounded growth. This is only correct when SDHPR=0. In trading, always use GHPR; the arithmetic mean materially overstates compound growth.
+- [p.49-51] Using the arithmetic mean HPR as the base of `(1+r)^q` for compounded growth. This is correct only when SDHPR=0. In trading, always use GHPR; the arithmetic mean materially overstates compound growth.
 - [p.2-3] Evaluating a strategy by Mathematical Expectation alone, without a horizon lens. A positive-ME lottery can have 99.74% of players losing everything over their realistic horizon; a negative-ME insurance game is rational for finite-lifespan agents. "Mathematical Expectation must be utilized with the lens of a given horizon, a given lifespan" [p.4].
 - [p.103] Forgetting to treat ruin/drawdown analysis as order-dependent. Permutations must all be enumerated (n^q); unlike optimal-f calculation, order matters for ruin metrics.
 - [p.156-157, ch.6] Confusing *portfolio model* with *framework*. The static portfolio-model mindset (MPT, CAPM, half-Kelly) is obsolete; Leverage Space is a framework inside which migration functions realize specific criteria.
@@ -549,25 +549,25 @@ function PP(z_minus, z_plus, f_1..f_N):
 
 ## From `books/systematic_trading.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.160, ch.10]**: Subsystem position = (volatility_scalar × forecast) / 10. Apply to every instrument, every day.
-- **REGRA [p.173, ch.11]**: Portfolio position = subsystem_position × instrument_weight × IDM. IDM must never exceed 2.5 [p.170–171 (ch.11)].
-- **REGRA [p.174, ch.11]**: Apply position inertia — do not trade if the rounded target position is within 10% of the current held position.
-- **REGRA [p.133, ch.8]**: Cap combined forecast at ±20 after applying FDM. Never allow a combined forecast above +20 or below −20.
-- **REGRA [p.144, ch.9]**: Set percentage volatility target = SR_realistic / 2 (Half-Kelly). For negative-skew strategies: SR_realistic / 4 [p.146 (ch.9)].
-- **REGRA [p.146, ch.9]**: SR_realistic must be capped at 1.0 for staunch systems traders, regardless of how good the back-test looks. For semi-automatic traders, the maximum safe achievable SR is 0.5, so the volatility target must not exceed 25% [p.146 (ch.9)].
-- **REGRA [p.187–188, p.196, ch.12]**: Accept a new instrument only if its annual cost ≤ 0.13 SR/year (systems traders, p.187–188) or ≤ 0.08 SR/year (asset allocators and semi-auto traders, p.196).
-- **REGRA [p.212, ch.13]**: Semi-automatic stop loss uses X = 4 sigma_price_points from tracking extreme. On trigger: close the position only (no automatic reversal). Never modify the forecast after entering a trade [p.222 (ch.13)].
-- **REGRA [p.222, ch.13]**: Do NOT use profit targets for semi-automatic trading — no consistent evidence they improve performance.
-- **REGRA [p.122, ch.7]**: Prune any two trading rule variations with correlation > 0.95 — they add no independent information.
-- **REGRA [p.116, ch.7]**: Asset allocating investor always uses forecast = +10 (constant buy). Never short via this archetype.
-- **REGRA [p.201–202, ch.12]**: If maximum portfolio position < 4 blocks for any instrument at maximum forecast: increase instrument weight, reduce portfolio size, or remove the instrument.
-- **REGRA [p.196–197, ch.12]**: Use 20-week volatility look-back for asset allocators (instead of 25-day) to reduce volatility-estimate-driven turnover.
+- **RULE [p.160, ch.10]**: Subsystem position = (volatility_scalar × forecast) / 10. Apply to every instrument, every day.
+- **RULE [p.173, ch.11]**: Portfolio position = subsystem_position × instrument_weight × IDM. IDM must never exceed 2.5 [p.170–171 (ch.11)].
+- **RULE [p.174, ch.11]**: Apply position inertia — do not trade if the rounded target position is within 10% of the current held position.
+- **RULE [p.133, ch.8]**: Cap combined forecast at ±20 after applying FDM. Never allow a combined forecast above +20 or below −20.
+- **RULE [p.144, ch.9]**: Set percentage volatility target = SR_realistic / 2 (Half-Kelly). For negative-skew strategies: SR_realistic / 4 [p.146 (ch.9)].
+- **RULE [p.146, ch.9]**: SR_realistic must be capped at 1.0 for staunch systems traders, regardless of how good the back-test looks. For semi-automatic traders, the maximum safe achievable SR is 0.5, so the volatility target must not exceed 25% [p.146 (ch.9)].
+- **RULE [p.187–188, p.196, ch.12]**: Accept a new instrument only if its annual cost ≤ 0.13 SR/year (systems traders, p.187–188) or ≤ 0.08 SR/year (asset allocators and semi-auto traders, p.196).
+- **RULE [p.212, ch.13]**: Semi-automatic stop loss uses X = 4 sigma_price_points from tracking extreme. On trigger: close the position only (no automatic reversal). Never modify the forecast after entering a trade [p.222 (ch.13)].
+- **RULE [p.222, ch.13]**: Do NOT use profit targets for semi-automatic trading — no consistent evidence they improve performance.
+- **RULE [p.122, ch.7]**: Prune any two trading rule variations with correlation > 0.95 — they add no independent information.
+- **RULE [p.116, ch.7]**: Asset allocating investor always uses forecast = +10 (constant buy). Never short via this archetype.
+- **RULE [p.201–202, ch.12]**: If maximum portfolio position < 4 blocks for any instrument at maximum forecast: increase instrument weight, reduce portfolio size, or remove the instrument.
+- **RULE [p.196–197, ch.12]**: Use 20-week volatility look-back for asset allocators (instead of 25-day) to reduce volatility-estimate-driven turnover.
 
 ---
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Annualising volatility** [p.21 (ch.1)]
 
@@ -664,7 +664,7 @@ Carry forecast scalar is **30**; the raw carry is effectively an annualised Shar
 
 ---
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Full modular framework pipeline** [p.98–100 (ch.5)]
 
@@ -758,7 +758,7 @@ NOTE: The action on stop trigger is to CLOSE the position only [p.212 (ch.13)]. 
 
 ---
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - **[p.60, p.68–70, ch.3]**: Testing > 5 rule variations per idea with < 10 years of data almost guarantees selecting spurious rules. Table 4 (printed p.60): 50 rules, 5 years data → required SR threshold of 1.5 to keep false-positive rate below 5%; p.68–70 discusses the implications.
 - **[p.58–59, ch.3]**: Selecting the best of 90 "early loss taker" system variations (stop-loss B and profit-target A parameters) on 1-year rolling windows gave SR = 0.07 (worse than random). Using all 90 equally weighted gave SR = 0.33. Over-selection destroys performance.

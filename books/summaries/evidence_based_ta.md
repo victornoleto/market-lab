@@ -1,60 +1,57 @@
 # Evidence-Based Technical Analysis: Applying the Scientific Method and Statistical Inference to Trading Signals
 
 ## Metadata
-- **Autor:** David R. Aronson [p.7, p.15]
-- **Ano:** 2007 [p.8]
-- **Editora:** John Wiley & Sons (Wiley Trading series) [p.6, p.8]
-- **Páginas:** 544
+- **Author:** David R. Aronson [p.7, p.15]
+- **Year:** 2007 [p.8]
+- **Publisher:** John Wiley & Sons (Wiley Trading series) [p.6, p.8]
+- **Pages:** 544
 - **ISBN:** 978-0-470-00874-4 / 0-470-00874-1 [p.8]
-- **Foco principal:** Transformar análise técnica numa ciência observacional rigorosa usando o método científico, inferência estatística e testes robustos contra o viés do data-mining (White's Reality Check e Monte Carlo Permutation).
+- **Primary focus:** Turn technical analysis into a rigorous observational science by applying the scientific method, statistical inference, and tests robust against data-mining bias (White's Reality Check and Monte Carlo Permutation).
 
-## 1. Tese Central
+## 1. Core Thesis
+Technical analysis must evolve from a faith-based folk art into a rigorous observational science — "Evidence-Based Technical Analysis" (EBTA). The thesis is twofold [Introduction, p.1-7]: (1) subjective TA (hand-drawn chart patterns, Elliott Wave, Gann, etc.) is "worse than wrong — it is meaningless" [p.5] because it produces no falsifiable claims; (2) objective TA is amenable to scientific evaluation, but its historical results are systematically positively biased by data-mining bias [p.1], requiring specialized statistical tests such as White's Reality Check and Monte Carlo Permutation [p.239-243; p.325-328] to be trustworthy.
 
-TA deve evoluir de uma folk-art baseada em fé para uma ciência observacional rigorosa — "Evidence-Based Technical Analysis" (EBTA). A tese é dupla [Introduction, p.1-7]: (1) a TA subjetiva (chart patterns desenhados à mão, Elliott Wave, Gann, etc.) é "worse than wrong — it is meaningless" [p.5] porque não produz afirmações falsificáveis; (2) a TA objetiva é passível de ser avaliada cientificamente, mas seus resultados históricos são sistematicamente positivamente enviesados pelo data-mining bias [p.1], exigindo testes estatísticos especializados como White's Reality Check e Monte Carlo Permutation [p.239-243; p.325-328] para serem confiáveis.
+The book is divided into two parts [p.11]: Part I (methodological, psychological, philosophical, and statistical foundations — chapters 1-7); Part II (case study: back-test of 6,402 binary long/short rules on the S&P 500 over 25 years — chapters 8-9).
 
-O livro é dividido em duas partes [p.11]: Parte I (fundamentos metodológicos, psicológicos, filosóficos e estatísticos — capítulos 1-7); Parte II (case study: back-test de 6.402 regras binárias long/short no S&P 500 durante 25 anos — capítulos 8-9).
+## 2. Main Concepts
+- **EBTA (Evidence-Based Technical Analysis)** — TA restricted to objective methods whose results are evaluated with statistical inference that controls for data-mining bias [p.6-7, p.162-163].
+- **Subjective vs. Objective TA** — Subjective TA cannot be reduced to a computerizable and backtestable algorithm; objective TA can [p.5-6, p.16-17].
+- **Cognitive content / discernible-difference test** — A proposition can be a candidate for belief only if its truth vs. falsity produces an observable difference [p.2-3].
+- **Knowledge = justified true belief** — To qualify as knowledge, a claim must be true and justified by sound inference from evidence [p.4].
+- **Binary reversal rule** — A rule that always outputs +1 (long) or −1 (short), flipping from one to the other on signals [p.17, p.33].
+- **Position bias** — Tendency of a rule to spend more time in one state (long or short) due to asymmetry between its entry conditions [p.23-27].
+- **Detrending** — Subtract the average daily return of the back-test period from each daily market return, producing a zero-trend series. Required to eliminate the conjoined effect of position bias x market trend [p.27-28, p.29-30].
+- **Look-ahead bias** — Using information in the back-test that was not available at the time of the decision (e.g., using the close as a signal and executing at the same close) [p.29-30].
+- **Data-mining bias** — Systematic positive bias in the observed performance of the best rule when several are tested; observed performance exceeds expected performance [p.271, p.287].
+- **Multiple Comparison Procedure (MCP)** — Data-mining paradigm: test many candidate solutions and select the best by a figure of merit [p.264-265].
+- **Channel Breakout Operator (CBO)** — Trend-following operator: long signal when the series crosses above the maximum of the last n periods; short when it crosses below the minimum [p.397].
+- **Channel Normalization (CN) / Stochastics** — Detrending operator that scales the series to 0-100 based on its position in the range of the last n periods; acts as a high-pass filter [p.401-403].
+- **Reasoning by representativeness / sample size neglect** — Psychological heuristic that leads the analyst to perceive patterns in small samples of random data ("crime of small numbers") [p.88-96, p.113].
+- **Overconfidence bias** — Documented human tendency to overestimate the accuracy of one's own knowledge/skill [p.45-47].
+- **Configural thinking** — A mode of reasoning that requires integrating multiple variables simultaneously — the human mind is limited to ~3 factors [p.42-44].
+- **Null hypothesis (Ho) in rule testing** — The rule has no predictive power; expected return = 0 on detrended data [p.166-167, p.182].
+- **Sampling distribution** — Probability distribution of the test statistic (e.g., mean return) under the null hypothesis [p.167-168].
+- **Noise rule** — A rule whose +1/−1 signals are randomly paired with market returns; used as benchmark by Monte Carlo Permutation [p.239-240].
 
-## 2. Conceitos-Chave
-
-- **EBTA (Evidence-Based Technical Analysis)** — TA restrita a métodos objetivos cujos resultados são avaliados com inferência estatística que controla data-mining bias [p.6-7, p.162-163].
-- **Subjective vs. Objective TA** — Subjetiva não pode ser reduzida a algoritmo computerizável e backtestável; objetiva sim [p.5-6, p.16-17].
-- **Cognitive content / discernible-difference test** — Uma proposição só pode ser candidata a crença se se sua verdade vs. falsidade produzir diferença observável [p.2-3].
-- **Knowledge = justified true belief** — Para ser conhecimento, uma afirmação precisa ser verdadeira e justificada por inferência sólida a partir de evidência [p.4].
-- **Binary reversal rule** — Regra que produz sempre +1 (long) ou -1 (short), invertendo de uma para outra em sinais [p.17, p.33].
-- **Position bias** — Tendência de uma regra passar mais tempo em um estado (long ou short) devido à assimetria entre suas condições de entrada [p.23-27].
-- **Detrending** — Subtrair do retorno diário do mercado o retorno médio diário do período de back-test, criando série com tendência zero. Necessário para eliminar efeito conjugado de position bias × market trend [p.27-28, p.29-30].
-- **Look-ahead bias** — Uso de informação no back-test que não estava disponível no momento da decisão (ex.: usar close como sinal e executar ao mesmo close) [p.29-30].
-- **Data-mining bias** — Viés positivo sistemático na performance observada da melhor regra quando várias são testadas; a performance observada supera a performance esperada [p.271, p.287].
-- **Multiple Comparison Procedure (MCP)** — Paradigma de data mining: testar muitas soluções candidatas e selecionar a melhor por um figure of merit [p.264-265].
-- **Channel Breakout Operator (CBO)** — Operador trend-following: sinal long quando série supera o máximo dos últimos n-períodos; short quando fura o mínimo [p.397].
-- **Channel Normalization (CN) / Stochastics** — Operador detrending que escala a série de 0-100 conforme posição no range dos últimos n períodos; serve como high-pass filter [p.401-403].
-- **Reasoning by representativeness / sample size neglect** — Heurística psicológica que faz o analista perceber padrões em amostras pequenas de dados aleatórios ("crime of small numbers") [p.88-96, p.113].
-- **Overconfidence bias** — Tendência documentada de humanos superestimarem a precisão de seu próprio conhecimento/habilidade [p.45-47].
-- **Configural thinking** — Tipo de raciocínio que exige integrar múltiplas variáveis simultaneamente — mente humana limitada a ~3 fatores [p.42-44].
-- **Null hypothesis (Ho) em rule testing** — A regra não tem predictive power; retorno esperado = 0 em dados detrended [p.166-167, p.182].
-- **Sampling distribution** — Distribuição de probabilidade do test statistic (ex.: retorno médio) sob a hipótese nula [p.167-168].
-- **Noise rule** — Regra cujos sinais +1/-1 são aleatoriamente pareados com retornos do mercado; usada como benchmark pelo Monte Carlo Permutation [p.239-240].
-
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Expected Return of a binary reversal rule (no-predictive-power baseline)** [p.26-28]
 
 $$ER = [p(L) \times ADC] - [p(S) \times ADC]$$
 
-- $p(L)$ = proporção do tempo long [p.26]
+- $p(L)$ = proportion of time long [p.26]
 - $p(S)$ = $1 - p(L)$ [p.26]
-- $ADC$ = average daily change of market traded [p.26]
-- Implicação: se $ADC = 0$ (mercado detrended), $ER = 0$ qualquer que seja o position bias [p.28].
+- $ADC$ = average daily change of the traded market [p.26]
+- Implication: if $ADC = 0$ (detrended market), $ER = 0$ regardless of position bias [p.28].
 
-**Detrending (conversão para log returns) — rule daily return** [p.29-30]
+**Detrending (log-return conversion) — rule daily return** [p.29-30]
 
 $$\text{Rule daily return} = POS_0 \times \left[ \log\!\left(\frac{O_{+2}}{O_{+1}}\right) - ALR \right]$$
 
-- $POS_0$ = +1 ou -1 na close do dia 0 [p.29]
-- $O_{+1}$, $O_{+2}$ = opens dos dias 1 e 2 (evita look-ahead bias; executa no open seguinte ao sinal) [p.29-30]
+- $POS_0$ = +1 or −1 at the close of day 0 [p.29]
+- $O_{+1}$, $O_{+2}$ = opens of days 1 and 2 (avoids look-ahead bias; executes at the open following the signal) [p.29-30]
 - $ALR$ = average log return over back-test period [p.30]
 
-**Sample Mean (ponto estimador do retorno esperado)** [p.260]
+**Sample Mean (point estimator of expected return)** [p.260]
 
 $$\bar{X} = \frac{\sum_{i=1}^{n} X_i}{n}$$
 
@@ -62,13 +59,13 @@ $$\bar{X} = \frac{\sum_{i=1}^{n} X_i}{n}$$
 
 $$x = \frac{100 - \text{Confidence Interval Desired}}{2}$$
 
-- Remover os x% superiores e x% inferiores da distribuição bootstrap dos means para obter os bounds [p.250].
+- Remove the top x% and bottom x% from the bootstrap distribution of means to obtain the bounds [p.250].
 
 **Moving Average Operator** [p.415]
 
 $$MA_t = \frac{\sum_{i=1}^{n} P_{t-i+1}}{n}$$
 
-- Lag de um simple MA = $(n-1)/2$; lag de linear-weighted MA = $(n-1)/3$ [p.400].
+- Lag of a simple MA = $(n-1)/2$; lag of a linear-weighted MA = $(n-1)/3$ [p.400].
 
 **Linear Weighted Moving Average (LMA)** [p.400]
 
@@ -78,7 +75,7 @@ $$WMA_t = \frac{\sum_{i=1}^{n} (n - i + 1) \cdot P_{t-i+1}}{\sum_{i=1}^{n} i}$$
 
 $$CN_t = \left[ \frac{S_t - S_{\min,n}}{S_{\max,n} - S_{\min,n}} \right] \times 100$$
 
-- $S_t$ = valor da série no tempo t; $S_{\min,n}$ e $S_{\max,n}$ = mínimo e máximo dos últimos n dias [p.402].
+- $S_t$ = value of the series at time t; $S_{\min,n}$ and $S_{\max,n}$ = min and max of the last n days [p.402].
 
 **Cumulative Advance-Decline Ratio (CADR)** [p.414]
 
@@ -92,31 +89,30 @@ $$NVR_t = \frac{upvol_t - dnvol_t}{upvol_t + dnvol_t + unchvol_t}$$
 
 $$DI = CN\left[\, CN(S_1, n) - CN(S_{\&P500}, n),\ 10n \,\right]$$
 
-- Dupla CN necessária porque séries companheiras têm graus distintos de co-movimento com o S&P 500 [p.452-454].
+- Double CN is required because companion series have different degrees of co-movement with the S&P 500 [p.452-454].
 
-**Artificial Trading Rule Expected Return (usado nos experimentos de data-mining bias)** [p.307-308]
+**Artificial Trading Rule Expected Return (used in the data-mining bias experiments)** [p.307-308]
 
 $$ER = ppm \times 3.97 - (1 - ppm) \times 3.97$$
 
-- $ppm$ = probability of profitable month; 3.97% = mean absolute monthly return do S&P 500 de Aug/1928–Apr/2003 [p.308].
+- $ppm$ = probability of profitable month; 3.97% = mean absolute monthly return of the S&P 500 from Aug/1928–Apr/2003 [p.308].
 
-**Linear combining rule (complex rule via soma ponderada)** [p.468-469]
+**Linear combining rule (complex rule via weighted sum)** [p.468-469]
 
 $$Y = a_0 + \sum_{i=1}^{k} a_i \cdot r_i$$
 
-- $r_i$ = output da regra i; $a_i$ = peso; $Y$ = output da regra complexa linear [p.469].
+- $r_i$ = output of rule i; $a_i$ = weight; $Y$ = output of the linear complex rule [p.469].
 
 **Markowitz/Xu Data-Mining Correction** [p.324]
 
 $$H' = R + B(H - R)$$
 
-- $H'$ = expected return corrigido da melhor regra [p.324]
-- $R$ = retorno médio de todas as regras testadas [p.324]
-- $H$ = retorno observado da melhor regra [p.324]
-- $B \in [0,1]$ = shrinkage factor (menor B = mais shrinkage) [p.324].
+- $H'$ = corrected expected return of the best rule [p.324]
+- $R$ = mean return of all tested rules [p.324]
+- $H$ = observed return of the best rule [p.324]
+- $B \in [0,1]$ = shrinkage factor (smaller B = more shrinkage) [p.324].
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **White's Reality Check (WRC) — Bootstrap for best-of-N rules** [p.341-343]
 
 ```
@@ -198,55 +194,51 @@ Divergence:          D-<type>-<companion>-<displacement>-<CN_lookback>
 Total: 6,402 rules [p.405; p.457]
 ```
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.23]**: Evaluate a rule ONLY against a relevant benchmark. The benchmark adopted by the book is the return of a rule without predictive power (placebo). A 10% return is inadequate or superior depending on what other rules achieved.
+- **RULE [p.27-28]**: Detrend the traded market series BEFORE computing daily rule returns. Subtract the mean daily return of the back-test period. This eliminates the combined effect of position bias x market trend.
+- **RULE [p.29-30]**: Use log returns, not percentages. Signals generated at the close of day 0 are executed at the open of day +1; the day's return is $\log(O_{+2}/O_{+1})$ (avoids look-ahead bias).
+- **RULE [p.183-185]**: Start from the null hypothesis that every rule is useless (expected return = 0). Only reject Ho if the backtested return falls in the right tail of the sampling distribution (p-value < 0.05 in this book [p.410]).
+- **RULE [p.281, p.345]**: NEVER use single-rule back test p-values to evaluate the best rule from a data-mining run. Only tests that incorporate data-mining bias are valid — WRC or MCP.
+- **RULE [p.407]**: If multiple rules are tested (any data mining), store the full daily return series (for WRC) and/or the +1/−1 output values of ALL rules (for MCP). Without this, rigorous significance testing is impossible.
+- **RULE [p.407-408]**: Do not use rules from prior research by others without knowing how many rules that author tested ("data-snooping bias"). Prefer building the rule universe by combinatorial enumeration of parameters defined a priori.
+- **RULE [p.46-47]**: For data reported with lag or subject to revision (e.g., mutual fund cash, economic stats), lag the signals appropriately. The case study avoided the problem by using only data without lag/revision.
+- **RULE [p.149-150]**: For subjective analysts, issue only falsifiable forecasts. Three forms: (1) define a future evaluation point; (2) define the maximum adverse movement before declaring the forecast wrong; (3) predict a favorable magnitude X before an unfavorable Y.
+- **NEVER [p.43-44]**: Mentally combine more than 3 indicators in a configural (non-linear) way. The human mind is limited to 3 configural factors; 5 indicators generate 2^5 = 32 distinct configurations impossible to integrate intuitively.
+- **NEVER [p.107-113]**: Conclude that a chart is non-random by visual inspection. Random walks produce head-and-shoulders, double tops, and trends indistinguishable from "authentic" ones; expert chartists cannot tell them apart [Introduction, p.8; p.37-38].
+- **NEVER [p.291]**: Optimize parameters with few observations. The magnitude of data-mining bias grows dramatically with small sample size — e.g., best-of-1,024 rules with 10 obs → bias ~84% per year; with 1,000 obs → bias ~12% per year [p.315, Figure 6.33].
+- **RULE [p.473]**: If you allow complexity optimization (rule induction, neural nets), use 3 data segments — train / test / validation — not just 2. Only validation gives an unbiased out-of-sample estimate.
 
-- **REGRA [p.23]**: Avaliar uma regra APENAS contra um benchmark relevante. Benchmark adotado pelo livro: retorno de uma regra sem poder preditivo (placebo). Um retorno de 10% é insuficiente ou superior dependendo do que outras regras atingiram.
-- **REGRA [p.27-28]**: Detrendar a série do mercado traded ANTES de calcular retornos diários da regra. Subtrair o retorno médio diário do período de back-test. Elimina o efeito combinado de position bias × market trend.
-- **REGRA [p.29-30]**: Usar log returns, não percentagens. Sinais gerados na close do dia 0 são executados no open do dia +1; o retorno do dia é $\log(O_{+2}/O_{+1})$ (evita look-ahead bias).
-- **REGRA [p.183-185]**: Partir da hipótese nula de que toda regra é inútil (expected return = 0). Só rejeitar Ho se o retorno backtested cair na cauda direita da sampling distribution (p-value < 0.05 neste livro [p.410]).
-- **REGRA [p.281, p.345]**: NUNCA usar p-values de single-rule back test para avaliar a melhor regra de um data-mining run. Só são válidos tests que incorporam data-mining bias — WRC ou MCP.
-- **REGRA [p.407]**: Se múltiplas regras forem testadas (qualquer data mining), guardar as séries diárias completas de returns (para WRC) e/ou os output values +1/-1 de TODAS as regras (para MCP). Sem isto, significance testing rigoroso é impossível.
-- **REGRA [p.407-408]**: Não usar regras vindas de prior research de outros sem conhecer quantas regras aquele autor testou ("data-snooping bias"). Preferir construir o rule universe por enumeração combinatória de parâmetros definidos a priori.
-- **REGRA [p.46-47]**: Para dados reportados com lag ou sujeitos a revisão (ex.: mutual fund cash, stats econômicas), lagar os sinais apropriadamente. Case study evitou o problema usando apenas dados sem lag/revisão.
-- **REGRA [p.149-150]**: Para analistas subjetivos, emitir apenas forecasts falsificáveis. Três formas: (1) definir ponto futuro de avaliação; (2) definir máximo movimento adverso antes de declarar errado; (3) predizer magnitude X favorável antes de Y desfavorável.
-- **NUNCA [p.43-44]**: Combinar mentalmente mais de 3 indicadores de forma configural (não-linear). Mente humana limitada a 3 fatores configural; 5 indicadores geram 2^5 = 32 configurações distintas impossíveis de integrar intuitivamente.
-- **NUNCA [p.107-113]**: Concluir que um chart é não-aleatório por inspeção visual. Random walks produzem head-and-shoulders, double tops e trends indistinguíveis de "autênticos"; expert chartists não conseguem distinguir [Introduction, p.8; p.37-38].
-- **NUNCA [p.291]**: Otimizar parâmetros com poucas observações. A magnitude do data-mining bias cresce dramaticamente com sample size pequeno — ex.: best-of-1,024 rules com 10 obs → bias ~84% anual; com 1,000 obs → bias ~12% anual [p.315, Figure 6.33].
-- **REGRA [p.473]**: Se for permitir otimização de complexidade (rule induction, neural nets), usar 3 data segments — train / test / validation — não apenas 2. Only validation gives unbiased out-of-sample estimate.
+## 6. Pitfalls and Anti-patterns
+- [p.283-287] **Selecting the best rule without adjusting for data-mining bias** — the observed performance of the best of N rules systematically overestimates expected performance. Ignoring this is the classic "fool's gold" of objective TA.
+- [p.289-291] **Five factors that inflate data-mining bias**: (1) more rules tested → more bias; (2) fewer observations in the performance statistic → more bias; (3) lower correlation between rule returns → more bias; (4) presence of positive outliers → more bias; (5) smaller variance of expected returns across rules → more bias.
+- [p.149-151] **Non-falsifiable forecasts** ("I am bullish") fail the discernible-difference test. They are equivalent to astrology.
+- **Faith-based subjective TA** [p.5-6] (Elliott Wave, Gann, Magic T's, classic hand-drawn chart patterns) is "not even wrong" because it generates no testable predictions.
+- [p.333] **The "TA reflects all information" argument as a justification for TA** contains a logical contradiction — it is the same premise as EMH, which denies TA's effectiveness [p.333].
+- [p.58, p.71-78] **Confirmation bias, self-attribution bias, hindsight bias** — analysts reinterpret wrong signals as exceptions and attribute success to skill, failures to luck. Combat by keeping a daily journal with falsifiable forecasts recorded ex-ante [p.53, author's personal experience at Spear Leeds].
+- [p.88-96] **Illusion of trends & patterns in random data** (Reasoning by Representativeness + Law of Large Numbers violation). Small-sample neglect → gambler's fallacy and clustering illusion.
+- [p.273-280] **Comparing in-sample vs. out-of-sample performance** as a sole remedy. Once out-of-sample data is used even once, it loses its virginity; the arbitrary train/test split is subjective.
+- [p.29-30] **Look-ahead bias** — using the close as both input AND execution price (on the same bar) inflates returns.
+- [p.23-28] **Position bias x market trend** creates apparent predictive power in useless rules. A long-biased rule in a bull market produces profit without any skill.
+- [p.406] **Data-snooping bias (prior-research-snooping)** — testing rules from other authors without knowing how many rules they tested makes it impossible to evaluate significance correctly.
+- [p.450] **Only long/short reversal rules** — assumes the market is always inefficient. Long/short/neutral (tri-state) or long/neutral rules are more realistic — the restriction of the case study was an acknowledged limitation.
+- [p.287-288, p.473] **Overfitting from excessive complexity** — any rule can be fitted perfectly to the past with enough complexity; out-of-sample performance will be disastrous.
+- [p.407-408] **Complex rules were not tested in the case study**; a larger study (Hsu/Kuan, 39,832 rules) found that 82% of the 229 statistically significant rules were complex — but none significant on the S&P 500 or DJIA [p.450].
 
-## 6. Pitfalls e Anti-patterns
+## 7. Sensitive Parameters
+- **CBO lookback span {3, 5, 8, 12, 18, 27, 41, 61, 91, 137, 205 days}** [p.398]: chosen to be separated by a ~1.5 multiplier. Values selected "without optimization on the basis of intuition" [p.429] — explicitly not curve-fit.
+- **Threshold displacement {10, 20} in E-rules** [p.429]: upper threshold = 50+d, lower = 50-d. Chosen intuitively; not optimized.
+- **CN lookback {15, 30, 60 days}** [p.429]: three scales to capture extremes and divergences. Not optimized.
+- **Smoothing LMA = 4 days** [p.437]: fixed for all E-rules — justified as reducing signal chattering without excessive lag (LMA lag = (4-1)/3 = 1 day).
+- **Second-level CN lookback = 10x first level** in divergence indicator [p.454]: "assumed that 10x is enough to establish the fluctuation range" — a conservative, not optimized, choice.
+- **200d MA as regime filter** — not directly endorsed in the book; Aronson does NOT propose a magic number. Instead, the MLM Index uses a 12-month MA as a trend benchmark on 25 commodities [p.398].
+- **MLM Index = 12-month MA cross on 25 commodities** [p.398]: uses the 12-month MA ("extremely simplistic") applied to nearby futures — justified economically as risk premium for service to hedgers [p.380-384], not as curve-fit.
+- **Bootstrap/MC replications = 1,999** [p.442]: increasing would smooth the distribution but not alter the conclusion.
+- **Significance level α = 0.05** [p.410]: standard threshold; the case study would require 15%+ return for significance, 17%+ for p<0.001 [p.459].
+- **Case study back-test period: Nov 1, 1980 – Jul 1, 2005 (~6,800 days)** [p.257, p.405, p.409]: pragmatically justified, not tested for robustness.
+- **Trading costs were ignored in the case study** [p.47]: explicit decision — the goal was to find predictive power, not tradable systems. For real deployment, costs must be included.
 
-- [p.283-287] **Seleção da melhor regra sem ajustar para data-mining bias** — a performance observada da melhor de N regras sobrestima sistematicamente a expected performance. Ignorar isto é o clássico "fool's gold" da TA objetiva.
-- [p.289-291] **Cinco fatores que inflam data-mining bias**: (1) mais regras testadas → mais bias; (2) menos observações no performance statistic → mais bias; (3) menor correlação entre rule returns → mais bias; (4) presença de outliers positivos → mais bias; (5) menor variação de expected returns entre as regras → mais bias.
-- [p.149-151] **Forecasts não-falsificáveis** ("estou bullish") não passam no discernible-difference test. Equivalem a astrologia.
-- **Faith-based subjective TA** [p.5-6] (Elliott Wave, Gann, Magic T's, classic hand-drawn chart patterns) é "not even wrong" porque não gera previsões testáveis.
-- [p.333] **Argumento "TA reflete todas as informações" como justificativa de TA** contém contradição lógica — é a mesma premissa da EMH, que nega eficácia de TA [p.333].
-- [p.58, p.71-78] **Confirmation bias, self-attribution bias, hindsight bias** — analistas reinterpretam sinais errados como exceções e atribuem sucesso a skill, falhas a azar. Combater com journal diário com forecasts falsificáveis registrados ex-ante [p.53, experiência pessoal do autor em Spear Leeds].
-- [p.88-96] **Illusion of trends & patterns in random data** (Reasoning by Representativeness + Law of Large Numbers violation). Small-samples neglect → gambler's fallacy e clustering illusion.
-- [p.273-280] **Comparar performance in-sample vs. out-of-sample** como único remédio. A partir do momento em que dados out-of-sample são usados uma vez, perdem virgindade; a alocação arbitrária train/test é subjetiva.
-- [p.29-30] **Look-ahead bias** — usar close como input E como execution price (na mesma barra) inflaciona returns.
-- [p.23-28] **Position bias × market trend** cria aparência de predictive power em regras inúteis. Um long-biased rule em mercado de alta gera lucro sem qualquer skill.
-- [p.406] **Data-snooping bias (prior-research-snooping)** — testar regras de outros autores sem conhecer quantas regras eles testaram torna impossível avaliar significância corretamente.
-- [p.450] **Only long/short reversal rules** — assume mercado sempre ineficiente. Rules long/short/neutral (tri-state) ou long/neutral são mais realistas — restrição do case study foi limitação acknowledged.
-- [p.287-288, p.473] **Overfitting por complexidade excessiva** — qualquer rule pode ser fitted perfeitamente ao passado com complexidade suficiente; performance out-of-sample será desastrosa.
-- [p.407-408] **Complex rules não foram testadas no case study**; estudo maior (Hsu/Kuan, 39,832 rules) encontrou que 82% das 229 regras estatisticamente significativas eram complexas — mas nenhuma significativa em S&P 500 nem DJIA [p.450].
-
-## 7. Parâmetros Sensíveis
-
-- **CBO lookback span {3, 5, 8, 12, 18, 27, 41, 61, 91, 137, 205 dias}** [p.398]: escolhidos para estarem separados por multiplicador ~1.5. Valores escolhidos "without optimization on the basis of intuition" [p.429] — explicitamente não curve-fit.
-- **Threshold displacement {10, 20} em E-rules** [p.429]: upper threshold = 50+d, lower = 50-d. Escolhidos intuitivamente; não otimizados.
-- **CN lookback {15, 30, 60 dias}** [p.429]: três escalas para capturar extremes e divergences. Não otimizados.
-- **Smoothing LMA = 4 dias** [p.437]: fixo para todos os E-rules — justificado como reduzir chattering de sinais sem lag excessivo (LMA lag = (4-1)/3 = 1 dia).
-- **Second-level CN lookback = 10x first level** em divergence indicator [p.454]: "assumido que 10x é suficiente para estabelecer fluctuation range" — escolha conservadora, não otimizada.
-- **MA 200d como regime filter** — não endosso direto no livro; Aronson NÃO propõe número mágico. Em vez disso, MLM Index usa MA 12-meses como trend benchmark em 25 commodities [p.398].
-- **MLM Index = 12-month MA cross em 25 commodities** [p.398]: usa MA 12-meses ("extremamente simplista") aplicada ao nearby futures — justificado economicamente como risk premium de serviço a hedgers [p.380-384], não como curve-fit.
-- **Bootstrap/MC replications = 1,999** [p.442]: aumentar suavizaria distribuição mas não alteraria conclusão.
-- **Significance level α = 0.05** [p.410]: threshold padrão; resultado do case study seria 15%+ return para significance, 17%+ para p<0.001 [p.459].
-- **Case study back-test period: Nov 1, 1980 – Jul 1, 2005 (~6,800 days)** [p.257, p.405, p.409]: justificado pragmaticamente, não testado por robustness.
-- **Trading costs foram ignorados no case study** [p.47]: decisão explícita — objetivo era encontrar predictive power, não sistemas tradáveis. Para deployment real, costs devem ser incluídos.
-
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "Although the scientific method is not guaranteed to extract gold from the mountains of market data, an unscientific approach is almost certain to produce fool's gold." — [p.1]
 
 > "Subjective TA is not even wrong. It is worse than wrong. Statements that can be qualified as wrong (untrue) at least convey cognitive content that can be tested. The propositions of subjective TA offer no such thing." — [p.6-7]
@@ -261,11 +253,10 @@ Total: 6,402 rules [p.405; p.457]
 
 > "Had I used an ordinary significance test, which pays no attention to data-mining bias, the mean return of the best rule would have appeared to be highly significant (a p-value of 0.0005)." — [p.459]
 
-## 9. Conexões com Outros Livros Desta Base
-
-N/A — Primeiro livro processado neste pipeline; cross-refs serão adicionadas em passes subsequentes. Tópicos naturais de cross-reference futura (quando livros correspondentes forem processados):
-- **Data-mining bias, combinatorial backtesting, multiple-testing correction** → *Advances in Financial Machine Learning* (López de Prado), que define Deflated Sharpe Ratio e CPCV para o mesmo problema.
-- **Monte Carlo / Bootstrap em trading** → *Permutation and Randomization Tests for Trading System Development* ou *Statistically Sound Machine Learning for Algorithmic Trading* (Masters, que de fato inventou a versão MCP aqui usada [p.ix, p.239-240]).
-- **Kelly sizing, behavior bias** → *Mathematics of Money Management* (Vince), *Thinking, Fast and Slow* (Kahneman) — este último subjacente ao cap. 2 de Aronson.
+## 9. Cross-references to Other Books in This Knowledge Base
+N/A — First book processed in this pipeline; cross-refs will be added in subsequent passes. Natural future cross-reference topics (once the corresponding books are processed):
+- **Data-mining bias, combinatorial backtesting, multiple-testing correction** → *Advances in Financial Machine Learning* (López de Prado), which defines the Deflated Sharpe Ratio and CPCV for the same problem.
+- **Monte Carlo / Bootstrap in trading** → *Permutation and Randomization Tests for Trading System Development* or *Statistically Sound Machine Learning for Algorithmic Trading* (Masters, who actually invented the MCP variant used here [p.ix, p.239-240]).
+- **Kelly sizing, behavior bias** → *Mathematics of Money Management* (Vince), *Thinking, Fast and Slow* (Kahneman) — the latter underpins Aronson's ch.2.
 - **Trend-following risk premium / MLM Index** → *Following the Trend* (Clenow), *Trend Following* (Covel).
 - **Behavioral finance models (BSV, DHS, HS)** [p.331-380] → *Inefficient Markets* (Shleifer), *Irrational Exuberance* (Shiller).

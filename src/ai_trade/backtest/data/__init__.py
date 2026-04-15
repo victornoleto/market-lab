@@ -4,7 +4,7 @@ Phase 2 initial: `yfinance` + Wikipedia scrape — free, survivorship-biased,
 documented. Later adapters (Tiingo, EOD Historical, Norgate, cTrader
 historical) plug into the same contract so the engine stays agnostic.
 
-See ROADMAP.md §"Backtest em duas etapas" and README.md §"Universo Clenow e
+See ROADMAP.md §"Two-stage backtest" and README.md §"Clenow universe and
 survivorship bias" for why this initial choice is intentional.
 """
 

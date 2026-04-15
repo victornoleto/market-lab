@@ -1,47 +1,44 @@
 # Quantitative Trading: How to Build Your Own Algorithmic Trading Business
 
 ## Metadata
-- **Autor:** Ernest P. Chan [p.i, capa]
-- **Ano:** 2009 [p.iv]
-- **Editora:** John Wiley & Sons (Wiley Trading series) [p.iv]
-- **Páginas:** 204 (printed: ~181 páginas de conteúdo + appendix/index)
+- **Author:** Ernest P. Chan [p.i, cover]
+- **Year:** 2009 [p.iv]
+- **Publisher:** John Wiley & Sons (Wiley Trading series) [p.iv]
+- **Pages:** 204 (printed: ~181 pages of content + appendix/index)
 - **ISBN:** 978-0-470-28488-9 (cloth) [p.iv]
-- **Foco principal:** Guia prático para o trader independente construir um negócio de statistical arbitrage (stocks, futures, FX) com capital modesto.
+- **Primary focus:** Practical guide for the independent trader to build a statistical arbitrage business (stocks, futures, FX) with modest capital.
 
-## 1. Tese Central
+## 1. Core Thesis
+"Make everything as simple as possible. But not simpler." — Einstein, quoted by Chan [p.3]. Chan's core thesis is that independent traders, operating from home with $50k-$100k, can outperform institutional hedge funds by exploiting *low capacity strategies* that are economically unviable for large funds [ch.8, p.158]. The key is not advanced math (neural networks, stochastic calculus) but (1) structural simplicity of strategies, (2) discipline in the backtest framework to avoid biases, and (3) use of the Kelly formula for sizing and capital allocation across multiple strategies [ch.6, p.95-96].
 
-"Make everything as simple as possible. But not simpler." — Einstein, citado por Chan [p.3]. A tese central de Chan é que traders independentes, operando de casa com $50k-$100k, podem superar hedge funds institucionais ao explorar estratégias de *baixa capacidade* (low capacity strategies) que são economicamente inviáveis para fundos grandes [ch.8, p.158]. A chave não está em matemática avançada (neural networks, stochastic calculus) mas em (1) simplicidade estrutural das estratégias, (2) disciplina no framework de backtest para evitar viéses, e (3) uso do Kelly formula para sizing e alocação de capital entre múltiplas estratégias [ch.6, p.95-96].
+Chan argues that statistical arbitrage — trading simple stocks, futures, and FX — does not require a PhD; it requires parsimony (≤5 parameters), data free of survivorship bias whenever possible, and emotional management of drawdowns [ch.2-3, ch.6].
 
-Chan argumenta que statistical arbitrage — operando stocks, futures e FX simples — não requer PhD; requer parcimônia (≤5 parâmetros), dados sem survivorship bias sempre que possível, e gestão emocional de drawdowns [ch.2-3, ch.6].
+## 2. Main Concepts
+- **Statistical arbitrage** — quantitative trading of simple instruments (stocks, futures, currencies), distinct from complex derivatives [p.2]
+- **Sharpe ratio** — Chan's primary metric for comparing strategies; ratio of mean excess return to the standard deviation of excess returns [p.18, p.43]
+- **Information ratio** — version of Sharpe using a market benchmark (index) instead of the risk-free rate; appropriate for long-only strategies [p.18]
+- **Drawdown / Maximum drawdown / Maximum drawdown duration** — difference between current equity and the high watermark; largest peak-to-trough fall; longest period to recover losses [p.21, p.43]
+- **High watermark** — global maximum of the equity curve up to time t [p.21]
+- **Survivorship bias** — databases that omit delisted/bankrupt firms, artificially inflating backtests of "buy on the cheap" strategies [p.14, p.24, p.40-42]
+- **Look-ahead bias** — using information available only in the future (e.g., "buy within 1% of the day's low") to generate signals [p.51]
+- **Data-snooping bias** — parameter overfit to historical noise; worse the more parameters you have [p.25, p.52-53]
+- **Regime shift** — structural change in markets (decimalization, repeal of the short-sale rule, subprime crisis) that invalidates old series [p.25, p.104]
+- **Mean-reverting vs. momentum regime** — two basic categories of profitable strategies; random-walking prices are not tradable [p.116]
+- **Cointegration** — linear combination of two non-stationary series that produces a stationary I(0) series; basis of pair trading [p.126-127]
+- **Kelly formula (continuous finance)** — optimal fraction of equity per strategy to maximize long-term compounded growth [p.97]
+- **Half-Kelly** — using half of the Kelly leverage for safety against estimation errors and fat tails [p.98, p.105]
+- **Capacity** — amount of equity a strategy can absorb without degrading returns; the niche of the independent trader is low-capacity strategies [p.27, p.158]
+- **Fama-French 3-Factor model** — stock return as a function of beta, market cap, and book-to-price ratio [p.134]
+- **Factor exposure / factor return / specific return** — X (sensitivities), b (common drivers), u (specific noise) in the APT R = Xb + u [p.133-134]
+- **Ornstein-Uhlenbeck formula** — continuous mean-reversion model used to compute optimal half-life [p.140-141]
+- **PEAD (Post-Earnings Announcement Drift)** — momentum strategy: buy stocks whose earnings surprise positively, short those that disappoint [p.118]
 
-## 2. Conceitos-Chave
-
-- **Statistical arbitrage** — trading quantitativo de instrumentos simples (stocks, futures, currencies), distinto de derivativos complexos [p.2]
-- **Sharpe ratio** — métrica principal de Chan para comparar estratégias; razão entre retorno excedente médio e desvio-padrão dos retornos excedentes [p.18, p.43]
-- **Information ratio** — versão do Sharpe usando um benchmark de mercado (índice) em vez da taxa livre de risco; apropriado para estratégias long-only [p.18]
-- **Drawdown / Maximum drawdown / Maximum drawdown duration** — diferença entre equity atual e high watermark; maior queda peak-to-trough; maior período para recuperar losses [p.21, p.43]
-- **High watermark** — máximo global da equity curve até o tempo t [p.21]
-- **Survivorship bias** — databases que omitem empresas delistadas/bancarrotas, inflando artificialmente o backtest de estratégias "buy on the cheap" [p.14, p.24, p.40-42]
-- **Look-ahead bias** — usar informação disponível somente no futuro (ex: "comprar dentro de 1% da mínima do dia") para gerar sinais [p.51]
-- **Data-snooping bias** — overfit de parâmetros a ruído histórico; pior quanto mais parâmetros [p.25, p.52-53]
-- **Regime shift** — mudança estrutural nos mercados (decimalização, revogação do short-sale rule, crise subprime) que invalida séries antigas [p.25, p.104]
-- **Mean-reverting vs momentum regime** — duas categorias básicas de estratégias lucrativas; preços random-walking não são tradáveis [p.116]
-- **Cointegration** — combinação linear de duas séries não-estacionárias que produz uma série estacionária I(0); base de pair trading [p.126-127]
-- **Kelly formula (continuous finance)** — fração ótima de equity por estratégia para maximizar long-term compounded growth [p.97]
-- **Half-Kelly** — usar metade da alavancagem Kelly para segurança contra erros de estimação e fat tails [p.98, p.105]
-- **Capacity** — quantidade de equity que uma estratégia pode absorver sem degradar retornos; niche do trader independente são estratégias de baixa capacidade [p.27, p.158]
-- **Fama-French 3-Factor model** — retorno de stock como função de beta, market cap, book-to-price ratio [p.134]
-- **Factor exposure / factor return / specific return** — X (sensibilidades), b (drivers comuns), u (ruído específico) no APT R = Xb + u [p.133-134]
-- **Ornstein-Uhlenbeck formula** — modelo contínuo de mean reversion usado para calcular half-life ótimo [p.140-141]
-- **PEAD (Post-Earnings Announcement Drift)** — estratégia momentum: comprar stocks cujo earnings surpreende, shortar os que decepcionam [p.118]
-
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Sharpe Ratio (Chan's convention)** [p.43-44]
 
 $$\text{Annualized Sharpe Ratio} = \sqrt{N_T} \cdot \frac{\overline{R - r_F}}{\sigma_{R}}$$
 
-Onde $N_T$ é o número de períodos de trading por ano; para NYSE intraday $N_T = 252 \times 6.5 = 1638$, NÃO $252 \times 24$ [p.45]. Para estratégias dollar-neutral (self-financing), NÃO subtrair $r_F$: a margin balance rende crédito próximo de $r_F$, cancelando [p.43-44]. Para long-only day-trading sem holding overnight, também NÃO subtrair $r_F$ (sem financing cost) [p.44]. Regras de bolso: Sharpe < 1 = não stand-alone; Sharpe ≥ 2 = lucrativo quase todo mês; Sharpe ≥ 3 = lucrativo quase todo dia [p.43].
+Where $N_T$ is the number of trading periods per year; for NYSE intraday $N_T = 252 \times 6.5 = 1638$, NOT $252 \times 24$ [p.45]. For dollar-neutral (self-financing) strategies, do NOT subtract $r_F$: the margin balance earns interest close to $r_F$, cancelling it out [p.43-44]. For long-only day-trading without overnight holding, also do NOT subtract $r_F$ (no financing cost) [p.44]. Rules of thumb: Sharpe < 1 = not stand-alone; Sharpe ≥ 2 = profitable almost every month; Sharpe ≥ 3 = profitable almost every day [p.43].
 
 **Information Ratio** [p.18]
 
@@ -51,9 +48,9 @@ $$\text{Information Ratio} = \frac{\overline{R_{portfolio} - R_{benchmark}}}{\si
 
 $$g(f) = r + fm - \frac{s^2 f^2}{2}$$
 
-Onde $f$ é leverage, $r$ é risk-free rate, $m$ é média simples de um-período excess return, $s$ é std dos uncompounded returns [p.112]. Caso especial: para random walk puro ($m=0, f=1$), $g = -s^2/2 < 0$ — risco diminui growth rate mesmo com drift zero [p.97].
+Where $f$ is leverage, $r$ is the risk-free rate, $m$ is the simple mean of one-period excess return, $s$ is the std of uncompounded returns [p.112]. Special case: for a pure random walk ($m=0, f=1$), $g = -s^2/2 < 0$ — risk reduces the growth rate even with zero drift [p.97].
 
-**Kelly Formula — one strategy (Gaussian)** [p.97, p.113]
+**Kelly Formula — single strategy (Gaussian)** [p.97, p.113]
 
 $$f^* = \frac{m}{s^2}$$
 
@@ -63,25 +60,25 @@ Derivation [p.113]: take the first derivative of the Gaussian growth rate with r
 
 $$F^* = C^{-1} M$$
 
-Onde $F^*$ é vetor coluna de alocações ótimas $(f_1^*, \ldots, f_n^*)^T$, $C$ é matriz de covariância dos retornos ($C_{ij}$ = cov($R_i, R_j$)), e $M = (m_1, \ldots, m_n)^T$ é vetor de mean excess returns [p.96]. Retornos são one-period, simple (uncompounded), UNLEVERED [p.96-97]. Se estratégias independentes, $C$ é diagonal e $f_i = m_i / s_i^2$ [p.97].
+Where $F^*$ is the column vector of optimal allocations $(f_1^*, \ldots, f_n^*)^T$, $C$ is the covariance matrix of returns ($C_{ij}$ = cov($R_i, R_j$)), and $M = (m_1, \ldots, m_n)^T$ is the vector of mean excess returns [p.96]. Returns are one-period, simple (uncompounded), UNLEVERED [p.96-97]. If strategies are independent, $C$ is diagonal and $f_i = m_i / s_i^2$ [p.97].
 
 **Maximum Compounded Growth Rate (Kelly-optimal portfolio)** [p.98, p.102]
 
 $$g(F^*) = r + \frac{F^{*T} C F^*}{2} = r + \frac{S^2}{2}$$
 
-Onde $S = \sqrt{F^{*T} C F^*}$ é o Sharpe ratio do portfolio Kelly-ótimo [p.98, p.102]. **Esta fórmula é central**: long-term growth é proporcional a **Sharpe ratio ao quadrado**, não ao retorno médio [p.154].
+Where $S = \sqrt{F^{*T} C F^*}$ is the Sharpe ratio of the Kelly-optimal portfolio [p.98, p.102]. **This formula is central**: long-term growth is proportional to **Sharpe ratio squared**, not to mean return [p.154].
 
-**Leverage restriction sob Regulation T** [p.98]
+**Leverage restriction under Regulation T** [p.98]
 
 $$f_i^{restricted} = f_i \cdot \frac{l}{|f_1| + |f_2| + \cdots + |f_n|}$$
 
-Onde $l$ = 2 (overnight) ou 4 (intraday) [p.98].
+Where $l$ = 2 (overnight) or 4 (intraday) [p.98].
 
 **APT / Factor Model** [p.133-134]
 
 $$R = Xb + u$$
 
-Onde $R$ é vetor N×1 de excess returns, $X$ é matriz de factor exposures (loadings), $b$ é vetor de factor returns, e $u$ é vetor de specific returns (assumido uncorrelated cross-stocks) [p.133-134].
+Where $R$ is an N×1 vector of excess returns, $X$ is the matrix of factor exposures (loadings), $b$ is the vector of factor returns, and $u$ is the vector of specific returns (assumed uncorrelated across stocks) [p.133-134].
 
 **Ornstein-Uhlenbeck — mean reversion half-life** [p.140-141]
 
@@ -91,23 +88,22 @@ Half-life:
 
 $$\text{half-life} = \frac{\ln(2)}{\theta}$$
 
-Estimar $\theta$ via regressão linear de $dz$ contra $(z - \bar{z})$ [p.141]. No exemplo GLD-GDX: half-life ≈ 10 dias [p.141-142].
+Estimate $\theta$ via linear regression of $dz$ on $(z - \bar{z})$ [p.141]. In the GLD-GDX example: half-life ≈ 10 days [p.141-142].
 
 **Split/dividend adjustment multiplier** [p.37]
 
-Para split N-to-1 com ex-date T: multiplicar preços pré-T por $1/N$.
-Para dividendo $d$ com ex-date T:
+For an N-to-1 split with ex-date T: multiply pre-T prices by $1/N$.
+For a dividend $d$ with ex-date T:
 
 $$\text{multiplier} = \frac{Close(T-1) - d}{Close(T-1)}$$
 
-Aplicar multiplicador a todos os preços anteriores a T (não subtrair $d$, para preservar returns) [p.37].
+Apply the multiplier to all prices before T (do not subtract $d$, to preserve returns) [p.37].
 
-**Position sizing por market cap — fourth root rule** [p.88]
+**Position sizing by market cap — fourth root rule** [p.88]
 
-Chan recomenda scaling de capital por stock proporcional a $\text{MarketCap}^{1/4}$ para manter ratio max/min de weights abaixo de ~10 e preservar benefício de diversificação [p.88].
+Chan recommends scaling capital per stock proportional to $\text{MarketCap}^{1/4}$ to keep the max/min weight ratio below ~10 and preserve the diversification benefit [p.88].
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Kelly Optimal Allocation** [p.100-102, Example 6.3]
 
 ```
@@ -210,59 +206,55 @@ theta = OLS(dz, prevz - mean(prevz)).beta
 halflife = -ln(2) / theta     # negative theta means mean-reverting
 ```
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.43]**: Reject stand-alone strategies with Sharpe ratio < 1. Sharpe ≥ 2 is a realistic floor for a profit-center.
+- **RULE [p.53, p.74]**: Never use more than **5 parameters** in a model (including entry/exit thresholds, holding period, lookback). Rule-of-thumb: you need ≥ 252 x (n_params) data points.
+- **RULE [p.53]**: Split data into training set and test set, roughly equal (or at least 1/3 test set). The test set is SACRED — do NOT adjust parameters on it [p.60].
+- **RULE [p.98, p.105]**: Use **half-Kelly** by default (or less) due to fat tails and estimation error in $m, s$. Full Kelly is fragile.
+- **RULE [p.105-106]**: Final leverage = min(half-Kelly, max_tolerable_drawdown / worst_historical_one-period_loss).
+- **RULE [p.103]**: Rebalance positions per Kelly at least once at the end of each trading day. After a loss, reduce position size; after a gain, increase it.
+- **RULE [p.103]**: Lookback for estimating Kelly's $M$ and $C$ is ~6 months for strategies with a 1-day holding period.
+- **RULE [p.87]**: An individual order should not exceed **1% of the average daily volume** of the asset (reduces market impact).
+- **RULE [p.87]**: Avoid stocks priced < $5 (commission as % rises, percentage bid-ask spread rises).
+- **RULE [p.88]**: Scale capital per stock proportional to $\text{MarketCap}^{1/4}$, not linearly (preserves diversification).
+- **RULE [p.51, p.74]**: Always use **lagged data** (prior day's close) to generate signals, unless the strategy enters exactly at the close.
+- **RULE [p.142-143]**: A stop loss is appropriate for momentum strategies (trending regime). A stop loss is **harmful** for mean-reversion strategies — in mean-reverting, you exit at the worst moment.
+- **RULE [p.143]**: For mean-reversion, exit via (a) mean target price ($\mu$ of OU), (b) half-life of $\ln(2)/\theta$, or (c) the opposite of the new entry signal.
+- **RULE [p.97]**: Returns used as Kelly inputs must be **one-period, simple (uncompounded), unlevered**.
+- **RULE [p.43-44]**: For dollar-neutral portfolios and long-only strategies without overnight holdings, do NOT subtract the risk-free rate in the Sharpe calculation (financing cost is ~zero).
+- **NEVER [p.106]**: Rely on stop losses to prevent catastrophes — in gap events fills happen well below the stop, realizing the loss rather than avoiding it.
+- **NEVER [p.103]**: Fail to recompute $F^*$ daily after equity changes; Kelly is not set-and-forget.
+- **NEVER [p.52]**: Optimize parameters on the test set after already calibrating on the training set. This turns the test set into a training set and reintroduces data-snooping bias.
+- **NEVER [p.110]**: Modify a strategy immediately after a large loss ("representativeness bias"). Always backtest the modification over a long period.
 
-- **REGRA [p.43]**: Rejeitar estratégia stand-alone com Sharpe ratio < 1. Sharpe ≥ 2 é piso realista para profit-center.
-- **REGRA [p.53, p.74]**: Nunca usar mais de **5 parâmetros** em um modelo (incluindo entry/exit thresholds, holding period, lookback). Rule-of-thumb: precisa de ≥ 252 × (n_parâmetros) data points.
-- **REGRA [p.53]**: Dividir dados em training set e test set, roughly equal (ou mínimo 1/3 test set). Test set é SAGRADO — NÃO ajustar parâmetros nele [p.60].
-- **REGRA [p.98, p.105]**: Usar **half-Kelly** por default (ou menos) devido a fat tails e erro de estimação em $m, s$. Full Kelly é frágil.
-- **REGRA [p.105-106]**: Leverage final = min(half-Kelly, max_tolerable_drawdown / worst_historical_one-period_loss).
-- **REGRA [p.103]**: Rebalancear posições conforme Kelly pelo menos uma vez ao fim de cada trading day. Após perda, reduzir position size; após ganho, aumentar.
-- **REGRA [p.103]**: Lookback para estimar $M$ e $C$ do Kelly é ~6 meses para estratégias com holding de 1 dia.
-- **REGRA [p.87]**: Ordem individual não deve exceder **1% do average daily volume** do ativo (reduz market impact).
-- **REGRA [p.87]**: Evitar stocks com preço < $5 (comissão em % aumenta, bid-ask spread percentual aumenta).
-- **REGRA [p.88]**: Escalar capital por stock proporcional a $\text{MarketCap}^{1/4}$, não linearmente (preserva diversificação).
-- **REGRA [p.51, p.74]**: Sempre usar **dados laggados** (close do dia anterior) para gerar sinais, a menos que a estratégia entre exatamente no close.
-- **REGRA [p.142-143]**: Stop loss é apropriado para momentum strategies (regime trending). Stop loss é **prejudicial** para mean-reversion strategies — em mean-reverting, você exita no pior momento.
-- **REGRA [p.143]**: Para mean-reversion, exit via (a) mean target price ($\mu$ do OU), (b) half-life de $\ln(2)/\theta$, ou (c) oposição do novo entry signal.
-- **REGRA [p.97]**: Returns para input no Kelly devem ser **one-period, simple (uncompounded), unlevered**.
-- **REGRA [p.43-44]**: Para portfolios dollar-neutral e estratégias long-only sem overnight, NÃO subtrair risk-free rate no cálculo do Sharpe (financing cost é ~zero).
-- **NUNCA [p.106]**: Confiar em stop loss para prevenir catástrofes — em gap events os fills acontecem muito abaixo do stop, realizando a perda em vez de evitá-la.
-- **NUNCA [p.103]**: Deixar de recalcular $F^*$ diariamente após mudanças de equity; Kelly não é set-and-forget.
-- **NUNCA [p.52]**: Otimizar parâmetros no test set após já ter calibrado no training set. Isso transforma test set em training set e reintroduz data-snooping bias.
-- **NUNCA [p.110]**: Modificar estratégia imediatamente após uma grande perda ("representativeness bias"). Sempre backtestar a modificação em período longo.
+## 6. Pitfalls and Anti-patterns
+- **[p.14, p.24, p.40-42] Survivorship bias**: backtesting on a database without delisted stocks artificially inflates "buy cheap" / "buy losers" strategies. Chan's numerical example: a portfolio selected in 2001 returned **-42% real** vs. **+388% fictitious** when delisted stocks were omitted [Example 3.3, p.41-42].
+- **[p.51] Look-ahead bias**: using the "day's high" or a regression fit on the full dataset to generate signals within the period. Easier to detect in Excel (WYSIWYG) than in MATLAB/Python. Chan recommends the truncation test (see Algorithm in section 4).
+- **[p.25, p.52-53] Data-snooping bias**: any model with > ~5 parameters fit to < 5 years of daily data will fit noise. AI/neural networks with "many parameters" **consistently failed** in Chan's direct experience [sidebar p.26-27].
+- **[p.45] Transaction cost underestimation**: a Bollinger-band ES strategy with Sharpe = 3 (no costs) becomes Sharpe = **-3** with just 1 bp of cost per trade [p.45].
+- **[p.42] Noisy high/low data**: intraday high/low prices have far more noise than open/close; backtests that assume fills at limit prices below the day's high are overly optimistic [p.42].
+- **[p.25, p.104] Regime shifts**: data from more than 10 years ago can be useless due to structural changes (decimalization 2003, uptick-rule repeal 2007, subprime). Financial series are **non-stationary** [p.25].
+- **[p.111-112] Overleveraging after initial success** (greed): Chan confesses to having lost $1M+ by adding $100M to a strategy with only 6 months of track record. "It is a hitherto superbly performing model that is at the greatest risk of huge loss due to overconfidence and overleverage."
+- **[p.106, p.143] Stop loss in mean-reverting regime**: "exiting at the worst possible time."
+- **[p.108-109] Status quo bias / endowment effect**: holding losers too long even without mean-reverting justification; exiting winners too early due to loss aversion.
+- **[p.109] Representativeness bias**: changing parameters immediately after a large loss. "No system can avoid all the market vagaries that can result in losses."
+- **[p.110] Despair (prolonged drawdown) + greed (after big wins)** → overleveraging in both directions. Long-Term Capital Management 2000 and Amaranth Advisors 2006 are textbook cases [p.110].
+- **[p.123-126] AI / machine learning overfit**: Alphacet Discovery with perceptron returned 37.93% on a 6-month backtest in GS — Chan warns that the short period and multiple models tried still carry data-snooping, even in a moving-window framework.
+- **[p.139] Factor models with fundamental factors**: assume "investors persist in using the same metric to value companies" — severe drawdown when the valuation regime changes (e.g., growth-vs-value in 2007).
+- **[p.88] Linear scaling by market cap**: produces weight ratios > 10,000x, destroying diversification. Use fourth-root scaling.
 
-## 6. Pitfalls e Anti-patterns
+## 7. Sensitive Parameters
+- **Kelly leverage $f^* = m/s^2$** [p.98, p.105]: Chan recommends **half** the value (half-Kelly) in production. Economic justification: fat tails + estimation error. NOT curve-fit.
+- **Kelly lookback for estimating $m, s$** [p.103]: ~6 months for 1-day holding. Justification: balance between responsiveness to regime shifts and statistical stability. Low-sensitivity parameter — do not optimize in the backtest.
+- **Maximum of 5 parameters per model** [p.53]: Chan's rule-of-thumb based on experience, not formal theory. Relationship to sample size: 252 x n_params.
+- **Mean-reversion half-life = $\ln(2)/\theta$** [p.141]: parameter *derived* from OU, not optimized. Robust because it uses the full series, not just trades.
+- **Entry/exit thresholds in pair trading (GLD/GDX)** [p.58-59]: Chan tested ±2 std entry / ±1 std exit → train Sharpe 2.3, test 1.5; and ±1 std entry / ±0.5 std exit → train Sharpe 2.9, test 2.1. Moderate sensitivity — economically equivalent values work.
+- **Lookback=252 days, numFactors=5, topN=50 in the PCA factor model** [p.137]: parameters set arbitrarily by Chan; he admits the backtest is negative, suggesting the model structure is wrong, not the parameters.
+- **Transaction cost assumption of 5 bps per trade (one-way)** [p.45, p.63]: institutional standard for S&P 500. ES (E-mini S&P 500 futures): ~1 bp [p.45]. Economically justified by the average bid-ask spread + commission.
+- **Risk-free rate 4% p.a.** [p.45]: reflected the 3-month T-bill yield in 2008. Not optimized.
+- **Sharpe rules of thumb vs. holding frequency** [p.43]: Sharpe ≥ 2 = profitable almost every month; Sharpe ≥ 3 = profitable almost every day. Derived from the law of large numbers, not curve-fit.
 
-- **[p.14, p.24, p.40-42] Survivorship bias**: backtest em database sem stocks delistadas infla artificialmente estratégias "buy cheap" / "buy losers". Exemplo numérico de Chan: portfolio selecionado em 2001 retornou **-42% real** vs **+388% fictício** quando delisted stocks foram omitidas [Example 3.3, p.41-42].
-- **[p.51] Look-ahead bias**: usar "day's high" ou regressão ajustada no dataset inteiro para gerar sinais dentro do período. Mais fácil de detectar em Excel (WYSIWYG) que em MATLAB/Python. Chan recomenda truncation test (ver Algoritmo em seção 4).
-- **[p.25, p.52-53] Data-snooping bias**: qualquer modelo com > ~5 parâmetros sobre < 5 anos de daily data vai fitar ruído. AI/neural networks com "many parameters" **falharam consistentemente** na experiência direta de Chan [sidebar p.26-27].
-- **[p.45] Transaction cost underestimation**: estratégia Bollinger-band em ES com Sharpe = 3 sem custos vira Sharpe = **-3** com apenas 1 bp de custo por trade [p.45].
-- **[p.42] Dados high/low ruidosos**: preços high/low intraday têm muito mais ruído que open/close; backtests que assumem fills em limit prices abaixo da high do dia são superotimistas [p.42].
-- **[p.25, p.104] Regime shifts**: dados de > 10 anos atrás podem ser inúteis devido a mudanças estruturais (decimalização 2003, revogação do uptick rule 2007, subprime). Séries financeiras são **não-estacionárias** [p.25].
-- **[p.111-112] Overleveraging após sucesso inicial** (greed): Chan confessa ter perdido $1M+ adicionando $100M a estratégia com apenas 6 meses de track record. "It is a hitherto superbly performing model that is at the greatest risk of huge loss due to overconfidence and overleverage".
-- **[p.106, p.143] Stop loss em regime mean-reverting**: "exiting at the worst possible time".
-- **[p.108-109] Status quo bias / endowment effect**: segurar perdedoras por muito tempo mesmo sem justificativa mean-reverting; exitar vencedoras cedo demais por loss aversion.
-- **[p.109] Representativeness bias**: alterar parâmetros imediatamente após grande perda. "No system can avoid all the market vagaries that can result in losses".
-- **[p.110] Despair (drawdown prolongado) + greed (after big wins)** → overleveraging em ambas direções. Long-Term Capital Management 2000 e Amaranth Advisors 2006 são casos-texto [p.110].
-- **[p.123-126] AI / machine learning overfit**: Alphacet Discovery com perceptron rendeu 37.93% backtest de 6 meses em GS — Chan alerta que período curto e múltiplos modelos tentados ainda carregam data-snooping, mesmo em framework com moving window.
-- **[p.139] Factor models com fatores fundamentais**: assumem que "investors persist in using the same metric to value companies" — drawdown severo quando valuation regime muda (ex: growth-vs-value em 2007).
-- **[p.88] Scaling linear por market cap**: produz weight ratio > 10000×, destruindo diversificação. Use fourth-root scaling.
-
-## 7. Parâmetros Sensíveis
-
-- **Kelly leverage $f^* = m/s^2$** [p.98, p.105]: Chan recomenda **metade** do valor (half-Kelly) em produção. Justificativa econômica: fat tails + erro de estimação. NÃO é curve-fit.
-- **Kelly lookback para estimar $m, s$** [p.103]: ~6 meses para holding de 1 dia. Justificativa: balance entre responsividade a regime shifts e estabilidade estatística. Parâmetro com baixa sensibilidade — não otimizar no backtest.
-- **Máximo de 5 parâmetros por modelo** [p.53]: rule-of-thumb de Chan baseado em experiência, não em teoria formal. Relação com sample size: 252 × n_params.
-- **Half-life de mean reversion = $\ln(2)/\theta$** [p.141]: parâmetro *derivado* do OU, não otimizado. Robusto porque usa toda a série, não apenas os trades.
-- **Thresholds de entry/exit em pair trading (GLD/GDX)** [p.58-59]: Chan testou ±2 std entry / ±1 std exit → Sharpe train 2.3, test 1.5; e ±1 std entry / ±0.5 std exit → Sharpe train 2.9, test 2.1. Sensibilidade moderada — valores equivalentes economicamente funcionam.
-- **Lookback=252 dias, numFactors=5, topN=50 no PCA factor model** [p.137]: parâmetros arbitrários por Chan; ele admite que backtest é negativo, sugerindo que a estrutura do modelo está errada, não os parâmetros.
-- **Transaction cost assumption de 5 bps por trade (one-way)** [p.45, p.63]: padrão institucional para S&P 500. ES (E-mini S&P 500 futures): ~1 bp [p.45]. Justificado economicamente pela média bid-ask spread + commission.
-- **Risk-free rate 4% a.a.** [p.45]: refletia 3-month T-bill yield em 2008. Não otimizado.
-- **Regras de bolso Sharpe vs holding frequency** [p.43]: Sharpe ≥ 2 = quase todo mês lucrativo; Sharpe ≥ 3 = quase todo dia. Derivado do law of large numbers, não curve-fit.
-
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "As Einstein said: 'Make everything as simple as possible.' But not simpler." — [p.3]
 
 > "Finance is famously nonstationary... it is possible to incorporate such regime shifts into a sophisticated 'super'-model, but it is much simpler if we just demand that our model deliver good performance on recent data." — [p.25]
@@ -277,12 +269,11 @@ halflife = -ln(2) / theta     # negative theta means mean-reverting
 
 > "The ultimate risk management mind-set is very simple: Do not succumb to either despair or greed." — [p.112]
 
-## 9. Conexões com Outros Livros Desta Base
-
-- **Kelly formula & leverage-space** [p.96-98]: `leverage_space.md` (Vince) explora o mesmo terreno com mais profundidade matemática; Chan usa a versão Gaussian contínua (Thorp 1997), Vince usa Kelly discreto e TWR. A recomendação "half-Kelly" de Chan é consistente com o aviso de Vince sobre sensibilidade do optimal f.
-- **Parcimônia de parâmetros (≤5)** [p.53]: mesma conclusão em `systematic_trading.md` (Carver, ~3-4 params) e `evidence_based_ta.md` (Aronson, multiple-testing penalty). Convergência independente.
-- **Survivorship bias e data-snooping** [p.40-42, p.52-53]: `advances_fin_ml.md` (López de Prado) formaliza o problema com CPCV e DSR (Deflated Sharpe Ratio); Chan é menos rigoroso mas chega às mesmas advertências práticas.
-- **Mean-reversion, cointegration, Ornstein-Uhlenbeck** [p.126-142]: `time_series_hamilton.md` trata ADF/cointegration formalmente. Chan usa CADF via spatial-econometrics toolbox [p.128-129] como aplicação prática.
-- **Regime detection** [p.119-126]: `regime_change.md` e `ml_for_asset_managers.md` cobrem HMM / structural breaks — Chan é cético sobre Markov regime-switching ("useless for actual trading purposes because of constant transition probabilities", [p.121]) mas aberto a data-mining de turning points.
-- **Momentum strategies** [p.116-119]: `stocks_on_the_move.md` (Clenow) é uma implementação específica de momentum cross-sectional que cabe na classe descrita por Chan.
-- **Trilogia Chan** [capa]: este é o primeiro livro. `algo_trading_chan.md` (2013) e `machine_trading.md` (2017) ainda não processados — serão adicionados em passes subsequentes para expansão de cross-refs.
+## 9. Cross-references to Other Books in This Knowledge Base
+- **Kelly formula & leverage-space** [p.96-98]: `leverage_space.md` (Vince) covers the same ground with more mathematical depth; Chan uses the continuous Gaussian version (Thorp 1997), Vince uses discrete Kelly and TWR. Chan's "half-Kelly" recommendation is consistent with Vince's warning about the sensitivity of optimal f.
+- **Parameter parsimony (≤5)** [p.53]: same conclusion in `systematic_trading.md` (Carver, ~3-4 params) and `evidence_based_ta.md` (Aronson, multiple-testing penalty). Independent convergence.
+- **Survivorship bias and data-snooping** [p.40-42, p.52-53]: `advances_fin_ml.md` (López de Prado) formalizes the problem with CPCV and DSR (Deflated Sharpe Ratio); Chan is less rigorous but reaches the same practical warnings.
+- **Mean-reversion, cointegration, Ornstein-Uhlenbeck** [p.126-142]: `time_series_hamilton.md` covers ADF/cointegration formally. Chan uses CADF via the spatial-econometrics toolbox [p.128-129] as a practical application.
+- **Regime detection** [p.119-126]: `regime_change.md` and `ml_for_asset_managers.md` cover HMM / structural breaks — Chan is skeptical of Markov regime-switching ("useless for actual trading purposes because of constant transition probabilities", [p.121]) but open to data-mining turning points.
+- **Momentum strategies** [p.116-119]: `stocks_on_the_move.md` (Clenow) is a specific cross-sectional momentum implementation that fits the class Chan describes.
+- **Chan trilogy** [cover]: this is the first book. `algo_trading_chan.md` (2013) and `machine_trading.md` (2017) are not yet processed — they will be added in subsequent passes for expanded cross-refs.

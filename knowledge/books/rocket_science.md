@@ -1,44 +1,41 @@
 # Rocket Science for Traders: Digital Signal Processing Applications
 
 ## Metadata
-- **Autor:** John F. Ehlers [cover, p.iv]
-- **Ano:** 2001 [copyright page, p.iv]
-- **Editora:** John Wiley & Sons, Inc., New York [p.iv]
-- **Páginas:** 265 (PDF); ~245 numeradas no corpo + front/backmatter [metadata]
+- **Author:** John F. Ehlers [cover, p.iv]
+- **Year:** 2001 [copyright page, p.iv]
+- **Publisher:** John Wiley & Sons, Inc., New York [p.iv]
+- **Pages:** 265 (PDF); ~245 numbered in the body + front/backmatter [metadata]
 - **ISBN:** 0-471-40567-1 [p.iv]
-- **Foco principal:** Introdução do Digital Signal Processing (DSP) ao trading — uso de Hilbert Transform, Homodyne Discriminator, filtros FIR/IIR, Ehlers filters e cycle measurement para construir indicadores com lag mínimo e sistemas adaptativos ao ciclo dominante do mercado.
+- **Main focus:** Introduction of Digital Signal Processing (DSP) to trading — use of the Hilbert Transform, Homodyne Discriminator, FIR/IIR filters, Ehlers filters, and cycle measurement to build minimum-lag indicators and systems adaptive to the market's dominant cycle.
 
-## 1. Tese Central
+## 1. Core Thesis
+Ehlers argues that available trading software has not evolved alongside hardware — most indicators are primitive calculations that could be done with pencil and paper [Preface, p.vii]. The solution is to import DSP from the engineering domains (geophysics, electronics) into trading: treat price as a sampled signal that can be decomposed into two orthogonal components derived from the Drunkard's Walk — Trend Mode (solution of the Diffusion Equation) and Cycle Mode (solution of the Telegrapher's Equation) [ch.2, p.11-14]. The theoretical pair enables a trading system that switches rules according to the identified market mode.
 
-Ehlers argumenta que o software de trading disponível não evoluiu junto com o hardware — a maioria dos indicadores são cálculos primitivos que poderiam ser feitos com papel e lápis [Preface, p.vii]. A solução é importar DSP dos domínios de engenharia (geofísica, eletrônica) para trading: tratar preço como um sinal amostrado que pode ser decomposto em duas componentes ortogonais derivadas do Drunkard's Walk — Trend Mode (solução da Diffusion Equation) e Cycle Mode (solução da Telegrapher's Equation) [ch.2, p.11-14]. O par teórico permite construir um sistema de trading que alterna regras segundo o modo de mercado identificado.
+The operational thesis: using the amplitude-corrected Hilbert Transform to extract Inphase and Quadrature components, and the Homodyne Discriminator to measure the dominant cycle in real time, one can build (a) a Signal-to-Noise Ratio, (b) the Sinewave Indicator (anticipates turning points by 1/16 of a cycle), (c) an Instantaneous Trendline with half-cycle lag, and (d) automatic mode identification — combined in the SineTrend Automatic System [Preface, p.vii-ix; ch.12, p.119-129].
 
-A tese operacional: usando o Hilbert Transform amplitude-corrigido para extrair componentes Inphase e Quadrature, e o Homodyne Discriminator para medir o ciclo dominante em tempo real, é possível construir (a) Signal-to-Noise Ratio, (b) Sinewave Indicator (antecipa turning points 1/16 de ciclo), (c) Instantaneous Trendline com lag de meio ciclo, e (d) identificação automática de modo — combinados no SineTrend Automatic System [Preface, p.vii-ix; ch.12, p.119-129].
+## 2. Main Concepts
+- **Trend Mode** — mode derived from the Diffusion Equation (symmetric Drunkard's Walk p=½); traders ask "will it go up or down?"; use moving averages [p.11-14]
+- **Cycle Mode** — mode derived from the Telegrapher's Equation (Drunkard's Walk with persistence); traders ask "will the trend continue?"; use oscillators [p.11-14]
+- **Drunkard's Walk (constrained Random Walk)** — base 1-D model with regular steps; in the persistence-p version, produces harmonic motion [p.10-11]
+- **Nyquist criterion** — requires ≥2 samples/cycle; in trading the absolute minimum cycle is 2 bars, practical 5-8 bars [p.3-4]
+- **Aliasing** — distortion from sampling at less than 2x/cycle; data must be smoothed before any operation to avoid high-frequency fold-back [p.4]
+- **Decibels (dB)** — logarithmic unit; +3 dB = 2x power, −3 dB = half (cutoff frequency); amplitude 0.7 is half-power [p.5-6]
+- **Analytic signal** — real waveform familiar to the trader, with no imaginary values; positive frequencies only (or negative only) [p.53]
+- **Inphase / Quadrature (I, Q)** — orthogonal components (cosine and sine) obtained via the Hilbert Transform; Quadrature = 90° shift [p.54]
+- **Hilbert Transform** — converts an analytic signal into a complex signal; shifts all positive frequencies by −90° and negative by +90° [p.54-55]
+- **Homodyne Discriminator** — preferred algorithm for measuring the dominant cycle period, used throughout the book [Preface, p.viii; ch.7 referenced]
+- **Phasor / phase angle** — rotational vector representation of the cycle; phasor amplitude = √(I²+Q²), angle = arctan(Q/I) [p.47, p.79]
+- **Signal-to-Noise Ratio (SNR)** — ratio (signal power)/(noise power) in dB; noise defined as the average bar range (EMA α=0.1) [p.79-80]
+- **Sinewave Indicator** — plot of sin(DCPhase) and sin(DCPhase+45°); crosses 22.5° before the turning point; does not generate whipsaws in Trend Mode [p.99-100]
+- **Instantaneous Trendline (ITrend)** — SMA over the measured dominant cycle period; fully cancels the cyclic component [p.23, p.107]
+- **LeadSine** — second line of the Sinewave Indicator, advanced by 45° [p.99-100]
+- **Dominant Cycle Phase (DCPhase)** — heterodyne price with the dominant cycle and compute arctan(Imag/Real) — produces lag-free phase [p.95-96]
+- **Ehlers filter** — nonlinear FIR filter whose coefficients are a function of a statistic (e.g., momentum²); detects edges/shifts [ch.18, p.185-188]
+- **Order Statistic filter** — filter class based on ranking (not time); e.g., Median filter [p.186]
+- **Market mode overriding rule** — if |SmoothPrice − Trendline|/Trendline ≥ 1.5%, force Trend Mode [p.114]
+- **CycPart multiplier** — period multiplier for the Instantaneous Trendline SMA; optimized values 1.15 (T-Bonds) / 1.10 (Swiss Franc) [p.125, p.128]
 
-## 2. Conceitos-Chave
-
-- **Trend Mode** — modo derivado da Diffusion Equation (Drunkard's Walk simétrico p=½); traders perguntam "subirá ou descerá?"; usar moving averages [p.11-14]
-- **Cycle Mode** — modo derivado da Telegrapher's Equation (Drunkard's Walk com persistência); traders perguntam "a tendência continuará?"; usar oscilladores [p.11-14]
-- **Drunkard's Walk (Random Walk constrained)** — modelo base de 1 dimensão, passos regulares; na versão modificada com persistência p, produz movimento harmônico [p.10-11]
-- **Nyquist criterion** — precisa ≥2 samples/ciclo; em trading o ciclo mínimo absoluto é 2 bars, prático 5-8 bars [p.3-4]
-- **Aliasing** — distorção por amostrar menos que 2x/ciclo; dados devem ser smoothed antes de qualquer operação para evitar fold-back de altas frequências [p.4]
-- **Decibels (dB)** — unidade logarítmica; +3 dB = 2x poder, −3 dB = metade (cutoff frequency); amplitude de 0.7 é half-power [p.5-6]
-- **Analytic signal** — waveform real familiar ao trader, sem imaginary values; apenas frequências positivas (ou só negativas) [p.53]
-- **Inphase / Quadrature (I, Q)** — componentes ortogonais (cosseno e seno) obtidos via Hilbert Transform; Quadrature = 90° shift [p.54]
-- **Hilbert Transform** — converte analytic signal em sinal complexo; shifts todas frequências positivas por −90° e negativas por +90° [p.54-55]
-- **Homodyne Discriminator** — algoritmo preferido de medida de período do ciclo dominante, usado em todo o livro [Preface, p.viii; ch.7 referenced]
-- **Phasor / phase angle** — representação vetorial rotacional do ciclo; phasor amplitude = √(I²+Q²), ângulo = arctan(Q/I) [p.47, p.79]
-- **Signal-to-Noise Ratio (SNR)** — quociente (signal power)/(noise power) em dB; noise definido como range médio dos bars (EMA α=0.1) [p.79-80]
-- **Sinewave Indicator** — plotagem de sin(DCPhase) e sin(DCPhase+45°); cruza 22.5° antes do turning point; não gera whipsaw em Trend Mode [p.99-100]
-- **Instantaneous Trendline (ITrend)** — SMA sobre período do ciclo dominante medido; cancela completamente a componente cíclica [p.23, p.107]
-- **LeadSine** — segunda linha do Sinewave Indicator, 45° adiantada [p.99-100]
-- **Dominant Cycle Phase (DCPhase)** — heterodyne preço com ciclo dominante e calcular arctan(Imag/Real) — produz fase sem lag [p.95-96]
-- **Ehlers filter** — filtro FIR não-linear onde coeficientes são função de estatística (ex: momentum²); detecta edges/shifts [ch.18, p.185-188]
-- **Order Statistic filter** — classe de filtros baseada em ranking (não tempo); ex: Median filter [p.186]
-- **Market mode overriding rule** — se |SmoothPrice − Trendline|/Trendline ≥ 1.5%, força Trend Mode [p.114]
-- **CycPart multiplier** — multiplicador do período para SMA da Instantaneous Trendline; valor otimizado 1.15 (T-Bonds) / 1.10 (Swiss Franc) [p.125, p.128]
-
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **SMA lag** [p.18-19, ch.3]
 
 $$\text{Lag}_{SMA} = \frac{n - 1}{2}$$
@@ -47,7 +44,7 @@ $$\text{Lag}_{SMA} = \frac{n - 1}{2}$$
 
 $$\text{SMA}(P) = \frac{\sin(\pi W / P)}{\pi W / P}$$
 
-- $W$ = window width; $P$ = cycle period; nulls quando $W/P$ é inteiro
+- $W$ = window width; $P$ = cycle period; nulls when $W/P$ is integer
 
 **WMA lag (center of gravity of triangle)** [p.27]
 
@@ -55,7 +52,7 @@ $$\text{Lag}_{WMA} = \frac{n - 1}{3}$$
 
 **EMA alpha → lag** [p.29]
 
-$$\alpha = \frac{1}{L + 1}, \quad \alpha = \frac{2}{n + 1} \text{ (equivalente a n-bar SMA)}$$
+$$\alpha = \frac{1}{L + 1}, \quad \alpha = \frac{2}{n + 1} \text{ (equivalent to n-bar SMA)}$$
 
 **EMA cutoff period** [p.30, proved in ch.13]
 
@@ -66,6 +63,7 @@ $$P = \frac{-2\pi}{\ln(1 - \alpha)} \approx \frac{4\pi}{\alpha(2 + \alpha)}$$
 $$\frac{d}{dt}\sin(\omega t) = \omega \cos(\omega t)$$
 
 **3-bar detrend filter (odd-order, rejects 2-bar cycle)** [p.37]
+
 
 $$MO = 0.5 \cdot P - 0.5 \cdot P[2]$$
 
@@ -103,7 +101,7 @@ $$\phi_{lag} = \frac{360 \cdot 7}{\text{Period}} - 90^{\circ}$$
 
 $$\text{SNR} = 10 \log_{10}\left(\frac{I_1^2 + Q_1^2}{\text{Range}^2}\right) + 6 \text{ dB}$$
 
-— +6 dB bias compensa definição de "0 dB SNR = signal amp = half the daily range".
+— +6 dB bias compensates for the definition of "0 dB SNR = signal amp = half the daily range".
 
 **Enhanced SNR amplitude correction terms** (derived from chirp 10-40 bar) [p.88-89]
 
@@ -111,22 +109,21 @@ $$Q_3 = 0.5(\text{Smooth} - \text{Smooth}[2]) \cdot (0.1759 \cdot \text{SmoothPe
 
 $$I_3 = \frac{\pi}{2} \cdot \frac{1}{N/2}\sum_{k=0}^{N/2-1} Q_3[k]$$
 
-(o 1.57 ≈ π/2 compensa amplitude do half-cycle moving average)
+(the 1.57 ≈ π/2 compensates the half-cycle moving average amplitude)
 
 **Ehlers filter (general form)** [p.188]
 
 $$y = \frac{\sum_{i=1}^{n} c_i \cdot x_i}{\sum_{i=1}^{n} c_i}$$
 
-onde $c_i$ é uma estatística (momentum absoluto, distância², SNR, volume, etc.) ordenada na janela.
+where $c_i$ is a statistic (absolute momentum, squared distance, SNR, volume, etc.) ordered over the window.
 
 **Distance-coefficient Ehlers filter** [p.193]
 
 $$c_i = \sum_{k=1}^{n-1} (P_i - P_{i+k})^2$$
 
-(coeficiente = "distância" quadrática ao longo da janela → resposta não-linear que detecta edges)
+(coefficient = squared "distance" across the window → nonlinear edge-detecting response)
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Hilbert Transform + Homodyne Discriminator (cycle period)** [ch.6, p.59; ch.8 p.82-83, EasyLanguage]
 
 ```
@@ -249,61 +246,57 @@ For count = 0 to Length - 1:
 Filt = Num / SumCoef
 ```
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.114]**: Assume Trend Mode by default; Cycle Mode requires specific criteria (two conditions only).
+- **RULE [p.114]**: Cycle Mode is active for a half-dominant-cycle after the Sinewave/LeadSine lines cross.
+- **RULE [p.114]**: Cycle Mode if the phase rate of change is between 0.67× and 1.5× the dominant rate (360/Period).
+- **RULE [p.114]**: Override → Trend Mode when |SmoothPrice − Trendline|/Trendline ≥ 1.5% (price "widely separated").
+- **RULE [p.122]**: In Trend Mode, buy when SmoothPrice crosses above Trendline; sell when it crosses below.
+- **RULE [p.123]**: In Cycle Mode, buy when LeadSine crosses above Sine; sell when it crosses below.
+- **RULE [p.108]**: A trend is "in force" if SmoothPrice has not crossed the Instantaneous Trendline in the last half-dominant-cycle.
+- **RULE [p.108]**: Trend is declared early if SmoothPrice has not crossed in the last quarter-cycle and does not appear to return.
+- **RULE [p.108]**: Trend has ended when SmoothPrice crosses the Instantaneous Trendline again.
+- **RULE [p.93]**: Avoid Cycle Mode trading when SNR < 6 dB — below this the signal is less than 2× noise and profit becomes a crapshoot.
+- **RULE [p.82-83]**: Clamp Period to [6, 50] bars; also limit the bar-to-bar rate of change to [0.67×, 1.5×] to stabilize the measurement.
+- **RULE [p.125]**: On T-Bonds (1984-2000), CycPart=1.15 and a $1,100 money-management stop optimize SineTrend (profit $113k, 44.5% win, DD $8,137).
+- **RULE [p.128]**: On Swiss Franc (1975-2000), CycPart=1.10 and a $2,200 stop — avg_win/avg_loss ratio = 1.56:1.
+- **NEVER [p.3-4]**: Trade cycle periods < 2 bars (Nyquist) or in practice < 5-8 bars — aliasing makes it unworkable.
+- **NEVER [p.4]**: Operate on non-smoothed data — high-frequency aliasing contaminates all downstream analysis.
+- **NEVER [Preface p.ix]**: Use FFT to measure market spectra — ch.19 is dedicated to explaining why FFT is unsuitable for trading.
 
-- **REGRA [p.114]**: Assuma Trend Mode por padrão; o Cycle Mode exige critérios específicos (two conditions only).
-- **REGRA [p.114]**: Cycle Mode está ativo durante half-dominant-cycle após o cruzamento das linhas Sinewave/LeadSine.
-- **REGRA [p.114]**: Cycle Mode se phase rate of change estiver entre 0.67× e 1.5× do rate dominante (360/Period).
-- **REGRA [p.114]**: Override → Trend Mode quando |SmoothPrice − Trendline|/Trendline ≥ 1.5% (price "widely separated").
-- **REGRA [p.122]**: Em Trend Mode, buy quando SmoothPrice cruza acima de Trendline; sell quando cruza abaixo.
-- **REGRA [p.123]**: Em Cycle Mode, buy quando LeadSine cruza acima de Sine; sell quando cruza abaixo.
-- **REGRA [p.108]**: Um trend está "em força" se o SmoothPrice não cruzou a Instantaneous Trendline no último half-dominant-cycle.
-- **REGRA [p.108]**: Trend antecipado declarado se SmoothPrice não cruzou no último quarter-cycle e não aparenta retornar.
-- **REGRA [p.108]**: Trend terminou quando SmoothPrice cruza novamente a Instantaneous Trendline.
-- **REGRA [p.93]**: Evite Cycle Mode trading quando SNR < 6 dB — abaixo disso o sinal é menor que 2× noise e profit vira crapshoot.
-- **REGRA [p.82-83]**: Clampar Period em [6, 50] bars; também limitar rate de mudança a [0.67×, 1.5×] bar-a-bar para estabilizar medição.
-- **REGRA [p.125]**: Em T-Bonds (1984-2000), CycPart=1.15 e money-management stop de $1,100 otimizam SineTrend (profit $113k, 44.5% win, DD $8,137).
-- **REGRA [p.128]**: Em Swiss Franc (1975-2000), CycPart=1.10 e stop de $2,200 — ratio avg_win/avg_loss = 1.56:1.
-- **NUNCA [p.3-4]**: Tradar cycle periods < 2 bars (Nyquist) ou na prática < 5-8 bars — aliasing inviabiliza.
-- **NUNCA [p.4]**: Operar sobre dados não-smoothed — alta-frequência aliasing contamina toda análise downstream.
-- **NUNCA [Preface p.ix]**: Usar FFT para medir spectra de mercado — ch.19 é dedicado a explicar que FFT é inadequado para trading.
+## 6. Pitfalls and Anti-patterns
+- [p.17] Moving averages induce lag that is "almost always a bad characteristic"; smoothing is always a trade-off against lag.
+- [p.20] Too-wide SMA window: "sluggish" — useful only for the longest trends. Too-narrow window: whipsaws from inadequate smoothing.
+- [p.28-29] Common EMA programming error: assigning α=0.2 and (1-α)=0.9 (does not sum to 1) → recursion diverges / blows up. Always use α as a global variable and write the EMA as a function of α.
+- [p.33] Momentum NEVER leads the event on real price action — the 90° anticipation is an illusion that ONLY exists if price is a pure sine wave (Cycle Mode).
+- [p.33] Momentum is always noisier/more discontinuous than the original function (successive derivatives increase disjointedness).
+- [p.35] Momentum-based anticipation depends on FIRST identifying the market mode — in Trend Mode, assigning predictive capability to momentum is an error.
+- [p.37-39] "More of a good thing" does not work: increasing the high-pass filter length beyond ~5 bars adds lag that destroys any phase lead.
+- [p.58] An ideal Hilbert Transformer requires coefficients from −∞ to +∞; in practice it must be severely truncated. Non-truncated Hilbert lag at a 40-bar cycle = 21 bars, unworkable.
+- [p.82] Primary SNR has 10-bar lag; Alternate SNR adds 7.5 bars of lag (total 17.5) — "unthinkable for practical trading". Use Enhanced SNR (4-bar lag).
+- [Preface p.ix] FFT is an unsuitable tool for trading because it ignores mathematical constraints (short data window, non-stationarity).
+- [p.95] Phase computed directly from the Hilbert Transform is unusable: 7-bar lag is a "substantial portion of most tradable cycles" and the measurement is noisy.
+- [p.125] Caveat: the change to CycPart + money-management stop is presented as "not curve fitting" because tested over 16 years — but it is clearly a post-hoc optimization of 2 parameters. The trade-to-parameter ratio is cited as justification.
+- [p.124] Trend-Mode-only performance (no Cycle) is "simply awful" (negative avg trade) — the system relies heavily on Cycle trades → risk if regime changes.
+- [p.185] Linear filters (SMA/EMA) are OPTIMAL only for slowly-varying stationary signals + high-freq noise — market data is neither; requires nonlinear.
+- [p.194-195] Increasing coefficient nonlinearity (cube, Gaussian) degenerates the Ehlers filter into something indistinguishable from a median filter (loses gray-area resolution).
+- [p.117] Trying to automate mode decision "often leads to great deal of chatter and rapid back-and-forth switching" — which is why Trend is the default.
 
-## 6. Pitfalls e Anti-patterns
+## 7. Sensitive Parameters
+- **Hilbert Transformer truncation n=3 (4-tap)** [p.56-57]: economic choice to minimize lag to 3 bars; coefficients 0.0962 / 0.5769 derived by trial-and-error to flatten amplitude response. Justification = frequency-domain shape, NOT P&L optimization → low curve-fit risk.
+- **Amplitude correction (0.075·Period[1] + 0.54)** [p.58]: derived from measurement at 11dB @ 40-bar and 6.2dB @ 20-bar → linear fit. Mathematical, not tuned against market data.
+- **Period clamps [6, 50]** [p.82]: 6 for practical Nyquist; 50 because above that the system loses responsiveness. Theoretical choice.
+- **Rate-of-change clamp [0.67×, 1.5×]** [p.82]: limits spurious bar-to-bar "jumps". Preserves measurement continuity.
+- **EMA α=0.2 in post-discriminator smoothing** [p.82]: 9-bar-equivalent lag; not optimized, "range tends not to change much".
+- **Enhanced SNR amplitude coefficients 0.1759 / 0.4607** [p.88-89]: straight-line fit derived from a chirp (10-40 bars). Mathematical derivation, not curve-fit.
+- **Phase wraparound at 315° (not 360°)** [p.96]: cosmetic choice — "more pleasing display" — does not affect signals.
+- **Sinewave +45° lead** [p.99-100]: produces a crossover 22.5° before the turning point = 1/16 of the cycle. Pure mathematical derivation.
+- **Trend-Mode override threshold 1.5%** [p.114]: PRAGMATIC parameter (Ehlers admits: "pragmatic observation, not theoretical"). **Curve-fit RISK** — may be asset-specific.
+- **CycPart=1.15 (T-Bonds) / 1.10 (Swiss Franc)** [p.125, p.128]: **POST-HOC OPTIMIZED**. Ehlers argues low curve-fit risk due to high trade-to-parameter ratio (191-460 trades / 2 params over ~16 years). Still an optimized parameter — must pass CPCV.
+- **Money-management stop $1,100 / $2,200** [p.125, p.128]: also optimized — asset-specific. High curve-fit risk if extrapolated.
+- **Ehlers filter Length=15** [p.188]: "an example"; can be adapted to the dominant cycle. Not optimized.
 
-- [p.17] Moving averages induzem lag que "quase sempre é característica ruim"; smoothing é sempre trade-off contra lag.
-- [p.20] Janela muito larga (SMA): "sluggish" — só útil para longest trends. Janela muito estreita: whipsaws por inadequate smoothing.
-- [p.28-29] EMA programming error comum: atribuir α=0.2 e (1-α)=0.9 (não somam 1) → recursão diverge / travamento. Sempre use α como variável global, escreva EMA em função de α.
-- [p.33] Momentum NUNCA antecipa o evento em uma price action real — a antecipação de 90° é ilusão que SÓ existe se o preço for sine wave puro (Cycle Mode).
-- [p.33] Momentum é sempre mais noisy/descontínuo que a função original (successive derivatives aumentam disjointedness).
-- [p.35] A antecipação via momentum depende de PRIMEIRO identificar o market mode — em Trend Mode atribuir capacidade preditiva ao momentum é erro.
-- [p.37-39] "More of a good thing" não funciona: aumentar comprimento do high-pass filter além de ~5 bars adiciona lag que destrói qualquer phase lead.
-- [p.58] Hilbert Transformer ideal exige coeficientes de −∞ a +∞; na prática precisa ser severamente truncado. Lag de um Hilbert não-truncado a 40-bar cycle = 21 bars, inviável.
-- [p.82] Primary SNR tem lag de 10 bars; Alternate SNR lag adicional de 7.5 bars (total 17.5) — "unthinkable for practical trading". Use Enhanced SNR (4 bars lag).
-- [Preface p.ix] FFT é tool inadequado para trading porque ignora mathematical constraints (short data window, nonstationarity).
-- [p.95] Fase calculada diretamente do Hilbert Transform é inutilizável: lag de 7 bars é "substantial portion of most tradable cycles" e medição é ruidosa.
-- [p.125] Atenção: a mudança de CycPart + money-management stop é apresentada como "not curve fitting" porque testado em 16 anos — mas é claramente uma otimização pós-hoc de 2 parâmetros. Trade-to-parameter ratio citado como justificativa.
-- [p.124] O Trend-Mode-only performance (sem Cycle) é "simply awful" (avg trade negativo) — o sistema depende fortemente das Cycle trades → risco se regime muda.
-- [p.185] Linear filters (SMA/EMA) são ÓTIMOS apenas para sinais stationary slowly-varying + high-freq noise — market data não é nenhum dos dois; requer nonlinear.
-- [p.194-195] Aumentar nonlinearidade dos coeficientes (cube, Gaussian) faz o Ehlers filter degenerar para algo indistinguível de median filter (perde gray-area resolution).
-- [p.117] Trying to automate mode decision "often leads to great deal of chatter and rapid back-and-forth switching" — é por isso que Trend é default.
-
-## 7. Parâmetros Sensíveis
-
-- **Hilbert Transformer truncation n=3 (4-tap)** [p.56-57]: escolha econômica para minimizar lag a 3 bars; coeficientes 0.0962 / 0.5769 derivados por trial-and-error para achatar amplitude response. Justificativa = frequency-domain shape, NÃO optimização sobre P&L → baixo curve-fit risk.
-- **Amplitude correction (0.075·Period[1] + 0.54)** [p.58]: derivada de measurement em 11dB @ 40-bar e 6.2dB @ 20-bar → linear fit. Matemática, não tunada contra dados de mercado.
-- **Period clamps [6, 50]** [p.82]: 6 por Nyquist prático; 50 porque acima disso o sistema perde responsividade. Escolha teórica.
-- **Rate-of-change clamp [0.67×, 1.5×]** [p.82]: limita "jumps" espúrios bar-a-bar. Mantém continuidade de medição.
-- **EMA α=0.2 no smoothing pós-discriminador** [p.82]: 9-bar-equivalent lag; não é otimizado, é "range tends not to change much".
-- **Enhanced SNR amplitude coefficients 0.1759 / 0.4607** [p.88-89]: straight-line fit derivado de chirp (10-40 bars). Mathematical derivation, não curve-fit.
-- **Wraparound de fase em 315° (não 360°)** [p.96]: escolha cosmética — "mais pleasing display" — não afeta sinais.
-- **Sinewave +45° lead** [p.99-100]: produz cruzamento 22.5° antes do turning point = 1/16 do ciclo. Derivação matemática pura.
-- **Trend-Mode override threshold 1.5%** [p.114]: parâmetro PRAGMÁTICO (admitido por Ehlers: "pragmatic observation, not theoretical"). **RISCO de curve-fit** — pode ser asset-specific.
-- **CycPart=1.15 (T-Bonds) / 1.10 (Swiss Franc)** [p.125, p.128]: **AJUSTADO POST-HOC POR OTIMIZAÇÃO**. Ehlers argumenta baixo curve-fit risk por trade-to-parameter ratio alto (191-460 trades / 2 params em ~16 anos). Ainda assim, é parâmetro optimizado — deve passar por CPCV.
-- **Money-management stop $1,100 / $2,200** [p.125, p.128]: também otimizado — asset-specific. Alto curve-fit risk se extrapolado.
-- **Ehlers filter Length=15** [p.188]: "an example"; pode ser adaptive ao dominant cycle. Não otimizado.
-
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "Most of the trading tools available today are neither different nor more complex than the simple pencil-and-paper calculations that can be achieved through the use of mechanical adding machines." — [p.vii]
 
 > "Momentum can never lead the event. Momentum is always more disjoint (i.e., noisier) than the original function." — [p.34]
@@ -316,11 +309,10 @@ Filt = Num / SumCoef
 
 > "Market data tend to be nonstationary much of the time. Therefore, adaptive technique or nonlinear data processing is required for maximum effectiveness." — [p.195]
 
-## 9. Conexões com Outros Livros Desta Base
-
-- Hilbert Transform, Instantaneous Trendline, Sinewave Indicator são também tratados (mais maduros e com parâmetros refinados) em `cybernetic_analysis.md` — o livro de 2004 é uma continuação/evolução deste. Ver `cybernetic_analysis.md#3-fórmulas--equações` (truncated 4-tap Hilbert) e `cybernetic_analysis.md#sinewave-indicator-noncausal`. Este `rocket_science.md` contém a DERIVAÇÃO original e a justificativa filosófica (Drunkard's Walk → Diffusion vs Telegrapher's Equation) que o livro posterior apenas assume.
-- Trend/Cycle Mode dualidade é apresentada aqui como consequência de duas PDEs distintas [p.11-14]; em `cybernetic_analysis.md#2-conceitos-chave` o par é reformulado como "Instantaneous Trendline + Cyber Cycle" (soma = unidade no domínio frequência) — mesmo conceito, derivação diferente.
-- Ehlers Filters (ch.18) são introduzidos PRIMEIRO aqui [p.185-195]; expandidos em `cybernetic_analysis.md` (não revisado se aparecem lá explicitamente — N/A neste ponto).
-- Curve-fit risk de CycPart e money-management stop otimizados [p.125] deveria passar pelo framework CPCV/WFO descrito em `advances_fin_ml.md` e pelo princípio de parcimônia (≤4 params) de `systematic_trading.md`.
-- SNR indicator [ch.8] é conceitualmente próximo da análise de "tradeable regimes" em `regime_change.md` — ambos buscam filtrar períodos onde signal é insuficiente — mas mecanismos são distintos (DSP vs HMM/statistical).
-- Problemas com FFT [Preface p.ix, ch.19 referenced] contrastam com tratamento time-series em `time_series_hamilton.md` (ARIMA/spectral analysis clássico); Ehlers argumenta por Maximum Entropy / Homodyne em vez de Fourier direto.
+## 9. Cross-references to Other Books in This Knowledge Base
+- The Hilbert Transform, Instantaneous Trendline, and Sinewave Indicator are also treated (more maturely and with refined parameters) in `cybernetic_analysis.md` — the 2004 book is a continuation/evolution of this one. See `cybernetic_analysis.md#3-formulas--equations` (truncated 4-tap Hilbert) and `cybernetic_analysis.md#sinewave-indicator-noncausal`. This `rocket_science.md` contains the original DERIVATION and the philosophical justification (Drunkard's Walk → Diffusion vs Telegrapher's Equation) that the later book simply assumes.
+- The Trend/Cycle Mode duality is presented here as a consequence of two distinct PDEs [p.11-14]; in `cybernetic_analysis.md#2-conceitos-chave` the pair is reformulated as "Instantaneous Trendline + Cyber Cycle" (sum = unity in the frequency domain) — same concept, different derivation.
+- Ehlers Filters (ch.18) are introduced FIRST here [p.185-195]; expanded in `cybernetic_analysis.md` (whether they appear there explicitly was not reviewed — N/A at this point).
+- Curve-fit risk on the optimized CycPart and money-management stop [p.125] should be run through the CPCV/WFO framework described in `advances_fin_ml.md` and the parsimony principle (≤4 params) of `systematic_trading.md`.
+- The SNR indicator [ch.8] is conceptually close to the "tradeable regimes" analysis in `regime_change.md` — both seek to filter out periods with insufficient signal — but the mechanisms differ (DSP vs HMM/statistical).
+- FFT issues [Preface p.ix, ch.19 referenced] contrast with the time-series treatment in `time_series_hamilton.md` (classical ARIMA/spectral analysis); Ehlers argues for Maximum Entropy / Homodyne over direct Fourier.

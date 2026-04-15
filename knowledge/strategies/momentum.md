@@ -1,6 +1,6 @@
 # Momentum Strategies
 
-Trend-following e momentum cross-sectional, com filtro de regime.
+Trend-following and cross-sectional momentum, with regime filter.
 
 ## Sources
 
@@ -11,25 +11,25 @@ Trend-following e momentum cross-sectional, com filtro de regime.
 
 ## From `books/systematic_trading.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.160, ch.10]**: Subsystem position = (volatility_scalar × forecast) / 10. Apply to every instrument, every day.
-- **REGRA [p.173, ch.11]**: Portfolio position = subsystem_position × instrument_weight × IDM. IDM must never exceed 2.5 [p.170–171 (ch.11)].
-- **REGRA [p.174, ch.11]**: Apply position inertia — do not trade if the rounded target position is within 10% of the current held position.
-- **REGRA [p.133, ch.8]**: Cap combined forecast at ±20 after applying FDM. Never allow a combined forecast above +20 or below −20.
-- **REGRA [p.144, ch.9]**: Set percentage volatility target = SR_realistic / 2 (Half-Kelly). For negative-skew strategies: SR_realistic / 4 [p.146 (ch.9)].
-- **REGRA [p.146, ch.9]**: SR_realistic must be capped at 1.0 for staunch systems traders, regardless of how good the back-test looks. For semi-automatic traders, the maximum safe achievable SR is 0.5, so the volatility target must not exceed 25% [p.146 (ch.9)].
-- **REGRA [p.187–188, p.196, ch.12]**: Accept a new instrument only if its annual cost ≤ 0.13 SR/year (systems traders, p.187–188) or ≤ 0.08 SR/year (asset allocators and semi-auto traders, p.196).
-- **REGRA [p.212, ch.13]**: Semi-automatic stop loss uses X = 4 sigma_price_points from tracking extreme. On trigger: close the position only (no automatic reversal). Never modify the forecast after entering a trade [p.222 (ch.13)].
-- **REGRA [p.222, ch.13]**: Do NOT use profit targets for semi-automatic trading — no consistent evidence they improve performance.
-- **REGRA [p.122, ch.7]**: Prune any two trading rule variations with correlation > 0.95 — they add no independent information.
-- **REGRA [p.116, ch.7]**: Asset allocating investor always uses forecast = +10 (constant buy). Never short via this archetype.
-- **REGRA [p.201–202, ch.12]**: If maximum portfolio position < 4 blocks for any instrument at maximum forecast: increase instrument weight, reduce portfolio size, or remove the instrument.
-- **REGRA [p.196–197, ch.12]**: Use 20-week volatility look-back for asset allocators (instead of 25-day) to reduce volatility-estimate-driven turnover.
+- **RULE [p.160, ch.10]**: Subsystem position = (volatility_scalar × forecast) / 10. Apply to every instrument, every day.
+- **RULE [p.173, ch.11]**: Portfolio position = subsystem_position × instrument_weight × IDM. IDM must never exceed 2.5 [p.170–171 (ch.11)].
+- **RULE [p.174, ch.11]**: Apply position inertia — do not trade if the rounded target position is within 10% of the current held position.
+- **RULE [p.133, ch.8]**: Cap combined forecast at ±20 after applying FDM. Never allow a combined forecast above +20 or below −20.
+- **RULE [p.144, ch.9]**: Set percentage volatility target = SR_realistic / 2 (Half-Kelly). For negative-skew strategies: SR_realistic / 4 [p.146 (ch.9)].
+- **RULE [p.146, ch.9]**: SR_realistic must be capped at 1.0 for staunch systems traders, regardless of how good the back-test looks. For semi-automatic traders, the maximum safe achievable SR is 0.5, so the volatility target must not exceed 25% [p.146 (ch.9)].
+- **RULE [p.187–188, p.196, ch.12]**: Accept a new instrument only if its annual cost ≤ 0.13 SR/year (systems traders, p.187–188) or ≤ 0.08 SR/year (asset allocators and semi-auto traders, p.196).
+- **RULE [p.212, ch.13]**: Semi-automatic stop loss uses X = 4 sigma_price_points from tracking extreme. On trigger: close the position only (no automatic reversal). Never modify the forecast after entering a trade [p.222 (ch.13)].
+- **RULE [p.222, ch.13]**: Do NOT use profit targets for semi-automatic trading — no consistent evidence they improve performance.
+- **RULE [p.122, ch.7]**: Prune any two trading rule variations with correlation > 0.95 — they add no independent information.
+- **RULE [p.116, ch.7]**: Asset allocating investor always uses forecast = +10 (constant buy). Never short via this archetype.
+- **RULE [p.201–202, ch.12]**: If maximum portfolio position < 4 blocks for any instrument at maximum forecast: increase instrument weight, reduce portfolio size, or remove the instrument.
+- **RULE [p.196–197, ch.12]**: Use 20-week volatility look-back for asset allocators (instead of 25-day) to reduce volatility-estimate-driven turnover.
 
 ---
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Annualising volatility** [p.21 (ch.1)]
 
@@ -126,7 +126,7 @@ Carry forecast scalar is **30**; the raw carry is effectively an annualised Shar
 
 ---
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Full modular framework pipeline** [p.98–100 (ch.5)]
 
@@ -220,7 +220,7 @@ NOTE: The action on stop trigger is to CLOSE the position only [p.212 (ch.13)]. 
 
 ---
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - **[p.60, p.68–70, ch.3]**: Testing > 5 rule variations per idea with < 10 years of data almost guarantees selecting spurious rules. Table 4 (printed p.60): 50 rules, 5 years data → required SR threshold of 1.5 to keep false-positive rate below 5%; p.68–70 discusses the implications.
 - **[p.58–59, ch.3]**: Selecting the best of 90 "early loss taker" system variations (stop-loss B and profit-target A parameters) on 1-year rolling windows gave SR = 0.07 (worse than random). Using all 90 equally weighted gave SR = 0.33. Over-selection destroys performance.
@@ -239,28 +239,28 @@ NOTE: The action on stop trigger is to CLOSE the position only [p.212 (ch.13)]. 
 
 ## From `books/stocks_on_the_move.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.98]**: Only trade on Wednesdays. All calculations use daily data, but decisions happen once per week. Day choice is arbitrary — pick any day.
-- **REGRA [p.98]**: Rank S&P 500 stocks by (annualized 90-day exponential regression slope) × R².
-- **REGRA [p.98]**: Disqualify any stock trading below its 100-day moving average.
-- **REGRA [p.98]**: Disqualify any stock with a single-day move > 15% in the past 90 days.
-- **REGRA [p.98-99]**: Open new positions ONLY if S&P 500 Index is above its 200-day moving average. If below, do not buy; hold existing positions (slow scale-out as they fall out of ranking).
-- **REGRA [p.98]**: Position size = `AccountValue × 0.001 / ATR20`. Target daily impact per stock = 10 bps.
-- **REGRA [p.99]**: Build initial portfolio by buying top-ranked non-disqualified stocks until cash runs out.
-- **REGRA [p.99, p.110]**: Every Wednesday — sell holdings that (a) rank outside top 20% (e.g. rank > 100 in S&P 500), (b) dropped below 100d MA, (c) had >15% gap, or (d) left the index.
-- **REGRA [p.99]**: Every second Wednesday — recalculate target position sizes using current ATR and current account value; adjust if deviation is significant.
-- **REGRA [p.94]**: Do NOT use stop-losses. Exit is governed purely by ranking deterioration, trend breach, gap, or index exit.
-- **REGRA [p.96]**: Do NOT use trailing stops. They keep stale underperformers and lock in sideways drifters.
-- **NUNCA [p.94-95]**: Do not sell a holding just because the index drops below the 200d MA — only stop adding new positions. Existing holdings exit on their own criteria.
-- **NUNCA [p.68]**: Do not rank stocks by a single simple measure like "% above 200d MA" — it ignores volatility and rewards single-day jumps (e.g. takeovers) [p.68-69].
-- **NUNCA [p.83-85]**: Do not use equal-cash weighting. It tilts the portfolio toward the most volatile names.
+- **RULE [p.98]**: Only trade on Wednesdays. All calculations use daily data, but decisions happen once per week. The day of the week is arbitrary — pick any day.
+- **RULE [p.98]**: Rank S&P 500 stocks by (annualized 90-day exponential regression slope) x R^2.
+- **RULE [p.98]**: Disqualify any stock trading below its 100-day moving average.
+- **RULE [p.98]**: Disqualify any stock with a single-day move > 15% in the past 90 days.
+- **RULE [p.98-99]**: Open new positions ONLY if the S&P 500 Index is above its 200-day moving average. If below, do not buy; hold existing positions (slow scale-out as they fall out of the ranking).
+- **RULE [p.98]**: Position size = `AccountValue x 0.001 / ATR20`. Target daily impact per stock = 10 bps.
+- **RULE [p.99]**: Build the initial portfolio by buying top-ranked non-disqualified stocks until cash runs out.
+- **RULE [p.99, p.110]**: Every Wednesday — sell holdings that (a) rank outside the top 20% (e.g. rank > 100 in S&P 500), (b) dropped below the 100d MA, (c) had a >15% gap, or (d) left the index.
+- **RULE [p.99]**: Every second Wednesday — recalculate target position sizes using current ATR and current account value; adjust if deviation is significant.
+- **RULE [p.94]**: Do NOT use stop-losses. Exit is governed purely by ranking deterioration, trend breach, gap, or index exit.
+- **RULE [p.96]**: Do NOT use trailing stops. They keep stale underperformers and lock in sideways drifters.
+- **NEVER [p.94-95]**: Do not sell a holding just because the index drops below the 200d MA — only stop adding new positions. Existing holdings exit on their own criteria.
+- **NEVER [p.68]**: Do not rank stocks by a single simple measure like "% above 200d MA" — it ignores volatility and rewards single-day jumps (e.g. takeovers) [p.68-69].
+- **NEVER [p.83-85]**: Do not use equal-cash weighting. It tilts the portfolio toward the most volatile names.
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Annualized Exponential Regression Slope** [p.70-72, p.77]
 
-Given a series of closing prices $P_t$ over $N = 90$ trading days, compute the linear regression slope $m$ of $\ln(P_t)$ vs $t$:
+Given a series of closing prices $P_t$ over $N = 90$ trading days, compute the linear regression slope $m$ of $\ln(P_t)$ vs. $t$:
 
 $$\text{AnnualizedSlope} = \left( e^{m} \right)^{250} - 1$$
 
@@ -286,7 +286,7 @@ $$\text{TR}_t = \max\!\left( H_t - L_t,\ |H_t - C_{t-1}|,\ |L_t - C_{t-1}| \righ
 
 ATR is the average of TR over N days (Clenow uses N=20) [p.88].
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Ranking Algorithm (run every Wednesday)** [p.73-77, p.82, p.98]
 
@@ -350,81 +350,81 @@ monthly:
 # because of risk-parity weighting vs market-cap weighting [p.221-223, p.236]
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - [p.219-220] **Do not optimize parameters.** "Optimizations are evil and out to kill you." Clenow states he picked all numbers (200d, 100d, 90d, 15%, 10bps) without optimization; a result like "237-day MA is optimal" is curve-fit and has no predictive value.
 - [p.82, p.104] **Do not buy stocks with large recent gaps (>15% in past 90d).** These are usually takeover announcements, not genuine momentum — the stock is dead money afterwards.
 - [p.238-239] **Survivorship bias kills simulations.** Using current S&P 500 constituents for a 10-year backtest creates fake outperformance because current members are selected BECAUSE they rose. You MUST use point-in-time membership and include delisted stocks.
 - [p.239] **Missing cash dividends makes total returns meaningless over time.** Handle via dividend factors or as cash injections.
-- [p.239-240] **Single-strategy single-instrument backtesting software is useless.** Must handle full portfolio semantics (multiple positions, rebalancing, cross-sectional ranking).
-- [p.91-92] **Volatility is non-stationary.** A position sized once and left alone drifts to random risk — ATR doubling (e.g. Monster Aug 2014) doubles your risk allocation if you don't rebalance.
-- [p.63-65] **Do not hold momentum stocks through a bear market.** Correlations go to 1, diversification is illusory, momentum effect breaks down.
+- [p.239-240] **Single-strategy single-instrument backtesting software is useless.** It must handle full portfolio semantics (multiple positions, rebalancing, cross-sectional ranking).
+- [p.91-92] **Volatility is non-stationary.** A position sized once and left alone drifts to random risk — ATR doubling (e.g. Monster, Aug 2014) doubles your risk allocation if you do not rebalance.
+- [p.63-65] **Do not hold momentum stocks through a bear market.** Correlations go to 1, diversification is illusory, and the momentum effect breaks down.
 - [p.67-69] **Do not pick stocks by visual chart inspection or familiarity.** Discretionary pattern-matching is inconsistent day-to-day.
-- [p.229-230] **Do not hold < 10 stocks.** Event risk (single-stock shock) dominates; "element of luck becomes too large."
-- [p.231] **Do not hold 40+ stocks (too broad).** Simulations worsen, becomes impractical at low capital, loses the rebalance effect.
+- [p.229-230] **Do not hold fewer than 10 stocks.** Event risk (single-stock shock) dominates; "element of luck becomes too large."
+- [p.231] **Do not hold 40+ stocks (too broad).** Simulations worsen, it becomes impractical at low capital, and you lose the rebalance effect.
 
 ---
 
 ## From `books/trading_evolved.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.21-22]**: Antes de ir sistemático, **formule sua hipótese em regras firmes e testáveis**; se não consegue, é porque a ideia não era um modelo completo.
-- **REGRA [p.23]**: Abordagem default ao backtest é **skeptical** — procure razões para **rejeitar** a regra, não para aceitá-la (confirmação bias é inevitável se você buscar validação).
-- **REGRA [p.27-28]**: Todo modelo deve ter um **purpose específico** (fenômeno de mercado + perfil de retorno alvo); "make money" não é purpose.
-- **REGRA [p.29]**: Use **quantas menos regras e variações possível**. Complexidade precisa justificar economicamente sua existência — não basta melhorar o backtest.
-- **REGRA [p.30]**: Toda regra adicionada precisa ter **explicação real de mercado**, não só melhora de métrica histórica.
-- **REGRA [p.32]**: Use parte da série temporal para fitting e parte para testing (out-of-sample). Nunca teste no mesmo dado que ajustou.
-- **REGRA [p.33]**: Prefira **portfolios** (múltiplos markets) a single-market strategies; single-market = diversification zero.
-- **REGRA [p.192, p.198]**: Para equities, **use historical index membership** (não constituintes atuais) para evitar survivorship bias.
-- **REGRA [p.193-194]**: Ao lidar com equities, **corrija por dividendos** (total return series ou cash dividend accounting); ignorar = distorção substancial multi-ano.
-- **REGRA [p.207]**: Use **volatility-parity position sizing** (inverse-volatility weighting) para dar "equal vote" a cada posição.
-- **REGRA [p.197]**: **Momentum model S&P 500** — trade apenas mensalmente, top 30 ações por momentum score (janela 125d), compre se momentum > 40, inverse-vol weighting, volatility 20d std-dev de retornos.
-- **REGRA [p.261]**: Modelos de futures devem **checar diariamente** sinais de entrada/saída E rolls; trades executam no dia seguinte ao sinal (close).
-- **REGRA [p.263]**: Para futures, dimensione para cada posição impactar ~0.2% daily var do portfolio (risk_factor = 20 bps) como benchmark inicial.
-- **REGRA [p.267-268]**: Trailing stop para trend em futures = 3× std-dev de price changes (40d) do peak reading da posição. Implica giveback ~0.6% do portfolio por posição.
-- **REGRA [p.314-315]**: Counter-trend em bull — entrar long se EMA40>EMA80 E pullback < −3 std-dev do máximo 20d; exit em 20 dias OU reversão de trend.
-- **REGRA [p.349-352]**: **Combine múltiplos modelos descorrelacionados** como portfolio components — exemplo do livro: 5 modelos equi-ponderados produziram Sharpe 1.24 vs. melhor individual 0.84, drawdown −17% vs. −25% a −40% individuais.
-- **NUNCA [p.30]**: Rode um optimizer para encontrar "melhores" parâmetros; use **variações razoáveis** para testar estabilidade, não optimal values.
-- **NUNCA [p.41-42]**: Use pyramiding ("playing with house's money"); viola mark-to-market e é baseado em gambling fallacy.
-- **NUNCA [p.43]**: Defina risco como "risk per trade" baseado em distância de stop; isso ignora o fato de que risco é variação potencial por unidade de tempo.
-- **NUNCA [p.44]**: Mire triple-digit yearly returns — matematicamente inviável em longo prazo ("probability of ruin approaches 1").
-- **NUNCA [p.176]**: Mantenha leveraged/inverse ETFs além de um dia — rebalance diário cria volatility decay, perda mesmo em mercado lateral ou bear.
-- **NUNCA [p.26]**: Deixe um algo trading unsupervised; mesmo automatizado precisa de monitoramento constante.
-- **NUNCA [p.179-180]**: Assuma que pode shortar ETFs pequenos em backtest — liquidez de borrow é limitada e shares podem ser recalled no pior momento.
+- **RULE [p.21-22]**: Before going systematic, **formulate your hypothesis as firm, testable rules**; if you cannot, the idea was not a complete model.
+- **RULE [p.23]**: The default approach to backtesting is **skeptical** — look for reasons to **reject** the rule, not to accept it (confirmation bias is inevitable if you seek validation).
+- **RULE [p.27-28]**: Every model must have a **specific purpose** (market phenomenon + target return profile); "make money" is not a purpose.
+- **RULE [p.29]**: Use **as few rules and variations as possible**. Complexity must justify its existence economically — improving the backtest is not enough.
+- **RULE [p.30]**: Every rule added must have a **real market explanation**, not just a historical-metric improvement.
+- **RULE [p.32]**: Use part of the time series for fitting and part for out-of-sample testing. Never test on the same data you fit.
+- **RULE [p.33]**: Prefer **portfolios** (multiple markets) over single-market strategies; single-market = zero diversification.
+- **RULE [p.192, p.198]**: For equities, **use historical index membership** (not current constituents) to avoid survivorship bias.
+- **RULE [p.193-194]**: When dealing with equities, **adjust for dividends** (total return series or cash dividend accounting); ignoring them = substantial multi-year distortion.
+- **RULE [p.207]**: Use **volatility-parity position sizing** (inverse-volatility weighting) to give each position an "equal vote".
+- **RULE [p.197]**: **S&P 500 momentum model** — trade only monthly, top 30 stocks by momentum score (125d window), buy if momentum > 40, inverse-vol weighting, volatility = 20d std-dev of returns.
+- **RULE [p.261]**: Futures models must **check entry/exit signals AND rolls daily**; trades execute the day after the signal (close).
+- **RULE [p.263]**: For futures, size each position to impact ~0.2% daily portfolio var (risk_factor = 20 bps) as the initial benchmark.
+- **RULE [p.267-268]**: Trend trailing stop for futures = 3× std-dev of price changes (40d) from the position's peak reading. Implies ~0.6% portfolio giveback per position.
+- **RULE [p.314-315]**: Counter-trend in bull — enter long if EMA40>EMA80 AND pullback < −3 std-dev from the 20d high; exit in 20 days OR on trend reversal.
+- **RULE [p.349-352]**: **Combine multiple uncorrelated models** as portfolio components — book example: 5 equal-weighted models produced Sharpe 1.24 vs. best individual 0.84, drawdown −17% vs. individual −25% to −40%.
+- **NEVER [p.30]**: Run an optimizer to find "best" parameters; use **reasonable variations** to test stability, not optimal values.
+- **NEVER [p.41-42]**: Use pyramiding ("playing with house's money"); it violates mark-to-market and is based on a gambling fallacy.
+- **NEVER [p.43]**: Define risk as "risk per trade" based on stop distance; this ignores that risk is potential variation per unit of time.
+- **NEVER [p.44]**: Target triple-digit yearly returns — mathematically unviable long-term ("probability of ruin approaches 1").
+- **NEVER [p.176]**: Hold leveraged/inverse ETFs beyond one day — daily rebalance creates volatility decay, loss even in sideways or bear markets.
+- **NEVER [p.26]**: Leave an algo trading unsupervised; even when automated it needs constant monitoring.
+- **NEVER [p.179-180]**: Assume you can short small ETFs in a backtest — borrow liquidity is limited and shares can be recalled at the worst moment.
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Momentum Score (Clenow)** [p.200, p.204-205]
 
 $$\text{momentum\_score} = \left[\left(e^{\text{slope}}\right)^{252} - 1\right] \times 100 \times R^2$$
 
-- $\text{slope}$ = coeficiente angular da regressão linear sobre $\ln(\text{preço})$ vs. tempo
-- $R^2$ = coeficiente de determinação da mesma regressão (0 a 1)
-- 252 = dias úteis/ano (anualização)
-- Uso: ranking de ações para portfólio momentum; punição embutida para voláteis (R² baixo)
-- Janela padrão usada no livro: 125 dias [p.209]
-- Threshold mínimo usado: 40 [p.211]
+- $\text{slope}$ = slope of the linear regression of $\ln(\text{price})$ vs. time
+- $R^2$ = coefficient of determination of the same regression (0 to 1)
+- 252 = trading days/year (annualization)
+- Use: stock ranking for momentum portfolios; built-in penalty for volatile stocks (low R²)
+- Default window used in the book: 125 days [p.209]
+- Minimum threshold used: 40 [p.211]
 
 **Sharpe Ratio** [p.45-46]
 
 $$SR = \frac{R_{\text{ann}} - R_f}{\sigma_{\text{ann}}}$$
 
-- $R_{\text{ann}}$ = retorno anualizado da estratégia
-- $R_f$ = risk-free rate (Clenow recomenda yields diários de treasuries curtos; retail pode usar 0 para comparar estratégias entre si) [p.46]
-- $\sigma_{\text{ann}}$ = desvio-padrão anualizado dos retornos
-- Sharpe > 1 é raro; 0.7-0.8 pode ser "highly successful"; Sharpe 3-5 geralmente = negative skew perigoso [p.46]
+- $R_{\text{ann}}$ = annualized strategy return
+- $R_f$ = risk-free rate (Clenow recommends daily yields of short treasuries; retail can use 0 to compare strategies with each other) [p.46]
+- $\sigma_{\text{ann}}$ = annualized standard deviation of returns
+- Sharpe > 1 is rare; 0.7-0.8 can be "highly successful"; Sharpe 3-5 usually = dangerous negative skew [p.46]
 
 **Position Size (Volatility Parity Futures)** [p.263]
 
 $$\text{contracts} = \frac{\text{portfolio\_value} \times \text{risk\_factor}}{\sigma_{\text{price}} \times \text{point\_value}}$$
 
-- $\text{risk\_factor}$ = basis points alvo de variação diária por posição (ex: 0.002 = 20 bps = 0.2% daily impact alvo) [p.263]
-- $\sigma_{\text{price}}$ = 40-day std-dev das diferenças diárias de preço (price changes, não returns) [p.262]
-- $\text{point\_value}$ = big point value do contrato
-- Resultado arredondado para baixo (int)
+- $\text{risk\_factor}$ = target basis points of daily variation per position (e.g., 0.002 = 20 bps = 0.2% target daily impact) [p.263]
+- $\sigma_{\text{price}}$ = 40-day std-dev of daily price differences (price changes, not returns) [p.262]
+- $\text{point\_value}$ = contract big point value
+- Result rounded down to int
 
-**Volatility / Std-Dev de Price Changes (40 dias)** [p.262-263]
+**Volatility / Std-Dev of Price Changes (40 days)** [p.262-263]
 
 ```python
 std_dev = df.close.diff()[-40:].std()
@@ -437,28 +437,28 @@ def volatility(ts):
     return ts.pct_change().rolling(vola_window).std().iloc[-1]
 ```
 
-- `vola_window` = 20 dias no modelo Momentum [p.214]
+- `vola_window` = 20 days in the Momentum model [p.214]
 
-**Pullback normalizado (Counter-Trend)** [p.314-315]
+**Normalized pullback (Counter-Trend)** [p.314-315]
 
 $$\text{pullback} = \frac{\text{close}_t - \max(\text{close}_{t-20:t})}{\sigma_{40d}}$$
 
-- Entry long se $\text{pullback} < -3$ (i.e., 3 std-dev abaixo do high de 20d) em regime de bull market [p.314-315, p.321]
+- Enter long if $\text{pullback} < -3$ (i.e., 3 std-dev below the 20d high) in a bull-market regime [p.314-315, p.321]
 
 **Cost of Carry (Curve Trading)** [p.329-330]
 
 $$\text{annualized\_carry} = \left(\frac{P_{\text{near}}}{P_{\text{far}}}\right)^{365/\Delta\text{days}} - 1$$
 
-- Exemplo do livro: SH9 a 907.50, SK9 a 921.50, expiry 61 dias depois → perda implícita 1.52% em 61d = −8.75% annualized (contango) [p.329]
-- Usado como único input para seleção de trades no modelo "Trading the Curve" [p.326]
+- Book example: SH9 at 907.50, SK9 at 921.50, expiry 61 days later → implied loss 1.52% over 61d = −8.75% annualized (contango) [p.329]
+- Used as the sole input for trade selection in the "Trading the Curve" model [p.326]
 
 **Trend Filter (Dual EMA)** [p.264-265]
 
 - Bull: $\text{EMA}_{40} > \text{EMA}_{80}$
 - Bear: $\text{EMA}_{40} < \text{EMA}_{80}$
-- Usado no Core Trend Model e no Counter-Trend [p.265, p.312]
+- Used in the Core Trend Model and the Counter-Trend [p.265, p.312]
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Momentum Model (Equity, S&P 500 membership)** [p.197-198, p.222-226]
 
@@ -578,67 +578,67 @@ def universe_on(today):
     return latest_row.split(',')
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
-- [p.27-28] **Accidental models** — combinar indicadores aleatoriamente e tunar até o backtest ficar bonito. Não tem predictive value; modelo sem "raison d'être" é curve fit quase garantido.
-- [p.30] **Optimização de múltiplos parâmetros** → "optimizers will tell you what the perfect parameters WAS for the past" — sem valor preditivo.
-- [p.31] **Filters ad-hoc para evitar anos ruins** (ex: "filter que evita 2008") — parece melhorar backtest mas é overfit; se o modelo tivesse sido desenvolvido antes, tal filter não existiria.
-- [p.41-42] **Position-size pyramiding** — aumentar posição após ganho; "past trades lack magical ability to impact the future", é gambling fallacy.
-- [p.43] **"Risk per trade" baseado em stop distance** — definição errada de risco; duas carteiras com mesmo "risk per trade" podem ter risk real muito diferente.
-- [p.44-45] **Mirar triple-digit returns** — matematicamente impossível em longo prazo; expectativa realista = <15% p.a. de traders skilled.
-- [p.175-176] **Leveraged/Inverse ETFs held >1 day** — daily rebalance causa volatility decay; mesmo em bear market de underlying, inverse ETF pode perder.
-- [p.179-180] **Assumir que short em ETFs é grátis** no backtester — locate, funding rate e recall risk destroem o edge em practice.
-- [p.192] **Usar constituintes atuais do índice** para simular o passado — survivorship bias massivo (você escolheria Enron e Lehman 10 anos atrás? Mas escolhe Apple porque sabe que subiu).
-- [p.193] **Ignorar dividendos** em equity backtests — impacto significativo multi-ano.
-- [p.211-212] **Trend filter baseado em SMA longa (ex: 200d)** — pode ser **severe curve fitting** pelo conhecimento retrospectivo de 2008; "we already know from experience that using such a long term trend filter will greatly mitigate damage from the two major bear markets of our generation. The question is of course if that has any predictive value in terms of avoiding the next" [p.212].
+- [p.27-28] **Accidental models** — combining indicators randomly and tuning until the backtest looks good. No predictive value; a model without "raison d'être" is nearly guaranteed curve fit.
+- [p.30] **Multi-parameter optimization** → "optimizers will tell you what the perfect parameters WAS for the past" — no predictive value.
+- [p.31] **Ad-hoc filters to avoid bad years** (e.g., "filter that avoids 2008") — looks like backtest improvement but is overfit; had the model been developed earlier, the filter would not exist.
+- [p.41-42] **Position-size pyramiding** — increasing position after a gain; "past trades lack magical ability to impact the future" — it is a gambling fallacy.
+- [p.43] **"Risk per trade" based on stop distance** — wrong definition of risk; two portfolios with the same "risk per trade" can have very different real risk.
+- [p.44-45] **Targeting triple-digit returns** — mathematically impossible long-term; realistic expectation = <15% p.a. for skilled traders.
+- [p.175-176] **Leveraged/Inverse ETFs held >1 day** — daily rebalance causes volatility decay; even in a bear market of the underlying, an inverse ETF can lose.
+- [p.179-180] **Assuming shorting ETFs is free** in the backtester — locate, funding rate, and recall risk destroy the edge in practice.
+- [p.192] **Using current index constituents** to simulate the past — massive survivorship bias (would you have picked Enron and Lehman 10 years ago? But you pick Apple because you know it went up).
+- [p.193] **Ignoring dividends** in equity backtests — significant multi-year impact.
+- [p.211-212] **Long-SMA-based trend filter (e.g., 200d)** — may be **severe curve fitting** from hindsight knowledge of 2008; "we already know from experience that using such a long term trend filter will greatly mitigate damage from the two major bear markets of our generation. The question is of course if that has any predictive value in terms of avoiding the next" [p.212].
 - [p.257] **Inability to explain a strategy simply** — red flag: "if you are unable to explain the idea behind your trading strategy in a simple, brief and understandable manner, then there is a clear risk that you have overcomplicated and over fitted rules".
-- [p.26] **Automação sem supervisão** — "computers are only as smart as the person programming it, and usually not even that smart".
-- [p.259-260] **Faking capital with futures** (tradar um portfolio de $100k como se fosse $1M usando margem) — 10% drawdown te varre.
-- [p.349-350] **Comparar modelos apenas por retorno anual** — ignora drawdown, Sharpe, correlação com portfolio existente; "a model with low expected return but low/negative correlation can greatly help overall portfolio".
-- [p.370-372] **Comparar sua estratégia só contra o S&P 500** — uma seleção aleatória ("chimp with darts") de 50 ações bate o índice em longo prazo. "The index is a completely different systematic trading strategy. And a poorly designed one at that" [p.371].
-- [p.369] **Investir em mutual funds ativos** — ~80% falham em bater benchmark em qualquer período 3-5 anos (SPIVA reports).
-- [p.168] **Usar ETNs como ETFs** — ETN = dívida estruturada, counterparty risk; se o emissor quebra, cash é perdido (lembre 2008).
-- [p.321] **Expected: desenho simétrico long/short** — "bullish trends and bearish trends tend to behave quite differently and may require different parameter sets"; simetria é simplificação, não feature.
+- [p.26] **Automation without supervision** — "computers are only as smart as the person programming it, and usually not even that smart".
+- [p.259-260] **Faking capital with futures** (trading a $100k portfolio as if it were $1M via margin) — a 10% drawdown wipes you out.
+- [p.349-350] **Comparing models only by annual return** — ignores drawdown, Sharpe, correlation with existing portfolio; "a model with low expected return but low/negative correlation can greatly help overall portfolio".
+- [p.370-372] **Comparing your strategy only against the S&P 500** — a random ("chimp with darts") selection of 50 stocks beats the index long-term. "The index is a completely different systematic trading strategy. And a poorly designed one at that" [p.371].
+- [p.369] **Investing in active mutual funds** — ~80% fail to beat the benchmark in any 3-5 year period (SPIVA reports).
+- [p.168] **Using ETNs as ETFs** — ETN = structured debt, counterparty risk; if the issuer goes bust, cash is lost (remember 2008).
+- [p.321] **Expected: symmetric long/short design** — "bullish trends and bearish trends tend to behave quite differently and may require different parameter sets"; symmetry is simplification, not feature.
 
 ---
 
 ## From `books/universal_trend_tactics.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.13-14]**: Begin trading only when ROR = 0%. Any ROR above 0% guarantees eventual ruin over sufficient time. Do not compromise this requirement for any performance metric.
+- **RULE [p.13-14]**: Begin trading only when ROR = 0%. Any ROR above 0% guarantees eventual ruin over sufficient time. Do not compromise this requirement for any performance metric.
 
-- **REGRA [p.68-69]**: Mechanically follow the Three Golden Tenets at all times: (1) Follow the trend, (2) Cut losses short, (3) Let profits run.
+- **RULE [p.68-69]**: Mechanically follow the Three Golden Tenets at all times: (1) Follow the trend, (2) Cut losses short, (3) Let profits run.
 
-- **REGRA [p.261-262]**: Construct the research portfolio using only diversity and average daily volume as selection criteria. Select the 3 most liquid futures contracts per market segment across 8 segments. This fully eliminates data mining from portfolio construction.
+- **RULE [p.261-262]**: Construct the research portfolio using only diversity and average daily volume as selection criteria. Select the 3 most liquid futures contracts per market segment across 8 segments. This fully eliminates data mining from portfolio construction.
 
-- **REGRA [p.267, p.285]**: Always benchmark your own strategy against Turtle Trading (or the best available robust benchmark with ample out-of-sample evidence). If your strategy cannot surpass it, trade the benchmark, not your own design. Self-esteem must be tied to account balance, not development effort.
+- **RULE [p.267, p.285]**: Always benchmark your own strategy against Turtle Trading (or the best available robust benchmark with ample out-of-sample evidence). If your strategy cannot surpass it, trade the benchmark, not your own design. Self-esteem must be tied to account balance, not development effort.
 
-- **REGRA [p.266-267]**: Limit strategies to few rules, few indicators, few variables. Variables must have the same value for buy and sell setups AND the same value across all markets. Any asymmetry is a curve-fitting warning sign.
+- **RULE [p.266-267]**: Limit strategies to few rules, few indicators, few variables. Variables must have the same value for buy and sell setups AND the same value across all markets. Any asymmetry is a curve-fitting warning sign.
 
-- **REGRA [p.272]**: Always examine strategy performance with money management applied (CAGR). Never rely on single-contract net profit alone — it hides the impact of large stops.
+- **RULE [p.272]**: Always examine strategy performance with money management applied (CAGR). Never rely on single-contract net profit alone — it hides the impact of large stops.
 
-- **REGRA [p.274-279]**: Before trading any new strategy, complete an equity curve stability review. Adjust each variable ±10% (4 adjustments). If ANY combination produces ROR > 0%, the equity curve is fragile — do not trade it.
+- **RULE [p.274-279]**: Before trading any new strategy, complete an equity curve stability review. Adjust each variable ±10% (4 adjustments). If ANY combination produces ROR > 0%, the equity curve is fragile — do not trade it.
 
-- **REGRA [p.291]**: Use fixed-percentage money management at 2% risk per trade (author's standard benchmark test). Starting capital $50,000, point of ruin = 100% loss. All book backtests use these parameters for comparability.
+- **RULE [p.291]**: Use fixed-percentage money management at 2% risk per trade (author's standard benchmark test). Starting capital $50,000, point of ruin = 100% loss. All book backtests use these parameters for comparability.
 
-- **REGRA [p.301]**: Prefer strategies published before 2000. These automatically provide 20+ years of out-of-sample data, giving hard evidence of robustness rather than hope.
+- **RULE [p.301]**: Prefer strategies published before 2000. These automatically provide 20+ years of out-of-sample data, giving hard evidence of robustness rather than hope.
 
-- **REGRA [p.309-312]**: Dow Theory implementation: uptrend = higher swing highs; downtrend = lower swing lows. Entry on break of prior swing high (long) or prior swing low (short). Model is always in market (stop-and-reverse).
+- **RULE [p.309-312]**: Dow Theory implementation: uptrend = higher swing highs; downtrend = lower swing lows. Entry on break of prior swing high (long) or prior swing low (short). Model is always in market (stop-and-reverse).
 
-- **REGRA [p.323-326]**: Loss filter (borrowed from Turtle Trading 1983): only take a Dow trend change signal if the PREVIOUS Dow signal was a loss. On DDT this improved UPI from 1.4 to 2.4, CAGR from 23% to 31%, and cut drawdown 40%.
+- **RULE [p.323-326]**: Loss filter (borrowed from Turtle Trading 1983): only take a Dow trend change signal if the PREVIOUS Dow signal was a loss. On DDT this improved UPI from 1.4 to 2.4, CAGR from 23% to 31%, and cut drawdown 40%.
 
-- **REGRA [p.338-343]**: Two-stop trade plan: use an INITIAL stop at the high/low of the setup or entry bar (whichever is further) to cut losses short immediately; use a TRAILING swing stop to let winners run. Smaller initial stop reduces average risk, enabling larger position sizes and higher CAGR.
+- **RULE [p.338-343]**: Two-stop trade plan: use an INITIAL stop at the high/low of the setup or entry bar (whichever is further) to cut losses short immediately; use a TRAILING swing stop to let winners run. Smaller initial stop reduces average risk, enabling larger position sizes and higher CAGR.
 
-- **NUNCA [p.32-35]**: Do not develop strategies with more indicator variables than necessary. Four or more variables optimized on the same dataset create the Four Horsemen of the Strategy Apocalypse (data mining + curve fitting + novelty + no equity curve).
+- **NEVER [p.32-35]**: Do not develop strategies with more indicator variables than necessary. Four or more variables optimized on the same dataset create the Four Horsemen of the Strategy Apocalypse (data mining + curve fitting + novelty + no equity curve).
 
-- **NUNCA [p.271-272]**: Never accept a strategy with ROR > 0% regardless of its other metrics. ROR is the first gate, not the last.
+- **NEVER [p.271-272]**: Never accept a strategy with ROR > 0% regardless of its other metrics. ROR is the first gate, not the last.
 
-- **NUNCA [p.285]**: Do not retain a strategy in the candidate pool solely because of compelling net profit — if it has ROR > 0% (Ricardo Rules, Donchian 5/20, Elder TSTS, Livermore Reaction) it is excluded regardless of historical profit.
+- **NEVER [p.285]**: Do not retain a strategy in the candidate pool solely because of compelling net profit — if it has ROR > 0% (Ricardo Rules, Donchian 5/20, Elder TSTS, Livermore Reaction) it is excluded regardless of historical profit.
 
 ---
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Expectancy** — N/A (algebraic formula not presented in this book)
 
@@ -666,7 +666,7 @@ Variables [p.271]: $R_{\text{capital}}$ = total risk capital; $f$ = fixed fracti
 
 ---
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Equity Curve Stability Review** [p.140, p.145-157, p.274-279]
 
@@ -777,7 +777,7 @@ P24 backtest performance (40 years out-of-sample, 1979-2019):
 
 ---
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - **[p.32-33]** Data mining: selecting markets, timeframes, or entry/exit rules specifically because they worked on the training data. Eliminated by using an objectively constructed universal portfolio (diversity + volume only) — never cherry-pick markets after seeing results.
 

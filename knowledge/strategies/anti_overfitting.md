@@ -1,6 +1,6 @@
 # Anti-Overfitting Framework
 
-Práticas obrigatórias para evitar que estratégias passem em backtest mas falhem em live.
+Mandatory practices to prevent strategies that pass in backtest from failing in live.
 
 ## Sources
 
@@ -12,37 +12,37 @@ Práticas obrigatórias para evitar que estratégias passem em backtest mas falh
 
 ## From `books/advances_fin_ml.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.71-72]**: Apply the CUSUM filter to price series before applying triple-barrier labeling. Sampling at every tick creates serially correlated, non-IID labels. The CUSUM filter triggers observations only when cumulative price change exceeds $\pm h$, dramatically reducing label overlap.
+- **RULE [p.71-72]**: Apply the CUSUM filter to price series before applying triple-barrier labeling. Sampling at every tick creates serially correlated, non-IID labels. The CUSUM filter triggers observations only when cumulative price change exceeds $\pm h$, dramatically reducing label overlap.
 
-- **REGRA [p.78-80]**: Use the triple-barrier method with dynamically computed barriers (ATR-based or volatility-based), not fixed-price barriers. This ensures the barrier width adapts to the market regime and is not dominated by the vertical barrier.
+- **RULE [p.78-80]**: Use the triple-barrier method with dynamically computed barriers (ATR-based or volatility-based), not fixed-price barriers. This ensures the barrier width adapts to the market regime and is not dominated by the vertical barrier.
 
-- **REGRA [p.84-89]**: Separate the side prediction task from the sizing task using meta-labeling. Build a primary model for direction (recall-optimized), then a secondary model to learn when to trust it (precision-optimized). Do not conflate the two tasks.
+- **RULE [p.84-89]**: Separate the side prediction task from the sizing task using meta-labeling. Build a primary model for direction (recall-optimized), then a secondary model to learn when to trust it (precision-optimized). Do not conflate the two tasks.
 
-- **REGRA [p.98-99, p.103-106]**: Weight training samples by $\tilde{u}_i \cdot d_i$ where $\tilde{u}_i$ is average uniqueness and $d_i$ is a time-decay weight. Never train a financial ML model on equal-weighted overlapping labels — this artificially inflates effective sample size.
+- **RULE [p.98-99, p.103-106]**: Weight training samples by $\tilde{u}_i \cdot d_i$ where $\tilde{u}_i$ is average uniqueness and $d_i$ is a time-decay weight. Never train a financial ML model on equal-weighted overlapping labels — this artificially inflates effective sample size.
 
-- **REGRA [p.121-125]**: Apply FFD with the minimum $d^*$ that passes the ADF stationarity test. For E-mini S&P 500, this is approximately $d^* \approx 0.35$ [p.126-127], retaining 99.5% correlation with the original price series. Do not blindly apply $d=1$ (first difference) which destroys memory.
+- **RULE [p.121-125]**: Apply FFD with the minimum $d^*$ that passes the ADF stationarity test. For E-mini S&P 500, this is approximately $d^* \approx 0.35$ [p.126-127], retaining 99.5% correlation with the original price series. Do not blindly apply $d=1$ (first difference) which destroys memory.
 
-- **REGRA [p.149-154]**: Always use Purged K-Fold CV with embargo for financial ML. Embargo of $h \approx 0.01T$ prevents performance inflation from serial correlation not covered by purging alone.
+- **RULE [p.149-154]**: Always use Purged K-Fold CV with embargo for financial ML. Embargo of $h \approx 0.01T$ prevents performance inflation from serial correlation not covered by purging alone.
 
-- **REGRA [p.160-167]**: Use all three feature importance methods (MDI, MDA, SFI) and report only features ranked important by at least two methods. MDI is biased toward high-cardinality features; SFI ignores substitution effects. Their overlap is the reliable signal.
+- **RULE [p.160-167]**: Use all three feature importance methods (MDI, MDA, SFI) and report only features ranked important by at least two methods. MDI is biased toward high-cardinality features; SFI ignores substitution effects. Their overlap is the reliable signal.
 
-- **REGRA [p.167]**: Use weighted Kendall's $\tau$ to assess concordance between MDI feature importance rankings and their associated PCA eigenvalue rankings (not MDI vs MDA). The book's E-mini example gives $\tau = 0.8133$ between MDI importances and inverse PCA rankings [p.167]. A high $\tau$ confirms that PCA-identified features and ML-identified features agree on relative importance.
+- **RULE [p.167]**: Use weighted Kendall's $\tau$ to assess concordance between MDI feature importance rankings and their associated PCA eigenvalue rankings (not MDI vs MDA). The book's E-mini example gives $\tau = 0.8133$ between MDI importances and inverse PCA rankings [p.167]. A high $\tau$ confirms that PCA-identified features and ML-identified features agree on relative importance.
 
-- **REGRA [p.192-196]**: Use bet sizing (continuous position in $(-1,1)$) rather than binary signals. Discretize to $\{-1, -0.5, 0, +0.5, +1\}$ if necessary for execution, but avoid all-or-nothing signals that maximize turnover.
+- **RULE [p.192-196]**: Use bet sizing (continuous position in $(-1,1)$) rather than binary signals. Discretize to $\{-1, -0.5, 0, +0.5, +1\}$ if necessary for execution, but avoid all-or-nothing signals that maximize turnover.
 
-- **REGRA [p.208-211]**: Estimate PBO via CSCV before finalizing any strategy. A PBO > 0.5 means the strategy is more likely overfit than valid. Do not deploy until PBO is demonstrably below 0.5.
+- **RULE [p.208-211]**: Estimate PBO via CSCV before finalizing any strategy. A PBO > 0.5 means the strategy is more likely overfit than valid. Do not deploy until PBO is demonstrably below 0.5.
 
-- **REGRA [p.219-222]**: Use CPCV (not simple walk-forward) to generate a full distribution of $\phi[N,k]$ backtest paths. Report the distribution of Sharpe ratios, not just the mean. Strategies with high variance across paths have uncertain real-world performance.
+- **RULE [p.219-222]**: Use CPCV (not simple walk-forward) to generate a full distribution of $\phi[N,k]$ backtest paths. Report the distribution of Sharpe ratios, not just the mean. Strategies with high variance across paths have uncertain real-world performance.
 
-- **REGRA [p.276]**: Before declaring a strategy live-tradeable, verify it passes the DSR threshold. A single Sharpe ratio, however large, is uninformative without correction for the number of configurations tested.
+- **RULE [p.276]**: Before declaring a strategy live-tradeable, verify it passes the DSR threshold. A single Sharpe ratio, however large, is uninformative without correction for the number of configurations tested.
 
-- **REGRA [p.302-308]**: For portfolio construction, prefer HRP over Markowitz/CLA. HRP's Monte Carlo result shows $\sigma^2_{\text{HRP}} = 0.0671$ vs $\sigma^2_{\text{CLA}} = 0.1157$ vs $\sigma^2_{\text{IVP}} = 0.0928$ out-of-sample [p.313].
+- **RULE [p.302-308]**: For portfolio construction, prefer HRP over Markowitz/CLA. HRP's Monte Carlo result shows $\sigma^2_{\text{HRP}} = 0.0671$ vs $\sigma^2_{\text{CLA}} = 0.1157$ vs $\sigma^2_{\text{IVP}} = 0.0928$ out-of-sample [p.313].
 
-- **REGRA [p.383-384]**: Monitor VPIN as an intraday risk indicator. VPIN spiked anomalously before the 2010 Flash Crash, providing early warning. Treat a VPIN CDF > 0.99 as a signal to reduce exposure or widen spreads [p.448-449].
+- **RULE [p.383-384]**: Monitor VPIN as an intraday risk indicator. VPIN spiked anomalously before the 2010 Flash Crash, providing early warning. Treat a VPIN CDF > 0.99 as a signal to reduce exposure or widen spreads [p.448-449].
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Tick imbalance bar (TIB) threshold** [p.59-62]
 
@@ -218,7 +218,7 @@ $$S_t = \max(0,\; S_{t-1} + y_t - E_{t-1}[y_t])$$
 
 with the symmetric extension triggering on run-ups or run-downs. The only user-set parameter is the threshold $h$ (the filter size). No parameter $k$ appears in the Ch.2 CUSUM filter [p.71-72]. (Note: a separate `k` parameter appears in the Ch.17 Brown-Durbin-Evans CUSUM structural break test [p.333-334], where it denotes the number of regression features — a different context entirely.)
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Triple-barrier labeling** [p.78-80, ch.3]
 
@@ -433,7 +433,7 @@ Step 3: Apply trading rule on each path, compute SR per path
 Step 4: Report SR distribution; test if real SR is in top tail
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - **[p.29, p.39-40]** The Sisyphus paradigm — solo researcher who loops backtest until satisfied — is the root cause of most quantitative failure. It is structurally equivalent to p-hacking. The fix is a team-based pipeline with audited steps.
 
@@ -463,31 +463,31 @@ Step 4: Report SR distribution; test if real SR is in top tail
 
 ## From `books/testing_tuning.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.14-15]:** Always work with log-prices and compute trade returns as differences of logs. Never use raw percent returns in statistical evaluations — asymmetry of +x%/−x% accumulates into a bogus positive expectation.
-- **REGRA [p.17]:** Design the testing pipeline to eliminate *every* trace of future leak, including "innocuous" overlaps. A 1% edge produces a respectable equity curve; any leak is amplified.
-- **REGRA [p.21, p.27-28]:** Before training any model, visually study each indicator's time-series plot. If its central tendency wanders for months/years, either oscillate (lagged difference), normalize with a moving window, or reject the indicator.
-- **REGRA [p.30-31]:** Screen every candidate indicator for relative entropy ≥ 0.5 (hard concern at < 0.1). If low, revise the computation or apply a monotonic transform (tanh / logistic / log / tail cleaning).
-- **REGRA [p.43]:** Start with a regularized linear model. Graduate to nonlinear only if a clear, validated advantage emerges.
-- **REGRA [p.47]:** Never run a pure lasso (α = 1) on data that might contain near-perfect predictor collinearity. Use α just below 1 for stability.
-- **REGRA [p.125-127]:** After optimization, plot parameter sensitivity curves around the optimum. Smooth decline = robust; narrow peak or multi-peak = overfit / lucky. Reject narrow-peak systems.
-- **REGRA [p.143-144]:** After choosing among multiple competing systems based on OOS performance, the chosen OOS score is biased. You must hold out an additional fresh period for the final estimate, or use selection-bias MCPT [p.319-320].
-- **REGRA [p.149-150, p.171]:** In walkforward or CV, remove `min(lookback, lookahead) − 1` cases as a guard buffer between train and test. For CV, remove the buffer on *both* sides of each test block.
-- **REGRA [p.170-171]:** Do not use cross-validation for time-series trading-system performance estimation in general. Walkforward mimics real life; CV leaks nonstationarity and is pessimistically biased on smaller training sets. Narrow exceptions: optimizing model complexity or selecting predictors, where CV-inside-walkforward is reasonable. [p.211-212]
-- **REGRA [p.196-199]:** Whenever a selector picks from competing systems on OOS returns, use nested walkforward so the selector's own decisions are evaluated on untouched outer-OOS data.
-- **REGRA [p.244-245]:** For bounds on mean future returns with near-normal returns, use Student-t one-sided lower bound at the desired confidence. Beware heavy tails.
-- **REGRA [p.246-247]:** With non-normal or uncertain distributions, use BCa bootstrap, not pivot or percentile methods. BCa is the single most important bounding tool for the true mean of returns.
-- **REGRA [p.263-264]:** Never bootstrap the raw Sharpe ratio or raw profit factor. Bootstrap log(profit factor) instead; treat raw Sharpe bounds with "considerable caution."
-- **REGRA [p.291]:** To bound future drawdowns, use the drawdown-specific bootstrap (sample of size = drawdown-horizon = typically 252, from the full OOS pool); expect millions of iterations; never use drawdown bounds inside training loops unless you apply the faster approximation on p.264.
-- **REGRA [p.318, p.286]:** Run an MCPT on the *entire training process* (not just a final system). A good unpermuted result should sit in the extreme right tail of the permuted performance distribution (p < 0.05, ideally much smaller).
-- **REGRA [p.319-320]:** When comparing several trading-system candidates, the decision-relevant p-value is the *best-of-many* selection-bias-adjusted MCPT p-value, not the per-system p-value.
-- **REGRA [p.327-328]:** Permute *log-price changes*, not prices. Keep the first price fixed. Keep the shuffle inside the OOS region.
-- **REGRA [p.334-335]:** For multi-market systems, use a single shared permutation across all markets to preserve cross-correlation; drop dates with any missing market.
-- **NUNCA [p.16-17]:** Override the trading system based on gut feel. "Forget automated trading if you don't have the guts to believe in it."
-- **NUNCA [p.34]:** Truncate (clip) outliers — truncation is non-monotonic and destroys information. Use tail cleaning (exp compression) instead.
+- **RULE [p.14-15]:** Always work with log-prices and compute trade returns as differences of logs. Never use raw percent returns in statistical evaluations — asymmetry of +x%/−x% accumulates into a bogus positive expectation.
+- **RULE [p.17]:** Design the testing pipeline to eliminate *every* trace of future leak, including "innocuous" overlaps. A 1% edge produces a respectable equity curve; any leak is amplified.
+- **RULE [p.21, p.27-28]:** Before training any model, visually study each indicator's time-series plot. If its central tendency wanders for months/years, either oscillate (lagged difference), normalize with a moving window, or reject the indicator.
+- **RULE [p.30-31]:** Screen every candidate indicator for relative entropy ≥ 0.5 (hard concern at < 0.1). If low, revise the computation or apply a monotonic transform (tanh / logistic / log / tail cleaning).
+- **RULE [p.43]:** Start with a regularized linear model. Graduate to nonlinear only if a clear, validated advantage emerges.
+- **RULE [p.47]:** Never run a pure lasso (α = 1) on data that might contain near-perfect predictor collinearity. Use α just below 1 for stability.
+- **RULE [p.125-127]:** After optimization, plot parameter sensitivity curves around the optimum. Smooth decline = robust; narrow peak or multi-peak = overfit / lucky. Reject narrow-peak systems.
+- **RULE [p.143-144]:** After choosing among multiple competing systems based on OOS performance, the chosen OOS score is biased. You must hold out an additional fresh period for the final estimate, or use selection-bias MCPT [p.319-320].
+- **RULE [p.149-150, p.171]:** In walkforward or CV, remove `min(lookback, lookahead) − 1` cases as a guard buffer between train and test. For CV, remove the buffer on *both* sides of each test block.
+- **RULE [p.170-171]:** Do not use cross-validation for time-series trading-system performance estimation in general. Walkforward mimics real life; CV leaks nonstationarity and is pessimistically biased on smaller training sets. Narrow exceptions: optimizing model complexity or selecting predictors, where CV-inside-walkforward is reasonable. [p.211-212]
+- **RULE [p.196-199]:** Whenever a selector picks from competing systems on OOS returns, use nested walkforward so the selector's own decisions are evaluated on untouched outer-OOS data.
+- **RULE [p.244-245]:** For bounds on mean future returns with near-normal returns, use Student-t one-sided lower bound at the desired confidence. Beware heavy tails.
+- **RULE [p.246-247]:** With non-normal or uncertain distributions, use BCa bootstrap, not pivot or percentile methods. BCa is the single most important bounding tool for the true mean of returns.
+- **RULE [p.263-264]:** Never bootstrap the raw Sharpe ratio or raw profit factor. Bootstrap log(profit factor) instead; treat raw Sharpe bounds with "considerable caution."
+- **RULE [p.291]:** To bound future drawdowns, use the drawdown-specific bootstrap (sample of size = drawdown-horizon = typically 252, from the full OOS pool); expect millions of iterations; never use drawdown bounds inside training loops unless you apply the faster approximation on p.264.
+- **RULE [p.318, p.286]:** Run an MCPT on the *entire training process* (not just a final system). A good unpermuted result should sit in the extreme right tail of the permuted performance distribution (p < 0.05, ideally much smaller).
+- **RULE [p.319-320]:** When comparing several trading-system candidates, the decision-relevant p-value is the *best-of-many* selection-bias-adjusted MCPT p-value, not the per-system p-value.
+- **RULE [p.327-328]:** Permute *log-price changes*, not prices. Keep the first price fixed. Keep the shuffle inside the OOS region.
+- **RULE [p.334-335]:** For multi-market systems, use a single shared permutation across all markets to preserve cross-correlation; drop dates with any missing market.
+- **NEVER [p.16-17]:** Override the trading system based on gut feel. "Forget automated trading if you don't have the guts to believe in it."
+- **NEVER [p.34]:** Truncate (clip) outliers — truncation is non-monotonic and destroys information. Use tail cleaning (exp compression) instead.
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Equation 1-1 — Expected return of a trade** [p.18]
 
@@ -563,7 +563,7 @@ lower_bound = mean - stddev / sqrt((double) n) *
 
 Relatively robust to moderate non-normality but fragile under heavy tails or extreme skew. [p.244-245]
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **STATN — nonstationarity gap analysis** [p.22-26]
 
@@ -770,7 +770,7 @@ Apply σ identically to each market's change-vector and reconstruct.
 ```
 Required to preserve cross-market correlation. [p.334-335]
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - [p.17] Casual developers claim "small" future leaks don't matter. They do. Treat any leak as catastrophic.
 - [p.18-19] Bragging about how often a trading system wins is meaningless without the size of wins and losses — win/loss sizes and probabilities are inextricably related via Equation 1-1.
@@ -796,34 +796,34 @@ Required to preserve cross-market correlation. [p.334-335]
 
 ## From `books/stat_sound_indicators.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.4]**: "Predictions of large magnitude are more likely to signal profitable market moves than predictions of small magnitude." Use threshold-based trade conversion: long if prediction ≥ upper threshold, short if ≤ lower threshold.
-- **REGRA [p.4, p.189]**: Always specify a `MIN CRITERION FRACTION` (minimum fraction of bars that trade) when letting TSSB auto-optimize thresholds. Without it, the optimizer may converge on a single lucky trade.
-- **REGRA [p.87]**: When an indicator's absolute level is meaningful but secular drift ruins stationarity, apply `CENTER <lookback>`. When volatility varies across epochs, apply `SCALE <lookback>`. When both matter, apply `NORMALIZE <lookback>`. Use median/IQR rather than mean/std because of outlier robustness [p.87-88].
-- **REGRA [p.92]**: In multi-market systems, add `! <min_fraction>` (e.g., `! 0.6`) to require at least 60% of markets be present before computing the cross-market rank; otherwise the rank is meaningless.
-- **REGRA [p.94]**: Use `CLUMP60` pooling when the question is "are markets moving together?" It returns 0 in a mixed regime and a signed measure of conformity otherwise.
-- **REGRA [p.98]**: For Absorption Ratio computation, keep `CLEAN RAW DATA` threshold as small as possible (0.4 or less) — a single cleaned bar in any market anywhere in the lookback voids the computation for the current bar.
-- **REGRA [p.108]**: Never use `CLOSE TO CLOSE` as a direct predictor in a prediction model — it is extremely unstable, nonstationary, and has poor cross-market conformity. Use it only as input to Mahalanobis Distance or Absorption Ratio [p.108].
-- **REGRA [p.135-137]**: Prefer Morlet wavelets over Daubechies for financial applications: Morlet has best time-period localization, which is what traders need. Daubechies has zero redundancy but terrible localization — use only when maximal compression of a full time series is the goal.
-- **REGRA [p.137]**: Budget Morlet wavelet indicators parsimoniously — they are "seriously redundant." Using many Morlet wavelets as predictors will create massive overfitting via the curse of dimensionality.
-- **REGRA [p.141]**: For Daubechies wavelet indicators, set HistLength ≈ 3 × prediction horizon and Level = 2 (Li, Shi & Li recommendation). HistLength must be a power of two; 2^(Level+1) ≤ HistLength.
-- **REGRA [p.144-145]**: FTI parameter choice order: (1) pick Period from the trading cycle; (2) set HalfLength somewhat greater than Period/2; (3) set BlockSize = 2 × HalfLength, increasing if channel length < 20, decreasing if channel length > 20 and long-history memory is undesired.
-- **REGRA [p.156-157]**: For targets, prefer `NEXT DAY ATR RETURN` (or its multi-bar variant `SUBSEQUENT DAY ATR RETURN`) over raw log-ratio in multi-market settings — ATR-normalization equalizes across markets so high-volatility markets do not dominate training.
-- **REGRA [p.158]**: Use `HIT OR MISS` target whenever the real trading plan includes stops and profit targets — it mimics order execution and its distribution has no outliers, which helps training.
-- **REGRA [p.170, p.172]**: When ranking predictors with Nonredundant Predictor Screening, always append `MCPT = Nreps` (≥100, preferably 1000). The solo p-value grossly underestimates the true p-value because selection bias is ignored.
-- **REGRA [p.170]**: When using `TAILS`, keep tail fraction ≥ 0.05 and typically 0.10 — smaller fractions cause mean cell count to plummet, rendering tests unreliable. "Keeping more than ten percent of each tail usually results in significant loss of predictive power. The majority of predictive power in most indicators lies in the most extreme values" [p.166].
-- **REGRA [p.168, p.175]**: Use **Uncertainty Reduction** as the default selection criterion, not Cramer's V or Lambda. UReduc is one-sided, proportional, and uses all cells. TSSB hard-codes it as default "because it is an excellent choice" [p.169].
-- **REGRA [p.175]**: When the printed output contains the line `"Results below this line are suspect due to small mean cell count"`, do not trust any p-values or measures printed below that line.
-- **REGRA [p.178]**: When indicator tail-only screening disagrees with full-distribution screening on predictor ordering, trust the tails-only ordering for model-based trading systems — the tails usually carry more of the actionable signal.
-- **REGRA [p.280, p.290]**: Prefer PRESCREEN over TRIGGER when you have strong a-priori belief that a particular regime split is appropriate; the PRESCREEN+oracle combination gives higher net OOS PF because it lets models vote jointly over all regimes rather than dropping entire regimes [p.294-295, empirical comparison].
-- **REGRA [p.306]**: Never use `IS` (in-sample) portfolios in production — they select preferentially over-powerful overfitted component models. Use only `OOS` portfolios, which require WALK FORWARD.
-- **REGRA [p.44-45] (paraphrasing from context)**: The `PROFIT FACTOR` criterion has good generalizability; other performance statistics (e.g., model R² or ROC area) do not translate well to financial performance [p.44].
-- **NUNCA [p.299, p.306]**: Do not mix TRAIN PERMUTED with APPEND DATABASE or precomputed indicator databases — permutation requires the system to be able to *recompute* indicators and targets from raw permuted bar changes. A precomputed database cannot be shuffled at the bar level.
-- **NUNCA [p.307]**: Do not interpret a low IS-portfolio p-value from TRAIN PERMUTED as evidence of edge — it detects training bias but not OOS-specific selection bias. Only WALK FORWARD on OOS portfolios gives the honest answer.
-- **NUNCA [p.175]**: Do not compare p-values to 0.05 as if that alone validates an indicator — "if the null hypothesis is true, you will still obtain a p-value less than 0.1 ten percent of the time, and a p-value less than 0.01 one percent of the time" [p.174].
+- **RULE [p.4]**: "Predictions of large magnitude are more likely to signal profitable market moves than predictions of small magnitude." Use threshold-based trade conversion: long if prediction ≥ upper threshold, short if ≤ lower threshold.
+- **RULE [p.4, p.189]**: Always specify a `MIN CRITERION FRACTION` (minimum fraction of bars that trade) when letting TSSB auto-optimize thresholds. Without it, the optimizer may converge on a single lucky trade.
+- **RULE [p.87]**: When an indicator's absolute level is meaningful but secular drift ruins stationarity, apply `CENTER <lookback>`. When volatility varies across epochs, apply `SCALE <lookback>`. When both matter, apply `NORMALIZE <lookback>`. Use median/IQR rather than mean/std because of outlier robustness [p.87-88].
+- **RULE [p.92]**: In multi-market systems, add `! <min_fraction>` (e.g., `! 0.6`) to require at least 60% of markets be present before computing the cross-market rank; otherwise the rank is meaningless.
+- **RULE [p.94]**: Use `CLUMP60` pooling when the question is "are markets moving together?" It returns 0 in a mixed regime and a signed measure of conformity otherwise.
+- **RULE [p.98]**: For Absorption Ratio computation, keep `CLEAN RAW DATA` threshold as small as possible (0.4 or less) — a single cleaned bar in any market anywhere in the lookback voids the computation for the current bar.
+- **RULE [p.108]**: Never use `CLOSE TO CLOSE` as a direct predictor in a prediction model — it is extremely unstable, nonstationary, and has poor cross-market conformity. Use it only as input to Mahalanobis Distance or Absorption Ratio [p.108].
+- **RULE [p.135-137]**: Prefer Morlet wavelets over Daubechies for financial applications: Morlet has best time-period localization, which is what traders need. Daubechies has zero redundancy but terrible localization — use only when maximal compression of a full time series is the goal.
+- **RULE [p.137]**: Budget Morlet wavelet indicators parsimoniously — they are "seriously redundant." Using many Morlet wavelets as predictors will create massive overfitting via the curse of dimensionality.
+- **RULE [p.141]**: For Daubechies wavelet indicators, set HistLength ≈ 3 × prediction horizon and Level = 2 (Li, Shi & Li recommendation). HistLength must be a power of two; 2^(Level+1) ≤ HistLength.
+- **RULE [p.144-145]**: FTI parameter choice order: (1) pick Period from the trading cycle; (2) set HalfLength somewhat greater than Period/2; (3) set BlockSize = 2 × HalfLength, increasing if channel length < 20, decreasing if channel length > 20 and long-history memory is undesired.
+- **RULE [p.156-157]**: For targets, prefer `NEXT DAY ATR RETURN` (or its multi-bar variant `SUBSEQUENT DAY ATR RETURN`) over raw log-ratio in multi-market settings — ATR-normalization equalizes across markets so high-volatility markets do not dominate training.
+- **RULE [p.158]**: Use `HIT OR MISS` target whenever the real trading plan includes stops and profit targets — it mimics order execution and its distribution has no outliers, which helps training.
+- **RULE [p.170, p.172]**: When ranking predictors with Nonredundant Predictor Screening, always append `MCPT = Nreps` (≥100, preferably 1000). The solo p-value grossly underestimates the true p-value because selection bias is ignored.
+- **RULE [p.170]**: When using `TAILS`, keep tail fraction ≥ 0.05 and typically 0.10 — smaller fractions cause mean cell count to plummet, rendering tests unreliable. "Keeping more than ten percent of each tail usually results in significant loss of predictive power. The majority of predictive power in most indicators lies in the most extreme values" [p.166].
+- **RULE [p.168, p.175]**: Use **Uncertainty Reduction** as the default selection criterion, not Cramer's V or Lambda. UReduc is one-sided, proportional, and uses all cells. TSSB hard-codes it as default "because it is an excellent choice" [p.169].
+- **RULE [p.175]**: When the printed output contains the line `"Results below this line are suspect due to small mean cell count"`, do not trust any p-values or measures printed below that line.
+- **RULE [p.178]**: When indicator tail-only screening disagrees with full-distribution screening on predictor ordering, trust the tails-only ordering for model-based trading systems — the tails usually carry more of the actionable signal.
+- **RULE [p.280, p.290]**: Prefer PRESCREEN over TRIGGER when you have strong a-priori belief that a particular regime split is appropriate; the PRESCREEN+oracle combination gives higher net OOS PF because it lets models vote jointly over all regimes rather than dropping entire regimes [p.294-295, empirical comparison].
+- **RULE [p.306]**: Never use `IS` (in-sample) portfolios in production — they select preferentially over-powerful overfitted component models. Use only `OOS` portfolios, which require WALK FORWARD.
+- **RULE [p.44-45] (paraphrasing from context)**: The `PROFIT FACTOR` criterion has good generalizability; other performance statistics (e.g., model R² or ROC area) do not translate well to financial performance [p.44].
+- **NEVER [p.299, p.306]**: Do not mix TRAIN PERMUTED with APPEND DATABASE or precomputed indicator databases — permutation requires the system to be able to *recompute* indicators and targets from raw permuted bar changes. A precomputed database cannot be shuffled at the bar level.
+- **NEVER [p.307]**: Do not interpret a low IS-portfolio p-value from TRAIN PERMUTED as evidence of edge — it detects training bias but not OOS-specific selection bias. Only WALK FORWARD on OOS portfolios gives the honest answer.
+- **NEVER [p.175]**: Do not compare p-values to 0.05 as if that alone validates an indicator — "if the null hypothesis is true, you will still obtain a p-value less than 0.1 ten percent of the time, and a p-value less than 0.01 one percent of the time" [p.174].
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Aronson Decomposition of Trading System Performance** [p.302, Eq. 9]
 
@@ -908,7 +908,7 @@ Returns +Up if the price moves up at least Up × ATR before moving down Down × 
 
 Applied after centering and/or scaling by IQR to compress outliers and fix range; Φ is the standard normal CDF, F25/F50/F75 are historical 25th/50th/75th percentiles of the indicator. Form is proprietary to TSSB but the design goal is explicit: range-fix + outlier-compress while preserving monotonicity.
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Nonredundant Predictor Screening (stepwise with MCPT)** [p.167-170, 173-178]
 
@@ -1058,7 +1058,7 @@ Step 3: Select the best-fit linear model M*.
 Step 4: For each bar t, purified_X(t) = X(t) - M*(Y)(t)
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - [p.137, p.152] **Over-using redundant wavelet families**: a battery of Morlet wavelets at neighboring periods conveys nearly the same information repeatedly, driving overfitting via the curse of dimensionality. Use at most a small handful across well-separated periods, or switch to Daubechies when many scales are needed.
 - [p.148] **Trusting automated FTI period selection**: `FTI MINOR`, `FTI MAJOR`, and related auto-period variants are "highly unstable and of limited utility"; the chosen period can jump by large amounts from one bar to the next, producing non-stationary indicator behavior. Prefer `FTI FTI` with a fixed user-specified period.
@@ -1080,42 +1080,42 @@ Step 4: For each bar t, purified_X(t) = X(t) - M*(Y)(t)
 
 ## From `books/evidence_based_ta.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.23]**: Avaliar uma regra APENAS contra um benchmark relevante. Benchmark adotado pelo livro: retorno de uma regra sem poder preditivo (placebo). Um retorno de 10% é insuficiente ou superior dependendo do que outras regras atingiram.
-- **REGRA [p.27-28]**: Detrendar a série do mercado traded ANTES de calcular retornos diários da regra. Subtrair o retorno médio diário do período de back-test. Elimina o efeito combinado de position bias × market trend.
-- **REGRA [p.29-30]**: Usar log returns, não percentagens. Sinais gerados na close do dia 0 são executados no open do dia +1; o retorno do dia é $\log(O_{+2}/O_{+1})$ (evita look-ahead bias).
-- **REGRA [p.183-185]**: Partir da hipótese nula de que toda regra é inútil (expected return = 0). Só rejeitar Ho se o retorno backtested cair na cauda direita da sampling distribution (p-value < 0.05 neste livro [p.410]).
-- **REGRA [p.281, p.345]**: NUNCA usar p-values de single-rule back test para avaliar a melhor regra de um data-mining run. Só são válidos tests que incorporam data-mining bias — WRC ou MCP.
-- **REGRA [p.407]**: Se múltiplas regras forem testadas (qualquer data mining), guardar as séries diárias completas de returns (para WRC) e/ou os output values +1/-1 de TODAS as regras (para MCP). Sem isto, significance testing rigoroso é impossível.
-- **REGRA [p.407-408]**: Não usar regras vindas de prior research de outros sem conhecer quantas regras aquele autor testou ("data-snooping bias"). Preferir construir o rule universe por enumeração combinatória de parâmetros definidos a priori.
-- **REGRA [p.46-47]**: Para dados reportados com lag ou sujeitos a revisão (ex.: mutual fund cash, stats econômicas), lagar os sinais apropriadamente. Case study evitou o problema usando apenas dados sem lag/revisão.
-- **REGRA [p.149-150]**: Para analistas subjetivos, emitir apenas forecasts falsificáveis. Três formas: (1) definir ponto futuro de avaliação; (2) definir máximo movimento adverso antes de declarar errado; (3) predizer magnitude X favorável antes de Y desfavorável.
-- **NUNCA [p.43-44]**: Combinar mentalmente mais de 3 indicadores de forma configural (não-linear). Mente humana limitada a 3 fatores configural; 5 indicadores geram 2^5 = 32 configurações distintas impossíveis de integrar intuitivamente.
-- **NUNCA [p.107-113]**: Concluir que um chart é não-aleatório por inspeção visual. Random walks produzem head-and-shoulders, double tops e trends indistinguíveis de "autênticos"; expert chartists não conseguem distinguir [Introduction, p.8; p.37-38].
-- **NUNCA [p.291]**: Otimizar parâmetros com poucas observações. A magnitude do data-mining bias cresce dramaticamente com sample size pequeno — ex.: best-of-1,024 rules com 10 obs → bias ~84% anual; com 1,000 obs → bias ~12% anual [p.315, Figure 6.33].
-- **REGRA [p.473]**: Se for permitir otimização de complexidade (rule induction, neural nets), usar 3 data segments — train / test / validation — não apenas 2. Only validation gives unbiased out-of-sample estimate.
+- **RULE [p.23]**: Evaluate a rule ONLY against a relevant benchmark. The benchmark adopted by the book is the return of a rule without predictive power (placebo). A 10% return is inadequate or superior depending on what other rules achieved.
+- **RULE [p.27-28]**: Detrend the traded market series BEFORE computing daily rule returns. Subtract the mean daily return of the back-test period. This eliminates the combined effect of position bias x market trend.
+- **RULE [p.29-30]**: Use log returns, not percentages. Signals generated at the close of day 0 are executed at the open of day +1; the day's return is $\log(O_{+2}/O_{+1})$ (avoids look-ahead bias).
+- **RULE [p.183-185]**: Start from the null hypothesis that every rule is useless (expected return = 0). Only reject Ho if the backtested return falls in the right tail of the sampling distribution (p-value < 0.05 in this book [p.410]).
+- **RULE [p.281, p.345]**: NEVER use single-rule back test p-values to evaluate the best rule from a data-mining run. Only tests that incorporate data-mining bias are valid — WRC or MCP.
+- **RULE [p.407]**: If multiple rules are tested (any data mining), store the full daily return series (for WRC) and/or the +1/−1 output values of ALL rules (for MCP). Without this, rigorous significance testing is impossible.
+- **RULE [p.407-408]**: Do not use rules from prior research by others without knowing how many rules that author tested ("data-snooping bias"). Prefer building the rule universe by combinatorial enumeration of parameters defined a priori.
+- **RULE [p.46-47]**: For data reported with lag or subject to revision (e.g., mutual fund cash, economic stats), lag the signals appropriately. The case study avoided the problem by using only data without lag/revision.
+- **RULE [p.149-150]**: For subjective analysts, issue only falsifiable forecasts. Three forms: (1) define a future evaluation point; (2) define the maximum adverse movement before declaring the forecast wrong; (3) predict a favorable magnitude X before an unfavorable Y.
+- **NEVER [p.43-44]**: Mentally combine more than 3 indicators in a configural (non-linear) way. The human mind is limited to 3 configural factors; 5 indicators generate 2^5 = 32 distinct configurations impossible to integrate intuitively.
+- **NEVER [p.107-113]**: Conclude that a chart is non-random by visual inspection. Random walks produce head-and-shoulders, double tops, and trends indistinguishable from "authentic" ones; expert chartists cannot tell them apart [Introduction, p.8; p.37-38].
+- **NEVER [p.291]**: Optimize parameters with few observations. The magnitude of data-mining bias grows dramatically with small sample size — e.g., best-of-1,024 rules with 10 obs → bias ~84% per year; with 1,000 obs → bias ~12% per year [p.315, Figure 6.33].
+- **RULE [p.473]**: If you allow complexity optimization (rule induction, neural nets), use 3 data segments — train / test / validation — not just 2. Only validation gives an unbiased out-of-sample estimate.
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Expected Return of a binary reversal rule (no-predictive-power baseline)** [p.26-28]
 
 $$ER = [p(L) \times ADC] - [p(S) \times ADC]$$
 
-- $p(L)$ = proporção do tempo long [p.26]
+- $p(L)$ = proportion of time long [p.26]
 - $p(S)$ = $1 - p(L)$ [p.26]
-- $ADC$ = average daily change of market traded [p.26]
-- Implicação: se $ADC = 0$ (mercado detrended), $ER = 0$ qualquer que seja o position bias [p.28].
+- $ADC$ = average daily change of the traded market [p.26]
+- Implication: if $ADC = 0$ (detrended market), $ER = 0$ regardless of position bias [p.28].
 
-**Detrending (conversão para log returns) — rule daily return** [p.29-30]
+**Detrending (log-return conversion) — rule daily return** [p.29-30]
 
 $$\text{Rule daily return} = POS_0 \times \left[ \log\!\left(\frac{O_{+2}}{O_{+1}}\right) - ALR \right]$$
 
-- $POS_0$ = +1 ou -1 na close do dia 0 [p.29]
-- $O_{+1}$, $O_{+2}$ = opens dos dias 1 e 2 (evita look-ahead bias; executa no open seguinte ao sinal) [p.29-30]
+- $POS_0$ = +1 or −1 at the close of day 0 [p.29]
+- $O_{+1}$, $O_{+2}$ = opens of days 1 and 2 (avoids look-ahead bias; executes at the open following the signal) [p.29-30]
 - $ALR$ = average log return over back-test period [p.30]
 
-**Sample Mean (ponto estimador do retorno esperado)** [p.260]
+**Sample Mean (point estimator of expected return)** [p.260]
 
 $$\bar{X} = \frac{\sum_{i=1}^{n} X_i}{n}$$
 
@@ -1123,13 +1123,13 @@ $$\bar{X} = \frac{\sum_{i=1}^{n} X_i}{n}$$
 
 $$x = \frac{100 - \text{Confidence Interval Desired}}{2}$$
 
-- Remover os x% superiores e x% inferiores da distribuição bootstrap dos means para obter os bounds [p.250].
+- Remove the top x% and bottom x% from the bootstrap distribution of means to obtain the bounds [p.250].
 
 **Moving Average Operator** [p.415]
 
 $$MA_t = \frac{\sum_{i=1}^{n} P_{t-i+1}}{n}$$
 
-- Lag de um simple MA = $(n-1)/2$; lag de linear-weighted MA = $(n-1)/3$ [p.400].
+- Lag of a simple MA = $(n-1)/2$; lag of a linear-weighted MA = $(n-1)/3$ [p.400].
 
 **Linear Weighted Moving Average (LMA)** [p.400]
 
@@ -1139,7 +1139,7 @@ $$WMA_t = \frac{\sum_{i=1}^{n} (n - i + 1) \cdot P_{t-i+1}}{\sum_{i=1}^{n} i}$$
 
 $$CN_t = \left[ \frac{S_t - S_{\min,n}}{S_{\max,n} - S_{\min,n}} \right] \times 100$$
 
-- $S_t$ = valor da série no tempo t; $S_{\min,n}$ e $S_{\max,n}$ = mínimo e máximo dos últimos n dias [p.402].
+- $S_t$ = value of the series at time t; $S_{\min,n}$ and $S_{\max,n}$ = min and max of the last n days [p.402].
 
 **Cumulative Advance-Decline Ratio (CADR)** [p.414]
 
@@ -1153,30 +1153,30 @@ $$NVR_t = \frac{upvol_t - dnvol_t}{upvol_t + dnvol_t + unchvol_t}$$
 
 $$DI = CN\left[\, CN(S_1, n) - CN(S_{\&P500}, n),\ 10n \,\right]$$
 
-- Dupla CN necessária porque séries companheiras têm graus distintos de co-movimento com o S&P 500 [p.452-454].
+- Double CN is required because companion series have different degrees of co-movement with the S&P 500 [p.452-454].
 
-**Artificial Trading Rule Expected Return (usado nos experimentos de data-mining bias)** [p.307-308]
+**Artificial Trading Rule Expected Return (used in the data-mining bias experiments)** [p.307-308]
 
 $$ER = ppm \times 3.97 - (1 - ppm) \times 3.97$$
 
-- $ppm$ = probability of profitable month; 3.97% = mean absolute monthly return do S&P 500 de Aug/1928–Apr/2003 [p.308].
+- $ppm$ = probability of profitable month; 3.97% = mean absolute monthly return of the S&P 500 from Aug/1928–Apr/2003 [p.308].
 
-**Linear combining rule (complex rule via soma ponderada)** [p.468-469]
+**Linear combining rule (complex rule via weighted sum)** [p.468-469]
 
 $$Y = a_0 + \sum_{i=1}^{k} a_i \cdot r_i$$
 
-- $r_i$ = output da regra i; $a_i$ = peso; $Y$ = output da regra complexa linear [p.469].
+- $r_i$ = output of rule i; $a_i$ = weight; $Y$ = output of the linear complex rule [p.469].
 
 **Markowitz/Xu Data-Mining Correction** [p.324]
 
 $$H' = R + B(H - R)$$
 
-- $H'$ = expected return corrigido da melhor regra [p.324]
-- $R$ = retorno médio de todas as regras testadas [p.324]
-- $H$ = retorno observado da melhor regra [p.324]
-- $B \in [0,1]$ = shrinkage factor (menor B = mais shrinkage) [p.324].
+- $H'$ = corrected expected return of the best rule [p.324]
+- $R$ = mean return of all tested rules [p.324]
+- $H$ = observed return of the best rule [p.324]
+- $B \in [0,1]$ = shrinkage factor (smaller B = more shrinkage) [p.324].
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **White's Reality Check (WRC) — Bootstrap for best-of-N rules** [p.341-343]
 
@@ -1259,28 +1259,28 @@ Divergence:          D-<type>-<companion>-<displacement>-<CN_lookback>
 Total: 6,402 rules [p.405; p.457]
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
-- [p.283-287] **Seleção da melhor regra sem ajustar para data-mining bias** — a performance observada da melhor de N regras sobrestima sistematicamente a expected performance. Ignorar isto é o clássico "fool's gold" da TA objetiva.
-- [p.289-291] **Cinco fatores que inflam data-mining bias**: (1) mais regras testadas → mais bias; (2) menos observações no performance statistic → mais bias; (3) menor correlação entre rule returns → mais bias; (4) presença de outliers positivos → mais bias; (5) menor variação de expected returns entre as regras → mais bias.
-- [p.149-151] **Forecasts não-falsificáveis** ("estou bullish") não passam no discernible-difference test. Equivalem a astrologia.
-- **Faith-based subjective TA** [p.5-6] (Elliott Wave, Gann, Magic T's, classic hand-drawn chart patterns) é "not even wrong" porque não gera previsões testáveis.
-- [p.333] **Argumento "TA reflete todas as informações" como justificativa de TA** contém contradição lógica — é a mesma premissa da EMH, que nega eficácia de TA [p.333].
-- [p.58, p.71-78] **Confirmation bias, self-attribution bias, hindsight bias** — analistas reinterpretam sinais errados como exceções e atribuem sucesso a skill, falhas a azar. Combater com journal diário com forecasts falsificáveis registrados ex-ante [p.53, experiência pessoal do autor em Spear Leeds].
-- [p.88-96] **Illusion of trends & patterns in random data** (Reasoning by Representativeness + Law of Large Numbers violation). Small-samples neglect → gambler's fallacy e clustering illusion.
-- [p.273-280] **Comparar performance in-sample vs. out-of-sample** como único remédio. A partir do momento em que dados out-of-sample são usados uma vez, perdem virgindade; a alocação arbitrária train/test é subjetiva.
-- [p.29-30] **Look-ahead bias** — usar close como input E como execution price (na mesma barra) inflaciona returns.
-- [p.23-28] **Position bias × market trend** cria aparência de predictive power em regras inúteis. Um long-biased rule em mercado de alta gera lucro sem qualquer skill.
-- [p.406] **Data-snooping bias (prior-research-snooping)** — testar regras de outros autores sem conhecer quantas regras eles testaram torna impossível avaliar significância corretamente.
-- [p.450] **Only long/short reversal rules** — assume mercado sempre ineficiente. Rules long/short/neutral (tri-state) ou long/neutral são mais realistas — restrição do case study foi limitação acknowledged.
-- [p.287-288, p.473] **Overfitting por complexidade excessiva** — qualquer rule pode ser fitted perfeitamente ao passado com complexidade suficiente; performance out-of-sample será desastrosa.
-- [p.407-408] **Complex rules não foram testadas no case study**; estudo maior (Hsu/Kuan, 39,832 rules) encontrou que 82% das 229 regras estatisticamente significativas eram complexas — mas nenhuma significativa em S&P 500 nem DJIA [p.450].
+- [p.283-287] **Selecting the best rule without adjusting for data-mining bias** — the observed performance of the best of N rules systematically overestimates expected performance. Ignoring this is the classic "fool's gold" of objective TA.
+- [p.289-291] **Five factors that inflate data-mining bias**: (1) more rules tested → more bias; (2) fewer observations in the performance statistic → more bias; (3) lower correlation between rule returns → more bias; (4) presence of positive outliers → more bias; (5) smaller variance of expected returns across rules → more bias.
+- [p.149-151] **Non-falsifiable forecasts** ("I am bullish") fail the discernible-difference test. They are equivalent to astrology.
+- **Faith-based subjective TA** [p.5-6] (Elliott Wave, Gann, Magic T's, classic hand-drawn chart patterns) is "not even wrong" because it generates no testable predictions.
+- [p.333] **The "TA reflects all information" argument as a justification for TA** contains a logical contradiction — it is the same premise as EMH, which denies TA's effectiveness [p.333].
+- [p.58, p.71-78] **Confirmation bias, self-attribution bias, hindsight bias** — analysts reinterpret wrong signals as exceptions and attribute success to skill, failures to luck. Combat by keeping a daily journal with falsifiable forecasts recorded ex-ante [p.53, author's personal experience at Spear Leeds].
+- [p.88-96] **Illusion of trends & patterns in random data** (Reasoning by Representativeness + Law of Large Numbers violation). Small-sample neglect → gambler's fallacy and clustering illusion.
+- [p.273-280] **Comparing in-sample vs. out-of-sample performance** as a sole remedy. Once out-of-sample data is used even once, it loses its virginity; the arbitrary train/test split is subjective.
+- [p.29-30] **Look-ahead bias** — using the close as both input AND execution price (on the same bar) inflates returns.
+- [p.23-28] **Position bias x market trend** creates apparent predictive power in useless rules. A long-biased rule in a bull market produces profit without any skill.
+- [p.406] **Data-snooping bias (prior-research-snooping)** — testing rules from other authors without knowing how many rules they tested makes it impossible to evaluate significance correctly.
+- [p.450] **Only long/short reversal rules** — assumes the market is always inefficient. Long/short/neutral (tri-state) or long/neutral rules are more realistic — the restriction of the case study was an acknowledged limitation.
+- [p.287-288, p.473] **Overfitting from excessive complexity** — any rule can be fitted perfectly to the past with enough complexity; out-of-sample performance will be disastrous.
+- [p.407-408] **Complex rules were not tested in the case study**; a larger study (Hsu/Kuan, 39,832 rules) found that 82% of the 229 statistically significant rules were complex — but none significant on the S&P 500 or DJIA [p.450].
 
 ---
 
 ## From `books/ml_for_asset_managers.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
 This book is deliberately NOT a strategy cookbook [p.22]. Section 1 does not provide trading rules in an "if X then Y" imperative form. Still, several explicit methodological injunctions function as trading-research rules:
 
@@ -1293,11 +1293,11 @@ This book is deliberately NOT a strategy cookbook [p.22]. Section 1 does not pro
 - **RULE [p.21, §1.9 FAQ]**: In finance, prefer classifiers over regression methods: "failing to predict the size is an opportunity loss, but failing to predict the sign is an actual loss" [p.21]. Sign and size often depend on different features.
 - **RULE [p.18, §1.9 FAQ "What Are Some of the Ways..."]**: Use meta-labeling to let a secondary model decide bet size/timing, leaving buy/sell to a primary model — particularly valuable when primary model is fundamental or traditional [also referenced §5.5, body N/A in extract].
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 N/A — The Introduction (Section 1), which is the only substantive chapter present in the extracted text, is prose-level exposition and contains no numbered equations or closed-form formulas. The mathematical content of the book (Marcenko-Pastur density for denoising, variation of information, ONC, HRP, Deflated Sharpe Ratio formula, False Strategy Theorem bound, etc.) lives in Sections 2-8 and Appendices A-B, which are NOT in the extracted source file for this pipeline run. See `advances_fin_ml.md` (López de Prado 2018a, AFML) — the author's prior book, referenced throughout [p.1] — for Deflated Sharpe Ratio and CPCV formulas.
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Mean-Decrease Accuracy (MDA) — feature importance** [p.5]
 
@@ -1342,7 +1342,7 @@ The extracted text only *references* CPCV and attributes the full specification 
 
 Bodies of algorithms announced in the TOC — kernel-density-estimator denoising (§2), information-theoretic distance metrics (§3), ONC (§4), triple-barrier labeling and meta-labeling (§5), clustered feature importance (§6), Nested Clustered Optimization (§7), False Strategy Theorem / DSR testing (§8) — are N/A here because those sections are not in the extracted text. See `advances_fin_ml.md` for overlapping algorithms when available.
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - [p.3] Treating backtests as research tools. They are risk-of-overfit meters at best; at worst, false-positive generators.
 - [p.7] Running the backtest-tweak-backtest loop until the strategy "looks good." Guaranteed overfit.

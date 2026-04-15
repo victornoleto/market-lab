@@ -1,74 +1,71 @@
 # Trading Evolved — Anyone can Build Killer Trading Strategies in Python
 
-> **Convenção de páginas**: este summary cita usando os números dos marcadores `[PAGE N]` do texto extraído (PDF 1-indexed), que é a única numeração confiável visível no `_full.txt` — o livro não imprime números de página em texto plano. O validador `check_citations.py` aplica offset automaticamente se detectar.
+> **Page convention**: this summary cites using the `[PAGE N]` marker numbers from the extracted text (PDF 1-indexed), which is the only reliable numbering visible in `_full.txt` — the book does not print page numbers as plain text. The `check_citations.py` validator applies an offset automatically if detected.
 
 ## Metadata
-- **Autor:** Andreas F. Clenow [p.3]
-- **Ano:** 2019 [p.3]
-- **Editora:** Self-published / Equilateral Capital Management GmbH, Zurich [p.3]
-- **Páginas:** 467 (PDF)
+- **Author:** Andreas F. Clenow [p.3]
+- **Year:** 2019 [p.3]
+- **Publisher:** Self-published / Equilateral Capital Management GmbH, Zurich [p.3]
+- **Pages:** 467 (PDF)
 - **ISBN:** 9781091983786 [p.4]
-- **Foco principal:** Ensinar construção, backtesting e análise de estratégias quantitativas de trading em Python (Zipline + PyFolio), com modelos reais para ETFs, equities (momentum) e futures (trend, counter-trend, curve, time-return).
+- **Main focus:** Teaches construction, backtesting, and analysis of quantitative trading strategies in Python (Zipline + PyFolio), with real models for ETFs, equities (momentum), and futures (trend, counter-trend, curve, time-return).
 
-## 1. Tese Central
+## 1. Core Thesis
+Systematic trading is the use of computers to model, test, and implement mathematical trading rules. The book's goal is to make quantitative backtesting accessible to anyone with moderate background, using Python (Zipline, Pandas, PyFolio) as the tool, and demonstrating real trading models (not "magic systems") as the pedagogical vehicle. The scientific approach requires formulating hypotheses, testing with a skeptical mindset (default: reject), and prioritizing **simplicity** over curve-fitted complexity [p.21-23, p.27-30]. The central message is that the models shown "are teaching tools, not production grade models" — the reader should replicate, understand, modify, and only then build their own model [p.15, p.312, p.349].
 
-Systematic trading é o uso de computadores para modelar, testar e implementar regras matemáticas de trading. O objetivo do livro é tornar backtesting quantitativo acessível a qualquer pessoa com conhecimento moderado, usando Python (Zipline, Pandas, PyFolio) como ferramenta, e demonstrando modelos de trading reais (não "sistemas mágicos") como veículo pedagógico. A abordagem científica exige formular hipóteses, testar com mentalidade skeptical (default: rejeitar), e priorizar **simplicidade** sobre complexidade curve-fitted [p.21-23, p.27-30]. A mensagem central é que os modelos mostrados "are teaching tools, not production grade models" — o leitor deve replicar, entender, modificar e só então fazer seu próprio modelo [p.15, p.312, p.349].
-
-## 2. Conceitos-Chave
-
-- **Systematic trading** — uso de computadores para modelar, testar e implementar regras matemáticas de trading; remove o componente emocional e permite validação de ideias [p.21, p.24].
-- **Model Purpose / "raison d'être"** — todo modelo precisa ter um propósito específico (fenômeno de mercado que explora), não apenas "make money"; modelos sem propósito são "accidental models" — overfit quase certo [p.27-28].
-- **Accidental model** — modelo criado testando indicadores até achar retorno positivo; backtest parece bom mas não tem predictive value [p.27-28].
-- **Financial Risk** — definido como "potential value variation per unit of time" — volatilidade por tempo, não "quanto perco se meu stop bater" [p.37].
-- **Mark-to-Market** — valoração de posição/portfólio sempre pelo preço corrente de mercado; "playing with the house's money" é fallacy [p.39-40].
-- **Risk per Trade (fallacy)** — ideia retail de que risco = distância até stop × posição; Clenow rejeita: duas carteiras com mesmo "risk per trade" podem ter risco real 2× diferente se tamanhos notional diferem [p.42-43].
-- **Sharpe Ratio** — (retorno anualizado − risk-free) / desvio-padrão anualizado; valores >1 são raros; estratégias com Sharpe 3-5 geralmente têm "negative skew" (pequenas vitórias, raro loss catastrófico) [p.45-46].
-- **Investment Universe** — conjunto de markets elegíveis; seleção é crítica e fonte principal de survivorship bias em equities [p.32-33, p.192].
-- **Survivorship bias** — usar constituintes atuais de um índice para simular o passado; solução: usar composição histórica do índice (joiners/leavers) [p.192, p.197-198].
-- **Rebalancing** — ajustes de tamanho de posição para manter risk level alvo conforme volatilidade/portfolio mudam; não é mudança de opinião, é manutenção [p.35-36].
-- **Momentum (Clenow score)** — slope de regressão exponencial anualizado × R² (coeficiente de determinação); punir ações voláteis/jumpy [p.200, p.203-205].
-- **Volatility Parity / Inverse Volatility sizing** — alocar posições tal que cada uma contribua risco aproximadamente igual; mais voláteis = peso menor [p.206-207, p.293].
-- **Trend filter (index-level SMA)** — ex: proibir long quando S&P 500 < SMA(200); criticado como potencial curve-fitting se usado para "explicar" 2008/2020 [p.211-212].
-- **Trailing stop baseado em std-dev** — exit quando position cai N × std_dev do pico; normaliza cross-market [p.267-268].
+## 2. Main Concepts
+- **Systematic trading** — use of computers to model, test, and implement mathematical trading rules; removes the emotional component and enables idea validation [p.21, p.24].
+- **Model Purpose / "raison d'être"** — every model needs a specific purpose (the market phenomenon it exploits), not just "make money"; purpose-less models are "accidental models" — almost certain overfit [p.27-28].
+- **Accidental model** — a model created by testing indicators until positive returns are found; backtest looks good but has no predictive value [p.27-28].
+- **Financial Risk** — defined as "potential value variation per unit of time" — volatility over time, not "how much I lose if my stop triggers" [p.37].
+- **Mark-to-Market** — position/portfolio valuation always at current market price; "playing with the house's money" is a fallacy [p.39-40].
+- **Risk per Trade (fallacy)** — retail idea that risk = stop distance × position; Clenow rejects this: two portfolios with the same "risk per trade" can have 2× different real risk if notional sizes differ [p.42-43].
+- **Sharpe Ratio** — (annualized return − risk-free) / annualized standard deviation; values >1 are rare; strategies with Sharpe 3-5 typically carry "negative skew" (small wins, rare catastrophic loss) [p.45-46].
+- **Investment Universe** — set of eligible markets; selection is critical and the main source of survivorship bias in equities [p.32-33, p.192].
+- **Survivorship bias** — using an index's current constituents to simulate the past; fix: use the index's historical composition (joiners/leavers) [p.192, p.197-198].
+- **Rebalancing** — position-size adjustments to maintain the target risk level as volatility/portfolio change; not a change of opinion, it is maintenance [p.35-36].
+- **Momentum (Clenow score)** — annualized exponential-regression slope × R² (coefficient of determination); penalizes volatile/jumpy stocks [p.200, p.203-205].
+- **Volatility Parity / Inverse Volatility sizing** — allocate positions so each contributes roughly equal risk; more volatile = lower weight [p.206-207, p.293].
+- **Trend filter (index-level SMA)** — e.g., prohibit long when S&P 500 < SMA(200); criticized as potential curve-fitting when used to "explain" 2008/2020 [p.211-212].
+- **Std-dev-based trailing stop** — exit when position drops N × std_dev from the peak; normalizes across markets [p.267-268].
 - **ETF (good/bad/worst)** — good: passive low-cost trackers (SPY); bad: commodity ETNs (term-structure drag, counterparty risk); worst: leveraged/inverse (daily rebalance → volatility decay) [p.166-178].
-- **Contango / Backwardation** — term structure em contango tem viés bearish embutido; backwardation tem viés bullish [p.327-329].
-- **Carry / Cost of Carry** — diferença de preço entre contratos, anualizada; pode ser única fonte de sinal para "curve trading" [p.326, p.329].
-- **Continuation** — série contínua sintética de futures, stitched por rolls; usada só para cálculo de sinais, não para trading [p.270, p.294].
-- **Point Value (big point value)** — multiplicador que converte movimento de preço em $ P&L por contrato [p.237-238].
-- **Random portfolio benchmark ("Mr. Bubbles")** — seleção aleatória de 50 ações do S&P 500, rebalanceada mensalmente, tende a bater o índice em longo prazo — o índice é um sistema sistemático ruim, não um "average" [p.370-372].
+- **Contango / Backwardation** — contango term structure has embedded bearish bias; backwardation has bullish bias [p.327-329].
+- **Carry / Cost of Carry** — price difference between contracts, annualized; can be the sole signal source for "curve trading" [p.326, p.329].
+- **Continuation** — synthetic continuous futures series, stitched via rolls; used only for signal calculation, not for trading [p.270, p.294].
+- **Point Value (big point value)** — multiplier that converts a price move into $ P&L per contract [p.237-238].
+- **Random portfolio benchmark ("Mr. Bubbles")** — random selection of 50 stocks from the S&P 500, rebalanced monthly, tends to beat the index long-term — the index is a poorly designed systematic strategy, not an "average" [p.370-372].
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Momentum Score (Clenow)** [p.200, p.204-205]
 
 $$\text{momentum\_score} = \left[\left(e^{\text{slope}}\right)^{252} - 1\right] \times 100 \times R^2$$
 
-- $\text{slope}$ = coeficiente angular da regressão linear sobre $\ln(\text{preço})$ vs. tempo
-- $R^2$ = coeficiente de determinação da mesma regressão (0 a 1)
-- 252 = dias úteis/ano (anualização)
-- Uso: ranking de ações para portfólio momentum; punição embutida para voláteis (R² baixo)
-- Janela padrão usada no livro: 125 dias [p.209]
-- Threshold mínimo usado: 40 [p.211]
+- $\text{slope}$ = slope of the linear regression of $\ln(\text{price})$ vs. time
+- $R^2$ = coefficient of determination of the same regression (0 to 1)
+- 252 = trading days/year (annualization)
+- Use: stock ranking for momentum portfolios; built-in penalty for volatile stocks (low R²)
+- Default window used in the book: 125 days [p.209]
+- Minimum threshold used: 40 [p.211]
 
 **Sharpe Ratio** [p.45-46]
 
 $$SR = \frac{R_{\text{ann}} - R_f}{\sigma_{\text{ann}}}$$
 
-- $R_{\text{ann}}$ = retorno anualizado da estratégia
-- $R_f$ = risk-free rate (Clenow recomenda yields diários de treasuries curtos; retail pode usar 0 para comparar estratégias entre si) [p.46]
-- $\sigma_{\text{ann}}$ = desvio-padrão anualizado dos retornos
-- Sharpe > 1 é raro; 0.7-0.8 pode ser "highly successful"; Sharpe 3-5 geralmente = negative skew perigoso [p.46]
+- $R_{\text{ann}}$ = annualized strategy return
+- $R_f$ = risk-free rate (Clenow recommends daily yields of short treasuries; retail can use 0 to compare strategies with each other) [p.46]
+- $\sigma_{\text{ann}}$ = annualized standard deviation of returns
+- Sharpe > 1 is rare; 0.7-0.8 can be "highly successful"; Sharpe 3-5 usually = dangerous negative skew [p.46]
 
 **Position Size (Volatility Parity Futures)** [p.263]
 
 $$\text{contracts} = \frac{\text{portfolio\_value} \times \text{risk\_factor}}{\sigma_{\text{price}} \times \text{point\_value}}$$
 
-- $\text{risk\_factor}$ = basis points alvo de variação diária por posição (ex: 0.002 = 20 bps = 0.2% daily impact alvo) [p.263]
-- $\sigma_{\text{price}}$ = 40-day std-dev das diferenças diárias de preço (price changes, não returns) [p.262]
-- $\text{point\_value}$ = big point value do contrato
-- Resultado arredondado para baixo (int)
+- $\text{risk\_factor}$ = target basis points of daily variation per position (e.g., 0.002 = 20 bps = 0.2% target daily impact) [p.263]
+- $\sigma_{\text{price}}$ = 40-day std-dev of daily price differences (price changes, not returns) [p.262]
+- $\text{point\_value}$ = contract big point value
+- Result rounded down to int
 
-**Volatility / Std-Dev de Price Changes (40 dias)** [p.262-263]
+**Volatility / Std-Dev of Price Changes (40 days)** [p.262-263]
 
 ```python
 std_dev = df.close.diff()[-40:].std()
@@ -81,29 +78,28 @@ def volatility(ts):
     return ts.pct_change().rolling(vola_window).std().iloc[-1]
 ```
 
-- `vola_window` = 20 dias no modelo Momentum [p.214]
+- `vola_window` = 20 days in the Momentum model [p.214]
 
-**Pullback normalizado (Counter-Trend)** [p.314-315]
+**Normalized pullback (Counter-Trend)** [p.314-315]
 
 $$\text{pullback} = \frac{\text{close}_t - \max(\text{close}_{t-20:t})}{\sigma_{40d}}$$
 
-- Entry long se $\text{pullback} < -3$ (i.e., 3 std-dev abaixo do high de 20d) em regime de bull market [p.314-315, p.321]
+- Enter long if $\text{pullback} < -3$ (i.e., 3 std-dev below the 20d high) in a bull-market regime [p.314-315, p.321]
 
 **Cost of Carry (Curve Trading)** [p.329-330]
 
 $$\text{annualized\_carry} = \left(\frac{P_{\text{near}}}{P_{\text{far}}}\right)^{365/\Delta\text{days}} - 1$$
 
-- Exemplo do livro: SH9 a 907.50, SK9 a 921.50, expiry 61 dias depois → perda implícita 1.52% em 61d = −8.75% annualized (contango) [p.329]
-- Usado como único input para seleção de trades no modelo "Trading the Curve" [p.326]
+- Book example: SH9 at 907.50, SK9 at 921.50, expiry 61 days later → implied loss 1.52% over 61d = −8.75% annualized (contango) [p.329]
+- Used as the sole input for trade selection in the "Trading the Curve" model [p.326]
 
 **Trend Filter (Dual EMA)** [p.264-265]
 
 - Bull: $\text{EMA}_{40} > \text{EMA}_{80}$
 - Bear: $\text{EMA}_{40} < \text{EMA}_{80}$
-- Usado no Core Trend Model e no Counter-Trend [p.265, p.312]
+- Used in the Core Trend Model and the Counter-Trend [p.265, p.312]
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Momentum Model (Equity, S&P 500 membership)** [p.197-198, p.222-226]
 
 ```
@@ -222,73 +218,69 @@ def universe_on(today):
     return latest_row.split(',')
 ```
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.21-22]**: Before going systematic, **formulate your hypothesis as firm, testable rules**; if you cannot, the idea was not a complete model.
+- **RULE [p.23]**: The default approach to backtesting is **skeptical** — look for reasons to **reject** the rule, not to accept it (confirmation bias is inevitable if you seek validation).
+- **RULE [p.27-28]**: Every model must have a **specific purpose** (market phenomenon + target return profile); "make money" is not a purpose.
+- **RULE [p.29]**: Use **as few rules and variations as possible**. Complexity must justify its existence economically — improving the backtest is not enough.
+- **RULE [p.30]**: Every rule added must have a **real market explanation**, not just a historical-metric improvement.
+- **RULE [p.32]**: Use part of the time series for fitting and part for out-of-sample testing. Never test on the same data you fit.
+- **RULE [p.33]**: Prefer **portfolios** (multiple markets) over single-market strategies; single-market = zero diversification.
+- **RULE [p.192, p.198]**: For equities, **use historical index membership** (not current constituents) to avoid survivorship bias.
+- **RULE [p.193-194]**: When dealing with equities, **adjust for dividends** (total return series or cash dividend accounting); ignoring them = substantial multi-year distortion.
+- **RULE [p.207]**: Use **volatility-parity position sizing** (inverse-volatility weighting) to give each position an "equal vote".
+- **RULE [p.197]**: **S&P 500 momentum model** — trade only monthly, top 30 stocks by momentum score (125d window), buy if momentum > 40, inverse-vol weighting, volatility = 20d std-dev of returns.
+- **RULE [p.261]**: Futures models must **check entry/exit signals AND rolls daily**; trades execute the day after the signal (close).
+- **RULE [p.263]**: For futures, size each position to impact ~0.2% daily portfolio var (risk_factor = 20 bps) as the initial benchmark.
+- **RULE [p.267-268]**: Trend trailing stop for futures = 3× std-dev of price changes (40d) from the position's peak reading. Implies ~0.6% portfolio giveback per position.
+- **RULE [p.314-315]**: Counter-trend in bull — enter long if EMA40>EMA80 AND pullback < −3 std-dev from the 20d high; exit in 20 days OR on trend reversal.
+- **RULE [p.349-352]**: **Combine multiple uncorrelated models** as portfolio components — book example: 5 equal-weighted models produced Sharpe 1.24 vs. best individual 0.84, drawdown −17% vs. individual −25% to −40%.
+- **NEVER [p.30]**: Run an optimizer to find "best" parameters; use **reasonable variations** to test stability, not optimal values.
+- **NEVER [p.41-42]**: Use pyramiding ("playing with house's money"); it violates mark-to-market and is based on a gambling fallacy.
+- **NEVER [p.43]**: Define risk as "risk per trade" based on stop distance; this ignores that risk is potential variation per unit of time.
+- **NEVER [p.44]**: Target triple-digit yearly returns — mathematically unviable long-term ("probability of ruin approaches 1").
+- **NEVER [p.176]**: Hold leveraged/inverse ETFs beyond one day — daily rebalance creates volatility decay, loss even in sideways or bear markets.
+- **NEVER [p.26]**: Leave an algo trading unsupervised; even when automated it needs constant monitoring.
+- **NEVER [p.179-180]**: Assume you can short small ETFs in a backtest — borrow liquidity is limited and shares can be recalled at the worst moment.
 
-- **REGRA [p.21-22]**: Antes de ir sistemático, **formule sua hipótese em regras firmes e testáveis**; se não consegue, é porque a ideia não era um modelo completo.
-- **REGRA [p.23]**: Abordagem default ao backtest é **skeptical** — procure razões para **rejeitar** a regra, não para aceitá-la (confirmação bias é inevitável se você buscar validação).
-- **REGRA [p.27-28]**: Todo modelo deve ter um **purpose específico** (fenômeno de mercado + perfil de retorno alvo); "make money" não é purpose.
-- **REGRA [p.29]**: Use **quantas menos regras e variações possível**. Complexidade precisa justificar economicamente sua existência — não basta melhorar o backtest.
-- **REGRA [p.30]**: Toda regra adicionada precisa ter **explicação real de mercado**, não só melhora de métrica histórica.
-- **REGRA [p.32]**: Use parte da série temporal para fitting e parte para testing (out-of-sample). Nunca teste no mesmo dado que ajustou.
-- **REGRA [p.33]**: Prefira **portfolios** (múltiplos markets) a single-market strategies; single-market = diversification zero.
-- **REGRA [p.192, p.198]**: Para equities, **use historical index membership** (não constituintes atuais) para evitar survivorship bias.
-- **REGRA [p.193-194]**: Ao lidar com equities, **corrija por dividendos** (total return series ou cash dividend accounting); ignorar = distorção substancial multi-ano.
-- **REGRA [p.207]**: Use **volatility-parity position sizing** (inverse-volatility weighting) para dar "equal vote" a cada posição.
-- **REGRA [p.197]**: **Momentum model S&P 500** — trade apenas mensalmente, top 30 ações por momentum score (janela 125d), compre se momentum > 40, inverse-vol weighting, volatility 20d std-dev de retornos.
-- **REGRA [p.261]**: Modelos de futures devem **checar diariamente** sinais de entrada/saída E rolls; trades executam no dia seguinte ao sinal (close).
-- **REGRA [p.263]**: Para futures, dimensione para cada posição impactar ~0.2% daily var do portfolio (risk_factor = 20 bps) como benchmark inicial.
-- **REGRA [p.267-268]**: Trailing stop para trend em futures = 3× std-dev de price changes (40d) do peak reading da posição. Implica giveback ~0.6% do portfolio por posição.
-- **REGRA [p.314-315]**: Counter-trend em bull — entrar long se EMA40>EMA80 E pullback < −3 std-dev do máximo 20d; exit em 20 dias OU reversão de trend.
-- **REGRA [p.349-352]**: **Combine múltiplos modelos descorrelacionados** como portfolio components — exemplo do livro: 5 modelos equi-ponderados produziram Sharpe 1.24 vs. melhor individual 0.84, drawdown −17% vs. −25% a −40% individuais.
-- **NUNCA [p.30]**: Rode um optimizer para encontrar "melhores" parâmetros; use **variações razoáveis** para testar estabilidade, não optimal values.
-- **NUNCA [p.41-42]**: Use pyramiding ("playing with house's money"); viola mark-to-market e é baseado em gambling fallacy.
-- **NUNCA [p.43]**: Defina risco como "risk per trade" baseado em distância de stop; isso ignora o fato de que risco é variação potencial por unidade de tempo.
-- **NUNCA [p.44]**: Mire triple-digit yearly returns — matematicamente inviável em longo prazo ("probability of ruin approaches 1").
-- **NUNCA [p.176]**: Mantenha leveraged/inverse ETFs além de um dia — rebalance diário cria volatility decay, perda mesmo em mercado lateral ou bear.
-- **NUNCA [p.26]**: Deixe um algo trading unsupervised; mesmo automatizado precisa de monitoramento constante.
-- **NUNCA [p.179-180]**: Assuma que pode shortar ETFs pequenos em backtest — liquidez de borrow é limitada e shares podem ser recalled no pior momento.
-
-## 6. Pitfalls e Anti-patterns
-
-- [p.27-28] **Accidental models** — combinar indicadores aleatoriamente e tunar até o backtest ficar bonito. Não tem predictive value; modelo sem "raison d'être" é curve fit quase garantido.
-- [p.30] **Optimização de múltiplos parâmetros** → "optimizers will tell you what the perfect parameters WAS for the past" — sem valor preditivo.
-- [p.31] **Filters ad-hoc para evitar anos ruins** (ex: "filter que evita 2008") — parece melhorar backtest mas é overfit; se o modelo tivesse sido desenvolvido antes, tal filter não existiria.
-- [p.41-42] **Position-size pyramiding** — aumentar posição após ganho; "past trades lack magical ability to impact the future", é gambling fallacy.
-- [p.43] **"Risk per trade" baseado em stop distance** — definição errada de risco; duas carteiras com mesmo "risk per trade" podem ter risk real muito diferente.
-- [p.44-45] **Mirar triple-digit returns** — matematicamente impossível em longo prazo; expectativa realista = <15% p.a. de traders skilled.
-- [p.175-176] **Leveraged/Inverse ETFs held >1 day** — daily rebalance causa volatility decay; mesmo em bear market de underlying, inverse ETF pode perder.
-- [p.179-180] **Assumir que short em ETFs é grátis** no backtester — locate, funding rate e recall risk destroem o edge em practice.
-- [p.192] **Usar constituintes atuais do índice** para simular o passado — survivorship bias massivo (você escolheria Enron e Lehman 10 anos atrás? Mas escolhe Apple porque sabe que subiu).
-- [p.193] **Ignorar dividendos** em equity backtests — impacto significativo multi-ano.
-- [p.211-212] **Trend filter baseado em SMA longa (ex: 200d)** — pode ser **severe curve fitting** pelo conhecimento retrospectivo de 2008; "we already know from experience that using such a long term trend filter will greatly mitigate damage from the two major bear markets of our generation. The question is of course if that has any predictive value in terms of avoiding the next" [p.212].
+## 6. Pitfalls and Anti-patterns
+- [p.27-28] **Accidental models** — combining indicators randomly and tuning until the backtest looks good. No predictive value; a model without "raison d'être" is nearly guaranteed curve fit.
+- [p.30] **Multi-parameter optimization** → "optimizers will tell you what the perfect parameters WAS for the past" — no predictive value.
+- [p.31] **Ad-hoc filters to avoid bad years** (e.g., "filter that avoids 2008") — looks like backtest improvement but is overfit; had the model been developed earlier, the filter would not exist.
+- [p.41-42] **Position-size pyramiding** — increasing position after a gain; "past trades lack magical ability to impact the future" — it is a gambling fallacy.
+- [p.43] **"Risk per trade" based on stop distance** — wrong definition of risk; two portfolios with the same "risk per trade" can have very different real risk.
+- [p.44-45] **Targeting triple-digit returns** — mathematically impossible long-term; realistic expectation = <15% p.a. for skilled traders.
+- [p.175-176] **Leveraged/Inverse ETFs held >1 day** — daily rebalance causes volatility decay; even in a bear market of the underlying, an inverse ETF can lose.
+- [p.179-180] **Assuming shorting ETFs is free** in the backtester — locate, funding rate, and recall risk destroy the edge in practice.
+- [p.192] **Using current index constituents** to simulate the past — massive survivorship bias (would you have picked Enron and Lehman 10 years ago? But you pick Apple because you know it went up).
+- [p.193] **Ignoring dividends** in equity backtests — significant multi-year impact.
+- [p.211-212] **Long-SMA-based trend filter (e.g., 200d)** — may be **severe curve fitting** from hindsight knowledge of 2008; "we already know from experience that using such a long term trend filter will greatly mitigate damage from the two major bear markets of our generation. The question is of course if that has any predictive value in terms of avoiding the next" [p.212].
 - [p.257] **Inability to explain a strategy simply** — red flag: "if you are unable to explain the idea behind your trading strategy in a simple, brief and understandable manner, then there is a clear risk that you have overcomplicated and over fitted rules".
-- [p.26] **Automação sem supervisão** — "computers are only as smart as the person programming it, and usually not even that smart".
-- [p.259-260] **Faking capital with futures** (tradar um portfolio de $100k como se fosse $1M usando margem) — 10% drawdown te varre.
-- [p.349-350] **Comparar modelos apenas por retorno anual** — ignora drawdown, Sharpe, correlação com portfolio existente; "a model with low expected return but low/negative correlation can greatly help overall portfolio".
-- [p.370-372] **Comparar sua estratégia só contra o S&P 500** — uma seleção aleatória ("chimp with darts") de 50 ações bate o índice em longo prazo. "The index is a completely different systematic trading strategy. And a poorly designed one at that" [p.371].
-- [p.369] **Investir em mutual funds ativos** — ~80% falham em bater benchmark em qualquer período 3-5 anos (SPIVA reports).
-- [p.168] **Usar ETNs como ETFs** — ETN = dívida estruturada, counterparty risk; se o emissor quebra, cash é perdido (lembre 2008).
-- [p.321] **Expected: desenho simétrico long/short** — "bullish trends and bearish trends tend to behave quite differently and may require different parameter sets"; simetria é simplificação, não feature.
+- [p.26] **Automation without supervision** — "computers are only as smart as the person programming it, and usually not even that smart".
+- [p.259-260] **Faking capital with futures** (trading a $100k portfolio as if it were $1M via margin) — a 10% drawdown wipes you out.
+- [p.349-350] **Comparing models only by annual return** — ignores drawdown, Sharpe, correlation with existing portfolio; "a model with low expected return but low/negative correlation can greatly help overall portfolio".
+- [p.370-372] **Comparing your strategy only against the S&P 500** — a random ("chimp with darts") selection of 50 stocks beats the index long-term. "The index is a completely different systematic trading strategy. And a poorly designed one at that" [p.371].
+- [p.369] **Investing in active mutual funds** — ~80% fail to beat the benchmark in any 3-5 year period (SPIVA reports).
+- [p.168] **Using ETNs as ETFs** — ETN = structured debt, counterparty risk; if the issuer goes bust, cash is lost (remember 2008).
+- [p.321] **Expected: symmetric long/short design** — "bullish trends and bearish trends tend to behave quite differently and may require different parameter sets"; symmetry is simplification, not feature.
 
-## 7. Parâmetros Sensíveis
+## 7. Sensitive Parameters
+- **Momentum window = 125 days** [p.209, p.214] — "meant to roughly represent half a year". Clenow explicitly admits: "I deliberately chose middle of the road kind of settings. I pick them more or less at random, from a set of reasonable values" [p.210]. NOT optimized.
+- **Minimum momentum = 40** [p.211] — arbitrary threshold. Clenow: "This fairly arbitrary number, is to ensure that we are not buying flat or negative stocks". Note: depends on window — shorter windows produce more extreme scores, so the threshold must scale [p.211].
+- **Portfolio size = 30 stocks** [p.210] — economic rationale: "10 stocks = too high single-stock risk; too many = quality suffers and monitoring overhead". Not backtest-optimized.
+- **Vola window = 20 days** (equities) [p.214] — "reasonable", industry standard.
+- **Vola window = 40 days** (futures, std-dev of price changes) [p.262] — "roughly measures the past two months' volatility. Feel free to experiment".
+- **Trend filter EMAs = 40/80 days** [p.265] — "these numbers are reasonable, as are many others. Feel free to try other combinations". Clenow: chosen for exposure symmetry, not for the best backtest.
+- **Breakout window = 50 days** (Core Trend) [p.266] — arbitrary.
+- **Stop = 3× std-dev** [p.267] — economic rationale: with risk_factor=0.2%, a 3σ stop loses ~0.6% of the portfolio per position, which is "acceptable giveback".
+- **Risk factor = 20 bps (0.002) daily** [p.263] — main risk tuning knob; "reasonable" default that can be scaled to the mandate.
+- **Days to hold = 20** (Counter-Trend) [p.315] — "approximately one month"; Clenow admits it is "wonky stop logic" in the demo [p.321].
+- **Dip buy = −3 std-dev** (Counter-Trend) [p.315] — symmetric to the Trend stop to explain the dynamics; not optimized.
+- **S&P 500 index trend filter (200d)** [p.211-212] — Clenow explicitly does NOT use it in the book's momentum model, suspected of retrospective curve fit.
+- **Commission = 0.1% per $** (equity) [p.215]; **$0.85/contract + $1.5 exchange fee** (futures) [p.268-269] — realistic for a low-cost broker.
+- **Slippage = VolumeShareSlippage, limit 2.5% of daily volume, impact 5%** (equity) [p.215]; **VolatilityVolumeShare limit 30%** (futures) [p.269].
 
-- **Momentum window = 125 dias** [p.209, p.214] — "meant to roughly represent half a year". Clenow admite explicitamente: "I deliberately chose middle of the road kind of settings. I pick them more or less at random, from a set of reasonable values" [p.210]. NÃO é otimizado.
-- **Minimum momentum = 40** [p.211] — threshold arbitrário. Clenow: "This fairly arbitrary number, is to ensure that we are not buying flat or negative stocks". Nota: depende da janela — janelas mais curtas produzem scores mais extremos, então o threshold precisa escalar [p.211].
-- **Portfolio size = 30 stocks** [p.210] — justificativa econômica: "10 stocks = too high single-stock risk; too many = quality suffers and monitoring overhead". Não é otimizado para backtest.
-- **Vola window = 20 dias** (equities) [p.214] — "reasonable", padrão industrial.
-- **Vola window = 40 dias** (futures, std-dev de price changes) [p.262] — "roughly measures the past two months' volatility. Feel free to experiment".
-- **Trend filter EMAs = 40/80 dias** [p.265] — "these numbers are reasonable, as are many others. Feel free to try other combinations". Clenow: escolheu por simetria de exposição, não por backtest best.
-- **Breakout window = 50 dias** (Core Trend) [p.266] — arbitrário.
-- **Stop = 3× std-dev** [p.267] — justificativa econômica: com risk_factor=0.2%, um stop 3σ perde ~0.6% do portfolio por posição, o que é "giveback acceptable".
-- **Risk factor = 20 bps (0.002) daily** [p.263] — ajustador principal de risco; default "reasonable" que pode ser escalado conforme mandato.
-- **Days to hold = 20** (Counter-Trend) [p.315] — "approximately one month"; Clenow admite é "wonky stop logic" em demo [p.321].
-- **Dip buy = −3 std-dev** (Counter-Trend) [p.315] — simétrico ao stop do Trend para explicar a dinâmica; não otimizado.
-- **S&P 500 index trend filter (200d)** [p.211-212] — Clenow explicitamente NÃO usa no modelo momentum do livro, suspeita de curve fit retrospectivo.
-- **Commission = 0.1% por $** (equity) [p.215]; **$0.85/contract + $1.5 exchange fee** (futures) [p.268-269] — realistas para low-cost broker.
-- **Slippage = VolumeShareSlippage, limit 2.5% do volume diário, impact 5%** (equity) [p.215]; **VolatilityVolumeShare limit 30%** (futures) [p.269].
-
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "The point of my books, all of my books, is to make a seemingly complex subject accessible." — [p.13]
 
 > "Your default way of thinking should be to find ways to reject the rules. To show that they fail to add value and should be discarded." — [p.23]
@@ -307,14 +299,13 @@ def universe_on(today):
 
 > "Never forget that the interesting money in this business is made from trading other people's money." — [p.355]
 
-## 9. Conexões com Outros Livros Desta Base
-
-- **Momentum model (equity, S&P 500)** é versão evoluída (com código Python + Zipline) do modelo de `stocks_on_the_move.md` — mesmo autor Clenow; Clenow explicitamente refere-se ao livro anterior [p.196, p.199]. Aqui a implementação é quantitativa com survivorship-bias handling via CSV de composição histórica do índice.
-- **Core Trend Model (futures)** é reimplementação em Python do modelo apresentado em Clenow, *Following the Trend* (2013) [p.255-258]. Não há summary desse livro anterior na base.
-- **`systematic_trading.md` (Rob Carver)** é referenciado explicitamente como complemento teórico/profundo — "a deep dive into systematic trading, you should look at something like the aptly named Systematic Trading (Carver, 2015)" [p.18]; e Carver é co-autor de guest chapter 22 em *Trading Evolved* [p.385]. Conexão: Carver defende parcimônia e position sizing similar; convergência independente sobre risk budgeting e importância de skepticism contra optimization.
-- **Volatility parity / inverse-volatility sizing** [p.206-207, p.263] também central em `systematic_trading.md` — mesmo conceito, notação similar.
-- **Counter-trend / mean reversion em bull markets** [p.310-315] complementa a abordagem de `algo_trading_chan.md` e `machine_trading.md` (Ernest Chan) sobre mean-reversion; Clenow foca em futures diversificados, Chan em equity pairs.
-- **Curve/carry trading** [p.326-330] trata um tópico ausente dos outros livros da base — seção 18 é aporte original.
-- **Skepticism anti-optimização** [p.30-31, p.257] ecoa fortemente com `advances_fin_ml.md` (López de Prado — "backtest overfitting is the most pressing issue") e `evidence_based_ta.md` (Aronson — data-mining bias). Clenow chega à mesma conclusão sem framework estatístico formal, apenas princípio empírico.
-- **ETF pitfalls (leveraged/inverse daily rebalance decay)** [p.172-176] é tratamento prático que complementa `volatility_trading.md` (Sinclair) sobre estruturação de produtos derivativos.
-- **Random portfolio benchmark ("Mr. Bubbles")** [p.367-372] tem afinidade com a discussão de `evidence_based_ta.md` sobre significância estatística contra benchmarks passivos/random.
+## 9. Cross-references to Other Books in This Knowledge Base
+- The **Momentum model (equity, S&P 500)** is an evolved version (with Python + Zipline code) of the model from `stocks_on_the_move.md` — same author Clenow; Clenow explicitly references the earlier book [p.196, p.199]. Here the implementation is quantitative with survivorship-bias handling via a CSV of historical index composition.
+- The **Core Trend Model (futures)** is a Python reimplementation of the model presented in Clenow, *Following the Trend* (2013) [p.255-258]. No summary of that earlier book exists in this knowledge base.
+- **`systematic_trading.md` (Rob Carver)** is explicitly referenced as a deeper theoretical complement — "a deep dive into systematic trading, you should look at something like the aptly named Systematic Trading (Carver, 2015)" [p.18]; Carver is also co-author of guest chapter 22 in *Trading Evolved* [p.385]. Connection: Carver advocates similar parsimony and position sizing; independent convergence on risk budgeting and the importance of skepticism against optimization.
+- **Volatility parity / inverse-volatility sizing** [p.206-207, p.263] also central in `systematic_trading.md` — same concept, similar notation.
+- **Counter-trend / mean reversion in bull markets** [p.310-315] complements the approach of `algo_trading_chan.md` and `machine_trading.md` (Ernest Chan) on mean-reversion; Clenow focuses on diversified futures, Chan on equity pairs.
+- **Curve/carry trading** [p.326-330] treats a topic absent from other books in this knowledge base — section 18 is an original contribution.
+- **Anti-optimization skepticism** [p.30-31, p.257] resonates strongly with `advances_fin_ml.md` (López de Prado — "backtest overfitting is the most pressing issue") and `evidence_based_ta.md` (Aronson — data-mining bias). Clenow reaches the same conclusion without a formal statistical framework, via empirical principle alone.
+- **ETF pitfalls (leveraged/inverse daily rebalance decay)** [p.172-176] is a practical treatment that complements `volatility_trading.md` (Sinclair) on derivatives product structuring.
+- **Random portfolio benchmark ("Mr. Bubbles")** [p.367-372] aligns with the discussion in `evidence_based_ta.md` on statistical significance against passive/random benchmarks.

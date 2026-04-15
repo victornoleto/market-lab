@@ -1,25 +1,23 @@
 # The Mathematics of Money Management: Risk Analysis Techniques for Traders
 
 ## Metadata
-- **Autor:** Ralph Vince [p.2]
-- **Ano:** 1992 [p.2]
-- **Editora:** John Wiley & Sons [p.2]
-- **Páginas:** 109 (PDF) [p.?]
+- **Author:** Ralph Vince [p.2]
+- **Year:** 1992 [p.2]
+- **Publisher:** John Wiley & Sons [p.2]
+- **Pages:** 109 (PDF) [p.?]
 - **ISBN:** 0-471-54738-7 [p.2]
-- **Foco principal:** Mathematical framework for optimal position sizing (optimal f), portfolio construction via geometric mean maximization, and risk management for active traders. [p.5]
+- **Main focus:** Mathematical framework for optimal position sizing (optimal f), portfolio construction via geometric mean maximization, and risk management for active traders. [p.5]
 
 ---
 
-## 1. Tese Central
-
+## 1. Core Thesis
 The book's central thesis is that there exists a mathematically optimal fixed fraction of capital to risk on each trade — called **optimal f** — which maximizes the geometric growth rate (TWR) of an account over time. This fraction is unique to each trading system and can be derived either empirically from trade history or parametrically from a probability distribution of outcomes [p.5-8, ch.1].
 
 A secondary thesis is that modern portfolio theory (Markowitz) produces suboptimal results when applied naively to trading because it constrains portfolio weights to sum to 1 and uses arithmetic-mean-based metrics. By lifting the constraint on the sum of weights and targeting the **geometric optimal portfolio** (the portfolio with the highest geometric mean HPR), combined with a **dynamic fractional f** strategy that allocates only a portion of total equity as "active," traders can achieve asymptotically superior growth while bounding catastrophic loss [p.81-88, ch.7-8].
 
 ---
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Optimal f** — The fixed fraction of equity to risk per trade that maximizes the Terminal Wealth Relative (TWR). Found by iterating f from 0.01 to 1.00 and selecting the value that maximizes TWR. Unique to each trading system [p.9-14, ch.1].
 
 - **Terminal Wealth Relative (TWR)** — The product of all Holding Period Returns across N trades; measures total growth multiple. TWR > 1 means net profit [p.14, ch.1].
@@ -70,8 +68,7 @@ A secondary thesis is that modern portfolio theory (Markowitz) produces suboptim
 
 ---
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **HPR (Holding Period Return)** [p.16, ch.1; eq.1.11]
 
 $$HPR_i = 1 + f \cdot \left(\frac{-\text{Trade}_i}{\text{BiggestLoss}}\right)$$
@@ -238,8 +235,7 @@ $$N'(X) = \frac{N!}{X!(N-X)!} \cdot P^X \cdot Q^{N-X}$$
 
 ---
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Algorithm: Empirical Optimal f Search** [p.16-17, ch.1]
 
 ```python
@@ -347,42 +343,40 @@ for each system i:
 
 ---
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.13]**: Never use money management to salvage a system with negative mathematical expectation. Money management only amplifies what is already there — positive or negative.
 
-- **REGRA [p.13]**: Never use money management to salvage a system with negative mathematical expectation. Money management only amplifies what is already there — positive or negative.
+- **RULE [p.17]**: Always use the biggest historical loss (not average loss) as the denominator in HPR calculations. Using average loss underestimates real risk.
 
-- **REGRA [p.17]**: Always use the biggest historical loss (not average loss) as the denominator in HPR calculations. Using average loss underestimates real risk.
+- **RULE [p.16]**: Do NOT equate optimal f with Kelly Criterion unless the trading system has exactly two outcomes of fixed sizes (pure Bernoulli).
 
-- **REGRA [p.16]**: Do NOT equate optimal f with Kelly Criterion unless the trading system has exactly two outcomes of fixed sizes (pure Bernoulli).
+- **RULE [p.16]**: Do not use Kelly Criterion on systems with variable win/loss sizes. Produces incorrect f values and can lead to ruin.
 
-- **REGRA [p.16]**: Do not use Kelly Criterion on systems with variable win/loss sizes. Produces incorrect f values and can lead to ruin.
+- **RULE [p.34]**: Expect the **longest** drawdown to occupy 35-55% of trading life at optimal f. The arc sine laws apply to duration of drawdown, not its depth. This is a mathematical consequence, not a tail risk.
 
-- **REGRA [p.34]**: Expect the **longest** drawdown to occupy 35-55% of trading life at optimal f. The arc sine laws apply to duration of drawdown, not its depth. This is a mathematical consequence, not a tail risk.
+- **RULE [p.26, ch.2]**: Do NOT switch to fixed-fraction trading until equity surpasses the Threshold to Geometric (T). Below T, constant-contract trading has a higher expected outcome.
 
-- **REGRA [p.26, ch.2]**: Do NOT switch to fixed-fraction trading until equity surpasses the Threshold to Geometric (T). Below T, constant-contract trading has a higher expected outcome.
+- **RULE [p.44-48, ch.3]**: When using parametric optimal f with the Normal distribution, use at minimum M = 100 discrete points to discretize the distribution.
 
-- **REGRA [p.44-48, ch.3]**: When using parametric optimal f with the Normal distribution, use at minimum M = 100 discrete points to discretize the distribution.
+- **RULE [p.76-80, ch.6]**: Compute optimal f for each market system individually first, then construct the portfolio using those HPR streams. Do NOT optimize portfolio weights and f simultaneously.
 
-- **REGRA [p.76-80, ch.6]**: Compute optimal f for each market system individually first, then construct the portfolio using those HPR streams. Do NOT optimize portfolio weights and f simultaneously.
+- **RULE [p.82-84, ch.7]**: Use unconstrained portfolio weights (sum > 1 is allowed and expected). The constraint sum(w) = 1 artificially limits growth.
 
-- **REGRA [p.82-84, ch.7]**: Use unconstrained portfolio weights (sum > 1 is allowed and expected). The constraint sum(w) = 1 artificially limits growth.
+- **RULE [p.89-93, ch.8]**: Prefer dynamic fractional f over static fractional f. Dynamic is asymptotically superior: it compounds the active portion at full optimal f while inactive equity provides a floor.
 
-- **REGRA [p.89-93, ch.8]**: Prefer dynamic fractional f over static fractional f. Dynamic is asymptotically superior: it compounds the active portion at full optimal f while inactive equity provides a floor.
+- **RULE [p.96-97, ch.8]**: Before trading an unconstrained portfolio, compute margin upper limit U via Eq. (8.08). Set maximum active equity percentage to min(U, 1.0).
 
-- **REGRA [p.96-97, ch.8]**: Before trading an unconstrained portfolio, compute margin upper limit U via Eq. (8.08). Set maximum active equity percentage to min(U, 1.0).
+- **RULE [p.97, ch.8]**: When a component's portfolio weight exceeds 1.0, set the active equity upper limit to 1 / (highest weighting) to prevent a single worst-case loss from wiping the account.
 
-- **REGRA [p.97, ch.8]**: When a component's portfolio weight exceeds 1.0, set the active equity upper limit to 1 / (highest weighting) to prevent a single worst-case loss from wiping the account.
+- **RULE [p.97-98, ch.8]**: When managing a rotating portfolio, always recalculate the unconstrained geometric optimal portfolio after each composition change. Keep the inactive equity dollar amount constant.
 
-- **REGRA [p.97-98, ch.8]**: When managing a rotating portfolio, always recalculate the unconstrained geometric optimal portfolio after each composition change. Keep the inactive equity dollar amount constant.
+- **NEVER [p.16]**: Do not use the Kelly Criterion on trading systems with variable win/loss sizes.
 
-- **NUNCA [p.16]**: Do not use the Kelly Criterion on trading systems with variable win/loss sizes.
-
-- **NUNCA [p.24]**: Do not use the Fundamental Equation of Trading as a real-time trading signal. Use it only for scenario analysis and only when distribution is stationary.
+- **NEVER [p.24]**: Do not use the Fundamental Equation of Trading as a real-time trading signal. Use it only for scenario analysis and only when distribution is stationary.
 
 ---
 
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - **[p.13]** Attempting to use money management on a system with negative expectation. No position sizing technique converts a losing strategy into a winner.
 
 - **[p.17, ch.1]** Confusing optimal f with the fraction of account equity to invest. Optimal f is the fraction used to compute position size (contracts = equity / f$), not a direct equity percentage.
@@ -409,8 +403,7 @@ for each system i:
 
 ---
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **Number of discrete points for parametric optimal f (M)** [p.44-48, ch.3]: Author uses 100 in examples. Not a curve-fit risk — computational precision parameter.
 
 - **Initial active equity percentage** [p.89-93, ch.8]: Author cites 20% in examples. Determined by investor utility and drawdown tolerance, not statistically optimized. Lower is always safer.
@@ -427,8 +420,7 @@ for each system i:
 
 ---
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "Mathematical expectation is the amount you expect to make or lose, on average, each bet. In gambling parlance this is sometimes known as the player's edge (if positive to the player) or the house's advantage (if negative to the player)." — [p.13]
 
 > "The Kelly formula pertains only to a very specific type of game—a Bernoulli game, where the possible outcomes are a fixed win amount or a fixed loss amount. ... In the real world, it is the rare trading system that has uniform winning and losing amounts." — [p.16]
@@ -441,6 +433,5 @@ for each system i:
 
 ---
 
-## 9. Conexões com Outros Livros Desta Base
-
-N/A — Este e o primeiro livro desta base cujo conteudo de money management foi processado de forma detalhada. Cross-referencias serao adicionadas em passes subsequentes quando os demais summaries estiverem validados.
+## 9. Cross-references to Other Books in This Knowledge Base
+N/A — This is the first book in this base whose money management content has been processed in detail. Cross-references will be added in subsequent passes once the remaining summaries have been validated.

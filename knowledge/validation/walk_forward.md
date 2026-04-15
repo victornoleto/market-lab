@@ -1,6 +1,6 @@
 # Walk-Forward Analysis
 
-Treino/teste deslizante — simula operação real com re-otimização periódica.
+Sliding train/test — simulates real operation with periodic re-optimization.
 
 ## Sources
 
@@ -10,31 +10,31 @@ Treino/teste deslizante — simula operação real com re-otimização periódic
 
 ## From `books/testing_tuning.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.14-15]:** Always work with log-prices and compute trade returns as differences of logs. Never use raw percent returns in statistical evaluations — asymmetry of +x%/−x% accumulates into a bogus positive expectation.
-- **REGRA [p.17]:** Design the testing pipeline to eliminate *every* trace of future leak, including "innocuous" overlaps. A 1% edge produces a respectable equity curve; any leak is amplified.
-- **REGRA [p.21, p.27-28]:** Before training any model, visually study each indicator's time-series plot. If its central tendency wanders for months/years, either oscillate (lagged difference), normalize with a moving window, or reject the indicator.
-- **REGRA [p.30-31]:** Screen every candidate indicator for relative entropy ≥ 0.5 (hard concern at < 0.1). If low, revise the computation or apply a monotonic transform (tanh / logistic / log / tail cleaning).
-- **REGRA [p.43]:** Start with a regularized linear model. Graduate to nonlinear only if a clear, validated advantage emerges.
-- **REGRA [p.47]:** Never run a pure lasso (α = 1) on data that might contain near-perfect predictor collinearity. Use α just below 1 for stability.
-- **REGRA [p.125-127]:** After optimization, plot parameter sensitivity curves around the optimum. Smooth decline = robust; narrow peak or multi-peak = overfit / lucky. Reject narrow-peak systems.
-- **REGRA [p.143-144]:** After choosing among multiple competing systems based on OOS performance, the chosen OOS score is biased. You must hold out an additional fresh period for the final estimate, or use selection-bias MCPT [p.319-320].
-- **REGRA [p.149-150, p.171]:** In walkforward or CV, remove `min(lookback, lookahead) − 1` cases as a guard buffer between train and test. For CV, remove the buffer on *both* sides of each test block.
-- **REGRA [p.170-171]:** Do not use cross-validation for time-series trading-system performance estimation in general. Walkforward mimics real life; CV leaks nonstationarity and is pessimistically biased on smaller training sets. Narrow exceptions: optimizing model complexity or selecting predictors, where CV-inside-walkforward is reasonable. [p.211-212]
-- **REGRA [p.196-199]:** Whenever a selector picks from competing systems on OOS returns, use nested walkforward so the selector's own decisions are evaluated on untouched outer-OOS data.
-- **REGRA [p.244-245]:** For bounds on mean future returns with near-normal returns, use Student-t one-sided lower bound at the desired confidence. Beware heavy tails.
-- **REGRA [p.246-247]:** With non-normal or uncertain distributions, use BCa bootstrap, not pivot or percentile methods. BCa is the single most important bounding tool for the true mean of returns.
-- **REGRA [p.263-264]:** Never bootstrap the raw Sharpe ratio or raw profit factor. Bootstrap log(profit factor) instead; treat raw Sharpe bounds with "considerable caution."
-- **REGRA [p.291]:** To bound future drawdowns, use the drawdown-specific bootstrap (sample of size = drawdown-horizon = typically 252, from the full OOS pool); expect millions of iterations; never use drawdown bounds inside training loops unless you apply the faster approximation on p.264.
-- **REGRA [p.318, p.286]:** Run an MCPT on the *entire training process* (not just a final system). A good unpermuted result should sit in the extreme right tail of the permuted performance distribution (p < 0.05, ideally much smaller).
-- **REGRA [p.319-320]:** When comparing several trading-system candidates, the decision-relevant p-value is the *best-of-many* selection-bias-adjusted MCPT p-value, not the per-system p-value.
-- **REGRA [p.327-328]:** Permute *log-price changes*, not prices. Keep the first price fixed. Keep the shuffle inside the OOS region.
-- **REGRA [p.334-335]:** For multi-market systems, use a single shared permutation across all markets to preserve cross-correlation; drop dates with any missing market.
-- **NUNCA [p.16-17]:** Override the trading system based on gut feel. "Forget automated trading if you don't have the guts to believe in it."
-- **NUNCA [p.34]:** Truncate (clip) outliers — truncation is non-monotonic and destroys information. Use tail cleaning (exp compression) instead.
+- **RULE [p.14-15]:** Always work with log-prices and compute trade returns as differences of logs. Never use raw percent returns in statistical evaluations — asymmetry of +x%/−x% accumulates into a bogus positive expectation.
+- **RULE [p.17]:** Design the testing pipeline to eliminate *every* trace of future leak, including "innocuous" overlaps. A 1% edge produces a respectable equity curve; any leak is amplified.
+- **RULE [p.21, p.27-28]:** Before training any model, visually study each indicator's time-series plot. If its central tendency wanders for months/years, either oscillate (lagged difference), normalize with a moving window, or reject the indicator.
+- **RULE [p.30-31]:** Screen every candidate indicator for relative entropy ≥ 0.5 (hard concern at < 0.1). If low, revise the computation or apply a monotonic transform (tanh / logistic / log / tail cleaning).
+- **RULE [p.43]:** Start with a regularized linear model. Graduate to nonlinear only if a clear, validated advantage emerges.
+- **RULE [p.47]:** Never run a pure lasso (α = 1) on data that might contain near-perfect predictor collinearity. Use α just below 1 for stability.
+- **RULE [p.125-127]:** After optimization, plot parameter sensitivity curves around the optimum. Smooth decline = robust; narrow peak or multi-peak = overfit / lucky. Reject narrow-peak systems.
+- **RULE [p.143-144]:** After choosing among multiple competing systems based on OOS performance, the chosen OOS score is biased. You must hold out an additional fresh period for the final estimate, or use selection-bias MCPT [p.319-320].
+- **RULE [p.149-150, p.171]:** In walkforward or CV, remove `min(lookback, lookahead) − 1` cases as a guard buffer between train and test. For CV, remove the buffer on *both* sides of each test block.
+- **RULE [p.170-171]:** Do not use cross-validation for time-series trading-system performance estimation in general. Walkforward mimics real life; CV leaks nonstationarity and is pessimistically biased on smaller training sets. Narrow exceptions: optimizing model complexity or selecting predictors, where CV-inside-walkforward is reasonable. [p.211-212]
+- **RULE [p.196-199]:** Whenever a selector picks from competing systems on OOS returns, use nested walkforward so the selector's own decisions are evaluated on untouched outer-OOS data.
+- **RULE [p.244-245]:** For bounds on mean future returns with near-normal returns, use Student-t one-sided lower bound at the desired confidence. Beware heavy tails.
+- **RULE [p.246-247]:** With non-normal or uncertain distributions, use BCa bootstrap, not pivot or percentile methods. BCa is the single most important bounding tool for the true mean of returns.
+- **RULE [p.263-264]:** Never bootstrap the raw Sharpe ratio or raw profit factor. Bootstrap log(profit factor) instead; treat raw Sharpe bounds with "considerable caution."
+- **RULE [p.291]:** To bound future drawdowns, use the drawdown-specific bootstrap (sample of size = drawdown-horizon = typically 252, from the full OOS pool); expect millions of iterations; never use drawdown bounds inside training loops unless you apply the faster approximation on p.264.
+- **RULE [p.318, p.286]:** Run an MCPT on the *entire training process* (not just a final system). A good unpermuted result should sit in the extreme right tail of the permuted performance distribution (p < 0.05, ideally much smaller).
+- **RULE [p.319-320]:** When comparing several trading-system candidates, the decision-relevant p-value is the *best-of-many* selection-bias-adjusted MCPT p-value, not the per-system p-value.
+- **RULE [p.327-328]:** Permute *log-price changes*, not prices. Keep the first price fixed. Keep the shuffle inside the OOS region.
+- **RULE [p.334-335]:** For multi-market systems, use a single shared permutation across all markets to preserve cross-correlation; drop dates with any missing market.
+- **NEVER [p.16-17]:** Override the trading system based on gut feel. "Forget automated trading if you don't have the guts to believe in it."
+- **NEVER [p.34]:** Truncate (clip) outliers — truncation is non-monotonic and destroys information. Use tail cleaning (exp compression) instead.
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Equation 1-1 — Expected return of a trade** [p.18]
 
@@ -110,7 +110,7 @@ lower_bound = mean - stddev / sqrt((double) n) *
 
 Relatively robust to moderate non-normality but fragile under heavy tails or extreme skew. [p.244-245]
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **STATN — nonstationarity gap analysis** [p.22-26]
 
@@ -317,7 +317,7 @@ Apply σ identically to each market's change-vector and reconstruct.
 ```
 Required to preserve cross-market correlation. [p.334-335]
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - [p.17] Casual developers claim "small" future leaks don't matter. They do. Treat any leak as catastrophic.
 - [p.18-19] Bragging about how often a trading system wins is meaningless without the size of wins and losses — win/loss sizes and probabilities are inextricably related via Equation 1-1.
@@ -343,34 +343,34 @@ Required to preserve cross-market correlation. [p.334-335]
 
 ## From `books/stat_sound_indicators.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.4]**: "Predictions of large magnitude are more likely to signal profitable market moves than predictions of small magnitude." Use threshold-based trade conversion: long if prediction ≥ upper threshold, short if ≤ lower threshold.
-- **REGRA [p.4, p.189]**: Always specify a `MIN CRITERION FRACTION` (minimum fraction of bars that trade) when letting TSSB auto-optimize thresholds. Without it, the optimizer may converge on a single lucky trade.
-- **REGRA [p.87]**: When an indicator's absolute level is meaningful but secular drift ruins stationarity, apply `CENTER <lookback>`. When volatility varies across epochs, apply `SCALE <lookback>`. When both matter, apply `NORMALIZE <lookback>`. Use median/IQR rather than mean/std because of outlier robustness [p.87-88].
-- **REGRA [p.92]**: In multi-market systems, add `! <min_fraction>` (e.g., `! 0.6`) to require at least 60% of markets be present before computing the cross-market rank; otherwise the rank is meaningless.
-- **REGRA [p.94]**: Use `CLUMP60` pooling when the question is "are markets moving together?" It returns 0 in a mixed regime and a signed measure of conformity otherwise.
-- **REGRA [p.98]**: For Absorption Ratio computation, keep `CLEAN RAW DATA` threshold as small as possible (0.4 or less) — a single cleaned bar in any market anywhere in the lookback voids the computation for the current bar.
-- **REGRA [p.108]**: Never use `CLOSE TO CLOSE` as a direct predictor in a prediction model — it is extremely unstable, nonstationary, and has poor cross-market conformity. Use it only as input to Mahalanobis Distance or Absorption Ratio [p.108].
-- **REGRA [p.135-137]**: Prefer Morlet wavelets over Daubechies for financial applications: Morlet has best time-period localization, which is what traders need. Daubechies has zero redundancy but terrible localization — use only when maximal compression of a full time series is the goal.
-- **REGRA [p.137]**: Budget Morlet wavelet indicators parsimoniously — they are "seriously redundant." Using many Morlet wavelets as predictors will create massive overfitting via the curse of dimensionality.
-- **REGRA [p.141]**: For Daubechies wavelet indicators, set HistLength ≈ 3 × prediction horizon and Level = 2 (Li, Shi & Li recommendation). HistLength must be a power of two; 2^(Level+1) ≤ HistLength.
-- **REGRA [p.144-145]**: FTI parameter choice order: (1) pick Period from the trading cycle; (2) set HalfLength somewhat greater than Period/2; (3) set BlockSize = 2 × HalfLength, increasing if channel length < 20, decreasing if channel length > 20 and long-history memory is undesired.
-- **REGRA [p.156-157]**: For targets, prefer `NEXT DAY ATR RETURN` (or its multi-bar variant `SUBSEQUENT DAY ATR RETURN`) over raw log-ratio in multi-market settings — ATR-normalization equalizes across markets so high-volatility markets do not dominate training.
-- **REGRA [p.158]**: Use `HIT OR MISS` target whenever the real trading plan includes stops and profit targets — it mimics order execution and its distribution has no outliers, which helps training.
-- **REGRA [p.170, p.172]**: When ranking predictors with Nonredundant Predictor Screening, always append `MCPT = Nreps` (≥100, preferably 1000). The solo p-value grossly underestimates the true p-value because selection bias is ignored.
-- **REGRA [p.170]**: When using `TAILS`, keep tail fraction ≥ 0.05 and typically 0.10 — smaller fractions cause mean cell count to plummet, rendering tests unreliable. "Keeping more than ten percent of each tail usually results in significant loss of predictive power. The majority of predictive power in most indicators lies in the most extreme values" [p.166].
-- **REGRA [p.168, p.175]**: Use **Uncertainty Reduction** as the default selection criterion, not Cramer's V or Lambda. UReduc is one-sided, proportional, and uses all cells. TSSB hard-codes it as default "because it is an excellent choice" [p.169].
-- **REGRA [p.175]**: When the printed output contains the line `"Results below this line are suspect due to small mean cell count"`, do not trust any p-values or measures printed below that line.
-- **REGRA [p.178]**: When indicator tail-only screening disagrees with full-distribution screening on predictor ordering, trust the tails-only ordering for model-based trading systems — the tails usually carry more of the actionable signal.
-- **REGRA [p.280, p.290]**: Prefer PRESCREEN over TRIGGER when you have strong a-priori belief that a particular regime split is appropriate; the PRESCREEN+oracle combination gives higher net OOS PF because it lets models vote jointly over all regimes rather than dropping entire regimes [p.294-295, empirical comparison].
-- **REGRA [p.306]**: Never use `IS` (in-sample) portfolios in production — they select preferentially over-powerful overfitted component models. Use only `OOS` portfolios, which require WALK FORWARD.
-- **REGRA [p.44-45] (paraphrasing from context)**: The `PROFIT FACTOR` criterion has good generalizability; other performance statistics (e.g., model R² or ROC area) do not translate well to financial performance [p.44].
-- **NUNCA [p.299, p.306]**: Do not mix TRAIN PERMUTED with APPEND DATABASE or precomputed indicator databases — permutation requires the system to be able to *recompute* indicators and targets from raw permuted bar changes. A precomputed database cannot be shuffled at the bar level.
-- **NUNCA [p.307]**: Do not interpret a low IS-portfolio p-value from TRAIN PERMUTED as evidence of edge — it detects training bias but not OOS-specific selection bias. Only WALK FORWARD on OOS portfolios gives the honest answer.
-- **NUNCA [p.175]**: Do not compare p-values to 0.05 as if that alone validates an indicator — "if the null hypothesis is true, you will still obtain a p-value less than 0.1 ten percent of the time, and a p-value less than 0.01 one percent of the time" [p.174].
+- **RULE [p.4]**: "Predictions of large magnitude are more likely to signal profitable market moves than predictions of small magnitude." Use threshold-based trade conversion: long if prediction ≥ upper threshold, short if ≤ lower threshold.
+- **RULE [p.4, p.189]**: Always specify a `MIN CRITERION FRACTION` (minimum fraction of bars that trade) when letting TSSB auto-optimize thresholds. Without it, the optimizer may converge on a single lucky trade.
+- **RULE [p.87]**: When an indicator's absolute level is meaningful but secular drift ruins stationarity, apply `CENTER <lookback>`. When volatility varies across epochs, apply `SCALE <lookback>`. When both matter, apply `NORMALIZE <lookback>`. Use median/IQR rather than mean/std because of outlier robustness [p.87-88].
+- **RULE [p.92]**: In multi-market systems, add `! <min_fraction>` (e.g., `! 0.6`) to require at least 60% of markets be present before computing the cross-market rank; otherwise the rank is meaningless.
+- **RULE [p.94]**: Use `CLUMP60` pooling when the question is "are markets moving together?" It returns 0 in a mixed regime and a signed measure of conformity otherwise.
+- **RULE [p.98]**: For Absorption Ratio computation, keep `CLEAN RAW DATA` threshold as small as possible (0.4 or less) — a single cleaned bar in any market anywhere in the lookback voids the computation for the current bar.
+- **RULE [p.108]**: Never use `CLOSE TO CLOSE` as a direct predictor in a prediction model — it is extremely unstable, nonstationary, and has poor cross-market conformity. Use it only as input to Mahalanobis Distance or Absorption Ratio [p.108].
+- **RULE [p.135-137]**: Prefer Morlet wavelets over Daubechies for financial applications: Morlet has best time-period localization, which is what traders need. Daubechies has zero redundancy but terrible localization — use only when maximal compression of a full time series is the goal.
+- **RULE [p.137]**: Budget Morlet wavelet indicators parsimoniously — they are "seriously redundant." Using many Morlet wavelets as predictors will create massive overfitting via the curse of dimensionality.
+- **RULE [p.141]**: For Daubechies wavelet indicators, set HistLength ≈ 3 × prediction horizon and Level = 2 (Li, Shi & Li recommendation). HistLength must be a power of two; 2^(Level+1) ≤ HistLength.
+- **RULE [p.144-145]**: FTI parameter choice order: (1) pick Period from the trading cycle; (2) set HalfLength somewhat greater than Period/2; (3) set BlockSize = 2 × HalfLength, increasing if channel length < 20, decreasing if channel length > 20 and long-history memory is undesired.
+- **RULE [p.156-157]**: For targets, prefer `NEXT DAY ATR RETURN` (or its multi-bar variant `SUBSEQUENT DAY ATR RETURN`) over raw log-ratio in multi-market settings — ATR-normalization equalizes across markets so high-volatility markets do not dominate training.
+- **RULE [p.158]**: Use `HIT OR MISS` target whenever the real trading plan includes stops and profit targets — it mimics order execution and its distribution has no outliers, which helps training.
+- **RULE [p.170, p.172]**: When ranking predictors with Nonredundant Predictor Screening, always append `MCPT = Nreps` (≥100, preferably 1000). The solo p-value grossly underestimates the true p-value because selection bias is ignored.
+- **RULE [p.170]**: When using `TAILS`, keep tail fraction ≥ 0.05 and typically 0.10 — smaller fractions cause mean cell count to plummet, rendering tests unreliable. "Keeping more than ten percent of each tail usually results in significant loss of predictive power. The majority of predictive power in most indicators lies in the most extreme values" [p.166].
+- **RULE [p.168, p.175]**: Use **Uncertainty Reduction** as the default selection criterion, not Cramer's V or Lambda. UReduc is one-sided, proportional, and uses all cells. TSSB hard-codes it as default "because it is an excellent choice" [p.169].
+- **RULE [p.175]**: When the printed output contains the line `"Results below this line are suspect due to small mean cell count"`, do not trust any p-values or measures printed below that line.
+- **RULE [p.178]**: When indicator tail-only screening disagrees with full-distribution screening on predictor ordering, trust the tails-only ordering for model-based trading systems — the tails usually carry more of the actionable signal.
+- **RULE [p.280, p.290]**: Prefer PRESCREEN over TRIGGER when you have strong a-priori belief that a particular regime split is appropriate; the PRESCREEN+oracle combination gives higher net OOS PF because it lets models vote jointly over all regimes rather than dropping entire regimes [p.294-295, empirical comparison].
+- **RULE [p.306]**: Never use `IS` (in-sample) portfolios in production — they select preferentially over-powerful overfitted component models. Use only `OOS` portfolios, which require WALK FORWARD.
+- **RULE [p.44-45] (paraphrasing from context)**: The `PROFIT FACTOR` criterion has good generalizability; other performance statistics (e.g., model R² or ROC area) do not translate well to financial performance [p.44].
+- **NEVER [p.299, p.306]**: Do not mix TRAIN PERMUTED with APPEND DATABASE or precomputed indicator databases — permutation requires the system to be able to *recompute* indicators and targets from raw permuted bar changes. A precomputed database cannot be shuffled at the bar level.
+- **NEVER [p.307]**: Do not interpret a low IS-portfolio p-value from TRAIN PERMUTED as evidence of edge — it detects training bias but not OOS-specific selection bias. Only WALK FORWARD on OOS portfolios gives the honest answer.
+- **NEVER [p.175]**: Do not compare p-values to 0.05 as if that alone validates an indicator — "if the null hypothesis is true, you will still obtain a p-value less than 0.1 ten percent of the time, and a p-value less than 0.01 one percent of the time" [p.174].
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Aronson Decomposition of Trading System Performance** [p.302, Eq. 9]
 
@@ -455,7 +455,7 @@ Returns +Up if the price moves up at least Up × ATR before moving down Down × 
 
 Applied after centering and/or scaling by IQR to compress outliers and fix range; Φ is the standard normal CDF, F25/F50/F75 are historical 25th/50th/75th percentiles of the indicator. Form is proprietary to TSSB but the design goal is explicit: range-fix + outlier-compress while preserving monotonicity.
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Nonredundant Predictor Screening (stepwise with MCPT)** [p.167-170, 173-178]
 
@@ -605,7 +605,7 @@ Step 3: Select the best-fit linear model M*.
 Step 4: For each bar t, purified_X(t) = X(t) - M*(Y)(t)
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - [p.137, p.152] **Over-using redundant wavelet families**: a battery of Morlet wavelets at neighboring periods conveys nearly the same information repeatedly, driving overfitting via the curse of dimensionality. Use at most a small handful across well-separated periods, or switch to Daubechies when many scales are needed.
 - [p.148] **Trusting automated FTI period selection**: `FTI MINOR`, `FTI MAJOR`, and related auto-period variants are "highly unstable and of limited utility"; the chosen period can jump by large amounts from one bar to the next, producing non-stationary indicator behavior. Prefer `FTI FTI` with a fixed user-specified period.
@@ -627,72 +627,72 @@ Step 4: For each bar t, purified_X(t) = X(t) - M*(Y)(t)
 
 ## From `books/trading_systems_methods.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
 **Market selection by noise**:
-- **REGRA [p.13]**: Low-noise markets (short-rates, long-maturity bonds, USD crossrates, energy, metals) -> trend-following.
-- **REGRA [p.13]**: High-noise markets (equity indices) -> mean-reverting / countertrend.
-- **REGRA [p.13-14]**: Long-term traders use low-frequency (weekly/monthly) + long-term trends. Short-term traders use high-frequency + mean-reverting.
+- **RULE [p.13]**: Low-noise markets (short-rates, long-maturity bonds, USD crossrates, energy, metals) -> trend-following.
+- **RULE [p.13]**: High-noise markets (equity indices) -> mean-reverting / countertrend.
+- **RULE [p.13-14]**: Long-term traders use low-frequency (weekly/monthly) + long-term trends. Short-term traders use high-frequency + mean-reverting.
 
 **Swing / Event-Driven Trend Rules**:
-- **REGRA [p.168]**: Conservative swing entry -- buy when current upswing high exceeds previous upswing high; sell short when current downswing low falls below previous downswing low.
-- **REGRA [p.191]** (Livermore): Enter only in direction of major trend (higher highs+higher lows, or lower lows+lower highs); add each penetration confirmation; stop-loss at penetration beyond prior pivot.
-- **REGRA [p.172]** (Keltner Minor Trend): Buy when daily trades above most recent high; stay long until trades below most recent low. Always reverse.
-- **REGRA [p.195]** (Wilder Swing Index): Long when ASI_t > HSP_{t-2}; short when ASI_t < LSP_{t-2}; SAR at most recent opposite swing point.
+- **RULE [p.168]**: Conservative swing entry -- buy when current upswing high exceeds previous upswing high; sell short when current downswing low falls below previous downswing low.
+- **RULE [p.191]** (Livermore): Enter only in direction of major trend (higher highs+higher lows, or lower lows+lower highs); add each penetration confirmation; stop-loss at penetration beyond prior pivot.
+- **RULE [p.172]** (Keltner Minor Trend): Buy when daily trades above most recent high; stay long until trades below most recent low. Always reverse.
+- **RULE [p.195]** (Wilder Swing Index): Long when ASI_t > HSP_{t-2}; short when ASI_t < LSP_{t-2}; SAR at most recent opposite swing point.
 
 **Point-and-Figure**:
-- **REGRA [p.199]**: Buy when X one box above highest X of last X column. Sell when O below lowest O of last O column.
-- **REGRA [p.201]**: Filter signals with 45-degree trendlines -- only take longs when 45-degree trendline up, shorts when down.
+- **RULE [p.199]**: Buy when X one box above highest X of last X column. Sell when O below lowest O of last O column.
+- **RULE [p.201]**: Filter signals with 45-degree trendlines -- only take longs when 45-degree trendline up, shorts when down.
 
 **Moving-average and trend systems**:
-- **REGRA [p.285]**: Use MA length < half the cycle period to preserve cycle visibility.
-- **REGRA [p.285]**: Match MA period to trading horizon -- 63-day = quarterly; 252-day = annual; 200-day = stock-market macro benchmark.
-- **REGRA [p.352-353]** (Donchian 5/20): Buy if not long AND $C_t > MA5_{t-1} + ATR_{t-1}$ AND $C_t > MA20_{t-1} + ATR_{t-1}$. Exit long if either MA band violated.
-- **REGRA [p.353]**: Position Size = Investment / (ATR * Big Point Value).
-- **REGRA [p.353]** (Donchian 20/40 = Turtle basis): Buy when high > max high 40 days; exit long when low < min low 20 days.
-- **REGRA [p.354]**: Golden Cross (50 crosses above 200) -- buy SPY; when 50 crosses below 200 (Death Cross) -> short/flat. Yielded 66.7% return over 1999-2010 vs. passive -7.8%.
-- **REGRA [p.355]** (Woodshedder ROC): Buy when 5-day ROC below 252-day ROC for 2 consecutive days; exit long when 5-day > 252-day for 2 consecutive days.
-- **REGRA [p.326-327]** (Bollinger reversal): Buy on close > upper band; short on close < lower band. Exit at center trendline -> cuts order size 50%.
-- **REGRA [p.333]** (Volatility System): $V_t = \frac{1}{n}\sum TR_i$; sell if close drops by $k \cdot V_{t-1}$ (k approx 3).
+- **RULE [p.285]**: Use MA length < half the cycle period to preserve cycle visibility.
+- **RULE [p.285]**: Match MA period to trading horizon -- 63-day = quarterly; 252-day = annual; 200-day = stock-market macro benchmark.
+- **RULE [p.352-353]** (Donchian 5/20): Buy if not long AND $C_t > MA5_{t-1} + ATR_{t-1}$ AND $C_t > MA20_{t-1} + ATR_{t-1}$. Exit long if either MA band violated.
+- **RULE [p.353]**: Position Size = Investment / (ATR * Big Point Value).
+- **RULE [p.353]** (Donchian 20/40 = Turtle basis): Buy when high > max high 40 days; exit long when low < min low 20 days.
+- **RULE [p.354]**: Golden Cross (50 crosses above 200) -- buy SPY; when 50 crosses below 200 (Death Cross) -> short/flat. Yielded 66.7% return over 1999-2010 vs. passive -7.8%.
+- **RULE [p.355]** (Woodshedder ROC): Buy when 5-day ROC below 252-day ROC for 2 consecutive days; exit long when 5-day > 252-day for 2 consecutive days.
+- **RULE [p.326-327]** (Bollinger reversal): Buy on close > upper band; short on close < lower band. Exit at center trendline -> cuts order size 50%.
+- **RULE [p.333]** (Volatility System): $V_t = \frac{1}{n}\sum TR_i$; sell if close drops by $k \cdot V_{t-1}$ (k approx 3).
 
 **Oscillators / Momentum**:
-- **REGRA [p.383]** (MACD): Buy when MACD crosses up through signal; require MACD to have first penetrated opposite threshold (e.g. +/-2.00) to filter whipsaws.
-- **REGRA [p.386-387]** (RSI): Wilder 70/30 overbought/oversold; per Aan (1985) [p.387-388] prefer 80/20 (1.5 sigma).
-- **REGRA [p.388]**: For sustained moves of 14+ days, RSI stays saturated -- do not fade blindly.
-- **REGRA [p.392]** (Stochastic): Buy when %D below 20 and cross back up; sell when %D above 80 and cross back down. Always confirm with longer-term trend direction.
-- **REGRA [p.640]** (Ruggiero COT): Buy when COT Index Commercials [lag 1+ week] > trigger AND COT Index Small Traders < trigger. Commercials' actions lead.
-- **REGRA [p.640]**: Exit mean-reverting trade at neutral (50), not opposite extreme.
+- **RULE [p.383]** (MACD): Buy when MACD crosses up through signal; require MACD to have first penetrated opposite threshold (e.g. +/-2.00) to filter whipsaws.
+- **RULE [p.386-387]** (RSI): Wilder 70/30 overbought/oversold; per Aan (1985) [p.387-388] prefer 80/20 (1.5 sigma).
+- **RULE [p.388]**: For sustained moves of 14+ days, RSI stays saturated -- do not fade blindly.
+- **RULE [p.392]** (Stochastic): Buy when %D below 20 and cross back up; sell when %D above 80 and cross back down. Always confirm with longer-term trend direction.
+- **RULE [p.640]** (Ruggiero COT): Buy when COT Index Commercials [lag 1+ week] > trigger AND COT Index Small Traders < trigger. Commercials' actions lead.
+- **RULE [p.640]**: Exit mean-reverting trade at neutral (50), not opposite extreme.
 
 **KAMA (trading)**:
-- **REGRA [p.783]**: Trade KAMA via trendline direction -- buy when it turns up, sell when it turns down.
-- **REGRA [p.783]**: Keep ER period <= 14 days (default 10); leave slowest = 30 fixed; raise fastest from 2 to reduce sensitivity; use small threshold filter (~0.1 SD of trendline changes) to prevent false flips.
+- **RULE [p.783]**: Trade KAMA via trendline direction -- buy when it turns up, sell when it turns down.
+- **RULE [p.783]**: Keep ER period <= 14 days (default 10); leave slowest = 30 fixed; raise fastest from 2 to reduce sensitivity; use small threshold filter (~0.1 SD of trendline changes) to prevent false flips.
 
 **Risk Control**:
-- **REGRA [p.53]**: Target volatility for book default = 12% annualized.
-- **REGRA [p.1037]**: Initial stop below low of entry day OR previous day's low, whichever is lower. Move to break-even ASAP; trail to protect 50% of peak profit.
-- **REGRA [p.1057-1059]**: Size position inversely proportional to ATR for equal-risk allocation across markets.
-- **REGRA [p.1091]**: Use optimal f as UPPER BOUND; never size larger, or if you get average results you can expect to go broke eventually.
-- **REGRA [p.1091]**: Simpler alternative -- trade constant position size with reserve large enough to absorb extreme moves.
-- **REGRA [p.942]**: Investor capitalization = 3 * maximum drawdown.
-- **REGRA [p.942]**: Require >= 400 trades to reduce sample error to ~5%.
+- **RULE [p.53]**: Target volatility for book default = 12% annualized.
+- **RULE [p.1037]**: Initial stop below low of entry day OR previous day's low, whichever is lower. Move to break-even ASAP; trail to protect 50% of peak profit.
+- **RULE [p.1057-1059]**: Size position inversely proportional to ATR for equal-risk allocation across markets.
+- **RULE [p.1091]**: Use optimal f as UPPER BOUND; never size larger, or if you get average results you can expect to go broke eventually.
+- **RULE [p.1091]**: Simpler alternative -- trade constant position size with reserve large enough to absorb extreme moves.
+- **RULE [p.942]**: Investor capitalization = 3 * maximum drawdown.
+- **RULE [p.942]**: Require >= 400 trades to reduce sample error to ~5%.
 
 **Seasonal / Calendar**:
-- **REGRA [p.480]** (Holiday -- Kaeppel): Buy on close 3 days before an exchange holiday; sell on close 2 days later.
-- **REGRA [p.480]** (Hirsch): Buy first trading day of November; sell last trading day of April.
-- **REGRA [p.482]** (McGinley January): If first 5 trading days of January are up >= 4%, year has always been up. Buy, hold full year.
-- **REGRA [p.480]** (Month-End): Buy last (or 2nd-to-last) day of month; sell 4th trading day of next month.
+- **RULE [p.480]** (Holiday -- Kaeppel): Buy on close 3 days before an exchange holiday; sell on close 2 days later.
+- **RULE [p.480]** (Hirsch): Buy first trading day of November; sell last trading day of April.
+- **RULE [p.482]** (McGinley January): If first 5 trading days of January are up >= 4%, year has always been up. Buy, hold full year.
+- **RULE [p.480]** (Month-End): Buy last (or 2nd-to-last) day of month; sell 4th trading day of next month.
 
 **Day Trading**:
-- **REGRA [p.741]**: Prefer mean-reverting day strategies -- passive entry orders have near-zero slippage and may earn liquidity rebate.
-- **REGRA [p.740]**: Favor markets with highest volume AND highest volatility simultaneously.
+- **RULE [p.741]**: Prefer mean-reverting day strategies -- passive entry orders have near-zero slippage and may earn liquidity rebate.
+- **RULE [p.740]**: Favor markets with highest volume AND highest volatility simultaneously.
 
 **NUNCA**:
-- **NUNCA [p.1091]** (Elder): Never average down. Never meet margin calls. Liquidate worst position first.
-- **NUNCA [p.27]**: Never reuse out-of-sample data after the first validation run -- feedback contaminates.
-- **NUNCA [p.919]**: Never iterate step-forward test design after seeing results -- recreates overfitting.
-- **NUNCA [p.941]**: Never change test ranges after tests started -- prevents data-snooping bias.
+- **NEVER [p.1091]** (Elder): Never average down. Never meet margin calls. Liquidate worst position first.
+- **NEVER [p.27]**: Never reuse out-of-sample data after the first validation run -- feedback contaminates.
+- **NEVER [p.919]**: Never iterate step-forward test design after seeing results -- recreates overfitting.
+- **NEVER [p.941]**: Never change test ranges after tests started -- prevents data-snooping bias.
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Efficiency Ratio** [p.10-11, p.781]:
 $$ER_t = \frac{|P_t - P_{t-n}|}{\sum_{i=t-n+1}^{t} |P_i - P_{i-1}|}$$
@@ -871,7 +871,7 @@ $$\text{optimal } f = \arg\max_{f \in [0.01, 1]} \left( \prod_{i=1}^{n} \left(1 
 
 **Portfolio variance** [p.1088]: $\sigma^2_R = \sum w_i^2 \sigma_i^2 + \sum\sum_{i\ne j} w_i w_j \text{cov}_{ij}$ where $\text{cov}_{ij} = \text{corr}_{ij} \sigma_i \sigma_j$.
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **KAMA (Kaufman Adaptive Moving Average)** [p.780-781]:
 ```
@@ -1013,7 +1013,7 @@ Stop-loss (long):
 ```
 (Kaufman's Ch 24 later contrasts this traditional mean-variance approach with his GASP Genetic Algorithm Solution to Portfolios, arguing mean-variance breaks when strategy returns include many zero-days from being out of the market.)
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - [p.27] "All testing is overfitting the data." In-sample/out-of-sample discipline is mandatory; OOS can only be used once.
 - [p.43] Kurtosis on daily returns > 7-8 -> "it begins to look as though the trading method is overfitted."

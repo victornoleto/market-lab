@@ -1,14 +1,14 @@
 """ai_trade.backtest.grid — parameter-grid backtest + gate evaluation.
 
-Fase 2.5/3 module: runs a strategy grid across N≥20 configs and
+Phase 2.5/3 module: runs a strategy grid across N≥20 configs and
 exercises the PBO/DSR/walk-forward gates in production. See
-``specs/backtest_phase2.md`` §"Reavaliação pós-Fase 2" and
+``specs/backtest_phase2.md`` §"Post-Phase 2 reassessment" and
 ``specs/backtest_phase2_5_ehlers.md`` for motivation (single-trial
 strategies never activate the gates; a grid does).
 
 The runner/result layer is generic over the config dataclass —
-:class:`ClenowGridConfig` for Execução 1, :class:`EhlersGridConfig` for
-Execução 2, future strategies plug in by adding their own frozen
+:class:`ClenowGridConfig` for Run 1, :class:`EhlersGridConfig` for
+Run 2, future strategies plug in by adding their own frozen
 dataclass.
 """
 

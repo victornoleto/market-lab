@@ -5,21 +5,19 @@
 This book's PDF uses a single continuous page numbering sequence: the `[PAGE N]` markers in the extracted text align with the printed page numbers referenced by the author himself (e.g., the author's in-text reference "the progressive walkforward algorithm given on page 142" lands exactly at `[PAGE 142]` in the extraction, which contains the walkforward training-bias program). Therefore every `[p.X]` citation below refers directly to the `[PAGE X]` marker = printed page X. Chapter 1 (Introduction) begins at p.11; TOC/frontmatter occupies p.1-10. Range `[p.X-Y]` = PAGE X through PAGE Y. `[ch.N]` is used when the concept spans the entire chapter.
 
 ## Metadata
-- **Autor:** Timothy Masters [p.2, p.9]
-- **Ano:** 2018 [p.3]
-- **Editora:** Apress (distributed by Springer) [p.3, p.4]
-- **Páginas:** 353 (PDF); printed content pp.1-348 [metadata.json]
+- **Author:** Timothy Masters [p.2, p.9]
+- **Year:** 2018 [p.3]
+- **Publisher:** Apress (distributed by Springer) [p.3, p.4]
+- **Pages:** 353 (PDF); printed content pp.1-348 [metadata.json]
 - **ISBN:** 978-1-4842-4172-1 (print), 978-1-4842-4173-8 (electronic) [p.3]
-- **Foco principal:** Rigorous statistical methodology for evaluating, validating, and bounding the future performance of automated market trading systems, with emphasis on avoiding overfitting and future leak.
+- **Main focus:** Rigorous statistical methodology for evaluating, validating, and bounding the future performance of automated market trading systems, with emphasis on avoiding overfitting and future leak.
 
-## 1. Tese Central
-
+## 1. Core Thesis
 A trading system backtest is not a research tool — it is a tool for measuring the *risk of overfitting* and the probability that apparent in-sample edge will survive into live trading. The central thesis of the book, restated in many forms, is that seemingly small methodological errors (future leak through lookback/lookahead overlap, selection bias across competing systems, unregularized predictor sets, bootstrap confidence intervals on ratio statistics, cross-validation on nonstationary series) *systematically* inflate reported performance and destroy capital in production. The entire book is organized as a pipeline of defenses: pre-optimization (stationarity induction, indicator entropy), optimization (regularized linear models, differential evolution), post-optimization (cheap bias estimates, parameter-sensitivity curves), unbiased trade simulation (walkforward, nested walkforward), trade analysis (Student-t and BCa bounds on mean return, bootstrapped drawdown quantiles), and finally permutation testing (MCPT of training processes and model factories). [ch.1, p.11-19; ch.7, p.310-312]
 
 Masters' operating principle, stated explicitly: "the strength of your indicators is vastly more important than the strength of the predictive model that uses them to signal trades. Some of the best, most stable and profitable trading systems I've seen over the years use a simple linear or nearly linear model with high-quality indicators as inputs." [p.43]
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Future leak** — illegal leakage of future knowledge into a testing procedure; produces optimistic performance estimates. Masters stresses it is "far deadlier than you imagine": a nearly-random system with a 1% edge can produce a respectable-looking equity curve. [p.17]
 - **Percent-wins fallacy** — $E[\text{return}] = W \cdot p - L \cdot q$; win-rate and payoff are inseparable. A 9/10 win-rate system on a random walk with 1:9 payoff has zero expectation. [p.18-19]
 - **Stationarity (practical)** — "the degree to which a time series' statistical properties remain constant over time"; markets are inherently nonstationary; traditional statistical tests for nonstationarity are pointless (they always reject). The relevant question is: can we induce stationarity in the indicator? [p.20-21]
@@ -42,8 +40,7 @@ Masters' operating principle, stated explicitly: "the strength of your indicator
 - **MCPT (Monte Carlo Permutation Test)** — null hypothesis: market changes are unordered (no exploitable structure). Permute price-changes (not prices) to destroy patterns while preserving the marginal distribution; re-run the full training/testing pipeline; p-value = fraction of permuted runs that match or beat the unpermuted performance. [p.310-319]
 - **Skill / TrainingBias / Trend partitioning** — MCPT-based decomposition of total IS return into learned skill, patterns learned in-sample that will not repeat (TrainingBias), and market long-bias contribution (Trend). [p.321-322]
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Equation 1-1 — Expected return of a trade** [p.18]
 
 $$E[R] = W \cdot p - L \cdot q$$
@@ -118,8 +115,7 @@ lower_bound = mean - stddev / sqrt((double) n) *
 
 Relatively robust to moderate non-normality but fragile under heavy tails or extreme skew. [p.244-245]
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **STATN — nonstationarity gap analysis** [p.22-26]
 
 ```
@@ -325,32 +321,30 @@ Apply σ identically to each market's change-vector and reconstruct.
 ```
 Required to preserve cross-market correlation. [p.334-335]
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.14-15]:** Always work with log-prices and compute trade returns as differences of logs. Never use raw percent returns in statistical evaluations — asymmetry of +x%/−x% accumulates into a bogus positive expectation.
+- **RULE [p.17]:** Design the testing pipeline to eliminate *every* trace of future leak, including "innocuous" overlaps. A 1% edge produces a respectable equity curve; any leak is amplified.
+- **RULE [p.21, p.27-28]:** Before training any model, visually study each indicator's time-series plot. If its central tendency wanders for months/years, either oscillate (lagged difference), normalize with a moving window, or reject the indicator.
+- **RULE [p.30-31]:** Screen every candidate indicator for relative entropy ≥ 0.5 (hard concern at < 0.1). If low, revise the computation or apply a monotonic transform (tanh / logistic / log / tail cleaning).
+- **RULE [p.43]:** Start with a regularized linear model. Graduate to nonlinear only if a clear, validated advantage emerges.
+- **RULE [p.47]:** Never run a pure lasso (α = 1) on data that might contain near-perfect predictor collinearity. Use α just below 1 for stability.
+- **RULE [p.125-127]:** After optimization, plot parameter sensitivity curves around the optimum. Smooth decline = robust; narrow peak or multi-peak = overfit / lucky. Reject narrow-peak systems.
+- **RULE [p.143-144]:** After choosing among multiple competing systems based on OOS performance, the chosen OOS score is biased. You must hold out an additional fresh period for the final estimate, or use selection-bias MCPT [p.319-320].
+- **RULE [p.149-150, p.171]:** In walkforward or CV, remove `min(lookback, lookahead) − 1` cases as a guard buffer between train and test. For CV, remove the buffer on *both* sides of each test block.
+- **RULE [p.170-171]:** Do not use cross-validation for time-series trading-system performance estimation in general. Walkforward mimics real life; CV leaks nonstationarity and is pessimistically biased on smaller training sets. Narrow exceptions: optimizing model complexity or selecting predictors, where CV-inside-walkforward is reasonable. [p.211-212]
+- **RULE [p.196-199]:** Whenever a selector picks from competing systems on OOS returns, use nested walkforward so the selector's own decisions are evaluated on untouched outer-OOS data.
+- **RULE [p.244-245]:** For bounds on mean future returns with near-normal returns, use Student-t one-sided lower bound at the desired confidence. Beware heavy tails.
+- **RULE [p.246-247]:** With non-normal or uncertain distributions, use BCa bootstrap, not pivot or percentile methods. BCa is the single most important bounding tool for the true mean of returns.
+- **RULE [p.263-264]:** Never bootstrap the raw Sharpe ratio or raw profit factor. Bootstrap log(profit factor) instead; treat raw Sharpe bounds with "considerable caution."
+- **RULE [p.291]:** To bound future drawdowns, use the drawdown-specific bootstrap (sample of size = drawdown-horizon = typically 252, from the full OOS pool); expect millions of iterations; never use drawdown bounds inside training loops unless you apply the faster approximation on p.264.
+- **RULE [p.318, p.286]:** Run an MCPT on the *entire training process* (not just a final system). A good unpermuted result should sit in the extreme right tail of the permuted performance distribution (p < 0.05, ideally much smaller).
+- **RULE [p.319-320]:** When comparing several trading-system candidates, the decision-relevant p-value is the *best-of-many* selection-bias-adjusted MCPT p-value, not the per-system p-value.
+- **RULE [p.327-328]:** Permute *log-price changes*, not prices. Keep the first price fixed. Keep the shuffle inside the OOS region.
+- **RULE [p.334-335]:** For multi-market systems, use a single shared permutation across all markets to preserve cross-correlation; drop dates with any missing market.
+- **NEVER [p.16-17]:** Override the trading system based on gut feel. "Forget automated trading if you don't have the guts to believe in it."
+- **NEVER [p.34]:** Truncate (clip) outliers — truncation is non-monotonic and destroys information. Use tail cleaning (exp compression) instead.
 
-- **REGRA [p.14-15]:** Always work with log-prices and compute trade returns as differences of logs. Never use raw percent returns in statistical evaluations — asymmetry of +x%/−x% accumulates into a bogus positive expectation.
-- **REGRA [p.17]:** Design the testing pipeline to eliminate *every* trace of future leak, including "innocuous" overlaps. A 1% edge produces a respectable equity curve; any leak is amplified.
-- **REGRA [p.21, p.27-28]:** Before training any model, visually study each indicator's time-series plot. If its central tendency wanders for months/years, either oscillate (lagged difference), normalize with a moving window, or reject the indicator.
-- **REGRA [p.30-31]:** Screen every candidate indicator for relative entropy ≥ 0.5 (hard concern at < 0.1). If low, revise the computation or apply a monotonic transform (tanh / logistic / log / tail cleaning).
-- **REGRA [p.43]:** Start with a regularized linear model. Graduate to nonlinear only if a clear, validated advantage emerges.
-- **REGRA [p.47]:** Never run a pure lasso (α = 1) on data that might contain near-perfect predictor collinearity. Use α just below 1 for stability.
-- **REGRA [p.125-127]:** After optimization, plot parameter sensitivity curves around the optimum. Smooth decline = robust; narrow peak or multi-peak = overfit / lucky. Reject narrow-peak systems.
-- **REGRA [p.143-144]:** After choosing among multiple competing systems based on OOS performance, the chosen OOS score is biased. You must hold out an additional fresh period for the final estimate, or use selection-bias MCPT [p.319-320].
-- **REGRA [p.149-150, p.171]:** In walkforward or CV, remove `min(lookback, lookahead) − 1` cases as a guard buffer between train and test. For CV, remove the buffer on *both* sides of each test block.
-- **REGRA [p.170-171]:** Do not use cross-validation for time-series trading-system performance estimation in general. Walkforward mimics real life; CV leaks nonstationarity and is pessimistically biased on smaller training sets. Narrow exceptions: optimizing model complexity or selecting predictors, where CV-inside-walkforward is reasonable. [p.211-212]
-- **REGRA [p.196-199]:** Whenever a selector picks from competing systems on OOS returns, use nested walkforward so the selector's own decisions are evaluated on untouched outer-OOS data.
-- **REGRA [p.244-245]:** For bounds on mean future returns with near-normal returns, use Student-t one-sided lower bound at the desired confidence. Beware heavy tails.
-- **REGRA [p.246-247]:** With non-normal or uncertain distributions, use BCa bootstrap, not pivot or percentile methods. BCa is the single most important bounding tool for the true mean of returns.
-- **REGRA [p.263-264]:** Never bootstrap the raw Sharpe ratio or raw profit factor. Bootstrap log(profit factor) instead; treat raw Sharpe bounds with "considerable caution."
-- **REGRA [p.291]:** To bound future drawdowns, use the drawdown-specific bootstrap (sample of size = drawdown-horizon = typically 252, from the full OOS pool); expect millions of iterations; never use drawdown bounds inside training loops unless you apply the faster approximation on p.264.
-- **REGRA [p.318, p.286]:** Run an MCPT on the *entire training process* (not just a final system). A good unpermuted result should sit in the extreme right tail of the permuted performance distribution (p < 0.05, ideally much smaller).
-- **REGRA [p.319-320]:** When comparing several trading-system candidates, the decision-relevant p-value is the *best-of-many* selection-bias-adjusted MCPT p-value, not the per-system p-value.
-- **REGRA [p.327-328]:** Permute *log-price changes*, not prices. Keep the first price fixed. Keep the shuffle inside the OOS region.
-- **REGRA [p.334-335]:** For multi-market systems, use a single shared permutation across all markets to preserve cross-correlation; drop dates with any missing market.
-- **NUNCA [p.16-17]:** Override the trading system based on gut feel. "Forget automated trading if you don't have the guts to believe in it."
-- **NUNCA [p.34]:** Truncate (clip) outliers — truncation is non-monotonic and destroys information. Use tail cleaning (exp compression) instead.
-
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - [p.17] Casual developers claim "small" future leaks don't matter. They do. Treat any leak as catastrophic.
 - [p.18-19] Bragging about how often a trading system wins is meaningless without the size of wins and losses — win/loss sizes and probabilities are inextricably related via Equation 1-1.
 - [p.21] Do not run classical stationarity tests on markets — they always reject; time wasted.
@@ -371,8 +365,7 @@ Required to preserve cross-market correlation. [p.334-335]
 - [p.314] "I have often seen people develop systems that look back optimizable parameters"... overfitting is caused by systems that are *too powerful*, not too weak — MCPT of the training process is the defense.
 - [p.321-322] Do not confuse total in-sample return with skill. MCPT partitions return into three components: **Skill** (legitimate learned patterns likely to continue), **TrainingBias** (noise patterns learned in-sample that will not repeat), and **Trend** (long-bias contribution from a trending market); high "Trend" component means your system is mostly just long-biased.
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **Relative entropy threshold = 0.5 (serious concern at < 0.1)** [p.31] — heuristic but pragmatic; Masters admits "this threshold is highly arbitrary." Not curve-fit (chosen from information theory, not optimization).
 - **Elastic-net α** [p.47] — justified economically: α = 0 (ridge) spreads weights across correlated indicators; α = 1 (lasso) picks one; intermediate is a design choice, not an optimization target. Set α < 1 (e.g., 0.95) to avoid numerical instability with near-collinear predictors.
 - **λ (regularization strength)** [p.65-66, p.82] — *should* be chosen by k-fold CV on pooled OOS explained variance. Not hand-tuned.
@@ -384,8 +377,7 @@ Required to preserve cross-market correlation. [p.334-335]
 - **Drawdown horizon n_trades = 252** [p.306-307] — Masters uses one trading year as default, noting this is configurable. Economic justification: annual performance reviews.
 - **MCPT nreps** [p.338] — "hundreds or thousands"; the p-value resolution is limited by nreps.
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "Future leak is far deadlier than you imagine. Take it seriously." — [p.17]
 
 > "If someone brags about how often their trading system wins, ask them about the size of their wins and losses. And if they brag about how huge their wins are compared to their losses, ask them how often they win. Neither exists in isolation." — [p.19]
@@ -396,8 +388,7 @@ Required to preserve cross-market correlation. [p.334-335]
 
 > "The problem in which permutation testing is valuable is the opposite of weakness: your system is too powerful at detecting predictive patterns. The term commonly employed for this situation is overfitting. When your system has too many optimizable parameters, it will tend to see random noise as predictive patterns and learn these patterns along with any legitimate patterns that might be present." — [p.314]
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - **`evidence_based_ta.md` (Aronson)** — same author-school (Masters wrote EBTA's statistical appendix style companion earlier); MCPT methodology in this book extends and operationalizes the Monte Carlo permutation test framework Aronson uses to evaluate rule-based systems; both books share the "specification-destroying shuffle" philosophy. [p.310-319 here vs. Aronson's MCPT chapters]
 - **`advances_fin_ml.md` (López de Prado)** — López de Prado's CPCV (Combinatorial Purged Cross-Validation) solves the same purge/embargo concern that Masters addresses with the `min(lookback, lookahead) - 1` guard buffer [p.149-150, p.162, p.171]. Masters arrives at the buffer analytically for WF and CV; LdP formalizes purge+embargo for combinatorial CV. CSCV here [p.182] traces to Bailey et al. 2015, the same paper LdP cites for DSR (Deflated Sharpe Ratio).
 - **`stat_sound_indicators.md`** — N/A — summary not present in current base (file not in books/summaries/). Revisit when processed; entropy-based indicator screening [p.30-31, p.34-37] and tail-cleaning [p.38-40] should cross-reference directly.

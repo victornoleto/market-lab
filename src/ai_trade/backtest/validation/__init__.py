@@ -1,6 +1,6 @@
 """ai_trade.backtest.validation — anti-overfit framework.
 
-Seven-layer gate from the ai-trade roadmap §"Fase 3 — Backtest rigoroso":
+Seven-layer gate from the ai-trade roadmap §"Phase 3 — Rigorous backtest":
 
 * :mod:`cpcv` — Purged K-Fold + Combinatorial Purged Cross-Validation
   (AFML ch.7 p.149-154, ch.12 p.219-222)

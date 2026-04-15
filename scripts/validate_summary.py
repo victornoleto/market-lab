@@ -38,15 +38,15 @@ SUMMARIES_PATH = SUMMARIES_DIR / "{slug}.md"
 
 REQUIRED_SECTIONS = (
     "Metadata",
-    "Tese Central",
-    "Conceitos-Chave",
-    "Fórmulas / Equações",
-    "Algoritmos e Pseudocódigo",
-    "Regras de Trading Explícitas",
-    "Pitfalls e Anti-patterns",
-    "Parâmetros Sensíveis",
-    "Citações Literais Importantes",
-    "Conexões com Outros Livros Desta Base",
+    "Core Thesis",
+    "Main Concepts",
+    "Formulas / Equations",
+    "Algorithms and Pseudocode",
+    "Explicit Trading Rules",
+    "Pitfalls and Anti-patterns",
+    "Sensitive Parameters",
+    "Key Literal Quotes",
+    "Cross-references to Other Books in This Knowledge Base",
 )
 
 # Regex: matches a citation marker at the end of a line or inline.
@@ -96,7 +96,7 @@ def split_sections(md_text: str) -> dict[str, str]:
     for i, (start, raw_name) in enumerate(indexes):
         end = indexes[i + 1][0] if i + 1 < len(indexes) else len(md_text)
         body = md_text[start:end]
-        # Strip numbering: "1. Tese Central" → "Tese Central"
+        # Strip numbering: "1. Core Thesis" → "Core Thesis"
         name = re.sub(r"^\d+\.\s+", "", raw_name).strip()
         out[name] = body
     return out
@@ -187,7 +187,7 @@ def validate(slug: str, min_ratio: float) -> ValidationResult:
 
     # Cross-ref sanity: if section 9 references other summaries, they should exist.
     conn_body = next(
-        (sections[n] for n in sections if _loose_eq(n, "Conexões com Outros Livros Desta Base")),
+        (sections[n] for n in sections if _loose_eq(n, "Cross-references to Other Books in This Knowledge Base")),
         "",
     )
     for m in re.finditer(r"`([a-z_]+)\.md(?:#[a-z0-9\-]+)?`", conn_body):

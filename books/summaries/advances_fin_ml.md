@@ -1,21 +1,19 @@
 # Advances in Financial Machine Learning
 
 ## Metadata
-- **Autor:** Marcos López de Prado [p.i]
-- **Ano:** 2018
-- **Editora:** John Wiley & Sons
-- **Páginas:** 489
+- **Author:** Marcos López de Prado [p.i]
+- **Year:** 2018
+- **Publisher:** John Wiley & Sons
+- **Pages:** 489
 - **ISBN:** 978-1-119-48208-6
-- **Foco principal:** A rigorous ML methodology for financial research — from data structures and feature engineering through model selection, backtesting, and high-performance implementation — designed to replace the ad-hoc Sisyphus paradigm with a robust, team-based production pipeline.
+- **Main focus:** A rigorous ML methodology for financial research — from data structures and feature engineering through model selection, backtesting, and high-performance implementation — designed to replace the ad-hoc Sisyphus paradigm with a robust, team-based production pipeline.
 
-## 1. Tese Central
-
+## 1. Core Thesis
 The book argues that the overwhelming majority of quantitative failures stem not from bad ideas but from a flawed research paradigm: individual analysts who code → backtest → iterate until Sharpe looks good. López de Prado calls this the **Sisyphus paradigm** and shows it structurally guarantees overfitting [p.29]. The alternative is a **meta-strategy paradigm** — a division-of-labor production pipeline in which data curators, feature analysts, strategists, backtesters, deployment engineers, and portfolio oversight each perform specialized, verifiable work, making the process auditable and reproducible [p.30, p.32-35].
 
 The unifying technical claim is that financial ML requires domain-adapted methodology at every step: standard bar construction produces data with unwanted statistical properties; standard cross-validation is invalid on serially correlated labels; standard Sharpe-based selection is biased by multiple testing; standard portfolio optimization is ill-conditioned. Each chapter introduces a principled, often novel solution. The three Laws of Backtesting summarize the epistemological core: Law 1 (Snippet 8.1, [p.159]) — "Backtesting is not a research tool. Feature importance is."; Law 2 (Snippet 11.1, [p.207]) — "Backtesting while researching is like drinking and driving. Do not research under the influence of a backtest."; Law 3 (Snippet 14.5, [p.276]) — "Every backtest result must be reported in conjunction with all the trials involved in its production. Absent that information, it is impossible to assess the backtest's 'false discovery' probability."
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Sisyphus paradigm** — solo analyst who codes, backtests, and iterates until results look acceptable; structurally guarantees overfitting [p.29]
 - **Meta-strategy paradigm** — team-based production chain with specialized roles; separates research from validation [p.29-30]
 - **Financial data types** — fundamental (economic data), market (prices/volumes), analytics (estimates), alternative (non-standard sources); each with distinct stale-data and look-ahead risks [p.52]
@@ -50,8 +48,7 @@ The unifying technical claim is that financial ML requires domain-adapted method
 - **Atoms and molecules** — decomposition of parallel jobs: atoms are indivisible tasks; molecules are subsets of atoms assigned to a single CPU core [p.399]
 - **Quantum annealing for portfolio optimization** — discretizing the dynamic trading trajectory problem into a combinatorial integer program soluble by a quantum annealer [p.420-421]
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Tick imbalance bar (TIB) threshold** [p.59-62]
 
 The bar is formed when the cumulative signed tick imbalance exceeds:
@@ -226,8 +223,7 @@ $$S_t = \max(0,\; S_{t-1} + y_t - E_{t-1}[y_t])$$
 
 with the symmetric extension triggering on run-ups or run-downs. The only user-set parameter is the threshold $h$ (the filter size). No parameter $k$ appears in the Ch.2 CUSUM filter [p.71-72]. (Note: a separate `k` parameter appears in the Ch.17 Brown-Durbin-Evans CUSUM structural break test [p.333-334], where it denotes the number of regression features — a different context entirely.)
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Triple-barrier labeling** [p.78-80, ch.3]
 
 ```
@@ -441,38 +437,36 @@ Step 3: Apply trading rule on each path, compute SR per path
 Step 4: Report SR distribution; test if real SR is in top tail
 ```
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.71-72]**: Apply the CUSUM filter to price series before applying triple-barrier labeling. Sampling at every tick creates serially correlated, non-IID labels. The CUSUM filter triggers observations only when cumulative price change exceeds $\pm h$, dramatically reducing label overlap.
 
-- **REGRA [p.71-72]**: Apply the CUSUM filter to price series before applying triple-barrier labeling. Sampling at every tick creates serially correlated, non-IID labels. The CUSUM filter triggers observations only when cumulative price change exceeds $\pm h$, dramatically reducing label overlap.
+- **RULE [p.78-80]**: Use the triple-barrier method with dynamically computed barriers (ATR-based or volatility-based), not fixed-price barriers. This ensures the barrier width adapts to the market regime and is not dominated by the vertical barrier.
 
-- **REGRA [p.78-80]**: Use the triple-barrier method with dynamically computed barriers (ATR-based or volatility-based), not fixed-price barriers. This ensures the barrier width adapts to the market regime and is not dominated by the vertical barrier.
+- **RULE [p.84-89]**: Separate the side prediction task from the sizing task using meta-labeling. Build a primary model for direction (recall-optimized), then a secondary model to learn when to trust it (precision-optimized). Do not conflate the two tasks.
 
-- **REGRA [p.84-89]**: Separate the side prediction task from the sizing task using meta-labeling. Build a primary model for direction (recall-optimized), then a secondary model to learn when to trust it (precision-optimized). Do not conflate the two tasks.
+- **RULE [p.98-99, p.103-106]**: Weight training samples by $\tilde{u}_i \cdot d_i$ where $\tilde{u}_i$ is average uniqueness and $d_i$ is a time-decay weight. Never train a financial ML model on equal-weighted overlapping labels — this artificially inflates effective sample size.
 
-- **REGRA [p.98-99, p.103-106]**: Weight training samples by $\tilde{u}_i \cdot d_i$ where $\tilde{u}_i$ is average uniqueness and $d_i$ is a time-decay weight. Never train a financial ML model on equal-weighted overlapping labels — this artificially inflates effective sample size.
+- **RULE [p.121-125]**: Apply FFD with the minimum $d^*$ that passes the ADF stationarity test. For E-mini S&P 500, this is approximately $d^* \approx 0.35$ [p.126-127], retaining 99.5% correlation with the original price series. Do not blindly apply $d=1$ (first difference) which destroys memory.
 
-- **REGRA [p.121-125]**: Apply FFD with the minimum $d^*$ that passes the ADF stationarity test. For E-mini S&P 500, this is approximately $d^* \approx 0.35$ [p.126-127], retaining 99.5% correlation with the original price series. Do not blindly apply $d=1$ (first difference) which destroys memory.
+- **RULE [p.149-154]**: Always use Purged K-Fold CV with embargo for financial ML. Embargo of $h \approx 0.01T$ prevents performance inflation from serial correlation not covered by purging alone.
 
-- **REGRA [p.149-154]**: Always use Purged K-Fold CV with embargo for financial ML. Embargo of $h \approx 0.01T$ prevents performance inflation from serial correlation not covered by purging alone.
+- **RULE [p.160-167]**: Use all three feature importance methods (MDI, MDA, SFI) and report only features ranked important by at least two methods. MDI is biased toward high-cardinality features; SFI ignores substitution effects. Their overlap is the reliable signal.
 
-- **REGRA [p.160-167]**: Use all three feature importance methods (MDI, MDA, SFI) and report only features ranked important by at least two methods. MDI is biased toward high-cardinality features; SFI ignores substitution effects. Their overlap is the reliable signal.
+- **RULE [p.167]**: Use weighted Kendall's $\tau$ to assess concordance between MDI feature importance rankings and their associated PCA eigenvalue rankings (not MDI vs MDA). The book's E-mini example gives $\tau = 0.8133$ between MDI importances and inverse PCA rankings [p.167]. A high $\tau$ confirms that PCA-identified features and ML-identified features agree on relative importance.
 
-- **REGRA [p.167]**: Use weighted Kendall's $\tau$ to assess concordance between MDI feature importance rankings and their associated PCA eigenvalue rankings (not MDI vs MDA). The book's E-mini example gives $\tau = 0.8133$ between MDI importances and inverse PCA rankings [p.167]. A high $\tau$ confirms that PCA-identified features and ML-identified features agree on relative importance.
+- **RULE [p.192-196]**: Use bet sizing (continuous position in $(-1,1)$) rather than binary signals. Discretize to $\{-1, -0.5, 0, +0.5, +1\}$ if necessary for execution, but avoid all-or-nothing signals that maximize turnover.
 
-- **REGRA [p.192-196]**: Use bet sizing (continuous position in $(-1,1)$) rather than binary signals. Discretize to $\{-1, -0.5, 0, +0.5, +1\}$ if necessary for execution, but avoid all-or-nothing signals that maximize turnover.
+- **RULE [p.208-211]**: Estimate PBO via CSCV before finalizing any strategy. A PBO > 0.5 means the strategy is more likely overfit than valid. Do not deploy until PBO is demonstrably below 0.5.
 
-- **REGRA [p.208-211]**: Estimate PBO via CSCV before finalizing any strategy. A PBO > 0.5 means the strategy is more likely overfit than valid. Do not deploy until PBO is demonstrably below 0.5.
+- **RULE [p.219-222]**: Use CPCV (not simple walk-forward) to generate a full distribution of $\phi[N,k]$ backtest paths. Report the distribution of Sharpe ratios, not just the mean. Strategies with high variance across paths have uncertain real-world performance.
 
-- **REGRA [p.219-222]**: Use CPCV (not simple walk-forward) to generate a full distribution of $\phi[N,k]$ backtest paths. Report the distribution of Sharpe ratios, not just the mean. Strategies with high variance across paths have uncertain real-world performance.
+- **RULE [p.276]**: Before declaring a strategy live-tradeable, verify it passes the DSR threshold. A single Sharpe ratio, however large, is uninformative without correction for the number of configurations tested.
 
-- **REGRA [p.276]**: Before declaring a strategy live-tradeable, verify it passes the DSR threshold. A single Sharpe ratio, however large, is uninformative without correction for the number of configurations tested.
+- **RULE [p.302-308]**: For portfolio construction, prefer HRP over Markowitz/CLA. HRP's Monte Carlo result shows $\sigma^2_{\text{HRP}} = 0.0671$ vs $\sigma^2_{\text{CLA}} = 0.1157$ vs $\sigma^2_{\text{IVP}} = 0.0928$ out-of-sample [p.313].
 
-- **REGRA [p.302-308]**: For portfolio construction, prefer HRP over Markowitz/CLA. HRP's Monte Carlo result shows $\sigma^2_{\text{HRP}} = 0.0671$ vs $\sigma^2_{\text{CLA}} = 0.1157$ vs $\sigma^2_{\text{IVP}} = 0.0928$ out-of-sample [p.313].
+- **RULE [p.383-384]**: Monitor VPIN as an intraday risk indicator. VPIN spiked anomalously before the 2010 Flash Crash, providing early warning. Treat a VPIN CDF > 0.99 as a signal to reduce exposure or widen spreads [p.448-449].
 
-- **REGRA [p.383-384]**: Monitor VPIN as an intraday risk indicator. VPIN spiked anomalously before the 2010 Flash Crash, providing early warning. Treat a VPIN CDF > 0.99 as a signal to reduce exposure or widen spreads [p.448-449].
-
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - **[p.29, p.39-40]** The Sisyphus paradigm — solo researcher who loops backtest until satisfied — is the root cause of most quantitative failure. It is structurally equivalent to p-hacking. The fix is a team-based pipeline with audited steps.
 
 - **[p.148-149]** Standard K-fold CV on financial data inflates performance because: (1) training and test sets overlap in time; (2) labels for correlated periods leak across folds. López de Prado describes the inflation mechanism qualitatively; no numerical Sharpe-inflation multiplier is given in the source.
@@ -497,8 +491,7 @@ Step 4: Report SR distribution; test if real SR is in top tail
 
 - **[p.144]** Boosting is more prone to overfitting in finance than bagging because it explicitly targets the residuals of prior models; in a noisy financial environment, it will target noise. Prefer bagging (random forests) over gradient boosting for financial ML unless the dataset is large and low-noise.
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **CUSUM threshold $h$** [p.71-72]: Author recommends setting $h$ equal to the daily volatility estimate (rolling standard deviation). This makes the filter volatility-adaptive and ensures approximately constant sampling rate across regimes. Not curve-fit — grounded in units of returns.
 
 - **Triple-barrier barrier multipliers** [p.78-80]: Author uses equal-width barriers (1:1 profit-taking to stop-loss) as the default, with multipliers of 1×-2× the volatility estimate. Asymmetric ratios require separate economic justification.
@@ -519,8 +512,7 @@ Step 4: Report SR distribution; test if real SR is in top tail
 
 - **PSR benchmark $\widehat{SR}^*$** [p.273-274]: Author recommends setting $\widehat{SR}^* = 0$ (test against noise) or $\widehat{SR}^* = SR_{\text{benchmark}}$ (test against passive strategy). Must be declared before looking at results.
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "Backtesting is not a research tool. Feature importance is." — Marcos López de Prado, Snippet 8.1 (Marcos' First Law of Backtesting) [p.159]
 
 > "Backtesting while researching is like drinking and driving. Do not research under the influence of a backtest." — Marcos López de Prado, Snippet 11.1 (Marcos' Second Law of Backtesting) [p.207]
@@ -531,8 +523,7 @@ Step 4: Report SR distribution; test if real SR is in top tail
 
 > "The purpose of a backtest is to discard bad models, not to improve them. Adjusting your model based on the backtest results is a waste of time ... and it's dangerous." — [p.206]
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - The **Kelly criterion and fractional Kelly sizing** discussed in `math_money_mgmt.md` connects to López de Prado's bet-sizing via predicted probability in ch.10 [p.192-196] — both derive position size from an edge estimate, but AFML conditions edge on ML probability rather than historical win rate.
 
 - **Feature importance and overfitting diagnostics** connect to `ml_for_algo_trading.md` — that book applies MDI/MDA in practice; AFML provides the theoretical derivation of why MDI is biased and when SFI is preferred [p.160-164].

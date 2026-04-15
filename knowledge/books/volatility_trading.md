@@ -1,25 +1,23 @@
 # Volatility Trading (Second Edition)
 
 ## Metadata
-- **Autor:** Euan Sinclair [p.i]
-- **Ano:** 2013
-- **Editora:** John Wiley & Sons (Wiley Trading series)
-- **Páginas:** 298
+- **Author:** Euan Sinclair [p.i]
+- **Year:** 2013
+- **Publisher:** John Wiley & Sons (Wiley Trading series)
+- **Pages:** 298
 - **ISBN:** 978-1-118-34713-3
-- **Foco principal:** A systematic, data-driven approach to trading volatility through options — forecasting realized vs. implied volatility, optimal delta hedging, Kelly-based sizing, and behavioral psychology.
+- **Main focus:** A systematic, data-driven approach to trading volatility through options — forecasting realized vs. implied volatility, optimal delta hedging, Kelly-based sizing, and behavioral psychology.
 
 ---
 
-## 1. Tese Central
-
+## 1. Core Thesis
 The book's central theme is stated explicitly in the Conclusion chapter: "Successful trading is about developing a consistent process. You must have a goal; you must find trades with edge; you must capture that edge and you must size each trade in a way that is consistent with your goal." [p.249]
 
 The trading process breaks into three inseparable pillars: finding profitable trades (primarily via forecasting realized volatility against implied), managing risk and bankroll (optimal hedging + Kelly-based sizing), and psychology (recognizing and exploiting cognitive biases). Sinclair's approach is data-driven and mathematical, using the Black-Scholes-Merton framework as a conceptual language — not as a model of physical reality — to translate between option prices and implied volatility, then trade the divergence between implied and forecast realized volatility. Rules, formulas, and parameters must be justified economically, not back-fitted. [p.xv–xvi, p.249–251]
 
 ---
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Implied volatility** — the volatility value that, when inserted into the BSM formula, reproduces the market price of an option; it is "the wrong number we put into the wrong formula to get the correct option price." [p.11]
 - **Realized volatility** — the observed standard deviation of log-returns over a historical window, estimated via close-to-close or range-based estimators. Instantaneous volatility is unobservable; it must be estimated over time. [p.14]
 - **Variance premium** — the empirical tendency for index implied volatility (e.g., VIX) to be persistently higher than subsequent realized volatility; the dominant source of beta for short-volatility traders. [p.214]
@@ -38,8 +36,7 @@ The trading process breaks into three inseparable pillars: finding profitable tr
 
 ---
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **BSM Delta-Hedged Portfolio P/L (instantaneous)** [p.5]
 
 $$\frac{1}{2}\sigma^2 S^2 \Gamma + \theta - r(C - \Delta S_t) = 0$$
@@ -210,8 +207,7 @@ $$\sigma^2_{VIX} = \frac{2}{T}\sum_{i=1}^{N}\frac{\Delta X_i}{X_i^2}\exp(rT)V(X_
 
 ---
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **Pretrade Analysis Process** [p.239–243]
 
 ```
@@ -288,26 +284,24 @@ Sharpe ratio 2.62. Outperformed simple short VXX (Sharpe 1.5, larger drawdowns).
 
 ---
 
-## 5. Regras de Trading Explícitas
-
-- **REGRA [p.52]**: EWMA lambda should be between 0.9 and 0.99. A lower value places more weight on recent observations. Treat large single-event jumps (e.g., earnings gaps) as outliers — exclude them from forecasts unless future earnings dates fall within the option's life, rather than letting them exponentially decay.
-- **REGRA [p.57–58]**: Use at least 1,000 data points when fitting GARCH. With fewer data, parameters are unreliable and the likelihood surface is too flat to optimize meaningfully.
-- **REGRA [p.58]**: Do not rely solely on a GARCH point forecast. Place the forecast in the context of a volatility cone. "Selling one-month implied volatility at 35 percent because this is in the 90th percentile for one-month volatility over the past two years can form the basis of a sensible trading plan." [p.60]
-- **REGRA [p.60]**: Use the implied/realized spread of the index (e.g., VIX vs. S&P 500 realized) as a benchmark for the amount of edge expected in individual underlying trades. "Consider using the implied/realized spread of the index as a benchmark for the amount of edge you look for in all of your trades." [p.60]
-- **REGRA [p.64]**: Adjust each volatility forecast by subtracting the "usual" implied/forecast spread before judging whether an option is cheap or expensive. For the S&P 500 (sample period shown in Figure 4.5), the average spread (VIX − 30-day realized) was 3.09 percentage points. [p.64]
-- **REGRA [p.102]**: Use the Whalley-Wilmott delta band as the rehedging trigger. Rehedge only when delta drifts outside the band $\partial V/\partial S \pm (3\lambda S^2 \exp(-r(T-t))/2\gamma)^{1/3}$. [p.102]
-- **REGRA [p.113–115]**: Aggregate option positions across different underlyings before deciding to hedge. Offsetting Greeks reduce the net hedge needed and thus transaction costs. [p.113–115]
-- **REGRA [p.138]**: Size positions using $f = r/\sigma^2$ (continuous Kelly) where $r$ is the expected excess return of the trade and $\sigma^2$ is its variance. [p.138]
-- **REGRA [p.139]**: "There is no compelling theoretical reason for sizing trades according to the fractional Kelly idea. Fractional Kelly doesn't correspond to maximizing any utility function." Use it for two practical reasons: (1) it trades expected return for lower drawdown volatility; (2) it acts as a conservative Bayesian prior on true edge. [p.139]
-- **REGRA [p.217]**: Sell index volatility (straddles/strangles on QQQ/SPY) when the VIX is below 35. "The volatility premium is proportionally greater when the implied volatility is low." Results are "fairly robust with respect to the actual VIX level chosen." [p.217]
-- **REGRA [p.218]**: As a secondary filter, only sell options when VIX is below its EWMA. This further smooths returns but "the potential for curve fitting is significant." [p.218]
-- **REGRA [p.226]**: For the VIX-basis trade: trigger when expected daily convergence > 0.1 VIX points; hold 5 days; optionally hedge with S&P 500 futures (estimated hedge ratio from regression). [p.226]
-- **REGRA [p.249]**: Define a single, clearly articulated trading goal before establishing a strategy. "I want to make as much money as possible, with minimal risk and a steady income, is not a goal; it is three goals." [p.249]
+## 5. Explicit Trading Rules
+- **RULE [p.52]**: EWMA lambda should be between 0.9 and 0.99. A lower value places more weight on recent observations. Treat large single-event jumps (e.g., earnings gaps) as outliers — exclude them from forecasts unless future earnings dates fall within the option's life, rather than letting them exponentially decay.
+- **RULE [p.57–58]**: Use at least 1,000 data points when fitting GARCH. With fewer data, parameters are unreliable and the likelihood surface is too flat to optimize meaningfully.
+- **RULE [p.58]**: Do not rely solely on a GARCH point forecast. Place the forecast in the context of a volatility cone. "Selling one-month implied volatility at 35 percent because this is in the 90th percentile for one-month volatility over the past two years can form the basis of a sensible trading plan." [p.60]
+- **RULE [p.60]**: Use the implied/realized spread of the index (e.g., VIX vs. S&P 500 realized) as a benchmark for the amount of edge expected in individual underlying trades. "Consider using the implied/realized spread of the index as a benchmark for the amount of edge you look for in all of your trades." [p.60]
+- **RULE [p.64]**: Adjust each volatility forecast by subtracting the "usual" implied/forecast spread before judging whether an option is cheap or expensive. For the S&P 500 (sample period shown in Figure 4.5), the average spread (VIX − 30-day realized) was 3.09 percentage points. [p.64]
+- **RULE [p.102]**: Use the Whalley-Wilmott delta band as the rehedging trigger. Rehedge only when delta drifts outside the band $\partial V/\partial S \pm (3\lambda S^2 \exp(-r(T-t))/2\gamma)^{1/3}$. [p.102]
+- **RULE [p.113–115]**: Aggregate option positions across different underlyings before deciding to hedge. Offsetting Greeks reduce the net hedge needed and thus transaction costs. [p.113–115]
+- **RULE [p.138]**: Size positions using $f = r/\sigma^2$ (continuous Kelly) where $r$ is the expected excess return of the trade and $\sigma^2$ is its variance. [p.138]
+- **RULE [p.139]**: "There is no compelling theoretical reason for sizing trades according to the fractional Kelly idea. Fractional Kelly doesn't correspond to maximizing any utility function." Use it for two practical reasons: (1) it trades expected return for lower drawdown volatility; (2) it acts as a conservative Bayesian prior on true edge. [p.139]
+- **RULE [p.217]**: Sell index volatility (straddles/strangles on QQQ/SPY) when the VIX is below 35. "The volatility premium is proportionally greater when the implied volatility is low." Results are "fairly robust with respect to the actual VIX level chosen." [p.217]
+- **RULE [p.218]**: As a secondary filter, only sell options when VIX is below its EWMA. This further smooths returns but "the potential for curve fitting is significant." [p.218]
+- **RULE [p.226]**: For the VIX-basis trade: trigger when expected daily convergence > 0.1 VIX points; hold 5 days; optionally hedge with S&P 500 futures (estimated hedge ratio from regression). [p.226]
+- **RULE [p.249]**: Define a single, clearly articulated trading goal before establishing a strategy. "I want to make as much money as possible, with minimal risk and a steady income, is not a goal; it is three goals." [p.249]
 
 ---
 
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - **[p.18]** Using only the last 30 closing prices to measure volatility gives unacceptably large sampling error. The 95% confidence interval (±2 std devs) means the estimate could be off by as much as 25% of the true value.
 - **[p.28]** Close-to-close estimator is extremely inefficient (slow convergence). Garman-Klass and Yang-Zhang are more efficient but more biased due to discrete sampling. The "right" choice is context-dependent; using multiple estimators and comparing them is preferable to relying on one. [p.28]
 - **[p.52]** EWMA after outlier events: "An exponential weighting may smooth the jumps in our volatility forecast but it does so purely to make things look pretty." Preferred approach: decide explicitly whether the event was an outlier and exclude or weight it accordingly. [p.52]
@@ -329,8 +323,7 @@ Sharpe ratio 2.62. Outperformed simple short VXX (Sharpe 1.5, larger drawdowns).
 
 ---
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **EWMA lambda (λ)** [p.52]: The book states "values of between 0.9 and 0.99 are used." No single value is recommended; arbitrary choice is explicitly criticized as a "stupid solution" for handling outlier events. Context-dependent.
 - **GARCH α, β for MSFT** [p.54]: The only equity example given is Microsoft (MSFT), fitted on daily data May 2003–May 2007: $\omega = 0.00000505$, $\alpha = 0.053$, $\beta = 0.884$. These are illustrative, not claimed as typical values. Author notes parameters estimated with MLE show "little persistence" across re-estimation dates. [p.57]
 - **Volatility cone lookback window** [p.58–59]: Example uses four years of daily data. Choice depends on stationarity assumptions. "Choosing the right compromise is something of an art and the most appropriate solution will be dependent on current market conditions." [p.18]
@@ -342,8 +335,7 @@ Sharpe ratio 2.62. Outperformed simple short VXX (Sharpe 1.5, larger drawdowns).
 
 ---
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "Successful trading is about developing a consistent process. You must have a goal; you must find trades with edge; you must capture that edge and you must size each trade in a way that is consistent with your goal." — [p.249]
 
 > "Generally values of between 0.9 and 0.99 are used." (on EWMA $\lambda$) — [p.52]
@@ -358,8 +350,7 @@ Sharpe ratio 2.62. Outperformed simple short VXX (Sharpe 1.5, larger drawdowns).
 
 ---
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 - The Kelly criterion (Eq. 8.5 and continuous case Eq. 8.14) is treated in Ralph Vince's *The Mathematics of Money Management* (Wiley, 1992), cited directly by Sinclair at [p.251] (Resources section). Vince is described as introducing Kelly-based ideas and calculations for traders. See `math_money_mgmt.md` if available.
 - The GARCH family (Chapter 4) overlaps with treatments in `fin_time_series_tsay.md` and `time_series_hamilton.md` — those texts provide formal econometric grounding for ARMA/GARCH; Sinclair's treatment is applications-oriented.
 - Behavioral finance biases (Chapter 10) connect thematically to `adaptive_markets.md` — Lo's Adaptive Markets Hypothesis explains why option traders persistently misprice volatility via evolutionary/psychological mechanisms.

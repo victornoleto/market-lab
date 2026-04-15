@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the Clenow momentum grid (Fase 2.5 / 3) with active gates.
+"""Run the Clenow momentum grid (Phase 2.5 / 3) with active gates.
 
 Orchestrates the end-to-end pipeline:
 

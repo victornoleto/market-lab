@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the Ehlers Band-Pass Swing grid (Fase 2.5 Execução 2) with active gates.
+"""Run the Ehlers Band-Pass Swing grid (Phase 2.5 Run 2) with active gates.
 
 Orchestrates the end-to-end pipeline for a single-instrument Ehlers
 swing-trader grid on ``^GSPC`` (index price):
@@ -30,7 +30,7 @@ Dry-run (fast smoke):
         --dry-run --output-dir /tmp/grid_smoke
 
 Logs: unified append-only log at ``logs/grid.log`` (single ``tail -f``
-for every run, past and future — shared with Clenow Execução 1 for
+for every run, past and future — shared with Clenow Run 1 for
 cross-strategy comparison). Per-run detail under
 ``.cache/grid_runs/{run_id}/``.
 """

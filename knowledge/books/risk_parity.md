@@ -1,25 +1,23 @@
 # Risk Parity Fundamentals
 
 ## Metadata
-- **Autor:** Edward E. Qian, PhD, CFA [p.xvii]
-- **Ano:** 2016
-- **Editora:** CRC Press / Taylor & Francis Group
-- **Páginas:** 245
+- **Author:** Edward E. Qian, PhD, CFA [p.xvii]
+- **Year:** 2016
+- **Publisher:** CRC Press / Taylor & Francis Group
+- **Pages:** 245
 - **ISBN:** 978-1-4987-3880-4 (eBook PDF)
-- **Foco principal:** Portfolio construction via balanced risk allocation across equity, interest rate, and inflation risk premiums — the theoretical and practical case for risk parity over traditional 60/40.
+- **Main focus:** Portfolio construction via balanced risk allocation across equity, interest rate, and inflation risk premiums — the theoretical and practical case for risk parity over traditional 60/40.
 
 ---
 
-## 1. Tese Central
-
+## 1. Core Thesis
 The central thesis is that traditional capital-weighted portfolios such as the 60/40 stock/bond allocation are misleadingly named "balanced" — they are in fact severely unbalanced in terms of risk, with 90%–95% of portfolio risk concentrated in equities [p.1–2, ch.1]. True diversification requires allocating risk equally (or proportionally) across independent risk premiums rather than allocating capital. Risk parity achieves this by inverting the process: start with a target risk allocation, derive portfolio weights, and apply leverage to reach the desired return level [p.10, ch.1].
 
 The three primary risk premiums that must be balanced are: equity risk premium (rewarded by business cycle growth), interest rate risk premium (rewarded by lending over long horizons), and inflation risk "premium" (primarily a hedge via commodities and inflation-linked bonds) [p.17–18, ch.2]. A risk parity portfolio is superior precisely because these three premiums have low and sometimes negative correlations — each provides diversification exactly when the others struggle [p.69, ch.4]. The author coined the term "risk parity" in 2005 and launched a live risk parity strategy at PanAgora Asset Management in 2006 [p.xiii–xiv].
 
 ---
 
-## 2. Conceitos-Chave
-
+## 2. Main Concepts
 - **Risk contribution (variance decomposition)** — The share of a portfolio's total variance attributable to each component, calculated by assigning the component's variance plus half of its covariances with all other assets [p.3–5, ch.1]. For a 60/40 portfolio with equity vol 15% and bond vol 5%, stocks contribute ~92% of total risk and bonds only ~8% [p.5–6, ch.1].
 
 - **Loss contribution ≈ risk contribution** — Mathematically provable (Qian 2006) that for a large portfolio loss $L$, each component's fractional loss contribution approximately equals its risk contribution: $L_s/L \approx p_s$ [p.7, ch.1]. Empirically confirmed on the 60/40 portfolio (S&P 500 / LT Government Bond), January 1926 – June 2004 [p.8, ch.1].
@@ -52,8 +50,7 @@ The three primary risk premiums that must be balanced are: equity risk premium (
 
 ---
 
-## 3. Fórmulas / Equações
-
+## 3. Formulas / Equations
 **Portfolio Variance of Two-Asset Portfolio (e.g. 60/40)** [p.5, ch.1]
 
 $$\sigma^2 = w_s^2 \sigma_s^2 + 2\rho w_s w_b \sigma_s \sigma_b + w_b^2 \sigma_b^2$$
@@ -110,8 +107,7 @@ where $w_1$ is the weight in the risky asset (e.g., $w_1 = -1$ for inverse ETF, 
 
 ---
 
-## 4. Algoritmos e Pseudocódigo
-
+## 4. Algorithms and Pseudocode
 **ERC Portfolio Construction** [p.10–11, ch.1]
 
 ```
@@ -202,38 +198,36 @@ Result: commodities (GSCI) benefit from stop-loss due to AC(1) = 0.15 (positive)
 
 ---
 
-## 5. Regras de Trading Explícitas
+## 5. Explicit Trading Rules
+- **RULE [p.10, ch.1]**: For a two-asset risk parity portfolio, set weights inversely proportional to volatility. With stocks at 15% vol and bonds at 5% vol (ratio 3:1), the unlevered risk parity portfolio is 25% stocks / 75% bonds.
 
-- **REGRA [p.10, ch.1]**: For a two-asset risk parity portfolio, set weights inversely proportional to volatility. With stocks at 15% vol and bonds at 5% vol (ratio 3:1), the unlevered risk parity portfolio is 25% stocks / 75% bonds.
+- **RULE [p.10, ch.1]**: Apply leverage to the unlevered risk parity portfolio to match a target risk level (e.g., 60/40's ~9.6% volatility). A 25/75 stock/bond portfolio requires ~2:1 leverage → 50% stocks / 150% bonds.
 
-- **REGRA [p.10, ch.1]**: Apply leverage to the unlevered risk parity portfolio to match a target risk level (e.g., 60/40's ~9.6% volatility). A 25/75 stock/bond portfolio requires ~2:1 leverage → 50% stocks / 150% bonds.
+- **RULE [p.16, ch.1]**: Use risk parity at one of three leverage levels: (1) unleveraged at 4%–5% risk (bond-index substitute); (2) ~2:1 leverage at ~10% risk (balanced portfolio substitute); (3) ~4:1 leverage at ~20% risk (global macro substitute, Sharpe ~1.1 over 1983–2004 backtest).
 
-- **REGRA [p.16, ch.1]**: Use risk parity at one of three leverage levels: (1) unleveraged at 4%–5% risk (bond-index substitute); (2) ~2:1 leverage at ~10% risk (balanced portfolio substitute); (3) ~4:1 leverage at ~20% risk (global macro substitute, Sharpe ~1.1 over 1983–2004 backtest).
+- **RULE [p.25, ch.2]**: Classify HY bonds as equity risk, not interest rate risk. Do NOT include HY bonds in the interest rate bucket of a risk parity portfolio — this amounts to doubling equity risk. Exclude HY from core risk parity allocations due to equity exposure and illiquidity.
 
-- **REGRA [p.25, ch.2]**: Classify HY bonds as equity risk, not interest rate risk. Do NOT include HY bonds in the interest rate bucket of a risk parity portfolio — this amounts to doubling equity risk. Exclude HY from core risk parity allocations due to equity exposure and illiquidity.
+- **RULE [p.37–38, ch.2]**: Always hedge currency exposure when investing in foreign equity or bond risk premiums. Currency risk adds volatility without return premium (t-stat ≈ 0.28 for USD investors in unhedged WGBI).
 
-- **REGRA [p.37–38, ch.2]**: Always hedge currency exposure when investing in foreign equity or bond risk premiums. Currency risk adds volatility without return premium (t-stat ≈ 0.28 for USD investors in unhedged WGBI).
+- **RULE [p.55, ch.3]**: Do NOT use duration alone as the risk measure for bonds. Use return volatility (= duration × yield volatility). In a ZIRP environment, declining yield volatility can more than offset rising duration, resulting in lower effective bond risk.
 
-- **REGRA [p.55, ch.3]**: Do NOT use duration alone as the risk measure for bonds. Use return volatility (= duration × yield volatility). In a ZIRP environment, declining yield volatility can more than offset rising duration, resulting in lower effective bond risk.
+- **RULE [p.55–56, ch.3]**: In ZIRP environments where short-end yields are anchored, reduce risk allocation to 2-year and 5-year bonds (low term premium, no equity-hedging benefit). Increase allocation to 10- and 30-year bonds (meaningful yield volatility, negative equity correlation preserved).
 
-- **REGRA [p.55–56, ch.3]**: In ZIRP environments where short-end yields are anchored, reduce risk allocation to 2-year and 5-year bonds (low term premium, no equity-hedging benefit). Increase allocation to 10- and 30-year bonds (meaningful yield volatility, negative equity correlation preserved).
+- **RULE [p.66, ch.3]**: Do NOT use forward rates as forecasts of future interest rates. The hit ratio is only 39% (1952–2013). Use current rates as the default expectation; rely on fundamental macroeconomic analysis (growth + inflation) for any active interest rate views.
 
-- **REGRA [p.66, ch.3]**: Do NOT use forward rates as forecasts of future interest rates. The hit ratio is only 39% (1952–2013). Use current rates as the default expectation; rely on fundamental macroeconomic analysis (growth + inflation) for any active interest rate views.
+- **RULE [p.78, ch.4]**: When inflation is persistently high, dynamically shift risk allocation toward real assets (commodities, inflation-linked bonds) and away from nominal bonds and equities. Dynamic risk allocation would have been especially beneficial in the 1970s.
 
-- **REGRA [p.78, ch.4]**: When inflation is persistently high, dynamically shift risk allocation toward real assets (commodities, inflation-linked bonds) and away from nominal bonds and equities. Dynamic risk allocation would have been especially beneficial in the 1970s.
+- **RULE [p.78, ch.4]**: As a secondary inflation defense, deleverage the portfolio (reduce total risk exposure) when all three risk premiums are simultaneously negative. High cash returns during inflationary regimes partially compensate for the deleveraging.
 
-- **REGRA [p.78, ch.4]**: As a secondary inflation defense, deleverage the portfolio (reduce total risk exposure) when all three risk premiums are simultaneously negative. High cash returns during inflationary regimes partially compensate for the deleveraging.
+- **RULE [p.113, ch.5]**: Do NOT use inverse or leveraged single-asset ETFs as long-term investments. Annual return slippage (negative diversification return) at 20% underlying vol: −21.3% for −3X, −11.3% for 3X, −3.9% for −1X. These are structural costs, not episodic.
 
-- **REGRA [p.113, ch.5]**: Do NOT use inverse or leveraged single-asset ETFs as long-term investments. Annual return slippage (negative diversification return) at 20% underlying vol: −21.3% for −3X, −11.3% for 3X, −3.9% for −1X. These are structural costs, not episodic.
+- **RULE [p.180–183, ch.7]**: Stop-loss policies have real investment value for commodities (positive autocorrelation AC(1) = 0.15 and fat tails), but little or negative investment value for stocks, bonds, and diversified risk parity portfolios overall.
 
-- **REGRA [p.180–183, ch.7]**: Stop-loss policies have real investment value for commodities (positive autocorrelation AC(1) = 0.15 and fat tails), but little or negative investment value for stocks, bonds, and diversified risk parity portfolios overall.
-
-- **NUNCA [p.169, ch.7]**: Do not label a portfolio "risk parity" based on leverage and fixed-income notional weight alone. A portfolio with 86%–93% "risk-on" (equity + inflation) allocation is not risk parity — it is a disguised 60/40. The required test: equity risk + interest rate risk + inflation risk each ≈ 20%–40%.
+- **NEVER [p.169, ch.7]**: Do not label a portfolio "risk parity" based on leverage and fixed-income notional weight alone. A portfolio with 86%–93% "risk-on" (equity + inflation) allocation is not risk parity — it is a disguised 60/40. The required test: equity risk + interest rate risk + inflation risk each ≈ 20%–40%.
 
 ---
 
-## 6. Pitfalls e Anti-patterns
-
+## 6. Pitfalls and Anti-patterns
 - **[p.18, ch.2]** Applying ERC to an asymmetric set of assets (e.g., four equity asset classes + five bond asset classes including HY/EM + one commodity = 10 assets) produces ~65% equity risk — structurally resembling a 60/40 portfolio. Risk parity requires parity at the level of economic risk dimensions (equity/rates/inflation), not at the level of asset count.
 
 - **[p.11, ch.1]** Naïve risk parity (inverse vol weighting) ignores correlations and is exact only for two-asset portfolios or when all pairwise correlations are equal. For N > 2 assets with unequal correlations, it overweights high-correlation assets relative to the true ERC optimum.
@@ -256,8 +250,7 @@ Result: commodities (GSCI) benefit from stop-loss due to AC(1) = 0.15 (positive)
 
 ---
 
-## 7. Parâmetros Sensíveis
-
+## 7. Sensitive Parameters
 - **Equity volatility: 15%–20% annualized** [p.1, ch.1]: Broad developed market equity indices have volatilities in this range. Used as 15% in most examples. Not optimized — reflects long-run empirical norm; economically justified as the risk compensation for business cycle exposure.
 
 - **Investment-grade bond volatility: ~5% annualized** [p.1, ch.1]: High-quality fixed-income assets exhibit much lower volatilities. Used as 5% in most examples; 3:1 vol ratio vs. equities. Not optimized; economically justified by the lower uncertainty of fixed coupon payments.
@@ -274,8 +267,7 @@ Result: commodities (GSCI) benefit from stop-loss due to AC(1) = 0.15 (positive)
 
 ---
 
-## 8. Citações Literais Importantes
-
+## 8. Key Literal Quotes
 > "The innovation and defining characteristic of risk parity lies in its active use of risk contribution as the underlying criterion to construct portfolios, rather than as a limited and often passive tool for risk monitoring." — [p.3, ch.1]
 
 > "Risk contributions to portfolio risk are directly linked to return contributions to portfolio returns from underlying assets." — [p.6, ch.1]
@@ -290,8 +282,7 @@ Result: commodities (GSCI) benefit from stop-loss due to AC(1) = 0.15 (positive)
 
 ---
 
-## 9. Conexões com Outros Livros Desta Base
-
+## 9. Cross-references to Other Books in This Knowledge Base
 N/A — This is among the first books processed; cross-references will be added in subsequent passes after other summaries in this knowledge base are verified. Likely connections based on content overlap (not yet verified against other summaries):
 
 - ERC/risk-budgeting portfolio construction: potentially related to `ml_for_algo_trading.md` (portfolio construction chapters) and `trading_evolved.md` (risk-based allocation).

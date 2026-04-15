@@ -18,7 +18,7 @@ Notes
   pct_of_dcp=0.90, stop_pct=0.05`` — defaults from [cycle_analytics, ch.7
   p.77 text example; p.152-153 tuning; p.225-226 stop]). To search the
   parameter grid and apply PBO/DSR gates, use ``run_grid_ehlers.py``
-  (Commit 9 of this Execução).
+  (Commit 9 of this Run).
 * **Warmup.** The roofing filter needs ~2·hp_period bars, the Homodyne
   DCP another ~50 for its EMA cascades to converge. The script fetches
   ``--warmup-days`` extra trading days before ``--start``; the Runner

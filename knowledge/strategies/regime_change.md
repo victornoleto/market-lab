@@ -1,6 +1,6 @@
 # Regime Detection
 
-HMM e outros métodos para identificar bull/bear/sideways e trocar estratégia dinamicamente.
+HMM and other methods to identify bull/bear/sideways and switch strategy dynamically.
 
 ## Sources
 
@@ -10,27 +10,27 @@ HMM e outros métodos para identificar bull/bear/sideways e trocar estratégia d
 
 ## From `books/regime_change.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.82, ch.6]**: Under normal regime, enter contrarian when |TMV| reaches 2: short in uptrend (TMV ≥ 2), long in downtrend (TMV ≤ -2). Rationale: mean reversion is observed in normal market regimes.
+- **RULE [p.82, ch.6]**: Under normal regime, enter contrarian when |TMV| reaches 2: short in uptrend (TMV ≥ 2), long in downtrend (TMV ≤ -2). Rationale: mean reversion is observed in normal market regimes.
 
-- **REGRA [p.83, ch.6]**: Under abnormal regime, JC1 switches to trend-following on the same |TMV| ≥ 2 trigger. Rationale: in abnormal regimes, margin calls cascade and drive the prevailing trend further.
+- **RULE [p.83, ch.6]**: Under abnormal regime, JC1 switches to trend-following on the same |TMV| ≥ 2 trigger. Rationale: in abnormal regimes, margin calls cascade and drive the prevailing trend further.
 
-- **REGRA [p.82, ch.6]**: Close position at the next DC Confirmation (DCC) point under both normal and abnormal regimes.
+- **RULE [p.82, ch.6]**: Close position at the next DC Confirmation (DCC) point under both normal and abnormal regimes.
 
-- **REGRA [p.82–83, ch.6]**: Close ALL open positions immediately when a regime change is detected by the Bayes tracker. This is the primary stop-loss mechanism and the source of drawdown reduction.
+- **RULE [p.82–83, ch.6]**: Close ALL open positions immediately when a regime change is detected by the Bayes tracker. This is the primary stop-loss mechanism and the source of drawdown reduction.
 
-- **REGRA [p.83, ch.6]** (JC2 — more conservative): Hold NO positions during abnormal regime; wait for return to normal regime before re-entering.
+- **RULE [p.83, ch.6]** (JC2 — more conservative): Hold NO positions during abnormal regime; wait for return to normal regime before re-entering.
 
-- **REGRA [p.71, ch.5]**: Use B-Strict rule: only conclude Regime 2 if $p(C_2|x) > p(C_1|x)$ AND $p(C_2|x) > 0.8$. Reduces false alarms from 52 to 10 across DJIA/FTSE/S&P 500 test period [p.76, ch.5].
+- **RULE [p.71, ch.5]**: Use B-Strict rule: only conclude Regime 2 if $p(C_2|x) > p(C_1|x)$ AND $p(C_2|x) > 0.8$. Reduces false alarms from 52 to 10 across DJIA/FTSE/S&P 500 test period [p.76, ch.5].
 
-- **REGRA [p.58, ch.4]**: If the current market is moving away from the normal regime cluster in the T-TMV indicator space, consider closing positions or switching strategy.
+- **RULE [p.58, ch.4]**: If the current market is moving away from the normal regime cluster in the T-TMV indicator space, consider closing positions or switching strategy.
 
-- **NUNCA [p.77, ch.5]**: Treat regime tracking output as a forecast of future prices — the method is purely data-led and tells only the current regime state. "No forecasting is attempted."
+- **NEVER [p.77, ch.5]**: Treat regime tracking output as a forecast of future prices — the method is purely data-led and tells only the current regime state. "No forecasting is attempted."
 
 ---
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **DC Event Condition** [p.10, ch.2 eq. 2.1]
 
@@ -143,7 +143,7 @@ Applied so that regimes from markets with different absolute TMV/T scales can be
 
 ---
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Algorithm 1 — Naive Bayes Classifier training and testing** [p.65, ch.5]
 
@@ -254,7 +254,7 @@ Rule 3: When next DCC point confirmed: CLOSE
 
 ---
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - [p.94, ch.7] Using only time-series analysis for regime detection — this misses intra-day regime changes that DC captures (e.g., the 14 July 2016 EUR-GBP regime change linked to Theresa May becoming PM was not detected under time series) [p.29, ch.3].
 
@@ -280,19 +280,19 @@ Rule 3: When next DCC point confirmed: CLOSE
 
 ## From `books/sentiment_analysis_handbook.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
-- **REGRA [p.705]**: Filtre notícias antes de qualquer modelo: `relevance >= 0.75` AND `novelty <= 1`. Menor que isso = story é peripheral (firma só mencionada) ou stale (repete história das últimas 24h).
-- **REGRA [p.372]**: Estratégia Macquarie EPR — go LONG on (positive earnings surprise) AND (positive abnormal tone); go SHORT on the mirror; rebalance quarterly; hold day 2 to day 60.
-- **REGRA [p.362-363]**: 10-K complexity signal — SHORT high-complexity names (top quintile), especially for short-horizon sleeves. Only HIGH complexity underperforms; low-complexity names don't over-perform symmetrically.
-- **REGRA [p.52]**: News impact decays to zero within 2–5 days on price/beta (Patton & Verardo 2012) and ≈ 7 days on volatility (Mitra et al. 2009). Do NOT treat a news event as permanently informative.
-- **REGRA [p.53]**: Accumulate positive and negative impact streams SEPARATELY. Never net positive against negative sentiment — exact cancellation would hide true newsflow intensity.
-- **REGRA [p.44-45]**: Do NOT discard neutral-sentiment items: they contribute to newsflow, which itself has predictive content for volatility/beta.
-- **REGRA [p.64]**: Use the Loughran-McDonald finance dictionary instead of the Harvard General Inquirer for financial text — ~75% of Harvard "negative" words are not actually negative in finance context [p.47, p.361].
-- **REGRA [p.698, ch.20]**: Monitor OPTIONS volume as a leading indicator: options volume rises ≈ 7× (vs ~17% in equities) in the hour BEFORE firm-specific news on Dow 30 names, signalling informed trading.
-- **NUNCA [p.45]**: Extrair sentiment de somente uma fonte (ex.: apenas Twitter) para decisões de trading — Derwent Capital's Twitter-only hedge fund closed within 12 months of launch [p.42].
+- **RULE [p.705]**: Filter news before any model: `relevance >= 0.75` AND `novelty <= 1`. Anything less = the story is peripheral (firm only mentioned) or stale (repeats a story from the last 24h).
+- **RULE [p.372]**: Macquarie EPR strategy — go LONG on (positive earnings surprise) AND (positive abnormal tone); go SHORT on the mirror; rebalance quarterly; hold day 2 to day 60.
+- **RULE [p.362-363]**: 10-K complexity signal — SHORT high-complexity names (top quintile), especially for short-horizon sleeves. Only HIGH complexity underperforms; low-complexity names do not over-perform symmetrically.
+- **RULE [p.52]**: News impact decays to zero within 2–5 days on price/beta (Patton & Verardo 2012) and ≈ 7 days on volatility (Mitra et al. 2009). Do NOT treat a news event as permanently informative.
+- **RULE [p.53]**: Accumulate positive and negative impact streams SEPARATELY. Never net positive against negative sentiment — exact cancellation would hide true newsflow intensity.
+- **RULE [p.44-45]**: Do NOT discard neutral-sentiment items: they contribute to newsflow, which itself has predictive content for volatility/beta.
+- **RULE [p.64]**: Use the Loughran-McDonald finance dictionary instead of the Harvard General Inquirer for financial text — ~75% of Harvard "negative" words are not actually negative in finance context [p.47, p.361].
+- **RULE [p.698, ch.20]**: Monitor OPTIONS volume as a leading indicator: options volume rises ≈ 7x (vs. ~17% in equities) in the hour BEFORE firm-specific news on Dow 30 names, signalling informed trading.
+- **NEVER [p.45]**: Extract sentiment from a single source only (e.g., Twitter alone) for trading decisions — Derwent Capital's Twitter-only hedge fund closed within 12 months of launch [p.42].
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Tone probability decomposition (Thomson Reuters RNSE)** [p.704]
 
@@ -304,17 +304,17 @@ Each firm in a multi-firm article receives its own triplet based on the words us
 
 $$\text{relevance} \ge 0.75 \quad \text{AND} \quad \text{novelty} \le 1$$
 
-Justification: relevance ≥ 0.75 keeps stories where firm is the focus (not mentioned in passing); novelty ≤ 1 filters stale repeats within last 24h.
+Justification: relevance ≥ 0.75 keeps stories where the firm is the focus (not mentioned in passing); novelty ≤ 1 filters stale repeats within the last 24h.
 
 **Impact measure (conceptual formulation)** [p.52-53]
 
-Positive and negative sentiments accumulated separately to avoid cancellation:
+Positive and negative sentiments are accumulated separately to avoid cancellation:
 
 $$\text{Impact}^{+}(t) = \sum_{i: s_i > 0} s_i \cdot e^{-\lambda (t - t_i)}$$
 
 $$\text{Impact}^{-}(t) = \sum_{i: s_i < 0} s_i \cdot e^{-\lambda (t - t_i)}$$
 
-where $s_i$ is the sentiment score of news item $i$ arriving at $t_i$, and $\lambda$ controls decay. Empirically, decay observed in the range of 2–5 days (Patton & Verardo 2012) up to 7 days (Mitra, Mitra & diBartolomeo 2009) [p.52]. The exact equation form is described verbally; this is a reconstruction of the described "exponential decay + accumulation" procedure [p.53].
+where $s_i$ is the sentiment score of news item $i$ arriving at $t_i$, and $\lambda$ controls decay. Empirically, decay is observed in the range of 2–5 days (Patton & Verardo 2012) up to 7 days (Mitra, Mitra & diBartolomeo 2009) [p.52]. The exact equation form is described verbally; this is a reconstruction of the described "exponential decay + accumulation" procedure [p.53].
 
 **Residual complexity signal (Brar, De Rossi, Kalamkar — Macquarie)** [p.362]
 
@@ -322,7 +322,7 @@ $$\text{Complexity}_{i,t} = f(\text{word count}, \text{words/sentence}, \text{co
 
 $$\text{Signal}_{i,t} = \text{Complexity}_{i,t} - \hat{\alpha} - \hat{\beta}_1 \text{Size}_{i,t} - \hat{\beta}_2 \text{AssetGrowth}_{i,t} - \sum_s \hat{\gamma}_s \text{Sector}_s$$
 
-Residual after stripping size, asset growth and sector effects; used as cross-sectional signal [p.362].
+Residual after stripping size, asset growth, and sector effects; used as cross-sectional signal [p.362].
 
 **Abnormal tone (Macquarie EPR strategy)** [p.369]
 
@@ -334,9 +334,9 @@ Residual = soft-information signal orthogonal to hard earnings surprise [p.369].
 
 **Garcia (2013) empirical effect size** [p.65]
 
-A one standard-deviation increase in media pessimism ⇒ ≈ **−9 bps** stock return next day, over 80 years of NYT financial articles (~27,500 trading days); effect concentrated in recessions, Mondays, and day after holidays (~1/3 of sample) [p.65].
+A one standard-deviation increase in media pessimism ⇒ ≈ **−9 bps** stock return next day, over 80 years of NYT financial articles (~27,500 trading days); effect concentrated in recessions, Mondays, and the day after holidays (~1/3 of the sample) [p.65].
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Sentiment classification pipeline (general, per ch.1.2 and ch.9)** [p.47-48]
 
@@ -395,7 +395,7 @@ for each asset a at time t:
 ```
 Rationale: exact cancellation would misrepresent the situation as "no news" [p.53].
 
-**Information-share via Hasbrouck (1995) for options vs equity** [p.699]
+**Information-share via Hasbrouck (1995) for options vs. equity** [p.699]
 
 ```
 Given (Hasbrouck information share inputs) [p.699]:
@@ -409,30 +409,30 @@ Steps:
 Conditional result: IS rises from 14% (unconditional) to 27% around news [p.698]
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
-- **[p.64] Large K → spurious results.** Text data has as many covariates as words in the language (×n-grams). Probability of spurious patterns grows with K. Nyman et al. (2014) cited as warning.
+- **[p.64] Large K → spurious results.** Text data has as many covariates as words in the language (x n-grams). The probability of spurious patterns grows with K. Nyman et al. (2014) cited as a warning.
 - **[p.65] Large N ≠ precision.** Garcia (2013) had 27,500 trading days but the full effect was concentrated in only ~1/3 of observations (recessions, Mondays, day-after-holidays). Sample size gives illusion of robustness.
 - **[p.65-66] Small T (time) is the real bottleneck.** Financial crises are rare; predicting them with textual data runs into the same small-T problem as regime models.
-- **[p.66] Survivorship bias in text.** US went from 1,800 daily newspapers (1940) to 1,382 (2013). Cross-section of text today ≠ cross-section in the past — using current media footprint to infer old readership patterns is misleading.
-- **[p.66] Words change meaning.** "Awful" was positive until mid-20th century. Historical lexicon-based scores can silently drift.
-- **[p.47] Naïve bag-of-words mis-handles negation and context.** "The figure is not encouraging" can be scored positive. Must apply negation tagging (Das & Chen 2007) or move to sentence-level models.
-- **[p.64] Ex-ante dictionary selection creates hidden bias.** Even "fix" of using LM (built from 10-Ks) may not generalise to earnings transcripts, social media, or analyst notes. Hanley & Hoberg (2010) use alternative dictionaries — indication the field is not settled.
-- **[p.66-67] Ioannidis (2005) conditions for false-positive research are ALL satisfied for textual finance**: small effect size, flexibility in design, many teams chasing significance, financial incentives. Expect high false-positive rate in published sentiment-alpha claims.
-- **[p.67-68] Data-mining culture clash.** Finance traditionally distrusts data mining (Black 1993) while ML embraces it (Hand 2001); naïve textual-finance work imports ML tools without the finance discipline of out-of-sample testing.
+- **[p.66] Survivorship bias in text.** The US went from 1,800 daily newspapers (1940) to 1,382 (2013). The cross-section of text today is not the cross-section in the past — using the current media footprint to infer old readership patterns is misleading.
+- **[p.66] Words change meaning.** "Awful" was positive until the mid-20th century. Historical lexicon-based scores can silently drift.
+- **[p.47] Naive bag-of-words mishandles negation and context.** "The figure is not encouraging" can be scored positive. You must apply negation tagging (Das & Chen 2007) or move to sentence-level models.
+- **[p.64] Ex-ante dictionary selection creates hidden bias.** Even the "fix" of using LM (built from 10-Ks) may not generalise to earnings transcripts, social media, or analyst notes. Hanley & Hoberg (2010) use alternative dictionaries — an indication the field is not settled.
+- **[p.66-67] Ioannidis (2005) conditions for false-positive research are ALL satisfied for textual finance**: small effect size, flexibility in design, many teams chasing significance, financial incentives. Expect a high false-positive rate in published sentiment-alpha claims.
+- **[p.67-68] Data-mining culture clash.** Finance traditionally distrusts data mining (Black 1993) while ML embraces it (Hand 2001); naive textual-finance work imports ML tools without the finance discipline of out-of-sample testing.
 - **[p.42] Derwent Capital's Twitter-only hedge fund** — single-source sentiment fund shut down within 12 months. Single-source alpha claims are fragile.
-- **[p.362] Complexity signal: only the SHORT side works.** Cross-sectional asymmetry means long-only investors cannot fully exploit; real backtest must be long/short or short-only.
+- **[p.362] Complexity signal: only the SHORT side works.** Cross-sectional asymmetry means long-only investors cannot fully exploit it; a real backtest must be long/short or short-only.
 - **[p.374] Subjective ex-ante word-list** contaminates out-of-sample evaluation (Li 2010 critique).
 
 ---
 
 ## From `books/data_driven_science.md`
 
-### Regras de Trading Explícitas
+### Explicit Trading Rules
 
 N/A — This chapter is a pedagogical treatment of Reinforcement Learning for general dynamical systems, control, robotics, and board/video games. It does NOT discuss trading, asset pricing, portfolio optimization, execution, or any financial-market application. No trading rule ("if X then Y") is stated anywhere in the extracted pages. Applying RL to trading would require additional domain knowledge (reward function design, state/action spaces for markets, transaction costs, non-stationarity) that is not covered here. For explicit trading rules see `systematic_trading.md` or `evidence_based_ta.md`.
 
-### Fórmulas / Equações
+### Formulas / Equations
 
 **Policy as conditional probability** [p.3, eq.11.1]
 
@@ -550,7 +550,7 @@ $$V(x) = \min_{u}\bigl( L(x, u) + V(F(x, u)) \bigr)$$
 
 $$\pi(x) = \arg\min_{u}\bigl( L(x, u) + V(F(x, u)) \bigr)$$
 
-### Algoritmos e Pseudocódigo
+### Algorithms and Pseudocode
 
 **Policy Iteration** [p.12-13, §policy iteration]
 
@@ -657,7 +657,7 @@ Loop:
    d. Actor update: θ ← θ + α ∇_θ[ log π_θ(s,a) · Q_{θ₂}(s,a) ]
 ```
 
-### Pitfalls e Anti-patterns
+### Pitfalls and Anti-patterns
 
 - **Curse of dimensionality in dynamic programming** [p.11-12]: "For even moderately large problems, [Bellman backup] suffers from the curse of dimensionality, and approximate solution methods must be employed" [p.12]. Chess has combinatorially large state spaces (Shannon number ≈ 10^120 [p.25]) that make tabular Q infeasible.
 - **Policy iteration is expensive and prone to local minima** [p.13]: "This procedure is both expensive and prone to finding local minima. It also resembles the alternating descent method."

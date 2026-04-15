@@ -250,7 +250,7 @@ def generate_report(
             "source (`" + data_source + "`) that contains survivorship bias: "
             "companies delisted or bankrupted during the test period are not "
             "represented. Reported returns are systematically **overstated**. "
-            "See ROADMAP §\"Decisões adiadas — Fonte de dados\". Move to a "
+            "See ROADMAP §\"Deferred decisions — Data source\". Move to a "
             "survivorship-free source (Tiingo SF, Norgate, EOD) before "
             "trusting any gate decision based on this report.\n"
         )
