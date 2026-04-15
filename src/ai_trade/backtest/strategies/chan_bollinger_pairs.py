@@ -195,10 +195,92 @@ class ChanBollingerPairsStrategy:
                 f"for 1h mean-reversion"
             )
 
+    STATE_KEY_PREFIX = "chan_pairs_state"
+
+    def _state_key(self) -> str:
+        return f"{self.STATE_KEY_PREFIX}_{self.long_symbol}_{self.short_symbol}"
+
+    def _should_skip_entry_session(self, ts: pd.Timestamp) -> bool:
+        """Session gate — blocks entry near close or late on Friday."""
+        if ts.hour > self.entry_hour_cutoff:
+            return True
+        if ts.weekday() == 4 and ts.hour >= self.friday_no_entry_hour:
+            return True
+        return False
+
+    def _compute_leg_volumes(
+        self, equity: float, price_long: float, price_short: float
+    ) -> tuple[float, float]:
+        """Return (long_leg_shares, short_leg_shares) given current prices."""
+        total_notional = equity * self.risk_pct_of_equity
+        denom = price_long + self._beta * price_short
+        if denom <= 0 or total_notional <= 0:
+            return 0.0, 0.0
+        long_leg = total_notional / denom
+        short_leg = self._beta * long_leg
+        return long_leg, short_leg
+
     def on_bar(
         self,
         bars: dict[str, Bar],
         portfolio: Portfolio,
         context: dict,
     ) -> list[Order]:
-        return []  # scaffold — real logic in subsequent tasks
+        if self.long_symbol not in bars or self.short_symbol not in bars:
+            return []
+        bar_long = bars[self.long_symbol]
+        bar_short = bars[self.short_symbol]
+        ts = bar_long.timestamp
+        try:
+            idx = self._indicators.index.get_loc(ts)
+        except KeyError:
+            return []
+        if idx < 1:
+            return []
+        zscore_now = float(self._indicators["zscore"].iloc[idx])
+        zscore_prev = float(self._indicators["zscore"].iloc[idx - 1])
+        if np.isnan(zscore_now) or np.isnan(zscore_prev):
+            return []
+
+        pos_long = portfolio.positions.get(self.long_symbol)
+        pos_short = portfolio.positions.get(self.short_symbol)
+        in_position = pos_long is not None and pos_short is not None
+
+        if in_position:
+            return []  # exits implemented in Task 6
+        if self._should_skip_entry_session(ts):
+            return []
+
+        long_leg, short_leg = self._compute_leg_volumes(
+            portfolio.equity, bar_long.close, bar_short.close
+        )
+        if long_leg <= 0:
+            return []
+
+        state = context.setdefault(self._state_key(), {})
+
+        # Long spread entry: z crosses DOWN through -entry_z
+        if zscore_prev > -self.entry_z and zscore_now <= -self.entry_z:
+            state["entry_idx"] = idx
+            state["entry_z"] = zscore_now
+            state["entry_wall_clock_ts"] = ts
+            state["side"] = "long_spread"
+            state["beta_at_entry"] = self._beta
+            return [
+                Order(symbol=self.long_symbol, side="buy", volume=long_leg),
+                Order(symbol=self.short_symbol, side="sell", volume=short_leg),
+            ]
+
+        # Short spread entry: z crosses UP through +entry_z
+        if zscore_prev < self.entry_z and zscore_now >= self.entry_z:
+            state["entry_idx"] = idx
+            state["entry_z"] = zscore_now
+            state["entry_wall_clock_ts"] = ts
+            state["side"] = "short_spread"
+            state["beta_at_entry"] = self._beta
+            return [
+                Order(symbol=self.long_symbol, side="sell", volume=long_leg),
+                Order(symbol=self.short_symbol, side="buy", volume=short_leg),
+            ]
+
+        return []
