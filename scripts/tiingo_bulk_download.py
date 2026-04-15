@@ -19,20 +19,31 @@ Buckets (``--bucket``)
 * ``all``     — union of all above.
 
 Idempotent: skips tickers whose manifest entry already covers
-``[--start, --end]``. Re-runs are safe.
+``[--start, --end]``. Re-runs are safe. When re-running with a wider
+``--start``, the manifest check fails for each ticker and the full
+widened range is refetched — TiingoStorage.write() merges the new
+rows with the existing parquet (dedup by date), so no data is lost.
 
 Failures are logged, not fatal — the run continues. Per-ticker outcome
 goes to ``logs/tiingo_bulk.log``.
+
+Default window
+--------------
+
+``--start`` defaults to **1990-01-01** to capture the widest history
+each ticker has available (SPY from 1993-01, QQQ from 1999-03, TLT
+from 2002-07, etc.). Tiingo gracefully returns whatever exists per
+ticker — no 400s for pre-inception dates. Use a later ``--start`` for
+smoke tests or to stay within a narrower research window.
 
 Usage
 -----
 
     .venv/bin/python scripts/tiingo_bulk_download.py \\
-        --bucket spx500 \\
-        --start 2014-01-01 --end 2026-04-14
+        --bucket all                    # widest history, today's --end
 
     .venv/bin/python scripts/tiingo_bulk_download.py \\
-        --bucket all --resume
+        --bucket etf --start 2014-01-01 --end 2026-04-15   # narrow smoke
 """
 
 from __future__ import annotations
@@ -104,8 +115,11 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         ],
     )
     ap.add_argument(
-        "--start", type=date.fromisoformat, default=date(2014, 1, 1),
-        help="First date to fetch (default 2014-01-01).",
+        "--start", type=date.fromisoformat, default=date(1990, 1, 1),
+        help="First date to fetch (default 1990-01-01 — widest window "
+        "Tiingo typically serves for US equities/ETFs). Older tickers "
+        "silently return their actual inception range; younger ones "
+        "return what exists. Use a later date to speed up smoke tests.",
     )
     ap.add_argument(
         "--end", type=date.fromisoformat, default=date.today(),
