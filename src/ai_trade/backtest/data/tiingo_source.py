@@ -80,7 +80,17 @@ def _read_env_file(name: str) -> str:
 
 
 def _normalize(payload: list[dict]) -> pd.DataFrame:
-    """Tiingo JSON list → canonical 6-col OHLCV DataFrame."""
+    """Tiingo JSON list → canonical 6-col OHLCV DataFrame.
+
+    Defensive on ``adj_close`` and ``volume`` because the IEX endpoint
+    (equity/etf 1h) omits both — it only returns ``date/open/high/low/close``.
+    When absent:
+      * ``adj_close`` falls back to ``close`` (raw; split-adjust is applied
+        later by ``_apply_split_adjust_from_daily`` for equity/etf 1h);
+      * ``volume`` fills with 0.0 — IEX intraday doesn't publish volume
+        and downstream strategies that require it will surface the gap
+        explicitly. See spec §6.5 v3.1 caveat.
+    """
     if not payload:
         return pd.DataFrame(columns=_CANONICAL_COLUMNS)
 
@@ -88,15 +98,22 @@ def _normalize(payload: list[dict]) -> pd.DataFrame:
     df["date"] = pd.to_datetime(df["date"]).dt.tz_localize(None)
     df = df.set_index("date").sort_index()
 
-    # Map Tiingo names → canonical
+    close = df["close"].astype(float)
+    # Map Tiingo names → canonical (defensive for IEX intraday).
     canonical = pd.DataFrame(
         {
             "open": df["open"].astype(float),
             "high": df["high"].astype(float),
             "low": df["low"].astype(float),
-            "close": df["close"].astype(float),
-            "adj_close": df.get("adjClose", df["close"]).astype(float),
-            "volume": df["volume"].astype(float),
+            "close": close,
+            "adj_close": (
+                df["adjClose"].astype(float) if "adjClose" in df.columns else close
+            ),
+            "volume": (
+                df["volume"].astype(float)
+                if "volume" in df.columns
+                else pd.Series(0.0, index=df.index)
+            ),
         },
         index=df.index,
     )

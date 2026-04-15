@@ -53,13 +53,15 @@ trading: palpite disfarçado de análise.
     disparou pra 0.849 (paradoxo da uniformidade), mas **WF foi pra
     9/9** — diversificação *resolveu* o problema de crise. Sub-result
     que fica.
-- **Pivô arquitetural (decidido 2026-04-15 noite)** ⚠️ Todos os ciclos
-  acima rodaram em **bars diários**, com trades que duraram 1-60+ dias
-  em média. Isso é incompatível com o objetivo real do projeto:
-  **trades curtas e pontuais via CFDs na Pepperstone**. A partir de
-  agora, toda backtest opera em bars intraday (1h/15m/5m, 1min se
-  latência permitir) e o catálogo de estratégias muda pra quem
-  comporta short-hold. Detalhe na próxima seção e no changelog.
+- **Pivô arquitetural + `tiingo_service` entregue (2026-04-15 noite)** ✅
+  Os 5 ciclos diários eram incompatíveis com CFDs Pepperstone (swap
+  overnight). A partir de agora, toda backtest opera em bars intraday
+  (1h primeiro). `tiingo_service` lazy-cache refatorou
+  `TiingoSource`/`TiingoStorage` para o eixo `frequency`, migrou os 1675
+  tickers daily para `data/tiingo/daily/`, destravou IEX 1h + crypto 1h
+  + forex 1h, e aplica split/dividend adjust em intraday via daily cache
+  (evita re-introduzir bug do commit `5ca9410`). Smoke #1 retention PASS,
+  Smoke #2 e2e PASS. **405 testes verdes.** Próximo: catálogo Chan/Ehlers/vol-breakouts.
 - **Fases 3-7** ⏳ Ainda à frente (rigor + paper + live + governança +
   escala).
 
@@ -109,11 +111,10 @@ Duas coisas estão acontecendo:
 anteriores ficam no histórico como "pesquisa em bars diários"; daqui
 pra frente a agulha gira em torno de short-hold intraday.
 
-1. **`tiingo_service` lazy-cache** ← **próximo passo imediato**.
-   Substituir/complementar o bulk diário atual por uma camada onde
-   cada chamada de API é memoizada por `(endpoint, params)` — se já
-   está em `data/cache/`, retorna; senão, requisita, salva e retorna.
-   Destrava intraday (endpoints Tiingo IEX 1min/5m/1h) sem pre-bulk.
+1. ✅ **`tiingo_service` lazy-cache — ENTREGUE** (2026-04-15 noite).
+   Refactor in-place de `TiingoSource`/`TiingoStorage`; migração dos 1675
+   tickers daily + IEX 1h com split adjust; 405 testes verdes. Ver entrada
+   de changelog abaixo.
 2. **Catálogo de estratégias intraday short-hold** — começar em 1h
    (sweet spot entre ruído e frequência) e depois 15m/5m:
    - **Chan mean-reversion / cointegration pairs**
@@ -173,6 +174,55 @@ Termos que aparecem ao longo das entradas do changelog:
 ---
 
 # Changelog (entradas datadas)
+
+## 2026-04-15 (noite, pós-pivô) — `tiingo_service` lazy-cache entregue ✅
+
+**Gatilho:** item 1 do backlog pós-pivô de horas antes. Ver spec v3.1 em
+`docs/superpowers/specs/2026-04-15-tiingo-service-lazy-cache-design.md`
+(2 rodadas `/judge-spec` adversarial + Smoke #1 empírico antes de
+commitar implementação).
+
+**O que foi entregue:**
+
+- **Storage refactor** — `TiingoStorage` agora nested por frequency; slack
+  per-`(asset_class, freq)` (crypto 24/7 não compartilha slack com equity
+  RTH); `has()` aceita `date|datetime`; manifest grava `requested_range`
+  em v1; lockfile protege contra migração parcial concorrente.
+- **Migração executada** — 1675 tickers daily movidos para
+  `data/tiingo/daily/prices/` com backup automático em
+  `data/tiingo_premigrate_20260415-181358.tar.gz` (149 MB). pgrep guard
+  contra bulk ativo.
+- **Source refactor** — `TiingoSource.fetch()` aceita `frequency`;
+  rotea equity/etf 1h para `/iex/`; crypto/forex 1h usam `resampleFreq=1hour`;
+  aplica split/dividend adjust em IEX via ratio derivado do daily cache
+  (reusa pattern do `adjust.py`); `NotImplementedError` explícito se equity
+  sem daily cache ou frequency fora do whitelist v1 (`{daily, 1hour}`).
+- **Smoke #1 empírico (gate de design)** — SPY 5a ✅ · btcusd 208d ✅ ·
+  eurusd 416d ✅. Threshold ≥ 6m PASS para os 3 tickers.
+  Log em `logs/tiingo.log`.
+- **Smoke #2 e2e** — 3 tickers via código refatorado, persistem em
+  `data/tiingo/1hour/prices/`, cache hit na segunda chamada.
+
+**Baseline:** 377 → **405 testes verdes**. Não quebrado.
+
+**O que destrava:** catálogo de estratégias intraday do ROADMAP §"Next
+steps" item 2 — Chan mean-reversion pairs, Ehlers BP 1h, volatility
+breakouts. Cada uma terá spec próprio seguindo mesmo padrão F3.D.
+
+**Caveat residual:** cancelamento da subscrição Tiingo passa a ser safe
+APENAS para daily. Intraday requer API viva por causa da janela rolling
+de retention (crypto ~208 dias; SPY paid-tier superou docs públicos em
+~22× mas ainda rolling). Ver spec §6.5 item 4.
+
+**Arquivos gerados:**
+- `reports/spec-judges/2026-04-15-tiingo-service-lazy-cache-design-*/`
+  (4 juízes × 2 rodadas = 8 relatórios + 2 árbitros).
+- `docs/superpowers/plans/2026-04-15-tiingo-service-lazy-cache.md`
+  (plan executado).
+- Commits: storage+migrate (commit #1), source+adjust (commit #2),
+  smoke+docs (commit #3).
+
+---
 
 ## 2026-04-15 (noite, final) — Pivô: intraday short-hold + `tiingo_service` lazy-cache
 

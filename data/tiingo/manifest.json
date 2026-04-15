@@ -2562,6 +2562,17 @@
       "requested_start": "2020-09-23T00:00:00"
     }
   },
+  "BTCUSD": {
+    "1hour": {
+      "asset_class": "crypto",
+      "fetched_at": "2026-04-15T18:36:24",
+      "first_dt": "2026-02-14T00:00:00",
+      "last_dt": "2026-04-15T00:00:00",
+      "n_bars": 1439,
+      "requested_end": "2026-04-15T00:00:00",
+      "requested_start": "2026-02-14T00:00:00"
+    }
+  },
   "BTSG": {
     "daily": {
       "asset_class": "equity",
@@ -5937,6 +5948,17 @@
       "n_bars": 2765,
       "requested_end": "2026-04-14T00:00:00",
       "requested_start": "2015-04-16T00:00:00"
+    }
+  },
+  "EURUSD": {
+    "1hour": {
+      "asset_class": "forex",
+      "fetched_at": "2026-04-15T18:36:27",
+      "first_dt": "2025-09-28T21:00:00",
+      "last_dt": "2026-04-15T21:00:00",
+      "n_bars": 3382,
+      "requested_end": "2026-04-15T00:00:00",
+      "requested_start": "2025-09-27T00:00:00"
     }
   },
   "EVR": {
@@ -15015,6 +15037,15 @@
     }
   },
   "SPY": {
+    "1hour": {
+      "asset_class": "equity",
+      "fetched_at": "2026-04-15T18:36:23",
+      "first_dt": "2022-04-18T14:00:00",
+      "last_dt": "2026-04-15T19:00:00",
+      "n_bars": 6258,
+      "requested_end": "2026-04-15T00:00:00",
+      "requested_start": "2022-04-16T00:00:00"
+    },
     "daily": {
       "asset_class": "etf",
       "fetched_at": "2026-04-15T10:38:47",
