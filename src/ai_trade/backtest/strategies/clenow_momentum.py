@@ -59,6 +59,7 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
+from ai_trade.backtest.data.adjust import adjust_ohlc
 from ai_trade.backtest.engine.execution import Bar, Order
 from ai_trade.backtest.engine.portfolio import Portfolio
 from ai_trade.backtest.strategies.base import StrategyBase
@@ -198,6 +199,16 @@ class ClenowMomentumStrategy(StrategyBase):
         default_factory=lambda: logging.getLogger("ai_trade.strategy.clenow"),
         repr=False,
     )
+
+    def __post_init__(self) -> None:
+        """Rescale OHLC to the total-return (adj_close) base once at construction.
+
+        Splits and dividends would otherwise fire spurious "gap > 15%"
+        disqualifications (p.82, p.98) and distort the 90-day slope
+        regression. ``adjust_ohlc`` is a no-op when adj_close is absent
+        or equal to close, so synthetic fixtures keep working unchanged.
+        """
+        self.data = {sym: adjust_ohlc(df) for sym, df in self.data.items()}
 
     # -- rebalance dispatch --------------------------------------------------
 

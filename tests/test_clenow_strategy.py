@@ -548,3 +548,64 @@ class TestBuyLogic:
 
         buys = [o for o in orders if o.side == "buy"]
         assert len(buys) < 4  # at least one symbol must be skipped for lack of cash
+
+
+# ---------------------------------------------------------------------------
+# Total-return adjustment (regression — adj_close fix)
+# ---------------------------------------------------------------------------
+
+
+class TestTotalReturnAdjustment:
+    def test_split_does_not_trigger_gap_filter(self):
+        """Pre-fix: a 2:1 split shows as a 50% close-to-close drop, exceeding
+        the 15% gap threshold (p.82, p.98) and banning the ticker for 90
+        days. Post-fix: ``adjust_ohlc`` rescales raw close by
+        ``adj_close/close``, absorbing the split; the gap filter sees ~0%.
+        """
+        from ai_trade.backtest.strategies.clenow_momentum import (
+            ClenowMomentumStrategy, max_gap,
+        )
+
+        n = 120
+        idx = pd.bdate_range("2023-01-02", periods=n, name="date")
+        raw_close = [100.0] * 60 + [50.0] * (n - 60)  # 2:1 split at bar 60
+        adj_close = [50.0] * n  # entirely in post-split units
+        df = pd.DataFrame(
+            {
+                "open": raw_close,
+                "high": [c * 1.01 for c in raw_close],
+                "low": [c * 0.99 for c in raw_close],
+                "close": raw_close,
+                "adj_close": adj_close,
+                "volume": [1_000_000] * n,
+            },
+            index=idx,
+        )
+
+        strat = ClenowMomentumStrategy(
+            data={"X": df.copy(), "^GSPC": df.copy()},
+            constituents_provider=lambda d: {"X"},
+        )
+        # After __post_init__ applied adjust_ohlc, close IS adj_close.
+        gap = max_gap(strat.data["X"]["close"], lookback=90)
+        assert gap < 0.05, f"split residual gap not absorbed: {gap:.3%}"
+
+
+class TestClenowConstruction:
+    def test_post_init_is_noop_when_adj_close_equals_close(self):
+        """Synthetic fixtures with adj_close == close pass through unchanged."""
+        from ai_trade.backtest.strategies.clenow_momentum import (
+            ClenowMomentumStrategy,
+        )
+
+        df = _ohlcv_flat([100.0, 101.0, 102.0, 103.0])
+        strat = ClenowMomentumStrategy(
+            data={"X": df, "^GSPC": df},
+            constituents_provider=lambda d: {"X"},
+        )
+        # No mutation: close column identical to input.
+        pd.testing.assert_series_equal(
+            strat.data["X"]["close"].reset_index(drop=True),
+            df["close"].reset_index(drop=True),
+            check_names=False,
+        )

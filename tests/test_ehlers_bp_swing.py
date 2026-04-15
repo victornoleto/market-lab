@@ -217,3 +217,64 @@ class TestHoldingTime:
         # longer than 3× DCP would mean the exit logic is broken.
         median_held = float(np.median(holdings))
         assert median_held < 3 * 28
+
+
+# ---------------------------------------------------------------------------
+# Total-return adjustment (regression — adj_close fix)
+# ---------------------------------------------------------------------------
+
+
+class TestTotalReturnAdjustment:
+    def test_dividend_drops_absorbed_in_indicator_input(self):
+        """Pre-fix: quarterly ex-dividend drops appear as price shocks that
+        the Roofing Filter cannot fully cancel, spiking the AGC oscillator.
+        Post-fix: ``adjust_ohlc`` rescales OHLC to the adj_close base, so a
+        constant-price-with-dividends stock has a flat indicator series.
+        """
+        from ai_trade.backtest.strategies.ehlers_bp_swing import (
+            EhlersBPSwingStrategy,
+        )
+
+        n = 400
+        idx = pd.date_range("2020-01-01", periods=n, freq="B")
+        base = 400.0
+        raw_close = np.full(n, base, dtype=float)
+        for d in (60, 125, 190, 255, 320):
+            raw_close[d:] -= 1.50  # quarterly $1.50 dividend
+        adj_close = np.full(n, base)  # adjusted series is flat
+
+        df = pd.DataFrame(
+            {
+                "open": raw_close,
+                "high": raw_close + 0.5,
+                "low": raw_close - 0.5,
+                "close": raw_close,
+                "adj_close": adj_close,
+                "volume": np.full(n, 1e8),
+            },
+            index=idx,
+        )
+        strat = EhlersBPSwingStrategy(data={"SPY": df}, symbol="SPY")
+        osc = strat._indicators["SPY"]["osc"].dropna()
+        # Flat adjusted price → near-zero oscillator. Allow some numerical
+        # ringing from the IIR filters but nowhere near ±0.7 entry thresholds.
+        assert osc.abs().max() < 0.3, f"osc spike at {osc.abs().max():.3f}"
+
+    def test_fixture_without_adj_close_still_works(self):
+        """Synthetic fixtures built via ``_ohlcv_from_close`` (no adj_close
+        column) must keep functioning — adjust_ohlc no-ops on missing column.
+        """
+        from ai_trade.backtest.strategies.ehlers_bp_swing import (
+            EhlersBPSwingStrategy,
+        )
+
+        close = _sine_close(n=500, period=20)
+        data = {"^GSPC": _ohlcv_from_close(close)}  # no adj_close
+        strat = EhlersBPSwingStrategy(data=data, symbol="^GSPC")
+
+        # Indicators computed successfully; close series unchanged.
+        pd.testing.assert_series_equal(
+            strat.data["^GSPC"]["close"].reset_index(drop=True),
+            close.reset_index(drop=True),
+            check_names=False,
+        )

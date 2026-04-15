@@ -67,6 +67,7 @@ from dataclasses import dataclass, field
 import numpy as np
 import pandas as pd
 
+from ai_trade.backtest.data.adjust import adjust_ohlc
 from ai_trade.backtest.engine.execution import Bar, Order
 from ai_trade.backtest.engine.portfolio import Portfolio
 from ai_trade.backtest.indicators.ehlers_bp import band_pass
@@ -124,6 +125,13 @@ class EhlersBPSwingStrategy:
             )
         if self.symbol not in self.data:
             raise KeyError(f"symbol {self.symbol!r} not in data")
+
+        # Rescale OHLC to the total-return (adj_close) base before
+        # precomputing the roofing filter / DCP / band-pass. Splits and
+        # dividends otherwise inject discontinuities the Roofing Filter
+        # cannot fully absorb. No-op when adj_close is absent (synthetic
+        # fixtures) or identical to close.
+        self.data = {sym: adjust_ohlc(df) for sym, df in self.data.items()}
 
         self._precompute_indicators(self.symbol)
 
