@@ -48,6 +48,18 @@ from tqdm import tqdm
 log = logging.getLogger("ai_trade.grid")
 
 
+def _build_source(name: str):
+    """Construct a fetch_many-compatible source by name."""
+    if name == "yfinance":
+        from ai_trade.backtest.data.yfinance_source import YFinanceSource
+        return YFinanceSource()
+    if name == "tiingo":
+        from ai_trade.backtest.data.tiingo_source import TiingoSource
+        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        return TiingoSource(storage=TiingoStorage(root=Path("data/tiingo")))
+    raise ValueError(f"unknown data_source: {name!r}")
+
+
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(
         description="Clenow momentum grid with active anti-overfit gates.",
@@ -71,12 +83,20 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Limit grid to first 3 configs for smoke testing.",
     )
     ap.add_argument(
-        "--index-symbol", default="^GSPC",
-        help="Yahoo ticker for the regime filter (default: ^GSPC).",
+        "--index-symbol", default=None,
+        help="Ticker for the regime filter. Defaults: ^GSPC for yfinance, "
+        "SPY for tiingo (Tiingo does not serve raw indices).",
     )
     ap.add_argument(
         "--warmup-days", type=int, default=500,
         help="Calendar days of history before --start (default: 500).",
+    )
+    ap.add_argument(
+        "--data-source",
+        choices=["yfinance", "tiingo"],
+        default="yfinance",
+        help="OHLCV source. tiingo reads from data/tiingo/ (storage-first; "
+        "fetches API only on miss); yfinance hits Yahoo each cold run.",
     )
     ap.add_argument(
         "--log-level", default="INFO",
@@ -87,7 +107,6 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     from ai_trade.backtest.data.wikipedia_spx import WikipediaSPX
-    from ai_trade.backtest.data.yfinance_source import YFinanceSource
     from ai_trade.backtest.engine import (
         ExecutionConfig,
         ExecutionSimulator,
@@ -110,6 +129,8 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     args = _parse_args(argv)
+    if args.index_symbol is None:
+        args.index_symbol = "^GSPC" if args.data_source == "yfinance" else "SPY"
     run_id = args.run_id or f"grid_{datetime.now().strftime('%Y%m%d-%H%M')}"
     output_dir = args.output_dir / run_id
     checkpoint_dir = Path(".cache/grid_runs")
@@ -126,8 +147,9 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     log.info("=== grid run %s ===", run_id)
-    log.info("start=%s end=%s cash=$%.0f n_jobs=%d dry_run=%s",
-             args.start, args.end, args.cash, args.n_jobs, args.dry_run)
+    log.info("start=%s end=%s cash=$%.0f n_jobs=%d dry_run=%s data_source=%s index=%s",
+             args.start, args.end, args.cash, args.n_jobs, args.dry_run,
+             args.data_source, args.index_symbol)
 
     configs = grid_configs()
     if args.dry_run:
@@ -145,15 +167,18 @@ def main(argv: list[str] | None = None) -> int:
         tickers.append(args.index_symbol)
 
     fetch_start = args.start - timedelta(days=args.warmup_days)
-    log.info("Fetching %d tickers %s → %s (cold run: ~40 min)",
-             len(tickers), fetch_start, args.end)
-    src = YFinanceSource()
+    log.info("Fetching %d tickers %s → %s via %s",
+             len(tickers), fetch_start, args.end, args.data_source)
+    src = _build_source(args.data_source)
     raw = src.fetch_many(tickers, fetch_start, args.end)
     data = {t: df for t, df in raw.items() if not df.empty}
     dropped = len(raw) - len(data)
     if dropped:
-        log.warning("yfinance returned no data for %d tickers "
-                    "(survivorship materialized)", dropped)
+        log.warning(
+            "%s returned no data for %d tickers (survivorship: real on "
+            "yfinance, partial on tiingo for tickers absent from manifest)",
+            args.data_source, dropped,
+        )
     if args.index_symbol not in data:
         log.error("No data for index %s — abort", args.index_symbol)
         return 1
@@ -259,7 +284,7 @@ def main(argv: list[str] | None = None) -> int:
     if verdict.overall_pass:
         path = report_gen.write_pass_report(
             grid=grid, verdict=verdict, wf_results=wf_results,
-            output_dir=output_dir, data_source="yfinance",
+            output_dir=output_dir, data_source=args.data_source,
         )
         log.info("PASS report: %s", path)
     else:
@@ -269,7 +294,7 @@ def main(argv: list[str] | None = None) -> int:
         path = report_gen.write_fail_report(
             grid=grid, verdict=verdict, wf_results=wf_results,
             diagnostic=diagnostic,
-            output_dir=output_dir, data_source="yfinance",
+            output_dir=output_dir, data_source=args.data_source,
         )
         log.info("FAIL diagnostic report: %s", path)
         log.info("Failure modes: %s",
