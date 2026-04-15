@@ -243,8 +243,23 @@ class TiingoStorage:
         df = pd.read_parquet(self._price_path(ticker, frequency))
         if start is None and end is None:
             return df
-        lo = pd.Timestamp(start) if start is not None else df.index.min()
-        hi = pd.Timestamp(end) if end is not None else df.index.max()
+        # Expand date-only edges: date(D) as `end` means "end of day D" so
+        # intraday bars at 14:00/15:00 on D still slice in; daily rows at
+        # 00:00 also pass because lo stays at midnight. Mirror of `has()`.
+        start_is_date_only = start is not None and not isinstance(start, datetime)
+        end_is_date_only = end is not None and not isinstance(end, datetime)
+        lo = (
+            pd.Timestamp(datetime.combine(start, datetime.min.time()))
+            if start_is_date_only
+            else pd.Timestamp(start) if start is not None
+            else df.index.min()
+        )
+        hi = (
+            pd.Timestamp(datetime.combine(end, datetime.max.time()))
+            if end_is_date_only
+            else pd.Timestamp(end) if end is not None
+            else df.index.max()
+        )
         mask = (df.index >= lo) & (df.index <= hi)
         return df.loc[mask]
 

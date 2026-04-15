@@ -24,6 +24,66 @@ import pandas as pd
 import pytest
 
 
+# ---------------------------------------------------------------------------
+# URL routing + params (whitelist v1: {equity, etf, crypto, forex} × {daily, 1hour})
+# ---------------------------------------------------------------------------
+
+
+class TestUrlRouting:
+    """Smoke tests for endpoint dispatch by (asset_class, frequency)."""
+
+    def test_equity_daily_uses_tiingo_daily_endpoint(self):
+        from ai_trade.backtest.data.tiingo_source import _build_url
+        url = _build_url("SPY", asset_class="equity", frequency="daily")
+        assert url == "https://api.tiingo.com/tiingo/daily/SPY/prices"
+
+    def test_equity_1hour_uses_iex_endpoint(self):
+        from ai_trade.backtest.data.tiingo_source import _build_url
+        url = _build_url("SPY", asset_class="equity", frequency="1hour")
+        assert url == "https://api.tiingo.com/iex/SPY/prices"
+
+    def test_crypto_1hour_uses_tiingo_crypto_endpoint(self):
+        from ai_trade.backtest.data.tiingo_source import _build_url
+        url = _build_url("BTCUSD", asset_class="crypto", frequency="1hour")
+        assert url == "https://api.tiingo.com/tiingo/crypto/prices"
+
+    def test_forex_1hour_uses_tiingo_fx_endpoint(self):
+        from ai_trade.backtest.data.tiingo_source import _build_url
+        url = _build_url("EURUSD", asset_class="forex", frequency="1hour")
+        assert url == "https://api.tiingo.com/tiingo/fx/EURUSD/prices"
+
+    def test_rejects_frequency_not_in_whitelist(self):
+        from ai_trade.backtest.data.tiingo_source import _build_url
+        with pytest.raises(NotImplementedError, match="frequency='5min'"):
+            _build_url("SPY", asset_class="equity", frequency="5min")
+
+    def test_rejects_index_1hour_with_etf_hint(self):
+        from ai_trade.backtest.data.tiingo_source import _build_url
+        with pytest.raises(NotImplementedError, match="ETF proxy"):
+            _build_url("SPX", asset_class="index", frequency="1hour")
+
+
+def test_build_params_adds_resample_freq_for_1hour():
+    from ai_trade.backtest.data.tiingo_source import _build_params
+    params = _build_params(
+        "SPY", date(2024, 1, 1), date(2024, 12, 31),
+        asset_class="equity", frequency="1hour",
+    )
+    assert params["resampleFreq"] == "1hour"
+    assert params["startDate"] == "2024-01-01"
+    assert params["endDate"] == "2024-12-31"
+
+
+def test_build_params_crypto_1hour_has_tickers_and_resample():
+    from ai_trade.backtest.data.tiingo_source import _build_params
+    params = _build_params(
+        "BTCUSD", date(2024, 1, 1), date(2024, 12, 31),
+        asset_class="crypto", frequency="1hour",
+    )
+    assert params["tickers"] == "BTCUSD"
+    assert params["resampleFreq"] == "1hour"
+
+
 # Sample Tiingo EOD response — first 2 rows of a real fetch, trimmed.
 _TIINGO_SAMPLE = [
     {
@@ -384,3 +444,175 @@ class TestErrors:
         assert list(df.columns) == [
             "open", "high", "low", "close", "adj_close", "volume",
         ]
+
+
+# ---------------------------------------------------------------------------
+# frequency kwarg + split adjust v1 (spec §3.3)
+# ---------------------------------------------------------------------------
+
+
+def test_fetch_with_frequency_1hour_persists_and_serves_cache(
+    tiingo_env, storage, monkeypatch,
+):
+    """Primeira call faz HTTP; segunda lê do cache."""
+    from datetime import date
+    import pandas as pd
+    from ai_trade.backtest.data.tiingo_source import TiingoSource
+    from ai_trade.backtest.data import tiingo_source as ts_mod
+
+    # Pré-popular daily cache para permitir split adjust (ratio = 1.0 aqui)
+    df_daily = pd.DataFrame(
+        {"open": [100.0] * 3, "high": [101.0] * 3, "low": [99.0] * 3,
+         "close": [100.0] * 3, "adj_close": [100.0] * 3, "volume": [1000.0] * 3},
+        index=pd.DatetimeIndex(
+            [pd.Timestamp("2024-01-02"),
+             pd.Timestamp("2024-01-03"),
+             pd.Timestamp("2024-01-04")],
+            name="date",
+        ),
+    )
+    storage.write("SPY", df_daily, asset_class="equity", frequency="daily")
+
+    IEX_SAMPLE = [
+        {"date": "2024-01-02T14:00:00.000Z",
+         "open": 100.0, "high": 100.5, "low": 99.5, "close": 100.2,
+         "volume": 500},
+        {"date": "2024-01-02T15:00:00.000Z",
+         "open": 100.2, "high": 100.8, "low": 100.0, "close": 100.5,
+         "volume": 600},
+    ]
+
+    call_count = {"n": 0}
+
+    def fake_get(url, params=None, headers=None, timeout=None):
+        call_count["n"] += 1
+        return _mock_response(IEX_SAMPLE, 200)
+
+    monkeypatch.setattr(ts_mod.requests, "get", fake_get)
+
+    source = TiingoSource(storage=storage)
+    df1 = source.fetch(
+        "SPY", date(2024, 1, 2), date(2024, 1, 2),
+        asset_class="equity", frequency="1hour",
+    )
+    assert not df1.empty
+    assert call_count["n"] == 1
+
+    df2 = source.fetch(
+        "SPY", date(2024, 1, 2), date(2024, 1, 2),
+        asset_class="equity", frequency="1hour",
+    )
+    assert not df2.empty
+    assert call_count["n"] == 1  # cache hit, sem HTTP extra
+
+
+def test_iex_applies_split_adjust_from_daily_cache(
+    tiingo_env, storage, monkeypatch,
+):
+    """close_intraday × (adj_close_daily/close_daily) vira adj_close_intraday."""
+    from datetime import date
+    import pandas as pd
+    from ai_trade.backtest.data.tiingo_source import TiingoSource
+    from ai_trade.backtest.data import tiingo_source as ts_mod
+
+    df_daily = pd.DataFrame(
+        {"open": [100.0], "high": [100.0], "low": [100.0],
+         "close": [100.0], "adj_close": [50.0], "volume": [1000.0]},
+        index=pd.DatetimeIndex([pd.Timestamp("2024-01-02")], name="date"),
+    )
+    storage.write("SPY", df_daily, asset_class="equity", frequency="daily")
+
+    IEX_SAMPLE = [
+        {"date": "2024-01-02T14:00:00.000Z",
+         "open": 100.0, "high": 100.0, "low": 100.0, "close": 100.0,
+         "volume": 500},
+    ]
+
+    def fake_get(url, params=None, headers=None, timeout=None):
+        return _mock_response(IEX_SAMPLE, 200)
+
+    monkeypatch.setattr(ts_mod.requests, "get", fake_get)
+
+    source = TiingoSource(storage=storage)
+    df = source.fetch(
+        "SPY", date(2024, 1, 2), date(2024, 1, 2),
+        asset_class="equity", frequency="1hour",
+    )
+
+    # Ratio = 50/100 = 0.5; close_intraday = 100 × 0.5 = 50
+    assert abs(df["close"].iloc[0] - 50.0) < 1e-6
+    assert abs(df["adj_close"].iloc[0] - 50.0) < 1e-6
+
+
+def test_iex_raises_notimplemented_if_equity_not_in_daily_cache(
+    tiingo_env, storage, monkeypatch,
+):
+    """equity/etf 1h sem daily cache para o ticker → NotImplementedError."""
+    from datetime import date
+    from ai_trade.backtest.data.tiingo_source import TiingoSource
+    from ai_trade.backtest.data import tiingo_source as ts_mod
+    import pytest
+
+    IEX_SAMPLE = [
+        {"date": "2024-01-02T14:00:00.000Z",
+         "open": 100.0, "high": 100.0, "low": 100.0, "close": 100.0,
+         "volume": 500},
+    ]
+
+    def fake_get(url, params=None, headers=None, timeout=None):
+        return _mock_response(IEX_SAMPLE, 200)
+
+    monkeypatch.setattr(ts_mod.requests, "get", fake_get)
+
+    source = TiingoSource(storage=storage)
+    with pytest.raises(NotImplementedError, match="daily primeiro"):
+        source.fetch(
+            "NVDA", date(2024, 1, 2), date(2024, 1, 2),
+            asset_class="equity", frequency="1hour",
+        )
+
+
+def test_crypto_and_forex_use_close_as_adj_close_no_split(
+    tiingo_env, storage, monkeypatch,
+):
+    """Crypto/forex 1h não tem split — adj_close := close."""
+    from datetime import date
+    from ai_trade.backtest.data.tiingo_source import TiingoSource
+    from ai_trade.backtest.data import tiingo_source as ts_mod
+
+    CRYPTO_SAMPLE = [{
+        "ticker": "btcusd",
+        "priceData": [
+            {"date": "2024-01-02T00:00:00.000Z",
+             "open": 45000.0, "high": 45100.0, "low": 44900.0,
+             "close": 45050.0, "volume": 100.0, "volumeNotional": 4500000.0,
+             "tradesDone": 1000},
+        ],
+    }]
+
+    def fake_get(url, params=None, headers=None, timeout=None):
+        return _mock_response(CRYPTO_SAMPLE, 200)
+
+    monkeypatch.setattr(ts_mod.requests, "get", fake_get)
+
+    source = TiingoSource(storage=storage)
+    df = source.fetch(
+        "BTCUSD", date(2024, 1, 2), date(2024, 1, 2),
+        asset_class="crypto", frequency="1hour",
+    )
+    assert abs(df["close"].iloc[0] - 45050.0) < 1e-6
+    assert abs(df["adj_close"].iloc[0] - 45050.0) < 1e-6
+
+
+def test_iex_payload_normalizes_without_adjclose():
+    """IEX payload sem adjClose — _normalize usa close."""
+    from ai_trade.backtest.data.tiingo_source import _normalize
+
+    payload = [
+        {"date": "2024-01-02T14:00:00.000Z",
+         "open": 100.0, "high": 100.5, "low": 99.5, "close": 100.2,
+         "volume": 500},
+    ]
+    df = _normalize(payload)
+    assert list(df.columns) == ["open", "high", "low", "close", "adj_close", "volume"]
+    assert abs(df["adj_close"].iloc[0] - df["close"].iloc[0]) < 1e-6
