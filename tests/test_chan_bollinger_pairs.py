@@ -35,13 +35,24 @@ def _synth_ohlcv(
 
 
 def test_instantiation_with_both_symbols_succeeds():
-    df_long = _synth_ohlcv(seed=1)
-    # SLV synth is a noisy linear function of GLD synth: enough signal
-    # for OLS + OU to succeed on the training slice.
-    df_short = df_long.copy()
-    df_short[["open", "high", "low", "close", "adj_close"]] = (
-        df_long[["open", "high", "low", "close", "adj_close"]] / 2.5
-        + np.random.default_rng(2).normal(0, 0.05, (len(df_long), 5))
+    # Cointegrated OU synth (same pattern as test_ols_recovers_known_beta):
+    # y = 2.5·x + OU noise with half-life ≈ 20 bars → OLS + OU succeed.
+    rng = np.random.default_rng(42)
+    n = 2000
+    idx = pd.date_range("2022-01-03 09:30", periods=n, freq="1h")
+    x = 50 + np.cumsum(rng.normal(0, 0.05, n))
+    eps = np.zeros(n)
+    lam = -np.log(2) / 20.0
+    for t in range(1, n):
+        eps[t] = eps[t - 1] * np.exp(lam) + rng.normal(0, 0.3)
+    y = 2.5 * x + eps
+    df_long = pd.DataFrame(
+        {"open": y, "high": y, "low": y, "close": y, "volume": 1e6, "adj_close": y},
+        index=idx,
+    )
+    df_short = pd.DataFrame(
+        {"open": x, "high": x, "low": x, "close": x, "volume": 1e6, "adj_close": x},
+        index=idx,
     )
     strat = ChanBollingerPairsStrategy(
         data={"GLD": df_long, "SLV": df_short},
@@ -80,4 +91,105 @@ def test_misaligned_timestamps_raises_valueerror():
             data={"GLD": df_long, "SLV": df_short},
             long_symbol="GLD",
             short_symbol="SLV",
+        )
+
+
+def test_ols_recovers_known_beta():
+    """Synthetic pair with y = 2.5 x + OU noise → β ≈ 2.5."""
+    rng = np.random.default_rng(42)
+    n = 2000
+    idx = pd.date_range("2022-01-03 09:30", periods=n, freq="1h")
+    x = 50 + np.cumsum(rng.normal(0, 0.05, n))
+    # OU noise around 2.5·x (mean-reverting spread): half-life ≈ 20 bars
+    eps = np.zeros(n)
+    lam = -np.log(2) / 20.0
+    for t in range(1, n):
+        eps[t] = eps[t - 1] * np.exp(lam) + rng.normal(0, 0.3)
+    y = 2.5 * x + eps
+    df_long = pd.DataFrame(
+        {"open": y, "high": y, "low": y, "close": y, "volume": 1e6, "adj_close": y},
+        index=idx,
+    )
+    df_short = pd.DataFrame(
+        {"open": x, "high": x, "low": x, "close": x, "volume": 1e6, "adj_close": x},
+        index=idx,
+    )
+    strat = ChanBollingerPairsStrategy(
+        data={"GLD": df_long, "SLV": df_short},
+    )
+    assert abs(strat._beta - 2.5) < 0.1, f"β recovered = {strat._beta}"
+
+
+def test_ou_recovers_known_half_life():
+    """OU synth with λ = -log(2)/20 → half-life bars ≈ 20."""
+    rng = np.random.default_rng(7)
+    n = 2000
+    idx = pd.date_range("2022-01-03 09:30", periods=n, freq="1h")
+    x = 50 + np.cumsum(rng.normal(0, 0.05, n))
+    eps = np.zeros(n)
+    target_hl = 20
+    lam = -np.log(2) / target_hl
+    for t in range(1, n):
+        eps[t] = eps[t - 1] * np.exp(lam) + rng.normal(0, 0.3)
+    y = 2.5 * x + eps
+    df_long = pd.DataFrame(
+        {"open": y, "high": y, "low": y, "close": y, "volume": 1e6, "adj_close": y},
+        index=idx,
+    )
+    df_short = pd.DataFrame(
+        {"open": x, "high": x, "low": x, "close": x, "volume": 1e6, "adj_close": x},
+        index=idx,
+    )
+    strat = ChanBollingerPairsStrategy(
+        data={"GLD": df_long, "SLV": df_short},
+    )
+    # Allow a ±50% envelope — OU estimation is noisy on finite samples.
+    assert 10 <= strat._half_life_bars <= 40, (
+        f"half-life recovered = {strat._half_life_bars}"
+    )
+
+
+def test_ou_rejects_random_walk():
+    """Pure random walk spread (no mean reversion) → RuntimeError."""
+    rng = np.random.default_rng(99)
+    n = 2000
+    idx = pd.date_range("2022-01-03 09:30", periods=n, freq="1h")
+    x = 50 + np.cumsum(rng.normal(0, 0.1, n))
+    y = 50 + np.cumsum(rng.normal(0, 0.1, n))  # independent RW — no cointegration
+    df_long = pd.DataFrame(
+        {"open": y, "high": y, "low": y, "close": y, "volume": 1e6, "adj_close": y},
+        index=idx,
+    )
+    df_short = pd.DataFrame(
+        {"open": x, "high": x, "low": x, "close": x, "volume": 1e6, "adj_close": x},
+        index=idx,
+    )
+    with pytest.raises(RuntimeError, match=r"(cointegrated|t[-_]stat|half[-_]life)"):
+        ChanBollingerPairsStrategy(
+            data={"GLD": df_long, "SLV": df_short},
+        )
+
+
+def test_half_life_clamp_rejects_too_slow():
+    """OU synth with half-life = 200 bars (> 60 max) → RuntimeError."""
+    rng = np.random.default_rng(13)
+    n = 2000
+    idx = pd.date_range("2022-01-03 09:30", periods=n, freq="1h")
+    x = 50 + np.cumsum(rng.normal(0, 0.05, n))
+    eps = np.zeros(n)
+    lam = -np.log(2) / 200.0
+    for t in range(1, n):
+        eps[t] = eps[t - 1] * np.exp(lam) + rng.normal(0, 0.3)
+    y = 2.5 * x + eps
+    df_long = pd.DataFrame(
+        {"open": y, "high": y, "low": y, "close": y, "volume": 1e6, "adj_close": y},
+        index=idx,
+    )
+    df_short = pd.DataFrame(
+        {"open": x, "high": x, "low": x, "close": x, "volume": 1e6, "adj_close": x},
+        index=idx,
+    )
+    with pytest.raises(RuntimeError, match=r"half[-_]life"):
+        ChanBollingerPairsStrategy(
+            data={"GLD": df_long, "SLV": df_short},
         )

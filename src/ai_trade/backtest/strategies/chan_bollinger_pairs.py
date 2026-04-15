@@ -58,6 +58,10 @@ class ChanBollingerPairsStrategy:
         default_factory=lambda: logging.getLogger("ai_trade.strategy.chan_pairs"),
         repr=False,
     )
+    _beta: float = field(init=False, default=float("nan"))
+    _half_life_bars: int = field(init=False, default=0)
+    _t_stat_ou: float = field(init=False, default=float("nan"))
+    _hedge_ordering: str = field(init=False, default="")
 
     def __post_init__(self) -> None:
         if self.long_symbol not in self.data:
@@ -70,6 +74,100 @@ class ChanBollingerPairsStrategy:
             raise ValueError(
                 f"timestamps of {self.long_symbol} and {self.short_symbol} "
                 f"must be aligned (len {len(df_long)} vs {len(df_short)})"
+            )
+        self._fit_hedge_and_half_life()
+
+    def _fit_beta_single(
+        self, y: np.ndarray, x: np.ndarray
+    ) -> tuple[float, float]:
+        """OLS of y on x with constant; return (β, t_stat_β)."""
+        n = len(x)
+        X = np.column_stack([np.ones(n), x])
+        coef, *_ = np.linalg.lstsq(X, y, rcond=None)
+        residuals = y - X @ coef
+        dof = n - 2
+        if dof <= 0:
+            return coef[1], float("nan")
+        sigma2 = (residuals @ residuals) / dof
+        xtx_inv = np.linalg.inv(X.T @ X)
+        se_beta = float(np.sqrt(sigma2 * xtx_inv[1, 1]))
+        t_stat = float(coef[1] / se_beta) if se_beta > 0 else float("nan")
+        return float(coef[1]), t_stat
+
+    def _fit_ou_half_life(
+        self, spread: np.ndarray
+    ) -> tuple[int, float]:
+        """OU regression: Δs_t ~ λ · s_{t-1} + α. Returns (half_life, t_stat_λ)."""
+        s_lag = spread[:-1]
+        s_delta = np.diff(spread)
+        n = len(s_lag)
+        X = np.column_stack([np.ones(n), s_lag])
+        coef, *_ = np.linalg.lstsq(X, s_delta, rcond=None)
+        residuals = s_delta - X @ coef
+        dof = n - 2
+        sigma2 = (residuals @ residuals) / dof if dof > 0 else float("nan")
+        xtx_inv = np.linalg.inv(X.T @ X)
+        se_lam = float(np.sqrt(sigma2 * xtx_inv[1, 1]))
+        lam = float(coef[1])
+        t_stat = float(lam / se_lam) if se_lam > 0 else float("nan")
+        if lam >= 0 or not np.isfinite(lam):
+            return 0, t_stat
+        half_life = int(round(-np.log(2) / lam))
+        return half_life, t_stat
+
+    def _fit_hedge_and_half_life(self) -> None:
+        """Fit β (both orderings, pick best OU t-stat) + half-life. Raises if not cointegrated."""
+        df_long = self.data[self.long_symbol]
+        df_short = self.data[self.short_symbol]
+        if self.train_bars >= len(df_long):
+            raise RuntimeError(
+                f"train_bars={self.train_bars} >= len(data)={len(df_long)} "
+                f"— not enough history to fit"
+            )
+        train_long = df_long["close"].to_numpy()[: self.train_bars]
+        train_short = df_short["close"].to_numpy()[: self.train_bars]
+
+        # Ordering A: price_long = α + β·price_short
+        beta_a, t_beta_a = self._fit_beta_single(train_long, train_short)
+        spread_a = train_long - beta_a * train_short
+        hl_a, t_ou_a = self._fit_ou_half_life(spread_a)
+
+        # Ordering B: price_short = α + β·price_long → convert to β_long-per-short
+        beta_b_raw, t_beta_b = self._fit_beta_single(train_short, train_long)
+        beta_b = 1.0 / beta_b_raw if abs(beta_b_raw) > 1e-9 else float("nan")
+        spread_b = train_long - beta_b * train_short
+        hl_b, t_ou_b = self._fit_ou_half_life(spread_b)
+
+        # Chan [p.54]: pick the ordering with the most negative OU t-stat.
+        if t_ou_a <= t_ou_b:
+            self._beta = beta_a
+            self._half_life_bars = hl_a
+            self._t_stat_ou = t_ou_a
+            self._hedge_ordering = f"{self.long_symbol}~{self.short_symbol}"
+        else:
+            self._beta = beta_b
+            self._half_life_bars = hl_b
+            self._t_stat_ou = t_ou_b
+            self._hedge_ordering = f"{self.short_symbol}~{self.long_symbol}"
+
+        self._logger.info(
+            "hedge fit: ordering=%s β=%.4f t_stat_OU=%.3f half_life=%d",
+            self._hedge_ordering, self._beta, self._t_stat_ou, self._half_life_bars,
+        )
+
+        # CADF 5% critical value ≈ -3.34 for bivariate cointegration
+        # [algo_trading_chan, p.43-45]. Using -3.4 for a small margin.
+        if not np.isfinite(self._t_stat_ou) or self._t_stat_ou > -3.4:
+            raise RuntimeError(
+                f"pair not cointegrated on training slice: "
+                f"t_stat_OU={self._t_stat_ou:.3f} > -3.4 "
+                f"(half_life would be {self._half_life_bars})"
+            )
+        if not (self.half_life_min <= self._half_life_bars <= self.half_life_max):
+            raise RuntimeError(
+                f"half_life={self._half_life_bars} outside clamp "
+                f"[{self.half_life_min}, {self.half_life_max}] — pair not suitable "
+                f"for 1h mean-reversion"
             )
 
     def on_bar(
