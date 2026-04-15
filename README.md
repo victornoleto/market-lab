@@ -249,6 +249,45 @@ regime-aware portfolio, or stop and reassess.
 
 ---
 
+## Tiingo bulk dataset (Phase 2.5 Run 3)
+
+Survivorship-free OHLCV cache for the planned Run 3 ablation. Persisted
+under `data/tiingo/` so backtests work offline after the Tiingo Power
+subscription is cancelled.
+
+```bash
+# 1) Set the API key (one-time)
+echo "TIINGO_API_KEY=<your-key>" >> .env
+
+# 2) Bulk-download the universe (~30-40 min for --bucket all)
+.venv/bin/python scripts/tiingo_bulk_download.py \
+    --bucket all --start 2014-01-01 --end 2026-04-14
+
+# 3) Backup the dataset to a portable .tar.gz (~150 MB)
+.venv/bin/python scripts/tiingo_backup.py
+# → data/tiingo_backup_<YYYYMMDD-HHMM>.tar.gz
+
+# 4) Run grids against the local cache (no API needed after step 2)
+.venv/bin/python scripts/run_grid_clenow.py --data-source tiingo \
+    --start 2015-01-01 --end 2023-12-31 --n-jobs 4
+.venv/bin/python scripts/run_grid_ehlers.py --data-source tiingo \
+    --start 2015-01-01 --end 2023-12-31 --n-jobs 4
+```
+
+Buckets: `spx500` (Wikipedia point-in-time, ~800 unique inc. delistings),
+`spx400` / `spx600` (current snapshot), `etf` (32 hand-picked broad/
+sector/bond/commodity/vol), `crypto` (top-10 by liquidity),
+`forex` (10 majors + crosses), `all` (union, ~1700 unique).
+
+Tiingo does not serve raw indices — `--data-source tiingo` auto-swaps
+`^GSPC` → `SPY` (and Ehlers `--symbol` similarly). Heavy parquet files
+under `data/tiingo/prices/` are gitignored; `manifest.json` is
+force-tracked so collaborators see what's been downloaded.
+
+Rationale for the ablation: [`docs/tiingo_ablation_rationale.md`](docs/tiingo_ablation_rationale.md).
+
+---
+
 ## Books
 
 **33 books absorbed** as a Claude Skill (Phase 0 done). Per-book importance
