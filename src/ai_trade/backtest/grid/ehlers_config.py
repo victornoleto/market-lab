@@ -55,6 +55,10 @@ class EhlersGridConfig:
     risk_pct_of_equity: float = 0.95         # single-instrument swing trader
     period_min: int = 6                      # [p.82, ch.7]
     period_max: int = 50                     # [p.82, ch.7]
+    # Regime filter (0 = disabled). [algo_trading_chan, p.28, ch.2]
+    regime_sma_period: int = 0
+    # Hard time-stop in bars (0 = disabled). 5 = 1 trading week on daily.
+    max_hold_bars: int = 0
 
 
 def ehlers_grid_configs() -> list[EhlersGridConfig]:
@@ -103,4 +107,31 @@ def ehlers_reduced_1h_configs() -> list[EhlersGridConfig]:
         EhlersGridConfig(hp_period=48, lp_period=20, pct_of_dcp=0.80, stop_pct=0.02),
         EhlersGridConfig(hp_period=48, lp_period=10, pct_of_dcp=0.70, stop_pct=0.05),
         EhlersGridConfig(hp_period=60, lp_period=25, pct_of_dcp=0.80, stop_pct=0.03),
+    ]
+
+
+def ehlers_regime_daily_configs() -> list[EhlersGridConfig]:
+    """N=2 pre-specified daily configs with SMA200 regime filter + 5d stop.
+
+    Pre-selected BEFORE seeing daily data. Rationale:
+
+    * Config A (hp=48, lp=10, pct=0.90, stop=0.05):
+      Literature defaults from [cycle_analytics, p.77/220-221, ch.7/17].
+      regime_sma=200 per [algo_trading_chan, p.28, ch.2]; max_hold=5 (1 week).
+    * Config B (hp=80, lp=20, pct=0.90, stop=0.02):
+      Slower cycle (~16 trading weeks) for multi-week swings on daily bars.
+      [cycle_analytics, p.82, ch.7]; regime_sma=200; max_hold=10 (2 weeks).
+
+    With N=2 and T≈5500 (22y daily), DSR threshold ≈ 0.18 annualized —
+    much more lenient than N=24. [advances_fin_ml, p.208-211, ch.14].
+    """
+    return [
+        EhlersGridConfig(
+            hp_period=48, lp_period=10, pct_of_dcp=0.90, stop_pct=0.05,
+            regime_sma_period=200, max_hold_bars=5,
+        ),
+        EhlersGridConfig(
+            hp_period=80, lp_period=20, pct_of_dcp=0.90, stop_pct=0.02,
+            regime_sma_period=200, max_hold_bars=10,
+        ),
     ]

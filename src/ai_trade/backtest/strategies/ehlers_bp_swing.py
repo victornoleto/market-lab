@@ -108,6 +108,12 @@ class EhlersBPSwingStrategy:
     risk_pct_of_equity: float = 0.95  # near-full deployment (swing trader)
     period_min: int = 6
     period_max: int = 50
+    # Regime filter: 0 = disabled. When > 0, only enter long above SMA(N),
+    # only enter short below SMA(N). [algo_trading_chan, p.28, ch.2]
+    regime_sma_period: int = 0
+    # Hard time-stop: exit after N bars if still in position (0 = disabled).
+    # 5 bars on daily = 1 trading week. [algo_trading_chan, p.28, ch.2]
+    max_hold_bars: int = 0
 
     _indicators: dict[str, pd.DataFrame] = field(init=False, default_factory=dict)
     _logger: logging.Logger = field(
@@ -145,15 +151,18 @@ class EhlersBPSwingStrategy:
         osc = _agc_normalize(bp, decay=self.agc_decay)
         trend = super_smoother(close, self.lp_period)
 
-        self._indicators[symbol] = pd.DataFrame(
-            {
-                "smooth": roofed,
-                "dcp": dcp,
-                "bp": bp,
-                "osc": osc,
-                "trend": trend,
-            }
-        )
+        ind: dict[str, pd.Series] = {
+            "smooth": roofed,
+            "dcp": dcp,
+            "bp": bp,
+            "osc": osc,
+            "trend": trend,
+        }
+
+        if self.regime_sma_period > 0:
+            ind["regime_sma"] = close.rolling(self.regime_sma_period).mean()
+
+        self._indicators[symbol] = pd.DataFrame(ind)
 
     # -- main dispatch -------------------------------------------------------
 
@@ -228,7 +237,12 @@ class EhlersBPSwingStrategy:
         if side == "short" and bar.close > trend_now:
             return Order(symbol=self.symbol, side="buy", volume=pos.volume)
 
-        # 3. Time-stop: non-profitable past half the dominant cycle.
+        # 3. Hard time-stop: exit after max_hold_bars (0 = disabled).
+        if self.max_hold_bars > 0 and bars_held >= self.max_hold_bars:
+            close_side = "sell" if side == "long" else "buy"
+            return Order(symbol=self.symbol, side=close_side, volume=pos.volume)
+
+        # 4. Time-stop: non-profitable past half the dominant cycle.
         if bars_held >= half_dcp and pnl_per_unit <= 0:
             close_side = "sell" if side == "long" else "buy"
             return Order(symbol=self.symbol, side=close_side, volume=pos.volume)
@@ -260,14 +274,24 @@ class EhlersBPSwingStrategy:
         if volume <= 0:
             return []
 
+        # Regime filter [algo_trading_chan, p.28, ch.2]: above SMA = long-only,
+        # below SMA = short-only. NaN (warmup period) = allow both sides.
+        regime_allows_long = True
+        regime_allows_short = True
+        if self.regime_sma_period > 0 and "regime_sma" in self._indicators[self.symbol].columns:
+            sma_val = float(self._indicators[self.symbol]["regime_sma"].iloc[idx])
+            if not math.isnan(sma_val):
+                regime_allows_long = bar.close > sma_val
+                regime_allows_short = bar.close < sma_val
+
         # Long entry: cross below lower_threshold (anticipatory).
-        if osc_prev > self.lower_threshold and osc_now <= self.lower_threshold:
+        if regime_allows_long and osc_prev > self.lower_threshold and osc_now <= self.lower_threshold:
             state["entry_idx"] = idx
             state["dcp_at_entry"] = dcp_now
             return [Order(symbol=self.symbol, side="buy", volume=volume)]
 
         # Short entry: cross above upper_threshold.
-        if osc_prev < self.upper_threshold and osc_now >= self.upper_threshold:
+        if regime_allows_short and osc_prev < self.upper_threshold and osc_now >= self.upper_threshold:
             state["entry_idx"] = idx
             state["dcp_at_entry"] = dcp_now
             return [Order(symbol=self.symbol, side="sell", volume=volume)]

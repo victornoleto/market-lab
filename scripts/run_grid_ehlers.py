@@ -111,10 +111,11 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     ap.add_argument(
         "--preset", default=None,
-        choices=["full", "reduced_1h"],
+        choices=["full", "reduced_1h", "regime_daily"],
         help="Config preset. full = 24 cartesian-product configs (default); "
         "reduced_1h = 4 pre-selected configs for 1h grids (N=4, lower DSR "
-        "threshold). Pre-selection per [cycle_analytics, p.48/77/152-153].",
+        "threshold). regime_daily = 2 pre-specified daily configs with "
+        "SMA200 regime filter + time-stop [algo_trading_chan, p.28, ch.2].",
     )
     ap.add_argument(
         "--log-level", default="INFO",
@@ -151,6 +152,7 @@ def main(argv: list[str] | None = None) -> int:
         compose_observers,
         ehlers_grid_configs,
         ehlers_reduced_1h_configs,
+        ehlers_regime_daily_configs,
         setup_grid_logging,
         wf_for_grid,
     )
@@ -189,6 +191,9 @@ def main(argv: list[str] | None = None) -> int:
     if preset == "reduced_1h":
         configs = ehlers_reduced_1h_configs()
         log.info("PRESET reduced_1h: %d pre-selected configs (N=%d)", len(configs), len(configs))
+    elif preset == "regime_daily":
+        configs = ehlers_regime_daily_configs()
+        log.info("PRESET regime_daily: %d pre-specified configs with SMA200 regime filter", len(configs))
     else:
         configs = ehlers_grid_configs()
     if args.dry_run:
@@ -244,6 +249,8 @@ def main(argv: list[str] | None = None) -> int:
             risk_pct_of_equity=cfg.risk_pct_of_equity,
             period_min=cfg.period_min,
             period_max=cfg.period_max,
+            regime_sma_period=cfg.regime_sma_period,
+            max_hold_bars=cfg.max_hold_bars,
         )
         runner = Runner(executor=ExecutionSimulator(ExecutionConfig()))
         return runner.run(
