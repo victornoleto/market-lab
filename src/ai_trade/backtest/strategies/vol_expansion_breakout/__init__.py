@@ -9,6 +9,11 @@ from ai_trade.backtest.strategies.vol_expansion_breakout._breakout_signal import
     BreakoutDirection,
     DonchianBreakout,
 )
+from ai_trade.backtest.strategies.vol_expansion_breakout._exit_manager import (
+    ExitManager,
+    ExitReason,
+    PositionState,
+)
 from ai_trade.backtest.strategies.vol_expansion_breakout._regime_filter import (
     RegimeReading,
     YangZhangCone,
@@ -20,6 +25,9 @@ from ai_trade.backtest.strategies.vol_expansion_breakout._vol_target_sizer impor
 __all__ = [
     "BreakoutDirection",
     "DonchianBreakout",
+    "ExitManager",
+    "ExitReason",
+    "PositionState",
     "RegimeReading",
     "VolTargetSizer",
     "YangZhangCone",
