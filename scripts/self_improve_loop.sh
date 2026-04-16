@@ -124,9 +124,15 @@ $scope_clause
      - Result: <verdict, key metrics>
      - Conclusion: <what we learned, what to try next>
      \`\`\`
-   - If \`## History\` exceeds ~50 entries, prune oldest (preserve 5 newest + any breakthrough entries; document the pruning).
+   - If \`## History\` exceeds ~20 entries, prune oldest (preserve 5 newest + any ★ PASS entries; document the pruning).
    - Move consumed items from "Promising leads" to "Known dead ends" (with a one-line reason) when the lead is exhausted.
 5. **Document significant results in jornada/.** When a result is significant (any gate-passing config, OOS validation, or new strategy family that passes), create a detailed entry file at \`jornada/YYYY-MM-DD-HHmm-slug.md\` AND add it to the top of the entry index in \`jornada/README.md\`. This is the human-readable project record — memory.md is for loop continuity, jornada/ is for the user.
+6. **KEEP memory.md COMPACT (< 15 KB).** This file is re-sent every iteration — bloat = wasted tokens + worse model performance. Rules:
+   - \`## History\` entries: MAX 5 lines each. No tables, no code blocks. Just: Hypothesis, Action (1 line), Result (1 line), Conclusion (1 line).
+   - \`## Known dead ends\`: ONE LINE per entry. No explanations — just strategy name + verdict.
+   - \`## ★ GOAL ACHIEVED\` section: keep only the BEST config summary. Move detailed tables (OOS, costs, trade analysis) to \`jornada/\` entries instead.
+   - \`## Promising leads\`: remove consumed items entirely (they're in History already). Don't keep strikethrough text.
+   - If memory.md exceeds 15 KB after your edits, PRUNE before exiting. Check with: \`wc -c < docs/self_improvement/memory.md\`
 6. Exit cleanly.
 
 ## Hard rules
