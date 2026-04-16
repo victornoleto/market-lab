@@ -19,6 +19,7 @@ from ai_trade.backtest.strategies.chan_bollinger_pairs import ChanBollingerPairs
 from ai_trade.backtest.strategies.clenow_momentum import ClenowMomentumStrategy
 from ai_trade.backtest.strategies.vol_expansion_breakout import (
     RegimeReading,
+    VolExpansionBreakoutStrategy,
     YangZhangCone,
 )
 
@@ -29,5 +30,6 @@ __all__ = [
     "Strategy",
     "StrategyBase",
     "StrategyContext",
+    "VolExpansionBreakoutStrategy",
     "YangZhangCone",
 ]

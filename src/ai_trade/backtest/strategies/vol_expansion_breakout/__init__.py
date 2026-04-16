@@ -18,6 +18,9 @@ from ai_trade.backtest.strategies.vol_expansion_breakout._regime_filter import (
     RegimeReading,
     YangZhangCone,
 )
+from ai_trade.backtest.strategies.vol_expansion_breakout._strategy import (
+    VolExpansionBreakoutStrategy,
+)
 from ai_trade.backtest.strategies.vol_expansion_breakout._vol_target_sizer import (
     VolTargetSizer,
 )
@@ -29,6 +32,7 @@ __all__ = [
     "ExitReason",
     "PositionState",
     "RegimeReading",
+    "VolExpansionBreakoutStrategy",
     "VolTargetSizer",
     "YangZhangCone",
 ]
