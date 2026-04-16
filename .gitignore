@@ -107,3 +107,7 @@ db/*.db
 .tox/
 .coverage
 htmlcov/
+
+# Git worktrees (used by superpowers:subagent-driven-development)
+.worktrees/
+
