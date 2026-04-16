@@ -269,6 +269,51 @@ class TiingoSource:
             return _normalize(body[0].get("priceData", []))
         return _normalize(body)
 
+    def _filter_orphan_intraday_bars(
+        self, ticker: str, df_intraday: pd.DataFrame,
+    ) -> pd.DataFrame:
+        """Drop intraday bars whose calendar date is not in the daily cache.
+
+        Tiingo IEX returns placeholder bars on US market-closed days
+        (US holidays): volume=0, OHLC all identical, RAW unadjusted prices.
+        For tickers with historical splits (XLK ratio≈0.48, XLE≈0.41), these
+        placeholder bars sit at 2x+ the surrounding adjusted bars and
+        catastrophically inflate backtest PnL when a strategy enters before a
+        holiday and exits on the placeholder bar.
+
+        Filtering by "calendar date is in daily cache" is the deterministic
+        guard — daily IS the source of truth for which days were trading
+        days. Heuristics like volume=0 or OHLC-identical would also catch
+        real low-liquidity bars. See spec §3.3 + audit
+        jornada/2026-04-16-0833-tiingo-cache-audit.md (which initially
+        underestimated the impact as "latent non-material").
+        """
+        if df_intraday.empty:
+            return df_intraday
+        try:
+            df_daily = self.storage.read(ticker, frequency="daily")
+        except KeyError:
+            # No daily cache at all — let the split-adjust step raise its
+            # NotImplementedError with the actionable message.
+            return df_intraday
+
+        daily_dates = {ts.date() for ts in df_daily.index}
+        bar_dates = pd.Series(
+            [ts.date() for ts in df_intraday.index], index=df_intraday.index,
+        )
+        orphan_mask = ~bar_dates.isin(daily_dates)
+        n_orphan = int(orphan_mask.sum())
+        if n_orphan == 0:
+            return df_intraday
+
+        orphan_dates = sorted({d.isoformat() for d in bar_dates[orphan_mask]})
+        log.warning(
+            "filtered %d intraday bar(s) on %d day(s) for %s with no daily "
+            "counterpart (Tiingo IEX market-closed-day placeholders): %s",
+            n_orphan, len(orphan_dates), ticker, orphan_dates,
+        )
+        return df_intraday.loc[~orphan_mask]
+
     def _apply_split_adjust_from_daily(
         self, ticker: str, df_intraday: pd.DataFrame,
     ) -> pd.DataFrame:
@@ -364,6 +409,7 @@ class TiingoSource:
         # Split adjust para IEX 1h (equity/etf) se daily cache disponível.
         # Crypto/forex 1h já vêm com adj_close := close via _normalize.
         if frequency == "1hour" and asset_class in ("equity", "etf"):
+            df = self._filter_orphan_intraday_bars(ticker, df)
             df = self._apply_split_adjust_from_daily(ticker, df)
 
         self.storage.write(

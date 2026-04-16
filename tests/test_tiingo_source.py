@@ -572,16 +572,17 @@ def test_iex_raises_notimplemented_if_equity_not_in_daily_cache(
         )
 
 
-def test_iex_warns_when_daily_cache_lags_intraday_dates(
+def test_iex_filters_orphan_holiday_bars_with_warning(
     tiingo_env, storage, monkeypatch, caplog,
 ):
-    """Daily cache cobre subset das datas intraday → warn (não silent fallback).
+    """Tiingo IEX placeholder bars on US holidays (no daily counterpart)
+    must be dropped before split-adjust, with a WARNING.
 
-    Regression guard for spec §3.3: 'no silent fallback'. Quando o daily cache
-    fica atrás do intraday (e.g., daily até D, intraday até D+1), as barras
-    intraday do dia órfão usam ratio=1.0 — comportamento correto se o dia não
-    teve split/dividendo, mas tem que ser sinalizado para o operador refrescar
-    o daily.
+    Background: Tiingo IEX returns 6 fake hourly bars on US market-closed
+    days with volume=0 and OHLC all identical at the RAW (unadjusted)
+    price. For tickers with historical splits, these placeholders sit at
+    2x+ surrounding adjusted bars and inflate backtest PnL by 90%+.
+    Detected 2026-04-16 — see jornada/2026-04-16-13XX-data-bug.md.
     """
     import logging
     from datetime import date
@@ -590,19 +591,30 @@ def test_iex_warns_when_daily_cache_lags_intraday_dates(
     from ai_trade.backtest.data import tiingo_source as ts_mod
 
     df_daily = pd.DataFrame(
-        {"open": [100.0], "high": [100.0], "low": [100.0],
-         "close": [100.0], "adj_close": [50.0], "volume": [1000.0]},
-        index=pd.DatetimeIndex([pd.Timestamp("2024-01-02")], name="date"),
+        {
+            "open":  [100.0, 100.0],
+            "high":  [100.0, 100.0],
+            "low":   [100.0, 100.0],
+            "close": [100.0, 100.0],
+            "adj_close": [50.0, 50.0],
+            "volume": [1000.0, 1000.0],
+        },
+        index=pd.DatetimeIndex(
+            [pd.Timestamp("2024-01-12"), pd.Timestamp("2024-01-16")], name="date",
+        ),
     )
-    storage.write("SPY", df_daily, asset_class="equity", frequency="daily")
+    storage.write("XLK", df_daily, asset_class="etf", frequency="daily")
 
     IEX_SAMPLE = [
-        {"date": "2024-01-02T14:00:00.000Z",
+        {"date": "2024-01-12T15:00:00.000Z",
          "open": 100.0, "high": 100.0, "low": 100.0, "close": 100.0,
          "volume": 500},
-        {"date": "2024-01-03T14:00:00.000Z",
+        {"date": "2024-01-15T15:00:00.000Z",
          "open": 200.0, "high": 200.0, "low": 200.0, "close": 200.0,
-         "volume": 600},
+         "volume": 0},
+        {"date": "2024-01-16T15:00:00.000Z",
+         "open": 100.0, "high": 100.0, "low": 100.0, "close": 100.0,
+         "volume": 500},
     ]
 
     monkeypatch.setattr(
@@ -613,31 +625,36 @@ def test_iex_warns_when_daily_cache_lags_intraday_dates(
     caplog.set_level(logging.WARNING, logger="ai_trade.backtest.data.tiingo_source")
     source = TiingoSource(storage=storage)
     df = source.fetch(
-        "SPY", date(2024, 1, 2), date(2024, 1, 3),
-        asset_class="equity", frequency="1hour",
+        "XLK", date(2024, 1, 12), date(2024, 1, 16),
+        asset_class="etf", frequency="1hour",
     )
 
-    fallback_warnings = [
+    filter_warnings = [
         r for r in caplog.records
-        if r.levelname == "WARNING" and "split-adjust fallback" in r.message
+        if r.levelname == "WARNING" and "market-closed-day placeholders" in r.message
     ]
-    assert fallback_warnings, (
-        "expected a 'split-adjust fallback' warning when daily cache lags intraday; "
-        f"got records: {[(r.levelname, r.message) for r in caplog.records]}"
+    assert filter_warnings, (
+        "expected a placeholder-filtering warning when intraday includes a "
+        f"day not in daily cache; got: {[(r.levelname, r.message) for r in caplog.records]}"
     )
-    assert "2024-01-03" in fallback_warnings[0].message
-    assert "SPY" in fallback_warnings[0].message
+    assert "2024-01-15" in filter_warnings[0].message
+    assert "XLK" in filter_warnings[0].message
 
-    bar_02 = df.loc[df.index.date == date(2024, 1, 2)]
-    bar_03 = df.loc[df.index.date == date(2024, 1, 3)]
-    assert abs(bar_02["close"].iloc[0] - 50.0) < 1e-6, "2024-01-02 must be ratio-adjusted (50/100)"
-    assert abs(bar_03["close"].iloc[0] - 200.0) < 1e-6, "2024-01-03 must use ratio=1.0 fallback (raw 200)"
+    bar_dates = sorted({ts.date() for ts in df.index})
+    assert date(2024, 1, 15) not in bar_dates, "orphan bar must be dropped"
+    assert date(2024, 1, 12) in bar_dates and date(2024, 1, 16) in bar_dates
+
+    bar_12 = df.loc[df.index.date == date(2024, 1, 12)]
+    bar_16 = df.loc[df.index.date == date(2024, 1, 16)]
+    assert abs(bar_12["close"].iloc[0] - 50.0) < 1e-6, "2024-01-12 must be ratio-adjusted"
+    assert abs(bar_16["close"].iloc[0] - 50.0) < 1e-6, "2024-01-16 must be ratio-adjusted"
 
 
-def test_iex_no_warning_when_daily_covers_all_intraday_dates(
+def test_iex_no_filter_warning_when_all_intraday_dates_in_daily(
     tiingo_env, storage, monkeypatch, caplog,
 ):
-    """Daily cobre todas as datas intraday → sem warning (path normal)."""
+    """When intraday calendar dates are fully covered by daily cache,
+    no orphan-filtering warning should fire."""
     import logging
     from datetime import date
     import pandas as pd
@@ -645,20 +662,20 @@ def test_iex_no_warning_when_daily_covers_all_intraday_dates(
     from ai_trade.backtest.data import tiingo_source as ts_mod
 
     df_daily = pd.DataFrame(
-        {"open": [100.0, 200.0], "high": [100.0, 200.0], "low": [100.0, 200.0],
-         "close": [100.0, 200.0], "adj_close": [100.0, 200.0],
-         "volume": [1000.0, 1500.0]},
+        {"open": [100.0, 100.0], "high": [100.0, 100.0], "low": [100.0, 100.0],
+         "close": [100.0, 100.0], "adj_close": [100.0, 100.0],
+         "volume": [1000.0, 1000.0]},
         index=pd.DatetimeIndex(
             [pd.Timestamp("2024-01-02"), pd.Timestamp("2024-01-03")], name="date",
         ),
     )
-    storage.write("SPY", df_daily, asset_class="equity", frequency="daily")
+    storage.write("SPY", df_daily, asset_class="etf", frequency="daily")
 
     IEX_SAMPLE = [
         {"date": "2024-01-02T14:00:00.000Z",
          "open": 100.0, "high": 100.0, "low": 100.0, "close": 100.0, "volume": 500},
         {"date": "2024-01-03T14:00:00.000Z",
-         "open": 200.0, "high": 200.0, "low": 200.0, "close": 200.0, "volume": 600},
+         "open": 100.0, "high": 100.0, "low": 100.0, "close": 100.0, "volume": 500},
     ]
 
     monkeypatch.setattr(
@@ -670,16 +687,16 @@ def test_iex_no_warning_when_daily_covers_all_intraday_dates(
     source = TiingoSource(storage=storage)
     source.fetch(
         "SPY", date(2024, 1, 2), date(2024, 1, 3),
-        asset_class="equity", frequency="1hour",
+        asset_class="etf", frequency="1hour",
     )
 
-    fallback_warnings = [
+    filter_warnings = [
         r for r in caplog.records
-        if "split-adjust fallback" in r.message
+        if "market-closed-day placeholders" in r.message
     ]
-    assert not fallback_warnings, (
-        f"unexpected fallback warning when daily fully covers intraday: "
-        f"{[r.message for r in fallback_warnings]}"
+    assert not filter_warnings, (
+        f"unexpected filter warning when intraday is fully covered by daily: "
+        f"{[r.message for r in filter_warnings]}"
     )
 
 
