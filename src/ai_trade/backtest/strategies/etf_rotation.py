@@ -71,6 +71,10 @@ class ETFRotationStrategy(StrategyBase):
     sma_index_period: int = 200
     sma_stock_period: int = 100
     top_n: int = 1  # [stocks_on_the_move, p.95, ch.6]
+    # Vol-sizing: scale position to target_vol/realized_vol [machine_trading, p.126-127]
+    vol_sizing: bool = False
+    target_vol: float = 0.15  # 15% annual target
+    vol_window: int = 20  # trailing days for realized vol estimate
 
     _adj_data: dict[str, pd.DataFrame] = field(init=False, default_factory=dict)
     _prev_month: int = field(init=False, default=-1)
@@ -152,11 +156,23 @@ class ETFRotationStrategy(StrategyBase):
             if target not in portfolio.positions:
                 bar = bars[target]
                 if bar.close > 0 and portfolio.equity > 0:
-                    volume = portfolio.equity * alloc_per / bar.close
+                    scale = self._vol_scale(target, ts) if self.vol_sizing else 1.0
+                    volume = portfolio.equity * alloc_per * scale / bar.close
                     if volume > 0:
                         orders.append(Order(symbol=target, side="buy", volume=volume))
 
         return orders
+
+    def _vol_scale(self, sym: str, ts: pd.Timestamp) -> float:
+        """Return position scale factor: target_vol / realized_vol, capped at 1.0."""
+        closes = self._close_up_to(sym, ts)
+        if closes is None or len(closes) < self.vol_window + 1:
+            return 1.0
+        rets = closes.iloc[-(self.vol_window + 1):].pct_change().dropna()
+        vol_annual = float(rets.std(ddof=1) * np.sqrt(252))
+        if vol_annual <= 0:
+            return 1.0
+        return min(1.0, self.target_vol / vol_annual)
 
     def _close_up_to(self, sym: str, ts: pd.Timestamp) -> pd.Series | None:
         df = self._adj_data.get(sym)
