@@ -104,6 +104,19 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "the same root corrupt entries.",
     )
     ap.add_argument(
+        "--frequency", default="daily",
+        choices=["daily", "1hour"],
+        help="Bar frequency. daily = EOD OHLCV (default); 1hour = IEX "
+        "intraday via Tiingo. Requires --data-source=tiingo for 1hour.",
+    )
+    ap.add_argument(
+        "--preset", default=None,
+        choices=["full", "reduced_1h"],
+        help="Config preset. full = 24 cartesian-product configs (default); "
+        "reduced_1h = 4 pre-selected configs for 1h grids (N=4, lower DSR "
+        "threshold). Pre-selection per [cycle_analytics, p.48/77/152-153].",
+    )
+    ap.add_argument(
         "--log-level", default="INFO",
         choices=["DEBUG", "INFO", "WARNING", "ERROR"],
     )
@@ -137,6 +150,7 @@ def main(argv: list[str] | None = None) -> int:
         StatusFileObserver,
         compose_observers,
         ehlers_grid_configs,
+        ehlers_reduced_1h_configs,
         setup_grid_logging,
         wf_for_grid,
     )
@@ -145,6 +159,9 @@ def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
     if args.symbol is None:
         args.symbol = "^GSPC" if args.data_source == "yfinance" else "SPY"
+    if args.frequency == "1hour" and args.data_source != "tiingo":
+        log.error("--frequency=1hour requires --data-source=tiingo")
+        return 1
     run_id = args.run_id or f"grid_ehlers_{datetime.now().strftime('%Y%m%d-%H%M')}"
     output_dir = args.output_dir / run_id
     checkpoint_dir = Path(".cache/grid_runs")
@@ -162,22 +179,29 @@ def main(argv: list[str] | None = None) -> int:
 
     log.info("=== grid run %s ===", run_id)
     log.info(
-        "start=%s end=%s cash=$%.0f n_jobs=%d dry_run=%s symbol=%s data_source=%s",
+        "start=%s end=%s cash=$%.0f n_jobs=%d dry_run=%s symbol=%s "
+        "data_source=%s frequency=%s preset=%s",
         args.start, args.end, args.cash, args.n_jobs, args.dry_run,
-        args.symbol, args.data_source,
+        args.symbol, args.data_source, args.frequency, args.preset,
     )
 
-    configs = ehlers_grid_configs()
+    preset = args.preset or ("reduced_1h" if args.frequency == "1hour" else "full")
+    if preset == "reduced_1h":
+        configs = ehlers_reduced_1h_configs()
+        log.info("PRESET reduced_1h: %d pre-selected configs (N=%d)", len(configs), len(configs))
+    else:
+        configs = ehlers_grid_configs()
     if args.dry_run:
         configs = configs[:3]
         log.info("DRY RUN: limited to %d configs", len(configs))
 
     fetch_start = args.start - timedelta(days=args.warmup_days)
-    log.info("Fetching %s %s → %s via %s",
-             args.symbol, fetch_start, args.end, args.data_source)
+    log.info("Fetching %s %s → %s via %s (freq=%s)",
+             args.symbol, fetch_start, args.end, args.data_source, args.frequency)
     src = _build_source(args.data_source, args.storage_root)
     fetch_kwargs = (
-        {"asset_class": args.asset_class} if args.data_source == "tiingo" else {}
+        {"asset_class": args.asset_class, "frequency": args.frequency}
+        if args.data_source == "tiingo" else {}
     )
     raw = src.fetch_many([args.symbol], fetch_start, args.end, **fetch_kwargs)
     if args.symbol not in raw or raw[args.symbol].empty:

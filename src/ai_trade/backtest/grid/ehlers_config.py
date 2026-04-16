@@ -75,3 +75,32 @@ def ehlers_grid_configs() -> list[EhlersGridConfig]:
             HP_PERIOD, LP_PERIOD, PCT_OF_DCP, STOP_PCT
         )
     ]
+
+
+def ehlers_reduced_1h_configs() -> list[EhlersGridConfig]:
+    """Return 4 pre-selected configs for 1h Ehlers grid (N=4).
+
+    Pre-selection rationale (chosen BEFORE seeing 1h data):
+
+    * Config A (hp=40, lp=10, pct=0.75, stop=0.03): shorter cycle for
+      intraday — hp=40 bars ≈ 6 trading days on 1h, 60°-lead tuning
+      ``[cycle_analytics, p.152-153, ch.11]``.
+    * Config B (hp=48, lp=20, pct=0.80, stop=0.02): our best daily param
+      set, translated to 1h for baseline comparison
+      ``[cycle_analytics, p.77, ch.7]``.
+    * Config C (hp=48, lp=10, pct=0.70, stop=0.05): wider stop for
+      higher-vol intraday, more aggressive lead tuning
+      ``[cycle_analytics, p.225-226, ch.17]``.
+    * Config D (hp=60, lp=25, pct=0.80, stop=0.03): slower cycle variant
+      for multi-day swings on 1h ``[cycle_analytics, p.82, ch.7]``.
+
+    With N=4 and T≈8000 (5y hourly), DSR threshold ≈ 0.36 annualized
+    — substantially more favorable than N=24 threshold ≈ 0.78.
+    ``[advances_fin_ml, p.208-211, ch.14]``.
+    """
+    return [
+        EhlersGridConfig(hp_period=40, lp_period=10, pct_of_dcp=0.75, stop_pct=0.03),
+        EhlersGridConfig(hp_period=48, lp_period=20, pct_of_dcp=0.80, stop_pct=0.02),
+        EhlersGridConfig(hp_period=48, lp_period=10, pct_of_dcp=0.70, stop_pct=0.05),
+        EhlersGridConfig(hp_period=60, lp_period=25, pct_of_dcp=0.80, stop_pct=0.03),
+    ]
