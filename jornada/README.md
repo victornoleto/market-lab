@@ -197,6 +197,8 @@ Termos que aparecem ao longo das entradas do changelog:
 
 ## Entradas (mais recente primeiro)
 
+- [2026-04-16 0130 — Kalman Pairs OOS 2025 FAIL: demoted de winner #2](2026-04-16-0130-kalman-pairs-oos-FAIL.md)
+- [2026-04-16 0045 — Kalman Pairs SPY-IWM 1h: PASS (3 gates)](2026-04-16-0045-kalman-pairs-spy-iwm-PASS.md)
 - [2026-04-16 0010 — OOS 2025 Hold-out: Bollinger MR edge CONFIRMA](2026-04-16-0010-bollinger-mr-oos-2025-PASS.md)
 - [2026-04-15 2350 — PRIMEIRA ESTRATEGIA VENCEDORA: Bollinger MR 1h SPY PASS](2026-04-15-2350-bollinger-mr-1h-PASS.md)
 - [2026-04-15 2301 — Vol-Expansion Breakout SPY+GLD+TLT 1h ❌](2026-04-15-2301-vol-expansion-1h.md)
