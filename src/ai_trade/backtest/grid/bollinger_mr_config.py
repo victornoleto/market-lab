@@ -54,3 +54,18 @@ def bollinger_mr_grid_configs() -> list[BollingerMRGridConfig]:
         BollingerMRGridConfig(window=w, std_mult=m)
         for w, m in itertools.product(WINDOW, STD_MULT)
     ]
+
+
+def bollinger_mr_canonical_configs() -> list[BollingerMRGridConfig]:
+    """Return the single canonical Bollinger Band configuration (N=1).
+
+    The "20,2" Bollinger — 20-bar window, 2σ bands — is the specification
+    explicitly described in ``[machine_trading, p.204-205, ch.7]`` as the
+    standard for short-term scalping. Using N=1 is valid when the config is
+    pre-specified by literature rather than selected from data.
+
+    With N=1, DSR has no multiple-test deflation: the p-value tests whether
+    the observed Sharpe is statistically > 0 at the 5% level
+    ``[advances_fin_ml, p.208-211, ch.14]``.
+    """
+    return [BollingerMRGridConfig(window=20, std_mult=2.0)]

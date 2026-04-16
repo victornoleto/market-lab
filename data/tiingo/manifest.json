@@ -7210,12 +7210,12 @@
     },
     "daily": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T10:39:30",
+      "fetched_at": "2026-04-16T13:37:35",
       "first_dt": "2004-11-18T00:00:00",
       "last_dt": "2026-04-14T00:00:00",
       "n_bars": 5383,
       "requested_end": "2026-04-14T00:00:00",
-      "requested_start": "2004-11-18T00:00:00"
+      "requested_start": "2004-08-10T00:00:00"
     }
   },
   "GLPI": {
@@ -15102,21 +15102,21 @@
   "SPY": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-16T12:44:59",
-      "first_dt": "2019-12-02T15:00:00",
+      "fetched_at": "2026-04-16T13:47:22",
+      "first_dt": "2019-11-25T17:00:00",
       "last_dt": "2026-04-14T19:00:00",
-      "n_bars": 9594,
-      "requested_end": "2026-04-16T00:00:00",
-      "requested_start": "2026-04-09T00:00:00"
+      "n_bars": 9616,
+      "requested_end": "2026-04-14T00:00:00",
+      "requested_start": "2019-09-01T00:00:00"
     },
     "daily": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T10:38:47",
-      "first_dt": "2003-08-20T00:00:00",
+      "fetched_at": "2026-04-16T13:35:29",
+      "first_dt": "2003-05-12T00:00:00",
       "last_dt": "2026-04-14T00:00:00",
-      "n_bars": 5698,
+      "n_bars": 5768,
       "requested_end": "2026-04-14T00:00:00",
-      "requested_start": "2003-08-20T00:00:00"
+      "requested_start": "2003-05-12T00:00:00"
     }
   },
   "SR": {
@@ -15890,12 +15890,12 @@
     },
     "daily": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T10:40:03",
+      "fetched_at": "2026-04-16T13:36:23",
       "first_dt": "2002-07-26T00:00:00",
       "last_dt": "2026-04-14T00:00:00",
       "n_bars": 5967,
       "requested_end": "2026-04-14T00:00:00",
-      "requested_start": "2002-07-26T00:00:00"
+      "requested_start": "2002-04-17T00:00:00"
     }
   },
   "TMDX": {

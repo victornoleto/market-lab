@@ -29,7 +29,7 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-15)
+## Onde estamos hoje (2026-04-16)
 
 - **Fase 0 — Biblioteca de conhecimento** ✅ 33 livros digeridos em resumos
   validados automaticamente. Zero alucinação detectada (toda afirmação
@@ -84,12 +84,12 @@ trading: palpite disfarçado de análise.
   escala).
 
 **Fatos concretos úteis pra contexto:**
-- 461 testes Python verdes (pytest -q).
+- **515 testes Python verdes** (pytest -q).
+- **1 winner ativo**: Bollinger MR (20,2) + GARCH Sizing SPY 1h [SHORT-HOLD CFD]. Sharpe IS 0.982, OOS 2025 Sharpe 0.552, 2026-Q1 Sharpe 2.784.
 - Tiingo bulk completo: 1660 tickers survivorship-free, 145 MB em backup.
-- Ativos cobertos: SPY, QQQ, IWM, XLK/XLU/XLF/XLE, GLD, SLV, TLT, EEM,
-  EFA, USO, DBA, BTC, ETH + SPX point-in-time 506 tickers.
-- Último commit significativo: `7030d41` (AFML meta-labeling shippado,
-  ainda não conectado às estratégias).
+- Cache intraday limpo (2026-04-16): 4296 bars placeholder removidos.
+- Ativos cobertos intraday: SPY, QQQ, IWM, XLK/XLE/XLF, GLD, SLV, TLT, EEM, EFA, DIA (1h).
+- Ainda precisa: 1 winner Path B (swing diário) para completar Phase A.
 
 ---
 
@@ -209,6 +209,7 @@ demoção de strategies que já não passariam de qualquer jeito).
 
 ## Entradas (mais recente primeiro)
 
+- [2026-04-16 1347 — ★ WINNER #1 [SHORT-HOLD CFD]: Bollinger MR + GARCH Sizing SPY 1h — Sharpe 0.982, OOS 2025 Sharpe 0.552, 2026-Q1 Sharpe 2.784](2026-04-16-1347-bollinger-mr-garch-spy-1h-PASS.md)
 - [2026-04-16 1245 — 🚨 BUG CRÍTICO: TODOS os 3 winners retratados; bars-fake da Tiingo IEX em US holidays](2026-04-16-1245-data-bug-winners-retracted.md)
 - [2026-04-16 1300 — Cross-asset overlap: XLK-XLE corr 0.83 → ~2 edges efetivos, não 3 ⚠️ RETRACTED](2026-04-16-1300-bollinger-mr-overlap.md)
 - [2026-04-16 1230 — MC bootstrap dos winners: XLK robusto, SPY OOS Sharpe lower bound = 0.031 ⚠️ RETRACTED](2026-04-16-1230-bollinger-mr-mc-bootstrap.md)

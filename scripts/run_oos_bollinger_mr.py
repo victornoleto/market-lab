@@ -46,6 +46,11 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--stop-pct", type=float, default=0.02)
     ap.add_argument("--max-hold", type=int, default=24)
     ap.add_argument(
+        "--garch-lambda", type=float, default=0.0,
+        help="EWMA-GARCH vol sizing lambda (0=disabled, 0.94=RiskMetrics). "
+             "[machine_trading, p.126-127, ch.4]",
+    )
+    ap.add_argument(
         "--emit-trades",
         action="store_true",
         help="Write per-trade CSV (train + OOS) for downstream MC bootstrap.",
@@ -95,6 +100,7 @@ def main(argv: list[str] | None = None) -> int:
         stop_pct=args.stop_pct,
         max_hold=args.max_hold,
         risk_pct_of_equity=0.95,
+        garch_lambda=args.garch_lambda,
     )
     runner = Runner(executor=ExecutionSimulator(ExecutionConfig()))
     result: BacktestResult = runner.run(
@@ -161,6 +167,7 @@ def main(argv: list[str] | None = None) -> int:
         stop_pct=args.stop_pct,
         max_hold=args.max_hold,
         risk_pct_of_equity=0.95,
+        garch_lambda=args.garch_lambda,
     )
     result_train = runner.run(
         strategy=strategy_train, data=data_train_bounded, initial_cash=args.cash,
