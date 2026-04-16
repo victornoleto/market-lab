@@ -197,6 +197,7 @@ Termos que aparecem ao longo das entradas do changelog:
 
 ## Entradas (mais recente primeiro)
 
+- [2026-04-16 1300 — Cross-asset overlap: XLK-XLE corr 0.83 → ~2 edges efetivos, não 3](2026-04-16-1300-bollinger-mr-overlap.md)
 - [2026-04-16 1230 — MC bootstrap dos winners: XLK robusto, SPY OOS Sharpe lower bound = 0.031](2026-04-16-1230-bollinger-mr-mc-bootstrap.md)
 - [2026-04-16 0833 — Tiingo cache audit: Q1-2026 stress é trustworthy + latent bug detectado](2026-04-16-0833-tiingo-cache-audit.md)
 - [2026-04-16 0130 — Kalman Pairs OOS 2025 FAIL: demoted de winner #2](2026-04-16-0130-kalman-pairs-oos-FAIL.md)
