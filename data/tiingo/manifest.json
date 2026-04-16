@@ -15102,12 +15102,12 @@
   "SPY": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T23:39:26",
+      "fetched_at": "2026-04-16T08:34:44",
       "first_dt": "2019-12-02T15:00:00",
       "last_dt": "2026-04-15T19:00:00",
       "n_bars": 9978,
-      "requested_end": "2026-04-15T00:00:00",
-      "requested_start": "2019-12-02T00:00:00"
+      "requested_end": "2026-04-16T00:00:00",
+      "requested_start": "2026-04-09T00:00:00"
     },
     "daily": {
       "asset_class": "etf",
