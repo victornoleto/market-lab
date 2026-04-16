@@ -8805,12 +8805,12 @@
   "IWM": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T22:28:02",
-      "first_dt": "2020-04-15T14:00:00",
+      "fetched_at": "2026-04-16T00:41:38",
+      "first_dt": "2020-01-02T15:00:00",
       "last_dt": "2026-04-15T19:00:00",
-      "n_bars": 9396,
-      "requested_end": "2026-04-15T00:00:00",
-      "requested_start": "2020-04-15T00:00:00"
+      "n_bars": 9840,
+      "requested_end": "2025-12-31T00:00:00",
+      "requested_start": "2020-01-02T00:00:00"
     },
     "daily": {
       "asset_class": "etf",

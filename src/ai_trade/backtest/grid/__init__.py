@@ -35,6 +35,10 @@ from ai_trade.backtest.grid.chan_pairs_config import (
     ChanPairsGridConfig,
     chan_pairs_grid_configs,
 )
+from ai_trade.backtest.grid.kalman_pairs_config import (
+    KalmanPairsGridConfig,
+    kalman_pairs_grid_configs,
+)
 from ai_trade.backtest.grid.vol_expansion_config import (
     VolExpansionGridConfig,
     vol_expansion_grid_configs,
@@ -59,6 +63,7 @@ from ai_trade.backtest.grid.walk_forward import WFResult, wf_for_config, wf_for_
 __all__ = [
     "BollingerMRGridConfig",
     "ChanPairsGridConfig",
+    "KalmanPairsGridConfig",
     "ClenowGridConfig",
     "VolExpansionGridConfig",
     "DiagnosticAnalyzer",
@@ -77,6 +82,7 @@ __all__ = [
     "WFResult",
     "bollinger_mr_grid_configs",
     "chan_pairs_grid_configs",
+    "kalman_pairs_grid_configs",
     "vol_expansion_grid_configs",
     "compose_observers",
     "ehlers_grid_configs",
