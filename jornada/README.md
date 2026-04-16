@@ -195,15 +195,28 @@ Termos que aparecem ao longo das entradas do changelog:
 
 ---
 
+## ⚠️ Avisos de retratação (2026-04-16 12:45)
+
+Entries marcadas com **⚠️ RETRACTED** ou **CONCLUSÃO INVÁLIDA** abaixo
+foram afetadas por bug crítico nos dados Tiingo IEX (placeholder bars
+em US holidays sem split-adjust). Veja
+[2026-04-16-1245-data-bug-winners-retracted.md](2026-04-16-1245-data-bug-winners-retracted.md)
+para detalhes. Conclusões dessas entries não são confiáveis.
+
+Entries marcadas com **DATA TAINTED (mas conclusão permanece)** usaram
+dados ruins mas chegaram à conclusão certa pelo motivo errado (e.g.,
+demoção de strategies que já não passariam de qualquer jeito).
+
 ## Entradas (mais recente primeiro)
 
-- [2026-04-16 1300 — Cross-asset overlap: XLK-XLE corr 0.83 → ~2 edges efetivos, não 3](2026-04-16-1300-bollinger-mr-overlap.md)
-- [2026-04-16 1230 — MC bootstrap dos winners: XLK robusto, SPY OOS Sharpe lower bound = 0.031](2026-04-16-1230-bollinger-mr-mc-bootstrap.md)
-- [2026-04-16 0833 — Tiingo cache audit: Q1-2026 stress é trustworthy + latent bug detectado](2026-04-16-0833-tiingo-cache-audit.md)
-- [2026-04-16 0130 — Kalman Pairs OOS 2025 FAIL: demoted de winner #2](2026-04-16-0130-kalman-pairs-oos-FAIL.md)
-- [2026-04-16 0045 — Kalman Pairs SPY-IWM 1h: PASS (3 gates)](2026-04-16-0045-kalman-pairs-spy-iwm-PASS.md)
-- [2026-04-16 0010 — OOS 2025 Hold-out: Bollinger MR edge CONFIRMA](2026-04-16-0010-bollinger-mr-oos-2025-PASS.md)
-- [2026-04-15 2350 — PRIMEIRA ESTRATEGIA VENCEDORA: Bollinger MR 1h SPY PASS](2026-04-15-2350-bollinger-mr-1h-PASS.md)
+- [2026-04-16 1245 — 🚨 BUG CRÍTICO: TODOS os 3 winners retratados; bars-fake da Tiingo IEX em US holidays](2026-04-16-1245-data-bug-winners-retracted.md)
+- [2026-04-16 1300 — Cross-asset overlap: XLK-XLE corr 0.83 → ~2 edges efetivos, não 3 ⚠️ RETRACTED](2026-04-16-1300-bollinger-mr-overlap.md)
+- [2026-04-16 1230 — MC bootstrap dos winners: XLK robusto, SPY OOS Sharpe lower bound = 0.031 ⚠️ RETRACTED](2026-04-16-1230-bollinger-mr-mc-bootstrap.md)
+- [2026-04-16 0833 — Tiingo cache audit: Q1-2026 stress é trustworthy + latent bug detectado ⚠️ CONCLUSÃO INVÁLIDA](2026-04-16-0833-tiingo-cache-audit.md)
+- [2026-04-16 0130 — Kalman Pairs OOS 2025 FAIL: demoted de winner #2 ⚠️ DATA TAINTED (mas conclusão FAIL permanece)](2026-04-16-0130-kalman-pairs-oos-FAIL.md)
+- [2026-04-16 0045 — Kalman Pairs SPY-IWM 1h: PASS (3 gates) ⚠️ RETRACTED](2026-04-16-0045-kalman-pairs-spy-iwm-PASS.md)
+- [2026-04-16 0010 — OOS 2025 Hold-out: Bollinger MR edge CONFIRMA ⚠️ RETRACTED](2026-04-16-0010-bollinger-mr-oos-2025-PASS.md)
+- [2026-04-15 2350 — PRIMEIRA ESTRATEGIA VENCEDORA: Bollinger MR 1h SPY PASS ⚠️ RETRACTED](2026-04-15-2350-bollinger-mr-1h-PASS.md)
 - [2026-04-15 2301 — Vol-Expansion Breakout SPY+GLD+TLT 1h ❌](2026-04-15-2301-vol-expansion-1h.md)
 - [2026-04-15 2109 — Chan pairs GLD-SLV 1h ❌](2026-04-15-2109-chan-pairs-1h.md)
 - [2026-04-15 1830 — tiingo_service lazy-cache ✅](2026-04-15-1830-tiingo-service.md)

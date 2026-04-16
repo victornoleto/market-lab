@@ -1,5 +1,10 @@
 # 2026-04-16 00:10 — OOS 2025 Hold-out: Bollinger MR edge CONFIRMA em dados futuros
 
+> ⚠️ **RETRACTED 2026-04-16 12:45.** Resultado usou cache 1h contaminada
+> por placeholder bars da Tiingo IEX em US holidays. Após cleanup, SPY
+> Bollinger MR não passa o gate (Sharpe 1.31 → 0.78, DSR FAIL). Veja
+> [2026-04-16-1245-data-bug-winners-retracted.md](2026-04-16-1245-data-bug-winners-retracted.md).
+
 **Verdict: OOS PASS — zero decay, edge ligeiramente mais forte em 2025.**
 
 Teste de robustez temporal mais severo possível: treinar em 2021-2024 (6252 bars), testar em 2025 puro (1560 bars) sem re-otimização. O config vencedor (window=20, std_mult=1.5) foi fixado a priori — zero data-snooping no período OOS.

@@ -1,5 +1,12 @@
 # Stress-test Bollinger MR winners no forward-window 2026-Q1
 
+> ⚠️ **RETRACTED 2026-04-16 12:45.** Cache 1h continha placeholder bars
+> em US holidays (Q1-2026 inclui MLK Day, Presidents' Day, Good Friday).
+> XLK/SPY/XLE Sharpes Q1-26 reportados (2.341 / 2.585 / 1.879) eram
+> dominados por trades fake nesses dias. EEM demoção stand-alone permanece
+> (EEM real edge ainda fraco). Veja
+> [2026-04-16-1245-data-bug-winners-retracted.md](2026-04-16-1245-data-bug-winners-retracted.md).
+
 **Data:** 2026-04-16, iter 16 do self-improvement loop.
 **Motivação (lead #8 da memória):** validar os 4 winners Bollinger MR 1h
 num período futuro (2026-Q1) que ficou fora tanto do grid (2021-2024)

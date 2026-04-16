@@ -1,5 +1,12 @@
 # Bollinger MR replica em sector ETFs — 3 novos winners
 
+> ⚠️ **RETRACTED 2026-04-16 12:45.** XLK e XLE têm os maiores ratios
+> raw/adj (~2× e ~2.4× em 2021), portanto os reports de iter 15 foram
+> fortemente inflados pelos placeholder bars. Pós-cleanup: XLK Sharpe
+> 1.93 → 0.75 (FAIL PBO+DSR), XLE 1.58 → 0.42 (FAIL PBO+DSR), EEM (não
+> re-rodado, mas demoção iter 16 permanece). Veja
+> [2026-04-16-1245-data-bug-winners-retracted.md](2026-04-16-1245-data-bug-winners-retracted.md).
+
 **Data:** 2026-04-16 01:00
 **Iteração:** 15
 **Verdict:** ★ 3 NOVOS WINNERS (XLK, XLE, EEM) — winner count 1/10 → 4/10

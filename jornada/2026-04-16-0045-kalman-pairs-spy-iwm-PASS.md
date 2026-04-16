@@ -1,5 +1,13 @@
 # Kalman pairs SPY-IWM 1h: segundo PASS no cofre (mas mais fraco)
 
+> ⚠️ **RETRACTED 2026-04-16 12:45.** Kalman também consumia cache 1h
+> contaminada (SPY + IWM, ambos com placeholder bars). O grid PASS
+> reportado provavelmente também é parcial-artefato. Não re-rodado pós-cleanup
+> porque a iter-13 OOS já tinha demonstrado decay catastrófico (Sharpe
+> +1.78 train → -1.14 OOS). Conclusão final (Kalman não é winner)
+> permanece pelo motivo certo agora. Veja
+> [2026-04-16-1245-data-bug-winners-retracted.md](2026-04-16-1245-data-bug-winners-retracted.md).
+
 **Data:** 2026-04-16 00:45
 **Contexto:** Iter 12 do loop de self-improvement — lead #1 da fila.
 

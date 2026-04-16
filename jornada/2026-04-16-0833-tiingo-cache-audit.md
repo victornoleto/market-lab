@@ -1,5 +1,19 @@
 # Tiingo cache audit — Q1-2026 forward stress é confiável
 
+> ⚠️ **CONCLUSÃO REVERTIDA 2026-04-16 12:45.** Este audit foi superficial:
+> focou só no caso forward (intraday termina 1 dia além do daily) e
+> classificou o silent-fallback como "latent não material". Investigação
+> de Task 1D revelou que o bug era ATIVO ao longo de todo o histórico —
+> cada US holiday (~12/ano × 5 anos = 60+ dias) gera placeholder bars.
+> Em XLK/XLE (ratio adj/raw ~0.4-0.5), esses bars sentam a 2× preço
+> adjacente e contribuem 85-89% do retorno total dos winners. Veja
+> [2026-04-16-1245-data-bug-winners-retracted.md](2026-04-16-1245-data-bug-winners-retracted.md)
+> para o fix completo.
+
+**Conclusão original abaixo (mantida como histórico):**
+
+
+
 **Verdict:** ✅ **Trustworthy.** O lazy-cache está fazendo o que o spec
 prometeu. As três conclusões dos winners (SPY/XLK/XLE Bollinger MR 1h)
 e a demoção do EEM no stress 2026-Q1 não foram contaminadas por dados

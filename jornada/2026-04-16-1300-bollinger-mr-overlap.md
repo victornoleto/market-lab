@@ -1,5 +1,16 @@
 # Cross-asset overlap dos winners — XLK e XLE são quase a mesma aposta
 
+> ⚠️ **RETRACTED 2026-04-16 12:45.** Daily PnL correlations foram
+> computadas em trades cuja PnL absoluta era 50-90% fake (placeholder
+> bars em US holidays). A correlação entry-time (Jaccard) ainda é válida
+> qualitativamente — entries em si estão certas, é só o PnL que está
+> contaminado. Mas as conclusões de "XLK-XLE corr 0.83 → 1 edge" e os
+> Sharpes daily-aggregated são ambos artefato. O script
+> `run_trade_overlap_bollinger_mr.py` permanece válido — re-rodar com
+> dados limpos quando algum strategy passar gate. Veja
+> [2026-04-16-1245-data-bug-winners-retracted.md](2026-04-16-1245-data-bug-winners-retracted.md).
+
+
 **Verdict:** Não temos 3 edges independentes — temos **~2**. XLK-XLE
 correlação diária de PnL = **0.83** (acima do threshold 0.7 do plan,
 que ativa a regra "1 edge × 3 ativos"). SPY corre por outro fator

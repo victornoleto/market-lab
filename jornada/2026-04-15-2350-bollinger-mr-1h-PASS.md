@@ -1,5 +1,11 @@
 # 2026-04-15 23:50 — PRIMEIRA ESTRATEGIA VENCEDORA: Bollinger Mean-Reversion 1h SPY
 
+> ⚠️ **RETRACTED 2026-04-16 12:45.** O grid PASS dependia de placeholder
+> bars da Tiingo IEX em US holidays. SPY tem ratio adj/raw ~0.93 em
+> 2020-2021 (1 split em 2020), portanto o erro é menos extremo que XLK/XLE
+> mas ainda material. Pós-cleanup: SPY Sharpe 1.31 → 0.78, FAIL DSR_ALL_FAIL.
+> Veja [2026-04-16-1245-data-bug-winners-retracted.md](2026-04-16-1245-data-bug-winners-retracted.md).
+
 **Verdict: PASS — Todos os 3 gates anti-overfit passaram.**
 
 Depois de 7 ciclos de tentativas (Clenow daily, Ehlers daily, Ehlers+meta-labeling, Chan pairs 1h, Vol-expansion 1h, Ehlers 1h, portfolio combos) e zero configurações passando, o loop autônomo de self-improvement encontrou a primeira estratégia vencedora na **iteração 2** (< 30 minutos de execução autônoma).

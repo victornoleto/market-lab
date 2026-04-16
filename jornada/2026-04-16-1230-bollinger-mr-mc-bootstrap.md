@@ -1,5 +1,14 @@
 # MC bootstrap dos winners — bandas honestas em torno do Sharpe
 
+> ⚠️ **RETRACTED 2026-04-16 12:45.** As CIs aqui foram computadas em
+> trade returns de cache contaminada. As bandas de Sharpe/CAGR/MaxDD
+> portanto são em torno de pontos artificiais. A infra de bootstrap
+> (`stationary_bootstrap_trades`) e o módulo de teste permanecem válidos
+> e reusáveis — só o exercício específico de SPY/XLK/XLE 2025-2026Q1
+> precisa re-rodar com dados limpos depois que algum strategy passe o
+> gate. Veja [2026-04-16-1245-data-bug-winners-retracted.md](2026-04-16-1245-data-bug-winners-retracted.md).
+
+
 **Verdict resumido:** ✅ Os 3 winners passam o critério "lower bound do
 Sharpe OOS CI95 > 0", mas **com folga muito desigual**. XLK é o mais
 robusto (lower bound 0.601), SPY o mais frágil (0.031, basicamente
