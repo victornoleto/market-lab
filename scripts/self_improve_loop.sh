@@ -27,10 +27,10 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-: "${MAX_ITER:=10}"
-: "${ITER_TIMEOUT:=900}"
-: "${SCOPE:=research}"
-: "${COOLDOWN:=5}"
+: "${MAX_ITER:=20}"
+: "${ITER_TIMEOUT:=1800}"
+: "${SCOPE:=code}"
+: "${COOLDOWN:=10}"
 
 MEMORY_DIR="docs/self_improvement"
 MEMORY_FILE="$MEMORY_DIR/memory.md"
@@ -44,6 +44,14 @@ mkdir -p "$MEMORY_DIR" "$LOG_DIR"
 command -v claude >/dev/null || { echo "claude CLI not in PATH" >&2; exit 1; }
 command -v timeout >/dev/null || { echo "GNU timeout missing" >&2; exit 1; }
 [[ -f "$TEMPLATE" ]] || { echo "missing $TEMPLATE" >&2; exit 1; }
+
+# Branch guard: refuse to run on main/master
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
+if [[ "$CURRENT_BRANCH" == "main" || "$CURRENT_BRANCH" == "master" ]]; then
+    echo "FATAL: self_improve_loop refuses to run on '$CURRENT_BRANCH'." >&2
+    echo "Create a feature branch first: git checkout -b self-improve/<name>" >&2
+    exit 1
+fi
 
 # Rotate old per-iteration logs (keep loop_* logs for audit; iter_* files
 # accumulate quickly and are less valuable once their findings are in memory).
@@ -127,6 +135,8 @@ $scope_clause
 - Cite \`[book.slug, p.X]\` for any strategy/parameter choice grounded in the knowledge base.
 - Working directory: /var/www/pessoal/ai-trade
 - Goal: gate-passing strategy. Memory is single source of truth.
+- The shell loop auto-commits after each iteration on the isolated branch. Do NOT run git commit yourself.
+- **Swap constraint:** strategies for Pepperstone CFDs must target median hold ≤ 5 days. Label findings as [SHORT-HOLD CFD] or [SWING BROKER].
 
 Begin by reading memory.md.
 PROMPT
@@ -142,6 +152,7 @@ read_iteration() {
 }
 
 echo "=== self_improve_loop @ $(date -Iseconds) ===" | tee -a "$RUN_LOG"
+echo "Branch: $CURRENT_BRANCH" | tee -a "$RUN_LOG"
 echo "MAX_ITER=$MAX_ITER  SCOPE=$SCOPE  ITER_TIMEOUT=${ITER_TIMEOUT}s  COOLDOWN=${COOLDOWN}s" | tee -a "$RUN_LOG"
 echo "Memory: $MEMORY_FILE" | tee -a "$RUN_LOG"
 echo "Loop log: $RUN_LOG" | tee -a "$RUN_LOG"
@@ -174,8 +185,22 @@ for i in $(seq "$START_ITER" "$END_ITER"); do
         exit "$EXIT"
     fi
 
-    STATUS=$(read_status)
+    # Auto-commit changes from this iteration (safe: we're on an isolated branch)
     MEM_ITER=$(read_iteration)
+    ITER_SUMMARY=$(awk '/^### Iteration '"$MEM_ITER"'/{found=1; next} found && /^- Hypothesis:/{print; exit}' "$MEMORY_FILE" \
+        | sed 's/^- Hypothesis: //' | head -c 72)
+    [[ -z "$ITER_SUMMARY" ]] && ITER_SUMMARY="iteration $MEM_ITER"
+    if git diff --quiet HEAD 2>/dev/null && [[ -z "$(git ls-files --others --exclude-standard)" ]]; then
+        echo "--- No changes to commit for iteration $i ---" | tee -a "$RUN_LOG"
+    else
+        git add -A
+        git commit -m "$(cat <<EOF
+self-improve: iter $MEM_ITER — $ITER_SUMMARY
+EOF
+        )" --no-gpg-sign 2>&1 | tee -a "$RUN_LOG" || true
+    fi
+
+    STATUS=$(read_status)
     echo "--- Iteration $i done | memory iter=$MEM_ITER status=$STATUS ---" \
         | tee -a "$RUN_LOG"
 
