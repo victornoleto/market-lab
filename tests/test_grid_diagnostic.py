@@ -264,3 +264,80 @@ def test_diagnostic_handles_grid_with_error_trials_gracefully():
     assert len(report.per_config_metrics) == 2
     err_row = report.per_config_metrics[report.per_config_metrics.config_id == 1]
     assert err_row["sharpe"].isna().all()
+
+
+def _mk_grid_all_errored(n: int = 4):
+    """Grid where ALL trials errored upstream of the backtest (no equity curve)."""
+    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.result import GridResult, TrialResult
+
+    trials = []
+    for i in range(n):
+        cfg = ClenowGridConfig(
+            lookback_regression=60 + 15 * i, top_pct=0.20, risk_factor=0.001,
+        )
+        trials.append(
+            TrialResult(
+                config_id=i, config=cfg, result=None,
+                sharpe=float("nan"), cagr=float("nan"), max_drawdown=float("nan"),
+                status="error",
+                error_msg=(
+                    f"trial {i} failed: pair not cointegrated "
+                    f"(t_stat_OU=-2.5 > -3.4)"
+                ),
+            )
+        )
+    return GridResult(trials=trials, run_id="diag_all_err")
+
+
+def _mk_verdict_no_pbo(n_configs: int = 4):
+    """Verdict for grids where PBO/DSR/WF couldn't be computed."""
+    from ai_trade.backtest.grid.gates import GateVerdict
+
+    return GateVerdict(
+        pbo_result=None,
+        pbo_pass=False,
+        dsr_results={},
+        dsr_pass_ids=[],
+        wf_verdicts={},
+        wf_pass_ids=[],
+        overall_pass=False,
+        best_config_id=None,
+    )
+
+
+def test_diagnostic_handles_all_trials_errored():
+    """All trials errored at __post_init__ (gate upstream of backtest).
+
+    DiagnosticAnalyzer must NOT raise; must surface a GATE_UPSTREAM_FAIL
+    failure mode and a degenerate best_config that the report layer can
+    handle gracefully (per existing report.py:263 defensive check).
+    """
+    from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
+
+    grid = _mk_grid_all_errored(n=4)
+    verdict = _mk_verdict_no_pbo(n_configs=4)
+    wf_results = {}  # WF can't run on errored trials
+
+    report = DiagnosticAnalyzer().analyze(
+        grid=grid, verdict=verdict, wf_results=wf_results,
+    )
+
+    labels = {m.label for m in report.failure_modes}
+    assert "GATE_UPSTREAM_FAIL" in labels, (
+        f"expected GATE_UPSTREAM_FAIL in failure modes, got {labels}"
+    )
+    # When upstream fails, other modes shouldn't be classified — they're misleading
+    assert "PBO_HIGH" not in labels
+    assert "DSR_ALL_FAIL" not in labels
+
+    # Degenerate best_config: first trial's config dims, no result, error status
+    assert report.best_config.result is None
+    assert report.best_config.status == "error"
+    assert report.best_config.config_id == 0
+    assert report.best_config.error_msg is not None
+    assert "cointegrated" in report.best_config.error_msg
+
+    # Recommendation must mention the upstream fail and the actual error
+    rec_lower = report.recommendation.lower()
+    assert "gate_upstream_fail" in rec_lower or "all trials" in rec_lower

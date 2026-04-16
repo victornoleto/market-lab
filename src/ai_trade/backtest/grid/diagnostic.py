@@ -86,6 +86,34 @@ class DiagnosticAnalyzer:
 
     def _classify_failure(self, verdict: GateVerdict) -> list[FailureMode]:
         modes: list[FailureMode] = []
+
+        # Check upstream fail FIRST — other gate verdicts are misleading
+        # when no trial produced an equity curve.
+        # We detect this via verdict signature: pbo_result is None AND
+        # dsr_results is empty AND wf_verdicts is empty (no OK trials means
+        # GateEvaluator couldn't compute any of these).
+        upstream_fail = (
+            verdict.pbo_result is None
+            and not verdict.dsr_results
+            and not verdict.wf_verdicts
+        )
+        if upstream_fail:
+            modes.append(FailureMode(
+                label="GATE_UPSTREAM_FAIL",
+                description=(
+                    "All trials errored upstream of the backtest (e.g. the "
+                    "strategy's __post_init__ validator rejected the data — "
+                    "no cointegration, half-life out of range, regime "
+                    "filter, etc.). No equity curve was produced for any "
+                    "config, so PBO/DSR/walk-forward could not be computed. "
+                    "Inspect the per-trial error_msg in the report below "
+                    "and check spec §7 for the next-step decision (typically "
+                    "a strategy pivot rather than parameter tuning)."
+                ),
+                severity="critical",
+            ))
+            return modes
+
         pbo_fail = not verdict.pbo_pass
         dsr_fail = len(verdict.dsr_pass_ids) == 0
         wf_fail = len(verdict.wf_pass_ids) == 0
@@ -141,14 +169,30 @@ class DiagnosticAnalyzer:
 
 
 def _best_config(grid: GridResult) -> TrialResult:
-    """The trial with the highest cached Sharpe — ignores gates. NaN trials
-    (error status) are excluded.
+    """The trial with the highest cached Sharpe.
+
+    NaN Sharpes (error trials) are excluded from ranking. When no trial
+    succeeded, returns a degenerate TrialResult derived from the first
+    trial — the result/sharpe/cagr/max_drawdown fields are NaN-ish and
+    callers (report layer) must check ``best.result is None``.
     """
     ok = grid.ok_trials
-    if not ok:
-        raise ValueError("grid has no OK trials — cannot compute best_config")
-    return max(
-        ok, key=lambda t: t.sharpe if np.isfinite(t.sharpe) else -np.inf,
+    if ok:
+        return max(
+            ok, key=lambda t: t.sharpe if np.isfinite(t.sharpe) else -np.inf,
+        )
+    if not grid.trials:
+        raise ValueError("grid has no trials at all — cannot diagnose")
+    first = grid.trials[0]
+    return TrialResult(
+        config_id=first.config_id,
+        config=first.config,
+        result=None,
+        sharpe=float("nan"),
+        cagr=float("nan"),
+        max_drawdown=float("nan"),
+        status="error",
+        error_msg=first.error_msg,
     )
 
 
@@ -203,6 +247,20 @@ def _recommendation(
     if not failure_modes:
         return "All gates passed. No diagnostic necessary."
     labels = {mode.label for mode in failure_modes}
+
+    # Special case: all trials errored upstream — best_config is degenerate.
+    if "GATE_UPSTREAM_FAIL" in labels:
+        err = best_config.error_msg or "(no error_msg captured)"
+        return (
+            "Grid did not pass gates. Failure mode: GATE_UPSTREAM_FAIL.\n\n"
+            f"All trials failed at construction. Sample error from "
+            f"config_id={best_config.config_id}: {err}\n\n"
+            "Next step: per spec §7, treat this as a strategy-level "
+            "rejection — the hypothesis (this pair / this universe / this "
+            "regime) does not satisfy the construction gate. Pivot to the "
+            "next catálogo intraday entry rather than tuning parameters."
+        )
+
     lines = [
         "Grid did not pass gates. Failure modes: "
         + ", ".join(sorted(labels))
