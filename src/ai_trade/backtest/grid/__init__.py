@@ -30,6 +30,10 @@ from ai_trade.backtest.grid.chan_pairs_config import (
     ChanPairsGridConfig,
     chan_pairs_grid_configs,
 )
+from ai_trade.backtest.grid.vol_expansion_config import (
+    VolExpansionGridConfig,
+    vol_expansion_grid_configs,
+)
 from ai_trade.backtest.grid.gates import GateEvaluator, GateVerdict
 from ai_trade.backtest.grid.report import GridReportGenerator
 from ai_trade.backtest.grid.observers import (
@@ -50,6 +54,7 @@ from ai_trade.backtest.grid.walk_forward import WFResult, wf_for_config, wf_for_
 __all__ = [
     "ChanPairsGridConfig",
     "ClenowGridConfig",
+    "VolExpansionGridConfig",
     "DiagnosticAnalyzer",
     "DiagnosticReport",
     "EhlersGridConfig",
@@ -65,6 +70,7 @@ __all__ = [
     "TrialResult",
     "WFResult",
     "chan_pairs_grid_configs",
+    "vol_expansion_grid_configs",
     "compose_observers",
     "ehlers_grid_configs",
     "ehlers_meta_grid_configs",
