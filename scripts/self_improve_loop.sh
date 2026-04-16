@@ -202,8 +202,14 @@ EOF
     fi
 
     STATUS=$(read_status)
-    echo "--- Iteration $i done | memory iter=$MEM_ITER status=$STATUS ---" \
+    # Extract verdict from the iteration's Result line (★ = PASS, FAIL otherwise)
+    ITER_VERDICT=$(awk '/^### Iteration '"$MEM_ITER"'/{found=1; next} found && /^- Result:/{print; exit}' "$MEMORY_FILE" \
+        | grep -qo '★' && echo "★ PASS" || echo "FAIL")
+    ITER_RESULT=$(awk '/^### Iteration '"$MEM_ITER"'/{found=1; next} found && /^- Result:/{sub(/^- Result: /,""); print; exit}' "$MEMORY_FILE" \
+        | head -c 120)
+    echo "--- Iteration $i done | $ITER_VERDICT | memory iter=$MEM_ITER status=$STATUS ---" \
         | tee -a "$RUN_LOG"
+    [[ -n "$ITER_RESULT" ]] && echo "    $ITER_RESULT" | tee -a "$RUN_LOG"
 
     if [[ "$STATUS" == "done" ]]; then
         echo "=== SUCCESS at iteration $i — gate-passing config found ===" \
