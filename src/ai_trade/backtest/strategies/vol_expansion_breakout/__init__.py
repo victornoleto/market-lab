@@ -13,10 +13,14 @@ from ai_trade.backtest.strategies.vol_expansion_breakout._regime_filter import (
     RegimeReading,
     YangZhangCone,
 )
+from ai_trade.backtest.strategies.vol_expansion_breakout._vol_target_sizer import (
+    VolTargetSizer,
+)
 
 __all__ = [
     "BreakoutDirection",
     "DonchianBreakout",
     "RegimeReading",
+    "VolTargetSizer",
     "YangZhangCone",
 ]
