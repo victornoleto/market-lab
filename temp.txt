@@ -1,0 +1,4 @@
+Leia JORNADA.md, depois ROADMAP.md §"Current status" e §"Next steps".
+  O último estado (2026-04-15): Run 4 Step 1 (AFML) e F3.C (long-history)
+  ambos FAIL. Próximo passo a decidir: F3.D (portfolio Clenow+Ehlers),
+  AFML sofisticado, relaxar DD gate, ou outra coisa.

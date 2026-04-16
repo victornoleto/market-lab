@@ -12,6 +12,10 @@ Run 2, future strategies plug in by adding their own frozen
 dataclass.
 """
 
+from ai_trade.backtest.grid.bollinger_mr_config import (
+    BollingerMRGridConfig,
+    bollinger_mr_grid_configs,
+)
 from ai_trade.backtest.grid.config import ClenowGridConfig, grid_configs
 from ai_trade.backtest.grid.diagnostic import (
     DiagnosticAnalyzer,
@@ -53,6 +57,7 @@ from ai_trade.backtest.grid.runner import GridRunner
 from ai_trade.backtest.grid.walk_forward import WFResult, wf_for_config, wf_for_grid
 
 __all__ = [
+    "BollingerMRGridConfig",
     "ChanPairsGridConfig",
     "ClenowGridConfig",
     "VolExpansionGridConfig",
@@ -70,6 +75,7 @@ __all__ = [
     "StatusFileObserver",
     "TrialResult",
     "WFResult",
+    "bollinger_mr_grid_configs",
     "chan_pairs_grid_configs",
     "vol_expansion_grid_configs",
     "compose_observers",

@@ -15,6 +15,7 @@ from ai_trade.backtest.strategies.base import (
     StrategyBase,
     StrategyContext,
 )
+from ai_trade.backtest.strategies.bollinger_mr import BollingerMRStrategy
 from ai_trade.backtest.strategies.chan_bollinger_pairs import ChanBollingerPairsStrategy
 from ai_trade.backtest.strategies.clenow_momentum import ClenowMomentumStrategy
 from ai_trade.backtest.strategies.vol_expansion_breakout import (
@@ -24,6 +25,7 @@ from ai_trade.backtest.strategies.vol_expansion_breakout import (
 )
 
 __all__ = [
+    "BollingerMRStrategy",
     "ChanBollingerPairsStrategy",
     "ClenowMomentumStrategy",
     "RegimeReading",
