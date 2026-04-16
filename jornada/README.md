@@ -91,7 +91,7 @@ trading: palpite disfarçado de análise.
   - ⚠️ Winner 3: ETF Rotation top-2 diário [SWING BROKER]. **COSTS-SENSITIVE**: WF 5/8 (abaixo do mínimo 6/8) após aplicar custos reais.
 - Tiingo bulk completo: 1660 tickers survivorship-free, 145 MB em backup.
 - Cache intraday limpo (2026-04-16): 4296 bars placeholder removidos.
-- **Phase B**: custo-ablação ✅, MC bootstrap CI ✅, cross-asset transport ✅, cross-strategy correlation ✅, próximo: regime decomp + risk-pct sensitivity + production-readiness.
+- **Phase B CONCLUÍDA** ✅: todos 9 leads consumidos. Vereditos: BollingerMR-GARCH SPY 1h → **GO-WITH-CAVEATS** (edge SPY-only, min $1k, CAGR ~5.9%/yr líquido); ETFRotation top-1 → **GO** (22 anos, CI>0, custos OK); ETFRotation top-2 → NO-GO (WF falha com 15% IR). Ver `2026-04-16-1600-production-readiness-summary.md`.
 
 ---
 
@@ -127,7 +127,7 @@ Duas coisas estão acontecendo:
 
 ## O que vem a seguir (ordem de prioridade)
 
-**Phase B ativa (2026-04-16).** Phase A completa com 3 winners: BollingerMR-GARCH SPY 1h + ETF Rotation top-1 e top-2. Fase B = validar, stress-testar e preparar os winners para produção.
+**Phase B CONCLUÍDA (2026-04-16).** Todos os 9 leads de validação concluídos. Vereditos finais: BollingerMR-GARCH SPY 1h → **GO-WITH-CAVEATS** (edge real, custos OK, SPY-only); ETFRotation top-1 → **GO** (bootstrap CI>0, 22 anos, custos OK); ETFRotation top-2 → **NO-GO** (WF falha com custos). Próxima fase: implementação do executor live (Phase 3 ROADMAP).
 
 1. ✅ **`tiingo_service` lazy-cache — ENTREGUE** (2026-04-15 noite).
    Refactor in-place de `TiingoSource`/`TiingoStorage`; migração dos 1675
@@ -209,6 +209,7 @@ demoção de strategies que já não passariam de qualquer jeito).
 
 ## Entradas (mais recente primeiro)
 
+- [2026-04-16 1600 — 🏁 Phase B CONCLUÍDA: Production Readiness Summary — BollingerMR GO-WITH-CAVEATS, ETFRotation top-1 GO, ETFRotation top-2 NO-GO (costs-sensitive)](2026-04-16-1600-production-readiness-summary.md)
 - [2026-04-16 1507 — Phase B Leads #7+#8: Vol-sizing ETFRotation NEUTRAL; BollingerMR scale-invariante, viável a partir de $1k](2026-04-16-1507-vol-sizing-account-sensitivity-phase-b.md)
 - [2026-04-16 1458 — Phase B Lead #6: Regime decomp — BollingerMR sem quintil perdedor; ETFRotation protegida por SMA200 em bears; nenhum trigger de pausa VIX necessário](2026-04-16-1458-regime-decomp-phase-b.md)
 - [2026-04-16 1549 — Phase B Leads #4+#5: Cross-asset transport + correlação. ETFRotation expanded_8 PASS; BollingerMR XLF FAIL (SPY-only). Correlação ρ=0.252 — INDEPENDENTES, 50/50 blend Sharpe=1.020](2026-04-16-1549-cross-asset-transport-correlation-phase-b.md)
