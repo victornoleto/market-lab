@@ -4875,10 +4875,10 @@
   "DIA": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T22:28:18",
+      "fetched_at": "2026-04-16T12:44:59",
       "first_dt": "2020-04-15T14:00:00",
-      "last_dt": "2026-04-15T19:00:00",
-      "n_bars": 9396,
+      "last_dt": "2026-04-14T19:00:00",
+      "n_bars": 9042,
       "requested_end": "2026-04-15T00:00:00",
       "requested_start": "2020-04-15T00:00:00"
     },
@@ -5412,10 +5412,10 @@
   "EEM": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T22:28:21",
+      "fetched_at": "2026-04-16T12:44:59",
       "first_dt": "2020-04-15T14:00:00",
-      "last_dt": "2026-04-15T19:00:00",
-      "n_bars": 9396,
+      "last_dt": "2026-04-14T19:00:00",
+      "n_bars": 9042,
       "requested_end": "2026-04-15T00:00:00",
       "requested_start": "2020-04-15T00:00:00"
     },
@@ -5432,10 +5432,10 @@
   "EFA": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T22:28:25",
+      "fetched_at": "2026-04-16T12:44:59",
       "first_dt": "2020-04-15T14:00:00",
-      "last_dt": "2026-04-15T19:00:00",
-      "n_bars": 9396,
+      "last_dt": "2026-04-14T19:00:00",
+      "n_bars": 9042,
       "requested_end": "2026-04-15T00:00:00",
       "requested_start": "2020-04-15T00:00:00"
     },
@@ -7201,10 +7201,10 @@
   "GLD": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T19:22:07",
+      "fetched_at": "2026-04-16T12:44:59",
       "first_dt": "2020-04-15T14:00:00",
-      "last_dt": "2026-04-15T19:00:00",
-      "n_bars": 9396,
+      "last_dt": "2026-04-14T19:00:00",
+      "n_bars": 9042,
       "requested_end": "2026-04-15T00:00:00",
       "requested_start": "2020-04-15T00:00:00"
     },
@@ -8805,10 +8805,10 @@
   "IWM": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-16T00:41:38",
+      "fetched_at": "2026-04-16T12:44:59",
       "first_dt": "2020-01-02T15:00:00",
-      "last_dt": "2026-04-15T19:00:00",
-      "n_bars": 9840,
+      "last_dt": "2026-04-14T19:00:00",
+      "n_bars": 9468,
       "requested_end": "2025-12-31T00:00:00",
       "requested_start": "2020-01-02T00:00:00"
     },
@@ -13500,10 +13500,10 @@
   "QQQ": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T22:27:59",
+      "fetched_at": "2026-04-16T12:44:59",
       "first_dt": "2020-04-15T14:00:00",
-      "last_dt": "2026-04-15T19:00:00",
-      "n_bars": 9396,
+      "last_dt": "2026-04-14T19:00:00",
+      "n_bars": 9042,
       "requested_end": "2026-04-15T00:00:00",
       "requested_start": "2020-04-15T00:00:00"
     },
@@ -14785,10 +14785,10 @@
   "SLV": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T19:22:10",
+      "fetched_at": "2026-04-16T12:44:59",
       "first_dt": "2020-04-15T14:00:00",
-      "last_dt": "2026-04-15T19:00:00",
-      "n_bars": 9396,
+      "last_dt": "2026-04-14T19:00:00",
+      "n_bars": 9042,
       "requested_end": "2026-04-15T00:00:00",
       "requested_start": "2020-04-15T00:00:00"
     },
@@ -15102,10 +15102,10 @@
   "SPY": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-16T08:34:44",
+      "fetched_at": "2026-04-16T12:44:59",
       "first_dt": "2019-12-02T15:00:00",
-      "last_dt": "2026-04-15T19:00:00",
-      "n_bars": 9978,
+      "last_dt": "2026-04-14T19:00:00",
+      "n_bars": 9594,
       "requested_end": "2026-04-16T00:00:00",
       "requested_start": "2026-04-09T00:00:00"
     },
@@ -15881,10 +15881,10 @@
   "TLT": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T22:28:06",
+      "fetched_at": "2026-04-16T12:44:59",
       "first_dt": "2020-04-15T14:00:00",
-      "last_dt": "2026-04-15T19:00:00",
-      "n_bars": 9396,
+      "last_dt": "2026-04-14T19:00:00",
+      "n_bars": 9042,
       "requested_end": "2026-04-15T00:00:00",
       "requested_start": "2020-04-15T00:00:00"
     },
@@ -16800,6 +16800,17 @@
       "requested_start": "2014-01-02T00:00:00"
     }
   },
+  "UVXY": {
+    "daily": {
+      "asset_class": "etf",
+      "fetched_at": "2026-04-16T12:32:45",
+      "first_dt": "2024-01-02T00:00:00",
+      "last_dt": "2024-01-05T00:00:00",
+      "n_bars": 4,
+      "requested_end": "2024-01-05T00:00:00",
+      "requested_start": "2024-01-01T00:00:00"
+    }
+  },
   "V": {
     "daily": {
       "asset_class": "equity",
@@ -17007,6 +17018,28 @@
       "n_bars": 1432,
       "requested_end": "2026-04-14T00:00:00",
       "requested_start": "2020-07-31T00:00:00"
+    }
+  },
+  "VIXM": {
+    "daily": {
+      "asset_class": "etf",
+      "fetched_at": "2026-04-16T12:32:46",
+      "first_dt": "2024-01-02T00:00:00",
+      "last_dt": "2024-01-05T00:00:00",
+      "n_bars": 4,
+      "requested_end": "2024-01-05T00:00:00",
+      "requested_start": "2024-01-01T00:00:00"
+    }
+  },
+  "VIXY": {
+    "daily": {
+      "asset_class": "etf",
+      "fetched_at": "2026-04-16T12:32:58",
+      "first_dt": "2021-01-04T00:00:00",
+      "last_dt": "2026-04-15T00:00:00",
+      "n_bars": 1326,
+      "requested_end": "2026-04-15T00:00:00",
+      "requested_start": "2021-01-01T00:00:00"
     }
   },
   "VLO": {
@@ -18101,10 +18134,10 @@
   "XLE": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T22:28:09",
+      "fetched_at": "2026-04-16T12:44:59",
       "first_dt": "2020-04-15T14:00:00",
-      "last_dt": "2026-04-15T19:00:00",
-      "n_bars": 9396,
+      "last_dt": "2026-04-14T19:00:00",
+      "n_bars": 9042,
       "requested_end": "2026-04-15T00:00:00",
       "requested_start": "2020-04-15T00:00:00"
     },
@@ -18121,10 +18154,10 @@
   "XLF": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T22:28:12",
+      "fetched_at": "2026-04-16T12:44:59",
       "first_dt": "2020-04-15T14:00:00",
-      "last_dt": "2026-04-15T19:00:00",
-      "n_bars": 9396,
+      "last_dt": "2026-04-14T19:00:00",
+      "n_bars": 9042,
       "requested_end": "2026-04-15T00:00:00",
       "requested_start": "2020-04-15T00:00:00"
     },
@@ -18152,10 +18185,10 @@
   "XLK": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-15T22:28:15",
+      "fetched_at": "2026-04-16T12:44:59",
       "first_dt": "2020-04-15T14:00:00",
-      "last_dt": "2026-04-15T19:00:00",
-      "n_bars": 9396,
+      "last_dt": "2026-04-14T19:00:00",
+      "n_bars": 9042,
       "requested_end": "2026-04-15T00:00:00",
       "requested_start": "2020-04-15T00:00:00"
     },
