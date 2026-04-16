@@ -34,7 +34,7 @@
 
 - ⏳ **Next steps (in order, post-pivot):**
     1. ✅ **`tiingo_service` lazy-cache** — DELIVERED 2026-04-15 (noite). See entry above.
-    2. **Intraday strategy catalog — 1h first** (sweet spot between noise and frequency). Chan mean-reversion pairs is the strongest fit `[algo_trading_chan]`; Ehlers BP Swing ported to 1h (recalibrate thresholds); Sinclair-style volatility breakouts `[volatility_trading]`. Each strategy gets the same anti-overfit gate battery (CPCV/PBO/DSR/WF). Expand to 15m / 5m only after 1h gives useful signal.
+    2. **Intraday strategy catalog — 1h first** (sweet spot between noise and frequency). ❌ Chan mean-reversion pairs GLD-SLV FAIL CADF (t_stat=-2.956 > -3.4). ❌ Vol-expansion breakout SPY+GLD+TLT FAIL all gates (PBO=0.687, DSR 0/12, WF 0/12). **Next:** Ehlers BP Swing ported to 1h (recalibrate thresholds) — last item before considering pivot. Note: Tiingo FX 1h has ~3.5y data gap (2021-06→2025-01); FX strategies deferred until fixed. Expand to 15m / 5m only after 1h gives useful signal.
     3. **AFML sophisticated** — re-enters here, as a meta-label layer over whichever intraday strategy shows edge in (2). Same plan as the deferred path: walk-forward CV with purge/embargo `[advances_fin_ml, ch.7]`, rich features, asymmetric triple-barrier.
     4. **Carver multi-asset trend / other multi-day families** — only if nothing intraday delivers. These don't fit the short-hold goal either, so they're effectively a last-resort pivot.
     5. **Cancel Tiingo subscription** — pushed out until `tiingo_service` is verified working against live endpoints (can't evaluate without fresh intraday data).
