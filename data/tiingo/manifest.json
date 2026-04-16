@@ -7210,12 +7210,12 @@
     },
     "daily": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-16T14:42:35",
+      "fetched_at": "2026-04-16T14:49:21",
       "first_dt": "2004-11-18T00:00:00",
       "last_dt": "2026-04-14T00:00:00",
       "n_bars": 5383,
       "requested_end": "2024-12-31T00:00:00",
-      "requested_start": "2001-08-20T00:00:00"
+      "requested_start": "2003-08-22T00:00:00"
     }
   },
   "GLPI": {
@@ -18154,12 +18154,12 @@
   "XLF": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-16T12:44:59",
-      "first_dt": "2020-04-15T14:00:00",
+      "fetched_at": "2026-04-16T14:49:25",
+      "first_dt": "2020-03-16T14:00:00",
       "last_dt": "2026-04-14T19:00:00",
-      "n_bars": 9042,
-      "requested_end": "2026-04-15T00:00:00",
-      "requested_start": "2020-04-15T00:00:00"
+      "n_bars": 9168,
+      "requested_end": "2026-04-14T00:00:00",
+      "requested_start": "2020-03-16T00:00:00"
     },
     "daily": {
       "asset_class": "etf",

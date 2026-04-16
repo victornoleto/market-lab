@@ -91,7 +91,7 @@ trading: palpite disfarçado de análise.
   - ⚠️ Winner 3: ETF Rotation top-2 diário [SWING BROKER]. **COSTS-SENSITIVE**: WF 5/8 (abaixo do mínimo 6/8) após aplicar custos reais.
 - Tiingo bulk completo: 1660 tickers survivorship-free, 145 MB em backup.
 - Cache intraday limpo (2026-04-16): 4296 bars placeholder removidos.
-- **Phase B**: custo-ablação ✅, MC bootstrap CI ✅, próximo: cross-asset transport + correlação entre estratégias.
+- **Phase B**: custo-ablação ✅, MC bootstrap CI ✅, cross-asset transport ✅, cross-strategy correlation ✅, próximo: regime decomp + risk-pct sensitivity + production-readiness.
 
 ---
 
@@ -209,6 +209,7 @@ demoção de strategies que já não passariam de qualquer jeito).
 
 ## Entradas (mais recente primeiro)
 
+- [2026-04-16 1549 — Phase B Leads #4+#5: Cross-asset transport + correlação. ETFRotation expanded_8 PASS; BollingerMR XLF FAIL (SPY-only). Correlação ρ=0.252 — INDEPENDENTES, 50/50 blend Sharpe=1.020](2026-04-16-1549-cross-asset-transport-correlation-phase-b.md)
 - [2026-04-16 1520 — Phase B Lead #3: MC Bootstrap CI — ETFRotation IS CI=[0.449,1.254] ROBUSTO; BollingerMR bar-level Sharpe IS=0.995/OOS=0.945](2026-04-16-1520-mc-bootstrap-ci-phase-b.md)
 - [2026-04-16 1435 — Phase B Lead #2: Custo-ablação — BollingerMR PASS, ETFRotation_top1 PASS, ETFRotation_top2 ⚠️ costs-sensitive (WF 5/8)](2026-04-16-1435-cost-ablation-phase-b-winners.md)
 - [2026-04-16 1416 — ★ WINNER #3 [SWING BROKER]: ETF Rotation top-2 — Sharpe 0.708, OOS 2025 1.611, Q1 0.481 — Phase A COMPLETA](2026-04-16-1416-etf-rotation-top2-PASS.md)
