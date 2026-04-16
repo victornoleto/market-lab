@@ -85,13 +85,14 @@ trading: palpite disfarçado de análise.
 
 **Fatos concretos úteis pra contexto:**
 - **520 testes Python verdes** (pytest -q).
-- **2 winners ativos**:
+- **3 winners ativos (Phase A COMPLETA → Phase B ativa)**:
   - Winner 1: Bollinger MR (20,2) + GARCH Sizing SPY 1h [SHORT-HOLD CFD]. Sharpe IS 0.982, OOS 2025: 0.552, 2026-Q1: 2.784.
-  - **Winner 2: ETF Monthly Rotation SPY/QQQ/IWM/GLD/TLT diário [SWING BROKER]**. Sharpe IS 0.708, OOS 2025: 1.477, 2026-Q1: 1.081. DSR p=0.0009.
+  - Winner 2: ETF Monthly Rotation top-1 SPY/QQQ/IWM/GLD/TLT diário [SWING BROKER]. Sharpe IS 0.708, OOS 2025: 1.477, 2026-Q1: 1.081. DSR p=0.0009.
+  - **Winner 3: ETF Monthly Rotation top-2 SPY/QQQ/IWM/GLD/TLT diário [SWING BROKER]**. Sharpe IS 0.708, OOS 2025: 1.611, 2026-Q1: 0.481. DSR p=0.0009.
 - Tiingo bulk completo: 1660 tickers survivorship-free, 145 MB em backup.
 - Cache intraday limpo (2026-04-16): 4296 bars placeholder removidos.
 - Ativos cobertos intraday: SPY, QQQ, IWM, XLK/XLE/XLF, GLD, SLV, TLT, EEM, EFA, DIA (1h).
-- Phase A: 2/3 winners, 1 por path ✓. Falta: 1 winner adicional (qualquer path).
+- **Phase B**: re-validar winners em janela mais longa, cost ablation, bootstrap CI, cross-asset, correlação.
 
 ---
 
@@ -127,9 +128,7 @@ Duas coisas estão acontecendo:
 
 ## O que vem a seguir (ordem de prioridade)
 
-**Direção nova pós-pivô 2026-04-15 noite.** Todos os cinco ciclos
-anteriores ficam no histórico como "pesquisa em bars diários"; daqui
-pra frente a agulha gira em torno de short-hold intraday.
+**Phase B ativa (2026-04-16).** Phase A completa com 3 winners: BollingerMR-GARCH SPY 1h + ETF Rotation top-1 e top-2. Fase B = validar, stress-testar e preparar os winners para produção.
 
 1. ✅ **`tiingo_service` lazy-cache — ENTREGUE** (2026-04-15 noite).
    Refactor in-place de `TiingoSource`/`TiingoStorage`; migração dos 1675
@@ -211,6 +210,7 @@ demoção de strategies que já não passariam de qualquer jeito).
 
 ## Entradas (mais recente primeiro)
 
+- [2026-04-16 1416 — ★ WINNER #3 [SWING BROKER]: ETF Rotation top-2 — Sharpe 0.708, OOS 2025 1.611, Q1 0.481 — Phase A COMPLETA](2026-04-16-1416-etf-rotation-top2-PASS.md)
 - [2026-04-16 1420 — ★ WINNER #2 [SWING BROKER]: ETF Monthly Rotation SPY/QQQ/IWM/GLD/TLT — Sharpe 0.708, OOS 2025 Sharpe 1.477, 2026-Q1 Sharpe 1.081](2026-04-16-1420-etf-rotation-monthly-PASS.md)
 - [2026-04-16 1347 — ★ WINNER #1 [SHORT-HOLD CFD]: Bollinger MR + GARCH Sizing SPY 1h — Sharpe 0.982, OOS 2025 Sharpe 0.552, 2026-Q1 Sharpe 2.784](2026-04-16-1347-bollinger-mr-garch-spy-1h-PASS.md)
 - [2026-04-16 1245 — 🚨 BUG CRÍTICO: TODOS os 3 winners retratados; bars-fake da Tiingo IEX em US holidays](2026-04-16-1245-data-bug-winners-retracted.md)

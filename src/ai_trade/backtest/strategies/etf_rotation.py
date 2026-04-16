@@ -11,7 +11,7 @@ Rules (all pre-specified from literature, no tuning):
   [stocks_on_the_move, p.66-67, ch.5]; go flat (cash) otherwise
 * Rebalancing cadence: first bar of each calendar month
   [stocks_on_the_move, p.98-99, ch.6]
-* Top 1 ETF: 100% allocation (single-position rotation)
+* Top-N ETFs: equal allocation (100%/N each)
   [stocks_on_the_move, p.95, ch.6]
 * Per-stock trend filter: ETF must be above its own 100-day SMA
   [stocks_on_the_move, p.81-82, ch.6]
@@ -70,6 +70,7 @@ class ETFRotationStrategy(StrategyBase):
     lookback: int = 90
     sma_index_period: int = 200
     sma_stock_period: int = 100
+    top_n: int = 1  # [stocks_on_the_move, p.95, ch.6]
 
     _adj_data: dict[str, pd.DataFrame] = field(init=False, default_factory=dict)
     _prev_month: int = field(init=False, default=-1)
@@ -132,11 +133,13 @@ class ETFRotationStrategy(StrategyBase):
             orders.extend(self._exit_all(portfolio))
             return orders
 
-        target = max(scores, key=scores.__getitem__)
+        # Pick top-N by score; equal-weight allocation [stocks_on_the_move, p.95]
+        targets = sorted(scores, key=scores.__getitem__, reverse=True)[: self.top_n]
+        alloc_per = 1.0 / len(targets)
 
-        # --- Exit positions not in target ---
+        # --- Exit positions not in target set ---
         for sym in list(portfolio.positions):
-            if sym != target:
+            if sym not in targets:
                 pos = portfolio.positions[sym]
                 orders.append(Order(
                     symbol=sym,
@@ -144,13 +147,14 @@ class ETFRotationStrategy(StrategyBase):
                     volume=pos.volume,
                 ))
 
-        # --- Enter target if not already fully allocated ---
-        if target not in portfolio.positions:
-            bar = bars[target]
-            if bar.close > 0 and portfolio.equity > 0:
-                volume = portfolio.equity / bar.close
-                if volume > 0:
-                    orders.append(Order(symbol=target, side="buy", volume=volume))
+        # --- Enter/rebalance each target ---
+        for target in targets:
+            if target not in portfolio.positions:
+                bar = bars[target]
+                if bar.close > 0 and portfolio.equity > 0:
+                    volume = portfolio.equity * alloc_per / bar.close
+                    if volume > 0:
+                        orders.append(Order(symbol=target, side="buy", volume=volume))
 
         return orders
 

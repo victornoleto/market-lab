@@ -51,6 +51,8 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     ap.add_argument("--storage-root", type=Path, default=Path("data/tiingo"))
     ap.add_argument("--log-level", default="INFO",
                     choices=["DEBUG", "INFO", "WARNING", "ERROR"])
+    ap.add_argument("--top-n", type=int, default=1,
+                    help="Number of top ETFs to hold (equal-weight). [stocks_on_the_move, p.95]")
     return ap.parse_args(argv)
 
 
@@ -110,6 +112,7 @@ def main(argv: list[str] | None = None) -> int:
         lookback=90,
         sma_index_period=200,
         sma_stock_period=100,
+        top_n=args.top_n,
     )
 
     runner = Runner(executor=ExecutionSimulator(ExecutionConfig()))
