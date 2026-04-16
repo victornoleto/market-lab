@@ -45,6 +45,17 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--std-mult", type=float, default=1.5)
     ap.add_argument("--stop-pct", type=float, default=0.02)
     ap.add_argument("--max-hold", type=int, default=24)
+    ap.add_argument(
+        "--emit-trades",
+        action="store_true",
+        help="Write per-trade CSV (train + OOS) for downstream MC bootstrap.",
+    )
+    ap.add_argument(
+        "--trades-out",
+        type=Path,
+        default=None,
+        help="Path for trades CSV. Default: reports/bollinger_mr_trades/<sym>_<oos_start>_<oos_end>.csv",
+    )
     args = ap.parse_args(argv)
 
     # Fetch data with warmup for MA calculation.
@@ -204,6 +215,37 @@ def main(argv: list[str] | None = None) -> int:
         print("\n◐ OOS MARGINAL — Profitable but Sharpe/DD degraded. Use with caution.")
     else:
         print("\n✗ OOS FAIL — Edge did not persist in 2025.")
+
+    if args.emit_trades:
+        out_path = args.trades_out or (
+            Path("reports/bollinger_mr_trades")
+            / f"{args.symbol}_{args.oos_start.isoformat()}_{args.oos_end.isoformat()}.csv"
+        )
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        rows = []
+        for tr in result_train.trades:
+            rows.append({
+                "period": "train",
+                "symbol": tr.symbol, "side": str(tr.side),
+                "volume": tr.volume,
+                "entry_time": tr.entry_time.isoformat(),
+                "exit_time": tr.exit_time.isoformat(),
+                "entry_price": tr.entry_price, "exit_price": tr.exit_price,
+                "pnl": tr.pnl,
+            })
+        for tr in result.trades:
+            rows.append({
+                "period": "oos",
+                "symbol": tr.symbol, "side": str(tr.side),
+                "volume": tr.volume,
+                "entry_time": tr.entry_time.isoformat(),
+                "exit_time": tr.exit_time.isoformat(),
+                "entry_price": tr.entry_price, "exit_price": tr.exit_price,
+                "pnl": tr.pnl,
+            })
+        df_trades = pd.DataFrame(rows)
+        df_trades.to_csv(out_path, index=False)
+        print(f"\n✓ Wrote {len(rows)} trades ({n_trades_train} train + {n_trades} oos) → {out_path}")
 
     return 0
 
