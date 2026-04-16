@@ -209,6 +209,7 @@ demoção de strategies que já não passariam de qualquer jeito).
 
 ## Entradas (mais recente primeiro)
 
+- [2026-04-16 1458 — Phase B Lead #6: Regime decomp — BollingerMR sem quintil perdedor; ETFRotation protegida por SMA200 em bears; nenhum trigger de pausa VIX necessário](2026-04-16-1458-regime-decomp-phase-b.md)
 - [2026-04-16 1549 — Phase B Leads #4+#5: Cross-asset transport + correlação. ETFRotation expanded_8 PASS; BollingerMR XLF FAIL (SPY-only). Correlação ρ=0.252 — INDEPENDENTES, 50/50 blend Sharpe=1.020](2026-04-16-1549-cross-asset-transport-correlation-phase-b.md)
 - [2026-04-16 1520 — Phase B Lead #3: MC Bootstrap CI — ETFRotation IS CI=[0.449,1.254] ROBUSTO; BollingerMR bar-level Sharpe IS=0.995/OOS=0.945](2026-04-16-1520-mc-bootstrap-ci-phase-b.md)
 - [2026-04-16 1435 — Phase B Lead #2: Custo-ablação — BollingerMR PASS, ETFRotation_top1 PASS, ETFRotation_top2 ⚠️ costs-sensitive (WF 5/8)](2026-04-16-1435-cost-ablation-phase-b-winners.md)
