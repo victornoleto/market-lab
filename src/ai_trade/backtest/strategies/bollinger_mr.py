@@ -14,6 +14,8 @@ on liquid ETFs (SPY, QQQ). Targets median hold ≤ 24 bars (1 day on 1h).
   scalping.
 - Hard time-stop to cap holding period: ``[machine_trading, p.126, ch.4]``
   — "exit after N bars if not profitable" for intraday risk control.
+- Optional SMA regime filter: ``[stocks_on_the_move, p.110]`` — only
+  enter when close > SMA(regime_sma) to avoid bear-market entries.
 
 Pipeline (per bar)
 ------------------
@@ -58,6 +60,7 @@ class BollingerMRStrategy:
     stop_pct: float = 0.02
     max_hold: int = 24
     risk_pct_of_equity: float = 0.95
+    regime_sma: int = 0  # 0 = disabled; >0 = SMA(N) regime filter [stocks_on_the_move, p.110]
 
     _indicators: dict[str, pd.DataFrame] = field(init=False, default_factory=dict)
     _logger: logging.Logger = field(
@@ -74,6 +77,8 @@ class BollingerMRStrategy:
             raise ValueError(f"std_mult must be > 0, got {self.std_mult}")
         if self.max_hold < 1:
             raise ValueError(f"max_hold must be >= 1, got {self.max_hold}")
+        if self.regime_sma < 0:
+            raise ValueError(f"regime_sma must be >= 0, got {self.regime_sma}")
         if self.symbol not in self.data:
             raise KeyError(f"symbol {self.symbol!r} not in data")
 
@@ -86,10 +91,13 @@ class BollingerMRStrategy:
         std = close.rolling(window=self.window, min_periods=self.window).std(ddof=1)
         lower_band = ma - self.std_mult * std
 
-        self._indicators[symbol] = pd.DataFrame(
-            {"ma": ma, "std": std, "lower_band": lower_band},
-            index=close.index,
-        )
+        cols = {"ma": ma, "std": std, "lower_band": lower_band}
+        if self.regime_sma > 0:
+            cols["regime_ma"] = close.rolling(
+                window=self.regime_sma, min_periods=self.regime_sma,
+            ).mean()
+
+        self._indicators[symbol] = pd.DataFrame(cols, index=close.index)
 
     def on_bar(
         self,
@@ -163,6 +171,13 @@ class BollingerMRStrategy:
         portfolio: Portfolio,
         lower_now: float,
     ) -> list[Order]:
+        # Regime filter: skip entry if close is below SMA regime filter.
+        # [stocks_on_the_move, p.110] — go flat in bear markets.
+        if self.regime_sma > 0:
+            regime_ma = self._indicators[self.symbol]["regime_ma"].iloc[idx]
+            if np.isnan(regime_ma) or bar.close < regime_ma:
+                return []
+
         equity = portfolio.equity
         if equity <= 0:
             return []
