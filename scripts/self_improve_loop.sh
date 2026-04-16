@@ -126,7 +126,8 @@ $scope_clause
      \`\`\`
    - If \`## History\` exceeds ~50 entries, prune oldest (preserve 5 newest + any breakthrough entries; document the pruning).
    - Move consumed items from "Promising leads" to "Known dead ends" (with a one-line reason) when the lead is exhausted.
-5. Exit cleanly.
+5. **Document significant results in jornada/.** When a result is significant (any gate-passing config, OOS validation, or new strategy family that passes), create a detailed entry file at \`jornada/YYYY-MM-DD-HHmm-slug.md\` AND add it to the top of the entry index in \`jornada/README.md\`. This is the human-readable project record — memory.md is for loop continuity, jornada/ is for the user.
+6. Exit cleanly.
 
 ## Hard rules
 
