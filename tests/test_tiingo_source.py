@@ -572,6 +572,117 @@ def test_iex_raises_notimplemented_if_equity_not_in_daily_cache(
         )
 
 
+def test_iex_warns_when_daily_cache_lags_intraday_dates(
+    tiingo_env, storage, monkeypatch, caplog,
+):
+    """Daily cache cobre subset das datas intraday → warn (não silent fallback).
+
+    Regression guard for spec §3.3: 'no silent fallback'. Quando o daily cache
+    fica atrás do intraday (e.g., daily até D, intraday até D+1), as barras
+    intraday do dia órfão usam ratio=1.0 — comportamento correto se o dia não
+    teve split/dividendo, mas tem que ser sinalizado para o operador refrescar
+    o daily.
+    """
+    import logging
+    from datetime import date
+    import pandas as pd
+    from ai_trade.backtest.data.tiingo_source import TiingoSource
+    from ai_trade.backtest.data import tiingo_source as ts_mod
+
+    df_daily = pd.DataFrame(
+        {"open": [100.0], "high": [100.0], "low": [100.0],
+         "close": [100.0], "adj_close": [50.0], "volume": [1000.0]},
+        index=pd.DatetimeIndex([pd.Timestamp("2024-01-02")], name="date"),
+    )
+    storage.write("SPY", df_daily, asset_class="equity", frequency="daily")
+
+    IEX_SAMPLE = [
+        {"date": "2024-01-02T14:00:00.000Z",
+         "open": 100.0, "high": 100.0, "low": 100.0, "close": 100.0,
+         "volume": 500},
+        {"date": "2024-01-03T14:00:00.000Z",
+         "open": 200.0, "high": 200.0, "low": 200.0, "close": 200.0,
+         "volume": 600},
+    ]
+
+    monkeypatch.setattr(
+        ts_mod.requests, "get",
+        lambda *a, **kw: _mock_response(IEX_SAMPLE, 200),
+    )
+
+    caplog.set_level(logging.WARNING, logger="ai_trade.backtest.data.tiingo_source")
+    source = TiingoSource(storage=storage)
+    df = source.fetch(
+        "SPY", date(2024, 1, 2), date(2024, 1, 3),
+        asset_class="equity", frequency="1hour",
+    )
+
+    fallback_warnings = [
+        r for r in caplog.records
+        if r.levelname == "WARNING" and "split-adjust fallback" in r.message
+    ]
+    assert fallback_warnings, (
+        "expected a 'split-adjust fallback' warning when daily cache lags intraday; "
+        f"got records: {[(r.levelname, r.message) for r in caplog.records]}"
+    )
+    assert "2024-01-03" in fallback_warnings[0].message
+    assert "SPY" in fallback_warnings[0].message
+
+    bar_02 = df.loc[df.index.date == date(2024, 1, 2)]
+    bar_03 = df.loc[df.index.date == date(2024, 1, 3)]
+    assert abs(bar_02["close"].iloc[0] - 50.0) < 1e-6, "2024-01-02 must be ratio-adjusted (50/100)"
+    assert abs(bar_03["close"].iloc[0] - 200.0) < 1e-6, "2024-01-03 must use ratio=1.0 fallback (raw 200)"
+
+
+def test_iex_no_warning_when_daily_covers_all_intraday_dates(
+    tiingo_env, storage, monkeypatch, caplog,
+):
+    """Daily cobre todas as datas intraday → sem warning (path normal)."""
+    import logging
+    from datetime import date
+    import pandas as pd
+    from ai_trade.backtest.data.tiingo_source import TiingoSource
+    from ai_trade.backtest.data import tiingo_source as ts_mod
+
+    df_daily = pd.DataFrame(
+        {"open": [100.0, 200.0], "high": [100.0, 200.0], "low": [100.0, 200.0],
+         "close": [100.0, 200.0], "adj_close": [100.0, 200.0],
+         "volume": [1000.0, 1500.0]},
+        index=pd.DatetimeIndex(
+            [pd.Timestamp("2024-01-02"), pd.Timestamp("2024-01-03")], name="date",
+        ),
+    )
+    storage.write("SPY", df_daily, asset_class="equity", frequency="daily")
+
+    IEX_SAMPLE = [
+        {"date": "2024-01-02T14:00:00.000Z",
+         "open": 100.0, "high": 100.0, "low": 100.0, "close": 100.0, "volume": 500},
+        {"date": "2024-01-03T14:00:00.000Z",
+         "open": 200.0, "high": 200.0, "low": 200.0, "close": 200.0, "volume": 600},
+    ]
+
+    monkeypatch.setattr(
+        ts_mod.requests, "get",
+        lambda *a, **kw: _mock_response(IEX_SAMPLE, 200),
+    )
+
+    caplog.set_level(logging.WARNING, logger="ai_trade.backtest.data.tiingo_source")
+    source = TiingoSource(storage=storage)
+    source.fetch(
+        "SPY", date(2024, 1, 2), date(2024, 1, 3),
+        asset_class="equity", frequency="1hour",
+    )
+
+    fallback_warnings = [
+        r for r in caplog.records
+        if "split-adjust fallback" in r.message
+    ]
+    assert not fallback_warnings, (
+        f"unexpected fallback warning when daily fully covers intraday: "
+        f"{[r.message for r in fallback_warnings]}"
+    )
+
+
 def test_crypto_and_forex_use_close_as_adj_close_no_split(
     tiingo_env, storage, monkeypatch,
 ):

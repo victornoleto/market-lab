@@ -312,6 +312,18 @@ class TiingoSource:
         daily_dates = [ts.date() for ts in df_daily.index]
         date_to_ratio: dict[date, float] = dict(zip(daily_dates, daily_ratio.values))
 
+        missing_dates = sorted(set(intraday_dates) - set(daily_dates))
+        if missing_dates:
+            log.warning(
+                "split-adjust fallback ratio=1.0 for %s on %d intraday day(s) "
+                "missing from daily cache: %s. Refresh the daily cache so "
+                "split/dividend ratios are applied; spec §3.3 forbids silent "
+                "fallback.",
+                ticker,
+                len(missing_dates),
+                [d.isoformat() for d in missing_dates],
+            )
+
         ratios = pd.Series(
             [date_to_ratio.get(d, 1.0) for d in intraday_dates],
             index=df_intraday.index,
