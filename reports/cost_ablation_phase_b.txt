@@ -1,0 +1,26 @@
+Cost Ablation Phase B — 2026-04-16
+============================================================
+
+PATH A: BollingerMR SPY 1h [SHORT-HOLD CFD]
+  Pepperstone Razor: half_spread=0.01 | commission=0.0186/share/side | swap_annual=5.8%
+  IS Sharpe (no cost): 1.149
+  IS Sharpe (with cost): 0.964
+  OOS 2025 Sharpe (with cost): 0.474
+  Stress 2026-Q1 Sharpe (with cost): 2.854
+  n_trades IS: 151
+  Median hold (trading days): 7.38
+
+PATH B: ETFRotation_top1 [SWING BROKER]
+  BR broker: commission=0.10% RT | tax=15% on positive months
+  IS Sharpe (gross): 0.729
+  IS Sharpe (net): 0.551
+  OOS 2025 Sharpe (net): 1.570
+  Stress 2026-Q1 Sharpe (net): -0.650
+
+PATH B: ETFRotation_top2 [SWING BROKER]
+  BR broker: commission=0.10% RT | tax=15% on positive months
+  IS Sharpe (gross): 0.736
+  IS Sharpe (net): 0.540
+  OOS 2025 Sharpe (net): 2.056
+  Stress 2026-Q1 Sharpe (net): -1.103
+
