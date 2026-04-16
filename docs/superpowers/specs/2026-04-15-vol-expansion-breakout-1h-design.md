@@ -1,4 +1,4 @@
-# Volatility Expansion Breakout em 1h — SPY + XAU/USD + EUR/USD (Segunda Estratégia Intraday Pós-Pivô)
+# Volatility Expansion Breakout em 1h — SPY + GLD + TLT (Segunda Estratégia Intraday Pós-Pivô)
 
 **Data:** 2026-04-15
 **Fase:** Phase 2.5 — catálogo intraday, entrada #2 pós-pivô
@@ -25,34 +25,33 @@ Per `ROADMAP §Next steps (post-pivot)` item 2 e `JORNADA §Onde estamos hoje`, 
 ### 1.2 Escopo v1 — 3 ativos × 4 configs (Bundle β)
 
 **Universo:**
-- `SPY` (Tiingo IEX 1h, sessão US equity 9:30-16:00 ET, ~7 bars/dia)
-- `XAU/USD` (Tiingo FX 1h, sessão 24h Dom-Sex, ~120 bars/semana) — spot gold
-- `EUR/USD` (Tiingo FX 1h, sessão 24h Dom-Sex)
+- `SPY` (Tiingo IEX 1h, sessão US equity 9:30-16:00 ET, ~7 bars/dia) — equity risk premium
+- `GLD` (Tiingo IEX 1h, mesma sessão) — inflation/safe-haven/commodity
+- `TLT` (Tiingo IEX 1h, mesma sessão) — duration/interest rate risk
 
-**Justificativa do Bundle β:**
-1. **Multi-asset class diversifica teste de robustez** — equity-beta (SPY) + commodity/inflation-hedge (XAU) + G7 rate differential (EUR/USD). 3 drivers econômicos distintos. Edge que pega nos 3 é evidência forte do mecanismo, não tailoring.
-2. **Spot gold > GLD pra breakouts** — GLD tem overnight gaps artificiais por London fix; XAU/USD tem range contínuo. Yang-Zhang `[p.22, Eq.2.17a]` foi derivado pra "lidar com opening jumps" — XAU se beneficia diretamente.
-3. **EUR/USD é a FX mais citável** e menos regime-dependente; torna PROCEED/BLOCK do diagnostic mais defensável.
-4. **Sessions semi-coerentes** — 1 equity + 2 FX. Dois bar-handlers ao invés de 3.
+**Justificativa do Bundle γ (pivot de Bundle β):**
 
-**Fallback Bundle α:** se Tiingo FX 1h retention < 3y para `XAU/USD` ou `EURUSD` (Smoke #2 do plan), substitui por `GLD` (mesma sessão IEX que SPY) e mantém EUR/USD. Documentado no plan §5.1.
+Bundle β original (SPY + XAU/USD + EUR/USD) **abortado na pre-flight probe**: Tiingo FX 1h tem gap massivo de ~3.5 anos (2021-06 → 2025-01) em ambos xauusd e eurusd. Nenhuma parcela contínua ≥ 3y pra CPCV N=6. Resultado documentado em `reports/vol_expansion_fx_retention_probe.md`.
+
+Bundle γ (SPY + GLD + TLT) é a alternativa ETF-only que preserva ortogonalidade econômica:
+1. **3 drivers distintos** — equity risk premium (SPY), commodity/safe-haven (GLD), duration/rates (TLT). Correlações historicamente baixas/negativas: SPY-GLD ≈ -0.3 a +0.2; SPY-TLT ≈ -0.3 a -0.5; GLD-TLT ≈ +0.1 a +0.3.
+2. **Trio canônico risk-parity** — Carver `[systematic_trading]` usa exatamente SPY/GLD/TLT como exemplo de diversificação multi-asset.
+3. **Sessão uniforme** — todos IEX 9:30-16:00 ET, `bars_per_year=1638`. Elimina handling de sessão FX 24h. Simplificação substancial vs Bundle β.
+4. **Retention verificada** — 6y de dados 1h (2020-04-15 → 2026-04-15) pra todos os 3, probe em `vol_expansion_fx_retention_probe.md`.
 
 **Descartados nesta iteração:**
-- **Sector SPDR basket (XLE/XLF/XLK...)** — alta correlação intra-equity (todos equity-beta dependent), reproduz o problema de uniformidade que matou F3.D v1 (PBO 0.849).
-- **AUD/USD como FX** — commodity-FX, correlacionado com gold, rompe ortogonalidade econômica.
-- **USD/JPY** — BoJ interventions são outliers que distorcem o filtro YZ-cone (`[p.52]` adverte sobre handling de outliers).
-- **GBP/USD** — Brexit-era é regime mudado pós-2020; sample limpo é mais curto.
+- **XAU/USD + EUR/USD (FX)** — gap de dados Tiingo 2021-06 → 2025-01.
+- **SLV** — correlação ~0.80+ com GLD, praticamente reduz pra 2 ativos ortogonais.
+- **QQQ / IWM** — correlação ~0.85+ com SPY (equity-beta dominant), marginal diversification.
+- **Sector SPDR basket (XLE/XLF/XLK...)** — alta correlação intra-equity, reproduz problema F3.D v1 (PBO 0.849).
 - **Pyramiding** — Turtles permite até 4 unidades `[trading_systems_methods, p.353]`; v1 fica em 1 unidade pra parsimônia.
 
 ### 1.3 Hipótese de sucesso v1
 
 Spec é executável em v1 se:
 
-1. **Retention Tiingo FX 1h** confirmada via Smoke #2 (probe no plan §5.1):
-   - `XAU/USD` ≥ 3y de bars (necessário pra CPCV N=6 viável)
-   - `EURUSD` ≥ 3y de bars
-   - Se qualquer um < 3y → fallback automático Bundle α (XAU→GLD), log warning, prossegue
-2. **Cone warmup** ≥ 1y (≈1700 FX bars / ≈1690 SPY bars) por símbolo antes do filtro retornar `True`. Período de warmup gera zero trades (não erro).
+1. **Retention Tiingo IEX 1h** ≥ 3y pra todos os 3 ETFs — **✅ verificado**: SPY/GLD/TLT todos com 6y (2020-04-15 → 2026-04-15, 9396 bars cada). Probe em `reports/vol_expansion_fx_retention_probe.md`.
+2. **Cone warmup** ≥ 1y (≈1690 bars a 7 bars/dia) por símbolo antes do filtro retornar `True`. Período de warmup gera zero trades (não erro).
 3. **Sample size pós-backtest** ≥ 30 trades por símbolo. Se algum símbolo tem `n_trades < 30` ⇒ DSR insignificante por baixa amostragem; **única retentativa documentada com K=50th** (decisão pré-registrada, não grid disfarçado).
 
 Assumindo hipótese OK, o trabalho está entregue quando:
@@ -75,7 +74,7 @@ Esta estratégia enforça via **três camadas de exit (§3.3)**:
 2. **Hard cap wall-clock 48h** — dispara independente de preço/canal.
 3. **Disaster stop 4σ** — Carver `[systematic_trading, p.212, ch.13]`; protege contra gap notícia em fake breakout.
 
-**Friday weekend-flat não está em v1** para nenhum dos 3 ativos. FX 24h fecha sozinho Sex 17 ET (sem exposure weekend material). SPY: trade aberto Sex tarde com 48h hard cap fecha Dom à noite (mercado closed) → ordem executa Seg open com slippage de gap. O hard cap §1.4 cobre o weekend exposure sem precisar de Friday flat dedicado. Hook v2 #7 avalia se `pct_trades_overnight_SPY` no diagnostic justifica adicionar Friday flat dedicado.
+**Friday weekend-flat não está em v1** para nenhum dos 3 ETFs. Todos IEX (9:30-16:00 ET): trade aberto Sex tarde com 48h hard cap fecha Dom à noite (mercado closed) → ordem executa Seg open com slippage de gap. O hard cap §1.4 cobre o weekend exposure sem precisar de Friday flat dedicado. Hook v2 #7 avalia se `pct_trades_overnight` no diagnostic justifica adicionar Friday flat dedicado.
 
 Alerta no diagnostic: se `pct_trades_exited_by_hard_cap > 20%` em qualquer símbolo, **spec falhou na sua premissa intraday-short-hold** — sinal não é fundamentalmente curto no timeframe, violação do pivô. Retorna ao brainstorm. Idêntico ao gate Chan pair `[chan-pairs-1h-design §1.4]`.
 
@@ -233,10 +232,7 @@ $$\text{position\_size} = \frac{\text{target\_vol\_annual} \times \text{equity}}
 Onde:
 - `target_vol_annual = 0.10` (10%, fixo, não gridado)
 - `σ_YZ_annual` = output canônico do RegimeFilter (re-uso) — magnitude anualizada, não percentil
-- `bars_per_year` (usado pra anualizar σ raw e na conversão price-points em §3.4):
-  - SPY: 6.5h × 252d = 1638 bars
-  - GLD (fallback): idem 1638
-  - XAU/USD, EUR/USD: 24h × 5d × 52w = 6240 bars (FX trading week)
+- `bars_per_year = 1638` pra todos os 3 ETFs (6.5h × 252d). Uniforme — sem branching per-asset (simplificação vs Bundle β original que requeria 6240 pra FX)
 
 **Por que vol-targeting > Kelly contínuo de Sinclair `[volatility_trading, p.138, Eq. 8.14]`**:
 
@@ -294,7 +290,7 @@ def disaster_stop_exit(position, bar_t) -> bool:
         return (bar_t.close - position.entry_price) >= position.disaster_threshold
 ```
 
-**Convenção de unidades**: σ_YZ é fração anualizada (ex: 0.20 = 20%/y). `bars_per_year` é o mesmo do sizer (§3.3) — 1638 SPY/GLD, 6240 FX. `REF_HOLD_BARS = 24` (≈1 dia trading SPY ou ≈1 dia FX) é a escala de hold esperada — fixa, não tunável. Resultado: `disaster_threshold` em dólares, comparável diretamente com `(entry - close)`.
+**Convenção de unidades**: σ_YZ é fração anualizada (ex: 0.20 = 20%/y). `bars_per_year = 1638` uniforme pra todos os 3 ETFs (§3.3). `REF_HOLD_BARS = 24` (≈1 dia trading = 3.4 sessões IEX completas) é a escala de hold esperada — fixa, não tunável. Resultado: `disaster_threshold` em dólares, comparável diretamente com `(entry - close)`.
 
 Carver `[p.212]` usa "X = 4 sigma_price_points from tracking extreme" — adaptamos pra "4σ from entry price" (disaster guard, não trailing). Tracking extreme é hook v2 #4. σ_YZ + threshold congelados no entry pra evitar stop "se mexer" com vol intra-trade.
 
@@ -335,10 +331,10 @@ DSR threshold approx: `E[max] ≈ √(2 ln 12) ≈ 2.23`. Mais alto que Chan pai
 | Símbolo | Endpoint Tiingo | Sessão | Bars/dia esperados |
 |---|---|---|---|
 | `SPY` | IEX 1h | 9:30-16:00 ET, ~252 d/y | ~7 |
-| `XAU/USD` | FX 1h | Dom 17 ET → Sex 17 ET, ~5 d/wk | ~24 |
-| `EURUSD` | FX 1h | Dom 17 ET → Sex 17 ET, ~5 d/wk | ~24 |
+| `GLD` | IEX 1h | 9:30-16:00 ET, ~252 d/y | ~7 |
+| `TLT` | IEX 1h | 9:30-16:00 ET, ~252 d/y | ~7 |
 
-Lazy-cache via `tiingo_service` (spec pai). Probe inicial no plan §5.1.
+Lazy-cache via `tiingo_service` (spec pai). Retention confirmada: 6y (2020-04-15 → 2026-04-15), 9396 bars cada. `bars_per_year = 1638` uniforme.
 
 ### 4.2 Período de backtest
 
@@ -349,18 +345,7 @@ Lazy-cache via `tiingo_service` (spec pai). Probe inicial no plan §5.1.
 ### 4.3 Calendar / timezone
 
 - Todos os bars normalizados pra UTC no buffer interno.
-- SPY: `pandas_market_calendars.get_calendar("NYSE")` filtra holidays + sessões parciais.
-- FX: 24h Dom-Sex, ignora holidays (mercado FX não fecha por feriados domésticos isolados; respeita Christmas/New Year via filtros do Tiingo).
-
-### 4.4 Fallback Bundle α
-
-Se Smoke #2 detecta `XAU/USD` 1h retention < 3y:
-1. Log warning estruturado em `logs/grid.log`.
-2. Substitui símbolo no config: `XAU/USD` → `GLD` (Tiingo IEX 1h, mesma sessão SPY).
-3. Atualiza `bars_per_year` no sizer: GLD usa 1638 (idem SPY).
-4. Diagnostic report inclui flag `bundle_used: alpha` em vez de `beta`.
-
-EUR/USD não tem fallback — é mais comum em planos Tiingo. Se ele falhar retention, **aborta o spec** e volta ao brainstorm pra reconsiderar premissa multi-asset.
+- Todos os 3 ETFs: `pandas_market_calendars.get_calendar("NYSE")` filtra holidays + sessões parciais. Calendário uniforme — sem branching FX.
 
 ---
 
@@ -368,7 +353,7 @@ EUR/USD não tem fallback — é mais comum em planos Tiingo. Se ele falhar rete
 
 ### 5.1 Pre-gates (RuntimeError ou skip antes de qualquer trade)
 
-1. **Tiingo retention**: § 4.4 acima. Probe no plan §5.1, antes de implementar a estratégia.
+1. **Tiingo retention**: ✅ verificada na pre-flight probe (6y todos os 3 ETFs).
 2. **Cone warmup**: < 1700 bars ⇒ `is_quiet = False`. Sem erro.
 3. **σ_YZ degenerate**: `σ_YZ < 1e-6` ⇒ sizer retorna 0 + warning. Sem erro.
 4. **Sample size pós-backtest**: `n_trades < 30` por símbolo ⇒ retentativa única documentada com `K_filter = 50` (não grid). Se ainda < 30 ⇒ FAIL com diagnostic claro.
@@ -411,8 +396,8 @@ Em `reports/grid_vol_expansion_<timestamp>/diagnostic.md`:
 - `sharpe_per_symbol`, `max_dd_per_symbol`
 
 **Bundle confirmation:**
-- `bundle_used` (α ou β)
-- `tiingo_retention_per_symbol` (anos disponíveis)
+- `bundle_used`: γ (SPY + GLD + TLT, all ETF IEX)
+- `tiingo_retention_per_symbol` (anos disponíveis, esperado 6y pra todos)
 
 ### 5.4 Fallback config K=50 (única retentativa)
 
@@ -480,7 +465,7 @@ Documentados aqui pra ressuscitar se v1 PASS:
 2. **Pyramiding**: até 4 unidades estilo Turtles `[trading_systems_methods, p.353]`. Adiciona unidade a cada novo high (long) ou low (short) por X% do range.
 3. **Vol-contraction regime-shift exit**: sair quando YZ percentil sobe acima de threshold (filtro vira "saímos do regime de baixa vol"). Adiciona 4ª condição ao ExitManager.
 4. **Trailing disaster stop**: usar Carver tracking extreme `[p.212]` em vez de entry price congelado.
-5. **Universo expandido**: + GBP/USD, + GLD em paralelo (não substituto). Re-roda DSR com N_trials maior.
+5. **Universo expandido**: + IWM, + QQQ, + XLE em paralelo. Re-roda DSR com N_trials maior. FX (XAU/USD, EUR/USD) quando Tiingo resolver gap de dados (2021-2025).
 6. **Meta-label AFML over este sinal**: item 3 do ROADMAP next steps post-pivot. Triple-barrier sobre as entradas Donchian filtradas, walk-forward CV com purge/embargo `[advances_fin_ml, ch.7]`.
 7. **Friday flat pra SPY**: avaliar se `pct_trades_overnight_SPY > X%` e DD overnight é material.
 8. **Asymmetric direction bias**: testar long-only em SPY (equity drift) vs bidirecional FX. Hipótese alternativa não-canônica.
@@ -566,7 +551,7 @@ Nada bloqueia downstream em v1. Se PASS, hook v2 #6 (AFML meta-label) é o próx
 Mecanismo de **breakout de baixa vol carregar informação** é a hipótese central. Falha se:
 - Breakouts low-vol não geram retornos diferenciados de breakouts high-vol → `breakout_strength_avg` low + Sharpe baixo
 - Filtro YZ-cone não diferencia regimes (sample percentil é uniformemente distribuído entre bins de retorno) → `yz_pct_at_entry_avg ≈ 50` em vez de < 33
-- Edge esmaga em FX (24h vs 6.5h sessions) → Sharpe SPY OK mas FX fail
+- Edge esmaga em bonds (TLT tem microestrutura diferente de equities) → Sharpe SPY OK mas TLT fail
 
 Cada um destes é diagnosticado explicitamente em §5.3.
 
