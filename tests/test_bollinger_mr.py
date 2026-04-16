@@ -283,3 +283,143 @@ class TestBollingerMRGridConfig:
         cfg = bollinger_mr_grid_configs()[0]
         with pytest.raises(AttributeError):
             cfg.window = 99  # type: ignore[misc]
+
+
+# ---------------------------------------------------------------------------
+# Direction: short and both [machine_trading, p.204-205, ch.7]
+# ---------------------------------------------------------------------------
+
+
+def _spike_and_drop(
+    n_warmup: int = 100,
+    n_spike: int = 10,
+    n_drop: int = 50,
+    baseline: float = 100.0,
+    spike_height: float = 8.0,
+    freq: str = "h",
+) -> pd.Series:
+    """Flat → sharp spike → drop back to baseline. Mirrors _dip_and_recover."""
+    warmup = np.full(n_warmup, baseline)
+    spike = np.linspace(baseline, baseline + spike_height, n_spike)
+    drop = np.linspace(baseline + spike_height, baseline, n_drop)
+    values = np.concatenate([warmup, spike, drop])
+    idx = pd.date_range("2021-01-01", periods=len(values), freq=freq)
+    return pd.Series(values, index=idx)
+
+
+class TestDirectionParam:
+    def test_default_direction_is_long(self):
+        from ai_trade.backtest.strategies.bollinger_mr import BollingerMRStrategy
+
+        close = _sine_close(n=200)
+        data = {"SPY": _ohlcv_from_close(close)}
+        strat = BollingerMRStrategy(data=data, symbol="SPY")
+        assert strat.direction == "long"
+
+    def test_rejects_invalid_direction(self):
+        from ai_trade.backtest.strategies.bollinger_mr import BollingerMRStrategy
+
+        close = _sine_close(n=200)
+        data = {"SPY": _ohlcv_from_close(close)}
+        with pytest.raises(ValueError, match="direction"):
+            BollingerMRStrategy(data=data, symbol="SPY", direction="invalid")
+
+    def test_upper_band_computed(self):
+        from ai_trade.backtest.strategies.bollinger_mr import BollingerMRStrategy
+
+        close = _sine_close(n=500, period=40)
+        data = {"SPY": _ohlcv_from_close(close)}
+        strat = BollingerMRStrategy(data=data, symbol="SPY", window=20)
+        ind = strat._indicators["SPY"]
+        assert "upper_band" in ind.columns
+
+    def test_short_direction_generates_short_trades_on_spike(self):
+        """A spike above the upper band should trigger short entry."""
+        from ai_trade.backtest.strategies.bollinger_mr import BollingerMRStrategy
+
+        close = _spike_and_drop(n_warmup=100, n_spike=10, n_drop=50,
+                                baseline=100.0, spike_height=8.0)
+        data = {"SPY": _ohlcv_from_close(close)}
+        strat = BollingerMRStrategy(
+            data=data, symbol="SPY", window=20, std_mult=1.5, direction="short",
+        )
+        result = _run_strategy(strat, data)
+
+        short_trades = [t for t in result.trades if t.side == "short"]
+        assert len(short_trades) >= 1, (
+            f"expected short trade on spike+drop, got {len(short_trades)}"
+        )
+
+    def test_short_direction_no_long_trades(self):
+        """direction='short' must never produce long trades."""
+        from ai_trade.backtest.strategies.bollinger_mr import BollingerMRStrategy
+
+        close = _sine_close(n=2000, period=40, amplitude=5.0)
+        data = {"SPY": _ohlcv_from_close(close)}
+        strat = BollingerMRStrategy(
+            data=data, symbol="SPY", window=20, std_mult=1.5, direction="short",
+        )
+        result = _run_strategy(strat, data)
+        long_trades = [t for t in result.trades if t.side == "long"]
+        assert len(long_trades) == 0, f"short-only produced {len(long_trades)} long trades"
+
+    def test_both_direction_generates_long_and_short(self):
+        """direction='both' on cyclic data generates both long and short trades."""
+        from ai_trade.backtest.strategies.bollinger_mr import BollingerMRStrategy
+
+        close = _sine_close(n=2000, period=40, amplitude=5.0)
+        data = {"SPY": _ohlcv_from_close(close)}
+        strat = BollingerMRStrategy(
+            data=data, symbol="SPY", window=20, std_mult=1.5, direction="both",
+        )
+        result = _run_strategy(strat, data)
+
+        sides = {t.side for t in result.trades}
+        assert "long" in sides, "both should produce long trades on cyclic data"
+        assert "short" in sides, "both should produce short trades on cyclic data"
+
+    def test_long_direction_unchanged_behavior(self):
+        """direction='long' must produce identical results to default."""
+        from ai_trade.backtest.strategies.bollinger_mr import BollingerMRStrategy
+
+        close = _sine_close(n=2000, period=40, amplitude=5.0)
+        data = {"SPY": _ohlcv_from_close(close)}
+
+        strat_default = BollingerMRStrategy(data=data, symbol="SPY", window=20, std_mult=1.5)
+        strat_long = BollingerMRStrategy(
+            data=data, symbol="SPY", window=20, std_mult=1.5, direction="long",
+        )
+
+        res_default = _run_strategy(strat_default, data)
+        res_long = _run_strategy(strat_long, data)
+
+        assert len(res_default.trades) == len(res_long.trades)
+        assert abs(res_default.final_equity - res_long.final_equity) < 0.01
+
+    def test_short_stop_loss_fires_on_continued_rise(self):
+        """After short entry on a spike, continued rise should trigger stop-loss."""
+        from ai_trade.backtest.strategies.bollinger_mr import BollingerMRStrategy
+
+        n_warmup = 100
+        n_rise = 200
+        warmup = np.full(n_warmup, 100.0)
+        rise = np.linspace(100.0, 130.0, n_rise)  # +30% continuous rise
+        values = np.concatenate([warmup, rise])
+        idx = pd.date_range("2021-01-01", periods=len(values), freq="h")
+        close = pd.Series(values, index=idx)
+        data = {"SPY": _ohlcv_from_close(close)}
+
+        strat = BollingerMRStrategy(
+            data=data, symbol="SPY", window=20, std_mult=1.5,
+            stop_pct=0.02, direction="short",
+        )
+        result = _run_strategy(strat, data)
+
+        if result.trades:
+            for trade in result.trades:
+                assert trade.side == "short"
+                # Short loss: entry < exit. Stop loss at 2%.
+                loss_pct = (trade.exit_price - trade.entry_price) / trade.entry_price
+                assert loss_pct <= 3 * 0.02, (
+                    f"short stop loss exceeded 3× headroom: {loss_pct:.4f}"
+                )

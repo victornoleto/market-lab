@@ -62,6 +62,11 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--frequency", default="1hour", choices=["daily", "1hour"],
     )
     ap.add_argument(
+        "--direction", default="long",
+        choices=["long", "short", "both"],
+        help="Entry direction: long (default), short, or both.",
+    )
+    ap.add_argument(
         "--log-level", default="INFO",
         choices=["DEBUG", "INFO", "WARNING", "ERROR"],
     )
@@ -126,9 +131,9 @@ def main(argv: list[str] | None = None) -> int:
     log.info("=== grid run %s ===", run_id)
     log.info(
         "start=%s end=%s cash=$%.0f n_jobs=%d symbol=%s "
-        "data_source=%s frequency=%s",
+        "data_source=%s frequency=%s direction=%s",
         args.start, args.end, args.cash, args.n_jobs,
-        args.symbol, args.data_source, args.frequency,
+        args.symbol, args.data_source, args.frequency, args.direction,
     )
 
     configs = bollinger_mr_grid_configs()
@@ -177,6 +182,7 @@ def main(argv: list[str] | None = None) -> int:
             stop_pct=cfg.stop_pct,
             max_hold=cfg.max_hold,
             risk_pct_of_equity=cfg.risk_pct_of_equity,
+            direction=args.direction,
         )
         runner = Runner(executor=ExecutionSimulator(ExecutionConfig()))
         return runner.run(

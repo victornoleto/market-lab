@@ -171,6 +171,7 @@ for i in $(seq "$START_ITER" "$END_ITER"); do
 
     set +e
     timeout "$ITER_TIMEOUT" claude -p "$PROMPT" \
+        --model sonnet \
         --dangerously-skip-permissions 2>&1 | tee -a "$ITER_LOG"
     EXIT=${PIPESTATUS[0]}
     set -e

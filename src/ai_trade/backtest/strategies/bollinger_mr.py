@@ -21,13 +21,12 @@ Pipeline (per bar)
 ------------------
 
 1. Pre-compute MA(window) and rolling σ(window) on adjusted close.
-2. Lower band = MA - mult × σ.
-3. **Entry (long only):** close crosses below lower band.
-4. **Exit:** close crosses above MA, OR hard time-stop (max_hold bars),
+2. Lower band = MA - mult × σ; Upper band = MA + mult × σ.
+3. **Entry (long):** close crosses below lower band.
+4. **Entry (short, when direction="short"/"both"):** close crosses above
+   upper band ``[machine_trading, p.204-205, ch.7]``.
+5. **Exit:** close crosses to MA, OR hard time-stop (max_hold bars),
    OR stop-loss (fixed %).
-5. No short entries — mean-reversion on equity indices is asymmetric
-   (oversold bounces are more reliable than overbought shorts)
-   ``[algo_trading_chan, p.30, ch.2]``.
 
 Position sizing
 ---------------
@@ -40,6 +39,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
+from typing import Literal
 
 import numpy as np
 import pandas as pd
@@ -48,10 +48,19 @@ from ai_trade.backtest.data.adjust import adjust_ohlc
 from ai_trade.backtest.engine.execution import Bar, Order
 from ai_trade.backtest.engine.portfolio import Portfolio
 
+Direction = Literal["long", "short", "both"]
+
 
 @dataclass
 class BollingerMRStrategy:
-    """Single-instrument Bollinger mean-reversion (long-only, short-hold)."""
+    """Single-instrument Bollinger mean-reversion (short-hold).
+
+    ``direction`` controls entry sides:
+
+    * ``"long"``  — buy below lower band only (default, backward-compatible).
+    * ``"short"`` — sell above upper band only.
+    * ``"both"``  — long + short entries, one position at a time.
+    """
 
     data: dict[str, pd.DataFrame]
     symbol: str = "SPY"
@@ -61,6 +70,7 @@ class BollingerMRStrategy:
     max_hold: int = 24
     risk_pct_of_equity: float = 0.95
     regime_sma: int = 0  # 0 = disabled; >0 = SMA(N) regime filter [stocks_on_the_move, p.110]
+    direction: Direction = "long"
 
     _indicators: dict[str, pd.DataFrame] = field(init=False, default_factory=dict)
     _logger: logging.Logger = field(
@@ -79,6 +89,8 @@ class BollingerMRStrategy:
             raise ValueError(f"max_hold must be >= 1, got {self.max_hold}")
         if self.regime_sma < 0:
             raise ValueError(f"regime_sma must be >= 0, got {self.regime_sma}")
+        if self.direction not in ("long", "short", "both"):
+            raise ValueError(f"direction must be 'long', 'short', or 'both', got {self.direction!r}")
         if self.symbol not in self.data:
             raise KeyError(f"symbol {self.symbol!r} not in data")
 
@@ -90,8 +102,9 @@ class BollingerMRStrategy:
         ma = close.rolling(window=self.window, min_periods=self.window).mean()
         std = close.rolling(window=self.window, min_periods=self.window).std(ddof=1)
         lower_band = ma - self.std_mult * std
+        upper_band = ma + self.std_mult * std
 
-        cols = {"ma": ma, "std": std, "lower_band": lower_band}
+        cols = {"ma": ma, "std": std, "lower_band": lower_band, "upper_band": upper_band}
         if self.regime_sma > 0:
             cols["regime_ma"] = close.rolling(
                 window=self.regime_sma, min_periods=self.regime_sma,
@@ -121,8 +134,9 @@ class BollingerMRStrategy:
 
         ma_now = float(ind["ma"].iloc[idx])
         lower_now = float(ind["lower_band"].iloc[idx])
+        upper_now = float(ind["upper_band"].iloc[idx])
 
-        if np.isnan(ma_now) or np.isnan(lower_now):
+        if np.isnan(ma_now) or np.isnan(lower_now) or np.isnan(upper_now):
             return []
 
         pos = portfolio.positions.get(self.symbol)
@@ -135,7 +149,7 @@ class BollingerMRStrategy:
                 return [exit_order]
             return []
 
-        return self._maybe_enter(bar, idx, state, portfolio, lower_now)
+        return self._maybe_enter(bar, idx, state, portfolio, lower_now, upper_now)
 
     def _maybe_exit(
         self,
@@ -148,6 +162,15 @@ class BollingerMRStrategy:
         entry_price = pos.avg_entry_price
         entry_idx = state.get("entry_idx", idx)
         bars_held = idx - entry_idx
+
+        if pos.side == "long":
+            return self._maybe_exit_long(pos, bar, bars_held, ma_now)
+        return self._maybe_exit_short(pos, bar, bars_held, ma_now)
+
+    def _maybe_exit_long(
+        self, pos, bar: Bar, bars_held: int, ma_now: float,
+    ) -> Order | None:
+        entry_price = pos.avg_entry_price
 
         # 1. Stop-loss — capital preservation (always first).
         if bar.close <= entry_price * (1 - self.stop_pct):
@@ -163,6 +186,25 @@ class BollingerMRStrategy:
 
         return None
 
+    def _maybe_exit_short(
+        self, pos, bar: Bar, bars_held: int, ma_now: float,
+    ) -> Order | None:
+        entry_price = pos.avg_entry_price
+
+        # 1. Stop-loss — price rises above entry by stop_pct.
+        if bar.close >= entry_price * (1 + self.stop_pct):
+            return Order(symbol=self.symbol, side="buy", volume=pos.volume)
+
+        # 2. Mean-reversion target: close crosses below MA.
+        if bar.close <= ma_now:
+            return Order(symbol=self.symbol, side="buy", volume=pos.volume)
+
+        # 3. Hard time-stop.
+        if bars_held >= self.max_hold:
+            return Order(symbol=self.symbol, side="buy", volume=pos.volume)
+
+        return None
+
     def _maybe_enter(
         self,
         bar: Bar,
@@ -170,6 +212,7 @@ class BollingerMRStrategy:
         state: dict,
         portfolio: Portfolio,
         lower_now: float,
+        upper_now: float,
     ) -> list[Order]:
         # Regime filter: skip entry if close is below SMA regime filter.
         # [stocks_on_the_move, p.110] — go flat in bear markets.
@@ -189,8 +232,14 @@ class BollingerMRStrategy:
             return []
 
         # Long entry: close dips below lower Bollinger band.
-        if bar.close < lower_now:
+        if self.direction in ("long", "both") and bar.close < lower_now:
             state["entry_idx"] = idx
             return [Order(symbol=self.symbol, side="buy", volume=volume)]
+
+        # Short entry: close rises above upper Bollinger band.
+        # [machine_trading, p.204-205, ch.7] — symmetric Bollinger scalping.
+        if self.direction in ("short", "both") and bar.close > upper_now:
+            state["entry_idx"] = idx
+            return [Order(symbol=self.symbol, side="sell", volume=volume)]
 
         return []
