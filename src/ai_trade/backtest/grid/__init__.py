@@ -22,6 +22,10 @@ from ai_trade.backtest.grid.ehlers_config import (
     EhlersGridConfig,
     ehlers_grid_configs,
 )
+from ai_trade.backtest.grid.ehlers_meta_config import (
+    EhlersMetaGridConfig,
+    ehlers_meta_grid_configs,
+)
 from ai_trade.backtest.grid.gates import GateEvaluator, GateVerdict
 from ai_trade.backtest.grid.report import GridReportGenerator
 from ai_trade.backtest.grid.observers import (
@@ -44,6 +48,7 @@ __all__ = [
     "DiagnosticAnalyzer",
     "DiagnosticReport",
     "EhlersGridConfig",
+    "EhlersMetaGridConfig",
     "FailureMode",
     "GateEvaluator",
     "GateVerdict",
@@ -56,6 +61,7 @@ __all__ = [
     "WFResult",
     "compose_observers",
     "ehlers_grid_configs",
+    "ehlers_meta_grid_configs",
     "grid_configs",
     "setup_grid_logging",
     "trial_from_dir",
