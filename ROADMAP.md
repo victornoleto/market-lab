@@ -4,7 +4,63 @@
 
 ---
 
-## 📍 Current status (2026-04-15)
+## 📍 Current status (2026-04-16, post data-bug cleanup)
+
+### Headline
+
+- **0/10 winners.** All 3 prior "winners" (XLK / SPY / XLE Bollinger MR 1h, iters 5/15/16 of the self-improve loop) were **retracted on 2026-04-16 12:45** after a data-bug postmortem. Tiingo IEX returned 6 placeholder hourly bars on US market-closed days (volume=0, OHLC identical, RAW unadjusted prices). For tickers with historical splits (XLK ratio≈0.48, XLE≈0.41) those bars sat at 2× adjacent prices and inflated the strategies' P&L by 45-89%. Post-cleanup re-validation: SPY Sharpe 1.31→0.78, XLK 1.93→0.75, XLE 1.58→0.42 — all FAIL the 3-gate framework. See `jornada/2026-04-16-1245-data-bug-winners-retracted.md` for the full postmortem.
+- **Tooling hardened.** `_filter_orphan_intraday_bars` in `tiingo_source.py` blocks the bug from re-entering the cache; `scripts/clean_intraday_orphans.py` removed 4296 placeholder bars from 12 tickers (backups kept locally). 2 regression tests added. **515 tests green.**
+- **Self-improvement loop is the production search mechanism.** `scripts/self_improve_loop.sh` runs Claude Code in a fresh-context sonnet session per iteration, reads `docs/self_improvement/memory.md`, picks one experiment from the leads list, runs it, updates memory + jornada, auto-commits on the isolated branch. The previous 17 iterations are committed but their conclusions about "winners" are retracted — the infrastructure they built (grids, OOS scripts, bootstrap, overlap, regime decomp, GARCH-prep) is intact and reusable.
+
+### Phases
+
+- ✅ **Phase 0 — Knowledge Base.** 33/33 books absorbed and validated. Loadable as Claude Skill.
+- ✅ **Phase 0.5 — `knowledge/SKILL.md`.** Aggregated skill with 7 inviolable rules.
+- 🔄 **Phase 1 — Pepperstone/cTrader infra.** Scaffold ready (Postgres 5435 + Grafana 3000 via docker-compose; OAuth bootstrap script). Blocked awaiting Spotware approval.
+- ✅ **Phase 2 — Backtest engine + validation.** CPCV / PBO / DSR / walk-forward / MCPT. 515 tests green.
+- 🔄 **Phase 2.5 — Strategy search.** Active. 0 winners after data-bug retraction. Loop running on isolated branch (see "Next steps" below).
+- ⏳ **Phase 3 — Calibrated strategy + Pepperstone-cost ablation.** Blocked on Phase 2.5 producing a winner.
+- ⏳ **Phase 4-7 — Paper trading → live → monitoring → scaling.** All blocked on Phase 3.
+
+---
+
+## 🛤️ Two production environments (CFD short-hold + swing broker)
+
+The project targets **two parallel deployment paths**, not one. A strategy is labelled by which path it fits — and the gating decision uses the correct cost model per path.
+
+### Path A — Pepperstone CFD (short-hold, hours~few days)
+
+- **Broker:** Pepperstone via cTrader Open API (OAuth2 / Protobuf). Razor account preferred (raw spread + $3.50/side commission for transparent backtesting).
+- **Cost:** spread + commission per trade + **swap/overnight** charged daily for any position held past ~22:00 GMT.
+- **Constraint:** strategies must have **median holding period ≤ 5 days** (ideally hours). Multi-day swap kills alpha mathematically per `[systematic_trading, p.185-188, ch.12]` (annual_cost ≤ 0.13 SR/year gate).
+- **Universe:** index CFDs (SPX500, NAS100), share CFDs, FX majors, BTCUSD/ETHUSD, gold/silver. Limited list per Pepperstone offering.
+- **Data:** Tiingo IEX 1h primary (5m/15m as 2nd-tier when retention permits). Cache cleaned 2026-04-16; new fetches go through orphan filter.
+- **Tax:** none in Brazil for losses; **gains taxed as variable-income trader** (15% / 20% depending on operation type, monthly settlement).
+- **Status:** 0 winners post-cleanup. Active search via loop.
+
+### Path B — Stock broker (swing, days~weeks~months)
+
+- **Broker:** non-CFD (e.g., XP, Inter, Avenue Securities). Direct stock/ETF ownership.
+- **Cost:** broker commission per trade (often free now) + **bid-ask spread**. **No swap.** Multi-day holds fine.
+- **Constraint:** none on holding period — strategy logic drives it.
+- **Universe:** US ETFs (SPY/QQQ/sector spiders), Brazilian stocks (B3 listings), eventually international.
+- **Data:** Tiingo daily primary (already on disk for 1660 tickers since 2026-04-14 bulk).
+- **Tax:** **15% on gross profit, monthly** (Brazil capital-gains regime for stocks held >1 day). 20% if day-trade. Gate: net Sharpe **after 15% tax haircut** must still pass the 3-gate framework.
+- **Status:** secondary priority. Daily strategies (Ehlers BP Swing, Clenow momentum, regime-filtered trend) are candidates here — they failed Path A constraints (multi-day holds) but might survive Path B with the tax cost honestly modeled.
+
+### Implication for strategy validation
+
+When evaluating a new strategy, the loop / human reviewer must:
+1. Label it `[SHORT-HOLD CFD]` (Path A) or `[SWING BROKER]` (Path B) based on observed median hold.
+2. Apply the correct cost model: swap+spread+commission for A, commission+spread+15%-tax for B.
+3. Re-run gates with the path-specific cost. Strategy may pass on one path and fail on the other.
+4. Document path assignment in jornada entry header.
+
+A winner on either path is a winner. The "find ~10 strategies" goal in `docs/self_improvement/memory.md` mixes both paths; don't artificially restrict the search to one.
+
+---
+
+## 📍 Historical status (2026-04-15, pre-retraction)
 
 - ✅ **Phase 0 — Knowledge Base.** 33/33 books absorbed and validated (pipeline `books/raw/*.pdf` → `extracted/` → `summaries/<slug>.md`, autonomous 3-layer validation replacing human review). Global `check_citations.py`: 33/33 PASS. Quality: 🌟 12 Perfect · ✅ 20 Good · ⚠️ 1 Border, 0 real hallucinations.
 - ✅ **Phase 0.5 — `knowledge/SKILL.md`.** `build_skill.py` aggregates the 33 summaries into a thematic Claude Skill (`knowledge/SKILL.md` + `books/`, `strategies/`, `indicators/`, `validation/`). Skill loadable via the `Skill` tool, inviolable rules #1-7 in production.
@@ -32,14 +88,96 @@
 - 🔄 **Phase 2.5 — Run 4 Step 1 (AFML meta-labeling simple, 2026-04-15) — FAIL.** See JORNADA.md changelog.
 - ✅ **Phase 2.5 — Run 4 Step 1 prep (long-history Ehlers, 2026-04-15) — FAIL** (mixed signals). See JORNADA.md changelog.
 
-- ⏳ **Next steps (in order, post-pivot):**
-    1. ✅ **`tiingo_service` lazy-cache** — DELIVERED 2026-04-15 (noite). See entry above.
-    2. **Intraday strategy catalog — 1h first** (sweet spot between noise and frequency). ❌ Chan mean-reversion pairs GLD-SLV FAIL CADF (t_stat=-2.956 > -3.4). ❌ Vol-expansion breakout SPY+GLD+TLT FAIL all gates (PBO=0.687, DSR 0/12, WF 0/12). **Next:** Ehlers BP Swing ported to 1h (recalibrate thresholds) — last item before considering pivot. Note: Tiingo FX 1h has ~3.5y data gap (2021-06→2025-01); FX strategies deferred until fixed. Expand to 15m / 5m only after 1h gives useful signal.
-    3. **AFML sophisticated** — re-enters here, as a meta-label layer over whichever intraday strategy shows edge in (2). Same plan as the deferred path: walk-forward CV with purge/embargo `[advances_fin_ml, ch.7]`, rich features, asymmetric triple-barrier.
-    4. **Carver multi-asset trend / other multi-day families** — only if nothing intraday delivers. These don't fit the short-hold goal either, so they're effectively a last-resort pivot.
-    5. **Cancel Tiingo subscription** — pushed out until `tiingo_service` is verified working against live endpoints (can't evaluate without fresh intraday data).
+- ⏳ **Historical next-steps (pre-retraction; retained for context).** The post-cleanup search plan is in the new section below.
 
   Diagnostics still relevant: `reports/grid_portfolio_20260415-1541/diagnostic.md` (F3.D v1), `reports/grid_ehlers_spy_postfix_20260415-0958/diagnostic.md`, `reports/grid_clenow_tiingo_postfix_20260415-1005/diagnostic.md`, `reports/grid_ehlers_20260415-1353/diagnostic.md`.
+
+---
+
+## 🚀 Next steps (post-cleanup, 2026-04-16)
+
+The self-improvement loop drives Phase 2.5 search. Memory.md `## Leads` section orders the next experiments. Initial 4-step plan (the loop will adapt as it learns):
+
+### Step 1 — Re-survey clean cache (CHEAP / IMMEDIATE)
+
+Re-run grids for all previously-tested strategies with the cleaned data, to confirm the universe of FAIL strategies is still FAIL (it should be — contamination INFLATED returns, not deflated). Useful negative result: confirms the pre-cleanup conclusions stand for the bad strategies, so the retraction is bounded.
+
+- 1h Bollinger MR: SPY/XLK/XLE/EEM/QQQ/IWM/DIA — all already FAIL on clean data (SPY/XLK/XLE confirmed in commit `9aa1b4e`; QQQ/IWM/DIA/EEM pending, ~30s each).
+- 1h OU MR: SPY/QQQ/IWM — re-run with clean cache.
+- 1h Kalman pairs SPY-IWM — re-run grid + OOS with clean cache.
+- 1h Vol-expansion SPY+GLD+TLT — re-run.
+- Outcome of step 1 = empirical floor: "with the universe + strategies tried so far, no edge survives clean data".
+
+### Step 2 — GARCH-sized Bollinger MR 1h SPY (CITED)
+
+Implement `[machine_trading, p.126-127, ch.4]`: same Bollinger entry/exit, but position size = `target_vol / σ_forecast(GARCH(1,1))` × equity. Hypothesis: the fixed-size variant FAIL'd because of vol clustering — large bars near vol spikes overwhelm noise small bars. Dynamic sizing should improve risk-adjusted return at the cost of variable position size.
+
+- Add `arch` package to dev deps.
+- New `src/ai_trade/backtest/indicators/garch.py` (rolling fit on last N bars, forecast σ_{t+1}).
+- New `src/ai_trade/backtest/strategies/bollinger_mr_garch.py` subclassing `BollingerMRStrategy`.
+- Grid N=4 over `target_vol ∈ {0.08, 0.12, 0.16, 0.20}`.
+- Full 3-gate evaluation; if PASS, OOS 2025 + Q1-2026 stress.
+
+### Step 3 — Pivot timeframe (5m / 15m bars)
+
+If steps 1-2 fail, the 1h timeframe might be too coarse for mean-reversion edge. Tiingo IEX retention for 5m / 15m is shorter (~3-6 months per Smoke #1 measurement) but still enough for OOS validation. Test:
+
+- 5m Bollinger MR SPY (recalibrate window from 20 to ~60-100 bars).
+- 15m Bollinger MR SPY.
+- Add `5min` / `15min` to the whitelist in `tiingo_source.py` (3-step unblock per spec §6.6).
+
+### Step 4 — Path B candidates (daily Ehlers + regime filter)
+
+Pivot to the **swing broker** path. Daily Ehlers BP Swing 2005-2023 previously FAIL'd WF 0/24 — try with regime filter (SMA200 / VIX) + 5d hard stop. Daily data isn't holiday-affected the same way, so re-runs might surprise. Apply 15% tax haircut on net profits before gating.
+
+- Daily Ehlers + SMA200 trend filter + 5d hard stop.
+- Daily Carver trend (basket of futures-like ETFs) — last-resort multi-day approach.
+
+### Beyond step 4
+
+If all 4 fail, brainstorm new families. Lead candidates per `memory.md`:
+- PEAD (post-earnings drift) — needs earnings dates source.
+- Donchian breakout intraday.
+- Volatility-of-volatility (VVIX-based regime filter).
+- Knowledge-base re-audit for untapped ideas from 33 books.
+
+### How the autonomous loop runs the plan
+
+The loop (`bash scripts/self_improve_loop.sh`) executes one experiment per iteration on the isolated branch `self-improve/post-cleanup-20260416` (or similar). Each iteration:
+
+1. Reads `docs/self_improvement/memory.md` (sole continuity).
+2. Picks ONE concrete experiment from `## Leads` (in order).
+3. Executes it (writes code if SCOPE=code; runs grids; reads results).
+4. Updates memory.md (`iteration:`, `best_*`, `## History`, moves consumed leads to `## Dead ends`).
+5. If a config passes all 3 gates: writes `jornada/YYYY-MM-DD-HHmm-slug.md` PASS entry.
+6. Auto-commits on the isolated branch (loop shell handles git).
+7. Exits cleanly. Loop sleeps `COOLDOWN` (default 10s) and starts iter+1.
+
+Loop terminates when:
+- A config passes all 3 gates AND `status: done` is set in memory frontmatter (loop exits 0).
+- `MAX_ITER` reached (default 20) without success.
+- Iteration timeout `ITER_TIMEOUT` (default 1800s = 30min) → loop aborts.
+- Iteration exits non-zero → loop aborts.
+
+Operator workflow:
+```bash
+# Start the loop (runs in foreground; Ctrl-C to stop)
+MAX_ITER=20 SCOPE=code bash scripts/self_improve_loop.sh
+
+# Or in background, follow logs
+nohup bash scripts/self_improve_loop.sh > logs/self_improve/loop_latest.log 2>&1 &
+tail -f logs/self_improve/loop_latest.log
+```
+
+Audit after the run:
+```bash
+git log --oneline main..HEAD       # what the loop committed
+cat docs/self_improvement/memory.md  # current best, history, leads
+ls jornada/*.md                    # any new PASS / FAIL entries
+.venv/bin/pytest -q                # baseline still green
+```
+
+The loop is **safe** — it can't push, can't merge, can't touch main. Its blast radius is the isolated branch's commits, which are reviewed before merging.
 
 ---
 

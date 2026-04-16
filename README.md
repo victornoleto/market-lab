@@ -1,13 +1,21 @@
-# ai-trade — Systematic Swing-Trading for Pepperstone CFD
+# ai-trade — Systematic Trading (Dual Environment)
 
-Automated systematic trading system for **Pepperstone CFDs via cTrader
-Open API**, grounded in **33 absorbed quantitative trading / ML books**
-exposed as a Claude Skill (citable knowledge base). All code is deterministic
-and every decision refers back to `[book.slug, p.X]`.
+Automated systematic trading system targeting **two parallel deployment
+paths**: short-hold via **Pepperstone CFD / cTrader Open API** (hours~few
+days, swap cost) and swing via a **Brazilian stock broker** (days~weeks,
+no swap, 15% capital-gains tax). Every strategy is labelled by the path
+it fits and gated against the **path-specific cost model**.
+
+Grounded in **33 absorbed quantitative trading / ML books** exposed as a
+Claude Skill (citable knowledge base). All code is deterministic; every
+decision cites `[book.slug, p.X]`.
 
 **Golden rule:** no claim, strategy, parameter, or gate without a book
 reference. Hallucination destroys the value of the knowledge base — and,
 in live, destroys capital.
+
+See [`ROADMAP.md`](ROADMAP.md) §"Two production environments" for the
+dual-path framework and per-path constraints.
 
 ---
 
@@ -18,15 +26,16 @@ in live, destroys capital.
 | 0 | Knowledge base — 33 books → validated summaries | ✅ Done |
 | 0.5 | `build_skill.py` + skill sanity gate | ✅ Done |
 | 1 | Pepperstone/cTrader infra + Postgres/Grafana | 🔄 Scaffold (awaiting Spotware OAuth approval) |
-| 2 | Backtest Module — engine + validation + metrics + Clenow replication | ✅ Done |
-| 2.5 | Strategy Engine (Universe Selector + grounded candidates) | ⏳ |
-| 3 | Rigorous backtest (parameter grid + CPCV/PBO/DSR gates in production) | ⏳ |
-| 4 | Paper trading (cTrader demo account) | ⏳ |
-| 5 | Live trading ($1000 initial) | ⏳ |
+| 2 | Backtest engine + CPCV/PBO/DSR/WF/MCPT validation | ✅ Done — 515 tests green |
+| 2.5 | Strategy search via self-improve loop | 🔄 0 winners post-cleanup (data-bug retracted prior 3 winners on 2026-04-16, see ROADMAP "Current status") |
+| 3 | Calibrated strategy + Pepperstone-cost ablation | ⏳ Blocked on 2.5 |
+| 4 | Paper trading (cTrader demo account) | ⏳ Blocked on 3 |
+| 5 | Live trading ($1000 initial) | ⏳ Blocked on 4 |
 | 6 | Monitoring + governance | ⏳ |
 | 7 | Scaling | ⏳ |
 
-Phase-by-phase details in [`ROADMAP.md`](ROADMAP.md).
+Phase-by-phase details + dual-environment framework + autonomous loop
+discipline in [`ROADMAP.md`](ROADMAP.md).
 
 ---
 
