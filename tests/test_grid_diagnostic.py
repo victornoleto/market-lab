@@ -26,7 +26,7 @@ import pytest
 
 def _mk_grid(sharpes: list[float]):
     from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import GridResult, TrialResult
 
     trials = []
@@ -43,9 +43,7 @@ def _mk_grid(sharpes: list[float]):
             equity_curve=eq, trades=[], fills=[],
             initial_cash=100_000.0, final_equity=float(eq.iloc[-1]),
         )
-        cfg = ClenowGridConfig(
-            lookback_regression=60 + 15 * i, top_pct=0.20, risk_factor=0.001,
-        )
+        cfg = BollingerMRGridConfig(window=20, std_mult=2.0)
         trials.append(
             TrialResult(
                 config_id=i, config=cfg, result=result,
@@ -197,7 +195,7 @@ def test_diagnostic_per_config_metrics_has_expected_columns():
     )
     df = report.per_config_metrics
     for col in (
-        "config_id", "lookback_regression", "top_pct", "risk_factor",
+        "config_id", "window", "std_mult",
         "sharpe", "cagr", "max_drawdown", "dsr_pass", "wf_verdict",
     ):
         assert col in df.columns
@@ -226,7 +224,7 @@ def test_diagnostic_recommendation_text_is_nonempty_and_cites_failure_modes():
 def test_diagnostic_handles_grid_with_error_trials_gracefully():
     """Error trials (status='error') appear in per_config_metrics as NaN rows."""
     from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
     from ai_trade.backtest.grid.result import GridResult, TrialResult
 
@@ -234,9 +232,7 @@ def test_diagnostic_handles_grid_with_error_trials_gracefully():
     eq = pd.Series(100_000.0 + np.arange(30, dtype=float) * 10.0, index=idx)
     ok_trial = TrialResult(
         config_id=0,
-        config=ClenowGridConfig(
-            lookback_regression=60, top_pct=0.10, risk_factor=0.001,
-        ),
+        config=BollingerMRGridConfig(window=20, std_mult=2.0),
         result=BacktestResult(
             equity_curve=eq, trades=[], fills=[],
             initial_cash=100_000.0, final_equity=float(eq.iloc[-1]),
@@ -245,9 +241,7 @@ def test_diagnostic_handles_grid_with_error_trials_gracefully():
     )
     err_trial = TrialResult(
         config_id=1,
-        config=ClenowGridConfig(
-            lookback_regression=120, top_pct=0.30, risk_factor=0.002,
-        ),
+        config=BollingerMRGridConfig(window=20, std_mult=2.0),
         result=None,
         sharpe=float("nan"), cagr=float("nan"), max_drawdown=float("nan"),
         status="error", error_msg="boom",
@@ -268,14 +262,12 @@ def test_diagnostic_handles_grid_with_error_trials_gracefully():
 
 def _mk_grid_all_errored(n: int = 4):
     """Grid where ALL trials errored upstream of the backtest (no equity curve)."""
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import GridResult, TrialResult
 
     trials = []
     for i in range(n):
-        cfg = ClenowGridConfig(
-            lookback_regression=60 + 15 * i, top_pct=0.20, risk_factor=0.001,
-        )
+        cfg = BollingerMRGridConfig(window=20, std_mult=2.0)
         trials.append(
             TrialResult(
                 config_id=i, config=cfg, result=None,

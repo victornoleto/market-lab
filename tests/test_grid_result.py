@@ -70,7 +70,7 @@ def test_align_returns_rejects_empty_input():
 
 def test_trial_result_carries_config_and_scalar_metrics():
     from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import TrialResult
 
     equity = _make_equity("2020-01-01", 50)
@@ -81,7 +81,7 @@ def test_trial_result_carries_config_and_scalar_metrics():
         initial_cash=100_000.0,
         final_equity=float(equity.iloc[-1]),
     )
-    config = ClenowGridConfig(lookback_regression=90, top_pct=0.20, risk_factor=0.001)
+    config = BollingerMRGridConfig(window=20, std_mult=2.0)
 
     trial = TrialResult(
         config_id=7,
@@ -99,10 +99,10 @@ def test_trial_result_carries_config_and_scalar_metrics():
 
 
 def test_trial_result_error_status_stores_error_message():
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import TrialResult
 
-    config = ClenowGridConfig(lookback_regression=60, top_pct=0.10, risk_factor=0.001)
+    config = BollingerMRGridConfig(window=20, std_mult=2.0)
     trial = TrialResult(
         config_id=0,
         config=config,
@@ -123,7 +123,7 @@ def test_trial_to_dir_writes_expected_files(tmp_path: Path):
     fills.parquet, meta.json.
     """
     from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import TrialResult, trial_to_dir
 
     equity = _make_equity("2020-01-01", 10)
@@ -134,7 +134,7 @@ def test_trial_to_dir_writes_expected_files(tmp_path: Path):
         initial_cash=100_000.0,
         final_equity=float(equity.iloc[-1]),
     )
-    config = ClenowGridConfig(lookback_regression=90, top_pct=0.20, risk_factor=0.001)
+    config = BollingerMRGridConfig(window=20, std_mult=2.0)
     trial = TrialResult(
         config_id=3,
         config=config,
@@ -156,13 +156,13 @@ def test_trial_to_dir_writes_expected_files(tmp_path: Path):
     assert meta["config_id"] == 3
     assert meta["status"] == "ok"
     assert meta["sharpe"] == pytest.approx(0.5)
-    assert meta["config"]["lookback_regression"] == 90
+    assert meta["config"]["window"] == 20
 
 
 def test_trial_round_trip_to_and_from_dir(tmp_path: Path):
     """Round-trip preserves config, metrics, status, equity curve values."""
     from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import (
         TrialResult,
         trial_from_dir,
@@ -177,7 +177,7 @@ def test_trial_round_trip_to_and_from_dir(tmp_path: Path):
         initial_cash=100_000.0,
         final_equity=float(equity.iloc[-1]),
     )
-    config = ClenowGridConfig(lookback_regression=105, top_pct=0.30, risk_factor=0.002)
+    config = BollingerMRGridConfig(window=20, std_mult=2.0)
     trial = TrialResult(
         config_id=23,
         config=config,
@@ -203,14 +203,14 @@ def test_trial_round_trip_to_and_from_dir(tmp_path: Path):
 
 def test_trial_from_dir_on_error_trial_reconstructs_without_result(tmp_path: Path):
     """Error trials have result=None; meta.json still persists config + error_msg."""
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import (
         TrialResult,
         trial_from_dir,
         trial_to_dir,
     )
 
-    config = ClenowGridConfig(lookback_regression=60, top_pct=0.10, risk_factor=0.001)
+    config = BollingerMRGridConfig(window=20, std_mult=2.0)
     trial = TrialResult(
         config_id=0,
         config=config,
@@ -233,7 +233,7 @@ def test_trial_from_dir_on_error_trial_reconstructs_without_result(tmp_path: Pat
 
 def test_grid_result_exposes_returns_matrix_and_configs():
     from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import GridResult, TrialResult
 
     trials = []
@@ -246,7 +246,7 @@ def test_grid_result_exposes_returns_matrix_and_configs():
             initial_cash=100_000.0,
             final_equity=float(equity.iloc[-1]),
         )
-        config = ClenowGridConfig(lookback_regression=lb, top_pct=tp, risk_factor=rf)
+        config = BollingerMRGridConfig(window=20, std_mult=2.0)
         trials.append(
             TrialResult(
                 config_id=i,
@@ -271,7 +271,7 @@ def test_grid_result_returns_matrix_excludes_error_trials():
     (``pbo`` would otherwise crash on the NaN column / missing curve).
     """
     from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import GridResult, TrialResult
 
     equity = _make_equity("2020-01-01", 50)
@@ -279,8 +279,8 @@ def test_grid_result_returns_matrix_excludes_error_trials():
         equity_curve=equity, trades=[], fills=[],
         initial_cash=100_000.0, final_equity=float(equity.iloc[-1]),
     )
-    cfg_ok = ClenowGridConfig(lookback_regression=60, top_pct=0.10, risk_factor=0.001)
-    cfg_bad = ClenowGridConfig(lookback_regression=120, top_pct=0.30, risk_factor=0.002)
+    cfg_ok = BollingerMRGridConfig(window=20, std_mult=2.0)
+    cfg_bad = BollingerMRGridConfig(window=20, std_mult=2.0)
 
     ok_trial = TrialResult(
         config_id=0, config=cfg_ok, result=result,

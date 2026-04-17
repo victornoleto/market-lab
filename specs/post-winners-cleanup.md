@@ -272,29 +272,70 @@ Strategies que não viraram winner **nem** são cobertas pelos 2 winners:
 
 ### 6.1 Inventário a remover
 
-- [ ] 6.1.1 Listar `src/ai_trade/backtest/strategies/*.py` e identificar:
-  - **KEEP:** `base.py`, `bollinger_mr.py`, `etf_rotation.py` + helpers
-    compartilhados.
-  - **DELETE:** `clenow_momentum.py`, `ehlers_bp_swing.py` (se existir),
-    `kalman_pairs.py` (se existir), `chan_pairs.py` (se existir),
-    `vol_expansion_breakout.py` (se existir). Confirmar cada um via `git ls-files`.
-- [ ] 6.1.2 Deletar **tests correspondentes** em `tests/` (grep pelos
-  nomes de classe; remover os arquivos inteiros quando testam só strategy
-  removida).
-- [ ] 6.1.3 Deletar **scripts one-shot** dessas strategies em `scripts/`:
-  `run_clenow_replication.py`, `run_ehlers_*.py`, `run_chan_*.py`, etc.
-  — NÃO remover qualquer script listado em §2.4.
+- [x] 6.1.1 Strategies deletadas (6 + 1 sub-package): `clenow_momentum.py`,
+  `ehlers_bp_swing.py`, `ehlers_meta.py`, `kalman_pairs.py`,
+  `chan_bollinger_pairs.py`, `ou_mean_rev.py`, `vol_expansion_breakout/`
+  (pacote com 6 arquivos). Também deletado: sub-package
+  `src/ai_trade/backtest/portfolio/` (F3.D Clenow+Ehlers portfolio,
+  obsoleto). Helper `adjusted_slope` + `atr` + `max_gap` migrados
+  previamente pra `helpers/momentum.py` (commit `3b8e3be`).
+- [x] 6.1.2 Tests deletados: 18 test files
+  (test_clenow_strategy, test_clenow_integration, test_ehlers_bp_swing,
+  test_ehlers_grid_config, test_ehlers_indicators, test_ehlers_integration,
+  test_ehlers_meta, test_kalman_pairs, test_chan_bollinger_pairs,
+  test_chan_pairs_grid_config, test_ou_mean_rev, 6× test_vol_expansion_*,
+  test_grid_runner_generic, test_grid_config, test_portfolio_configs,
+  test_portfolio_combined).
+- [x] 6.1.3 Scripts deletados: 13 one-shot scripts
+  (run_clenow_replication, run_ehlers_replication, run_ehlers_multi_asset.sh,
+  run_grid_clenow, run_grid_ehlers, run_grid_ehlers_meta,
+  run_grid_chan_pairs, run_grid_kalman_pairs, run_grid_vol_expansion,
+  run_grid_ou_mean_rev, run_oos_kalman_pairs, run_portfolio_combined,
+  build_ehlers_summary).
+- [x] 6.1.4 Grid configs deletados: `grid/config.py` (Clenow),
+  `grid/ehlers_config.py`, `grid/ehlers_meta_config.py`,
+  `grid/chan_pairs_config.py`, `grid/kalman_pairs_config.py`,
+  `grid/ou_mean_rev_config.py`, `grid/vol_expansion_config.py`.
+- [x] 6.1.5 `strategies/__init__.py` atualizado: só exporta
+  BollingerMRStrategy + ETFRotationStrategy (os 2 winners).
+- [x] 6.1.6 `grid/__init__.py` atualizado: só exporta
+  BollingerMRGridConfig + infra genérica.
+- [x] 6.1.7 `grid/runner.py` + `grid/result.py`: default
+  `config_cls` trocado de `ClenowGridConfig` para
+  `BollingerMRGridConfig`.
+- [x] 6.1.8 Tests migrados pra `BollingerMRGridConfig(window=20,
+  std_mult=2.0)` canonical: test_grid_report, test_grid_gates,
+  test_grid_observers, test_grid_diagnostic, test_grid_walk_forward,
+  test_grid_result, test_grid_runner, test_bollinger_mr. Campos
+  `lookback_regression`/`top_pct`/`risk_factor` substituídos por
+  `window`/`std_mult` onde relevante.
+- [x] 6.1.9 Mensagens user-facing em `grid/diagnostic.py` e
+  `grid/report.py` limpas de referências a Ehlers/Clenow/Chan
+  estratégias deletadas.
 
 ### 6.2 Validação
 
-- [ ] 6.2.1 `.venv/bin/pytest -q` pós-remoção → deve cair para ~X passed
-  (subtrair testes deletados). Baseline novo documentado aqui.
-- [ ] 6.2.2 `grep -rn "ClenowMomentum\|EhlersBPSwing\|KalmanPairs\|ChanPairs\|VolExpansion" src/ tests/ scripts/`
-  → zero hits. Se houver, é import residual.
-- [ ] 6.2.3 Rodar os grids dos 2 winners novamente em modo smoke (1
-  config cada) pra garantir que não quebrei imports implícitos.
+- [x] 6.2.1 `.venv/bin/pytest -q` → **345 passed** (de 531 pós-helper-
+  extraction, removidos ~186 tests de strategies descartadas).
+  Baseline novo documentado aqui: 345 passed, 2 skipped esperados.
+- [x] 6.2.2 `grep -rn "ClenowMomentum|EhlersBPSwing|EhlersMeta|KalmanPairs|ChanBollingerPairs|VolExpansionBreakout|OUMeanRev" src/ tests/ scripts/`
+  → único hit em `strategies/__init__.py` é comentário docstring
+  documentando a cleanup (intencional, não bug).
+- [x] 6.2.3 Smoke import sanity: `from ai_trade.backtest.strategies
+  import BollingerMRStrategy, ETFRotationStrategy` + helpers OK.
+  Grids completos dos 2 winners em Task 7.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** Cleanup estrutural completo. 6 strategy
+files + 1 sub-package + 1 Clenow+Ehlers portfolio sub-package
+deletados. 18 test files removidos, 13 one-shot scripts removidos, 7
+grid configs removidos. Engine genérico (runner, result) migrado de
+ClenowGridConfig como default → BollingerMRGridConfig. 8 test files
+migrados para usar a config canonical. Mensagens user-facing
+atualizadas. **345 tests passing**, imports sanitizados, zero
+residual de class names dos discarded strategies. Branch
+`cleanup/post-winners-20260416` em 3 commits incrementais (Task 1
+merge + Task 2 jornadas + Task 3 cleanup). Pronto pra Task 4
+(citation audit).
 
 ---
 

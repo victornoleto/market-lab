@@ -3,8 +3,9 @@
 Generic over the config type: the ``config_cls`` field is the dataclass
 used for both *trial_fn* typing (implicit) and checkpoint rehydration
 (explicit — ``trial_from_dir`` needs the class to reconstruct instances).
-Default ``ClenowGridConfig`` preserves backward compatibility; pass
-``EhlersGridConfig`` (or any other frozen dataclass) for other strategies.
+Default :class:`BollingerMRGridConfig` (the surviving Path A winner config
+after the 2026-04-16 cleanup); pass any other frozen dataclass for new
+strategies.
 
 The ``trial_fn`` contract isolates GridRunner from strategy-construction
 details: callers pass a closure that knows how to build and run one
@@ -21,7 +22,7 @@ from typing import Callable, Generic, TypeVar
 from joblib import Parallel, delayed
 
 from ai_trade.backtest.engine.runner import BacktestResult
-from ai_trade.backtest.grid.config import ClenowGridConfig
+from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
 from ai_trade.backtest.grid.result import (
     GridResult,
     TrialResult,
@@ -54,15 +55,14 @@ class GridRunner(Generic[ConfigT]):
     same ``run_id`` reuses any trial directories already present.
 
     ``config_cls`` is the dataclass used to rehydrate checkpoints from
-    disk. It defaults to :class:`ClenowGridConfig` so pre-existing
-    Clenow call sites don't need to change; new strategies (Ehlers,
-    future AFML/Chan) pass their own config class.
+    disk. Defaults to :class:`BollingerMRGridConfig` (the surviving Path A
+    winner config); pass your own frozen dataclass for new strategies.
     """
 
     checkpoint_dir: Path = field(default_factory=lambda: Path(".cache/grid_runs"))
     n_jobs: int = 1
     periods_per_year: int = 252
-    config_cls: type = ClenowGridConfig
+    config_cls: type = BollingerMRGridConfig
 
     def run(
         self,

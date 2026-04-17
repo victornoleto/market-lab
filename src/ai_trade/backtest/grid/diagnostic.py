@@ -274,8 +274,8 @@ def _recommendation(
     if "PBO_HIGH" in labels:
         lines.append(
             "PBO_HIGH: grid is overfit — don't expand the grid. Consider a "
-            "different hypothesis family (Ehlers DSP, AFML meta-label, mean "
-            "reversion) or a universe shift (Nasdaq100, liquidity filter)."
+            "different hypothesis family (LETF rotation, multi-asset BollingerMR, "
+            "AFML meta-label) or a universe shift."
         )
     if "DSR_ALL_FAIL" in labels and "PBO_HIGH" not in labels:
         lines.append(

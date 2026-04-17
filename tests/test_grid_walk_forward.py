@@ -114,7 +114,7 @@ def test_wf_for_config_over_all_grid_delegates_to_single_config_impl():
     sequential) and returns dict[config_id, WFResult]. We test the shape.
     """
     from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import GridResult, TrialResult
     from ai_trade.backtest.grid.walk_forward import wf_for_grid
 
@@ -128,9 +128,7 @@ def test_wf_for_config_over_all_grid_delegates_to_single_config_impl():
             equity_curve=eq, trades=[], fills=[],
             initial_cash=100_000.0, final_equity=float(eq.iloc[-1]),
         )
-        cfg = ClenowGridConfig(
-            lookback_regression=60, top_pct=0.10, risk_factor=0.001,
-        )
+        cfg = BollingerMRGridConfig(window=20, std_mult=2.0)
         trials.append(
             TrialResult(
                 config_id=i, config=cfg, result=result,

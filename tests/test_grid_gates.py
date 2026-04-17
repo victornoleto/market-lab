@@ -29,7 +29,7 @@ def _build_grid_from_returns(returns_per_config: list[np.ndarray]):
     a TrialResult with cached Sharpe/CAGR/DD.
     """
     from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import GridResult, TrialResult
     from ai_trade.backtest.metrics.performance import (
         cagr as cagr_fn,
@@ -49,9 +49,7 @@ def _build_grid_from_returns(returns_per_config: list[np.ndarray]):
             equity_curve=equity, trades=[], fills=[],
             initial_cash=100_000.0, final_equity=float(equity.iloc[-1]),
         )
-        cfg = ClenowGridConfig(
-            lookback_regression=60, top_pct=0.10 + 0.01 * i, risk_factor=0.001,
-        )
+        cfg = BollingerMRGridConfig(window=20, std_mult=2.0)
         trials.append(
             TrialResult(
                 config_id=i, config=cfg, result=result,

@@ -37,7 +37,7 @@ import pandas as pd
 from ai_trade.backtest.engine.execution import Fill, Order
 from ai_trade.backtest.engine.portfolio import Trade
 from ai_trade.backtest.engine.runner import BacktestResult
-from ai_trade.backtest.grid.config import ClenowGridConfig
+from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
 
 
 ConfigT = TypeVar("ConfigT")
@@ -231,7 +231,7 @@ def trial_to_dir(trial: TrialResult, directory: Path) -> None:
 
 def trial_from_dir(
     directory: Path,
-    config_cls: type[ConfigT] = ClenowGridConfig,  # type: ignore[assignment]
+    config_cls: type[ConfigT] = BollingerMRGridConfig,  # type: ignore[assignment]
 ) -> TrialResult[Any]:
     """Reconstruct a TrialResult from ``directory``.
 
@@ -241,9 +241,9 @@ def trial_from_dir(
         Path to the ``trial_{id}/`` directory.
     config_cls : type, optional
         Dataclass to rebuild the config with. Defaults to
-        :class:`ClenowGridConfig` for backward compatibility with the
-        Clenow pipeline; pass e.g. :class:`EhlersGridConfig` for the
-        Ehlers execution.
+        :class:`BollingerMRGridConfig` (the surviving Path A winner config
+        after the 2026-04-16 cleanup); pass any other frozen dataclass for
+        new strategies.
     """
     directory = Path(directory)
     meta = json.loads((directory / "meta.json").read_text())
