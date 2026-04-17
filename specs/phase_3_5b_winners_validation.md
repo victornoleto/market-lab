@@ -209,7 +209,7 @@ Sub-tasks independentes (cada uma ≤ 1 iter):
 
 ### Task 8 — Allocation & multi-strategy clarification
 
-- [ ] Documento `docs/phase3_winners_allocation.md` (NEW) respondendo
+- [x] Documento `docs/phase3_winners_allocation.md` (NEW) respondendo
       a dúvida do usuário:
       - **"São 3 strategies paralelas?" → NÃO.** O alvo de produção é
         **1 portfolio com 3 pernas EW a 33.3% cada**. O usuário vê 3
@@ -220,9 +220,18 @@ Sub-tasks independentes (cada uma ≤ 1 iter):
       - **Proporção no capital total:** Plano B ocupa 20-40% do capital
         ativo (mandate rule 1). Dentro de Plano B → 100% no portfolio
         3-leg. O 33% EW é só dentro do portfolio, não do capital total.
-- [ ] Exemplo numérico: $10k capital total com 30% em Plano B → $3k no
+- [x] Exemplo numérico: $10k capital total com 30% em Plano B → $3k no
       portfolio → $1k em cada perna.
-- **Conclusion:** _(preencher)_
+- **Conclusion:** ✅ Iter 14 (2026-04-17). `docs/phase3_winners_allocation.md`
+  criado (~170 linhas, 8 seções). Tabela CAGR/Sharpe/MaxDD consolidada da
+  janela comum 2004-11-18 → 2026-04-14 (Portfolio 25.56%/2.108/10.86%,
+  LETF 29.06%/1.724, QQQ 17.40%/1.389, GLD 11.46%/0.937, SPY B&H
+  10.66%/0.629). 4 alternativas rejeitadas (só-LETF, 3 contas, HRP/ERC,
+  vol-target default) com rationale + citações `[advances_fin_ml, p.298-299,
+  p.271-273]`. Exemplo $10k com 30% em Plano B → $1k/perna + nota de
+  colapso p/ só-LETF se capital <$3k em B. Checklist go-live + monitor
+  ρ 252d. Jornada: `2026-04-17-1945-phase3.5b-task8-allocation-doc.md`.
+  Zero código tocado; pytest 670 preservado. Próximo: Task 9.
 
 ### Task 9 — Summary Phase 3.5b
 
