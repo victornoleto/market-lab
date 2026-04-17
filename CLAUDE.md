@@ -37,11 +37,17 @@ Sumário do `docs/investment-mandate.md`. Regras invioláveis:
    1:1 → 1:200 cross-checked com Kelly f/2. Target: **5-10%/mês a
    partir de $1k**. Single-asset edge NÃO é aceito como winner final.
 4. **Strategy B (Path B swing broker) tese primária: LETF rotation
-   (SPY-SMA → UPRO/CASH)** baseada em
-   `books/summaries/leverage_for_the_long_run.md` (Gayed 2016/2020).
-   Overfit control via CPCV obrigatório; 15% IR modelado sempre;
-   UPRO sintético pre-2009 via `r = 3 × r_SPX_TR - drag_daily`.
-   Target: **CAGR líquido ≥ 15%/ano, ideal ≥ 20%**.
+   SPY-EMA(125) com banda simétrica 5% → UPRO 3x (chosen agressivo)
+   ou SSO 2x (conservador) com gold allocation 0-100%.** Baseada em
+   `books/summaries/leverage_for_the_long_run.md` (Gayed 2016/2020) +
+   `docs/reference/letf_rotation_reddit_analysis.md`. Seed (chosen):
+   `EMA 125 + band 5% + Lev 3x + Gold 0%` → CAGR 17.19% testfol.io
+   1968-2026, MaxDD -57.88%, 42 trades/58y. **Overfit control:
+   CPCV + PBO + splits mutuamente exclusivos (IS 1970-2000 / OOS
+   2001-2015 / Stress 2016-2026) + stationary block bootstrap
+   a 0.001.** 15% IR sempre; UPRO/SSO sintéticos pre-2009/2006 via
+   `r = L × r_SPX_TR - drag - expense`. Target: **CAGR líquido
+   ≥ 15%/ano, ideal ≥ 20%**.
 5. **Gates sempre:** PBO<0.5 + DSR p<0.05 + WF≥6/8 + single-block OOS
    + forward-window stress. Zero bypass. "Quase lá" não passa.
 6. **Threading model live (Phase 4):** 1 thread/processo por ativo

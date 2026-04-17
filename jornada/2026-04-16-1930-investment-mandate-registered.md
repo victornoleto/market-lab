@@ -75,14 +75,53 @@ seção).
    - `docs/reference/letf_rotation_reddit_analysis.md` — conteúdo do
      post do Reddit (WebFetch bloqueado).
 
+## Update 2026-04-16 21:30 — Reddit PDF + testfol.io response fornecidos
+
+Logo após registrar o mandate inicial, o usuário forneceu:
+- **`docs/reference/letf_rotation_reddit_post.pdf`** (Shift+P do post
+  original, 24pp, 4.6MB) — WebFetch estava bloqueado.
+- **`docs/reference/testfolio_letf_spy_ema_125_response.json`** (12MB)
+  — resposta completa do testfol.io pra config chosen (cashflow,
+  equity curve, trade stats, 1968-2026).
+
+Leitura do PDF revelou o parameter space real (360 configs, 220k
+backtests, 230 janelas) e o ranking completo, que é **diferente** do
+que eu tinha inferido inicialmente:
+
+- **Top ranked pelo scoring Calmar/Sortino/Sharpe:** SPY EMA 125 5%
+  **Lev 2x** Gold 75% (mais conservador).
+- **Chosen pelo usuário:** SPY EMA 125 5% **Lev 3x** Gold 0% (mais
+  agressivo e mais simples — binário 0/100%, menor fricção fiscal).
+- CAGR 17.19% com MaxDD -57.88% (28× cumulative vs SPY B&H em ~58y).
+
+Mandate §4 atualizado com:
+- Regra exata de rotação (5% simétrico, re-entry em 105% EMA — não em
+  95%, confirmado em comments).
+- Grid completo 360 configs (2 MA × 4 períodos × 3 bands × 3 lev × 5
+  gold_alloc) pra submeter ao CPCV+PBO.
+- Splits mutuamente exclusivos (IS 1970-2000 / OOS 2001-2015 / Stress
+  2016-2026) — endereça crítica da Destrolas.
+- Stationary block bootstrap a 0.001 — endereça crítica da
+  ChemicalStats.
+- SSO (2x) adicionado como path alternativo; UPRO proxy estendido pra
+  pre-2006 também.
+- §4.6 novo: alocação dentro do bucket ativo — ~25% do capital total
+  vai pra LETF rotation conforme intent declarado no Reddit.
+
+Spec `post-winners-cleanup.md §8 Lead B1` reescrito com o param grid
+completo + splits + bootstrap + ground-truth validation contra
+testfol.io response.
+
+Também atualizei CLAUDE.md root §📌 regra 4 com a config chosen
+específica, e sincronizei `.claude/CLAUDE.md` local.
+
 ## O que vem a seguir
 
 Próxima sessão:
 1. Executar o cleanup propriamente dito (tasks §4-§10 do spec).
 2. Merge pra `main` com autorização explícita.
-3. Preencher os 2 placeholders (testfol payload + Reddit post).
-4. Criar branch `phase3/letf-and-multi-asset-<date>`.
-5. Disparar o self-improve loop com os 5 leads nova memory.
+3. Criar branch `phase3/letf-and-multi-asset-<date>`.
+4. Disparar o self-improve loop com os 5 leads nova memory.
 
 ## Links
 

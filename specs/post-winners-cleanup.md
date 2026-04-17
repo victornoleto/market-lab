@@ -132,8 +132,17 @@ Lista absoluta. Qualquer tarefa que tocar esses arquivos falha o spec.
 - `docs/reference/letf_rotation_testfol_payload.json` — config
   testfol.io que gerou os seed params (stripado de auth). Lead B1 input.
 - `docs/reference/letf_rotation_reddit_analysis.md` — análise pessoal
-  do usuário no Reddit /r/LETFs. Conteúdo colado pelo usuário
-  (WebFetch bloqueado). Lead B1 input complementar.
+  do usuário no Reddit /r/LETFs: top-10 ranked configs, chosen config
+  stats (EMA 125 5% Lev 3x Gold 0% CAGR 17.19%), regra exata de
+  rotação, críticas dos comentaristas a endereçar (block bootstrap,
+  splits mutuamente exclusivos, multi-market robustness).
+- `docs/reference/letf_rotation_reddit_post.pdf` — print original do
+  post (24pp, 4.6MB) fornecido pelo usuário via Shift+P 2026-04-16.
+- `docs/reference/testfolio_letf_spy_ema_125_response.json` — payload
+  12MB da resposta testfol.io pra config chosen (1968-2026 cashflow +
+  equity curve + trade stats). Usado como ground-truth pro Lead B1
+  validar que a implementação bate numericamente ao testfol.io na
+  mesma janela.
 
 ---
 
@@ -337,7 +346,7 @@ separada (`phase3/letf-and-multi-asset-<date>`), após o cleanup merged.
 | A1 | A | **BollingerMR leverage sweep SPY 1h** — risk_pct ∈ {0.95, 2.0, 5.0, 10.0, 20.0} simulando margin-call bar-a-bar; Kelly f/2 cross-check; prob-of-ruin MC 10k paths. | nenhum | `[math_money_mgmt, Vince]`, `[leverage_space, Vince]`, `[leverage_for_the_long_run, p.7]` |
 | A2 | A | **Multi-asset universe screener** SPY+QQQ+GLD+BTC+ETH+FX majors: implementar `ai_trade/screener/` com Hurst/ATR/spread/volume; pre-screener roda antes do backtest e filtra ativos "propícios" para BollingerMR. | A1 opcional | `[machine_trading, Chan]`, `[volatility_trading, Sinclair]` |
 | A3 | A | **Per-asset BollingerMR + threading-ready code** — refactor do runner pra state-isolated per-ticker; perks opcionais (FX session filter, equity pre/post-market, crypto 24/7, gold news filter); output multi-asset portfolio metrics + correlation. | A2 | `[advances_fin_ml, ch.7/11]` (CPCV multi-asset) |
-| B1 | B | **LETF rotation replication** — SPY-EMA/SMA rotation → UPRO 3x / CASH. Seed params do testfol.io do usuário (EMA 125 band 5%). Submete param space completo ao CPCV + PBO. 15% IR BR modelado. UPRO sintético pre-2009 via r=3×r_SPX_TR−drag. Janela 1928-2026 (manifest).  | Task 0 (book) | `[leverage_for_the_long_run, p.13, p.21]` |
+| B1 | B | **LETF rotation replication** — Grid 360 configs (EMA/SMA × {100,125,150,200} × band {0,3%,5%} × lev {1x,2x,3x} × gold {0,25,50,75,100%}). Seed: EMA 125 5% Lev 3x Gold 0% (chosen user) + EMA 125 5% Lev 2x Gold 75% (top rank user). Splits mutuamente exclusivos IS 1970-2000 / OOS 2001-2015 / Stress 2016-2026 (crítica Destrolas). Stationary block bootstrap a 0.001 (crítica ChemicalStats). UPRO/SSO sintéticos pre-2009/2006. 15% IR BR por switch. | Task 0 (book) + `docs/reference/letf_rotation_reddit_analysis.md` + `docs/reference/testfolio_letf_spy_ema_125_response.json` | `[leverage_for_the_long_run, p.13, p.17, p.21]` |
 | B2 | B | **LETF rotation vs. ETFRotation benchmark** — correlação dos sinais, blend risk-parity, MAR ratio comparison; decidir se ambos coexistem na carteira ou se LETF substitui ETFRotation como winner Path B. | B1 | `[advances_fin_ml, p.196-202]` (PSR), `[stocks_on_the_move, p.81]` |
 
 ### Subtasks

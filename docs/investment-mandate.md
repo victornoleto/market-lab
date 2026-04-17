@@ -204,22 +204,62 @@ Insights-chave:
 
 ### 4.2 Parâmetros seed vs. otimização rigorosa
 
-O usuário tem análise prévia em testfol.io que indicou **SPY EMA 125
-com banda 5%** como "melhor" via tentativa-e-erro, CAGR 16.74% vs.
-SPY 10.63% (1967-2026). Esses params entram como **seed** para a
-Lead B1, **não como winner**.
+Análise prévia do usuário em testfol.io (220k backtests, 960 combos
+× 230 janelas, publicada em `/r/LETFs` — detalhes em
+`docs/reference/letf_rotation_reddit_analysis.md`) produziu:
 
-Lead B1 submete o parameter space {MA_type, MA_period, band_pct}
-completo ao CPCV + PBO. Se PBO > 0.5, pivot para param space
-menor (ex.: SMA only, band 0%) e re-teste. Qualquer param escolhido
-por "visualmente bonito" é rejeitado até passar PBO.
+- **Top-ranked (conservador, melhor Calmar):** `SPY EMA 125 5% | Lev 2x | Gold 75%`
+  — 12× cumulative vs SPY B&H, MaxDD 12.8% melhor que B&H.
+- **Chosen pelo usuário (agressivo, mais simples):** `SPY EMA 125 5% | Lev 3x | Gold 0%`
+  — CAGR 17.19%, MaxDD -57.88%, 28× cumulative vs B&H, 42 trades em
+  58 anos, win rate 90.5%. Motivo: binário 0%/100% simplifica execução
+  e reduz fricção tributária (sem switches cash↔gold).
 
-Citações externas ao livro (próprios estudos do usuário):
-- `docs/reference/letf_rotation_testfol_payload.json` — config exata
-  do testfol.io que originou os params seed (stripado de auth token).
-- `docs/reference/letf_rotation_reddit_analysis.md` — análise do
-  usuário publicada no Reddit (/r/LETFs). **WebFetch falhou com Reddit
-  — usuário precisa colar conteúdo manualmente**.
+**Regra exata (tolerância 5% confirmada pelo usuário em comments):**
+- `preço > EMA × 1.05` → entrar/manter leveraged position (UPRO 3x ou SSO 2x).
+- `preço < EMA × 0.95` → sair da leveraged para cash (ou gold, se
+  `gold_alloc > 0%`).
+- **Re-entry assimétrica:** só re-entra quando preço cruza
+  `EMA × 1.05` de volta (não em 0.95). Evita whipsaw em consolidação.
+
+Esses params entram como **seed** para Lead B1, **não como winner
+auditado**. O parameter space a submeter ao CPCV + PBO:
+
+| Parâmetro | Valores a testar |
+|-----------|------------------|
+| `ma_type` | {EMA, SMA} |
+| `ma_period` | {100, 125, 150, 200} |
+| `band_pct` | {0.0, 0.03, 0.05} |
+| `leverage` | {1, 2, 3} |
+| `gold_alloc` | {0.00, 0.25, 0.50, 0.75, 1.00} |
+
+Grid total = 2 × 4 × 3 × 3 × 5 = **360 configs**. PBO ≥ 0.5 bloqueia
+promoção a winner — nesse caso, reduzir grid para `band ∈ {0.03,0.05}`
++ `ma_period ∈ {125, 150}` (parameter space estreito pré-especificado
+antes de rodar) e re-testar.
+
+**Splits temporais obrigatórios (crítica da Destrolas no post):**
+- IS: 1970-2000 (30y)
+- OOS: 2001-2015 (15y) — mutuamente exclusivo, não overlap
+- Stress: 2016-2026 (10y recente)
+
+Se IS vencer em ranking e OOS mantiver top-20%, promove; senão,
+descarta independentemente do IS performance.
+
+**Bootstrap para CI (crítica da ChemicalStats):** stationary block
+bootstrap (Politis-Romano block size auto) para CI do Sharpe do winner
+a nível 0.001. Substitui a metodologia overlapping do testfol.io.
+
+Referências externas (arquivos committed):
+- `docs/reference/letf_rotation_reddit_post.pdf` — print do post
+  original (24pp, Shift+P do navegador em 2026-04-16).
+- `docs/reference/letf_rotation_reddit_analysis.md` — summary do post
+  com tabelas, stats da config chosen, críticas e resposta do user.
+- `docs/reference/testfolio_letf_spy_ema_125_response.json` — payload
+  12MB da resposta testfol.io pra config chosen `SPY EMA 125 5% | Lev 3x | Gold 0%`
+  (cashflow + equity curve + stats, 1968-2026).
+- `docs/reference/letf_rotation_testfol_payload.json` — config de
+  request exata (sem Bearer token), pra reprodutibilidade.
 
 ### 4.3 Tax modeling obrigatório
 
@@ -236,36 +276,56 @@ Nota operacional: o usuário deve validar com contador o tratamento
 exato para ETFs americanos via corretora BR internacional — pode
 haver regime distinto por BDR vs. ETF americano direto.
 
-### 4.4 UPRO proxy pre-2009
+### 4.4 UPRO/SSO proxy pre-2009/2006
 
-UPRO foi lançado em 2009. Para backtest 1967-2026 (que foi o range do
-estudo pessoal do usuário), UPRO precisa ser **sintético** antes de
-2009:
+UPRO (ProShares 3x SPX) lançou em 2009; SSO (2x SPX) em 2006. Para
+backtest 1970-2026 precisa ser **sintético** antes dessas datas:
 
 ```
-r_UPRO_synth[t] = L * r_SPX_TR[t] - (expense_ratio_daily + borrow_cost_daily)
+r_LETF_synth[t] = L × r_SPX_TR[t] − expense_daily − borrow_daily
 ```
 
-onde L=3, expense_ratio ~0.92% ao ano, borrow_cost/drag ~0.87% ao
-ano (valor usado pelo testfol.io; validar em
-`leverage_for_the_long_run.md`). Daily rebalancing implícito
-conforme `[leverage_for_the_long_run, p.16, footnote 22-23]`.
+onde:
+- L ∈ {2, 3} conforme leverage target.
+- `expense_daily = 0.92% / 252` (UPRO expense ratio típico);
+  SSO usa ~0.89%.
+- `borrow_daily = 0.87% / 252` (valor observado pelo testfol.io no
+  `drag` = 0.87 do payload chosen config). Validar em
+  `leverage_for_the_long_run.md [p.16, footnote 22-23]`.
 
-Após 2009, usar UPRO real (Tiingo ou Yahoo). O split a 2009 fica
-documentado no código da strategy, não escondido em constant.
+Post-2009 (3x) / post-2006 (2x), usar o real UPRO/SSO (Tiingo daily).
+O split temporal fica documentado no código da strategy, não escondido
+em constant. Diff entre synth vs real deve ser ≤ 0.5% CAGR no overlap
+2009-2020 (ver tabela de tracking error em
+`leverage_for_the_long_run.md [p.21, Table 12]`).
 
 ### 4.5 Universo permitido (Path B)
 
 - **LETFs primários:** UPRO (3x SPX), SSO (2x SPX), TQQQ (3x NAS),
-  QLD (2x NAS)
-- **Safe haven rotation target:** CASH ou SHV (short treasury)
+  QLD (2x NAS), SPXL (3x SPX) — equivalente a UPRO em Pepperstone/
+  corretoras.
+- **Safe haven rotation target:** CASH (MMF ou SHV short treasury) ou
+  GLD (gold allocation configurável 0-100% via `gold_alloc` param).
 - **Não permitidos neste compartimento:** ativos alavancados crypto
   (BITU, BITX — histórico curto; vai pro path A), 3x emerging markets
-  (EDC — liquidez inadequada).
+  (EDC — liquidez inadequada), TMF (3x long bonds) — user sinalizou
+  "catastrophe" nos comments do Reddit.
 
 Acesso via corretora BR internacional (Inter, XP Internacional, Avenue,
 Nomad). Se liquidez BDR de UPRO/TQQQ for adequada no volume alvo,
 alternativa aceita; senão, conta internacional é mandatory.
+
+### 4.6 Capital allocation dentro do bucket ativo
+
+Dentro dos 20-40% de capital ativo (Path A + Path B), o usuário
+sinalizou no Reddit que ~**25% do capital total** vai pra LETF
+rotation. Default calibration assumindo 30% ativo total:
+
+- ~25 pts → Path B LETF rotation (esta seção)
+- ~5 pts → Path A Pepperstone CFD (Strategy A)
+
+Se Strategy A não produzir winner em Phase 3, re-alocar os 5 pts de
+volta para o bucket passive (total ativo cai para 25 pts).
 
 ---
 
