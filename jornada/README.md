@@ -198,6 +198,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16-1245-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-16 2254 — 🏷️ Tag `v0.1-phase-2.5-winners` liberado: snapshot reprodutível dos 2 winners, main congelada, Phase 3 abre em branch separada](2026-04-16-2254-tag-v0.1-released.md)
 - [2026-04-16 2235 — ✅ Cleanup pós-winners completo: repo enxugado (520→345 tests, 18 books archived, 6 strategies removed), Phase 3 leads registrados](2026-04-16-2235-post-winners-cleanup-completed.md)
 - [2026-04-16 1930 — 📌 Investment Mandate registrado; CAGRs dos winners insuficientes vs CDI BR; direção agressiva Phase 3 (5 leads)](2026-04-16-1930-investment-mandate-registered.md)
 - [2026-04-16 1600 — 🏁 Phase B CONCLUÍDA: Production Readiness Summary — BollingerMR GO-WITH-CAVEATS, ETFRotation top-1 GO, ETFRotation top-2 NO-GO (costs-sensitive)](2026-04-16-1600-production-readiness-summary.md)
