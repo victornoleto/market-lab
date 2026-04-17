@@ -28,7 +28,7 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from ai_trade.backtest.grid.result import GridResult, TrialResult
-from ai_trade.backtest.validation.dsr import DSRResult, dsr
+from ai_trade.backtest.validation.dsr import DSRResult, dsr, psr
 from ai_trade.backtest.validation.pbo import PBOResult, pbo, pbo_gate
 
 
@@ -84,7 +84,12 @@ class GateEvaluator:
 
     def _pbo_gate(self, grid: GridResult) -> tuple[PBOResult | None, bool]:
         matrix = grid.returns_matrix
-        if matrix.shape[1] < 2 or matrix.shape[0] < self.n_blocks_pbo:
+        # N=1: PBO concept doesn't apply (no comparison between configs).
+        # Trivially pass — no multiple testing to correct for.
+        if matrix.shape[1] < 2:
+            _log.info("PBO trivially passed: N=1 pre-specified config, no multiple-test correction")
+            return None, True
+        if matrix.shape[0] < self.n_blocks_pbo:
             _log.warning(
                 "PBO skipped: matrix shape %s insufficient for %d blocks",
                 matrix.shape, self.n_blocks_pbo,
@@ -108,13 +113,29 @@ class GateEvaluator:
             rets = eq.pct_change().dropna().to_numpy(dtype=float)
             if len(rets) < 2:
                 continue
-            try:
-                dsr_res = dsr(rets, n_trials=n_trials)
-            except ValueError as exc:
-                _log.warning(
-                    "DSR failed for config %d: %s", trial.config_id, exc,
+            if n_trials == 1:
+                # PSR with benchmark=0 [AFML p.201-207]: test that SR > 0 at alpha level.
+                # Appropriate for pre-specified single configs (no multiple-test deflation).
+                try:
+                    p_val = 1.0 - psr(rets, benchmark=0.0)
+                except ValueError as exc:
+                    _log.warning("PSR failed for config %d: %s", trial.config_id, exc)
+                    continue
+                dsr_res = DSRResult(
+                    dsr=1.0 - p_val,
+                    p_value=p_val,
+                    observed_sharpe=float(np.array(rets).mean() / (np.array(rets).std(ddof=0) + 1e-12)),
+                    benchmark_sharpe=0.0,
+                    n_trials=1,
                 )
-                continue
+            else:
+                try:
+                    dsr_res = dsr(rets, n_trials=n_trials)
+                except ValueError as exc:
+                    _log.warning(
+                        "DSR failed for config %d: %s", trial.config_id, exc,
+                    )
+                    continue
             results[trial.config_id] = dsr_res
             if dsr_res.p_value < self.dsr_alpha:
                 pass_ids.append(trial.config_id)

@@ -26,6 +26,7 @@ from ai_trade.backtest.grid.ehlers_config import (
     EhlersGridConfig,
     ehlers_grid_configs,
     ehlers_reduced_1h_configs,
+    ehlers_regime_daily_configs,
 )
 from ai_trade.backtest.grid.ehlers_meta_config import (
     EhlersMetaGridConfig,
@@ -87,6 +88,7 @@ __all__ = [
     "compose_observers",
     "ehlers_grid_configs",
     "ehlers_reduced_1h_configs",
+    "ehlers_regime_daily_configs",
     "ehlers_meta_grid_configs",
     "grid_configs",
     "setup_grid_logging",

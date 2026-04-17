@@ -29,7 +29,7 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-15)
+## Onde estamos hoje (2026-04-16)
 
 - **Fase 0 — Biblioteca de conhecimento** ✅ 33 livros digeridos em resumos
   validados automaticamente. Zero alucinação detectada (toda afirmação
@@ -84,12 +84,14 @@ trading: palpite disfarçado de análise.
   escala).
 
 **Fatos concretos úteis pra contexto:**
-- 461 testes Python verdes (pytest -q).
+- **520 testes Python verdes** (pytest -q).
+- **Winners Phase A COMPLETA → Phase B ativa (cost ablation + MC bootstrap concluídos iters 22-23)**:
+  - ✅ Winner 1: Bollinger MR (20,2) + GARCH SPY 1h [SHORT-HOLD CFD]. IS Sharpe 0.995, OOS 0.945. **CUSTO-ROBUSTO**. MC bootstrap trade-CI=[-0.134, 1.728] (bar-level Sharpe é métrica primária — GARCH sizing não capturado por trade).
+  - ✅ Winner 2: ETF Rotation top-1 diário [SWING BROKER]. IS Sharpe 0.708, OOS 1.477. **CUSTO-ROBUSTO**. MC bootstrap IS CI95=[0.449, 1.254] — lower bound > 0, ROBUSTO.
+  - ⚠️ Winner 3: ETF Rotation top-2 diário [SWING BROKER]. **COSTS-SENSITIVE**: WF 5/8 (abaixo do mínimo 6/8) após aplicar custos reais.
 - Tiingo bulk completo: 1660 tickers survivorship-free, 145 MB em backup.
-- Ativos cobertos: SPY, QQQ, IWM, XLK/XLU/XLF/XLE, GLD, SLV, TLT, EEM,
-  EFA, USO, DBA, BTC, ETH + SPX point-in-time 506 tickers.
-- Último commit significativo: `7030d41` (AFML meta-labeling shippado,
-  ainda não conectado às estratégias).
+- Cache intraday limpo (2026-04-16): 4296 bars placeholder removidos.
+- **Phase B CONCLUÍDA** ✅: todos 9 leads consumidos. Vereditos: BollingerMR-GARCH SPY 1h → **GO-WITH-CAVEATS** (edge SPY-only, min $1k, CAGR ~5.9%/yr líquido); ETFRotation top-1 → **GO** (22 anos, CI>0, custos OK); ETFRotation top-2 → NO-GO (WF falha com 15% IR). Ver `2026-04-16-1600-production-readiness-summary.md`.
 
 ---
 
@@ -125,9 +127,7 @@ Duas coisas estão acontecendo:
 
 ## O que vem a seguir (ordem de prioridade)
 
-**Direção nova pós-pivô 2026-04-15 noite.** Todos os cinco ciclos
-anteriores ficam no histórico como "pesquisa em bars diários"; daqui
-pra frente a agulha gira em torno de short-hold intraday.
+**Phase B CONCLUÍDA (2026-04-16).** Todos os 9 leads de validação concluídos. Vereditos finais: BollingerMR-GARCH SPY 1h → **GO-WITH-CAVEATS** (edge real, custos OK, SPY-only); ETFRotation top-1 → **GO** (bootstrap CI>0, 22 anos, custos OK); ETFRotation top-2 → **NO-GO** (WF falha com custos). Próxima fase: implementação do executor live (Phase 3 ROADMAP).
 
 1. ✅ **`tiingo_service` lazy-cache — ENTREGUE** (2026-04-15 noite).
    Refactor in-place de `TiingoSource`/`TiingoStorage`; migração dos 1675
@@ -209,6 +209,16 @@ demoção de strategies que já não passariam de qualquer jeito).
 
 ## Entradas (mais recente primeiro)
 
+- [2026-04-16 1930 — 📌 Investment Mandate registrado; CAGRs dos winners insuficientes vs CDI BR; direção agressiva Phase 3 (5 leads)](2026-04-16-1930-investment-mandate-registered.md)
+- [2026-04-16 1600 — 🏁 Phase B CONCLUÍDA: Production Readiness Summary — BollingerMR GO-WITH-CAVEATS, ETFRotation top-1 GO, ETFRotation top-2 NO-GO (costs-sensitive)](2026-04-16-1600-production-readiness-summary.md)
+- [2026-04-16 1507 — Phase B Leads #7+#8: Vol-sizing ETFRotation NEUTRAL; BollingerMR scale-invariante, viável a partir de $1k](2026-04-16-1507-vol-sizing-account-sensitivity-phase-b.md)
+- [2026-04-16 1458 — Phase B Lead #6: Regime decomp — BollingerMR sem quintil perdedor; ETFRotation protegida por SMA200 em bears; nenhum trigger de pausa VIX necessário](2026-04-16-1458-regime-decomp-phase-b.md)
+- [2026-04-16 1549 — Phase B Leads #4+#5: Cross-asset transport + correlação. ETFRotation expanded_8 PASS; BollingerMR XLF FAIL (SPY-only). Correlação ρ=0.252 — INDEPENDENTES, 50/50 blend Sharpe=1.020](2026-04-16-1549-cross-asset-transport-correlation-phase-b.md)
+- [2026-04-16 1520 — Phase B Lead #3: MC Bootstrap CI — ETFRotation IS CI=[0.449,1.254] ROBUSTO; BollingerMR bar-level Sharpe IS=0.995/OOS=0.945](2026-04-16-1520-mc-bootstrap-ci-phase-b.md)
+- [2026-04-16 1435 — Phase B Lead #2: Custo-ablação — BollingerMR PASS, ETFRotation_top1 PASS, ETFRotation_top2 ⚠️ costs-sensitive (WF 5/8)](2026-04-16-1435-cost-ablation-phase-b-winners.md)
+- [2026-04-16 1416 — ★ WINNER #3 [SWING BROKER]: ETF Rotation top-2 — Sharpe 0.708, OOS 2025 1.611, Q1 0.481 — Phase A COMPLETA](2026-04-16-1416-etf-rotation-top2-PASS.md)
+- [2026-04-16 1420 — ★ WINNER #2 [SWING BROKER]: ETF Monthly Rotation SPY/QQQ/IWM/GLD/TLT — Sharpe 0.708, OOS 2025 Sharpe 1.477, 2026-Q1 Sharpe 1.081](2026-04-16-1420-etf-rotation-monthly-PASS.md)
+- [2026-04-16 1347 — ★ WINNER #1 [SHORT-HOLD CFD]: Bollinger MR + GARCH Sizing SPY 1h — Sharpe 0.982, OOS 2025 Sharpe 0.552, 2026-Q1 Sharpe 2.784](2026-04-16-1347-bollinger-mr-garch-spy-1h-PASS.md)
 - [2026-04-16 1245 — 🚨 BUG CRÍTICO: TODOS os 3 winners retratados; bars-fake da Tiingo IEX em US holidays](2026-04-16-1245-data-bug-winners-retracted.md)
 - [2026-04-16 1300 — Cross-asset overlap: XLK-XLE corr 0.83 → ~2 edges efetivos, não 3 ⚠️ RETRACTED](2026-04-16-1300-bollinger-mr-overlap.md)
 - [2026-04-16 1230 — MC bootstrap dos winners: XLK robusto, SPY OOS Sharpe lower bound = 0.031 ⚠️ RETRACTED](2026-04-16-1230-bollinger-mr-mc-bootstrap.md)

@@ -1,0 +1,9 @@
+Run: etf_rotation_top2_IS_iter21
+Period: 2005-01-03 → 2024-12-31
+Symbols: ['SPY', 'QQQ', 'IWM', 'GLD', 'TLT']
+Sharpe: 0.708
+CAGR: 8.90%
+MaxDD: -21.44%
+overall_pass: True
+DSR_p: 0.0009
+WF: 7/8 (pass)

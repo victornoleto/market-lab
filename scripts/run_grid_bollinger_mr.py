@@ -67,6 +67,17 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Entry direction: long (default), short, or both.",
     )
     ap.add_argument(
+        "--garch-lambda", type=float, default=0.0,
+        help="EWMA-GARCH vol sizing lambda (0=disabled, 0.94=RiskMetrics). "
+             "[machine_trading, p.126-127, ch.4]",
+    )
+    ap.add_argument(
+        "--canonical-only", action="store_true",
+        help="Run only the canonical (20,2) Bollinger config (N=1, no "
+             "multiple-test deflation). Use when config is pre-specified "
+             "by literature. [machine_trading, p.204-205, ch.7]",
+    )
+    ap.add_argument(
         "--log-level", default="INFO",
         choices=["DEBUG", "INFO", "WARNING", "ERROR"],
     )
@@ -103,6 +114,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     from ai_trade.backtest.grid.bollinger_mr_config import (
         BollingerMRGridConfig,
+        bollinger_mr_canonical_configs,
         bollinger_mr_grid_configs,
     )
     from ai_trade.backtest.strategies.bollinger_mr import BollingerMRStrategy
@@ -131,12 +143,17 @@ def main(argv: list[str] | None = None) -> int:
     log.info("=== grid run %s ===", run_id)
     log.info(
         "start=%s end=%s cash=$%.0f n_jobs=%d symbol=%s "
-        "data_source=%s frequency=%s direction=%s",
+        "data_source=%s frequency=%s direction=%s garch_lambda=%.2f",
         args.start, args.end, args.cash, args.n_jobs,
-        args.symbol, args.data_source, args.frequency, args.direction,
+        args.symbol, args.data_source, args.frequency,
+        args.direction, args.garch_lambda,
     )
 
-    configs = bollinger_mr_grid_configs()
+    if args.canonical_only:
+        configs = bollinger_mr_canonical_configs()
+        log.info("CANONICAL mode: N=1 pre-specified config (20,2) [machine_trading, p.204-205]")
+    else:
+        configs = bollinger_mr_grid_configs()
     if args.dry_run:
         configs = configs[:2]
         log.info("DRY RUN: limited to %d configs", len(configs))
@@ -183,6 +200,7 @@ def main(argv: list[str] | None = None) -> int:
             max_hold=cfg.max_hold,
             risk_pct_of_equity=cfg.risk_pct_of_equity,
             direction=args.direction,
+            garch_lambda=args.garch_lambda,
         )
         runner = Runner(executor=ExecutionSimulator(ExecutionConfig()))
         return runner.run(

@@ -1,0 +1,66 @@
+{
+  "symbol": "SPY",
+  "trades_csv": "reports/bollinger_mr_trades/SPY_2025-01-01_2026-04-14.csv",
+  "train": {
+    "n_trades": 151,
+    "years": 5.0598,
+    "trades_per_year": 29.84,
+    "first_entry": "2019-12-02T15:00:00",
+    "last_exit": "2024-12-23T17:00:00",
+    "point": {
+      "sharpe": 0.7161,
+      "cagr": 0.062354,
+      "max_dd": -0.16573
+    },
+    "ci_95": {
+      "sharpe": [
+        -0.1342,
+        1.7281
+      ],
+      "cagr": [
+        -0.017467,
+        0.144885
+      ],
+      "max_dd": [
+        -0.257909,
+        -0.06994
+      ]
+    },
+    "bootstrap": {
+      "block_mean": 5,
+      "n_resamples": 10000,
+      "seed": 42
+    }
+  },
+  "oos": {
+    "n_trades": 37,
+    "years": 1.2076,
+    "trades_per_year": 30.64,
+    "first_entry": "2025-01-10T15:00:00",
+    "last_exit": "2026-03-27T17:00:00",
+    "point": {
+      "sharpe": 0.0908,
+      "cagr": 0.004007,
+      "max_dd": -0.105972
+    },
+    "ci_95": {
+      "sharpe": [
+        -1.796,
+        2.7958
+      ],
+      "cagr": [
+        -0.161805,
+        0.15856
+      ],
+      "max_dd": [
+        -0.222668,
+        -0.023692
+      ]
+    },
+    "bootstrap": {
+      "block_mean": 5,
+      "n_resamples": 10000,
+      "seed": 42
+    }
+  }
+}

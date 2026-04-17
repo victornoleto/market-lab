@@ -1,6 +1,6 @@
 # books/ — Books Knowledge Base
 
-This folder contains the **33 absorbed books** that feed the ai-trade
+This folder contains the **34 absorbed books** that feed the ai-trade
 "trading expert" (Phase 0 of [`../ROADMAP.md`](../ROADMAP.md), **done**).
 
 Pipeline:
@@ -33,9 +33,9 @@ books/
 
 ---
 
-## Book catalog (33/33 absorbed)
+## Book catalog (34/34 absorbed)
 
-Post-pipeline state (2026-04-14): **33/33 summaries PASS** structural +
+Post-pipeline state (2026-04-16): **34/34 summaries PASS** structural +
 `check_citations.py` (0 fails), with adversarial validation by two LLM
 judges (Layer-3). Pipeline details in
 `/home/victor/.claude/plans/synthetic-snuggling-wren.md`.
@@ -64,6 +64,7 @@ judges (Layer-3). Pipeline details in
 | `eval_opt_strategies` | `⭐⭐⭐` | Pardo | 367 | 97 | 100% | 🌟 | J1 PASS 100% / J2 PASS 92%, 0 halluc, dens 0.26/p, 5 mis-cit fixed |
 | `evidence_based_ta` | `⭐⭐` | Aronson | 544 | 105 | 100% | 🌟 | J1 PASS 100% / J2 PASS 97%, 0 halluc, dens 0.19/p |
 | `fin_time_series_tsay` | `⭐⭐` | Tsay | 714 | 36 | 88% | ✅ | J1 PASS 100%, 0 halluc, dens 0.05/p — lean technical reference |
+| `leverage_for_the_long_run` | `⭐⭐⭐` | Gayed | 24 | 41 | 88% | ✅ | J1 PASS 92% / J2 BORDER 75%, 3 page-off halluc (non-blocking), dens 1.71/p — LETF rotation reference |
 | `leverage_space` | `⭐⭐` | Vince | 206 | 46 | 100% | 🌟 | J1 PASS 100%, 0 halluc, dens 0.22/p |
 | `machine_trading` | `⭐⭐` | Chan | 267 | 75 | 88% | ✅ | J1 PASS 100%, 0 halluc, dens 0.28/p |
 | `math_money_mgmt` | `⭐⭐` | Vince | 109 | 16 | 97% | ✅ | J1 PASS 100% / J2 BORDER 72%, 0 halluc; 2 mis-cit fixed after FU-1 |
@@ -87,9 +88,9 @@ judges (Layer-3). Pipeline details in
 | `universal_trend_tactics` | `⭐` | Penfold | 409 | 75 | 100% | ✅ | J1 PASS 90% / J2 BORDER 86%, 0 halluc, dens 0.18/p |
 | `volatility_trading` | `⭐⭐` | Sinclair | 298 | 130 | 80% | ✅ | J1 BORDER 93% / J2 PASS 93%, 0 halluc after corrective re-abs, dens 0.44/p |
 
-**Summary:** 🌟 12 × Perfect · ✅ 20 × Good · ⚠️ 1 × Border (`cybernetic_trading` — ambiguous only, 0 halluc) · 🔴 0 × Under-mined.
-**Importance:** `⭐⭐⭐` 7 · `⭐⭐` 12 · `⭐` 14.
-**Global cit-check:** 33/33 PASS (0 fails).
+**Summary:** 🌟 12 × Perfect · ✅ 21 × Good · ⚠️ 1 × Border (`cybernetic_trading` — ambiguous only, 0 halluc) · 🔴 0 × Under-mined.
+**Importance:** `⭐⭐⭐` 8 · `⭐⭐` 12 · `⭐` 14.
+**Global cit-check:** 34/34 PASS (0 fails).
 
 **Notes on the Review column:**
 - `J1/J2 <verdict> Xx%` = support_ratio of the adversarial judges (Layer-3); halluc = claims marked `unsupported`.

@@ -38,6 +38,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--symbol", default="SPY")
     ap.add_argument("--oos-start", type=date.fromisoformat, default=date(2025, 1, 1))
     ap.add_argument("--oos-end", type=date.fromisoformat, default=date(2025, 12, 31))
+    ap.add_argument("--train-start", type=date.fromisoformat, default=date(2021, 1, 1))
+    ap.add_argument("--train-end", type=date.fromisoformat, default=date(2024, 12, 31))
     ap.add_argument("--cash", type=float, default=100_000.0)
     ap.add_argument("--storage-root", type=Path, default=Path("data/tiingo"))
     # Fixed best config from training (2021-2024):
@@ -45,6 +47,11 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--std-mult", type=float, default=1.5)
     ap.add_argument("--stop-pct", type=float, default=0.02)
     ap.add_argument("--max-hold", type=int, default=24)
+    ap.add_argument(
+        "--garch-lambda", type=float, default=0.0,
+        help="EWMA-GARCH vol sizing lambda (0=disabled, 0.94=RiskMetrics). "
+             "[machine_trading, p.126-127, ch.4]",
+    )
     ap.add_argument(
         "--emit-trades",
         action="store_true",
@@ -95,6 +102,7 @@ def main(argv: list[str] | None = None) -> int:
         stop_pct=args.stop_pct,
         max_hold=args.max_hold,
         risk_pct_of_equity=0.95,
+        garch_lambda=args.garch_lambda,
     )
     runner = Runner(executor=ExecutionSimulator(ExecutionConfig()))
     result: BacktestResult = runner.run(
@@ -135,10 +143,10 @@ def main(argv: list[str] | None = None) -> int:
     else:
         win_rate = avg_pnl = total_pnl = 0.0
 
-    # Also compute metrics for the training period (2021-2024) using same config.
-    print("\n--- Training period comparison (2021-2024) ---")
-    train_start = date(2021, 1, 1)
-    train_end = date(2024, 12, 31)
+    # Also compute metrics for the training period using same config.
+    print(f"\n--- Training period comparison ({args.train_start} → {args.train_end}) ---")
+    train_start = args.train_start
+    train_end = args.train_end
     train_fetch_start = train_start - timedelta(days=warmup_days)
     raw_train = src.fetch_many(
         [args.symbol], train_fetch_start, train_end,
@@ -161,6 +169,7 @@ def main(argv: list[str] | None = None) -> int:
         stop_pct=args.stop_pct,
         max_hold=args.max_hold,
         risk_pct_of_equity=0.95,
+        garch_lambda=args.garch_lambda,
     )
     result_train = runner.run(
         strategy=strategy_train, data=data_train_bounded, initial_cash=args.cash,

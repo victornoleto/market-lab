@@ -16,6 +16,9 @@ on liquid ETFs (SPY, QQQ). Targets median hold ≤ 24 bars (1 day on 1h).
   — "exit after N bars if not profitable" for intraday risk control.
 - Optional SMA regime filter: ``[stocks_on_the_move, p.110]`` — only
   enter when close > SMA(regime_sma) to avoid bear-market entries.
+- EWMA vol sizing (garch_lambda > 0): ``[machine_trading, p.126-127,
+  ch.4]`` — scale notional by σ_baseline / σ_ewma so position is
+  inversely proportional to current volatility. λ=0.94 (RiskMetrics).
 
 Pipeline (per bar)
 ------------------
@@ -33,6 +36,10 @@ Position sizing
 
 Fraction of current equity at entry: ``notional = equity · risk_pct``,
 ``volume = notional / entry_price``.
+
+Optional EWMA-GARCH sizing (``garch_lambda > 0``): multiplies notional
+by ``clip(σ_baseline / σ_ewma, 0.1, 3.0)``. Reduces exposure in
+high-vol regimes, increases it in low-vol regimes.
 """
 
 from __future__ import annotations
@@ -71,8 +78,12 @@ class BollingerMRStrategy:
     risk_pct_of_equity: float = 0.95
     regime_sma: int = 0  # 0 = disabled; >0 = SMA(N) regime filter [stocks_on_the_move, p.110]
     direction: Direction = "long"
+    # EWMA-GARCH vol sizing [machine_trading, p.126-127, ch.4].
+    # 0.0 = disabled; 0.94 = RiskMetrics lambda.
+    garch_lambda: float = 0.0
 
     _indicators: dict[str, pd.DataFrame] = field(init=False, default_factory=dict)
+    _garch_baseline_vol: float = field(init=False, default=0.0)
     _logger: logging.Logger = field(
         default_factory=lambda: logging.getLogger("ai_trade.strategy.bollinger_mr"),
         repr=False,
@@ -91,6 +102,8 @@ class BollingerMRStrategy:
             raise ValueError(f"regime_sma must be >= 0, got {self.regime_sma}")
         if self.direction not in ("long", "short", "both"):
             raise ValueError(f"direction must be 'long', 'short', or 'both', got {self.direction!r}")
+        if not (0.0 <= self.garch_lambda < 1.0):
+            raise ValueError(f"garch_lambda must be in [0, 1), got {self.garch_lambda}")
         if self.symbol not in self.data:
             raise KeyError(f"symbol {self.symbol!r} not in data")
 
@@ -109,6 +122,18 @@ class BollingerMRStrategy:
             cols["regime_ma"] = close.rolling(
                 window=self.regime_sma, min_periods=self.regime_sma,
             ).mean()
+
+        # EWMA-GARCH vol sizing [machine_trading, p.126-127, ch.4].
+        if self.garch_lambda > 0:
+            returns = close.pct_change().fillna(0.0)
+            # span = 2/α - 1 where α = 1 - λ (EWMA decay factor).
+            span = 2.0 / (1.0 - self.garch_lambda) - 1.0
+            ewma_var = returns.ewm(span=span, adjust=False).var()
+            ewma_vol = np.sqrt(ewma_var.clip(lower=1e-12))
+            cols["ewma_vol"] = ewma_vol
+            # Baseline = median EWMA vol over history (robust to outliers).
+            valid = ewma_vol[ewma_vol > 0]
+            self._garch_baseline_vol = float(valid.median()) if len(valid) > 0 else 0.0
 
         self._indicators[symbol] = pd.DataFrame(cols, index=close.index)
 
@@ -225,6 +250,16 @@ class BollingerMRStrategy:
         if equity <= 0:
             return []
         notional = equity * self.risk_pct_of_equity
+
+        # EWMA-GARCH vol scaling [machine_trading, p.126-127, ch.4].
+        if self.garch_lambda > 0 and self._garch_baseline_vol > 0:
+            ind = self._indicators[self.symbol]
+            if "ewma_vol" in ind.columns:
+                ewma_vol = float(ind["ewma_vol"].iloc[idx])
+                if ewma_vol > 0:
+                    vol_ratio = self._garch_baseline_vol / ewma_vol
+                    notional *= float(np.clip(vol_ratio, 0.1, 3.0))
+
         if bar.close <= 0:
             return []
         volume = notional / bar.close

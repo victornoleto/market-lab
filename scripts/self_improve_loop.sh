@@ -27,7 +27,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-: "${MAX_ITER:=20}"
+: "${MAX_ITER:=100}"
 : "${ITER_TIMEOUT:=1800}"
 : "${SCOPE:=code}"
 : "${COOLDOWN:=10}"
@@ -100,50 +100,68 @@ build_prompt() {
     cat <<PROMPT
 You are resuming an autonomous self-improvement loop for the ai-trade project at /var/www/pessoal/ai-trade.
 
-**FIRST ACTION (mandatory):** Read \`docs/self_improvement/memory.md\` in full. Your conversation history is empty — that file is your only continuity. It contains the goal, project state anchor, known dead ends, promising leads, binding constraints, and a history of prior iterations.
+**FIRST ACTION (mandatory):** Read \`docs/self_improvement/memory.md\` in full. Your conversation history is empty — that file is your only continuity. It contains the goal, current phase (A or B), winners found per path, project state anchor, known dead ends, promising leads, binding constraints, and a history of prior iterations.
 
 $scope_clause
 
+## Mission (across all iterations)
+
+The loop has TWO phases. Memory.md frontmatter has \`phase: A\` or \`phase: B\` — read it first.
+
+**Phase A — Find ≥3 gate-passing strategies, with ≥1 per path.**
+- Path A = [SHORT-HOLD CFD] (Pepperstone, swap, median hold ≤ 5 days). Use the Tiingo IEX 1h cache (or 5m/15m if added).
+- Path B = [SWING BROKER] (Brazilian stock broker, no swap, 15% capital-gains tax modeled in net Sharpe). Use Tiingo daily cache.
+- Each winner = a config that passes all 3 gates (PBO < 0.5 AND DSR p < 0.05 AND WF ≥ 6/8) on its path AND survives single-block OOS hold-out AND a forward-window stress (newest quarter).
+- A winner enters \`winners_short_hold:\` or \`winners_swing:\` in memory.md frontmatter (YAML list of dicts: \`{strategy, asset, frequency, sharpe_is, sharpe_oos, jornada}\`).
+- Phase A completes when: \`len(winners_short_hold) ≥ 1 AND len(winners_swing) ≥ 1 AND total ≥ 3\`. Set \`phase: B\` in frontmatter on the iteration that completes this.
+
+**Phase B — Test, optimize, validate the winners. DO NOT exit yet.**
+- Re-validate each winner on the LONGEST available historical window (manifest \`first_dt\` → \`last_dt\`).
+- Cost ablation per path (real Pepperstone spreads/swap for A; 15% tax + spread for B).
+- Multi-asset transport: does the winner replicate on a related asset?
+- Cross-strategy correlation: are the winners independent edges or correlated?
+- GARCH / vol-sized variants when applicable.
+- Production-readiness checklist (CI bands via stationary bootstrap; regime decomposition; risk-pct sensitivity at \$1k account).
+- Phase B leads are listed in memory.md \`## Phase B leads\` (separate from Phase A leads).
+- Loop exits with \`status: done\` ONLY when Phase B leads are exhausted AND a production-readiness summary jornada exists.
+
 ## Per-iteration task
 
-1. Read memory.md.
-2. Decide ONE concrete next experiment, audit, or implementation step. Strict rules:
-   - Do NOT repeat anything in "Known dead ends".
-   - Prefer items from "Promising leads not yet explored" in the listed order, unless you have a specific reason to deviate (document it).
-   - The step must be completable in under ~15 minutes wallclock.
+1. Read memory.md (especially: \`phase\`, \`winners_short_hold\`, \`winners_swing\`, \`## Leads\` if phase==A, \`## Phase B leads\` if phase==B).
+2. Decide ONE concrete experiment for the current phase. Strict rules:
+   - Do NOT repeat anything in \`## Dead ends\`.
+   - Phase A: pick from \`## Leads\` in listed order unless documented reason to deviate.
+   - Phase B: pick from \`## Phase B leads\` in listed order; if exhausted, propose a new B-task (e.g., a new asset for an existing winner) and append it.
+   - The step must complete in under ~25 minutes wallclock.
 3. Execute the step. Report intermediate findings in your output.
-4. Update \`docs/self_improvement/memory.md\`:
+4. **HARD RULE — TIME WINDOW:** every backtest MUST use the LONGEST available historical window for each (ticker, frequency). Read \`data/tiingo/manifest.json\` first to get \`first_dt\` / \`last_dt\` per (ticker, freq). DO NOT use a shorter window unless explicitly justified (e.g., a regime cut). Reject your own design if it uses a window narrower than the manifest allows.
+5. Update \`docs/self_improvement/memory.md\`:
    - Bump \`iteration:\` in the YAML frontmatter.
-   - Update \`best_verdict:\`, \`best_sharpe:\`, \`best_asset:\`, \`best_config:\` if you produced a better result than the current best (any 3-gate-passing config beats any non-passing).
-   - Set \`status: done\` ONLY if a config passed all 3 gates (PBO < 0.5 AND DSR p < 0.05 AND WF ≥ 6/8). Otherwise leave \`in_progress\`.
-   - Append a terse iteration entry under \`## History\` with this template (5-15 lines):
-     \`\`\`
-     ### Iteration N — YYYY-MM-DD HH:MM
-     - Hypothesis: <one sentence>
-     - Action: <command(s) run, file(s) written>
-     - Result: <verdict, key metrics>
-     - Conclusion: <what we learned, what to try next>
-     \`\`\`
-   - If \`## History\` exceeds ~20 entries, prune oldest (preserve 5 newest + any ★ PASS entries; document the pruning).
-   - Move consumed items from "Promising leads" to "Known dead ends" (with a one-line reason) when the lead is exhausted.
-5. **Document significant results in jornada/.** When a result is significant (any gate-passing config, OOS validation, or new strategy family that passes), create a detailed entry file at \`jornada/YYYY-MM-DD-HHmm-slug.md\` AND add it to the top of the entry index in \`jornada/README.md\`. This is the human-readable project record — memory.md is for loop continuity, jornada/ is for the user.
-6. **KEEP memory.md COMPACT (< 15 KB).** This file is re-sent every iteration — bloat = wasted tokens + worse model performance. Rules:
-   - \`## History\` entries: MAX 5 lines each. No tables, no code blocks. Just: Hypothesis, Action (1 line), Result (1 line), Conclusion (1 line).
-   - \`## Known dead ends\`: ONE LINE per entry. No explanations — just strategy name + verdict.
-   - \`## ★ GOAL ACHIEVED\` section: keep only the BEST config summary. Move detailed tables (OOS, costs, trade analysis) to \`jornada/\` entries instead.
-   - \`## Promising leads\`: remove consumed items entirely (they're in History already). Don't keep strikethrough text.
-   - If memory.md exceeds 15 KB after your edits, PRUNE before exiting. Check with: \`wc -c < docs/self_improvement/memory.md\`
-6. Exit cleanly.
+   - If a config passed: append it to \`winners_short_hold:\` or \`winners_swing:\` with the dict format above.
+   - Update \`best_verdict:\`, \`best_sharpe:\`, \`best_asset:\`, \`best_config:\` if you produced a better result than the current best.
+   - Recompute Phase A completion: if \`len(winners_short_hold) ≥ 1 AND len(winners_swing) ≥ 1 AND total ≥ phase_a_target\` → set \`phase: B\` (transition).
+   - Set \`status: done\` ONLY when phase==B AND \`## Phase B leads\` is exhausted AND production-readiness jornada exists. Otherwise leave \`status: in_progress\`.
+   - Append a terse iteration entry under \`## History\` (5 lines max each).
+   - Move consumed leads to \`## Dead ends\` (one line each).
+6. **Document significant results in jornada/.** Any gate-passing config or OOS/stress validation = mandatory \`jornada/YYYY-MM-DD-HHmm-slug.md\` entry, added to top of \`jornada/README.md\` index. Tag entries clearly with \`[SHORT-HOLD CFD]\` or \`[SWING BROKER]\` in the header.
+7. **KEEP memory.md COMPACT (< 15 KB).** Rules:
+   - \`## History\` entries: MAX 5 lines each. No tables, no code blocks.
+   - \`## Dead ends\`: ONE LINE per entry.
+   - Move detailed analyses to jornada/ entries.
+   - If memory.md > 15 KB after edits, PRUNE oldest \`## History\` entries (keep 5 newest + all ★ PASS entries) before exiting. Check: \`wc -c < docs/self_improvement/memory.md\`.
+8. Exit cleanly.
 
 ## Hard rules
 
-- The memory file is sacred. Update it conservatively — every edit is read by the next iteration.
-- All claims of "edge" or "improvement" require passing all 3 gates. No partial credit.
+- The memory file is sacred. Update conservatively — every edit is read by the next iteration.
+- Phase B does NOT terminate the loop. Only \`status: done\` after Phase B leads exhausted does.
+- All claims of "edge" or "winner" require passing all 3 gates + single-block OOS + forward-window stress. No partial credit.
 - Cite \`[book.slug, p.X]\` for any strategy/parameter choice grounded in the knowledge base.
-- Working directory: /var/www/pessoal/ai-trade
-- Goal: gate-passing strategy. Memory is single source of truth.
-- The shell loop auto-commits after each iteration on the isolated branch. Do NOT run git commit yourself.
-- **Swap constraint:** strategies for Pepperstone CFDs must target median hold ≤ 5 days. Label findings as [SHORT-HOLD CFD] or [SWING BROKER].
+- Working directory: /var/www/pessoal/ai-trade.
+- The shell loop auto-commits after each iteration on the isolated branch. Do NOT run \`git commit\` yourself.
+- **TIME WINDOW (repeated for emphasis):** ALWAYS use the LONGEST available historical window per (ticker, frequency). Check \`data/tiingo/manifest.json\` before backtesting. Narrower windows = wasted iteration.
+- **Path labelling:** every winner candidate must be tagged \`[SHORT-HOLD CFD]\` (Path A, median hold ≤ 5 days, Pepperstone swap modeled) or \`[SWING BROKER]\` (Path B, daily/swing, 15% BR tax modeled in net Sharpe).
+- **Data source discipline:** intraday cache was cleaned 2026-04-16 of US-holiday placeholder bars. The \`_filter_orphan_intraday_bars\` guard is active for new fetches. If you suspect data contamination on any new ticker/freq, run \`scripts/clean_intraday_orphans.py --dry-run\` before trusting the result.
 
 Begin by reading memory.md.
 PROMPT
@@ -156,6 +174,23 @@ read_status() {
 
 read_iteration() {
     awk '/^---$/{f++; next} f==1 && /^iteration:/{print $2; exit}' "$MEMORY_FILE"
+}
+
+read_phase() {
+    awk '/^---$/{f++; next} f==1 && /^phase:/{print $2; exit}' "$MEMORY_FILE"
+}
+
+# Count winners per path (YAML lists in frontmatter); naive grep — counts the
+# number of "- " bullet lines under each list. Good enough to display progress.
+read_winners_count() {
+    local list_name="$1"
+    awk -v lname="$list_name" '
+        /^---$/{f++; next}
+        f==1 && $0 ~ "^"lname":" {in_list=1; next}
+        f==1 && in_list && /^[a-zA-Z_]+:/ {in_list=0}
+        f==1 && in_list && /^  - / {n++}
+        END{print n+0}
+    ' "$MEMORY_FILE"
 }
 
 echo "=== self_improve_loop @ $(date -Iseconds) ===" | tee -a "$RUN_LOG"
@@ -209,25 +244,33 @@ EOF
     fi
 
     STATUS=$(read_status)
+    PHASE=$(read_phase)
+    SHORT_HOLD_N=$(read_winners_count "winners_short_hold")
+    SWING_N=$(read_winners_count "winners_swing")
     # Extract verdict from the iteration's Result line (★ = PASS, FAIL otherwise)
     ITER_VERDICT=$(awk '/^### Iteration '"$MEM_ITER"'/{found=1; next} found && /^- Result:/{print; exit}' "$MEMORY_FILE" \
         | grep -qo '★' && echo "★ PASS" || echo "FAIL")
     ITER_RESULT=$(awk '/^### Iteration '"$MEM_ITER"'/{found=1; next} found && /^- Result:/{sub(/^- Result: /,""); print; exit}' "$MEMORY_FILE" \
         | head -c 120)
-    echo "--- Iteration $i done | $ITER_VERDICT | memory iter=$MEM_ITER status=$STATUS ---" \
+    echo "--- Iteration $i done | $ITER_VERDICT | iter=$MEM_ITER status=$STATUS phase=$PHASE winners(short=$SHORT_HOLD_N, swing=$SWING_N) ---" \
         | tee -a "$RUN_LOG"
     [[ -n "$ITER_RESULT" ]] && echo "    $ITER_RESULT" | tee -a "$RUN_LOG"
 
     if [[ "$STATUS" == "done" ]]; then
-        echo "=== SUCCESS at iteration $i — gate-passing config found ===" \
+        echo "=== SUCCESS at iteration $i — Phase B exhausted, mission complete ===" \
             | tee -a "$RUN_LOG"
-        echo "=== Review memory.md and commit when ready ==="
+        echo "=== winners: short_hold=$SHORT_HOLD_N, swing=$SWING_N ===" \
+            | tee -a "$RUN_LOG"
+        echo "=== Review memory.md + jornada/ and decide next steps ===" \
+            | tee -a "$RUN_LOG"
         exit 0
     fi
 
     sleep "$COOLDOWN"
 done
 
-echo "=== Loop ended after $MAX_ITER iterations without SUCCESS @ $(date -Iseconds) ===" \
+echo "=== Loop reached MAX_ITER=$MAX_ITER without status:done @ $(date -Iseconds) ===" \
     | tee -a "$RUN_LOG"
-echo "Inspect $MEMORY_FILE for accumulated findings."
+echo "Final state: phase=$PHASE  winners(short=$SHORT_HOLD_N, swing=$SWING_N)" \
+    | tee -a "$RUN_LOG"
+echo "Inspect $MEMORY_FILE for accumulated findings; re-run loop with higher MAX_ITER to continue."

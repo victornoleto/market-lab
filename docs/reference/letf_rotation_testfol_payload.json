@@ -1,0 +1,96 @@
+{
+  "_comment": "testfol.io Tactical API request payload — config CHOSEN pelo usuário (SPY EMA 125 5% | Lev 3x | Gold 0%). Auth header removido. Usado como ground-truth reference para Lead B1 (specs/post-winners-cleanup.md §8).",
+  "_endpoint": "POST https://testfol.io/api/tactical",
+  "_response_file": "docs/reference/testfolio_letf_spy_ema_125_response.json",
+  "_source": "cURL fornecida pelo usuário 2026-04-15; Bearer token stripado antes de commit.",
+  "_rule_interpretation": "Signal 1 é 'EMA(SPYSIM, 125) < Price(SPYSIM)' com tolerance=5%. Quando signal DISPARA (preço > EMA × 1.05), alocação 1 (Leveraged SPY 3x) ativa. Quando signal NÃO dispara (preço < EMA × 0.95), alocação 2 (Cash) ativa. Re-entry em 1.05 (assimétrico). SPY benchmark é alocação 3 comparativa.",
+
+  "name": "SPY EMA 125 5% | Lev 3x | Gold 0%",
+  "start_date": "1968-01-01",
+  "end_date": "",
+  "start_val": 1000,
+  "adj_inflation": false,
+  "trading_cost": 0,
+  "rolling_window": 60,
+  "withdrawal_surface_include": false,
+  "withdrawal_surface_projection": "NONE",
+  "withdrawal_surface_projection_min_years": 0,
+  "withdrawal_surface_start_years": 5,
+  "withdrawal_surface_end_years": 50,
+  "withdrawal_surface_step_years": 1,
+  "signals": [
+    {
+      "name": "1",
+      "indicator_1": {
+        "type": "EMA",
+        "ticker": "SPYSIM",
+        "ticker_2": null,
+        "value": null,
+        "lookback": 125,
+        "delay": null
+      },
+      "comparison": "<",
+      "indicator_2": {
+        "type": "Price",
+        "ticker": "SPYSIM",
+        "ticker_2": null,
+        "value": null,
+        "lookback": null,
+        "delay": null
+      },
+      "tolerance": 5
+    }
+  ],
+  "derived_signals": [],
+  "mode": "BACKTEST",
+  "global_candidate_tickers": [],
+  "include_efficient_frontier": false,
+  "allocations": [
+    {
+      "name": "Leveraged SPY",
+      "signals": ["1"],
+      "ops": [],
+      "nots": [false],
+      "tickers": [{"ticker": "SPYSIM?L=3", "percent": 100}],
+      "drag": 0.87,
+      "candidate_tickers": [],
+      "optimize_objective": null,
+      "rebalance_freq": "Daily",
+      "rebalance_offset": 0,
+      "absolute_dev": 0,
+      "relative_dev": 0
+    },
+    {
+      "name": "Cash/Gold",
+      "signals": [],
+      "ops": [],
+      "nots": [],
+      "tickers": [{"ticker": "CASHX", "percent": 100}],
+      "drag": 0,
+      "candidate_tickers": [],
+      "optimize_objective": null,
+      "rebalance_freq": "Daily",
+      "rebalance_offset": 0,
+      "absolute_dev": 0,
+      "relative_dev": 0
+    },
+    {
+      "name": "SPY (benchmark)",
+      "signals": [],
+      "ops": [],
+      "nots": [],
+      "tickers": [{"ticker": "SPYSIM", "percent": 100}],
+      "drag": 0.02,
+      "candidate_tickers": [],
+      "optimize_objective": null,
+      "rebalance_freq": "Daily",
+      "rebalance_offset": 0,
+      "absolute_dev": 0,
+      "relative_dev": 0
+    }
+  ],
+  "trading_freq": "Daily",
+  "trading_offset": 0,
+  "cashflow_legs": [],
+  "one_time_cashflows": []
+}
