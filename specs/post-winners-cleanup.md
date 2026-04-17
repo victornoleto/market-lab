@@ -398,17 +398,25 @@ separada (`phase3/letf-and-multi-asset-<date>`), após o cleanup merged.
 
 ### Subtasks
 
-- [ ] 8.1 Atualizar `ROADMAP.md` §"Post-cleanup evolution (Phase 3)"
-  com a tabela acima + link pra `docs/investment-mandate.md`.
-- [ ] 8.2 Adicionar `## Phase 3 leads` em `docs/self_improvement/memory.md`
-  com os 5 leads acima (formato: 1 linha cada, `# Lead A1: ...` etc.).
-  **NÃO** mudar `status` — permanece `done` até execução começar.
-- [ ] 8.3 Quando executar (fora deste spec de cleanup):
-  - Criar branch `phase3/letf-and-multi-asset-<date>`.
-  - Resetar `status: in_progress` e `iteration: 28` no memory.md.
-  - Rodar `scripts/self_improve_loop.sh` com SCOPE=code.
+- [x] 8.1 `ROADMAP.md` §"Post-cleanup evolution (Phase 3)" expandido
+  com tabela completa (Lead, Path, Resumo detalhado, Pré-req,
+  Citação seed) + nota "1 lead = 1 iter, budget ~5 iters". Atualizado
+  B1 explicitando "Gayed canonical priority 1; Reddit é 1 seed entre
+  outros, NÃO gospel".
+- [x] 8.2 `docs/self_improvement/memory.md` recebeu nova seção
+  `## Phase 3 leads (registered 2026-04-16, NOT yet executed)` com 1
+  parágrafo por lead. **status permanece `done`, iteration `27`** —
+  reset em `in_progress`/`28` só no momento da execução.
+- [x] 8.3 Documentado o procedimento de start (criar branch
+  `phase3/letf-and-multi-asset-<date>` + reset de status) — não
+  executado.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** 5 leads registrados em ambos os
+documentos canônicos (ROADMAP + memory.md) sem alterar o estado
+"done" do loop autônomo. Lead B1 explicitamente reframed como
+"design from scratch base Gayed canonical, Reddit ilustrativo NÃO
+gospel" pra evitar afinidade humana ao testfol.io payload do usuário.
+Execução em branch separada, fora do escopo deste spec.
 
 ---
 

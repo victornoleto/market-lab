@@ -20,15 +20,16 @@
 Ver `docs/investment-mandate.md` para o mandate completo.
 `specs/post-winners-cleanup.md` §8 registra os 5 leads abaixo. Execução
 em branch separada (`phase3/letf-and-multi-asset-<date>`) depois que o
-cleanup for merged.
+cleanup for merged. **Cada lead = 1 iteração do self-improve loop**
+(`SCOPE=code`, `ITER_TIMEOUT=1800s`). Budget total estimado: ~5 iters.
 
-| Lead | Path | Resumo | Citação seed |
-|------|------|--------|--------------|
-| A1 | A | BollingerMR leverage sweep SPY 1h (1:1 → 1:200) com Kelly f/2 + prob-of-ruin MC | `[math_money_mgmt]`, `[leverage_space]`, `[leverage_for_the_long_run, p.7]` |
-| A2 | A | Multi-asset universe screener (SPY+QQQ+GLD+BTC+FX majors) com Hurst/ATR/spread/volume | `[machine_trading]`, `[volatility_trading]` |
-| A3 | A | Per-asset BollingerMR + threading-ready refactor (state-isolated, perks por ativo) | `[advances_fin_ml, ch.7/11]` |
-| B1 | B | LETF rotation SPY-EMA → UPRO/CASH, seed params testfol.io, submeter ao CPCV+PBO, 15% IR, UPRO sintético pre-2009 | `[leverage_for_the_long_run, p.13, p.21]` |
-| B2 | B | LETF rotation vs. ETFRotation benchmark (correlação, blend risk-parity, MAR) | `[advances_fin_ml, p.196-202]`, `[stocks_on_the_move, p.81]` |
+| Lead | Path | Resumo | Pré-req | Citação seed |
+|------|------|--------|---------|--------------|
+| **A1** | A | **BollingerMR leverage sweep SPY 1h** — risk_pct ∈ {0.95, 2.0, 5.0, 10.0, 20.0} simulando margin-call bar-a-bar; Kelly f/2 cross-check; prob-of-ruin MC 10k paths | nenhum | `[math_money_mgmt, Vince]`, `[leverage_space, Vince]`, `[leverage_for_the_long_run, p.7]` |
+| **A2** | A | **Multi-asset universe screener** SPY+QQQ+GLD+BTC+ETH+FX majors: implementar `ai_trade/screener/` com Hurst/ATR/spread/volume; pre-screener filtra ativos "propícios" para BollingerMR | A1 opcional | `[machine_trading, Chan]`, `[volatility_trading, Sinclair]` |
+| **A3** | A | **Per-asset BollingerMR + threading-ready code** — refactor do runner pra state-isolated per-ticker; perks opcionais (FX session filter, equity pre/post-market, crypto 24/7, gold news filter); output multi-asset portfolio metrics + correlation | A2 | `[advances_fin_ml, ch.7/11]` (CPCV multi-asset) |
+| **B1** | B | **LETF rotation — design a partir do zero (base Gayed)** — encontrar UMA config simples da família LETF rotation que passe rigorosamente os gates. Grid 360 configs (EMA/SMA × {100, 125, 150, 200} × band {0, 3%, 5%} × lev {1x, 2x, 3x} × gold {0, 25, 50, 75, 100%}). **Priorizar Gayed canonical (SMA 200, band 0%, Cash 100%) priority 1**; params do Reddit (EMA 125, band 5%) é 1 seed entre outros, NÃO gospel a validar. Splits IS 1970-2000 / OOS 2001-2015 / Stress 2016-2026 mutuamente exclusivos. Stationary block bootstrap a 0.001. UPRO/SSO sintéticos pre-2009/2006. 15% IR BR por switch. **Winner decidido pelos gates, não por afinidade.** | Task 0 livro absorvido + `docs/reference/letf_rotation_reddit_analysis.md` (contexto ilustrativo) | `[leverage_for_the_long_run, p.13, p.17, p.21]` |
+| **B2** | B | **LETF rotation vs. ETFRotation benchmark** — correlação dos sinais, blend risk-parity, MAR ratio comparison; decidir se ambos coexistem na carteira ou se LETF substitui ETFRotation como winner Path B | B1 | `[advances_fin_ml, p.196-202]` (PSR), `[stocks_on_the_move, p.81]` |
 
 ### Phases
 
