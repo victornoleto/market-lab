@@ -148,9 +148,23 @@ agora do que em live.
 
 Sub-tasks independentes (cada uma ≤ 1 iter):
 
-- [ ] **7a Real vs synthetic UPRO/SSO.** Re-rodar LETF rotation substituindo
-      sintético pós-2009 por UPRO real (dados Tiingo). Comparar Sharpe/CAGR
-      e ver desvio. Documentar drag real vs modelado.
+- [ ] **7a Real vs synthetic UPRO/SSO + testfolio cross-check.** 3-way
+      comparison obrigatória:
+      (1) nossa `synthesize_letf_returns` (flat 1% drag);
+      (2) testfolio `data/external/testfolio_spysim_leverage.parquet`
+      (FFR-aware cost: `SW * (L-1) * (FFR + 0.4%)`);
+      (3) UPRO/SSO reais do Tiingo pós-2006/2009.
+      Alinhar nas janelas IS/OOS/Stress do B1c winner.
+      **GATE adicional:** se gap CAGR nosso-vs-testfolio > 2%/ano em
+      qualquer janela histórica, implementar FFR-aware cost function
+      em nova `synthesize_letf_returns_ffr_aware()` (NEW) e re-rodar
+      B1c gates antes de confirmar winner.
+      Ver `data/external/README.md` para contexto completo da
+      discrepância identificada (testfolio usa FFR real histórico,
+      nosso modelo usa constante 1%/ano de Gayed — no período IS
+      1970-2000 com FFR médio ~8%, o gap pode ser ~8%/ano compound).
+      Artefatos: `reports/phase3_5b/robustness/testfolio_vs_synthetic_letf.md`
+      + plot 3-way equity curve.
 - [ ] **7b Stress isolado.** Sub-períodos 2008-2009 (crise), 2020-03
       (COVID crash), 2022 (bear + rate hikes), 2025-Q1 stress. Sharpe e
       drawdown por sub-período por strategy.
