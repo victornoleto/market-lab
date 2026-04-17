@@ -198,6 +198,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16-1245-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-17 0055 — ★ B1c PASS [SWING BROKER]: LETF rotation grid 72 configs × gates 5x. Winner EMA100/2x band=0% — OOS Sharpe 1.724, OOS CAGR 41%, PBO 0.0, DSR p=0, bootstrap 99.9% CI [1.037, 2.468]. 13/72 passam. Mandate CAGR ≥15% clearado por +21pp](2026-04-17-0055-b1c-letf-rotation-gates-PASS.md)
 - [2026-04-17 0030 — B1b-ii [SWING BROKER]: SPX TR loader 1970-2026 stitched (Ken French Mkt+RF pré-2001 + Tiingo SPY pós). 14,191 bars, zero NaN, 11 testes. Pipeline pronto pra Lead B1c](2026-04-17-0030-b1b-ii-spx-tr-loader.md)
 - [2026-04-17 0005 — B1b-i [SWING BROKER]: grid runner LETF rotation + smoke 16 configs SPY. Pipeline OK, smoke encoraja (EMA125/3x OOS Sharpe 1.94) mas NÃO é winner — gates B1c pendentes](2026-04-17-0005-b1b-i-letf-rotation-grid-smoke.md)
 - [2026-04-16 2355 — B1a [SWING BROKER]: módulo LETF rotation + synthetic LETF helper entregues com 36 testes. Fundação para grid de 360 configs (B1b/B1c)](2026-04-16-2355-b1a-letf-rotation-module.md)
