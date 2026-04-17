@@ -195,17 +195,17 @@
       "avg_drawdown_pct": 0.01266972821701744,
       "max_drawdown_duration_days": 204.0,
       "avg_drawdown_duration_days": 14.1,
-      "n_trades": 451.0,
-      "win_rate_pct": 0.8780487804878049,
-      "best_trade_pct": 1.483493370128378,
-      "worst_trade_pct": -0.07154150197880202,
-      "avg_trade_pct": 0.07866546830942711,
-      "max_trade_duration_days": 565.0,
-      "avg_trade_duration_days": 49.288248337028826,
-      "profit_factor": 32.099022628516714,
-      "expectancy_pct": 0.07866546830942711,
-      "sqn": 10.5368070109762,
-      "kelly": 0.8501878405009615
+      "n_trades": 259.0,
+      "win_rate_pct": 0.806949806949807,
+      "best_trade_pct": 0.7987106693349542,
+      "worst_trade_pct": -0.06789926681438828,
+      "avg_trade_pct": 0.06646298854136419,
+      "max_trade_duration_days": 452.0,
+      "avg_trade_duration_days": 50.22007722007722,
+      "profit_factor": 19.105849282877447,
+      "expectancy_pct": 0.06646298854136419,
+      "sqn": 8.971427005288826,
+      "kelly": 0.7638521064411524
     },
     "spy_benchmark": {
       "return_pct": 7.6920566633253635,
@@ -221,6 +221,6 @@
       "correlation": 0.5486052829547573,
       "beta": 0.3210946502336693
     },
-    "n_trades": 451
+    "n_trades": 259
   }
 }

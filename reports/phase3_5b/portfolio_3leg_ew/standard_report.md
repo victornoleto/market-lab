@@ -20,17 +20,17 @@ Max. Drawdown [%]         10.86%
 Avg. Drawdown [%]         1.27%
 Max. Drawdown Duration    204 days
 Avg. Drawdown Duration    14 days
-# Trades                  451
-Win Rate [%]              87.80%
-Best Trade [%]            148.35%
-Worst Trade [%]           -7.15%
-Avg. Trade [%]            7.87%
-Max. Trade Duration       565 days
-Avg. Trade Duration       49 days
-Profit Factor             32.099
-Expectancy [%]            7.87%
-SQN                       10.537
-Kelly Criterion           0.850
+# Trades                  259
+Win Rate [%]              80.69%
+Best Trade [%]            79.87%
+Worst Trade [%]           -6.79%
+Avg. Trade [%]            6.65%
+Max. Trade Duration       452 days
+Avg. Trade Duration       50 days
+Profit Factor             19.106
+Expectancy [%]            6.65%
+SQN                       8.971
+Kelly Criterion           0.764
 _strategy                 weights=(1/3,1/3,1/3) rebalance=daily tax_per_leg=15%
 ```
 

@@ -189,6 +189,27 @@ def _scale_trades(trades: list[Trade], notional: float) -> list[Trade]:
     ]
 
 
+def _filter_trades_to_window(
+    trades: list[Trade],
+    window_start: pd.Timestamp,
+    window_end: pd.Timestamp,
+) -> list[Trade]:
+    """Keep trades fully contained in [window_start, window_end].
+
+    Portfolio 3-leg equity curve starts on the intersection of the 3 legs'
+    common-window (daily returns ∩ non-NaN), so a leg trade whose entry
+    pre-dates the portfolio's first tradeable bar was NOT actually taken
+    by the portfolio. Excluding those trades keeps the trade log
+    consistent with the equity curve and the tax aggregates.
+    """
+    return [
+        t
+        for t in trades
+        if pd.Timestamp(t.entry_date) >= window_start
+        and pd.Timestamp(t.exit_date) <= window_end
+    ]
+
+
 def _plot_equity_curve(
     path: Path,
     title: str,
@@ -413,15 +434,38 @@ def main(argv: list[str] | None = None) -> int:
     port_equity_unit = (1.0 + blend).cumprod()
     port_equity = _scale_equity(port_equity_unit, args.initial_capital)
 
+    # Portfolio was only tradeable once all 3 legs are aligned. Filter
+    # each leg's trades to the blend window so the consolidated trade
+    # log matches the equity curve (Phase 3.5b Task 6 correctness fix).
+    port_window_start = pd.Timestamp(blend.index[0])
+    port_window_end = pd.Timestamp(blend.index[-1])
+    letf_trades_pw = _filter_trades_to_window(
+        letf_trades, port_window_start, port_window_end
+    )
+    qqq_trades_pw = _filter_trades_to_window(
+        qqq_trades, port_window_start, port_window_end
+    )
+    gld_trades_pw = _filter_trades_to_window(
+        gld_trades, port_window_start, port_window_end
+    )
+    log.info(
+        "  portfolio window %s → %s — kept %d/%d LETF, %d/%d QQQ, %d/%d GLD trades",
+        port_window_start.date(),
+        port_window_end.date(),
+        len(letf_trades_pw), len(letf_trades),
+        len(qqq_trades_pw), len(qqq_trades),
+        len(gld_trades_pw), len(gld_trades),
+    )
+
     # Per-leg trade notional = initial_capital / 3 (EW), so each trade's
     # gross PnL reflects the leg's slice. This is the Phase 3.5b §3 rule:
     # 15% tax applied to each leg's profitable trades individually.
     leg_notional = args.initial_capital / 3.0
     port_trades = aggregate_leg_trades(
         [
-            ("LETF_2x", _scale_trades(letf_trades, leg_notional)),
-            ("QQQ", _scale_trades(qqq_trades, leg_notional)),
-            ("GLD", _scale_trades(gld_trades, leg_notional)),
+            ("LETF_2x", _scale_trades(letf_trades_pw, leg_notional)),
+            ("QQQ", _scale_trades(qqq_trades_pw, leg_notional)),
+            ("GLD", _scale_trades(gld_trades_pw, leg_notional)),
         ]
     )
     summaries["portfolio_3leg_ew"] = _emit_reports(
