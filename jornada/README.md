@@ -198,6 +198,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16-1245-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-17 0120 — ★ A3b PASS [SWING BROKER]: Donchian breakout QQQ daily 20/10 — OOS Sharpe 1.738 (marginal > LETF B1c 1.724), OOS CAGR 20.38%, WF 8/8, DSR p=0.004, bootstrap 99.9% CI [0.557, 2.954]. TLT e xrpusd FAIL. Confirma tese "match strategy family ao ativo": MR→SPY, trend→QQQ](2026-04-17-0120-a3b-tsmom-donchian-per-asset-PASS.md)
 - [2026-04-17 0008 — A3a [SHORT-HOLD CFD]: BollingerMR GARCH NÃO transporta de SPY → IWM / TLT / xrpusd. Todos 3 ativos FAIL em PBO+DSR+WF. Confirma dead end: Strategy A é SPY-only; sem portfólio equal-weight viável. Próximo: A3b multi-strategy per-asset ou pivô](2026-04-17-0008-a3a-bollinger-mr-garch-per-asset-FAIL.md)
 - [2026-04-17 0005 — ★ B2 [SWING BROKER]: LETF rotation vs ETFRotation top-1 benchmark. LETF domina em Sharpe/CAGR/MaxDD/MAR, blend inverse-vol destrói alpha. `REPLACE_B_WITH_A` — Path B passa a ser só LETF rotation](2026-04-17-0005-b2-letf-vs-etf-rotation-benchmark.md)
 - [2026-04-16 2353 — A2 [SHORT-HOLD CFD]: Multi-asset universe screener (Hurst+ATR+vol+$vol) sobre 14 candidatos (5 ETFs + 9 cryptos). Top: IWM (H=0.447), SPY, TLT (H=0.470). Cryptos majores BTC/ETH H~0.585 trending — não MR-favorable. FX gap documentado](2026-04-16-2353-a2-multi-asset-screener.md)
