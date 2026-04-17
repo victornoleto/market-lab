@@ -151,18 +151,22 @@ Lista absoluta. Qualquer tarefa que tocar esses arquivos falha o spec.
 Antes de qualquer coisa, validar que a branch `self-improve/post-cleanup-20260416`
 está mergeable e limpa:
 
-- [ ] `git status` limpo (só `reports/bollinger_mr_regime_decomp/` untracked é
+- [x] `git status` limpo (só `reports/bollinger_mr_regime_decomp/` untracked é
   ok — mover pra dentro dos commits ou `.gitignore` em §4.1).
-- [ ] `.venv/bin/pytest -q` → 520 passed, 2 skipped.
-- [ ] `git log --oneline main..self-improve/post-cleanup-20260416` mostra
+- [x] `.venv/bin/pytest -q` → 520 passed, 2 skipped.
+- [x] `git log --oneline main..self-improve/post-cleanup-20260416` mostra
   10 commits (iter 19-27 + chore inicial).
-- [ ] `docs/self_improvement/memory.md` tem `status: done`, `iteration: 27`,
+- [x] `docs/self_improvement/memory.md` tem `status: done`, `iteration: 27`,
   `phase: B`, winners populados.
-- [ ] `jornada/2026-04-16-1600-production-readiness-summary.md` existe.
-- [ ] Nenhum commit da branch tocou `main`-only files (CLAUDE.md,
+- [x] `jornada/2026-04-16-1600-production-readiness-summary.md` existe.
+- [x] Nenhum commit da branch tocou `main`-only files (CLAUDE.md,
   ROADMAP.md sem necessidade) — diff review.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** Pre-flight all green. Validation expandida
+descobriu que (a) `reports/bollinger_mr_regime_decomp/` já estava
+tracked (commit 79f1378 iter 19) e (b) a contagem de commits ahead era
+13 (não 10 — incluía os 3 commits pré-cleanup do mandate). Nenhum
+secret real no diff (matches só em docs sobre como NÃO commitar).
 
 ---
 
@@ -208,20 +212,23 @@ commit pré-cleanup.
 Preservar a granularidade dos 10 commits — são o registro histórico do
 loop autônomo.
 
-- [ ] 4.1 Commitar `reports/bollinger_mr_regime_decomp/` (se relevante
+- [x] 4.1 Commitar `reports/bollinger_mr_regime_decomp/` (se relevante
   para Phase B) ou adicionar ao `.gitignore`. Decidir caso-a-caso lendo
-  o conteúdo.
-- [ ] 4.2 `git checkout main && git pull --ff-only origin main`.
-- [ ] 4.3 `git merge --no-ff self-improve/post-cleanup-20260416 -m
+  o conteúdo. → **N/A:** já tracked desde iter 19 (commit 79f1378).
+- [x] 4.2 `git checkout main && git pull --ff-only origin main`.
+- [x] 4.3 `git merge --no-ff self-improve/post-cleanup-20260416 -m
   "merge: autonomous loop iter 19-27 — 2 production winners
-  (BollingerMR SPY 1h + ETFRotation monthly top-1)"`.
-- [ ] 4.4 `.venv/bin/pytest -q` pós-merge → 520/2 verde.
+  (BollingerMR SPY 1h + ETFRotation monthly top-1)"` → commit `e881076`.
+- [x] 4.4 `.venv/bin/pytest -q` pós-merge → 520 passed, 2 skipped em 14.51s.
 - [ ] 4.5 `git push origin main` (com autorização explícita do usuário —
-  é merge em branch protegida de facto).
-- [ ] 4.6 **Não deletar** a branch `self-improve/post-cleanup-20260416`
-  ainda — é ponto-de-retorno se cleanup der errado.
+  é merge em branch protegida de facto). **Pendente: aguardando autorização.**
+- [x] 4.6 **Não deletar** a branch `self-improve/post-cleanup-20260416`
+  ainda — é ponto-de-retorno se cleanup der errado. Branch preservada.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** Merge `--no-ff` aplicado preservando os 13
+commits (iter 19-27 + 3 mandate). Pytest 520/2 estável pós-merge.
+Branch `cleanup/post-winners-20260416` criada a partir do main mergeado
+para o restante do trabalho. Push pendente de autorização explícita.
 
 ---
 
@@ -230,31 +237,32 @@ loop autônomo.
 As ~10 entradas `⚠️ RETRACTED` ou `⚠️ DATA TAINTED` ficam como ruído no
 índice. Consolidar sem perder conteúdo.
 
-- [ ] 5.1 Criar `jornada/_archive/2026-04-16-retracted-entries.md` com
+- [x] 5.1 Criar `jornada/_archive/2026-04-16-retracted-entries.md` com
   TOC linkando cada entry retratada. Cabeçalho explicativo (data-bug
   Tiingo IEX, magnitude, fix em `_filter_orphan_intraday_bars`).
-- [ ] 5.2 **Mover** (git mv) as entries retratadas para `jornada/_archive/`:
-  - `2026-04-15-2350-bollinger-mr-1h-PASS.md`
-  - `2026-04-16-0010-bollinger-mr-oos-2025-PASS.md`
-  - `2026-04-16-0045-kalman-pairs-spy-iwm-PASS.md`
-  - `2026-04-16-0059-bollinger-mr-2026q1-stress-test.md`
-  - `2026-04-16-0100-bollinger-mr-sector-etfs-PASS.md`
-  - `2026-04-16-0130-kalman-pairs-oos-FAIL.md` (DATA TAINTED)
-  - `2026-04-16-0833-tiingo-cache-audit.md` (conclusão inválida)
-  - `2026-04-16-1230-bollinger-mr-mc-bootstrap.md` (RETRACTED)
-  - `2026-04-16-1300-bollinger-mr-overlap.md` (RETRACTED)
-- [ ] 5.3 **Manter** `2026-04-16-1245-data-bug-winners-retracted.md` fora
+- [x] 5.2 **Mover** (git mv) as 9 entries retratadas para `jornada/_archive/`.
+- [x] 5.3 **Manter** `2026-04-16-1245-data-bug-winners-retracted.md` fora
   do archive — é o postmortem e documento histórico de primeira ordem.
-- [ ] 5.4 Atualizar `jornada/README.md`:
-  - Remover as entries movidas da lista newest-first.
-  - Adicionar uma linha "📦 **Entradas retratadas arquivadas:**
-    ver `_archive/2026-04-16-retracted-entries.md` (data-bug 2026-04-16)".
-  - Atualizar seção "Onde estamos hoje (2026-04-16 evening)" refletindo
-    os 2 winners production-ready.
-  - Atualizar "O que vem a seguir": paper trading + leverage exploration
-    (§8).
+- [x] 5.4 Atualizar `jornada/README.md`:
+  - "Onde estamos hoje (2026-04-16 evening)" reescrito refletindo 2
+    winners production-ready + Investment Mandate registrado + Phase 3
+    leads.
+  - "O que vem a seguir" reescrito como tabela dos 5 leads (A1-A3
+    Path A, B1-B2 Path B), substituindo a lista antiga
+    Chan/Vol-Expansion/Ehlers BP.
+  - Lista "Entradas (mais recente primeiro)" enxugada (12 entries top-
+    level + pointer para archive).
+  - Bloco "⚠️ Avisos de retratação" removido (substituído pelo pointer).
+  - Glossário ampliado: Path A/B, SHORT-HOLD CFD, SWING BROKER, LETF
+    rotation, Investment Mandate, CDI BR.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** 9 entries movidas via `git mv` (rename
+preservada no histórico). Archive index escrito com TOC + magnitude do
+bug + lições preservadas (`_filter_orphan_intraday_bars`,
+`scripts/clean_intraday_orphans.py`, sniff-test convention). README
+top-level enxugado de 31 entries para 12 entries + pointer; seções
+"Onde estamos hoje" e "O que vem a seguir" reescritas pra refletir
+estado pós-loop. Glossário cresceu 6 termos novos.
 
 ---
 
