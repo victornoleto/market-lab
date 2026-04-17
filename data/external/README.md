@@ -70,24 +70,45 @@ em UPRO ~60% do tempo, o erro efetivo é menor (~60% × gap bruto).
 
 ---
 
+## ⚠️ Janela de comparação válida: 1962-present
+
+**IMPORTANTE:** usar testfolio **apenas** pela janela 1962-present para
+comparar com nossos dados (Ken French + Tiingo). Razão:
+
+| Período | Fonte SPYSIM | Comparável ao nosso? |
+|---------|--------------|----------------------|
+| 1885-1928 | Schwert Dow Jones Composite | ❌ Dow ≠ S&P 500, NÃO comparar |
+| 1928-1962 | Schwert S&P 500 Composite (reconstrução) | ❌ Underlying reconstruído, não bate com KF market factor |
+| 1962-1993 | S&P 500 Price Index + Shiller dividends | 🟡 Similar ao KF market factor (KF tem small-cap tilt pequeno) |
+| 1993-present | SPY real + 0.0945% p.a. | 🟢 Apples-to-apples com nosso Tiingo SPY |
+
+**O valor do testfolio não é substituir nosso SPX TR — é calibrar o
+modelo de custo de leverage.** Fora disso, o dataset é secundário.
+
 ## Como usar em Phase 3.5b
 
 **Task 7a (real vs synthetic UPRO/SSO)** deve:
 
-1. Ler `data/external/testfolio_spysim_leverage.parquet`
-2. Alinhar com nossa SPX TR loader (`src/ai_trade/backtest/data/spx_tr_loader.py`)
-3. Para cada janela IS/OOS/Stress rodar 3 comparações:
+1. Ler `data/external/testfolio_spysim_leverage.parquet`, truncar em
+   1962-01-01 → 2026-04-16.
+2. Alinhar com `src/ai_trade/backtest/data/spx_tr_loader.py` na mesma
+   janela.
+3. 3-way comparação de equity:
    - Nossa `synthesize_letf_returns(spx_tr, L=2, fee=0.01)`
-   - Testfolio `spy_2x_equity` (mesma janela)
+   - Testfolio `spy_2x_equity` (1962+)
    - UPRO/SSO reais (Tiingo) pós-2006/2009
-4. Reportar CAGR gap + Sharpe gap + MaxDD gap
-5. Se gap > 2%/yr CAGR em qualquer janela → **rerun B1c com custo
-   time-varying** (implementar FFR-aware cost function) antes de
-   confirmar winner.
+4. Estratificar o gap CAGR nosso-vs-testfolio **por bucket de FFR médio
+   anual** (FFR<2%, 2%≤FFR<5%, FFR≥5%). Série FFR via `data/ken_french/`
+   RF column.
+5. Se gap > 2%/yr CAGR em qualquer bucket com ≥5 anos de dados →
+   implementar `synthesize_letf_returns_ffr_aware()` (nova função) e
+   rerodar B1c gates com a função corrigida.
 
 Artefatos esperados:
 - `reports/phase3_5b/robustness/testfolio_vs_synthetic_letf.md`
-- Plot sobrepondo 3 equity curves (synthetic, testfolio, real ETF) por janela
+  (com tabela CAGR-por-bucket-FFR)
+- Plot 3-way equity curves (synthetic, testfolio, real ETF) a partir
+  de 1962-01-01
 
 ---
 

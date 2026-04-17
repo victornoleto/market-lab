@@ -148,23 +148,50 @@ agora do que em live.
 
 Sub-tasks independentes (cada uma ≤ 1 iter):
 
-- [ ] **7a Real vs synthetic UPRO/SSO + testfolio cross-check.** 3-way
-      comparison obrigatória:
-      (1) nossa `synthesize_letf_returns` (flat 1% drag);
-      (2) testfolio `data/external/testfolio_spysim_leverage.parquet`
-      (FFR-aware cost: `SW * (L-1) * (FFR + 0.4%)`);
-      (3) UPRO/SSO reais do Tiingo pós-2006/2009.
-      Alinhar nas janelas IS/OOS/Stress do B1c winner.
+- [ ] **7a Real vs synthetic UPRO/SSO + testfolio cross-check.**
+      **Escopo e foco:** o objetivo **não é substituir nosso dataset
+      SPX TR por testfolio** — é **calibrar o custo de leverage**.
+      Testfolio usa modelo FFR-aware (`SW * (L-1) * (FFR + 0.4%)`,
+      SW=1.1, SP=0.4%), nosso sintético usa flat 1%/ano (Gayed p.16).
+      A discrepância de custo é o que interessa.
+
+      **Janela de comparação VÁLIDA:** 1962-present (≈64 anos).
+      - 1962-1993: testfolio usa S&P 500 oficial + Shiller dividends;
+        nosso Ken French market factor é *similar mas não idêntico*
+        (KF inclui CRSP small-caps). Comparáveis em ordem de grandeza.
+      - 1993-present: ambos usam SPY. Apples-to-apples.
+      - **NÃO comparar pré-1962** (Schwert DJ reconstruction 1885-1928
+        + Schwert S&P reconstruction 1928-1962) — underlying diferente
+        do nosso KF, divergências não são sinal de erro de custo.
+
+      **3-way comparison (janela 1962-present, quebrada por regime de FFR):**
+      (1) nossa `synthesize_letf_returns(spx_tr_our, L=2, fee=0.01)`;
+      (2) testfolio `spy_2x_equity` do
+          `data/external/testfolio_spysim_leverage.parquet`;
+      (3) UPRO/SSO reais do Tiingo (SSO pós-2006-06, UPRO pós-2009-06).
+
+      Computar CAGR gap nosso-vs-testfolio estratificado por bucket
+      de FFR médio anual: {FFR<2%, 2%≤FFR<5%, FFR≥5%}. Esperamos:
+      FFR<2% → nosso modelo ~igual ou levemente pessimista (nosso 1%
+      > testfolio 0.44%);  FFR≥5% → nosso modelo muito otimista
+      (nosso 1% << testfolio ~6%).
+
       **GATE adicional:** se gap CAGR nosso-vs-testfolio > 2%/ano em
-      qualquer janela histórica, implementar FFR-aware cost function
-      em nova `synthesize_letf_returns_ffr_aware()` (NEW) e re-rodar
-      B1c gates antes de confirmar winner.
-      Ver `data/external/README.md` para contexto completo da
-      discrepância identificada (testfolio usa FFR real histórico,
-      nosso modelo usa constante 1%/ano de Gayed — no período IS
-      1970-2000 com FFR médio ~8%, o gap pode ser ~8%/ano compound).
-      Artefatos: `reports/phase3_5b/robustness/testfolio_vs_synthetic_letf.md`
-      + plot 3-way equity curve.
+      qualquer bucket de FFR com ≥5 anos de dados, implementar
+      `synthesize_letf_returns_ffr_aware(spx_tr, L, ffr_series,
+      sw=1.1, sp=0.004)` em `src/ai_trade/backtest/helpers/
+      synthetic_letf.py` (função NOVA, manter a antiga para
+      compatibilidade com Gayed paper). Série histórica FFR via
+      `data/ken_french/` RF column (T-bill rate, proxy aceitável
+      para FFR). Re-rodar B1c gates com a nova função antes de
+      confirmar o LETF winner.
+
+      Ver `data/external/README.md` para contexto completo.
+
+      Artefatos:
+      `reports/phase3_5b/robustness/testfolio_vs_synthetic_letf.md`
+      (+ tabela CAGR-por-bucket-FFR) + plot 3-way equity curve
+      alinhado em 1962-start.
 - [ ] **7b Stress isolado.** Sub-períodos 2008-2009 (crise), 2020-03
       (COVID crash), 2022 (bear + rate hikes), 2025-Q1 stress. Sharpe e
       drawdown por sub-período por strategy.
