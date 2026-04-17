@@ -29,11 +29,34 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-16 evening)
+## Onde estamos hoje (2026-04-17 evening)
 
-**Estado:** loop autônomo da Phase 2.5 fechado. 2 winners production-ready
-+ Investment Mandate formalizado. Repositório enxugado pelo cleanup
-pós-winners (`specs/post-winners-cleanup.md`).
+**Estado:** Phase 3.5b **e** seu addendum operacional fechados. 4
+winners Path B production-ready, 1 portfolio 3-leg EW como default
+de deploy. Loop autônomo rodou 23 iterações sem regressão
+(iter 1-15 Phase 3.5b main + iter 16-23 addendum). Pytest 550 → 698
+(+148, zero flakiness).
+
+**Highlights da última sessão (2026-04-17):**
+
+- **Phase 3 closed (iter 0-9, manhã):** 5 leads A1/B1/A2/B2/A3
+  verdictados. Path A → Bollinger MR GARCH SPY 1h (standalone).
+  Path B → EW 3-leg {LETF EMA100/2× + QQQ Donchian 20/10 + GLD
+  Donchian 40/20}, OOS Sharpe 2.251 / CAGR 29.06% / MDD −10.86%.
+- **Phase 3.5b closed (iter 1-15, tarde):** 4 winners re-validados
+  end-to-end + robustness battery 7 tasks PASS (FFR-aware, stress
+  isolado, slippage, allocation 5-way, ρ rolling, vol-target).
+  Portfolio 3-leg EW na janela comum 2004-11 → 2026-04 (21.36 yrs):
+  Sharpe **2.108**, CAGR 25.56%, MaxDD **10.86%**.
+- **Phase 3.5b-addendum closed (iter 16-23, noite):** 3 dúvidas
+  operacionais respondidas. 2-leg LETF+QQQ (⚠️ DR 1.121 FAIL),
+  leverage sweep 2×/2.5×/3× (só 2× passa todos gates + ETF real),
+  rebalance modes daily/monthly_sell/monthly_cashflow (daily vence
+  em 3-leg; 2-leg+cashflow é o único fallback ergonômico viável).
+  **Winner imutável:** 3-leg EW daily.
+
+Indices criados em 2026-04-17 2245:
+- `reports/phase3_5b/README.md` (main) + `reports/phase3_5b/variants/README.md` (sub-index).
 
 - **Fase 0 — Biblioteca de conhecimento** ✅ 34 livros absorvidos
   (`leverage_for_the_long_run` adicionado 2026-04-16 como base científica
@@ -84,57 +107,40 @@ pós-winners (`specs/post-winners-cleanup.md`).
 
 ---
 
-## O que vem a seguir (Phase 3 leads, ordem de execução)
+## O que vem a seguir (handoff Phase 4 + Phase 3.5a)
 
-**Onde paramos:** 2 winners production-ready, ambos com CAGR líquido
-abaixo da meta (CDI BR ~13-14%/ano). Conclusão do mandate: BollingerMR
-SPY 1h é base de Strategy A mas precisa virar **multi-asset + alavancado**
-pra atingir 5-10%/mês; ETFRotation diário é base de Strategy B mas
-precisa ser substituído por **LETF rotation** ancorada em Gayed pra
-atingir ≥15%/ano.
+**Onde paramos:** Phase 3.5b + addendum fechados. 4 winners Path B
+production-ready, 1 portfolio 3-leg EW como default de deploy. Path A
+tem Bollinger MR GARCH SPY 1h mas com CAGR abaixo do CDI BR — em
+investigação paralela (Phase 3.5a).
 
-5 leads registrados em `ROADMAP.md` §"Post-cleanup evolution (Phase 3)".
-Execução em branch separada (`phase3/letf-and-multi-asset-<date>`).
+**Handoff imediato (2 frentes independentes):**
 
-**Path A — Strategy A (short-hold CFD Pepperstone, agressiva):**
-1. **Lead A1 — BollingerMR leverage sweep SPY 1h.** risk_pct ∈ {0.95,
-   2.0, 5.0, 10.0, 20.0} simulando margin-call bar-a-bar; Kelly f/2
-   cross-check; prob-of-ruin MC 10k paths. Cita
-   `[math_money_mgmt, Vince]` + `[leverage_space, Vince]` +
-   `[leverage_for_the_long_run, p.7]`.
-2. **Lead A2 — Multi-asset universe screener.** Pré-screener
-   (Hurst/ATR/spread/volume) sobre SPY+QQQ+GLD+BTC+ETH+FX majors antes
-   do backtest. Cita `[machine_trading, Chan]` +
-   `[volatility_trading, Sinclair]`.
-3. **Lead A3 — Per-asset BollingerMR + threading-ready code.** State
-   isolado por ticker; perks opcionais (FX session filter, equity
-   pre/post-market, crypto 24/7, gold news filter); output multi-asset
-   portfolio metrics + correlation. Cita
-   `[advances_fin_ml, ch.7/11]` (CPCV multi-asset).
+1. **Phase 4 paper trading Plano B** — deploy do 3-leg EW daily em
+   conta broker BR ($10k equivalente). Monitor ρ 252d: alertar se 3 ρ
+   ≥ 0.70 por ≥ 10 barras (evento inédito em 21 anos, sinal de
+   regime-break). Checklist em `docs/phase3_winners_allocation.md`.
+   Tickers operacionais: SSO 2× (substituto real do LETF sintético
+   no backtest) + QQQ + GLD, rebalance diário pelo algoritmo.
+2. **Phase 3.5a Strategy A short-hold** — branch paralela já em
+   curso. Busca de edge short-hold CFD para Plano A Pepperstone
+   (multi-asset obrigatório por mandate §3, target 5-10%/mês a partir
+   de $1k). Winner candidato atual: Bollinger MR GARCH SPY 1h (iter
+   19-27 da Phase 2.5) — precisa virar multi-asset via sweep
+   1:1→1:200 + pre-screener Hurst/ATR/spread/volume.
 
-**Path B — Strategy B (swing broker BR, moderada):**
-4. **Lead B1 — LETF rotation, design from scratch base Gayed.**
-   Objetivo: encontrar UMA config simples da família LETF rotation
-   que passe rigorosamente os gates. Grid 360 configs (EMA/SMA ×
-   {100, 125, 150, 200} × band {0, 3%, 5%} × lev {1x, 2x, 3x} × gold
-   {0, 25, 50, 75, 100%}). Priorizar Gayed canonical (SMA 200 / band
-   0% / Cash 100%) priority 1; Reddit config (EMA 125 / band 5% /
-   Lev 3x / Gold 0%) é 1 seed entre outros, NÃO gospel a validar.
-   Splits IS 1970-2000 / OOS 2001-2015 / Stress 2016-2026, mutuamente
-   exclusivos. Stationary block bootstrap a 0.001. UPRO/SSO sintéticos
-   pre-2009/2006. 15% IR BR por switch. Winner decidido pelos gates,
-   não afinidade. Cita `[leverage_for_the_long_run, p.13, p.17, p.21]`.
-5. **Lead B2 — LETF rotation vs ETFRotation benchmark.** Correlação dos
-   sinais, blend risk-parity, MAR ratio comparison; decidir se ambos
-   coexistem ou se LETF substitui ETFRotation como winner Path B.
-   Cita `[advances_fin_ml, p.196-202]` (PSR) +
-   `[stocks_on_the_move, p.81]`.
+**Variantes operacionais do Phase 3.5b-addendum (opt-in condicional):**
 
-**Não-prioridades:**
-- AFML meta-labeling — DEFERRED (não há strategy órfã precisando de
-  filtro hoje).
-- Carver multi-asset trend — DEFERRED (multi-day, contraditório com
-  Path A; só reabre se Phase 3 falhar).
+- **C₃ — 2-leg LETF+QQQ + monthly_cashflow $500/mo** — fallback
+  ergonômico quando broker BR não oferece GLD. Sharpe 1.881 (preserva
+  95% do winner), tax-free no rebal layer, MaxDD +3.74 pp.
+- **B₃ — LETF 3×** — escalation lever *opt-in* com overlay manual
+  (Kelly-fractional < 0.5× ou regime-conditional). Default: **não**.
+
+**Não-prioridades confirmadas (DEFERRED):**
+
+- AFML meta-labeling — não há strategy órfã precisando de filtro hoje.
+- Carver multi-asset trend — só reabre se Phase 3.5a falhar.
 
 ---
 
@@ -198,6 +204,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16-1245-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-17 2245 — ★★ Phase 3.5b-addendum SUMMARY [PLANO B] [SWING BROKER] (Task D, loop CLOSED). Indices criados: `reports/phase3_5b/README.md` (main) + `reports/phase3_5b/variants/README.md` (sub-index all-in com tabela 9 rows + explainer inline DR Choueifaty-Coignard). Seção "Operational variants (addendum 2026-04-17)" adicionada ao summary jornada 2045 (tabela consolidada + decisão final). Resposta às 3 dúvidas operacionais: **(A) 2-leg LETF+QQQ** — Sharpe 1.888, MaxDD 14.41%, ⚠️ DR 1.121 FAIL, deploy só se broker bloquear GLD. **(B) Leverage 2×/2.5×/3×** — Sharpe flat (+0.06 span), MaxDD linear (+4 pp/0.5×), 3× ⚠️ FAIL WF MaxDD 5/8, 2.5× sintético-only; keep 2×. **(C) Rebalance modes** — daily vence em 3-leg; só 2-leg+cashflow preserva Sharpe (1.881 ≈ daily 1.888 com tax-free + $500/mo DCA), mas +3.74pp MaxDD. Monthly_sell paga $30k/yr (3-leg) ou $145k/yr (2-leg) e é dominado. **Production default IMUTÁVEL: 3-leg EW daily** (Sharpe 2.108, MaxDD 10.86%). Fallback condicional: C3 (2-leg cashflow DCA). Escalation opt-in: B3 (3×) com overlay manual. Zero código tocado; pytest **698** mantido (baseline iter 20 preservado). Winners imutáveis preservados em todas 8 iters do addendum. Handoff: Phase 3.5a (Path A Pepperstone CFD short-hold) + Phase 4 paper trading Plano B. Loop Phase 3.5b-addendum **FECHADO**](2026-04-17-2245-phase3.5b-addendum-summary.md)
 - [2026-04-17 2230 — Phase 3.5b-addendum Task C3 [PLANO B] [SWING BROKER]: rebalance modes applied to 2-leg EW (LETF 2x + QQQ Donchian 20/10), janela QQQ-limited 2001-05-14 → 2026-04-14 (6266 bars, 24.87 yrs). **Daily (Task A ref)** reproduzido: CAGR 31.59%, Sharpe 1.888, MaxDD 14.41%. **Monthly_sell:** CAGR 29.94% (−1.65 pp), Sharpe 1.800 (−0.088), MaxDD 14.46%, 12.1 eventos/ano, IR **$144 794/ano** (~4.7× o 3-leg). **Monthly_cashflow** ($500/mês = 0.5% inicial): Sharpe **1.881** (≈ daily), MaxDD 18.15% (+3.74 pp), drift máx 49.30%. Hipótese C3 parcialmente confirmada: ρ=0.555 **reduz drift típico** (mean_sell 0.60% vs 3-leg 0.82%; mean_cash 32.69% vs 40.10%) mas **não reduz drift de cauda** (max_sell 5.23% vs 4.81% do 3-leg). Paradoxo 4.7× imposto: EW de 2 legs usa notional maior por perna (50% vs 33%), janela mais longa, sem GLD para "drenar ganhos". Ranking 2-leg: `daily ≈ cashflow > sell`. Operational fallback aceitável: cashflow no 2-leg para DCA $500/mês (Sharpe preservado, tax-free, mas +3.74pp MaxDD). Winner produção **imutável = 3-leg EW daily**. Sub-index `reports/phase3_5b/variants/rebalance_modes/README.md` criado comparando 2-leg × 3-leg; `implementation_notes.md` documentando cost basis proporcional, month-end detection, deposit allocation. Citações `[advances_fin_ml, p.298-299]` (EW baseline), `[leverage_for_the_long_run, p.17, Table 8]` (drift×tax), Investment Mandate §4 (15% IR BR). Script `scripts/run_phase3_5b_task_c3_rebalance_2leg.py`. 4 artefatos em `rebalance_modes/`. Pytest 698 mantido. Winners imutáveis preservados. Próximo: Task D (main index + summary update, loop fecha)](2026-04-17-2230-phase3.5b-addendum-task-c3-rebalance-2leg.md)
 - [2026-04-17 2215 — Phase 3.5b-addendum Task C2 [PLANO B] [SWING BROKER]: rebalance modes applied to 3-leg EW winner (LETF 2x + QQQ Donchian 20/10 + GLD Donchian 40/20), janela comum 2004-11-18 → 2026-04-14 (5383 bars, 21.36 yrs, GLD-limited). **Daily winner** reproduzido bit-por-bit (CAGR 25.56%, Sharpe **2.108**, MaxDD **10.86%**). **Monthly_sell:** CAGR 23.79% (−1.77 pp), Sharpe 1.964 (−0.144), MaxDD 10.94%, **17.9 eventos tributários/ano**, IR **$30 740/ano** ($656 642 total em 21 anos). **Monthly_cashflow** (depósito $500/mês = 0.5 % inicial): Sharpe 1.944 (pior), MaxDD 17.78 % (+6.9 pp), drift máximo 65.05 % — o depósito fica pequeno vs equity ao longo do tempo e a perna LETF (maior vol) acaba dominando. CAGR 40.47 % inflado por $129 k de depósitos externos (não é performance pura). Conclusão: **daily > sell > cashflow** em Sharpe e MaxDD; monthly_sell é o modo realista sem bot mas paga ~3 %/ano do principal em IR de rebal; monthly_cashflow só viável se depósito ≥ 1 %/mês (senão drift explode). Script: `scripts/run_phase3_5b_task_c2_rebalance_3leg.py`. 4 artefatos em `reports/phase3_5b/variants/rebalance_modes/` (comparison_3leg.md, summary_3leg.json, drift_3leg.png, equity_3leg.png). Citações `[advances_fin_ml, p.298-299]` (1/n prior), `[leverage_for_the_long_run, p.17, Table 8]` (drift×tax tradeoff), Investment Mandate §4 (15 % IR BR). Pytest 698 mantido. Winners imutáveis preservados. Próximo: Task C3 (2-leg LETF+QQQ, hipótese drift menor com ρ=0.555)](2026-04-17-2215-phase3.5b-addendum-task-c2-rebalance-3leg.md)
 - [2026-04-17 2200 — Phase 3.5b-addendum Task C1 [PLANO B] [SWING BROKER]: módulo `rebalance_modes.py` + 28 tests (670 → 698). Novo `src/ai_trade/backtest/metrics/rebalance_modes.py` (~320 loc, 3 funções puras): `apply_daily_rebalance` (Σ w·r.cumprod baseline, drift ≡ 0), `apply_monthly_sell_rebalance` (end-of-month sell overweight → buy underweight, cost basis proporcional, 15% IR BR sobre realized gains, residual drift = tax fraction), `apply_monthly_cashflow_rebalance` (100% do depósito na perna mais subponderada, zero sells/tax). Retorna `RebalanceResult` {equity, leg_equity, weights, drift, taxable_events, total_tax_paid, total_deposits}. 28 tests cobrindo validation (9), rebalance-date detection (2), daily invariants (5), sell tax semantics (7, incluindo zero-tax-on-loss e drift-converges-on-rebal), cashflow behavior (5, incluindo deposit=0 ⇒ buy-and-hold exato). Pytest 670 → 698, zero regressão. Winners imutáveis preservados. Citações `[advances_fin_ml, p.298-299]`, Investment Mandate §4, `[leverage_for_the_long_run, p.17, Table 8]`. Desbloqueio: C2/C3 agora podem consumir as funções puras; cumpre spec §Task C1 (≥15 tests, não modificar lógica strategies). Próximo: Task C2 (comparison_3leg.md drift×tax×perf sobre janela comum 2004-11 → 2026-04)](2026-04-17-2200-phase3.5b-addendum-task-c1-rebalance-modes-module.md)
