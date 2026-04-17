@@ -70,8 +70,12 @@ import pandas as pd
 
 from ai_trade.backtest.helpers.synthetic_letf import (
     DEFAULT_ANNUAL_FEE,
+    DEFAULT_EXPENSE_RATIO,
+    DEFAULT_FFR_SPREAD,
+    DEFAULT_SWAP_EXPOSURE,
     TRADING_DAYS_PER_YEAR,
     synthesize_letf_returns,
+    synthesize_letf_returns_ffr_aware,
 )
 
 log = logging.getLogger(__name__)
@@ -306,6 +310,11 @@ def simulate_letf_rotation(
     spx_prices: pd.Series,
     config: LETFRotationConfig,
     gold_returns: pd.Series | None = None,
+    *,
+    ffr_annualized: pd.Series | None = None,
+    ffr_swap_exposure: float = DEFAULT_SWAP_EXPOSURE,
+    ffr_spread: float = DEFAULT_FFR_SPREAD,
+    ffr_expense_ratio: float = DEFAULT_EXPENSE_RATIO,
 ) -> RotationResult:
     """Run a single LETF rotation configuration end-to-end.
 
@@ -352,9 +361,26 @@ def simulate_letf_rotation(
         spx_prices, config.filter, config.lookback, config.band_pct
     )
 
-    on_returns = synthesize_letf_returns(
-        spx_returns, config.leverage, config.annual_fee
-    )
+    # Phase 3.5b Task 7a: opt-in FFR-aware cost model.
+    # Default (ffr_annualized=None) preserves Gayed flat-fee behavior
+    # byte-for-byte — every existing call-site is unchanged. Callers
+    # that want the time-varying swap cost (Phase 3.5b robustness)
+    # pass a daily-indexed annualized-FFR series.
+    # [leverage_for_the_long_run, p.16] flat fee intact;
+    # `synthesize_letf_returns_ffr_aware` docstring explains FFR path.
+    if ffr_annualized is None:
+        on_returns = synthesize_letf_returns(
+            spx_returns, config.leverage, config.annual_fee
+        )
+    else:
+        on_returns = synthesize_letf_returns_ffr_aware(
+            spx_returns,
+            config.leverage,
+            ffr_annualized,
+            swap_exposure=ffr_swap_exposure,
+            ffr_spread=ffr_spread,
+            expense_ratio=ffr_expense_ratio,
+        )
 
     cash_daily = config.cash_rate_annual / TRADING_DAYS_PER_YEAR
     if gold_returns is None:

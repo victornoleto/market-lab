@@ -1,0 +1,3232 @@
+{
+  "run": {
+    "mode": "ffr_aware",
+    "start": "1970-01-02",
+    "end": "2026-04-14",
+    "cutoff_date": "2001-05-14",
+    "n_configs": 72,
+    "n_bars": 14191,
+    "splits": {
+      "IS": {
+        "start": "1970-01-02",
+        "end": "2000-12-31"
+      },
+      "OOS": {
+        "start": "2001-01-01",
+        "end": "2015-12-31"
+      },
+      "Stress": {
+        "start": "2016-01-01",
+        "end": "2026-04-14"
+      }
+    },
+    "costs": {
+      "swap_exposure": 1.1,
+      "ffr_spread": 0.004,
+      "expense_ratio": 0.0095,
+      "commission_bps": 10.0,
+      "spread_bps": 5.0,
+      "tax_rate": 0.15,
+      "cash_rate_annual": 0.0,
+      "mean_ffr_annual": 0.04308558945810725
+    },
+    "bootstrap": {
+      "n_resamples": 2000,
+      "alpha": 0.001,
+      "block_mean": 5
+    }
+  },
+  "verdict": {
+    "pbo": 0.0,
+    "pbo_pass": true,
+    "n_configs": 72,
+    "n_passing": 13,
+    "winner_config_id": 37,
+    "evaluations": [
+      {
+        "config_id": 0,
+        "config": {
+          "filter": "SMA",
+          "lookback": 100,
+          "band_pct": 0.0,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.6260309743387709,
+          "cagr": 0.1751570648101035,
+          "max_drawdown": -0.11576982275634173,
+          "final_equity_from_unit": 151.04031234686835
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.4447674332359834,
+          "cagr": 0.1612626668963344,
+          "max_drawdown": -0.08447273064470673,
+          "final_equity_from_unit": 9.378930978096125
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.6942989368743997,
+          "cagr": 0.19975460799392408,
+          "max_drawdown": -0.0974580929016684,
+          "final_equity_from_unit": 6.471593525834965
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.11576982275634173,
+        "wf_pass": true,
+        "dsr_p_value": 0.0007963075710025747,
+        "bootstrap_sharpe_lo": 0.7641403810287292,
+        "bootstrap_sharpe_hi": 2.1553256405204873,
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      {
+        "config_id": 1,
+        "config": {
+          "filter": "SMA",
+          "lookback": 100,
+          "band_pct": 0.0,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.5571004432994613,
+          "cagr": 0.3428853490258177,
+          "max_drawdown": -0.20958366855069221,
+          "final_equity_from_unit": 9558.395755081789
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.5236680731017986,
+          "cagr": 0.3550929466655155,
+          "max_drawdown": -0.1515545591756633,
+          "final_equity_from_unit": 94.59549703914742
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.7201235778798505,
+          "cagr": 0.4269548927168829,
+          "max_drawdown": -0.18375938744384002,
+          "final_equity_from_unit": 38.31049375860259
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.20958366855069221,
+        "wf_pass": true,
+        "dsr_p_value": 0.0002591621052143722,
+        "bootstrap_sharpe_lo": 0.8426377217420099,
+        "bootstrap_sharpe_hi": 2.224096576254856,
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      {
+        "config_id": 2,
+        "config": {
+          "filter": "SMA",
+          "lookback": 100,
+          "band_pct": 0.0,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.5456864026291564,
+          "cagr": 0.5239331958622389,
+          "max_drawdown": -0.2909938827714845,
+          "final_equity_from_unit": 487435.3561121902
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.5617837691571983,
+          "cagr": 0.5682936057255115,
+          "max_drawdown": -0.20789489346310341,
+          "final_equity_from_unit": 843.2998791859646
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.7430948908603934,
+          "cagr": 0.6830748237111313,
+          "max_drawdown": -0.26702986780824867,
+          "final_equity_from_unit": 208.18878380588322
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.2909938827714845,
+        "wf_pass": false,
+        "dsr_p_value": 0.00014508709370275596,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "WF ratio=1.00 max_dd=29.10%"
+        ]
+      },
+      {
+        "config_id": 3,
+        "config": {
+          "filter": "SMA",
+          "lookback": 100,
+          "band_pct": 0.03,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.9885503472671308,
+          "cagr": 0.10171060543364097,
+          "max_drawdown": -0.21091073176781194,
+          "final_equity_from_unit": 20.312622420350017
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.3886216396095791,
+          "cagr": 0.03759834209712931,
+          "max_drawdown": -0.20554367803683327,
+          "final_equity_from_unit": 1.7377759390426837
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8713848232491577,
+          "cagr": 0.0994548803648796,
+          "max_drawdown": -0.22486578491914477,
+          "final_equity_from_unit": 2.643819912966176
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.3267898380308851,
+        "wf_pass": false,
+        "dsr_p_value": 0.8170187034331198,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.8170>=0.05",
+          "WF ratio=1.00 max_dd=32.68%"
+        ]
+      },
+      {
+        "config_id": 4,
+        "config": {
+          "filter": "SMA",
+          "lookback": 100,
+          "band_pct": 0.03,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.8430475243088814,
+          "cagr": 0.16347741366419366,
+          "max_drawdown": -0.4386008792288887,
+          "final_equity_from_unit": 110.72289590720982
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.398853883570968,
+          "cagr": 0.06568001959927128,
+          "max_drawdown": -0.38561802281714497,
+          "final_equity_from_unit": 2.5919996433985664
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8480045405104624,
+          "cagr": 0.18436921761659142,
+          "max_drawdown": -0.3953017330720249,
+          "final_equity_from_unit": 5.669366152725104
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.5619912675178786,
+        "wf_pass": false,
+        "dsr_p_value": 0.8065370673965107,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.8065>=0.05",
+          "WF ratio=1.00 max_dd=56.20%"
+        ]
+      },
+      {
+        "config_id": 5,
+        "config": {
+          "filter": "SMA",
+          "lookback": 100,
+          "band_pct": 0.03,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.801398101355614,
+          "cagr": 0.2188251069360012,
+          "max_drawdown": -0.6045787484106038,
+          "final_equity_from_unit": 469.5544554570815
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.40911105753698396,
+          "cagr": 0.08361425601015982,
+          "max_drawdown": -0.5360366961697491,
+          "final_equity_from_unit": 3.3277593135999037
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8499366999538502,
+          "cagr": 0.2625720163258263,
+          "max_drawdown": -0.5279336899512672,
+          "final_equity_from_unit": 10.921378128724399
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.7230620708491717,
+        "wf_pass": false,
+        "dsr_p_value": 0.7955743986207978,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.7956>=0.05",
+          "WF ratio=1.00 max_dd=72.31%"
+        ]
+      },
+      {
+        "config_id": 6,
+        "config": {
+          "filter": "SMA",
+          "lookback": 100,
+          "band_pct": 0.05,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.9284569322545547,
+          "cagr": 0.09791051983336141,
+          "max_drawdown": -0.18077678200096747,
+          "final_equity_from_unit": 18.24386695362606
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6498762356661669,
+          "cagr": 0.06755310756222155,
+          "max_drawdown": -0.164609535793104,
+          "final_equity_from_unit": 2.661054316445539
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7448752765753845,
+          "cagr": 0.08322275633328702,
+          "max_drawdown": -0.2690403156958242,
+          "final_equity_from_unit": 2.269838529181485
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.3101260836228562,
+        "wf_pass": false,
+        "dsr_p_value": 0.45995404980287613,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4600>=0.05",
+          "WF ratio=1.00 max_dd=31.01%"
+        ]
+      },
+      {
+        "config_id": 7,
+        "config": {
+          "filter": "SMA",
+          "lookback": 100,
+          "band_pct": 0.05,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7805869078320931,
+          "cagr": 0.15275558363479846,
+          "max_drawdown": -0.3335245869489939,
+          "final_equity_from_unit": 83.03171879220264
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6536629989531607,
+          "cagr": 0.12595696345832974,
+          "max_drawdown": -0.3132387792569644,
+          "final_equity_from_unit": 5.907390854672778
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7182046285205782,
+          "cagr": 0.14926023933536925,
+          "max_drawdown": -0.46522192166792764,
+          "final_equity_from_unit": 4.164167293768668
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.5369505389791116,
+        "wf_pass": false,
+        "dsr_p_value": 0.4540603076312921,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4541>=0.05",
+          "WF ratio=1.00 max_dd=53.70%"
+        ]
+      },
+      {
+        "config_id": 8,
+        "config": {
+          "filter": "SMA",
+          "lookback": 100,
+          "band_pct": 0.05,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7371711976633432,
+          "cagr": 0.19966907743999607,
+          "max_drawdown": -0.4597007754155058,
+          "final_equity_from_unit": 286.95090309733104
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6627365585012479,
+          "cagr": 0.1764317601506884,
+          "max_drawdown": -0.44783749067287837,
+          "final_equity_from_unit": 11.390451062502073
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7181047628640154,
+          "cagr": 0.20632914258539348,
+          "max_drawdown": -0.6092693065145294,
+          "final_equity_from_unit": 6.844597725795468
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.6962357690742986,
+        "wf_pass": false,
+        "dsr_p_value": 0.4402381843368006,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4402>=0.05",
+          "WF ratio=1.00 max_dd=69.62%"
+        ]
+      },
+      {
+        "config_id": 9,
+        "config": {
+          "filter": "SMA",
+          "lookback": 125,
+          "band_pct": 0.0,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.532916343261315,
+          "cagr": 0.16760914680379058,
+          "max_drawdown": -0.1288024127264521,
+          "final_equity_from_unit": 123.62244280477195
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.427291893846782,
+          "cagr": 0.1582760569985464,
+          "max_drawdown": -0.08235648761451209,
+          "final_equity_from_unit": 9.024198251783432
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.622294594555832,
+          "cagr": 0.19835111471663636,
+          "max_drawdown": -0.09982935220332667,
+          "final_equity_from_unit": 6.394383872936691
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.1288024127264521,
+        "wf_pass": true,
+        "dsr_p_value": 0.0010214878247132297,
+        "bootstrap_sharpe_lo": 0.759749349172213,
+        "bootstrap_sharpe_hi": 2.199851345424933,
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      {
+        "config_id": 10,
+        "config": {
+          "filter": "SMA",
+          "lookback": 125,
+          "band_pct": 0.0,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.4484662567691788,
+          "cagr": 0.3206730872902357,
+          "max_drawdown": -0.23500498036128736,
+          "final_equity_from_unit": 5691.159899090571
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.5131431168130796,
+          "cagr": 0.34991372230794604,
+          "max_drawdown": -0.15762130084049497,
+          "final_equity_from_unit": 89.32449512108187
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.6493708989835243,
+          "cagr": 0.42230407604277875,
+          "max_drawdown": -0.18527241137013317,
+          "final_equity_from_unit": 37.04928004266826
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.23500498036128736,
+        "wf_pass": true,
+        "dsr_p_value": 0.0003007944437961596,
+        "bootstrap_sharpe_lo": 0.8472317144555995,
+        "bootstrap_sharpe_hi": 2.2620709713891793,
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      {
+        "config_id": 11,
+        "config": {
+          "filter": "SMA",
+          "lookback": 125,
+          "band_pct": 0.0,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.4307590948759104,
+          "cagr": 0.48261046506370975,
+          "max_drawdown": -0.33439396042156233,
+          "final_equity_from_unit": 207381.4151025077
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.5544077096690998,
+          "cagr": 0.5607556726869702,
+          "max_drawdown": -0.22883149059594143,
+          "final_equity_from_unit": 784.6092371509917
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.6726018507583629,
+          "cagr": 0.6725572256097259,
+          "max_drawdown": -0.2670298678082489,
+          "final_equity_from_unit": 195.2277447161137
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.33439396042156244,
+        "wf_pass": false,
+        "dsr_p_value": 0.00015915684141643016,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "WF ratio=1.00 max_dd=33.44%"
+        ]
+      },
+      {
+        "config_id": 12,
+        "config": {
+          "filter": "SMA",
+          "lookback": 125,
+          "band_pct": 0.03,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.028162244568797,
+          "cagr": 0.10875767696128902,
+          "max_drawdown": -0.1836056585325896,
+          "final_equity_from_unit": 24.765673664457143
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.4735375794771002,
+          "cagr": 0.04728519959749766,
+          "max_drawdown": -0.19674345559629525,
+          "final_equity_from_unit": 1.997179643015616
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8612448640310318,
+          "cagr": 0.09888631182367824,
+          "max_drawdown": -0.22247124292691356,
+          "final_equity_from_unit": 2.6298340162801885
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.3208254531631587,
+        "wf_pass": false,
+        "dsr_p_value": 0.7178166294578098,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.7178>=0.05",
+          "WF ratio=1.00 max_dd=32.08%"
+        ]
+      },
+      {
+        "config_id": 13,
+        "config": {
+          "filter": "SMA",
+          "lookback": 125,
+          "band_pct": 0.03,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.8831298024276876,
+          "cagr": 0.1765780406172055,
+          "max_drawdown": -0.33428643400515956,
+          "final_equity_from_unit": 156.82243675005543
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.48375020449460393,
+          "cagr": 0.0856582738834244,
+          "max_drawdown": -0.35858799124571206,
+          "final_equity_from_unit": 3.422990716329272
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8375816060632372,
+          "cagr": 0.1827540144602391,
+          "max_drawdown": -0.3931642563827167,
+          "final_equity_from_unit": 5.590584025214226
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.5472879614675491,
+        "wf_pass": false,
+        "dsr_p_value": 0.704532592347317,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.7045>=0.05",
+          "WF ratio=1.00 max_dd=54.73%"
+        ]
+      },
+      {
+        "config_id": 14,
+        "config": {
+          "filter": "SMA",
+          "lookback": 125,
+          "band_pct": 0.03,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.840929907443255,
+          "cagr": 0.237821066846732,
+          "max_drawdown": -0.4614468576692836,
+          "final_equity_from_unit": 759.4219456167422
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.49453587660310805,
+          "cagr": 0.11444812764297585,
+          "max_drawdown": -0.4936665232098525,
+          "final_equity_from_unit": 5.065130804609668
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8395757329719375,
+          "cagr": 0.25967504008103126,
+          "max_drawdown": -0.5261100836422206,
+          "final_equity_from_unit": 10.667133323126
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.7034584686236537,
+        "wf_pass": false,
+        "dsr_p_value": 0.6901059595459748,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.6901>=0.05",
+          "WF ratio=1.00 max_dd=70.35%"
+        ]
+      },
+      {
+        "config_id": 15,
+        "config": {
+          "filter": "SMA",
+          "lookback": 125,
+          "band_pct": 0.05,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.8781970699947105,
+          "cagr": 0.09407850888211322,
+          "max_drawdown": -0.21737251327153662,
+          "final_equity_from_unit": 16.364852627820177
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6768809865089278,
+          "cagr": 0.07004245299996525,
+          "max_drawdown": -0.16625896809332597,
+          "final_equity_from_unit": 2.7554874004794696
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7225572499815275,
+          "cagr": 0.08211758461854624,
+          "max_drawdown": -0.1799548373897979,
+          "final_equity_from_unit": 2.2462038536470432
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.3196065330862109,
+        "wf_pass": false,
+        "dsr_p_value": 0.4194387327317065,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4194>=0.05",
+          "WF ratio=1.00 max_dd=31.96%"
+        ]
+      },
+      {
+        "config_id": 16,
+        "config": {
+          "filter": "SMA",
+          "lookback": 125,
+          "band_pct": 0.05,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7336545234579477,
+          "cagr": 0.14390381098801663,
+          "max_drawdown": -0.3719899718626981,
+          "final_equity_from_unit": 65.33895883196926
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6819146691906938,
+          "cagr": 0.13151201793088996,
+          "max_drawdown": -0.3076178636465221,
+          "final_equity_from_unit": 6.359120178807685
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.6935104802591946,
+          "cagr": 0.14563391410940185,
+          "max_drawdown": -0.3247302301979903,
+          "final_equity_from_unit": 4.031386060055341
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.5464411749393078,
+        "wf_pass": false,
+        "dsr_p_value": 0.41154153746357325,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4115>=0.05",
+          "WF ratio=1.00 max_dd=54.64%"
+        ]
+      },
+      {
+        "config_id": 17,
+        "config": {
+          "filter": "SMA",
+          "lookback": 125,
+          "band_pct": 0.05,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.6902709351062584,
+          "cagr": 0.18472215061410302,
+          "max_drawdown": -0.5063960977395401,
+          "final_equity_from_unit": 194.3294408729897
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6918202926886391,
+          "cagr": 0.1857951305180814,
+          "max_drawdown": -0.42778456518340335,
+          "final_equity_from_unit": 12.82593736414762
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.6907817866228361,
+          "cagr": 0.19851970939483898,
+          "max_drawdown": -0.44291741048304734,
+          "final_equity_from_unit": 6.403614541952125
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.7012075183038495,
+        "wf_pass": false,
+        "dsr_p_value": 0.3966766376954388,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.3967>=0.05",
+          "WF ratio=1.00 max_dd=70.12%"
+        ]
+      },
+      {
+        "config_id": 18,
+        "config": {
+          "filter": "SMA",
+          "lookback": 150,
+          "band_pct": 0.0,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.4417046596229857,
+          "cagr": 0.16010636197225137,
+          "max_drawdown": -0.13968778515541347,
+          "final_equity_from_unit": 101.17257952679138
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.3520727130750765,
+          "cagr": 0.14865024767838642,
+          "max_drawdown": -0.10907103932239992,
+          "final_equity_from_unit": 7.964257163358239
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.4840173239373229,
+          "cagr": 0.1870382390822165,
+          "max_drawdown": -0.10943581510965605,
+          "final_equity_from_unit": 5.801746742177814
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.1396877851554129,
+        "wf_pass": true,
+        "dsr_p_value": 0.002646627067806717,
+        "bootstrap_sharpe_lo": 0.6694812786187968,
+        "bootstrap_sharpe_hi": 2.1844528293837886,
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      {
+        "config_id": 19,
+        "config": {
+          "filter": "SMA",
+          "lookback": 150,
+          "band_pct": 0.0,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.3443305902586549,
+          "cagr": 0.2993668117050845,
+          "max_drawdown": -0.2632251678609284,
+          "final_equity_from_unit": 3432.525955271091
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.4254477382202904,
+          "cagr": 0.32387847431983285,
+          "max_drawdown": -0.19869466259696145,
+          "final_equity_from_unit": 66.73246107228849
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.4977365941512835,
+          "cagr": 0.3900519855390232,
+          "max_drawdown": -0.2082847947065276,
+          "final_equity_from_unit": 29.284362103865213
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.2632251678609282,
+        "wf_pass": false,
+        "dsr_p_value": 0.0010240796192390045,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "WF ratio=1.00 max_dd=26.32%"
+        ]
+      },
+      {
+        "config_id": 20,
+        "config": {
+          "filter": "SMA",
+          "lookback": 150,
+          "band_pct": 0.0,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.3213709106741,
+          "cagr": 0.4435148254660355,
+          "max_drawdown": -0.37147182619822827,
+          "final_equity_from_unit": 90360.04429077478
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.4620609946176213,
+          "cagr": 0.5136292917822403,
+          "max_drawdown": -0.27574376467363837,
+          "final_equity_from_unit": 495.78377719869434
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.5157347084664206,
+          "cagr": 0.6111174392227434,
+          "max_drawdown": -0.2974333671589785,
+          "final_equity_from_unit": 133.00737398184114
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.3714718261982284,
+        "wf_pass": false,
+        "dsr_p_value": 0.0006157346754344095,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "WF ratio=1.00 max_dd=37.15%"
+        ]
+      },
+      {
+        "config_id": 21,
+        "config": {
+          "filter": "SMA",
+          "lookback": 150,
+          "band_pct": 0.03,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.9816369800848487,
+          "cagr": 0.10594808960548296,
+          "max_drawdown": -0.17513190473215334,
+          "final_equity_from_unit": 22.887330354480245
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.668089443649541,
+          "cagr": 0.06780473003318566,
+          "max_drawdown": -0.1425849510287459,
+          "final_equity_from_unit": 2.670460537890541
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.9074277916930348,
+          "cagr": 0.10392136600046875,
+          "max_drawdown": -0.17801946428023285,
+          "final_equity_from_unit": 2.756045064951402
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.2290096882676158,
+        "wf_pass": true,
+        "dsr_p_value": 0.43237476382987605,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4324>=0.05"
+        ]
+      },
+      {
+        "config_id": 22,
+        "config": {
+          "filter": "SMA",
+          "lookback": 150,
+          "band_pct": 0.03,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.8335575928974336,
+          "cagr": 0.1683238837275367,
+          "max_drawdown": -0.32635715985068314,
+          "final_equity_from_unit": 125.9967325534528
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6790078821262463,
+          "cagr": 0.12909920458906732,
+          "max_drawdown": -0.24757723816118182,
+          "final_equity_from_unit": 6.159092708571632
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.883217205075185,
+          "cagr": 0.19380207730427657,
+          "max_drawdown": -0.32264136507423324,
+          "final_equity_from_unit": 6.149809629838321
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.41614927321858186,
+        "wf_pass": false,
+        "dsr_p_value": 0.41578528567857975,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4158>=0.05",
+          "WF ratio=1.00 max_dd=41.61%"
+        ]
+      },
+      {
+        "config_id": 23,
+        "config": {
+          "filter": "SMA",
+          "lookback": 150,
+          "band_pct": 0.03,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7900622571389971,
+          "cagr": 0.2229174127597282,
+          "max_drawdown": -0.45153575333114515,
+          "final_equity_from_unit": 521.1237925445283
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6912944160058868,
+          "cagr": 0.18363911958180457,
+          "max_drawdown": -0.3338006329075993,
+          "final_equity_from_unit": 12.481183961420934
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.885019969240216,
+          "cagr": 0.2777046123883482,
+          "max_drawdown": -0.440575002026398,
+          "final_equity_from_unit": 12.340551941402188
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.5638640304106487,
+        "wf_pass": false,
+        "dsr_p_value": 0.39738605445677755,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.3974>=0.05",
+          "WF ratio=1.00 max_dd=56.39%"
+        ]
+      },
+      {
+        "config_id": 24,
+        "config": {
+          "filter": "SMA",
+          "lookback": 150,
+          "band_pct": 0.05,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.8774911469140405,
+          "cagr": 0.09472892411851808,
+          "max_drawdown": -0.20879780728224384,
+          "final_equity_from_unit": 16.670011756045994
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6607564795167561,
+          "cagr": 0.06894122271868808,
+          "max_drawdown": -0.15291344193327083,
+          "final_equity_from_unit": 2.7133330847479087
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7871034031720097,
+          "cagr": 0.09242655217405304,
+          "max_drawdown": -0.18780151485892338,
+          "final_equity_from_unit": 2.4755567479361353
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.25713524405192645,
+        "wf_pass": false,
+        "dsr_p_value": 0.4435569195660458,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4436>=0.05",
+          "WF ratio=1.00 max_dd=25.71%"
+        ]
+      },
+      {
+        "config_id": 25,
+        "config": {
+          "filter": "SMA",
+          "lookback": 150,
+          "band_pct": 0.05,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7310350313276127,
+          "cagr": 0.14395193450579225,
+          "max_drawdown": -0.3628499207067507,
+          "final_equity_from_unit": 65.42446510492829
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.662886401658913,
+          "cagr": 0.1283138642220385,
+          "max_drawdown": -0.2823873615907566,
+          "final_equity_from_unit": 6.0952634589047605
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7581969133151899,
+          "cagr": 0.16630350215989465,
+          "max_drawdown": -0.338033829495482,
+          "final_equity_from_unit": 4.842658203344415
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.4583441983261072,
+        "wf_pass": false,
+        "dsr_p_value": 0.44010543063256446,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4401>=0.05",
+          "WF ratio=1.00 max_dd=45.83%"
+        ]
+      },
+      {
+        "config_id": 26,
+        "config": {
+          "filter": "SMA",
+          "lookback": 150,
+          "band_pct": 0.05,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.6855644177003529,
+          "cagr": 0.1836730767622805,
+          "max_drawdown": -0.49724025321300613,
+          "final_equity_from_unit": 189.05061893896618
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6712002910327017,
+          "cagr": 0.1797548179152011,
+          "max_drawdown": -0.3952637172790835,
+          "final_equity_from_unit": 11.881798375872528
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7568483049719876,
+          "cagr": 0.23039114407427497,
+          "max_drawdown": -0.4597035508954451,
+          "final_equity_from_unit": 8.381081793761759
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.6090964851426598,
+        "wf_pass": false,
+        "dsr_p_value": 0.4274758759224787,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4275>=0.05",
+          "WF ratio=1.00 max_dd=60.91%"
+        ]
+      },
+      {
+        "config_id": 27,
+        "config": {
+          "filter": "SMA",
+          "lookback": 200,
+          "band_pct": 0.0,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.2752214734751632,
+          "cagr": 0.14402416296323106,
+          "max_drawdown": -0.15594337123527513,
+          "final_equity_from_unit": 65.55300452611175
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.1447519212094033,
+          "cagr": 0.12328803540745792,
+          "max_drawdown": -0.11112235970180284,
+          "final_equity_from_unit": 5.701176213143602
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.3518588953383857,
+          "cagr": 0.16920800020564308,
+          "max_drawdown": -0.1148670225046261,
+          "final_equity_from_unit": 4.9677546619105755
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.15594337123527535,
+        "wf_pass": true,
+        "dsr_p_value": 0.023348587148896094,
+        "bootstrap_sharpe_lo": 0.433968997955232,
+        "bootstrap_sharpe_hi": 1.9127644110335407,
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      {
+        "config_id": 28,
+        "config": {
+          "filter": "SMA",
+          "lookback": 200,
+          "band_pct": 0.0,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.1559594342024788,
+          "cagr": 0.25590733172325564,
+          "max_drawdown": -0.2798288985021644,
+          "final_equity_from_unit": 1192.1327635800749
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.1921340109699965,
+          "cagr": 0.25921437537394776,
+          "max_drawdown": -0.20725410304691205,
+          "final_equity_from_unit": 31.529315962590204
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.3573730570457048,
+          "cagr": 0.3455863573507707,
+          "max_drawdown": -0.20125225661253976,
+          "final_equity_from_unit": 20.982401843103954
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.2798288985021644,
+        "wf_pass": false,
+        "dsr_p_value": 0.014778704326815273,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "WF ratio=1.00 max_dd=27.98%"
+        ]
+      },
+      {
+        "config_id": 29,
+        "config": {
+          "filter": "SMA",
+          "lookback": 200,
+          "band_pct": 0.0,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.1239368917066916,
+          "cagr": 0.3663060094976247,
+          "max_drawdown": -0.39445487863356876,
+          "final_equity_from_unit": 16361.416029958777
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.218783775172304,
+          "cagr": 0.3999634549605142,
+          "max_drawdown": -0.29290673849280946,
+          "final_equity_from_unit": 154.06063586555334
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.37205627495628,
+          "cagr": 0.5323023274768404,
+          "max_drawdown": -0.29661727889775247,
+          "final_equity_from_unit": 79.52729699099223
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.39445487863356876,
+        "wf_pass": false,
+        "dsr_p_value": 0.011268152182506874,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "WF ratio=1.00 max_dd=39.45%"
+        ]
+      },
+      {
+        "config_id": 30,
+        "config": {
+          "filter": "SMA",
+          "lookback": 200,
+          "band_pct": 0.03,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.9655231086399902,
+          "cagr": 0.1067658811631893,
+          "max_drawdown": -0.1840711925123214,
+          "final_equity_from_unit": 23.419346604968478
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.7147498999326045,
+          "cagr": 0.07321918186237553,
+          "max_drawdown": -0.15071462582869666,
+          "final_equity_from_unit": 2.8805401850606027
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8219393425560828,
+          "cagr": 0.0973807741232311,
+          "max_drawdown": -0.2123014526270689,
+          "final_equity_from_unit": 2.5931220421811085
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.21230145262706956,
+        "wf_pass": true,
+        "dsr_p_value": 0.3638239190356779,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.3638>=0.05"
+        ]
+      },
+      {
+        "config_id": 31,
+        "config": {
+          "filter": "SMA",
+          "lookback": 200,
+          "band_pct": 0.03,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.8187939053754545,
+          "cagr": 0.16817491384332017,
+          "max_drawdown": -0.3214427480986244,
+          "final_equity_from_unit": 125.49825602675479
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.7185853959686036,
+          "cagr": 0.13866324003655817,
+          "max_drawdown": -0.2687391519587372,
+          "final_equity_from_unit": 6.988162080013534
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7964340570891979,
+          "cagr": 0.17751425723632153,
+          "max_drawdown": -0.37662985577821284,
+          "final_equity_from_unit": 5.341766469361457
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.3766298557782126,
+        "wf_pass": false,
+        "dsr_p_value": 0.3579075128233836,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.3579>=0.05",
+          "WF ratio=1.00 max_dd=37.66%"
+        ]
+      },
+      {
+        "config_id": 32,
+        "config": {
+          "filter": "SMA",
+          "lookback": 200,
+          "band_pct": 0.03,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7749229209379686,
+          "cagr": 0.22100851708793212,
+          "max_drawdown": -0.434113686690623,
+          "final_equity_from_unit": 496.4210326179687
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.7280478589733326,
+          "cagr": 0.19753639707389103,
+          "max_drawdown": -0.3799792731314314,
+          "final_equity_from_unit": 14.8646997773708
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7968522584125602,
+          "cagr": 0.24870551301628163,
+          "max_drawdown": -0.5068953422209239,
+          "final_equity_from_unit": 9.752098438297729
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.5068953422209237,
+        "wf_pass": false,
+        "dsr_p_value": 0.3442894031268394,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.3443>=0.05",
+          "WF ratio=1.00 max_dd=50.69%"
+        ]
+      },
+      {
+        "config_id": 33,
+        "config": {
+          "filter": "SMA",
+          "lookback": 200,
+          "band_pct": 0.05,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.9086299210370365,
+          "cagr": 0.10272635072277359,
+          "max_drawdown": -0.23715010485063337,
+          "final_equity_from_unit": 20.902962068534034
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.662738846545954,
+          "cagr": 0.06859616106723121,
+          "max_drawdown": -0.206648448564149,
+          "final_equity_from_unit": 2.7002487061258758
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8291294426924726,
+          "cagr": 0.09981841552700188,
+          "max_drawdown": -0.19221212975911528,
+          "final_equity_from_unit": 2.6527974535939967
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.23715010485063326,
+        "wf_pass": true,
+        "dsr_p_value": 0.4405764390839495,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4406>=0.05"
+        ]
+      },
+      {
+        "config_id": 34,
+        "config": {
+          "filter": "SMA",
+          "lookback": 200,
+          "band_pct": 0.05,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.758257705009073,
+          "cagr": 0.15669452087584057,
+          "max_drawdown": -0.4081149323648112,
+          "final_equity_from_unit": 92.32049426149132
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6620019608912044,
+          "cagr": 0.1271751549016693,
+          "max_drawdown": -0.36074654349600754,
+          "final_equity_from_unit": 6.003809547291642
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7958960743362626,
+          "cagr": 0.18005204609630576,
+          "max_drawdown": -0.3457111580875524,
+          "final_equity_from_unit": 5.461000736874026
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.4081149323648112,
+        "wf_pass": false,
+        "dsr_p_value": 0.44147082166039864,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4415>=0.05",
+          "WF ratio=1.00 max_dd=40.81%"
+        ]
+      },
+      {
+        "config_id": 35,
+        "config": {
+          "filter": "SMA",
+          "lookback": 200,
+          "band_pct": 0.05,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7118817952132882,
+          "cagr": 0.20032761325312642,
+          "max_drawdown": -0.5420612276181118,
+          "final_equity_from_unit": 291.8883132568282
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6688552666820158,
+          "cagr": 0.17776905967790024,
+          "max_drawdown": -0.4928438260410378,
+          "final_equity_from_unit": 11.585858594684874
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7924948189732776,
+          "cagr": 0.250178975011244,
+          "max_drawdown": -0.46999317768133375,
+          "final_equity_from_unit": 9.870741225146945
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.5420612276181112,
+        "wf_pass": false,
+        "dsr_p_value": 0.43105437758038134,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4311>=0.05",
+          "WF ratio=1.00 max_dd=54.21%"
+        ]
+      },
+      {
+        "config_id": 36,
+        "config": {
+          "filter": "EMA",
+          "lookback": 100,
+          "band_pct": 0.0,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.7238319508184061,
+          "cagr": 0.1910834900155658,
+          "max_drawdown": -0.11265214933403989,
+          "final_equity_from_unit": 229.52934829981615
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.5947342043518327,
+          "cagr": 0.17830890805431054,
+          "max_drawdown": -0.08527649054502806,
+          "final_equity_from_unit": 11.66562451302701
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.8804981833590821,
+          "cagr": 0.22787529982135224,
+          "max_drawdown": -0.09484311671674983,
+          "final_equity_from_unit": 8.207010395693862
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.11265214933403989,
+        "wf_pass": true,
+        "dsr_p_value": 8.841086206534676e-05,
+        "bootstrap_sharpe_lo": 0.8976402345811387,
+        "bootstrap_sharpe_hi": 2.3413700558134862,
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      {
+        "config_id": 37,
+        "config": {
+          "filter": "EMA",
+          "lookback": 100,
+          "band_pct": 0.0,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.6441010931830706,
+          "cagr": 0.3749314902222589,
+          "max_drawdown": -0.20837201322094345,
+          "final_equity_from_unit": 19896.879878345906
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.6779448584343042,
+          "cagr": 0.3965009468627727,
+          "max_drawdown": -0.15779381521456826,
+          "final_equity_from_unit": 148.45321052740067
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.9164871562537285,
+          "cagr": 0.4972260139496367,
+          "max_drawdown": -0.18375938744384013,
+          "final_equity_from_unit": 62.71783649391246
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.2083720132209439,
+        "wf_pass": true,
+        "dsr_p_value": 2.1894282045242797e-05,
+        "bootstrap_sharpe_lo": 0.9846888210428634,
+        "bootstrap_sharpe_hi": 2.4188240755321715,
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      {
+        "config_id": 38,
+        "config": {
+          "filter": "EMA",
+          "lookback": 100,
+          "band_pct": 0.0,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.629545232968366,
+          "cagr": 0.5758606055806903,
+          "max_drawdown": -0.3005540232274371,
+          "final_equity_from_unit": 1381323.4429824383
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.7183282683120935,
+          "cagr": 0.642129828740243,
+          "max_drawdown": -0.2215257333045133,
+          "final_equity_from_unit": 1679.3020119670073
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.9449458591445472,
+          "cagr": 0.8108710063980182,
+          "max_drawdown": -0.2670298678082491,
+          "final_equity_from_unit": 440.93075863247736
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.3005540232274373,
+        "wf_pass": false,
+        "dsr_p_value": 1.0614220790072793e-05,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "WF ratio=1.00 max_dd=30.06%"
+        ]
+      },
+      {
+        "config_id": 39,
+        "config": {
+          "filter": "EMA",
+          "lookback": 100,
+          "band_pct": 0.03,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.0026133141392184,
+          "cagr": 0.10741084007434187,
+          "max_drawdown": -0.1627422078034806,
+          "final_equity_from_unit": 23.847348978442852
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.5321130173757533,
+          "cagr": 0.05397617441720093,
+          "max_drawdown": -0.16690016293033472,
+          "final_equity_from_unit": 2.196988152320416
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.900780274092896,
+          "cagr": 0.10363724761893978,
+          "max_drawdown": -0.2510667775628931,
+          "final_equity_from_unit": 2.7487802868708084
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.26603480924194756,
+        "wf_pass": false,
+        "dsr_p_value": 0.6373895622747248,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.6374>=0.05",
+          "WF ratio=1.00 max_dd=26.60%"
+        ]
+      },
+      {
+        "config_id": 40,
+        "config": {
+          "filter": "EMA",
+          "lookback": 100,
+          "band_pct": 0.03,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.8538047162283936,
+          "cagr": 0.17177694584259418,
+          "max_drawdown": -0.3687978161950902,
+          "final_equity_from_unit": 138.1031864226959
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.5423732081589354,
+          "cagr": 0.09961950546279219,
+          "max_drawdown": -0.31392029751545303,
+          "final_equity_from_unit": 4.144678999351574
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8820219093304981,
+          "cagr": 0.19440259744121846,
+          "max_drawdown": -0.4354588573030692,
+          "final_equity_from_unit": 6.181604710904631
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.47758382192387105,
+        "wf_pass": false,
+        "dsr_p_value": 0.6225816410453144,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.6226>=0.05",
+          "WF ratio=1.00 max_dd=47.76%"
+        ]
+      },
+      {
+        "config_id": 41,
+        "config": {
+          "filter": "EMA",
+          "lookback": 100,
+          "band_pct": 0.03,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.8106242264125748,
+          "cagr": 0.22898875724328316,
+          "max_drawdown": -0.5327841770268498,
+          "final_equity_from_unit": 607.8590463330544
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.5531870221747223,
+          "cagr": 0.13610185936061803,
+          "max_drawdown": -0.44286348383967244,
+          "final_equity_from_unit": 6.756467476918958
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8863582483849843,
+          "cagr": 0.27945567684730044,
+          "max_drawdown": -0.5748195738053089,
+          "final_equity_from_unit": 12.515075399563749
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.6362385250653562,
+        "wf_pass": false,
+        "dsr_p_value": 0.6067102970255098,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.6067>=0.05",
+          "WF ratio=1.00 max_dd=63.62%"
+        ]
+      },
+      {
+        "config_id": 42,
+        "config": {
+          "filter": "EMA",
+          "lookback": 100,
+          "band_pct": 0.05,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.9261723987959106,
+          "cagr": 0.1002098507488478,
+          "max_drawdown": -0.2040857330870257,
+          "final_equity_from_unit": 19.469835466972146
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.7800667545760366,
+          "cagr": 0.08395987361862911,
+          "max_drawdown": -0.14895736265418869,
+          "final_equity_from_unit": 3.3436860678754785
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7665787958245064,
+          "cagr": 0.08645304617298177,
+          "max_drawdown": -0.27896873053228843,
+          "final_equity_from_unit": 2.3402123146438796
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.2789687305322891,
+        "wf_pass": false,
+        "dsr_p_value": 0.2755114617881739,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.2755>=0.05",
+          "WF ratio=1.00 max_dd=27.90%"
+        ]
+      },
+      {
+        "config_id": 43,
+        "config": {
+          "filter": "EMA",
+          "lookback": 100,
+          "band_pct": 0.05,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7796849546853308,
+          "cagr": 0.15573266605608604,
+          "max_drawdown": -0.3677768048244541,
+          "final_equity_from_unit": 89.96355187930344
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.7866043991240638,
+          "cagr": 0.16062980283023576,
+          "max_drawdown": -0.27968646030860855,
+          "final_equity_from_unit": 9.3026937946017
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7365362257051036,
+          "cagr": 0.15481038569295258,
+          "max_drawdown": -0.48012362076744575,
+          "final_equity_from_unit": 4.375045144364083
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.4801236207674454,
+        "wf_pass": false,
+        "dsr_p_value": 0.2660615353987168,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.2661>=0.05",
+          "WF ratio=1.00 max_dd=48.01%"
+        ]
+      },
+      {
+        "config_id": 44,
+        "config": {
+          "filter": "EMA",
+          "lookback": 100,
+          "band_pct": 0.05,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7360168966579361,
+          "cagr": 0.2027436813682788,
+          "max_drawdown": -0.49887219616923795,
+          "final_equity_from_unit": 310.7168759745749
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.7972126707192381,
+          "cagr": 0.2310423672224018,
+          "max_drawdown": -0.39650905199909803,
+          "final_equity_from_unit": 22.469189806905533
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.734837300111852,
+          "cagr": 0.2141081308778383,
+          "max_drawdown": -0.6266001953934366,
+          "final_equity_from_unit": 7.3109257366759435
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.6266001953934366,
+        "wf_pass": false,
+        "dsr_p_value": 0.25246262480996795,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.2525>=0.05",
+          "WF ratio=1.00 max_dd=62.66%"
+        ]
+      },
+      {
+        "config_id": 45,
+        "config": {
+          "filter": "EMA",
+          "lookback": 125,
+          "band_pct": 0.0,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.5874540253502691,
+          "cagr": 0.17811340574471757,
+          "max_drawdown": -0.126974815605423,
+          "final_equity_from_unit": 163.31075254208628
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.4291266597666625,
+          "cagr": 0.1583850509822069,
+          "max_drawdown": -0.08323504983997443,
+          "final_equity_from_unit": 9.036920705048669
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.770839971682204,
+          "cagr": 0.2206174022470222,
+          "max_drawdown": -0.10878597511071908,
+          "final_equity_from_unit": 7.722964396082658
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.126974815605423,
+        "wf_pass": true,
+        "dsr_p_value": 0.0010103779581214223,
+        "bootstrap_sharpe_lo": 0.7331592072660056,
+        "bootstrap_sharpe_hi": 2.207744282893219,
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      {
+        "config_id": 46,
+        "config": {
+          "filter": "EMA",
+          "lookback": 125,
+          "band_pct": 0.0,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.4916972384506244,
+          "cagr": 0.33978890362212444,
+          "max_drawdown": -0.23293716019999655,
+          "final_equity_from_unit": 8896.478853242126
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.5071819120245085,
+          "cagr": 0.3481887853929506,
+          "max_drawdown": -0.15999330077298202,
+          "final_equity_from_unit": 87.63073758443201
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.8044650690812927,
+          "cagr": 0.4771320154097971,
+          "max_drawdown": -0.18788628018769205,
+          "final_equity_from_unit": 54.60346944806951
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.23293716019999655,
+        "wf_pass": true,
+        "dsr_p_value": 0.00034288990018827015,
+        "bootstrap_sharpe_lo": 0.8318608489079633,
+        "bootstrap_sharpe_hi": 2.269722347067799,
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      {
+        "config_id": 47,
+        "config": {
+          "filter": "EMA",
+          "lookback": 125,
+          "band_pct": 0.0,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.470525625831904,
+          "cagr": 0.511852069094513,
+          "max_drawdown": -0.32395300874512956,
+          "final_equity_from_unit": 380592.04284446954
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.5452240630110623,
+          "cagr": 0.5564261449091992,
+          "max_drawdown": -0.23192259508701163,
+          "final_equity_from_unit": 752.646175374821
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.8313875292303394,
+          "cagr": 0.7714759662326043,
+          "max_drawdown": -0.26702986780824867,
+          "final_equity_from_unit": 351.9021494338126
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.32395300874512956,
+        "wf_pass": false,
+        "dsr_p_value": 0.00019517630214305193,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "WF ratio=1.00 max_dd=32.40%"
+        ]
+      },
+      {
+        "config_id": 48,
+        "config": {
+          "filter": "EMA",
+          "lookback": 125,
+          "band_pct": 0.03,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.9735151142064886,
+          "cagr": 0.10559614334509115,
+          "max_drawdown": -0.18179304218221937,
+          "final_equity_from_unit": 22.661988378839688
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.5773961281251035,
+          "cagr": 0.058099349801701505,
+          "max_drawdown": -0.1560529126754634,
+          "final_equity_from_unit": 2.329246344125388
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.874766067050157,
+          "cagr": 0.10234122655382616,
+          "max_drawdown": -0.2588710362510874,
+          "final_equity_from_unit": 2.7158603372942576
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.2588710362510872,
+        "wf_pass": false,
+        "dsr_p_value": 0.5703181364821293,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.5703>=0.05",
+          "WF ratio=1.00 max_dd=25.89%"
+        ]
+      },
+      {
+        "config_id": 49,
+        "config": {
+          "filter": "EMA",
+          "lookback": 125,
+          "band_pct": 0.03,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.8245045198595808,
+          "cagr": 0.16697089491043005,
+          "max_drawdown": -0.4034975974250563,
+          "final_equity_from_unit": 121.53887389111381
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.5845219339363558,
+          "cagr": 0.10790685158684132,
+          "max_drawdown": -0.29233672980387604,
+          "final_equity_from_unit": 4.6378053926104785
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8532442955220849,
+          "cagr": 0.19010510473526954,
+          "max_drawdown": -0.44748656400110487,
+          "final_equity_from_unit": 5.957299731983317
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.44748656400110487,
+        "wf_pass": false,
+        "dsr_p_value": 0.5596114273980615,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.5596>=0.05",
+          "WF ratio=1.00 max_dd=44.75%"
+        ]
+      },
+      {
+        "config_id": 50,
+        "config": {
+          "filter": "EMA",
+          "lookback": 125,
+          "band_pct": 0.03,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7807395070744138,
+          "cagr": 0.2203207319965108,
+          "max_drawdown": -0.5704000915768183,
+          "final_equity_from_unit": 487.8013441055735
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.5945107872633651,
+          "cagr": 0.14940219037406677,
+          "max_drawdown": -0.4200854691380963,
+          "final_equity_from_unit": 8.042675156684977
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8562709820036902,
+          "cagr": 0.270976998165239,
+          "max_drawdown": -0.5886255937544131,
+          "final_equity_from_unit": 11.690270926170879
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.5886255937544138,
+        "wf_pass": false,
+        "dsr_p_value": 0.5444498225629696,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.5444>=0.05",
+          "WF ratio=1.00 max_dd=58.86%"
+        ]
+      },
+      {
+        "config_id": 51,
+        "config": {
+          "filter": "EMA",
+          "lookback": 125,
+          "band_pct": 0.05,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.9430863211909429,
+          "cagr": 0.10367755851694893,
+          "max_drawdown": -0.20186525788874055,
+          "final_equity_from_unit": 21.470826582423037
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.7084598571642204,
+          "cagr": 0.07371046637447254,
+          "max_drawdown": -0.1573258475581143,
+          "final_equity_from_unit": 2.9003460702226698
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8346311053348741,
+          "cagr": 0.09537839550211746,
+          "max_drawdown": -0.1979909454942923,
+          "final_equity_from_unit": 2.5450115222751863
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.2018652578887401,
+        "wf_pass": true,
+        "dsr_p_value": 0.37316349385111025,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.3732>=0.05"
+        ]
+      },
+      {
+        "config_id": 52,
+        "config": {
+          "filter": "EMA",
+          "lookback": 125,
+          "band_pct": 0.05,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7977675724186086,
+          "cagr": 0.16184107875851872,
+          "max_drawdown": -0.36011399281092904,
+          "final_equity_from_unit": 105.98294127811937
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.7102726649738264,
+          "cagr": 0.13855930045767328,
+          "max_drawdown": -0.2767184814640855,
+          "final_equity_from_unit": 6.978617475130932
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.805020428088108,
+          "cagr": 0.1737660561222949,
+          "max_drawdown": -0.3536798430158318,
+          "final_equity_from_unit": 5.1699574018215815
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.3601139928109295,
+        "wf_pass": false,
+        "dsr_p_value": 0.3700127584199636,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.3700>=0.05",
+          "WF ratio=1.00 max_dd=36.01%"
+        ]
+      },
+      {
+        "config_id": 53,
+        "config": {
+          "filter": "EMA",
+          "lookback": 125,
+          "band_pct": 0.05,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7531969906577399,
+          "cagr": 0.21115203301371221,
+          "max_drawdown": -0.48994416763264126,
+          "final_equity_from_unit": 385.8530283509109
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.7184990267995343,
+          "cagr": 0.19621694705058235,
+          "max_drawdown": -0.3890236369939768,
+          "final_equity_from_unit": 14.62136353924446
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8035502532682433,
+          "cagr": 0.2440199106831944,
+          "max_drawdown": -0.47806933225803405,
+          "final_equity_from_unit": 9.383318225248942
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.48994416763264104,
+        "wf_pass": false,
+        "dsr_p_value": 0.3580008200559688,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.3580>=0.05",
+          "WF ratio=1.00 max_dd=48.99%"
+        ]
+      },
+      {
+        "config_id": 54,
+        "config": {
+          "filter": "EMA",
+          "lookback": 150,
+          "band_pct": 0.0,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.4616420320243098,
+          "cagr": 0.16650512595404643,
+          "max_drawdown": -0.12834268716229058,
+          "final_equity_from_unit": 120.03986789432918
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.4064545147217506,
+          "cagr": 0.15514766467922025,
+          "max_drawdown": -0.10576203641818382,
+          "final_equity_from_unit": 8.66607884685403
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.6169975373551115,
+          "cagr": 0.2021113398541643,
+          "max_drawdown": -0.11769578343091369,
+          "final_equity_from_unit": 6.603137703948255
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.12834268716229058,
+        "wf_pass": true,
+        "dsr_p_value": 0.0013891924675408784,
+        "bootstrap_sharpe_lo": 0.6884423862144367,
+        "bootstrap_sharpe_hi": 2.216764150024235,
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      {
+        "config_id": 55,
+        "config": {
+          "filter": "EMA",
+          "lookback": 150,
+          "band_pct": 0.0,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.35643644801374,
+          "cagr": 0.3097078730274916,
+          "max_drawdown": -0.23712935214277975,
+          "final_equity_from_unit": 4391.7448261973395
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.4773035738137834,
+          "cagr": 0.3382722593800189,
+          "max_drawdown": -0.1946706910181747,
+          "final_equity_from_unit": 78.46066978797526
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.6495887913550558,
+          "cagr": 0.43200321100691297,
+          "max_drawdown": -0.2047000154446662,
+          "final_equity_from_unit": 39.72324705161375
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.23712935214277975,
+        "wf_pass": true,
+        "dsr_p_value": 0.0005284644692210572,
+        "bootstrap_sharpe_lo": 0.7653575373002554,
+        "bootstrap_sharpe_hi": 2.281020367333835,
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      {
+        "config_id": 56,
+        "config": {
+          "filter": "EMA",
+          "lookback": 150,
+          "band_pct": 0.0,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.3309418511899471,
+          "cagr": 0.4580371408275987,
+          "max_drawdown": -0.33084930998044026,
+          "final_equity_from_unit": 123345.54094709935
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.5132246385809818,
+          "cagr": 0.5380840993256664,
+          "max_drawdown": -0.27216903715122565,
+          "final_equity_from_unit": 630.2420058618944
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.6750722338782462,
+          "cagr": 0.6895157462777732,
+          "max_drawdown": -0.27435135077397665,
+          "final_equity_from_unit": 216.5044448558798
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.33084930998044026,
+        "wf_pass": false,
+        "dsr_p_value": 0.00031325899897094445,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "WF ratio=1.00 max_dd=33.08%"
+        ]
+      },
+      {
+        "config_id": 57,
+        "config": {
+          "filter": "EMA",
+          "lookback": 150,
+          "band_pct": 0.03,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.9920813685481525,
+          "cagr": 0.10975415971519809,
+          "max_drawdown": -0.2173725132715365,
+          "final_equity_from_unit": 25.467047519861392
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6693261768657179,
+          "cagr": 0.06774405496905023,
+          "max_drawdown": -0.13738958225315323,
+          "final_equity_from_unit": 2.6681895310591983
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8765712434169964,
+          "cagr": 0.10277160447152078,
+          "max_drawdown": -0.2596952531081219,
+          "final_equity_from_unit": 2.726752597492201
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.2596952531081217,
+        "wf_pass": false,
+        "dsr_p_value": 0.43050994882411453,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4305>=0.05",
+          "WF ratio=1.00 max_dd=25.97%"
+        ]
+      },
+      {
+        "config_id": 58,
+        "config": {
+          "filter": "EMA",
+          "lookback": 150,
+          "band_pct": 0.03,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.8481431126053561,
+          "cagr": 0.17528653328365174,
+          "max_drawdown": -0.371989971862698,
+          "final_equity_from_unit": 151.5584724559252
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6775878839844846,
+          "cagr": 0.1285599859553792,
+          "max_drawdown": -0.26360177241628957,
+          "final_equity_from_unit": 6.115200501043849
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8548955892040865,
+          "cagr": 0.19092959556381262,
+          "max_drawdown": -0.44831160177505536,
+          "final_equity_from_unit": 5.999755284055392
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.4483116017750556,
+        "wf_pass": false,
+        "dsr_p_value": 0.41797179181264277,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4180>=0.05",
+          "WF ratio=1.00 max_dd=44.83%"
+        ]
+      },
+      {
+        "config_id": 59,
+        "config": {
+          "filter": "EMA",
+          "lookback": 150,
+          "band_pct": 0.03,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.8054201562535556,
+          "cagr": 0.23270511670846306,
+          "max_drawdown": -0.49494641488082014,
+          "final_equity_from_unit": 667.6783752142679
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6883669582354746,
+          "cagr": 0.1823599651047072,
+          "max_drawdown": -0.38129769816795356,
+          "final_equity_from_unit": 12.280750688791626
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8577311697018221,
+          "cagr": 0.27211688631400044,
+          "max_drawdown": -0.5894348578905116,
+          "final_equity_from_unit": 11.798226237747222
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.5894348578905118,
+        "wf_pass": false,
+        "dsr_p_value": 0.4018345527504936,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4018>=0.05",
+          "WF ratio=1.00 max_dd=58.94%"
+        ]
+      },
+      {
+        "config_id": 60,
+        "config": {
+          "filter": "EMA",
+          "lookback": 150,
+          "band_pct": 0.05,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.9293131483322172,
+          "cagr": 0.10287301510802371,
+          "max_drawdown": -0.20186088218990628,
+          "final_equity_from_unit": 20.98956188529776
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6822969612391162,
+          "cagr": 0.0705706189425459,
+          "max_drawdown": -0.1858290991134085,
+          "final_equity_from_unit": 2.7759213478319626
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8615276831827113,
+          "cagr": 0.10456965706283872,
+          "max_drawdown": -0.19799094549429208,
+          "final_equity_from_unit": 2.7726864921354317
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.20625942596153202,
+        "wf_pass": true,
+        "dsr_p_value": 0.41140611474277533,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4114>=0.05"
+        ]
+      },
+      {
+        "config_id": 61,
+        "config": {
+          "filter": "EMA",
+          "lookback": 150,
+          "band_pct": 0.05,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7788821376450998,
+          "cagr": 0.15838951103606158,
+          "max_drawdown": -0.36191753344360444,
+          "final_equity_from_unit": 96.62015251311512
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6818628403275381,
+          "cagr": 0.13150644888669039,
+          "max_drawdown": -0.3277881861057014,
+          "final_equity_from_unit": 6.358651592215262
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8268171748443177,
+          "cagr": 0.18957608729584563,
+          "max_drawdown": -0.3536798430158309,
+          "final_equity_from_unit": 5.9302019947290106
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.3717872363608248,
+        "wf_pass": false,
+        "dsr_p_value": 0.41171727828163684,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4117>=0.05",
+          "WF ratio=1.00 max_dd=37.18%"
+        ]
+      },
+      {
+        "config_id": 62,
+        "config": {
+          "filter": "EMA",
+          "lookback": 150,
+          "band_pct": 0.05,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7321229403304413,
+          "cagr": 0.204394939817081,
+          "max_drawdown": -0.4925215256794079,
+          "final_equity_from_unit": 324.2558670305551
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6890008422789224,
+          "cagr": 0.18480691263046634,
+          "max_drawdown": -0.45420247190144936,
+          "final_equity_from_unit": 12.66682948719664
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8230362348892312,
+          "cagr": 0.26490850035009106,
+          "max_drawdown": -0.4780693322580336,
+          "final_equity_from_unit": 11.130402899410807
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.5047166870379436,
+        "wf_pass": false,
+        "dsr_p_value": 0.40100257336564404,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4010>=0.05",
+          "WF ratio=1.00 max_dd=50.47%"
+        ]
+      },
+      {
+        "config_id": 63,
+        "config": {
+          "filter": "EMA",
+          "lookback": 200,
+          "band_pct": 0.0,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.3112376869145412,
+          "cagr": 0.1514881038028486,
+          "max_drawdown": -0.17238110491711245,
+          "final_equity_from_unit": 80.24004620971492
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.1877387219079514,
+          "cagr": 0.1309871103395499,
+          "max_drawdown": -0.11101242882707663,
+          "final_equity_from_unit": 6.315095110489109
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.455928611397768,
+          "cagr": 0.1876156820647099,
+          "max_drawdown": -0.13002622867577218,
+          "final_equity_from_unit": 5.830751741819187
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.1723811049171129,
+        "wf_pass": true,
+        "dsr_p_value": 0.01547923730057732,
+        "bootstrap_sharpe_lo": 0.43557788355862864,
+        "bootstrap_sharpe_hi": 1.9327983530644401,
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      {
+        "config_id": 64,
+        "config": {
+          "filter": "EMA",
+          "lookback": 200,
+          "band_pct": 0.0,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.1932734779929435,
+          "cagr": 0.270624560437531,
+          "max_drawdown": -0.28812773740359243,
+          "final_equity_from_unit": 1712.4404924973223
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.2327636322944797,
+          "cagr": 0.27572662801038894,
+          "max_drawdown": -0.20748761363765922,
+          "final_equity_from_unit": 38.32009674841318
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.4777819107642942,
+          "cagr": 0.39317043609665947,
+          "max_drawdown": -0.22782212808643587,
+          "final_equity_from_unit": 29.965050012604248
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.28812773740359254,
+        "wf_pass": false,
+        "dsr_p_value": 0.009730353516377743,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "WF ratio=1.00 max_dd=28.81%"
+        ]
+      },
+      {
+        "config_id": 65,
+        "config": {
+          "filter": "EMA",
+          "lookback": 200,
+          "band_pct": 0.0,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 1.1619630867185844,
+          "cagr": 0.3891976794201746,
+          "max_drawdown": -0.3832657823522636,
+          "final_equity_from_unit": 27425.15258235421
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 1.2586317607831352,
+          "cagr": 0.42660614438511013,
+          "max_drawdown": -0.2936798059291088,
+          "final_equity_from_unit": 204.30318077150136
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 1.4983115132389193,
+          "cagr": 0.616474805387907,
+          "max_drawdown": -0.306856029068851,
+          "final_equity_from_unit": 137.61294520490773
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.38326578235226383,
+        "wf_pass": false,
+        "dsr_p_value": 0.00735884675039844,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "WF ratio=1.00 max_dd=38.33%"
+        ]
+      },
+      {
+        "config_id": 66,
+        "config": {
+          "filter": "EMA",
+          "lookback": 200,
+          "band_pct": 0.03,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.9719421417209315,
+          "cagr": 0.10872825107005868,
+          "max_drawdown": -0.1859726532243764,
+          "final_equity_from_unit": 24.745249101362194
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6475883774190564,
+          "cagr": 0.06769415698689274,
+          "max_drawdown": -0.16777589391611558,
+          "final_equity_from_unit": 2.6663232502925003
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.8079155276222744,
+          "cagr": 0.0957090393171991,
+          "max_drawdown": -0.26586273912589364,
+          "final_equity_from_unit": 2.5528998437398376
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.26586273912589364,
+        "wf_pass": false,
+        "dsr_p_value": 0.4634988448085452,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4635>=0.05",
+          "WF ratio=1.00 max_dd=26.59%"
+        ]
+      },
+      {
+        "config_id": 67,
+        "config": {
+          "filter": "EMA",
+          "lookback": 200,
+          "band_pct": 0.03,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.8225497855226814,
+          "cagr": 0.17072659696372083,
+          "max_drawdown": -0.3583904457219672,
+          "final_equity_from_unit": 134.3062752525438
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6531092780627182,
+          "cagr": 0.1263901488998631,
+          "max_drawdown": -0.3098355023314081,
+          "final_equity_from_unit": 5.9415102775473105
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7845685517077786,
+          "cagr": 0.17443596383667503,
+          "max_drawdown": -0.4585393309738912,
+          "final_equity_from_unit": 5.200293486408802
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.4585393309738911,
+        "wf_pass": false,
+        "dsr_p_value": 0.4549556097641896,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4550>=0.05",
+          "WF ratio=1.00 max_dd=45.85%"
+        ]
+      },
+      {
+        "config_id": 68,
+        "config": {
+          "filter": "EMA",
+          "lookback": 200,
+          "band_pct": 0.03,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7777468118787895,
+          "cagr": 0.22391962044760816,
+          "max_drawdown": -0.5197111300947002,
+          "final_equity_from_unit": 534.5653101096926
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6624996933077141,
+          "cagr": 0.17696324908240268,
+          "max_drawdown": -0.43291474356480586,
+          "final_equity_from_unit": 11.467741524049437
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.785922383862628,
+          "cagr": 0.24404480803439643,
+          "max_drawdown": -0.6096593823507821,
+          "final_equity_from_unit": 9.385244039717103
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.6096593823507823,
+        "wf_pass": false,
+        "dsr_p_value": 0.4406540924623642,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4407>=0.05",
+          "WF ratio=1.00 max_dd=60.97%"
+        ]
+      },
+      {
+        "config_id": 69,
+        "config": {
+          "filter": "EMA",
+          "lookback": 200,
+          "band_pct": 0.05,
+          "leverage": 1.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.8742083560001829,
+          "cagr": 0.09951390419389439,
+          "max_drawdown": -0.23864664749250364,
+          "final_equity_from_unit": 19.090591555912177
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.654591347971932,
+          "cagr": 0.06675063573373152,
+          "max_drawdown": -0.15620724555225407,
+          "final_equity_from_unit": 2.6312622191295505
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7916441736082741,
+          "cagr": 0.09832334054721792,
+          "max_drawdown": -0.19996497168681315,
+          "final_equity_from_unit": 2.6160516262259113
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.23864664749250308,
+        "wf_pass": true,
+        "dsr_p_value": 0.4528614300887952,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4529>=0.05"
+        ]
+      },
+      {
+        "config_id": 70,
+        "config": {
+          "filter": "EMA",
+          "lookback": 200,
+          "band_pct": 0.05,
+          "leverage": 2.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.7186372677141115,
+          "cagr": 0.14790505993332004,
+          "max_drawdown": -0.41072435393052176,
+          "final_equity_from_unit": 72.83078046382391
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.6528904456439332,
+          "cagr": 0.12348392301224687,
+          "max_drawdown": -0.29272727260915754,
+          "final_equity_from_unit": 5.7160799689386526
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7565571045580917,
+          "cagr": 0.17457167045285016,
+          "max_drawdown": -0.36205003108313405,
+          "final_equity_from_unit": 5.206458353385901
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.4107243539305214,
+        "wf_pass": false,
+        "dsr_p_value": 0.4552734550015759,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4553>=0.05",
+          "WF ratio=1.00 max_dd=41.07%"
+        ]
+      },
+      {
+        "config_id": 71,
+        "config": {
+          "filter": "EMA",
+          "lookback": 200,
+          "band_pct": 0.05,
+          "leverage": 3.0,
+          "gold_weight": 0.0
+        },
+        "is": {
+          "name": "IS",
+          "n_bars": 7834,
+          "sharpe": 0.6702551914034439,
+          "cagr": 0.18518600701421528,
+          "max_drawdown": -0.544145490537067,
+          "final_equity_from_unit": 196.70873905390226
+        },
+        "oos": {
+          "name": "OOS",
+          "n_bars": 3773,
+          "sharpe": 0.659424140175346,
+          "cagr": 0.17242897916538746,
+          "max_drawdown": -0.41345913966877623,
+          "final_equity_from_unit": 10.82378347934258
+        },
+        "stress": {
+          "name": "Stress",
+          "n_bars": 2584,
+          "sharpe": 0.7520045730232914,
+          "cagr": 0.2385449621717819,
+          "max_drawdown": -0.49502627575548563,
+          "final_equity_from_unit": 8.968388503237481
+        },
+        "wf_profitable_ratio": 1.0,
+        "wf_max_window_drawdown": 0.5441454905370675,
+        "wf_pass": false,
+        "dsr_p_value": 0.44530578379777597,
+        "bootstrap_sharpe_lo": null,
+        "bootstrap_sharpe_hi": null,
+        "verdict": "FAIL",
+        "failed_gates": [
+          "DSR_p=0.4453>=0.05",
+          "WF ratio=1.00 max_dd=54.41%"
+        ]
+      }
+    ]
+  }
+}

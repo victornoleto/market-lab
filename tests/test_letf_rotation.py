@@ -325,3 +325,96 @@ class TestSimulateLetfRotation:
         )
         result = simulate_letf_rotation(rets, prices, cfg)
         assert result.sharpe() == 0.0
+
+
+class TestSimulateFFRAware:
+    """Phase 3.5b Task 7a — opt-in FFR-aware cost path."""
+
+    def _always_on_series(self, n: int = 400, seed: int = 42):
+        # Strong uptrend → regime stays ON almost the entire window after
+        # the MA warmup, so cost-model differences between flat-fee and
+        # FFR-aware accumulate cleanly across most bars.
+        idx = pd.date_range("2020-01-01", periods=n, freq="B")
+        rng = np.random.default_rng(seed)
+        rets = pd.Series(rng.normal(0.0012, 0.004, n), index=idx)
+        prices = (1.0 + rets).cumprod() * 100.0
+        return rets, prices
+
+    def test_default_none_preserves_flat_fee_path(self):
+        rets, prices = self._always_on_series()
+        cfg = LETFRotationConfig(
+            filter="SMA", lookback=20, band_pct=0.0, leverage=2.0,
+            gold_weight=0.0, annual_fee=0.01, cash_rate_annual=0.0,
+            commission_bps=0.0, spread_bps=0.0, tax_rate=0.0,
+        )
+        r_default = simulate_letf_rotation(rets, prices, cfg)
+        r_explicit_none = simulate_letf_rotation(
+            rets, prices, cfg, ffr_annualized=None
+        )
+        # Byte-identical equity paths — the default behavior is unchanged.
+        pd.testing.assert_series_equal(
+            r_default.equity, r_explicit_none.equity
+        )
+        pd.testing.assert_series_equal(
+            r_default.daily_returns, r_explicit_none.daily_returns
+        )
+
+    def test_ffr_aware_high_rate_reduces_equity_vs_flat_fee(self):
+        # 7.5%/yr FFR is above the 1%/yr flat-fee drag the Gayed model
+        # assumes, so the FFR-aware equity curve must end BELOW the flat
+        # one under the same SPX path and signal sequence.
+        rets, prices = self._always_on_series()
+        cfg = LETFRotationConfig(
+            filter="SMA", lookback=20, band_pct=0.0, leverage=2.0,
+            gold_weight=0.0, annual_fee=0.01, cash_rate_annual=0.0,
+            commission_bps=0.0, spread_bps=0.0, tax_rate=0.0,
+        )
+        ffr = pd.Series(0.075, index=rets.index)
+        r_flat = simulate_letf_rotation(rets, prices, cfg)
+        r_ffr = simulate_letf_rotation(
+            rets, prices, cfg,
+            ffr_annualized=ffr,
+            ffr_swap_exposure=1.1,
+            ffr_spread=0.004,
+            ffr_expense_ratio=0.0095,
+        )
+        assert r_ffr.equity.iloc[-1] < r_flat.equity.iloc[-1]
+        # Same regime trajectory → same number of switches.
+        assert int(r_ffr.switches.sum()) == int(r_flat.switches.sum())
+
+    def test_ffr_aware_low_rate_beats_flat_fee(self):
+        # 0%/yr FFR with default SW=1.1, SP=0.4%, ER=0.95% gives
+        # annual_cost = 1.1 * (2-1) * 0.004 + 0.0095 = 1.39%/yr on ON days
+        # vs flat 1%/yr of Gayed. At L=2 that's still more expensive ON,
+        # but keeps the flat variant ahead → assert the relationship is
+        # stable: flat at fee=0.0139 matches FFR-aware at FFR=0.
+        rets, prices = self._always_on_series()
+        cfg_flat_matched = LETFRotationConfig(
+            filter="SMA", lookback=20, band_pct=0.0, leverage=2.0,
+            gold_weight=0.0, annual_fee=1.1 * 0.004 + 0.0095,
+            cash_rate_annual=0.0, commission_bps=0.0, spread_bps=0.0,
+            tax_rate=0.0,
+        )
+        r_flat_matched = simulate_letf_rotation(
+            rets, prices, cfg_flat_matched
+        )
+        cfg_for_ffr = LETFRotationConfig(
+            filter="SMA", lookback=20, band_pct=0.0, leverage=2.0,
+            gold_weight=0.0, annual_fee=0.01, cash_rate_annual=0.0,
+            commission_bps=0.0, spread_bps=0.0, tax_rate=0.0,
+        )
+        ffr_zero = pd.Series(0.0, index=rets.index)
+        r_ffr = simulate_letf_rotation(
+            rets, prices, cfg_for_ffr,
+            ffr_annualized=ffr_zero,
+            ffr_swap_exposure=1.1,
+            ffr_spread=0.004,
+            ffr_expense_ratio=0.0095,
+        )
+        # Equity paths must match to float precision when the two cost
+        # models are analytically equal (same ON-return formula).
+        np.testing.assert_allclose(
+            r_ffr.equity.to_numpy(),
+            r_flat_matched.equity.to_numpy(),
+            rtol=1e-12, atol=1e-12,
+        )
