@@ -22,12 +22,36 @@ from ai_trade.backtest.metrics.performance import (
     volatility,
 )
 from ai_trade.backtest.metrics.report import generate_report
+from ai_trade.backtest.metrics.standard_report import (
+    SpyBenchmark,
+    SpyComparison,
+    StandardReport,
+    Trade,
+    build_spy_benchmark,
+    build_standard_report,
+    compare_vs_spy,
+    drawdown_periods,
+    load_spy_series,
+    render_markdown,
+    render_trade_log,
+)
 
 __all__ = [
+    "SpyBenchmark",
+    "SpyComparison",
+    "StandardReport",
+    "Trade",
+    "build_spy_benchmark",
+    "build_standard_report",
     "cagr",
     "calmar",
+    "compare_vs_spy",
+    "drawdown_periods",
     "generate_report",
+    "load_spy_series",
     "max_drawdown",
+    "render_markdown",
+    "render_trade_log",
     "returns_from_equity",
     "sharpe",
     "sortino",
