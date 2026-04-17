@@ -31,6 +31,7 @@ cd "$(dirname "$0")/.."
 : "${ITER_TIMEOUT:=1800}"
 : "${SCOPE:=code}"
 : "${COOLDOWN:=10}"
+: "${CLAUDE_MODEL:=sonnet}"
 
 MEMORY_DIR="docs/self_improvement"
 MEMORY_FILE="$MEMORY_DIR/memory.md"
@@ -195,7 +196,7 @@ read_winners_count() {
 
 echo "=== self_improve_loop @ $(date -Iseconds) ===" | tee -a "$RUN_LOG"
 echo "Branch: $CURRENT_BRANCH" | tee -a "$RUN_LOG"
-echo "MAX_ITER=$MAX_ITER  SCOPE=$SCOPE  ITER_TIMEOUT=${ITER_TIMEOUT}s  COOLDOWN=${COOLDOWN}s" | tee -a "$RUN_LOG"
+echo "MAX_ITER=$MAX_ITER  SCOPE=$SCOPE  ITER_TIMEOUT=${ITER_TIMEOUT}s  COOLDOWN=${COOLDOWN}s  CLAUDE_MODEL=$CLAUDE_MODEL" | tee -a "$RUN_LOG"
 echo "Memory: $MEMORY_FILE" | tee -a "$RUN_LOG"
 echo "Loop log: $RUN_LOG" | tee -a "$RUN_LOG"
 echo "" | tee -a "$RUN_LOG"
@@ -212,7 +213,7 @@ for i in $(seq "$START_ITER" "$END_ITER"); do
 
     set +e
     timeout "$ITER_TIMEOUT" claude -p "$PROMPT" \
-        --model sonnet \
+        --model "$CLAUDE_MODEL" \
         --dangerously-skip-permissions 2>&1 | tee -a "$ITER_LOG"
     EXIT=${PIPESTATUS[0]}
     set -e
