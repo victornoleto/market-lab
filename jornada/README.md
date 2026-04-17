@@ -209,6 +209,7 @@ demoção de strategies que já não passariam de qualquer jeito).
 
 ## Entradas (mais recente primeiro)
 
+- [2026-04-16 1930 — 📌 Investment Mandate registrado; CAGRs dos winners insuficientes vs CDI BR; direção agressiva Phase 3 (5 leads)](2026-04-16-1930-investment-mandate-registered.md)
 - [2026-04-16 1600 — 🏁 Phase B CONCLUÍDA: Production Readiness Summary — BollingerMR GO-WITH-CAVEATS, ETFRotation top-1 GO, ETFRotation top-2 NO-GO (costs-sensitive)](2026-04-16-1600-production-readiness-summary.md)
 - [2026-04-16 1507 — Phase B Leads #7+#8: Vol-sizing ETFRotation NEUTRAL; BollingerMR scale-invariante, viável a partir de $1k](2026-04-16-1507-vol-sizing-account-sensitivity-phase-b.md)
 - [2026-04-16 1458 — Phase B Lead #6: Regime decomp — BollingerMR sem quintil perdedor; ETFRotation protegida por SMA200 em bears; nenhum trigger de pausa VIX necessário](2026-04-16-1458-regime-decomp-phase-b.md)

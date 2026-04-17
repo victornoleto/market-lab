@@ -1,0 +1,141 @@
+# CLAUDE.md — ai-trade
+
+Instruções de colaboração com o Claude Code neste repositório.
+
+---
+
+## Leituras iniciais obrigatórias
+
+Ao abrir qualquer sessão sobre este projeto, leia nesta ordem:
+
+1. `jornada/README.md` — retrato atual em linguagem humana (estado, diagnóstico,
+   próximo passo). **Sempre começa aqui.**
+2. `ROADMAP.md` — mapa técnico detalhado das fases 0-7, decisões deferidas
+   e "Current status" com verdict dos runs.
+3. `README.md` — setup, arquitetura de alto nível, como rodar backtests.
+4. `specs/backtest_phase2.md` e `specs/backtest_phase2_5_ehlers.md` —
+   specs executáveis com Conclusion field por tarefa.
+5. `docs/investment-mandate.md` — **regras permanentes** sobre capital
+   allocation, CAGR mínimo, alavancagem, multi-asset, threading model.
+   O sumário abaixo é o que sempre carrega em contexto; o mandate
+   completo tem a rationale.
+
+---
+
+## 📌 Investment Mandate (ler antes de qualquer discussão de strategy)
+
+Sumário do `docs/investment-mandate.md`. Regras invioláveis:
+
+1. **Capital allocation:** 60-80% passive buy&hold (ver
+   `portfolio-aposentadoria.md`), 20-40% split entre 2 strategies
+   ativas (Path A short-hold CFD Pepperstone + Path B swing broker BR).
+2. **CAGR mínimo aceitável = CDI BR (~13-14%/ano líquido).** Abaixo
+   disso, strategy não é winner — é folclore.
+3. **Strategy A (Path A Pepperstone CFD) é multi-asset obrigatório**
+   (SPY/QQQ/Gold/BTC/ETH/FX majors), com universe pre-screening
+   (Hurst/ATR/spread/volume) e alavancagem ótima via sweep empírico
+   1:1 → 1:200 cross-checked com Kelly f/2. Target: **5-10%/mês a
+   partir de $1k**. Single-asset edge NÃO é aceito como winner final.
+4. **Strategy B (Path B swing broker) tese primária: LETF rotation
+   (SPY-SMA → UPRO/CASH)** baseada em
+   `books/summaries/leverage_for_the_long_run.md` (Gayed 2016/2020).
+   Overfit control via CPCV obrigatório; 15% IR modelado sempre;
+   UPRO sintético pre-2009 via `r = 3 × r_SPX_TR - drag_daily`.
+   Target: **CAGR líquido ≥ 15%/ano, ideal ≥ 20%**.
+5. **Gates sempre:** PBO<0.5 + DSR p<0.05 + WF≥6/8 + single-block OOS
+   + forward-window stress. Zero bypass. "Quase lá" não passa.
+6. **Threading model live (Phase 4):** 1 thread/processo por ativo
+   monitorado, state isolado, perks por-ativo opcionais (sessão FX,
+   pre/post market equity, news filter gold).
+7. **Dynamic sizing:** position size decresce com equity (fase
+   agressiva até 2× equity inicial, fase preservação depois com
+   multiplicador ≤ 1).
+
+Qualquer divergência deste mandate é bug de raciocínio — consulte
+`docs/investment-mandate.md` §7 (histórico de overrides) antes de
+agir contra.
+
+---
+
+## Regra 1 — Manter jornada/ atualizado
+
+**Sempre que houver progresso relevante, crie um novo arquivo em
+`jornada/` antes de encerrar a sessão.**
+
+O que conta como "progresso relevante":
+- Verdict de um Run de backtest (pass/fail com explicação).
+- Decisão de arquitetura ou escolha técnica (ex.: Tiingo vs EOD, manter vs
+  pivotar estratégia).
+- Commit que muda o estado público do projeto (não toda refatoração interna).
+- Pivot / mudança de prioridade no ROADMAP.
+
+Como escrever a entrada:
+- Criar arquivo `jornada/YYYY-MM-DD-HHmm-slug.md` com `# título` no topo.
+- Linguagem humana, analogias permitidas, sem jargão sem glossário.
+- Se introduzir termo novo, adicionar no "Glossário mínimo" em `jornada/README.md`.
+- Atualizar a lista de entradas em `jornada/README.md` (newest first).
+- Atualizar as seções fixas de `jornada/README.md` (`Onde estamos hoje`,
+  `O que vem a seguir`) quando relevante — elas refletem o **estado atual**.
+
+O que **não** escrever nas entradas:
+- Detalhes de implementação linha-a-linha (isso vai em `specs/` ou
+  commit messages).
+- Progresso de testes unitários ou refactoring interno.
+- Qualquer coisa que o user não-especialista não conseguiria ler e
+  entender.
+
+---
+
+## Regra 2 — Citação obrigatória em toda decisão técnica
+
+Regra inviolável do projeto: **toda escolha de indicador, parâmetro,
+gate ou estratégia cita um livro específico** no formato `[book.slug,
+p.X]` (ou `[ch.Y]` quando não há página).
+
+Exemplos:
+- ✅ "PBO > 0.5 ⇒ descarta `[advances_fin_ml, p.208-211]`"
+- ✅ "Lookback 90 dias `[stocks_on_the_move, p.81]`"
+- ❌ "Vou usar lookback de 90 dias porque costuma funcionar" (sem citação)
+- ❌ "Baseado em experiência, o Sharpe 1.0 é o gate" (palpite)
+
+Citações vão em docstrings, comentários de decisão, PR descriptions,
+reports e entradas de JORNADA.md. Os 33 livros absorvidos estão em
+`books/summaries/` (e a Skill agregada em `knowledge/SKILL.md`) —
+consulte antes de afirmar.
+
+---
+
+## Regra 3 — jornada/ é complementar, não substituto
+
+`jornada/` não substitui:
+- `ROADMAP.md` — continua sendo o mapa técnico autoritativo.
+- `README.md` — continua sendo o ponto de entrada pra setup.
+- `specs/*.md` — continuam sendo os specs executáveis detalhados.
+- `books/summaries/*.md` — continuam sendo a fonte de citação.
+
+`jornada/` **é** a vista humana do conjunto. Quando o conteúdo técnico
+detalhado diverge da narrativa humana, o conteúdo técnico ganha —
+`jornada/README.md` vira "outdated" e precisa de atualização.
+
+---
+
+## Convenções de código (resumo)
+
+- Python 3.12, tipagem gradual via `typing`, `pyproject.toml` com `uv`.
+- Testes: `pytest`, meta atual 461 testes. **Não quebrar baseline.**
+- LLM SDK é proibido em Python runtime: toda inteligência LLM roda
+  dentro do Claude Code CLI (subagents + slash commands).
+- Estratégias novas herdam de `backtest/strategies/base.py`. Sources
+  de dados herdam de `backtest/data/` interface.
+- Reports obrigatoriamente incluem disclaimer de survivorship se a
+  fonte for yfinance/Wikipedia. Tiingo storage libera disclaimer.
+- Commits: Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`).
+
+---
+
+## Referências rápidas
+
+- Plano da sessão atual: `/home/victor/.claude/plans/abstract-juggling-wombat.md`
+- Skill loadable: `knowledge/SKILL.md`
+- Inventário de livros (slug ↔ título): `books/MAPPING.md`
+- Logs unificados: `logs/grid.log`, `logs/tiingo.log`
