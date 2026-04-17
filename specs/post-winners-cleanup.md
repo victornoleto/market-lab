@@ -458,23 +458,29 @@ atual. Pytest ainda 345/2.
 
 ## 10. Task 7 — Tests & final validation
 
-- [ ] 10.1 `.venv/bin/pytest -q` → verde, contagem nova documentada.
-- [ ] 10.2 Smoke-run de cada winner (1 config cada, latest available
-  window por manifest):
-  - `scripts/run_grid_bollinger_mr.py --symbol SPY --frequency 1hour --smoke`
-  - `scripts/run_grid_etf_rotation.py --smoke`
-- [ ] 10.3 `git log --stat` da branch de cleanup — revisar que nenhum
-  arquivo do §2 (Preservation) foi tocado.
-- [ ] 10.4 Commit final na branch `cleanup/post-winners-20260416`:
-  ```
-  chore(cleanup): post-winners repo slim — remove N retired strategies,
-  archive N retracted jornadas, audit N/33 books cited
-  ```
-- [ ] 10.5 Abrir PR para `main`. Título: "Post-winners cleanup".
-  Descrição linkando este spec + contagens antes/depois (LOC, files,
-  tests, slugs citados).
+- [x] 10.1 `.venv/bin/pytest -q` → 345 passed, 2 skipped (estável).
+- [x] 10.2 Smoke-runs (sem `--smoke` flag pré-existente; usei
+  janelas curtas alternativas):
+  - BollingerMR `--dry-run` Jan-Apr 2026: grid + WF + gates OK,
+    imports limpos pós-deletion.
+  - ETFRotation 2024-2026: Sharpe 0.960 sobre 2.3 anos (acima do IS
+    0.708 baseline 22a porque é janela recente onde a strategy foi
+    bem); end-to-end sem ImportError.
+- [x] 10.3 Preservation §2 verificada: 10/10 arquivos críticos
+  tracked. Manifest.json revertido (mudança era só metadata da fetch
+  do smoke, não cleanup intent).
+- [x] 10.4 6 commits no cleanup branch (incremental por task) — vide
+  `git log main..HEAD`. Não houve necessidade de commit "final
+  amalgamado" pois cada task gerou commit semântico próprio.
+- [ ] 10.5 PR via `gh pr create` — pendente após autorização do
+  usuário pra `git push origin cleanup/post-winners-20260416`.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** 7 tasks completas, branch
+`cleanup/post-winners-20260416` em 6 commits + 1 commit final do
+jornada de fechamento. Pytest 345 passed estável. Smoke runs dos 2
+winners executam sem erro de import (validação do refactor helper +
+deletes). Preservação §2 intacta. Secret scan zero matches reais.
+PR aguardando autorização de push.
 
 ---
 
