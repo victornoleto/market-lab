@@ -8,9 +8,13 @@ import pytest
 
 from ai_trade.backtest.helpers.synthetic_letf import (
     DEFAULT_ANNUAL_FEE,
+    DEFAULT_EXPENSE_RATIO,
+    DEFAULT_FFR_SPREAD,
+    DEFAULT_SWAP_EXPOSURE,
     TRADING_DAYS_PER_YEAR,
     synthesize_letf_prices,
     synthesize_letf_returns,
+    synthesize_letf_returns_ffr_aware,
 )
 
 
@@ -84,3 +88,132 @@ class TestSynthesizeLetfPrices:
         assert prices.iloc[0] == pytest.approx(101.0)
         assert prices.iloc[1] == pytest.approx(101.0)
         assert prices.iloc[2] == pytest.approx(103.02)
+
+
+class TestSynthesizeLetfReturnsFfrAware:
+    """Phase 3.5b Task 7a — testfolio FFR-aware cost model."""
+
+    def test_defaults_match_testfolio(self):
+        assert DEFAULT_SWAP_EXPOSURE == 1.1
+        assert DEFAULT_FFR_SPREAD == 0.004
+        assert DEFAULT_EXPENSE_RATIO == 0.0095
+
+    def test_formula_matches_testfolio_model(self, simple_returns):
+        ffr = pd.Series(0.05, index=simple_returns.index)
+        out = synthesize_letf_returns_ffr_aware(
+            simple_returns,
+            leverage=2.0,
+            ffr_annualized=ffr,
+            swap_exposure=1.1,
+            ffr_spread=0.004,
+            expense_ratio=0.0095,
+        )
+        annual_cost = 1.1 * (2.0 - 1.0) * (0.05 + 0.004) + 0.0095
+        expected = 2.0 * simple_returns - annual_cost / TRADING_DAYS_PER_YEAR
+        pd.testing.assert_series_equal(out, expected)
+
+    def test_leverage_1_only_expense_ratio_applies(self, simple_returns):
+        ffr = pd.Series(0.10, index=simple_returns.index)
+        out = synthesize_letf_returns_ffr_aware(
+            simple_returns,
+            leverage=1.0,
+            ffr_annualized=ffr,
+            expense_ratio=0.0095,
+        )
+        expected = simple_returns - 0.0095 / TRADING_DAYS_PER_YEAR
+        pd.testing.assert_series_equal(out, expected)
+
+    def test_ffr_zero_reduces_to_spread_only_on_swap(self, simple_returns):
+        ffr = pd.Series(0.0, index=simple_returns.index)
+        out = synthesize_letf_returns_ffr_aware(
+            simple_returns,
+            leverage=3.0,
+            ffr_annualized=ffr,
+            swap_exposure=1.1,
+            ffr_spread=0.004,
+            expense_ratio=0.0,
+        )
+        # cost = 1.1 * 2 * 0.004 = 0.0088
+        expected = 3.0 * simple_returns - 0.0088 / TRADING_DAYS_PER_YEAR
+        pd.testing.assert_series_equal(out, expected)
+
+    def test_time_varying_ffr(self, simple_returns):
+        ffr = pd.Series(
+            [0.02, 0.04, 0.06, 0.08, 0.10], index=simple_returns.index
+        )
+        out = synthesize_letf_returns_ffr_aware(
+            simple_returns,
+            leverage=2.0,
+            ffr_annualized=ffr,
+            swap_exposure=1.1,
+            ffr_spread=0.004,
+            expense_ratio=0.0095,
+        )
+        annual_costs = 1.1 * 1.0 * (ffr + 0.004) + 0.0095
+        expected = 2.0 * simple_returns - annual_costs / TRADING_DAYS_PER_YEAR
+        pd.testing.assert_series_equal(out, expected)
+
+    def test_ffr_reindex_ffill(self, simple_returns):
+        # FFR with only the first 2 dates; rest ffilled
+        idx = simple_returns.index
+        partial_ffr = pd.Series([0.03, 0.05], index=idx[:2])
+        out = synthesize_letf_returns_ffr_aware(
+            simple_returns,
+            leverage=2.0,
+            ffr_annualized=partial_ffr,
+            expense_ratio=0.0,
+            ffr_spread=0.0,
+            swap_exposure=1.0,
+        )
+        # cost = (L-1) * ffr_effective = 1 * ffr
+        # Day 0: ffr=0.03 ; Day 1: ffr=0.05 ; Days 2-4 ffilled=0.05
+        expected_costs = pd.Series([0.03, 0.05, 0.05, 0.05, 0.05], index=idx)
+        expected = 2.0 * simple_returns - expected_costs / TRADING_DAYS_PER_YEAR
+        pd.testing.assert_series_equal(out, expected)
+
+    def test_ffr_outside_range_backfills(self, simple_returns):
+        # FFR only at last index → backfill to earlier dates
+        idx = simple_returns.index
+        late_ffr = pd.Series([0.07], index=[idx[-1]])
+        out = synthesize_letf_returns_ffr_aware(
+            simple_returns,
+            leverage=2.0,
+            ffr_annualized=late_ffr,
+            expense_ratio=0.0,
+            ffr_spread=0.0,
+            swap_exposure=1.0,
+        )
+        expected = 2.0 * simple_returns - 0.07 / TRADING_DAYS_PER_YEAR
+        pd.testing.assert_series_equal(out, expected)
+
+    def test_ffr_no_overlap_raises(self, simple_returns):
+        disjoint_idx = pd.date_range("2030-01-01", periods=3, freq="B")
+        far_ffr = pd.Series([np.nan, np.nan, np.nan], index=disjoint_idx)
+        with pytest.raises(ValueError, match="no overlap"):
+            synthesize_letf_returns_ffr_aware(
+                simple_returns, leverage=2.0, ffr_annualized=far_ffr
+            )
+
+    def test_zero_leverage_raises(self, simple_returns):
+        ffr = pd.Series(0.05, index=simple_returns.index)
+        with pytest.raises(ValueError, match="leverage must be > 0"):
+            synthesize_letf_returns_ffr_aware(
+                simple_returns, leverage=0.0, ffr_annualized=ffr
+            )
+
+    def test_high_ffr_gap_vs_flat_model(self):
+        # Sanity: in a 5%/yr FFR regime, FFR-aware 2x costs more than
+        # flat 1% Gayed model — matches Phase 3.5b Task 7a empirical
+        # finding (~+6%/yr gap, concentrated in FFR≥5% bucket).
+        idx = pd.date_range("2020-01-01", periods=TRADING_DAYS_PER_YEAR, freq="B")
+        rets = pd.Series(0.0004, index=idx)  # ~10%/yr flat
+        ffr = pd.Series(0.05, index=idx)
+        flat = synthesize_letf_returns(rets, leverage=2.0, annual_fee=0.01)
+        aware = synthesize_letf_returns_ffr_aware(
+            rets, leverage=2.0, ffr_annualized=ffr
+        )
+        # aware - flat < 0 (aware costs more → lower return each day)
+        assert (aware - flat).mean() < 0
+        # Annualized gap > 0.5% (well short of noise)
+        annualized_gap = (flat - aware).mean() * TRADING_DAYS_PER_YEAR
+        assert annualized_gap > 0.005
