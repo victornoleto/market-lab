@@ -198,6 +198,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16-1245-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-16 2310 — A1 [SHORT-HOLD CFD]: Leverage sweep BollingerMR SPY 1h. L=2 único GO (CAGR 10.76% < CDI). L=5 bate CAGR 19.77% mas fura DD -69.84%. L≥10 ruína](2026-04-16-2310-a1-leverage-sweep-bollinger-mr-spy-1h.md)
 - [2026-04-16 2254 — 🏷️ Tag `v0.1-phase-2.5-winners` liberado: snapshot reprodutível dos 2 winners, main congelada, Phase 3 abre em branch separada](2026-04-16-2254-tag-v0.1-released.md)
 - [2026-04-16 2235 — ✅ Cleanup pós-winners completo: repo enxugado (520→345 tests, 18 books archived, 6 strategies removed), Phase 3 leads registrados](2026-04-16-2235-post-winners-cleanup-completed.md)
 - [2026-04-16 1930 — 📌 Investment Mandate registrado; CAGRs dos winners insuficientes vs CDI BR; direção agressiva Phase 3 (5 leads)](2026-04-16-1930-investment-mandate-registered.md)
