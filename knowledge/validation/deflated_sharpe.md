@@ -5,7 +5,10 @@ Correction of the observed Sharpe by the number of strategies tested — guards 
 ## Sources
 
 - [`books/advances_fin_ml.md`](../books/advances_fin_ml.md)
-- [`books/ml_for_asset_managers.md`](../books/ml_for_asset_managers.md)
+
+## Pending sources (not yet absorbed)
+
+- `books/ml_for_asset_managers.md` — missing (absorb with `/absorb-book ml_for_asset_managers`)
 
 ## From `books/advances_fin_ml.md`
 
@@ -455,87 +458,5 @@ Step 4: Report SR distribution; test if real SR is in top tail
 - **[p.29]** Researchers who add complexity to survive the backtest (adding parameters, changing lookback windows, switching instruments) are unknowingly inflating the multiple-testing bias. Every additional configuration tested increases the effective null hypothesis count.
 
 - **[p.144]** Boosting is more prone to overfitting in finance than bagging because it explicitly targets the residuals of prior models; in a noisy financial environment, it will target noise. Prefer bagging (random forests) over gradient boosting for financial ML unless the dataset is large and low-noise.
-
----
-
-## From `books/ml_for_asset_managers.md`
-
-### Explicit Trading Rules
-
-This book is deliberately NOT a strategy cookbook [p.22]. Section 1 does not provide trading rules in an "if X then Y" imperative form. Still, several explicit methodological injunctions function as trading-research rules:
-
-- **RULE [p.3, §1.2.1]**: Never develop a strategy solely through backtests. Backtests can prove a strategy is a false positive; they can never prove it is a true positive.
-- **RULE [p.3, §1.2.1]**: A strategy must be supported by a theory (general enough to explain particular cases including black swans) before being deployed.
-- **RULE [p.7, §1.4.2]**: Do NOT run the "backtest → tweak → backtest" cycle. It is a futile exercise that inevitably ends with an overfit false positive; a poorly performing backtest is an opportunity to fix the research process, not the strategy.
-- **RULE [p.8, §1.4.2]**: When running multiple tests on the same dataset, track the number of independent trials and adjust significance via FWER / Deflated Sharpe Ratio.
-- **RULE [p.6, §1.4.1]**: Apply all three train-set overfitting defenses together — resampling (cross-validation + Monte Carlo), regularization (LASSO / early stopping), and ensemble methods.
-- **RULE [p.9, §1.4.2]**: Apply all three test-set overfitting defenses together — FWER tracking (e.g., DSR), resampling combinatorial splits (CPCV), and Monte Carlo on estimated data-generating processes. "These solutions are neither infallible nor incompatible, and my advice is that you apply all of them" [p.9].
-- **RULE [p.21, §1.9 FAQ]**: In finance, prefer classifiers over regression methods: "failing to predict the size is an opportunity loss, but failing to predict the sign is an actual loss" [p.21]. Sign and size often depend on different features.
-- **RULE [p.18, §1.9 FAQ "What Are Some of the Ways..."]**: Use meta-labeling to let a secondary model decide bet size/timing, leaving buy/sell to a primary model — particularly valuable when primary model is fundamental or traditional [also referenced §5.5, body N/A in extract].
-
-### Formulas / Equations
-
-N/A — The Introduction (Section 1), which is the only substantive chapter present in the extracted text, is prose-level exposition and contains no numbered equations or closed-form formulas. The mathematical content of the book (Marcenko-Pastur density for denoising, variation of information, ONC, HRP, Deflated Sharpe Ratio formula, False Strategy Theorem bound, etc.) lives in Sections 2-8 and Appendices A-B, which are NOT in the extracted source file for this pipeline run. See `advances_fin_ml.md` (López de Prado 2018a, AFML) — the author's prior book, referenced throughout [p.1] — for Deflated Sharpe Ratio and CPCV formulas.
-
-### Algorithms and Pseudocode
-
-**Mean-Decrease Accuracy (MDA) — feature importance** [p.5]
-
-```
-Input: dataset D with features F and labels y; ML algorithm A
-1. Fit A on D; evaluate out-of-sample cross-validated accuracy acc_base.
-2. For each feature f in F (or combination of features):
-    a. Shuffle the time series of f across D (break its relationship with y).
-    b. Re-evaluate out-of-sample cross-validated accuracy acc_shuffled(f).
-    c. importance(f) = acc_base - acc_shuffled(f)
-3. Rank features by importance.
-# Interpretation: shuffling an important feature causes significant accuracy decay.
-# MDA identifies variables that should be part of the theory; it does not uncover the mechanism itself.
-```
-
-**Combinatorial Purged Cross-Validation (CPCV) — test-set overfit mitigation** [p.8]
-
-The extracted text only *references* CPCV and attributes the full specification to AFML (López de Prado 2018a) ch.12. No pseudocode is provided in Section 1. Reconstruction is N/A here — see `advances_fin_ml.md` for the step-by-step algorithm.
-
-**Causal inference via ML (3-step)** [p.5]
-
-```
-1. Fit an ML algorithm A on historical data to predict outcomes ABSENT the effect
-   (nontheoretical, data-driven — "oracle" style).
-2. Collect observations of outcomes UNDER the presence of the effect.
-3. Use A (from step 1) to predict the observations from step 2.
-   Prediction error attributable to the effect → propose a theory of causation.
-# Attributed to Varian 2014; Athey 2015.
-```
-
-**Theory-discovery pipeline (3-step, the book's overall method)** [p.3-4]
-
-```
-1. Apply ML tools to uncover hidden variables involved in a complex phenomenon
-   (the ingredients a theory must incorporate).
-2. Formulate a theory: a structural statement / system of equations hypothesizing
-   a particular cause-effect mechanism binding the ingredients.
-3. Derive testable implications beyond the original ML observations
-   (both positives: x ⇒ y, and negatives: ¬y ⇒ ¬x). A successful theory
-   predicts out-of-sample AND explains the counterfactual.
-```
-
-Bodies of algorithms announced in the TOC — kernel-density-estimator denoising (§2), information-theoretic distance metrics (§3), ONC (§4), triple-barrier labeling and meta-labeling (§5), clustered feature importance (§6), Nested Clustered Optimization (§7), False Strategy Theorem / DSR testing (§8) — are N/A here because those sections are not in the extracted text. See `advances_fin_ml.md` for overlapping algorithms when available.
-
-### Pitfalls and Anti-patterns
-
-- [p.3] Treating backtests as research tools. They are risk-of-overfit meters at best; at worst, false-positive generators.
-- [p.7] Running the backtest-tweak-backtest loop until the strategy "looks good." Guaranteed overfit.
-- [p.6] Using flexible specifications without resampling, regularization, and ensembling → train-set overfit.
-- [p.8] Reporting a single Sharpe ratio without disclosing the number of independent trials run → inflated FWER.
-- [p.12, §1.7.1] Invoking the Central Limit Theorem to justify linear regression under nonstationary / dependent / non-i.i.d. financial data. "The sample mean converges in distribution to a Gaussian, but not the sample itself!" — and only under i.i.d.
-- [p.12, §1.7.1] Dismissing violations of classical regression assumptions (misspecification, multicollinearity, missing regressors, nonlinear interactions) as "no big deal." Each leads to false positives and/or false negatives.
-- [p.13, §1.7.4] Treating financial ML as plug-and-play application of standard ML. "Financial ML is a subject in its own right" — low signal-to-noise ratio makes oracle-style prediction unsafe.
-- [p.19, §1.9 FAQ "What Are the Risks?"] Deploying ML "oracles" divorced from economic theory. ML's flexibility ensures it will always find a pattern, even in pure noise.
-- [p.13, §1.7.3] Assuming ML requires massive historical data. Many applications (risk analysis, portfolio construction, outlier detection, feature importance, bet-sizing) use Monte Carlo simulations and need little-to-no historical data.
-- [p.14, §1.8] Overexposing graduate students to econometric legacy techniques at the expense of modern ML; the most successful quant firms rely on ML, not econometrics.
-- [p.21-22, §1.9 FAQ "Why Don't You Discuss a Wide Range..."] Using a single regression model to jointly predict sign AND size of outcomes. They typically depend on different features.
-- [p.14, §1.7.5] Assuming ML overfits more than classical methods. "In knowledgeable hands, ML algorithms overfit less than classical methods" — but concedes that in nonexpert hands, harm can exceed benefit.
-- Sections 2-8 contain many further, more specific pitfalls (random-matrix noise in covariance matrices, PCA-driven dimensionality-reduction misinterpretation, fixed-horizon labeling, p-value multicollinearity breakdown, mean-variance instability from signal structure) listed in the Outline [p.9-10] but their detailed content is N/A — those sections are not in the extracted file.
 
 ---

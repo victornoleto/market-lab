@@ -9,10 +9,10 @@
 ### Headline
 
 - **2 winners + Investment Mandate (2026-04-16 evening).** Autonomous self-improve loop iter 19-27 delivered (1) **BollingerMR GARCH SPY 1h** [SHORT-HOLD CFD] — CAGR ~5.9%/ano, PSR p=0.043, verdict **GO-WITH-CAVEATS** (SPY-only); (2) **ETFRotation Monthly Top-1** [SWING BROKER] — CAGR líquido ~9.1-9.6%/ano em 23 anos, PSR p=0.004, bootstrap CI [0.449, 1.254], verdict **GO**. Correlation ρ=0.252 — independent. Full summary: `jornada/2026-04-16-1600-production-readiness-summary.md`. Both CAGRs são considerados insuficientes vs. CDI BR (~13-14%/ano), por isso o **Investment Mandate** registrado em `docs/investment-mandate.md` define evolução agressiva (ver seção abaixo).
-- **34/34 books absorbed.** `leverage_for_the_long_run` (Gayed 2016/2020) adicionado como referência primária para Strategy B LETF rotation.
-- **520 tests green.** +5 vs pré-loop; zero regressão.
+- **34 books absorbed; 16 active + 18 archived (cleanup 2026-04-16).** `leverage_for_the_long_run` (Gayed 2016/2020) adicionado como referência primária para Strategy B LETF rotation. Audit completo em `books/CITATION_AUDIT.md`.
+- **345 tests green** (after post-winners cleanup removed ~186 strategy-specific tests; engine + winners + helpers preserved).
 - **Prior 3 "winners" retracted (2026-04-16 12:45).** All 3 prior "winners" (XLK / SPY / XLE Bollinger MR 1h, iters 5/15/16 of the self-improve loop) were **retracted on 2026-04-16 12:45** after a data-bug postmortem. Tiingo IEX returned 6 placeholder hourly bars on US market-closed days (volume=0, OHLC identical, RAW unadjusted prices). For tickers with historical splits (XLK ratio≈0.48, XLE≈0.41) those bars sat at 2× adjacent prices and inflated the strategies' P&L by 45-89%. Post-cleanup re-validation: SPY Sharpe 1.31→0.78, XLK 1.93→0.75, XLE 1.58→0.42 — all FAIL the 3-gate framework. See `jornada/2026-04-16-1245-data-bug-winners-retracted.md` for the full postmortem.
-- **Tooling hardened.** `_filter_orphan_intraday_bars` in `tiingo_source.py` blocks the bug from re-entering the cache; `scripts/clean_intraday_orphans.py` removed 4296 placeholder bars from 12 tickers (backups kept locally). 2 regression tests added. **515 tests green.**
+- **Tooling hardened.** `_filter_orphan_intraday_bars` in `tiingo_source.py` blocks the bug from re-entering the cache; `scripts/clean_intraday_orphans.py` removed 4296 placeholder bars from 12 tickers (backups kept locally). 2 regression tests added.
 - **Self-improvement loop is the production search mechanism.** `scripts/self_improve_loop.sh` runs Claude Code in a fresh-context sonnet session per iteration, reads `docs/self_improvement/memory.md`, picks one experiment from the leads list, runs it, updates memory + jornada, auto-commits on the isolated branch. The previous 17 iterations are committed but their conclusions about "winners" are retracted — the infrastructure they built (grids, OOS scripts, bootstrap, overlap, regime decomp, GARCH-prep) is intact and reusable.
 
 ### Post-cleanup evolution (Phase 3 leads)
@@ -20,22 +20,23 @@
 Ver `docs/investment-mandate.md` para o mandate completo.
 `specs/post-winners-cleanup.md` §8 registra os 5 leads abaixo. Execução
 em branch separada (`phase3/letf-and-multi-asset-<date>`) depois que o
-cleanup for merged.
+cleanup for merged. **Cada lead = 1 iteração do self-improve loop**
+(`SCOPE=code`, `ITER_TIMEOUT=1800s`). Budget total estimado: ~5 iters.
 
-| Lead | Path | Resumo | Citação seed |
-|------|------|--------|--------------|
-| A1 | A | BollingerMR leverage sweep SPY 1h (1:1 → 1:200) com Kelly f/2 + prob-of-ruin MC | `[math_money_mgmt]`, `[leverage_space]`, `[leverage_for_the_long_run, p.7]` |
-| A2 | A | Multi-asset universe screener (SPY+QQQ+GLD+BTC+FX majors) com Hurst/ATR/spread/volume | `[machine_trading]`, `[volatility_trading]` |
-| A3 | A | Per-asset BollingerMR + threading-ready refactor (state-isolated, perks por ativo) | `[advances_fin_ml, ch.7/11]` |
-| B1 | B | LETF rotation SPY-EMA → UPRO/CASH, seed params testfol.io, submeter ao CPCV+PBO, 15% IR, UPRO sintético pre-2009 | `[leverage_for_the_long_run, p.13, p.21]` |
-| B2 | B | LETF rotation vs. ETFRotation benchmark (correlação, blend risk-parity, MAR) | `[advances_fin_ml, p.196-202]`, `[stocks_on_the_move, p.81]` |
+| Lead | Path | Resumo | Pré-req | Citação seed |
+|------|------|--------|---------|--------------|
+| **A1** | A | **BollingerMR leverage sweep SPY 1h** — risk_pct ∈ {0.95, 2.0, 5.0, 10.0, 20.0} simulando margin-call bar-a-bar; Kelly f/2 cross-check; prob-of-ruin MC 10k paths | nenhum | `[math_money_mgmt, Vince]`, `[leverage_space, Vince]`, `[leverage_for_the_long_run, p.7]` |
+| **A2** | A | **Multi-asset universe screener** SPY+QQQ+GLD+BTC+ETH+FX majors: implementar `ai_trade/screener/` com Hurst/ATR/spread/volume; pre-screener filtra ativos "propícios" para BollingerMR | A1 opcional | `[machine_trading, Chan]`, `[volatility_trading, Sinclair]` |
+| **A3** | A | **Per-asset BollingerMR + threading-ready code** — refactor do runner pra state-isolated per-ticker; perks opcionais (FX session filter, equity pre/post-market, crypto 24/7, gold news filter); output multi-asset portfolio metrics + correlation | A2 | `[advances_fin_ml, ch.7/11]` (CPCV multi-asset) |
+| **B1** | B | **LETF rotation — design a partir do zero (base Gayed)** — encontrar UMA config simples da família LETF rotation que passe rigorosamente os gates. Grid 360 configs (EMA/SMA × {100, 125, 150, 200} × band {0, 3%, 5%} × lev {1x, 2x, 3x} × gold {0, 25, 50, 75, 100%}). **Priorizar Gayed canonical (SMA 200, band 0%, Cash 100%) priority 1**; params do Reddit (EMA 125, band 5%) é 1 seed entre outros, NÃO gospel a validar. Splits IS 1970-2000 / OOS 2001-2015 / Stress 2016-2026 mutuamente exclusivos. Stationary block bootstrap a 0.001. UPRO/SSO sintéticos pre-2009/2006. 15% IR BR por switch. **Winner decidido pelos gates, não por afinidade.** | Task 0 livro absorvido + `docs/reference/letf_rotation_reddit_analysis.md` (contexto ilustrativo) | `[leverage_for_the_long_run, p.13, p.17, p.21]` |
+| **B2** | B | **LETF rotation vs. ETFRotation benchmark** — correlação dos sinais, blend risk-parity, MAR ratio comparison; decidir se ambos coexistem na carteira ou se LETF substitui ETFRotation como winner Path B | B1 | `[advances_fin_ml, p.196-202]` (PSR), `[stocks_on_the_move, p.81]` |
 
 ### Phases
 
 - ✅ **Phase 0 — Knowledge Base.** 34/34 books absorbed and validated. Loadable as Claude Skill.
 - ✅ **Phase 0.5 — `knowledge/SKILL.md`.** Aggregated skill with 7 inviolable rules.
 - 🔄 **Phase 1 — Pepperstone/cTrader infra.** Scaffold ready (Postgres 5435 + Grafana 3000 via docker-compose; OAuth bootstrap script). Blocked awaiting Spotware approval.
-- ✅ **Phase 2 — Backtest engine + validation.** CPCV / PBO / DSR / walk-forward / MCPT. 520 tests green.
+- ✅ **Phase 2 — Backtest engine + validation.** CPCV / PBO / DSR / walk-forward / MCPT. 345 tests green pós-cleanup.
 - ✅ **Phase 2.5 — Strategy search.** 2 winners delivered (iter 19-27). Investment Mandate registrado. Cleanup em `specs/post-winners-cleanup.md` (pendente execução).
 - ⏳ **Phase 3 — Post-cleanup evolution.** 5 leads registrados (A1-A3 + B1-B2 acima). Bloqueado pelo cleanup.
 - ⏳ **Phase 4-7 — Paper trading → live → monitoring → scaling.** All blocked on Phase 3.
@@ -80,7 +81,7 @@ A winner on either path is a winner. The "find ~10 strategies" goal in `docs/sel
 
 ## 📍 Historical status (2026-04-15, pre-retraction)
 
-- ✅ **Phase 0 — Knowledge Base.** 33/33 books absorbed and validated (pipeline `books/raw/*.pdf` → `extracted/` → `summaries/<slug>.md`, autonomous 3-layer validation replacing human review). Global `check_citations.py`: 33/33 PASS. Quality: 🌟 12 Perfect · ✅ 20 Good · ⚠️ 1 Border, 0 real hallucinations.
+- ✅ **Phase 0 — Knowledge Base.** 34/34 books absorbed and validated (pipeline `books/raw/*.pdf` → `extracted/` → `summaries/<slug>.md`, autonomous 3-layer validation replacing human review). Global `check_citations.py`: 34/34 PASS originalmente; 18 arquivados pós-cleanup 2026-04-16 (raw PDFs preservados, summaries em `_archive/`). Quality original: 🌟 12 Perfect · ✅ 21 Good · ⚠️ 1 Border, 0 real hallucinations.
 - ✅ **Phase 0.5 — `knowledge/SKILL.md`.** `build_skill.py` aggregates the 33 summaries into a thematic Claude Skill (`knowledge/SKILL.md` + `books/`, `strategies/`, `indicators/`, `validation/`). Skill loadable via the `Skill` tool, inviolable rules #1-7 in production.
 - 🔄 **Phase 1 — Pepperstone/cTrader infra.** Scaffold ready (docker-compose with Postgres 5435 + Grafana; `ctrader_oauth_bootstrap.py`; schemas). Blocked awaiting Spotware approval of the OAuth app.
 - ✅ **Phase 2 — Backtest Module** (scope rewritten — see preamble below). Delivered 2026-04-14 via `specs/backtest_phase2.md`: data layer (yfinance + Wikipedia SPX point-in-time), engine (portfolio + CFD-aware execution + runner), validation framework (CPCV / PBO / DSR / walk-forward / MCPT), metrics + report (mandatory survivorship disclaimer), Clenow `stocks_on_the_move` replicated end-to-end. **173 tests passing**.
@@ -475,7 +476,7 @@ Commit only when asked.
 
 ---
 
-## 📚 Books in the knowledge base (33/33 absorbed and validated)
+## 📚 Books in the knowledge base (34 absorbed; 16 active + 18 archived 2026-04-16)
 
 Summarized status — full details in `books/README.md` (the "Book catalog" table with per-book Review columns):
 

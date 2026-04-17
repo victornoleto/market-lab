@@ -140,9 +140,8 @@ class GridReportGenerator:
                 "DSR p < 0.05, walk-forward ≥ 6/8 profitable).\n"
                 "- Validate on a survivorship-free paid-data source as the "
                 "first ablation study (ROADMAP §\"Deferred decisions\").\n"
-                "- Proceed to the second strategy (Ehlers DSP / AFML meta-"
-                "label / Chan mean-reversion) once the survivorship "
-                "ablation succeeds.\n"
+                "- Phase 3 leads (5) registered in ROADMAP — execute in "
+                "branch separated from production.\n"
             ),
         ]
         md_path = output_dir / "summary.md"
@@ -351,9 +350,9 @@ def _wf_breakdown_section(wf_results: dict[int, WFResult]) -> str:
 def _write_sharpe_heatmap(grid: GridResult, path: Path) -> None:
     """2D Sharpe heatmap over the first two varied config axes.
 
-    For strategies with >2 varied dims (Clenow has 3, Ehlers has 4),
-    additional axes are aggregated via ``max`` — the cell shows the
-    best Sharpe achieved across any value of the other axes.
+    For strategies with >2 varied dims, additional axes are aggregated
+    via ``max`` — the cell shows the best Sharpe achieved across any
+    value of the other axes.
     """
     ok = grid.ok_trials
     if not ok:

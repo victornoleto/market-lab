@@ -50,12 +50,12 @@ def _fake_result(periods: int = 30) -> "object":
 
 
 def test_grid_runner_produces_trial_per_config(tmp_path: Path):
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.runner import GridRunner
 
     configs = [
-        ClenowGridConfig(lookback_regression=60, top_pct=0.10, risk_factor=0.001),
-        ClenowGridConfig(lookback_regression=90, top_pct=0.20, risk_factor=0.001),
+        BollingerMRGridConfig(window=20, std_mult=2.0),
+        BollingerMRGridConfig(window=20, std_mult=2.0),
     ]
     trial_fn = MagicMock(side_effect=lambda _cfg: _fake_result(30))
     runner = GridRunner(checkpoint_dir=tmp_path, n_jobs=1)
@@ -70,17 +70,17 @@ def test_grid_runner_produces_trial_per_config(tmp_path: Path):
 
 def test_grid_runner_catches_exception_and_stores_error_trial(tmp_path: Path):
     """A failing trial must NOT abort the grid — just recorded as error."""
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.runner import GridRunner
 
     configs = [
-        ClenowGridConfig(lookback_regression=60, top_pct=0.10, risk_factor=0.001),
-        ClenowGridConfig(lookback_regression=90, top_pct=0.20, risk_factor=0.001),
-        ClenowGridConfig(lookback_regression=120, top_pct=0.30, risk_factor=0.002),
+        BollingerMRGridConfig(window=20, std_mult=2.0),
+        BollingerMRGridConfig(window=40, std_mult=2.0),
+        BollingerMRGridConfig(window=20, std_mult=1.5),
     ]
 
     def _trial_fn(cfg):
-        if cfg.lookback_regression == 90:
+        if cfg.window == 40:
             raise RuntimeError("insufficient warmup")
         return _fake_result(30)
 
@@ -100,12 +100,10 @@ def test_grid_runner_computes_scalar_metrics_from_equity_curve(tmp_path: Path):
     """Sharpe / CAGR / max_dd must be cached per trial — gate evaluation relies
     on these without touching the original equity curve.
     """
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.runner import GridRunner
 
-    configs = [ClenowGridConfig(
-        lookback_regression=60, top_pct=0.10, risk_factor=0.001,
-    )]
+    configs = [BollingerMRGridConfig(window=20, std_mult=2.0)]
     runner = GridRunner(checkpoint_dir=tmp_path, n_jobs=1)
     grid = runner.run(
         configs=configs,
@@ -122,13 +120,13 @@ def test_grid_runner_resumes_from_checkpoint(tmp_path: Path):
     """Re-run of a run_id with an existing trial directory must skip the
     trial_fn call (loaded from disk instead).
     """
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import TrialResult, trial_to_dir
     from ai_trade.backtest.grid.runner import GridRunner
 
     configs = [
-        ClenowGridConfig(lookback_regression=60, top_pct=0.10, risk_factor=0.001),
-        ClenowGridConfig(lookback_regression=90, top_pct=0.20, risk_factor=0.001),
+        BollingerMRGridConfig(window=20, std_mult=2.0),
+        BollingerMRGridConfig(window=20, std_mult=2.0),
     ]
 
     # Pre-seed trial_0/ as a completed checkpoint.
@@ -158,12 +156,12 @@ def test_grid_runner_resumes_from_checkpoint(tmp_path: Path):
 
 def test_grid_runner_writes_checkpoint_per_trial(tmp_path: Path):
     """After a run completes, each trial has a directory on disk."""
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.runner import GridRunner
 
     configs = [
-        ClenowGridConfig(lookback_regression=60, top_pct=0.10, risk_factor=0.001),
-        ClenowGridConfig(lookback_regression=90, top_pct=0.20, risk_factor=0.001),
+        BollingerMRGridConfig(window=20, std_mult=2.0),
+        BollingerMRGridConfig(window=20, std_mult=2.0),
     ]
     runner = GridRunner(checkpoint_dir=tmp_path, n_jobs=1)
     runner.run(
@@ -177,12 +175,12 @@ def test_grid_runner_writes_checkpoint_per_trial(tmp_path: Path):
 
 
 def test_grid_runner_invokes_progress_callback_after_each_trial(tmp_path: Path):
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.runner import GridRunner
 
     configs = [
-        ClenowGridConfig(lookback_regression=60, top_pct=0.10, risk_factor=0.001),
-        ClenowGridConfig(lookback_regression=90, top_pct=0.20, risk_factor=0.001),
+        BollingerMRGridConfig(window=20, std_mult=2.0),
+        BollingerMRGridConfig(window=20, std_mult=2.0),
     ]
     callback = MagicMock()
     runner = GridRunner(checkpoint_dir=tmp_path, n_jobs=1)
@@ -206,17 +204,17 @@ def test_grid_runner_parallel_produces_same_results_as_sequential(tmp_path: Path
     back in completion order but we re-sort by config_id downstream. Checkpoint
     dir differs between runs so outputs are independent.
     """
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.runner import GridRunner
 
     configs = [
-        ClenowGridConfig(lookback_regression=60, top_pct=0.10, risk_factor=0.001),
-        ClenowGridConfig(lookback_regression=90, top_pct=0.20, risk_factor=0.001),
-        ClenowGridConfig(lookback_regression=120, top_pct=0.30, risk_factor=0.002),
+        BollingerMRGridConfig(window=20, std_mult=2.0),
+        BollingerMRGridConfig(window=20, std_mult=2.0),
+        BollingerMRGridConfig(window=20, std_mult=2.0),
     ]
 
     def _trial_fn(cfg):
-        return _fake_result(periods=50 + cfg.lookback_regression)
+        return _fake_result(periods=50 + cfg.window)
 
     seq_grid = GridRunner(checkpoint_dir=tmp_path / "seq", n_jobs=1).run(
         configs=configs, trial_fn=_trial_fn, run_id="r",
@@ -236,12 +234,12 @@ def test_grid_runner_parallel_produces_same_results_as_sequential(tmp_path: Path
 
 def test_grid_runner_resumes_with_error_checkpoint(tmp_path: Path):
     """Pre-existing error checkpoint loads as error trial, no retry."""
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import TrialResult, trial_to_dir
     from ai_trade.backtest.grid.runner import GridRunner
 
     configs = [
-        ClenowGridConfig(lookback_regression=60, top_pct=0.10, risk_factor=0.001),
+        BollingerMRGridConfig(window=20, std_mult=2.0),
     ]
     run_dir = tmp_path / "err-resume"
     trial_to_dir(

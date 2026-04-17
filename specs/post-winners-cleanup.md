@@ -151,18 +151,22 @@ Lista absoluta. Qualquer tarefa que tocar esses arquivos falha o spec.
 Antes de qualquer coisa, validar que a branch `self-improve/post-cleanup-20260416`
 está mergeable e limpa:
 
-- [ ] `git status` limpo (só `reports/bollinger_mr_regime_decomp/` untracked é
+- [x] `git status` limpo (só `reports/bollinger_mr_regime_decomp/` untracked é
   ok — mover pra dentro dos commits ou `.gitignore` em §4.1).
-- [ ] `.venv/bin/pytest -q` → 520 passed, 2 skipped.
-- [ ] `git log --oneline main..self-improve/post-cleanup-20260416` mostra
+- [x] `.venv/bin/pytest -q` → 520 passed, 2 skipped.
+- [x] `git log --oneline main..self-improve/post-cleanup-20260416` mostra
   10 commits (iter 19-27 + chore inicial).
-- [ ] `docs/self_improvement/memory.md` tem `status: done`, `iteration: 27`,
+- [x] `docs/self_improvement/memory.md` tem `status: done`, `iteration: 27`,
   `phase: B`, winners populados.
-- [ ] `jornada/2026-04-16-1600-production-readiness-summary.md` existe.
-- [ ] Nenhum commit da branch tocou `main`-only files (CLAUDE.md,
+- [x] `jornada/2026-04-16-1600-production-readiness-summary.md` existe.
+- [x] Nenhum commit da branch tocou `main`-only files (CLAUDE.md,
   ROADMAP.md sem necessidade) — diff review.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** Pre-flight all green. Validation expandida
+descobriu que (a) `reports/bollinger_mr_regime_decomp/` já estava
+tracked (commit 79f1378 iter 19) e (b) a contagem de commits ahead era
+13 (não 10 — incluía os 3 commits pré-cleanup do mandate). Nenhum
+secret real no diff (matches só em docs sobre como NÃO commitar).
 
 ---
 
@@ -208,20 +212,23 @@ commit pré-cleanup.
 Preservar a granularidade dos 10 commits — são o registro histórico do
 loop autônomo.
 
-- [ ] 4.1 Commitar `reports/bollinger_mr_regime_decomp/` (se relevante
+- [x] 4.1 Commitar `reports/bollinger_mr_regime_decomp/` (se relevante
   para Phase B) ou adicionar ao `.gitignore`. Decidir caso-a-caso lendo
-  o conteúdo.
-- [ ] 4.2 `git checkout main && git pull --ff-only origin main`.
-- [ ] 4.3 `git merge --no-ff self-improve/post-cleanup-20260416 -m
+  o conteúdo. → **N/A:** já tracked desde iter 19 (commit 79f1378).
+- [x] 4.2 `git checkout main && git pull --ff-only origin main`.
+- [x] 4.3 `git merge --no-ff self-improve/post-cleanup-20260416 -m
   "merge: autonomous loop iter 19-27 — 2 production winners
-  (BollingerMR SPY 1h + ETFRotation monthly top-1)"`.
-- [ ] 4.4 `.venv/bin/pytest -q` pós-merge → 520/2 verde.
+  (BollingerMR SPY 1h + ETFRotation monthly top-1)"` → commit `e881076`.
+- [x] 4.4 `.venv/bin/pytest -q` pós-merge → 520 passed, 2 skipped em 14.51s.
 - [ ] 4.5 `git push origin main` (com autorização explícita do usuário —
-  é merge em branch protegida de facto).
-- [ ] 4.6 **Não deletar** a branch `self-improve/post-cleanup-20260416`
-  ainda — é ponto-de-retorno se cleanup der errado.
+  é merge em branch protegida de facto). **Pendente: aguardando autorização.**
+- [x] 4.6 **Não deletar** a branch `self-improve/post-cleanup-20260416`
+  ainda — é ponto-de-retorno se cleanup der errado. Branch preservada.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** Merge `--no-ff` aplicado preservando os 13
+commits (iter 19-27 + 3 mandate). Pytest 520/2 estável pós-merge.
+Branch `cleanup/post-winners-20260416` criada a partir do main mergeado
+para o restante do trabalho. Push pendente de autorização explícita.
 
 ---
 
@@ -230,31 +237,32 @@ loop autônomo.
 As ~10 entradas `⚠️ RETRACTED` ou `⚠️ DATA TAINTED` ficam como ruído no
 índice. Consolidar sem perder conteúdo.
 
-- [ ] 5.1 Criar `jornada/_archive/2026-04-16-retracted-entries.md` com
+- [x] 5.1 Criar `jornada/_archive/2026-04-16-retracted-entries.md` com
   TOC linkando cada entry retratada. Cabeçalho explicativo (data-bug
   Tiingo IEX, magnitude, fix em `_filter_orphan_intraday_bars`).
-- [ ] 5.2 **Mover** (git mv) as entries retratadas para `jornada/_archive/`:
-  - `2026-04-15-2350-bollinger-mr-1h-PASS.md`
-  - `2026-04-16-0010-bollinger-mr-oos-2025-PASS.md`
-  - `2026-04-16-0045-kalman-pairs-spy-iwm-PASS.md`
-  - `2026-04-16-0059-bollinger-mr-2026q1-stress-test.md`
-  - `2026-04-16-0100-bollinger-mr-sector-etfs-PASS.md`
-  - `2026-04-16-0130-kalman-pairs-oos-FAIL.md` (DATA TAINTED)
-  - `2026-04-16-0833-tiingo-cache-audit.md` (conclusão inválida)
-  - `2026-04-16-1230-bollinger-mr-mc-bootstrap.md` (RETRACTED)
-  - `2026-04-16-1300-bollinger-mr-overlap.md` (RETRACTED)
-- [ ] 5.3 **Manter** `2026-04-16-1245-data-bug-winners-retracted.md` fora
+- [x] 5.2 **Mover** (git mv) as 9 entries retratadas para `jornada/_archive/`.
+- [x] 5.3 **Manter** `2026-04-16-1245-data-bug-winners-retracted.md` fora
   do archive — é o postmortem e documento histórico de primeira ordem.
-- [ ] 5.4 Atualizar `jornada/README.md`:
-  - Remover as entries movidas da lista newest-first.
-  - Adicionar uma linha "📦 **Entradas retratadas arquivadas:**
-    ver `_archive/2026-04-16-retracted-entries.md` (data-bug 2026-04-16)".
-  - Atualizar seção "Onde estamos hoje (2026-04-16 evening)" refletindo
-    os 2 winners production-ready.
-  - Atualizar "O que vem a seguir": paper trading + leverage exploration
-    (§8).
+- [x] 5.4 Atualizar `jornada/README.md`:
+  - "Onde estamos hoje (2026-04-16 evening)" reescrito refletindo 2
+    winners production-ready + Investment Mandate registrado + Phase 3
+    leads.
+  - "O que vem a seguir" reescrito como tabela dos 5 leads (A1-A3
+    Path A, B1-B2 Path B), substituindo a lista antiga
+    Chan/Vol-Expansion/Ehlers BP.
+  - Lista "Entradas (mais recente primeiro)" enxugada (12 entries top-
+    level + pointer para archive).
+  - Bloco "⚠️ Avisos de retratação" removido (substituído pelo pointer).
+  - Glossário ampliado: Path A/B, SHORT-HOLD CFD, SWING BROKER, LETF
+    rotation, Investment Mandate, CDI BR.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** 9 entries movidas via `git mv` (rename
+preservada no histórico). Archive index escrito com TOC + magnitude do
+bug + lições preservadas (`_filter_orphan_intraday_bars`,
+`scripts/clean_intraday_orphans.py`, sniff-test convention). README
+top-level enxugado de 31 entries para 12 entries + pointer; seções
+"Onde estamos hoje" e "O que vem a seguir" reescritas pra refletir
+estado pós-loop. Glossário cresceu 6 termos novos.
 
 ---
 
@@ -264,29 +272,70 @@ Strategies que não viraram winner **nem** são cobertas pelos 2 winners:
 
 ### 6.1 Inventário a remover
 
-- [ ] 6.1.1 Listar `src/ai_trade/backtest/strategies/*.py` e identificar:
-  - **KEEP:** `base.py`, `bollinger_mr.py`, `etf_rotation.py` + helpers
-    compartilhados.
-  - **DELETE:** `clenow_momentum.py`, `ehlers_bp_swing.py` (se existir),
-    `kalman_pairs.py` (se existir), `chan_pairs.py` (se existir),
-    `vol_expansion_breakout.py` (se existir). Confirmar cada um via `git ls-files`.
-- [ ] 6.1.2 Deletar **tests correspondentes** em `tests/` (grep pelos
-  nomes de classe; remover os arquivos inteiros quando testam só strategy
-  removida).
-- [ ] 6.1.3 Deletar **scripts one-shot** dessas strategies em `scripts/`:
-  `run_clenow_replication.py`, `run_ehlers_*.py`, `run_chan_*.py`, etc.
-  — NÃO remover qualquer script listado em §2.4.
+- [x] 6.1.1 Strategies deletadas (6 + 1 sub-package): `clenow_momentum.py`,
+  `ehlers_bp_swing.py`, `ehlers_meta.py`, `kalman_pairs.py`,
+  `chan_bollinger_pairs.py`, `ou_mean_rev.py`, `vol_expansion_breakout/`
+  (pacote com 6 arquivos). Também deletado: sub-package
+  `src/ai_trade/backtest/portfolio/` (F3.D Clenow+Ehlers portfolio,
+  obsoleto). Helper `adjusted_slope` + `atr` + `max_gap` migrados
+  previamente pra `helpers/momentum.py` (commit `3b8e3be`).
+- [x] 6.1.2 Tests deletados: 18 test files
+  (test_clenow_strategy, test_clenow_integration, test_ehlers_bp_swing,
+  test_ehlers_grid_config, test_ehlers_indicators, test_ehlers_integration,
+  test_ehlers_meta, test_kalman_pairs, test_chan_bollinger_pairs,
+  test_chan_pairs_grid_config, test_ou_mean_rev, 6× test_vol_expansion_*,
+  test_grid_runner_generic, test_grid_config, test_portfolio_configs,
+  test_portfolio_combined).
+- [x] 6.1.3 Scripts deletados: 13 one-shot scripts
+  (run_clenow_replication, run_ehlers_replication, run_ehlers_multi_asset.sh,
+  run_grid_clenow, run_grid_ehlers, run_grid_ehlers_meta,
+  run_grid_chan_pairs, run_grid_kalman_pairs, run_grid_vol_expansion,
+  run_grid_ou_mean_rev, run_oos_kalman_pairs, run_portfolio_combined,
+  build_ehlers_summary).
+- [x] 6.1.4 Grid configs deletados: `grid/config.py` (Clenow),
+  `grid/ehlers_config.py`, `grid/ehlers_meta_config.py`,
+  `grid/chan_pairs_config.py`, `grid/kalman_pairs_config.py`,
+  `grid/ou_mean_rev_config.py`, `grid/vol_expansion_config.py`.
+- [x] 6.1.5 `strategies/__init__.py` atualizado: só exporta
+  BollingerMRStrategy + ETFRotationStrategy (os 2 winners).
+- [x] 6.1.6 `grid/__init__.py` atualizado: só exporta
+  BollingerMRGridConfig + infra genérica.
+- [x] 6.1.7 `grid/runner.py` + `grid/result.py`: default
+  `config_cls` trocado de `ClenowGridConfig` para
+  `BollingerMRGridConfig`.
+- [x] 6.1.8 Tests migrados pra `BollingerMRGridConfig(window=20,
+  std_mult=2.0)` canonical: test_grid_report, test_grid_gates,
+  test_grid_observers, test_grid_diagnostic, test_grid_walk_forward,
+  test_grid_result, test_grid_runner, test_bollinger_mr. Campos
+  `lookback_regression`/`top_pct`/`risk_factor` substituídos por
+  `window`/`std_mult` onde relevante.
+- [x] 6.1.9 Mensagens user-facing em `grid/diagnostic.py` e
+  `grid/report.py` limpas de referências a Ehlers/Clenow/Chan
+  estratégias deletadas.
 
 ### 6.2 Validação
 
-- [ ] 6.2.1 `.venv/bin/pytest -q` pós-remoção → deve cair para ~X passed
-  (subtrair testes deletados). Baseline novo documentado aqui.
-- [ ] 6.2.2 `grep -rn "ClenowMomentum\|EhlersBPSwing\|KalmanPairs\|ChanPairs\|VolExpansion" src/ tests/ scripts/`
-  → zero hits. Se houver, é import residual.
-- [ ] 6.2.3 Rodar os grids dos 2 winners novamente em modo smoke (1
-  config cada) pra garantir que não quebrei imports implícitos.
+- [x] 6.2.1 `.venv/bin/pytest -q` → **345 passed** (de 531 pós-helper-
+  extraction, removidos ~186 tests de strategies descartadas).
+  Baseline novo documentado aqui: 345 passed, 2 skipped esperados.
+- [x] 6.2.2 `grep -rn "ClenowMomentum|EhlersBPSwing|EhlersMeta|KalmanPairs|ChanBollingerPairs|VolExpansionBreakout|OUMeanRev" src/ tests/ scripts/`
+  → único hit em `strategies/__init__.py` é comentário docstring
+  documentando a cleanup (intencional, não bug).
+- [x] 6.2.3 Smoke import sanity: `from ai_trade.backtest.strategies
+  import BollingerMRStrategy, ETFRotationStrategy` + helpers OK.
+  Grids completos dos 2 winners em Task 7.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** Cleanup estrutural completo. 6 strategy
+files + 1 sub-package + 1 Clenow+Ehlers portfolio sub-package
+deletados. 18 test files removidos, 13 one-shot scripts removidos, 7
+grid configs removidos. Engine genérico (runner, result) migrado de
+ClenowGridConfig como default → BollingerMRGridConfig. 8 test files
+migrados para usar a config canonical. Mensagens user-facing
+atualizadas. **345 tests passing**, imports sanitizados, zero
+residual de class names dos discarded strategies. Branch
+`cleanup/post-winners-20260416` em 3 commits incrementais (Task 1
+merge + Task 2 jornadas + Task 3 cleanup). Pronto pra Task 4
+(citation audit).
 
 ---
 
@@ -296,35 +345,33 @@ Dos **34** books em `books/summaries/` (33 originais + leverage_for_the_long_run
 absorvido em Task 0), listar quais foram de fato citados no
 código/jornadas dos winners + no `docs/investment-mandate.md`.
 
-- [ ] 7.1 Rodar grep agregado em tudo que sobrou após §5 e §6:
-  ```
-  grep -rhoE '\[[a-z_]+(,\s*(p|ch)\.[0-9-]+)?\]' \
-    src/ tests/ scripts/ jornada/ knowledge/ ROADMAP.md CLAUDE.md \
-    docs/investment-mandate.md \
-    | grep -oE '\[[a-z_]+' | sort -u
-  ```
-- [ ] 7.2 Cruzar com `books/MAPPING.md` (slug ↔ título). Produzir uma
-  tabela `used` vs `unused` e inserir em `books/CITATION_AUDIT.md`
-  (novo arquivo).
-- [ ] 7.3 **Força inclusão obrigatória (não arquivar mesmo se unused):**
-  - `leverage_for_the_long_run` — referenciado pelo mandate §4 (LETF rotation).
-  - `math_money_mgmt` — referenciado pelo mandate §3.3 (Kelly f/2).
-  - `leverage_space` — referenciado pelo mandate §3.3 (ruin/drawdown).
-  - `advances_fin_ml` — framework de gates (PBO/DSR/CPCV) em mandate §2.
-- [ ] 7.4 Para slugs **unused** fora da lista §7.3 (provavelmente ~15-18
-  dos 34):
-  - Mover `books/summaries/<slug>.md` → `books/summaries/_archive/`.
-  - Atualizar `books/MAPPING.md` marcando `[archived]` na linha.
-  - **NÃO** remover `books/raw/<slug>.pdf` nem `books/extracted/<slug>/`.
-- [ ] 7.5 Regenerar `knowledge/SKILL.md` a partir apenas dos summaries
-  mantidos (usar a skill `absorb-all-books` ou um script agregador — não
-  reescrever manualmente).
-- [ ] 7.6 Atualizar `knowledge/SKILL.md` header com "Regenerado
-  2026-04-16 após cleanup: N slugs citados nos winners de Fase 2.5
-  + 4 slugs protegidos pelo Investment Mandate".
+- [x] 7.1 Grep executado pós-cleanup §5/§6 com pattern refinado
+  `\[[a-z_]+(,|\])` para capturar tanto `[slug]` quanto `[slug, p.X]`.
+  Adicionado `docs/reference/` ao escopo. Produziu 16 USED slugs.
+- [x] 7.2 Cruzado com `books/MAPPING.md` (34 books). Tabela completa
+  em `books/CITATION_AUDIT.md` com USED / ARCHIVED / PROTECTED.
+- [x] 7.3 PROTECTED list (§7.3) verificada — todos 4 já em USED:
+  `leverage_for_the_long_run`, `math_money_mgmt`, `leverage_space`,
+  `advances_fin_ml`.
+- [x] 7.4 18 slugs UNUSED (não-PROTECTED) movidos via `git mv` para
+  `books/summaries/_archive/`. `books/MAPPING.md` atualizado com
+  marcador `[archived 2026-04-16]` em cada entry. PDFs raw e
+  extractions intactos.
+- [x] 7.5 `scripts/build_skill.py` regenerou `knowledge/SKILL.md` +
+  16 thematic files. Stale copies de summaries arquivados em
+  `knowledge/books/` removidos manualmente (build_skill.py é
+  add-only, não detecta deleções).
+- [x] 7.6 SKILL.md header + description atualizados refletindo "16
+  active books + 18 archived".
+- [x] 7.7 Test fixture `test_check_citations.py` migrado de
+  `cybernetic_trading` (archived) → `volatility_trading` (USED com
+  `_page_index.json` disponível).
 
-**Conclusion (preencher com):** N slugs usados / 34 total. Lista exata
-em `books/CITATION_AUDIT.md`.
+**Conclusion (2026-04-16):** **16 USED / 18 ARCHIVED / 34 TOTAL.**
+PROTECTED (4) é subset de USED, sem treatment especial necessário.
+Lista exata em `books/CITATION_AUDIT.md`. Pytest 345 passed (test
+fixture corrigido). Re-promoção de qualquer slug archived é só
+`git mv` de volta + rerun build_skill.py.
 
 ---
 
@@ -351,59 +398,89 @@ separada (`phase3/letf-and-multi-asset-<date>`), após o cleanup merged.
 
 ### Subtasks
 
-- [ ] 8.1 Atualizar `ROADMAP.md` §"Post-cleanup evolution (Phase 3)"
-  com a tabela acima + link pra `docs/investment-mandate.md`.
-- [ ] 8.2 Adicionar `## Phase 3 leads` em `docs/self_improvement/memory.md`
-  com os 5 leads acima (formato: 1 linha cada, `# Lead A1: ...` etc.).
-  **NÃO** mudar `status` — permanece `done` até execução começar.
-- [ ] 8.3 Quando executar (fora deste spec de cleanup):
-  - Criar branch `phase3/letf-and-multi-asset-<date>`.
-  - Resetar `status: in_progress` e `iteration: 28` no memory.md.
-  - Rodar `scripts/self_improve_loop.sh` com SCOPE=code.
+- [x] 8.1 `ROADMAP.md` §"Post-cleanup evolution (Phase 3)" expandido
+  com tabela completa (Lead, Path, Resumo detalhado, Pré-req,
+  Citação seed) + nota "1 lead = 1 iter, budget ~5 iters". Atualizado
+  B1 explicitando "Gayed canonical priority 1; Reddit é 1 seed entre
+  outros, NÃO gospel".
+- [x] 8.2 `docs/self_improvement/memory.md` recebeu nova seção
+  `## Phase 3 leads (registered 2026-04-16, NOT yet executed)` com 1
+  parágrafo por lead. **status permanece `done`, iteration `27`** —
+  reset em `in_progress`/`28` só no momento da execução.
+- [x] 8.3 Documentado o procedimento de start (criar branch
+  `phase3/letf-and-multi-asset-<date>` + reset de status) — não
+  executado.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** 5 leads registrados em ambos os
+documentos canônicos (ROADMAP + memory.md) sem alterar o estado
+"done" do loop autônomo. Lead B1 explicitamente reframed como
+"design from scratch base Gayed canonical, Reddit ilustrativo NÃO
+gospel" pra evitar afinidade humana ao testfol.io payload do usuário.
+Execução em branch separada, fora do escopo deste spec.
 
 ---
 
 ## 9. Task 6 — Atualizar docs raiz
 
-- [ ] 9.1 `ROADMAP.md` §"Current status":
-  - Remover narrativa de iters retratadas.
-  - Adicionar bloco "**2026-04-16 evening:** 2 production winners
-    encontrados via loop autônomo 2-fase" + links pros jornada PASS.
-  - Atualizar contagem de testes.
-- [ ] 9.2 `README.md`:
-  - Atualizar "Como rodar um backtest" com exemplos dos 2 winners
-    (removendo o exemplo de Clenow, se presente).
-  - Atualizar contagem de testes / tickers / histórico.
-- [ ] 9.3 `jornada/README.md`:
-  - Seção "Onde estamos hoje" reflete estado pós-cleanup.
-  - Glossário: adicionar "Path A / Path B", "SHORT-HOLD CFD",
-    "SWING BROKER" se ainda não estão.
+- [x] 9.1 `ROADMAP.md` §"Current status":
+  - Headline winners block já estava (commits pré-cleanup).
+  - Test count atualizado: 520 → 345 (post-cleanup).
+  - Phase 0: "33/33 books" → "34 absorbed; 16 active + 18 archived".
+  - Phase 2: "520 tests green" → "345 tests green pós-cleanup".
+  - §"Books in the knowledge base": header atualizado.
+- [x] 9.2 `README.md`:
+  - Header: "33 absorbed books" → "16 actively-cited (out of 34
+    absorbed; 18 archived)".
+  - Status table: Phase 2 "515 tests green" → "345 tests green";
+    Phase 2.5 "0 winners post-cleanup" → "Done — 2 production winners".
+  - Repository structure: `clenow_momentum.py` removido,
+    `helpers/momentum.py` + `bollinger_mr.py` + `etf_rotation.py`
+    listados; `run_clenow_replication.py` substituído pelos 4
+    scripts dos winners + Phase B + self_improve_loop.sh.
+  - "How to run a backtest": exemplo Clenow → 2 exemplos
+    (BollingerMR + ETFRotation) com flags reais.
+  - "How to run the grid": Clenow + Ehlers grids removidos,
+    substituídos por nota "Phase 2.5 result: 2 winners".
+  - Components count: "173 tests" → "345 tests"; lista atualizada.
+  - §"Books": "33 books absorbed" → "34 books; 16 active + 18
+    archived"; link adicional pra `CITATION_AUDIT.md`.
+- [x] 9.3 `jornada/README.md` (já feito em Task 2):
+  - "Onde estamos hoje (2026-04-16 evening)" reescrito.
+  - "O que vem a seguir" reescrito como Phase 3 leads.
+  - Glossário ampliado: Path A/B, SHORT-HOLD CFD, SWING BROKER, LETF
+    rotation, Investment Mandate, CDI BR.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** Documentos raiz consistentes pós-cleanup.
+Test counts, book counts, e exemplos de execução refletem o estado
+atual. Pytest ainda 345/2.
 
 ---
 
 ## 10. Task 7 — Tests & final validation
 
-- [ ] 10.1 `.venv/bin/pytest -q` → verde, contagem nova documentada.
-- [ ] 10.2 Smoke-run de cada winner (1 config cada, latest available
-  window por manifest):
-  - `scripts/run_grid_bollinger_mr.py --symbol SPY --frequency 1hour --smoke`
-  - `scripts/run_grid_etf_rotation.py --smoke`
-- [ ] 10.3 `git log --stat` da branch de cleanup — revisar que nenhum
-  arquivo do §2 (Preservation) foi tocado.
-- [ ] 10.4 Commit final na branch `cleanup/post-winners-20260416`:
-  ```
-  chore(cleanup): post-winners repo slim — remove N retired strategies,
-  archive N retracted jornadas, audit N/33 books cited
-  ```
-- [ ] 10.5 Abrir PR para `main`. Título: "Post-winners cleanup".
-  Descrição linkando este spec + contagens antes/depois (LOC, files,
-  tests, slugs citados).
+- [x] 10.1 `.venv/bin/pytest -q` → 345 passed, 2 skipped (estável).
+- [x] 10.2 Smoke-runs (sem `--smoke` flag pré-existente; usei
+  janelas curtas alternativas):
+  - BollingerMR `--dry-run` Jan-Apr 2026: grid + WF + gates OK,
+    imports limpos pós-deletion.
+  - ETFRotation 2024-2026: Sharpe 0.960 sobre 2.3 anos (acima do IS
+    0.708 baseline 22a porque é janela recente onde a strategy foi
+    bem); end-to-end sem ImportError.
+- [x] 10.3 Preservation §2 verificada: 10/10 arquivos críticos
+  tracked. Manifest.json revertido (mudança era só metadata da fetch
+  do smoke, não cleanup intent).
+- [x] 10.4 6 commits no cleanup branch (incremental por task) — vide
+  `git log main..HEAD`. Não houve necessidade de commit "final
+  amalgamado" pois cada task gerou commit semântico próprio.
+- [ ] 10.5 PR via `gh pr create` — pendente após autorização do
+  usuário pra `git push origin cleanup/post-winners-20260416`.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** 7 tasks completas, branch
+`cleanup/post-winners-20260416` em 6 commits + 1 commit final do
+jornada de fechamento. Pytest 345 passed estável. Smoke runs dos 2
+winners executam sem erro de import (validação do refactor helper +
+deletes). Preservação §2 intacta. Secret scan zero matches reais.
+PR aguardando autorização de push.
 
 ---
 

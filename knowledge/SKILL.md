@@ -1,9 +1,15 @@
 ---
 name: trading-knowledge
-description: Knowledge base for algorithmic swing trading built from 33 absorbed books. Use when designing strategies, selecting indicators, sizing positions, validating backtests, or reviewing any trading decision for the ai-trade project. Every recommendation MUST cite its source summary (knowledge/books/<slug>.md#section).
+description: Knowledge base for algorithmic short-hold + swing trading built from 16 actively-cited absorbed books (cleanup 2026-04-16). Use when designing strategies, selecting indicators, sizing positions, validating backtests, or reviewing any trading decision for the ai-trade project. Every recommendation MUST cite its source summary (knowledge/books/<slug>.md#section).
 ---
 
 # Trading Knowledge — ai-trade Phase 0 Deliverable
+
+> **Regenerated 2026-04-16 após cleanup pós-winners:** 16 slugs USED
+> nos winners production-ready de Fase 2.5 + 4 slugs PROTECTED pelo
+> Investment Mandate (sobreposição completa = 16 ativos netos). 18
+> slugs archived em `books/summaries/_archive/` (ver
+> `books/CITATION_AUDIT.md`); raw PDFs preservados em `books/raw/`.
 
 This skill aggregates the extracted knowledge from the books absorbed in
 Phase 0 of the `ai-trade` project. Use it when giving advice on:
@@ -61,46 +67,48 @@ justification citing a source:
 
 ### Per-book summaries
 
-**Tier S — Essentials (7 absorbed):**
+**Tier S — Essentials (6 absorbed):**
 - [`books/advances_fin_ml.md`](books/advances_fin_ml.md) — Complete anti-overfit framework; CPCV, meta-labeling, DSR.
 - [`books/systematic_trading.md`](books/systematic_trading.md) — Parsimony + robust position sizing; systems design.
 - [`books/trading_systems_methods.md`](books/trading_systems_methods.md) — Encyclopedic reference of classical methods.
 - [`books/testing_tuning.md`](books/testing_tuning.md) — Practical statistical validation in C++.
 - [`books/stocks_on_the_move.md`](books/stocks_on_the_move.md) — Momentum with 2 parameters — baseline.
-- [`books/eval_opt_strategies.md`](books/eval_opt_strategies.md) — Pardo — classical walk-forward; anti-overfit optimization framework.
 - [`books/quant_trading_chan.md`](books/quant_trading_chan.md) — Chan — practical mean-reversion/momentum baseline and infra.
 
-**Tier A — Technical foundation (8 absorbed):**
+**Tier A — Technical foundation (6 absorbed):**
 - [`books/rocket_science.md`](books/rocket_science.md) — DSP for trading; Hilbert transform, MAMA.
-- [`books/cybernetic_analysis.md`](books/cybernetic_analysis.md) — DSP continuation; Fisher transform, Cyber Cycle.
 - [`books/cycle_analytics.md`](books/cycle_analytics.md) — Adaptive cycles — Ehlers' latest refinements.
 - [`books/math_money_mgmt.md`](books/math_money_mgmt.md) — Optimal f, risk of ruin, adapted Kelly.
-- [`books/trading_evolved.md`](books/trading_evolved.md) — Systems in Python — direct bridge to the stack.
 - [`books/ml_for_algo_trading.md`](books/ml_for_algo_trading.md) — Pragmatic ML + Python guide (Jansen).
 - [`books/algo_trading_chan.md`](books/algo_trading_chan.md) — Chan — mean-reversion, momentum and practical execution.
 - [`books/machine_trading.md`](books/machine_trading.md) — Chan — ML/quant strategies focused on execution.
 
-**Tier B — Depth and complement (9 absorbed):**
-- [`books/stat_sound_indicators.md`](books/stat_sound_indicators.md) — Aronson+Masters TSSB; rigor in indicators.
+**Tier B — Depth and complement (3 absorbed):**
 - [`books/evidence_based_ta.md`](books/evidence_based_ta.md) — Aronson's statistical foundation; data-mining bias.
-- [`books/ml_for_asset_managers.md`](books/ml_for_asset_managers.md) — AFML condensed for portfolio management.
 - [`books/leverage_space.md`](books/leverage_space.md) — Multi-asset sizing — Kelly extension for portfolios.
-- [`books/regime_change.md`](books/regime_change.md) — HMM + regime change in computational finance.
 - [`books/volatility_trading.md`](books/volatility_trading.md) — Sinclair — vol modeling, options and vol-based sizing.
-- [`books/trading_exchanges.md`](books/trading_exchanges.md) — Harris — market microstructure, costs, liquidity.
-- [`books/fin_time_series_tsay.md`](books/fin_time_series_tsay.md) — Tsay — academic reference for financial time series.
-- [`books/big_data_ml_quant.md`](books/big_data_ml_quant.md) — Guida collection — ML applications in quant.
 
-**Tier C — Reference (9 absorbed):**
-- [`books/cybernetic_trading.md`](books/cybernetic_trading.md) — Intermarket + NN (Ruggiero 1997).
-- [`books/numerical_recipes.md`](books/numerical_recipes.md) — Numerical reference (SVD, FFT, optimization).
-- [`books/data_driven_science.md`](books/data_driven_science.md) — Brunton & Kutz — PCA, SVD, dynamical systems.
-- [`books/tech_analysis_patterns.md`](books/tech_analysis_patterns.md) — TA patterns handled algorithmically.
-- [`books/universal_trend_tactics.md`](books/universal_trend_tactics.md) — Penfold — trend-trading tactics.
-- [`books/sentiment_analysis_handbook.md`](books/sentiment_analysis_handbook.md) — Mitra & Yu — sentiment in finance as overlay.
-- [`books/time_series_hamilton.md`](books/time_series_hamilton.md) — Hamilton — classical time-series reference.
-- [`books/adaptive_markets.md`](books/adaptive_markets.md) — Lo — adaptive markets hypothesis; theoretical context.
-- [`books/risk_parity.md`](books/risk_parity.md) — Qian — portfolio construction by risk parity.
+**Tier C — Reference (0 absorbed):**
+
+**Not yet absorbed (18):**
+- `books/eval_opt_strategies.md` — Pardo — classical walk-forward; anti-overfit optimization framework.
+- `books/cybernetic_analysis.md` — DSP continuation; Fisher transform, Cyber Cycle.
+- `books/trading_evolved.md` — Systems in Python — direct bridge to the stack.
+- `books/stat_sound_indicators.md` — Aronson+Masters TSSB; rigor in indicators.
+- `books/ml_for_asset_managers.md` — AFML condensed for portfolio management.
+- `books/regime_change.md` — HMM + regime change in computational finance.
+- `books/trading_exchanges.md` — Harris — market microstructure, costs, liquidity.
+- `books/fin_time_series_tsay.md` — Tsay — academic reference for financial time series.
+- `books/big_data_ml_quant.md` — Guida collection — ML applications in quant.
+- `books/cybernetic_trading.md` — Intermarket + NN (Ruggiero 1997).
+- `books/numerical_recipes.md` — Numerical reference (SVD, FFT, optimization).
+- `books/data_driven_science.md` — Brunton & Kutz — PCA, SVD, dynamical systems.
+- `books/tech_analysis_patterns.md` — TA patterns handled algorithmically.
+- `books/universal_trend_tactics.md` — Penfold — trend-trading tactics.
+- `books/sentiment_analysis_handbook.md` — Mitra & Yu — sentiment in finance as overlay.
+- `books/time_series_hamilton.md` — Hamilton — classical time-series reference.
+- `books/adaptive_markets.md` — Lo — adaptive markets hypothesis; theoretical context.
+- `books/risk_parity.md` — Qian — portfolio construction by risk parity.
 
 ## Companion code (C++)
 

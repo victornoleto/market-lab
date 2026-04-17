@@ -36,7 +36,7 @@ from ai_trade.backtest.data.adjust import adjust_ohlc
 from ai_trade.backtest.engine.execution import Bar, Order
 from ai_trade.backtest.engine.portfolio import Portfolio
 from ai_trade.backtest.strategies.base import StrategyBase
-from ai_trade.backtest.strategies.clenow_momentum import adjusted_slope
+from ai_trade.backtest.helpers.momentum import adjusted_slope
 
 log = logging.getLogger(__name__)
 

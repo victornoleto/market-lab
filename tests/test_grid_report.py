@@ -24,7 +24,7 @@ import pandas as pd
 def _build_synthetic_world(n_configs: int = 3, seed: int = 0):
     """Assemble grid + verdict + wf_results + diagnostic for report tests."""
     from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
     from ai_trade.backtest.grid.gates import GateVerdict
     from ai_trade.backtest.grid.result import GridResult, TrialResult
@@ -44,11 +44,7 @@ def _build_synthetic_world(n_configs: int = 3, seed: int = 0):
             equity_curve=eq, trades=[], fills=[],
             initial_cash=100_000.0, final_equity=float(eq.iloc[-1]),
         )
-        cfg = ClenowGridConfig(
-            lookback_regression=60 + 30 * i,
-            top_pct=0.10 + 0.1 * (i % 2),
-            risk_factor=0.001,
-        )
+        cfg = BollingerMRGridConfig(window=20, std_mult=2.0)
         trials.append(
             TrialResult(
                 config_id=i, config=cfg, result=result,

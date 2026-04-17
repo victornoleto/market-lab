@@ -18,12 +18,10 @@ import pytest
 
 def _mk_trial(config_id: int, status: str = "ok", sharpe: float = 0.82):
     from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.config import ClenowGridConfig
+    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
     from ai_trade.backtest.grid.result import TrialResult
 
-    cfg = ClenowGridConfig(
-        lookback_regression=60 + config_id, top_pct=0.20, risk_factor=0.001,
-    )
+    cfg = BollingerMRGridConfig(window=20, std_mult=2.0)
     if status == "error":
         return TrialResult(
             config_id=config_id, config=cfg, result=None,
@@ -58,7 +56,7 @@ def test_jsonl_trial_observer_writes_one_line_per_trial(tmp_path: Path):
     assert first["config_id"] == 0
     assert first["status"] == "ok"
     assert first["sharpe"] == pytest.approx(0.82)
-    assert "lookback_regression" in first["config"]
+    assert "window" in first["config"]
     assert first["completed"] == 1
     assert first["total"] == 3
 
