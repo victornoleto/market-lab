@@ -345,35 +345,33 @@ Dos **34** books em `books/summaries/` (33 originais + leverage_for_the_long_run
 absorvido em Task 0), listar quais foram de fato citados no
 código/jornadas dos winners + no `docs/investment-mandate.md`.
 
-- [ ] 7.1 Rodar grep agregado em tudo que sobrou após §5 e §6:
-  ```
-  grep -rhoE '\[[a-z_]+(,\s*(p|ch)\.[0-9-]+)?\]' \
-    src/ tests/ scripts/ jornada/ knowledge/ ROADMAP.md CLAUDE.md \
-    docs/investment-mandate.md \
-    | grep -oE '\[[a-z_]+' | sort -u
-  ```
-- [ ] 7.2 Cruzar com `books/MAPPING.md` (slug ↔ título). Produzir uma
-  tabela `used` vs `unused` e inserir em `books/CITATION_AUDIT.md`
-  (novo arquivo).
-- [ ] 7.3 **Força inclusão obrigatória (não arquivar mesmo se unused):**
-  - `leverage_for_the_long_run` — referenciado pelo mandate §4 (LETF rotation).
-  - `math_money_mgmt` — referenciado pelo mandate §3.3 (Kelly f/2).
-  - `leverage_space` — referenciado pelo mandate §3.3 (ruin/drawdown).
-  - `advances_fin_ml` — framework de gates (PBO/DSR/CPCV) em mandate §2.
-- [ ] 7.4 Para slugs **unused** fora da lista §7.3 (provavelmente ~15-18
-  dos 34):
-  - Mover `books/summaries/<slug>.md` → `books/summaries/_archive/`.
-  - Atualizar `books/MAPPING.md` marcando `[archived]` na linha.
-  - **NÃO** remover `books/raw/<slug>.pdf` nem `books/extracted/<slug>/`.
-- [ ] 7.5 Regenerar `knowledge/SKILL.md` a partir apenas dos summaries
-  mantidos (usar a skill `absorb-all-books` ou um script agregador — não
-  reescrever manualmente).
-- [ ] 7.6 Atualizar `knowledge/SKILL.md` header com "Regenerado
-  2026-04-16 após cleanup: N slugs citados nos winners de Fase 2.5
-  + 4 slugs protegidos pelo Investment Mandate".
+- [x] 7.1 Grep executado pós-cleanup §5/§6 com pattern refinado
+  `\[[a-z_]+(,|\])` para capturar tanto `[slug]` quanto `[slug, p.X]`.
+  Adicionado `docs/reference/` ao escopo. Produziu 16 USED slugs.
+- [x] 7.2 Cruzado com `books/MAPPING.md` (34 books). Tabela completa
+  em `books/CITATION_AUDIT.md` com USED / ARCHIVED / PROTECTED.
+- [x] 7.3 PROTECTED list (§7.3) verificada — todos 4 já em USED:
+  `leverage_for_the_long_run`, `math_money_mgmt`, `leverage_space`,
+  `advances_fin_ml`.
+- [x] 7.4 18 slugs UNUSED (não-PROTECTED) movidos via `git mv` para
+  `books/summaries/_archive/`. `books/MAPPING.md` atualizado com
+  marcador `[archived 2026-04-16]` em cada entry. PDFs raw e
+  extractions intactos.
+- [x] 7.5 `scripts/build_skill.py` regenerou `knowledge/SKILL.md` +
+  16 thematic files. Stale copies de summaries arquivados em
+  `knowledge/books/` removidos manualmente (build_skill.py é
+  add-only, não detecta deleções).
+- [x] 7.6 SKILL.md header + description atualizados refletindo "16
+  active books + 18 archived".
+- [x] 7.7 Test fixture `test_check_citations.py` migrado de
+  `cybernetic_trading` (archived) → `volatility_trading` (USED com
+  `_page_index.json` disponível).
 
-**Conclusion (preencher com):** N slugs usados / 34 total. Lista exata
-em `books/CITATION_AUDIT.md`.
+**Conclusion (2026-04-16):** **16 USED / 18 ARCHIVED / 34 TOTAL.**
+PROTECTED (4) é subset de USED, sem treatment especial necessário.
+Lista exata em `books/CITATION_AUDIT.md`. Pytest 345 passed (test
+fixture corrigido). Re-promoção de qualquer slug archived é só
+`git mv` de volta + rerun build_skill.py.
 
 ---
 

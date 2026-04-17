@@ -58,8 +58,9 @@ def test_check_summary_prefers_canonical_map_over_heuristic(monkeypatch):
         return original_detect(pages)
 
     monkeypatch.setattr(check_citations, "detect_printed_pdf_offset", spy)
-    # Use an existing real slug that has _page_index.json
-    rep = check_citations.check_summary("cybernetic_trading")  # known-passing slug
+    # Use an active USED slug that has _page_index.json (post 2026-04-16 cleanup
+    # cybernetic_trading was archived; volatility_trading is a winner-cited slug).
+    rep = check_citations.check_summary("volatility_trading")
     assert "detect_called" not in calls, "should have used canonical map"
     assert rep.offset >= 0
 
