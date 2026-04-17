@@ -422,21 +422,37 @@ Execução em branch separada, fora do escopo deste spec.
 
 ## 9. Task 6 — Atualizar docs raiz
 
-- [ ] 9.1 `ROADMAP.md` §"Current status":
-  - Remover narrativa de iters retratadas.
-  - Adicionar bloco "**2026-04-16 evening:** 2 production winners
-    encontrados via loop autônomo 2-fase" + links pros jornada PASS.
-  - Atualizar contagem de testes.
-- [ ] 9.2 `README.md`:
-  - Atualizar "Como rodar um backtest" com exemplos dos 2 winners
-    (removendo o exemplo de Clenow, se presente).
-  - Atualizar contagem de testes / tickers / histórico.
-- [ ] 9.3 `jornada/README.md`:
-  - Seção "Onde estamos hoje" reflete estado pós-cleanup.
-  - Glossário: adicionar "Path A / Path B", "SHORT-HOLD CFD",
-    "SWING BROKER" se ainda não estão.
+- [x] 9.1 `ROADMAP.md` §"Current status":
+  - Headline winners block já estava (commits pré-cleanup).
+  - Test count atualizado: 520 → 345 (post-cleanup).
+  - Phase 0: "33/33 books" → "34 absorbed; 16 active + 18 archived".
+  - Phase 2: "520 tests green" → "345 tests green pós-cleanup".
+  - §"Books in the knowledge base": header atualizado.
+- [x] 9.2 `README.md`:
+  - Header: "33 absorbed books" → "16 actively-cited (out of 34
+    absorbed; 18 archived)".
+  - Status table: Phase 2 "515 tests green" → "345 tests green";
+    Phase 2.5 "0 winners post-cleanup" → "Done — 2 production winners".
+  - Repository structure: `clenow_momentum.py` removido,
+    `helpers/momentum.py` + `bollinger_mr.py` + `etf_rotation.py`
+    listados; `run_clenow_replication.py` substituído pelos 4
+    scripts dos winners + Phase B + self_improve_loop.sh.
+  - "How to run a backtest": exemplo Clenow → 2 exemplos
+    (BollingerMR + ETFRotation) com flags reais.
+  - "How to run the grid": Clenow + Ehlers grids removidos,
+    substituídos por nota "Phase 2.5 result: 2 winners".
+  - Components count: "173 tests" → "345 tests"; lista atualizada.
+  - §"Books": "33 books absorbed" → "34 books; 16 active + 18
+    archived"; link adicional pra `CITATION_AUDIT.md`.
+- [x] 9.3 `jornada/README.md` (já feito em Task 2):
+  - "Onde estamos hoje (2026-04-16 evening)" reescrito.
+  - "O que vem a seguir" reescrito como Phase 3 leads.
+  - Glossário ampliado: Path A/B, SHORT-HOLD CFD, SWING BROKER, LETF
+    rotation, Investment Mandate, CDI BR.
 
-**Conclusion:**
+**Conclusion (2026-04-16):** Documentos raiz consistentes pós-cleanup.
+Test counts, book counts, e exemplos de execução refletem o estado
+atual. Pytest ainda 345/2.
 
 ---
 

@@ -6,9 +6,10 @@ days, swap cost) and swing via a **Brazilian stock broker** (days~weeks,
 no swap, 15% capital-gains tax). Every strategy is labelled by the path
 it fits and gated against the **path-specific cost model**.
 
-Grounded in **33 absorbed quantitative trading / ML books** exposed as a
-Claude Skill (citable knowledge base). All code is deterministic; every
-decision cites `[book.slug, p.X]`.
+Grounded in **16 actively-cited quantitative trading / ML books** (out
+of 34 absorbed; 18 archived in 2026-04-16 cleanup — full list in
+`books/CITATION_AUDIT.md`) exposed as a Claude Skill (citable knowledge
+base). All code is deterministic; every decision cites `[book.slug, p.X]`.
 
 **Golden rule:** no claim, strategy, parameter, or gate without a book
 reference. Hallucination destroys the value of the knowledge base — and,
@@ -23,12 +24,12 @@ dual-path framework and per-path constraints.
 
 | Phase | Scope | Status |
 |---|---|---|
-| 0 | Knowledge base — 33 books → validated summaries | ✅ Done |
+| 0 | Knowledge base — 34 books → validated summaries (16 active + 18 archived) | ✅ Done |
 | 0.5 | `build_skill.py` + skill sanity gate | ✅ Done |
 | 1 | Pepperstone/cTrader infra + Postgres/Grafana | 🔄 Scaffold (awaiting Spotware OAuth approval) |
-| 2 | Backtest engine + CPCV/PBO/DSR/WF/MCPT validation | ✅ Done — 515 tests green |
-| 2.5 | Strategy search via self-improve loop | 🔄 0 winners post-cleanup (data-bug retracted prior 3 winners on 2026-04-16, see ROADMAP "Current status") |
-| 3 | Calibrated strategy + Pepperstone-cost ablation | ⏳ Blocked on 2.5 |
+| 2 | Backtest engine + CPCV/PBO/DSR/WF/MCPT validation | ✅ Done — 345 tests green |
+| 2.5 | Strategy search via self-improve loop | ✅ Done — 2 production winners (BollingerMR SPY 1h Sharpe 0.995 + ETFRotation monthly Sharpe 0.708) + Investment Mandate; ver `jornada/2026-04-16-1600-production-readiness-summary.md` |
+| 3 | Post-cleanup evolution: 5 leads (A1-A3 multi-asset BollingerMR + B1-B2 LETF rotation) | ⏳ Pendente — execução em branch separada |
 | 4 | Paper trading (cTrader demo account) | ⏳ Blocked on 3 |
 | 5 | Live trading ($1000 initial) | ⏳ Blocked on 4 |
 | 6 | Monitoring + governance | ⏳ |
@@ -63,10 +64,11 @@ books/raw/    ─▶ summaries/    ─▶ knowledge/               cTrader Open 
 ```
 ai-trade/
 ├── books/                           # Raw knowledge base (Phase 0)
-│   ├── raw/                         # 33 PDFs with canonical slugs
-│   ├── summaries/                   # 1 validated MD per book
+│   ├── raw/                         # 34 PDFs with canonical slugs
+│   ├── summaries/                   # 16 active MD (18 archived under _archive/)
 │   ├── code/                        # Complementary C++ code (Timothy Masters)
 │   ├── MAPPING.md                   # "Original name → slug" inventory
+│   ├── CITATION_AUDIT.md            # USED / ARCHIVED / PROTECTED audit
 │   └── README.md                    # Catalog + quality + absorption pipeline
 ├── knowledge/                       # Aggregated Claude Skill (Phase 0.5)
 │   ├── SKILL.md                     # Entry point + inviolable rules
@@ -77,12 +79,14 @@ ai-trade/
 ├── src/ai_trade/                    # Python runtime (Phase 1+)
 │   ├── __init__.py
 │   ├── config.py                    # Typed config (pydantic-settings)
-│   └── backtest/                    # Phase 2 — backtest module (173 tests)
-│       ├── data/                    #   yfinance + Wikipedia SPX point-in-time
+│   └── backtest/                    # Phase 2 — backtest module
+│       ├── data/                    #   tiingo + yfinance + Wikipedia SPX point-in-time
 │       ├── engine/                  #   portfolio + CFD-aware execution + runner
 │       ├── validation/              #   CPCV / PBO / DSR / walk-forward / MCPT
 │       ├── metrics/                 #   Sharpe/Sortino/Calmar + MD+PNG report
-│       └── strategies/              #   base + Clenow momentum replication
+│       ├── grid/                    #   parameter-grid runner + gate evaluator
+│       ├── helpers/                 #   pure-function helpers (momentum.py)
+│       └── strategies/              #   base + 2 production winners (bollinger_mr + etf_rotation)
 ├── scripts/                         # Deterministic utilities (no LLM)
 │   ├── extract_pdfs.py              # PDF → text + chapters + metadata
 │   ├── validate_summary.py          # Structural gate for summaries
@@ -93,7 +97,13 @@ ai-trade/
 │   ├── compress_pdfs.py             # Ghostscript compressor (reversible)
 │   ├── rename_books.py              # Normalize slugs in books/raw/
 │   ├── ctrader_oauth_bootstrap.py   # OAuth2 one-time bootstrap (local browser)
-│   └── run_clenow_replication.py    # Clenow momentum replication CLI (Phase 2)
+│   ├── run_grid_bollinger_mr.py     # Path A winner — BollingerMR SPY 1h grid
+│   ├── run_oos_bollinger_mr.py      # Path A winner — OOS validation
+│   ├── run_etf_rotation.py          # Path B winner — Monthly ETFRotation
+│   ├── run_oos_etf_rotation.py      # Path B winner — OOS validation
+│   ├── run_*_phase_b.py             # Phase B validation scripts (cost ablation, MC, regime)
+│   ├── self_improve_loop.sh         # Autonomous self-improve loop driver
+│   └── clean_intraday_orphans.py    # Tiingo IEX placeholder-bar defense
 ├── db/
 │   └── init.sql                     # Postgres schemas: market_data, trades, ...
 ├── docker-compose.yml               # Postgres 16 + Grafana 11
@@ -159,36 +169,55 @@ Phase 2 delivered the complete backtest module in `src/ai_trade/backtest/`:
 engine (portfolio + CFD-aware execution + bar-by-bar runner), validation
 framework (CPCV / PBO / DSR / walk-forward / MCPT), metrics (Sharpe /
 Sortino / Calmar / CAGR / max DD / VaR) and a markdown + PNG report
-generator. Reference replication: Andreas Clenow `stocks_on_the_move` on
-the SPX 500 point-in-time universe (yfinance + Wikipedia scrape).
+generator. After Phase 2.5 cleanup (2026-04-16) only the 2 production
+winners remain in `strategies/`.
+
+**Winner #1 — BollingerMR GARCH SPY 1h [SHORT-HOLD CFD, Path A]**
+(IS Sharpe 0.995, OOS 0.945):
 
 ```bash
-.venv/bin/python scripts/run_clenow_replication.py \
-    --start 2023-07-01 \
-    --end 2023-12-31 \
-    --cash 100000 \
-    --output-dir reports/
+.venv/bin/python scripts/run_grid_bollinger_mr.py \
+    --data-source tiingo --symbol SPY --asset-class etf \
+    --storage-root data/tiingo \
+    --start 2019-12-02 --end 2026-04-15 \
+    --frequency 1hour --output-dir reports/ --n-jobs 4 \
+    --run-id grid_bollinger_mr_spy_1h_<id>
 ```
 
-Outputs:
-- `reports/clenow_momentum_<YYYYMMDD-HHMM>.md` — structured report with
-  mandatory survivorship-bias disclaimer, annualized metrics,
-  walk-forward summary, and trade list (top winners/losers)
-- `reports/assets/*.png` — equity curve + underwater drawdown (2 panels,
-  headless Agg backend)
+**Winner #2 — ETFRotation Monthly Top-1 [SWING BROKER, Path B]**
+(IS Sharpe 0.708, OOS 1.477, 22 anos histórico):
 
-Components (covered by 173 tests with numerical verification against the
-source books):
+```bash
+.venv/bin/python scripts/run_etf_rotation.py
+```
+
+Outputs land in `reports/<run_id>/`:
+- `summary.md` (gates pass) OR `diagnostic.md` (gates fail) — both
+  include survivorship disclaimer when source is yfinance/Wikipedia
+  (Tiingo storage releases the disclaimer)
+- `assets/*.png` — equity curve + underwater drawdown
+- `.cache/grid_runs/<run_id>/trial_*/` — per-trial checkpoints
+  (parquet + JSON, resume-friendly)
+
+Components (covered by **345 tests** post-cleanup with numerical
+verification against the source books):
 - `backtest/engine/` — `portfolio.py` / `execution.py` / `runner.py`
 - `backtest/validation/` — `cpcv.py` / `pbo.py` / `dsr.py` /
   `walk_forward.py` / `permutation.py`
 - `backtest/metrics/` — `performance.py` / `report.py`
-- `backtest/strategies/` — `base.py` / `clenow_momentum.py`
+- `backtest/grid/` — `runner.py` / `result.py` / `gates.py` /
+  `walk_forward.py` / `bollinger_mr_config.py` (only surviving config)
+- `backtest/helpers/` — `momentum.py` (pure functions: `adjusted_slope`,
+  `atr`, `max_gap`)
+- `backtest/strategies/` — `base.py` / `bollinger_mr.py` /
+  `etf_rotation.py` (the 2 winners)
 
-Replication notes (performance vs. book, limitations, design decisions):
-[`reports/clenow_replication_notes.md`](reports/clenow_replication_notes.md).
 Executable Phase 2 spec with a Conclusion field per task:
-[`specs/backtest_phase2.md`](specs/backtest_phase2.md).
+[`specs/backtest_phase2.md`](specs/backtest_phase2.md). Production
+readiness summary of the 2 winners:
+[`jornada/2026-04-16-1600-production-readiness-summary.md`](jornada/2026-04-16-1600-production-readiness-summary.md).
+Investment Mandate (regras invioláveis):
+[`docs/investment-mandate.md`](docs/investment-mandate.md).
 
 **Critical gate:** every report generated from `yfinance`/`wikipedia`
 sources includes a mandatory survivorship-bias disclaimer (inviolable
@@ -199,62 +228,30 @@ DSR p-value < 0.05 — see
 
 ---
 
-## How to run the grid (Phase 2.5/3)
+## How to run the grid (Phase 2.5)
 
-The `src/ai_trade/backtest/grid/` module extends Phase 2 with infrastructure
-to run a grid of strategy configurations with anti-overfit gates active
-(PBO / DSR / walk-forward). A new CLI orchestrates fetch + parallel grid
-(joblib) + walk-forward + gate evaluation + report/diagnostic:
+The `src/ai_trade/backtest/grid/` module extends Phase 2 with
+infrastructure to run a grid of strategy configurations with anti-
+overfit gates active (PBO / DSR / walk-forward). After the 2026-04-16
+cleanup only `BollingerMRGridConfig` remains as a registered grid
+config; the runner is generic, so Phase 3 leads can plug in their own
+frozen dataclasses.
 
-**Clenow momentum grid** (SPX point-in-time, 30 configs):
-
-```bash
-.venv/bin/python scripts/run_grid_clenow.py \
-    --start 2015-01-01 --end 2023-12-31 \
-    --cash 100000 --output-dir reports/ \
-    --n-jobs 4
-```
-
-**Ehlers Band-Pass Swing grid** (^GSPC single-instrument, 24 configs):
-
-```bash
-.venv/bin/python scripts/run_grid_ehlers.py \
-    --start 2015-01-01 --end 2023-12-31 \
-    --cash 100000 --output-dir reports/ \
-    --n-jobs 4
-```
-
-Follow execution in real time (unified log — a single `tail -f`
-for any run, present or future, Clenow OR Ehlers):
+Follow execution in real time (unified log — a single `tail -f` for
+any run):
 
 ```bash
 tail -f logs/grid.log
 cat logs/grid_latest_status.md  # high-level snapshot of the last run
 ```
 
-**Outputs:**
-- `reports/grid_<YYYYMMDD-HHMM>/summary.md` (if gates pass) OR
-  `diagnostic.md` (if they fail) — both include survivorship disclaimer
-- `reports/grid_<YYYYMMDD-HHMM>/assets/heatmap_sharpe.png` — Sharpe over
-  the first 2 varied grid dimensions, aggregated by max over the rest
-- `.cache/grid_runs/<run_id>/trial_*/` — per-trial checkpoints (parquet
-  + JSON, human-inspectable, resume-friendly)
-- `.cache/grid_runs/<run_id>/trials.jsonl` — machine-readable per-trial
+**Outputs:** `reports/<run_id>/summary.md` (gates pass) OR
+`diagnostic.md` (gates fail), `assets/*.png`, and resume-friendly
+checkpoints in `.cache/grid_runs/<run_id>/trial_*/`.
 
-**Run 1 — Clenow (2026-04-14):** gates fail marginally —
-PBO=0.524, DSR 0/30, WF 4/30. Best #15 (lookback=90, top=20%, risk=0.2%)
-Sharpe 0.58 CAGR 8.87%. See `specs/backtest_phase2.md` §"Phase 2.5/3 —
-Run 1".
-
-**Run 2 — Ehlers Band-Pass Swing (2026-04-14):** **PBO passes**
-(0.468) but DSR 0/24 reject. Best #6 (hp=48, lp=20, pct=0.80) Sharpe
-0.31 CAGR 2.17% DD 14.65%. **Cross-correlation Clenow × Ehlers =
-−0.0108** — orthogonal strategies (candidate for regime-aware
-portfolio). See `specs/backtest_phase2_5_ehlers.md` §"Run — results
-and fork".
-
-Fork open on both runs: paid-data ablation (recommended), 3rd strategy,
-regime-aware portfolio, or stop and reassess.
+**Phase 2.5 result (2026-04-16 evening):** 2 production winners
+(BollingerMR SPY 1h GO-WITH-CAVEATS + ETFRotation monthly top-1 GO).
+Detailed verdicts: [`jornada/2026-04-16-1600-production-readiness-summary.md`](jornada/2026-04-16-1600-production-readiness-summary.md).
 
 ---
 
@@ -299,12 +296,14 @@ Rationale for the ablation: [`docs/tiingo_ablation_rationale.md`](docs/tiingo_ab
 
 ## Books
 
-**33 books absorbed** as a Claude Skill (Phase 0 done). Per-book importance
-(⭐⭐⭐ critical, ⭐⭐ important, ⭐ complementary) and absorption quality
-(🌟 perfect, ✅ good, ⚠️ borderline) are in the full catalog at
-[`books/README.md`](books/README.md#book-catalog-3333-absorbed).
+**34 books absorbed; 16 active + 18 archived (cleanup 2026-04-16)** as a
+Claude Skill (Phase 0 done). Per-book importance (⭐⭐⭐ critical, ⭐⭐
+important, ⭐ complementary) and absorption quality (🌟 perfect, ✅ good,
+⚠️ borderline) are in the full catalog at
+[`books/README.md`](books/README.md).
 
 **Canonical inventory** (slug → title/author/year): [`books/MAPPING.md`](books/MAPPING.md).
+**Citation audit** (USED / ARCHIVED / PROTECTED): [`books/CITATION_AUDIT.md`](books/CITATION_AUDIT.md).
 
 ### Raw PDFs are not versioned
 

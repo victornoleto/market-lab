@@ -9,10 +9,10 @@
 ### Headline
 
 - **2 winners + Investment Mandate (2026-04-16 evening).** Autonomous self-improve loop iter 19-27 delivered (1) **BollingerMR GARCH SPY 1h** [SHORT-HOLD CFD] — CAGR ~5.9%/ano, PSR p=0.043, verdict **GO-WITH-CAVEATS** (SPY-only); (2) **ETFRotation Monthly Top-1** [SWING BROKER] — CAGR líquido ~9.1-9.6%/ano em 23 anos, PSR p=0.004, bootstrap CI [0.449, 1.254], verdict **GO**. Correlation ρ=0.252 — independent. Full summary: `jornada/2026-04-16-1600-production-readiness-summary.md`. Both CAGRs são considerados insuficientes vs. CDI BR (~13-14%/ano), por isso o **Investment Mandate** registrado em `docs/investment-mandate.md` define evolução agressiva (ver seção abaixo).
-- **34/34 books absorbed.** `leverage_for_the_long_run` (Gayed 2016/2020) adicionado como referência primária para Strategy B LETF rotation.
-- **520 tests green.** +5 vs pré-loop; zero regressão.
+- **34 books absorbed; 16 active + 18 archived (cleanup 2026-04-16).** `leverage_for_the_long_run` (Gayed 2016/2020) adicionado como referência primária para Strategy B LETF rotation. Audit completo em `books/CITATION_AUDIT.md`.
+- **345 tests green** (after post-winners cleanup removed ~186 strategy-specific tests; engine + winners + helpers preserved).
 - **Prior 3 "winners" retracted (2026-04-16 12:45).** All 3 prior "winners" (XLK / SPY / XLE Bollinger MR 1h, iters 5/15/16 of the self-improve loop) were **retracted on 2026-04-16 12:45** after a data-bug postmortem. Tiingo IEX returned 6 placeholder hourly bars on US market-closed days (volume=0, OHLC identical, RAW unadjusted prices). For tickers with historical splits (XLK ratio≈0.48, XLE≈0.41) those bars sat at 2× adjacent prices and inflated the strategies' P&L by 45-89%. Post-cleanup re-validation: SPY Sharpe 1.31→0.78, XLK 1.93→0.75, XLE 1.58→0.42 — all FAIL the 3-gate framework. See `jornada/2026-04-16-1245-data-bug-winners-retracted.md` for the full postmortem.
-- **Tooling hardened.** `_filter_orphan_intraday_bars` in `tiingo_source.py` blocks the bug from re-entering the cache; `scripts/clean_intraday_orphans.py` removed 4296 placeholder bars from 12 tickers (backups kept locally). 2 regression tests added. **515 tests green.**
+- **Tooling hardened.** `_filter_orphan_intraday_bars` in `tiingo_source.py` blocks the bug from re-entering the cache; `scripts/clean_intraday_orphans.py` removed 4296 placeholder bars from 12 tickers (backups kept locally). 2 regression tests added.
 - **Self-improvement loop is the production search mechanism.** `scripts/self_improve_loop.sh` runs Claude Code in a fresh-context sonnet session per iteration, reads `docs/self_improvement/memory.md`, picks one experiment from the leads list, runs it, updates memory + jornada, auto-commits on the isolated branch. The previous 17 iterations are committed but their conclusions about "winners" are retracted — the infrastructure they built (grids, OOS scripts, bootstrap, overlap, regime decomp, GARCH-prep) is intact and reusable.
 
 ### Post-cleanup evolution (Phase 3 leads)
@@ -36,7 +36,7 @@ cleanup for merged. **Cada lead = 1 iteração do self-improve loop**
 - ✅ **Phase 0 — Knowledge Base.** 34/34 books absorbed and validated. Loadable as Claude Skill.
 - ✅ **Phase 0.5 — `knowledge/SKILL.md`.** Aggregated skill with 7 inviolable rules.
 - 🔄 **Phase 1 — Pepperstone/cTrader infra.** Scaffold ready (Postgres 5435 + Grafana 3000 via docker-compose; OAuth bootstrap script). Blocked awaiting Spotware approval.
-- ✅ **Phase 2 — Backtest engine + validation.** CPCV / PBO / DSR / walk-forward / MCPT. 520 tests green.
+- ✅ **Phase 2 — Backtest engine + validation.** CPCV / PBO / DSR / walk-forward / MCPT. 345 tests green pós-cleanup.
 - ✅ **Phase 2.5 — Strategy search.** 2 winners delivered (iter 19-27). Investment Mandate registrado. Cleanup em `specs/post-winners-cleanup.md` (pendente execução).
 - ⏳ **Phase 3 — Post-cleanup evolution.** 5 leads registrados (A1-A3 + B1-B2 acima). Bloqueado pelo cleanup.
 - ⏳ **Phase 4-7 — Paper trading → live → monitoring → scaling.** All blocked on Phase 3.
@@ -81,7 +81,7 @@ A winner on either path is a winner. The "find ~10 strategies" goal in `docs/sel
 
 ## 📍 Historical status (2026-04-15, pre-retraction)
 
-- ✅ **Phase 0 — Knowledge Base.** 33/33 books absorbed and validated (pipeline `books/raw/*.pdf` → `extracted/` → `summaries/<slug>.md`, autonomous 3-layer validation replacing human review). Global `check_citations.py`: 33/33 PASS. Quality: 🌟 12 Perfect · ✅ 20 Good · ⚠️ 1 Border, 0 real hallucinations.
+- ✅ **Phase 0 — Knowledge Base.** 34/34 books absorbed and validated (pipeline `books/raw/*.pdf` → `extracted/` → `summaries/<slug>.md`, autonomous 3-layer validation replacing human review). Global `check_citations.py`: 34/34 PASS originalmente; 18 arquivados pós-cleanup 2026-04-16 (raw PDFs preservados, summaries em `_archive/`). Quality original: 🌟 12 Perfect · ✅ 21 Good · ⚠️ 1 Border, 0 real hallucinations.
 - ✅ **Phase 0.5 — `knowledge/SKILL.md`.** `build_skill.py` aggregates the 33 summaries into a thematic Claude Skill (`knowledge/SKILL.md` + `books/`, `strategies/`, `indicators/`, `validation/`). Skill loadable via the `Skill` tool, inviolable rules #1-7 in production.
 - 🔄 **Phase 1 — Pepperstone/cTrader infra.** Scaffold ready (docker-compose with Postgres 5435 + Grafana; `ctrader_oauth_bootstrap.py`; schemas). Blocked awaiting Spotware approval of the OAuth app.
 - ✅ **Phase 2 — Backtest Module** (scope rewritten — see preamble below). Delivered 2026-04-14 via `specs/backtest_phase2.md`: data layer (yfinance + Wikipedia SPX point-in-time), engine (portfolio + CFD-aware execution + runner), validation framework (CPCV / PBO / DSR / walk-forward / MCPT), metrics + report (mandatory survivorship disclaimer), Clenow `stocks_on_the_move` replicated end-to-end. **173 tests passing**.
@@ -476,7 +476,7 @@ Commit only when asked.
 
 ---
 
-## 📚 Books in the knowledge base (33/33 absorbed and validated)
+## 📚 Books in the knowledge base (34 absorbed; 16 active + 18 archived 2026-04-16)
 
 Summarized status — full details in `books/README.md` (the "Book catalog" table with per-book Review columns):
 
