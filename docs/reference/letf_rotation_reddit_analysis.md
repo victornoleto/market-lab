@@ -1,5 +1,16 @@
 # LETF Rotation — Reddit /r/LETFs post summary (user's prior study)
 
+> ⚠️ **Disclaimer (adicionado 2026-04-16 21:50 pelo próprio usuário):
+> este post é trial-and-error, NÃO ciência.** A única âncora científica
+> válida pra Strategy B é `books/summaries/leverage_for_the_long_run.md`
+> (Gayed). Este documento existe como **exemplo ilustrativo de um tipo
+> de estratégia simples e eficaz** (regime-rotation com LETF) —
+> Strategy B não precisa replicar esses params. O Lead B1 deve projetar
+> uma LETF rotation ancorada em Gayed, submeter ao framework de gates
+> do ai-trade, e o resultado *pode ou não* parecer com esta config.
+> Os params abaixo valem como um de vários seed points, não como
+> target a reproduzir.
+
 **Fonte:** Post do usuário `u/noletovictor` em `/r/LETFs`, há ~5 meses
 (publicado ~2025-11).
 **URL:** https://www.reddit.com/r/LETFs/comments/1p4t114/the_best_optimization_for_leveraged_rotation/

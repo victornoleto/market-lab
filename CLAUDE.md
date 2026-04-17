@@ -28,7 +28,9 @@ Sumário do `docs/investment-mandate.md`. Regras invioláveis:
 
 1. **Capital allocation:** 60-80% passive buy&hold (ver
    `portfolio-aposentadoria.md`), 20-40% split entre 2 strategies
-   ativas (Path A short-hold CFD Pepperstone + Path B swing broker BR).
+   ativas: **Strategy A (principal, Path A short-hold CFD
+   Pepperstone, agressiva alavancada)** e **Strategy B (secundária,
+   Path B swing broker BR, moderada).**
 2. **CAGR mínimo aceitável = CDI BR (~13-14%/ano líquido).** Abaixo
    disso, strategy não é winner — é folclore.
 3. **Strategy A (Path A Pepperstone CFD) é multi-asset obrigatório**
@@ -36,16 +38,19 @@ Sumário do `docs/investment-mandate.md`. Regras invioláveis:
    (Hurst/ATR/spread/volume) e alavancagem ótima via sweep empírico
    1:1 → 1:200 cross-checked com Kelly f/2. Target: **5-10%/mês a
    partir de $1k**. Single-asset edge NÃO é aceito como winner final.
-4. **Strategy B (Path B swing broker) tese primária: LETF rotation
-   SPY-EMA(125) com banda simétrica 5% → UPRO 3x (chosen agressivo)
-   ou SSO 2x (conservador) com gold allocation 0-100%.** Baseada em
-   `books/summaries/leverage_for_the_long_run.md` (Gayed 2016/2020) +
-   `docs/reference/letf_rotation_reddit_analysis.md`. Seed (chosen):
-   `EMA 125 + band 5% + Lev 3x + Gold 0%` → CAGR 17.19% testfol.io
-   1968-2026, MaxDD -57.88%, 42 trades/58y. **Overfit control:
-   CPCV + PBO + splits mutuamente exclusivos (IS 1970-2000 / OOS
-   2001-2015 / Stress 2016-2026) + stationary block bootstrap
-   a 0.001.** 15% IR sempre; UPRO/SSO sintéticos pre-2009/2006 via
+4. **Strategy B (Path B swing broker) é a SEGUNDA strategy do projeto**
+   (swing moderado, complementa Strategy A). Tese: **família LETF
+   rotation** — regime MA (SMA ou EMA) sobre SPY → LETF (UPRO 3x ou
+   SSO 2x) em on-regime, cash (ou gold) em off-regime. **Base
+   científica ÚNICA: `books/summaries/leverage_for_the_long_run.md`**
+   (Gayed 2016/2020); o Reddit study do usuário
+   (`docs/reference/letf_rotation_reddit_analysis.md`) é
+   trial-and-error ilustrativo, **NÃO gospel a replicar**. Lead B1
+   projeta do zero com base em Gayed, testa grid amplo (360 configs),
+   e o winner pode ou não parecer com a config do Reddit. **Overfit
+   control:** CPCV + PBO + splits mutuamente exclusivos (IS 1970-2000
+   / OOS 2001-2015 / Stress 2016-2026) + stationary block bootstrap
+   a 0.001. 15% IR BR sempre; UPRO/SSO sintéticos pre-2009/2006 via
    `r = L × r_SPX_TR - drag - expense`. Target: **CAGR líquido
    ≥ 15%/ano, ideal ≥ 20%**.
 5. **Gates sempre:** PBO<0.5 + DSR p<0.05 + WF≥6/8 + single-block OOS

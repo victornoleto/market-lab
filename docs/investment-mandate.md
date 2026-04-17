@@ -182,13 +182,19 @@ multiplicador explícito em código. Citar `[math_money_mgmt, Vince]`.
 
 ## 4. Regras de Strategy B — Swing broker
 
-### 4.1 Tese primária: LETF rotation
+### 4.1 Tese primária: LETF rotation (família, não config específica)
 
-Strategy B hoje tem **uma tese principal**: rotação entre LETF (UPRO
-3x SPY ou similar) e CASH, governada por um regime signal sobre o
-underlying (SPY).
+**Strategy B é a segunda strategy do projeto — complemento swing ao
+motor agressivo de Strategy A.** Não precisa ser tão agressiva; precisa
+ser cientificamente sólida e simples de operar.
 
-Fonte intelectual principal:
+A tese atual é **regime-rotation com LETF**: alocar em ETF alavancado
+(UPRO 3x ou SSO 2x sobre SPY/SPX) quando um filtro de regime de
+volatilidade sinaliza "on", e rotacionar pra CASH (e/ou gold) quando
+sinaliza "off". A definição concreta do filtro (qual MA, qual band,
+qual leverage, qual gold_alloc) **é output do Lead B1**, não input.
+
+Fonte intelectual primária e **única** aceita como base científica:
 `books/summaries/leverage_for_the_long_run.md` — Michael Gayed 2016/2020.
 Insights-chave:
 - Volatility é o inimigo da alavancagem; **MAs são filtros de regime
@@ -204,26 +210,47 @@ Insights-chave:
 
 ### 4.2 Parâmetros seed vs. otimização rigorosa
 
-Análise prévia do usuário em testfol.io (220k backtests, 960 combos
-× 230 janelas, publicada em `/r/LETFs` — detalhes em
-`docs/reference/letf_rotation_reddit_analysis.md`) produziu:
+**Status do estudo pessoal do usuário (Reddit /r/LETFs):** o usuário
+declarou explicitamente (2026-04-16 21:50) que seu estudo no testfol.io
+é **trial-and-error, não ciência**. A análise foi feita meses atrás
+sem base em livro científico, apenas intuição. Isso NÃO desqualifica
+a tese regime-rotation-LETF (que é bem suportada por Gayed), mas
+DESQUALIFICA os params específicos como "verdade a reproduzir".
 
-- **Top-ranked (conservador, melhor Calmar):** `SPY EMA 125 5% | Lev 2x | Gold 75%`
-  — 12× cumulative vs SPY B&H, MaxDD 12.8% melhor que B&H.
-- **Chosen pelo usuário (agressivo, mais simples):** `SPY EMA 125 5% | Lev 3x | Gold 0%`
-  — CAGR 17.19%, MaxDD -57.88%, 28× cumulative vs B&H, 42 trades em
-  58 anos, win rate 90.5%. Motivo: binário 0%/100% simplifica execução
-  e reduz fricção tributária (sem switches cash↔gold).
+Portanto:
 
-**Regra exata (tolerância 5% confirmada pelo usuário em comments):**
-- `preço > EMA × 1.05` → entrar/manter leveraged position (UPRO 3x ou SSO 2x).
-- `preço < EMA × 0.95` → sair da leveraged para cash (ou gold, se
-  `gold_alloc > 0%`).
-- **Re-entry assimétrica:** só re-entra quando preço cruza
-  `EMA × 1.05` de volta (não em 0.95). Evita whipsaw em consolidação.
+- **Params do Reddit são um seed-point entre vários.** Não têm
+  prioridade sobre os params que Gayed defende (SMA 200, sem band,
+  sem gold).
+- **Winner do Lead B1 pode ser bem diferente do Reddit.** Se o grid
+  rigoroso favorecer SMA 200 0% Lev 2x Cash 100% (Gayed canonical),
+  esse é o winner — não o EMA 125 5% Lev 3x Gold 0% do usuário.
+- **O objetivo é "uma strategy simples e eficaz da família LETF
+  rotation"**, não "validar a config do Reddit".
 
-Esses params entram como **seed** para Lead B1, **não como winner
-auditado**. O parameter space a submeter ao CPCV + PBO:
+**Seed points válidos (ordem de prioridade):**
+
+1. **Gayed canonical** `[leverage_for_the_long_run, p.13, p.17]`:
+   SMA 200 | sem band | Lev 2x ou 3x | Cash 100% (risk-off) —
+   documentado academicamente.
+2. **Reddit EMA-based** (usuário, ilustrativo): EMA 125 | band 5% |
+   Lev 2x-3x | Gold 0-100% — trial-and-error, a validar ou refutar.
+
+A regra do Reddit tem uma decisão operacional interessante (banda
+simétrica evita whipsaw; ~5 trades/ano), mas a justificativa é pós-hoc
+(o user achou por tentativa). Gayed não usa band — aceita o ruído de
+~5 rotations/year em 200-day SMA como já suficientemente low-turnover.
+O Lead B1 testa as duas abordagens; se band=5% passar rigorosamente os
+gates adicionais sobre a base SMA-sem-band, aí sim vira feature
+defensável.
+
+**Se o usuário quiser a regra de banda operacional** (confirmada em
+comments do Reddit):
+- `preço > MA × (1 + band)` → entrar/manter leveraged.
+- `preço < MA × (1 - band)` → sair para cash ou gold.
+- Re-entry em `MA × (1 + band)` (assimétrico — evita whipsaw).
+
+O parameter space a submeter ao CPCV + PBO:
 
 | Parâmetro | Valores a testar |
 |-----------|------------------|
