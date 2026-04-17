@@ -80,6 +80,7 @@ __all__ = [
     "LETFRotationConfig",
     "RotationResult",
     "compute_regime_signal",
+    "get_trades",
     "simulate_letf_rotation",
 ]
 
@@ -428,3 +429,99 @@ def simulate_letf_rotation(
         cum_cost_pct=cum_cost,
         cum_tax_pct=cum_tax,
     )
+
+
+def get_trades(
+    result: RotationResult,
+    spx_returns: pd.Series,
+    config: LETFRotationConfig,
+    *,
+    asset_label: str | None = None,
+    notional: float = 1.0,
+):
+    """Extract RISK_ON trade list from a rotation result (Phase 3.5b hook).
+
+    Each trade = one contiguous RISK_ON regime block. Entry date is the
+    first bar in the block; exit date is the last bar in the block (the
+    next day's OFF state marks the regime switch). Trade prices are
+    **synthetic** — entry=1.0 and exit=compound leveraged return during
+    the block — so trade-level stats (Win Rate, Profit Factor, SQN)
+    reflect the **leveraged** captured return, not the underlying
+    unleveraged index move.
+
+    Switch costs and BR 15% tax are NOT baked into the trade prices —
+    the trade log layer applies ``tax_rate`` per profitable trade at
+    render time (:func:`metrics.standard_report.render_trade_log`).
+
+    Parameters
+    ----------
+    result
+        ``RotationResult`` from :func:`simulate_letf_rotation`.
+    spx_returns
+        Daily SPX total returns — same series fed to ``simulate_letf_rotation``.
+    config
+        Same ``LETFRotationConfig`` used for the simulation (needed to
+        recompute ``on_returns`` consistently with leverage/fee).
+    asset_label
+        Label written into each Trade's ``asset`` field. Defaults to
+        ``f"LETF_{config.leverage:g}x"``.
+    notional
+        BRL capital per trade. Phase 3.5b uses 1.0 (unit equity); the
+        report renderer scales when a dollar notional is passed.
+
+    Returns
+    -------
+    list[Trade]
+        One ``Trade`` per RISK_ON block, ordered by entry date.
+
+    Citations
+    ---------
+    * Leveraged return formula ``r = L·r_SPX - fee/252``:
+      ``[leverage_for_the_long_run, p.16]``.
+    * BR 15% swing capital-gains tax: Investment Mandate §4.
+    """
+    from ai_trade.backtest.metrics.standard_report import Trade
+
+    label = asset_label or f"LETF_{config.leverage:g}x"
+    on_returns = synthesize_letf_returns(
+        spx_returns, config.leverage, config.annual_fee
+    )
+
+    trades: list[Trade] = []
+    regime = result.regime
+    n = len(regime)
+    i = 0
+    while i < n:
+        state = regime.iloc[i]
+        if not isinstance(state, str) or state != "ON":
+            i += 1
+            continue
+        entry_idx = i
+        j = i + 1
+        while j < n:
+            nxt = regime.iloc[j]
+            if not isinstance(nxt, str) or nxt != "ON":
+                break
+            j += 1
+        exit_idx = j - 1
+        entry_ts = pd.Timestamp(regime.index[entry_idx])
+        exit_ts = pd.Timestamp(regime.index[exit_idx])
+        block = on_returns.iloc[entry_idx : exit_idx + 1].astype(float).fillna(0.0)
+        cum = float((1.0 + block).prod())
+        # Guard: Trade requires exit_price > 0; a catastrophic leveraged
+        # wipeout would hit this. In practice daily r >-1, so cum > 0.
+        if cum <= 0:
+            cum = 1e-9
+        trades.append(
+            Trade(
+                asset=label,
+                entry_date=entry_ts,
+                exit_date=exit_ts,
+                entry_price=1.0,
+                exit_price=cum,
+                notional=notional,
+                direction="long",
+            )
+        )
+        i = j
+    return trades

@@ -52,6 +52,7 @@ __all__ = [
     "TSMOMConfig",
     "TSMOMResult",
     "compute_donchian_signal",
+    "get_trades",
     "simulate_tsmom",
 ]
 
@@ -298,3 +299,59 @@ def simulate_tsmom(
         cum_cost_pct=cum_cost,
         cum_tax_pct=cum_tax,
     )
+
+
+def get_trades(
+    result: TSMOMResult,
+    close: pd.Series,
+    *,
+    asset_label: str,
+    notional: float = 1.0,
+):
+    """Extract LONG-regime trade list from a TSMOM result (Phase 3.5b hook).
+
+    Each trade = one contiguous LONG regime block. Entry/exit prices are
+    the **underlying close** at the first/last LONG bar — no leverage
+    applied (TSMOM is 1:1). Switch cost and BR 15% tax are the report
+    layer's concern (see :func:`metrics.standard_report.render_trade_log`).
+
+    Citations
+    ---------
+    * Donchian Turtle entry/exit: ``[trading_systems_methods, p.353]``.
+    * BR 15% swing tax per trade: Investment Mandate §4.
+    """
+    from ai_trade.backtest.metrics.standard_report import Trade
+
+    trades: list[Trade] = []
+    regime = result.regime
+    n = len(regime)
+    i = 0
+    while i < n:
+        state = regime.iloc[i]
+        if not isinstance(state, str) or state != "LONG":
+            i += 1
+            continue
+        entry_idx = i
+        j = i + 1
+        while j < n:
+            nxt = regime.iloc[j]
+            if not isinstance(nxt, str) or nxt != "LONG":
+                break
+            j += 1
+        exit_idx = j - 1
+        entry_px = float(close.iloc[entry_idx])
+        exit_px = float(close.iloc[exit_idx])
+        if entry_px > 0 and exit_px > 0:
+            trades.append(
+                Trade(
+                    asset=asset_label,
+                    entry_date=pd.Timestamp(close.index[entry_idx]),
+                    exit_date=pd.Timestamp(close.index[exit_idx]),
+                    entry_price=entry_px,
+                    exit_price=exit_px,
+                    notional=notional,
+                    direction="long",
+                )
+            )
+        i = j
+    return trades

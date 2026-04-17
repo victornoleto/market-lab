@@ -62,6 +62,7 @@ log = logging.getLogger(__name__)
 
 __all__ = [
     "align_returns_3",
+    "aggregate_leg_trades",
     "blend_equal_weight_3",
     "blend_ivp_static_3",
     "blend_hrp_3",
@@ -70,6 +71,44 @@ __all__ = [
     "A3dGateVerdict",
     "evaluate_a3d_gates",
 ]
+
+
+def aggregate_leg_trades(legs):
+    """Flatten per-leg Trade lists into a single chronological log.
+
+    Phase 3.5b hook — takes a sequence of ``(leg_name, list[Trade])`` pairs
+    and returns a single list sorted by entry_date. Each Trade keeps its
+    original ``asset`` label; if a leg's trades arrive with blank labels,
+    the leg_name is stamped in. Preserves ordering stability for trades
+    sharing an entry_date (secondary key: leg order).
+
+    Tax is NOT re-applied here — each leg's Trade carries its own
+    ``asset`` label and the report layer (``render_trade_log``) taxes
+    each winning trade individually, matching the Phase 3.5b §3 rule:
+    "BR 15% por venda lucrativa de cada perna" (not at the portfolio
+    level).
+    """
+    from ai_trade.backtest.metrics.standard_report import Trade
+
+    ordered: list[tuple[int, Trade]] = []
+    for leg_ix, pair in enumerate(legs):
+        name, trades = pair
+        for t in trades:
+            if t.asset:
+                relabeled = t
+            else:
+                relabeled = Trade(
+                    asset=name,
+                    entry_date=t.entry_date,
+                    exit_date=t.exit_date,
+                    entry_price=t.entry_price,
+                    exit_price=t.exit_price,
+                    notional=t.notional,
+                    direction=t.direction,
+                )
+            ordered.append((leg_ix, relabeled))
+    ordered.sort(key=lambda it: (it[1].entry_date, it[0]))
+    return [t for _, t in ordered]
 
 
 def align_returns_3(
