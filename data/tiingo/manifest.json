@@ -8805,12 +8805,12 @@
   "IWM": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-16T12:44:59",
-      "first_dt": "2020-01-02T15:00:00",
+      "fetched_at": "2026-04-17T00:07:27",
+      "first_dt": "2019-11-25T17:00:00",
       "last_dt": "2026-04-14T19:00:00",
-      "n_bars": 9468,
-      "requested_end": "2025-12-31T00:00:00",
-      "requested_start": "2020-01-02T00:00:00"
+      "n_bars": 9616,
+      "requested_end": "2026-04-14T00:00:00",
+      "requested_start": "2019-09-24T00:00:00"
     },
     "daily": {
       "asset_class": "etf",
@@ -15881,12 +15881,12 @@
   "TLT": {
     "1hour": {
       "asset_class": "etf",
-      "fetched_at": "2026-04-16T14:02:25",
-      "first_dt": "2020-01-06T15:00:00",
+      "fetched_at": "2026-04-17T00:07:49",
+      "first_dt": "2019-11-25T17:00:00",
       "last_dt": "2026-04-14T19:00:00",
-      "n_bars": 9456,
-      "requested_end": "2024-12-31T00:00:00",
-      "requested_start": "2020-01-06T00:00:00"
+      "n_bars": 9616,
+      "requested_end": "2026-04-14T00:00:00",
+      "requested_start": "2019-09-28T00:00:00"
     },
     "daily": {
       "asset_class": "etf",
@@ -18601,12 +18601,12 @@
   "xrpusd": {
     "daily": {
       "asset_class": "crypto",
-      "fetched_at": "2026-04-15T00:27:26",
+      "fetched_at": "2026-04-17T00:08:05",
       "first_dt": "2015-02-26T00:00:00",
       "last_dt": "2026-04-14T00:00:00",
       "n_bars": 3878,
       "requested_end": "2026-04-14T00:00:00",
-      "requested_start": "2015-02-26T00:00:00"
+      "requested_start": "2014-11-18T00:00:00"
     }
   }
 }
