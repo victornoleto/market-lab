@@ -1,0 +1,189 @@
+{
+  "config_name": "tsmom_lb12m_vt10",
+  "config_entry": {
+    "name": "tsmom_lb12m_vt10",
+    "type": "tsmom_multi_asset",
+    "lookback_months": 12,
+    "lookback_days": 252,
+    "vol_target_annual": 0.1,
+    "signal": "binary_long_flat",
+    "rebalance_cadence": "monthly_eom",
+    "direction": "long_only"
+  },
+  "universe": [
+    "BTCUSD",
+    "DBA",
+    "DIA",
+    "EEM",
+    "EFA",
+    "EURUSD",
+    "GBPUSD",
+    "GLD",
+    "HYG",
+    "IEF",
+    "IWM",
+    "LQD",
+    "QQQ",
+    "SLV",
+    "SPY",
+    "TLT",
+    "UNG",
+    "USDJPY",
+    "USO",
+    "XLB",
+    "XLC",
+    "XLE",
+    "XLF",
+    "XLI",
+    "XLK",
+    "XLP",
+    "XLRE",
+    "XLU",
+    "XLV",
+    "XLY"
+  ],
+  "universe_size": 30,
+  "window": {
+    "start": "2001-05-14",
+    "end": "2026-04-17",
+    "n_bars": 6386,
+    "n_rebalances": 300
+  },
+  "splits": {
+    "IS": {
+      "range": [
+        "2001-05-14",
+        "2017-12-31"
+      ],
+      "n_bars": 4221,
+      "sharpe": -0.3212900445864001,
+      "cagr": -0.01857608135483413,
+      "max_drawdown": -0.3194024283493395,
+      "final_equity": 0.7304637837980492
+    },
+    "OOS": {
+      "range": [
+        "2018-01-01",
+        "2023-12-31"
+      ],
+      "n_bars": 1565,
+      "sharpe": -0.21200094648065246,
+      "cagr": -0.004911953335367314,
+      "max_drawdown": -0.10243527045241496,
+      "final_equity": 0.9698828821225075
+    },
+    "FWD": {
+      "range": [
+        "2024-01-01",
+        "2026-04-14"
+      ],
+      "n_bars": 597,
+      "sharpe": -1.5226459853819985,
+      "cagr": -0.06929831789626484,
+      "max_drawdown": -0.18223044418190404,
+      "final_equity": 0.8435495275600591
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 0.125,
+    "max_window_drawdown": 0.1771739455536273,
+    "pass": false,
+    "min_profitable_ratio": 0.75,
+    "max_drawdown_cap": 0.25
+  },
+  "hold_metrics": {
+    "median_hold_days": 159.5,
+    "n_long_bar_positions": 24643,
+    "n_rebalances": 300
+  },
+  "costs": {
+    "cum_transaction_cost_pct": 0.020200673151758868,
+    "cum_swap_cost_pct": 0.9277582226966917,
+    "swap_daily_bps": 5.0,
+    "round_trip_bps_by_class": {
+      "etf": 10.0,
+      "forex": 8.0,
+      "commodity_etf": 13.0,
+      "crypto": 20.0
+    }
+  },
+  "last_bar_longs": [
+    {
+      "ticker": "EURUSD",
+      "weight": 0.48682688082096925
+    },
+    {
+      "ticker": "GBPUSD",
+      "weight": 0.4922049943904017
+    },
+    {
+      "ticker": "USDJPY",
+      "weight": 0.36476327500697364
+    }
+  ],
+  "daily_returns_compact": {
+    "head": {
+      "2001-05-14": 0.0,
+      "2001-05-15": 0.0,
+      "2001-05-16": 0.0
+    },
+    "tail": {
+      "2026-04-15": -0.00027148936727229523,
+      "2026-04-16": -0.0019072588184953685,
+      "2026-04-17": -0.0004608864327189675
+    }
+  },
+  "runtime_seconds": 0.2,
+  "iter": 11,
+  "produced_at": "2026-04-18T16:59:44+00:00",
+  "verdict_per_config": {
+    "checks": [
+      {
+        "name": "oos_sharpe_gt_0",
+        "pass": false,
+        "value": "-0.212"
+      },
+      {
+        "name": "fwd_sharpe_gt_0",
+        "pass": false,
+        "value": "-1.523"
+      },
+      {
+        "name": "wf_pass",
+        "pass": false,
+        "value": "6/8"
+      },
+      {
+        "name": "median_hold_ge_3d",
+        "pass": true,
+        "value": "159.5d"
+      },
+      {
+        "name": "oos_cagr_ge_30pct",
+        "pass": false,
+        "value": "-0.5%"
+      },
+      {
+        "name": "oos_sharpe_ge_2",
+        "pass": false,
+        "value": "-0.212"
+      },
+      {
+        "name": "oos_maxdd_le_25pct",
+        "pass": true,
+        "value": "-10.2%"
+      }
+    ],
+    "n_passed": 2,
+    "n_total": 7,
+    "all_pass_except_cross_config_gates": false,
+    "failed_subset_gates": [
+      "oos_sharpe_gt_0",
+      "fwd_sharpe_gt_0",
+      "wf_pass",
+      "oos_cagr_ge_30pct",
+      "oos_sharpe_ge_2"
+    ]
+  }
+}
