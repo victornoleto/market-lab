@@ -10,7 +10,7 @@
     "advances_fin_ml, ch.7"
   ],
   "started_at": "2026-04-18T20:09:33.892205+00:00",
-  "last_updated_at": "2026-04-18T20:33:25+00:00",
+  "last_updated_at": "2026-04-18T20:40:35+00:00",
   "configs": [
     {
       "name": "kalman_eg_2sigma_30d",
@@ -129,8 +129,8 @@
     }
   ],
   "tickers_errored": [],
-  "status": "aggregating",
-  "aggregation_iter": null,
-  "aggregate_file_md": null,
-  "aggregate_jornada": null
+  "status": "done",
+  "aggregation_iter": 66,
+  "aggregate_file_md": "reports/phase3_5a_v2/v2_l5_equity_pairs/AGGREGATE.md",
+  "aggregate_jornada": "jornada/2026-04-19-0310-phase3.5a-v2-L5-equity-pairs-DEAD.md"
 }
