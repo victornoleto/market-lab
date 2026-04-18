@@ -11,7 +11,7 @@
     "systematic_trading, ch.8 \u2014 off-regime asset selection (risk-parity)"
   ],
   "started_at": "2026-04-18T17:13:16+00:00",
-  "last_updated_at": "2026-04-18T18:47:40+00:00",
+  "last_updated_at": "2026-04-18T19:01:40+00:00",
   "configs": [
     {
       "name": "gayed_sma200_L2_off_cash",
@@ -855,10 +855,10 @@
     }
   ],
   "tickers_errored": [],
-  "status": "aggregating",
-  "aggregation_iter": null,
-  "aggregate_file_md": null,
-  "aggregate_jornada": null,
+  "status": "done",
+  "aggregation_iter": 43,
+  "aggregate_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/AGGREGATE.md",
+  "aggregate_jornada": "jornada/2026-04-19-0020-phase3.5a-v2-L2-gayed-transported-PASS.md",
   "work_unit_kind": "config",
   "universe": [
     "SPY",
