@@ -120,6 +120,53 @@ class TestConstruction:
         with pytest.raises(KeyError):
             DonchianBreakoutStrategy(data=data, symbol="ZZZ")
 
+    def test_invalid_exit_mode_rejected(self):
+        from ai_trade.backtest.strategies.donchian_breakout import (
+            DonchianBreakoutStrategy,
+        )
+
+        close = pd.Series(
+            np.linspace(100, 110, 200),
+            index=pd.date_range("2021-01-01", periods=200, freq="h"),
+        )
+        data = {"X": _ohlcv_from_close(close)}
+        with pytest.raises(ValueError, match="exit_mode"):
+            DonchianBreakoutStrategy(
+                data=data, symbol="X", exit_mode="bogus",  # type: ignore[arg-type]
+            )
+        with pytest.raises(ValueError, match="atr_exit_mult"):
+            DonchianBreakoutStrategy(
+                data=data, symbol="X", exit_mode="chandelier", atr_exit_mult=0.0,
+            )
+
+
+class TestChandelierExit:
+    def test_chandelier_exit_triggers_on_trailing_drop(self):
+        """Long entered at breakout; chandelier trailing exit fires before
+        Donchian M-bar low does (wider tolerance on the way up, tighter on
+        pullback)."""
+        from ai_trade.backtest.strategies.donchian_breakout import (
+            DonchianBreakoutStrategy,
+        )
+
+        close = _flat_breakout_reverse(
+            n_flat=80, n_break=30, n_revert=40,
+            baseline=100.0, breakout_amp=15.0,
+        )
+        data = {"X": _ohlcv_from_close(close, spread_bps=2.0)}
+        strat = DonchianBreakoutStrategy(
+            data=data, symbol="X", entry_lookback=20, exit_lookback=10,
+            atr_lookback=14, atr_stop_mult=0.0,
+            exit_mode="chandelier", atr_exit_mult=3.0,
+            max_hold=300, direction="long",
+        )
+        result = _run_strategy(strat, data)
+
+        # A full round-trip must occur (entry + chandelier-triggered exit).
+        assert len(result.trades) >= 1
+        first = result.trades[0]
+        assert first.exit_time > first.entry_time
+
 
 class TestSignals:
     def test_long_entry_on_breakout(self):

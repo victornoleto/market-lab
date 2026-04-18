@@ -54,11 +54,20 @@ from ai_trade.backtest.engine.execution import Bar, Order
 from ai_trade.backtest.engine.portfolio import Portfolio
 
 Direction = Literal["long", "short", "both"]
+ExitMode = Literal["donchian", "chandelier"]
 
 
 @dataclass
 class DonchianBreakoutStrategy:
-    """Single-instrument Donchian channel breakout (short-hold)."""
+    """Single-instrument Donchian channel breakout (short-hold).
+
+    ``exit_mode="chandelier"`` swaps the Donchian M-bar exit band for a
+    trailing ATR stop anchored on the close peak (long) or trough
+    (short) since entry, using ``atr_exit_mult × atr_at_entry``. The
+    ATR band stop (``atr_stop_mult``) and the time-stop still apply.
+    Chandelier formulation per ``[volatility_trading]`` (Chandelier
+    exit: "highest high/lowest low since entry minus N×ATR").
+    """
 
     data: dict[str, pd.DataFrame]
     symbol: str = "SPY"
@@ -69,6 +78,8 @@ class DonchianBreakoutStrategy:
     max_hold: int = 120  # ~5 days on FX 1h (24h * 5)
     risk_pct_of_equity: float = 0.95
     direction: Direction = "long"
+    exit_mode: ExitMode = "donchian"
+    atr_exit_mult: float = 0.0  # trailing ATR multiplier when exit_mode="chandelier"
 
     _indicators: dict[str, pd.DataFrame] = field(init=False, default_factory=dict)
     _logger: logging.Logger = field(
@@ -95,6 +106,17 @@ class DonchianBreakoutStrategy:
         if self.direction not in ("long", "short", "both"):
             raise ValueError(
                 f"direction must be 'long', 'short', or 'both', got {self.direction!r}"
+            )
+        if self.exit_mode not in ("donchian", "chandelier"):
+            raise ValueError(
+                f"exit_mode must be 'donchian' or 'chandelier', got {self.exit_mode!r}"
+            )
+        if self.atr_exit_mult < 0:
+            raise ValueError(f"atr_exit_mult must be >= 0, got {self.atr_exit_mult}")
+        if self.exit_mode == "chandelier" and self.atr_exit_mult <= 0:
+            raise ValueError(
+                "exit_mode='chandelier' requires atr_exit_mult > 0 "
+                "(trailing stop width in ATR units)"
             )
         if self.symbol not in self.data:
             raise KeyError(f"symbol {self.symbol!r} not in data")
@@ -184,14 +206,22 @@ class DonchianBreakoutStrategy:
         atr_at_entry = state.get("atr_at_entry", 0.0)
 
         if pos.side == "long":
-            # 1. ATR stop (price drops by N×ATR from entry).
+            # 1. ATR hard stop (price drops by N×ATR from entry).
             if self.atr_stop_mult > 0 and atr_at_entry > 0:
                 stop_px = pos.avg_entry_price - self.atr_stop_mult * atr_at_entry
                 if bar.close <= stop_px:
                     return Order(symbol=self.symbol, side="sell", volume=pos.volume)
-            # 2. Donchian exit channel breakdown.
-            if bar.close < float(row["exit_low"]):
-                return Order(symbol=self.symbol, side="sell", volume=pos.volume)
+            # 2. Exit mode: donchian M-bar low OR chandelier trailing ATR.
+            if self.exit_mode == "chandelier":
+                peak = max(state.get("peak", bar.close), float(bar.high))
+                state["peak"] = peak
+                if atr_at_entry > 0:
+                    trail_px = peak - self.atr_exit_mult * atr_at_entry
+                    if bar.close <= trail_px:
+                        return Order(symbol=self.symbol, side="sell", volume=pos.volume)
+            else:
+                if bar.close < float(row["exit_low"]):
+                    return Order(symbol=self.symbol, side="sell", volume=pos.volume)
             # 3. Time-stop.
             if bars_held >= self.max_hold:
                 return Order(symbol=self.symbol, side="sell", volume=pos.volume)
@@ -202,8 +232,16 @@ class DonchianBreakoutStrategy:
             stop_px = pos.avg_entry_price + self.atr_stop_mult * atr_at_entry
             if bar.close >= stop_px:
                 return Order(symbol=self.symbol, side="buy", volume=pos.volume)
-        if bar.close > float(row["exit_high"]):
-            return Order(symbol=self.symbol, side="buy", volume=pos.volume)
+        if self.exit_mode == "chandelier":
+            trough = min(state.get("trough", bar.close), float(bar.low))
+            state["trough"] = trough
+            if atr_at_entry > 0:
+                trail_px = trough + self.atr_exit_mult * atr_at_entry
+                if bar.close >= trail_px:
+                    return Order(symbol=self.symbol, side="buy", volume=pos.volume)
+        else:
+            if bar.close > float(row["exit_high"]):
+                return Order(symbol=self.symbol, side="buy", volume=pos.volume)
         if bars_held >= self.max_hold:
             return Order(symbol=self.symbol, side="buy", volume=pos.volume)
         return None
@@ -227,11 +265,15 @@ class DonchianBreakoutStrategy:
         if self.direction in ("long", "both") and bar.close > float(row["entry_high"]):
             state["entry_idx"] = idx
             state["atr_at_entry"] = float(row["atr"])
+            if self.exit_mode == "chandelier":
+                state["peak"] = float(bar.high)
             return [Order(symbol=self.symbol, side="buy", volume=volume)]
 
         if self.direction in ("short", "both") and bar.close < float(row["entry_low"]):
             state["entry_idx"] = idx
             state["atr_at_entry"] = float(row["atr"])
+            if self.exit_mode == "chandelier":
+                state["trough"] = float(bar.low)
             return [Order(symbol=self.symbol, side="sell", volume=volume)]
 
         return []
