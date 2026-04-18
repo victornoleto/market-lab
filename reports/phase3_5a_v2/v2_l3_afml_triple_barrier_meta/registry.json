@@ -12,7 +12,7 @@
     "systematic_trading, p.185-188 \u2014 hold economics / cost amortization"
   ],
   "started_at": "2026-04-18T19:07:21+00:00",
-  "last_updated_at": "2026-04-18T19:41:57+00:00",
+  "last_updated_at": "2026-04-18T19:44:43+00:00",
   "configs": [
     {
       "name": "afml_ema50_tb_2atr_1atr_20d_rf_meta",
@@ -44,9 +44,7 @@
       "broker_model": "pepperstone_razor_cfd"
     }
   ],
-  "tickers_pending": [
-    "XLY"
-  ],
+  "tickers_pending": [],
   "tickers_done": [
     {
       "ticker": "EFA",
@@ -223,10 +221,26 @@
       "median_hold_days": 12.0,
       "result_file_md": "reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/XLV.md",
       "result_file_json": "reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/XLV.json"
+    },
+    {
+      "ticker": "XLY",
+      "frequency": "daily",
+      "window_start": "2014-01-02",
+      "window_end": "2026-04-14",
+      "iter": 56,
+      "n_configs_tested": 1,
+      "best_config": "afml_ema50_tb_2atr_1atr_20d_rf_meta",
+      "best_sharpe_oos": 0.11560055828451493,
+      "best_cagr": 0.006645360639079945,
+      "best_maxdd": -0.1322205466004911,
+      "any_pass_5gate": false,
+      "median_hold_days": 6.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/XLY.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/XLY.json"
     }
   ],
   "tickers_errored": [],
-  "status": "sweeping",
+  "status": "aggregating",
   "aggregation_iter": null,
   "aggregate_file_md": null,
   "aggregate_jornada": null
