@@ -11,7 +11,7 @@
     "systematic_trading, p.185-188 (hold-time discipline)"
   ],
   "started_at": "2026-04-18T13:03:53+00:00",
-  "last_updated_at": "2026-04-18T13:31:50+00:00",
+  "last_updated_at": "2026-04-18T13:34:20+00:00",
   "configs": [
     {
       "name": "donchian_10_5_long",
@@ -47,7 +47,6 @@
     }
   ],
   "tickers_pending": [
-    "usdjpy",
     "xagusd",
     "xauusd"
   ],
@@ -195,6 +194,22 @@
       "median_hold_days": 1.083,
       "result_file_md": "reports/phase3_5a/t2_donchian_breakout/usdchf.md",
       "result_file_json": "reports/phase3_5a/t2_donchian_breakout/usdchf.json"
+    },
+    {
+      "ticker": "usdjpy",
+      "frequency": "1hour",
+      "window_start": "2020-01-06",
+      "window_end": "2026-04-14",
+      "iter": 13,
+      "n_configs_tested": 3,
+      "best_config": "donchian_20_10_long",
+      "best_sharpe_oos": -2.0777,
+      "best_cagr": -0.11228999999999999,
+      "best_maxdd": -0.23763,
+      "any_pass_5gate": false,
+      "median_hold_days": 0.896,
+      "result_file_md": "reports/phase3_5a/t2_donchian_breakout/usdjpy.md",
+      "result_file_json": "reports/phase3_5a/t2_donchian_breakout/usdjpy.json"
     }
   ],
   "tickers_errored": [],
