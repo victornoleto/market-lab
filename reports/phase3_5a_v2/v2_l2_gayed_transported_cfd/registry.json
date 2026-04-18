@@ -1,0 +1,473 @@
+{
+  "schema_version": 1,
+  "phase": "phase3_5a_v2",
+  "lead_id": "V2-L2",
+  "lead_slug": "v2_l2_gayed_transported_cfd",
+  "lead_title": "Gayed LETF rotation transported to CFD (3 signals x 3 leverages x 3 off-regime)",
+  "citations_seed": [
+    "leverage_for_the_long_run, p.7, p.11, p.13, p.14, p.16, p.17, p.21",
+    "leverage_space, Vince \u2014 PoR vs leverage cap",
+    "math_money_mgmt, Vince \u2014 Kelly f/2 cross-check",
+    "systematic_trading, ch.8 \u2014 off-regime asset selection (risk-parity)"
+  ],
+  "started_at": "2026-04-18T17:13:16+00:00",
+  "last_updated_at": "2026-04-18T17:13:16+00:00",
+  "configs": [
+    {
+      "name": "gayed_sma200_L2_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 2,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L2_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 2,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L2_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 2,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L3_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 3,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L3_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 3,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L3_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 3,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L5_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 5,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L5_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 5,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L5_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 5,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L2_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 2,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L2_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 2,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L2_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 2,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L3_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 3,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L3_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 3,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L3_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 3,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L5_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 5,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L5_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 5,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L5_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 5,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L2_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 2,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L2_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 2,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L2_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 2,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L3_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 3,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L3_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 3,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L3_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 3,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L5_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 5,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L5_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 5,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L5_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 5,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    }
+  ],
+  "tickers_pending": [
+    "gayed_sma200_L2_off_cash",
+    "gayed_sma200_L2_off_tlt",
+    "gayed_sma200_L2_off_gld",
+    "gayed_sma200_L3_off_cash",
+    "gayed_sma200_L3_off_tlt",
+    "gayed_sma200_L3_off_gld",
+    "gayed_sma200_L5_off_cash",
+    "gayed_sma200_L5_off_tlt",
+    "gayed_sma200_L5_off_gld",
+    "gayed_ema100_L2_off_cash",
+    "gayed_ema100_L2_off_tlt",
+    "gayed_ema100_L2_off_gld",
+    "gayed_ema100_L3_off_cash",
+    "gayed_ema100_L3_off_tlt",
+    "gayed_ema100_L3_off_gld",
+    "gayed_ema100_L5_off_cash",
+    "gayed_ema100_L5_off_tlt",
+    "gayed_ema100_L5_off_gld",
+    "gayed_lrs_L2_off_cash",
+    "gayed_lrs_L2_off_tlt",
+    "gayed_lrs_L2_off_gld",
+    "gayed_lrs_L3_off_cash",
+    "gayed_lrs_L3_off_tlt",
+    "gayed_lrs_L3_off_gld",
+    "gayed_lrs_L5_off_cash",
+    "gayed_lrs_L5_off_tlt",
+    "gayed_lrs_L5_off_gld"
+  ],
+  "tickers_done": [],
+  "tickers_errored": [],
+  "status": "pending",
+  "aggregation_iter": null,
+  "aggregate_file_md": null,
+  "aggregate_jornada": null,
+  "work_unit_kind": "config",
+  "universe": [
+    "SPY",
+    "QQQ"
+  ],
+  "universe_source": "data/universe_plano_a_v2.json",
+  "universe_size": 2,
+  "cost_model": {
+    "broker": "pepperstone_razor",
+    "spread_half_bps": 2,
+    "commission_per_side_usd": 3.5,
+    "slippage_bps_round": 2,
+    "swap_daily_pct_long": -0.005,
+    "swap_daily_pct_short": -0.008,
+    "citation": "docs/investment-mandate.md \u00a73, specs/phase_3_5a_v2.md \u00a73"
+  }
+}
