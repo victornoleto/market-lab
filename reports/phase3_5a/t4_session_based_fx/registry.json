@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "phase": "phase3_5a",
+  "lead_id": "T4",
+  "lead_slug": "t4_session_based_fx",
+  "lead_title": "Session-based FX strategies (London ORB / NY-close MR / Asian-range fade) on 6 FX majors 1h",
+  "citations_seed": [
+    "quant_trading_chan, p.43-53, ch.2-3 (FX parsimony \u22645 params, intraday Sharpe annualization)",
+    "trading_systems_methods, p.353 (Donchian/breakout foundations)",
+    "trading_systems_methods, p.326-329 (range fade / false-breakout mechanics)",
+    "volatility_trading (ATR filter + Chandelier exit)",
+    "systematic_trading, p.185-188 (hold-time discipline \u22645d; T4 goes even tighter \u226424h)",
+    "advances_fin_ml, ch.7 (CPCV/PBO gate framework)"
+  ],
+  "started_at": "2026-04-18T14:20:42+00:00",
+  "last_updated_at": "2026-04-18T14:20:42+00:00",
+  "configs": [
+    {
+      "name": "london_orb_asian_range",
+      "type": "session_orb",
+      "session": "london",
+      "range_session": "asian",
+      "range_hours_utc": [
+        0,
+        7
+      ],
+      "breakout_hours_utc": [
+        7,
+        21
+      ],
+      "direction": "both",
+      "atr_stop_mult": 2.0,
+      "atr_window": 14,
+      "time_stop_bars": 24,
+      "citation": "trading_systems_methods, p.353 (Donchian breakout base); quant_trading_chan, ch.3-4 (FX intraday parsimony)"
+    },
+    {
+      "name": "ny_close_mr_1h",
+      "type": "session_mr",
+      "session": "ny_close",
+      "signal_hours_utc": [
+        20,
+        21
+      ],
+      "exit_hours_utc": [
+        7,
+        8
+      ],
+      "range_window_bars": 24,
+      "entry_band_pct": 0.2,
+      "direction": "both",
+      "atr_stop_mult": 2.5,
+      "atr_window": 14,
+      "time_stop_bars": 12,
+      "citation": "quant_trading_chan, p.43-53, ch.2-3 (MR parsimony \u22645 params); evidence_based_ta (FX close MR documented)"
+    },
+    {
+      "name": "asian_range_fade_ny_range",
+      "type": "session_fade",
+      "session": "asian",
+      "range_session": "ny",
+      "range_hours_utc": [
+        13,
+        21
+      ],
+      "fade_hours_utc": [
+        0,
+        7
+      ],
+      "direction": "both",
+      "atr_stop_mult": 2.0,
+      "atr_window": 14,
+      "time_stop_bars": 7,
+      "citation": "trading_systems_methods, p.326-329 (range fade + breakout false-moves); volatility_trading (ATR filter)"
+    }
+  ],
+  "tickers_pending": [
+    "eurusd",
+    "gbpusd",
+    "eurgbp",
+    "usdcad",
+    "usdjpy",
+    "audusd"
+  ],
+  "tickers_done": [],
+  "tickers_errored": [],
+  "status": "pending",
+  "aggregation_iter": null,
+  "aggregate_file_md": null,
+  "aggregate_jornada": null
+}
