@@ -10,7 +10,7 @@
     "advances_fin_ml, ch.7"
   ],
   "started_at": "2026-04-18T20:09:33.892205+00:00",
-  "last_updated_at": "2026-04-18T20:28:44+00:00",
+  "last_updated_at": "2026-04-18T20:31:05+00:00",
   "configs": [
     {
       "name": "kalman_eg_2sigma_30d",
@@ -30,7 +30,6 @@
     }
   ],
   "tickers_pending": [
-    "XLE_USO",
     "XLF_HYG"
   ],
   "tickers_done": [
@@ -97,6 +96,22 @@
       "median_hold_days": 0.0,
       "result_file_md": "reports/phase3_5a_v2/v2_l5_equity_pairs/TLT_IEF.md",
       "result_file_json": "reports/phase3_5a_v2/v2_l5_equity_pairs/TLT_IEF.json"
+    },
+    {
+      "ticker": "XLE_USO",
+      "frequency": "daily",
+      "window_start": "2006-04-10",
+      "window_end": "2026-04-14",
+      "iter": 64,
+      "n_configs_tested": 1,
+      "best_config": "kalman_eg_2sigma_30d",
+      "best_sharpe_oos": 0.0,
+      "best_cagr": 0.0,
+      "best_maxdd": 0.0,
+      "any_pass_5gate": false,
+      "median_hold_days": 0.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l5_equity_pairs/XLE_USO.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l5_equity_pairs/XLE_USO.json"
     }
   ],
   "tickers_errored": [],
