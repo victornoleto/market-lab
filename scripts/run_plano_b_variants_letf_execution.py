@@ -264,7 +264,7 @@ def _plot(
     ax.fill_between(spy_eq.index, spy_dd.values, 0.0,
                     alpha=0.2, color="#8b949e",
                     label=f"SPYSIM B&H (MaxDD {spy_m['max_drawdown_pct']:.1f}%)")
-    ax.set_title("Drawdown underwater — V1/V2/V3/V4 (1986-2026)")
+    ax.set_title("Drawdown underwater — V1–V8 LETF execution variants (1986-2026)")
     ax.set_xlabel("Date")
     ax.set_ylabel("Drawdown (%)")
     ax.legend(loc="lower left", fontsize=8)
