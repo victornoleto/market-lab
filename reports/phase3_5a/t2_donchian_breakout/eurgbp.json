@@ -1,0 +1,286 @@
+{
+  "ticker": "eurgbp",
+  "frequency": "1hour",
+  "asset_class": "forex",
+  "window": {
+    "start": "2020-01-06",
+    "end": "2026-04-14",
+    "n_bars": 38590
+  },
+  "costs_model": {
+    "half_spread_bps": 2.0,
+    "commission_per_side_usd": 3.5,
+    "swap_daily_pct_long": 5e-05,
+    "swap_daily_pct_short": 5e-05,
+    "citation": "pepperstone razor tier (docs/investment-mandate.md \u00a73)"
+  },
+  "cross_config": {
+    "pbo": 0.7302,
+    "pbo_pass": false
+  },
+  "configs": [
+    {
+      "name": "donchian_10_5_long",
+      "type": "donchian",
+      "direction": "long",
+      "params": {
+        "entry_lookback": 10,
+        "exit_lookback": 5,
+        "atr_stop_mult": 2.0,
+        "atr_window": 14,
+        "time_stop_bars": 120
+      },
+      "metrics_is": {
+        "label": "is",
+        "start": "2020-01-06",
+        "end": "2023-12-31",
+        "n_bars": 24394,
+        "sharpe": -3.4282,
+        "cagr_pct": -15.847,
+        "max_dd_pct": -52.424,
+        "final_equity": 49861.79,
+        "n_trades": 691,
+        "median_hold_days": 0.417,
+        "median_hold_bars": 9
+      },
+      "metrics_oos": {
+        "label": "oos",
+        "start": "2024-01-01",
+        "end": "2025-12-31",
+        "n_bars": 12441,
+        "sharpe": -5.933,
+        "cagr_pct": -16.004,
+        "max_dd_pct": -30.146,
+        "final_equity": 69854.42,
+        "n_trades": 338,
+        "median_hold_days": 0.417,
+        "median_hold_bars": 9
+      },
+      "metrics_fwd": {
+        "label": "fwd",
+        "start": "2026-01-01",
+        "end": "2026-04-14",
+        "n_bars": 1755,
+        "sharpe": -7.2459,
+        "cagr_pct": -17.972,
+        "max_dd_pct": -5.739,
+        "final_equity": 94413.45,
+        "n_trades": 53,
+        "median_hold_days": 0.333,
+        "median_hold_bars": 8
+      },
+      "metrics_full": {
+        "label": "full",
+        "start": "2020-01-06",
+        "end": "2026-04-14",
+        "n_bars": 38590,
+        "sharpe": -3.9884,
+        "cagr_pct": -15.996,
+        "max_dd_pct": -68.623,
+        "final_equity": 32884.83,
+        "n_trades": 1082,
+        "median_hold_days": 0.417,
+        "median_hold_bars": 9
+      },
+      "wf": {
+        "verdict": "reject",
+        "n_profitable": 0,
+        "n_windows": 8
+      },
+      "dsr": {
+        "p_value": 1.0,
+        "psr": 0.0
+      },
+      "gates": {
+        "pbo_pass": false,
+        "dsr_pass": false,
+        "wf_pass": false,
+        "oos_block_pass": false,
+        "fwd_stress_pass": false,
+        "hold_le_5d_pass": true,
+        "any_pass": false
+      }
+    },
+    {
+      "name": "donchian_20_10_long",
+      "type": "donchian",
+      "direction": "long",
+      "params": {
+        "entry_lookback": 20,
+        "exit_lookback": 10,
+        "atr_stop_mult": 2.0,
+        "atr_window": 14,
+        "time_stop_bars": 120
+      },
+      "metrics_is": {
+        "label": "is",
+        "start": "2020-01-06",
+        "end": "2023-12-31",
+        "n_bars": 24394,
+        "sharpe": -2.9696,
+        "cagr_pct": -13.055,
+        "max_dd_pct": -46.512,
+        "final_equity": 56879.49,
+        "n_trades": 409,
+        "median_hold_days": 0.75,
+        "median_hold_bars": 17
+      },
+      "metrics_oos": {
+        "label": "oos",
+        "start": "2024-01-01",
+        "end": "2025-12-31",
+        "n_bars": 12441,
+        "sharpe": -5.102,
+        "cagr_pct": -12.652,
+        "max_dd_pct": -24.29,
+        "final_equity": 75709.56,
+        "n_trades": 203,
+        "median_hold_days": 0.708,
+        "median_hold_bars": 16
+      },
+      "metrics_fwd": {
+        "label": "fwd",
+        "start": "2026-01-01",
+        "end": "2026-04-14",
+        "n_bars": 1755,
+        "sharpe": -5.824,
+        "cagr_pct": -13.577,
+        "max_dd_pct": -4.222,
+        "final_equity": 95854.09,
+        "n_trades": 27,
+        "median_hold_days": 0.667,
+        "median_hold_bars": 16
+      },
+      "metrics_full": {
+        "label": "full",
+        "start": "2020-01-06",
+        "end": "2026-04-14",
+        "n_bars": 38590,
+        "sharpe": -3.4095,
+        "cagr_pct": -12.949,
+        "max_dd_pct": -61.183,
+        "final_equity": 41277.85,
+        "n_trades": 639,
+        "median_hold_days": 0.75,
+        "median_hold_bars": 17
+      },
+      "wf": {
+        "verdict": "reject",
+        "n_profitable": 0,
+        "n_windows": 8
+      },
+      "dsr": {
+        "p_value": 1.0,
+        "psr": 0.0
+      },
+      "gates": {
+        "pbo_pass": false,
+        "dsr_pass": false,
+        "wf_pass": false,
+        "oos_block_pass": false,
+        "fwd_stress_pass": false,
+        "hold_le_5d_pass": true,
+        "any_pass": false
+      }
+    },
+    {
+      "name": "atr_chandelier_long",
+      "type": "atr_channel",
+      "direction": "long",
+      "params": {
+        "entry_lookback": 20,
+        "atr_window": 14,
+        "atr_exit_mult": 3.0,
+        "time_stop_bars": 120
+      },
+      "metrics_is": {
+        "label": "is",
+        "start": "2020-01-06",
+        "end": "2023-12-31",
+        "n_bars": 24394,
+        "sharpe": -2.8333,
+        "cagr_pct": -12.309,
+        "max_dd_pct": -42.648,
+        "final_equity": 58873.0,
+        "n_trades": 360,
+        "median_hold_days": 0.938,
+        "median_hold_bars": 21
+      },
+      "metrics_oos": {
+        "label": "oos",
+        "start": "2024-01-01",
+        "end": "2025-12-31",
+        "n_bars": 12441,
+        "sharpe": -4.8803,
+        "cagr_pct": -12.818,
+        "max_dd_pct": -24.586,
+        "final_equity": 75413.99,
+        "n_trades": 173,
+        "median_hold_days": 0.958,
+        "median_hold_bars": 22
+      },
+      "metrics_fwd": {
+        "label": "fwd",
+        "start": "2026-01-01",
+        "end": "2026-04-14",
+        "n_bars": 1755,
+        "sharpe": -8.9838,
+        "cagr_pct": -18.184,
+        "max_dd_pct": -5.732,
+        "final_equity": 94342.63,
+        "n_trades": 29,
+        "median_hold_days": 0.5,
+        "median_hold_bars": 12
+      },
+      "metrics_full": {
+        "label": "full",
+        "start": "2020-01-06",
+        "end": "2026-04-14",
+        "n_bars": 38590,
+        "sharpe": -3.3759,
+        "cagr_pct": -12.749,
+        "max_dd_pct": -59.195,
+        "final_equity": 41886.69,
+        "n_trades": 562,
+        "median_hold_days": 0.917,
+        "median_hold_bars": 21
+      },
+      "wf": {
+        "verdict": "reject",
+        "n_profitable": 0,
+        "n_windows": 8
+      },
+      "dsr": {
+        "p_value": 1.0,
+        "psr": 0.0
+      },
+      "gates": {
+        "pbo_pass": false,
+        "dsr_pass": false,
+        "wf_pass": false,
+        "oos_block_pass": false,
+        "fwd_stress_pass": false,
+        "hold_le_5d_pass": true,
+        "any_pass": false
+      }
+    }
+  ],
+  "best_config": "atr_chandelier_long",
+  "best_sharpe_oos": -4.8803,
+  "best_cagr_oos": -12.818,
+  "best_maxdd_oos": -24.586,
+  "best_median_hold_days_oos": 0.958,
+  "any_pass_5gate": false,
+  "benchmark_spy": {
+    "spy_return_pct": 134.948,
+    "spy_cagr_pct": 14.645,
+    "spy_maxdd_pct": 33.7,
+    "spy_sharpe": 0.769,
+    "excess_return_pct": -202.063,
+    "excess_cagr_pct": -31.044,
+    "information_ratio": -1.593,
+    "correlation": -0.1904,
+    "beta": -0.04,
+    "note": "Strategy first-config equity resampled daily; SPY from Tiingo cache"
+  }
+}
