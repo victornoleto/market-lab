@@ -12,7 +12,7 @@
     "advances_fin_ml, ch.7 (CPCV \u2014 combinatorial purged CV)"
   ],
   "started_at": "2026-04-18T13:49:25+00:00",
-  "last_updated_at": "2026-04-18T13:49:25+00:00",
+  "last_updated_at": "2026-04-18T13:56:35+00:00",
   "configs": [
     {
       "name": "ols_z2_exit0",
@@ -51,16 +51,34 @@
     }
   ],
   "tickers_pending": [
-    "audusd_nzdusd",
     "eurusd_eurgbp",
     "eurusd_gbpusd",
     "spy_qqq",
     "usdjpy_usdchf",
     "xauusd_xagusd"
   ],
-  "tickers_done": [],
+  "tickers_done": [
+    {
+      "ticker": "audusd_nzdusd",
+      "frequency": "1hour",
+      "window_start": "2020-01-06",
+      "window_end": "2026-04-14",
+      "iter": 18,
+      "n_configs_tested": 3,
+      "best_config": "ols_z2_exit0",
+      "best_sharpe_oos": -1.7035,
+      "best_cagr": -0.040119999999999996,
+      "best_maxdd": -0.08281000000000001,
+      "any_pass_5gate": false,
+      "median_hold_days": 0.312,
+      "cointegrated_at_5pct": true,
+      "engle_granger_p": 0.001909,
+      "result_file_md": "reports/phase3_5a/t3_intraday_pairs_statarb/audusd_nzdusd.md",
+      "result_file_json": "reports/phase3_5a/t3_intraday_pairs_statarb/audusd_nzdusd.json"
+    }
+  ],
   "tickers_errored": [],
-  "status": "pending",
+  "status": "sweeping",
   "aggregation_iter": null,
   "aggregate_file_md": null,
   "aggregate_jornada": null
