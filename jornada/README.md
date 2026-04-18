@@ -29,13 +29,35 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-17 evening)
+## Onde estamos hoje (2026-04-19 madrugada)
 
-**Estado:** Phase 3.5b **e** seu addendum operacional fechados. 4
-winners Path B production-ready, 1 portfolio 3-leg EW como default
-de deploy. Loop autônomo rodou 24 iterações sem regressão
-(iter 1-15 Phase 3.5b main + iter 16-23 addendum + iter 24 C4
-threshold sweep). Pytest 550 → 709 (+159, zero flakiness).
+**Estado:** ★★★ **Phase 3.5a-V2 encerrada com WINNER FOUND** ★★★.
+Dual-path production-ready: Plano A (Gayed rotation CFD L=2) +
+Plano B (3-leg EW). Loop autônomo V2 rodou 82 iters / 58 runs em 6
+famílias novas, produziu 1 PASS (gayed_ema100_L2_off_gld, Sharpe OOS
+2.285 / CAGR 79% / MDD -21%) e 5 DEAD com diagnóstico estrutural
+completo. Stop rule binding NÃO disparou. Próxima fase: paper trading
+dual-path 3 meses (`specs/phase_4_paper_trading.md`). Pytest ≥ 783
+preservado ao longo da V2. Phase 3.5b continua imutável (já era
+production-ready desde 2026-04-17).
+
+**Highlights Phase 3.5a-V2 (2026-04-19, 05:10):**
+
+- **1 PASS — Plano A winner:** `gayed_ema100_L2_off_gld` (Gayed LETF
+  rotation `[leverage_for_the_long_run]` transportada para CFD). Sharpe
+  OOS 2.285 / CAGR 79.14% / MDD -21.02% / hold 6d / IR SPY 2.16.
+  13/13 gates V2 pass.
+- **5 DEAD com diagnóstico:** V2-L1 TSMOM (swap drag 74-166%), V2-L3
+  AFML meta-label (primary EMA-50 fino), V2-L4 Carver RP (RP só ajuda
+  se todas pernas positivas), V2-L5 Kalman pairs (0/6 ADF, pair-arb
+  ETF líquido extinto), V2-L6 Vol-breakout (12/12 OOS negativa).
+- **Inferência estrutural:** Plano A edge é regime-driven, não breakout/
+  pair/meta. V1 "abandon" interpretation refutado — framework V1 era
+  errado, não Plano A.
+- **Três leverage invariants** descobertos no L2 sweep (MDD super-linear
+  em L, Sharpe por adaptividade EMA100>LRS>SMA200, off-regime GLD>cash>TLT).
+
+**Highlights sessão anterior (2026-04-17):**
 
 **Highlights da última sessão (2026-04-17):**
 
@@ -113,29 +135,48 @@ Indices criados em 2026-04-17 2245:
 
 ---
 
-## O que vem a seguir (handoff Phase 4 + Phase 3.5a)
+## O que vem a seguir (Phase 4 dual-path paper trading)
 
-**Onde paramos:** Phase 3.5b + addendum fechados. 4 winners Path B
-production-ready, 1 portfolio 3-leg EW como default de deploy. Path A
-tem Bollinger MR GARCH SPY 1h mas com CAGR abaixo do CDI BR — em
-investigação paralela (Phase 3.5a).
+**Onde paramos:** Phase 3.5a-V2 encerrada (iter 81 V2-L7, 2026-04-19
+madrugada). WINNER FOUND. Dual-path ativo completo:
 
-**Handoff imediato (2 frentes independentes):**
+- Plano A: `gayed_ema100_L2_off_gld` — CFD Pepperstone L=2.
+- Plano B: 3-leg EW {SSO+QLD+UGL} — Banco Inter Global, threshold 10pp.
 
-1. **Phase 4 paper trading Plano B** — deploy do 3-leg EW daily em
-   conta broker BR ($10k equivalente). Monitor ρ 252d: alertar se 3 ρ
-   ≥ 0.70 por ≥ 10 barras (evento inédito em 21 anos, sinal de
-   regime-break). Checklist em `docs/phase3_winners_allocation.md`.
-   Tickers operacionais: SSO 2× (substituto real do LETF sintético
-   no backtest) + QQQ + GLD, rebalance diário pelo algoritmo.
-2. **Phase 3.5a Strategy A short-hold** — branch paralela já em
-   curso. Busca de edge short-hold CFD para Plano A Pepperstone
-   (multi-asset obrigatório por mandate §3, target 5-10%/mês a partir
-   de $1k). Winner candidato atual: Bollinger MR GARCH SPY 1h (iter
-   19-27 da Phase 2.5) — precisa virar multi-asset via sweep
-   1:1→1:200 + pre-screener Hurst/ATR/spread/volume.
+**Handoff imediato:** construir `specs/phase_4_paper_trading.md`
+(drafted nesta iter) — **3 meses calendário de paper trading dual-path**
+em cTrader Demo (A) + Inter Global com capital real mínimo (B),
+seguido de gate paper→live e então Phase 5.
 
-**Variantes operacionais do Phase 3.5b-addendum (opt-in condicional):**
+Gates paper→live:
+- Realized Sharpe ≥ 0.7 × backtest (A: 1.60, B: 1.58).
+- MaxDD realizado ≤ 1.5 × backtest (A: 31.5%, B: 16.3%).
+- Slippage ≤ 30 bps/trade.
+- Latency signal→fill ≤ 5 min.
+
+**Tarefas Phase 4 build:**
+
+1. `src/ai_trade/brokers/ctrader_adapter.py` (OAuth2, market data,
+   order mgmt) + tests.
+2. `src/ai_trade/live/gayed_regime_service.py` (EMA-100 close SPY,
+   daily idempotent) + tests.
+3. `scripts/live_plano_a_paper_daily.py` (cron diário Plano A paper).
+4. Inter Global account setup (operacional, não código).
+5. `scripts/plano_b_daily_signal.py` (signal emit + planilha manual).
+
+**Zona PROIBIDA:**
+
+- V3 do Plano A (contrato V2 estaca isso).
+- Otimizar parâmetros winners em Phase 4 (só teste de fidelidade).
+- Expansão de universe ou adição de features nas strategies.
+
+**Phase 4 legacy de archived:**
+
+Handoff anterior (Phase 3.5b addendum fechado em 2026-04-17) está agora
+consolidado em `reports/phase3_5b/PRODUCTION.md` + jornadas
+`2026-04-17-*`. Phase 4 agora é dual-path (não só B).
+
+**Variantes operacionais do Phase 3.5b-addendum (opt-in condicional para Plano B):**
 
 - **C₃ — 2-leg LETF+QQQ + monthly_cashflow $500/mo** — fallback
   ergonômico quando broker BR não oferece GLD. Sharpe 1.881 (preserva
@@ -143,10 +184,19 @@ investigação paralela (Phase 3.5a).
 - **B₃ — LETF 3×** — escalation lever *opt-in* com overlay manual
   (Kelly-fractional < 0.5× ou regime-conditional). Default: **não**.
 
-**Não-prioridades confirmadas (DEFERRED):**
+**Phase B leads (post-V2 optimization, deferred para Phase 4/5):**
 
-- AFML meta-labeling — não há strategy órfã precisando de filtro hoje.
-- Carver multi-asset trend — só reabre se Phase 3.5a falhar.
+- Cost sensitivity Pepperstone Razor (spread/commission/swap ±30%).
+- Multi-asset transport do winner Plano A (IWM/XLK/FX carry).
+- Walk-forward re-optimization cadence EMA-100.
+- ρ(A, B) medido em paper (se > 0.7, re-ponderar dual-path).
+- GARCH vol-sizing variant do winner A.
+
+**Zona PROIBIDA:**
+
+- V3 do Plano A — contrato V2 estaca permanentemente.
+- Re-abertura de famílias DEAD V1/V2 (TSMOM, pairs FX/ETF, vol-breakout).
+- AFML meta-labeling como family search (V2-L3 já refutou).
 
 ---
 
@@ -210,6 +260,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16-1245-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-19 0510 — Phase 3.5a-V2 SUMMARY [SHORT-HOLD CFD] (V2-L7 atomic verdict, iter 81) — ★★★ **WINNER FOUND — PHASE 3.5a-V2 ENCERRADA**. 82 iters / 58 runs em 6 famílias novas produziram **1 gate-passing winner** (`gayed_ema100_L2_off_gld`, Sharpe OOS 2.285 / CAGR 79.14% / MDD -21.02% / hold 6d / 13/13 gates V2 pass). 5 DEAD com diagnóstico estrutural (L1 TSMOM swap drag, L3 AFML primary thin, L4 Carver RP diluição, L5 pair-arb ETF líquido extinto, L6 vol-breakout regime 2022-2024 letal). **Stop rule binding NÃO dispara** (1 PASS ≥ 1 requerido) — Plano A retido como 2ª perna mandate §1 lado a lado com Plano B 3-leg EW. Inferência estrutural: Plano A edge é regime-driven (Gayed-class), não breakout/pair/meta. Três invariantes de leverage descobertos no L2 sweep. V1 "abandon Plano A" interpretation refutado — framework V1 era errado, não Plano A. **Dual-path portfolio:** A CAGR 79% / MDD -21% complementa B CAGR 25.56% / MDD -10.86%; neither dominates, mandate §1 positions 50/50 inside 20-40% active bucket. Cross-lead AGGREGATE `reports/phase3_5a_v2/AGGREGATE.md`; mandate §7 entry V2-verdict atualizada; `specs/phase_4_paper_trading.md` drafted (dual-path paper 3mo; cTrader Demo A + Inter Global B; gates paper→live: Sharpe ≥ 0.7× backtest, MDD ≤ 1.5× backtest, slippage ≤ 30 bps). Zero código novo nesta iter; pytest ≥ 783 preservado. Memory.md flip `status: done`. **Próxima fase:** Phase 4 build (cTrader adapter + regime-signal service + Inter Global account) + 3 meses paper, então Phase 5 live. Zona proibida: V3 do Plano A (contrato V2), re-abertura famílias DEAD, AFML meta-label como family search. Citações `[leverage_for_the_long_run, p.7-21]`, `[leverage_space, Vince]`, `[math_money_mgmt, Vince]`, `[systematic_trading, ch.8-9, ch.14-15, p.185-188]`, `[advances_fin_ml, p.208-211, ch.11, ch.14, ch.16, p.196-202, p.50]`, `[algo_trading_chan, p.42-54]`, `[machine_trading_chan, ch.3]`, `[trend_following_covel, ch.3-5]`, `[stocks_on_the_move, p.81]`.](2026-04-19-0510-phase3.5a-v2-summary-WINNER-FOUND.md)
 - [2026-04-19 0410 — Phase 3.5a-V2 Lead V2-L6 [SHORT-HOLD CFD] (aggregator, iter 80) — ❌ **DEAD END (0/12 configs subset-PASS, 12/12 OOS Sharpe NEGATIVA)**. Donchian channel breakout entry (lookback {20,50,100}d) × exit {trailing ATR 3× sobre ATR(20), opposite Donchian channel lookback/2-day} × direction {long-only, long/short}, equal-weight 1/N portfolio sobre 10 ETFs líquidos US (SPY/QQQ/DIA/IWM índices, GLD/SLV metais, USO/UNG energia, TLT/HYG fixed-income), custos Pepperstone Razor (spread 2bps half + slippage 1bps/side + swap long 0.005%/dia + swap short 0.002%/dia), splits IS 2014-2021 / OOS 2022-2024 / FWD 2025-2026, walk-forward 8 janelas + 7 subset gates + 5-gate framework V2. **Padrão devastador:** IS positivo em 12/12 (Sharpe 0.237→0.904), **OOS NEGATIVO em 12/12 (Sharpe −0.728→−0.217)**, FWD positivo em 12/12 (Sharpe 0.6→1.95). Best `vol_donch20_atr3x_long` OOS S −0.217 / CAGR −1.8% / FWD +1.527 — ainda falha gate OOS single-block. **Long-only domina L/S por 0.35-0.40 Sharpe** (UNG short bleed −2.93× em 2022 com gas natural russo squeeze, TLT/HYG short na hike-cycle Fed 2022-2024). 4 configs L/S falham WF por MDD > 25% cap (ATR-3× e opposite ambos). Lookback {20,50,100}d e exit {ATR 3×, opp channel} indiferentes (±0.05 Sharpe entre exits, ±0.06 entre lookbacks na mesma direção). **Diagnóstico de regime:** OOS 2022-2024 é o pior cenário possível para Donchian 1/N — bear de 2022 rápido (6 meses) reverte Q1 2023 antes que breakout 100d dispare, range tech-narrow 2023 (MAG7 leadership), 3 correções 5-10% em 2024 disparam stops ATR 3× fora dos topos `[trend_following_covel, ch.4]`. Discipline Covel exige 3-5 trades grandes pagando whipsaw — não aconteceram. Nenhum macro-move grande ininterrupto durou > 6 meses sem correção 10%+. Universo 10 ETFs é pequeno (Winton 50+ futures, Clenow 200+ stocks); expansão para 30-50 instrumentos exigiria futures fora do catálogo Pepperstone CFD. **V2-L6 confirma classe-DEAD:** trend-follow puro CTA em ETF universe pequeno é refutado. Edge Plano A é regime-driven (Gayed-class V2-L2 winner) ou vol-mean-reversion GARCH-sized (BollingerMR baseline) — pure breakout rotacional creamado em V1 (1h FX/metais), V2-L1 (TSMOM daily) e agora V2-L6 (vol-breakout daily). **V2-L6 → `## Dead ends`** em memory.md; `active_lead_registry=null`; registry status=done. Winner Plano A permanece `gayed_ema100_L2_off_gld` standalone (Sharpe OOS 2.285/CAGR 79.14%/MDD -21.02%/hold 6d, iter 43 V2-L2 PASS); `winners_short_hold:` intacto (2 entradas). **Stop rule V2 não dispara** (1 PASS já em winners). Resta **apenas iter 81 = V2-L7 atomic**: consolidar L1-L6 (1 PASS / 5 DEAD), aplicar winner criteria §6 spec, draft `specs/phase_4_paper_trading.md` com winner Gayed + setup cTrader Open API, flip `status: done`, atualizar ROADMAP/jornada README como Phase 3.5a-V2 completed. Zero código novo (sweeps anteriores já têm aggregator), pytest 783 preservado. Citações `[trading_systems_methods, p.353]` (Donchian canonical), `[volatility_trading]` (Sinclair ATR exits), `[trend_following_covel, ch.3-5]` (trend-follow discipline; choppy markets letais), `[systematic_trading, p.185-188]` (retail CFD spread/commission dominantes), `[advances_fin_ml, ch.11]` (single-block OOS hold-out veta overfitting), `[stocks_on_the_move]` (universe size requirement).](2026-04-19-0410-phase3.5a-v2-L6-vol-breakout-DEAD.md)
 - [2026-04-19 0310 — Phase 3.5a-V2 Lead V2-L5 [SHORT-HOLD CFD] (aggregator, iter 66) — ❌ **DEAD END (0/6 pares cointegrados)**. Pairs-trading market-neutral Engle-Granger + Kalman β dinâmico + 2σ/0σ entry/exit / 4σ stop / hold cap 30d, custos Pepperstone Razor CFD, em 6 pares ETF US blue-chip (GLD/SLV, QQQ/XLK, SPY/IWM, TLT/IEF, XLE/USO, XLF/HYG). **Nenhum par passa ADF gate (p ≤ 0.05):** TLT_IEF p=0.992 ★worst (rates zero-bound + Fed ciclo quebra duration pair); XLE_USO p=0.511 com β OLS -0.137 absurdo (USO contango drag decoupla energy equity); QQQ_XLK p=0.658 (MAG7 concentração quebra setor vs índice pós-2021); GLD_SLV p=0.192 (silver industrial rompe paridade metais); SPY_IWM p=0.115 (small-cap decoupling pós-2021); **XLF_HYG p=0.0746 closest** mas β 2.67 economicamente anômalo + Fed hikes 2022-2024 anulam drivers (HYG ↓ duration vs XLF ↑ NIM). **Zero trades em todos 6 pares** (filtro ADF nunca deixa entrar); 1/7 subset gates cada (só `oos_maxdd_le_25pct` trivial). Diagnóstico: o universo Pepperstone CFD blue-chip (ETF líquidos US, FX majors, metais, BTC/ETH) **não contém** os instrumentos onde pair-trading retém edge em 2026 — arbitragem HFT/quant extingue spreads em ETF líquido; o que resta em daily é ruído correlacionado, não mean-reversion estrutural `[algo_trading_chan, p.42-54]`, `[machine_trading_chan, ch.3]`, `[advances_fin_ml, ch.7]`. Confirma V1-T3 Kalman FX + V1-T4 session-based FX como classes refutadas para Plano A. **V2-L5 → `## Dead ends`**; `active_lead_registry=null`; registry status=done. Winner Plano A permanece `gayed_ema100_L2_off_gld` standalone (Sharpe 2.285/CAGR 79.14%/MDD -21.02% iter 43). **Stop rule V2 NÃO dispara** (1 PASS em `winners_short_hold`). Restam L6 (vol breakout multi-asset, 14 iters) + L7 (verdict atomic, 1 iter). Próxima iter (67) = **V2-L6 bootstrap**: 12 configs (lookback {20,50,100}d × exit {trailing ATR 3×, opposite channel} × direction {long-only, long/short}), universe índices+commodities+FI (NÃO FX — V1 refutou). Zero código novo; pytest 796 preservado. Citações `[algo_trading_chan, p.42-54]`, `[machine_trading_chan, ch.3]`, `[advances_fin_ml, ch.7]`, `[systematic_trading, p.185-188]`.](2026-04-19-0310-phase3.5a-v2-L5-equity-pairs-DEAD.md)
 - [2026-04-19 0240 — Phase 3.5a-V2 Lead V2-L5 [SHORT-HOLD CFD] (sweep-tickers, iter 65) — **XLF_HYG FAIL (p=0.0746, closest of 6) + sweep 6/6 COMPLETE, `sweeping → aggregating`**. Window 2014-01-02→2026-04-14 (3088 bars, HYG inception-bound). OLS `log(XLF) = -7.66 + 2.67*log(HYG)`; ADF stat -2.697, p=0.0746 > α=0.05 → NOT cointegrated (borderline, mas falha). Kalman β final 1.563. 0 trades, 6/7 subset gates FAIL. Diagnóstico: XLF/HYG compartilham credit-spread sensitivity mas divergem em rate-duration (Fed hikes 2022-2024: HYG price ↓ por duration vs XLF ↑ por NIM expansion) → drivers parcialmente anuláveis. β 2.67 economicamente anômalo. **V2-L5 fecha 6/6 pairs, 0 cointegrados:** GLD_SLV (p=0.192), QQQ_XLK (0.658), SPY_IWM (0.115), TLT_IEF (0.992), XLE_USO (0.511), XLF_HYG (0.0746, closest). **V2-L5 refuta equity pairs como fonte de edge Plano A** — pair arbitrage em ETFs líquidos de mercados maduros é extinto por institutional arb `[algo_trading_chan, p.42]`, e o universo Pepperstone CFD (blue-chip global) não oferece micro-cap / structural pairs fora desse dominio. Plano A winner permanece `gayed_ema100_L2_off_gld` standalone (Sharpe 2.285 iter 43). L1/L3/L4/L5 DEAD; restam L6 (vol breakout) + L7 (verdict). Stop rule não dispara (1 winner já em `winners_short_hold:`). Próxima iter (66) = **aggregator V2-L5**: escreve AGGREGATE.md, flip `status=done`, zera `active_lead_registry`, move V2-L5 para `## Dead ends`. Zero código novo; `iter_v2_l5_run_pair.py` reusado; pytest 796 preservado. Citações `[algo_trading_chan, p.42-54]`, `[machine_trading_chan, ch.3]`, `[advances_fin_ml, ch.11]`, `[systematic_trading, p.185-188]`.](2026-04-19-0240-phase3.5a-v2-L5-xlf-hyg-FAIL-sweep-complete.md)
