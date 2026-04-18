@@ -12,7 +12,7 @@
     "advances_fin_ml, ch.7 (CPCV \u2014 combinatorial purged CV)"
   ],
   "started_at": "2026-04-18T13:49:25+00:00",
-  "last_updated_at": "2026-04-18T13:58:51+00:00",
+  "last_updated_at": "2026-04-18T14:01:25+00:00",
   "configs": [
     {
       "name": "ols_z2_exit0",
@@ -51,7 +51,6 @@
     }
   ],
   "tickers_pending": [
-    "eurusd_gbpusd",
     "spy_qqq",
     "usdjpy_usdchf",
     "xauusd_xagusd"
@@ -92,6 +91,24 @@
       "engle_granger_p": 0.125282,
       "result_file_md": "reports/phase3_5a/t3_intraday_pairs_statarb/eurusd_eurgbp.md",
       "result_file_json": "reports/phase3_5a/t3_intraday_pairs_statarb/eurusd_eurgbp.json"
+    },
+    {
+      "ticker": "eurusd_gbpusd",
+      "frequency": "1hour",
+      "window_start": "2020-01-06",
+      "window_end": "2026-04-14",
+      "iter": 20,
+      "n_configs_tested": 3,
+      "best_config": "ols_z2_exit0",
+      "best_sharpe_oos": -1.9532,
+      "best_cagr": -0.03755,
+      "best_maxdd": -0.07812999999999999,
+      "any_pass_5gate": false,
+      "median_hold_days": 1.292,
+      "cointegrated_at_5pct": true,
+      "engle_granger_p": 0.012183,
+      "result_file_md": "reports/phase3_5a/t3_intraday_pairs_statarb/eurusd_gbpusd.md",
+      "result_file_json": "reports/phase3_5a/t3_intraday_pairs_statarb/eurusd_gbpusd.json"
     }
   ],
   "tickers_errored": [],
