@@ -1,0 +1,83 @@
+{
+  "config": {
+    "tax_rate": 0.15,
+    "initial_capital": 100000.0,
+    "legs": {
+      "SSO": "LETF EMA100/band0.00/lev2.0x",
+      "QQQ": "Donchian 20/10",
+      "GLD": "Donchian 40/20"
+    }
+  },
+  "spy_buy_hold": {
+    "start": "2004-11-18",
+    "end": "2026-04-14",
+    "years": 21.4,
+    "total_return_pct": 769.21,
+    "cagr_pct": 10.63,
+    "sharpe": 0.629,
+    "max_drawdown_pct": 55.2,
+    "final_equity": 869205.67
+  },
+  "thresholds": [
+    {
+      "threshold_pp": 5.0,
+      "metrics": {
+        "start": "2004-11-18",
+        "end": "2026-04-14",
+        "years": 21.4,
+        "total_return_pct": 10986.09,
+        "cagr_pct": 24.61,
+        "sharpe": 2.002,
+        "max_drawdown_pct": 11.1,
+        "final_equity": 11112922.49
+      },
+      "rebalance_events": 31,
+      "rebalance_tax_paid_usd": 508714.59,
+      "excess_vs_spy": {
+        "cagr_pp": 13.98,
+        "sharpe_delta": 1.373,
+        "maxdd_delta_pp": -44.1
+      }
+    },
+    {
+      "threshold_pp": 10.0,
+      "metrics": {
+        "start": "2004-11-18",
+        "end": "2026-04-14",
+        "years": 21.4,
+        "total_return_pct": 12617.9,
+        "cagr_pct": 25.41,
+        "sharpe": 1.989,
+        "max_drawdown_pct": 11.12,
+        "final_equity": 12748685.37
+      },
+      "rebalance_events": 14,
+      "rebalance_tax_paid_usd": 448116.26,
+      "excess_vs_spy": {
+        "cagr_pp": 14.78,
+        "sharpe_delta": 1.36,
+        "maxdd_delta_pp": -44.08
+      }
+    },
+    {
+      "threshold_pp": 15.0,
+      "metrics": {
+        "start": "2004-11-18",
+        "end": "2026-04-14",
+        "years": 21.4,
+        "total_return_pct": 14666.6,
+        "cagr_pct": 26.29,
+        "sharpe": 1.972,
+        "max_drawdown_pct": 12.24,
+        "final_equity": 14802343.33
+      },
+      "rebalance_events": 8,
+      "rebalance_tax_paid_usd": 375579.03,
+      "excess_vs_spy": {
+        "cagr_pp": 15.66,
+        "sharpe_delta": 1.343,
+        "maxdd_delta_pp": -42.96
+      }
+    }
+  ]
+}
