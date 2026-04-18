@@ -32,7 +32,7 @@ the user's preference for the tactical 3-leg).
    bootstrap) used in Phase 3 b1c should be applied before any
    real-capital decision.
 
-Output under ``reports/static_sso_zroz_gld/``:
+Output under ``reports/phase3_5b/rejected_alternatives/static_sso_zroz_gld/``:
 
 * ``equity_vs_spy.png`` — 4 variants + SPYSIM on log scale.
 * ``drawdown_vs_spy.png`` — underwater curves.
@@ -85,7 +85,7 @@ SSO_ANNUAL_FEE = 0.01   # Gayed p.16 default for synthetic LETF drag.
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--output-dir", type=Path,
-                    default=Path("reports/static_sso_zroz_gld"))
+                    default=Path("reports/phase3_5b/rejected_alternatives/static_sso_zroz_gld"))
     ap.add_argument("--initial-capital", type=float, default=100_000.0)
     ap.add_argument("--threshold-pp", type=float, default=10.0)
     ap.add_argument("--tax-rate", type=float, default=0.15)

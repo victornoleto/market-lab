@@ -8,7 +8,7 @@
 
 ## TL;DR (1 parágrafo)
 
-Operar **um único portfólio 3-leg equal-weight** (33.3% cada em **SSO** = LETF EMA100/2x, **QQQ** = Donchian 20/10, **GLD** = Donchian 40/20) no **Banco Inter Global**, com **rebalance threshold 5-10 pp** (não diário — T+N settlement inviabiliza diário). Capital: **30% do total** em Plano B; dentro de Plano B, 100% neste portfolio. Expectativas validadas em janela 2004-2026 (21.4y): **CAGR 25.56% / Sharpe 2.108 / MaxDD -10.86%** vs SPY buy-and-hold (10.66% / 0.629 / -55.20%). 15% IR BR por venda lucrativa (DARF 6015); ~12-14 DARFs/ano total (12 inside-leg + 1-2 rebalance). Pre-deploy: abrir conta Inter Global, validar catálogo SSO, remeter capital (IOF 3.5%), montar planilha de cost basis em USD+PTAX.
+Operar **um único portfólio 3-leg equal-weight** (33.3% cada em **SSO** = LETF EMA100/2x, **QQQ** = Donchian 20/10, **GLD** = Donchian 40/20) no **Banco Inter Global**, com **rebalance threshold 10 pp** (não diário — T+N settlement inviabiliza diário; default revisto em 2026-04-18). Capital: **30% do total** em Plano B; dentro de Plano B, 100% neste portfolio. Expectativas (threshold 10pp, 2004-2026, 21.4y): **CAGR 25.41% / Sharpe 1.989 / MaxDD -11.12%** vs SPY buy-and-hold (10.66% / 0.629 / -55.20%). **Extended-window stress test (1986-2026 via testfol.io, 40y):** CAGR 26.96% / Sharpe 2.028 / MaxDD -10.12% — sobreviveu Black Monday 1987, dot-com 2000-2002, Lehman 2008, COVID 2020 e 2022 (ver §10). 15% IR BR por venda lucrativa (DARF 6015); ~12-13 DARFs/ano total. Pre-deploy: abrir conta Inter Global, validar catálogo SSO, remeter capital (IOF 3.5%), montar planilha de cost basis em USD+PTAX.
 
 ---
 
@@ -28,24 +28,26 @@ Operar **um único portfólio 3-leg equal-weight** (33.3% cada em **SSO** = LETF
 
 ---
 
-## 2. Rebalance cadence — threshold 5-10 pp (não diário)
+## 2. Rebalance cadence — threshold 10 pp (não diário)
 
 **Decisão operacional:** rebalance diário é **teoricamente ótimo mas fisicamente impossível** devido a T+N settlement (Inter = T+1 formal, mas cash only available para cross-buy após T+1). Além disso, diário implicaria 252 DARFs/yr — inviável.
 
-**Default recomendado:** **threshold 5 pp** — rebalancear quando qualquer perna drifta > 5 pp do target (ex: > 38.3% ou < 28.3%).
+**Default de produção:** **threshold 10 pp** — rebalancear quando qualquer perna drifta > 10 pp do target (ex: > 43.3% ou < 23.3%). Decisão revista em 2026-04-18 após sweep completo (5/10/15/25/100pp): 10pp domina 5pp em todos os eixos operacionais (metade das DARFs, ΔSharpe -0.013 dentro do ruído, MaxDD idêntico, +0.80pp CAGR).
 
-| Threshold | Sharpe | ΔSh vs daily | Eventos/yr | DARFs/yr total | CAGR | MaxDD | Recomendado |
-|-----------|--------|--------------|------------|----------------|------|-------|-------------|
-| 5 pp ⭐ | **2.002** | -0.106 | 1.31 | ~13.3 | 24.66% | 11.10% | **Default produção** |
-| 10 pp | 1.990 | -0.118 | 0.61 | ~12.6 | 25.47% | 11.12% | Alternativa se quiser menos DARFs |
-| 15 pp | 1.972 | -0.136 | 0.37 | ~12.4 | 26.35% | 12.24% | Aceitável (drift notável) |
-| annual-only | 1.967 | -0.141 | 1.08 | ~13.1 | 25.07% | 11.56% | Menos predictable |
-| _daily (teto teórico)_ | _2.108_ | _—_ | _0_ | _12_ | _25.56%_ | _10.86%_ | _Referência_ |
-| _never (BH puro)_ | _1.881_ | _-0.226_ | _0_ | _12_ | _40.33%*_ | _17.99%_ | _Não — drift explode_ |
+| Threshold | Sharpe | Eventos/yr | CAGR | MaxDD | Recomendação |
+|-----------|--------|------------|------|-------|-------------|
+| 5 pp | 2.002 | 1.31 | 24.61% | -11.10% | Disciplina rigorosa (DARFs altas) |
+| **10 pp ⭐** | **1.989** | **0.65** | **25.41%** | **-11.12%** | **Default produção (escolhido 2026-04-18)** |
+| 15 pp | 1.972 | 0.37 | 26.29% | -12.24% | Aceitável (drift notável); +0.88pp CAGR por +1.12pp MaxDD |
+| 25 pp | 1.958 | 0.23 | 27.81% | -14.06% | **Não** — ratio CAGR/MaxDD piora; paga MAIS tax por rebal |
+| never (100pp) | 1.881 | 0 | 40.23% | -17.99% | **Não** — vira "long-SSO concentrado"; frágil a regime shift |
+| _daily (teto teórico)_ | _2.108_ | _252_ | _25.56%_ | _-10.86%_ | _Referência — T+1 inviabiliza_ |
 
-**Regra operacional:** ao final de cada pregão, calcular `max(|actual_w_i - 1/3|)` por perna; se > threshold escolhido, rebalancear no próximo dia útil (não intraday). Rebalance = vender excedentes, comprar déficits com o cash da venda (T+1 settle).
+**Regra operacional:** ao final de cada pregão, calcular `max(|actual_w_i - 1/3|)` por perna; se > 10pp, rebalancear no próximo dia útil (não intraday). Rebalance = vender excedentes, comprar déficits com o cash da venda (T+1 settle).
 
-**Rationale completo:** [`variants/rebalance_modes/threshold_sweep.md`](variants/rebalance_modes/threshold_sweep.md) (Task C4). Citação `[advances_fin_ml, p.275-278]`.
+**Sweep completo em** [`threshold_sweep_full/`](threshold_sweep_full/) — inclui extremos (25pp e never-rebal) que revelam o ponto de quebra do equal-weight.
+
+**Rationale detalhado:** [`variants/rebalance_modes/threshold_sweep.md`](variants/rebalance_modes/threshold_sweep.md) (Task C4). Citação `[advances_fin_ml, p.275-278]`.
 
 ---
 
@@ -124,15 +126,22 @@ vida real. CAGR real esperado: ~23-24% (não 25.56%). MaxDD real:
 ~12-14% (não 10.86%). Ainda excelente — mas não é o que o backtest
 mostra.
 
-#### (b) Janela de backtest é benigna
+#### (b) Janela de backtest é benigna — **substancialmente mitigado por extended-window 1986-2026**
 
-GLD existe desde 2004. Nossa janela (2004-11 → 2026-04, 21.4y) **não
-inclui** 1929 Great Depression, 1973-74 stagflação, 2000 dot-com crash.
-Gayed 1928-2020 `[p.17, Table 8]` reportou 2× LRS com **MaxDD -78.7%**
-em janela completa. Nossa janela cobre só o regime pós-Bretton-Woods-2
-(2004+), atipicamente tranquilo. Tail events futuros (regime de
-stagflação sustentada, Volcker-style rate hikes) podem levar MaxDD a
-25-40%, não 10%.
+GLD existe desde 2004. Nossa janela canônica de gates (2004-11 → 2026-04,
+21.4y) **não inclui** 1929 Great Depression, 1973-74 stagflação, 2000
+dot-com crash. Gayed 1928-2020 `[p.17, Table 8]` reportou 2× LRS com
+**MaxDD -78.7%** em janela completa.
+
+**Mitigação (2026-04-18):** em §10 desta runbook rodamos o mesmo winner
+sobre **1986-2026 (40 anos) via testfol.io SPYSIM/QQQSIM/GLDSIM**. A
+estratégia **sobreviveu Black Monday 1987, dot-com 2000-2002, Lehman
+2008, COVID 2020 e 2022** com MaxDD -10.12% (vs -10.86% na janela
+canônica) e Sharpe 2.03. Isso **não elimina** o risco de tail events
+fora desta amostra (stagflação 70s, 1929), mas remove 3 dos 4 crashes
+estruturais modernos da lista de "nunca testamos". Tail events futuros
+não-precedentes podem ainda levar MaxDD a 25-40%; manter cap de
+allocation.
 
 #### (c) Kelly / frac-Kelly — parameter uncertainty
 
@@ -214,23 +223,24 @@ tipo (d) acima.
 
 ---
 
-## 5. Expected metrics (production default — threshold 5 pp)
+## 5. Expected metrics (production default — threshold 10 pp)
 
 **Janela de referência:** 2004-11-18 → 2026-04-14 (21.36 anos, 5383 bars, GLD-limited).
 **Custos modelados:** 5 bps spread + 10 bps commission round-trip, 15% BR IR por saída lucrativa, swap = 0.
 
-| Métrica | Valor (threshold 5pp) | vs daily | vs SPY B&H |
-|---------|-----------------------|----------|-----------|
-| CAGR | 24.66% | -0.9 pp | **+14.0 pp** |
-| Sharpe | 2.002 | -0.106 | +1.373 |
-| MaxDD | 11.10% | +0.24 pp | -44.1 pp (4.5× mais seguro) |
+| Métrica | Valor (threshold 10pp) | vs daily teto | vs SPY B&H |
+|---------|-----------------------|---------------|-----------|
+| CAGR | **25.41%** | -0.15 pp | **+14.78 pp** |
+| Sharpe | **1.989** | -0.119 | +1.360 |
+| MaxDD | **-11.12%** | +0.26 pp | -44.1 pp (4.5× mais seguro) |
 | Sortino | ~3.0 | ≈ daily | +2.4 |
-| Calmar | ~2.2 | ≈ daily | +2.0 |
-| Rebal events/yr | 1.31 | +1.31 | — |
-| DARFs/yr total | ~13 | +1 | — |
-| IR 15% paga/yr | ~$24k em $100k | — | — |
+| Calmar | ~2.3 | ≈ daily | +2.0 |
+| Rebal events/yr | **0.65** | — | — |
+| DARFs/yr total | ~12-13 | ≈ — | — |
 
 **Stress windows (Task 7b — [`robustness/stress_isolated.md`](robustness/stress_isolated.md)):** MaxDD do portfolio em 2008/2020/2022/2025 **nunca excedeu 6.85%**. LETF regime filter (EMA100) absorveu o grosso dos crashes (LETF ficou em cash durante 2008).
+
+**Extended window 1986-2026 (§10):** CAGR 26.96% / Sharpe 2.03 / MaxDD -10.12% em 40 anos via testfol.io — sobrevive 1987, 2000-2002, 2008, 2020, 2022 com MaxDD ≤ 10.12%. **Elevation de confiança substantial** vs. janela canônica 21y.
 
 **Reality check sobre leverage:** nosso backtest mede 2× via `synthesize_letf_returns(fee=1%)`. Gayed Table 12 `[leverage_for_the_long_run, p.21]` reporta **"negative leverage premium" ~2% drag/yr** em UPRO real. Para SSO (2×), esperar **drag ~1-1.5%/yr** adicional na vida real — MaxDD real provavelmente ~12-14% em vez de 11%. Ainda dentro de tolerância.
 
@@ -247,7 +257,7 @@ Todos os FLAGs foram documentados durante Phase 3.5b e **não invalidam o winner
 | **Real UPRO 3x tem MaxDD ~50%** (Gayed p.21 Table 12) | 🔴 alta (se tentar 3x) | **Mantemos 2× SSO**; 3× explicitamente rejeitado Task B3 |
 | **2-leg sem GLD** falha DR gate | 🟡 média | Se Inter algum dia remover GLD, degrada para 2-leg LETF+QQQ (Sharpe -0.22) |
 | **Inter informe rendimentos atrasa** | 🟡 média | Planilha própria obrigatória |
-| **Cashflow rebalance** sozinho (sem sells) drift explode 65pp | 🟡 média | Não usar — threshold 5-10pp é o caminho |
+| **Cashflow rebalance** sozinho (sem sells) drift explode 65pp | 🟡 média | Não usar — threshold 10pp é o caminho |
 | **Dividendos Inter às vezes não creditam** | 🟢 baixa | Monitorar mensalmente |
 
 **Regra mãe:** se qualquer flag vira red (ex: Inter anuncia que SSO sai do catálogo, ou FFR sobe pra 8%+ sustentado), reavaliar. Não "apertar o gate" nem torturar os dados — **re-design do zero**, mandate §5.4.
@@ -261,7 +271,7 @@ Todos os FLAGs foram documentados durante Phase 3.5b e **não invalidam o winner
 - [ ] **3. Definir capital Plano B.** Decidir % active bucket → capital USD → valor BRL a remeter (incluir 3.5% IOF + 1.5% FX spread).
 - [ ] **4. Remessa inicial.** Enviar BRL para USD via Inter. Aguardar settlement (~1 dia útil).
 - [ ] **5. Planilha cost basis.** Criar Google Sheets / Excel com colunas: `date, ticker, action (BUY/SELL), qty, price_usd, ptax_ask, cost_basis_brl, realized_gain_brl, darf_due_month`. Essa planilha é a fonte de verdade fiscal — NÃO o informe Inter.
-- [ ] **6. Definir threshold.** Escolher 5 pp (default) ou 10 pp (menos DARFs).
+- [ ] **6. Confirmar threshold 10 pp** (default produção) ou ajustar para 5pp (disciplina mais rigorosa, ~2× DARFs) / 15pp (aceitável, drift notável).
 - [ ] **7. Scripts de monitoramento.** Setup local: script Python que lê preços Inter (ou Yahoo/Tiingo manual) e calcula daily signal por perna + drift atual + threshold trigger. Placeholder: `scripts/plano_b_daily_check.py` (não implementado ainda — Phase 4).
 - [ ] **8. Primeira compra.** Entry ≠ market open. Confirmar sinal LETF (SPY vs EMA100) antes de comprar SSO — se off-regime, começar em cash naquela perna.
 - [ ] **9. Backup disaster recovery.** Como liquidar tudo em caso de emergência? Inter app → ordem market sell 3 tickers → settlement T+1 → FX retorno + IOF 0.38%.
@@ -306,6 +316,8 @@ Todos os FLAGs foram documentados durante Phase 3.5b e **não invalidam o winner
 - [Summary jornada](../../jornada/2026-04-17-2045-phase3.5b-full-validation-summary.md) — verdict completo
 - [Addendum jornada](../../jornada/2026-04-17-2245-phase3.5b-addendum-summary.md) — variants
 - [Task C4 jornada](../../jornada/2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md) — threshold decision
+- [Extended-window jornada](../../jornada/2026-04-18-1230-phase3.5b-extended-window-PASS.md) — **§10 stress test 40y**
+- [Rejected alternative jornada](../../jornada/2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md) — **§11 SSO/ZROZ/GLD descartado**
 - [Allocation doc](../../docs/phase3_winners_allocation.md) — "1 portfolio vs 3 strategies"
 - [Investment mandate](../../docs/investment-mandate.md) §4.6 — broker Inter details
 
@@ -322,12 +334,96 @@ Todos os FLAGs foram documentados durante Phase 3.5b e **não invalidam o winner
 - [Allocation 5-way](robustness/allocation_comparison.md) (Task 7d)
 - [Rolling correlation](robustness/rolling_correlation.md) (Task 7e)
 - [Vol-target sizing](robustness/vol_target_sizing.md) (Task 7f)
+- **[Extended window 1986-2026](extended_window_1986_2026/)** — 40-year stress via testfol.io (§10)
+- **[Threshold sweep full (5→100pp)](threshold_sweep_full/)** — inclui extremos (§2)
 
 **Variants (reference only):**
 - [2-leg LETF+QQQ](variants/letf_qqq_2leg_ew/standard_report.md) — fallback se GLD sai
 - [Leverage 2×/2.5×/3×](variants/letf_leverage_comparison/README.md) — 2× continua o único
 - [Rebalance modes + threshold sweep](variants/rebalance_modes/README.md) — base da decisão §2
 
+**Rejected alternatives (documented negatives):**
+- [SSO/ZROZ/GLD static (risk parity)](rejected_alternatives/static_sso_zroz_gld/) — §11
+
 ---
 
-**Última atualização:** 2026-04-18 (SSO confirmado Inter → bloqueador removido).
+## 10. Extended window 1986-2026 — stress test suplementar (★ FENOMENAL)
+
+> **Status:** Supplementary confirmation (não substitui gates canônicos 2004-2026, mas eleva confiança substancialmente).
+> **Data:** 2026-04-18
+> **Script:** [`scripts/run_plano_b_extended_1986.py`](../../scripts/run_plano_b_extended_1986.py)
+> **Artefatos:** [`extended_window_1986_2026/`](extended_window_1986_2026/)
+
+**Motivação:** §4.1(b) listava "janela benigna 2004-2026" como flag. Queríamos testar se o edge sobrevive 1987 Black Monday, 1990 recession, 2000-2002 dot-com (NDX -83%), 2008 Lehman, 2020 COVID, 2022 rate hikes — **5 eventos de cauda de naturezas distintas em 40 anos**.
+
+**Dados:** testfol.io **SPYSIM/QQQSIM/GLDSIM** de 1986-01-02 até 2026-04-17 (10.151 barras). Metodologia alinhada com precedente do repo (Task 7a comparou synthesize_letf_returns vs UPRO real do testfol.io). Cache compactado em `data/testfolio/cache/history.parquet` (346 KB vs 7.5 MB JSON).
+
+**Config idêntica ao winner de produção:** LETF EMA100 band0 lev2x + QQQ Donchian 20/10 + GLD Donchian 40/20, threshold 10pp, 15% BR IR.
+
+### Resultado
+
+| Métrica | **1986-2026 (40y, testfol.io)** | 2004-2026 (21.4y, gates canônicos) |
+|---|---:|---:|
+| CAGR | **26.96%** | 25.41% |
+| Sharpe | **2.028** | 1.989 |
+| MaxDD | **-10.12%** | -11.12% |
+| Final ($100k→) | $1.50B | $13.1M |
+| Rebal events | 30 (0.74/yr) | 14 (0.65/yr) |
+| SPYSIM B&H no mesmo window | 11.49% / 0.68 / -55.14% | 10.63% / 0.63 / -55.20% |
+
+**Leitura:** todas as 3 métricas melhoraram marginalmente no window longo. O filter EMA100 + Donchian breakout absorveram cada um dos 5 crashes com MaxDD ≤ 10.12%. A janela inclui 1995-2000 (um dos maiores bull runs em equity) o que explica o CAGR levemente maior; mas **MaxDD também melhorou** — não é apenas "mais upside", é robustez real.
+
+### Caveats documentados
+
+1. **Close-only Donchian.** testfol.io não exporta HLC; sinais usam close breakouts (vs canonical high/low). Aproximação "ligeiramente menos whippy".
+2. **Modelado, não medido.** Pre-1999 QQQSIM e pre-2004 GLDSIM são simulações testfol.io (index returns + ETF drag), não ETFs reais.
+3. **Retail pre-1999.** QQQ não era tradeável retail antes do IPO 1999-03; o backtest responde "o sinal teria funcionado", não "você teria ganhado esse dinheiro".
+4. **Custos modernos (15 bps) em todo window.** Pre-2000 commissions eram 50-100 bps round-trip — resultado otimista naquele sub-período.
+5. **Não substitui gates canônicos.** O PASS nos 5 gates (PBO/DSR/WF/Stress/Bootstrap) foi estabelecido em 2004-2026; este teste é **confirmação suplementar**, não reprocessamento do verdict.
+
+### Implicação prática
+
+§4.1(b) **continua válido** como lembrete de que não testamos 1929 / 1973-74 Volcker. Mas 3 dos 4 grandes crashes modernos (1987, 2000-2002, 2008) agora têm evidência de sobrevivência com MaxDD ≤ 10%. **Elevation de confiança:** de "winner validado em 21y benignos" para "winner validado em 40y cobrindo 5 eventos de cauda distintos".
+
+---
+
+## 11. Rejected alternative — SSO/ZROZ/GLD static (risk parity)
+
+> **Status:** **Descartado** 2026-04-18 — documentação da decisão negativa.
+> **Script:** [`scripts/run_static_sso_zroz_gld.py`](../../scripts/run_static_sso_zroz_gld.py)
+> **Artefatos:** [`rejected_alternatives/static_sso_zroz_gld/`](rejected_alternatives/static_sso_zroz_gld/)
+
+**Tese testada:** estratégia estática **sem signals**, com 3 ativos hedgeados por regime macro (SSO equity 2× + ZROZ duration 28y + GLD hedge inflação). Inspirada em Bridgewater All Weather + Hedgefundie HFEA. 4 variantes de peso:
+
+- **SA** (Super Aggressive): 60 SSO / 20 ZROZ / 20 GLD
+- **A**  (Aggressive):       50 / 25 / 25
+- **M**  (Moderate):         40 / 30 / 30
+- **C**  (Conservative):     30 / 35 / 35
+
+**Window:** 1986-2026 via testfol.io SPYSIM (SSO sintetizado L=2), ZROZSIM, GLDSIM. Threshold rebalance 10pp.
+
+### Resultado — todas as variantes reprovadas
+
+| Variant | CAGR | Sharpe | MaxDD | Mandate ≥15%? | MaxDD ≤ 25%? |
+|---|---:|---:|---:|:---:|:---:|
+| SA 60/20/20 | 16.08% | 0.766 | **-59.4%** | ✅ | ❌ |
+| A 50/25/25 | 14.78% | 0.795 | -49.5% | ⚠️ marginal | ❌ |
+| M 40/30/30 | 14.00% | 0.861 | -37.8% | ❌ | ❌ |
+| C 30/35/35 | 12.54% | 0.863 | -34.0% | ❌ | ❌ |
+| _SPYSIM B&H_ | _11.49%_ | _0.682_ | _-55.1%_ | — | — |
+
+### Por que descartado (3 motivos estruturais)
+
+1. **SA tem MaxDD PIOR que SPY puro** (-59.4% vs -55.1%). LETF 2x sem regime filter é fatal em 2008 — nem ZROZ nem GLD salvam. Over-leverage sem hedge dinâmico.
+2. **Não existe sweet spot** entre as 4 alocações. SA passa CAGR mas falha MaxDD gate. C passa Sharpe mas falha mandate CAGR ≥ 15%. Nenhuma combinação de pesos estáticos satisfaz ambos os requisitos do mandate §2/§5.4.
+3. **Dominada em Pareto pelo winner atual.** 3-leg tactical (§10) tem CAGR 27%, Sharpe 2.03, MaxDD -10% no mesmo 40y window. Melhor variante estática (SA) empata em CAGR mas tem **6× pior** MaxDD.
+
+### Conclusão operacional
+
+O **edge não vem da composição de ativos** — vem do **filter EMA100 + Donchian breakouts**. Substituir signals por weights fixos quebra a estrutura que produz alpha. Se o usuário quisesse reviver SSO/ZROZ/GLD, teria que adicionar regime filter + breakouts — aí deixa de ser "static risk parity" e vira variante do winner que já temos.
+
+**Lição preservada:** documentação das 4 variantes fica como evidência de que tentamos e por que não serve, evitando re-exploração desta ideia no futuro. Citações: Bridgewater All Weather (Dalio), Hedgefundie HFEA (retail Reddit 2019), `[leverage_for_the_long_run, p.16]` (LETF synthesis).
+
+---
+
+**Última atualização:** 2026-04-18 (threshold default 5→10pp + §10 extended window + §11 SSO/ZROZ/GLD rejected).

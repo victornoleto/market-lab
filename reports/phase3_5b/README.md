@@ -29,10 +29,14 @@ comparison, rolling correlation, vol-target sizing). Every test passed
 without moving the winners. The addendum then generated three operational
 variants requested by the user — a 2-leg LETF+QQQ blend (falls DR gate),
 an LETF leverage sweep at 2×/2.5×/3× (only 2× passes every gate), and a
-rebalance-cadence comparison (daily/monthly_sell/monthly_cashflow). The
-winner deployment blueprint is **unchanged**: a 3-leg EW blend with daily
-rebalance, OOS Sharpe 2.108 / CAGR 25.56% / MaxDD −10.86% over 21.36
-years. `[advances_fin_ml, p.298-299]`, `[leverage_for_the_long_run, p.16]`.
+rebalance-cadence comparison (daily/monthly_sell/monthly_cashflow).
+
+**2026-04-18 updates (post-deploy-authorization):**
+- **Threshold default revised from 5pp → 10pp** after extreme sweep (5/10/15/25/100pp) — 10pp dominates 5pp on every operational axis (half the DARFs, ΔSharpe -0.013 within noise, identical MaxDD, +0.80pp CAGR). See `PRODUCTION.md` §2.
+- **★ Extended window 1986-2026 stress test PASS.** Same winner re-run on 40y of testfol.io SPYSIM/QQQSIM/GLDSIM yields CAGR 26.96% / Sharpe 2.03 / MaxDD -10.12% — **survives Black Monday 1987, dot-com 2000-2002, Lehman 2008, COVID 2020, 2022 rate hikes**. Elevates confidence substantially vs the 21y canonical window. See `PRODUCTION.md` §10 and `extended_window_1986_2026/`.
+- **SSO/ZROZ/GLD static (risk parity) rejected.** 4 weight variants (60/20/20 → 30/35/35) tested on 1986-2026; all dominated in Pareto by the current tactical winner. Edge comes from signals (EMA100 + Donchian), not asset composition. Documented as negative finding in `PRODUCTION.md` §11 and `rejected_alternatives/static_sso_zroz_gld/`.
+
+The winner deployment blueprint is **unchanged**: a 3-leg EW blend with threshold-10pp rebalance. OOS Sharpe 2.108 / CAGR 25.56% / MaxDD −10.86% over 21.36 years (daily-rebal ceiling); production threshold-10pp: Sharpe 1.989 / CAGR 25.41% / MaxDD -11.12%. `[advances_fin_ml, p.298-299]`, `[leverage_for_the_long_run, p.16]`.
 
 ## Official winners
 
@@ -127,24 +131,32 @@ proportional cost-basis tax accounting.
 ```
 reports/phase3_5b/
 ├── README.md                                  # this file
+├── PRODUCTION.md                              # operational runbook (primary entry)
 ├── summary.json                               # consolidated metrics for the four winners
 ├── letf_rotation_ema100_2x/                   # LETF winner, 1970-2026
 ├── qqq_donchian_20_10/                        # QQQ winner, 2001-2026
 ├── gld_donchian_40_20/                        # GLD winner, 2004-2026
 ├── portfolio_3leg_ew/                         # 3-leg portfolio, common window
 ├── robustness/                                # Tasks 7a-7f: FFR / stress / slippage / allocation / ρ / vol-target
-└── variants/                                  # Phase 3.5b-addendum (A/B/C)
-    ├── README.md                              # sub-index, comparative tables
-    ├── letf_qqq_2leg_ew/                      # A: drop GLD
-    ├── letf_leverage_comparison/              # B: 2× / 2.5× / 3× sweep
-    │   ├── letf_ema100_2x/                    # symlink reuse of winner
-    │   ├── letf_ema100_2_5x/                  # synthetic-only, ⚠️ THEORY
-    │   └── letf_ema100_3x/                    # ⚠️ FAIL WF MaxDD gate
-    └── rebalance_modes/                       # C: daily / monthly_sell / monthly_cashflow / threshold_Xpp
-        ├── comparison_3leg.md                 # C2: 3-leg calendar cadences
-        ├── comparison_2leg.md                 # C3: 2-leg calendar cadences
-        ├── threshold_sweep.md                 # C4: drift-triggered sweep {5/10/15/20pp + annual + never}
-        └── implementation_notes.md
+├── variants/                                  # Phase 3.5b-addendum (A/B/C)
+│   ├── README.md                              # sub-index, comparative tables
+│   ├── letf_qqq_2leg_ew/                      # A: drop GLD
+│   ├── letf_leverage_comparison/              # B: 2× / 2.5× / 3× sweep
+│   └── rebalance_modes/                       # C: daily / monthly_sell / monthly_cashflow / threshold_Xpp
+├── extended_window_1986_2026/                 # ★ §10 stress test 40y via testfol.io (2026-04-18)
+│   ├── equity_vs_spy.png
+│   ├── drawdown_vs_spy.png
+│   ├── summary.json
+│   └── rebalance_events.csv
+├── threshold_sweep_full/                      # §2 sweep completo 5→100pp (inclui extremos 25pp/never)
+│   ├── equity_vs_spy.png
+│   ├── drawdown_vs_spy.png
+│   └── summary.json
+└── rejected_alternatives/                     # §11 decisões negativas documentadas
+    └── static_sso_zroz_gld/                   # SSO/ZROZ/GLD 4-variant, dominated by winner
+        ├── equity_vs_spy.png
+        ├── drawdown_vs_spy.png
+        └── summary.json
 ```
 
 ## Citations
@@ -171,6 +183,8 @@ reports/phase3_5b/
 - [`2026-04-17-2230-phase3.5b-addendum-task-c3-rebalance-2leg.md`](../../jornada/2026-04-17-2230-phase3.5b-addendum-task-c3-rebalance-2leg.md) — Task C3 (2-leg cadence sweep).
 - [`2026-04-17-2245-phase3.5b-addendum-summary.md`](../../jornada/2026-04-17-2245-phase3.5b-addendum-summary.md) — Task D (this index).
 - [`2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md`](../../jornada/2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md) — Task C4 (threshold sweep).
+- [`2026-04-18-1230-phase3.5b-extended-window-PASS.md`](../../jornada/2026-04-18-1230-phase3.5b-extended-window-PASS.md) — **★ Extended window 1986-2026 stress test PASS (§10)**.
+- [`2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md`](../../jornada/2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md) — **Rejected SSO/ZROZ/GLD static (§11)**.
 
 ## Pytest baseline
 

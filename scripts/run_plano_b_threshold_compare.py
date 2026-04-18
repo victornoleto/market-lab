@@ -7,7 +7,7 @@ equity curves on a single log-scale plot against SPY. Defaults to
 {5 pp, 10 pp} — the two candidates discussed in
 ``reports/phase3_5b/PRODUCTION.md`` §2.
 
-Emits under ``reports/plano_b_threshold_compare/``:
+Emits under ``reports/phase3_5b/threshold_sweep_full/``:
 
 * ``equity_vs_spy.png`` — all thresholds + SPY on one log-scale panel.
 * ``drawdown_vs_spy.png`` — all thresholds + SPY underwater curves.
@@ -58,7 +58,7 @@ PALETTE = ["#1f6feb", "#d4691a", "#2ea043", "#9333ea", "#e11d48"]
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--output-dir", type=Path,
-                    default=Path("reports/plano_b_threshold_compare"))
+                    default=Path("reports/phase3_5b/threshold_sweep_full"))
     ap.add_argument("--initial-capital", type=float, default=100_000.0)
     ap.add_argument("--thresholds", type=float, nargs="+",
                     default=[5.0, 10.0],

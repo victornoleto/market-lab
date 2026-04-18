@@ -7,9 +7,9 @@ SPYSIM / QQQSIM / GLDSIM history (1986-01-02 → 2026-04-17, 40 yr)
 and compares the equity curve to SPYSIM buy&hold.
 
 **This is a supplementary stress test**, not a replacement baseline.
-Results feed ``reports/plano_b_extended_window/`` and do NOT retroactively
-invalidate the gate-passing verdict established on 2004-2026 in
-``reports/phase3_5b/PRODUCTION.md``.
+Results feed ``reports/phase3_5b/extended_window_1986_2026/`` and do NOT
+retroactively invalidate the gate-passing verdict established on
+2004-2026 in ``reports/phase3_5b/PRODUCTION.md``.
 
 Caveats explicitly documented with the output:
 
@@ -27,7 +27,7 @@ Caveats explicitly documented with the output:
    post-2010; discount-broker commissions were 50-100 bps pre-2000.
    Result is therefore optimistic for the pre-2000 leg — flagged.
 
-Emits under ``reports/plano_b_extended_window/``:
+Emits under ``reports/phase3_5b/extended_window_1986_2026/``:
 
 * ``equity_vs_spy.png`` — strategy vs SPYSIM buy&hold, log-scale.
 * ``drawdown_vs_spy.png`` — underwater curves.
@@ -77,7 +77,7 @@ GLD_CFG = TSMOMConfig(entry_lookback=40, exit_lookback=20)
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--output-dir", type=Path,
-                    default=Path("reports/plano_b_extended_window"))
+                    default=Path("reports/phase3_5b/extended_window_1986_2026"))
     ap.add_argument("--initial-capital", type=float, default=100_000.0)
     ap.add_argument("--threshold-pp", type=float, default=10.0,
                     help="User-selected production default (Phase 3.5b post-review).")
