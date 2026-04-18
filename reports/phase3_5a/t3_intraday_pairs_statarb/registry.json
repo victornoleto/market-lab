@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "phase": "phase3_5a",
+  "lead_id": "T3",
+  "lead_slug": "t3_intraday_pairs_statarb",
+  "lead_title": "Intraday pairs / stat-arb (cointegra\u00e7\u00e3o + Kalman pair-trade 1h)",
+  "citations_seed": [
+    "algo_trading_chan, p.42-54, ch.2 (CADF + Engle-Granger cointegra\u00e7\u00e3o)",
+    "algo_trading_chan, p.71-73, ch.3 (Bollinger-band pair)",
+    "algo_trading_chan, p.75-80, ch.3 (Kalman dynamic hedge-ratio, \u03b4=0.0001, Ve=0.001)",
+    "machine_trading, p.76-79, ch.3 (SSM Kalman overfit warning EWA-EWC)",
+    "advances_fin_ml, ch.7 (CPCV \u2014 combinatorial purged CV)"
+  ],
+  "started_at": "2026-04-18T13:49:25+00:00",
+  "last_updated_at": "2026-04-18T13:49:25+00:00",
+  "configs": [
+    {
+      "name": "ols_z2_exit0",
+      "type": "pair_static_ols",
+      "hedge_method": "ols_rolling",
+      "hedge_lookback": 120,
+      "zscore_lookback": 120,
+      "z_entry": 2.0,
+      "z_exit": 0.0,
+      "stop_loss_z": 3.5,
+      "citation": "algo_trading_chan, p.71-73, ch.3"
+    },
+    {
+      "name": "kalman_z2_exit0",
+      "type": "pair_kalman",
+      "hedge_method": "kalman",
+      "kalman_delta": 0.0001,
+      "kalman_Ve": 0.001,
+      "zscore_lookback": 120,
+      "z_entry": 2.0,
+      "z_exit": 0.0,
+      "stop_loss_z": 3.5,
+      "citation": "algo_trading_chan, p.75-80, ch.3"
+    },
+    {
+      "name": "kalman_z2_exit0p5",
+      "type": "pair_kalman",
+      "hedge_method": "kalman",
+      "kalman_delta": 0.0001,
+      "kalman_Ve": 0.001,
+      "zscore_lookback": 120,
+      "z_entry": 2.0,
+      "z_exit": 0.5,
+      "stop_loss_z": 3.5,
+      "citation": "algo_trading_chan, p.75-80, ch.3 (tighter exit for \u22645d hold)"
+    }
+  ],
+  "tickers_pending": [
+    "audusd_nzdusd",
+    "eurusd_eurgbp",
+    "eurusd_gbpusd",
+    "spy_qqq",
+    "usdjpy_usdchf",
+    "xauusd_xagusd"
+  ],
+  "tickers_done": [],
+  "tickers_errored": [],
+  "status": "pending",
+  "aggregation_iter": null,
+  "aggregate_file_md": null,
+  "aggregate_jornada": null
+}
