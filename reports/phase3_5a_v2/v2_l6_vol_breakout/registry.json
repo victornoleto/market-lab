@@ -12,7 +12,7 @@
     "advances_fin_ml, ch.14 (DSR p-value)"
   ],
   "started_at": "2026-04-18T20:44:53+00:00",
-  "last_updated_at": "2026-04-18T20:51:29+00:00",
+  "last_updated_at": "2026-04-18T20:53:53+00:00",
   "configs": [
     {
       "name": "vol_donch20_atr3x_long",
@@ -304,7 +304,6 @@
     }
   ],
   "tickers_pending": [
-    "vol_donch20_atr3x_ls",
     "vol_donch20_opp_long",
     "vol_donch20_opp_ls",
     "vol_donch50_atr3x_long",
@@ -332,6 +331,22 @@
       "median_hold_days": 20.5,
       "result_file_md": "reports/phase3_5a_v2/v2_l6_vol_breakout/vol_donch20_atr3x_long.md",
       "result_file_json": "reports/phase3_5a_v2/v2_l6_vol_breakout/vol_donch20_atr3x_long.json"
+    },
+    {
+      "ticker": "vol_donch20_atr3x_ls",
+      "frequency": "daily",
+      "window_start": "2014-01-02",
+      "window_end": "2026-04-14",
+      "iter": 69,
+      "n_configs_tested": 1,
+      "best_config": "vol_donch20_atr3x_ls",
+      "best_sharpe_oos": -0.6214741513843725,
+      "best_cagr": -0.044911590907238175,
+      "best_maxdd": -0.18572544275488523,
+      "any_pass_5gate": false,
+      "median_hold_days": 24.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l6_vol_breakout/vol_donch20_atr3x_ls.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l6_vol_breakout/vol_donch20_atr3x_ls.json"
     }
   ],
   "tickers_errored": [],
