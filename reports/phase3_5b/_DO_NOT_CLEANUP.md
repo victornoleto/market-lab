@@ -22,6 +22,9 @@ foi revisada pelo usuário e está no estado definitivo:
 - `threshold_sweep_full/` — §2 sweep 5/10/15/25/100pp; preservar.
 - `rejected_alternatives/static_sso_zroz_gld/` — §11 decisão negativa;
   preservar como evidência documentada.
+- `variants_letf_execution/` — ★★ §12 V4 promoted 2026-04-18 (gate
+  verdict formal); README + gates_verdict.md + gates_verdict.json +
+  equity/drawdown charts + summary.json.
 - `summary.json` — consolidated metrics; imutável.
 
 ## Instruções para cleanup pós-V2
@@ -31,7 +34,9 @@ Quando o cleanup geral rodar após Phase 3.5a-V2:
 1. **Não mexer em nada sob `reports/phase3_5b/`.**
 2. **Não deletar scripts `run_phase3_5b_*.py`, `run_plano_b_*.py`,
    `run_static_sso_zroz_gld.py`, `run_a3d_3leg_portfolio.py`,
-   `validate_phase3_winners.py`, `extract_testfolio_json.py`.**
+   `validate_phase3_winners.py`, `extract_testfolio_json.py`,
+   `run_plano_b_variants_letf_execution.py`,
+   `run_plano_b_variants_gates.py`.**
    Todos são reproducíveis para os artefatos acima.
 3. **Não mexer em `src/ai_trade/backtest/data/testfolio_loader.py`.**
 4. **Não mexer em `data/testfolio/`** (raw JSON + cache parquet).
@@ -44,6 +49,7 @@ Quando o cleanup geral rodar após Phase 3.5a-V2:
 - `jornada/2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md`
 - `jornada/2026-04-18-1230-phase3.5b-extended-window-PASS.md`
 - `jornada/2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md`
+- `jornada/2026-04-18-1400-phase3.5b-V4-promoted-gate-verdict.md`
 
 ## Se precisar mexer (excepcionalmente)
 
