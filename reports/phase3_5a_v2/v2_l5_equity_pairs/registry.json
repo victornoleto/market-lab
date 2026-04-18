@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "phase": "phase3_5a_v2",
+  "lead_id": "V2-L5",
+  "lead_slug": "v2_l5_equity_pairs",
+  "lead_title": "Equity pairs cointegration daily (Kalman dynamic beta, 2sigma bands, hold cap 30d)",
+  "citations_seed": [
+    "machine_trading_chan, ch.3",
+    "algo_trading_chan, p.42-54",
+    "advances_fin_ml, ch.7"
+  ],
+  "started_at": "2026-04-18T20:09:33.892205+00:00",
+  "last_updated_at": "2026-04-18T20:09:33.892205+00:00",
+  "configs": [
+    {
+      "name": "kalman_eg_2sigma_30d",
+      "type": "pairs_cointegration",
+      "cointegration_test": "engle_granger_adf",
+      "adf_alpha": 0.05,
+      "beta_estimator": "kalman_filter",
+      "kalman_delta": 1e-05,
+      "kalman_ve": 0.001,
+      "entry_z": 2.0,
+      "exit_z": 0.0,
+      "stop_z": 4.0,
+      "hold_cap_days": 30,
+      "direction": "market_neutral",
+      "lookback_adf_days": 252,
+      "z_window_days": 60
+    }
+  ],
+  "tickers_pending": [
+    "GLD_SLV",
+    "QQQ_XLK",
+    "SPY_IWM",
+    "TLT_IEF",
+    "XLE_USO",
+    "XLF_HYG"
+  ],
+  "tickers_done": [],
+  "tickers_errored": [],
+  "status": "pending",
+  "aggregation_iter": null,
+  "aggregate_file_md": null,
+  "aggregate_jornada": null
+}
