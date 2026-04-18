@@ -71,17 +71,27 @@ TAX_RATE = 0.15                              # BR IR on realized gain
 
 # Variant weights dict
 VARIANTS: dict[str, dict[str, str]] = {
-    "V1_SSO_QQQ_GLD":  {"leg1": "SSOSIM", "leg2": "QQQSIM", "leg3": "GLDSIM"},
-    "V2_SSO_QLD_GLD":  {"leg1": "SSOSIM", "leg2": "QLDSIM", "leg3": "GLDSIM"},
-    "V3_SSO_QQQ_UGL":  {"leg1": "SSOSIM", "leg2": "QQQSIM", "leg3": "UGLSIM"},
-    "V4_SSO_QLD_UGL":  {"leg1": "SSOSIM", "leg2": "QLDSIM", "leg3": "UGLSIM"},
+    # 2× family
+    "V1_SSO_QQQ_GLD":   {"leg1": "SSOSIM",  "leg2": "QQQSIM",  "leg3": "GLDSIM"},
+    "V2_SSO_QLD_GLD":   {"leg1": "SSOSIM",  "leg2": "QLDSIM",  "leg3": "GLDSIM"},
+    "V3_SSO_QQQ_UGL":   {"leg1": "SSOSIM",  "leg2": "QQQSIM",  "leg3": "UGLSIM"},
+    "V4_SSO_QLD_UGL":   {"leg1": "SSOSIM",  "leg2": "QLDSIM",  "leg3": "UGLSIM"},
+    # 3× family (no 3× gold ETF exists — UGL stays 2× in V7/V8)
+    "V5_UPRO_QQQ_GLD":  {"leg1": "UPROSIM", "leg2": "QQQSIM",  "leg3": "GLDSIM"},
+    "V6_UPRO_TQQQ_GLD": {"leg1": "UPROSIM", "leg2": "TQQQSIM", "leg3": "GLDSIM"},
+    "V7_UPRO_QQQ_UGL":  {"leg1": "UPROSIM", "leg2": "QQQSIM",  "leg3": "UGLSIM"},
+    "V8_UPRO_TQQQ_UGL": {"leg1": "UPROSIM", "leg2": "TQQQSIM", "leg3": "UGLSIM"},
 }
 
 VARIANT_COLORS = {
-    "V1_SSO_QQQ_GLD": "#1f6feb",
-    "V2_SSO_QLD_GLD": "#2ea043",
-    "V3_SSO_QQQ_UGL": "#d4691a",
-    "V4_SSO_QLD_UGL": "#e11d48",
+    "V1_SSO_QQQ_GLD":   "#1f6feb",
+    "V2_SSO_QLD_GLD":   "#2ea043",
+    "V3_SSO_QQQ_UGL":   "#d4691a",
+    "V4_SSO_QLD_UGL":   "#e11d48",
+    "V5_UPRO_QQQ_GLD":  "#9333ea",
+    "V6_UPRO_TQQQ_GLD": "#14b8a6",
+    "V7_UPRO_QQQ_UGL":  "#ea580c",
+    "V8_UPRO_TQQQ_UGL": "#be185d",
 }
 
 
@@ -279,35 +289,43 @@ def main(argv: list[str] | None = None) -> int:
     sso = load_testfolio_series("SSOSIM")
     qld = load_testfolio_series("QLDSIM")
     ugl = load_testfolio_series("UGLSIM")
-    log.info("all 6 series: %d bars  %s → %s",
+    upro = load_testfolio_series("UPROSIM")
+    tqqq = load_testfolio_series("TQQQSIM")
+    log.info("all 8 series: %d bars  %s → %s",
              len(spy), spy.index[0].date(), spy.index[-1].date())
 
     # Pre-compute execution returns (ground-truth daily returns).
     sso_ret = sso.pct_change().fillna(0.0)
+    upro_ret = upro.pct_change().fillna(0.0)
     qqq_ret = qqq.pct_change().fillna(0.0)
     qld_ret = qld.pct_change().fillna(0.0)
+    tqqq_ret = tqqq.pct_change().fillna(0.0)
     gld_ret = gld.pct_change().fillna(0.0)
     ugl_ret = ugl.pct_change().fillna(0.0)
 
-    # Sleeve 1 (SSO) shared across all 4 variants.
-    log.info("building SSO leg (EMA100 on SPYSIM, execution = SSOSIM) …")
+    # Sleeve 1 SSO/UPRO — signal always on SPY.
+    log.info("building SSO leg 2× (signal on SPY, exec=SSOSIM) …")
     sso_daily = _build_leg_sso(spy, sso_ret)
+    log.info("building UPRO leg 3× (signal on SPY, exec=UPROSIM) …")
+    upro_daily = _build_leg_sso(spy, upro_ret)
 
-    # Sleeve 2 (QQQ or QLD) depending on variant — precompute both.
-    log.info("building QQQ-leg 1× (signals on QQQSIM, execution = QQQSIM) …")
+    # Sleeve 2 QQQ/QLD/TQQQ — signal always on QQQSIM.
+    log.info("building QQQ leg 1× (signal on QQQ, exec=QQQSIM) …")
     qqq_leg = _build_leg_donchian(qqq, qqq_ret, QQQ_ENTRY, QQQ_EXIT)
-    log.info("building QQQ-leg 2× (signals on QQQSIM, execution = QLDSIM) …")
+    log.info("building QLD leg 2× (signal on QQQ, exec=QLDSIM) …")
     qld_leg = _build_leg_donchian(qqq, qld_ret, QQQ_ENTRY, QQQ_EXIT)
+    log.info("building TQQQ leg 3× (signal on QQQ, exec=TQQQSIM) …")
+    tqqq_leg = _build_leg_donchian(qqq, tqqq_ret, QQQ_ENTRY, QQQ_EXIT)
 
-    # Sleeve 3 (GLD or UGL).
-    log.info("building GLD-leg 1× (signals on GLDSIM, execution = GLDSIM) …")
+    # Sleeve 3 GLD/UGL — signal always on GLDSIM. No 3× gold ETF exists.
+    log.info("building GLD leg 1× (signal on GLD, exec=GLDSIM) …")
     gld_leg = _build_leg_donchian(gld, gld_ret, GLD_ENTRY, GLD_EXIT)
-    log.info("building GLD-leg 2× (signals on GLDSIM, execution = UGLSIM) …")
+    log.info("building UGL leg 2× (signal on GLD, exec=UGLSIM) …")
     ugl_leg = _build_leg_donchian(gld, ugl_ret, GLD_ENTRY, GLD_EXIT)
 
     leg_map = {
-        "SSOSIM": sso_daily,
-        "QQQSIM": qqq_leg, "QLDSIM": qld_leg,
+        "SSOSIM": sso_daily, "UPROSIM": upro_daily,
+        "QQQSIM": qqq_leg, "QLDSIM": qld_leg, "TQQQSIM": tqqq_leg,
         "GLDSIM": gld_leg, "UGLSIM": ugl_leg,
     }
 

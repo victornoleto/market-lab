@@ -101,6 +101,82 @@
       },
       "rebalance_events": 39,
       "rebalance_tax_paid_usd": 557615138.59
+    },
+    {
+      "variant": "V5_UPRO_QQQ_GLD",
+      "legs": {
+        "leg1": "UPROSIM",
+        "leg2": "QQQSIM",
+        "leg3": "GLDSIM"
+      },
+      "metrics": {
+        "start": "1986-01-02",
+        "end": "2026-04-17",
+        "years": 40.29,
+        "cagr_pct": 33.31,
+        "sharpe": 1.891,
+        "max_drawdown_pct": 14.06,
+        "final_equity": 10722523081.86
+      },
+      "rebalance_events": 39,
+      "rebalance_tax_paid_usd": 378345469.22
+    },
+    {
+      "variant": "V6_UPRO_TQQQ_GLD",
+      "legs": {
+        "leg1": "UPROSIM",
+        "leg2": "TQQQSIM",
+        "leg3": "GLDSIM"
+      },
+      "metrics": {
+        "start": "1986-01-02",
+        "end": "2026-04-17",
+        "years": 40.29,
+        "cagr_pct": 52.87,
+        "sharpe": 1.94,
+        "max_drawdown_pct": 20.21,
+        "final_equity": 2663094775979.33
+      },
+      "rebalance_events": 82,
+      "rebalance_tax_paid_usd": 75934491765.98
+    },
+    {
+      "variant": "V7_UPRO_QQQ_UGL",
+      "legs": {
+        "leg1": "UPROSIM",
+        "leg2": "QQQSIM",
+        "leg3": "UGLSIM"
+      },
+      "metrics": {
+        "start": "1986-01-02",
+        "end": "2026-04-17",
+        "years": 40.29,
+        "cagr_pct": 36.42,
+        "sharpe": 1.903,
+        "max_drawdown_pct": 13.89,
+        "final_equity": 27175860884.75
+      },
+      "rebalance_events": 40,
+      "rebalance_tax_paid_usd": 1213065976.07
+    },
+    {
+      "variant": "V8_UPRO_TQQQ_UGL",
+      "legs": {
+        "leg1": "UPROSIM",
+        "leg2": "TQQQSIM",
+        "leg3": "UGLSIM"
+      },
+      "metrics": {
+        "start": "1986-01-02",
+        "end": "2026-04-17",
+        "years": 40.29,
+        "cagr_pct": 56.37,
+        "sharpe": 1.986,
+        "max_drawdown_pct": 22.84,
+        "final_equity": 6638651461992.32
+      },
+      "rebalance_events": 76,
+      "rebalance_tax_paid_usd": 219329573789.19
     }
   ],
   "caveats": [

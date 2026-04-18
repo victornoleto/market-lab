@@ -70,10 +70,16 @@ THRESHOLD_PP = 10.0
 PERIODS_PER_YEAR = 252
 
 VARIANTS = {
-    "V1_SSO_QQQ_GLD":  {"leg1": "SSOSIM", "leg2": "QQQSIM", "leg3": "GLDSIM"},
-    "V2_SSO_QLD_GLD":  {"leg1": "SSOSIM", "leg2": "QLDSIM", "leg3": "GLDSIM"},
-    "V3_SSO_QQQ_UGL":  {"leg1": "SSOSIM", "leg2": "QQQSIM", "leg3": "UGLSIM"},
-    "V4_SSO_QLD_UGL":  {"leg1": "SSOSIM", "leg2": "QLDSIM", "leg3": "UGLSIM"},
+    # 2× family
+    "V1_SSO_QQQ_GLD":   {"leg1": "SSOSIM",  "leg2": "QQQSIM",  "leg3": "GLDSIM"},
+    "V2_SSO_QLD_GLD":   {"leg1": "SSOSIM",  "leg2": "QLDSIM",  "leg3": "GLDSIM"},
+    "V3_SSO_QQQ_UGL":   {"leg1": "SSOSIM",  "leg2": "QQQSIM",  "leg3": "UGLSIM"},
+    "V4_SSO_QLD_UGL":   {"leg1": "SSOSIM",  "leg2": "QLDSIM",  "leg3": "UGLSIM"},
+    # 3× family (no 3× gold ETF exists — UGL stays 2× in V7/V8)
+    "V5_UPRO_QQQ_GLD":  {"leg1": "UPROSIM", "leg2": "QQQSIM",  "leg3": "GLDSIM"},
+    "V6_UPRO_TQQQ_GLD": {"leg1": "UPROSIM", "leg2": "TQQQSIM", "leg3": "GLDSIM"},
+    "V7_UPRO_QQQ_UGL":  {"leg1": "UPROSIM", "leg2": "QQQSIM",  "leg3": "UGLSIM"},
+    "V8_UPRO_TQQQ_UGL": {"leg1": "UPROSIM", "leg2": "TQQQSIM", "leg3": "UGLSIM"},
 }
 
 # Gate thresholds (mandate §5).
@@ -81,7 +87,7 @@ GATE_WF_MIN_RATIO = 6 / 8
 GATE_WF_MAX_DD = 0.25
 GATE_DSR_ALPHA = 0.05
 GATE_BOOTSTRAP_ALPHA = 0.001   # 99.9% CI
-N_TRIALS_DSR = 4               # 4 portfolio variants tested
+N_TRIALS_DSR = 8               # 8 portfolio variants tested (V1-V8)
 
 # Window splits.
 WINDOWS = {
@@ -335,7 +341,7 @@ def _render_markdown(
 ) -> None:
     """Emit the human-readable verdict table ordered best-to-worst."""
     lines: list[str] = []
-    lines.append("# Phase 3.5b — V1/V2/V3/V4 gate verdict\n")
+    lines.append("# Phase 3.5b — V1-V8 gate verdict (LETF execution variants)\n")
     lines.append(f"**Threshold:** {threshold_pp:g}pp | **Tax:** 15% | "
                  "**Source:** testfol.io ground truth | "
                  "**Signals:** EMA100(SPY), Donchian 20/10 (QQQ), "
@@ -426,8 +432,13 @@ def main(argv: list[str] | None = None) -> int:
     sso = load_testfolio_series("SSOSIM")
     qld = load_testfolio_series("QLDSIM")
     ugl = load_testfolio_series("UGLSIM")
-    leg_series = {"SSOSIM": sso, "QQQSIM": qqq, "QLDSIM": qld,
-                  "GLDSIM": gld, "UGLSIM": ugl}
+    upro = load_testfolio_series("UPROSIM")
+    tqqq = load_testfolio_series("TQQQSIM")
+    leg_series = {
+        "SSOSIM": sso, "UPROSIM": upro,
+        "QQQSIM": qqq, "QLDSIM": qld, "TQQQSIM": tqqq,
+        "GLDSIM": gld, "UGLSIM": ugl,
+    }
 
     # Build returns per variant.
     variant_returns: dict[str, pd.Series] = {}

@@ -1,8 +1,8 @@
-# Phase 3.5b — V1/V2/V3/V4 gate verdict
+# Phase 3.5b — V1-V8 gate verdict (LETF execution variants)
 
 **Threshold:** 10pp | **Tax:** 15% | **Source:** testfol.io ground truth | **Signals:** EMA100(SPY), Donchian 20/10 (QQQ), Donchian 40/20 (GLD)
 
-**DSR n_trials:** 4 | **WF windows:** 8 (≥6 profitable, ≤25% DD each) | **Bootstrap:** 99.9% CI on OOS Sharpe (stationary block, n_resamples=2000)
+**DSR n_trials:** 8 | **WF windows:** 8 (≥6 profitable, ≤25% DD each) | **Bootstrap:** 99.9% CI on OOS Sharpe (stationary block, n_resamples=2000)
 
 
 ## Window — `canonical_2004_2026`
@@ -11,10 +11,14 @@ IS: `2004-11-18 → 2014-12-31`  |  OOS: `2015-01-01 → 2019-12-31`  |  Stress:
 
 | Rank | Variant | Verdict | IS Sh | OOS Sh | Stress Sh | Full CAGR | Full MaxDD | WF ratio | WF max DD | DSR p | Boot 99.9% CI lo | Failed |
 |---:|---|:-:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| 1 | V4_SSO_QLD_UGL | ✅ PASS | 1.970 | 2.609 | 2.172 | 39.19% | 12.22% | 1.00 | 12.22% | 0.0000 | 1.274 | — |
-| 2 | V2_SSO_QLD_GLD | ✅ PASS | 1.996 | 2.595 | 2.176 | 35.03% | 12.62% | 1.00 | 12.62% | 0.0000 | 1.304 | — |
-| 3 | V1_SSO_QQQ_GLD | ✅ PASS | 1.962 | 2.478 | 2.137 | 26.53% | 9.39% | 1.00 | 9.39% | 0.0000 | 1.043 | — |
-| 4 | V3_SSO_QQQ_UGL | ✅ PASS | 1.923 | 2.392 | 2.058 | 30.89% | 10.88% | 1.00 | 10.88% | 0.0000 | 1.081 | — |
+| 1 | V8_UPRO_TQQQ_UGL | ✅ PASS | 2.015 | 2.622 | 2.203 | 58.17% | 17.14% | 1.00 | 17.14% | 0.0000 | 1.309 | — |
+| 2 | V4_SSO_QLD_UGL | ✅ PASS | 1.970 | 2.609 | 2.172 | 39.19% | 12.22% | 1.00 | 12.22% | 0.0000 | 1.274 | — |
+| 3 | V2_SSO_QLD_GLD | ✅ PASS | 1.996 | 2.595 | 2.176 | 35.03% | 12.62% | 1.00 | 12.62% | 0.0000 | 1.304 | — |
+| 4 | V6_UPRO_TQQQ_GLD | ✅ PASS | 1.974 | 2.573 | 2.129 | 53.02% | 17.05% | 1.00 | 17.05% | 0.0000 | 1.325 | — |
+| 5 | V1_SSO_QQQ_GLD | ✅ PASS | 1.962 | 2.478 | 2.137 | 26.53% | 9.39% | 1.00 | 9.39% | 0.0000 | 1.043 | — |
+| 6 | V7_UPRO_QQQ_UGL | ✅ PASS | 1.896 | 2.428 | 2.053 | 38.98% | 12.38% | 1.00 | 12.38% | 0.0000 | 1.176 | — |
+| 7 | V3_SSO_QQQ_UGL | ✅ PASS | 1.923 | 2.392 | 2.058 | 30.89% | 10.88% | 1.00 | 10.88% | 0.0000 | 1.081 | — |
+| 8 | V5_UPRO_QQQ_GLD | ✅ PASS | 1.913 | 2.354 | 2.022 | 34.46% | 14.06% | 1.00 | 14.06% | 0.0000 | 1.024 | — |
 
 
 ## Window — `extended_1986_2026`
@@ -23,10 +27,14 @@ IS: `1986-01-02 → 2010-12-31`  |  OOS: `2011-01-01 → 2019-12-31`  |  Stress:
 
 | Rank | Variant | Verdict | IS Sh | OOS Sh | Stress Sh | Full CAGR | Full MaxDD | WF ratio | WF max DD | DSR p | Boot 99.9% CI lo | Failed |
 |---:|---|:-:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| 1 | V4_SSO_QLD_UGL | ✅ PASS | 1.852 | 2.320 | 2.172 | 37.93% | 16.91% | 1.00 | 16.91% | 0.0000 | 1.357 | — |
-| 2 | V2_SSO_QLD_GLD | ✅ PASS | 1.852 | 2.294 | 2.176 | 35.00% | 15.81% | 1.00 | 15.81% | 0.0000 | 1.305 | — |
-| 3 | V1_SSO_QQQ_GLD | ✅ PASS | 1.875 | 2.195 | 2.137 | 25.94% | 11.13% | 1.00 | 11.13% | 0.0000 | 1.262 | — |
-| 4 | V3_SSO_QQQ_UGL | ✅ PASS | 1.834 | 2.174 | 2.058 | 28.92% | 13.70% | 1.00 | 13.70% | 0.0000 | 1.229 | — |
+| 1 | V8_UPRO_TQQQ_UGL | ✅ PASS | 1.855 | 2.348 | 2.203 | 56.39% | 22.84% | 1.00 | 22.84% | 0.0000 | 1.377 | — |
+| 2 | V4_SSO_QLD_UGL | ✅ PASS | 1.852 | 2.320 | 2.172 | 37.93% | 16.91% | 1.00 | 16.91% | 0.0000 | 1.357 | — |
+| 3 | V2_SSO_QLD_GLD | ✅ PASS | 1.852 | 2.294 | 2.176 | 35.00% | 15.81% | 1.00 | 15.81% | 0.0000 | 1.305 | — |
+| 4 | V6_UPRO_TQQQ_GLD | ✅ PASS | 1.822 | 2.272 | 2.129 | 52.88% | 20.21% | 1.00 | 20.21% | 0.0000 | 1.299 | — |
+| 5 | V1_SSO_QQQ_GLD | ✅ PASS | 1.875 | 2.195 | 2.137 | 25.94% | 11.13% | 1.00 | 11.13% | 0.0000 | 1.262 | — |
+| 6 | V3_SSO_QQQ_UGL | ✅ PASS | 1.834 | 2.174 | 2.058 | 28.92% | 13.70% | 1.00 | 13.70% | 0.0000 | 1.229 | — |
+| 7 | V7_UPRO_QQQ_UGL | ✅ PASS | 1.805 | 2.140 | 2.053 | 36.43% | 13.89% | 1.00 | 13.89% | 0.0000 | 1.147 | — |
+| 8 | V5_UPRO_QQQ_GLD | ✅ PASS | 1.806 | 2.085 | 2.022 | 33.32% | 14.06% | 1.00 | 14.06% | 0.0000 | 1.090 | — |
 
 
 ## Legend
@@ -34,7 +42,7 @@ IS: `1986-01-02 → 2010-12-31`  |  OOS: `2011-01-01 → 2019-12-31`  |  Stress:
 * **OOS Sharpe > 0** (gate 1) — simple sign test.
 * **Stress Sharpe > 0** (gate 2) — post-cutoff regime.
 * **WF ratio ≥ 0.75** AND **per-window MaxDD ≤ 25%** (gate 3) — 8 windows over full range.
-* **DSR p < 0.05** (gate 4) — multiple-testing adjusted Sharpe significance (n_trials=4).
+* **DSR p < 0.05** (gate 4) — multiple-testing adjusted Sharpe significance (n_trials=8).
 * **Bootstrap 99.9% CI lower > 0** (gate 5) — stationary-block bootstrap on OOS returns.
 
 ## Interpretação
