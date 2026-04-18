@@ -10,7 +10,7 @@
     "advances_fin_ml, ch.7"
   ],
   "started_at": "2026-04-18T20:09:33.892205+00:00",
-  "last_updated_at": "2026-04-18T20:31:05+00:00",
+  "last_updated_at": "2026-04-18T20:33:25+00:00",
   "configs": [
     {
       "name": "kalman_eg_2sigma_30d",
@@ -29,9 +29,7 @@
       "z_window_days": 60
     }
   ],
-  "tickers_pending": [
-    "XLF_HYG"
-  ],
+  "tickers_pending": [],
   "tickers_done": [
     {
       "ticker": "GLD_SLV",
@@ -112,10 +110,26 @@
       "median_hold_days": 0.0,
       "result_file_md": "reports/phase3_5a_v2/v2_l5_equity_pairs/XLE_USO.md",
       "result_file_json": "reports/phase3_5a_v2/v2_l5_equity_pairs/XLE_USO.json"
+    },
+    {
+      "ticker": "XLF_HYG",
+      "frequency": "daily",
+      "window_start": "2014-01-02",
+      "window_end": "2026-04-14",
+      "iter": 65,
+      "n_configs_tested": 1,
+      "best_config": "kalman_eg_2sigma_30d",
+      "best_sharpe_oos": 0.0,
+      "best_cagr": 0.0,
+      "best_maxdd": 0.0,
+      "any_pass_5gate": false,
+      "median_hold_days": 0.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l5_equity_pairs/XLF_HYG.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l5_equity_pairs/XLF_HYG.json"
     }
   ],
   "tickers_errored": [],
-  "status": "sweeping",
+  "status": "aggregating",
   "aggregation_iter": null,
   "aggregate_file_md": null,
   "aggregate_jornada": null
