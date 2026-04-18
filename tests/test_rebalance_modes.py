@@ -28,6 +28,7 @@ from ai_trade.backtest.metrics.rebalance_modes import (
     apply_daily_rebalance,
     apply_monthly_cashflow_rebalance,
     apply_monthly_sell_rebalance,
+    apply_threshold_rebalance,
 )
 
 
@@ -100,6 +101,23 @@ class TestValidation:
                 df,
                 {"leg0": 0.5, "leg1": 0.5},
                 monthly_deposit=-10.0,
+            )
+
+    def test_rejects_negative_threshold(self) -> None:
+        df = _mk_returns_df(n=30)
+        with pytest.raises(ValueError, match="threshold_pp"):
+            apply_threshold_rebalance(
+                df, {"leg0": 0.5, "leg1": 0.5}, threshold_pp=-1.0
+            )
+
+    def test_rejects_bad_threshold_tax_rate(self) -> None:
+        df = _mk_returns_df(n=30)
+        with pytest.raises(ValueError, match="tax_rate"):
+            apply_threshold_rebalance(
+                df,
+                {"leg0": 0.5, "leg1": 0.5},
+                threshold_pp=10.0,
+                tax_rate=1.2,
             )
 
 
@@ -395,4 +413,189 @@ class TestMonthlyCashflowRebalance:
         )
         assert result.total_deposits == pytest.approx(
             100.0 * len(rebal), rel=1e-12
+        )
+
+
+class TestThresholdRebalance:
+    def test_zero_threshold_rebalances_on_every_drifted_bar(self) -> None:
+        # threshold_pp = 0 → any positive drift post-return triggers
+        # rebalance. With non-trivial dispersion, almost every bar fires.
+        rng = np.random.default_rng(2020)
+        idx = pd.date_range("2020-01-01", periods=60, freq="B")
+        df = pd.DataFrame(
+            {
+                "leg0": rng.normal(0.002, 0.01, 60),
+                "leg1": rng.normal(-0.002, 0.01, 60),
+            },
+            index=idx,
+        )
+        result = apply_threshold_rebalance(
+            df, {"leg0": 0.5, "leg1": 0.5}, threshold_pp=0.0
+        )
+        # After rebalance, drift collapses to ~0 (tax may keep tiny
+        # residual). Check that post-rebal drift is near zero on most
+        # bars.
+        assert result.drift.values.max() < 0.02
+        assert result.n_taxable_events >= len(df) - 1
+
+    def test_infinite_threshold_equals_buy_and_hold(self) -> None:
+        # threshold_pp very large → never triggers → pure
+        # buy-and-hold, zero events, zero tax.
+        df = _mk_returns_df(seed=42, n=200)
+        w = {"leg0": 0.5, "leg1": 0.5}
+        result = apply_threshold_rebalance(
+            df, w, threshold_pp=1e9, initial_capital=1.0
+        )
+        # Expected leg equities: w_j * (1 + r_j).cumprod()
+        expected_leg0 = 0.5 * (1.0 + df["leg0"]).cumprod()
+        expected_leg1 = 0.5 * (1.0 + df["leg1"]).cumprod()
+        expected_total = expected_leg0 + expected_leg1
+        np.testing.assert_allclose(
+            result.equity.values, expected_total.values, rtol=1e-10
+        )
+        assert result.taxable_events == []
+        assert result.total_tax_paid == 0.0
+
+    def test_trigger_cross_is_strict_greater_than(self) -> None:
+        # Construct a scenario where drift reaches exactly threshold_pp
+        # — must NOT trigger. Reach > threshold → must trigger.
+        idx = pd.date_range("2020-01-01", periods=8, freq="B")
+        # leg0 gains 2% daily, leg1 flat → drift grows ~1pp/day.
+        df = pd.DataFrame(
+            {"leg0": [0.02] * 8, "leg1": [0.0] * 8}, index=idx
+        )
+        result_high = apply_threshold_rebalance(
+            df, {"leg0": 0.5, "leg1": 0.5}, threshold_pp=50.0
+        )
+        # After 8 bars at 2%/0%, drift peaks modestly — below 50pp.
+        assert result_high.n_taxable_events == 0
+
+        # Much lower threshold → triggers at least once across 8 bars.
+        result_low = apply_threshold_rebalance(
+            df, {"leg0": 0.5, "leg1": 0.5}, threshold_pp=0.3
+        )
+        assert result_low.n_taxable_events >= 1
+
+    def test_higher_threshold_reduces_events(self) -> None:
+        # More conservative threshold → fewer rebalances over the
+        # same return series.
+        rng = np.random.default_rng(123)
+        idx = pd.date_range("2015-01-01", periods=750, freq="B")
+        df = pd.DataFrame(
+            {
+                "leg0": rng.normal(0.0008, 0.012, 750),
+                "leg1": rng.normal(0.0003, 0.010, 750),
+            },
+            index=idx,
+        )
+        w = {"leg0": 0.5, "leg1": 0.5}
+        r5 = apply_threshold_rebalance(df, w, threshold_pp=5.0)
+        r10 = apply_threshold_rebalance(df, w, threshold_pp=10.0)
+        r20 = apply_threshold_rebalance(df, w, threshold_pp=20.0)
+        assert r5.n_taxable_events >= r10.n_taxable_events
+        assert r10.n_taxable_events >= r20.n_taxable_events
+        assert r5.n_taxable_events > r20.n_taxable_events
+
+    def test_tax_per_event_matches_realized_gain(self) -> None:
+        # Every TaxableEvent must satisfy tax_paid = tax_rate *
+        # max(0, realized_gain).
+        rng = np.random.default_rng(321)
+        idx = pd.date_range("2018-01-01", periods=400, freq="B")
+        df = pd.DataFrame(
+            {
+                "leg0": rng.normal(0.001, 0.013, 400),
+                "leg1": rng.normal(-0.0003, 0.009, 400),
+            },
+            index=idx,
+        )
+        result = apply_threshold_rebalance(
+            df,
+            {"leg0": 0.5, "leg1": 0.5},
+            threshold_pp=3.0,
+            tax_rate=0.15,
+        )
+        assert result.n_taxable_events > 0
+        sum_tax = 0.0
+        for ev in result.taxable_events:
+            if ev.realized_gain > 0:
+                assert ev.tax_paid == pytest.approx(
+                    0.15 * ev.realized_gain, rel=1e-12
+                )
+            else:
+                assert ev.tax_paid == 0.0
+            sum_tax += ev.tax_paid
+        assert result.total_tax_paid == pytest.approx(sum_tax, rel=1e-12)
+
+    def test_drift_resets_on_rebalance_dates(self) -> None:
+        # Post-rebalance drift should collapse to ~0 on any bar where a
+        # taxable event fired (with tax_rate=0 the reset is exact).
+        idx = pd.date_range("2020-01-01", periods=80, freq="B")
+        df = pd.DataFrame(
+            {"leg0": [0.01] * 80, "leg1": [-0.005] * 80},
+            index=idx,
+        )
+        result = apply_threshold_rebalance(
+            df,
+            {"leg0": 0.5, "leg1": 0.5},
+            threshold_pp=5.0,
+            tax_rate=0.0,
+        )
+        assert result.n_taxable_events >= 2
+        rebal_dates = {ev.date for ev in result.taxable_events}
+        for rd in rebal_dates:
+            pos = idx.get_loc(rd)
+            # Post-rebal max drift must be essentially zero.
+            assert result.max_drift.iloc[pos] < 1e-9
+
+    def test_zero_tax_rate_produces_tax_free_events(self) -> None:
+        # With tax_rate=0, all TaxableEvents must record tax_paid == 0
+        # even though the sell-overweight mechanic still fires.
+        rng = np.random.default_rng(99)
+        idx = pd.date_range("2019-01-01", periods=300, freq="B")
+        df = pd.DataFrame(
+            {
+                "leg0": rng.normal(0.001, 0.013, 300),
+                "leg1": rng.normal(-0.0003, 0.009, 300),
+            },
+            index=idx,
+        )
+        w = {"leg0": 0.5, "leg1": 0.5}
+        r_thr = apply_threshold_rebalance(
+            df, w, threshold_pp=3.0, tax_rate=0.0
+        )
+        assert r_thr.n_taxable_events > 0
+        assert r_thr.total_tax_paid == 0.0
+        for ev in r_thr.taxable_events:
+            assert ev.tax_paid == 0.0
+
+    def test_returns_RebalanceResult_with_event_dates_in_index(self) -> None:
+        df = _mk_returns_df(seed=5, n=120)
+        result = apply_threshold_rebalance(
+            df,
+            {"leg0": 0.5, "leg1": 0.5},
+            threshold_pp=3.0,
+        )
+        assert isinstance(result, RebalanceResult)
+        for ev in result.taxable_events:
+            assert isinstance(ev, TaxableEvent)
+            assert ev.date in df.index
+
+    def test_three_leg_threshold_preserves_sum_of_leg_equity(self) -> None:
+        # Regression guard: after rebalance, sum(leg_equity) == equity
+        # on every bar.
+        rng = np.random.default_rng(7)
+        idx = pd.date_range("2010-01-01", periods=500, freq="B")
+        df = pd.DataFrame(
+            {
+                "letf": rng.normal(0.0007, 0.013, 500),
+                "qqq": rng.normal(0.0005, 0.011, 500),
+                "gld": rng.normal(0.0002, 0.009, 500),
+            },
+            index=idx,
+        )
+        w = {"letf": 1 / 3, "qqq": 1 / 3, "gld": 1 / 3}
+        result = apply_threshold_rebalance(df, w, threshold_pp=10.0)
+        leg_sum = result.leg_equity.sum(axis=1)
+        np.testing.assert_allclose(
+            leg_sum.values, result.equity.values, rtol=1e-10
         )

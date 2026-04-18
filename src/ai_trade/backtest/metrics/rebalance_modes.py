@@ -1,6 +1,6 @@
-"""Rebalance-mode simulators — Phase 3.5b Addendum Task C1 [SWING BROKER].
+"""Rebalance-mode simulators — Phase 3.5b Addendum Tasks C1 + C4 [SWING BROKER].
 
-Three pure functions applied to a DataFrame of per-leg daily returns and
+Four pure functions applied to a DataFrame of per-leg daily returns and
 a set of target weights:
 
 * :func:`apply_daily_rebalance` — weights reset to target at close of
@@ -16,6 +16,15 @@ a set of target weights:
   most-underweight leg**. No sells → no realized tax. Designed to model
   a disciplined monthly contribution via a broker with cash deposit
   flow (Plano B, BR swing broker).
+* :func:`apply_threshold_rebalance` (Task C4) — weights drift; rebalance
+  fires **only when** ``max|actual_w - target_w| > threshold_pp/100``
+  on a given bar (post-return, pre-rebal check). Same sell-overweight →
+  buy-underweight mechanic + 15 % realized-gain tax as
+  ``apply_monthly_sell_rebalance``. Institutional standard for
+  drift-triggered rebalancing ``[advances_fin_ml, p.275-278]`` — the
+  operational variant that limits DARFs/year to the actual number of
+  threshold crossings, typically 2-6/yr at 10-15pp thresholds vs 12/yr
+  for monthly cadence.
 
 Design choices
 --------------
@@ -81,6 +90,7 @@ __all__ = [
     "apply_daily_rebalance",
     "apply_monthly_sell_rebalance",
     "apply_monthly_cashflow_rebalance",
+    "apply_threshold_rebalance",
 ]
 
 
@@ -423,4 +433,144 @@ def apply_monthly_cashflow_rebalance(
         taxable_events=[],
         total_tax_paid=0.0,
         total_deposits=float(total_deposits),
+    )
+
+
+def apply_threshold_rebalance(
+    returns_df: pd.DataFrame,
+    target_weights: dict[str, float] | pd.Series,
+    threshold_pp: float,
+    initial_capital: float = 1.0,
+    tax_rate: float = 0.15,
+) -> RebalanceResult:
+    """Rebalance only when per-bar drift exceeds ``threshold_pp`` points.
+
+    On every bar:
+
+    1. Apply returns to each leg (buy-and-hold compounding).
+    2. Compute ``max_drift = max_j |actual_w_j - target_w_j|``.
+    3. If ``max_drift * 100 > threshold_pp`` → execute the same
+       sell-overweight → buy-underweight mechanic as
+       :func:`apply_monthly_sell_rebalance` (proportional cost basis,
+       15 % realized-gain tax on sells reduces the rebalance pool).
+    4. Otherwise, let the drift continue.
+
+    The parameter ``threshold_pp`` is expressed in **percentage points**
+    of weight drift (e.g. ``10.0`` means rebalance when any leg deviates
+    by 10 pp from target). Two degenerate cases:
+
+    * ``threshold_pp == 0.0`` → rebalance every bar (equivalent to
+      daily-sell-with-tax; different from :func:`apply_daily_rebalance`
+      which pays no rebal-layer tax).
+    * ``threshold_pp == float('inf')`` or any value so large that drift
+      never crosses it → pure buy-and-hold, zero events, zero tax.
+
+    The rebal cadence is **drift-triggered**, not calendar-triggered —
+    typically 2-6 events/year at 10-15 pp thresholds vs 12/yr for
+    monthly cadence, which is the operational win for a BR retail
+    investor dealing with DARFs (capital-gains declarations).
+
+    References
+    ----------
+    * Threshold rebalancing as institutional standard:
+      ``[advances_fin_ml, p.275-278]`` (Marcos López de Prado discusses
+      drift-triggered cadences in the "trading rule" section — fewer
+      trades, lower turnover, similar risk-adjusted returns).
+    * Cost-basis + tax accounting: reuses the convention from
+      :func:`apply_monthly_sell_rebalance` (proportional average basis,
+      Investment Mandate §4 — 15 % BR IR on realized gains).
+    * Drift vs tax tradeoff framing: ``[leverage_for_the_long_run, p.17,
+      Table 8]``.
+
+    Path tag: **[SWING BROKER]** — Plano B context (15 % IR, no swap).
+    """
+    if threshold_pp < 0:
+        raise ValueError(
+            f"threshold_pp must be non-negative, got {threshold_pp}"
+        )
+    if tax_rate < 0 or tax_rate >= 1:
+        raise ValueError(f"tax_rate must be in [0, 1), got {tax_rate}")
+    rdf, w = _validate_inputs(returns_df, target_weights)
+    target = w.values
+    legs = list(rdf.columns)
+    n_legs = len(legs)
+    n_bars = len(rdf)
+    threshold_w = threshold_pp / 100.0
+
+    current_equity = target * initial_capital
+    leg_basis = target * initial_capital
+    leg_e = np.zeros((n_bars, n_legs), dtype=float)
+    total_path = np.zeros(n_bars, dtype=float)
+    weights_path = np.zeros((n_bars, n_legs), dtype=float)
+    drift_path = np.zeros((n_bars, n_legs), dtype=float)
+    events: list[TaxableEvent] = []
+    total_tax = 0.0
+
+    for i in range(n_bars):
+        ts = rdf.index[i]
+        current_equity = current_equity * (1.0 + rdf.iloc[i].values)
+
+        total_pre = current_equity.sum()
+        if total_pre > 1e-12:
+            actual_w_pre = current_equity / total_pre
+        else:
+            actual_w_pre = target.copy()
+        max_drift_now = float(np.max(np.abs(actual_w_pre - target)))
+
+        if max_drift_now > threshold_w and total_pre > 1e-12:
+            target_dollars = target * total_pre
+            deltas = target_dollars - current_equity
+            proceeds_pool = 0.0
+            for j in range(n_legs):
+                if deltas[j] < -1e-12:
+                    sell_amount = float(-deltas[j])
+                    if current_equity[j] > 1e-12:
+                        basis_per_dollar = leg_basis[j] / current_equity[j]
+                        cost_basis_sold = sell_amount * basis_per_dollar
+                        realized_gain = sell_amount - cost_basis_sold
+                        tax = max(0.0, realized_gain) * tax_rate
+                    else:
+                        cost_basis_sold = 0.0
+                        realized_gain = 0.0
+                        tax = 0.0
+                    events.append(
+                        TaxableEvent(
+                            date=ts,
+                            leg=legs[j],
+                            proceeds=sell_amount,
+                            cost_basis_sold=float(cost_basis_sold),
+                            realized_gain=float(realized_gain),
+                            tax_paid=float(tax),
+                        )
+                    )
+                    current_equity[j] -= sell_amount
+                    leg_basis[j] = max(
+                        0.0, leg_basis[j] - cost_basis_sold
+                    )
+                    proceeds_pool += sell_amount - tax
+                    total_tax += tax
+
+            buy_needed = np.maximum(deltas, 0.0)
+            buy_total = float(buy_needed.sum())
+            if buy_total > 1e-12 and proceeds_pool > 1e-12:
+                alloc = buy_needed / buy_total * proceeds_pool
+                current_equity = current_equity + alloc
+                leg_basis = leg_basis + alloc
+
+        tot = current_equity.sum()
+        leg_e[i] = current_equity
+        total_path[i] = tot
+        actual_w = current_equity / tot if tot > 1e-12 else target.copy()
+        weights_path[i] = actual_w
+        drift_path[i] = np.abs(actual_w - target)
+
+    equity_series = pd.Series(total_path, index=rdf.index, name="equity")
+    return RebalanceResult(
+        equity=equity_series,
+        leg_equity=pd.DataFrame(leg_e, index=rdf.index, columns=legs),
+        weights=pd.DataFrame(weights_path, index=rdf.index, columns=legs),
+        drift=pd.DataFrame(drift_path, index=rdf.index, columns=legs),
+        taxable_events=events,
+        total_tax_paid=float(total_tax),
+        total_deposits=0.0,
     )

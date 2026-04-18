@@ -1,9 +1,11 @@
 # Rebalance modes — implementation notes
 
-Module: `src/ai_trade/backtest/metrics/rebalance_modes.py` (Task C1).
-Tests: `tests/test_rebalance_modes.py` (28 cases).
+Module: `src/ai_trade/backtest/metrics/rebalance_modes.py` (Tasks C1 + C4).
+Tests: `tests/test_rebalance_modes.py` (**39 cases** — 28 for C1's 3
+functions, 11 for C4's `apply_threshold_rebalance`).
 Consumers: `scripts/run_phase3_5b_task_c2_rebalance_3leg.py` (C2),
-`scripts/run_phase3_5b_task_c3_rebalance_2leg.py` (C3).
+`scripts/run_phase3_5b_task_c3_rebalance_2leg.py` (C3),
+`scripts/run_phase3_5b_task_c4_threshold_rebalance.py` (C4).
 
 This file documents the non-trivial algorithmic choices so a reader
 of the two comparison reports does not have to reverse-engineer the
@@ -14,9 +16,12 @@ module.
 ```python
 apply_daily_rebalance(returns_df, target_weights, initial_capital)
 apply_monthly_sell_rebalance(returns_df, target_weights,
-                             initial_capital, tax_rate=0.15)
+                             initial_capital, tax_rate=0.15,
+                             rebalance_freq="M")  # or "Y" for annual
 apply_monthly_cashflow_rebalance(returns_df, target_weights,
                                  monthly_deposit, initial_capital)
+apply_threshold_rebalance(returns_df, target_weights, threshold_pp,
+                          initial_capital, tax_rate=0.15)
 ```
 
 * `returns_df: DataFrame` — one column per leg, daily returns already
@@ -98,6 +103,45 @@ largest negative drift** (most underweight vs target). Rationale:
    degenerate case that fires ~0 times in practice (verified in the
    C2/C3 runs — `n_deposit_events = n_months − 0`).
 
+## 4.5. Threshold trigger (C4)
+
+`apply_threshold_rebalance(threshold_pp)` replaces the calendar-driven
+month-end trigger with a **post-return drift check**. On each bar:
+
+1. Apply leg returns (buy-and-hold compounding).
+2. Compute `max_drift = max_j |actual_w_j - target_w_j|` on the new
+   leg equities.
+3. If `max_drift * 100 > threshold_pp` → execute the same sell-overweight
+   → buy-underweight mechanic as `apply_monthly_sell_rebalance` (same
+   proportional cost basis, same 15% IR on realized gains). Otherwise
+   let drift continue.
+
+**Parameter semantics:** `threshold_pp` is in **percentage points** of
+weight drift. Two degenerate cases documented in the tests:
+* `threshold_pp = 0.0` → trigger every bar (differs from daily rebal in
+  that it pays rebal-layer tax — arguably not useful in practice).
+* `threshold_pp ≥ max-achievable-drift` (e.g. `1e9`) → never triggers,
+  equivalent to pure buy-and-hold.
+
+**Why strict `>` (not `≥`)?** A leg that lands *exactly* on the
+threshold by chance should not trigger a tax event — the practitioner's
+bar is "materially past the line", not "reached the line". Tests
+`test_trigger_cross_is_strict_greater_than` pin this.
+
+**No post-rebal residual drift (zero-tax case):** when `tax_rate=0.0`,
+the rebal fully resets to target on the trigger bar (tests
+`test_drift_resets_on_rebalance_dates`). With non-zero tax, post-rebal
+drift equals `total_tax_this_bar / portfolio_value` — the same residual
+documented for `apply_monthly_sell_rebalance`.
+
+**Distinction vs calendar modes:** threshold is **information-driven**
+(rebal when the book demands it), calendar is **time-driven** (rebal
+on schedule regardless of drift). On the 3-leg winner's window,
+threshold 5pp fires 28 unique dates across 21.36 yrs vs
+`monthly_sell`'s 256 — a 9× reduction in DARFs/yr at the cost of
+0.11 Sharpe. Citation: `[advances_fin_ml, p.275-278]` (institutional
+drift-triggered trading rules).
+
 ## 5. Edge cases
 
 * **Single-leg portfolio** (`len(target_weights) == 1`): daily and
@@ -151,8 +195,10 @@ Numba / no Cython — pure NumPy + Pandas.
 
 ## 9. Related artefacts
 
-* **Module:** `src/ai_trade/backtest/metrics/rebalance_modes.py`.
-* **Tests:** `tests/test_rebalance_modes.py` (28 cases, pytest
-  baseline 670 → 698).
-* **Comparison reports:** `comparison_3leg.md` / `comparison_2leg.md`.
+* **Module:** `src/ai_trade/backtest/metrics/rebalance_modes.py`
+  (4 functions).
+* **Tests:** `tests/test_rebalance_modes.py` (**39 cases**, pytest
+  baseline 670 → 698 → 709 across C1 + C4).
+* **Comparison reports:** `comparison_3leg.md` (C2),
+  `comparison_2leg.md` (C3), `threshold_sweep.md` (C4).
 * **Sub-index:** `README.md` (this directory).

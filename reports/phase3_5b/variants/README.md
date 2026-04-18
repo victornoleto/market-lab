@@ -25,6 +25,8 @@ are breached gates per the per-variant `flags.md`.
 | C-2 | 3-leg EW + monthly_cashflow $500 / mo | 21.36 | 40.47%* | 1.944 | 17.78% | 18.36% | — | — | yes | no — max drift 65% |
 | C-3 | 2-leg EW + monthly_cashflow $500 / mo | 24.87 | 42.63%* | 1.881 | 18.15% | 19.96% | — | ⚠️ inherits 2-leg DR FAIL | yes | **yes** if DCA-ing and tax-averse |
 | C-4 | 2-leg EW + monthly_sell | 24.87 | 29.94% | 1.800 | 14.46% | 15.20% | — | ⚠️ inherits 2-leg DR FAIL | yes | no — pays $145 k / yr IR |
+| C-5 | 3-leg EW + threshold 5pp | 21.36 | 24.66% | 2.002 | 11.10% | 11.34% | — | — | yes | **yes** if daily rebal is operationally prohibitive (1.3 DARFs/yr, 95% of daily Sharpe) |
+| C-6 | 3-leg EW + threshold 10pp | 21.36 | 25.47% | 1.990 | 11.12% | 11.76% | — | — | yes | aggressive-low-DARF fallback (0.6 DARFs/yr, 94% of daily Sharpe) |
 
 *Cashflow CAGR is inflated by $6 k / yr of external deposits compounding
 inside the equity curve. It is **not** pure-return alpha and is not
@@ -48,18 +50,25 @@ judgement. The daily mode on either blend is deposit-free by construction.
   3× trips the Phase 3 WF MaxDD ≤ 25% gate in 3 of 8 windows (WF1
   1970s, WF2 early 1980s, WF7 2018-2025) — see
   [`letf_leverage_comparison/README.md`](letf_leverage_comparison/README.md).
-- **C-1…C-4** swap the rebalance cadence (daily → monthly_sell →
-  monthly_cashflow $500 / mo) on both the 3-leg winner and the 2-leg
-  Task A variant. The findings are detailed in
-  [`rebalance_modes/README.md`](rebalance_modes/README.md). Core
-  conclusions:
+- **C-1…C-6** swap the rebalance cadence (daily → monthly_sell →
+  monthly_cashflow $500 / mo → threshold_Xpp) on the 3-leg winner
+  and, for calendar modes, the 2-leg Task A variant. The findings
+  are detailed in [`rebalance_modes/README.md`](rebalance_modes/README.md)
+  and [`rebalance_modes/threshold_sweep.md`](rebalance_modes/threshold_sweep.md).
+  Core conclusions:
   - `monthly_sell` consistently drops Sharpe ~0.1 and leaks $30 k / yr
     (3-leg) or $145 k / yr (2-leg) in realised-gains IR; dominated
     by daily.
   - `monthly_cashflow` is tax-free by construction but grows drift
     unless deposit scales with equity. On 2-leg it preserves Sharpe
     (1.881 ≈ 1.888 daily) with only +3.74 pp MaxDD — the one non-daily
-    mode that survives as a realistic DCA pattern.
+    calendar mode that survives as a realistic DCA pattern.
+  - **`threshold Xpp` (C-5 / C-6, task C4 sweep)** are drift-triggered
+    rebalances. At 5 pp they preserve **95% of daily Sharpe** (2.002 vs
+    2.108) at just **1.31 DARFs/yr from the rebal layer** — a 9×
+    reduction vs `monthly_sell` + materially cheaper tax bill. The
+    recommended fallback when daily cadence is operationally
+    impractical.
 
 ## Explainer — Diversification Ratio (DR)
 
@@ -102,6 +111,11 @@ variants worth considering in practice are:
    doing $500 / mo DCA on a broker that does not offer GLD. Preserves
    Sharpe, stays tax-free at the rebal layer, accepts +3.74 pp MaxDD.
    Not an upgrade — an ergonomic fallback.
+3. **Switch cadence to threshold 5-10 pp on 3-leg** *only* if daily
+   rebalance is operationally prohibitive (too many DARFs, too much
+   bookkeeping). Preserves 94-95% of daily Sharpe at 0.6-1.3 DARFs/yr
+   from the rebal layer. Strictly dominates `monthly_sell` on both
+   Sharpe and tax drag.
 
 Everything else in this addendum is informational.
 
@@ -109,6 +123,8 @@ Everything else in this addendum is informational.
 
 - Naive EW (1/n) superiority vs Σ-based allocators:
   `[advances_fin_ml, p.298-299]`.
+- Threshold rebalancing as institutional practice:
+  `[advances_fin_ml, p.275-278]`.
 - DR formula: `[advances_fin_ml, p.310]`.
 - LETF synthetic formula & leverage grid:
   `[leverage_for_the_long_run, p.16-17, Table 8]`.
@@ -125,3 +141,4 @@ Everything else in this addendum is informational.
 - [`../../../jornada/2026-04-17-2215-phase3.5b-addendum-task-c2-rebalance-3leg.md`](../../../jornada/2026-04-17-2215-phase3.5b-addendum-task-c2-rebalance-3leg.md) — Task C2 (3-leg cadence).
 - [`../../../jornada/2026-04-17-2230-phase3.5b-addendum-task-c3-rebalance-2leg.md`](../../../jornada/2026-04-17-2230-phase3.5b-addendum-task-c3-rebalance-2leg.md) — Task C3 (2-leg cadence).
 - [`../../../jornada/2026-04-17-2245-phase3.5b-addendum-summary.md`](../../../jornada/2026-04-17-2245-phase3.5b-addendum-summary.md) — Task D (this sub-index).
+- [`../../../jornada/2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md`](../../../jornada/2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md) — Task C4 (threshold sweep).

@@ -149,6 +149,36 @@ reports/phase3_5b/
 - [ ] Jornada `<date>-phase3.5b-addendum-task-c-rebalance-modes.md` [PLANO B].
 - **Conclusion:** _(preencher)_
 
+### Task C4 — Threshold rebalance sweep (ADDED post-loop-1)
+
+- [ ] Estender `src/ai_trade/backtest/metrics/rebalance_modes.py` com função
+      nova `apply_threshold_rebalance(returns_df, target_weights,
+      threshold_pp, tax_rate=0.15)` — rebalance só quando qualquer perna
+      cruza `|actual_w - target_w| > threshold_pp/100`. Nas demais datas
+      deixa drift compor livremente. `[advances_fin_ml, p.275-278]` prática
+      institucional.
+- [ ] Novos testes em `tests/test_rebalance_modes.py`: ≥6 tests para
+      threshold (threshold=0 == daily; threshold=infinito == never;
+      threshold triggers on cross; tax calc por evento; drift series
+      correta; cost basis FIFO).
+- [ ] Script `scripts/run_phase3_5b_task_c4_threshold_rebalance.py` aplica
+      sweep {5pp, 10pp, 15pp, 20pp, annual-only, never} sobre 3-leg EW
+      (LETF+QQQ+GLD, janela 2004-11 → 2026-04).
+- [ ] Output: `reports/phase3_5b/variants/rebalance_modes/threshold_sweep.md`
+      com tabela comparativa: threshold, # rebalance events total, events/ano,
+      max drift observado, CAGR, Sharpe, MaxDD, IR pago/ano, tax events total
+      (inside-leg + rebalance-layer), Sharpe delta vs daily baseline.
+- [ ] Atualizar `reports/phase3_5b/variants/rebalance_modes/README.md` com
+      nova seção "Threshold-based rebalancing" e recomendação operacional
+      (qual threshold balanceia custo fiscal vs diversification preservation).
+- [ ] Atualizar `reports/phase3_5b/README.md` + `reports/phase3_5b/variants/README.md`
+      com link/menção da análise threshold.
+- [ ] Atualizar `jornada/2026-04-17-2045-phase3.5b-full-validation-summary.md`
+      com bullet point na seção "Operational variants" referenciando C4.
+- [ ] Jornada nova `<date>-phase3.5b-addendum-task-c4-threshold-rebalance.md`
+      [PLANO B] com decisão "recommended threshold for production".
+- **Conclusion:** _(preencher)_
+
 ### Task D — Main index `reports/phase3_5b/README.md` + summary jornada update
 
 - [ ] Criar `reports/phase3_5b/README.md` como **main index** com:

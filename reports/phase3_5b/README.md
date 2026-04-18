@@ -102,14 +102,17 @@ is *show all, flag failures* (`specs/phase_3_5b_addendum_operational.md` §0).
 | **A.** What if I drop GLD (2-leg LETF+QQQ)? | [`variants/letf_qqq_2leg_ew/`](variants/letf_qqq_2leg_ew/standard_report.md) | Sharpe 1.888 (−0.22), MaxDD 14.41% (+3.55 pp). ⚠️ FAIL DR 1.121 < 1.20 — doubling-down on US equity. Deploy only if broker blocks GLD. |
 | **B.** Could I go 2.5× or 3× instead of 2× on the LETF leg? | [`variants/letf_leverage_comparison/`](variants/letf_leverage_comparison/README.md) | Sharpe flat (1.848 → 1.882 → 1.910); MaxDD blows up (20.55 → 24.65 → 28.45). 3× fails WF MaxDD gate 3/8 windows; 2.5× passes but is synthetic-only (no listed ETF). **Keep 2×**. |
 | **C.** Can I rebalance monthly instead of daily? | [`variants/rebalance_modes/`](variants/rebalance_modes/README.md) | Daily wins Sharpe on both 2-leg and 3-leg. Monthly_sell drops Sharpe by ~0.1 and pays $30 k–$145 k / yr in IR. Monthly_cashflow ($500 / mo) matches daily Sharpe on 2-leg (tax-free) but adds +3.74 pp to MaxDD. |
+| **C4.** What if I rebalance only when drift exceeds X pp (DARF-minimising fallback)? | [`variants/rebalance_modes/threshold_sweep.md`](variants/rebalance_modes/threshold_sweep.md) | Threshold 5 pp preserves **95% of daily Sharpe** (2.002 vs 2.108) at **1.3 DARFs/yr** from the rebal layer — 9× fewer than monthly_sell. Recommended operational fallback when daily cadence is prohibitive. |
 
-The addendum-specific artefacts are produced by three scripts under
+The addendum-specific artefacts are produced by four scripts under
 `scripts/`: `run_phase3_5b_task_a_2leg.py`,
 `run_phase3_5b_letf_leverage_variant.py`,
-`run_phase3_5b_task_c{2,3}_rebalance_{3,2}leg.py`. The shared module
-`src/ai_trade/backtest/metrics/rebalance_modes.py` (~320 loc, 3 pure
-functions, 28 unit tests) implements the three cadences with proportional
-cost-basis tax accounting.
+`run_phase3_5b_task_c{2,3}_rebalance_{3,2}leg.py`, and
+`run_phase3_5b_task_c4_threshold_rebalance.py` (C4 — threshold sweep).
+The shared module `src/ai_trade/backtest/metrics/rebalance_modes.py`
+(~470 loc, **4 pure functions, 39 unit tests**) implements the four
+cadences (daily / monthly_sell / monthly_cashflow / threshold) with
+proportional cost-basis tax accounting.
 
 ## Directory map
 
@@ -129,15 +132,17 @@ reports/phase3_5b/
     │   ├── letf_ema100_2x/                    # symlink reuse of winner
     │   ├── letf_ema100_2_5x/                  # synthetic-only, ⚠️ THEORY
     │   └── letf_ema100_3x/                    # ⚠️ FAIL WF MaxDD gate
-    └── rebalance_modes/                       # C: daily / monthly_sell / monthly_cashflow
-        ├── comparison_3leg.md
-        ├── comparison_2leg.md
+    └── rebalance_modes/                       # C: daily / monthly_sell / monthly_cashflow / threshold_Xpp
+        ├── comparison_3leg.md                 # C2: 3-leg calendar cadences
+        ├── comparison_2leg.md                 # C3: 2-leg calendar cadences
+        ├── threshold_sweep.md                 # C4: drift-triggered sweep {5/10/15/20pp + annual + never}
         └── implementation_notes.md
 ```
 
 ## Citations
 
 - Naive EW's robustness to Σ-estimation error: `[advances_fin_ml, p.298-299]`.
+- Threshold rebalancing as institutional practice: `[advances_fin_ml, p.275-278]`.
 - DR formula (Choueifaty-Coignard 2008): `[advances_fin_ml, p.310]`.
 - LETF synthetic formula and leverage grid: `[leverage_for_the_long_run, p.16-17, Table 8]`.
 - TSMOM Donchian params: `[stocks_on_the_move, p.81]`, `[following_the_trend, ch.3]`.
@@ -157,8 +162,10 @@ reports/phase3_5b/
 - [`2026-04-17-2215-phase3.5b-addendum-task-c2-rebalance-3leg.md`](../../jornada/2026-04-17-2215-phase3.5b-addendum-task-c2-rebalance-3leg.md) — Task C2 (3-leg cadence sweep).
 - [`2026-04-17-2230-phase3.5b-addendum-task-c3-rebalance-2leg.md`](../../jornada/2026-04-17-2230-phase3.5b-addendum-task-c3-rebalance-2leg.md) — Task C3 (2-leg cadence sweep).
 - [`2026-04-17-2245-phase3.5b-addendum-summary.md`](../../jornada/2026-04-17-2245-phase3.5b-addendum-summary.md) — Task D (this index).
+- [`2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md`](../../jornada/2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md) — Task C4 (threshold sweep).
 
 ## Pytest baseline
 
-550 (iter 0) → 670 (iter 15, Phase 3.5b main) → **698** (iter 20, addendum
-Task C1). Zero flakiness, zero regression. Winners immutable throughout.
+550 (iter 0) → 670 (iter 15, Phase 3.5b main) → 698 (iter 20, addendum
+Task C1) → **709** (iter 24, addendum Task C4). Zero flakiness, zero
+regression. Winners immutable throughout.
