@@ -32,6 +32,7 @@ cd "$(dirname "$0")/.."
 : "${SCOPE:=code}"
 : "${COOLDOWN:=10}"
 : "${CLAUDE_MODEL:=sonnet}"
+: "${SWEEP_MODE:=off}"   # off|fanout — see specs/self_improve_fanout_mode.md
 
 MEMORY_DIR="docs/self_improvement"
 MEMORY_FILE="$MEMORY_DIR/memory.md"
@@ -45,6 +46,21 @@ mkdir -p "$MEMORY_DIR" "$LOG_DIR"
 command -v claude >/dev/null || { echo "claude CLI not in PATH" >&2; exit 1; }
 command -v timeout >/dev/null || { echo "GNU timeout missing" >&2; exit 1; }
 [[ -f "$TEMPLATE" ]] || { echo "missing $TEMPLATE" >&2; exit 1; }
+
+# SWEEP_MODE validation. Only `off` (legacy) and `fanout` are valid.
+# Fan-out mode requires docs/self_improvement/fanout_protocol.md as the
+# agent handbook; without it the in-prompt reference points at nothing.
+case "$SWEEP_MODE" in
+    off|fanout) ;;
+    *)
+        echo "FATAL: invalid SWEEP_MODE='$SWEEP_MODE' (must be off|fanout)" >&2
+        exit 2
+        ;;
+esac
+if [[ "$SWEEP_MODE" == "fanout" && ! -f "docs/self_improvement/fanout_protocol.md" ]]; then
+    echo "FATAL: SWEEP_MODE=fanout requires docs/self_improvement/fanout_protocol.md" >&2
+    exit 1
+fi
 
 # Branch guard: refuse to run on main/master
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
@@ -163,6 +179,47 @@ The loop has TWO phases. Memory.md frontmatter has \`phase: A\` or \`phase: B\` 
 - **TIME WINDOW (repeated for emphasis):** ALWAYS use the LONGEST available historical window per (ticker, frequency). Check \`data/tiingo/manifest.json\` before backtesting. Narrower windows = wasted iteration.
 - **Path labelling:** every winner candidate must be tagged \`[SHORT-HOLD CFD]\` (Path A, median hold ≤ 5 days, Pepperstone swap modeled) or \`[SWING BROKER]\` (Path B, daily/swing, 15% BR tax modeled in net Sharpe).
 - **Data source discipline:** intraday cache was cleaned 2026-04-16 of US-holiday placeholder bars. The \`_filter_orphan_intraday_bars\` guard is active for new fetches. If you suspect data contamination on any new ticker/freq, run \`scripts/clean_intraday_orphans.py --dry-run\` before trusting the result.
+PROMPT
+
+    # Fan-out sweep protocol — only injected when SWEEP_MODE=fanout.
+    # In legacy mode (SWEEP_MODE=off) this case emits zero extra output so
+    # the prompt is byte-identical to the pre-patch version.
+    case "$SWEEP_MODE" in
+        fanout)
+            cat <<'SWEEP'
+
+## Fan-out sweep protocol (ACTIVE — SWEEP_MODE=fanout)
+
+Read `docs/self_improvement/fanout_protocol.md` in full before acting on
+any lead whose universe is a ticker sweep. Summary of the rules:
+
+1. If memory.md `active_lead_registry` is empty → BOOTSTRAP: create the
+   registry.json for the next pending lead, write it atomically, update
+   memory.md, EXIT the iter (no ticker processed).
+2. If the registry status is `pending` or `sweeping`: process EXACTLY
+   ONE ticker — `tickers_pending[0]`. Write `<ticker>.json` +
+   `<ticker>.md` atomically, pop from pending, append to done, bump
+   status if the pending list just emptied.
+3. If registry status is `aggregating`: write `AGGREGATE.md` + jornada,
+   flip status to `done`, clear `active_lead_registry` in memory.md.
+4. NEVER process more than one work unit (bootstrap OR one ticker OR
+   aggregator) per iter, and NEVER multiple tickers in one iter.
+5. Registry schema is v1; use the `ai_trade.backtest.sweeps.registry`
+   helper (load/validate/atomic_write/append_done/pop_pending).
+6. Commit subject is driven by the memory.md history entry. Formats:
+   `iter N — <lead_id> bootstrap registry`,
+   `iter N — <lead_id> sweep <ticker>`,
+   `iter N — <lead_id> aggregator <PASS|DEAD>`.
+
+Atomic leads (no ticker sweep) stay on the legacy `1 iter = 1 Lead`
+contract even while SWEEP_MODE=fanout is set; the fan-out protocol
+applies only to sweeps with more than a handful of tickers.
+SWEEP
+            ;;
+        off|"") ;;  # legacy mode — emit nothing, prompt unchanged
+    esac
+
+    cat <<'PROMPT'
 
 Begin by reading memory.md.
 PROMPT
@@ -196,7 +253,7 @@ read_winners_count() {
 
 echo "=== self_improve_loop @ $(date -Iseconds) ===" | tee -a "$RUN_LOG"
 echo "Branch: $CURRENT_BRANCH" | tee -a "$RUN_LOG"
-echo "MAX_ITER=$MAX_ITER  SCOPE=$SCOPE  ITER_TIMEOUT=${ITER_TIMEOUT}s  COOLDOWN=${COOLDOWN}s  CLAUDE_MODEL=$CLAUDE_MODEL" | tee -a "$RUN_LOG"
+echo "MAX_ITER=$MAX_ITER  SCOPE=$SCOPE  ITER_TIMEOUT=${ITER_TIMEOUT}s  COOLDOWN=${COOLDOWN}s  CLAUDE_MODEL=$CLAUDE_MODEL  SWEEP_MODE=$SWEEP_MODE" | tee -a "$RUN_LOG"
 echo "Memory: $MEMORY_FILE" | tee -a "$RUN_LOG"
 echo "Loop log: $RUN_LOG" | tee -a "$RUN_LOG"
 echo "" | tee -a "$RUN_LOG"
