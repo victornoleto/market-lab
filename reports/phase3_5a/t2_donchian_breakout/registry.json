@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "phase": "phase3_5a",
+  "lead_id": "T2",
+  "lead_slug": "t2_donchian_breakout",
+  "lead_title": "Donchian 10/5 & 20/10 + ATR-Chandelier breakout (long) on 12 FX/metal 1h",
+  "citations_seed": [
+    "trading_systems_methods, p.353 (Donchian channel)",
+    "volatility_trading (ATR Chandelier stop)",
+    "advances_fin_ml, ch.7 (CPCV / PBO gates)",
+    "systematic_trading, p.185-188 (hold-time discipline)"
+  ],
+  "started_at": "2026-04-18T13:03:53+00:00",
+  "last_updated_at": "2026-04-18T13:03:53+00:00",
+  "configs": [
+    {
+      "name": "donchian_10_5_long",
+      "type": "donchian",
+      "entry_lookback": 10,
+      "exit_lookback": 5,
+      "direction": "long",
+      "atr_stop_mult": 2.0,
+      "atr_window": 14,
+      "time_stop_bars": 120,
+      "citation": "trading_systems_methods, p.353"
+    },
+    {
+      "name": "donchian_20_10_long",
+      "type": "donchian",
+      "entry_lookback": 20,
+      "exit_lookback": 10,
+      "direction": "long",
+      "atr_stop_mult": 2.0,
+      "atr_window": 14,
+      "time_stop_bars": 120,
+      "citation": "trading_systems_methods, p.353"
+    },
+    {
+      "name": "atr_chandelier_long",
+      "type": "atr_channel",
+      "entry_lookback": 20,
+      "atr_window": 14,
+      "atr_exit_mult": 3.0,
+      "direction": "long",
+      "time_stop_bars": 120,
+      "citation": "volatility_trading (Chandelier exit)"
+    }
+  ],
+  "tickers_pending": [
+    "audusd",
+    "eurgbp",
+    "eurjpy",
+    "eurusd",
+    "gbpjpy",
+    "gbpusd",
+    "nzdusd",
+    "usdcad",
+    "usdchf",
+    "usdjpy",
+    "xagusd",
+    "xauusd"
+  ],
+  "tickers_done": [],
+  "tickers_errored": [],
+  "status": "pending",
+  "aggregation_iter": null,
+  "aggregate_file_md": null,
+  "aggregate_jornada": null
+}
