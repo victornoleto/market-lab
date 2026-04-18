@@ -1,12 +1,20 @@
 # Phase 3.5b — Winners full validation (main index)
 
+> ## 📘 Procurando "o que fazer na prática"? → **[`PRODUCTION.md`](PRODUCTION.md)**
+>
+> Runbook operacional consolidado: estratégia final, broker (Inter),
+> rebalance cadence (threshold 5-10pp), capital allocation, métricas
+> esperadas, riscos, pre-deploy checklist, monitoring. Este README é
+> o index técnico de validação.
+
 > **Path tag:** `[SWING BROKER]` (Plano B — Brazilian stock broker, 15% IR,
 > swap = 0, daily rebalance).
 >
 > **Branch:** `phase3.5b/winners-validation-20260417`.
 >
 > **Status:** Phase 3.5b main **PASS** (closed 2026-04-17 10:58, iter 15).
-> Phase 3.5b-addendum **PASS** (closed 2026-04-17, iter 23 — this index).
+> Phase 3.5b-addendum + Task C4 **PASS** (closed 2026-04-17, iter 24).
+> Deploy authorized 2026-04-18 (broker Inter + SSO confirmed).
 
 ## TL;DR (one paragraph)
 

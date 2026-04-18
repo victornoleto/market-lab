@@ -122,6 +122,34 @@ da quota ativa em Plano B** (3-leg EW). Migrar parcial para Plano A
 assim que Phase 3.5a entregar um winner com Sharpe > 1.5 e
 ρ_252d < 0.4 vs este portfolio.
 
+### 4.1 "Por que não inverter e colocar maioria em Plano B?"
+
+Pergunta recorrente dado o winner (CAGR 25 %, Sharpe 2.1, MaxDD 10 %
+domina passivo típico). **Resposta:** mandate rule 1 NÃO é arbitrário —
+análise completa com books e recomendação de escalação gradual em
+`reports/phase3_5b/PRODUCTION.md` §4.1-4.3. Sumário:
+
+- **Backtest ≠ live:** UPRO real teve ~2 %/yr drag vs teórico
+  `[leverage_for_the_long_run, p.21]`. SSO real deve ter ~1 %; espere
+  CAGR 23-24 % / MaxDD 12-14 % na vida real.
+- **Janela benigna:** 2004+ não contém 1929, 1973-74, 2000. Gayed
+  1928-2020 reportou 2× LRS com MaxDD -78.7 % `[p.17]`.
+- **Kelly / parameter uncertainty:** full-Kelly leva a ruína quando
+  params são estimados `[fortune_formula]`, `[leverage_space]`.
+  Half-Kelly é o prudente — mesma lógica escala pra capital allocation.
+- **Failure modes não-correlacionados:** Plano B falha se Inter tira
+  SSO, ou ProShares fecha fundo, ou FFR > 8 % sustentado, ou regime
+  muda. Plano C imune a esses. Tê-los juntos = hedge cruzado.
+- **Behavioral (Gayed p.19-20 literal):** "Risk of Ruin = drawdown path
+  where investor abandons before recovery". Kahneman: dor 2× ganho.
+  Com 80 % em Plano B e -15 % DD = dor equivalente a -24 %. Probabilidade
+  de vender no pior momento sobe dramaticamente.
+
+**Recomendação:** escalação GRADUAL com track record live, nunca < 50 %
+passivo pré-10y live. Ver tabela detalhada em
+[`reports/phase3_5b/PRODUCTION.md`](../reports/phase3_5b/PRODUCTION.md)
+§4.2.
+
 ---
 
 ## 5. Exemplo numérico — $10 000 de capital total
