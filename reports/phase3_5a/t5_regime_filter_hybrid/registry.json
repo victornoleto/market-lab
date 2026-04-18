@@ -12,7 +12,7 @@
     "advances_fin_ml, ch.7 (CPCV/PBO gate framework)"
   ],
   "started_at": "2026-04-18T14:52:42+00:00",
-  "last_updated_at": "2026-04-18T15:01:13+00:00",
+  "last_updated_at": "2026-04-18T15:04:34+00:00",
   "configs": [
     {
       "name": "bmr_canonical",
@@ -74,7 +74,6 @@
     }
   ],
   "tickers_pending": [
-    "SPY",
     "eurusd",
     "gbpusd",
     "usdjpy",
@@ -96,6 +95,22 @@
       "median_hold_days": 2.917,
       "result_file_md": "reports/phase3_5a/t5_regime_filter_hybrid/QQQ.md",
       "result_file_json": "reports/phase3_5a/t5_regime_filter_hybrid/QQQ.json"
+    },
+    {
+      "ticker": "SPY",
+      "frequency": "1hour",
+      "window_start": "2020-01-06",
+      "window_end": "2026-04-14",
+      "iter": 35,
+      "n_configs_tested": 5,
+      "best_config": "bmr_rv_lowvol_30d",
+      "best_sharpe_oos": -0.4639,
+      "best_cagr": -0.03864,
+      "best_maxdd": -0.13741,
+      "any_pass_5gate": false,
+      "median_hold_days": 3.0,
+      "result_file_md": "reports/phase3_5a/t5_regime_filter_hybrid/SPY.md",
+      "result_file_json": "reports/phase3_5a/t5_regime_filter_hybrid/SPY.json"
     }
   ],
   "tickers_errored": [],
