@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "phase": "phase3_5a_v2",
+  "lead_id": "V2-L3",
+  "lead_slug": "v2_l3_afml_triple_barrier_meta",
+  "lead_title": "AFML triple-barrier + RandomForest meta-label (EMA-50 primary, CPCV 8 folds, daily CFD cost model)",
+  "citations_seed": [
+    "advances_fin_ml, ch.3 \u2014 triple-barrier labeling",
+    "advances_fin_ml, ch.3 \u2014 meta-labeling (ONC + primary/meta split)",
+    "advances_fin_ml, ch.7 \u2014 CPCV with embargo",
+    "advances_fin_ml, ch.11 \u2014 WF CV sanity checks",
+    "systematic_trading, p.185-188 \u2014 hold economics / cost amortization"
+  ],
+  "started_at": "2026-04-18T19:07:21+00:00",
+  "last_updated_at": "2026-04-18T19:07:21+00:00",
+  "configs": [
+    {
+      "name": "afml_ema50_tb_2atr_1atr_20d_rf_meta",
+      "type": "afml_triple_barrier_meta_label",
+      "primary_model": "ema_crossover",
+      "primary_fast": 50,
+      "primary_slow_kind": "price_vs_ema50",
+      "barrier_tp_atr_mult": 2.0,
+      "barrier_sl_atr_mult": 1.0,
+      "barrier_atr_lookback": 20,
+      "barrier_time_bars": 20,
+      "meta_model": "sklearn_random_forest",
+      "meta_n_estimators": 100,
+      "meta_max_depth": 5,
+      "meta_random_state": 42,
+      "meta_features": [
+        "ret_5d",
+        "vol_20d",
+        "rsi_14d",
+        "atr_ratio_20d"
+      ],
+      "meta_label_threshold_p": 0.55,
+      "cv_scheme": "cpcv",
+      "cv_n_folds": 8,
+      "cv_n_test_splits": 2,
+      "cv_embargo_frac": 0.01,
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    }
+  ],
+  "tickers_pending": [
+    "EFA",
+    "GLD",
+    "QQQ",
+    "SPY",
+    "TLT",
+    "XLE",
+    "XLF",
+    "XLI",
+    "XLK",
+    "XLU",
+    "XLV",
+    "XLY"
+  ],
+  "tickers_done": [],
+  "tickers_errored": [],
+  "status": "pending",
+  "aggregation_iter": null,
+  "aggregate_file_md": null,
+  "aggregate_jornada": null
+}
