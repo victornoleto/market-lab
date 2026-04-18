@@ -1,0 +1,112 @@
+{
+  "config": {
+    "threshold_pp": 10.0,
+    "tax_rate": 0.15,
+    "switch_cost_pct": 0.0015,
+    "initial_capital": 100000.0,
+    "data_source": "testfol.io (SSOSIM/QLDSIM/UGLSIM ground truth)",
+    "window": {
+      "start": "1986-01-02",
+      "end": "2026-04-17",
+      "bars": 10151
+    },
+    "signals": {
+      "SSO": "EMA100 band 0.0",
+      "QQQ/QLD": "Donchian 20/10",
+      "GLD/UGL": "Donchian 40/20"
+    }
+  },
+  "spy_buy_hold_SPYSIM": {
+    "start": "1986-01-02",
+    "end": "2026-04-17",
+    "years": 40.29,
+    "cagr_pct": 11.49,
+    "sharpe": 0.682,
+    "max_drawdown_pct": 55.14,
+    "final_equity": 7985645.3
+  },
+  "variants": [
+    {
+      "variant": "V1_SSO_QQQ_GLD",
+      "legs": {
+        "leg1": "SSOSIM",
+        "leg2": "QQQSIM",
+        "leg3": "GLDSIM"
+      },
+      "metrics": {
+        "start": "1986-01-02",
+        "end": "2026-04-17",
+        "years": 40.29,
+        "cagr_pct": 25.93,
+        "sharpe": 1.97,
+        "max_drawdown_pct": 11.13,
+        "final_equity": 1082173615.18
+      },
+      "rebalance_events": 27,
+      "rebalance_tax_paid_usd": 23868983.95
+    },
+    {
+      "variant": "V2_SSO_QLD_GLD",
+      "legs": {
+        "leg1": "SSOSIM",
+        "leg2": "QLDSIM",
+        "leg3": "GLDSIM"
+      },
+      "metrics": {
+        "start": "1986-01-02",
+        "end": "2026-04-17",
+        "years": 40.29,
+        "cagr_pct": 34.99,
+        "sharpe": 1.969,
+        "max_drawdown_pct": 15.81,
+        "final_equity": 17778283869.33
+      },
+      "rebalance_events": 49,
+      "rebalance_tax_paid_usd": 534216744.21
+    },
+    {
+      "variant": "V3_SSO_QQQ_UGL",
+      "legs": {
+        "leg1": "SSOSIM",
+        "leg2": "QQQSIM",
+        "leg3": "UGLSIM"
+      },
+      "metrics": {
+        "start": "1986-01-02",
+        "end": "2026-04-17",
+        "years": 40.29,
+        "cagr_pct": 28.92,
+        "sharpe": 1.923,
+        "max_drawdown_pct": 13.7,
+        "final_equity": 2779037669.39
+      },
+      "rebalance_events": 30,
+      "rebalance_tax_paid_usd": 77674387.06
+    },
+    {
+      "variant": "V4_SSO_QLD_UGL",
+      "legs": {
+        "leg1": "SSOSIM",
+        "leg2": "QLDSIM",
+        "leg3": "UGLSIM"
+      },
+      "metrics": {
+        "start": "1986-01-02",
+        "end": "2026-04-17",
+        "years": 40.29,
+        "cagr_pct": 37.92,
+        "sharpe": 1.973,
+        "max_drawdown_pct": 16.91,
+        "final_equity": 42146981439.37
+      },
+      "rebalance_events": 39,
+      "rebalance_tax_paid_usd": 557615138.59
+    }
+  ],
+  "caveats": [
+    "Signals on 1\u00d7 underlying (SPYSIM/QQQSIM/GLDSIM); execution via ground-truth leveraged series when in position.",
+    "QLD/UGL availability on Inter Global NOT confirmed \u2014 V2/V3/V4 require broker catalog verification before real deploy.",
+    "Close-only Donchian (testfol.io has no HLC).",
+    "Pre-1999 QQQSIM and pre-2004 GLDSIM are testfol.io simulations from index returns + ETF drag (modelled, not measured)."
+  ]
+}
