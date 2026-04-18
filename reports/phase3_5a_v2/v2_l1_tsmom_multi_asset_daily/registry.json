@@ -10,7 +10,7 @@
     "advances_fin_ml, ch.8"
   ],
   "started_at": "2026-04-18T16:29:44+00:00",
-  "last_updated_at": "2026-04-18T17:03:45+00:00",
+  "last_updated_at": "2026-04-18T17:09:27+00:00",
   "configs": [
     {
       "name": "tsmom_lb01m_vt10",
@@ -329,10 +329,10 @@
     }
   ],
   "tickers_errored": [],
-  "status": "aggregating",
-  "aggregation_iter": null,
-  "aggregate_file_md": null,
-  "aggregate_jornada": null,
+  "status": "done",
+  "aggregation_iter": 14,
+  "aggregate_file_md": "reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/AGGREGATE.md",
+  "aggregate_jornada": "jornada/2026-04-18-1407-phase3.5a-v2-L1-tsmom-DEAD.md",
   "work_unit_kind": "config",
   "universe": [
     "BTCUSD",
