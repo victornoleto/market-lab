@@ -202,6 +202,10 @@ def _build_params(
         # Crypto endpoint takes a `tickers` query param, not a path segment.
         params["tickers"] = _normalize_ticker(ticker, asset_class)
         params["resampleFreq"] = "1hour" if frequency == "1hour" else "1day"
+    elif asset_class == "forex":
+        # Forex default is irregular tick sampling — must request the bar
+        # size explicitly. Tiingo FX also enforces startDate >= 2020-01-01.
+        params["resampleFreq"] = "1hour" if frequency == "1hour" else "1day"
     elif frequency == "1hour":
         params["resampleFreq"] = "1hour"
     return params
@@ -231,6 +235,40 @@ class TiingoSource:
         return key
 
     def _http_fetch(
+        self,
+        ticker: str,
+        start: date,
+        end: date,
+        asset_class: str,
+        frequency: str = "daily",
+    ) -> pd.DataFrame:
+        # Tiingo FX intraday caps each response at ~7000 bars (~1 year of
+        # 24/5 hourly data). Chunk the window to guarantee full coverage.
+        if asset_class == "forex" and frequency == "1hour":
+            from datetime import timedelta
+            chunk_days = 180
+            cur = start
+            frames: list[pd.DataFrame] = []
+            while cur < end:
+                chunk_end = min(end, cur + timedelta(days=chunk_days))
+                frames.append(
+                    self._http_fetch_single(
+                        ticker, cur, chunk_end, asset_class, frequency,
+                    )
+                )
+                cur = chunk_end
+            if not frames:
+                return _normalize([])
+            df = pd.concat([f for f in frames if not f.empty]) if any(
+                not f.empty for f in frames
+            ) else _normalize([])
+            if df.empty:
+                return df
+            df = df.sort_index()
+            return df[~df.index.duplicated(keep="last")]
+        return self._http_fetch_single(ticker, start, end, asset_class, frequency)
+
+    def _http_fetch_single(
         self,
         ticker: str,
         start: date,
