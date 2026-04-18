@@ -13,7 +13,7 @@
     "advances_fin_ml, ch.7 (CPCV/PBO gate framework)"
   ],
   "started_at": "2026-04-18T14:20:42+00:00",
-  "last_updated_at": "2026-04-18T14:38:21+00:00",
+  "last_updated_at": "2026-04-18T14:40:32+00:00",
   "configs": [
     {
       "name": "london_orb_asian_range",
@@ -75,7 +75,6 @@
     }
   ],
   "tickers_pending": [
-    "usdjpy",
     "audusd"
   ],
   "tickers_done": [
@@ -142,6 +141,22 @@
       "median_hold_days": 0.458,
       "result_file_md": "reports/phase3_5a/t4_session_based_fx/usdcad.md",
       "result_file_json": "reports/phase3_5a/t4_session_based_fx/usdcad.json"
+    },
+    {
+      "ticker": "usdjpy",
+      "frequency": "1hour",
+      "window_start": "2020-01-06",
+      "window_end": "2026-04-14",
+      "iter": 30,
+      "n_configs_tested": 3,
+      "best_config": "ny_close_mr_1h",
+      "best_sharpe_oos": 0.2742,
+      "best_cagr": 0.00178,
+      "best_maxdd": -0.00746,
+      "any_pass_5gate": false,
+      "median_hold_days": 0.458,
+      "result_file_md": "reports/phase3_5a/t4_session_based_fx/usdjpy.md",
+      "result_file_json": "reports/phase3_5a/t4_session_based_fx/usdjpy.json"
     }
   ],
   "tickers_errored": [],
