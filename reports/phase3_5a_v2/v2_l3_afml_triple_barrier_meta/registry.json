@@ -12,7 +12,7 @@
     "systematic_trading, p.185-188 \u2014 hold economics / cost amortization"
   ],
   "started_at": "2026-04-18T19:07:21+00:00",
-  "last_updated_at": "2026-04-18T19:39:37+00:00",
+  "last_updated_at": "2026-04-18T19:41:57+00:00",
   "configs": [
     {
       "name": "afml_ema50_tb_2atr_1atr_20d_rf_meta",
@@ -45,7 +45,6 @@
     }
   ],
   "tickers_pending": [
-    "XLV",
     "XLY"
   ],
   "tickers_done": [
@@ -208,6 +207,22 @@
       "median_hold_days": 14.0,
       "result_file_md": "reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/XLU.md",
       "result_file_json": "reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/XLU.json"
+    },
+    {
+      "ticker": "XLV",
+      "frequency": "daily",
+      "window_start": "2014-01-02",
+      "window_end": "2026-04-14",
+      "iter": 55,
+      "n_configs_tested": 1,
+      "best_config": "afml_ema50_tb_2atr_1atr_20d_rf_meta",
+      "best_sharpe_oos": 0.10139137338635922,
+      "best_cagr": 0.003254509655668203,
+      "best_maxdd": -0.058672651600732095,
+      "any_pass_5gate": false,
+      "median_hold_days": 12.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/XLV.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/XLV.json"
     }
   ],
   "tickers_errored": [],
