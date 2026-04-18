@@ -1,0 +1,747 @@
+{
+  "spec": "phase_3_5a/T1",
+  "strategy": "BollingerMR canonical (window=20, std=2.0)",
+  "direction": "short",
+  "frequency": "1hour",
+  "cost_model": {
+    "half_spread_bps": {
+      "forex": 2.0,
+      "metal": 5.0
+    },
+    "swap_rate_per_day": 5e-05
+  },
+  "results": [
+    {
+      "ticker": "eurusd",
+      "asset_class": "forex",
+      "direction": "short",
+      "n_bars_full": 38784,
+      "candidate": false,
+      "windows": [
+        {
+          "label": "FULL",
+          "start": "2020-01-01",
+          "end": "2026-04-17",
+          "n_bars": 38764,
+          "sharpe": -1.773,
+          "cagr_pct": -3.76,
+          "max_dd_pct": -57.08,
+          "final_equity": 43090.95,
+          "n_trades": 771,
+          "median_hold_days": 0.62,
+          "median_hold_bars": 15
+        },
+        {
+          "label": "IS",
+          "start": "2020-01-01",
+          "end": "2023-12-31",
+          "n_bars": 24519,
+          "sharpe": -1.429,
+          "cagr_pct": -3.22,
+          "max_dd_pct": -36.69,
+          "final_equity": 63481.66,
+          "n_trades": 499,
+          "median_hold_days": 0.62,
+          "median_hold_bars": 14
+        },
+        {
+          "label": "OOS",
+          "start": "2024-01-01",
+          "end": "2025-12-31",
+          "n_bars": 12421,
+          "sharpe": -2.414,
+          "cagr_pct": -4.55,
+          "max_dd_pct": -29.24,
+          "final_equity": 72037.25,
+          "n_trades": 242,
+          "median_hold_days": 0.67,
+          "median_hold_bars": 15
+        },
+        {
+          "label": "FWD",
+          "start": "2026-01-01",
+          "end": "2026-04-17",
+          "n_bars": 1803,
+          "sharpe": -3.048,
+          "cagr_pct": -5.65,
+          "max_dd_pct": -6.07,
+          "final_equity": 94228.16,
+          "n_trades": 30,
+          "median_hold_days": 0.77,
+          "median_hold_bars": 17
+        }
+      ]
+    },
+    {
+      "ticker": "gbpusd",
+      "asset_class": "forex",
+      "direction": "short",
+      "n_bars_full": 38785,
+      "candidate": false,
+      "windows": [
+        {
+          "label": "FULL",
+          "start": "2020-01-01",
+          "end": "2026-04-17",
+          "n_bars": 38765,
+          "sharpe": -1.447,
+          "cagr_pct": -3.49,
+          "max_dd_pct": -54.57,
+          "final_equity": 45842.27,
+          "n_trades": 803,
+          "median_hold_days": 0.58,
+          "median_hold_bars": 14
+        },
+        {
+          "label": "IS",
+          "start": "2020-01-01",
+          "end": "2023-12-31",
+          "n_bars": 24521,
+          "sharpe": -1.284,
+          "cagr_pct": -3.44,
+          "max_dd_pct": -38.99,
+          "final_equity": 61507.11,
+          "n_trades": 504,
+          "median_hold_days": 0.58,
+          "median_hold_bars": 13
+        },
+        {
+          "label": "OOS",
+          "start": "2024-01-01",
+          "end": "2025-12-31",
+          "n_bars": 12420,
+          "sharpe": -1.934,
+          "cagr_pct": -3.57,
+          "max_dd_pct": -23.74,
+          "final_equity": 77442.02,
+          "n_trades": 264,
+          "median_hold_days": 0.58,
+          "median_hold_bars": 13
+        },
+        {
+          "label": "FWD",
+          "start": "2026-01-01",
+          "end": "2026-04-17",
+          "n_bars": 1803,
+          "sharpe": -1.826,
+          "cagr_pct": -3.71,
+          "max_dd_pct": -4.02,
+          "final_equity": 96214.16,
+          "n_trades": 34,
+          "median_hold_days": 0.77,
+          "median_hold_bars": 15
+        }
+      ]
+    },
+    {
+      "ticker": "usdjpy",
+      "asset_class": "forex",
+      "direction": "short",
+      "n_bars_full": 38820,
+      "candidate": false,
+      "windows": [
+        {
+          "label": "FULL",
+          "start": "2020-01-01",
+          "end": "2026-04-17",
+          "n_bars": 38800,
+          "sharpe": -1.918,
+          "cagr_pct": -4.87,
+          "max_dd_pct": -66.69,
+          "final_equity": 33359.09,
+          "n_trades": 754,
+          "median_hold_days": 0.67,
+          "median_hold_bars": 15
+        },
+        {
+          "label": "IS",
+          "start": "2020-01-01",
+          "end": "2023-12-31",
+          "n_bars": 24557,
+          "sharpe": -1.953,
+          "cagr_pct": -5.01,
+          "max_dd_pct": -51.7,
+          "final_equity": 48869.03,
+          "n_trades": 475,
+          "median_hold_days": 0.67,
+          "median_hold_bars": 15
+        },
+        {
+          "label": "OOS",
+          "start": "2024-01-01",
+          "end": "2025-12-31",
+          "n_bars": 12419,
+          "sharpe": -1.937,
+          "cagr_pct": -4.96,
+          "max_dd_pct": -30.37,
+          "final_equity": 69907.74,
+          "n_trades": 241,
+          "median_hold_days": 0.67,
+          "median_hold_bars": 15
+        },
+        {
+          "label": "FWD",
+          "start": "2026-01-01",
+          "end": "2026-04-17",
+          "n_bars": 1803,
+          "sharpe": -1.238,
+          "cagr_pct": -2.34,
+          "max_dd_pct": -2.71,
+          "final_equity": 97606.2,
+          "n_trades": 37,
+          "median_hold_days": 0.62,
+          "median_hold_bars": 15
+        }
+      ]
+    },
+    {
+      "ticker": "usdchf",
+      "asset_class": "forex",
+      "direction": "short",
+      "n_bars_full": 38719,
+      "candidate": false,
+      "windows": [
+        {
+          "label": "FULL",
+          "start": "2020-01-01",
+          "end": "2026-04-17",
+          "n_bars": 38699,
+          "sharpe": -1.467,
+          "cagr_pct": -3.05,
+          "max_dd_pct": -49.98,
+          "final_equity": 50707.31,
+          "n_trades": 804,
+          "median_hold_days": 0.62,
+          "median_hold_bars": 14
+        },
+        {
+          "label": "IS",
+          "start": "2020-01-01",
+          "end": "2023-12-31",
+          "n_bars": 24455,
+          "sharpe": -1.345,
+          "cagr_pct": -2.85,
+          "max_dd_pct": -35.11,
+          "final_equity": 67019.53,
+          "n_trades": 512,
+          "median_hold_days": 0.62,
+          "median_hold_bars": 14
+        },
+        {
+          "label": "OOS",
+          "start": "2024-01-01",
+          "end": "2025-12-31",
+          "n_bars": 12420,
+          "sharpe": -1.659,
+          "cagr_pct": -3.32,
+          "max_dd_pct": -21.42,
+          "final_equity": 78853.16,
+          "n_trades": 250,
+          "median_hold_days": 0.62,
+          "median_hold_bars": 13
+        },
+        {
+          "label": "FWD",
+          "start": "2026-01-01",
+          "end": "2026-04-17",
+          "n_bars": 1803,
+          "sharpe": -1.845,
+          "cagr_pct": -3.84,
+          "max_dd_pct": -4.82,
+          "final_equity": 96074.06,
+          "n_trades": 41,
+          "median_hold_days": 0.67,
+          "median_hold_bars": 14
+        }
+      ]
+    },
+    {
+      "ticker": "audusd",
+      "asset_class": "forex",
+      "direction": "short",
+      "n_bars_full": 38732,
+      "candidate": false,
+      "windows": [
+        {
+          "label": "FULL",
+          "start": "2020-01-01",
+          "end": "2026-04-17",
+          "n_bars": 38712,
+          "sharpe": -0.895,
+          "cagr_pct": -2.57,
+          "max_dd_pct": -44.64,
+          "final_equity": 56469.71,
+          "n_trades": 758,
+          "median_hold_days": 0.58,
+          "median_hold_bars": 13
+        },
+        {
+          "label": "IS",
+          "start": "2020-01-01",
+          "end": "2023-12-31",
+          "n_bars": 24468,
+          "sharpe": -0.701,
+          "cagr_pct": -2.18,
+          "max_dd_pct": -27.97,
+          "final_equity": 73677.3,
+          "n_trades": 490,
+          "median_hold_days": 0.58,
+          "median_hold_bars": 13
+        },
+        {
+          "label": "OOS",
+          "start": "2024-01-01",
+          "end": "2025-12-31",
+          "n_bars": 12420,
+          "sharpe": -1.035,
+          "cagr_pct": -2.46,
+          "max_dd_pct": -18.72,
+          "final_equity": 83896.08,
+          "n_trades": 236,
+          "median_hold_days": 0.54,
+          "median_hold_bars": 12
+        },
+        {
+          "label": "FWD",
+          "start": "2026-01-01",
+          "end": "2026-04-17",
+          "n_bars": 1803,
+          "sharpe": -2.965,
+          "cagr_pct": -8.46,
+          "max_dd_pct": -8.74,
+          "final_equity": 91356.65,
+          "n_trades": 32,
+          "median_hold_days": 0.77,
+          "median_hold_bars": 17
+        }
+      ]
+    },
+    {
+      "ticker": "usdcad",
+      "asset_class": "forex",
+      "direction": "short",
+      "n_bars_full": 38716,
+      "candidate": false,
+      "windows": [
+        {
+          "label": "FULL",
+          "start": "2020-01-01",
+          "end": "2026-04-17",
+          "n_bars": 38696,
+          "sharpe": -1.929,
+          "cagr_pct": -3.59,
+          "max_dd_pct": -55.38,
+          "final_equity": 44793.77,
+          "n_trades": 823,
+          "median_hold_days": 0.58,
+          "median_hold_bars": 13
+        },
+        {
+          "label": "IS",
+          "start": "2020-01-01",
+          "end": "2023-12-31",
+          "n_bars": 24454,
+          "sharpe": -1.815,
+          "cagr_pct": -3.77,
+          "max_dd_pct": -41.69,
+          "final_equity": 58685.48,
+          "n_trades": 496,
+          "median_hold_days": 0.58,
+          "median_hold_bars": 13
+        },
+        {
+          "label": "OOS",
+          "start": "2024-01-01",
+          "end": "2025-12-31",
+          "n_bars": 12419,
+          "sharpe": -2.266,
+          "cagr_pct": -3.24,
+          "max_dd_pct": -21.26,
+          "final_equity": 79295.94,
+          "n_trades": 284,
+          "median_hold_days": 0.58,
+          "median_hold_bars": 12
+        },
+        {
+          "label": "FWD",
+          "start": "2026-01-01",
+          "end": "2026-04-17",
+          "n_bars": 1802,
+          "sharpe": -2.661,
+          "cagr_pct": -3.63,
+          "max_dd_pct": -3.99,
+          "final_equity": 96291.76,
+          "n_trades": 42,
+          "median_hold_days": 0.56,
+          "median_hold_bars": 12
+        }
+      ]
+    },
+    {
+      "ticker": "nzdusd",
+      "asset_class": "forex",
+      "direction": "short",
+      "n_bars_full": 38706,
+      "candidate": false,
+      "windows": [
+        {
+          "label": "FULL",
+          "start": "2020-01-01",
+          "end": "2026-04-17",
+          "n_bars": 38686,
+          "sharpe": -0.725,
+          "cagr_pct": -2.05,
+          "max_dd_pct": -38.55,
+          "final_equity": 63497.06,
+          "n_trades": 772,
+          "median_hold_days": 0.54,
+          "median_hold_bars": 12
+        },
+        {
+          "label": "IS",
+          "start": "2020-01-01",
+          "end": "2023-12-31",
+          "n_bars": 24444,
+          "sharpe": -0.586,
+          "cagr_pct": -1.77,
+          "max_dd_pct": -24.77,
+          "final_equity": 78040.27,
+          "n_trades": 510,
+          "median_hold_days": 0.54,
+          "median_hold_bars": 12
+        },
+        {
+          "label": "OOS",
+          "start": "2024-01-01",
+          "end": "2025-12-31",
+          "n_bars": 12418,
+          "sharpe": -0.864,
+          "cagr_pct": -2.11,
+          "max_dd_pct": -17.52,
+          "final_equity": 86048.83,
+          "n_trades": 229,
+          "median_hold_days": 0.54,
+          "median_hold_bars": 12
+        },
+        {
+          "label": "FWD",
+          "start": "2026-01-01",
+          "end": "2026-04-17",
+          "n_bars": 1803,
+          "sharpe": -1.991,
+          "cagr_pct": -5.33,
+          "max_dd_pct": -5.65,
+          "final_equity": 94556.18,
+          "n_trades": 33,
+          "median_hold_days": 0.58,
+          "median_hold_bars": 14
+        }
+      ]
+    },
+    {
+      "ticker": "eurjpy",
+      "asset_class": "forex",
+      "direction": "short",
+      "n_bars_full": 38691,
+      "candidate": false,
+      "windows": [
+        {
+          "label": "FULL",
+          "start": "2020-01-01",
+          "end": "2026-04-17",
+          "n_bars": 38671,
+          "sharpe": -2.031,
+          "cagr_pct": -4.88,
+          "max_dd_pct": -66.64,
+          "final_equity": 33378.14,
+          "n_trades": 753,
+          "median_hold_days": 0.71,
+          "median_hold_bars": 16
+        },
+        {
+          "label": "IS",
+          "start": "2020-01-01",
+          "end": "2023-12-31",
+          "n_bars": 24474,
+          "sharpe": -2.169,
+          "cagr_pct": -5.36,
+          "max_dd_pct": -53.46,
+          "final_equity": 46542.14,
+          "n_trades": 480,
+          "median_hold_days": 0.71,
+          "median_hold_bars": 15
+        },
+        {
+          "label": "OOS",
+          "start": "2024-01-01",
+          "end": "2025-12-31",
+          "n_bars": 12375,
+          "sharpe": -1.682,
+          "cagr_pct": -4.02,
+          "max_dd_pct": -25.29,
+          "final_equity": 74986.54,
+          "n_trades": 245,
+          "median_hold_days": 0.71,
+          "median_hold_bars": 15
+        },
+        {
+          "label": "FWD",
+          "start": "2026-01-01",
+          "end": "2026-04-17",
+          "n_bars": 1801,
+          "sharpe": -3.193,
+          "cagr_pct": -4.12,
+          "max_dd_pct": -4.27,
+          "final_equity": 95798.39,
+          "n_trades": 27,
+          "median_hold_days": 0.83,
+          "median_hold_bars": 18
+        }
+      ]
+    },
+    {
+      "ticker": "eurgbp",
+      "asset_class": "forex",
+      "direction": "short",
+      "n_bars_full": 38727,
+      "candidate": false,
+      "windows": [
+        {
+          "label": "FULL",
+          "start": "2020-01-01",
+          "end": "2026-04-17",
+          "n_bars": 38707,
+          "sharpe": -1.786,
+          "cagr_pct": -3.47,
+          "max_dd_pct": -54.01,
+          "final_equity": 46034.78,
+          "n_trades": 822,
+          "median_hold_days": 0.58,
+          "median_hold_bars": 13
+        },
+        {
+          "label": "IS",
+          "start": "2020-01-01",
+          "end": "2023-12-31",
+          "n_bars": 24463,
+          "sharpe": -1.589,
+          "cagr_pct": -3.58,
+          "max_dd_pct": -39.92,
+          "final_equity": 60292.97,
+          "n_trades": 530,
+          "median_hold_days": 0.62,
+          "median_hold_bars": 13
+        },
+        {
+          "label": "OOS",
+          "start": "2024-01-01",
+          "end": "2025-12-31",
+          "n_bars": 12420,
+          "sharpe": -2.58,
+          "cagr_pct": -3.26,
+          "max_dd_pct": -21.13,
+          "final_equity": 79184.09,
+          "n_trades": 256,
+          "median_hold_days": 0.54,
+          "median_hold_bars": 12
+        },
+        {
+          "label": "FWD",
+          "start": "2026-01-01",
+          "end": "2026-04-17",
+          "n_bars": 1803,
+          "sharpe": -3.063,
+          "cagr_pct": -3.55,
+          "max_dd_pct": -3.63,
+          "final_equity": 96371.37,
+          "n_trades": 34,
+          "median_hold_days": 0.42,
+          "median_hold_bars": 10
+        }
+      ]
+    },
+    {
+      "ticker": "gbpjpy",
+      "asset_class": "forex",
+      "direction": "short",
+      "n_bars_full": 38516,
+      "candidate": false,
+      "windows": [
+        {
+          "label": "FULL",
+          "start": "2020-01-01",
+          "end": "2026-04-17",
+          "n_bars": 38496,
+          "sharpe": -1.741,
+          "cagr_pct": -4.49,
+          "max_dd_pct": -63.43,
+          "final_equity": 36702.14,
+          "n_trades": 770,
+          "median_hold_days": 0.67,
+          "median_hold_bars": 15
+        },
+        {
+          "label": "IS",
+          "start": "2020-01-01",
+          "end": "2023-12-31",
+          "n_bars": 24261,
+          "sharpe": -1.815,
+          "cagr_pct": -4.9,
+          "max_dd_pct": -50.31,
+          "final_equity": 50128.14,
+          "n_trades": 473,
+          "median_hold_days": 0.67,
+          "median_hold_bars": 15
+        },
+        {
+          "label": "OOS",
+          "start": "2024-01-01",
+          "end": "2025-12-31",
+          "n_bars": 12411,
+          "sharpe": -1.638,
+          "cagr_pct": -3.99,
+          "max_dd_pct": -25.01,
+          "final_equity": 75100.76,
+          "n_trades": 258,
+          "median_hold_days": 0.67,
+          "median_hold_bars": 14
+        },
+        {
+          "label": "FWD",
+          "start": "2026-01-01",
+          "end": "2026-04-17",
+          "n_bars": 1803,
+          "sharpe": -1.319,
+          "cagr_pct": -2.31,
+          "max_dd_pct": -2.54,
+          "final_equity": 97641.27,
+          "n_trades": 38,
+          "median_hold_days": 0.62,
+          "median_hold_bars": 14
+        }
+      ]
+    },
+    {
+      "ticker": "xauusd",
+      "asset_class": "metal",
+      "direction": "short",
+      "n_bars_full": 32195,
+      "candidate": false,
+      "windows": [
+        {
+          "label": "FULL",
+          "start": "2020-01-01",
+          "end": "2026-04-17",
+          "n_bars": 32175,
+          "sharpe": -1.4,
+          "cagr_pct": -8.93,
+          "max_dd_pct": -81.86,
+          "final_equity": 18161.18,
+          "n_trades": 685,
+          "median_hold_days": 0.67,
+          "median_hold_bars": 13
+        },
+        {
+          "label": "IS",
+          "start": "2020-01-01",
+          "end": "2023-12-31",
+          "n_bars": 18618,
+          "sharpe": -1.196,
+          "cagr_pct": -8.59,
+          "max_dd_pct": -61.31,
+          "final_equity": 38743.59,
+          "n_trades": 391,
+          "median_hold_days": 0.67,
+          "median_hold_bars": 13
+        },
+        {
+          "label": "OOS",
+          "start": "2024-01-01",
+          "end": "2025-12-31",
+          "n_bars": 11835,
+          "sharpe": -2.119,
+          "cagr_pct": -9.02,
+          "max_dd_pct": -49.71,
+          "final_equity": 53026.97,
+          "n_trades": 259,
+          "median_hold_days": 0.67,
+          "median_hold_bars": 14
+        },
+        {
+          "label": "FWD",
+          "start": "2026-01-01",
+          "end": "2026-04-17",
+          "n_bars": 1701,
+          "sharpe": -1.305,
+          "cagr_pct": -12.0,
+          "max_dd_pct": -12.71,
+          "final_equity": 88398.99,
+          "n_trades": 35,
+          "median_hold_days": 0.62,
+          "median_hold_bars": 14
+        }
+      ]
+    },
+    {
+      "ticker": "xagusd",
+      "asset_class": "metal",
+      "direction": "short",
+      "n_bars_full": 32221,
+      "candidate": false,
+      "windows": [
+        {
+          "label": "FULL",
+          "start": "2020-01-01",
+          "end": "2026-04-17",
+          "n_bars": 32201,
+          "sharpe": -0.816,
+          "cagr_pct": -14.07,
+          "max_dd_pct": -93.91,
+          "final_equity": 6275.56,
+          "n_trades": 681,
+          "median_hold_days": 0.58,
+          "median_hold_bars": 12
+        },
+        {
+          "label": "IS",
+          "start": "2020-01-01",
+          "end": "2023-12-31",
+          "n_bars": 18645,
+          "sharpe": -0.627,
+          "cagr_pct": -14.18,
+          "max_dd_pct": -80.62,
+          "final_equity": 19858.06,
+          "n_trades": 390,
+          "median_hold_days": 0.58,
+          "median_hold_bars": 12
+        },
+        {
+          "label": "OOS",
+          "start": "2024-01-01",
+          "end": "2025-12-31",
+          "n_bars": 11834,
+          "sharpe": -1.598,
+          "cagr_pct": -13.32,
+          "max_dd_pct": -65.41,
+          "final_equity": 38342.56,
+          "n_trades": 259,
+          "median_hold_days": 0.58,
+          "median_hold_bars": 12
+        },
+        {
+          "label": "FWD",
+          "start": "2026-01-01",
+          "end": "2026-04-17",
+          "n_bars": 1701,
+          "sharpe": -1.189,
+          "cagr_pct": -18.17,
+          "max_dd_pct": -19.06,
+          "final_equity": 82420.34,
+          "n_trades": 32,
+          "median_hold_days": 0.5,
+          "median_hold_bars": 8
+        }
+      ]
+    }
+  ]
+}
