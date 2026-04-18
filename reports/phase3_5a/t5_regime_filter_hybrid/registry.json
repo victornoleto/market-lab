@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "phase": "phase3_5a",
+  "lead_id": "T5",
+  "lead_slug": "t5_regime_filter_hybrid",
+  "lead_title": "Regime-filter hybrid overlay on BollingerMR 20/2\u03c3 1h (6 assets \u00d7 5 configs)",
+  "citations_seed": [
+    "advances_fin_ml, ch.17 (regime-aware features; meta-labeling)",
+    "stocks_on_the_move, p.110 (SMA trend regime filter)",
+    "volatility_trading (realized vol regime; VIX-proxy)",
+    "systematic_trading, p.185-188 (median hold \u22645d discipline)",
+    "advances_fin_ml, ch.7 (CPCV/PBO gate framework)"
+  ],
+  "started_at": "2026-04-18T14:52:42+00:00",
+  "last_updated_at": "2026-04-18T14:52:42+00:00",
+  "configs": [
+    {
+      "name": "bmr_canonical",
+      "type": "bollinger_mr",
+      "lookback": 20,
+      "num_std": 2.0,
+      "regime_filter": "none",
+      "direction": "both",
+      "time_stop_bars": 120,
+      "citation": "Phase 3 baseline (BollingerMR SPY 1h) - no-regime control"
+    },
+    {
+      "name": "bmr_regime_sma200",
+      "type": "bollinger_mr",
+      "lookback": 20,
+      "num_std": 2.0,
+      "regime_filter": "sma_trend",
+      "regime_sma_window": 200,
+      "direction": "both",
+      "time_stop_bars": 120,
+      "citation": "stocks_on_the_move, p.110 (SMA trend regime); advances_fin_ml, ch.17 (regime-aware features)"
+    },
+    {
+      "name": "bmr_rv_lowvol_30d",
+      "type": "bollinger_mr",
+      "lookback": 20,
+      "num_std": 2.0,
+      "regime_filter": "rv_lowvol",
+      "rv_window_bars": 720,
+      "rv_reference_bars": 6048,
+      "direction": "both",
+      "time_stop_bars": 120,
+      "citation": "volatility_trading (realized vol regime; VIX-proxy); advances_fin_ml, ch.17"
+    },
+    {
+      "name": "bmr_rv_highvol_30d",
+      "type": "bollinger_mr",
+      "lookback": 20,
+      "num_std": 2.0,
+      "regime_filter": "rv_highvol",
+      "rv_window_bars": 720,
+      "rv_reference_bars": 6048,
+      "direction": "both",
+      "time_stop_bars": 120,
+      "citation": "volatility_trading (high-vol regime amplifies MR edge); advances_fin_ml, ch.17"
+    },
+    {
+      "name": "bmr_regime_combo",
+      "type": "bollinger_mr",
+      "lookback": 20,
+      "num_std": 2.0,
+      "regime_filter": "sma_trend_AND_rv_lowvol",
+      "regime_sma_window": 200,
+      "rv_window_bars": 720,
+      "rv_reference_bars": 6048,
+      "direction": "both",
+      "time_stop_bars": 120,
+      "citation": "advances_fin_ml, ch.17 (ensemble regime filter); stocks_on_the_move, p.110; volatility_trading"
+    }
+  ],
+  "tickers_pending": [
+    "QQQ",
+    "SPY",
+    "eurusd",
+    "gbpusd",
+    "usdjpy",
+    "xauusd"
+  ],
+  "tickers_done": [],
+  "tickers_errored": [],
+  "status": "pending",
+  "aggregation_iter": null,
+  "aggregate_file_md": null,
+  "aggregate_jornada": null
+}
