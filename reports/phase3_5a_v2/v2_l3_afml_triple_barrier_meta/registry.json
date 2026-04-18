@@ -12,7 +12,7 @@
     "systematic_trading, p.185-188 \u2014 hold economics / cost amortization"
   ],
   "started_at": "2026-04-18T19:07:21+00:00",
-  "last_updated_at": "2026-04-18T19:18:12+00:00",
+  "last_updated_at": "2026-04-18T19:21:56+00:00",
   "configs": [
     {
       "name": "afml_ema50_tb_2atr_1atr_20d_rf_meta",
@@ -45,7 +45,6 @@
     }
   ],
   "tickers_pending": [
-    "GLD",
     "QQQ",
     "SPY",
     "TLT",
@@ -73,6 +72,22 @@
       "median_hold_days": 6.0,
       "result_file_md": "reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/EFA.md",
       "result_file_json": "reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/EFA.json"
+    },
+    {
+      "ticker": "GLD",
+      "frequency": "daily",
+      "window_start": "2004-11-18",
+      "window_end": "2026-04-15",
+      "iter": 46,
+      "n_configs_tested": 1,
+      "best_config": "afml_ema50_tb_2atr_1atr_20d_rf_meta",
+      "best_sharpe_oos": -0.09733031653352074,
+      "best_cagr": -0.00123924123962027,
+      "best_maxdd": -0.02172196068973531,
+      "any_pass_5gate": false,
+      "median_hold_days": 6.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/GLD.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/GLD.json"
     }
   ],
   "tickers_errored": [],
