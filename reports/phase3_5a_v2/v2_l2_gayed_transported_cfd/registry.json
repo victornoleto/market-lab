@@ -11,7 +11,7 @@
     "systematic_trading, ch.8 \u2014 off-regime asset selection (risk-parity)"
   ],
   "started_at": "2026-04-18T17:13:16+00:00",
-  "last_updated_at": "2026-04-18T18:36:05+00:00",
+  "last_updated_at": "2026-04-18T18:39:35+00:00",
   "configs": [
     {
       "name": "gayed_sma200_L2_off_cash",
@@ -420,7 +420,6 @@
     }
   ],
   "tickers_pending": [
-    "gayed_lrs_L3_off_gld",
     "gayed_lrs_L5_off_cash",
     "gayed_lrs_L5_off_tlt",
     "gayed_lrs_L5_off_gld"
@@ -793,6 +792,22 @@
       "median_hold_days": 5.5,
       "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L3_off_tlt.md",
       "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L3_off_tlt.json"
+    },
+    {
+      "ticker": "gayed_lrs_L3_off_gld",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 39,
+      "n_configs_tested": 1,
+      "best_config": "gayed_lrs_L3_off_gld",
+      "best_sharpe_oos": 2.1867916870878688,
+      "best_cagr": 1.197853985744458,
+      "best_maxdd": -0.3163130387887634,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.5,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L3_off_gld.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L3_off_gld.json"
     }
   ],
   "tickers_errored": [],
