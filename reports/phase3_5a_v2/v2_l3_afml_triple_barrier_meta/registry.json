@@ -12,7 +12,7 @@
     "systematic_trading, p.185-188 \u2014 hold economics / cost amortization"
   ],
   "started_at": "2026-04-18T19:07:21+00:00",
-  "last_updated_at": "2026-04-18T19:44:43+00:00",
+  "last_updated_at": "2026-04-18T19:49:47.744143+00:00",
   "configs": [
     {
       "name": "afml_ema50_tb_2atr_1atr_20d_rf_meta",
@@ -240,8 +240,8 @@
     }
   ],
   "tickers_errored": [],
-  "status": "aggregating",
-  "aggregation_iter": null,
-  "aggregate_file_md": null,
-  "aggregate_jornada": null
+  "status": "done",
+  "aggregation_iter": 57,
+  "aggregate_file_md": "reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/AGGREGATE.md",
+  "aggregate_jornada": "jornada/2026-04-19-0115-phase3.5a-v2-L3-afml-triple-barrier-DEAD.md"
 }
