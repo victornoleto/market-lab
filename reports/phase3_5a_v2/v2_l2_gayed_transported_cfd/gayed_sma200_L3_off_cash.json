@@ -1,0 +1,149 @@
+{
+  "config_name": "gayed_sma200_L3_off_cash",
+  "config_entry": {
+    "name": "gayed_sma200_L3_off_cash",
+    "type": "plano_a_leveraged_rotation",
+    "regime_signal": "sma200",
+    "regime_lookback": 200,
+    "leverage": 3,
+    "off_regime_asset": "cash",
+    "risk_on_assets": [
+      "SPY",
+      "QQQ"
+    ],
+    "rebalance_cadence": "daily_close",
+    "direction": "long_only",
+    "broker_model": "pepperstone_razor_cfd"
+  },
+  "universe": [
+    "SPY",
+    "QQQ"
+  ],
+  "universe_size": 2,
+  "off_regime_asset": "cash",
+  "window": {
+    "start": "2001-05-14",
+    "end": "2026-04-14",
+    "n_bars": 6266,
+    "n_switches_total": 310
+  },
+  "splits": {
+    "IS": {
+      "range": [
+        "2001-05-14",
+        "2017-12-31"
+      ],
+      "n_bars": 4185,
+      "sharpe": 1.361469258541355,
+      "cagr": 0.4809082195021901,
+      "max_drawdown": -0.2744215876270688,
+      "final_equity": 679.1805524946992
+    },
+    "OOS": {
+      "range": [
+        "2018-01-01",
+        "2023-12-31"
+      ],
+      "n_bars": 1509,
+      "sharpe": 1.5560412561539358,
+      "cagr": 0.757897382093502,
+      "max_drawdown": -0.3163130387887634,
+      "final_equity": 29.31193755255946
+    },
+    "FWD": {
+      "range": [
+        "2024-01-01",
+        "2026-04-14"
+      ],
+      "n_bars": 572,
+      "sharpe": 1.3712337764996325,
+      "cagr": 0.6222153175431451,
+      "max_drawdown": -0.29865646096073895,
+      "final_equity": 2.9985613549406405
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 1.0,
+    "max_window_drawdown": 0.31631303878876327,
+    "pass": false,
+    "min_profitable_ratio": 0.75,
+    "max_drawdown_cap": 0.25
+  },
+  "hold_metrics": {
+    "median_hold_days": 5.0,
+    "n_switches_total": 310,
+    "switches_by_ticker": {
+      "SPY": 159,
+      "QQQ": 151
+    }
+  },
+  "costs": {
+    "cum_transaction_cost_pct": 0.8445599999999938,
+    "cum_swap_cost_pct": -0.6893249999999627,
+    "spread_half_bps": 2.0,
+    "commission_round_trip_bps": 6.6,
+    "slippage_bps_round_trip": 3.0,
+    "swap_daily_pct_long": -0.005
+  },
+  "last_bar_positions": [
+    {
+      "leg": "SPY",
+      "weight": 1.5
+    },
+    {
+      "leg": "QQQ",
+      "weight": 1.5
+    }
+  ],
+  "runtime_seconds": 0.36,
+  "iter": 19,
+  "produced_at": "2026-04-18T17:29:45+00:00",
+  "verdict_per_config": {
+    "checks": [
+      {
+        "name": "oos_sharpe_gt_0",
+        "pass": true,
+        "value": "1.556"
+      },
+      {
+        "name": "fwd_sharpe_gt_0",
+        "pass": true,
+        "value": "1.371"
+      },
+      {
+        "name": "wf_pass",
+        "pass": false,
+        "value": "6/8"
+      },
+      {
+        "name": "median_hold_ge_3d",
+        "pass": true,
+        "value": "5.0d"
+      },
+      {
+        "name": "oos_cagr_ge_30pct",
+        "pass": true,
+        "value": "75.8%"
+      },
+      {
+        "name": "oos_sharpe_ge_2",
+        "pass": false,
+        "value": "1.556"
+      },
+      {
+        "name": "oos_maxdd_le_25pct",
+        "pass": false,
+        "value": "-31.6%"
+      }
+    ],
+    "n_passed": 4,
+    "n_total": 7,
+    "all_pass_except_cross_config_gates": false,
+    "failed_subset_gates": [
+      "wf_pass",
+      "oos_sharpe_ge_2",
+      "oos_maxdd_le_25pct"
+    ]
+  }
+}
