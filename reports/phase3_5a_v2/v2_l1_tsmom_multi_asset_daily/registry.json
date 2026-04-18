@@ -10,7 +10,7 @@
     "advances_fin_ml, ch.8"
   ],
   "started_at": "2026-04-18T16:29:44+00:00",
-  "last_updated_at": "2026-04-18T16:29:44+00:00",
+  "last_updated_at": "2026-04-18T16:39:20+00:00",
   "configs": [
     {
       "name": "tsmom_lb01m_vt10",
@@ -134,8 +134,6 @@
     }
   ],
   "tickers_pending": [
-    "tsmom_lb01m_vt10",
-    "tsmom_lb01m_vt15",
     "tsmom_lb01m_vt20",
     "tsmom_lb03m_vt10",
     "tsmom_lb03m_vt15",
@@ -147,9 +145,42 @@
     "tsmom_lb12m_vt15",
     "tsmom_lb12m_vt20"
   ],
-  "tickers_done": [],
+  "tickers_done": [
+    {
+      "ticker": "tsmom_lb01m_vt10",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-17",
+      "iter": 3,
+      "n_configs_tested": 1,
+      "best_config": "tsmom_lb01m_vt10",
+      "best_sharpe_oos": 0.0,
+      "best_cagr": 0.0,
+      "best_maxdd": 0.0,
+      "any_pass_5gate": false,
+      "median_hold_days": 42.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/tsmom_lb01m_vt10.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/tsmom_lb01m_vt10.json"
+    },
+    {
+      "ticker": "tsmom_lb01m_vt15",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-17",
+      "iter": 3,
+      "n_configs_tested": 1,
+      "best_config": "tsmom_lb01m_vt15",
+      "best_sharpe_oos": -1.1175225338126868,
+      "best_cagr": -0.034041721328587515,
+      "best_maxdd": -0.23120822153164255,
+      "any_pass_5gate": false,
+      "median_hold_days": 41.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/tsmom_lb01m_vt15.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/tsmom_lb01m_vt15.json"
+    }
+  ],
   "tickers_errored": [],
-  "status": "pending",
+  "status": "sweeping",
   "aggregation_iter": null,
   "aggregate_file_md": null,
   "aggregate_jornada": null,

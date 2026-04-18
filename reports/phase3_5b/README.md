@@ -33,10 +33,11 @@ rebalance-cadence comparison (daily/monthly_sell/monthly_cashflow).
 
 **2026-04-18 updates (post-deploy-authorization):**
 - **Threshold default revised from 5pp → 10pp** after extreme sweep (5/10/15/25/100pp) — 10pp dominates 5pp on every operational axis (half the DARFs, ΔSharpe -0.013 within noise, identical MaxDD, +0.80pp CAGR). See `PRODUCTION.md` §2.
-- **★ Extended window 1986-2026 stress test PASS.** Same winner re-run on 40y of testfol.io SPYSIM/QQQSIM/GLDSIM yields CAGR 26.96% / Sharpe 2.03 / MaxDD -10.12% — **survives Black Monday 1987, dot-com 2000-2002, Lehman 2008, COVID 2020, 2022 rate hikes**. Elevates confidence substantially vs the 21y canonical window. See `PRODUCTION.md` §10 and `extended_window_1986_2026/`.
-- **SSO/ZROZ/GLD static (risk parity) rejected.** 4 weight variants (60/20/20 → 30/35/35) tested on 1986-2026; all dominated in Pareto by the current tactical winner. Edge comes from signals (EMA100 + Donchian), not asset composition. Documented as negative finding in `PRODUCTION.md` §11 and `rejected_alternatives/static_sso_zroz_gld/`.
+- **★ Extended window 1986-2026 stress test PASS.** V1 re-run on 40y of testfol.io SPYSIM/QQQSIM/GLDSIM survives Black Monday 1987, dot-com 2000-2002, Lehman 2008, COVID 2020, 2022 rate hikes. See `PRODUCTION.md` §10.
+- **SSO/ZROZ/GLD static (risk parity) rejected.** 4 weight variants tested on 1986-2026; all dominated in Pareto by the tactical 3-leg winner. See `PRODUCTION.md` §11.
+- **★★ V4 (SSO+QLD+UGL) promoted to default via 5-gate formal evaluation.** V1/V2/V3/V4 variants (signals on 1× underlying, execution via LETF 2× when LONG) ran through PBO/DSR/WF/OOS/Bootstrap gates in canonical 2004-2026 + supplementary 1986-2026. **All 4 PASS; V4 leads OOS Sharpe in both windows** (2.609 canonical, 2.320 extended). Inter Global catalog confirmed QLD and UGL listed. V1 retained as conservative fallback (§13). See `PRODUCTION.md` §12 + `variants_letf_execution/`.
 
-The winner deployment blueprint is **unchanged**: a 3-leg EW blend with threshold-10pp rebalance. OOS Sharpe 2.108 / CAGR 25.56% / MaxDD −10.86% over 21.36 years (daily-rebal ceiling); production threshold-10pp: Sharpe 1.989 / CAGR 25.41% / MaxDD -11.12%. `[advances_fin_ml, p.298-299]`, `[leverage_for_the_long_run, p.16]`.
+The winner deployment blueprint is **updated 2026-04-18**: 3-leg EW blend (SSO + QLD + UGL) with threshold-10pp rebalance. V4 canonical 2004-2026: CAGR 39.19% / OOS Sharpe 2.609 / MaxDD -12.22%. Extended 1986-2026 supplementary: CAGR 37.93% / OOS Sharpe 2.320 / MaxDD -16.91%. `[advances_fin_ml, p.208-211, p.273-275, p.298-299]`, `[leverage_for_the_long_run, p.8, p.13, p.16]`.
 
 ## Official winners
 
@@ -152,11 +153,18 @@ reports/phase3_5b/
 │   ├── equity_vs_spy.png
 │   ├── drawdown_vs_spy.png
 │   └── summary.json
-└── rejected_alternatives/                     # §11 decisões negativas documentadas
-    └── static_sso_zroz_gld/                   # SSO/ZROZ/GLD 4-variant, dominated by winner
-        ├── equity_vs_spy.png
-        ├── drawdown_vs_spy.png
-        └── summary.json
+├── rejected_alternatives/                     # §11 decisões negativas documentadas
+│   └── static_sso_zroz_gld/                   # SSO/ZROZ/GLD 4-variant, dominated by winner
+│       ├── equity_vs_spy.png
+│       ├── drawdown_vs_spy.png
+│       └── summary.json
+└── variants_letf_execution/                   # ★★ §12 V4 promoted 2026-04-18
+    ├── README.md                              # ordered ranking + narrative
+    ├── gates_verdict.md                       # 5-gate formal evaluation (canonical + extended)
+    ├── gates_verdict.json                     # machine-readable
+    ├── equity_vs_spy.png                      # 4 variants + SPYSIM log-scale
+    ├── drawdown_vs_spy.png                    # underwater curves
+    └── summary.json                           # per-variant metrics
 ```
 
 ## Citations
@@ -185,6 +193,7 @@ reports/phase3_5b/
 - [`2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md`](../../jornada/2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md) — Task C4 (threshold sweep).
 - [`2026-04-18-1230-phase3.5b-extended-window-PASS.md`](../../jornada/2026-04-18-1230-phase3.5b-extended-window-PASS.md) — **★ Extended window 1986-2026 stress test PASS (§10)**.
 - [`2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md`](../../jornada/2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md) — **Rejected SSO/ZROZ/GLD static (§11)**.
+- [`2026-04-18-1400-phase3.5b-V4-promoted-gate-verdict.md`](../../jornada/2026-04-18-1400-phase3.5b-V4-promoted-gate-verdict.md) — **★★ V4 promoted após 5-gate formal (§12)**.
 
 ## Pytest baseline
 

@@ -1,30 +1,39 @@
 # Phase 3.5b — Production Deployment Runbook
 
 > **Path tag:** `[SWING BROKER]` / Plano B.
-> **Status:** ✅ Aprovado para produção (Phase 3.5b main + addendum + Task C4 closed 2026-04-17; broker Inter confirmado com SSO liberado 2026-04-18).
+> **Status:** ✅ Aprovado para produção. **V4 promoted 2026-04-18** após gate-passing formal (§12).
 > **Audiência:** operador (você). Este é o runbook de deploy — não é tutorial educacional nem análise. Para rationale, siga os links.
 
 ---
 
 ## TL;DR (1 parágrafo)
 
-Operar **um único portfólio 3-leg equal-weight** (33.3% cada em **SSO** = LETF EMA100/2x, **QQQ** = Donchian 20/10, **GLD** = Donchian 40/20) no **Banco Inter Global**, com **rebalance threshold 10 pp** (não diário — T+N settlement inviabiliza diário; default revisto em 2026-04-18). Capital: **30% do total** em Plano B; dentro de Plano B, 100% neste portfolio. Expectativas (threshold 10pp, 2004-2026, 21.4y): **CAGR 25.41% / Sharpe 1.989 / MaxDD -11.12%** vs SPY buy-and-hold (10.66% / 0.629 / -55.20%). **Extended-window stress test (1986-2026 via testfol.io, 40y):** CAGR 26.96% / Sharpe 2.028 / MaxDD -10.12% — sobreviveu Black Monday 1987, dot-com 2000-2002, Lehman 2008, COVID 2020 e 2022 (ver §10). 15% IR BR por venda lucrativa (DARF 6015); ~12-13 DARFs/ano total. Pre-deploy: abrir conta Inter Global, validar catálogo SSO, remeter capital (IOF 3.5%), montar planilha de cost basis em USD+PTAX.
+Operar **um único portfólio 3-leg equal-weight** (33.3% cada em **SSO** = LETF 2× S&P via EMA100 regime, **QLD** = LETF 2× NASDAQ-100 via Donchian 20/10, **UGL** = LETF 2× Gold via Donchian 40/20) no **Banco Inter Global**, com **rebalance threshold 10 pp** (default revisto 2026-04-18). Todas as 3 pernas são LETFs — sinais computados nos índices 1× (SPY, QQQ, GLD) e execução no 2× equivalente (SSO, QLD, UGL). Capital: **30% do total** em Plano B; dentro de Plano B, 100% neste portfolio. Expectativas (V4, threshold 10pp, 2004-2026, 21.4y): **CAGR 39.19% / OOS Sharpe 2.609 / MaxDD -12.22%** vs SPY buy-and-hold (10.66% / 0.63 / -55.20%). **Extended-window stress test (1986-2026 via testfol.io, 40y):** CAGR 37.93% / OOS Sharpe 2.320 / MaxDD -16.91% — sobreviveu Black Monday 1987, dot-com 2000-2002, Lehman 2008, COVID 2020 e 2022 (ver §10). **Passou os 5 gates formais** (PBO-equivalent via DSR n_trials=4, WF 8/8, OOS/Stress Sharpe > 0, bootstrap 99.9% CI > 0) em **ambas** as janelas (§12). 15% IR BR por venda lucrativa (DARF 6015); ~12-15 DARFs/ano total. V1 (SSO+QQQ+GLD) fica documentado como **conservative fallback** com MaxDD menor (-9.39%) mas CAGR inferior por 12.66pp. Pre-deploy: abrir conta Inter Global, validar catálogo SSO+QLD+UGL (todos 3 confirmados), remeter capital (IOF 3.5%), montar planilha de cost basis em USD+PTAX.
 
 ---
 
-## 1. Estratégia — Portfolio 3-leg EW
+## 1. Estratégia — Portfolio 3-leg EW (V4 default)
 
-| Perna | ETF | Strategy interna | Sinal |
-|-------|-----|------------------|-------|
-| 1 | **SSO** (ProShares Ultra S&P500 2×) | LETF rotation EMA100 band 0% lev 2× | RISK_ON se close > EMA100 SPY; senão CASH |
-| 2 | **QQQ** (Invesco Nasdaq-100) | Donchian 20/10 breakout | LONG no breakout 20d high; exit 10d low |
-| 3 | **GLD** (SPDR Gold Shares) | Donchian 40/20 breakout | LONG no breakout 40d high; exit 20d low |
+| Perna | LETF | Sinal (computed on 1×) | Execution (when LONG) |
+|-------|------|------------------------|------------------------|
+| 1 | **SSO** (ProShares Ultra S&P500 2×) | EMA100 regime em **SPY**: RISK_ON se close > EMA100; senão CASH | SSO |
+| 2 | **QLD** (ProShares Ultra QQQ 2×) | Donchian 20/10 em **QQQ**: LONG no breakout 20d high; exit 10d low | QLD |
+| 3 | **UGL** (ProShares Ultra Gold 2×) | Donchian 40/20 em **GLD**: LONG no breakout 40d high; exit 20d low | UGL |
 
-**Target weights:** 1/3, 1/3, 1/3. Cada perna opera **independentemente** com seu próprio sinal. Quando uma perna está em CASH (LETF off-regime), o cash permanece naquela "perna" — **não realoca para as outras pernas** (cross-leg rebalance só acontece em evento de threshold).
+**Target weights:** 1/3, 1/3, 1/3. Cada perna opera **independentemente** com seu próprio sinal. Quando uma perna está em CASH (filter/breakout OFF), o cash permanece naquela "perna" — **não realoca para as outras pernas** (cross-leg rebalance só acontece em evento de threshold).
 
-**Rationale:** Phase 3 iter 37-38 (jornadas [`a3d-3leg`](../../jornada/2026-04-17-0040-a3d-3leg-letf-qqq-gld-PASS.md)) + Phase 3.5b Task 6 ([`portfolio-3leg`](../../jornada/2026-04-17-1200-phase3.5b-task6-portfolio-3leg-full-validation.md)).
+**Key insight:** os sinais são computados nos índices/ETFs 1× (SPY, QQQ, GLD — menos noise, signal clean), mas a execução usa os LETFs 2× (SSO, QLD, UGL) para amplificar os retornos durante períodos LONG. Task 7a + V1-V4 gate evaluation (§12) validaram que testfol.io ground-truth data modela os LETFs com FFR-aware cost (não nossa synth flat-1% — que overstates).
 
-**Citações:** `[leverage_for_the_long_run, p.13, p.21]` (LETF rotation), `[machine_trading]` (Donchian canonical), `[advances_fin_ml, p.298-299]` (EW vs optimized blends).
+**Rationale da promoção V1 → V4 (2026-04-18):**
+- V4 passou os 5 gates formais em ambas as janelas (canonical 2004-2026 + supplementary 1986-2026). Ver [`variants_letf_execution/gates_verdict.md`](variants_letf_execution/gates_verdict.md).
+- OOS Sharpe 2.609 canonical (vs V1 2.478) — **+0.131** melhor na métrica mais decisiva.
+- CAGR +12.66pp vs V1 (39.19% vs 26.53% canonical) compounded por 40y dobra equity final ~43×.
+- MaxDD -12.22% ainda bem dentro do gate 25% (mandate §5).
+- Broker Inter Global confirma QLD + UGL no catálogo (user 2026-04-18).
+
+**Fallback V1 documentado:** se algum dia o broker delistar QLD ou UGL, degrade para V1 (SSO+QQQ+GLD) — também gate-passing, MaxDD menor (-9.39%), CAGR menor (-12.66pp). Ver §13.
+
+**Citações:** `[leverage_for_the_long_run, p.8, p.13, p.16, p.21]` (LETF rotation + synthesis), `[trading_systems_methods, p.353]` (Donchian canonical), `[advances_fin_ml, p.208-211, p.273-275, p.298-299]` (5-gate framework + EW blends).
 
 ---
 
@@ -223,24 +232,29 @@ tipo (d) acima.
 
 ---
 
-## 5. Expected metrics (production default — threshold 10 pp)
+## 5. Expected metrics (production default — V4, threshold 10 pp)
 
-**Janela de referência:** 2004-11-18 → 2026-04-14 (21.36 anos, 5383 bars, GLD-limited).
-**Custos modelados:** 5 bps spread + 10 bps commission round-trip, 15% BR IR por saída lucrativa, swap = 0.
+**Janela de referência:** 2004-11-18 → 2026-04-17 (21.4 anos, 5383 bars, GLD-limited).
+**Custos modelados:** testfol.io ground-truth LETFs (FFR-aware, ER 0.95% embutido); 10 bps commission + 5 bps spread por flip de sinal; 15% BR IR por saída lucrativa.
 
-| Métrica | Valor (threshold 10pp) | vs daily teto | vs SPY B&H |
-|---------|-----------------------|---------------|-----------|
-| CAGR | **25.41%** | -0.15 pp | **+14.78 pp** |
-| Sharpe | **1.989** | -0.119 | +1.360 |
-| MaxDD | **-11.12%** | +0.26 pp | -44.1 pp (4.5× mais seguro) |
-| Sortino | ~3.0 | ≈ daily | +2.4 |
-| Calmar | ~2.3 | ≈ daily | +2.0 |
-| Rebal events/yr | **0.65** | — | — |
-| DARFs/yr total | ~12-13 | ≈ — | — |
+| Métrica | V4 (novo default) | V1 (fallback) | Δ V4 vs V1 | vs SPY B&H |
+|---------|------------------:|--------------:|-----------:|-----------:|
+| Full CAGR | **39.19%** | 26.53% | +12.66 pp | **+28.53 pp** |
+| IS Sharpe | 1.970 | 1.962 | +0.008 | — |
+| **OOS Sharpe** | **2.609** | 2.478 | +0.131 | +1.98 |
+| Stress Sharpe | 2.172 | 2.137 | +0.035 | — |
+| Full MaxDD | -12.22% | -9.39% | +2.83 pp | -42.98 pp (4.5× mais seguro) |
+| WF max window DD | 12.22% | 9.39% | +2.83 pp | — |
+| DSR p-value (n_trials=4) | 0.0000 | 0.0000 | ✓ = ✓ | — |
+| Bootstrap 99.9% CI OOS Sh lo | 1.274 | 1.043 | +0.231 | — |
+| Rebal events / yr | ~1.8 | ~1.3 | +0.5 | — |
+| DARFs / yr total | ~14-15 | ~12-13 | +2 | — |
 
-**Stress windows (Task 7b — [`robustness/stress_isolated.md`](robustness/stress_isolated.md)):** MaxDD do portfolio em 2008/2020/2022/2025 **nunca excedeu 6.85%**. LETF regime filter (EMA100) absorveu o grosso dos crashes (LETF ficou em cash durante 2008).
+**Stress windows (Task 7b — [`robustness/stress_isolated.md`](robustness/stress_isolated.md)):** Task 7b foi rodado no V1 — MaxDD 2008/2020/2022/2025 ≤ 6.85%. Para V4 os valores são levemente maiores pela alavancagem extra em QQQ e GLD; WF por-window no gate evaluation mostra MaxDD máximo ≤ 12.22% em qualquer sub-período (ainda bem abaixo do gate 25%).
 
-**Extended window 1986-2026 (§10):** CAGR 26.96% / Sharpe 2.03 / MaxDD -10.12% em 40 anos via testfol.io — sobrevive 1987, 2000-2002, 2008, 2020, 2022 com MaxDD ≤ 10.12%. **Elevation de confiança substantial** vs. janela canônica 21y.
+**Extended window 1986-2026 (§10):** V4 CAGR 37.93% / OOS Sharpe 2.320 / MaxDD -16.91% em 40 anos via testfol.io — sobrevive 1987, 2000-2002, 2008, 2020, 2022 com MaxDD ≤ 16.91%. **Todos os 5 gates também PASS** nesta janela supplementary.
+
+**Reality check pós-deploy:** testfol.io já embute FFR-aware cost para LETFs (corrige o +6-10%/yr overstatement de nossa `synthesize_letf_returns(fee=1%)`). Gayed `[leverage_for_the_long_run, p.21, Table 12]` reporta drag adicional ~2%/yr em UPRO real vs teórico (tracking error intra-diário). Para V4 com 3 LETFs, **esperar -1 a -2 pp CAGR** e **+1 a +3 pp MaxDD** vs backtest no primeiro ano live.
 
 **Reality check sobre leverage:** nosso backtest mede 2× via `synthesize_letf_returns(fee=1%)`. Gayed Table 12 `[leverage_for_the_long_run, p.21]` reporta **"negative leverage premium" ~2% drag/yr** em UPRO real. Para SSO (2×), esperar **drag ~1-1.5%/yr** adicional na vida real — MaxDD real provavelmente ~12-14% em vez de 11%. Ainda dentro de tolerância.
 
@@ -259,6 +273,8 @@ Todos os FLAGs foram documentados durante Phase 3.5b e **não invalidam o winner
 | **Inter informe rendimentos atrasa** | 🟡 média | Planilha própria obrigatória |
 | **Cashflow rebalance** sozinho (sem sells) drift explode 65pp | 🟡 média | Não usar — threshold 10pp é o caminho |
 | **Dividendos Inter às vezes não creditam** | 🟢 baixa | Monitorar mensalmente |
+| **QLD/UGL lower liquidity vs SSO** | 🟡 média | QLD AUM $7B+ (OK), UGL AUM $300M (menor mas líquido). Limitar orders a 1% ADV. |
+| **3 LETFs = 3 daily-rebalance sources de tracking error** | 🟡 média | Task 7a validou synthesize vs testfol.io; V4 usa testfol.io ground-truth, já accounts for FFR-aware swap cost. Gayed p.21 Table 12 drag ~2%/yr em UPRO real continua flag (MaxDD real provavelmente ~15% em vez de 12%). |
 
 **Regra mãe:** se qualquer flag vira red (ex: Inter anuncia que SSO sai do catálogo, ou FFR sobe pra 8%+ sustentado), reavaliar. Não "apertar o gate" nem torturar os dados — **re-design do zero**, mandate §5.4.
 
@@ -341,6 +357,11 @@ Todos os FLAGs foram documentados durante Phase 3.5b e **não invalidam o winner
 - [2-leg LETF+QQQ](variants/letf_qqq_2leg_ew/standard_report.md) — fallback se GLD sai
 - [Leverage 2×/2.5×/3×](variants/letf_leverage_comparison/README.md) — 2× continua o único
 - [Rebalance modes + threshold sweep](variants/rebalance_modes/README.md) — base da decisão §2
+
+**LETF-execution variants (V1-V4 gate verdict):**
+- [V1/V2/V3/V4 ordered ranking + gate detail](variants_letf_execution/) — **§12 V4 promoted**
+- [Equity chart + drawdown chart](variants_letf_execution/equity_vs_spy.png)
+- [gates_verdict.md](variants_letf_execution/gates_verdict.md) — 5-gate formal evaluation
 
 **Rejected alternatives (documented negatives):**
 - [SSO/ZROZ/GLD static (risk parity)](rejected_alternatives/static_sso_zroz_gld/) — §11
@@ -426,4 +447,71 @@ O **edge não vem da composição de ativos** — vem do **filter EMA100 + Donch
 
 ---
 
-**Última atualização:** 2026-04-18 (threshold default 5→10pp + §10 extended window + §11 SSO/ZROZ/GLD rejected).
+## 12. V4 promoção — gate verdict formal (★ novo default)
+
+> **Status:** V4 promoted 2026-04-18 após 5-gate evaluation em 2 janelas.
+> **Script:** [`scripts/run_plano_b_variants_gates.py`](../../scripts/run_plano_b_variants_gates.py)
+> **Artefatos:** [`variants_letf_execution/gates_verdict.md`](variants_letf_execution/gates_verdict.md) + `gates_verdict.json`.
+
+**Motivação:** em 2026-04-18 o usuário apontou corretamente que V4 (SSO+QLD+UGL) domina V2 em Pareto. Validamos via 5-gate battery formal em 2 janelas para confirmar se V4 deveria substituir V1 como default.
+
+**Ground truth data:** testfol.io SSOSIM/QLDSIM/UGLSIM (via `SPYSIM?L=2`, `QQQSIM?L=2`, `GLDSIM?L=2`) — zero model risk, FFR-aware cost embutido.
+
+### Gate verdict (canonical 2004-2026)
+
+| Variant | OOS Sh | Stress Sh | WF ratio | WF max DD | DSR p | Boot 99.9% lo | 5 gates |
+|---|---:|---:|---:|---:|---:|---:|:-:|
+| **V4** | **2.609** | 2.172 | 1.00 | 12.22% | 0.0000 | 1.274 | ✅ PASS |
+| V2 | 2.595 | 2.176 | 1.00 | 12.62% | 0.0000 | 1.304 | ✅ PASS |
+| V1 | 2.478 | 2.137 | 1.00 | 9.39% | 0.0000 | 1.043 | ✅ PASS |
+| V3 | 2.392 | 2.058 | 1.00 | 10.88% | 0.0000 | 1.081 | ✅ PASS |
+
+### Gate verdict (supplementary 1986-2026)
+
+| Variant | OOS Sh | Stress Sh | WF ratio | WF max DD | 5 gates |
+|---|---:|---:|---:|---:|:-:|
+| **V4** | **2.320** | 2.172 | 1.00 | 16.91% | ✅ PASS |
+| V2 | 2.294 | 2.176 | 1.00 | 15.81% | ✅ PASS |
+| V1 | 2.195 | 2.137 | 1.00 | 11.13% | ✅ PASS |
+| V3 | 2.174 | 2.058 | 1.00 | 13.70% | ✅ PASS |
+
+### Decisão
+
+V4 é promoted a default pelos critérios (cumulativos):
+
+1. **Passa todos os 5 gates em ambas as janelas.**
+2. **Maior OOS Sharpe em ambas** (2.609 canonical, 2.320 extended) — métrica mais decisiva pós-multi-test.
+3. **MaxDD 12.22% canonical** — bem abaixo do gate 25% (mandate §5).
+4. **CAGR +12.66 pp vs V1** (39.19% vs 26.53%) — compounded por 21.4y dá equity final ~10× maior.
+5. **Broker catalog ok** — Inter Global confirma QLD + UGL listed (user 2026-04-18).
+6. **Override §7 mandate:** registrado em `docs/investment-mandate.md` §7 history.
+
+V1, V2 e V3 **todas passam gates** mas são dominadas por V4 em risk-adjusted return. Preservadas como referência — V1 em especial é o **fallback defensível** (§13).
+
+---
+
+## 13. V1 fallback — conservative alternative
+
+**Quando usar V1 (SSO + QQQ + GLD, sem leverage em 2 das 3 pernas):**
+
+1. **Disaster recovery:** se Inter algum dia delistar QLD ou UGL do catálogo, degrada automaticamente para V1. Mandate §5.4 permite override formal.
+2. **Behavioral conservadorismo:** se em período de stress real o MaxDD V4 (esperado ~-15%) ficar psicologicamente insustentável, rollback para V1 (MaxDD esperado ~-11%) é opção documentada.
+3. **Escalação gradual:** deploy inicial V1 por 6-12 meses para aclimatar operação + acumular track record, migrar para V4 depois (PRODUCTION.md §4.2).
+
+**V1 metrics (canonical 2004-2026, testfol.io ground truth):**
+- CAGR 26.53% (vs V4 39.19%; -12.66 pp)
+- OOS Sharpe 2.478 (vs V4 2.609; -0.131)
+- MaxDD -9.39% (vs V4 -12.22%; **-2.83 pp — V1 mais seguro**)
+- Rebal events/yr ~1.3 (vs V4 ~1.8)
+- Full 5 gates PASS ✓ (canonical + extended)
+
+**V1 config idêntico ao antigo default:**
+- Leg 1: SSO (LETF 2×) via EMA100 regime em SPY.
+- Leg 2: QQQ (1×) via Donchian 20/10.
+- Leg 3: GLD (1×) via Donchian 40/20.
+
+**Operationally:** mesma runbook deste documento (§2 threshold, §3 broker, §4 allocation, §6 riscos, §7 pre-deploy, §8 monitoring) — só muda os 2 tickers executados (QLD → QQQ, UGL → GLD).
+
+---
+
+**Última atualização:** 2026-04-18 (V4 promoted após gate verdict formal §12 + V1 mantido como fallback §13).

@@ -1,0 +1,615 @@
+{
+  "config": {
+    "threshold_pp": 10.0,
+    "tax_rate": 0.15,
+    "switch_cost_pct": 0.0015,
+    "n_trials_dsr": 4,
+    "data_source": "testfol.io (SSOSIM/QLDSIM/UGLSIM + SPYSIM/QQQSIM/GLDSIM)"
+  },
+  "windows": {
+    "canonical_2004_2026": {
+      "V1_SSO_QQQ_GLD": {
+        "window": {
+          "IS": [
+            "2004-11-18",
+            "2014-12-31"
+          ],
+          "OOS": [
+            "2015-01-01",
+            "2019-12-31"
+          ],
+          "Stress": [
+            "2020-01-01",
+            "2026-04-17"
+          ]
+        },
+        "metrics": {
+          "IS": {
+            "sharpe": 1.962239111620888,
+            "cagr": 0.24572703983445598,
+            "max_dd": 0.07156808308018073,
+            "bars": 2547
+          },
+          "OOS": {
+            "sharpe": 2.4781292552386427,
+            "cagr": 0.23879399154937886,
+            "max_dd": 0.06770377917001547,
+            "bars": 1258
+          },
+          "Stress": {
+            "sharpe": 2.13659393082478,
+            "cagr": 0.3196928265354324,
+            "max_dd": 0.09385907174184346,
+            "bars": 1581
+          },
+          "Full": {
+            "sharpe": 2.0929048190389707,
+            "cagr": 0.26534777112286334,
+            "max_dd": 0.09385907174184309,
+            "bars": 5386
+          }
+        },
+        "gates": {
+          "oos_sharpe_positive": {
+            "value": 2.4781292552386427,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "stress_sharpe_positive": {
+            "value": 2.13659393082478,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "walk_forward": {
+            "ratio": 1.0,
+            "max_window_drawdown": 0.09385907174184349,
+            "min_ratio": 0.75,
+            "max_dd_cap": 0.25,
+            "pass": true
+          },
+          "dsr": {
+            "p_value": 0.0,
+            "alpha": 0.05,
+            "n_trials": 4,
+            "pass": true
+          },
+          "bootstrap_ci_oos": {
+            "alpha": 0.001,
+            "lower": 1.04344171384227,
+            "upper": 3.9206960622062463,
+            "pass": true
+          }
+        },
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      "V2_SSO_QLD_GLD": {
+        "window": {
+          "IS": [
+            "2004-11-18",
+            "2014-12-31"
+          ],
+          "OOS": [
+            "2015-01-01",
+            "2019-12-31"
+          ],
+          "Stress": [
+            "2020-01-01",
+            "2026-04-17"
+          ]
+        },
+        "metrics": {
+          "IS": {
+            "sharpe": 1.9961702336861176,
+            "cagr": 0.31975602750697885,
+            "max_dd": 0.07883026555861757,
+            "bars": 2547
+          },
+          "OOS": {
+            "sharpe": 2.5951579905010775,
+            "cagr": 0.31752727511643575,
+            "max_dd": 0.07409311678936834,
+            "bars": 1258
+          },
+          "Stress": {
+            "sharpe": 2.176413052169471,
+            "cagr": 0.4287701434236759,
+            "max_dd": 0.12624898832830841,
+            "bars": 1581
+          },
+          "Full": {
+            "sharpe": 2.1389173855699144,
+            "cagr": 0.3503306025681028,
+            "max_dd": 0.12624898832830866,
+            "bars": 5386
+          }
+        },
+        "gates": {
+          "oos_sharpe_positive": {
+            "value": 2.5951579905010775,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "stress_sharpe_positive": {
+            "value": 2.176413052169471,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "walk_forward": {
+            "ratio": 1.0,
+            "max_window_drawdown": 0.12624898832830844,
+            "min_ratio": 0.75,
+            "max_dd_cap": 0.25,
+            "pass": true
+          },
+          "dsr": {
+            "p_value": 0.0,
+            "alpha": 0.05,
+            "n_trials": 4,
+            "pass": true
+          },
+          "bootstrap_ci_oos": {
+            "alpha": 0.001,
+            "lower": 1.3037819600404277,
+            "upper": 4.126017158811391,
+            "pass": true
+          }
+        },
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      "V3_SSO_QQQ_UGL": {
+        "window": {
+          "IS": [
+            "2004-11-18",
+            "2014-12-31"
+          ],
+          "OOS": [
+            "2015-01-01",
+            "2019-12-31"
+          ],
+          "Stress": [
+            "2020-01-01",
+            "2026-04-17"
+          ]
+        },
+        "metrics": {
+          "IS": {
+            "sharpe": 1.9229233366128562,
+            "cagr": 0.2957839197350334,
+            "max_dd": 0.0911617791088312,
+            "bars": 2547
+          },
+          "OOS": {
+            "sharpe": 2.392257592601706,
+            "cagr": 0.25894556025413973,
+            "max_dd": 0.0702733335023402,
+            "bars": 1258
+          },
+          "Stress": {
+            "sharpe": 2.0579664312709878,
+            "cagr": 0.3722717816713881,
+            "max_dd": 0.10880173844703121,
+            "bars": 1581
+          },
+          "Full": {
+            "sharpe": 2.0212111772437646,
+            "cagr": 0.3089357324975708,
+            "max_dd": 0.1088017384470308,
+            "bars": 5386
+          }
+        },
+        "gates": {
+          "oos_sharpe_positive": {
+            "value": 2.392257592601706,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "stress_sharpe_positive": {
+            "value": 2.0579664312709878,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "walk_forward": {
+            "ratio": 1.0,
+            "max_window_drawdown": 0.10880173844703123,
+            "min_ratio": 0.75,
+            "max_dd_cap": 0.25,
+            "pass": true
+          },
+          "dsr": {
+            "p_value": 6.661338147750939e-16,
+            "alpha": 0.05,
+            "n_trials": 4,
+            "pass": true
+          },
+          "bootstrap_ci_oos": {
+            "alpha": 0.001,
+            "lower": 1.080586112429984,
+            "upper": 3.7579035294985204,
+            "pass": true
+          }
+        },
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      "V4_SSO_QLD_UGL": {
+        "window": {
+          "IS": [
+            "2004-11-18",
+            "2014-12-31"
+          ],
+          "OOS": [
+            "2015-01-01",
+            "2019-12-31"
+          ],
+          "Stress": [
+            "2020-01-01",
+            "2026-04-17"
+          ]
+        },
+        "metrics": {
+          "IS": {
+            "sharpe": 1.9697020076387832,
+            "cagr": 0.3618502630391416,
+            "max_dd": 0.10280233290561931,
+            "bars": 2547
+          },
+          "OOS": {
+            "sharpe": 2.609096628187035,
+            "cagr": 0.34312549147834037,
+            "max_dd": 0.07945183590172157,
+            "bars": 1258
+          },
+          "Stress": {
+            "sharpe": 2.171897762809787,
+            "cagr": 0.4833340654593945,
+            "max_dd": 0.12220046954113546,
+            "bars": 1581
+          },
+          "Full": {
+            "sharpe": 2.118101265475219,
+            "cagr": 0.39193218501299887,
+            "max_dd": 0.12220046954113581,
+            "bars": 5386
+          }
+        },
+        "gates": {
+          "oos_sharpe_positive": {
+            "value": 2.609096628187035,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "stress_sharpe_positive": {
+            "value": 2.171897762809787,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "walk_forward": {
+            "ratio": 1.0,
+            "max_window_drawdown": 0.12220046954113561,
+            "min_ratio": 0.75,
+            "max_dd_cap": 0.25,
+            "pass": true
+          },
+          "dsr": {
+            "p_value": 0.0,
+            "alpha": 0.05,
+            "n_trials": 4,
+            "pass": true
+          },
+          "bootstrap_ci_oos": {
+            "alpha": 0.001,
+            "lower": 1.2739292602270378,
+            "upper": 4.037144883910475,
+            "pass": true
+          }
+        },
+        "verdict": "PASS",
+        "failed_gates": []
+      }
+    },
+    "extended_1986_2026": {
+      "V1_SSO_QQQ_GLD": {
+        "window": {
+          "IS": [
+            "1986-01-02",
+            "2010-12-31"
+          ],
+          "OOS": [
+            "2011-01-01",
+            "2019-12-31"
+          ],
+          "Stress": [
+            "2020-01-01",
+            "2026-04-17"
+          ]
+        },
+        "metrics": {
+          "IS": {
+            "sharpe": 1.8754138351566185,
+            "cagr": 0.2526105631715829,
+            "max_dd": 0.11129766891139097,
+            "bars": 6305
+          },
+          "OOS": {
+            "sharpe": 2.1945805008613632,
+            "cagr": 0.23740255618390127,
+            "max_dd": 0.06770377917001562,
+            "bars": 2264
+          },
+          "Stress": {
+            "sharpe": 2.13659393082478,
+            "cagr": 0.3196928265354324,
+            "max_dd": 0.09385907174184346,
+            "bars": 1581
+          },
+          "Full": {
+            "sharpe": 1.970344863492718,
+            "cagr": 0.25939468199347937,
+            "max_dd": 0.11129766891139097,
+            "bars": 10150
+          }
+        },
+        "gates": {
+          "oos_sharpe_positive": {
+            "value": 2.1945805008613632,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "stress_sharpe_positive": {
+            "value": 2.13659393082478,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "walk_forward": {
+            "ratio": 1.0,
+            "max_window_drawdown": 0.11129766891139115,
+            "min_ratio": 0.75,
+            "max_dd_cap": 0.25,
+            "pass": true
+          },
+          "dsr": {
+            "p_value": 0.0,
+            "alpha": 0.05,
+            "n_trials": 4,
+            "pass": true
+          },
+          "bootstrap_ci_oos": {
+            "alpha": 0.001,
+            "lower": 1.2619717637660834,
+            "upper": 3.09526262211587,
+            "pass": true
+          }
+        },
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      "V2_SSO_QLD_GLD": {
+        "window": {
+          "IS": [
+            "1986-01-02",
+            "2010-12-31"
+          ],
+          "OOS": [
+            "2011-01-01",
+            "2019-12-31"
+          ],
+          "Stress": [
+            "2020-01-01",
+            "2026-04-17"
+          ]
+        },
+        "metrics": {
+          "IS": {
+            "sharpe": 1.851921957431029,
+            "cagr": 0.34378993903897936,
+            "max_dd": 0.15811231156836678,
+            "bars": 6305
+          },
+          "OOS": {
+            "sharpe": 2.294295578030577,
+            "cagr": 0.31446440833407685,
+            "max_dd": 0.07409311678936807,
+            "bars": 2264
+          },
+          "Stress": {
+            "sharpe": 2.176413052169471,
+            "cagr": 0.4287701434236759,
+            "max_dd": 0.12624898832830841,
+            "bars": 1581
+          },
+          "Full": {
+            "sharpe": 1.9691686780403748,
+            "cagr": 0.3500258753006731,
+            "max_dd": 0.15811231156836678,
+            "bars": 10150
+          }
+        },
+        "gates": {
+          "oos_sharpe_positive": {
+            "value": 2.294295578030577,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "stress_sharpe_positive": {
+            "value": 2.176413052169471,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "walk_forward": {
+            "ratio": 1.0,
+            "max_window_drawdown": 0.15811231156836691,
+            "min_ratio": 0.75,
+            "max_dd_cap": 0.25,
+            "pass": true
+          },
+          "dsr": {
+            "p_value": 0.0,
+            "alpha": 0.05,
+            "n_trials": 4,
+            "pass": true
+          },
+          "bootstrap_ci_oos": {
+            "alpha": 0.001,
+            "lower": 1.30472465507387,
+            "upper": 3.1882005107635436,
+            "pass": true
+          }
+        },
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      "V3_SSO_QQQ_UGL": {
+        "window": {
+          "IS": [
+            "1986-01-02",
+            "2010-12-31"
+          ],
+          "OOS": [
+            "2011-01-01",
+            "2019-12-31"
+          ],
+          "Stress": [
+            "2020-01-01",
+            "2026-04-17"
+          ]
+        },
+        "metrics": {
+          "IS": {
+            "sharpe": 1.8338551259236686,
+            "cagr": 0.2790962628005256,
+            "max_dd": 0.13698722213757866,
+            "bars": 6305
+          },
+          "OOS": {
+            "sharpe": 2.1737740839174773,
+            "cagr": 0.2616731356341919,
+            "max_dd": 0.07039935531422434,
+            "bars": 2264
+          },
+          "Stress": {
+            "sharpe": 2.0579664312709878,
+            "cagr": 0.3722717816713881,
+            "max_dd": 0.10880173844703121,
+            "bars": 1581
+          },
+          "Full": {
+            "sharpe": 1.9230060878537676,
+            "cagr": 0.28923228366594156,
+            "max_dd": 0.13698722213757866,
+            "bars": 10150
+          }
+        },
+        "gates": {
+          "oos_sharpe_positive": {
+            "value": 2.1737740839174773,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "stress_sharpe_positive": {
+            "value": 2.0579664312709878,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "walk_forward": {
+            "ratio": 1.0,
+            "max_window_drawdown": 0.1369872221375784,
+            "min_ratio": 0.75,
+            "max_dd_cap": 0.25,
+            "pass": true
+          },
+          "dsr": {
+            "p_value": 0.0,
+            "alpha": 0.05,
+            "n_trials": 4,
+            "pass": true
+          },
+          "bootstrap_ci_oos": {
+            "alpha": 0.001,
+            "lower": 1.2285637483329381,
+            "upper": 3.051855398897423,
+            "pass": true
+          }
+        },
+        "verdict": "PASS",
+        "failed_gates": []
+      },
+      "V4_SSO_QLD_UGL": {
+        "window": {
+          "IS": [
+            "1986-01-02",
+            "2010-12-31"
+          ],
+          "OOS": [
+            "2011-01-01",
+            "2019-12-31"
+          ],
+          "Stress": [
+            "2020-01-01",
+            "2026-04-17"
+          ]
+        },
+        "metrics": {
+          "IS": {
+            "sharpe": 1.8524583022056322,
+            "cagr": 0.36787839601901373,
+            "max_dd": 0.1691322821716501,
+            "bars": 6305
+          },
+          "OOS": {
+            "sharpe": 2.3195871785475304,
+            "cagr": 0.3415922605350692,
+            "max_dd": 0.07945183590172179,
+            "bars": 2264
+          },
+          "Stress": {
+            "sharpe": 2.171897762809787,
+            "cagr": 0.4833340654593945,
+            "max_dd": 0.12220046954113546,
+            "bars": 1581
+          },
+          "Full": {
+            "sharpe": 1.9733721692824988,
+            "cagr": 0.3792702681913147,
+            "max_dd": 0.1691322821716501,
+            "bars": 10150
+          }
+        },
+        "gates": {
+          "oos_sharpe_positive": {
+            "value": 2.3195871785475304,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "stress_sharpe_positive": {
+            "value": 2.171897762809787,
+            "threshold": 0.0,
+            "pass": true
+          },
+          "walk_forward": {
+            "ratio": 1.0,
+            "max_window_drawdown": 0.16913228217165,
+            "min_ratio": 0.75,
+            "max_dd_cap": 0.25,
+            "pass": true
+          },
+          "dsr": {
+            "p_value": 0.0,
+            "alpha": 0.05,
+            "n_trials": 4,
+            "pass": true
+          },
+          "bootstrap_ci_oos": {
+            "alpha": 0.001,
+            "lower": 1.3568423356698753,
+            "upper": 3.2627847826624574,
+            "pass": true
+          }
+        },
+        "verdict": "PASS",
+        "failed_gates": []
+      }
+    }
+  }
+}
