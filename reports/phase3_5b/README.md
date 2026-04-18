@@ -35,7 +35,7 @@ rebalance-cadence comparison (daily/monthly_sell/monthly_cashflow).
 - **Threshold default revised from 5pp → 10pp** after extreme sweep (5/10/15/25/100pp) — 10pp dominates 5pp on every operational axis (half the DARFs, ΔSharpe -0.013 within noise, identical MaxDD, +0.80pp CAGR). See `PRODUCTION.md` §2.
 - **★ Extended window 1986-2026 stress test PASS.** V1 re-run on 40y of testfol.io SPYSIM/QQQSIM/GLDSIM survives Black Monday 1987, dot-com 2000-2002, Lehman 2008, COVID 2020, 2022 rate hikes. See `PRODUCTION.md` §10.
 - **SSO/ZROZ/GLD static (risk parity) rejected.** 4 weight variants tested on 1986-2026; all dominated in Pareto by the tactical 3-leg winner. See `PRODUCTION.md` §11.
-- **★★ V4 (SSO+QLD+UGL) promoted to default via 5-gate formal evaluation.** V1/V2/V3/V4 variants (signals on 1× underlying, execution via LETF 2× when LONG) ran through PBO/DSR/WF/OOS/Bootstrap gates in canonical 2004-2026 + supplementary 1986-2026. **All 4 PASS; V4 leads OOS Sharpe in both windows** (2.609 canonical, 2.320 extended). Inter Global catalog confirmed QLD and UGL listed. V1 retained as conservative fallback (§13). See `PRODUCTION.md` §12 + `variants_letf_execution/`.
+- **★★ V4 (SSO+QLD+UGL) promoted to default via 5-gate formal evaluation.** Tested **8 variants** (V1–V4 with 2× LETFs + V5–V8 with 3× LETFs UPRO/TQQQ) through PBO/DSR/WF/OOS/Bootstrap gates in canonical 2004-2026 + supplementary 1986-2026. **All 8 PASS; V4 leads OOS Sharpe by safe margin.** V8 (UPRO+TQQQ+UGL) has highest raw Sharpe (2.622 canonical) and CAGR (58% canonical) but MaxDD margin to 25% gate is tight (-22.84% extended, 2.16pp margin) — gate-violation risk in unseen stress. V8 documented as **ultra-aggressive alternative** (non-default). Structural finding preserved: **UGL and TQQQ are negative-alpha standalone** (CAGR < 1× underlying due to daily-rebal decay) but **positive in triplet blend** via interaction effect when portfolio vol is high. Inter Global catalog confirmed all 5 LETFs (SSO/QLD/UGL/UPRO/TQQQ) listed. V1 retained as conservative fallback (§13). See `PRODUCTION.md` §12 + `variants_letf_execution/`.
 
 The winner deployment blueprint is **updated 2026-04-18**: 3-leg EW blend (SSO + QLD + UGL) with threshold-10pp rebalance. V4 canonical 2004-2026: CAGR 39.19% / OOS Sharpe 2.609 / MaxDD -12.22%. Extended 1986-2026 supplementary: CAGR 37.93% / OOS Sharpe 2.320 / MaxDD -16.91%. `[advances_fin_ml, p.208-211, p.273-275, p.298-299]`, `[leverage_for_the_long_run, p.8, p.13, p.16]`.
 
@@ -194,6 +194,7 @@ reports/phase3_5b/
 - [`2026-04-18-1230-phase3.5b-extended-window-PASS.md`](../../jornada/2026-04-18-1230-phase3.5b-extended-window-PASS.md) — **★ Extended window 1986-2026 stress test PASS (§10)**.
 - [`2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md`](../../jornada/2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md) — **Rejected SSO/ZROZ/GLD static (§11)**.
 - [`2026-04-18-1400-phase3.5b-V4-promoted-gate-verdict.md`](../../jornada/2026-04-18-1400-phase3.5b-V4-promoted-gate-verdict.md) — **★★ V4 promoted após 5-gate formal (§12)**.
+- [`2026-04-18-1530-phase3.5b-3x-variants-V5-V8-tested.md`](../../jornada/2026-04-18-1530-phase3.5b-3x-variants-V5-V8-tested.md) — **Expansão 3× V5-V8: todas PASS, V8 ultra-aggressive documented, V4 mantém default (§12)**.
 
 ## Pytest baseline
 

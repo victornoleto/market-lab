@@ -239,7 +239,7 @@ def _plot(
                     fontsize=7, alpha=0.6, verticalalignment="top")
     ax.set_yscale("log")
     ax.set_title(
-        f"Plano B — V1/V2/V3/V4 (LETF execution on QQQ/GLD legs) vs SPYSIM B&H  "
+        f"Plano B — V1–V8 (LETF execution 2×/3× on equity+gold legs) vs SPYSIM B&H  "
         f"— threshold {threshold_pp:g}pp, {spy_m['start']} → {spy_m['end']} "
         f"({spy_m['years']}y, testfol.io ground truth)"
     )

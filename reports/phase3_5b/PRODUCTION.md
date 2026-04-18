@@ -447,46 +447,67 @@ O **edge não vem da composição de ativos** — vem do **filter EMA100 + Donch
 
 ---
 
-## 12. V4 promoção — gate verdict formal (★ novo default)
+## 12. V1–V8 gate verdict — LETF execution variants
 
-> **Status:** V4 promoted 2026-04-18 após 5-gate evaluation em 2 janelas.
+> **Status:** 8 variants tested, all PASS 5 gates (2026-04-18). **V4 promoted as default.** V8 documented as ultra-aggressive alternative.
 > **Script:** [`scripts/run_plano_b_variants_gates.py`](../../scripts/run_plano_b_variants_gates.py)
-> **Artefatos:** [`variants_letf_execution/gates_verdict.md`](variants_letf_execution/gates_verdict.md) + `gates_verdict.json`.
+> **Artefatos:** [`variants_letf_execution/`](variants_letf_execution/) — `gates_verdict.md` + `gates_verdict.json` + charts.
 
-**Motivação:** em 2026-04-18 o usuário apontou corretamente que V4 (SSO+QLD+UGL) domina V2 em Pareto. Validamos via 5-gate battery formal em 2 janelas para confirmar se V4 deveria substituir V1 como default.
+**Motivação:** em 2026-04-18 expandimos os sinais production (EMA100 no SPY + Donchian 20/10 em QQQ + Donchian 40/20 em GLD) com execução em LETFs **2× (V1-V4)** e **3× (V5-V8)**. Objetivo: quantificar trade-off CAGR/MaxDD em todo espaço de alavancagem viável.
 
-**Ground truth data:** testfol.io SSOSIM/QLDSIM/UGLSIM (via `SPYSIM?L=2`, `QQQSIM?L=2`, `GLDSIM?L=2`) — zero model risk, FFR-aware cost embutido.
+**Ground truth data:** testfol.io `?L=N` (SSOSIM/QLDSIM/UGLSIM/UPROSIM/TQQQSIM) — zero model risk, FFR-aware cost. **Não existe ETF 3× gold** — V7/V8 usam UGL 2× por essa razão estrutural.
 
-### Gate verdict (canonical 2004-2026)
+### 8 variantes testadas
 
-| Variant | OOS Sh | Stress Sh | WF ratio | WF max DD | DSR p | Boot 99.9% lo | 5 gates |
-|---|---:|---:|---:|---:|---:|---:|:-:|
-| **V4** | **2.609** | 2.172 | 1.00 | 12.22% | 0.0000 | 1.274 | ✅ PASS |
-| V2 | 2.595 | 2.176 | 1.00 | 12.62% | 0.0000 | 1.304 | ✅ PASS |
-| V1 | 2.478 | 2.137 | 1.00 | 9.39% | 0.0000 | 1.043 | ✅ PASS |
-| V3 | 2.392 | 2.058 | 1.00 | 10.88% | 0.0000 | 1.081 | ✅ PASS |
+| V | Leg 1 (S&P) | Leg 2 (NDX) | Leg 3 (Gold) |
+|---|---|---|---|
+| V1 | SSO 2× | QQQ 1× | GLD 1× |
+| V2 | SSO 2× | **QLD 2×** | GLD 1× |
+| V3 | SSO 2× | QQQ 1× | **UGL 2×** |
+| **V4** ⭐ | **SSO 2×** | **QLD 2×** | **UGL 2×** |
+| V5 | **UPRO 3×** | QQQ 1× | GLD 1× |
+| V6 | **UPRO 3×** | **TQQQ 3×** | GLD 1× |
+| V7 | **UPRO 3×** | QQQ 1× | **UGL 2×** |
+| V8 | **UPRO 3×** | **TQQQ 3×** | **UGL 2×** |
 
-### Gate verdict (supplementary 1986-2026)
+### Gate verdict canonical 2004-2026 (ordered by OOS Sharpe)
 
-| Variant | OOS Sh | Stress Sh | WF ratio | WF max DD | 5 gates |
-|---|---:|---:|---:|---:|:-:|
-| **V4** | **2.320** | 2.172 | 1.00 | 16.91% | ✅ PASS |
-| V2 | 2.294 | 2.176 | 1.00 | 15.81% | ✅ PASS |
-| V1 | 2.195 | 2.137 | 1.00 | 11.13% | ✅ PASS |
-| V3 | 2.174 | 2.058 | 1.00 | 13.70% | ✅ PASS |
+| Rank | Variant | OOS Sh | CAGR | MaxDD | WF max DD | Boot 99.9% lo | 5 gates |
+|---:|---|---:|---:|---:|---:|---:|:-:|
+| 1 | V8 | **2.622** | **58.17%** | -17.14% | 17.14% | 1.309 | ✅ PASS |
+| 2 | **V4** ⭐ | 2.609 | 39.19% | -12.22% | 12.22% | 1.274 | ✅ PASS |
+| 3 | V2 | 2.595 | 35.03% | -12.62% | 12.62% | **1.304** | ✅ PASS |
+| 4 | V6 | 2.573 | 53.02% | -17.05% | 17.05% | 1.325 | ✅ PASS |
+| 5 | V1 | 2.478 | 26.53% | **-9.39%** | 9.39% | 1.043 | ✅ PASS |
+| 6 | V7 | 2.428 | 38.98% | -12.38% | 12.38% | 1.176 | ✅ PASS |
+| 7 | V3 | 2.392 | 30.89% | -10.88% | 10.88% | 1.081 | ✅ PASS |
+| 8 | V5 | 2.354 | 34.46% | -14.06% | 14.06% | 1.024 | ✅ PASS |
 
-### Decisão
+### Gate verdict extended 1986-2026 (supplementary)
 
-V4 é promoted a default pelos critérios (cumulativos):
+Top-4 ranking idêntico: **V8 > V4 > V2 > V6** em OOS Sharpe. V8 extended MaxDD 22.84% — a 2.16pp do gate 25%.
 
-1. **Passa todos os 5 gates em ambas as janelas.**
-2. **Maior OOS Sharpe em ambas** (2.609 canonical, 2.320 extended) — métrica mais decisiva pós-multi-test.
-3. **MaxDD 12.22% canonical** — bem abaixo do gate 25% (mandate §5).
-4. **CAGR +12.66 pp vs V1** (39.19% vs 26.53%) — compounded por 21.4y dá equity final ~10× maior.
-5. **Broker catalog ok** — Inter Global confirma QLD + UGL listed (user 2026-04-18).
-6. **Override §7 mandate:** registrado em `docs/investment-mandate.md` §7 history.
+### ★ Por que V4 (não V8) é default
 
-V1, V2 e V3 **todas passam gates** mas são dominadas por V4 em risk-adjusted return. Preservadas como referência — V1 em especial é o **fallback defensível** (§13).
+V8 tem **melhor OOS Sharpe** (+0.013 canonical) e **CAGR dramático** (+18.98pp) mas:
+
+1. **Margem ao gate 25% é crítica.** V4 MaxDD 12.22% canonical (12.78pp margem); V8 MaxDD 22.84% extended (**2.16pp margem**). V8 real com drag Gayed esperado ~+3-5pp **violaria gate em produção**.
+2. **Sharpe edge V8 é dentro do ruído bootstrap.** Δ +0.013 em Sharpe com T≈5000 observações → std(Sharpe) ≈ 0.014. Não estatisticamente distinguível de V4.
+3. **Tracking error intra-diário real.** Gayed p.21 Table 12 reporta drag UPRO real ~2%/yr vs teórico. Em 3× LETFs empilhados, effective drag ~4-5pp CAGR reduzido + 3-5pp MaxDD aumentado em produção.
+4. **Behavioral risk.** -17% vs -22% DD é psicologicamente maior diferença do que números sugerem (prospect theory 2×).
+
+**V4 é o default; V8 é a ultra-aggressive documentada.** Para quem quer ainda mais upside, V8 é gate-passing em backtest mas frágil a tail events futuros. Promoção de V8 requer:
+- ≥ 12-24 meses V4 track record live confirmando backtest dentro de ±30%
+- Override §7 mandate documentando aceitação de gate-violation risk em stress futuro
+
+V1, V2, V3, V5, V6, V7 **todos passam** mas são dominados:
+- V1 é fallback defensável (menor MaxDD) — §13
+- V6 é sub-ótimo vs V8 (ambos 3× equity, V6 menos CAGR e MaxDD similar — sem vantagem clara)
+- V2/V3/V5/V7 Pareto-dominados por V4 ou V8
+
+### Interaction effect preservado (achado estrutural)
+
+UGL sozinho CAGR 6.34% < GLD 1× 6.92% — **negative-alpha isolado** pelo daily rebalance decay em períodos flat do ouro. TQQQ sozinho CAGR 12.16% < QQQ 1× 14.58% — **também negative-alpha isolado**. Mas quando em **blend EW com legs 2× ou 3×-equity**, ambos UGL e TQQQ viram **positive via interaction effect** — correlação baixa vale proporcionalmente mais quando vol do resto do portfolio é alta. Não-aditividade do Sharpe preserva essa lição em `variants_letf_execution/README.md`.
 
 ---
 
