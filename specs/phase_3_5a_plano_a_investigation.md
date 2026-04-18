@@ -237,3 +237,87 @@ exit final do buy&hold — por ser 1 venda no fim do período).
 - **Tempo estimado:** ~5-7 horas autônomas com Opus 4.7.
 - **Paralelização com Phase 3.5b:** sim — branches separadas, sem shared
   state além do Tiingo cache (read-only em `data/tiingo/`).
+
+---
+
+## 8. Modo de execução — fan-out (adicionado 2026-04-18)
+
+A iter 3 desta fase (Lead T2 Donchian, 12 FX × 9 configs em um único
+processo) estourou o `ITER_TIMEOUT=1800s` e não persistiu progresso —
+motivou `specs/self_improve_fanout_mode.md` (aprovado, implementado nas
+Tasks 1-4 em 2026-04-18). A partir de agora:
+
+1. **Leads com ticker sweep ≥ 4 (T2, T3, T4, T5)** executam em
+   `SWEEP_MODE=fanout`:
+   - 1 iter = 1 ticker (ou bootstrap, ou aggregator).
+   - Continuidade via `reports/phase3_5a/<lead_slug>/registry.json`
+     (schema v1, append-only, atomic writes).
+   - `memory.md` frontmatter carrega só o pointer
+     `active_lead_registry:` — detalhe fica no registry.
+   - Per-ticker outputs (`<ticker>.json` + `<ticker>.md`) são commitados
+     junto com o update de registry (1 commit atômico por iter).
+   - Aggregator roda no iter seguinte a `tickers_pending == []`,
+     emite `AGGREGATE.md` + jornada, libera o slot.
+2. **Leads atômicos (T6 rebalance meta, T7 summary)** permanecem em
+   modo legacy (1 iter = 1 Lead). A flag `SWEEP_MODE=fanout` só injeta
+   a seção de protocolo quando o lead atual é sweep; atômicos continuam
+   fechando em uma iter gorda.
+3. **Protocolo completo:** `docs/self_improvement/fanout_protocol.md`
+   (lido pelo agente a cada iter que abra um lead de sweep).
+4. **Helpers Python:** `ai_trade.backtest.sweeps.registry` (load,
+   validate v1, atomic_write, append_done, pop_pending, advance_status,
+   new_registry).
+
+### 8.1 Re-lançamento da Phase 3.5a em modo fan-out
+
+```bash
+nohup env CLAUDE_MODEL=claude-opus-4-7 MAX_ITER=60 \
+    ITER_TIMEOUT=1800 SCOPE=code SWEEP_MODE=fanout \
+    bash scripts/self_improve_loop.sh \
+    > logs/loop_3_5a_fanout_$(date +%Y%m%d_%H%M).log 2>&1 &
+echo $! > /tmp/loop_3_5a_fanout.pid
+```
+
+Decomposição estimada (lead → iters necessários):
+
+| Lead | Iters |
+|------|-------|
+| T2 (Donchian 12 FX × 3 configs) | 1 bootstrap + 12 sweep + 1 aggregator = 14 |
+| T3 (pairs stat-arb, 3-6 pares)  | 1 + 6 + 1 = 8 |
+| T4 (session FX 2-3 tickers × 3 sessions) | 1 + 9 + 1 = 11 |
+| T5 (regime filter 6 ativos)     | 1 + 6 + 1 = 8 |
+| T6 (rebalance meta, atômico)    | 1 |
+| T7 (summary, atômico)           | 1 |
+| **Total**                       | **~43-45 iters** |
+
+`MAX_ITER=60` dá cushion de ~15 iters para retries e erros pontuais.
+ETA ~4.5-6h autônomas.
+
+### 8.2 Troubleshooting
+
+- Registry corrupto → próximo iter cria jornada blocker e flipa
+  `memory.md status: done` (loop para para investigação manual).
+- Ticker específico falha em backtest → entry em `tickers_errored`,
+  pop do pending, segue.
+- Dois iters consecutivos no mesmo erro (ex: permission denied em
+  atomic_write) → loop aborta via hard rule do `self_improve_loop.sh`
+  (exit code != 0). Operador cria jornada blocker + decide se re-queue.
+
+### 8.3 Inspeção em tempo real
+
+```bash
+# Progresso atual do loop
+tail -f logs/loop_3_5a_fanout_*.log
+
+# Estado de cada lead
+for f in reports/phase3_5a/*/registry.json; do
+    python3 -c "
+import json, sys
+r = json.load(open('$f'))
+print(f\"{r['lead_id']:<4} {r['status']:<12} done={len(r['tickers_done'])}/{len(r['tickers_done'])+len(r['tickers_pending'])}\")
+"
+done
+
+# Commits por iter
+git log --oneline phase3.5a/plano-a-short-hold-20260418 | head -20
+```
