@@ -10,7 +10,7 @@
     "advances_fin_ml, ch.7"
   ],
   "started_at": "2026-04-18T20:09:33.892205+00:00",
-  "last_updated_at": "2026-04-18T20:26:33+00:00",
+  "last_updated_at": "2026-04-18T20:28:44+00:00",
   "configs": [
     {
       "name": "kalman_eg_2sigma_30d",
@@ -30,7 +30,6 @@
     }
   ],
   "tickers_pending": [
-    "TLT_IEF",
     "XLE_USO",
     "XLF_HYG"
   ],
@@ -82,6 +81,22 @@
       "median_hold_days": 0.0,
       "result_file_md": "reports/phase3_5a_v2/v2_l5_equity_pairs/SPY_IWM.md",
       "result_file_json": "reports/phase3_5a_v2/v2_l5_equity_pairs/SPY_IWM.json"
+    },
+    {
+      "ticker": "TLT_IEF",
+      "frequency": "daily",
+      "window_start": "2014-01-02",
+      "window_end": "2026-04-14",
+      "iter": 63,
+      "n_configs_tested": 1,
+      "best_config": "kalman_eg_2sigma_30d",
+      "best_sharpe_oos": 0.0,
+      "best_cagr": 0.0,
+      "best_maxdd": 0.0,
+      "any_pass_5gate": false,
+      "median_hold_days": 0.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l5_equity_pairs/TLT_IEF.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l5_equity_pairs/TLT_IEF.json"
     }
   ],
   "tickers_errored": [],
