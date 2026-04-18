@@ -12,7 +12,7 @@
     "advances_fin_ml, ch.7 (CPCV/PBO gate framework)"
   ],
   "started_at": "2026-04-18T14:52:42+00:00",
-  "last_updated_at": "2026-04-18T15:13:58+00:00",
+  "last_updated_at": "2026-04-18T15:17:01+00:00",
   "configs": [
     {
       "name": "bmr_canonical",
@@ -73,9 +73,7 @@
       "citation": "advances_fin_ml, ch.17 (ensemble regime filter); stocks_on_the_move, p.110; volatility_trading"
     }
   ],
-  "tickers_pending": [
-    "xauusd"
-  ],
+  "tickers_pending": [],
   "tickers_done": [
     {
       "ticker": "QQQ",
@@ -156,10 +154,26 @@
       "median_hold_days": 0.625,
       "result_file_md": "reports/phase3_5a/t5_regime_filter_hybrid/usdjpy.md",
       "result_file_json": "reports/phase3_5a/t5_regime_filter_hybrid/usdjpy.json"
+    },
+    {
+      "ticker": "xauusd",
+      "frequency": "1hour",
+      "window_start": "2020-01-06",
+      "window_end": "2026-04-14",
+      "iter": 39,
+      "n_configs_tested": 5,
+      "best_config": "bmr_rv_highvol_30d",
+      "best_sharpe_oos": -2.7534,
+      "best_cagr": -0.24656,
+      "best_maxdd": -0.4562,
+      "any_pass_5gate": false,
+      "median_hold_days": 0.583,
+      "result_file_md": "reports/phase3_5a/t5_regime_filter_hybrid/xauusd.md",
+      "result_file_json": "reports/phase3_5a/t5_regime_filter_hybrid/xauusd.json"
     }
   ],
   "tickers_errored": [],
-  "status": "sweeping",
+  "status": "aggregating",
   "aggregation_iter": null,
   "aggregate_file_md": null,
   "aggregate_jornada": null
