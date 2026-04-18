@@ -63,7 +63,23 @@ V4 domina V2 em quase todas as métricas — exceção única é bootstrap canon
 
 Sobre a aparente contradição "V3 reprova em Sharpe mas V4 (que inclui UGL como V3) ganha":
 
-**Interaction effect.** Em V3, 2/3 do portfolio é equity 1×+2× enquanto UGL (que tem CAGR 6.34% vs GLD 6.92%, negative-alpha standalone) ocupa 1/3 diluindo returns. Em V4, os 2 legs equity já são mais voláteis (2× cada), e a correlação baixa de UGL com equity vale MAIS como hedge proporcional nesse regime. Conclusão: UGL sozinho (V3) faz mal; UGL em blend com QLD (V4) neutraliza por diversification effect.
+**★ Interaction effect — achado importante a preservar.** Os dados brutos de testfol.io revelam:
+
+| Asset | 1× CAGR 40y | 2× CAGR 40y | Multiplier efetivo |
+|---|---:|---:|---:|
+| SPY → SSO | 11.49% | 14.58% | 1.27× |
+| QQQ → QLD | 14.58% | 17.27% | 1.19× |
+| **GLD → UGL** | **6.92%** | **6.34%** | **0.92× (NEGATIVO)** |
+
+**UGL isoladamente é negative-alpha** — o daily rebalance decay durante períodos flat longos do ouro (2012-2018, 2020-2023) come mais que a alavancagem adiciona em períodos de trend. Isto é **intrínseco ao daily-rebalanced LETF em ativos de baixa persistência de tendência**, não um problema de parametrização.
+
+MAS quando incluído num portfolio EW com 2 legs equity já alavancadas (V4), UGL **vira positive via interaction effect**:
+- Em V3 (SSO 2× + QQQ 1× + UGL 2×): o portfolio tem vol moderada. UGL entra diluindo o CAGR + adicionando decay sem receber o "prêmio de diversificação" proporcional porque 2/3 do portfolio já tem correlação ≥ 0.5 com equity.
+- Em V4 (SSO 2× + QLD 2× + UGL 2×): o portfolio tem vol alta pelos 2 legs 2×-equity que correlacionam fortemente em risk-off. A correlação baixa de UGL (~0-0.15 com equity em risk-off) agora vale **MAIS** proporcionalmente — é o único hedge disponível quando ambos SSO e QLD caem juntos (2008, 2022). O custo do decay é o mesmo, mas o benefício de diversification é muito maior.
+
+**A lição generalizada:** o valor de diversification de um asset alavancado depende do **risco do resto do portfolio**. Em contexto de vol baixa, UGL é drag; em contexto de vol alta, UGL salva MaxDD. Este é um ponto onde intuição linear falha — o pricing de UGL na composição não é aditivo, é contextual.
+
+**Implicação para design futuro:** quando adicionar legs alavancadas a uma composição, pensar em **pairs** ou **triplets**, não em adições marginais. Adicionar UGL sozinho ao V1 piora o portfolio. Adicionar UGL + QLD juntos ao V1 melhora. É o mesmo raciocínio de `[advances_fin_ml, p.298-313, ch.16]` sobre HRP vs IVP — a estrutura correlacional domina a decisão.
 
 ---
 
