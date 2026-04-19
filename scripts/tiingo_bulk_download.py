@@ -90,6 +90,8 @@ CRYPTO_TICKERS = [
 FOREX_TICKERS = [
     "eurusd", "gbpusd", "usdjpy", "usdchf", "audusd",
     "usdcad", "nzdusd", "eurjpy", "eurgbp", "gbpjpy",
+    # Metals as FX (Pepperstone routes XAU/XAG via FX infra).
+    "xauusd", "xagusd",
 ]
 
 # Buckets that need network/cache (Wikipedia) are resolved lazily.
@@ -124,6 +126,12 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     ap.add_argument(
         "--end", type=date.fromisoformat, default=date.today(),
         help="Last date (default: today).",
+    )
+    ap.add_argument(
+        "--frequency", default="daily", choices=["daily", "1hour"],
+        help="Bar frequency. v1 whitelist accepts {daily, 1hour} for "
+        "equity/etf/crypto/forex; index is daily-only (Tiingo IEX "
+        "doesn't cover indices).",
     )
     ap.add_argument(
         "--storage-root", type=Path, default=Path("data/tiingo"),
@@ -243,11 +251,14 @@ def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
     _setup_logging(getattr(logging, args.log_level))
 
-    run_id = f"bulk_{args.bucket}_{datetime.now().strftime('%Y%m%d-%H%M')}"
+    run_id = (
+        f"bulk_{args.bucket}_{args.frequency}_"
+        f"{datetime.now().strftime('%Y%m%d-%H%M')}"
+    )
     log.info("=== %s ===", run_id)
     log.info(
-        "bucket=%s start=%s end=%s storage=%s throttle=%dms limit=%s",
-        args.bucket, args.start, args.end, args.storage_root,
+        "bucket=%s freq=%s start=%s end=%s storage=%s throttle=%dms limit=%s",
+        args.bucket, args.frequency, args.start, args.end, args.storage_root,
         args.throttle_ms, args.limit,
     )
 
@@ -263,6 +274,7 @@ def main(argv: list[str] | None = None) -> int:
     summary = {
         "run_id": run_id,
         "bucket": args.bucket,
+        "frequency": args.frequency,
         "start": args.start.isoformat(),
         "end": args.end.isoformat(),
         "n_total": len(pairs),
@@ -273,14 +285,23 @@ def main(argv: list[str] | None = None) -> int:
         "errors": [],
     }
 
+    # Intraday (1hour) is not routed for index tickers — Tiingo IEX doesn't
+    # cover indices. Skip them gracefully with a warning instead of crashing
+    # the run on the whitelist check.
+    if args.frequency == "1hour":
+        pairs = [(t, ac) for (t, ac) in pairs if ac != "index"]
+
     pbar = tqdm(pairs, desc=run_id, unit="tk")
     for ticker, asset_class in pbar:
-        if storage.has(ticker, args.start, args.end):
+        if storage.has(ticker, args.start, args.end, frequency=args.frequency):
             summary["n_skipped_cached"] += 1
             pbar.set_postfix({"last": f"{ticker} (cached)"})
             continue
         try:
-            df = source.fetch(ticker, args.start, args.end, asset_class=asset_class)
+            df = source.fetch(
+                ticker, args.start, args.end,
+                asset_class=asset_class, frequency=args.frequency,
+            )
         except Exception as exc:  # noqa: BLE001
             summary["n_errors"] += 1
             summary["errors"].append({"ticker": ticker, "error": str(exc)[:200]})

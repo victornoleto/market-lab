@@ -1,0 +1,66 @@
+{
+  "variant": "2leg_ew",
+  "window_start": "2001-05-14",
+  "window_end": "2026-04-14",
+  "n_bars": 6266,
+  "years": 24.865079365079364,
+  "initial_capital": 100000.0,
+  "monthly_deposit": 500.0,
+  "tax_rate": 0.15,
+  "target_weights": {
+    "LETF_2x": 0.5,
+    "QQQ": 0.5
+  },
+  "modes": {
+    "daily": {
+      "equity_final": 92077311.58007441,
+      "cagr": 0.3159169642352053,
+      "sharpe": 1.8878837028050532,
+      "volatility_ann": 0.15157977673079664,
+      "max_drawdown": 0.1441445753709807,
+      "max_abs_drift": 0.0,
+      "mean_max_drift": 0.0,
+      "taxable_events": 0,
+      "taxable_events_per_year": 0.0,
+      "total_tax_paid": 0.0,
+      "tax_per_year": 0.0,
+      "total_deposits": 0.0,
+      "deposits_per_year": 0.0
+    },
+    "monthly_sell": {
+      "equity_final": 67314146.50138828,
+      "cagr": 0.29944000453016084,
+      "sharpe": 1.800143202110504,
+      "volatility_ann": 0.15199709838857983,
+      "max_drawdown": 0.14455550132063252,
+      "max_abs_drift": 0.05225274270162833,
+      "mean_max_drift": 0.006041705813672512,
+      "taxable_events": 300,
+      "taxable_events_per_year": 12.065113309926588,
+      "total_tax_paid": 3600318.525857429,
+      "tax_per_year": 144794.16988765914,
+      "total_deposits": 0.0,
+      "deposits_per_year": 0.0
+    },
+    "monthly_cashflow": {
+      "equity_final": 682672059.0215628,
+      "cagr": 0.4263473260869335,
+      "sharpe": 1.8805088375680308,
+      "volatility_ann": 0.1995630306629729,
+      "max_drawdown": 0.18153815920692123,
+      "max_abs_drift": 0.4929505225414209,
+      "mean_max_drift": 0.32686919569144934,
+      "taxable_events": 0,
+      "taxable_events_per_year": 0.0,
+      "total_tax_paid": 0.0,
+      "tax_per_year": 0.0,
+      "total_deposits": 150000.0,
+      "deposits_per_year": 6032.556654963294
+    }
+  },
+  "winner_ref": {
+    "sharpe": 1.8878837028050532,
+    "cagr_pct": 0.3159169642352053,
+    "max_drawdown_pct": 0.1441445753709807
+  }
+}

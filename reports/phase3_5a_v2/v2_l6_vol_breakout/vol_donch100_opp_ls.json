@@ -1,0 +1,234 @@
+{
+  "config_name": "vol_donch100_opp_ls",
+  "config_entry": {
+    "name": "vol_donch100_opp_ls",
+    "type": "vol_breakout_donchian_atr",
+    "entry_lookback": 100,
+    "exit_type": "opposite_channel",
+    "atr_period": 20,
+    "atr_multiplier": null,
+    "exit_lookback": 50,
+    "direction": "long_short",
+    "universe": [
+      "SPY",
+      "QQQ",
+      "DIA",
+      "IWM",
+      "GLD",
+      "SLV",
+      "USO",
+      "UNG",
+      "TLT",
+      "HYG"
+    ],
+    "broker_model": "pepperstone_razor_cfd",
+    "rebalance_cadence": "daily_close"
+  },
+  "universe": [
+    "SPY",
+    "QQQ",
+    "DIA",
+    "IWM",
+    "GLD",
+    "SLV",
+    "USO",
+    "UNG",
+    "TLT",
+    "HYG"
+  ],
+  "universe_size": 10,
+  "n_active_tickers": 10,
+  "window": {
+    "start": "2014-01-02",
+    "end": "2026-04-14",
+    "n_bars": 3088
+  },
+  "splits": {
+    "IS": {
+      "range": [
+        "2014-01-02",
+        "2021-12-31"
+      ],
+      "n_bars": 2015,
+      "sharpe": 0.23748149541472957,
+      "cagr": 0.019209111405021906,
+      "max_drawdown": -0.26792952756388766,
+      "final_equity": 1.1643233009570884
+    },
+    "OOS": {
+      "range": [
+        "2022-01-01",
+        "2024-12-31"
+      ],
+      "n_bars": 753,
+      "sharpe": -0.5496070995307075,
+      "cagr": -0.03241793866483689,
+      "max_drawdown": -0.1320977821411241,
+      "final_equity": 0.9062203438549767
+    },
+    "FWD": {
+      "range": [
+        "2025-01-01",
+        "2026-04-14"
+      ],
+      "n_bars": 320,
+      "sharpe": 0.9450704044148476,
+      "cagr": 0.08400563917449544,
+      "max_drawdown": -0.058606959882077425,
+      "final_equity": 1.1078590177476666
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 0.75,
+    "max_window_drawdown": 0.2679295275638873,
+    "pass": false,
+    "min_profitable_ratio": 0.75,
+    "max_drawdown_cap": 0.25
+  },
+  "hold_metrics": {
+    "portfolio_median_hold_days": 52.25,
+    "n_total_trades": 419,
+    "per_ticker": [
+      {
+        "ticker": "SPY",
+        "n_bars": 3088,
+        "n_trades": 42,
+        "median_hold_days": 51.5,
+        "final_equity": 1.9464609290959811,
+        "sharpe_full": 0.5121621074169607
+      },
+      {
+        "ticker": "QQQ",
+        "n_bars": 3088,
+        "n_trades": 36,
+        "median_hold_days": 78.0,
+        "final_equity": 1.8093165414064425,
+        "sharpe_full": 0.3932212746029206
+      },
+      {
+        "ticker": "DIA",
+        "n_bars": 3088,
+        "n_trades": 47,
+        "median_hold_days": 45.0,
+        "final_equity": 1.7010368519247785,
+        "sharpe_full": 0.42329172171091883
+      },
+      {
+        "ticker": "IWM",
+        "n_bars": 3088,
+        "n_trades": 39,
+        "median_hold_days": 71.0,
+        "final_equity": 0.9747782816624381,
+        "sharpe_full": 0.06457673917964808
+      },
+      {
+        "ticker": "GLD",
+        "n_bars": 3088,
+        "n_trades": 31,
+        "median_hold_days": 53.0,
+        "final_equity": 1.7793049167823123,
+        "sharpe_full": 0.46242145223076697
+      },
+      {
+        "ticker": "SLV",
+        "n_bars": 3088,
+        "n_trades": 31,
+        "median_hold_days": 31.0,
+        "final_equity": 1.06463558630078,
+        "sharpe_full": 0.14076117112500783
+      },
+      {
+        "ticker": "USO",
+        "n_bars": 3088,
+        "n_trades": 29,
+        "median_hold_days": 100.0,
+        "final_equity": 0.493081999286896,
+        "sharpe_full": 0.20852171750926768
+      },
+      {
+        "ticker": "UNG",
+        "n_bars": 3088,
+        "n_trades": 8,
+        "median_hold_days": 173.5,
+        "final_equity": -2.927041666040256,
+        "sharpe_full": -0.1488278082353811
+      },
+      {
+        "ticker": "TLT",
+        "n_bars": 3088,
+        "n_trades": 67,
+        "median_hold_days": 18.0,
+        "final_equity": 0.5383725138836603,
+        "sharpe_full": -0.3508679609072139
+      },
+      {
+        "ticker": "HYG",
+        "n_bars": 3088,
+        "n_trades": 89,
+        "median_hold_days": 15.0,
+        "final_equity": 0.7130106463299188,
+        "sharpe_full": -0.33637614705650615
+      }
+    ]
+  },
+  "costs_model": {
+    "spread_half_bps": 2.0,
+    "slippage_bps": 1.0,
+    "swap_daily_pct_long": 5e-05,
+    "swap_daily_pct_short": 2e-05,
+    "weighting": "equal_weight_1_over_N",
+    "citation": "pepperstone razor tier (Phase 3.5a-V2 spec \u00a73)"
+  },
+  "runtime_seconds": 2.28,
+  "iter": 79,
+  "produced_at": "2026-04-18T21:17:44+00:00",
+  "verdict_per_config": {
+    "checks": [
+      {
+        "name": "oos_sharpe_gt_0",
+        "pass": false,
+        "value": "-0.550"
+      },
+      {
+        "name": "fwd_sharpe_gt_0",
+        "pass": true,
+        "value": "0.945"
+      },
+      {
+        "name": "wf_pass",
+        "pass": false,
+        "value": "6/8"
+      },
+      {
+        "name": "median_hold_ge_3d",
+        "pass": true,
+        "value": "52.2d"
+      },
+      {
+        "name": "oos_cagr_ge_30pct",
+        "pass": false,
+        "value": "-3.2%"
+      },
+      {
+        "name": "oos_sharpe_ge_2",
+        "pass": false,
+        "value": "-0.550"
+      },
+      {
+        "name": "oos_maxdd_le_25pct",
+        "pass": true,
+        "value": "-13.2%"
+      }
+    ],
+    "n_passed": 3,
+    "n_total": 7,
+    "all_pass_except_cross_config_gates": false,
+    "failed_subset_gates": [
+      "oos_sharpe_gt_0",
+      "wf_pass",
+      "oos_cagr_ge_30pct",
+      "oos_sharpe_ge_2"
+    ]
+  }
+}

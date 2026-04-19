@@ -1,0 +1,47 @@
+{
+  "config": {
+    "threshold_pp": 10.0,
+    "tax_rate": 0.15,
+    "initial_capital": 100000.0,
+    "legs": {
+      "SSO": "LETF EMA100/band0.00/lev2.0x",
+      "QQQ": "Donchian 20/10",
+      "GLD": "Donchian 40/20"
+    },
+    "data_source": "testfol.io SPYSIM/QQQSIM/GLDSIM"
+  },
+  "strategy": {
+    "start": "1986-01-02",
+    "end": "2026-04-17",
+    "years": 40.29,
+    "total_return_pct": 1501672.69,
+    "cagr_pct": 26.96,
+    "sharpe": 2.028,
+    "max_drawdown_pct": 10.12,
+    "final_equity": 1501772693.69
+  },
+  "spy_buy_hold_SPYSIM": {
+    "start": "1986-01-02",
+    "end": "2026-04-17",
+    "years": 40.29,
+    "total_return_pct": 7885.65,
+    "cagr_pct": 11.49,
+    "sharpe": 0.682,
+    "max_drawdown_pct": 55.14,
+    "final_equity": 7985645.3
+  },
+  "excess": {
+    "cagr_pp": 15.47,
+    "sharpe_delta": 1.346,
+    "maxdd_delta_pp": -45.02
+  },
+  "rebalance_events": 30,
+  "rebalance_tax_paid_usd": 51296639.51,
+  "caveats": [
+    "Supplementary stress test \u2014 does NOT replace the gate-passing 2004-2026 verdict in PRODUCTION.md.",
+    "Donchian uses close-only breakout (testfol.io has no HLC).",
+    "Pre-1999 QQQSIM & pre-2004 GLDSIM are simulated, not measured.",
+    "Pre-1999 QQQ was not retail-tradeable \u2014 signal validity only.",
+    "Modern-era costs (15 bps) applied; pre-2000 costs were 50-100 bps."
+  ]
+}

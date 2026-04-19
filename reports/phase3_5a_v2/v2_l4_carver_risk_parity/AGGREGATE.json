@@ -1,0 +1,178 @@
+{
+  "phase": "phase3_5a_v2",
+  "lead_id": "V2-L4",
+  "lead_slug": "v2_l4_carver_risk_parity",
+  "produced_at": "2026-04-18T20:01:22+00:00",
+  "inputs": {
+    "L1_tsmom_lb12m_vt10": "/var/www/pessoal/ai-trade/reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/tsmom_lb12m_vt10_daily_returns.parquet",
+    "L2_gayed_ema100_L3_off_gld": "/var/www/pessoal/ai-trade/reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L3_off_gld_daily_returns.parquet",
+    "L3_afml_XLF": "/var/www/pessoal/ai-trade/reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/XLF_daily_returns.parquet"
+  },
+  "weighting_method": "carver_vol_target_is_scaled_equal_weight",
+  "target_vol_annualised": 0.15,
+  "is_scales": {
+    "L1_tsmom_lb12m_vt10": 2.591717672945186,
+    "L2_gayed_ema100_L3_off_gld": 0.435253186902105,
+    "L3_afml_XLF": 5.845803856814114
+  },
+  "window": {
+    "start": "2003-08-20",
+    "end": "2026-04-14",
+    "n_bars": 5698
+  },
+  "splits": {
+    "IS": {
+      "name": "IS",
+      "n_bars": 3617,
+      "sharpe": 0.7034400424885704,
+      "cagr": 0.06954050481215601,
+      "max_drawdown": -0.23783506708340518,
+      "final_equity_from_unit": 2.6246598825505467
+    },
+    "OOS": {
+      "name": "OOS",
+      "n_bars": 1509,
+      "sharpe": 1.856097084052674,
+      "cagr": 0.16137869513310865,
+      "max_drawdown": -0.08439111421002454,
+      "final_equity_from_unit": 2.4494559345944382
+    },
+    "FWD": {
+      "name": "FWD",
+      "n_bars": 572,
+      "sharpe": 0.5942097130179236,
+      "cagr": 0.04535668126520487,
+      "max_drawdown": -0.06866823652915588,
+      "final_equity_from_unit": 1.105929278066551
+    },
+    "FULL": {
+      "name": "FULL",
+      "n_bars": 5698,
+      "sharpe": 0.9523677226684738,
+      "cagr": 0.09062347448585806,
+      "max_drawdown": -0.23783506708340518,
+      "final_equity_from_unit": 7.110006860006796
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 0.875,
+    "max_window_drawdown": 0.23783506708340518,
+    "pass": true
+  },
+  "pbo": {
+    "value": 0.0,
+    "n_blocks": 10,
+    "n_combinations": 252,
+    "pass": true
+  },
+  "dsr": {
+    "dsr": 0.9986448834502294,
+    "p_value": 0.0013551165497706075,
+    "observed_sharpe_periodic": 0.11696188722786105,
+    "benchmark_sharpe_periodic": 0.027093541141844507,
+    "n_trials": 4,
+    "pass": true
+  },
+  "bootstrap": {
+    "alpha": 0.001,
+    "n_resamples": 2000,
+    "block_mean": 5,
+    "seed": 42,
+    "ci_low": 0.4892691994908454,
+    "ci_high": 3.294243416874604,
+    "pass": true
+  },
+  "benchmark_spy_oos": {
+    "sharpe": 0.6583905809966942,
+    "cagr": 0.11997223145318503
+  },
+  "ir_vs_spy_oos": 0.10563776203990519,
+  "mean_weights": {
+    "L1_tsmom_lb12m_vt10": 0.29209776599854687,
+    "L2_gayed_ema100_L3_off_gld": 0.04905491244861445,
+    "L3_afml_XLF": 0.6588473215528388
+  },
+  "winner_checks": [
+    {
+      "name": "oos_sharpe_gt_0",
+      "pass": true,
+      "value": "1.856"
+    },
+    {
+      "name": "fwd_sharpe_gt_0",
+      "pass": true,
+      "value": "0.594"
+    },
+    {
+      "name": "wf_pass_6_of_8",
+      "pass": true,
+      "value": "7/8 mdd=23.78%"
+    },
+    {
+      "name": "pbo_lt_0_5",
+      "pass": true,
+      "value": "0.000"
+    },
+    {
+      "name": "dsr_p_lt_0_05",
+      "pass": true,
+      "value": "0.0014"
+    },
+    {
+      "name": "boot_99_9_ci_low_gt_0",
+      "pass": true,
+      "value": "0.4893"
+    },
+    {
+      "name": "oos_cagr_ge_30pct",
+      "pass": false,
+      "value": "16.14%"
+    },
+    {
+      "name": "oos_sharpe_ge_2",
+      "pass": false,
+      "value": "1.856"
+    },
+    {
+      "name": "oos_maxdd_le_25pct",
+      "pass": true,
+      "value": "-8.44%"
+    },
+    {
+      "name": "ir_vs_spy_ge_0_5",
+      "pass": false,
+      "value": "0.106"
+    }
+  ],
+  "verdict": "DEAD",
+  "diagnostic_2leg_L2_L3": {
+    "note": "Equal-weight vol-target blend of L2 + L3 only (drops L1 which is OOS-negative)",
+    "is_scales": {
+      "L2_gayed_ema100_L3_off_gld": 0.435253186902105,
+      "L3_afml_XLF": 5.845803856814114
+    },
+    "oos": {
+      "name": "OOS2",
+      "n_bars": 1509,
+      "sharpe": 2.0205784329293963,
+      "cagr": 0.2577173661897021,
+      "max_drawdown": -0.126583097964032,
+      "final_equity_from_unit": 3.947415415689959
+    },
+    "fwd": {
+      "name": "FWD2",
+      "n_bars": 572,
+      "sharpe": 1.8993971094894966,
+      "cagr": 0.17497002435841225,
+      "max_drawdown": -0.051115034369236034,
+      "final_equity_from_unit": 1.4419483066456518
+    },
+    "wf": {
+      "ratio": 1.0,
+      "mdd": 0.2657224737525068,
+      "pass": false
+    },
+    "ir_vs_spy_oos": 0.5742575668458014
+  }
+}

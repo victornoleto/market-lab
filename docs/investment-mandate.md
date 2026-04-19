@@ -24,7 +24,7 @@ com mandato e risco diferente:
 |---------------|---------------|--------|--------|
 | **Passive buy&hold factor-tilted** | **60-80%** do total | Composição de riqueza de longo prazo (aposentadoria 30a). | Governado por `portfolio-aposentadoria.md` — AVUS/SPMO/AVUV/AVDE/IDMO/AVDV/AVEM + IBIT + GLDM. Sem ação do ai-trade — esse compartimento é "set and forget" com rebalanceamento por aportes. |
 | **Strategy A — Short-hold CFD (ativa, agressiva)** | parte do **20-40% ativo** | Motor de retorno não-linear; aceita risco alto em troca de alpha mensurável. | Pepperstone via cTrader Open API. Multi-asset obrigatório. Alavancagem otimizada por sweep. Gates completos (PBO/DSR/WF + OOS + stress). |
-| **Strategy B — Swing broker (ativa, moderada)** | parte do **20-40% ativo** | Alpha via regime rotation. Tese principal hoje: LETF rotation (UPRO/CASH). | Corretora BR internacional (Inter/XP/Avenue). 15% IR modelado sempre. Overfit control via CPCV obrigatório. |
+| **Strategy B — Swing broker (ativa, moderada)** | parte do **20-40% ativo** | Alpha via regime rotation. Tese principal hoje: LETF rotation (UPRO/CASH). | **Banco Inter Internacional** (Inter&Co Securities, FINRA + Apex Clearing) — decisão 2026-04-18, ver §4.6. Acesso direto NYSE/NASDAQ. 15% IR modelado sempre. Overfit control via CPCV obrigatório. |
 
 A proporção exata entre A e B dentro dos 20-40% ativo é decisão do
 usuário em função da performance histórica das duas strategies. Default
@@ -342,7 +342,91 @@ Acesso via corretora BR internacional (Inter, XP Internacional, Avenue,
 Nomad). Se liquidez BDR de UPRO/TQQQ for adequada no volume alvo,
 alternativa aceita; senão, conta internacional é mandatory.
 
-### 4.6 Capital allocation dentro do bucket ativo
+### 4.6 Broker Strategy B — Banco Inter Internacional (locked 2026-04-18)
+
+Broker escolhido e **imutável sem discussão explícita**:
+**Banco Inter — Global Account + Inter&Co Securities** (corretora
+FINRA-regulated desde 2023-05, custódia via Apex Clearing). Acesso
+direto a NYSE/NASDAQ (~8.000 tickers), não via BDR.
+
+#### 4.7.1 Economia operacional (tabela Inter 2025-2026)
+
+| Item | Valor | Nota |
+|------|-------|------|
+| Corretagem compra/venda ETFs/ações US | **USD 0,00** | Zero, SEC/TAF absorvidos |
+| Manutenção/custódia Global Account | **USD 0,00** | — |
+| Inatividade | **USD 0,00** | — |
+| Spread cambial BRL↔USD | **1,50%** (Digital) / 1,25% (Black) / 0,99% (Win) | Dinâmico sobre PTAX |
+| IOF remessa outbound (investimento) | **3,50%** | Decreto 05/2025, unificado |
+| IOF retorno | 0,38% | — |
+| Settlement ETFs US | **T+1** | SEC industry standard desde 2024-05-28 |
+| Horário pregão | 10h30-17h Brasília (std) / 11h30-18h (DST) | Pre/after-market N/A |
+| Mínimo abertura | USD 1 | Cartão USD 20 |
+| Fractional shares | Disponíveis em tickers selecionados | Útil pra GLD (caro) |
+
+#### 4.7.2 Tributação (residente BR — Lei 14.754/2023)
+
+- **IR 15% flat sobre ganho de capital** em ETFs estrangeiros via
+  **DARF código 6015** (ganho de capital moeda estrangeira). Apurado
+  e recolhido pelo investidor até último dia útil do mês seguinte
+  à venda.
+- **Isenção R$35k/mês NÃO se aplica** — é exclusiva de ações na B3.
+- Inter fornece "Informe de Rendimentos Global Account" mas com
+  histórico documentado de atrasos/indisponibilidade (safra IR 2026).
+  **Responsabilidade do investidor:** manter planilha própria com
+  custo médio em USD e cotação PTAX do dia da operação.
+
+#### 4.7.3 Catálogo — status dos ETFs-chave do Plano B
+
+| Ticker | Status | Nota |
+|--------|--------|------|
+| QQQ (Invesco) | ✅ Confirmado | Alta liquidez, catálogo padrão |
+| GLD (SPDR Gold) | ✅ Confirmado | Alta liquidez, catálogo padrão |
+| **SSO (ProShares Ultra S&P 500 2x)** | ✅ **Confirmado** (usuário validou 2026-04-18) | Bloqueador pré-deploy removido. FINRA Rule 2360+ suitability check passou. |
+| UPRO (ProShares UltraPro 3x) | ⚠️ mesma situação | Fallback se SSO bloqueado — mas L=3x não é winner Phase 3.5b |
+| SPUU (Direxion Daily S&P500 2x) | ⚠️ mesma situação | Equivalente funcional ao SSO |
+
+**✅ BLOQUEADOR REMOVIDO (2026-04-18):** usuário confirmou que Inter
+libera SSO na sua conta. FINRA Rule 2360+ suitability check passou.
+Deploy autorizado. Runbook consolidado em
+[`reports/phase3_5b/PRODUCTION.md`](../reports/phase3_5b/PRODUCTION.md).
+
+Rotas de contingência mantidas documentadas (caso Inter remova SSO
+do catálogo futuramente): (a) Avenue (USD 2,50/ordem); (b) IBKR BR;
+(c) reconfigurar Plano B para 2-leg LETF+QQQ sem a perna leveraged
+(degrada Sharpe pra 1.888).
+
+#### 4.7.4 Fragilidades operacionais documentadas (reviews 2025-2026)
+
+- Informe de rendimentos Global Account 2025 atrasou/não saiu a
+  tempo da safra IR 2026.
+- Dividendos de ETFs internacionais com casos de não-creditamento.
+- Atendimento robotizado, sem chat humano para conta internacional
+  (tempo médio de resposta ~8 dias).
+
+Implicação para a estratégia: **manter planilha própria de cost
+basis**, não confiar exclusivamente no informe Inter. Dividendos
+aplicáveis à Phase 3.5b são marginais (ETFs selecionados não pagam
+ou pagam pouco), mas monitorar mensalmente.
+
+#### 4.7.5 Por que Inter vs alternativas (comparativo resumido)
+
+| Broker | Corretagem ETF US | Spread FX | Settlement | SSO disponível | IOF | Veredito |
+|--------|-------------------|-----------|------------|----------------|-----|----------|
+| **Inter Global** | USD 0,00 | 0.99-1.50% | T+1 | ⚠️ confirmar | 3.50% | **Mais barato all-in se SSO liberado** |
+| Avenue | USD 2.50/ordem após 3/mês | ~1% | T+1 | ✅ catálogo amplo | 3.50% | Fallback se Inter bloquear SSO |
+| XP Internacional | USD 0.00 (só premium) | variável | T+1 | Suitability check | 3.50% | Mais caro que Inter, paridade com Avenue |
+| IBKR BR | USD 0.005/share (min 1) | ~0.2% spot rate | T+1 | ✅ | 3.50% | Melhor FX, requer mais cliques |
+| Nomad | USD 0.00 | 1.50-2.50% | T+1 | Catálogo restrito | 3.50% | Menos ETFs alavancados |
+
+**Rationale:** com rebalance threshold 5-10pp (~1-2 eventos/ano no
+rebal layer, ~12 inside-leg/ano), Inter é a corretora **mais barata**
+do mercado BR pra este uso-caso se SSO estiver liberado. A diferença
+de spread FX Avenue/Inter é trivial num volume pequeno ($3k-$5k
+inicial em Plano B); o custo de corretagem Avenue USD 2,50/ordem
+anual (~30 ordens × $2,50 = $75) supera o diferencial FX.
+
+### 4.7 Capital allocation dentro do bucket ativo
 
 Dentro dos 20-40% de capital ativo (Path A + Path B), o usuário
 sinalizou no Reddit que ~**25% do capital total** vai pra LETF
@@ -411,3 +495,8 @@ propagar para CLAUDE.md.
 | Data | Mudança | Razão | Commit |
 |------|---------|-------|--------|
 | 2026-04-16 | Mandate criado | Insatisfação com CAGR dos 2 winners (5.9% + 9.5%) vs CDI BR (~13-14%); definição de compartimentos 60-80% / 20-40% ativo; target Strategy A = 5-10%/mês; multi-asset obrigatório; LETF rotation como tese primária Strategy B. | TBD (docs/mandate) |
+| 2026-04-18 | Broker Strategy B locked: **Banco Inter Internacional** (§4.6) | Usuário selecionou Inter Global Account após Phase 3.5b conclusão. Motivações: zero corretagem ETFs US + spread FX 1.50% competitivo + T+1 settlement + plataforma FINRA-regulated. T+N invalida "daily rebalance" — threshold 5-10pp é default operacional pós-Phase 3.5b Task C4. | TBD |
+| 2026-04-18 | SSO availability confirmado no Inter (§4.6.3) | Usuário validou diretamente com Inter. Bloqueador pré-deploy removido. Runbook consolidado em `reports/phase3_5b/PRODUCTION.md`. Plano B autorizado para deploy (aguarda Phase 4 infra). | TBD |
+| 2026-04-18 | **Phase 3.5a V1 encerrada sem winner novo.** (NOTA: esta entry foi escrita pelo T6 autônomo chamando V1 de "V2" — incorreto; V2 está em execução separada.) Ceiling empírico Plano A = BollingerMR_GARCH SPY 1h L=2 CAGR 5.9%/yr net. 143 runs em 6 famílias × universe Tiingo IEX 1h (12 FX/metals + 5 equity + 1 gold) produziram **0 winners novos**. Duas opções pivot registradas em jornada T6. Decisão final delegada ao Lead T7 + user. | Razor spread 5–7 bps × 200–500 trades/yr > edge MR/breakout/pair/session 1h. Universe Pepperstone index-CFD não-servido por Tiingo. Target §2 Plano A (5–10%/mês) e hierarquia §1 pressupunham universe + granularidade que Tiingo 1h não fornece. | iter 41 phase3.5a branch |
+| 2026-04-18 | **Phase 3.5a-V2 launched** (último test Plano A com framework corrigido) | User rejeitou framing "V1=V2" do T6/T7 autônomo. V2 real corrige todos os erros estruturais identificados no post-mortem: timeframe livre (não 1h), hold ≥3 dias (não ≤5d — inverte intuição swap), universe ≥30 multi-asset CFDs (não 12 FX), cost model spread+commission-dominant (não swap-focused), CAGR target 30%/yr realista (não 60-120%), 6 famílias novas (TSMOM, Gayed-transport, AFML meta-label, Carver RP, equity pairs, vol breakout). Spec autoritativo: `specs/phase_3_5a_v2.md`. **Binding stop rule: se V2 produzir 0 PASS, Plano A abandonado permanentemente (sem V3).** User memory: `project_plano_a_v2_last_attempt.md`. Ratificação: se winner → paper trading dual (A+B); se abandon → Phase 4 Plano B puro + §4.7 re-alocação 5pp Path A → Path B. | V1 testou framework errado; V2 corrige antes de ratificar abandono. Última tentativa antes de foco exclusivo Plano B. | iter 0 phase3.5a-v2 branch |
+| 2026-04-19 | **Phase 3.5a-V2 ENCERRADA — WINNER FOUND.** 82 iters / 58 runs em 6 famílias produziram **1 gate-passing winner**: `gayed_ema100_L2_off_gld` (Gayed LETF rotation `[leverage_for_the_long_run]` transportada para CFD Pepperstone: SPY+QQQ risk-on, GLD risk-off, leverage 2×). OOS Sharpe **2.285** / CAGR líquido **79.14%** / MaxDD **−21.02%** / median hold 6d / IR vs SPY 2.161. 13/13 gates V2 pass (PBO 0.103, DSR p 0.000288, WF 8/8 @ DD 22.7%, boot99.9 CI low 0.962, FWD Sharpe 1.821). Leads L1 TSMOM / L3 AFML meta / L4 Carver RP blend / L5 Kalman pairs / L6 vol-breakout todos DEAD com diagnóstico estrutural (ver `reports/phase3_5a_v2/AGGREGATE.md`). **Binding stop rule NÃO dispara** (1 PASS ≥ 1 requerido). Plano A RETIDO como 2ª perna ativa mandate §1. Próxima fase: `specs/phase_4_paper_trading.md` (dual-path paper trading A+B, 3 meses). **Anti-regra explícita:** não fazer V3; não re-otimizar winner em Phase 3.5a — Phase B leads são movidos para Phase 4+5 (cost sensitivity, multi-asset transport, WF re-opt, ρ(A,B), GARCH vol-sizing). Plano B 3-leg EW permanece IMUTÁVEL. | V2 vindicou o framework corrigido (daily, hold ≥3d, spread+commission-dominant). Regime-driven é a única família viável em Plano A CFD Pepperstone — inferência de 6 famílias testadas, 1 PASS (Gayed), 5 DEAD estrutural. | iter 81 phase3.5a-v2 branch (V2-L7 atomic verdict) |

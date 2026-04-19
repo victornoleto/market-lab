@@ -1,0 +1,183 @@
+{
+  "ticker": "EFA",
+  "frequency": "daily",
+  "config_entry": {
+    "name": "afml_ema50_tb_2atr_1atr_20d_rf_meta",
+    "type": "afml_triple_barrier_meta_label",
+    "primary_model": "ema_crossover",
+    "primary_fast": 50,
+    "primary_slow_kind": "price_vs_ema50",
+    "barrier_tp_atr_mult": 2.0,
+    "barrier_sl_atr_mult": 1.0,
+    "barrier_atr_lookback": 20,
+    "barrier_time_bars": 20,
+    "meta_model": "sklearn_random_forest",
+    "meta_n_estimators": 100,
+    "meta_max_depth": 5,
+    "meta_random_state": 42,
+    "meta_features": [
+      "ret_5d",
+      "vol_20d",
+      "rsi_14d",
+      "atr_ratio_20d"
+    ],
+    "meta_label_threshold_p": 0.55,
+    "cv_scheme": "cpcv",
+    "cv_n_folds": 8,
+    "cv_n_test_splits": 2,
+    "cv_embargo_frac": 0.01,
+    "rebalance_cadence": "daily_close",
+    "direction": "long_only",
+    "broker_model": "pepperstone_razor_cfd"
+  },
+  "window": {
+    "start": "2003-08-20",
+    "end": "2026-04-14",
+    "n_bars": 5698
+  },
+  "splits": {
+    "IS": {
+      "range": [
+        "2003-08-20",
+        "2019-06-24"
+      ],
+      "n_bars": 3988,
+      "sharpe": 0.10273085131769458,
+      "cagr": 0.0031306013255647525,
+      "max_drawdown": -0.1749562635361226,
+      "final_equity": 1.0507094682526485
+    },
+    "OOS": {
+      "range": [
+        "2019-06-25",
+        "2024-01-03"
+      ],
+      "n_bars": 1140,
+      "sharpe": 0.6451597372343486,
+      "cagr": 0.021608495395171845,
+      "max_drawdown": -0.030631716489897265,
+      "final_equity": 1.101542582072955
+    },
+    "FWD": {
+      "range": [
+        "2024-01-04",
+        "2026-04-14"
+      ],
+      "n_bars": 570,
+      "sharpe": 1.7887326136258814,
+      "cagr": 0.035974157228323866,
+      "max_drawdown": -0.004987493433839751,
+      "final_equity": 1.083222817316261
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 0.5,
+    "max_window_drawdown": 0.10685183047380764,
+    "pass": false,
+    "min_profitable_ratio": 0.75,
+    "max_drawdown_cap": 0.25
+  },
+  "hold_metrics": {
+    "median_hold_days": 6.0,
+    "n_events_total": 220,
+    "n_events_taken": 31,
+    "per_bin_counts": {
+      "-1": 119,
+      "1": 91,
+      "0": 10
+    }
+  },
+  "costs": {
+    "cum_transaction_cost_pct": 0.04216,
+    "cum_swap_cost_pct": 0.007749999999999981,
+    "spread_half_bps": 2.0,
+    "commission_round_trip_bps": 6.6,
+    "slippage_bps_round_trip": 3.0,
+    "swap_daily_pct_long": -5e-05
+  },
+  "cv": {
+    "n_folds": 8,
+    "n_test_splits": 2,
+    "embargo_frac": 0.01,
+    "fold_accuracies": [
+      0.5892857142857143,
+      0.5,
+      0.5714285714285714,
+      0.45454545454545453,
+      0.7090909090909091,
+      0.6181818181818182,
+      0.5272727272727272,
+      0.5178571428571429,
+      0.5892857142857143,
+      0.4727272727272727,
+      0.5818181818181818,
+      0.5636363636363636,
+      0.509090909090909,
+      0.4642857142857143,
+      0.4,
+      0.5272727272727272,
+      0.4909090909090909,
+      0.45454545454545453,
+      0.6181818181818182,
+      0.45454545454545453,
+      0.5272727272727272,
+      0.5555555555555556,
+      0.5555555555555556,
+      0.5370370370370371,
+      0.6296296296296297,
+      0.48148148148148145,
+      0.5185185185185185
+    ]
+  },
+  "runtime_seconds": 2.3,
+  "iter": 45,
+  "produced_at": "2026-04-18T19:18:12+00:00",
+  "verdict_per_config": {
+    "checks": [
+      {
+        "name": "oos_sharpe_gt_0",
+        "pass": true,
+        "value": "0.645"
+      },
+      {
+        "name": "fwd_sharpe_gt_0",
+        "pass": true,
+        "value": "1.789"
+      },
+      {
+        "name": "wf_pass",
+        "pass": false,
+        "value": "6/8"
+      },
+      {
+        "name": "median_hold_ge_3d",
+        "pass": true,
+        "value": "6.0d"
+      },
+      {
+        "name": "oos_cagr_ge_30pct",
+        "pass": false,
+        "value": "2.2%"
+      },
+      {
+        "name": "oos_sharpe_ge_2",
+        "pass": false,
+        "value": "0.645"
+      },
+      {
+        "name": "oos_maxdd_le_25pct",
+        "pass": true,
+        "value": "-3.1%"
+      }
+    ],
+    "n_passed": 4,
+    "n_total": 7,
+    "all_pass_except_cross_config_gates": false,
+    "failed_subset_gates": [
+      "wf_pass",
+      "oos_cagr_ge_30pct",
+      "oos_sharpe_ge_2"
+    ]
+  }
+}

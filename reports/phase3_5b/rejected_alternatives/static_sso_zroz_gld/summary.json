@@ -1,0 +1,137 @@
+{
+  "config": {
+    "threshold_pp": 10.0,
+    "tax_rate": 0.15,
+    "initial_capital": 100000.0,
+    "sso_synthesis": {
+      "leverage": 2.0,
+      "annual_fee": 0.01,
+      "source": "synthesize_letf_returns(SPYSIM)"
+    },
+    "data_source": "testfol.io SPYSIM/ZROZSIM/GLDSIM",
+    "window": {
+      "start": "1986-01-02",
+      "end": "2026-04-17",
+      "bars": 10151
+    }
+  },
+  "spy_buy_hold_SPYSIM": {
+    "start": "1986-01-02",
+    "end": "2026-04-17",
+    "years": 40.29,
+    "total_return_pct": 7885.65,
+    "cagr_pct": 11.49,
+    "sharpe": 0.682,
+    "max_drawdown_pct": 55.14,
+    "final_equity": 7985645.3
+  },
+  "variants": [
+    {
+      "variant": "SA_60_20_20",
+      "weights": {
+        "SSO": 0.6,
+        "ZROZ": 0.2,
+        "GLD": 0.2
+      },
+      "metrics": {
+        "start": "1986-01-02",
+        "end": "2026-04-17",
+        "years": 40.29,
+        "total_return_pct": 40472.28,
+        "cagr_pct": 16.08,
+        "sharpe": 0.766,
+        "max_drawdown_pct": 59.42,
+        "final_equity": 40571312.29
+      },
+      "rebalance_events": 47,
+      "rebalance_tax_paid_usd": 2574161.94,
+      "excess_vs_spy": {
+        "cagr_pp": 4.59,
+        "sharpe_delta": 0.084,
+        "maxdd_delta_pp": 4.28
+      }
+    },
+    {
+      "variant": "A_50_25_25",
+      "weights": {
+        "SSO": 0.5,
+        "ZROZ": 0.25,
+        "GLD": 0.25
+      },
+      "metrics": {
+        "start": "1986-01-02",
+        "end": "2026-04-17",
+        "years": 40.29,
+        "total_return_pct": 25682.12,
+        "cagr_pct": 14.78,
+        "sharpe": 0.795,
+        "max_drawdown_pct": 49.46,
+        "final_equity": 25781606.01
+      },
+      "rebalance_events": 46,
+      "rebalance_tax_paid_usd": 1901977.8,
+      "excess_vs_spy": {
+        "cagr_pp": 3.29,
+        "sharpe_delta": 0.113,
+        "maxdd_delta_pp": -5.68
+      }
+    },
+    {
+      "variant": "M_40_30_30",
+      "weights": {
+        "SSO": 0.4,
+        "ZROZ": 0.3,
+        "GLD": 0.3
+      },
+      "metrics": {
+        "start": "1986-01-02",
+        "end": "2026-04-17",
+        "years": 40.29,
+        "total_return_pct": 19499.38,
+        "cagr_pct": 14.0,
+        "sharpe": 0.861,
+        "max_drawdown_pct": 37.76,
+        "final_equity": 19599070.9
+      },
+      "rebalance_events": 55,
+      "rebalance_tax_paid_usd": 1631034.08,
+      "excess_vs_spy": {
+        "cagr_pp": 2.51,
+        "sharpe_delta": 0.179,
+        "maxdd_delta_pp": -17.38
+      }
+    },
+    {
+      "variant": "C_30_35_35",
+      "weights": {
+        "SSO": 0.3,
+        "ZROZ": 0.35,
+        "GLD": 0.35
+      },
+      "metrics": {
+        "start": "1986-01-02",
+        "end": "2026-04-17",
+        "years": 40.29,
+        "total_return_pct": 11563.25,
+        "cagr_pct": 12.54,
+        "sharpe": 0.863,
+        "max_drawdown_pct": 33.99,
+        "final_equity": 11663112.52
+      },
+      "rebalance_events": 46,
+      "rebalance_tax_paid_usd": 932871.92,
+      "excess_vs_spy": {
+        "cagr_pp": 1.05,
+        "sharpe_delta": 0.181,
+        "maxdd_delta_pp": -21.15
+      }
+    }
+  ],
+  "caveats": [
+    "No regime filter \u2014 leveraged SSO stays long in 2008/2000 crashes.",
+    "ZROZ/duration risk \u2014 backtest window had secular disinflation; regime may not persist.",
+    "Descriptive only \u2014 does NOT replace the 5-gate validation required before real-capital deployment.",
+    "testfol.io ZROZSIM pre-2009 is simulated from yield curve.",
+    "Modern-era costs (15 bps) applied; pre-2000 costs were higher."
+  ]
+}

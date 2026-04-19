@@ -1,0 +1,106 @@
+{
+  "common_window": {
+    "start": "2004-11-18",
+    "end": "2026-04-14",
+    "bars": 5383
+  },
+  "is_end": "2017-09-21",
+  "is_fraction": 0.6,
+  "comparison": {
+    "leg_names": [
+      "LETF_EMA100_2x",
+      "QQQ_Donchian_20_10",
+      "GLD_Donchian_40_20"
+    ],
+    "is_end": "2017-09-21",
+    "default_method": "equal_weight",
+    "rationale": "EW kept (OOS Sharpe=2.301, DR=1.376); no challenger improves BOTH OOS Sharpe by \u2265+0.05 AND DR by \u2265+0.05.",
+    "rows": [
+      {
+        "method": "equal_weight",
+        "weights": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "bars": 5383,
+        "full_sharpe": 2.1083766535661903,
+        "full_cagr_pct": 0.2555604552929469,
+        "full_volatility_ann_pct": 0.11094410975930522,
+        "full_max_drawdown_pct": 0.1085544019784769,
+        "is_sharpe": 1.9708643725157493,
+        "oos_sharpe": 2.3011811280080425,
+        "diversification_ratio": 1.3759944716921864,
+        "final_equity": 129.40148582716756
+      },
+      {
+        "method": "ivp_static",
+        "weights": [
+          0.12133243826947224,
+          0.5017990191806779,
+          0.3768685425498499
+        ],
+        "bars": 5383,
+        "full_sharpe": 1.9852490007636754,
+        "full_cagr_pct": 0.19193559389102366,
+        "full_volatility_ann_pct": 0.09058571967825628,
+        "full_max_drawdown_pct": 0.08834902750284063,
+        "is_sharpe": 1.8088441284091266,
+        "oos_sharpe": 2.228989221129072,
+        "diversification_ratio": 1.4353955057268373,
+        "final_equity": 42.62685644524851
+      },
+      {
+        "method": "hrp",
+        "weights": [
+          0.10392834287800413,
+          0.42982026294922926,
+          0.4662513941727666
+        ],
+        "bars": 5383,
+        "full_sharpe": 1.9238932936583821,
+        "full_cagr_pct": 0.1813393378608814,
+        "full_volatility_ann_pct": 0.08873630091871047,
+        "full_max_drawdown_pct": 0.08387982338994178,
+        "is_sharpe": 1.734616721585241,
+        "oos_sharpe": 2.186269876478871,
+        "diversification_ratio": 1.4557869999362725,
+        "final_equity": 35.21227704920193
+      },
+      {
+        "method": "risk_parity",
+        "weights": [
+          0.19177853659157093,
+          0.39308607865380757,
+          0.4151353847546214
+        ],
+        "bars": 5383,
+        "full_sharpe": 2.04953429706008,
+        "full_cagr_pct": 0.2095636099650402,
+        "full_volatility_ann_pct": 0.09510963860382425,
+        "full_max_drawdown_pct": 0.09147371202869405,
+        "is_sharpe": 1.8817733725026646,
+        "oos_sharpe": 2.2826908737003597,
+        "diversification_ratio": 1.4527361403548766,
+        "final_equity": 58.30679930022374
+      },
+      {
+        "method": "min_variance",
+        "weights": [
+          6.938893903907228e-18,
+          0.5744735834518214,
+          0.4255264165481785
+        ],
+        "bars": 5383,
+        "full_sharpe": 1.7414974438485182,
+        "full_cagr_pct": 0.15472266864749584,
+        "full_volatility_ann_pct": 0.08475007214159534,
+        "full_max_drawdown_pct": 0.07521616272541165,
+        "is_sharpe": 1.536219940691674,
+        "oos_sharpe": 2.0244136290961325,
+        "diversification_ratio": 1.3847034466771722,
+        "final_equity": 21.651686357564728
+      }
+    ]
+  }
+}
