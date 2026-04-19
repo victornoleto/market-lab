@@ -4,6 +4,21 @@
 
 ---
 
+## ⚠️ Nota sobre paths de jornadas
+
+Jornadas citadas neste documento usam paths **pré-reorganização**
+(formato flat `jornada/YYYY-MM-DD-HHMM-slug.md`). Quando o cleanup
+executar `CLEANUP-PROMPT.md §A`, as jornadas serão movidas para
+`jornada/YYYY-MM-DD/NN-slug.md`. O agente de cleanup é instruído a
+**re-gravar este documento substituindo os paths pelos novos**
+antes de prosseguir com §B-F.
+
+Se você está lendo este arquivo pós-cleanup e os paths abaixo parecem
+desatualizados, a reorganização foi concluída — use os paths novos
+(consulte `jornada/README.md` para o mapeamento).
+
+---
+
 ## Filosofia de cleanup (decidida com usuário 2026-04-18)
 
 1. **V2 (winner encontrado):** preservar com **detalhamento máximo** — este é o
