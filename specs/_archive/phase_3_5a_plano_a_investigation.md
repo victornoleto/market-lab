@@ -1,3 +1,16 @@
+# [SUPERSEDED by specs/phase_3_5a_v2.md — V1 refuted 2026-04-18]
+
+> **Status:** histórico. Phase 3.5a V1 foi refutada após 42 iters /
+> 143 runs / 0 PASS em 6 famílias (BollingerMR FX/metais, Donchian 1h,
+> Kalman pairs, session-based FX, regime-filter hybrid). Framework errado:
+> 1h FX retail, hold ≤5d, universe pequeno. Diagnóstico completo nas
+> jornadas T1-T5 DEAD + T6 meta + T7 summary em
+> `jornada/2026-04-18/02..26-*.md`. Substituído por `specs/phase_3_5a_v2.md`
+> (universe multi-asset daily, hold ≥3d), que encontrou o winner
+> `gayed_ema100_L2_off_gld` em 2026-04-19.
+
+---
+
 # Spec — Phase 3.5a [PLANO A] Investigation
 
 Continuar a busca de uma strategy viável para **Plano A (Pepperstone CFD
