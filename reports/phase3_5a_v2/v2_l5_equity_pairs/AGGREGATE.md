@@ -80,4 +80,4 @@ trivialmente. Subset gates: 1/7 em todos.
 
 - Per-ticker reports: `reports/phase3_5a_v2/v2_l5_equity_pairs/*.md`
 - Registry: `reports/phase3_5a_v2/v2_l5_equity_pairs/registry.json`
-- Jornada: `jornada/2026-04-19-0310-phase3.5a-v2-L5-equity-pairs-DEAD.md`
+- Jornada: `jornada/2026-04-19/05-phase3.5a-v2-L5-equity-pairs-DEAD.md`

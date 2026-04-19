@@ -47,7 +47,7 @@ Rationale documentado em `reports/phase3_5b/robustness/allocation_comparison.md`
 \* LETF rotation na **janela longa** (1970 → 2026) tem CAGR 44.69 % e
 Sharpe 1.85 `[reports/phase3_5b/letf_rotation_ema100_2x/summary.json]`; na
 janela comum (desde 2004-11-18) os números caem para os valores acima
-(OOS Sharpe 1.724 reportado em `jornada/2026-04-17-0055-b1c-letf-rotation-gates-PASS.md`).
+(OOS Sharpe 1.724 reportado em `jornada/2026-04-17/07-b1c-letf-rotation-gates-PASS.md`).
 Para comparação apples-to-apples com o portfólio, usar a janela comum.
 
 O **excess CAGR do portfolio vs SPY é +14.90 pp** com Max DD −44.35 pp
@@ -216,9 +216,9 @@ o capital crescer para >$3 000 em Plano B.
 ## 8. Referências internas
 
 - Winner config cards:
-  - `jornada/2026-04-17-0055-b1c-letf-rotation-gates-PASS.md`
-  - `jornada/2026-04-17-0120-a3b-tsmom-donchian-per-asset-PASS.md`
-  - `jornada/2026-04-17-0040-a3d-3leg-letf-qqq-gld-PASS.md`
+  - `jornada/2026-04-17/07-b1c-letf-rotation-gates-PASS.md`
+  - `jornada/2026-04-17/08-a3b-tsmom-donchian-per-asset-PASS.md`
+  - `jornada/2026-04-17/06-a3d-3leg-letf-qqq-gld-PASS.md`
 - Reports full Phase 3.5b: `reports/phase3_5b/{letf_rotation_ema100_2x, qqq_donchian_20_10, gld_donchian_40_20, portfolio_3leg_ew}/`
 - Robustness: `reports/phase3_5b/robustness/` (stress, slippage,
   allocation, correlation, vol-target).

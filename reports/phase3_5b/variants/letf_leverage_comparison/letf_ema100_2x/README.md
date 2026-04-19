@@ -40,7 +40,7 @@ Tasks B2 (2.5x sintético) e B3 (3x) ficam nas colunas ao lado.
 - Leverage level 2x (SSO real pós-2006, sintético antes):
   `[leverage_for_the_long_run, p.17, Table 8]`.
 - EMA100 lookback + band=0%: Gayed 2016 moving-average filter. Winner
-  3.5b main `jornada/2026-04-17-0055-b1c-letf-rotation-gates-PASS.md`.
+  3.5b main `jornada/2026-04-17/07-b1c-letf-rotation-gates-PASS.md`.
 
 ---
 

@@ -134,11 +134,11 @@ Everything else in this addendum is informational.
 
 ## Related jornadas
 
-- [`../../../jornada/2026-04-17-2100-phase3.5b-addendum-task-a-2leg-letf-qqq.md`](../../../jornada/2026-04-17-2100-phase3.5b-addendum-task-a-2leg-letf-qqq.md) — Task A (2-leg DR FAIL).
-- [`../../../jornada/2026-04-17-2130-phase3.5b-addendum-task-b2-letf-2_5x-synthetic.md`](../../../jornada/2026-04-17-2130-phase3.5b-addendum-task-b2-letf-2_5x-synthetic.md) — Task B2 (2.5× synthetic).
-- [`../../../jornada/2026-04-17-2145-phase3.5b-addendum-task-b3-letf-3x.md`](../../../jornada/2026-04-17-2145-phase3.5b-addendum-task-b3-letf-3x.md) — Task B3 (3× WF FAIL).
-- [`../../../jornada/2026-04-17-2200-phase3.5b-addendum-task-c1-rebalance-modes-module.md`](../../../jornada/2026-04-17-2200-phase3.5b-addendum-task-c1-rebalance-modes-module.md) — Task C1 (module).
-- [`../../../jornada/2026-04-17-2215-phase3.5b-addendum-task-c2-rebalance-3leg.md`](../../../jornada/2026-04-17-2215-phase3.5b-addendum-task-c2-rebalance-3leg.md) — Task C2 (3-leg cadence).
-- [`../../../jornada/2026-04-17-2230-phase3.5b-addendum-task-c3-rebalance-2leg.md`](../../../jornada/2026-04-17-2230-phase3.5b-addendum-task-c3-rebalance-2leg.md) — Task C3 (2-leg cadence).
-- [`../../../jornada/2026-04-17-2245-phase3.5b-addendum-summary.md`](../../../jornada/2026-04-17-2245-phase3.5b-addendum-summary.md) — Task D (this sub-index).
-- [`../../../jornada/2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md`](../../../jornada/2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md) — Task C4 (threshold sweep).
+- [`../../../jornada/2026-04-17/25-phase3.5b-addendum-task-a-2leg-letf-qqq.md`](../../../jornada/2026-04-17/25-phase3.5b-addendum-task-a-2leg-letf-qqq.md) — Task A (2-leg DR FAIL).
+- [`../../../jornada/2026-04-17/27-phase3.5b-addendum-task-b2-letf-2_5x-synthetic.md`](../../../jornada/2026-04-17/27-phase3.5b-addendum-task-b2-letf-2_5x-synthetic.md) — Task B2 (2.5× synthetic).
+- [`../../../jornada/2026-04-17/28-phase3.5b-addendum-task-b3-letf-3x.md`](../../../jornada/2026-04-17/28-phase3.5b-addendum-task-b3-letf-3x.md) — Task B3 (3× WF FAIL).
+- [`../../../jornada/2026-04-17/29-phase3.5b-addendum-task-c1-rebalance-modes-module.md`](../../../jornada/2026-04-17/29-phase3.5b-addendum-task-c1-rebalance-modes-module.md) — Task C1 (module).
+- [`../../../jornada/2026-04-17/30-phase3.5b-addendum-task-c2-rebalance-3leg.md`](../../../jornada/2026-04-17/30-phase3.5b-addendum-task-c2-rebalance-3leg.md) — Task C2 (3-leg cadence).
+- [`../../../jornada/2026-04-17/31-phase3.5b-addendum-task-c3-rebalance-2leg.md`](../../../jornada/2026-04-17/31-phase3.5b-addendum-task-c3-rebalance-2leg.md) — Task C3 (2-leg cadence).
+- [`../../../jornada/2026-04-17/32-phase3.5b-addendum-summary.md`](../../../jornada/2026-04-17/32-phase3.5b-addendum-summary.md) — Task D (this sub-index).
+- [`../../../jornada/2026-04-17/33-phase3.5b-addendum-task-c4-threshold-rebalance.md`](../../../jornada/2026-04-17/33-phase3.5b-addendum-task-c4-threshold-rebalance.md) — Task C4 (threshold sweep).

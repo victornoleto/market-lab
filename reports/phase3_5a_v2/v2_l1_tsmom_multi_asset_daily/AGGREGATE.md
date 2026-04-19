@@ -113,5 +113,5 @@ holds > 40 days."
 - Per-config JSON: `reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/tsmom_*.json`
 - Daily returns parquets: `reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/tsmom_*_daily_returns.parquet`
 - Registry: `reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/registry.json`
-- Jornada: `jornada/2026-04-18-1945-phase3.5a-v2-L1-tsmom-DEAD.md`
+- Jornada: `jornada/2026-04-18/09-phase3.5a-v2-L1-tsmom-DEAD.md`
 - Next lead: V2-L2 (Gayed LETF rotation transportada CFD), spec §V2-L2.

@@ -329,11 +329,11 @@ Todos os FLAGs foram documentados durante Phase 3.5b e **não invalidam o winner
 ## 9. Navegação rápida
 
 **Main docs:**
-- [Summary jornada](../../jornada/2026-04-17-2045-phase3.5b-full-validation-summary.md) — verdict completo
-- [Addendum jornada](../../jornada/2026-04-17-2245-phase3.5b-addendum-summary.md) — variants
-- [Task C4 jornada](../../jornada/2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md) — threshold decision
-- [Extended-window jornada](../../jornada/2026-04-18-1230-phase3.5b-extended-window-PASS.md) — **§10 stress test 40y**
-- [Rejected alternative jornada](../../jornada/2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md) — **§11 SSO/ZROZ/GLD descartado**
+- [Summary jornada](../../jornada/2026-04-17/24-phase3.5b-full-validation-summary.md) — verdict completo
+- [Addendum jornada](../../jornada/2026-04-17/32-phase3.5b-addendum-summary.md) — variants
+- [Task C4 jornada](../../jornada/2026-04-17/33-phase3.5b-addendum-task-c4-threshold-rebalance.md) — threshold decision
+- [Extended-window jornada](../../jornada/2026-04-18/04-phase3.5b-extended-window-PASS.md) — **§10 stress test 40y**
+- [Rejected alternative jornada](../../jornada/2026-04-18/05-phase3.5b-rejected-sso-zroz-gld.md) — **§11 SSO/ZROZ/GLD descartado**
 - [Allocation doc](../../docs/phase3_winners_allocation.md) — "1 portfolio vs 3 strategies"
 - [Investment mandate](../../docs/investment-mandate.md) §4.6 — broker Inter details
 

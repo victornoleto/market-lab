@@ -201,5 +201,5 @@ per spec, but their value changes:
 - Daily returns:      `reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_*_daily_returns.parquet`
 - Aggregate JSON:     `reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/AGGREGATE.json`
 - Registry:           `reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/registry.json`
-- Jornada:            `jornada/2026-04-19-0020-phase3.5a-v2-L2-gayed-transported-PASS.md`
+- Jornada:            `jornada/2026-04-19/01-phase3.5a-v2-L2-gayed-transported-PASS.md`
 - Next lead:          V2-L3 (AFML triple-barrier + meta-label), spec §V2-L3.

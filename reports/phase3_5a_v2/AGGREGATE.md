@@ -249,8 +249,8 @@ These are **not** Phase 3.5a-V2 work — they belong to `specs/phase_4_paper_tra
   - L5 Pairs: `reports/phase3_5a_v2/v2_l5_equity_pairs/AGGREGATE.md`
   - L6 Vol-breakout: `reports/phase3_5a_v2/v2_l6_vol_breakout/AGGREGATE.md`
 - **Spec:** `specs/phase_3_5a_v2.md`
-- **Winner jornada:** `jornada/2026-04-19-0020-phase3.5a-v2-L2-gayed-transported-PASS.md`
-- **Final verdict jornada:** `jornada/2026-04-19-0510-phase3.5a-v2-summary-WINNER-FOUND.md` (this iter)
+- **Winner jornada:** `jornada/2026-04-19/01-phase3.5a-v2-L2-gayed-transported-PASS.md`
+- **Final verdict jornada:** `jornada/2026-04-19/07-phase3.5a-v2-summary-WINNER-FOUND.md` (this iter)
 - **Next phase spec:** `specs/phase_4_paper_trading.md` (drafted this iter)
 - **Plano B production runbook (reference):** `reports/phase3_5b/PRODUCTION.md`
 - **Investment mandate (updated §7 this iter):** `docs/investment-mandate.md`
