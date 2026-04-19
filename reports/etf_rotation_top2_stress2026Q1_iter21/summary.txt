@@ -1,9 +1,0 @@
-Run: etf_rotation_top2_stress2026Q1_iter21
-Period: 2026-01-01 → 2026-03-31
-Symbols: ['SPY', 'QQQ', 'IWM', 'GLD', 'TLT']
-Sharpe: 0.481
-CAGR: 9.79%
-MaxDD: -13.46%
-overall_pass: False
-DSR_p: 0.4091
-WF: 0/0 (reject)
