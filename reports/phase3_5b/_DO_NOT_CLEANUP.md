@@ -50,6 +50,7 @@ Quando o cleanup geral rodar após Phase 3.5a-V2:
 - `jornada/2026-04-18-1230-phase3.5b-extended-window-PASS.md`
 - `jornada/2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md`
 - `jornada/2026-04-18-1400-phase3.5b-V4-promoted-gate-verdict.md`
+- `jornada/2026-04-18-1530-phase3.5b-3x-variants-V5-V8-tested.md`
 
 ## Se precisar mexer (excepcionalmente)
 
