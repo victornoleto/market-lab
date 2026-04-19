@@ -53,7 +53,7 @@ referência histórica significativa.
 5. `specs/phase_3_5a_v2.md` — contrato V2 executado
 6. `specs/phase_4_paper_trading.md` — próxima fase
 7. `jornada/README.md` — retrato atual + glossário
-8. `jornada/2026-04-18-1900-phase3.5a-v2-WINNER-humana.md` — narrativa arc V1→V2
+8. `jornada/2026-04-18/23-phase3.5a-v2-WINNER-humana.md` — narrativa arc V1→V2
 9. `ROADMAP.md` — mapa técnico
 10. `CLAUDE.md` — convenções do projeto
 11. `docs/investment-mandate.md` — regras invioláveis de strategy

@@ -1,9 +1,0 @@
-Run: etf_rotation_top2_OOS2025_iter21
-Period: 2025-01-01 → 2025-12-31
-Symbols: ['SPY', 'QQQ', 'IWM', 'GLD', 'TLT']
-Sharpe: 1.611
-CAGR: 20.67%
-MaxDD: -7.28%
-overall_pass: False
-DSR_p: 0.0604
-WF: 6/8 (pass)

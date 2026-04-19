@@ -27,10 +27,13 @@ dual-path framework and per-path constraints.
 | 0 | Knowledge base — 34 books → validated summaries (16 active + 18 archived) | ✅ Done |
 | 0.5 | `build_skill.py` + skill sanity gate | ✅ Done |
 | 1 | Pepperstone/cTrader infra + Postgres/Grafana | 🔄 Scaffold (awaiting Spotware OAuth approval) |
-| 2 | Backtest engine + CPCV/PBO/DSR/WF/MCPT validation | ✅ Done — 345 tests green |
-| 2.5 | Strategy search via self-improve loop | ✅ Done — 2 production winners (BollingerMR SPY 1h Sharpe 0.995 + ETFRotation monthly Sharpe 0.708) + Investment Mandate; ver `jornada/2026-04-16-1600-production-readiness-summary.md` |
-| 3 | Post-cleanup evolution: 5 leads (A1-A3 multi-asset BollingerMR + B1-B2 LETF rotation) | ⏳ Pendente — execução em branch separada |
-| 4 | Paper trading (cTrader demo account) | ⏳ Blocked on 3 |
+| 2 | Backtest engine + CPCV/PBO/DSR/WF/MCPT validation | ✅ Done — 796 tests green |
+| 2.5 | Strategy search via self-improve loop | ✅ Done — 2 initial winners (BollingerMR SPY 1h + ETFRotation monthly) + Investment Mandate; `jornada/2026-04-16/10-production-readiness-summary.md` |
+| 3 | Post-cleanup evolution: 5 leads (A1-A3 + B1-B2) | ✅ Done — Path B 3-leg LETF EW winner consolidated in Phase 3.5b |
+| 3.5a V1 | Plano A short-hold 1h FX/metals retail (6 famílias) | ❌ Refuted 2026-04-18 (0/143 PASS, framework errado); sumário em 7 jornadas `jornada/2026-04-18/02..26-*.md` |
+| 3.5a V2 | Plano A daily multi-asset CFD Pepperstone (6 famílias novas) | ✅ Done 2026-04-19 — ★ WINNER `gayed_ema100_L2_off_gld` Sharpe 2.285 CAGR 79.14% MDD -21.02% (13/13 gates pass); `docs/strategies/plano_a_v2_l2_gayed_cfd.md` |
+| 3.5b | Plano B LETF rotation winners end-to-end validation | ✅ Done 2026-04-17 — Portfolio 3-leg EW (SSO+QLD+UGL threshold 10pp) Sharpe 2.251 CAGR 25.56% MDD -10.86%; runbook em `reports/phase3_5b/PRODUCTION.md` |
+| 4 | Paper trading dual-path 3 meses (cTrader demo A + Inter Global B) | ⏳ Next — spec em `specs/phase_4_paper_trading.md` |
 | 5 | Live trading ($1000 initial) | ⏳ Blocked on 4 |
 | 6 | Monitoring + governance | ⏳ |
 | 7 | Scaling | ⏳ |
@@ -215,7 +218,7 @@ verification against the source books):
 Executable Phase 2 spec with a Conclusion field per task:
 [`specs/backtest_phase2.md`](specs/backtest_phase2.md). Production
 readiness summary of the 2 winners:
-[`jornada/2026-04-16-1600-production-readiness-summary.md`](jornada/2026-04-16-1600-production-readiness-summary.md).
+[`jornada/2026-04-16/10-production-readiness-summary.md`](jornada/2026-04-16/10-production-readiness-summary.md).
 Investment Mandate (regras invioláveis):
 [`docs/investment-mandate.md`](docs/investment-mandate.md).
 
@@ -251,7 +254,7 @@ checkpoints in `.cache/grid_runs/<run_id>/trial_*/`.
 
 **Phase 2.5 result (2026-04-16 evening):** 2 production winners
 (BollingerMR SPY 1h GO-WITH-CAVEATS + ETFRotation monthly top-1 GO).
-Detailed verdicts: [`jornada/2026-04-16-1600-production-readiness-summary.md`](jornada/2026-04-16-1600-production-readiness-summary.md).
+Detailed verdicts: [`jornada/2026-04-16/10-production-readiness-summary.md`](jornada/2026-04-16/10-production-readiness-summary.md).
 
 ---
 

@@ -44,13 +44,13 @@ Quando o cleanup geral rodar após Phase 3.5a-V2:
 
 ## Jornadas relacionadas (imutáveis)
 
-- `jornada/2026-04-17-2045-phase3.5b-full-validation-summary.md`
-- `jornada/2026-04-17-2245-phase3.5b-addendum-summary.md`
-- `jornada/2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md`
-- `jornada/2026-04-18-1230-phase3.5b-extended-window-PASS.md`
-- `jornada/2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md`
-- `jornada/2026-04-18-1400-phase3.5b-V4-promoted-gate-verdict.md`
-- `jornada/2026-04-18-1530-phase3.5b-3x-variants-V5-V8-tested.md`
+- `jornada/2026-04-17/24-phase3.5b-full-validation-summary.md`
+- `jornada/2026-04-17/32-phase3.5b-addendum-summary.md`
+- `jornada/2026-04-17/33-phase3.5b-addendum-task-c4-threshold-rebalance.md`
+- `jornada/2026-04-18/04-phase3.5b-extended-window-PASS.md`
+- `jornada/2026-04-18/05-phase3.5b-rejected-sso-zroz-gld.md`
+- `jornada/2026-04-18/08-phase3.5b-V4-promoted-gate-verdict.md`
+- `jornada/2026-04-18/16-phase3.5b-3x-variants-V5-V8-tested.md`
 
 ## Se precisar mexer (excepcionalmente)
 

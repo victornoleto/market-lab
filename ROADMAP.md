@@ -4,14 +4,36 @@
 
 ---
 
-## 📍 Current status (2026-04-16, post data-bug cleanup)
+## 📍 Current status (2026-04-19, post Phase 3.5a-V2 + cleanup)
+
+### Headline (2026-04-19)
+
+- **Phase 3.5a-V2 encerrada com WINNER** (`gayed_ema100_L2_off_gld` —
+  Gayed rotation transportada para CFD Pepperstone L=2; Sharpe OOS
+  2.285, CAGR 79.14%, MDD -21.02%, 13/13 gates pass). Living strategy
+  doc: `docs/strategies/plano_a_v2_l2_gayed_cfd.md`.
+- **Phase 3.5a-V1 refutada** 2026-04-18 (42 iters, 143 runs, 0 PASS).
+  Framework errado (1h FX retail, universe pequeno). Sumário em 7
+  jornadas V1 DEAD preservadas em `jornada/2026-04-18/02..26-*.md`.
+- **Phase 3.5b continua em produção** — Portfolio 3-leg EW
+  (SSO+QLD+UGL, threshold 10pp, Sharpe 2.251 CAGR 25.56% MDD -10.86%).
+  Intocável.
+- **Cleanup pós-V2 executado** — `jornada/` reorganizada por dia
+  (100 arquivos, 10 pastas), reports V1 + scripts V1 prunados (82 files
+  removidos), V2 winner + Phase 3.5b preservados integralmente,
+  pytest 796 passed. Detalhes em `jornada/2026-04-19/08-cleanup-post-v2.md`.
+- **Próximo:** Phase 4 dual-path paper trading 3 meses
+  (`specs/phase_4_paper_trading.md`). cTrader Demo (Plano A) + Inter
+  Global (Plano B).
+
+### Legacy status (2026-04-16, pré-V2)
 
 ### Headline
 
-- **2 winners + Investment Mandate (2026-04-16 evening).** Autonomous self-improve loop iter 19-27 delivered (1) **BollingerMR GARCH SPY 1h** [SHORT-HOLD CFD] — CAGR ~5.9%/ano, PSR p=0.043, verdict **GO-WITH-CAVEATS** (SPY-only); (2) **ETFRotation Monthly Top-1** [SWING BROKER] — CAGR líquido ~9.1-9.6%/ano em 23 anos, PSR p=0.004, bootstrap CI [0.449, 1.254], verdict **GO**. Correlation ρ=0.252 — independent. Full summary: `jornada/2026-04-16-1600-production-readiness-summary.md`. Both CAGRs são considerados insuficientes vs. CDI BR (~13-14%/ano), por isso o **Investment Mandate** registrado em `docs/investment-mandate.md` define evolução agressiva (ver seção abaixo).
+- **2 winners + Investment Mandate (2026-04-16 evening).** Autonomous self-improve loop iter 19-27 delivered (1) **BollingerMR GARCH SPY 1h** [SHORT-HOLD CFD] — CAGR ~5.9%/ano, PSR p=0.043, verdict **GO-WITH-CAVEATS** (SPY-only); (2) **ETFRotation Monthly Top-1** [SWING BROKER] — CAGR líquido ~9.1-9.6%/ano em 23 anos, PSR p=0.004, bootstrap CI [0.449, 1.254], verdict **GO**. Correlation ρ=0.252 — independent. Full summary: `jornada/2026-04-16/10-production-readiness-summary.md`. Both CAGRs são considerados insuficientes vs. CDI BR (~13-14%/ano), por isso o **Investment Mandate** registrado em `docs/investment-mandate.md` define evolução agressiva (ver seção abaixo).
 - **34 books absorbed; 16 active + 18 archived (cleanup 2026-04-16).** `leverage_for_the_long_run` (Gayed 2016/2020) adicionado como referência primária para Strategy B LETF rotation. Audit completo em `books/CITATION_AUDIT.md`.
 - **345 tests green** (after post-winners cleanup removed ~186 strategy-specific tests; engine + winners + helpers preserved).
-- **Prior 3 "winners" retracted (2026-04-16 12:45).** All 3 prior "winners" (XLK / SPY / XLE Bollinger MR 1h, iters 5/15/16 of the self-improve loop) were **retracted on 2026-04-16 12:45** after a data-bug postmortem. Tiingo IEX returned 6 placeholder hourly bars on US market-closed days (volume=0, OHLC identical, RAW unadjusted prices). For tickers with historical splits (XLK ratio≈0.48, XLE≈0.41) those bars sat at 2× adjacent prices and inflated the strategies' P&L by 45-89%. Post-cleanup re-validation: SPY Sharpe 1.31→0.78, XLK 1.93→0.75, XLE 1.58→0.42 — all FAIL the 3-gate framework. See `jornada/2026-04-16-1245-data-bug-winners-retracted.md` for the full postmortem.
+- **Prior 3 "winners" retracted (2026-04-16 12:45).** All 3 prior "winners" (XLK / SPY / XLE Bollinger MR 1h, iters 5/15/16 of the self-improve loop) were **retracted on 2026-04-16 12:45** after a data-bug postmortem. Tiingo IEX returned 6 placeholder hourly bars on US market-closed days (volume=0, OHLC identical, RAW unadjusted prices). For tickers with historical splits (XLK ratio≈0.48, XLE≈0.41) those bars sat at 2× adjacent prices and inflated the strategies' P&L by 45-89%. Post-cleanup re-validation: SPY Sharpe 1.31→0.78, XLK 1.93→0.75, XLE 1.58→0.42 — all FAIL the 3-gate framework. See `jornada/2026-04-16/01-data-bug-winners-retracted.md` for the full postmortem.
 - **Tooling hardened.** `_filter_orphan_intraday_bars` in `tiingo_source.py` blocks the bug from re-entering the cache; `scripts/clean_intraday_orphans.py` removed 4296 placeholder bars from 12 tickers (backups kept locally). 2 regression tests added.
 - **Self-improvement loop is the production search mechanism.** `scripts/self_improve_loop.sh` runs Claude Code in a fresh-context sonnet session per iteration, reads `docs/self_improvement/memory.md`, picks one experiment from the leads list, runs it, updates memory + jornada, auto-commits on the isolated branch. The previous 17 iterations are committed but their conclusions about "winners" are retracted — the infrastructure they built (grids, OOS scripts, bootstrap, overlap, regime decomp, GARCH-prep) is intact and reusable.
 
@@ -89,11 +111,11 @@ A winner on either path is a winner. The "find ~10 strategies" goal in `docs/sel
 - 🔄 **Phase 2.5 — Run 2 (Ehlers Band-Pass Swing grid, 2026-04-14).** Pivot to a 2nd DSP-based strategy. New Ehlers primitives (SuperSmoother, HP, Roofing, Homodyne DCP, Band-pass) in `backtest/indicators/`. New `EhlersBPSwingStrategy` (anticipatory ±0.7 thresholds over AGC-normalised BPF). GridRunner generalised to `TypeVar ConfigT` — Clenow and Ehlers share the runner. Grid of 24 configs (hp_period × lp_period × pct_of_dcp × stop_pct = 2×2×3×2) over ^GSPC 2015-2023 (~3s wallclock n_jobs=4). **Mixed verdict:** PBO=0.468 **passes** (Ehlers is structurally less overfit than Clenow), DSR 0/24 reject, WF 2/24 pass. Best #6 Sharpe 0.31 CAGR 2.17% DD 14.65%. **Cross-correlation Clenow × Ehlers best equity curves = −0.0108** — orthogonal strategies → regime-aware portfolio is a candidate. **55 new tests (290/290 green).** Details: `specs/backtest_phase2_5_ehlers.md` §"Run — results and fork".
 - ✅ **Phase 2.5 — Run 3 (Tiingo survivorship-free ablation, 2026-04-15).** Bulk 1660 tickers delivered (backup `data/tiingo_backup_20260415-0958.tar.gz`, 145.7 MB). Three concrete hypotheses tested on the same gate framework:
   - **Ehlers BP Swing, SPY 2015-2023, post-fix:** PBO=0.496 pass, DSR 0/24 reject (best p=0.332, from 0.852), WF 7/24 pass (from 2/24), best Sharpe 0.806 (from 0.310 yfinance Run 2). Verdict: FAIL (DSR only) — edge real but small vs N=24 trials.
-  - **Ehlers multi-asset 2005-2023, post-fix:** 0/N PASS. Longer window kills WF across all ETFs (2008/2011/2015/2020 regime collision). Crypto barely clears WF intermittently. See `reports/ehlers_multi_asset_summary.md`.
+  - **Ehlers multi-asset 2005-2023, post-fix:** 0/N PASS. Longer window kills WF across all ETFs (2008/2011/2015/2020 regime collision). Crypto barely clears WF intermittently. (Diagnostic prunado em cleanup 2026-04-19; narrative sumário em jornadas `2026-04-14/01-tiingo-run3.md` e afins.)
   - **Clenow momentum, Tiingo SPX 506 tickers 2015-2023, post-fix:** PBO=0.603 fail (worsened vs 0.524), DSR 0/30 reject, WF 9/30 pass (from 4/30), best Sharpe 0.618 (from 0.583). Survivorship-honest universe is stricter than yfinance's filtered one. Verdict: FAIL (PBO + DSR).
   - **Code-level bugs fixed along the way:** (i) both strategies read raw `close` instead of `adj_close` — splits triggered Clenow's 15% gap filter and dividends spiked Ehlers' oscillator; new `adjust_ohlc` utility rebases OHLC to the total-return base (commit `5ca9410`). (ii) `TiingoSource._http_fetch` now returns an empty frame on 404 instead of crashing long universe fetches (commit `75f80de`). (iii) Tiingo bulk default `--start 1990-01-01` to capture widest history per ticker (commit `e0c95f1`). **351 tests green (+64 net vs Run 2 baseline 290).**
 
-- 🔄 **Phase 2.5 — Run 4 Step 2 (F3.D Portfolio Clenow+Ehlers, 2026-04-15) — FAIL v1.** v1 on SPY 2015-2023 (daily bars): PBO 0.849 ❌ (diversification uniformity paradox), DSR 0/9 reject (best p=0.190), **walk-forward 9/9 pass** ✅ (huge gain — Clenow regime filter subsidizes Ehlers DD in crises). Best Sharpe 0.804, CAGR 10.84%, DD 18.02%. v2 SKIPPED per go/no-go. Commits `872a9cf`/`c99bca3`/`36c0f57`/`ac00d6e`. Diagnostic: `reports/grid_portfolio_20260415-1541/diagnostic.md`. Spec+plan under `docs/superpowers/{specs,plans}/2026-04-15-f3d-portfolio-clenow-ehlers*.md`.
+- 🔄 **Phase 2.5 — Run 4 Step 2 (F3.D Portfolio Clenow+Ehlers, 2026-04-15) — FAIL v1.** v1 on SPY 2015-2023 (daily bars): PBO 0.849 ❌ (diversification uniformity paradox), DSR 0/9 reject (best p=0.190), **walk-forward 9/9 pass** ✅ (huge gain — Clenow regime filter subsidizes Ehlers DD in crises). Best Sharpe 0.804, CAGR 10.84%, DD 18.02%. v2 SKIPPED per go/no-go. Commits `872a9cf`/`c99bca3`/`36c0f57`/`ac00d6e`. Diagnostic folder prunado em cleanup 2026-04-19 (refutado em Phase 2.5, superseded by Phase 3.5b); spec+plan sob `docs/superpowers/{specs,plans}/2026-04-15-f3d-portfolio-clenow-ehlers*.md` mantidos.
 
   Sub-result to keep: diversification solves the WF gate (9/9 from Ehlers 7/24 / Clenow 9/30). The `src/ai_trade/backtest/portfolio/` package is timeframe-agnostic — reusable for any future combination.
 
@@ -109,7 +131,7 @@ A winner on either path is a winner. The "find ~10 strategies" goal in `docs/sel
 
 - ⏳ **Historical next-steps (pre-retraction; retained for context).** The post-cleanup search plan is in the new section below.
 
-  Diagnostics still relevant: `reports/grid_portfolio_20260415-1541/diagnostic.md` (F3.D v1), `reports/grid_ehlers_spy_postfix_20260415-0958/diagnostic.md`, `reports/grid_clenow_tiingo_postfix_20260415-1005/diagnostic.md`, `reports/grid_ehlers_20260415-1353/diagnostic.md`.
+  Diagnostics Phase 2/2.5 Clenow/Ehlers/F3.D foram prunados no cleanup 2026-04-19 após Phase 3.5b + Phase 3.5a-V2 superarem esses leads. Histórico em jornadas `2026-04-13`, `2026-04-14`, `2026-04-15` e especs `backtest_phase2*.md`.
 
 ---
 
@@ -454,9 +476,9 @@ Read first:
    + last two changelog entries (pivô + F3.D v1 FAIL).
 2. ROADMAP.md §"Current status" (has the pivot block marked ⚠️) +
    §"Next steps (post-pivot)".
-3. reports/grid_portfolio_20260415-1541/diagnostic.md (F3.D v1 — PBO
-   paradox; useful to understand why diversification alone isn't enough
-   when configs are too uniform).
+3. (F3.D v1 diagnostic prunado 2026-04-19 — narrative em jornada
+   `2026-04-17/04-a3c-portfolio-letf-donchian-FAIL-DR.md` explica o
+   mesmo padrão PBO-paradox em contexto Phase 3.)
 4. src/ai_trade/backtest/data/{tiingo_source.py,tiingo_storage.py} —
    starting points for the new tiingo_service lazy-cache layer.
 5. docs/superpowers/specs/2026-04-15-f3d-portfolio-clenow-ehlers-design.md

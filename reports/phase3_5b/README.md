@@ -181,20 +181,20 @@ reports/phase3_5b/
 
 ## Related jornadas
 
-- [`2026-04-17-2045-phase3.5b-full-validation-summary.md`](../../jornada/2026-04-17-2045-phase3.5b-full-validation-summary.md) — Phase 3.5b main summary (PASS verdict).
-- [`2026-04-17-2100-phase3.5b-addendum-task-a-2leg-letf-qqq.md`](../../jornada/2026-04-17-2100-phase3.5b-addendum-task-a-2leg-letf-qqq.md) — Task A (2-leg DR FAIL).
-- [`2026-04-17-2115-phase3.5b-addendum-task-b1-letf-2x-reuse.md`](../../jornada/2026-04-17-2115-phase3.5b-addendum-task-b1-letf-2x-reuse.md) — Task B1 (2× baseline reuse).
-- [`2026-04-17-2130-phase3.5b-addendum-task-b2-letf-2_5x-synthetic.md`](../../jornada/2026-04-17-2130-phase3.5b-addendum-task-b2-letf-2_5x-synthetic.md) — Task B2 (2.5× synthetic).
-- [`2026-04-17-2145-phase3.5b-addendum-task-b3-letf-3x.md`](../../jornada/2026-04-17-2145-phase3.5b-addendum-task-b3-letf-3x.md) — Task B3 (3× FAIL MaxDD gate).
-- [`2026-04-17-2200-phase3.5b-addendum-task-c1-rebalance-modes-module.md`](../../jornada/2026-04-17-2200-phase3.5b-addendum-task-c1-rebalance-modes-module.md) — Task C1 (module + 28 tests).
-- [`2026-04-17-2215-phase3.5b-addendum-task-c2-rebalance-3leg.md`](../../jornada/2026-04-17-2215-phase3.5b-addendum-task-c2-rebalance-3leg.md) — Task C2 (3-leg cadence sweep).
-- [`2026-04-17-2230-phase3.5b-addendum-task-c3-rebalance-2leg.md`](../../jornada/2026-04-17-2230-phase3.5b-addendum-task-c3-rebalance-2leg.md) — Task C3 (2-leg cadence sweep).
-- [`2026-04-17-2245-phase3.5b-addendum-summary.md`](../../jornada/2026-04-17-2245-phase3.5b-addendum-summary.md) — Task D (this index).
-- [`2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md`](../../jornada/2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md) — Task C4 (threshold sweep).
-- [`2026-04-18-1230-phase3.5b-extended-window-PASS.md`](../../jornada/2026-04-18-1230-phase3.5b-extended-window-PASS.md) — **★ Extended window 1986-2026 stress test PASS (§10)**.
-- [`2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md`](../../jornada/2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md) — **Rejected SSO/ZROZ/GLD static (§11)**.
-- [`2026-04-18-1400-phase3.5b-V4-promoted-gate-verdict.md`](../../jornada/2026-04-18-1400-phase3.5b-V4-promoted-gate-verdict.md) — **★★ V4 promoted após 5-gate formal (§12)**.
-- [`2026-04-18-1530-phase3.5b-3x-variants-V5-V8-tested.md`](../../jornada/2026-04-18-1530-phase3.5b-3x-variants-V5-V8-tested.md) — **Expansão 3× V5-V8: todas PASS, V8 ultra-aggressive documented, V4 mantém default (§12)**.
+- [`2026-04-17-2045-phase3.5b-full-validation-summary.md`](../../jornada/2026-04-17/24-phase3.5b-full-validation-summary.md) — Phase 3.5b main summary (PASS verdict).
+- [`2026-04-17-2100-phase3.5b-addendum-task-a-2leg-letf-qqq.md`](../../jornada/2026-04-17/25-phase3.5b-addendum-task-a-2leg-letf-qqq.md) — Task A (2-leg DR FAIL).
+- [`2026-04-17-2115-phase3.5b-addendum-task-b1-letf-2x-reuse.md`](../../jornada/2026-04-17/26-phase3.5b-addendum-task-b1-letf-2x-reuse.md) — Task B1 (2× baseline reuse).
+- [`2026-04-17-2130-phase3.5b-addendum-task-b2-letf-2_5x-synthetic.md`](../../jornada/2026-04-17/27-phase3.5b-addendum-task-b2-letf-2_5x-synthetic.md) — Task B2 (2.5× synthetic).
+- [`2026-04-17-2145-phase3.5b-addendum-task-b3-letf-3x.md`](../../jornada/2026-04-17/28-phase3.5b-addendum-task-b3-letf-3x.md) — Task B3 (3× FAIL MaxDD gate).
+- [`2026-04-17-2200-phase3.5b-addendum-task-c1-rebalance-modes-module.md`](../../jornada/2026-04-17/29-phase3.5b-addendum-task-c1-rebalance-modes-module.md) — Task C1 (module + 28 tests).
+- [`2026-04-17-2215-phase3.5b-addendum-task-c2-rebalance-3leg.md`](../../jornada/2026-04-17/30-phase3.5b-addendum-task-c2-rebalance-3leg.md) — Task C2 (3-leg cadence sweep).
+- [`2026-04-17-2230-phase3.5b-addendum-task-c3-rebalance-2leg.md`](../../jornada/2026-04-17/31-phase3.5b-addendum-task-c3-rebalance-2leg.md) — Task C3 (2-leg cadence sweep).
+- [`2026-04-17-2245-phase3.5b-addendum-summary.md`](../../jornada/2026-04-17/32-phase3.5b-addendum-summary.md) — Task D (this index).
+- [`2026-04-17-2315-phase3.5b-addendum-task-c4-threshold-rebalance.md`](../../jornada/2026-04-17/33-phase3.5b-addendum-task-c4-threshold-rebalance.md) — Task C4 (threshold sweep).
+- [`2026-04-18-1230-phase3.5b-extended-window-PASS.md`](../../jornada/2026-04-18/04-phase3.5b-extended-window-PASS.md) — **★ Extended window 1986-2026 stress test PASS (§10)**.
+- [`2026-04-18-1315-phase3.5b-rejected-sso-zroz-gld.md`](../../jornada/2026-04-18/05-phase3.5b-rejected-sso-zroz-gld.md) — **Rejected SSO/ZROZ/GLD static (§11)**.
+- [`2026-04-18-1400-phase3.5b-V4-promoted-gate-verdict.md`](../../jornada/2026-04-18/08-phase3.5b-V4-promoted-gate-verdict.md) — **★★ V4 promoted após 5-gate formal (§12)**.
+- [`2026-04-18-1530-phase3.5b-3x-variants-V5-V8-tested.md`](../../jornada/2026-04-18/16-phase3.5b-3x-variants-V5-V8-tested.md) — **Expansão 3× V5-V8: todas PASS, V8 ultra-aggressive documented, V4 mantém default (§12)**.
 
 ## Pytest baseline
 

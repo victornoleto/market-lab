@@ -8,8 +8,8 @@ custo ou regra mudar.
 trading validation (Phase 4, `specs/phase_4_paper_trading.md`).
 
 **Jornadas relacionadas:**
-- Winner PASS jornada: `jornada/2026-04-19-0020-phase3.5a-v2-L2-gayed-transported-PASS.md`
-- V2 summary: `jornada/2026-04-19-0510-phase3.5a-v2-summary-WINNER-FOUND.md`
+- Winner PASS jornada: `jornada/2026-04-19/01-phase3.5a-v2-L2-gayed-transported-PASS.md`
+- V2 summary: `jornada/2026-04-19/07-phase3.5a-v2-summary-WINNER-FOUND.md`
 - Aggregator L2: `reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/AGGREGATE.md`
 
 ---

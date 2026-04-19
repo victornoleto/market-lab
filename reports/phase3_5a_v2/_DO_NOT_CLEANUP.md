@@ -6,16 +6,10 @@
 
 ## ⚠️ Nota sobre paths de jornadas
 
-Jornadas citadas neste documento usam paths **pré-reorganização**
-(formato flat `jornada/YYYY-MM-DD-HHMM-slug.md`). Quando o cleanup
-executar `CLEANUP-PROMPT.md §A`, as jornadas serão movidas para
-`jornada/YYYY-MM-DD/NN-slug.md`. O agente de cleanup é instruído a
-**re-gravar este documento substituindo os paths pelos novos**
-antes de prosseguir com §B-F.
-
-Se você está lendo este arquivo pós-cleanup e os paths abaixo parecem
-desatualizados, a reorganização foi concluída — use os paths novos
-(consulte `jornada/README.md` para o mapeamento).
+Jornadas citadas neste documento usam paths **pós-reorganização §A**
+(formato per-day `jornada/YYYY-MM-DD/NN-slug.md`), concluída em
+2026-04-19 no commit do cleanup/post-3_5a-v2 §A. Para mapeamento
+rápido antigo→novo, `jornada/README.md` lista entradas por dia.
 
 ---
 
@@ -110,28 +104,28 @@ scripts/iter_v2_l6_run_config.py           (vol breakout, 643 LOC)
 ### A.5 Jornadas V2 (preservar TODAS)
 
 **Narrativa humana e T7 agente (obrigatórios):**
-- `jornada/2026-04-18-1900-phase3.5a-v2-WINNER-humana.md` ★ narrativa humana
-- `jornada/2026-04-19-0510-phase3.5a-v2-summary-WINNER-FOUND.md` — T7 autônomo
-- `jornada/2026-04-19-0020-phase3.5a-v2-L2-gayed-transported-PASS.md` ★ winner PASS
+- `jornada/2026-04-18/23-phase3.5a-v2-WINNER-humana.md` ★ narrativa humana
+- `jornada/2026-04-19/07-phase3.5a-v2-summary-WINNER-FOUND.md` — T7 autônomo
+- `jornada/2026-04-19/01-phase3.5a-v2-L2-gayed-transported-PASS.md` ★ winner PASS
 
 **DEAD aggregates V2 (um por lead refutado):**
-- `jornada/2026-04-18-1407-phase3.5a-v2-L1-tsmom-DEAD.md`
-- `jornada/2026-04-19-0115-phase3.5a-v2-L3-afml-triple-barrier-DEAD.md`
-- `jornada/2026-04-19-0215-phase3.5a-v2-L4-carver-blend-DEAD.md`
-- `jornada/2026-04-19-0310-phase3.5a-v2-L5-equity-pairs-DEAD.md`
-- `jornada/2026-04-19-0410-phase3.5a-v2-L6-vol-breakout-DEAD.md`
+- `jornada/2026-04-18/09-phase3.5a-v2-L1-tsmom-DEAD.md`
+- `jornada/2026-04-19/02-phase3.5a-v2-L3-afml-triple-barrier-DEAD.md`
+- `jornada/2026-04-19/03-phase3.5a-v2-L4-carver-blend-DEAD.md`
+- `jornada/2026-04-19/05-phase3.5a-v2-L5-equity-pairs-DEAD.md`
+- `jornada/2026-04-19/06-phase3.5a-v2-L6-vol-breakout-DEAD.md`
 
 **V2-L2 sweep trail (preservar — processo de descoberta do winner):**
-- `jornada/2026-04-18-1324-phase3.5a-v2-L0-universe-screener.md`
-- `jornada/2026-04-18-1341-phase3.5a-v2-L1-tsmom-lb1m-weekday-bug.md` (bug encontrado, instrutivo)
-- `jornada/2026-04-18-1421-phase3.5a-v2-L2-gayed-sma200-L2-cash-baseline-strong.md`
-- `jornada/2026-04-18-15*-phase3.5a-v2-L2-gayed-sma200-*.md` (3 arquivos, trail SMA200)
-- `jornada/2026-04-18-16*-phase3.5a-v2-L2-gayed-ema100-*.md` (2 arquivos, 1ª SUBSET PASS)
-- `jornada/2026-04-18-17*-phase3.5a-v2-L2-*.md` (1 arquivo)
-- `jornada/2026-04-18-21*-phase3.5a-v2-L2-*.md` (1 arquivo)
-- `jornada/2026-04-18-22*-phase3.5a-v2-L2-*.md` (3 arquivos, 2 SUBSET PASS + 1 FAIL)
-- `jornada/2026-04-18-23*-phase3.5a-v2-L2-*.md` (2 arquivos, L3/L5 patterns)
-- `jornada/2026-04-19-0240-phase3.5a-v2-L5-xlf-hyg-FAIL-sweep-complete.md`
+- `jornada/2026-04-18/06-phase3.5a-v2-L0-universe-screener.md`
+- `jornada/2026-04-18/07-phase3.5a-v2-L1-tsmom-lb1m-weekday-bug.md` (bug encontrado, instrutivo)
+- `jornada/2026-04-18/11-phase3.5a-v2-L2-gayed-sma200-L2-cash-baseline-strong.md`
+- `jornada/2026-04-18/14..16-phase3.5a-v2-L2-gayed-sma200-*.md` (3 arquivos, trail SMA200)
+- `jornada/2026-04-18/18..19-phase3.5a-v2-L2-gayed-ema100-*.md` (2 arquivos, 1ª SUBSET PASS)
+- `jornada/2026-04-18/21-phase3.5a-v2-L2-ema100-L2-gld-SUBSET-PASS.md`
+- `jornada/2026-04-18/25-phase3.5a-v2-L2-ema100-L5-tlt-FAIL.md`
+- `jornada/2026-04-18/27..29-phase3.5a-v2-L2-lrs-*.md` (3 arquivos, 2 SUBSET PASS + 1 FAIL)
+- `jornada/2026-04-18/30..31-phase3.5a-v2-L2-gayed-lrs-L3/L5-*.md` (2 arquivos, L3/L5 patterns)
+- `jornada/2026-04-19/04-phase3.5a-v2-L5-xlf-hyg-FAIL-sweep-complete.md`
 
 Estes jornadas sweep documentam as **3 invariantes de leverage** descobertas +
 a hipótese-verificação iterativa do agente (predições hit 3/3 em vários
@@ -154,13 +148,13 @@ não os dados detalhados.
 Estas 7 jornadas contam a história V1 completa em nível de sumário:
 
 ```
-jornada/2026-04-18-0130-phase3.5a-T1-bollinger-mr-fx-metals-DEAD.md   (T1 DEAD)
-jornada/2026-04-18-1500-phase3.5a-T2-donchian-breakout-DEAD.md        (T2 DEAD)
-jornada/2026-04-18-1420-phase3.5a-T3-pairs-statarb-DEAD.md            (T3 DEAD)
-jornada/2026-04-18-1545-phase3.5a-T4-session-based-fx-DEAD.md         (T4 DEAD)
-jornada/2026-04-18-1800-phase3.5a-T5-regime-filter-hybrid-DEAD.md     (T5 DEAD)
-jornada/2026-04-18-2100-phase3.5a-T6-rebalance-meta-mandate-override.md  (T6 meta)
-jornada/2026-04-18-2200-phase3.5a-T7-summary-close-PLANO-A-abandoned.md  (T7 summary)
+jornada/2026-04-18/02-phase3.5a-T1-bollinger-mr-fx-metals-DEAD.md   (T1 DEAD)
+jornada/2026-04-18/13-phase3.5a-T2-donchian-breakout-DEAD.md        (T2 DEAD)
+jornada/2026-04-18/10-phase3.5a-T3-pairs-statarb-DEAD.md            (T3 DEAD)
+jornada/2026-04-18/17-phase3.5a-T4-session-based-fx-DEAD.md         (T4 DEAD)
+jornada/2026-04-18/22-phase3.5a-T5-regime-filter-hybrid-DEAD.md     (T5 DEAD)
+jornada/2026-04-18/24-phase3.5a-T6-rebalance-meta-mandate-override.md  (T6 meta)
+jornada/2026-04-18/26-phase3.5a-T7-summary-close-PLANO-A-abandoned.md  (T7 summary)
 ```
 
 **Justificativa:** cada DEAD aggregate explica por que uma família específica
@@ -237,8 +231,8 @@ Alternativa mais conservadora: manter o arquivo mas adicionar header
 ### C.5 Jornadas V1 per-ticker FAIL (2 arquivos)
 
 ```bash
-rm jornada/2026-04-18-1015-phase3.5a-T2-eurgbp-FAIL.md
-rm jornada/2026-04-18-1430-phase3.5a-T2-usdcad-FAIL.md
+rm jornada/2026-04-18/03-phase3.5a-T2-eurgbp-FAIL.md
+rm jornada/2026-04-18/12-phase3.5a-T2-usdcad-FAIL.md
 ```
 
 Motivo: per-ticker FAIL jornadas (apenas 2 foram geradas em V1 T2). Ambos
@@ -248,7 +242,7 @@ tickers. Índice cross-ticker está na DEAD aggregate.
 ### C.6 Jornada T0 infra V1 (opcional)
 
 ```bash
-rm jornada/2026-04-18-0105-phase3.5a-T0-tiingo-fx-pull.md
+rm jornada/2026-04-18/01-phase3.5a-T0-tiingo-fx-pull.md
 ```
 
 Motivo: este jornada documenta o pull inicial de Tiingo FX daily+1h. O
@@ -304,11 +298,11 @@ rm tests/test_donchian_breakout.py
 rm specs/phase_3_5a_plano_a_investigation.md
 
 # C.5: V1 per-ticker FAIL jornadas
-rm jornada/2026-04-18-1015-phase3.5a-T2-eurgbp-FAIL.md
-rm jornada/2026-04-18-1430-phase3.5a-T2-usdcad-FAIL.md
+rm jornada/2026-04-18/03-phase3.5a-T2-eurgbp-FAIL.md
+rm jornada/2026-04-18/12-phase3.5a-T2-usdcad-FAIL.md
 
 # C.6 (opcional): T0 infra jornada
-# rm jornada/2026-04-18-0105-phase3.5a-T0-tiingo-fx-pull.md
+# rm jornada/2026-04-18/01-phase3.5a-T0-tiingo-fx-pull.md
 
 # Verificar pytest pós-cleanup
 .venv/bin/pytest -q 2>&1 | tail -1

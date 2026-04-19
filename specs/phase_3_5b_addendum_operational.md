@@ -173,7 +173,7 @@ reports/phase3_5b/
       (qual threshold balanceia custo fiscal vs diversification preservation).
 - [ ] Atualizar `reports/phase3_5b/README.md` + `reports/phase3_5b/variants/README.md`
       com link/menção da análise threshold.
-- [ ] Atualizar `jornada/2026-04-17-2045-phase3.5b-full-validation-summary.md`
+- [ ] Atualizar `jornada/2026-04-17/24-phase3.5b-full-validation-summary.md`
       com bullet point na seção "Operational variants" referenciando C4.
 - [ ] Jornada nova `<date>-phase3.5b-addendum-task-c4-threshold-rebalance.md`
       [PLANO B] com decisão "recommended threshold for production".
@@ -193,7 +193,7 @@ reports/phase3_5b/
         availability, recommended?}.
       - Explicação inline do DR (Choueifaty-Coignard) pro usuário.
 - [ ] Atualizar
-      `jornada/2026-04-17-2045-phase3.5b-full-validation-summary.md`:
+      `jornada/2026-04-17/24-phase3.5b-full-validation-summary.md`:
       adicionar seção **"Operational variants (addendum 2026-04-17)"** no
       fim com:
       - Links para os 3 novos sub-reports.

@@ -113,4 +113,4 @@ owner makes.
 
 - Per-ticker reports: `reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/*.md`
 - Registry: `reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/registry.json`
-- Jornada: `jornada/2026-04-19-0115-phase3.5a-v2-L3-afml-triple-barrier-DEAD.md`
+- Jornada: `jornada/2026-04-19/02-phase3.5a-v2-L3-afml-triple-barrier-DEAD.md`

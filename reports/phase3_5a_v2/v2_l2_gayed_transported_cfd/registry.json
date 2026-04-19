@@ -858,7 +858,7 @@
   "status": "done",
   "aggregation_iter": 43,
   "aggregate_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/AGGREGATE.md",
-  "aggregate_jornada": "jornada/2026-04-19-0020-phase3.5a-v2-L2-gayed-transported-PASS.md",
+  "aggregate_jornada": "jornada/2026-04-19/01-phase3.5a-v2-L2-gayed-transported-PASS.md",
   "work_unit_kind": "config",
   "universe": [
     "SPY",

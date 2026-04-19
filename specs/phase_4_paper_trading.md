@@ -229,7 +229,7 @@ Antes de mergear esta spec em main e abrir branch `phase4/dual-path-paper-tradin
 
 - [ ] Validar `reports/phase3_5a_v2/AGGREGATE.md` está escrito com verdict PASS (✅ feito na iter 81).
 - [ ] Validar `docs/investment-mandate.md §7` tem entry V2 verdict (✅ feito na iter 81).
-- [ ] Validar `jornada/2026-04-19-0510-phase3.5a-v2-summary-WINNER-FOUND.md` existe (✅ feito na iter 81).
+- [ ] Validar `jornada/2026-04-19/07-phase3.5a-v2-summary-WINNER-FOUND.md` existe (✅ feito na iter 81).
 - [ ] Memory.md `status: done` (✅ feito na iter 81 V2-L7).
 - [ ] ROADMAP.md atualizado para indicar Phase 3.5a-V2 encerrada + Phase 4 next (TODO user).
 - [ ] Usuário confirma autorização de gastar 4 meses calendário nesta fase antes de launch.

@@ -72,14 +72,14 @@ Lista absoluta. Qualquer tarefa que tocar esses arquivos falha o spec.
 
 ### 2.2 Winners — jornadas
 
-- `jornada/2026-04-16-1347-bollinger-mr-garch-spy-1h-PASS.md`
-- `jornada/2026-04-16-1420-etf-rotation-monthly-PASS.md`
-- `jornada/2026-04-16-1416-etf-rotation-top2-PASS.md` (variante NO-GO, mas
+- `jornada/2026-04-16/02-bollinger-mr-garch-spy-1h-PASS.md`
+- `jornada/2026-04-16/04-etf-rotation-monthly-PASS.md`
+- `jornada/2026-04-16/03-etf-rotation-top2-PASS.md` (variante NO-GO, mas
   contexto científico útil)
 - Todas as 5 Phase B jornadas: `1435-cost-ablation-*`, `1458-regime-decomp-*`,
   `1507-vol-sizing-account-sensitivity-*`, `1520-mc-bootstrap-ci-*`,
   `1549-cross-asset-transport-correlation-*`.
-- `jornada/2026-04-16-1600-production-readiness-summary.md` (o consolidado).
+- `jornada/2026-04-16/10-production-readiness-summary.md` (o consolidado).
 
 ### 2.3 Winners — reports
 
@@ -158,7 +158,7 @@ está mergeable e limpa:
   10 commits (iter 19-27 + chore inicial).
 - [x] `docs/self_improvement/memory.md` tem `status: done`, `iteration: 27`,
   `phase: B`, winners populados.
-- [x] `jornada/2026-04-16-1600-production-readiness-summary.md` existe.
+- [x] `jornada/2026-04-16/10-production-readiness-summary.md` existe.
 - [x] Nenhum commit da branch tocou `main`-only files (CLAUDE.md,
   ROADMAP.md sem necessidade) — diff review.
 

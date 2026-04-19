@@ -332,7 +332,7 @@
   "status": "done",
   "aggregation_iter": 14,
   "aggregate_file_md": "reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/AGGREGATE.md",
-  "aggregate_jornada": "jornada/2026-04-18-1407-phase3.5a-v2-L1-tsmom-DEAD.md",
+  "aggregate_jornada": "jornada/2026-04-18/09-phase3.5a-v2-L1-tsmom-DEAD.md",
   "work_unit_kind": "config",
   "universe": [
     "BTCUSD",

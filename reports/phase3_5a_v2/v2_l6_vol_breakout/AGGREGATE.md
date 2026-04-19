@@ -150,4 +150,4 @@ como escrito. Recuperação pertence a V2-L2 (winner) e V2-L4
 
 - Per-config reports: `reports/phase3_5a_v2/v2_l6_vol_breakout/vol_*.md` (12)
 - Registry: `reports/phase3_5a_v2/v2_l6_vol_breakout/registry.json`
-- Jornada: `jornada/2026-04-19-0410-phase3.5a-v2-L6-vol-breakout-DEAD.md`
+- Jornada: `jornada/2026-04-19/06-phase3.5a-v2-L6-vol-breakout-DEAD.md`
