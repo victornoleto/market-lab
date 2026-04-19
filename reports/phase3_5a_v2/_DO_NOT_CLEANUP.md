@@ -121,7 +121,7 @@ scripts/iter_v2_l6_run_config.py           (vol breakout, 643 LOC)
 - `jornada/2026-04-18/11-phase3.5a-v2-L2-gayed-sma200-L2-cash-baseline-strong.md`
 - `jornada/2026-04-18/14..16-phase3.5a-v2-L2-gayed-sma200-*.md` (3 arquivos, trail SMA200)
 - `jornada/2026-04-18/18..19-phase3.5a-v2-L2-gayed-ema100-*.md` (2 arquivos, 1ª SUBSET PASS)
-- `jornada/2026-04-18/20-phase3.5a-v2-L2-ema100-L2-gld-SUBSET-PASS.md`
+- `jornada/2026-04-18/21-phase3.5a-v2-L2-ema100-L2-gld-SUBSET-PASS.md`
 - `jornada/2026-04-18/25-phase3.5a-v2-L2-ema100-L5-tlt-FAIL.md`
 - `jornada/2026-04-18/27..29-phase3.5a-v2-L2-lrs-*.md` (3 arquivos, 2 SUBSET PASS + 1 FAIL)
 - `jornada/2026-04-18/30..31-phase3.5a-v2-L2-gayed-lrs-L3/L5-*.md` (2 arquivos, L3/L5 patterns)

@@ -4,7 +4,29 @@
 
 ---
 
-## 📍 Current status (2026-04-16, post data-bug cleanup)
+## 📍 Current status (2026-04-19, post Phase 3.5a-V2 + cleanup)
+
+### Headline (2026-04-19)
+
+- **Phase 3.5a-V2 encerrada com WINNER** (`gayed_ema100_L2_off_gld` —
+  Gayed rotation transportada para CFD Pepperstone L=2; Sharpe OOS
+  2.285, CAGR 79.14%, MDD -21.02%, 13/13 gates pass). Living strategy
+  doc: `docs/strategies/plano_a_v2_l2_gayed_cfd.md`.
+- **Phase 3.5a-V1 refutada** 2026-04-18 (42 iters, 143 runs, 0 PASS).
+  Framework errado (1h FX retail, universe pequeno). Sumário em 7
+  jornadas V1 DEAD preservadas em `jornada/2026-04-18/02..26-*.md`.
+- **Phase 3.5b continua em produção** — Portfolio 3-leg EW
+  (SSO+QLD+UGL, threshold 10pp, Sharpe 2.251 CAGR 25.56% MDD -10.86%).
+  Intocável.
+- **Cleanup pós-V2 executado** — `jornada/` reorganizada por dia
+  (100 arquivos, 10 pastas), reports V1 + scripts V1 prunados (82 files
+  removidos), V2 winner + Phase 3.5b preservados integralmente,
+  pytest 796 passed. Detalhes em `jornada/2026-04-19/08-cleanup-post-v2.md`.
+- **Próximo:** Phase 4 dual-path paper trading 3 meses
+  (`specs/phase_4_paper_trading.md`). cTrader Demo (Plano A) + Inter
+  Global (Plano B).
+
+### Legacy status (2026-04-16, pré-V2)
 
 ### Headline
 
