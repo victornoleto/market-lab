@@ -11,7 +11,6 @@ import pytest
 from reports.phase_3_5c.cross_lib.data.reference_prices import (
     LETF_SPECS,
     UNDERLYING_TICKERS,
-    build_reference_prices,
     load_reference_parquet,
 )
 
@@ -43,7 +42,12 @@ def test_canonical_window_coverage(prices: pd.DataFrame) -> None:
 
 
 def test_synthetic_letf_invariant(prices: pd.DataFrame) -> None:
-    """Pre-inception, SSO daily return ≈ 2 × SPY daily return - drag."""
+    """Pre-inception, SSO daily return ≈ 2 × SPY daily return - drag.
+
+    Validates the Gayed synthesis formula `r_L = L × r_underlying - drag`
+    `[leverage_for_the_long_run, p.16]` (footnote 22) — tolerance bands
+    derived from the expected daily re-leveraging invariant.
+    """
     sso = prices[prices["ticker"] == "SSO"].set_index("date")["close"]
     spy = prices[prices["ticker"] == "SPY"].set_index("date")["close"]
     pre_inception = sso.index < pd.Timestamp("2006-06-21")
