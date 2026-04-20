@@ -3,7 +3,11 @@ are compared against.
 
 Runs ONCE when the harness is first built. Re-run only when `letf_rotation.py`
 or `portfolio_3leg_ew` computation changes. Baseline is git-committed so
-verdicts are reproducible.
+verdicts are reproducible. Reproducibility is guaranteed by the `integrity_hash`
+field (SHA-256 over all metric payload, excluding `generated_at` and
+`integrity_hash` itself). The `generated_at` timestamp is informational only —
+re-running regenerates it, but the hash is stable as long as source metrics
+haven't changed.
 
 SCHEMA NOTE — two distinct metric encodings in phase3_5b summaries:
   * Portfolio variants (variants_letf_execution, extended_window_1986_2026):
@@ -188,7 +192,12 @@ def build_baseline() -> dict:
 
 
 def _hash_baseline(baseline: dict) -> str:
-    body = {k: v for k, v in baseline.items() if k != "integrity_hash"}
+    # Exclude integrity_hash and generated_at (timestamp is informational only)
+    body = {
+        k: v
+        for k, v in baseline.items()
+        if k not in {"integrity_hash", "generated_at"}
+    }
     return hashlib.sha256(
         json.dumps(body, sort_keys=True).encode()
     ).hexdigest()

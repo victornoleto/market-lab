@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-20T11:31:53.293523+00:00",
-  "git_commit": "4a9f3ddd561288eaef2dd69a37c1af5b70cf4434",
-  "integrity_hash": "155e790411840fae937dd29abfa4167d73da6663907465cb0c46418d7f8ecbe6",
+  "generated_at": "2026-04-20T11:36:02.227634+00:00",
+  "git_commit": "10eb9f824030c58717dbedd4bada2dae23a9a87c",
+  "integrity_hash": "c130ef614411c81a7e6b4ea51bba2c99da8de800165d12e18037efbc251c2a4f",
   "metric_units": {
     "cagr": "percent (e.g. 37.92 means 37.92%/yr)",
     "max_dd": "percent, negative (e.g. -16.91 means 16.91% drawdown)",
