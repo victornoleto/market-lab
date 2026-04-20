@@ -58,10 +58,15 @@ cleanup for merged. **Cada lead = 1 iteração do self-improve loop**
 - ✅ **Phase 0 — Knowledge Base.** 34/34 books absorbed and validated. Loadable as Claude Skill.
 - ✅ **Phase 0.5 — `knowledge/SKILL.md`.** Aggregated skill with 7 inviolable rules.
 - 🔄 **Phase 1 — Pepperstone/cTrader infra.** Scaffold ready (Postgres 5435 + Grafana 3000 via docker-compose; OAuth bootstrap script). Blocked awaiting Spotware approval.
-- ✅ **Phase 2 — Backtest engine + validation.** CPCV / PBO / DSR / walk-forward / MCPT. 345 tests green pós-cleanup.
-- ✅ **Phase 2.5 — Strategy search.** 2 winners delivered (iter 19-27). Investment Mandate registrado. Cleanup em `specs/post-winners-cleanup.md` (pendente execução).
-- ⏳ **Phase 3 — Post-cleanup evolution.** 5 leads registrados (A1-A3 + B1-B2 acima). Bloqueado pelo cleanup.
-- ⏳ **Phase 4-7 — Paper trading → live → monitoring → scaling.** All blocked on Phase 3.
+- ✅ **Phase 2 — Backtest engine + validation.** CPCV / PBO / DSR / walk-forward / MCPT. **796 tests green.**
+- ✅ **Phase 2.5 — Strategy search.** 2 primeiros winners entregues (iter 19-27, BollingerMR GARCH SPY 1h + ETFRotation monthly). Investment Mandate registrado. Superseded operacionalmente pelos winners Phase 3.5b + 3.5a-V2.
+- ✅ **Phase 3 — Post-cleanup evolution.** 5 leads A1-A3 + B1-B2 executados (2026-04-17 madrugada). Path A BollingerMR GARCH SPY 1h (standalone, CAGR 5.9%/yr < CDI); Path B 3-leg EW {LETF+QQQ+GLD} consolidado em Phase 3.5b.
+- ✅ **Phase 3.5a-V1.** ❌ Refuted 2026-04-18 — 42 iters, 143 runs, 0/6 famílias PASS (1h FX retail framework errado). Sumário preservado em 7 jornadas `2026-04-18/{02..26}-*.md`.
+- ✅ **Phase 3.5a-V2.** ★ Winner **`gayed_ema100_L2_off_gld`** (Gayed LETF rotation transportada para CFD Pepperstone L=2; Sharpe OOS 2.285, CAGR 79.14%, MDD -21.02%; 13/13 gates). Living doc [`docs/strategies/plano_a_v2_l2_gayed_cfd.md`](docs/strategies/plano_a_v2_l2_gayed_cfd.md). **Plano A retido.**
+- ✅ **Phase 3.5b.** ★ Winner **Portfolio 3-leg EW {SSO+QLD+UGL} threshold 10pp** (Sharpe OOS 2.251 janela canônica / 2.609 V4; CAGR 25.56% canônico / 39.19% V4; MDD -10.86%). Runbook [`reports/phase3_5b/PRODUCTION.md`](reports/phase3_5b/PRODUCTION.md). **Plano B em produção.**
+- ⏳ **Phase 4 — Paper trading dual-path 3 meses.** Spec [`specs/phase_4_paper_trading.md`](specs/phase_4_paper_trading.md). Próxima fase. Blocked apenas no OAuth Spotware (Path A paper); Path B pode começar independentemente.
+- ⏳ **Phase 5 — Live trading.** $1k A + capital gradual B após gates paper→live.
+- ⏳ **Phase 6-7 — Monitoring / governance / scaling.**
 
 ---
 
@@ -135,90 +140,66 @@ A winner on either path is a winner. The "find ~10 strategies" goal in `docs/sel
 
 ---
 
-## 🚀 Next steps (post-cleanup, 2026-04-16)
+## 🚀 Next steps (2026-04-19 — Phase 4 paper trading dual-path)
 
-The self-improvement loop drives Phase 2.5 search. Memory.md `## Leads` section orders the next experiments. Initial 4-step plan (the loop will adapt as it learns):
+A busca de strategies terminou. Plano A (Gayed CFD L=2) e Plano B (3-leg
+EW LETF) são **winners production-ready**. Phase 4 é validação realizada
+em paper/live-mínimo por 3 meses antes de Phase 5 live.
 
-### Step 1 — Re-survey clean cache (CHEAP / IMMEDIATE)
+**Spec autoritativo:** [`specs/phase_4_paper_trading.md`](specs/phase_4_paper_trading.md)
+**Resumo executivo dos dois planos:** [`docs/CURRENT_STATE.md`](docs/CURRENT_STATE.md)
 
-Re-run grids for all previously-tested strategies with the cleaned data, to confirm the universe of FAIL strategies is still FAIL (it should be — contamination INFLATED returns, not deflated). Useful negative result: confirms the pre-cleanup conclusions stand for the bad strategies, so the retraction is bounded.
+### Entregáveis Phase 4 (build)
 
-- 1h Bollinger MR: SPY/XLK/XLE/EEM/QQQ/IWM/DIA — all already FAIL on clean data (SPY/XLK/XLE confirmed in commit `9aa1b4e`; QQQ/IWM/DIA/EEM pending, ~30s each).
-- 1h OU MR: SPY/QQQ/IWM — re-run with clean cache.
-- 1h Kalman pairs SPY-IWM — re-run grid + OOS with clean cache.
-- 1h Vol-expansion SPY+GLD+TLT — re-run.
-- Outcome of step 1 = empirical floor: "with the universe + strategies tried so far, no edge survives clean data".
+1. **`src/ai_trade/brokers/ctrader_adapter.py`** + tests — OAuth2
+   Spotware, market data, order management. Bloqueado na aprovação
+   OAuth Spotware.
+2. **`src/ai_trade/live/gayed_regime_service.py`** + tests — EMA-100
+   daily idempotent sobre SPY close. Usa `plano_a_leveraged_rotation.py`
+   como backend compartilhado com backtest.
+3. **`scripts/live_plano_a_paper_daily.py`** — cron diário Plano A
+   paper (cTrader Demo).
+4. **Inter Global account setup** — operacional, não código. Remeter
+   capital mínimo, planilha cost basis USD+PTAX, catálogo SSO+QLD+UGL
+   confirmado.
+5. **`scripts/plano_b_daily_signal.py`** — signal emit + planilha
+   manual Plano B. User executa ordens na corretora.
 
-### Step 2 — GARCH-sized Bollinger MR 1h SPY (CITED)
+### Gates paper → live (quando passar, Phase 5 libera)
 
-Implement `[machine_trading, p.126-127, ch.4]`: same Bollinger entry/exit, but position size = `target_vol / σ_forecast(GARCH(1,1))` × equity. Hypothesis: the fixed-size variant FAIL'd because of vol clustering — large bars near vol spikes overwhelm noise small bars. Dynamic sizing should improve risk-adjusted return at the cost of variable position size.
+| Métrica | Gate |
+|---|---|
+| Realized Sharpe | ≥ 0.7 × backtest (A: ≥ 1.60, B: ≥ 1.58) |
+| MaxDD realizado | ≤ 1.5 × backtest (A: ≤ 31.5%, B: ≤ 16.3%) |
+| Slippage médio | ≤ 30 bps/trade |
+| Latency signal→fill | ≤ 5 min |
+| Duração mínima | 3 meses calendário, dual-path |
 
-- Add `arch` package to dev deps.
-- New `src/ai_trade/backtest/indicators/garch.py` (rolling fit on last N bars, forecast σ_{t+1}).
-- New `src/ai_trade/backtest/strategies/bollinger_mr_garch.py` subclassing `BollingerMRStrategy`.
-- Grid N=4 over `target_vol ∈ {0.08, 0.12, 0.16, 0.20}`.
-- Full 3-gate evaluation; if PASS, OOS 2025 + Q1-2026 stress.
+### Zona proibida durante Phase 4 (contrato V2 + §3.5b imutabilidade)
 
-### Step 3 — Pivot timeframe (5m / 15m bars)
+- V3 do Plano A — a busca está fechada, contrato V2 estaca isso.
+- Re-otimizar parâmetros winners em Phase 4 — **só teste de fidelidade**.
+- Expansão de universe ou features nas strategies winners.
+- Re-abertura de famílias DEAD V1/V2 (TSMOM, pairs ETF, vol-breakout,
+  AFML meta-label single-asset).
 
-If steps 1-2 fail, the 1h timeframe might be too coarse for mean-reversion edge. Tiingo IEX retention for 5m / 15m is shorter (~3-6 months per Smoke #1 measurement) but still enough for OOS validation. Test:
+### Leads Phase B adiados para Phase 5+ (post-live calibration)
 
-- 5m Bollinger MR SPY (recalibrate window from 20 to ~60-100 bars).
-- 15m Bollinger MR SPY.
-- Add `5min` / `15min` to the whitelist in `tiingo_source.py` (3-step unblock per spec §6.6).
+- Cost sensitivity Pepperstone Razor (spread/commission/swap ±30%).
+- Multi-asset transport do winner Plano A (IWM/XLK/FX carry).
+- Walk-forward re-optimization cadence EMA-100.
+- ρ(A, B) medido em paper (se > 0.7, re-ponderar dual-path).
+- GARCH vol-sizing variant do winner A.
 
-### Step 4 — Path B candidates (daily Ehlers + regime filter)
+### Self-improvement loop — status
 
-Pivot to the **swing broker** path. Daily Ehlers BP Swing 2005-2023 previously FAIL'd WF 0/24 — try with regime filter (SMA200 / VIX) + 5d hard stop. Daily data isn't holiday-affected the same way, so re-runs might surprise. Apply 15% tax haircut on net profits before gating.
+O loop está no `status: done` pós-Phase 3.5a-V2 (2026-04-19). Não deve
+rodar durante Phase 4 — paper trading é validação realizada, não busca
+de novos params. Para Phase 5+ o loop pode retornar ao encontrar novo
+lead cumprindo mandate (via brainstorm humano ou livro absorvido).
 
-- Daily Ehlers + SMA200 trend filter + 5d hard stop.
-- Daily Carver trend (basket of futures-like ETFs) — last-resort multi-day approach.
-
-### Beyond step 4
-
-If all 4 fail, brainstorm new families. Lead candidates per `memory.md`:
-- PEAD (post-earnings drift) — needs earnings dates source.
-- Donchian breakout intraday.
-- Volatility-of-volatility (VVIX-based regime filter).
-- Knowledge-base re-audit for untapped ideas from 33 books.
-
-### How the autonomous loop runs the plan
-
-The loop (`bash scripts/self_improve_loop.sh`) executes one experiment per iteration on the isolated branch `self-improve/post-cleanup-20260416` (or similar). Each iteration:
-
-1. Reads `docs/self_improvement/memory.md` (sole continuity).
-2. Picks ONE concrete experiment from `## Leads` (in order).
-3. Executes it (writes code if SCOPE=code; runs grids; reads results).
-4. Updates memory.md (`iteration:`, `best_*`, `## History`, moves consumed leads to `## Dead ends`).
-5. If a config passes all 3 gates: writes `jornada/YYYY-MM-DD-HHmm-slug.md` PASS entry.
-6. Auto-commits on the isolated branch (loop shell handles git).
-7. Exits cleanly. Loop sleeps `COOLDOWN` (default 10s) and starts iter+1.
-
-Loop terminates when:
-- A config passes all 3 gates AND `status: done` is set in memory frontmatter (loop exits 0).
-- `MAX_ITER` reached (default 20) without success.
-- Iteration timeout `ITER_TIMEOUT` (default 1800s = 30min) → loop aborts.
-- Iteration exits non-zero → loop aborts.
-
-Operator workflow:
-```bash
-# Start the loop (runs in foreground; Ctrl-C to stop)
-MAX_ITER=20 SCOPE=code bash scripts/self_improve_loop.sh
-
-# Or in background, follow logs
-nohup bash scripts/self_improve_loop.sh > logs/self_improve/loop_latest.log 2>&1 &
-tail -f logs/self_improve/loop_latest.log
-```
-
-Audit after the run:
-```bash
-git log --oneline main..HEAD       # what the loop committed
-cat docs/self_improvement/memory.md  # current best, history, leads
-ls jornada/*.md                    # any new PASS / FAIL entries
-.venv/bin/pytest -q                # baseline still green
-```
-
-The loop is **safe** — it can't push, can't merge, can't touch main. Its blast radius is the isolated branch's commits, which are reviewed before merging.
+Loop mechanics preservadas no commit — ver `scripts/self_improve_loop.sh`
+e `docs/self_improvement/fanout_protocol.md` se/quando precisar retomar.
 
 ---
 
