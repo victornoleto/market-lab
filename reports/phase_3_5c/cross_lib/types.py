@@ -75,6 +75,34 @@ class RunResult:
 
     Non-frozen because pandas Series are unhashable; we treat it as an
     immutable value by convention (don't mutate after construction).
+
+    window : tuple[str, str]
+        (start_date, end_date) as strings for the run backtest period.
+    stage : int
+        1 = Stage 1 (our own historical data), 2 = Stage 2 (independent data).
+    equity_curve : pd.Series
+        Daily $1 → cumulative (compounded), indexed by trading day (not calendar day).
+    monthly_returns : pd.Series
+        Per-month returns (e.g., Jan 2020 return, Feb 2020 return), used for verdict comparison.
+    trade_dates : list[pd.Timestamp]
+        Dates when signal or position status changed (useful for reviewing turnover/rebalance timing).
+    cagr : float
+        Compound Annual Growth Rate (%).
+    sharpe : float
+        Annualized Sharpe ratio.
+    max_dd : float
+        Maximum drawdown (negative value, e.g., -0.25 for 25% DD).
+    wf_splits_8 : list[float]
+        Walk-forward Sharpe ratio per split (N=8 splits); N=8 matches project gate
+        `WF≥6/8` (CLAUDE.md §5). Methodology per [advances_fin_ml, ch.12].
+    dsr_pval : float
+        Deflated Sharpe Ratio p-value (Bailey & López de Prado, [advances_fin_ml, p.275]).
+        If p-value < 0.05, the Sharpe is statistically significant after correction for trials.
+    outcome : Outcome
+        Terminal status: "OK" (passed all gates), "SKIPPED" (adapter not available),
+        "DATA_UNAVAILABLE" (insufficient history), or "ERROR" (runtime failure).
+    error_detail : str | None
+        Human-readable reason when outcome ≠ "OK"; None otherwise.
     """
 
     variant_id: str

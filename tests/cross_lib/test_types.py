@@ -127,5 +127,6 @@ def test_run_result_skipped_outcome() -> None:
 
 
 def test_outcome_literal_values() -> None:
-    allowed: tuple[Outcome, ...] = ("OK", "SKIPPED", "DATA_UNAVAILABLE", "ERROR")
-    assert len(allowed) == 4
+    from typing import get_args
+
+    assert get_args(Outcome) == ("OK", "SKIPPED", "DATA_UNAVAILABLE", "ERROR")
