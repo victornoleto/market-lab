@@ -19,6 +19,7 @@ Citations
 from __future__ import annotations
 
 from dataclasses import dataclass
+import os
 from pathlib import Path
 
 import pandas as pd
@@ -37,8 +38,11 @@ from ai_trade.backtest.helpers.synthetic_letf import (
 # Module-level Tiingo singleton — absolute path to main repo bulk cache.
 # The worktree data/tiingo/ only holds the manifest; parquet files live in
 # the main repo at /var/www/pessoal/ai-trade/data/tiingo.
+# Driven by AI_TRADE_TIINGO_ROOT env var; default points to main repo.
 # ---------------------------------------------------------------------------
-_TIINGO_ROOT = Path("/var/www/pessoal/ai-trade/data/tiingo")
+_TIINGO_ROOT = Path(
+    os.environ.get("AI_TRADE_TIINGO_ROOT", "/var/www/pessoal/ai-trade/data/tiingo")
+)
 _STORAGE = TiingoStorage(root=_TIINGO_ROOT)
 
 # ---------------------------------------------------------------------------
@@ -253,13 +257,18 @@ def _real_post_inception(ticker: str, end_date: str) -> pd.DataFrame:
             columns=["date", "ticker", "open", "high", "low", "close", "volume"]
         )
 
-    # yfinance returns MultiIndex columns when downloading a single ticker
-    # (e.g. ('Close', 'SSO')).  Flatten to lowercase.
-    raw.columns = [col[0].lower() for col in raw.columns]
-    raw = raw.reset_index().rename(columns={"date": "date"})
-    # The DatetimeIndex column from yfinance is named "Date" (capital D).
-    if "Date" in raw.columns:
-        raw = raw.rename(columns={"Date": "date"})
+    # yfinance column handling: guard against MultiIndex vs single-level columns.
+    # Some versions/edge cases return single-level; others return MultiIndex tuples.
+    # For MultiIndex, prefer level 0 (metric name), fallback to level 1 if level 0 is empty.
+    if isinstance(raw.columns, pd.MultiIndex):
+        raw.columns = [col[0].lower() if col[0] else col[1].lower() for col in raw.columns]
+    else:
+        raw.columns = [str(c).lower() for c in raw.columns]
+
+    # Reset index and normalize the date column name (DatetimeIndex is named "Date").
+    raw = raw.reset_index()
+    raw.columns = [str(c).lower() if isinstance(c, str) else str(c[0]).lower() for c in raw.columns]
+
     raw["ticker"] = ticker
     return raw[["date", "ticker", "open", "high", "low", "close", "volume"]]
 
@@ -294,13 +303,16 @@ def _load_ffr_series(start: str, end: str) -> pd.Series:
     """Federal Funds Rate daily series (annualized fraction, e.g. 0.05 = 5%).
 
     Loaded from ``data/external/ffr.csv`` (FRED series DFF, columns: date, rate).
+    Path is driven by AI_TRADE_ROOT env var; default points to main repo.
     If the file is absent, falls back to a flat 3% over a business-day index —
     this is a conservative approximation sufficient for the cross-lib Stage 1
     comparison where absolute CAGR tolerances are ±2 pp.
 
     FFR-aware cost model: ``[leverage_for_the_long_run, p.16-17]``.
     """
-    ffr_path = Path("data/external/ffr.csv")
+    ffr_path = Path(
+        os.environ.get("AI_TRADE_ROOT", "/var/www/pessoal/ai-trade")
+    ) / "data" / "external" / "ffr.csv"
     if ffr_path.exists():
         df = pd.read_csv(ffr_path, parse_dates=["date"]).set_index("date")["rate"]
         return df.loc[start:end]
