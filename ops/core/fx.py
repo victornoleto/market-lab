@@ -31,6 +31,8 @@ def _previous_business_day(d: date) -> date:
 
 
 def _lookup_cache(d: date) -> Decimal | None:
+    # Linear scan; acceptable for MVP volume (~2500 rows lifetime). Upgrade
+    # to module-level dict if cache grows beyond ~100k rows.
     for rate in storage.read_fx_rates():
         if rate.date == d:
             return rate.ptax_venda
@@ -46,8 +48,10 @@ def _fetch_bcb(d: date) -> Decimal:
     resp = requests.get(BCB_URL, params=params, timeout=BCB_TIMEOUT_SEC)
     resp.raise_for_status()
     data = resp.json()
-    if not data:
-        raise PtaxUnavailable(f"BCB returned empty for {d.isoformat()}")
+    if not isinstance(data, list) or not data:
+        raise PtaxUnavailable(
+            f"BCB returned unexpected payload for {d.isoformat()}: {data!r}"
+        )
     return Decimal(str(data[0]["valor"]))
 
 

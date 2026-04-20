@@ -60,3 +60,13 @@ def test_set_ptax_manual_bypasses_api(tmp_data_dir, requests_mock):
     # API never called
     assert requests_mock.call_count == 0
     assert fx.get_ptax(date(2026, 4, 20)) == Decimal("5.5000")
+
+
+def test_bcb_dict_error_response_raises_ptax_unavailable(tmp_data_dir, requests_mock):
+    """BCB sometimes returns a dict error body; must raise PtaxUnavailable, not TypeError."""
+    requests_mock.get(
+        "https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados",
+        json={"error": "Date out of range"},
+    )
+    with pytest.raises(fx.PtaxUnavailable):
+        fx.get_ptax(date(2026, 4, 20))
