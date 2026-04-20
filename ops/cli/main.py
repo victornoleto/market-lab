@@ -3,16 +3,20 @@ from __future__ import annotations
 
 import typer
 
-from ops.cli import darf, dividend, trade
+from ops.cli import benchmark, darf, dividend, status, trade
 
 app = typer.Typer(
-    help="ops — Plano B operational platform (trades, DARFs, benchmarks).",
+    help="ops — Plano B operational platform.",
     no_args_is_help=True,
 )
 
 app.add_typer(trade.app, name="trade", help="Manage trade log.")
 app.add_typer(dividend.app, name="dividend", help="Manage dividend log.")
 app.add_typer(darf.app, name="darf", help="DARF calculator.")
+app.add_typer(benchmark.app, name="benchmark", help="Benchmarks & reports.")
+
+# `ops status` as top-level command (no subgroup)
+app.command(name="status")(status.main)
 
 
 @app.command()
