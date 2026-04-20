@@ -94,3 +94,37 @@ def classify_tier(
         return Tier.CONFIRMS
 
     return Tier.WARNING
+
+
+def aggregate_verdict(
+    stage1_tiers: dict[str, Tier],
+    stage2_tiers: dict[str, Tier],
+    min_strong_stage1: int = 2,
+    min_confirm_stage2: int = 3,
+) -> AggregateVerdict:
+    """Aggregate per-lib tiers into a single verdict for one variant.
+
+    Precedence: REFUTES > insufficient coverage > weak-stage-1 > caveats > validated.
+    """
+    all_tiers = list(stage1_tiers.values()) + list(stage2_tiers.values())
+
+    if Tier.REFUTES in all_tiers:
+        return AggregateVerdict.BLOCKED_INVESTIGATE
+
+    if len(stage1_tiers) < min_strong_stage1:
+        return AggregateVerdict.INCONCLUSIVE
+
+    strong_s1 = sum(1 for t in stage1_tiers.values() if t == Tier.CONFIRMS_STRONG)
+    if strong_s1 < min_strong_stage1:
+        return AggregateVerdict.BLOCKED_INVESTIGATE
+
+    pass_s2 = sum(1 for t in stage2_tiers.values() if t in (Tier.CONFIRMS_STRONG, Tier.CONFIRMS))
+    warn_s2 = sum(1 for t in stage2_tiers.values() if t == Tier.WARNING)
+
+    if pass_s2 >= min_confirm_stage2:
+        return AggregateVerdict.VALIDATED
+
+    if pass_s2 + warn_s2 >= min_confirm_stage2 and warn_s2 <= 2:
+        return AggregateVerdict.VALIDATED_WITH_CAVEATS
+
+    return AggregateVerdict.INCONCLUSIVE

@@ -8,8 +8,10 @@ from reports.phase_3_5c.cross_lib.types import RunResult
 from reports.phase_3_5c.cross_lib.verdict import (
     TOL_CONFIRM,
     TOL_STRONG,
+    AggregateVerdict,
     Baseline,
     Tier,
+    aggregate_verdict,
     classify_tier,
 )
 
@@ -82,3 +84,57 @@ def test_tol_confirm_bands() -> None:
     assert TOL_CONFIRM.sharpe == 0.15
     assert TOL_CONFIRM.max_dd_pp == 3.0
     assert TOL_CONFIRM.monthly_rho == 0.95
+
+
+def test_aggregate_all_strong_is_validated() -> None:
+    stage1 = {
+        "bt": Tier.CONFIRMS_STRONG,
+        "vectorbt": Tier.CONFIRMS_STRONG,
+        "backtrader": Tier.CONFIRMS,
+    }
+    stage2 = {
+        "bt": Tier.CONFIRMS,
+        "vectorbt": Tier.CONFIRMS,
+        "backtrader": Tier.CONFIRMS,
+    }
+    assert aggregate_verdict(stage1, stage2) == AggregateVerdict.VALIDATED
+
+
+def test_aggregate_stage2_warning_is_caveats() -> None:
+    stage1 = {
+        "bt": Tier.CONFIRMS_STRONG,
+        "vectorbt": Tier.CONFIRMS_STRONG,
+        "backtrader": Tier.CONFIRMS,
+    }
+    stage2 = {
+        "bt": Tier.CONFIRMS,
+        "vectorbt": Tier.WARNING,
+        "backtrader": Tier.WARNING,
+    }
+    assert aggregate_verdict(stage1, stage2) == AggregateVerdict.VALIDATED_WITH_CAVEATS
+
+
+def test_aggregate_any_refutes_is_blocked() -> None:
+    stage1 = {
+        "bt": Tier.CONFIRMS_STRONG,
+        "vectorbt": Tier.CONFIRMS_STRONG,
+        "backtrader": Tier.REFUTES,
+    }
+    stage2 = {"bt": Tier.CONFIRMS}
+    assert aggregate_verdict(stage1, stage2) == AggregateVerdict.BLOCKED_INVESTIGATE
+
+
+def test_aggregate_insufficient_libs_is_inconclusive() -> None:
+    stage1 = {"bt": Tier.CONFIRMS_STRONG}
+    stage2: dict[str, Tier] = {}
+    assert aggregate_verdict(stage1, stage2) == AggregateVerdict.INCONCLUSIVE
+
+
+def test_aggregate_stage1_weak_is_blocked() -> None:
+    stage1 = {"bt": Tier.CONFIRMS, "vectorbt": Tier.CONFIRMS}  # 0 STRONG
+    stage2 = {
+        "bt": Tier.CONFIRMS,
+        "vectorbt": Tier.CONFIRMS,
+        "backtrader": Tier.CONFIRMS,
+    }
+    assert aggregate_verdict(stage1, stage2) == AggregateVerdict.BLOCKED_INVESTIGATE
