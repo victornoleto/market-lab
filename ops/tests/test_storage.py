@@ -1,12 +1,11 @@
 """Tests for ops/core/storage.py — atomic CSV r/w with schema_version."""
 from datetime import date, datetime, timezone
 from decimal import Decimal
-from pathlib import Path
 
 import pytest
 
 from ops.core import storage
-from ops.core.models import FxRate, Trade, Dividend, BenchmarkPoint, DarfEvent, CarryforwardBalance
+from ops.core.models import FxRate, Trade
 
 
 def test_schema_version_written_on_first_write(tmp_data_dir):

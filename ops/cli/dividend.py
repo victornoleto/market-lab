@@ -2,12 +2,11 @@
 from __future__ import annotations
 
 from datetime import date
-from decimal import Decimal
 from typing import Optional
 
 import typer
 
-from ops.cli._common import die, fmt_brl, parse_date, parse_decimal
+from ops.cli._common import fmt_brl, parse_date, parse_decimal
 from ops.core import fx, storage
 from ops.core.models import Dividend
 

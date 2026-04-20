@@ -66,8 +66,8 @@ def positions_from_trades(trades: list[Trade]) -> list[Position]:
     for (broker, account_id, ticker), lots in open_lots.items():
         if not lots:
             continue
-        total_qty = sum((l.qty for l in lots), start=Decimal("0"))
-        total_basis = sum((l.cost_basis_brl for l in lots), start=Decimal("0"))
+        total_qty = sum((lot.qty for lot in lots), start=Decimal("0"))
+        total_basis = sum((lot.cost_basis_brl for lot in lots), start=Decimal("0"))
         avg_cost = total_basis / total_qty if total_qty > 0 else Decimal("0")
         result.append(
             Position(
