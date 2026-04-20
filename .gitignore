@@ -126,3 +126,7 @@ htmlcov/
 # Git worktrees (used by superpowers:subagent-driven-development)
 .worktrees/
 
+# ops/ data — trades fiscais, CSVs privados, NUNCA commitar
+ops/data/**
+!ops/data/.gitkeep
+
