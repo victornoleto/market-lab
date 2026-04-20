@@ -192,7 +192,7 @@ Threshold operacional por strategy:
 | Strategy | Instrumento | Capital mínimo | Razão |
 |---|---|---:|---|
 | **Plano A (share CFD)** | SPY/QQQ/GLD share CFDs | **$5.000** | Commission fixa $7 RT = 14 bps a $5k (ainda 2× modelo, aceitável); abaixo disso, CAGR vira negativa |
-| **Plano A (Index CFD)** | US500/USTEC/XAUUSD | **$1.000** ✅ Phase 4.0 validou (10/10 gates, OOS Sharpe 2.400 / CAGR 85.76% / MDD -21.51%); T1/T2 empíricos pendentes | Commission-free em Razor Index; lot 0.01 ≈ $600 notional permite granularidade |
+| **Plano A (Index CFD)** | US500/NAS100/XAUUSD | **$5.000** (lot-granularity-bound). Phase 4.0 backtest T3+T4: 10/10 gates PASS. T1 empirical 2026-04-20 via Open API: commission-zero ✅ confirmado, mas lot minimums reais (US500 $600, NAS100 $2k, XAUUSD $2.7k) inviabilizam $1k target. T2 dividend pendente. | T1 rate card: `docs/strategies/plano_a_pepperstone_index_cfd_rate_card.md`. |
 | **Plano B (LETF BR)** | SSO/QLD/UGL via Inter Global | **sem mínimo** | Zero corretagem Inter; expense ratio LETF embutido (0.95%/yr); 15% IR só sobre ganho realizado |
 
 Implicações:

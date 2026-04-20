@@ -219,11 +219,14 @@ round-trips.
 
 Capital thresholds for faithful backtest→live transfer:
 - **Share CFD path (SPY/QQQ/GLD):** $5.000 minimum; $10.000 preferred.
-- **Index CFD path (US500/USTEC/XAUUSD):** $1.000 viable — **Phase 4.0
-  validou 2026-04-19** (10/10 gates, OOS Sharpe 2.400 / CAGR 85.76% /
-  MDD -21.51%; bootstrap 99.9% CI low 1.379 vs baseline 0.962). Live
-  start ainda bloqueado por T1 (rate card empírico) + T2 (dividend
-  adjustment cycle) na conta Pepperstone demo. Ver
+- **Index CFD path (US500/NAS100/XAUUSD):** Phase 4.0 backtest PASS (10/10
+  gates, OOS Sharpe 2.400 / CAGR 85.76% / MDD -21.51%; bootstrap 99.9%
+  CI low 1.379). Phase 4.0 T1 empirical 2026-04-20 via Open API:
+  **commission-zero confirmed ✅** + swap dentro do envelope ✅, MAS lot
+  minimums reais (US500 $600, NAS100 $2k, XAUUSD $2.7k) fix capital floor
+  at **$5,000 — not $1,000 as initially modeled**. T1 rate card:
+  `docs/strategies/plano_a_pepperstone_index_cfd_rate_card.md`. Live start
+  ainda bloqueado por T2 (dividend adjustment cycle). Ver
   `reports/phase4_0/index_cfd_validation/AGGREGATE.md`.
 - **Below $5.000 in share CFD:** do not execute. Fallback to Plano B
   at Banco Inter BR (zero corretagem) until capital scale sufficient.
