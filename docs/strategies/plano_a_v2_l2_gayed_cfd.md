@@ -162,14 +162,101 @@ causa de dividend adjustment. Precisa validar em paper trading (Phase 4).
 
 ### 4.3 Leverage disponível vs leverage aplicado
 
-**Pepperstone SCB libera até 1:20 em US share CFDs.** Este winner usa
-**2×** — 10× abaixo do máximo. Razão:
+> **Distinção crítica** que o resto desta seção formaliza:
+> - **Leverage da conta** (`1:20`, `1:50`, `1:100`, `1:200`, `1:500`)
+>   = capacidade máxima que o broker permite. Determina a **margem
+>   mínima requerida** por instrumento. **Não afeta CAGR/Sharpe/MDD.**
+> - **Leverage aplicada da estratégia** (`L=2`) = exposição efetiva
+>   que a estratégia pede. Determina **totalmente** CAGR/Sharpe/MDD.
 
-- V2-L2 testou L∈{2, 3, 5}; **só L=2 passou gate MaxDD ≤ 25%** (L=3 → MDD ~30%, L=5 → MDD ~49%)
-- Vince PoR `[leverage_space]` confirma: L=5 empírico = PoR > 50%
-- L=2 com Kelly f/2 cross-check `[math_money_mgmt]` é safe
+#### 4.3.1 Sweep empírico L=2 vs L=3 vs L=5 (mesmo signal, só muda L)
 
-**Não operar acima de 2× em nenhuma circunstância.** L=3 fura gates do backtest.
+Dados do sweep V2-L2 do winner (EMA100 regime + SPY/QQQ risk-on + GLD
+risk-off), variando apenas o multiplicador de exposição:
+
+| L | IS Sharpe | IS CAGR | IS MDD | OOS Sharpe | OOS CAGR | OOS MDD | FWD Sharpe | FWD CAGR |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| **2** ⭐ | 1.856 | 53.42% | **-22.67%** | **2.284** | **79.14%** | **-21.02%** ✅ | 1.821 | 59.28% |
+| 3 | 1.969 | 87.34% | -23.78% | 2.294 | 128.93% | **-30.04%** ❌ | 1.899 | 96.95% |
+| 5 | 2.034 | 169.17% | -29.48% | 2.283 | 255.23% | **-46.20%** ❌ | 1.945 | 186.35% |
+
+**Leitura em 3 invariantes (descobertos no sweep V2-L2):**
+
+1. **Sharpe é flat** cross-L (2.28–2.29 OOS): estamos na região
+   Kelly-saturada — aumentar leverage não compra Sharpe adicional,
+   só multiplica o PnL bruto.
+2. **CAGR cresce super-linearmente** com L (79% → 129% → 255%): é o
+   efeito da alavancagem em cima de um edge real positivo.
+3. **MaxDD também cresce super-linearmente** (21% → 30% → 46%): a
+   marca d'água Vince `[leverage_space]`, `[math_money_mgmt]`. **L=5
+   empírico ≡ PoR > 50%** — ruína provável em horizonte multi-anual.
+
+**Só L=2 passa o gate MaxDD ≤ 25% do mandate §5.** L=3 fura o gate em
+5pp; L=5 em 21pp. **Não operar acima de 2× em nenhuma circunstância.**
+
+#### 4.3.2 Leverage da conta (broker) vs métricas da estratégia
+
+**Tese:** leverage da conta **não** aparece na expected return da
+estratégia. Ela aparece em (i) margem usada, (ii) capital livre como
+buffer, (iii) o teto de L possível. A estratégia veta L > 2, então
+(iii) não é binding em produção.
+
+Exemplo concreto: conta $10.000, strategy em risk-on → $20.000 de
+exposição nominal (2 pernas × 1× capital = 2× capital total):
+
+| Tier conta | Instrumento típico | Margin % | Margem bloqueada | Capital livre | Strategy metrics |
+|---|---|---:|---:|---:|:---:|
+| 1:20 | US share CFD (SPY, QQQ, GLD) | 5.00% | $1.000 | $9.000 | **idênticas** |
+| 1:50 | US sector/country CFD | 2.00% | $400 | $9.600 | idênticas |
+| 1:100 | FX majors, minor indices | 1.00% | $200 | $9.800 | idênticas |
+| 1:200 | Major index CFD (US500, USTEC) | 0.50% | $100 | $9.900 | idênticas |
+| 1:500 | Gold CFD (XAUUSD) | 0.20% | $40 | $9.960 | idênticas |
+
+**CAGR / Sharpe / MaxDD são exatamente os mesmos em qualquer tier.**
+A estratégia mantém **L aplicada = 2× sempre** — o que muda é só
+quanto capital fica "preso" como margem vs livre como buffer.
+
+#### 4.3.3 Impacto indireto — buffer contra stop-out
+
+Leverage da conta mais alta = margem menor bloqueada = buffer maior
+contra margin call. Útil em stress intraday, não nas métricas
+baseline.
+
+Em share CFD (1:20, 5% margem em $20k = $1k bloqueado):
+- Margin call @ 80% use → equity $800 livre
+- Stop-out @ 50% use → equity $500 livre
+- Traduzindo para drawdown da conta: **stop-out a ~-90%** de DD
+  (ver §5.3 pra cálculo completo)
+- Buffer backtest MDD -21% → stop-out -90% = **margem 69pp**
+
+Em index CFD (1:200, 0.5% margem em $20k = $100 bloqueado):
+- Mesma strategy, mas margem 10× menor → buffer ainda maior
+- Stop-out não é risco realista em movimento razoável
+- Kill-switch manual (§5.4) dispara bem antes
+
+**Conclusão operacional:** qualquer tier 1:20+ é suficiente para
+L=2. Preferência: **usar share CFD (1:20)** — reflete 1:1 o backtest
+(mesmo price action SPY/QQQ/GLD) e evita risco de tracking error
+que index CFD introduz (dividend adjustment via cash, rolagem de
+contrato, etc.).
+
+#### 4.3.4 Por que Pepperstone SCB e não tier "1:500 Seychelles"
+
+Pepperstone tem várias entities globais com leverages diferentes:
+
+| Entity | Leverage max retail | Acessibilidade Brasil | Uso recomendado |
+|---|---:|---|---|
+| **Pepperstone SCB** (Bahamas) | 1:500 em gold, 1:200 em índices, 1:20 em share CFD | ✅ **tier escolhido** — aceita Brasil | ⭐ este plano A |
+| Pepperstone FCA (UK) | 1:30 retail (ESMA limit) | ❌ não aceita Brasil | N/A |
+| Pepperstone ASIC (AU) | 1:30 retail | ❌ não aceita Brasil | N/A |
+| "Off-shore 1:1000" (marketing) | 1:1000 nominal | ⚠️ regulamentação questionável | ❌ não usar |
+
+SCB é o **Bahamian Securities Commission** — regulação legítima com
+negative balance protection + compensation scheme. Tiers "1:1000"
+geralmente são jurisdições sem proteção patrimonial real.
+
+**Não há vantagem operacional** em perseguir leverage máxima mais
+alta do que SCB oferece — a estratégia já está capped em L=2.
 
 ### 4.4 Custos operacionais esperados
 
