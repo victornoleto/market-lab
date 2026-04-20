@@ -111,6 +111,8 @@ sweep completo (5/10/15/25/100pp) — 10pp domina 5pp em operabilidade
 UGL, degrade pra V1. Sharpe 2.478, CAGR 26.53%, MDD -9.39%.
 
 **Leia mais:**
+- Living strategy doc (autoritativo — inclui V1-V8 completo + rationale V4 default):
+  [`docs/strategies/plano_b_3leg_letf_rotation.md`](strategies/plano_b_3leg_letf_rotation.md)
 - Runbook de produção (operacional canônico):
   [`reports/phase3_5b/PRODUCTION.md`](../reports/phase3_5b/PRODUCTION.md)
 - Index técnico dos sleeves:
