@@ -1,8 +1,7 @@
 {
-  "baseline_note": "Pinned from Stage 1 bt adapter runs on reference_prices.parquet (synthetic+yfinance data, seam-corrected at inception). Cross-lib test measures agreement between all libs and the bt reference. Phase 3.5b baseline (testfol.io SSOSIM, CAGR=37.92%) preserved in generate_baseline.py for documentation. [advances_fin_ml, p.31-34]",
-  "generated_at": "2026-04-20T17:31:54.351089+00:00",
-  "git_commit": "9cc2e3675f20e0b1bdad6756ea1556c8e7002de5",
-  "integrity_hash": "f433c4ed18c92b809fcda83ed0f76043d9a6bc8aafa47161b7c39818915fe2c9",
+  "generated_at": "2026-04-20T11:36:02.227634+00:00",
+  "git_commit": "10eb9f824030c58717dbedd4bada2dae23a9a87c",
+  "integrity_hash": "c130ef614411c81a7e6b4ea51bba2c99da8de800165d12e18037efbc251c2a4f",
   "metric_units": {
     "cagr": "percent (e.g. 37.92 means 37.92%/yr)",
     "max_dd": "percent, negative (e.g. -16.91 means 16.91% drawdown)",
@@ -13,74 +12,44 @@
   "variants": {
     "leg_qld_only": {
       "canonical": {
-        "cagr": 11.678022286896228,
-        "max_dd": -40.29302772672072,
-        "return_ann": 11.678022286896228,
-        "sharpe": 0.6131925311973401,
-        "volatility_ann": null
+        "cagr": 17.403924053933363,
+        "max_dd": -12.78851224401985,
+        "return_ann": 17.361543415355428,
+        "sharpe": 1.3889878056490708,
+        "volatility_ann": 12.079850871204025
       }
     },
     "leg_sso_only": {
       "canonical": {
-        "cagr": 10.230386831748994,
-        "max_dd": -43.77651628262963,
-        "return_ann": 10.230386831748994,
-        "sharpe": 0.55605167551547,
-        "volatility_ann": null
-      },
-      "extended": {
-        "cagr": 5.215072592133585,
-        "max_dd": -43.77653390347997,
-        "return_ann": 5.215072592133585,
-        "sharpe": 0.38463017035509084,
-        "volatility_ann": null
-      },
-      "post_2009": {
-        "cagr": 13.553081046013293,
-        "max_dd": -40.78152689391213,
-        "return_ann": 13.553081046013293,
-        "sharpe": 0.6691927070326958,
-        "volatility_ann": null
+        "cagr": 44.693959570539036,
+        "max_dd": -20.549286254091374,
+        "return_ann": 44.72270799516585,
+        "sharpe": 1.8476194909688326,
+        "volatility_ann": 21.22961564799752
       }
     },
     "leg_ugl_only": {
       "canonical": {
-        "cagr": 8.249280392281788,
-        "max_dd": -51.928403959796285,
-        "return_ann": 8.249280392281788,
-        "sharpe": 0.44775302842412873,
-        "volatility_ann": null
-      }
-    },
-    "plano_b_v4_daily": {
-      "canonical": {
-        "cagr": 11.604279439032172,
-        "max_dd": -28.77701227421161,
-        "return_ann": 11.604279439032172,
-        "sharpe": 0.7843761035252046,
-        "volatility_ann": null
+        "cagr": 11.464118838802605,
+        "max_dd": -14.354414902198032,
+        "return_ann": 11.4395889798232,
+        "sharpe": 0.9367516543098318,
+        "volatility_ann": 12.413416165162458
       }
     },
     "plano_b_v4_threshold_10": {
       "canonical": {
-        "cagr": 11.604279439032172,
-        "max_dd": -28.77701227421161,
-        "return_ann": 11.604279439032172,
-        "sharpe": 0.7843761035252046,
+        "cagr": 37.92,
+        "max_dd": -16.91,
+        "return_ann": 37.92,
+        "sharpe": 1.973,
         "volatility_ann": null
       },
       "extended": {
-        "cagr": 5.979342960362222,
-        "max_dd": -28.777168222638505,
-        "return_ann": 5.979342960362222,
-        "sharpe": 0.534491873176791,
-        "volatility_ann": null
-      },
-      "post_2009": {
-        "cagr": 13.986999067817552,
-        "max_dd": -22.837363699329988,
-        "return_ann": 13.986999067817552,
-        "sharpe": 0.9197505183297212,
+        "cagr": 26.96,
+        "max_dd": -10.12,
+        "return_ann": 26.96,
+        "sharpe": 2.028,
         "volatility_ann": null
       }
     },
