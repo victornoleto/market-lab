@@ -92,3 +92,47 @@ def test_multiple_tickers_tracked_independently(tmp_data_dir):
     pos = positions.current_positions()
     tickers = sorted(p.ticker for p in pos)
     assert tickers == ["QLD", "SSO"]
+
+
+def test_same_ticker_different_accounts_are_separate_positions(tmp_data_dir):
+    """Multi-account: same ticker in 2 accounts → 2 positions (not collapsed)."""
+    acc1_trade = Trade(
+        trade_id="A1", date=date(2026, 4, 1), broker="inter_global",
+        account_id="acc_plano_b", strategy="plano_b", ticker="SSO",
+        instrument_type="etf", instrument_domicile="us", side="buy",
+        qty=Decimal("10"), price_native=Decimal("52"), currency="USD",
+        fees_native=Decimal("0"), ptax_venda=Decimal("5"),
+        cost_basis_brl=Decimal("2600"), gross_brl=Decimal("2600"),
+        realized_gain_brl=Decimal("0"), trade_type="swing",
+    )
+    acc2_trade = Trade(
+        trade_id="A2", date=date(2026, 4, 1), broker="inter_global",
+        account_id="acc_secondary", strategy="manual", ticker="SSO",
+        instrument_type="etf", instrument_domicile="us", side="buy",
+        qty=Decimal("5"), price_native=Decimal("52"), currency="USD",
+        fees_native=Decimal("0"), ptax_venda=Decimal("5"),
+        cost_basis_brl=Decimal("1300"), gross_brl=Decimal("1300"),
+        realized_gain_brl=Decimal("0"), trade_type="swing",
+    )
+    storage.append_trade(acc1_trade)
+    storage.append_trade(acc2_trade)
+    pos = positions.current_positions()
+    assert len(pos) == 2
+    accounts = sorted(p.account_id for p in pos)
+    assert accounts == ["acc_plano_b", "acc_secondary"]
+
+
+def test_out_of_order_trades_still_fifo_correctly(tmp_data_dir):
+    """Late-entered trades sorted internally; FIFO matches oldest."""
+    # Enter newer buy first, then older buy, then a sell that needs FIFO
+    storage.append_trade(_buy("BLATER", date(2026, 4, 10), Decimal("10"), Decimal("3000")))
+    storage.append_trade(_buy("BEARLIER", date(2026, 4, 1), Decimal("10"), Decimal("2500")))
+    storage.append_trade(_sell("S1", date(2026, 4, 20), Decimal("5"),
+                               Decimal("1400"), Decimal("150")))
+    pos = positions.current_positions()
+    assert len(pos) == 1
+    assert pos[0].qty == Decimal("15")
+    # FIFO by date should consume from BEARLIER (older), not BLATER
+    assert len(pos[0].open_lots) == 2
+    assert pos[0].open_lots[0].trade_id == "BEARLIER"
+    assert pos[0].open_lots[0].qty == Decimal("5")  # 5 consumed, 5 remaining

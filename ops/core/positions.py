@@ -23,12 +23,14 @@ def _group_key(t: Trade) -> tuple[str, str, str]:
 
 def current_positions() -> list[Position]:
     """Reconstruct current positions from the full trade log."""
-    trades = sorted(storage.read_trades(), key=lambda t: (t.date, t.trade_id))
-    return positions_from_trades(trades)
+    return positions_from_trades(storage.read_trades())
 
 
 def positions_from_trades(trades: list[Trade]) -> list[Position]:
-    """Apply FIFO lot matching to a chronologically sorted list of trades."""
+    """Apply FIFO lot matching. Trades are sorted by (date, trade_id) internally."""
+    # Sort by (date, trade_id): trade_id as tie-breaker assumes monotonic IDs
+    # (YYYYMMDD-NNN format from the CLI); lexicographic order matches entry order.
+    trades = sorted(trades, key=lambda t: (t.date, t.trade_id))
     open_lots: dict[tuple[str, str, str], list[Lot]] = defaultdict(list)
 
     for t in trades:
