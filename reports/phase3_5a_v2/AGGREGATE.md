@@ -202,6 +202,40 @@ Execution discipline: the fan-out protocol (1 unit per iter, atomic writes, regi
 
 ---
 
+## 7.5 Known execution limitations (added 2026-04-19 post-verdict)
+
+The V2-L2 winner gate-passes under the **cost model assumed in the
+backtest** (spread 2 bps + commission 6.6 bps RT + slippage 3 bps +
+swap 0.005-0.02%/day, all in **bps of notional**). One limitation
+not visible in the gates but critical for live deployment:
+
+**The bps cost model is valid only above ~$10k notional per trade.**
+Pepperstone Razor charges commission as a **fixed dollar amount per
+side** ($3.50/side = $7/RT), not in bps. At $1k notional, real
+commission = 70 bps vs 6.6 bps modeled (+10×); at $5k notional,
+14 bps (+2×); at $10k, 7 bps (≈ model). Below $5k the strategy's
+net CAGR projection collapses to negative across 309 historical
+round-trips.
+
+Capital thresholds for faithful backtest→live transfer:
+- **Share CFD path (SPY/QQQ/GLD):** $5.000 minimum; $10.000 preferred.
+- **Index CFD path (US500/USTEC/XAUUSD):** $1.000 viable — **Phase 4.0
+  validou 2026-04-19** (10/10 gates, OOS Sharpe 2.400 / CAGR 85.76% /
+  MDD -21.51%; bootstrap 99.9% CI low 1.379 vs baseline 0.962). Live
+  start ainda bloqueado por T1 (rate card empírico) + T2 (dividend
+  adjustment cycle) na conta Pepperstone demo. Ver
+  `reports/phase4_0/index_cfd_validation/AGGREGATE.md`.
+- **Below $5.000 in share CFD:** do not execute. Fallback to Plano B
+  at Banco Inter BR (zero corretagem) until capital scale sufficient.
+
+Full math and tables: `docs/strategies/plano_a_v2_l2_gayed_cfd.md §5.5`.
+Mandate entry: `docs/investment-mandate.md §3.6`.
+Citation: `[systematic_trading, Carver, p.185-188]`.
+
+This limitation does **not** invalidate the V2-L2 gate pass — it just
+scopes the capital regime where the pass applies. All 13/13 gates
+remain valid at $10k+ notional per trade.
+
 ## 8. Phase B leads (post-V2 optimization, deferred to Phase 4+5)
 
 Now that Plano A has a winner, Phase B (optimization) leads are:
