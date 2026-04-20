@@ -8,8 +8,8 @@ NAS100/XAUUSD estão dentro do envelope de viabilidade do Caminho 3
 (ver `scripts/pull_ctrader_rate_card.py`). Scope = "accounts" (read-only).
 Broker: Pepperstone SCB (account 46981202, demo, $50k balance).
 
-**Pendentes:** T1.2 spread em live quotes; T2 dividend adjustment em
-próximo ciclo ex-div SPY (~mid-Jun 2026).
+**Pendentes:** T1.2 open-hours spread re-check (atual é off-hours);
+T2 dividend adjustment em próximo ciclo ex-div SPY (~mid-Jun 2026).
 
 ---
 
@@ -43,7 +43,7 @@ próximo ciclo ex-div SPY (~mid-Jun 2026).
 | swapCalculationType | 1 (PERCENTAGE) | Annualized % |
 | swapPeriod | 24 (hours) | Daily accrual |
 | skipRolloverDays | 3 (Wed triple charge) | Standard pattern |
-| spread_half_bps (estimate) | TBD | Pendente T1.2 live quote |
+| spread_half_bps (off-hours) | **0.32 bps** ✅ | T1.2 live quote 2026-04-20 23:00 UTC, 4 ticks |
 
 **Interpretação swap long:** -6.14%/yr ≈ **-0.0168%/day** applied to levered
 notional. Fed rate ~5% + Pepperstone broker spread ~1% = 6.14% coerente.
@@ -157,7 +157,7 @@ Gate T2: haircut ≤ 5% (yield capture ≥ 95%).
 |---|---|---:|:--:|
 | commission ≤ 30 bps RT | envelope max 40 bps | **0 bps** | ✅ PASS massivo |
 | swap_long ≥ -0.025%/day | envelope max -0.040%/day | -0.0168%/day (US500) | ✅ PASS |
-| spread_half ≤ 15 bps | envelope max 25 bps | **TBD** (T1.2) | ⏳ pending |
+| spread_half ≤ 15 bps | envelope max 25 bps | US500 **0.32 bps**, NAS100 **0.30 bps**, XAUUSD **0.25 bps** (off-hours; need open-hours re-check) | ✅ PASS massivo (~16-20× abaixo do envelope) |
 | div_haircut ≤ 50% | envelope max 100% | TBD (T2) | ⏳ pending |
 | **Lot granularity @ $1k** | ≤ 50% rounding | NAS100 **200%**, XAUUSD **270%** | ❌ **FAIL** |
 

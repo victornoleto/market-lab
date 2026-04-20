@@ -68,6 +68,29 @@ Correção do T3 necessária? Provavelmente não — a sensibility matrix já co
 3. `docs/investment-mandate.md` §3.6 — Plano A Index CFD threshold corrigido de $1k pra $5k com justificativa lot-granularity-bound.
 4. `reports/phase3_5a_v2/AGGREGATE.md` §7.5 — confirm commission-zero, adicionar lot minimum caveat, link pro rate card.
 
+## Addendum — T1.2 spread live quotes (mesma noite, 23:00 UTC)
+
+Extendi o script pra subscribe em `ProtoOASubscribeSpotsReq` e capturar 30 segundos de ticks bid/ask. Resultados (after-hours, US cash market fechou 21:00 UTC):
+
+| Symbol | Ticks | Median half-spread | Baseline modelado | Delta |
+|---|---:|---:|---:|---:|
+| XAUUSD | 55 | **0.25 bps** | 5.0 bps | 20× tighter |
+| NAS100 | 31 | **0.30 bps** | 5.0 bps | 17× tighter |
+| US500 | 4 | **0.32 bps** | 5.0 bps | 16× tighter |
+
+**All pass gate ≤15 bps by ~15-20× margin.** Pepperstone Razor Index tem
+spreads extremamente competitivos porque é sua principal forma de
+monetização (commission zero em Index). Modelar 5 bps half era
+pessimismo conservador; realidade é desprezível em comparação.
+
+**Caveat importante:** captura foi **off-hours** (23:00 UTC, 2h após US close
+21:00 UTC). Spreads em Index CFDs podem widenear 2-5× no primeiro minuto da
+sessão US (14:30 UTC) por price discovery gap. Precisa re-check em
+open-hours ou FOMC/NFP days pra validar worst-case. Script `measure_ctrader_spread.py`
+é reusável a qualquer hora.
+
+Script: `scripts/measure_ctrader_spread.py`. Data raw: `reports/phase4_0/index_cfd_validation/spread_measurements.json`.
+
 ## Próximos pendentes
 
 **T1.2 — Spread em live quotes:** posso adicionar `ProtoOASubscribeSpotsReq` ao script pra medir bid/ask spread real durante US hours. Refina `spread_half_bps` no cost model. Iniciar esta noite mesmo que mercado esteja closed — Index CFDs normalmente têm cotações 23h por overlap com futures.
