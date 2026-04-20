@@ -2,8 +2,6 @@
 from datetime import date
 from decimal import Decimal
 
-import pytest
-
 from ops.core.models import Dividend, Trade
 from ops.core.tax import get_regime
 
@@ -103,7 +101,9 @@ def test_carryforward_offsets_gain():
     assert e.tax_due_brl == Decimal("450.00")
 
 
-def test_carryforward_larger_than_gain_zero_tax():
+def test_carryforward_larger_than_gain_zero_tax(tmp_path):
+    """Carry fully offsets gain → no DARF emitted (zero tax means nothing to file).
+    The consumption is still counted on the caller side via carryforward.csv."""
     r = get_regime("monthly_6015")
     trades = [_make_sell("T1", date(2026, 5, 10), Decimal("1000.00"))]
     events = r.compute(
@@ -111,11 +111,7 @@ def test_carryforward_larger_than_gain_zero_tax():
         {"swing": Decimal("2500.00"), "daytrade": Decimal("0")},
         date(2026, 5, 1), date(2026, 5, 31),
     )
-    assert len(events) == 1
-    e = events[0]
-    assert e.loss_offset_brl == Decimal("1000.00")  # only consume up to gain
-    assert e.net_taxable_brl == Decimal("0")
-    assert e.tax_due_brl == Decimal("0")
+    assert events == []
 
 
 def test_swing_and_daytrade_produce_separate_darfs():
