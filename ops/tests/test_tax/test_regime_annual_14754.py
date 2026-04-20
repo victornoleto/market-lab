@@ -96,3 +96,37 @@ def test_net_loss_no_darf():
         date(2026, 1, 1), date(2026, 12, 31),
     )
     assert events == []
+
+
+def test_negative_gain_offset_by_dividends_still_net_positive_emits_darf():
+    """gain=-500 + dividends=+700 → net_rendimentos=+200 → DARF R$ 30."""
+    r = get_regime("annual_14754")
+    trades = [_sell(date(2026, 5, 10), Decimal("-500"))]
+    divs = [_div(date(2026, 6, 15), Decimal("700"))]
+    events = r.compute(
+        trades, divs,
+        {"rendimentos": Decimal("0")},
+        date(2026, 1, 1), date(2026, 12, 31),
+    )
+    assert len(events) == 1
+    e = events[0]
+    assert e.gross_gain_brl == Decimal("-500")
+    assert e.dividends_brl == Decimal("700")
+    assert e.net_taxable_brl == Decimal("200")
+    assert e.tax_due_brl == Decimal("30.00")
+
+
+def test_negative_carry_clamped_to_zero_never_overcharges():
+    """Malformed carry_in (negative) must NOT become an overcharge."""
+    r = get_regime("annual_14754")
+    trades = [_sell(date(2026, 5, 10), Decimal("1000"))]
+    events = r.compute(
+        trades, [],
+        {"rendimentos": Decimal("-200")},  # BUG scenario upstream
+        date(2026, 1, 1), date(2026, 12, 31),
+    )
+    assert len(events) == 1
+    e = events[0]
+    assert e.loss_offset_brl == Decimal("0")   # clamped, not -200
+    assert e.net_taxable_brl == Decimal("1000")  # not 1200
+    assert e.tax_due_brl == Decimal("150.00")    # not 180

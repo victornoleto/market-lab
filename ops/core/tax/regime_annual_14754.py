@@ -54,7 +54,7 @@ class AnnualLei14754Regime(TaxRegime):
         if net_rendimentos <= Decimal("0"):
             return []  # net loss year — all accrues to carryforward (caller handles)
 
-        carry_in = carryforward_in.get("rendimentos", Decimal("0"))
+        carry_in = max(Decimal("0"), carryforward_in.get("rendimentos", Decimal("0")))
         loss_offset = min(carry_in, net_rendimentos)
         net_taxable = net_rendimentos - loss_offset
         rate = Decimal("0.15")
@@ -64,6 +64,7 @@ class AnnualLei14754Regime(TaxRegime):
         if tax_due <= Decimal("0"):
             return []
 
+        # darf_id unique per year; assumes caller uses period_for() (full calendar year).
         return [
             DarfEvent(
                 darf_id=f"DARF-A-{period_end.year}-REND",

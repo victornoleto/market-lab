@@ -130,6 +130,22 @@ def test_swing_and_daytrade_produce_separate_darfs():
     assert streams == ["daytrade", "swing"]
 
 
+def test_negative_carry_clamped_to_zero_never_overcharges():
+    """Malformed carry_in (negative) must NOT become an overcharge."""
+    r = get_regime("monthly_6015")
+    trades = [_make_sell("T1", date(2026, 5, 10), Decimal("1000.00"))]
+    events = r.compute(
+        trades, [],
+        {"swing": Decimal("-200"), "daytrade": Decimal("0")},
+        date(2026, 5, 1), date(2026, 5, 31),
+    )
+    assert len(events) == 1
+    e = events[0]
+    assert e.loss_offset_brl == Decimal("0")
+    assert e.net_taxable_brl == Decimal("1000.00")
+    assert e.tax_due_brl == Decimal("150.00")
+
+
 def test_dividends_not_in_monthly_stream():
     """Monthly regime: dividends are separate Carnê-Leão, not in DARF."""
     r = get_regime("monthly_6015")

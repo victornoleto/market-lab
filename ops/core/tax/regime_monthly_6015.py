@@ -58,7 +58,7 @@ class MonthlyLei11033Regime(TaxRegime):
             if gross_gain <= Decimal("0"):
                 continue
 
-            carry_in = carryforward_in.get(stream_name, Decimal("0"))
+            carry_in = max(Decimal("0"), carryforward_in.get(stream_name, Decimal("0")))
             loss_offset = min(carry_in, gross_gain)
             net_taxable = gross_gain - loss_offset
             rate = Decimal("0.15") if stream_name == "swing" else Decimal("0.20")
