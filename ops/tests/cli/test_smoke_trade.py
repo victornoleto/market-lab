@@ -47,3 +47,26 @@ def test_trade_add_then_list(tmp_data_dir, requests_mock):
     assert result.exit_code == 0
     assert "T-20260420-001" in result.output
     assert "SSO" in result.output
+
+
+def test_trade_add_invalid_qty(tmp_data_dir, requests_mock):
+    """Bad --qty produces clean error, not traceback."""
+    result = runner.invoke(app, [
+        "trade", "add",
+        "--ticker", "SSO", "--side", "buy", "--qty", "not_a_number",
+        "--price", "52.30", "--date", "2026-04-20",
+    ])
+    assert result.exit_code == 1
+    assert "--qty" in result.output
+    assert "not_a_number" in result.output
+
+
+def test_trade_add_invalid_date(tmp_data_dir, requests_mock):
+    """Bad --date produces clean error."""
+    result = runner.invoke(app, [
+        "trade", "add",
+        "--ticker", "SSO", "--side", "buy", "--qty", "10",
+        "--price", "52", "--date", "not-a-date",
+    ])
+    assert result.exit_code == 1
+    assert "--date" in result.output

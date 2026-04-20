@@ -7,7 +7,7 @@ from typing import Optional
 
 import typer
 
-from ops.cli._common import die, fmt_brl, fmt_qty
+from ops.cli._common import die, fmt_brl, fmt_qty, parse_decimal, parse_date
 from ops.core import fx, storage
 from ops.core.models import Trade
 
@@ -42,22 +42,22 @@ def add(
 ) -> None:
     """Add a new trade. PTAX auto-fetched unless --ptax given."""
     # Convert string inputs to Decimal after CLI parsing (Typer doesn't support Decimal natively)
-    qty_d = Decimal(qty)
-    price_native_d = Decimal(price_native)
-    fees_native_d = Decimal(fees_native)
-    ptax_d: Optional[Decimal] = Decimal(ptax) if ptax is not None else None
+    qty_d = parse_decimal(qty, "--qty")
+    price_d = parse_decimal(price_native, "--price")
+    fees_d = parse_decimal(fees_native, "--fees")
+    ptax_d: Optional[Decimal] = parse_decimal(ptax, "--ptax") if ptax is not None else None
 
     if side not in ("buy", "sell"):
         die(f"side must be buy|sell, got {side!r}")
-    trade_date = date.fromisoformat(d) if d else date.today()
+    trade_date = parse_date(d, "--date") if d else date.today()
     ptax_venda = ptax_d if ptax_d is not None else (
         Decimal("1") if currency == "BRL" else fx.get_ptax(trade_date)
     )
 
     # Compute BRL values
-    gross_native = qty_d * price_native_d
+    gross_native = qty_d * price_d
     gross_brl = gross_native * ptax_venda
-    fees_brl = fees_native_d * ptax_venda
+    fees_brl = fees_d * ptax_venda
     cost_basis_brl = gross_brl + fees_brl if side == "buy" else Decimal("0")
 
     realized_gain_brl = Decimal("0")
@@ -84,20 +84,20 @@ def add(
                 f"{qty_d - remaining}. Backfill buys first.")
         realized_gain_brl = gross_brl - fees_brl - consumed_basis
 
-    trade_id = _next_trade_id(trade_date)
-    trade = Trade(
-        trade_id=trade_id, date=trade_date, broker=broker, account_id=account_id,
-        strategy=strategy, ticker=ticker, instrument_type=instrument_type,
-        instrument_domicile=instrument_domicile, side=side, qty=qty_d,
-        price_native=price_native_d, currency=currency, fees_native=fees_native_d,
-        ptax_venda=ptax_venda, cost_basis_brl=cost_basis_brl, gross_brl=gross_brl,
-        realized_gain_brl=realized_gain_brl, trade_type=trade_type, notes=notes,
-    )
     with storage.lock():
+        trade_id = _next_trade_id(trade_date)
+        trade = Trade(
+            trade_id=trade_id, date=trade_date, broker=broker, account_id=account_id,
+            strategy=strategy, ticker=ticker, instrument_type=instrument_type,
+            instrument_domicile=instrument_domicile, side=side, qty=qty_d,
+            price_native=price_d, currency=currency, fees_native=fees_d,
+            ptax_venda=ptax_venda, cost_basis_brl=cost_basis_brl, gross_brl=gross_brl,
+            realized_gain_brl=realized_gain_brl, trade_type=trade_type, notes=notes,
+        )
         storage.append_trade(trade)
     typer.secho(f"[OK] Trade {trade_id} registrado.", fg=typer.colors.GREEN)
     typer.echo(f"  Date      : {trade_date.isoformat()}")
-    typer.echo(f"  {side.upper():4} {fmt_qty(qty_d)} {ticker} @ {price_native_d} {currency}")
+    typer.echo(f"  {side.upper():4} {fmt_qty(qty_d)} {ticker} @ {price_d} {currency}")
     typer.echo(f"  PTAX      : {ptax_venda}")
     typer.echo(f"  Gross BRL : {fmt_brl(gross_brl)}")
     if side == "buy":

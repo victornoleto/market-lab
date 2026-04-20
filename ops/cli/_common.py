@@ -1,7 +1,8 @@
 """Shared CLI utilities: pretty tables, confirmations, error formatting."""
 from __future__ import annotations
 
-from decimal import Decimal
+from datetime import date as _date
+from decimal import Decimal, InvalidOperation
 
 import typer
 
@@ -24,3 +25,19 @@ def confirm(prompt: str) -> bool:
 def die(msg: str, code: int = 1) -> None:
     typer.secho(f"[ERROR] {msg}", fg=typer.colors.RED, err=True)
     raise typer.Exit(code)
+
+
+def parse_decimal(s: str, flag: str) -> Decimal:
+    """Parse string to Decimal, die() with friendly error on bad input."""
+    try:
+        return Decimal(s)
+    except (InvalidOperation, ValueError):
+        die(f"{flag} must be a number, got {s!r}")
+
+
+def parse_date(s: str, flag: str) -> _date:
+    """Parse ISO date string, die() with friendly error on bad input."""
+    try:
+        return _date.fromisoformat(s)
+    except (ValueError, TypeError):
+        die(f"{flag} must be YYYY-MM-DD, got {s!r}")
