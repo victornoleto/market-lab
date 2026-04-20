@@ -1,0 +1,25 @@
+{
+  "variant_id": "plano_b_v4_threshold_10",
+  "lib": "quantstats(from=bt)",
+  "window": [
+    "1986-01-02",
+    "2026-04-18"
+  ],
+  "stage": 1,
+  "cagr": 0.05980573851713178,
+  "sharpe": 0.5344923582636226,
+  "max_dd": -0.28776867629537695,
+  "wf_splits_8": [
+    NaN,
+    NaN,
+    NaN,
+    0.2451718723120231,
+    0.6026423169088516,
+    0.47146466118967456,
+    1.0272020846495433,
+    0.913983410669521
+  ],
+  "dsr_pval": 0.0,
+  "outcome": "OK",
+  "error_detail": "recomputed from bt equity"
+}

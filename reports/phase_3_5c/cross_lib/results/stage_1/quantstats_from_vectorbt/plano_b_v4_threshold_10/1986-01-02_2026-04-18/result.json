@@ -1,0 +1,25 @@
+{
+  "variant_id": "plano_b_v4_threshold_10",
+  "lib": "quantstats(from=vectorbt)",
+  "window": [
+    "1986-01-02",
+    "2026-04-18"
+  ],
+  "stage": 1,
+  "cagr": 0.05983817701619132,
+  "sharpe": 0.5350985867342185,
+  "max_dd": -0.2877721867660785,
+  "wf_splits_8": [
+    NaN,
+    NaN,
+    NaN,
+    0.2577172692936979,
+    0.5563550377620649,
+    0.497329093510972,
+    1.0599466358555965,
+    0.9132763728408119
+  ],
+  "dsr_pval": 0.0,
+  "outcome": "OK",
+  "error_detail": "recomputed from vectorbt equity"
+}
