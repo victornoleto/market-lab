@@ -9,6 +9,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Literal
 
+import pandas as pd
+
 SignalType = Literal["ema_regime", "donchian"]
 RebalanceMode = Literal["daily", "monthly_sell", "monthly_cashflow", "threshold"]
 ExecutionModel = Literal["letf_synthetic", "cfd_synthetic", "real_etf"]
@@ -62,3 +64,30 @@ class VariantConfig:
     rebalance: RebalanceConfig
     target_weights: tuple[float, ...]
     windows: tuple[tuple[str, str], ...]
+
+
+Outcome = Literal["OK", "SKIPPED", "DATA_UNAVAILABLE", "ERROR"]
+
+
+@dataclass
+class RunResult:
+    """Output of a single adapter run.
+
+    Non-frozen because pandas Series are unhashable; we treat it as an
+    immutable value by convention (don't mutate after construction).
+    """
+
+    variant_id: str
+    lib: str
+    window: tuple[str, str]
+    stage: int
+    equity_curve: pd.Series
+    monthly_returns: pd.Series
+    trade_dates: list[pd.Timestamp]
+    cagr: float
+    sharpe: float
+    max_dd: float
+    wf_splits_8: list[float]
+    dsr_pval: float
+    outcome: Outcome
+    error_detail: str | None

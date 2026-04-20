@@ -1,11 +1,14 @@
 """Tests for cross-lib core types."""
 from __future__ import annotations
 
+import pandas as pd
 import pytest
 
 from reports.phase_3_5c.cross_lib.types import (
     LegConfig,
+    Outcome,
     RebalanceConfig,
+    RunResult,
     VariantConfig,
 )
 
@@ -74,3 +77,55 @@ def test_variant_config_is_frozen() -> None:
     )
     with pytest.raises(AttributeError):
         variant.variant_id = "y"  # type: ignore[misc]
+
+
+def test_run_result_ok_outcome() -> None:
+    eq = pd.Series(
+        [1.0, 1.01, 1.02], index=pd.date_range("2020-01-01", periods=3, freq="D")
+    )
+    mr = pd.Series([0.01, 0.01], index=pd.date_range("2020-01-31", periods=2, freq="ME"))
+    result = RunResult(
+        variant_id="x",
+        lib="bt",
+        window=("2020-01-01", "2020-12-31"),
+        stage=1,
+        equity_curve=eq,
+        monthly_returns=mr,
+        trade_dates=[pd.Timestamp("2020-03-01")],
+        cagr=0.25,
+        sharpe=1.5,
+        max_dd=-0.10,
+        wf_splits_8=[1.4, 1.5, 1.6, 1.5, 1.4, 1.5, 1.6, 1.5],
+        dsr_pval=0.02,
+        outcome="OK",
+        error_detail=None,
+    )
+    assert result.outcome == "OK"
+    assert len(result.wf_splits_8) == 8
+
+
+def test_run_result_skipped_outcome() -> None:
+    eq = pd.Series(dtype=float)
+    result = RunResult(
+        variant_id="x",
+        lib="bt",
+        window=("2020-01-01", "2020-12-31"),
+        stage=1,
+        equity_curve=eq,
+        monthly_returns=eq,
+        trade_dates=[],
+        cagr=float("nan"),
+        sharpe=float("nan"),
+        max_dd=float("nan"),
+        wf_splits_8=[],
+        dsr_pval=float("nan"),
+        outcome="SKIPPED",
+        error_detail="bt not installed",
+    )
+    assert result.outcome == "SKIPPED"
+    assert result.error_detail == "bt not installed"
+
+
+def test_outcome_literal_values() -> None:
+    allowed: tuple[Outcome, ...] = ("OK", "SKIPPED", "DATA_UNAVAILABLE", "ERROR")
+    assert len(allowed) == 4
