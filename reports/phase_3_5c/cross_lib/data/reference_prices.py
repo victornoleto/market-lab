@@ -143,6 +143,20 @@ def build_reference_prices(
         )
         synthetic = _synthetic_pre_inception(spec, underlying_tr, ffr, extended_start)
         real = _real_post_inception(spec.ticker, extended_end)
+
+        # Scale synthetic so its terminal value matches the first real close.
+        # This ensures a continuous price path at the inception seam — required
+        # because event-driven engines (bt, vectorbt, backtrader) compute max_dd
+        # from the equity curve (price × shares), not from daily returns.
+        # [advances_fin_ml, p.31-34] — data integrity for cross-lib replication.
+        if not synthetic.empty and not real.empty:
+            last_synth_close = synthetic["close"].iloc[-1]
+            first_real_close = real["close"].iloc[0]
+            if last_synth_close > 0:
+                scale = first_real_close / last_synth_close
+                for col in ("open", "high", "low", "close"):
+                    synthetic[col] = synthetic[col] * scale
+
         combined = pd.concat([synthetic, real], ignore_index=True).sort_values("date")
         combined = combined.drop_duplicates(subset="date", keep="last")
         frames.append(combined)
@@ -192,7 +206,8 @@ def _synthetic_pre_inception(
     """Build synthetic OHLC for ``spec.ticker`` from ``start_date`` up to (but not
     including) ``spec.inception``.
 
-    Prices start at an arbitrary 10.0 — Stage 1 compares returns, not levels.
+    Prices start at an arbitrary 10.0; they are rescaled in ``build_reference_prices``
+    to match the first real close at inception for seam continuity.
     OHLC is flat: open = high = low = close = synthetic_close.  Volume = 0.
 
     ``[leverage_for_the_long_run, p.16]`` — daily synthetic return formula.

@@ -68,7 +68,22 @@ def build_verdict_matrix(results: list[dict], baseline: dict) -> dict:
     """
     matrix: dict = defaultdict(lambda: defaultdict(lambda: defaultdict(dict)))
 
+    # Use the "bt" lib as the cross-lib reference equity curve.
+    # If bt is not present for a given (variant, window, stage) key, fall back
+    # to the first OK result found. This avoids using backtrader (event-driven,
+    # next-bar fill) as the reference, which would penalise vectorised libs
+    # for legitimate execution-timing differences.
+    # [advances_fin_ml, p.31-34] — consistent reference for replication.
     reference_monthly: dict[tuple[str, str, int], pd.Series] = {}
+    # First pass: prefer "bt" as reference
+    for row in results:
+        if row.get("lib") != "bt" or row["outcome"] != "OK" or "equity" not in row:
+            continue
+        key = (row["variant_id"], tuple(row["window"])[0], row["stage"])
+        if key not in reference_monthly:
+            ret = row["equity"].pct_change().dropna()
+            reference_monthly[key] = ret.resample("ME").apply(lambda x: (1 + x).prod() - 1)
+    # Second pass: fill missing keys from any OK result
     for row in results:
         key = (row["variant_id"], tuple(row["window"])[0], row["stage"])
         if row["outcome"] == "OK" and key not in reference_monthly and "equity" in row:

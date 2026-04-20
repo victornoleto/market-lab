@@ -89,16 +89,22 @@ class BacktraderAdapter:
         cerebro.broker.setcash(1_000_000.0)
         cerebro.broker.setcommission(commission=0.0)
 
-        # Add one data feed per ticker
+        # Build wide-format DataFrame for precomputing signals.
+        # Passed via params so the strategy can reconstruct signals correctly
+        # without relying on backtrader's circular-buffer datetime.date() API,
+        # which has an off-by-one issue in __init__ (index 0 = last bar).
+        # [advances_fin_ml, p.31-34] — data integrity for cross-lib replication.
+        wide_prices: dict[str, pd.Series] = {}
         tickers = sorted({leg.signal_ticker for leg in variant.legs} | {leg.execution_ticker for leg in variant.legs})
         for ticker in tickers:
             sub = prices[prices["ticker"] == ticker].sort_values("date")
             feed_df = sub.set_index("date")[["open", "high", "low", "close", "volume"]]
             feed_df.index = pd.to_datetime(feed_df.index)
+            wide_prices[ticker] = feed_df["close"]
             data = bt.feeds.PandasData(dataname=feed_df, name=ticker)
             cerebro.adddata(data)
 
-        cerebro.addstrategy(_PlanoBStrategy, variant=variant)
+        cerebro.addstrategy(_PlanoBStrategy, variant=variant, wide_prices=wide_prices)
         cerebro.addanalyzer(_EquityCurveAnalyzer, _name="equity")
         results = cerebro.run()
         analyzer = results[0].analyzers.equity
@@ -154,23 +160,23 @@ def _build_strategy_class():
     import backtrader as bt
 
     class PlanoBStrategy(bt.Strategy):
-        params = (("variant", None),)
+        params = (("variant", None), ("wide_prices", None))
 
         def __init__(self) -> None:
             self.variant = self.p.variant
             self.signal_states: dict[str, int] = {}
             self.data_by_ticker = {d._name: d for d in self.datas}
 
-            # Precompute signals using pandas (same logic as signals.py).
-            # backtrader doesn't offer a clean EMA-from-first-bar hook, so
-            # we compute the state series up-front on the feed's pandas DF.
+            # Precompute signals using the wide_prices dict passed via params.
+            # We do NOT use feed.close.array / feed.datetime.date() here because
+            # in backtrader's __init__, datetime.date(0) returns the LAST bar
+            # (ring-buffer semantics), scrambling the date index for the first
+            # element. Using the pre-built pandas Series avoids this entirely.
+            # [advances_fin_ml, p.31-34] — data integrity for cross-lib replication.
             self.precomputed_state: dict[str, pd.Series] = {}
+            wide_prices: dict[str, pd.Series] = self.p.wide_prices or {}
             for leg in self.variant.legs:
-                feed = self.data_by_ticker[leg.signal_ticker]
-                close_series = pd.Series(
-                    [feed.close.array[i] for i in range(feed.buflen())],
-                    index=pd.to_datetime([feed.datetime.date(i) for i in range(feed.buflen())]),
-                )
+                close_series = wide_prices[leg.signal_ticker]
                 if leg.signal_type == "ema_regime":
                     state = ema_regime(close_series, leg.signal_params["lookback"])
                 else:

@@ -46,7 +46,7 @@ VARIANTS: dict[str, VariantConfig] = {
         legs=_V4_LEGS,
         rebalance=RebalanceConfig(mode="threshold", threshold_pp=10.0),
         target_weights=(1 / 3, 1 / 3, 1 / 3),
-        windows=(CANONICAL, EXTENDED),
+        windows=(CANONICAL, EXTENDED, POST_2009),
     ),
     "plano_b_v4_daily": VariantConfig(
         variant_id="plano_b_v4_daily",
@@ -64,7 +64,7 @@ VARIANTS: dict[str, VariantConfig] = {
         legs=(_V4_LEGS[0],),
         rebalance=RebalanceConfig(mode="daily", threshold_pp=None),
         target_weights=(1.0,),
-        windows=(CANONICAL, EXTENDED),
+        windows=(CANONICAL, EXTENDED, POST_2009),
     ),
     "leg_qld_only": VariantConfig(
         variant_id="leg_qld_only",
