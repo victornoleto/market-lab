@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from ops.core import storage
-from ops.core.models import FxRate, Trade
+from ops.core.models import FxRate, Trade, Dividend, BenchmarkPoint, DarfEvent, CarryforwardBalance
 
 
 def test_schema_version_written_on_first_write(tmp_data_dir):
@@ -102,3 +102,30 @@ def test_lock_prevents_concurrent_write(tmp_data_dir):
         with pytest.raises(storage.LockHeldError):
             with storage.lock(timeout_sec=0.1):
                 pass
+
+
+def test_empty_file_returns_empty_list(tmp_data_dir):
+    """Zero-byte CSV is valid: no data, no schema — returns []."""
+    path = tmp_data_dir / "trades.csv"
+    path.touch()
+    assert storage.read_trades() == []
+
+
+def test_tmp_file_cleaned_up_on_write_failure(tmp_data_dir, monkeypatch):
+    """If write fails before rename, .tmp file is removed (no orphan)."""
+    # Force rename to fail after .tmp is written
+    def fail_rename(*args, **kwargs):
+        raise OSError("simulated rename failure")
+
+    monkeypatch.setattr("os.rename", fail_rename)
+    rate = FxRate(
+        date=date(2026, 4, 20),
+        ptax_venda=Decimal("5.1234"),
+        source="bcb_sgs_1",
+        fetched_at=datetime.now(timezone.utc),
+    )
+    with pytest.raises(OSError):
+        storage.append_fx_rate(rate)
+
+    # Tmp file must not be left behind
+    assert not (tmp_data_dir / "fx_cache.csv.tmp").exists()

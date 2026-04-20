@@ -7,6 +7,7 @@ from __future__ import annotations
 import csv
 import fcntl
 import os
+import time
 from contextlib import contextmanager
 from dataclasses import asdict, fields
 from datetime import date, datetime
@@ -49,18 +50,24 @@ def _atomic_write(path: Path, rows: Iterable[dict[str, Any]], columns: list[str]
     """Write to .tmp, then os.rename (atomic on POSIX)."""
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(path.suffix + ".tmp")
-    with tmp.open("w", newline="", encoding="utf-8") as f:
-        f.write(f"# schema_version: {SCHEMA_VERSION}\n")
-        writer = csv.DictWriter(f, fieldnames=columns)
-        writer.writeheader()
-        for row in rows:
-            writer.writerow(row)
-    os.rename(tmp, path)
+    try:
+        with tmp.open("w", newline="", encoding="utf-8") as f:
+            f.write(f"# schema_version: {SCHEMA_VERSION}\n")
+            writer = csv.DictWriter(f, fieldnames=columns)
+            writer.writeheader()
+            for row in rows:
+                writer.writerow(row)
+        os.rename(tmp, path)
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise
 
 
 def _check_schema(path: Path) -> None:
     if not path.exists():
         return
+    if path.stat().st_size == 0:
+        return  # empty file = no data yet, no schema to check
     with path.open("r", encoding="utf-8") as f:
         first = f.readline().strip()
     expected = f"# schema_version: {SCHEMA_VERSION}"
@@ -70,6 +77,8 @@ def _check_schema(path: Path) -> None:
 
 def _read_rows(path: Path) -> list[dict[str, str]]:
     if not path.exists():
+        return []
+    if path.stat().st_size == 0:
         return []
     _check_schema(path)
     with path.open("r", encoding="utf-8") as f:
@@ -146,6 +155,7 @@ def write_trades(trades: list[Trade]) -> None:
 
 
 def append_trade(trade: Trade) -> None:
+    """Append a trade. Read-then-write; not process-safe alone — wrap in lock() if concurrent writers."""
     trades = read_trades()
     trades.append(trade)
     write_trades(trades)
@@ -179,6 +189,7 @@ def read_dividends() -> list[Dividend]:
 
 
 def append_dividend(div: Dividend) -> None:
+    """Append a dividend. Read-then-write; not process-safe alone — wrap in lock() if concurrent writers."""
     divs = read_dividends()
     divs.append(div)
     _atomic_write(
@@ -207,6 +218,7 @@ def read_fx_rates() -> list[FxRate]:
 
 
 def append_fx_rate(rate: FxRate) -> None:
+    """Append an FX rate. Read-then-write; not process-safe alone — wrap in lock() if concurrent writers."""
     rates = read_fx_rates()
     rates.append(rate)
     _atomic_write(
@@ -236,6 +248,7 @@ def read_benchmark_points() -> list[BenchmarkPoint]:
 
 
 def append_benchmark_points(points: list[BenchmarkPoint]) -> None:
+    """Append benchmark points. Read-then-write; not process-safe alone — wrap in lock() if concurrent writers."""
     existing = read_benchmark_points()
     combined = existing + points
     _atomic_write(
@@ -276,6 +289,7 @@ def read_darf_history() -> list[DarfEvent]:
 
 
 def append_darf_event(event: DarfEvent) -> None:
+    """Append a DARF event. Read-then-write; not process-safe alone — wrap in lock() if concurrent writers."""
     events = read_darf_history()
     events.append(event)
     _atomic_write(
@@ -307,6 +321,7 @@ def read_carryforward() -> list[CarryforwardBalance]:
 
 
 def write_carryforward(balances: list[CarryforwardBalance]) -> None:
+    """Write full carryforward state. Read-then-write; not process-safe alone — wrap in lock() if concurrent writers."""
     _atomic_write(
         _path("carryforward.csv"),
         [_row_from_dataclass(b) for b in balances],
@@ -320,8 +335,6 @@ def write_carryforward(balances: list[CarryforwardBalance]) -> None:
 @contextmanager
 def lock(timeout_sec: float = 5.0):
     """Exclusive flock on ops/data/.lock. Raises LockHeldError if timeout."""
-    import time
-
     lock_path = data_dir() / ".lock"
     lock_path.parent.mkdir(parents=True, exist_ok=True)
     fd = os.open(lock_path, os.O_CREAT | os.O_RDWR, 0o644)
