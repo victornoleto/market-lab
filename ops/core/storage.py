@@ -288,15 +288,20 @@ def read_darf_history() -> list[DarfEvent]:
     ]
 
 
-def append_darf_event(event: DarfEvent) -> None:
-    """Append a DARF event. Read-then-write; not process-safe alone — wrap in lock() if concurrent writers."""
-    events = read_darf_history()
-    events.append(event)
+def write_darf_history(events: list[DarfEvent]) -> None:
+    """Rewrite the entire darf_history.csv. Not process-safe alone — wrap in lock() for concurrent writers."""
     _atomic_write(
         _path("darf_history.csv"),
         [_row_from_dataclass(e) for e in events],
         _DARF_COLUMNS,
     )
+
+
+def append_darf_event(event: DarfEvent) -> None:
+    """Append a DARF event. Read-then-write; not process-safe alone — wrap in lock() if concurrent writers."""
+    events = read_darf_history()
+    events.append(event)
+    write_darf_history(events)
 
 
 # --- CarryforwardBalance ---

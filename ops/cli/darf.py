@@ -13,7 +13,7 @@ from ops.core import storage
 from ops.core.models import CarryforwardBalance, Stream
 from ops.core.tax import get_regime
 
-app = typer.Typer(help="DARF calculator — preview, close, list, show, paid.")
+app = typer.Typer(help="DARF calculator — preview, close, list, carryforward, paid.")
 
 DEFAULT_REGIME = "annual_14754"  # Configurable via config.yaml in future.
 
@@ -88,50 +88,50 @@ def close(
     period_start, period_end = r.period_for(ref)
     period_key = r.period_key(period_end)
 
-    # Idempotency: reject if a DARF already exists for this (regime, period).
-    existing = [e for e in storage.read_darf_history()
-                if e.regime == regime
-                and e.period_start == period_start
-                and e.period_end == period_end]
-    if existing:
-        die(f"DARF for {regime} {period_key} already exists. "
-            f"Use `ops darf recompute --confirm`.")
-
-    trades = [t for t in storage.read_trades() if period_start <= t.date <= period_end]
-    divs = [x for x in storage.read_dividends() if period_start <= x.payment_date <= period_end]
-    carry_in = {s: _current_carryforward(regime, s) for s in r.streams}
-
-    events = r.compute(trades, divs, carry_in, period_start, period_end)
-
-    # Build new carryforward balances (one row per stream, regardless of events emitted).
-    new_balances = []
-    for stream in r.streams:
-        if stream in ("swing", "daytrade"):
-            stream_sells = [t for t in trades
-                            if t.side == "sell" and t.trade_type == stream]
-        else:  # rendimentos — annual regime, all sells count
-            stream_sells = [t for t in trades if t.side == "sell"]
-        # Accrue: negative gains flip sign and contribute to carryforward pool
-        accrued = sum(
-            (-t.realized_gain_brl for t in stream_sells if t.realized_gain_brl < 0),
-            start=Decimal("0"),
-        )
-        consumed = sum(
-            (e.loss_offset_brl for e in events if e.stream == stream),
-            start=Decimal("0"),
-        )
-        balance_in = carry_in.get(stream, Decimal("0"))
-        balance_out = balance_in + accrued - consumed
-        if balance_out < 0:
-            die(f"Carryforward invariant violated: balance_out={balance_out} "
-                f"for {regime}/{stream} in {period_key}")
-        new_balances.append(CarryforwardBalance(
-            regime=regime, stream=stream, period=period_key,
-            balance_in=balance_in, accrued_this_period=accrued,
-            consumed_this_period=consumed, balance_out=balance_out,
-        ))
-
     with storage.lock():
+        # Idempotency check (must be inside lock)
+        existing = [e for e in storage.read_darf_history()
+                    if e.regime == regime
+                    and e.period_start == period_start
+                    and e.period_end == period_end]
+        if existing:
+            die(f"DARF for {regime} {period_key} already exists. "
+                f"Use `ops darf recompute --confirm`.")
+
+        trades = [t for t in storage.read_trades() if period_start <= t.date <= period_end]
+        divs = [x for x in storage.read_dividends() if period_start <= x.payment_date <= period_end]
+        carry_in = {s: _current_carryforward(regime, s) for s in r.streams}
+
+        events = r.compute(trades, divs, carry_in, period_start, period_end)
+
+        # Build new carryforward balances (one row per stream, regardless of events emitted).
+        new_balances = []
+        for stream in r.streams:
+            if stream in ("swing", "daytrade"):
+                stream_sells = [t for t in trades
+                                if t.side == "sell" and t.trade_type == stream]
+            else:  # rendimentos — annual regime, all sells count
+                stream_sells = [t for t in trades if t.side == "sell"]
+            # Accrue: negative gains flip sign and contribute to carryforward pool
+            accrued = sum(
+                (-t.realized_gain_brl for t in stream_sells if t.realized_gain_brl < 0),
+                start=Decimal("0"),
+            )
+            consumed = sum(
+                (e.loss_offset_brl for e in events if e.stream == stream),
+                start=Decimal("0"),
+            )
+            balance_in = carry_in.get(stream, Decimal("0"))
+            balance_out = balance_in + accrued - consumed
+            if balance_out < 0:
+                die(f"Carryforward invariant violated: balance_out={balance_out} "
+                    f"for {regime}/{stream} in {period_key}")
+            new_balances.append(CarryforwardBalance(
+                regime=regime, stream=stream, period=period_key,
+                balance_in=balance_in, accrued_this_period=accrued,
+                consumed_this_period=consumed, balance_out=balance_out,
+            ))
+
         for e in events:
             storage.append_darf_event(e)
         all_balances = storage.read_carryforward()
@@ -141,6 +141,7 @@ def close(
         ] + new_balances
         storage.write_carryforward(all_balances)
 
+    # Print results AFTER releasing lock
     if not events:
         typer.echo(f"[OK] {regime} {period_key}: sem DARF (sem ganho tributavel). "
                    f"Carryforward atualizado.")
@@ -200,16 +201,7 @@ def paid(
     if match_idx is None:
         die(f"DARF {darf_id} not found")
     paid_date = parse_date(d, "--date") if d else date.today()
-    e = events[match_idx]
-    events[match_idx] = dataclass_replace(e, paid_at=paid_date, paid_proof_path=proof)
-
-    from dataclasses import fields as _fields
-    from ops.core.models import DarfEvent
-
+    events[match_idx] = dataclass_replace(events[match_idx], paid_at=paid_date, paid_proof_path=proof)
     with storage.lock():
-        storage._atomic_write(
-            storage._path("darf_history.csv"),
-            [storage._row_from_dataclass(ev) for ev in events],
-            [f.name for f in _fields(DarfEvent)],
-        )
+        storage.write_darf_history(events)
     typer.secho(f"[OK] {darf_id} marked paid on {paid_date}.", fg=typer.colors.GREEN)
