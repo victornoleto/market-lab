@@ -29,25 +29,28 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-21 — iter 40)
+## Onde estamos hoje (2026-04-21 — iter 43, loop encerrado)
 
-**Estado:** 🔄 **Phase 3.5e breadth-hunt — c01–c05 DEAD, c04 SKIPPED, próximo: c06 mom6mo bootstrap.**
-- c01 (SMA200 binary/cash/gld/tlt, 12 trials): 0/12 pre-pass — FWD universal fail tariff shock 2026.
-- c02 (SMA150/cash, 4 trials): 0/4 pre-pass — cash off-leg=0% yield é o bottleneck estrutural.
-- c03 (EMA100/TLT, 4 trials): 0/4 pre-pass — melhor Sharpe_net=0.505 (TQQQ); TLT bear 2022 anulou hedge. `[leverage_for_the_long_run, p.31]`
-- c04 (SMA200/SHV): SKIPPED — SHV não está em reference_prices.parquet.
-- c05 (mom12mo/cash/gld/tlt, 12 trials): 0/12 pre-pass — mensal lento demais para crashes intra-mês em LETFs.
-- **Trial count: 32/144 (22% da grade).** Gates meta: Sharpe_net>0.8, Calmar>0.5, DSR p<0.05.
-- **Próximo: c06 — mom6mo** (momento absoluto 6 meses Antonacci, mais sensível). `[dual_momentum, ch.6]`
+**Estado:** 🔄 **Phase 3.5e breadth-hunt pausada — 5 families DEAD, c04 deferred, c06 parcial. Pipeline consertada (Tiingo-first).**
+- **Pipeline fix (commits f7c2810 + 6729468)**: SSO/QLD/UPRO/TQQQ+SHV entraram no Tiingo; `reference_prices.py` vira Tiingo-first; `stage2_validation.py` helper + testfol.io; spec §3.1 proíbe yfinance direto em sweeps. Pytest 908→914.
+- c01 (SMA200/cash/gld/tlt, 12 trials): 0/12 pre-pass — FWD tariff shock 2026.
+- c02 (SMA150/cash, 4 trials): 0/4 pre-pass — cash 0% yield bottleneck.
+- c03 (EMA100/TLT, 4 trials): 0/4 pre-pass — TLT bear 2022 joint crash.
+- c04 (SMA200/SHV): **deferred** — SHV precisa entrar no `reference_prices.parquet` (próxima sessão).
+- c05 (mom12mo × 3 off-legs, 12 trials): 0/12 pre-pass — monthly não protege LETF intra-month.
+- c06 (mom6mo × 3 off-legs): **6/12 trials parciais** (QLD/SSO done, TQQQ/UPRO + aggregator pending).
+- Stage-2 concordance validada: SSO Δ0.17pp, TQQQ Δ0.05pp, UPRO Δ0.12pp (antes 5-15pp drift yf).
+- **Trial count: 38/144 (26%).** Loop exit por MAX_ITER=20; 0 winners.
+- **Próxima sessão:** fixar SHV → c04 (4 trials); rodar c06 UPRO + aggregator; c07 Clenow + c10-c11 vol-target (families estruturalmente diferentes) antes de escalar decisão.
 
 Entries relevantes:
-- `jornada/2026-04-21-1644-c05-mom12mo-dead.md` — c05 aggregator verdict (iter 40) ← NOVO
-- `jornada/2026-04-21-1640-c03-ema100-tlt-dead.md` — c03 aggregator verdict (iter 34)
-- `jornada/2026-04-21-1535-c02-sma150-cash-dead.md` — c02 aggregator verdict (iter 28)
-- `jornada/2026-04-21-19-c01-sma200-aggregator-dead.md` — c01 aggregator verdict
-- `reports/phase_3_5e/c05_mom12mo_abs_momentum/AGGREGATE.md` — resultado completo c05
-- `reports/phase_3_5e/c03_ema100_tlt/AGGREGATE.md` — resultado completo c03
-- `reports/phase_3_5e/c02_sma150_cash/AGGREGATE.md` — resultado completo c02
+- `jornada/2026-04-21-1700-session-summary-phase-3-5e-batch1.md` — summary completo da sessão ← NOVO
+- `jornada/2026-04-21-14-data-pipeline-tiingo-first.md` — fix arquitetural
+- `jornada/2026-04-21-1644-c05-mom12mo-dead.md` — c05 aggregator
+- `jornada/2026-04-21-1640-c03-ema100-tlt-dead.md` — c03 aggregator
+- `jornada/2026-04-21-1535-c02-sma150-cash-dead.md` — c02 aggregator
+- `jornada/2026-04-21-19-c01-sma200-aggregator-dead.md` — c01 aggregator
+- `reports/phase_3_5e/c0{2,3,5}_*/AGGREGATE.md` — resultados completos
 
 ---
 
@@ -371,6 +374,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16/01-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-21 17h — **Session summary Phase 3.5e batch 1 (iters 14-43)** [SWING BROKER] — 30 iters em 2 shell loops: pré-fix (14-23, c01 DEAD + c02 parcial rollbacked) + pós-fix Tiingo-first (24-43, c02/c03/c05 DEAD aggregators, c04 skipped por SHV faltando no parquet, c06 parcial 6/12 trials). **0 winners; 38/144 trials; 5 families avaliadas**. Padrões confirmados: FWD tariff Q1-2026 é killer universal; cash off-leg tem floor inaceitável; TLT off-leg falha em 2022 joint crash; monthly momentum não protege 3× intra-month; 15% IR BR exige gross Sharpe ≥ 0.94. Próxima sessão: c07 Clenow + c10-c11 vol-target antes de escalar decisão.](2026-04-21-1700-session-summary-phase-3-5e-batch1.md)
 - [2026-04-21 (iter 28) — **Phase 3.5e c02 SMA150/cash: DEAD END 0/4 pass** [SWING BROKER] — c02 family (SMA150 binary regime + cash off-leg, 4 assets = 4 trials). 0/4 pre-pass: DSR+Calmar+Sharpe_net falham universalmente. Melhor: QLD Sharpe_net=0.475, Calmar=0.252 (gates: SN>0.8, Calmar>0.5). WF=8/8 e OOS/FWD passam para todos. Descoberta: SMA150 passa FWD (evitou choque tarifário Jan-Abr 2026) onde SMA200/c01 falhou — MA mais curta reage mais rápido. Bottleneck estrutural: cash off-leg = 0% yield → Sharpe e Calmar insuficientes em qualquer MA period. trial_count=16/144. Stage-2 concordante para SSO (Δ=0.17pp), TQQQ (Δ=0.05pp), UPRO (Δ=0.12pp). Próximo: c03 ema100_tlt (TLT off-leg fornece yield + diversificação).](2026-04-21-1535-c02-sma150-cash-dead.md)
 - [2026-04-21 14h — **Pivot Tiingo-first + testfol.io Stage-2** [INFRA] — Stage-2 reportou ΔCAGR 8.21pp (QLD iter 21) e 15.16pp (TQQQ iter 23) na sessão do loop. Diagnóstico: pipeline fazia yfinance-vs-yfinance (cache parquet vs live re-fetch), adjusted-close ajustado retroativamente. Fix: SSO/QLD/UPRO/TQQQ entram no Tiingo bulk (+SHV); `reference_prices.py` vira Tiingo-first com yfinance fallback apenas para UGL/SPXL/TMF; novo helper `stage2_validation.py` usa testfol.io SPY 2x/3x (1885-2026) para SSO/UPRO/SPXL e marca N/A explícito para QQQ/GLD/TLT-based. Spec §3.1 proíbe yfinance direto em sweep scripts. Pytest 908→914 (+6 stage2 tests). Loop pausado em iter 23 para decisão de re-run c01/c02 sobre novos dados.](2026-04-21-14-data-pipeline-tiingo-first.md)
 - [2026-04-21 (iter 19) — **Phase 3.5e c01 SMA200 Aggregator: DEAD END (0/12 pre-pass)** [SWING BROKER] — c01 family (SMA200 binary regime, 4 assets × 3 off-legs = 12 trials) concluída. Aggregate PBO=0.139 PASS — sinal real, família não overfit. Mas 0/12 pre-pass: FWD gate falha universalmente (choque tarifário Jan-Apr 2026). Melhor: QLD+GLD Sharpe_net=0.660, CAGR_net=17.5%, Calmar=0.400 — todos abaixo dos gates (SN>0.8, Calmar>0.5). trial_count=12/144. Próximo: c02 sma150_cash.](2026-04-21-19-c01-sma200-aggregator-dead.md)
