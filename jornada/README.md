@@ -29,20 +29,23 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-21 — iter 34)
+## Onde estamos hoje (2026-04-21 — iter 40)
 
-**Estado:** 🔄 **Phase 3.5e breadth-hunt — c01 DEAD, c02 DEAD, c03 DEAD, c04 SKIPPED (sem SHV), próximo: c05 mom12mo.**
+**Estado:** 🔄 **Phase 3.5e breadth-hunt — c01–c05 DEAD, c04 SKIPPED, próximo: c06 mom6mo bootstrap.**
 - c01 (SMA200 binary/cash/gld/tlt, 12 trials): 0/12 pre-pass — FWD universal fail tariff shock 2026.
 - c02 (SMA150/cash, 4 trials): 0/4 pre-pass — cash off-leg=0% yield é o bottleneck estrutural.
-- c03 (EMA100/TLT, 4 trials): 0/4 pre-pass — melhor Sharpe_net=0.505 (TQQQ), gap −0.295 ao gate; TLT bear 2022 anulou o hedge. `[leverage_for_the_long_run, p.31]`
+- c03 (EMA100/TLT, 4 trials): 0/4 pre-pass — melhor Sharpe_net=0.505 (TQQQ); TLT bear 2022 anulou hedge. `[leverage_for_the_long_run, p.31]`
 - c04 (SMA200/SHV): SKIPPED — SHV não está em reference_prices.parquet.
-- **Próximo: c05 — mom12mo** (momento absoluto 12 meses Antonacci). `[dual_momentum, ch.6]`
-- Trial count: 20/144 (14% da grade). Gates meta: Sharpe_net>0.8, Calmar>0.5, DSR p<0.05.
+- c05 (mom12mo/cash/gld/tlt, 12 trials): 0/12 pre-pass — mensal lento demais para crashes intra-mês em LETFs.
+- **Trial count: 32/144 (22% da grade).** Gates meta: Sharpe_net>0.8, Calmar>0.5, DSR p<0.05.
+- **Próximo: c06 — mom6mo** (momento absoluto 6 meses Antonacci, mais sensível). `[dual_momentum, ch.6]`
 
 Entries relevantes:
+- `jornada/2026-04-21-1644-c05-mom12mo-dead.md` — c05 aggregator verdict (iter 40) ← NOVO
 - `jornada/2026-04-21-1640-c03-ema100-tlt-dead.md` — c03 aggregator verdict (iter 34)
 - `jornada/2026-04-21-1535-c02-sma150-cash-dead.md` — c02 aggregator verdict (iter 28)
 - `jornada/2026-04-21-19-c01-sma200-aggregator-dead.md` — c01 aggregator verdict
+- `reports/phase_3_5e/c05_mom12mo_abs_momentum/AGGREGATE.md` — resultado completo c05
 - `reports/phase_3_5e/c03_ema100_tlt/AGGREGATE.md` — resultado completo c03
 - `reports/phase_3_5e/c02_sma150_cash/AGGREGATE.md` — resultado completo c02
 
