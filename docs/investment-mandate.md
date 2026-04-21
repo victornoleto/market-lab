@@ -212,6 +212,34 @@ dominates at retail scale."
 
 ## 4. Regras de Strategy B — Swing broker
 
+> **⚠ UPDATE 2026-04-20 NOITE — Plano B V4 winner INVALIDADO.**
+> A Phase 3.5c cross-lib validation (bt + vectorbt + backtrader +
+> quantstats, 4 engines independentes) provou que o winner Phase 3.5b
+> (3-leg EW SSO+QLD+UGL, threshold 10pp, Sharpe 2.25, CAGR 25.56%)
+> foi validado contra dados proprietários testfol.io
+> (SSOSIM/QLDSIM/UGLSIM) que **não reproduzem na nossa pipeline**
+> (`synthesize_letf_returns_ffr_aware` + yfinance). Nossa stack
+> produz CAGR ~11.6% / max_dd -28.8% / Sharpe 0.78 na mesma janela
+> canonical — **abaixo do floor CDI BR e pior que SPY buy-and-hold
+> alavancado**. Regime filter EMA100 apenas troca CAGR por
+> drawdown reduction (Sharpe-neutro). Detalhes em
+> `jornada/2026-04-20/03-*.md` e `04-*.md`.
+>
+> **Consequência operacional:**
+> - Plano B V4 NÃO é winner validado; não entrar em Phase 4 com ele.
+> - Phase 3.5d aberta em 2026-04-20 para encontrar winner novo com 3×
+>   LETFs (UPRO, TQQQ, TMF), gate obrigatório "beat SPY buy-and-hold
+>   pós-imposto 15%", validação cross-lib em ≥ 2/3 libs.
+> - Plano A V2-L2 Gayed CFD em **stand-by** — pode estar sujeito ao
+>   mesmo artifact de synthetic LETF model; re-validar em cross-lib
+>   antes de Phase 4 live.
+>
+> **Os §4.1-§4.7 abaixo permanecem como tese da família LETF rotation
+> (ainda válida como ancoragem científica em Gayed), mas a
+> implementação concreta 3-leg EW SSO+QLD+UGL é explicitamente
+> rejeitada.** Ver `specs/phase_3_5d_plano_b_v2_3x_letf.md` para novo
+> escopo.
+
 ### 4.1 Tese primária: LETF rotation (família, não config específica)
 
 **Strategy B é a segunda strategy do projeto — complemento swing ao
