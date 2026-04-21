@@ -4,6 +4,65 @@
 
 ---
 
+## 🛑 RESUMO PRA RETOMADA (2026-04-20, fim de sessão)
+
+**Estado quando paramos:** Phase 4.0 (Index CFD substitution validation)
+executada e merged em `main`. Caminho 3 validado **tecnicamente** (10/10 gates
+backtest) **e empiricamente** (commission-zero + swap dentro envelope + spread
+0.25-0.32 bps half vs 15 bps threshold). **Porém capital floor real = $5k,
+não $1k**, por lot granularity do broker (NAS100 min $2k, XAUUSD min $2.7k).
+
+**Branch mergeada em `main`:** `phase4_0/index-cfd-validation`.
+
+### 🎯 Continuar de onde paramos — opções
+
+1. **[Plano A unblock] T1.2 open-hours spread re-check**
+   - Rodar `.venv/bin/python scripts/measure_ctrader_spread.py --seconds 300`
+     durante US cash session (14:30-21:00 UTC). Atual é off-hours (23:00 UTC).
+   - Atualizar `docs/strategies/plano_a_pepperstone_index_cfd_rate_card.md §5`.
+   - Trabalho: ~10 min.
+
+2. **[Plano A unblock] T2 dividend adjustment**
+   - Aguarda próximo ciclo ex-div SPY (~mid-Jun 2026, SPY paga trimestral).
+   - Procedimento: abrir 0.1 lot long US500 em demo ≥5 dias antes do ex-div,
+     verificar cash adjustment no cTrader transaction history.
+   - Gate: yield capture ≥ 95% (haircut ≤ 5%).
+
+3. **[Decisão operacional] Capital strategy a $1k total**
+   - **Opção A:** Acumular pra $5k antes de paper-tradear Plano A real.
+   - **Opção B:** Começar Plano B $1k no Banco Inter em paralelo (sem lot drama).
+   - **Opção C:** Híbrido — $1k Plano B + acumular paralelo pra $5k Plano A.
+   - Consultar `docs/strategies/plano_a_v2_l2_gayed_cfd.md §5.5.4` e
+     `docs/investment-mandate.md §3.6` pra thresholds e mandato.
+
+4. **[Plano B continuation]** — Usuário saiu pra trabalhar em "problemas do Plano B".
+   Ver `jornada/2026-04-20/01-ops-platform-mvp-delivered.md` pra contexto
+   ops platform. Se houver mudanças no Plano B strategy, atualizar
+   `docs/strategies/plano_b_3leg_letf_rotation.md`.
+
+### Files-chave pra consultar ao voltar
+
+- `reports/phase4_0/index_cfd_validation/AGGREGATE.md` — verdict técnico Phase 4.0
+- `docs/strategies/plano_a_pepperstone_index_cfd_rate_card.md` — rate card empírico
+- `docs/strategies/plano_a_v2_l2_gayed_cfd.md §5.5, §6.3, §9 update log`
+- `jornada/2026-04-20/02-phase4_0-T1-rate-card-empirico.md` — última entry
+- `docs/investment-mandate.md §3.6` — capital thresholds
+
+### Scripts reusáveis (cTrader Open API)
+
+- `scripts/pull_ctrader_rate_card.py` — symbol specs via Protobuf
+- `scripts/measure_ctrader_spread.py` — live bid/ask ticks
+- `scripts/search_ctrader_micro_symbols.py` — catalog variants
+- Credenciais em `.env.local` (gitignored; scope=accounts read-only)
+
+### Zona NÃO-pendente (já fechado, não revisitar)
+
+- Phase 4.0 backtest T3 + gates T4 + sensibility matrix → **validado, imutável**
+- T1 commission-zero confirmado empiricamente → **fechado**
+- Rate card base → **fechado** (só falta open-hours + dividend)
+
+---
+
 ## 📍 Current status (2026-04-19, post Phase 3.5a-V2 + cleanup)
 
 ### Headline (2026-04-19)
@@ -22,9 +81,15 @@
   (100 arquivos, 10 pastas), reports V1 + scripts V1 prunados (82 files
   removidos), V2 winner + Phase 3.5b preservados integralmente,
   pytest 796 passed. Detalhes em `jornada/2026-04-19/08-cleanup-post-v2.md`.
+- **Phase 4.0 executada 2026-04-19/20** — Index CFD substitution validation.
+  Backtest gates 10/10 PASS (`reports/phase4_0/index_cfd_validation/AGGREGATE.md`);
+  empirical T1 commission-zero confirmado + T1.2 spread 0.3 bps half off-hours.
+  **Descoberta crítica:** capital floor real = $5k (lot granularity),
+  não $1k. Ver `jornada/2026-04-20/02-phase4_0-T1-rate-card-empirico.md`.
 - **Próximo:** Phase 4 dual-path paper trading 3 meses
   (`specs/phase_4_paper_trading.md`). cTrader Demo (Plano A) + Inter
-  Global (Plano B).
+  Global (Plano B). Plano A live start ainda bloqueado por T1.2 open-hours
+  re-check + T2 dividend cycle (~mid-Jun 2026).
 
 ### Legacy status (2026-04-16, pré-V2)
 
