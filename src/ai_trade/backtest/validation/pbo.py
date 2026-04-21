@@ -14,10 +14,25 @@ underperform OOS as to outperform, i.e. we are selecting lucky noise.
 
 from __future__ import annotations
 
+import warnings
 from dataclasses import dataclass
 from itertools import combinations
 
 import numpy as np
+
+
+MIN_HONEST_N_CONFIGS = 4
+"""Below this, CSCV PBO is too noisy to gate on a single run.
+
+With ``N=2`` and ``n_blocks=10``, bootstrap simulations on iid noise produce
+PBO values ∈ [0.016, 0.897] purely by chance — the result is indistinguishable
+from a coin flip. The PBO gate was designed for a universe of trials that is
+exogenous to the strategy under test; shrinking the grid ex-post until the
+gate passes is exactly the behavior PBO was meant to detect.
+
+See ``reports/phase_3_5d/ESCALATION_PENDING.md`` for the incident (Phase 3.5d
+iter 13, E1 candidate rejected) that motivated this guard.
+"""
 
 
 @dataclass
@@ -68,6 +83,17 @@ def pbo(returns: np.ndarray, n_blocks: int = 10) -> PBOResult:
     T, N = returns.shape
     if N < 2:
         raise ValueError("PBO requires at least 2 strategies (N >= 2)")
+    if N < MIN_HONEST_N_CONFIGS:
+        warnings.warn(
+            f"PBO called with N={N} configurations (<{MIN_HONEST_N_CONFIGS}). "
+            "CSCV is statistically unstable with small N — a single run can "
+            "swing wildly by chance. The gate is informative only over a grid "
+            "of trials declared exogenously to the strategy. See "
+            "reports/phase_3_5d/ESCALATION_PENDING.md for the incident that "
+            "motivated this warning.",
+            UserWarning,
+            stacklevel=2,
+        )
     n_blocks = n_blocks - (n_blocks % 2)
     if n_blocks < 2:
         raise ValueError("n_blocks must round down to an even integer >= 2")

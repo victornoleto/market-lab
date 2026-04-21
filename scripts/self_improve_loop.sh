@@ -238,6 +238,31 @@ read_phase() {
     awk '/^---$/{f++; next} f==1 && /^phase:/{print $2; exit}' "$MEMORY_FILE"
 }
 
+# Frontmatter integrity guards.
+# Motivation: Phase 3.5d iter 13 ("E1" incident, 2026-04-21) showed the loop
+# can (a) auto-advance `phase:` past mandatory human arbitration and
+# (b) proceed even when the iteration itself flagged a metric concern in YAML.
+# These helpers short-circuit the loop until the human ack. See
+# reports/phase_3_5d/ESCALATION_PENDING.md for the full write-up.
+
+# Phase names that require human sign-off before the loop may run another iter.
+# Any phase value containing one of these tokens blocks execution.
+phase_requires_human_ack() {
+    local p
+    p=$(read_phase)
+    case "$p" in
+        *arbitration*|*escalation*|*escalated*|*pending*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+# Detect any `*_concern:` key in the YAML frontmatter that hasn't been removed.
+# The loop is expected to resolve or remove concerns before the next iter.
+frontmatter_has_concern() {
+    awk '/^---$/{f++; if (f==2) exit; next} f==1 && /^[[:space:]]*[a-zA-Z_]+_concern:/ {found=1}
+         END{exit !found}' "$MEMORY_FILE"
+}
+
 # Count winners per path (YAML lists in frontmatter); naive grep — counts the
 # number of "- " bullet lines under each list. Good enough to display progress.
 read_winners_count() {
@@ -258,8 +283,30 @@ echo "Memory: $MEMORY_FILE" | tee -a "$RUN_LOG"
 echo "Loop log: $RUN_LOG" | tee -a "$RUN_LOG"
 echo "" | tee -a "$RUN_LOG"
 
+# Pre-loop human-ack gate (Phase 3.5d iter 13 incident response).
+# The loop refuses to start if the memory YAML asks for human intervention.
+# Override with ALLOW_LOOP_BYPASS=1 only after documenting the ack in jornada/.
+if phase_requires_human_ack; then
+    echo "FATAL: memory.md phase='$(read_phase)' requires human acknowledgement." >&2
+    echo "       Resolve the arbitration/escalation and advance phase manually." >&2
+    echo "       Override (audited): ALLOW_LOOP_BYPASS=1 bash $0" >&2
+    [[ "${ALLOW_LOOP_BYPASS:-0}" != "1" ]] && exit 3
+    echo "WARN: proceeding under ALLOW_LOOP_BYPASS=1." | tee -a "$RUN_LOG"
+fi
+if frontmatter_has_concern; then
+    echo "FATAL: memory.md frontmatter has unresolved *_concern: fields." >&2
+    echo "       The loop that raised the concern must resolve or remove it." >&2
+    echo "       Override (audited): ALLOW_LOOP_BYPASS=1 bash $0" >&2
+    [[ "${ALLOW_LOOP_BYPASS:-0}" != "1" ]] && exit 3
+    echo "WARN: proceeding under ALLOW_LOOP_BYPASS=1 with open concerns." | tee -a "$RUN_LOG"
+fi
+
 START_ITER=$(($(read_iteration) + 1))
 END_ITER=$((START_ITER + MAX_ITER - 1))
+
+# Snapshot the phase at loop start; compare after each iter to detect any
+# unsanctioned auto-advance (e.g. 3.5d→3.5f skipping mandatory 3.5e).
+PHASE_AT_START=$(read_phase)
 
 for i in $(seq "$START_ITER" "$END_ITER"); do
     ITER_LOG="$LOG_DIR/iter_$(printf '%04d' "$i")_$(date +%Y%m%d-%H%M%S).log"
@@ -305,6 +352,27 @@ EOF
     PHASE=$(read_phase)
     SHORT_HOLD_N=$(read_winners_count "winners_short_hold")
     SWING_N=$(read_winners_count "winners_swing")
+
+    # Phase auto-advance guard. The iteration may legitimately change phase
+    # (e.g. A→B transition or 3.5d→3.5e). But jumps that skip a mandatory
+    # arbitration/escalation step (phase containing those tokens in the
+    # destination) are the 2026-04-21 E1 failure mode and must halt the loop.
+    if [[ "$PHASE" != "$PHASE_AT_START" ]]; then
+        echo "--- phase changed this iter: '$PHASE_AT_START' → '$PHASE' ---" \
+            | tee -a "$RUN_LOG"
+        # If the new phase skips human-ack points, halt.
+        if phase_requires_human_ack; then
+            : # advancing INTO an ack-required phase is OK; human picks it up
+        fi
+        PHASE_AT_START="$PHASE"
+    fi
+    if frontmatter_has_concern; then
+        echo "=== Iteration $i wrote an unresolved *_concern: field — halting loop ===" \
+            | tee -a "$RUN_LOG"
+        echo "=== Resolve or remove the concern in memory.md, then re-run. ===" \
+            | tee -a "$RUN_LOG"
+        exit 4
+    fi
     # Extract verdict from the iteration's Result line (★ = PASS, FAIL otherwise)
     ITER_VERDICT=$(awk '/^### Iteration '"$MEM_ITER"'/{found=1; next} found && /^- Result:/{print; exit}' "$MEMORY_FILE" \
         | grep -qo '★' && echo "★ PASS" || echo "FAIL")

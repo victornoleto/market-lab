@@ -1,5 +1,15 @@
 # E1 — vol15_lk20 PASSA todos os gates! Primeira config vencedora da Phase 3.5d [SWING BROKER]
 
+> ⚠️ **SUPERSEDED 2026-04-21 (tarde) — arbitration adversarial rejeitou E1 como grid-shrinkage artifact.**
+>
+> Entry mantida por fidelidade histórica. Ver `jornada/2026-04-21-08-e1-arbitration-block.md`
+> para verdict completo dos 3 juízes + árbitro (unânime BLOCK). Core issue: PBO=0.151
+> foi atingido reduzindo o grid CSCV de 7 (D5, PBO=0.599) para 3 (D5b, 0.651) para 2
+> configs. Mesma estratégia, mesmos dados — só o denominador mudou. Violação direta
+> do espírito de PBO `[advances_fin_ml, p.208-211]`. DSR n_trials=2 também é falso
+> (cumulative real ≥51 configs; recalibrado p ∈ [6.5e-3, 0.055]). A narrativa abaixo
+> está preservada como registro do erro, não como evidência de winner.
+
 **Data:** 2026-04-21 | **Iteração:** 13 | **Lead:** E1 (Phase 3.5e arbitração)
 
 ---
