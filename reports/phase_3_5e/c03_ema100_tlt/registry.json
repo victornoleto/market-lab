@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "phase": "phase_3_5e",
+  "lead_id": "c03",
+  "lead_slug": "c03_ema100_tlt",
+  "lead_title": "Binary EMA100 regime filter + TLT off-leg \u2014 Gayed TLT variant [leverage_for_the_long_run, p.31]",
+  "citations_seed": [
+    "leverage_for_the_long_run, p.31",
+    "advances_fin_ml, p.208-211"
+  ],
+  "started_at": "2026-04-21T18:39:45+00:00",
+  "last_updated_at": "2026-04-21T18:39:45+00:00",
+  "configs": [
+    {
+      "name": "c03_ema100_tlt",
+      "type": "binary_ma",
+      "ma_type": "EMA",
+      "ma_period": 100,
+      "signal_asset": "SPY",
+      "off_leg": "TLT",
+      "citation": "leverage_for_the_long_run, p.31"
+    }
+  ],
+  "tickers_pending": [
+    "QLD",
+    "SSO",
+    "TQQQ",
+    "UPRO"
+  ],
+  "tickers_done": [],
+  "tickers_errored": [],
+  "status": "pending",
+  "aggregation_iter": null,
+  "aggregate_file_md": null,
+  "aggregate_jornada": null
+}
