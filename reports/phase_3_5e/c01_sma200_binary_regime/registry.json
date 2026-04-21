@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "phase": "phase_3_5e",
+  "lead_id": "c01",
+  "lead_slug": "c01_sma200_binary_regime",
+  "lead_title": "Binary SMA200 regime filter \u2014 Gayed canonical [leverage_for_the_long_run, ch.2]",
+  "citations_seed": [
+    "leverage_for_the_long_run, ch.2",
+    "advances_fin_ml, p.208-211"
+  ],
+  "started_at": "2026-04-21T16:20:25+00:00",
+  "last_updated_at": "2026-04-21T16:20:25+00:00",
+  "configs": [
+    {
+      "name": "c01_sma200_cash",
+      "type": "binary_ma",
+      "ma_type": "SMA",
+      "ma_period": 200,
+      "signal_asset": "SPY",
+      "off_leg": "cash",
+      "citation": "leverage_for_the_long_run, ch.2"
+    },
+    {
+      "name": "c01_sma200_gld",
+      "type": "binary_ma",
+      "ma_type": "SMA",
+      "ma_period": 200,
+      "signal_asset": "SPY",
+      "off_leg": "GLD",
+      "citation": "leverage_for_the_long_run, ch.2"
+    },
+    {
+      "name": "c01_sma200_tlt",
+      "type": "binary_ma",
+      "ma_type": "SMA",
+      "ma_period": 200,
+      "signal_asset": "SPY",
+      "off_leg": "TLT",
+      "citation": "leverage_for_the_long_run, ch.2"
+    }
+  ],
+  "tickers_pending": [
+    "QLD",
+    "SSO",
+    "TQQQ",
+    "UPRO"
+  ],
+  "tickers_done": [],
+  "tickers_errored": [],
+  "status": "pending",
+  "aggregation_iter": null,
+  "aggregate_file_md": null,
+  "aggregate_jornada": null
+}
