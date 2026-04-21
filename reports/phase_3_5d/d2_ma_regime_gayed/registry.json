@@ -10,7 +10,7 @@
     "leverage_for_the_long_run, p.60"
   ],
   "started_at": "2026-04-21T02:57:42+00:00",
-  "last_updated_at": "2026-04-21T02:57:42+00:00",
+  "last_updated_at": "2026-04-21T03:07:16+00:00",
   "configs": [
     {
       "name": "sma200_cash",
@@ -62,13 +62,29 @@
     }
   ],
   "tickers_pending": [
-    "EW_UPRO_TQQQ",
     "TQQQ",
     "UPRO"
   ],
-  "tickers_done": [],
+  "tickers_done": [
+    {
+      "ticker": "EW_UPRO_TQQQ",
+      "frequency": "daily",
+      "window_start": "2010-02-11",
+      "window_end": "2026-04-17",
+      "iter": 3,
+      "n_configs_tested": 6,
+      "best_config": "sma200_gld",
+      "best_sharpe_oos": 1.2761118623179375,
+      "best_cagr": 0.3145793405182953,
+      "best_maxdd": -0.5631919587123994,
+      "any_pass_5gate": false,
+      "pbo": 0.11904761904761904,
+      "result_file_md": "reports/phase_3_5d/d2_ma_regime_gayed/EW_UPRO_TQQQ.md",
+      "result_file_json": "reports/phase_3_5d/d2_ma_regime_gayed/EW_UPRO_TQQQ.json"
+    }
+  ],
   "tickers_errored": [],
-  "status": "pending",
+  "status": "sweeping",
   "aggregation_iter": null,
   "aggregate_file_md": null,
   "aggregate_jornada": null

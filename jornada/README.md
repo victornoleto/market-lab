@@ -29,12 +29,15 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-20 noite)
+## Onde estamos hoje (2026-04-21)
 
-**Estado:** 🔄 **Phase 3.5d em execução** — loop autônomo ativo buscando winner 3× LETF swing.
-Iter 0 completo: baseline D1 buy-and-hold estabelecido (TQQQ puro rende ~35%/ano líquido,
-MaxDD 81.7%; todo regime-filter precisa superar esse chão). Lead D2 (MA regime filter, Gayed)
-é o próximo candidato. Spec: `specs/phase_3_5d_plano_b_v2_3x_letf.md`.
+**Estado:** 🔄 **Phase 3.5d Lead D2 sweeping** — iter 3 completo. EW_UPRO_TQQQ com SMA200+GLD
+passou 8/9 gates — near-miss por 0.027 no Sharpe_net (0.773 vs 0.8). Cross-lib concordante
+(bt ±0.58pp, yfinance ±1.36pp). Próximas iters: TQQQ e UPRO single-leg.
+Spec: `specs/phase_3_5d_plano_b_v2_3x_letf.md`. Lead D2 registry: 1/3 tickers done.
+
+**Estado anterior (2026-04-20 noite):** Phase 3.5d lançada. Iter 0 D1 buy-and-hold baseline
+estabeleceu que TQQQ puro rende ~35%/ano líquido (MaxDD 81.7%). Iter 2 bootstrap D2 registry.
 
 **Estado anterior (2026-04-20 abertura):** ⚠ **Plano B V4 winner REJEITADO pela cross-lib validation.**
 Phase 3.5c descobriu que os números da Phase 3.5b (Sharpe 2.25, CAGR
@@ -319,6 +322,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16/01-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-21 (iter 3) — **Phase 3.5d D2 — EW_UPRO_TQQQ SMA200+GLD near-miss: 8/9 gates PASS** [SWING BROKER] — EW UPRO+TQQQ com filtro SMA200, off-leg GLD: CAGR_net=26.7%, Sharpe=0.909, MaxDD=-56.3%, Calmar=0.559. Passa PBO (0.119), DSR (p=0.011), WF 7/8, OOS hold-out (1.276), FWD stress (+0.264). Falha APENAS Sharpe_net (0.773 vs 0.8 limiar, falta 0.027). Cross-lib bt ±0.58pp ✓ e Stage-2 yfinance ±1.36pp ✓. TMF como off-leg é desastroso (MaxDD -83.8%!); GLD muito superior. Próximo: TQQQ e UPRO single-leg para verificar Sharpe mais alto.](2026-04-21/01-d2-ew-upro-tqqq-near-miss.md)
 - [2026-04-20 noite (iter 0) — **Phase 3.5d D1 — baseline buy-and-hold 3× LETF estabelecido** — 6 configs buy-and-hold testadas (UPRO, TQQQ, EW combos). Todos os configs 3× LETF batem SPY net post-tax (SPY=10.38%/ano; TQQQ sozinho=34.95%/ano). Porém MaxDD 70-82% — todos falham Calmar>0.5 gate (exceto TQQQ isolado: 0.504) e Sharpe_net>0.8 gate. EW 50/50 UPRO+TQQQ é o benchmark natural para D2+: CAGR_net 30.75%, MaxDD 73.5%. TMF no portfolio melhora Sharpe (0.839→0.923) mas sacrifica CAGR (-5.59pp). Chão definido: D2 regime-filter precisa bater ~30% net E ter Calmar>0.5. Próximo: D2 MA regime filter (SMA200/EMA100) `[leverage_for_the_long_run, p.13]`.](2026-04-20/05-phase-3-5d-d1-bh-baseline.md)
 - [2026-04-20 noite — ★ **Plano B V4 REJEITADO — Phase 3.5d aberta (3× LETFs)** — Encerramento de ciclo. Cross-lib validation (bt/vectorbt/backtrader/quantstats) confirmou que o winner Phase 3.5b (3-leg EW SSO+QLD+UGL, Sharpe 2.25, CAGR 25.56%) foi artifact de dados testfol.io proprietários. Nossa pipeline (synthetic_letf + yfinance) produz CAGR ~11.6% / max_dd -28.8% / Sharpe 0.78 — **abaixo CDI** e **pior que SPY buy-and-hold alavancado**. Regime filter EMA100 troca 5pp CAGR por 40pp DD reduction: trade-off Sharpe-neutro, não supera B&H. Plano A V2-L2 Gayed CFD em **stand-by** (mesmo risco de artifact). Phase 3.5d abre ciclo novo com 3× LETFs (UPRO, TQQQ, TMF), gate obrigatório "beat SPY pós-tax 15% IR BR", cross-lib concordance ≥ 2/3 libs, 8 leads (D1-D8) com indicator-family homogeneity testada via contrafactual (D2 MA vs D3 Donchian). Spec: `specs/phase_3_5d_plano_b_v2_3x_letf.md`. Launch prompt: `docs/self_improvement/phase_3_5d_launch_prompt.md`. Phase 4 paper trading **pausada**. Próxima sessão: rodar launch prompt, executar setup, aprovar loop com `MAX_ITER=10 SWEEP_MODE=fanout`.](2026-04-20/04-plano-b-v4-rejected-3-5d-launch.md)
 - [2026-04-20 tarde — **Phase 3.5c cross-lib validation — descoberta técnica completa** — Reimplementamos Plano B V4 em 4 libs Python (bt, vectorbt, backtrader, quantstats) para responder "o winner é real ou artifact?". 3 libs concordaram dentro de 1-2pp de CAGR (agreement forte), mas TODAS divergiram materialmente do baseline Phase 3.5b (CAGR 37.92% vs 11.6%, max_dd -16.91% vs -28.8%). Investigação mostrou que baseline Phase 3.5b usa testfol.io SSOSIM/QLDSIM/UGLSIM (dados proprietários sintéticos) que não existem em nossa stack. Windows e instrumentos dos leg baselines também não batem (QQQ em vez de QLD, janela 1970-2026 em vez de 2004-2026). 2 bugs reais descobertos durante a reimplementação (seam stitching em reference_prices.py inception date SSO 42× salto; ring-buffer em backtrader `datetime.date(i)` scrambling signal dates). Findings doc: `docs/superpowers/findings/2026-04-20-phase-3-5c-baseline-mismatch.md`. Ação B confirmou via head-to-head vs SSO buy-and-hold real pós-2006 que o regime filter EMA100 reduz max_dd mas não supera SPY alavancado. **Conclusão: Plano B V4 não passa gates em dados realistas.**](2026-04-20/03-phase-3-5c-cross-lib-exposed-baseline-mismatch.md)
