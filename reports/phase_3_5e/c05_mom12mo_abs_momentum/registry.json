@@ -9,7 +9,7 @@
     "advances_fin_ml, p.208-211"
   ],
   "started_at": "2026-04-21T19:12:52+00:00",
-  "last_updated_at": "2026-04-21T19:34:27+00:00",
+  "last_updated_at": "2026-04-21T19:40:28+00:00",
   "configs": [
     {
       "name": "c05_mom12mo_cash",
@@ -39,9 +39,7 @@
       "citation": "dual_momentum, ch.6"
     }
   ],
-  "tickers_pending": [
-    "UPRO"
-  ],
+  "tickers_pending": [],
   "tickers_done": [
     {
       "ticker": "QLD",
@@ -90,10 +88,26 @@
       "pbo_local": NaN,
       "result_file_md": "reports/phase_3_5e/c05_mom12mo_abs_momentum/TQQQ.md",
       "result_file_json": "reports/phase_3_5e/c05_mom12mo_abs_momentum/TQQQ.json"
+    },
+    {
+      "ticker": "UPRO",
+      "frequency": "daily",
+      "window_start": "2004-11-18",
+      "window_end": "2026-04-15",
+      "iter": 39,
+      "n_configs_tested": 3,
+      "best_config": "c05_mom12mo_gld",
+      "best_sharpe_oos": 0.4797291386090833,
+      "best_cagr": 0.16159376504635858,
+      "best_maxdd": -0.8313116596579475,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c05_mom12mo_abs_momentum/UPRO.md",
+      "result_file_json": "reports/phase_3_5e/c05_mom12mo_abs_momentum/UPRO.json"
     }
   ],
   "tickers_errored": [],
-  "status": "sweeping",
+  "status": "aggregating",
   "aggregation_iter": null,
   "aggregate_file_md": null,
   "aggregate_jornada": null
