@@ -29,17 +29,31 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-19 madrugada)
+## Onde estamos hoje (2026-04-20 noite)
 
-**Estado:** ★★★ **Phase 3.5a-V2 encerrada com WINNER FOUND** ★★★.
-Dual-path production-ready: Plano A (Gayed rotation CFD L=2) +
-Plano B (3-leg EW). Loop autônomo V2 rodou 82 iters / 58 runs em 6
-famílias novas, produziu 1 PASS (gayed_ema100_L2_off_gld, Sharpe OOS
-2.285 / CAGR 79% / MDD -21%) e 5 DEAD com diagnóstico estrutural
-completo. Stop rule binding NÃO disparou. Próxima fase: paper trading
-dual-path 3 meses (`specs/phase_4_paper_trading.md`). Pytest ≥ 783
-preservado ao longo da V2. Phase 3.5b continua imutável (já era
-production-ready desde 2026-04-17).
+**Estado:** ⚠ **Plano B V4 winner REJEITADO pela cross-lib validation.**
+Phase 3.5c descobriu que os números da Phase 3.5b (Sharpe 2.25, CAGR
+25.56%) foram validados contra dados proprietários testfol.io
+(SSOSIM/QLDSIM/UGLSIM) que **não reproduzem na nossa pipeline**. 3 libs
+independentes (bt, vectorbt, backtrader) convergem em CAGR ~11.6% /
+max_dd -28.8% / Sharpe 0.78 — **abaixo do CDI floor e pior que SPY
+buy-and-hold alavancado**. Regime filter EMA100 troca CAGR por DD
+reduction em Sharpe-neutral way; em posição alavancada, não supera
+buy-and-hold. **Plano B V4 não passa gates do investment mandate.**
+Plano A (Gayed V2-L2 CFD) entra em **stand-by** — pode estar sujeito
+ao mesmo artifact, re-validar em cross-lib antes de Phase 4 live.
+
+**Phase 3.5d em prep:** encontrar novo winner Plano B usando 3× LETFs
+(UPRO, TQQQ, TMF) que **supere SPY buy-and-hold pós 15% IR BR** com
+validação cross-lib obrigatória desde o dia 1. Spec:
+`specs/phase_3_5d_plano_b_v2_3x_letf.md`. Launch prompt:
+`docs/self_improvement/phase_3_5d_launch_prompt.md`.
+
+**Legacy state (2026-04-19 madrugada — pre-rejection):** Phase 3.5a-V2
+encerrada com Plano A V2-L2 Gayed PASS + Plano B 3-leg V4 imutável.
+Esse estado ficou obsoleto em 2026-04-20 noite após Phase 3.5c.
+Dual-path paper trading (`specs/phase_4_paper_trading.md`) **pausado**
+até Phase 3.5d produzir winner replicado em 2+ libs.
 
 **Highlights Phase 3.5a-V2 (2026-04-19, 05:10):**
 
@@ -135,18 +149,53 @@ Indices criados em 2026-04-17 2245:
 
 ---
 
-## O que vem a seguir (Phase 4 dual-path paper trading)
+## O que vem a seguir (Phase 3.5d — novo Plano B com 3× LETFs)
 
-**Onde paramos:** Phase 3.5a-V2 encerrada (iter 81 V2-L7, 2026-04-19
-madrugada). WINNER FOUND. Dual-path ativo completo:
+**Onde paramos (2026-04-20 noite):** Phase 3.5c cross-lib expôs que
+Plano B V4 não é reproduzível. Usuário aceitou a constatação e abriu
+Phase 3.5d como novo ciclo.
 
-- Plano A: `gayed_ema100_L2_off_gld` — CFD Pepperstone L=2.
-- Plano B: 3-leg EW {SSO+QLD+UGL} — Banco Inter Global, threshold 10pp.
+**Objetivo Phase 3.5d:** encontrar estratégia swing trade com 3×
+LETFs (UPRO ou SPXL, TQQQ, TMF opcional) que **supere SPY
+buy-and-hold pós-imposto (15% IR BR)**, passe gates PBO/DSR/WF, e
+seja validada em ≥ 2 de 3 libs (bt, vectorbt, backtrader).
 
-**Handoff imediato:** construir `specs/phase_4_paper_trading.md`
-(drafted nesta iter) — **3 meses calendário de paper trading dual-path**
-em cTrader Demo (A) + Inter Global com capital real mínimo (B),
-seguido de gate paper→live e então Phase 5.
+**Handoff imediato:** a próxima sessão interativa deve executar o
+launch prompt em `docs/self_improvement/phase_3_5d_launch_prompt.md`
+— setup da branch, atualiza `reference_prices.parquet` com 4 novos
+LETFs, reseta `memory.md`, roda smoke test, espera aprovação do
+usuário, depois lança loop com `MAX_ITER=10 SWEEP_MODE=fanout`.
+
+**Leads a investigar (D1-D8, spec §4):**
+1. D1 — Buy-and-hold 3× LETF puro (baseline defensivo).
+2. D2 — MA regime filter homogêneo em TODAS as legs (Gayed canonical).
+3. D3 — Donchian breakout homogêneo (Kaufman/Clenow contrafactual).
+4. D4 — Dual momentum (Antonacci).
+5. D5 — Volatility targeting (LETF exposure scaling).
+6. D6 — Trend + momentum composite (Clenow).
+7. D7 — Regime-gated dual LETF (two-layer).
+8. D8 — Tactical bond-equity hedge (stretch).
+
+**Pergunta-chave aberta (resposta no primeiro commit Phase 3.5d):**
+"Por que no SPY/SSO foi usado EMA100 e nas outras legs foi usado
+Donchian?" → Spec §4 força indicator homogeneity (D2 vs D3
+contrafactual).
+
+**Gates novos Phase 3.5d (não existiam em Phase 3.5b):**
+- Cross-lib concordance ≥ 2/3 libs dentro de ±3pp CAGR.
+- Two-stage data (reference + yfinance independent) ≤ ±3pp delta.
+- **Beat SPY B&H pós-tax** — sem isso, é folclore.
+- Calmar > 0.5 + Sharpe > 0.8.
+
+**Zona PROIBIDA Phase 3.5d:**
+- Re-abrir Plano B V4 3-leg EW (rejeitado em `2026-04-20/04-*`).
+- Tocar em Plano A V2-L2 Gayed CFD (stand-by até Phase 3.5d winner).
+- Re-pinar baseline a partir de uma única engine.
+- Validar contra dado testfol.io como source of truth.
+- Usar inverse LETFs (SQQQ, SPXS).
+
+**Phase 4 paper trading: PAUSADA.** Reavalia após winner Plano B V2
+confirmado + Plano A V2-L2 re-validado cross-lib.
 
 Gates paper→live:
 - Realized Sharpe ≥ 0.7 × backtest (A: 1.60, B: 1.58).
@@ -265,6 +314,8 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16/01-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-20 noite — ★ **Plano B V4 REJEITADO — Phase 3.5d aberta (3× LETFs)** — Encerramento de ciclo. Cross-lib validation (bt/vectorbt/backtrader/quantstats) confirmou que o winner Phase 3.5b (3-leg EW SSO+QLD+UGL, Sharpe 2.25, CAGR 25.56%) foi artifact de dados testfol.io proprietários. Nossa pipeline (synthetic_letf + yfinance) produz CAGR ~11.6% / max_dd -28.8% / Sharpe 0.78 — **abaixo CDI** e **pior que SPY buy-and-hold alavancado**. Regime filter EMA100 troca 5pp CAGR por 40pp DD reduction: trade-off Sharpe-neutro, não supera B&H. Plano A V2-L2 Gayed CFD em **stand-by** (mesmo risco de artifact). Phase 3.5d abre ciclo novo com 3× LETFs (UPRO, TQQQ, TMF), gate obrigatório "beat SPY pós-tax 15% IR BR", cross-lib concordance ≥ 2/3 libs, 8 leads (D1-D8) com indicator-family homogeneity testada via contrafactual (D2 MA vs D3 Donchian). Spec: `specs/phase_3_5d_plano_b_v2_3x_letf.md`. Launch prompt: `docs/self_improvement/phase_3_5d_launch_prompt.md`. Phase 4 paper trading **pausada**. Próxima sessão: rodar launch prompt, executar setup, aprovar loop com `MAX_ITER=10 SWEEP_MODE=fanout`.](2026-04-20/04-plano-b-v4-rejected-3-5d-launch.md)
+- [2026-04-20 tarde — **Phase 3.5c cross-lib validation — descoberta técnica completa** — Reimplementamos Plano B V4 em 4 libs Python (bt, vectorbt, backtrader, quantstats) para responder "o winner é real ou artifact?". 3 libs concordaram dentro de 1-2pp de CAGR (agreement forte), mas TODAS divergiram materialmente do baseline Phase 3.5b (CAGR 37.92% vs 11.6%, max_dd -16.91% vs -28.8%). Investigação mostrou que baseline Phase 3.5b usa testfol.io SSOSIM/QLDSIM/UGLSIM (dados proprietários sintéticos) que não existem em nossa stack. Windows e instrumentos dos leg baselines também não batem (QQQ em vez de QLD, janela 1970-2026 em vez de 2004-2026). 2 bugs reais descobertos durante a reimplementação (seam stitching em reference_prices.py inception date SSO 42× salto; ring-buffer em backtrader `datetime.date(i)` scrambling signal dates). Findings doc: `docs/superpowers/findings/2026-04-20-phase-3-5c-baseline-mismatch.md`. Ação B confirmou via head-to-head vs SSO buy-and-hold real pós-2006 que o regime filter EMA100 reduz max_dd mas não supera SPY alavancado. **Conclusão: Plano B V4 não passa gates em dados realistas.**](2026-04-20/03-phase-3-5c-cross-lib-exposed-baseline-mismatch.md)
 - [2026-04-20 — **Phase 4.0 T1 rate card empírico via Open API** — cTrader app approved → Open API unlocked. Pulled real specs for US500/NAS100/XAUUSD via Protobuf. ✅ commission-zero confirmado empiricamente em todos 3 (era a principal incerteza da sensibility matrix). Swap US500 -6.14%/yr, NAS100 -6.14%/yr, XAUUSD -8.84 pips (~1-12%/yr) — dentro do envelope testado. ❌ **Descoberta crítica: lot minimums estruturais inviabilizam $1k target.** US500 min 0.1 lot = $600, NAS100 min 0.1 lot = $2k (2× overshoot), XAUUSD min 0.01 lot = $2.7k (5× overshoot). Threshold Index CFD revisado **$1k → $5k como mínimo real**. Não é falha do cost model — é broker lot granularity que nenhum gate de backtest captura. Propagado: rate card doc novo, strategy §5.5.4 + §6.3 corrigidos, mandate §3.6 corrigido, AGGREGATE §7.5 atualizada. Scripts `pull_ctrader_rate_card.py` + `search_ctrader_micro_symbols.py` commit-and-reusáveis como base do cTrader adapter (Phase 4 T1). Próximo: T1.2 spread live quotes, T2 dividend cycle (mid-Jun).](2026-04-20/02-phase4_0-T1-rate-card-empirico.md)
 - [2026-04-19 — **Phase 4.0 Index CFD path VALIDADO (10/10 gates PASS)** — resolve o bloqueio de $1k descoberto em jornada 11. Re-backtest V2-L2 com SPX TR + QQQ adj_close + GLD adj_close (proxies US500/USTEC/XAUUSD) + cost model Index CFD (commission=0, spread=5bps half, swap=-0.008%): OOS Sharpe 2.400 (baseline 2.285, +5%), CAGR 85.76% (baseline 79.1%, +8%), MDD -21.51%. Bootstrap 99.9% CI full [1.379, 2.618] (baseline low 0.962, +43%). IR vs SPY OOS 2.333 (+8%). Walk-fwd 8/8 profitable, max-DD 22.6%. Cost sensitivity swap 2×: Sharpe 2.292/CAGR 80.38% — robusto. Por que melhora: commission-zero Razor Index economiza 204 bps cumulativos sobre 309 trades + SPX TR tem menos whipsaws (281 vs 315 SPY raw close flips); swap pior (-73% vs -45% cum) não compensa. Propagado: strategy doc §4.2 tabela comparativa + §6.3 $1k ✅, mandate §3.6, Phase 4 spec §1 variant, AGGREGATE §7.5 flag removido. Live ainda bloqueado por T1 (rate card empírico) + T2 (dividend adjustment cycle) na conta Pepperstone demo.](2026-04-19/12-phase4_0-index-cfd-validated.md)
 - [2026-04-19 — **Capital-fragility discovery:** cost model em bps do V2-L2 winner colapsa em conta <$5k. Commission fixa Razor $3.50/side = 70 bps a $1k notional vs 6.6 bps modelados (+10×). 309 trades × 70 bps = 216% equity drag → CAGR negativa. Nenhum gate PBO/DSR/WF captou (validam sinal, não economia). Propagado para: docs/strategies/plano_a_v2_l2_gayed_cfd.md §5.5 + §6.2 caveat #7 + §6.3 escalação fix, specs/phase_4_paper_trading.md §1, docs/investment-mandate.md §3.6 (nova), reports/phase3_5a_v2/AGGREGATE.md §7.5 (nova). Thresholds: Plano A share CFD $5k min / Index CFD $1k min (condicional Phase 4.0 validation) / Plano B sem mín. Usuário ($1k total) escolheu avaliar Caminho 3 (Index CFDs) — próximo passo: memo de análise + draft Phase 4.0 spec.](2026-04-19/11-capital-fragility-cost-model-bps.md)

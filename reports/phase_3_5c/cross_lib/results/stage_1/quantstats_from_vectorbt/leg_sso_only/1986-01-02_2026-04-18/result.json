@@ -1,0 +1,25 @@
+{
+  "variant_id": "leg_sso_only",
+  "lib": "quantstats(from=vectorbt)",
+  "window": [
+    "1986-01-02",
+    "2026-04-18"
+  ],
+  "stage": 1,
+  "cagr": 0.05216730378858725,
+  "sharpe": 0.3846491066964653,
+  "max_dd": -0.43776591627263417,
+  "wf_splits_8": [
+    NaN,
+    NaN,
+    NaN,
+    0.17726750377451278,
+    0.31885132261366556,
+    0.26777012188296484,
+    0.890605544162999,
+    0.6386909421652457
+  ],
+  "dsr_pval": 0.0,
+  "outcome": "OK",
+  "error_detail": "recomputed from vectorbt equity"
+}

@@ -1,0 +1,25 @@
+{
+  "variant_id": "plano_b_v4_threshold_10",
+  "lib": "quantstats(from=backtrader)",
+  "window": [
+    "1986-01-02",
+    "2026-04-18"
+  ],
+  "stage": 1,
+  "cagr": 0.05507885858779793,
+  "sharpe": 0.5589227583000137,
+  "max_dd": -0.24141297243127213,
+  "wf_splits_8": [
+    NaN,
+    NaN,
+    NaN,
+    0.40076287784543024,
+    0.6807869019677185,
+    0.4322619345935702,
+    0.6866917492165387,
+    1.165888891569207
+  ],
+  "dsr_pval": 0.0,
+  "outcome": "OK",
+  "error_detail": "recomputed from backtrader equity"
+}

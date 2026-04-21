@@ -52,6 +52,13 @@ ctrader = [
     "twisted==21.7.0",
     "protobuf==3.20.1",
 ]
+cross_lib = [
+    "bt>=1.0",
+    "vectorbt>=0.27",
+    "backtrader>=1.9",
+    "quantstats>=0.0.64",
+    "pyfolio-reloaded>=0.9.5",
+]
 
 [project.scripts]
 ops = "ops.cli.main:app"

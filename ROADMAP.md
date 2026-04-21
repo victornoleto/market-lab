@@ -4,13 +4,37 @@
 
 ---
 
-## 🛑 RESUMO PRA RETOMADA (2026-04-20, fim de sessão)
+## 🛑 RESUMO PRA RETOMADA (2026-04-20, noite — Phase 3.5c/3.5d pivot)
 
-**Estado quando paramos:** Phase 4.0 (Index CFD substitution validation)
+**⚠ PIVOT CRÍTICO 2026-04-20 NOITE:** Phase 3.5c cross-lib validation
+rejeitou o winner Plano B V4 (3-leg EW SSO+QLD+UGL). 3 libs
+independentes (bt, vectorbt, backtrader) convergem em CAGR ~11.6% /
+max_dd -28.8% / Sharpe 0.78 na nossa pipeline — baseline Phase 3.5b
+(CAGR 37.92% / Sharpe 2.25) era artifact de dados testfol.io
+proprietários. **Plano B V4 não passa gates do investment mandate.**
+Plano A V2-L2 Gayed CFD em **stand-by** (mesmo risco). Phase 4 paper
+trading **pausada**. Novo ciclo **Phase 3.5d** aberto com foco em 3×
+LETFs (UPRO, TQQQ, TMF) que superem SPY buy-and-hold pós-imposto.
+Detalhes: `jornada/2026-04-20/03-*.md` e `04-*.md`.
+
+**Próxima ação:** executar launch prompt
+`docs/self_improvement/phase_3_5d_launch_prompt.md` em sessão nova.
+Setup = branch dedicada + reference_prices.parquet com 4 novos LETFs +
+memory.md reset + smoke test. Depois aprovar lançamento do loop
+autônomo (`MAX_ITER=10 SWEEP_MODE=fanout bash scripts/self_improve_loop.sh`).
+
+**Spec autoritativo Phase 3.5d:** `specs/phase_3_5d_plano_b_v2_3x_letf.md`
+(search space D1-D8, gates incluindo cross-lib + beat-SPY, anti-patterns).
+
+---
+
+**Estado pré-pivot (2026-04-20 manhã):** Phase 4.0 (Index CFD substitution validation)
 executada e merged em `main`. Caminho 3 validado **tecnicamente** (10/10 gates
 backtest) **e empiricamente** (commission-zero + swap dentro envelope + spread
 0.25-0.32 bps half vs 15 bps threshold). **Porém capital floor real = $5k,
 não $1k**, por lot granularity do broker (NAS100 min $2k, XAUUSD min $2.7k).
+Esse estado é **legacy** — Plano A Phase 4.0 work fica intacto mas pausado
+pendendo Plano B winner novo.
 
 **Branch mergeada em `main`:** `phase4_0/index-cfd-validation`.
 
