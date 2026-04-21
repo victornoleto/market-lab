@@ -9,7 +9,7 @@
     "advances_fin_ml, p.208-211"
   ],
   "started_at": "2026-04-21T16:20:25+00:00",
-  "last_updated_at": "2026-04-21T16:30:20+00:00",
+  "last_updated_at": "2026-04-21T16:37:10+00:00",
   "configs": [
     {
       "name": "c01_sma200_cash",
@@ -40,7 +40,6 @@
     }
   ],
   "tickers_pending": [
-    "SSO",
     "TQQQ",
     "UPRO"
   ],
@@ -60,6 +59,22 @@
       "pbo_local": 0.031746031746031744,
       "result_file_md": "reports/phase_3_5e/c01_sma200_binary_regime/QLD.md",
       "result_file_json": "reports/phase_3_5e/c01_sma200_binary_regime/QLD.json"
+    },
+    {
+      "ticker": "SSO",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 16,
+      "n_configs_tested": 3,
+      "best_config": "c01_sma200_gld",
+      "best_sharpe_oos": 0.5941703228565934,
+      "best_cagr": 0.13834580244175232,
+      "best_maxdd": -0.42374220824744313,
+      "any_pass_5gate": false,
+      "pbo_local": 0.18253968253968253,
+      "result_file_md": "reports/phase_3_5e/c01_sma200_binary_regime/SSO.md",
+      "result_file_json": "reports/phase_3_5e/c01_sma200_binary_regime/SSO.json"
     }
   ],
   "tickers_errored": [],
