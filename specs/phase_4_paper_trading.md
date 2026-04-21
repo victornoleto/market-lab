@@ -37,7 +37,8 @@ Phase 5.
 - **Rebalance cadence:** daily close (decisão no close US).
 - **Broker:** Pepperstone cTrader Open API (Razor tier).
 - **Cost model:** spread 2-5 bps half ×2 + commission $3.50/side + slippage 1-3 bps + swap 0.005-0.02%/day.
-- **Sizing inicial:** paper USD equivalent 10k (escala arbitrária para simular frictions reais; sizing real quando Phase 5).
+- **Sizing inicial:** paper USD equivalent **10k** (escala **deliberadamente escolhida**, não arbitrária — é o threshold onde o cost model bps do backtest é fielmente representativo da commission fixa real do Razor tier; abaixo de $5k o modelo bps degenera, ver `docs/strategies/plano_a_v2_l2_gayed_cfd.md §5.5`). Sizing real em Phase 5 começa em $5k (share CFD) ou $1k (Index CFD, **validado Phase 4.0 2026-04-19**, ver `reports/phase4_0/index_cfd_validation/AGGREGATE.md`).
+- **Variant Index CFD (para capital inicial $1k):** US500 (SPY), USTEC (QQQ), XAUUSD (GLD) com cost model `commission=0.0 bps, spread_half=5 bps, slippage=3 bps, swap_daily=-0.008%`. Phase 4.0 re-backtest preserva/melhora gates (OOS Sharpe 2.400 vs 2.285 baseline). **Live só após** T1 (rate card empírico) + T2 (dividend adjustment cycle observado) na conta Pepperstone demo.
 
 ### Plano B — Portfolio 3-leg EW (V4, Phase 3.5b-addendum winner)
 

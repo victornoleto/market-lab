@@ -1,0 +1,84 @@
+{
+  "phase": "4.0 T4 \u2014 full gates battery",
+  "n_pass": 10,
+  "n_total": 10,
+  "all_pass": true,
+  "gates": [
+    {
+      "name": "bootstrap_full_ci_low_gt_0",
+      "pass": true,
+      "value": "1.3794369713361185"
+    },
+    {
+      "name": "bootstrap_oos_ci_low_gt_0",
+      "pass": true,
+      "value": "1.0551765770233466"
+    },
+    {
+      "name": "walk_forward_6_of_8_mdd_25pct",
+      "pass": true,
+      "value": "1.000/0.226"
+    },
+    {
+      "name": "oos_cagr_ge_30pct",
+      "pass": true,
+      "value": "0.8576436612807328"
+    },
+    {
+      "name": "oos_sharpe_ge_2",
+      "pass": true,
+      "value": "2.399948389251206"
+    },
+    {
+      "name": "oos_mdd_le_25pct",
+      "pass": true,
+      "value": "-0.21511077078605279"
+    },
+    {
+      "name": "fwd_sharpe_gt_0",
+      "pass": true,
+      "value": "1.797315074207387"
+    },
+    {
+      "name": "median_hold_ge_3d",
+      "pass": true,
+      "value": "5.0"
+    },
+    {
+      "name": "ir_vs_spy_ge_05",
+      "pass": true,
+      "value": "2.332649128709564"
+    },
+    {
+      "name": "cost_sensitivity_swap_2x",
+      "pass": true,
+      "value": "S=2.292/C=0.804"
+    }
+  ],
+  "bootstrap": {
+    "full": {
+      "ci_low": 1.3794369713361185,
+      "ci_high": 2.618272554610366
+    },
+    "oos_only": {
+      "ci_low": 1.0551765770233466,
+      "ci_high": 3.723958445891661
+    },
+    "alpha": 0.001,
+    "block_mean": 5,
+    "n_resamples": 10000
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 1.0,
+    "max_window_drawdown": 0.2261128911117939,
+    "pass": true
+  },
+  "information_ratio_vs_spy_oos": 2.332649128709564,
+  "cost_sensitivity_swap_2x": {
+    "oos_sharpe": 2.2923661124629557,
+    "oos_cagr": 0.8037978904050513,
+    "pass": true
+  },
+  "produced_at": "2026-04-20T12:28:58.081822+00:00"
+}
