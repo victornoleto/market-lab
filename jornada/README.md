@@ -29,9 +29,24 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-21 tarde)
+## Onde estamos hoje (2026-04-21 — iter 19)
 
-**Estado:** 🛑 **Phase 3.5d ENCERRADA sem winner — E1 REJEITADO pela arbitration adversarial.**
+**Estado:** 🔄 **Phase 3.5e breadth-hunt em andamento — c01 DEAD, c02 próximo.**
+c01 (SMA200 binary regime, 12 trials) concluído. PBO=0.139 PASS — sinal real, não noise.
+Mas 0/12 pre-pass: FWD gate universal falha por choque de tarifas Jan-Apr 2026. Calmar <0.5 e
+Sharpe_net <0.8 em todos os configs. Melhor: QLD+GLD Sharpe_net=0.660, CAGR_net=17.5%.
+Próximo: c02 sma150_cash (MA mais curta, saída mais rápida). `[leverage_for_the_long_run, p.30]`
+
+Entries relevantes:
+- `jornada/2026-04-21-19-c01-sma200-aggregator-dead.md` — c01 aggregator verdict
+- `reports/phase_3_5e/c01_sma200_binary_regime/AGGREGATE.md` — resultado completo
+
+---
+
+**Estado anterior (2026-04-21 tarde, iters 14-18):** Phase 3.5e lançada. c01 sweep 4 tickers
+(QLD/SSO/TQQQ/UPRO) × 3 off-legs = 12 trials. Todos falham FWD (tariff shock 2026).
+
+**Estado anterior (2026-04-21 — E1 arbitration):** 🛑 **Phase 3.5d ENCERRADA sem winner — E1 REJEITADO pela arbitration adversarial.**
 Pivot para Phase 3.5e: comparação honesta 2× (SSO/QLD) + 3× (UPRO/TQQQ) com grid pre-declarado.
 
 **O que aconteceu:** iter 13 gerou "winner" E1 (`vol15_lk20` TQQQ+GLD, PBO=0.151). Rodei arbitration
@@ -348,6 +363,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16/01-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-21 (iter 19) — **Phase 3.5e c01 SMA200 Aggregator: DEAD END (0/12 pre-pass)** [SWING BROKER] — c01 family (SMA200 binary regime, 4 assets × 3 off-legs = 12 trials) concluída. Aggregate PBO=0.139 PASS — sinal real, família não overfit. Mas 0/12 pre-pass: FWD gate falha universalmente (choque tarifário Jan-Apr 2026). Melhor: QLD+GLD Sharpe_net=0.660, CAGR_net=17.5%, Calmar=0.400 — todos abaixo dos gates (SN>0.8, Calmar>0.5). trial_count=12/144. Próximo: c02 sma150_cash.](2026-04-21-19-c01-sma200-aggregator-dead.md)
 - [2026-04-21 (tarde) — 🛑 **Phase 3.5d ENCERRADA SEM WINNER — E1 REJEITADO pela arbitration adversarial** [SWING BROKER] — 3 juízes adversariais (methodology + domain + strategic) + árbitro convergem em BLOCK unânime. Core: PBO=0.151 de E1 foi atingido reduzindo grid CSCV de 7 (D5: 0.599) para 3 (D5b: 0.651) para 2 configs — mesma strategy, mesmos dados, só o denominador mudou. Violação direta `[advances_fin_ml, p.208-211]`. DSR n_trials=2 vs real ≥51 (p recalibrado ∈ [6.5e-3, 0.055]). 3 mis-citations (ch.14 ≠ vol-tgt, p.298-299 ≠ DSR, Gayed ≠ TQQQ+GLD). Loop auto-advançou phase 3.5d→3.5f pulando 3.5e arbitration. Decisão: pivot Phase 3.5e — 2× (SSO/QLD) primário + 3× (UPRO/TQQQ) comparação honesta, grid pre-declarado ≥10 configs, winner selection por Calmar/Sharpe risk-adjusted (não MaxDD isolado).](2026-04-21-08-e1-arbitration-block.md)
 - [2026-04-21 (iter 13) — ★ **Phase 3.5d E1 — vol15_lk20 PASSA TODOS OS GATES! Primeiro winner Phase 3.5d** [SWING BROKER] ⚠️ **SUPERSEDED pela arbitration** — E1 atômico. vol-targeting TQQQ+GLD target=15%/ano lookback=20d. PBO=0.151✓ (caiu de 0.599 D5!), DSR_p=2.3e-5✓, WF=8/8✓, OOS=1.169✓, FWD=0.182✓, CAGR_net=18.14%✓, Calmar=0.573✓, SN=0.855✓. Cross-lib: bt✓(0.15pp), vectorbt✓(0.44pp). Stage-2✓(2.23pp D5 ref). A chave: testar apenas 2 configs estruturalmente diversas reduz o PBO dramáticamente — vol15_lk20 é IS-winner consistente em 84.9% dos 252 folds CSCV. `[advances_fin_ml, ch.14]`, `[volatility_trading]`, `[leverage_for_the_long_run, p.13]`. **Rejeitado pela arbitration 2026-04-21 tarde — ver entry 08.**](2026-04-21-07-e1-vol-tgt-winner-pass.md)
 - [2026-04-21 (iter 12) — **Phase 3.5d D7+D8 — IMPASSE ESTRUTURAL confirmado: contradição PBO↔FWD insuperável** [SWING BROKER] — D7 DEAD: QQQ signals pior que SPY (SN 0.797→0.709, FWD ainda -1.51). D8 formal: slope_dom_rm15 (SN=0.762, FWD=0.573✓) vs slope_dom_pure (SN=0.847✓, FWD=-1.344✗) — PBO=0.794 FAIL. Contradição: sinal binário estável → PBO baixo → fica em TQQQ no choque → FWD falha. Sinal com saída no choque → IS-winner instável → PBO alto. Máximo alcançável mantendo FWD pass: SN=0.762 (gap=0.038 do gate 0.800). D5 vol-targeting: SN=0.855✓ FWD=0.182✓ PBO=0.599✗ — único a passar SN+FWD mas falha PBO. Phase 3.5e arbitração necessária.](2026-04-21-07-d7-d8-phase35d-impasse.md)
