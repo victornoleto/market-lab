@@ -1,0 +1,112 @@
+{
+  "ticker": "TQQQ",
+  "frequency": "daily",
+  "phase": "phase_3_5e",
+  "lead_id": "c03",
+  "lead_slug": "c03_ema100_tlt",
+  "iter": 32,
+  "source": "reference_prices.parquet (Stage 1, Tiingo-first; TQQQ pre-2010 synthetic)",
+  "config": {
+    "name": "c03_ema100_tlt",
+    "off_leg": "TLT",
+    "window_start": "2002-07-26",
+    "window_end": "2026-04-15",
+    "window_years": 23.71252566735113,
+    "n_bars": 5967,
+    "metrics_is": {
+      "cagr": 0.17948410152877248,
+      "cagr_net": 0.1525614862994566,
+      "sharpe": 0.5937373589166854,
+      "sharpe_net": 0.5046767550791826,
+      "max_dd": -0.7631256068996841,
+      "calmar": 0.235196014792315
+    },
+    "wf": {
+      "sharpes": [
+        0.18573408137782804,
+        0.1801863081803781,
+        0.9046826697550512,
+        0.9976518744015591,
+        0.9308183457434633,
+        0.5941060553711979,
+        0.2800271328845935,
+        0.9512406419244519
+      ],
+      "positive": 8,
+      "total": 8,
+      "pass": true
+    },
+    "oos": {
+      "is_sharpe": 0.6847543498700576,
+      "oos_sharpe": 0.25096374283346984,
+      "oos_pass": false,
+      "is_start": "2002-07-29",
+      "is_end": "2021-07-13",
+      "oos_start": "2021-07-14",
+      "oos_end": "2026-04-15"
+    },
+    "fwd": {
+      "fwd_sharpe": 0.06591267093497087,
+      "fwd_pass": true,
+      "fwd_start": "2026-01-14",
+      "fwd_end": "2026-04-15"
+    },
+    "spy_benchmark": {
+      "spy_cagr_gross": 0.0926610023562533,
+      "spy_cagr_net": 0.0787618520028153,
+      "spy_sharpe": 0.563528383127185,
+      "spy_max_dd": -0.5647366900495063,
+      "corr_vs_spy": 0.45832289054819486
+    },
+    "dsr": {
+      "dsr": 0.8419405502433412,
+      "p_value": 0.15805944975665875,
+      "pass": false,
+      "n_trials_used": 19
+    },
+    "stage2": {
+      "stage2_cagr": 0.27079124516596376,
+      "stage1_cagr_overlap": 0.2635006968242748,
+      "delta_pp": 0.7290548341688963,
+      "concordant": true,
+      "window": "2010-02-11 \u2192 2026-04-15"
+    },
+    "gates": {
+      "gate1_pbo": "AGGREGATE_LEVEL",
+      "gate2_dsr": false,
+      "gate3_wf": true,
+      "gate4_oos": false,
+      "gate5_fwd": true,
+      "overfit_pass_no_pbo": false,
+      "eco1_beats_spy": true,
+      "eco2_calmar": false,
+      "eco3_sharpe_net": false,
+      "eco_pass": false,
+      "pre_pass_pending_pbo": false,
+      "fail_reason": "DSR, OOS, CALMAR, SHARPE_NET"
+    }
+  },
+  "best_config": "c03_ema100_tlt",
+  "any_prepass_pending_pbo": false,
+  "best_sharpe_oos": 0.25096374283346984,
+  "best_cagr": 0.17948410152877248,
+  "best_maxdd": -0.7631256068996841,
+  "cross_lib_bt": {
+    "bt_cagr": 0.17956698435866003,
+    "bt_sharpe": 0.5939515967193818
+  },
+  "stage2_concordance": {
+    "stage2_cagr": 0.27079124516596376,
+    "stage1_cagr_overlap": 0.2635006968242748,
+    "delta_pp": 0.7290548341688963,
+    "concordant": true,
+    "window": "2010-02-11 \u2192 2026-04-15"
+  },
+  "citations": [
+    "leverage_for_the_long_run, p.31",
+    "leverage_for_the_long_run, ch.2",
+    "advances_fin_ml, p.208-211",
+    "advances_fin_ml, p.298-299"
+  ],
+  "generated_at": "2026-04-21T18:57:29.142062+00:00"
+}
