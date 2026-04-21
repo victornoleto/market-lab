@@ -87,9 +87,51 @@ pendendo Plano B winner novo.
 
 ---
 
-## 📍 Current status (2026-04-19, post Phase 3.5a-V2 + cleanup)
+## 📍 Current status (2026-04-20 noite, Phase 3.5c/3.5d pivot)
 
-### Headline (2026-04-19)
+### Phase 3.5c closed — rejected Plano B V4 (2026-04-20)
+
+- **Verdict:** Plano B V4 (3-leg EW SSO+QLD+UGL threshold 10pp) **rejected**
+  after cross-library validation (bt, vectorbt, backtrader, quantstats)
+  converged on CAGR ≈ 11.6% / max_dd ≈ -28.8% / Sharpe ≈ 0.78 on our
+  `synthesize_letf_returns_ffr_aware` + yfinance pipeline — materially
+  below CDI BR floor and worse than SPY buy-and-hold pós 15% IR BR.
+- **Root cause:** Phase 3.5b "winner" (Sharpe 2.25, CAGR 25.56%) was
+  validated against proprietary testfol.io SSOSIM/QLDSIM/UGLSIM data
+  not reproducible in our stack. See
+  `docs/superpowers/findings/2026-04-20-phase-3-5c-baseline-mismatch.md`
+  + `jornada/2026-04-20/03-phase-3-5c-cross-lib-exposed-baseline-mismatch.md`.
+- **By-products kept:** 2 real bugs fixed during replication —
+  seam stitching (`reference_prices.py`, commit `b27ccb0`) and
+  backtrader ring-buffer (commit `393dc8b`). 52/52 cross-lib tests
+  green. Adapters reusable for Phase 3.5d (do not reimplement).
+- **Plano A V2-L2 Gayed CFD:** **stand-by** — same testfol.io artifact
+  risk. Re-validate cross-lib only after Phase 3.5d produces a winner.
+- **Phase 4 paper trading:** **pausada** until Phase 3.5d winner lands.
+
+### Phase 3.5d opening — 3× LETF swing search (2026-04-20)
+
+- **Goal:** find a swing-trade configuration over 3× LETFs
+  (UPRO/SPXL, TQQQ, TMF optional) that beats SPY buy-and-hold
+  pós 15% IR BR on the common post-2010 window, validated
+  cross-library (≥ 2/3 engines within ±3 pp CAGR) and cross-data
+  (Stage 1 parquet vs Stage 2 yfinance within ±3 pp).
+- **Authoritative spec:** `specs/phase_3_5d_plano_b_v2_3x_letf.md`
+  (search space D1-D8, gates including cross-lib + beat-SPY,
+  anti-patterns §10). Launch prompt:
+  `docs/self_improvement/phase_3_5d_launch_prompt.md`.
+- **Universe delta:** `reference_prices.parquet` rebuilt with
+  UPRO (3×, 2009-06-25), SPXL (3×, 2008-11-05), TQQQ (3×, 2010-02-09),
+  TMF (3×, 2009-04-16) + TLT underlying. 10 tickers total; seam
+  continuity verified (ratio ≈ 1.0 at each inception).
+- **Loop protocol:** feature branch `phase3.5d/plano-b-v2-3x-letf-20260420`
+  + `MAX_ITER=10 SWEEP_MODE=fanout CLAUDE_MODEL=sonnet
+  bash scripts/self_improve_loop.sh` per session.
+- **New gates (over Phase 3.5b):** cross-lib concordance ≥ 2/3 libs,
+  two-stage data ≤ ±3 pp CAGR, **beat SPY B&H pós-tax**, Calmar > 0.5,
+  Sharpe pós-imposto > 0.8.
+
+### Headline (legacy 2026-04-19 — superseded 2026-04-20)
 
 - **Phase 3.5a-V2 encerrada com WINNER** (`gayed_ema100_L2_off_gld` —
   Gayed rotation transportada para CFD Pepperstone L=2; Sharpe OOS

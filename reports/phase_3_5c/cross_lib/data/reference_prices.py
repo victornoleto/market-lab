@@ -53,7 +53,7 @@ REFERENCE_PARQUET = Path(
     "reports/phase_3_5c/cross_lib/data/reference_prices.parquet"
 )
 
-UNDERLYING_TICKERS: tuple[str, ...] = ("SPY", "QQQ", "GLD")
+UNDERLYING_TICKERS: tuple[str, ...] = ("SPY", "QQQ", "GLD", "TLT")
 
 
 @dataclass(frozen=True)
@@ -84,6 +84,7 @@ class LetfSpec:
 
 
 LETF_SPECS: tuple[LetfSpec, ...] = (
+    # --- 2× LETFs (legacy Plano B V4 lineage; kept for regression tests) ---
     # SSO — ProShares Ultra S&P 500 (2×), inception 2006-06-21, ER 0.89 %
     # [leverage_for_the_long_run, p.16] — 2× SPY is the primary LRS vehicle.
     LetfSpec("SSO", "SPY", 2.0, "2006-06-21", 0.0089),
@@ -91,6 +92,15 @@ LETF_SPECS: tuple[LetfSpec, ...] = (
     LetfSpec("QLD", "QQQ", 2.0, "2006-06-21", 0.0095),
     # UGL — ProShares Ultra Gold (2×), inception 2008-12-03, ER 0.95 %
     LetfSpec("UGL", "GLD", 2.0, "2008-12-03", 0.0095),
+    # --- 3× LETFs (Phase 3.5d universe; see specs/phase_3_5d_plano_b_v2_3x_letf.md §2.1) ---
+    # UPRO — ProShares UltraPro S&P 500 (3×), inception 2009-06-25, ER 0.91 %
+    LetfSpec("UPRO", "SPY", 3.0, "2009-06-25", 0.0091),
+    # SPXL — Direxion Daily S&P 500 Bull 3X (3×), inception 2008-11-05, ER 1.00 %
+    LetfSpec("SPXL", "SPY", 3.0, "2008-11-05", 0.0100),
+    # TQQQ — ProShares UltraPro QQQ (3×), inception 2010-02-09, ER 0.84 %
+    LetfSpec("TQQQ", "QQQ", 3.0, "2010-02-09", 0.0084),
+    # TMF — Direxion Daily 20+ Year Treasury Bull 3X (3×), inception 2009-04-16, ER 1.06 %
+    LetfSpec("TMF", "TLT", 3.0, "2009-04-16", 0.0106),
 )
 
 
@@ -307,7 +317,7 @@ def _load_underlying_tr(underlying: str, start: str, end: str) -> pd.Series:
             end=end,
             tiingo_storage_root=str(_TIINGO_ROOT),
         )
-    if underlying in ("QQQ", "GLD"):
+    if underlying in ("QQQ", "GLD", "TLT"):
         raw = _STORAGE.read(underlying, frequency="daily")
         mask = (raw.index >= pd.Timestamp(start)) & (raw.index <= pd.Timestamp(end))
         return raw.loc[mask, "close"].pct_change().dropna()
@@ -344,7 +354,11 @@ if __name__ == "__main__":
     df = build_reference_prices()
     save_reference_parquet(df)
     print(f"Wrote {len(df)} rows to {REFERENCE_PARQUET}")
-    for tkr in ("SPY", "QQQ", "GLD", "SSO", "QLD", "UGL"):
+    for tkr in (
+        "SPY", "QQQ", "GLD", "TLT",
+        "SSO", "QLD", "UGL",
+        "UPRO", "SPXL", "TQQQ", "TMF",
+    ):
         sub = df[df["ticker"] == tkr]
         if sub.empty:
             print(f"  {tkr}: 0 rows (MISSING)")

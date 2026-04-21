@@ -11,7 +11,7 @@ from typing import Literal
 
 import pandas as pd
 
-SignalType = Literal["ema_regime", "donchian"]
+SignalType = Literal["ema_regime", "donchian", "always_on"]
 RebalanceMode = Literal["daily", "monthly_sell", "monthly_cashflow", "threshold"]
 ExecutionModel = Literal["letf_synthetic", "cfd_synthetic", "real_etf"]
 StrategyFamily = Literal["plano_b", "plano_a"]

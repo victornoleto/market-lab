@@ -23,6 +23,15 @@ def ema_regime(prices: pd.Series, lookback: int) -> pd.Series:
     return (prices > ema).astype(bool)
 
 
+def always_on(prices: pd.Series) -> pd.Series:
+    """Return constant-True state Series — buy-and-hold baseline (Lead D1).
+
+    Used by Phase 3.5d as the defensive floor against which regime-filter
+    strategies must prove they add value. `[leverage_for_the_long_run, p.16]`.
+    """
+    return pd.Series(True, index=prices.index, dtype=bool)
+
+
 def donchian_signal(prices: pd.Series, entry: int, exit_: int) -> pd.Series:
     """Return state Series: 1 when LONG, 0 when FLAT.
 

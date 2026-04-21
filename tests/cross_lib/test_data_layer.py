@@ -30,15 +30,89 @@ def test_canonical_window_coverage(prices: pd.DataFrame) -> None:
     canonical_end = pd.Timestamp("2026-04-18")
     # All tickers are synthesized pre-inception using GLD's inception as a constraint.
     # GLD (real) from 2004-11-18; UGL (real) from 2008-12-03; SSO/QLD (real) from 2006-06-21.
+    # Phase 3.5d 3× LETFs: UPRO 2009-06-25, SPXL 2008-11-05, TQQQ 2010-02-09, TMF 2009-04-16.
+    # TLT (underlying for TMF) available from 2002-07-26.
     # Pre-inception: synthetic from 1986-01-02 (SPX TR start) or when underlying is available.
-    # Min dates are driven by when underlying became available or synthetic window started.
     # Just check all tickers reach close to the end date.
-    for ticker in ("SPY", "QQQ", "GLD", "SSO", "QLD", "UGL"):
+    for ticker in (
+        "SPY", "QQQ", "GLD", "TLT",
+        "SSO", "QLD", "UGL",
+        "UPRO", "SPXL", "TQQQ", "TMF",
+    ):
         sub = prices[prices["ticker"] == ticker]
         assert len(sub) > 0, f"{ticker} has no data"
         assert sub["date"].max() >= canonical_end - pd.Timedelta(days=5), (
             f"{ticker} missing post-{canonical_end}"
         )
+
+
+@pytest.mark.parametrize(
+    "ticker,underlying,leverage,inception",
+    [
+        ("UPRO", "SPY", 3.0, "2009-06-25"),
+        ("SPXL", "SPY", 3.0, "2008-11-05"),
+        ("TQQQ", "QQQ", 3.0, "2010-02-09"),
+        ("TMF", "TLT", 3.0, "2009-04-16"),
+    ],
+)
+def test_3x_letf_synthetic_invariant(
+    prices: pd.DataFrame,
+    ticker: str,
+    underlying: str,
+    leverage: float,
+    inception: str,
+) -> None:
+    """Pre-inception, 3× LETF daily return ≈ 3 × underlying daily return - drag.
+
+    Validates the Gayed synthesis formula `r_L = L × r_underlying - drag`
+    `[leverage_for_the_long_run, p.16]` for the Phase 3.5d 3× universe.
+    """
+    letf = prices[prices["ticker"] == ticker].set_index("date")["close"]
+    under = prices[prices["ticker"] == underlying].set_index("date")["close"]
+    pre_inception = letf.index < pd.Timestamp(inception)
+    letf_rets = letf.pct_change().loc[pre_inception]
+    under_rets = under.pct_change().reindex(letf_rets.index)
+
+    pearson = letf_rets.corr(under_rets)
+    assert pearson > 0.99, f"{ticker}/{underlying} return correlation pre-inception = {pearson}"
+
+    ratio = (letf_rets / under_rets).dropna().median()
+    # Tolerance ±10 % of nominal leverage to absorb FFR-aware drag + ER.
+    assert leverage * 0.9 < ratio < leverage * 1.1, (
+        f"{ticker}/{underlying} ratio pre-inception = {ratio} (expected ~{leverage})"
+    )
+
+
+@pytest.mark.parametrize(
+    "ticker,inception",
+    [
+        ("UPRO", "2009-06-25"),
+        ("SPXL", "2008-11-05"),
+        ("TQQQ", "2010-02-09"),
+        ("TMF", "2009-04-16"),
+    ],
+)
+def test_3x_letf_seam_continuity(
+    prices: pd.DataFrame, ticker: str, inception: str
+) -> None:
+    """Last synthetic close must match first real close at inception.
+
+    Stitching bug documented in
+    `jornada/2026-04-20/03-phase-3-5c-cross-lib-exposed-baseline-mismatch.md`;
+    scaling fix is in ``reference_prices.py::build_reference_prices``.
+    """
+    sub = prices[prices["ticker"] == ticker].sort_values("date").reset_index(drop=True)
+    pre = sub[sub["date"] < inception]
+    post = sub[sub["date"] >= inception]
+    assert not pre.empty, f"{ticker} has no synthetic history before {inception}"
+    assert not post.empty, f"{ticker} has no real history after {inception}"
+    last_synth = pre["close"].iloc[-1]
+    first_real = post["close"].iloc[0]
+    ratio = first_real / last_synth
+    assert 0.99 < ratio < 1.01, (
+        f"{ticker} seam discontinuity: last_synth={last_synth}, "
+        f"first_real={first_real}, ratio={ratio}"
+    )
 
 
 def test_synthetic_letf_invariant(prices: pd.DataFrame) -> None:

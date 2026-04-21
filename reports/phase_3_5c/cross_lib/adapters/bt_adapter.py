@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd
 
 from reports.phase_3_5c.cross_lib.adapters.signals import (
+    always_on,
     donchian_signal,
     ema_regime,
 )
@@ -97,6 +98,8 @@ class BtAdapter:
                     leg.signal_params["entry"],
                     leg.signal_params["exit"],
                 )
+            elif leg.signal_type == "always_on":
+                state = always_on(signal_prices)
             else:
                 raise ValueError(f"Unknown signal_type: {leg.signal_type}")
             weights[leg.execution_ticker] = state.astype(float) * weight_per_leg
