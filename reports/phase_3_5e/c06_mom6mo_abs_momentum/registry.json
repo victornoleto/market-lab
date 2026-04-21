@@ -3,13 +3,13 @@
   "phase": "phase_3_5e",
   "lead_id": "c06",
   "lead_slug": "c06_mom6mo_abs_momentum",
-  "lead_title": "Absolute momentum 6-month (Antonacci) — 3 off-legs × 4 LETFs [dual_momentum, ch.6]",
+  "lead_title": "Absolute momentum 6-month (Antonacci) \u2014 3 off-legs \u00d7 4 LETFs [dual_momentum, ch.6]",
   "citations_seed": [
     "dual_momentum, ch.6",
     "advances_fin_ml, p.208-211"
   ],
   "started_at": "2026-04-21T20:00:00Z",
-  "last_updated_at": "2026-04-21T20:00:00Z",
+  "last_updated_at": "2026-04-21T19:54:34+00:00",
   "configs": [
     {
       "name": "c06_mom6mo_cash",
@@ -39,10 +39,31 @@
       "citation": "dual_momentum, ch.6"
     }
   ],
-  "tickers_pending": ["QLD", "SSO", "TQQQ", "UPRO"],
-  "tickers_done": [],
+  "tickers_pending": [
+    "SSO",
+    "TQQQ",
+    "UPRO"
+  ],
+  "tickers_done": [
+    {
+      "ticker": "QLD",
+      "frequency": "daily",
+      "window_start": "2004-11-18",
+      "window_end": "2026-04-15",
+      "iter": 42,
+      "n_configs_tested": 3,
+      "best_config": "c06_mom6mo_gld",
+      "best_sharpe_oos": 0.5983455990303485,
+      "best_cagr": 0.1714559722238247,
+      "best_maxdd": -0.5171542553185626,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c06_mom6mo_abs_momentum/QLD.md",
+      "result_file_json": "reports/phase_3_5e/c06_mom6mo_abs_momentum/QLD.json"
+    }
+  ],
   "tickers_errored": [],
-  "status": "pending",
+  "status": "sweeping",
   "aggregation_iter": null,
   "aggregate_file_md": null,
   "aggregate_jornada": null
