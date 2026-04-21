@@ -1,0 +1,309 @@
+{
+  "ticker": "TQQQ",
+  "frequency": "daily",
+  "strategy": "vol_targeting_structural_diversity",
+  "lead": "D5b",
+  "iter": 10,
+  "window": {
+    "start": "2004-11-18",
+    "end": "2026-04-15",
+    "n_bars": 5384,
+    "years": 21.404517453798768
+  },
+  "stage": 1,
+  "source": "reference_prices.parquet (seam-corrected)",
+  "n_configs": 3,
+  "config_families": [
+    "binary_regime",
+    "vol_targeting",
+    "combo"
+  ],
+  "spy_benchmark": {
+    "cagr": 0.08602666059621522,
+    "cagr_net": 0.07312266150678294,
+    "sharpe": 0.5303084816253403,
+    "max_dd": -0.5647366900495059
+  },
+  "pbo": {
+    "pbo": 0.6507936507936508,
+    "n_combinations": 252,
+    "pass": false
+  },
+  "configs": [
+    {
+      "name": "sma200_gld",
+      "config_type": "binary_regime",
+      "target_vol": null,
+      "lookback": null,
+      "use_sma200": true,
+      "metrics_is": {
+        "cagr": 0.2630260362791046,
+        "cagr_net": 0.2235721308372389,
+        "sharpe": 0.7597946246948952,
+        "sharpe_net": 0.6458254309906609,
+        "max_dd": -0.6374556079616579,
+        "calmar": 0.4126185933482685,
+        "n_bars": 5383
+      },
+      "wf": {
+        "sharpes": [
+          0.3422750373702949,
+          0.6688512611656764,
+          0.35577701797061795,
+          1.6027670071135225,
+          1.0579489642901903,
+          0.6799898985838307,
+          0.6853623298554732,
+          0.6772633619493289
+        ],
+        "positive": 8,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.8408621921866672,
+        "oos_sharpe": 0.46693216585078184,
+        "oos_pass": true,
+        "is_start": "2004-11-19",
+        "is_end": "2021-12-28",
+        "oos_start": "2021-12-29",
+        "oos_end": "2026-04-15"
+      },
+      "fwd": {
+        "fwd_sharpe": -0.002226043622671836,
+        "fwd_pass": false,
+        "fwd_start": "2026-01-14",
+        "fwd_end": "2026-04-15"
+      },
+      "spy_benchmark": {
+        "spy_cagr": 0.08602666059621522,
+        "spy_cagr_net": 0.07312266150678294,
+        "spy_sharpe": 0.5303084816253403,
+        "spy_max_dd": -0.5647366900495059,
+        "corr_vs_spy": 0.5137247403276599
+      },
+      "weight_stats": {
+        "mean": 0.7436849925705795,
+        "min": 0.0,
+        "max": 1.0,
+        "std": 0.4366383348208925
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.2600169932088521,
+        "cagr_delta_pp": 0.3009043070252515,
+        "concordant": true
+      },
+      "stage2": {
+        "cagr_stage2": 0.3832791293934019,
+        "cagr_delta_pp": 12.025309311429734,
+        "concordant": false
+      },
+      "dsr": {
+        "dsr": 0.9956302857300462,
+        "p_value": 0.004369714269953806,
+        "pass": true
+      },
+      "gates": {
+        "gate1_pbo": false,
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": false,
+        "overfit_pass": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": false,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "ALL_PASS": false,
+        "fail_reason": "PBO, FWD, CALMAR, SHARPE_NET"
+      }
+    },
+    {
+      "name": "vol15_lk20",
+      "config_type": "vol_targeting",
+      "target_vol": 0.15,
+      "lookback": 20,
+      "use_sma200": false,
+      "metrics_is": {
+        "cagr": 0.21336232001422673,
+        "cagr_net": 0.18135797201209272,
+        "sharpe": 1.0062604111548843,
+        "sharpe_net": 0.8553213494816516,
+        "max_dd": -0.3720554536868155,
+        "calmar": 0.5734691371943398,
+        "n_bars": 5383
+      },
+      "wf": {
+        "sharpes": [
+          0.7686075903266543,
+          0.6630642595680303,
+          1.2499362365515148,
+          0.608435237391255,
+          1.1657295048174339,
+          1.3142773068343414,
+          0.7676518975256857,
+          1.4419013058306618
+        ],
+        "positive": 8,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.9637894840108294,
+        "oos_sharpe": 1.1688574192609684,
+        "oos_pass": true,
+        "is_start": "2004-11-19",
+        "is_end": "2021-12-28",
+        "oos_start": "2021-12-29",
+        "oos_end": "2026-04-15"
+      },
+      "fwd": {
+        "fwd_sharpe": 0.1818809310486664,
+        "fwd_pass": true,
+        "fwd_start": "2026-01-14",
+        "fwd_end": "2026-04-15"
+      },
+      "spy_benchmark": {
+        "spy_cagr": 0.08602666059621522,
+        "spy_cagr_net": 0.07312266150678294,
+        "spy_sharpe": 0.5303084816253403,
+        "spy_max_dd": -0.5647366900495059,
+        "corr_vs_spy": 0.6172445269405664
+      },
+      "weight_stats": {
+        "mean": 0.32845812728625234,
+        "min": 0.0,
+        "max": 1.0,
+        "std": 0.14590123698496338
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.21490079134041795,
+        "cagr_delta_pp": 0.15384713261912264,
+        "concordant": true
+      },
+      "stage2": {
+        "cagr_stage2": 0.23568941605094307,
+        "cagr_delta_pp": 2.2327096036716343,
+        "concordant": true
+      },
+      "dsr": {
+        "dsr": 0.99990941755838,
+        "p_value": 9.058244161996853e-05,
+        "pass": true
+      },
+      "gates": {
+        "gate1_pbo": false,
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": true,
+        "overfit_pass": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": true,
+        "eco3_sharpe_net": true,
+        "eco_pass": true,
+        "ALL_PASS": false,
+        "fail_reason": "PBO"
+      }
+    },
+    {
+      "name": "vol15_lk20_sma200",
+      "config_type": "combo",
+      "target_vol": 0.15,
+      "lookback": 20,
+      "use_sma200": true,
+      "metrics_is": {
+        "cagr": 0.19499601688461032,
+        "cagr_net": 0.16574661435191876,
+        "sharpe": 0.9564537546509988,
+        "sharpe_net": 0.812985691453349,
+        "max_dd": -0.3017154843587325,
+        "calmar": 0.6462910489962282,
+        "n_bars": 5383
+      },
+      "wf": {
+        "sharpes": [
+          0.7482476435409571,
+          0.8222878788092407,
+          1.0898654498066365,
+          0.5550744123559639,
+          1.1063060164126344,
+          1.0382854525940834,
+          0.8210402243121914,
+          1.4027697511413826
+        ],
+        "positive": 8,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.9037372075576322,
+        "oos_sharpe": 1.1703465734212415,
+        "oos_pass": true,
+        "is_start": "2004-11-19",
+        "is_end": "2021-12-28",
+        "oos_start": "2021-12-29",
+        "oos_end": "2026-04-15"
+      },
+      "fwd": {
+        "fwd_sharpe": 0.14468242394329103,
+        "fwd_pass": true,
+        "fwd_start": "2026-01-14",
+        "fwd_end": "2026-04-15"
+      },
+      "spy_benchmark": {
+        "spy_cagr": 0.08602666059621522,
+        "spy_cagr_net": 0.07312266150678294,
+        "spy_sharpe": 0.5303084816253403,
+        "spy_max_dd": -0.5647366900495059,
+        "corr_vs_spy": 0.3769128123587543
+      },
+      "weight_stats": {
+        "mean": 0.27533243502358035,
+        "min": 0.0,
+        "max": 1.0,
+        "std": 0.19966585849584903
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.19418896316077228,
+        "cagr_delta_pp": 0.08070537238380471,
+        "concordant": true
+      },
+      "stage2": {
+        "cagr_stage2": 0.2180091618319271,
+        "cagr_delta_pp": 2.3013144947316766,
+        "concordant": true
+      },
+      "dsr": {
+        "dsr": 0.9997843528831125,
+        "p_value": 0.00021564711688748517,
+        "pass": true
+      },
+      "gates": {
+        "gate1_pbo": false,
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": true,
+        "overfit_pass": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": true,
+        "eco3_sharpe_net": true,
+        "eco_pass": true,
+        "ALL_PASS": false,
+        "fail_reason": "PBO"
+      }
+    }
+  ],
+  "best_config": "vol15_lk20",
+  "any_pass_all_gates": false,
+  "best_sharpe": 1.0062604111548843,
+  "best_sharpe_net": 0.8553213494816516,
+  "best_cagr_net": 0.18135797201209272,
+  "best_calmar": 0.5734691371943398,
+  "citations": [
+    "advances_fin_ml, ch.14",
+    "volatility_trading",
+    "leverage_for_the_long_run, p.13",
+    "advances_fin_ml, p.208-211",
+    "advances_fin_ml, p.298-299"
+  ],
+  "generated_at": "2026-04-21T04:06:18.664358+00:00"
+}
