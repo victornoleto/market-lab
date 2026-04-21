@@ -31,15 +31,14 @@ trading: palpite disfarçado de análise.
 
 ## Onde estamos hoje (2026-04-21)
 
-**Estado:** 🔄 **Phase 3.5d D6 (Clenow composite score) — próximo passo após D5b hipótese falhar** —
-D5b (iter 10) mostrou que configs heterogêneas NÃO reduzem PBO: 3 famílias diversas deram PBO=0.651 (pior que D5's 0.599).
-Insight crítico: **regime binário ON/OFF (D2) tem PBO=0.115 naturalmente**, enquanto vol-targeting contínuo tem PBO>0.5.
-D2 (sma200_gld): PBO=0.115 ✓ mas Sharpe_net=0.780 ✗ (gate=0.800, gap=0.020).
-Próximo: **D6** — composite score binário (MA slope + momentum 90d + 1/vol) com 3 triplas de pesos.
-Mantém caráter ON/OFF (PBO baixo esperado) mas sinal mais sofisticado que SMA200 puro → pode boostar Sharpe_net acima de 0.800.
-Citação: [stocks_on_the_move, p.81, ch.6].
-Spec: `specs/phase_3_5d_plano_b_v2_3x_letf.md`.
-Spec: `specs/phase_3_5d_plano_b_v2_3x_letf.md`.
+**Estado:** 🔄 **Phase 3.5d D7 — QQQ-signal composite (próximo após D6 near-miss)** —
+D6 (iter 11): composite binário (slope_MA200_SPY + mom_90d_SPY + inv_vol_TQQQ), PBO=0.341 ✓ PASS!
+trend_heavy (0.5, 0.3, 0.2): Sharpe_net=0.797 (gate=0.800, faltou 0.003), Calmar=0.731 ✓, WF=7/8 ✓.
+6/8 gates PASS. Falha: FWD (choque tarifário Jan-Apr 2026, TQQQ -3.8%) + Sharpe_net por 0.003.
+Diagnóstico bônus: slope_dominant (0.6, 0.25, 0.15) tem SN=0.847 (✓ passa!) mas também falha FWD.
+Insight: FWD falha porque sinal usou SPY — QQQ cairia antes em choques tech → saída mais rápida do TQQQ.
+Próximo: **D7** — mesmo composite mas usando slope_MA200(QQQ) + mom_90d(QQQ) + inv_vol(TQQQ).
+Citação: [stocks_on_the_move, p.81] — sinais no índice subjacente (QQQ para TQQQ, não SPY).
 
 **Estado anterior (2026-04-20 noite):** Phase 3.5d lançada. Iter 0 D1 buy-and-hold baseline
 estabeleceu que TQQQ puro rende ~35%/ano líquido (MaxDD 81.7%). Iter 2 bootstrap D2 registry.
@@ -327,6 +326,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16/01-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-21 (iter 11) — **Phase 3.5d D6 — Clenow Composite Score NEAR-MISS: 0/3 pass, PBO=0.341 PASS, SN=0.797** [SWING BROKER] — D6 atômico. 3 triplas de pesos para sinal composto binário (z-score slope_MA200_SPY + mom_90d_SPY + inv_vol_TQQQ). **Breakthrough PBO:** PBO=0.341 < 0.5 ✓ (primeiro sinal composto a passar PBO). trend_heavy (0.5,0.3,0.2): Sharpe=0.938, SN=0.797 (gate=0.800, faltou 0.003!), MaxDD=-42.4% (melhora enorme vs D2 -60.3%), Calmar=0.731 ✓. WF=7/8 ✓, OOS ✓, DSR_p=0.002 ✓, SPY_BEAT ✓ — 6/8 gates PASS. Falha: FWD (choque tarifário Jan-Apr 2026, TQQQ -3.8%) e SN por 0.003. Diagnóstico: slope_dominant (0.6,0.25,0.15) teria SN=0.847 mas também falha FWD. FWD falha estruturalmente nesse período — sinal baseado em SPY não saiu rápido o suficiente. Próximo: D7 com QQQ (índice subjacente do TQQQ) — reage mais rápido a choques tech.](2026-04-21-1040-d6-clenow-composite-near-miss.md)
 - [2026-04-21 (iter 10) — **Phase 3.5d D5b — Vol-targeting Structural Diversity: DEAD END, PBO=0.651** [SWING BROKER] — D5b atômico. Hipótese: 3 configs estruturalmente diversas (sma200_gld binário + vol15_lk20 contínuo + combo) reduziriam PBO abaixo de 0.5. Resultado: PBO=0.651 (pior que D5=0.599). Insight crucial: configs heterogêneos podem PIORAR PBO porque o IS-vencedor muda por regime → NÃO é consistente OOS. D2 (binário ON/OFF) tem PBO=0.115 naturalmente. Gargalo real: D2 sma200_gld tem Sharpe_net=0.780 (gate=0.800, gap=0.020). Próximo: D6 composite score binário (Clenow) — tenta boostar Sharpe_net >0.800 mantendo caráter binário e PBO baixo.](2026-04-21/06-d5b-vol-targeting-diverse-dead.md)
 - [2026-04-21 (iter 9) — **Phase 3.5d D5 — Vol-targeting TQQQ+GLD: NEAR-MISS 0/7 pass, PBO=0.599** [SWING BROKER] — D5 atômico. 7 configs (vol15/20 × lb10/20/30 + best×SMA200), janela 2004-2026 (21.4yr). **Breakthrough:** vol15_lk20 é a primeira config a superar Sharpe_net>0.800 (0.855). MaxDD reduzido de -60.3% (D2) para -37.2%. WF=8/8, OOS=1.169, DSR_p=0.001, bt±0.15pp, stage2±2.23pp — todos passam. Somente PBO=0.599 falha (configs muito homogêneas inflam PBO). Próximo: D5b — 3 configs estruturalmente diversas (sma200 puro vs vol15_lk20 puro vs combo) para PBO<0.5.](2026-04-21/05-d5-vol-targeting-near-miss.md)
 - [2026-04-21 (iter 8) — **Phase 3.5d D4 — Absolute Momentum Antonacci TQQQ+GLD: DEAD END 0/6 pass** [SWING BROKER] — D4 atômico. 6 configs (6/9/12mo × QQQ/TQQQ signal), janela 2004-2026 (21.4yr). Melhor: mom12_qqq Sharpe=0.665, net=0.565 (gate 0.800). PBO=0.778 (FAIL). Rebalanceamento mensal não protege intra-mês; SMA200 diário permanece superior. Próximo: D5 Volatility Targeting.](2026-04-21/04-d4-abs-momentum-antonacci-dead.md)

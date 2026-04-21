@@ -1,0 +1,277 @@
+{
+  "ticker": "TQQQ",
+  "frequency": "daily",
+  "strategy": "clenow_composite_binary",
+  "lead": "D6",
+  "iter": 11,
+  "window": {
+    "start": "2010-02-11",
+    "end": "2026-04-14",
+    "n_bars": 4067,
+    "years": 16.16974674880219
+  },
+  "stage": 1,
+  "source": "reference_prices.parquet",
+  "n_configs": 3,
+  "signal_params": {
+    "sma_period": 200,
+    "slope_period": 20,
+    "mom_period": 90,
+    "vol_period": 20,
+    "zscore_window": 252
+  },
+  "spy_benchmark": {
+    "cagr": 0.12191468087263324,
+    "cagr_net": 0.10362747874173825,
+    "sharpe": 0.7557971530902019,
+    "max_dd": -0.3410474670449845
+  },
+  "pbo": {
+    "pbo": 0.3412698412698413,
+    "n_combinations": 252,
+    "pass": true
+  },
+  "configs": [
+    {
+      "name": "equal_weight",
+      "weights": {
+        "w_slope": 0.3333333333333333,
+        "w_mom": 0.3333333333333333,
+        "w_invvol": 0.3333333333333333
+      },
+      "metrics_is": {
+        "cagr": 0.21070464979472447,
+        "cagr_net": 0.1790989523255158,
+        "sharpe": 0.7307972462227513,
+        "sharpe_net": 0.6211776592893387,
+        "max_dd": -0.4308065281467621,
+        "calmar": 0.4890934468916499,
+        "n_bars": 4066
+      },
+      "wf": {
+        "sharpes": [
+          1.7774387232461635,
+          0.6152780730385423,
+          -0.15006573219322722,
+          0.9079467498031005,
+          0.38971584549508637,
+          0.957169744775597,
+          1.2199720882933447,
+          0.23983698475673948
+        ],
+        "positive": 7,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.6910028935004989,
+        "oos_sharpe": 0.8734292904657417,
+        "oos_pass": true,
+        "is_end": "2023-01-12",
+        "oos_start": "2023-01-13"
+      },
+      "fwd": {
+        "fwd_sharpe": -1.7343539377826325,
+        "fwd_pass": false
+      },
+      "weight_stats": {
+        "mean": 0.485243482538121,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.20929956598620425,
+        "cagr_delta_pp": 0.14050838085202244,
+        "concordant": true
+      },
+      "stage2": {
+        "cagr_stage2": 0.21510389026904253,
+        "cagr_delta_pp": 0.4399240474318056,
+        "concordant": true
+      },
+      "dsr": {
+        "dsr": 0.9799151792293841,
+        "p_value": 0.020084820770615908,
+        "pass": true
+      },
+      "gates": {
+        "gate1_pbo": true,
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": false,
+        "overfit_pass": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": false,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "ALL_PASS": false,
+        "fail_reason": "FWD, CALMAR, SHARPE_NET"
+      }
+    },
+    {
+      "name": "trend_heavy",
+      "weights": {
+        "w_slope": 0.5,
+        "w_mom": 0.3,
+        "w_invvol": 0.2
+      },
+      "metrics_is": {
+        "cagr": 0.3100993433908912,
+        "cagr_net": 0.2635844418822575,
+        "sharpe": 0.9375062870071189,
+        "sharpe_net": 0.796880343956051,
+        "max_dd": -0.42434110691646104,
+        "calmar": 0.7307784665131197,
+        "n_bars": 4066
+      },
+      "wf": {
+        "sharpes": [
+          1.6257238496740094,
+          1.0471874414169506,
+          -0.4665449210105767,
+          1.5171082003930672,
+          0.07014736141302916,
+          1.2813622345369273,
+          1.4282361139648727,
+          0.7288893234742901
+        ],
+        "positive": 7,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.8413296549345225,
+        "oos_sharpe": 1.251316262994285,
+        "oos_pass": true,
+        "is_end": "2023-01-12",
+        "oos_start": "2023-01-13"
+      },
+      "fwd": {
+        "fwd_sharpe": -1.1420904159876244,
+        "fwd_pass": false
+      },
+      "weight_stats": {
+        "mean": 0.515248401377275,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.3029316900639505,
+        "cagr_delta_pp": 0.7167653326940693,
+        "concordant": true
+      },
+      "stage2": {
+        "cagr_stage2": 0.26957122325835625,
+        "cagr_delta_pp": 4.052812013253493,
+        "concordant": false
+      },
+      "dsr": {
+        "dsr": 0.997870661936023,
+        "p_value": 0.002129338063976971,
+        "pass": true
+      },
+      "gates": {
+        "gate1_pbo": true,
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": false,
+        "overfit_pass": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": true,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "ALL_PASS": false,
+        "fail_reason": "FWD, SHARPE_NET"
+      }
+    },
+    {
+      "name": "mom_heavy",
+      "weights": {
+        "w_slope": 0.2,
+        "w_mom": 0.6,
+        "w_invvol": 0.2
+      },
+      "metrics_is": {
+        "cagr": 0.23920790089691502,
+        "cagr_net": 0.20332671576237776,
+        "sharpe": 0.7880056858442853,
+        "sharpe_net": 0.6698048329676425,
+        "max_dd": -0.42327691542830087,
+        "calmar": 0.5651333492989286,
+        "n_bars": 4066
+      },
+      "wf": {
+        "sharpes": [
+          1.9354257872787308,
+          0.26934609921510794,
+          -0.2196661314414491,
+          0.8568908231559528,
+          0.8027773721954993,
+          1.3026662803536777,
+          1.1381675970929284,
+          0.25566506257447924
+        ],
+        "positive": 7,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.7233417929487522,
+        "oos_sharpe": 1.007294618454427,
+        "oos_pass": true,
+        "is_end": "2023-01-12",
+        "oos_start": "2023-01-13"
+      },
+      "fwd": {
+        "fwd_sharpe": -1.6511981951944186,
+        "fwd_pass": false
+      },
+      "weight_stats": {
+        "mean": 0.4938514510575504,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.25155231809728407,
+        "cagr_delta_pp": 1.234441720036905,
+        "concordant": true
+      },
+      "stage2": {
+        "cagr_stage2": 0.25440867485292107,
+        "cagr_delta_pp": 1.5200773956006053,
+        "concordant": true
+      },
+      "dsr": {
+        "dsr": 0.9887263201160357,
+        "p_value": 0.011273679883964327,
+        "pass": true
+      },
+      "gates": {
+        "gate1_pbo": true,
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": false,
+        "overfit_pass": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": true,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "ALL_PASS": false,
+        "fail_reason": "FWD, SHARPE_NET"
+      }
+    }
+  ],
+  "best_config": "trend_heavy",
+  "best_sharpe": 0.9375062870071189,
+  "best_sharpe_net": 0.796880343956051,
+  "best_cagr_net": 0.2635844418822575,
+  "best_calmar": 0.7307784665131197,
+  "any_pass_all_gates": false,
+  "citations": [
+    "stocks_on_the_move, p.81, ch.6",
+    "leverage_for_the_long_run, p.13",
+    "advances_fin_ml, p.208-211",
+    "advances_fin_ml, p.298-299"
+  ],
+  "generated_at": "2026-04-21T13:34:39.739258+00:00"
+}
