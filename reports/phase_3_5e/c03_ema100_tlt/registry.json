@@ -89,8 +89,10 @@
     }
   ],
   "tickers_errored": [],
-  "status": "aggregating",
-  "aggregation_iter": null,
-  "aggregate_file_md": null,
-  "aggregate_jornada": null
+  "status": "done",
+  "aggregation_iter": 34,
+  "aggregate_file_md": "reports/phase_3_5e/c03_ema100_tlt/AGGREGATE.md",
+  "aggregate_jornada": "jornada/2026-04-21-1640-c03-ema100-tlt-dead.md",
+  "aggregate_verdict": "DEAD — 0/4 pre-pass",
+  "aggregate_note": "c04 sma200_shv SKIPPED (SHV not in reference_prices.parquet). Next: c05 mom12mo."
 }
