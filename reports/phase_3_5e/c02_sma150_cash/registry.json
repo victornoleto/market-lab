@@ -9,7 +9,7 @@
     "advances_fin_ml, p.208-211"
   ],
   "started_at": "2026-04-21T17:00:51+00:00",
-  "last_updated_at": "2026-04-21T17:17:49+00:00",
+  "last_updated_at": "2026-04-21T17:45:00+00:00",
   "configs": [
     {
       "name": "c02_sma150_cash",
@@ -22,61 +22,23 @@
     }
   ],
   "tickers_pending": [
+    "QLD",
+    "SSO",
+    "TQQQ",
     "UPRO"
   ],
-  "tickers_done": [
-    {
-      "ticker": "QLD",
-      "frequency": "daily",
-      "window_start": "2001-05-15",
-      "window_end": "2026-04-14",
-      "iter": 21,
-      "n_configs_tested": 1,
-      "best_config": "c02_sma150_cash",
-      "best_sharpe_oos": 0.59654551892081,
-      "best_cagr": 0.12118447403913746,
-      "best_maxdd": -0.49439986256090757,
-      "any_pass_5gate": false,
-      "pbo_local": NaN,
-      "result_file_md": "reports/phase_3_5e/c02_sma150_cash/QLD.md",
-      "result_file_json": "reports/phase_3_5e/c02_sma150_cash/QLD.json"
-    },
-    {
-      "ticker": "SSO",
-      "frequency": "daily",
-      "window_start": "2001-05-14",
-      "window_end": "2026-04-14",
-      "iter": 22,
-      "n_configs_tested": 1,
-      "best_config": "c02_sma150_cash",
-      "best_sharpe_oos": 0.6197577473348743,
-      "best_cagr": 0.07513628298313813,
-      "best_maxdd": -0.442810011965022,
-      "any_pass_5gate": false,
-      "pbo_local": NaN,
-      "result_file_md": "reports/phase_3_5e/c02_sma150_cash/SSO.md",
-      "result_file_json": "reports/phase_3_5e/c02_sma150_cash/SSO.json"
-    },
-    {
-      "ticker": "TQQQ",
-      "frequency": "daily",
-      "window_start": "2001-05-15",
-      "window_end": "2026-04-14",
-      "iter": 23,
-      "n_configs_tested": 1,
-      "best_config": "c02_sma150_cash",
-      "best_sharpe_oos": 0.5721518224143864,
-      "best_cagr": 0.1413385531048048,
-      "best_maxdd": -0.655142403513667,
-      "any_pass_5gate": false,
-      "pbo_local": NaN,
-      "result_file_md": "reports/phase_3_5e/c02_sma150_cash/TQQQ.md",
-      "result_file_json": "reports/phase_3_5e/c02_sma150_cash/TQQQ.json"
-    }
-  ],
+  "tickers_done": [],
   "tickers_errored": [],
-  "status": "sweeping",
+  "status": "pending",
   "aggregation_iter": null,
   "aggregate_file_md": null,
-  "aggregate_jornada": null
+  "aggregate_jornada": null,
+  "reset_notes": [
+    {
+      "reset_at": "2026-04-21T17:45:00+00:00",
+      "reason": "Data pipeline pivoted to Tiingo-first for LETFs (commit f7c2810). Old QLD/SSO/TQQQ runs used yfinance-backed reference_prices.parquet; new sweep re-uses Tiingo adj_close. c01 kept as-is (verdict DEAD consolidated; numerical shifts immaterial to gate fails).",
+      "removed_tickers": ["QLD", "SSO", "TQQQ"],
+      "prior_trial_count_delta": -3
+    }
+  ]
 }
