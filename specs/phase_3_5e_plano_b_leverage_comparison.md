@@ -113,9 +113,17 @@ proibido** (3.5d D2: MaxDD -82% a -87%, structural fail).
 ### 3.1 Source discipline
 
 1. **Stage 1** — `reports/phase_3_5c/cross_lib/data/reference_prices.parquet`:
-   precisa incluir SSO, QLD, UPRO, TQQQ, SPY, GLD, TLT, SHV.
-2. **Stage 2** — yfinance direct fetch para validação independente. Δ CAGR
-   tolerância ≤ 3 pp.
+   precisa incluir SSO, QLD, UPRO, TQQQ, SPY, GLD, TLT, SHV. **Tiingo é a
+   fonte primária** (SPY/QQQ/GLD/TLT/SHV + LETFs SSO/QLD/UPRO/TQQQ adicionados
+   em 2026-04-21). yfinance apenas fallback para UGL/SPXL/TMF (ainda não em
+   Tiingo).
+2. **Stage 2** — `reports/phase_3_5c/cross_lib/stage2_validation.run_stage2()`.
+   Usa testfol.io `testfolio_spysim_leverage.parquet` como fonte independente
+   (SPY 1x/2x/3x equity 1885-2026). Tolerância Δ CAGR ≤ 3 pp.
+   - SSO → `spy_2x_equity`, UPRO/SPXL → `spy_3x_equity` (concordance check possível)
+   - QLD/TQQQ/UGL/TMF → Stage-2 = `na` (sem QQQSIM/GLDSIM/TLTSIM; work future)
+   - **Proibido** chamar yfinance direto em sweep scripts — causa yfinance-vs-
+     yfinance drift (iter 21: QLD Δ8.21pp; iter 23: TQQQ Δ15.16pp).
 3. **Synthetic extensions:** SSO/QLD pre-2006 via `r = L × r_SPX_TR - drag -
    expense` conforme mandate §4. Pre-inception synthetic é opcional — só se
    um winner passar gates no histórico real e precisar de 1970-2005 para

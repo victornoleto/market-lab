@@ -1,14 +1,22 @@
 """Assembles reference_prices.parquet — the single source of truth for Stage 1.
 
-Post-inception of each real LETF (SSO 2006-06-21, QLD 2006-06-21, UGL 2008-12-03)
-we use real OHLCV from yfinance (SSO/QLD/UGL are not in the Tiingo bulk cache — only
-SPY/QQQ/GLD are available there).  Pre-inception, we synthesize via
-``synthesize_letf_returns_ffr_aware`` — matching the methodology our engine uses
-internally.  Synthetic OHLC collapses high=low=close=open=synthetic_close (no intraday).
+Post-inception of each real LETF we prefer Tiingo OHLCV (the paid primary
+source, stable adjusted-close snapshots). yfinance is kept as a fallback only
+for LETFs not yet added to the Tiingo bulk cache (UGL, SPXL, TMF as of
+2026-04-21). Pre-inception, we synthesize via ``synthesize_letf_returns_ffr_aware``
+— matching the methodology our engine uses internally. Synthetic OHLC
+collapses high=low=close=open=synthetic_close (no intraday).
 
-The underlying tickers (SPY/QQQ/GLD) use Tiingo storage (absolute path to main repo
-cache) because the worktree ``data/tiingo/`` directory only carries the manifest
-symlink, not the parquet files themselves.
+The underlying tickers (SPY/QQQ/GLD/TLT) use Tiingo storage (absolute path
+to main repo cache) because the worktree ``data/tiingo/`` directory only
+carries the manifest symlink, not the parquet files themselves.
+
+Rationale for yfinance de-emphasis: during Phase 3.5e iter 21 we observed
+Stage-2 ΔCAGR of 8.21pp for QLD and 15.16pp for TQQQ — caused by
+yfinance-vs-yfinance inconsistency (cached parquet snapshot vs live
+re-fetch, differing due to retroactive adjusted-close/dividend handling).
+Tiingo adj_close is point-in-time stable. See
+``jornada/2026-04-21-*-data-pipeline-tiingo-first.md`` for the incident.
 
 Citations
 ---------
@@ -259,20 +267,58 @@ def _synthetic_pre_inception(
 
 
 def _real_post_inception(ticker: str, end_date: str) -> pd.DataFrame:
-    """Fetch real post-inception OHLCV from yfinance for SSO/QLD/UGL.
+    """Fetch real post-inception OHLCV — Tiingo-first, yfinance fallback.
 
-    SSO, QLD, and UGL are not present in the Tiingo bulk cache, so we
-    fall back to yfinance (adjusted prices, split/dividend-corrected).
-    yfinance is also used by Stage 2 independent adapters, so this
-    introduces no extra dependency.
+    Tiingo is the primary source (paid, stable adjusted-close snapshots).
+    yfinance is used only when the ticker is missing from the Tiingo bulk
+    cache — currently UGL, SPXL, TMF (see module docstring for context).
 
     Returns long-format DataFrame with ``[date, ticker, open, high, low, close,
-    volume]``.
+    volume]``. Uses Tiingo ``adj_close`` as the canonical split/dividend-adjusted
+    close so the synthetic→real seam (continuous equity curve) holds under
+    split/dividend events.
     """
     spec = next(s for s in LETF_SPECS if s.ticker == ticker)
+    try:
+        raw = _STORAGE.read(ticker, frequency="daily")
+    except (FileNotFoundError, KeyError):
+        return _real_post_inception_yfinance(ticker, spec.inception, end_date)
+
+    mask = (raw.index >= pd.Timestamp(spec.inception)) & (
+        raw.index <= pd.Timestamp(end_date)
+    )
+    raw = raw.loc[mask].copy()
+    if raw.empty:
+        return pd.DataFrame(
+            columns=["date", "ticker", "open", "high", "low", "close", "volume"]
+        )
+
+    # Tiingo returns raw OHLC plus ``adj_close`` (split/dividend-adjusted).
+    # Use adj_close for close to preserve continuity across corporate actions;
+    # scale OHL by the same factor so intraday ranges stay consistent.
+    factor = raw["adj_close"] / raw["close"].where(raw["close"] != 0, other=1.0)
+    adj = pd.DataFrame(
+        {
+            "date": raw.index,
+            "ticker": ticker,
+            "open": (raw["open"] * factor).to_numpy(),
+            "high": (raw["high"] * factor).to_numpy(),
+            "low": (raw["low"] * factor).to_numpy(),
+            "close": raw["adj_close"].to_numpy(),
+            "volume": raw["volume"].to_numpy(),
+        }
+    )
+    adj["date"] = pd.to_datetime(adj["date"])
+    return adj.reset_index(drop=True)
+
+
+def _real_post_inception_yfinance(
+    ticker: str, inception: str, end_date: str
+) -> pd.DataFrame:
+    """yfinance fallback — only used when Tiingo lacks the ticker."""
     raw = yf.download(
         ticker,
-        start=spec.inception,
+        start=inception,
         end=end_date,
         progress=False,
         auto_adjust=True,
@@ -282,15 +328,11 @@ def _real_post_inception(ticker: str, end_date: str) -> pd.DataFrame:
             columns=["date", "ticker", "open", "high", "low", "close", "volume"]
         )
 
-    # yfinance column handling: guard against MultiIndex vs single-level columns.
-    # Some versions/edge cases return single-level; others return MultiIndex tuples.
-    # For MultiIndex, prefer level 0 (metric name), fallback to level 1 if level 0 is empty.
     if isinstance(raw.columns, pd.MultiIndex):
         raw.columns = [col[0].lower() if col[0] else col[1].lower() for col in raw.columns]
     else:
         raw.columns = [str(c).lower() for c in raw.columns]
 
-    # Reset index and normalize the date column name (DatetimeIndex is named "Date").
     raw = raw.reset_index()
     raw.columns = [str(c).lower() if isinstance(c, str) else str(c[0]).lower() for c in raw.columns]
 
