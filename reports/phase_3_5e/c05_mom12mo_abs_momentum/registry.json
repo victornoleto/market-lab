@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "phase": "phase_3_5e",
+  "lead_id": "c05",
+  "lead_slug": "c05_mom12mo_abs_momentum",
+  "lead_title": "Absolute momentum 12-month (Antonacci) \u2014 3 off-legs \u00d7 4 LETFs [dual_momentum, ch.6]",
+  "citations_seed": [
+    "dual_momentum, ch.6",
+    "advances_fin_ml, p.208-211"
+  ],
+  "started_at": "2026-04-21T19:12:52+00:00",
+  "last_updated_at": "2026-04-21T19:12:52+00:00",
+  "configs": [
+    {
+      "name": "c05_mom12mo_cash",
+      "type": "abs_momentum",
+      "lookback_months": 12,
+      "signal_asset": "self",
+      "off_leg": "cash",
+      "rebal_freq": "monthly",
+      "citation": "dual_momentum, ch.6"
+    },
+    {
+      "name": "c05_mom12mo_gld",
+      "type": "abs_momentum",
+      "lookback_months": 12,
+      "signal_asset": "self",
+      "off_leg": "GLD",
+      "rebal_freq": "monthly",
+      "citation": "dual_momentum, ch.6"
+    },
+    {
+      "name": "c05_mom12mo_tlt",
+      "type": "abs_momentum",
+      "lookback_months": 12,
+      "signal_asset": "self",
+      "off_leg": "TLT",
+      "rebal_freq": "monthly",
+      "citation": "dual_momentum, ch.6"
+    }
+  ],
+  "tickers_pending": [
+    "QLD",
+    "SSO",
+    "TQQQ",
+    "UPRO"
+  ],
+  "tickers_done": [],
+  "tickers_errored": [],
+  "status": "pending",
+  "aggregation_iter": null,
+  "aggregate_file_md": null,
+  "aggregate_jornada": null
+}
