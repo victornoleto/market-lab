@@ -1,0 +1,80 @@
+{
+  "phase": "4.0 T3 \u2014 Index CFD substitution",
+  "config": {
+    "regime_signal": "ema100",
+    "leverage": 2.0,
+    "off_regime_asset": "gld",
+    "risk_on_labels": [
+      "SPY",
+      "QQQ"
+    ],
+    "spread_half_bps": 5.0,
+    "commission_round_trip_bps": 0.0,
+    "slippage_bps_round_trip": 3.0,
+    "swap_daily_pct_long": -0.008
+  },
+  "substitution_map": {
+    "SPY": "SPX TR stitched (KF pre-2001 + Tiingo SPY TR post-2001)",
+    "QQQ": "QQQ adj_close (Tiingo; proxy for NDX TR / USTEC CFD)",
+    "gld": "GLD adj_close (Tiingo; proxy for XAUUSD CFD \u2014 XAUUSD parquet insufficient history)"
+  },
+  "window": {
+    "start": "2001-05-14",
+    "end": "2026-04-14",
+    "n_bars": 6266,
+    "n_switches_total": 584,
+    "median_hold_days": 5.0,
+    "cum_cost_pct": 1.1400999999999974,
+    "cum_swap_pct": -0.7330400000000498
+  },
+  "splits": {
+    "IS": {
+      "sharpe": 1.859694290119198,
+      "cagr": 0.5425810504338697,
+      "mdd": -0.22611289111179422,
+      "n": 4185
+    },
+    "OOS": {
+      "sharpe": 2.399948389251206,
+      "cagr": 0.8576436612807328,
+      "mdd": -0.21511077078605279,
+      "n": 1509
+    },
+    "FWD": {
+      "sharpe": 1.797315074207387,
+      "cagr": 0.5856312562701906,
+      "mdd": -0.17932826765119336,
+      "n": 572
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 1.0,
+    "max_window_drawdown": 0.2261128911117939,
+    "pass": true
+  },
+  "t3_gates": {
+    "oos_sharpe_ge_2": {
+      "value": 2.399948389251206,
+      "pass": true
+    },
+    "oos_cagr_ge_60pct": {
+      "value": 0.8576436612807328,
+      "pass": true
+    },
+    "oos_mdd_le_25pct": {
+      "value": -0.21511077078605279,
+      "pass": true
+    },
+    "all_pass": true
+  },
+  "baseline_v2_l2": {
+    "OOS_sharpe": 2.285,
+    "OOS_cagr": 0.7914,
+    "OOS_mdd": -0.2102,
+    "n_switches_total": 616,
+    "cum_cost_pct": 1.258,
+    "cum_swap_pct": -0.4493
+  },
+  "produced_at": "2026-04-20T12:26:20.868715+00:00"
+}

@@ -156,9 +156,29 @@ Existem 2 formas de obter exposição SPY/QQQ via Pepperstone:
 **Backtest do V2-L2 usou SPY/QQQ/GLD ETF prices** (Tiingo daily cache).
 Execução mais fiel = **US share CFDs**.
 
-**Execução alternativa (se share CFDs não disponíveis na tua conta):**
-usar US500/USTEC/XAUUSD. Diferença material esperada < 10 bps/yr por
-causa de dividend adjustment. Precisa validar em paper trading (Phase 4).
+**Execução alternativa VALIDADA (Phase 4.0, 2026-04-19):** substituir
+por US500/USTEC/XAUUSD **preserva ou melhora** os gates:
+
+| Métrica | Share CFD (V2-L2) | Index CFD (Phase 4.0) | Delta |
+|---|---:|---:|---:|
+| OOS Sharpe | 2.285 | **2.400** | +5.0% |
+| OOS CAGR | 79.14% | **85.76%** | +8.4% |
+| OOS MDD | −21.02% | −21.51% | +0.5pp (pior) |
+| IR vs SPY (OOS) | 2.161 | **2.333** | +8.0% |
+| Bootstrap 99.9% CI low (full) | 0.962 | **1.379** | +43% |
+
+Ver `reports/phase4_0/index_cfd_validation/AGGREGATE.md` para
+verdict completo (10/10 gates pass). **Caminho Index CFD habilita
+capital mínimo $1.000** (vs $5.000 share CFD) conforme §5.5.4.
+
+**Pre-requisitos de execução live (T1/T2 da Phase 4.0, bloqueiam Phase 5.1):**
+1. Rate card Razor Index empiricamente confirmado: commission ≤ 1 bps
+   e spread ≤ 7 bps half no cTrader demo.
+2. Dividend adjustment Pepperstone ≥ 95% gross yield em 1 ciclo SPY
+   ex-div observado.
+
+Se T1/T2 falharem, revoga-se §6.3 escalação Phase 5.1 Index CFD $1k
+opção e retorna-se ao caminho share CFD a $5k.
 
 ### 4.3 Leverage disponível vs leverage aplicado
 
@@ -324,6 +344,110 @@ Com conta $10k e margem usada $1.000 (risk-on):
 **Em risk-off (GLD 1×):** stop-out impossível em movimento normal
 (GLD cairia -95% pra disparar).
 
+### 5.5 Capital mínimo viável (fragilidade do modelo bps→dólares) — **leitura obrigatória**
+
+O backtest modela custos em **basis points do notional**. Essa linearidade
+**quebra catastroficamente em contas pequenas**, porque Pepperstone Razor
+cobra commission **fixa em dólares por side**, não em bps. O modelo bps
+é uma aproximação boa APENAS acima de certo threshold de notional.
+
+#### 5.5.1 A matemática do colapso
+
+Razor commission típica: **$3.50/side → $7.00 round-trip por ticker**. O
+equivalente em bps depende do notional:
+
+| Notional por trade | Commission RT em $ | Commission RT em bps | Desvio vs modelo (6.6 bps) |
+|---:|---:|---:|---:|
+| $500 (conta $500, L=2 em 1 leg) | $7.00 | **140 bps** | +21× |
+| $1.000 (conta $1k) | $7.00 | **70 bps** | +10× |
+| $5.000 (conta $5k) | $7.00 | **14 bps** | +2× |
+| $10.000 (conta $10k) | $7.00 | 7 bps | ≈ modelo ✅ |
+| $50.000 (conta $50k) | $7.00 | 1.4 bps | −5× (conservador) |
+| $100.000 (conta $100k) | $7.00 | 0.7 bps | −9× (muito conservador) |
+
+Para 309 round-trips risk-on observados no trade log histórico:
+
+| Capital | Commission total (25y) | % do equity inicial | Sharpe degradation estimada |
+|---:|---:|---:|---:|
+| $1.000 | $2.163 | **216%** | Sharpe cai para < 0 (CAGR negativo) |
+| $5.000 | $2.163 | 43% | Sharpe cai ~30-40% (possibly < 2.0) |
+| $10.000 | $2.163 | 22% | Sharpe ≈ modelo ✅ |
+| $50.000 | $2.163 | 4% | Sharpe marginalmente melhor que modelo |
+
+**Observação:** o modelo bps do backtest (6.6 bps RT) implicitamente
+assume notional/trade ≈ $10k+. Abaixo disso, a estratégia está **fora
+do regime testado** — não há gate PBO/DSR que cubra esse cenário.
+
+#### 5.5.2 Lot granularity — segundo fator
+
+Pepperstone US Stock CFD: **1 lot = 1 share** (mínimo). Exemplos ao preço
+observado em 2026-04 (SPY ≈ $694, QQQ ≈ $629):
+
+| Equity | Target SPY notional | Shares viáveis | Desvio do target |
+|---:|---:|---|---:|
+| $1.000 | $1.000 | 1 ($694) ou 2 ($1.388) | −31% ou +39% |
+| $5.000 | $5.000 | 7 ($4.858) ou 8 ($5.552) | −3% ou +11% |
+| $10.000 | $10.000 | 14 ($9.716) ou 15 ($10.410) | −2.8% ou +4.1% |
+| $50.000 | $50.000 | 72 ($49.968) | −0.06% |
+
+Mesmo padrão para QQQ. **Abaixo de $5k a equal-weight SPY+QQQ quebra**
+(strategy core assumption) por causa de rounding forçado.
+
+#### 5.5.3 Thresholds operacionais
+
+Baseado nos dois fatores combinados (commission dominance + lot granularity):
+
+| Capital | Viabilidade | Recomendação |
+|---:|:---:|---|
+| **< $5.000** | ❌ **não-viável** | Não operar Plano A. Usar Plano B no Banco Inter (zero commission, 15% IR apenas sobre gain realizado) |
+| **$5.000-10.000** | ⚠️ marginal | Operar em paper até atingir $10k. Alternativamente, explorar Index CFDs (§5.5.4) |
+| **$10.000-25.000** | ✅ viável | Regime onde o cost model bps é fielmente representativo. Começar com escalação gradual (Phase 5.1) |
+| **> $25.000** | ✅✅ ótimo | Commission drag negligível; estratégia 1:1 com backtest |
+
+#### 5.5.4 Caminho alternativo — Index CFD (parcialmente validado Phase 4.0)
+
+Index CFDs (US500, NAS100, XAUUSD) confirmados em 2026-04-20 via Open API
+pull empírico:
+
+- **Commission ZERO** em todos os 3 símbolos ✅ (confirmado, não tipicamente)
+- Swap long: US500 -6.14%/yr, NAS100 -6.14%/yr, XAUUSD -8.84 pips (~1-12%/yr)
+- NAS100-F e US500-F (variantes futures) oferecem **0 swap** mas lot minimums
+  dramaticamente maiores ($20k/$6k respectivamente) — inviáveis a conta pequena.
+
+**MAS: lot minimums do broker quebram o target $1k na prática** (descoberto
+no T1 pull — ver `docs/strategies/plano_a_pepperstone_index_cfd_rate_card.md`):
+
+| Symbol | Min notional real | Target $1k | Viabilidade |
+|---|---:|---:|:--:|
+| US500 | $600 (0.1 lot) | $1k | ⚠️ 40% under rounding |
+| NAS100 | $2,000 (0.1 lot) | $1k | ❌ 2× overshoot — quebra equal-weight |
+| XAUUSD | $2,700 (0.01 lot = 1 oz) | $500 (risk-off 50%) | ❌ 5× overshoot |
+
+**Threshold Index CFD revisado pós-T1:**
+
+| Capital | Viabilidade 3-leg Index CFD | Motivo |
+|---:|:--:|---|
+| $1,000 | ❌ **inviável** | NAS100 + XAUUSD lot minimums estruturais |
+| $5,000 | ✅ **mínimo real** | Todas 3 legs operáveis, rounding 40-50% absorvível |
+| $10,000+ | ✅ ótimo | Granularidade fina em todas legs |
+
+Índice CFD path é viável mas **o floor real (lot-bound) é $5k, não $1k**.
+Se capital inicial for $1-5k, considerar: fallback Plano B at Banco Inter
+(sem lot minimum drama) até acumular $5k.
+
+Validação formal:
+- Backtest: `reports/phase4_0/index_cfd_validation/AGGREGATE.md` (T3+T4 PASS)
+- Rate card empírico: `docs/strategies/plano_a_pepperstone_index_cfd_rate_card.md`
+- Spec: `specs/phase_4_0_index_cfd_validation.md`
+
+#### 5.5.5 Citação
+
+`[systematic_trading, Carver, p.185-188]`: "Fixed commission dominates
+at retail scale. Turnover discipline is the single biggest differentiator
+between retail and institutional systematic trading viability." O capital
+threshold onde isso muda é estratégia-específico; para Plano A com 24-26
+trades/year × 2 tickers, esse threshold é **~$5-10k** conforme math §5.5.1.
+
 ### 5.4 Kill-switch manual (regra operacional, não código)
 
 Interrompe a strategy manualmente se:
@@ -379,6 +503,14 @@ Todos documentados em `reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/AGGREGAT
 6. **Gayed 2016 pode ter data mining implícito.**
    EMA-100 é a escolha canônica do paper mas há literatura sobre "Gayed refit" — rodas próprias do Gayed apresentam variantes (LRS composite). Nosso backtest aderiu ao EMA-100 puro pra evitar re-optimization overhead, mas o paper original é produto de uma época (pre-2016 data).
 
+7. **Backtest cost model quebra em contas pequenas.** ⚠️ **CRÍTICO**
+   O modelo `commission_round_trip_bps = 6.6` assume notional por trade
+   de ~$10k+. Abaixo disso, a commission fixa $3.50/side vira dominante:
+   a $1k notional, commission real = 70 bps vs 6.6 bps modelados (+10×).
+   Projeção matemática: 309 trades × 70 bps = 216% do equity inicial em
+   custos sobre 25 anos, **torna CAGR negativo**. Threshold operacional
+   detalhado em §5.5. `[systematic_trading, p.185-188]`
+
 ### 6.3 Escalação de capital (post-paper-trading)
 
 Se Phase 4 paper trading passa gates (≥ 0.7× Sharpe backtest, MDD ≤ 1.5× modelado):
@@ -386,9 +518,15 @@ Se Phase 4 paper trading passa gates (≥ 0.7× Sharpe backtest, MDD ≤ 1.5× m
 | Fase | Capital | Duração | Trigger para próximo |
 |------|---------|---------|---------------------|
 | Phase 4 paper | $10k virtual (cTrader Demo) | 3 meses | Gates paper pass |
-| Phase 5.1 live pequeno | $1.000 real | 3 meses | MDD realizado ≤ -20%, Sharpe ≥ 1.5 |
-| Phase 5.2 live médio | $5.000 real | 3 meses | Continuação dos gates 5.1 |
+| Phase 5.1 live pequeno | **$5.000 mínimo real** (share CFD ou Index CFD — ambos lot-granularity-bound a $5k; ver §5.5.4). Phase 4.0 backtest validou gates mas T1 empírico (2026-04-20) descobriu lot minimums estruturais que inviabilizam $1k. | 3 meses | MDD realizado ≤ -20%, Sharpe ≥ 1.5 |
+| Phase 5.2 live médio | $10.000-25.000 real | 3 meses | Continuação dos gates 5.1 |
 | Phase 5.3 live full | Alocação target do bucket A (parte dos 20-40% ativo) | Open-ended | Quarterly review |
+
+> **Correção 2026-04-19:** a linha Phase 5.1 previamente lia "$1.000 real"
+> incondicionalmente. Revisão descobriu que $1.000 em share CFD é
+> inviável (§5.5); manteve-se a opção $1.000 **apenas em Index CFD**
+> condicionada à validação da Phase 4.0 (substituição de instrumento
+> preserva gates). Se Phase 4.0 não for executada, mínimo $5.000.
 
 **Escalação gradual é a única defesa contra o abismo backtest→live.**
 A literatura `[systematic_trading, ch.14-15]` confirma: 60-80% dos
@@ -445,6 +583,9 @@ Toda decisão de parâmetro/regra desta strategy tem citação explícita:
 | Data | Mudança | Motivo |
 |------|---------|--------|
 | 2026-04-19 | Documento criado pós V2-L7 verdict | Winner confirmed, Phase 4 prep |
+| 2026-04-19 | Adicionado §5.5 capital mínimo viável; caveat #7 em §6.2; fix em §6.3 Phase 5.1 | Descoberta do bps→dólares collapse em conta <$5k. User questionou viabilidade a $1k. |
+| 2026-04-19 | Phase 4.0 Index CFD validation executada; §4.2 atualizada com resultado; §6.3 Phase 5.1 confirma $1k Index CFD | T3 re-backtest passou 3/3 sanity gates (Sharpe 2.400, CAGR 85.76%, MDD -21.51%); T4 passou 10/10 gates completos. T1/T2 empíricos pendentes de conta Pepperstone demo. |
+| 2026-04-20 | T1 empirical rate card executado via Open API; §5.5.4 corrigida com lot granularity discovery | Commission-zero confirmado ✅ + swap dentro do envelope ✅, MAS lot minimums reais (US500 $600, NAS100 $2k, XAUUSD $2.7k) quebram target $1k. Threshold Index CFD corrigido de $1k para $5k como mínimo real. §6.3 Phase 5.1 precisa revisão — $1k Index CFD não é viável estruturalmente. |
 
 Atualize aqui quando qualquer parâmetro mudar. NUNCA mude parâmetros sem:
 1. Justificativa com citação do knowledge base

@@ -178,6 +178,36 @@ integral; na prática, o usuário "colhe" parte do ganho conforme
 equity cresce, reduzindo fração do at-risk. Formalizado como
 multiplicador explícito em código. Citar `[math_money_mgmt, Vince]`.
 
+### 3.6 Capital mínimo viável por strategy (cost model floor)
+
+Descoberto em 2026-04-19 durante revisão Phase 4 pre-launch: **o cost
+model bps do backtest degrada catastroficamente abaixo de certo
+threshold de notional**, porque Razor tier cobra commission **fixa em
+dólares** ($3.50/side), não em bps. Quando notional por trade cai abaixo
+de ~$5-10k, a commission real como % do notional explode (70 bps a
+$1k vs 6.6 bps modelados), e o backtest perde validade.
+
+Threshold operacional por strategy:
+
+| Strategy | Instrumento | Capital mínimo | Razão |
+|---|---|---:|---|
+| **Plano A (share CFD)** | SPY/QQQ/GLD share CFDs | **$5.000** | Commission fixa $7 RT = 14 bps a $5k (ainda 2× modelo, aceitável); abaixo disso, CAGR vira negativa |
+| **Plano A (Index CFD)** | US500/NAS100/XAUUSD | **$5.000** (lot-granularity-bound). Phase 4.0 backtest T3+T4: 10/10 gates PASS. T1 empirical 2026-04-20 via Open API: commission-zero ✅ confirmado, mas lot minimums reais (US500 $600, NAS100 $2k, XAUUSD $2.7k) inviabilizam $1k target. T2 dividend pendente. | T1 rate card: `docs/strategies/plano_a_pepperstone_index_cfd_rate_card.md`. |
+| **Plano B (LETF BR)** | SSO/QLD/UGL via Inter Global | **sem mínimo** | Zero corretagem Inter; expense ratio LETF embutido (0.95%/yr); 15% IR só sobre ganho realizado |
+
+Implicações:
+- Spec Phase 4 usa $10k paper trading como baseline seguro acima de
+  qualquer threshold (independente de share vs Index CFD choice).
+- Phase 5.1 live pequeno foi corrigida de "$1.000 real" incondicional
+  para "$5.000 share CFD / $1.000 Index CFD se validado". Ver
+  `docs/strategies/plano_a_v2_l2_gayed_cfd.md §6.3`.
+- Allocation mandate §1 (20-40% active bucket) só se aplica com total
+  account ≥ threshold da strategy escolhida. Para usuário com $1k total:
+  100% em Plano B ou C (não Plano A share CFD).
+
+Citação: `[systematic_trading, Carver, p.185-188]` — "Fixed commission
+dominates at retail scale."
+
 ---
 
 ## 4. Regras de Strategy B — Swing broker

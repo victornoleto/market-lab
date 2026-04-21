@@ -132,3 +132,7 @@ reports/phase_3_5c/cross_lib/results/
 reports/phase_3_5c/cross_lib/errors/
 reports/phase_3_5c/cross_lib/reference/baseline.json
 
+# ops/ data — trades fiscais, CSVs privados, NUNCA commitar
+ops/data/**
+!ops/data/.gitkeep
+
