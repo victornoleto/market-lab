@@ -29,17 +29,19 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-21 — iter 19)
+## Onde estamos hoje (2026-04-21 — iter 28)
 
-**Estado:** 🔄 **Phase 3.5e breadth-hunt em andamento — c01 DEAD, c02 próximo.**
-c01 (SMA200 binary regime, 12 trials) concluído. PBO=0.139 PASS — sinal real, não noise.
-Mas 0/12 pre-pass: FWD gate universal falha por choque de tarifas Jan-Apr 2026. Calmar <0.5 e
-Sharpe_net <0.8 em todos os configs. Melhor: QLD+GLD Sharpe_net=0.660, CAGR_net=17.5%.
-Próximo: c02 sma150_cash (MA mais curta, saída mais rápida). `[leverage_for_the_long_run, p.30]`
+**Estado:** 🔄 **Phase 3.5e breadth-hunt em andamento — c01 DEAD, c02 DEAD, c03 próximo.**
+- c01 (SMA200 binary/cash/gld/tlt, 12 trials): 0/12 pre-pass — FWD universal fail tariff shock 2026.
+- c02 (SMA150/cash, 4 trials): 0/4 pre-pass — DSR+Calmar+Sharpe_net universal fail; FWD PASS (cash saiu antes do choque). Off-leg caixa = 0% yield é o bottleneck estrutural.
+- **Próximo: c03 ema100_tlt** — EMA100 com TLT como off-leg (yield + diversificação). `[leverage_for_the_long_run, p.31]`
+- Trial count: 16/144. Gates meta: Sharpe_net>0.8, Calmar>0.5, DSR p<0.05.
 
 Entries relevantes:
+- `jornada/2026-04-21-1535-c02-sma150-cash-dead.md` — c02 aggregator verdict (iter 28)
 - `jornada/2026-04-21-19-c01-sma200-aggregator-dead.md` — c01 aggregator verdict
-- `reports/phase_3_5e/c01_sma200_binary_regime/AGGREGATE.md` — resultado completo
+- `reports/phase_3_5e/c02_sma150_cash/AGGREGATE.md` — resultado completo c02
+- `reports/phase_3_5e/c01_sma200_binary_regime/AGGREGATE.md` — resultado completo c01
 
 ---
 
@@ -363,6 +365,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16/01-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-21 (iter 28) — **Phase 3.5e c02 SMA150/cash: DEAD END 0/4 pass** [SWING BROKER] — c02 family (SMA150 binary regime + cash off-leg, 4 assets = 4 trials). 0/4 pre-pass: DSR+Calmar+Sharpe_net falham universalmente. Melhor: QLD Sharpe_net=0.475, Calmar=0.252 (gates: SN>0.8, Calmar>0.5). WF=8/8 e OOS/FWD passam para todos. Descoberta: SMA150 passa FWD (evitou choque tarifário Jan-Abr 2026) onde SMA200/c01 falhou — MA mais curta reage mais rápido. Bottleneck estrutural: cash off-leg = 0% yield → Sharpe e Calmar insuficientes em qualquer MA period. trial_count=16/144. Stage-2 concordante para SSO (Δ=0.17pp), TQQQ (Δ=0.05pp), UPRO (Δ=0.12pp). Próximo: c03 ema100_tlt (TLT off-leg fornece yield + diversificação).](2026-04-21-1535-c02-sma150-cash-dead.md)
 - [2026-04-21 14h — **Pivot Tiingo-first + testfol.io Stage-2** [INFRA] — Stage-2 reportou ΔCAGR 8.21pp (QLD iter 21) e 15.16pp (TQQQ iter 23) na sessão do loop. Diagnóstico: pipeline fazia yfinance-vs-yfinance (cache parquet vs live re-fetch), adjusted-close ajustado retroativamente. Fix: SSO/QLD/UPRO/TQQQ entram no Tiingo bulk (+SHV); `reference_prices.py` vira Tiingo-first com yfinance fallback apenas para UGL/SPXL/TMF; novo helper `stage2_validation.py` usa testfol.io SPY 2x/3x (1885-2026) para SSO/UPRO/SPXL e marca N/A explícito para QQQ/GLD/TLT-based. Spec §3.1 proíbe yfinance direto em sweep scripts. Pytest 908→914 (+6 stage2 tests). Loop pausado em iter 23 para decisão de re-run c01/c02 sobre novos dados.](2026-04-21-14-data-pipeline-tiingo-first.md)
 - [2026-04-21 (iter 19) — **Phase 3.5e c01 SMA200 Aggregator: DEAD END (0/12 pre-pass)** [SWING BROKER] — c01 family (SMA200 binary regime, 4 assets × 3 off-legs = 12 trials) concluída. Aggregate PBO=0.139 PASS — sinal real, família não overfit. Mas 0/12 pre-pass: FWD gate falha universalmente (choque tarifário Jan-Apr 2026). Melhor: QLD+GLD Sharpe_net=0.660, CAGR_net=17.5%, Calmar=0.400 — todos abaixo dos gates (SN>0.8, Calmar>0.5). trial_count=12/144. Próximo: c02 sma150_cash.](2026-04-21-19-c01-sma200-aggregator-dead.md)
 - [2026-04-21 (tarde) — 🛑 **Phase 3.5d ENCERRADA SEM WINNER — E1 REJEITADO pela arbitration adversarial** [SWING BROKER] — 3 juízes adversariais (methodology + domain + strategic) + árbitro convergem em BLOCK unânime. Core: PBO=0.151 de E1 foi atingido reduzindo grid CSCV de 7 (D5: 0.599) para 3 (D5b: 0.651) para 2 configs — mesma strategy, mesmos dados, só o denominador mudou. Violação direta `[advances_fin_ml, p.208-211]`. DSR n_trials=2 vs real ≥51 (p recalibrado ∈ [6.5e-3, 0.055]). 3 mis-citations (ch.14 ≠ vol-tgt, p.298-299 ≠ DSR, Gayed ≠ TQQQ+GLD). Loop auto-advançou phase 3.5d→3.5f pulando 3.5e arbitration. Decisão: pivot Phase 3.5e — 2× (SSO/QLD) primário + 3× (UPRO/TQQQ) comparação honesta, grid pre-declarado ≥10 configs, winner selection por Calmar/Sharpe risk-adjusted (não MaxDD isolado).](2026-04-21-08-e1-arbitration-block.md)
