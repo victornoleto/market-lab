@@ -1,0 +1,549 @@
+{
+  "ticker": "TQQQ",
+  "frequency": "daily",
+  "window": {
+    "start": "2010-02-11",
+    "end": "2026-04-17",
+    "n_bars": 4070,
+    "years": 16.177960301163587
+  },
+  "stage": 1,
+  "source": "reference_prices.parquet (seam-corrected)",
+  "pbo": {
+    "pbo": 0.11507936507936507,
+    "n_combinations": 252,
+    "pass": true,
+    "note": "PBO=0.115 (PASS)"
+  },
+  "configs": [
+    {
+      "name": "sma200_cash",
+      "indicator": "SMA",
+      "lookback": 200,
+      "off_leg": "cash",
+      "metrics_is": {
+        "cagr": 0.3055985519281226,
+        "cagr_net": 0.25975876913890417,
+        "sharpe": 0.8238910581487578,
+        "sharpe_net": 0.7003073994264442,
+        "max_dd": -0.5480636102991108,
+        "calmar": 0.5575968668332848,
+        "n_bars": 4069
+      },
+      "wf": {
+        "sharpes": [
+          0.19583080684409368,
+          1.021374454715936,
+          0.5166050671797315,
+          1.645240911001679,
+          -0.11067700444569616,
+          1.3859134432452522,
+          1.2836429723600207,
+          0.6224351692641794
+        ],
+        "positive": 7,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.720611881838911,
+        "oos_sharpe": 1.1940990683717252,
+        "oos_pass": true,
+        "is_start": "2010-02-12",
+        "is_end": "2023-01-18",
+        "oos_start": "2023-01-19",
+        "oos_end": "2026-04-17"
+      },
+      "fwd": {
+        "fwd_sharpe": -0.05056716862581275,
+        "fwd_pass": false,
+        "fwd_start": "2026-01-16",
+        "fwd_end": "2026-04-17"
+      },
+      "spy_benchmark": {
+        "spy_cagr": 0.12184914719138851,
+        "spy_cagr_net": 0.10357177511268023,
+        "spy_sharpe": 0.7555179209681369,
+        "spy_max_dd": -0.3410474670449845,
+        "corr_vs_spy": 0.6326938155841134
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.28255118214239494,
+        "bt_sharpe": 0.778481240946875,
+        "cagr_delta_pp": 2.3047369785727634,
+        "concordant": true
+      },
+      "stage2": {
+        "cagr_stage2": 0.3028050510550171,
+        "cagr_delta_pp": 0.2793500873105481,
+        "concordant": true
+      },
+      "economic_gates": {
+        "beats_spy_net": true,
+        "calmar_pass": true,
+        "sharpe_net_pass": false
+      },
+      "dsr": {
+        "dsr": 0.9758766270308569,
+        "p_value": 0.02412337296914313,
+        "pass": true
+      },
+      "gates": {
+        "gate1_pbo": true,
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": false,
+        "overfit_pass": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": true,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "ALL_PASS": false,
+        "fail_reason": "FWD, SHARPE_NET"
+      }
+    },
+    {
+      "name": "ema100_cash",
+      "indicator": "EMA",
+      "lookback": 100,
+      "off_leg": "cash",
+      "metrics_is": {
+        "cagr": 0.27315398930452606,
+        "cagr_net": 0.23218089090884714,
+        "sharpe": 0.7812112760532401,
+        "sharpe_net": 0.6640295846452541,
+        "max_dd": -0.4693032758248027,
+        "calmar": 0.5820415142520722,
+        "n_bars": 4069
+      },
+      "wf": {
+        "sharpes": [
+          0.9475814276232979,
+          1.007426751383881,
+          0.3072579252673866,
+          1.4801366025895741,
+          -0.346869880893013,
+          1.3471789133929493,
+          0.9706081837077978,
+          0.33684076652882194
+        ],
+        "positive": 7,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.7070387256209427,
+        "oos_sharpe": 1.047248736582682,
+        "oos_pass": true,
+        "is_start": "2010-02-12",
+        "is_end": "2023-01-18",
+        "oos_start": "2023-01-19",
+        "oos_end": "2026-04-17"
+      },
+      "fwd": {
+        "fwd_sharpe": -1.0230483939894701,
+        "fwd_pass": false,
+        "fwd_start": "2026-01-16",
+        "fwd_end": "2026-04-17"
+      },
+      "spy_benchmark": {
+        "spy_cagr": 0.12184914719138851,
+        "spy_cagr_net": 0.10357177511268023,
+        "spy_sharpe": 0.7555179209681369,
+        "spy_max_dd": -0.3410474670449845,
+        "corr_vs_spy": 0.5978407840594362
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.2863667342148102,
+        "bt_sharpe": 0.806998965662924,
+        "cagr_delta_pp": 1.3212744910284124,
+        "concordant": true
+      },
+      "stage2": {
+        "cagr_stage2": 0.28198475062193906,
+        "cagr_delta_pp": 0.8830761317413005,
+        "concordant": true
+      },
+      "economic_gates": {
+        "beats_spy_net": true,
+        "calmar_pass": true,
+        "sharpe_net_pass": false
+      },
+      "dsr": {
+        "dsr": 0.964916951842322,
+        "p_value": 0.03508304815767804,
+        "pass": true
+      },
+      "gates": {
+        "gate1_pbo": true,
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": false,
+        "overfit_pass": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": true,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "ALL_PASS": false,
+        "fail_reason": "FWD, SHARPE_NET"
+      }
+    },
+    {
+      "name": "sma200_tmf",
+      "indicator": "SMA",
+      "lookback": 200,
+      "off_leg": "TMF",
+      "metrics_is": {
+        "cagr": 0.24366708075831522,
+        "cagr_net": 0.20711701864456794,
+        "sharpe": 0.6836312491435146,
+        "sharpe_net": 0.5810865617719874,
+        "max_dd": -0.8502477449430036,
+        "calmar": 0.2865836248406039,
+        "n_bars": 4069
+      },
+      "wf": {
+        "sharpes": [
+          0.37795741300337987,
+          0.863710980773583,
+          0.5206828383747346,
+          1.689978701796158,
+          -0.13691786785764948,
+          1.2707510608588766,
+          0.5266795937915033,
+          0.5084951294467642
+        ],
+        "positive": 7,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.5837481824400164,
+        "oos_sharpe": 1.0933814749437767,
+        "oos_pass": true,
+        "is_start": "2010-02-12",
+        "is_end": "2023-01-18",
+        "oos_start": "2023-01-19",
+        "oos_end": "2026-04-17"
+      },
+      "fwd": {
+        "fwd_sharpe": 0.3109943138703155,
+        "fwd_pass": true,
+        "fwd_start": "2026-01-16",
+        "fwd_end": "2026-04-17"
+      },
+      "spy_benchmark": {
+        "spy_cagr": 0.12184914719138851,
+        "spy_cagr_net": 0.10357177511268023,
+        "spy_sharpe": 0.7555179209681369,
+        "spy_max_dd": -0.3410474670449845,
+        "corr_vs_spy": 0.4256291388298494
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.20866942521898912,
+        "bt_sharpe": 0.6278442462998215,
+        "cagr_delta_pp": 3.49976555393261,
+        "concordant": false
+      },
+      "stage2": {
+        "cagr_stage2": 0.23984765255457186,
+        "cagr_delta_pp": 0.3819428203743369,
+        "concordant": true
+      },
+      "economic_gates": {
+        "beats_spy_net": true,
+        "calmar_pass": false,
+        "sharpe_net_pass": false
+      },
+      "dsr": {
+        "dsr": 0.9239398459256298,
+        "p_value": 0.07606015407437017,
+        "pass": false
+      },
+      "gates": {
+        "gate1_pbo": true,
+        "gate2_dsr": false,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": true,
+        "overfit_pass": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": false,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "ALL_PASS": false,
+        "fail_reason": "DSR, CALMAR, SHARPE_NET"
+      }
+    },
+    {
+      "name": "ema100_tmf",
+      "indicator": "EMA",
+      "lookback": 100,
+      "off_leg": "TMF",
+      "metrics_is": {
+        "cagr": 0.23722719073641385,
+        "cagr_net": 0.20164311212595176,
+        "sharpe": 0.6776687461748269,
+        "sharpe_net": 0.5760184342486028,
+        "max_dd": -0.8270342167594003,
+        "calmar": 0.28684084156269885,
+        "n_bars": 4069
+      },
+      "wf": {
+        "sharpes": [
+          0.8805511536910536,
+          0.9229818378708826,
+          0.2078887790661526,
+          1.36636456720595,
+          0.03172794209758884,
+          1.2537306938640251,
+          0.42533430315501014,
+          0.2572608884330128
+        ],
+        "positive": 8,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.600066445579805,
+        "oos_sharpe": 0.9894489356850175,
+        "oos_pass": true,
+        "is_start": "2010-02-12",
+        "is_end": "2023-01-18",
+        "oos_start": "2023-01-19",
+        "oos_end": "2026-04-17"
+      },
+      "fwd": {
+        "fwd_sharpe": -0.38438814247045794,
+        "fwd_pass": false,
+        "fwd_start": "2026-01-16",
+        "fwd_end": "2026-04-17"
+      },
+      "spy_benchmark": {
+        "spy_cagr": 0.12184914719138851,
+        "spy_cagr_net": 0.10357177511268023,
+        "spy_sharpe": 0.7555179209681369,
+        "spy_max_dd": -0.3410474670449845,
+        "corr_vs_spy": 0.381692738779301
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.22879444565937423,
+        "bt_sharpe": 0.6646496543007259,
+        "cagr_delta_pp": 0.8432745077039616,
+        "concordant": true
+      },
+      "stage2": {
+        "cagr_stage2": 0.2365708228826484,
+        "cagr_delta_pp": 0.06563678537654383,
+        "concordant": true
+      },
+      "economic_gates": {
+        "beats_spy_net": true,
+        "calmar_pass": false,
+        "sharpe_net_pass": false
+      },
+      "dsr": {
+        "dsr": 0.9207821591266394,
+        "p_value": 0.07921784087336059,
+        "pass": false
+      },
+      "gates": {
+        "gate1_pbo": true,
+        "gate2_dsr": false,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": false,
+        "overfit_pass": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": false,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "ALL_PASS": false,
+        "fail_reason": "DSR, FWD, CALMAR, SHARPE_NET"
+      }
+    },
+    {
+      "name": "sma200_gld",
+      "indicator": "SMA",
+      "lookback": 200,
+      "off_leg": "GLD",
+      "metrics_is": {
+        "cagr": 0.36662933723440405,
+        "cagr_net": 0.3116349366492434,
+        "sharpe": 0.9182132706159439,
+        "sharpe_net": 0.7804812800235523,
+        "max_dd": -0.6032684545001925,
+        "calmar": 0.6077382871580053,
+        "n_bars": 4069
+      },
+      "wf": {
+        "sharpes": [
+          0.5852003514556972,
+          1.0358558691166084,
+          0.687102259694216,
+          1.6127941558023628,
+          -0.09853160137381277,
+          1.4802681242976903,
+          1.288844490923814,
+          0.7769126861908936
+        ],
+        "positive": 7,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.810225978727824,
+        "oos_sharpe": 1.3079729021020636,
+        "oos_pass": true,
+        "is_start": "2010-02-12",
+        "is_end": "2023-01-18",
+        "oos_start": "2023-01-19",
+        "oos_end": "2026-04-17"
+      },
+      "fwd": {
+        "fwd_sharpe": 0.3777892393038027,
+        "fwd_pass": true,
+        "fwd_start": "2026-01-16",
+        "fwd_end": "2026-04-17"
+      },
+      "spy_benchmark": {
+        "spy_cagr": 0.12184914719138851,
+        "spy_cagr_net": 0.10357177511268023,
+        "spy_sharpe": 0.7555179209681369,
+        "spy_max_dd": -0.3410474670449845,
+        "corr_vs_spy": 0.6296654062836132
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.3475885681364985,
+        "bt_sharpe": 0.8801701601983908,
+        "cagr_delta_pp": 1.904076909790553,
+        "concordant": true
+      },
+      "stage2": {
+        "cagr_stage2": 0.3593322415929545,
+        "cagr_delta_pp": 0.7297095641449536,
+        "concordant": true
+      },
+      "economic_gates": {
+        "beats_spy_net": true,
+        "calmar_pass": true,
+        "sharpe_net_pass": false
+      },
+      "dsr": {
+        "dsr": 0.9904416084775644,
+        "p_value": 0.00955839152243565,
+        "pass": true
+      },
+      "gates": {
+        "gate1_pbo": true,
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": true,
+        "overfit_pass": true,
+        "eco1_beats_spy": true,
+        "eco2_calmar": true,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "ALL_PASS": false,
+        "fail_reason": "SHARPE_NET"
+      }
+    },
+    {
+      "name": "ema100_gld",
+      "indicator": "EMA",
+      "lookback": 100,
+      "off_leg": "GLD",
+      "metrics_is": {
+        "cagr": 0.3183979454318473,
+        "cagr_net": 0.27063825361707017,
+        "sharpe": 0.8545143880433492,
+        "sharpe_net": 0.7263372298368468,
+        "max_dd": -0.5485519527689148,
+        "calmar": 0.580433528355293,
+        "n_bars": 4069
+      },
+      "wf": {
+        "sharpes": [
+          0.9945566298951358,
+          1.0818278087648656,
+          0.5553659805138563,
+          1.357399997495541,
+          -0.302655526542827,
+          1.544034777078813,
+          0.9948537549022946,
+          0.37230348542310243
+        ],
+        "positive": 7,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.7953431360487865,
+        "oos_sharpe": 1.068315409374536,
+        "oos_pass": true,
+        "is_start": "2010-02-12",
+        "is_end": "2023-01-18",
+        "oos_start": "2023-01-19",
+        "oos_end": "2026-04-17"
+      },
+      "fwd": {
+        "fwd_sharpe": -1.1476089916066246,
+        "fwd_pass": false,
+        "fwd_start": "2026-01-16",
+        "fwd_end": "2026-04-17"
+      },
+      "spy_benchmark": {
+        "spy_cagr": 0.12184914719138851,
+        "spy_cagr_net": 0.10357177511268023,
+        "spy_sharpe": 0.7555179209681369,
+        "spy_max_dd": -0.3410474670449845,
+        "corr_vs_spy": 0.5949805582439236
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.3486898333843029,
+        "bt_sharpe": 0.9086564106762492,
+        "cagr_delta_pp": 3.029188795245563,
+        "concordant": false
+      },
+      "stage2": {
+        "cagr_stage2": 0.3305545832437058,
+        "cagr_delta_pp": 1.2156637811858495,
+        "concordant": true
+      },
+      "economic_gates": {
+        "beats_spy_net": true,
+        "calmar_pass": true,
+        "sharpe_net_pass": false
+      },
+      "dsr": {
+        "dsr": 0.9820686455991405,
+        "p_value": 0.017931354400859467,
+        "pass": true
+      },
+      "gates": {
+        "gate1_pbo": true,
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": false,
+        "overfit_pass": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": true,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "ALL_PASS": false,
+        "fail_reason": "FWD, SHARPE_NET"
+      }
+    }
+  ],
+  "best_config": "sma200_gld",
+  "any_pass_5gate": false,
+  "best_sharpe_oos": 1.3079729021020636,
+  "best_cagr": 0.36662933723440405,
+  "best_maxdd": -0.6032684545001925,
+  "citations": [
+    "leverage_for_the_long_run, p.13",
+    "leverage_for_the_long_run, p.16",
+    "leverage_for_the_long_run, p.60",
+    "advances_fin_ml, p.208-211",
+    "advances_fin_ml, p.298-299"
+  ],
+  "generated_at": "2026-04-21T03:16:37.800364+00:00"
+}
