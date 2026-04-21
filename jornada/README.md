@@ -31,12 +31,13 @@ trading: palpite disfarçado de análise.
 
 ## Onde estamos hoje (2026-04-21)
 
-**Estado:** 🔄 **Phase 3.5d D4 ENCERRADO (DEAD END) — D5 Volatility Targeting próximo** —
-D4 (Absolute Momentum Antonacci, 6 configs TQQQ+GLD) completou 0/6 pass. Melhor: mom12_qqq —
-Sharpe_net=0.565 (gate 0.800), PBO=0.778 (gate 0.500), MaxDD=-69.9%. Momentum mensal inferior
-ao SMA200 diário em todas métricas: não protege intra-mês e tem maior seleção de hiperparâmetros.
-SMA200 permanece melhor filtro (D2 Sharpe_net=0.780, gap=0.020 para o gate).
-Próximo: **D5 Volatility Targeting** `[advances_fin_ml, ch.14]` — escala contínua de exposição.
+**Estado:** 🔥 **Phase 3.5d D5 NEAR-MISS (9/10 gates) — D5b próximo para resolver PBO** —
+D5 (Vol-targeting TQQQ+GLD, 7 configs) gerou o **melhor resultado até agora**:
+`vol15_lk20` — Sharpe=1.006, **Sharpe_net=0.855** (primeira config a superar o gate 0.800!),
+MaxDD=-37.2%, Calmar=0.573, WF=8/8, OOS=1.169, bt±0.15pp, stage2±2.23pp.
+**Única falha: PBO=0.599** (gate<0.5) — causada por 7 configs homogêneas da mesma família.
+Próximo: **D5b** — teste com 3 configs estruturalmente diversas (sma200_gld puro vs vol15_lk20
+puro vs combo) para PBO < 0.5. Se passar → **winner candidato** da Phase 3.5d.
 Spec: `specs/phase_3_5d_plano_b_v2_3x_letf.md`.
 
 **Estado anterior (2026-04-20 noite):** Phase 3.5d lançada. Iter 0 D1 buy-and-hold baseline
@@ -325,6 +326,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16/01-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-21 (iter 9) — **Phase 3.5d D5 — Vol-targeting TQQQ+GLD: NEAR-MISS 0/7 pass, PBO=0.599** [SWING BROKER] — D5 atômico. 7 configs (vol15/20 × lb10/20/30 + best×SMA200), janela 2004-2026 (21.4yr). **Breakthrough:** vol15_lk20 é a primeira config a superar Sharpe_net>0.800 (0.855). MaxDD reduzido de -60.3% (D2) para -37.2%. WF=8/8, OOS=1.169, DSR_p=0.001, bt±0.15pp, stage2±2.23pp — todos passam. Somente PBO=0.599 falha (configs muito homogêneas inflam PBO). Próximo: D5b — 3 configs estruturalmente diversas (sma200 puro vs vol15_lk20 puro vs combo) para PBO<0.5.](2026-04-21/05-d5-vol-targeting-near-miss.md)
 - [2026-04-21 (iter 8) — **Phase 3.5d D4 — Absolute Momentum Antonacci TQQQ+GLD: DEAD END 0/6 pass** [SWING BROKER] — D4 atômico. 6 configs (6/9/12mo × QQQ/TQQQ signal), janela 2004-2026 (21.4yr). Melhor: mom12_qqq Sharpe=0.665, net=0.565 (gate 0.800). PBO=0.778 (FAIL). Rebalanceamento mensal não protege intra-mês; SMA200 diário permanece superior. Próximo: D5 Volatility Targeting.](2026-04-21/04-d4-abs-momentum-antonacci-dead.md)
 - [2026-04-21 (iter 7) — **Phase 3.5d D3 — Donchian Breakout TQQQ+GLD: DEAD END 0/4 pass** [SWING BROKER] — D3 atômico. 4 configs (dc20/10, dc40/20, dc60/30, dc80/40), janela 2004-2026 (21.4yr). Melhor: dc20_10 Sharpe bruto 0.795, líquido 0.676 (gate 0.800). Donchian reduz MaxDD de -81.7% para -47.2% mas CAGR cai muito. Sharpe bruto inferior ao SMA200-D2 (0.795 vs 0.918). PBO 0.107 ✓, DSR passa nos 2 melhores configs. Gargalo: 15% IR BR exige gross Sharpe ≥ 0.941 — inalcançado com 22 configs testadas (D2+D3). Próximo: D4 Dual Momentum Antonacci (12 meses).](2026-04-21/03-d3-donchian-tqqq-gld-dead.md)
 - [2026-04-21 (iter 6) — **Phase 3.5d D2 — MA Regime Gayed: DEAD END 0/3 tickers pass** [SWING BROKER] — D2 sweep completo. 3 tickers × 6 configs = 18 runs, 0 passaram os 5 gates. Melhor: TQQQ sma200_gld — Sharpe_net 0.780 (gate=0.800, falta 0.020). UPRO estruturalmente mais fraco em todos os runs. TMF off-leg: MaxDD -82% a -87% (fora definitivamente). GLD off-leg: consistentemente melhor. Forward stress positivo em todos os tickers (+0.11 a +0.38). Bloqueador é tax drag 15% IR BR, não fraqueza do sinal. Próximo: D3 Donchian breakout em TQQQ.](2026-04-21/02-d2-ma-regime-gayed-aggregate-dead.md)
