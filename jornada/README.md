@@ -31,10 +31,13 @@ trading: palpite disfarçado de análise.
 
 ## Onde estamos hoje (2026-04-21)
 
-**Estado:** 🔄 **Phase 3.5d Lead D2 sweeping** — iter 3 completo. EW_UPRO_TQQQ com SMA200+GLD
-passou 8/9 gates — near-miss por 0.027 no Sharpe_net (0.773 vs 0.8). Cross-lib concordante
-(bt ±0.58pp, yfinance ±1.36pp). Próximas iters: TQQQ e UPRO single-leg.
-Spec: `specs/phase_3_5d_plano_b_v2_3x_letf.md`. Lead D2 registry: 1/3 tickers done.
+**Estado:** 🔄 **Phase 3.5d Lead D2 ENCERRADO (DEAD END) — D3 bootstrap pendente** —
+D2 (MA regime SMA200/EMA100 × 3 tickers × 6 configs = 18 runs) completou 0/3 pass.
+Melhor config: TQQQ sma200_gld — Sharpe_net 0.780 vs gate 0.800 (falta 0.020).
+Todos os outros gates passaram (PBO 0.115, WF 7/8, DSR_p 0.010, OOS+FWD positivos).
+Bloqueador: IR BR 15% converte gross Sharpe ~0.92 em net ~0.78. TMF = estruturalmente fora.
+TQQQ > UPRO em todos os 18 runs. Próximo: **D3 Donchian breakout** bootstrap em TQQQ.
+Spec: `specs/phase_3_5d_plano_b_v2_3x_letf.md`.
 
 **Estado anterior (2026-04-20 noite):** Phase 3.5d lançada. Iter 0 D1 buy-and-hold baseline
 estabeleceu que TQQQ puro rende ~35%/ano líquido (MaxDD 81.7%). Iter 2 bootstrap D2 registry.
@@ -322,6 +325,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16/01-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-21 (iter 6) — **Phase 3.5d D2 — MA Regime Gayed: DEAD END 0/3 tickers pass** [SWING BROKER] — D2 sweep completo. 3 tickers × 6 configs = 18 runs, 0 passaram os 5 gates. Melhor: TQQQ sma200_gld — Sharpe_net 0.780 (gate=0.800, falta 0.020). UPRO estruturalmente mais fraco em todos os runs. TMF off-leg: MaxDD -82% a -87% (fora definitivamente). GLD off-leg: consistentemente melhor. Forward stress positivo em todos os tickers (+0.11 a +0.38). Bloqueador é tax drag 15% IR BR, não fraqueza do sinal. Próximo: D3 Donchian breakout em TQQQ.](2026-04-21/02-d2-ma-regime-gayed-aggregate-dead.md)
 - [2026-04-21 (iter 3) — **Phase 3.5d D2 — EW_UPRO_TQQQ SMA200+GLD near-miss: 8/9 gates PASS** [SWING BROKER] — EW UPRO+TQQQ com filtro SMA200, off-leg GLD: CAGR_net=26.7%, Sharpe=0.909, MaxDD=-56.3%, Calmar=0.559. Passa PBO (0.119), DSR (p=0.011), WF 7/8, OOS hold-out (1.276), FWD stress (+0.264). Falha APENAS Sharpe_net (0.773 vs 0.8 limiar, falta 0.027). Cross-lib bt ±0.58pp ✓ e Stage-2 yfinance ±1.36pp ✓. TMF como off-leg é desastroso (MaxDD -83.8%!); GLD muito superior. Próximo: TQQQ e UPRO single-leg para verificar Sharpe mais alto.](2026-04-21/01-d2-ew-upro-tqqq-near-miss.md)
 - [2026-04-20 noite (iter 0) — **Phase 3.5d D1 — baseline buy-and-hold 3× LETF estabelecido** — 6 configs buy-and-hold testadas (UPRO, TQQQ, EW combos). Todos os configs 3× LETF batem SPY net post-tax (SPY=10.38%/ano; TQQQ sozinho=34.95%/ano). Porém MaxDD 70-82% — todos falham Calmar>0.5 gate (exceto TQQQ isolado: 0.504) e Sharpe_net>0.8 gate. EW 50/50 UPRO+TQQQ é o benchmark natural para D2+: CAGR_net 30.75%, MaxDD 73.5%. TMF no portfolio melhora Sharpe (0.839→0.923) mas sacrifica CAGR (-5.59pp). Chão definido: D2 regime-filter precisa bater ~30% net E ter Calmar>0.5. Próximo: D2 MA regime filter (SMA200/EMA100) `[leverage_for_the_long_run, p.13]`.](2026-04-20/05-phase-3-5d-d1-bh-baseline.md)
 - [2026-04-20 noite — ★ **Plano B V4 REJEITADO — Phase 3.5d aberta (3× LETFs)** — Encerramento de ciclo. Cross-lib validation (bt/vectorbt/backtrader/quantstats) confirmou que o winner Phase 3.5b (3-leg EW SSO+QLD+UGL, Sharpe 2.25, CAGR 25.56%) foi artifact de dados testfol.io proprietários. Nossa pipeline (synthetic_letf + yfinance) produz CAGR ~11.6% / max_dd -28.8% / Sharpe 0.78 — **abaixo CDI** e **pior que SPY buy-and-hold alavancado**. Regime filter EMA100 troca 5pp CAGR por 40pp DD reduction: trade-off Sharpe-neutro, não supera B&H. Plano A V2-L2 Gayed CFD em **stand-by** (mesmo risco de artifact). Phase 3.5d abre ciclo novo com 3× LETFs (UPRO, TQQQ, TMF), gate obrigatório "beat SPY pós-tax 15% IR BR", cross-lib concordance ≥ 2/3 libs, 8 leads (D1-D8) com indicator-family homogeneity testada via contrafactual (D2 MA vs D3 Donchian). Spec: `specs/phase_3_5d_plano_b_v2_3x_letf.md`. Launch prompt: `docs/self_improvement/phase_3_5d_launch_prompt.md`. Phase 4 paper trading **pausada**. Próxima sessão: rodar launch prompt, executar setup, aprovar loop com `MAX_ITER=10 SWEEP_MODE=fanout`.](2026-04-20/04-plano-b-v4-rejected-3-5d-launch.md)
