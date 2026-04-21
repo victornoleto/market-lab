@@ -9,7 +9,7 @@
     "advances_fin_ml, p.208-211"
   ],
   "started_at": "2026-04-21T17:00:51+00:00",
-  "last_updated_at": "2026-04-21T17:00:51+00:00",
+  "last_updated_at": "2026-04-21T17:06:56+00:00",
   "configs": [
     {
       "name": "c02_sma150_cash",
@@ -22,14 +22,30 @@
     }
   ],
   "tickers_pending": [
-    "QLD",
     "SSO",
     "TQQQ",
     "UPRO"
   ],
-  "tickers_done": [],
+  "tickers_done": [
+    {
+      "ticker": "QLD",
+      "frequency": "daily",
+      "window_start": "2001-05-15",
+      "window_end": "2026-04-14",
+      "iter": 21,
+      "n_configs_tested": 1,
+      "best_config": "c02_sma150_cash",
+      "best_sharpe_oos": 0.59654551892081,
+      "best_cagr": 0.12118447403913746,
+      "best_maxdd": -0.49439986256090757,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c02_sma150_cash/QLD.md",
+      "result_file_json": "reports/phase_3_5e/c02_sma150_cash/QLD.json"
+    }
+  ],
   "tickers_errored": [],
-  "status": "pending",
+  "status": "sweeping",
   "aggregation_iter": null,
   "aggregate_file_md": null,
   "aggregate_jornada": null
