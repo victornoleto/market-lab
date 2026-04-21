@@ -9,7 +9,7 @@
     "advances_fin_ml, p.208-211"
   ],
   "started_at": "2026-04-21T18:39:45+00:00",
-  "last_updated_at": "2026-04-21T18:45:13+00:00",
+  "last_updated_at": "2026-04-21T18:51:13+00:00",
   "configs": [
     {
       "name": "c03_ema100_tlt",
@@ -22,7 +22,6 @@
     }
   ],
   "tickers_pending": [
-    "SSO",
     "TQQQ",
     "UPRO"
   ],
@@ -42,6 +41,22 @@
       "pbo_local": NaN,
       "result_file_md": "reports/phase_3_5e/c03_ema100_tlt/QLD.md",
       "result_file_json": "reports/phase_3_5e/c03_ema100_tlt/QLD.json"
+    },
+    {
+      "ticker": "SSO",
+      "frequency": "daily",
+      "window_start": "2002-07-26",
+      "window_end": "2026-04-15",
+      "iter": 31,
+      "n_configs_tested": 1,
+      "best_config": "c03_ema100_tlt",
+      "best_sharpe_oos": 0.11797070493453388,
+      "best_cagr": 0.08463407781264753,
+      "best_maxdd": -0.5791424301502205,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c03_ema100_tlt/SSO.md",
+      "result_file_json": "reports/phase_3_5e/c03_ema100_tlt/SSO.json"
     }
   ],
   "tickers_errored": [],
