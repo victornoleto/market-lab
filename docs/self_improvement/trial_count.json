@@ -1,7 +1,7 @@
 {
   "phase": "phase_3_5e",
   "description": "Cumulative trial count for DSR honest n_trials computation. Incremented once per (config x asset x off_leg) combination completed in the Phase 3.5e grid. Grid total = 144 initial (12 configs x 4 assets x 3 off_legs).",
-  "total_trials_completed": 14,
+  "total_trials_completed": 15,
   "grid_total": 144,
   "last_updated": "2026-04-21",
   "reset_notes": [
