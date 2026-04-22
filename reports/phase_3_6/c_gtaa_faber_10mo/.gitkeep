@@ -1,0 +1,3 @@
+# Local-only artifacts (gitignored):
+# - daily_returns.parquet — winner-cell daily net returns (tax+frictions baked in).
+#   Regenerate via: .venv/bin/python scripts/run_phase3_6_c_gtaa_faber_10mo.py
