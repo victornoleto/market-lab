@@ -29,7 +29,25 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-21 — iter 43, loop encerrado)
+## Onde estamos hoje (2026-04-22 — Phase 3.5f aberta, engine lookahead bug descoberto)
+
+**Estado:** 🚨 **V2-L2 winner sob suspeita — bug de look-ahead bias descoberto na engine canonical.**
+- Iniciei Phase 3.5f (branch `phase3.5f/plano-a-v2-l2-cross-lib-redo-20260422`) pra validar o winner V2-L2 do Plano A (`gayed_ema100_L2_off_gld`) em cross-lib limpa.
+- Stage A (Tiingo raw close) reproduz o baseline V2-L2 ao ponto decimal — engine sem drift desde 2026-04-19.
+- Stage-2 (testfolio SPYSIM/QQQSIM/GLDSIM TR) mostra que o baseline subestima performance CFD real em ~8pp CAGR/ano por usar `close` raw em vez de `adj_close` TR.
+- **Cross-lib (bt + vectorbt + backtrader) expôs um bug fundamental:** canonical engine usa `w_i × r_i` (peso decidido com `close_i`, retorno calculado com `close_i`) — look-ahead bias clássico. 3 libs independentes + numpy reference batem entre si em CAGR 15-21% OOS; canonical sozinho em 79-92%. Diferença de 19,000× em equity final em 25 anos.
+- **Ramificações preliminares:** V2-L2 Sharpe 2.28/CAGR 79% provavelmente é artifact (honest estimate 15-18% OOS, abaixo do CDI). Phase 3.5c cross-lib teria detectado isso em 2026-04-20, mas foi mis-diagnosticado como "dados sintéticos". Phase 3.5d + 3.5e Plano B rodou com mesma engine — alguns "DEAD ends" podem ter sido winners honest. Phase 4.0 Index CFD idem.
+- **Decisão do usuário 2026-04-22:** fix obrigatório; foco exclusivo em encontrar winner honest pra Plano A; Plano B stand-by; Plano C não se toca.
+- **Próxima sessão:** executar `docs/plans/2026-04-22-engine-lookahead-fix-and-plano-a-winner-hunt.md` — 5 fases (F0 testes cirúrgicos → F1 scope mapping → F2 fix + regression tests → F3 re-validação honest dos 6 V2 leads → F4 docs + mandate update).
+
+Entries relevantes:
+- `jornada/2026-04-22-2212-engine-lookahead-bias-descoberto.md` — narrativa completa desta sessão ← NOVO
+- `docs/plans/2026-04-22-engine-lookahead-fix-and-plano-a-winner-hunt.md` — plano executável ← NOVO
+- `reports/phase_3_5f/v2_l2_gayed_redo/cross_lib_report.md` — evidência do bug
+
+---
+
+## Estado anterior (2026-04-21 — iter 43, loop encerrado)
 
 **Estado:** 🔄 **Phase 3.5e breadth-hunt pausada — 5 families DEAD, c04 deferred, c06 parcial. Pipeline consertada (Tiingo-first).**
 - **Pipeline fix (commits f7c2810 + 6729468)**: SSO/QLD/UPRO/TQQQ+SHV entraram no Tiingo; `reference_prices.py` vira Tiingo-first; `stage2_validation.py` helper + testfol.io; spec §3.1 proíbe yfinance direto em sweeps. Pytest 908→914.
@@ -41,10 +59,10 @@ trading: palpite disfarçado de análise.
 - c06 (mom6mo × 3 off-legs): **6/12 trials parciais** (QLD/SSO done, TQQQ/UPRO + aggregator pending).
 - Stage-2 concordance validada: SSO Δ0.17pp, TQQQ Δ0.05pp, UPRO Δ0.12pp (antes 5-15pp drift yf).
 - **Trial count: 38/144 (26%).** Loop exit por MAX_ITER=20; 0 winners.
-- **Próxima sessão:** fixar SHV → c04 (4 trials); rodar c06 UPRO + aggregator; c07 Clenow + c10-c11 vol-target (families estruturalmente diferentes) antes de escalar decisão.
+- **Status 2026-04-22:** Plano B em stand-by por decisão explícita do usuário. Engine bug 2026-04-22 afeta também o Plano B mas a re-validação fica congelada até Plano A ser resolvido.
 
 Entries relevantes:
-- `jornada/2026-04-21-1700-session-summary-phase-3-5e-batch1.md` — summary completo da sessão ← NOVO
+- `jornada/2026-04-21-1700-session-summary-phase-3-5e-batch1.md` — summary completo da sessão
 - `jornada/2026-04-21-14-data-pipeline-tiingo-first.md` — fix arquitetural
 - `jornada/2026-04-21-1644-c05-mom12mo-dead.md` — c05 aggregator
 - `jornada/2026-04-21-1640-c03-ema100-tlt-dead.md` — c03 aggregator
@@ -374,6 +392,10 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16/01-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-23 07h — **Resumo da madrugada Phase 3.5f** [SHORT-HOLD CFD] — sumário matinal pós-execução F4. Engine bug consertado, 918 testes verdes, 6 V2 leads re-validadas sob engine honest, **0 winners**. V2-L2 Gayed cai de Sharpe 2.28/CAGR 79% pra Sharpe 0.56/CAGR ~14% (65pp de lookahead inflation). Escopo do bug: 1 arquivo, 1 linha — Plano B reports preservados como clean canonical. Escalação ao usuário com 4 opções: V3 (desenhar 7ª família), Phase-6 fallback Gayed 1× unleveraged, abandonar Plano A permanente (invoca `project_plano_a_v2_last_attempt`), ou freezar Plano A e retomar Plano B c06-c12. Files canonicais não tocados; drafts em `docs/.pending/` aguardam escolha.](2026-04-23-0700-overnight-summary.md)
+- [2026-04-22 — **Plano A re-validado sob engine honest: 6 leads, 0 winners** [SHORT-HOLD CFD] — Phase 3.5f F3. Re-avaliou V2-L1 TSMOM (Sharpe −0.21, já era DEAD), V2-L2 Gayed (Sharpe 0.56/CAGR 14%/MDD −37%, winner falso), V2-L3 AFML (Sharpe 1.21 mas CAGR 2.5%), V2-L4 Carver RP (blend dominado por L3 a 66% weight, não L2 a 4.8% como plano supunha), V2-L5 Kalman (0 pairs cointegrados, estrutural), V2-L6 Donchian (12/12 neg). Nenhuma das 6 passa os 13 gates. F3 gate (c) fira; escalação obrigatória. Hipótese "L2 dilui em L4" invalidada: L4 pondera inverso-vol; L2 pesa 4.8%, blend herda CAGR-starvation do L3. `[advances_fin_ml, p.31-34, p.50, ch.16]`, `[systematic_trading, ch.11]`.](2026-04-22-plano-a-honest-revalidation.md)
+- [2026-04-22 — **O bug da engine: apostar em cara depois de ver a moeda cair** [SHORT-HOLD CFD] — narrativa humana do look-ahead bias em `plano_a_leveraged_rotation.py:462`. `new_w[bar_i] × ret[bar_i]` (peso decidido com `close[i]` × retorno de `close[i]/close[i-1]-1`) = Oracle trading. Pego por cross-lib: bt+vectorbt+backtrader+numpy reference todos a CAGR 15-21% OOS, canonical sozinho a 79-92%, fator 19,000× em equity final. Fix: `.shift(1)` no vetor de pesos (commit `7b90a8f`). 4 testes cirúrgicos hand-verifiable (`tests/test_plano_a_lookahead_bias.py`). Surpresa boa: bug em 1 arquivo 1 linha; `letf_rotation.py` e todas outras engines já estavam corretas — Plano B (phase_3_5b/c/d/e) 100% preservado. `[advances_fin_ml, p.31-34]`.](2026-04-22-engine-lookahead-bug.md)
+- [2026-04-22 22h — **Engine lookahead bias descoberto, plano de fix gerado** [SHORT-HOLD CFD] — sessão que descobriu o bug. Phase 3.5f Stage A validou reprodução canonical do V2-L2 Gayed (Sharpe OOS 2.284 bate baseline). Stage-2 testfolio TR concordou dentro de Δ0.004 Sharpe. **Cross-lib expôs:** canonical sozinho em CAGR 71% vs bt/vbt/backtrader/numpy todos a 15-21%. Bug: `w_i × r_i` em `plano_a_leveraged_rotation.py`. Plano de fix de 5 fases (F0 testes → F1 scope → F2 fix → F3 re-validação 6 leads → F4 docs) registrado em `docs/plans/2026-04-22-engine-lookahead-fix-and-plano-a-winner-hunt.md`.](2026-04-22-2212-engine-lookahead-bias-descoberto.md)
 - [2026-04-21 17h — **Session summary Phase 3.5e batch 1 (iters 14-43)** [SWING BROKER] — 30 iters em 2 shell loops: pré-fix (14-23, c01 DEAD + c02 parcial rollbacked) + pós-fix Tiingo-first (24-43, c02/c03/c05 DEAD aggregators, c04 skipped por SHV faltando no parquet, c06 parcial 6/12 trials). **0 winners; 38/144 trials; 5 families avaliadas**. Padrões confirmados: FWD tariff Q1-2026 é killer universal; cash off-leg tem floor inaceitável; TLT off-leg falha em 2022 joint crash; monthly momentum não protege 3× intra-month; 15% IR BR exige gross Sharpe ≥ 0.94. Próxima sessão: c07 Clenow + c10-c11 vol-target antes de escalar decisão.](2026-04-21-1700-session-summary-phase-3-5e-batch1.md)
 - [2026-04-21 (iter 28) — **Phase 3.5e c02 SMA150/cash: DEAD END 0/4 pass** [SWING BROKER] — c02 family (SMA150 binary regime + cash off-leg, 4 assets = 4 trials). 0/4 pre-pass: DSR+Calmar+Sharpe_net falham universalmente. Melhor: QLD Sharpe_net=0.475, Calmar=0.252 (gates: SN>0.8, Calmar>0.5). WF=8/8 e OOS/FWD passam para todos. Descoberta: SMA150 passa FWD (evitou choque tarifário Jan-Abr 2026) onde SMA200/c01 falhou — MA mais curta reage mais rápido. Bottleneck estrutural: cash off-leg = 0% yield → Sharpe e Calmar insuficientes em qualquer MA period. trial_count=16/144. Stage-2 concordante para SSO (Δ=0.17pp), TQQQ (Δ=0.05pp), UPRO (Δ=0.12pp). Próximo: c03 ema100_tlt (TLT off-leg fornece yield + diversificação).](2026-04-21-1535-c02-sma150-cash-dead.md)
 - [2026-04-21 14h — **Pivot Tiingo-first + testfol.io Stage-2** [INFRA] — Stage-2 reportou ΔCAGR 8.21pp (QLD iter 21) e 15.16pp (TQQQ iter 23) na sessão do loop. Diagnóstico: pipeline fazia yfinance-vs-yfinance (cache parquet vs live re-fetch), adjusted-close ajustado retroativamente. Fix: SSO/QLD/UPRO/TQQQ entram no Tiingo bulk (+SHV); `reference_prices.py` vira Tiingo-first com yfinance fallback apenas para UGL/SPXL/TMF; novo helper `stage2_validation.py` usa testfol.io SPY 2x/3x (1885-2026) para SSO/UPRO/SPXL e marca N/A explícito para QQQ/GLD/TLT-based. Spec §3.1 proíbe yfinance direto em sweep scripts. Pytest 908→914 (+6 stage2 tests). Loop pausado em iter 23 para decisão de re-run c01/c02 sobre novos dados.](2026-04-21-14-data-pipeline-tiingo-first.md)
