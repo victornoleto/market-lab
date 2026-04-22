@@ -1,4 +1,4 @@
-# Estado atual — ai-trade (2026-04-23)
+# Estado atual — ai-trade (2026-04-22)
 
 > **Propósito:** onboard rápido para humanos e agentes. Este doc é o
 > índice de orientação — a verdade canônica vive nos arquivos
@@ -6,22 +6,34 @@
 
 ---
 
-## TL;DR
+## TL;DR (2026-04-22 — Phase 3.8-1 fechada, 29/29 honest FAIL, Phase 3.9 planejada-não-executada)
 
-**Nenhum winner ativo.** Phase 3.5f fechou o V2 do Plano A com veredito
-FAIL em todas as 6 leads sob engine honest (bug de look-ahead descoberto
-e consertado em 2026-04-22). Plano B V4 já havia sido retratado em
-Phase 3.5c (2026-04-20) por divergência cross-lib. Plano A V2 encerrado
-definitivamente per `project_plano_a_v2_last_attempt` rule.
+**Nenhum winner ativo. Nunca houve.** 29 validações honest sob 13 gates
+em 3 phases (3.5f/3.6/3.7-3/3.8-1), 0 PASS. Pattern exato predito por
+López de Prado DSR + Aronson 6402-rule + Li-Ferreira 2025 Network
+Momentum state-of-art Sharpe 0.35 líquido.
 
-**Próxima fase ativa:** Phase 3.6 — broader swing-winner hunt
-broker-agnostic sobre os 33 livros em `books/summaries/` + `_archive/`.
-Plano executável em `docs/plans/2026-04-23-find-swing-winner-phase-3-6.md`.
+**Phase 3.8-1 (Plano B hunt, 2026-04-22):** 5 hipóteses canonical-or-close
+(B1 Gayed SMA-200 + UPRO/SSO, B2 MA-robustness sweep 16 configs, B3
+Pauchlyova 5-asset static+trend, B4 Hsieh AR(1), B5 Faber 10-mo GTAA
+unleveraged) FAIL sob mesmo killer estrutural — bootstrap OOS 99.9%
+CI low cruza zero + DSR p > 0.05 em TODOS. B5 com turnover 1.39/ano
+(tax-minimal) também falhou — DARF não é único killer; signal é
+statistically weak per se sob multiple-testing. `reports/phase_3_8/BREADTH_NO_WINNER_B.md`
+formaliza R1-R5 (R1 paper-trade B5 6-12m / R2 pivot Plano C 100% mandate
+§4.7 default / R3 re-spec Válido=CDI-matcher / R4 wait+re-run / R5 Phase 3.9
+composer-inspired layered-conditional).
 
-**Engine agora confiável.** Fix commit `7b90a8f` alinha
-`prev_weights × return_today`; cross-lib concordância a 1e-6 com
-bt/vectorbt/backtrader/numpy. Qualquer strategy futura herda baseline
-honest validada por 3 libs independentes.
+**Phase 3.9 planejada mas NÃO executada** (usuário "dar um tempo" 2026-04-22).
+Plan em `docs/plans/2026-04-22-phase3.9-composer-inspired-hunt-prompt.md`.
+
+**Próxima fase ativa:** NENHUMA. Projeto em pausa, aguardando decisão
+usuário entre R1/R2/R3/R4/R5 OR abrir tópico novo. Mandate intacto; nenhuma
+relaxação de gates além das §2.2/§2.3 tier framework de 2026-04-22.
+
+**Engine honest validada cross-lib em 23 strategies** (10 Phase 3.6 + 8
+Phase 3.7-3 + 5 Phase 3.8-1). Fix commit `7b90a8f` Phase 3.5f preserved.
+Pytest baseline 929 passed, 2 skipped.
 
 ---
 

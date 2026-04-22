@@ -4,9 +4,37 @@
 
 ---
 
-## 🛑 RESUMO PRA RETOMADA (2026-04-23 — Phase 3.5f fechada, Phase 3.6 aberta)
+## 🛑 RESUMO PRA RETOMADA (2026-04-22 — Phase 3.8-1 fechada BREADTH_NO_WINNER_B 5/5; 29/29 cumulativo; Phase 3.9 planejada mas não executada)
 
-**Phase 3.5f fechou sem winner honest.** Look-ahead bias descoberto em
+**Phase 3.8-1 (Plano B winner hunt) fechou sem winner.** 5 hipóteses
+canonical-or-close-variant (B1 Gayed canonical SMA-200 + UPRO/SSO, B2
+MA-robustness sweep 16 configs, B3 Pauchlyova 5-asset static+trend, B4
+Hsieh-Chang-Chen AR(1) regime, B5 Faber 10-mo GTAA unleveraged) × 13
+gates honest sob rota B Inter + 15% DARF year-end = **5/5 FAIL**.
+**Killer único em todas:** bootstrap OOS 99.9% CI low cruza zero +
+DSR p > 0.05. B5 Faber com turnover 1.39/ano (tax-minimal) também
+falhou — DARF não é único killer; o signal SPY-SMA-based é statistically
+weak per se sob multiple-testing. Commits atômicos: `9a3e24d` B1 +
+`14f58d7` B2 + `36b5fda` B4 + `f69b468` B3 + `1746969` B5 + `bb0ef78`
+BREADTH_NO_WINNER_B escalation. `reports/phase_3_8/BREADTH_NO_WINNER_B.md`
+formaliza 5 caminhos R1-R5.
+
+**Cumulativo honest do projeto: 29/29 validations honest 13-gate, 0 PASS**
+(Phase 3.5f 6 + Phase 3.6 10 + Phase 3.7-3 8 + Phase 3.8-1 5). Pattern
+predicted by López de Prado DSR + Aronson 6402-rule + Li-Ferreira 2025.
+
+**Phase 3.9 planejada mas NÃO executada.** Doc em
+`docs/plans/2026-04-22-phase3.9-composer-inspired-hunt-prompt.md` cobre
+3 arquétipos layered-conditional (B6 3-layer VIX+SMA+RSI weekly, B7
+sideways-deleverage tertiary-state monthly, B8 Gayed+VIXY swan-catcher).
+Usuário decidiu "dar um tempo" em 2026-04-22 pós-Phase-3.8 closure.
+Pytest baseline 929 green (908 + 21 smoke tests B1-B5).
+
+**Histórico (2026-04-22 Phase 3.7-3):** top-tier literature hypothesis
+hunt fechou BREADTH_NO_WINNER 8/8 (H1/H2/H3 × 8 subagents, 3 killers
+paradigm-específicos). R3 pick foi Phase 3.8-1; também falhou.
+
+**Histórico (2026-04-23 Phase 3.5f):** Look-ahead bias descoberto em
 `src/ai_trade/backtest/strategies/plano_a_leveraged_rotation.py:462` (um
 arquivo, uma linha — F1 grep-audit em `docs/superpowers/findings/2026-04-22-engine-lookahead-scope.md`).
 Fix em commit `7b90a8f`; pytest 918 green; cross-lib (bt, vectorbt,
