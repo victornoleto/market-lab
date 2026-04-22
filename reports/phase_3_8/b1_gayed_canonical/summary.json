@@ -1,0 +1,471 @@
+{
+  "git_sha": "3f6f5a7c16",
+  "windows": {
+    "IS": [
+      "1970-01-02",
+      "1999-12-31"
+    ],
+    "OOS": [
+      "2000-01-01",
+      "2015-12-31"
+    ],
+    "FWD": [
+      "2016-01-01",
+      "2026-04-15"
+    ]
+  },
+  "variants": [
+    {
+      "variant": "B1-UPRO-3x",
+      "verdict": "FAIL",
+      "hard_fails": 2,
+      "config_hash": "1bc48acdd6",
+      "cfg": {
+        "leverage": 3.0,
+        "letf_kind": "UPRO",
+        "sma_period": 200,
+        "expense_ratio": 0.0095,
+        "swap_exposure": 1.1,
+        "ffr_spread": 0.004,
+        "cash_rate_annual": 0.04,
+        "commission_bps": 0.0,
+        "spread_bps": 5.0,
+        "tax_rate": 0.15,
+        "use_real_letf": true
+      },
+      "is_stats": {
+        "label": "IS",
+        "variant": "B1-UPRO-3x",
+        "n_days": 7582,
+        "sharpe_daily": 0.7582171337872393,
+        "cagr": 0.2084258047314156,
+        "mdd": -0.4698740211777278,
+        "n_switches": 137,
+        "median_hold_days": 16.0,
+        "on_regime_fraction": 0.7544183592719599,
+        "cum_cost_pct": 0.0685,
+        "cum_tax_pct": 55.819635466892976
+      },
+      "oos_stats": {
+        "label": "OOS",
+        "variant": "B1-UPRO-3x",
+        "n_days": 4025,
+        "sharpe_daily": 0.3706170295011562,
+        "cagr": 0.06856244219888907,
+        "mdd": -0.5120242159644661,
+        "n_switches": 109,
+        "median_hold_days": 4.0,
+        "on_regime_fraction": 0.6390062111801242,
+        "cum_cost_pct": 0.05450000000000001,
+        "cum_tax_pct": 0.6791039259066749
+      },
+      "fwd_stats": {
+        "label": "FWD",
+        "variant": "B1-UPRO-3x",
+        "n_days": 2585,
+        "sharpe_daily": 0.7098757895941382,
+        "cagr": 0.20336691543080265,
+        "mdd": -0.53394572631355,
+        "n_switches": 51,
+        "median_hold_days": 4.0,
+        "on_regime_fraction": 0.767504835589942,
+        "cum_cost_pct": 0.025500000000000002,
+        "cum_tax_pct": 1.4652196448630381
+      },
+      "cost2_stats": {
+        "label": "OOS_2x_cost",
+        "variant": "B1-UPRO-3x",
+        "n_days": 4025,
+        "sharpe_daily": 0.28192956979636974,
+        "cagr": 0.0394307520712307,
+        "mdd": -0.5243741573950359,
+        "n_switches": 109,
+        "median_hold_days": 4.0,
+        "on_regime_fraction": 0.6390062111801242,
+        "cum_cost_pct": 0.10900000000000001,
+        "cum_tax_pct": 1.055718053874207
+      },
+      "ir_oos": 0.20836574191992074,
+      "oos_cagr_tier": "Folclore",
+      "oos_mdd_tier": "Reject",
+      "wf_returns": [
+        1.2023049071550256,
+        0.7365684875554344,
+        4.593012906427059,
+        0.7788997967518725,
+        3.453104240972327,
+        1.6171707495063483,
+        0.16621321804351274,
+        0.7139799863493657
+      ],
+      "wf_dds": [
+        0.39445487863356843,
+        0.4698740211777279,
+        0.33220858231445904,
+        0.46333279800671145,
+        0.37811723745998893,
+        0.32805755447024687,
+        0.49402564802944715,
+        0.5120242159644661
+      ],
+      "wf_verdict": "pass",
+      "boot_results": {
+        "OOS": {
+          "ci_low_999": -0.0004973000865713373,
+          "passes": false
+        },
+        "FULL": {
+          "ci_low_999": 0.00032036025866355515,
+          "passes": true
+        }
+      },
+      "pbo_value": 0.23809523809523808,
+      "pbo_verdict": "pass",
+      "dsr_p": 0.4912205839080451,
+      "crosslib_delta_pp": 0.0,
+      "crosslib_note": "pandas(no-tax)=9.487%, vbt=9.487%, |\u0394|=0.000pp (compared ex-tax to match vbt scope)",
+      "stress_rows": [
+        [
+          "dotcom_2000_2002",
+          {
+            "n": 752,
+            "sharpe": -0.44375597106531744,
+            "cagr": -0.03514452973716087,
+            "mdd": -0.19911532456326297
+          }
+        ],
+        [
+          "gfc_2007_2009",
+          {
+            "n": 378,
+            "sharpe": -1.0383334418517753,
+            "cagr": -0.18566470206112806,
+            "mdd": -0.33948633198559663
+          }
+        ],
+        [
+          "euro_2011",
+          {
+            "n": 170,
+            "sharpe": -2.3112443669118403,
+            "cagr": -0.5701893823740463,
+            "mdd": -0.43835539295887493
+          }
+        ],
+        [
+          "covid_2020_03",
+          {
+            "n": 62,
+            "sharpe": -3.4331048152668076,
+            "cagr": -0.8366043641357718,
+            "mdd": -0.45052922897915115
+          }
+        ],
+        [
+          "rate_shock_2022",
+          {
+            "n": 251,
+            "sharpe": -1.8918293883133752,
+            "cagr": -0.38228932553721306,
+            "mdd": -0.39271711015410105
+          }
+        ]
+      ],
+      "gate_rows": [
+        [
+          "1 IS Sharpe > 0.5",
+          "0.758",
+          "PASS"
+        ],
+        [
+          "2 OOS Sharpe >= 1.3",
+          "0.371",
+          "FAIL"
+        ],
+        [
+          "3 OOS CAGR tier (WARN)",
+          "6.856% \u2014 tier **Folclore**",
+          "WARNING-ONLY"
+        ],
+        [
+          "4 OOS MDD tier (WARN)",
+          "-51.202% \u2014 tier **Reject**",
+          "WARNING-ONLY"
+        ],
+        [
+          "5 FWD Sharpe > 0",
+          "0.710",
+          "PASS"
+        ],
+        [
+          "6 WF >= 6/8 positive",
+          "8/8 profitable",
+          "PASS"
+        ],
+        [
+          "7 Median hold >= 5d",
+          "16.0 trading days",
+          "PASS"
+        ],
+        [
+          "8 IR vs SPY >= 0.2",
+          "0.208",
+          "PASS"
+        ],
+        [
+          "9 Cross-lib CAGR <= 3pp (HARD)",
+          "pandas(no-tax)=9.487%, vbt=9.487%, |\u0394|=0.000pp (compared ex-tax to match vbt scope)",
+          "PASS"
+        ],
+        [
+          "10 Bootstrap 99.9% CI low > 0 (HARD)",
+          "OOS=-0.0004973; FULL=0.00032036",
+          "FAIL"
+        ],
+        [
+          "11 PBO < 0.5 (HARD)",
+          "pbo=0.238",
+          "PASS"
+        ],
+        [
+          "12 DSR p < 0.05 (HARD)",
+          "p=0.4912",
+          "FAIL"
+        ],
+        [
+          "13 Cost\u00d72 Sharpe > 0.8",
+          "0.282 (cagr=3.943%)",
+          "FAIL"
+        ]
+      ],
+      "trades_per_yr": 5.276998102836017,
+      "turnover_warn": false
+    },
+    {
+      "variant": "B1-SSO-2x",
+      "verdict": "FAIL",
+      "hard_fails": 2,
+      "config_hash": "cc7b1014ef",
+      "cfg": {
+        "leverage": 2.0,
+        "letf_kind": "SSO",
+        "sma_period": 200,
+        "expense_ratio": 0.0095,
+        "swap_exposure": 1.1,
+        "ffr_spread": 0.004,
+        "cash_rate_annual": 0.04,
+        "commission_bps": 0.0,
+        "spread_bps": 5.0,
+        "tax_rate": 0.15,
+        "use_real_letf": true
+      },
+      "is_stats": {
+        "label": "IS",
+        "variant": "B1-SSO-2x",
+        "n_days": 7582,
+        "sharpe_daily": 0.8207754637982169,
+        "cagr": 0.16301011932744536,
+        "mdd": -0.33569875269857685,
+        "n_switches": 137,
+        "median_hold_days": 16.0,
+        "on_regime_fraction": 0.7544183592719599,
+        "cum_cost_pct": 0.0685,
+        "cum_tax_pct": 17.649422490127932
+      },
+      "oos_stats": {
+        "label": "OOS",
+        "variant": "B1-SSO-2x",
+        "n_days": 4025,
+        "sharpe_daily": 0.3912613898825751,
+        "cagr": 0.061006582022400835,
+        "mdd": -0.37415915012405176,
+        "n_switches": 109,
+        "median_hold_days": 4.0,
+        "on_regime_fraction": 0.6390062111801242,
+        "cum_cost_pct": 0.05450000000000001,
+        "cum_tax_pct": 0.47657327031036617
+      },
+      "fwd_stats": {
+        "label": "FWD",
+        "variant": "B1-SSO-2x",
+        "n_days": 2585,
+        "sharpe_daily": 0.7271182260244765,
+        "cagr": 0.15205549935301055,
+        "mdd": -0.3907241666869068,
+        "n_switches": 51,
+        "median_hold_days": 4.0,
+        "on_regime_fraction": 0.767504835589942,
+        "cum_cost_pct": 0.025500000000000002,
+        "cum_tax_pct": 0.7725672828959377
+      },
+      "cost2_stats": {
+        "label": "OOS_2x_cost",
+        "variant": "B1-SSO-2x",
+        "n_days": 4025,
+        "sharpe_daily": 0.28570755926050856,
+        "cagr": 0.03850249002128536,
+        "mdd": -0.37760336759827917,
+        "n_switches": 109,
+        "median_hold_days": 4.0,
+        "on_regime_fraction": 0.6390062111801242,
+        "cum_cost_pct": 0.10900000000000001,
+        "cum_tax_pct": 0.7801774024710237
+      },
+      "ir_oos": 0.11191902014979185,
+      "oos_cagr_tier": "Folclore",
+      "oos_mdd_tier": "Warning",
+      "wf_returns": [
+        0.8706444496528851,
+        0.7267474468957384,
+        2.700291947581514,
+        0.6911310925565965,
+        2.0695994656828165,
+        1.0824606471022853,
+        0.22969337933771072,
+        0.5550059806960774
+      ],
+      "wf_dds": [
+        0.2789919214846358,
+        0.3356987526985772,
+        0.2272409143146763,
+        0.32535531706262477,
+        0.26532916161580133,
+        0.22413121300162997,
+        0.3517815529118018,
+        0.37415915012405176
+      ],
+      "wf_verdict": "pass",
+      "boot_results": {
+        "OOS": {
+          "ci_low_999": -0.00029739182913715443,
+          "passes": false
+        },
+        "FULL": {
+          "ci_low_999": 0.0002502184015351779,
+          "passes": true
+        }
+      },
+      "pbo_value": 0.23809523809523808,
+      "pbo_verdict": "pass",
+      "dsr_p": 0.4586480135735178,
+      "crosslib_delta_pp": 0.0,
+      "crosslib_note": "pandas(no-tax)=8.190%, vbt=8.190%, |\u0394|=0.000pp (compared ex-tax to match vbt scope)",
+      "stress_rows": [
+        [
+          "dotcom_2000_2002",
+          {
+            "n": 752,
+            "sharpe": -0.21519815800285277,
+            "cagr": -0.011877611254275111,
+            "mdd": -0.135857183096589
+          }
+        ],
+        [
+          "gfc_2007_2009",
+          {
+            "n": 378,
+            "sharpe": -0.970379291983326,
+            "cagr": -0.11736544603871257,
+            "mdd": -0.23566041452293807
+          }
+        ],
+        [
+          "euro_2011",
+          {
+            "n": 170,
+            "sharpe": -2.185457339713394,
+            "cagr": -0.4084153238315078,
+            "mdd": -0.30332219153598106
+          }
+        ],
+        [
+          "covid_2020_03",
+          {
+            "n": 62,
+            "sharpe": -3.406069095091564,
+            "cagr": -0.688428911592052,
+            "mdd": -0.323890853886607
+          }
+        ],
+        [
+          "rate_shock_2022",
+          {
+            "n": 251,
+            "sharpe": -1.840719993744049,
+            "cagr": -0.2639367714124192,
+            "mdd": -0.27280489042254774
+          }
+        ]
+      ],
+      "gate_rows": [
+        [
+          "1 IS Sharpe > 0.5",
+          "0.821",
+          "PASS"
+        ],
+        [
+          "2 OOS Sharpe >= 1.3",
+          "0.391",
+          "FAIL"
+        ],
+        [
+          "3 OOS CAGR tier (WARN)",
+          "6.101% \u2014 tier **Folclore**",
+          "WARNING-ONLY"
+        ],
+        [
+          "4 OOS MDD tier (WARN)",
+          "-37.416% \u2014 tier **Warning**",
+          "WARNING-ONLY"
+        ],
+        [
+          "5 FWD Sharpe > 0",
+          "0.727",
+          "PASS"
+        ],
+        [
+          "6 WF >= 6/8 positive",
+          "8/8 profitable",
+          "PASS"
+        ],
+        [
+          "7 Median hold >= 5d",
+          "16.0 trading days",
+          "PASS"
+        ],
+        [
+          "8 IR vs SPY >= 0.2",
+          "0.112",
+          "FAIL"
+        ],
+        [
+          "9 Cross-lib CAGR <= 3pp (HARD)",
+          "pandas(no-tax)=8.190%, vbt=8.190%, |\u0394|=0.000pp (compared ex-tax to match vbt scope)",
+          "PASS"
+        ],
+        [
+          "10 Bootstrap 99.9% CI low > 0 (HARD)",
+          "OOS=-0.000297392; FULL=0.000250218",
+          "FAIL"
+        ],
+        [
+          "11 PBO < 0.5 (HARD)",
+          "pbo=0.238",
+          "PASS"
+        ],
+        [
+          "12 DSR p < 0.05 (HARD)",
+          "p=0.4586",
+          "FAIL"
+        ],
+        [
+          "13 Cost\u00d72 Sharpe > 0.8",
+          "0.286 (cagr=3.850%)",
+          "FAIL"
+        ]
+      ],
+      "trades_per_yr": 5.276998102836017,
+      "turnover_warn": false
+    }
+  ]
+}
