@@ -455,13 +455,16 @@ def simulate_plano_a_rotation(
         if bar_i == 0:
             gross_ret = 0.0
         else:
-            # Risk-on contribution: w_k * asset_k_return.
+            # HONEST: prior bar's weight earns today's return (shift
+            # convention). Avoids look-ahead where the signal-triggering
+            # close would also score the return it caused.
+            # [advances_fin_ml, p.31-34]
             per_asset = np.where(
                 np.isnan(ret_vals[bar_i]), 0.0, ret_vals[bar_i]
             )
-            on_ret = float(np.sum(new_w[:n_assets] * per_asset))
+            on_ret = float(np.sum(prev_weights[:n_assets] * per_asset))
             off_r = off_vals[bar_i] if not np.isnan(off_vals[bar_i]) else 0.0
-            off_ret = float(new_w[-1] * off_r)
+            off_ret = float(prev_weights[-1] * off_r)
             gross_ret = on_ret + off_ret
 
         daily_net[bar_i] = gross_ret - cost_today + swap_today
