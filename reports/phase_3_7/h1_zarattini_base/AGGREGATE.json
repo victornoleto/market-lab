@@ -1,0 +1,296 @@
+{
+  "phase": "phase_3_7",
+  "family": "H1a_zarattini_aziz_barbon_2024_base",
+  "slug": "h1_zarattini_base",
+  "produced_at": "2026-04-22T14:43:18+00:00",
+  "broker_path": "Pepperstone Razor SPX500 CFD (no DARF per mandate \u00a72.2 rota A)",
+  "cost_model": {
+    "spread_one_way_fraction": 6.67e-05,
+    "spread_one_way_bps": 0.6669999999999999,
+    "commission_round_trip": 0.0,
+    "swap_daily": 0.0,
+    "tax_rate": 0.0
+  },
+  "data_source": "Tiingo IEX 1-min 2017-01-03 \u2192 2026-04-14 (data/phase3_7/intraday/)",
+  "winner_config": {
+    "ma_days": 14,
+    "atr_period": 20,
+    "atr_multiplier": 2.0,
+    "atr_scale": "daily",
+    "signal_start_bar": 1,
+    "flat_at_close": true,
+    "no_reentry_after_stop_same_day": true
+  },
+  "windows": {
+    "IS": [
+      "2017-06-01",
+      "2021-12-31"
+    ],
+    "OOS": [
+      "2022-01-01",
+      "2024-12-31"
+    ],
+    "FWD": [
+      "2025-01-01",
+      "2026-04-14"
+    ]
+  },
+  "splits": {
+    "IS_SPY": {
+      "name": "IS",
+      "n_bars": 1169,
+      "sharpe": -0.1483305083831561,
+      "cagr": -0.025853556856290205,
+      "max_drawdown": -0.2613950537528511,
+      "final_equity_from_unit": 0.8855827648849488
+    },
+    "OOS_SPY": {
+      "name": "OOS",
+      "n_bars": 760,
+      "sharpe": -0.33536532879008096,
+      "cagr": -0.054202596429325456,
+      "max_drawdown": -0.2279554542622133,
+      "final_equity_from_unit": 0.8452986890971951
+    },
+    "FWD_SPY": {
+      "name": "FWD",
+      "n_bars": 326,
+      "sharpe": 0.20180621767928086,
+      "cagr": 0.019321729842380453,
+      "max_drawdown": -0.12960332657914686,
+      "final_equity_from_unit": 1.0250661616360894
+    },
+    "FULL_SPY": {
+      "name": "FULL",
+      "n_bars": 2358,
+      "sharpe": -0.1483718162167295,
+      "cagr": -0.02733586085377615,
+      "max_drawdown": -0.4271906261952759,
+      "final_equity_from_unit": 0.7715555080055495
+    },
+    "OOS_QQQ": {
+      "name": "OOS_QQQ",
+      "n_bars": 760,
+      "sharpe": 0.2730022361955601,
+      "cagr": 0.03418845088222322,
+      "max_drawdown": -0.21979802921058966,
+      "final_equity_from_unit": 1.1067022468887902
+    },
+    "SPY_OOS_BH": {
+      "name": "SPY_OOS_BH",
+      "n_bars": 760,
+      "sharpe": 0.4891546481648281,
+      "cagr": 0.07235201787095025,
+      "max_drawdown": -0.2535690362555474,
+      "final_equity_from_unit": 1.2345073092640202
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable": 3,
+    "max_window_drawdown": 0.18535755117812136,
+    "pass": false
+  },
+  "pbo": {
+    "value": 0.36904761904761907,
+    "n_blocks": 10,
+    "n_combinations": 252,
+    "pass": false
+  },
+  "dsr": {
+    "dsr": 0.037762947979458394,
+    "p_value": 0.9622370520205417,
+    "observed_sharpe": -0.02113994239508895,
+    "n_trials": 5,
+    "pass": false
+  },
+  "bootstrap_oos": {
+    "ci_low": -1.9664493277642416,
+    "ci_high": 1.276727728338483,
+    "pass": false
+  },
+  "bootstrap_full": {
+    "ci_low": -1.1523151285297752,
+    "ci_high": 0.7681335788204599,
+    "pass": false
+  },
+  "cross_lib": {
+    "status": "ok",
+    "ref_cagr_oos": -0.054202596429325456,
+    "vbt_cagr_oos": -0.05949613683908228,
+    "delta_cagr_pp": 0.5293540409756825,
+    "n_common_days": 760
+  },
+  "ir_vs_spy_oos": -0.5804759952021662,
+  "median_hold_minutes": 386.0,
+  "median_hold_hours": 6.433333333333334,
+  "n_entries_full": 2205,
+  "n_trades_full": 2205,
+  "n_trades_oos_approx": 730,
+  "cum_spread_pct": 0.294147,
+  "cum_commission_pct": 0.0,
+  "cost2x_oos": {
+    "name": "OOS_cost2x",
+    "n_bars": 760,
+    "sharpe": -0.569990703991523,
+    "cagr": -0.08429814712268568,
+    "max_drawdown": -0.29265254910947236,
+    "final_equity_from_unit": 0.7667525005607758
+  },
+  "cagr_tier_oos_rotaA": "Folclore",
+  "mdd_tier_oos_rotaA": "Excelente",
+  "gates": [
+    {
+      "name": "gate_01_is_sharpe_gt_0_5",
+      "pass": false,
+      "value": "-0.148",
+      "level": "soft"
+    },
+    {
+      "name": "gate_02_oos_sharpe_ge_1_3",
+      "pass": false,
+      "value": "-0.335",
+      "level": "soft"
+    },
+    {
+      "name": "gate_03_oos_cagr_tier",
+      "pass": null,
+      "value": "-5.42% \u2192 Folclore",
+      "level": "warning"
+    },
+    {
+      "name": "gate_04_oos_mdd_tier",
+      "pass": null,
+      "value": "-22.80% \u2192 Excelente",
+      "level": "warning"
+    },
+    {
+      "name": "gate_05_fwd_sharpe_gt_0",
+      "pass": true,
+      "value": "0.202",
+      "level": "soft"
+    },
+    {
+      "name": "gate_06_wf_6_8_profitable",
+      "pass": false,
+      "value": "3/8  max_mdd=18.54%",
+      "level": "soft"
+    },
+    {
+      "name": "gate_07_median_hold_ge_1h",
+      "pass": true,
+      "value": "6.4h (386 bars)",
+      "level": "soft"
+    },
+    {
+      "name": "gate_08_ir_vs_spy_ge_0_2",
+      "pass": false,
+      "value": "-0.5805",
+      "level": "soft"
+    },
+    {
+      "name": "gate_09_cross_lib_concordance_3pp",
+      "pass": true,
+      "value": "status=ok \u0394=0.5293540409756825pp",
+      "level": "hard"
+    },
+    {
+      "name": "gate_10_bootstrap_oos_99p9_ci_low_gt_0",
+      "pass": false,
+      "value": "OOS [-1.9664,1.2767]",
+      "level": "hard"
+    },
+    {
+      "name": "gate_10b_bootstrap_full_99p9_ci_low_gt_0",
+      "pass": false,
+      "value": "FULL [-1.1523,0.7681]",
+      "level": "hard"
+    },
+    {
+      "name": "gate_11_pbo_lt_0_3",
+      "pass": false,
+      "value": "0.3690",
+      "level": "hard"
+    },
+    {
+      "name": "gate_12_dsr_p_lt_0_05",
+      "pass": false,
+      "value": "0.962237",
+      "level": "hard"
+    },
+    {
+      "name": "gate_13_cost2x_sharpe_gt_1",
+      "pass": false,
+      "value": "-0.570",
+      "level": "soft"
+    }
+  ],
+  "verdict": "FAIL (hard gates)",
+  "hard_fails": [
+    "gate_10_bootstrap_oos_99p9_ci_low_gt_0",
+    "gate_10b_bootstrap_full_99p9_ci_low_gt_0",
+    "gate_11_pbo_lt_0_3",
+    "gate_12_dsr_p_lt_0_05"
+  ],
+  "soft_fails": [
+    "gate_01_is_sharpe_gt_0_5",
+    "gate_02_oos_sharpe_ge_1_3",
+    "gate_06_wf_6_8_profitable",
+    "gate_08_ir_vs_spy_ge_0_2",
+    "gate_13_cost2x_sharpe_gt_1"
+  ],
+  "halt_n_trades_triggered": false,
+  "grid_configs": [
+    {
+      "tag": "ma14_atr20_k2_daily",
+      "ma_days": 14,
+      "atr_period": 20,
+      "atr_multiplier": 2.0,
+      "atr_scale": "daily",
+      "sharpe_full": -0.1483718162167295
+    },
+    {
+      "tag": "ma10_atr20_k2_daily",
+      "ma_days": 10,
+      "atr_period": 20,
+      "atr_multiplier": 2.0,
+      "atr_scale": "daily",
+      "sharpe_full": 0.004582387208477462
+    },
+    {
+      "tag": "ma20_atr20_k2_daily",
+      "ma_days": 20,
+      "atr_period": 20,
+      "atr_multiplier": 2.0,
+      "atr_scale": "daily",
+      "sharpe_full": -0.018839780246502714
+    },
+    {
+      "tag": "ma14_atr20_k3_daily",
+      "ma_days": 14,
+      "atr_period": 20,
+      "atr_multiplier": 3.0,
+      "atr_scale": "daily",
+      "sharpe_full": -0.12498011439697401
+    },
+    {
+      "tag": "ma14_atr14_k2_daily",
+      "ma_days": 14,
+      "atr_period": 14,
+      "atr_multiplier": 2.0,
+      "atr_scale": "daily",
+      "sharpe_full": -0.09989705887755625
+    }
+  ],
+  "is_sharpe": -0.1483305083831561,
+  "is_cagr": -0.025853556856290205,
+  "oos_sharpe": -0.33536532879008096,
+  "oos_cagr": -0.054202596429325456,
+  "oos_mdd": -0.2279554542622133,
+  "fwd_sharpe": 0.20180621767928086,
+  "fwd_cagr": 0.019321729842380453,
+  "cross_lib_max_delta_cagr_pp": 0.5293540409756825,
+  "bootstrap_oos_ci_low": -1.9664493277642416,
+  "bootstrap_full_ci_low": -1.1523151285297752,
+  "cost_x2_sharpe": -0.569990703991523
+}

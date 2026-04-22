@@ -1,0 +1,6 @@
+tag,ma_days,atr_period,atr_multiplier,atr_scale,sharpe_full
+ma14_atr20_k2_daily,14,20,2.0,daily,-0.1484
+ma10_atr20_k2_daily,10,20,2.0,daily,0.0046
+ma20_atr20_k2_daily,20,20,2.0,daily,-0.0188
+ma14_atr20_k3_daily,14,20,3.0,daily,-0.1250
+ma14_atr14_k2_daily,14,14,2.0,daily,-0.0999
