@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "phase": "phase3_5d",
+  "lead_id": "D2",
+  "lead_slug": "d2_ma_regime_gayed",
+  "lead_title": "MA regime filter homogeneous (Gayed canonical)",
+  "citations_seed": [
+    "leverage_for_the_long_run, p.13",
+    "leverage_for_the_long_run, p.16",
+    "leverage_for_the_long_run, p.60"
+  ],
+  "started_at": "2026-04-21T02:57:42+00:00",
+  "last_updated_at": "2026-04-21T03:28:35+00:00",
+  "configs": [
+    {
+      "name": "sma200_cash",
+      "type": "ma_regime",
+      "indicator": "SMA",
+      "lookback": 200,
+      "off_leg": "cash",
+      "citation": "leverage_for_the_long_run, p.13"
+    },
+    {
+      "name": "ema100_cash",
+      "type": "ma_regime",
+      "indicator": "EMA",
+      "lookback": 100,
+      "off_leg": "cash",
+      "citation": "leverage_for_the_long_run, p.16"
+    },
+    {
+      "name": "sma200_tmf",
+      "type": "ma_regime",
+      "indicator": "SMA",
+      "lookback": 200,
+      "off_leg": "TMF",
+      "citation": "leverage_for_the_long_run, p.13,p.60"
+    },
+    {
+      "name": "ema100_tmf",
+      "type": "ma_regime",
+      "indicator": "EMA",
+      "lookback": 100,
+      "off_leg": "TMF",
+      "citation": "leverage_for_the_long_run, p.16,p.60"
+    },
+    {
+      "name": "sma200_gld",
+      "type": "ma_regime",
+      "indicator": "SMA",
+      "lookback": 200,
+      "off_leg": "GLD",
+      "citation": "leverage_for_the_long_run, p.13"
+    },
+    {
+      "name": "ema100_gld",
+      "type": "ma_regime",
+      "indicator": "EMA",
+      "lookback": 100,
+      "off_leg": "GLD",
+      "citation": "leverage_for_the_long_run, p.16"
+    }
+  ],
+  "tickers_pending": [],
+  "tickers_done": [
+    {
+      "ticker": "EW_UPRO_TQQQ",
+      "frequency": "daily",
+      "window_start": "2010-02-11",
+      "window_end": "2026-04-17",
+      "iter": 3,
+      "n_configs_tested": 6,
+      "best_config": "sma200_gld",
+      "best_sharpe_oos": 1.2761118623179375,
+      "best_cagr": 0.3145793405182953,
+      "best_maxdd": -0.5631919587123994,
+      "any_pass_5gate": false,
+      "pbo": 0.11904761904761904,
+      "result_file_md": "reports/phase_3_5d/d2_ma_regime_gayed/EW_UPRO_TQQQ.md",
+      "result_file_json": "reports/phase_3_5d/d2_ma_regime_gayed/EW_UPRO_TQQQ.json"
+    },
+    {
+      "ticker": "TQQQ",
+      "frequency": "daily",
+      "window_start": "2010-02-11",
+      "window_end": "2026-04-17",
+      "iter": 4,
+      "n_configs_tested": 6,
+      "best_config": "sma200_gld",
+      "best_sharpe_oos": 1.3079729021020636,
+      "best_cagr": 0.36662933723440405,
+      "best_maxdd": -0.6032684545001925,
+      "any_pass_5gate": false,
+      "pbo": 0.11507936507936507,
+      "result_file_md": "reports/phase_3_5d/d2_ma_regime_gayed/TQQQ.md",
+      "result_file_json": "reports/phase_3_5d/d2_ma_regime_gayed/TQQQ.json"
+    },
+    {
+      "ticker": "UPRO",
+      "frequency": "daily",
+      "window_start": "2010-02-11",
+      "window_end": "2026-04-17",
+      "iter": 5,
+      "n_configs_tested": 6,
+      "best_config": "sma200_gld",
+      "best_sharpe_oos": 1.1636673072885924,
+      "best_cagr": 0.24356724293644016,
+      "best_maxdd": -0.5316608444980466,
+      "any_pass_5gate": false,
+      "pbo": 0.11507936507936507,
+      "result_file_md": "reports/phase_3_5d/d2_ma_regime_gayed/UPRO.md",
+      "result_file_json": "reports/phase_3_5d/d2_ma_regime_gayed/UPRO.json"
+    }
+  ],
+  "tickers_errored": [],
+  "status": "done",
+  "aggregation_iter": 6,
+  "aggregate_file_md": "reports/phase_3_5d/d2_ma_regime_gayed/AGGREGATE.md",
+  "aggregate_jornada": "jornada/2026-04-21/02-d2-ma-regime-gayed-aggregate-dead.md"
+}

@@ -197,6 +197,70 @@ class TestPBO:
         assert pbo_gate(0.5) == "reject"  # boundary inclusive on the bad side
         assert pbo_gate(0.3) == "pass"
 
+    def test_warns_when_n_configs_below_honest_threshold(self):
+        """Regression for Phase 3.5d E1 incident.
+
+        Same ``vol15_lk20`` strategy gave PBO=0.599 (N=7), 0.651 (N=3), 0.151
+        (N=2) — the result was a function of grid size, not strategy robustness.
+        The guard emits a ``UserWarning`` when N < ``MIN_HONEST_N_CONFIGS``.
+        """
+        import warnings
+        from ai_trade.backtest.validation.pbo import MIN_HONEST_N_CONFIGS, pbo
+
+        assert MIN_HONEST_N_CONFIGS >= 4
+
+        rng = np.random.default_rng(seed=0)
+        for n_small in [2, 3]:
+            with warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always")
+                pbo(rng.standard_normal((300, n_small)), n_blocks=8)
+            assert any(
+                issubclass(w.category, UserWarning) and "statistically unstable" in str(w.message)
+                for w in caught
+            ), f"no instability warning for N={n_small}"
+
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            pbo(rng.standard_normal((300, MIN_HONEST_N_CONFIGS)), n_blocks=8)
+        assert not any(
+            issubclass(w.category, UserWarning) and "statistically unstable" in str(w.message)
+            for w in caught
+        ), f"false-positive warning at honest threshold N={MIN_HONEST_N_CONFIGS}"
+
+    def test_small_n_pbo_is_unstable_regression(self):
+        """Quantify Phase 3.5d E1 anti-pattern: PBO at small N swings wildly by seed.
+
+        The Phase 3.5d incident: same ``vol15_lk20`` strategy, same data,
+        produced PBO=0.599 (N=7), 0.651 (N=3), 0.151 (N=2). Accepting the
+        N=2 value as evidence of robustness was the error — a single PBO run
+        at small N has sampling variance large enough to span nearly the whole
+        [0,1] interval purely by chance.
+
+        This test reproduces the mechanism: under the iid null, PBO across
+        seeds at N=2 spans a much wider range than at N=20. AFML p.208-211.
+        """
+        import warnings
+        from ai_trade.backtest.validation.pbo import pbo
+
+        pbos_n2, pbos_n20 = [], []
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", UserWarning)
+            for seed in range(30):
+                rng = np.random.default_rng(seed=seed)
+                pbos_n2.append(pbo(rng.standard_normal((400, 2)), n_blocks=8).pbo)
+                pbos_n20.append(pbo(rng.standard_normal((400, 20)), n_blocks=8).pbo)
+
+        range_n2 = max(pbos_n2) - min(pbos_n2)
+        range_n20 = max(pbos_n20) - min(pbos_n20)
+        # N=2 sampling is wider than N=20 under the iid null. Empirically
+        # N=2 spans ~0.6-0.9 of [0,1]; N=20 spans ~0.2-0.4.
+        assert range_n2 > 0.5, (
+            f"N=2 PBO should span >0.5 across seeds under null; got {range_n2:.2f}"
+        )
+        assert range_n2 >= range_n20, (
+            f"N=2 range ({range_n2:.2f}) should be >= N=20 range ({range_n20:.2f})"
+        )
+
 
 class TestDSR:
     """Deflated Sharpe Ratio from AFML ch.14 p.273-275."""

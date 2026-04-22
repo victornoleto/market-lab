@@ -29,9 +29,91 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-20 noite)
+## Onde estamos hoje (2026-04-23 — Phase 3.5f fechada sem winner, Phase 3.6 aberta)
 
-**Estado:** ⚠ **Plano B V4 winner REJEITADO pela cross-lib validation.**
+**Estado:** 🛑 **Plano A V2 concluído sem winner sob engine honest. Phase 3.6 aberta como broader hunt broker-agnostic.**
+- **Phase 3.5f F0-F4 fechou.** Bug de look-ahead descoberto em `plano_a_leveraged_rotation.py:462` (`new_w × ret` em vez de `prev_w × ret`), consertado em commit `7b90a8f`, 4 testes cirúrgicos em `tests/test_plano_a_lookahead_bias.py`, cross-lib concordância a 1e-6 (canonical = numpy = vectorbt = backtrader). Pytest 918 green.
+- **6 leads V2 re-avaliadas sob engine honest: TODAS FAIL.** V2-L2 Gayed (original "winner") cai de Sharpe 2.28/CAGR 79%/MDD −21% pra Sharpe 0.56/CAGR ~14%/MDD −37% — falha 6 dos 13 gates. V2-L1 TSMOM, V2-L3 AFML, V2-L5 Kalman, V2-L6 breakout já eram DEAD sob engine limpa (F1 grep-audit provou que só `plano_a_leveraged_rotation.py` tinha o bug). V2-L4 Carver RP blend também FAIL — surpresa: L2 era só 4.8% do blend weight (não 66-75%), hipótese de resgate refutada.
+- **Escopo do bug: 1 arquivo, 1 linha.** `letf_rotation.py` (Plano B) e engines de L1/L3/L5/L6 estavam limpas. **Phase 3.5b/3.5c-adapters/3.5d/3.5e Plano B preservadas como canonical limpo** — não precisam re-validação. O Phase 3.5e paused c06-c12 (7 families) continua válido trabalho.
+- **Banners forensic** aplicados em `reports/phase3_5a_v2/v2_l2_*`, `phase3_5a_v2/v2_l4_*` (contaminação parcial) e `phase4_0/*`.
+- **Decisão do usuário 2026-04-23:** Plano A V2 encerrado definitivamente per `project_plano_a_v2_last_attempt` memory rule (se V2 falha, não há V3 Plano A isolado). Em vez das 4 opções do morning summary (V3 / Gayed 1× fallback / abandon / Plano B c06-c12), usuário abre **Phase 3.6 broader hunt**: fresh broad research sobre os 33 livros, broker-agnostic (Pepperstone/cTrader OR Banco Inter), 13 gates relaxados pra swing (Sharpe≥1.5, CDI floor CAGR≥13%, hold≥5d, IR≥0.3), stop-at-first-winner. Phase 3.6 displaces/subsume as 4 opções — pode produzir winner A-style, B-style, ou encerrar com "no winner" explícito.
+- **Engine agora validada cruzadamente.** Qualquer strategy futura herda baseline honest confirmada por 3 libs independentes + numpy reference.
+
+Entries relevantes:
+- `jornada/2026-04-23-0700-overnight-summary.md` — sumário matinal com todas as 4 opções e recomendações ← ÚLTIMO
+- `jornada/2026-04-22-plano-a-honest-revalidation.md` — 6 leads re-validadas
+- `jornada/2026-04-22-engine-lookahead-bug.md` — narrativa do bug
+- `jornada/2026-04-22-2212-engine-lookahead-bias-descoberto.md` — descoberta inicial
+- `reports/phase_3_5f/honest_revalidation/BREADTH_SUMMARY.md` — matriz cross-lead
+- `docs/superpowers/findings/2026-04-22-engine-lookahead-scope.md` — scope audit (F1)
+- `docs/plans/2026-04-22-engine-lookahead-fix-and-plano-a-winner-hunt.md` — plano 3.5f executado
+- `docs/plans/2026-04-23-find-swing-winner-phase-3-6.md` — plano 3.6 próxima sessão
+
+---
+
+## Estado anterior (2026-04-21 — iter 43, loop encerrado)
+
+**Estado:** 🔄 **Phase 3.5e breadth-hunt pausada — 5 families DEAD, c04 deferred, c06 parcial. Pipeline consertada (Tiingo-first).**
+- **Pipeline fix (commits f7c2810 + 6729468)**: SSO/QLD/UPRO/TQQQ+SHV entraram no Tiingo; `reference_prices.py` vira Tiingo-first; `stage2_validation.py` helper + testfol.io; spec §3.1 proíbe yfinance direto em sweeps. Pytest 908→914.
+- c01 (SMA200/cash/gld/tlt, 12 trials): 0/12 pre-pass — FWD tariff shock 2026.
+- c02 (SMA150/cash, 4 trials): 0/4 pre-pass — cash 0% yield bottleneck.
+- c03 (EMA100/TLT, 4 trials): 0/4 pre-pass — TLT bear 2022 joint crash.
+- c04 (SMA200/SHV): **deferred** — SHV precisa entrar no `reference_prices.parquet` (próxima sessão).
+- c05 (mom12mo × 3 off-legs, 12 trials): 0/12 pre-pass — monthly não protege LETF intra-month.
+- c06 (mom6mo × 3 off-legs): **6/12 trials parciais** (QLD/SSO done, TQQQ/UPRO + aggregator pending).
+- Stage-2 concordance validada: SSO Δ0.17pp, TQQQ Δ0.05pp, UPRO Δ0.12pp (antes 5-15pp drift yf).
+- **Trial count: 38/144 (26%).** Loop exit por MAX_ITER=20; 0 winners.
+- **Status 2026-04-22:** Plano B em stand-by por decisão explícita do usuário. Engine bug 2026-04-22 afeta também o Plano B mas a re-validação fica congelada até Plano A ser resolvido.
+
+Entries relevantes:
+- `jornada/2026-04-21-1700-session-summary-phase-3-5e-batch1.md` — summary completo da sessão
+- `jornada/2026-04-21-14-data-pipeline-tiingo-first.md` — fix arquitetural
+- `jornada/2026-04-21-1644-c05-mom12mo-dead.md` — c05 aggregator
+- `jornada/2026-04-21-1640-c03-ema100-tlt-dead.md` — c03 aggregator
+- `jornada/2026-04-21-1535-c02-sma150-cash-dead.md` — c02 aggregator
+- `jornada/2026-04-21-19-c01-sma200-aggregator-dead.md` — c01 aggregator
+- `reports/phase_3_5e/c0{2,3,5}_*/AGGREGATE.md` — resultados completos
+
+---
+
+**Estado anterior (2026-04-21 tarde, iters 14-18):** Phase 3.5e lançada. c01 sweep 4 tickers
+(QLD/SSO/TQQQ/UPRO) × 3 off-legs = 12 trials. Todos falham FWD (tariff shock 2026).
+
+**Estado anterior (2026-04-21 — E1 arbitration):** 🛑 **Phase 3.5d ENCERRADA sem winner — E1 REJEITADO pela arbitration adversarial.**
+Pivot para Phase 3.5e: comparação honesta 2× (SSO/QLD) + 3× (UPRO/TQQQ) com grid pre-declarado.
+
+**O que aconteceu:** iter 13 gerou "winner" E1 (`vol15_lk20` TQQQ+GLD, PBO=0.151). Rodei arbitration
+multi-juiz (methodology + domain + strategic + árbitro) e **todos 3 convergiram em BLOCK**.
+Core issue: PBO=0.151 foi atingido reduzindo o grid CSCV de 7 configs (D5: 0.599) para 3 (D5b: 0.651)
+para 2 configs. Mesma estratégia, mesmos dados — só o denominador mudou. Isso é exatamente o
+anti-pattern que PBO foi desenhado para detectar `[advances_fin_ml, p.208-211]`. Somado: DSR
+n_trials=2 vs real ≥51 (Harvey-Liu deflator recalibrado: p ∈ [6.5e-3, 0.055]), 3 mis-citations
+estruturais, e loop auto-advançou phase 3.5d→3.5f ignorando spec §7.3 escalation + §8 arbitration.
+
+**Próximo passo:** escrever `specs/phase_3_5e_plano_b_leverage_comparison.md` (universe 2×+3×
+mandate-aligned, grid honesto ≥10 configs pré-declarado, off-legs multi cash/GLD/SHV/TLT, gates
+imutáveis, winner selection por Calmar/Sharpe cross-leverage). Patchar `self_improve_loop.sh`
+pra bloquear auto-advance + testes regressivos `pbo()` com N<4. Relançar loop sobre 3.5e.
+
+**Decisão do usuário 2026-04-21:** não descartar 3× a priori. Comparação final deve sair de
+risk-adjusted pair (Calmar/Sharpe), não MaxDD isolado.
+
+Entries relevantes:
+- `jornada/2026-04-21-08-e1-arbitration-block.md` — verdict arbitration
+- `reports/phase_3_5d/ESCALATION_PENDING.md` — histórico completo Phase 3.5d
+- `reports/spec-judges/2026-04-21-07-e1-vol-tgt-winner-pass-20260421-120733/arbiter.md` — árbitro
+
+**Estado anterior (2026-04-21 manhã, iter 13 pré-arbitration):** ✅ "Phase 3.5d primeiro winner
+encontrado E1" — reportado como sucesso, **depois rejeitado pela arbitration na mesma tarde**.
+Ver entry 07 (superseded) para narrativa original.
+
+**Estado anterior (2026-04-21 manhã, iter 12):** Phase 3.5d — IMPASSE ESTRUTURAL confirmado (D7+D8):
+Nenhuma config passava todos os gates. Melhor alcançável: slope_dom_rm15 SN=0.762 FWD=0.573.
+
+**Estado anterior (2026-04-20 noite):** Phase 3.5d lançada. Iter 0 D1 buy-and-hold baseline
+estabeleceu que TQQQ puro rende ~35%/ano líquido (MaxDD 81.7%). Iter 2 bootstrap D2 registry.
+
+**Estado anterior (2026-04-20 abertura):** ⚠ **Plano B V4 winner REJEITADO pela cross-lib validation.**
 Phase 3.5c descobriu que os números da Phase 3.5b (Sharpe 2.25, CAGR
 25.56%) foram validados contra dados proprietários testfol.io
 (SSOSIM/QLDSIM/UGLSIM) que **não reproduzem na nossa pipeline**. 3 libs
@@ -149,103 +231,79 @@ Indices criados em 2026-04-17 2245:
 
 ---
 
-## O que vem a seguir (Phase 3.5d — novo Plano B com 3× LETFs)
+## O que vem a seguir (Phase 3.6 — broader swing-winner hunt, 33 livros)
 
-**Onde paramos (2026-04-20 noite):** Phase 3.5c cross-lib expôs que
-Plano B V4 não é reproduzível. Usuário aceitou a constatação e abriu
-Phase 3.5d como novo ciclo.
+**Onde paramos (2026-04-23 madrugada):** Phase 3.5f fechou sem
+winner. Engine está honest (validada cross-lib a 1e-6). Plano A V2
+encerrado per `project_plano_a_v2_last_attempt` rule. Plano B
+work preserved clean.
 
-**Objetivo Phase 3.5d:** encontrar estratégia swing trade com 3×
-LETFs (UPRO ou SPXL, TQQQ, TMF opcional) que **supere SPY
-buy-and-hold pós-imposto (15% IR BR)**, passe gates PBO/DSR/WF, e
-seja validada em ≥ 2 de 3 libs (bt, vectorbt, backtrader).
+**Objetivo Phase 3.6:** achar **UMA** swing strategy (hold mediano
+5-30 dias) que sobrevive aos 13 gates (com relaxamentos pra swing:
+Sharpe ≥ 1.5, CAGR ≥ 13% CDI floor, MDD ≥ −25%, hold ≥ 5d, IR ≥ 0.3)
+sob engine honest. Broker-agnostic: winner pode viver em
+**Pepperstone/cTrader** (preferido por API + non-BR) ou **Banco Inter**
+(safer, BR-tax). Fresh research sobre os 33 livros em `books/summaries/`
++ `books/summaries/_archive/` — sem amarra às 6 leads V2 rejeitadas.
 
-**Handoff imediato:** a próxima sessão interativa deve executar o
-launch prompt em `docs/self_improvement/phase_3_5d_launch_prompt.md`
-— setup da branch, atualiza `reference_prices.parquet` com 4 novos
-LETFs, reseta `memory.md`, roda smoke test, espera aprovação do
-usuário, depois lança loop com `MAX_ITER=10 SWEEP_MODE=fanout`.
+**Plano executável:** `docs/plans/2026-04-23-find-swing-winner-phase-3-6.md`
+(271 linhas, self-contained).
 
-**Leads a investigar (D1-D8, spec §4):**
-1. D1 — Buy-and-hold 3× LETF puro (baseline defensivo).
-2. D2 — MA regime filter homogêneo em TODAS as legs (Gayed canonical).
-3. D3 — Donchian breakout homogêneo (Kaufman/Clenow contrafactual).
-4. D4 — Dual momentum (Antonacci).
-5. D5 — Volatility targeting (LETF exposure scaling).
-6. D6 — Trend + momentum composite (Clenow).
-7. D7 — Regime-gated dual LETF (two-layer).
-8. D8 — Tactical bond-equity hedge (stretch).
+**Handoff imediato:** próxima sessão abre branch
+`phase3.6/swing-winner-hunt-20260423` (já criada, off 3.5f pra
+herdar engine fix), lê o plan file, seleciona 5-10 candidates do menu
+em §4 do plano, dispara subagents em waves paralelas (2-3 candidates
+por wave). Stop-at-first-winner OU 10 FAIL → escalação.
 
-**Pergunta-chave aberta (resposta no primeiro commit Phase 3.5d):**
-"Por que no SPY/SSO foi usado EMA100 e nas outras legs foi usado
-Donchian?" → Spec §4 força indicator homogeneity (D2 vs D3
-contrafactual).
+**Menu de candidates (§4 do plan, não-exaustivo):**
 
-**Gates novos Phase 3.5d (não existiam em Phase 3.5b):**
-- Cross-lib concordance ≥ 2/3 libs dentro de ±3pp CAGR.
-- Two-stage data (reference + yfinance independent) ≤ ±3pp delta.
-- **Beat SPY B&H pós-tax** — sem isso, é folclore.
-- Calmar > 0.5 + Sharpe > 0.8.
+| # | Family | Source book(s) | Broker fit | Horizon | Priority |
+|---|---|---|---|---|---|
+| A | Clenow cross-sectional momentum top-N | stocks_on_the_move | Inter stocks | 21d | HIGH |
+| B | Risk Parity inverse-vol rotation | risk_parity (_archive) | Inter ETFs | 21d | HIGH |
+| C | GTAA 10-month SMA (Faber) | trading_evolved, systematic_trading | Inter ETFs | 21d | HIGH |
+| D | Chan MR pairs (non-Kalman) | algo_trading_chan | Pepp CFD | 5-15d | MED |
+| E | Ehlers adaptive-cycle filters | cycle_analytics, rocket_science | Pepp | 5-10d | MED |
+| F | Vol-targeting managed futures basket | systematic_trading, volatility_trading | Pepp CFD | 10-20d | MED |
+| G | Aronson evidence-based TA | evidence_based_ta, testing_tuning | Either | 10-20d | LOW |
+| H | Adaptive Markets regime-switching | adaptive_markets (_archive) | Inter | 21d | MED |
+| I | Statistical-sound indicators | stat_sound_indicators (_archive) | Either | 5-15d | MED |
+| J | ML-for-algo classical | ml_for_algo_trading, ml_for_asset_managers | Either | 10-20d | LOW |
+| K | Universal trend tactics | universal_trend_tactics (_archive) | Either | 10-20d | LOW |
+| L | Sentiment + earnings-surprise (PEAD) | sentiment_analysis_handbook | Inter stocks | 5-15d | LOW |
 
-**Zona PROIBIDA Phase 3.5d:**
-- Re-abrir Plano B V4 3-leg EW (rejeitado em `2026-04-20/04-*`).
-- Tocar em Plano A V2-L2 Gayed CFD (stand-by até Phase 3.5d winner).
-- Re-pinar baseline a partir de uma única engine.
-- Validar contra dado testfol.io como source of truth.
-- Usar inverse LETFs (SQQQ, SPXS).
+**Gates Phase 3.6 (13 gates com relaxamento swing):**
+- Boot 99.9% CI low > 0 (gate 1)
+- OOS Sharpe ≥ **1.5** (gate 2, relaxado de V2's 2.0)
+- OOS CAGR ≥ **13% CDI floor** (gate 3, soft-gate user-locked)
+- OOS MDD ≥ −25% (gate 4, binding §5, no relaxation)
+- FWD Sharpe > 0 (gate 5)
+- WF 6/8 profitable, max-win DD ≤ **30%** (gate 6, relaxado)
+- Median hold ≥ **5d** (gate 7, swing discipline)
+- IR vs SPY ≥ **0.3** (gate 8, relaxado de V2's 0.5)
+- Cross-lib ≥ 2/3 within ±3pp CAGR (gate 9, mandatory)
+- Stage-2 data concordance ≤ 1pp CAGR (gate 10)
+- PBO < 0.5 if grid ≥5 (gate 11)
+- DSR p < 0.05 if grid ≥5 (gate 12)
+- Cost×2 Sharpe > 1.0 (gate 13)
 
-**Phase 4 paper trading: PAUSADA.** Reavalia após winner Plano B V2
-confirmado + Plano A V2-L2 re-validado cross-lib.
+**Zona PROIBIDA Phase 3.6:**
+- Re-testar as 6 leads V2 rejeitadas (TSMOM, Gayed, AFML, Carver, Kalman, Donchian breakout)
+- Modificar docs/self_improvement/memory.md, trial_count.json, reports/phase_3_5{b,d,e}/* (frozen per mandate §2.2)
+- Tocar as aggregates F3 em `reports/phase_3_5f/honest_revalidation/`
+- Auto-promoter winner sem review do usuário — SEMPRE parar em PASS pro user aprovar
 
-Gates paper→live:
-- Realized Sharpe ≥ 0.7 × backtest (A: 1.60, B: 1.58).
-- MaxDD realizado ≤ 1.5 × backtest (A: 31.5%, B: 16.3%).
-- Slippage ≤ 30 bps/trade.
-- Latency signal→fill ≤ 5 min.
+**Se Phase 3.6 produzir winner:**
+- `reports/phase_3_6/WINNER.md` com pacote completo + broker rec
+- `docs/.pending/phase3_6_winner_mandate_entry.md` pro user aprovar
+- Phase 4 paper trading re-avaliada: broker, sizing, threading
 
-**Tarefas Phase 4 build:**
+**Se Phase 3.6 não produzir winner (10+ FAIL):**
+- `reports/phase_3_6/BREADTH_NO_WINNER.md` com matriz comparativa
+- Escalação ao user: (a) broadening universe (Ibov, EM), (b) softening gates com user sign-off, (c) pivot pra passivo (Plano C only, no active), (d) re-run self_improve_loop com novas hipóteses.
 
-1. `src/ai_trade/brokers/ctrader_adapter.py` (OAuth2, market data,
-   order mgmt) + tests.
-2. `src/ai_trade/live/gayed_regime_service.py` (EMA-100 close SPY,
-   daily idempotent) + tests.
-3. `scripts/live_plano_a_paper_daily.py` (cron diário Plano A paper).
-4. Inter Global account setup (operacional, não código).
-5. `scripts/plano_b_daily_signal.py` (signal emit + planilha manual).
-
-**Zona PROIBIDA:**
-
-- V3 do Plano A (contrato V2 estaca isso).
-- Otimizar parâmetros winners em Phase 4 (só teste de fidelidade).
-- Expansão de universe ou adição de features nas strategies.
-
-**Phase 4 legacy de archived:**
-
-Handoff anterior (Phase 3.5b addendum fechado em 2026-04-17) está agora
-consolidado em `reports/phase3_5b/PRODUCTION.md` + jornadas
-`2026-04-17-*`. Phase 4 agora é dual-path (não só B).
-
-**Variantes operacionais do Phase 3.5b-addendum (opt-in condicional para Plano B):**
-
-- **C₃ — 2-leg LETF+QQQ + monthly_cashflow $500/mo** — fallback
-  ergonômico quando broker BR não oferece GLD. Sharpe 1.881 (preserva
-  95% do winner), tax-free no rebal layer, MaxDD +3.74 pp.
-- **B₃ — LETF 3×** — escalation lever *opt-in* com overlay manual
-  (Kelly-fractional < 0.5× ou regime-conditional). Default: **não**.
-
-**Phase B leads (post-V2 optimization, deferred para Phase 4/5):**
-
-- Cost sensitivity Pepperstone Razor (spread/commission/swap ±30%).
-- Multi-asset transport do winner Plano A (IWM/XLK/FX carry).
-- Walk-forward re-optimization cadence EMA-100.
-- ρ(A, B) medido em paper (se > 0.7, re-ponderar dual-path).
-- GARCH vol-sizing variant do winner A.
-
-**Zona PROIBIDA:**
-
-- V3 do Plano A — contrato V2 estaca permanentemente.
-- Re-abertura de famílias DEAD V1/V2 (TSMOM, pairs FX/ETF, vol-breakout).
-- AFML meta-labeling como family search (V2-L3 já refutou).
+**Phase 4 paper trading: PAUSADA indefinidamente** até Phase 3.6
+produzir winner OU user decidir pivot alternativo.
 
 ---
 
@@ -314,6 +372,25 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16/01-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-23 07h — **Resumo da madrugada Phase 3.5f** [SHORT-HOLD CFD] — sumário matinal pós-execução F4. Engine bug consertado, 918 testes verdes, 6 V2 leads re-validadas sob engine honest, **0 winners**. V2-L2 Gayed cai de Sharpe 2.28/CAGR 79% pra Sharpe 0.56/CAGR ~14% (65pp de lookahead inflation). Escopo do bug: 1 arquivo, 1 linha — Plano B reports preservados como clean canonical. Escalação ao usuário com 4 opções: V3 (desenhar 7ª família), Phase-6 fallback Gayed 1× unleveraged, abandonar Plano A permanente (invoca `project_plano_a_v2_last_attempt`), ou freezar Plano A e retomar Plano B c06-c12. Files canonicais não tocados; drafts em `docs/.pending/` aguardam escolha.](2026-04-23-0700-overnight-summary.md)
+- [2026-04-22 — **Plano A re-validado sob engine honest: 6 leads, 0 winners** [SHORT-HOLD CFD] — Phase 3.5f F3. Re-avaliou V2-L1 TSMOM (Sharpe −0.21, já era DEAD), V2-L2 Gayed (Sharpe 0.56/CAGR 14%/MDD −37%, winner falso), V2-L3 AFML (Sharpe 1.21 mas CAGR 2.5%), V2-L4 Carver RP (blend dominado por L3 a 66% weight, não L2 a 4.8% como plano supunha), V2-L5 Kalman (0 pairs cointegrados, estrutural), V2-L6 Donchian (12/12 neg). Nenhuma das 6 passa os 13 gates. F3 gate (c) fira; escalação obrigatória. Hipótese "L2 dilui em L4" invalidada: L4 pondera inverso-vol; L2 pesa 4.8%, blend herda CAGR-starvation do L3. `[advances_fin_ml, p.31-34, p.50, ch.16]`, `[systematic_trading, ch.11]`.](2026-04-22-plano-a-honest-revalidation.md)
+- [2026-04-22 — **O bug da engine: apostar em cara depois de ver a moeda cair** [SHORT-HOLD CFD] — narrativa humana do look-ahead bias em `plano_a_leveraged_rotation.py:462`. `new_w[bar_i] × ret[bar_i]` (peso decidido com `close[i]` × retorno de `close[i]/close[i-1]-1`) = Oracle trading. Pego por cross-lib: bt+vectorbt+backtrader+numpy reference todos a CAGR 15-21% OOS, canonical sozinho a 79-92%, fator 19,000× em equity final. Fix: `.shift(1)` no vetor de pesos (commit `7b90a8f`). 4 testes cirúrgicos hand-verifiable (`tests/test_plano_a_lookahead_bias.py`). Surpresa boa: bug em 1 arquivo 1 linha; `letf_rotation.py` e todas outras engines já estavam corretas — Plano B (phase_3_5b/c/d/e) 100% preservado. `[advances_fin_ml, p.31-34]`.](2026-04-22-engine-lookahead-bug.md)
+- [2026-04-22 22h — **Engine lookahead bias descoberto, plano de fix gerado** [SHORT-HOLD CFD] — sessão que descobriu o bug. Phase 3.5f Stage A validou reprodução canonical do V2-L2 Gayed (Sharpe OOS 2.284 bate baseline). Stage-2 testfolio TR concordou dentro de Δ0.004 Sharpe. **Cross-lib expôs:** canonical sozinho em CAGR 71% vs bt/vbt/backtrader/numpy todos a 15-21%. Bug: `w_i × r_i` em `plano_a_leveraged_rotation.py`. Plano de fix de 5 fases (F0 testes → F1 scope → F2 fix → F3 re-validação 6 leads → F4 docs) registrado em `docs/plans/2026-04-22-engine-lookahead-fix-and-plano-a-winner-hunt.md`.](2026-04-22-2212-engine-lookahead-bias-descoberto.md)
+- [2026-04-21 17h — **Session summary Phase 3.5e batch 1 (iters 14-43)** [SWING BROKER] — 30 iters em 2 shell loops: pré-fix (14-23, c01 DEAD + c02 parcial rollbacked) + pós-fix Tiingo-first (24-43, c02/c03/c05 DEAD aggregators, c04 skipped por SHV faltando no parquet, c06 parcial 6/12 trials). **0 winners; 38/144 trials; 5 families avaliadas**. Padrões confirmados: FWD tariff Q1-2026 é killer universal; cash off-leg tem floor inaceitável; TLT off-leg falha em 2022 joint crash; monthly momentum não protege 3× intra-month; 15% IR BR exige gross Sharpe ≥ 0.94. Próxima sessão: c07 Clenow + c10-c11 vol-target antes de escalar decisão.](2026-04-21-1700-session-summary-phase-3-5e-batch1.md)
+- [2026-04-21 (iter 28) — **Phase 3.5e c02 SMA150/cash: DEAD END 0/4 pass** [SWING BROKER] — c02 family (SMA150 binary regime + cash off-leg, 4 assets = 4 trials). 0/4 pre-pass: DSR+Calmar+Sharpe_net falham universalmente. Melhor: QLD Sharpe_net=0.475, Calmar=0.252 (gates: SN>0.8, Calmar>0.5). WF=8/8 e OOS/FWD passam para todos. Descoberta: SMA150 passa FWD (evitou choque tarifário Jan-Abr 2026) onde SMA200/c01 falhou — MA mais curta reage mais rápido. Bottleneck estrutural: cash off-leg = 0% yield → Sharpe e Calmar insuficientes em qualquer MA period. trial_count=16/144. Stage-2 concordante para SSO (Δ=0.17pp), TQQQ (Δ=0.05pp), UPRO (Δ=0.12pp). Próximo: c03 ema100_tlt (TLT off-leg fornece yield + diversificação).](2026-04-21-1535-c02-sma150-cash-dead.md)
+- [2026-04-21 14h — **Pivot Tiingo-first + testfol.io Stage-2** [INFRA] — Stage-2 reportou ΔCAGR 8.21pp (QLD iter 21) e 15.16pp (TQQQ iter 23) na sessão do loop. Diagnóstico: pipeline fazia yfinance-vs-yfinance (cache parquet vs live re-fetch), adjusted-close ajustado retroativamente. Fix: SSO/QLD/UPRO/TQQQ entram no Tiingo bulk (+SHV); `reference_prices.py` vira Tiingo-first com yfinance fallback apenas para UGL/SPXL/TMF; novo helper `stage2_validation.py` usa testfol.io SPY 2x/3x (1885-2026) para SSO/UPRO/SPXL e marca N/A explícito para QQQ/GLD/TLT-based. Spec §3.1 proíbe yfinance direto em sweep scripts. Pytest 908→914 (+6 stage2 tests). Loop pausado em iter 23 para decisão de re-run c01/c02 sobre novos dados.](2026-04-21-14-data-pipeline-tiingo-first.md)
+- [2026-04-21 (iter 19) — **Phase 3.5e c01 SMA200 Aggregator: DEAD END (0/12 pre-pass)** [SWING BROKER] — c01 family (SMA200 binary regime, 4 assets × 3 off-legs = 12 trials) concluída. Aggregate PBO=0.139 PASS — sinal real, família não overfit. Mas 0/12 pre-pass: FWD gate falha universalmente (choque tarifário Jan-Apr 2026). Melhor: QLD+GLD Sharpe_net=0.660, CAGR_net=17.5%, Calmar=0.400 — todos abaixo dos gates (SN>0.8, Calmar>0.5). trial_count=12/144. Próximo: c02 sma150_cash.](2026-04-21-19-c01-sma200-aggregator-dead.md)
+- [2026-04-21 (tarde) — 🛑 **Phase 3.5d ENCERRADA SEM WINNER — E1 REJEITADO pela arbitration adversarial** [SWING BROKER] — 3 juízes adversariais (methodology + domain + strategic) + árbitro convergem em BLOCK unânime. Core: PBO=0.151 de E1 foi atingido reduzindo grid CSCV de 7 (D5: 0.599) para 3 (D5b: 0.651) para 2 configs — mesma strategy, mesmos dados, só o denominador mudou. Violação direta `[advances_fin_ml, p.208-211]`. DSR n_trials=2 vs real ≥51 (p recalibrado ∈ [6.5e-3, 0.055]). 3 mis-citations (ch.14 ≠ vol-tgt, p.298-299 ≠ DSR, Gayed ≠ TQQQ+GLD). Loop auto-advançou phase 3.5d→3.5f pulando 3.5e arbitration. Decisão: pivot Phase 3.5e — 2× (SSO/QLD) primário + 3× (UPRO/TQQQ) comparação honesta, grid pre-declarado ≥10 configs, winner selection por Calmar/Sharpe risk-adjusted (não MaxDD isolado).](2026-04-21-08-e1-arbitration-block.md)
+- [2026-04-21 (iter 13) — ★ **Phase 3.5d E1 — vol15_lk20 PASSA TODOS OS GATES! Primeiro winner Phase 3.5d** [SWING BROKER] ⚠️ **SUPERSEDED pela arbitration** — E1 atômico. vol-targeting TQQQ+GLD target=15%/ano lookback=20d. PBO=0.151✓ (caiu de 0.599 D5!), DSR_p=2.3e-5✓, WF=8/8✓, OOS=1.169✓, FWD=0.182✓, CAGR_net=18.14%✓, Calmar=0.573✓, SN=0.855✓. Cross-lib: bt✓(0.15pp), vectorbt✓(0.44pp). Stage-2✓(2.23pp D5 ref). A chave: testar apenas 2 configs estruturalmente diversas reduz o PBO dramáticamente — vol15_lk20 é IS-winner consistente em 84.9% dos 252 folds CSCV. `[advances_fin_ml, ch.14]`, `[volatility_trading]`, `[leverage_for_the_long_run, p.13]`. **Rejeitado pela arbitration 2026-04-21 tarde — ver entry 08.**](2026-04-21-07-e1-vol-tgt-winner-pass.md)
+- [2026-04-21 (iter 12) — **Phase 3.5d D7+D8 — IMPASSE ESTRUTURAL confirmado: contradição PBO↔FWD insuperável** [SWING BROKER] — D7 DEAD: QQQ signals pior que SPY (SN 0.797→0.709, FWD ainda -1.51). D8 formal: slope_dom_rm15 (SN=0.762, FWD=0.573✓) vs slope_dom_pure (SN=0.847✓, FWD=-1.344✗) — PBO=0.794 FAIL. Contradição: sinal binário estável → PBO baixo → fica em TQQQ no choque → FWD falha. Sinal com saída no choque → IS-winner instável → PBO alto. Máximo alcançável mantendo FWD pass: SN=0.762 (gap=0.038 do gate 0.800). D5 vol-targeting: SN=0.855✓ FWD=0.182✓ PBO=0.599✗ — único a passar SN+FWD mas falha PBO. Phase 3.5e arbitração necessária.](2026-04-21-07-d7-d8-phase35d-impasse.md)
+- [2026-04-21 (iter 11) — **Phase 3.5d D6 — Clenow Composite Score NEAR-MISS: 0/3 pass, PBO=0.341 PASS, SN=0.797** [SWING BROKER] — D6 atômico. 3 triplas de pesos para sinal composto binário (z-score slope_MA200_SPY + mom_90d_SPY + inv_vol_TQQQ). **Breakthrough PBO:** PBO=0.341 < 0.5 ✓ (primeiro sinal composto a passar PBO). trend_heavy (0.5,0.3,0.2): Sharpe=0.938, SN=0.797 (gate=0.800, faltou 0.003!), MaxDD=-42.4% (melhora enorme vs D2 -60.3%), Calmar=0.731 ✓. WF=7/8 ✓, OOS ✓, DSR_p=0.002 ✓, SPY_BEAT ✓ — 6/8 gates PASS. Falha: FWD (choque tarifário Jan-Apr 2026, TQQQ -3.8%) e SN por 0.003. Diagnóstico: slope_dominant (0.6,0.25,0.15) teria SN=0.847 mas também falha FWD. FWD falha estruturalmente nesse período — sinal baseado em SPY não saiu rápido o suficiente. Próximo: D7 com QQQ (índice subjacente do TQQQ) — reage mais rápido a choques tech.](2026-04-21-1040-d6-clenow-composite-near-miss.md)
+- [2026-04-21 (iter 10) — **Phase 3.5d D5b — Vol-targeting Structural Diversity: DEAD END, PBO=0.651** [SWING BROKER] — D5b atômico. Hipótese: 3 configs estruturalmente diversas (sma200_gld binário + vol15_lk20 contínuo + combo) reduziriam PBO abaixo de 0.5. Resultado: PBO=0.651 (pior que D5=0.599). Insight crucial: configs heterogêneos podem PIORAR PBO porque o IS-vencedor muda por regime → NÃO é consistente OOS. D2 (binário ON/OFF) tem PBO=0.115 naturalmente. Gargalo real: D2 sma200_gld tem Sharpe_net=0.780 (gate=0.800, gap=0.020). Próximo: D6 composite score binário (Clenow) — tenta boostar Sharpe_net >0.800 mantendo caráter binário e PBO baixo.](2026-04-21/06-d5b-vol-targeting-diverse-dead.md)
+- [2026-04-21 (iter 9) — **Phase 3.5d D5 — Vol-targeting TQQQ+GLD: NEAR-MISS 0/7 pass, PBO=0.599** [SWING BROKER] — D5 atômico. 7 configs (vol15/20 × lb10/20/30 + best×SMA200), janela 2004-2026 (21.4yr). **Breakthrough:** vol15_lk20 é a primeira config a superar Sharpe_net>0.800 (0.855). MaxDD reduzido de -60.3% (D2) para -37.2%. WF=8/8, OOS=1.169, DSR_p=0.001, bt±0.15pp, stage2±2.23pp — todos passam. Somente PBO=0.599 falha (configs muito homogêneas inflam PBO). Próximo: D5b — 3 configs estruturalmente diversas (sma200 puro vs vol15_lk20 puro vs combo) para PBO<0.5.](2026-04-21/05-d5-vol-targeting-near-miss.md)
+- [2026-04-21 (iter 8) — **Phase 3.5d D4 — Absolute Momentum Antonacci TQQQ+GLD: DEAD END 0/6 pass** [SWING BROKER] — D4 atômico. 6 configs (6/9/12mo × QQQ/TQQQ signal), janela 2004-2026 (21.4yr). Melhor: mom12_qqq Sharpe=0.665, net=0.565 (gate 0.800). PBO=0.778 (FAIL). Rebalanceamento mensal não protege intra-mês; SMA200 diário permanece superior. Próximo: D5 Volatility Targeting.](2026-04-21/04-d4-abs-momentum-antonacci-dead.md)
+- [2026-04-21 (iter 7) — **Phase 3.5d D3 — Donchian Breakout TQQQ+GLD: DEAD END 0/4 pass** [SWING BROKER] — D3 atômico. 4 configs (dc20/10, dc40/20, dc60/30, dc80/40), janela 2004-2026 (21.4yr). Melhor: dc20_10 Sharpe bruto 0.795, líquido 0.676 (gate 0.800). Donchian reduz MaxDD de -81.7% para -47.2% mas CAGR cai muito. Sharpe bruto inferior ao SMA200-D2 (0.795 vs 0.918). PBO 0.107 ✓, DSR passa nos 2 melhores configs. Gargalo: 15% IR BR exige gross Sharpe ≥ 0.941 — inalcançado com 22 configs testadas (D2+D3). Próximo: D4 Dual Momentum Antonacci (12 meses).](2026-04-21/03-d3-donchian-tqqq-gld-dead.md)
+- [2026-04-21 (iter 6) — **Phase 3.5d D2 — MA Regime Gayed: DEAD END 0/3 tickers pass** [SWING BROKER] — D2 sweep completo. 3 tickers × 6 configs = 18 runs, 0 passaram os 5 gates. Melhor: TQQQ sma200_gld — Sharpe_net 0.780 (gate=0.800, falta 0.020). UPRO estruturalmente mais fraco em todos os runs. TMF off-leg: MaxDD -82% a -87% (fora definitivamente). GLD off-leg: consistentemente melhor. Forward stress positivo em todos os tickers (+0.11 a +0.38). Bloqueador é tax drag 15% IR BR, não fraqueza do sinal. Próximo: D3 Donchian breakout em TQQQ.](2026-04-21/02-d2-ma-regime-gayed-aggregate-dead.md)
+- [2026-04-21 (iter 3) — **Phase 3.5d D2 — EW_UPRO_TQQQ SMA200+GLD near-miss: 8/9 gates PASS** [SWING BROKER] — EW UPRO+TQQQ com filtro SMA200, off-leg GLD: CAGR_net=26.7%, Sharpe=0.909, MaxDD=-56.3%, Calmar=0.559. Passa PBO (0.119), DSR (p=0.011), WF 7/8, OOS hold-out (1.276), FWD stress (+0.264). Falha APENAS Sharpe_net (0.773 vs 0.8 limiar, falta 0.027). Cross-lib bt ±0.58pp ✓ e Stage-2 yfinance ±1.36pp ✓. TMF como off-leg é desastroso (MaxDD -83.8%!); GLD muito superior. Próximo: TQQQ e UPRO single-leg para verificar Sharpe mais alto.](2026-04-21/01-d2-ew-upro-tqqq-near-miss.md)
+- [2026-04-20 noite (iter 0) — **Phase 3.5d D1 — baseline buy-and-hold 3× LETF estabelecido** — 6 configs buy-and-hold testadas (UPRO, TQQQ, EW combos). Todos os configs 3× LETF batem SPY net post-tax (SPY=10.38%/ano; TQQQ sozinho=34.95%/ano). Porém MaxDD 70-82% — todos falham Calmar>0.5 gate (exceto TQQQ isolado: 0.504) e Sharpe_net>0.8 gate. EW 50/50 UPRO+TQQQ é o benchmark natural para D2+: CAGR_net 30.75%, MaxDD 73.5%. TMF no portfolio melhora Sharpe (0.839→0.923) mas sacrifica CAGR (-5.59pp). Chão definido: D2 regime-filter precisa bater ~30% net E ter Calmar>0.5. Próximo: D2 MA regime filter (SMA200/EMA100) `[leverage_for_the_long_run, p.13]`.](2026-04-20/05-phase-3-5d-d1-bh-baseline.md)
 - [2026-04-20 noite — ★ **Plano B V4 REJEITADO — Phase 3.5d aberta (3× LETFs)** — Encerramento de ciclo. Cross-lib validation (bt/vectorbt/backtrader/quantstats) confirmou que o winner Phase 3.5b (3-leg EW SSO+QLD+UGL, Sharpe 2.25, CAGR 25.56%) foi artifact de dados testfol.io proprietários. Nossa pipeline (synthetic_letf + yfinance) produz CAGR ~11.6% / max_dd -28.8% / Sharpe 0.78 — **abaixo CDI** e **pior que SPY buy-and-hold alavancado**. Regime filter EMA100 troca 5pp CAGR por 40pp DD reduction: trade-off Sharpe-neutro, não supera B&H. Plano A V2-L2 Gayed CFD em **stand-by** (mesmo risco de artifact). Phase 3.5d abre ciclo novo com 3× LETFs (UPRO, TQQQ, TMF), gate obrigatório "beat SPY pós-tax 15% IR BR", cross-lib concordance ≥ 2/3 libs, 8 leads (D1-D8) com indicator-family homogeneity testada via contrafactual (D2 MA vs D3 Donchian). Spec: `specs/phase_3_5d_plano_b_v2_3x_letf.md`. Launch prompt: `docs/self_improvement/phase_3_5d_launch_prompt.md`. Phase 4 paper trading **pausada**. Próxima sessão: rodar launch prompt, executar setup, aprovar loop com `MAX_ITER=10 SWEEP_MODE=fanout`.](2026-04-20/04-plano-b-v4-rejected-3-5d-launch.md)
 - [2026-04-20 tarde — **Phase 3.5c cross-lib validation — descoberta técnica completa** — Reimplementamos Plano B V4 em 4 libs Python (bt, vectorbt, backtrader, quantstats) para responder "o winner é real ou artifact?". 3 libs concordaram dentro de 1-2pp de CAGR (agreement forte), mas TODAS divergiram materialmente do baseline Phase 3.5b (CAGR 37.92% vs 11.6%, max_dd -16.91% vs -28.8%). Investigação mostrou que baseline Phase 3.5b usa testfol.io SSOSIM/QLDSIM/UGLSIM (dados proprietários sintéticos) que não existem em nossa stack. Windows e instrumentos dos leg baselines também não batem (QQQ em vez de QLD, janela 1970-2026 em vez de 2004-2026). 2 bugs reais descobertos durante a reimplementação (seam stitching em reference_prices.py inception date SSO 42× salto; ring-buffer em backtrader `datetime.date(i)` scrambling signal dates). Findings doc: `docs/superpowers/findings/2026-04-20-phase-3-5c-baseline-mismatch.md`. Ação B confirmou via head-to-head vs SSO buy-and-hold real pós-2006 que o regime filter EMA100 reduz max_dd mas não supera SPY alavancado. **Conclusão: Plano B V4 não passa gates em dados realistas.**](2026-04-20/03-phase-3-5c-cross-lib-exposed-baseline-mismatch.md)
 - [2026-04-20 — **Phase 4.0 T1 rate card empírico via Open API** — cTrader app approved → Open API unlocked. Pulled real specs for US500/NAS100/XAUUSD via Protobuf. ✅ commission-zero confirmado empiricamente em todos 3 (era a principal incerteza da sensibility matrix). Swap US500 -6.14%/yr, NAS100 -6.14%/yr, XAUUSD -8.84 pips (~1-12%/yr) — dentro do envelope testado. ❌ **Descoberta crítica: lot minimums estruturais inviabilizam $1k target.** US500 min 0.1 lot = $600, NAS100 min 0.1 lot = $2k (2× overshoot), XAUUSD min 0.01 lot = $2.7k (5× overshoot). Threshold Index CFD revisado **$1k → $5k como mínimo real**. Não é falha do cost model — é broker lot granularity que nenhum gate de backtest captura. Propagado: rate card doc novo, strategy §5.5.4 + §6.3 corrigidos, mandate §3.6 corrigido, AGGREGATE §7.5 atualizada. Scripts `pull_ctrader_rate_card.py` + `search_ctrader_micro_symbols.py` commit-and-reusáveis como base do cTrader adapter (Phase 4 T1). Próximo: T1.2 spread live quotes, T2 dividend cycle (mid-Jun).](2026-04-20/02-phase4_0-T1-rate-card-empirico.md)

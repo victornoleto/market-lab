@@ -70,9 +70,15 @@ ETF_TICKERS = [
     # Sector SPDR
     "XLK", "XLF", "XLE", "XLV", "XLY", "XLP", "XLI", "XLU", "XLB", "XLRE", "XLC",
     # Bonds
-    "AGG", "TLT", "IEF", "LQD", "HYG",
+    "AGG", "TLT", "IEF", "LQD", "HYG", "SHV",
     # Commodities / volatility
     "GLD", "SLV", "USO", "UNG", "VXX",
+    # Leveraged ETFs — Plano B Path B LETF rotation universe
+    # [leverage_for_the_long_run, ch.2]. Inceptions: SSO/QLD 2006-06-21,
+    # UPRO 2009-06-23, TQQQ 2010-02-09. Tiingo serves these as standard
+    # daily OHLCV — previously missing from bulk cache so reference_prices.py
+    # fell back to yfinance (unstable adjusted-close causes Stage-2 drift).
+    "SSO", "QLD", "UPRO", "TQQQ",
 ]
 
 # Tiingo does NOT serve index prices directly (^GSPC, ^IXIC, ^DJI, ^RUT,

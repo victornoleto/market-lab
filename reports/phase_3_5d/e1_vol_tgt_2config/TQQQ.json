@@ -1,0 +1,174 @@
+{
+  "ticker": "TQQQ",
+  "frequency": "daily",
+  "strategy": "e1_vol_tgt_2config",
+  "window": {
+    "start": "2004-11-18",
+    "end": "2026-04-15",
+    "n_bars": 5384,
+    "years": 21.404517453798768
+  },
+  "spy_benchmark": {
+    "cagr": 0.08602666059621522,
+    "cagr_net": 0.07312266150678294,
+    "sharpe": 0.5303084816253403,
+    "max_dd": -0.5647366900495059
+  },
+  "pbo": {
+    "pbo": 0.15079365079365079,
+    "n_combinations": 252,
+    "pass": true
+  },
+  "configs": [
+    {
+      "name": "vol15_lk20",
+      "metrics_is": {
+        "cagr": 0.21336232001422673,
+        "cagr_net": 0.18135797201209272,
+        "sharpe": 1.0062604111548843,
+        "sharpe_net": 0.8553213494816516,
+        "max_dd": -0.3720554536868155,
+        "calmar": 0.5734691371943398,
+        "n_bars": 5383
+      },
+      "wf": {
+        "sharpes": [
+          0.7686075903266543,
+          0.6630642595680303,
+          1.2499362365515148,
+          0.608435237391255,
+          1.1657295048174339,
+          1.3142773068343414,
+          0.7676518975256857,
+          1.4419013058306618
+        ],
+        "positive": 8,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.9637894840108294,
+        "oos_sharpe": 1.1688574192609684,
+        "oos_pass": true,
+        "is_start": "2004-11-19",
+        "is_end": "2021-12-28",
+        "oos_start": "2021-12-29",
+        "oos_end": "2026-04-15"
+      },
+      "fwd": {
+        "fwd_sharpe": 0.1818809310486664,
+        "fwd_pass": true,
+        "fwd_start": "2026-01-14",
+        "fwd_end": "2026-04-15"
+      },
+      "weight_stats": {
+        "mean": 0.32845812728625234,
+        "min": 0.0,
+        "max": 1.0,
+        "std": 0.14590123698496338
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.21490079134041795,
+        "cagr_delta_pp": 0.15384713261912264,
+        "concordant": true
+      },
+      "dsr": {
+        "dsr": 0.9999767186131819,
+        "p_value": 2.3281386818063687e-05,
+        "pass": true
+      },
+      "gates": {
+        "gate1_pbo": true,
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": true,
+        "eco1_beats_spy": true,
+        "eco2_calmar": true,
+        "eco3_sharpe_net": true,
+        "ALL_PASS": true,
+        "fail_reason": "PASS"
+      }
+    },
+    {
+      "name": "sma200_gld_binary",
+      "metrics_is": {
+        "cagr": 0.2630260362791046,
+        "cagr_net": 0.2235721308372389,
+        "sharpe": 0.7597946246948952,
+        "sharpe_net": 0.6458254309906609,
+        "max_dd": -0.6374556079616579,
+        "calmar": 0.4126185933482685,
+        "n_bars": 5383
+      },
+      "wf": {
+        "sharpes": [
+          0.3422750373702949,
+          0.6688512611656764,
+          0.35577701797061795,
+          1.6027670071135225,
+          1.0579489642901903,
+          0.6799898985838307,
+          0.6853623298554732,
+          0.6772633619493289
+        ],
+        "positive": 8,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.8408621921866672,
+        "oos_sharpe": 0.46693216585078184,
+        "oos_pass": true,
+        "is_start": "2004-11-19",
+        "is_end": "2021-12-28",
+        "oos_start": "2021-12-29",
+        "oos_end": "2026-04-15"
+      },
+      "fwd": {
+        "fwd_sharpe": -0.002226043622671836,
+        "fwd_pass": false,
+        "fwd_start": "2026-01-14",
+        "fwd_end": "2026-04-15"
+      },
+      "weight_stats": {
+        "mean": 0.7436849925705795,
+        "min": 0.0,
+        "max": 1.0,
+        "std": 0.4366383348208925
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.2600169932088521,
+        "cagr_delta_pp": 0.3009043070252515,
+        "concordant": true
+      },
+      "dsr": {
+        "dsr": 0.9984138523626234,
+        "p_value": 0.0015861476373766337,
+        "pass": true
+      },
+      "gates": {
+        "gate1_pbo": true,
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": false,
+        "eco3_sharpe_net": false,
+        "ALL_PASS": false,
+        "fail_reason": "FWD, CALMAR, SHARPE_NET"
+      }
+    }
+  ],
+  "any_pass_all_gates": true,
+  "best_config": "vol15_lk20",
+  "best_sharpe": 1.0062604111548843,
+  "best_sharpe_net": 0.8553213494816516,
+  "citations": [
+    "advances_fin_ml, ch.14",
+    "volatility_trading",
+    "leverage_for_the_long_run, p.13",
+    "advances_fin_ml, p.208-211",
+    "advances_fin_ml, p.298-299"
+  ],
+  "generated_at": "2026-04-21T14:07:52.837567+00:00"
+}

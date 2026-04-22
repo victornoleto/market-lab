@@ -1,14 +1,22 @@
 """Assembles reference_prices.parquet — the single source of truth for Stage 1.
 
-Post-inception of each real LETF (SSO 2006-06-21, QLD 2006-06-21, UGL 2008-12-03)
-we use real OHLCV from yfinance (SSO/QLD/UGL are not in the Tiingo bulk cache — only
-SPY/QQQ/GLD are available there).  Pre-inception, we synthesize via
-``synthesize_letf_returns_ffr_aware`` — matching the methodology our engine uses
-internally.  Synthetic OHLC collapses high=low=close=open=synthetic_close (no intraday).
+Post-inception of each real LETF we prefer Tiingo OHLCV (the paid primary
+source, stable adjusted-close snapshots). yfinance is kept as a fallback only
+for LETFs not yet added to the Tiingo bulk cache (UGL, SPXL, TMF as of
+2026-04-21). Pre-inception, we synthesize via ``synthesize_letf_returns_ffr_aware``
+— matching the methodology our engine uses internally. Synthetic OHLC
+collapses high=low=close=open=synthetic_close (no intraday).
 
-The underlying tickers (SPY/QQQ/GLD) use Tiingo storage (absolute path to main repo
-cache) because the worktree ``data/tiingo/`` directory only carries the manifest
-symlink, not the parquet files themselves.
+The underlying tickers (SPY/QQQ/GLD/TLT) use Tiingo storage (absolute path
+to main repo cache) because the worktree ``data/tiingo/`` directory only
+carries the manifest symlink, not the parquet files themselves.
+
+Rationale for yfinance de-emphasis: during Phase 3.5e iter 21 we observed
+Stage-2 ΔCAGR of 8.21pp for QLD and 15.16pp for TQQQ — caused by
+yfinance-vs-yfinance inconsistency (cached parquet snapshot vs live
+re-fetch, differing due to retroactive adjusted-close/dividend handling).
+Tiingo adj_close is point-in-time stable. See
+``jornada/2026-04-21-*-data-pipeline-tiingo-first.md`` for the incident.
 
 Citations
 ---------
@@ -53,7 +61,7 @@ REFERENCE_PARQUET = Path(
     "reports/phase_3_5c/cross_lib/data/reference_prices.parquet"
 )
 
-UNDERLYING_TICKERS: tuple[str, ...] = ("SPY", "QQQ", "GLD")
+UNDERLYING_TICKERS: tuple[str, ...] = ("SPY", "QQQ", "GLD", "TLT")
 
 
 @dataclass(frozen=True)
@@ -84,6 +92,7 @@ class LetfSpec:
 
 
 LETF_SPECS: tuple[LetfSpec, ...] = (
+    # --- 2× LETFs (legacy Plano B V4 lineage; kept for regression tests) ---
     # SSO — ProShares Ultra S&P 500 (2×), inception 2006-06-21, ER 0.89 %
     # [leverage_for_the_long_run, p.16] — 2× SPY is the primary LRS vehicle.
     LetfSpec("SSO", "SPY", 2.0, "2006-06-21", 0.0089),
@@ -91,6 +100,15 @@ LETF_SPECS: tuple[LetfSpec, ...] = (
     LetfSpec("QLD", "QQQ", 2.0, "2006-06-21", 0.0095),
     # UGL — ProShares Ultra Gold (2×), inception 2008-12-03, ER 0.95 %
     LetfSpec("UGL", "GLD", 2.0, "2008-12-03", 0.0095),
+    # --- 3× LETFs (Phase 3.5d universe; see specs/phase_3_5d_plano_b_v2_3x_letf.md §2.1) ---
+    # UPRO — ProShares UltraPro S&P 500 (3×), inception 2009-06-25, ER 0.91 %
+    LetfSpec("UPRO", "SPY", 3.0, "2009-06-25", 0.0091),
+    # SPXL — Direxion Daily S&P 500 Bull 3X (3×), inception 2008-11-05, ER 1.00 %
+    LetfSpec("SPXL", "SPY", 3.0, "2008-11-05", 0.0100),
+    # TQQQ — ProShares UltraPro QQQ (3×), inception 2010-02-09, ER 0.84 %
+    LetfSpec("TQQQ", "QQQ", 3.0, "2010-02-09", 0.0084),
+    # TMF — Direxion Daily 20+ Year Treasury Bull 3X (3×), inception 2009-04-16, ER 1.06 %
+    LetfSpec("TMF", "TLT", 3.0, "2009-04-16", 0.0106),
 )
 
 
@@ -249,20 +267,58 @@ def _synthetic_pre_inception(
 
 
 def _real_post_inception(ticker: str, end_date: str) -> pd.DataFrame:
-    """Fetch real post-inception OHLCV from yfinance for SSO/QLD/UGL.
+    """Fetch real post-inception OHLCV — Tiingo-first, yfinance fallback.
 
-    SSO, QLD, and UGL are not present in the Tiingo bulk cache, so we
-    fall back to yfinance (adjusted prices, split/dividend-corrected).
-    yfinance is also used by Stage 2 independent adapters, so this
-    introduces no extra dependency.
+    Tiingo is the primary source (paid, stable adjusted-close snapshots).
+    yfinance is used only when the ticker is missing from the Tiingo bulk
+    cache — currently UGL, SPXL, TMF (see module docstring for context).
 
     Returns long-format DataFrame with ``[date, ticker, open, high, low, close,
-    volume]``.
+    volume]``. Uses Tiingo ``adj_close`` as the canonical split/dividend-adjusted
+    close so the synthetic→real seam (continuous equity curve) holds under
+    split/dividend events.
     """
     spec = next(s for s in LETF_SPECS if s.ticker == ticker)
+    try:
+        raw = _STORAGE.read(ticker, frequency="daily")
+    except (FileNotFoundError, KeyError):
+        return _real_post_inception_yfinance(ticker, spec.inception, end_date)
+
+    mask = (raw.index >= pd.Timestamp(spec.inception)) & (
+        raw.index <= pd.Timestamp(end_date)
+    )
+    raw = raw.loc[mask].copy()
+    if raw.empty:
+        return pd.DataFrame(
+            columns=["date", "ticker", "open", "high", "low", "close", "volume"]
+        )
+
+    # Tiingo returns raw OHLC plus ``adj_close`` (split/dividend-adjusted).
+    # Use adj_close for close to preserve continuity across corporate actions;
+    # scale OHL by the same factor so intraday ranges stay consistent.
+    factor = raw["adj_close"] / raw["close"].where(raw["close"] != 0, other=1.0)
+    adj = pd.DataFrame(
+        {
+            "date": raw.index,
+            "ticker": ticker,
+            "open": (raw["open"] * factor).to_numpy(),
+            "high": (raw["high"] * factor).to_numpy(),
+            "low": (raw["low"] * factor).to_numpy(),
+            "close": raw["adj_close"].to_numpy(),
+            "volume": raw["volume"].to_numpy(),
+        }
+    )
+    adj["date"] = pd.to_datetime(adj["date"])
+    return adj.reset_index(drop=True)
+
+
+def _real_post_inception_yfinance(
+    ticker: str, inception: str, end_date: str
+) -> pd.DataFrame:
+    """yfinance fallback — only used when Tiingo lacks the ticker."""
     raw = yf.download(
         ticker,
-        start=spec.inception,
+        start=inception,
         end=end_date,
         progress=False,
         auto_adjust=True,
@@ -272,15 +328,11 @@ def _real_post_inception(ticker: str, end_date: str) -> pd.DataFrame:
             columns=["date", "ticker", "open", "high", "low", "close", "volume"]
         )
 
-    # yfinance column handling: guard against MultiIndex vs single-level columns.
-    # Some versions/edge cases return single-level; others return MultiIndex tuples.
-    # For MultiIndex, prefer level 0 (metric name), fallback to level 1 if level 0 is empty.
     if isinstance(raw.columns, pd.MultiIndex):
         raw.columns = [col[0].lower() if col[0] else col[1].lower() for col in raw.columns]
     else:
         raw.columns = [str(c).lower() for c in raw.columns]
 
-    # Reset index and normalize the date column name (DatetimeIndex is named "Date").
     raw = raw.reset_index()
     raw.columns = [str(c).lower() if isinstance(c, str) else str(c[0]).lower() for c in raw.columns]
 
@@ -307,7 +359,7 @@ def _load_underlying_tr(underlying: str, start: str, end: str) -> pd.Series:
             end=end,
             tiingo_storage_root=str(_TIINGO_ROOT),
         )
-    if underlying in ("QQQ", "GLD"):
+    if underlying in ("QQQ", "GLD", "TLT"):
         raw = _STORAGE.read(underlying, frequency="daily")
         mask = (raw.index >= pd.Timestamp(start)) & (raw.index <= pd.Timestamp(end))
         return raw.loc[mask, "close"].pct_change().dropna()
@@ -344,7 +396,11 @@ if __name__ == "__main__":
     df = build_reference_prices()
     save_reference_parquet(df)
     print(f"Wrote {len(df)} rows to {REFERENCE_PARQUET}")
-    for tkr in ("SPY", "QQQ", "GLD", "SSO", "QLD", "UGL"):
+    for tkr in (
+        "SPY", "QQQ", "GLD", "TLT",
+        "SSO", "QLD", "UGL",
+        "UPRO", "SPXL", "TQQQ", "TMF",
+    ):
         sub = df[df["ticker"] == tkr]
         if sub.empty:
             print(f"  {tkr}: 0 rows (MISSING)")

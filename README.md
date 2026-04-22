@@ -27,16 +27,26 @@ dual-path framework and per-path constraints.
 | 0 | Knowledge base — 34 books → validated summaries (16 active + 18 archived) | ✅ Done |
 | 0.5 | `build_skill.py` + skill sanity gate | ✅ Done |
 | 1 | Pepperstone/cTrader infra + Postgres/Grafana | 🔄 Scaffold (awaiting Spotware OAuth approval) |
-| 2 | Backtest engine + CPCV/PBO/DSR/WF/MCPT validation | ✅ Done — 796 tests green |
-| 2.5 | Strategy search via self-improve loop | ✅ Done — 2 initial winners (BollingerMR SPY 1h + ETFRotation monthly) + Investment Mandate; `jornada/2026-04-16/10-production-readiness-summary.md` |
-| 3 | Post-cleanup evolution: 5 leads (A1-A3 + B1-B2) | ✅ Done — Path B 3-leg LETF EW winner consolidated in Phase 3.5b |
-| 3.5a V1 | Plano A short-hold 1h FX/metals retail (6 famílias) | ❌ Refuted 2026-04-18 (0/143 PASS, framework errado); sumário em 7 jornadas `jornada/2026-04-18/02..26-*.md` |
-| 3.5a V2 | Plano A daily multi-asset CFD Pepperstone (6 famílias novas) | ✅ Done 2026-04-19 — ★ WINNER `gayed_ema100_L2_off_gld` Sharpe 2.285 CAGR 79.14% MDD -21.02% (13/13 gates pass); `docs/strategies/plano_a_v2_l2_gayed_cfd.md` |
-| 3.5b | Plano B LETF rotation winners end-to-end validation | ✅ Done 2026-04-17 — Portfolio 3-leg EW (SSO+QLD+UGL threshold 10pp) Sharpe 2.251 CAGR 25.56% MDD -10.86%; runbook em `reports/phase3_5b/PRODUCTION.md` |
-| 4 | Paper trading dual-path 3 meses (cTrader demo A + Inter Global B) | ⏳ Next — spec em `specs/phase_4_paper_trading.md` |
+| 2 | Backtest engine + CPCV/PBO/DSR/WF/MCPT validation | ✅ Done — 918 tests green (cross-lib validated 1e-6) |
+| 2.5 | Strategy search via self-improve loop | ✅ Done — initial winners deprecated in 3.5c/3.5f re-validations |
+| 3 | Post-cleanup evolution: 5 leads (A1-A3 + B1-B2) | ✅ Done — consolidated in Phase 3.5b (Plano B V4 later rejected in 3.5c) |
+| 3.5a V1 | Plano A short-hold 1h FX/metals retail (6 famílias) | ❌ Refuted 2026-04-18 (0/143 PASS, framework errado) |
+| 3.5a V2 | Plano A daily multi-asset CFD Pepperstone (6 famílias novas) | ❌ **WINNER retracted 2026-04-22** — look-ahead bias in engine inflated baseline; honest re-validation fails gates in `reports/phase_3_5f/honest_revalidation/` |
+| 3.5b | Plano B LETF rotation winners end-to-end validation | ❌ V4 baseline retracted 2026-04-20 (testfol.io synthetics divergence) — see 3.5c |
+| 3.5c | Cross-lib validation (bt, vectorbt, backtrader) | ✅ Done 2026-04-20 — exposed Plano B V4 divergence; adapters clean + reusable |
+| 3.5d | Plano B 3× LETF swing search | ❌ Closed 2026-04-21 — arbitration blocked E1 (PBO grid-shrinkage anti-pattern) |
+| 3.5e | Plano B breadth-hunt c01-c12 | 🔄 Paused 2026-04-21 — c01/c02/c03/c05 DEAD, c06-c12 untested; engine now confirmed clean |
+| 3.5f | Engine look-ahead fix + Plano A V2 honest re-validation | ✅ Done 2026-04-22→23 — bug fixed (commit `7b90a8f`); all 6 V2 leads FAIL honest gates |
+| 3.6 | Broader swing-winner hunt over 33 books (broker-agnostic) | 🔄 Next — plan `docs/plans/2026-04-23-find-swing-winner-phase-3-6.md` |
+| 4 | Paper trading dual-path 3 meses (cTrader demo A + Inter Global B) | ⏸️ Paused — no winner to paper-trade |
 | 5 | Live trading ($1000 initial) | ⏳ Blocked on 4 |
 | 6 | Monitoring + governance | ⏳ |
 | 7 | Scaling | ⏳ |
+
+**Current reality (2026-04-23):** no winner is currently confirmed for
+Plano A or Plano B. Phase 3.6 is a fresh broad hunt across the 33
+books to find one. See [`docs/CURRENT_STATE.md`](docs/CURRENT_STATE.md)
+for the canonical status snapshot.
 
 Phase-by-phase details + dual-environment framework + autonomous loop
 discipline in [`ROADMAP.md`](ROADMAP.md).

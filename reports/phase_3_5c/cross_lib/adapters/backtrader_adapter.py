@@ -24,6 +24,7 @@ from reports.phase_3_5c.cross_lib.adapters.bt_adapter import (
     _walk_forward_sharpe,
 )
 from reports.phase_3_5c.cross_lib.adapters.signals import (
+    always_on,
     donchian_signal,
     ema_regime,
 )
@@ -179,12 +180,16 @@ def _build_strategy_class():
                 close_series = wide_prices[leg.signal_ticker]
                 if leg.signal_type == "ema_regime":
                     state = ema_regime(close_series, leg.signal_params["lookback"])
-                else:
+                elif leg.signal_type == "donchian":
                     state = donchian_signal(
                         close_series,
                         leg.signal_params["entry"],
                         leg.signal_params["exit"],
                     )
+                elif leg.signal_type == "always_on":
+                    state = always_on(close_series)
+                else:
+                    raise ValueError(f"Unknown signal_type: {leg.signal_type}")
                 self.precomputed_state[leg.signal_ticker] = state.astype(int)
 
             self.last_rebal_weights: dict[str, float] = {}

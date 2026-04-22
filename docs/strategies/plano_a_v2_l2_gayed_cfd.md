@@ -1,5 +1,79 @@
 # Plano A V2-L2 — Gayed Regime Rotation CFD
 
+**Last reviewed:** 2026-04-22 (status flipped from WINNER to REJECTED).
+
+> # ⚠️ REJECTED — look-ahead bias in prior engine
+>
+> **Status update 2026-04-22:** esta strategy foi **re-classificada de
+> "winner" para "rejected"** sob o engine honest.
+>
+> **O que mudou.** Em 2026-04-22 foi descoberto um look-ahead bias no
+> engine Plano A (`src/ai_trade/backtest/strategies/plano_a_leveraged_rotation.py:462`),
+> onde o alinhamento weight×return era `new_w[bar_i] × ret[bar_i]` em
+> vez do correto `prev_w[bar_i] × ret[bar_i]`. O bug dava ao simulador
+> conhecimento do close de hoje antes de dimensionar a posição. Fix em
+> commit `7b90a8f`; 4 testes cirúrgicos em `tests/test_plano_a_lookahead_bias.py`
+> discriminam convenção buggy vs honest com números verificáveis à mão.
+> `[advances_fin_ml, p.31-34]`
+>
+> **Impacto nesta strategy (números honest, OOS 2018-2023):**
+>
+> | Métrica | Buggy (como publicado) | Honest (pós-fix) |
+> |---|---:|---:|
+> | Sharpe OOS | 2.284 | ~0.56 |
+> | CAGR OOS | 79.14% | 12.58% (raw close) / 14.29% (adj close TR) |
+> | MaxDD OOS | −21.02% | ~−37% |
+> | Bootstrap 99.9% CI low | 0.962 | <0 (falha gate 1) |
+>
+> A strategy **falha gate 1 (boot CI > 0), gate 2 (Sharpe OOS ≥ 2.0),
+> gate 3 (CAGR OOS ≥ 30% OU CDI floor), gate 4 (MDD OOS ≥ −25%
+> binding cap §5), gate 6 (WF max-window DD), gate 8 (IR) e gate 13
+> (cost×2)** sob engine honest. Per mandate §2.5 (zero bypass), não é
+> promovível.
+>
+> **O que permanece verdadeiro.** A tese Gayed regime-rotation
+> `[leverage_for_the_long_run, p.11-14]` carrega edge modesto (~14%/yr
+> CAGR) — comparável ao piso CDI BR para versão desalavancada, mas a
+> forma leveraged (L=2×) usada aqui paga drawdown desproporcional
+> (−37% vs −21% baseline) sem CAGR incremental acima do CDI.
+>
+> **Decisão do usuário 2026-04-23.** Abandonar Plano A V2 definitivamente
+> per `project_plano_a_v2_last_attempt` rule (sem V3 Plano A isolado).
+> Abrir **Phase 3.6** como broader hunt broker-agnostic sobre os 33
+> livros (`docs/plans/2026-04-23-find-swing-winner-phase-3-6.md`).
+> Phase 3.6 pode produzir strategy A-style, B-style ou nenhum winner;
+> substitui as 4 opções (V3/Gayed 1×/abandon/Plano B c06-c12) do
+> morning summary 3.5f. Ver `docs/investment-mandate.md §7`
+> (row 2026-04-22).
+>
+> **Registro histórico.** Resultados buggy-engine originais preservados
+> verbatim em §9 (below) e em
+> `reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/` (flagged via
+> `ENGINE_BIAS_FORENSIC.md`). **Não citar os números buggy como
+> verdade.**
+>
+> **Leia também:**
+> - `reports/phase_3_5f/honest_revalidation/v2_l2_gayed_cfd/AGGREGATE.md`
+> - `reports/phase_3_5f/honest_revalidation/BREADTH_SUMMARY.md`
+> - `jornada/2026-04-22-engine-lookahead-bug.md`
+> - `jornada/2026-04-22-plano-a-honest-revalidation.md`
+> - `jornada/2026-04-23-0700-overnight-summary.md`
+> - `docs/plans/2026-04-23-find-swing-winner-phase-3-6.md`
+
+---
+
+## §9. Historical (buggy-engine) record — preservado para rastreabilidade
+
+O conteúdo abaixo é a versão canônica original do documento quando V2-L2
+Gayed era classificada como winner (2026-04-19 → 2026-04-22). Mantido
+verbatim como evidência forense de como o bug se manifestou na
+documentação de produção. **Qualquer número em §9 que conflite com o
+banner acima é obsoleto.**
+
+---
+
+## 9.1 TL;DR original (buggy-engine)
+
 **Living strategy document.** Este arquivo é a especificação operacional
 canônica do winner Plano A. Atualize aqui sempre que qualquer parâmetro,
 custo ou regra mudar.

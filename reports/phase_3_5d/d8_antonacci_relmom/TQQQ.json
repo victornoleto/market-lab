@@ -1,0 +1,182 @@
+{
+  "lead": "D8",
+  "iter": 12,
+  "window": {
+    "start": "2010-02-11",
+    "end": "2026-04-14",
+    "n_bars": 4067
+  },
+  "pbo": {
+    "pbo": 0.7936507936507936,
+    "pass": false
+  },
+  "spy_cagr_net": 0.10362747874173825,
+  "configs": [
+    {
+      "name": "slope_dom_pure",
+      "metrics": {
+        "cagr": 0.3391778626771047,
+        "cagr_net": 0.288301183275539,
+        "sharpe": 0.9967865937225729,
+        "sharpe_net": 0.847268604664187,
+        "max_dd": -0.494437585220304,
+        "calmar": 0.6859872162145176,
+        "n_bars": 4066
+      },
+      "wf": {
+        "sharpes": [
+          1.6693115254370574,
+          0.9718950886396953,
+          -0.46015518268710437,
+          1.6348802880412223,
+          0.04485959859923789,
+          1.327902324524566,
+          1.6899826358228132,
+          0.8007060852641203
+        ],
+        "positive": 7,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.8992080639542317,
+        "oos_sharpe": 1.316759733019197,
+        "oos_pass": true,
+        "oos_start": "2023-01-13"
+      },
+      "fwd": {
+        "fwd_sharpe": -1.3440655069434393,
+        "fwd_pass": false,
+        "fwd_start": "2026-01-13"
+      },
+      "weight_mean": 0.5126628964838947,
+      "dsr": {
+        "p_value": 0.0010021608978270091,
+        "pass": true
+      },
+      "gates": {
+        "PBO": false,
+        "DSR": true,
+        "WF": true,
+        "OOS": true,
+        "FWD": false,
+        "BEAT_SPY": true,
+        "CALMAR": true,
+        "SHARPE_NET": true,
+        "ALL_PASS": false,
+        "fail_reason": "PBO,FWD"
+      }
+    },
+    {
+      "name": "slope_dom_rm15",
+      "metrics": {
+        "cagr": 0.2324159417818603,
+        "cagr_net": 0.19755355051458126,
+        "sharpe": 0.8967997170875206,
+        "sharpe_net": 0.7622797595243925,
+        "max_dd": -0.4195435774319567,
+        "calmar": 0.5539733040474312,
+        "n_bars": 4066
+      },
+      "wf": {
+        "sharpes": [
+          1.6693115254370574,
+          0.9926112037755206,
+          -0.6011745033200121,
+          1.0268592540859438,
+          0.7660553552929589,
+          1.3259709776348,
+          0.8882136567162935,
+          0.8255140112570183
+        ],
+        "positive": 7,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.876036965068554,
+        "oos_sharpe": 0.9962657670004695,
+        "oos_pass": true,
+        "oos_start": "2023-01-13"
+      },
+      "fwd": {
+        "fwd_sharpe": 0.5734657284976942,
+        "fwd_pass": true,
+        "fwd_start": "2026-01-13"
+      },
+      "weight_mean": 0.3548069830341775,
+      "dsr": {
+        "p_value": 0.003588738179065798,
+        "pass": true
+      },
+      "gates": {
+        "PBO": false,
+        "DSR": true,
+        "WF": true,
+        "OOS": true,
+        "FWD": true,
+        "BEAT_SPY": true,
+        "CALMAR": true,
+        "SHARPE_NET": false,
+        "ALL_PASS": false,
+        "fail_reason": "PBO,SHARPE_NET"
+      }
+    },
+    {
+      "name": "sma200_rm20",
+      "metrics": {
+        "cagr": 0.266560976671554,
+        "cagr_net": 0.2265768301708209,
+        "sharpe": 0.8747967368447336,
+        "sharpe_net": 0.7435772263180235,
+        "max_dd": -0.4912670055813265,
+        "calmar": 0.5425989810899814,
+        "n_bars": 4066
+      },
+      "wf": {
+        "sharpes": [
+          1.0054003245565293,
+          0.9439895538205525,
+          0.38217341226934093,
+          1.548484617735733,
+          0.6163124430846125,
+          0.8423922170795826,
+          1.0144320488919334,
+          0.6498732973062936
+        ],
+        "positive": 8,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.7835697775874121,
+        "oos_sharpe": 1.187174560560522,
+        "oos_pass": true,
+        "oos_start": "2023-01-13"
+      },
+      "fwd": {
+        "fwd_sharpe": 0.5225121920942638,
+        "fwd_pass": true,
+        "fwd_start": "2026-01-13"
+      },
+      "weight_mean": 0.5441357265797886,
+      "dsr": {
+        "p_value": 0.004607144017018228,
+        "pass": true
+      },
+      "gates": {
+        "PBO": false,
+        "DSR": true,
+        "WF": true,
+        "OOS": true,
+        "FWD": true,
+        "BEAT_SPY": true,
+        "CALMAR": true,
+        "SHARPE_NET": false,
+        "ALL_PASS": false,
+        "fail_reason": "PBO,SHARPE_NET"
+      }
+    }
+  ],
+  "best_config": "slope_dom_pure",
+  "best_sharpe_net": 0.847268604664187,
+  "any_pass": false,
+  "generated_at": "2026-04-21T13:58:39.939230+00:00"
+}

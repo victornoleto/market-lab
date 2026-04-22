@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "phase": "phase_3_5e",
+  "lead_id": "c02",
+  "lead_slug": "c02_sma150_cash",
+  "lead_title": "Binary SMA150 regime filter + cash off-leg \u2014 shorter MA sensitivity [leverage_for_the_long_run, p.30]",
+  "citations_seed": [
+    "leverage_for_the_long_run, p.30",
+    "advances_fin_ml, p.208-211"
+  ],
+  "started_at": "2026-04-21T17:00:51+00:00",
+  "last_updated_at": "2026-04-21T18:35:15.198109+00:00",
+  "configs": [
+    {
+      "name": "c02_sma150_cash",
+      "type": "binary_ma",
+      "ma_type": "SMA",
+      "ma_period": 150,
+      "signal_asset": "SPY",
+      "off_leg": "cash",
+      "citation": "leverage_for_the_long_run, p.30"
+    }
+  ],
+  "tickers_pending": [],
+  "tickers_done": [
+    {
+      "ticker": "QLD",
+      "frequency": "daily",
+      "window_start": "2001-05-15",
+      "window_end": "2026-04-17",
+      "iter": 24,
+      "n_configs_tested": 1,
+      "best_config": "c02_sma150_cash",
+      "best_sharpe_oos": 0.6590844902366405,
+      "best_cagr": 0.12447376286387324,
+      "best_maxdd": -0.49439986256090823,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c02_sma150_cash/QLD.md",
+      "result_file_json": "reports/phase_3_5e/c02_sma150_cash/QLD.json"
+    },
+    {
+      "ticker": "SSO",
+      "frequency": "daily",
+      "window_start": "2001-05-15",
+      "window_end": "2026-04-17",
+      "iter": 25,
+      "n_configs_tested": 1,
+      "best_config": "c02_sma150_cash",
+      "best_sharpe_oos": 0.68105102187362,
+      "best_cagr": 0.07777575286567107,
+      "best_maxdd": -0.4427755753698084,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c02_sma150_cash/SSO.md",
+      "result_file_json": "reports/phase_3_5e/c02_sma150_cash/SSO.json"
+    },
+    {
+      "ticker": "TQQQ",
+      "frequency": "daily",
+      "window_start": "2001-05-15",
+      "window_end": "2026-04-17",
+      "iter": 26,
+      "n_configs_tested": 1,
+      "best_config": "c02_sma150_cash",
+      "best_sharpe_oos": 0.6347360924710462,
+      "best_cagr": 0.14555715767055366,
+      "best_maxdd": -0.655142403513667,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c02_sma150_cash/TQQQ.md",
+      "result_file_json": "reports/phase_3_5e/c02_sma150_cash/TQQQ.json"
+    },
+    {
+      "ticker": "UPRO",
+      "frequency": "daily",
+      "window_start": "2001-05-15",
+      "window_end": "2026-04-17",
+      "iter": 27,
+      "n_configs_tested": 1,
+      "best_config": "c02_sma150_cash",
+      "best_sharpe_oos": 0.6387547173440221,
+      "best_cagr": 0.0890324258253079,
+      "best_maxdd": -0.6156939862825714,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c02_sma150_cash/UPRO.md",
+      "result_file_json": "reports/phase_3_5e/c02_sma150_cash/UPRO.json"
+    }
+  ],
+  "tickers_errored": [],
+  "status": "done",
+  "aggregation_iter": 28,
+  "aggregate_file_md": "reports/phase_3_5e/c02_sma150_cash/AGGREGATE.md",
+  "aggregate_jornada": "jornada/2026-04-21-1930-c02-sma150-cash-dead.md",
+  "reset_notes": [
+    {
+      "reset_at": "2026-04-21T17:45:00+00:00",
+      "reason": "Data pipeline pivoted to Tiingo-first for LETFs (commit f7c2810). Old QLD/SSO/TQQQ runs used yfinance-backed reference_prices.parquet; new sweep re-uses Tiingo adj_close. c01 kept as-is (verdict DEAD consolidated; numerical shifts immaterial to gate fails).",
+      "removed_tickers": [
+        "QLD",
+        "SSO",
+        "TQQQ"
+      ],
+      "prior_trial_count_delta": -3
+    }
+  ]
+}

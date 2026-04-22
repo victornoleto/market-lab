@@ -20,6 +20,7 @@ from reports.phase_3_5c.cross_lib.adapters.bt_adapter import (
     _walk_forward_sharpe,
 )
 from reports.phase_3_5c.cross_lib.adapters.signals import (
+    always_on,
     donchian_signal,
     ema_regime,
 )
@@ -99,6 +100,8 @@ class VectorbtAdapter:
                     leg.signal_params["entry"],
                     leg.signal_params["exit"],
                 )
+            elif leg.signal_type == "always_on":
+                state = always_on(signal_prices)
             else:
                 raise ValueError(f"Unknown signal_type: {leg.signal_type}")
             weights[leg.execution_ticker] = state.astype(float) * w

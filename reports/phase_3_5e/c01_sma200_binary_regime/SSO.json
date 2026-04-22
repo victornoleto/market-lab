@@ -1,0 +1,281 @@
+{
+  "ticker": "SSO",
+  "frequency": "daily",
+  "phase": "phase_3_5e",
+  "lead_id": "c01",
+  "lead_slug": "c01_sma200_binary_regime",
+  "iter": 16,
+  "source": "reference_prices.parquet (Stage 1, cross_lib copy)",
+  "pbo_local": {
+    "pbo": 0.18253968253968253,
+    "n_configs": 3,
+    "n_combinations": 252,
+    "pass_local": true,
+    "note": "N=3 \u2014 INFORMATIONAL ONLY (N<4, real PBO at aggregator). PBO=0.183",
+    "warnings": [
+      "PBO called with N=3 configurations (<4). CSCV is statistically unstable with small N \u2014 a single run can swing wildly by chance. The gate is informative only over a grid of trials declared exogenously to the strategy. See reports/phase_3_5d/ESCALATION_PENDING.md for the incident that motivated this warning."
+    ]
+  },
+  "configs": [
+    {
+      "name": "c01_sma200_cash",
+      "off_leg": "cash",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "window_years": 24.914442162902123,
+      "n_bars": 6265,
+      "metrics_is": {
+        "cagr": 0.10749542309825166,
+        "cagr_net": 0.09137110963351391,
+        "sharpe": 0.5819350908394746,
+        "sharpe_net": 0.4946448272135534,
+        "max_dd": -0.39015308153384215,
+        "calmar": 0.2755211433308324
+      },
+      "wf": {
+        "sharpes": [
+          0.80760008778654,
+          0.3205866317498864,
+          -0.10800934397333621,
+          1.0202562065360894,
+          0.5095297232018695,
+          0.8627252995567019,
+          0.2377342986938512,
+          1.05205405496299
+        ],
+        "positive": 7,
+        "total": 8,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.571989167294278,
+        "oos_sharpe": 0.6206497996946232,
+        "oos_pass": true,
+        "is_start": "2001-05-15",
+        "is_end": "2021-04-16",
+        "oos_start": "2021-04-19",
+        "oos_end": "2026-04-14"
+      },
+      "fwd": {
+        "fwd_sharpe": -1.0115334544579118,
+        "fwd_pass": false,
+        "fwd_start": "2026-01-13",
+        "fwd_end": "2026-04-14"
+      },
+      "spy_benchmark": {
+        "spy_cagr_gross": 0.07111498747381462,
+        "spy_cagr_net": 0.060447739352742426,
+        "spy_sharpe": 0.45639706689352305,
+        "spy_max_dd": -0.5647366900495074,
+        "corr_vs_spy": 0.5679425444110336
+      },
+      "dsr": {
+        "dsr": 0.965699515849923,
+        "p_value": 0.034300484150077026,
+        "pass": true,
+        "n_trials_used": 4
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.11671291076861223,
+        "cagr_delta_pp": 0.9217487670360569,
+        "concordant": true
+      },
+      "stage2": {
+        "cagr_stage2": 0.13804483177624505,
+        "cagr_delta_pp": 3.0549408677993384,
+        "concordant": false
+      },
+      "gates": {
+        "gate1_pbo": "AGGREGATE_LEVEL",
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": false,
+        "overfit_pass_no_pbo": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": false,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "pre_pass_pending_pbo": false,
+        "fail_reason": "FWD, CALMAR, SHARPE_NET"
+      }
+    },
+    {
+      "name": "c01_sma200_gld",
+      "off_leg": "GLD",
+      "window_start": "2004-11-18",
+      "window_end": "2026-04-14",
+      "window_years": 21.399041752224505,
+      "n_bars": 5382,
+      "metrics_is": {
+        "cagr": 0.13834580244175232,
+        "cagr_net": 0.11759393207548947,
+        "sharpe": 0.6472144011199528,
+        "sharpe_net": 0.5501322409519598,
+        "max_dd": -0.42374220824744313,
+        "calmar": 0.3264857730692847
+      },
+      "wf": {
+        "sharpes": [
+          0.3255941863703858,
+          0.4098343032169985,
+          0.05453526548093487,
+          1.4465205995710257,
+          0.9497607978006756,
+          0.4457387325007081,
+          0.7922611327666841,
+          0.9414502346934227
+        ],
+        "positive": 8,
+        "total": 8,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.6599000405661868,
+        "oos_sharpe": 0.5941703228565934,
+        "oos_pass": true,
+        "is_start": "2004-11-19",
+        "is_end": "2021-12-27",
+        "oos_start": "2021-12-28",
+        "oos_end": "2026-04-14"
+      },
+      "fwd": {
+        "fwd_sharpe": -0.4945341273901376,
+        "fwd_pass": false,
+        "fwd_start": "2026-01-13",
+        "fwd_end": "2026-04-14"
+      },
+      "spy_benchmark": {
+        "spy_cagr_gross": 0.08603812754352513,
+        "spy_cagr_net": 0.07313240841199636,
+        "spy_sharpe": 0.5303577920384361,
+        "spy_max_dd": -0.5647366900495059,
+        "corr_vs_spy": 0.528615372730786
+      },
+      "dsr": {
+        "dsr": 0.9620403292235443,
+        "p_value": 0.03795967077645568,
+        "pass": true,
+        "n_trials_used": 5
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.147282380778464,
+        "cagr_delta_pp": 0.8936578336711687,
+        "concordant": true
+      },
+      "stage2": {
+        "cagr_stage2": 0.16679895175065274,
+        "cagr_delta_pp": 2.8453149308900416,
+        "concordant": true
+      },
+      "gates": {
+        "gate1_pbo": "AGGREGATE_LEVEL",
+        "gate2_dsr": true,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": false,
+        "overfit_pass_no_pbo": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": false,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "pre_pass_pending_pbo": false,
+        "fail_reason": "FWD, CALMAR, SHARPE_NET"
+      }
+    },
+    {
+      "name": "c01_sma200_tlt",
+      "off_leg": "TLT",
+      "window_start": "2002-07-26",
+      "window_end": "2026-04-14",
+      "window_years": 23.709787816564,
+      "n_bars": 5966,
+      "metrics_is": {
+        "cagr": 0.1060803408437101,
+        "cagr_net": 0.09016828971715359,
+        "sharpe": 0.5432918208103313,
+        "sharpe_net": 0.46179804768878163,
+        "max_dd": -0.5401247230019788,
+        "calmar": 0.1963997134849194
+      },
+      "wf": {
+        "sharpes": [
+          0.7159849743378627,
+          0.08581638022175395,
+          0.5413415655960694,
+          0.976174803301513,
+          0.5079551126017704,
+          0.19547996756862124,
+          0.2780775370686038,
+          1.0200533575190482
+        ],
+        "positive": 8,
+        "total": 8,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.6111732567777254,
+        "oos_sharpe": 0.2770790132304506,
+        "oos_pass": false,
+        "is_start": "2002-07-29",
+        "is_end": "2021-07-12",
+        "oos_start": "2021-07-13",
+        "oos_end": "2026-04-14"
+      },
+      "fwd": {
+        "fwd_sharpe": -1.0827631394868584,
+        "fwd_pass": false,
+        "fwd_start": "2026-01-13",
+        "fwd_end": "2026-04-14"
+      },
+      "spy_benchmark": {
+        "spy_cagr_gross": 0.0923100107396897,
+        "spy_cagr_net": 0.07846350912873624,
+        "spy_sharpe": 0.5618336118985194,
+        "spy_max_dd": -0.5647366900495063,
+        "corr_vs_spy": 0.41825472510576855
+      },
+      "dsr": {
+        "dsr": 0.9079688685404816,
+        "p_value": 0.09203113145951836,
+        "pass": false,
+        "n_trials_used": 6
+      },
+      "cross_lib_bt": {
+        "bt_cagr": 0.11788342996694201,
+        "cagr_delta_pp": 1.1803089123231914,
+        "concordant": true
+      },
+      "stage2": {
+        "cagr_stage2": 0.13611229820013282,
+        "cagr_delta_pp": 3.0031957356422723,
+        "concordant": false
+      },
+      "gates": {
+        "gate1_pbo": "AGGREGATE_LEVEL",
+        "gate2_dsr": false,
+        "gate3_wf": true,
+        "gate4_oos": false,
+        "gate5_fwd": false,
+        "overfit_pass_no_pbo": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": false,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "pre_pass_pending_pbo": false,
+        "fail_reason": "DSR, OOS, FWD, CALMAR, SHARPE_NET"
+      }
+    }
+  ],
+  "best_config": "c01_sma200_gld",
+  "any_prepass_pending_pbo": false,
+  "best_sharpe_oos": 0.5941703228565934,
+  "best_cagr": 0.13834580244175232,
+  "best_maxdd": -0.42374220824744313,
+  "citations": [
+    "leverage_for_the_long_run, ch.2",
+    "advances_fin_ml, p.208-211",
+    "advances_fin_ml, p.298-299"
+  ],
+  "generated_at": "2026-04-21T16:37:10.606272+00:00"
+}

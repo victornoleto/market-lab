@@ -1,0 +1,100 @@
+{
+  "ticker": "QLD",
+  "frequency": "daily",
+  "phase": "phase_3_5e",
+  "lead_id": "c03",
+  "lead_slug": "c03_ema100_tlt",
+  "iter": 30,
+  "source": "reference_prices.parquet (Stage 1, Tiingo-first post-2026-04-21)",
+  "config": {
+    "name": "c03_ema100_tlt",
+    "off_leg": "TLT",
+    "window_start": "2002-07-26",
+    "window_end": "2026-04-15",
+    "window_years": 23.71252566735113,
+    "n_bars": 5967,
+    "metrics_is": {
+      "cagr": 0.14146137525342128,
+      "cagr_net": 0.12024216896540808,
+      "sharpe": 0.583465372716718,
+      "sharpe_net": 0.49594556680921026,
+      "max_dd": -0.6482996489916638,
+      "calmar": 0.21820368941035825
+    },
+    "wf": {
+      "sharpes": [
+        0.19286817462801642,
+        0.1609922700473969,
+        0.9451171093558408,
+        1.008289406393235,
+        0.8984125510394052,
+        0.627895750794145,
+        0.15952817913698197,
+        0.9470285288299225
+      ],
+      "positive": 8,
+      "total": 8,
+      "pass": true
+    },
+    "oos": {
+      "is_sharpe": 0.6931494086368625,
+      "oos_sharpe": 0.17518881117725038,
+      "oos_pass": false,
+      "is_start": "2002-07-29",
+      "is_end": "2021-07-13",
+      "oos_start": "2021-07-14",
+      "oos_end": "2026-04-15"
+    },
+    "fwd": {
+      "fwd_sharpe": 0.06395007570819254,
+      "fwd_pass": true,
+      "fwd_start": "2026-01-14",
+      "fwd_end": "2026-04-15"
+    },
+    "spy_benchmark": {
+      "spy_cagr_gross": 0.0926610023562533,
+      "spy_cagr_net": 0.0787618520028153,
+      "spy_sharpe": 0.563528383127185,
+      "spy_max_dd": -0.5647366900495063,
+      "corr_vs_spy": 0.4171255948131823
+    },
+    "dsr": {
+      "dsr": 0.8420814197648088,
+      "p_value": 0.15791858023519123,
+      "pass": false,
+      "n_trials_used": 17
+    },
+    "stage2": {
+      "note": "N/A \u2014 QLD is QQQ-based 2\u00d7; no QQQSIM in testfol.io; yfinance forbidden per spec \u00a73.1"
+    },
+    "gates": {
+      "gate1_pbo": "AGGREGATE_LEVEL",
+      "gate2_dsr": false,
+      "gate3_wf": true,
+      "gate4_oos": false,
+      "gate5_fwd": true,
+      "overfit_pass_no_pbo": false,
+      "eco1_beats_spy": true,
+      "eco2_calmar": false,
+      "eco3_sharpe_net": false,
+      "eco_pass": false,
+      "pre_pass_pending_pbo": false,
+      "fail_reason": "DSR, OOS, CALMAR, SHARPE_NET"
+    }
+  },
+  "best_config": "c03_ema100_tlt",
+  "any_prepass_pending_pbo": false,
+  "best_sharpe_oos": 0.17518881117725038,
+  "best_cagr": 0.14146137525342128,
+  "best_maxdd": -0.6482996489916638,
+  "cross_lib_bt": {
+    "bt_cagr": 0.1433117303345237,
+    "bt_sharpe": 0.5891655539159623
+  },
+  "citations": [
+    "leverage_for_the_long_run, p.31",
+    "advances_fin_ml, p.208-211",
+    "advances_fin_ml, p.298-299"
+  ],
+  "generated_at": "2026-04-21T18:45:13.312581+00:00"
+}
