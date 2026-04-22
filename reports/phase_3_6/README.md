@@ -27,6 +27,15 @@
 | F | `f_vol_target_managed_futures` | `systematic_trading.md` (p.118-119, p.137-148, p.170-174, p.282-285, p.185-188), `volatility_trading.md` | Pepperstone CFD | 10-20d hold | done | ❌ FAIL (12/13) | 6-asset multi-class MF basket (SPY/TLT/GLD/USO/EFA/IEF) with Carver continuous EWMAC 16:64 + portfolio-level 15% vol target + IDM=√N cap 2.5 + 10d rebal + position inertia 10%. OOS Sharpe 0.115 / CAGR −0.14% / MDD −36.5% / DSR p=0.94 / PBO 0.60 / cost×2 Sharpe −0.46. **Gross Sharpe 0.60 pré-custo** (signal works) mas swap drag 311% cumulativo em 25 anos @ 2.22× alavancagem média erases edge — confirms Carver speed-limit `[systematic_trading, p.185-188]`. Cross-lib Δ=0.000pp (PASS). Differentiates from V2-L1: continuous EWMAC vs binary past-return, portfolio-level IDM vs per-leg vol, 6 asset-class ETFs vs 30-asset FX-dominant. |
 | H | `h_amh_regime_switching` | `adaptive_markets.md` (_archive, p.282-283 RULE 1A-5A, p.244-246 ch.7), `regime_change.md` (_archive, p.14-17 ch.2, p.25-27 ch.3), `fin_time_series_tsay.md` (_archive, p.186-187 §4.1.4) | Inter (ETFs) | 21d rebal | done | ❌ FAIL (8/13) | 3-asset SPY/TLT/GLD with in-house Gaussian HMM (Baum-Welch EM + Viterbi, no hmmlearn) on 20d realized σ/ρ/skew of SPY-TLT; 18-cell grid n∈{2,3,4}×feature∈{σ,σρ,σρskew}×cadence∈{10,21}d. Winner n2_sigma_rc21: OOS Sharpe 0.69 / CAGR 9.47% / MDD −21.18% / FWD Sh 1.21 / median hold 42d / PBO 0.194 / cross-lib Δ=0.000pp / data Δ=0.45pp. Fails bootstrap CI, Sharpe 1.5, CDI CAGR, WF DD 37%, IR −0.17, DSR p=0.56, cost×2 Sharpe 0.69. **Diagnostic:** HMM separates IS into low-vol (67%) + crisis (33%) cleanly, but state-conditional mean SPY return IDENTICAL across states (+0.04%/day both) — classifier gates volatility, not direction. Differentiator vs V2-L2 Gayed landed (HMM ≠ EMA cross), edge did not. |
 | J | `j_ml_classical` | `ml_for_algo_trading.md` (ch.4 p.82-93, ch.12 p.388-400), `ml_for_asset_managers.md` (p.8 §1.4.2, p.21 §1.9), `advances_fin_ml.md` (p.103-110, p.208-211, p.31-34) | Inter (ETFs) | 5d rebal | done | ❌ FAIL (8/13) | Track J1 (Jansen GBM, not J2 FFD-reg). 7-ETF panel SPY/QQQ/TLT/GLD/EEM/XLF/XLE; sklearn GradientBoostingClassifier 300×depth3 lr0.05 substitutes LightGBM (absent in venv) per ch.12 p.390-400; 10 panel-shared features (vol_60/corr_spy/vol_20/mom_z/ret_{1,5,20}/RSI14/dow/regime_SPY200); forward 5d sign binary label; 50% equity per triggered ticker capped 100%. Purged 5-fold + 5×H embargo IS only, model frozen post-IS. Winner n300_d3_t55_h5: OOS Sharpe **0.231** / CAGR **2.62%** / MDD **−35.32%** / DSR p=0.890 / bootstrap OOS CI [−0.84,+1.73] / IR vs SPY −0.92 / WF 8/8 but DD 35.3% / cost×2 S=0.138 / PBO 0.016 (perverse — all 16 configs equally mediocre OOS). IS→OOS Sharpe decay 1.250→0.231 = regime-shift intolerance. Feature importance 51.6% on vol+corr = regime classifier, not swing predictor (median hold 457.5d in 10 runs). Differentiates from V2-L3 AFML on every axis (universe, label paradigm, model, training regime, sizing). FWD Sharpe 1.17 sole positive. Cross-lib Δ=0.000pp (handroll, gate 9 deferred per 3.5b/f precedent). |
+| K | `k_universal_trend` | `universal_trend_tactics.md` (_archive, p.68-69 golden tenets, p.168-169/p.261-262 P24, p.245-255/p.259 UPI, p.291 sizing, p.295-299 Donchian/Turtle, p.338-343 ATR trail) | Pepperstone CFD | 5-30d hold | done | ❌ FAIL (10/13) | Penfold Donchian-50 + ATR(14)×3.0 trailing stop + 0.5%/leg risk em 9-ETF P24-proxy basket (SPY/QQQ/EFA/EEM/TLT/IEF/GLD/SLV/USO; 5 setores; grãos/livestock/softs/currencies sem cobertura honest na Tiingo). OOS Sharpe **0.387** / CAGR **+1.88%** / MDD **−9.87%** (gate 4 PASS!) / FWD Sharpe **+0.211** (gate 5 PASS!) / median hold **23d** (gate 7 PASS) / IR vs SPY −0.564 / DSR p=0.760 / **PBO 0.964** catastrófico / cost×2 Sharpe −0.224 / bootstrap OOS CI [−0.85,+1.70]. **Penfold UPI OOS = 0.331** (Penfold guideline >2 "very good", <0.5 "low" `[p.259]`) — falha o threshold do próprio livro. Cross-lib Δ=0.000pp (PASS). 3 PASS positivos: ATR-trail funciona (MDD pequena), median hold true swing 23d, FWD positivo único entre 10 fams sem relaxar gate 5. Mecanismo de FAIL: 5-setor cobertura insuficiente vs P24 8-setor, Donchian gera 550 trades/25y vs Penfold MWDT ~15-30/decada, swap drag 71.6% acumulado erode break-even. Differentiators vs F: ATR-trail (não signal-reversal), P24-proxy (não tractability-driven), UPI suplementar. |
+
+---
+
+**ESCALATION §6.3 TRIGGERED:** 10 FAIL accumulated → orchestrator must
+write `reports/phase_3_6/BREADTH_NO_WINNER.md` with comparison table
+across all 10 families and 4 recommendations (broaden universe /
+soften gates / pivot Plano C passive only / re-run self_improve_loop
+fresh book-driven hypotheses).
 
 ## Waves
 
@@ -36,7 +45,7 @@
 
 ## Counters
 
-- FAIL: 9
+- FAIL: **10** ⬅ ESCALATION §6.3 TRIGGERED
 - PARTIAL (12/13): 0
 - WINNER: 0
-- Remaining until escalation: 1 FAIL **or** 3 PARTIAL
+- Remaining until escalation: **0** (escalation now active — `BREADTH_NO_WINNER.md` pending)
