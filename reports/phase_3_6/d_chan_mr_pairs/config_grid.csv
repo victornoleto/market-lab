@@ -1,0 +1,7 @@
+tag,lookback,entry_z,exit_z,stop_z,sharpe_full
+lb60_enter2.0_exit0.0_stop4.0,60,2.0,0.0,4.0,-0.5423
+lb126_enter2.0_exit0.0_stop4.0,126,2.0,0.0,4.0,-0.2510
+lb252_enter2.0_exit0.0_stop4.0,252,2.0,0.0,4.0,-0.4678
+lb126_enter1.5_exit0.0_stop4.0,126,1.5,0.0,4.0,-0.4843
+lb126_enter2.5_exit0.5_stop4.0,126,2.5,0.5,4.0,-0.1624
+lb126_enter2.0_exit0.5_stop3.5,126,2.0,0.5,3.5,-0.1716

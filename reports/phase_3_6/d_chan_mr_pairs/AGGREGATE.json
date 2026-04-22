@@ -1,0 +1,345 @@
+{
+  "phase": "phase_3_6",
+  "family": "D_chan_mr_pairs_non_kalman",
+  "slug": "d_chan_mr_pairs",
+  "produced_at": "2026-04-22T03:01:25+00:00",
+  "engine_fix_commit": "7b90a8f",
+  "broker_path": "Pepperstone Razor CFD (plan \u00a73.1) \u2014 spread 5bps/leg, commission $0.35/100k, swap \u22122bps/night/leg, no BR tax",
+  "data_source": "Tiingo daily parquets (5 ETF pairs; HYG inception 2007-04-11)",
+  "survivorship_caveat": "All 5 pairs are liquid US sector ETFs that remained tradable through the full 2007-2026 span. IS effective start is 2007-04-11 (HYG inception) \u2014 the 2001-2017 IS is truncated ~6 years on the left. This is documented and not silently backfilled. Per [algo_trading_chan, p.88-89] the ETF pair space is known to compress edge over time as institutional arbitrage grows.",
+  "pair_universe": [
+    {
+      "y": "XLE",
+      "x": "USO",
+      "label": "energy_xle_uso"
+    },
+    {
+      "y": "TLT",
+      "x": "IEF",
+      "label": "bonds_tlt_ief"
+    },
+    {
+      "y": "HYG",
+      "x": "LQD",
+      "label": "credit_hyg_lqd"
+    },
+    {
+      "y": "GLD",
+      "x": "SLV",
+      "label": "metals_gld_slv"
+    },
+    {
+      "y": "XLU",
+      "x": "XLP",
+      "label": "defensives_xlu_xlp"
+    }
+  ],
+  "pair_statistics_winner_cfg": [
+    {
+      "label": "energy_xle_uso",
+      "y": "XLE",
+      "x": "USO",
+      "total_bars": 4784,
+      "coint_bars": 504,
+      "coint_pct": 0.10535117056856187,
+      "trades": 13
+    },
+    {
+      "label": "bonds_tlt_ief",
+      "y": "TLT",
+      "x": "IEF",
+      "total_bars": 4784,
+      "coint_bars": 441,
+      "coint_pct": 0.09218227424749163,
+      "trades": 9
+    },
+    {
+      "label": "credit_hyg_lqd",
+      "y": "HYG",
+      "x": "LQD",
+      "total_bars": 4784,
+      "coint_bars": 1008,
+      "coint_pct": 0.21070234113712374,
+      "trades": 14
+    },
+    {
+      "label": "metals_gld_slv",
+      "y": "GLD",
+      "x": "SLV",
+      "total_bars": 4784,
+      "coint_bars": 483,
+      "coint_pct": 0.10096153846153846,
+      "trades": 6
+    },
+    {
+      "label": "defensives_xlu_xlp",
+      "y": "XLU",
+      "x": "XLP",
+      "total_bars": 4784,
+      "coint_bars": 736,
+      "coint_pct": 0.15384615384615385,
+      "trades": 15
+    }
+  ],
+  "winner_config": {
+    "lookback": 126,
+    "entry_z": 2.0,
+    "exit_z": 0.0,
+    "stop_z": 4.0,
+    "coint_pvalue_gate": 0.1,
+    "per_pair_gross_pct": 0.05,
+    "spread_one_way_pct": 0.0005,
+    "commission_per_trade_pct": 3.5e-05,
+    "swap_per_night_pct": 0.0002,
+    "tax_rate": 0.0
+  },
+  "window": {
+    "start": "2007-04-11",
+    "end": "2026-04-15",
+    "n_bars": 4784
+  },
+  "splits": {
+    "IS": {
+      "name": "IS",
+      "n_bars": 2702,
+      "sharpe": -0.22061058351061003,
+      "cagr": -0.000504586314725386,
+      "max_drawdown": -0.006313026303879976,
+      "final_equity_from_unit": 0.9946029645759098
+    },
+    "OOS": {
+      "name": "OOS",
+      "n_bars": 1509,
+      "sharpe": -0.5108701122488736,
+      "cagr": -0.0032599706214156976,
+      "max_drawdown": -0.02372677533328349,
+      "final_equity_from_unit": 0.98063701532981
+    },
+    "FWD": {
+      "name": "FWD",
+      "n_bars": 572,
+      "sharpe": 1.2329597492980362,
+      "cagr": 0.002498520878857491,
+      "max_drawdown": -0.0012149939492243078,
+      "final_equity_from_unit": 1.0056802444767903
+    },
+    "FULL": {
+      "name": "FULL",
+      "n_bars": 4784,
+      "sharpe": -0.2509759564587622,
+      "cagr": -0.0010161423037620132,
+      "max_drawdown": -0.028993655483632752,
+      "final_equity_from_unit": 0.9808846777302717
+    },
+    "SPY_OOS": {
+      "name": "SPY_OOS",
+      "n_bars": 1509,
+      "sharpe": 0.6583905809966943,
+      "cagr": 0.11997223145318503,
+      "max_drawdown": -0.3369994047053618,
+      "final_equity_from_unit": 1.970868865655394
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 0.25,
+    "max_window_drawdown": 0.016790604147642885,
+    "pass": false,
+    "mdd_cap": 0.3
+  },
+  "pbo": {
+    "value": 0.30158730158730157,
+    "n_blocks": 10,
+    "n_combinations": 252,
+    "pass": true
+  },
+  "dsr": {
+    "dsr": 0.004133837451156149,
+    "p_value": 0.9958661625488439,
+    "observed_sharpe": -0.03219246071249236,
+    "n_trials": 6,
+    "pass": false
+  },
+  "bootstrap_oos": {
+    "ci_low": -1.365045892138135,
+    "ci_high": 0.49762755541420384,
+    "pass": false
+  },
+  "bootstrap_full": {
+    "ci_low": -0.7942413156067292,
+    "ci_high": 0.42552944688285993,
+    "pass": false
+  },
+  "ir_vs_spy_oos": -0.6728287431731012,
+  "median_hold_days": 10.0,
+  "n_trades_total_winner": 57,
+  "n_trades_per_pair": {
+    "energy_xle_uso": 13,
+    "bonds_tlt_ief": 9,
+    "credit_hyg_lqd": 14,
+    "metals_gld_slv": 6,
+    "defensives_xlu_xlp": 15
+  },
+  "cum_cost_pct_winner": 0.021199000000000003,
+  "cum_tax_pct_winner": 0.0,
+  "cost_sensitivity_2x": {
+    "name": "OOS_2x",
+    "n_bars": 1509,
+    "sharpe": -0.7381342632131682,
+    "cagr": -0.004716557642111208,
+    "max_drawdown": -0.03051949567263057,
+    "final_equity_from_unit": 0.9720869615928266
+  },
+  "gates": [
+    {
+      "name": "gate_01_bootstrap_oos_99p9_ci_low_gt_0",
+      "pass": false,
+      "value": "-1.3650"
+    },
+    {
+      "name": "gate_01b_bootstrap_full_99p9_ci_low_gt_0",
+      "pass": false,
+      "value": "-0.7942"
+    },
+    {
+      "name": "gate_02_oos_sharpe_ge_1_5",
+      "pass": false,
+      "value": "-0.511"
+    },
+    {
+      "name": "gate_03_oos_cagr_ge_13pct_CDI",
+      "pass": false,
+      "value": "-0.33%"
+    },
+    {
+      "name": "gate_03_target_oos_cagr_ge_30pct",
+      "pass": false,
+      "value": "-0.33%"
+    },
+    {
+      "name": "gate_04_oos_maxdd_le_25pct",
+      "pass": true,
+      "value": "-2.37%"
+    },
+    {
+      "name": "gate_05_fwd_sharpe_gt_0",
+      "pass": true,
+      "value": "1.233"
+    },
+    {
+      "name": "gate_06_wf_6_8_and_mdd_le_30pct",
+      "pass": false,
+      "value": "2/8 mdd=1.68%"
+    },
+    {
+      "name": "gate_07_median_hold_ge_5d",
+      "pass": true,
+      "value": "10.0d"
+    },
+    {
+      "name": "gate_08_ir_vs_spy_oos_ge_0_3",
+      "pass": false,
+      "value": "-0.6728"
+    },
+    {
+      "name": "gate_09_cross_lib_concordance",
+      "pass": null,
+      "value": "deferred (see cross_lib_check.md)"
+    },
+    {
+      "name": "gate_10_stage2_data_concordance",
+      "pass": null,
+      "value": "N/A \u2014 only one data source (Tiingo)"
+    },
+    {
+      "name": "gate_11_pbo_lt_0_5",
+      "pass": true,
+      "value": "0.3016"
+    },
+    {
+      "name": "gate_12_dsr_p_lt_0_05",
+      "pass": false,
+      "value": "0.995866"
+    },
+    {
+      "name": "gate_13_cost_sensitivity_2x_sharpe_gt_1",
+      "pass": false,
+      "value": "-0.738"
+    }
+  ],
+  "verdict": "FAIL",
+  "failed_gates": [
+    "gate_01_bootstrap_oos_99p9_ci_low_gt_0",
+    "gate_01b_bootstrap_full_99p9_ci_low_gt_0",
+    "gate_02_oos_sharpe_ge_1_5",
+    "gate_03_oos_cagr_ge_13pct_CDI",
+    "gate_03_target_oos_cagr_ge_30pct",
+    "gate_06_wf_6_8_and_mdd_le_30pct",
+    "gate_08_ir_vs_spy_oos_ge_0_3",
+    "gate_12_dsr_p_lt_0_05",
+    "gate_13_cost_sensitivity_2x_sharpe_gt_1"
+  ],
+  "grid_configs": [
+    {
+      "tag": "lb60_enter2.0_exit0.0_stop4.0",
+      "lookback": 60,
+      "entry_z": 2.0,
+      "exit_z": 0.0,
+      "stop_z": 4.0,
+      "sharpe_full": -0.5423020725232415
+    },
+    {
+      "tag": "lb126_enter2.0_exit0.0_stop4.0",
+      "lookback": 126,
+      "entry_z": 2.0,
+      "exit_z": 0.0,
+      "stop_z": 4.0,
+      "sharpe_full": -0.2509759564587622
+    },
+    {
+      "tag": "lb252_enter2.0_exit0.0_stop4.0",
+      "lookback": 252,
+      "entry_z": 2.0,
+      "exit_z": 0.0,
+      "stop_z": 4.0,
+      "sharpe_full": -0.46776075973794584
+    },
+    {
+      "tag": "lb126_enter1.5_exit0.0_stop4.0",
+      "lookback": 126,
+      "entry_z": 1.5,
+      "exit_z": 0.0,
+      "stop_z": 4.0,
+      "sharpe_full": -0.484344814486559
+    },
+    {
+      "tag": "lb126_enter2.5_exit0.5_stop4.0",
+      "lookback": 126,
+      "entry_z": 2.5,
+      "exit_z": 0.5,
+      "stop_z": 4.0,
+      "sharpe_full": -0.16243206526469653
+    },
+    {
+      "tag": "lb126_enter2.0_exit0.5_stop3.5",
+      "lookback": 126,
+      "entry_z": 2.0,
+      "exit_z": 0.5,
+      "stop_z": 3.5,
+      "sharpe_full": -0.1715698044500316
+    }
+  ],
+  "is_sharpe": -0.22061058351061003,
+  "is_cagr": -0.000504586314725386,
+  "oos_sharpe": -0.5108701122488736,
+  "oos_cagr": -0.0032599706214156976,
+  "oos_mdd": -0.02372677533328349,
+  "fwd_sharpe": 1.2329597492980362,
+  "fwd_cagr": 0.002498520878857491,
+  "wf_profitable_windows": 2,
+  "wf_max_dd": 0.016790604147642885,
+  "cross_lib_max_delta_cagr": null,
+  "bootstrap_oos_ci_low": -1.365045892138135,
+  "bootstrap_full_ci_low": -0.7942413156067292,
+  "cost_x2_sharpe": -0.7381342632131682
+}
