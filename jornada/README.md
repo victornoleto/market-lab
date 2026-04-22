@@ -40,6 +40,7 @@ trading: palpite disfarçado de análise.
 - **Engine agora validada cruzadamente.** Qualquer strategy futura herda baseline honest confirmada por 3 libs independentes + numpy reference.
 
 Entries relevantes:
+- `jornada/2026-04-23-0307-phase3.6-e_ehlers_cycles-FAIL.md` — Family E Ehlers adaptive-cycle filters FAIL 10/13 gates (OOS Sharpe −0.61 / CAGR −9.95% / MDD −53.4% / DSR p=0.998; sinal DSP replicável mas sem edge em regime trend-dominado 2018-2023 — confirma caveat Ehlers `[cycle_analytics, p.xi-xii]` "cycles em trend são folia")
 - `jornada/2026-04-22-0310-phase3.6-d_chan_mr_pairs-FAIL.md` — Family D Chan MR pairs (non-Kalman) FAIL 8/13 gates (OOS Sharpe −0.51 / CAGR −0.33% / DSR p=0.996; 57 trades gerados mas sem edge — confirma caveat Chan p.88-89 sobre compressão da cointegração em ETFs líquidos)
 - `jornada/2026-04-23-2349-phase3.6-a_clenow_momentum-FAIL.md` — Family A Clenow swing momentum FAIL 9/13 gates (OOS Sharpe 0.25 / CAGR 2.67% / IR vs SPY −0.63; FWD Sharpe 1.18 é único positivo)
 - `jornada/2026-04-23-2339-phase3.6-c_gtaa_faber_10mo-FAIL.md` — Family C GTAA Faber 10mo FAIL 8/13 gates (PBO 0.91 catastrófico)
