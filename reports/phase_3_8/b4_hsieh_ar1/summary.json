@@ -1,0 +1,304 @@
+{
+  "git_sha": "14f58d7d8b",
+  "windows": {
+    "IS": [
+      "1970-01-02",
+      "1999-12-31"
+    ],
+    "OOS": [
+      "2000-01-01",
+      "2015-12-31"
+    ],
+    "FWD": [
+      "2016-01-01",
+      "2026-04-15"
+    ]
+  },
+  "grid_size": 8,
+  "pbo_threshold": 0.3,
+  "winner": {
+    "variant": "B4-SSO-2x-L126",
+    "verdict": "FAIL",
+    "hard_fails": 2,
+    "config_hash": "54e7b22cad",
+    "cfg": {
+      "leverage": 2.0,
+      "letf_kind": "SSO",
+      "ar1_lookback": 126,
+      "expense_ratio": 0.0095,
+      "swap_exposure": 1.1,
+      "ffr_spread": 0.004,
+      "cash_rate_annual": 0.04,
+      "commission_bps": 0.0,
+      "spread_bps": 5.0,
+      "tax_rate": 0.15,
+      "use_real_letf": true
+    },
+    "is_stats": {
+      "label": "IS",
+      "variant": "B4-SSO-2x-L126",
+      "n_days": 7582,
+      "sharpe_daily": 0.5285200969926804,
+      "cagr": 0.11025037498587076,
+      "mdd": -0.789406429820775,
+      "n_switches": 109,
+      "median_hold_days": 5.0,
+      "on_regime_fraction": 0.9113690319176998,
+      "cum_cost_pct": 0.05450000000000001,
+      "cum_tax_pct": 5.00251403166771
+    },
+    "oos_stats": {
+      "label": "OOS",
+      "variant": "B4-SSO-2x-L126",
+      "n_days": 4025,
+      "sharpe_daily": 0.4929637142640872,
+      "cagr": 0.07682718693226631,
+      "mdd": -0.35353068975559976,
+      "n_switches": 155,
+      "median_hold_days": 5.0,
+      "on_regime_fraction": 0.30559006211180123,
+      "cum_cost_pct": 0.0775,
+      "cum_tax_pct": 0.4847514032288711
+    },
+    "fwd_stats": {
+      "label": "FWD",
+      "variant": "B4-SSO-2x-L126",
+      "n_days": 2585,
+      "sharpe_daily": 0.438850869106398,
+      "cagr": 0.06916683504510757,
+      "mdd": -0.264931410006671,
+      "n_switches": 116,
+      "median_hold_days": 4.0,
+      "on_regime_fraction": 0.2676982591876209,
+      "cum_cost_pct": 0.05800000000000001,
+      "cum_tax_pct": 0.2035464187727518
+    },
+    "cost2_stats": {
+      "label": "OOS_2x_cost",
+      "variant": "B4-SSO-2x-L126",
+      "n_days": 4025,
+      "sharpe_daily": 0.3726413410572775,
+      "cagr": 0.05382765741269435,
+      "mdd": -0.354345692154466,
+      "n_switches": 155,
+      "median_hold_days": 5.0,
+      "on_regime_fraction": 0.30559006211180123,
+      "cum_cost_pct": 0.155,
+      "cum_tax_pct": 0.7665061385702978
+    },
+    "ir_oos": 0.16378994555323553,
+    "oos_cagr_tier": "Folclore",
+    "oos_mdd_tier": "Warning",
+    "wf_returns": [
+      -0.012319359747410052,
+      1.3277212806255863,
+      1.738859476959607,
+      0.1037727427403845,
+      1.3863569262440114,
+      0.4576371158425321,
+      0.38248244395789954,
+      1.2793412646669289
+    ],
+    "wf_dds": [
+      0.789406429820775,
+      0.35458170194461747,
+      0.4629741304010845,
+      0.595716802285444,
+      0.43457721912768443,
+      0.35353068975559954,
+      0.14176498709957353,
+      0.217846606598614
+    ],
+    "wf_verdict": "pass",
+    "boot_results": {
+      "OOS": {
+        "ci_low_999": -0.0001237403889362394,
+        "passes": false
+      },
+      "FULL": {
+        "ci_low_999": 5.208816759316059e-05,
+        "passes": true
+      }
+    },
+    "pbo_value": 0.18253968253968253,
+    "pbo_verdict": "pass",
+    "pbo_threshold": 0.3,
+    "dsr_p": 0.30375737915026324,
+    "crosslib_delta_pp": 0.0,
+    "crosslib_note": "pandas(no-tax)=9.954%, vbt=9.954%, |\u0394|=0.000pp (compared ex-tax to match vbt scope)",
+    "stress_rows": [
+      [
+        "dotcom_2000_2002",
+        {
+          "n": 752,
+          "sharpe": 0.10037898670667202,
+          "cagr": -0.01899004270254867,
+          "mdd": -0.35353068975559976
+        }
+      ],
+      [
+        "gfc_2007_2009",
+        {
+          "n": 378,
+          "sharpe": 4.659445922111646,
+          "cagr": 0.03254028892216554,
+          "mdd": -0.005864661074838851
+        }
+      ],
+      [
+        "euro_2011",
+        {
+          "n": 170,
+          "sharpe": -0.6570661512067686,
+          "cagr": -0.14138737258624912,
+          "mdd": -0.2178466065986142
+        }
+      ],
+      [
+        "covid_2020_03",
+        {
+          "n": 62,
+          "sharpe": -0.5397755543377317,
+          "cagr": -0.21507899595532054,
+          "mdd": -0.154049670607871
+        }
+      ],
+      [
+        "rate_shock_2022",
+        {
+          "n": 251,
+          "sharpe": -0.011251313806096204,
+          "cagr": -0.07381057268644942,
+          "mdd": -0.23640354769254746
+        }
+      ]
+    ],
+    "gate_rows": [
+      [
+        "1 IS Sharpe > 0.5",
+        "0.529",
+        "PASS"
+      ],
+      [
+        "2 OOS Sharpe >= 1.3",
+        "0.493",
+        "FAIL"
+      ],
+      [
+        "3 OOS CAGR tier (WARN)",
+        "7.683% \u2014 tier **Folclore**",
+        "WARNING-ONLY"
+      ],
+      [
+        "4 OOS MDD tier (WARN)",
+        "-35.353% \u2014 tier **Warning**",
+        "WARNING-ONLY"
+      ],
+      [
+        "5 FWD Sharpe > 0",
+        "0.439",
+        "PASS"
+      ],
+      [
+        "6 WF >= 6/8 positive",
+        "7/8 profitable",
+        "PASS"
+      ],
+      [
+        "7 Median hold >= 5d",
+        "5.0 trading days",
+        "PASS"
+      ],
+      [
+        "8 IR vs SPY >= 0.2",
+        "0.164",
+        "FAIL"
+      ],
+      [
+        "9 Cross-lib CAGR <= 3pp (HARD)",
+        "pandas(no-tax)=9.954%, vbt=9.954%, |\u0394|=0.000pp (compared ex-tax to match vbt scope)",
+        "PASS"
+      ],
+      [
+        "10 Bootstrap 99.9% CI low > 0 (HARD)",
+        "OOS=-0.00012374; FULL=5.20882e-05",
+        "FAIL"
+      ],
+      [
+        "11 PBO < 0.3 (HARD, single-feature)",
+        "pbo=0.183",
+        "PASS"
+      ],
+      [
+        "12 DSR p < 0.05 (HARD)",
+        "p=0.3038",
+        "FAIL"
+      ],
+      [
+        "13 Cost\u00d72 Sharpe > 0.8",
+        "0.373 (cagr=5.383%)",
+        "FAIL"
+      ]
+    ],
+    "trades_per_yr": 6.751714744369314,
+    "darf_toxic": false,
+    "grid_sharpe": [
+      {
+        "variant": "B4-UPRO-3x-L42",
+        "ar1_lookback": 42,
+        "leverage": 3.0,
+        "letf_kind": "UPRO",
+        "oos_sharpe": -0.04446317274316126
+      },
+      {
+        "variant": "B4-UPRO-3x-L63",
+        "ar1_lookback": 63,
+        "leverage": 3.0,
+        "letf_kind": "UPRO",
+        "oos_sharpe": 0.30265154921068355
+      },
+      {
+        "variant": "B4-UPRO-3x-L84",
+        "ar1_lookback": 84,
+        "leverage": 3.0,
+        "letf_kind": "UPRO",
+        "oos_sharpe": 0.2948969212752531
+      },
+      {
+        "variant": "B4-UPRO-3x-L126",
+        "ar1_lookback": 126,
+        "leverage": 3.0,
+        "letf_kind": "UPRO",
+        "oos_sharpe": 0.4524219514511775
+      },
+      {
+        "variant": "B4-SSO-2x-L42",
+        "ar1_lookback": 42,
+        "leverage": 2.0,
+        "letf_kind": "SSO",
+        "oos_sharpe": -0.012702687841582117
+      },
+      {
+        "variant": "B4-SSO-2x-L63",
+        "ar1_lookback": 63,
+        "leverage": 2.0,
+        "letf_kind": "SSO",
+        "oos_sharpe": 0.3328763295851871
+      },
+      {
+        "variant": "B4-SSO-2x-L84",
+        "ar1_lookback": 84,
+        "leverage": 2.0,
+        "letf_kind": "SSO",
+        "oos_sharpe": 0.3352343606828449
+      },
+      {
+        "variant": "B4-SSO-2x-L126",
+        "ar1_lookback": 126,
+        "leverage": 2.0,
+        "letf_kind": "SSO",
+        "oos_sharpe": 0.4929637142640872
+      }
+    ]
+  }
+}
