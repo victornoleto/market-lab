@@ -1,0 +1,224 @@
+{
+  "phase": "phase_3_7",
+  "hypothesis": "H1.b",
+  "hypothesis_name": "Maroy 2024 VWAP-exit intraday noise-boundary",
+  "slug": "h1_maroy_vwap",
+  "produced_at": "2026-04-22T14:38:49+00:00",
+  "git_sha": "32b6128f73",
+  "broker_path": "Pepperstone Razor SPX500 CFD intraday (no DARF per mandate \u00a74.8)",
+  "data_source": "Tiingo IEX 1-min parquet (data/phase3_7/intraday/SPY_1min.parquet, QQQ_1min.parquet)",
+  "paper_entry": "Zarattini-Aziz-Barbon 2024 (SSRN 4824172)",
+  "paper_exit": "Mar\u00f3y 2024 (SSRN 5095349) VWAP-cross variant",
+  "winner_config": {
+    "ma_lookback_days": 14,
+    "noise_band_scale": 1.0,
+    "allow_short": true,
+    "flat_at_close": true,
+    "spread_one_way": 6.7e-05,
+    "commission_per_flip": 0.0,
+    "min_bar_idx_for_entry": 1
+  },
+  "windows": {
+    "IS": {
+      "start": "2017-06-01",
+      "end": "2021-12-31"
+    },
+    "OOS": {
+      "start": "2022-01-01",
+      "end": "2024-12-31"
+    },
+    "FWD": {
+      "start": "2025-01-01",
+      "end": "2026-04-14"
+    }
+  },
+  "splits": {
+    "IS": {
+      "name": "IS",
+      "n_bars": 1169,
+      "sharpe": -2.276264096290889,
+      "cagr": -0.26224760645691036,
+      "max_drawdown": -0.7568884437995038,
+      "final_equity_from_unit": 0.24392261996072306
+    },
+    "OOS": {
+      "name": "OOS",
+      "n_bars": 760,
+      "sharpe": -2.9581747185247034,
+      "cagr": -0.35321431888258603,
+      "max_drawdown": -0.733231196229374,
+      "final_equity_from_unit": 0.2687060141491505
+    },
+    "FWD": {
+      "name": "FWD",
+      "n_bars": 326,
+      "sharpe": -1.2111097492754412,
+      "cagr": -0.1792928821750367,
+      "max_drawdown": -0.4295263394878116,
+      "final_equity_from_unit": 0.7744430680633699
+    },
+    "FULL": {
+      "name": "FULL",
+      "n_bars": 2358,
+      "sharpe": -2.3806373989740477,
+      "cagr": -0.282795445329029,
+      "max_drawdown": -0.9581076254272283,
+      "final_equity_from_unit": 0.04458936553540098
+    },
+    "QQQ_OOS": {
+      "name": "QQQ_OOS",
+      "n_bars": 760,
+      "sharpe": -1.032968311725107,
+      "cagr": -0.18517153687832466,
+      "max_drawdown": -0.5791196407422986,
+      "final_equity_from_unit": 0.5392459916885325
+    },
+    "SPY_OOS": {
+      "name": "SPY_OOS",
+      "n_bars": 760,
+      "sharpe": 0.4891546481648281,
+      "cagr": 0.07235201787095025,
+      "max_drawdown": -0.2535690362555474,
+      "final_equity_from_unit": 1.2345073092640202
+    }
+  },
+  "tiers": {
+    "cagr_tier_A_rota": "folclore",
+    "mdd_tier_A_rota": "warning"
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 0.125,
+    "max_window_drawdown": 0.28009806418831906,
+    "pass": false
+  },
+  "bootstrap_oos": {
+    "ci_low": -4.9524887771570505,
+    "ci_high": -1.2591679576983452,
+    "alpha": 0.001
+  },
+  "bootstrap_full": {
+    "ci_low": -3.552561197680708,
+    "ci_high": -1.0503620281052677,
+    "alpha": 0.001
+  },
+  "pbo": {
+    "value": 0.0,
+    "n_blocks": 10,
+    "n_combinations": 252
+  },
+  "dsr": {
+    "dsr": 9.460966687084203e-13,
+    "p_value": 0.9999999999990539,
+    "observed_sharpe": -0.1864702095766267,
+    "n_trials": 24
+  },
+  "ir_vs_spy_oos": -2.2384490404636885,
+  "median_hold_bars_minutes": 10.0,
+  "n_trades_winner_spy": 24950,
+  "n_trades_winner_qqq": 23148,
+  "cum_spread_pct_spy": 3.3433,
+  "cost_sensitivity_2x": {
+    "name": "OOS_2x",
+    "n_bars": 760,
+    "sharpe": -5.353463137535696,
+    "cagr": -0.5527183545869145,
+    "max_drawdown": -0.9118528414647276,
+    "final_equity_from_unit": 0.08834803581481772
+  },
+  "cross_lib": {
+    "method": "hand-rolled pandas python-loop path (independent state machine)",
+    "canon_oos_cagr": -0.35321431888258603,
+    "indep_oos_cagr": -0.35321431888258603,
+    "delta_cagr_pp": 0.0,
+    "delta_sharpe": 0.0
+  },
+  "gates": [
+    {
+      "name": "gate_01_is_sharpe_gt_0_5",
+      "pass": false,
+      "value": "-2.276"
+    },
+    {
+      "name": "gate_02_oos_sharpe_ge_1_3",
+      "pass": false,
+      "value": "-2.958"
+    },
+    {
+      "name": "gate_03_oos_cagr_tier_A_warning_only",
+      "pass": null,
+      "value": "-35.32% tier=folclore"
+    },
+    {
+      "name": "gate_04_oos_mdd_tier_A_warning_only",
+      "pass": null,
+      "value": "-73.32% tier=warning"
+    },
+    {
+      "name": "gate_05_fwd_sharpe_gt_0",
+      "pass": false,
+      "value": "-1.211"
+    },
+    {
+      "name": "gate_06_wf_6_8",
+      "pass": false,
+      "value": "1/8 mdd=28.01%"
+    },
+    {
+      "name": "gate_07_median_hold_ge_60_bars",
+      "pass": false,
+      "value": "10.0 bars"
+    },
+    {
+      "name": "gate_08_ir_vs_spy_oos_ge_0_2",
+      "pass": false,
+      "value": "-2.2384"
+    },
+    {
+      "name": "gate_09_cross_lib_delta_cagr_le_3pp_HARD",
+      "pass": true,
+      "value": "\u0394=+0.000pp"
+    },
+    {
+      "name": "gate_10_bootstrap_oos_99p9_ci_low_gt_0_HARD",
+      "pass": false,
+      "value": "oos_lo=-4.9525"
+    },
+    {
+      "name": "gate_10b_bootstrap_full_99p9_ci_low_gt_0_HARD",
+      "pass": false,
+      "value": "full_lo=-3.5526"
+    },
+    {
+      "name": "gate_11_pbo_lt_0_3_HARD",
+      "pass": true,
+      "value": "0.0000"
+    },
+    {
+      "name": "gate_12_dsr_p_lt_0_05_HARD",
+      "pass": false,
+      "value": "1.000000"
+    },
+    {
+      "name": "gate_13_costx2_sharpe_gt_1",
+      "pass": false,
+      "value": "-5.353"
+    }
+  ],
+  "verdict": "FAIL",
+  "failed_gates_hard": [
+    "gate_10_bootstrap_oos_99p9_ci_low_gt_0_HARD",
+    "gate_10b_bootstrap_full_99p9_ci_low_gt_0_HARD",
+    "gate_12_dsr_p_lt_0_05_HARD"
+  ],
+  "failed_gates_soft": [
+    "gate_01_is_sharpe_gt_0_5",
+    "gate_02_oos_sharpe_ge_1_3",
+    "gate_05_fwd_sharpe_gt_0",
+    "gate_06_wf_6_8",
+    "gate_07_median_hold_ge_60_bars",
+    "gate_08_ir_vs_spy_oos_ge_0_2",
+    "gate_13_costx2_sharpe_gt_1"
+  ],
+  "runtime_seconds": 59.977094650268555
+}
