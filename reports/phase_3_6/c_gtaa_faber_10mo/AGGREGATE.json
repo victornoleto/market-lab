@@ -1,0 +1,496 @@
+{
+  "phase": "phase_3_6",
+  "family": "C",
+  "family_slug": "c_gtaa_faber_10mo",
+  "produced_at": "2026-04-22T02:38:02+00:00",
+  "engine": "return_series_clean (no bar-engine, prev_weight \u00d7 ret)",
+  "engine_fix_commit": "7b90a8f",
+  "universe": [
+    "SPY",
+    "EFA",
+    "GLD",
+    "IEF"
+  ],
+  "universe_deviation_note": "4-asset Faber variant: REIT dropped (no VNQ/IYR/ICF in Tiingo; XLRE inception 2015 too late for IS). DBC (commodity basket) also unavailable \u2014 GLD used as single-commodity proxy per [trading_evolved, p.200] Ivy allocation which includes GLD.",
+  "windows": {
+    "IS": [
+      "2006-01-03",
+      "2017-12-31"
+    ],
+    "OOS": [
+      "2018-01-01",
+      "2023-12-31"
+    ],
+    "FWD": [
+      "2024-01-01",
+      "2026-04-14"
+    ]
+  },
+  "is_start_note": "Trimmed to 2006-01-03 (IEF inception) to keep 4-asset panel inner-joined.",
+  "cost_model": {
+    "source": "plan \u00a73.2 + mandate \u00a71",
+    "commission_bps": 0,
+    "spread_bps": 2,
+    "slippage_bps": 1,
+    "tax_rate": 0.15,
+    "fx_note": "FX spread applied only on BRL\u2194USD capital deployment \u2014 outside backtest scope."
+  },
+  "grid": [
+    {
+      "config_id": "sma6m_lag0_equal",
+      "sma_months": 6,
+      "signal_lag_days": 0,
+      "weighting": "equal",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.5927236665309857,
+      "is_cagr": 0.05762655919022519,
+      "oos_sharpe": 0.35312833382296077,
+      "oos_cagr": 0.031120298097111698,
+      "oos_mdd": -0.201954651306697,
+      "fwd_sharpe": 1.6333282052176201,
+      "fwd_cagr": 0.18281894318419223,
+      "median_hold_days": 105.0
+    },
+    {
+      "config_id": "sma6m_lag0_inv_vol",
+      "sma_months": 6,
+      "signal_lag_days": 0,
+      "weighting": "inv_vol",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.6436322402573237,
+      "is_cagr": 0.05475719314823846,
+      "oos_sharpe": 0.279174460798561,
+      "oos_cagr": 0.02221120213326855,
+      "oos_mdd": -0.19817346083036647,
+      "fwd_sharpe": 1.611697984996879,
+      "fwd_cagr": 0.13877061932152124,
+      "median_hold_days": 105.0
+    },
+    {
+      "config_id": "sma6m_lag1_equal",
+      "sma_months": 6,
+      "signal_lag_days": 1,
+      "weighting": "equal",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.5298836330856574,
+      "is_cagr": 0.050821403909661944,
+      "oos_sharpe": 0.3416584724374134,
+      "oos_cagr": 0.029949436976674626,
+      "oos_mdd": -0.19103079677377055,
+      "fwd_sharpe": 1.6643533178857894,
+      "fwd_cagr": 0.18620062829141126,
+      "median_hold_days": 105.0
+    },
+    {
+      "config_id": "sma6m_lag1_inv_vol",
+      "sma_months": 6,
+      "signal_lag_days": 1,
+      "weighting": "inv_vol",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.567801453829939,
+      "is_cagr": 0.0478117257647952,
+      "oos_sharpe": 0.2860040588665837,
+      "oos_cagr": 0.02294227590865816,
+      "oos_mdd": -0.18748260734169941,
+      "fwd_sharpe": 1.6981938080611623,
+      "fwd_cagr": 0.1461549952654626,
+      "median_hold_days": 105.0
+    },
+    {
+      "config_id": "sma8m_lag0_equal",
+      "sma_months": 8,
+      "signal_lag_days": 0,
+      "weighting": "equal",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.5415767100138946,
+      "is_cagr": 0.04998553697497288,
+      "oos_sharpe": 0.3900058127349127,
+      "oos_cagr": 0.0361912031033047,
+      "oos_mdd": -0.2296781784408135,
+      "fwd_sharpe": 1.6329451045790768,
+      "fwd_cagr": 0.17863118109105947,
+      "median_hold_days": 147.0
+    },
+    {
+      "config_id": "sma8m_lag0_inv_vol",
+      "sma_months": 8,
+      "signal_lag_days": 0,
+      "weighting": "inv_vol",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.6584238976836836,
+      "is_cagr": 0.052197603576121576,
+      "oos_sharpe": 0.2934857425560323,
+      "oos_cagr": 0.024520941819397235,
+      "oos_mdd": -0.23563963970169843,
+      "fwd_sharpe": 1.5816145877886298,
+      "fwd_cagr": 0.12869813181427547,
+      "median_hold_days": 147.0
+    },
+    {
+      "config_id": "sma8m_lag1_equal",
+      "sma_months": 8,
+      "signal_lag_days": 1,
+      "weighting": "equal",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.535788126270772,
+      "is_cagr": 0.04938859819991248,
+      "oos_sharpe": 0.4144443409791586,
+      "oos_cagr": 0.03893752646365245,
+      "oos_mdd": -0.20707688232721022,
+      "fwd_sharpe": 1.607496532147125,
+      "fwd_cagr": 0.1756097198333859,
+      "median_hold_days": 147.0
+    },
+    {
+      "config_id": "sma8m_lag1_inv_vol",
+      "sma_months": 8,
+      "signal_lag_days": 1,
+      "weighting": "inv_vol",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.6647073888463585,
+      "is_cagr": 0.05280480800883791,
+      "oos_sharpe": 0.343043667128052,
+      "oos_cagr": 0.029683637644914995,
+      "oos_mdd": -0.2098665761744486,
+      "fwd_sharpe": 1.5513203493511212,
+      "fwd_cagr": 0.1261597088591535,
+      "median_hold_days": 147.0
+    },
+    {
+      "config_id": "sma10m_lag0_equal",
+      "sma_months": 10,
+      "signal_lag_days": 0,
+      "weighting": "equal",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.5088489990482287,
+      "is_cagr": 0.046564368295951786,
+      "oos_sharpe": 0.15268938008255092,
+      "oos_cagr": 0.010561211876053633,
+      "oos_mdd": -0.23081505905687383,
+      "fwd_sharpe": 1.5978715646631458,
+      "fwd_cagr": 0.17445315512236892,
+      "median_hold_days": 168.0
+    },
+    {
+      "config_id": "sma10m_lag0_inv_vol",
+      "sma_months": 10,
+      "signal_lag_days": 0,
+      "weighting": "inv_vol",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.6436368826500326,
+      "is_cagr": 0.04988303128617155,
+      "oos_sharpe": 0.11524438619189574,
+      "oos_cagr": 0.0064879586066159955,
+      "oos_mdd": -0.23765947367528562,
+      "fwd_sharpe": 1.5400293660381161,
+      "fwd_cagr": 0.12555165824634473,
+      "median_hold_days": 168.0
+    },
+    {
+      "config_id": "sma10m_lag1_equal",
+      "sma_months": 10,
+      "signal_lag_days": 1,
+      "weighting": "equal",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.5153161240003472,
+      "is_cagr": 0.047170797196341985,
+      "oos_sharpe": 0.19592323272168427,
+      "oos_cagr": 0.015191624256100988,
+      "oos_mdd": -0.20627919553545104,
+      "fwd_sharpe": 1.5761151774395874,
+      "fwd_cagr": 0.17190010740192152,
+      "median_hold_days": 168.0
+    },
+    {
+      "config_id": "sma10m_lag1_inv_vol",
+      "sma_months": 10,
+      "signal_lag_days": 1,
+      "weighting": "inv_vol",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.6668269252216161,
+      "is_cagr": 0.051742659857340056,
+      "oos_sharpe": 0.17558193621788518,
+      "oos_cagr": 0.012441072520672725,
+      "oos_mdd": -0.20895531097627273,
+      "fwd_sharpe": 1.513929679131743,
+      "fwd_cagr": 0.12339163579073964,
+      "median_hold_days": 168.0
+    },
+    {
+      "config_id": "sma12m_lag0_equal",
+      "sma_months": 12,
+      "signal_lag_days": 0,
+      "weighting": "equal",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.4523963271134316,
+      "is_cagr": 0.04012726025046254,
+      "oos_sharpe": 0.3178957243373735,
+      "oos_cagr": 0.026980090665512213,
+      "oos_mdd": -0.1667901962410797,
+      "fwd_sharpe": 1.5681202794188416,
+      "fwd_cagr": 0.17753905116106217,
+      "median_hold_days": 178.5
+    },
+    {
+      "config_id": "sma12m_lag0_inv_vol",
+      "sma_months": 12,
+      "signal_lag_days": 0,
+      "weighting": "inv_vol",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.6019248390186261,
+      "is_cagr": 0.04569530725746396,
+      "oos_sharpe": 0.2596391719480695,
+      "oos_cagr": 0.019562190073158847,
+      "oos_mdd": -0.14740265176442768,
+      "fwd_sharpe": 1.5772928922573088,
+      "fwd_cagr": 0.1309358002679002,
+      "median_hold_days": 178.5
+    },
+    {
+      "config_id": "sma12m_lag1_equal",
+      "sma_months": 12,
+      "signal_lag_days": 1,
+      "weighting": "equal",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.45102445867727314,
+      "is_cagr": 0.04001090705703647,
+      "oos_sharpe": 0.33473754077197726,
+      "oos_cagr": 0.02879745505444098,
+      "oos_mdd": -0.14941242335577065,
+      "fwd_sharpe": 1.5446658391530994,
+      "fwd_cagr": 0.17492992454601586,
+      "median_hold_days": 178.5
+    },
+    {
+      "config_id": "sma12m_lag1_inv_vol",
+      "sma_months": 12,
+      "signal_lag_days": 1,
+      "weighting": "inv_vol",
+      "commission_bps": 0.0,
+      "spread_bps": 2.0,
+      "slippage_bps": 1.0,
+      "tax_rate": 0.15,
+      "is_sharpe": 0.6022707258248718,
+      "is_cagr": 0.04590726912010168,
+      "oos_sharpe": 0.31692190117751395,
+      "oos_cagr": 0.02499910923247839,
+      "oos_mdd": -0.1348112552337012,
+      "fwd_sharpe": 1.55936282574159,
+      "fwd_cagr": 0.12969060076575079,
+      "median_hold_days": 178.5
+    }
+  ],
+  "winner_label": "sma8m_lag1_equal",
+  "winner_metrics": {
+    "IS": {
+      "name": "IS",
+      "n_bars": 3020,
+      "sharpe": 0.535788126270772,
+      "cagr": 0.04938859819991248,
+      "max_drawdown": -0.18466417977740035,
+      "final_equity_from_unit": 1.7819838818793727
+    },
+    "OOS": {
+      "name": "OOS",
+      "n_bars": 1509,
+      "sharpe": 0.4144443409791586,
+      "cagr": 0.03893752646365245,
+      "max_drawdown": -0.20707688232721022,
+      "final_equity_from_unit": 1.2570110818650984
+    },
+    "FWD": {
+      "name": "FWD",
+      "n_bars": 572,
+      "sharpe": 1.607496532147125,
+      "cagr": 0.1756097198333859,
+      "max_drawdown": -0.09516584967689756,
+      "final_equity_from_unit": 1.4437308568748364
+    },
+    "FULL": {
+      "name": "FULL",
+      "n_bars": 5102,
+      "sharpe": 0.6161648619495452,
+      "cagr": 0.059164589953613955,
+      "max_drawdown": -0.20707688232721122,
+      "final_equity_from_unit": 3.2019228363009047
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 0.875,
+    "max_window_drawdown": 0.19222217282243292,
+    "pass": true
+  },
+  "pbo": {
+    "value": 0.9087301587301587,
+    "n_blocks": 10,
+    "n_combinations": 252,
+    "pass": false
+  },
+  "dsr": {
+    "dsr": 0.21715301462918496,
+    "p_value": 0.7828469853708151,
+    "observed_sharpe": 0.026116194399696546,
+    "n_trials": 16,
+    "pass": false
+  },
+  "bootstrap_oos": {
+    "ci_low": -0.7319686181426055,
+    "ci_high": 1.5770097339552787,
+    "pass": false
+  },
+  "bootstrap_full": {
+    "ci_low": -0.01951992633735919,
+    "ci_high": 1.205437667866802,
+    "pass": false
+  },
+  "benchmark_spy_oos": {
+    "sharpe": 0.6583905809966943,
+    "cagr": 0.11997223145318503
+  },
+  "ir_vs_spy_oos": -0.49767315093139874,
+  "median_hold_days": 147.0,
+  "data_concordance": {
+    "note": "Tiingo GLD CAGR=11.34% vs testfolio GLDSIM CAGR=11.79%  \u0394=0.45pp (window 2004-11-19\u21922026-04-15)",
+    "pass": true
+  },
+  "cost_sensitivity_2x": {
+    "name": "OOS_2x",
+    "n_bars": 1509,
+    "sharpe": 0.406832509781277,
+    "cagr": 0.03809389110281858,
+    "max_drawdown": -0.20868026067263368,
+    "final_equity_from_unit": 1.250911308933573
+  },
+  "gates": [
+    {
+      "name": "gate_01_bootstrap_oos_99p9_ci_low_gt_0",
+      "pass": false,
+      "value": "-0.7320"
+    },
+    {
+      "name": "gate_01b_bootstrap_full_99p9_ci_low_gt_0",
+      "pass": false,
+      "value": "-0.0195"
+    },
+    {
+      "name": "gate_02_oos_sharpe_ge_1_5",
+      "pass": false,
+      "value": "0.414"
+    },
+    {
+      "name": "gate_03_oos_cagr_ge_cdi_13pct",
+      "pass": false,
+      "value": "3.89%"
+    },
+    {
+      "name": "gate_04_oos_maxdd_le_25pct",
+      "pass": true,
+      "value": "-20.71%"
+    },
+    {
+      "name": "gate_05_fwd_sharpe_gt_0",
+      "pass": true,
+      "value": "1.607"
+    },
+    {
+      "name": "gate_06_wf_6_8_and_mdd_le_30pct",
+      "pass": true,
+      "value": "7/8 mdd=19.22%"
+    },
+    {
+      "name": "gate_07_median_hold_ge_5d",
+      "pass": true,
+      "value": "147.0d"
+    },
+    {
+      "name": "gate_08_ir_vs_spy_oos_ge_0_3",
+      "pass": false,
+      "value": "-0.498"
+    },
+    {
+      "name": "gate_09_cross_lib_concordance",
+      "pass": null,
+      "value": "see scripts/run_phase3_6_c_cross_lib.py"
+    },
+    {
+      "name": "gate_10_data_concordance_le_1pp_cagr",
+      "pass": true,
+      "value": "Tiingo GLD CAGR=11.34% vs testfolio GLDSIM CAGR=11.79%  \u0394=0.45pp (window 2004-11-19\u21922026-04-15)"
+    },
+    {
+      "name": "gate_11_pbo_lt_0_5",
+      "pass": false,
+      "value": "0.9087 (252 combos)"
+    },
+    {
+      "name": "gate_12_dsr_p_lt_0_05",
+      "pass": false,
+      "value": "0.782847"
+    },
+    {
+      "name": "gate_13_cost2x_oos_sharpe_gt_1",
+      "pass": false,
+      "value": "0.407"
+    }
+  ],
+  "verdict": "FAIL",
+  "failed_gates": [
+    "gate_01_bootstrap_oos_99p9_ci_low_gt_0",
+    "gate_01b_bootstrap_full_99p9_ci_low_gt_0",
+    "gate_02_oos_sharpe_ge_1_5",
+    "gate_03_oos_cagr_ge_cdi_13pct",
+    "gate_08_ir_vs_spy_oos_ge_0_3",
+    "gate_11_pbo_lt_0_5",
+    "gate_12_dsr_p_lt_0_05",
+    "gate_13_cost2x_oos_sharpe_gt_1"
+  ],
+  "n_pass": 5,
+  "n_fail": 8,
+  "n_deferred": 1
+}

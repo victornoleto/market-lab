@@ -136,3 +136,8 @@ reports/phase_3_5c/cross_lib/reference/baseline.json
 ops/data/**
 !ops/data/.gitkeep
 
+
+# Phase 3.7-2 data sprint — parquets gitignored (per prompt); MANIFEST committed
+data/phase3_7/**/*.parquet
+data/phase3_7/**/*.csv
+!data/phase3_7/MANIFEST.json

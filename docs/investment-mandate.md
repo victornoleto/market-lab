@@ -35,38 +35,107 @@ paper trading por Sharpe net realizado.
 
 ## 2. Performance targets e mínimos aceitáveis
 
-### Benchmark obrigatório
+### 2.1 Benchmarks âncora (tax-adjusted, residente BR)
 
-**CDI Brasil ~13-14%/ano líquido** é o chão absoluto para qualquer
-strategy ativa deste projeto. Uma strategy que rende 6% CAGR com
-MaxDD -13% (como o BollingerMR SPY 1h encontrado em 2026-04-16) **não
-é um winner** — é pior que Tesouro Selic sem risco. Fica registrada
-como histórico de pesquisa, não como produto.
+Dois benchmarks externos definem o espectro de avaliação:
 
-### Targets por strategy
+- **CDI bruto:** ~13%/ano (renda fixa BR de referência).
+- **CDI líquido (15% IR):** ~11%/ano — o retorno real de deixar o dinheiro
+  parado em Tesouro Selic.
+- **SPY buy-hold bruto:** ~10-12%/ano (histórico US equity long-run).
+- **SPY buy-hold líquido via Inter (15% DARF):** ~8,5-10%/ano — o
+  retorno real de comprar e segurar SPY via corretora BR internacional.
+- **SPY buy-hold via Pepperstone:** **inviável long-hold** (swap diário
+  aniquila o retorno composto); não é comparador realista para Strategy A.
 
-- **Strategy A (Path A CFD):** **5-10%/mês líquido** (equivalente CAGR
-  60-120%), partindo de $1k de capital inicial. Razão: motor agressivo
-  alavancado faz sentido matemático com target assim; 20-30% ao ano
-  não justifica risk-of-ruin de CFD alavancado.
-- **Strategy B (Path B swing):** **CAGR líquido ≥ 15%/ano** após 15%
-  IR, ideal ≥ 20%. Razão: precisa bater o compartimento passive
-  (AVUS+SPMO+AVUV ~11-13% esperado líquido de IR) por margem não-
-  trivial, senão a complexidade adicional não paga.
+A escolha entre Strategy A e Strategy B tem comparators distintos porque
+rota tributária e risco de counterparty são diferentes.
 
-### Gates obrigatórios (sem exceção)
+### 2.2 CAGR — tier framework (warning-only, não bloqueante)
 
-Toda strategy candidata passa por:
+**⚠ Mudança mandate 2026-04-22 (§7):** o gate "CAGR ≥ CDI" deixa de ser
+hard-block e vira **classificação por tier com warning visível**.
+Strategy com CAGR abaixo do CDI ainda é registrada, só é rotulada como
+"folclore" e não é promovida a live — mas não bloqueia mais a
+descoberta de leads válidos por causa de uma métrica de CAGR irreal
+(ex.: Phase 3.6 Family H com OOS CAGR 9,47% foi auto-rejeitada; sob o
+tier framework teria sido classificada como "folclore" mas mantida
+como referência).
 
-1. **PBO < 0.5** — `[advances_fin_ml, p.208-211]`
+#### Strategy B (Inter, 15% DARF sobre lucro realizado)
+
+| Tier | CAGR líquido OOS | Verdict |
+|---|---|---|
+| **Folclore** | < 11% (CDI líquido) | Pior que Selic. Warning registrado; NÃO é winner, não vai a live. |
+| **Marginal** | 11-17% | Warning obrigatório. Melhor que CDI mas abaixo de 2× CDI — broker-risk + esforço ativo provavelmente não se pagam; sign-off explícito do usuário pra promover. |
+| **Válido** | 17-25% | Winner candidate. ~2× CDI líquido; bate SPY buy-hold líquido por 2-3×. |
+| **Forte** | 25-40% | Prime winner. Justifica monitoramento ativo + DARF paperwork. |
+| **Extraordinário** | > 40% | **Suspect-by-default.** PBO < 0.3 obrigatório; DSR com `n_trials` inflado; cross-lib mandatório; extra look-ahead audit. |
+
+#### Strategy A (Pepperstone, sem DARF modelado — decisão usuário 2026-04-22)
+
+| Tier | CAGR líquido OOS | Verdict |
+|---|---|---|
+| **Folclore** | < 13% (CDI bruto) | Sem DARF modelado, comparator é CDI bruto. Warning registrado; NÃO é winner. |
+| **Marginal** | 13-25% | Warning + recomendação de não-deploy. O broker-risk-premium (SCB Bahamas, §4.8) não compensa retorno abaixo de 2× CDI. |
+| **Válido** | 25-50% | Winner candidate. Alavancagem retail 20:1 no SPX500 permite chegar lá; justifica risco offshore. |
+| **Forte** | 50-100% | Prime winner. Patamar original do mandate (5-10%/mês) — continua sendo **goal**, não mais gate. |
+| **Extraordinário** | > 100% | **Suspect-by-default.** Gayed V2-L2 mostrou exatamente esse tier (79% CAGR) evaporar pra 14% pós-engine-fix (§7 entry 2026-04-22). Extra-robustness obrigatória. |
+
+### 2.3 MDD — tier framework (warning-only, não bloqueante)
+
+**⚠ Mudança mandate 2026-04-22 (§7):** o gate MDD binding −25% também
+vira classificação por tier. Strategy com MDD pior que reject-threshold
+ainda é registrada, mas não promovida. Mesma lógica que CAGR — evita
+auto-rejeitar leads cujo drawdown é proporcional ao leverage.
+
+#### Strategy A (Pepperstone CFD, alavancada)
+
+| Tier | MDD range | Verdict |
+|---|---|---|
+| **Excelente** | MDD ≤ 25% | Top-tier vs benchmarks LETF (Gayed LRS 200d 2x = −78,7%; 3x = −92,2%). |
+| **Válido** | 25% < MDD ≤ 40% | Aceitável para 2-3× leverage. |
+| **Marginal warning** | 40% < MDD ≤ 50% | Pior que SPY buy-hold (−56% em 2008). Warning visível. |
+| **Forte warning** | 50% < MDD ≤ 75% | Aproxima de ruin; extra scrutiny + sign-off explícito pré-live. |
+| **Reject** | MDD > 75% | Risk-of-ruin territory. Não é winner sob nenhuma circunstância. |
+
+#### Strategy B (Inter swing, moderada)
+
+| Tier | MDD range | Verdict |
+|---|---|---|
+| **Excelente** | MDD ≤ 15% | Top-tier vs benchmarks quant. |
+| **Válido** | 15% < MDD ≤ 25% | Comparável a Clenow/Chan OOS. |
+| **Marginal warning** | 25% < MDD ≤ 35% | Warning visível. |
+| **Forte warning** | 35% < MDD ≤ 50% | Risco significativo; sign-off explícito pré-live. |
+| **Reject** | MDD > 50% | Inaceitável para strategy moderada. |
+
+### 2.4 Gates obrigatórios (hard-block — zero bypass)
+
+Os gates **não-CAGR, não-MDD** continuam hard-block:
+
+1. **PBO < 0.5** — `[advances_fin_ml, p.208-211]` (≤ 0.3 para tier "Extraordinário" CAGR)
 2. **DSR p-value < 0.05** — `[advances_fin_ml, p.196-202]`
-3. **Walk-forward ≥ 6/8 janelas positivas** com MaxDD ≤ 25% — `[testing_tuning]`
+3. **Walk-forward ≥ 6/8 janelas positivas** — `[testing_tuning]`
 4. **Single-block OOS hold-out** (última fatia de 6-12 meses) positivo.
 5. **Forward-window stress** (última fatia de 3 meses recentes) positivo.
+6. **Bootstrap 99.9% CI low > 0** em OOS + full-period Sharpe.
+7. **Cross-lib concordância** ≥ 2/3 dentro de ±3pp CAGR OOS.
 
-Violação de qualquer gate = strategy não existe. Sem "mas no IS era
-bom", sem "com um param a mais", sem "só falhou em 1 ano". Zero
-bypass.
+Violação de qualquer gate nesta lista = strategy não existe. Sem
+arredondamento, sem "quase lá".
+
+**CAGR e MDD NÃO estão nesta lista.** Eles classificam via tier
+(§2.2, §2.3) e podem gerar warning + sign-off do usuário, mas não
+auto-rejeitam.
+
+### 2.5 Overfit control em otimização
+
+Qualquer param grid implica CPCV + PBO. Encontrar params por tentativa-
+e-erro num backtester externo (ex.: testfol.io) é **ponto de partida**,
+nunca "winner final". Os params encontrados pelo usuário em estudos
+externos (ex.: SPY EMA 125, band 5% — ver `docs/reference/letf_rotation_reddit_analysis.md`
+quando colado) entram como **seed lead** para a lead B1, que então
+submete os params ao CPCV+PBO rigoroso antes de virar strategy.
 
 ### Overfit control em otimização
 
@@ -496,6 +565,73 @@ rotation. Default calibration assumindo 30% ativo total:
 Se Strategy A não produzir winner em Phase 3, re-alocar os 5 pts de
 volta para o bucket passive (total ativo cai para 25 pts).
 
+### 4.8 Pepperstone — perfil de risco e staging de depósitos (Strategy A)
+
+**Contexto jurisdicional (2026-04 snapshot):**
+
+- **Pepperstone Group Ltd** — holding australiana fundada em 2010 (John
+  Lavarack / Owen Kerr). ASIC-regulated na sede de Melbourne.
+- **Rota típica para residentes BR:** **Pepperstone Markets Limited**
+  (SCB — Securities Commission of The Bahamas) ou **Pepperstone
+  Financial Services (DIFC) Limited** (DFSA Dubai). KYC determina a
+  entidade efetiva.
+- **SCB Bahamas é jurisdição Tier-3** — **sem esquema de compensação
+  ao investidor** equivalente a FSCS UK (£85k) ou ICF EU (€20k). Em
+  insolvência do broker, retorno do capital depende do processo falimentar
+  nas Bahamas.
+- **Fora da alçada CVM/BCB.** Nenhuma proteção regulatória BR se aplica
+  ao cliente; IR compliance para ganho de capital offshore (DARF 6015,
+  Lei 14.754/2023) é **decisão e responsabilidade 100% do investidor** —
+  ver §2 decisão usuário 2026-04-22 sobre não-modelagem no backtest.
+
+**Proteções que Pepperstone oferece:**
+
+- **Negative balance protection** ativa em todas entidades (limita perda
+  a 0, não a valor positivo além do depósito — útil em gap events).
+- **Segregação de fundos em bancos tier-1** (Barclays, NAB) — prática
+  padrão, não esquema de compensação.
+- **Cliente de margem diária** — margin calls automáticos evitam
+  runaway losses acima do saldo.
+
+**Track record (2010-2026):**
+
+- Forex Broker of the Year awards múltiplas vezes (prêmios da indústria,
+  não regulatórios).
+- Sem scandals regulatórios majores conhecidos.
+- Parte do ecossistema cTrader (plataforma de 3ª parte, Spotware) —
+  exposição operacional ao ciclo de desenvolvimento do cTrader.
+
+**Implicação operacional — staging de depósitos obrigatório:**
+
+Dado que (a) o esquema regulatório é Tier-3 sem compensação, (b) o
+dinheiro em Pepperstone deve ser mentalmente "escrito off" como
+at-risk-total, e (c) o automation elimina o atrito operacional mas
+não o counterparty risk:
+
+1. **Paper trading ≥ 3 meses** (já obrigatório por §2.4 + `docs/strategies/plano_a_pepperstone_index_cfd_rate_card.md`).
+2. **Live inicial:** USD **500-1.000** apenas — "proof it runs".
+3. **Escalada em degraus mensais condicionais:** cada green month
+   autoriza o próximo degrau; cap em **USD 5-10k** até 6 meses de live
+   verde.
+4. **Cap permanente:** nunca exceder tolerância pessoal de perda total
+   do valor em Pepperstone. Se $20k na conta significa "ficaria
+   destruído se perder tudo", **não coloca $20k** — ajuste o cap para
+   onde a perda seria absorvível.
+5. **Diversificação de broker** permanece recomendada — não concentrar
+   todo o bucket ativo em Pepperstone mesmo após track record de live
+   verde.
+
+Comparação qualitativa com Banco Inter (§4.6):
+
+| Dimensão | Pepperstone (Strategy A) | Inter (Strategy B) |
+|---|---|---|
+| Jurisdição efetiva pra BR retail | SCB Bahamas (Tier-3) | FINRA + Apex Clearing (Tier-1) |
+| Compensação ao investidor | N/A (processo falimentar Bahamas) | SIPC US$500k (via Apex) |
+| Regulação BR | Fora da alçada CVM/BCB | CVM + BACEN + Inter&Co |
+| Modelagem de imposto em backtest | **Nenhuma** (decisão usuário 2026-04-22) | **15% DARF** sobre lucro realizado |
+| Esforço operacional para aporte | "Colocar saldo na conta" (automação completa) | Wire transfer + FX + custódia Apex |
+| Broker-risk-premium demandado | **Alto** (tier CAGR A começa em 13% vs B em 11%) | Baixo |
+
 ---
 
 ## 5. Anti-patterns registrados (o que NÃO fazer)
@@ -508,10 +644,14 @@ Decisões tomadas que NÃO podem ser revertidas sem discussão explícita:
 2. **Strategy B = buy&hold não-alavancado.** Se a tese "só" é buy&hold,
    isso já está em `portfolio-aposentadoria.md` — strategy B precisa
    gerar alpha marginal via regime-switch ou alavancagem.
-3. **CAGR < CDI BR como "winner".** Se retorno líquido não bate CDI,
-   a strategy é folclore, não produto.
-4. **Gate bypass por "quase lá".** PBO 0.51 não é PBO 0.49. WF 5/8 não
-   é WF 6/8. Não se arredonda o gate pra cima; re-trabalha o design.
+3. **Promoção a live com CAGR ou MDD em tier "folclore"/"reject".** Os
+   tiers §2.2 e §2.3 permitem classificar strategies com CAGR abaixo do
+   CDI ou MDD acima do reject-threshold como referência de pesquisa, mas
+   **nunca ir a live** com elas. "Folclore" e "Reject" são descarte
+   operacional, só não são mais auto-bloqueio no gate-check.
+4. **Gate bypass por "quase lá"** nos gates hard-block (§2.4). PBO 0.51
+   não é PBO 0.49. WF 5/8 não é WF 6/8. Não se arredonda o gate pra
+   cima; re-trabalha o design. (CAGR e MDD têm tiers, não arredondamento.)
 5. **Alavancagem sem prob-of-ruin.** Nunca. Sempre sweep + Monte Carlo.
 6. **Retroajuste de params pós-OOS.** Se OOS falhou, strategy é re-
    desenhada do zero, não tunada pra "passar OOS".
@@ -558,4 +698,5 @@ propagar para CLAUDE.md.
 | 2026-04-18 | **Phase 3.5a V1 encerrada sem winner novo.** (NOTA: esta entry foi escrita pelo T6 autônomo chamando V1 de "V2" — incorreto; V2 está em execução separada.) Ceiling empírico Plano A = BollingerMR_GARCH SPY 1h L=2 CAGR 5.9%/yr net. 143 runs em 6 famílias × universe Tiingo IEX 1h (12 FX/metals + 5 equity + 1 gold) produziram **0 winners novos**. Duas opções pivot registradas em jornada T6. Decisão final delegada ao Lead T7 + user. | Razor spread 5–7 bps × 200–500 trades/yr > edge MR/breakout/pair/session 1h. Universe Pepperstone index-CFD não-servido por Tiingo. Target §2 Plano A (5–10%/mês) e hierarquia §1 pressupunham universe + granularidade que Tiingo 1h não fornece. | iter 41 phase3.5a branch |
 | 2026-04-18 | **Phase 3.5a-V2 launched** (último test Plano A com framework corrigido) | User rejeitou framing "V1=V2" do T6/T7 autônomo. V2 real corrige todos os erros estruturais identificados no post-mortem: timeframe livre (não 1h), hold ≥3 dias (não ≤5d — inverte intuição swap), universe ≥30 multi-asset CFDs (não 12 FX), cost model spread+commission-dominant (não swap-focused), CAGR target 30%/yr realista (não 60-120%), 6 famílias novas (TSMOM, Gayed-transport, AFML meta-label, Carver RP, equity pairs, vol breakout). Spec autoritativo: `specs/phase_3_5a_v2.md`. **Binding stop rule: se V2 produzir 0 PASS, Plano A abandonado permanentemente (sem V3).** User memory: `project_plano_a_v2_last_attempt.md`. Ratificação: se winner → paper trading dual (A+B); se abandon → Phase 4 Plano B puro + §4.7 re-alocação 5pp Path A → Path B. | V1 testou framework errado; V2 corrige antes de ratificar abandono. Última tentativa antes de foco exclusivo Plano B. | iter 0 phase3.5a-v2 branch |
 | 2026-04-19 | **Phase 3.5a-V2 ENCERRADA — WINNER FOUND.** 82 iters / 58 runs em 6 famílias produziram **1 gate-passing winner**: `gayed_ema100_L2_off_gld` (Gayed LETF rotation `[leverage_for_the_long_run]` transportada para CFD Pepperstone: SPY+QQQ risk-on, GLD risk-off, leverage 2×). OOS Sharpe **2.285** / CAGR líquido **79.14%** / MaxDD **−21.02%** / median hold 6d / IR vs SPY 2.161. 13/13 gates V2 pass (PBO 0.103, DSR p 0.000288, WF 8/8 @ DD 22.7%, boot99.9 CI low 0.962, FWD Sharpe 1.821). Leads L1 TSMOM / L3 AFML meta / L4 Carver RP blend / L5 Kalman pairs / L6 vol-breakout todos DEAD com diagnóstico estrutural (ver `reports/phase3_5a_v2/AGGREGATE.md`). **Binding stop rule NÃO dispara** (1 PASS ≥ 1 requerido). Plano A RETIDO como 2ª perna ativa mandate §1. Próxima fase: `specs/phase_4_paper_trading.md` (dual-path paper trading A+B, 3 meses). **Anti-regra explícita:** não fazer V3; não re-otimizar winner em Phase 3.5a — Phase B leads são movidos para Phase 4+5 (cost sensitivity, multi-asset transport, WF re-opt, ρ(A,B), GARCH vol-sizing). Plano B 3-leg EW permanece IMUTÁVEL. **⚠️ ESTE WINNER FOI RETRATADO EM 2026-04-22 — ver entry abaixo.** | V2 vindicou o framework corrigido (daily, hold ≥3d, spread+commission-dominant). Regime-driven é a única família viável em Plano A CFD Pepperstone — inferência de 6 famílias testadas, 1 PASS (Gayed), 5 DEAD estrutural. | iter 81 phase3.5a-v2 branch (V2-L7 atomic verdict) |
+| 2026-04-22 | **CAGR + MDD gates relaxados para tier framework (warning-only, não-bloqueante).** Phase 3.6 fechou com 10 FAIL onde 7 famílias tinham gates hard-block de CAGR (≥13% CDI) ou MDD (−25%) como razão principal de rejeição — ex.: Family H (HMM regime) OOS Sharpe 0.69 / CAGR 9.47% / MDD −21% **teria sido classificado como "folclore CAGR + excelente MDD"** sob novo framework, visível pra decisão do usuário em vez de auto-rejeitado. Phase 3.7-1 literature sprint confirmou que mesmo papers state-of-art (Zarattini 2024 SPY intraday Sharpe 1.33 net CAGR 19.6%) não atingem 60-120% — target original era irreal. **Mudança:** (a) CAGR vira tier-classifier com 5 níveis por rota (A: Folclore < 13%, Marginal 13-25%, Válido 25-50%, Forte 50-100%, Extraordinário > 100% suspect; B: Folclore < 11%, Marginal 11-17%, Válido 17-25%, Forte 25-40%, Extraordinário > 40% suspect); (b) MDD idem (A: Excelente ≤ 25%, Válido ≤ 40%, Marginal warning ≤ 50%, Forte warning ≤ 75%, Reject > 75%; B: Excelente ≤ 15%, Válido ≤ 25%, Marginal ≤ 35%, Forte ≤ 50%, Reject > 50%); (c) Gates hard-block remanescentes (§2.4): PBO, DSR, WF, single-block OOS, FWD, bootstrap CI, cross-lib — esses permanecem zero-bypass. **Decisão usuário explícita:** não modelar 15% DARF no cost model Pepperstone (jurisdição offshore SCB Bahamas — Lei 14.754/2023 DARF 6015 sobre ganho de capital offshore é responsabilidade self-reported do investidor; decisão técnica do backtest é ignorar). Strategy B (Inter) mantém 15% DARF no cost model por consistência tributária real. **Mandate §4.8 novo:** documenta perfil de risco Pepperstone (SCB Tier-3 sem investor compensation; segregação em tier-1 banks; staging de depósitos: $500-1k inicial → escalada condicional em degraus → cap $5-10k até 6 meses verdes). Phase 3.6 BREADTH_NO_WINNER mantém seu verdict (10 FAIL é FAIL mesmo sob novo framework porque a maioria falhou gates hard-block PBO/DSR/Sharpe também), mas Phase 3.7-3 hunt se beneficia do relaxamento: leads como H1 (Zarattini 2024 intraday Sharpe 1.33 net CAGR 19.6%) agora podem passar como "Válido Marginal" A em vez de auto-rejeitar. | Phase 3.6 null + Phase 3.7-1 research evidence consolidada: target 5-10%/mês mandate original (Apr-16) foi irrealista vs literatura 2022-2026 e vs Phase 3.6 10-family honest results. CDI continua benchmark-âncora (tier floor); SPY buy-hold líquido é comparator realista. | TBD (mandate edit 2026-04-22) |
 | 2026-04-22 | **Engine look-ahead bias descoberto e consertado — Plano A V2 RETRATADO.** Phase 3.5f executou 5 fases (F0 testes cirúrgicos → F1 scope audit → F2 fix → F3 re-validação → F4 docs). Bug em `src/ai_trade/backtest/strategies/plano_a_leveraged_rotation.py:462` fazia `new_w[bar_i] × ret[bar_i]` (peso decidido com `close[i]` multiplicado pelo retorno causado por `close[i]`) — look-ahead clássico. Três libs independentes (bt, vectorbt, backtrader) + numpy reference concordam na convenção shift (`prev_w × ret`); canonical estava sozinho. Fix commit `7b90a8f`. Escopo do bug: **1 arquivo, 1 linha** — F1 grep-audit confirmou que `letf_rotation.py` (Plano B) e todas as outras engines V2 estavam limpas. Phase 3.5b/3.5c/3.5d/3.5e Plano B **preservadas como canonical limpo.** **Re-validação honest dos 6 V2 leads: TODAS FAIL.** V2-L2 Gayed cai de Sharpe 2.285/CAGR 79.14%/MDD −21% para Sharpe 0.56/CAGR ~14%/MDD −37% — gates 1 (boot CI), 2 (Sharpe), 4 (MDD binding cap §5), 6 (WF max-window DD), 8 (IR), 13 (cost×2) falham. V2-L1/L3/L5/L6 já eram DEAD sob engine limpa (reconfirmado); V2-L4 Carver RP blend falha também (surpresa secundária: L2 era só 4.8% do blend weight, não 66-75% como assumido — hipótese de resgate via blend refutada). Banners forensic aplicados em `reports/phase3_5a_v2/v2_l2_*`, `phase3_5a_v2/v2_l4_*`, `phase4_0/*` (`ENGINE_BIAS_FORENSIC.md`). **Plano A: zero winner honest.** Binding stop rule `project_plano_a_v2_last_attempt` dispara: se V2 falha, abandonar Plano A (sem V3 isolado). **Decisão do usuário 2026-04-23:** abrir Phase 3.6 como broader hunt (plano em `docs/plans/2026-04-23-find-swing-winner-phase-3-6.md`) — fresh broad hunt broker-agnostic sobre os 33 livros, com 13 gates relaxados pra swing (Sharpe≥1.5, CDI floor CAGR≥13%, hold≥5d, IR≥0.3). Phase 3.6 displaces as 4 opções A/B/C/D previstas no morning summary 3.5f (V3 / Gayed 1× / abandon / Plano B c06-c12) — pode produzir winner A-style, B-style, ou nenhum. Plano A V2 encerrado definitivamente; Plano B c06-c12 disponível como um dos caminhos Phase 3.6 (mas não obrigatório). | Look-ahead convention enforcement + cross-lib independent replication. Two-stage protocol + engine audit. `[advances_fin_ml, p.31-34]` | `7b90a8f` (fix) → `f7a8116` (F4 close) → `e2d6d17` (Phase 3.6 plan) |

@@ -1,0 +1,7 @@
+tag,risk_per_trade,max_leverage,allow_short,sharpe_full,n_trades
+r005_lev1_short,0.005,1.0,True,0.3088,161
+r010_lev1_short,0.01,1.0,True,0.3088,161
+r015_lev1_short,0.015,1.0,True,0.3088,161
+r010_lev2_short,0.01,2.0,True,0.3088,161
+r010_lev1_longonly,0.01,1.0,False,0.4970,104
+r010_lev2_longonly,0.01,2.0,False,0.4970,104

@@ -1,0 +1,9 @@
+slug,sr_obs,p_raw,p_corrected_bonferroni,survive,runtime_s,M,alpha,n_permutations
+rsi14_mr,0.020785,0.423154,1.000000,False,8.25,8,0.001,500
+macd_hist_cross,0.011545,0.854291,1.000000,False,2.57,8,0.001,500
+connors_rsi2_mr,0.051308,0.031936,0.255489,False,10.62,8,0.001,500
+donchian20_breakout,0.013606,0.738523,1.000000,False,7.76,8,0.001,500
+zscore5_mr,0.024247,0.351297,1.000000,False,7.66,8,0.001,500
+bollinger2_mr,0.019569,0.475050,1.000000,False,8.14,8,0.001,500
+sma200_trend,0.033367,0.349301,1.000000,False,2.27,8,0.001,500
+cn20_mr,0.029267,0.389222,1.000000,False,7.64,8,0.001,500

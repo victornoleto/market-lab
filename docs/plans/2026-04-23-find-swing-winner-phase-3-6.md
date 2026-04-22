@@ -114,27 +114,38 @@ Start with HIGH-priority (A, B, C) — most tractable, best-documented, most lik
 
 Per plan 3.5f §5.5 with these swing-specific adjustments:
 
-| # | Gate | Threshold | Rationale |
-|---|---|---|---|
-| 1 | Bootstrap 99.9% CI low > 0 | OOS Sharpe AND full-period Sharpe | `[advances_fin_ml, p.196-202]` |
-| 2 | OOS Sharpe ≥ **1.5** | relaxed from V2's 2.0 — swing strategies typically lower Sharpe than short-hold | user override 2026-04-22 |
-| 3 | OOS CAGR ≥ **13% (CDI floor)** | strict ≥30% is target; CDI soft-floor per user override 2026-04-22 | mandate §2 with user relaxation |
-| 4 | OOS MaxDD ≥ −25% | binding cap, no relaxation | mandate §5 |
-| 5 | FWD Sharpe > 0 | 2024-2026 stress | plan §5.5 |
-| 6 | WF 8-windows | ≥6/8 profitable, max-window DD ≤ **30%** (relaxed from 25% for swing long-hold) | `[advances_fin_ml, ch.11]` |
-| 7 | Median hold ≥ **5 trading days** | swing discipline (up from V2's 3d) | this plan |
-| 8 | IR vs SPY buy-hold ≥ **0.3** | relaxed from V2's 0.5 for non-leveraged | this plan |
-| 9 | Cross-lib ≥ 2/3 within ±3pp CAGR | bt, vectorbt, backtrader | plan §5.5 |
-| 10 | Stage-2 data concordance ≤1pp CAGR | Tiingo adj vs testfolio (for ETF strategies) | plan §5.5 |
-| 11 | PBO < 0.5 (if grid ≥5 configs) | CSCV 10-block | `[advances_fin_ml, p.208-211]` |
-| 12 | DSR p < 0.05 (if grid ≥5 configs) | on winner OOS Sharpe | `[advances_fin_ml, p.196-202]` |
-| 13 | Cost×2 sensitivity: OOS Sharpe > 1.0 | robust to cost-model variance | plan §5.5 |
+Per plan 3.5f §5.5 with swing-specific adjustments, **AND per mandate
+§2.2 + §2.3 override (2026-04-22) CAGR and MDD are now warning-only
+tiers, not hard-block**.
 
-**Winner = ALL 13 pass** (with user-override relaxations applied to gates 2, 3, 6, 7, 8).
+| # | Gate | Threshold | Block / Warn | Rationale |
+|---|---|---|---|---|
+| 1 | Bootstrap 99.9% CI low > 0 | OOS Sharpe AND full-period Sharpe | **BLOCK** | `[advances_fin_ml, p.196-202]` |
+| 2 | OOS Sharpe ≥ **1.5** | — | **BLOCK** | user override 2026-04-22 (swing vs short-hold) |
+| 3 | OOS CAGR tier | classify per §2.2 (A: Folclore/Marginal/Válido/Forte/Extraordinário; B: idem) | **WARN-ONLY** (não bloqueia) | mandate §2.2 override 2026-04-22 |
+| 4 | OOS MaxDD tier | classify per §2.3 (A: Excelente/Válido/Warning×2/Reject at −75%; B: idem at −50%) | **WARN-ONLY** até Reject (Reject tier não promove a live) | mandate §2.3 override 2026-04-22 |
+| 5 | FWD Sharpe > 0 | 2024-2026 stress | **BLOCK** | plan §5.5 |
+| 6 | WF 8-windows | ≥6/8 profitable; max-window DD classifica por §2.3 tier | **BLOCK** (6/8 count); **WARN-ONLY** (DD tier) | `[advances_fin_ml, ch.11]` + §2.3 |
+| 7 | Median hold ≥ **5 trading days** (swing) OR ≥ 1h intraday (Strategy A pivot mandate §3) | — | **BLOCK** | mandate §3 pivot 2026-04-15 |
+| 8 | IR vs SPY buy-hold ≥ **0.3** | — | **BLOCK** | non-leveraged swing baseline |
+| 9 | Cross-lib ≥ 2/3 within ±3pp CAGR | bt, vectorbt, backtrader | **BLOCK** | plan §5.5 |
+| 10 | Stage-2 data concordance ≤1pp CAGR | Tiingo adj vs testfolio (ETF) | **BLOCK** | plan §5.5 |
+| 11 | PBO < 0.5 (if grid ≥5 configs); **< 0.3 se tier CAGR = Extraordinário** | CSCV 10-block | **BLOCK** | `[advances_fin_ml, p.208-211]` + §2.2 |
+| 12 | DSR p < 0.05 (if grid ≥5 configs) | on winner OOS Sharpe | **BLOCK** | `[advances_fin_ml, p.196-202]` |
+| 13 | Cost×2 sensitivity: OOS Sharpe > 1.0 | robust to cost variance | **BLOCK** | plan §5.5 |
 
-**PARTIAL = 12/13 pass** (escalate to user for review).
+**Winner = ALL hard-block gates pass + tier CAGR ≥ "Marginal" + tier MDD ≤ "Forte warning".**
 
-**FAIL = any missed gate not covered by a listed relaxation.**
+Tier "Folclore" (CAGR) ou "Reject" (MDD) = strategy fica como referência
+de pesquisa mas **NÃO vai a live**. Tier "Marginal" CAGR ou "Forte
+warning" MDD = winner-with-caveats, requer sign-off explícito do usuário
+pré-live.
+
+**PARTIAL** = todos hard-block passam mas tier CAGR ou MDD fica em
+"Marginal"/"Forte warning" → escalar ao usuário pra decisão.
+
+**FAIL** = qualquer hard-block não passa, OR tier CAGR = Folclore, OR tier
+MDD = Reject.
 
 ---
 

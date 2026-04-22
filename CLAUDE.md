@@ -31,13 +31,28 @@ Sumário do `docs/investment-mandate.md`. Regras invioláveis:
    ativas: **Strategy A (principal, Path A short-hold CFD
    Pepperstone, agressiva alavancada)** e **Strategy B (secundária,
    Path B swing broker BR, moderada).**
-2. **CAGR mínimo aceitável = CDI BR (~13-14%/ano líquido).** Abaixo
-   disso, strategy não é winner — é folclore.
+2. **CAGR e MDD são tiers warning-only (não bloqueantes) desde 2026-04-22
+   (mandate §2.2, §2.3, §7).** Benchmarks âncora: **CDI líquido ~11%/ano**
+   (CDI 13% × (1 − 15% IR)) e **SPY buy-hold líquido via Inter ~8,5%/ano**.
+   CAGR tiers por rota: **Strategy B (Inter pós-15%-DARF)** — Folclore
+   < 11%, Marginal 11-17%, **Válido 17-25%**, Forte 25-40%, Extraordinário
+   > 40% (suspect). **Strategy A (Pepperstone, sem DARF modelado por decisão
+   usuário 2026-04-22)** — Folclore < 13%, Marginal 13-25%, **Válido
+   25-50%**, Forte 50-100%, Extraordinário > 100% (suspect). MDD tiers
+   análogos: A Excelente ≤ 25%, Válido ≤ 40%, Warning 40-75%, Reject
+   > 75%; B Excelente ≤ 15%, Válido ≤ 25%, Warning 25-50%, Reject > 50%.
+   **Folclore/Reject tiers = não-winner, não vai a live**, mas o backtest
+   NÃO auto-rejeita no gate-check (antes auto-rejeitava; agora classifica
+   + warning pra sign-off do usuário).
 3. **Strategy A (Path A Pepperstone CFD) é multi-asset obrigatório**
    (SPY/QQQ/Gold/BTC/ETH/FX majors), com universe pre-screening
    (Hurst/ATR/spread/volume) e alavancagem ótima via sweep empírico
-   1:1 → 1:200 cross-checked com Kelly f/2. Target: **5-10%/mês a
-   partir de $1k**. Single-asset edge NÃO é aceito como winner final.
+   1:1 → 1:200 cross-checked com Kelly f/2. Goal (não mais gate):
+   **5-10%/mês** — continua sendo onde queremos chegar, mas tier "Válido"
+   começa em 25% CAGR net. Single-asset edge NÃO é aceito como winner
+   final. **Staging obrigatório pós-live (§4.8):** USD 500-1k inicial
+   (SCB Bahamas é Tier-3 sem investor compensation), escalada condicional
+   em degraus, cap USD 5-10k até 6 meses verdes.
 4. **Strategy B (Path B swing broker) é a SEGUNDA strategy do projeto**
    (swing moderado, complementa Strategy A). Tese: **família LETF
    rotation** — regime MA (SMA ou EMA) sobre SPY → LETF (UPRO 3x ou
@@ -51,10 +66,13 @@ Sumário do `docs/investment-mandate.md`. Regras invioláveis:
    control:** CPCV + PBO + splits mutuamente exclusivos (IS 1970-2000
    / OOS 2001-2015 / Stress 2016-2026) + stationary block bootstrap
    a 0.001. 15% IR BR sempre; UPRO/SSO sintéticos pre-2009/2006 via
-   `r = L × r_SPX_TR - drag - expense`. Target: **CAGR líquido
-   ≥ 15%/ano, ideal ≥ 20%**.
-5. **Gates sempre:** PBO<0.5 + DSR p<0.05 + WF≥6/8 + single-block OOS
-   + forward-window stress. Zero bypass. "Quase lá" não passa.
+   `r = L × r_SPX_TR - drag - expense`. Goal: tier "Válido" CAGR 17-25%
+   líquido (pós-15%-DARF), ideal "Forte" 25-40%.
+5. **Gates hard-block (zero bypass)** — `§2.4`: PBO<0.5 + DSR p<0.05 +
+   WF≥6/8 + single-block OOS + FWD stress + bootstrap 99.9% CI low > 0 +
+   cross-lib concordância ±3pp CAGR. **CAGR e MDD NÃO estão nesta lista**
+   (viraram tiers §2.2/§2.3 em 2026-04-22). "Quase lá" nos gates hard-block
+   ainda não passa.
 6. **Threading model live (Phase 4):** 1 thread/processo por ativo
    monitorado, state isolado, perks por-ativo opcionais (sessão FX,
    pre/post market equity, news filter gold).

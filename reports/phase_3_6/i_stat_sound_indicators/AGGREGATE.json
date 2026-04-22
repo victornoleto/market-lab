@@ -1,0 +1,158 @@
+{
+  "phase": "phase_3_6",
+  "family": "I_stat_sound_indicators",
+  "slug": "i_stat_sound_indicators",
+  "produced_at": "2026-04-22T03:08:54+00:00",
+  "engine_fix_commit": "7b90a8f",
+  "broker_path": "Banco Inter Internacional (ETFs, 15% BR CG tax)",
+  "data_source": "Tiingo daily parquets {SPY,QQQ,GLD,TLT,EEM}",
+  "universe": [
+    "SPY",
+    "QQQ",
+    "GLD",
+    "TLT",
+    "EEM"
+  ],
+  "candidate_pool": [
+    "rsi14_mr",
+    "macd_hist_cross",
+    "connors_rsi2_mr",
+    "donchian20_breakout",
+    "zscore5_mr",
+    "bollinger2_mr",
+    "sma200_trend",
+    "cn20_mr"
+  ],
+  "screen_alpha": 0.001,
+  "bonferroni_M": 8,
+  "n_permutations": 500,
+  "screening_rows": [
+    {
+      "slug": "rsi14_mr",
+      "sr_obs": 0.02078489905085408,
+      "p_raw": 0.4231536926147705,
+      "p_corrected_bonferroni": 1.0,
+      "survive": false,
+      "runtime_s": 8.245644807815552,
+      "M": 8,
+      "alpha": 0.001,
+      "n_permutations": 500
+    },
+    {
+      "slug": "macd_hist_cross",
+      "sr_obs": 0.01154499754149732,
+      "p_raw": 0.8542914171656687,
+      "p_corrected_bonferroni": 1.0,
+      "survive": false,
+      "runtime_s": 2.5736987590789795,
+      "M": 8,
+      "alpha": 0.001,
+      "n_permutations": 500
+    },
+    {
+      "slug": "connors_rsi2_mr",
+      "sr_obs": 0.05130777008664533,
+      "p_raw": 0.031936127744510975,
+      "p_corrected_bonferroni": 0.2554890219560878,
+      "survive": false,
+      "runtime_s": 10.624966621398926,
+      "M": 8,
+      "alpha": 0.001,
+      "n_permutations": 500
+    },
+    {
+      "slug": "donchian20_breakout",
+      "sr_obs": 0.013606305583542137,
+      "p_raw": 0.7385229540918163,
+      "p_corrected_bonferroni": 1.0,
+      "survive": false,
+      "runtime_s": 7.758623838424683,
+      "M": 8,
+      "alpha": 0.001,
+      "n_permutations": 500
+    },
+    {
+      "slug": "zscore5_mr",
+      "sr_obs": 0.024247428212538058,
+      "p_raw": 0.35129740518962077,
+      "p_corrected_bonferroni": 1.0,
+      "survive": false,
+      "runtime_s": 7.6576087474823,
+      "M": 8,
+      "alpha": 0.001,
+      "n_permutations": 500
+    },
+    {
+      "slug": "bollinger2_mr",
+      "sr_obs": 0.0195689488149447,
+      "p_raw": 0.4750499001996008,
+      "p_corrected_bonferroni": 1.0,
+      "survive": false,
+      "runtime_s": 8.137051343917847,
+      "M": 8,
+      "alpha": 0.001,
+      "n_permutations": 500
+    },
+    {
+      "slug": "sma200_trend",
+      "sr_obs": 0.03336699124228743,
+      "p_raw": 0.34930139720558884,
+      "p_corrected_bonferroni": 1.0,
+      "survive": false,
+      "runtime_s": 2.274214506149292,
+      "M": 8,
+      "alpha": 0.001,
+      "n_permutations": 500
+    },
+    {
+      "slug": "cn20_mr",
+      "sr_obs": 0.029267130967090924,
+      "p_raw": 0.38922155688622756,
+      "p_corrected_bonferroni": 1.0,
+      "survive": false,
+      "runtime_s": 7.639225006103516,
+      "M": 8,
+      "alpha": 0.001,
+      "n_permutations": 500
+    }
+  ],
+  "survivors": [],
+  "verdict": "FAIL-structural (0 survivors)",
+  "failed_gates": [
+    "all_edge_gates_undefined"
+  ],
+  "splits": {
+    "IS": {
+      "name": "IS",
+      "n_bars": 3301,
+      "sharpe": 0.0,
+      "cagr": 0.0,
+      "max_drawdown": 0.0,
+      "final_equity_from_unit": 1.0
+    },
+    "OOS": {
+      "name": "OOS",
+      "n_bars": 1509,
+      "sharpe": 0.0,
+      "cagr": 0.0,
+      "max_drawdown": 0.0,
+      "final_equity_from_unit": 1.0
+    },
+    "FWD": {
+      "name": "FWD",
+      "n_bars": 572,
+      "sharpe": 0.0,
+      "cagr": 0.0,
+      "max_drawdown": 0.0,
+      "final_equity_from_unit": 1.0
+    },
+    "FULL": {
+      "name": "FULL",
+      "n_bars": 5383,
+      "sharpe": 0.0,
+      "cagr": 0.0,
+      "max_drawdown": 0.0,
+      "final_equity_from_unit": 1.0
+    }
+  }
+}
