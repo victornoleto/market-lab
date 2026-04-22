@@ -17,19 +17,22 @@ insuficientes para justificar o esforço científico vs. CDI BR).
 
 ## 1. Capital allocation model
 
-O capital total do investidor se divide em 3 compartimentos, cada um
-com mandato e risco diferente:
+O capital total do investidor se divide em compartimentos com mandato e
+risco diferentes:
 
 | Compartimento | Alocação alvo | Função | Regras |
 |---------------|---------------|--------|--------|
 | **Passive buy&hold factor-tilted** | **60-80%** do total | Composição de riqueza de longo prazo (aposentadoria 30a). | Governado por `portfolio-aposentadoria.md` — AVUS/SPMO/AVUV/AVDE/IDMO/AVDV/AVEM + IBIT + GLDM. Sem ação do ai-trade — esse compartimento é "set and forget" com rebalanceamento por aportes. |
 | **Strategy A — Short-hold CFD (ativa, agressiva)** | parte do **20-40% ativo** | Motor de retorno não-linear; aceita risco alto em troca de alpha mensurável. | Pepperstone via cTrader Open API. Multi-asset obrigatório. Alavancagem otimizada por sweep. Gates completos (PBO/DSR/WF + OOS + stress). |
-| **Strategy B — Swing broker (ativa, moderada)** | parte do **20-40% ativo** | Alpha via regime rotation. Tese principal hoje: LETF rotation (UPRO/CASH). | **Banco Inter Internacional** (Inter&Co Securities, FINRA + Apex Clearing) — decisão 2026-04-18, ver §4.6. Acesso direto NYSE/NASDAQ. 15% IR modelado sempre. Overfit control via CPCV obrigatório. |
+| **Strategy B — Swing broker US (ativa, moderada)** | parte do **20-40% ativo** | Alpha via regime rotation. Tese principal hoje: LETF rotation (UPRO/CASH). | **Banco Inter Internacional** (Inter&Co Securities, FINRA + Apex Clearing) — decisão 2026-04-18, ver §4.6. Acesso direto NYSE/NASDAQ. 15% IR modelado sempre. Overfit control via CPCV obrigatório. |
+| **Strategy D — Swing BR ranking mensal (ativa, moderada)** | parte do **20-40% ativo** | Alpha via ranking cross-sectional de ações BR com ciclo mensal. Aproveita isenção R$20k/mês no mercado à vista. | Broker BR doméstico (XP/Clear/Rico/Inter DTVM/BTG — a definir). Universo IBrX-100. Tax model R$20k isenção condicional (§5). Gates completos (PBO/DSR/WF + OOS + stress) com DSR deflator ajustado pelo grid size. |
 
-A proporção exata entre A e B dentro dos 20-40% ativo é decisão do
-usuário em função da performance histórica das duas strategies. Default
-inicial sugerido: **50/50 entre A e B**, re-ponderado após 6 meses de
-paper trading por Sharpe net realizado.
+**Slots ativos sem winner confirmado ficam inativos (zero alocação real)**
+até aprovação em backtest honest; capital desses slots redistribui pro
+compartimento passivo enquanto pendente. A proporção exata entre slots
+ativos é decisão do usuário pós-winners, tipicamente re-ponderada por
+Sharpe net realizado após 6 meses de paper trading. **Abertura de Strategy
+D em 2026-04-22 (ver §7)** pós-29/29 honest FAIL em A+B.
 
 ---
 
@@ -82,6 +85,22 @@ como referência).
 | **Forte** | 50-100% | Prime winner. Patamar original do mandate (5-10%/mês) — continua sendo **goal**, não mais gate. |
 | **Extraordinário** | > 100% | **Suspect-by-default.** Gayed V2-L2 mostrou exatamente esse tier (79% CAGR) evaporar pra 14% pós-engine-fix (§7 entry 2026-04-22). Extra-robustness obrigatória. |
 
+#### Strategy D (broker BR doméstico, isenção R$20k/mês condicional)
+
+Comparator é CDI líquido ~11%/ano (mesmo benchmark de Strategy B), já que
+D opera em rota BR com broker doméstico e o investidor compara com a
+alternativa conservadora brasileira (Tesouro Selic). Tax model: vendas
+mensais ≤ R$20k isentas; > R$20k → 15% DARF sobre o lucro realizado do
+mês (regra art. 3º II Lei 11.033/2004). Ver §5 para detalhes operacionais.
+
+| Tier | CAGR líquido OOS | Verdict |
+|---|---|---|
+| **Folclore** | < 11% (CDI líquido) | Pior que Selic — custo de oportunidade negativo. Warning; NÃO é winner. |
+| **Marginal** | 11-17% | Warning obrigatório. Melhor que CDI mas abaixo de 2× CDI; esforço de execução + risco equity BR provavelmente não compensam. |
+| **Válido** | 17-25% | Winner candidate. ~2× CDI líquido; equiparável a Strategy B tier Válido. |
+| **Forte** | 25-40% | Prime winner. Justifica monitoramento mensal ativo. |
+| **Extraordinário** | > 40% | **Suspect-by-default.** PBO < 0.3 obrigatório; DSR deflator ajustado pelo grid total; bootstrap 99.99% CI (não 99.9%); cross-lib mandatório. |
+
 ### 2.3 MDD — tier framework (warning-only, não bloqueante)
 
 **⚠ Mudança mandate 2026-04-22 (§7):** o gate MDD binding −25% também
@@ -108,6 +127,20 @@ auto-rejeitar leads cujo drawdown é proporcional ao leverage.
 | **Marginal warning** | 25% < MDD ≤ 35% | Warning visível. |
 | **Forte warning** | 35% < MDD ≤ 50% | Risco significativo; sign-off explícito pré-live. |
 | **Reject** | MDD > 50% | Inaceitável para strategy moderada. |
+
+#### Strategy D (broker BR swing, moderada, ações à vista)
+
+Mais conservador que B porque D opera em ações BR (beta individual
+alto, spreads 15-50 bps, regime-shifts locais 2015/2020/2022) e não em
+LETFs US líquidos com regime-rotation.
+
+| Tier | MDD range | Verdict |
+|---|---|---|
+| **Excelente** | MDD ≤ 15% | Top-tier vs benchmarks BR equity (IBOV MDD 2008 −60%, 2020 −47%, 2022 −27%). |
+| **Válido** | 15% < MDD ≤ 25% | Comparável a Clenow momentum OOS em US equity. |
+| **Marginal warning** | 25% < MDD ≤ 35% | Warning visível; aproxima IBOV buy-hold drawdown. |
+| **Forte warning** | 35% < MDD ≤ 50% | Risco significativo; sign-off explícito pré-live. |
+| **Reject** | MDD > 50% | Inaceitável para swing BR moderado — se passar disso, re-sizing ou abandono. |
 
 ### 2.4 Gates obrigatórios (hard-block — zero bypass)
 
@@ -634,6 +667,142 @@ Comparação qualitativa com Banco Inter (§4.6):
 
 ---
 
+## 4b. Regras de Strategy D — Swing BR ranking mensal
+
+**Status:** aberta 2026-04-22 (override do mandate §1 — ver §7). Slot
+ativo separado de A e B, com tese estruturalmente diferente: ranking
+cross-sectional mensal de ações brasileiras no mercado à vista, com tax
+model aproveitando a **isenção de IR até R$20k/mês em vendas** (art. 3º
+II Lei 11.033/2004).
+
+Zero configuração aprovada como winner até o momento. A Fase D-MVP
+começa com leads OHLCV-only (D1 Clenow momentum, D4 Low-vol + mom);
+Fase D-ampliada adiciona D2 Magic Formula, D3 Multi-fator V+M+Q e
+combos com regime filter. Abort-early gate pós-MVP evita desperdício
+de esforço em scraping caso PBO/DSR iniciais já descartem a tese.
+
+### 4b.1 Universo
+
+**IBrX-100** (B3 top ~100 ações por free-float liquidity). Composição
+oficial rebalanceia quadrimestralmente em PDFs B3 — cara de
+operacionalizar point-in-time. Fase D-MVP usa **proxy dinâmico**:
+ranking mensal por mediana de (close × volume) sobre janela de 60
+pregões, threshold R$5M/dia. Survivorship bias residual do yfinance
+.SA (ações delistadas pré-2026-04 ausentes) documentado como
+disclaimer obrigatório em todo report — regra CLAUDE.md.
+
+### 4b.2 Cadência e cesta
+
+- **Rebalanceamento:** 1º dia útil B3 do mês (calendar próprio em
+  `src/ai_trade/backtest/data/br_tickers.py`).
+- **Cesta:** N ∈ {15, 20, 25, 30} grid-testável. Default central 20
+  `[stocks_on_the_move, p.153, p.229-230]` (Clenow recomenda 20-30 pra
+  reduzir "dependency on luck").
+- **Position inertia:** 10% — não troca posição se ranking fica
+  marginalmente fora do top N `[systematic_trading, p.174]`.
+- **Sector cap:** ∈ {20%, 25%, 30%} grid-testável, enforcement via
+  SECTOR_MAP (GICS coarse). Mitiga concentração IBOV ~50% em
+  bancos+commodities.
+
+### 4b.3 Sinais testáveis (todos com citação obrigatória)
+
+1. **Lead D1 — Clenow momentum**: Adjusted Slope = annualized slope(log
+   price, 90-180d) × R². Filtros SMA₁₀₀ + gap ≤ 15%. ATR sizing 10 bps/day.
+   `[stocks_on_the_move, p.76-77, 81-82, 88]`.
+2. **Lead D2 — Magic Formula (Greenblatt)**: composite rank ROIC +
+   Earnings Yield, citado em `[quant_trading_chan, ch.1, p.7]`.
+   Dependente de fundamentals; Fase D-ampliada.
+3. **Lead D3 — Multi-fator V+M+Q equal-weighted**: rank(Slope_180d) +
+   rank(1/PB) + rank(ROE), peso equal
+   `[quant_trading_chan, ch.1, p.7]` (Kahneman: equal weights > conviction).
+4. **Lead D4 — Low-vol + Mom hybrid**: top K por slope 180d → re-rank
+   top N por menor vol realizada 60-90d. Evita concentração em single-name
+   volátil. OHLCV-only.
+5. **Leads D5-D8 — Combos**: regime filter IBOV SMA(200), ensemble
+   D1 ∩ D4 ∩ D3, rotation D1/D3/D4 por vol regime IBOV.
+
+### 4b.4 Tax model (core do apelo Strategy D)
+
+Regra CVM/RFB (art. 3º II Lei 11.033/2004):
+
+- Vendas totais de ações à vista ≤ **R$20.000/mês** (agregado entre
+  corretoras por CPF) → **isento de IR** sobre o lucro realizado.
+- Vendas > R$20.000/mês → **15% DARF sobre todo o lucro realizado do
+  mês**, recolhido até o último dia útil do mês seguinte.
+- Day-trade tributa 20% sempre, sem isenção (D é swing-only, só mercado
+  à vista com posição overnight).
+- Prejuízos compensáveis em meses futuros (carry-forward por CPF, sem
+  prazo), limitados à mesma natureza (swing × swing, day-trade × day-trade).
+
+Cost model em `src/ai_trade/backtest/costs/br_cost_model.py`:
+
+```python
+def monthly_tax(sells_in_month, pnl_month):
+    gross_sales = sum(s.gross_amount for s in sells_in_month)
+    if gross_sales <= 20_000:
+        return 0.0
+    return max(0.0, pnl_month) * 0.15
+```
+
+**Sensitivity obrigatória no backtest:** R$50k / R$100k / R$500k de
+capital inicial. A isenção some conforme o ticket médio cresce: cesta
+de 20 × ticket R$25k = 1 venda já estoura R$20k/mês. Strategy D tier
+"Válido" tem que aguentar o cenário capital-grande (sempre 15% DARF)
+classificando pelo menos como tier "Marginal" (gate #11 cost stress).
+
+### 4b.5 Cost model BR
+
+- **Corretagem:** default R$0 (Clear/Nubank zero broker). Cenário
+  conservador R$5 flat (XP/Rico). Grid-switchable.
+- **Emolumentos B3:** 0.025% sobre volume (taxa pública).
+- **Spread:** 15 bps (IBrX-100 top 30 por market cap) a 50 bps (small-caps
+  dentro do IBrX-100). `br_cost_model.py` diferencia por ticker.
+- **FX spread:** N/A — D opera em BRL, sem conversão USD.
+
+### 4b.6 Broker BR (a definir)
+
+Nenhuma conta aberta em 2026-04-22. Candidatos a avaliar quando houver
+winner confirmado:
+
+- **Clear/Rico (XP Group):** zero corretagem. Home-broker funcional.
+  Tier-1 CVM + BSM (compensação até R$120k).
+- **Nubank Invest:** zero corretagem. Interface limitada; API privada.
+- **Inter DTVM:** zero corretagem. Parte do mesmo grupo Inter
+  Internacional (§4.6) mas entidade diferente — confirmar antes.
+- **BTG Pactual digital:** zero corretagem em algumas categorias; API
+  mais robusta.
+
+Criterion de seleção Fase D-promotion: zero corretagem + API/OFX para
+execução + emolumentos B3 transparentes + custódia Tier-1 CVM + extrato
+exportável para ledger tributário R$20k.
+
+### 4b.7 Gates Strategy D (mesmos hard-block + extras)
+
+Gates §2.4 mantidos integralmente. Extras específicos de Strategy D:
+
+8. **DSR deflator** com `N_trials = total de configs do grid D
+   (D1+D2+D3+D4+D5-D8)`, ~64 configs projetadas. Bonferroni-style
+   deflator pra evitar multiple-testing inflado
+   `[advances_fin_ml, p.275]`.
+9. **Cost stress:** 2× cost model → ainda tier Válido.
+10. **Tax stress:** sempre 15% DARF (cenário capital-grande) → ≥ tier
+    Marginal.
+11. **Sector concentration:** máx 35% em qualquer setor durante > 50%
+    do período OOS.
+12. **Liquidity stress:** slippage linear 10 bps/turnover mantém tier
+    Válido.
+13. **Abort-early (Fase D-MVP → D-ampliada):** se zero configs de D1+D4
+    passa PBO < 0.5 E DSR p < 0.1 (relaxado no MVP), parar e não
+    implementar D2/D3 (economia de scrape Fundamentus).
+
+### 4b.8 Referência permanente
+
+Spec executável: `specs/strategy_d_br_ranking.md`. Plano:
+`/home/victor/.claude/plans/zazzy-booping-oasis.md`. Override: `docs/mandate_overrides/2026-04-22-strategy-d-open.md`.
+Jornada de abertura: `jornada/2026-04-22-1734-strategy-d-open.md`.
+
+---
+
 ## 5. Anti-patterns registrados (o que NÃO fazer)
 
 Decisões tomadas que NÃO podem ser revertidas sem discussão explícita:
@@ -699,4 +868,5 @@ propagar para CLAUDE.md.
 | 2026-04-18 | **Phase 3.5a-V2 launched** (último test Plano A com framework corrigido) | User rejeitou framing "V1=V2" do T6/T7 autônomo. V2 real corrige todos os erros estruturais identificados no post-mortem: timeframe livre (não 1h), hold ≥3 dias (não ≤5d — inverte intuição swap), universe ≥30 multi-asset CFDs (não 12 FX), cost model spread+commission-dominant (não swap-focused), CAGR target 30%/yr realista (não 60-120%), 6 famílias novas (TSMOM, Gayed-transport, AFML meta-label, Carver RP, equity pairs, vol breakout). Spec autoritativo: `specs/phase_3_5a_v2.md`. **Binding stop rule: se V2 produzir 0 PASS, Plano A abandonado permanentemente (sem V3).** User memory: `project_plano_a_v2_last_attempt.md`. Ratificação: se winner → paper trading dual (A+B); se abandon → Phase 4 Plano B puro + §4.7 re-alocação 5pp Path A → Path B. | V1 testou framework errado; V2 corrige antes de ratificar abandono. Última tentativa antes de foco exclusivo Plano B. | iter 0 phase3.5a-v2 branch |
 | 2026-04-19 | **Phase 3.5a-V2 ENCERRADA — WINNER FOUND.** 82 iters / 58 runs em 6 famílias produziram **1 gate-passing winner**: `gayed_ema100_L2_off_gld` (Gayed LETF rotation `[leverage_for_the_long_run]` transportada para CFD Pepperstone: SPY+QQQ risk-on, GLD risk-off, leverage 2×). OOS Sharpe **2.285** / CAGR líquido **79.14%** / MaxDD **−21.02%** / median hold 6d / IR vs SPY 2.161. 13/13 gates V2 pass (PBO 0.103, DSR p 0.000288, WF 8/8 @ DD 22.7%, boot99.9 CI low 0.962, FWD Sharpe 1.821). Leads L1 TSMOM / L3 AFML meta / L4 Carver RP blend / L5 Kalman pairs / L6 vol-breakout todos DEAD com diagnóstico estrutural (ver `reports/phase3_5a_v2/AGGREGATE.md`). **Binding stop rule NÃO dispara** (1 PASS ≥ 1 requerido). Plano A RETIDO como 2ª perna ativa mandate §1. Próxima fase: `specs/phase_4_paper_trading.md` (dual-path paper trading A+B, 3 meses). **Anti-regra explícita:** não fazer V3; não re-otimizar winner em Phase 3.5a — Phase B leads são movidos para Phase 4+5 (cost sensitivity, multi-asset transport, WF re-opt, ρ(A,B), GARCH vol-sizing). Plano B 3-leg EW permanece IMUTÁVEL. **⚠️ ESTE WINNER FOI RETRATADO EM 2026-04-22 — ver entry abaixo.** | V2 vindicou o framework corrigido (daily, hold ≥3d, spread+commission-dominant). Regime-driven é a única família viável em Plano A CFD Pepperstone — inferência de 6 famílias testadas, 1 PASS (Gayed), 5 DEAD estrutural. | iter 81 phase3.5a-v2 branch (V2-L7 atomic verdict) |
 | 2026-04-22 | **CAGR + MDD gates relaxados para tier framework (warning-only, não-bloqueante).** Phase 3.6 fechou com 10 FAIL onde 7 famílias tinham gates hard-block de CAGR (≥13% CDI) ou MDD (−25%) como razão principal de rejeição — ex.: Family H (HMM regime) OOS Sharpe 0.69 / CAGR 9.47% / MDD −21% **teria sido classificado como "folclore CAGR + excelente MDD"** sob novo framework, visível pra decisão do usuário em vez de auto-rejeitado. Phase 3.7-1 literature sprint confirmou que mesmo papers state-of-art (Zarattini 2024 SPY intraday Sharpe 1.33 net CAGR 19.6%) não atingem 60-120% — target original era irreal. **Mudança:** (a) CAGR vira tier-classifier com 5 níveis por rota (A: Folclore < 13%, Marginal 13-25%, Válido 25-50%, Forte 50-100%, Extraordinário > 100% suspect; B: Folclore < 11%, Marginal 11-17%, Válido 17-25%, Forte 25-40%, Extraordinário > 40% suspect); (b) MDD idem (A: Excelente ≤ 25%, Válido ≤ 40%, Marginal warning ≤ 50%, Forte warning ≤ 75%, Reject > 75%; B: Excelente ≤ 15%, Válido ≤ 25%, Marginal ≤ 35%, Forte ≤ 50%, Reject > 50%); (c) Gates hard-block remanescentes (§2.4): PBO, DSR, WF, single-block OOS, FWD, bootstrap CI, cross-lib — esses permanecem zero-bypass. **Decisão usuário explícita:** não modelar 15% DARF no cost model Pepperstone (jurisdição offshore SCB Bahamas — Lei 14.754/2023 DARF 6015 sobre ganho de capital offshore é responsabilidade self-reported do investidor; decisão técnica do backtest é ignorar). Strategy B (Inter) mantém 15% DARF no cost model por consistência tributária real. **Mandate §4.8 novo:** documenta perfil de risco Pepperstone (SCB Tier-3 sem investor compensation; segregação em tier-1 banks; staging de depósitos: $500-1k inicial → escalada condicional em degraus → cap $5-10k até 6 meses verdes). Phase 3.6 BREADTH_NO_WINNER mantém seu verdict (10 FAIL é FAIL mesmo sob novo framework porque a maioria falhou gates hard-block PBO/DSR/Sharpe também), mas Phase 3.7-3 hunt se beneficia do relaxamento: leads como H1 (Zarattini 2024 intraday Sharpe 1.33 net CAGR 19.6%) agora podem passar como "Válido Marginal" A em vez de auto-rejeitar. | Phase 3.6 null + Phase 3.7-1 research evidence consolidada: target 5-10%/mês mandate original (Apr-16) foi irrealista vs literatura 2022-2026 e vs Phase 3.6 10-family honest results. CDI continua benchmark-âncora (tier floor); SPY buy-hold líquido é comparator realista. | TBD (mandate edit 2026-04-22) |
+| 2026-04-22 | **Strategy D aberta como 3º slot ativo (swing BR ranking mensal).** Após 29/29 honest FAIL cumulativos (Phase 3.5f 6 V2 A-leads + Phase 3.6 10 famílias + Phase 3.7-3 8 literature hypotheses + Phase 3.8-1 5 canonical B variants), nenhum winner confirmado nos dois slots ativos originais do mandate. Engine limpo cross-lib a 1e-6 em 23/24 strategies. Decisão do usuário: abrir Strategy D com tese estruturalmente diferente — ranking cross-sectional mensal de ações brasileiras no mercado à vista, aproveitando isenção R$20k/mês (art. 3º II Lei 11.033/2004) em broker BR doméstico (a definir: XP/Clear/Rico/Inter DTVM/BTG). **Universo:** IBrX-100 (proxy por liquidez mensal + 60d median notional ≥ R$5M/dia). **Cadência:** mensal (1º dia útil). **4 famílias de sinal + combos:** D1 Clenow momentum `[stocks_on_the_move, p.76-77, 81-82, 88]`, D2 Magic Formula `[quant_trading_chan, ch.1, p.7]`, D3 Multi-fator V+M+Q equal-weighted `[quant_trading_chan, ch.1, p.7]`, D4 Low-vol+mom hybrid, D5-D8 combos regime-filter/ensemble. **Grid total estimado:** ~64 configs → DSR deflator Bonferroni obrigatório `[advances_fin_ml, p.275]`. **Tax model:** isenção R$20k condicional (§4b.4). **Abort-early gate:** se Fase D-MVP (D1+D4, OHLCV-only) não gerar nenhum config com PBO<0.5 E DSR p<0.1, parar antes de D-ampliada (economiza scrape Fundamentus). **Tier comparator:** CDI líquido ~11%/ano (igual Strategy B); tier Válido 17-25% CAGR net. Alocação concreta entre slots A/B/D adiada até houver winner confirmado em algum — decisão explícita do usuário 2026-04-22. Spec: `specs/strategy_d_br_ranking.md`. Plano: `/home/victor/.claude/plans/zazzy-booping-oasis.md`. Override: `docs/mandate_overrides/2026-04-22-strategy-d-open.md` (Signed). Jornada: `jornada/2026-04-22-1734-strategy-d-open.md`. | 29/29 FAIL em A+B esgotou a vizinhança testada; pivot estrutural em vez de continuar "mais uma hipótese B". Isenção R$20k/mês + ausência de swap + liquidez BR razoável (IBrX-100 top-30 spreads ~15 bps) oferecem estrutura diferente das rotas US. | TBD (mandate edit 2026-04-22) |
 | 2026-04-22 | **Engine look-ahead bias descoberto e consertado — Plano A V2 RETRATADO.** Phase 3.5f executou 5 fases (F0 testes cirúrgicos → F1 scope audit → F2 fix → F3 re-validação → F4 docs). Bug em `src/ai_trade/backtest/strategies/plano_a_leveraged_rotation.py:462` fazia `new_w[bar_i] × ret[bar_i]` (peso decidido com `close[i]` multiplicado pelo retorno causado por `close[i]`) — look-ahead clássico. Três libs independentes (bt, vectorbt, backtrader) + numpy reference concordam na convenção shift (`prev_w × ret`); canonical estava sozinho. Fix commit `7b90a8f`. Escopo do bug: **1 arquivo, 1 linha** — F1 grep-audit confirmou que `letf_rotation.py` (Plano B) e todas as outras engines V2 estavam limpas. Phase 3.5b/3.5c/3.5d/3.5e Plano B **preservadas como canonical limpo.** **Re-validação honest dos 6 V2 leads: TODAS FAIL.** V2-L2 Gayed cai de Sharpe 2.285/CAGR 79.14%/MDD −21% para Sharpe 0.56/CAGR ~14%/MDD −37% — gates 1 (boot CI), 2 (Sharpe), 4 (MDD binding cap §5), 6 (WF max-window DD), 8 (IR), 13 (cost×2) falham. V2-L1/L3/L5/L6 já eram DEAD sob engine limpa (reconfirmado); V2-L4 Carver RP blend falha também (surpresa secundária: L2 era só 4.8% do blend weight, não 66-75% como assumido — hipótese de resgate via blend refutada). Banners forensic aplicados em `reports/phase3_5a_v2/v2_l2_*`, `phase3_5a_v2/v2_l4_*`, `phase4_0/*` (`ENGINE_BIAS_FORENSIC.md`). **Plano A: zero winner honest.** Binding stop rule `project_plano_a_v2_last_attempt` dispara: se V2 falha, abandonar Plano A (sem V3 isolado). **Decisão do usuário 2026-04-23:** abrir Phase 3.6 como broader hunt (plano em `docs/plans/2026-04-23-find-swing-winner-phase-3-6.md`) — fresh broad hunt broker-agnostic sobre os 33 livros, com 13 gates relaxados pra swing (Sharpe≥1.5, CDI floor CAGR≥13%, hold≥5d, IR≥0.3). Phase 3.6 displaces as 4 opções A/B/C/D previstas no morning summary 3.5f (V3 / Gayed 1× / abandon / Plano B c06-c12) — pode produzir winner A-style, B-style, ou nenhum. Plano A V2 encerrado definitivamente; Plano B c06-c12 disponível como um dos caminhos Phase 3.6 (mas não obrigatório). | Look-ahead convention enforcement + cross-lib independent replication. Two-stage protocol + engine audit. `[advances_fin_ml, p.31-34]` | `7b90a8f` (fix) → `f7a8116` (F4 close) → `e2d6d17` (Phase 3.6 plan) |

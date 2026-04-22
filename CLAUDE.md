@@ -27,24 +27,29 @@ Ao abrir qualquer sessão sobre este projeto, leia nesta ordem:
 Sumário do `docs/investment-mandate.md`. Regras invioláveis:
 
 1. **Capital allocation:** 60-80% passive buy&hold (ver
-   `portfolio-aposentadoria.md`), 20-40% split entre 2 strategies
-   ativas: **Strategy A (principal, Path A short-hold CFD
-   Pepperstone, agressiva alavancada)** e **Strategy B (secundária,
-   Path B swing broker BR, moderada).**
+   `portfolio-aposentadoria.md`), 20-40% split entre **até 3 strategies
+   ativas**: **Strategy A (short-hold CFD Pepperstone, agressiva
+   alavancada)**, **Strategy B (swing broker US via Inter Internacional,
+   moderada, LETF rotation Gayed-anchored)** e **Strategy D (swing BR
+   ranking mensal em broker BR doméstico, moderada, com isenção R$20k/mês).**
+   Slots sem winner confirmado ficam inativos (zero alocação real);
+   capital redistribui pro passivo até aprovação em backtest honest.
+   Alocação exata entre slots A/B/D **adiada** até houver winner em algum
+   — decisão explícita do usuário 2026-04-22 (mandate §7).
 2. **CAGR e MDD são tiers warning-only (não bloqueantes) desde 2026-04-22
    (mandate §2.2, §2.3, §7).** Benchmarks âncora: **CDI líquido ~11%/ano**
    (CDI 13% × (1 − 15% IR)) e **SPY buy-hold líquido via Inter ~8,5%/ano**.
-   CAGR tiers por rota: **Strategy B (Inter pós-15%-DARF)** — Folclore
-   < 11%, Marginal 11-17%, **Válido 17-25%**, Forte 25-40%, Extraordinário
-   > 40% (suspect). **Strategy A (Pepperstone, sem DARF modelado por decisão
-   usuário 2026-04-22)** — Folclore < 13%, Marginal 13-25%, **Válido
-   25-50%**, Forte 50-100%, Extraordinário > 100% (suspect). MDD tiers
-   análogos: A Excelente ≤ 25%, Válido ≤ 40%, Warning 40-75%, Reject
-   > 75%; B Excelente ≤ 15%, Válido ≤ 25%, Warning 25-50%, Reject > 50%.
-   **Folclore/Reject tiers = não-winner, não vai a live**, mas o backtest
-   NÃO auto-rejeita no gate-check (antes auto-rejeitava; agora classifica
-   + warning pra sign-off do usuário).
-3. **Strategy A (Path A Pepperstone CFD) é multi-asset obrigatório**
+   CAGR tiers por rota: **Strategy B (Inter pós-15%-DARF) e Strategy D
+   (BR doméstico pós-isenção condicional)** compartem comparador —
+   Folclore < 11%, Marginal 11-17%, **Válido 17-25%**, Forte 25-40%,
+   Extraordinário > 40% (suspect). **Strategy A (Pepperstone, sem DARF
+   modelado)** — Folclore < 13%, Marginal 13-25%, **Válido 25-50%**,
+   Forte 50-100%, Extraordinário > 100% (suspect). MDD tiers análogos:
+   A Excelente ≤ 25%, Válido ≤ 40%, Warning 40-75%, Reject > 75%;
+   B Excelente ≤ 15%, Válido ≤ 25%, Warning 25-50%, Reject > 50%;
+   D segue mesmo padrão de B (estrutura moderada). **Folclore/Reject
+   tiers = não-winner, não vai a live**, mas backtest NÃO auto-rejeita.
+3. **Strategy A (Pepperstone CFD) é multi-asset obrigatório**
    (SPY/QQQ/Gold/BTC/ETH/FX majors), com universe pre-screening
    (Hurst/ATR/spread/volume) e alavancagem ótima via sweep empírico
    1:1 → 1:200 cross-checked com Kelly f/2. Goal (não mais gate):
@@ -53,24 +58,34 @@ Sumário do `docs/investment-mandate.md`. Regras invioláveis:
    final. **Staging obrigatório pós-live (§4.8):** USD 500-1k inicial
    (SCB Bahamas é Tier-3 sem investor compensation), escalada condicional
    em degraus, cap USD 5-10k até 6 meses verdes.
-4. **Strategy B (Path B swing broker) é a SEGUNDA strategy do projeto**
-   (swing moderado, complementa Strategy A). Tese: **família LETF
-   rotation** — regime MA (SMA ou EMA) sobre SPY → LETF (UPRO 3x ou
-   SSO 2x) em on-regime, cash (ou gold) em off-regime. **Base
-   científica ÚNICA: `books/summaries/leverage_for_the_long_run.md`**
-   (Gayed 2016/2020); o Reddit study do usuário
-   (`docs/reference/letf_rotation_reddit_analysis.md`) é
-   trial-and-error ilustrativo, **NÃO gospel a replicar**. Lead B1
-   projeta do zero com base em Gayed, testa grid amplo (360 configs),
-   e o winner pode ou não parecer com a config do Reddit. **Overfit
-   control:** CPCV + PBO + splits mutuamente exclusivos (IS 1970-2000
-   / OOS 2001-2015 / Stress 2016-2026) + stationary block bootstrap
-   a 0.001. 15% IR BR sempre; UPRO/SSO sintéticos pre-2009/2006 via
-   `r = L × r_SPX_TR - drag - expense`. Goal: tier "Válido" CAGR 17-25%
-   líquido (pós-15%-DARF), ideal "Forte" 25-40%.
+4. **Strategy B (swing broker US)** — swing moderado em LETFs US via
+   Banco Inter Internacional (§4.6). Tese: **LETF rotation** — regime MA
+   (SMA ou EMA) sobre SPY → LETF (UPRO 3x ou SSO 2x) em on-regime, cash
+   (ou gold) em off-regime. **Base científica ÚNICA:
+   `books/summaries/leverage_for_the_long_run.md`** (Gayed 2016/2020).
+   **Overfit control:** CPCV + PBO + splits mutuamente exclusivos (IS
+   1970-2000 / OOS 2001-2015 / Stress 2016-2026) + stationary block
+   bootstrap a 0.001. 15% IR BR sempre; UPRO/SSO sintéticos pre-2009/2006
+   via `r = L × r_SPX_TR - drag - expense`. Goal: tier "Válido" CAGR
+   17-25% líquido (pós-15%-DARF), ideal "Forte" 25-40%.
+4b. **Strategy D (swing BR ranking mensal)** — slot aberto 2026-04-22
+   após 29/29 FAIL em A+B (mandate §7). Universo **IBrX-100** proxy por
+   liquidez mensal. Cadência **mensal** (1º dia útil B3). 4 famílias de
+   sinal + combos: D1 Clenow momentum `[stocks_on_the_move, p.76-77]`,
+   D2 Magic Formula `[quant_trading_chan, ch.1, p.7]`, D3 Multi-fator
+   V+M+Q equal-weighted, D4 Low-vol+mom hybrid, D5-D8 combos com regime
+   filter IBOV. **Tax model isenção condicional** (§4b.4): vendas ≤
+   R$20k/mês isento; > R$20k → 15% DARF sobre lucro do mês. Stack dados:
+   **yfinance `.SA` (OHLCV) + Fundamentus scrape (fundamentals) + fallback
+   Oceans14 Playwright**. **Abort-early gate** pós-MVP (D1+D4 OHLCV-only)
+   evita scrape caso PBO/DSR iniciais descartem a tese. Broker BR final
+   (XP/Clear/Rico/Inter DTVM/BTG) definido em Fase D-promotion. Spec:
+   `specs/strategy_d_br_ranking.md`.
 5. **Gates hard-block (zero bypass)** — `§2.4`: PBO<0.5 + DSR p<0.05 +
    WF≥6/8 + single-block OOS + FWD stress + bootstrap 99.9% CI low > 0 +
-   cross-lib concordância ±3pp CAGR. **CAGR e MDD NÃO estão nesta lista**
+   cross-lib concordância ±3pp CAGR. Strategy D adiciona **DSR deflator
+   pelo grid total** (~64 configs → Bonferroni-like) + cost×2 stress +
+   tax-always-15% stress (§4b.7). **CAGR e MDD NÃO estão nesta lista**
    (viraram tiers §2.2/§2.3 em 2026-04-22). "Quase lá" nos gates hard-block
    ainda não passa.
 6. **Threading model live (Phase 4):** 1 thread/processo por ativo

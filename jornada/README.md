@@ -29,7 +29,13 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-22 — Phase 3.8-1 hunt fechou BREADTH_NO_WINNER_B 5/5; decisão pendente entre R1/R2/R3/R4/R5)
+## Onde estamos hoje (2026-04-22 17h34 — Strategy D proposta como 3º slot ativo, aguardando assinatura do usuário)
+
+**Estado:** 🟡 **Após Phase 3.8-1 fechar BREADTH_NO_WINNER_B (5/5 FAIL, cumulativo 29/29), usuário decidiu pivot para "swing-trade BR ranking-based" como 3ª estratégia ativa (Strategy D). Plano aprovado em `/home/victor/.claude/plans/zazzy-booping-oasis.md`. Proposta formal de override do mandate em `docs/mandate_overrides/2026-04-22-strategy-d-open.md` — mandate ainda NÃO editado; aguarda "aprovado" explícito. Cadência mensal, universo IBrX-100, 4 famílias de sinal (Clenow momentum / Magic Formula / multi-fator V+M+Q / low-vol+mom hybrid) + combos, tax model R$20k isenção condicional, stack yfinance .SA + Fundamentus scrape + fallback Oceans14. Gates hard-block Phase 3.5f-3.8 mantidos + DSR deflator ajustado por N_trials do grid (~64 configs). Fase D-0 (docs) iniciada; Fase D-1 (data layer BR) começa pós-assinatura.**
+
+---
+
+## Estado anterior (2026-04-22 — Phase 3.8-1 hunt fechou BREADTH_NO_WINNER_B 5/5; decisão pendente entre R1/R2/R3/R4/R5)
 
 **Estado:** 🛑 **Phase 3.8-1 Plano B winner hunt fechou em BREADTH_NO_WINNER_B (commit pendente após este README). 5 hipóteses (B1 Gayed canonical, B2 MA-robustness sweep, B3 Pauchlyova static+trend, B4 Hsieh AR(1), B5 Faber GTAA) × 13 gates honest = 5/5 FAIL. Engine F2 continua limpa (cross-lib Δ 0.000pp em 4/5, 0.578pp em B3 — 23 strategies total já validadas cross-lib); overfit controlado em 4/5 (PBO 0.155-0.298). Killer estrutural único em TODAS: bootstrap OOS 99.9% CI low cruza zero (−4.5e-5 a −5e-4) + DSR p > 0.05 (0.0835-0.59). B5 Faber com turnover 1.39/ano (tax-minimal) também falha — DARF não é o único killer; o signal SPY-SMA-based é weak sob multiple-testing independente do turnover. Total cumulativo honest do projeto: 29/29 FAIL (6 V2 + 10 Phase 3.6 + 8 Phase 3.7-3 + 5 Phase 3.8-1). `reports/phase_3_8/BREADTH_NO_WINNER_B.md` formaliza 5 caminhos (R1 paper-trade B5 6-12m zero-cost; R2 pivot Plano C 100% mandate §4.7 default; R3 re-spec mandate Válido=CDI-matcher; R4 wait 6-12m re-run; R5 Phase 3.9 composer-inspired arquétipos layered-conditional). Orquestrador recomenda R2 primário + R1+R5 opcionais concorrentes. Pytest preserved 908 → 929 (+21 smoke tests).**
 
@@ -386,6 +392,26 @@ Termos que aparecem ao longo das entradas do changelog:
 - **CDI BR** — taxa interbancária brasileira, ~13-14%/ano em 2026.
   Floor mínimo do mandate: estratégia que rinde menos que isso não é
   winner — é folclore.
+- **Strategy D** — 3º slot ativo proposto em 2026-04-22, após 29/29 FAIL
+  em A+B. Swing-trade de ações BR (IBrX-100) com ranking mensal. Aproveita
+  isenção R$20k/mês de IR no mercado à vista (art. 3º II Lei 11.033/2004).
+  Aguarda override do mandate §1.
+- **IBrX-100** — índice da B3 com ~100 ações mais negociadas. Liquidez
+  média ≥ R$5M/dia. Concentração setorial ~35-40% em bancos + commodities
+  (vs ~50% no IBOV). Universo-alvo de Strategy D.
+- **Isenção R$20k** — isenção de IR sobre ganhos em vendas de ações no
+  mercado à vista até R$20k/mês (agregado entre corretoras por CPF). Só
+  vale para swing-trade (posições overnight); day-trade tributa 20%
+  sempre. Se vender > R$20k num mês, todo o lucro do mês tributa 15%
+  (DARF último dia útil do mês seguinte).
+- **Adjusted Slope** — métrica Clenow de momentum: anualiza o slope de
+  regressão log-linear sobre N dias e multiplica por R². Penaliza momentum
+  ruidoso, favorece momentum suave. Base de Lead D1
+  `[stocks_on_the_move, p.76-77]`.
+- **Magic Formula** — ranking de Greenblatt: `rank(ROIC) + rank(Earnings
+  Yield)` composite. Citado em Chan como exemplo de rank-combo
+  equal-weighted superior a conviction weights (Kahneman)
+  `[quant_trading_chan, ch.1, p.7]`.
 
 ---
 
@@ -403,6 +429,7 @@ Termos que aparecem ao longo das entradas do changelog:
 [`2026-04-16-1245-data-bug-winners-retracted.md`](2026-04-16/01-data-bug-winners-retracted.md)
 permanece no top-level como documento histórico.
 
+- [2026-04-22 17h34 — **Strategy D (swing BR ranking mensal) proposta como 3º slot ativo** [SWING BR RANKING] — após 29/29 FAIL em A+B (Phase 3.5f-3.8), usuário decidiu pivot estrutural. Universo IBrX-100, cadência mensal, 4 famílias de sinal (Clenow momentum / Magic Formula / multi-fator V+M+Q / low-vol+mom hybrid) + combos, tax model R$20k isenção condicional, stack yfinance `.SA` + Fundamentus scrape + fallback Oceans14 Playwright. Plano aprovado em `/home/victor/.claude/plans/zazzy-booping-oasis.md`. Mandate override formal em `docs/mandate_overrides/2026-04-22-strategy-d-open.md` — mandate ainda NÃO editado; aguarda assinatura explícita. Gates hard-block Phase 3.5f-3.8 mantidos + DSR deflator ajustado por N_trials (~64 configs). `[stocks_on_the_move, p.76-77, 81-82, 88]`, `[quant_trading_chan, ch.1, p.7]`, `[advances_fin_ml, p.208-211, p.275]`, `[systematic_trading, p.174]`.](2026-04-22-1734-strategy-d-open.md)
 - [2026-04-23 00h27 — **Phase 3.6 Família H AMH regime-switching (HMM): FAIL** [SWING BROKER] — HMM gaussiano in-house (Baum-Welch + Viterbi, sem hmmlearn) em vol realizada 20d SPY+TLT, mapeia regimes para SPY/TLT/GLD, rebal 10/21d, Inter cost model. Grid 18 configs (n∈{2,3,4} × feature_set∈{σ, σ+ρ, σ+ρ+skew} × cadence∈{10,21}). Winner n2_sigma_rc21: OOS Sharpe 0.69, CAGR 9.47%, MDD −21.18% (passa), FWD Sharpe 1.21 (passa), hold 42d, PBO 0.19, cross-lib Δ=0.000pp. Falha 8 arms: bootstrap CI straddles zero, Sharpe < 1.5, CAGR < 13% CDI, DSR p=0.56, IR vs SPY −0.17, WF DD 37%, cost×2 Sharpe 0.69. **Diagnóstico-chave:** HMM separa IS em low-vol (67%) e crisis (33%) limpamente, MAS o retorno-médio-condicional SPY é idêntico nos 2 estados (+0.04%/dia em ambos) — classificador gateja volatilidade, não direção. Strategy depende de GLD outperformar SPY-em-drawdown, que em 2022 não aconteceu. **Diferenciador vs V2-L2 Gayed aterrissou** (HMM ≠ EMA cross), **edge não aterrissou** — mesma classe de falha por mecanismo diferente. `[adaptive_markets, p.282-283, RULE 1A-5A]`, `[regime_change, p.14-17, ch.2]`, `[fin_time_series_tsay, p.186-187, §4.1.4]`, `[advances_fin_ml, p.31-34, p.196-211, p.273-275]`.](2026-04-23-0027-phase3.6-h_amh_regime_switching-FAIL.md)
 - [2026-04-23 23h39 — **Phase 3.6 Família B Risk Parity inverse-vol: FAIL** [SWING BROKER] — 4 ETFs (SPY/TLT/GLD/EEM) naïve inverse-vol, 21d rebal, vol-target 10/15%, 1× alavancagem, broker Inter (1.25% FX one-way + 15% tax mensal). Grid 8 configs, IS-best winner = N120_tvol15_rbd21. OOS Sharpe 0.17, CAGR 1.31%, MDD −25.40% (bate cap). 5/13 gates passam (WF 6/8, hold 21d, PBO 0.21, data concordance, median hold); 8 falham (bootstrap CI, Sharpe, CAGR, MDD, IR_vs_SPY −0.76, DSR p=0.85, cost×2 Sharpe 0.11). Três razões estruturais: (1) Qian exige leverage pra RP ser competitivo — nosso spec proíbe; (2) 2022 foi o anti-pattern do próprio livro: bond+equity caíram juntos sem commodity hedge (DBC não tá no Tiingo); (3) Inter tax+FX model incompatível com rebal mensal. Pattern alinha com V2-L4 Carver RP e V2-L1 TSMOM sob engine honesta. `[risk_parity, p.10-18, p.73-74]`, `[systematic_trading, p.175-188]`, `[advances_fin_ml, p.31-34, p.196-211]`.](2026-04-23-2339-phase3.6-b_risk_parity_inverse_vol-FAIL.md)
 - [2026-04-23 07h — **Resumo da madrugada Phase 3.5f** [SHORT-HOLD CFD] — sumário matinal pós-execução F4. Engine bug consertado, 918 testes verdes, 6 V2 leads re-validadas sob engine honest, **0 winners**. V2-L2 Gayed cai de Sharpe 2.28/CAGR 79% pra Sharpe 0.56/CAGR ~14% (65pp de lookahead inflation). Escopo do bug: 1 arquivo, 1 linha — Plano B reports preservados como clean canonical. Escalação ao usuário com 4 opções: V3 (desenhar 7ª família), Phase-6 fallback Gayed 1× unleveraged, abandonar Plano A permanente (invoca `project_plano_a_v2_last_attempt`), ou freezar Plano A e retomar Plano B c06-c12. Files canonicais não tocados; drafts em `docs/.pending/` aguardam escolha.](2026-04-23-0700-overnight-summary.md)
