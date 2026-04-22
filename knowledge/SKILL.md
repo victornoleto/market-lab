@@ -65,6 +65,26 @@ justification citing a source:
   - [`validation/deflated_sharpe.md`](validation/deflated_sharpe.md)
   - [`validation/walk_forward.md`](validation/walk_forward.md)
 
+### Literature sprints — paper-level entries
+
+Academic papers and practitioner research catalogued from literature sprints
+(not full-book summaries). Each entry is an abstract-level summary with the
+source URL as primary reference; raw text is NOT locally ingested. Citation
+format: `[paper.<slug>, §section]`.
+
+- [`papers/README.md`](papers/README.md) — index of all papers by topic, with
+  provenance, current sprint scope (T1-T10 — LETF, VIX, intraday, Kelly,
+  crypto, FX, overnight, ML).
+- Highest-priority leads from Phase 3.7-1 sprint (2026-04-22):
+  - [`papers/zarattini_2024_intraday_spy.md`](papers/zarattini_2024_intraday_spy.md) —
+    SPY intraday noise-boundary momentum, Sharpe 1.33 net (2007-2024).
+  - [`papers/bozovic_2024_vix_managed.md`](papers/bozovic_2024_vix_managed.md) —
+    VIX-scaled portfolios, minimal rebalancing, survives costs.
+  - [`papers/zarattini_2025_crypto_trends.md`](papers/zarattini_2025_crypto_trends.md) —
+    Crypto Donchian ensemble, Sharpe > 1.5 net, alpha 10.8% vs BTC.
+  - [`papers/wysocki_2024_kelly_vix.md`](papers/wysocki_2024_kelly_vix.md) —
+    Kelly × VIX hybrid sizing, PSR-validated.
+
 ### Per-book summaries
 
 **Tier S — Essentials (6 absorbed):**
