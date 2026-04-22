@@ -1,0 +1,349 @@
+{
+  "phase": "phase_3_6",
+  "family": "B",
+  "family_slug": "b_risk_parity_inverse_vol",
+  "produced_at": "2026-04-22T02:36:35+00:00",
+  "engine_fix_commit": "7b90a8f",
+  "universe": [
+    "SPY",
+    "TLT",
+    "GLD",
+    "EEM"
+  ],
+  "windows": {
+    "IS": [
+      "2001-05-14",
+      "2017-12-31"
+    ],
+    "OOS": [
+      "2018-01-01",
+      "2023-12-31"
+    ],
+    "FWD": [
+      "2024-01-01",
+      "2026-04-14"
+    ]
+  },
+  "effective_panel_range": {
+    "start": "2004-11-19",
+    "end": "2026-04-15",
+    "n_bars": 5383
+  },
+  "winner_config": {
+    "slug": "N120_tvol15_rbd21",
+    "universe": [
+      "SPY",
+      "TLT",
+      "GLD",
+      "EEM"
+    ],
+    "vol_lookback": 120,
+    "target_vol": 0.15,
+    "rebalance_days": 21,
+    "max_leverage": 1.0,
+    "fx_spread_one_way": 0.0125,
+    "tax_rate_monthly": 0.15
+  },
+  "grid_n": 8,
+  "splits": {
+    "IS": {
+      "name": "IS",
+      "n_bars": 3301,
+      "sharpe": 0.6263451543048806,
+      "cagr": 0.055722592495742296,
+      "max_drawdown": -0.21939658883181534,
+      "final_equity_from_unit": 2.034622737849615
+    },
+    "OOS": {
+      "name": "OOS",
+      "n_bars": 1509,
+      "sharpe": 0.1740872623186985,
+      "cagr": 0.013111964852803082,
+      "max_drawdown": -0.2540039121496459,
+      "final_equity_from_unit": 1.0811284995193116
+    },
+    "FWD": {
+      "name": "FWD",
+      "n_bars": 572,
+      "sharpe": 1.3579967120001024,
+      "cagr": 0.15323431495601425,
+      "max_drawdown": -0.08700066382271976,
+      "final_equity_from_unit": 1.3821113234764228
+    },
+    "FULL": {
+      "name": "FULL",
+      "n_bars": 5383,
+      "sharpe": 0.5708192325356376,
+      "cagr": 0.053399889116078736,
+      "max_drawdown": -0.2540039121496469,
+      "final_equity_from_unit": 3.038206682695946
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 0.75,
+    "max_window_drawdown": 0.254003912149645,
+    "pass": true
+  },
+  "pbo": {
+    "value": 0.21031746031746032,
+    "n_blocks": 10,
+    "n_combinations": 252,
+    "pass": true
+  },
+  "dsr": {
+    "dsr": 0.15167239892244477,
+    "p_value": 0.8483276010775552,
+    "observed_sharpe": 0.010970102220444426,
+    "n_trials": 8,
+    "pass": false
+  },
+  "bootstrap_oos": {
+    "ci_low": -1.0553868328015508,
+    "ci_high": 1.4977211540045752,
+    "pass": false
+  },
+  "bootstrap_full": {
+    "ci_low": -0.06421696215377729,
+    "ci_high": 1.2340263316325046,
+    "pass": false
+  },
+  "benchmark_spy_oos": {
+    "sharpe": 0.6583905809966943,
+    "cagr": 0.11997223145318503
+  },
+  "ir_vs_spy_oos": -0.7567939497227872,
+  "median_hold_days": 21.428571428571427,
+  "cost_2x": {
+    "name": "OOS_2x",
+    "n_bars": 1509,
+    "sharpe": 0.10811171759199212,
+    "cagr": 0.005845658488026206,
+    "max_drawdown": -0.25912098671279715,
+    "final_equity_from_unit": 1.0355186838147925
+  },
+  "data_concordance": {
+    "status": "ok",
+    "tiingo_3asset_cagr": 0.057693445056615555,
+    "testfolio_3asset_cagr": 0.06464554135971601,
+    "delta_pp": 0.6952096303100452,
+    "pass": true,
+    "note": "3-asset proxy (SPY/TLT/GLD) \u2014 testfolio has no EM synthetic"
+  },
+  "per_config": [
+    {
+      "slug": "N20_tvol10_rbd21",
+      "vol_lookback": 20,
+      "target_vol": 0.1,
+      "rebalance_days": 21,
+      "is_sharpe": 0.43503008272443794,
+      "oos_sharpe": 0.002941216786803535,
+      "fwd_sharpe": 1.1895089437341333,
+      "is_cagr": 0.03484082078817341,
+      "oos_cagr": -0.004997109896124452,
+      "fwd_cagr": 0.12653562348916458,
+      "oos_mdd": -0.26586908944244647,
+      "rebal_count": 256,
+      "cum_fx_cost": 0.9072150770382745,
+      "cum_tax": 0.6641119767122832
+    },
+    {
+      "slug": "N20_tvol15_rbd21",
+      "vol_lookback": 20,
+      "target_vol": 0.15,
+      "rebalance_days": 21,
+      "is_sharpe": 0.4285275802000936,
+      "oos_sharpe": 0.011945986836729728,
+      "fwd_sharpe": 1.2283220222063242,
+      "is_cagr": 0.036454532493367164,
+      "oos_cagr": -0.004282191420514669,
+      "fwd_cagr": 0.13195143748624427,
+      "oos_mdd": -0.2771096305263794,
+      "rebal_count": 256,
+      "cum_fx_cost": 0.9040314493218138,
+      "cum_tax": 0.701757662865293
+    },
+    {
+      "slug": "N40_tvol10_rbd21",
+      "vol_lookback": 40,
+      "target_vol": 0.1,
+      "rebalance_days": 21,
+      "is_sharpe": 0.49298231693030203,
+      "oos_sharpe": 0.09860133039478451,
+      "fwd_sharpe": 1.264764885967724,
+      "is_cagr": 0.04005293087501993,
+      "oos_cagr": 0.00485903388779807,
+      "fwd_cagr": 0.13890024904693776,
+      "oos_mdd": -0.24750613154940038,
+      "rebal_count": 255,
+      "cum_fx_cost": 0.5832384761841911,
+      "cum_tax": 0.7420013853922369
+    },
+    {
+      "slug": "N40_tvol15_rbd21",
+      "vol_lookback": 40,
+      "target_vol": 0.15,
+      "rebalance_days": 21,
+      "is_sharpe": 0.4902297964032264,
+      "oos_sharpe": 0.13192260468229677,
+      "fwd_sharpe": 1.2879298023062806,
+      "is_cagr": 0.042519164165341516,
+      "oos_cagr": 0.00833429361633331,
+      "fwd_cagr": 0.14289296644343374,
+      "oos_mdd": -0.2547623321228265,
+      "rebal_count": 255,
+      "cum_fx_cost": 0.5802328074722151,
+      "cum_tax": 0.7989130497523673
+    },
+    {
+      "slug": "N60_tvol10_rbd21",
+      "vol_lookback": 60,
+      "target_vol": 0.1,
+      "rebalance_days": 21,
+      "is_sharpe": 0.5227996491607181,
+      "oos_sharpe": 0.10794473035014321,
+      "fwd_sharpe": 1.2739128779168885,
+      "is_cagr": 0.04303949622100567,
+      "oos_cagr": 0.005823781320474675,
+      "fwd_cagr": 0.14061450124172303,
+      "oos_mdd": -0.25044847488909927,
+      "rebal_count": 254,
+      "cum_fx_cost": 0.4508109312020996,
+      "cum_tax": 0.7660424190321267
+    },
+    {
+      "slug": "N60_tvol15_rbd21",
+      "vol_lookback": 60,
+      "target_vol": 0.15,
+      "rebalance_days": 21,
+      "is_sharpe": 0.5196809713700659,
+      "oos_sharpe": 0.16821762528155604,
+      "fwd_sharpe": 1.2828090112820985,
+      "is_cagr": 0.04554312625452006,
+      "oos_cagr": 0.012261793494667161,
+      "fwd_cagr": 0.14263003428740473,
+      "oos_mdd": -0.25318238767913204,
+      "rebal_count": 254,
+      "cum_fx_cost": 0.44945663986365236,
+      "cum_tax": 0.8328269671203035
+    },
+    {
+      "slug": "N120_tvol10_rbd21",
+      "vol_lookback": 120,
+      "target_vol": 0.1,
+      "rebalance_days": 21,
+      "is_sharpe": 0.6218427687268304,
+      "oos_sharpe": 0.08486386595179818,
+      "fwd_sharpe": 1.3579967120001062,
+      "is_cagr": 0.052004141888315036,
+      "oos_cagr": 0.0033815420122937923,
+      "fwd_cagr": 0.15323431495601558,
+      "oos_mdd": -0.2530719407211096,
+      "rebal_count": 251,
+      "cum_fx_cost": 0.30116500131092444,
+      "cum_tax": 0.8702493777699429
+    },
+    {
+      "slug": "N120_tvol15_rbd21",
+      "vol_lookback": 120,
+      "target_vol": 0.15,
+      "rebalance_days": 21,
+      "is_sharpe": 0.6263451543048806,
+      "oos_sharpe": 0.1740872623186985,
+      "fwd_sharpe": 1.3579967120001024,
+      "is_cagr": 0.055722592495742296,
+      "oos_cagr": 0.013111964852803082,
+      "fwd_cagr": 0.15323431495601425,
+      "oos_mdd": -0.2540039121496459,
+      "rebal_count": 251,
+      "cum_fx_cost": 0.29995715361482833,
+      "cum_tax": 0.9703863115770849
+    }
+  ],
+  "gates": [
+    {
+      "name": "gate_01_bootstrap_oos_99p9_ci_low_gt_0",
+      "pass": false,
+      "value": "-1.0554"
+    },
+    {
+      "name": "gate_01b_bootstrap_full_99p9_ci_low_gt_0",
+      "pass": false,
+      "value": "-0.0642"
+    },
+    {
+      "name": "gate_02_oos_sharpe_ge_1_5",
+      "pass": false,
+      "value": "0.174"
+    },
+    {
+      "name": "gate_03_oos_cagr_ge_cdi_13pct",
+      "pass": false,
+      "value": "1.31%"
+    },
+    {
+      "name": "gate_04_oos_maxdd_ge_neg25pct",
+      "pass": false,
+      "value": "-25.40%"
+    },
+    {
+      "name": "gate_05_fwd_sharpe_gt_0",
+      "pass": true,
+      "value": "1.358"
+    },
+    {
+      "name": "gate_06_wf_6_8_and_mdd_le_30pct",
+      "pass": true,
+      "value": "6/8 mdd=25.40%"
+    },
+    {
+      "name": "gate_07_median_hold_ge_5d",
+      "pass": true,
+      "value": "21.4d"
+    },
+    {
+      "name": "gate_08_ir_vs_spy_oos_ge_0_3",
+      "pass": false,
+      "value": "-0.757"
+    },
+    {
+      "name": "gate_09_cross_lib_concordance",
+      "pass": null,
+      "value": "deferred \u2192 run_phase3_6_b_cross_lib.py"
+    },
+    {
+      "name": "gate_10_data_concordance_le_1pp",
+      "pass": true,
+      "value": "\u0394=0.695pp (Tiingo 5.77% vs testfolio 6.46%)"
+    },
+    {
+      "name": "gate_11_pbo_lt_0_5",
+      "pass": true,
+      "value": "0.2103"
+    },
+    {
+      "name": "gate_12_dsr_p_lt_0_05",
+      "pass": false,
+      "value": "0.848328"
+    },
+    {
+      "name": "gate_13_cost_2x_oos_sharpe_gt_1",
+      "pass": false,
+      "value": "0.108"
+    }
+  ],
+  "verdict": "FAIL",
+  "failed_gates": [
+    "gate_01_bootstrap_oos_99p9_ci_low_gt_0",
+    "gate_01b_bootstrap_full_99p9_ci_low_gt_0",
+    "gate_02_oos_sharpe_ge_1_5",
+    "gate_03_oos_cagr_ge_cdi_13pct",
+    "gate_04_oos_maxdd_ge_neg25pct",
+    "gate_08_ir_vs_spy_oos_ge_0_3",
+    "gate_12_dsr_p_lt_0_05",
+    "gate_13_cost_2x_oos_sharpe_gt_1"
+  ],
+  "n_pass": 5,
+  "n_fail": 8,
+  "n_deferred": 1
+}
