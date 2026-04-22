@@ -1,0 +1,195 @@
+{
+  "verdict": "FAIL",
+  "config_hash": "6d5951ff26",
+  "git_sha": "2358c00560",
+  "windows": {
+    "IS": {
+      "label": "IS",
+      "n_days": 2528,
+      "sharpe_daily": 0.9439961770164382,
+      "cagr": 0.18253002582468358,
+      "mdd": -0.266080800906094,
+      "n_switches": 73,
+      "median_hold_days": 6.0,
+      "on_regime_fraction": 0.7436708860759493,
+      "cum_cost_pct": 0.29740670768673433,
+      "cum_tax_pct": 0.8098198737704911
+    },
+    "OOS": {
+      "label": "OOS",
+      "n_days": 4025,
+      "sharpe_daily": 0.3867001896752272,
+      "cagr": 0.06751004650559467,
+      "mdd": -0.48083433953525745,
+      "n_switches": 125,
+      "median_hold_days": 4.0,
+      "on_regime_fraction": 0.6096894409937889,
+      "cum_cost_pct": 0.16643139850093638,
+      "cum_tax_pct": 0.5705110206594326
+    },
+    "FWD": {
+      "label": "FWD",
+      "n_days": 2584,
+      "sharpe_daily": 0.6482598494000918,
+      "cagr": 0.16242491777932377,
+      "mdd": -0.538091648284327,
+      "n_switches": 95,
+      "median_hold_days": 5.5,
+      "on_regime_fraction": 0.7136222910216719,
+      "cum_cost_pct": 0.28314804553192374,
+      "cum_tax_pct": 1.0604495185436336
+    },
+    "OOS_2x_cost": {
+      "label": "OOS_2x_cost",
+      "n_days": 4025,
+      "sharpe_daily": 0.27835793606555853,
+      "cagr": 0.038896442008281795,
+      "mdd": -0.5328111880359007,
+      "n_switches": 125,
+      "median_hold_days": 4.0,
+      "on_regime_fraction": 0.6096894409937889,
+      "cum_cost_pct": 0.27154984152937484,
+      "cum_tax_pct": 0.8691498671373715
+    }
+  },
+  "ir_oos_vs_spy": 0.1640038787390285,
+  "wf": {
+    "returns": [
+      0.7921680255891144,
+      0.8219191869792506,
+      0.3452956954249031,
+      0.1740721805607357,
+      0.43411060431387427,
+      -0.17212348505449548,
+      0.3120863634724711,
+      0.9578597210060857
+    ],
+    "dds": [
+      0.14037175487669973,
+      0.16747598898940375,
+      0.2660808009060941,
+      0.13890075713942507,
+      0.2355054066939548,
+      0.34292920463508814,
+      0.3458229905353656,
+      0.23309391187980766
+    ],
+    "profitable": 7,
+    "total": 8,
+    "verdict": "pass"
+  },
+  "bootstrap": {
+    "OOS": {
+      "ci_low_999": -0.0004566176695538073,
+      "passes": false
+    },
+    "FULL": {
+      "ci_low_999": 0.00013059109367553838,
+      "passes": true
+    }
+  },
+  "pbo": 0.21428571428571427,
+  "pbo_verdict": "pass",
+  "dsr_p": 0.6378560729646354,
+  "crosslib_delta_pp_cagr": 0.0010873760114105124,
+  "crosslib_note": "pandas(no-tax)=9.425%, vbt=9.426%, |\u0394|=0.001pp (compared ex-tax to match vbt scope)",
+  "gate_rows": [
+    [
+      "1 IS Sharpe > 0.5",
+      "0.944",
+      "PASS"
+    ],
+    [
+      "2 OOS Sharpe >= 1.3",
+      "0.387",
+      "FAIL"
+    ],
+    [
+      "3 OOS CAGR tier (WARN)",
+      "6.751% \u2014 tier **Folclore**",
+      "WARNING-ONLY"
+    ],
+    [
+      "4 OOS MDD tier (WARN)",
+      "-48.083% \u2014 tier **Warning**",
+      "WARNING-ONLY"
+    ],
+    [
+      "5 FWD Sharpe > 0",
+      "0.648",
+      "PASS"
+    ],
+    [
+      "6 WF >= 6/8 positive",
+      "7/8 profitable",
+      "PASS"
+    ],
+    [
+      "7 Median hold >= 5d",
+      "6.0 trading days",
+      "PASS"
+    ],
+    [
+      "8 IR vs SPY >= 0.2",
+      "0.164",
+      "FAIL"
+    ],
+    [
+      "9 Cross-lib CAGR <= 3pp (HARD)",
+      "pandas(no-tax)=9.425%, vbt=9.426%, |\u0394|=0.001pp (compared ex-tax to match vbt scope)",
+      "PASS"
+    ],
+    [
+      "10 Bootstrap 99.9% CI low > 0 (HARD)",
+      "OOS=-0.000456618; FULL=0.000130591",
+      "FAIL"
+    ],
+    [
+      "11 PBO < 0.5 (HARD)",
+      "pbo=0.214",
+      "PASS"
+    ],
+    [
+      "12 DSR p < 0.05 (HARD)",
+      "p=0.6379",
+      "FAIL"
+    ],
+    [
+      "13 Cost\u00d72 Sharpe > 0.8",
+      "0.278 (cagr=3.890%)",
+      "FAIL"
+    ]
+  ],
+  "stress": {
+    "dotcom_2000_2002": {
+      "n": 752,
+      "sharpe": -0.24916356435970594,
+      "cagr": -0.013592957454693355,
+      "mdd": -0.13890075713942496
+    },
+    "gfc_2007_2009": {
+      "n": 378,
+      "sharpe": -0.7703556609816568,
+      "cagr": -0.09358701249462698,
+      "mdd": -0.20583067967297497
+    },
+    "euro_2011": {
+      "n": 170,
+      "sharpe": -1.4063941053101419,
+      "cagr": -0.3698216202299195,
+      "mdd": -0.2729380132419539
+    },
+    "covid_2020_03": {
+      "n": 62,
+      "sharpe": 0.1909568804100105,
+      "cagr": 0.0152212273956438,
+      "mdd": -0.1398481713248788
+    },
+    "rate_shock_2022": {
+      "n": 251,
+      "sharpe": -1.8788772910416973,
+      "cagr": -0.3586075919506583,
+      "mdd": -0.3695292864580457
+    }
+  }
+}
