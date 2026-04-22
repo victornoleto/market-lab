@@ -1,0 +1,127 @@
+{
+  "phase": "3.5f Cross-lib",
+  "config": "gayed_ema100_L2_off_gld",
+  "methodology": "Tiingo raw close (baseline V2-L2); cost=0/swap=0 for engine isolation",
+  "concordance_per_split": {
+    "IS": {
+      "canonical": {
+        "n_bars": 4185,
+        "sharpe": 0.563366731847923,
+        "cagr": 0.11600194708255884,
+        "max_drawdown": -0.421812185582349
+      },
+      "numpy_ref": {
+        "n_bars": 4185,
+        "sharpe": 0.563366731847923,
+        "cagr": 0.11600194708255884,
+        "max_drawdown": -0.421812185582349,
+        "delta_cagr_pp": 0.0,
+        "delta_sharpe": 0.0
+      },
+      "bt": {
+        "error": "Cannot allocate capital to off_gld because price is nan as of 2001-05-14 00:00:00",
+        "cagr": NaN,
+        "sharpe": NaN,
+        "delta_cagr_pp": NaN,
+        "delta_sharpe": NaN
+      },
+      "vectorbt": {
+        "n_bars": 4185,
+        "sharpe": 0.563366731847923,
+        "cagr": 0.11600194708255884,
+        "max_drawdown": -0.421812185582349,
+        "delta_cagr_pp": 0.0,
+        "delta_sharpe": 0.0
+      },
+      "backtrader": {
+        "n_bars": 4185,
+        "sharpe": 0.563366731847923,
+        "cagr": 0.11600194708255884,
+        "max_drawdown": -0.421812185582349,
+        "delta_cagr_pp": 0.0,
+        "delta_sharpe": 0.0
+      }
+    },
+    "OOS": {
+      "canonical": {
+        "n_bars": 1509,
+        "sharpe": 0.8100126687376223,
+        "cagr": 0.20785774055326955,
+        "max_drawdown": -0.3542006290235964
+      },
+      "numpy_ref": {
+        "n_bars": 1509,
+        "sharpe": 0.8100126687376223,
+        "cagr": 0.20785774055326955,
+        "max_drawdown": -0.3542006290235964,
+        "delta_cagr_pp": 0.0,
+        "delta_sharpe": 0.0
+      },
+      "bt": {
+        "error": "Cannot allocate capital to off_gld because price is nan as of 2001-05-14 00:00:00",
+        "cagr": NaN,
+        "sharpe": NaN,
+        "delta_cagr_pp": NaN,
+        "delta_sharpe": NaN
+      },
+      "vectorbt": {
+        "n_bars": 1509,
+        "sharpe": 0.8100126687376223,
+        "cagr": 0.20785774055326955,
+        "max_drawdown": -0.3542006290235964,
+        "delta_cagr_pp": 0.0,
+        "delta_sharpe": 0.0
+      },
+      "backtrader": {
+        "n_bars": 1509,
+        "sharpe": 0.8100126687376223,
+        "cagr": 0.20785774055326955,
+        "max_drawdown": -0.3542006290235964,
+        "delta_cagr_pp": 0.0,
+        "delta_sharpe": 0.0
+      }
+    },
+    "FWD": {
+      "canonical": {
+        "n_bars": 572,
+        "sharpe": 1.012914586585014,
+        "cagr": 0.272098985312218,
+        "max_drawdown": -0.26543854214556417
+      },
+      "numpy_ref": {
+        "n_bars": 572,
+        "sharpe": 1.012914586585014,
+        "cagr": 0.272098985312218,
+        "max_drawdown": -0.26543854214556417,
+        "delta_cagr_pp": 0.0,
+        "delta_sharpe": 0.0
+      },
+      "bt": {
+        "error": "Cannot allocate capital to off_gld because price is nan as of 2001-05-14 00:00:00",
+        "cagr": NaN,
+        "sharpe": NaN,
+        "delta_cagr_pp": NaN,
+        "delta_sharpe": NaN
+      },
+      "vectorbt": {
+        "n_bars": 572,
+        "sharpe": 1.012914586585014,
+        "cagr": 0.272098985312218,
+        "max_drawdown": -0.26543854214556417,
+        "delta_cagr_pp": 0.0,
+        "delta_sharpe": 0.0
+      },
+      "backtrader": {
+        "n_bars": 572,
+        "sharpe": 1.012914586585014,
+        "cagr": 0.272098985312218,
+        "max_drawdown": -0.26543854214556417,
+        "delta_cagr_pp": 0.0,
+        "delta_sharpe": 0.0
+      }
+    }
+  },
+  "oos_libs_passing_3pp": 2,
+  "cross_lib_pass": true,
+  "produced_at": "2026-04-22T01:31:37+00:00"
+}
