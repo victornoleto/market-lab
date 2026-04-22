@@ -24,6 +24,7 @@
 | D | `d_chan_mr_pairs` | `algo_trading_chan.md` (p.51-73, p.88-89, ch.3) | Pepperstone CFD | 5-15d hold | done | ❌ FAIL (5/13) | Non-Kalman variant (rolling OLS + EG gate) — 57 trades across 5 ETF pairs, median hold 10d. OOS Sharpe −0.51 / CAGR −0.33% / DSR p=0.996 / IR vs SPY −0.67 / bootstrap CI [−1.37,+0.50] straddles zero. MDD safe (−2.37%), PBO 0.30 (no overfit), cross-lib Δ=0.37pp (PASS). Cointegration OFF 79-91% of bars — confirms Chan's p.88-89 caveat on ETF pair-edge compression. Contrast V2-L5 Kalman (0 trades): two roads, same no-edge destination. |
 | E | `e_ehlers_cycles` | `cycle_analytics.md` (p.77-137, p.220-221), `rocket_science.md` | Pepperstone CFD | 5-15d hold | done | ❌ FAIL (10/13) | 5-ETF basket (SPY/QQQ/GLD/TLT/EFA) with roofing filter + autocorrelation periodogram DC + adaptive RSI (anticipate entries). OOS Sharpe −0.61 / CAGR −9.95% / MDD −53.4% / DSR p=0.998 / IR vs SPY −1.39 / bootstrap CI [−1.86,+0.81]. 697 trades (median 6.0d, gate 7 PASS); cum cost 163% of equity dominates. PBO 0.516 (just above 0.5 line). FWD Sharpe +0.60 is the sole edge signal. Cross-lib Δ=0.000pp (PASS). Confirms Ehlers' own caveat `[cycle_analytics, p.xi-xii]`: "cycles in trend regime = folly." |
 | I | `i_stat_sound_indicators` | `stat_sound_indicators.md` (p.170, p.174, p.299-306), `testing_tuning.md`, `evidence_based_ta.md` | Inter (ETFs) | 5-15d hold | done | ❌ FAIL-structural (0 survivors / 15 gates undefined) | 5-ETF universe SPY/QQQ/GLD/TLT/EEM; pool of 8 canonical indicators (RSI14 MR, MACD hist-cross, Connors RSI2 MR, Donchian-20 breakout, z-score-5 MR, Bollinger 2σ MR, SMA200 trend, CN20 MR). 500-perm simple-market MCPT + Bonferroni M=8. **0/8 survive at p_Bonferroni<0.001** — best was Connors-RSI2 at p_raw=0.032 (p_corr=0.256). No ensemble formed → 13 gates all undefined. Scientifically informative FAIL, consistent with Aronson's 6,402-rule study `[evidence_based_ta, p.459]` on S&P 500. |
+| F | `f_vol_target_managed_futures` | `systematic_trading.md` (p.118-119, p.137-148, p.170-174, p.282-285, p.185-188), `volatility_trading.md` | Pepperstone CFD | 10-20d hold | done | ❌ FAIL (12/13) | 6-asset multi-class MF basket (SPY/TLT/GLD/USO/EFA/IEF) with Carver continuous EWMAC 16:64 + portfolio-level 15% vol target + IDM=√N cap 2.5 + 10d rebal + position inertia 10%. OOS Sharpe 0.115 / CAGR −0.14% / MDD −36.5% / DSR p=0.94 / PBO 0.60 / cost×2 Sharpe −0.46. **Gross Sharpe 0.60 pré-custo** (signal works) mas swap drag 311% cumulativo em 25 anos @ 2.22× alavancagem média erases edge — confirms Carver speed-limit `[systematic_trading, p.185-188]`. Cross-lib Δ=0.000pp (PASS). Differentiates from V2-L1: continuous EWMAC vs binary past-return, portfolio-level IDM vs per-leg vol, 6 asset-class ETFs vs 30-asset FX-dominant. |
 
 ## Waves
 
@@ -33,7 +34,7 @@
 
 ## Counters
 
-- FAIL: 6
+- FAIL: 7
 - PARTIAL (12/13): 0
 - WINNER: 0
-- Remaining until escalation: 4 FAIL **or** 3 PARTIAL
+- Remaining until escalation: 3 FAIL **or** 3 PARTIAL

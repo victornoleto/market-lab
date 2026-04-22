@@ -1,0 +1,368 @@
+{
+  "phase": "phase_3_6",
+  "family": "F_vol_target_managed_futures_basket",
+  "slug": "f_vol_target_managed_futures",
+  "produced_at": "2026-04-22T03:22:15+00:00",
+  "engine_fix_commit": "7b90a8f",
+  "broker_path": "Pepperstone Razor CFD (multi-asset, non-BR jurisdiction)",
+  "data_source": "Tiingo daily parquets (6-asset MF-proxy basket)",
+  "universe": [
+    "SPY",
+    "TLT",
+    "GLD",
+    "USO",
+    "EFA",
+    "IEF"
+  ],
+  "differentiation_from_v2_l1": {
+    "trend_signal": "Carver continuous EWMAC (signed forecast \u00b120) vs V2-L1 binary past-return sign test.",
+    "vol_target_scope": "Portfolio-level target 15% ann with IDM (\u221aN, cap 2.5) vs V2-L1 per-leg inverse-vol.",
+    "basket_composition": "6 multi-class ETFs (equity/bonds/commodities/intl) vs V2-L1 30-asset FX-dominant."
+  },
+  "winner_config": {
+    "fast_span": 16,
+    "slow_span": 64,
+    "ewmac_scalar": 3.75,
+    "target_vol_annual": 0.15,
+    "rebalance_days": 10,
+    "sigma_ewma_span": 35,
+    "inertia_frac": 0.1,
+    "max_per_leg": 2.0,
+    "max_gross_leverage": 4.0,
+    "idm_cap": 2.5,
+    "min_active_assets": 3,
+    "forecast_cap": 20.0,
+    "swap_daily_long": -0.0003,
+    "swap_daily_short": 0.0,
+    "commission_round_trip": 3.5e-05,
+    "tax_rate": 0.0
+  },
+  "window": {
+    "start": "2001-05-14",
+    "end": "2026-04-20",
+    "n_bars": 6270
+  },
+  "splits": {
+    "IS": {
+      "name": "IS",
+      "n_bars": 4185,
+      "sharpe": -0.0906660251498382,
+      "cagr": -0.03801442353225015,
+      "max_drawdown": -0.6419535526354079,
+      "final_equity_from_unit": 0.5253852543935049
+    },
+    "OOS": {
+      "name": "OOS",
+      "n_bars": 1509,
+      "sharpe": 0.11488900873159198,
+      "cagr": -0.0013692890230672106,
+      "max_drawdown": -0.3651610258795053,
+      "final_equity_from_unit": 0.9918285176570631
+    },
+    "FWD": {
+      "name": "FWD",
+      "n_bars": 572,
+      "sharpe": -0.06693289219509653,
+      "cagr": -0.03538278679935847,
+      "max_drawdown": -0.29919206610425686,
+      "final_equity_from_unit": 0.921485170035474
+    },
+    "FULL": {
+      "name": "FULL",
+      "n_bars": 6270,
+      "sharpe": -0.033286411149301906,
+      "cagr": -0.029236583340402578,
+      "max_drawdown": -0.6844603452804942,
+      "final_equity_from_unit": 0.4779353534925276
+    },
+    "SPY_OOS": {
+      "name": "SPY_OOS",
+      "n_bars": 1509,
+      "sharpe": 0.6583905809966943,
+      "cagr": 0.11997223145318503,
+      "max_drawdown": -0.3369994047053618,
+      "final_equity_from_unit": 1.970868865655394
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 0.375,
+    "max_window_drawdown": 0.36187037903490704,
+    "pass": false,
+    "mdd_cap": 0.3
+  },
+  "pbo": {
+    "value": 0.5952380952380952,
+    "n_blocks": 10,
+    "n_combinations": 252,
+    "pass": false
+  },
+  "dsr": {
+    "dsr": 0.06481687742171234,
+    "p_value": 0.9351831225782876,
+    "observed_sharpe": 0.0072397265199323265,
+    "n_trials": 16,
+    "pass": false
+  },
+  "bootstrap_oos": {
+    "ci_low": -1.0984337054741744,
+    "ci_high": 1.4725313002462779,
+    "pass": false
+  },
+  "bootstrap_full": {
+    "ci_low": -0.5521177384568059,
+    "ci_high": 0.5966459648719354,
+    "pass": false
+  },
+  "ir_vs_spy_oos": -0.3316368711687779,
+  "median_hold_days": 50.0,
+  "n_hold_segments": 450,
+  "cum_cost_pct_winner": 0.22655529035585753,
+  "cum_swap_pct_winner": 3.1083136027063594,
+  "cum_commission_pct_winner": 0.023492594650989563,
+  "n_rebalances_winner": 570,
+  "avg_gross_leverage_winner": 2.219655327701528,
+  "cost_sensitivity_2x": {
+    "name": "OOS_2x",
+    "n_bars": 1509,
+    "sharpe": -0.4547121400197242,
+    "cagr": -0.128843009098088,
+    "max_drawdown": -0.6584805014434039,
+    "final_equity_from_unit": 0.4378160662076675
+  },
+  "gates": [
+    {
+      "name": "gate_01_bootstrap_oos_99p9_ci_low_gt_0",
+      "pass": false,
+      "value": "-1.0984"
+    },
+    {
+      "name": "gate_01b_bootstrap_full_99p9_ci_low_gt_0",
+      "pass": false,
+      "value": "-0.5521"
+    },
+    {
+      "name": "gate_02_oos_sharpe_ge_1_5",
+      "pass": false,
+      "value": "0.115"
+    },
+    {
+      "name": "gate_03_oos_cagr_ge_13pct_CDI",
+      "pass": false,
+      "value": "-0.14%"
+    },
+    {
+      "name": "gate_03_target_oos_cagr_ge_30pct",
+      "pass": false,
+      "value": "-0.14%"
+    },
+    {
+      "name": "gate_04_oos_maxdd_le_25pct",
+      "pass": false,
+      "value": "-36.52%"
+    },
+    {
+      "name": "gate_05_fwd_sharpe_gt_0",
+      "pass": false,
+      "value": "-0.067"
+    },
+    {
+      "name": "gate_06_wf_6_8_and_mdd_le_30pct",
+      "pass": false,
+      "value": "3/8 mdd=36.19%"
+    },
+    {
+      "name": "gate_07_median_hold_ge_5d",
+      "pass": true,
+      "value": "50.0d"
+    },
+    {
+      "name": "gate_08_ir_vs_spy_oos_ge_0_3",
+      "pass": false,
+      "value": "-0.3316"
+    },
+    {
+      "name": "gate_09_cross_lib_concordance",
+      "pass": null,
+      "value": "deferred (see cross_lib_check.md)"
+    },
+    {
+      "name": "gate_10_stage2_data_concordance",
+      "pass": null,
+      "value": "N/A \u2014 only one data source (Tiingo)"
+    },
+    {
+      "name": "gate_11_pbo_lt_0_5",
+      "pass": false,
+      "value": "0.5952"
+    },
+    {
+      "name": "gate_12_dsr_p_lt_0_05",
+      "pass": false,
+      "value": "0.935183"
+    },
+    {
+      "name": "gate_13_cost_sensitivity_2x_sharpe_gt_1",
+      "pass": false,
+      "value": "-0.455"
+    }
+  ],
+  "verdict": "FAIL",
+  "failed_gates": [
+    "gate_01_bootstrap_oos_99p9_ci_low_gt_0",
+    "gate_01b_bootstrap_full_99p9_ci_low_gt_0",
+    "gate_02_oos_sharpe_ge_1_5",
+    "gate_03_oos_cagr_ge_13pct_CDI",
+    "gate_03_target_oos_cagr_ge_30pct",
+    "gate_04_oos_maxdd_le_25pct",
+    "gate_05_fwd_sharpe_gt_0",
+    "gate_06_wf_6_8_and_mdd_le_30pct",
+    "gate_08_ir_vs_spy_oos_ge_0_3",
+    "gate_11_pbo_lt_0_5",
+    "gate_12_dsr_p_lt_0_05",
+    "gate_13_cost_sensitivity_2x_sharpe_gt_1"
+  ],
+  "grid_configs": [
+    {
+      "tag": "ewmac8_32_vt10_rb10",
+      "fast_span": 8,
+      "slow_span": 32,
+      "target_vol_annual": 0.1,
+      "rebalance_days": 10,
+      "sharpe_full": -0.25338004378836304
+    },
+    {
+      "tag": "ewmac8_32_vt10_rb20",
+      "fast_span": 8,
+      "slow_span": 32,
+      "target_vol_annual": 0.1,
+      "rebalance_days": 20,
+      "sharpe_full": -0.2071097007569309
+    },
+    {
+      "tag": "ewmac8_32_vt15_rb10",
+      "fast_span": 8,
+      "slow_span": 32,
+      "target_vol_annual": 0.15,
+      "rebalance_days": 10,
+      "sharpe_full": -0.24898980298939502
+    },
+    {
+      "tag": "ewmac8_32_vt15_rb20",
+      "fast_span": 8,
+      "slow_span": 32,
+      "target_vol_annual": 0.15,
+      "rebalance_days": 20,
+      "sharpe_full": -0.200648137743682
+    },
+    {
+      "tag": "ewmac16_64_vt10_rb10",
+      "fast_span": 16,
+      "slow_span": 64,
+      "target_vol_annual": 0.1,
+      "rebalance_days": 10,
+      "sharpe_full": -0.03874774991954133
+    },
+    {
+      "tag": "ewmac16_64_vt10_rb20",
+      "fast_span": 16,
+      "slow_span": 64,
+      "target_vol_annual": 0.1,
+      "rebalance_days": 20,
+      "sharpe_full": -0.1169889758275213
+    },
+    {
+      "tag": "ewmac16_64_vt15_rb10",
+      "fast_span": 16,
+      "slow_span": 64,
+      "target_vol_annual": 0.15,
+      "rebalance_days": 10,
+      "sharpe_full": -0.033286411149301906
+    },
+    {
+      "tag": "ewmac16_64_vt15_rb20",
+      "fast_span": 16,
+      "slow_span": 64,
+      "target_vol_annual": 0.15,
+      "rebalance_days": 20,
+      "sharpe_full": -0.11144711078601151
+    },
+    {
+      "tag": "ewmac32_128_vt10_rb10",
+      "fast_span": 32,
+      "slow_span": 128,
+      "target_vol_annual": 0.1,
+      "rebalance_days": 10,
+      "sharpe_full": -0.11645845837063426
+    },
+    {
+      "tag": "ewmac32_128_vt10_rb20",
+      "fast_span": 32,
+      "slow_span": 128,
+      "target_vol_annual": 0.1,
+      "rebalance_days": 20,
+      "sharpe_full": -0.11973469956182829
+    },
+    {
+      "tag": "ewmac32_128_vt15_rb10",
+      "fast_span": 32,
+      "slow_span": 128,
+      "target_vol_annual": 0.15,
+      "rebalance_days": 10,
+      "sharpe_full": -0.09997201616352094
+    },
+    {
+      "tag": "ewmac32_128_vt15_rb20",
+      "fast_span": 32,
+      "slow_span": 128,
+      "target_vol_annual": 0.15,
+      "rebalance_days": 20,
+      "sharpe_full": -0.11558531866302747
+    },
+    {
+      "tag": "ewmac64_256_vt10_rb10",
+      "fast_span": 64,
+      "slow_span": 256,
+      "target_vol_annual": 0.1,
+      "rebalance_days": 10,
+      "sharpe_full": -0.1831439861092768
+    },
+    {
+      "tag": "ewmac64_256_vt10_rb20",
+      "fast_span": 64,
+      "slow_span": 256,
+      "target_vol_annual": 0.1,
+      "rebalance_days": 20,
+      "sharpe_full": -0.15616193375616916
+    },
+    {
+      "tag": "ewmac64_256_vt15_rb10",
+      "fast_span": 64,
+      "slow_span": 256,
+      "target_vol_annual": 0.15,
+      "rebalance_days": 10,
+      "sharpe_full": -0.19317147503988208
+    },
+    {
+      "tag": "ewmac64_256_vt15_rb20",
+      "fast_span": 64,
+      "slow_span": 256,
+      "target_vol_annual": 0.15,
+      "rebalance_days": 20,
+      "sharpe_full": -0.1529839111298003
+    }
+  ],
+  "is_sharpe": -0.0906660251498382,
+  "is_cagr": -0.03801442353225015,
+  "oos_sharpe": 0.11488900873159198,
+  "oos_cagr": -0.0013692890230672106,
+  "oos_mdd": -0.3651610258795053,
+  "fwd_sharpe": -0.06693289219509653,
+  "fwd_cagr": -0.03538278679935847,
+  "wf_profitable_windows": 3,
+  "wf_max_dd": 0.36187037903490704,
+  "cross_lib_max_delta_cagr": null,
+  "bootstrap_oos_ci_low": -1.0984337054741744,
+  "bootstrap_full_ci_low": -0.5521177384568059,
+  "cost_x2_sharpe": -0.4547121400197242
+}

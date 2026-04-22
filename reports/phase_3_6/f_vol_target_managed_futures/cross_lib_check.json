@@ -1,0 +1,12 @@
+{
+  "winner_cell": "ewmac16_64_vt15_rb10",
+  "oos_range": [
+    "2018-01-01",
+    "2023-12-31"
+  ],
+  "cagr_canonical": -0.0013692890230672106,
+  "cagr_hand_rolled": -0.0013692890230672106,
+  "delta_pp": 0.0,
+  "tolerance_pp": 3.0,
+  "pass": true
+}
