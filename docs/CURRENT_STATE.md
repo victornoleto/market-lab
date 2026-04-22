@@ -1,183 +1,179 @@
-# Estado atual — ai-trade (2026-04-19)
+# Estado atual — ai-trade (2026-04-23)
 
-> **Propósito:** onboard rápido para humanos e agentes. Após 0 e
-> Phase 2/2.5/3/3.5a/3.5b completas, o projeto tem **dois winners
-> production-ready** (Plano A e Plano B). Este doc é o índice de
-> orientação — a verdade canônica vive nos arquivos referenciados.
+> **Propósito:** onboard rápido para humanos e agentes. Este doc é o
+> índice de orientação — a verdade canônica vive nos arquivos
+> referenciados.
 
 ---
 
 ## TL;DR
 
-- **Plano A** (Path A, short-hold CFD) → `gayed_ema100_L2_off_gld`,
-  CFD Pepperstone 2×, Sharpe 2.285, CAGR 79.14%, MDD -21.02%.
-- **Plano B** (Path B, swing broker) → Portfolio 3-leg EW
-  (SSO+QLD+UGL, threshold 10pp), Banco Inter Global, Sharpe 2.251
-  em janela canônica (2.609 V4), CAGR 25.56%, MDD -10.86%.
-- **Próximo:** Phase 4 — paper trading dual-path 3 meses
-  (cTrader Demo A + Inter Global B).
-- **Blocker operacional:** aprovação do OAuth Pepperstone
-  (Spotware) para Plano A paper.
+**Nenhum winner ativo.** Phase 3.5f fechou o V2 do Plano A com veredito
+FAIL em todas as 6 leads sob engine honest (bug de look-ahead descoberto
+e consertado em 2026-04-22). Plano B V4 já havia sido retratado em
+Phase 3.5c (2026-04-20) por divergência cross-lib. Plano A V2 encerrado
+definitivamente per `project_plano_a_v2_last_attempt` rule.
+
+**Próxima fase ativa:** Phase 3.6 — broader swing-winner hunt
+broker-agnostic sobre os 33 livros em `books/summaries/` + `_archive/`.
+Plano executável em `docs/plans/2026-04-23-find-swing-winner-phase-3-6.md`.
+
+**Engine agora confiável.** Fix commit `7b90a8f` alinha
+`prev_weights × return_today`; cross-lib concordância a 1e-6 com
+bt/vectorbt/backtrader/numpy. Qualquer strategy futura herda baseline
+honest validada por 3 libs independentes.
 
 ---
 
-## Plano A — Pepperstone CFD (short-hold alavancado)
+## Status dos Planos (2026-04-23)
 
-**Status:** WINNER confirmado em 2026-04-19 (Phase 3.5a-V2). 13/13 gates
-passam com folga material. Pronto para paper trading.
+### Plano A — Pepperstone CFD (short-hold alavancado)
 
-**Config canônica:** `gayed_ema100_L2_off_gld`
+**Status:** 🛑 **V2 encerrado sem winner honest.** Phase 3.5f F0-F4
+completou re-validação das 6 leads V2 sob engine patched:
 
-| Dimensão | Valor |
-|---|---|
-| Sinal | Gayed LETF rotation transportada para CFD |
-| Regime filter | EMA-100 sobre SPY close (daily) |
-| Risk-on | SPY + QQQ equal-weight @ leverage 2× (CFD Pepperstone) |
-| Risk-off | GLD (não cash, não TLT) |
-| Hold median | 6 dias |
-| Sharpe OOS (2018-2023) | 2.285 |
-| CAGR OOS net | 79.14% |
-| MaxDD OOS | -21.02% |
-| IR vs SPY | 2.161 |
-| PBO (10-block) | 0.103 |
-| DSR p-value (N=27) | 0.000288 |
-| Bootstrap 99.9% CI low | 0.962 |
-
-**Base científica:** `[leverage_for_the_long_run, Gayed 2016/2020]` —
-regime-on/off + leverage tática. Invariantes descobertas no L2 sweep:
-(1) MDD super-linear em leverage (L2 ~21%, L3 ~30%, L5 ~49% — só L=2
-passa gate); (2) adaptividade EMA-100 > LRS > SMA-200; (3) GLD > cash
-> TLT como off-regime (TLT correlaciona com SPY em rate shocks).
-
-**Leia mais:**
-- Living strategy doc (autoritativo):
-  [`docs/strategies/plano_a_v2_l2_gayed_cfd.md`](strategies/plano_a_v2_l2_gayed_cfd.md)
-- Narrativa humana do arc V1→V2:
-  [`jornada/2026-04-18/23-phase3.5a-v2-WINNER-humana.md`](../jornada/2026-04-18/23-phase3.5a-v2-WINNER-humana.md)
-- Gate verdict PASS técnico:
-  [`jornada/2026-04-19/01-phase3.5a-v2-L2-gayed-transported-PASS.md`](../jornada/2026-04-19/01-phase3.5a-v2-L2-gayed-transported-PASS.md)
-- Summary T7 (fecho V2):
-  [`jornada/2026-04-19/07-phase3.5a-v2-summary-WINNER-FOUND.md`](../jornada/2026-04-19/07-phase3.5a-v2-summary-WINNER-FOUND.md)
-- Evidência bruta (winner config + AGGREGATE + registry):
-  [`reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/`](../reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/)
-- Preservação:
-  [`reports/phase3_5a_v2/_DO_NOT_CLEANUP.md`](../reports/phase3_5a_v2/_DO_NOT_CLEANUP.md)
-- Spec executada:
-  [`specs/phase_3_5a_v2.md`](../specs/phase_3_5a_v2.md)
-
-**V1 refutado (contexto histórico):** framework errado (1h FX retail,
-hold ≤5d, universe pequeno) → 0/143 PASS em 6 famílias. Ver 7 jornadas
-DEAD em `jornada/2026-04-18/` (slugs `T1-T5-*-DEAD.md` + `T6-*` + `T7-*`).
-
----
-
-## Plano B — Banco Inter Global (swing LETF rotation)
-
-**Status:** WINNER confirmado em 2026-04-17 (Phase 3.5b). 5 gates formais
-passam em 2 janelas (21.4y canônica + 40y extended). Threshold 10pp
-default revisto em 2026-04-18. SSO+QLD+UGL todos confirmados no catálogo
-Inter Global.
-
-**Config canônica:** Portfolio 3-leg EW, rebalance threshold 10pp
-
-| Perna | LETF 2× | Sinal (no 1×) | Execução |
-|---|---|---|---|
-| 1 | SSO (S&P 2×) | EMA-100 regime sobre SPY | SSO quando close > EMA100 |
-| 2 | QLD (NASDAQ 2×) | Donchian 20/10 sobre QQQ | QLD quando breakout 20d high |
-| 3 | UGL (Gold 2×) | Donchian 40/20 sobre GLD | UGL quando breakout 40d high |
-
-**Pesos alvo:** 1/3, 1/3, 1/3 — cada perna opera independente. Cash
-dentro da perna quando filtro off; cross-leg rebalance só em evento
-de threshold ≥10pp.
-
-| Métrica | V4 canônica (2004-2026, 21.4y) | Extended (1986-2026, 40y) |
+| Lead | Família | Veredito honest |
 |---|---|---|
-| Sharpe OOS | 2.609 (janela comum 2.251) | 2.320 |
-| CAGR | 39.19% | 37.93% |
-| MaxDD | -12.22% | -16.91% |
-| vs SPY B&H | 10.66% CAGR, Sharpe 0.63, MDD -55% | (idem) |
+| V2-L1 | TSMOM multi-asset | FAIL (engine era clean, DEAD confirmado) |
+| V2-L2 | **Gayed regime rotation CFD** | **FAIL (79%→14% CAGR sob fix; 6/13 gates falham)** |
+| V2-L3 | AFML triple-barrier meta-label | FAIL (engine era clean, DEAD confirmado) |
+| V2-L4 | Carver Risk Parity blend | FAIL (surpresa: L2 só 4.8% do blend; rescue refutado) |
+| V2-L5 | Kalman pair cointegration | FAIL (structural: 0 cointegrated pairs) |
+| V2-L6 | Donchian vol-breakout | FAIL (12/12 OOS Sharpe negativo; engine era clean) |
 
-**Base científica:** `[leverage_for_the_long_run]` + extensão multi-asset
-`[advances_fin_ml, ch.11, ch.14]`. Rebalance threshold escolhido por
-sweep completo (5/10/15/25/100pp) — 10pp domina 5pp em operabilidade
-(metade das DARFs, Sharpe dentro do ruído).
-
-**Broker:** Banco Inter Global (zero corretagem + spread FX 0.99-1.50%
-+ T+1 liquidation). SSO/QLD/UGL todos confirmados no catálogo
-(user validou 2026-04-18). 15% IR BR por venda lucrativa via DARF 6015;
-~12-15 DARFs/ano.
-
-**Fallback documentado:** V1 (SSO+QQQ+GLD) — se Inter delistar QLD ou
-UGL, degrade pra V1. Sharpe 2.478, CAGR 26.53%, MDD -9.39%.
+**Decisão (2026-04-23):** abandonar Plano A V2 sem V3 isolado per
+`project_plano_a_v2_last_attempt` memory rule. Phase 3.6 (broader hunt)
+pode eventualmente produzir strategy tradeável em Pepperstone CFD como
+sub-família — mas não é "V3 Plano A".
 
 **Leia mais:**
-- Living strategy doc (autoritativo — inclui V1-V8 completo + rationale V4 default):
-  [`docs/strategies/plano_b_3leg_letf_rotation.md`](strategies/plano_b_3leg_letf_rotation.md)
-- Runbook de produção (operacional canônico):
-  [`reports/phase3_5b/PRODUCTION.md`](../reports/phase3_5b/PRODUCTION.md)
-- Index técnico dos sleeves:
-  [`reports/phase3_5b/README.md`](../reports/phase3_5b/README.md)
-- V4 gate verdict formal:
-  [`reports/phase3_5b/variants_letf_execution/`](../reports/phase3_5b/variants_letf_execution/)
-- Extended window 1986-2026:
-  [`reports/phase3_5b/extended_window_1986_2026/`](../reports/phase3_5b/extended_window_1986_2026/)
-- Threshold sweep completo:
-  [`reports/phase3_5b/threshold_sweep_full/`](../reports/phase3_5b/threshold_sweep_full/)
-- Rejeição SSO+ZROZ+GLD (decisão negativa documentada):
-  [`reports/phase3_5b/rejected_alternatives/static_sso_zroz_gld/`](../reports/phase3_5b/rejected_alternatives/static_sso_zroz_gld/)
-- Jornada V4 promoted (2026-04-18):
-  [`jornada/2026-04-18/08-phase3.5b-V4-promoted-gate-verdict.md`](../jornada/2026-04-18/08-phase3.5b-V4-promoted-gate-verdict.md)
-- Preservação:
-  [`reports/phase3_5b/_DO_NOT_CLEANUP.md`](../reports/phase3_5b/_DO_NOT_CLEANUP.md)
+- Living doc (com banner REJECTED):
+  [`docs/strategies/plano_a_v2_l2_gayed_cfd.md`](strategies/plano_a_v2_l2_gayed_cfd.md)
+- Phase 3.5f breadth summary:
+  [`reports/phase_3_5f/honest_revalidation/BREADTH_SUMMARY.md`](../reports/phase_3_5f/honest_revalidation/BREADTH_SUMMARY.md)
+- Morning summary (decisão 4-opções):
+  [`jornada/2026-04-23-0700-overnight-summary.md`](../jornada/2026-04-23-0700-overnight-summary.md)
+- Plano A DEAD historical per-lead: `reports/phase_3_5f/honest_revalidation/v2_l{1..6}_*/AGGREGATE.md`
 
 ---
 
-## Próxima fase — Phase 4 paper trading dual-path
+### Plano B — Banco Inter Global (swing LETF rotation)
 
-**Spec autoritativo:**
-[`specs/phase_4_paper_trading.md`](../specs/phase_4_paper_trading.md)
+**Status:** 🟡 **V4 rejeitado em 2026-04-20 (Phase 3.5c cross-lib);
+Phase 3.5e breadth-hunt c06-c12 pausado em 26% (iter 43).**
 
-**Duração:** 3 meses calendário (mínimo). Paralelo A + B.
+V4 original (3-leg EW SSO+QLD+UGL, Sharpe 2.25/CAGR 37.92% reportado em
+Phase 3.5b) foi rejeitado após cross-lib showing CAGR real ~11.6% /
+Sharpe 0.78 — baseline Phase 3.5b dependia de testfol.io proprietary
+synthetics que não reproduzem na pipeline. Phase 3.5d tentou 3× LETF
+search, encerrada sem winner em 2026-04-21 (E1 vol_target bloqueado por
+arbitration adversarial: PBO reduction por grid shrinkage).
 
-**Path A paper** → cTrader Demo Pepperstone (bloqueado pelo OAuth
-approval Spotware). Sinal diário via `scripts/live_plano_a_paper_daily.py`
-(a construir). Zero capital real.
+Phase 3.5e c06-c12 breadth-hunt em progresso quando Phase 3.5f descobriu
+o engine bug (que NÃO afeta `letf_rotation.py` — F1 audit provou que
+Plano B engine estava clean). Trial count 38/144 (26%). Pausado por
+decisão explícita do usuário em 2026-04-22.
 
-**Path B paper** → Inter Global com capital real **mínimo** (sanidade
-operacional). Sinal emitido + planilha manual; user executa ordens.
+**Status engine (após Phase 3.5f F1 audit):** Plano B engine
+(`letf_rotation.py`, `synthesize_letf_returns_ffr_aware`) **nunca teve
+o bug** — usa compounding de return-series direto, não `w × r`
+bar-level. Todos os reports Phase 3.5b/3.5c-adapters/3.5d/3.5e são
+**canonical limpo**. Não precisam re-validação.
 
-**Gates paper → live:**
+**Phase 3.6 pode retomar trabalho Plano B** como uma das candidates
+(família LETF rotation / family C "GTAA 10-month SMA" no menu §4 do
+plano 3.6). Não obrigatório — depende de quais candidates Phase 3.6
+selecionar.
 
-| Métrica | Gate |
-|---|---|
-| Realized Sharpe | ≥ 0.7 × backtest (A: ≥1.60, B: ≥1.58) |
-| MaxDD realizado | ≤ 1.5 × backtest (A: ≤31.5%, B: ≤16.3%) |
-| Slippage médio | ≤ 30 bps/trade |
-| Latency signal→fill | ≤ 5 min |
+**Leia mais:**
+- Living doc (V4 + rejection history):
+  [`docs/strategies/plano_b_3leg_letf_rotation.md`](strategies/plano_b_3leg_letf_rotation.md)
+- Phase 3.5c rejection:
+  [`jornada/2026-04-20/03-phase-3-5c-cross-lib-exposed-baseline-mismatch.md`](../jornada/2026-04-20/03-phase-3-5c-cross-lib-exposed-baseline-mismatch.md)
+- Phase 3.5e batch 1 summary:
+  [`jornada/2026-04-21-1700-session-summary-phase-3-5e-batch1.md`](../jornada/2026-04-21-1700-session-summary-phase-3-5e-batch1.md)
+- Engine clean confirmation:
+  [`docs/superpowers/findings/2026-04-22-engine-lookahead-scope.md`](superpowers/findings/2026-04-22-engine-lookahead-scope.md)
 
-**Zona proibida (contrato V2):**
-- V3 do Plano A (a busca está fechada).
-- Re-otimizar parâmetros winners em Phase 4 — só teste de fidelidade.
-- Expansão de universe ou features nas strategies winners.
+---
+
+### Plano C — Buy-hold aposentadoria (passivo)
+
+**Status:** ✅ Intocado. 60-80% do portfolio. Mandate §1.
+
+Ver [`portfolio-aposentadoria.md`](../portfolio-aposentadoria.md).
+
+---
+
+## Próxima fase — Phase 3.6 (broader swing-winner hunt)
+
+**Plano executável:**
+[`docs/plans/2026-04-23-find-swing-winner-phase-3-6.md`](plans/2026-04-23-find-swing-winner-phase-3-6.md)
+(271 linhas, self-contained).
+
+**Branch:** `phase3.6/swing-winner-hunt-20260423` (já criada off 3.5f
+pra herdar engine fix).
+
+**Objetivo:** 1 swing strategy (hold 5-30d) que sobrevive 13 gates
+relaxados pra swing (Sharpe ≥ 1.5, CAGR ≥ 13% CDI floor, MDD ≥ −25%,
+hold ≥ 5d, IR ≥ 0.3, cross-lib concordance obrigatória).
+
+**Broker-agnostic:** Pepperstone/cTrader OR Banco Inter, escolhido por
+per-strategy fit. Tax model 15% BR se Inter; zero se Pepperstone.
+
+**Menu 12 candidates** (§4 do plan) cobre equity cross-sectional
+momentum (Clenow), risk parity (Bridgewater), GTAA (Faber), pairs MR
+(Chan), Ehlers cycle filters, vol-target managed futures, evidence-
+based TA (Aronson), adaptive markets regime-switching, stat-sound
+indicators, ML-for-algo classical, universal trend tactics, PEAD.
+
+**Stopping rule:** stop-at-first-winner (HOLD pro user approval) OU
+10 FAIL → escalação com `BREADTH_NO_WINNER.md`.
+
+---
+
+## Phase 4 paper trading — status
+
+**PAUSADA indefinidamente** até Phase 3.6 produzir winner OU user
+decidir pivot alternativo (softer gates com sign-off / broadening
+universe / passivo-only). Spec `specs/phase_4_paper_trading.md`
+preservada mas não-ativa.
+
+---
+
+## Engine status (pós-2026-04-22)
+
+| Componente | Status | Ref |
+|---|---|---|
+| `plano_a_leveraged_rotation.py` | ✅ HONEST (fix 7b90a8f) | `tests/test_plano_a_lookahead_bias.py` (4 tests) |
+| `letf_rotation.py` | ✅ NEVER HAD BUG | F1 audit |
+| `tsmom_multi_asset.py` | ✅ CLEAN | F1 audit |
+| `afml_tb_meta.py` | ✅ CLEAN | F1 audit |
+| `donchian_breakout.py` | ✅ CLEAN | F1 audit |
+| `kalman_pair_cointegration.py` | ✅ CLEAN | F1 audit |
+| Cross-lib validation | ✅ 1e-6 concordance | `reports/phase_3_5f/v2_l2_gayed_redo/cross_lib_report.md` |
+| Pytest baseline | ✅ 918 green | 914 + 4 F0 surgical |
 
 ---
 
 ## Regras invioláveis (lembrete)
 
-Todas as 7 regras do Investment Mandate continuam valendo. Sumário:
+Todas as 7 regras do Investment Mandate continuam valendo:
 
-1. Capital: 60-80% passivo (aposentadoria) + 20-40% ativas split 50/50
-   A+B dentro do bucket ativo.
-2. CAGR mínimo = CDI BR (~13-14%/ano). Ambos os winners superam por 2-5×.
-3. Plano A é multi-asset (SPY+QQQ+GLD via CFD); Plano B é multi-LETF
-   (SSO+QLD+UGL).
-4. Gates sempre (PBO < 0.5, DSR p < 0.05, WF ≥ 6/8, single-block OOS,
+1. Capital: 60-80% passivo (Plano C) + 20-40% ativas. Ativas =
+   2 strategies (A short-hold agressiva, B swing moderada) — HOJE
+   ambas as slots A+B estão **sem winner confirmado**.
+2. CAGR mínimo = CDI BR (~13-14%/ano). Gate soft-lock em Phase 3.6.
+3. Strategy A (CFD Pepperstone) é multi-asset obrigatório.
+4. Strategy B é família LETF rotation ancorada em Gayed.
+5. Gates sempre (PBO < 0.5, DSR p < 0.05, WF ≥ 6/8, single-block OOS,
    forward-window stress). Zero bypass.
-5. Threading model live: 1 thread/ativo.
-6. Dynamic sizing: fase agressiva → preservação conforme equity cresce.
+6. Threading model live: 1 thread/ativo.
 7. Citação obrigatória em toda decisão técnica: `[book.slug, p.X]`.
 
-**Leia mais:** [`docs/investment-mandate.md`](investment-mandate.md).
+**Leia mais:** [`docs/investment-mandate.md`](investment-mandate.md)
+(especialmente §7 Histórico de overrides — linha 2026-04-22 registra o
+engine bug + V2 abandonment).
 
 ---
 
@@ -191,15 +187,22 @@ Todas as 7 regras do Investment Mandate continuam valendo. Sumário:
   [`jornada/README.md`](../jornada/README.md)
 - **Mandate completo (regras + §7 histórico):**
   [`docs/investment-mandate.md`](investment-mandate.md)
-- **Knowledge base (34 livros, 16 active):**
+- **Knowledge base (34 livros, 16 active + 18 archived):**
   [`books/MAPPING.md`](../books/MAPPING.md)
   + Skill agregada [`knowledge/SKILL.md`](../knowledge/SKILL.md)
 - **Convenções do projeto:**
   [`CLAUDE.md`](../CLAUDE.md)
+- **Plano 3.6 (próxima fase):**
+  [`docs/plans/2026-04-23-find-swing-winner-phase-3-6.md`](plans/2026-04-23-find-swing-winner-phase-3-6.md)
+- **Phase 3.5f (overnight run fechada):**
+  [`docs/plans/2026-04-22-engine-lookahead-fix-and-plano-a-winner-hunt.md`](plans/2026-04-22-engine-lookahead-fix-and-plano-a-winner-hunt.md)
 
 ---
 
 ## Changelog deste doc
 
-- **2026-04-19:** versão inicial — criado pós-cleanup, após V2 winner
-  found + Phase 3.5b final. Orienta para Phase 4 paper trading.
+- **2026-04-23:** rewrite total após Phase 3.5f fechar sem winner.
+  Plano A V2 encerrado; Plano B c06-c12 pausado; Phase 3.6 aberta
+  como broader hunt.
+- **2026-04-19:** versão inicial — criado pós-cleanup, após V2
+  winner (buggy-engine) + Phase 3.5b final. **SUPERSEDED 2026-04-23.**

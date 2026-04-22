@@ -29,21 +29,25 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-22 — Phase 3.5f aberta, engine lookahead bug descoberto)
+## Onde estamos hoje (2026-04-23 — Phase 3.5f fechada sem winner, Phase 3.6 aberta)
 
-**Estado:** 🚨 **V2-L2 winner sob suspeita — bug de look-ahead bias descoberto na engine canonical.**
-- Iniciei Phase 3.5f (branch `phase3.5f/plano-a-v2-l2-cross-lib-redo-20260422`) pra validar o winner V2-L2 do Plano A (`gayed_ema100_L2_off_gld`) em cross-lib limpa.
-- Stage A (Tiingo raw close) reproduz o baseline V2-L2 ao ponto decimal — engine sem drift desde 2026-04-19.
-- Stage-2 (testfolio SPYSIM/QQQSIM/GLDSIM TR) mostra que o baseline subestima performance CFD real em ~8pp CAGR/ano por usar `close` raw em vez de `adj_close` TR.
-- **Cross-lib (bt + vectorbt + backtrader) expôs um bug fundamental:** canonical engine usa `w_i × r_i` (peso decidido com `close_i`, retorno calculado com `close_i`) — look-ahead bias clássico. 3 libs independentes + numpy reference batem entre si em CAGR 15-21% OOS; canonical sozinho em 79-92%. Diferença de 19,000× em equity final em 25 anos.
-- **Ramificações preliminares:** V2-L2 Sharpe 2.28/CAGR 79% provavelmente é artifact (honest estimate 15-18% OOS, abaixo do CDI). Phase 3.5c cross-lib teria detectado isso em 2026-04-20, mas foi mis-diagnosticado como "dados sintéticos". Phase 3.5d + 3.5e Plano B rodou com mesma engine — alguns "DEAD ends" podem ter sido winners honest. Phase 4.0 Index CFD idem.
-- **Decisão do usuário 2026-04-22:** fix obrigatório; foco exclusivo em encontrar winner honest pra Plano A; Plano B stand-by; Plano C não se toca.
-- **Próxima sessão:** executar `docs/plans/2026-04-22-engine-lookahead-fix-and-plano-a-winner-hunt.md` — 5 fases (F0 testes cirúrgicos → F1 scope mapping → F2 fix + regression tests → F3 re-validação honest dos 6 V2 leads → F4 docs + mandate update).
+**Estado:** 🛑 **Plano A V2 concluído sem winner sob engine honest. Phase 3.6 aberta como broader hunt broker-agnostic.**
+- **Phase 3.5f F0-F4 fechou.** Bug de look-ahead descoberto em `plano_a_leveraged_rotation.py:462` (`new_w × ret` em vez de `prev_w × ret`), consertado em commit `7b90a8f`, 4 testes cirúrgicos em `tests/test_plano_a_lookahead_bias.py`, cross-lib concordância a 1e-6 (canonical = numpy = vectorbt = backtrader). Pytest 918 green.
+- **6 leads V2 re-avaliadas sob engine honest: TODAS FAIL.** V2-L2 Gayed (original "winner") cai de Sharpe 2.28/CAGR 79%/MDD −21% pra Sharpe 0.56/CAGR ~14%/MDD −37% — falha 6 dos 13 gates. V2-L1 TSMOM, V2-L3 AFML, V2-L5 Kalman, V2-L6 breakout já eram DEAD sob engine limpa (F1 grep-audit provou que só `plano_a_leveraged_rotation.py` tinha o bug). V2-L4 Carver RP blend também FAIL — surpresa: L2 era só 4.8% do blend weight (não 66-75%), hipótese de resgate refutada.
+- **Escopo do bug: 1 arquivo, 1 linha.** `letf_rotation.py` (Plano B) e engines de L1/L3/L5/L6 estavam limpas. **Phase 3.5b/3.5c-adapters/3.5d/3.5e Plano B preservadas como canonical limpo** — não precisam re-validação. O Phase 3.5e paused c06-c12 (7 families) continua válido trabalho.
+- **Banners forensic** aplicados em `reports/phase3_5a_v2/v2_l2_*`, `phase3_5a_v2/v2_l4_*` (contaminação parcial) e `phase4_0/*`.
+- **Decisão do usuário 2026-04-23:** Plano A V2 encerrado definitivamente per `project_plano_a_v2_last_attempt` memory rule (se V2 falha, não há V3 Plano A isolado). Em vez das 4 opções do morning summary (V3 / Gayed 1× fallback / abandon / Plano B c06-c12), usuário abre **Phase 3.6 broader hunt**: fresh broad research sobre os 33 livros, broker-agnostic (Pepperstone/cTrader OR Banco Inter), 13 gates relaxados pra swing (Sharpe≥1.5, CDI floor CAGR≥13%, hold≥5d, IR≥0.3), stop-at-first-winner. Phase 3.6 displaces/subsume as 4 opções — pode produzir winner A-style, B-style, ou encerrar com "no winner" explícito.
+- **Engine agora validada cruzadamente.** Qualquer strategy futura herda baseline honest confirmada por 3 libs independentes + numpy reference.
 
 Entries relevantes:
-- `jornada/2026-04-22-2212-engine-lookahead-bias-descoberto.md` — narrativa completa desta sessão ← NOVO
-- `docs/plans/2026-04-22-engine-lookahead-fix-and-plano-a-winner-hunt.md` — plano executável ← NOVO
-- `reports/phase_3_5f/v2_l2_gayed_redo/cross_lib_report.md` — evidência do bug
+- `jornada/2026-04-23-0700-overnight-summary.md` — sumário matinal com todas as 4 opções e recomendações ← ÚLTIMO
+- `jornada/2026-04-22-plano-a-honest-revalidation.md` — 6 leads re-validadas
+- `jornada/2026-04-22-engine-lookahead-bug.md` — narrativa do bug
+- `jornada/2026-04-22-2212-engine-lookahead-bias-descoberto.md` — descoberta inicial
+- `reports/phase_3_5f/honest_revalidation/BREADTH_SUMMARY.md` — matriz cross-lead
+- `docs/superpowers/findings/2026-04-22-engine-lookahead-scope.md` — scope audit (F1)
+- `docs/plans/2026-04-22-engine-lookahead-fix-and-plano-a-winner-hunt.md` — plano 3.5f executado
+- `docs/plans/2026-04-23-find-swing-winner-phase-3-6.md` — plano 3.6 próxima sessão
 
 ---
 
@@ -227,103 +231,79 @@ Indices criados em 2026-04-17 2245:
 
 ---
 
-## O que vem a seguir (Phase 3.5d — novo Plano B com 3× LETFs)
+## O que vem a seguir (Phase 3.6 — broader swing-winner hunt, 33 livros)
 
-**Onde paramos (2026-04-20 noite):** Phase 3.5c cross-lib expôs que
-Plano B V4 não é reproduzível. Usuário aceitou a constatação e abriu
-Phase 3.5d como novo ciclo.
+**Onde paramos (2026-04-23 madrugada):** Phase 3.5f fechou sem
+winner. Engine está honest (validada cross-lib a 1e-6). Plano A V2
+encerrado per `project_plano_a_v2_last_attempt` rule. Plano B
+work preserved clean.
 
-**Objetivo Phase 3.5d:** encontrar estratégia swing trade com 3×
-LETFs (UPRO ou SPXL, TQQQ, TMF opcional) que **supere SPY
-buy-and-hold pós-imposto (15% IR BR)**, passe gates PBO/DSR/WF, e
-seja validada em ≥ 2 de 3 libs (bt, vectorbt, backtrader).
+**Objetivo Phase 3.6:** achar **UMA** swing strategy (hold mediano
+5-30 dias) que sobrevive aos 13 gates (com relaxamentos pra swing:
+Sharpe ≥ 1.5, CAGR ≥ 13% CDI floor, MDD ≥ −25%, hold ≥ 5d, IR ≥ 0.3)
+sob engine honest. Broker-agnostic: winner pode viver em
+**Pepperstone/cTrader** (preferido por API + non-BR) ou **Banco Inter**
+(safer, BR-tax). Fresh research sobre os 33 livros em `books/summaries/`
++ `books/summaries/_archive/` — sem amarra às 6 leads V2 rejeitadas.
 
-**Handoff imediato:** a próxima sessão interativa deve executar o
-launch prompt em `docs/self_improvement/phase_3_5d_launch_prompt.md`
-— setup da branch, atualiza `reference_prices.parquet` com 4 novos
-LETFs, reseta `memory.md`, roda smoke test, espera aprovação do
-usuário, depois lança loop com `MAX_ITER=10 SWEEP_MODE=fanout`.
+**Plano executável:** `docs/plans/2026-04-23-find-swing-winner-phase-3-6.md`
+(271 linhas, self-contained).
 
-**Leads a investigar (D1-D8, spec §4):**
-1. D1 — Buy-and-hold 3× LETF puro (baseline defensivo).
-2. D2 — MA regime filter homogêneo em TODAS as legs (Gayed canonical).
-3. D3 — Donchian breakout homogêneo (Kaufman/Clenow contrafactual).
-4. D4 — Dual momentum (Antonacci).
-5. D5 — Volatility targeting (LETF exposure scaling).
-6. D6 — Trend + momentum composite (Clenow).
-7. D7 — Regime-gated dual LETF (two-layer).
-8. D8 — Tactical bond-equity hedge (stretch).
+**Handoff imediato:** próxima sessão abre branch
+`phase3.6/swing-winner-hunt-20260423` (já criada, off 3.5f pra
+herdar engine fix), lê o plan file, seleciona 5-10 candidates do menu
+em §4 do plano, dispara subagents em waves paralelas (2-3 candidates
+por wave). Stop-at-first-winner OU 10 FAIL → escalação.
 
-**Pergunta-chave aberta (resposta no primeiro commit Phase 3.5d):**
-"Por que no SPY/SSO foi usado EMA100 e nas outras legs foi usado
-Donchian?" → Spec §4 força indicator homogeneity (D2 vs D3
-contrafactual).
+**Menu de candidates (§4 do plan, não-exaustivo):**
 
-**Gates novos Phase 3.5d (não existiam em Phase 3.5b):**
-- Cross-lib concordance ≥ 2/3 libs dentro de ±3pp CAGR.
-- Two-stage data (reference + yfinance independent) ≤ ±3pp delta.
-- **Beat SPY B&H pós-tax** — sem isso, é folclore.
-- Calmar > 0.5 + Sharpe > 0.8.
+| # | Family | Source book(s) | Broker fit | Horizon | Priority |
+|---|---|---|---|---|---|
+| A | Clenow cross-sectional momentum top-N | stocks_on_the_move | Inter stocks | 21d | HIGH |
+| B | Risk Parity inverse-vol rotation | risk_parity (_archive) | Inter ETFs | 21d | HIGH |
+| C | GTAA 10-month SMA (Faber) | trading_evolved, systematic_trading | Inter ETFs | 21d | HIGH |
+| D | Chan MR pairs (non-Kalman) | algo_trading_chan | Pepp CFD | 5-15d | MED |
+| E | Ehlers adaptive-cycle filters | cycle_analytics, rocket_science | Pepp | 5-10d | MED |
+| F | Vol-targeting managed futures basket | systematic_trading, volatility_trading | Pepp CFD | 10-20d | MED |
+| G | Aronson evidence-based TA | evidence_based_ta, testing_tuning | Either | 10-20d | LOW |
+| H | Adaptive Markets regime-switching | adaptive_markets (_archive) | Inter | 21d | MED |
+| I | Statistical-sound indicators | stat_sound_indicators (_archive) | Either | 5-15d | MED |
+| J | ML-for-algo classical | ml_for_algo_trading, ml_for_asset_managers | Either | 10-20d | LOW |
+| K | Universal trend tactics | universal_trend_tactics (_archive) | Either | 10-20d | LOW |
+| L | Sentiment + earnings-surprise (PEAD) | sentiment_analysis_handbook | Inter stocks | 5-15d | LOW |
 
-**Zona PROIBIDA Phase 3.5d:**
-- Re-abrir Plano B V4 3-leg EW (rejeitado em `2026-04-20/04-*`).
-- Tocar em Plano A V2-L2 Gayed CFD (stand-by até Phase 3.5d winner).
-- Re-pinar baseline a partir de uma única engine.
-- Validar contra dado testfol.io como source of truth.
-- Usar inverse LETFs (SQQQ, SPXS).
+**Gates Phase 3.6 (13 gates com relaxamento swing):**
+- Boot 99.9% CI low > 0 (gate 1)
+- OOS Sharpe ≥ **1.5** (gate 2, relaxado de V2's 2.0)
+- OOS CAGR ≥ **13% CDI floor** (gate 3, soft-gate user-locked)
+- OOS MDD ≥ −25% (gate 4, binding §5, no relaxation)
+- FWD Sharpe > 0 (gate 5)
+- WF 6/8 profitable, max-win DD ≤ **30%** (gate 6, relaxado)
+- Median hold ≥ **5d** (gate 7, swing discipline)
+- IR vs SPY ≥ **0.3** (gate 8, relaxado de V2's 0.5)
+- Cross-lib ≥ 2/3 within ±3pp CAGR (gate 9, mandatory)
+- Stage-2 data concordance ≤ 1pp CAGR (gate 10)
+- PBO < 0.5 if grid ≥5 (gate 11)
+- DSR p < 0.05 if grid ≥5 (gate 12)
+- Cost×2 Sharpe > 1.0 (gate 13)
 
-**Phase 4 paper trading: PAUSADA.** Reavalia após winner Plano B V2
-confirmado + Plano A V2-L2 re-validado cross-lib.
+**Zona PROIBIDA Phase 3.6:**
+- Re-testar as 6 leads V2 rejeitadas (TSMOM, Gayed, AFML, Carver, Kalman, Donchian breakout)
+- Modificar docs/self_improvement/memory.md, trial_count.json, reports/phase_3_5{b,d,e}/* (frozen per mandate §2.2)
+- Tocar as aggregates F3 em `reports/phase_3_5f/honest_revalidation/`
+- Auto-promoter winner sem review do usuário — SEMPRE parar em PASS pro user aprovar
 
-Gates paper→live:
-- Realized Sharpe ≥ 0.7 × backtest (A: 1.60, B: 1.58).
-- MaxDD realizado ≤ 1.5 × backtest (A: 31.5%, B: 16.3%).
-- Slippage ≤ 30 bps/trade.
-- Latency signal→fill ≤ 5 min.
+**Se Phase 3.6 produzir winner:**
+- `reports/phase_3_6/WINNER.md` com pacote completo + broker rec
+- `docs/.pending/phase3_6_winner_mandate_entry.md` pro user aprovar
+- Phase 4 paper trading re-avaliada: broker, sizing, threading
 
-**Tarefas Phase 4 build:**
+**Se Phase 3.6 não produzir winner (10+ FAIL):**
+- `reports/phase_3_6/BREADTH_NO_WINNER.md` com matriz comparativa
+- Escalação ao user: (a) broadening universe (Ibov, EM), (b) softening gates com user sign-off, (c) pivot pra passivo (Plano C only, no active), (d) re-run self_improve_loop com novas hipóteses.
 
-1. `src/ai_trade/brokers/ctrader_adapter.py` (OAuth2, market data,
-   order mgmt) + tests.
-2. `src/ai_trade/live/gayed_regime_service.py` (EMA-100 close SPY,
-   daily idempotent) + tests.
-3. `scripts/live_plano_a_paper_daily.py` (cron diário Plano A paper).
-4. Inter Global account setup (operacional, não código).
-5. `scripts/plano_b_daily_signal.py` (signal emit + planilha manual).
-
-**Zona PROIBIDA:**
-
-- V3 do Plano A (contrato V2 estaca isso).
-- Otimizar parâmetros winners em Phase 4 (só teste de fidelidade).
-- Expansão de universe ou adição de features nas strategies.
-
-**Phase 4 legacy de archived:**
-
-Handoff anterior (Phase 3.5b addendum fechado em 2026-04-17) está agora
-consolidado em `reports/phase3_5b/PRODUCTION.md` + jornadas
-`2026-04-17-*`. Phase 4 agora é dual-path (não só B).
-
-**Variantes operacionais do Phase 3.5b-addendum (opt-in condicional para Plano B):**
-
-- **C₃ — 2-leg LETF+QQQ + monthly_cashflow $500/mo** — fallback
-  ergonômico quando broker BR não oferece GLD. Sharpe 1.881 (preserva
-  95% do winner), tax-free no rebal layer, MaxDD +3.74 pp.
-- **B₃ — LETF 3×** — escalation lever *opt-in* com overlay manual
-  (Kelly-fractional < 0.5× ou regime-conditional). Default: **não**.
-
-**Phase B leads (post-V2 optimization, deferred para Phase 4/5):**
-
-- Cost sensitivity Pepperstone Razor (spread/commission/swap ±30%).
-- Multi-asset transport do winner Plano A (IWM/XLK/FX carry).
-- Walk-forward re-optimization cadence EMA-100.
-- ρ(A, B) medido em paper (se > 0.7, re-ponderar dual-path).
-- GARCH vol-sizing variant do winner A.
-
-**Zona PROIBIDA:**
-
-- V3 do Plano A — contrato V2 estaca permanentemente.
-- Re-abertura de famílias DEAD V1/V2 (TSMOM, pairs FX/ETF, vol-breakout).
-- AFML meta-labeling como family search (V2-L3 já refutou).
+**Phase 4 paper trading: PAUSADA indefinidamente** até Phase 3.6
+produzir winner OU user decidir pivot alternativo.
 
 ---
 
