@@ -1,0 +1,328 @@
+{
+  "phase": "phase_3_7",
+  "family": "H2a_bozovic_2024_vix_managed_portfolio",
+  "slug": "h2_bozovic_vix_scaling",
+  "produced_at": "2026-04-22T15:00:20+00:00",
+  "broker_path": "Banco Inter USD sub-account (15% DARF year-end per mandate \u00a74 rota B)",
+  "cost_model": {
+    "commission": 0.0,
+    "fx_spread_per_conversion": 0.012,
+    "apply_fx_on_rebalance": false,
+    "tax_rate_year_end": 0.15,
+    "cum_tax_pct_full_run": 3.1668792173251252,
+    "cum_fx_pct_full_run": 0.0
+  },
+  "data_source": "SPY: Ken French CRSP-VW TR (1991-2001-05-13) + Tiingo adj_close (2001-05-14+). SHV: Ken French RF daily (1991-2007-01-10) + Tiingo adj_close (2007-01-11+). VIXCLS: FRED/data/phase3_7/vix/VIXCLS.parquet (1990-01-02+).",
+  "winner_config": {
+    "vix_baseline": 20.0,
+    "vix_ma_days": 21,
+    "exposure_floor": 0.0,
+    "exposure_cap": 1.0,
+    "tax_rate": 0.15,
+    "fx_spread": 0.012,
+    "apply_fx_on_rebalance": false,
+    "rebalance_threshold": 0.0
+  },
+  "windows": {
+    "IS": [
+      "1991-01-02",
+      "2005-12-31"
+    ],
+    "OOS": [
+      "2006-01-01",
+      "2018-12-31"
+    ],
+    "FWD": [
+      "2019-01-01",
+      "2026-04-14"
+    ]
+  },
+  "splits": {
+    "IS": {
+      "name": "IS",
+      "n_bars": 3780,
+      "sharpe": 0.6233399618867653,
+      "cagr": 0.07837366291329695,
+      "max_drawdown": -0.4645067435042032,
+      "final_equity_from_unit": 3.1012665035038784
+    },
+    "OOS": {
+      "name": "OOS",
+      "n_bars": 3271,
+      "sharpe": 0.4738877221937469,
+      "cagr": 0.06043063812573046,
+      "max_drawdown": -0.4021143829247229,
+      "final_equity_from_unit": 2.1417258068059692
+    },
+    "FWD": {
+      "name": "FWD",
+      "n_bars": 1830,
+      "sharpe": 0.7245154026974281,
+      "cagr": 0.10920365070558646,
+      "max_drawdown": -0.26238688137974187,
+      "final_equity_from_unit": 2.1225977685812354
+    },
+    "FULL": {
+      "name": "FULL",
+      "n_bars": 8881,
+      "sharpe": 0.5896684608685607,
+      "cagr": 0.07797311065385015,
+      "max_drawdown": -0.4645067435042032,
+      "final_equity_from_unit": 14.098427050483187
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable": 7,
+    "max_window_drawdown": 0.4645067435042035,
+    "pass": true
+  },
+  "pbo": {
+    "value": 0.023809523809523808,
+    "n_blocks": 10,
+    "n_combinations": 252,
+    "pass": true
+  },
+  "dsr": {
+    "dsr": 0.6569960596422024,
+    "p_value": 0.3430039403577976,
+    "observed_sharpe": 0.029856684726256133,
+    "n_trials": 6,
+    "pass": false
+  },
+  "bootstrap_oos": {
+    "ci_low": -0.25519626769204495,
+    "ci_high": 1.3664822643292671,
+    "pass": false
+  },
+  "bootstrap_full": {
+    "ci_low": 0.09840588491790223,
+    "ci_high": 1.1126126609492266,
+    "pass": true
+  },
+  "cross_lib": {
+    "status": "ok",
+    "ref_cagr_oos": 0.07578041604521624,
+    "alt_cagr_oos": 0.07578041604521624,
+    "delta_cagr_pp": 0.0,
+    "n_common_days": 3271,
+    "method": "pandas_module_vs_pandas_reference"
+  },
+  "ir_vs_spy_oos": -0.29937231603061026,
+  "median_regime_hold_days": 2745.0,
+  "n_rebalances_full": 3249,
+  "mean_daily_exposure_change": 0.002569173576763906,
+  "cost2x_oos": {
+    "name": "OOS_cost2x",
+    "n_bars": 3271,
+    "sharpe": 0.289710185079237,
+    "cagr": 0.03262231098081636,
+    "max_drawdown": -0.43826658617029035,
+    "final_equity_from_unit": 1.5169209101935879
+  },
+  "cagr_tier_oos_rotaB": "Folclore",
+  "mdd_tier_oos_rotaB": "Forte warning",
+  "stress_breakdown": {
+    "GFC_2008": {
+      "name": "GFC_2008",
+      "n_bars": 377,
+      "sharpe": -0.8372183163494339,
+      "cagr": -0.17953110720245025,
+      "max_drawdown": -0.3536056408507915,
+      "final_equity_from_unit": 0.7437623722859196
+    },
+    "Euro_2011": {
+      "name": "Euro_2011",
+      "n_bars": 127,
+      "sharpe": -0.5481657724754682,
+      "cagr": -0.13519715626842432,
+      "max_drawdown": -0.16805303581580444,
+      "final_equity_from_unit": 0.9294118931316284
+    },
+    "Taper_2013": {
+      "name": "Taper_2013",
+      "n_bars": 170,
+      "sharpe": 1.6372203780299122,
+      "cagr": 0.2013165101518255,
+      "max_drawdown": -0.05552122435469353,
+      "final_equity_from_unit": 1.131715244040035
+    },
+    "China_Aug2015": {
+      "name": "China_Aug2015",
+      "n_bars": 106,
+      "sharpe": -0.23018709152152936,
+      "cagr": -0.05835880398250026,
+      "max_drawdown": -0.1110952855719376,
+      "final_equity_from_unit": 0.9750240057369168
+    },
+    "Q4_2018": {
+      "name": "Q4_2018",
+      "n_bars": 63,
+      "sharpe": -2.433332596391344,
+      "cagr": -0.4432891948804527,
+      "max_drawdown": -0.18791269125434218,
+      "final_equity_from_unit": 0.8637884897415635
+    },
+    "COVID_2020": {
+      "name": "COVID_2020",
+      "n_bars": 94,
+      "sharpe": -1.1103807391674876,
+      "cagr": -0.34589557849902497,
+      "max_drawdown": -0.2623868813797421,
+      "final_equity_from_unit": 0.853558784702882
+    },
+    "Rate_2022": {
+      "name": "Rate_2022",
+      "n_bars": 251,
+      "sharpe": -1.0143585451606292,
+      "cagr": -0.1901259220916819,
+      "max_drawdown": -0.2294742950031181,
+      "final_equity_from_unit": 0.8105520735033014
+    }
+  },
+  "gates": [
+    {
+      "name": "gate_01_is_sharpe_gt_0_5",
+      "pass": true,
+      "value": "0.623",
+      "level": "soft"
+    },
+    {
+      "name": "gate_02_oos_sharpe_ge_1_3",
+      "pass": false,
+      "value": "0.474",
+      "level": "soft"
+    },
+    {
+      "name": "gate_03_oos_cagr_tier",
+      "pass": null,
+      "value": "6.04% \u2192 Folclore",
+      "level": "warning"
+    },
+    {
+      "name": "gate_04_oos_mdd_tier",
+      "pass": null,
+      "value": "-40.21% \u2192 Forte warning",
+      "level": "warning"
+    },
+    {
+      "name": "gate_05_fwd_sharpe_gt_0",
+      "pass": true,
+      "value": "0.725",
+      "level": "soft"
+    },
+    {
+      "name": "gate_06_wf_6_8_profitable",
+      "pass": true,
+      "value": "7/8  max_mdd=46.45%",
+      "level": "soft"
+    },
+    {
+      "name": "gate_07_median_hold_ge_5d",
+      "pass": true,
+      "value": "2745.0 days",
+      "level": "soft"
+    },
+    {
+      "name": "gate_08_ir_vs_spy_ge_0_2",
+      "pass": false,
+      "value": "-0.2994",
+      "level": "soft"
+    },
+    {
+      "name": "gate_09_cross_lib_concordance_3pp",
+      "pass": true,
+      "value": "status=ok \u0394=0.0pp",
+      "level": "hard"
+    },
+    {
+      "name": "gate_10_bootstrap_oos_99p9_ci_low_gt_0",
+      "pass": false,
+      "value": "OOS [-0.2552,1.3665]",
+      "level": "hard"
+    },
+    {
+      "name": "gate_10b_bootstrap_full_99p9_ci_low_gt_0",
+      "pass": true,
+      "value": "FULL [0.0984,1.1126]",
+      "level": "hard"
+    },
+    {
+      "name": "gate_11_pbo_lt_0_3",
+      "pass": true,
+      "value": "0.0238",
+      "level": "hard"
+    },
+    {
+      "name": "gate_12_dsr_p_lt_0_05",
+      "pass": false,
+      "value": "0.343004",
+      "level": "hard"
+    },
+    {
+      "name": "gate_13_cost2x_sharpe_gt_1",
+      "pass": false,
+      "value": "0.290",
+      "level": "soft"
+    }
+  ],
+  "verdict": "FAIL (hard gates)",
+  "hard_fails": [
+    "gate_10_bootstrap_oos_99p9_ci_low_gt_0",
+    "gate_12_dsr_p_lt_0_05"
+  ],
+  "soft_fails": [
+    "gate_02_oos_sharpe_ge_1_3",
+    "gate_08_ir_vs_spy_ge_0_2",
+    "gate_13_cost2x_sharpe_gt_1"
+  ],
+  "grid_configs": [
+    {
+      "tag": "vma21_vb20",
+      "vix_ma_days": 21,
+      "vix_baseline": 20.0,
+      "sharpe_full": 0.5896684608685607
+    },
+    {
+      "tag": "vma10_vb20",
+      "vix_ma_days": 10,
+      "vix_baseline": 20.0,
+      "sharpe_full": 0.6257328011133678
+    },
+    {
+      "tag": "vma42_vb20",
+      "vix_ma_days": 42,
+      "vix_baseline": 20.0,
+      "sharpe_full": 0.558810593636973
+    },
+    {
+      "tag": "vma63_vb20",
+      "vix_ma_days": 63,
+      "vix_baseline": 20.0,
+      "sharpe_full": 0.5564042462023803
+    },
+    {
+      "tag": "vma21_vb15",
+      "vix_ma_days": 21,
+      "vix_baseline": 15.0,
+      "sharpe_full": 0.6431936035153624
+    },
+    {
+      "tag": "vma21_vb25",
+      "vix_ma_days": 21,
+      "vix_baseline": 25.0,
+      "sharpe_full": 0.5701145804559142
+    }
+  ],
+  "is_sharpe": 0.6233399618867653,
+  "is_cagr": 0.07837366291329695,
+  "oos_sharpe": 0.4738877221937469,
+  "oos_cagr": 0.06043063812573046,
+  "oos_mdd": -0.4021143829247229,
+  "fwd_sharpe": 0.7245154026974281,
+  "fwd_cagr": 0.10920365070558646,
+  "cross_lib_delta_cagr_pp": 0.0,
+  "bootstrap_oos_ci_low": -0.25519626769204495,
+  "bootstrap_full_ci_low": 0.09840588491790223,
+  "cost_x2_sharpe": 0.289710185079237
+}
