@@ -4,6 +4,59 @@ Audit trail das mudanças feitas durante a sessão 2026-04-23.
 
 ---
 
+## Re-validação NTSI/NTSE: teste hybrid v3.6 (2026-04-23 pós-v3.5)
+
+**Trigger:** usuário questionou se o argumento "bonds em BRL" foi aplicado
+corretamente. Observação válida: princípio Campbell-Viceira é sobre
+bonds-as-STABILIZER, não bonds-as-OVERLAY em produtos stacked.
+
+**Re-examinação empírica honesta:**
+
+Argumento filosófico que usei (home currency) foi **overstated** pra overlay
+context. Mas argumento empírico original se mantém.
+
+**Teste: 3 variantes hybrid vs v3.5 current:**
+- v3.6a HYBRID: AVDE 15 + NTSI 5 + AVEM 10 + NTSE 3
+- v3.6b HYBRID-DM: AVDE 15 + NTSI 5 (only DM stacking, sem NTSE)
+- v3.6c AGGRESSIVE: AVDE 12 + NTSI 8 + AVEM 10 + NTSE 3
+
+**Resultados:**
+
+| Window | v3.5 CAGR | Best hybrid CAGR | Delta |
+|--------|-----------|-------------------|-------|
+| Proxy 2014-26 (bull) | 15,32% | 15,40% | +0,08pp (tiny) |
+| Proxy 2007-26 (inclui 2008) | 10,12% | 10,40% | +0,28pp |
+| **Real 2022-26 (inclui rate shock)** | **18,23%** | **17,82%** | **-0,41pp ❌** |
+
+**Chave:** no PROXY (idealized NTSI_syn = 0.9 VEA + 0.6 IEF), stacking
+mostra benefício pequeno. No REAL DATA 2022-2026 (4 anos com rate shock),
+hybrid UNDERPERFORMS v3.5 por 0,29-0,58pp.
+
+**Por que proxy ≠ real:**
+1. NTSI_syn é mathematical clean (sem fund fees além de ER, sem AUM
+   issues, sem tracking error)
+2. NTSI real (2020+) sofreu: AUM pequeno ($330M), new product tracking,
+   rate regime hostile a bonds (rates hiking from 0% → 5%)
+3. NTSE AUM $27M é crítico e o proxy não captura isso
+
+**Asness (1926-2021) evidence ainda vale**, mas depende de 3 pilares:
+(a) bond premium positivo, (b) bonds low vol, (c) neg correlation em
+crashes. **Pelo menos (c) falhou em 2022** (bonds caíram com equity).
+
+**Veredito: v3.5 CURRENT mantido.** 3 razões:
+
+1. Real data 2022-2026 favorece v3.5 (-0,29 to -0,58pp pro hybrid)
+2. Benefício teórico é microscópico (+0,28pp no proxy melhor caso)
+3. Simplicidade: v3.5 tem factor tilts Avantis (estrutural alpha, 33+y
+   evidence) em vez de capital efficiency (que depende de bond regime)
+
+**Reconciliação:** minha rejeição NTSI em V3.5 foi correta por motivos
+**empíricos**, não filosóficos. O argumento "home currency" foi ajuste
+a posteriori; o argumento real era "NTSI/NTSE underperformed AVDE/AVEM
+em dados reais 2020+".
+
+---
+
 ## Validação final (2026-04-23 pós-v3.5)
 
 **Trigger:** usuário compartilhou lista comprehensive de stacked ETFs do
