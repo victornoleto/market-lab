@@ -166,15 +166,15 @@ class MonthlyRankingStrategy(StrategyBase):
             self.universe_config,
         )
         if not universe:
-            return self._exit_all(portfolio)
+            return self._exit_all(portfolio, bars)
 
         scores = self.compute_scores(universe, ts, bars)
         if not scores:
-            return self._exit_all(portfolio)
+            return self._exit_all(portfolio, bars)
 
         targets = self._pick_targets(scores)
         if not targets:
-            return self._exit_all(portfolio)
+            return self._exit_all(portfolio, bars)
 
         # Capture for subsequent sessions' inertia decisions.
         self._last_targets = list(targets)
@@ -235,8 +235,15 @@ class MonthlyRankingStrategy(StrategyBase):
         target_set = set(targets)
 
         # Close positions not in target set.
+        # IMPORTANT: skip tickers without a bar today — the Runner enforces
+        # ``order.symbol in bars``. In a multi-market universe (US+BR), some
+        # tickers have no bar on cross-market holidays (e.g., US closed
+        # 2012-01-02 observance but BR open). Hold the position until the
+        # next bar where exit is actually possible.
         for sym in list(portfolio.positions):
             if sym not in target_set:
+                if sym not in bars:
+                    continue
                 pos = portfolio.positions[sym]
                 orders.append(
                     Order(
@@ -295,9 +302,14 @@ class MonthlyRankingStrategy(StrategyBase):
         scale = target_risk_per_slot / risk_per_currency
         return float(min(1.0, max(0.0, scale)))
 
-    def _exit_all(self, portfolio: Portfolio) -> list[Order]:
+    def _exit_all(self, portfolio: Portfolio, bars: dict[str, Bar] | None = None) -> list[Order]:
+        """Exit every open position. If ``bars`` is given, skip tickers without
+        a bar this timestamp (Runner-safe for multi-market cross-calendar).
+        """
         orders: list[Order] = []
         for sym, pos in list(portfolio.positions.items()):
+            if bars is not None and sym not in bars:
+                continue
             orders.append(
                 Order(
                     symbol=sym,

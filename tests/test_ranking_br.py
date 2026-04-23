@@ -376,6 +376,47 @@ class TestOrderEmission:
         assert orders[0].side == "sell"
         assert orders[0].symbol == "ILLIQ.SA"
 
+    def test_no_order_for_ticker_without_bar_cross_calendar(self):
+        """Regression: multi-market universe where US ticker has no bar on
+        a BR-trading day (e.g., 2012-01-02 US observance holiday vs BR open)
+        must NOT emit a sell order for the US position — Runner raises if
+        order.symbol is not in bars that timestamp.
+
+        Scenario: portfolio holds ROST (US) and PETR4.SA (BR). Rebalance
+        day has bar only for PETR4.SA. Target set = {VALE3.SA}. Strategy
+        should emit sell for PETR4.SA (bar present) but NOT for ROST.
+        """
+        from ai_trade.backtest.engine.execution import Bar
+
+        data = {
+            "PETR4.SA": _build_series("2023-01-01", 300, daily_drift=0.002, seed=70, volume=10_000_000),
+            "VALE3.SA": _build_series("2023-01-01", 300, daily_drift=0.003, seed=71, volume=10_000_000),
+            "ROST": _build_series("2023-01-01", 300, daily_drift=0.001, seed=72, volume=10_000_000),
+        }
+        ts = data["PETR4.SA"].index[-1]
+        # Build bars without ROST (simulating US holiday).
+        bars = {
+            "PETR4.SA": Bar(symbol="PETR4.SA", timestamp=ts,
+                            open=50.0, high=50.5, low=49.5, close=50.0, volume=10_000_000),
+            "VALE3.SA": Bar(symbol="VALE3.SA", timestamp=ts,
+                            open=60.0, high=60.5, low=59.5, close=60.0, volume=10_000_000),
+        }
+        portfolio = Portfolio(initial_cash=100_000.0)
+        portfolio.open_position("ROST", "long", volume=100, price=120.0, timestamp=ts)
+        portfolio.open_position("PETR4.SA", "long", volume=500, price=45.0, timestamp=ts)
+
+        strat = D1ClenowBR(
+            data=data, n_top=1, sector_cap_pct=None, lookback=90,
+            universe_config=UniverseConfig(min_median_notional_brl=1_000_000.0),
+        )
+        strat.should_rebalance(ts, bars)
+        orders = strat.on_rebalance(ts, bars, portfolio, {})
+        # Must not include any order for ROST (no bar).
+        order_symbols = {o.symbol for o in orders}
+        assert "ROST" not in order_symbols, (
+            f"ROST has no bar yet strategy emitted order; got {order_symbols}"
+        )
+
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
