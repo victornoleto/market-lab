@@ -75,10 +75,20 @@ def load_french() -> pd.DataFrame:
 
 
 def daily_to_monthly(rets: pd.Series | pd.DataFrame) -> pd.Series | pd.DataFrame:
-    """Compound daily returns to monthly (period-end)."""
+    """Compound daily returns to monthly (period-end).
+
+    IMPORTANT: months where the underlying series has no observations must
+    remain NaN (not 0). pandas `resample().prod()` defaults to treating
+    all-NaN groups as 1 (neutral element), which then produces spurious 0
+    returns via `1 - 1`. We manually mask months with zero observations.
+    """
     if isinstance(rets, pd.Series):
-        return (1 + rets).resample("ME").prod() - 1
-    return (1 + rets).resample("ME").prod() - 1
+        count = rets.resample("ME").count()
+        monthly = (1 + rets).resample("ME").prod() - 1
+        return monthly.where(count > 0)
+    count = rets.resample("ME").count()
+    monthly = (1 + rets).resample("ME").prod() - 1
+    return monthly.where(count > 0)
 
 
 def main() -> None:

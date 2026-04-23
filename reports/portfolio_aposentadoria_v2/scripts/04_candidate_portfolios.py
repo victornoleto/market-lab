@@ -37,12 +37,12 @@ PORTFOLIOS: list[Portfolio] = [
             "AVEM": 0.15,
             "IBIT": 0.03, "GLDM": 0.02,
         },
-        # Long-run proxy: replace AVUS/AVUV with KF-synthetic (99yr), drop alts
+        # Long-run proxy: replace AVUS/AVUV with KF-synthetic (99yr), use VEA
+        # for ex-US (AVDV would truncate window to 2019+)
         weights_proxy={
             "AVUS_syn_3f": 0.38,  # AVUS + SPMO proxy (no Mom factor)
             "AVUV_syn_3f": 0.14,
-            "VEA": 0.19,  # AVDE+IDMO (short history, use VEA as DM proxy)
-            "AVDV": 0.09,  # no long proxy — will limit window
+            "VEA": 0.28,  # AVDE + IDMO + AVDV combined (DM proxy)
             "VWO": 0.15,  # AVEM proxy
             "GLD": 0.05,  # alts lump
         },
@@ -67,8 +67,7 @@ PORTFOLIOS: list[Portfolio] = [
         },
         weights_proxy={
             "SPY_2x_sim": 0.50,  # SSO long-run proxy w/ LETF fees
-            "VEA": 0.19,  # AVDE+IDMO proxy
-            "AVDV": 0.09,
+            "VEA": 0.28,  # AVDE+IDMO+AVDV combined (DM proxy)
             "VWO": 0.15,
             "AVUV_syn_3f": 0.05,
             "GLD": 0.02,

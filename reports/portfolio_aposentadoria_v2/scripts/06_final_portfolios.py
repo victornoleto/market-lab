@@ -29,142 +29,148 @@ OUT_DIR = REPO / "reports" / "portfolio_aposentadoria_v2" / "results"
 
 
 # ============================================================================
-# 4 Final optimized portfolios
+# 4 Final optimized portfolios (redesigned 2026-04-23 after user caught
+# CAGR-ordering inconsistency: FINAL_3 had higher CAGR than FINAL_1).
+# Root causes addressed:
+#   1. Fixed NaN-fill bug in daily_to_monthly (02_build_returns_panel.py)
+#   2. Redesigned proxy weights to use ONLY long-history assets (no RSST_syn
+#      which truncated window to 2019+)
+#   3. Made portfolios more structurally differentiated (leverage/diversification)
 # ============================================================================
 FINAL = {
-    # ---------- Portfolio 1: Max CAGR (accumulation, accept any MDD) ----------
+    # ---------- Portfolio 1: Max CAGR ----------
+    # Design: HEAVY leverage (NTSX + raw SSO/QLD) + factor tilts.
+    # NO managed futures (MF dilutes CAGR in bull periods).
     "FINAL_1_MAX_CAGR": {
         "name": "Leveraged Growth Engine (Max CAGR)",
         "objective": "maximize expected 30-year CAGR; accept historical MDD up to ~60%",
         "weights_real": {
-            "NTSX": 0.30,   # 1.5x US 90/60
-            "NTSI": 0.15,   # 1.5x DM 90/60
-            "RSST": 0.15,   # 100/100 US stocks + MF (leveraged diversifier)
-            "AVUV": 0.15,   # SCV tilt
-            "AVDV": 0.10,   # Int SCV
-            "AVEM": 0.05,   # EM
-            "SPMO": 0.05,   # Momentum tilt (US)
+            "NTSX": 0.25,
+            "NTSI": 0.15,
+            "SSO": 0.15,
+            "QLD": 0.05,
+            "AVUV": 0.15,
+            "AVDV": 0.10,
+            "AVEM": 0.05,
+            "SPMO": 0.05,
             "IBIT": 0.03,
             "GLDM": 0.02,
         },
         "weights_proxy": {
-            "NTSX_syn": 0.45,            # NTSX + NTSI combined proxy (no long syn for NTSI)
-            "RSST_syn": 0.15,            # short history — use synthetic (2019+)
+            "NTSX_syn": 0.40,
+            "SPY_2x_sim": 0.20,
             "AVUV_syn_3f": 0.15,
-            "AVDV": 0.10,                # AVDV real only (2019+)
-            "VWO": 0.10,                 # AVEM + SPMO combined proxy
-            "GLD": 0.05,                 # IBIT + GLDM combined proxy
+            "VEA": 0.10,
+            "VWO": 0.10,
+            "GLD": 0.05,
         },
-        "embedded_leverage_approx": 1.55,  # 90/60 NTSX + 100/100 RSST
+        "embedded_leverage_approx": 1.65,
         "rationale": (
-            "NTSX + NTSI = 45% gives 1.5x capital efficiency on 60/40 beta; "
-            "RSST stacks MF on top of US equity (uncorrelated return stream); "
-            "35% factor tilts (AVUV+AVDV+AVEM+SPMO); 5% alts. "
-            "Embedded leverage ~1.55x. Expected CAGR vs SPY: +2-3pp with modest Sharpe gain."
+            "Aggressive leverage: NTSX family 40% (1.5x US+DM) + SSO+QLD 20% "
+            "(proxy SPY_2x 20% at 2x) = high equity beta. Factor tilts 35% "
+            "(AVUV+AVDV+AVEM+SPMO). 5% alts. NO managed futures — MF dilutes "
+            "CAGR. Embedded leverage ~1.65x."
         ),
     },
 
-    # ---------- Portfolio 2: Max Sharpe (risk-adjusted) ----------
+    # ---------- Portfolio 2: Max Sharpe ----------
+    # Design: heavy bond/gold diversification via NTSX + direct TLT/IEF + GLD.
+    # No raw LETF (adds vol without adding Sharpe).
     "FINAL_2_MAX_SHARPE": {
-        "name": "Risk Parity with Factor Tilt (Max Sharpe)",
+        "name": "Risk-Parity Factor Core (Max Sharpe)",
         "objective": "maximize Sharpe ratio; accept CAGR cost for better path",
         "weights_real": {
-            "NTSX": 0.25,   # embedded 60/40 US
-            "NTSI": 0.15,   # embedded 60/40 DM
-            "NTSE": 0.05,   # embedded 60/40 EM
-            "AVUV": 0.10,   # SCV
+            "NTSX": 0.30,
+            "NTSI": 0.15,
+            "AVUV": 0.08,
             "AVDV": 0.05,
-            "RSBT": 0.15,   # 100/100 bonds + MF — dominant diversifier
-            "DBMF": 0.10,   # pure MF as second diversifier
-            "GLDM": 0.10,   # gold as tail hedge
-            "TLT": 0.05,    # long bonds direct
+            "RSBT": 0.10,
+            "DBMF": 0.07,
+            "TLT": 0.10,
+            "IEF": 0.10,
+            "GLDM": 0.05,
         },
         "weights_proxy": {
-            "NTSX_syn": 0.45,           # all NTSX family
-            "AVUV_syn_3f": 0.10,
-            "AVDV": 0.05,
-            "TLT": 0.20,                # RSBT + direct TLT proxy
-            "SPY_1x_sim": 0.10,         # DBMF long-run proxy (imperfect)
+            "NTSX_syn": 0.45,
+            "AVUV_syn_3f": 0.08,
+            "VEA": 0.05,
+            "TLT": 0.17,
+            "IEF": 0.15,
             "GLD": 0.10,
         },
-        "embedded_leverage_approx": 1.35,
+        "embedded_leverage_approx": 1.27,
         "rationale": (
-            "Heavy diversification via RSBT (bonds + MF stacked) and direct DBMF. "
-            "Embedded leverage 1.35x mainly from NTSX family. Lower equity beta, "
-            "higher MF exposure. Target Sharpe 0.60+ on 20yr data."
+            "Diversification-first. NTSX family 45% (1.5x 60/40); direct bonds "
+            "17% TLT + 10% IEF for duration extension; gold 10% tail hedge. "
+            "No raw LETF — vol hurts Sharpe. Target Sharpe 0.6-0.75."
         ),
     },
 
-    # ---------- Portfolio 3: Max terminal wealth with MDD ≤ 50% ----------
+    # ---------- Portfolio 3: Max TW with MDD ≤ 50% ----------
+    # Middle ground. Strong factor tilt + moderate leverage.
     "FINAL_3_MAX_TW_MDD50": {
-        "name": "Bounded Growth (Max Terminal Wealth, MDD ≤ 50%)",
+        "name": "Bounded Growth (Max TW, MDD ≤ 50%)",
         "objective": "maximize p50 terminal wealth subject to historical MDD ≤ 50%",
         "weights_real": {
-            "NTSX": 0.25,
+            "NTSX": 0.30,
             "NTSI": 0.15,
-            "NTSE": 0.08,
-            "AVUV": 0.12,
-            "AVDV": 0.08,
+            "NTSE": 0.05,
+            "AVUV": 0.15,
+            "AVDV": 0.10,
             "AVEM": 0.05,
-            "SPMO": 0.05,   # momentum tilt (US)
-            "RSBT": 0.08,   # MF + bonds stack
-            "DBMF": 0.05,   # direct MF
-            "GLDM": 0.05,
-            "IBIT": 0.02,
-            "TLT": 0.02,
+            "SPMO": 0.05,
+            "RSBT": 0.05,
+            "DBMF": 0.03,
+            "TLT": 0.04,
+            "GLDM": 0.03,
         },
         "weights_proxy": {
-            "NTSX_syn": 0.48,           # NTSX + NTSI + NTSE proxy
-            "AVUV_syn_3f": 0.12,
-            "AVDV": 0.08,
-            "VWO": 0.10,                # AVEM + SPMO proxy
-            "TLT": 0.05,                # RSBT + TLT direct
-            "SPY_1x_sim": 0.05,         # DBMF proxy
-            "GLD": 0.10,                # GLDM + IBIT proxy
-            "IEF": 0.02,
+            "NTSX_syn": 0.50,
+            "AVUV_syn_3f": 0.15,
+            "VEA": 0.10,
+            "VWO": 0.10,
+            "TLT": 0.09,
+            "GLD": 0.06,
         },
-        "embedded_leverage_approx": 1.30,
+        "embedded_leverage_approx": 1.40,
         "rationale": (
-            "Middle ground: more factor tilt than Portfolio 2, less leverage than "
-            "Portfolio 1. Diversified across geographies + factors + MF + alts. "
-            "Target MDD < 50% in historical backtest + bootstrap; target CAGR 8-9%."
+            "Middle ground. Strong factor tilt (35% SCV+Momentum+EM), NTSX family "
+            "core 50% = 1.4x effective. Modest bond+MF+gold buffer ~15%. "
+            "Target CAGR 8-10% with MDD 30-45%."
         ),
     },
 
-    # ---------- Portfolio 4: Max SWR (retirement phase) ----------
+    # ---------- Portfolio 4: Max SWR (retirement end-state) ----------
     "FINAL_4_MAX_SWR": {
         "name": "Retirement Income Optimizer (Max SWR)",
         "objective": "maximize 30-year SWR at 95% success; end-state of glidepath",
         "weights_real": {
-            "NTSX": 0.18,   # lower equity but still levered core
-            "NTSI": 0.10,
-            "AVUV": 0.08,
-            "AVDV": 0.05,
-            "DBMF": 0.15,   # heavy MF for crisis alpha
-            "KMLM": 0.05,   # second MF with different index (diversify MF itself)
-            "RSBT": 0.08,
-            "TLT": 0.08,
-            "IEF": 0.12,
-            "SHV": 0.05,    # near-cash for withdrawal buffer
-            "GLDM": 0.05,
+            "NTSX": 0.20,
+            "NTSI": 0.08,
+            "AVUV": 0.06,
+            "AVDV": 0.04,
+            "DBMF": 0.10,
+            "KMLM": 0.05,
+            "RSBT": 0.05,
+            "TLT": 0.10,
+            "IEF": 0.15,
+            "SHV": 0.08,
+            "GLDM": 0.08,
             "IBIT": 0.01,
         },
         "weights_proxy": {
             "NTSX_syn": 0.28,
-            "AVUV_syn_3f": 0.08,
-            "AVDV": 0.05,
-            "SPY_1x_sim": 0.20,         # MF long-run proxy (DBMF + KMLM + RSBT partial)
-            "TLT": 0.08,
-            "IEF": 0.12,
-            "SHV": 0.05,
-            "GLD": 0.14,
+            "AVUV_syn_3f": 0.06,
+            "VEA": 0.04,
+            "TLT": 0.15,
+            "IEF": 0.27,
+            "GLD": 0.20,
         },
-        "embedded_leverage_approx": 1.15,
+        "embedded_leverage_approx": 1.12,
         "rationale": (
-            "End-state retirement allocation: equity ~45% effective (via NTSX), "
-            "bonds 25%, MF 28% (heavy), alts 6%, cash 5% buffer. "
-            "Target: SWR 4-4.5% at 95% success over 30y retirement. "
-            "Not suitable for accumulation — too defensive."
+            "End-state retirement. Equity ~45% effective (NTSX + direct), "
+            "bonds 30%, cash 12%, gold 20%, factor tilt 10%. Low vol (~7-9%), "
+            "low MDD (~15-25%), target SWR 4-5% at 95%. NOT for accumulation."
         ),
     },
 }
@@ -207,22 +213,29 @@ def run_final(panel: pd.DataFrame) -> dict:
                 entry["backtests"][wk] = {"status": "MISSING", "missing": missing}
                 continue
             sub = panel[list(weights)].loc[start:end]
-            if sub.notna().mean().min() < 0.85:
-                entry["backtests"][wk] = {"status": "INSUFFICIENT"}
+            sub_clean = sub.dropna(how="any")
+            if len(sub_clean) < 24:
+                entry["backtests"][wk] = {"status": "INSUFFICIENT",
+                                          "months_after_intersect": int(len(sub_clean))}
                 continue
             try:
+                actual_start = sub_clean.index.min().strftime("%Y-%m-%d")
+                actual_end = sub_clean.index.max().strftime("%Y-%m-%d")
                 config = pm.SimConfig(
-                    start=start, end=end, initial_wealth=10_000.0, rebalance="monthly",
+                    start=actual_start, end=actual_end, initial_wealth=10_000.0,
+                    rebalance="monthly",
                     use_letf_proxy_fees=(which == "proxy"),
                 )
                 r = pm.simulate(weights, panel, config)
                 entry["backtests"][wk] = {
                     "status": "OK",
+                    "actual_start": actual_start, "actual_end": actual_end,
                     "cagr": r.cagr, "vol": r.vol_ann, "sharpe": r.sharpe,
                     "mdd": r.max_dd, "worst_12m": r.worst_12m,
                     "terminal_10k": r.terminal_wealth, "n_months": int(len(r.returns)),
                 }
-                print(f"  {wk:20s}: CAGR={r.cagr:.2%} Sharpe={r.sharpe:.2f} "
+                print(f"  {wk:20s}: [{actual_start}→{actual_end}] "
+                      f"CAGR={r.cagr:.2%} Sharpe={r.sharpe:.2f} "
                       f"MDD={r.max_dd:.2%} vol={r.vol_ann:.2%}")
             except Exception as e:
                 entry["backtests"][wk] = {"status": "ERROR", "error": str(e)}
@@ -234,11 +247,14 @@ def run_final(panel: pd.DataFrame) -> dict:
             if missing:
                 continue
             sub = panel[list(weights)].loc[start:end]
-            if sub.notna().mean().min() < 0.85:
+            sub_clean = sub.dropna(how="any")
+            if len(sub_clean) < 60:  # need ≥5y for meaningful SWR bootstrap
                 continue
-            # Use this window
+            actual_start = sub_clean.index.min().strftime("%Y-%m-%d")
+            actual_end = sub_clean.index.max().strftime("%Y-%m-%d")
             try:
-                config = pm.SimConfig(start=start, end=end, initial_wealth=10_000.0,
+                config = pm.SimConfig(start=actual_start, end=actual_end,
+                                      initial_wealth=10_000.0,
                                       rebalance="monthly",
                                       use_letf_proxy_fees=(which == "proxy"))
                 r = pm.simulate(weights, panel, config)

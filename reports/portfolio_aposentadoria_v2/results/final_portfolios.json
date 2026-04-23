@@ -3,9 +3,10 @@
     "name": "Leveraged Growth Engine (Max CAGR)",
     "objective": "maximize expected 30-year CAGR; accept historical MDD up to ~60%",
     "weights_real": {
-      "NTSX": 0.3,
+      "NTSX": 0.25,
       "NTSI": 0.15,
-      "RSST": 0.15,
+      "SSO": 0.15,
+      "QLD": 0.05,
       "AVUV": 0.15,
       "AVDV": 0.1,
       "AVEM": 0.05,
@@ -14,328 +15,347 @@
       "GLDM": 0.02
     },
     "weights_proxy": {
-      "NTSX_syn": 0.45,
-      "RSST_syn": 0.15,
+      "NTSX_syn": 0.4,
+      "SPY_2x_sim": 0.2,
       "AVUV_syn_3f": 0.15,
-      "AVDV": 0.1,
+      "VEA": 0.1,
       "VWO": 0.1,
       "GLD": 0.05
     },
-    "embedded_leverage_approx": 1.55,
-    "rationale": "NTSX + NTSI = 45% gives 1.5x capital efficiency on 60/40 beta; RSST stacks MF on top of US equity (uncorrelated return stream); 35% factor tilts (AVUV+AVDV+AVEM+SPMO); 5% alts. Embedded leverage ~1.55x. Expected CAGR vs SPY: +2-3pp with modest Sharpe gain.",
+    "embedded_leverage_approx": 1.65,
+    "rationale": "Aggressive leverage: NTSX family 40% (1.5x US+DM) + SSO+QLD 20% (proxy SPY_2x 20% at 2x) = high equity beta. Factor tilts 35% (AVUV+AVDV+AVEM+SPMO). 5% alts. NO managed futures \u2014 MF dilutes CAGR. Embedded leverage ~1.65x.",
     "backtests": {
       "real_2020_2026": {
         "status": "OK",
-        "cagr": 0.09948191757402314,
-        "vol": 0.14268816332345122,
-        "sharpe": 0.5002558898209059,
-        "mdd": -0.2213725799051972,
-        "worst_12m": -0.1872013241163032,
-        "terminal_10k": 18089.45864300576,
-        "n_months": 75
+        "actual_start": "2024-01-31",
+        "actual_end": "2026-03-31",
+        "cagr": 0.1859853669294964,
+        "vol": 0.13058960349700285,
+        "sharpe": 1.0477620035539759,
+        "mdd": -0.06860902557219221,
+        "worst_12m": 0.06705531271108067,
+        "terminal_10k": 14678.392408522011,
+        "n_months": 27
       },
       "syn_2006_2026": {
         "status": "OK",
-        "cagr": 0.09095115596027115,
-        "vol": 0.12215439044224534,
-        "sharpe": 0.6076846547466893,
-        "mdd": -0.35279064894357504,
-        "worst_12m": -0.31011122239363953,
-        "terminal_10k": 57863.80925873508,
-        "n_months": 242
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.10402608905713029,
+        "vol": 0.17946335025769672,
+        "sharpe": 0.500235290210127,
+        "mdd": -0.5601912105061536,
+        "worst_12m": -0.495630316469556,
+        "terminal_10k": 63427.98917937448,
+        "n_months": 224
       },
       "syn_long_1926": {
         "status": "OK",
-        "cagr": 0.03229234112500756,
-        "vol": 0.06488363343034462,
-        "sharpe": 0.012594261031098428,
-        "mdd": -0.3527906489435751,
-        "worst_12m": -0.31011122239363953,
-        "terminal_10k": 237503.28336302328,
-        "n_months": 1196
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.10402608905713029,
+        "vol": 0.17946335025769672,
+        "sharpe": 0.500235290210127,
+        "mdd": -0.5601912105061536,
+        "worst_12m": -0.495630316469556,
+        "terminal_10k": 63427.98917937448,
+        "n_months": 224
       }
     },
     "swr": {
-      "window": "real_2020_2026",
-      "swr_95pct": 0.061456009825174074,
+      "window": "syn_2006_2026",
+      "swr_95pct": 0.043588674421162064,
       "success_at_swr": 0.95
     },
     "bootstrap": {
-      "window": "real_2020_2026",
+      "window": "syn_2006_2026",
       "initial_wealth": 10000,
       "monthly_contrib": 1000,
       "horizon_years": 30,
       "terminal_wealth": {
-        "p05": 974630.5332358761,
-        "p25": 1585971.01502061,
-        "p50": 2234178.250837095,
-        "p75": 3247349.3830717374,
-        "p95": 5565607.473974831,
-        "mean": 2638653.8116660262
+        "p05": 700766.1609498576,
+        "p25": 1547304.3522294716,
+        "p50": 2659932.545346109,
+        "p75": 4408958.021017153,
+        "p95": 8969771.61651769,
+        "mean": 3520296.5003866423
       },
       "mdd_distribution": {
-        "p05": -0.38173793509052917,
-        "p50": -0.2697652896994014,
-        "p95": -0.2144622164575832
+        "p05": -0.6780982878015661,
+        "p50": -0.4830033820066587,
+        "p95": -0.2571900130897773
       },
-      "prob_mdd_gt_50pct": 0.0045,
-      "prob_mdd_gt_70pct": 0.0
+      "prob_mdd_gt_50pct": 0.4405,
+      "prob_mdd_gt_70pct": 0.035
     }
   },
   "FINAL_2_MAX_SHARPE": {
-    "name": "Risk Parity with Factor Tilt (Max Sharpe)",
+    "name": "Risk-Parity Factor Core (Max Sharpe)",
     "objective": "maximize Sharpe ratio; accept CAGR cost for better path",
     "weights_real": {
-      "NTSX": 0.25,
+      "NTSX": 0.3,
       "NTSI": 0.15,
-      "NTSE": 0.05,
-      "AVUV": 0.1,
+      "AVUV": 0.08,
       "AVDV": 0.05,
-      "RSBT": 0.15,
-      "DBMF": 0.1,
-      "GLDM": 0.1,
-      "TLT": 0.05
+      "RSBT": 0.1,
+      "DBMF": 0.07,
+      "TLT": 0.1,
+      "IEF": 0.1,
+      "GLDM": 0.05
     },
     "weights_proxy": {
       "NTSX_syn": 0.45,
-      "AVUV_syn_3f": 0.1,
-      "AVDV": 0.05,
-      "TLT": 0.2,
-      "SPY_1x_sim": 0.1,
+      "AVUV_syn_3f": 0.08,
+      "VEA": 0.05,
+      "TLT": 0.17,
+      "IEF": 0.15,
       "GLD": 0.1
     },
-    "embedded_leverage_approx": 1.35,
-    "rationale": "Heavy diversification via RSBT (bonds + MF stacked) and direct DBMF. Embedded leverage 1.35x mainly from NTSX family. Lower equity beta, higher MF exposure. Target Sharpe 0.60+ on 20yr data.",
+    "embedded_leverage_approx": 1.27,
+    "rationale": "Diversification-first. NTSX family 45% (1.5x 60/40); direct bonds 17% TLT + 10% IEF for duration extension; gold 10% tail hedge. No raw LETF \u2014 vol hurts Sharpe. Target Sharpe 0.6-0.75.",
     "backtests": {
       "real_2020_2026": {
         "status": "OK",
-        "cagr": 0.07820670599048962,
-        "vol": 0.10782555429426519,
-        "sharpe": 0.4646893109402288,
-        "mdd": -0.17797792738880464,
-        "worst_12m": -0.14646068829162273,
-        "terminal_10k": 16009.865335477045,
-        "n_months": 75
+        "actual_start": "2023-02-28",
+        "actual_end": "2026-03-31",
+        "cagr": 0.09675446073102001,
+        "vol": 0.09845457096897743,
+        "sharpe": 0.48003688336819345,
+        "mdd": -0.08779210296651298,
+        "worst_12m": 0.040600438473356704,
+        "terminal_10k": 13397.171901509242,
+        "n_months": 38
       },
       "syn_2006_2026": {
         "status": "OK",
-        "cagr": 0.09196851436664755,
-        "vol": 0.10786741946109753,
-        "sharpe": 0.6976036634973274,
-        "mdd": -0.275391563314385,
-        "worst_12m": -0.2537477359650264,
-        "terminal_10k": 58961.79225128423,
-        "n_months": 242
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.08639975711866521,
+        "vol": 0.10067406498839733,
+        "sharpe": 0.7166450383034648,
+        "mdd": -0.2478658951885069,
+        "worst_12m": -0.22192835383514808,
+        "terminal_10k": 46968.53169778984,
+        "n_months": 224
       },
       "syn_long_1926": {
         "status": "OK",
-        "cagr": 0.036931863776735074,
-        "vol": 0.06233828957596135,
-        "sharpe": 0.08753342616412693,
-        "mdd": -0.29284898555854566,
-        "worst_12m": -0.2537477359650264,
-        "terminal_10k": 371340.1718937397,
-        "n_months": 1196
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.08639975711866521,
+        "vol": 0.10067406498839733,
+        "sharpe": 0.7166450383034648,
+        "mdd": -0.2478658951885069,
+        "worst_12m": -0.22192835383514808,
+        "terminal_10k": 46968.53169778984,
+        "n_months": 224
       }
     },
     "swr": {
-      "window": "real_2020_2026",
-      "swr_95pct": 0.05599386255902117,
+      "window": "syn_2006_2026",
+      "swr_95pct": 0.05816635318092266,
       "success_at_swr": 0.95
     },
     "bootstrap": {
-      "window": "real_2020_2026",
+      "window": "syn_2006_2026",
       "initial_wealth": 10000,
       "monthly_contrib": 1000,
       "horizon_years": 30,
       "terminal_wealth": {
-        "p05": 804171.2456874987,
-        "p25": 1135824.8094249517,
-        "p50": 1465475.1047226498,
-        "p75": 1909251.0759270806,
-        "p95": 2818958.292101219,
-        "mean": 1590052.1315159108
+        "p05": 867109.9671512006,
+        "p25": 1351202.594246439,
+        "p50": 1769804.0415114136,
+        "p75": 2308608.549644405,
+        "p95": 3291067.274624823,
+        "mean": 1895363.3175697203
       },
       "mdd_distribution": {
-        "p05": -0.28484474816149497,
-        "p50": -0.18966704960811626,
-        "p95": -0.14145423406395818
+        "p05": -0.3426753433470772,
+        "p50": -0.2209568410548679,
+        "p95": -0.14062137229312868
       },
-      "prob_mdd_gt_50pct": 0.0005,
+      "prob_mdd_gt_50pct": 0.001,
       "prob_mdd_gt_70pct": 0.0
     }
   },
   "FINAL_3_MAX_TW_MDD50": {
-    "name": "Bounded Growth (Max Terminal Wealth, MDD \u2264 50%)",
+    "name": "Bounded Growth (Max TW, MDD \u2264 50%)",
     "objective": "maximize p50 terminal wealth subject to historical MDD \u2264 50%",
     "weights_real": {
-      "NTSX": 0.25,
+      "NTSX": 0.3,
       "NTSI": 0.15,
-      "NTSE": 0.08,
-      "AVUV": 0.12,
-      "AVDV": 0.08,
+      "NTSE": 0.05,
+      "AVUV": 0.15,
+      "AVDV": 0.1,
       "AVEM": 0.05,
       "SPMO": 0.05,
-      "RSBT": 0.08,
-      "DBMF": 0.05,
-      "GLDM": 0.05,
-      "IBIT": 0.02,
-      "TLT": 0.02
+      "RSBT": 0.05,
+      "DBMF": 0.03,
+      "TLT": 0.04,
+      "GLDM": 0.03
     },
     "weights_proxy": {
-      "NTSX_syn": 0.48,
-      "AVUV_syn_3f": 0.12,
-      "AVDV": 0.08,
+      "NTSX_syn": 0.5,
+      "AVUV_syn_3f": 0.15,
+      "VEA": 0.1,
       "VWO": 0.1,
-      "TLT": 0.05,
-      "SPY_1x_sim": 0.05,
-      "GLD": 0.1,
-      "IEF": 0.02
+      "TLT": 0.09,
+      "GLD": 0.06
     },
-    "embedded_leverage_approx": 1.3,
-    "rationale": "Middle ground: more factor tilt than Portfolio 2, less leverage than Portfolio 1. Diversified across geographies + factors + MF + alts. Target MDD < 50% in historical backtest + bootstrap; target CAGR 8-9%.",
+    "embedded_leverage_approx": 1.4,
+    "rationale": "Middle ground. Strong factor tilt (35% SCV+Momentum+EM), NTSX family core 50% = 1.4x effective. Modest bond+MF+gold buffer ~15%. Target CAGR 8-10% with MDD 30-45%.",
     "backtests": {
       "real_2020_2026": {
         "status": "OK",
-        "cagr": 0.08855973072073375,
-        "vol": 0.12961544728347352,
-        "sharpe": 0.4664444595463209,
-        "mdd": -0.21977607023177873,
-        "worst_12m": -0.1893553443568996,
-        "terminal_10k": 16995.214574253827,
-        "n_months": 75
+        "actual_start": "2023-02-28",
+        "actual_end": "2026-03-31",
+        "cagr": 0.13433529755830897,
+        "vol": 0.11657001524833925,
+        "sharpe": 0.7278257796213013,
+        "mdd": -0.09780192844519246,
+        "worst_12m": 0.05286733442067293,
+        "terminal_10k": 14905.546839559009,
+        "n_months": 38
       },
       "syn_2006_2026": {
         "status": "OK",
-        "cagr": 0.09400614045298528,
-        "vol": 0.12059120658360158,
-        "sharpe": 0.6408952631286795,
-        "mdd": -0.3551697980138826,
-        "worst_12m": -0.3208336007944468,
-        "terminal_10k": 61220.72743296932,
-        "n_months": 242
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.09202366515164795,
+        "vol": 0.13346387236487675,
+        "sharpe": 0.58271557549401,
+        "mdd": -0.40980095697870556,
+        "worst_12m": -0.3642280793907624,
+        "terminal_10k": 51720.7642843884,
+        "n_months": 224
       },
       "syn_long_1926": {
         "status": "OK",
-        "cagr": 0.03479847882015852,
-        "vol": 0.06487633147470563,
-        "sharpe": 0.05122513920989087,
-        "mdd": -0.3551697980138828,
-        "worst_12m": -0.3208336007944468,
-        "terminal_10k": 302430.9508575112,
-        "n_months": 1196
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.09202366515164795,
+        "vol": 0.13346387236487675,
+        "sharpe": 0.58271557549401,
+        "mdd": -0.40980095697870556,
+        "worst_12m": -0.3642280793907624,
+        "terminal_10k": 51720.7642843884,
+        "n_months": 224
       }
     },
     "swr": {
-      "window": "real_2020_2026",
-      "swr_95pct": 0.0570832932932808,
+      "window": "syn_2006_2026",
+      "swr_95pct": 0.0518058371477855,
       "success_at_swr": 0.95
     },
     "bootstrap": {
-      "window": "real_2020_2026",
+      "window": "syn_2006_2026",
       "initial_wealth": 10000,
       "monthly_contrib": 1000,
       "horizon_years": 30,
       "terminal_wealth": {
-        "p05": 837429.4526395779,
-        "p25": 1313706.4911890053,
-        "p50": 1807148.266413305,
-        "p75": 2510592.708238468,
-        "p95": 4093195.5717562563,
-        "mean": 2054958.2757191928
+        "p05": 770583.633098117,
+        "p25": 1384781.372055897,
+        "p50": 2038444.1077248608,
+        "p75": 2897540.053802541,
+        "p95": 4795134.705277315,
+        "mean": 2312194.564974664
       },
       "mdd_distribution": {
-        "p05": -0.3640166157356196,
-        "p50": -0.24951443181196947,
-        "p95": -0.18783500140592324
+        "p05": -0.5127847237544352,
+        "p50": -0.34212153572875076,
+        "p95": -0.186966897924658
       },
-      "prob_mdd_gt_50pct": 0.004,
-      "prob_mdd_gt_70pct": 0.0
+      "prob_mdd_gt_50pct": 0.0575,
+      "prob_mdd_gt_70pct": 0.001
     }
   },
   "FINAL_4_MAX_SWR": {
     "name": "Retirement Income Optimizer (Max SWR)",
     "objective": "maximize 30-year SWR at 95% success; end-state of glidepath",
     "weights_real": {
-      "NTSX": 0.18,
-      "NTSI": 0.1,
-      "AVUV": 0.08,
-      "AVDV": 0.05,
-      "DBMF": 0.15,
+      "NTSX": 0.2,
+      "NTSI": 0.08,
+      "AVUV": 0.06,
+      "AVDV": 0.04,
+      "DBMF": 0.1,
       "KMLM": 0.05,
-      "RSBT": 0.08,
-      "TLT": 0.08,
-      "IEF": 0.12,
-      "SHV": 0.05,
-      "GLDM": 0.05,
+      "RSBT": 0.05,
+      "TLT": 0.1,
+      "IEF": 0.15,
+      "SHV": 0.08,
+      "GLDM": 0.08,
       "IBIT": 0.01
     },
     "weights_proxy": {
       "NTSX_syn": 0.28,
-      "AVUV_syn_3f": 0.08,
-      "AVDV": 0.05,
-      "SPY_1x_sim": 0.2,
-      "TLT": 0.08,
-      "IEF": 0.12,
-      "SHV": 0.05,
-      "GLD": 0.14
+      "AVUV_syn_3f": 0.06,
+      "VEA": 0.04,
+      "TLT": 0.15,
+      "IEF": 0.27,
+      "GLD": 0.2
     },
-    "embedded_leverage_approx": 1.15,
-    "rationale": "End-state retirement allocation: equity ~45% effective (via NTSX), bonds 25%, MF 28% (heavy), alts 6%, cash 5% buffer. Target: SWR 4-4.5% at 95% success over 30y retirement. Not suitable for accumulation \u2014 too defensive.",
+    "embedded_leverage_approx": 1.12,
+    "rationale": "End-state retirement. Equity ~45% effective (NTSX + direct), bonds 30%, cash 12%, gold 20%, factor tilt 10%. Low vol (~7-9%), low MDD (~15-25%), target SWR 4-5% at 95%. NOT for accumulation.",
     "backtests": {
       "real_2020_2026": {
         "status": "OK",
-        "cagr": 0.0638341299797196,
-        "vol": 0.08010208431751761,
-        "sharpe": 0.4460908454558885,
-        "mdd": -0.11364256706029745,
-        "worst_12m": -0.09072758587820584,
-        "terminal_10k": 14721.836677604795,
-        "n_months": 75
+        "actual_start": "2024-01-31",
+        "actual_end": "2026-03-31",
+        "cagr": 0.1107939544617702,
+        "vol": 0.07060632344511462,
+        "sharpe": 0.8729446475643884,
+        "mdd": -0.043086157291293684,
+        "worst_12m": 0.04601061875578161,
+        "terminal_10k": 12667.04728383538,
+        "n_months": 27
       },
       "syn_2006_2026": {
         "status": "OK",
-        "cagr": 0.08646826790224016,
-        "vol": 0.09555453598571648,
-        "sharpe": 0.7299335379963875,
-        "mdd": -0.24483266034260784,
-        "worst_12m": -0.23303666300320802,
-        "terminal_10k": 53252.96241447393,
-        "n_months": 242
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.07876754702289812,
+        "vol": 0.08752445334088337,
+        "sharpe": 0.7371123908965083,
+        "mdd": -0.21454943625332654,
+        "worst_12m": -0.1916012150191615,
+        "terminal_10k": 41176.89813665212,
+        "n_months": 224
       },
       "syn_long_1926": {
         "status": "OK",
-        "cagr": 0.042623135863412376,
-        "vol": 0.06673581111528344,
-        "sharpe": 0.1670460876727044,
-        "mdd": -0.37792138518818974,
-        "worst_12m": -0.249811588723569,
-        "terminal_10k": 640756.9404579771,
-        "n_months": 1196
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.07876754702289812,
+        "vol": 0.08752445334088337,
+        "sharpe": 0.7371123908965083,
+        "mdd": -0.21454943625332654,
+        "worst_12m": -0.1916012150191615,
+        "terminal_10k": 41176.89813665212,
+        "n_months": 224
       }
     },
     "swr": {
-      "window": "real_2020_2026",
-      "swr_95pct": 0.054322659634526635,
+      "window": "syn_2006_2026",
+      "swr_95pct": 0.057256722806496345,
       "success_at_swr": 0.95
     },
     "bootstrap": {
-      "window": "real_2020_2026",
+      "window": "syn_2006_2026",
       "initial_wealth": 10000,
       "monthly_contrib": 1000,
       "horizon_years": 30,
       "terminal_wealth": {
-        "p05": 723134.6292114833,
-        "p25": 923260.9553772432,
-        "p50": 1106352.2524150114,
-        "p75": 1343539.4014735005,
-        "p95": 1806623.4134456487,
-        "mean": 1157402.6753577304
+        "p05": 829262.5797886252,
+        "p25": 1182041.1951140414,
+        "p50": 1515559.216397334,
+        "p75": 1916330.6595943333,
+        "p95": 2757297.1050214604,
+        "mean": 1608417.4672793169
       },
       "mdd_distribution": {
-        "p05": -0.17132709835515736,
-        "p50": -0.11181010744705014,
-        "p95": -0.08792630963270004
+        "p05": -0.2685749315698318,
+        "p50": -0.17283749258811076,
+        "p95": -0.10744066111473204
       },
       "prob_mdd_gt_50pct": 0.0,
       "prob_mdd_gt_70pct": 0.0

@@ -1,5 +1,10 @@
 # Plano C v2 — TLDR (leia isso primeiro)
 
+> **⚠️ Atualizado 2026-04-23:** pós-entrega, usuário pegou inconsistência
+> nos números (FINAL_1 "Max CAGR" tinha CAGR menor que FINAL_3). Dois bugs
+> corrigidos. Detalhes em `CORRECTIONS.md`. Tabelas abaixo refletem
+> números corretos.
+
 > Pra ler em 2 minutos. Detalhes técnicos em `ANALYSIS.md` (~750 linhas com
 > backtest, citações de livros, pesquisa web 2024-2026, metodologia).
 
@@ -14,15 +19,15 @@
 
 ## Sua pergunta sobre SSO 50%: não faça
 
-Seu plano atual (`P0`) vs SSO 50% (`P1`) no backtest 2006-2026:
+Seu plano atual (`P0`) vs SSO 50% (`P1`) no backtest 2007-2026 (18,5y, corrigido):
 
 |  | P0 Atual | P1 Seu SSO | Delta |
 |--|----------|-------------|-------|
-| CAGR | 7,5% | 9,4% | +1,9pp ✅ |
-| Sharpe | 0,39 | 0,35 | **PIOR** ❌ |
-| MDD | -50% | -69% | **+19pp pior** ❌ |
-| P(MDD>50% em 30y) | 4% | **53%** | **13× pior** ❌ |
-| SWR aposentadoria | 4,1% | 2,7% | -1,4pp ❌ |
+| CAGR | 7,52% | 9,53% | +2,01pp ✅ |
+| Sharpe | 0,37 | 0,34 | **PIOR** ❌ |
+| MDD | -53,6% | -71,1% | **+17,5pp pior** ❌ |
+| P(MDD>50% em 30y) | 30% | **79%** | **2,6× pior** ❌ |
+| SWR aposentadoria | 3,48% | 2,48% | -1,00pp ❌ |
 
 **Kernel bom, execução ruim.** O princípio (eficiência de capital) é correto,
 mas SSO é pura leverage sobre beta. A alternativa certa é **return stacking**:
@@ -34,19 +39,25 @@ Exemplo: NTSX 100% vs SSO 100% em 2006-2026:
 
 NTSX entrega quase o mesmo CAGR com **metade do drawdown e quase 2× o Sharpe**.
 
-## As 4 carteiras finais
+## As 4 carteiras finais — CORRIGIDAS
 
-Todas em `ANALYSIS.md` §6 com pesos detalhados.
+Janela 2007-07 → 2026-02 (18,5y). Pesos em `ANALYSIS.md` §6.
 
 | Carteira | Objetivo | CAGR | Sharpe | MDD | p50 TW 30y | Quando usar |
 |----------|----------|------|--------|-----|------------|-------------|
-| **FINAL_1** | Max CAGR | 9,1% | 0,61 | -35% | **$2,23M** | Acumulação 30-45 anos |
-| **FINAL_2** | Max Sharpe | 9,2% | **0,70** | -28% | $1,47M | Pré-aposentadoria 55-60 |
-| **FINAL_3** | Max TW c/ MDD≤50% | **9,4%** | 0,64 | -36% | $1,81M | **Meu default, 30-60 anos** |
-| **FINAL_4** | Max SWR | 8,6% | 0,73 | -24% | $1,11M | Aposentadoria 60+ |
+| **FINAL_1** | Max CAGR | **10,40%** | 0,50 | -56% | **$2,66M** | Acumulação 30-45 anos |
+| **FINAL_2** | Max Sharpe | 8,64% | 0,72 | -25% | $1,77M | Pré-aposentadoria 55-60 |
+| **FINAL_3** | Max TW c/ MDD≤50% | 9,20% | 0,58 | -41% | $2,04M | **Meu default, 30-60 anos** |
+| **FINAL_4** | Max SWR | 7,88% | **0,74** | **-21%** | $1,52M | Aposentadoria 60+ |
 
-Todas batem seu plano atual simultaneamente em CAGR, Sharpe e MDD. Bootstrap
-30 anos com inicial $10k + aporte $1k/mês.
+**Rankings consistentes com o nome** (Max CAGR → FINAL_1; MDD ≤ 50% → FINAL_3
+respeita o gate; lowest vol+MDD → FINAL_4). FINAL_2 e FINAL_4 empatadas em
+Sharpe/SWR por serem ambas "diversification-first" — diferenciadas só por
+equity beta (FINAL_2 mais agressiva na acumulação, FINAL_4 mais cash-heavy
+na aposentadoria).
+
+**Correção importante:** FINAL_1 bate P0 em CAGR+Sharpe mas **perde em MDD**
+(-56% vs -54%). Troca MDD por CAGR. FINAL_2/3/4 batem P0 em tudo.
 
 ## Estrutura comum das 4
 

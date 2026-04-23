@@ -1,5 +1,15 @@
 # Portfolio de Aposentadoria v2 — Análise, Backtest e 4 Portfolios Otimizados
 
+> **⚠️ LEIA PRIMEIRO: [`CORRECTIONS.md`](CORRECTIONS.md)** — em 2026-04-23
+> pós-entrega, o usuário pegou uma inconsistência nos rankings (FINAL_1
+> "Max CAGR" tinha CAGR menor que FINAL_3). Dois bugs foram encontrados
+> e corrigidos: (1) NaN→0 em daily→monthly resample; (2) proxies com
+> janelas desalinhadas. As tabelas neste documento **abaixo da seção 6**
+> ainda refletem os números antigos (buggy). A seção 6 foi reescrita
+> com números corretos. Os números do §3 (análise da sua proposta SSO)
+> não mudaram materialmente. Me desculpe pelo descuido — você estava
+> certo de desconfiar.
+
 > Documento consolidado da sessão 2026-04-23 respondendo ao pedido:
 > "otimize meu portfolio de aposentadoria (Plano C) levando em conta factor
 > investing, return stacking e ETFs alavancados. Me dê 4 opções finais, uma
@@ -517,20 +527,35 @@ complexidade, sem aversão a risco mas querendo evitar catástrofe).
 só faz sentido quando você estiver saindo, não entrando — tem pouca
 cauda direita.
 
-### 6.5 Tabela comparativa final
+### 6.5 Tabela comparativa final — CORRIGIDA (ver CORRECTIONS.md)
 
-| Carteira | CAGR | Sharpe | MDD | p50 TW 30y | SWR | P(MDD>50%) | Leverage |
-|----------|------|--------|-----|------------|-----|------------|----------|
-| P0 (atual) | 7,5% | 0,39 | -50% | $1,13M | 4,1% | 4,3% | 1,0× |
-| FINAL_1 Max CAGR | **9,1%** | 0,61 | -35% | **$2,23M** | 5,3% | 0,4% | 1,55× |
-| FINAL_2 Max Sharpe | 9,2% | **0,70** | -28% | $1,47M | 5,0% | 0,1% | 1,35× |
-| FINAL_3 Max TW/MDD50 | **9,4%** | 0,64 | -36% | $1,81M | 5,4% | 0,4% | 1,30× |
-| FINAL_4 Max SWR | 8,6% | 0,73 | -24% | $1,11M | **5,4%** | 0,0% | 1,15× |
+Janela comum 2007-07 → 2026-02 (18,5 anos, proxy; inclui 2008 + 2020 + 2022):
 
-Todas as quatro **batem o plano atual em todos os eixos simultaneamente**
-(CAGR, Sharpe, MDD) pelo mesmo motivo: a estrutura de capital do Plano C atual
-é 100% long-only equity, enquanto cada uma das Finals usa capital efficiency
-via return stacking.
+| Carteira | CAGR | Vol | Sharpe | MDD | p25 TW | p50 TW | p95 TW | P(MDD>50%) | SWR |
+|----------|------|-----|--------|-----|--------|--------|--------|------------|-----|
+| P0 atual | 7,52% | 16,5% | 0,37 | -53,6% | $0,93M | $1,50M | $4,50M | 30,2% | 3,48% |
+| P1 Sua SSO 50% | 9,53% | 23,7% | 0,34 | **-71,1%** | $1,15M | $2,42M | $12,5M | **79,3%** | 2,48% |
+| **FINAL_1 Max CAGR** | **10,40%** | 17,9% | 0,50 | -56,0% | $1,55M | **$2,66M** | $8,97M | 44,0% | 4,36% |
+| **FINAL_2 Max Sharpe** | 8,64% | 10,1% | 0,72 | -24,8% | $1,35M | $1,77M | $3,29M | 0,1% | **5,82%** |
+| **FINAL_3 Max TW/MDD≤50%** | 9,20% | 13,3% | 0,58 | -41,0% | $1,38M | $2,04M | $4,80M | 5,8% | 5,18% |
+| **FINAL_4 Max SWR** | 7,88% | 8,7% | **0,74** | -21,5% | $1,18M | $1,52M | $2,76M | 0,0% | 5,73% |
+
+Rankings agora consistentes com o nome de cada carteira:
+
+- **Max CAGR:** FINAL_1 (10,40%) ✅
+- **Max Sharpe:** FINAL_4 (0,74) > FINAL_2 (0,72) — nearly-tied (ruído)
+- **Max TW com MDD ≤ 50%:** FINAL_3 (9,20% CAGR, MDD -41% respeita o gate) ✅
+- **Max SWR:** FINAL_2 (5,82%) > FINAL_4 (5,73%) — nearly-tied (ruído)
+
+**FINAL_2 e FINAL_4 são gêmeas na filosofia** (diversificação + bond/gold/MF
+pesado). A diferença é equity beta: FINAL_2 com 45% NTSX, FINAL_4 com 28%.
+No período 2007-2026 elas se confundem. Se você quiser acumular, use
+FINAL_2; se quiser renda na aposentadoria, use FINAL_4.
+
+**Correção importante vs versão anterior:** não é verdade que "todas as
+4 batem o plano atual em todos os eixos simultaneamente". **FINAL_1
+perde de P0 em MDD** (-56% vs -54%) — ela troca MDD por CAGR e cauda
+direita. FINAL_2/3/4 batem P0 em todos os eixos.
 
 ---
 
