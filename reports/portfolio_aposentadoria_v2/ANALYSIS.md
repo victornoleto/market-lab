@@ -445,6 +445,8 @@ BR FI proxy. Validação adicional com dados REAIS 2020-2026.
 ### 6.1 FINAL V3_1: Max CAGR — "Leveraged Growth Engine"
 
 **Objetivo:** maximizar CAGR esperado em 30 anos; zero FI (drag); aceita MDD até ~40%.
+**Default pra fase de acumulação 30-45 anos** (primeiros ~15 anos sem BR FI
+para max equity + factor tilts).
 
 | Ticker | Peso | Classe |
 |--------|------|--------|
@@ -470,7 +472,50 @@ p05=$2,89M / p25=**$7,53M** / p50=**$12,42M** / p95=$46,17M / P(MDD>50%)=1,4% / 
 **Veredito:** Máxima convexidade à direita. GDE 30% substitui a lógica do NTSX+SSO
 com stacking de gold (descorrelacionado) em vez de bonds (que drena em bull). O
 SSO 10% direto adiciona a camada extra de beta puro. Bull case forte, caveat:
-janela curta 2014-2026 é bull-biased.
+janela curta 2014-2026 é bull-biased. Real-world 30y expectativa: CAGR
+**12-14% com MDD 40-55%** (ver backtest sem BTGD 2007-2026 abaixo).
+
+### 6.1.1 Variante V3_1 SCV-Heavy (opcional)
+
+Pros que priorizam **factor tilts, especialmente SCV** sobre beta-leverage.
+Pesos redistribuídos com +15pp em SCV (AVUV 25% + AVDV 15%) às custas de
+GDE (20%) e NTSI (12%) reduzidos:
+
+| Ticker | V3_1 Current | V3_1 SCV-Heavy |
+|--------|-------------|----------------|
+| GDE | 30% | 20% |
+| NTSI | 15% | 12% |
+| NTSE | 5% | 5% |
+| **AVUV** | **15%** | **25%** |
+| **AVDV** | **10%** | **15%** |
+| AVEM | 5% | 5% |
+| SPMO | 5% | 5% |
+| SSO | 10% | 10% |
+| BTGD | 3% | 3% |
+| IBIT | 2% | 2% |
+| **Total SCV** | **25%** | **40%** |
+| **Total factor** | **35%** | **50%** |
+
+**Trade-off quantitativo** (backtest mesmo proxy):
+
+| Janela | V3_1 Current CAGR | V3_1 SCV-Heavy CAGR | Diff |
+|--------|-------------------|---------------------|------|
+| 2014-2026 (bull, com BTGD) | 18,33% | 16,55% | **-1,78pp** |
+| 2007-2026 (sem BTGD) | 13,06% | 11,33% | **-1,73pp** |
+
+**Preço do tilt extra SCV: ~1,7pp de CAGR backtest por 15pp de SCV
+adicional.** Motivo: SCV ficou abaixo de SPX em 2010-2024 ("value dead"
+era).
+
+**Contra-argumento pró SCV-Heavy:** value spread (expensive/cheap ratio) hoje
+está no **percentil 95-100 histórico** (Asness/AQR 2024) — posicionamento
+mais extremo desde 2000. Se mean reversion funcionar, SCV deveria
+outperformar SPX na próxima década. Backtest dos últimos 15 anos
+**subestima** SCV forward.
+
+**Decisão honesta:** escolha qual aposta você acredita mais — beta + leverage
+(Current) ou mean reversion do value (SCV-Heavy). Não há resposta
+objetivamente certa.
 
 ### 6.2 FINAL V3_2: Max Sharpe — "Diversified Factor + BR FI"
 
@@ -503,8 +548,9 @@ com IMAB11 duration 6-8y seria Sharpe 0,8-0,9.
 
 ### 6.3 FINAL V3_3: Max Terminal Wealth com MDD ≤ 50% — "Bounded Growth"
 
-**Objetivo:** max p50 terminal wealth com MDD histórico ≤ 50%. **Meu default
-pra acumulação 30-60 anos.**
+**Objetivo:** max p50 terminal wealth com MDD histórico ≤ 50%. **Default
+pra fase de transição 45-55 anos** (entre V3_1 aggressive e V3_2
+pre-retirement).
 
 | Ticker | Peso | Classe |
 |--------|------|--------|
@@ -529,10 +575,10 @@ CAGR **11,69%** / Sharpe 0,79 / MDD -35,5% / Vol 13,0%
 **Bootstrap 30y:**
 p05=$1,66M / p25=**$2,23M** / p50=**$3,31M** / p95=$8,06M / P(MDD>50%)=1,8% / SWR 6,75%
 
-**Veredito:** Balanceada. CAGR alto, MDD respeita o gate 50%, factor tilts
-robustos, BR FI suficiente pra rebalancear na queda mas não tanto pra drenar
-CAGR. É o melhor ponto pragmático pro seu perfil (30 anos, tolerante a
-complexidade, factor believer).
+**Veredito:** Balanceada. Serve como ponte entre V3_1 (acumulação agressiva)
+e V3_2 (pre-retirement). 18% de BR FI começa a amortecer sequence risk sem
+drenar CAGR significativamente. NÃO é a default pra acumulação inicial
+(30-45 anos) — use V3_1; V3_3 entra a partir dos 45.
 
 ### 6.4 FINAL V3_4: Max SWR — "Retirement Income BR"
 
@@ -582,11 +628,19 @@ pra BR FI (veja §1.1).
 | **V3_3 Max TW/MDD50** | 11,69% | 13,0% | 0,79 | -36% | $2,23M | $3,31M | $8,06M | 6,75% | 18% | 1,35× |
 | **V3_4 Max SWR** | 11,69% | 7,5% | **1,36** | **-12%** | $2,48M | $3,13M | $5,87M | **8,61%** | 52% | 1,15× |
 
-Rankings consistentes com o nome:
+Rankings por objetivo:
 - **Max CAGR:** V3_1 (18,33%) ✅
 - **Max Sharpe:** V3_4 (1,36) > V3_2 (1,12) — V3_4 vence no proxy CDI
 - **Max TW/MDD≤50%:** V3_3 (MDD -36% dentro do gate, CAGR 11,69%) ✅
 - **Max SWR:** V3_4 (8,61%) ✅
+
+**Observação importante sobre V3_2 vs V3_3 no backtest:** V3_2 domina V3_3
+em todos os 5 eixos (CAGR, Sharpe, MDD, Terminal wealth, SWR). Isso é em
+parte artefato do proxy CDI (V3_2 tem 35% BR FI vs 18% em V3_3; o proxy
+infla Sharpe desproporcionalmente em V3_2). Real-world com IMAB11
+(duration ~7y) a diferença encolheria. **O V3_3 se justifica no glidepath**
+como ponte estrutural entre V3_1 (0% BR FI) e V3_2 (35% BR FI) — é a
+transição natural 45-55 anos.
 
 **Vs P0 (plano atual):** todas as 4 V3 batem P0 em CAGR, Sharpe e terminal
 wealth. V3_3 e V3_4 batem em MDD também; V3_1 troca MDD (-30% vs -54% do P0)
@@ -629,22 +683,41 @@ dataset 38 países 1890-2019, 1M bootstraps). TDFs tradicionais subperformam
 all-equity em **todos** os outcomes (wealth at retirement, consumo sustentado,
 risco exaustão, bequests).
 
-### 7.2 Minha recomendação — glidepath por mix de fontes de retorno
+### 7.2 Glidepath recomendado (atualizado)
 
 Em vez de mudar `equity %` por idade, troque o **mix de fontes de retorno**
-por fase da vida:
+por fase da vida. **Nos primeiros 15 anos, zero BR FI — foco total em max
+equity + factor tilts.** BR FI entra só a partir dos 45 e escala
+progressivamente.
 
-| Fase | Idade | Portfolio | Racional |
-|------|-------|-----------|----------|
-| Acumulação agressiva | 30-45 | **V3_1** (Max CAGR) | Horizonte 15+ anos absorve drawdowns |
-| Transição | 45-55 | **V3_3** (Max TW/MDD≤50%) | 15-25 anos pós-transição; capa MDD pra proteger sequence risk |
-| Pré-aposentadoria | 55-60 | **V3_2** (Max Sharpe) | 5-10 anos antes; sequence risk dominante |
-| Aposentadoria | 60+ | **V3_4** (Max SWR) | Foco em withdrawal rate sustentável |
+| Fase | Idade | Portfolio | BR FI% | Leverage | Racional |
+|------|-------|-----------|--------|----------|----------|
+| **Acumulação agressiva** | 30-45 | **V3_1** (Max CAGR) | 0% | 1,75× | 15+ anos absorve DDs; foco total equity+factor |
+| **Transição** | 45-55 | **V3_3** (Max TW/MDD≤50%) | 18% | 1,35× | BR FI começa como amortecedor sequence risk |
+| **Pré-aposentadoria** | 55-60 | **V3_2** (Max Sharpe) | 35% | 1,25× | BR FI domina, MF + factor como alpha extra |
+| **Aposentadoria** | 60+ | **V3_4** (Max SWR) | 52% | 1,15× | BR FI dominante, MF crisis alpha, equity residual |
 
-**Mecânica do glidepath (exemplo V3_1 → V3_3 aos 45):**
-- Parar de aportar em SSO e BTGD (eliminar a leverage extra)
-- Redirecionar aportes pra B5P211 + IMAB11 + DINF11 até atingir ~18% BR FI
-- Reduzir GDE de 30% pra 20% vendendo gradualmente em anos bons
+**Mecânica da transição V3_1 → V3_3 aos 45 anos:**
+- Parar de aportar em SSO (eliminar 10% da leverage direta)
+- Reduzir BTGD de 3% pra 0%
+- Reduzir GDE de 30% pra 20% gradualmente (vendas em anos bons)
+- Redirecionar aportes novos pra B5P211 (10%) + IMAB11 (5%) + DINF11 (3%) até
+  atingir 18% BR FI
+- Adicionar DBMF 5% pra diversificação
+
+**Mecânica da transição V3_3 → V3_2 aos 55 anos:**
+- Reduzir NTSE (5→0) e SPMO (5→0)
+- Reduzir AVUV (15→10) e AVDV (10→5)
+- Aumentar B5P211 (10→15), IMAB11 (5→10), DINF11 (3→10)
+- Aumentar DBMF (5→10) + KMLM (0→5)
+- Aumentar GLDM (2→5)
+
+**Mecânica da transição V3_2 → V3_4 aos 60 anos:**
+- Zerar NTSI, NTSE, RSBT equity leverage
+- Reduzir GDE (20→15)
+- Reduzir AVUV/AVDV pra residual
+- Adicionar LFTS11 (10% cash buffer)
+- Aumentar B5P211 (15→20), IMAB11 (10→15)
 
 ### 7.3 Opção Cederburg-pura (mais agressiva, evidência-based)
 

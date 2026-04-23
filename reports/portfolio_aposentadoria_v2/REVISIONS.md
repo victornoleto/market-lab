@@ -1,6 +1,49 @@
-# Revisões — Plano C v2/v3
+# Revisões — Plano C v2/v3/v3.1
 
 Audit trail das mudanças feitas durante a sessão 2026-04-23.
+
+---
+
+## V3.1 (2026-04-23 tarde — glidepath mapping revisto + V3_1 SCV-Heavy variante)
+
+**Trigger 1:** usuário apontou que V3_3 não fazia sentido como default pra
+acumulação — V3_2 domina V3_3 em todos os 5 eixos (CAGR, Sharpe, MDD, Terminal
+wealth, SWR).
+
+**Trigger 2:** usuário: "não acho que precisamos focar em renda fixa nos
+primeiros ~15 anos. O interessante seria sempre focar em maximizar o retorno
+da renda variavel, e até mesmo dos factor tilt (principalmente scv)."
+
+**Mudanças:**
+
+1. **Glidepath repensado como fase-da-vida, não mais "default único":**
+   - 30-45 (acumulação 15y): V3_1 Max CAGR (**0% BR FI**, leverage 1,75×)
+   - 45-55 (transição): V3_3 Bounded Growth (18% BR FI)
+   - 55-60 (pré-retirement): V3_2 Max Sharpe (35% BR FI)
+   - 60+ (retirement): V3_4 Max SWR (52% BR FI)
+
+2. **Admissão honesta sobre V3_3:** domina V3_2 no backtest, mas isso é em
+   parte artefato do proxy CDI inflando V3_2 (35% BR FI vs 18% em V3_3). O
+   V3_3 se justifica no glidepath como estrutural ponte 45-55, não como
+   default de acumulação.
+
+3. **V3_1 SCV-Heavy variante (opcional):** testei pressionar SCV mais alto
+   por preferência do usuário. Resultado:
+
+| V3_1 variante | SCV% | CAGR (2014-26) | Sharpe | CAGR (2007-26 no-BTGD) |
+|---------------|------|----------------|--------|------------------------|
+| V3_1 Current | 25% | 18,33% | 0,93 | 13,06% |
+| V3_1 SCV-Heavy | 40% | 16,55% | 0,83 | 11,33% |
+| V3_1 Ultra-SCV | 55% | 14,97% | 0,76 | 9,92% |
+
+Trade-off: cada +15pp SCV custa ~1,7pp CAGR backtest (SCV underperformed SPX
+2010-2024). Contra-argumento Asness 2024: value spread percentil 95-100 =
+posicionamento extremo pré-reversão. Decisão honesta deferida ao usuário.
+
+4. **Mecânica de transição** documentada em §7.2 (ANALYSIS.md):
+   - V3_1 → V3_3 (aos 45): zerar SSO+BTGD; reduzir GDE 30→20; add 18% BR FI
+   - V3_3 → V3_2 (aos 55): reduzir equity leverage; add BR FI 18→35
+   - V3_2 → V3_4 (aos 60): zerar equity leverage extra; BR FI 35→52 + cash
 
 ---
 
