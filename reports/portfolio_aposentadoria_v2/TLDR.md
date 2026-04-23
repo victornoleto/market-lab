@@ -146,15 +146,16 @@ A 10% alocação o premium compensa.
 
 ## O que mudou do Plano C atual
 
-| | Plano atual (P0) | V3_1 (acumulação) |
+| | Plano atual (P0) | V3_1 v3.5 (acumulação) |
 |--|------------------|-------------------|
-| Estrutura | 100% equity long-only factor | Return stacking + factor + leverage |
-| Alavancagem | 1,0× | 1,75× via GDE + NTSX + SSO |
-| Fixed income | 0% | 0% (vem depois, fase transição) |
-| Gold/BTC | 5% | 5% (BTGD + IBIT, concentrado) |
-| CAGR esperado 30y | 7,5% | 12-14% (real-world) / 18,3% (backtest bull) |
-| Sharpe | 0,37 | 0,93 |
-| Terminal wealth 30y p50 | $1,50M | $12,4M (backtest bull) / ~$5M (real-world) |
+| Estrutura | 100% equity long-only factor | Factor + equity stacked com gold |
+| Alavancagem | 1,0× | 1,25× via GDE + BTGD (tudo stacked) |
+| Fixed income | 0% | 0% (vem depois, fase transição aos 45) |
+| Gold/BTC | 5% (standalone GLDM+IBIT) | 27,5% gold + 5% BTC (tudo via stacking) |
+| ETFs internacionais | AVDE, AVDE, AVEM (pure) | AVDE, AVEM (pure — zero Treasury overlay) |
+| CAGR esperado 30y | 7,5% | 10-12% (real-world) / 15,3% (backtest bull) |
+| Sharpe | 0,37 | 0,83 |
+| Terminal wealth 30y p50 | $1,50M | $6,71M (backtest bull) / ~$4-5M (real-world) |
 
 ## Três decisões estruturais (evidência-based)
 

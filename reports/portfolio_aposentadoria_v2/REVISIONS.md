@@ -1,6 +1,36 @@
-# Revisões — Plano C v2/v3/v3.1/v3.2/v3.3/v3.4/v3.5
+# Revisões — Plano C v2/v3/v3.1/v3.2/v3.3/v3.4/v3.5 (+ validação final)
 
 Audit trail das mudanças feitas durante a sessão 2026-04-23.
+
+---
+
+## Validação final (2026-04-23 pós-v3.5)
+
+**Trigger:** usuário compartilhou lista comprehensive de stacked ETFs do
+Reddit r/LETFs pra validar se V3_5 faltou algum produto relevante.
+
+**Análise em** `data/stacked_etfs_comprehensive_review.md`.
+
+**Conclusão:** V3_1 v3.5 (GDE + BTGD como únicos stacked) é a estrutura
+correta. A maioria dos ETFs da lista falha em 1 dos 2 critérios estruturais
+(overlay com return stream positivo + não-USD-tied):
+
+- **14 ETFs rejected** por ter US bonds/Treasury/TIPS overlay (NTSI, NTSE,
+  NTSX, NTSD, NTSG, RSSB, RSBA, RSBT, RSBY, ESBG, GDT, WTIP, SPLS, ISTG,
+  ISST, ISBT, ALLW, LQPE, RPAR, UPAR, ENDW)
+- **5 ETFs Income family** (ISSG, ISST, ISBG, ISSB, ISBT) — wrong-fit
+  acumulação (covered calls cap upside)
+- **GDE + BTGD passam ambos critérios** ✅
+
+**Radar de futuro:**
+- RSSX (100% SPY + 80% Gold + 20% BTC): alternativa integrada a BTGD;
+  esperar 2-3y track record (inception mai-2025)
+- HOLD (75% SPY + 75% MF): possível substituto pra DBMF standalone em V3_3
+- Tidal upcoming (100% VXUS + 100% MF): interessante se lançar
+
+**Nenhum ETF da lista representa upgrade claro vs V3_1 v3.5 atual.**
+
+---
 
 ---
 

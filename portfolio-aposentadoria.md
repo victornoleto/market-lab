@@ -2,6 +2,27 @@
 
 > Documento gerado a partir de uma consultoria sobre construção de portfólio de aposentadoria baseado em ETFs domiciliados nos Estados Unidos, com tilts de fatores fundamentados em pesquisa acadêmica.
 
+> **📋 VERSÃO REVISADA (V3.5, 2026-04-23):** este documento foi consolidado
+> original. Após análise completa com backtest + revisão de princípios
+> estruturais (bonds em moeda de consumo, stacking com overlay
+> descorrelacionado, factor tilts balanceados), o design evolui para o
+> que está em **`reports/portfolio_aposentadoria_v2/`**. Ver:
+>
+> - `reports/portfolio_aposentadoria_v2/TLDR.md` — 2-min read da versão atual
+> - `reports/portfolio_aposentadoria_v2/ANALYSIS.md` — análise completa ~900 linhas
+> - `reports/portfolio_aposentadoria_v2/REVISIONS.md` — audit trail V1→V3.5
+>
+> Principais diferenças vs este documento original:
+>
+> 1. **Bonds em BRL (não em USD)**: adicionados na fase de transição aos 45 anos
+>    (B5P211, IMAB11, LFTS11, DINF11) — nunca US Treasuries.
+> 2. **Stacked alts** (GDE, BTGD) em vez de standalone (GLDM, IBIT).
+> 3. **Fator tilts balanceados 15% SCV + 10% Momentum** (ratio 60/40) em vez de
+>    25% SCV + 5% Momentum.
+> 4. **Glidepath por fase-da-vida**: V3_1 (30-45) → V3_3 (45-55) → V3_2 (55-60) → V3_4 (60+).
+> 5. **US Estate Tax alert crítico** (ETFs US-domiciliados >$60k → até 40% tax
+>    para não-residente na morte). Mitigação via UCITS irlandeses.
+
 ---
 
 ## Sumário
