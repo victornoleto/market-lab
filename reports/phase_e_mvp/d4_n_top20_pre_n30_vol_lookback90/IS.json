@@ -1,0 +1,20 @@
+{
+  "split": "IS",
+  "start": "2010-01-01",
+  "end": "2019-12-31",
+  "n_bars": 2580,
+  "initial_cash": 50000.0,
+  "final_equity_gross": 503974.13056821964,
+  "final_equity_net": 342105.10301816446,
+  "cagr_gross": 0.22120579052831313,
+  "cagr_net": 0.17599232426569933,
+  "sharpe_net": 0.9706081926825102,
+  "sortino_net": 1.379707853991817,
+  "mdd_net": 0.2527996210770576,
+  "n_trades": 505,
+  "n_trades_br": 310,
+  "n_trades_us": 195,
+  "tax_total_brl": 64757.87730090811,
+  "monthly_tax_hits": 78,
+  "pct_months_exempt_br": 0.5555555555555556
+}

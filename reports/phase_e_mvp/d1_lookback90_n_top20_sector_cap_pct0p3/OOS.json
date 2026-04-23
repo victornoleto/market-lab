@@ -1,0 +1,20 @@
+{
+  "split": "OOS",
+  "start": "2020-01-01",
+  "end": "2023-12-31",
+  "n_bars": 1031,
+  "initial_cash": 50000.0,
+  "final_equity_gross": 392689.7691727168,
+  "final_equity_net": 326517.96365407406,
+  "cagr_gross": -0.04332399287866828,
+  "cagr_net": -0.08307511347724494,
+  "sharpe_net": -0.13808184254749697,
+  "sortino_net": -0.1748010333815758,
+  "mdd_net": 0.5098497999796159,
+  "n_trades": 379,
+  "n_trades_br": 258,
+  "n_trades_us": 121,
+  "tax_total_brl": 69456.58013083664,
+  "monthly_tax_hits": 32,
+  "pct_months_exempt_br": 0.5238095238095238
+}

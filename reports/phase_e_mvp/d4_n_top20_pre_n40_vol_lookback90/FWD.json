@@ -1,0 +1,20 @@
+{
+  "split": "FWD",
+  "start": "2024-01-01",
+  "end": "2026-04-15",
+  "n_bars": 587,
+  "initial_cash": 50000.0,
+  "final_equity_gross": 296576.0884259344,
+  "final_equity_net": 286330.8665786838,
+  "cagr_gross": -0.010657400415751694,
+  "cagr_net": -0.02506088526652428,
+  "sharpe_net": -0.06361872213139123,
+  "sortino_net": -0.08546612269407587,
+  "mdd_net": 0.26974869717023586,
+  "n_trades": 142,
+  "n_trades_br": 93,
+  "n_trades_us": 49,
+  "tax_total_brl": 9911.190402071148,
+  "monthly_tax_hits": 18,
+  "pct_months_exempt_br": 0.5714285714285714
+}
