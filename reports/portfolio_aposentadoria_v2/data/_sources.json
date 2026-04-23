@@ -245,5 +245,103 @@
     "start": "2004-11-18T00:00:00",
     "end": "2026-04-22T00:00:00",
     "rows": 5389
+  },
+  "B5P211": {
+    "source": "yfinance_BR",
+    "ticker": "B5P211.SA",
+    "desc": "IT Now IMAB-5 P2 \u2014 IPCA+ bonds \u22645y, IMA-B 5",
+    "start": "2020-11-16T00:00:00",
+    "end": "2026-04-22T00:00:00",
+    "rows": 1351
+  },
+  "IMAB11": {
+    "source": "yfinance_BR",
+    "ticker": "IMAB11.SA",
+    "desc": "IT Now IMA-B \u2014 full-curve IPCA+ bonds",
+    "start": "2019-05-20T00:00:00",
+    "end": "2026-04-22T00:00:00",
+    "rows": 1724
+  },
+  "LFTS11": {
+    "source": "yfinance_BR",
+    "ticker": "LFTS11.SA",
+    "desc": "Investo LFT Selic \u2014 Selic-linked, cash proxy",
+    "start": "2024-02-20T00:00:00",
+    "end": "2026-04-22T00:00:00",
+    "rows": 543
+  },
+  "DEBB11": {
+    "source": "yfinance_BR",
+    "ticker": "DEBB11.SA",
+    "desc": "Investo Deb\u00eantures Incentivadas",
+    "start": "2022-06-28T00:00:00",
+    "end": "2026-04-22T00:00:00",
+    "rows": 936
+  },
+  "FIXA11": {
+    "source": "yfinance_BR",
+    "ticker": "FIXA11.SA",
+    "desc": "Mirae all-fixed-income BR",
+    "start": "2021-01-12T00:00:00",
+    "end": "2026-04-22T00:00:00",
+    "rows": 1310
+  },
+  "BOVA11": {
+    "source": "yfinance_BR",
+    "ticker": "BOVA11.SA",
+    "desc": "iShares Ibovespa BR reference",
+    "start": "2009-04-17T00:00:00",
+    "end": "2026-04-22T00:00:00",
+    "rows": 4195
+  },
+  "IVVB11": {
+    "source": "yfinance_BR",
+    "ticker": "IVVB11.SA",
+    "desc": "iShares S&P500 BR (BRL-hedged exposure)",
+    "start": "2014-04-29T00:00:00",
+    "end": "2026-04-22T00:00:00",
+    "rows": 2948
+  },
+  "GDE": {
+    "source": "tiingo_api",
+    "desc": "WisdomTree Efficient Gold Plus Equity \u2014 90% SPX + 90% gold fut",
+    "start": "2022-03-17T00:00:00",
+    "end": "2026-04-22T00:00:00",
+    "rows": 1028
+  },
+  "RSSX": {
+    "source": "tiingo_api",
+    "desc": "Return Stacked US Stocks & Gold/Bitcoin \u2014 100% SPX + 100% gold/BTC",
+    "start": "2025-05-30T00:00:00",
+    "end": "2026-04-22T00:00:00",
+    "rows": 225
+  },
+  "BTGD": {
+    "source": "tiingo_api",
+    "desc": "STKd 100% Bitcoin & 100% Gold \u2014 2\u00d7 leveraged gold+BTC",
+    "start": "2024-10-16T00:00:00",
+    "end": "2026-04-22T00:00:00",
+    "rows": 379
+  },
+  "ISBG": {
+    "source": "tiingo_api",
+    "desc": "IncomeSTKd 1\u00d7 BTC & 1\u00d7 Gold Premium \u2014 Quantify, + option premium",
+    "start": "2008-02-14T00:00:00",
+    "end": "2026-04-22T00:00:00",
+    "rows": 4545
+  },
+  "BTC_USD": {
+    "source": "yfinance_BTC-USD",
+    "desc": "BTC spot from yfinance",
+    "start": "2014-09-17T00:00:00",
+    "end": "2026-04-23T00:00:00",
+    "rows": 4237
+  },
+  "IPCA_BR": {
+    "source": "bcb_sgs_433",
+    "desc": "IPCA monthly BR (BCB series 433)",
+    "start": "2000-01-01T00:00:00",
+    "end": "2026-03-01T00:00:00",
+    "rows": 315
   }
 }

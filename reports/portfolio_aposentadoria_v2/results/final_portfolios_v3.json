@@ -1,0 +1,339 @@
+{
+  "FINAL_V3_1_MAX_CAGR": {
+    "name": "Leveraged Growth Engine v3 (Max CAGR)",
+    "objective": "maximize 30y CAGR; accept historical MDD up to ~60%",
+    "weights_real": {
+      "GDE": 0.3,
+      "NTSI": 0.15,
+      "NTSE": 0.05,
+      "AVUV": 0.15,
+      "AVDV": 0.1,
+      "AVEM": 0.05,
+      "SPMO": 0.05,
+      "SSO": 0.1,
+      "BTGD": 0.03,
+      "IBIT": 0.02
+    },
+    "weights_proxy": {
+      "GDE_syn": 0.3,
+      "SPY_2x_sim": 0.1,
+      "NTSX_syn": 0.2,
+      "AVUV_syn_3f": 0.2,
+      "VEA": 0.1,
+      "VWO": 0.05,
+      "BTGD_syn": 0.05
+    },
+    "embedded_leverage_approx": 1.75,
+    "rationale": "GDE 30% + NTSX family 20% (= 50% capital-efficient equity+overlay). SSO 10% for extra US leverage. Factor 35% (SCV+Momentum+EM). BTGD/IBIT 5% tail. Zero direct FI \u2014 opportunity cost in bull. No NTSX 'Treasury overlay' problem: bonds inside NTSX are instrument-level, not asset-allocation, and justified as capital efficiency per WisdomTree research.",
+    "backtests": {
+      "real_recent": {
+        "status": "INSUFFICIENT",
+        "months_after_intersect": 18
+      },
+      "syn_2007_2026": {
+        "status": "OK",
+        "actual_start": "2014-09-30",
+        "actual_end": "2026-02-28",
+        "cagr": 0.18332825158247057,
+        "vol": 0.17518181153404053,
+        "sharpe": 0.9343292885923032,
+        "mdd": -0.29732772233262034,
+        "worst_12m": -0.23356300655341933,
+        "terminal_10k": 69296.32172871393,
+        "n_months": 138
+      },
+      "syn_long_2000": {
+        "status": "OK",
+        "actual_start": "2014-09-30",
+        "actual_end": "2026-02-28",
+        "cagr": 0.18332825158247057,
+        "vol": 0.17518181153404053,
+        "sharpe": 0.9343292885923032,
+        "mdd": -0.29732772233262034,
+        "worst_12m": -0.23356300655341933,
+        "terminal_10k": 69296.32172871393,
+        "n_months": 138
+      }
+    },
+    "swr": {
+      "window": "syn_2007_2026",
+      "swr_95pct": 0.09614456335754311,
+      "success_at_swr": 0.95
+    },
+    "bootstrap": {
+      "window": "syn_2007_2026",
+      "initial_wealth": 10000,
+      "monthly_contrib": 1000,
+      "horizon_years": 30,
+      "terminal_wealth": {
+        "p05": 3462311.6662275274,
+        "p25": 7525316.025426656,
+        "p50": 12422141.050233541,
+        "p75": 21237659.507029682,
+        "p95": 46174094.82158277,
+        "mean": 17238287.348731205
+      },
+      "mdd_distribution": {
+        "p05": -0.43879509365382147,
+        "p50": -0.29667294992667204,
+        "p95": -0.2226871434342869
+      },
+      "prob_mdd_gt_50pct": 0.014,
+      "prob_mdd_gt_70pct": 0.0
+    }
+  },
+  "FINAL_V3_2_MAX_SHARPE": {
+    "name": "Diversified Factor + BR FI v3 (Max Sharpe)",
+    "objective": "maximize Sharpe; accept CAGR cost for better path",
+    "weights_real": {
+      "GDE": 0.2,
+      "NTSI": 0.1,
+      "AVUV": 0.1,
+      "AVDV": 0.05,
+      "DBMF": 0.1,
+      "KMLM": 0.05,
+      "B5P211": 0.15,
+      "IMAB11": 0.1,
+      "DINF11": 0.1,
+      "GLDM": 0.05
+    },
+    "weights_proxy": {
+      "GDE_syn": 0.2,
+      "NTSX_syn": 0.1,
+      "AVUV_syn_3f": 0.1,
+      "VEA": 0.05,
+      "CDI_BR": 0.35,
+      "GLD": 0.2
+    },
+    "embedded_leverage_approx": 1.25,
+    "rationale": "Home-currency bonds 35% (B5P211+IMAB11+DINF11). GDE 20% capital efficient equity+gold. 15% managed futures as crisis alpha. Factor tilt 15%. Gold 5% extra. FI denominado em BRL elimina FX risk sobre stabilizer; DINF11 \u00e9 isento IR. Target Sharpe 0.65-0.80.",
+    "backtests": {
+      "real_recent": {
+        "status": "MISSING",
+        "missing": [
+          "DINF11"
+        ]
+      },
+      "syn_2007_2026": {
+        "status": "OK",
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.12461009475161533,
+        "vol": 0.09873226827861196,
+        "sharpe": 1.1177491281908702,
+        "mdd": -0.18098671879615089,
+        "worst_12m": -0.1809867187961508,
+        "terminal_10k": 89544.08718754258,
+        "n_months": 224
+      },
+      "syn_long_2000": {
+        "status": "OK",
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.12461009475161533,
+        "vol": 0.09873226827861196,
+        "sharpe": 1.1177491281908702,
+        "mdd": -0.18098671879615089,
+        "worst_12m": -0.1809867187961508,
+        "terminal_10k": 89544.08718754258,
+        "n_months": 224
+      }
+    },
+    "swr": {
+      "window": "syn_2007_2026",
+      "swr_95pct": 0.0832568480766713,
+      "success_at_swr": 0.95
+    },
+    "bootstrap": {
+      "window": "syn_2007_2026",
+      "initial_wealth": 10000,
+      "monthly_contrib": 1000,
+      "horizon_years": 30,
+      "terminal_wealth": {
+        "p05": 1788698.1080560554,
+        "p25": 2748537.520645638,
+        "p50": 3704141.268825802,
+        "p75": 5091849.149204949,
+        "p95": 7977237.982011446,
+        "mean": 4177994.81643916
+      },
+      "mdd_distribution": {
+        "p05": -0.24270045482280134,
+        "p50": -0.16864507238335602,
+        "p95": -0.09456159187437585
+      },
+      "prob_mdd_gt_50pct": 0.0,
+      "prob_mdd_gt_70pct": 0.0
+    }
+  },
+  "FINAL_V3_3_MAX_TW_MDD50": {
+    "name": "Bounded Growth + BR FI v3 (Max TW, MDD \u2264 50%)",
+    "objective": "maximize p50 terminal wealth; historical MDD \u2264 50%",
+    "weights_real": {
+      "GDE": 0.2,
+      "NTSI": 0.15,
+      "NTSE": 0.05,
+      "AVUV": 0.15,
+      "AVDV": 0.1,
+      "AVEM": 0.05,
+      "SPMO": 0.05,
+      "DBMF": 0.05,
+      "B5P211": 0.1,
+      "IMAB11": 0.05,
+      "DINF11": 0.03,
+      "GLDM": 0.02
+    },
+    "weights_proxy": {
+      "GDE_syn": 0.2,
+      "NTSX_syn": 0.2,
+      "AVUV_syn_3f": 0.2,
+      "VEA": 0.1,
+      "VWO": 0.05,
+      "CDI_BR": 0.18,
+      "GLD": 0.07
+    },
+    "embedded_leverage_approx": 1.35,
+    "rationale": "Strong factor tilt 35%, NTSX family 40% capital efficient core, BR FI 18%, MF 5%, gold 2%. Target CAGR 9-10% com MDD 30-45%. BR FI pequena o suficiente pra n\u00e3o drag CAGR, suficiente pra rebalancear na queda de equity.",
+    "backtests": {
+      "real_recent": {
+        "status": "MISSING",
+        "missing": [
+          "DINF11"
+        ]
+      },
+      "syn_2007_2026": {
+        "status": "OK",
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.11687750978963596,
+        "vol": 0.12964978866299018,
+        "sharpe": 0.7915579569320322,
+        "mdd": -0.35510065659221096,
+        "worst_12m": -0.3295513389869764,
+        "terminal_10k": 78723.34171853765,
+        "n_months": 224
+      },
+      "syn_long_2000": {
+        "status": "OK",
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.11687750978963596,
+        "vol": 0.12964978866299018,
+        "sharpe": 0.7915579569320322,
+        "mdd": -0.35510065659221096,
+        "worst_12m": -0.3295513389869764,
+        "terminal_10k": 78723.34171853765,
+        "n_months": 224
+      }
+    },
+    "swr": {
+      "window": "syn_2007_2026",
+      "swr_95pct": 0.06754174691541265,
+      "success_at_swr": 0.95
+    },
+    "bootstrap": {
+      "window": "syn_2007_2026",
+      "initial_wealth": 10000,
+      "monthly_contrib": 1000,
+      "horizon_years": 30,
+      "terminal_wealth": {
+        "p05": 1265156.8499658478,
+        "p25": 2229476.560670557,
+        "p50": 3310417.65201289,
+        "p75": 4858281.9816676,
+        "p95": 8057198.154216716,
+        "mean": 3822853.5131832515
+      },
+      "mdd_distribution": {
+        "p05": -0.44993846804281123,
+        "p50": -0.3039260889988632,
+        "p95": -0.16076702680800095
+      },
+      "prob_mdd_gt_50pct": 0.0175,
+      "prob_mdd_gt_70pct": 0.0
+    }
+  },
+  "FINAL_V3_4_MAX_SWR": {
+    "name": "Retirement Income BR v3 (Max SWR)",
+    "objective": "maximize 30y SWR at 95%; end-state of glidepath",
+    "weights_real": {
+      "GDE": 0.15,
+      "AVUV": 0.08,
+      "AVDV": 0.05,
+      "DBMF": 0.1,
+      "KMLM": 0.05,
+      "B5P211": 0.2,
+      "IMAB11": 0.15,
+      "LFTS11": 0.1,
+      "DINF11": 0.07,
+      "GLDM": 0.05
+    },
+    "weights_proxy": {
+      "GDE_syn": 0.15,
+      "AVUV_syn_3f": 0.08,
+      "VEA": 0.05,
+      "CDI_BR": 0.52,
+      "GLD": 0.2
+    },
+    "embedded_leverage_approx": 1.15,
+    "rationale": "BR FI 52% (stabilizer + income). Equity ~40% effective via GDE. Gold 25% (via GLD proxy incl MF). Factor tilt 13% residual. Zero US bonds \u2014 Campbell-Viceira + Vanguard + PWL all agree. Target SWR 4-5%; MDD \u2264 20% em BRL terms.",
+    "backtests": {
+      "real_recent": {
+        "status": "MISSING",
+        "missing": [
+          "DINF11"
+        ]
+      },
+      "syn_2007_2026": {
+        "status": "OK",
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.11692884933677927,
+        "vol": 0.07529806062081915,
+        "sharpe": 1.3636030002809996,
+        "mdd": -0.12090893311282472,
+        "worst_12m": -0.09209050695407361,
+        "terminal_10k": 78790.91781984572,
+        "n_months": 224
+      },
+      "syn_long_2000": {
+        "status": "OK",
+        "actual_start": "2007-07-31",
+        "actual_end": "2026-02-28",
+        "cagr": 0.11692884933677927,
+        "vol": 0.07529806062081915,
+        "sharpe": 1.3636030002809996,
+        "mdd": -0.12090893311282472,
+        "worst_12m": -0.09209050695407361,
+        "terminal_10k": 78790.91781984572,
+        "n_months": 224
+      }
+    },
+    "swr": {
+      "window": "syn_2007_2026",
+      "swr_95pct": 0.08609932451757683,
+      "success_at_swr": 0.95
+    },
+    "bootstrap": {
+      "window": "syn_2007_2026",
+      "initial_wealth": 10000,
+      "monthly_contrib": 1000,
+      "horizon_years": 30,
+      "terminal_wealth": {
+        "p05": 1765665.313099656,
+        "p25": 2481243.877266166,
+        "p50": 3130737.731410721,
+        "p75": 4052325.4235085845,
+        "p95": 5871017.409117409,
+        "mean": 3404075.6024864423
+      },
+      "mdd_distribution": {
+        "p05": -0.1443023787262384,
+        "p50": -0.11213062579189129,
+        "p95": -0.06393147775192563
+      },
+      "prob_mdd_gt_50pct": 0.0,
+      "prob_mdd_gt_70pct": 0.0
+    }
+  }
+}

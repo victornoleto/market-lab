@@ -1,12 +1,44 @@
-# Plano C v2 — TLDR (leia isso primeiro)
+# Plano C v2/v3 — TLDR (leia isso primeiro)
 
-> **⚠️ Atualizado 2026-04-23:** pós-entrega, usuário pegou inconsistência
-> nos números (FINAL_1 "Max CAGR" tinha CAGR menor que FINAL_3). Dois bugs
-> corrigidos. Detalhes em `CORRECTIONS.md`. Tabelas abaixo refletem
-> números corretos.
+> **⚠️ Atualizado 3× em 2026-04-23** (feedback iterativo):
+>
+> 1. Análise inicial: v2 com US bonds + WisdomTree NTSX. `ANALYSIS.md`.
+> 2. Correção 1: bugs de NaN-fill e janelas desalinhadas → `CORRECTIONS.md`.
+> 3. **Correção 2 (mais recente, esta versão):** substituir US bonds por BR FI
+>    (Campbell-Viceira: bonds em moeda doméstica) + adicionar GDE/BTGD/RSSX
+>    (return-stacked alts). Descartar ISBG (AUM microscópico, decay). Resultado
+>    em `CORRECTIONS_V3.md`.
+>
+> **A versão final que você deve usar é a V3** (abaixo). V1/V2 preservadas
+> pra audit trail.
 
-> Pra ler em 2 minutos. Detalhes técnicos em `ANALYSIS.md` (~750 linhas com
-> backtest, citações de livros, pesquisa web 2024-2026, metodologia).
+## As 4 carteiras V3 — VERSÃO FINAL
+
+Janela de backtest proxy 2007-2026 (18.5y); BR FI via proxy CDI (otimista no MDD).
+
+| Carteira | CAGR | Sharpe | MDD | p50 TW 30y | SWR | %BR FI | Leverage |
+|----------|------|--------|-----|------------|-----|--------|----------|
+| **V3_1 Max CAGR** | **18,3%*** | 0,93 | -30% | **$12,4M** | 9,6% | 0% | 1,75× |
+| **V3_2 Max Sharpe** | 12,5% | 1,12 | -18% | $3,7M | 8,3% | 35% | 1,25× |
+| **V3_3 Max TW/MDD≤50%** | 11,7% | 0,79 | -36% | $3,3M | 6,7% | 18% | 1,35× |
+| **V3_4 Max SWR** | 11,7% | **1,36** | -12% | $3,1M | **8,6%** | 52% | 1,15× |
+
+(*) V3_1 janela 2014-2026 devido ao BTGD_syn. Os demais 2007-2026.
+
+**Validação com dados reais (V3_4, janela 2020-2026):** CAGR 11,6% / Sharpe
+1,33 / MDD -3,5% — estrutura confirmada; proxy CDI estava direcionalmente
+correto.
+
+### O que mudou vs v2
+
+- **Bonds US (TLT/IEF/SHV) → Bonds BR (B5P211/IMAB11/LFTS11/DINF11).**
+  Fundamento: Campbell-Viceira 2010, Vanguard 2018/2023, PWL Capital —
+  bonds na moeda de consumo. Real yield NTN-B IPCA+6% domina TIPS +2%
+  em 400bps.
+- **Gold/BTC sleeve expandida com return stacking: GDE, BTGD.**
+  ISBG descartado (AUM <$5M, covered-call decay).
+
+---
 
 ## O que eu fiz
 
