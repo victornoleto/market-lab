@@ -1,13 +1,19 @@
-# Mandate override proposal — CONSOLIDAR PLANO C / fechar slots ativos
+# Mandate override — CONSOLIDAR PLANO C / fechar slots ativos
 
 **Data:** 2026-04-23
 **Proposto por:** Claude Code (após Phase E-MVP falhar 42/42; cumulativo 113/113)
-**Status:** 🟡 Proposta — aguarda sign-off explícito do usuário
-**Afeta:** `docs/investment-mandate.md` §1 (realocação 100% passive); marca
-Strategy A, B, D, E como "INATIVO — no winner found". `CLAUDE.md` + `.claude/CLAUDE.md`
-sumário.
-**Reversível:** Sim. Este override não apaga a infra (engine, gates, livros,
-scripts); só muda a alocação de capital e congela os slots ativos.
+**Status:** ✅ **Signed 2026-04-23** (usuário: "Ok, faça sua consolidação.
+Vamos pausar o estudo/evolução dos planos A/B/D por enquanto.")
+**Opção aplicada:** PRIMARY (consolidação imediata; TIMEWAIT implícito via
+revisão programada 6-12 meses; R5-LAST meta-labeling ensemble NÃO executado).
+**Afeta (APLICADO):** `docs/investment-mandate.md` §1 (realocação 100%
+passive) + §7 (entrada histórica). `CLAUDE.md` + `.claude/CLAUDE.md`
+sumário atualizados. Strategy A, B, D marcadas DORMANT (0% capital);
+Strategy E infra retida como experimental.
+**Reversibilidade:** Override não apaga a infra (engine cross-lib, gates,
+33 livros, scripts Phase D/E). Muda apenas alocação de capital e congela
+slots ativos. Futuros overrides podem reativar slots caso literatura/regime
+sugiram novo signal promissor.
 
 ---
 
