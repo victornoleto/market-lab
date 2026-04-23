@@ -1,30 +1,31 @@
 {
   "FINAL_V3_1_MAX_CAGR": {
-    "name": "Leveraged Growth Engine v3 (Max CAGR)",
-    "objective": "maximize 30y CAGR; accept historical MDD up to ~60%",
+    "name": "Leveraged Growth Engine v3.2 (Max CAGR)",
+    "objective": "maximize 30y CAGR; accept historical MDD up to ~50%",
     "weights_real": {
-      "GDE": 0.3,
-      "NTSI": 0.15,
-      "NTSE": 0.05,
-      "AVUV": 0.15,
-      "AVDV": 0.1,
+      "GDE": 0.35,
+      "NTSI": 0.18,
+      "NTSE": 0.07,
+      "AVUV": 0.1,
+      "AVDV": 0.05,
+      "SPMO": 0.07,
+      "IDMO": 0.03,
       "AVEM": 0.05,
-      "SPMO": 0.05,
-      "SSO": 0.1,
       "BTGD": 0.03,
-      "IBIT": 0.02
+      "IBIT": 0.02,
+      "GLDM": 0.05
     },
     "weights_proxy": {
-      "GDE_syn": 0.3,
-      "SPY_2x_sim": 0.1,
-      "NTSX_syn": 0.2,
+      "GDE_syn": 0.35,
+      "NTSX_syn": 0.25,
       "AVUV_syn_3f": 0.2,
-      "VEA": 0.1,
+      "VEA": 0.08,
       "VWO": 0.05,
-      "BTGD_syn": 0.05
+      "BTGD_syn": 0.05,
+      "GLD": 0.02
     },
-    "embedded_leverage_approx": 1.75,
-    "rationale": "GDE 30% + NTSX family 20% (= 50% capital-efficient equity+overlay). SSO 10% for extra US leverage. Factor 35% (SCV+Momentum+EM). BTGD/IBIT 5% tail. Zero direct FI \u2014 opportunity cost in bull. No NTSX 'Treasury overlay' problem: bonds inside NTSX are instrument-level, not asset-allocation, and justified as capital efficiency per WisdomTree research.",
+    "embedded_leverage_approx": 1.51,
+    "rationale": "v3.2 redesign (p\u00f3s feedback usu\u00e1rio): removido SSO 10% por inconsist\u00eancia com princ\u00edpio 'stacked overlay > LETF puro'. Tilts rebalanceados 15% SCV + 10% Momentum (25% total) \u2014 literatura AQR: value+momentum correla\u00e7\u00e3o -0.4 a -0.7, stacking d\u00e1 Sharpe boost. Leverage efetivo baixa de 1.75\u00d7 para 1.51\u00d7 (tudo via overlay stacked). Backtest 2007-2026: Sharpe 0.72 vs 0.64 current, MDD -45% vs -52% \u2014 estritamente melhor.",
     "backtests": {
       "real_recent": {
         "status": "INSUFFICIENT",
@@ -34,30 +35,30 @@
         "status": "OK",
         "actual_start": "2014-09-30",
         "actual_end": "2026-02-28",
-        "cagr": 0.18332825158247057,
-        "vol": 0.17518181153404053,
-        "sharpe": 0.9343292885923032,
-        "mdd": -0.29732772233262034,
-        "worst_12m": -0.23356300655341933,
-        "terminal_10k": 69296.32172871393,
+        "cagr": 0.18263171514596177,
+        "vol": 0.1618491373770627,
+        "sharpe": 1.006993077316827,
+        "mdd": -0.2759381061028858,
+        "worst_12m": -0.2197775879910755,
+        "terminal_10k": 68828.68892786886,
         "n_months": 138
       },
       "syn_long_2000": {
         "status": "OK",
         "actual_start": "2014-09-30",
         "actual_end": "2026-02-28",
-        "cagr": 0.18332825158247057,
-        "vol": 0.17518181153404053,
-        "sharpe": 0.9343292885923032,
-        "mdd": -0.29732772233262034,
-        "worst_12m": -0.23356300655341933,
-        "terminal_10k": 69296.32172871393,
+        "cagr": 0.18263171514596177,
+        "vol": 0.1618491373770627,
+        "sharpe": 1.006993077316827,
+        "mdd": -0.2759381061028858,
+        "worst_12m": -0.2197775879910755,
+        "terminal_10k": 68828.68892786886,
         "n_months": 138
       }
     },
     "swr": {
       "window": "syn_2007_2026",
-      "swr_95pct": 0.09614456335754311,
+      "swr_95pct": 0.09799952843345636,
       "success_at_swr": 0.95
     },
     "bootstrap": {
@@ -66,19 +67,19 @@
       "monthly_contrib": 1000,
       "horizon_years": 30,
       "terminal_wealth": {
-        "p05": 3462311.6662275274,
-        "p25": 7525316.025426656,
-        "p50": 12422141.050233541,
-        "p75": 21237659.507029682,
-        "p95": 46174094.82158277,
-        "mean": 17238287.348731205
+        "p05": 3631894.8952907785,
+        "p25": 7569919.103995466,
+        "p50": 12339243.148935603,
+        "p75": 20376384.999370635,
+        "p95": 43263148.37868126,
+        "mean": 16458069.451981883
       },
       "mdd_distribution": {
-        "p05": -0.43879509365382147,
-        "p50": -0.29667294992667204,
-        "p95": -0.2226871434342869
+        "p05": -0.4051736005492404,
+        "p50": -0.2744712356626612,
+        "p95": -0.19355906812213472
       },
-      "prob_mdd_gt_50pct": 0.014,
+      "prob_mdd_gt_50pct": 0.005,
       "prob_mdd_gt_70pct": 0.0
     }
   },

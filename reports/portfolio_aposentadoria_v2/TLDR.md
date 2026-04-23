@@ -41,64 +41,71 @@ Comparação direta 2006-2026:
 | **NTSX_syn** (0,9 SPY + 0,6 IEF) | **11,50%** | **0,71** | -41% |
 | SSO (LETF puro c/ fees) | 12,91% | 0,37 | -81% |
 
-## As 4 carteiras finais
+## As 4 carteiras finais (v3.2 revisada)
 
 Janela backtest 2007-2026 (18,5y) usando proxies. Validação com dados reais
 2020-2026.
 
 | Carteira | Objetivo | CAGR | Sharpe | MDD | p50 TW 30y | SWR | BR FI% | Quando usar |
 |----------|----------|------|--------|-----|------------|-----|--------|-------------|
-| **V3_1** | Max CAGR | **18,3%*** | 0,93 | -30% | **$12,4M** | 9,6% | 0% | **Acumulação 30-45** |
+| **V3_1 v3.2** | Max CAGR | **18,3%*** | **1,01** | **-28%** | **$12,3M** | 9,8% | 0% | **Acumulação 30-45** |
 | **V3_2** | Max Sharpe | 12,5% | **1,12** | -18% | $3,7M | 8,3% | 35% | Pré-aposentadoria 55-60 |
 | **V3_3** | Max TW/MDD≤50% | 11,7% | 0,79 | -36% | $3,3M | 6,7% | 18% | Transição 45-55 |
 | **V3_4** | Max SWR | 11,7% | 1,36 | **-12%** | $3,1M | **8,6%** | 52% | Retirement 60+ |
 
-(*) V3_1 em janela 2014-2026 (bull-biased, BTGD_syn); sem BTGD em 2007-2026 o
-CAGR cai pra ~13%. Real-world esperado: 12-14% com MDD 40-55%.
+(*) V3_1 em janela 2014-2026; sem BTGD em 2007-2026 o CAGR cai pra ~13,4% e
+MDD -44,7% (vs -52% da versão com SSO). Real-world esperado: **13-15% CAGR
+com MDD 35-45%**.
 
-## Estrutura das 4 (pesos reais)
+**V3_1 REVISTA em 3 mudanças importantes (pós feedback do usuário):**
+1. **Removido SSO 10%** (era inconsistente com princípio "stacked overlay >
+   LETF puro"). Redirecionado pra GDE+NTSI.
+2. **Tilts balanceados em 25% total** (15% SCV + 10% Momentum, antes era
+   25% SCV + 5% Mom, desbalanceado 5:1).
+3. **Adicionado IDMO 3%** (momentum internacional — AQR: value+momentum
+   correlação negativa -0,4 a -0,7, stacking melhora Sharpe).
 
-| Ticker | V3_1 | V3_2 | V3_3 | V3_4 |
-|--------|------|------|------|------|
-| **GDE** (90% SPX + 90% gold) | 30% | 20% | 20% | 15% |
-| **NTSI/NTSE** (Int/EM 90/60) | 20% | 10% | 20% | 0% |
-| **AVUV + AVDV** (SCV) | 25% | 15% | 25% | 13% |
-| **AVEM + SPMO** (EM + Mom) | 10% | 0% | 10% | 0% |
-| **SSO** (2× SPY) | 10% | 0% | 0% | 0% |
+Delta vs V3_1 original: Sharpe +0,08 / MDD melhor 7pp em 2008 / Leverage
+1,51× (de 1,75×) / CAGR praticamente igual.
+
+## Estrutura das 4 (pesos reais — V3_1 v3.2 atualizada)
+
+| Ticker | V3_1 v3.2 | V3_2 | V3_3 | V3_4 |
+|--------|-----------|------|------|------|
+| **GDE** (90% SPX + 90% gold) | 35% | 20% | 20% | 15% |
+| **NTSI/NTSE** (Int/EM 90/60) | 25% | 10% | 20% | 0% |
+| **AVUV + AVDV** (SCV, 15% total em V3_1) | 15% | 15% | 25% | 13% |
+| **SPMO + IDMO** (Momentum, 10% total em V3_1) | 10% | 0% | 5% | 0% |
+| **AVEM** (EM core) | 5% | 0% | 5% | 0% |
+| ~~**SSO**~~ | ~~0%~~ | ~~0%~~ | ~~0%~~ | ~~0%~~ |
 | **DBMF + KMLM** (MF) | 0% | 15% | 5% | 15% |
 | **B5P211 + IMAB11** (IPCA+) | 0% | 25% | 15% | 35% |
 | **LFTS11** (Selic cash) | 0% | 0% | 0% | 10% |
 | **DINF11** (isento IR) | 0% | 10% | 3% | 7% |
-| **BTGD + IBIT + GLDM** (gold/BTC) | 5% | 5% | 2% | 5% |
+| **BTGD + IBIT + GLDM** (gold/BTC) | 10% | 5% | 2% | 5% |
+| **Total factor tilts** | **25%** (15 SCV + 10 Mom) | 15% | 30% | 13% |
+| **Leverage efetivo** | **1,51×** | 1,25× | 1,35× | 1,15× |
 
-## Opcional: variantes SCV-heavy
+## Justificativa do balance SCV/Momentum (25% total)
 
-Você disse "foco em factor tilts, especialmente SCV". Testei pressionar SCV
-mais alto:
+Literatura AQR "Our Model Goes to Six" + "Fact, Fiction, and Momentum":
+- Correlação HML vs UMD = **-0,4 a -0,7** (Asness/Frazzini)
+- Peso ótimo momentum em portfolio ótimo = **~38%** (AQR French-data analysis)
+- Stacking value + momentum melhora Sharpe pela correlação negativa condicional
 
-| V3_1 variante | SCV% | CAGR (2014-26) | Sharpe | CAGR (2007-26 no-BTGD) |
-|---------------|------|----------------|--------|------------------------|
-| **V3_1 Current** (default) | 25% | **18,3%** | **0,93** | **13,1%** |
-| V3_1 SCV-Heavy | 40% | 16,6% | 0,83 | 11,3% |
-| V3_1 Ultra-SCV | 55% | 15,0% | 0,76 | 9,9% |
+Seu argumento psicológico também é válido: **Larry Swedroe estima que apenas
+~5% dos investidores DIY mantêm tilt de SCV** (tracking error pain). 25% total
+balanceado minimiza lag vs SPY nos piores cenários.
 
-**Trade-off:** cada 15pp extra de SCV custa ~1,7pp de CAGR no backtest dos
-últimos 19 anos. Motivo: SCV ficou **abaixo** de SPX em 2010-2024 ("value
-dead").
+**Escolha atual (balanceada e defensável):**
+- 15% SCV (AVUV 10% + AVDV 5%)
+- 10% Momentum (SPMO 7% + IDMO 3%)
+- 5% EM core (AVEM)
+- Total factor: 30% (25% efetivo SCV+Mom + 5% EM geographical)
 
-**Contra-argumento:** value spread hoje está no **percentil 95-100**
-(Asness/AQR 2024) — posicionamento mais extremo desde 2000. Se mean reversion
-funcionar, SCV deveria outperformar next decade. Backtest dos últimos 15 anos
-**subestima** SCV futuro.
-
-**Escolha honesta:**
-- **V3_1 Current (25% SCV):** aposta em beta + leverage. Melhor número
-  backtest.
-- **V3_1 SCV-Heavy (40% SCV):** aposta contrarian no value premium. Pior
-  número backtest, maior alpha esperado se mean reversion funciona.
-
-Meu default: **V3_1 Current**. Se você quer apostar forte em SCV, V3_1
-SCV-Heavy tem (AVUV 25% + AVDV 15%) em vez de (AVUV 15% + AVDV 10%).
+Caveat tax: Momentum tem turnover ~100%/ano → distribuições de cap gains →
+15% DARF. Drag real estimado 1-1,5%/ano pra brasileiro (vs 0,3-0,5% do AVUV).
+A 10% alocação o premium compensa.
 
 ## O que mudou do Plano C atual
 
@@ -180,12 +187,12 @@ transição (~45 anos).
 5. **Hand-picked weights**, não otimização matemática.
 6. **FX risk não modelado** — portfolio mix BRL+USD assumido neutro.
 
-## Próximo passo (se aprovar a v3)
+## Próximo passo (se aprovar a v3.2)
 
 1. Ler `ANALYSIS.md` completo (~900 linhas)
-2. Decidir: V3_1 Current (25% SCV) ou V3_1 SCV-Heavy (40% SCV)?
-3. Setup broker US (Inter Internacional ou IBKR)
-4. Definir estate tax mitigation: UCITS já agora, ou aceitar risco até
-   patrimônio crescer
-5. Testar 12 meses em paper trading antes de escalar
-6. Broker BR (Inter DTVM / XP / Clear) entra em cena por volta dos 45 anos
+2. Setup broker US (Inter Internacional pra começar; IBKR quando aporte >$500/mês)
+3. Implementar V3_1 v3.2 exatamente como descrito (11 tickers)
+4. Definir estate tax mitigation: UCITS já agora (CSPX/IWDA pra parte do
+   bucket equity), ou aceitar risco até patrimônio crescer
+5. Testar 12 meses em paper trading antes de escalar aportes
+6. Broker BR (Inter DTVM / XP / Clear) entra em cena aos ~45 anos pra BR FI

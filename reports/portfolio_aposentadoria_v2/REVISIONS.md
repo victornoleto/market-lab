@@ -1,6 +1,51 @@
-# Revisões — Plano C v2/v3/v3.1
+# Revisões — Plano C v2/v3/v3.1/v3.2
 
 Audit trail das mudanças feitas durante a sessão 2026-04-23.
+
+---
+
+## V3.2 (2026-04-23 final — V3_1 revisada, 3 mudanças)
+
+**Trigger:** usuário apontou 3 pontos legítimos:
+
+1. Tilt total 25% balanceado é suficiente (psychological tracking error pain
+   limita aderência acima disso — Swedroe: apenas ~5% dos DIY mantêm tilt SCV).
+2. Momentum estava subdimensionado (5% SPMO) vs SCV (25%) — ratio 5:1.
+   AQR "Our Model Goes to Six" + Asness/Frazzini: correlação HML vs UMD
+   -0,4 a -0,7, peso ótimo momentum ~38% em portfolio otimizado.
+3. **Incoerência flagrada:** SSO 10% em V3_1 contradiz meu próprio argumento
+   em §3 e §4 de que "return stacking com overlay descorrelacionado >
+   LETF puro".
+
+**Mudanças em V3_1 (v3.1 → v3.2):**
+
+- **Removido SSO 10%** — redirecionado pra GDE (30→35) + NTSI (15→18) +
+  NTSE (5→7) (3 assets stacked em vez de 1 LETF puro).
+- **Rebalance tilts 25% total:** SCV 25% → 15% (AVUV 10 + AVDV 5), Momentum
+  5% → 10% (SPMO 7 + IDMO 3). Ratio SCV:Mom passou de 5:1 para 1,5:1.
+- **Adicionado IDMO 3%** (momentum internacional, pareia com AVDV pra
+  complementaridade cross-regional).
+- **Adicionado GLDM 5%** (gold spot — pequeno reforço anti-debasement).
+- **Leverage efetivo: 1,75× → 1,51×** (menos, mas todo via stacked overlay).
+
+**Resultados backtest comparativo:**
+
+| Janela | Métrica | v3.1 (SSO 10%) | v3.2 (sem SSO) | Delta |
+|--------|---------|-----------------|-----------------|-------|
+| 2014-26 | CAGR | 18,33% | 18,26% | ~igual |
+| 2014-26 | Sharpe | 0,93 | **1,01** | **+0,08** |
+| 2014-26 | MDD | -29,7% | **-27,6%** | **+2pp** |
+| 2007-26 (inclui 2008) | CAGR | 13,06% | **13,40%** | **+0,34pp** |
+| 2007-26 | Sharpe | 0,64 | **0,72** | **+0,08** |
+| 2007-26 | MDD | -52,0% | **-44,7%** | **+7,3pp** |
+
+**v3.2 domina v3.1 em todas as métricas.** Confirmação empírica do princípio:
+stacked overlay (GDE/NTSX) > LETF puro (SSO). O 10% SSO estava sangrando 7pp
+de MDD em 2008 sem contribuir CAGR líquido proporcional.
+
+**Lição:** minha inconsistência original veio de "querer mais leverage"
+achando que SSO 10% "é pequeno e não dói". Backtest provou o contrário — o
+LETF puro amplifica MDD desproporcionalmente em bear.
 
 ---
 

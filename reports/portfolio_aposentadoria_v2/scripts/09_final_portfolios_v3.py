@@ -64,37 +64,41 @@ FINAL_V3 = {
     # Max leverage via GDE (equity+gold stacked) + NTSX family + SSO extra.
     # No BR FI (opportunity cost — FI drags CAGR).
     "FINAL_V3_1_MAX_CAGR": {
-        "name": "Leveraged Growth Engine v3 (Max CAGR)",
-        "objective": "maximize 30y CAGR; accept historical MDD up to ~60%",
+        "name": "Leveraged Growth Engine v3.2 (Max CAGR)",
+        "objective": "maximize 30y CAGR; accept historical MDD up to ~50%",
         "weights_real": {
-            "GDE": 0.30,    # 90% SPX + 90% gold, 1.8× lev
-            "NTSI": 0.15,   # Int 90/60
-            "NTSE": 0.05,   # EM 90/60
-            "AVUV": 0.15,   # US SCV
-            "AVDV": 0.10,   # Int SCV
-            "AVEM": 0.05,
-            "SPMO": 0.05,   # US Momentum
-            "SSO": 0.10,    # extra US 2x leverage
+            "GDE": 0.35,    # 90% SPX + 90% gold, 1.8× lev (up from 30 to replace SSO)
+            "NTSI": 0.18,   # Int 90/60 (up from 15)
+            "NTSE": 0.07,   # EM 90/60 (up from 5)
+            "AVUV": 0.10,   # US SCV (balanced factor 15% SCV + 10% Momentum)
+            "AVDV": 0.05,   # Int SCV
+            "SPMO": 0.07,   # US Momentum (up from 5)
+            "IDMO": 0.03,   # Int Momentum (new — AQR: value+momentum complementar)
+            "AVEM": 0.05,   # EM core
             "BTGD": 0.03,   # gold+BTC stacked
-            "IBIT": 0.02,
+            "IBIT": 0.02,   # BTC spot
+            "GLDM": 0.05,   # gold spot (new)
+            # REMOVED SSO 10% — inconsistency with NTSX/GDE principle
+            # (LETF buy-hold pure beta is what we argued against)
         },
         "weights_proxy": {
-            "GDE_syn": 0.30,         # long history (2004+)
-            "SPY_2x_sim": 0.10,      # SSO proxy (1885+)
-            "NTSX_syn": 0.20,        # NTSI + NTSE combined (2006+)
-            "AVUV_syn_3f": 0.20,     # AVUV + SPMO combined (1926+)
-            "VEA": 0.10,             # AVDV proxy (2007+)
-            "VWO": 0.05,             # AVEM (2006+)
-            "BTGD_syn": 0.05,        # gold+BTC (2014+)
+            "GDE_syn": 0.35,
+            "NTSX_syn": 0.25,          # NTSI + NTSE combined
+            "AVUV_syn_3f": 0.20,       # AVUV + SPMO combined (no long-history momentum proxy)
+            "VEA": 0.08,               # AVDV + IDMO
+            "VWO": 0.05,               # AVEM
+            "BTGD_syn": 0.05,          # BTGD + IBIT
+            "GLD": 0.02,               # GLDM residual
         },
-        "embedded_leverage_approx": 1.75,
+        "embedded_leverage_approx": 1.51,
         "rationale": (
-            "GDE 30% + NTSX family 20% (= 50% capital-efficient equity+overlay). "
-            "SSO 10% for extra US leverage. Factor 35% (SCV+Momentum+EM). "
-            "BTGD/IBIT 5% tail. Zero direct FI — opportunity cost in bull. "
-            "No NTSX 'Treasury overlay' problem: bonds inside NTSX are "
-            "instrument-level, not asset-allocation, and justified as capital "
-            "efficiency per WisdomTree research."
+            "v3.2 redesign (pós feedback usuário): removido SSO 10% por "
+            "inconsistência com princípio 'stacked overlay > LETF puro'. "
+            "Tilts rebalanceados 15% SCV + 10% Momentum (25% total) — "
+            "literatura AQR: value+momentum correlação -0.4 a -0.7, stacking "
+            "dá Sharpe boost. Leverage efetivo baixa de 1.75× para 1.51× "
+            "(tudo via overlay stacked). Backtest 2007-2026: Sharpe 0.72 vs "
+            "0.64 current, MDD -45% vs -52% — estritamente melhor."
         ),
     },
 

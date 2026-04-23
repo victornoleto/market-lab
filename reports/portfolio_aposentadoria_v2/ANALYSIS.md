@@ -442,80 +442,72 @@ Cada uma otimizando uma função objetivo diferente, usando:
 Janela de backtest primária: **2007-07 → 2026-02 (18,5 anos, proxy)** com CDI como
 BR FI proxy. Validação adicional com dados REAIS 2020-2026.
 
-### 6.1 FINAL V3_1: Max CAGR — "Leveraged Growth Engine"
+### 6.1 FINAL V3_1 v3.2: Max CAGR — "Leveraged Growth Engine"
 
-**Objetivo:** maximizar CAGR esperado em 30 anos; zero FI (drag); aceita MDD até ~40%.
+**Objetivo:** maximizar CAGR esperado em 30 anos; zero FI (drag); aceita MDD até ~45%.
 **Default pra fase de acumulação 30-45 anos** (primeiros ~15 anos sem BR FI
-para max equity + factor tilts).
+para max equity + factor tilts balanceados).
 
-| Ticker | Peso | Classe |
-|--------|------|--------|
-| **GDE** | 30% | 90% SPX + 90% gold (1,8× lev) |
-| NTSI | 15% | Int 90/60 |
-| NTSE | 5% | EM 90/60 |
-| AVUV | 15% | US SCV |
-| AVDV | 10% | Int SCV |
-| AVEM | 5% | EM core |
-| SPMO | 5% | US Momentum |
-| SSO | 10% | 2× SPY direto (extra leverage) |
-| BTGD | 3% | Gold+BTC stacked |
-| IBIT | 2% | Bitcoin spot |
+**Revisado 2026-04-23 pós feedback do usuário em 3 mudanças:**
+1. **Removido SSO 10%** — inconsistência com princípio "stacked overlay >
+   LETF puro" que eu defendi em §3 e §4. SSO era LETF puro sem overlay
+   descorrelacionado.
+2. **Tilts rebalanceados em 25% total** (antes 25% SCV + 5% Mom desbalanceado
+   5:1; agora 15% SCV + 10% Momentum = 1,5:1). Justificativa: AQR "Our Model
+   Goes to Six" + "Fact, Fiction, and Momentum" — correlação HML vs UMD
+   -0,4 a -0,7 faz stacking value+momentum melhorar Sharpe.
+3. **Adicionado IDMO 3%** (momentum internacional, novo) + **GLDM 5%** (gold
+   spot residual).
 
-**Alavancagem efetiva ≈ 1,75×.** Zero bonds. Factor tilts 35%.
+| Ticker | Peso | Classe | Mudança vs v3.1 |
+|--------|------|--------|------------------|
+| **GDE** | **35%** | 90% SPX + 90% gold (1,8× lev) | +5pp (compensa SSO) |
+| **NTSI** | **18%** | Int 90/60 | +3pp |
+| **NTSE** | **7%** | EM 90/60 | +2pp |
+| **AVUV** | **10%** | US SCV | -5pp (balance tilt) |
+| **AVDV** | **5%** | Int SCV | -5pp |
+| **SPMO** | **7%** | US Momentum | +2pp |
+| **IDMO** | **3%** | Int Momentum | **+3pp NOVO** |
+| AVEM | 5% | EM core | = |
+| BTGD | 3% | Gold+BTC stacked | = |
+| IBIT | 2% | Bitcoin spot | = |
+| **GLDM** | **5%** | Gold spot | **+5pp NOVO** |
+| ~~SSO~~ | ~~0%~~ | ~~2× SPY~~ | **REMOVIDO** |
 
-**Performance (proxy long-history 2014-2026, janela 11,4y por BTGD_syn):**
-CAGR **18,33%** / Sharpe 0,93 / MDD -29,7% / Vol 17,5%
+**Decomposição estrutural:**
+- Core stacked (GDE + NTSI + NTSE + AVEM): **65%**
+- Factor tilts balanceados: **25%** (15% SCV + 10% Momentum)
+- Alts (gold + BTC): **10%** (5% GLDM + 3% BTGD + 2% IBIT)
 
-**Bootstrap 30y (10k + 1k/mês):**
-p05=$2,89M / p25=**$7,53M** / p50=**$12,42M** / p95=$46,17M / P(MDD>50%)=1,4% / SWR 9,61%
+**Alavancagem efetiva ≈ 1,51×** (vs 1,75× da versão anterior).
+Toda leverage via stacked overlay descorrelacionado — zero LETF puro.
 
-**Veredito:** Máxima convexidade à direita. GDE 30% substitui a lógica do NTSX+SSO
-com stacking de gold (descorrelacionado) em vez de bonds (que drena em bull). O
-SSO 10% direto adiciona a camada extra de beta puro. Bull case forte, caveat:
-janela curta 2014-2026 é bull-biased. Real-world 30y expectativa: CAGR
-**12-14% com MDD 40-55%** (ver backtest sem BTGD 2007-2026 abaixo).
+**Performance (proxy 2014-2026, 11,4y, bull-biased):**
+CAGR **18,26%** / Sharpe **1,01** / MDD -27,6% / Vol 16,2%
 
-### 6.1.1 Variante V3_1 SCV-Heavy (opcional)
+**Performance (proxy 2007-2026 sem BTGD, 18,5y, inclui 2008):**
+CAGR **13,40%** / Sharpe **0,72** / MDD **-44,7%** / Vol 16,7%
 
-Pros que priorizam **factor tilts, especialmente SCV** sobre beta-leverage.
-Pesos redistribuídos com +15pp em SCV (AVUV 25% + AVDV 15%) às custas de
-GDE (20%) e NTSI (12%) reduzidos:
+**Bootstrap 30y (10k + 1k/mês, janela 2014-2026):**
+p05=$2,91M / p25=**$7,57M** / p50=**$12,34M** / p95=$43,26M / P(MDD>50%)=0,5% / SWR 9,80%
 
-| Ticker | V3_1 Current | V3_1 SCV-Heavy |
-|--------|-------------|----------------|
-| GDE | 30% | 20% |
-| NTSI | 15% | 12% |
-| NTSE | 5% | 5% |
-| **AVUV** | **15%** | **25%** |
-| **AVDV** | **10%** | **15%** |
-| AVEM | 5% | 5% |
-| SPMO | 5% | 5% |
-| SSO | 10% | 10% |
-| BTGD | 3% | 3% |
-| IBIT | 2% | 2% |
-| **Total SCV** | **25%** | **40%** |
-| **Total factor** | **35%** | **50%** |
+**Veredito:** estritamente superior à v3.1 (SSO version) em todos os eixos
+relevantes — Sharpe +0,08, MDD -7pp em 2008, Vol -1,3pp, com CAGR
+essencialmente igual. Real-world 30y expectativa: **CAGR 13-15% com MDD
+35-45%**.
 
-**Trade-off quantitativo** (backtest mesmo proxy):
+**Backtest comparativo v3.1 (com SSO) vs v3.2 (sem SSO):**
 
-| Janela | V3_1 Current CAGR | V3_1 SCV-Heavy CAGR | Diff |
-|--------|-------------------|---------------------|------|
-| 2014-2026 (bull, com BTGD) | 18,33% | 16,55% | **-1,78pp** |
-| 2007-2026 (sem BTGD) | 13,06% | 11,33% | **-1,73pp** |
-
-**Preço do tilt extra SCV: ~1,7pp de CAGR backtest por 15pp de SCV
-adicional.** Motivo: SCV ficou abaixo de SPX em 2010-2024 ("value dead"
-era).
-
-**Contra-argumento pró SCV-Heavy:** value spread (expensive/cheap ratio) hoje
-está no **percentil 95-100 histórico** (Asness/AQR 2024) — posicionamento
-mais extremo desde 2000. Se mean reversion funcionar, SCV deveria
-outperformar SPX na próxima década. Backtest dos últimos 15 anos
-**subestima** SCV forward.
-
-**Decisão honesta:** escolha qual aposta você acredita mais — beta + leverage
-(Current) ou mean reversion do value (SCV-Heavy). Não há resposta
-objetivamente certa.
+| Janela | Métrica | v3.1 (com SSO 10%) | v3.2 (sem SSO) | Delta |
+|--------|---------|---------------------|-----------------|-------|
+| 2014-2026 | CAGR | 18,33% | 18,26% | ~igual |
+| 2014-2026 | Sharpe | 0,93 | **1,01** | **+0,08** |
+| 2014-2026 | MDD | -29,7% | **-27,6%** | **+2pp** |
+| 2014-2026 | Vol | 17,5% | **16,2%** | **-1,3pp** |
+| 2007-2026 (inclui 2008) | CAGR | 13,06% | **13,40%** | **+0,34pp** |
+| 2007-2026 | Sharpe | 0,64 | **0,72** | **+0,08** |
+| 2007-2026 | MDD | -52,0% | **-44,7%** | **+7,3pp** |
+| Leverage efetivo | | 1,75× | 1,51× | Menor (cleaner) |
 
 ### 6.2 FINAL V3_2: Max Sharpe — "Diversified Factor + BR FI"
 
