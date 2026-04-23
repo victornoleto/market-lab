@@ -1,0 +1,62 @@
+{
+  "d1_lookback180_n_top15_sector_cap_pct0p25": {
+    "dsr": 0.007327824773093983,
+    "p_value": 0.992672175226906,
+    "observed_sharpe": -0.0069037048912499975,
+    "benchmark_sharpe": 0.07016146139920754
+  },
+  "d1_lookback180_n_top15_sector_cap_pct0p3": {
+    "dsr": 0.004198565556875451,
+    "p_value": 0.9958014344431245,
+    "observed_sharpe": -0.012665306303512992,
+    "benchmark_sharpe": 0.07016146139920754
+  },
+  "d1_lookback180_n_top15_sector_cap_pct0p2": {
+    "dsr": 0.003206850163343362,
+    "p_value": 0.9967931498366567,
+    "observed_sharpe": -0.01535606479898853,
+    "benchmark_sharpe": 0.07016146139920754
+  },
+  "d1_lookback90_n_top25_sector_cap_pct0p2": {
+    "dsr": 0.0010423803612736576,
+    "p_value": 0.9989576196387263,
+    "observed_sharpe": -0.02627116500294121,
+    "benchmark_sharpe": 0.07016146139920754
+  },
+  "d1_lookback90_n_top25_sector_cap_pct0p25": {
+    "dsr": 0.0009870348211648262,
+    "p_value": 0.9990129651788352,
+    "observed_sharpe": -0.026758617651671236,
+    "benchmark_sharpe": 0.07016146139920754
+  },
+  "d1_lookback90_n_top20_sector_cap_pct0p2": {
+    "dsr": 0.0005929789407951863,
+    "p_value": 0.9994070210592048,
+    "observed_sharpe": -0.030177721906652306,
+    "benchmark_sharpe": 0.07016146139920754
+  },
+  "d1_lookback90_n_top15_sector_cap_pct0p2": {
+    "dsr": 0.0004516266136694867,
+    "p_value": 0.9995483733863305,
+    "observed_sharpe": -0.032205064228360114,
+    "benchmark_sharpe": 0.07016146139920754
+  },
+  "d1_lookback90_n_top15_sector_cap_pct0p25": {
+    "dsr": 0.0004516266136694867,
+    "p_value": 0.9995483733863305,
+    "observed_sharpe": -0.032205064228360114,
+    "benchmark_sharpe": 0.07016146139920754
+  },
+  "d1_lookback90_n_top25_sector_cap_pct0p3": {
+    "dsr": 0.00038756731139711,
+    "p_value": 0.9996124326886029,
+    "observed_sharpe": -0.032799799396633716,
+    "benchmark_sharpe": 0.07016146139920754
+  },
+  "d1_lookback90_n_top15_sector_cap_pct0p3": {
+    "dsr": 0.0003235204030691633,
+    "p_value": 0.9996764795969308,
+    "observed_sharpe": -0.034966697713503615,
+    "benchmark_sharpe": 0.07016146139920754
+  }
+}
