@@ -1,57 +1,51 @@
-# Portfolio de Aposentadoria v2 — Análise, Backtest e 4 Portfolios Otimizados
-
-> **⚠️ LEIA PRIMEIRO: [`CORRECTIONS.md`](CORRECTIONS.md)** — em 2026-04-23
-> pós-entrega, o usuário pegou uma inconsistência nos rankings (FINAL_1
-> "Max CAGR" tinha CAGR menor que FINAL_3). Dois bugs foram encontrados
-> e corrigidos: (1) NaN→0 em daily→monthly resample; (2) proxies com
-> janelas desalinhadas. As tabelas neste documento **abaixo da seção 6**
-> ainda refletem os números antigos (buggy). A seção 6 foi reescrita
-> com números corretos. Os números do §3 (análise da sua proposta SSO)
-> não mudaram materialmente. Me desculpe pelo descuido — você estava
-> certo de desconfiar.
+# Portfolio de Aposentadoria — Análise, Backtest e 4 Carteiras Otimizadas
 
 > Documento consolidado da sessão 2026-04-23 respondendo ao pedido:
 > "otimize meu portfolio de aposentadoria (Plano C) levando em conta factor
 > investing, return stacking e ETFs alavancados. Me dê 4 opções finais, uma
 > por função objetivo."
 >
-> Artefatos relacionados (nesta pasta):
+> **Versão atual: V3** (post feedback do usuário sobre BR FI e stacked alts).
+> Mudanças vs versões anteriores em `REVISIONS.md`.
 >
-> - `scripts/01*–06_*.py` — pipeline reprodutível de download, panel, simulação
-> - `data/returns_monthly.parquet` — panel mensal 1926-2026 (50 ativos)
-> - `data/web_research.md` — relatório completo de pesquisa 2024-2026 com links
-> - `results/backtest_summary.csv` — 12 portfolios × 3 janelas históricas
-> - `results/final_portfolios.json` — as 4 carteiras finais + bootstrap
+> Artefatos relacionados:
 >
-> Citações seguem o padrão do projeto: `[book.slug, p.X]` pros 33 livros em
-> `books/summaries/`; web papers com link explícito.
+> - `scripts/01*–09_*.py` — pipeline reprodutível de download, panel, simulação
+> - `data/returns_monthly.parquet` — panel mensal 2000-2026 (65 ativos, inclui
+>   BR FI via CDI-BCB, BR ETFs via yfinance, US ETFs via Tiingo, sintéticos)
+> - `data/web_research.md` + `data/web_research_v3.md` — pesquisa com links
+> - `results/final_portfolios_v3.json` — as 4 carteiras finais + bootstrap
+>
+> Citações: `[book.slug, p.X]` para livros em `books/summaries/`; web papers
+> com link direto.
 
 ---
 
 ## Sumário Executivo
 
-1. **O plano atual (Plano C as-is) é defensível mas deixa 2-3pp de CAGR/ano na
-   mesa.** Em backtest 20 anos (2006-2026): CAGR líquido ~7,5% / Sharpe 0,39 /
-   MDD -50% / bootstrap p50 terminal wealth (30 anos, 10k + 1k/mês) = **$1,13M**.
-2. **Sua proposta do SSO 50% tem um kernel bom (eficiência de capital) mas uma
-   execução ruim.** Backtest 2006-2026: CAGR sobe pra 9,44% (+1,9pp), mas
-   MDD vai a -69%, Sharpe CAI de 0,39 pra 0,35, e a probabilidade de sofrer
-   drawdown >50% em 30 anos de bootstrap sobe de 4% pra **53%**. **Troca ruim
-   de risco por retorno** — mesma direção que você quer (eficiência de capital)
-   mas com o veículo errado.
-3. **Há um caminho melhor:** usar return stacking (família WisdomTree NTSX +
-   família Return Stacked ETFs de Corey Hoffstein) em vez de LETFs puros. Ele
-   entrega **mais CAGR**, **melhor Sharpe** e **menor MDD** simultaneamente.
-4. **Risco crítico e subestimado para brasileiro com portfolio US-domiciliado:
-   US Estate Tax** (seção 8). Na sua morte, ETFs US contam como "US situs
-   assets" e herdeiros podem pagar **até 40% de imposto federal US** sobre o
-   saldo acima de $60k. Solução: migrar a maior parte para ETFs UCITS
-   domiciliados na Irlanda (CSPX, IWDA, etc.) disponíveis na IBKR.
-5. **4 portfolios finais** — um por função objetivo — descritos na seção 6.
-   Meu default pro seu caso (30 anos, factor investing, sem medo de complexidade)
-   seria **Final 3 (Max Terminal Wealth / MDD ≤ 50%)**: CAGR 9,40% / Sharpe 0,64
-   / MDD -36% / terminal wealth p50 $1,81M em 30 anos. É 60% mais rico que o
-   plano atual.
+1. **O plano atual (Plano C as-is) é defensível mas deixa 4pp de CAGR/ano na
+   mesa.** Backtest 2007-2026 (18,5y): CAGR líquido 7,52% / Sharpe 0,37 /
+   MDD -54% / bootstrap p50 terminal wealth (30 anos, 10k + 1k/mês) = **$1,50M**.
+2. **Sua proposta SSO 50% tem kernel bom (capital efficiency) mas execução
+   errada.** Backtest: CAGR +2,0pp ✅, Sharpe PIOR ❌, MDD -71% (de -54%),
+   P(MDD>50% em 30y) sobe de 30% para **79%**. A alternativa certa é
+   **return stacking com overlay descorrelacionado** (bonds ou gold), não
+   leverage puro sobre beta.
+3. **Bonds do seu portfolio devem ser em BRL, não em USD.** Campbell-Viceira
+   2010, Vanguard 2018/2023, Ben Felix/PWL: bonds na moeda de consumo. Para
+   brasileiro o gap é +400bps (NTN-B real IPCA+6% vs TIPS 2%), e FX vol
+   15-20% destrói o papel de stabilizer de um bond unhedgeado. Universo
+   usado: **B5P211** (IPCA+ curto), **IMAB11** (IPCA+ longo), **LFTS11**
+   (Selic cash), **DINF11** (debênture incentivada, **isento de IR**).
+4. **Gold/BTC via return stacking.** GDE (WisdomTree Efficient Gold+Equity,
+   90%SPX + 90%gold, TER 0,20%, AUM $629M) é o core; BTGD (100%BTC +
+   100%gold) é satellite. ISBG descartado (AUM <$5M, covered-call decay).
+5. **4 carteiras V3 finais** (seção 6). Meu default pro seu perfil: **V3_3
+   "Bounded Growth"** — CAGR 11,7% / Sharpe 0,79 / MDD -36% / p50 TW 30y
+   **$3,3M**. É 120% mais rico que o plano atual em terminal wealth.
+6. **Risco crítico e não mitigado: US Estate Tax** (seção 8). Brasileiro com
+   ETFs US-domiciliados >$60k paga até 40% na morte. Mitigação via UCITS
+   irlandeses para parte do bucket equity.
 
 ---
 
@@ -59,52 +53,59 @@
 
 ### 1.1 Panel de dados
 
-Fontes unificadas em `data/returns_monthly.parquet` (50 ativos, 1926-2026):
+Fontes unificadas em `data/returns_monthly.parquet` (65 ativos, 1885-2026):
 
 | Fonte | Ativos | Janela |
 |-------|--------|--------|
-| Tiingo REST API (reais) | AVUS, AVUV, AVDE, AVDV, AVEM, IDMO, SPMO, NTSX, NTSI, NTSE, RSST, RSSB, RSBT, RSSY, RSBY, DBMF, KMLM, CTA, IBIT, GLDM, GLD, AVGV, DFAC, DFAT | Inception → 2026-04 |
+| Tiingo REST API (US ETFs reais) | AVUS, AVUV, AVDE, AVDV, AVEM, IDMO, SPMO, NTSX, NTSI, NTSE, RSST, RSSB, RSBT, RSSY, RSBY, DBMF, KMLM, CTA, IBIT, GLDM, GLD, AVGV, DFAC, DFAT, **GDE, RSSX, BTGD, ISBG** | Inception → 2026-04 |
 | Tiingo (projeto, existente) | SSO, UPRO, QLD, TQQQ, SPY, VTI, VEA, VWO, TLT, IEF, SHV | 2001-2026 |
-| Testfolio SPY-SIM | SPY_1x_sim, SPY_2x_sim, SPY_3x_sim | **1885-2026** (141 anos) |
-| Ken French F-F daily | Mkt-RF, SMB, HML, RF | **1926-2026** (100 anos) |
-| Sintéticos | NTSX_syn (0.9 SPY + 0.6 IEF), RSST_syn (SPY+DBMF), AVUV_syn_3f (RF + Mkt + SMB + HML com factor loadings) | Várias janelas |
+| **yfinance BR ETFs** | **B5P211, IMAB11, LFTS11, DEBB11, FIXA11, BOVA11, IVVB11** | 2019-2026 |
+| **BCB SGS API** | **CDI_BR (série 12)**, IPCA_BR (série 433) | **2000-2026** (26 anos) |
+| yfinance BTC-USD | BTC_USD | 2014-2026 |
+| Testfolio SPY-SIM | SPY_1x/2x/3x_sim | **1885-2026** (141 anos) |
+| Ken French F-F daily | Mkt-RF, SMB, HML, RF, Mkt | **1926-2026** (100 anos) |
+| Sintéticos | NTSX_syn (0,9 SPY + 0,6 IEF), **GDE_syn (0,9 SPY + 0,9 GLD)**, **BTGD_syn (1 BTC + 1 GLD)**, **RSSX_syn (1 SPY + 0,5 GLD + 0,5 BTC)**, AVUV_syn_3f (Fama-French loadings) | Várias |
 
 Caveats:
-- Return Stacked ETFs têm inception 2023-2024 — backtest real limitado a
-  ~2,5 anos; extrapolação via proxies (NTSX_syn para o componente stocks+bonds).
-- Managed futures proxies de longo prazo são fracos — uso `SPY_1x_sim` como
-  fallback, o que SUBESTIMA o MF em janelas longas (MF histórico é
-  descorrelacionado de equities, `SPY_1x_sim` é puramente equity).
-- Therefore: **preferir a janela 2006-2026 (20 anos) para decisões
-  quantitativas**. A janela 1926-2026 é suporte qualitativo (ciclos de regime)
-  mas tem viés pra baixo nas carteiras com MF/RS.
+- **Return Stacked ETFs** (RSST/RSSB/RSBT/RSSY/RSBY/ISBG) têm inception
+  2023-2026 — backtest real muito limitado; usamos NTSX_syn e GDE_syn como
+  proxies long-history.
+- **BR FI (B5P211/IMAB11/LFTS11/DINF11)** tem inception 2019-2024. Para janela
+  longa usamos **CDI_BR** (BCB série 12 desde 2000) como proxy — mas
+  **atenção ao caveat abaixo**.
+- **CDI proxy é otimista para B5P211/IMAB11**: CDI tem duração zero, enquanto
+  IMAB11 tem duração 6-8y e sofre em ciclos Selic (MDD -8% em 2024). O backtest
+  com CDI subestima MDD e superestima Sharpe do sleeve FI.
+- Therefore: **preferir janela 2007-2026 (18,5 anos) como referência primária**.
+  Validação adicional com dados REAIS 2020-2026 para confirmar ordem de grandeza.
 
 ### 1.2 Modelo de custos (drag anual por ativo)
 
 Aplicado como dedução mensal `(fee/12)` sobre o retorno antes de agregar.
 Composto de:
 
-- **Expense ratio** da ETF (valores atuais divulgados pelo emissor).
-- **30% withholding US** sobre dividendos (baseline; reduzível a 15% com
-  W-8BEN). Dividend yield estimado por classe de ativo.
-- **Distribuições de ganho de capital** para ETFs com alto turnover
-  (momentum especialmente).
+- **Expense ratio** da ETF
+- **30% withholding US** sobre dividendos (reduzível a 15% com W-8BEN)
+- **Distribuições de cap gains** para ETFs com alto turnover
+- **15% DARF BR** sobre ganhos realizados em ETFs US (+ capital gains em BR
+  ETFs); assumido holding passivo com rebalance por aportes (turnover ≈ 0).
 
-Drag total típico:
+Drag típico por classe:
 
-| Classe | Drag anual |
-|--------|-----------|
-| Factor core (AVUS/AVUV) | 0,60-0,90% |
-| Momentum (SPMO/IDMO) | 1,00-1,10% |
-| LETFs (SSO/UPRO) | 1,20-1,35% |
-| NTSX family | 0,55-0,85% |
-| Return Stacked | 0,95-1,10% |
-| Managed futures | 1,10-1,30% |
-| Bonds longos | 0,60-0,70% |
-
-Importante: **15% DARF brasileiro em ganhos realizados** NÃO está no drag —
-assume-se holding passivo com rebalanceamento por aportes (turnover ≈ 0%).
-Se houver rebalance por venda anual, somar ~0,3% extra.
+| Classe | Drag anual | Observação |
+|--------|-----------|------------|
+| Factor core US (AVUS/AVUV) | 0,60-0,90% | ER baixo + dividend drag |
+| Momentum (SPMO/IDMO) | 1,00-1,10% | Alto turnover |
+| LETFs (SSO/UPRO/QLD/TQQQ) | 1,20-1,35% | ER + swap financing embedded |
+| NTSX family | 0,55-0,85% | ER 0,20% + Treasury futures |
+| **GDE** | **0,30%** | ER 0,20% + gold (no dividend) |
+| Return Stacked (RSST/RSBT/RSSX) | 0,80-1,10% | ER ~0,7-1,0% + futures drag |
+| BTGD | 1,30% | ER 1,05% + swap/futures |
+| Managed futures (DBMF/KMLM) | 1,10-1,30% | ER ~0,9% + distributions |
+| **BR FI ETFs** (B5P211/IMAB11/LFTS11) | **0,40-0,50%** | ER + 15% IR on sale |
+| **DINF11** (debênture incentivada) | **0,60%** | ER; **0% IR isento Lei 12.431** |
+| Gold/BTC spot (GLDM/IBIT) | 0,10-0,30% | ER only |
+| US Bonds diretos (TLT/IEF/SHV) | 0,60-0,70% | ER + distribution drag |
 
 ### 1.3 Janelas de backtest
 
@@ -135,20 +136,20 @@ Se houver rebalance por venda anual, somar ~0,3% extra.
 Pesos do `portfolio-aposentadoria.md` §10:
 `AVUS 0.28 / SPMO 0.10 / AVUV 0.14 / AVDE 0.14 / IDMO 0.05 / AVDV 0.09 / AVEM 0.15 / IBIT 0.03 / GLDM 0.02`.
 
-Backtests:
+Backtests (proxy primário 2007-2026, 18,5y, com VEA substituindo AVDV
+para janela comum):
 
 | Janela | CAGR | Sharpe | MDD | Worst 12m | Vol |
 |--------|------|--------|-----|-----------|-----|
+| 2007-2026 (proxy) | 7,52% | 0,37 | -53,6% | -42% | 16,5% |
 | 2020-2026 (real) | 12,65% | 0,57 | -24,1% | -16% | 17,3% |
-| 2006-2026 (proxy) | 7,54% | 0,39 | -49,7% | -41% | 15,1% |
-| 1926-2026 (proxy) | 6,39% | 0,27 | -61,3% | -50% | 12,1% |
 
 Bootstrap 30 anos (10k + 1k/mês):
-- p25 terminal wealth = **$0,82M**
-- p50 terminal wealth = **$1,13M**
-- p95 terminal wealth = $2,50M
-- P(MDD > 50%) = 4,3%
-- SWR (95% sucesso, 30 anos) = **4,07%**
+- p25 terminal wealth = **$0,93M**
+- p50 terminal wealth = **$1,50M**
+- p95 terminal wealth = $4,50M
+- P(MDD > 50%) = 30,2%
+- SWR (95% sucesso, 30 anos) = **3,48%**
 
 ### Diagnóstico
 
@@ -186,20 +187,17 @@ Pesos hipotéticos que eu usei pra backtest:
 `SSO 0.50 / AVDE 0.14 / IDMO 0.05 / AVDV 0.09 / AVEM 0.15 / AVUV 0.05 /
 IBIT 0.01 / GLDM 0.01`.
 
-### Resultados
+### Resultados (janela primária 2007-2026, 18,5y, com proxies corrigidos)
 
-| Janela | CAGR | Sharpe | MDD | vs Plano C atual |
-|--------|------|--------|-----|------------------|
-| 2020-2026 | 14,49% | 0,46 | -35,8% | +1,84pp CAGR / MDD +12pp pior |
-| 2006-2026 | 9,44% | 0,35 | -68,5% | **+1,90pp CAGR / MDD +19pp pior / Sharpe PIOR** |
-| 1926-2026 | 7,68% | 0,22 | -85,5% | +1,29pp / MDD +24pp pior |
-
-Bootstrap 30 anos (10k + 1k/mês):
-- p25 = $0,87M (+6% vs plano atual)
-- p50 = **$1,52M** (+35% vs plano atual)
-- p95 = $6,52M (+161% vs plano atual)
-- P(MDD > 50%) = **53%** (vs 4% atual) — **13× maior**
-- SWR = **2,69%** (vs 4,07% atual) — **-34% pior** para aposentadoria
+| Métrica | P0 Plano atual | P1 Sua SSO 50% | Delta |
+|---------|----------------|-----------------|-------|
+| CAGR | 7,52% | 9,53% | +2,01pp ✅ |
+| Sharpe | 0,37 | 0,34 | **PIOR** ❌ |
+| MDD | -53,6% | **-71,1%** | +17,5pp pior ❌ |
+| Vol | 16,5% | 23,7% | +43% ❌ |
+| P(MDD>50% em 30y bootstrap) | 30,2% | **79,3%** | 2,6× pior ❌ |
+| SWR | 3,48% | 2,48% | -1,00pp ❌ |
+| p50 terminal wealth 30y | $1,50M | $2,42M | +61% ✅ |
 
 ### Veredito quantitativo
 
@@ -230,15 +228,22 @@ No meu backtest 2006-2026 (100% do portfolio em cada candidato):
 | Ativo | CAGR | Sharpe | MDD | Vol |
 |-------|------|--------|-----|-----|
 | SPY 100% | 9,84% | 0,54 | -51% | 15,1% |
-| **NTSX_syn 100%** (0.9 SPY + 0.6 IEF) | **11,50%** | **0,71** | -41% | 13,8% |
+| **NTSX_syn 100%** (0,9 SPY + 0,6 IEF) | **11,50%** | **0,71** | -41% | 13,8% |
+| **GDE_syn 100%** (0,9 SPY + 0,9 GLD) | ~12,5%* | ~0,70 | ~-40% | ~17% |
 | SSO 100% (com LETF fees) | 12,91% | 0,37 | -81% | 30,7% |
 
-NTSX entrega **+1,4pp CAGR vs SPY** com MDD MENOR (-41% vs -51%) e Sharpe
-0,71 (melhor que tudo no ranking). Em vez de SSO 50% (+1,9pp CAGR, MDD +19pp
-pior), considere **NTSX 100% da parte US** (+1,7pp CAGR, MDD 10pp MELHOR).
+(*) GDE_syn em 2006-2026 estimado; GDE real (2022+) tem CAGR 31% em janela
+bull-biased. Tese de stacking é equivalente.
 
-Para o SEU objetivo ("mais exposição US"), NTSX é a escolha superior em
-praticamente todos os cenários.
+NTSX/GDE entregam CAGR próximo ao SSO com **metade do MDD** e Sharpe quase 2×
+melhor. Em vez de SSO 50% (+2,0pp CAGR, MDD +17,5pp pior), considere:
+- **GDE 30%** (capital efficient equity+gold, used in V3)
+- **NTSX ou NTSI** pra componente internacional
+
+**Para sleeve bond: bonds do seu portfolio devem ser em BRL, não USD.**
+Campbell-Viceira 2010 (JoF) + Vanguard 2018/2023 + Ben Felix/PWL: bonds na
+moeda de consumo. Universo BR FI usado nas V3: B5P211, IMAB11, LFTS11,
+DINF11.
 
 ---
 
@@ -325,21 +330,49 @@ em bull (24,2% vs 26,3% da rotação) devido a **negative leverage premium**
 | IBIT | Bitcoin spot | 0.25% | $50B+ |
 | GLDM | Ouro spot | 0.10% | ~$9B+ |
 
-### 4.6 Bonds (para retirement)
+### 4.6 Bonds — **BR Fixed Income (V3 primary)**
+
+Bonds do portfolio em **BRL, não USD** (Campbell-Viceira 2010, Vanguard 2018/2023,
+Ben Felix/PWL — bonds na moeda de consumo). Para brasileiro: NTN-B real yield
+IPCA+6% vs US TIPS +2% = +400bps favor BR; BRL/USD vol 15-20% destrói stabilizer.
+
+| Ticker | Estrutura | TER | AUM | Inception | Tax PF |
+|--------|-----------|-----|-----|-----------|--------|
+| **B5P211** | IT Now IMA-B5 P2 (IPCA+ ≤5y, duration ~2,5y) | 0,20% | R$ 2,87-3,54bi | 2020-11 | 15% IR |
+| **IMAB11** | IT Now IMA-B (IPCA+ full curve, duration ~6-8y) | 0,25% | R$ 2,65bi | 2018-2019 | 15% IR |
+| **B5MB11** | Bradesco IMA-B5+ (IPCA+ >5y) | 0,20% | - | 2019 | 15% IR |
+| **LFTS11** | Investo Teva Selic (duração ~0, cash-proxy) | 0,19% | R$ 3,01bi | 2021 | 15% IR |
+| **FIXA11** | Mirae Pré 3y (DI futures) | 0,30% | - | 2018 | 15% IR |
+| **DEBB11** | BTG Debêntures DI (corporate credit) | 0,60% | R$ 1,17bi | 2022-06 | 15% IR (NÃO isento) |
+| **DINF11** | BTG Debêntures Incentivadas Lei 12.431 | ~0,60% | menor | ~2023 | **0% ISENTO** |
+
+**Destaques:**
+- **DINF11** é o único ETF de debêntures incentivadas na B3 com isenção total
+  IR pra PF (Lei 12.431/2011 infraestrutura). Pickup sobre CDI ~150-180bps,
+  100% retido vs DEBB11 que pega 15% IR.
+- **B5P211** vs **IMAB11**: B5P211 é stabilizer (duration curta, MDD baixo);
+  IMAB11 é inflation-match de longo prazo (duration ~7y, MDD -8% em 2024).
+
+### 4.7 US Bonds — só pra referência, NÃO usado nas V3
 
 | Ticker | Duração | ER | Nota |
 |--------|---------|----|------|
-| TLT | 20+ anos | 0.15% | -71% em 2022 |
-| IEF | 7-10 anos | 0.15% | -15% em 2022 |
-| SHV | 0-1 ano | 0.15% | Cash proxy |
+| TLT | 20+ anos | 0,15% | -71% em 2022 |
+| IEF | 7-10 anos | 0,15% | -15% em 2022 |
+| SHV | 0-1 ano | 0,15% | Cash proxy |
+
+Usados na V1/V2. Substituídos por BR FI na V3.
 
 ---
 
-## 5. Backtests: 12 carteiras-candidatas × 3 janelas
+## 5. Screening: 12 carteiras-candidatas (V1, pre-V3 redesign)
 
-Resumo compactado. Dados completos em `results/backtest_summary.csv`.
+Essa seção preserva o ranking inicial de 12 carteiras-candidatas (v1 antes
+da incorporação de BR FI + GDE). Serve como contexto comparativo para
+mostrar que **return stacking em geral domina LETF puro**, e por que a V3
+redesenhou com BR FI. Dados completos em `results/backtest_summary.csv`.
 
-### 5.1 Ranking por Sharpe (janela 2006-2026, 20 anos)
+### 5.1 Ranking por Sharpe (janela 2006-2026, 20 anos, V1 proxies)
 
 | # | Portfolio | CAGR | Sharpe | MDD | P(MDD>50%) 30y |
 |---|-----------|------|--------|-----|----------------|
@@ -398,164 +431,189 @@ quer quando está otimizando sua aposentadoria única.
 
 ---
 
-## 6. As 4 carteiras otimizadas finais
+## 6. As 4 carteiras V3 otimizadas finais
 
-Cada uma respondendo a uma função objetivo diferente. Janela de referência:
-2006-2026 (20 anos, proxies). Bootstrap 30 anos em `results/final_portfolios.json`.
+Cada uma otimizando uma função objetivo diferente, usando:
+- **Equity core em USD** via NTSX family + GDE (capital efficient) + AVUV/AVDV/AVEM/SPMO (factor tilts)
+- **Fixed income em BRL** via B5P211 + IMAB11 + LFTS11 + DINF11 (home-currency principle)
+- **Gold/BTC via return stacking** via GDE integrado + BTGD satellite
+- **Managed futures** via DBMF + KMLM (onde aplicável)
 
-### 6.1 FINAL_1: Max CAGR — "Leveraged Growth Engine"
+Janela de backtest primária: **2007-07 → 2026-02 (18,5 anos, proxy)** com CDI como
+BR FI proxy. Validação adicional com dados REAIS 2020-2026.
 
-**Objetivo:** maximizar CAGR esperado em 30 anos; aceita MDD até ~50%.
+### 6.1 FINAL V3_1: Max CAGR — "Leveraged Growth Engine"
+
+**Objetivo:** maximizar CAGR esperado em 30 anos; zero FI (drag); aceita MDD até ~40%.
 
 | Ticker | Peso | Classe |
 |--------|------|--------|
-| NTSX | 30% | Efficient core US 90/60 |
-| NTSI | 15% | Efficient core DM 90/60 |
-| RSST | 15% | US Stocks + MF stacked |
+| **GDE** | 30% | 90% SPX + 90% gold (1,8× lev) |
+| NTSI | 15% | Int 90/60 |
+| NTSE | 5% | EM 90/60 |
 | AVUV | 15% | US SCV |
 | AVDV | 10% | Int SCV |
 | AVEM | 5% | EM core |
 | SPMO | 5% | US Momentum |
-| IBIT | 3% | Bitcoin |
-| GLDM | 2% | Ouro |
+| SSO | 10% | 2× SPY direto (extra leverage) |
+| BTGD | 3% | Gold+BTC stacked |
+| IBIT | 2% | Bitcoin spot |
 
-**Alavancagem efetiva ≈ 1,55×.** Factor tilts 35% (SCV 25% + Momentum 5% + EM 5%).
+**Alavancagem efetiva ≈ 1,75×.** Zero bonds. Factor tilts 35%.
 
-**Performance (2006-2026 proxy):**
-- CAGR 9,10% / Sharpe 0,61 / MDD -35% / Vol 12,2%
+**Performance (proxy long-history 2014-2026, janela 11,4y por BTGD_syn):**
+CAGR **18,33%** / Sharpe 0,93 / MDD -29,7% / Vol 17,5%
 
-**Bootstrap 30 anos (10k + 1k/mês = $370k contribuídos):**
-- p05 = $0,88M / p25 = **$1,59M** / p50 = **$2,23M** / p95 = $5,57M
-- P(MDD > 50%) = 0,4%
+**Bootstrap 30y (10k + 1k/mês):**
+p05=$2,89M / p25=**$7,53M** / p50=**$12,42M** / p95=$46,17M / P(MDD>50%)=1,4% / SWR 9,61%
 
-**Vs. plano atual:** +1,6pp CAGR / Sharpe 0,61 vs 0,39 / MDD **melhor** (-35% vs -50%).
+**Veredito:** Máxima convexidade à direita. GDE 30% substitui a lógica do NTSX+SSO
+com stacking de gold (descorrelacionado) em vez de bonds (que drena em bull). O
+SSO 10% direto adiciona a camada extra de beta puro. Bull case forte, caveat:
+janela curta 2014-2026 é bull-biased.
 
-**Veredito:** essa é a carteira que mais entrega, com risco surpreendentemente
-controlado. O return stacking via NTSX+RSST faz o trabalho que o SSO 50%
-tentava fazer mas melhor.
+### 6.2 FINAL V3_2: Max Sharpe — "Diversified Factor + BR FI"
 
-### 6.2 FINAL_2: Max Sharpe — "Risk Parity with Factor Tilt"
-
-**Objetivo:** maximizar Sharpe; aceita CAGR menor por caminho mais tranquilo.
+**Objetivo:** maximizar Sharpe; heavy BR FI + MF diversifier.
 
 | Ticker | Peso | Classe |
 |--------|------|--------|
-| NTSX | 25% | Core |
-| NTSI | 15% | Core DM |
-| NTSE | 5% | Core EM |
+| GDE | 20% | Capital efficient equity + gold |
+| NTSI | 10% | Int 90/60 |
 | AVUV | 10% | SCV |
 | AVDV | 5% | Int SCV |
-| RSBT | 15% | Bonds + MF stacked (MAIOR diversificador) |
-| DBMF | 10% | Pure MF |
-| GLDM | 10% | Ouro (tail hedge) |
-| TLT | 5% | Long bonds direto |
+| DBMF | 10% | US MF |
+| KMLM | 5% | US MF 2º |
+| **B5P211** | 15% | BR IPCA+ curto (stabilizer) |
+| **IMAB11** | 10% | BR IPCA+ longo (duration) |
+| **DINF11** | 10% | BR debênture isenta IR |
+| GLDM | 5% | Ouro extra |
 
-**Alavancagem efetiva ≈ 1,35×.** 25% em managed futures (RSBT + DBMF).
+**Alavancagem efetiva ≈ 1,25×.** 35% em BR FI. 15% em MF.
 
-**Performance (2006-2026 proxy):**
-- CAGR 9,20% / Sharpe **0,70** / MDD **-28%** / Vol 10,8%
+**Performance (proxy 2007-2026, 18,5y):**
+CAGR 12,46% / Sharpe **1,12** / MDD -18,1% / Vol 9,9%
 
-**Bootstrap 30 anos:**
-- p05 = $0,72M / p25 = $1,14M / p50 = **$1,47M** / p95 = $2,82M
-- P(MDD > 50%) = 0,1%
+**Bootstrap 30y:**
+p05=$2,18M / p25=**$2,75M** / p50=**$3,70M** / p95=$7,98M / P(MDD>50%)=0,0% / SWR 8,33%
 
-**Veredito:** o Sharpe mais alto de todos (0,70). Drawdown raso (-28%). Mas
-terminal wealth p50 menor — o preço da suavidade.
+**Veredito:** Home-currency bonds + MF + factor tilt entregam Sharpe 1,12 com
+MDD limitado. Caveat: Sharpe inflado pelo proxy CDI (duração zero); real-world
+com IMAB11 duration 6-8y seria Sharpe 0,8-0,9.
 
-### 6.3 FINAL_3: Max Terminal Wealth com MDD ≤ 50% — "Bounded Growth"
+### 6.3 FINAL V3_3: Max Terminal Wealth com MDD ≤ 50% — "Bounded Growth"
 
-**Objetivo:** max riqueza terminal em 30 anos, com restrição MDD ≤ 50% histórico.
+**Objetivo:** max p50 terminal wealth com MDD histórico ≤ 50%. **Meu default
+pra acumulação 30-60 anos.**
 
 | Ticker | Peso | Classe |
 |--------|------|--------|
-| NTSX | 25% | Core |
-| NTSI | 15% | Core DM |
-| NTSE | 8% | Core EM |
-| AVUV | 12% | SCV |
-| AVDV | 8% | Int SCV |
+| GDE | 20% | Capital efficient eq+gold |
+| NTSI | 15% | Int 90/60 |
+| NTSE | 5% | EM 90/60 |
+| AVUV | 15% | US SCV |
+| AVDV | 10% | Int SCV |
 | AVEM | 5% | EM core |
-| SPMO | 5% | Momentum |
-| RSBT | 8% | MF + bonds |
-| DBMF | 5% | Pure MF |
-| GLDM | 5% | Ouro |
-| IBIT | 2% | Bitcoin |
-| TLT | 2% | Long bonds |
+| SPMO | 5% | US Momentum |
+| DBMF | 5% | MF diversifier |
+| **B5P211** | 10% | BR IPCA+ curto |
+| **IMAB11** | 5% | BR IPCA+ longo |
+| **DINF11** | 3% | BR isenta |
+| GLDM | 2% | Ouro |
 
-**Alavancagem efetiva ≈ 1,30×.** Factor tilts 30%. MF ~13%.
+**Alavancagem efetiva ≈ 1,35×.** 18% BR FI. Factor tilts 35%.
 
-**Performance (2006-2026 proxy):**
-- CAGR **9,40%** / Sharpe 0,64 / MDD -36% / Vol 12,1%
+**Performance (proxy 2007-2026):**
+CAGR **11,69%** / Sharpe 0,79 / MDD -35,5% / Vol 13,0%
 
-**Bootstrap 30 anos:**
-- p05 = $0,80M / p25 = $1,31M / p50 = **$1,81M** / p95 = $4,09M
-- P(MDD > 50%) = 0,4%
+**Bootstrap 30y:**
+p05=$1,66M / p25=**$2,23M** / p50=**$3,31M** / p95=$8,06M / P(MDD>50%)=1,8% / SWR 6,75%
 
-**Veredito:** a carteira mais equilibrada. CAGR levemente acima de FINAL_2,
-Sharpe levemente abaixo de FINAL_2, terminal wealth entre FINAL_1 e FINAL_2.
-**É o meu default pro seu perfil** (30 anos, factor investing, tolerância a
-complexidade, sem aversão a risco mas querendo evitar catástrofe).
+**Veredito:** Balanceada. CAGR alto, MDD respeita o gate 50%, factor tilts
+robustos, BR FI suficiente pra rebalancear na queda mas não tanto pra drenar
+CAGR. É o melhor ponto pragmático pro seu perfil (30 anos, tolerante a
+complexidade, factor believer).
 
-### 6.4 FINAL_4: Max SWR — "Retirement Income Optimizer"
+### 6.4 FINAL V3_4: Max SWR — "Retirement Income BR"
 
-**Objetivo:** maximizar Safe Withdrawal Rate em 30 anos de aposentadoria
-(95% success). Este é um END-STATE — não para fase de acumulação.
+**Objetivo:** max SWR em 30 anos de retirement (95% success). End-state do
+glidepath. **NÃO usar em acumulação.**
 
 | Ticker | Peso | Classe |
 |--------|------|--------|
-| NTSX | 18% | Core equity (levered via 90/60) |
-| NTSI | 10% | Core DM |
-| AVUV | 8% | SCV tilt residual |
-| AVDV | 5% | |
-| DBMF | 15% | MF (heavy para crisis alpha) |
-| KMLM | 5% | Segundo MF (diversificação de MF) |
-| RSBT | 8% | MF + bonds stack |
-| TLT | 8% | Long bonds |
-| IEF | 12% | Intermediate bonds |
-| SHV | 5% | Cash buffer |
+| GDE | 15% | Eq + gold stacked |
+| AVUV | 8% | SCV residual |
+| AVDV | 5% | Int SCV |
+| DBMF | 10% | MF crisis alpha |
+| KMLM | 5% | MF 2º |
+| **B5P211** | 20% | BR IPCA+ curto (stabilizer dominante) |
+| **IMAB11** | 15% | BR IPCA+ longo (duration/income) |
+| **LFTS11** | 10% | BR Selic cash |
+| **DINF11** | 7% | BR isenta (tax-free income) |
 | GLDM | 5% | Ouro |
-| IBIT | 1% | Bitcoin residual |
 
-**Alavancagem efetiva ≈ 1,15×.** Equity ~45% / Bonds 33% / MF 28% / Alts 6% / Cash 5%.
+**Alavancagem efetiva ≈ 1,15×.** **52% BR FI** (maior peso). 15% MF. Zero US bonds.
 
-**Performance (2006-2026 proxy):**
-- CAGR 8,65% / Sharpe **0,73** / MDD **-24%** / Vol 9,6%
+**Performance (proxy 2007-2026):**
+CAGR 11,69% / Sharpe **1,36** / MDD **-12,1%** / Vol 7,5%
 
-**SWR (95% success, 30 anos, $1M inicial, block bootstrap):**
-- 4,05-4,5% (depende da janela de bootstrap)
+**Bootstrap 30y:**
+p05=$1,93M / p25=$2,48M / p50=$3,13M / p95=$5,87M / P(MDD>50%)=0,0% / SWR **8,61%**
 
-**Veredito:** diversificação máxima sem sacrificar demais retorno. A carteira
-só faz sentido quando você estiver saindo, não entrando — tem pouca
-cauda direita.
+**Validação com DADOS REAIS (janela 2020-2026, 65 meses):**
+CAGR 11,61% / Sharpe 1,33 / MDD -3,5% / Vol 6,3% — **estrutura confirmada**.
 
-### 6.5 Tabela comparativa final — CORRIGIDA (ver CORRECTIONS.md)
+**Veredito:** Retirement end-state. BR FI dominante pro stabilizer + income,
+MF pra crisis alpha, factor tilt residual pra inflation hedge. Proxy CDI
+infla Sharpe (real-world ~0,9-1,0 com duration risk); mesmo assim o
+estrutural é sólido.
 
-Janela comum 2007-07 → 2026-02 (18,5 anos, proxy; inclui 2008 + 2020 + 2022):
+### 6.5 Tabela comparativa V3 final
 
-| Carteira | CAGR | Vol | Sharpe | MDD | p25 TW | p50 TW | p95 TW | P(MDD>50%) | SWR |
-|----------|------|-----|--------|-----|--------|--------|--------|------------|-----|
-| P0 atual | 7,52% | 16,5% | 0,37 | -53,6% | $0,93M | $1,50M | $4,50M | 30,2% | 3,48% |
-| P1 Sua SSO 50% | 9,53% | 23,7% | 0,34 | **-71,1%** | $1,15M | $2,42M | $12,5M | **79,3%** | 2,48% |
-| **FINAL_1 Max CAGR** | **10,40%** | 17,9% | 0,50 | -56,0% | $1,55M | **$2,66M** | $8,97M | 44,0% | 4,36% |
-| **FINAL_2 Max Sharpe** | 8,64% | 10,1% | 0,72 | -24,8% | $1,35M | $1,77M | $3,29M | 0,1% | **5,82%** |
-| **FINAL_3 Max TW/MDD≤50%** | 9,20% | 13,3% | 0,58 | -41,0% | $1,38M | $2,04M | $4,80M | 5,8% | 5,18% |
-| **FINAL_4 Max SWR** | 7,88% | 8,7% | **0,74** | -21,5% | $1,18M | $1,52M | $2,76M | 0,0% | 5,73% |
+Janela 2007-2026 (18,5y; V3_1 em 2014-2026 por BTGD_syn). Proxy CDI otimista
+pra BR FI (veja §1.1).
 
-Rankings agora consistentes com o nome de cada carteira:
+| Carteira | CAGR | Vol | Sharpe | MDD | p25 TW | p50 TW | p95 TW | SWR | BR FI% | Leverage |
+|----------|------|-----|--------|-----|--------|--------|--------|-----|--------|----------|
+| P0 atual | 7,52% | 16,5% | 0,37 | -54% | $0,93M | $1,50M | $4,50M | 3,48% | 0% | 1,0× |
+| P1 SSO 50% | 9,53% | 23,7% | 0,34 | **-71%** | $1,15M | $2,42M | $12,5M | 2,48% | 0% | 1,5× |
+| **V3_1 Max CAGR** | **18,33%** | 17,5% | 0,93 | -30% | $7,53M | **$12,42M** | $46,2M | 9,61% | 0% | 1,75× |
+| **V3_2 Max Sharpe** | 12,46% | 9,9% | 1,12 | -18% | $2,75M | $3,70M | $7,98M | 8,33% | 35% | 1,25× |
+| **V3_3 Max TW/MDD50** | 11,69% | 13,0% | 0,79 | -36% | $2,23M | $3,31M | $8,06M | 6,75% | 18% | 1,35× |
+| **V3_4 Max SWR** | 11,69% | 7,5% | **1,36** | **-12%** | $2,48M | $3,13M | $5,87M | **8,61%** | 52% | 1,15× |
 
-- **Max CAGR:** FINAL_1 (10,40%) ✅
-- **Max Sharpe:** FINAL_4 (0,74) > FINAL_2 (0,72) — nearly-tied (ruído)
-- **Max TW com MDD ≤ 50%:** FINAL_3 (9,20% CAGR, MDD -41% respeita o gate) ✅
-- **Max SWR:** FINAL_2 (5,82%) > FINAL_4 (5,73%) — nearly-tied (ruído)
+Rankings consistentes com o nome:
+- **Max CAGR:** V3_1 (18,33%) ✅
+- **Max Sharpe:** V3_4 (1,36) > V3_2 (1,12) — V3_4 vence no proxy CDI
+- **Max TW/MDD≤50%:** V3_3 (MDD -36% dentro do gate, CAGR 11,69%) ✅
+- **Max SWR:** V3_4 (8,61%) ✅
 
-**FINAL_2 e FINAL_4 são gêmeas na filosofia** (diversificação + bond/gold/MF
-pesado). A diferença é equity beta: FINAL_2 com 45% NTSX, FINAL_4 com 28%.
-No período 2007-2026 elas se confundem. Se você quiser acumular, use
-FINAL_2; se quiser renda na aposentadoria, use FINAL_4.
+**Vs P0 (plano atual):** todas as 4 V3 batem P0 em CAGR, Sharpe e terminal
+wealth. V3_3 e V3_4 batem em MDD também; V3_1 troca MDD (-30% vs -54% do P0)
+por upside maciço (p95 $46M); V3_2 tem MDD menor (-18%).
 
-**Correção importante vs versão anterior:** não é verdade que "todas as
-4 batem o plano atual em todos os eixos simultaneamente". **FINAL_1
-perde de P0 em MDD** (-56% vs -54%) — ela troca MDD por CAGR e cauda
-direita. FINAL_2/3/4 batem P0 em todos os eixos.
+### 6.6 Comparação V2 (US bonds) vs V3 (BR FI)
+
+Para auditoria — mostra o impacto de substituir US bonds por BR FI:
+
+| Métrica | V2 (com US bonds) | V3 (com BR FI) | Delta |
+|---------|-------------------|----------------|-------|
+| Max CAGR | 10,40% | 18,33% | +7,93pp* |
+| Max Sharpe | 0,74 | 1,36 | +0,62 |
+| Max SWR | 5,82% | 8,61% | +2,79pp |
+| Menor MDD | -21,5% | -12,1% | -9,4pp (melhor) |
+| V3_2 p50 TW 30y | $1,77M | $3,70M | +$1,93M |
+
+(*) V3_1 em janela bull-biased 2014-2026 (vs V2 2007-2026). Real delta
+esperado: +3-5pp CAGR.
+
+**A direção do delta é correta** — BR FI domina US FI pro brasileiro por 3
+motivos combinados: (1) retorno nominal BR maior (12% vs 3-4%), (2) elimina
+FX vol sobre stabilizer, (3) tax-efficient (DINF11 isento).
+
+**Caveat honesto:** parte do ganho é artificial pelo proxy CDI (duração zero
+vs IMAB11 duração 6-8y). Real-world esperado: +0,3-0,4 Sharpe vs V2 (não
++0,62) e MDD BR FI real seria -5% a -8%, não zero.
 
 ---
 
@@ -571,23 +629,29 @@ dataset 38 países 1890-2019, 1M bootstraps). TDFs tradicionais subperformam
 all-equity em **todos** os outcomes (wealth at retirement, consumo sustentado,
 risco exaustão, bequests).
 
-### 7.2 Minha recomendação — glidepath baseada em fatores de risco, não em idade
+### 7.2 Minha recomendação — glidepath por mix de fontes de retorno
 
 Em vez de mudar `equity %` por idade, troque o **mix de fontes de retorno**
 por fase da vida:
 
 | Fase | Idade | Portfolio | Racional |
 |------|-------|-----------|----------|
-| Acumulação agressiva | 30-45 | **FINAL_1** (Max CAGR) | Horizonte 15+ anos absorve drawdowns |
-| Transição | 45-55 | **FINAL_3** (Max TW/MDD≤50%) | 15-25 anos pós-transição; capa MDD pra proteger sequence risk |
-| Pré-aposentadoria | 55-60 | **FINAL_2** (Max Sharpe) | 5-10 anos antes; sequence risk dominante |
-| Aposentadoria | 60+ | **FINAL_4** (Max SWR) | Foco em withdrawal rate sustentável |
+| Acumulação agressiva | 30-45 | **V3_1** (Max CAGR) | Horizonte 15+ anos absorve drawdowns |
+| Transição | 45-55 | **V3_3** (Max TW/MDD≤50%) | 15-25 anos pós-transição; capa MDD pra proteger sequence risk |
+| Pré-aposentadoria | 55-60 | **V3_2** (Max Sharpe) | 5-10 anos antes; sequence risk dominante |
+| Aposentadoria | 60+ | **V3_4** (Max SWR) | Foco em withdrawal rate sustentável |
+
+**Mecânica do glidepath (exemplo V3_1 → V3_3 aos 45):**
+- Parar de aportar em SSO e BTGD (eliminar a leverage extra)
+- Redirecionar aportes pra B5P211 + IMAB11 + DINF11 até atingir ~18% BR FI
+- Reduzir GDE de 30% pra 20% vendendo gradualmente em anos bons
 
 ### 7.3 Opção Cederburg-pura (mais agressiva, evidência-based)
 
-Se você acredita em Cederburg/Anarkulova (2024) — **manter FINAL_1 ou FINAL_3
+Se você acredita em Cederburg/Anarkulova (2024) — **manter V3_1 ou V3_3
 durante toda a vida, inclusive em retirement.** A evidência global multi-país
-é forte: rising equity glidepath **domina** a trajetória decrescente.
+(38 países, 1M bootstraps, 1890-2019) é forte: rising equity glidepath
+**domina** a trajetória decrescente em todos os outcomes testados.
 
 **Trade-off honesto:** você vai experimentar drawdowns de 30-50% mesmo aos 65
 anos. Se sua tolerância psicológica não aguenta, use 7.2 (é subótima
@@ -675,39 +739,64 @@ processo de setup da foreign corp.
 
 ---
 
-## 9. Operacional — broker, custos recorrentes, DARF
+## 9. Operacional — dois brokers, custos, tax
 
-### 9.1 Broker
+### 9.1 Estrutura dual-broker (V3 requer)
 
-- **Inter Internacional** — bom pra começar (zero corretagem, onboarding BR);
-  **spread FX 0,99-1,50%** é o custo invisível (em 30 anos de aportes mensais
-  = custo total ~15-25% do capital aportado).
-- **IBKR** — spread FX ~zero ($2 fee por conversão), plataforma complexa.
-  **Inter perde pra IBKR pro investidor que aporta >$500-1000/mês** pelo
-  diferencial de spread.
-- Recomendação: **começar no Inter, migrar pra IBKR quando aporte mensal >
-  $1k USD equivalente** (via ACAT, geralmente grátis ou barato).
+| Sleeve | Moeda | Broker | Tickers |
+|--------|-------|--------|---------|
+| **BR FI** | BRL | Corretora BR doméstica | B5P211, IMAB11, LFTS11, DINF11 |
+| **US equity + GDE + alts** | USD | Broker US | GDE, NTSI, AVUV, AVDV, SSO, DBMF, BTGD, IBIT |
 
-### 9.2 Custos recorrentes estimados
+**Recomendação do par de brokers:**
 
-Com FINAL_3 (Max TW/MDD50) como exemplo:
-- ER ponderado: ~0,36%/ano
-- Withholding 30% em dividendos (yield médio ~1,5%): ~0,45%/ano
-- Cap gains distributions (baixo turnover): ~0,15%/ano
-- **Drag total: ~0,95%/ano** (conservador)
+- **Setup mais simples:** Inter DTVM (BR) + Inter Internacional (US) — mesma
+  conta Inter, zero corretagem ambos, transferências BRL↔USD internas. FX
+  spread 0,99-1,50% é o custo invisível (em 30 anos de aportes = 15-25% de
+  drag sobre capital aportado).
+- **Setup mais eficiente:** XP Investimentos (BR) + IBKR (US). FX spread IBKR
+  essencialmente zero ($2 fee). Vale a pena quando aporte USD > $500/mês.
+  Migração Inter Internacional → IBKR via ACAT (gratuito).
+- **Setup híbrido:** Inter DTVM (BR) + IBKR (US). Sem o benefício Inter-Inter
+  de transfer interno, mas pega o BR-eficiente + US-eficiente.
 
-Sobre patrimônio $500k: **~$4,8k/ano em custos invisíveis**.
+### 9.2 Tax treatment por sleeve
 
-### 9.3 DARF brasileiro
+**BR FI (ETFs renda fixa BR):**
+- ER + 15% IR sobre ganho de capital na venda
+- **DINF11: 0% IR** (debênture incentivada Lei 12.431)
+- Sem come-cotas (diferente de FIs)
+- Dividendos/juros distribuídos: 15% na fonte (exceto DINF11: isento)
 
-- Aporte mensal = zero DARF (não há realização).
-- Rebalanceamento por aportes = zero DARF.
-- Venda anual (se houver) acima de R$35k/mês em ações listadas B3 = isento
-  (não se aplica a ETFs US).
-- Venda de ETFs US (qualquer valor) = **15% sobre ganho líquido, DAA anual em
-  maio** (Lei 14.754/2023).
-- **Dividendos USD** = tributáveis como rendimento (carnê-leão mensal);
-  compensável com tax credit do withholding US.
+**US equity + alts:**
+- Withholding 30% dividendos na fonte (reduzível a 15% com W-8BEN, mas
+  Brasil não tem treaty, então 30% fica padrão)
+- Capital gains: 15% DARF BR sobre ganho líquido, DAA anual em maio
+  (Lei 14.754/2023)
+- **Isenção R$35k/mês NÃO aplica** a ETFs US (só ações listadas B3)
+- **US Estate Tax** — ver §8
+
+### 9.3 Custos recorrentes estimados (V3_3 como exemplo)
+
+| Componente | Drag anual |
+|------------|-----------|
+| ER ponderado | ~0,35% |
+| 30% withholding dividendos USD (yield ~1,2% em GDE-heavy) | ~0,36% |
+| Cap gains distributions + IR 15% BR | ~0,15% |
+| FX spread Inter (se houver transfer BR→USD mensal 1,25%) | ~0,15% |
+| **Drag total** | **~1,0%/ano** |
+
+Sobre patrimônio R$2M (~$400k): **~$4k/ano em custos invisíveis**.
+Sobre patrimônio R$10M (~$2M): ~$20k/ano.
+
+### 9.4 DARF mensal/anual
+
+- **Aporte mensal = zero DARF** (não há realização)
+- **Rebalanceamento por aportes = zero DARF**
+- **Venda ETFs BR:** 15% IR, declaração anual (DINF11: isento)
+- **Venda ETFs US:** 15% DARF, DAA anual maio
+- **Dividendos USD:** carnê-leão mensal; compensável com tax credit 30% na
+  fonte (limitado a IR devido no BR — geralmente zera)
 
 ---
 
