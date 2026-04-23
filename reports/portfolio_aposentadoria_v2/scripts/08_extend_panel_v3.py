@@ -93,6 +93,26 @@ def main() -> None:
         new_assets["RSSX_syn"] = rssx_syn
         print(f"  +RSSX_syn (synthetic): {len(rssx_syn)} rows from {rssx_syn.index.min().date()}")
 
+    # NTSI_syn = 0.9 VEA + 0.6 IEF (DM 90/60 stacked, since VEA inception 2007-07)
+    if "VEA" in existing.columns and "IEF" in existing.columns:
+        vea = existing["VEA"]
+        ief = existing["IEF"]
+        joint = pd.concat([vea.rename("vea"), ief.rename("ief")], axis=1).dropna()
+        ntsi_syn = 0.9 * joint["vea"] + 0.6 * joint["ief"]
+        ntsi_syn.name = "NTSI_syn"
+        new_assets["NTSI_syn"] = ntsi_syn
+        print(f"  +NTSI_syn (synthetic): {len(ntsi_syn)} rows from {ntsi_syn.index.min().date()}")
+
+    # NTSE_syn = 0.9 VWO + 0.6 IEF (EM 90/60 stacked, since VWO 2006-01)
+    if "VWO" in existing.columns and "IEF" in existing.columns:
+        vwo = existing["VWO"]
+        ief = existing["IEF"]
+        joint = pd.concat([vwo.rename("vwo"), ief.rename("ief")], axis=1).dropna()
+        ntse_syn = 0.9 * joint["vwo"] + 0.6 * joint["ief"]
+        ntse_syn.name = "NTSE_syn"
+        new_assets["NTSE_syn"] = ntse_syn
+        print(f"  +NTSE_syn (synthetic): {len(ntse_syn)} rows from {ntse_syn.index.min().date()}")
+
     # Build new panel by concatenating with existing (preserving existing columns)
     new_df = pd.DataFrame(new_assets)
     # Align indices and combine with existing

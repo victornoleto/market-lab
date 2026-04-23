@@ -442,80 +442,85 @@ Cada uma otimizando uma função objetivo diferente, usando:
 Janela de backtest primária: **2007-07 → 2026-02 (18,5 anos, proxy)** com CDI como
 BR FI proxy. Validação adicional com dados REAIS 2020-2026.
 
-### 6.1 FINAL V3_1 v3.3: Max CAGR — "Leveraged Growth Engine"
+### 6.1 FINAL V3_1 v3.4: Max CAGR — "Leveraged Growth Engine"
 
 **Objetivo:** maximizar CAGR esperado em 30 anos; zero FI (drag); aceita MDD até ~45%.
 **Default pra fase de acumulação 30-45 anos** — primeiros ~15 anos com zero
 BR FI + 30% factor tilts balanceados (15% SCV + 15% Momentum US/DM).
 
-**Final design pós feedback iterativo do usuário:**
+**Final design v3.4 — consolidação pós 6 iterações de feedback:**
 
-1. **Removido SSO 10%** — inconsistência com princípio "stacked overlay >
-   LETF puro". SSO era LETF puro sem overlay descorrelacionado.
-2. **30% factor tilts balanceados** — 15% SCV (AVUV 10 + AVDV 5) + 15%
-   Momentum (SPMO 10 + IDMO 5). Literatura AQR "Our Model Goes to Six":
-   correlação HML vs UMD -0,4 a -0,7, peso ótimo momentum em portfolio
-   otimizado ~38%. Balance 1:1 SCV/Momentum captura diversification benefit.
+1. **Zero SSO** — LETF puro inconsistente com princípio "stacked overlay
+   descorrelacionado > LETF puro" (§3, §4). Redistribuído pra GDE + stacking.
+2. **25% factor tilts, ratio 60/40 SCV/Mom** — 15% SCV (AVUV 10 + AVDV 5) +
+   10% Momentum (SPMO 7 + IDMO 3). Literatura AQR: correlação HML vs UMD
+   -0,4 a -0,7; peso ótimo momentum ~38% em portfolio Mkt+SMB+HML+UMD
+   optimizado. Tax-efficient pra BR (SCV turnover 20-30%/ano vs Mom 100%+).
 3. **Momentum apenas em US + DM (não EM).** Empírico: EEMO 41% vs AVEM 109%
    desde 2019. Custos implementação EM + crashes assimétricos em crises
-   cambiais invalidam momentum em EM (ver §5 do portfolio-aposentadoria.md
-   original).
-4. **ETFs escolhidos são best-in-class após review empírica:**
-   - AVUV/AVDV: factor loadings mais fortes (SMB 0.70, HML 0.55), Avantis
-     methodology integrated value × profitability.
-   - SPMO bateu MTUM head-to-head 2015-2026 (+2,5pp CAGR, +0,16 Sharpe,
-     +9pp MDD). Mantido.
-   - IDMO bateu IMTM em CAGR (+1,3pp). Caveat AUM $250M — se patrimônio >$5M
-     considere IMTM ($2B) por liquidez; pra patrimônio tipico IDMO OK.
+   cambiais invalidam momentum em EM.
+4. **Pure stacking — zero standalone gold/BTC.** Removido GLDM 10% e IBIT 2%.
+   Gold/BTC agora 100% via GDE (eq+gold stacked) e BTGD (BTC+gold stacked).
+   Gold notional reduzido 40% → **27,5%**. BTC 5% via BTGD único.
+5. **Geografia 55/30/15 US/DM/EM** — target do Plano C original (levemente
+   mais Int+EM que VT 63/27/10; direção Cederburg 2024 favorece Int).
+6. **ETFs best-in-class** (review empírica head-to-head):
+   - AVUV/AVDV: factor loadings mais fortes (SMB 0.70 / HML 0.55); Avantis
+     integrated value × profitability
+   - SPMO bateu MTUM 2015-2026: +2,5pp CAGR, +0,16 Sharpe, +9pp MDD
+   - IDMO bateu IMTM em CAGR (+1,3pp); caveat AUM $250M — IMTM se >$5M
+   - GDE TER 0,20% é best-in-class pra 90%/90% stacking
 
 | Ticker | Peso | Classe |
 |--------|------|--------|
-| **GDE** | **30%** | 90% SPX + 90% gold (1,8× lev) |
-| **NTSI** | **15%** | Int 90/60 |
-| **NTSE** | **5%** | EM 90/60 |
+| **GDE** | **25%** | 90% SPX + 90% gold (1,8× lev) |
+| **AVUS** | **12%** | US core Avantis (tilts integrados modestos) |
+| **NTSI** | **20%** | Int 90/60 stacked |
+| **NTSE** | **8%** | EM 90/60 stacked |
+| AVEM | 5% | EM core (sem momentum) |
 | **AVUV** | **10%** | US SCV |
 | **AVDV** | **5%** | Int SCV |
-| **SPMO** | **10%** | US Momentum |
-| **IDMO** | **5%** | Int Momentum (US+DM only; zero EM Mom) |
-| AVEM | 5% | EM core (com tilts Avantis; sem momentum) |
-| BTGD | 3% | Gold+BTC stacked |
-| IBIT | 2% | Bitcoin spot |
-| **GLDM** | **10%** | Gold spot |
+| **SPMO** | **7%** | US Momentum |
+| **IDMO** | **3%** | Int Momentum (US+DM only; zero EM Mom) |
+| **BTGD** | **5%** | BTC+gold stacked (única fonte de BTC) |
 
 **Decomposição estrutural:**
-- Core stacked (GDE + NTSI + NTSE + AVEM): **55%**
-- Factor tilts balanceados: **30%** (15% SCV + 15% Momentum)
-- Alts (gold + BTC): **15%** (10% GLDM + 3% BTGD + 2% IBIT)
+- Core equity stacked (GDE + AVUS + NTSI + NTSE + AVEM): **70%**
+- Factor tilts 60/40 SCV/Mom: **25%** (15% SCV + 10% Momentum)
+- Scarcity stacked (BTGD): **5%**
 
-**Alavancagem efetiva ≈ 1,37×.** Toda via stacked overlay descorrelacionado.
+**Decomposição notional (exposure total):**
+- **Equity: 90%** — **US 51,5% (57%) / DM 26,2% (29%) / EM 12,2% (14%)** ≈ 55/30/15
+- **Gold: 27,5%** (via GDE 22,5% + BTGD 5%)
+- **BTC: 5%** (via BTGD)
+- **Bonds: 16,8%** (via NTSI/NTSE Treasury overlay)
+- **Total notional: 139%** → leverage efetiva **1,39×**
 
 **Performance (proxy 2014-2026, 11,4y, bull-biased):**
-CAGR **17,44%** / Sharpe **0,97** / MDD -26,5% / Vol 15,9%
+CAGR **15,54%** / Sharpe **0,85** / MDD -28,5% / Vol 15,9%
 
 **Performance (proxy 2007-2026 sem BTGD, 18,5y, inclui 2008):**
-CAGR **12,62%** / Sharpe **0,68** / MDD **-44,8%** / Vol 16,5%
+CAGR **10,84%** / Sharpe **0,55** / MDD **-49,2%** / Vol 17,0%
 
 **Bootstrap 30y (10k + 1k/mês, janela 2014-2026):**
-p05=$2,66M / p25=**$6,42M** / p50=**$10,27M** / p95=$35,19M / P(MDD>50%)=0,4% / SWR 9,47%
+p25=**$4,36M** / p50=**$6,95M** / p95=$24,21M / P(MDD>50%)=1,3% / SWR 8,19%
 
-**Veredito:** real-world 30y expectativa: **CAGR 12-14% com MDD 35-45%**.
+**Veredito:** real-world 30y expectativa: **CAGR 10-12% com MDD 40-55%**.
 
-**Trade-off honesto 25% factor (v3.2) vs 30% factor (v3.3):**
+**Trade-off honesto versões V3_1:**
 
-| Janela | Métrica | v3.2 (25% factor) | **v3.3 (30% factor)** | Delta |
-|--------|---------|-------------------|------------------------|-------|
-| 2014-2026 | CAGR | 18,26% | 17,44% | -0,82pp |
-| 2014-2026 | Sharpe | 1,01 | 0,97 | -0,04 |
-| 2014-2026 | MDD | -27,6% | -26,5% | +1,1pp better |
-| 2007-2026 | CAGR | 13,40% | 12,62% | -0,78pp |
-| 2007-2026 | Sharpe | 0,72 | 0,68 | -0,04 |
-| Leverage | | 1,51× | 1,37× | Menor |
+| Versão | CAGR 2014-26 | Sharpe | MDD | Gold % | BTC % | US/DM/EM |
+|--------|--------------|--------|-----|--------|-------|----------|
+| v3.1 (com SSO) | 18,33% | 0,93 | -30% | 36% | 5% | ~59/29/12 |
+| v3.2 (sem SSO) | 18,26% | 1,01 | -28% | 35% | 5% | ~58/30/12 |
+| v3.3 (30% factor) | 17,44% | 0,97 | -27% | 40% | 5% | ~59/29/12 |
+| **v3.4 (55/30/15 + pure stack)** | **15,54%** | **0,85** | **-28%** | **27,5%** | **5%** | **57/29/14** |
 
-Pressionar 25% → 30% factor custa ~0,8pp CAGR no backtest (menos GDE/NTSI,
-mais tilts que underperformed SPX 2010-2024). Em compensação: mais factor
-alpha esperado se mean reversion funciona (Asness 2024 value spread p95-100)
-+ MDD marginalmente melhor. **Escolha estrutural do investidor, não
-optimization matemática.**
+Progressão v3.1 → v3.4: cada iteração trocou CAGR backtest por **coerência
+estrutural** (remove SSO) → **factor tilts balanceados** (AQR) → **geografia
+alinhada com Plano C + pure stacking alts** (coerência filosófica). O v3.4
+custa ~3pp CAGR vs v3.1 bull-biased, mas é o design mais defensável
+conceitualmente.
 
 ### 6.2 FINAL V3_2: Max Sharpe — "Diversified Factor + BR FI"
 

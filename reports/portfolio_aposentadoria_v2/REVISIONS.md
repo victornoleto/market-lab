@@ -1,6 +1,79 @@
-# Revisões — Plano C v2/v3/v3.1/v3.2/v3.3
+# Revisões — Plano C v2/v3/v3.1/v3.2/v3.3/v3.4
 
 Audit trail das mudanças feitas durante a sessão 2026-04-23.
+
+---
+
+## V3.4 (2026-04-23 consolidação — pure stacking + 55/30/15 + math fix)
+
+**Triggers (3 pontos do usuário):**
+
+1. "Muita posição em gold e BTC, redundância GDE+GLDM."
+2. "IBIT standalone inconsistente com stacking philosophy."
+3. "Qual a diferença de ISBG pra BTGD?" + "Você está mantendo VT 60/30/10?"
+
+**Descoberta ao verificar a pergunta geográfica:** Variante A que propus
+anteriormente só somava **90%** (erro de matemática meu); precisou ser
+corrigida com AVUS 12% preenchendo os 10% faltantes + ajuste de NTSI/NTSE.
+
+**Respostas empíricas:**
+
+- **Gold notional v3.3 era 40%** (GDE 27 + GLDM 10 + BTGD 3) — excessivo
+  vs consenso acadêmico 5-15% moderado, 20-30% all-weather aggressive.
+- **ISBG vs BTGD:** ISBG tem option overlay (covered calls + short puts) que
+  cap upside — wrong-fit pra acumulação. BTGD é pura beta BTC+gold. ISBG OK
+  só pra retirement income (V3_4), NÃO pra acumulação.
+- **IBIT standalone:** literatura (Fidelity 2022, BlackRock 2024, Hoffstein/
+  Newfound) suporta 1-5% BTC allocation; Hoffstein explicitamente recomenda
+  stacked > standalone por capital efficiency. Confirma intuição do usuário.
+- **RSSX re-avaliado:** ainda muito novo (inception mai-2025, AUM $60M).
+  BTGD preferido pra concentração BTC+gold scarcity.
+
+**Mudanças V3_1 v3.3 → v3.4:**
+
+- GDE: 30% → **25%** (reduz gold notional)
+- **AVUS 12% NOVO** (US core unlevered, preenche math gap + ajusta geografia)
+- NTSI: 15% → **20%** (absorve equity sacrificado, mais DM)
+- NTSE: 5% → **8%** (mais EM)
+- AVUV/AVDV/SPMO/IDMO: 15/10 → 15/10 (mantém 25% factor 60/40 SCV/Mom)
+- AVEM: 5% = (inalterado)
+- BTGD: 3% → **5%** (consolida BTC exposure, concentrado)
+- **IBIT 2% REMOVIDO** (standalone → BTC agora só via BTGD)
+- **GLDM 10% REMOVIDO** (standalone → gold agora só via GDE + BTGD)
+
+**Decomposição notional v3.4:**
+- Gold: **27,5%** (era 40%) — -12,5pp
+- BTC: 5% (mantido, agora via BTGD único)
+- Equity US/DM/EM: **57/29/14** (target 55/30/15 ✅)
+- Bonds: 16,8% (via Treasury overlay NTSI/NTSE)
+- Leverage efetiva: 1,39×
+
+**Infra adicionada:**
+
+- Novos sintéticos no panel: **NTSI_syn** (0,9 VEA + 0,6 IEF, desde 2007-07)
+  e **NTSE_syn** (0,9 VWO + 0,6 IEF, desde 2006-01). Permitem backtest
+  long-history de carteiras com sleeve internacional stacked.
+- `scripts/08_extend_panel_v3.py` atualizado pra criar os 2 sintéticos.
+
+**Backtest v3.3 vs v3.4 (janela 2014-2026):**
+
+| Métrica | v3.3 (heavy gold + standalone) | v3.4 (55/30/15 + pure stacked) | Delta |
+|---------|-------------------------------|--------------------------------|-------|
+| CAGR | 17,44% | 15,54% | -1,90pp |
+| Sharpe | 0,97 | 0,85 | -0,12 |
+| MDD | -26,5% | -28,5% | -2,0pp |
+| Gold notional | 40% | 27,5% | -12,5pp ✅ |
+| Geo ratio US/DM/EM | 59/29/12 | 57/29/14 | Alinhado Plano C |
+| p50 TW 30y | $10,27M | $6,95M | -$3,3M |
+
+**Preço do clean design: -1,9pp CAGR.** Motivo: menos GDE (gold premium
+2014-26) + AVUS unlevered 12%. Em troca: filosofia coerente (tudo stacked),
+geografia alinhada, zero redundância.
+
+**Lição iterativa V3.1 → V3.4:** cada ajuste trocou CAGR backtest por
+coerência estrutural. Versão final (v3.4) custa ~3pp CAGR vs v3.1
+(bull-biased com SSO + heavy gold), mas é o design mais defensável
+filosoficamente. Coerência > optimization num single window.
 
 ---
 

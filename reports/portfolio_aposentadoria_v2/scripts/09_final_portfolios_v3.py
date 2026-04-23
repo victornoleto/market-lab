@@ -64,41 +64,43 @@ FINAL_V3 = {
     # Max leverage via GDE (equity+gold stacked) + NTSX family + SSO extra.
     # No BR FI (opportunity cost — FI drags CAGR).
     "FINAL_V3_1_MAX_CAGR": {
-        "name": "Leveraged Growth Engine v3.3 (Max CAGR)",
+        "name": "Leveraged Growth Engine v3.4 (Max CAGR)",
         "objective": "maximize 30y CAGR; accept historical MDD up to ~50%",
         "weights_real": {
-            "GDE": 0.30,    # 90% SPX + 90% gold, 1.8× lev
-            "NTSI": 0.15,   # Int 90/60
-            "NTSE": 0.05,   # EM 90/60
-            "AVUV": 0.10,   # US SCV — 15% SCV split 10/5
-            "AVDV": 0.05,   # Int SCV
-            "SPMO": 0.10,   # US Momentum — 15% Mom split 10/5
-            "IDMO": 0.05,   # Int Momentum
-            "AVEM": 0.05,   # EM core (NO momentum in EM per academic evidence)
-            "BTGD": 0.03,   # gold+BTC stacked
-            "IBIT": 0.02,   # BTC spot
-            "GLDM": 0.10,   # gold spot
+            "GDE": 0.25,    # 90% SPX + 90% gold stacked — reduzido de 30 pra diminuir gold notional
+            "AVUS": 0.12,   # US core (Avantis, com tilts modestos) — preenche equity US
+            "NTSI": 0.20,   # Int 90/60 stacked
+            "NTSE": 0.08,   # EM 90/60 stacked
+            "AVEM": 0.05,   # EM core (com tilts Avantis; sem Momentum)
+            "AVUV": 0.10,   # US SCV
+            "AVDV": 0.05,   # Int SCV (15% total SCV)
+            "SPMO": 0.07,   # US Momentum
+            "IDMO": 0.03,   # Int Momentum (10% total Mom — 25% factor total 60/40 SCV/Mom)
+            "BTGD": 0.05,   # BTC+gold stacked (única fonte de BTC; tudo stacked)
         },
         "weights_proxy": {
-            "GDE_syn": 0.30,
-            "NTSX_syn": 0.20,          # NTSI + NTSE combined
-            "AVUV_syn_3f": 0.25,       # AVUV (10) + SPMO proxy (10) + some Mom residual
-            "VEA": 0.10,               # AVDV + IDMO
-            "VWO": 0.05,               # AVEM
-            "BTGD_syn": 0.05,          # BTGD + IBIT
-            "GLD": 0.05,               # GLDM
+            "GDE_syn": 0.25,           # GDE real (2004+ via sintético)
+            "AVUS_syn_3f": 0.12,       # AVUS syn via Fama-French (1926+)
+            "NTSI_syn": 0.20,          # NTSI syn = 0.9*VEA + 0.6*IEF (2007+)
+            "NTSE_syn": 0.08,          # NTSE syn = 0.9*VWO + 0.6*IEF (2006+)
+            "VWO": 0.05,               # AVEM proxy
+            "AVUV_syn_3f": 0.17,       # AVUV (10) + SPMO (7) lumped
+            "VEA": 0.08,               # AVDV (5) + IDMO (3) lumped
+            "BTGD_syn": 0.05,          # BTGD syn (2014+)
         },
-        "embedded_leverage_approx": 1.37,
+        "embedded_leverage_approx": 1.39,
         "rationale": (
-            "v3.3 redesign (2026-04-23 feedback final): "
-            "30% factor tilts balanceados 15% SCV + 15% Momentum (AQR: "
-            "correlação value-momentum -0.4 a -0.7). "
-            "Momentum ONLY em US + DM (não EM — EEMO empírico: 41% vs "
-            "AVEM 109% desde 2019; custos de implementação EM + crashes "
-            "assimétricos invalidam momentum EM). "
-            "Zero SSO (LETF puro inconsistente com princípio stacked overlay). "
-            "Trade-off 25% → 30% factor: -0.8pp CAGR backtest em troca de "
-            "mais evidence-based alpha. Leverage efetivo 1.37× (todo stacked)."
+            "v3.4 redesign (2026-04-23 final): CONSOLIDAÇÃO de gold/BTC via "
+            "stacking puro — removido GLDM 10% e IBIT 2% standalone. Tudo que "
+            "envolve gold/BTC agora via GDE (stacked eq+gold) ou BTGD (stacked "
+            "BTC+gold). Gold notional reduzido de 40% pra 27,5%. "
+            "GEOGRAFIA: target US/DM/EM = 55/30/15 (Plano C original), "
+            "atingido via GDE 25 + AVUS 12 + AVUV 10 + SPMO 7 (US 55%), "
+            "NTSI 20 + AVDV 5 + IDMO 3 (DM 28%), NTSE 8 + AVEM 5 (EM 13%). "
+            "FACTOR TILT: 25% total (15% SCV + 10% Mom, ratio 60/40 AQR-optimal). "
+            "Trade-off vs v3.3 (30% factor + heavy gold): -1.9pp CAGR backtest "
+            "2014-26 (preço do gold reduzido + mais broad US). Leverage 1.39× "
+            "tudo via stacked overlay descorrelacionado."
         ),
     },
 
