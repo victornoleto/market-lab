@@ -1,0 +1,178 @@
+Failed to get ticker 'AVUS' reason: Failed to perform, curl: (28) Connection timed out after 10002 milliseconds. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+
+1 Failed download:
+['AVUS']: Timeout('Failed to perform, curl: (28) Connection timed out after 30002 milliseconds. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.')
+Failed to get ticker 'AVUV' reason: Failed to perform, curl: (28) Operation timed out after 10001 milliseconds with 0 bytes received. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+
+1 Failed download:
+['AVUV']: Timeout('Failed to perform, curl: (28) Operation timed out after 30001 milliseconds with 0 bytes received. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.')
+Failed to get ticker 'SPMO' reason: Failed to perform, curl: (28) Connection timed out after 10003 milliseconds. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$SPMO: possibly delisted; no timezone found
+
+1 Failed download:
+['SPMO']: possibly delisted; no timezone found
+Failed to get ticker 'AVDE' reason: Failed to perform, curl: (28) Connection timed out after 10002 milliseconds. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$AVDE: possibly delisted; no timezone found
+
+1 Failed download:
+['AVDE']: possibly delisted; no timezone found
+Failed to get ticker 'IDMO' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$IDMO: possibly delisted; no timezone found
+
+1 Failed download:
+['IDMO']: possibly delisted; no timezone found
+Failed to get ticker 'AVDV' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$AVDV: possibly delisted; no timezone found
+
+1 Failed download:
+['AVDV']: possibly delisted; no timezone found
+Failed to get ticker 'AVEM' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$AVEM: possibly delisted; no timezone found
+
+1 Failed download:
+['AVEM']: possibly delisted; no timezone found
+Failed to get ticker 'DFAC' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$DFAC: possibly delisted; no timezone found
+
+1 Failed download:
+['DFAC']: possibly delisted; no timezone found
+Failed to get ticker 'DFAT' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$DFAT: possibly delisted; no timezone found
+
+1 Failed download:
+['DFAT']: possibly delisted; no timezone found
+Failed to get ticker 'AVGV' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$AVGV: possibly delisted; no timezone found
+
+1 Failed download:
+['AVGV']: possibly delisted; no timezone found
+Failed to get ticker 'EFO' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$EFO: possibly delisted; no timezone found
+
+1 Failed download:
+['EFO']: possibly delisted; no timezone found
+Failed to get ticker 'NTSX' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$NTSX: possibly delisted; no timezone found
+
+1 Failed download:
+['NTSX']: possibly delisted; no timezone found
+Failed to get ticker 'NTSI' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$NTSI: possibly delisted; no timezone found
+
+1 Failed download:
+['NTSI']: possibly delisted; no timezone found
+Failed to get ticker 'NTSE' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$NTSE: possibly delisted; no timezone found
+
+1 Failed download:
+['NTSE']: possibly delisted; no timezone found
+Failed to get ticker 'RSST' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$RSST: possibly delisted; no timezone found
+
+1 Failed download:
+['RSST']: possibly delisted; no timezone found
+Failed to get ticker 'RSSB' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$RSSB: possibly delisted; no timezone found
+
+1 Failed download:
+['RSSB']: possibly delisted; no timezone found
+Failed to get ticker 'RSBT' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$RSBT: possibly delisted; no timezone found
+
+1 Failed download:
+['RSBT']: possibly delisted; no timezone found
+Failed to get ticker 'RSSY' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$RSSY: possibly delisted; no timezone found
+
+1 Failed download:
+['RSSY']: possibly delisted; no timezone found
+Failed to get ticker 'RSBY' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$RSBY: possibly delisted; no timezone found
+
+1 Failed download:
+['RSBY']: possibly delisted; no timezone found
+Failed to get ticker 'DBMF' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$DBMF: possibly delisted; no timezone found
+
+1 Failed download:
+['DBMF']: possibly delisted; no timezone found
+Failed to get ticker 'KMLM' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$KMLM: possibly delisted; no timezone found
+
+1 Failed download:
+['KMLM']: possibly delisted; no timezone found
+Failed to get ticker 'CTA' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$CTA: possibly delisted; no timezone found
+
+1 Failed download:
+['CTA']: possibly delisted; no timezone found
+Failed to get ticker 'IBIT' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$IBIT: possibly delisted; no timezone found
+
+1 Failed download:
+['IBIT']: possibly delisted; no timezone found
+Failed to get ticker 'GLDM' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$GLDM: possibly delisted; no timezone found
+
+1 Failed download:
+['GLDM']: possibly delisted; no timezone found
+Failed to get ticker 'VXUS' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$VXUS: possibly delisted; no timezone found
+
+1 Failed download:
+['VXUS']: possibly delisted; no timezone found
+Failed to get ticker 'VT' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$VT: possibly delisted; no timezone found
+
+1 Failed download:
+['VT']: possibly delisted; no timezone found
+Failed to get ticker '^SP500TR' reason: Failed to perform, curl: (6) Could not resolve host: query2.finance.yahoo.com. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+$^SP500TR: possibly delisted; no timezone found
+
+1 Failed download:
+['^SP500TR']: possibly delisted; no timezone found
+$^GSPC: possibly delisted; no price data found  (1d 1990-01-01 -> 2026-04-23)
+
+1 Failed download:
+['^GSPC']: possibly delisted; no price data found  (1d 1990-01-01 -> 2026-04-23)
+FAIL: AVUS — no data available
+FAIL: AVUV — no data available
+FAIL: SPMO — no data available
+FAIL: AVDE — no data available
+FAIL: IDMO — no data available
+FAIL: AVDV — no data available
+FAIL: AVEM — no data available
+FAIL: DFAC — no data available
+FAIL: DFAT — no data available
+FAIL: AVGV — no data available
+OK (tiingo): SSO — 4988 rows 2006-06-21 → 2026-04-20
+OK (tiingo): UPRO — 4230 rows 2009-06-25 → 2026-04-20
+OK (tiingo): QLD — 4988 rows 2006-06-21 → 2026-04-20
+OK (tiingo): TQQQ — 4071 rows 2010-02-11 → 2026-04-20
+FAIL: EFO — no data available
+FAIL: NTSX — no data available
+FAIL: NTSI — no data available
+FAIL: NTSE — no data available
+FAIL: RSST — no data available
+FAIL: RSSB — no data available
+FAIL: RSBT — no data available
+FAIL: RSSY — no data available
+FAIL: RSBY — no data available
+FAIL: DBMF — no data available
+FAIL: KMLM — no data available
+FAIL: CTA — no data available
+FAIL: IBIT — no data available
+FAIL: GLDM — no data available
+OK (tiingo): SPY — 6270 rows 2001-05-14 → 2026-04-20
+OK (tiingo): VTI — 5105 rows 2006-01-03 → 2026-04-20
+FAIL: VXUS — no data available
+OK (tiingo): VEA — 4713 rows 2007-07-26 → 2026-04-20
+OK (tiingo): VWO — 5105 rows 2006-01-03 → 2026-04-20
+FAIL: VT — no data available
+OK (tiingo): TLT — 5968 rows 2002-07-26 → 2026-04-15
+OK (tiingo): IEF — 5105 rows 2006-01-03 → 2026-04-20
+OK (tiingo): SHV — 4848 rows 2007-01-11 → 2026-04-20
+FAIL: ^SP500TR — no data available
+FAIL: ^GSPC — no data available
+
+Summary: 11 OK / 28 FAIL of 39 tickers

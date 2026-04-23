@@ -1,0 +1,303 @@
+{
+  "SPY": {
+    "start": "2001-05-15",
+    "end": "2026-04-20",
+    "n_days": 6269,
+    "source": "real"
+  },
+  "VTI": {
+    "start": "2006-01-04",
+    "end": "2026-04-20",
+    "n_days": 5104,
+    "source": "real"
+  },
+  "VXUS": {
+    "start": "2011-01-31",
+    "end": "2026-04-22",
+    "n_days": 3829,
+    "source": "real"
+  },
+  "VEA": {
+    "start": "2007-07-27",
+    "end": "2026-04-20",
+    "n_days": 4712,
+    "source": "real"
+  },
+  "VWO": {
+    "start": "2006-01-04",
+    "end": "2026-04-20",
+    "n_days": 5104,
+    "source": "real"
+  },
+  "VT": {
+    "start": "2008-06-27",
+    "end": "2026-04-22",
+    "n_days": 4482,
+    "source": "real"
+  },
+  "SSO": {
+    "start": "2006-06-22",
+    "end": "2026-04-20",
+    "n_days": 4987,
+    "source": "real"
+  },
+  "UPRO": {
+    "start": "2009-06-26",
+    "end": "2026-04-20",
+    "n_days": 4229,
+    "source": "real"
+  },
+  "QLD": {
+    "start": "2006-06-22",
+    "end": "2026-04-20",
+    "n_days": 4987,
+    "source": "real"
+  },
+  "TQQQ": {
+    "start": "2010-02-12",
+    "end": "2026-04-20",
+    "n_days": 4070,
+    "source": "real"
+  },
+  "EFO": {
+    "start": "2009-06-05",
+    "end": "2026-04-22",
+    "n_days": 4245,
+    "source": "real"
+  },
+  "NTSX": {
+    "start": "2018-08-03",
+    "end": "2026-04-22",
+    "n_days": 1939,
+    "source": "real"
+  },
+  "NTSI": {
+    "start": "2021-05-21",
+    "end": "2026-04-22",
+    "n_days": 1235,
+    "source": "real"
+  },
+  "NTSE": {
+    "start": "2021-05-21",
+    "end": "2026-04-22",
+    "n_days": 1235,
+    "source": "real"
+  },
+  "RSST": {
+    "start": "2023-09-07",
+    "end": "2026-04-22",
+    "n_days": 658,
+    "source": "real"
+  },
+  "RSSB": {
+    "start": "2023-12-06",
+    "end": "2026-04-22",
+    "n_days": 595,
+    "source": "real"
+  },
+  "RSBT": {
+    "start": "2023-02-09",
+    "end": "2026-04-22",
+    "n_days": 802,
+    "source": "real"
+  },
+  "RSSY": {
+    "start": "2024-05-30",
+    "end": "2026-04-22",
+    "n_days": 475,
+    "source": "real"
+  },
+  "RSBY": {
+    "start": "2024-08-22",
+    "end": "2026-04-22",
+    "n_days": 417,
+    "source": "real"
+  },
+  "DBMF": {
+    "start": "2019-05-09",
+    "end": "2026-04-22",
+    "n_days": 1748,
+    "source": "real"
+  },
+  "KMLM": {
+    "start": "2020-12-03",
+    "end": "2026-04-22",
+    "n_days": 1351,
+    "source": "real"
+  },
+  "CTA": {
+    "start": "2022-03-09",
+    "end": "2026-04-22",
+    "n_days": 1034,
+    "source": "real"
+  },
+  "AVUS": {
+    "start": "2019-09-27",
+    "end": "2026-04-22",
+    "n_days": 1650,
+    "source": "real"
+  },
+  "AVUV": {
+    "start": "2019-09-27",
+    "end": "2026-04-22",
+    "n_days": 1650,
+    "source": "real"
+  },
+  "SPMO": {
+    "start": "2015-10-13",
+    "end": "2026-04-22",
+    "n_days": 2646,
+    "source": "real"
+  },
+  "AVDE": {
+    "start": "2019-09-27",
+    "end": "2026-04-22",
+    "n_days": 1650,
+    "source": "real"
+  },
+  "IDMO": {
+    "start": "2012-02-27",
+    "end": "2026-04-22",
+    "n_days": 3559,
+    "source": "real"
+  },
+  "AVDV": {
+    "start": "2019-09-27",
+    "end": "2026-04-22",
+    "n_days": 1650,
+    "source": "real"
+  },
+  "AVEM": {
+    "start": "2019-09-20",
+    "end": "2026-04-22",
+    "n_days": 1655,
+    "source": "real"
+  },
+  "DFAC": {
+    "start": "2021-06-15",
+    "end": "2026-04-22",
+    "n_days": 1219,
+    "source": "real"
+  },
+  "DFAT": {
+    "start": "2021-06-15",
+    "end": "2026-04-22",
+    "n_days": 1219,
+    "source": "real"
+  },
+  "AVGV": {
+    "start": "2023-06-30",
+    "end": "2026-04-22",
+    "n_days": 705,
+    "source": "real"
+  },
+  "IBIT": {
+    "start": "2024-01-12",
+    "end": "2026-04-22",
+    "n_days": 570,
+    "source": "real"
+  },
+  "GLDM": {
+    "start": "2018-06-27",
+    "end": "2026-04-22",
+    "n_days": 1965,
+    "source": "real"
+  },
+  "GLD": {
+    "start": "2004-11-19",
+    "end": "2026-04-22",
+    "n_days": 5388,
+    "source": "real"
+  },
+  "TLT": {
+    "start": "2002-07-29",
+    "end": "2026-04-15",
+    "n_days": 5967,
+    "source": "real"
+  },
+  "IEF": {
+    "start": "2006-01-04",
+    "end": "2026-04-20",
+    "n_days": 5104,
+    "source": "real"
+  },
+  "SHV": {
+    "start": "2007-01-12",
+    "end": "2026-04-20",
+    "n_days": 4847,
+    "source": "real"
+  },
+  "SPY_1x_sim": {
+    "start": "1885-03-23",
+    "end": "2026-04-16",
+    "n_days": 35332,
+    "source": "testfolio_sim"
+  },
+  "SPY_2x_sim": {
+    "start": "1885-03-23",
+    "end": "2026-04-16",
+    "n_days": 35332,
+    "source": "testfolio_sim"
+  },
+  "SPY_3x_sim": {
+    "start": "1885-03-23",
+    "end": "2026-04-16",
+    "n_days": 35332,
+    "source": "testfolio_sim"
+  },
+  "KF_Mkt_RF": {
+    "start": "1926-07-01",
+    "end": "2026-02-27",
+    "n_days": 26190,
+    "source": "ken_french"
+  },
+  "KF_SMB": {
+    "start": "1926-07-01",
+    "end": "2026-02-27",
+    "n_days": 26190,
+    "source": "ken_french"
+  },
+  "KF_HML": {
+    "start": "1926-07-01",
+    "end": "2026-02-27",
+    "n_days": 26190,
+    "source": "ken_french"
+  },
+  "KF_RF": {
+    "start": "1926-07-01",
+    "end": "2026-02-27",
+    "n_days": 26190,
+    "source": "ken_french"
+  },
+  "KF_Mkt": {
+    "start": "1926-07-01",
+    "end": "2026-02-27",
+    "n_days": 26190,
+    "source": "ken_french"
+  },
+  "NTSX_syn": {
+    "start": "2006-01-04",
+    "end": "2026-04-16",
+    "n_days": 5102,
+    "source": "synthesized: 0.9*SPY_1x_sim + 0.6*IEF"
+  },
+  "RSST_syn": {
+    "start": "2019-05-09",
+    "end": "2026-04-16",
+    "n_days": 1744,
+    "source": "synthesized: 1.0*SPY_1x_sim + 1.0*DBMF"
+  },
+  "AVUV_syn_3f": {
+    "start": "1926-07-01",
+    "end": "2026-02-27",
+    "n_days": 26190,
+    "source": "synthesized: RF + 1.0*MktRF + 0.70*SMB + 0.55*HML (literature loadings)",
+    "caveat": "3-factor only; no RMW/CMA; upper-bound estimate"
+  },
+  "AVUS_syn_3f": {
+    "start": "1926-07-01",
+    "end": "2026-02-27",
+    "n_days": 26190,
+    "source": "synthesized: RF + 1.03*MktRF + 0.09*SMB + 0.15*HML (from portfolio-aposentadoria doc)"
+  }
+}
