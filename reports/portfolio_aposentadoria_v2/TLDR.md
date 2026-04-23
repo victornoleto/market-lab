@@ -41,14 +41,14 @@ Comparação direta 2006-2026:
 | **NTSX_syn** (0,9 SPY + 0,6 IEF) | **11,50%** | **0,71** | -41% |
 | SSO (LETF puro c/ fees) | 12,91% | 0,37 | -81% |
 
-## As 4 carteiras finais (V3_1 v3.4 — 55/30/15 + pure stacking)
+## As 4 carteiras finais (V3_1 v3.5 — AVDE/AVEM pure equity, zero US bonds)
 
 Janela backtest 2007-2026 (18,5y) usando proxies. Validação com dados reais
 2020-2026.
 
 | Carteira | Objetivo | CAGR | Sharpe | MDD | p50 TW 30y | SWR | BR FI% | Quando usar |
 |----------|----------|------|--------|-----|------------|-----|--------|-------------|
-| **V3_1 v3.4** | Max CAGR | **15,5%*** | 0,85 | -28% | **$6,95M** | 8,2% | 0% | **Acumulação 30-45** |
+| **V3_1 v3.5** | Max CAGR | **15,3%*** | 0,83 | -27% | **$6,71M** | 8,1% | 0% | **Acumulação 30-45** |
 | **V3_2** | Max Sharpe | 12,5% | **1,12** | -18% | $3,7M | 8,3% | 35% | Pré-aposentadoria 55-60 |
 | **V3_3** | Max TW/MDD≤50% | 11,7% | 0,79 | -36% | $3,3M | 6,7% | 18% | Transição 45-55 |
 | **V3_4** | Max SWR | 11,7% | 1,36 | **-12%** | $3,1M | **8,6%** | 52% | Retirement 60+ |
@@ -56,41 +56,48 @@ Janela backtest 2007-2026 (18,5y) usando proxies. Validação com dados reais
 (*) V3_1 janela 2014-2026 (bull-biased); sem BTGD em 2007-2026 o CAGR cai
 pra ~10,8% e MDD -49%. Real-world 30y esperado: **10-12% CAGR com MDD 40-55%**.
 
-**V3_1 v3.4 — ajustes finais consolidados (5 decisões estruturais):**
+**V3_1 v3.5 — decisões estruturais finais (6 princípios):**
 
 1. **Zero SSO** (LETF puro inconsistente com princípio stacked overlay).
 2. **Pure stacking alts** — removido GLDM 10% e IBIT 2% standalone. Gold/BTC
-   agora 100% via GDE (eq+gold) e BTGD (BTC+gold). Gold notional reduzido
-   de 40% → **27,5%**; BTC 5% via BTGD puro.
-3. **Geografia 55/30/15 US/DM/EM** (Plano C original, levemente mais Int+EM
-   que VT 63/27/10; direção Cederburg 2024 favorece mais Int).
-4. **25% factor tilts** com ratio 60/40 SCV/Mom (15% SCV + 10% Mom) — AQR
-   Asness "Fact, Fiction, Momentum" optimal; tax-efficient pra BR (SCV tem
-   turnover 5× menor que Mom).
-5. **Momentum apenas em US + DM, zero em EM** — EEMO 41% vs AVEM 109% desde
-   2019; custos EM + crashes assimétricos invalidam momentum em EM.
+   agora 100% via GDE (eq+gold) e BTGD (BTC+gold). Gold notional 27,5%;
+   BTC 5% via BTGD único.
+3. **Geografia 55/30/15 US/DM/EM** (Plano C original).
+4. **25% factor tilts** com ratio 60/40 SCV/Mom (AQR-optimal).
+5. **Momentum apenas em US + DM, zero em EM** (EEMO empírico 41% vs AVEM 109%).
+6. **Zero NTSI/NTSE (!) — pure equity via AVDE/AVEM:**
+   - Real data 2021-2026: **AVDE beat NTSI +4,6pp CAGR**, **AVEM beat NTSE +4,1pp CAGR**
+   - Treasury overlay falhou em 2022 rate shock (double hit: equity+bonds ↓)
+   - NTSI/NTSE embute US bonds em sleeve internacional — inconsistente com "bonds em BRL"
+   - AUM crítico: NTSE **$27M** (vs AVEM $6B) — risco liquidez
+   - GDE (gold overlay) mantido, porque gold é return stream positivo e hedge cambial não-USD
 
 **ETFs escolhidos best-in-class** (review empírica head-to-head):
 - AVUV/AVDV (SCV): factor loadings mais fortes; Avantis integrated methodology
-- SPMO (US Mom): bateu MTUM (+2,5pp CAGR, +0,16 Sharpe, +9pp MDD)
-- IDMO (Int Mom): bateu IMTM (+1,3pp CAGR); caveat AUM $250M — IMTM se >$5M
-- GDE (Eq+Gold stacked): TER 0,20% é best-in-class pra essa estrutura
+- **AVDE** (DM core): beat NTSI por 4,6pp CAGR em dados reais 2021-2026
+- **AVEM** (EM core): beat NTSE por 4,1pp CAGR em dados reais 2021-2026
+- SPMO (US Mom): bateu MTUM (+2,5pp CAGR)
+- IDMO (Int Mom): bateu IMTM (+1,3pp CAGR); caveat AUM $250M
+- GDE (Eq+Gold stacked): único stacking mantido; gold overlay > Treasury overlay
 
-**Trade-off v3.3 (heavy gold + standalone) → v3.4 (pure stacked + 55/30/15):**
--1,9pp CAGR bull window 2014-2026 (preço de gold reduzido 40%→27,5% + 12%
-AVUS unlevered). Em troca: filosofia coerente (tudo stacked), geografia
-alinhada com Plano C, menos concentração em gold.
+**Trade-off v3.4 (NTSI/NTSE) → v3.5 (AVDE/AVEM):**
+- Proxy backtest 2014-26: -0,22pp CAGR (quase nada)
+- **Real data 2021-26: +0,4pp CAGR** (AVDE/AVEM crushed NTSI/NTSE)
+- Leverage 1,39× → 1,25× (perde bond overlay)
+- Equity notional 90% → 92,5% (pure equity)
+- Zero US bonds embedded — consistência total com princípio "bonds em BRL"
 
-## Estrutura das 4 (pesos reais — V3_1 v3.4)
+## Estrutura das 4 (pesos reais — V3_1 v3.5)
 
-| Ticker | V3_1 v3.4 | V3_2 | V3_3 | V3_4 |
+| Ticker | V3_1 v3.5 | V3_2 | V3_3 | V3_4 |
 |--------|-----------|------|------|------|
 | **GDE** (90% SPX + 90% gold) | 25% | 20% | 20% | 15% |
-| **AVUS** (US core Avantis) | **12%** | 0% | 0% | 0% |
-| **NTSI/NTSE** (Int/EM 90/60) | 28% | 10% | 20% | 0% |
+| **AVUS** (US core Avantis) | 12% | 0% | 0% | 0% |
+| **AVDE** (DM core Avantis, pure eq) | **20%** | 0% | 0% | 0% |
+| **AVEM** (EM core Avantis, pure eq) | **13%** | 0% | 5% | 0% |
+| ~~NTSI/NTSE~~ (90/60 stacked — REMOVIDO em v3.5) | 0% | 10% | 20% | 0% |
 | **AVUV + AVDV** (SCV) | 15% | 15% | 25% | 13% |
 | **SPMO + IDMO** (Momentum US+DM) | 10% | 0% | 5% | 0% |
-| **AVEM** (EM core, sem momentum) | 5% | 0% | 5% | 0% |
 | **DBMF + KMLM** (MF) | 0% | 15% | 5% | 15% |
 | **B5P211 + IMAB11** (IPCA+) | 0% | 25% | 15% | 35% |
 | **LFTS11** (Selic cash) | 0% | 0% | 0% | 10% |
@@ -98,16 +105,23 @@ alinhada com Plano C, menos concentração em gold.
 | **BTGD** (gold+BTC stacked) | **5%** | 0% | 0% | 0% |
 | **GLDM** (gold spot) | 0% | 5% | 2% | 5% |
 | **Total factor tilts** | **25%** (15 SCV + 10 Mom) | 15% | 30% | 13% |
-| **US / DM / EM** | **55/30/15** | — | — | — |
-| **Leverage efetivo** | **1,39×** | 1,25× | 1,35× | 1,15× |
+| **US / DM / EM** | **56/30/14** | — | — | — |
+| **Leverage efetivo** | **1,25×** | 1,25× | 1,35× | 1,15× |
 
-### Decomposição notional do V3_1 v3.4
+### Decomposição notional do V3_1 v3.5
 
-- **Equity total:** ~90% notional → split **US 51,5% / DM 26,2% / EM 12,2%** (ratio 57/29/14 ≈ 55/30/15 ✅)
+- **Equity total:** **92,5%** notional → split **US 51,5% / DM 28% / EM 13%** (ratio 56/30/14)
 - **Gold:** 27,5% (22,5% via GDE + 5% via BTGD, tudo stacked)
-- **BTC:** 5% (via BTGD, stacked)
-- **Bonds:** 16,8% (via NTSI/NTSE Treasury overlay)
-- **Total notional:** 139% → leverage efetiva 1,39× via stacked puro
+- **BTC:** 5% (via BTGD único, stacked)
+- **Bonds:** **0%** (zero US Treasury — BR FI entrará só na transição aos 45)
+- **Total notional:** 125% → leverage **1,25×** via stacked puro (só GDE + BTGD)
+
+**Mudança estrutural v3.4 → v3.5:** NTSI e NTSE foram **removidos**.
+Substituídos por AVDE (20%) e AVEM (13%) — pure equity Avantis com factor
+tilts integrados. Motivo: real data 2021-2026 mostrou AVDE batendo NTSI por
+**+4,6pp CAGR** e AVEM batendo NTSE por **+4,1pp CAGR** (Treasury overlay
+destruído pelo rate shock 2022). GDE mantido porque gold overlay é
+conceitualmente diferente (return stream positivo, hedge cambial não-USD).
 
 ## Justificativa do balance SCV/Momentum (25% total)
 

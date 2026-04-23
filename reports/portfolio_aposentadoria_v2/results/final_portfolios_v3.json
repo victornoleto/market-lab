@@ -1,13 +1,12 @@
 {
   "FINAL_V3_1_MAX_CAGR": {
-    "name": "Leveraged Growth Engine v3.4 (Max CAGR)",
+    "name": "Leveraged Growth Engine v3.5 (Max CAGR)",
     "objective": "maximize 30y CAGR; accept historical MDD up to ~50%",
     "weights_real": {
       "GDE": 0.25,
       "AVUS": 0.12,
-      "NTSI": 0.2,
-      "NTSE": 0.08,
-      "AVEM": 0.05,
+      "AVDE": 0.2,
+      "AVEM": 0.13,
       "AVUV": 0.1,
       "AVDV": 0.05,
       "SPMO": 0.07,
@@ -17,15 +16,13 @@
     "weights_proxy": {
       "GDE_syn": 0.25,
       "AVUS_syn_3f": 0.12,
-      "NTSI_syn": 0.2,
-      "NTSE_syn": 0.08,
-      "VWO": 0.05,
+      "VEA": 0.28,
+      "VWO": 0.13,
       "AVUV_syn_3f": 0.17,
-      "VEA": 0.08,
       "BTGD_syn": 0.05
     },
-    "embedded_leverage_approx": 1.39,
-    "rationale": "v3.4 redesign (2026-04-23 final): CONSOLIDA\u00c7\u00c3O de gold/BTC via stacking puro \u2014 removido GLDM 10% e IBIT 2% standalone. Tudo que envolve gold/BTC agora via GDE (stacked eq+gold) ou BTGD (stacked BTC+gold). Gold notional reduzido de 40% pra 27,5%. GEOGRAFIA: target US/DM/EM = 55/30/15 (Plano C original), atingido via GDE 25 + AVUS 12 + AVUV 10 + SPMO 7 (US 55%), NTSI 20 + AVDV 5 + IDMO 3 (DM 28%), NTSE 8 + AVEM 5 (EM 13%). FACTOR TILT: 25% total (15% SCV + 10% Mom, ratio 60/40 AQR-optimal). Trade-off vs v3.3 (30% factor + heavy gold): -1.9pp CAGR backtest 2014-26 (pre\u00e7o do gold reduzido + mais broad US). Leverage 1.39\u00d7 tudo via stacked overlay descorrelacionado.",
+    "embedded_leverage_approx": 1.25,
+    "rationale": "v3.5 redesign (2026-04-23 final-final): REMOVIDO NTSI e NTSE (stacked DM/EM c/ US Treasury overlay) \u2014 substitu\u00eddos por AVDE/AVEM (pure equity Avantis). Motivos: (1) Real data 2021-2026: AVDE beat NTSI +4.6pp CAGR, AVEM beat NTSE +4.1pp \u2014 Treasury overlay destru\u00eddo pelo rate shock 2022; (2) Consist\u00eancia filos\u00f3fica \u2014 'bonds em BRL n\u00e3o USD' (Campbell-Viceira 2010) inconsistente com 12% US Treasuries embedded em NTSI/NTSE; (3) AUM cr\u00edtico \u2014 AVEM $6B vs NTSE $27M (28\u00d7 menor); (4) Factor tilts \u2014 AVDE/AVEM add Avantis value\u00d7profitability; (5) GDE (gold overlay) mant\u00e9m stacking, porque gold \u00e9 return stream positivo e hedge cambial n\u00e3o-USD-tied. Trade-off vs v3.4: -0.2pp CAGR proxy backtest, +0.4pp real data recent. Leverage baixa 1.39\u00d7\u21921.25\u00d7 (perde bond overlay; pega +2.5pp equity notional). Zero US bonds.",
     "backtests": {
       "real_recent": {
         "status": "INSUFFICIENT",
@@ -35,30 +32,30 @@
         "status": "OK",
         "actual_start": "2014-09-30",
         "actual_end": "2026-02-28",
-        "cagr": 0.1553540221835361,
-        "vol": 0.15933145199969523,
-        "sharpe": 0.851704206814334,
-        "mdd": -0.2848916762237314,
-        "worst_12m": -0.24399770210131155,
-        "terminal_10k": 52628.79507225229,
+        "cagr": 0.15318006863696554,
+        "vol": 0.16073734357458644,
+        "sharpe": 0.8307298816186097,
+        "mdd": -0.27208265727342695,
+        "worst_12m": -0.22784008728541394,
+        "terminal_10k": 51501.154696683385,
         "n_months": 138
       },
       "syn_long_2000": {
         "status": "OK",
         "actual_start": "2014-09-30",
         "actual_end": "2026-02-28",
-        "cagr": 0.1553540221835361,
-        "vol": 0.15933145199969523,
-        "sharpe": 0.851704206814334,
-        "mdd": -0.2848916762237314,
-        "worst_12m": -0.24399770210131155,
-        "terminal_10k": 52628.79507225229,
+        "cagr": 0.15318006863696554,
+        "vol": 0.16073734357458644,
+        "sharpe": 0.8307298816186097,
+        "mdd": -0.27208265727342695,
+        "worst_12m": -0.22784008728541394,
+        "terminal_10k": 51501.154696683385,
         "n_months": 138
       }
     },
     "swr": {
       "window": "syn_2007_2026",
-      "swr_95pct": 0.08191151937094676,
+      "swr_95pct": 0.08136997840486856,
       "success_at_swr": 0.95
     },
     "bootstrap": {
@@ -67,19 +64,19 @@
       "monthly_contrib": 1000,
       "horizon_years": 30,
       "terminal_wealth": {
-        "p05": 2098450.8423943515,
-        "p25": 4364312.962352045,
-        "p50": 6949827.604446664,
-        "p75": 11556734.945163105,
-        "p95": 24214085.598390836,
-        "mean": 9294612.305773163
+        "p05": 2022450.336046931,
+        "p25": 4181609.7762755514,
+        "p50": 6705663.014644246,
+        "p75": 11023124.506845929,
+        "p95": 22969704.627176158,
+        "mean": 8930463.685071388
       },
       "mdd_distribution": {
-        "p05": -0.43058486587177075,
-        "p50": -0.2840098675472087,
-        "p95": -0.20284311754057455
+        "p05": -0.4226613118784112,
+        "p50": -0.2809523457196317,
+        "p95": -0.21804016579218038
       },
-      "prob_mdd_gt_50pct": 0.013,
+      "prob_mdd_gt_50pct": 0.0065,
       "prob_mdd_gt_70pct": 0.0
     }
   },

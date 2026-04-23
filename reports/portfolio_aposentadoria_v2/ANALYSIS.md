@@ -442,7 +442,7 @@ Cada uma otimizando uma função objetivo diferente, usando:
 Janela de backtest primária: **2007-07 → 2026-02 (18,5 anos, proxy)** com CDI como
 BR FI proxy. Validação adicional com dados REAIS 2020-2026.
 
-### 6.1 FINAL V3_1 v3.4: Max CAGR — "Leveraged Growth Engine"
+### 6.1 FINAL V3_1 v3.5: Max CAGR — "Leveraged Growth Engine"
 
 **Objetivo:** maximizar CAGR esperado em 30 anos; zero FI (drag); aceita MDD até ~45%.
 **Default pra fase de acumulação 30-45 anos** — primeiros ~15 anos com zero
@@ -473,11 +473,10 @@ BR FI + 30% factor tilts balanceados (15% SCV + 15% Momentum US/DM).
 
 | Ticker | Peso | Classe |
 |--------|------|--------|
-| **GDE** | **25%** | 90% SPX + 90% gold (1,8× lev) |
+| **GDE** | **25%** | 90% SPX + 90% gold (1,8× lev) — único stacking com overlay |
 | **AVUS** | **12%** | US core Avantis (tilts integrados modestos) |
-| **NTSI** | **20%** | Int 90/60 stacked |
-| **NTSE** | **8%** | EM 90/60 stacked |
-| AVEM | 5% | EM core (sem momentum) |
+| **AVDE** | **20%** | DM core Avantis pure equity (substitui NTSI) |
+| **AVEM** | **13%** | EM core Avantis pure equity (substitui NTSE+AVEM) |
 | **AVUV** | **10%** | US SCV |
 | **AVDV** | **5%** | Int SCV |
 | **SPMO** | **7%** | US Momentum |
@@ -485,42 +484,46 @@ BR FI + 30% factor tilts balanceados (15% SCV + 15% Momentum US/DM).
 | **BTGD** | **5%** | BTC+gold stacked (única fonte de BTC) |
 
 **Decomposição estrutural:**
-- Core equity stacked (GDE + AVUS + NTSI + NTSE + AVEM): **70%**
+- Core equity (GDE + AVUS + AVDE + AVEM): **70%**
 - Factor tilts 60/40 SCV/Mom: **25%** (15% SCV + 10% Momentum)
 - Scarcity stacked (BTGD): **5%**
 
-**Decomposição notional (exposure total):**
-- **Equity: 90%** — **US 51,5% (57%) / DM 26,2% (29%) / EM 12,2% (14%)** ≈ 55/30/15
-- **Gold: 27,5%** (via GDE 22,5% + BTGD 5%)
-- **BTC: 5%** (via BTGD)
-- **Bonds: 16,8%** (via NTSI/NTSE Treasury overlay)
-- **Total notional: 139%** → leverage efetiva **1,39×**
+**Decomposição notional:**
+- **Equity: 92,5%** — **US 51,5% (56%) / DM 28% (30%) / EM 13% (14%)** ≈ 55/30/15
+- **Gold: 27,5%** (GDE 22,5% + BTGD 5%, tudo stacked)
+- **BTC: 5%** (via BTGD único)
+- **Bonds: 0%** — zero US Treasury (único stacking é GDE gold overlay)
+- **Total notional: 125%** → leverage efetiva **1,25×**
 
-**Performance (proxy 2014-2026, 11,4y, bull-biased):**
-CAGR **15,54%** / Sharpe **0,85** / MDD -28,5% / Vol 15,9%
+**Performance (proxy 2014-2026, 11,4y):**
+CAGR **15,32%** / Sharpe **0,83** / MDD -27,2% / Vol 16,1%
 
 **Performance (proxy 2007-2026 sem BTGD, 18,5y, inclui 2008):**
-CAGR **10,84%** / Sharpe **0,55** / MDD **-49,2%** / Vol 17,0%
+CAGR **10,12%** / Sharpe **0,50** / MDD **-52,3%** / Vol 17,3%
 
 **Bootstrap 30y (10k + 1k/mês, janela 2014-2026):**
-p25=**$4,36M** / p50=**$6,95M** / p95=$24,21M / P(MDD>50%)=1,3% / SWR 8,19%
+p25=**$4,18M** / p50=**$6,71M** / p95=$22,97M / P(MDD>50%)=0,7% / SWR 8,14%
 
 **Veredito:** real-world 30y expectativa: **CAGR 10-12% com MDD 40-55%**.
 
 **Trade-off honesto versões V3_1:**
 
-| Versão | CAGR 2014-26 | Sharpe | MDD | Gold % | BTC % | US/DM/EM |
-|--------|--------------|--------|-----|--------|-------|----------|
-| v3.1 (com SSO) | 18,33% | 0,93 | -30% | 36% | 5% | ~59/29/12 |
-| v3.2 (sem SSO) | 18,26% | 1,01 | -28% | 35% | 5% | ~58/30/12 |
-| v3.3 (30% factor) | 17,44% | 0,97 | -27% | 40% | 5% | ~59/29/12 |
-| **v3.4 (55/30/15 + pure stack)** | **15,54%** | **0,85** | **-28%** | **27,5%** | **5%** | **57/29/14** |
+| Versão | CAGR 2014-26 | Sharpe | MDD | Gold % | US/DM/EM | US Bonds |
+|--------|--------------|--------|-----|--------|----------|----------|
+| v3.1 (com SSO) | 18,33% | 0,93 | -30% | 36% | ~59/29/12 | 9% (NTSI/NTSE) |
+| v3.2 (sem SSO) | 18,26% | 1,01 | -28% | 35% | ~58/30/12 | 12% (NTSI/NTSE) |
+| v3.3 (30% factor) | 17,44% | 0,97 | -27% | 40% | ~59/29/12 | 12% |
+| v3.4 (55/30/15) | 15,54% | 0,85 | -28% | 27,5% | 57/29/14 | 16,8% |
+| **v3.5 (AVDE/AVEM pure)** | **15,32%** | **0,83** | **-27%** | **27,5%** | **56/30/14** | **0%** |
 
-Progressão v3.1 → v3.4: cada iteração trocou CAGR backtest por **coerência
-estrutural** (remove SSO) → **factor tilts balanceados** (AQR) → **geografia
-alinhada com Plano C + pure stacking alts** (coerência filosófica). O v3.4
-custa ~3pp CAGR vs v3.1 bull-biased, mas é o design mais defensável
-conceitualmente.
+**Real-data 2021-2026 (onde é comparável):** v3.5 BATE v3.4 em ~0,4pp
+CAGR porque AVDE/AVEM bateram NTSI/NTSE no real (Treasury overlay failed
+em 2022 rate shock).
+
+Progressão v3.1 → v3.5: cada iteração trocou CAGR backtest por coerência
+estrutural. v3.5 é a versão final filosoficamente defensável — **zero US
+bonds** em qualquer forma, todo stacking via GDE (gold overlay) + BTGD
+(scarcity), factor tilts 25% balanceados, geografia 55/30/15 alinhada.
 
 ### 6.2 FINAL V3_2: Max Sharpe — "Diversified Factor + BR FI"
 

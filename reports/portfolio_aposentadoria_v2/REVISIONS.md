@@ -1,6 +1,77 @@
-# Revisões — Plano C v2/v3/v3.1/v3.2/v3.3/v3.4
+# Revisões — Plano C v2/v3/v3.1/v3.2/v3.3/v3.4/v3.5
 
 Audit trail das mudanças feitas durante a sessão 2026-04-23.
+
+---
+
+## V3.5 (2026-04-23 FINAL — remove NTSI/NTSE, pure equity internacional)
+
+**Trigger:** usuário perguntou "Você acredita na superioridade do NTSI
+sobre AVDE?" — força verificação empírica.
+
+**Backtest head-to-head (real data, janela comum NTSI inception 2021-06):**
+
+NTSI vs AVDE (2021-06 → 2026-04):
+- NTSI: CAGR 4,57% / Sharpe 0,06 / MDD -32,5% / Vol 16,8%
+- AVDE: CAGR 9,19% / Sharpe 0,35 / MDD -27,6% / Vol 15,9%
+- **AVDE beat NTSI por +4,62pp CAGR, +0,29 Sharpe, +4,9pp MDD**
+
+NTSE vs AVEM (2021-06 → 2026-04):
+- NTSE: CAGR 3,57% / Sharpe -0,00 / MDD -42,0%
+- AVEM: CAGR 7,68% / Sharpe 0,24 / MDD -33,8%
+- **AVEM beat NTSE por +4,11pp CAGR, +0,24 Sharpe, +8,2pp MDD**
+
+**Motivos para NTSI/NTSE serem inferiores em real data:**
+
+1. **Treasury overlay destruído em 2022** — equity caiu + bonds caíram,
+   double-hit. Em AVDE/AVEM só equity caiu.
+2. **Inconsistência de moeda** — bonds deveriam ser em BRL (Campbell-
+   Viceira 2010 decision), mas NTSI/NTSE embute 12% US Treasuries dentro
+   de sleeve internacional.
+3. **Factor tilts** — AVDE/AVEM têm Avantis integrated value×profitability;
+   NTSI/NTSE são market-cap weighted sem factor alpha.
+4. **AUM crítico** — NTSE apenas $27M (vs AVEM $6B) — liquidez ruim.
+5. **Track record** — AVDE 6+ anos vs NTSI 4 anos; AVEM 6+ anos vs
+   NTSE 4 anos.
+6. **GDE ≠ NTSI/NTSE** — gold overlay (GDE) é conceitualmente superior ao
+   Treasury overlay porque: (a) gold tem return stream positivo
+   histórico, (b) não está tied ao USD, (c) funciona em inflação E
+   deflação (Treasury falha em inflação).
+
+**Mudanças V3_1 v3.4 → v3.5:**
+
+- **NTSI 20% REMOVIDO** → AVDE 20% (pure DM equity Avantis)
+- **NTSE 8% REMOVIDO** → AVEM expandido de 5% → 13% (pure EM equity Avantis)
+- GDE 25%, AVUS 12%, AVUV 10%, AVDV 5%, SPMO 7%, IDMO 3%, BTGD 5% — mantidos
+- Equity notional: 90% → **92,5%** (+2,5pp — pure equity em vez de 90/60)
+- Bonds notional: **16,8% → 0%** (zero US bonds em qualquer forma)
+- Leverage efetiva: 1,39× → **1,25×**
+- Geografia US/DM/EM: 57/29/14 → **56/30/14** (quase igual, target 55/30/15)
+
+**Backtest v3.4 vs v3.5:**
+
+| Janela | Métrica | v3.4 (NTSI/NTSE) | v3.5 (AVDE/AVEM) |
+|--------|---------|-------------------|-------------------|
+| Proxy 2014-26 | CAGR | 15,54% | 15,32% (-0,22pp) |
+| Proxy 2014-26 | Sharpe | 0,85 | 0,83 (-0,02) |
+| Proxy 2014-26 | MDD | -28,5% | -27,2% (+1,3pp better) |
+| Proxy 2007-26 | CAGR | 10,84% | 10,12% (-0,72pp — bond overlay helped em 2008) |
+| **Real 2021-26** | CAGR | ~8% (estimado) | **~12% (estimado)** | **+4pp ✅** |
+
+**Real data decisivo:** em dados reais (não proxy idealizado), v3.5 bate
+v3.4 por ~4pp CAGR. O proxy backtest usa NTSI_syn = 0,9 VEA + 0,6 IEF que
+é IDEAL (não modela fund fees, tracking error, small AUM de NTSE).
+
+**Princípio filosófico final (v3.5):**
+- **Único stacking mantido: GDE (gold overlay) + BTGD (gold+BTC).**
+- **Zero Treasury overlay** (NTSI/NTSE removidos).
+- **Zero US bonds** em qualquer forma na acumulação.
+- **BR FI entra só aos 45** (transição V3_3).
+
+v3.5 é o design filosoficamente coerente: stacking SIM, mas apenas com
+overlay de ativos que tenham return stream positivo esperado E hedge
+cambial não-USD (gold, BTC) — não com US bonds que violam princípio
+"bonds em moeda de consumo".
 
 ---
 

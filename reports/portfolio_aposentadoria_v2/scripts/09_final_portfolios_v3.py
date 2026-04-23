@@ -64,43 +64,44 @@ FINAL_V3 = {
     # Max leverage via GDE (equity+gold stacked) + NTSX family + SSO extra.
     # No BR FI (opportunity cost — FI drags CAGR).
     "FINAL_V3_1_MAX_CAGR": {
-        "name": "Leveraged Growth Engine v3.4 (Max CAGR)",
+        "name": "Leveraged Growth Engine v3.5 (Max CAGR)",
         "objective": "maximize 30y CAGR; accept historical MDD up to ~50%",
         "weights_real": {
-            "GDE": 0.25,    # 90% SPX + 90% gold stacked — reduzido de 30 pra diminuir gold notional
-            "AVUS": 0.12,   # US core (Avantis, com tilts modestos) — preenche equity US
-            "NTSI": 0.20,   # Int 90/60 stacked
-            "NTSE": 0.08,   # EM 90/60 stacked
-            "AVEM": 0.05,   # EM core (com tilts Avantis; sem Momentum)
+            "GDE": 0.25,    # 90% SPX + 90% gold stacked (gold overlay OK — non-USD)
+            "AVUS": 0.12,   # US core Avantis
+            "AVDE": 0.20,   # DM core Avantis (replaces NTSI — AVDE beat NTSI by +4.6pp real data)
+            "AVEM": 0.13,   # EM core Avantis (replaces NTSE — AVEM beat NTSE by +4.1pp real data)
             "AVUV": 0.10,   # US SCV
             "AVDV": 0.05,   # Int SCV (15% total SCV)
             "SPMO": 0.07,   # US Momentum
             "IDMO": 0.03,   # Int Momentum (10% total Mom — 25% factor total 60/40 SCV/Mom)
-            "BTGD": 0.05,   # BTC+gold stacked (única fonte de BTC; tudo stacked)
+            "BTGD": 0.05,   # BTC+gold stacked (única fonte BTC)
         },
         "weights_proxy": {
-            "GDE_syn": 0.25,           # GDE real (2004+ via sintético)
-            "AVUS_syn_3f": 0.12,       # AVUS syn via Fama-French (1926+)
-            "NTSI_syn": 0.20,          # NTSI syn = 0.9*VEA + 0.6*IEF (2007+)
-            "NTSE_syn": 0.08,          # NTSE syn = 0.9*VWO + 0.6*IEF (2006+)
-            "VWO": 0.05,               # AVEM proxy
+            "GDE_syn": 0.25,           # GDE synth (2004+)
+            "AVUS_syn_3f": 0.12,       # AVUS synth via Fama-French (1926+)
+            "VEA": 0.28,               # AVDE (20) + AVDV (5) + IDMO (3) lumped
+            "VWO": 0.13,               # AVEM (13) — pure EM proxy, sem Treasury overlay
             "AVUV_syn_3f": 0.17,       # AVUV (10) + SPMO (7) lumped
-            "VEA": 0.08,               # AVDV (5) + IDMO (3) lumped
-            "BTGD_syn": 0.05,          # BTGD syn (2014+)
+            "BTGD_syn": 0.05,          # BTGD synth (2014+)
         },
-        "embedded_leverage_approx": 1.39,
+        "embedded_leverage_approx": 1.25,
         "rationale": (
-            "v3.4 redesign (2026-04-23 final): CONSOLIDAÇÃO de gold/BTC via "
-            "stacking puro — removido GLDM 10% e IBIT 2% standalone. Tudo que "
-            "envolve gold/BTC agora via GDE (stacked eq+gold) ou BTGD (stacked "
-            "BTC+gold). Gold notional reduzido de 40% pra 27,5%. "
-            "GEOGRAFIA: target US/DM/EM = 55/30/15 (Plano C original), "
-            "atingido via GDE 25 + AVUS 12 + AVUV 10 + SPMO 7 (US 55%), "
-            "NTSI 20 + AVDV 5 + IDMO 3 (DM 28%), NTSE 8 + AVEM 5 (EM 13%). "
-            "FACTOR TILT: 25% total (15% SCV + 10% Mom, ratio 60/40 AQR-optimal). "
-            "Trade-off vs v3.3 (30% factor + heavy gold): -1.9pp CAGR backtest "
-            "2014-26 (preço do gold reduzido + mais broad US). Leverage 1.39× "
-            "tudo via stacked overlay descorrelacionado."
+            "v3.5 redesign (2026-04-23 final-final): REMOVIDO NTSI e NTSE "
+            "(stacked DM/EM c/ US Treasury overlay) — substituídos por AVDE/"
+            "AVEM (pure equity Avantis). Motivos: "
+            "(1) Real data 2021-2026: AVDE beat NTSI +4.6pp CAGR, AVEM beat "
+            "NTSE +4.1pp — Treasury overlay destruído pelo rate shock 2022; "
+            "(2) Consistência filosófica — 'bonds em BRL não USD' (Campbell-"
+            "Viceira 2010) inconsistente com 12% US Treasuries embedded em "
+            "NTSI/NTSE; "
+            "(3) AUM crítico — AVEM $6B vs NTSE $27M (28× menor); "
+            "(4) Factor tilts — AVDE/AVEM add Avantis value×profitability; "
+            "(5) GDE (gold overlay) mantém stacking, porque gold é return "
+            "stream positivo e hedge cambial não-USD-tied. "
+            "Trade-off vs v3.4: -0.2pp CAGR proxy backtest, +0.4pp real data "
+            "recent. Leverage baixa 1.39×→1.25× (perde bond overlay; pega "
+            "+2.5pp equity notional). Zero US bonds."
         ),
     },
 
