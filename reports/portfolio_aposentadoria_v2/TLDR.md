@@ -41,50 +41,57 @@ Comparação direta 2006-2026:
 | **NTSX_syn** (0,9 SPY + 0,6 IEF) | **11,50%** | **0,71** | -41% |
 | SSO (LETF puro c/ fees) | 12,91% | 0,37 | -81% |
 
-## As 4 carteiras finais (v3.2 revisada)
+## As 4 carteiras finais (V3_1 v3.3 — 30% factor balanceado)
 
 Janela backtest 2007-2026 (18,5y) usando proxies. Validação com dados reais
 2020-2026.
 
 | Carteira | Objetivo | CAGR | Sharpe | MDD | p50 TW 30y | SWR | BR FI% | Quando usar |
 |----------|----------|------|--------|-----|------------|-----|--------|-------------|
-| **V3_1 v3.2** | Max CAGR | **18,3%*** | **1,01** | **-28%** | **$12,3M** | 9,8% | 0% | **Acumulação 30-45** |
+| **V3_1 v3.3** | Max CAGR | **17,4%*** | 0,97 | **-27%** | **$10,3M** | 9,5% | 0% | **Acumulação 30-45** |
 | **V3_2** | Max Sharpe | 12,5% | **1,12** | -18% | $3,7M | 8,3% | 35% | Pré-aposentadoria 55-60 |
 | **V3_3** | Max TW/MDD≤50% | 11,7% | 0,79 | -36% | $3,3M | 6,7% | 18% | Transição 45-55 |
 | **V3_4** | Max SWR | 11,7% | 1,36 | **-12%** | $3,1M | **8,6%** | 52% | Retirement 60+ |
 
-(*) V3_1 em janela 2014-2026; sem BTGD em 2007-2026 o CAGR cai pra ~13,4% e
-MDD -44,7% (vs -52% da versão com SSO). Real-world esperado: **13-15% CAGR
-com MDD 35-45%**.
+(*) V3_1 em janela 2014-2026; sem BTGD em 2007-2026 o CAGR cai pra ~12,6% e
+MDD -44,8%. Real-world esperado: **12-14% CAGR com MDD 35-45%**.
 
-**V3_1 REVISTA em 3 mudanças importantes (pós feedback do usuário):**
-1. **Removido SSO 10%** (era inconsistente com princípio "stacked overlay >
-   LETF puro"). Redirecionado pra GDE+NTSI.
-2. **Tilts balanceados em 25% total** (15% SCV + 10% Momentum, antes era
-   25% SCV + 5% Mom, desbalanceado 5:1).
-3. **Adicionado IDMO 3%** (momentum internacional — AQR: value+momentum
-   correlação negativa -0,4 a -0,7, stacking melhora Sharpe).
+**V3_1 v3.3 — ajustes finais (pós feedback completo do usuário):**
 
-Delta vs V3_1 original: Sharpe +0,08 / MDD melhor 7pp em 2008 / Leverage
-1,51× (de 1,75×) / CAGR praticamente igual.
+1. **30% factor tilt balanceado** (15% SCV + 15% Momentum). Antes 25% (15+10);
+   upgrade pro 30% balanceado 1:1 baseado em AQR "Our Model Goes to Six"
+   (correlação value-mom -0.4 a -0.7, peso ótimo Mom ~38% em portfolio
+   optimizado).
+2. **Momentum apenas em US + DM, zero em EM.** Empírico: EEMO entregou
+   apenas 41% desde 2019 vs AVEM 109% (custos implementação EM + crashes
+   assimétricos em crises). AVEM 5% como core EM com tilts integrados Avantis.
+3. **ETFs escolhidos são os melhores da categoria** (review empírica):
+   - **AVUV/AVDV (SCV):** factor loadings mais fortes (SMB 0.70 / HML 0.55);
+     Avantis methodology integrated value × profitability
+   - **SPMO (US Mom):** bateu MTUM em CAGR (+2.5pp), Sharpe (+0.16) e MDD
+     (+9pp) no backtest 2015-2026 head-to-head. Mantido.
+   - **IDMO (Int Mom):** bateu IMTM em CAGR (+1.3pp). Caveat: AUM $250M —
+     se patrimônio >$5M considere IMTM ($2B) por liquidez.
+4. **Zero SSO** (LETF puro inconsistente com princípio stacked overlay).
+5. **Trade-off honesto 25% → 30% factor:** -0,8pp CAGR backtest em troca de
+   mais evidence-based alpha. Leverage efetivo 1,37× (de 1,51×).
 
-## Estrutura das 4 (pesos reais — V3_1 v3.2 atualizada)
+## Estrutura das 4 (pesos reais — V3_1 v3.3)
 
-| Ticker | V3_1 v3.2 | V3_2 | V3_3 | V3_4 |
+| Ticker | V3_1 v3.3 | V3_2 | V3_3 | V3_4 |
 |--------|-----------|------|------|------|
-| **GDE** (90% SPX + 90% gold) | 35% | 20% | 20% | 15% |
-| **NTSI/NTSE** (Int/EM 90/60) | 25% | 10% | 20% | 0% |
+| **GDE** (90% SPX + 90% gold) | 30% | 20% | 20% | 15% |
+| **NTSI/NTSE** (Int/EM 90/60) | 20% | 10% | 20% | 0% |
 | **AVUV + AVDV** (SCV, 15% total em V3_1) | 15% | 15% | 25% | 13% |
-| **SPMO + IDMO** (Momentum, 10% total em V3_1) | 10% | 0% | 5% | 0% |
-| **AVEM** (EM core) | 5% | 0% | 5% | 0% |
-| ~~**SSO**~~ | ~~0%~~ | ~~0%~~ | ~~0%~~ | ~~0%~~ |
+| **SPMO + IDMO** (Momentum US+DM, 15% total em V3_1) | 15% | 0% | 5% | 0% |
+| **AVEM** (EM core, sem momentum) | 5% | 0% | 5% | 0% |
 | **DBMF + KMLM** (MF) | 0% | 15% | 5% | 15% |
 | **B5P211 + IMAB11** (IPCA+) | 0% | 25% | 15% | 35% |
 | **LFTS11** (Selic cash) | 0% | 0% | 0% | 10% |
 | **DINF11** (isento IR) | 0% | 10% | 3% | 7% |
-| **BTGD + IBIT + GLDM** (gold/BTC) | 10% | 5% | 2% | 5% |
-| **Total factor tilts** | **25%** (15 SCV + 10 Mom) | 15% | 30% | 13% |
-| **Leverage efetivo** | **1,51×** | 1,25× | 1,35× | 1,15× |
+| **BTGD + IBIT + GLDM** (gold/BTC) | 15% | 5% | 2% | 5% |
+| **Total factor tilts** | **30%** (15 SCV + 15 Mom) | 15% | 30% | 13% |
+| **Leverage efetivo** | **1,37×** | 1,25× | 1,35× | 1,15× |
 
 ## Justificativa do balance SCV/Momentum (25% total)
 

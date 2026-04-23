@@ -1,6 +1,68 @@
-# Revisões — Plano C v2/v3/v3.1/v3.2
+# Revisões — Plano C v2/v3/v3.1/v3.2/v3.3
 
 Audit trail das mudanças feitas durante a sessão 2026-04-23.
+
+---
+
+## V3.3 (2026-04-23 final-final — factor tilts 30% balanceado + ETF review)
+
+**Trigger:** usuário pediu:
+1. 30% factor tilt total (em vez de 25%), balanceado 15% SCV + 15% Momentum
+2. Momentum apenas em US + DM (não EM), com justificativa acadêmica
+3. Review dos ETFs escolhidos — há opções melhores?
+
+**Resposta 1 - EM Momentum:** usuário correto. EEMO entregou 41% vs AVEM
+109% desde 2019. 3 razões: (a) custos implementação EM 2-5× maiores que DM,
+(b) crashes momentum asimétricos em EM (crisis periods cambiais + políticas),
+(c) EEMO estrutural ruim (AUM $12M, tracking error brutal). Manter AVEM
+como core EM (com tilts integrados Avantis), zero momentum EM.
+
+**Resposta 2 - ETF review:**
+
+- **AVUV/AVDV (SCV):** mantidos. Factor loadings mais fortes (SMB 0.70,
+  HML 0.55, RMW 0.20). Avantis integrated value × profitability é a
+  methodology mais moderna. Nenhuma alternativa melhor.
+- **SPMO vs MTUM head-to-head 2015-2026 (10.5y):**
+  - SPMO: CAGR 16.91%, Sharpe 0.90, MDD -22%
+  - MTUM: CAGR 14.44%, Sharpe 0.74, MDD -31%
+  - **SPMO bateu MTUM em TODAS as métricas.** Concentração S&P 500 top-100
+    entregou mais momentum premium que a metodologia MSCI diversificada
+    na última década. Mantido SPMO.
+- **IDMO vs IMTM 2015-2026 (11.2y):**
+  - IDMO: CAGR 8.98%, Sharpe 0.42, MDD -34%
+  - IMTM: CAGR 7.67%, Sharpe 0.40, MDD -31%
+  - IDMO bateu em CAGR (+1.3pp), empate Sharpe, perde margeim MDD.
+    AUM IDMO $250M vs IMTM $2B — liquidez mais fraca. Mantido IDMO com
+    caveat: se patrimônio >$5M considere IMTM por AUM.
+
+**Mudanças V3_1 v3.2 → v3.3:**
+
+- SCV: 15% mantido (AVUV 10 + AVDV 5)
+- Momentum: 10% → 15% (SPMO 7→10 + IDMO 3→5)
+- Total factor: 25% → 30% balanceado (15 SCV + 15 Mom)
+- GDE: 35% → 30% (libera 5pp pra extra Momentum)
+- NTSI: 18% → 15%, NTSE: 7% → 5% (libera 5pp)
+- GLDM: 5% → 10% (absorve parte do ajuste)
+- Leverage efetiva: 1.51× → 1.37× (menos GDE/NTSI, mais gold spot)
+
+**Backtest comparativo v3.2 (25% factor) vs v3.3 (30% factor):**
+
+| Janela | Métrica | v3.2 (25%) | v3.3 (30%) |
+|--------|---------|------------|------------|
+| 2014-26 | CAGR | 18,26% | 17,44% (-0,82pp) |
+| 2014-26 | Sharpe | 1,01 | 0,97 (-0,04) |
+| 2014-26 | MDD | -27,6% | -26,5% (+1,1pp) |
+| 2007-26 | CAGR | 13,40% | 12,62% (-0,78pp) |
+| 2007-26 | Sharpe | 0,72 | 0,68 (-0,04) |
+
+**Trade-off:** 30% factor custa ~0,8pp CAGR backtest vs 25%. Em compensação:
+mais factor alpha esperado se mean reversion funciona (Asness 2024 value
+spread percentil 95-100 histórico). Escolha estrutural do usuário.
+
+**Lição:** minha tentativa de recomendar MTUM/IMTM como "upgrade
+academicamente melhor" foi refutada pelo backtest head-to-head. Os ETFs
+originais (SPMO/IDMO) outperformed em dados reais. User foi certo em pedir
+review empírica.
 
 ---
 

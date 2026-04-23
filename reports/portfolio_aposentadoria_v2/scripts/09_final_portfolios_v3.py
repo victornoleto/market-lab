@@ -64,41 +64,41 @@ FINAL_V3 = {
     # Max leverage via GDE (equity+gold stacked) + NTSX family + SSO extra.
     # No BR FI (opportunity cost — FI drags CAGR).
     "FINAL_V3_1_MAX_CAGR": {
-        "name": "Leveraged Growth Engine v3.2 (Max CAGR)",
+        "name": "Leveraged Growth Engine v3.3 (Max CAGR)",
         "objective": "maximize 30y CAGR; accept historical MDD up to ~50%",
         "weights_real": {
-            "GDE": 0.35,    # 90% SPX + 90% gold, 1.8× lev (up from 30 to replace SSO)
-            "NTSI": 0.18,   # Int 90/60 (up from 15)
-            "NTSE": 0.07,   # EM 90/60 (up from 5)
-            "AVUV": 0.10,   # US SCV (balanced factor 15% SCV + 10% Momentum)
+            "GDE": 0.30,    # 90% SPX + 90% gold, 1.8× lev
+            "NTSI": 0.15,   # Int 90/60
+            "NTSE": 0.05,   # EM 90/60
+            "AVUV": 0.10,   # US SCV — 15% SCV split 10/5
             "AVDV": 0.05,   # Int SCV
-            "SPMO": 0.07,   # US Momentum (up from 5)
-            "IDMO": 0.03,   # Int Momentum (new — AQR: value+momentum complementar)
-            "AVEM": 0.05,   # EM core
+            "SPMO": 0.10,   # US Momentum — 15% Mom split 10/5
+            "IDMO": 0.05,   # Int Momentum
+            "AVEM": 0.05,   # EM core (NO momentum in EM per academic evidence)
             "BTGD": 0.03,   # gold+BTC stacked
             "IBIT": 0.02,   # BTC spot
-            "GLDM": 0.05,   # gold spot (new)
-            # REMOVED SSO 10% — inconsistency with NTSX/GDE principle
-            # (LETF buy-hold pure beta is what we argued against)
+            "GLDM": 0.10,   # gold spot
         },
         "weights_proxy": {
-            "GDE_syn": 0.35,
-            "NTSX_syn": 0.25,          # NTSI + NTSE combined
-            "AVUV_syn_3f": 0.20,       # AVUV + SPMO combined (no long-history momentum proxy)
-            "VEA": 0.08,               # AVDV + IDMO
+            "GDE_syn": 0.30,
+            "NTSX_syn": 0.20,          # NTSI + NTSE combined
+            "AVUV_syn_3f": 0.25,       # AVUV (10) + SPMO proxy (10) + some Mom residual
+            "VEA": 0.10,               # AVDV + IDMO
             "VWO": 0.05,               # AVEM
             "BTGD_syn": 0.05,          # BTGD + IBIT
-            "GLD": 0.02,               # GLDM residual
+            "GLD": 0.05,               # GLDM
         },
-        "embedded_leverage_approx": 1.51,
+        "embedded_leverage_approx": 1.37,
         "rationale": (
-            "v3.2 redesign (pós feedback usuário): removido SSO 10% por "
-            "inconsistência com princípio 'stacked overlay > LETF puro'. "
-            "Tilts rebalanceados 15% SCV + 10% Momentum (25% total) — "
-            "literatura AQR: value+momentum correlação -0.4 a -0.7, stacking "
-            "dá Sharpe boost. Leverage efetivo baixa de 1.75× para 1.51× "
-            "(tudo via overlay stacked). Backtest 2007-2026: Sharpe 0.72 vs "
-            "0.64 current, MDD -45% vs -52% — estritamente melhor."
+            "v3.3 redesign (2026-04-23 feedback final): "
+            "30% factor tilts balanceados 15% SCV + 15% Momentum (AQR: "
+            "correlação value-momentum -0.4 a -0.7). "
+            "Momentum ONLY em US + DM (não EM — EEMO empírico: 41% vs "
+            "AVEM 109% desde 2019; custos de implementação EM + crashes "
+            "assimétricos invalidam momentum EM). "
+            "Zero SSO (LETF puro inconsistente com princípio stacked overlay). "
+            "Trade-off 25% → 30% factor: -0.8pp CAGR backtest em troca de "
+            "mais evidence-based alpha. Leverage efetivo 1.37× (todo stacked)."
         ),
     },
 
