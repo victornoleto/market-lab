@@ -1,7 +1,0 @@
-tag,lookback,signal_feed,long_asset,off_asset_return,sharpe_full
-lb10_vixy_spy,10,VIXY,SPY,TLT,0.2249
-lb21_vixy_spy,21,VIXY,SPY,TLT,0.5463
-lb42_vixy_spy,42,VIXY,SPY,TLT,0.4232
-lb63_vixy_spy,63,VIXY,SPY,TLT,0.3437
-lb21_vxx_spy,21,VXX,SPY,TLT,0.4651
-lb21_vixy_sso,21,VIXY,SSO,TLT,0.5848

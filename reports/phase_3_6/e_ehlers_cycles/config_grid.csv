@@ -1,7 +1,0 @@
-tag,hp_period,ss_period,rsi_lower,rsi_upper,hold_cap_bars,sharpe_full
-hp48_ss10_lo30_hi70_hold20,48.0,10.0,0.3,0.7,20,-0.0439
-hp48_ss10_lo25_hi75_hold20,48.0,10.0,0.25,0.75,20,-0.1677
-hp48_ss10_lo35_hi65_hold20,48.0,10.0,0.35,0.65,20,0.0319
-hp60_ss10_lo30_hi70_hold20,60.0,10.0,0.3,0.7,20,-0.0887
-hp48_ss10_lo30_hi70_hold10,48.0,10.0,0.3,0.7,10,0.0064
-hp48_ss10_lo30_hi70_hold40,48.0,10.0,0.3,0.7,40,-0.0136

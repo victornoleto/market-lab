@@ -1,6 +1,0 @@
-tag,top_n,rebalance_days,use_regime_filter,sharpe_full
-top10_rebal21_regon,10,21,True,0.3698
-top20_rebal21_regon,20,21,True,0.3707
-top30_rebal21_regon,30,21,True,0.3221
-top20_rebal10_regon,20,10,True,0.4938
-top20_rebal21_regoff,20,21,False,0.3820
