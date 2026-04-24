@@ -50,6 +50,10 @@ data/*.tar.gz
 # (avoids manifest race condition). Recreated on demand.
 data/tiingo_adhoc/
 
+# Portfolio Tracker app — independent sub-project with its own git repo.
+# Do NOT track from the ai-trade parent repo.
+app/
+
 # External reference datasets (testfol.io, etc.) — raw exports can be large
 # and/or contain personal API tokens. README.md is tracked as documentation;
 # parquet/json/curl artifacts stay local.
