@@ -169,6 +169,113 @@ Se você tem $5k em cash na IBKR Pro esperando aporte = $225/ano de juros "grát
 
 ## 3. Outros custos e considerações
 
+### ⏱️ Settlement — T+1 (novidade desde maio 2024)
+
+**Quando o dinheiro fica disponível pra nova compra após vender:**
+
+| Tipo de conta | Settlement | Pode comprar com proceeds unsettled? |
+|---|---|---|
+| **Margin account** (padrão IBKR Pro) | T+1 | **SIM, imediatamente** sem restrição |
+| **Cash account** (opção Lite ou Pro) | T+1 | Sim, mas com regra de Good Faith Violation |
+
+**Desde 28/mai/2024, ETFs e ações US liquidam em T+1** (próximo dia útil).
+Antes era T+2.
+
+#### Na prática pro V3.5
+
+- **Margin account (recomendado):** você vende ETF A e compra ETF B na mesma
+  tela, mesmo dia, sem esperar. Zero fricção.
+- **Cash account:** pode comprar com proceeds unsettled; MAS se **vender** o
+  que comprou antes do settlement original (T+1) → **Good Faith Violation
+  (GFV)**. 3 GFVs em 12 meses = conta restrita a "settled cash only" por
+  90 dias.
+
+**Pra rebalanceamento mensal normal (buy-and-hold), nunca vai virar GFV.**
+A regra só pega day traders.
+
+#### Se precisa sacar (wire pro BR)
+
+- Settlement T+1 + wire internacional 1-2 dias úteis
+- Total: **2-4 dias úteis** entre venda e dinheiro na conta BR
+
+---
+
+### 📄 Relatórios IBKR pra IR brasileiro
+
+**Sim, IBKR gera tudo que você precisa** — mas **NÃO em formato BR-compliant
+automático**. É responsabilidade sua parsear pros campos do IRPF.
+
+#### Relatórios disponíveis (Client Portal → "Performance & Reports" → "Statements")
+
+| Relatório | Utilidade pro IR BR |
+|---|---|
+| **Activity Statement** | ⭐ **Principal** — todas trades, dividendos, fees, FX em um arquivo |
+| **Annual Statement** | Resumo anual consolidado |
+| **Form 1042-S** (pós W-8BEN) | US-source income + withholding tax — compensável no BR |
+| **Tax Summary Report** | Consolidado dividendos + juros + capital gains |
+| **Monthly Statement** | Útil pra conferir mensal |
+
+**Formatos:** CSV, PDF, HTML, XML. **CSV é o melhor** pra processar em planilha.
+
+#### O que extrair do Activity Statement pro IRPF
+
+| Campo IRPF | Fonte no IBKR |
+|---|---|
+| Bens e Direitos — Conta corrente exterior | Saldo USD × PTAX 31/12 |
+| Bens e Direitos — Ações/ETFs exterior (código 31) | Quantidade × custo médio USD × PTAX compra |
+| Ganho de capital vendas exterior (DARF 15%) | Soma de vendas ano: receitas - custo - fees (FIFO) |
+| Dividendos recebidos exterior | "Dividends" × PTAX do pagamento |
+| Imposto pago no exterior | "Withholding Tax" × PTAX → compensa no IR BR |
+
+PTAX: consulte no site do [Banco Central](https://www.bcb.gov.br/conversao)
+(série USD venda).
+
+#### Limitação prática
+
+- Relatórios IBKR são em **inglês** e valores em **USD**
+- Você (ou ferramenta) precisa:
+  - Converter USD → BRL pela PTAX do dia de cada operação
+  - Mapear nomenclatura US → padrão IRPF
+  - Calcular ganho em BRL (NÃO em USD!)
+
+#### Ferramentas que facilitam
+
+1. **myProfit** (myprofit.com.br):
+   - Parseja Activity Statement IBKR (CSV) automaticamente
+   - Gera relatório BR-compliant (ganhos por operação + PTAX)
+   - Custo: ~R$ 50-100/ano
+   - **Vale a pena** pra quem tem muitas operações
+
+2. **Bastter.com** — fórum + planilhas grátis, mais manual
+
+3. **Planilha própria Excel/Sheets** — se é organizado
+
+4. **Contador especializado em exterior** — R$ 300-800/ano (quem não
+   quer mexer)
+
+#### Recomendação pra V3.5 (buy-and-hold sem vendas)
+
+Na fase de acumulação (2026-2050), você terá:
+- 100+ compras mensais (aportes distribuídos entre ETFs)
+- **0 vendas**
+- Dividendos modestos (GDE ~1%, AVDE/AVEM ~2-3%)
+
+**Activity Statement CSV + planilha simples** é suficiente. Não precisa
+pagar myProfit nesse período.
+
+Quando entrar na aposentadoria (50+ anos) e começar a VENDER pra saque,
+aí vale myProfit ou contador.
+
+#### Timing de declaração (Lei 14.754/2023 vigente)
+
+- Ano base 2026 → declarar em **Abril/2027**
+- **Tudo no IRPF anual único** (não mais GCAP nem carnê-leão)
+- **Prazo DARF:** último dia útil de **Maio** do ano seguinte (vendas 2026
+  → DARF Mai/2027)
+- **15% fixo** sobre ganho de capital (antes era progressivo 15-22,5%)
+
+---
+
 ### Custos recorrentes IBKR (todos os planos)
 
 | Item | Valor |
@@ -289,6 +396,15 @@ manuais por mês.
 ---
 
 ## Sources
+
+### Settlement + tax reports
+- [IBKR — T+1 Settlement overview](https://www.interactivebrokers.com/campus/traders-insight/securities/stocks/t1-settlement-what-it-means-for-traders-and-investors/)
+- [IBKR — Shortened T+1 Settlement](https://www.interactivebrokers.com/en/accounts/legalDocuments/ShortenedSettlement.php)
+- [IBKR — Tax Information Overview](https://www.interactivebrokers.com/en/support/tax-overview.php)
+- [IBKR — Year-End Reports](https://www.interactivebrokers.com/en/support/tax-us-reports.php)
+- [IBKR — Non-US Tax Forms (1042-S)](https://www.interactivebrokers.com/en/support/tax-nonus-forms.php)
+- [InfoMoney — Como declarar ETFs IR 2026](https://www.infomoney.com.br/guias/declarar-etf-imposto-de-renda-ir/)
+- [B3 Bora Investir — ETFs IRPF 2026](https://borainvestir.b3.com.br/noticias/imposto-de-renda/renda-variavel-imposto-de-renda/de-lucros-a-dividendos-como-declarar-etfs-no-imposto-de-renda-2026-sem-erro/)
 
 ### Depósito
 - [TransferBank — Remessa para Interactive Brokers](https://www.transferbank.com.br/interactivebrokers)
