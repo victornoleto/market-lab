@@ -905,6 +905,118 @@ rejected — require qualitatively different mechanism:
       Option E (EBP with pre-validation), Option G (return-stacked),
       Option H (meta-labeling with EMPIRICALLY pre-screened features
       where |ρ(feature, σ²_port)| < 0.30 on > 80% of bars).
+- [ ] **EBP (Gilchrist-Zakrajšek 2012) credit-cycle binary-haircut
+      overlay on vol-managed SPY+TLT (or SPY+TLT+GLD) blend at ANY
+      threshold/z-window/smoothing/lag choice** (iter 014 —
+      pre-validation screen rejects all 3 datasets; 60d rolling
+      |ρ(EBP_z, σ²_port)| > 0.30 on 68-71 % of bars, mean |ρ| ≈ 0.47,
+      max 0.96). GZ2012's decomposition strips expected-default risk
+      but the residual still cointegrates with blend realised variance
+      at 60-day business-cycle scale. Kill #PV TRIGGERED before any
+      backtest — no DSR trial committed. Also applies to HYG/LQD
+      ratio and any other credit-spread-derivative signal on this
+      mechanism. **Fourth consecutive overlay failure on iter 008
+      blend (009/012/013/014) — overlay family CLOSED on this
+      mechanism**; mechanism change required. The **pre-validation
+      screen methodology (60d |ρ(feature, σ²_port)| > 0.30 exceed
+      fraction > 20% → abort)** introduced in iter 014 is now
+      MANDATORY for any future overlay/meta-label proposal on a
+      vol-managed blend.
+
+---
+
+## From iteration 014 — EBP credit-cycle binary haircut overlay, rejected by pre-validation screen
+
+Complete study: `studies/strategy_hunt_loop/iterations/014-2026-04-24-1642-ebp-credit-overlay-blend/final_report.md`.
+
+### What the iteration resolved
+
+Iter 014 tested BASE_MEMORY's "Option E" — a binary-haircut overlay on
+iter 008's `vt15_L21_cap20` blend driven by the **Gilchrist-Zakrajšek
+(2012) Excess Bond Premium (EBP)** signal. EBP is the residual of
+corporate bond spreads AFTER stripping expected-default variation; the
+hypothesis was that this decomposition would produce a credit-risk-
+premium signal partially orthogonal to realised equity volatility,
+allowing the overlay to add information iter 013's vol-proxy features
+could not.
+
+Iter 014 also introduced a novel pre-commit methodology: a **mandatory
+pre-validation screen** that measures 60-day rolling
+|ρ(EBP_z_252, σ²_port(blend))| across each dataset and aborts the
+iteration BEFORE running any backtest if the fraction of windows with
+|ρ| > 0.30 exceeds 20 % on ANY dataset. The screen is the primary
+defense against re-opening the cointegration failure mode that killed
+iter 009 (T10Y3M 21d symmetric), iter 012 (T10Y3M 5d asymmetric) and
+iter 013 (LR meta with ρ_60 + VIX_z_252).
+
+Result: **pre-validation screen FAILS decisively on all 3 datasets**:
+
+| dataset | exceed_frac | max |ρ| | mean |ρ| |
+|---|---|---|---|
+| educational | **0.684** | 0.958 | 0.469 |
+| spy_real    | **0.691** | 0.958 | 0.472 |
+| ndx_real    | **0.706** | 0.942 | 0.482 |
+
+All three datasets show ~3.4× overshoot of the 20 % abort threshold,
+mean |ρ| ≈ 0.47 (1.5× the 0.30 threshold), max touching 0.96. **Kill
+#PV triggered → abort iteration before full backtest, no DSR trial
+committed (cumulative_n_trials unchanged at 4255).** Score 0/100 FAIL.
+
+### Structural principle (do NOT re-test)
+
+**EBP (Gilchrist-Zakrajšek 2012 residual) is empirically cointegrated
+with blend σ²_port at the 60-day business-cycle timescale on all 3
+datasets.** The GZ2012 decomposition that strips expected-default
+variation from corporate bond spreads still leaves a residual that
+swings WITH equity-vol regimes at the 60-day scale. The credit cycle
+and equity-vol cycle are measurably co-moving at this observation
+window.
+
+More broadly: **any "regime" signal on the vol-managed SPY+TLT blend
+cointegrates with σ²_port at business-cycle scales** — this is a
+property of the portfolio's own response function. The blend self-
+adjusts on the same macro-risk gradient that drives yield-curve
+slopes, cross-asset correlation, VIX, and now credit-risk-premium
+residual. Four independent attempts (iter 009, 012, 013, 014) now
+document this structural pattern.
+
+### Don't re-test
+
+- **EBP overlay on vol-managed SPY+TLT (or SPY+TLT+GLD) blend at any
+  threshold, z-score window, smoothing, or lag choice** — pre-val
+  result is structural, not parametric. Variants forbidden:
+  threshold ∈ {0.5, 1.5, 2.0}, z-window ∈ {63, 126, 504},
+  applied_to ∈ {both, bond-only, conditional}, lag ∈ {0, 2, 5}.
+- **Any other credit-cycle / credit-spread signal as a binary-
+  haircut or meta-label overlay** on a vol-managed stock-bond blend
+  at 60-day observation scale: HYG/LQD ratio, AAA spread,
+  BBB spread, distance-to-default indices, dealer-inventory
+  proxies — all are observationally cointegrated with σ²_port
+  at the relevant business-cycle window.
+- **Bigger ensemble of macro features (EBP + T10Y3M + VIX + SPY-TLT
+  correlation + ρ_HY)** as meta-label inputs — each individual
+  feature is cointegrated with σ²_port; a weighted combination only
+  inherits the same cointegration.
+- **Running any new overlay or meta-label on iter 008/010 blend
+  without first running the 60-day |ρ(feature, σ²_port)| > 0.30
+  pre-validation screen**. The pre-commit methodology is now
+  mandatory for all such proposals.
+
+### Path forward (NOT dead — but requires MECHANISM change)
+
+The overlay family on the vol-managed SPY+TLT blend is structurally
+closed. Further progress requires a primitive that doesn't have a
+σ²_port-like self-adjustment response:
+
+- **Return-stacked ETF rotation (NTSX/NTSI/NTSE)** — built-in futures-
+  stacking primitive, structurally distinct from iter 008's explicit
+  vol-scaling + risk-parity weighting.
+- **Cross-sectional signals on heterogeneous universes** — factor
+  ETFs (MTUM, QUAL, VLUE, USMV, SIZE, SPMO) have genuine ranking
+  structure (unlike sector ETFs killed by iter 003).
+- **Options-implied regime signals on plain single-asset SPY** — no
+  σ²_port axis means no cointegration to worry about; VIX3M/VIX
+  slope or put-call skew tested as regime conditioning.
 
 ---
 

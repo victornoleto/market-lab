@@ -1,0 +1,47 @@
+{
+  "preval_cfg": {
+    "rolling_window": 60,
+    "rho_threshold": 0.3,
+    "max_exceed_frac": 0.2
+  },
+  "blend_cfg": {
+    "cfg_id": "vt15_L21_cap20",
+    "target_vol": 0.15,
+    "lookback": 21,
+    "max_leverage": 2.0
+  },
+  "ebp_column": "ebp",
+  "datasets": {
+    "educational": {
+      "dataset": "educational",
+      "n_valid": 5656,
+      "exceed_frac": 0.6836987270155587,
+      "max_abs_rho": 0.9584142023794273,
+      "mean_abs_rho": 0.4685978334884763,
+      "rho_positive_frac": 0.5792079207920792,
+      "rho_negative_frac": 0.4207920792079208,
+      "passes_screen": false
+    },
+    "spy_real": {
+      "dataset": "spy_real",
+      "n_valid": 3915,
+      "exceed_frac": 0.6906768837803321,
+      "max_abs_rho": 0.9584142023794225,
+      "mean_abs_rho": 0.47159273910652144,
+      "rho_positive_frac": 0.5530012771392082,
+      "rho_negative_frac": 0.44699872286079184,
+      "passes_screen": false
+    },
+    "ndx_real": {
+      "dataset": "ndx_real",
+      "n_valid": 3755,
+      "exceed_frac": 0.7057256990679095,
+      "max_abs_rho": 0.942315499295013,
+      "mean_abs_rho": 0.48169318779507764,
+      "rho_positive_frac": 0.5715046604527297,
+      "rho_negative_frac": 0.4284953395472703,
+      "passes_screen": false
+    }
+  },
+  "all_pass": false
+}

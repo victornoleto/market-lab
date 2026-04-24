@@ -1,9 +1,9 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 13
+total_iterations: 14
 winners_found: 0
 status: iterating
-latest_iteration: "013-2026-04-24-1619"
+latest_iteration: "014-2026-04-24-1642"
 cumulative_n_trials: 4255
 ---
 
@@ -60,11 +60,11 @@ winner:
 
 | rank | iter | tier | score | strategy slug | primary citation | headline |
 |---|---|---|---|---|---|---|
-| 1 | **008** | 🥈 PROMISING | **74** | `vol_managed_60_40 vt15_L21_cap20` (2-leg SPY+TLT, single ex-ante cfg) | `[risk_parity, p.10-11]` + Moreira-Muir 2017 | hunt-loop co-high; 6/6/6 gates; 4/5 winner conds; only DSR p=0.332 fails |
-| 1 | **010** | 🥈 PROMISING | **74** | `vt15_L21_cap20_3leg` (3-leg SPY+TLT+GLD, single ex-ante cfg) | `[risk_parity, p.10-11]` + Asness-Frazzini-Pedersen 2012 | hunt-loop co-high; spy Sharpe 1.040 (Δ+0.14); ties iter 008 → blend family ceiling |
-| 3 | 006 | 🥈 PROMISING | 67 | `vol_managed_60_40 vt15_L21_cap20` (12-cfg grid) | `[risk_parity, p.10-11]` + Moreira-Muir 2017 | first SPY+TLT blend; 4/5 winner conds; killed by grid PBO 0.690 |
-| 4 | **009** | 🥈 PROMISING | 64 | `vt15_L21_cap20 + ts_inv21_h50` (T10Y3M 21d symmetric overlay) | `[regime_change, p.5-6]` + Estrella-Mishkin 1998 | macro overlay; 21d EMA erased lead-time; 100% bottom-20 overlap on edu+spy |
-| 4 | **013** | 🥈 PROMISING | **64** | `vt15_L21_cap20 + meta_lr_rho60_vixz252` (LR meta on iter 008 blend) | `[advances_fin_ml, ch.3, p.50-56]` + López de Prado 2018 | meta-labeling ρ+vix features redundant with vol-scaling; same 100% overlap as iter 009/012 |
+| 1 | **008** | 🥈 PROMISING | **74** | `vt15_L21_cap20` (2-leg SPY+TLT, single ex-ante) | `[risk_parity, p.10-11]` + Moreira-Muir 2017 | hunt-loop co-high; 6/6/6 gates; 4/5 winner; DSR p=0.332 only fail |
+| 1 | **010** | 🥈 PROMISING | **74** | `vt15_L21_cap20_3leg` (3-leg SPY+TLT+GLD) | `[risk_parity, p.10-11]` + Asness-Frazzini-Pedersen 2012 | ties iter 008 → blend family ceiling |
+| 3 | 006 | 🥈 PROMISING | 67 | `vt15_L21_cap20` (12-cfg grid) | `[risk_parity, p.10-11]` + Moreira-Muir 2017 | first blend; killed by grid PBO 0.690 |
+| 4 | 009 | 🥈 PROMISING | 64 | `vt15_L21_cap20 + ts_inv21_h50` | `[regime_change, p.5-6]` + Estrella-Mishkin 1998 | 21d EMA erased T10Y3M lead-time; 100% overlap |
+| 4 | 013 | 🥈 PROMISING | **64** | `vt15_L21_cap20 + meta_lr_rho60_vixz252` | `[advances_fin_ml, ch.3]` + López de Prado 2018 | LR meta vol-proxy features redundant with vol-scaling |
 
 *(iter 001 ~35/100 approximate; back-fill in `tests/test_strategy_scoring.py::TestNearMiss`.)*
 
@@ -78,9 +78,13 @@ the 18 KB ceiling. Full hypothesis, citations, scope and score
 breakdown for compressed iters are recoverable from
 `iterations/NNN-*/hypothesis.md` + `verdict.json` + `final_report.md`.
 
-### 013 — 2026-04-24 — Meta-labeling LR classifier (AFML ch.3) on iter 008 blend (🥈 PROMISING, 64/100, Kill #3)
-- **Result:** Sharpe edu/spy/ndx 0.853/0.990/1.007 (Δ vs iter 008 −0.012/−0.010/−0.014; only 1/3 clears +0.10 gate), gates 6/7 × 3 ds, DSR worst p=0.351 (n=4255), gate-fire 10.1%/6.3%/3.2%, p_act std 0.19-0.21 (NOT degenerate), overlap-bottom-20% **100% edu+spy, 62.5% ndx** (same diagnostic as iter 009/012), robustness 9/9 (hunt-loop best), winner 1/5; score 1:10 2:19 3:0 4:15 5:15 6:5.
-- **Lesson:** **Meta-labeling with vol-proxy features (ρ_60 + vix_z_252) on vol-managed SPY+TLT blend is REDUNDANT with variance-scaling** — same 100%-overlap failure as T10Y3M overlay family (iter 009/012). Classifier learns real patterns but those patterns cointegrate with σ²_port at business-cycle scale. **Three distinct regime-overlay/meta-model approaches (009/012/013) all closed with identical diagnostic — vol-managed SPY+TLT blend at 74/100 NOT unlocked by more vol-proxy signals regardless of implementation.** Pivot: Option E (EBP — needs pre-val), Option G (return-stacked ETF), Option H (meta-labeling with non-cointegrated features). See `iterations/013-2026-04-24-1619-meta-labeling-blend/`.
+### 014 — 2026-04-24 — EBP (GZ2012) credit-cycle overlay on iter 008 blend — **pre-val screen FAIL** (❌ FAIL, 0/100, Kill #PV, 0 DSR committed)
+- **Result:** Pre-validation screen (novel methodology: 60d rolling |ρ(EBP_z, realised σ²_port)| > 0.30 exceed frac > 20% → abort) FAILs all 3 ds — exceed_frac edu/spy/ndx **0.684/0.691/0.706** (3.4× over cap), max|ρ| 0.96/0.96/0.94, mean|ρ| 0.47/0.47/0.48. No backtest run; cumulative_n_trials unchanged 4255. Pytest baseline 823→832 (+9 TDD specs). Score 0/25 0/25 0/15 0/15 0/15 0/5 (nothing measured — pre-val abort precedes gates).
+- **Lesson:** EBP's GZ2012 residual does NOT decouple from blend σ²_port at 60d scale — fourth consecutive overlay failure on iter 008's blend (009 T10Y3M sym, 012 T10Y3M asym, 013 LR meta, 014 EBP credit) with same cointegration diagnostic. **Overlay family on this mechanism is CLOSED.** Pre-val gate is now mandatory on future overlay/meta-label proposals. Next iter must change MECHANISM: Option G (return-stacked ETF), cross-sectional factor momentum, or options-skew on plain SPY. See `iterations/014-2026-04-24-1642-ebp-credit-overlay-blend/`.
+
+### 013 — 2026-04-24 — Meta-labeling LR classifier w/ ρ+VIX features on iter 008 blend (🥈 PROMISING, 64/100, Kill #3)
+- **Result:** Sharpe edu/spy/ndx 0.853/0.990/1.007 (Δ vs iter 008 −0.012/−0.010/−0.014; 1/3 clears gate), gates 6/7×3, DSR p=0.351 (n=4255), overlap-bottom-20% 100%/100%/62.5% (same as 009/012), p_act std 0.19-0.21, winner 1/5; score 1:10 2:19 3:0 4:15 5:15 6:5.
+- **Lesson:** Meta-labeling with vol-proxy features (ρ_60, vix_z) on vol-managed SPY+TLT blend is REDUNDANT with variance-scaling. Three regime-overlay/meta-model approaches (009/012/013) all closed with identical 100%-overlap. See `iterations/013-2026-04-24-1619-meta-labeling-blend/`.
 
 ### 012 — 2026-04-24 — Asymmetric T10Y3M equity-leg-only haircut (5d EMA) on iter 008 blend (🥉 MARGINAL, 58/100)
 - **Result:** Sharpe edu/spy/ndx 0.824/0.965/0.968 (Δ vs iter 008 −0.041/−0.035/−0.053; only 1/3 clears +0.10 gate), gates 6/7 × 3 ds, DSR worst p=0.410 (n=4252), overlap-bottom-20% 100% edu+spy (same diagnostic as iter 009), winner 0/5; score 1:10 2:19 3:0 4:15 5:10 6:4.
@@ -127,17 +131,19 @@ breakdown for compressed iters are recoverable from
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed (DEAD_ENDS or saturated): sector rotation 1/K + Clenow (002/003), single-asset vol-scaling (004/005), momentum overlay on vol-managed blend (007 redundant), iter 006 single-cfg verification (008 confirmed structural), T10Y3M overlay entire 2×2 quadrant FALSIFIED (009 symmetric+21d heavy + 012 asymmetric+5d light — both 100% redundancy with variance-scaling), 3-leg blend daily (010 ties iter 008 — blend family ceiling), weekly-rebalance blend (011 — daily cadence required, DSR-attack via timeframe falsified), **Option C vol-proxy meta-labeling (iter 013 — LR on ρ_60+vix_z 100% redundant with vol-scaling, same failure mode as 009/012)**.
+Consumed (DEAD_ENDS or saturated): sector rotation 1/K + Clenow (002/003), single-asset vol-scaling (004/005), momentum overlay on vol-managed blend (007 redundant), iter 006 single-cfg verification (008 confirmed structural), T10Y3M overlay entire 2×2 quadrant FALSIFIED (009 symmetric+21d heavy + 012 asymmetric+5d light), 3-leg blend daily (010 ties iter 008 — blend family ceiling), weekly-rebalance blend (011 — daily cadence required), **Option C vol-proxy meta-labeling (iter 013)**, **Option E EBP credit-cycle overlay (iter 014 — pre-val rejected, |ρ|>0.3 on 68-71% bars)**.
 
-### Iter 014 candidates (ranked by expected information gain)
+### Iter 015 candidates (ranked by structural novelty)
 
-Iter 013 framing: three distinct "regime overlay/meta-model" approaches now all show the same 100%-overlap failure mode (iter 009 T10Y3M 21d symmetric; iter 012 T10Y3M 5d asymmetric; iter 013 LR meta on ρ_60+vix_z). **The vol-managed SPY+TLT blend at 74/100 is NOT unlocked by more vol-proxy signals, regardless of implementation.** Remaining productive paths require signals empirically pre-validated as non-cointegrated with σ²_port(blend).
+**Framing:** 4 consecutive overlays on iter 008 blend failed with same cointegration diagnostic (009/012/013/014). Overlay family CLOSED — iter 015 must change MECHANISM, not decorate iter 008 again. Novel methodology from iter 014: **pre-validation screen (60d |ρ(feature, σ²_port)| > 0.30 exceed > 20% → abort)** — mandatory for any future overlay/meta-label on a vol-managed blend.
 
-0i. **[OPTION E — EBP MACRO SIGNAL]** EBP (Gilchrist-Zakrajšek 2012) overlay on iter 008 blend. Credit-cycle signal structurally distinct from yield-curve slope (different historical fire-episodes: 1998 LTCM, 2008 GFC, 2020 COVID). Monthly data → held constant within month at daily rebalance. Data in `data/external/macro/ebp_monthly.parquet`. **MANDATORY PRE-VALIDATION** after iter 013: measure 60-day rolling correlation between EBP and σ²_port(iter 008); if |ρ| > 0.30 on > 20% of bars → reject without full-iter test.
+0k. **[OPTION G — RETURN-STACKED ETF ROTATION]** — PRIMARY rec. NTSX/NTSI/NTSE (90% equity + 60% UST futures stacked). New primitive vs iter 008's explicit vol-scaling. `[risk_parity, p.5]` + `[leverage_for_the_long_run, p.19-20]`. NTSX launched 2018-08; NTSI/NTSE 2021-02 — synthetic proxies (90% SPY/EFA/EEM + 60% IEF) for pre-2021.
 
-0k. **[OPTION G — RETURN-STACKED ETF ROTATION]** NTSX/NTSI/NTSE rotation. Built-in 90/60 equity/bond leverage + region tilt — structurally new primitive not yet tested. Parallel-track candidate (different universe/mechanism). `[risk_parity, p.5]` + `[leverage_for_the_long_run, p.19-20]`. NTSI/NTSE launched 2021 — 16y backtest requires synthetic proxies (90% SPY/EFA/EEM + 60% IEF).
+0m. **[CROSS-SECTIONAL FACTOR MOMENTUM]** — skip 2-leg universe. MTUM/QUAL/VLUE/USMV/SIZE/SPMO (heterogeneous factor tilts, NOT sector ETFs — iter 003 killed those on homogeneity). 12-1 ranking momentum across factors. Cross-sectional axis, not time-series. `[ml_for_algo_trading, ch.4]` + `[advances_fin_ml, ch.7]`.
 
-0l. **[OPTION H — META-LABELING WITH PRE-SCREENED ORTHOGONAL FEATURES]** — same architecture as iter 013 but with features empirically validated as NON-cointegrated with σ²_port: HY credit spread (HYG/LQD ratio), VIX term-structure slope (VIX3M/VIX ratio), cross-sectional breadth (% SPY components > 200d MA), FX carry index. Require pre-iter screening: |ρ(feature, σ²_port)| < 0.30 on ≥ 80% of bars. Features failing screen are rejected pre-commit.
+0n. **[OPTIONS SKEW / VIX TERM SIGNAL ON PLAIN SPY]** — single-asset primary (no blend → no σ²_port cointegration). VIX/VIX3M ratio or put-call skew on plain SPY daily. `[volatility_trading, ch.4-5]`. Tests options-implied axis (iter 013 flagged as potentially orthogonal).
+
+0l. **[OPTION H — META-LABELING WITH PRE-SCREENED FEATURES]** — deprioritised vs G/cross-sec. Given iter 014 killed EBP, credit-adjacent features likely also fail pre-val; features must come from genuinely different axis (cross-sectional, options-implied).
 
 ### Deeper backlog (not yet designed as iter-next)
 
@@ -167,7 +173,8 @@ Iter 013 framing: three distinct "regime overlay/meta-model" approaches now all 
 - 3-leg SPY+TLT+GLD daily on `vt15_L21_cap20_3leg` — ties iter 008 at 74/100, blend family ceiling (iter 010); DO NOT re-test minor variations
 - Weekly-rebalance 3-leg blend (W-FRI, 4w lookback) — vol-managed REQUIRES daily cadence; MDD +10-14 pp, DSR WORSE, turnover UP (iter 011); DO NOT re-test other weekly params or monthly cadence
 - T10Y3M asymmetric equity-leg-only haircut, 5d EMA on iter 008 blend — SAME 100% gate-fire/bottom-20%-scale overlap as iter 009 symmetric 21d (iter 012); **2×2 quadrant (smoothing × asymmetry) fully closed**; redundancy is structural cointegration, not parametric; DO NOT re-test any T10Y3M overlay variant on this mechanism
-- Meta-labeling LR classifier with ρ_stockbond + VIX z-score features on iter 008 vol-managed blend — SAME 100% gate-fire/bottom-20%-scale overlap on edu+spy as iter 009/012 (iter 013); both features cointegrate with σ²_port at business-cycle scale; classifier learns redundant de-lever rule. **Three regime-overlay/meta-model approaches (009 + 012 + 013) all show identical 100%-overlap failure** — vol-proxy signals CANNOT break 74/100 ceiling, require empirically non-cointegrated features (EBP credit, VIX term slope, breadth, FX carry — all need pre-validation)
+- Meta-labeling LR with ρ_stockbond + VIX_z on iter 008 blend — 100% bottom-20% overlap edu+spy same as iter 009/012 (iter 013); vol-proxy features cointegrate with σ²_port at business-cycle scale
+- EBP (GZ2012 residual) credit-cycle binary haircut overlay on iter 008 blend — pre-val screen rejects all 3 ds (iter 014): 60d rolling |ρ(EBP_z, σ²_port)| > 0.30 on 68-71% of bars (mean≈0.47, max 0.96). **Fourth overlay failure on iter 008 blend (009 T10Y3M sym / 012 T10Y3M asym / 013 LR meta / 014 EBP) — overlay family CLOSED; pre-validation gate mandatory for any future overlay/meta-label on vol-managed blend.**
 
 ---
 
