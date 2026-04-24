@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 2
+total_iterations: 3
 winners_found: 0
 status: iterating
-latest_iteration: "002-2026-04-24"
-cumulative_n_trials: 4024
+latest_iteration: "003-2026-04-24"
+cumulative_n_trials: 4048
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -62,6 +62,7 @@ strategies visible for future research.
 |---|---|---|---|---|---|---|
 | 1 | 001 | 📉 NEAR_FAIL | ~35/100 | `EMA_N150_th5_bL3_sL0 + sl30_rec10_cape05` | `[leverage_for_the_long_run, p.13, 16]` | top synth Sharpe but fails real-data; MDD too high on spy/ndx |
 | 2 | 002 | ❌ FAIL | 17/100 | `sector_momentum_clenow k5_L2` | `[stocks_on_the_move, p.76-77, 88-89, 98-99]` | canonical Clenow on 11 SPDR sectors under-deploys capital (63-75% in cash) due to ATR sizing mismatch; Sharpe ≈ 1/3 of bench |
+| 3 | 003 | ❌ FAIL | 7/100 | `sector_momentum_equal_notional k9_L20_lb90` | `[stocks_on_the_move, p.70-77, p.82]` | equal-notional fixes deployment (1.55-1.76 vs iter 002's 0.25-0.37); ranking signal confirmed absent on sector ETFs (top cfgs are k9 near-EW; PBO 0.63-0.91 overfit signature) |
 
 *(iter 001 approximate. See
 `tests/test_strategy_scoring.py::TestNearMiss` for the back-filled
@@ -70,6 +71,14 @@ calculation.)*
 ---
 
 ## Iteration log (newest first, 6-line max per entry)
+
+### 003 — 2026-04-24 — Equal-notional sector rotation with Clenow ranking (❌ FAIL, score 7/100)
+- **Hypothesis:** Replacing iter 002's 10bps ATR-risk-parity sizing with equal-notional 1/K sizing on the same 11 SPDR sectors + Clenow adjusted-slope×R² ranking isolates the signal-edge question from the sizing-calibration issue and should surface any real edge.
+- **Citations:** `[stocks_on_the_move, p.70-77, p.82, p.60, p.66-67, p.98-99, p.81]`, `[advances_fin_ml, p.298-299, p.208-211, p.222-223, p.196-202]`, Jegadeesh-Titman 1993 (JofF 48(1) 65-91).
+- **Scope:** 24 configs (top_k ∈ {3,5,7,9} × lookback_slope ∈ {60,90,120} × buy_leverage ∈ {1.0, 2.0}) × 3 datasets identical to iter 002 windows.
+- **Result:** Top cfg k9_L20_lb90 Sharpe edu 0.30 / spy 0.26 / ndx 0.29 (all ≈ 1/3 of bench 0.54/0.79/0.91). Deployment medians 1.55-1.76 (vs iter 002's 0.25-0.37 — confirmed full deployment). Gates edu 4/7, spy 3/7, ndx 2/7. DSR p=0.982-0.992 with n_trials=4048. PBO 0.63-0.91 (textbook overfit signature). G7 cross-lib 0.000pp (engine clean). Winner conditions 0/5.
+- **Score breakdown:** 1:0/25 2:2/25 3:0/15 4:0/15 5:5/15 6:0/5
+- **Lesson:** Signal is genuinely absent on SPDR universe — top cfgs are k9 (hold nearly all sectors near-EW) which is evidence against the ranking. 11-asset ETF universe is structurally too homogeneous for cross-sectional ranking momentum; aggregate market factor dominates idiosyncratic score. This finding closes sector momentum as a direction regardless of sizing. See `iterations/003-2026-04-24-0927-sector-momentum-equal-notional/final_report.md`.
 
 ### 002 — 2026-04-24 — Clenow cross-sectional momentum on 11 SPDR sectors (❌ FAIL, score 17/100)
 - **Hypothesis:** Clenow book-canonical (adjusted slope × R², ATR risk-parity 10bps, SPY 200d regime) transported from S&P 500 stocks to 11 SPDR sector ETFs beats SPY risk-adjusted
@@ -93,13 +102,7 @@ calculation.)*
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-0. **Equal-notional sector rotation (Clenow ranking signal, 1/K sizing)** —
-   NEW direction surfaced by iter 002. Removes ATR risk-parity so sizing
-   doesn't dominate; tests whether Clenow's adjusted-slope ranking has ANY
-   edge on sector ETFs. If this also fails, sector momentum on SPDR
-   universe is a true dead-end. Citation: `[stocks_on_the_move, p.76-77]`
-   for signal, separate from the sizing rule (which iter 002 showed
-   doesn't transport cleanly).
+~~0. Equal-notional sector rotation (Clenow ranking signal, 1/K sizing)~~ — **CONSUMED iter 003, FAIL 7/100, moved to DEAD_ENDS**. Equal-notional fixes deployment but signal confirmed absent on SPDR universe. Sector momentum direction closed.
 
 ~~1. Cross-sectional momentum on US sector ETFs (Clenow canonical)~~ — **CONSUMED iter 002, FAIL 17/100, moved to DEAD_ENDS**.
 
@@ -153,6 +156,8 @@ Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 - Parameter variations of iteration-001 base configs (iter 001)
 - Clenow canonical (10 bps ATR-risk-parity) on sector-ETF universe with top-K=3-5 — under-deploys by ~3× (iter 002)
 - 4-config single-strategy-family grid when all configs land in the same near-zero regime (G1 PBO noise floor ~0.5) (iter 002)
+- Clenow adjusted-slope × R² ranking with equal-notional 1/K sizing on 11 SPDR sectors — full deployment confirmed, signal still absent (iter 003)
+- Cross-sectional ranking momentum on any ≤20-asset universe of diversified baskets (sector/factor/country ETFs) — too homogeneous (iter 003)
 
 ---
 
@@ -164,7 +169,7 @@ Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 - **DSR n_trials cumulative** — increment `cumulative_n_trials` in this
   memory's frontmatter each iteration (add this iter's config count)
 - **Real data > synth**: synth-only edge does NOT count as winner
-- **Pytest baseline must stay green** (currently 1 161)
+- **Pytest baseline must stay green** (currently 760 collected: 755 pass + 5 skip, post-cleanup 2026-04-24; each iteration adds to this)
 - **Max 2h wall-time** per iteration (stop if running longer)
 - **NEVER commit to git** — the shell `run_loop.sh` handles it
 

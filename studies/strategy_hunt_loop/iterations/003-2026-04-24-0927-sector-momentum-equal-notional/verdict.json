@@ -1,0 +1,166 @@
+{
+  "total_score": 7,
+  "tier": "FAIL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 0,
+      "max": 25,
+      "datasets_beat": 0,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 2,
+      "max": 25,
+      "per_dataset": {
+        "educational": "4",
+        "spy_real": "3",
+        "ndx_real": "2"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": false
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.9915435925092894,
+      "cumulative_n_trials": 4048
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "per_dataset": {
+        "educational": false,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 5,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.2976098952284715,
+      "cagr": 0.03781281884245202,
+      "mdd": 0.4852236629797436,
+      "dsr_p_value": 0.9817895883651347
+    },
+    "spy_real": {
+      "sharpe": 0.25670941020669763,
+      "cagr": 0.029618975260764513,
+      "mdd": 0.48223743992734863,
+      "dsr_p_value": 0.9915435925092894
+    },
+    "ndx_real": {
+      "sharpe": 0.28558818192694385,
+      "cagr": 0.03573111049647859,
+      "mdd": 0.48352455314818243,
+      "dsr_p_value": 0.98836988075295
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.5359479480340954,
+      "cagr": 0.08871981676589624,
+      "mdd": 0.5647366900495064,
+      "label": "SPY b&h (measured sectors_long)"
+    },
+    "spy_real": {
+      "sharpe": 0.7933510836620546,
+      "cagr": 0.12931187465654848,
+      "mdd": 0.3410474670449843,
+      "label": "SPY b&h (measured sectors_spy)"
+    },
+    "ndx_real": {
+      "sharpe": 0.9126905384720373,
+      "cagr": 0.18151874537812196,
+      "mdd": 0.35617218247976434,
+      "label": "QQQ b&h (measured sectors_ndx)"
+    }
+  },
+  "cumulative_n_trials": 4048,
+  "configs_tested": 24,
+  "primary_citation": "[stocks_on_the_move, p.70-77, p.82]",
+  "hypothesis_slug": "sector-momentum-equal-notional",
+  "top_candidate": {
+    "sectors_long": "k9_L20_lb60",
+    "sectors_spy": "k9_L20_lb90",
+    "sectors_ndx": "k9_L20_lb90"
+  },
+  "gate_details": {
+    "sectors_long": {
+      "cfg_id": "k9_L20_lb60",
+      "n_passed": "4",
+      "G1_pbo_pass": false,
+      "G1_pbo_value": 0.6349206349206349,
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.9817895883651347,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 6,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.14067896880059003,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.04570263637076673,
+      "G6_boot_pass": false,
+      "G6_boot_ci_low": -0.3674708991896417,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 3.922290714442056e-07,
+      "deployment_median": 1.548234622091279
+    },
+    "sectors_spy": {
+      "cfg_id": "k9_L20_lb90",
+      "n_passed": "3",
+      "G1_pbo_pass": false,
+      "G1_pbo_value": 0.7698412698412699,
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.9915435925092894,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 6,
+      "G4_oos_pass": "False",
+      "G4_oos_sharpe": -0.049194032878929,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.13431369436978793,
+      "G6_boot_pass": false,
+      "G6_boot_ci_low": -0.4381022420755863,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 6.446501998880194e-07,
+      "deployment_median": 1.7516685745831035
+    },
+    "sectors_ndx": {
+      "cfg_id": "k9_L20_lb90",
+      "n_passed": "2",
+      "G1_pbo_pass": false,
+      "G1_pbo_value": 0.9047619047619048,
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.98836988075295,
+      "G3_wf_pass": false,
+      "G3_wf_profitable": 5,
+      "G4_oos_pass": "False",
+      "G4_oos_sharpe": -0.1749220448070299,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.13323237346083247,
+      "G6_boot_pass": false,
+      "G6_boot_ci_low": -0.40054421178802213,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 1.5485526416725293e-06,
+      "deployment_median": 1.7592152799621383
+    }
+  },
+  "status": "fail"
+}

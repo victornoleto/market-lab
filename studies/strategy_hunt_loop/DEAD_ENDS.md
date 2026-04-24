@@ -138,6 +138,70 @@ Complete study: `studies/strategy_hunt_loop/iterations/002-2026-04-24-0906-secto
 
 ---
 
+## From iteration 003 — equal-notional sector rotation with Clenow ranking
+
+Complete study: `studies/strategy_hunt_loop/iterations/003-2026-04-24-0927-sector-momentum-equal-notional/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Clenow adjusted-slope × R² ranking with equal-notional 1/K sizing on
+   11 SPDR sectors, grid top_k ∈ {3, 5, 7, 9} × lookback_slope ∈ {60, 90,
+   120} × buy_leverage ∈ {1.0, 2.0} (24 configs)** — Sharpe 0.15-0.30
+   across all 24 configs × 3 datasets, vs bench 0.54-0.91. Score 7/100
+   ❌ FAIL. Winner conditions 0/5.
+
+2. **The specific root cause: the ranking signal has no discriminatory
+   power on this universe.** Iter 002 suggested sizing was the culprit
+   because portfolios were 63-77% in cash; iter 003 fixed sizing
+   (deployment 1.00-1.99 gross exposure / equity, median 1.55-1.76 for
+   top candidates) and discovered the signal itself is noise. The grid's
+   top configs are `top_k=9` (hold nearly all 9-11 sectors, near-equal-
+   weight) — concentrating in top-3 or top-5 by ranking score actively
+   reduces Sharpe. This is direct empirical evidence against the
+   adjusted-slope ranking on a small ETF universe.
+
+3. **PBO worse than iter 002** (0.635-0.905 vs 0.516-0.567). The larger
+   24-config grid has real return dispersion, but the IS-best / OOS-best
+   rank reversal is severe — textbook overfitting signature, not the
+   "small-grid noise floor" of iter 002. G6 bootstrap 99.9% CI low is
+   −0.37 to −0.44 across all 3 datasets: no statistical edge even under
+   favorable resampling.
+
+4. **Structural hypothesis confirmed**: cross-sectional ranking momentum
+   needs a heterogeneous universe (~50+ assets with meaningful
+   idiosyncratic return components) to produce a rankable cross-section.
+   ≤20-asset universes of diversified baskets (sector/factor/country
+   ETFs) are structurally too homogeneous — aggregate market factor
+   dominates, ranking score is noise.
+
+### Don't re-test
+
+- Clenow adjusted-slope × R² ranking with equal-notional or any sizing
+  variant on the 11 SPDR sector ETFs.
+- Any cross-sectional ranking momentum mechanism (adjusted-slope,
+  12-month return, 12-1 momentum, etc.) on a ≤20-asset universe of
+  diversified-basket ETFs.
+
+### Structural principles
+
+- **Cross-sectional ranking mechanisms need universe heterogeneity.**
+  Jegadeesh-Titman (1993) and Clenow (2015) both designed their ranking
+  formulas on single-stock universes (NYSE/AMEX, S&P 500) with 500+
+  constituents and meaningful idiosyncratic return variance per name.
+  On 11 SPDR sectors — each itself a basket of ~50-80 stocks — the
+  idiosyncratic component is washed out; top-rank vs bottom-rank sector
+  returns are dominated by the same market factor, and the ranking
+  signal adds no alpha.
+
+- **Fixing one issue can expose a deeper one.** Iter 002's "under-
+  deployment" finding was correct mechanically, but it masked a more
+  fundamental problem — the signal's absence. Iter 003's lesson is that
+  when diagnosing a FAIL, check whether the fix actually tested the
+  hypothesis or just moved the bottleneck. Here the fix (equal-notional)
+  cleanly tested the signal, and the signal was the problem.
+
+---
+
 ## Structural dead-end categories
 
 Any new hypothesis that falls into one of these is automatically
@@ -155,6 +219,12 @@ rejected — require qualitatively different mechanism:
 - [ ] Small grids (≤ 4 configs) of a single strategy family where every
       config lives in the same near-zero-return regime (G1 PBO = 0.5
       noise floor, uninformative)
+- [ ] Clenow adjusted-slope × R² ranking with equal-notional 1/K sizing
+      on 11 SPDR sectors (iter 003 — signal absent, deployment fix does
+      not resurrect it)
+- [ ] Cross-sectional ranking momentum on any ≤20-asset ETF universe of
+      diversified baskets (iter 003 — universe too homogeneous, aggregate
+      market factor dominates idiosyncratic ranking signal)
 
 ---
 
