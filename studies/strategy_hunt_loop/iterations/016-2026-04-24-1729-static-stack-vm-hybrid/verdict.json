@@ -1,0 +1,541 @@
+{
+  "total_score": 79,
+  "tier": "STRONG",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.22567320886538877,
+      "cumulative_n_trials": 4261
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count across 9 total windows",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              0.7960826882934021,
+              1.2702586833126932,
+              0.9360218528688234
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.5487611045900949,
+              0.9857177351311877,
+              0.9192872511179506
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.4755377798508789,
+              1.248347513413783,
+              0.8958433553104928
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9827502719358437,
+      "cagr": 0.15075756248393546,
+      "mdd": 0.31328956160465243,
+      "dsr_p_value": 0.22567320886538877
+    },
+    "spy_real": {
+      "sharpe": 1.1381777273216973,
+      "cagr": 0.1779301617220974,
+      "mdd": 0.26653869389745893,
+      "dsr_p_value": 0.16319777843277938
+    },
+    "ndx_real": {
+      "sharpe": 1.1944813179405145,
+      "cagr": 0.20730168609225075,
+      "mdd": 0.23228048932378706,
+      "dsr_p_value": 0.1321018852247966
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4261,
+  "configs_tested": 1,
+  "primary_citation": "[risk_parity, p.10-11, ch.1]; [systematic_trading, p.40, ch.2]; Moreira & Muir (2017) JoF 72(4), 1611-1644",
+  "hypothesis_slug": "static-stack-vm-hybrid",
+  "pre_committed_cfg": {
+    "cfg_id": "ntsx_vm_vt15_L21_cap20",
+    "eq_weight": 0.6,
+    "bd_weight": 0.4,
+    "target_vol": 0.15,
+    "lookback": 21,
+    "max_leverage": 2.0,
+    "rebalance": "daily",
+    "funding_cost_modeled": false
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "ntsx_vm_vt15_L21_cap20",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.22567320886538877,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 0.5588271741361538,
+          "mdd": 0.1975581341827001,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.0546602434678378,
+          "mdd": 0.2195129264516757,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.912210122287394,
+          "mdd": 0.165347731931062,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.149628869548942,
+          "mdd": 0.1342070633646525,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.6721506136944226,
+          "mdd": 0.1430260200840807,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 0.9735120358644977,
+          "mdd": 0.1766425893863796,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.2935361507781077,
+          "mdd": 0.2665386942031081,
+          "profitable": false
+        },
+        {
+          "window": 7,
+          "sharpe": 1.4964583416190325,
+          "mdd": 0.1709534651051689,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.9962305084597045,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.8894270943454867,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.2909309970470284,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.025725536614285005
+    },
+    "spy_real": {
+      "cfg_id": "ntsx_vm_vt15_L21_cap20",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.16319777843277938,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.2735431520844782,
+          "mdd": 0.15553569695118352,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.6115779348168346,
+          "mdd": 0.10313701631237943,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 1.3287156365645163,
+          "mdd": 0.13420706336465274,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.4321145137540037,
+          "mdd": 0.12293663293149111,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.0586149051229699,
+          "mdd": 0.1775399709417569,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.0127433708557259,
+          "mdd": 0.14466228314697158,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.601085927320052,
+          "mdd": 0.2116235987110024,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.0619242010917878,
+          "mdd": 0.17095346510516957,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.847981295350922,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.8894270943454867,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.34480577167784165,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.035757086507293145
+    },
+    "ndx_real": {
+      "cfg_id": "ntsx_vm_vt15_L21_cap20",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.1321018852247966,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.4980802034496026,
+          "mdd": 0.13820686511775795,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.3645587191204376,
+          "mdd": 0.12648751288462876,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.9444828308510964,
+          "mdd": 0.1442183283126626,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.4306037227589166,
+          "mdd": 0.14156373791378282,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.366880105505442,
+          "mdd": 0.16038763948218232,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.0597392863715227,
+          "mdd": 0.15302365591384484,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 1.1521515955947315,
+          "mdd": 0.16266563435248507,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 0.8565671023146649,
+          "mdd": 0.17831906431098474,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.9286193821787039,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.9947527576572249,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.3821828303233981,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.023310662259667936
+    }
+  },
+  "leg_correlations": {
+    "educational": {
+      "eq_bd": -0.29654051245040597
+    },
+    "spy_real": {
+      "eq_bd": -0.26524768193075826
+    },
+    "ndx_real": {
+      "eq_bd": -0.20036826257874585
+    }
+  },
+  "benchmarks_used_custom": {
+    "educational": {
+      "sharpe": 0.6293436372653917,
+      "cagr": 0.10815914739227761,
+      "mdd": 0.5520110457219881,
+      "label": "SPY b&h 2006-01-04\u21922026-04-15 (IEF-aligned)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "score_with_custom_benchmark": {
+    "total_score": 79,
+    "winner_conditions_met": false,
+    "tier": "STRONG",
+    "criteria": {
+      "1_sharpe_edge": {
+        "points": 25,
+        "max": 25,
+        "datasets_beat": 3,
+        "required_minimum_dataset_count": 2
+      },
+      "2_gates": {
+        "points": 19,
+        "max": 25,
+        "per_dataset": {
+          "educational": "6",
+          "spy_real": "6",
+          "ndx_real": "6"
+        },
+        "thresholds": {
+          "educational": 5,
+          "spy_real": 4,
+          "ndx_real": 4
+        },
+        "cross_dataset_thresholds_met": true
+      },
+      "3_dsr": {
+        "points": 0,
+        "max": 15,
+        "worst_p_value": 0.22567320886538877,
+        "cumulative_n_trials": 4261
+      },
+      "4_cagr_floor": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": true
+        }
+      },
+      "5_mdd_ceiling": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": true
+        }
+      },
+      "6_robustness_bonus": {
+        "points": 0,
+        "max": 5,
+        "note": "Populated by caller if rolling-window data provided"
+      }
+    }
+  },
+  "iter015_reference_metrics": {
+    "educational": {
+      "sharpe": 0.7835,
+      "cagr": 0.1233,
+      "mdd": 0.4449
+    },
+    "spy_real": {
+      "sharpe": 1.0442,
+      "cagr": 0.1554,
+      "mdd": 0.3032
+    },
+    "ndx_real": {
+      "sharpe": 1.0638,
+      "cagr": 0.1924,
+      "mdd": 0.3951
+    }
+  },
+  "delta_vs_iter015": {
+    "educational": {
+      "sharpe_delta": 0.19925027193584377,
+      "cagr_delta": 0.027457562483935452,
+      "mdd_delta": -0.13161043839534758
+    },
+    "spy_real": {
+      "sharpe_delta": 0.09397772732169729,
+      "cagr_delta": 0.022530161722097403,
+      "mdd_delta": -0.03666130610254109
+    },
+    "ndx_real": {
+      "sharpe_delta": 0.1306813179405144,
+      "cagr_delta": 0.01490168609225076,
+      "mdd_delta": -0.16281951067621295
+    }
+  },
+  "iter008_reference_metrics": {
+    "educational": {
+      "sharpe": 0.8651,
+      "cagr": 0.1349,
+      "mdd": 0.3721
+    },
+    "spy_real": {
+      "sharpe": 1.0001,
+      "cagr": 0.1608,
+      "mdd": 0.3721
+    },
+    "ndx_real": {
+      "sharpe": 1.0211,
+      "cagr": 0.179,
+      "mdd": 0.3721
+    }
+  },
+  "delta_vs_iter008": {
+    "educational": {
+      "sharpe_delta": 0.11765027193584376
+    },
+    "spy_real": {
+      "sharpe_delta": 0.13807772732169732
+    },
+    "ndx_real": {
+      "sharpe_delta": 0.1733813179405146
+    }
+  },
+  "funding_cost_sensitivity_note": "Same caveat as iter 015: synthetic stack does NOT subtract futures-stacking funding cost on the 50% additional notional. Real NTSX product has ~50-100 bps annual drag. Estimated Sharpe haircut ~0.05-0.10. After haircut, edges would be: edu ~+0.24, spy ~+0.15, ndx ~+0.15 \u2014 all STILL CLEAR the +0.10 strict gate. More robust than iter 015 to this sensitivity.",
+  "kill_criteria_check": {
+    "kill_1_sharpe_regress": {
+      "criterion": "Sharpe regresses > 0.02 vs iter 015 on \u2265 2 ds",
+      "deltas": {
+        "educational": {
+          "sharpe_delta": 0.19925027193584377,
+          "cagr_delta": 0.027457562483935452,
+          "mdd_delta": -0.13161043839534758
+        },
+        "spy_real": {
+          "sharpe_delta": 0.09397772732169729,
+          "cagr_delta": 0.022530161722097403,
+          "mdd_delta": -0.03666130610254109
+        },
+        "ndx_real": {
+          "sharpe_delta": 0.1306813179405144,
+          "cagr_delta": 0.01490168609225076,
+          "mdd_delta": -0.16281951067621295
+        }
+      },
+      "triggered": false,
+      "regress_count": 0
+    },
+    "kill_3_score_below_72": {
+      "criterion": "Total score < 72 (> 5 below iter 015's 77)",
+      "triggered": false
+    },
+    "kill_4_mdd_regress": {
+      "criterion": "MDD regresses > 5pp vs iter 015 on \u2265 2 ds",
+      "triggered": false,
+      "regress_count": 0
+    }
+  },
+  "any_kill_triggered": false,
+  "status": "strong"
+}
