@@ -1,0 +1,163 @@
+{
+  "total_score": 59,
+  "tier": "MARGINAL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 10,
+      "max": 25,
+      "datasets_beat": 1,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.3606478197677512,
+      "cumulative_n_trials": 4192
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.8485848359624016,
+      "cagr": 0.12430932538127237,
+      "mdd": 0.46935410678561196,
+      "dsr_p_value": 0.04373260173901761
+    },
+    "spy_real": {
+      "sharpe": 0.9806612859823309,
+      "cagr": 0.17979556378751593,
+      "mdd": 0.25674948694771704,
+      "dsr_p_value": 0.3606478197677512
+    },
+    "ndx_real": {
+      "sharpe": 1.0521115688486224,
+      "cagr": 0.21099717987471212,
+      "mdd": 0.24199120997659498,
+      "dsr_p_value": 0.28700629866804706
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4192,
+  "configs_tested": 12,
+  "primary_citation": "Moreira & Muir (2017), JoF 72(4) DOI 10.1111/jofi.12513; [systematic_trading, p.107-111, p.144 ch.9]",
+  "hypothesis_slug": "variance-managed-spy",
+  "top_candidate": {
+    "educational": "vt15_L21_cap15",
+    "spy_real": "vt20_L21_cap15",
+    "ndx_real": "vt20_L21_cap15"
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "vt15_L21_cap15",
+      "n_passed": "6",
+      "G1_pbo_pass": false,
+      "G1_pbo_value": 0.5714285714285714,
+      "G2_dsr_pass": true,
+      "G2_dsr_p": 0.04373260173901761,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 6,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.9283618300034101,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.9776617177538839,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.35267130888947995,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.027631223271185057
+    },
+    "spy_real": {
+      "cfg_id": "vt20_L21_cap15",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": 0.23809523809523808,
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.3606478197677512,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.8912897344187167,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.9361318303711467,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.21176202150289433,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.03911618187864008
+    },
+    "ndx_real": {
+      "cfg_id": "vt20_L21_cap15",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": 0.14682539682539683,
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.28700629866804706,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.9767716831944179,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.0102266186615052,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.21364383437521978,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.022881726345302944
+    }
+  },
+  "status": "marginal"
+}

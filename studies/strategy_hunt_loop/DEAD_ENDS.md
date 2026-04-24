@@ -202,6 +202,60 @@ Complete study: `studies/strategy_hunt_loop/iterations/003-2026-04-24-0927-secto
 
 ---
 
+## From iteration 005 — Moreira-Muir variance-scaling on SPY/QQQ
+
+Complete study: `studies/strategy_hunt_loop/iterations/005-2026-04-24-1008-variance-managed-spy/final_report.md`.
+
+### What the iteration resolved
+
+Variance-scaling (`σ^{-2}`, Moreira-Muir 2017 canonical) was tested
+head-to-head with iter 004's vol-scaling (`σ^{-1}`, Carver form) on
+SPY/QQQ daily returns. Result: **+0.01 Sharpe uplift on real data** —
+a lateral move, not the paper's +0.12-0.15 improvement.
+
+Iter 005 score 59/100 MARGINAL (new top-K #1), Sharpe edge +0.081 spy
+/ +0.097 ndx (both still below +0.10 strict gate). Kill criteria 1-3
+all NOT triggered — the mechanism is not broken, just saturated.
+
+### Structural principle (do NOT re-test)
+
+**Single-asset vol-adaptation on SPY/QQQ over 17y cannot clear the
++0.10 strict Sharpe gate regardless of exponent choice.** This applies
+to any form `s_t = f(σ̂_{t-1})` where `f` is a static function of
+lagged realised vol. Tested endpoints:
+
+- `f(σ) = target_vol / σ` (iter 004, Carver): edge +0.080 spy / +0.088 ndx
+- `f(σ) = target_vol² / σ²` (iter 005, Moreira-Muir): edge +0.081 spy / +0.097 ndx
+
+The family is bounded above at ~+0.08-0.10 real-data Sharpe edge
+because SPY's post-2009 buy-hold Sharpe 0.90 is already near the
+informational ceiling for a signal-free vol-feedback — vol is
+persistent, but the autocorrelation structure of SPY returns is
+already mostly captured by a first-order rescaling. Squaring or
+higher-order exponents add numerical asymmetry but no new information.
+
+### Don't re-test
+
+- Any further single-asset exponent sweep on SPY/QQQ (e.g., σ⁻¹·⁵, σ⁻³,
+  log-σ). The ceiling is informational, not parametric.
+- Param grids larger than 12 configs on any single-mechanism vol-
+  adaptation family — inflates `cumulative_n_trials` without moving
+  the limiting factor (Sharpe edge magnitude).
+
+### Path forward (NOT dead)
+
+Vol-adaptation remains a valid **primitive** for compounded strategies:
+
+- Vol-managed 60/40 SPY+TLT (cross-asset correlation axis is new)
+- Variance-scaling × momentum overlay (Moreira-Muir Table IV)
+- Meta-labeling on top of variance-scaled primary
+
+These are NOT forbidden by the iter 005 principle — the bound applies
+to single-asset static-vol-feedback, not to compounding mechanisms
+that add an independent edge source.
+
+---
+
 ## Structural dead-end categories
 
 Any new hypothesis that falls into one of these is automatically
@@ -225,6 +279,9 @@ rejected — require qualitatively different mechanism:
 - [ ] Cross-sectional ranking momentum on any ≤20-asset ETF universe of
       diversified baskets (iter 003 — universe too homogeneous, aggregate
       market factor dominates idiosyncratic ranking signal)
+- [ ] Single-asset vol-adaptation on SPY/QQQ with any static `f(σ̂_{t-1})`
+      exponent choice (iter 004 σ⁻¹ + iter 005 σ⁻² — family saturates at
+      +0.08-0.10 real-data Sharpe edge; only compounding mechanisms through)
 
 ---
 
