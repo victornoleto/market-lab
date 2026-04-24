@@ -104,6 +104,23 @@ cat studies/strategy_hunt_loop/BASE_MEMORY.md
 # ... produce override per mandate §7 if going live
 ```
 
+## Backlog (orchestrator hardening)
+
+- **Retry on transient API errors before fail-fast.** Today
+  `run_loop.sh` aborts the entire loop on **any** non-zero exit from
+  `claude -p` (lines 160-163). That includes Anthropic-side transients
+  like `529 overloaded_error` (API congestion) and `429 rate_limit`,
+  which killed the iter 008 run on 2026-04-24 14:11 right after the
+  iteration had already produced full artifacts and was on the final
+  bookkeeping step. Plan: wrap the `claude -p` call in a 3-attempt
+  retry-with-backoff (60s / 180s / 600s) that distinguishes infra
+  errors (parse stderr for `overloaded_error` / `rate_limit` / network
+  timeout) from real model errors, and only aborts the loop on
+  persistent failure. Keep current fail-fast behaviour for any other
+  non-zero exit. Tracked here, not in `ROADMAP.md`, because the
+  project is in mandate §1 MAINTENANCE — this is hunt-loop tooling
+  debt, not a roadmap deliverable.
+
 ## Resuming after interruption
 
 If the loop is interrupted (Ctrl-C, crash, timeout):
