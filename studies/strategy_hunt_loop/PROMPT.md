@@ -24,18 +24,21 @@ next iteration continues in a fresh session.
 
 1. `studies/strategy_hunt_loop/BASE_MEMORY.md` — full read (state +
    iteration log + top-K ranked + promising directions + constraints)
-2. `studies/strategy_hunt_loop/DEAD_ENDS.md` — structural dead-ends
+2. `studies/strategy_hunt_loop/INFRASTRUCTURE.md` — available simulators,
+   data loaders, validation, metrics, signals, data cache (reuse, don't
+   rebuild)
+3. `studies/strategy_hunt_loop/DEAD_ENDS.md` — structural dead-ends
    you must NOT re-test
-3. `studies/strategy_hunt_loop/WINNER_AND_RANKING.md` — strict 5-condition
+4. `studies/strategy_hunt_loop/WINNER_AND_RANKING.md` — strict 5-condition
    winner test + 0-100 scoring rubric + tier system
-4. `studies/strategy_hunt_loop/scoring.py` — the reusable scoring helper
+5. `studies/strategy_hunt_loop/scoring.py` — the reusable scoring helper
    (import at end of Stage 4 to produce `verdict.json`)
-5. `CLAUDE.md` + `.claude/CLAUDE.md` — project rules (mandate §1,
+6. `CLAUDE.md` + `.claude/CLAUDE.md` — project rules (mandate §1,
    citations, gates)
-6. `jornada/README.md` — current project state
-7. Last successful iteration's `final_report.md` (if any) — know what
+7. `jornada/README.md` — current project state
+8. Last successful iteration's `final_report.md` (if any) — know what
    the prior session learned
-8. `data/tiingo/manifest.json` — data availability (if it exists)
+9. `data/tiingo/manifest.json` — data availability (if it exists)
    — note which tickers and frequencies you have
 
 ---
@@ -76,6 +79,18 @@ Requirements:
 Pick from `BASE_MEMORY.md` `## Promising unexplored directions` unless
 you have specific reason to propose outside the list (document the
 reason).
+
+Selection heuristics (use to choose between candidates, not to invent
+new ones outside the list):
+
+- **Start simplest version (Occam's razor)** — if the simple version
+  can't beat SPY, no amount of complexity will. Defer ML/HMM/multi-
+  signal compositions until a single-mechanism baseline scores at
+  least PROMISING.
+- **Think about what SPY doesn't capture** — sector rotation? factor
+  tilt? non-equity? timing? regime? cross-asset correlation? credit?
+  The structurally new direction usually answers this question first
+  and picks a mechanism second.
 
 Red flags (means you should pick differently):
 
@@ -134,12 +149,11 @@ if it's primarily config-of-existing-infra.
 
 Rules:
 
-- **Reuse existing infra** (see `BASE_MEMORY.md` `## Infrastructure
-  available`). Only build new modules when the mechanism is
-  qualitatively new.
+- **Reuse existing infra** (see `INFRASTRUCTURE.md`). Only build new
+  modules when the mechanism is qualitatively new.
 - **TDD**: write tests FIRST for any new simulator logic.
   `tests/test_<slug>.py`. Baseline pytest must stay green (currently
-  1 161 tests).
+  ~796 collected; never reduce passing count).
 - **Run on all 3 datasets**: educational synth + spy_real + ndx_real.
   Cross-dataset is non-negotiable.
 - **Save results** to `iterations/{{ITERATION_N}}-*/results.json`
@@ -278,30 +292,44 @@ Path(f"studies/strategy_hunt_loop/iterations/{{ITERATION_N}}-*/verdict.json").wr
 1. Bump `total_iterations` in frontmatter
 2. Update `latest_iteration`
 3. Update `cumulative_n_trials` += configs tested this iteration
-4. Append 6-line entry to `## Iteration log`:
+4. Append a **full 6-field entry** to `## Iteration log` (newest first):
    ```markdown
-   ### NNN — YYYY-MM-DD — <one-line hypothesis> (TIER | score X/100)
+   ### NNN — YYYY-MM-DD — <one-line hypothesis> (TIER, score X/100)
    - **Hypothesis:** <...>
    - **Citations:** <...>
    - **Scope:** N configs, 3 datasets
-   - **Result:** Sharpe edu/spy/ndx, gates edu/spy/ndx, dsr p=...
+   - **Result:** Sharpe edu/spy/ndx, gates edu/spy/ndx, DSR p=...
    - **Score breakdown:** 1:X/25 2:X/25 3:X/15 4:X/15 5:X/15 6:X/5
    - **Lesson:** <one line>
    ```
 5. **Update `## Top-K strategies ranked`** — maintain top-5 ever-scored
    across all iterations. Insert this iteration's top candidate if its
-   score enters top-5; demote/drop lowest. Table format:
-   ```markdown
-   | rank | iter | tier | score | strategy_slug | primary citation | notes |
-   ```
+   score enters top-5; demote/drop lowest. Keep the `headline` cell
+   ≤ 1 line / ≤ 120 chars (full detail belongs in the iteration log
+   entry below).
 6. If WINNER (tier=WINNER): set `status: winner` in frontmatter,
    populate `## Winners found`
-7. If FAIL with new structural dead-end: append section to `DEAD_ENDS.md`
+7. If FAIL with new structural dead-end: append section to `DEAD_ENDS.md`,
+   plus a **1-line** entry to BASE_MEMORY's `## Structural dead-ends`
+   section (full text lives in `DEAD_ENDS.md`)
 8. If direction consumed, move it from `## Promising unexplored
    directions` to consumed/dead state
 
-**Keep `BASE_MEMORY.md` < 20 KB**. If it grows past, prune oldest log
-entries (keep latest 10 iteration log entries + all winners + top-K table).
+**Auto-prune rule (byte-aware)**: after writing your new entry, run
+`wc -c studies/strategy_hunt_loop/BASE_MEMORY.md`. **If > 18000 bytes**,
+compress every entry in `## Iteration log` EXCEPT the latest one
+(the one you just wrote) down to the 3-line format:
+
+```markdown
+### NNN — YYYY-MM-DD — <slug> (TIER, X/100)
+- **Result:** Sharpe edu/spy/ndx X.X/X.X/X.X (Δ ±X.XX/±X.XX/±X.XX), gates N/N/N, DSR p=X.XXX (n=NNNN), winner=N/5; score 1:X 2:X 3:X 4:X 5:X 6:X.
+- **Lesson:** <1-2 sentences strategic takeaway>. See `iterations/NNN-*/`.
+```
+
+The old `Hypothesis` / `Citations` / `Scope` fields stay recoverable
+from `iterations/NNN-*/hypothesis.md` + `verdict.json` +
+`final_report.md`. After compression, re-run `wc -c` and confirm file
+is under 18 000 bytes; if not, compress the latest entry too.
 
 ---
 
@@ -313,7 +341,7 @@ entries (keep latest 10 iteration log entries + all winners + top-K table).
 - **Citations obrigatórias** (CLAUDE.md Regra 2) — `[book.slug, p.X]`
   for every decision.
 - **Baseline pytest must stay green** — revert any change that breaks.
-  Current count: 1 161 tests.
+  Never reduce the passing count.
 - **NEVER commit to git** — shell `run_loop.sh` handles commits.
 - **Max 2 h wall-time per iteration** — if running longer, save
   partial results + write final_report.md with "INCOMPLETE" status.
@@ -343,8 +371,8 @@ user decision, made separately with the full evidence in hand.
 ## IF NOT WINNER
 
 1. `status: iterating` in `BASE_MEMORY.md`
-2. 5-line entry appended to `## Iteration log`
-3. `DEAD_ENDS.md` updated if structural
+2. 6-field entry appended to `## Iteration log` (then auto-prune if > 18 KB)
+3. `DEAD_ENDS.md` updated if structural (plus 1-line summary in BASE_MEMORY)
 4. `## Promising unexplored directions` refreshed (remove tried,
    possibly add new ones discovered during research)
 5. Suggest 2-3 structurally different directions explicitly in the
@@ -353,4 +381,5 @@ user decision, made separately with the full evidence in hand.
 ---
 
 Now begin with **FIRST ACTIONS** — read BASE_MEMORY.md, then
-DEAD_ENDS.md, then WINNER_AND_RANKING.md, then proceed to Stage 1.
+INFRASTRUCTURE.md, then DEAD_ENDS.md, then WINNER_AND_RANKING.md,
+then proceed to Stage 1.
