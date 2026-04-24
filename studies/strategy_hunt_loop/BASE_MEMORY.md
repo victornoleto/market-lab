@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 3
+total_iterations: 4
 winners_found: 0
 status: iterating
-latest_iteration: "003-2026-04-24"
-cumulative_n_trials: 4048
+latest_iteration: "004-2026-04-24"
+cumulative_n_trials: 4156
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -60,9 +60,10 @@ strategies visible for future research.
 
 | rank | iter | tier | score | strategy slug | primary citation | notes |
 |---|---|---|---|---|---|---|
-| 1 | 001 | 📉 NEAR_FAIL | ~35/100 | `EMA_N150_th5_bL3_sL0 + sl30_rec10_cape05` | `[leverage_for_the_long_run, p.13, 16]` | top synth Sharpe but fails real-data; MDD too high on spy/ndx |
-| 2 | 002 | ❌ FAIL | 17/100 | `sector_momentum_clenow k5_L2` | `[stocks_on_the_move, p.76-77, 88-89, 98-99]` | canonical Clenow on 11 SPDR sectors under-deploys capital (63-75% in cash) due to ATR sizing mismatch; Sharpe ≈ 1/3 of bench |
-| 3 | 003 | ❌ FAIL | 7/100 | `sector_momentum_equal_notional k9_L20_lb90` | `[stocks_on_the_move, p.70-77, p.82]` | equal-notional fixes deployment (1.55-1.76 vs iter 002's 0.25-0.37); ranking signal confirmed absent on sector ETFs (top cfgs are k9 near-EW; PBO 0.63-0.91 overfit signature) |
+| 1 | 004 | 🥉 MARGINAL | 51/100 | `vol_managed_spy tv20_L21_cap15` | `[systematic_trading, p.107-111, p.144 ch.9]` + Moreira-Muir 2017 | single-asset vol-scaling. **6/7 gates on spy_real AND ndx_real**, G6 bootstrap CI > 0 (first in hunt loop), MDD reduced 6-9pp vs bench, Sharpe edge +0.08-0.15. Narrowly misses winner: +0.08 < +0.10 Sharpe gate on real data, DSR p=0.30-0.36 at n_trials=4156 |
+| 2 | 001 | 📉 NEAR_FAIL | ~35/100 | `EMA_N150_th5_bL3_sL0 + sl30_rec10_cape05` | `[leverage_for_the_long_run, p.13, 16]` | top synth Sharpe but fails real-data; MDD too high on spy/ndx |
+| 3 | 002 | ❌ FAIL | 17/100 | `sector_momentum_clenow k5_L2` | `[stocks_on_the_move, p.76-77, 88-89, 98-99]` | canonical Clenow on 11 SPDR sectors under-deploys capital (63-75% in cash) due to ATR sizing mismatch; Sharpe ≈ 1/3 of bench |
+| 4 | 003 | ❌ FAIL | 7/100 | `sector_momentum_equal_notional k9_L20_lb90` | `[stocks_on_the_move, p.70-77, p.82]` | equal-notional fixes deployment (1.55-1.76 vs iter 002's 0.25-0.37); ranking signal confirmed absent on sector ETFs (top cfgs are k9 near-EW; PBO 0.63-0.91 overfit signature) |
 
 *(iter 001 approximate. See
 `tests/test_strategy_scoring.py::TestNearMiss` for the back-filled
@@ -71,6 +72,14 @@ calculation.)*
 ---
 
 ## Iteration log (newest first, 6-line max per entry)
+
+### 004 — 2026-04-24 — Volatility-managed SPY (single-asset continuous vol scaling) (🥉 MARGINAL, score 51/100)
+- **Hypothesis:** Rescale SPY exposure by `target_vol / σ̂_{t-1}` (Carver `[systematic_trading, p.107-111]` / Moreira-Muir 2017) — no signal, no cross-section, just continuous inverse-vol scaling. Tests the simplest instantiation of a canonical mechanism.
+- **Citations:** `[systematic_trading, p.40 ch.2, p.107-111, p.144-146 ch.9]`, `[advances_fin_ml, p.162-164, p.208-211, p.222-223 p.275, p.196-202, p.31-34]`, Moreira & Muir (2017) *JoF* 72(4) 1611-1644 DOI 10.1111/jofi.12513.
+- **Scope:** 36 configs (target_vol ∈ {0.10, 0.15, 0.20} × lookback ∈ {21, 63, 126, 252} × max_leverage ∈ {1.5, 2.0, 3.0}) × 3 datasets (SPYSIM synth 40y / SPY adj_close 17y / QQQ adj_close 16y). Cost model 2 bps/unit-scale-change.
+- **Result:** Grand champion `tv20_L21_cap15` Sharpe edu 0.81 (Δ+0.13) / spy 0.98 (Δ+0.08) / ndx 1.04 (Δ+0.09). Gates edu 4/7, **spy 6/7**, **ndx 6/7**. G1 PBO 0.54/**0.31**/**0.35** (real-data clean). G6 bootstrap 99.9% CI low +0.33/+0.23/+0.22 (first iteration to clear G6). G7 cross-lib parity 0.02-0.04pp. DSR p 0.06/0.36/0.30 at n_trials=4156. MDD reduced 6-9pp on real data vs bench. Winner conditions 0/5 (fails strict Sharpe edge +0.10 on spy/ndx; DSR deflator penalty too large).
+- **Score breakdown:** 1:10/25 2:11/25 3:0/15 4:15/15 5:15/15 6:0/5
+- **Lesson:** **Vol-scaling mechanism is real and partially validated**: 6/7 gates pass on both real-data slots, MDD reduced while CAGR up, G6 (bootstrap) clears for the first time in the hunt loop. Falls 0.02 Sharpe short of the +0.10 strict gate and DSR headroom eroded by cumulative n_trials. The productive path is NOT more param sweeps but a compounding mechanism (variance-scaling per Moreira, or vol-managed 60/40 mix). See `iterations/004-2026-04-24-vol-managed-spy/final_report.md`.
 
 ### 003 — 2026-04-24 — Equal-notional sector rotation with Clenow ranking (❌ FAIL, score 7/100)
 - **Hypothesis:** Replacing iter 002's 10bps ATR-risk-parity sizing with equal-notional 1/K sizing on the same 11 SPDR sectors + Clenow adjusted-slope×R² ranking isolates the signal-edge question from the sizing-calibration issue and should surface any real edge.
@@ -105,6 +114,23 @@ Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 ~~0. Equal-notional sector rotation (Clenow ranking signal, 1/K sizing)~~ — **CONSUMED iter 003, FAIL 7/100, moved to DEAD_ENDS**. Equal-notional fixes deployment but signal confirmed absent on SPDR universe. Sector momentum direction closed.
 
 ~~1. Cross-sectional momentum on US sector ETFs (Clenow canonical)~~ — **CONSUMED iter 002, FAIL 17/100, moved to DEAD_ENDS**.
+
+~~4. Vol-targeting + leverage-control on SPY alone~~ — **PARTIALLY CONSUMED iter 004, MARGINAL 51/100**. Single-asset vol-scaling works (6/7 gates on real data + G6 bootstrap CI > 0 for first time) but falls 0.02 Sharpe short of +0.10 strict gate. Not a dead-end — next productive iteration is variance-scaling (Moreira-Muir canonical) or vol-managed 60/40 mix.
+
+0a. **[ITER 005 RECOMMENDATION] Moreira-Muir canonical variance-scaling
+   on SPY** — replace iter 004's `target_vol / σ̂_{t-1}` (vol-scaling,
+   Carver form) with `c / σ̂²_{t-1}` (variance-scaling, Moreira-Muir
+   2017 *JoF* 72(4) canonical). Paper reports stronger Sharpe gains
+   for variance-scaling because realised variance is more persistent
+   than realised vol. Expected +0.12 to +0.15 Sharpe uplift — enough
+   to clear the +0.10 strict gate. Tighter grid (12 configs, not 36)
+   to preserve DSR headroom.
+
+0b. **[ITER 005+ ALTERNATE] Vol-managed 60/40 (SPY + TLT)** — apply
+   vol-scaling to a SPY/TLT blend weighted by inverse-vol. Adds
+   correlation-diversification on top of vol-adaptation. Both tickers
+   cached 17y. Different enough from iter 004 to avoid DSR inflation
+   on the same mechanism.
 
 2. **Return-stacked rotation NTSX/NTSI/NTSE** —
    `[risk_parity, p.5, ch.1]` +

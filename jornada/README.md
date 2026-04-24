@@ -152,6 +152,7 @@ Termos que aparecem ao longo das entradas do changelog:
 — bug Tiingo IEX em US holidays.
 
 ### 2026-04-24
+- [2026-04-24 10h00 — **Hunt loop iter 004: vol-managed SPY dá 51/100 MARGINAL (melhor resultado do loop, passa 6/7 gates em real data, mas cai 0.02 Sharpe abaixo do corte)** [HUNT LOOP]](2026-04-24-1000-hunt-loop-iter-004-vol-managed-spy-marginal.md) — Pesquisa em background (mandate §1 segue 100% Plano C). Single-asset vol scaling Carver/Moreira-Muir. G6 bootstrap CI > 0 pela primeira vez no loop. Próxima iteração: variance-scaling canônico (Moreira 2017).
 - [2026-04-24 00h30 — **Estudo de proteção a crash fecha em resultado negativo honesto — 0/16 cross-dataset winners** [EDUCACIONAL]](2026-04-24-0030-crash-protection-study-closes-negative.md) — Phase 1+2+3 sobre top-1 EMA/SMA threshold com 3× UPRO synth. 4020 configs testadas, 0 passam spec §0. 3 killers: WF MDD universal, PBO spy/ndx (0.78/0.60), DSR n=4020. Consistente com 113/113 honest FAIL.
 
 ### 2026-04-23
