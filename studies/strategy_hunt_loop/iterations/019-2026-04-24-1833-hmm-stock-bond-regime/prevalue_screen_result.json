@@ -1,0 +1,44 @@
+{
+  "threshold": 0.3,
+  "max_exceed_frac": 0.2,
+  "screen_window": 60,
+  "passed": false,
+  "datasets": [
+    {
+      "dataset": "educational",
+      "n_bars": 5041,
+      "rho_mean": -0.2824,
+      "rho_std": 0.3127,
+      "state_neg_frac": 0.7869,
+      "corr_state_sigma_full": -0.0581,
+      "corr_rho_sigma_full": -0.0751,
+      "exceed_frac_state": 0.6461,
+      "exceed_frac_rho": 0.6449,
+      "passed": false
+    },
+    {
+      "dataset": "spy_real",
+      "n_bars": 4166,
+      "rho_mean": -0.278,
+      "rho_std": 0.3134,
+      "state_neg_frac": 0.7895,
+      "corr_state_sigma_full": 0.0131,
+      "corr_rho_sigma_full": -0.0154,
+      "exceed_frac_state": 0.665,
+      "exceed_frac_rho": 0.6472,
+      "passed": false
+    },
+    {
+      "dataset": "ndx_real",
+      "n_bars": 4006,
+      "rho_mean": -0.2172,
+      "rho_std": 0.2999,
+      "state_neg_frac": 0.7411,
+      "corr_state_sigma_full": 0.036,
+      "corr_rho_sigma_full": 0.0199,
+      "exceed_frac_state": 0.4877,
+      "exceed_frac_rho": 0.6671,
+      "passed": false
+    }
+  ]
+}

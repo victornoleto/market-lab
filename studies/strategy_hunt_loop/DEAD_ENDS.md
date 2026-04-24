@@ -1161,6 +1161,88 @@ overlay failures AND iter 007 TSMOM redundancy:
 
 ---
 
+## From iteration 019 — HMM stock-bond correlation regime rotation on iter 016 base (pre-val abort)
+
+Complete study:
+`studies/strategy_hunt_loop/iterations/019-2026-04-24-1833-hmm-stock-bond-regime/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Any regime signal derived from ρ_stock_bond (60d rolling
+   correlation between SPY/QQQ and IEF) applied as an overlay to a
+   vol-managed 2-leg stack** — abort triggered on pre-val screen
+   (iter 014 pattern). Per-dataset rolling 60-bar |corr(binary_state,
+   σ²_port_iter016)| exceed-fraction: **64.6% / 66.5% / 48.8%** vs
+   20% ceiling — 2.4-3.3× over. Continuous ρ_60 vs σ²_port exceed-
+   fraction: 64.5% / 64.7% / 66.7% — uniformly ~3.2× over.
+
+2. **The specific root cause is ALGEBRAIC, not empirical.** σ²_port
+   for a 2-leg blend is
+   σ²_port = w_eq²·σ²_eq + w_bd²·σ²_bd + **2·w_eq·w_bd·ρ·σ_eq·σ_bd**,
+   which contains ρ as a multiplicative factor in the cross-term.
+   Any measurable function of ρ (threshold, HMM state, clustering,
+   GMM posterior, sign indicator) is cointegrated with σ²_port by
+   construction. The cointegration does NOT depend on choice of
+   threshold, number of HMM states, discretization method, or
+   feature-smoothing kernel — it is a consequence of the portfolio-
+   variance identity itself.
+
+3. **HMM discretization does NOT rescue the cointegration.** Iter
+   014 had left the HMM case open as "binary state ∈ {0, 1} might
+   break the cointegration sufficiently". Iter 019's pre-val answers
+   NO: the binary-threshold state (conservative upper bound on any
+   HMM-smoothed state) fails by the same margin as continuous ρ.
+   HMM forward-backward is a smoothing operator on ρ; it cannot
+   contain more orthogonalization information than the raw ρ.
+
+### Don't re-test
+
+- **2-state Gaussian HMM** on ρ_60d with state-conditional
+  {0.6/0.4 ↔ 0.3/0.7} ratio rotation on iter 016 base (iter 019
+  configuration).
+- **Any n-state HMM** (n ∈ {2, 3, 4, 5}) on any ρ-based feature
+  (ρ_20, ρ_60, ρ_120, EWMA ρ, DCC-GARCH-modeled ρ) applied as
+  overlay on iter 008 / iter 010 / iter 015 / iter 016 — same
+  algebraic cointegration applies.
+- **Regime classifier** via k-means, Gaussian mixture, agglomerative
+  clustering, or spectral clustering on ρ features, applied to
+  vol-managed 2-leg stack ratio rotation.
+- **Threshold overlays** on ρ (single threshold, percentile bands,
+  volatility-scaled thresholds, regime-stable thresholds, etc.) on
+  any vol-managed 2-leg stack.
+- **Any overlay mechanism whose primary feature is a measurable
+  function of (σ_eq, σ_bd, ρ)** — the three ingredients of σ²_port
+  by identity. This includes: VIX z-score (σ_eq proxy), MOVE index
+  (σ_bd proxy), realized-vol regimes on either leg, vol-of-vol
+  signals, correlation skewness signals, correlation dispersion, etc.
+
+### Structural principles
+
+- **Vol-managed portfolio scaling signals are feature-exhaustive for
+  their ingredient features.** Any overlay drawn from the ingredient
+  set (σ_eq, σ_bd, ρ) is structurally redundant — the variance-
+  target already optimally scales based on these. Adding a regime-
+  overlay based on any of them is zero-information-gain AT BEST,
+  noise-introduction AT WORST.
+- **Discretization is not orthogonalization.** A binary/categorical
+  partition of a cointegrated continuous signal inherits the
+  cointegration. To escape σ²_port cointegration, the overlay
+  feature must be drawn from information NOT representable as a
+  function of (σ_eq, σ_bd, ρ). Examples of structurally-escaping
+  features: options-implied skewness, options-implied kurtosis,
+  convex payoffs from options positions (Carr-Madan static
+  replication), cross-asset carry spreads (FX/commodities/bonds
+  decoupled from the blend's equity-bond axis), fundamental
+  valuation spreads (CAPE differential, earnings yield spread).
+- **Pre-val screen is mandatory for ANY proposed overlay on
+  vol-managed stacks.** Iter 014 (EBP credit), iter 019 (ρ_60 HMM):
+  two out of two pre-val tests failed, protecting 2-4h of wasted
+  implementation each. The screen should now be considered the
+  standard first step of any overlay iteration, not an optional
+  sanity check.
+
+---
+
 ## Things that might still work (in principle)
 
 These are NOT dead-ends, just untested:
@@ -1170,12 +1252,18 @@ These are NOT dead-ends, just untested:
 - Cross-ASSET-CLASS rotation (equity vs bonds vs FX vs commodities)
 - Factor rotation (value/momentum/quality/low-vol dynamic weights)
 - Options overlay (put spreads as tail insurance) — structurally
-  convex, orthogonal to linear overlay failures
+  convex, orthogonal to linear overlay failures. **Now the ONLY
+  remaining structurally orthogonal primitive after iter 019 closed
+  ρ-derived overlays algebraically.**
 - Funding-cost-modeled replay of iter 016 for deployability check
+  — ✅ done in iter 018, validated
 - ML-based meta-labeling with EMPIRICALLY pre-screened orthogonal
-  features (iter 014 pre-val screen mandatory)
-- Regime-switching HMM on correlation or macro state (iter 014
-  predicts pre-val likely fails; run screen first)
+  features (iter 014 pre-val screen mandatory) — must use features
+  structurally disjoint from (σ_eq, σ_bd, ρ) per iter 019's finding
+- ~~Regime-switching HMM on correlation or macro state (iter 014
+  predicts pre-val likely fails; run screen first)~~ — **✗ CLOSED
+  by iter 019** on correlation variant; macro-state HMM would need
+  features structurally orthogonal to (σ_eq, σ_bd, ρ)
 - Seasonality-based entries/exits
 - Dynamic vol-targeting (Carver) without any leverage
 

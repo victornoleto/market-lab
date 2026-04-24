@@ -1,0 +1,60 @@
+{
+  "iteration": "019-2026-04-24-1833-hmm-stock-bond-regime",
+  "status": "aborted_pre_validation",
+  "backtest_executed": false,
+  "hmm_trained": false,
+  "configs_tested": 0,
+  "cumulative_n_trials_before": 4264,
+  "cumulative_n_trials_after": 4264,
+  "cumulative_n_trials_delta": 0,
+  "kill_triggered": "Kill #0 — pre-val screen",
+  "pre_validation": {
+    "method": "60-bar rolling |corr(binary_state_on_rho_60, sigma2_port_iter016)|",
+    "state_classifier": "binary threshold at rho=0.0 (conservative upper bound for any HMM-derived state)",
+    "rho_lookback": 60,
+    "sigma_lookback": 21,
+    "screen_window": 60,
+    "rho_threshold": 0.30,
+    "max_exceed_frac_allowed": 0.20,
+    "source_file": "prevalue_screen.py",
+    "result_file": "prevalue_screen_result.json"
+  },
+  "per_dataset_screen_result": {
+    "educational": {
+      "n_bars": 5041,
+      "rho_mean": -0.2824,
+      "rho_std": 0.3127,
+      "state_neg_frac": 0.7869,
+      "corr_state_sigma_full": -0.0581,
+      "corr_rho_sigma_full": -0.0751,
+      "exceed_frac_state": 0.6461,
+      "exceed_frac_rho": 0.6449,
+      "passed": false
+    },
+    "spy_real": {
+      "n_bars": 4166,
+      "rho_mean": -0.278,
+      "rho_std": 0.3134,
+      "state_neg_frac": 0.7895,
+      "corr_state_sigma_full": 0.0131,
+      "corr_rho_sigma_full": -0.0154,
+      "exceed_frac_state": 0.665,
+      "exceed_frac_rho": 0.6472,
+      "passed": false
+    },
+    "ndx_real": {
+      "n_bars": 4006,
+      "rho_mean": -0.2172,
+      "rho_std": 0.2999,
+      "state_neg_frac": 0.7411,
+      "corr_state_sigma_full": 0.036,
+      "corr_rho_sigma_full": 0.0199,
+      "exceed_frac_state": 0.4877,
+      "exceed_frac_rho": 0.6671,
+      "passed": false
+    }
+  },
+  "returns_series": {},
+  "runs": [],
+  "note_on_missing_returns_series": "No backtest run — pre-val abort means plot_helper.py will skip this iteration. Consistent with iter 014 precedent (EBP credit overlay pre-val abort — no plots in iter 014 dir either)."
+}

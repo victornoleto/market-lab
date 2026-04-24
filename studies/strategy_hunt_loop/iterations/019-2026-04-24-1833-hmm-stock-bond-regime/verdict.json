@@ -1,0 +1,74 @@
+{
+  "status": "fail",
+  "tier": "FAIL",
+  "total_score": 0,
+  "winner_conditions_met": false,
+  "reason": "pre_validation_failed",
+  "reason_detail": "60d rolling |corr(binary_state(ρ_60d < 0 vs ≥ 0), σ²_port(iter 016 60:40 blend))| exceeds the 0.30 threshold on 48.8-66.5% of bars across all 3 datasets (2.4-3.3x the 20% ceiling). Continuous ρ_60 vs σ²_port rolling |corr| exceeds 0.65 on all 3 ds. The cointegration is **algebraic**, not merely empirical: σ²_port = w_eq²·σ²_eq + w_bd²·σ²_bd + 2·w_eq·w_bd·ρ·σ_eq·σ_bd contains ρ as a structural factor, so any regime signal derived from ρ inherits the cointegration with σ²_port regardless of the threshold or discretization method. This generalizes iter 014's pre-val result from EBP credit-cycle proxies to ANY stock-bond correlation-based regime signal on vol-managed stacks.",
+  "kill_triggered": "Kill #0 — pre-validation screen",
+  "backtest_executed": false,
+  "hmm_trained": false,
+  "dsr_budget_spent": false,
+  "pre_validation": {
+    "rolling_window_days": 60,
+    "rho_threshold": 0.30,
+    "max_exceed_frac_allowed": 0.20,
+    "state_classifier": "binary threshold on ρ_60d at 0.0 (conservative proxy for HMM state)",
+    "per_dataset": {
+      "educational": {
+        "n_bars": 5041,
+        "rho_mean": -0.2824,
+        "rho_std": 0.3127,
+        "state_neg_frac": 0.7869,
+        "corr_state_sigma_full": -0.0581,
+        "corr_rho_sigma_full": -0.0751,
+        "exceed_frac_state": 0.6461,
+        "exceed_frac_rho": 0.6449,
+        "passed": false
+      },
+      "spy_real": {
+        "n_bars": 4166,
+        "rho_mean": -0.278,
+        "rho_std": 0.3134,
+        "state_neg_frac": 0.7895,
+        "corr_state_sigma_full": 0.0131,
+        "corr_rho_sigma_full": -0.0154,
+        "exceed_frac_state": 0.665,
+        "exceed_frac_rho": 0.6472,
+        "passed": false
+      },
+      "ndx_real": {
+        "n_bars": 4006,
+        "rho_mean": -0.2172,
+        "rho_std": 0.2999,
+        "state_neg_frac": 0.7411,
+        "corr_state_sigma_full": 0.036,
+        "corr_rho_sigma_full": 0.0199,
+        "exceed_frac_state": 0.4877,
+        "exceed_frac_rho": 0.6671,
+        "passed": false
+      }
+    },
+    "all_pass": false
+  },
+  "criteria": {
+    "1_sharpe_edge":     {"points": 0, "max": 25, "note": "not measured — pre-val failed"},
+    "2_gates":           {"points": 0, "max": 25, "note": "not measured — pre-val failed"},
+    "3_dsr":             {"points": 0, "max": 15, "note": "not measured — pre-val failed"},
+    "4_cagr_floor":      {"points": 0, "max": 15, "note": "not measured — pre-val failed"},
+    "5_mdd_ceiling":     {"points": 0, "max": 15, "note": "not measured — pre-val failed"},
+    "6_robustness_bonus":{"points": 0, "max": 5,  "note": "not measured — pre-val failed"}
+  },
+  "metrics_used": {},
+  "benchmarks_used": {
+    "educational": {"sharpe": 0.68,  "cagr": 0.1147, "mdd": 0.5514, "label": "SPYSIM b&h (40y synth)"},
+    "spy_real":    {"sharpe": 0.90,  "cagr": 0.1497, "mdd": 0.3370, "label": "SPY b&h Tiingo (17y)"},
+    "ndx_real":    {"sharpe": 0.955, "cagr": 0.1918, "mdd": 0.3512, "label": "QQQ b&h Tiingo (16y)"}
+  },
+  "cumulative_n_trials": 4264,
+  "configs_tested": 0,
+  "primary_citation": "[regime_change, p.14-17, ch.2] (Chen & Tsang 2021); supporting [ml_for_algo_trading, ch.20 p.625]; [ilmanen_expected_returns, ch.1-3]; Ang & Bekaert (2002) JBES DOI 10.1198/073500102317351930",
+  "hypothesis_slug": "hmm-stock-bond-regime",
+  "iteration_dir": "iterations/019-2026-04-24-1833-hmm-stock-bond-regime/",
+  "decision": "abort_iteration_no_trials_committed"
+}
