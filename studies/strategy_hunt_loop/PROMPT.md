@@ -157,7 +157,12 @@ Rules:
 - **Run on all 3 datasets**: educational synth + spy_real + ndx_real.
   Cross-dataset is non-negotiable.
 - **Save results** to `iterations/{{ITERATION_N}}-*/results.json`
-  with per-dataset metrics.
+  with per-dataset metrics. Schema must include
+  `results["returns_series"][dataset][cfg_id] = {"index": [ISO dates],
+  "net_returns": [daily net returns]}` for at least the top candidate
+  of each dataset. The Stage-5 plot helper depends on this key (see
+  existing iterations 004/005/006/008/010/015/016 for the canonical
+  schema).
 - **Cross-lib G7**: if you wrote a new simulator, also write a
   hand-rolled numpy reference to confirm ±3 pp CAGR parity.
 
@@ -314,6 +319,23 @@ Path(f"studies/strategy_hunt_loop/iterations/{{ITERATION_N}}-*/verdict.json").wr
    section (full text lives in `DEAD_ENDS.md`)
 8. If direction consumed, move it from `## Promising unexplored
    directions` to consumed/dead state
+
+**Generate equity-vs-benchmark plots** (mandatory for every iteration,
+winner or not):
+
+```bash
+uv run python studies/strategy_hunt_loop/plot_helper.py --iter {{ITERATION_N}}
+```
+
+This auto-detects the top config per dataset (highest Sharpe from
+`results.json["runs"]`) and writes
+`iterations/{{ITERATION_N}}-*/plot_vs_benchmark_spy_real.png` and
+`...ndx_real.png` with (a) log-scale equity curves (strategy vs SPY/QQQ
+buy-and-hold) and (b) rolling 1y Sharpe differential. Educational
+dataset is skipped by the helper (per-iter synthetic benchmarks differ).
+Depends on the `returns_series` key from Stage 3 — if missing, the
+helper prints a skip message and you should backfill the key and
+re-run. Do NOT commit or merge without the two PNGs present.
 
 **Auto-prune rule (byte-aware)**: after writing your new entry, run
 `wc -c studies/strategy_hunt_loop/BASE_MEMORY.md`. **If > 18000 bytes**,

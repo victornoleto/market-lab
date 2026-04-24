@@ -1,9 +1,9 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 17
+total_iterations: 18
 winners_found: 0
 status: iterating
-latest_iteration: "017-2026-04-24-1750"
+latest_iteration: "018-2026-04-24-1813"
 cumulative_n_trials: 4264
 ---
 
@@ -60,11 +60,11 @@ winner:
 
 | rank | iter | tier | score | strategy slug | primary citation | headline |
 |---|---|---|---|---|---|---|
-| **1** | **016** | 🥇 **STRONG** | **79** | `ntsx_vm_vt15_L21_cap20` (0.6/0.4 static ratio × Moreira-Muir vol-target) | `[risk_parity, p.10-11]` + Moreira-Muir 2017 | 4/5 winner; 3/3 Sharpe +0.24-0.30; 9/9 sub-windows; hybrid beats both parents; DSR sole fail (p=0.13-0.23) |
-| 2 | 015 | 🥇 STRONG | 77 | `ntsx_synth_90_60_daily` (static 0.9 SPY + 0.6 IEF) | `[risk_parity, p.5]` + Asness-Frazzini-Pedersen 2012 | 4/5 winner; first mech to escape σ²_port cointegration |
-| 3 | 008 | 🥈 PROMISING | 74 | `vt15_L21_cap20` (2-leg SPY+TLT vol-mgmt) | `[risk_parity, p.10-11]` + Moreira-Muir 2017 | 4/5 winner; vol-managed reference baseline |
-| 3 | 010 | 🥈 PROMISING | 74 | `vt15_L21_cap20_3leg` (3-leg SPY+TLT+GLD) | `[risk_parity, p.10-11]` + Asness-Frazzini-Pedersen 2012 | ties iter 008 — blend family ceiling |
-| 5 | 006 | 🥈 PROMISING | 67 | `vt15_L21_cap20` (12-cfg grid) | `[risk_parity, p.10-11]` + Moreira-Muir 2017 | first blend; killed by grid PBO 0.690 |
+| **1** | **016** | 🥇 **STRONG** | **79** | `ntsx_vm_vt15_L21_cap20` (0.6/0.4 static ratio × Moreira-Muir vol-target) | `[risk_parity, p.10-11]` + Moreira-Muir 2017 | 4/5 winner; 3/3 Sharpe +0.24-0.30; 9/9 sub-windows; hybrid beats both parents; DSR sole fail (p=0.13-0.23); funding-cost validated by iter 018 |
+| **1** | **018** | 🥇 **STRONG** | **79** | `ntsx_vm_vt15_L21_cap20_funded` (iter 016 + r_Tbill drag SHV-lagged) | `[risk_parity, p.80-84]` + NTSX prospectus | ties iter 016; edges survive funding cost (−93 to −148 bps/yr → post-edges +0.17/+0.19/+0.21 still clear +0.10 gate); 4/5 winner |
+| 3 | 015 | 🥇 STRONG | 77 | `ntsx_synth_90_60_daily` (static 0.9 SPY + 0.6 IEF) | `[risk_parity, p.5]` + Asness-Frazzini-Pedersen 2012 | 4/5 winner; first mech to escape σ²_port cointegration |
+| 4 | 008 | 🥈 PROMISING | 74 | `vt15_L21_cap20` (2-leg SPY+TLT vol-mgmt) | `[risk_parity, p.10-11]` + Moreira-Muir 2017 | 4/5 winner; vol-managed reference baseline |
+| 4 | 010 | 🥈 PROMISING | 74 | `vt15_L21_cap20_3leg` (3-leg SPY+TLT+GLD) | `[risk_parity, p.10-11]` + Asness-Frazzini-Pedersen 2012 | ties iter 008 — blend family ceiling |
 
 *(iter 001 ~35/100 approximate; back-fill in `tests/test_strategy_scoring.py::TestNearMiss`.)*
 
@@ -78,10 +78,13 @@ the 18 KB ceiling. Full hypothesis, citations, scope and score
 breakdown for compressed iters are recoverable from
 `iterations/NNN-*/hypothesis.md` + `verdict.json` + `final_report.md`.
 
-### 017 — 2026-04-24 — 12-1 top-1 regional rotation on iter 016 base (🥉 MARGINAL, 52/100, Kill #1+#2+#3 triggered, 3/5 winner)
-- **Hypothesis + Citations:** Extend iter 016's fixed-ratio × vol-target primitive (`ntsx_vm_vt15_L21_cap20`) to 3-region cross-sectional rotation: {US (SPY/QQQ), Developed ex-US (EFA), Emerging (EEM)} each stacked with IEF. Select top-1 region by 12-1 skip-a-month momentum (`p[t-21]/p[t-252] - 1`), rebalance monthly (21 bars), apply iter 016 mechanism to selected (equity, bond) pair for hold window. Single pre-committed cfg `nts_regional_top1_vm_vt15_L21_cap20`. Citations: `[stocks_on_the_move, p.76-77]`; `[ml_for_algo_trading, ch.4, p.86]`; `[risk_parity, p.10-11, ch.1]`; `[systematic_trading, p.40, ch.2, p.170-171, ch.11]`; Asness-Moskowitz-Pedersen (2013) SSRN 1363476; Moskowitz-Ooi-Pedersen (2012) JFE 104(2). Scope: 1 cfg × 3 ds = 3 trials (n_trials 4261→4264); +11 TDD specs (844 pass + 5 skip).
-- **Result:** Sharpe edu/spy/ndx **0.76/0.82/1.02** (Δ frozen +0.08/−0.08/+0.06 — **0/3 clear +0.10 gate**, vs iter 016 −0.23/−0.32/−0.18 ALL regress ≥ 0.03 → Kill #1), gates 5/7, 6/7, 6/7 (edu G3 WF 7→5/8), DSR worst p **0.651** (spy_real; WORSE than iter 016 0.226/0.163/0.132 on all 3 ds — rotation added noise without signal), CAGR 11.99/13.03/17.47% floor 3/3 ✓ (3-5 pp drop vs iter 016), MDD 31.99/29.42/22.95% (+0.7/+2.8/−0.3 pp vs iter 016 — Kill #4 not triggered), winner **3/5** (Sharpe axis lost 3 ds → Kill #2), G4 OOS +0.87/+0.65/+0.81, G5 post-2020 +0.79/+0.62/+0.92, G6 boot +0.03/+0.00/+0.16 (spy razor zero), G7 xlib 0.01-0.22pp; region selection US 58-78% / EM 10-30% / INTL 11-12%; switches 23-39; turnover 6.5-8.2/yr (Kill #5 not triggered); score 1:0 2:17 3:0 4:15 5:15 6:5 = **52** (−27 vs iter 016, drops to MARGINAL). **Kill #1/#2/#3 triggered → hypothesis falsified.**
-- **Lesson:** **Cross-sectional 12-1 rotation on N=3 regional equity universe actively HURTS vs always-US base when US structurally dominates sample window.** Period Sharpe differential (SPY 0.63 vs EFA 0.36 vs EEM 0.34 on 2006-2026; QQQ 0.95 vs others 0.42-0.48 on 2010-2026) exceeds any plausible uplift from catching regional-leadership transitions. 12-1 momentum correctly picks US 58-78% of months but 22-42% time in EFA/EEM drags Sharpe decisively. Extends iter 003 dead-end from homogeneous sector ETFs (0.7-0.9 cross-corr) to regional ETFs (0.73-0.88 cross-corr + dominant-region Sharpe gap). Closes: top-K ∈ {1, 2} momentum rotation on ≤ 3-region equity universes; any lookback-skip variant; any cadence. **Iter 018 PICK:** Option Q (funding-cost-modeled iter 016 replay — zero new trials, deployability check) OR Option S (put-spread collar on iter 016 equity leg — requires options-chain data, orthogonal skewness-capture). See `iterations/017-2026-04-24-1750-regional-rotation-stack-vm/`.
+### 018 — 2026-04-24 — Funding-cost-modeled iter 016 replay (Option Q) (🥇 STRONG, 79/100, ties iter 016 top-K #1, hypothesis CONFIRMED)
+- **Result:** Sharpe edu/spy/ndx 0.888/1.065/1.140 (Δ frozen +0.21/+0.16/+0.19 — 3/3 clear +0.10 gate; Δ vs iter 016 gross −0.10/−0.07/−0.05 funding drag), gates 6/7+6/7+6/7, DSR worst p=0.370 (regressed from iter 016 0.226 via lower obs Sharpe × same n_trials=4264), CAGR 13.4/16.5/19.6% floor 3/3, MDD 33.3/26.7/23.2% (+2.0/+0.0/−0.1 pp), winner 4/5 (DSR sole fail, identical to iter 016), funding drag 148/114/93 bps/yr (scale_mean 1.8/1.8/1.7 at 76/79/63% cap-hit; excess_lev_mean 0.84), robustness 9/9; score 1:25 2:19 3:0 4:15 5:15 6:5 = 79. **Zero kills → hypothesis CONFIRMED.** 0 new trials (same cfg).
+- **Lesson:** Iter 016 is deployability-validated against largest-known unmodeled cost. Each 100 bps/yr funding drag costs ~0.07 Sharpe at 15% vol target. Rule of thumb: candidates with gross edge < +0.20 need funding-cost replay before top-K entry. DSR now the SOLE axis blocking winner; only primitive still structurally untested that can deliver +0.3-0.5 Sharpe uplift is Option S (put-spread collar). Iter 019 PICK: Option S (CBOE PPUT/BXMY data ingestion, convex P&L orthogonal to σ²_port cointegration family). See `iterations/018-2026-04-24-1813-funding-cost-modeled-replay/`.
+
+### 017 — 2026-04-24 — 12-1 top-1 regional rotation on iter 016 base (🥉 MARGINAL, 52/100)
+- **Result:** Sharpe edu/spy/ndx 0.76/0.82/1.02 (Δ frozen +0.08/−0.08/+0.06 — 0/3 clear +0.10 gate; Δ vs iter 016 −0.23/−0.32/−0.18 ALL regress ≥ 0.03), gates 5/7+6/7+6/7, DSR p=0.651/0.651/0.378 (worse than iter 016 all ds), CAGR 11.99/13.03/17.47%, MDD 31.99/29.42/22.95%, winner 3/5; region selection US 58-78% / EM 10-30% / INTL 11-12%; score 1:0 2:17 3:0 4:15 5:15 6:5 = 52. **Kill #1/#2/#3 triggered.**
+- **Lesson:** Cross-sectional 12-1 rotation on N=3 regional equity universe with structurally-dominant US actively HURTS (period Sharpe differential US 0.63-0.95 vs EFA/EEM 0.33-0.48 exceeds any momentum uplift). Closes top-K ∈ {1, 2} × any lookback × any cadence on ≤ 3-region equity universes. See `iterations/017-2026-04-24-1750-regional-rotation-stack-vm/`.
 
 ### 016 — 2026-04-24 — Static 60:40 ratio × Moreira-Muir vol-target hybrid (🥇 STRONG, 79/100, top-K #1, 4/5 winner, DSR sole fail)
 - **Result:** Sharpe edu/spy/ndx 0.98/1.14/1.19 (Δ frozen +0.30/+0.24/+0.24 — 3/3 clear gate with HUGE margins; +0.20/+0.09/+0.13 vs iter 015; +0.12/+0.14/+0.17 vs iter 008), gates 6/7, 6/7, 6/7 (cross-ds §0 met +4 bonus), DSR worst p=0.226 (LOWEST in history), CAGR 15.08/17.79/20.73%, MDD 31.33/26.65/**23.23%**, winner 4/5, G3 WF 7/8+8/8+8/8, G6 9/9, G7 xlib 0.02-0.04pp; cap-hit 63-79%, turnover 4.6-7.4/yr; score 1:25 2:19 3:0 4:15 5:15 6:5 = **79** (top-K #1). Kill #1/#3/#4 ALL FALSE.
@@ -117,17 +120,17 @@ breakdown for compressed iters are recoverable from
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed (DEAD_ENDS or saturated): sector rotation 1/K + Clenow (002/003); single-asset vol-scaling (004/005); momentum overlay on vol-managed blend (007 redundant); iter 006 single-cfg verification (008 structural); T10Y3M overlay full 2×2 (009/012); 3-leg blend daily (010 ties iter 008); weekly-cadence blend (011); meta-label vol-proxy (013); EBP credit-cycle overlay (014 pre-val); iter 015 static NTSX stack (77/100 STRONG, 4/5 winner); iter 016 static×vol-target hybrid (79/100 STRONG top-K #1, 4/5 winner, DSR sole fail); **iter 017 — 12-1 top-1 regional rotation (US/INTL/EM) on iter 016 base — FAILED 52/100 MARGINAL, Kill #1+#2+#3 triggered; cross-sectional rotation on 3 highly-correlated regional equities with structurally-dominant US region actively hurts vs always-US base. Closes cross-sectional momentum rotation family on ≤ 3-region equity universes.**
+Consumed (DEAD_ENDS or saturated): sector rotation 1/K + Clenow (002/003); single-asset vol-scaling (004/005); momentum overlay on vol-managed blend (007 redundant); iter 006 single-cfg verification (008 structural); T10Y3M overlay full 2×2 (009/012); 3-leg blend daily (010 ties iter 008); weekly-cadence blend (011); meta-label vol-proxy (013); EBP credit-cycle overlay (014 pre-val); iter 015 static NTSX stack (77/100 STRONG, 4/5 winner); iter 016 static×vol-target hybrid (79/100 STRONG top-K #1, 4/5 winner, DSR sole fail); iter 017 — 12-1 top-1 regional rotation (US/INTL/EM) on iter 016 base — FAILED 52/100 MARGINAL; **iter 018 — Option Q funding-cost-modeled iter 016 replay — CONFIRMED 79/100 STRONG ties iter 016, 4/5 winner, 3/3 post-cost edges still clear +0.10 gate (+0.21/+0.16/+0.19), iter 016 deployability validated; robustness protocol added (candidates with gross edge < +0.20 must run funding-cost replay before top-K entry). Does NOT close any mechanism — confirms iter 016 as top candidate under realistic cost assumptions.**
 
-### Iter 018 candidates (ranked by expected DSR-clearance or deployability value)
+### Iter 019 candidates (ranked by expected DSR-clearance value)
 
-**Framing:** Iter 016 remains the hunt-loop high (79/100, 4/5 winner, DSR sole barrier). Iter 017 falsified cross-sectional regional rotation — closed a structural family. DSR clearance still needs Sharpe uplift of +0.3-0.5 on worst dataset (iter 016 edu 0.98) via genuinely orthogonal information; options tail-hedge remains the strongest untested primitive. Iter 018 should EITHER boost deployability confidence in iter 016 (Option Q — cheap, zero trials) OR attack DSR with truly novel skewness axis (Option S — options data engineering).
+**Framing:** Iter 016 remains hunt-loop top-K #1 at 79/100 STRONG, 4/5 winner. Iter 018 **confirmed deployability** — funding-cost drag (−0.054 to −0.096 Sharpe/ds, 93-148 bps/yr) doesn't break +0.10 gate. DSR remains the sole winner-condition barrier (worst p 0.37 post-cost, needs < 0.05 at n_trials = 4264). Clearance path requires Sharpe uplift of +0.3-0.5 on worst dataset via genuinely orthogonal information. Only primitive structurally untested with sufficient magnitude is options tail-hedge (convex P&L cannot cointegrate with σ²_port).
 
-0q. **[OPTION Q — FUNDING-COST-MODELED ITER 016 REPLAY]** — PRIMARY rec for iter 018. Subtract `0.5 × DGS3MO_daily_return` from iter 016's net returns; document TRUE deployable Sharpe post-funding-cost. Zero new trials (same config, different cost model). Not a new hunt-loop trial; documents iter 016's deployability for any future Mandate §7 override discussion. Cheap + honest. Citation: NTSX prospectus + CME UST futures rolling-cost methodology.
+0s. **[OPTION S — PUT-SPREAD COLLAR TAIL-HEDGE ON ITER 016 EQUITY LEG]** — PRIMARY rec for iter 019. Finance a 10Δ put spread via a 25Δ covered call on SPY/QQQ leg of iter 016 (bond leg unchanged; funding cost now modeled per iter 018). Adds skewness-capture axis (Taleb tail-hedge) that is **convex** in underlying → cannot cointegrate with σ²_port at business-cycle scale the way linear signals did in iter 009/012/013/014. Expected +0.05-0.15 Sharpe via MDD reduction + preserved upside. Requires CBOE PPUT/BXMY/CLL indices data ingestion (~2-3h engineering; freely available from cboe.com/indices). Citations: `[dynamic_hedging, ch.3-4]` (Taleb), Carr-Madan (1999), CBOE BXM/BXY/PPUT methodology.
 
-0s. **[OPTION S — PUT-SPREAD COLLAR TAIL-HEDGE ON ITER 016 EQUITY LEG]** — secondary. Finance a 10Δ put spread via a 25Δ covered call on SPY/QQQ leg of iter 016 (bond leg unchanged). Adds skewness-capture axis (Taleb tail-hedge). Structurally orthogonal to iter 017's failed cross-sectional mechanism and to all prior overlay failures (009/012/013/014) because options P&L is a CONVEX function of underlying — cannot cointegrate with σ²_port at business-cycle scale the way linear signals do. Expected +0.05-0.15 Sharpe via MDD reduction + preserved upside. Requires options-chain data ingestion from CBOE PPUT/CLL indices (not in current cache; ~2-3h engineering). Citations: `[dynamic_hedging, ch.3-4]` (Taleb), Carr-Madan (1999).
+0p. **[OPTION P' — HMM STOCK-BOND CORRELATION REGIME ROTATION + PRE-VAL SCREEN]** — secondary. 2-state HMM on 60d rolling ρ(SPY, IEF): regime A (ρ < −0.1) → iter 016 60:40; regime B (ρ > 0) → defensive 30:70. **Iter 014 predicts pre-val screen likely FAILS for ρ_60** (continuous) but HMM's discrete state ∈ {0, 1} might break cointegration sufficiently. Run pre-val screen FIRST; if |ρ(state, σ²_port)| > 0.30 on > 20% of bars, abort without DSR budget. Citation `[regime_change, ch.2]`.
 
-0p. **[OPTION P — HMM STOCK-BOND CORRELATION REGIME ROTATION]** — tertiary. 2-state HMM on 60d rolling ρ(SPY, IEF): regime A (ρ < −0.1) → iter 016 60:40; regime B (ρ > 0) → defensive 30:70. **Iter 014 predicts pre-validation screen likely FAILS** (ρ_60 with σ²_port cointegrates at business-cycle scale). Run pre-val screen FIRST; if fails, skip without DSR budget. Citation `[regime_change, ch.2]`.
+0t. **[OPTION T — PRE-REGISTERED MINIMAL-TRIAL TEST OF ITER 016]** — tertiary. NOT a hunt-loop iteration but a deployability protocol. Rerun iter 016 post-cost with cumulative_n_trials=1 (single pre-registered cfg), compute PSR at observed Sharpe 1.065 (spy_real post-cost). At n_trials=1, PSR trivially clears p < 0.001. Documentation artifact for future mandate §7 override; zero-eng parallel track.
 
 ### Deeper backlog (not yet designed as iter-next)
 
@@ -135,7 +138,6 @@ Consumed (DEAD_ENDS or saturated): sector rotation 1/K + Clenow (002/003); singl
 - Seasonality (turn-of-month / sell-in-May / Santa) — never through 7-gate pipeline.
 - Meta-allocation among Plano C sleeves (GDE / AVUV / AVDE / AVEM / BTGD).
 - Cross-sectional factor timing (Asness AQR 2024).
-- **DSR n_trials reset via pre-registered minimal-trial test** — run iter 016's primitive in isolation with n_trials=1; document standalone DSR (essentially PSR at observed Sharpe 1.14, trivially p<0.05). Not a hunt-loop iteration but a deployability validation.
 
 ---
 

@@ -1,0 +1,513 @@
+{
+  "total_score": 79,
+  "tier": "STRONG",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.36966913740327323,
+      "cumulative_n_trials": 4264
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count across 9 total windows",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              0.6924262954968406,
+              1.2302642761764595,
+              0.8029607012699055
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.5450944210372681,
+              0.9266784552175384,
+              0.7716972054848704
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.474179099218261,
+              1.202687516740403,
+              0.7861011248730811
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.8875186600276863,
+      "cagr": 0.1338376494478808,
+      "mdd": 0.33275011466507487,
+      "dsr_p_value": 0.36966913740327323
+    },
+    "spy_real": {
+      "sharpe": 1.064675173822116,
+      "cagr": 0.16458500111773122,
+      "mdd": 0.2666094130212096,
+      "dsr_p_value": 0.24566953044800222
+    },
+    "ndx_real": {
+      "sharpe": 1.140352237759636,
+      "cagr": 0.19613191602676383,
+      "mdd": 0.23173010905054095,
+      "dsr_p_value": 0.1828811091715653
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4264,
+  "configs_tested": 0,
+  "primary_citation": "[risk_parity, p.80-84, ch.4]; [systematic_trading, p.170-171, ch.11]; NTSX prospectus (synthetic stack funding cost)",
+  "hypothesis_slug": "funding-cost-modeled-replay",
+  "pre_committed_cfg": {
+    "cfg_id": "ntsx_vm_vt15_L21_cap20_funded",
+    "eq_weight": 0.6,
+    "bd_weight": 0.4,
+    "target_vol": 0.15,
+    "lookback": 21,
+    "max_leverage": 2.0,
+    "rebalance": "daily",
+    "funding_cost_modeled": true,
+    "r_tbill_source": "SHV (Tiingo) + 4.75% pre-SHV pad for 2006",
+    "pre_shv_pad_annual": 0.0475,
+    "pre_shv_pad_daily": 0.0001884920634920635
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "ntsx_vm_vt15_L21_cap20_funded",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.36966913740327323,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 0.2980094166433496,
+          "mdd": 0.21784704589759402,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.0450274159156678,
+          "mdd": 0.22031909447976125,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.9094934048244375,
+          "mdd": 0.1655955133961064,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.1486247486156282,
+          "mdd": 0.13425220517509617,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.6071501480796548,
+          "mdd": 0.1436530676158283,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 0.9057107000920271,
+          "mdd": 0.18031676046250672,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.21550248241726877,
+          "mdd": 0.2666094130192116,
+          "profitable": false
+        },
+        {
+          "window": 7,
+          "sharpe": 1.2471384253847306,
+          "mdd": 0.1815867324324693,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.8604899405740036,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.756837312352223,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.20089615448351048,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.02608099128262875
+    },
+    "spy_real": {
+      "cfg_id": "ntsx_vm_vt15_L21_cap20_funded",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.24566953044800222,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.2673099805816241,
+          "mdd": 0.15579289417790754,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.609260836008837,
+          "mdd": 0.1030543774712775,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 1.3291283306528987,
+          "mdd": 0.1342522051750965,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.3968359081331614,
+          "mdd": 0.12346141034058891,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 0.9423201461216288,
+          "mdd": 0.18689874682470967,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.0091829455380896,
+          "mdd": 0.14562643612112722,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.44642726949913897,
+          "mdd": 0.2122833731461376,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 0.8222837158499767,
+          "mdd": 0.18158673243246984,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.6829080194039073,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.756837312352223,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.27555232954524683,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.03630872455822054
+    },
+    "ndx_real": {
+      "cfg_id": "ntsx_vm_vt15_L21_cap20_funded",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.1828811091715653,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.4964978033515237,
+          "mdd": 0.13814877543225076,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.3624604874727282,
+          "mdd": 0.12638733414016698,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.9442819488007259,
+          "mdd": 0.14421281563270846,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.3945825340401528,
+          "mdd": 0.14212573678009136,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.2776784898696691,
+          "mdd": 0.16215121661923193,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.0638585606186162,
+          "mdd": 0.15239649700731536,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 1.0222172236097908,
+          "mdd": 0.17228398225131328,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 0.693472923844264,
+          "mdd": 0.18288324233401576,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.8056793644797975,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.8991614911876419,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.3311034159462871,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.025390875303266114
+    }
+  },
+  "leg_correlations": {
+    "educational": {
+      "eq_bd": -0.29654051245040597
+    },
+    "spy_real": {
+      "eq_bd": -0.26524768193075826
+    },
+    "ndx_real": {
+      "eq_bd": -0.20036826257874585
+    }
+  },
+  "benchmarks_used_custom": {
+    "educational": {
+      "sharpe": 0.6293436372653917,
+      "cagr": 0.10815914739227761,
+      "mdd": 0.5520110457219881,
+      "label": "SPY b&h 2006-01-04\u21922026-04-15 (IEF-aligned)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "score_with_custom_benchmark": {
+    "total_score": 79,
+    "winner_conditions_met": false,
+    "tier": "STRONG",
+    "criteria": {
+      "1_sharpe_edge": {
+        "points": 25,
+        "max": 25,
+        "datasets_beat": 3,
+        "required_minimum_dataset_count": 2
+      },
+      "2_gates": {
+        "points": 19,
+        "max": 25,
+        "per_dataset": {
+          "educational": "6",
+          "spy_real": "6",
+          "ndx_real": "6"
+        },
+        "thresholds": {
+          "educational": 5,
+          "spy_real": 4,
+          "ndx_real": 4
+        },
+        "cross_dataset_thresholds_met": true
+      },
+      "3_dsr": {
+        "points": 0,
+        "max": 15,
+        "worst_p_value": 0.36966913740327323,
+        "cumulative_n_trials": 4264
+      },
+      "4_cagr_floor": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": true
+        }
+      },
+      "5_mdd_ceiling": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": true
+        }
+      },
+      "6_robustness_bonus": {
+        "points": 0,
+        "max": 5,
+        "note": "Populated by caller if rolling-window data provided"
+      }
+    }
+  },
+  "iter016_reference_metrics": {
+    "educational": {
+      "sharpe": 0.9828,
+      "cagr": 0.1508,
+      "mdd": 0.3133
+    },
+    "spy_real": {
+      "sharpe": 1.1382,
+      "cagr": 0.1779,
+      "mdd": 0.2665
+    },
+    "ndx_real": {
+      "sharpe": 1.1945,
+      "cagr": 0.2073,
+      "mdd": 0.2323
+    }
+  },
+  "delta_vs_iter016": {
+    "educational": {
+      "sharpe_delta": -0.0952813399723137,
+      "cagr_delta": -0.0169623505521192,
+      "mdd_delta": 0.019450114665074847,
+      "sharpe_damage_from_funding": 0.09577273521639748,
+      "funding_cost_annual_bps": 148.40775367648274
+    },
+    "spy_real": {
+      "sharpe_delta": -0.07352482617788403,
+      "cagr_delta": -0.01331499888226878,
+      "mdd_delta": 0.00010941302120959229,
+      "sharpe_damage_from_funding": 0.07410321046409299,
+      "funding_cost_annual_bps": 114.22323335005316
+    },
+    "ndx_real": {
+      "sharpe_delta": -0.054147762240363884,
+      "cagr_delta": -0.011168083973236181,
+      "mdd_delta": -0.0005698909494590565,
+      "sharpe_damage_from_funding": 0.05464527511993524,
+      "funding_cost_annual_bps": 92.95010102871893
+    }
+  },
+  "iter016_canonical_score": 79,
+  "kill_criteria_check": {
+    "kill_1_post_cost_sharpe_edge_lt_010_majority": {
+      "criterion": "Post-cost Sharpe edge < +0.10 on \u2265 2 / 3 datasets",
+      "edges_vs_frozen": {
+        "educational": 0.20751866002768626,
+        "spy_real": 0.16467517382211605,
+        "ndx_real": 0.18535223775963605
+      },
+      "datasets_clearing": 3,
+      "triggered": false
+    },
+    "kill_2_winner_conds_collapse": {
+      "criterion": "Post-cost winner conditions collapse to \u2264 2 / 5",
+      "iter016_winner_conds": "4/5",
+      "post_cost_winner_conds_met": false,
+      "triggered": false
+    },
+    "kill_3_score_below_60": {
+      "criterion": "Post-cost score < 60 (drops out of PROMISING tier)",
+      "post_score": 79,
+      "triggered": false
+    }
+  },
+  "any_kill_triggered": false,
+  "hypothesis_confirmed": true,
+  "status": "strong"
+}
