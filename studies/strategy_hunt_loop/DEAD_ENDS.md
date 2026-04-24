@@ -922,6 +922,31 @@ rejected — require qualitatively different mechanism:
       fraction > 20% → abort)** introduced in iter 014 is now
       MANDATORY for any future overlay/meta-label proposal on a
       vol-managed blend.
+- [ ] **Cross-sectional top-K momentum rotation on ≤ 3-region equity
+      universe (US/INTL/EM, any of SPY/QQQ × EFA/VEA/IEFA ×
+      EEM/VWO/IEMG) with iter 016's fixed-ratio × vol-target
+      primitive, at ANY lookback ∈ {63, 126, 189, 252, 378} days,
+      ANY skip ∈ {0, 5, 10, 21, 42}, ANY top-K ∈ {1, 2, 3}, ANY
+      rebalance cadence ∈ {daily, weekly, monthly, quarterly}**
+      (iter 017). Actively HURTS vs always-US base (Δ Sharpe 3/3
+      regress −0.18/−0.32; score 79 → 52; 4/5 winner → 3/5). The
+      period-matched regional Sharpe differential on 2006-2026
+      (US 0.63-0.95 vs EFA 0.36-0.48 vs EEM 0.34-0.42) exceeds any
+      plausible uplift from catching regional-leadership
+      transitions — 22-42 % of months spent in EFA/EEM eats the
+      differential without recapturing it via rare leadership
+      windows. Extends iter 003 dead-end from homogeneous sector
+      ETFs to regional equity ETFs. Variants closed: Clenow
+      adjusted-slope × R² ranking on same 3-region universe;
+      absolute-momentum filter variant; adding a 4th
+      regional-equity ETF (total-US / frontier) while keeping the
+      same mechanism — all inherit the Sharpe-differential trap.
+      Kill #1 + #2 + #3 triggered. **Path forward requires a
+      DIFFERENT information source** — cross-sectional valuation
+      (mean-reverting, not trend-following), cross-asset-class
+      rotation (classes not nested within single equity risk
+      premium factor), or structurally convex primitives like
+      options tail-hedge.
 
 ---
 
@@ -1020,20 +1045,139 @@ closed. Further progress requires a primitive that doesn't have a
 
 ---
 
+## From iteration 017 — 12-1 top-1 regional rotation (cross-sectional, ≤3 regions) on iter 016 base
+
+Complete study: `studies/strategy_hunt_loop/iterations/017-2026-04-24-1750-regional-rotation-stack-vm/final_report.md`.
+
+### What the iteration resolved
+
+Iter 017 tested BASE_MEMORY's PRIMARY iter-017 rec — "Option R" —
+extending iter 016's fixed-ratio × vol-target primitive
+(`ntsx_vm_vt15_L21_cap20`) to a 3-region cross-sectional rotation.
+Universe: {US (SPY on edu/spy, QQQ on ndx), Developed ex-US (EFA),
+Emerging (EEM)}, each stacked with IEF via iter 016's 0.6/0.4 ratio ×
+vt15/L21/cap20 vol-target engine. Selection rule: top-1 by 12-1
+skip-a-month momentum (`p[t-21]/p[t-252] - 1`), re-ranked monthly
+(21 bars). Single pre-committed cfg; iter 016 mechanism applied on
+the selected region's (equity, IEF) pair within each 21-bar hold
+window. 2 bps/leg running cost + 2 bps one-off switch cost on
+equity-leg transitions.
+
+Result: **score 52/100 MARGINAL** (−27 vs iter 016's 79). Three
+pre-committed kill criteria TRIGGERED: Kill #1 (Sharpe regress > 0.03
+vs iter 016 on ≥ 2 ds — actually 3/3 regress: edu Δ −0.225, spy
+Δ −0.319, ndx Δ −0.176), Kill #2 (winner conditions dropped 4/5 →
+3/5 — Sharpe axis lost all 3 datasets), Kill #3 (score < 72 — 52 is
+decisively below). Kill #4 (MDD regress > 5pp) and Kill #5 (turnover
+> 15/yr) NOT triggered.
+
+Sharpe vs frozen benchmarks: edu 0.758 (+0.078), spy 0.819 (−0.081),
+ndx 1.019 (+0.064). 0/3 datasets clear the +0.10 Sharpe-edge winner
+gate (iter 016 was 3/3 clear by +0.24-0.30 margin).
+
+### Structural principle (do NOT re-test)
+
+**Cross-sectional top-K momentum rotation on ≤ 3-region equity
+universes fails when one region has a structurally higher period
+Sharpe than the others in the sample window.** The failure mode is
+not "momentum signal noise" — the selector correctly concentrated on
+US 58-78 % of months. It's that the remaining 22-42 % spent in EFA
+or EEM generates decisive drag because their period Sharpes are
+materially lower. Empirical numbers:
+
+| region | 2006-2026 Sharpe | 2010-2026 Sharpe |
+|---|---|---|
+| SPY | 0.63 | 0.90 |
+| QQQ | — | 0.95 |
+| EFA | 0.36 | 0.48 |
+| EEM | 0.34 | 0.42 |
+
+12-1 momentum selected EFA/EEM frequently enough (22-42 % of months
+on educational + spy_real) that the portfolio ate the
+period-matched Sharpe differential without recapturing it via
+regional-leadership transitions (2003-2007 EM commodities is BEFORE
+our window, 2014-2017 / 2022 non-US windows are too brief to
+dominate the full 17-20y signal average).
+
+Cross-asset correlations on the IEF-aligned window are high (US-INTL
+0.76-0.88, US-EM 0.73-0.82, INTL-EM 0.85-0.87), confirming the
+iter 003 structural lesson ("cross-sectional ranking momentum needs
+universe heterogeneity") extends from homogeneous sector ETFs
+(ρ ≈ 0.7-0.9) to regional equity ETFs (ρ ≈ 0.73-0.88) when a
+single region dominates the sample Sharpe.
+
+Additional failure mode: **DSR p-values REGRESSED sharply vs iter 016**
+(0.226/0.163/0.132 → 0.625/0.651/0.378). The rotation added noise
+without adding observed Sharpe, so the signal-to-deflator ratio
+worsened markedly — three new trials (n_trials 4261 → 4264) were a
+minor deflator change; the dominant effect was observed-Sharpe
+regression.
+
+### Don't re-test
+
+- Any top-K ∈ {1, 2, 3} cross-sectional momentum rotation on
+  {US, Developed ex-US (EFA / IEFA / VEA), Emerging (EEM / IEMG /
+  VWO)} ± iter 016's primitive with ANY lookback ∈ {63, 126, 189,
+  252, 378} days, ANY skip ∈ {0, 5, 10, 21, 42}, ANY rebalance
+  cadence ∈ {daily, weekly, monthly, quarterly}. The killer is the
+  dominant-region Sharpe-differential structure on THIS sample
+  window, not the parameter choice.
+- Clenow adjusted-slope × R² ranking on the same 3-region universe
+  — same structural failure mode, just with a different ranking
+  score. Regional Sharpe differential eats the selector edge.
+- Absolute-momentum FILTER variant ("long the winning region only if
+  its 12-1 > 0, else cash or bond-only") — same 3-region universe,
+  same dominant-US structure, just adds binary gate redundant with
+  iter 016's vol-target (iter 007 lesson applies).
+- Adding a 4th region (e.g. VTI = total-US, SPEM, FM = frontier) to
+  the rotation universe while keeping the same 12-1 + top-K=1-2
+  mechanism — expected effect is dilution of US concentration
+  (mechanically worse, not better, given the Sharpe-gap structure).
+
+### Path forward (NOT dead — strictly different mechanism)
+
+The only remaining untested primitives that are structurally
+orthogonal to iter 017's failed mechanism AND iter 009/012/013/014
+overlay failures AND iter 007 TSMOM redundancy:
+
+- **Put-spread collar tail-hedge** on iter 016's equity leg (bond
+  leg unchanged). Options P&L is a CONVEX function of underlying,
+  cannot cointegrate linearly with σ²_port at business-cycle scale.
+  Adds skewness-capture axis. Requires options-chain data
+  ingestion from CBOE PPUT/CLL indices.
+- **Funding-cost-modeled iter 016 replay**: subtract realistic
+  `0.5 × DGS3MO` from iter 016 net returns. Zero new trials; a
+  deployability validation rather than a hunt-loop iteration.
+- **Cross-sectional VALUATION rotation** (CAPE or P/B spread between
+  regions) — different information source than momentum, no
+  Sharpe-differential trap because valuation is mean-reverting not
+  trend-following. Would NOT re-open the iter 017 dead-end because
+  the SIGNAL is structurally different. Requires CAPE/P-B data
+  ingestion.
+- **Cross-asset-class rotation** (equities vs bonds vs FX vs
+  commodities) — the Sharpe-differential argument that killed iter
+  017 doesn't apply because the classes aren't nested within a
+  single equity risk premium factor.
+
+---
+
 ## Things that might still work (in principle)
 
 These are NOT dead-ends, just untested:
 
 - Weekly/monthly timeframe (not daily)
-- Cross-sectional (not time-series)
-- Different asset class (FX / commodities / bonds) or multi-asset
+- Cross-sectional VALUATION (not momentum) rotation
+- Cross-ASSET-CLASS rotation (equity vs bonds vs FX vs commodities)
 - Factor rotation (value/momentum/quality/low-vol dynamic weights)
-- Options overlay (put spreads as tail insurance)
-- ML-based meta-labeling on top of primary signal
-- Regime-switching HMM on correlation or macro state
+- Options overlay (put spreads as tail insurance) — structurally
+  convex, orthogonal to linear overlay failures
+- Funding-cost-modeled replay of iter 016 for deployability check
+- ML-based meta-labeling with EMPIRICALLY pre-screened orthogonal
+  features (iter 014 pre-val screen mandatory)
+- Regime-switching HMM on correlation or macro state (iter 014
+  predicts pre-val likely fails; run screen first)
 - Seasonality-based entries/exits
 - Dynamic vol-targeting (Carver) without any leverage
-- Return-stacked ETFs (NTSX/NTSI/NTSE) with rotation
 
 The `## Promising unexplored directions` section of `BASE_MEMORY.md`
 prioritizes these.
