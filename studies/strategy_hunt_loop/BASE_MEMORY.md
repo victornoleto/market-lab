@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 19
+total_iterations: 20
 winners_found: 0
 status: iterating
-latest_iteration: "019-2026-04-24-1833"
-cumulative_n_trials: 4264
+latest_iteration: "020-2026-04-24-1850"
+cumulative_n_trials: 4267
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -78,24 +78,28 @@ the 18 KB ceiling. Full hypothesis, citations, scope and score
 breakdown for compressed iters are recoverable from
 `iterations/NNN-*/hypothesis.md` + `verdict.json` + `final_report.md`.
 
-### 019 — 2026-04-24 — HMM stock-bond correlation regime rotation on iter 016 base (❌ FAIL, 0/100, Kill #0 pre-val)
-- **Result:** Pre-val |corr(binary_state(ρ_60<0 vs ≥0), σ²_port_iter016)| rolling-60d exceed-frac edu/spy/ndx = **0.646/0.665/0.488** vs 0.20 ceiling (2.4-3.3× over); continuous ρ_60 exceed-frac 0.645/0.647/0.667 uniformly ~3.2× over. 0 cfgs run (iter 014 abort pattern), 0 new DSR trials (cumulative stays 4264), winner 0/5; score 1:0 2:0 3:0 4:0 5:0 6:0 = 0. Screen runtime ~30s, saved ~90 min of wasted eng.
-- **Lesson:** σ²_port = w_eq²σ²_eq + w_bd²σ²_bd + **2·w_eq·w_bd·ρ·σ_eq·σ_bd** contains ρ as a factor → any measurable function of ρ (continuous, threshold-binary, HMM state, cluster) is cointegrated ALGEBRAICALLY, not empirically. HMM discretization is smoothing on ρ, not a feature-space change → zero orthogonalization. Closes entire family of ρ-derived regime overlays on vol-managed 2-leg stacks, by analogous σ_eq/σ_bd dependence also closes VIX/MOVE/realized-vol overlays. Option S (convex options P&L) remains SOLE structurally-orthogonal primitive. See `iterations/019-2026-04-24-1833-hmm-stock-bond-regime/`.
+### 020 — 2026-04-24 — Monthly-rolled put-spread tail hedge (5/10% OTM, 21-DTE, VIX-IV) on iter 016 base (🥇 STRONG by score, **Kill #1+#2 TRIGGERED**)
+- **Result:** Sharpe edu/spy/ndx 0.905/1.063/1.142 (Δ frozen +0.22/+0.16/+0.19 — PASS +0.10 gate 3/3 inherited from iter 016; **Δ iter 016 −0.076/−0.077/−0.044**), MDD 37.0/29.9/27.8% (**Δ iter 016 +5.7/+3.2/+4.6pp WORSE 3/3**), gates 6/7/6/7/6/7, DSR worst p=0.340 (n=4267; worse than iter 016's 0.226), overlay annual −3.03/−3.00/−4.13%, winner 4/5; score 1:25 2:19 3:0 4:15 5:15 6:5 = 79 (ties top-K by rubric, DOMINATED vs iter 016 on all axes).
+- **Lesson:** **Convex options overlays on vol-managed stacks are REDUNDANT, not complementary.** Carr-Madan orthogonality is a STATIC info statement — in a dynamic σ-feedback system (iter 016's vol-target already de-levers on σ² spike) both mechanisms fire on same event → net 3-4%/yr cost with zero MDD benefit. Rubric score 79 MISLEADING (measures edge vs SPY, not vs parent); Kill criteria correctly flagged failure. Closes long-gamma overlay family on vol-managed 2-leg stacks; does NOT close short-vol harvest or options-on-unlevered primitives. See `iterations/020-2026-04-24-1850-put-spread-tail-hedge/`.
 
-### 018 — 2026-04-24 — Funding-cost-modeled iter 016 replay (🥇 STRONG, 79/100, ties iter 016 top-K #1, hypothesis CONFIRMED)
-- **Result:** Sharpe edu/spy/ndx 0.888/1.065/1.140 (Δ frozen +0.21/+0.16/+0.19 — 3/3 clear +0.10 gate; funding drag 148/114/93 bps/yr), gates 6/7+6/7+6/7, DSR worst p=0.370 (iter 016 was 0.226), winner 4/5, robustness 9/9; score 1:25 2:19 3:0 4:15 5:15 6:5 = 79. Iter 016 deployability validated. 0 new trials.
-- **Lesson:** Each 100 bps/yr funding drag costs ~0.07 Sharpe at 15% vol target. Rule: candidates with gross edge < +0.20 need funding-cost replay before top-K entry. DSR now sole winner-barrier. See `iterations/018-2026-04-24-1813-funding-cost-modeled-replay/`.
+### 019 — 2026-04-24 — HMM stock-bond correlation regime rotation on iter 016 base (❌ FAIL, 0/100, Kill #PV)
+- **Result:** Pre-val rejects all 3 ds (exceed-frac 0.646/0.665/0.488 vs 0.20 ceiling; continuous ρ_60 0.645/0.647/0.667), 0 cfgs run, 0 new trials, winner 0/5; score 1:0 2:0 3:0 4:0 5:0 6:0 = 0.
+- **Lesson:** σ²_port contains ρ as algebraic cross-term → any function of ρ is ALGEBRAICALLY cointegrated, not empirically. Closes ρ-regime overlays on vol-managed stacks; by σ_eq/σ_bd analogy also closes VIX/MOVE/realized-vol overlays. See `iterations/019-2026-04-24-1833-hmm-stock-bond-regime/`.
 
-### 017 — 2026-04-24 — 12-1 top-1 regional rotation on iter 016 base (🥉 MARGINAL, 52/100)
-- **Result:** Sharpe edu/spy/ndx 0.76/0.82/1.02 (Δ frozen +0.08/−0.08/+0.06 — 0/3 clear +0.10 gate; Δ vs iter 016 −0.23/−0.32/−0.18 ALL regress ≥ 0.03), gates 5/7+6/7+6/7, DSR p=0.651/0.651/0.378 (worse than iter 016 all ds), CAGR 11.99/13.03/17.47%, MDD 31.99/29.42/22.95%, winner 3/5; region selection US 58-78% / EM 10-30% / INTL 11-12%; score 1:0 2:17 3:0 4:15 5:15 6:5 = 52. **Kill #1/#2/#3 triggered.**
-- **Lesson:** Cross-sectional 12-1 rotation on N=3 regional equity universe with structurally-dominant US actively HURTS (period Sharpe differential US 0.63-0.95 vs EFA/EEM 0.33-0.48 exceeds any momentum uplift). Closes top-K ∈ {1, 2} × any lookback × any cadence on ≤ 3-region equity universes. See `iterations/017-2026-04-24-1750-regional-rotation-stack-vm/`.
+### 018 — 2026-04-24 — Funding-cost-modeled iter 016 replay (🥇 STRONG, 79/100, ties top-K #1)
+- **Result:** Sharpe edu/spy/ndx 0.888/1.065/1.140 (Δ frozen +0.21/+0.16/+0.19 — 3/3 pass +0.10 gate; funding drag 148/114/93 bps/yr), gates 6/7/6/7/6/7, DSR worst p=0.370 (n=4264), winner 4/5; score 1:25 2:19 3:0 4:15 5:15 6:5 = 79. 0 new trials.
+- **Lesson:** Each 100 bps/yr funding drag costs ~0.07 Sharpe at 15% vol target. Iter 016 deployability validated post-cost; DSR now sole winner-barrier. See `iterations/018-2026-04-24-1813-funding-cost-modeled-replay/`.
+
+### 017 — 2026-04-24 — 12-1 top-1 regional rotation on iter 016 base (🥉 MARGINAL, 52/100, Kill #1+#2+#3)
+- **Result:** Sharpe edu/spy/ndx 0.76/0.82/1.02 (Δ frozen +0.08/−0.08/+0.06, Δ iter 016 −0.23/−0.32/−0.18 all regress), gates 5/7/6/7/6/7, DSR p=0.651/0.651/0.378, winner 3/5; score 1:0 2:17 3:0 4:15 5:15 6:5 = 52.
+- **Lesson:** Cross-sectional 12-1 rotation on N=3 regional equity universe with structurally-dominant US HURTS (period Sharpe differential US 0.63-0.95 vs EFA/EEM 0.33-0.48 exceeds momentum uplift). Closes top-K ∈ {1,2} on ≤ 3-region equity universes. See `iterations/017-2026-04-24-1750-regional-rotation-stack-vm/`.
 
 ### 016 — 2026-04-24 — Static 60:40 ratio × Moreira-Muir vol-target hybrid (🥇 STRONG, 79/100, top-K #1, 4/5 winner, DSR sole fail)
-- **Result:** Sharpe edu/spy/ndx 0.98/1.14/1.19 (Δ frozen +0.30/+0.24/+0.24 — 3/3 clear gate with HUGE margins; +0.20/+0.09/+0.13 vs iter 015; +0.12/+0.14/+0.17 vs iter 008), gates 6/7, 6/7, 6/7 (cross-ds §0 met +4 bonus), DSR worst p=0.226 (LOWEST in history), CAGR 15.08/17.79/20.73%, MDD 31.33/26.65/**23.23%**, winner 4/5, G3 WF 7/8+8/8+8/8, G6 9/9, G7 xlib 0.02-0.04pp; cap-hit 63-79%, turnover 4.6-7.4/yr; score 1:25 2:19 3:0 4:15 5:15 6:5 = **79** (top-K #1). Kill #1/#3/#4 ALL FALSE.
-- **Lesson:** **Fixed-ratio × vol-target is structurally ADDITIVE not redundant** — iter 015's fixed ratio prevents iter 008's vulnerability to asymmetric single-leg vol shocks; iter 008's scaling adds regime adaptation. Post-funding-cost edge still clears +0.10 on 3/3 ds. DSR is now the sole barrier. See `iterations/016-2026-04-24-1729-static-stack-vm-hybrid/`.
+- **Result:** Sharpe edu/spy/ndx 0.98/1.14/1.19 (Δ frozen +0.30/+0.24/+0.24 — HUGE margins; vs iter 008 +0.12/+0.14/+0.17), gates 6/7/6/7/6/7 (cross-ds bonus +4), DSR worst p=0.226 (LOWEST in history, n=4261), CAGR 15.1/17.8/20.7%, MDD 31.3/26.7/**23.2%**, winner 4/5, G3 WF 7/8/8/8/8/8, G7 xlib 0.02-0.04pp; score 1:25 2:19 3:0 4:15 5:15 6:5 = **79**. Kill #1/#3/#4 ALL FALSE.
+- **Lesson:** **Fixed-ratio × vol-target is structurally ADDITIVE not redundant** — iter 015's fixed ratio prevents iter 008's asymmetric vol-shock vulnerability; iter 008's scaling adds regime adaptation. Post-funding-cost edge still clears +0.10 on 3/3 ds (iter 018). DSR is sole barrier. See `iterations/016-2026-04-24-1729-static-stack-vm-hybrid/`.
 
 ### 015 — 2026-04-24 — Static synthetic NTSX 90/60 SPY+IEF stack (🥇 STRONG, 77/100, 4/5 winner)
-- **Result:** Sharpe edu/spy/ndx 0.78/1.04/1.06 (Δ frozen +0.10/+0.14/+0.11 — 1st iter clearing gate cross-ds), gates 5/7+6/7+6/7, DSR worst p=0.548, CAGR+MDD floor 3/3 (ndx MDD 39.51% vs 40.12% razor 0.61pp), G6 9/9, score 1:25 2:17 3:0 4:15 5:15 6:5 = **77**.
+- **Result:** Sharpe edu/spy/ndx 0.78/1.04/1.06 (Δ frozen +0.10/+0.14/+0.11 — 1st iter clearing +0.10 gate cross-ds), gates 5/7/6/7/6/7, DSR worst p=0.548 (n=4258), CAGR+MDD floor 3/3, G6 9/9, winner 4/5; score 1:25 2:17 3:0 4:15 5:15 6:5 = **77**.
 - **Lesson:** First mechanism change (static fixed weights) DOES break σ²_port cointegration ceiling. DSR is universal hunt-loop ceiling regardless of mechanism. Synth NTSX has ~75-100bps funding-cost gap. See `iterations/015-2026-04-24-1704-return-stacked-static-ntsx/`.
 
 ### Iters 005-014 (compressed 1-line; full detail in `iterations/NNN-*/`)
@@ -124,17 +128,19 @@ breakdown for compressed iters are recoverable from
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed (DEAD_ENDS or saturated): sector rotation 1/K + Clenow (002/003); single-asset vol-scaling (004/005); momentum overlay (007 redundant); iter 006 single-cfg verif (008 structural); T10Y3M overlay 2×2 (009/012); 3-leg blend (010 ties 008); weekly blend (011); meta-label vol-proxy (013); EBP credit overlay (014 pre-val); iter 015 static NTSX (77 STRONG); iter 016 static×vol-target (79 STRONG top-K #1, 4/5, DSR sole fail); iter 017 regional rotation (52 MARGINAL); iter 018 funding-cost replay (79 STRONG ties top-K #1, iter 016 deployability confirmed); **iter 019 HMM ρ_60 regime rotation (Option P') FAILED Kill #0 pre-val — closes ρ-derived regime overlays on vol-managed 2-leg stacks algebraically (σ²_port contains ρ as cross-term factor).**
+Consumed (DEAD_ENDS or saturated): sector rotation 1/K + Clenow (002/003); single-asset vol-scaling (004/005); momentum overlay (007 redundant); iter 006 single-cfg verif (008 structural); T10Y3M overlay 2×2 (009/012); 3-leg blend (010 ties 008); weekly blend (011); meta-label vol-proxy (013); EBP credit overlay (014 pre-val); iter 015 static NTSX (77 STRONG); iter 016 static×vol-target (79 STRONG top-K #1, 4/5, DSR sole fail); iter 017 regional rotation (52 MARGINAL); iter 018 funding-cost replay (79 STRONG ties top-K #1, iter 016 deployability confirmed); iter 019 HMM ρ_60 regime rotation (Option P') FAILED Kill #0 pre-val — closes ρ-derived regime overlays on vol-managed 2-leg stacks algebraically (σ²_port contains ρ as cross-term factor); **iter 020 put-spread tail hedge (Option S) scored 79 but Kills #1+#2 TRIGGERED — closes long-gamma overlay family on vol-managed stacks (convex P&L is REDUNDANT with vol-target's variance-responsive scaling, not complementary; both fire on σ² spikes).**
 
-### Iter 020 candidates (ranked by expected DSR-clearance value)
+### Iter 021 candidates (ranked by expected DSR-clearance value)
 
-**Framing:** Iter 016 remains hunt-loop top-K #1 at 79/100 STRONG, 4/5 winner. Iter 018 confirmed deployability under funding cost. Iter 019 closed ρ-regime overlays algebraically. DSR remains the sole winner-condition barrier (worst p 0.37 post-cost at n_trials = 4264). Clearance path requires Sharpe uplift of +0.3-0.5 on worst dataset via genuinely orthogonal information, AND the overlay feature must be structurally disjoint from (σ_eq, σ_bd, ρ) — the ingredient set of iter 016's vol-target. **Only remaining untested primitive with this property is options convex P&L.**
+**Framing:** Iter 016 top-K #1 (79/100 STRONG, 4/5, DSR sole barrier). Iter 018 confirmed deployability post-funding-cost. Iter 019 closed ρ-regime overlays algebraically. Iter 020 closed long-gamma overlays on vol-managed stacks (REDUNDANT with vol-target). Remaining primitives with features disjoint from iter 016's (σ_eq, σ_bd, ρ, long-gamma):
 
-0s. **[OPTION S — PUT-SPREAD COLLAR TAIL-HEDGE ON ITER 016 EQUITY LEG]** — PRIMARY, now promoted from iter 019 secondary. Full 2h budget available (iter 019 aborted in 30s). Finance a 10Δ put spread via a 25Δ covered call on SPY/QQQ leg of iter 016 (bond leg unchanged; funding cost modeled per iter 018). Options P&L is **convex** in the underlying → cannot be reconstructed from (σ_eq, σ_bd, ρ) alone, so orthogonal to σ²_port cointegration family that killed iter 009/012/013/014/019. Expected +0.05-0.15 Sharpe via MDD reduction + preserved upside. Requires CBOE PPUT/BXMY/CLL indices data ingestion (~2-3h engineering; freely available from cboe.com/indices). Citations: `[dynamic_hedging, ch.3-4]` (Taleb), Carr-Madan (1999), CBOE PPUT/BXM/CLL methodology.
+0v. **[OPTION V — VARIANCE PREMIUM HARVEST (short-vol)]** — PRIMARY. SELL short-dated put or straddle on equity leg; harvests 2-3%/yr VRP that iter 020 paid. P&L OPPOSITE sign (theta-positive calm, negative-skewed crash); fires on OPPOSITE event (low realized-vs-implied, not σ² spike) → does NOT overlap iter 020's closure. Expected +0.10-0.20 Sharpe. Reuses SPY+VIX infra (same BS framework, opposite sign). Citations: `[volatility_trading, ch.3]` VRP; Bondarenko (2014); CBOE PUT index.
 
-0u. **[OPTION U — CROSS-ASSET CARRY on FX/commodities/bonds]** — secondary (promoted from deeper backlog). Feature set structurally disjoint from iter 016's (σ_eq, σ_bd, ρ_stock_bond): FX carry uses interest-rate differentials; commodity carry uses futures curve slope (contango/backwardation); bond carry uses term-structure slope. None are functions of (σ_eq, σ_bd, ρ) → escapes iter 019's closure. Requires new data ingestion (currency ETFs FXE/FXY/FXB/FXC, commodity basket DBC/GLD+USO, short-term bonds SHY/SHV). Citation: `[ilmanen_expected_returns, ch.5-7]` (carry as universal factor).
+0w. **[OPTION W — CROSS-ASSET CARRY FX/commodities/bonds]** — secondary. Linear P&L from interest-rate differentials / futures curve slope / term structure — disjoint from (σ_eq, σ_bd, ρ) and from long-gamma. Requires new data (FX ETFs, commodity basket, short bonds). Citation: `[ilmanen_expected_returns, ch.5-7]`.
 
-0t. **[OPTION T — PRE-REGISTERED MINIMAL-TRIAL TEST OF ITER 016]** — tertiary, parallel track. NOT a hunt-loop iteration but a deployability protocol. Rerun iter 016 post-cost with cumulative_n_trials=1 (single pre-registered cfg), compute PSR at observed Sharpe 1.065 (spy_real post-cost). At n_trials=1, PSR trivially clears p < 0.001. Documentation artifact for future mandate §7 override; zero-eng parallel track.
+0x. **[OPTION X — UNCORRELATED ASSET IN STACK]** — tertiary. Add 3rd leg (managed-futures trend proxy DBMF, or controlled long-vol ETF) to iter 016 stack. Expands σ²_port ingredient set. Citations: `[risk_parity, ch.5-7]`; `[systematic_trading, ch.14]`.
+
+0t. **[OPTION T — PRE-REGISTERED MINIMAL-TRIAL TEST]** — parallel track, not a hunt iter. Rerun iter 016 post-cost with n_trials=1; PSR trivially clears p<0.001. Documentation artifact for mandate §7 override.
 
 ### Deeper backlog (not yet designed as iter-next)
 
@@ -165,6 +171,7 @@ Consumed (DEAD_ENDS or saturated): sector rotation 1/K + Clenow (002/003); singl
 - EBP (GZ2012) credit-cycle overlay on iter 008 — pre-val rejects all 3 ds (60d |ρ|>0.3 on 68-71% bars); 4th overlay failure on iter 008 blend; **overlay family CLOSED on this mechanism; pre-val screen mandatory for any future overlay** (iter 014)
 - 12-1 top-K=1 cross-sectional rotation on 3-region equity universe (US+EFA+EEM) with iter 016 base — actively HURTS vs always-US (Δ Sharpe −0.18/−0.32 on 3/3 ds); period Sharpe differential (US 0.63-0.95 vs EFA/EEM 0.33-0.48) exceeds regional-leadership uplift; closes top-K ∈ {1,2} × any lookback × any cadence for N ≤ 3 regional equity universes (iter 017)
 - **Any regime overlay using stock-bond correlation ρ on vol-managed 2-leg stack — ALGEBRAICALLY cointegrated with σ²_port (which contains ρ as multiplicative factor in cross-term); pre-val exceed-frac 0.65/0.67/0.49 on 3/3 ds; HMM discretization does NOT rescue (it is a smoothing operator on ρ, not a feature-space change); by analogous σ_eq/σ_bd dependence also closes VIX/MOVE/realized-vol overlays on vol-managed stacks (iter 019)**
+- **Monthly-rolled OTM put-spread tail hedge (5/10% OTM, 21-DTE, VIX-IV) on vol-managed 2-leg stack — convex options P&L REDUNDANT with vol-target's variance-responsive scaling (both fire on σ² spikes); drag 3-4%/yr, Sharpe regress −0.04 to −0.08, MDD WORSE +3-6pp 3/3 ds (Kill #2). Closes long-gamma overlay family on vol-managed stacks; does NOT close short-vol harvest / options-on-unlevered (iter 020)**
 
 ---
 

@@ -1264,11 +1264,132 @@ These are NOT dead-ends, just untested:
   predicts pre-val likely fails; run screen first)~~ — **✗ CLOSED
   by iter 019** on correlation variant; macro-state HMM would need
   features structurally orthogonal to (σ_eq, σ_bd, ρ)
+- ~~Convex options overlays (put-spread, protective put, collar) on
+  vol-managed 2-leg stacks~~ — **✗ CLOSED by iter 020** (long-gamma
+  redundant with vol-target's variance response; short-vol harvest
+  still open)
 - Seasonality-based entries/exits
 - Dynamic vol-targeting (Carver) without any leverage
 
 The `## Promising unexplored directions` section of `BASE_MEMORY.md`
 prioritizes these.
+
+---
+
+## From iteration 020 — monthly-rolled put-spread tail hedge on iter 016 equity leg
+
+Complete study:
+`studies/strategy_hunt_loop/iterations/020-2026-04-24-1850-put-spread-tail-hedge/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Long 5% OTM / short 10% OTM monthly-rolled put spread on iter
+   016 equity leg (`ntsx_vm_vt15_L21_cap20_pp5_10_1m`).** Single
+   pre-committed cfg: 21-DTE expiry, monthly roll, BS-priced with VIX
+   as IV (iv_scale 1.0 for SPY, 1.1 for QQQ as VXN proxy), 5 bps per
+   roll transaction cost, hedge_notional_ratio=1.0. Result: Sharpe
+   regress **−0.076 / −0.077 / −0.044** vs iter 016 on edu/spy/ndx
+   (Kill #1 triggered, 2 of 3 ds clear); MDD WORSE by **+5.68 /
+   +3.23 / +4.61 pp** on all 3 ds (Kill #2 triggered, 0/3 improve);
+   hedge P&L annualised **−3.03% / −3.00% / −4.13%**, hedge Sharpe
+   −0.73 / −0.78 / −0.93, only 28-30% of bars positive; worst DSR
+   p=0.340 (deteriorated from iter 016's 0.226). Score 79/100 by
+   rubric (ties top-K) but STRICTLY DOMINATED by iter 016 on every
+   meaningful axis.
+
+2. **The specific root cause: structural REDUNDANCY between long-gamma
+   hedge and vol-target scaling on the same σ² process.** Carr-Madan
+   (1999) orthogonality — "options P&L is convex, cannot be
+   reconstructed from σ² alone" — is an information-theoretic
+   statement that holds STATICALLY but does NOT deliver value in a
+   dynamic σ-feedback system. iter 016's vol-target already responds
+   to σ²_{t-1} by de-levering; both mechanisms fire on the same
+   trigger event (S_t drops sharply ↔ σ²_t spikes), so they duplicate
+   crash protection at double the cost rather than compounding it.
+   Additional mechanism-level drivers:
+   - The hedge's persistent theta drag during calm regimes inflates
+     drawdown windows (calm periods of ~3%/yr drag cause slow
+     equity curve decay → deeper peak-to-trough excursions before
+     the next peak is reached).
+   - At scale ~1.9× (cap-hit 76-89% of bars on iter 016 base), the
+     effective hedge drag is scale × hedge_cost ≈ 5-8%/yr in
+     portfolio-level terms.
+   - VIX-as-IV pricing matches empirical put-spread CBOE indices
+     (PPUT/CLL history) to within ~50 bps/yr drag — the implementation
+     is faithful, not an artefact of bad pricing.
+
+### Don't re-test
+
+- Monthly-rolled 5/10 OTM put-spread (or any OTM long/short put
+  spread wider-than-cost) on iter 016 / 015 / 008 / 010 base. The
+  spread-family closure applies to any bounded-payoff long-gamma
+  structure.
+- Pure protective put (long only, no short leg) on the same base —
+  would have HIGHER drag than the spread tested here (which was the
+  best-case); closed by strict dominance.
+- Collar (long put + short call) on the same base — the short-call
+  leg caps upside and adds its own drag in bull regimes; the long-put
+  drag is what iter 020 measured; net result would be worse Sharpe
+  (calls cap upside) with the same MDD problem.
+- Any grid variant (strike pct × DTE × roll frequency × IV scaling)
+  of the long-gamma family on a vol-managed 2-leg stack — changing
+  parameters within the family cannot break the structural redundancy
+  with vol-target.
+- Quarterly (63-DTE) or weekly (5-DTE) rolled long-put or long
+  put-spread on iter 016 base — different roll cadence moves drag
+  magnitude but not the redundancy mechanism.
+- Applying overlay to bond leg (long IEF puts) — same σ²_bd
+  redundancy applies; bond vol drives pos_bd scaling already.
+
+### Don't re-test on other bases UNLESS the base is NOT vol-managed
+
+- Long-gamma overlay on iter 015 (static NTSX, no vol-target) —
+  might work because the base has no σ² feedback, so overlay and
+  base are genuinely orthogonal. Expected score: 75-80 with genuine
+  MDD reduction. But base scored 77 alone → overlay would need to
+  be >+2 score additive to be interesting; drag cost may cancel.
+  Low-priority vs Option V/W/X.
+
+### Structural principles
+
+- **In a dynamic σ-feedback system (vol-target, vol-managed, risk-
+  parity-DCC), any overlay whose expected P&L is monotone in σ² is
+  structurally REDUNDANT with the base.** The base has already
+  extracted the conditional-mean information from σ²; the overlay
+  adds only conditional higher-moment information (skew, kurtosis)
+  at a cost that exceeds the value of those higher moments on broad
+  equity indices (where higher moments are already small per
+  Israelov 2017 AQR).
+- **Rubric-score 79 in a "STRONG" tier can mask strict domination.**
+  The hunt-loop score measures edge vs SPY, not incremental value vs
+  the parent strategy. Kill criteria (pre-committed, base-relative)
+  are the only guard against "inherited edge" scoring artefacts.
+  Future iterations building on existing top-K members MUST declare
+  base-relative kills, not just absolute ones.
+- **Carr-Madan orthogonality ≠ additive value.** The theorem says
+  options are in principle INDEPENDENT of variance; it does NOT say
+  they add value to a system already acting on variance. Orthogonality
+  of FEATURES is necessary but not sufficient for orthogonality of
+  IMPROVEMENTS. This is the iter 019 algebraic cointegration argument
+  applied one level up: iter 019 showed algebraic redundancy of ρ-
+  derived signals with σ²_port; iter 020 shows functional redundancy
+  of long-gamma hedges with σ²-responsive base.
+
+### Paths forward (NOT dead)
+
+1. **Variance premium HARVEST (short-vol, opposite sign)** — fires on
+   opposite event (low realized-vs-implied differential, not σ² spike).
+   Does NOT cointegrate with vol-target because the vol-target
+   de-levers DURING σ² spikes while short-vol PROFITS from σ² decay
+   AFTER spikes subside. Primary iter 021 candidate. See BASE_MEMORY
+   Option V.
+2. **Cross-asset carry** — linear P&L from term-structure / interest-
+   rate differentials, structurally disjoint from both σ² and
+   long-gamma. Secondary iter 021 candidate. See BASE_MEMORY Option W.
+3. **Expanded stack with uncorrelated third leg** (DBMF trend, long-
+   vol ETF controlled allocation) — changes the σ² ingredient set
+   rather than overlaying on it. Tertiary iter 021 candidate. See
+   BASE_MEMORY Option X.
 
 ---
 

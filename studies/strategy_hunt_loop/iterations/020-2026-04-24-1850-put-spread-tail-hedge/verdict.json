@@ -1,0 +1,526 @@
+{
+  "total_score": 79,
+  "tier": "STRONG",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.34040334097478586,
+      "cumulative_n_trials": 4267
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              0.6461061979763405,
+              1.2954147341632265,
+              0.8651299278466487
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.3751467583457033,
+              1.081046987787308,
+              0.8104520413497729
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.3403546766912653,
+              1.3472385688668307,
+              0.8118750508472858
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9048275939181868,
+      "cagr": 0.12684602651611088,
+      "mdd": 0.3701320864185931,
+      "dsr_p_value": 0.34040334097478586
+    },
+    "spy_real": {
+      "sharpe": 1.0633149780074829,
+      "cagr": 0.153305954165339,
+      "mdd": 0.29875829975763174,
+      "dsr_p_value": 0.24384725430703114
+    },
+    "ndx_real": {
+      "sharpe": 1.1420047273207554,
+      "cagr": 0.19032901800077884,
+      "mdd": 0.2784090914178716,
+      "dsr_p_value": 0.17924000782596483
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4267,
+  "configs_tested": 1,
+  "primary_citation": "[volatility_trading, p.11, p.41]; [risk_parity, p.10-11, ch.1]; [systematic_trading, p.40, ch.2]; Carr & Madan (1999); Moreira & Muir (2017)",
+  "hypothesis_slug": "put-spread-tail-hedge",
+  "pre_committed_cfg": {
+    "cfg_id": "ntsx_vm_vt15_L21_cap20_pp5_10_1m",
+    "eq_weight": 0.6,
+    "bd_weight": 0.4,
+    "target_vol": 0.15,
+    "lookback": 21,
+    "max_leverage": 2.0,
+    "k_long_pct": 0.95,
+    "k_short_pct": 0.9,
+    "dte_days": 21,
+    "rf": 0.02,
+    "cost_bps_per_roll": 5.0,
+    "hedge_notional_ratio": 1.0,
+    "rebalance": "daily",
+    "funding_cost_modeled": false
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "ntsx_vm_vt15_L21_cap20_pp5_10_1m",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.34040334097478586,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 6,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 0.407955408932524,
+          "mdd": 0.21501849598916264,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 0.6850533853980001,
+          "mdd": 0.25250483540491964,
+          "profitable": false
+        },
+        {
+          "window": 2,
+          "sharpe": 1.0583672657549366,
+          "mdd": 0.10739629815544087,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.0712730380307918,
+          "mdd": 0.11058507282918054,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.737239389087515,
+          "mdd": 0.11565907265167344,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.0372558095410929,
+          "mdd": 0.173344858434712,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.08483059812901843,
+          "mdd": 0.28693404612425794,
+          "profitable": false
+        },
+        {
+          "window": 7,
+          "sharpe": 1.5582622471893228,
+          "mdd": 0.14666486450798397,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.9083081813380949,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.8187185446910192,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.24719340351813635,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.028098264056075628
+    },
+    "spy_real": {
+      "cfg_id": "ntsx_vm_vt15_L21_cap20_pp5_10_1m",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.24384725430703114,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.0675917885344886,
+          "mdd": 0.13251609361527286,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.3637726486047403,
+          "mdd": 0.09619895168237454,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 1.244001938617982,
+          "mdd": 0.13138018823480446,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.4979858386006955,
+          "mdd": 0.0890317075585324,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.3755781390855129,
+          "mdd": 0.12932716055754473,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 0.8707420444564254,
+          "mdd": 0.14019077944554506,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.39348859076131637,
+          "mdd": 0.245640112905814,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.1662752677716164,
+          "mdd": 0.1630727304184646,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.7795009835222312,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.7964758552053095,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.2825551928286175,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0386047771034459
+    },
+    "ndx_real": {
+      "cfg_id": "ntsx_vm_vt15_L21_cap20_pp5_10_1m",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.17924000782596483,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.2575044413146963,
+          "mdd": 0.12374268421666329,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.2170380767297058,
+          "mdd": 0.11360028443859903,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 1.0779070234291324,
+          "mdd": 0.11742836846156096,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.543215492880214,
+          "mdd": 0.10163002058255757,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.3919169134713236,
+          "mdd": 0.1856083475061202,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 0.9543736564283448,
+          "mdd": 0.19425926840805158,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.9885285063058165,
+          "mdd": 0.1806693881380747,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 0.9005164175287687,
+          "mdd": 0.22465325567895367,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.8141712700636062,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.9442837543619046,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.33701831791774195,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.018969936650292674
+    }
+  },
+  "leg_correlations": {
+    "educational": {
+      "eq_bd": -0.2964952668081083
+    },
+    "spy_real": {
+      "eq_bd": -0.26518352489713926
+    },
+    "ndx_real": {
+      "eq_bd": -0.20026271838270637
+    }
+  },
+  "benchmarks_used_custom": {
+    "educational": {
+      "sharpe": 0.6274107005006827,
+      "cagr": 0.10775107206419254,
+      "mdd": 0.5520110457219881,
+      "label": "SPY b&h 2006-01-04\u21922026-04-14 (IEF-aligned)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "score_with_custom_benchmark": {
+    "total_score": 79,
+    "winner_conditions_met": false,
+    "tier": "STRONG",
+    "criteria": {
+      "1_sharpe_edge": {
+        "points": 25,
+        "max": 25,
+        "datasets_beat": 3,
+        "required_minimum_dataset_count": 2
+      },
+      "2_gates": {
+        "points": 19,
+        "max": 25,
+        "per_dataset": {
+          "educational": "6",
+          "spy_real": "6",
+          "ndx_real": "6"
+        },
+        "thresholds": {
+          "educational": 5,
+          "spy_real": 4,
+          "ndx_real": 4
+        },
+        "cross_dataset_thresholds_met": true
+      },
+      "3_dsr": {
+        "points": 0,
+        "max": 15,
+        "worst_p_value": 0.34040334097478586,
+        "cumulative_n_trials": 4267
+      },
+      "4_cagr_floor": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": true
+        }
+      },
+      "5_mdd_ceiling": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": true
+        }
+      },
+      "6_robustness_bonus": {
+        "points": 0,
+        "max": 5,
+        "note": "Populated by caller if rolling-window data provided"
+      }
+    }
+  },
+  "iter016_reference_metrics": {
+    "educational": {
+      "sharpe": 0.981,
+      "cagr": 0.1508,
+      "mdd": 0.3133
+    },
+    "spy_real": {
+      "sharpe": 1.1405,
+      "cagr": 0.1779,
+      "mdd": 0.2665
+    },
+    "ndx_real": {
+      "sharpe": 1.1861,
+      "cagr": 0.2073,
+      "mdd": 0.2323
+    }
+  },
+  "delta_vs_iter016": {
+    "educational": {
+      "sharpe_delta": -0.0761724060818132,
+      "cagr_delta": -0.023953973483889113,
+      "mdd_delta": 0.05683208641859305
+    },
+    "spy_real": {
+      "sharpe_delta": -0.0771850219925172,
+      "cagr_delta": -0.024594045834661016,
+      "mdd_delta": 0.032258299757631725
+    },
+    "ndx_real": {
+      "sharpe_delta": -0.04409527267924451,
+      "cagr_delta": -0.016970981999221174,
+      "mdd_delta": 0.04610909141787162
+    }
+  },
+  "overlay_diagnostics": {
+    "educational": {
+      "annualized": -0.030286498035021703,
+      "sharpe": -0.733913439194018,
+      "frac_positive_bars": 0.29218350068911203,
+      "cumulative": -0.46197585477336667
+    },
+    "spy_real": {
+      "annualized": -0.02996152081924275,
+      "sharpe": -0.781493619174544,
+      "frac_positive_bars": 0.2849666983824929,
+      "cumulative": -0.39798635433279284
+    },
+    "ndx_real": {
+      "annualized": -0.041273690663844564,
+      "sharpe": -0.9343638270745019,
+      "frac_positive_bars": 0.30019782393669636,
+      "cumulative": -0.4915565659226483
+    }
+  },
+  "kill_criteria_check": {
+    "kill_1_sharpe_regress": {
+      "criterion": "Sharpe regresses > 0.05 vs iter 016 on \u2265 2 of 3 ds",
+      "triggered": true,
+      "regress_count": 2
+    },
+    "kill_2_mdd_no_improvement": {
+      "criterion": "MDD does NOT improve on ANY dataset (hedge failing its job)",
+      "triggered": true,
+      "improving_count": 0
+    },
+    "kill_3_drag_excessive": {
+      "criterion": "Options drag > 3%/yr annualized on all 3 ds",
+      "triggered": false,
+      "drag_count": 2
+    },
+    "kill_4_score_below_70": {
+      "criterion": "Total score < 70 (\u2265 9 below iter 016's 79)",
+      "triggered": false
+    }
+  },
+  "any_kill_triggered": true,
+  "status": "strong"
+}
