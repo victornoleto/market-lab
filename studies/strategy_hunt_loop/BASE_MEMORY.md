@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 10
+total_iterations: 11
 winners_found: 0
 status: iterating
-latest_iteration: "010-2026-04-24-1506"
-cumulative_n_trials: 4246
+latest_iteration: "011-2026-04-24-1527"
+cumulative_n_trials: 4249
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -74,6 +74,14 @@ calculation.)*
 
 ## Iteration log (newest first, 6-line max per entry)
 
+### 011 — 2026-04-24 — Weekly-rebalance 3-leg vol-managed SPY+TLT+GLD blend (🥉 MARGINAL, score 52/100, Kill #1 + #3 TRIGGERED)
+- **Hypothesis:** Option F — reuse iter 010's 3-leg vol-managed blend on weekly W-FRI cadence with 4-week lookback, `periods_per_year=52`. Claim: weekly execution (a) aligns with Moreira-Muir 2017 monthly regime, (b) reduces DSR penalty via lower effective T × n_trials interaction, (c) reduces turnover/cost drag. Single ex-ante pre-committed cfg `vt15_Lw4_cap20_3leg_weekly`.
+- **Citations:** `[systematic_trading, p.144, p.170-171, ch.11]` (target_vol / IDM cadence-agnostic claim tested); `[risk_parity, p.10-11, ch.1]` (naïve RP generalisation to weekly); `[advances_fin_ml, p.162-164, 208-211, 222-223, 31-34]`; Moreira-Muir 2017 *JoF* 72(4) DOI 10.1111/jofi.12513.
+- **Scope:** 1 ex-ante cfg × 3 datasets (edu SPY+TLT+GLD ~21y weekly 1114 bars / spy 17y weekly 878 / ndx 16y weekly 844) = 3 trials. Cumulative n_trials 4246 → 4249. Custom weekly benchmarks (live-computed) replace frozen daily `scoring.BENCHMARKS`.
+- **Result:** Sharpe edu 0.942 (Δ+0.277 vs weekly 0.665) / spy 1.019 (Δ+0.087 — misses +0.10 gate) / ndx 0.898 (Δ−0.109 — negative edge). **Kill #1 TRIGGERED** (both real slots regress vs iter 010 daily: spy −0.021, ndx −0.097). **Kill #3 TRIGGERED** (score 52 < 70). Gates edu 5/7 (G2/G3 fail) / spy 6/7 (G2 fail) / ndx 5/7 (G2/G3 fail). G1 vacuous N=1. G2 DSR WORST p=0.515 (regression vs iter 010 0.368 — theoretical claim falsified). G3 WF 5/8 on edu+ndx (6/8 spy). G6 boot CI +0.049 to +0.277 all positive. G7 xlib 0.02-0.20 pp PASS. MDD ballooned +10-14 pp on all 3 datasets (edu 33.67%→47.19%, spy 33.67%→47.19%, ndx 37.43%→48.99%). Cap-hit 86%→95% — vol-target no longer binding. Turnover UP 10/yr→13.6/yr per leg. Winner conditions **3/5** (regression from 4/5): Sharpe edge 1/3, MDD ceiling 1/3, DSR worst p=0.515.
+- **Score breakdown:** 1:10/25 2:17/25 3:0/15 4:15/15 5:5/15 6:5/5
+- **Lesson:** **Vol-managed variance-targeting REQUIRES daily cadence — it is NOT cadence-agnostic.** The mechanism's edge comes from fast reaction to realized-vol regime shifts; at weekly cadence, regime changes between Fridays happen entirely unhedged inside the week (MDD +10-14 pp). DSR theoretical claim also falsified: reducing T by ~5× inflates `E[SR_max]` by √5× at fixed n_trials, exactly cancelling the periodic-Sharpe growth, with second-order effects making DSR WORSE not better. **Cross-asset correlation (SPY-TLT) is weaker at weekly scale** (−0.24 vs daily −0.30) — diversification return shrinks. **Turnover increases** because 4-week lookback moves weights ~25%/rebalance (vs ~5%/daily). Iter 010 + iter 011 together confirm the blend family's **daily-cadence ceiling is 74/100**; slower cadences score strictly worse. DSR ceiling attacks via timeframe change are UNAVAILABLE for this mechanism. Productive path: Option B' (asymmetric overlay, daily) or Option C (meta-labeling, daily). See `iterations/011-2026-04-24-1527-weekly-three-leg-blend/final_report.md`.
+
 ### 010 — 2026-04-24 — Three-leg vol-managed SPY+TLT+GLD blend with inverse-variance weighting (🥈 PROMISING, score 74/100)
 - **Hypothesis:** Structural extension of iter 008's 2-leg blend to 3 legs by adding GLD with identical params (`vt15_L21_cap20_3leg`, single ex-ante cfg). Naïve risk parity generalises cleanly to N=3; Moreira-Muir variance-scaling applies unchanged to 3×3 σ²_port. Gold adds real-asset / inflation-hedge factor with ρ≈0 to both equity and bond legs — uncorrelated-leg diversification axis qualitatively new vs 2-leg.
 - **Citations:** `[risk_parity, p.10-11, ch.1]` + `[risk_parity, p.80-81, ch.4]` (naïve RP + cross-asset diversification); `[systematic_trading, p.144, p.170-171, ch.11]` (target_vol + IDM cap); `[advances_fin_ml, p.162-164, 208-211, 222-223, 31-34]`; `[ilmanen_expected_returns, ch.11]` (gold diversifier). Moreira-Muir 2017 + Asness-Frazzini-Pedersen 2012 *FAJ* 68(1) SSRN 1728082 + Qian 2005 PanAgora.
@@ -114,27 +122,12 @@ calculation.)*
 - **Score breakdown:** 1:20/25 2:17/25 3:0/15 4:15/15 5:15/15 6:0/5
 - **Lesson:** Cross-asset diversification as compounding mechanism WORKS — new hunt-loop high (67/100), first to clear +0.10 gate on 2 datasets AND clear both CAGR + MDD floors 3/3. Only structural cost: 12-config blend grid inflates PBO (0.69 vs 0.24 single-asset). Next iteration should pre-commit single cfg (no grid, no PBO issue) OR compound with momentum overlay (+0.05-0.10 expected). See final_report.md.
 
-### 005 — 2026-04-24 — Moreira-Muir canonical variance-scaling on SPY/QQQ (🥉 MARGINAL, score 59/100)
-- **Hypothesis:** Replace iter 004's `target_vol/σ̂_{t-1}` (vol-scaling) with `target_vol²/σ̂²_{t-1}` (variance-scaling, Moreira-Muir 2017 canonical). Paper argues `σ^{-2}` is sharper because variance is more persistent; expected +0.12-0.15 uplift.
-- **Citations:** Moreira & Muir (2017) *JoF* 72(4) DOI 10.1111/jofi.12513; `[systematic_trading, p.107-111 ch.9]`; `[advances_fin_ml, p.162-164, 208-211, 222-223, 196-202, 31-34]`; Cederburg et al. (2020) *JFE* 138(1) counter.
-- **Scope:** 12 configs (target_vol×lookback×cap = 2×3×2) × 3 datasets. 2 bps cost. 3× smaller grid than iter 004 to preserve DSR.
-- **Result:** Grand champion `vt20_L21_cap15` Sharpe edu 0.849 (Δ+0.167 hunt-loop top) / spy 0.981 (Δ+0.081) / ndx 1.052 (Δ+0.097). Gates **6/7 on ALL 3 datasets** (first hunt-loop cross-dataset §0 meet). G1 PBO edu 0.571 FAIL, **spy 0.238** / **ndx 0.147** (cleanest). G2 DSR **edu PASS** (p=0.044) spy/ndx FAIL. G6 bootstrap CI +0.35/+0.21/+0.21 all pos. G7 xlib 0.02-0.04 pp. Winner 0/5 (ndx Δ+0.097 misses +0.10 by 0.003).
-- **Score breakdown:** 1:10/25 2:19/25 3:0/15 4:15/15 5:15/15 6:0/5
-- **Lesson:** Moreira-Muir +0.20-0.40 uplift does NOT replicate on single-asset SPY/QQQ (only +0.01 over iter 004). **Single-asset vol-adaptation family saturated at +0.08-0.10 regardless of exponent σ^{-1}/σ^{-2}**. Only path through is compounding mechanism (cross-asset or signal overlay). See final_report.md.
-
-### 004 — 2026-04-24 — Volatility-managed SPY (single-asset continuous vol scaling) (🥉 MARGINAL, score 51/100)
-- **Hypothesis:** Rescale SPY exposure by `target_vol / σ̂_{t-1}` (Carver `[systematic_trading, p.107-111]` / Moreira-Muir 2017) — no signal, no cross-section, just continuous inverse-vol scaling. Tests the simplest instantiation of a canonical mechanism.
-- **Citations:** `[systematic_trading, p.40 ch.2, p.107-111, p.144-146 ch.9]`, `[advances_fin_ml, p.162-164, p.208-211, p.222-223 p.275, p.196-202, p.31-34]`, Moreira & Muir (2017) *JoF* 72(4) 1611-1644 DOI 10.1111/jofi.12513.
-- **Scope:** 36 configs (target_vol ∈ {0.10, 0.15, 0.20} × lookback ∈ {21, 63, 126, 252} × max_leverage ∈ {1.5, 2.0, 3.0}) × 3 datasets (SPYSIM synth 40y / SPY adj_close 17y / QQQ adj_close 16y). Cost model 2 bps/unit-scale-change.
-- **Result:** Grand champion `tv20_L21_cap15` Sharpe edu 0.81 (Δ+0.13) / spy 0.98 (Δ+0.08) / ndx 1.04 (Δ+0.09). Gates edu 4/7, **spy 6/7**, **ndx 6/7**. G1 PBO 0.54/**0.31**/**0.35** (real-data clean). G6 bootstrap 99.9% CI low +0.33/+0.23/+0.22 (first iteration to clear G6). G7 cross-lib parity 0.02-0.04pp. DSR p 0.06/0.36/0.30 at n_trials=4156. MDD reduced 6-9pp on real data vs bench. Winner conditions 0/5 (fails strict Sharpe edge +0.10 on spy/ndx; DSR deflator penalty too large).
-- **Score breakdown:** 1:10/25 2:11/25 3:0/15 4:15/15 5:15/15 6:0/5
-- **Lesson:** **Vol-scaling mechanism is real and partially validated**: 6/7 gates pass on both real-data slots, MDD reduced while CAGR up, G6 (bootstrap) clears for the first time in the hunt loop. Falls 0.02 Sharpe short of the +0.10 strict gate and DSR headroom eroded by cumulative n_trials. The productive path is NOT more param sweeps but a compounding mechanism (variance-scaling per Moreira, or vol-managed 60/40 mix). See `iterations/004-2026-04-24-vol-managed-spy/final_report.md`.
-
-### Iters 001-004 (pruned for space — see DEAD_ENDS.md + Top-K table)
+### Iters 001-005 (pruned for space — see DEAD_ENDS.md + Top-K table + individual `iterations/NNN-*/final_report.md`)
 - **001** (NEAR_FAIL ~35/100) — Crash-protected LETF trend, 4020 cfgs, 0/16 cross-dataset winners. See `studies/ema_sma_threshold_crash_protected/phase3_FINAL.md`.
-- **002** (FAIL 17/100) — Clenow 10bps ATR-risk-parity on 11 SPDR sectors. Root cause: ATR sizing calibrated for stocks fails on diversified-basket ETFs → 63-75% cash drag.
-- **003** (FAIL 7/100) — Clenow adjusted-slope × R² with equal-notional on 11 SPDR sectors. Root cause: ≤ 20-asset homogeneous ETF universe lacks ranking signal.
-- **004** (MARGINAL 51/100) — Single-asset vol-scaling SPY `σ⁻¹` (Carver form). 6/7 gates on spy+ndx, G6 first-ever pass, Sharpe edge +0.08-0.15 (below +0.10 on spy).
+- **002** (FAIL 17/100) — Clenow 10bps ATR-risk-parity on 11 SPDR sectors. ATR sizing calibrated for stocks fails on diversified-basket ETFs → 63-75% cash drag.
+- **003** (FAIL 7/100) — Clenow adjusted-slope × R² with equal-notional on 11 SPDR sectors. ≤ 20-asset homogeneous ETF universe lacks ranking signal.
+- **004** (MARGINAL 51/100) — Single-asset vol-scaling SPY `σ⁻¹` (Carver form). 6/7 gates on spy+ndx, G6 first-ever pass, Sharpe edge +0.08-0.15 (below +0.10 on spy). Vol-scaling mechanism real and partially validated; MDD reduced 6-9pp on real data.
+- **005** (MARGINAL 59/100) — Moreira-Muir canonical variance-scaling `σ⁻²` on SPY/QQQ. 6/7 gates on ALL 3 datasets (first cross-dataset §0 meet). G2 DSR passes on edu (p=0.044) — first hunt-loop DSR-clear on any dataset. Sharpe edge +0.081 spy / +0.097 ndx (just below +0.10). **Single-asset vol-adaptation family saturates** — only compounding mechanisms through.
 
 ---
 
@@ -148,53 +141,51 @@ saturated at +0.08-0.10), vol-managed 60/40 × momentum overlay (iter 007
 redundant), single-cfg ex-ante verification of iter 006 blend (iter 008
 confirmed structural — score 74, DSR sole killer), T10Y3M 21d-EMA
 binary haircut overlay (iter 009 score 64 — smoothing erased lead-time),
-**3-leg SPY+TLT+GLD vol-managed blend (iter 010 score 74 — tied
-iter 008, confirmed blend family saturates ~Sharpe 1.00 regardless of
-N=2/3; DSR is the true ceiling, not leg-count)**. See `DEAD_ENDS.md`.
+3-leg SPY+TLT+GLD vol-managed blend (iter 010 score 74 — tied iter 008,
+confirmed blend family saturates ~Sharpe 1.00 regardless of N=2/3; DSR
+is the true ceiling, not leg-count), **weekly-rebalance 3-leg blend
+(iter 011 score 52 MARGINAL — Kill #1 + #3 triggered; vol-managed
+variance-targeting REQUIRES daily cadence; MDD ballooned +10-14 pp at
+weekly, DSR got WORSE not better, turnover UP, cross-asset correlation
+WEAKER)**. See `DEAD_ENDS.md`.
 
-### Iter 011 candidates (ranked by expected information gain)
+### Iter 012 candidates (ranked by expected information gain)
 
-Iter 010 framing: **iter 008 (N=2) and iter 010 (N=3) both score exactly
-74/100 with 4/5 winner conditions**. The structural extension worked
-cleanly (generalised risk-parity + Moreira-Muir to 3 legs) but scored
-identical — DSR at cumulative n_trials ≈ 4246 requires Sharpe uplift
-> ~0.30 on the worst dataset; blend family delivers at most +0.14 best
-case / +0.04 worst case. **Adding more legs (N=4, N=5) won't close the
-2× gap.** The productive path must address DSR directly: either change
-the information source or change the timeframe-regime the deflator sees.
+Iter 011 framing: the blend family's **daily-cadence ceiling is 74/100**
+(iter 008 + iter 010). Iter 011 empirically falsified Option F (weekly
+rebalance): vol-managed variance-targeting is NOT cadence-agnostic.
+DSR-attack via timeframe change is structurally unavailable for this
+mechanism. Remaining productive paths preserve daily cadence.
 
-0j. **[OPTION F — TIMEFRAME CHANGE] Weekly-rebalance 3-leg blend
-   (iter 010 mechanism, weekly resample)** — same risk-parity + Moreira-
-   Muir variance-scaling, but signal and execution sampled 52× per year
-   instead of 252×. Reduces DSR's effective n_trials (trials are
-   *sampled* in the deflator). Also matches the Moreira-Muir 2017
-   monthly-scale regime more directly. Single ex-ante cfg; reuses
-   `three_leg_blend.py` on `.resample("W-FRI")`. **PICK FIRST for
-   iter 011** — cheapest implementation, strongest theoretical attack
-   on the DSR ceiling.
+0h. **[OPTION B' — REFINED OVERLAY] Asymmetric T10Y3M overlay on iter
+   008 daily blend: raw (≤ 5d smoothing) signal + haircut on EQUITY
+   LEG ONLY (bond leg keeps full weight during recessions)**. Addresses
+   iter 009's two failure modes: (a) preserves lead-time by minimal
+   smoothing (≤ 5d vs iter 009's 21d EMA), (b) respects flight-to-
+   quality via asymmetric haircut. Single ex-ante cfg. Expected Sharpe
+   uplift +0.03-0.08 if asymmetry isolates the benefit. **PICK FIRST
+   for iter 012** — cheapest implementation (~30 min), genuinely novel
+   combinatorial quadrant of iter 009's parameter space.
 
 0f. **[OPTION C — META-LABELING on iter 008 blend] (AFML ch.3)** —
    secondary ML model predicts bar-level profitability using cross-
-   sectional / macro features blend can't see. Orthogonal by
-   construction; highest engineering cost; only direction that adds
-   *informationally independent* signal beyond vol-regime. Expected
-   uplift +0.20-0.30 Sharpe if meta-model has real predictive power;
-   that magnitude is what DSR needs. Pick after Option F if weekly-
-   rebalance doesn't break the ceiling.
-
-0h. **[OPTION B' — REFINED OVERLAY] Asymmetric T10Y3M overlay: raw
-   (≤ 5d smoothing) signal + haircut on EQUITY LEG ONLY (bond leg
-   keeps full weight during recessions)**. Addresses iter 009's two
-   failure modes: (a) preserves lead-time by minimal smoothing, (b)
-   respects flight-to-quality. Single ex-ante cfg. Expected Sharpe
-   uplift +0.03-0.08 if asymmetry isolates the benefit. Low-cost
-   confirmation of the asymmetric-overlay principle.
+   sectional / macro features blend can't see (cross-asset momentum,
+   credit spreads via EBP, VIX term structure, breadth). Orthogonal
+   by construction; highest engineering cost (~2-3h). Only direction
+   that adds *informationally independent* signal beyond vol-regime.
+   Expected uplift +0.20-0.30 Sharpe if meta-model has real predictive
+   power — that magnitude is what DSR needs. Pick after Option B'.
 
 0i. **[OPTION E — NEW MACRO SIGNAL] EBP (Gilchrist-Zakrajšek 2012)
    overlay on iter 008 blend**. Monthly-sampled credit-cycle signal;
    captures credit-spread risk structurally distinct from yield-curve
    slope. Month-end rebalance at daily horizon. Data in
    `data/external/macro/ebp_monthly.parquet`.
+
+0k. **[OPTION G — RETURN-STACKED ETF ROTATION] NTSX/NTSI/NTSE
+   rotation**. Built-in 90/60 equity/bond leverage layered with
+   region-tilt factor — structurally new primitive not yet tested.
+   `[risk_parity, p.5]` + `[leverage_for_the_long_run, p.19-20]`.
 
 ### Deeper backlog (not yet designed as iter-next)
 
@@ -225,7 +216,8 @@ the information source or change the timeframe-regime the deflator sees.
 - **Single-asset vol-adaptation on SPY/QQQ cannot clear +0.10 Sharpe gate regardless of exponent** (iter 004 `σ^{-1}` + iter 005 `σ^{-2}`) — family saturates at +0.08-0.10 real-data edge because SPY post-2009 Sharpe 0.90 is near the informational ceiling for signal-free vol-feedback. Only path through is compounding mechanism (cross-asset or signal overlay)
 - **Time-series momentum overlay (12-1 / 6-1 / 18-1) on vol-managed 2-asset blend** REDUCES Sharpe by 0.01-0.15 on real data (iter 007) — momentum signal is redundant with variance-scaling's regime sensitivity; both track the same equity-vol information. Compounding needs ORTHOGONAL signals (carry, macro, meta-labeling), not correlated ones.
 - **T10Y3M 21-day EMA binary haircut (threshold=0, haircut=0.5, symmetric on both legs) on iter 008 vol-managed blend** REDUCES Sharpe by 0.01-0.03 on all 3 datasets (iter 009). Root cause: the 21-day EMA smoothing destroyed the 6-18 month recession lead that is T10Y3M's canonical value. After smoothing, signal fires concurrently with realized-vol regime shifts (100% overlap with bottom-20% blend scale on edu+spy). **Macro overlays on vol-managed blends must preserve signal LEAD-TIME (raw or ≤ 5d smoothing) AND use asymmetric haircut (equity leg only) to be orthogonal.**
-- **Vol-managed 3-leg blend (SPY+TLT+GLD / QQQ+TLT+GLD) on daily horizon with `vt15_L21_cap20_3leg`** (iter 010) ties iter 008 at 74/100 with 4/5 winner conditions but does NOT surpass — DSR worst p worsens 0.332→0.368 because ndx_real Sharpe regresses −0.03 (while edu +0.12 and spy +0.04). Leg-count is NOT the ceiling — the **blend family saturates near Sharpe 1.00 on real data** because daily vol-regime info has a hard informational ceiling `[leverage_for_the_long_run, p.9]`. Adding 4th/5th legs or swapping GLD for IAU/GDX will score 74 ±2. **DO NOT re-test with minor variations on this mechanism.** Productive path: change information source (meta-labeling) or timeframe (weekly rebalance changes DSR n_trials regime).
+- **Vol-managed 3-leg blend (SPY+TLT+GLD / QQQ+TLT+GLD) on daily horizon with `vt15_L21_cap20_3leg`** (iter 010) ties iter 008 at 74/100 with 4/5 winner conditions but does NOT surpass — DSR worst p worsens 0.332→0.368 because ndx_real Sharpe regresses −0.03 (while edu +0.12 and spy +0.04). Leg-count is NOT the ceiling — the **blend family saturates near Sharpe 1.00 on real data** because daily vol-regime info has a hard informational ceiling `[leverage_for_the_long_run, p.9]`. Adding 4th/5th legs or swapping GLD for IAU/GDX will score 74 ±2. **DO NOT re-test with minor variations on this mechanism.** Productive path: change information source (meta-labeling) — **timeframe change FALSIFIED by iter 011.**
+- **Weekly-rebalance 3-leg vol-managed blend (`vt15_Lw4_cap20_3leg_weekly`, W-FRI cadence, 4-week lookback)** (iter 011) scores 52/100 MARGINAL — Kill #1 + #3 TRIGGERED. Sharpe regresses vs iter 010 daily on all 3 datasets (edu −0.047, spy −0.021, ndx −0.097). **MDD ballooned +10-14 pp** (vol-targeting mechanism requires DAILY cadence to react to intra-week regime shifts; at weekly, regime changes between Fridays happen unhedged). Cap-hit 86%→95% — vol-target no longer binding most bars. DSR got WORSE (0.368→0.515) — reducing T inflates `E[SR_max]` at fixed n_trials, exactly cancelling periodic-Sharpe growth. Turnover UP (10/yr→13.6/yr per leg). Cross-asset SPY-TLT correlation WEAKER at weekly scale (−0.24 vs daily −0.30). **Vol-managed variance-targeting is NOT cadence-agnostic.** DSR ceiling attack via timeframe change is STRUCTURALLY UNAVAILABLE for this mechanism. Do not re-test with other weekly params (W-MON / lookback 2-8 / target_vol 0.10-0.20) or monthly cadence.
 
 ---
 

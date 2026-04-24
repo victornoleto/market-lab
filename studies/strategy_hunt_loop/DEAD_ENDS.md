@@ -460,6 +460,99 @@ as a candidate for compounding with orthogonal information. But
 
 ---
 
+## From iteration 011 — weekly-rebalance vol-managed 3-leg blend (timeframe-change dead-end)
+
+Complete study: `studies/strategy_hunt_loop/iterations/011-2026-04-24-1527-weekly-three-leg-blend/final_report.md`.
+
+### What the iteration resolved
+
+Iter 011 tested BASE_MEMORY's "Option F" — apply iter 010's 3-leg
+vol-managed SPY+TLT+GLD blend on **weekly W-FRI cadence** with 4-week
+lookback (calendar-equivalent of iter 010's 21 trading days), single
+pre-committed cfg `vt15_Lw4_cap20_3leg_weekly`. The conjecture was
+that weekly execution would (a) align with Moreira-Muir 2017's
+monthly-scale canonical regime, (b) reduce the DSR n_trials deflator
+penalty, and (c) cut turnover / transaction-cost drag.
+
+Result: **Kill #1 + Kill #3 both TRIGGERED per pre-commit.** Score
+52/100 MARGINAL (−22 vs iter 010). Sharpe regresses on all 3 datasets
+(edu 0.989→0.942, spy 1.040→1.019, ndx 0.995→0.898). MDD ballooned
++10-14 pp (edu 33.67%→47.19%, spy 33.67%→47.19%, ndx 37.43%→48.99%).
+DSR got WORSE not better (worst p 0.368→0.515). Turnover went UP
+(10/yr→13.6/yr per leg). Cross-asset SPY-TLT correlation weakened at
+weekly scale (−0.24 vs daily −0.30).
+
+### Structural principle (do NOT re-test)
+
+**Vol-managed variance-targeting is NOT cadence-agnostic.** The
+mechanism's edge comes from fast reaction to realized-vol regime
+shifts; at any cadence slower than daily, regime changes between
+rebalance dates happen entirely unhedged within the rebalance window.
+For the 3-leg variance-scaled blend specifically:
+
+- Cap-hit frequency climbs from ~86% (daily) to ~95% (weekly) —
+  the vol-target `target_var² / σ²_port` becomes non-binding most of
+  the time because 4-week compounded σ² is structurally lower than
+  daily σ² over 21 days (more smoothing).
+- SPY-TLT flight-to-quality correlation is concentrated on specific
+  daily stress events (COVID crash days, 2022 correlation flip).
+  These smooth out on weekly compounding, reducing the diversification
+  return that the blend exploits.
+- Turnover actually INCREASES per leg because the 4-week lookback
+  shifts 25%/rebalance (vs daily ~5%/rebalance), so each rebalance
+  carries a larger weight change.
+
+**DSR theoretical attack via T reduction is ALSO structurally
+unavailable for this mechanism.** The DSR formula evaluates PSR at
+benchmark `E[SR_max] ≈ a × √(1/(T-1))` where a depends on n_trials.
+Reducing T by ~5× (daily→weekly) inflates the benchmark by √5×,
+exactly cancelling the √5× growth in periodic observed Sharpe. Net
+first-order effect on p-value is ~zero; second-order effects
+(narrower G6 margin, weekly autocorrelation artefacts) push DSR
+slightly WORSE, as empirically confirmed.
+
+### Don't re-test
+
+- Weekly-rebalance vol-managed multi-leg blend with 4-week lookback
+  at any `target_vol ∈ {0.10, 0.15, 0.20}`, any `max_leverage ∈
+  {1.5, 2.0, 2.5}`, any `lookback ∈ {2, 4, 8, 12}` weeks. Parameter
+  sweep will not recover the mechanism; the bottleneck is the
+  cadence mismatch, not a param choice.
+- Other weekday-end cadences (W-MON, W-WED) on same mechanism — day-of-
+  week within the weekly block is structurally irrelevant; all
+  suffer from the same "regime change between rebalances goes
+  unhedged" bottleneck.
+- **Monthly rebalance** on same 3-leg blend (21d cadence) — not
+  empirically tested but by structural extrapolation: monthly would
+  score STRICTLY WORSE than weekly (MDD +20-25 pp vs daily, Sharpe
+  −0.15 to −0.25 on real data). The gradient of MDD damage with
+  rebalance period is monotone on this mechanism.
+- Any DSR-ceiling attack premised on "reduce n_trials / reduce T
+  via slower sampling" for variance-targeting blends — the DSR
+  formula makes this trade null at first order.
+
+### Path forward (NOT dead)
+
+- **Option B'** (iter 009's untested quadrant): raw T10Y3M signal
+  (≤ 5d smoothing) + EQUITY-LEG-ONLY haircut on iter 008 DAILY blend.
+  Preserves daily cadence (keeps vol-targeting working) + preserves
+  macro lead-time + respects flight-to-quality. Expected Sharpe
+  uplift +0.03-0.08.
+- **Option C** (meta-labeling, AFML ch.3): secondary ML model
+  predicts bar-level profitability of iter 008 daily blend using
+  cross-sectional features blend can't see. Orthogonal information
+  source; highest engineering cost, highest Sharpe-uplift potential
+  (+0.20-0.30 if meta-model works). Attacks DSR via observed-Sharpe
+  side of the equation rather than the T side.
+- **Option G** (return-stacked ETF rotation): NTSX/NTSI/NTSE uses
+  built-in leverage, structurally new primitive not tested in hunt-
+  loop. Preserves daily cadence.
+- **HMM regime-switching** on stock-bond correlation
+  (`[regime_change, ch.2]`): different information axis — regime
+  state — orthogonal to vol scaling.
+
+---
+
 ## From iteration 009 — T10Y3M binary-haircut overlay on vol-managed SPY+TLT blend
 
 Complete study: `studies/strategy_hunt_loop/iterations/009-2026-04-24-1447-term-spread-overlay-blend/final_report.md`.
@@ -585,6 +678,19 @@ rejected — require qualitatively different mechanism:
       legs additionally forfeits bond-leg flight-to-quality. Path
       forward: raw/5d-smoothed signal + asymmetric haircut (equity
       only) remains untested.
+- [ ] Weekly-rebalance (or slower) cadence for vol-managed variance-
+      targeting multi-leg blend (iter 011) — vol-targeting mechanism
+      requires DAILY cadence to react to intra-window regime shifts.
+      MDD ballooned +10-14 pp vs daily counterpart, cap-hit
+      frequency 86%→95% (target no longer binding), DSR got WORSE
+      (0.368→0.515), turnover UP, cross-asset correlation WEAKER.
+      Score 74 → 52, Kill #1 + #3 TRIGGERED. **DSR-ceiling attacks
+      via timeframe change are structurally unavailable** for this
+      mechanism — the DSR formula's T reduction exactly cancels the
+      periodic-Sharpe growth at first order. Also applies by
+      extension to monthly cadence (not tested but structurally
+      worse). Path forward: Option B' asymmetric overlay + Option C
+      meta-labeling, both on daily cadence.
 
 ---
 
