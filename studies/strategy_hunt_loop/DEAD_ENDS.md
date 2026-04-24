@@ -553,6 +553,99 @@ slightly WORSE, as empirically confirmed.
 
 ---
 
+## From iteration 012 — Asymmetric T10Y3M equity-leg-only haircut overlay (5d EMA) on vol-managed SPY+TLT blend
+
+Complete study: `studies/strategy_hunt_loop/iterations/012-2026-04-24-1556-asymmetric-term-spread-overlay/final_report.md`.
+
+### What the iteration resolved
+
+Iter 012 tested BASE_MEMORY's "Option B'" — iter 009's remaining
+untested combinatorial quadrant: **asymmetric haircut (equity leg
+ONLY, 0.5×; bond leg unchanged) + light smoothing (5-day EMA, not
+21-day)**. Single pre-committed combined cfg
+`vt15_L21_cap20 × ts_inv5_h50_eq` (threshold=0, haircut=0.5,
+smoothing=5d, applied_to=equity, lag=1). The conjecture was that
+(a) 5d EMA preserves T10Y3M's 6-18 month recession lead-time
+(44 zero-crossings over 44y, vs 21d EMA which loses the lead), and
+(b) equity-only haircut respects flight-to-quality (SPY-TLT ρ ≈ −0.30
+means TLT typically rallies during recession).
+
+Result: **Kill #1 + Kill #3 + Kill #4 all TRIGGERED.** Score
+**58/100 MARGINAL** (−16 vs iter 008, −6 vs iter 009). Sharpe
+regresses on ALL 3 datasets vs iter 008 (edu −0.041, spy −0.035,
+ndx −0.053). Gate-fire / bottom-20%-scale overlap is **100 % on edu
++ spy** — identical diagnostic to iter 009 at 21-day EMA. Winner
+conditions **0/5** (regression from iter 008's 4/5).
+
+### Structural principle (do NOT re-test — the T10Y3M overlay family is CLOSED)
+
+**Combined iter 009 + iter 012 span the full 2×2 combinatorial matrix
+of the T10Y3M-overlay hypothesis on a vol-managed SPY/QQQ+TLT blend,
+and all empirically-tested corners fail with the same 100 % gate-fire /
+bottom-20%-scale overlap diagnostic on SPY-based datasets**:
+
+| smoothing \\ asymmetry | symmetric (both legs) | asymmetric (equity only) |
+|---|---|---|
+| heavy (21d EMA) | iter 009: 64/100, FAIL (tested) | strictly worse (not worth testing) |
+| light (5d EMA) | structurally same as 009 light-quadrant | **iter 012: 58/100, FAIL (tested)** |
+
+The redundancy with variance-scaling is **structural cointegration,
+not a parameter choice**. T10Y3M and SPY realized-vol are
+cointegrated at the business-cycle timescale that matters for a
+vol-managed blend: by the time a T10Y3M inversion has persisted long
+enough to trigger a binary gate (at any practical smoothing), realized
+equity vol has already started accelerating and the blend has already
+started de-levering. No smoothing window, threshold, haircut level, or
+leg-asymmetry choice breaks this.
+
+The ndx_real partial-orthogonality (40.5 % overlap) is a red herring:
+QQQ's tech-specific vol regimes lead aggregate SPY vol regimes by 1-2
+months, but the gate's *direction* (halve equity on inversion) is
+wrong for QQQ because tech vol spikes (2018 Q4, 2020 Feb, 2022 Q4)
+happen independently of T10Y3M inversions.
+
+Additional failure mode: the **asymmetric bond-preservation is the
+wrong-direction asymmetry for the post-2008 regime**. In 2022 SPY-TLT
+correlation briefly went POSITIVE; preserving the TLT leg while
+halving the SPY leg meant carrying a losing bond position through
+the rate-hike shock, compounding the CAGR drag. A dynamic asymmetry
+(asymmetric during ρ < 0, symmetric during ρ ≥ 0) might help, but
+falls back to the 100 %-overlap structural problem on historical
+ρ < 0 episodes.
+
+### Don't re-test
+
+- **Any T10Y3M binary-haircut overlay variant on a vol-managed
+  SPY/QQQ+TLT blend** — the 2×2 quadrant matrix is fully closed
+  (iter 009 heavy-symmetric tested, iter 012 light-asymmetric tested,
+  heavy-asymmetric scores strictly worse than tested corners, light-
+  symmetric has no theoretical reason to beat tested corners). Variants
+  forbidden: haircut ∈ {0.3, 0.7, 0.9}, threshold ∈ {−0.25, −0.5,
+  +0.25}, smoothing ∈ {2, 3, 10, 15, 21} days, lag ∈ {0, 2, 5} bars,
+  applied_to ∈ {bond, both, conditional}.
+- **Any other yield-curve-slope-like signal** (T10Y2M, T5Y3M, T10Y6M,
+  SOFR-IOER) as binary-haircut overlay — they all cointegrate with
+  T10Y3M at the business-cycle timescale and will reproduce the same
+  100 %-overlap diagnostic.
+
+### Path forward (NOT dead)
+
+- **Option C — meta-labeling** (AFML ch.3, ch.5). Primary recommendation
+  for iter 013. Uses cross-sectional features the blend can't see
+  (cross-asset momentum, breadth, options-implied skew, macro state
+  regime encoding). Orthogonal by construction, attacks DSR ceiling via
+  observed-Sharpe side rather than timeframe or filter-overlay.
+- **Option E — EBP (excess bond premium) overlay** (Gilchrist-Zakrajšek
+  2012). Credit-cycle signal, distinct from yield-curve slope —
+  different historical fire-episodes (1998 LTCM, 2008 GFC, 2020 COVID)
+  some independent of T10Y3M. Requires empirical verification that
+  EBP-SPY-realized-vol correlation < T10Y3M's before the overlay is
+  worth the cumulative n_trials cost.
+- **Option G — Return-stacked ETF rotation** (NTSX/NTSI/NTSE). Different
+  universe, structurally novel primitive.
+
+---
+
 ## From iteration 009 — T10Y3M binary-haircut overlay on vol-managed SPY+TLT blend
 
 Complete study: `studies/strategy_hunt_loop/iterations/009-2026-04-24-1447-term-spread-overlay-blend/final_report.md`.
@@ -675,9 +768,19 @@ rejected — require qualitatively different mechanism:
       signal fires concurrently with blend's own variance-scaling
       de-lever (100% bottom-20% scale overlap on edu + spy). Score
       regresses 74 → 64, Kill #3 TRIGGERED. Symmetric haircut on both
-      legs additionally forfeits bond-leg flight-to-quality. Path
-      forward: raw/5d-smoothed signal + asymmetric haircut (equity
-      only) remains untested.
+      legs additionally forfeits bond-leg flight-to-quality.
+- [ ] **T10Y3M (or any yield-curve-slope) binary-haircut overlay on
+      vol-managed SPY/QQQ+TLT blend at ANY smoothing window + ANY leg
+      asymmetry combination** (iter 012, combined with iter 009). The
+      2×2 matrix {heavy/light smoothing × symmetric/asymmetric} is
+      fully closed: light+asymmetric (5d EMA, equity-only) scored 58
+      with the SAME 100% gate-fire/bottom-20%-scale overlap on edu+spy
+      as iter 009's heavy+symmetric 64. Redundancy is structural
+      cointegration of T10Y3M with SPY realized-vol at the
+      business-cycle timescale, not a parameter choice. Kill #1 + #3
+      + #4 all triggered. **Productive direction**: orthogonal
+      information (meta-labeling AFML ch.3 / EBP credit-cycle signal /
+      return-stacked ETF rotation) — NOT yield-curve derivatives.
 - [ ] Weekly-rebalance (or slower) cadence for vol-managed variance-
       targeting multi-leg blend (iter 011) — vol-targeting mechanism
       requires DAILY cadence to react to intra-window regime shifts.

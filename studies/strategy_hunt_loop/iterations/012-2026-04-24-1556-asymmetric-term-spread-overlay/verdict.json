@@ -1,0 +1,296 @@
+{
+  "total_score": 58,
+  "tier": "MARGINAL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 10,
+      "max": 25,
+      "datasets_beat": 1,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.40946432134859156,
+      "cumulative_n_trials": 4252
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": false,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 4,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count across 9 total",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 8,
+        "fraction_positive": 0.8888888888888888,
+        "bonus_awarded": 4,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              0.6293861592994059,
+              1.3841142655802874,
+              0.5105702380619282
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.6861421972168684,
+              1.323427715390524,
+              0.004685946445714603
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.6662637836404681,
+              1.3590327734158456,
+              -0.05274326807471348
+            ],
+            "positive_count": 2,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.8238141464269789,
+      "cagr": 0.12265961813097159,
+      "mdd": 0.39077343422572053,
+      "dsr_p_value": 0.3623823925650833
+    },
+    "spy_real": {
+      "sharpe": 0.9651069838391775,
+      "cagr": 0.14651855000189307,
+      "mdd": 0.39077343422572053,
+      "dsr_p_value": 0.38481818422450187
+    },
+    "ndx_real": {
+      "sharpe": 0.9677700459551805,
+      "cagr": 0.16152783411952298,
+      "mdd": 0.38171150983023894,
+      "dsr_p_value": 0.40946432134859156
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.6618335196421604,
+      "cagr": 0.11089033538290027,
+      "mdd": 0.5520110457219883,
+      "label": "SPY b&h 2002-07-29\u21922026-04-15 (iter 012 TLT-aligned)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4252,
+  "configs_tested": 1,
+  "primary_citation": "[regime_change, p.5-6, ch.2]; [risk_parity, p.10-11, ch.1]; [systematic_trading, p.144, ch.9]; [advances_fin_ml, p.162-164, 208-211, 222-223, 31-34]; Moreira & Muir (2017), JoF 72(4) DOI 10.1111/jofi.12513; Estrella & Mishkin (1998), REStat 80(1) DOI 10.1162/003465398557320.",
+  "hypothesis_slug": "asymmetric-term-spread-overlay",
+  "pre_committed_cfg": {
+    "blend": {
+      "cfg_id": "vt15_L21_cap20",
+      "target_vol": 0.15,
+      "lookback": 21,
+      "max_leverage": 2.0
+    },
+    "overlay": {
+      "cfg_id": "ts_inv5_h50_eq",
+      "indicator": "t10y3m_daily",
+      "smoothing_window": 5,
+      "threshold": 0.0,
+      "haircut": 0.5,
+      "applied_to": "equity",
+      "lag_bars": 1
+    },
+    "combined_cfg_id": "vt15_L21_cap20+ts_inv5_h50_eq"
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "vt15_L21_cap20+ts_inv5_h50_eq",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 combined (overlay+blend) \u2192 PBO undefined; vacuous PASS",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.3623823925650833,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 6,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.46900563313575777,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.26522675259509537,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.17180804655203571,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.07042910766514865
+    },
+    "spy_real": {
+      "cfg_id": "vt15_L21_cap20+ts_inv5_h50_eq",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 combined (overlay+blend) \u2192 PBO undefined; vacuous PASS",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.38481818422450187,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.09889451510785124,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.26522675259509537,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.19291190085615176,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.028918158314783504
+    },
+    "ndx_real": {
+      "cfg_id": "vt15_L21_cap20+ts_inv5_h50_eq",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 combined (overlay+blend) \u2192 PBO undefined; vacuous PASS",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.40946432134859156,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.013111466480923132,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.2709611640431658,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.127419554575949,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0431651060735172
+    }
+  },
+  "leg_correlations": {
+    "educational": -0.3065921040296599,
+    "spy_real": -0.2952247053508441,
+    "ndx_real": -0.2251995652762236
+  },
+  "benchmarks_used_custom": {
+    "educational": {
+      "sharpe": 0.6618335196421604,
+      "cagr": 0.11089033538290027,
+      "mdd": 0.5520110457219883,
+      "label": "SPY b&h 2002-07-29\u21922026-04-15 (iter 012 TLT-aligned)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "iter008_reference_metrics": {
+    "educational": {
+      "sharpe": 0.8651,
+      "cagr": 0.1349,
+      "mdd": 0.3721
+    },
+    "spy_real": {
+      "sharpe": 1.0001,
+      "cagr": 0.1608,
+      "mdd": 0.3721
+    },
+    "ndx_real": {
+      "sharpe": 1.0211,
+      "cagr": 0.179,
+      "mdd": 0.3721
+    }
+  },
+  "deltas_vs_iter008": {
+    "educational": {
+      "sharpe_delta": -0.04128585357302106,
+      "cagr_delta": -0.0122403818690284,
+      "mdd_delta": 0.018673434225720542
+    },
+    "spy_real": {
+      "sharpe_delta": -0.03499301616082251,
+      "cagr_delta": -0.014281449998106932,
+      "mdd_delta": 0.018673434225720542
+    },
+    "ndx_real": {
+      "sharpe_delta": -0.05332995404481944,
+      "cagr_delta": -0.01747216588047701,
+      "mdd_delta": 0.009611509830238951
+    }
+  },
+  "overlay_diagnostics": {
+    "educational": {
+      "gate_fire_rate": 0.16582576522031617,
+      "gate_scale_corr": 0.0590189272136804,
+      "gate_bottom20_overlap_frac": 1.0
+    },
+    "spy_real": {
+      "gate_fire_rate": 0.178359096313912,
+      "gate_scale_corr": 0.1341220376919004,
+      "gate_bottom20_overlap_frac": 1.0
+    },
+    "ndx_real": {
+      "gate_fire_rate": 0.18541409147095178,
+      "gate_scale_corr": 0.21365443262846212,
+      "gate_bottom20_overlap_frac": 0.4053333333333333
+    }
+  },
+  "status": "marginal",
+  "kill_criteria_triggered": [
+    "Kill #1 spy_real \u0394=-0.0350 AND ndx_real \u0394=-0.0533 \u2014 BOTH real slots regress vs iter 008 \u2192 asymmetric-equity-only principle falsified",
+    "Kill #3 score 58 < 70 threshold",
+    "Kill #4 educational gate-fire/bottom-20%-scale overlap 100.0% \u2265 60% \u2192 5d-smoothed signal STILL redundant with variance-scaling",
+    "Kill #4 spy_real gate-fire/bottom-20%-scale overlap 100.0% \u2265 60% \u2192 5d-smoothed signal STILL redundant with variance-scaling"
+  ]
+}
