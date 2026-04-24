@@ -1524,6 +1524,90 @@ Complete study:
 
 ---
 
+## From iteration 022 — TOM seasonality eq_weight modulator on iter 016 base
+
+Complete study: `studies/strategy_hunt_loop/iterations/022-2026-04-24-1942-tom-seasonality-overlay/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Calendar-driven eq:bd weight modulator on vol-managed 2-leg stack**
+   (iter 016 base). Cfg `ntsx_vm_vt15_L21_cap20_tom_b90_m50`:
+   eq_weight = 0.9 on TOM window (last 3 + first 3 business days of
+   each calendar month) / 0.5 mid-month; bd_weight mirrors (0.1 TOM,
+   0.5 mid). Sharpe regresses uniformly vs iter 016 by −0.218 / −0.256
+   / −0.209 across educational / spy_real / ndx_real — the largest
+   iter-to-iter-016 Sharpe drop in the hunt-loop. DSR worst p=0.587
+   (vs iter 016's 0.226 — got WORSE). MDD regresses on 2/3 datasets
+   (+6.2 pp spy, +7.3 pp ndx). Kills #2, #3, #4 all triggered.
+
+2. **The specific root cause: σ²_port is quadratic in w_eq.** When the
+   modulator swings w_eq by Δw = 0.4 (from 0.5 to 0.9), σ²_port
+   triples on the boosted bars (since σ_eq ≈ 3.5× σ_bd for
+   SPY/QQQ+IEF). Vol-target's scale[t] = target_vol² / σ²_port[t-1]
+   compensates by cutting scale by a factor of 3×, so the net equity
+   position on TOM days is roughly equal to iter 016's 0.6 constant
+   position. The raw TOM-day premium (+1-3 bps/d on all 3 datasets;
+   Kill #1 passed cleanly) gets compressed to ~0.6 bps/d net, then
+   erased by the turnover cost of switching weights at every TOM
+   boundary (~30 bps/day net position change).
+
+3. **Secondary damage from mid-month bond overshoot.** During
+   non-TOM bars (~72% of the sample), w_bd = 0.5 instead of iter 016's
+   0.4. In the post-2009 zero-rate regime, bonds underperformed
+   equity by ~4-6 %/yr, so over-allocating to bonds on most bars
+   costs ~40-60 bps/yr in CAGR regardless of TOM premium capture.
+
+4. **The TOM premium IS real** on all 3 datasets (Kill #1 passed):
+   Δ mean +1.14 to +2.64 bps/day; TOM-day Sharpe 0.91 / 1.05 / 1.20 vs
+   mid-month 0.53 / 0.84 / 0.86. The failure is PORTFOLIO-LEVEL
+   absorption, not signal-level absence. Post-overlay TOM-state net
+   Sharpe INVERTS on 2/3 datasets (TOM net Sharpe < mid net Sharpe) —
+   the vol-target feedback actively negates the premium at the
+   aggregate-return level.
+
+### Don't re-test
+
+- TOM, holiday, day-of-week, week-of-month, month-of-year, or
+  earnings-calendar weight modulators with Δw ≥ 0.2 swing on any
+  vol-managed 2-leg stack (iter 008, iter 016, iter 018, iter 021
+  bases). All will fail by the same σ² ∝ w² geometric mechanism.
+- Smaller swing magnitudes (Δw = 0.1-0.2) on the same vol-managed
+  2-leg base. Will reduce the Sharpe regression magnitude but still
+  produce negative net edge vs iter 016 — the scale-compensation ÷
+  quadratic-penalty ratio is strictly less than 1 for any Δw > 0.
+
+### Structural principles
+
+- **σ²_port feedback absorbs any time-varying per-leg weight schedule
+  on a 2-leg vol-managed stack, regardless of the signal source**
+  (variance overlays iter 020/021; ρ-regime overlays iter 019; calendar
+  modulators iter 022). The lemma is geometric (quadratic variance
+  penalty on w_eq) not signal-specific.
+
+- **Kill #1 (mechanism present in raw data) passing is necessary but
+  NOT sufficient for strategy success.** Even a strong raw conditional
+  drift signal can be erased at the portfolio-construction level by
+  variance-target feedback. Future iterations testing a new signal
+  class should ALSO verify that the portfolio construction doesn't
+  absorb the premium — e.g. by checking post-overlay TOM-state Sharpe
+  vs mid-state Sharpe separation.
+
+- **Bypassing absorption requires a portfolio-GEOMETRY change, not a
+  signal change.** Candidates: binary entry/exit rotations (zero
+  variance on out-of-market bars); stacks with variance-disjoint legs
+  (managed-futures 3rd leg; FX carry); rotations on non-equity
+  underlyings (VX futures roll). All remaining undefeated directions
+  in BASE_MEMORY ({Option X, W, Y, Z}) change the geometry.
+
+### Next direction after this failure
+
+See BASE_MEMORY "Iter 023 candidates" — Option X (3rd uncorrelated
+leg, probably synth managed-futures on TLT trend) is PRIMARY; Option
+Z (seasonality as BINARY rotation, not weight modulator) is secondary
+and can reuse iter 022's TOM flag logic.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:
