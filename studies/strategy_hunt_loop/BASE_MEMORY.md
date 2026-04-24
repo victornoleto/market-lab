@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 12
+total_iterations: 13
 winners_found: 0
 status: iterating
-latest_iteration: "012-2026-04-24-1556"
-cumulative_n_trials: 4252
+latest_iteration: "013-2026-04-24-1619"
+cumulative_n_trials: 4255
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -63,8 +63,8 @@ winner:
 | 1 | **008** | 🥈 PROMISING | **74** | `vol_managed_60_40 vt15_L21_cap20` (2-leg SPY+TLT, single ex-ante cfg) | `[risk_parity, p.10-11]` + Moreira-Muir 2017 | hunt-loop co-high; 6/6/6 gates; 4/5 winner conds; only DSR p=0.332 fails |
 | 1 | **010** | 🥈 PROMISING | **74** | `vt15_L21_cap20_3leg` (3-leg SPY+TLT+GLD, single ex-ante cfg) | `[risk_parity, p.10-11]` + Asness-Frazzini-Pedersen 2012 | hunt-loop co-high; spy Sharpe 1.040 (Δ+0.14); ties iter 008 → blend family ceiling |
 | 3 | 006 | 🥈 PROMISING | 67 | `vol_managed_60_40 vt15_L21_cap20` (12-cfg grid) | `[risk_parity, p.10-11]` + Moreira-Muir 2017 | first SPY+TLT blend; 4/5 winner conds; killed by grid PBO 0.690 |
-| 4 | **009** | 🥈 PROMISING | 64 | `vt15_L21_cap20 + ts_inv21_h50` (T10Y3M overlay) | `[regime_change, p.5-6]` + Estrella-Mishkin 1998 | macro overlay; 21d EMA erased lead-time, regress vs iter 008 |
-| 5 | 005 | 🥉 MARGINAL | 59 | `variance_managed_spy vt20_L21_cap15` | Moreira-Muir 2017 + `[systematic_trading, p.107-111]` | canonical σ⁻²; 6/7 gates × 3 ds; edge +0.081/+0.097 just below +0.10 |
+| 4 | **009** | 🥈 PROMISING | 64 | `vt15_L21_cap20 + ts_inv21_h50` (T10Y3M 21d symmetric overlay) | `[regime_change, p.5-6]` + Estrella-Mishkin 1998 | macro overlay; 21d EMA erased lead-time; 100% bottom-20 overlap on edu+spy |
+| 4 | **013** | 🥈 PROMISING | **64** | `vt15_L21_cap20 + meta_lr_rho60_vixz252` (LR meta on iter 008 blend) | `[advances_fin_ml, ch.3, p.50-56]` + López de Prado 2018 | meta-labeling ρ+vix features redundant with vol-scaling; same 100% overlap as iter 009/012 |
 
 *(iter 001 ~35/100 approximate; back-fill in `tests/test_strategy_scoring.py::TestNearMiss`.)*
 
@@ -78,13 +78,13 @@ the 18 KB ceiling. Full hypothesis, citations, scope and score
 breakdown for compressed iters are recoverable from
 `iterations/NNN-*/hypothesis.md` + `verdict.json` + `final_report.md`.
 
-### 012 — 2026-04-24 — Asymmetric T10Y3M equity-leg-only haircut overlay on iter 008 daily blend (🥉 MARGINAL, 58/100, Kill #1 + #3 + #4 TRIGGERED)
-- **Hypothesis:** Option B' — apply T10Y3M binary haircut ONLY to equity leg of iter 008's daily 2-leg blend (SPY halved when ts ≤ 0, TLT keeps full weight), with 5-day EMA smoothing (not 21d iter 009). Single pre-committed cfg `vt15_L21_cap20 × ts_inv5_h50_eq` (threshold=0, haircut=0.5, smoothing=5d, applied_to=equity, lag=1). Two structural distinctions vs iter 009 (dead-end): (a) light smoothing preserves 6-18m lead-time, (b) asymmetric preserves flight-to-quality.
-- **Citations:** `[regime_change, p.5-6, ch.2]` (regime-change principle); `[risk_parity, p.10-11, ch.1, p.80-81]` (RP base + asymmetry rationale); `[systematic_trading, p.144, ch.9]` (tier-2 haircut); `[advances_fin_ml, p.162-164, 208-211, 222-223, 31-34]`; Moreira-Muir 2017 *JoF* 72(4) DOI 10.1111/jofi.12513; Estrella-Mishkin 1998 *REStat* 80(1) DOI 10.1162/003465398557320.
-- **Scope:** 1 ex-ante combined cfg × 3 datasets (edu SPY+TLT 24y 5967 bars / spy 17y 4226 / ndx 16y 4066) = 3 trials. Cumulative n_trials 4249 → 4252.
-- **Result:** Sharpe edu 0.824 (Δ+0.162 vs bench 0.66, Δ−0.041 vs iter 008) / spy 0.965 (Δ+0.065, Δ−0.035) / ndx 0.968 (Δ+0.013, Δ−0.053). Sharpe edge gate: only 1/3 clears +0.10 (iter 008 had 2/3). **Kill #1 TRIGGERED** (both real slots regress vs iter 008). **Kill #3 TRIGGERED** (58 < 70). **Kill #4 TRIGGERED** (gate-fire/bottom-20%-scale overlap 100% on edu+spy — same diagnostic as iter 009, 5d EMA did NOT resolve redundancy). Gates 6/7 uniformly all 3 ds — only G2 DSR fails (p=0.362/0.385/0.410, worst than iter 008's 0.332). G3 WF 6/7/7 (improved vs iter 008). G4 OOS +0.469/+0.099/+0.013 all PASS. G6 boot CI +0.127 to +0.193 all positive. G7 xlib 0.03-0.07 pp PASS. MDD +1.9pp edu/spy, +1.0pp ndx. CAGR floor 3/3. MDD ceiling 2/3 (spy 0.38 pp over). Winner conditions **0/5** (regression from iter 008's 4/5).
-- **Score breakdown:** 1:10/25 2:19/25 3:0/15 4:15/15 5:10/15 6:4/5
-- **Lesson:** **T10Y3M binary-haircut overlay on vol-managed SPY/QQQ+TLT blend is CLOSED as a research direction.** Iter 009 (symmetric, 21d EMA) + iter 012 (asymmetric, 5d EMA) together span the full 2×2 corner matrix of {smoothing × asymmetry}; all empirically-tested corners show 100% gate-fire/bottom-20%-scale overlap on SPY-based datasets. The redundancy with variance-scaling is STRUCTURAL not parametric — T10Y3M and SPY realized-vol are cointegrated at the business-cycle timescale that matters for a vol-managed blend. Asymmetric bond-preservation is additionally the WRONG direction for 2022 regime where SPY-TLT correlation went positive. **DO NOT re-test any T10Y3M overlay variant on this mechanism.** Productive pivot: Option C (meta-labeling AFML ch.3 — orthogonal cross-sectional features) OR Option E (EBP Gilchrist-Zakrajšek 2012 — credit-spread distinct from rates-term-structure) OR Option G (return-stacked ETF rotation). See `iterations/012-2026-04-24-1556-asymmetric-term-spread-overlay/final_report.md`.
+### 013 — 2026-04-24 — Meta-labeling LR classifier (AFML ch.3) on iter 008 blend (🥈 PROMISING, 64/100, Kill #3)
+- **Result:** Sharpe edu/spy/ndx 0.853/0.990/1.007 (Δ vs iter 008 −0.012/−0.010/−0.014; only 1/3 clears +0.10 gate), gates 6/7 × 3 ds, DSR worst p=0.351 (n=4255), gate-fire 10.1%/6.3%/3.2%, p_act std 0.19-0.21 (NOT degenerate), overlap-bottom-20% **100% edu+spy, 62.5% ndx** (same diagnostic as iter 009/012), robustness 9/9 (hunt-loop best), winner 1/5; score 1:10 2:19 3:0 4:15 5:15 6:5.
+- **Lesson:** **Meta-labeling with vol-proxy features (ρ_60 + vix_z_252) on vol-managed SPY+TLT blend is REDUNDANT with variance-scaling** — same 100%-overlap failure as T10Y3M overlay family (iter 009/012). Classifier learns real patterns but those patterns cointegrate with σ²_port at business-cycle scale. **Three distinct regime-overlay/meta-model approaches (009/012/013) all closed with identical diagnostic — vol-managed SPY+TLT blend at 74/100 NOT unlocked by more vol-proxy signals regardless of implementation.** Pivot: Option E (EBP — needs pre-val), Option G (return-stacked ETF), Option H (meta-labeling with non-cointegrated features). See `iterations/013-2026-04-24-1619-meta-labeling-blend/`.
+
+### 012 — 2026-04-24 — Asymmetric T10Y3M equity-leg-only haircut (5d EMA) on iter 008 blend (🥉 MARGINAL, 58/100)
+- **Result:** Sharpe edu/spy/ndx 0.824/0.965/0.968 (Δ vs iter 008 −0.041/−0.035/−0.053; only 1/3 clears +0.10 gate), gates 6/7 × 3 ds, DSR worst p=0.410 (n=4252), overlap-bottom-20% 100% edu+spy (same diagnostic as iter 009), winner 0/5; score 1:10 2:19 3:0 4:15 5:10 6:4.
+- **Lesson:** **T10Y3M overlay family CLOSED — iter 009 (21d symmetric) + iter 012 (5d asymmetric) span the full 2×2 smoothing × asymmetry matrix, all corners show 100% overlap with variance-scaling de-lever on SPY-based datasets.** Structural cointegration, not parametric. Also in 2022 ρ(SPY,TLT)>0 regime, asymmetric bond-preservation is wrong direction. See `iterations/012-2026-04-24-1556-asymmetric-term-spread-overlay/`.
 
 ### 011 — 2026-04-24 — Weekly 3-leg blend (🥉 MARGINAL, 52/100, Kill #1+#3)
 - **Result:** Sharpe edu/spy/ndx 0.942/1.019/0.898 (Δ weekly-bench +0.277/+0.087/−0.109; only 1/3 clears gate), gates 5/6/5, DSR worst p=0.515 (n=4249 — REGRESSES vs iter 010 daily 0.368), MDD 47/47/49% (+10-14pp vs iter 010), cap-hit 86%→95%, turnover UP 10/yr→13.6/yr per leg, winner 3/5; score 1:10 2:17 3:0 4:15 5:5 6:5.
@@ -127,17 +127,17 @@ breakdown for compressed iters are recoverable from
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed (DEAD_ENDS or saturated): sector rotation 1/K + Clenow (002/003), single-asset vol-scaling (004/005), momentum overlay on vol-managed blend (007 redundant), iter 006 single-cfg verification (008 confirmed structural), T10Y3M overlay entire 2×2 quadrant FALSIFIED (009 symmetric+21d heavy + 012 asymmetric+5d light — both show 100% redundancy with variance-scaling), 3-leg blend daily (010 ties iter 008 — blend family ceiling), weekly-rebalance blend (011 — daily cadence required, DSR-attack via timeframe falsified).
+Consumed (DEAD_ENDS or saturated): sector rotation 1/K + Clenow (002/003), single-asset vol-scaling (004/005), momentum overlay on vol-managed blend (007 redundant), iter 006 single-cfg verification (008 confirmed structural), T10Y3M overlay entire 2×2 quadrant FALSIFIED (009 symmetric+21d heavy + 012 asymmetric+5d light — both 100% redundancy with variance-scaling), 3-leg blend daily (010 ties iter 008 — blend family ceiling), weekly-rebalance blend (011 — daily cadence required, DSR-attack via timeframe falsified), **Option C vol-proxy meta-labeling (iter 013 — LR on ρ_60+vix_z 100% redundant with vol-scaling, same failure mode as 009/012)**.
 
-### Iter 013 candidates (ranked by expected information gain)
+### Iter 014 candidates (ranked by expected information gain)
 
-Iter 012 framing: T10Y3M-overlay quadrant fully closed (009+012 span all 2×2 corners). Timeframe-change quadrant closed (011). Momentum-overlay quadrant closed (007). Remaining productive paths require **genuinely orthogonal information** — not another correlated macro signal on the same universe.
+Iter 013 framing: three distinct "regime overlay/meta-model" approaches now all show the same 100%-overlap failure mode (iter 009 T10Y3M 21d symmetric; iter 012 T10Y3M 5d asymmetric; iter 013 LR meta on ρ_60+vix_z). **The vol-managed SPY+TLT blend at 74/100 is NOT unlocked by more vol-proxy signals, regardless of implementation.** Remaining productive paths require signals empirically pre-validated as non-cointegrated with σ²_port(blend).
 
-0f. **[OPTION C — META-LABELING on iter 008 blend] (AFML ch.3, ch.5)** — secondary ML model uses cross-sectional features blend can't see (cross-asset momentum, breadth, options-implied skew, macro state regime encoding). Orthogonal by construction; ~2-3h engineering. Expected +0.20-0.30 Sharpe if model has real predictive power — that magnitude is what DSR needs. **PICK FIRST for iter 013** — highest information-orthogonality ceiling, attacks DSR via observed-Sharpe side.
+0i. **[OPTION E — EBP MACRO SIGNAL]** EBP (Gilchrist-Zakrajšek 2012) overlay on iter 008 blend. Credit-cycle signal structurally distinct from yield-curve slope (different historical fire-episodes: 1998 LTCM, 2008 GFC, 2020 COVID). Monthly data → held constant within month at daily rebalance. Data in `data/external/macro/ebp_monthly.parquet`. **MANDATORY PRE-VALIDATION** after iter 013: measure 60-day rolling correlation between EBP and σ²_port(iter 008); if |ρ| > 0.30 on > 20% of bars → reject without full-iter test.
 
-0i. **[OPTION E — EBP MACRO SIGNAL] EBP (Gilchrist-Zakrajšek 2012) overlay on iter 008 blend**. Credit-cycle signal structurally distinct from yield-curve slope (different historical fire-episodes: 1998 LTCM, 2008 GFC, 2020 COVID). Monthly data → held constant within month at daily rebalance. Data in `data/external/macro/ebp_monthly.parquet`. Expected +0.02-0.06 Sharpe IF EBP-SPY-realized-vol correlation < T10Y3M's (needs validation — NOT re-open T10Y case).
+0k. **[OPTION G — RETURN-STACKED ETF ROTATION]** NTSX/NTSI/NTSE rotation. Built-in 90/60 equity/bond leverage + region tilt — structurally new primitive not yet tested. Parallel-track candidate (different universe/mechanism). `[risk_parity, p.5]` + `[leverage_for_the_long_run, p.19-20]`. NTSI/NTSE launched 2021 — 16y backtest requires synthetic proxies (90% SPY/EFA/EEM + 60% IEF).
 
-0k. **[OPTION G — RETURN-STACKED ETF ROTATION] NTSX/NTSI/NTSE rotation**. Built-in 90/60 equity/bond leverage + region tilt — structurally new primitive not yet tested. Parallel-track candidate (different universe/mechanism). `[risk_parity, p.5]` + `[leverage_for_the_long_run, p.19-20]`.
+0l. **[OPTION H — META-LABELING WITH PRE-SCREENED ORTHOGONAL FEATURES]** — same architecture as iter 013 but with features empirically validated as NON-cointegrated with σ²_port: HY credit spread (HYG/LQD ratio), VIX term-structure slope (VIX3M/VIX ratio), cross-sectional breadth (% SPY components > 200d MA), FX carry index. Require pre-iter screening: |ρ(feature, σ²_port)| < 0.30 on ≥ 80% of bars. Features failing screen are rejected pre-commit.
 
 ### Deeper backlog (not yet designed as iter-next)
 
@@ -167,6 +167,7 @@ Iter 012 framing: T10Y3M-overlay quadrant fully closed (009+012 span all 2×2 co
 - 3-leg SPY+TLT+GLD daily on `vt15_L21_cap20_3leg` — ties iter 008 at 74/100, blend family ceiling (iter 010); DO NOT re-test minor variations
 - Weekly-rebalance 3-leg blend (W-FRI, 4w lookback) — vol-managed REQUIRES daily cadence; MDD +10-14 pp, DSR WORSE, turnover UP (iter 011); DO NOT re-test other weekly params or monthly cadence
 - T10Y3M asymmetric equity-leg-only haircut, 5d EMA on iter 008 blend — SAME 100% gate-fire/bottom-20%-scale overlap as iter 009 symmetric 21d (iter 012); **2×2 quadrant (smoothing × asymmetry) fully closed**; redundancy is structural cointegration, not parametric; DO NOT re-test any T10Y3M overlay variant on this mechanism
+- Meta-labeling LR classifier with ρ_stockbond + VIX z-score features on iter 008 vol-managed blend — SAME 100% gate-fire/bottom-20%-scale overlap on edu+spy as iter 009/012 (iter 013); both features cointegrate with σ²_port at business-cycle scale; classifier learns redundant de-lever rule. **Three regime-overlay/meta-model approaches (009 + 012 + 013) all show identical 100%-overlap failure** — vol-proxy signals CANNOT break 74/100 ceiling, require empirically non-cointegrated features (EBP credit, VIX term slope, breadth, FX carry — all need pre-validation)
 
 ---
 

@@ -646,6 +646,101 @@ falls back to the 100 %-overlap structural problem on historical
 
 ---
 
+## From iteration 013 — meta-labeling classifier with vol-proxy features on vol-managed SPY+TLT blend
+
+Complete study: `studies/strategy_hunt_loop/iterations/013-2026-04-24-1619-meta-labeling-blend/final_report.md`.
+
+### What the iteration resolved
+
+Iter 013 tested BASE_MEMORY's "PICK FIRST" Option C — a scikit-learn
+`LogisticRegression(C=1.0, penalty='l2')` trained on two features
+orthogonal to the blend's realized-vol inputs: rolling 60-day SPY-TLT
+correlation and VIX z-score over 252 bars. Walk-forward retraining
+every 252 bars on rolling 1000-bar window; decision threshold
+p > 0.5. Single pre-committed combined cfg
+`vt15_L21_cap20 × meta_lr_rho60_vixz252_w1000_r252`. Intent: attack
+DSR ceiling via observed-Sharpe side using a ML architecture
+(AFML ch.3, López de Prado 2018) distinct from the macro-overlay
+family falsified in iter 009/012.
+
+Result: **score 64/100 MARGINAL/PROMISING boundary**, −10 vs iter
+008/010 co-high. Kill #3 triggered (< 70). Sharpe regresses slightly
+on ALL 3 datasets (Δ −0.010 to −0.014), but all under the Kill #1
+0.02 tolerance. Gates 6/7 uniformly across datasets (only G2 DSR
+fails, worst p = 0.351). CAGR + MDD floors both 3/3. Robustness 9/9
+sub-windows positive — highest in hunt-loop history.
+
+### Structural principle (do NOT re-test)
+
+**Meta-labeling with any feature set that cointegrates with portfolio
+realized vol at the business-cycle timescale produces 100 % overlap
+between meta-gate-off bars and bottom-20 % blend-scale bars** on
+SPY-based datasets. The classifier is NOT degenerate — `p_act` has
+std 0.19-0.21, showing genuine decision-making — but the patterns it
+learned are the same ones the variance-scaler already enforces.
+Adding a decision stage with correlated information forfeits residual
+positive drift without buying any regime protection.
+
+This is the same structural redundancy observed in iter 009 (T10Y3M
+21d symmetric) and iter 012 (T10Y3M 5d asymmetric). **Three distinct
+"regime overlay / meta-model" approaches (macro-binary-symmetric,
+macro-binary-asymmetric, ML-classifier-continuous) now all show
+identical 100 %-overlap failure on edu + spy_real.** The common
+failure mode is that **any slow-moving regime proxy cointegrates with
+realized portfolio vol at the business-cycle scales that drive the
+blend's own de-lever**, whether that proxy is yield-curve slope,
+cross-asset correlation, VIX level, or a classifier trained on them.
+
+Empirical evidence: iter 013 gate fires at 10.1 % / 6.3 % / 3.2 %
+(edu/spy/ndx) with 100 % / 100 % / 62.5 % bottom-20 %-scale overlap;
+iter 009 fires at 16.3 % / 17.8 % / 18.5 % with 100 % / 100 % / 40 %;
+iter 012 fires at 15.2 % / 17.1 % / 12.9 % with 100 % / 100 % /
+40.5 %. Different fire-rates, same structural overlap.
+
+### Don't re-test
+
+- **Meta-labeling classifiers (logistic regression, random forest,
+  gradient boosting, simple MLP) on a vol-managed SPY/QQQ+TLT blend
+  using any subset of the following features**: SPY-TLT rolling
+  correlation (any window 21-252 bars), VIX level or z-score (any
+  normalisation window), realized volatility of either leg (any
+  lookback), SMA/EMA/momentum of either leg, yield-curve-slope
+  signals (T10Y3M, T10Y2M, etc.), SPY-VIX spread. Every one of these
+  cointegrates with σ²_port at the business-cycle scale.
+- **Retrain-cadence or window-size variations** (train 500/2000
+  bars, retrain quarterly/monthly) on the same feature set — the
+  cointegration is structural, not parametric; smaller windows make
+  the classifier noisier without adding orthogonal information.
+- **Decision-threshold sweep** (p > 0.4, p > 0.6) on iter 013's
+  feature set — still the same signal source, just different
+  fire-rate.
+- **Non-linear classifiers with identical features** (random forest,
+  GBM, XGBoost, neural net) — a more expressive model cannot
+  manufacture orthogonality from correlated features; it just
+  overfits harder on the training set, which DSR then penalises.
+
+### Path forward (NOT dead)
+
+- **Option E (EBP credit-cycle overlay)** remains valid IFF
+  pre-validation shows EBP's 60-day rolling correlation with
+  σ²_port(iter 008) stays < 0.30 on > 80 % of bars. 1998 LTCM, 2008
+  GFC, 2020 COVID fire-episodes are partially independent of
+  rates-term-structure, so this is plausible — but not guaranteed.
+  Pre-screen BEFORE committing DSR budget.
+- **Option G (return-stacked ETF rotation)** remains valid. Different
+  universe (NTSX/NTSI/NTSE or synthetic proxies), different primitive
+  (built-in futures-stacking leverage).
+- **Option H (meta-labeling with empirically-screened orthogonal
+  features)** remains valid. Same architecture as iter 013, but
+  reject any feature whose |ρ(feature, σ²_port)| > 0.30 on > 20 %
+  of bars BEFORE training. Candidate features to screen: HYG/LQD
+  credit spread ratio, VIX term-structure slope (VIX3M/VIX if
+  available), cross-sectional breadth (% components above 200d MA),
+  FX carry basket. Only features passing the screen advance to
+  full-iter test.
+
+---
+
 ## From iteration 009 — T10Y3M binary-haircut overlay on vol-managed SPY+TLT blend
 
 Complete study: `studies/strategy_hunt_loop/iterations/009-2026-04-24-1447-term-spread-overlay-blend/final_report.md`.
@@ -794,6 +889,22 @@ rejected — require qualitatively different mechanism:
       extension to monthly cadence (not tested but structurally
       worse). Path forward: Option B' asymmetric overlay + Option C
       meta-labeling, both on daily cadence.
+- [ ] **Meta-labeling classifier (LR/RF/GBM/etc.) with any vol-proxy
+      feature set on a vol-managed SPY/QQQ+TLT blend** (iter 013).
+      Features cointegrated with σ²_port at business-cycle scale:
+      SPY-TLT rolling correlation (any window), VIX level or
+      z-score, realized volatility of either leg, SMA/EMA/momentum
+      of either leg, yield-curve slope, SPY-VIX spread. Classifier
+      is NOT degenerate (p_act std 0.19-0.21) but learns redundant
+      de-lever rule. Score 74 → 64 with 100% gate-fire/bottom-
+      20%-scale overlap on edu+spy. **Three regime overlay/meta-
+      model approaches now all closed with same diagnostic (iter
+      009 symmetric T10Y3M, iter 012 asymmetric T10Y3M, iter 013
+      LR meta)** — vol-proxy signals cannot break 74/100 ceiling
+      regardless of implementation. Kill #3 TRIGGERED. Path forward:
+      Option E (EBP with pre-validation), Option G (return-stacked),
+      Option H (meta-labeling with EMPIRICALLY pre-screened features
+      where |ρ(feature, σ²_port)| < 0.30 on > 80% of bars).
 
 ---
 
