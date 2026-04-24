@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 22
+total_iterations: 23
 winners_found: 0
 status: iterating
-latest_iteration: "022-2026-04-24-1942"
-cumulative_n_trials: 4273
+latest_iteration: "023-2026-04-24-2007"
+cumulative_n_trials: 4276
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -78,13 +78,13 @@ the 18 KB ceiling. Full hypothesis, citations, scope and score
 breakdown for compressed iters are recoverable from
 `iterations/NNN-*/hypothesis.md` + `verdict.json` + `final_report.md`.
 
-### 022 — 2026-04-24 — TOM seasonality eq_weight modulator 0.9↔0.5 on iter 016 base (🥉 MARGINAL 54/100, Kills #2+#3+#4, Kill #1 clear)
-- **Hypothesis:** TOM institutional-flow premium (Lakonishok-Smidt 1988; Etula et al 2020 JF) should be orthogonal to σ²_port since calendar-driven. Modulate eq_weight 0.9 on TOM (last 3 + first 3 bdays) / 0.5 mid-month, preserve iter 016's long-run 60:40 avg.
-- **Citations:** `[trading_systems_methods, p.479-481]` primary; `[trading_systems_methods, p.418]`; `[risk_parity, p.10-11, ch.1]`; `[systematic_trading, p.40, ch.2]`; `[advances_fin_ml, p.162-164]`; Lakonishok-Smidt 1988 RFS, Etula et al 2020 JF, Kunkel et al 2003 IRFA, Ariel 1987 JFE, Moreira-Muir 2017.
-- **Scope:** 1 cfg × 3 ds; n_trials 4270→4273 (+3).
-- **Result:** Sharpe 0.763/0.885/0.977 (Δ frozen +0.08/−0.01/+0.02, 0/3 pass +0.10; **Δ iter 016 −0.218/−0.256/−0.209 uniform regression**), MDD 34.0/32.8/30.6% (+2.7/+6.2/+7.3pp vs iter 016, Kill #4 2/3), CAGR 11.1/13.2/15.8% (−0.4/−1.8/−3.4pp), gates 6/7 all ds (G2 DSR fail, xds +4), **DSR p=0.587/0.513/0.396 worse than iter 016's 0.226** (Kill #3), robustness 9/9, winner 0/5; **raw TOM premium IS present** (+1.14-2.64 bps/d; ann-Sh diff +0.18-0.38 — Kill #1 clear); post-overlay TOM-state ann-Sh INVERTS on 2/3 ds.
-- **Score breakdown:** 1:0/25 2:19/25 3:0/15 4:15/15 5:15/15 6:5/5 = 54/100 MARGINAL.
-- **Lesson:** σ²_port absorption generalises from variance overlays to calendar-driven weight modulators. σ²_port quadratic in w_eq; swing 0.5↔0.9 triples σ² on TOM days → scale ÷3 → premium compressed (~0.6 bps/d net, erased by turnover); mid-month w_bd overshoot drags CAGR ~50 bps/yr. Closes calendar-modulated eq:bd weight family (TOM/holiday/DoW/MoY/earnings all predicted identical). Does NOT close binary calendar entry/exit, calendar on variance-disjoint legs, calendar in cross-sectional ranking. Forward: portfolio-geometry change (Option X 3rd leg, W carry, Z seasonality-as-rotation). See `iterations/022-2026-04-24-1942-tom-seasonality-overlay/`.
+### 023 — 2026-04-24 — Time-series trend 3-asset SPY+TLT+GLD per-asset vol-target (📉 NEAR_FAIL 28/100, biggest hunt-loop regression)
+- **Result:** Sharpe 0.554/0.552/0.610 (Δ frozen −0.126/−0.348/−0.345, 0/3 beat bench; **Δ iter 016 −0.427/−0.588/−0.576 uniform — largest ever**), CAGR 8/8/9% floor fails 3/3, MDD 48/48/36% spy +14.5pp, gates 5/5/4 (G2 DSR fail p=0.89/0.93/0.90; G6 boot CI neg 3/3; G3 WF fail ndx 4/8), DSR worst-ever p=0.926, n_trials 4273→4276, winner 0/5; cap_hit 67-75% (Kill C clear), short fracs 9-18% eq / 38-45% TLT / 33-39% GLD (Kill B clear, geometry change happens mechanically); score 1:0 2:15 3:0 4:0 5:10 6:3 = 28.
+- **Lesson:** TSM-primary on ≤4-asset ETF basket cannot beat SPY/QQQ — turnover ~35/yr/leg × 2 bps cost (2.1%/yr drag) dominates sqrt(3)≈1.7× basket diversification (Carver Law of Active Management); Hurst-Ooi-Pedersen 2017's documented +1.0 Sharpe required 67 markets. Per-asset vol-target IS structurally different from σ²_port but cost > premium at this scale. Closes TSM-primary on broad-asset-class small baskets. Does NOT close slow-EWMAC + exit thresholds, ≥20-market external baskets, carry-primary, VRP-primary. See `iterations/023-2026-04-24-2007-time-series-trend-3etf/`.
+
+### 022 — 2026-04-24 — TOM seasonality eq_weight modulator 0.9↔0.5 (🥉 MARGINAL 54/100)
+- **Result:** Sharpe 0.763/0.885/0.977 (Δ frozen +0.08/−0.01/+0.02; **Δ iter 016 −0.218/−0.256/−0.209 uniform regression**), MDD 34.0/32.8/30.6% (+2.7/+6.2/+7.3pp vs 016, Kill #4 2/3), gates 6/6/6, DSR p=0.587/0.513/0.396 worst (Kill #3); raw TOM premium present (Kill #1 clear) but post-overlay inverts on 2/3 ds.
+- **Lesson:** σ²_port absorption generalises from variance to calendar-driven weight modulators (σ² quadratic in w_eq, swing 0.5↔0.9 triples σ² → scale÷3 → premium compressed). Closes calendar-modulated eq:bd weight family (TOM/holiday/DoW/MoY/earnings predicted identical). See `iterations/022-2026-04-24-1942-tom-seasonality-overlay/`.
 
 ### 021 — 2026-04-24 — Short put credit spread VRP (🥇 STRONG 79/100, ties top-K #1)
 - **Result:** Sharpe 0.990/1.138/1.144 (Δ iter 016 +0.009/−0.002/−0.042 Kill #2), MDD 29.4/25.6/20.4% (Δ iter 016 −1.95/−1.01/−2.85pp uniform improvement), gates 6/7, DSR p=0.217 (n=4270 lowest-ever), overlay +2.95-4.10%/yr Bondarenko-matching, winner 4/5; score 1:25 2:19 3:0 4:15 5:15 6:5 = 79.
@@ -140,23 +140,20 @@ breakdown for compressed iters are recoverable from
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: sector rotation (002/003); single-asset vol-scaling (004/005); momentum overlay (007); iter 006 verif (008); T10Y3M 2×2 (009/012); 3-leg blend SPY+TLT+GLD (010, 74); weekly blend (011); meta-label vol-proxy (013); EBP credit overlay (014); iter 015 NTSX static (77); iter 016 static×vol-target (79 top-K #1); iter 017 regional rotation (52); iter 018 funding-cost replay (79); iter 019 HMM ρ regime; iter 020 long-gamma put-spread; iter 021 short-gamma credit-spread VRP (79 top-K #1); **iter 022 closes calendar-modulated-weight family (MARGINAL 54) — σ²_port absorption now universal across ALL signal classes on iter 016 base (variance, credit, correlation, momentum, calendar).**
+Consumed/closed: sector rotation (002/003); single-asset vol-scaling (004/005); momentum overlay on blend (007); T10Y3M 2×2 (009/012); 3-leg static blend (010); weekly blend (011); meta-label vol-proxy (013); EBP credit overlay (014); regional rotation (017); HMM ρ regime (019); long-gamma put-spread (020); short-gamma credit-spread VRP overlay (021); calendar-modulated weight (022); **TSM-primary on small basket per-asset vol-target (023 — 28/100, biggest regression).** Top-K #1 still iter 016/018/021 triple-tied at 79.
 
-### Iter 023 candidates (post-iter-022; σ²_port absorption universal, portfolio-geometry change required)
+### Iter 024 candidates (post-iter-023)
 
-Iter 016/018/021 triple-tied at 79/100 top-K #1. No remaining signal-class bypasses absorption; forward path requires structural geometry change:
+0c. **Option C — Cross-asset CARRY as primary** — PRIMARY POST-023. Linear in yield differentials (Asness-Moskowitz-Pedersen 2013), uncorrelated w/ TSM, low turnover ~3-6/yr. Bond-curve carry synthesisable from TLT-vs-IEF/SHY price ratio. `[ilmanen_expected_returns, ch.5-7]`.
+0z. **Option Z — Slow EWMAC 64/256 + exit thresholds** — secondary; diagnoses if iter 023 bottleneck was speed or basket size. Turnover ~5-8/yr/leg. `[systematic_trading, p.118-119, ch.7]`.
+0v. **Option V — VRP-primary portfolio** (short puts/spreads + cash collateral + Tbill). Premium ~3-4%/yr (Bondarenko 2014); turnover ~12/yr; tail-risk concern. `[volatility_trading, ch.3]`.
+0t. **Option T — pre-registered minimal-trial replay of iter 016** (n_trials=1, PSR clears) — §7 override artifact.
 
-0x. **Option X — 3rd uncorrelated leg (synth managed-futures on TLT trend, or TLT+GLD trend-basket)** — PRIMARY. DBMF/KMLM absent from Tiingo but trend-on-TLT reachable in-cache. Iter 010 saturated 74 with SPY+TLT+GLD; TLT-trend 3rd leg is more variance-disjoint. `[risk_parity, ch.5-7]` + `[systematic_trading, ch.14]`. Sharpe hurdle +0.05 over iter 016.
-0z. **Option Z — seasonality as BINARY rotation** — secondary. "Long 1.5-2× SPY on TOM, cash mid-month" — different variance geometry (zero variance off-TOM), not w_eq perturbation. Citations carry from iter 022.
-0w. **Option W — cross-asset carry (FX/rates/commodity term)** — tertiary; needs external data (UUP/DBC not in Tiingo). `[ilmanen_expected_returns, ch.5-7]`.
-0y. **Option Y — VX futures roll carry** — needs external CBOE/CME (not in Tiingo). `[volatility_trading, ch.5]`.
-0t. **Option T — pre-registered minimal-trial test** — parallel track. Rerun iter 016 post-cost, n_trials=1; PSR clears p<0.001. §7 override artifact.
+### Deeper backlog
 
-### Deeper backlog (not yet designed as iter-next)
-
-- Halloween (sell-in-May) / Santa-rally modulators — predicted to behave like TOM (iter 022 closed this family). Skip unless tested in rotation form (Option Z).
-- Meta-allocation among Plano C sleeves (GDE / AVUV / AVDE / AVEM / BTGD).
-- Cross-sectional factor timing (Asness AQR 2024).
+- Calendar effects family closed (iter 022).
+- Plano C sleeve meta-allocation (GDE/AVUV/AVDE/AVEM/BTGD).
+- Cross-sectional factor timing (likely ≥10 factor ETFs needed, close to iter 003 floor).
 
 ---
 
@@ -183,6 +180,7 @@ Iter 016/018/021 triple-tied at 79/100 top-K #1. No remaining signal-class bypas
 - Any regime overlay using stock-bond correlation ρ on vol-managed 2-leg stack — ρ enters σ²_port as cross-term, any f(ρ) is algebraically cointegrated; HMM discretization doesn't rescue; by σ_eq/σ_bd analogy also closes VIX/MOVE/realized-vol overlays (iter 019)
 - Options-on-equity-leg 5/10%OTM×21DTE either sign on vol-managed 2-leg stack — σ²_port→scale absorbs variance; Sharpe tied regardless of sign (iter 020 long Δ−0.04 to −0.08; iter 021 short Δ+0.01/−0.00/−0.04). MDD asymmetric (short −1 to −3pp, long +3 to +6pp). Does NOT close bare short puts/ATM straddles/different DTE/VX futures roll (iter 020/021)
 - Calendar-driven eq:bd weight modulator on vol-managed 2-leg stack (TOM/holiday/DoW/MoY) — σ²_port QUADRATIC in w_eq; swing 0.5↔0.9 triples σ² on flagged days, scale compensates 3×; premium compressed + mid-month w_bd overshoot → Sharpe uniformly −0.21 to −0.26 vs iter 016. Raw TOM premium IS present but absorbed. Does NOT close binary entry/exit, variance-disjoint legs, cross-sectional ranking (iter 022)
+- TSM (any lookback {3-24m}/skip {0-2m}) as PRIMARY mechanism on ≤4-asset broad-asset-class ETF basket with per-asset vol-target — turnover ~35/yr/leg × 2 bps cost > sqrt(3)~1.7× diversification; geometry change happens (kill #B+C clear) but cost > premium. Sharpe regress 0.43-0.59 vs iter 016 (biggest ever). Does NOT close slow-EWMAC + exit thresholds, ≥20-market baskets, carry-primary, VRP-primary (iter 023)
 
 ---
 

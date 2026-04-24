@@ -1608,6 +1608,122 @@ and can reuse iter 022's TOM flag logic.
 
 ---
 
+## From iteration 023 — TSM-primary on 3-asset ETF basket with per-asset vol-target
+
+Complete study: `studies/strategy_hunt_loop/iterations/023-2026-04-24-2007-time-series-trend-3etf/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Time-series trend-following (252-day lookback, 21-day skip,
+   Moskowitz-Ooi-Pedersen 2012 canonical) on a 3-asset ETF basket
+   {SPY/QQQ, TLT, GLD} with per-asset vol-targeting (10% per leg) and
+   2.0× total leverage cap, as the PRIMARY portfolio mechanism (no
+   blend overlay, no static base)** — Sharpe 0.55/0.55/0.61 vs
+   benchmarks 0.68/0.90/0.955 on educational/spy/ndx (Δ −0.13/−0.35/
+   −0.34 vs custom; Δ −0.43/−0.59/−0.58 vs iter 016). Score 28/100
+   📉 NEAR_FAIL. Winner conditions 0/5. **Largest cross-dataset
+   Sharpe regression in the entire hunt loop** (~2× iter 022's
+   previous worst).
+
+2. **The specific root cause: turnover cost dominates basket
+   diversification.** Turnover was ~35/yr per leg × 3 legs × 2 bps
+   per unit Δposition = ~2.1%/yr cost drag. iter 016's blend has
+   ~6/yr × 2 legs × 2 bps = ~0.024%/yr. The two-orders-of-magnitude
+   higher cost dominates the alpha that the small basket can
+   theoretically deliver. Hurst-Ooi-Pedersen 2017's documented +1.0
+   Sharpe for TSM was achieved on **67 markets globally**; with N=3
+   effectively independent (correlations −0.31 to +0.21), the
+   theoretical upper bound is sqrt(3)/sqrt(67) ≈ 21% of the documented
+   edge — and even that small bound is dwarfed by the cost drag.
+
+3. **Per-asset vol-target IS structurally different from σ²_port
+   (kill #B and #C clear), but the geometry change does not translate
+   to alpha at this scale.** Mechanically the strategy short bonds
+   ~43-45% of bars (capturing the 2022 bond crash directionally),
+   leverage cap binds only 67-75% of bars (not pinned), and the basket
+   correlations are textbook (eq-bond −0.30, eq-gold +0.06, bond-gold
+   +0.18). So the iter 023 hypothesis "per-asset vol-target escapes
+   σ²_port absorption" is **mechanically validated but empirically
+   refuted** — the geometry change happens, but the cost ceiling
+   prevents any uplift.
+
+4. **DSR p worst-ever**: 0.926 on spy_real, vs iter 021's 0.217 best.
+   G6 bootstrap CI low is **negative** on all 3 datasets (−0.16 / −0.25
+   / −0.24) — the realized Sharpe is statistically indistinguishable
+   from a noise null. CAGR floor fails on 3/3 datasets (8% / 8% / 9%
+   vs benchmark 11% / 15% / 19%).
+
+### Don't re-test
+
+- TSM (any lookback in {3-24 months}, any skip in {0-2 months}) on any
+  ≤ 4-asset broad-asset-class ETF basket {equity, bond, gold,
+  commodity} as the **primary** portfolio mechanism.
+- Per-asset vol-targeting in {5%, 10%, 15%} per leg with leverage cap
+  in {1.5×, 2.0×, 2.5×} on the same small-basket TSM construction.
+- TSM with daily rebalance on small ETF baskets — turnover dominates.
+  Weekly rebalance on TSM is also expected to fail (see iter 011 weekly
+  blend lesson — daily required for vol-managed primitives, but a
+  TSM-primary weekly grid is a separate untested point if anyone is
+  curious).
+
+### Don't close (path remains open)
+
+- TSM with **slow signals + exit thresholds** to suppress turnover —
+  EWMAC 64/256 (`[systematic_trading, p.118-119, ch.7] + p.282-284`)
+  with hold-period constraints could drop turnover to ~5-8/yr/leg.
+  Worth ONE iteration to verify whether iter 023's bottleneck was
+  lookback-speed or basket-size; if slow signals also fail, the
+  TSM-primary family is fully closed.
+- TSM on **larger universes** (≥ 20 markets) — would require external
+  data outside Tiingo cache (futures, currencies). Out of scope for
+  this hunt loop given cache constraints.
+- Cross-asset **carry** as primary mechanism (linear in yield
+  differentials, ~3-6/yr turnover, uncorrelated with TSM per
+  Asness-Moskowitz-Pedersen 2013 "Value and Momentum Everywhere"
+  *JF* 68(3)).
+- VRP-portfolio as primary mechanism (short puts/spreads + cash
+  collateral + Tbill, premium ~3-4%/yr per Bondarenko 2014, monthly
+  rebalance ~12/yr).
+
+### Structural principles
+
+- **Carver's Law of Active Management binds tightly on small N.** The
+  Sharpe formula `SR ∝ sqrt(N_independent_bets × IR)` is not a soft
+  rule of thumb; it is the operational ceiling. Going from 1 asset
+  to 3 multiplies the diversification factor by sqrt(3) ≈ 1.73; going
+  from 1 to 67 (Hurst-Ooi-Pedersen 2017) multiplies by sqrt(67) ≈
+  8.19. The empirical TSM Sharpe edge scales with this factor.
+  Plan for the basket size BEFORE picking the mechanism.
+
+- **Cost analysis is a pre-commitment, not a post-hoc diagnostic.**
+  Multiplying expected turnover × per-trade cost gives the
+  cost-floor a strategy must clear. For a 35/yr/leg × 2 bps × 3 legs
+  setup, that's 2.1%/yr the strategy must beat just to break even;
+  with SPY annualised return ~14% post-2009, that's 15% of total
+  return given up to costs. Any iteration whose pre-cost backtest
+  Sharpe is +0.10 over benchmark but has ≥ 30/yr/leg turnover should
+  be flagged as cost-dominated before running.
+
+- **"Geometry change" is necessary but NOT sufficient for escaping
+  iter 016 saturation.** iter 023 verified that breaking σ²_port
+  feedback is achievable (per-asset vol-target works mechanically),
+  but the alpha did not appear because a different binding constraint
+  (cost vs basket-size diversification) became active. Forward
+  iterations should map the binding constraint of each new geometry
+  change BEFORE committing to implement it. The remaining "Option C
+  / Z / V" candidates each have different binding constraints
+  (carry: data narrowness; slow-EWMAC: same-basket diagnosis; VRP-
+  primary: tail risk).
+
+### Next direction after this failure
+
+See BASE_MEMORY "Iter 024 candidates" — Option C (cross-asset carry
+as primary) is PRIMARY post-iter-023; Option Z (slow EWMAC variants
+to diagnose iter 023's lookback-speed contribution) is secondary and
+cheap; Option V (VRP-primary portfolio) is tertiary.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:
