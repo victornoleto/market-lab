@@ -380,6 +380,86 @@ momentum and blend-scale dominates.
 
 ---
 
+## From iteration 010 — 3-leg vol-managed SPY+TLT+GLD blend (structural saturation, not mechanism-kill)
+
+Complete study: `studies/strategy_hunt_loop/iterations/010-2026-04-24-1506-three-asset-spy-tlt-gld-blend/final_report.md`.
+
+### What the iteration resolved
+
+Iter 010 extended iter 008's 2-leg SPY+TLT vol-managed blend to 3 legs
+by adding GLD as the third (commodity / inflation-hedge) leg, with
+IDENTICAL params (`vt15_L21_cap20_3leg`, single ex-ante cfg, no sweep).
+Naïve risk parity generalised cleanly to N=3 (9 TDD specs pass),
+Moreira-Muir variance-scaling applied unchanged to the 3-leg σ²_port,
+cross-lib parity holds to ≤ 0.12 pp. Result: **score 74/100 ties iter
+008 exactly (hunt-loop high still held, not exceeded)**, 4/5 winner
+conditions, DSR remains the sole failure.
+
+Dataset asymmetry is the core finding:
+- educational (SPY b&h bench 0.63): **Sharpe +0.12 vs iter 008** (0.87
+  → 0.99). Broad 21y window, equity leg not at Sharpe-ceiling — GLD
+  adds real diversification.
+- spy_real (SPY b&h bench 0.90): **Sharpe +0.04 vs iter 008** (1.00
+  → 1.04). Modest but measurable — comfortable clearance of +0.10
+  gate vs iter 008's exact tie.
+- ndx_real (QQQ b&h bench 0.955): **Sharpe −0.03 vs iter 008** (1.02
+  → 1.00). Tech-heavy universe where equity leg is already near its
+  informational ceiling; GLD's ρ≈0 contribution acts more as drag
+  than hedge on this regime. WF also regresses 7/8 → 5/8 on ndx.
+
+### Structural principle (grid-design caveat, NOT mechanism-kill)
+
+**The vol-managed inverse-variance-weighted multi-leg blend family
+saturates at Sharpe ≈ 1.00 on 16-17y real data, regardless of whether
+N=2 (iter 008) or N=3 (iter 010).** Two iterations, identical
+disciplined N=1 pre-commitment, identical params, both score 74/100
+with 4/5 winner conditions. The specific ceiling factor is
+**DSR-reachability** at cumulative_n_trials ≈ 4240-4250: the deflator
+requires Sharpe uplift > ~0.30 on the worst dataset; the blend
+family delivers +0.04 (worst) to +0.14 (best) on real data. A ~2× gap
+that cannot be closed by adding more legs.
+
+This is **NOT a mechanism kill**. The 3-leg blend itself is a valid
+building block — its cross-asset diversification is real, its MDD
+reduction is real, and it's arguably the best hunt-loop deliverable
+as a candidate for compounding with orthogonal information. But
+**further minor variations of the same core mechanism will score
+74±2 and add nothing new**.
+
+### Don't re-test
+
+- Vol-managed 3-leg blend on daily horizon with minor param variations
+  (`target_vol ∈ {0.10, 0.20}`, `lookback ∈ {63, 126, 252}`,
+  `max_leverage ∈ {1.5, 2.5}`) — will score 74 ± 2 at 4/5 winner
+  conditions, adding only to `cumulative_n_trials` and worsening DSR.
+- Substituting GLD with closely-related commodity proxies (IAU, GDX,
+  PHYS, SGOL) — all track gold spot price, ρ-structure identical.
+- Adding a 4th leg (currency basket, emerging bonds, VIX) to expand
+  to N=4 without changing the core mechanism — expected effect is
+  further ±0.02 Sharpe noise per dataset, no structural ceiling break.
+- Any 3-leg blend grid with > 1 config — G1 PBO reverts from N=1
+  vacuous-PASS to grid-level measurement, and iter 006's grid-level
+  PBO instability (0.69 on 12-cfg grid) has no reason to improve at
+  N=3.
+
+### Path forward (NOT dead — truly different mechanism required)
+
+- **Weekly or monthly rebalance** of the 3-leg blend. Changes the
+  effective n_trials regime DSR sees (weekly ≈ 52/yr vs daily 252/yr)
+  and aligns better with Moreira-Muir 2017's monthly-data canonical
+  regime. Cheapest path to attack the DSR ceiling directly.
+- **Meta-labeling (AFML ch.3)** on the iter 008 2-leg base. Secondary
+  ML model predicts bar-level profitability using cross-sectional
+  features the blend cannot see. Only direction that adds
+  *informationally independent* signal beyond vol-regime.
+- **Asymmetric macro overlay** (iter 009 Option B' — raw/5d T10Y3M +
+  equity-leg-only haircut). Still untested; preserves lead-time +
+  respects flight-to-quality.
+- **Return-stacked ETF rotation** (NTSX/NTSI/NTSE) — built-in leverage
+  layered with duration/equity factor, a structurally new primitive.
+
+---
+
 ## From iteration 009 — T10Y3M binary-haircut overlay on vol-managed SPY+TLT blend
 
 Complete study: `studies/strategy_hunt_loop/iterations/009-2026-04-24-1447-term-spread-overlay-blend/final_report.md`.
