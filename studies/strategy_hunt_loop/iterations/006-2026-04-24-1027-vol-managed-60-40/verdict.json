@@ -1,0 +1,188 @@
+{
+  "total_score": 67,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 20,
+      "max": 25,
+      "datasets_beat": 2,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 17,
+      "max": 25,
+      "per_dataset": {
+        "educational": "5",
+        "spy_real": "5",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.3315822368914889,
+      "cumulative_n_trials": 4228
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9294277132090076,
+      "cagr": 0.14435171017254045,
+      "mdd": 0.4010140032631462,
+      "dsr_p_value": 0.19996902220995905
+    },
+    "spy_real": {
+      "sharpe": 1.000097854936687,
+      "cagr": 0.16078558863307668,
+      "mdd": 0.37212855040786796,
+      "dsr_p_value": 0.3315822368914889
+    },
+    "ndx_real": {
+      "sharpe": 1.0210678313259451,
+      "cagr": 0.17897474484383724,
+      "mdd": 0.3721234767910892,
+      "dsr_p_value": 0.32921708689022344
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.6618335196421604,
+      "cagr": 0.11089033538290027,
+      "mdd": 0.5520110457219883,
+      "label": "SPY b&h 2002-07-29\u21922026-04-15 (iter 006 TLT-aligned window)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4228,
+  "configs_tested": 12,
+  "primary_citation": "[risk_parity, p.10-11, ch.1]; [systematic_trading, p.170-171, ch.11]; Moreira & Muir (2017), JoF 72(4) DOI 10.1111/jofi.12513",
+  "hypothesis_slug": "vol-managed-60-40",
+  "top_candidate": {
+    "educational": "vt15_L63_cap20",
+    "spy_real": "vt15_L21_cap20",
+    "ndx_real": "vt15_L21_cap20"
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "vt15_L63_cap20",
+      "n_passed": "5",
+      "G1_pbo_pass": false,
+      "G1_pbo_value": 0.6904761904761905,
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.19996902220995905,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.4650603158401364,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.2817426994088229,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.2857329117434453,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.050471908983817926
+    },
+    "spy_real": {
+      "cfg_id": "vt15_L21_cap20",
+      "n_passed": "5",
+      "G1_pbo_pass": false,
+      "G1_pbo_value": 0.6904761904761905,
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.3315822368914889,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.3504520222890075,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.42000601038823154,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.20161196194561487,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.02893653447211264
+    },
+    "ndx_real": {
+      "cfg_id": "vt15_L21_cap20",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": 0.4722222222222222,
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.32921708689022344,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.30304820859946074,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.4480534258370681,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.17457027139566236,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.04337876995030854
+    }
+  },
+  "leg_correlations": {
+    "educational": -0.3065921040296599,
+    "spy_real": -0.2952247053508441,
+    "ndx_real": -0.2251995652762236
+  },
+  "benchmarks_used_custom": {
+    "educational": {
+      "sharpe": 0.6618335196421604,
+      "cagr": 0.11089033538290027,
+      "mdd": 0.5520110457219883,
+      "label": "SPY b&h 2002-07-29\u21922026-04-15 (iter 006 TLT-aligned window)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "status": "promising"
+}

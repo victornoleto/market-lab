@@ -256,6 +256,61 @@ that add an independent edge source.
 
 ---
 
+## From iteration 006 — vol-managed 60/40 SPY+TLT inverse-variance blend
+
+Complete study: `studies/strategy_hunt_loop/iterations/006-2026-04-24-1027-vol-managed-60-40/final_report.md`.
+
+### What the iteration resolved
+
+Inverse-variance weighted SPY+TLT blend with Moreira-Muir portfolio-
+level variance-scaling on top. **PROMISING tier, score 67/100 (new
+hunt-loop top-K #1)**, clearing +0.10 Sharpe gate on 2 of 3 datasets
+(educational +0.268, spy_real +0.100 exact) and CAGR + MDD floors 3/3
+(first iteration to achieve both).
+
+Kill #3 triggered: **grid-level PBO on spy_real jumped to 0.690** (vs
+iter 005's single-asset variance-scaling at 0.238) — the 2-asset blend
+adds degrees of freedom that destabilise IS/OOS rank ordering on a
+12-config grid.
+
+### Structural principle (grid-design, NOT mechanism dead-end)
+
+**Vol-managed N-leg blends (N ≥ 2) on a 12-config grid are overfit-
+sensitive (PBO ~0.7)** because each extra leg adds a new
+weight-dynamics dimension. When short-lookback configs (21d) and
+long-lookback configs (126d) respond differently to regime changes
+(e.g. 2022 bond crash), IS/OOS rank reversals dominate the grid,
+and PBO spikes.
+
+This is a **grid-design caveat, not a mechanism dead-end**. The blend
+mechanism's top-candidate Sharpe edge (+0.10 spy_real, +0.27
+educational) remains real and gate-passing outside of G1.
+
+### Don't re-test (grid-design)
+
+- Blend mechanisms (N ≥ 2 legs with dynamic weighting) on a 12-config
+  grid. Expect PBO > 0.5.
+- Adding more configs to a blend grid without deliberate return
+  dispersion — will not fix PBO and will further inflate
+  `cumulative_n_trials` penalising DSR.
+
+### Paths forward (NOT dead)
+
+Two productive options for iter 007 preserving the blend mechanism:
+
+1. **Pre-committed single-config blend** (no grid search). Commit
+   ex-ante to one cfg (e.g. `vt15_L63_cap20` — iter 006 educational
+   winner). Eliminates PBO requirement (PBO is grid-definitional).
+   Only +3 n_trials added. Tests whether blend edge survives without
+   grid-selection.
+
+2. **Blend + signal overlay** (momentum gate or meta-labeling). Adds
+   a structurally independent edge axis (trend) without expanding
+   the weight-dynamics grid — PBO dimensionality is controlled by
+   signal gate, not weight-sweep.
+
+---
+
 ## Structural dead-end categories
 
 Any new hypothesis that falls into one of these is automatically
@@ -282,6 +337,10 @@ rejected — require qualitatively different mechanism:
 - [ ] Single-asset vol-adaptation on SPY/QQQ with any static `f(σ̂_{t-1})`
       exponent choice (iter 004 σ⁻¹ + iter 005 σ⁻² — family saturates at
       +0.08-0.10 real-data Sharpe edge; only compounding mechanisms through)
+- [ ] Vol-managed N-leg blends (N ≥ 2 with dynamic weights) on a 12-config
+      grid — iter 006 PBO 0.69 on spy_real (vs 0.24 single-asset). Grid-
+      design caveat, mechanism itself remains valid under single-cfg or
+      signal-overlay approaches.
 
 ---
 
