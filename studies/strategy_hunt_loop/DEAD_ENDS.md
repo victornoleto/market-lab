@@ -380,6 +380,84 @@ momentum and blend-scale dominates.
 
 ---
 
+## From iteration 009 — T10Y3M binary-haircut overlay on vol-managed SPY+TLT blend
+
+Complete study: `studies/strategy_hunt_loop/iterations/009-2026-04-24-1447-term-spread-overlay-blend/final_report.md`.
+
+### What the iteration resolved
+
+Canonical 10Y-3M Treasury term-spread (Estrella-Mishkin 1998 / Estrella-
+Hardouvelis 1991) tested as a binary-haircut macro overlay on iter
+008's single-cfg vol-managed SPY+TLT blend (`vt15_L21_cap20`). Single
+pre-committed overlay cfg `ts_inv21_h50`: threshold=0.0 (classical
+inversion), haircut=0.5 (Carver tier-2 half-exposure), smoothing=21-day
+EMA (monthly emulation of Estrella-Mishkin's data frequency), lag=1
+bar (no look-ahead). Result: **Sharpe regresses** on all 3 datasets
+(edu −0.029, spy −0.021, ndx −0.014); score **74 → 64** (Kill #3
+TRIGGERED at pre-commit < 65 threshold). Winner conditions **4/5 → 3/5**.
+
+KILL #3 (score < 65) TRIGGERED. KILL #1 (Sharpe regression > 0.05) did
+NOT trigger — the regression is bounded but systematic.
+
+### Structural principle (do NOT re-test)
+
+**Macro leading-indicator overlays on vol-managed blends must preserve
+the signal's LEAD-TIME property.** T10Y3M is canonically a 6-18 month
+recession leading indicator. The 21-day EMA smoothing pre-committed
+for iter 009 (to emulate Estrella-Mishkin's monthly-data regime)
+**erased the lead**: the smoothed series inverts within 1-2 months of
+rising realized vol, which variance-scaling (σ²_port) is already
+reacting to. Diagnostic: **100% of gate-fire bars coincide with
+bottom-20% blend scale bars on educational + spy_real**; 40% overlap
+on ndx_real. The overlay adds no early-warning information, only
+duplicates the blend's own de-lever magnitude.
+
+Empirical asymmetry: Sharpe damage is proportional to the gate
+fire-rate (edu 16.3% fires → Δ−0.029; spy 17.8% → Δ−0.021; ndx 18.5%
+→ Δ−0.014). CAGR drag is ~1.5-1.9 pp per dataset — cost of halving
+exposure on bars with positive drift exceeds the benefit of halving
+on bars with negative drift.
+
+Additional failure mode: **symmetric haircut** (applied to BOTH legs
+in equal proportion) forfeits the bond leg's flight-to-quality rally
+during recessions. SPY-TLT correlation ≈ −0.30 means the bond leg
+typically appreciates when equity falls; halving the bond leg during
+inversion compounds the CAGR drag.
+
+### Don't re-test
+
+- T10Y3M binary-haircut overlay with threshold=0, haircut=0.5, and
+  smoothing ≥ 21 days on any vol-managed 2-asset blend. Variants with
+  slightly different thresholds / haircuts / smoothing windows in the
+  same family share the dead-end (1-signal-1-threshold-1-haircut with
+  monthly-scale smoothing is the killer configuration).
+- EMA-smoothed macro leading indicators (CAPE, EBP, T10Y3M, VIX) at
+  smoothing windows ≥ 21 days as overlays on a vol-managed portfolio
+  base — the smoothing destroys the lead-time that makes these
+  signals valuable and the signal becomes redundant with the blend's
+  own variance-scaling.
+- Symmetric haircut (same factor on equity AND bond legs) during
+  recession regimes on a 2-asset stock-bond blend — forfeits bond-leg
+  flight-to-quality benefit.
+
+### Path forward (NOT dead)
+
+- **Asymmetric T10Y3M overlay**: raw (or ≤ 5-day smoothed) signal +
+  haircut on EQUITY LEG ONLY. Preserves lead-time AND respects flight-
+  to-quality. Untested.
+- **EBP (excess bond premium, Gilchrist-Zakrajšek 2012) overlay**:
+  credit-cycle signal structurally distinct from yield-curve slope.
+  Monthly data → held constant within month, applied at daily rebalance.
+- **3-asset blend extension (SPY+TLT+GLD)**: structural extension
+  rather than overlay; different asset structure = different
+  diversification axis. Most likely path to break the
+  redundancy-with-variance-scaling ceiling.
+- **Meta-labeling on iter 008 blend** (AFML ch.3): secondary ML model
+  predicts bar-level profitability using cross-sectional + macro
+  features. Orthogonal by construction.
+
+---
+
 ## Structural dead-end categories
 
 Any new hypothesis that falls into one of these is automatically
@@ -418,6 +496,15 @@ rejected — require qualitatively different mechanism:
 - [ ] 3-config ex-ante grids of blend × binary-signal family — iter 007
       showed G1 PBO = 0.64-0.76 even at 3 pre-declared cfgs. Overfit-
       sensitivity is structural to the compound, not to grid search.
+- [ ] Monthly-smoothed (EMA ≥ 21 days) macro leading indicator binary
+      haircut as overlay on vol-managed 2-asset blend (iter 009) — the
+      smoothing erases the lead-time that makes the signal valuable;
+      signal fires concurrently with blend's own variance-scaling
+      de-lever (100% bottom-20% scale overlap on edu + spy). Score
+      regresses 74 → 64, Kill #3 TRIGGERED. Symmetric haircut on both
+      legs additionally forfeits bond-leg flight-to-quality. Path
+      forward: raw/5d-smoothed signal + asymmetric haircut (equity
+      only) remains untested.
 
 ---
 
