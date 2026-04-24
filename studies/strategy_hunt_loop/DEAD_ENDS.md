@@ -311,6 +311,75 @@ Two productive options for iter 007 preserving the blend mechanism:
 
 ---
 
+## From iteration 007 — time-series momentum overlay on vol-managed SPY+TLT blend
+
+Complete study: `studies/strategy_hunt_loop/iterations/007-2026-04-24-1047-vol-managed-60-40-momentum-overlay/final_report.md`.
+
+### What the iteration resolved
+
+Canonical 12-1 (skip-a-month, `[ml_for_algo_trading, ch.4 p.86]` /
+Jegadeesh-Titman 1993 / Moskowitz-Ooi-Pedersen 2012) time-series
+momentum overlay tested on top of iter 006's vol-managed SPY+TLT
+blend. Pre-committed blend cfg `vt15_L21_cap20`; 3 overlay configs
+(lookback ∈ {126, 252, 378} days, skip=21) × 3 datasets = 9 trials.
+Result: **Sharpe REGRESSES vs iter 006 on both real-data slots**:
+spy_real 0.941 (vs 1.000, −0.06), ndx_real 0.872 (vs 1.021, −0.15).
+Score 50/100 MARGINAL (down from 67 PROMISING).
+
+KILL #1 (pre-committed: Sharpe ≤ iter 006 on BOTH real slots):
+TRIGGERED. KILL #3 (G1 PBO > 0.5 on 2+ datasets): TRIGGERED (all 3).
+
+### Structural principle (do NOT re-test)
+
+**Time-series momentum overlay is REDUNDANT with variance-scaling on
+a vol-managed 2-asset blend.** Both mechanisms target the same
+underlying information: equity-regime volatility.
+`[leverage_for_the_long_run, p.9]` — SPY below-MA exhibits 2-3× the
+above-MA volatility — this asymmetry is what variance-scaling (iter
+005's `σ^{-2}`, iter 006's blend) already exploits via its
+`scale = target_vol² / σ²` rule. Stacking momentum on top forces
+exposure to zero in regimes where the blend is already reduced
+naturally, forfeiting the residual positive drift at the cost of
+transaction friction on gate flips.
+
+Empirical asymmetry: Sharpe damage scales with the base blend's
+Sharpe. Educational (iter 006 Sharpe 0.929) loses only −0.013, while
+ndx_real (iter 006 Sharpe 1.021) loses −0.149. The stronger the base
+signal, the more costly the overlay — confirming the overlay is
+removing information, not adding it.
+
+Moreira-Muir (2017) Table IV's vol-managed × momentum Sharpe uplift is
+documented **for a vol-managed single factor (MOM alone)**, not for a
+vol-managed BLEND. The uplift does not transfer: once the base is
+already a vol-managed cross-asset blend, the correlation between
+momentum and blend-scale dominates.
+
+### Don't re-test
+
+- Time-series momentum overlay (any lookback, any skip, any threshold)
+  on a vol-managed 2-asset blend with variance-scaling.
+- Absolute momentum (Moskowitz-Ooi-Pedersen form, threshold = 0) as a
+  binary gate on iter 006's blend.
+- Any correlated regime signal (EMA/SMA/VIX/drawdown/absolute momentum)
+  as an overlay on iter 006's blend — variance-scaling already
+  captures this dimension.
+- 3-config ex-ante grids of blend × binary-signal family — iter 007
+  showed G1 PBO = 0.64-0.76 even at 3 pre-declared cfgs. The
+  overfit-sensitivity is structural to the compound, not to grid
+  search.
+
+### Path forward (NOT dead)
+
+- **Orthogonal signals** (carry = term spread, macro state = EBP,
+  sentiment = options skew, meta-labeling on cross-sectional features)
+  still untested on iter 006's mechanism.
+- **Single-config (no grid) verification of iter 006** remains untested
+  — Option A from iter 006's final report still valid.
+- **3-asset or higher blend** extensions (SPY+TLT+GLD, NTSX/NTSI/NTSE
+  rotation) are structurally different and untested.
+
+---
+
 ## Structural dead-end categories
 
 Any new hypothesis that falls into one of these is automatically
@@ -341,6 +410,14 @@ rejected — require qualitatively different mechanism:
       grid — iter 006 PBO 0.69 on spy_real (vs 0.24 single-asset). Grid-
       design caveat, mechanism itself remains valid under single-cfg or
       signal-overlay approaches.
+- [ ] Time-series momentum overlay (any lookback/skip/threshold) on a
+      vol-managed 2-asset blend with variance-scaling (iter 007) —
+      momentum signal is redundant with variance-scaling's regime
+      sensitivity; both track same equity-vol information. Compounding
+      needs orthogonal signals (carry, macro, meta-labeling).
+- [ ] 3-config ex-ante grids of blend × binary-signal family — iter 007
+      showed G1 PBO = 0.64-0.76 even at 3 pre-declared cfgs. Overfit-
+      sensitivity is structural to the compound, not to grid search.
 
 ---
 
