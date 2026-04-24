@@ -1,0 +1,527 @@
+{
+  "total_score": 79,
+  "tier": "STRONG",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.21707819486784485,
+      "cumulative_n_trials": 4270
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              0.8320411890052791,
+              1.2165394386292703,
+              0.9583081957401995
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.5709786117417646,
+              0.8712000512875212,
+              0.9798813799455238
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.4448163714156068,
+              1.057411656692444,
+              0.9345254270587833
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9904333085852426,
+      "cagr": 0.15802249476196195,
+      "mdd": 0.29384237613277486,
+      "dsr_p_value": 0.21707819486784485
+    },
+    "spy_real": {
+      "sharpe": 1.1381367960065516,
+      "cagr": 0.1867487299617676,
+      "mdd": 0.2564326459501138,
+      "dsr_p_value": 0.16591755969913535
+    },
+    "ndx_real": {
+      "sharpe": 1.1435874425513313,
+      "cagr": 0.20063878709317184,
+      "mdd": 0.2038497728576648,
+      "dsr_p_value": 0.18200818923822126
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4270,
+  "configs_tested": 1,
+  "primary_citation": "[volatility_trading, ch.3, p.11, p.41]; [risk_parity, p.10-11, ch.1]; [systematic_trading, p.40, ch.2]; Bondarenko (2014) QJF 4(3); Carr & Madan (1999); Moreira & Muir (2017)",
+  "hypothesis_slug": "short-credit-spread-vrp-harvest",
+  "pre_committed_cfg": {
+    "cfg_id": "ntsx_vm_vt15_L21_cap20_scs5_10_1m",
+    "eq_weight": 0.6,
+    "bd_weight": 0.4,
+    "target_vol": 0.15,
+    "lookback": 21,
+    "max_leverage": 2.0,
+    "k_long_pct": 0.95,
+    "k_short_pct": 0.9,
+    "dte_days": 21,
+    "rf": 0.02,
+    "cost_bps_per_roll": 5.0,
+    "harvest_notional_ratio": 1.0,
+    "rebalance": "daily",
+    "funding_cost_modeled": false
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "ntsx_vm_vt15_L21_cap20_scs5_10_1m",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.21707819486784485,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 0.6079279864726098,
+          "mdd": 0.18600742616258054,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.0829382887884262,
+          "mdd": 0.19368552024718969,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.9623407247416323,
+          "mdd": 0.17244924345532447,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.0188376175940634,
+          "mdd": 0.16194315678971063,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.5458837632612097,
+          "mdd": 0.17593987190192437,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.041736836968118,
+          "mdd": 0.15712670600477208,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.4265328751551597,
+          "mdd": 0.25168987475908733,
+          "profitable": false
+        },
+        {
+          "window": 7,
+          "sharpe": 1.4012438035638919,
+          "mdd": 0.17050758297538005,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.0271676130564646,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.9131719867254386,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.35906135192104005,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.022577233365583815
+    },
+    "spy_real": {
+      "cfg_id": "ntsx_vm_vt15_L21_cap20_scs5_10_1m",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.16591755969913535,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.3214817097051803,
+          "mdd": 0.16511784443499747,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.677287151677,
+          "mdd": 0.10420410644349123,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 1.188918502609853,
+          "mdd": 0.15507535071153075,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.4027151580071284,
+          "mdd": 0.13054754115931944,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 0.9125047575907645,
+          "mdd": 0.19393065979777774,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.0571884518167738,
+          "mdd": 0.1637986857865482,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.695738163259936,
+          "mdd": 0.1813108236321069,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.0220650373264575,
+          "mdd": 0.15913807059701704,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.8867117642092941,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.9305246759506826,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.31054430844448905,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0241833351570353
+    },
+    "ndx_real": {
+      "cfg_id": "ntsx_vm_vt15_L21_cap20_scs5_10_1m",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.18200818923822126,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.561058811466538,
+          "mdd": 0.13643613306713293,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.316740072011142,
+          "mdd": 0.1392472457245862,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.7057088384467298,
+          "mdd": 0.1672067547562252,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.3003383922669458,
+          "mdd": 0.1745673034327979,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.195579896711284,
+          "mdd": 0.15616852841139017,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.0591044348539962,
+          "mdd": 0.1358666216685845,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 1.2425573711626698,
+          "mdd": 0.13939567207027662,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 0.8355875250733912,
+          "mdd": 0.15460279735222912,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.0008301759964473,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.011832602431511,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.3593903326041607,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.02782350213106355
+    }
+  },
+  "leg_correlations": {
+    "educational": {
+      "eq_bd": -0.2964952668081083
+    },
+    "spy_real": {
+      "eq_bd": -0.26518352489713926
+    },
+    "ndx_real": {
+      "eq_bd": -0.20026271838270637
+    }
+  },
+  "benchmarks_used_custom": {
+    "educational": {
+      "sharpe": 0.6274107005006827,
+      "cagr": 0.10775107206419254,
+      "mdd": 0.5520110457219881,
+      "label": "SPY b&h 2006-01-04\u21922026-04-14 (IEF-aligned)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "score_with_custom_benchmark": {
+    "total_score": 79,
+    "winner_conditions_met": false,
+    "tier": "STRONG",
+    "criteria": {
+      "1_sharpe_edge": {
+        "points": 25,
+        "max": 25,
+        "datasets_beat": 3,
+        "required_minimum_dataset_count": 2
+      },
+      "2_gates": {
+        "points": 19,
+        "max": 25,
+        "per_dataset": {
+          "educational": "6",
+          "spy_real": "6",
+          "ndx_real": "6"
+        },
+        "thresholds": {
+          "educational": 5,
+          "spy_real": 4,
+          "ndx_real": 4
+        },
+        "cross_dataset_thresholds_met": true
+      },
+      "3_dsr": {
+        "points": 0,
+        "max": 15,
+        "worst_p_value": 0.21707819486784485,
+        "cumulative_n_trials": 4270
+      },
+      "4_cagr_floor": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": true
+        }
+      },
+      "5_mdd_ceiling": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": true
+        }
+      },
+      "6_robustness_bonus": {
+        "points": 0,
+        "max": 5,
+        "note": "Populated by caller if rolling-window data provided"
+      }
+    }
+  },
+  "iter016_reference_metrics": {
+    "educational": {
+      "sharpe": 0.981,
+      "cagr": 0.1508,
+      "mdd": 0.3133
+    },
+    "spy_real": {
+      "sharpe": 1.1405,
+      "cagr": 0.1779,
+      "mdd": 0.2665
+    },
+    "ndx_real": {
+      "sharpe": 1.1861,
+      "cagr": 0.2073,
+      "mdd": 0.2323
+    }
+  },
+  "delta_vs_iter016": {
+    "educational": {
+      "sharpe_delta": 0.009433308585242606,
+      "cagr_delta": 0.007222494761961962,
+      "mdd_delta": -0.01945762386722516
+    },
+    "spy_real": {
+      "sharpe_delta": -0.0023632039934484705,
+      "cagr_delta": 0.00884872996176761,
+      "mdd_delta": -0.010067354049886235
+    },
+    "ndx_real": {
+      "sharpe_delta": -0.042512557448668664,
+      "cagr_delta": -0.006661212906828168,
+      "mdd_delta": -0.028450227142335194
+    }
+  },
+  "overlay_diagnostics": {
+    "educational": {
+      "annualized": 0.029515916841053036,
+      "sharpe": 0.733913439194018,
+      "frac_positive_bars": 0.7046662728883638,
+      "cumulative": 0.7972828311978117
+    },
+    "spy_real": {
+      "annualized": 0.029395721664653207,
+      "sharpe": 0.781493619174544,
+      "frac_positive_bars": 0.711465271170314,
+      "cumulative": 0.6214579932243867
+    },
+    "ndx_real": {
+      "annualized": 0.041019777147926595,
+      "sharpe": 0.9343638270745019,
+      "frac_positive_bars": 0.6960929772502473,
+      "cumulative": 0.906228963924417
+    }
+  },
+  "kill_criteria_check": {
+    "kill_1_vrp_fails_to_materialize": {
+      "criterion": "Overlay annualized < +1.5%/yr on \u2265 2 of 3 ds",
+      "triggered": false,
+      "fails_count": 0
+    },
+    "kill_2_crash_drag_dominates_theta": {
+      "criterion": "\u0394 Sharpe \u2264 0.00 vs iter 016 on \u2265 2 of 3 ds",
+      "triggered": true,
+      "not_improving_count": 2
+    },
+    "kill_3_dsr_degrades": {
+      "criterion": "DSR worst p > 0.30 (> iter 016's 0.226 by meaningful margin)",
+      "triggered": false,
+      "dsr_worst_p": 0.21707819486784485
+    },
+    "kill_4_mdd_explodes": {
+      "criterion": "MDD > iter 016 + 5pp on \u2265 2 of 3 ds",
+      "triggered": false,
+      "explodes_count": 0
+    }
+  },
+  "any_kill_triggered": true,
+  "status": "strong"
+}

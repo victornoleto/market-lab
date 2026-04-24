@@ -1393,6 +1393,137 @@ Complete study:
 
 ---
 
+## From iteration 021 — short-credit-spread VRP harvest (iter 020 sign-flipped) on iter 016 equity leg
+
+Complete study:
+`studies/strategy_hunt_loop/iterations/021-2026-04-24-1916-short-credit-spread-vrp/final_report.md`.
+
+### What happened (closes a family, does NOT abandon the parent)
+
+1. **Short 5/10 % OTM monthly-rolled put credit spread on iter 016
+   equity leg (`ntsx_vm_vt15_L21_cap20_scs5_10_1m`).** Single
+   pre-committed cfg: SELL the exact spread iter 020 BOUGHT, every
+   other parameter identical (21-DTE, monthly roll, BS-priced with
+   VIX as IV, iv_scale 1.0 SPY / 1.1 QQQ, 5 bps per roll,
+   harvest_notional_ratio = 1.0). Result: Sharpe Δ vs iter 016
+   **+0.009 / −0.002 / −0.042** (Kill #2 "Δ ≤ 0 on ≥ 2 of 3 ds"
+   triggered by tiny margins on spy+ndx); MDD **UNIFORMLY IMPROVED
+   −1.95 / −1.01 / −2.85 pp** on all 3 ds (opposite of iter 020's
+   +3-6 pp regression); overlay annualised **+2.95 % / +2.94 % /
+   +4.10 %** (VRP materialises, matches Bondarenko 2014 empirical
+   prior); overlay standalone Sharpe +0.73 / +0.78 / +0.93; DSR
+   worst p = **0.2171** (marginally improves iter 016's 0.226 but
+   still above the 0.20 scoring tier); G3 WF 7/8/8/8/8/8;
+   robustness 9/9 sub-windows positive. Score **79/100 STRONG**
+   (ties iter 016 and iter 018 at top-K #1).
+
+2. **The specific structural finding: Sharpe-level symmetry under the
+   sign flip.** Iter 020 PAID the variance-risk premium and iter 021
+   COLLECTS it, but BOTH tie Sharpe at the vol-managed-stack ceiling
+   of ~1.14-1.19 (spy). The vol-target's `σ²_port[t-1] → scale[t]`
+   feedback loop absorbs the overlay's variance contribution at the
+   next bar, so whatever CAGR the overlay injects or removes, `σ`
+   compensates — the portfolio's risk-adjusted return is pinned by
+   construction. This is a **portfolio-construction ceiling**, not a
+   mechanism limit; changing the sign, strike, or DTE of the overlay
+   cannot break it.
+
+3. **The MDD asymmetry is REAL and not noise.** Short theta INCOME
+   during calm regimes elevates intermediate peaks, reducing the
+   denominator of peak-to-trough drawdown; the capped tail loss
+   (credit spread caps at (K_long − K_short)/S_entry ≈ 5 %) prevents
+   crash-bar runaway. Conversely, long theta PAYMENT flattens peaks
+   and extends drawdown windows — iter 020's +3-6 pp MDD regression.
+   So iter 021 is a legitimate **MDD-improving ceteris-paribus
+   variant of iter 016**: risk reduction at Sharpe parity. If
+   deployment ever targets MDD-at-Sharpe-parity, iter 021 is the cfg.
+
+### Don't re-test
+
+- **Any fixed-sign European options overlay at 5/10 % OTM × 21-DTE on
+  a vol-managed 2-leg stack** — both signs now empirically tested and
+  both tied at the Sharpe ceiling. Parameter sweeps within this
+  family (strike ±2%, DTE 14-28 days, roll frequency) will not break
+  the absorption property.
+- **Short bare uncapped naked put on iter 016 equity leg at 5 % OTM
+  × 21-DTE × full notional** — structurally similar theta source but
+  with uncapped tail risk; the crash-bar loss is asymmetric in a way
+  the credit spread isn't, and the Sharpe absorption still holds for
+  the theta portion. Would likely yield worse MDD than iter 021 at
+  similar Sharpe; not worth the tail risk.
+- **Stacking both long AND short spread overlays (iter 020 + iter 021
+  combined) on iter 016** — the two overlays would exactly cancel
+  overlay P&L stream (same strikes, opposite sides) up to transaction
+  cost, leaving just 2× the cost drag. Pure destruction of value;
+  obvious but do not attempt.
+- **Changing the base from iter 016 to iter 015 (static NTSX)**
+  without vol-target — MAY work because iter 015 has no σ²_port
+  feedback to absorb the overlay. Same caveat as iter 020 paths-
+  forward #1: promising but low-priority vs Option X/W/Y from
+  BASE_MEMORY. If attempted, score hurdle is +3 over iter 015's 77.
+
+### Don't re-test on other bases UNLESS
+
+- Iter 015 (static NTSX, no vol-target) — short-vol overlay might
+  compound genuinely since no σ² feedback is present. Low-priority
+  relative to Option X/W/Y because even a +0.10 Sharpe gain on iter
+  015's 1.04-1.06 spy-real Sharpe reaches 1.14-1.16 — same ceiling
+  iter 016 already hits. Marginal improvement at best.
+
+### Structural principles
+
+- **Vol-target is an ABSORBING operator on equity-leg variance
+  contributions.** Any overlay on r_eq that adds a stream `x_t` with
+  non-trivial σ²_x gets folded into `σ²_port[t-1]` by the next bar,
+  causing the scale `min(target_vol² / σ²_port, cap)` to compensate
+  so that portfolio realised-variance stays pinned to target. CAGR
+  shifts (up for short-theta, down for long-theta) but Sharpe is
+  held constant by construction. This is the **variance-target
+  absorption lemma** and applies to any Moreira-Muir-style
+  mechanism.
+- **Bilateral closure from a single test on each side.** Iter 020
+  tested the long side and found drag; iter 021 tested the short
+  side and found the Sharpe ceiling. Together these two tests close
+  an entire 2-dimensional family (sign × magnitude) — no additional
+  parameter sweep is informative under the absorption lemma.
+- **Rubric score 79 "STRONG" is a base-absolute metric and can
+  coexist with a triggered base-relative Kill.** Iter 021's score
+  ties top-K because it inherits iter 016's edge vs SPY; the Kill
+  criterion (base-relative Sharpe delta) correctly flags that no
+  progress was made toward the DSR-clearance goal. **Future
+  iterations MUST pre-commit base-relative kills**, not just
+  absolute ones, when building on an existing top-K member.
+- **MDD structure is NOT absorbed by vol-target in the same way as
+  Sharpe.** The scale operator equalises realised-variance at the
+  portfolio level, but drawdown is a PATH-DEPENDENT functional of
+  the return stream. Theta income during calm periods provides a
+  positive drift that elevates intermediate peaks → lower peak-to-
+  trough; theta payment does the opposite. This is a second-order
+  effect invisible to the Sharpe gate but material at the
+  deployment level.
+
+### Paths forward (NOT dead — inherited from iter 020 + refined)
+
+1. **Option X (3rd uncorrelated leg)** — PROMOTED to primary after
+   iter 021. Adds a third σ² ingredient (DBMF trend / commodity
+   basket / VIX carry via ETF) with volatility dynamics disjoint
+   from SPY realised variance; does not live on the equity leg so
+   escapes the absorption lemma. BASE_MEMORY Option X. Expected
+   Sharpe hurdle +0.05 over iter 016.
+2. **Option W (cross-asset carry)** — secondary. Linear P&L from
+   rate/curve differentials is disjoint from all σ² axes and from
+   long/short-gamma. Data availability is the primary gate. BASE_MEMORY
+   Option W.
+3. **Option Y (VX futures roll)** — tertiary. Direct VRP instrument
+   on a DIFFERENT underlying (VIX futures ≠ SPY), bypasses the
+   equity-overlay absorption. Requires external CBOE/CME data.
+   BASE_MEMORY Option Y.
+4. **DO NOT pursue further options-on-equity-leg iterations at these
+   strikes/DTE** — absorption lemma makes parameter sweeps
+   uninformative.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:
