@@ -1,0 +1,326 @@
+{
+  "total_score": 77,
+  "tier": "STRONG",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 17,
+      "max": 25,
+      "per_dataset": {
+        "educational": "5",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.5483806952759498,
+      "cumulative_n_trials": 4258
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count across 9 total windows",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              0.5457845435184128,
+              1.242157490350949,
+              0.8221282047760397
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.5142740428570336,
+              0.9494404730908237,
+              0.7814542060335684
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.4732039506946175,
+              1.185292057612515,
+              0.7171448263997893
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.7835159394528711,
+      "cagr": 0.12334380196139882,
+      "mdd": 0.4449292329656862,
+      "dsr_p_value": 0.5483806952759498
+    },
+    "spy_real": {
+      "sharpe": 1.0441595976415032,
+      "cagr": 0.15535185853597655,
+      "mdd": 0.30320169616664866,
+      "dsr_p_value": 0.26755580704861315
+    },
+    "ndx_real": {
+      "sharpe": 1.0637515002341693,
+      "cagr": 0.19244115126849937,
+      "mdd": 0.3951308189467023,
+      "dsr_p_value": 0.2674982402470971
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4258,
+  "configs_tested": 1,
+  "primary_citation": "[risk_parity, p.5, p.10-11, ch.1]; [leverage_for_the_long_run, p.19-20]; Asness-Frazzini-Pedersen (2012), FAJ 68(1), SSRN 1728082; WisdomTree NTSX prospectus (90/60 weights)",
+  "hypothesis_slug": "return-stacked-static-ntsx",
+  "pre_committed_cfg": {
+    "cfg_id": "ntsx_synth_90_60_daily",
+    "eq_w": 0.9,
+    "bd_w": 0.6,
+    "rebalance": "daily",
+    "funding_cost_modeled": false
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "ntsx_synth_90_60_daily",
+      "n_passed": "5",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.5483806952759498,
+      "G3_wf_pass": false,
+      "G3_wf_profitable": 5,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.9055821907965305,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.7820208344557198,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.12940603752193655,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.025312169313917998
+    },
+    "spy_real": {
+      "cfg_id": "ntsx_synth_90_60_daily",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.26755580704861315,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 6,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.7652738455690861,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.7820208344557198,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.3122431105516517,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.016711894793886017
+    },
+    "ndx_real": {
+      "cfg_id": "ntsx_synth_90_60_daily",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.2674982402470971,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.6803262145319547,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.8490679455674294,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.2803746527220496,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.08703505574643167
+    }
+  },
+  "leg_correlations": {
+    "educational": {
+      "eq_bd": -0.29654051245040597
+    },
+    "spy_real": {
+      "eq_bd": -0.26524768193075826
+    },
+    "ndx_real": {
+      "eq_bd": -0.20036826257874585
+    }
+  },
+  "benchmarks_used_custom": {
+    "educational": {
+      "sharpe": 0.6293436372653917,
+      "cagr": 0.10815914739227761,
+      "mdd": 0.5520110457219881,
+      "label": "SPY b&h 2006-01-04\u21922026-04-15 (iter 015 IEF-aligned)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "score_with_custom_benchmark": {
+    "total_score": 77,
+    "winner_conditions_met": false,
+    "tier": "STRONG",
+    "criteria": {
+      "1_sharpe_edge": {
+        "points": 25,
+        "max": 25,
+        "datasets_beat": 3,
+        "required_minimum_dataset_count": 2
+      },
+      "2_gates": {
+        "points": 17,
+        "max": 25,
+        "per_dataset": {
+          "educational": "5",
+          "spy_real": "6",
+          "ndx_real": "6"
+        },
+        "thresholds": {
+          "educational": 5,
+          "spy_real": 4,
+          "ndx_real": 4
+        },
+        "cross_dataset_thresholds_met": true
+      },
+      "3_dsr": {
+        "points": 0,
+        "max": 15,
+        "worst_p_value": 0.5483806952759498,
+        "cumulative_n_trials": 4258
+      },
+      "4_cagr_floor": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": true
+        }
+      },
+      "5_mdd_ceiling": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": true
+        }
+      },
+      "6_robustness_bonus": {
+        "points": 0,
+        "max": 5,
+        "note": "Populated by caller if rolling-window data provided"
+      }
+    }
+  },
+  "iter008_reference_metrics": {
+    "educational": {
+      "sharpe": 0.8651,
+      "cagr": 0.1349,
+      "mdd": 0.3721
+    },
+    "spy_real": {
+      "sharpe": 1.0001,
+      "cagr": 0.1608,
+      "mdd": 0.3721
+    },
+    "ndx_real": {
+      "sharpe": 1.0211,
+      "cagr": 0.179,
+      "mdd": 0.3721
+    }
+  },
+  "delta_vs_iter008": {
+    "educational": {
+      "sharpe_delta": -0.08158406054712886,
+      "cagr_delta": -0.011556198038601168,
+      "mdd_delta": 0.07282923296568622
+    },
+    "spy_real": {
+      "sharpe_delta": 0.044059597641503245,
+      "cagr_delta": -0.005448141464023448,
+      "mdd_delta": -0.06889830383335133
+    },
+    "ndx_real": {
+      "sharpe_delta": 0.042651500234169415,
+      "cagr_delta": 0.013441151268499374,
+      "mdd_delta": 0.023030818946702336
+    }
+  },
+  "funding_cost_sensitivity_note": "Synthetic NTSX does NOT subtract futures-stacking funding cost on the 50% additional notional. Real product has ~50-100 bps annual drag depending on rate regime. Estimated Sharpe haircut: ~0.05-0.10 across 17y. After haircut, spy_real Sharpe \u2248 0.94-0.99 (likely still beats SPY 0.90 by less than +0.10), ndx_real \u2248 0.96-1.01, educational \u2248 0.68-0.73. Strict winner-condition robustness to this assumption is QUESTIONABLE on 2-3 datasets.",
+  "status": "strong"
+}
