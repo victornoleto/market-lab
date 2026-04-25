@@ -4287,3 +4287,163 @@ Citations for iter 062's closure:
   DOI 10.1016/j.jfineco.2017.11.002 — bond term-premium harvest.
 - ProShares UPRO prospectus 2024-2025 — expense ratio 0.91%/yr,
   swap counterparty financing T-bill + 0.95%.
+
+
+---
+
+## From iteration 063 — Internal-LETF UPRO substitution on iter 058 (DSR-clearing) anchor at preserved-equity weighting
+
+Complete study: `studies/strategy_hunt_loop/iterations/063-2026-04-25-1246-iter058-internal-letf/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Internal-LETF UPRO substitution preserving equity exposure on iter
+   041 sub-component WITHIN iter 058 anchor (calm 0.2333 UPRO + 0.6333
+   IEF + 0.6333 GLD = 1.50 NAV; stress 0.10 UPRO + 0.65 IEF + 0.65 GLD
+   = 1.40 NAV; iter 039 + HYG_TSM unchanged at canonical weights)** —
+   single pre-committed cfg, score **81 STRONG, 1/6 kills fired (kill A
+   only — Sharpe regress vs iter 058 by ≥ 0.05 on 3/3 datasets)**. iter
+   058's DSR-clearing branch (Sharpe 1.22-1.40 on iter 046 + HYG)
+   does NOT absorb LETF substitution drag any better than iter 037's
+   CAGR-clearing branch (Sharpe 0.96-1.17 on canonical SPY+IEF+GLD).
+   The drag magnitude on iter 058 (Δ −0.05/−0.09/−0.06) matches iter
+   062's drag on iter 037 (Δ −0.03/−0.09/−0.07) almost exactly,
+   confirming the **drag is per-unit-LETF-equity-weight INVARIANT
+   across base anchor Sharpe regimes**.
+
+2. **The "Sharpe-headroom absorbs internal-LETF drag" thesis from
+   BASE_MEMORY direction #1 was FALSIFIED**. The hypothesis predicted
+   that iter 058's higher base Sharpe (1.22-1.40) would absorb the
+   internal-LETF substitution's vol-decay + financing drag (the iter
+   062 finding of −0.03 to −0.09) without falling out of DSR clearance,
+   while gaining +1.3-2.1 pp CAGR uplift to break iter 058's CAGR-floor
+   0/3. Empirical result: Sharpe drag was identical to iter 062
+   (−0.05 to −0.09 across 3 datasets), CAGR uplift was muted
+   (+0.66 to +1.85 pp instead of predicted +1.3-2.1 pp because the
+   iter 041 component contributes only 0.45 of total NAV inside iter
+   058, not the full 1.0 of iter 037), and DSR worst-p REGRESSED on
+   2/3 datasets (edu 0.0494 → 0.0762; spy 0.0337 → 0.0698) due to
+   lower Sharpe at fixed n_trials = 4333. Only ndx DSR cleared
+   (0.0258 → 0.0426 ≤ 0.05).
+
+3. **CAGR-uplift hypothesis PARTIALLY confirmed (1/3 floor unlock —
+   edu)**. Educational CAGR moved from 8.69% (iter 058) → 9.46% (iter
+   063), crossing the 9.18% floor for the **first time** on the iter
+   058 family (iter 058 itself was 8.69%, iter 050 was 8.84%, iter 046
+   was 9.07%; all below the 9.18% threshold). This is a real Pareto
+   improvement on criterion 4 (CAGR floor). But spy_real (9.67% < 11.98%
+   floor; gap −2.3 pp) and ndx_real (11.12% < 15.35% floor; gap −4.2
+   pp) remained below their floors — internal-LETF on iter 041 alone
+   (only 0.45 of total NAV) provides insufficient CAGR uplift to close
+   the spy/ndx gaps.
+
+4. **Score 81 STRONG = NEW Pareto-non-dominated intermediate point**
+   between iter 058's 85 (canonical, no substitution) and iter 062's
+   79 (internal-LETF on iter 037 anchor). iter 063 trades **−4 pts
+   gates (DSR fails 2/3 vs iter 058's 0/3) + −5 pts DSR criterion
+   (worst-p 0.0762 falls in 0.05-0.10 band → 10 pts vs iter 058's 15
+   pts at < 0.05) for +5 pts CAGR floor (1/3 unlock vs iter 058's
+   0/3)**. Net −4 pts vs iter 058's 85 → 81. The trade is
+   Pareto-non-dominated: each iter occupies a distinct point on the
+   (DSR clearance × CAGR floor pass) frontier, and the
+   saved-stream-pair Pareto ceiling at 85 is NOT broken.
+
+### Don't re-test
+
+- Internal-LETF substitution on iter 058 anchor at any equity weight
+  scheme that preserves total NAV ≤ 1.50× per regime (the 0.2333/
+  0.6333/0.6333 calm + 0.10/0.65/0.65 stress case here closes
+  preserved-NAV; equity-OVERWEIGHT or equity-UNDERWEIGHT variations
+  predicted to drift toward UPRO-solo or SPY-solo Sharpe regimes
+  respectively, both bounded below the 81 ceiling per the per-unit-
+  LETF-weight drag invariance principle).
+- Internal-LETF substitution on iter 046 anchor itself (without
+  HYG_TSM) — predicted to drop iter 046's 85 to ~80-82 by the same
+  drag mechanism, no benefit since HYG_TSM is the structurally
+  Sharpe-positive 3rd stream (iter 058's contribution).
+- 2× LETF (SSO, QLD) substitution on iter 058 anchor — predicted to
+  follow the same per-unit drag pattern: less vol decay than 3×
+  UPRO/TQQQ but lower CAGR uplift, net Sharpe likely also
+  Pareto-bounded at ≤ 81.
+- Internal-LETF substitution on the iter 039 VRP basket leg of iter
+  058 — structurally impossible because iter 039 uses options on
+  SPY/QQQ/IWM (gamma path is NOT linear in underlying spot leverage;
+  options on UPRO are NOT linear transforms of options on SPY).
+
+### Structural principles
+
+- **Internal-LETF drag is per-unit-LETF-equity-weight INVARIANT**:
+  the −0.05 to −0.09 Sharpe drag observed in iter 063 on iter 058
+  anchor (where the LETF leg is 0.45 of total NAV via 0.90 × 0.50 ×
+  0.2333) matches the −0.03 to −0.09 drag observed in iter 062 on
+  iter 037 anchor (where the LETF leg is 0.20 of total 1.50 NAV =
+  0.13 fraction). The drag is structural to UPRO/TQQQ's daily-reset
+  path drift formula
+  (`CAGR_LETF ≈ leverage·CAGR_base − ½·leverage²·var_base − expense`)
+  plus the visible swap+expense baked into NAV path. **Anchor base
+  Sharpe level does NOT modulate the drag**.
+
+- **Internal-LETF axis is now EXHAUSTED across both Pareto branches**:
+  - **iter 037-anchor (CAGR-clearing branch)**: 4× confirmed at
+    79-STRONG ceiling under (a) anchor weights, (b) leverage type,
+    (c) 3rd-stream addition (037, 059, 061, 062 all = 79).
+  - **iter 058-anchor (DSR-clearing branch)**: closed at 81-STRONG
+    by iter 063 (1× test, structurally distinct anchor).
+  - **Path to WINNER 90+ cannot come from internal-LETF substitution
+    on either family** — must come from (a) novel anchor with
+    simultaneously Sharpe ≥ 1.20 AND CAGR ≥ 12% on real data (no
+    anchor in iters 0-63 has this combination — fundamental binding
+    constraint), or (b) a structurally novel CAGR-additive 3rd stream
+    beyond HYG with standalone Sharpe ≥ 0.7 AND CAGR ≥ iter 046's
+    9.5%/yr (the binding constraint identified in iter 058's final
+    report).
+
+- **G7 cross-library parity is exactly 0.000000 pp** on the full
+  composite stream (pandas full pipeline = numpy reference) across
+  all 3 datasets (educational 4783 bars, spy_real 4226 bars, ndx_real
+  4066 bars). The pure-numpy reference for the 3-leg LETF stack +
+  combiner reproduces the pandas pipeline to floating-point identity.
+  18/18 TDD tests pass in 0.33s.
+
+- **Markowitz closed-form Sharpe identity is exact on the outer
+  combine** (residuals 0.000/0.000/0.000 on 0.90 × r_046_LETF + 0.10
+  × r_HYG across all 3 datasets, 4787-bar inner-join). The inner
+  combine has a small +0.017 residual on educational from a regime-
+  flip cost asymmetry well within the 0.05 kill D threshold.
+
+- **The iter 058-family CAGR-floor is partially addressable via
+  internal-LETF on iter 041 sub-component**: edu CAGR-floor unlocks
+  for the first time (9.46% > 9.18%), but spy/ndx remain 2.3-4.2 pp
+  below their floors. To close spy/ndx CAGR gaps, internal-LETF
+  alone is insufficient — must combine with a CAGR-additive 3rd
+  stream (e.g., QQQ-200d-trend with CAGR ~12-14% would be additive
+  to iter 058's existing 8.7-9.3% if Sharpe and correlation hold).
+
+Citations for iter 063's closure:
+
+- `[leverage_for_the_long_run, p.19-25]` — Hsiao-Williams 2017
+  daily-reset LETF formula and Itô-correction-derived path drift.
+- `[risk_parity, ch.5]` — AFP 2012 multi-leg risk-parity stack
+  preserved verbatim under LETF substitution on iter 041 leg only.
+- `[volatility_trading, p.218]` — Sinclair 2013 cross-asset VRP
+  basket (iter 039) preserved verbatim because options structure
+  doesn't admit linear LETF substitution.
+- Asvanunt-Richardson 2017 JPM 43(2) DOI 10.3905/jpm.2017.43.2.090
+  — credit risk premium (HYG_TSM 3rd stream preserved verbatim).
+- `[advances_fin_ml, ch.17-18]` — regime detection (iter 041 VIX gate
+  carried over to iter 041_LETF).
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials
+  (4332 → 4333). Worst-p 0.0762 (edu), 0.0698 (spy), 0.0426 (ndx).
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (numpy
+  reference; 0.000000 pp parity on full composite stream).
+- `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
+- `[advances_fin_ml, p.162-164]` — no-lookahead 1-day shift rule.
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV (vacuous at N=1).
+- Whaley (2009), JPM 35(3) 98-105, DOI 10.3905/JPM.2009.35.3.098 —
+  VIX as ex-ante risk regime indicator.
+- Markowitz (1952), JoF 7(1) 77-91 — convex combination Sharpe
+  identity (outer residual 0.000-0.000-0.000; inner residual
+  +0.017 educational from regime cost asymmetry).
+- Erb-Harvey (2006), FAJ 62(2), DOI 10.2469/faj.v62.n2.4084 —
+  gold strategic role.
+- ProShares UPRO prospectus 2024-2025 — expense ratio 0.91%/yr.
