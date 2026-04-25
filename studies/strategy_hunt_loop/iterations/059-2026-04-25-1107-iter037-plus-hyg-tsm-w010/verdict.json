@@ -1,0 +1,572 @@
+{
+  "status": "strong",
+  "tier": "STRONG",
+  "total_score": 79,
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.2674698173891702,
+      "cumulative_n_trials": 4329
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count across 9 windows",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              0.7990279825948502,
+              1.1048102563857967,
+              1.178862971077849
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.3091110566309585,
+              1.1469657218847984,
+              1.0922466015630403
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.1754915045736414,
+              1.3540105850974502,
+              1.0723285895162527
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9813717352527199,
+      "cagr": 0.13044883882655545,
+      "mdd": 0.3070727806348159,
+      "dsr_p_value": 0.2674698173891702
+    },
+    "spy_real": {
+      "sharpe": 1.1732387995139508,
+      "cagr": 0.14469564165711923,
+      "mdd": 0.22932415840569942,
+      "dsr_p_value": 0.12789765986609536
+    },
+    "ndx_real": {
+      "sharpe": 1.182989144380088,
+      "cagr": 0.1649563587101508,
+      "mdd": 0.2932873598086198,
+      "dsr_p_value": 0.13809122240876437
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4329,
+  "configs_tested": 1,
+  "primary_citation": "Asvanunt-Richardson 2017 JPM 43(2) DOI 10.3905/jpm.2017.43.2.090 + [risk_parity, ch.5] (iter 037 anchor preserved) + [systematic_trading] (Carver TSM) + [advances_fin_ml, p.222-223] (DSR cumulative) + [advances_fin_ml, p.31-34] (G7) + Markowitz (1952) JoF 7(1) (closed-form combo)",
+  "hypothesis_slug": "iter037-plus-hyg-tsm-w010",
+  "cfg_id": "iter037_plus_hyg_tsm_w010_lookback90",
+  "cfg": {
+    "cfg_id": "iter037_plus_hyg_tsm_w010_lookback90",
+    "w_037": 0.9,
+    "w_hyg": 0.1,
+    "hyg_ticker": "HYG",
+    "lookback": 90,
+    "rf": 0.02,
+    "cost_bps": 5.0,
+    "rebalance": "daily; HYG TSM long iff trailing-90d return at t-1 > 0",
+    "primary_citation": "Asvanunt-Richardson 2017 JPM 43(2) DOI 10.3905/jpm.2017.43.2.090 + [risk_parity, ch.5] (iter 037 anchor preserved)"
+  },
+  "score_custom": 79,
+  "tier_custom": "STRONG",
+  "winner_conds_custom": false,
+  "criteria_custom": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.2674698173891702,
+      "cumulative_n_trials": 4329
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "iter037_plus_hyg_tsm_w010_lookback90",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": NaN,
+      "G1_note": "N=1 cfg \u2014 PBO is vacuous; G1 reported as PASS (uninformative)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p_raw": 0.2674698173891702,
+      "G2_alpha_raw": 0.05,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 0.3603012241678351,
+          "mdd": 0.30707278073643085,
+          "profitable": false
+        },
+        {
+          "window": 1,
+          "sharpe": 1.6419373551330725,
+          "mdd": 0.07891123009642499,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.7782966632733416,
+          "mdd": 0.11101911233903512,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 0.8484200236397463,
+          "mdd": 0.09786700376741998,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 0.9568910284010492,
+          "mdd": 0.1074197982008919,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.3888325809519366,
+          "mdd": 0.19490762240230836,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.1380976566473936,
+          "mdd": 0.22932415836278083,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 2.197563180907714,
+          "mdd": 0.11831157910476395,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.1460877103440335,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.1539984310780544,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.2767577580641878,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0,
+      "dsr_p_value": 0.2674698173891702
+    },
+    "spy_real": {
+      "cfg_id": "iter037_plus_hyg_tsm_w010_lookback90",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": NaN,
+      "G1_note": "N=1 cfg \u2014 PBO is vacuous; G1 reported as PASS (uninformative)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p_raw": 0.12789765986609536,
+      "G2_alpha_raw": 0.05,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 2.1842106140337587,
+          "mdd": 0.07834623728124152,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 0.5810170955458946,
+          "mdd": 0.11101911233903525,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.6580492471638649,
+          "mdd": 0.09648371343680319,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.4276574589006368,
+          "mdd": 0.0784413533751082,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.4372776696752412,
+          "mdd": 0.1074197982008932,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 0.9922414560403232,
+          "mdd": 0.19490762240230788,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.5190198204148619,
+          "mdd": 0.21346257642454233,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 2.0301641406584245,
+          "mdd": 0.11831157910476402,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.2139356422027139,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.1539984310780544,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.38926830599118944,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0,
+      "dsr_p_value": 0.12789765986609536
+    },
+    "ndx_real": {
+      "cfg_id": "iter037_plus_hyg_tsm_w010_lookback90",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": NaN,
+      "G1_note": "N=1 cfg \u2014 PBO is vacuous; G1 reported as PASS (uninformative)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p_raw": 0.13809122240876437,
+      "G2_alpha_raw": 0.05,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.9944569558012695,
+          "mdd": 0.08156363000941656,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 0.5466634333272878,
+          "mdd": 0.14205083120287934,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.6756787942359369,
+          "mdd": 0.08285804016343111,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.7658776528110345,
+          "mdd": 0.09094343933561304,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 0.655172147513041,
+          "mdd": 0.16447810350564523,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.6116965443019253,
+          "mdd": 0.11386932337653642,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.5748675552309216,
+          "mdd": 0.2558268684981626,
+          "profitable": false
+        },
+        {
+          "window": 7,
+          "sharpe": 1.8333225523077095,
+          "mdd": 0.1297699533026128,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.0808228033760494,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.1730885801558983,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.3982972820327268,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0,
+      "dsr_p_value": 0.13809122240876437
+    }
+  },
+  "robustness_bonus": {
+    "total_sub_windows": 9,
+    "positive_sub_windows": 9,
+    "fraction_positive": 1.0,
+    "bonus_awarded": 5,
+    "per_dataset": {
+      "educational": {
+        "window_sharpes": [
+          0.7990279825948502,
+          1.1048102563857967,
+          1.178862971077849
+        ],
+        "positive_count": 3,
+        "total": 3
+      },
+      "spy_real": {
+        "window_sharpes": [
+          1.3091110566309585,
+          1.1469657218847984,
+          1.0922466015630403
+        ],
+        "positive_count": 3,
+        "total": 3
+      },
+      "ndx_real": {
+        "window_sharpes": [
+          1.1754915045736414,
+          1.3540105850974502,
+          1.0723285895162527
+        ],
+        "positive_count": 3,
+        "total": 3
+      }
+    }
+  },
+  "pre_committed_kills": {
+    "A_sharpe_regress_vs_iter037_010_2plus_ds": {
+      "fired": false,
+      "n_datasets_dropping_010": 0,
+      "deltas": {
+        "educational": -0.0013016838989442503,
+        "spy_real": 0.019485115230988503,
+        "ndx_real": 0.009260346668517716
+      },
+      "threshold": "Sharpe \u2264 iter 037 \u2212 0.10 on \u2265 2 of 3 datasets"
+    },
+    "B_dsr_worst_p_above_iter037_baseline": {
+      "fired": true,
+      "iter059_worst_p": 0.2674698173891702,
+      "iter037_worst_p_baseline": 0.222,
+      "iter037_worst_p_actual": 0.22162330591131196,
+      "iter058_worst_p": 0.04938498504564193,
+      "threshold": "iter 059 worst DSR p \u2265 0.222 (iter 037 baseline)"
+    },
+    "C_score_below_iter037_baseline_79": {
+      "fired": false,
+      "score_frozen": 79,
+      "iter037_score": 79,
+      "iter058_score": 85,
+      "threshold": "score < 79 (iter 037 anchor baseline)"
+    },
+    "D_markowitz_mispredicts_005_2plus_ds": {
+      "fired": false,
+      "n_datasets_mispredicting_005": 0,
+      "residuals": {
+        "educational": -9.992007221626409e-16,
+        "spy_real": 6.661338147750939e-16,
+        "ndx_real": 6.661338147750939e-16
+      },
+      "threshold": "|observed S \u2212 formula S| \u2265 0.05 on \u2265 2 of 3 datasets"
+    },
+    "E_g7_crosslib_above_3pp": {
+      "fired": false,
+      "max_diff_pp": 0.0,
+      "threshold": "> 3.0 pp on any dataset"
+    },
+    "F_corr_above_085": {
+      "fired": false,
+      "avg_corr": 0.41627691135381184,
+      "per_dataset": {
+        "educational": 0.36812780606673845,
+        "spy_real": 0.44385692124847614,
+        "ndx_real": 0.436846006746221
+      },
+      "threshold": "average corr(r_hyg, r_037) > 0.85"
+    },
+    "G_cagr_floor_fail_2plus_ds": {
+      "fired": false,
+      "n_datasets_failing_floor": 0,
+      "per_dataset": {
+        "educational": {
+          "cagr": 0.13044883882655545,
+          "floor": 0.09176000000000001,
+          "passed": true
+        },
+        "spy_real": {
+          "cagr": 0.14469564165711923,
+          "floor": 0.11976,
+          "passed": true
+        },
+        "ndx_real": {
+          "cagr": 0.1649563587101508,
+          "floor": 0.15344000000000002,
+          "passed": true
+        }
+      },
+      "threshold": "combined CAGR < 0.8\u00d7bench on \u2265 2 of 3 datasets"
+    }
+  },
+  "n_kills_fired": 1,
+  "iter037_reference_metrics": {
+    "educational": {
+      "sharpe": 0.9826734191516642,
+      "cagr": 0.1415825281529195,
+      "mdd": 0.3332813035827291
+    },
+    "spy_real": {
+      "sharpe": 1.1537536842829623,
+      "cagr": 0.15533594027829234,
+      "mdd": 0.25243339468961395
+    },
+    "ndx_real": {
+      "sharpe": 1.1737287977115702,
+      "cagr": 0.1775662328522971,
+      "mdd": 0.32277431254608085
+    }
+  },
+  "iter037_reference_score": 79,
+  "iter037_reference_dsr": {
+    "educational": 0.22162330591131196,
+    "spy_real": 0.14448484566929354,
+    "ndx_real": 0.14578032935623475
+  },
+  "iter058_reference_score": 85,
+  "iter058_reference_dsr": {
+    "educational": 0.04938498504564193,
+    "spy_real": 0.033709392395485316,
+    "ndx_real": 0.02577775006454075
+  },
+  "delta_vs_iter037": {
+    "educational": {
+      "sharpe_delta": -0.0013016838989442503,
+      "cagr_delta": -0.011133689326364049,
+      "mdd_delta": -0.026208522947913204
+    },
+    "spy_real": {
+      "sharpe_delta": 0.019485115230988503,
+      "cagr_delta": -0.010640298621173105,
+      "mdd_delta": -0.023109236283914536
+    },
+    "ndx_real": {
+      "sharpe_delta": 0.009260346668517716,
+      "cagr_delta": -0.012609874142146316,
+      "mdd_delta": -0.029486952737461047
+    }
+  }
+}

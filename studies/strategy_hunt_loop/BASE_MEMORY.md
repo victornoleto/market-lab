@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 58
+total_iterations: 59
 winners_found: 0
 status: iterating
-latest_iteration: "058-2026-04-25-1044"
-cumulative_n_trials: 4328
+latest_iteration: "059-2026-04-25-1107"
+cumulative_n_trials: 4329
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -55,12 +55,12 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
 
-### 058 — 2026-04-25 — hyg-credit-carry-3rd-stream (🥇 STRONG, 85/100, TOP-K #1 tie)
-- **Hypothesis + cite:** HYG long-only + 90d boolean trend filter as 3rd stream on iter 046 at w=0.10 (analog of iter 049/050/057 with credit-carry asset). Cites Asvanunt-Richardson 2017 JPM 43(2) DOI 10.3905/jpm.2017.43.2.090 (credit risk premium primary) + `[risk_parity, ch.5]` + `[volatility_trading, p.218]` (iter 046 base) + `[systematic_trading]` (Carver TSM) + `[advances_fin_ml, p.222-223, p.31-34]` + Markowitz 1952. 1 cfg pre-committed; n_trials 4327→4328.
-- **Result:** Sharpe edu/spy/ndx 1.22/1.35/1.40 (Δ046 +0.02/+0.025/+0.02 UP), CAGR 8.69/9.01/9.27% (Δ046 −0.46/−0.44/−0.49pp; 0/3 floor), MDD 16.74/13.71/13.12% (Δ046 −1.23/−1.51/−1.45 DOWN; 3/3), gates 7/7/7, DSR worst-p 0.049/0.034/0.026 (edu clears 0.05), corr 0.38/0.48/0.48 (avg 0.44), HYG_TSM S 0.87/0.99/0.99 (CAGR 4.75-5.08%, pct_long 73-76%), Markowitz residual 0.0000, G7 0.0000pp, robustness 9/9, winner 4/5; score 25+25+15+0+15+5=85 frozen / 90 custom. **0/6 kills fired** (1st kill-free iter-046-family addition).
-- **Lesson:** 3rd-stream-Sharpe thesis vindicated constructively: HYG_TSM (S~0.9) > gold (S~0.4) > commodity (S~0.2) → 85 > 78 > 64 at same w=0.10. Markowitz exact at 4787-bar scale. CAGR floor remains binding ceiling — diversifiers with standalone CAGR < 9.5%/yr strictly worsen it. Path 90: iter-037 anchor or levered-HYG. See `iterations/058-*/`.
+### 059 — 2026-04-25 — iter037-plus-hyg-tsm-w010 (🥇 STRONG, 79/100, 1/7 KILLS — B only)
+- **Result:** S 0.98/1.17/1.18 (Δ frozen +0.30/+0.27/+0.23, Δ037 −0.001/+0.020/+0.009), CAGR 13.04/14.47/16.50% (Δ037 −1.1/−1.1/−1.3; **3/3 floor PASS** vs 058's 0/3), MDD 30.71/22.93/29.33% (3/3, Δ037 −2.6/−2.3/−2.9 DOWN), gates 6/6/6 (G2 DSR FAIL ×3), DSR worst-p 0.268/0.128/0.138 (edu rises vs 037's 0.222 from HYG-windowing 2006-07 loss), corr avg 0.42, Markowitz 0.0000, G7 0.0000pp, robustness 9/9, winner 4/5; score 25+19+0+15+15+5=79. Cites `[risk_parity, ch.5]` + Asvanunt-Richardson 2017 + `[systematic_trading]` + Markowitz 1952. n_trials 4328→4329.
+- **Lesson:** Anchor substitution at fixed w=0.10 HYG_TSM trades CAGR-floor (15/15 here vs 058's 0/15) for DSR-pass (0/15 here vs 058's 15/15) — net 79 = bare iter 037. Saved-stream-pair Pareto traces 2 non-dominating points: 79 (CAGR-branch, 037) vs 85 (DSR-branch, 058). Path to WINNER 90+ needs NEW base anchor with Sharpe ≥ 1.20 AND CAGR ≥ 12% (none in iters 0-58). Levered iter 058 = iter 060 #1 direct attack. See `iterations/059-*/`.
 
-### Iters 015-057 (compressed 1-line; full detail in `iterations/NNN-*/`)
+### Iters 015-058 (compressed 1-line; full detail in `iterations/NNN-*/`)
+- **058** (🥇 85 TOP-K #1 tied, 0/6 KILLS, hyg-credit-carry-3rd-stream) S 1.22/1.35/1.40 (Δ046 +0.02 each), gates 7/7/7, DSR 0.049/0.034/0.026, CAGR 8.69/9.01/9.27% (0/3 floor), MDD 16.74/13.71/13.12% (3/3, Δ046 −1.2/−1.5/−1.5), corr 0.44, Markowitz 0.0000, score 85. **3rd-stream-Sharpe thesis vindicated (HYG_TSM S~0.9 → 85 > gold 78 > commodity 64); CAGR floor 0/15 binding on iter-046 anchor.**
 - **057** (🥈 64, 4/6 KILLS, commodity-tsm-basket-3leg) S 1.05/1.08/1.14 (Δ046 −0.16/−0.24/−0.24), CAGR 8.10/7.87/8.22% (0/3 floor), MDD 15.78/10.53/11.24% (Δ046 −2/−5/−3 pp), gates 6/6/6, DSR worst-p 0.223, corr 0.30, score 64. **Closes multi-commodity TSM 3rd-stream on iter 046; standalone basket Sharpe 0.13-0.29 too low for Markowitz-positive contribution.**
 - **056** (🥈 74, 2/4 KILLS, iter046-levered-130) S 1.10/1.21/1.27 (Δ046 −0.11/−0.11/−0.11), CAGR 10.79/11.20/11.61% (1/3 floor), gates 6/6/6 G2 FAIL ×3, DSR worst-p 0.10, score 74. **External 1.3× lev at 3.5% borrow trades CAGR for Sharpe; closes external-lev axis on iter 046 at borrow ≥ 3%.**
 - **055** (🥈 73, 0/6 KILLS, vrp-basket-5etf-cross-region) S 1.07/1.40/1.60 (Δ039 −0.07/+0.12/+0.04), CAGR 4.74/5.38/6.20% (0/3 floor), MDD 16/6/5%, DSR edu 0.130, score 73. **EFA/EEM help post-GFC, hurt pre-GFC edu (EM tail miss); iter 039 Pareto-opt at 76; broader-VRP axis closed.**
@@ -131,17 +131,16 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-036/**037**-**058**. **iter 058 entered TOP-K #1 (tied with 046 at 85 STRONG); vindicates 3rd-stream-Sharpe thesis (HYG_TSM S~0.9, w=0.10 → 85 vs gold 78 vs commodity 64).** Saved-stream-pair Pareto exhausted: ceiling = 85. DSR binding at n_trials > 4300: edu S ≥ 1.10 for 0.10 bucket, ≥ 1.18 strict-winner. **CAGR floor 0/15 = structural binding constraint on iter-046-family** — any 3rd stream with standalone CAGR < iter 046's ~9.5%/yr strictly worsens combined CAGR (confirmed iter 058).
+Consumed/closed: 002-005/007/009-014/017/019-**059**. **Iter 059 closed 037-anchor + HYG_TSM at w=0.10 → 79 (CAGR floor unlocked 3/3 but DSR didn't improve).** Saved-stream-pair Pareto traces 2 non-dominating points: 79 (CAGR-branch, 037) vs 85 (DSR-branch, 058). **NO anchor in iter 0-58 has Sharpe ≥ 1.20 AND CAGR ≥ 12% simultaneously; saved-stream-pair frontier capped at 85.**
 
-### Iter 059 candidates (iter 058 set TOP-K #1 tied at 85 STRONG; CAGR floor remains ceiling)
+### Iter 060 candidates (iter 058 = TOP-K #1 stays; 037 anchor closed via 059)
 
-- **#1 HYG_TSM 3rd stream on iter 037 anchor (RECOMMENDED — addresses CAGR ceiling)** — iter 037 standalone CAGR 12.4-15.5% > iter 046's 9.07-9.76%; adding HYG_TSM at w=0.10 (proven on 058) to 037 may preserve Sharpe + unlock CAGR floor. Re-uses HYG_TSM engine. Cite Asvanunt-Richardson 2017 + `[risk_parity, ch.5]`. Predicted 80-88; path to WINNER if Sharpe + CAGR unlock simultaneously.
-- **#2 Levered HYG_TSM at 1.3× borrow as 3rd stream on iter 046** — doubles HYG_TSM CAGR (5%→9-10%); risk = iter 056 borrow-drag pattern but on single 10% sleeve so smaller. Predicted 78-85.
-- **#3 T10Y3M regime as iter 041 alternative** — single-feature forward-looking gate on SPY+IEF+GLD at 1.4-1.5× lev. Distinct from iter 044 (2-feature composite, closed). Cite `[advances_fin_ml, ch.17-18]` + Estrella-Mishkin 1998 NBER 6649. Predicted 76-84.
-- **#4 Plano C sleeve eval** (mandate-aligned passive factor-tilted; ETFs young, FF93 proxies for edu). Predicted ≤ 70.
-- **#5 Delisted-aware data source** (CRSP/Norgate; unblocks cross-sectional family). Not feasible without budget.
+- **#1 Levered iter 058 at 1.2-1.3× external borrow (RECOMMENDED)**: direct attack on CAGR floor 0/15; iter 056 pattern on 058 stream. Predicted 78-92; path to WINNER if borrow ≤ 3%.
+- **#2 Equity-overweight 037 (0.75/0.40/0.40) + HYG_TSM**: trades MDD for Sharpe; predicted 82-87.
+- **#3 Regime-aware leverage on iter 015 base**: VIX-z-score 2-state HMM, lever 1.7× calm / 1.0× stress. `[advances_fin_ml, ch.17-18]`. Predicted 80-95.
+- **#4 Plano C sleeve eval** (predicted ≤ 70). **#5 CRSP/Norgate delisted** (not feasible without budget).
 
-DEAD-LETTER: 037+026/041+026/037+046/041+039 any weight (Pareto 79-85); 046-family 044/047-050; **HYG_TSM 3rd stream on 046 at w=0.10 (TESTED 058, scored 85; family Pareto)**; HYG-041 substitution (UNTESTED, distinct); HMM-2; FX carry; MTUM/QUAL/USMV (not in cache); all 037-anchor saved-stream-pairs (045/051/053, ceil 84); 041 substitution for 037 (052); cross-sectional momentum on Tiingo cache (054 data layer); broader-region VRP 5-leg (055 at 73); external lev on 046 at borrow ≥ 3% (056 at 74); multi-commodity TSM basket on 046 (057 at 64).
+DEAD-LETTER: 037+026/041+026/037+046/041+039 any weight (Pareto 79-85); 046-family 044/047-050; **HYG_TSM 3rd stream on 046 at w=0.10 (058 = 85; family Pareto)**; **HYG_TSM 3rd stream on 037 at w=0.10 (059 = 79; CAGR floor unlocked but DSR not improved)**; HYG-041 substitution (UNTESTED, distinct); HMM-2; FX carry; MTUM/QUAL/USMV (not in cache); all 037-anchor saved-stream-pairs (045/051/053, ceil 84); 041 substitution for 037 (052); cross-sectional momentum on Tiingo cache (054 data layer); broader-region VRP 5-leg (055 at 73); external lev on 046 at borrow ≥ 3% (056 at 74); multi-commodity TSM basket on 046 (057 at 64).
 
 ### Deeper backlog
 
@@ -166,6 +165,7 @@ DEAD-LETTER: 037+026/041+026/037+046/041+039 any weight (Pareto 79-85); 046-fami
 - **iter 056 closure (external leverage on iter 046)**: 1.3× borrow at 3.5% loses 0.1 Sharpe, fails G2 DSR; iter 046's 85 = Pareto ceiling on this family.
 - **iter 057 closure (multi-commodity TSM 3rd-stream)**: USO+UNG+SLV at w=0.20 scored 64; standalone basket Sharpe 0.13-0.29 too low (Markowitz dilution at unequal Sharpes); orthogonality vindicated (corr 0.30) but absolute Sharpe matters more.
 - **iter 049/050/057/058 STRUCTURAL FINDING**: 3rd-stream Sharpe ≥ ~0.5 is binding for Markowitz-positive contribution, NOT correlation alone. Vindicated constructively by 058 (HYG_TSM S~0.9, w=0.10 → 85 STRONG; ties 046 at TOP-K #1 with better Sharpe + MDD). CAGR floor 0/15 now binding ceiling on iter-046-family.
+- **iter 059 closure (037+HYG at w=0.10)**: CAGR floor 3/3 unlocked but DSR worst-p 0.268 ≥ iter 037 baseline 0.222 → score 79 = bare iter 037. **CAGR-DSR dual constraint structural finding**: at n_trials=4329 and w_HYG=0.10, NO anchor in iters 0-58 has Sharpe ≥ 1.20 AND CAGR ≥ 12% simultaneously; saved-stream-pair Pareto frontier capped at 79-85.
 
 ---
 
