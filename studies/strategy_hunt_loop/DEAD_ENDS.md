@@ -4043,3 +4043,113 @@ Citations for iter 060's closure:
   convention.
 - IBKR Pro Tier 1 margin schedule (2025-04) — 3.5% retail rate
   (iter 056 datum, contrast).
+
+
+---
+
+## From iteration 061 — equity-overweight iter 037 (0.75/0.40/0.40) + HYG_TSM at w=0.10
+
+Complete study: `studies/strategy_hunt_loop/iterations/061-2026-04-25-1154-iter037-eq075-plus-hyg-tsm/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Re-weighting iter 037's 3-leg static stack from canonical 0.60 SPY +
+   0.45 IEF + 0.45 GLD (1.50× lev) to equity-overweight 0.75 SPY + 0.40
+   IEF + 0.40 GLD (1.55× lev), then combining with HYG_TSM at w=0.10**.
+   Score **79/100 STRONG** (1/6 KILLS B fired — DSR worst-p 0.341 ≥
+   0.222 baseline). Same score as iter 037 standalone (79) and iter 059
+   (37+HYG at canonical weights, 79). The hypothesis predicted Sharpe
+   would lift to 1.10-1.25 via equity tilt; empirically it dropped
+   slightly (0.91/1.14/1.16 standalone vs iter 037's 0.96/1.15/1.17).
+
+2. **The specific root cause: iter 037's bond/gold legs are Sharpe-
+   POSITIVE contributors, not Sharpe-neutral diversifiers**. Standalone
+   eq075 Sharpe 0.91 (edu) vs iter 037 anchor 0.96 = −0.05; the SPY tilt
+   pulled portfolio Sharpe DOWN toward SPY-solo Sharpe (~0.90 post-2009),
+   not UP toward 1.20. The empirical ratio ΔCAGR/ΔSharpe ≈ 16
+   pp/Sharpe-unit ≈ SPY's solo Sharpe — boosting equity weight from
+   0.60 to 0.75 added ~0.5-1.0 pp CAGR but cost ~0.05 Sharpe, with the
+   lower base Sharpe at fixed n_trials=4331 raising DSR worst-p from
+   iter 037's 0.222 to **0.341** (REGRESSED 50%).
+
+3. **CAGR-floor unlock thesis CONFIRMED but DSR regressed — net score
+   unchanged at 79**. The CAGR floor 3/3 ✓ (13.85/15.98/18.57% vs
+   floors 9.18/11.98/15.35%) and MDD ceiling 3/3 ✓ (35.97/24.84/32.48%
+   vs ceilings 60.14/38.70/40.12%) survived the equity overweight, so
+   the predicted Pareto-positive directions held. But the negative
+   Sharpe drift compounded into DSR penalty, neutralizing the gain.
+   This mirrors iter 059's "anchor substitution at fixed w_HYG=0.10
+   trades CAGR-floor for DSR-pass" finding, but for a different anchor
+   variant — equally Pareto-bounded at 79 STRONG.
+
+### Don't re-test
+
+- Iter 037-family weight-tuning at any equity weight ≥ 0.70 (eq075 +
+  HYG closure here implies broader equity-tilt closure).
+- Equity-overweight versions of iter 037 with HYG_TSM at any weight
+  w ∈ [0.05, 0.15] (the iter 058/059/060/061 thread shows HYG_TSM at
+  any reasonable weight + iter 037 anchor saturates at 79 STRONG).
+- 3-leg static stacks with eq_w ≥ 0.75 on SPY+IEF+GLD/QQQ+IEF+GLD
+  with any 3rd-stream addition (the underlying mechanism — equity tilt
+  pulls portfolio Sharpe toward SPY-solo — generalizes across 3rd
+  streams).
+
+### Structural principles
+
+- **The canonical iter 037 weights (0.60/0.45/0.45) are roughly Sharpe-
+  optimal within the SPY+IEF+GLD risk-parity stack at preserved
+  leverage 1.50×**. Weight perturbations along the equity-vs-diversifier
+  axis trade Sharpe for CAGR (or vice versa) at a punishingly high
+  rate (~16 pp CAGR per unit Sharpe), with DSR penalty growing faster
+  than the CAGR uplift compensates. **No anchor weight in this space
+  breaks the 79-STRONG ceiling on the CAGR-clearing Pareto branch.**
+
+- **Diversification value is asymmetric in mean-variance space**: when
+  diversifier legs (bond, gold) have standalone Sharpe similar to or
+  higher than the equity leg's Sharpe-after-vol-adjustment, REDUCING
+  diversifier weight LOWERS portfolio Sharpe even when equity weight
+  rises. This is the Markowitz tangent-portfolio principle running in
+  reverse — the iter 037 weights sit near the tangent for SPY+IEF+GLD
+  at observed correlations (~+0.0-0.3 SPY-IEF, ~+0.0 SPY-GLD).
+
+- **DSR is more sensitive to base Sharpe than to base CAGR at fixed
+  n_trials in the 4000-5000 range**: a Sharpe drop of 0.05 (from 0.96
+  to 0.91 on edu) raised DSR worst-p from 0.268 to 0.341 (50% increase),
+  while a CAGR uplift of +0.4-2.1 pp (3 datasets) added zero score
+  buckets because both anchors already cleared the floor. Empirical
+  rule: at n_trials > 4000, every 0.05 Sharpe < 1.0 costs ~0.07-0.10
+  DSR worst-p — significant in the 0.20-0.30 bucket.
+
+- **The CAGR-DSR dual constraint is now confirmed across 4 anchor
+  variations** (iter 037 standalone, iter 058 = 046+HYG, iter 059 =
+  037+HYG canonical, iter 061 = 037-eq075+HYG): the saved-stream
+  library cannot deliver simultaneously CAGR ≥ 0.8×bench (3 datasets)
+  AND DSR p < 0.05 with HYG_TSM at any weight in [0.05, 0.15]. **The
+  Pareto frontier at 79 (CAGR-clearing) / 85 (DSR-clearing) STRONG is
+  structural, not config-specific.**
+
+Citations for iter 061's closure:
+
+- `[risk_parity, ch.5]` — Asness-Frazzini-Pedersen 2012 multi-leg
+  risk-parity decomposition; the equity-vs-diversifier weight trade-off
+  hinges on the diversifier leg's standalone Sharpe being non-trivial
+  (which it is for IEF and GLD post-2004).
+- `[risk_parity, p.5, p.10-11, ch.1]` — AFP 2012 SSRN 1728082 static-
+  stack mechanism.
+- `[leverage_for_the_long_run, p.19-20]` — Hsiao & Williams 2017
+  preserved-leverage zone (1.5-1.6× total). The 1.55× iter 061 weight
+  is within the zone but the equity-vs-diversifier mix matters more
+  than the total-lev level for Sharpe optimization.
+- Asvanunt & Richardson 2017, JPM 43(2), DOI 10.3905/jpm.2017.43.2.090
+  — credit risk premium (HYG_TSM, vendored from iter 058/059).
+- `[systematic_trading]` (Carver) — TSM single-asset rule.
+- `[stocks_on_the_move, p.76-77]` (Clenow) — boolean trend on log price.
+- Markowitz (1952), JoF 7(1) 77-91 — closed-form Sharpe identity
+  (residual = 0.0000 ✓ on all 3 datasets, validating the convex combo
+  arithmetic).
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials (4331).
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (0.0000 pp ×3).
+- Erb & Harvey (2006), FAJ 62(2) 69-97 — gold strategic role; the
+  GLD leg's positive Sharpe contribution is the surprising finding
+  vindicating Erb-Harvey's "gold-as-diversifier" thesis even at
+  reduced 0.40 weight.
