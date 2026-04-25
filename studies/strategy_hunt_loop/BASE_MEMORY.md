@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 35
+total_iterations: 36
 winners_found: 0
 status: iterating
-latest_iteration: "035-2026-04-25-0142"
-cumulative_n_trials: 4294
+latest_iteration: "036-2026-04-25-0206"
+cumulative_n_trials: 4297
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -80,11 +80,13 @@ the 18 KB ceiling. Full hypothesis, citations, scope and score
 breakdown for compressed iters are recoverable from
 `iterations/NNN-*/hypothesis.md` + `verdict.json` + `final_report.md`.
 
-### 035 — 2026-04-25 — static-stack-spy-gld (🥇 STRONG, 77/100, 1/6 KILLS — Kill C only)
-- **Result:** Sharpe edu/spy/ndx 0.877/1.070/1.103 (Δ frozen +0.197/+0.170/+0.148; **Δ015 +0.094/+0.026/+0.040 POSITIVE 3/3, edu strongest; Δ034 +0.082/+0.012/+0.028**), gates 5/6/6, DSR p=0.344/0.236/0.219 (n=4294, **edu −0.205 absolute vs iter 015's 0.548, biggest static-stack DSR improvement** but worst-p > 0.20 Kill C); MDD 48.67%/32.44%/36.95% **3/3 ceiling clean** (vs iter 034 ndx breach); G7 max 0.188pp; winner=4/5; score 1:25 2:17 3:0 4:15 **5:15** 6:5 = **77** (vs iter 034's 5:10 = 72 — only diff: GLD didn't breach ndx MDD).
-- **Lesson:** **Static-stack 2-leg 90/60 architecture has INTRINSIC 77 ceiling, asset-class-agnostic.** Gold (zero carry, contango) and IEF (term-premium) both extract Sharpe ~1.05-1.10 on identical 1.5× lev base. **Iter 015's edge was DIVERSIFICATION-driven, NOT bond-carry-driven** — closes "better diversifier asset class" path (DBC/GSG/VNQ/EMB/ZROZ all bounded by same architectural ceiling). Open: 3-leg ADDITIVE (SPY+IEF+GLD compound, untested), non-static (regime/ML/CS), cross-asset VRP basket. See `iterations/035-2026-04-25-0142-static-stack-spy-gld/`.
+### 036 — 2026-04-25 — ntsx-3leg-additive-spy-ief-gld (🥈 PROMISING, 72/100, 1/6 KILLS — Kill C only)
+- **Result:** Sharpe edu/spy/ndx 0.921/1.147/1.154 (Δ frozen +0.241/+0.247/+0.199 ALL 3 ≥ +0.10; Δ015 +0.138/+0.103/+0.090; **Δ035 +0.044/+0.077/+0.051 — 1st empirical proof 3rd leg adds Sharpe**), gates 5/6/6, DSR p=**0.311**/0.151/0.164 (n=4297, **lowest static-stack worst-p ever** vs 015's 0.548, 035's 0.344 — Kill C); MDD 42.83/32.41/**41.53%** (ndx breach +1.41pp), winner=4/5; G7 max 0.142pp; robust 9/9; score 1:25 2:17 3:0 4:15 **5:10** 6:5 = **72**.
+- **Lesson:** **77 ceiling TRIPLE-CONFIRMED**: asset-agnostic (035) + 2-leg-saturated (015) + leverage-bound (036). 3-leg additive @ 1.8× extracts +0.05 Sharpe (AMP 2013 orthogonality real) BUT +0.30 lev breaks ndx MDD → net 72. **Static-stack ≤1.8× exhausted at 77.** Open: lev-preserved 3-leg (0.6/0.45/0.45 = 1.5×), HMM regime, VRP basket. See `iterations/036-2026-04-25-0206-ntsx-3leg-additive-spy-ief-gld/`.
 
-### Iters 015-034 (compressed 1-line; full detail in `iterations/NNN-*/`)
+### Iters 015-035 (compressed 1-line; full detail in `iterations/NNN-*/`)
+
+- **035** (🥇 77, 1/6 KILLS — Kill C only, GLD substitution) `static_stack_90_60_spy_gld`: Sharpe 0.877/1.070/1.103 (Δ015 +0.094/+0.026/+0.040 POSITIVE 3/3), DSR 0.344/0.236/0.219 (n=4294, edu −0.205 absolute vs iter 015), MDD 48.67%/32.44%/36.95% 3/3 clean; G7 max 0.188pp; score 1:25 2:17 3:0 4:15 5:15 6:5 = **77**. PRINCIPLE: 77 ceiling asset-class-agnostic; gold and IEF extract same Sharpe on 90/60 1.5× base → iter 015's edge was DIVERSIFICATION-driven not bond-carry. Closes single-asset diversifier substitution.
 
 - **034** (🥈 72, 1/6 KILLS — C only, 3-leg bond-carry sleeve) zero-net-notional duration spread on iter 015 (`ntsx_synth_90_spy_40_ief_20_tlt`): Sharpe 0.795/1.058/1.075 (Δ015 +0.011/+0.014/+0.012 POSITIVE 3/3 but small), DSR 0.529/0.250/0.253 (n=4291, all 3 fail Kill C), MDD ndx 42.11% breach +1.99pp; G7 max 0.087pp; score 1:25 2:17 3:0 4:15 5:10 6:5 = **72**. PRINCIPLE: third bond-axis path tying iter 032/033 at 72 — bond-axis CLOSED. iter 035 GLD substitution result re-classifies this lesson: 77 ceiling is architecture-bound, not bond-specific.
 
@@ -138,17 +140,18 @@ breakdown for compressed iters are recoverable from
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-034/**035** (iter 035 STRONG 77 — GLD substitution TIES iter 015 ceiling from different asset class, beats it on Sharpe (+0.026 to +0.094) AND DSR (−0.205 absolute) AND ndx MDD (−2.56pp), but rubric ties at 77. **77 ceiling now confirmed architecture-bound (90/60 + 1.5× + 2-leg static), NOT bond-specific.** Closes all single-asset diversifier substitutions). Top-K #1 still iter 016/018/021 triple-tied at 79.
+Consumed/closed: 002-005/007/009-014/017/019-035/**036** (iter 036 PROMISING 72 — 3-leg additive SPY+IEF+GLD at 1.8× lev demonstrated Sharpe IS extracted by 3rd leg (+0.05 over iter 035 across all 3 ds, 1st empirical proof) but +0.30 leverage breaks ndx MDD ceiling, netting 72. **77 ceiling NOW TRIPLE-CONFIRMED**: asset-class-agnostic (035) + 2-leg-saturated (015) + leverage-bound (036). Static-stack family within ≤1.8× exhausted at 77 absolute. Closes 3-leg additive at >1.5× lev). Top-K #1 still iter 016/018/021 triple-tied at 79.
 
-### Iter 036 candidates (post-iter-035 — 77 ceiling asset-class-agnostic; pivot to multi-leg additive OR non-static)
+### Iter 037 candidates (static-stack ≤1.8× exhausted at 77; pivot to lev-preserved 3-leg, non-static, OR cross-asset VRP)
 
-- **G-3LEG additive 3-leg static (RECOMMENDED)**: SPY+IEF+GLD compound, e.g., `0.9/0.4/0.4` (1.7× lev) or `0.9/0.6/0.3` (1.8× lev). Stacks bonds AND gold as parallel diversifiers (NOT substitution). Tests whether two orthogonal diversifiers compound or saturate. Pre-committed outcomes: ≥80 = 1st real break; ~77 = leverage-bound. Extends iter 034's 3-leg primitive. ~30 min. `[risk_parity, ch.5]` + Erb-Harvey 2006 + AMP 2013.
-- **C-VRP IWM**: iter 026 architecture but on IWM (Russell 2000) instead of SPY. Small-cap stress decorrelated (2022 IWM −36% vs SPY −25%). Iter 026's ndx 7/7+DSR PASS shows architecture has at least one DSR-clearing path; IWM may break SPY-specific edu DSR bottleneck. ~60-90 min. `[volatility_trading, p.218]` + AMP 2013.
-- **Non-static architecture** (Sharpe ≥ 1.30 cross-ds): ML meta-label `[advances_fin_ml, ch.3]`, HMM regime-aware lev scaling, cross-sectional factor timing 5+ ETFs. Only credible path to DSR PASS at n ≥ 4294. ~2-4 h.
+- **G-3LEG-PRESERVED lev-preserved 3-leg (RECOMMENDED)**: `0.6 SPY + 0.45 IEF + 0.45 GLD = 1.5× lev` — 3 orthogonal diversifiers AT iter 015 lev. Pre-committed: Sharpe ≥ +0.10 cross-ds AND ndx MDD ≤ 40% = 1st 80+ break; <+0.10 on ≥2 ds closes static-stack at ≤1.5×. ~30 min, minimal cfg change. **Single most informative remaining cheap test.** `[risk_parity, ch.5]` + AMP 2013.
+- **HMM regime-aware lev scaling on iter 015**: VIX level/z 2-state HMM; lev 1.5× low-vol / 1.0× high-vol. Predicted: breaks 77 on MDD axis. `[advances_fin_ml, ch.17-18]`. ~2-4h.
+- **C-VRP IWM**: iter 026 arch on IWM (Russell 2000) put cs. Iter 026 ndx 7/7+DSR PASS → IWM may break SPY edu DSR bottleneck. ~60-90 min. `[volatility_trading, p.218]` + AMP 2013.
+- **Non-static (other)** (Sharpe ≥ 1.30): ML meta-label `[advances_fin_ml, ch.3]`, CS factor timing 5+ ETFs. Only credible DSR PASS path at n ≥ 4297. ~2-4h.
 
-DEAD-LETTER **F-FX FX carry** (was iter 035's recommended pick per iter 034 report): **DATA-BLOCKED** — `audusd.parquet`/`usdjpy.parquet` only span 2020-01-01→2026-04-17 (1957 bars/6y); insufficient for spy_real/ndx_real cross-dataset. Parked until alternative source.
+DEAD-LETTER **F-FX FX carry**: **DATA-BLOCKED** (audusd/usdjpy span 2020+ only, 6y insufficient). Parked.
 
-NOT recommended (032/033/034/**035** confirm): **all single-asset diversifier substitutions on 2-leg static stack** — IEF and GLD independently confirm 77 ceiling. Includes DBC/GSG/USO commodity baskets, VNQ REITs, EMB EM bonds, ZROZ/EDV ultra-long. Architecture is leverage-bound at 1.5×, not asset-bound.
+NOT recommended (032/033/034/035/**036** confirm): single-asset diversifier substitutions on 2-leg AND 3-leg additive at >1.5× — IEF/GLD substs (035) AND 3-leg @ 1.8× (036) bounded at 72-77. Includes DBC/GSG/USO, VNQ, EMB, ZROZ/EDV.
 
 ### Deeper backlog
 
@@ -167,7 +170,7 @@ NOT recommended (032/033/034/**035** confirm): **all single-asset diversifier su
 - **Tightening iter 026**: vol-target wrapper ABSORBS short-vol overlays (Sharpe-neutral); stand-alone harvest on T-bill collateral delivers +0.38-0.45 Sharpe alpha 3/3 (STRONG 76).
 - **Tightening iter 027**: linear leverage on T-bill+harvest is NOT total-Sharpe-neutral (rf-bonus dilutes); N=3.5 total Sharpe→overlay_sharpe; closes leverage-only path.
 - **Tightening iter 028-031** (single-axis VIX-gate family on iter 026 base): constant `VIX<35` (028 lifts edu Kill A 2/3), `level+3d-persistence` (029 ties 71 +0.0003 of 10pt threshold), `z(60,2)` regime-relative (030 1st spy 7/7+DSR PASS but Kill A+B), AND-composite R-1∧R-2 (031 ties 76 ceiling, 1st all-3 DSR<0.10 but criterion-4 CAGR 0/15 structural). All 5 iters capped at 76/71 by harvest_notional=1.0 T-bill architecture. Single-axis family CLOSED. Open: R-3 VXV term-structure, multi-asset, non-VIX gates.
-- **iter 032/033/034/035 (static-stack 2-leg ceiling at 72-77, four different paths)**: 032 layered VRP composition + 033 full TLT substitution + 034 zero-net-notional spread sleeve all hit **72** PROMISING (1:25 2:17 3:0 4:15 5:10 6:5); **iter 035 GLD substitution hits 77 STRONG** (1:25 2:17 3:0 4:15 **5:15** 6:5) — only difference: GLD didn't breach ndx MDD ceiling. **iter 035 finding re-classifies 032/033/034 lesson**: iter 015's 77 was NOT bond-specific edge — the architecture's intrinsic ceiling is asset-class-agnostic. Gold (zero carry) and IEF (term premium) reach the same DSR-bound Sharpe ~1.05-1.10 on a 90/60 levered base. Best static-stack DSR ever observed = iter 035 edu p=0.344 (vs iter 015's 0.548 → −0.205 absolute, biggest static improvement). **Closes ALL single-asset diversifier substitutions on 2-leg static stack** (commodity baskets, REITs, EM bonds, ultra-long bonds). Open: 3-leg ADDITIVE (SPY+IEF+GLD compound), cross-asset VRP basket, non-static (regime/ML/CS) Sharpe ≥ 1.30 cross-ds.
+- **iter 032/033/034/035/036 (static-stack ceiling 72-77, 5 paths — TRIPLE-CONFIRMED)**: 032/033/034/036 hit 72 (1:25 2:17 3:0 4:15 **5:10** 6:5); **035 GLD subst hits 77** (5:15) — only diff: ndx MDD clean. **77 ceiling is simultaneously asset-agnostic (035), 2-leg-saturated (015), AND leverage-bound (036, 3-leg @ 1.8× breaks ndx MDD)**. 036 NULL on Kill A proved 3rd leg DOES add +0.05 Sharpe (AMP 2013 orthogonality empirical), but +0.30 lev breaks tail. Best DSR ever = **036 edu p=0.311** (−0.237 vs 015). **Closes all single-asset diversifier substitutions on 2-leg AND 3-leg additive at >1.5× lev**. Open: lev-preserved 3-leg (0.6/0.45/0.45 = 1.5×), HMM regime, cross-asset VRP basket.
 
 ---
 
