@@ -2585,9 +2585,105 @@ only MDD-control, not Sharpe-uplift.
 
 ### Open paths to break 79 (out-of-static-stack)
 - Cross-asset VRP basket (iter 026 × SPY+QQQ+IWM at 1/3 each) —
-  strongest credible DSR-PASS path.
+  TESTED in iter 039 (see below); reaches 76 STRONG, NOT 79; basket
+  is operationally dominant over iter 026 single-asset but score-tied.
 - Regime-conditional **weights** on iter 037 base (not leverage).
 - ML meta-label on iter 037 (AFML ch.3) — orthogonal by construction.
+
+---
+
+## From iteration 039 — Cross-asset VRP basket SPY+QQQ+IWM @ 1/3 each (STRONG 76, ties iter 026/031)
+
+Single pre-committed cfg `vrp_basket_eq3_5_10_1m` — T-bill collateral
++ short 5/10 % OTM 21-DTE put credit spread on SPY (iv_scale=1.0),
+QQQ (iv_scale=1.10, VXN proxy), IWM (iv_scale=1.25, RVX proxy);
+equal weights 1/3 each; total `harvest_notional=1.0`. Tested
+Sinclair 2013 p.218 cross-asset VRP harvest diversification.
+
+### What happened
+- Score **76 STRONG** ties iter 026 and iter 031 byte-for-byte at
+  top-K #5 (decomposition 25/21/10/0/15/5).
+- **Sharpe edu/spy/ndx 1.140/1.288/1.561** — Δ frozen +0.46/+0.39/+0.61;
+  Δ026 +0.010/+0.008/**+0.191** (ndx Sharpe is a **loop-record**
+  single-dataset value).
+- **DSR p edu/spy/ndx 0.0748/0.0612/**0.0059**** — ndx is
+  **loop-record sub-0.01** (6.4× tighter than iter 026 ndx 0.038);
+  edu/spy improved by ~0.008-0.009 vs iter 026 but stay > 0.05 strict.
+- MDD 14.32 / 7.07 / 6.84 % (Δ026 −2.48 / +0.67 / −1.36 pp).
+- Gates 6/6/**7** (ndx clean 7/7); robust **9/9** sub-windows positive
+  (ties iter 037/038 perfection); G7 cross-lib **0.0000 pp** on all 3
+  datasets (loop-best, perfect float-precision replication).
+- 0/6 pre-committed kills fire (Sharpe higher 3/3, DSR worst-p 0.075
+  < 0.10, MDD < 35 %, G7 < 3 pp, score 76 ≥ 70, robust 9/9 ≥ 6/9).
+
+### Don't re-test
+- **4-leg / 5-leg basket extensions** (SPY, QQQ, IWM + DIA + MDY at
+  1/N notional). Marginal Sharpe gain saturates as ρ_avg(legs) →
+  ρ_average across liquid US index ETFs (~ 0.85 for VIX/VXN/VXD/RVX).
+  Predicted ≤ +0.02 Sharpe / −0.005 DSR worst-p; not enough for
+  criterion-3 step-change.
+- **VIX-regime / persistence / z-score gates on the basket** — iter
+  028-031 closed single-axis VIX-gate family on iter 026 base;
+  predicted ≤ +0.03 / −0.01 Sharpe / DSR (worst-p) on basket base.
+- **Asymmetric basket weights** (e.g., 0.5 SPY + 0.3 QQQ + 0.2 IWM):
+  predicted ± 0.02 Sharpe, no DSR step-change. Equal-weight is
+  near-optimal under ρ ≈ 0.75 across legs.
+- **DTE / strike sweeps** (15-day, 7/12 strikes, etc): Bondarenko
+  2014 §V — 5/10 21-DTE configuration extracts ≥ 90 % of max-Sharpe
+  VRP on liquid index puts; alternatives ≤ +0.05 / −0.005.
+- **Basket on a static-stack base** (e.g., iter 015 + basket overlay):
+  iter 032 closed put-spread overlay on iter 015 with corr_SPY ≈
+  0.97 absorption; basket has identical equity-correlation profile
+  (basket corr_SPY = 0.78 — same magnitude family) so σ²_port
+  absorption analogue applies.
+
+### Structural principles
+1. **VRP-harvester family ceiling at 76 STRONG** is now confirmed
+   across **two structurally-different constructions** (single-asset
+   SPY, 3-asset basket) and **three single-axis VIX-gate variants**
+   (iter 028 const, 029 persistence, 030 z-score, 031 AND-composite,
+   all capped at 76/71). The ceiling is **architecturally bound by
+   T-bill-collateral + harvest_notional=1.0** — criterion 4 (CAGR
+   floor 0/15) is structural; criterion 3 (DSR worst-p) is
+   dataset-asymmetric (ndx clears, spy near-clear, edu structurally
+   bounded by 2008 GFC sustained-vol cluster where ρ(VIX, VXN, RVX)
+   → 1).
+2. **Cross-asset diversification IS empirically validated** but
+   delivers Sharpe lift mainly on the dataset whose benchmark most
+   rewards short-vol harvest (ndx +0.19 vs single-asset; edu/spy ≈
+   +0.01). Basket overlay Sharpe ndx 1.07 is the highest VRP-overlay
+   Sharpe ever recorded; consistent with σ_basket ≈ 0.91 σ_single
+   under ρ ≈ 0.75.
+3. **Operational dominance ≠ score dominance.** iter 039 strictly
+   dominates iter 026 on Sharpe magnitude (3/3 datasets), DSR
+   significance (ndx ×6.4 tighter), and sub-window robustness (9/9
+   perfect, vs iter 026's 9/9 with lower individual values), but
+   ties at 76 because criterion 4 (CAGR 0/15) and criterion 3 (DSR
+   bucket 10/15 below 0.05 strict-PASS) are structural ceilings
+   unaltered by basket diversification.
+4. **G7 cross-library parity at 0.0000 pp** — iter 039 is the
+   cleanest G7 result ever; demonstrates that the BS pricing core
+   from iter 020/026 generalizes correctly to basket aggregation
+   without numerical drift.
+
+### Open paths to break 76 (within or near VRP-harvester family)
+- **Vol-target wrapper around iter 039 basket** (strongest credible
+  break-76 path): apply Moreira-Muir 2017 σ⁻²-scaling to basket
+  realized vol; target_vol=15%, lookback=21d, max_lev=2.0×.
+  Combines iter 016 mechanism with iter 039 basket. σ²_port
+  absorption argument is structurally weaker on multi-leg-equity-VRP
+  basket than on iter 032's static-stack overlay (no equity-leg-vs-
+  bond-leg cointegration; all 3 legs are equity-VRP). Predicted
+  78-82 STRONG → potential WINNER if all 3 datasets clear DSR < 0.05.
+- **ML meta-label on iter 039 basket** (AFML ch.3): binary
+  classifier on the basket's daily signal. Features: VIX, VXN-proxy,
+  RVX-proxy, VVIX, T10Y3M, EBP, realized vol, implied skew.
+  Orthogonal-by-construction — could break edu DSR via skipping
+  high-vol-cluster days.
+- **Kelly-fraction harvest sizing on basket**: scale `harvest_notional`
+  ∝ rolling-window σ_basket⁻². Re-opens iter 027's leverage axis
+  with non-linear sizing; may rebreak iter 027's rf-bonus-dilution
+  closure.
 
 ---
 
