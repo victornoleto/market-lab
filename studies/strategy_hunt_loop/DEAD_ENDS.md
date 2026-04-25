@@ -1830,6 +1830,103 @@ See BASE_MEMORY "Iter 026 candidates":
 
 ---
 
+## From iteration 027 — Levered VRP-primary (`harvest_notional=3.5`)
+
+Complete study: `studies/strategy_hunt_loop/iterations/027-2026-04-24-2144-levered-vrp-primary/final_report.md`.
+
+### What the iteration resolved
+
+Iter 027 tested whether linearly leveraging iter 026's VRP harvester
+from `harvest_notional=1.0` to `3.5` would clear the structural CAGR
+floor (iter 026 0/3 → projected 3/3) while preserving Sharpe edge and
+DSR significance under the (theoretical) leverage-neutrality
+assumption. Single pre-committed cfg `vrp_primary_h3_5_5_10_1m`,
+n_trials 4279→4280.
+
+Result: **PROMISING tier 74/100, 4/5 winner conditions** (DSR sole
+gap, same as iter 026), **score regression 76→74**. CAGR floor cleared
+3/3 datasets (11.43%/12.05%/16.82%) — the hypothesis-specific gain
+was confirmed. But Sharpe regressed 0.31-0.37 across all 3 datasets
+(edu 1.13→0.80, spy 1.28→0.91, ndx 1.37→1.06), violating Kill A's
+≤0.05 tolerance, and DSR p collapsed (0.083→0.517 edu, 0.070→0.464
+spy, 0.038→0.281 ndx). Sharpe edge gate misses on spy_real (+0.014 <
++0.10).
+
+### Structural principle (do NOT re-test)
+
+**Linear leverage on a constant-rf-collateral + harvest strategy is
+NOT total-return-Sharpe-neutral.** Total-return Sharpe converges
+toward `overlay_sharpe` as `harvest_notional → ∞`. Algebraic detail:
+
+    Sharpe(r, N) = (rf_d + N × mean_h) / (N × σ_h) × √252
+                = overlay_sharpe + rf_d / (N × σ_h) × √252
+
+The first term is leverage-invariant; the second term is inversely
+proportional to N (the rf bonus is diluted by leverage). At iter 026
+N=1, the rf bonus added ~0.46 Sharpe to the educational dataset
+(0.669 + 0.46 = 1.13). At iter 027 N=3.5, the rf bonus is diluted to
+~0.13 (0.669 + 0.13 = 0.80). Same math holds across all 3 datasets
+with consistent direction.
+
+The TDD test `test_iter027_sharpe_invariant_under_leverage` correctly
+verified that EXCESS-return Sharpe (after rf subtraction) IS leverage-
+invariant. But the hunt-loop scoring uses TOTAL-return Sharpe (full
+series, no rf subtraction), so the dilution bites in production
+metrics.
+
+### Don't re-test
+
+- Higher `harvest_notional` (≥ 4.0) on the iter 026 base — would
+  further dilute Sharpe; CAGR marginal benefit on already-cleared
+  floors; MDD risk on educational; DSR worsens.
+- Linear leverage on any constant-rf-collateral + harvest strategy
+  expecting to preserve total-return Sharpe — same dilution applies
+  structurally to carry, FX-basis, futures-basis variants where the
+  collateral earns a fixed return and the harvest scales linearly.
+- Tweaking iter 027's parameters (different N, slightly different
+  strikes/DTE) to "rescue" — the rf-dilution boundary is structural.
+
+### Structural principles
+
+- **Total-return Sharpe ≠ excess-return Sharpe** when the strategy
+  contains constant-yield components. Theory papers (Asness-Frazzini-
+  Pedersen 2012's levered-low-vol argument) typically frame Sharpe in
+  excess-return form, which IS leverage-invariant. Production scoring
+  often uses total returns (no rf subtraction in `_sharpe()`), which
+  has the rf-dilution effect under leverage. **Always check which
+  Sharpe form your benchmark + scoring use** before pre-committing
+  to leverage as a Sharpe-preserving operation.
+
+- **Path to clear CAGR floor without losing Sharpe edge requires
+  scaling the rf-yield component too.** Equivalently: the strategy
+  must lever the harvest WITHOUT diluting the rf bonus. This needs
+  margin-financing modeling (where margin posted reduces rf-earning
+  capital — but realistic margin requirements are < 100%, so partial
+  rf can be retained) OR a different mechanism architecture
+  (compounding harvest at variable notional, or a multi-leg structure
+  where multiple constant-yield components co-scale).
+
+- **The +0.38-0.45 Sharpe edge of iter 026 was N=1-specific.** The
+  intrinsic harvest skill (`overlay_sharpe`) is 0.67/0.77/0.93 — that
+  is the asymptotic ceiling of any leveraged version. To produce a
+  WINNER from this primitive, future iterations must lift
+  `overlay_sharpe` itself: VIX filter (V-3), strike refinement (V-5),
+  or composing with orthogonal return source (V-4 VRP+carry).
+
+### Path forward (NOT dead — overlay_sharpe-lifting paths)
+
+- **VIX-regime filter on iter 026 base** (V-3, Sinclair p.217 explicit
+  rule). Hypothesis: filtering high-VIX opens lifts `overlay_sharpe`
+  to 0.80-1.05, restoring full-strategy Sharpe at N=1. Best path to a
+  true WINNER.
+- **VRP + Carry composite** (V-4). Adds non-equity-correlated return
+  stream from iter 024 carry; composite σ² should drop modestly while
+  total mean grows.
+- **Strike refinement** (V-5). 5/15% wider OR 3/7% closer-to-ATM
+  affects per-trade harvest geometry; pre-commit one variant.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:

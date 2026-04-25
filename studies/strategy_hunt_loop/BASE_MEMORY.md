@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 26
+total_iterations: 27
 winners_found: 0
 status: iterating
-latest_iteration: "026-2026-04-24-2122"
-cumulative_n_trials: 4279
+latest_iteration: "027-2026-04-24-2144"
+cumulative_n_trials: 4280
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -79,9 +79,13 @@ the 18 KB ceiling. Full hypothesis, citations, scope and score
 breakdown for compressed iters are recoverable from
 `iterations/NNN-*/hypothesis.md` + `verdict.json` + `final_report.md`.
 
+### 027 — 2026-04-24 — levered-vrp-primary (🥈 PROMISING, 74/100, 4/5 winner conditions)
+- **Result:** Sharpe edu/spy/ndx 0.801/0.914/1.057 (Δ frozen +0.121/+0.014/+0.102; +0.10 gate 2/3 — spy MISSES), gates 6/6/6, DSR p=0.517/0.464/0.281 (**DSR collapsed vs iter 026 0.083/0.070/0.038 — biggest DSR regress**), CAGR 11.43/12.05/16.82% (**floor 3/3 ✓ — gain**), MDD 50.68/23.14/28.81% (ceiling 3/3 ✓), G7 xlib 0.0000 pp, 21d-worst −26.5/−17.4/−20.4% (3.5× iter 026 < 30% Kill B), robustness 9/9, winner=4/5 (DSR sole gap); score 1:20 2:19 3:0 4:15 5:15 6:5 = 74.
+- **Lesson:** Linear leverage on T-bill-collateral + harvest is **NOT** total-return-Sharpe neutral (IS excess-Sharpe neutral). At `harvest_notional=3.5`, total Sharpe converges from `(overlay_sharpe + rf_bonus_N=1)` to `overlay_sharpe ≈ 0.67/0.77/0.93`. iter 026's +0.38-0.45 edge was N=1-specific (rf-bonus). Closes leverage-only path to WINNER; opens overlay_sharpe-lifting paths (V-3 VIX filter, V-4 VRP+carry, V-5 strikes). Citations: `[volatility_trading, ch.3, p.41]` + `[risk_parity, p.5]` + Bondarenko 2014. See `iterations/027-2026-04-24-2144-levered-vrp-primary/`.
+
 ### 026 — 2026-04-24 — vrp-primary-portfolio (🥇 STRONG, 76/100 — top-K #5)
 - **Result:** Sharpe edu/spy/ndx 1.133/1.282/1.367 (Δ frozen +0.453/+0.382/+0.412 — 3/3 +0.10 gate, **largest cross-ds Sharpe edge ever**), gates 6/6/**7** (ndx **1st 7/7 ever**), DSR p=0.083/0.070/**0.038** (ndx **1st DSR PASS ever** at n=4279), CAGR 4.85/4.97/6.31% (floor 0/3, structural), MDD 16.82/6.35/8.18% (ceiling 3/3), G3 WF 8/8 all 3, G6 3/3 PASS, G7 xlib 0.0000 pp, corr_SPY 0.74-0.77 (β≈0.11), 21d-worst −7.45/−4.86/−5.72%, robustness 9/9, winner=3/5 (DSR worst-p + CAGR floor are gaps); score 1:25 2:21 3:10 4:0 5:15 6:5 = 76.
-- **Lesson:** VRP harvest on T-bill collateral (no σ²_port absorber) produces strongest Sharpe edge + first DSR pass on real data + first 7/7 gates — confirming iter 020/021 vol-target wrapper ABSORBED the harvest. CAGR floor structurally bounded at 5-6%/yr by harvest_notional=1.0; forward WINNER path: lever (harvest_notional=2.0-2.5) for CAGR + Sinclair p.217 VIX<35 filter to clear edu+spy DSR. Citations: `[volatility_trading, ch.3, p.41, p.217]` + Bondarenko 2014 QJF 4(3) + Carr-Wu 2009 RFS 22(3). See `iterations/026-2026-04-24-2122-vrp-primary-portfolio/`.
+- **Lesson:** VRP harvest on T-bill collateral (no σ²_port absorber) produces strongest Sharpe edge + first DSR pass on real data + first 7/7 gates — confirming iter 020/021 vol-target wrapper ABSORBED the harvest. CAGR floor structurally bounded at 5-6%/yr by harvest_notional=1.0; iter 027 reveals the +0.38-0.45 edge included an rf-bonus that disappears under leverage. Citations: `[volatility_trading, ch.3, p.41, p.217]` + Bondarenko 2014 QJF 4(3) + Carr-Wu 2009 RFS 22(3). See `iterations/026-2026-04-24-2122-vrp-primary-portfolio/`.
 
 ### 025 — 2026-04-24 — slow-ewmac-multi-asset (📉 NEAR_FAIL, 39/100)
 - **Result:** Sharpe edu/spy/ndx 0.77/0.82/0.83 (Δ frozen +0.09/−0.09/−0.13), gates 6/6/6, DSR p=0.62/0.62/0.63 (n=4278), winner=0/5; score 1:0 2:19 3:0 4:0 5:15 6:5 = 39.
@@ -91,9 +95,9 @@ breakdown for compressed iters are recoverable from
 - **Result:** Sharpe 0.79/1.05/1.06 (Δ frozen +0.11/+0.15/+0.10 — 3/3 +0.10 gate), gates 5/6/6, DSR p=0.586 (n=4277), winner=4/5; score 1:25 2:17 3:0 4:15 5:10 6:5 = 72.
 - **Lesson:** Carry-as-ALLOCATION (no σ²_port absorption) achieves 3/3 Sharpe edge but on 2-bond universe ties iter 015 static-IEF baseline; DSR ceiling at n=4277 binds. See `iterations/024-2026-04-24-2033-bond-carry-duration-timing/`.
 
-### 023 — 2026-04-24 — TSM 3-asset SPY+TLT+GLD per-asset vol-target (📉 NEAR_FAIL 28/100, biggest regression)
-- **Result:** Sharpe 0.554/0.552/0.610 (Δ frozen −0.126/−0.348/−0.345; **Δ iter 016 −0.427/−0.588/−0.576 — largest ever**), CAGR 8/8/9% floor fails 3/3, MDD 48/48/36% spy +14.5pp, gates 5/5/4, DSR worst-ever p=0.926, n_trials 4273→4276, winner 0/5; geometry change mechanical (Kill B+C clear) but cost > premium; score 1:0 2:15 3:0 4:0 5:10 6:3 = 28.
-- **Lesson:** TSM-primary on ≤4-asset ETF basket cannot beat SPY/QQQ — turnover ~35/yr/leg × 2 bps (2.1%/yr drag) dominates sqrt(3) basket diversification (Carver LoAM); Hurst-Ooi-Pedersen 2017's +1.0 Sharpe required 67 markets. Closes TSM-primary on broad-asset-class small baskets; does NOT close slow-EWMAC, ≥20-market baskets, carry-primary, VRP-primary. See `iterations/023-2026-04-24-2007-time-series-trend-3etf/`.
+### 023 — 2026-04-24 — tsm-3etf (📉 NEAR_FAIL, 28/100)
+- **Result:** Sharpe 0.55/0.55/0.61 (Δ frozen −0.13/−0.35/−0.35; Δ iter 016 −0.43/−0.59/−0.58 largest ever), CAGR 8/8/9% floor 0/3, MDD 48/48/36%, DSR p=0.926 worst-ever, winner 0/5; score 1:0 2:15 3:0 4:0 5:10 6:3 = 28.
+- **Lesson:** TSM-primary on ≤4-asset ETF basket — turnover 35/yr/leg dominates sqrt(3) diversification; HOP 2017's +1.0 Sharpe required 67 markets. Closes broad-asset-class small baskets. See `iterations/023-2026-04-24-2007-time-series-trend-3etf/`.
 
 ### Iters 015-022 (compressed 2-line; full detail in `iterations/NNN-*/`)
 
@@ -132,16 +136,17 @@ breakdown for compressed iters are recoverable from
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002/003/004/005/007/009/010/011/012/013/014/017/019/020/021/022/023/024/025/026 (iter 026 STRONG, ranked #5; mechanism remains open — see iter 027 candidates). Top-K #1 still iter 016/018/021 triple-tied at 79.
+Consumed/closed: 002/003/004/005/007/009/010/011/012/013/014/017/019/020/021/022/023/024/025/026/027 (iter 027 PROMISING 74, leverage-only path closed; iter 026 STRONG #5 mechanism remains open via overlay_sharpe-lifting paths). Top-K #1 still iter 016/018/021 triple-tied at 79.
 
-### Iter 027 candidates (post-iter-026 — strongest direction is doubling down on VRP)
+### Iter 028 candidates (post-iter-027 — lift `overlay_sharpe` itself, NOT leverage)
 
-0v2. **Option V-2 — Levered VRP-primary** (`harvest_notional` ∈ {2.0, 2.5} pre-committed). Iter 026 1.0 left CAGR 5-6%/yr (floor 0/3); 2.0 projects 8-10%/yr (clears edu+spy floors), worst-case ~10-15% (still capped). DSR neutral (Sharpe scales 1:1). Could yield 1st WINNER. `[volatility_trading, ch.3]`.
-0v3. **Option V-3 — VIX-filter VRP-primary** (Sinclair p.217: open only when VIX<35). Avoids high-IV opens; should lift Sharpe edu+spy to clear DSR<0.05. Single binary param. `[volatility_trading, p.217]`.
-0v4. **Option V-4 — VRP + Carry composite** (0.5 × VRP + 0.5 × iter 024 bond-carry). Lowers σ² + corr_SPY toward 0.5 (Carr-Wu); FDM diversification.
-0ls. **Option LS — Long-SHORT slow-EWMAC** — same as iter 025 + short positions; recovers ~50% trend premium. ETF borrow ~30-50 bps/yr.
-0c. **Option C — EWMAC + Carry combo on 6 assets** — Carver's negative-skew complement; FDM 1.10→1.5-1.8 with 4 forecasts.
-0w. **Option W — Wider-universe carry** — iter 024 extended to 3+ duration buckets OR cross-asset (FX UUP, commodity DBC).
+- **V-3 VIX-filter VRP** (Sinclair p.217: VIX<35 gate; iter 026 base N=1). Targets harvest-skill itself. **STRONGEST candidate — best path to WINNER.** `[volatility_trading, p.217]`.
+- **V-4 VRP+Carry composite** (0.5 × iter 026 + 0.5 × iter 024). Carry uncorrelated → composite σ² drops; adds CAGR from carry leg.
+- **V-5 Strike refinement** (5/15% wider OR 3/7% closer-to-ATM). Affects overlay_sharpe non-trivially.
+- **V-6 iter 027 N=1.5-2.0** sweet-spot interpolation (lower priority — interpolation, not structural lift).
+- **LS Long-short slow-EWMAC** (iter 025 + shorts; recovers ~50% trend premium).
+- **C EWMAC+Carry combo** on 6 assets (Carver negative-skew complement; FDM 1.10→1.5-1.8).
+- **W Wider-universe carry** (iter 024 + 3+ duration buckets OR cross-asset FX/commodity).
 
 ### Deeper backlog
 
@@ -175,10 +180,11 @@ Consumed/closed: 002/003/004/005/007/009/010/011/012/013/014/017/019/020/021/022
 - Stock-bond correlation ρ regime overlay on vol-managed stack — ρ enters σ²_port as cross-term, any f(ρ) cointegrated; closes VIX/MOVE/realized-vol overlays by analogy (iter 019)
 - Options-on-equity-leg 5/10%OTM×21DTE either sign on vol-managed 2-leg stack — σ²_port absorbs variance; Sharpe tied. MDD asymmetric (short −1-3pp, long +3-6pp). Does NOT close bare short puts/ATM straddles/different DTE (iter 020/021)
 - Calendar-driven eq:bd weight modulator on vol-managed 2-leg stack (TOM/holiday/DoW) — σ²_port quadratic in w_eq; scale compensates → premium compressed; Sharpe −0.21 to −0.26 vs iter 016. Does NOT close binary entry/exit, cross-sectional ranking (iter 022)
-- TSM (any lookback/skip) as PRIMARY mechanism on ≤4-asset broad-asset-class ETF basket per-asset vol-target — turnover ~35/yr/leg dominates sqrt(3) diversification; Sharpe regress 0.43-0.59 vs iter 016 (largest ever). Does NOT close slow-EWMAC, ≥20-market baskets, carry-primary, VRP-primary (iter 023)
-- Bond-curve carry-as-ALLOCATION on 2-bond universe (TLT↔SHV via T10Y3M ramp) in static 0.9/0.6 stack — novel mechanism (NOT in iter 009/012/013 haircut family), 3/3 Sharpe edge cross-ds, but saturates at iter 015 static-IEF plateau (Δ +0.003/+0.009/−0.003); DSR worst p=0.586 (n=4277). Tightens T10Y3M boundary (closed as scaler, NOT as allocation switch). Does NOT close cross-asset carry, ≥3 duration buckets, carry+value (iter 024)
-- Slow-EWMAC trend (32:128 + 64:256, FDM=1.10, Carver no-trade buffer 10%) with portfolio-level vol-target on 6-asset broad-asset-class long-only ETF basket (SPY/QQQ + TLT + IEF + GLD + EFA + EEM) — fixes iter 023's turnover (1.6/yr/leg vs 35/yr; engine cleanest ever, G3 7-8/8, G6 3/3, G7 < 0.06 pp), but Sharpe 0.77/0.82/0.83 vs SPY/QQQ 0.68/0.90/0.96 → 2/3 regress on real data (Δ frozen +0.086/−0.085/−0.127). MDD dramatically improved (17% vs 33-55%). Long-only constraint sacrifices ~50% of trend premium; 6-asset too narrow vs Hurst-Ooi-Pedersen 67-market for SR≈1.0. Does NOT close long-short slow-EWMAC, ≥20-asset trend, EWMAC+Carry combo, VRP-primary (iter 025)
-- **Tightening (NOT a dead-end)**: iter 020/021 vol-target wrapper ABSORBS short-vol overlays into σ²_port (Sharpe-neutral); the same harvest stand-alone on T-bill collateral delivers +0.38-0.45 Sharpe alpha 3/3 datasets (iter 026 STRONG 76). Short-vol overlays must NOT sit beneath σ²_port scalers if Sharpe direct is goal.
+- TSM-PRIMARY on ≤4-asset broad-class ETF basket per-asset vol-target — turnover ~35/yr/leg dominates sqrt(3) diversification (iter 023). Open: slow-EWMAC, ≥20-market, carry/VRP-primary.
+- Bond-curve carry-as-ALLOCATION on 2-bond universe (T10Y3M ramp) in static 0.9/0.6 stack — saturates at iter 015 static-IEF plateau; DSR worst p=0.586 (iter 024). Open: cross-asset carry, ≥3 duration buckets, carry+value.
+- Slow-EWMAC long-only (FDM=1.10, buffer 10%) on 6-asset broad-class basket — engine cleanest ever but Sharpe 0.77/0.82/0.83 regresses 2/3 vs SPY/QQQ; long-only sacrifices ~50% trend premium; 6-asset too narrow vs Hurst-Ooi-Pedersen 67-market (iter 025). Open: long-SHORT, ≥20-asset, EWMAC+Carry, VRP-primary.
+- **Tightening (iter 026)**: vol-target wrapper ABSORBS short-vol overlays (Sharpe-neutral); stand-alone harvest on T-bill collateral delivers +0.38-0.45 Sharpe alpha 3/3 (STRONG 76).
+- **Tightening (iter 027)**: linear leverage on T-bill-collateral + harvest is NOT total-return-Sharpe-neutral (IS excess-Sharpe-neutral). At N=3.5, total Sharpe→overlay_sharpe (0.67/0.77/0.93); CAGR floor 3/3 ✓ but DSR collapsed (0.083→0.517); Score 76→74. iter 026's +0.38-0.45 edge was N=1-specific (rf-bonus). Closes leverage-only path; opens overlay_sharpe-lifting paths (V-3 VIX filter, V-4 VRP+carry, V-5 strikes). Does NOT close iter 026 at N=1.
 
 ---
 
