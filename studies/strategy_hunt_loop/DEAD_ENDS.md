@@ -2939,6 +2939,111 @@ datasets. Final score 74 vs iter 041's 84 (Kills A + B + D fired).
 
 ---
 
+## From iteration 047 — Weight sweep `w_041 ∈ {0.50, 0.65, 0.80}` on iter 046 base (STRONG 79, weight axis CLOSED, Bonferroni cost > grid gain)
+
+Complete study: `studies/strategy_hunt_loop/iterations/047-2026-04-25-0619-iter046-weight-sweep/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Pre-committed 3-cfg weight sweep on iter 046's iter 041 + iter 039
+   convex-combo base** — best cfg (50/50 = iter 046) scored 79/100 frozen
+   under Bonferroni-adjusted G2 (α' = 0.05/3 = 0.01667). 65/35 scored
+   79; 80/20 scored 74. **iter 046's 50/50 IS the score-function
+   Pareto-optimum** on this component pair: shifts toward iter 041
+   trade DSR (Δ−10 across the 30pp sweep) faster than they gain
+   CAGR-floor (Δ+5; only 1 of 3 floors crossable per 30pp shift).
+   Sharpe monotone ↓ (1.20→1.14→1.08 edu / 1.32→1.25→1.19 spy /
+   1.38→1.28→1.19 ndx) and CAGR monotone ↑ as `w_041` rises, but the
+   score function is not maximised at any interior point. Kills A
+   (top score 79 < iter 046's 85) and B (all 3 cfgs fail Bonferroni-DSR
+   on all 3 datasets) fired.
+
+2. **Bonferroni cost (6 pp on gates) > marginal grid-dispersion gain
+   in the iter 046 family**. iter 046's raw worst-p was 0.041 across
+   the 3 datasets; under α'=0.0167 from N=3 pre-commitment all 3 cfgs
+   FAIL G2 on all 3 datasets, dropping criterion 2 from 25 (iter 046's
+   N=1) to 19 (iter 047's N=3). The 6-pt regression accounts for the
+   entire gap between iter 046 (85) and iter 047's identical 50/50
+   cfg (79).
+
+3. **80/20 missed spy CAGR floor by 0.07pp** (11.91% vs 11.98%) — the
+   closest near-miss on a CAGR floor in the iteration loop history.
+   Even if 80/20 had cleared spy by 0.07pp, ndx (11.71% vs 15.35%
+   floor) would still fail and cond #4 needs ≥ 2/3 datasets passing.
+
+### Don't re-test
+
+- Any `w_041 ∈ [0.5, 1.0]` weight on the iter 041 + iter 039 convex
+  combo. The 3-point sweep covered the high-CAGR side of the Pareto
+  frontier; the entire half is score-dominated by 50/50.
+- Any `w_041 < 0.5` weight (toward iter 039) on this component pair.
+  Not tested but extrapolation is monotone (Sharpe stays high but
+  CAGR drops further; criterion 4 already 0/3 at 50/50, can only stay
+  at 0/3). Sharpe also doesn't gain because 50/50 already exceeds
+  both standalone components on edu+spy (Markowitz benefit fully
+  realised at 50/50).
+- Pre-committing more than N=1 cfg in the iter 046 family without
+  ≥6 pp other gains to amortize the Bonferroni penalty. Single-cfg
+  iter 046-family research must be the rule.
+
+### Structural principles
+
+- **A monotone parameter sweep cannot reveal a non-trivial Pareto-
+  optimum.** When the score function trades off two monotone-in-w
+  criteria (Sharpe ↓ vs CAGR ↑ in this case), the optimum lies at
+  whichever endpoint maximises the sum — interior points are dominated
+  unless the score function is non-linear in a discontinuous way (e.g.,
+  a binary floor crossing). Here the only floor crossing in the swept
+  range was edu (9.18%) at w_041 ≥ 0.65, but the +5 pt CAGR-floor gain
+  was offset by a −5 pt DSR-bucket loss at the same point. Future
+  weight sweeps must (a) include the inverse-variance optimum
+  (≈ 89.5% iter 039 here, NOT covered by {0.5, 0.65, 0.8}) AND (b) span
+  multiple floor crossings, otherwise the sweep is uninformative.
+
+- **Bonferroni adjustment must be priced into iteration design**.
+  Pre-committing N cfgs at α' = α/N is honest discipline, but it
+  actively destroys score on iter 046-family strategies whose raw p
+  is 0.04-0.05. Future research extending iter 046 should either:
+  (a) keep N=1 (single pre-committed extension), or (b) target raw
+  worst-p < 0.0167 / N to amortize the BF cost. Option (b) requires
+  components with raw p < 0.01, which the iter 041 + iter 039 pair
+  does not deliver at 17-20y windows.
+
+- **The Pareto-optimum on a 2-component convex combo on the SCORE
+  function is NOT the inverse-variance optimum on the SHARPE function**.
+  Markowitz inverse-variance places the optimum near 89.5% iter 039
+  (where σ_combined is minimised), but that point would have CAGR
+  ≈ 5-6% (failing all 3 floors) and lower expected return. The
+  score function's CAGR-floor + DSR-bucket structure shifts the
+  optimum toward higher iter 041 weight UNTIL the DSR-bucket boundary
+  is crossed — for this pair, that boundary sits at exactly 50/50
+  (where raw worst-p ≈ 0.04, just below 0.05).
+
+- **Ndx CAGR floor (15.35%) is structurally unreachable from iter 041-
+  based composites**. iter 041 alone caps at 12.97% CAGR on ndx (its
+  regime tilt sacrifices CAGR for Sharpe variance reduction); any
+  convex combination with iter 039 (6.33% CAGR on ndx) only LOWERS
+  the combined CAGR. Future iter 046-base research must either accept
+  ndx CAGR criterion 4 = 0/15 OR replace iter 041 with a higher-CAGR
+  ndx base (e.g., regime-gated QQQ stack).
+
+### Citations
+
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV (now N=3 vs iter 046's
+  N=1; PBO=0 on 3/3 in this iteration but weakly informative due to
+  N < 4).
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials.
+- `[risk_parity, ch.5]` — iter 041 base architecture (unmodified).
+- `[volatility_trading, p.218]` — iter 039 basket architecture (unmodified).
+- Markowitz (1952), JoF 7(1) 77-91 — convex-combination minimum-variance
+  weight sits at the inverse-variance ratio; sweeping AWAY trades
+  variance for higher expected return (the Pareto frontier mapped here).
+- Bonferroni (1936), Pubblicazioni del R. Istituto Superiore di Scienze
+  Economiche e Commerciali di Firenze 8, 3-62 — closed multi-test
+  correction α' = α/k for k pre-committed hypotheses.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:
