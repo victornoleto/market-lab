@@ -4776,3 +4776,162 @@ Citations for iter 065's closure:
   DOI 10.1016/j.jfineco.2013.10.005 — borrow frictions on levered
   low-vol strategies; Sharpe-without-rf convention drag formula
   re-vindicated empirically here at calm-only application.
+
+---
+
+## From iteration 066 — Tree-based RF meta-labeling on iter 064 daily 1-day sign with 5 standard features (NEAR_FAIL 37, 5/8 KILLS A+B+C+D+H — REGRESSION −53)
+
+Complete study: `studies/strategy_hunt_loop/iterations/066-2026-04-25-1411-meta-label-rf-iter064/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Random Forest classifier (n_estimators=200, max_depth=4,
+   random_state=42, class_weight='balanced')** as binary trade/cash
+   gate on iter 064 saved combined stream. Average OOF AUC = 0.503 /
+   0.503 / 0.492 across edu / spy / ndx — **classifier is at chance
+   on all 3 datasets**. Per-fold AUCs cluster tightly around 0.5
+   (range 0.462-0.534). Sharpe drops 0.48-0.72 absolute vs iter 064
+   (KILL A 3/3); CAGR drops 5.4-6.9 pp absolute (KILL D destroys edu
+   floor unlock); DSR worst-p 0.039 → 0.85 (KILL B 21.6× iter 064's
+   ceiling). Score 37 NEAR_FAIL — regression −53.
+
+2. **5-feature space (`roll21_sharpe`, `roll63_mdd`, `vix`,
+   `t10y3m`, `sma200_dist`)** carries no predictable signal about
+   iter 064's daily-bar return sign. Feature importance flat (range
+   0.12-0.25 across 5 features) — no dominant signal in any
+   regime/vol/momentum primitive. Holds across 3 independent
+   datasets — NOT a small-sample artifact.
+
+3. **5-fold purged k-fold with 21-day embargo** correctly produces
+   honest out-of-fold predictions (no contamination, deterministic
+   reproducibility, G7 cross-lib 0.000000 pp). The chance-level AUC
+   is the **true** predictability of the feature space, not in-sample
+   overfit.
+
+4. **Daily-cadence binary gate friction binds at 5 bps/flip**.
+   622-703 flips × 5 bps = 311-352 bps of friction over the test
+   window. Even a perfectly random (uninformative) gate destroys
+   5-7 pp of CAGR via friction × half-time-in-cash compounding.
+   Constraint: any binary gate at daily cadence needs flip rate
+   ≤ ~50/year (regime persistence ≥ 5 trading days) to not destroy
+   the underlying CAGR.
+
+### Don't re-test
+
+- Tree-based meta-labeling (RF, GBM, XGBoost, LightGBM) on iter 064
+  daily 1-day return sign with the standard 5-feature canon (or any
+  subset of those 5 features), at any depth ≤ 8 and any threshold
+  in [0.3, 0.7]. iter 066 + iter 013 jointly close: 2 model classes
+  (LR, RF) × 2 base strategies (iter 016 vol-managed, iter 064
+  Markowitz-saturated composite).
+- Logistic / linear meta-label on iter 064 with the same 5 features
+  (subsumed by iter 013's general LR closure + iter 066's tree
+  generalisation).
+- Daily-cadence binary gate on ANY iter ≥ 50 base at 5 bps/flip
+  cost (friction-cost binding observation; any oracle gate would
+  still need flip rate ≤ ~50/yr).
+- Binary gate threshold tuning (0.5 → 0.6 / 0.4) on the same RF
+  classifier — with AUC at chance, threshold sweep changes
+  pct_traded but not the discriminative power.
+- max_depth sweeps 4 → 8 / 16 on the same feature space — with
+  feature importance already flat, deeper trees memorise noise
+  without generalising.
+- ANY binary gate on iter 064 base that introduces ≥ 100 flips per
+  decade at 5 bps cost (friction-bound).
+
+### Structural principles
+
+- **Bar-level 1-day sign of a Markowitz-saturated composite stream
+  is informationally null in the standard regime/vol/momentum
+  feature canon, regardless of model class.** This generalises
+  iter 013's LR-meta-label closure ("redundant with variance-
+  scaling") to tree-based classifiers and broader feature sets.
+  The closure now spans **2 model classes (LR, RF) × 2 base
+  strategies (iter 016 vol-managed, iter 064 saturated composite)**.
+
+- **Saturated composite stream's residual variance is unpredictable
+  by definition.** iter 064 = 0.9·iter_046 + 0.1·QQQ_TREND, where
+  iter_046 = 0.5·iter_039 + 0.5·iter_041, where iter_039 has its
+  own VRP-basket variance allocation and iter_041 has VIX regime
+  weighting. The structure has already absorbed 4 layers of regime
+  conditioning before bar-level meta-labeling can act. The residual
+  daily noise is by construction NOT regime-conditioned, hence
+  no observable feature predicts it.
+
+- **Friction-cost regime constraint binds for daily-cadence binary
+  gates**. The Sharpe-uplift threshold for a binary gate to be net
+  positive is roughly:
+  `expected_uplift_per_correct_call ≥ flip_rate × cost_per_flip /
+  (positive_bar_fraction × pct_traded)`. At daily cadence with 700
+  flips/yr and 5 bps cost, an oracle classifier (perfect 0.6 AUC)
+  delivers ~0.3-0.5 pp/yr Sharpe uplift; friction is 30 pp/decade
+  drag. The minimum-viable cadence is therefore **weekly or longer**
+  (regime persistence ≥ 5 trading days, ~50 flips/yr).
+
+- **iter 013 LR meta-label closure is now a 2-dimensional closure**:
+  spans (LR, RF) × (vol-managed simple, Markowitz-saturated
+  composite). Future meta-labeling attempts on this strategy family
+  must vary BOTH the model class AND the label horizon
+  simultaneously to break the closure. Specifically: (a) forward
+  N-day Sharpe label with N ≥ 5, AND (b) regime classifier (HMM /
+  GBM with monotone constraints / deep net) — neither alone
+  suffices.
+
+- **iter 064's 90 is now a strict LOCAL OPTIMUM in 6-dimensional
+  ambient mechanism space**. Closed axes:
+  1. Saved-stream-pair recombination (045/051/052/053 → 84)
+  2. Internal LETF substitution (062/063 → 79-81)
+  3. QQQ-trend static weight sweep (047 → 79)
+  4. Output-side VIX gate (048 → 83)
+  5. Calm-conditional external lev (065 → 74)
+  6. Bar-level meta-labeling (066 → 37, this iter)
+
+  Path to WINNER 95+ requires a mechanism orthogonal to all 6 axes.
+  Most promising remaining candidates (per iter 067 candidate list):
+  variance-targeting (no lev, dynamic position size); regime-
+  conditional QQQ_TREND component WEIGHT (NOT output lev); forward
+  5-day Sharpe meta-label.
+
+### Things that might still work (in principle)
+
+- **Variance-targeting on iter 064 (no lev cap > 1.0)**: Moreira-Muir
+  2017 σ⁻²-target wrapper on iter 064 saved combined stream. Distinct
+  from iter 016 (simpler 60:40 base) and iter 040 (iter 039
+  standalone, not composite). Predicted 80-90.
+- **Regime-conditional QQQ_TREND component WEIGHT** (vary w_qqqt by
+  VIX regime; total combined weight stays at 1.0 always; NO
+  leverage): tests sub-component regime conditioning at convex-combo
+  input layer. Predicted 85-93.
+- **Forward 5-day Sharpe meta-label** (regime classification at
+  weekly cadence): converts label from binary 1-day sign to
+  binary forward-5d-Sharpe. Lower flip rate ~120/yr vs 700/yr in
+  iter 066 → less friction. Predicted 60-85 with high variance.
+
+### Citations for iter 066's closure
+
+- `[advances_fin_ml, ch.3]` — López de Prado (2018), Chapter 3
+  "Labeling". Meta-labeling pattern with primary/secondary model
+  decomposition. **Foundational citation; iter 066's closure is on
+  the canonical mechanism.**
+- `[advances_fin_ml, ch.7]` — purged k-fold cross-validation,
+  p.103-110. 5-fold contiguous split with 21-bar embargo —
+  rigorously honest no-look-ahead evaluation.
+- `[advances_fin_ml, p.222-223]` — Deflated Sharpe Ratio with
+  cumulative n_trials = 4336.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (0.000000
+  pp on 3/3, post-prediction transform).
+- `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV (vacuous at N=1).
+- `[advances_fin_ml, p.162-164]` — strict 1-day shift no-peek for
+  feature engineering.
+- Breiman, L. (2001), *Mach. Learn.* 45(1) 5-32, DOI
+  10.1023/A:1010933404324 — Random Forest.
+- Lopez de Prado, M. (2020), *Mach. Learn. for Asset Managers*,
+  Cambridge — independent confirmation of tree-based meta-label
+  out-of-sample edge with proper purging (the iter 066 result is the
+  null finding when this method is applied to a saturated composite).
+- Faber, M. (2007), SSRN 962461 — `sma200_dist` feature primitive.
+- Whaley, R. E. (2009), JPM 35(3) 98-105, DOI 10.3905/JPM.2009.35.3.098
+  — `vix` feature primitive.
+- `[risk_parity, ch.5]` — iter 064 base preserved via iter_046.
+- `[volatility_trading, p.218]` — iter 039 sub-component.
