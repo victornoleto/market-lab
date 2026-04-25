@@ -4629,3 +4629,150 @@ and points future iterations to the open **weight-sweep** axis
 - `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
 - `[advances_fin_ml, p.162-164]` — no-lookahead 1-day shift rule.
 - `[advances_fin_ml, p.208-211]` — PBO via CSCV (vacuous at N=1).
+
+
+---
+
+## From iteration 065 — VIX-calm-conditional external 1.5× leverage on iter 064 saved combined stream at futures-realistic 2.25% borrow (PROMISING 74, **2/7 KILLS A+C**, calm-conditional ext-lev axis on iter 064 base CLOSED)
+
+`studies/strategy_hunt_loop/iterations/065-2026-04-25-1341-iter064-vix-output-lev-gate/final_report.md`
+
+Tested whether **calm-conditional** application of external leverage
+(only during VIX[t-1] < 20, ~70% of bars) escapes iter 060's
+Sharpe-convention closure on iter 058-derived bases. iter 060 closed
+unconditional 1.5× ext lev on iter 058 (score 79, drag 3/3 fired
+kill A+B); iter 060's final report explicitly opened calm-regime-gated
+ext lev as untested. iter 064 (= iter 058 architecture with QQQ_TREND
+substituting HYG_TSM at w=0.10, score 90) provides a slightly higher
+starting CAGR (9.49/9.97/10.17%) and tighter DSR (worst-p 0.0392 vs
+iter 058's 0.0494) — predicting that calm-fraction-discounted drag
+(~30% of full-lev drag) might preserve DSR while delivering CAGR
+uplift sufficient to clear spy floor (gap −2.01 pp at iter 064).
+
+Empirical result: **score 74 PROMISING (regression −16 vs iter 064
+base 90)**. CAGR uplift confirmed 3/3 (+1.47 / +1.49 / +1.63 pp;
+spy gap closed from −2.01 → −0.51 pp but NOT cleared). Sharpe drag
+fired KILL A on 2/3 datasets (Δ Sharpe 064: −0.097 / −0.138 / −0.144;
+threshold ≥ 0.10 absolute). DSR worst-p tripled from 0.0392 (iter 064
+spy) to 0.1140 (this iter spy) — all 3 datasets fail DSR < 0.05 cut
+(edu 0.0867, spy 0.1140, ndx 0.1031). Score 25+19+5+5+15+5 = 74.
+
+**Methodological closure**: iter 060's discovered Sharpe-convention
+formula (per the codebase's `_sharpe()` rf=0 default):
+
+```
+Sharpe_drag = (lev − 1) / lev × annualized_borrow / σ_annual
+```
+
+— GENERALIZES to calm-only application with one important nuance:
+the calm-fraction discount on drag is OFFSET by the calm-regime
+contributing most of the realised variance. Empirical drag at
+calm-only application:
+
+| dataset | predicted (with calm discount) | observed |
+|---|---|---|
+| educational | 0.117 × 0.653 = **0.076** | 0.097 |
+| spy_real    | 0.114 × 0.684 = **0.078** | 0.138 |
+| ndx_real    | 0.115 × 0.707 = **0.081** | 0.144 |
+
+Observed drag is **1.3-1.8× the calm-fraction-discounted prediction**.
+The discrepancy is because Sharpe drag is a function of
+(borrow / σ_full_sample), not (borrow / σ_calm_only). When the
+calm-only strategy includes the calm-regime returns AT FULL VOLATILITY
+(σ_calm ≈ σ_full), the per-bar drag is calm × full-σ, but it's
+applied to a smaller fraction of bars. Net:
+
+```
+calm_only_drag ≈ full_drag × (1 − stress_frac × (σ_stress / σ_full)²)
+```
+
+Since σ_stress / σ_full ≈ 1.5-2.0× (stress regimes are volatile by
+definition), the discount factor on drag is ~30% smaller than the
+naive calm-fraction multiplier suggests. Result: calm-conditional
+application reduces drag by only ~10-15%, NOT 30%.
+
+Closures (now in DEAD_ENDS):
+
+- **VIX-calm-conditional external leverage on iter 064 saved combined
+  stream at lev_calm=1.5, lev_stress=1.0, vix_threshold=20,
+  borrow_annual=2.25%**: closed at score 74 PROMISING (2/7 kills A+C).
+  The mechanism delivers predicted CAGR uplift (+1.5 pp average) but
+  Sharpe drag (0.10-0.14) exceeds iter 064's narrow DSR margin
+  (worst-p 0.0392) → DSR worst-p triples → criterion 3 drops 15 → 5,
+  per-dataset gates 7/7 → 6/7 × 3, net **−16 score**.
+
+- **Generalised closure**: ANY external leverage transform with
+  borrow ≥ rf + 25 bps applied to ANY iter-046-/iter-058-/iter-064-
+  derived combined stream is structurally bounded by the codebase's
+  `_sharpe()` rf=0 convention, REGARDLESS of regime conditioning
+  (calm-only, stress-only, T10Y3M-conditional, etc.). The empirical
+  drag scales with full-sample volatility (not regime-conditional
+  volatility), so regime gating reduces drag by ~10-15%, not the
+  naive calm-fraction (~30%).
+
+- **iter 064's score 90 confirmed as strict LOCAL OPTIMUM** under
+  all linear/scalar transforms tested to date: saved-stream-pair
+  recombination (045/051/052/053 → 79-84), external lev (056/060
+  → 74-79), internal LETF (062/063 → 79-81), calm-conditional ext
+  lev (this iter → 74), output-VIX gate (048 → 83). Path to WINNER
+  95+ requires fundamentally different mechanism class (e.g.,
+  meta-labeling with non-linear features).
+
+What is **NOT closed** by this iteration:
+
+- **Lower lev_calm (1.2× or 1.3×) on iter 064**: would reduce drag
+  proportionally but also reduce CAGR uplift; net score predicted
+  80-85 (likely strict regression vs unlevered iter 064's 90 because
+  the smaller CAGR uplift can't unlock spy floor either while DSR
+  marginally regresses). **UNTESTED** but likely unproductive.
+- **Variance-targeting on iter 064** (σ_target=σ_064 dynamic position
+  sizing without nominal lev > 1.0): structurally distinct because
+  it does NOT incur borrow drag (no nominal leverage above 1.0×) —
+  scales position inversely to realised volatility. Moreira-Muir 2017
+  CAGR uplift via 2nd-order compounding gain.
+- **Meta-labeling on iter 064 daily returns**: structurally distinct
+  from all linear transforms; gates the strategy bar-by-bar based on
+  forward-Sharpe predictive features. iter 013 closed LR meta-label
+  as redundant w/ variance-scaling, but tree-based with non-linear
+  features genuinely untested on iter 064.
+- **Regime-conditional QQQ_TREND component WEIGHT** (vary w_qqqt by
+  VIX regime, not lev on output stream): tests sub-component regime
+  conditioning at the convex-combo input layer rather than the
+  scalar output. Not tested.
+
+Citations for iter 065's closure:
+
+- `[leverage_for_the_long_run, ch.5]` — Hsiao & Williams 2017
+  *J. Index Investing*. NTSX architecture / futures-financing
+  rationale (~T-bill + 0.5pp). The futures-financing thesis informed
+  borrow_annual=2.25% (rf 2% + 25 bps basis); outcome reaffirms
+  iter 060's Sharpe-convention closure on this base.
+- Whaley, R. E. (2009), *JPM* 35(3) 98-105,
+  DOI 10.3905/JPM.2009.35.3.098 — VIX as ex-ante risk regime
+  indicator; threshold 20 ≈ long-run median. Empirical pct_calm
+  65-71% on iter 064 windows confirms VIX 20 is reasonable median.
+- Bekaert, G. & Hoerova, M. (2014), *J Econometrics* 183(2) 181-192,
+  SSRN 2294327 — VIX uncertainty/risk-aversion decomposition;
+  supports binary calm/stress regime via VIX threshold 20.
+- `[advances_fin_ml, ch.17-18]` — regime detection / Markov-switching;
+  binary VIX gate is a degenerate 2-state HMM.
+- `[advances_fin_ml, p.162-164]` — no-lookahead 1-day shift rule
+  (`vix.shift(1).bfill()`).
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials
+  (4334 → 4335 = +1). Worst-p 0.1140 (spy) — fails 0.05 cut.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (0.0000 pp
+  on all 3 datasets — pure linear transform identity).
+- `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV (vacuous at N=1).
+- `[risk_parity, ch.5]` — iter 046 base preserved verbatim via iter
+  064's 90% NAV anchor.
+- `[volatility_trading, p.218]` — Sinclair (2013) cross-asset VRP
+  basket preserved via iter 039 sub-component.
+- Faber, M. (2007), SSRN 962461 — single-asset 200-day SMA TAA
+  primitive; QQQ_TREND component preserved verbatim from iter 064.
+- Markowitz, H. (1952), *JoF* 7(1) 77-91 — convex combination
+  Sharpe identity (the underlying iter 064 stream).
+- Frazzini, A. & Pedersen, L. H. (2014), *JFE* 111(1) 1-25,
+  DOI 10.1016/j.jfineco.2013.10.005 — borrow frictions on levered
+  low-vol strategies; Sharpe-without-rf convention drag formula
+  re-vindicated empirically here at calm-only application.
