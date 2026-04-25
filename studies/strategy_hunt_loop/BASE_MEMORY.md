@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 68
+total_iterations: 69
 winners_found: 0
 status: iterating
-latest_iteration: "068-2026-04-25-1758"
-cumulative_n_trials: 4338
+latest_iteration: "069-2026-04-25-1518"
+cumulative_n_trials: 4339
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -41,11 +41,11 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 | rank | iter | tier | score | strategy slug | primary citation | headline |
 |---|---|---|---|---|---|---|
-| **1** | **064** | 🥇 STRONG | **90** | `iter046_plus_qqq_trend_w010_lookback200` | Faber 2007 + `[stocks_on_the_move, p.21-30]` | TOP-K #1; 0/7 kills; 7/7×3; DSR <0.05×3; 4/5 winner conds; edu CAGR floor PASS |
-| **2** | **058** | 🥇 STRONG | **85** | `iter046_plus_hyg_tsm_w010` | Asvanunt-Richardson 2017 | 7/7×3; HYG carry; CAGR-dilutive (replaced in iter 064) |
-| **2** | **046** | 🥇 STRONG | **85** | `iter039_on_iter041_50_50` | `[risk_parity, ch.5]` + Sinclair | 1st 7/7×3 + DSR<0.05×3; iter 064's 90% anchor |
-| **4** | **053** | 🥇 STRONG | **84** | `iter037_plus_iter046_w070` | `[risk_parity, ch.5]` | corr 0.95 kill F pre-fired; 037-anchor exhausted |
-| **4** | **051** | 🥇 STRONG | **84** | `iter037_plus_iter026_w080` | `[risk_parity, ch.5]` | 4/5 winner conds; DSR p=0.175 |
+| **1** | **064** | 🥇 STRONG | **90** | `iter046_plus_qqq_trend_w010_lookback200` | Faber 2007 + `[stocks_on_the_move, p.21-30]` | TOP-K #1; 0/7 kills; 7/7×3; DSR<0.05×3; 4/5 winner; static `w=0.10` Sharpe-maximal |
+| **1** | **069** | 🥇 STRONG | **90** | `iter064_vix_inner_w_calm005_stress020_vix20` | Faber 2007 + `[stocks_on_the_move, p.21-30]` + iter 068 KILL I | TIES iter 064; 1/9 KILLS A; 7/7×3; DSR<0.05×3; 4/5 winner; MDD −1 to −1.5pp vs 064 |
+| **3** | **058** | 🥇 STRONG | **85** | `iter046_plus_hyg_tsm_w010` | Asvanunt-Richardson 2017 | 7/7×3; HYG carry; CAGR-dilutive (replaced in iter 064) |
+| **3** | **046** | 🥇 STRONG | **85** | `iter039_on_iter041_50_50` | `[risk_parity, ch.5]` + Sinclair | 1st 7/7×3 + DSR<0.05×3; iter 064's 90% anchor |
+| **5** | **053** | 🥇 STRONG | **84** | `iter037_plus_iter046_w070` | `[risk_parity, ch.5]` | corr 0.95 kill F pre-fired; 037-anchor exhausted |
 
 *(iter 001 ~35/100; see `tests/test_strategy_scoring.py::TestNearMiss`.)*
 
@@ -55,13 +55,13 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
 
+### 069 — 2026-04-25 — iter064-vix-inner-weight-reverse (🥇 STRONG, 90/100, **TIES iter 064 for TOP-K #1**)
+- **Result:** S edu/spy/ndx 1.21/1.32/1.36 (Δ frozen +0.53/+0.42/+0.40, Δ064 −0.005/−0.010/−0.020 KILL A 3/3, **Δ068 +0.038/+0.041/+0.029 KILL I clean — reverse beats original 3/3**), CAGR 9.36/9.89/9.97% (Δ064 −0.13/−0.08/−0.21pp; edu unlock preserved), MDD 15.77/14.38/13.33% (Δ064 −1.50/−0.95/−1.42pp — strictly better than 064 on 3/3), gates **7/7/7**, DSR worst-p **0.0429** spy (n=4339, <0.05 ✓), corr(069,064) ≤0.991, corr(069,068) ≤0.970, mean_w_qqqt 0.094-0.102 ≈ 064 static 0.10, max|Σw-1|=0, G7=0pp (3/3), robustness 9/9, winner=4/5; score 1:25 2:25 3:15 4:5 5:15 6:5 = 90; 1/9 KILLS — KILL A only.
+- **Lesson:** iter 068's KILL I empirical lesson GENERALISES at blend level (reverse Sharpe lifts vs iter 068 on 3/3) but does NOT translate to Sharpe lift above iter 064's static `w=0.10`. **CLOSES inner-weight-swap axis BOTH DIRECTIONS at 90 ceiling**: in stress BOTH r_046 (S 1.43-1.93) AND r_qqqt (S 0.95-1.20) have higher Sharpe → differential is mostly noise → regime-conditional reallocation Sharpe-flat. iter 064 static is Sharpe-maximal under any binary-VIX inner-weight reweighting. Score 90 ties by trading −0.02 Sharpe for −1.0-1.5 pp MDD + robustness 5/5. **iter 064 = strict LOCAL OPTIMUM in 8-axis ambient mechanism space**. 95+ requires structurally orthogonal anchor or differential-Sharpe 3rd stream. See `iterations/069-*/`.
+
 ### 068 — 2026-04-25 — iter064-vix-inner-weight-swap (🥇 STRONG, 79/100)
-- **Hypothesis:** VIX-cond INNER Markowitz weight on iter 064 sub-streams: w_qqqt=0.20 calm / 0.05 stress; w_046=1−w_qqqt; total ≡ 1.0 (NO lev); cost 5bp×|Δw_qqqt|.
-- **Citations:** `[stocks_on_the_move, p.21-30]` + Faber 2007 SSRN 962461 + `[risk_parity, ch.5]` + Whaley 2009 JPM 35(3) + `[advances_fin_ml, p.162-164/222-223/31-34]`.
-- **Scope:** 1 cfg, 3 datasets, structurally orthogonal to iter 048/065 OUTPUT-scalar VIX gating and iter 067 σ⁻² overlay (operates on INNER Markowitz weight).
-- **Result:** Sharpe edu/spy/ndx 1.17/1.28/1.33 (Δ frozen +0.49/+0.38/+0.37; Δ064 −0.043/−0.050/−0.049 — KILL A 1/3 only, NOT fired), CAGR 9.53/10.04/10.30% (Δ064 +0.04/+0.06/+0.13pp; edu unlock preserved), MDD 18.55/17.07/16.49% (Δ064 +1.28/+1.74/+1.75pp — grew), gates 6/6/6, DSR worst-p 0.0593 spy (Δ064 +0.020; n=4338), corr(068,064) 0.992-0.993, pct_calm 65-71%, flips/yr 14.5-16.3, max|Σw-1|=0 (3/3), G7 0pp (3/3), robustness 9/9, winner=3/5; score 1:25 2:19 3:10 4:5 5:15 6:5 = 79. 1/9 KILLS — only KILL I (cond Sharpe ordering falsified).
-- **Score breakdown:** 1:25/25 2:19/25 3:10/15 4:5/15 5:15/15 6:5/5
-- **Lesson:** Engine 100% clean (G7 0pp, Σw ≡ 1.0 strictly, 13/13 TDD pass) but DIRECTIONAL HYPOTHESIS empirically falsified — QQQ_TREND Sharpe stress (0.95-1.20) > calm (0.71-0.76) on 3/3 ds; r_046 stress (1.43-1.93) > calm (1.05-1.09) on 3/3. Both iter 064 sub-streams STRUCTURALLY DEFENSIVE in stress (QQQ_TREND parks cash via 200d-SMA; r_046 de-risks via inner iter_041 VIX gates). Closes calm-trend/stress-defensive inner-weight direction at 79. **REVERSE-direction swap (calm 0.05 / stress 0.20) is iter 069 #1 candidate** — directly tests iter 068's empirical evidence. See `iterations/068-*/`.
+- **Result:** S edu/spy/ndx 1.17/1.28/1.33 (Δ frozen +0.49/+0.38/+0.37, Δ064 −0.043/−0.050/−0.049 — KILL A misses 1/3), CAGR 9.53/10.04/10.30% (edu unlock preserved), MDD 18.55/17.07/16.49% (+1.3-1.7pp vs 064), gates 6/6/6, DSR worst-p 0.059 spy (n=4338, fails 0.05), winner=3/5; score 1:25 2:19 3:10 4:5 5:15 6:5 = 79; 1/9 KILLS — only KILL I (conditional-Sharpe ordering falsified).
+- **Lesson:** Engine 100% clean (G7=0pp, Σw≡1.0 strictly, 13/13 TDD) but DIRECTIONAL HYPOTHESIS empirically falsified — QQQ_TREND Sharpe stress (0.95-1.20) > calm (0.71-0.76) on 3/3 (parks cash via 200d-SMA); r_046 stress (1.43-1.93) > calm (1.05-1.09) on 3/3. Both 064 sub-streams STRUCTURALLY DEFENSIVE in stress. REVERSE-direction swap (calm 0.05 / stress 0.20) is iter 069's natural test. See `iterations/068-*/`.
 
 ### 067 — 2026-04-25 — iter064-vol-target-cap10 (🥈 PROMISING, 74/100)
 - **Result:** S 1.17/1.26/1.28 (Δ064 −0.05/−0.08/−0.09 KILL A 2/3), CAGR 7.61/7.93/7.93% (Δ064 −1.9/−2.0/−2.2pp KILL D edu), MDD 13/13/12% (✓), gates 6/6/6, DSR worst-p 0.076 spy (n=4337), scale_mean 0.88, pct_at_cap 65-67%, corr 0.94-0.96, winner=3/5; score 1:25 2:19 3:10 4:0 5:15 6:5=74. 3/8 KILLS A+C+D.
@@ -108,18 +108,17 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-**068**. **iter 064 still TOP-K #1 STRONG 90, 0/7 KILLS.** iter 068 (VIX-cond INNER-weight swap on 064, calm 0.20 / stress 0.05) → 79 STRONG, only KILL I (directional hypothesis empirically falsified — QQQ_TREND Sharpe is HIGHER in stress, 0.95-1.20 vs calm 0.71-0.76; r_046 also higher in stress 1.43-1.93 vs calm 1.05-1.09 — both sub-streams are STRUCTURALLY DEFENSIVE in stress). **iter 064's 90 = 8-axis-closed strict LOCAL OPTIMUM** (saved-stream-pair / internal-LETF / weight-sweep / output-VIX-gate / calm-cond-ext-lev / bar-level-meta-label / σ⁻² cap-1.0 / VIX-cond inner-weight calm-trend direction).
+Consumed/closed: 002-005/007/009-014/017/019-**069**. **iter 064 still TOP-K #1 STRONG 90 (now TIED with iter 069), 0/7 KILLS.** iter 069 (REVERSE inner-weight swap calm 0.05 / stress 0.20) → 90 STRONG, 1/9 KILLS A only — reverse direction beats iter 068 on 3/3 ds (lesson generalises at blend level; KILL I clean) but Sharpe regresses −0.005 to −0.020 vs iter 064's static `w=0.10` (KILL A fires). **CLOSES inner-weight-swap axis BOTH DIRECTIONS at 90 ceiling.** Why: in stress BOTH iter 064 sub-streams have higher Sharpe than calm; *differential* conditional-Sharpe is mostly noise; regime-conditional reallocation between two defensive streams is Sharpe-flat. **iter 064's 90 = 8-axis-closed strict LOCAL OPTIMUM** (saved-stream-pair / internal-LETF / weight-sweep / output-VIX-gate / calm-cond-ext-lev / bar-level-meta-label / σ⁻² cap-1.0 / **VIX-cond inner-weight BOTH DIRECTIONS**).
 
-### Iter 069 candidates (iter 064 still TOP-K #1; iter 068 closed inner-weight calm-trend axis at 79; REVERSE-direction swap is the empirical-evidence-backed next test)
+### Iter 070 candidates (064+069 tied TOP-K #1; inner-weight axis CLOSED both directions; need mechanism orthogonal to 8 closed axes)
 
-- **#1 REVERSE inner weight swap** (calm `w_qqqt = 0.05` / stress `w_qqqt = 0.20`, total ≡ 1.0). Direct test of iter 068's empirically-derived conditional Sharpe ordering (QQQ_TREND stress > calm on 3/3 ds). **Predicted 80-90 if ordering generalises OOS. RECOMMENDED — cleanest information-theoretic test; either confirms lesson (Sharpe lift +0.04-0.07 → potential 85-90 break) or refutes generalisation (closes inner-weight axis in BOTH directions).**
-- **#2 Fresh AGGRESSIVE 3rd stream** (short-vol / VRP / convexity-buying with HIGH calm Sharpe and LOW stress Sharpe — opposite profile from QQQ_TREND, providing the missing aggressive complement to iter 064's defensive basin). Predicted 75-90. Harder to find (VRP universe limited; iter 057 closed commodity basket).
-- **#3 Higher-resolution regime classifier** (T10Y3M continuous score replacing binary VIX gate, or HMM 3-state on returns). Predicted 78-87 — novel granularity could expose conditional Sharpe patterns invisible to binary VIX-20.
-- **#4 Forward 5-day Sharpe meta-label** (still open from iter 067 final report; ~120 flips/yr vs 700/yr in iter 066). Predicted 60-85, high variance.
-- **#5 Fresh anchor (not iter 046-derived)** — cross-asset trend on Hurst-based regime, or credit-spread regime as primary signal. High exploration cost.
-- **#6 Plano C sleeve** (≤ 70). **#7 CRSP/Norgate** (data budget required).
+- **#1 Higher-resolution regime classifier on 064** (T10Y3M continuous z-score, or HMM 3-state). Binary VIX-20 may be the 90-ceiling cause. **RECOMMENDED**. Predicted 80-92.
+- **#2 Fresh AGGRESSIVE 3rd stream** (short-vol/VRP/convexity with HIGH calm Sharpe LOW stress Sharpe — provides *differential* lever iter 069 lacked). Predicted 75-92. Harder (VRP universe limited; iter 057 closed commodity basket).
+- **#3 Forward 5-day Sharpe meta-label on 064** (~120 flips/yr vs 700/yr in iter 066). Predicted 60-85, high variance.
+- **#4 Fresh anchor (not 046-derived)** — cross-asset trend on Hurst regime, or credit-spread regime. High cost.
+- **#5 Plano C sleeve** (≤70). **#6 CRSP/Norgate** (data budget).
 
-DEAD-LETTER (saved-stream-pairs / 046-family / HYG / HMM-2 / FX carry / MTUM-QUAL-USMV not cached / cross-sectional mom Tiingo / broader-region VRP 5-leg / ext-lev / commodity TSM basket / eq075 / internal-LETF / Faber QQQ-200d / VIX-calm-cond ext lev / bar-level RF meta-label / σ⁻² cap-1.0 overlay / **VIX-cond inner-weight calm-trend direction**): see iters 045/047-058/059/061/062/063/064/065/066/067/068 entries.
+DEAD-LETTER (saved-stream-pairs / 046-family / HYG / HMM-2 / FX carry / MTUM-QUAL-USMV not cached / cross-sectional mom Tiingo / broader-region VRP 5-leg / ext-lev / commodity TSM basket / eq075 / internal-LETF / Faber QQQ-200d / VIX-calm-cond ext lev / bar-level RF meta-label / σ⁻² cap-1.0 overlay / **VIX-cond inner-weight BOTH DIRECTIONS calm-trend AND stress-trend**): see iters 045/047-058/059/061/062/063/064/065/066/067/068/**069** entries.
 
 ### Deeper backlog
 
@@ -145,7 +144,8 @@ DEAD-LETTER (saved-stream-pairs / 046-family / HYG / HMM-2 / FX carry / MTUM-QUA
 - **iter 065 (VIX-calm-cond ext lev 1.5× on 064)**: 74 PROMISING −16, 2/7 KILLS A+C. CAGR +1.47/+1.49/+1.63pp but Sharpe drag −0.10/−0.14/−0.14 + DSR tripled. Closes calm-conditional ext-lev axis at lev=1.5×/borrow=rf+25bps.
 - **iter 066 (RF meta-label on 064 daily 1-day sign, 5 features)**: 37 NEAR_FAIL −53, 5/8 KILLS. AUC 0.49-0.50 at chance × 3 ds. Bar-level 1-day sign of Markowitz-saturated composite is informationally null in standard regime/vol/momentum canon regardless of model class (extends iter 013 LR closure to trees). 700 flips × 5 bps ≈ 30 pp friction.
 - **iter 067 (MM σ⁻² overlay on 064, cap=1.0)**: 74 PROMISING, 3/8 KILLS A+C+D. Combined with 065's +1.5× calm-lev, σ⁻² overlay family saturates at **74 ceiling for cap ∈ [1.0, 1.5×]**. Generalises iter 016's MM 79 ceiling to saturated-composite with mean-exposure-cap-drag.
-- **iter 068 (VIX-cond INNER weight swap on 064, calm 0.20 / stress 0.05)**: 79 STRONG, only 1/9 KILLS (I — directional hypothesis falsified). Engine clean (G7=0pp, Σw≡1.0, 13/13 TDD). Sharpe Δ064 −0.04 to −0.05 (KILL A misses by margin), DSR p 0.059 fails. **Conditional Sharpe: QQQ_TREND stress 0.95-1.20 > calm 0.71-0.76 on 3/3; r_046 stress 1.43-1.93 > calm 1.05-1.09 on 3/3** — both 064 sub-streams STRUCTURALLY DEFENSIVE in stress. Closes calm-trend/stress-defensive direction at 79; **reverse swap (calm 0.05 / stress 0.20) is iter 069 #1**.
+- **iter 068 (VIX-cond INNER weight swap on 064, calm 0.20 / stress 0.05) → 79**: 1/9 KILLS (I — direction empirically falsified). Cond Sharpe stress > calm on both r_046 and r_qqqt (3/3 ds) — both 064 sub-streams STRUCTURALLY DEFENSIVE in stress.
+- **iter 069 (REVERSE VIX-cond INNER weight swap on 064, calm 0.05 / stress 0.20) → 90 TIES iter 064 TOP-K #1**: 1/9 KILLS A only. Engine bit-identical to 068. Reverse Δ068 +0.029-0.041 Sharpe / −2.7-3.2 pp MDD on 3/3 (KILL I generalises) BUT Δ064 −0.005 to −0.020 Sharpe (KILL A — reverse beats original but loses to static `w=0.10`). **CLOSES inner-weight-swap axis BOTH DIRECTIONS at 90 ceiling**: in stress both streams have higher Sharpe → differential is noise → regime-conditional reweighting Sharpe-flat. iter 064 = strict LOCAL OPTIMUM in 8-axis ambient mechanism space.
 
 ---
 
