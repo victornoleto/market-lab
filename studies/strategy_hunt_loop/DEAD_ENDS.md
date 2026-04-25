@@ -5138,3 +5138,127 @@ iter 069's findings)
 - **iter 068 final report** — empirical KILL I per-stream conditional-
   Sharpe ordering. iter 069 confirms ordering generalises to blended
   path but does NOT translate to Sharpe lift above static baseline.
+
+---
+
+## From iteration 071 — Connors-Alvarez RSI(2) calm-aggressive 3rd stream on iter 064
+
+Complete study: `studies/strategy_hunt_loop/iterations/071-2026-04-25-1606-iter064-plus-spy-mr-rsi2/final_report.md`.
+
+**Closes**: calm-aggressive-3rd-stream axis on iter 064 base at 90
+STRONG ceiling (4-way joint TOP-K #1 with iter 064/069/070).
+
+**4 cfgs swept**: RSI threshold ∈ {3, 5, 10} × w_mr ∈ {0.05, 0.10}.
+Best cfg `iter064_plus_spy_mr_rsi2_th10_w005`: 90 STRONG, 4/5 winner
+conditions, 2/10 KILLS A+G fired.
+
+**Mechanism**: Stand-alone Connors-Alvarez (2009) RSI(2) buy-the-dip
+strategy on SPY, gated by Chan `[algo_trading_chan, p.95, ch.4]`
+200d-SMA momentum filter. Buy when SPY > SMA(200) AND RSI(2) <
+threshold; exit when SPY > SMA(5). Cost 5 bps per |Δpos|. Combined
+with iter 064 base (0.90·r_046 + 0.10·r_qqqt) at proportional
+weight: w_046=(1−w_mr)·0.90, w_qqqt=(1−w_mr)·0.10, w_mr ∈ {0.05, 0.10}.
+
+**Key empirical findings**:
+
+1. **KILL D vindicated cross-cfg cross-ds (3/3 datasets × 4 cfgs)**:
+   r_mr conditional Sharpe ordering is calm > stress on every cfg
+   on every dataset. Calm Sharpe 0.65-0.93; stress Sharpe 0.32-0.70.
+   This is the structural OPPOSITE of iter 046 + r_qqqt's defensive
+   profile (where stress Sharpe > calm Sharpe per iter 068's KILL I).
+   The calm-aggressive 3rd stream thesis from iter 070's final report
+   is EMPIRICALLY CONFIRMED.
+2. **r_mr genuinely orthogonal**: corr(r_mr, r_046) = 0.17-0.28 across
+   all cfgs/datasets — well below KILL C threshold of 0.5. Not a
+   re-encoding of the risk-parity defensive stack.
+3. **r_mr stream has standalone edge**: Sharpe 0.55-0.84; MDD 13-15%
+   (200d gate caps drawdowns); time-in-market 4.5-15.1% — Connors-
+   canonical low-frequency profile.
+4. **All 4 cfgs pass 7/7 gates × 3 ds**: PBO 0.08-0.31 (CSCV at N=4);
+   DSR worst-p 0.029-0.035 at cumulative n_trials = 4344; robustness
+   9/9 sub-windows positive; G7 cross-lib 0.0000 pp (max ret diff
+   1.11e-16).
+
+**Why it FAILS to break the 90 ceiling**:
+
+- **KILL A FIRES (best cfg)**: Sharpe lift vs iter 064 is +0.016/
+  +0.018/+0.015 — directionally positive on 3/3 but below pre-
+  committed +0.02 threshold. The orthogonal calm-aggressive lift
+  exists but is too small at w_mr=0.05 to break the +0.02 bar.
+- **KILL G FIRES (best cfg)**: corr(071, 064_static) = 0.999/0.999/
+  0.999 — at small w_mr=0.05, the 3rd stream is structurally inert
+  vs iter 064's static composition. The dominant 95% in iter 046+
+  r_qqqt drowns out the orthogonal calm-aggressive contribution.
+- **Pareto-front binding**: pushing w_mr from 0.05 → 0.10 (cfg
+  th5_w010) lifts Δ064 Sharpe over +0.02 (achieves +0.025-0.033),
+  clearing KILL A. But r_mr's standalone CAGR (~4-5%) is much lower
+  than r_046+r_qqqt's (~10%), so doubling w_mr drops edu CAGR to
+  8.95% — below the 9.18% iter 064 unlock floor. KILL H fires;
+  score caps at 85 STRONG (not 90).
+- **CAGR floor ceiling unchanged on spy/ndx**: best cfg still passes
+  only edu CAGR floor. spy_real (9.76% < 11.98%) and ndx_real (9.93%
+  < 15.35%) remain unreachable from this composition. The spy/ndx
+  CAGR floor blocker is invariant to inner-stream choice.
+
+**Structural diagnosis (4-iter pattern 064/069/070/071)**:
+
+The 90 ceiling is now confirmed across **four fundamentally different
+structural mechanisms**:
+
+| iter | mechanism | regime classifier | Δ064 Sharpe | edu CAGR | score |
+|---|---|---|---|---|---|
+| 064 | static 2-leg blend (baseline) | none | baseline | 9.49% | 90 |
+| 069 | inner-w binary VIX (reverse) | equity-vol binary | −0.005/−0.010/−0.020 | 9.36% | 90 |
+| 070 | inner-w continuous T10Y3M | macro/forward continuous | −0.003/−0.011/−0.018 | 9.69% | 90 |
+| 071 | calm-aggr 3rd stream (Connors RSI(2)) | none (orthogonal stream) | +0.016/+0.018/+0.015 | 9.27% | 90 |
+
+The 90 ceiling is **anchored in the iter 046 + r_qqqt base's CAGR
+profile** (vol-target ~10% << SPY 15% / QQQ 19%), NOT in the structural
+ingredient. Regime reweighting, continuous-regime, and orthogonal
+calm-aggressive 3rd stream all saturate at 90 STRONG.
+
+**What is OPEN for iter 072+** (NOT consumed by iter 071):
+
+1. **Hierarchical 3-stream regime allocation** — combine iter 071's
+   validated calm-aggressive r_mr with iter 069's binary-VIX OR iter
+   070's continuous-T10Y3M regime classifier. The hypothesis: in
+   calm regimes, up-weight r_mr; in stress regimes, zero r_mr. The
+   regime classifier provides allocation logic; the calm-aggressive
+   stream provides the orthogonal return source. Predicted 75-92.
+   Risk: 6+ free params at cumulative n_trials = 4344 → overfit risk.
+   Mitigation: pre-commit allocation rules from literature priors.
+2. **Fresh higher-CAGR anchor (NOT iter 046 family)** — break out of
+   the iter 046 vol-target ceiling. Cost: 5+ iterations to build new
+   anchor before composing.
+3. **Forward 5-day Sharpe meta-label on iter 064** (still open from
+   iter 067 final report).
+
+### Citations for iter 071's closure
+
+- `[algo_trading_chan, p.95, ch.4]` — Chan: momentum filter (price
+  above long-term MA) on mean-reversion entry signal. Primary
+  citation for the 200d-SMA gate.
+- `[algo_trading_chan, p.153-154, ch.6]` — Chan: mean-reversion +
+  momentum complementarity. Foundational structural hypothesis.
+- `[algo_trading_chan, p.183-184, ch.8]` — Chan: NEVER apply IS
+  stop-loss to MR; the 200d-SMA gate provides regime hedge.
+- `[quant_trading_chan, p.142-143]` — Chan: MR exit via opposite-
+  of-entry signal (here: SMA(5) cross).
+- Connors, L., & Alvarez, C. (2009), *Short Term Trading Strategies
+  That Work*, ISBN 978-0-9755513-2-7 — canonical RSI(2) rule set.
+- Lo, A. W., & MacKinlay, A. C. (1988), *Review of Financial Studies*
+  1(1): 41-66, DOI 10.1093/rfs/1.1.41 — short-horizon equity MR
+  empirical foundation.
+- Faber (2007), SSRN 962461 — preserved verbatim from iter 064 via
+  QQQ_TREND.
+- `[stocks_on_the_move, p.21-30]` (Clenow) — 200d SMA as regime gate
+  inside a momentum portfolio.
+- `[risk_parity, ch.5]` + `[volatility_trading, p.218]` — iter 046
+  base preserved verbatim.
+- `[advances_fin_ml, p.162-164]` — strict shift(1) on RSI and SMA.
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials=4344.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (0.0000 pp).
+- `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV (G1, N=4 cfgs).
+- iter 064/069/070 final reports — TOP-K #1 baseline + calm-aggressive
+  3rd stream thesis source.
