@@ -3852,3 +3852,98 @@ Complete study: `studies/strategy_hunt_loop/iterations/056-2026-04-25-0958-iter0
   Ratio: Correcting for Selection Bias, Backtest Overfitting, and
   Non-Normality. JPM 40(5) 94-107 — DSR test mechanics that drove
   the c2/c3 collapse here.
+
+---
+
+## From iteration 057 — multi-commodity TSM basket as 3rd-stream-overlay on iter 046
+
+Complete study:
+`studies/strategy_hunt_loop/iterations/057-2026-04-25-1019-commodity-tsm-basket-3leg/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Multi-commodity TSM basket (USO+UNG+SLV equal-weight, boolean
+   90d trend) at w_csm=0.20 as 3rd-stream-overlay on iter 046 (effective
+   weights 0.40 iter 041 + 0.40 iter 039 + 0.20 commodity TSM)** —
+   Sharpe 1.0473/1.0820/1.1440 (Δ046 −0.155/−0.241/−0.237 pp) on
+   educational/spy_real/ndx_real respectively. CAGR 8.10/7.87/8.22%
+   (Δ046 −1.06/−1.58/−1.54 pp; 0/3 datasets pass floor 9.18/11.98/15.35).
+   MDD 15.78/10.53/11.24% (Δ046 −2.2/−4.7/−3.3 pp; 3/3 datasets pass
+   ceiling). DSR worst-p 0.223 (5.4× iter 046's edu baseline 0.041).
+   Score 64 PROMISING (vs iter 046's 85 STRONG); 4/6 pre-committed
+   kills fired (A: Sharpe regress 3/3; B: DSR regress; C: CAGR regress
+   3/3; D: score below iter 050's 78). Standalone basket Sharpe
+   0.13/0.29/0.16 (post-2014 commodity bear dominates).
+
+2. **The specific root cause: 3rd-stream-Sharpe is the binding
+   constraint, NOT correlation.** corr(r_csm, r_046) measured at
+   0.319/0.315/0.296 — much lower than iter 049's gold-TSM corr ≈ 0.50,
+   confirming non-gold commodities are orthogonal to the SPY/IEF/GLD
+   regime stack and SPY/QQQ/IWM put-credit-spread VRP. The orthogonality
+   premise was empirically vindicated (kill F clean). However, with
+   standalone basket Sharpe ≈ 0.20 vs iter 046's ≈ 1.30, Markowitz
+   convex combination at w=0.20 is mean-reduction-dominated:
+   combined Sharpe ≈ (0.80 × 1.30 + 0.20 × 0.20) / σ_combined ≈ 1.16,
+   a drag of −0.14 vs iter 046's 1.30 even at the favourable
+   variance-reduction term σ_combined ≈ 0.91 (corr 0.30, w 0.80/0.20).
+   The MDD reduction (−2 to −5 pp on all 3) confirms diversification
+   IS working at the variance layer; the Sharpe drag confirms the
+   mean dilution dominates. DSR worst-p inverts because it's roughly
+   Sharpe-monotonic at fixed n_trials.
+
+3. **Erb-Harvey (2006) regime sensitivity** — commodity premia depend
+   strongly on the sample window. MOP 2012 reported commodity TSM
+   Sharpe 0.30-0.50 on 1985-2009 sample with strong trend regimes.
+   Our 2007-2026 sample is dominated by the 2014-2020 oil/gas bear
+   market and 2022 inflation regime — boolean trend filter
+   (`[stocks_on_the_move, p.76-77]`) goes to cash 50-70% of the time
+   on USO/UNG, capturing minimal upside. Silver fares slightly better
+   (Sharpe 0.20 standalone) because of 2020-2024 stealth bull run, but
+   not enough to lift basket mean.
+
+### Structural principles derived
+
+- **3rd-stream-Sharpe ≥ ~0.5 is the binding constraint for
+  Markowitz-positive contribution at any practical weight on iter 046
+  base.** Combining iter 049 (gold TSM at w=0.50, S_gold ≈ 0.45,
+  corr ≈ 0.50, score 59), iter 050 (gold TSM at w=0.10, score 78),
+  and iter 057 (commodity basket at w=0.20, S_csm ≈ 0.20, corr ≈ 0.30,
+  score 64): the score function is **Sharpe-dominated**, NOT
+  correlation-dominated. Lower correlation does NOT compensate for
+  lower absolute Sharpe of the 3rd stream.
+- **Multi-commodity TSM does not provide enough breadth to overcome
+  bear-regime drag in 2007+ sample.** A 3-asset basket achieves
+  σ-reduction by √3 vs single-asset, but each individual stream's
+  Sharpe is still in the 0.10-0.30 range; basket Sharpe is essentially
+  the asset-average Sharpe (since they're roughly i.i.d.). MOP 2012's
+  Sharpe 0.30-0.50 was on a 24-asset universe in a trending sample;
+  ETF data restricts us to 3-4 commodity instruments and a chop-heavy
+  sample.
+- **Diversification benefit on MDD does NOT translate to score
+  benefit** when the score function (this loop's rubric) is
+  Sharpe-and-CAGR-dominated. iter 057 improved MDD on all 3 datasets
+  by 2-5 pp — a real risk-management win — but score is structurally
+  pinned by Sharpe edge (c1) and CAGR floor (c4), with MDD ceiling (c5)
+  saturated already at iter 046's level.
+
+### Citations
+
+- `[risk_parity, ch.5]` — iter 046 base architecture (preserved).
+- `[volatility_trading, p.218]` — Sinclair iter 039 (preserved).
+- `[systematic_trading]` — Carver TSM single-asset rule.
+- `[stocks_on_the_move, p.76-77]` — Clenow boolean trend filter.
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (verified at
+  0.0000 pp this iteration).
+- Moskowitz, T. J., Ooi, Y. H., & Pedersen, L. H. (2012). Time series
+  momentum. JFE 104(2) 228-250.
+  DOI 10.1016/j.jfineco.2011.11.003 — TSM canonical reference; sample
+  sensitivity confirmed empirically.
+- Asness, C. S., Moskowitz, T. J., & Pedersen, L. H. (2013). Value
+  and momentum everywhere. JoF 68(3) 929-985.
+  DOI 10.1111/jofi.12021 — cross-asset momentum diversification.
+- Erb, C. B., & Harvey, C. R. (2006). The strategic and tactical value
+  of commodity futures. FAJ 62(2) 69-97.
+  DOI 10.2469/faj.v62.n2.4084 — commodity premia / roll yield.
+- Markowitz, H. M. (1952). Portfolio selection. JoF 7(1) 77-91 —
+  convex combination minimum-variance; vindicated and inverted here.
