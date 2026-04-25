@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 49
+total_iterations: 50
 winners_found: 0
 status: iterating
-latest_iteration: "049-2026-04-25-0705"
-cumulative_n_trials: 4316
+latest_iteration: "050-2026-04-25-0734"
+cumulative_n_trials: 4317
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -60,25 +60,19 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
 
-### 049 — 2026-04-25 — iter046-plus-gold-tsm (🥉 MARGINAL, 59/100 frozen / 64 custom, **4/6 KILLS, additive 50/50 axis CLOSED, DEEPEST single-iter regression in loop**)
-- **Result:** 50/50 combo iter 046 saved stream + gold TSM 90d (boolean trend on GLD, cash@rf=2%). Sharpe edu/spy/ndx **0.92/1.02/1.03** (Δ046 **−0.287/−0.307/−0.354** — widest 3/3 dropouts in loop), gates 6/6/6 (G2 fails 3/3), DSR p=**0.323/0.310/0.321** (8× iter 046's 0.044, n=4316), **corr(046,gold)=0.528/0.531/0.516** (predicted 0.10-0.30; Kill C fires), CAGR 8.91/9.36/9.29% (0/3 floors), MDD 19/13/13%, G7 0.0000pp, standalone gold S=0.61/0.69/0.67 (matches MYP 2012), robust 9/9, winner 1/5; score 1:20 2:19 3:0 4:0 5:15 6:5 = 59 frozen / 64 custom. Kills A+B+C+D fired (E+F clean).
-- **Lesson:** **At unequal Sharpes 50/50 weighting is sub-optimal regardless of ρ — dilution dominates by Markowitz identity.** S_a=1.32+S_b=0.69 even at ρ=0 gives combined Sharpe 1.25 < 1.32; optimum w_gold ≈ 0.09. iter 046's 50/50 worked only because S_041≈S_039≈1.04. **5 axes now closed on iter 046**: input gate (044), weight asymmetry (047), output leverage (048), 50/50 additive lower-Sharpe (049). Iter 050: w_gold=0.10 single cfg (~30 min), OR pre-screen ρ < 0.30 candidate, OR abandon iter 046 base. See `iterations/049-2026-04-25-0705-iter046-plus-gold-tsm/`.
+### 050 — 2026-04-25 — iter046-plus-gold-tsm-w010 (🥇 STRONG, 78/100 frozen / 83 custom, 1/6 KILLS — additive-low-weight axis CLOSED via DSR knife-edge; MARKOWITZ FORMULA EMPIRICALLY VALIDATED to 4 decimals)
+- **Result:** Sharpe edu/spy/ndx 1.18/1.30/1.35 (Δ046 −0.020/−0.020/−0.028, 3/3 beat frozen by ≥0.10), gates 6/7/7 (edu G2 fail), DSR p=0.0504/0.0496/0.0397 (worst-p crosses 0.05 by 0.0004 on edu only; n=4317), CAGR 0/3 floors (edu 0.04pp short), MDD 18/14/13% (Δ046 +0.08/−1.17/−1.11), corr(046,gold)=0.528/0.531/0.516, Markowitz residual = 0.0000 on 3/3, G7 0.0000pp, robust 9/9, winner 4/5; score 1:25 2:23 3:10 4:0 5:15 6:5 = 78. Kill C fired (score < 84); A+B+D+E+F clean.
+- **Lesson:** **Markowitz formula validates empirically to 4 decimals**, but **iter 046 sits at DSR knife-edge (worst-p 0.044, only 0.006 of headroom)**: any cfg incrementing n_trials adds +0.005 deflator-step penalty → Δp ≥ +0.010 with even small Sharpe drop → crosses 0.05 gate. **5th and final iter 046 axis CLOSED**: input(044)+weight(047)+output(048)+additive-50/50(049)+additive-low-weight(050). iter 046 base must be ABANDONED. Path forward #1: iter 037+iter 026 50/50 (Markowitz pre-screen). #2: iter 041 with HYG-leg substitution. #3: Plano C sleeve eval. See `iterations/050-*/`.
 
-### 048 — 2026-04-25 — iter046-output-lev-gate (🥇 STRONG, 83/100, 3/6 KILLS, output-leverage axis CLOSED)
-- **Result:** Sharpe edu/spy/ndx 1.20/1.29/1.34 (Δ frozen +0.52/+0.39/+0.39; Δ046 −0.0015/−0.0333/−0.0374), gates 7/6/7, DSR p=0.0427/0.0557/0.0438 (n=4315), winner=3/5; score 1:25 2:23 3:10 4:5 5:15 6:5 = 83. Kills B+D+F fired.
-- **Lesson:** Output-side regime leverage = OUTPUT-LEVEL ANALOG of iter 044's INPUT-gate closure. 3 modulation mechanisms closed (044 input + 047 weight + 048 output) — all trade variance×return. See `iterations/048-*/`.
+### 049 (🥉 59/64 MARGINAL, 4/6 KILLS, additive-50/50-low-S axis CLOSED) — gold TSM @ w=0.5: S edu/spy/ndx 0.92/1.02/1.03 (Δ046 −0.29/−0.31/−0.35), DSR 0.32 worst-p (8× iter 046), corr 0.528, score 20/19/0/0/15/5=59. **Markowitz dilution dominates at unequal Sharpes regardless of ρ; w*≈0.09 not 0.50**.
 
-### 047 — 2026-04-25 — iter046-weight-sweep-3cfg (🥇 STRONG, 79/100, weight axis CLOSED)
-- **Result:** 3-cfg sweep w_041 ∈ {0.5,0.65,0.8}, best=50/50 (≡ iter 046). Bonferroni α'=0.0167 destroys G2 (raw 0.042 fails); score 79 frozen/84 custom. Kills A+B fired.
-- **Lesson:** iter 046's 50/50 IS the score-function Pareto-optimum; weight asymmetry trades DSR Δ−10 > CAGR Δ+5. Ndx CAGR 15.35% structurally unreachable from iter 041 composites. See `iterations/047-*/`.
+### 048 (🥇 83/100, 3/6 KILLS, output-lev axis CLOSED) — VIX-output-gate on iter 046; S 1.20/1.29/1.34, DSR 0.043/0.056/0.044, score 25/23/10/5/15/5=83. **Output-side regime gate = output-level analog of iter 044 input closure (re-uses VIX classifier → double-counts)**.
 
-### 046 — 2026-04-25 — iter039-overlay-on-iter041 (🥇 STRONG, 85/100, TOP-K #1, 0/6 KILLS)
-- **Result:** 50/50 iter 041+iter 039. Sharpe edu/spy/ndx 1.20/1.32/1.38, DSR p=0.0414/0.0416/0.0311 (1st EVER sub-0.05×3, n=4311), gates 7/7/7 (1st EVER), CAGR 9.16/9.45/9.76% (edu razor-thin 0.02pp short of floor), MDD 17.97/15.22/14.57%, corr(041,039)=0.41, WF 8/8×3, winner 4/5; score 1:25 2:25 3:15 4:0 5:15 6:5 = 85.
-- **Lesson:** Out-of-family composition score advantage scales inversely with corr (045 ρ=0.58→81; 046 ρ=0.41→85). 5-pt gap to WINNER on CAGR-floor only. See `iterations/046-*/`.
+### 047 (🥇 79 frozen/84 custom, 2/6 KILLS, weight-asymmetry axis CLOSED) — 3-cfg sweep w_041 ∈ {0.5,0.65,0.8}; best=50/50 ≡ iter 046; Bonferroni α'=0.0167 destroys G2. **iter 046's 50/50 IS Pareto-optimum; ndx CAGR 15.35% unreachable**.
 
-### 045 — 2026-04-25 — iter039-overlay-on-iter037 (🥇 STRONG, 81/100)
-- **Result:** 50/50 iter 037+iter 039 (ρ=0.587). Sharpe 1.10/1.28/1.33, DSR 0.0962/0.0572/0.0495 (ndx sub-0.05), CAGR 9.7/10.4/10.6%, MDD 22.6/16.3/15.4%, gates 6/6/7, winner 3/5; score 25/21/10/5/15/5 = 81.
-- **Lesson:** Out-of-family composition at moderate corr compounds DSR (037 standalone DSR 0.222→0.096). iter 046 superseded at lower corr. See `iterations/045-*/`.
+### 046 (🥇 85/100 TOP-K #1, 0/6 KILLS) — 50/50 iter 041+iter 039 ρ=0.41; S 1.20/1.32/1.38, DSR p=0.041/0.042/0.031 (1st sub-0.05×3, n=4311), gates 7/7/7 (1st ever), CAGR 9.16/9.45/9.76% (edu 0.02pp short), MDD 18/15/15%, score 25/25/15/0/15/5=85. **Out-of-family composition score advantage scales inversely with corr; 5-pt gap to WINNER on CAGR-floor only**.
+
+### 045 (🥇 81/100) — 50/50 iter 037+iter 039 ρ=0.587; S 1.10/1.28/1.33, DSR 0.096/0.057/0.050, score 25/21/10/5/15/5=81. **Out-of-family at moderate corr compounds DSR; superseded by iter 046 at lower corr**.
 
 ### Iters 015-044 (compressed 1-line; full detail in `iterations/NNN-*/`)
 - **044** (🥈 74, multifeature-regime-vix-t10y3m) score 1:25 2:19 3:**0** 4:10 5:15 6:5 = 74; DSR 0.240 worst-p DEEPEST 041-perturb. PRINCIPLE: 2-feat composite over-classifies stress + T10Y3M dilutes VIX; 041's 84-ceiling LOCAL PLATEAU; **045+ MUST go OUT-OF-FAMILY** (vindicated by 045/046).
@@ -138,19 +132,18 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-036/**037**-**049**. iter 044/047/048/049 close 4 axes of iter 046: input gate (044), weight asymmetry (047), output leverage (048), 50/50 additive lower-Sharpe stream (049). Path forward narrowed.
+Consumed/closed: 002-005/007/009-014/017/019-036/**037**-**050**. iter 044/047/048/049/050 close **5 axes of iter 046**: input gate (044), weight asymmetry (047), output leverage (048), additive 50/50 lower-Sharpe (049), additive Markowitz-optimum low-weight (050). **iter 046 base is genuinely Pareto-optimal — must be abandoned**. Markowitz formula now empirically validated to 4 decimals (iter 050) → use for pre-screening future composition candidates BEFORE backtest.
 
-### Iter 050 candidates (iter 046 = 85 TOP-K #1; FOUR axes closed by 044/047/048/049)
+### Iter 051 candidates (iter 046 base ABANDONED; out-of-family bases required)
 
-- **iter 046 + gold TSM at LOWER WEIGHT (RECOMMENDED #1)** — single cfg `w_gold=0.10` (~Markowitz optimum given S_046=1.32, S_gold=0.69, ρ=0.53). Predicted 86-88 (small CAGR-floor pass on edu, no DSR collapse). Cheap test (~30 min). Direct mathematical follow-up to iter 049's Markowitz post-mortem.
-- **iter 046 + verified-low-corr 3rd stream (#2)** — pre-screen ρ to iter 046 saved stream BEFORE backtest commit. Candidates: TSM on USO (oil; ρ predicted 0.30-0.40, Sharpe 0.20-0.40), TSM on TLT (long bonds; ρ ~0.30-0.50 with iter 041 IEF leg), TSM on SLV (silver; ρ~0.45-0.55 — gold-correlated). HYG/EFA/EEM correlated equity-like — skip.
-- **iter 037 + iter 026 (single-asset SPY VRP) 50/50 (#3)** — iter 037 standalone score 79; iter 026 score 76 (1st DSR PASS ndx). 50/50 combo at corr likely 0.50-0.60 — same Markowitz dilution risk as iter 049 unless components are Sharpe-comparable (S_037~1.10, S_026~1.27 — fairly similar).
-- **iter 046 with iter 037 substituted for iter 041 base (#4)** — collapses to iter 045 base (already scored 81). Useful only as sanity replication.
-- **Single-stock momentum on Tiingo equities (DEFERRED, data window limited)** — 1632 equities in cache but ALL start ≥ 2013-01 (none cover 2009-06-25 spy_real start). Verified 2026-04-25.
+- **#1 iter 037 + iter 026 50/50** — single-base composites; iter 037 (3-leg, S≈1.10 std-bench) + iter 026 (single-asset SPY VRP, S≈1.27 ndx); ρ estimated 0.50-0.60 (orthogonal risk: VRP vs risk-parity-stack). **Pre-screen with Markowitz formula on saved streams BEFORE backtest** (only run if predicted Sharpe > 1.20 on 2/3 ds AND ρ < 0.55). Citations: `[risk_parity, ch.5]` + `[volatility_trading, ch.3]`.
+- **#2 iter 041 regime weights on (SPY, IEF, HYG)** — substitute gold leg with HY credit; HYG = "equity in bond's clothing" `[risk_parity, p.23]`. Standalone HYG TSM/regime-test required first. Citations: `[risk_parity, ch.5]` + Erb-Harvey 2006.
+- **#3 Plano C sleeve eval (GDE/AVUV/AVDE/AVEM/BTGD)** — factor-tilted passive baseline; if it delivers similar Sharpe + much higher CAGR, mandate §1 reinforced. Citations: `[fact_based_investing]` + `[your_complete_guide_factor_investing]`.
+- **DEFERRED**: single-stock Tiingo momentum (cache starts ≥ 2013-01, doesn't cover spy_real 2009-06).
 
-DEAD-LETTER: HMM-2 (044), FX carry (Tiingo post-2020), weight asymmetry on 046 (047), output-leverage on 046 (048), **50/50 additive lower-Sharpe stream on 046 (049)**, MTUM/QUAL/USMV factor-timing (NOT in cache, verified 2026-04-25).
+DEAD-LETTER: any iter 046-family enhancement (044/047/048/049/050); HMM-2 (044); FX carry (post-2020 only); MTUM/QUAL/USMV (NOT in cache).
 
-NOT recommended: perturbations of 037/041/046, σ⁻¹/σ⁻²/term-spread/MOVE/EBP gates on 037/041, 4-5-leg basket within iter 046 family, VIX/DTE/strike sweeps, MM σ⁻² on short-vol (040), Kelly-fraction, gate-enrichment on 041 (042/043/044), corr>0.85 (032), N>1 cfg in iter 046 family (047 BF closure), any regime-classifier MODULATION on iter 046 (044/047/048), **50/50 additive 3rd stream on iter 046 with S_3rd < 1.10 (049 closure: dilution dominates regardless of ρ by Markowitz identity)**.
+NOT recommended: perturbations of 037/041/046; σ⁻¹/σ⁻²/term-spread/MOVE/EBP gates on 037/041; 4-5-leg basket within iter 046 family; VIX/DTE/strike sweeps; MM σ⁻² on short-vol (040); gate-enrichment on 041 (042/043/044); corr>0.85 (032); N>1 cfg in iter 046 family (047); any iter 046 modulation/additive (044-050).
 
 ### Deeper backlog
 
@@ -170,7 +163,8 @@ NOT recommended: perturbations of 037/041/046, σ⁻¹/σ⁻²/term-spread/MOVE/
 - **Out-of-family composition VINDICATED**: iter 045 (81, ρ=0.58) → iter 046 (85, ρ=0.41) TOP-K #1; score scales inversely with corr.
 - **iter 047 closure**: 50/50 IS Pareto-optimum on iter 046; Bonferroni N=3 cost > grid gain; ndx CAGR 15.35% unreachable from iter 041 composites.
 - **iter 048 closure**: output-side regime gate is OUTPUT-LEVEL ANALOG of iter 044's input closure — re-using same VIX classifier double-counts.
-- **iter 049 closure**: 50/50 additive 3rd stream on iter 046 with S_3rd < 1.10 fails by Markowitz identity REGARDLESS of ρ — dilution effect dominates correlation diversification. Specifically: gold TSM 90d (S=0.69, ρ=0.53) at w=0.5 produces combined Sharpe 1.03 (formula prediction matches observed 1.02), score 59 MARGINAL — −26 vs iter 046's 85, deepest single-iter regression in loop. **Markowitz optimum w_gold ≈ 0.09**, NOT 0.50. Closure applies to ANY S_3rd < 1.10 stream at 50/50 on iter 046; future picks must use w ≤ 0.20 OR find S_3rd-comparable stream with verified ρ < 0.30 OR abandon iter 046 base. **5 distinct iter 046 enhancement axes now CLOSED** (input/weight/output/additive-50-50/...).
+- **iter 049 closure**: 50/50 additive 3rd stream on iter 046 with S_3rd < 1.10 fails by Markowitz identity regardless of ρ; gold TSM (S=0.69, ρ=0.53) at w=0.5 → combined S=1.03, score 59 (Δ-26). Markowitz optimum w*≈0.09, NOT 0.50.
+- **iter 050 closure (DSR knife-edge + Markowitz-formula validated)**: at Markowitz-rounded optimum w_gold=0.10 the formula matches observed Sharpe to 4 decimals (residual=0.0000) — but iter 046's worst DSR p=0.044 sits at 0.05 gate with only 0.006 headroom. Any cfg incrementing n_trials += 1 alone adds ~+0.005 deflator-step → Δp ≥ +0.010 with even small Sharpe drop crosses gate, costing c2−2 + c3−5 = −7pts. **5th & final iter 046 enhancement axis CLOSED**: input(044)+weight(047)+output(048)+additive-50/50(049)+additive-low-weight(050). **Generalised: any iter 046 enhancement incrementing n_trials by ≥1 without lifting worst-Sharpe-dataset by ≥0.02 regresses score**. iter 046 is Pareto-optimal in enhancement space → must be ABANDONED. Methodological win: Markowitz formula now empirically validated → pre-screen future composition candidates BEFORE backtest.
 
 ---
 
