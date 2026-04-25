@@ -1724,6 +1724,112 @@ cheap; Option V (VRP-primary portfolio) is tertiary.
 
 ---
 
+## From iteration 025 — Slow-EWMAC trend on 6-asset long-only basket
+
+Complete study: `studies/strategy_hunt_loop/iterations/025-2026-04-24-2059-slow-ewmac-multi-asset/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Slow-EWMAC trend (32:128 + 64:256 with FDM=1.10) + Carver no-trade
+   buffer (10%) + portfolio-level vol-target (4%/asset) + long-only on a
+   6-asset broad-asset-class ETF basket (SPY/QQQ + TLT + IEF + GLD + EFA
+   + EEM)** — Sharpe 0.766/0.815/0.828 vs benchmarks 0.68/0.90/0.955;
+   2/3 datasets REGRESS clearly (Δ frozen −0.085 spy_real, −0.127
+   ndx_real). CAGR collapses to 9.13/9.97/10.20% vs 11.47/14.97/19.18%
+   benchmark. Score 39/100 ❌ NEAR_FAIL. Winner conditions 0/5.
+
+2. **The specific root cause: long-only constraint truncates trend
+   premium asymmetrically.** Trend strategies harvest premium from BOTH
+   directional legs (long-up + short-down). With long-only, the
+   short-leg premium is forfeit entirely — the strategy goes flat on
+   negative trends. Hurst-Ooi-Pedersen 2017 attribution suggests this
+   loses ~50% of trend Sharpe. Combined with the 6-asset basket being
+   too narrow for full diversification (Carver's FDM = 3.2 needs 10
+   uncorrelated forecasts; at ρ ≈ 0.3 cross-asset correlation, effective
+   N ≈ 4 vs the 67-market basket Hurst-Ooi-Pedersen used for SR ≈ 1.0),
+   the realized Sharpe plateau is ~0.80 — well below post-GFC SPY/QQQ.
+
+3. **MDD reduction is dramatic (17.3% on all 3 datasets vs benchmarks
+   33-55%) but doesn't compensate.** The strategy is a defensive equity
+   surrogate, not a Sharpe-edge candidate. Long-only multi-asset trend
+   produces a low-leverage (gross 1.27 mean) low-vol portfolio that
+   trades MDD reduction for CAGR loss — not what's needed to beat SPY 1×.
+
+4. **Engine cleanest in hunt loop, but mechanism cannot escape the
+   benchmark.** G3 walk-forward 7-8/8 on all datasets (best-ever WF);
+   G6 bootstrap CI low > 0 on 3/3 (joins iter 016/021/024); G7 cross-lib
+   parity 0.003-0.06 pp (cleanest engine ever in hunt loop). Robustness
+   9/9 sub-windows positive (ties iter 013/024 record). Turnover
+   1.56-1.61 / yr / leg — 22× lower than iter 023's 35/yr/leg. The
+   mechanism IS doing what it's supposed to; it just doesn't beat
+   post-2009 US equity beta.
+
+### Don't re-test
+
+- Slow-EWMAC (32:128 + 64:256 with FDM=1.10) on 6-asset broad-asset-class
+  long-only ETF basket (SPY/QQQ + TLT + IEF + GLD + EFA + EEM) with
+  portfolio-level vol-target and Carver no-trade buffer.
+- Any further parameter sweep on this exact framework — the failure is
+  structural (long-only + 6-asset diversification limit), not parametric.
+  Variations of `target_vol_per_asset`, `no_trade_buffer_pct`, or
+  `max_per_asset_leverage` would land at the same ~0.80 Sharpe plateau.
+- Similar slow-trend frameworks on equivalent-narrow ETF baskets
+  (5-7 assets, single asset class per leg, long-only): the same
+  mechanism applies.
+
+### Structural principles
+
+- **Long-only constraint sacrifices ~50% of trend premium on directional
+  strategies.** When a downtrend asset is forced to flat instead of
+  short, the period's gain is set to zero rather than positive (from
+  short PnL). On a 6-asset basket where ~30% of bars have at least one
+  asset in negative trend, this aggregates to a meaningful Sharpe gap
+  vs the long-short variant. Trend strategies that cannot short
+  structurally cannot beat market beta in high-beta regimes (post-GFC
+  US equity).
+
+- **6-asset retail ETF basket cannot replicate Hurst-Ooi-Pedersen 67-
+  market futures trend edge.** The diversification benefit scales with
+  the effective independent count (N_eff ≈ N / (1 + (N-1)·ρ)). For a
+  6-asset multi-asset-class basket at typical cross-correlation 0.3,
+  N_eff ≈ 2.5 — far below the 50+ effective markets that produce
+  +1.0 Sharpe in centennial trend studies. **Trend strategies on retail
+  ETFs require either (a) a larger basket via fractional/levered
+  futures access, (b) factor-rotation within asset class to amplify
+  signal, OR (c) accept a lower Sharpe ceiling than the 1.0 referenced
+  in literature.**
+
+- **Engine cleanliness is necessary but not sufficient for beating the
+  benchmark.** Iter 025 has the cleanest engine in the hunt loop on
+  every diagnostic axis (G3, G6, G7, robustness) and still fails. This
+  validates the discipline of the hunt loop's gates: a strategy can
+  pass 6/7 gates uniformly, deliver 9/9 robustness, and have <0.06 pp
+  cross-lib parity, and still not beat the benchmark Sharpe. The
+  benchmark itself is the binding constraint, not the gate battery.
+
+- **MDD-reduction is a separable axis from Sharpe-edge.** Iter 025's
+  17% MDD vs benchmarks' 33-55% is a real, valuable property —
+  but on the hunt loop's Sharpe-edge primary metric, it doesn't help.
+  This suggests a SECONDARY axis worth tracking: "MDD-edge tier" for
+  defensive strategies. Iter 025 would tier as 🥇 STRONG by MDD edge
+  alone, even though it's NEAR_FAIL by Sharpe edge. Future iterations
+  could be stratified by primary axis — Sharpe vs MDD vs CAGR.
+
+### Next direction after this failure
+
+See BASE_MEMORY "Iter 026 candidates":
+
+- **Option V (VRP-primary)** — strongest candidate to break DSR ceiling
+  at n=4278; +3-4%/yr Bondarenko premium with retail short-put / Tbill
+  collateral structure.
+- **Option LS (Long-SHORT slow-EWMAC)** — same mechanism as iter 025
+  with shorts allowed; could recover the ~50% lost premium and lift
+  Sharpe from 0.80 to ~1.05+.
+- **Option C (EWMAC + Carry combo)** — 4 forecasts at FDM ≈ 1.5-1.8
+  could lift Sharpe by +0.15-0.20 via signal diversification.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:
