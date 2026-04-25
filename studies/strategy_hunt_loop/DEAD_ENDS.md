@@ -1915,15 +1915,81 @@ metrics.
 
 ### Path forward (NOT dead — overlay_sharpe-lifting paths)
 
-- **VIX-regime filter on iter 026 base** (V-3, Sinclair p.217 explicit
-  rule). Hypothesis: filtering high-VIX opens lifts `overlay_sharpe`
-  to 0.80-1.05, restoring full-strategy Sharpe at N=1. Best path to a
-  true WINNER.
+- **VIX-regime filter on iter 026 base** (V-3) — **TESTED iter 028 →
+  CONSTANT-THRESHOLD VERSION CLOSED**; regime-aware variants still open.
 - **VRP + Carry composite** (V-4). Adds non-equity-correlated return
   stream from iter 024 carry; composite σ² should drop modestly while
   total mean grows.
 - **Strike refinement** (V-5). 5/15% wider OR 3/7% closer-to-ATM
   affects per-trade harvest geometry; pre-commit one variant.
+
+---
+
+## From iteration 028 — constant VIX<35 filter on iter 026 (V-3)
+
+### What failed
+
+- Pre-committed cfg `vrp_filtered_vix35_h1_5_10_1m`: iter 026 base +
+  constant Sinclair p.217 `VIX<35` entry gate (at every natural roll
+  bar, open only when raw VIX[i] < 35; otherwise hold T-bills until
+  next eligible roll).
+- **Kill A TRIGGERED** — Sharpe regressed > 0.05 vs iter 026 on 2/3
+  datasets (spy −0.10, ndx −0.07). Educational *improved* (+0.13
+  Sharpe, first-ever 7/7 gates + first-ever DSR pass p=0.029 on the
+  longest 5100-bar window).
+- Score 71 PROMISING (down from iter 026's 76). Drop entirely from
+  DSR worst-p criterion: educational improved p (0.083 → 0.029), but
+  spy/ndx worsened p (0.070 → 0.136 and 0.038 → 0.064); the score
+  uses worst-p, which tracks the regression.
+- Underlying mechanism: the filter's sign depends on **vol-regime
+  persistence**, not absolute level. **Sustained** regimes
+  (2008-Q4, VIX 50-80 for weeks) produce breach-prone rolls → filter
+  skip is correct. **Transient spikes** (2020-Q1, 2022, 2024;
+  VIX > 35 for days) resolve without breach within 21-DTE → the
+  unfiltered iter 026 captures the IV mean-reversion premium; iter
+  028's skip forgoes that premium. Post-GFC datasets contain mostly
+  transient spikes, inverting the rule's empirical sign.
+
+### Don't re-test
+
+- **Any other constant VIX threshold (25, 30, 40, 50) on iter 026 base
+  without regime-persistence conditioning.** The dimension that breaks
+  is persistence, not level. Other constant levels will behave the
+  same way on post-GFC data (transient spikes will be skipped either
+  way; the level just tunes the frequency).
+- **Combining iter 028's VIX filter with iter 027's leverage.** The
+  leverage channel (rf-dilution) and filter channel (overlay_sharpe)
+  are orthogonal, but combining them compounds damage on spy/ndx.
+- **Symmetric two-sided VIX gates** (e.g. "only when VIX in [15, 35]")
+  on iter 026 — the low-VIX tail of any such gate is a no-op on this
+  sample (most bars have VIX < 35), so the test reduces to iter 028.
+
+### Structural principles
+
+- **Sinclair's pre-2010 rules are not universally transportable to
+  post-GFC data.** The 2008-Q4 regime that p.217 implicitly addresses
+  (sustained high-vol) is rare in 2010-2026; most post-GFC high-VIX
+  events are mean-reverting spikes. Absolute-level VIX rules therefore
+  have **regime-dependent sign** — they lift on samples containing
+  sustained vol regimes and hurt on samples without.
+- **Educational DSR floor of 0.083 is NOT a noise ceiling** — it
+  dropped to 0.029 under the right filter (even an imperfect one).
+  Multi-dataset DSR discrepancies are information about **regime
+  composition**, not irreducible statistical barriers.
+- **Path forward is regime-aware gates**, not constant thresholds.
+  Specifically: conditions that distinguish *persistent* vol regimes
+  from *transient* spikes.
+
+### Path forward (NOT dead — regime-aware gate paths)
+
+- **R-1 VIX-persistence gate** on iter 026 (filter only when VIX > 35
+  for ≥ 3 consecutive days). Preserves post-GFC transient-spike
+  capture AND still skips 2008-Q4 sustained regimes. Single binary
+  param, pre-committed. **Best path to WINNER post-iter-028.**
+- **R-2 VIX z-score gate** (filter when `(VIX − VIX_60d_mean) /
+  VIX_60d_std > 2`). Relative-shock conditioning.
+- **R-3 VIX > VXV term-structure gate** (`[volatility_trading, p.218]`).
+  Front-month backwardation as sustained-stress signal.
 
 ---
 
