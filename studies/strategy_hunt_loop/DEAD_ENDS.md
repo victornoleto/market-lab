@@ -2183,6 +2183,39 @@ Complete study: `studies/strategy_hunt_loop/iterations/030-2026-04-24-2259-vix-z
 
 ---
 
+## From iteration 031 — VIX AND-composite (R-1 ∧ R-2) on iter 026 base
+
+### What failed (partial closure: scored 76 STRONG, ties iter 026 ceiling)
+
+- Specific cfg `vrp_and_v3p35_z2_h1_5_10_1m`: AND-composite (`VIX>=35` for 3 days AND `z(VIX,60)>=2`) on iter 026 base scores **76/100 STRONG, all 6 pre-committed kills CLEAN**. **First-ever iteration with all 3 datasets simultaneously below DSR p=0.10** (edu 0.054 / spy 0.070 / ndx 0.050) and ndx 7/7 + DSR PASS preserved (third sub-0.05 PASS ever, p=0.0499). Composite is **vacuous on spy_real** by construction (0 fires across 17y of post-2009 bars where the intersection is structurally empty: spy never had VIX≥35 for 3 days AND z≥2 simultaneously); fires exactly 4 times across 60y of cross-dataset bars (2008-10-03 GFC initial ramp + 2020-03-11 + 2011-08-12 US debt downgrade + 2020-03-19).
+- Score TIES iter 026 at 76 (not a strict improvement) because the scoring rubric awards worst-p buckets, not DSR distribution tightness. Worst-p = spy 0.0699 (in [0.05, 0.10] bucket → 10 DSR pts, same as iter 026's worst-p 0.0828 in same bucket). Cross-dataset DSR distribution is *qualitatively* better but rubric blind to it.
+- All 5 strict winner conditions check: 1=PASS (3/3 datasets beat bench+0.10 Sharpe); 2=PASS (cross-dataset gates met); 3=FAIL (worst-p 0.0699 > 0.05); 4=FAIL (CAGR floor 0/3, all ~5%/yr vs floors 9-15%); 5=PASS (MDD ceiling 3/3). Final winner_conditions_met=False, score=76 STRONG.
+
+### Don't re-test
+
+- Specific cfg `vrp_and_v3p35_z2_h1_5_10_1m` (closed at score 76; ties iter 026 ceiling).
+- AND-composite at any other parameter triple `(vix_threshold, persistence_days, z_threshold)` on iter 026 base where `harvest_notional=1.0` — won't break the 76 ceiling because criterion 4 (CAGR floor 0/15) is structural to the T-bill-collateral architecture, regardless of gate parameters.
+- AND-composite param sweeps (`vix_threshold ∈ {30, 35, 40}` × `persistence_days ∈ {3, 5}` × `z_threshold ∈ {1.5, 2.0, 2.5}` × `z_window ∈ {30, 60, 120}`) — would inflate PBO grid-level beyond iter 026's 0.69 floor (iter 006 killed exactly by this); even if a sweep finds a slightly better point, it cannot break the 76 ceiling without addressing the CAGR criterion.
+- OR-composite of R-1 and R-2 — strictly worse than either alone (aggregates iter 028's edu over-fire and iter 030's ndx over-fire).
+- AND-composite + linear leverage (iter 027 + iter 031) — rf-dilution channel kills the gain (iter 027 already showed this at 74); leverage is NOT the CAGR mechanism.
+
+### Open paths (NOT closed by iter 031)
+
+- **R-3 VIX > VXV term-structure gate** — qualitatively different signal source (market-derived expectation curve, not historical VIX distribution). VXV/VIX3M starts late 2007 → educational shortened to ~18y. `[volatility_trading, p.218, p.229]` (IVTS) + Carr-Wu 2009 §III. Cleanest sustained-vs-transient signal in the literature; iter 031's confirmation of the 76 ceiling promotes this from #2 to #1.
+- **Multi-asset composition: iter 015 base + iter 031 VRP+composite overlay** — apply the iter 031 composite-gated VRP overlay onto iter 015's NTSX-style 0.9 SPY + 0.6 IEF static stack. Bond leg adds CAGR (criterion 4 was 0/15 on iter 031); static-vs-vol-target architecture validated at iter 015 STRONG 77. Combining iter 015 base + iter 031 overlay is the most direct path to breaking the 76 ceiling specifically by gaining CAGR floor points while preserving DSR distribution.
+- **R-1+R-2+R-3 triple AND-composite** — three-axis intersection. Probably empty on most datasets but might informatively shift fire dates.
+- **Composite gates with non-VIX features** (yield-curve regime, MOVE z-score, EBP credit cycle, EPU index) — qualitatively different signal sources.
+
+### Structural principles
+
+- **iter 026 single-asset VRP-primary family with literature-anchored 4-axis VIX gates is at score-rubric ceiling 76**: 5 iters total (026/028/029/030/031) span the full 4-axis exploration (no gate / level / level+persistence / z-score / level∧persistence∧z). All 5 capped at 76 (iter 026 + 031) or 71 (iter 028/029/030); none has broken the ceiling because criterion 4 (CAGR floor 0/15) is structural to harvest_notional=1.0 on T-bill collateral. Future iterations on this base will not exceed 76 without a CAGR mechanism.
+- **AND-composite is the structurally cleanest gate within the iter 026 family**: it is the FIRST iteration ever to keep all 3 DSR p-values < 0.10 simultaneously. The score rubric doesn't reward this distribution-tightening property, but for any future "winner-conds-met"-aware analysis, the AND-composite cfg is the cleanest baseline.
+- **Composite intersections are dramatically more selective than either single axis**: iter 030 z-only fires 19/17/16 rolls; iter 028 level-only fires 11/6/4 rolls; AND-composite fires 2/0/2 rolls — strictly more permissive than either alone, by ~10-20× reduction. The intersection cleanly maps to "literature-flagged regimes only" (Sinclair p.217-218 + Bondarenko 2014 §3 explicitly call out level AND persistence as joint warning signs).
+- **Spy_real post-2009 has zero days where R-1 and R-2 agree**: for any winner that needs to clear strict winner conditions on spy_real, the composite axis provides no leverage over no-filter (composite vacuous on spy by construction). The spy gain in iter 030 came from R-2 alone catching VIX<35 innovation shocks; that gain is *unavailable* to any AND-composite that requires R-1 to fire. Spy DSR can only improve through (a) R-2 alone (iter 030 cfg, but Kill A on ndx), (b) a different signal axis (R-3, MOVE, etc.), or (c) a multi-asset architecture that adds Sharpe via an orthogonal sleeve.
+- **Reducing-to-parent TDD tests scale to compositional gates**: iter 031's TDD specs include `test_andcomp_inf_vix_matches_iter026` (R-1 vacuous → iter 026 to 1e-12) AND `test_andcomp_inf_z_matches_iter026` (R-2 vacuous → iter 026 to 1e-12). Both pass. The pattern generalizes — any composite gate's TDD must include reduction tests for each axis individually, ensuring no axis introduces hidden state changes.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:

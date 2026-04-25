@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 30
+total_iterations: 31
 winners_found: 0
 status: iterating
-latest_iteration: "030-2026-04-24-2259"
-cumulative_n_trials: 4283
+latest_iteration: "031-2026-04-25-0001"
+cumulative_n_trials: 4284
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -64,8 +64,8 @@ winner:
 | **1** | **018** | 🥇 STRONG | **79** | `ntsx_vm_vt15_L21_cap20_funded` (016 + r_Tbill drag) | `[risk_parity, p.80-84]` + NTSX prospectus | edges survive funding cost (−93 to −148 bps/yr); ties 016 |
 | **1** | **021** | 🥇 STRONG | **79** | `ntsx_vm_..._scs5_10_1m` (016 + short OTM put-spread VRP) | `[volatility_trading, ch.3]` + Bondarenko 2014 | Sharpe-neutral but MDD −1 to −3pp; DSR p=0.217 record |
 | 4 | 015 | 🥇 STRONG | 77 | `ntsx_synth_90_60_daily` (static 0.9 SPY + 0.6 IEF) | `[risk_parity, p.5]` + Asness-Frazzini-Pedersen 2012 | 4/5 winner; 1st mech to escape σ²_port cointegration |
+| **5** | **031** | 🥇 STRONG | **76** | `vrp_and_v3p35_z2_h1_5_10_1m` (iter 026 + R-1 ∧ R-2 AND-composite VIX gate) | `[volatility_trading, p.217-218]` + Bondarenko 2014 §3 | **1st-ever all-3 DSR < 0.10** (edu 0.054 / spy 0.070 / ndx 0.050); composite vacuous on spy preserves iter 026 exactly; ndx 7/7 + DSR PASS preserved |
 | **5** | **026** | 🥇 STRONG | **76** | `vrp_primary_h1_5_10_1m` (T-bill + short SPY 5/10% put credit spread) | `[volatility_trading, ch.3, p.41, p.217]` + Bondarenko 2014 | **1st DSR PASS ever** (ndx p=0.038); **1st 7/7 gates ever** (ndx); Sharpe Δ +0.38-0.45 cross-ds |
-| 6 | 008 | 🥈 PROMISING | 74 | `vt15_L21_cap20` (2-leg SPY+TLT vol-mgmt) | `[risk_parity, p.10-11]` + Moreira-Muir 2017 | 4/5 winner; vol-managed reference baseline |
 
 *(iter 001 ~35/100 approximate; back-fill in `tests/test_strategy_scoring.py::TestNearMiss`.)*
 
@@ -79,11 +79,13 @@ the 18 KB ceiling. Full hypothesis, citations, scope and score
 breakdown for compressed iters are recoverable from
 `iterations/NNN-*/hypothesis.md` + `verdict.json` + `final_report.md`.
 
-### 030 — 2026-04-24 — vix-zscore-vrp-primary (🥈 PROMISING, 71/100, Kill A+B, **1st-ever spy 7/7 + spy DSR PASS**)
-- **Result:** Sharpe edu/spy/ndx 1.139/**1.362**/1.237 (Δ frozen +0.46/+0.46/+0.28; Δ iter026 +0.006/**+0.080**/−0.131 Kill A 2.6× ndx; Δ iter028 −0.121/+0.181/−0.064 Kill B edu), gates 6/**7**/6 (1st-ever 7/7 spy_real), DSR p=0.082/**0.0345**/0.101 (n=4283, **1st sub-0.05 spy DSR ever**; ndx 0.001 above 10-pt threshold), MDD 14.5/7.1/8.2% ceiling 3/3, robustness 9/9, winner=3/5; score 1:25 2:21 3:5 4:0 5:15 6:5 = 71.
-- **Lesson:** Z-score gate dramatic on spy (1st-ever 7/7 + DSR p=0.0345) but fails on edu (60d rolling mean absorbs GFC spike → sustained period unfiltered) AND ndx (over-filters tech mini-spikes). **STRUCTURAL CLOSURE: 3 successive single-axis VIX gates (028 level / 029 level+persistence / 030 z-score) all converge at 71, each w/ sub-0.05 DSR record on a *different* dataset (026 ndx, 028/029 edu, 030 spy). Single-axis family on iter 026 base CLOSED.** Forward path: R-1+R-2 AND-composite or R-3 VXV term-structure. See `iterations/030-2026-04-24-2259-vix-zscore-vrp-primary/`.
+### 031 — 2026-04-25 — vix-and-composite-vrp-primary (🥇 STRONG, 76/100, ALL 6 KILLS CLEAN, **1st-ever all-3 DSR < 0.10**)
+- **Result:** Sharpe edu/spy/ndx 1.190/1.282/1.333 (Δ026 +0.056/0.000 spy preserved/−0.035; Δ030 +0.051/−0.080/+0.096), gates 6/6/**7**, DSR p=**0.054**/0.070/**0.050** (n=4284, **3rd-ever sub-0.05 PASS** ndx, **1st-ever all-3 < 0.10**), MDD 3/3, robustness 9/9, winner=3/5; score 1:25 2:21 3:10 4:0 5:15 6:5 = **76 ties iter 026 ceiling**.
+- **Lesson:** AND-intersection R-1∧R-2 fires only 4× across 60y (Sep-Oct 2008 + Mar-2020 + 2011-08-12); vacuous on spy by construction (preserves iter 026 *exactly*); ndx 7/7+DSR PASS preserved. **CLOSURE**: 5 iters on iter 026 base (026/028/029/030/031) max at 76 — criterion-4 CAGR floor 0/15 structural to harvest_notional=1.0. Family at **score ceiling 76**; gain requires CAGR mechanism (multi-asset iter 015+031 overlay) OR R-3 VIX>VXV term-structure. See `iterations/031-2026-04-24-2322-vix-and-composite-vrp-primary/`.
 
-### Iters 015-029 (compressed 1-line; full detail in `iterations/NNN-*/`)
+### Iters 015-030 (compressed 1-line; full detail in `iterations/NNN-*/`)
+
+- **030** (🥈 71, Kill A+B) Z-score gate (`z_window=60, z_threshold=2.0`) on iter 026: spy 1st-ever 7/7 + DSR p=0.0345 PASS, but edu Kill B (z misses sustained Q4-2008) and ndx Kill A 2.6× (z over-filters tech mini-spikes); 3 successive single-axis iters (028/029/030) all converge at 71, each w/ sub-0.05 DSR on different dataset.
 
 - **029** (🥈 71, Kill A 2bp) Level + 3-day persistence on iter 028: edu DSR record p=0.0251 (best edu ever), spy partial recovery (+0.048 vs iter 028), ndx unchanged (already all-clustered). Worst-p 0.100 missed 10-pt threshold by 0.0003. Closes specific cfg; structural finding 3 datasets have qualitatively different regime structures.
 - **028** (🥈 71, Kill A) Constant `VIX<35` filter on iter 026: edu 1st-ever 7/7 + DSR p=0.029 record, but spy/ndx regress (transient spikes); closes constant-threshold path, opens regime-aware gates.
@@ -127,19 +129,19 @@ breakdown for compressed iters are recoverable from
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002/003/004/005/007/009/010/011/012/013/014/017/019/020/021/022/023/024/025/026/027/028/029/030 (iter 030 PROMISING 71, single-axis VIX-gate family CLOSED on iter 026 base — 3 successive iters 028/029/030 all converge at score 71, each w/ DSR record on different dataset). Top-K #1 still iter 016/018/021 triple-tied at 79.
+Consumed/closed: 002/003/004/005/007/009/010/011/012/013/014/017/019/020/021/022/023/024/025/026/027/028/029/030/031 (iter 031 STRONG 76 ties iter 026 ceiling; AND-composite axis on iter 026 base CLOSED — 5 iters total span full 4-axis VIX-gate exploration; ALL 5 capped at 76 due to criterion-4 CAGR floor 0/15 structural to harvest_notional=1.0). Top-K #1 still iter 016/018/021 triple-tied at 79.
 
-### Iter 031 candidates (post-iter-030 — composite or qualitatively different gate axes)
+### Iter 032 candidates (post-iter-031 — qualitatively different signal OR multi-asset CAGR mechanism)
 
-- **R-1+R-2 AND-composite** (persistence AND z-score, BOTH must fire to skip). **STRONGEST candidate post-iter-030.** Intersection should be very selective — only the genuinely worst regimes (GFC initial ramp where both fire; Mar-2020 where both fire) — preserving educational (level catches sustained period that z-score misses), preserving most of iter 026's spy/ndx harvest (composite is more permissive than either alone). Citation: `[volatility_trading, p.217-218]` + Bondarenko 2014 §3.
-- **R-3 VIX > VXV term-structure gate** (filter when VIX > VXV — front-month backwardation). Qualitatively different signal (market-derived expectation curve, not historical VIX distribution). VXV starts 2007 → shortens educational ~19y. `[volatility_trading, p.218, p.229]` + Carr-Wu 2009. Cleanest sustained-vs-transient signal in the literature.
-- **R-1+R-2 OR-composite** (persistence OR z-score fires). NOT recommended — would aggregate weaknesses (over-filter ndx; let edu sustained through). Strictly worse than either alone.
-- **Z-score parameter sweep** (z ∈ {1.5, 2.5, 3.0} × window ∈ {21, 120, 252}). Single-axis tightening — likely produces another 71-tied result; lowest priority.
-- **V-4 VRP+Carry composite** (0.5 × iter 026 + 0.5 × iter 024). Carry uncorrelated → composite σ² drops; adds CAGR from carry leg (could lift criterion 4 from 0/15 → 5/15).
-- **V-5 Strike refinement** (5/15% wider OR 3/7% closer-to-ATM). Affects overlay_sharpe non-trivially.
-- **V-6 Conditional strike adjustment**: widen strikes during persistent high-VIX rather than skipping outright; capture some premium decay with lower tail risk.
+- **R-3 VIX > VXV term-structure (STRONGEST signal-axis)**. Market-derived curve, not historical distribution. VXV/VIX3M starts late 2007 → edu ~18y. `[volatility_trading, p.218, p.229]` (IVTS) + Carr-Wu 2009 §III.
+- **iter 015 base + iter 031 overlay (STRONGEST for breaking 76 ceiling)**. Multi-asset 0.9 SPY + 0.6 IEF static stack with composite-gated VRP on equity leg; bond leg adds CAGR (criterion 4 was 0/15 on iter 031). iter 015 base validated at STRONG 77.
+- **R-1+R-2+R-3 triple AND-composite** — three-axis intersection. Lower priority, R-3 untested alone.
+- **AND-composite param sweep** — NOT recommended; PBO inflates beyond iter 026's 0.69 floor.
+- **V-4 VRP+Carry composite** (0.5 × iter 026 + 0.5 × iter 024). Carry uncorrelated → adds CAGR.
+- **V-5 Strike refinement** (5/15% wider OR 3/7% closer-to-ATM).
+- **V-6 Conditional strike widening** during persistent high-VIX (capture decay with lower tail).
 - **LS Long-short slow-EWMAC** (iter 025 + shorts; recovers ~50% trend premium).
-- **C EWMAC+Carry combo** on 6 assets (Carver negative-skew complement; FDM 1.10→1.5-1.8).
+- **C EWMAC+Carry combo** on 6 assets (Carver; FDM 1.10→1.5-1.8).
 - **W Wider-universe carry** (iter 024 + 3+ duration buckets OR cross-asset FX/commodity).
 
 ### Deeper backlog
@@ -175,6 +177,7 @@ Consumed/closed: 002/003/004/005/007/009/010/011/012/013/014/017/019/020/021/022
 - **Tightening iter 028**: constant `VIX<35` entry filter on iter 026 base is regime-conditional; lifts educational (GFC-inclusive → 1st-ever 7/7 + DSR p=0.029) but regresses spy/ndx (post-GFC transient spikes) → Kill A 2/3; closes constant-threshold V-3, opens regime-aware gates (R-1 persistence/R-2 z-score/R-3 term-structure). Does NOT close iter 026 at N=1.
 - **Tightening iter 029**: `vix_threshold=35, persistence_days=3` partially refines iter 028 (DSR worst 0.136→0.100, edu record 0.0251) but ties score 71 (missed 10-pt threshold by 0.0003) + Kill A. NEW finding: 3 datasets have qualitatively different high-VIX structures (edu deeply-persistent GFC; spy mixed; ndx all-clustered → R-1=iter 028). Single constant gate cannot optimize all 3. Closes that cfg; opens R-2 z-score, R-3 term-structure, composite gates.
 - **Tightening iter 030**: `z_window=60, z_threshold=2.0` regime-relative gate on iter 026 base scores 71 — **1st-ever spy 7/7 + DSR p=0.0345 (1st sub-0.05 spy DSR ever)**, but Kill A clean 2.6× threshold on ndx (−0.131; over-filters tech mini-spikes) AND Kill B on edu (−0.121 vs iter 028; rolling-mean absorbs GFC spike, sustained period unfiltered). **STRUCTURAL FINDING**: 3 successive single-axis gates (028 level / 029 level+persistence / 030 z-score) all converge at 71/100, each w/ sub-0.05 DSR record on a *different* dataset (iter 026 ndx, iter 028/029 edu, iter 030 spy). Single-axis VIX-gate family on iter 026 base is now CLOSED. Forward path: R-1+R-2 AND-composite or R-3 term-structure (VXV).
+- **Tightening iter 031**: AND-composite of R-1 ∧ R-2 on iter 026 base scores **76 ties iter 026 ceiling**; 1st-ever all-3 DSR < 0.10; ndx 7/7+DSR PASS preserved; vacuous on spy (0 fires/17y). 5 iters total on iter 026 base (026/028/029/030/031) max at 76 — criterion-4 CAGR floor 0/15 structural to harvest_notional=1.0. Iter 026 family at **score-rubric ceiling 76**; future gain requires CAGR mechanism (multi-asset iter 015 base + iter 031 overlay) OR qualitatively different signal (R-3 VIX>VXV). Does NOT close R-3, multi-asset, composite param sweeps.
 
 ---
 
