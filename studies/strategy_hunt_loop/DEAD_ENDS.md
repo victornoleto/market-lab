@@ -5262,3 +5262,163 @@ calm-aggressive 3rd stream all saturate at 90 STRONG.
 - `[advances_fin_ml, p.208-211]` — PBO via CSCV (G1, N=4 cfgs).
 - iter 064/069/070 final reports — TOP-K #1 baseline + calm-aggressive
   3rd stream thesis source.
+
+## From iteration 072 — VIX-binary regime-conditional r_mr allocation on iter 064 base
+
+**Strategy**: 4-cfg sweep of VIX-binary regime-conditional allocation
+of the iter-071-validated calm-aggressive r_mr stream on iter 064 base.
+The 3rd stream's weight switches between calm-regime value (w_mr_calm)
+and stress-regime value (w_mr_stress) based on VIX[t-1] threshold = 20
+(Whaley 2009 long-run median). w_046 and w_qqqt scale proportionally
+with (1 - w_mr) to preserve iter 064's 9:1 base ratio. Σw ≡ 1 every bar.
+
+```
+gate_stress[t] = (VIX[t-1] >= 20)
+w_mr[t]    = w_mr_stress if gate_stress[t] else w_mr_calm
+w_046[t]   = (1 - w_mr[t]) * 0.90
+w_qqqt[t]  = (1 - w_mr[t]) * 0.10
+cost[t]    = 5bp · |Δw_mr|
+r_072[t]   = w_046·r_046 + w_qqqt·r_qqqt + w_mr·r_mr - cost
+```
+
+4 cfgs sweep w_calm × w_stress: (0.10, 0.00), (0.15, 0.00), (0.10,
+0.05), (0.20, 0.00). RSI threshold fixed at iter 071 best (10). Tests
+direction #1 from iter 071 final report: hierarchical regime-conditional
+allocation of validated calm-aggressive complement.
+
+**Verdict**: 🥇 STRONG, score **85/100** (REGRESSION from joint TOP-K
+#1 of 90; ties iter 058 at TOP-K #5). 6/10 kills fired (A primary;
+B+C+D+E+I diagnostic). 4/5 winner conditions (CAGR floor lost vs iter
+071's 1/3, regressing to 0/3).
+
+**Why it APPEARS competitive**:
+
+1. **Engine integrity perfect**: 16/16 TDD tests pass (Σw≡1 to 1e-12,
+   no-peek shift(1), w_mr_stress=0 collapse to iter 064 base, w_mr_calm
+   =w_mr_stress collapse to iter 071 static, regime-conditional flip
+   cost, cross-lib parity). G7 cross-lib **0.0000 pp on all 4 cfgs ×
+   3 datasets** (max ret diff = 0.0).
+2. **All 7/7 gates pass × 3 datasets for ALL 4 cfgs**: PBO 0.03-0.32
+   (3/3 < 0.5 — well below CSCV overfit threshold); DSR < 0.05 worst
+   p on all cfgs at cumulative n_trials = 4348; WF 8/8 windows
+   profitable on edu, ≥6/8 on spy/ndx; bootstrap CI low > 0.49 on all.
+3. **Robustness 9/9 sub-windows positive** (Sharpe 1.13-1.59 across).
+4. **MDD strictly tightens vs iter 064** on 3/3 (best cfg −0.94 to
+   −0.99pp): the regime-conditional de-allocation of r_mr in stress
+   provides marginal MDD benefit.
+5. **r_mr stream remains genuinely calm-aggressive**: cond ratio
+   1.14-1.25 across 3 ds (KILL I fires only because the magnitude is
+   smaller than the 1.5 pre-committed threshold, but ratio > 1 on 3/3
+   = stream is calm-aggressive directionally).
+
+**Why it FAILS to break the 90 ceiling**:
+
+- **KILL A FIRES (best cfg)**: Sharpe lift vs iter 064 is +0.013/
+  +0.019/+0.016 — directionally positive on 3/3 but below pre-committed
+  +0.02 threshold. Same magnitude as iter 071's static (+0.016/+0.018/
+  +0.015) — the regime-conditioning provides ZERO incremental Sharpe
+  vs uniform static blend.
+- **KILL C FIRES (best cfg)**: Δ vs iter 071 th10_w005 Sharpe is
+  −0.004/+0.001/+0.001 — essentially zero on 3/3. Dynamic VIX-conditional
+  allocation gives NO benefit over uniform static at the same effective
+  average w. The mechanism's premise (selectively activating r_mr in
+  calm regime to amplify its calm Sharpe) is empirically false.
+- **KILL E FIRES (best cfg) — STRUCTURAL FALSIFICATION**: r_072
+  conditional Sharpe is calm 1.04-1.08 vs stress 1.82-1.97 — calm/
+  stress ratio 0.56-0.58 << 1.0 (3/3 datasets). The composition is
+  CALM-DEFENSIVE at the portfolio level, OPPOSITE of the hypothesis.
+  Investigating the components: r_064 calm 1.04-1.07 vs stress 1.48-
+  1.95 (also < 1 on 3/3). **iter 064 base is itself calm-defensive
+  at the bar level.** Up-weighting r_mr in calm regime concentrates
+  exposure in iter 064's LOWEST conditional-Sharpe segment.
+- **KILL B FIRES (best cfg)**: edu CAGR drops to 9.08% — 10bps below
+  the 9.18% iter 064 unlock floor. The selective r_mr exposure (mean
+  w_mr ≈ 0.084) costs ~19bps edu CAGR vs iter 071's static (9.27% →
+  9.08%), enough to drop CAGR floor pass rate from 1/3 to 0/3 → score
+  90 → 85.
+- **KILL D FIRES**: corr(072, 064_static) > 0.998 on 3/3 — at small
+  effective average w_mr, the regime-conditional weighting makes the
+  composition structurally inert vs iter 064's static blend.
+- **All 4 cfgs score 85** — Pareto-flat axis. More aggressive regime-
+  conditioning (cfg4: w_calm=0.20, w_stress=0.00) drops edu CAGR to
+  8.71% (47bps below floor), pure cost without compensating Sharpe lift.
+  Less aggressive (cfg1: w_calm=0.10, w_stress=0.00) is identical to
+  iter 071 static at portfolio level (mean_w_mr=0.068 vs iter 071's
+  0.05 — the r_mr exposure barely differs).
+
+**Structural diagnosis (5-iter pattern 064/068/069/070/071/072)**:
+
+| iter | mechanism | regime classifier | Δ064 Sharpe | edu CAGR | score |
+|---|---|---|---|---|---|
+| 064 | (baseline) | none | baseline | 9.49% | 90 |
+| 068 | inner-w binary VIX (orig dir) | equity-vol binary | −0.04/−0.05/−0.05 | 9.53% | 79 |
+| 069 | inner-w binary VIX (reverse) | equity-vol binary | −0.005/−0.010/−0.020 | 9.36% | 90 |
+| 070 | inner-w continuous T10Y3M | macro/forward continuous | −0.003/−0.011/−0.018 | 9.69% | 90 |
+| 071-th10w005 | static 3rd stream (SPY MR) | none (orthogonal) | +0.016/+0.018/+0.015 | 9.27% | 90 |
+| 072-cs010s005 | regime-cond 3rd stream | binary VIX on 3rd-stream weight | +0.013/+0.019/+0.016 | 9.08% | **85** |
+
+The 5-iter pattern PROVES the 90 ceiling is **hard-anchored in iter
+064 base's calm-defensive bar-level distribution**, NOT in mechanism
+choice. Regime reweighting (068/069), continuous regime (070), static
+3rd stream (071), regime-conditional 3rd stream (072) all saturate or
+regress at 90. The KILL E inversion in iter 072 reveals the structural
+mechanism: iter 064 base's calm-segment Sharpe is LOWER than its
+stress-segment Sharpe (~1.05 vs ~1.7 on 3/3), so any complement
+calm-allocated to iter 064 dilutes iter 064 in its WORST regime.
+Static blends work BETTER than regime-conditional because uniform
+captures iter 064's strong stress-Sharpe AND r_mr's calm-Sharpe
+additively.
+
+**This closes the 5th and final regime-allocation axis on iter 064
+base**. Direction #2 from iter 071 final report (fresh higher-CAGR
+anchor, NOT iter 046 family) is now the ONLY remaining structural
+lever. All structural compositions of iter 064 + regime + complement
+are exhausted.
+
+**How to tell if a future strategy IS this dead-end**:
+
+- Static + r_mr (Connors RSI(2)) + iter 064 base, regardless of allocation
+  rule, weight schedule, or regime classifier — the iter 064 base's
+  calm-defensive bar-level distribution caps the composition at 85-90.
+- Any composition that scales weights based on a regime classifier
+  (binary VIX, continuous T10Y3M, smooth z-score, macro indicator,
+  HMM state) applied to iter 064 sub-streams or external 3rd streams.
+- Any 3-leg blend on iter 064 base where the 3rd stream is not
+  intrinsically high-CAGR (≥ 11% standalone) AND structurally
+  complementary to iter 064's stress-Sharpe profile (i.e., calm-Sharpe
+  > stress-Sharpe on the 3rd stream while iter 064 base remains the
+  primary mass).
+
+**Why the 90 ceiling stands**: the iter 046 + r_qqqt vol-managed stack
+runs at vol-target levels well below SPY/QQQ's natural levered vol,
+giving iter 064 base a defensive risk profile (calm-S < stress-S at
+bar level). This caps the composition's Sharpe at ~1.22-1.38 across
+3 ds and CAGR at ~9-10% — below the 11.98%/15.35% spy/ndx floors and
+right at the 9.18% edu floor. Breaking 90 → 95+ requires a higher-vol-
+target base anchor that does NOT have iter 064's calm-defensive bias.
+
+**Citations applied**:
+
+- `[algo_trading_chan, p.95, p.153-154, ch.6]` — Chan: momentum filter
+  on MR + MR/momentum complementarity in regime-based portfolio
+  allocation.
+- Whaley, R. E. (2009). "Understanding the VIX." *JPM* 35(3): 98-105.
+  DOI 10.3905/JPM.2009.35.3.098 — VIX threshold = 20 (long-run median).
+- Bekaert, G., & Hoerova, M. (2014). *J Econometrics* 183(2): 181-192.
+  SSRN 2294327 — VIX as risk-aversion + uncertainty proxy.
+- Connors, L., & Alvarez, C. (2009). *Short Term Trading Strategies
+  That Work*. ISBN 978-0-9755513-2-7 — RSI(2) + VIX timing rule.
+- Lo, A. W., & MacKinlay, A. C. (1988). *RFS* 1(1): 41-66.
+  DOI 10.1093/rfs/1.1.41 — short-horizon mean-reversion.
+- Moskowitz, T., Ooi, Y. H., & Pedersen, L. H. (2012). *JFE* 104(2):
+  228-250. DOI 10.1016/j.jfineco.2011.11.003 — TSM regime conditionality.
+- `[risk_parity, ch.5]` + `[volatility_trading, p.218]` — iter 046 base.
+- Faber (2007), SSRN 962461 + `[stocks_on_the_move, p.21-30]` — iter 064.
+- `[advances_fin_ml, ch.17-18]` — regime detection / structural breaks.
+- `[advances_fin_ml, p.162-164]` — strict shift(1) on VIX (no peek).
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials = 4348.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (0.0000 pp).
+- `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV (G1, N=4 cfgs).
+- `[systematic_trading, ch.11]` — Carver IDM ≤ 2.5 (Σw ≡ 1.0).
+- iter 064/071 final reports — TOP-K #1 baseline + validated r_mr.
