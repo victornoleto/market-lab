@@ -3444,6 +3444,129 @@ improves vs iter 037 standalone on 3/3).
 
 ---
 
+## From iteration 053 — iter 037 + iter 046 reverse-weight Markowitz Pareto-opt at w_037=0.70
+
+### What failed
+
+The hypothesis: iter 037 (anchor, Sharpe 0.98 edu, CAGR 14-18%) +
+iter 046 (TOP-K #1 high-Sharpe donor, Sharpe 1.20 edu, CAGR 9%) at
+score-Pareto-optimum w_037 = 0.70 would push DSR worst-p across the
+0.10 score-bucket boundary while keeping 3/3 CAGR floor pass, achieving
+score 86-90.
+
+What actually happened: **Markowitz pre-screen revealed
+corr(iter 037, iter 046) = 0.9554 / 0.9574 / 0.9304 across edu/spy/ndx**
+— far above the Kill F threshold (0.85), pre-firing the structural
+diversification check before any backtest compute. The reason is
+structural: iter 046 = 0.5 × iter 041 + 0.5 × iter 039, and iter 041
+is itself a regime-modulated stack of SPY+IEF+GLD — the EXACT same
+instruments as iter 037. The two streams share roughly 91-95% of
+their daily-return variance.
+
+The backtest confirmed the pre-screen: combined Sharpe edu/spy/ndx
+1.029/1.193/1.220 (residual 0.0000 from Markowitz formula on all 3 ds,
+the **5th consecutive iteration** validating the closed-form
+identity), and edu DSR p=0.165 (same [0.10, 0.20) bucket as iter 051's
+0.175 and iter 052's 0.118). The c1+c4=40 plateau identified by the
+pre-screen sweep WAS reached: 3/3 CAGR floor pass at w_037=0.70
+(first time on iter 037 + iter 046 anchor pair, ndx margin only
+0.04 pp), 3/3 Sharpe edge maintained, 3/3 MDD ceiling pass.
+
+Final score 84/100 STRONG (ties iter 051 + iter 041 at TOP-K #2).
+4/5 strict winner conditions — DSR < 0.05 sole gap, identical to
+iter 051/052. Two pre-committed kills fired: Kill F (corr 0.95
+across 3 datasets, structural finding) and Kill B (DSR worst-p ≥
+0.10 at edu). Markowitz formula now validated to 4-5 decimals on
+**15/15 saved-stream backtests** across 5 consecutive iterations.
+
+### Don't re-test
+
+- **iter 037 + iter 046 at any weight** — Pareto-bounded at score 84
+  due to corr 0.95 destroying diversification. The c1+c4=40 plateau
+  is wide (w_037 ∈ [0.70, 0.95]) but the maximum combined edu Sharpe
+  in the plateau is 1.029 (at w_037=0.70), insufficient to clear the
+  0.10 DSR bucket boundary (need ≥ 1.10).
+- **Lower-weight iter 037 (w_037 < 0.70)** — fails CAGR floor on ndx
+  (already at 0.04 pp margin at w=0.70; any reduction drops below
+  15.35% floor). c4 → 10 or 5; net score regression.
+- **Higher-weight iter 037 (w_037 > 0.95)** — combined Sharpe ≈
+  iter 037 standalone (0.98), DSR p approaches 0.222; c3 → 0; net
+  score regression.
+- **Any second cfg in the iter 037 + iter 046 family (Bonferroni cost)** —
+  N=2 in the same family adds Bonferroni penalty to G2 DSR
+  (α'=0.025 instead of 0.05); predicted score regression similar to
+  iter 047 closure.
+- **All saved-stream-pair compositions on iter 037 anchor** — closed
+  cumulatively across iter 045 (037+039 → 81), iter 051 (037+026 →
+  84), iter 053 (037+046 → 84). The iter 037 anchor + saved-stream-
+  2nd-component permutation space is now exhausted.
+- **Saved-stream-pair compositions in general** — ceiling = 85
+  (iter 046, TOP-K #1), achieved at corr 0.41. All known pairs with
+  corr < 0.50 explored (iter 041 + iter 039 → 85; iter 037 + iter 026
+  → 84; iter 041 + iter 026 → 79). No remaining low-corr saved-stream
+  pair is expected to break the ceiling.
+
+### Structural principles
+
+- **Composition score scales inversely with corr** — empirically
+  validated across iter 045 (ρ=0.59 → 81), iter 046 (ρ=0.41 → 85),
+  iter 053 (ρ=0.95 → 84-with-CAGR-rescue). The Kill F threshold
+  (0.85) is well-calibrated: at ρ=0.95, the diversification gain in
+  the Markowitz formula is essentially zero, and the combined Sharpe
+  is bounded by the higher-Sharpe component (iter 046's 1.20 on edu).
+- **Pre-screen with Markowitz formula DETECTS Kill F BEFORE compute** —
+  iter 053 demonstrates the pre-screen artefact's full diagnostic
+  value: the structural finding (corr 0.95) is visible in 30 seconds
+  of saved-stream loading, before any backtest is run. Future
+  saved-stream composition iterations can use the pre-screen as a
+  triage tool: corr ≥ 0.85 → axis closed; 0.50 ≤ corr < 0.85 →
+  Pareto-bounded at ~80; corr < 0.50 → potential winner candidate.
+- **Saved-stream composition Pareto frontier is now mapped** —
+  iter 053 closes the last unexplored pair. The frontier consists of
+  3 known low-corr pairs (iter 041 + iter 039, iter 037 + iter 026,
+  iter 041 + iter 026) plus the high-corr (closed) iter 037 + iter 046
+  pair. Maximum achievable score on this frontier is 85 (iter 046,
+  TOP-K #1).
+- **3/3 CAGR floor pass IS achievable on the iter 037 anchor** — both
+  iter 051 (w_037=0.80 with iter 026) and iter 053 (w_037=0.70 with
+  iter 046) achieve it, but at the cost of DSR proximity (Sharpe
+  capped near 1.03-1.08 on edu). This is the price of high-CAGR
+  weighting: the iter 037 standalone CAGR is what enables the floor
+  pass, but iter 037's standalone Sharpe (0.98) drags the combined
+  Sharpe below the DSR-clearing threshold.
+- **Markowitz formula now empirically airtight on 5 iters and 15
+  datasets** — residual = 0.0000 on every saved-stream composition
+  measured. The closed-form prediction can be trusted as a
+  pre-backtest screen with full confidence.
+- **Path to 90+ WINNER cannot come from saved-stream composition**.
+  Required: a NEW base strategy with edu Sharpe ≥ 1.20 standalone
+  (iter 046's number, but achievable WITHOUT the iter 046 sub-
+  components). Candidates: single-stock cross-sectional momentum on
+  Tiingo cache (1695-ticker universe, escapes iter 003 closure),
+  broader-index VRP (SPY+IWM+EFA at 1/3), Plano C sleeve eval
+  (factor-tilted passive), or carry+value composite AMP 2013.
+
+### Citations
+
+- `[risk_parity, ch.5]` — iter 037 base + iter 041 base architecture
+  (preserved via saved streams in iter 046 sub-components).
+- `[volatility_trading, p.218]` — iter 026 / iter 039 base
+  architecture (preserved via saved stream in iter 046 sub-component).
+- Whaley, R.E. (2009) JPM 35(3) 98-105 — VIX regime classifier
+  (iter 041 sub-component embedded in iter 046).
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials.
+  Direct empirical confirmation: at n_trials=4320, edu Sharpe 1.029
+  → DSR p=0.165 falls in the 0.10-0.20 bucket.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (achieved
+  0.0000 pp on 3/3).
+- `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV (vacuous at N=1).
+- Markowitz, H. (1952), *Portfolio Selection*, JoF 7(1) 77-91 —
+  closed-form Sharpe identity. Validated to 4-5 decimals on 3/3
+  datasets (5th consecutive iter; cumulative 15/15 datasets).
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:

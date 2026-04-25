@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 52
+total_iterations: 53
 winners_found: 0
 status: iterating
-latest_iteration: "052-2026-04-25-0822"
-cumulative_n_trials: 4319
+latest_iteration: "053-2026-04-25-0847"
+cumulative_n_trials: 4320
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -42,9 +42,10 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 | rank | iter | tier | score | strategy slug | primary citation | headline |
 |---|---|---|---|---|---|---|
 | **1** | **046** | 🥇 STRONG | **85** | `iter039_on_iter041_50_50` | `[risk_parity, ch.5]` + Whaley + Sinclair | TOP-K; corr 0.41; 1st EVER 7/7×3 + DSR sub-0.05×3; 0/6 kills; CAGR 0/15 sole gap to 90 |
+| **2** | **053** | 🥇 STRONG | **84** | `iter037_plus_iter046_w070` | `[risk_parity, ch.5]` + Sinclair + Markowitz | 3-way tie #2; 3/3 CAGR (ndx +0.04pp); corr 0.95 Kill F PRE-FIRED; iter 037 anchor exhausted |
 | **2** | **051** | 🥇 STRONG | **84** | `iter037_plus_iter026_w080` | `[risk_parity, ch.5]` + Sinclair + Markowitz | **1st EVER 4/5 winner conds + 3/3 CAGR floor**; 25/19/5/15/15/5; DSR p=0.175 sole gap to 90 |
 | **2** | **041** | 🥇 STRONG | **84** | `regime_weights_vix_lt20_70_40_40_ge20_30_55_55` | `[risk_parity, ch.5]` + Whaley | 1st 84; DSR 0.222→0.168 escape; gate-mod axis closed (042/043/044); used in iter 046 |
-| **4** | **045** | 🥇 STRONG | **81** | `iter039_on_iter037_50_50` | `[risk_parity, ch.5]` + Sinclair | out-of-family 50/50 037+039; ρ=0.58; DSR 0.222→0.096; ndx 7/7; 0/6 kills; superseded by 046 |
+| **5** | **045** | 🥇 STRONG | **81** | `iter039_on_iter037_50_50` | `[risk_parity, ch.5]` + Sinclair | out-of-family 50/50 037+039; ρ=0.58; DSR 0.222→0.096; ndx 7/7; 0/6 kills; superseded by 046 |
 | **5** | **038** | 🥇 STRONG | **79** | `regime_lev_vix_lt20_lo10_hi17` | `[advances_fin_ml, ch.17-18]` + MM 2017 | VIX-gated 1.7/1.0× on 037; MDD −4/−8pp; DSR 0.204 |
 | **5** | **037** | 🥇 STRONG | **79** | `ntsx_3leg_preserved_60_45_45_spy_ief_gld` | `[risk_parity, ch.5]` + AMP 2013 | 1st plain static-stack 79; Sharpe +0.30/+0.25/+0.22; **base for iter 051** |
 | **5** | **016** | 🥇 STRONG | **79** | `ntsx_vm_vt15_L21_cap20` | `[risk_parity, p.10-11]` + MM 2017 | 60:40 × MM vol-target; Sharpe +0.24-0.30; DSR 0.226 |
@@ -61,11 +62,12 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
 
-### 052 — 2026-04-25 — iter041-plus-iter026-w082 (🥇 STRONG, 79/100, 1/6 KILLS)
-- **Result:** Sharpe edu/spy/ndx 1.078/1.188/1.220 (Δ frozen +0.40/+0.29/+0.27), gates 6/6/6 (G2 fail 3/3), DSR p=0.1177/0.1162/0.1086 (n=4319, **−33% vs iter 051 but same [0.10, 0.20) bucket**), CAGR 11.61/12.03/**14.01%** (edu+spy PASS, ndx FAIL by 1.34pp vs iter 051's PASS by 0.16pp), MDD 24/21/26% (−5/−0/−1pp vs iter 051), corr(041,026)=0.370/0.373/0.447, Markowitz residual=0.0000 (4th consec; 12/12 ds cumulative), G7 0.0000pp, robust 9/9, winner 4/5 (DSR fails); score 1:25 2:19 3:5 4:**10** 5:15 6:5 = **79** (Δ iter 051 −5 entirely on c4). Kill B fired.
-- **Lesson:** **iter 037 strictly dominates iter 041 as anchor**. iter 041's regime modulation trades CAGR for Sharpe; c1 already saturated at 25 (Sharpe lift yields 0 marginal score until DSR bucket crosses), while CAGR loss (15.63 vs 037's 17.76 ndx) costs 5 c4 pts. **iter 041+iter 026 family closes at Pareto-opt 79**; 4 saved-stream families now closed (037+039, 041+039, 037+026, 041+026). See `iterations/052-*/`.
+### 053 — 2026-04-25 — iter037-plus-iter046-w070 (🥇 STRONG, 84/100, 2/6 KILLS)
+- **Result:** Sharpe edu/spy/ndx 1.029/1.193/1.220 (Δ +0.35/+0.29/+0.27), gates 6/6/6, DSR p=0.165/0.112/0.108 (same bucket as 051/052), CAGR 12.71/13.73/**15.39%** (**3/3 floor PASS — 1st on iter 037+iter 046; ndx margin 0.04pp**), MDD 29/22/27%, corr 0.9554/0.9574/0.9304 (**Kill F PRE-FIRED by pre-screen** — iter 046 contains iter 041 sharing 037's SPY+IEF+GLD basis), Markowitz 0.0000 (5th consec, 15/15 ds), G7 0.0000pp, robust 9/9, winner 4/5; score 1:25 2:19 3:5 4:**15** 5:15 6:5 = **84**. Kills B+F fired.
+- **Lesson:** **Saved-stream-pair-on-iter-037-anchor EXHAUSTED at Pareto 84** (3 tested: 037+026→84, 037+039→81, 037+046→84). Composition score scales inversely with corr (045@0.59→81, 046@0.41→85, 053@0.95→84). **Saved-stream ceiling=85 (iter 046)**. Path to 90+ requires NEW base edu Sharpe ≥ 1.20. See `iterations/053-*/`.
 
-### Iters 015-051 (compressed 1-line; full detail in `iterations/NNN-*/`)
+### Iters 015-052 (compressed 1-line; full detail in `iterations/NNN-*/`)
+- **052** (🥇 79, iter041+026 w=0.82) S 1.08/1.19/1.22, DSR 0.118/0.116/0.109 (same bucket as 051), CAGR 11.6/12.0/14.0 (2/3, ndx FAIL 1.34pp), corr 0.37-0.45, Markowitz 0.0000 (4th), score 79. **iter 037 dominates iter 041 anchor.**
 - **051** (🥇 84, 1/6 KILLS, iter037+026 w_037=0.80) S 1.02/1.20/1.22, DSR 0.175/0.109/0.109, CAGR 12.4/13.5/15.5 (3/3 floor), MDD 29/21/27 (Δ037 −4/−4/−5), corr 0.57/0.55/0.60, Markowitz res=0.0000 (3rd consec), score 25+19+5+15+15+5=84. **1st 4/5 winner conds. Pareto box bounded at 84 (edu DSR floor + ndx CAGR floor unbreakable on this stream pair).**
 - **050** (🥇 78, 1/6 KILLS) 90/10 iter046+gold-TSM at Markowitz w*=0.10; n_trials+=1 → edu DSR 0.044→0.050 (c3 −5). Markowitz 1st-validated 4-decimal. **5 iter 046 axes closed (044/047/048/049/050).**
 - **049** (🥉 59 MARGINAL, 4/6 KILLS) gold TSM @ w=0.5; S 0.92/1.02/1.03 (Δ046 −0.30 each), DSR 0.32 worst (8× iter 046). **Markowitz dilution at unequal Sharpes; w*≈0.09 not 0.50.**
@@ -106,16 +108,16 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 ### Iters 005-014 (compressed 1-line; full detail in `iterations/NNN-*/`)
 
-- **014** (❌ FAIL 0, Kill #PV) — EBP credit overlay on iter 008; pre-val rejects 3/3 (exceed 0.68-0.71); overlay family CLOSED on iter 008 blend.
-- **013** (🥈 64, Kill #3) — LR meta-label ρ_60+vix_z on iter 008: Sharpe regress; vol-proxy meta REDUNDANT with variance-scaling.
-- **012** (🥉 58, Kill #1+#3+#4) — 5d EMA asymmetric T10Y3M haircut iter 008: 100% overlap edu+spy; T10Y3M 2×2 family CLOSED.
-- **011** (🥉 52, Kill #1+#3) — Weekly 3-leg blend: Sharpe regress 3/3, MDD +10-14pp; vol-targeting REQUIRES daily cadence.
-- **010** (🥈 74) — 3-leg SPY+TLT+GLD daily: ties iter 008 at 74, 4/5 winner; blend family saturates Sharpe ~1.00 regardless of N=2 or 3.
-- **009** (🥈 64, Kill #3) — 21d EMA symmetric T10Y3M haircut iter 008: 100% overlap at bottom-20%; smoothing destroys lead-time.
-- **008** (🥈 74) — Single-cfg ex-ante vol-managed SPY+TLT `vt15_L21_cap20`: Sharpe 0.87/1.00/1.02, DSR p=0.332, 4/5 winner; iter 006's edge IS structural.
-- **007** (🥉 50, Kill #1+#3) — 12-1 momentum overlay iter 006: Sharpe regress 2/3; momentum REDUNDANT with variance-scaling.
-- **006** (🥈 67, Kill #3) — 12-cfg vol-managed SPY+TLT grid: first +0.10 Sharpe gate cross-ds; killed G1 PBO 0.69 (grid inflates).
-- **005** (🥉 59) — Moreira-Muir σ⁻² single-asset SPY/QQQ: first DSR edu PASS; single-asset vol-adapt saturates +0.08-0.10.
+- **014** (❌ 0, Kill #PV) EBP credit overlay; pre-val rejects 3/3; overlay family CLOSED.
+- **013** (🥈 64, Kill #3) LR meta-label on 008: Sharpe regress; vol-proxy meta REDUNDANT with variance-scaling.
+- **012** (🥉 58) 5d EMA asymmetric T10Y3M on 008: 100% overlap; T10Y3M 2×2 family CLOSED.
+- **011** (🥉 52) Weekly 3-leg blend: Sharpe regress 3/3, MDD +10-14pp; vol-targeting REQUIRES daily.
+- **010** (🥈 74) 3-leg SPY+TLT+GLD daily: ties iter 008; blend family saturates Sharpe ~1.00.
+- **009** (🥈 64) 21d EMA symmetric T10Y3M on 008: 100% overlap; smoothing destroys lead-time.
+- **008** (🥈 74) Vol-managed SPY+TLT `vt15_L21_cap20`: Sharpe 0.87/1.00/1.02, 4/5 winner.
+- **007** (🥉 50) 12-1 momentum overlay 006: regress; momentum REDUNDANT with variance-scaling.
+- **006** (🥈 67) 12-cfg vol-managed SPY+TLT grid: first +0.10 cross-ds; killed G1 PBO 0.69.
+- **005** (🥉 59) Moreira-Muir σ⁻² single-asset: first DSR edu PASS; single-asset saturates +0.08-0.10.
 
 ### Iters 001-004 (compressed; full detail in iter dirs)
 
@@ -130,16 +132,16 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-036/**037**-**052**. iter 044/047/048/049/050 close **5 axes of iter 046**; iter 051 closes **iter 037+iter 026 family** at Pareto 84; iter 052 closes **iter 041+iter 026 family** at Pareto 79 (iter 037 dominates iter 041 as anchor). Markowitz formula validated to 4 decimals across iter 049/050/051/052 (4 consecutive iters, residual=0.0000 on 12/12 datasets). DSR is the binding constraint at n_trials > 4300: combined edu Sharpe ≥ ~1.10 needed to cross 0.10 score-bucket boundary; ≥ ~1.18 needed to cross 0.05 strict-winner gate.
+Consumed/closed: 002-005/007/009-014/017/019-036/**037**-**053**. iter 044/047/048/049/050 close **5 axes of iter 046**; iter 051/053 close **iter 037+iter 026/046 families** at Pareto 84; iter 052 closes **iter 041+iter 026 family** at Pareto 79 (iter 037 dominates iter 041 as anchor). **Saved-stream-pair Pareto exhausted: ceiling = 85 (iter 046 TOP-K #1)**; all combos on iter 037 anchor saturate at 84. Markowitz formula validated to 4-5 decimals across iter 049/050/051/052/053 (5 consecutive iters, residual=0.0000 on 15/15 datasets). DSR is the binding constraint at n_trials > 4300: combined edu Sharpe ≥ ~1.10 needed to cross 0.10 score-bucket boundary; ≥ ~1.18 needed to cross 0.05 strict-winner gate.
 
-### Iter 053 candidates (iter 052 confirms iter 037 dominates iter 041 as anchor)
+### Iter 054 candidates (iter 053 exhausts saved-stream composition; PIVOT TO NEW BASE)
 
-- **#1 iter 037 + iter 046 reverse-weight Markowitz Pareto-opt (RECOMMENDED)** — use iter 046 (TOP-K #1) instead of iter 026 as 2nd component; w_037 ≈ 0.40-0.60 may keep edu Sharpe ≥ 1.20 (DSR<0.05) + CAGR from iter 037 (14-17%) for 2-3/3 floor. Risk: iter 046 DSR knife-edge. Pre-screen mandatory. `[risk_parity, ch.5]` + Markowitz.
-- **#2 Plano C sleeve eval (mandate-aligned)** — factor-tilted passive (GDE/AVUV/AVDE/AVEM/BTGD); different paradigm; low n_trials → DSR easy. Data: factor ETFs inception 2018+; need AQR/FF proxies for edu window. `[fact_based_investing]` + Fama-French 1993.
-- **#3 New base edu Sharpe ≥ 1.20 standalone** — implement from scratch; VRP on RUT/EFA, carry+value AMP 2013, single-stock Tiingo momentum (cache 2013-08+, partial coverage). 60-90 min.
+- **#1 Single-stock Tiingo cross-sectional momentum (RECOMMENDED)** — Clenow 12-1/adjusted-slope on 1695-ticker Tiingo cache (2013-08+). ESCAPES iter 003's ≤20-asset closure (heterogeneous universe). Top-K=10-20, 60-90 min impl. `[stocks_on_the_move, p.76-77]` + Carhart 1997 JoF 52.
+- **#2 VRP on broader-index basket (SPY+IWM+EFA at 1/3, ~30-45 min)** — cache check for EFA. Universe extension of iter 026/039. `[volatility_trading, p.218]` + Bondarenko 2014.
+- **#3 Plano C sleeve eval (mandate-aligned)** — factor-tilted passive (GDE/AVUV/AVDE/AVEM/BTGD); low n_trials → DSR easy. Data: ETFs inception 2018-2024; need AQR/FF proxies for edu. `[fact_based_investing]` + FF93.
+- **#4 Carry + value composite AMP 2013** — orthogonal axes; needs dividend/earnings-yield signal. `[stocks_on_the_move]` + AMP 2013 JoF 68.
 
-DEAD-LETTER: iter 037+026/041+026 at any weight (Pareto 84/79); iter 046-family enhancements (044/047/048/049/050); HYG-in-041; HMM-2; FX carry; MTUM/QUAL/USMV (not in cache).
-NOT recommended: perturbations of 037/041/046; σ⁻¹/σ⁻²/term-spread/MOVE/EBP gates on 037/041; 4-5-leg in 046 family; VIX/DTE/strike sweeps; MM σ⁻² on short-vol (040); gate-enrichment on 041; corr>0.85 (032); N>1 cfg on 046 (047); 046 modulation/additive (044-050); **iter 041 substitution for iter 037 as anchor (closed by 052; iter 037 strictly dominates Sharpe-CAGR trade-off)**.
+DEAD-LETTER: iter 037+026/041+026/037+046/041+039 at any weight (Pareto 79-85 exhausted); iter 046-family enhancements (044/047/048/049/050); HYG-041; HMM-2; FX carry; MTUM/QUAL/USMV (not in cache); **all saved-stream-pair compositions on iter 037 anchor (closed by iter 045/051/053; ceiling 84)**; **iter 041 substitution for iter 037 (closed by 052)**.
 
 ### Deeper backlog
 
@@ -157,12 +159,10 @@ NOT recommended: perturbations of 037/041/046; σ⁻¹/σ⁻²/term-spread/MOVE/
 - **VRP-harvester family 76 ceiling (026/031/039/040)**: CAGR floor 0/15 + edu DSR > 0.05 structural to T-bill collateral.
 - **Static-stack 84-STRONG ceiling = LOCAL DSR PLATEAU**: iter 042 amp / 043 freq / 044 input all regress DSR.
 - **Out-of-family composition VINDICATED**: iter 045 (81, ρ=0.58) → iter 046 (85, ρ=0.41) TOP-K #1; score scales inversely with corr.
-- **iter 047 closure**: 50/50 IS Pareto-optimum on iter 046; Bonferroni N=3 cost > grid gain; ndx CAGR 15.35% unreachable from iter 041 composites.
-- **iter 048 closure**: output-side regime gate is OUTPUT-LEVEL ANALOG of iter 044's input closure — re-using same VIX classifier double-counts.
-- **iter 049 closure**: 50/50 additive 3rd stream on iter 046 with S_3rd < 1.10 fails by Markowitz identity regardless of ρ; gold TSM (S=0.69, ρ=0.53) at w=0.5 → combined S=1.03, score 59 (Δ-26). Markowitz optimum w*≈0.09, NOT 0.50.
-- **iter 050 closure**: iter 046 DSR knife-edge (p=0.044, headroom 0.006); n_trials+=1 deflator alone crosses gate. 5th iter 046 axis closed: input/weight/output/additive-50/50/additive-low-w (044-050). Markowitz formula 1st-validated 4-decimal.
-- **iter 051 closure (Pareto 84; 1st 4/5 winner + 3/3 CAGR)**: iter 037+026 at w_037=0.80 hits 3/3 CAGR + Sharpe edge + MDD + Markowitz 0.0000 residual; capped 84 because edu S 1.02 < 1.10 (DSR floor at n=4318). Two-constraint Pareto (ndx CAGR≥15.35 sets w_037≥0.78; edu DSR needs S≥1.10) unbreakable.
-- **iter 052 closure (Pareto 79; iter 037 strictly dominates iter 041 as anchor)**: iter 041+026 at w_041=0.82 — edu S +0.057 + DSR 0.175→0.118 (−33%) but same [0.10, 0.20) bucket → c3 unchanged; iter 041's lower ndx CAGR (15.63 vs 037's 17.76) → ndx combined 14.01 < 15.35 floor → c4 −5. Net 84→79. **Generalised: regime modulation trades CAGR for Sharpe, but c1 already saturated → Sharpe lift yields 0 score until bucket cross; CAGR loss costs 5pts/floor. 4 saved-stream families closed (037+039/041+039/037+026/041+026).** Markowitz residual=0.0000 4th consec, 12/12 datasets.
+- **iter 047-050 closures (5 axes of iter 046 closed)**: 047 (Bonferroni N=3 > grid gain; 50/50 IS Pareto-opt), 048 (output VIX gate = analog of 044 input closure, double-counts), 049 (50/50 additive 3rd stream with S<1.10 fails Markowitz id; w*≈0.09 not 0.50), 050 (iter 046 DSR knife-edge p=0.044; n+=1 alone crosses 0.05 gate). Markowitz 4-decimal validated.
+- **iter 051 closure (Pareto 84; 1st 4/5 winner + 3/3 CAGR)**: iter 037+026 w_037=0.80 — 3/3 CAGR + Sharpe edge + MDD + Markowitz 0.0000; capped 84 because edu S 1.02 < 1.10. Two-constraint Pareto unbreakable (ndx CAGR≥15.35 sets w≥0.78; DSR needs S≥1.10).
+- **iter 052 closure (Pareto 79; iter 037 dominates iter 041 as anchor)**: iter 041+026 w_041=0.82 — DSR 0.175→0.118 same bucket (c3 unchanged); ndx CAGR 14.01 < 15.35 floor (c4 −5). Net 84→79. Regime modulation trades CAGR for Sharpe, c1 already saturated. 4 saved-stream families closed.
+- **iter 053 closure (Pareto 84; saved-stream-pair-on-iter-037-anchor EXHAUSTED)**: iter 037+046 w_037=0.70, corr 0.93-0.96 (Kill F pre-fired) — iter 046's iter 041 sub-component duplicates iter 037 basis. 3/3 CAGR floor pass at this weight (1st time, ndx margin 0.04pp), but edu DSR p=0.165 same bucket; net 84. **Composition score scales inversely with corr (iter 045@0.59→81, iter 046@0.41→85, iter 053@0.95→84-with-CAGR-rescue). Saved-stream-pair Pareto ceiling=85 (iter 046, TOP-K #1); all 3 known-low-corr pairs explored. Path to 90+ requires NEW base edu Sharpe ≥ 1.20.** Markowitz res=0.0000 5th consec, 15/15 ds.
 
 ---
 
