@@ -2216,6 +2216,128 @@ Complete study: `studies/strategy_hunt_loop/iterations/030-2026-04-24-2259-vix-z
 
 ---
 
+## From iteration 032 — Layered NTSX 90/60 + iter 031 AND-composite VRP overlay
+
+### What failed (partial closure: scored 72 PROMISING, hypothesis CAGR-fix prediction confirmed but DSR collapsed)
+
+- Specific cfg `ntsx_vrp_and_v3p35_z2_eq09_bd06_h1`: combines iter 015 base
+  (top-K #4, STRONG 77) with iter 031 AND-composite VRP overlay on equity-leg
+  notional (top-K #5 tied, STRONG 76). Combined return =
+  `0.9·r_SPY + 0.6·r_IEF + harvest_notional·(−overlay_AND_composite)` on
+  static (NOT vol-managed) base.
+- **CAGR-fix prediction CONFIRMED**: criterion 4 unlocks 0/15 → **15/15** on
+  3/3 datasets (15.01% / 18.38% / 23.19% vs floors 9.18% / 11.98% / 15.35%).
+  Multi-asset composition is the validated mechanism for the iter 026 family
+  CAGR ceiling. **Sharpe edge preserved**: criterion 1 = 25/25 (3/3 clear
+  +0.10 vs frozen benchmarks).
+- **DSR-distribution prediction FALSIFIED HARD**: criterion 3 collapses
+  10/15 → **0/15** (worst-p **0.502** vs iter 031's 0.07; 5× the kill
+  threshold). Composite has similar Sharpe to iter 015 alone (0.81/1.04/1.08
+  vs ~0.83/1.04/1.16) but DSR drops by an order of magnitude. Mechanism:
+  put-spread overlay introduces realized negative skew (~−1 to −2) and
+  excess kurtosis (~5-15) to the JOINT distribution; even though the
+  AND-composite gate skips Sep-Oct 2008 / Mar-2020 / 2011-08, the harvest
+  is active during 2018-Q4 / 2022-Q1 / 2022-Q2 / 2022-Q4 / 2025-Q1 events
+  where vol stayed elevated but didn't trigger gate. Each contributes
+  3-5% loss bars compounding into negative skew at the joint level.
+- **MDD-prediction FALSIFIED on ndx**: criterion 5 falls 15/15 → **10/15**
+  (ndx 44.38% > 40.12% ceiling by +4.26pp). Driver: 2022 QQQ drawdown ~33%
+  with composite gate never firing → put-spread compounded equity decline
+  by ~5-8pp. iter 015 ndx MDD ~24%; iter 031 ndx MDD ~8%; combined 44%.
+- **Sharpe-additivity prediction FALSIFIED**: combined Sharpe is **3/3 BELOW
+  iter 015 alone** (−0.020/−0.005/−0.085) — the harvest layer adds positive
+  mean but the joint volatility offsets the gain. Net Sharpe ≈ NTSX Sharpe
+  rather than additive composition. corr_combined,SPY = +0.965-0.974 across
+  datasets (essentially fully equity-correlated) — put-spread harvest
+  amplifies equity drawdowns rather than diversifying.
+- 21-day worst rolling-sum return on combined: **−35.54% / −34.12% / −27.53%**
+  (vs iter 031's ~−6%/−1%/−1.5%). The composite has dramatically heavier
+  left tails than either layer alone.
+- All 5 strict winner conditions check: 1=PASS (3/3 datasets beat bench+0.10
+  Sharpe); 2=FAIL (educational gates 5/7 = 5 = exactly threshold, but DSR
+  fails per condition 3); 3=FAIL (worst-p 0.502 ≫ 0.05); 4=PASS (CAGR floor
+  3/3); 5=FAIL (MDD ceiling 2/3 — ndx breach). Final
+  winner_conditions_met=False, score=72 PROMISING.
+
+### Don't re-test
+
+- Specific cfg `ntsx_vrp_and_v3p35_z2_eq09_bd06_h1` (closed at score 72;
+  4 below iter 026 ceiling).
+- iter 015 NTSX 0.9/0.6 base + iter 026/028/029/030/031 family overlay at
+  any harvest_notional ≥ 0.5 — DSR collapse is structural to the joint
+  distribution's higher moments. Lower harvest_notional sweeps would trade
+  CAGR for DSR (parameter dance, not structural fix).
+- AND-composite param sweeps on iter 032 base (`vix_threshold` × `persistence` ×
+  `z_threshold` × `z_window`) — would inflate PBO without breaking the
+  criterion 3 / criterion 4 trade-off.
+- Larger harvest_notional (≥ 1.5): would worsen DSR collapse and MDD breach
+  proportionally.
+- iter 015 base + bare iter 026 (no gate) overlay: equivalent to setting
+  `vix_threshold=1e9` on iter 032 → marginally worse DSR (no gate protection
+  on edu/ndx).
+- Vol-target wrapper around iter 032 (i.e., iter 016 vol-target × NTSX × VRP
+  overlay): iter 020/021 dead-end already showed σ²_port absorption kills
+  this composition; not novel, not informative.
+
+### Open paths (NOT closed by iter 032)
+
+- **Cross-asset VRP**: iter 015 NTSX base + AND-composite put-spread on a
+  DIFFERENT INDEX than the equity leg (e.g., RUT/IWM, EFA, EEM). Hypothesis:
+  underlying decorrelation in stress events lowers composite corr_SPY (which
+  was +0.97 in iter 032) and reduces realized skew, recovering DSR. Most
+  promising next direction.
+- **Bond carry sleeve as iter 015 overlay**: long TLT short IEF (20-30y vs
+  7-10y duration spread) instead of put-spread harvest. Carry historically
+  lower correlated with equity stress. Iter 024 tested as primary signal
+  (saturated at iter 015 plateau); iter 015 + carry overlay is untested.
+- **FX carry sleeve as iter 015 overlay**: AUDJPY, DXY-vs-emerging, or
+  G10-momentum carry — most distribution-orthogonal to equity beta.
+  Lustig-Verdelhan 2007 + Burnside et al. 2011.
+- **R-3 VIX > VXV term-structure** on iter 026 base — qualitatively
+  different signal axis (untested, single-asset family).
+- **iter 015 base alone at higher leverage** (e.g., 1.0/1.5 SPY/IEF stack
+  PIMCO StocksPLUS-style) — broader NTSX without VRP layer.
+
+### Structural principles
+
+- **DSR penalty on a composed strategy is dominated by COMPOSITE distribution's
+  higher moments (skew/kurt), NOT by layer-individual DSRs**. Even when both
+  layers individually have DSR p ~ 0.07, the composite has p ~ 0.50. This is
+  novel relative to iter 020/021's σ²_port-absorption finding (which was
+  iter 016-vol-managed-specific): static-stack absorption operates via DSR's
+  higher-moment penalty on the joint distribution rather than via dynamic
+  σ²_port deleveraging. Future "stack overlay X on top of base Y" hypotheses
+  must compute realized higher moments on the COMPOSITE returns, not assume
+  from layer components.
+- **Layered composition of two STRONG-tier mechanisms does NOT yield
+  STRONG-tier composite**. The naive expected score for iter 015 (77) +
+  iter 031 (76) was 80+ via criterion 4 unlock; actual was 72 because
+  criterion 3 fell 10 → 0 (more pts lost than gained on criterion 4 +
+  criterion 5 partial). The trade-off between criterion 3 (DSR) and
+  criterion 4 (CAGR) is sharper than the rubric suggests when correlated
+  stress events compound between layers.
+- **High composite corr_SPY (+0.97) is the diagnostic for absorbed harvest**.
+  iter 015 alone had corr_SPY ~0.85-0.90; iter 031 alone had corr_SPY
+  ~0.71-0.74 (mixed); combined corr_SPY = +0.965-0.974. Whenever a
+  composite's daily corr-with-base exceeds either layer's individual
+  corr-with-base, the overlay is amplifying rather than diversifying. This
+  is a quick diagnostic for future layered hypotheses BEFORE running the
+  full gate battery.
+- **Reducing-to-parent TDD scales to multi-layer compositions**. iter 032's
+  5 TDD specs include `harvest_notional=0` → iter 015 exactly,
+  `eq_w=bd_w=0` → iter 031 overlay alone, `vix_threshold=1e9` → iter 015 +
+  (iter 026 − rf_daily) exactly. All three reduction tests pass at
+  floating-point precision (1e-12), confirming the composition primitive
+  is correct. The DSR collapse is a property of the strategy, not a bug.
+- **The "free CAGR" intuition from risk-parity is wrong when the overlay
+  amplifies stress-day losses**. Asness-Frazzini-Pedersen 2012 risk-parity
+  argument applies to UNCORRELATED diversifiers — the put-spread harvest
+  on the same equity index is *correlated* on stress days even with the
+  AND-composite gate. The bond leg adds CAGR (validated), but the harvest
+  layer's negative skew dominates the joint criterion 3.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:

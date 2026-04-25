@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 31
+total_iterations: 32
 winners_found: 0
 status: iterating
-latest_iteration: "031-2026-04-25-0001"
-cumulative_n_trials: 4284
+latest_iteration: "032-2026-04-25-0032"
+cumulative_n_trials: 4285
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -79,11 +79,14 @@ the 18 KB ceiling. Full hypothesis, citations, scope and score
 breakdown for compressed iters are recoverable from
 `iterations/NNN-*/hypothesis.md` + `verdict.json` + `final_report.md`.
 
-### 031 — 2026-04-25 — vix-and-composite-vrp-primary (🥇 STRONG, 76/100, ALL 6 KILLS CLEAN, **1st-ever all-3 DSR < 0.10**)
-- **Result:** Sharpe edu/spy/ndx 1.190/1.282/1.333 (Δ026 +0.056/0.000 spy preserved/−0.035; Δ030 +0.051/−0.080/+0.096), gates 6/6/**7**, DSR p=**0.054**/0.070/**0.050** (n=4284, **3rd-ever sub-0.05 PASS** ndx, **1st-ever all-3 < 0.10**), MDD 3/3, robustness 9/9, winner=3/5; score 1:25 2:21 3:10 4:0 5:15 6:5 = **76 ties iter 026 ceiling**.
-- **Lesson:** AND-intersection R-1∧R-2 fires only 4× across 60y (Sep-Oct 2008 + Mar-2020 + 2011-08-12); vacuous on spy by construction (preserves iter 026 *exactly*); ndx 7/7+DSR PASS preserved. **CLOSURE**: 5 iters on iter 026 base (026/028/029/030/031) max at 76 — criterion-4 CAGR floor 0/15 structural to harvest_notional=1.0. Family at **score ceiling 76**; gain requires CAGR mechanism (multi-asset iter 015+031 overlay) OR R-3 VIX>VXV term-structure. See `iterations/031-2026-04-24-2322-vix-and-composite-vrp-primary/`.
+### 032 — 2026-04-25 — ntsx-vrp-and-composite (🥈 PROMISING, 72/100, **3/6 KILLS FIRED — partial falsification**)
+- **Hypothesis:** iter 015 NTSX 0.9 SPY + 0.6 IEF static stack + iter 031 AND-composite VRP overlay on equity-leg notional — combine top-K #4 STRONG 77 + top-K #5 STRONG 76 to break iter 026 ceiling 76 by unlocking CAGR floor 0/15. Citations: `[risk_parity, p.5, p.10-11, ch.1]` + `[volatility_trading, p.217-218, ch.3]` + Asness-Frazzini-Pedersen 2012 + Bondarenko 2014 + Carr-Wu 2009 + Whaley 2009 + NTSX prospectus.
+- **Result:** Sharpe edu/spy/ndx 0.810/1.035/1.076 (Δ frozen +0.130/+0.135/+0.121 — 3/3 clear; Δ015 −0.020/−0.005/−0.085 absorbed; Δ031 −0.38/−0.25/−0.26), gates 5/7/6/7/6/7, DSR p=**0.502**/0.281/0.254 (n=4285, collapsed vs iter 031's 0.07), MDD 52.86%/35.63%/**44.38% breach** ndx, robustness 9/9, winner=3/5; score 1:25 2:17 3:**0** 4:**15** 5:10 6:5 = **72 — 4 below iter 026 ceiling, 7 below top-K #1**. corr_combined,SPY=+0.97 — harvest amplifies equity drawdowns. G7 cross-lib 0.0000pp 3/3.
+- **Lesson:** **Layered composition of two STRONG-tier mechanisms does NOT yield STRONG-tier composite** — DSR penalty dominated by COMPOSITE distribution higher moments (skew/kurt), NOT layer-individual DSRs. iter 020/021 σ²_port-absorption was iter 016 vol-managed-specific; static-stack absorption via DSR penalty instead. Criterion 3 (DSR) and criterion 4 (CAGR) trade off cleanly: iter 026/031 unlocks DSR but locks CAGR; iter 032 unlocks CAGR but locks DSR. Future winners need CAGR mechanism distribution-orthogonal to equity beta on stress days (cross-asset VRP RUT/EFA, bond/FX carry) — not short-vol overlay on equity stack. Closes cfg + iter 015 + iter 026/031 family overlay path. See `iterations/032-2026-04-25-0032-ntsx-vrp-and-composite/`.
 
-### Iters 015-030 (compressed 1-line; full detail in `iterations/NNN-*/`)
+### Iters 015-031 (compressed 1-line; full detail in `iterations/NNN-*/`)
+
+- **031** (🥇 76, top-K #5 tied, ALL 6 KILLS CLEAN, **1st-ever all-3 DSR < 0.10**) AND-composite R-1∧R-2 on iter 026 base (`vrp_and_v3p35_z2_h1_5_10_1m`): Sharpe 1.19/1.28/1.33, gates 6/6/7, DSR p=0.054/0.070/0.050 (n=4284, 3rd sub-0.05 ndx, 1st all-3<0.10); ties iter 026 ceiling because rubric awards worst-p bucket not distribution tightness. AND-intersection fires 4× across 60y (Sep-Oct 2008 + Mar-2020 + 2011-08-12); vacuous on spy by construction. CLOSURE: 5 iters on iter 026 base capped at 76; criterion-4 CAGR floor 0/15 structural to harvest_notional=1.0 — gain requires CAGR mechanism or R-3 term-structure.
 
 - **030** (🥈 71, Kill A+B) Z-score gate (`z_window=60, z_threshold=2.0`) on iter 026: spy 1st-ever 7/7 + DSR p=0.0345 PASS, but edu Kill B (z misses sustained Q4-2008) and ndx Kill A 2.6× (z over-filters tech mini-spikes); 3 successive single-axis iters (028/029/030) all converge at 71, each w/ sub-0.05 DSR on different dataset.
 
@@ -129,20 +132,17 @@ breakdown for compressed iters are recoverable from
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002/003/004/005/007/009/010/011/012/013/014/017/019/020/021/022/023/024/025/026/027/028/029/030/031 (iter 031 STRONG 76 ties iter 026 ceiling; AND-composite axis on iter 026 base CLOSED — 5 iters total span full 4-axis VIX-gate exploration; ALL 5 capped at 76 due to criterion-4 CAGR floor 0/15 structural to harvest_notional=1.0). Top-K #1 still iter 016/018/021 triple-tied at 79.
+Consumed/closed: 002/003/004/005/007/009/010/011/012/013/014/017/019/020/021/022/023/024/025/026/027/028/029/030/031/**032** (iter 032 PROMISING 72 — multi-asset CAGR fix WORKS but DSR collapses on composition; layered-composition of two STRONG-tier mechanisms does NOT yield STRONG composite; iter 015 NTSX base + iter 031 VRP overlay path CLOSED at 72). Top-K #1 still iter 016/018/021 triple-tied at 79.
 
-### Iter 032 candidates (post-iter-031 — qualitatively different signal OR multi-asset CAGR mechanism)
+### Iter 033 candidates (post-iter-032 — distribution-orthogonal CAGR mechanism)
 
-- **R-3 VIX > VXV term-structure (STRONGEST signal-axis)**. Market-derived curve, not historical distribution. VXV/VIX3M starts late 2007 → edu ~18y. `[volatility_trading, p.218, p.229]` (IVTS) + Carr-Wu 2009 §III.
-- **iter 015 base + iter 031 overlay (STRONGEST for breaking 76 ceiling)**. Multi-asset 0.9 SPY + 0.6 IEF static stack with composite-gated VRP on equity leg; bond leg adds CAGR (criterion 4 was 0/15 on iter 031). iter 015 base validated at STRONG 77.
-- **R-1+R-2+R-3 triple AND-composite** — three-axis intersection. Lower priority, R-3 untested alone.
-- **AND-composite param sweep** — NOT recommended; PBO inflates beyond iter 026's 0.69 floor.
-- **V-4 VRP+Carry composite** (0.5 × iter 026 + 0.5 × iter 024). Carry uncorrelated → adds CAGR.
-- **V-5 Strike refinement** (5/15% wider OR 3/7% closer-to-ATM).
-- **V-6 Conditional strike widening** during persistent high-VIX (capture decay with lower tail).
-- **LS Long-short slow-EWMAC** (iter 025 + shorts; recovers ~50% trend premium).
-- **C EWMAC+Carry combo** on 6 assets (Carver; FDM 1.10→1.5-1.8).
-- **W Wider-universe carry** (iter 024 + 3+ duration buckets OR cross-asset FX/commodity).
+- **C-VRP Cross-asset VRP (STRONGEST)**. iter 015 NTSX 0.9 SPY + 0.6 IEF base + iter 031 AND-composite put-spread on DIFFERENT INDEX (RUT/EFA) — hypothesis: underlying decorrelation lowers composite corr_SPY (+0.97 iter 032) and recovers DSR. `[volatility_trading, p.218]` + Asness-Moskowitz-Pedersen 2013.
+- **R-3 VIX > VXV term-structure**. Market-derived curve. VXV starts late 2007 → edu ~18y. `[volatility_trading, p.218, p.229]` + Carr-Wu 2009 §III. Single-asset — won't break CAGR ceiling but informative.
+- **B-Carry Bond carry sleeve** as iter 015 overlay. Long TLT/short IEF (20-30y vs 7-10y) instead of put-spread harvest. Lower equity-stress correlation than VRP. iter 024 tested as primary; overlay untested. `[risk_parity, ch.5]` + AMP 2013.
+- **F-FX FX carry sleeve** as iter 015 overlay. AUDJPY/G10-momentum carry — most distribution-orthogonal to equity beta. Lustig-Verdelhan 2007 AER 97(1); Burnside et al. 2011.
+- **V-4 VRP+Carry composite** (0.5 × iter 026 + 0.5 × iter 024). **R-1+R-2+R-3 triple** AND-composite. **LS** Long-short slow-EWMAC iter 025 + shorts. **C** EWMAC+Carry on 6 assets (Carver FDM 1.10→1.8).
+
+NOT recommended (per iter 032): iter 015 + iter 026/031 family overlay at any harvest_notional — DSR collapse is structural; iter 032 param sweeps inflate PBO.
 
 ### Deeper backlog
 
@@ -155,29 +155,13 @@ Consumed/closed: 002/003/004/005/007/009/010/011/012/013/014/017/019/020/021/022
 
 ## Structural dead-ends (1-line summaries; full text in `DEAD_ENDS.md`)
 
-- Iter 001 family: daily EMA/SMA on 3× LETF + any overlay; drawdown-based stop-loss primary; CAPE standalone de-lever; WF MDD<25% gate with leveraged trend; param variations of base cfgs — all structurally closed.
-- Clenow 10bps ATR-risk-parity on sector-ETF universe top-K=3-5 — under-deploys ~3× (iter 002); 4-cfg single-family grid near-zero → G1 PBO noise floor ~0.5.
-- Clenow adjusted-slope × R² equal-notional on 11 SPDR sectors — signal absent (iter 003); cross-sectional momentum on ≤20-asset homogeneous baskets (sector/factor/country ETFs) closed.
-- Single-asset vol-adaptation σ⁻¹/σ⁻² on SPY/QQQ — family saturates +0.08-0.10 (iter 004 + 005)
-- TSM 12-1/6-1/18-1 overlay on vol-managed blend — REDUNDANT with variance-scaling (iter 007).
-- T10Y3M 21d-EMA symmetric haircut on iter 008 — smoothing destroys lead-time (iter 009); T10Y3M asymmetric 5d EMA haircut — 100% overlap iter 009, 2×2 matrix closed (iter 012).
-- 3-leg SPY+TLT+GLD daily `vt15_L21_cap20_3leg` — ties iter 008 at 74, blend-family ceiling (iter 010).
-- Weekly/monthly rebalance for vol-managed multi-leg blend — daily cadence required; MDD +10-14pp (iter 011).
-- Meta-labeling LR with ρ + VIX_z on iter 008 — vol-proxy features cointegrate with σ²_port (iter 013).
-- EBP credit-cycle overlay on iter 008 — pre-val rejects 3/3; pre-val screen mandatory (iter 014).
-- 12-1 top-K=1 rotation on ≤3-region universe — period Sharpe differential exceeds uplift (iter 017).
-- ρ stock-bond regime overlay on vol-managed stack — ρ in σ²_port cross-term → any f(ρ) cointegrates; closes VIX/MOVE/realized-vol overlays by analogy (iter 019).
-- Options-on-equity-leg 5/10%OTM×21DTE either sign on vol-managed 2-leg stack — σ²_port absorbs; Sharpe tied; MDD asymmetric (short −1-3pp, long +3-6pp). Does NOT close bare short puts/ATM straddles/different DTE (iter 020/021).
-- Calendar-driven eq:bd weight modulator on vol-managed stack (TOM/holiday/DoW) — σ²_port quadratic in w_eq compresses premium; Sharpe −0.21 to −0.26 vs iter 016 (iter 022).
-- TSM-PRIMARY on ≤4-asset broad-class ETF basket per-asset vol-target — turnover ~35/yr/leg dominates sqrt(3) diversification (iter 023). Open: slow-EWMAC, ≥20-market, carry/VRP-primary.
-- Bond-curve carry-as-ALLOCATION on 2-bond universe (T10Y3M ramp) in static 0.9/0.6 stack — saturates at iter 015 static-IEF plateau; DSR worst p=0.586 (iter 024). Open: cross-asset carry, ≥3 duration buckets, carry+value.
-- Slow-EWMAC long-only (FDM=1.10, buffer 10%) on 6-asset broad-class basket — engine cleanest ever but Sharpe 0.77/0.82/0.83 regresses 2/3 vs SPY/QQQ; long-only sacrifices ~50% trend premium; 6-asset too narrow vs Hurst-Ooi-Pedersen 67-market (iter 025). Open: long-SHORT, ≥20-asset, EWMAC+Carry, VRP-primary.
+- Iter 001-014 family (compressed): daily EMA/SMA × LETF + any overlay; drawdown-stops primary; CAPE/EBP/VIX standalone single-indicator; Clenow ATR on sector ETFs top-K≤5; Clenow adj-slope × R² on ≤20-asset homogeneous baskets; single-asset σ⁻¹/σ⁻² SPY/QQQ; TSM 12-1/6-1/18-1 overlay on vol-managed blend; T10Y3M 21d/5d EMA haircut on iter 008; weekly/monthly rebalance for vol-managed blend; meta-LR ρ+VIX_z; EBP credit overlay; pre-val screen mandatory.
+- Iter 017/019/020/021 (compressed): 12-1 top-K=1 rotation on ≤3 regions; ρ stock-bond overlay (ρ in σ²_port cross-term cointegrates → closes VIX/MOVE/realized-vol overlays by analogy); options-on-equity-leg 5/10%OTM×21DTE either sign on vol-managed 2-leg stack — σ²_port absorbs; Sharpe tied; MDD asymmetric (short −1-3pp / long +3-6pp). Does NOT close bare puts/ATM straddles/different DTE on STATIC base (see iter 032).
+- Iter 022-025 (compressed): calendar TOM eq:bd modulator on vol-managed stack (σ²_port quadratic in w_eq); TSM-PRIMARY ≤4-asset per-asset vol-target (turnover dominates sqrt(N) diversification); bond-curve carry-as-ALLOCATION 2-bond static stack (saturates iter 015 plateau); slow-EWMAC long-only 6-asset basket (long-only sacrifices 50% trend premium; 6 too narrow vs HOP 67). Open: cross-asset carry, ≥20-asset, long-SHORT EWMAC, EWMAC+Carry, VRP-primary, carry+value.
 - **Tightening iter 026**: vol-target wrapper ABSORBS short-vol overlays (Sharpe-neutral); stand-alone harvest on T-bill collateral delivers +0.38-0.45 Sharpe alpha 3/3 (STRONG 76).
 - **Tightening iter 027**: linear leverage on T-bill+harvest is NOT total-Sharpe-neutral (rf-bonus dilutes); N=3.5 total Sharpe→overlay_sharpe; closes leverage-only path.
-- **Tightening iter 028**: constant `VIX<35` entry filter on iter 026 base is regime-conditional; lifts educational (GFC-inclusive → 1st-ever 7/7 + DSR p=0.029) but regresses spy/ndx (post-GFC transient spikes) → Kill A 2/3; closes constant-threshold V-3, opens regime-aware gates (R-1 persistence/R-2 z-score/R-3 term-structure). Does NOT close iter 026 at N=1.
-- **Tightening iter 029**: `vix_threshold=35, persistence_days=3` partially refines iter 028 (DSR worst 0.136→0.100, edu record 0.0251) but ties score 71 (missed 10-pt threshold by 0.0003) + Kill A. NEW finding: 3 datasets have qualitatively different high-VIX structures (edu deeply-persistent GFC; spy mixed; ndx all-clustered → R-1=iter 028). Single constant gate cannot optimize all 3. Closes that cfg; opens R-2 z-score, R-3 term-structure, composite gates.
-- **Tightening iter 030**: `z_window=60, z_threshold=2.0` regime-relative gate on iter 026 base scores 71 — **1st-ever spy 7/7 + DSR p=0.0345 (1st sub-0.05 spy DSR ever)**, but Kill A clean 2.6× threshold on ndx (−0.131; over-filters tech mini-spikes) AND Kill B on edu (−0.121 vs iter 028; rolling-mean absorbs GFC spike, sustained period unfiltered). **STRUCTURAL FINDING**: 3 successive single-axis gates (028 level / 029 level+persistence / 030 z-score) all converge at 71/100, each w/ sub-0.05 DSR record on a *different* dataset (iter 026 ndx, iter 028/029 edu, iter 030 spy). Single-axis VIX-gate family on iter 026 base is now CLOSED. Forward path: R-1+R-2 AND-composite or R-3 term-structure (VXV).
-- **Tightening iter 031**: AND-composite of R-1 ∧ R-2 on iter 026 base scores **76 ties iter 026 ceiling**; 1st-ever all-3 DSR < 0.10; ndx 7/7+DSR PASS preserved; vacuous on spy (0 fires/17y). 5 iters total on iter 026 base (026/028/029/030/031) max at 76 — criterion-4 CAGR floor 0/15 structural to harvest_notional=1.0. Iter 026 family at **score-rubric ceiling 76**; future gain requires CAGR mechanism (multi-asset iter 015 base + iter 031 overlay) OR qualitatively different signal (R-3 VIX>VXV). Does NOT close R-3, multi-asset, composite param sweeps.
+- **Tightening iter 028-031** (single-axis VIX-gate family on iter 026 base): constant `VIX<35` (028 lifts edu Kill A 2/3), `level+3d-persistence` (029 ties 71 +0.0003 of 10pt threshold), `z(60,2)` regime-relative (030 1st spy 7/7+DSR PASS but Kill A+B), AND-composite R-1∧R-2 (031 ties 76 ceiling, 1st all-3 DSR<0.10 but criterion-4 CAGR 0/15 structural). All 5 iters capped at 76/71 by harvest_notional=1.0 T-bill architecture. Single-axis family CLOSED. Open: R-3 VXV term-structure, multi-asset, non-VIX gates.
+- **Tightening iter 032** (layered composition NTSX 0.9 SPY + 0.6 IEF + iter 031 VRP overlay on equity-leg notional, cfg `ntsx_vrp_and_v3p35_z2_eq09_bd06_h1`): **PROMISING 72** — CAGR floor unlocks 0/15 → 15/15 ✓ and Sharpe 3/3 ✓, but DSR collapses 10/15 → 0/15 (worst-p 0.07→0.50) and ndx MDD breaches +5pp (44.38% vs 40.12%). corr_combined,SPY=+0.97 across datasets — harvest amplifies equity drawdowns. **NEW PRINCIPLE**: DSR penalty on composed strategy dominated by COMPOSITE distribution's higher moments (skew/kurt), NOT by layer-individual DSRs. Distinct from iter 020/021's σ²_port-absorption (iter 016 vol-managed-specific); static-stack absorption operates via DSR higher-moment penalty. Closes iter 015 + iter 026/031 family overlay path. Open: cross-asset VRP (RUT/EFA), bond/FX carry sleeves, lower harvest sweeps.
 
 ---
 

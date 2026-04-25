@@ -1,0 +1,373 @@
+{
+  "total_score": 72,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 17,
+      "max": 25,
+      "per_dataset": {
+        "educational": "5",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.5024446628007061,
+      "cumulative_n_trials": 4285
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": false
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count across 9 total",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              0.5679105673894708,
+              1.2517011919746395,
+              0.8452169947817313
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.538494942579608,
+              0.8731843144930328,
+              0.8148797914147335
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.5325060823240724,
+              1.1389688655283314,
+              0.7512415236469971
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.8096567376611006,
+      "cagr": 0.15007284141266752,
+      "mdd": 0.5285995863730323,
+      "dsr_p_value": 0.5024446628007061
+    },
+    "spy_real": {
+      "sharpe": 1.0352452004640882,
+      "cagr": 0.18375314256063424,
+      "mdd": 0.35626302130012033,
+      "dsr_p_value": 0.2813058055943224
+    },
+    "ndx_real": {
+      "sharpe": 1.075535520628433,
+      "cagr": 0.23188713514885406,
+      "mdd": 0.44375021904346584,
+      "dsr_p_value": 0.25359528502116857
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4285,
+  "configs_tested": 1,
+  "primary_citation": "[risk_parity, p.5, p.10-11, ch.1] + [volatility_trading, p.217-218, ch.3]; Asness-Frazzini-Pedersen 2012 SSRN 1728082; Bondarenko 2014 QJF 4(3); Carr-Wu 2009 RFS 22(3); Whaley 2009 JPM 35(3); WisdomTree NTSX prospectus",
+  "hypothesis_slug": "ntsx-vrp-and-composite",
+  "pre_committed_cfg": {
+    "cfg_id": "ntsx_vrp_and_v3p35_z2_eq09_bd06_h1",
+    "eq_w": 0.9,
+    "bd_w": 0.6,
+    "cost_bps_per_leg": 0.0002,
+    "rf": 0.02,
+    "harvest_notional": 1.0,
+    "k_long_pct": 0.95,
+    "k_short_pct": 0.9,
+    "dte_days": 21,
+    "cost_bps_per_roll": 5.0,
+    "vix_threshold": 35.0,
+    "persistence_days": 3,
+    "z_threshold": 2.0,
+    "z_window": 60,
+    "rebalance": "daily MtM, monthly roll, static eq_w/bd_w + harvest gated at NOT ((VIX>=35 for 3d) AND (VIX z(60d)>=2.0))",
+    "funding_cost_modeled": false
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "ntsx_vrp_and_v3p35_z2_eq09_bd06_h1",
+      "n_passed": "5",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.5024446628007061,
+      "G3_wf_pass": false,
+      "G3_wf_profitable": 5,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.9554004446383723,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.8062756714718862,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.13819797305056764,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 4.440892098500626e-14
+    },
+    "spy_real": {
+      "cfg_id": "ntsx_vrp_and_v3p35_z2_eq09_bd06_h1",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.2813058055943224,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 6,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.7680494406771188,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.79945224791739,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.2829158405731711,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 8.881784197001252e-14
+    },
+    "ndx_real": {
+      "cfg_id": "ntsx_vrp_and_v3p35_z2_eq09_bd06_h1",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.25359528502116857,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 6,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.7185927638871591,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.866832492179643,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.31709002835962885,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 2.220446049250313e-14
+    }
+  },
+  "leg_correlations": {
+    "educational": {
+      "eq_bd": -0.2964952668081083
+    },
+    "spy_real": {
+      "eq_bd": -0.26518352489713926
+    },
+    "ndx_real": {
+      "eq_bd": -0.20026271838270637
+    }
+  },
+  "benchmarks_used_custom": {
+    "educational": {
+      "sharpe": 0.6274107005006827,
+      "cagr": 0.10775107206419254,
+      "mdd": 0.5520110457219881,
+      "label": "SPY b&h 2006-01-04\u21922026-04-14 (iter 032 IEF-aligned)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "score_with_custom_benchmark": {
+    "total_score": 72,
+    "winner_conditions_met": false,
+    "tier": "PROMISING",
+    "criteria": {
+      "1_sharpe_edge": {
+        "points": 25,
+        "max": 25,
+        "datasets_beat": 3,
+        "required_minimum_dataset_count": 2
+      },
+      "2_gates": {
+        "points": 17,
+        "max": 25,
+        "per_dataset": {
+          "educational": "5",
+          "spy_real": "6",
+          "ndx_real": "6"
+        },
+        "thresholds": {
+          "educational": 5,
+          "spy_real": 4,
+          "ndx_real": 4
+        },
+        "cross_dataset_thresholds_met": true
+      },
+      "3_dsr": {
+        "points": 0,
+        "max": 15,
+        "worst_p_value": 0.5024446628007061,
+        "cumulative_n_trials": 4285
+      },
+      "4_cagr_floor": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": true
+        }
+      },
+      "5_mdd_ceiling": {
+        "points": 10,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": false
+        }
+      },
+      "6_robustness_bonus": {
+        "points": 0,
+        "max": 5,
+        "note": "Populated by caller if rolling-window data provided"
+      }
+    }
+  },
+  "iter015_reference_metrics": {
+    "educational": {
+      "sharpe": 0.83,
+      "cagr": 0.145,
+      "mdd": 0.23
+    },
+    "spy_real": {
+      "sharpe": 1.04,
+      "cagr": 0.154,
+      "mdd": 0.19
+    },
+    "ndx_real": {
+      "sharpe": 1.16,
+      "cagr": 0.195,
+      "mdd": 0.24
+    }
+  },
+  "iter031_reference_metrics": {
+    "educational": {
+      "sharpe": 1.19,
+      "cagr": 0.0495,
+      "mdd": 0.138,
+      "dsr_p": 0.0535
+    },
+    "spy_real": {
+      "sharpe": 1.282,
+      "cagr": 0.0497,
+      "mdd": 0.0635,
+      "dsr_p": 0.0699
+    },
+    "ndx_real": {
+      "sharpe": 1.333,
+      "cagr": 0.0609,
+      "mdd": 0.0818,
+      "dsr_p": 0.0499
+    }
+  },
+  "delta_vs_iter015": {
+    "educational": {
+      "sharpe_delta": -0.02034326233889938,
+      "cagr_delta": 0.005072841412667534,
+      "mdd_delta": 0.2985995863730323
+    },
+    "spy_real": {
+      "sharpe_delta": -0.004754799535911847,
+      "cagr_delta": 0.029753142560634244,
+      "mdd_delta": 0.16626302130012033
+    },
+    "ndx_real": {
+      "sharpe_delta": -0.08446447937156698,
+      "cagr_delta": 0.036887135148854056,
+      "mdd_delta": 0.20375021904346585
+    }
+  },
+  "delta_vs_iter031": {
+    "educational": {
+      "sharpe_delta": -0.38034326233889937,
+      "cagr_delta": 0.10057284141266752,
+      "mdd_delta": 0.39059958637303227
+    },
+    "spy_real": {
+      "sharpe_delta": -0.24675479953591184,
+      "cagr_delta": 0.13405314256063425,
+      "mdd_delta": 0.29276302130012033
+    },
+    "ndx_real": {
+      "sharpe_delta": -0.257464479371567,
+      "cagr_delta": 0.17098713514885405,
+      "mdd_delta": 0.36195021904346586
+    }
+  },
+  "status": "promising"
+}
