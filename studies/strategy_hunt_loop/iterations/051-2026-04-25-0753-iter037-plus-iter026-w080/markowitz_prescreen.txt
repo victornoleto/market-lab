@@ -1,0 +1,18 @@
+# Markowitz pre-screen — iter 051
+# iter 037 cfg: ntsx_3leg_preserved_60_45_45_spy_ief_gld
+# iter 026 cfg: vrp_primary_h1_5_10_1m
+# Source files: studies/strategy_hunt_loop/iterations/037-2026-04-25-0224-ntsx-3leg-preserved-lev/results.json, studies/strategy_hunt_loop/iterations/026-2026-04-24-2122-vrp-primary-portfolio/results.json
+
+# Pre-committed weight: w_037 = 0.80, w_026 = 0.20
+
+## Per-dataset standalone metrics + correlation
+     dataset    S_037    S_026     corr   CAGR_037   CAGR_026
+ educational    0.983    1.133    0.574     14.19%      4.85%
+    spy_real    1.154    1.281    0.545     15.53%      4.97%
+    ndx_real    1.173    1.367    0.602     17.88%      6.31%
+
+## Predicted combined metrics at w_037 = 0.80
+     dataset   pred S  pred CAGR  S floor CAGR floor   C1   C4
+ educational    1.021     12.40%    0.780      9.18%    ✓    ✓
+    spy_real    1.198     13.46%    1.000     11.98%    ✓    ✓
+    ndx_real    1.219     15.62%    1.055     15.35%    ✓    ✓

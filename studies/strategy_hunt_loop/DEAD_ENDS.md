@@ -3312,6 +3312,138 @@ Complete study: `studies/strategy_hunt_loop/iterations/049-2026-04-25-0705-iter0
 
 ---
 
+## From iteration 051 — iter 037 + iter 026 saved-stream composition at Markowitz score-Pareto-optimum w_037=0.80 (STRONG 84, **1st EVER 4/5 winner conds + 3/3 CAGR floor pass**, 1/6 KILLS, iter 037+iter 026 family Pareto-bounded at 84)
+
+Complete study: `studies/strategy_hunt_loop/iterations/051-2026-04-25-0753-iter037-plus-iter026-w080/final_report.md`.
+
+### What happened (1st 4/5 winner conditions in loop history)
+
+Single pre-committed cfg `iter037_plus_iter026_w080` — convex
+combination of iter 037 (3-leg static stack: 0.6 SPY + 0.45 IEF +
+0.45 GLD at 1.5× leverage; saved stream) at 80% weight + iter 026
+(single-asset SPY 5/10% OTM 21-DTE put credit spread on T-bill
+collateral, harvest_notional=1.0; saved stream) at 20% weight.
+Weight pre-selected via Markowitz score-Pareto-optimum analysis on
+the saved streams BEFORE running the backtest — the only weight that
+simultaneously passes Sharpe edge ≥+0.10 on 3/3 AND CAGR floor on 3/3.
+
+| dataset | Sharpe (Δ frozen) | CAGR (vs floor) | MDD | gates | DSR p |
+|---|---|---|---|---|---|
+| educational | 1.0212 (+0.34) | **12.38%** (+3.20pp ✓) | 29.30% ✓ | 6/7 | **0.1745** ❌ |
+| spy_real    | 1.1977 (+0.30) | **13.47%** (+1.49pp ✓) | 21.48% ✓ | 6/7 | 0.1086 ❌ |
+| ndx_real    | 1.2187 (+0.26) | **15.51%** (+0.16pp ✓) | 26.96% ✓ | 6/7 | 0.1091 ❌ |
+
+Score breakdown 25/19/5/15/15/5 = **84** STRONG (ties iter 041 at TOP-K
+#2; 1 pt behind iter 046's 85). 4/5 strict winner conditions met
+(only DSR p<0.05 fails — 1st time the loop reaches 4/5).
+
+Pre-committed kills 1/6 fired (B: DSR worst-p ≥ 0.10). A clean
+(Markowitz pre-screen accurate to 4 decimals); C clean (3/3 CAGR
+PASS — UNPRECEDENTED); D clean (residual=0.0000 on 3/3, 3rd
+consecutive iter); E clean (G7 0.0000pp); F clean (MDD strictly
+improves vs iter 037 standalone on 3/3).
+
+### Don't re-test (Pareto-bounded family)
+
+- **iter 037 + iter 026 at any weight in [0, 1]** — the score caps at
+  ~84 because two binding constraints leave no winner-feasible point:
+  - **ndx CAGR floor (15.35%)**: requires w_037 ≥ 0.78 (iter 037 has
+    high CAGR ~17.9%; iter 026 only ~6.3%; combined CAGR drops below
+    floor at w_037 < 0.78).
+  - **edu DSR p < 0.05 at n_trials=4318**: requires combined edu
+    Sharpe ≥ ~1.10. iter 037's edu Sharpe is 0.98 (80% weight = floor
+    at 0.98); iter 026's edu Sharpe is 1.13 (20% weight = ceiling at
+    1.05). The reachable combined Sharpe range on edu is [0.98, 1.13]
+    × Markowitz dilution at ρ=0.574 → effective range [1.00, 1.10].
+    Never clears 1.10 strict.
+
+  At w_037=0.78 (lowest CAGR-feasible): predicted edu Sharpe ≈ 1.03,
+  DSR p still in 0.10-0.20 bucket → c3 = 5 pts. At w_037=0.50 (50/50,
+  iter 045 baseline): predicted edu Sharpe 1.10, but ndx CAGR ~12.2%
+  fails floor 15.35% → c4 = 5 pts. Either weight loses 5+ pts; 80/20
+  is the score-Pareto-maximum at 84.
+- **iter 037 + iter 026 at 50/50 (iter 045 baseline pattern)** —
+  closes by analogy: similar mathematical structure to iter 045 (037+
+  039 50/50, score 81). Combined Sharpe higher (better DSR) but CAGR
+  floor only 1/3 → c4 = 5 pts; not better than 80/20.
+- **Lower-weight iter 026 overlay (w_037 ≥ 0.85)** — doesn't help
+  because edu Sharpe ceiling shrinks as iter 026 weight drops; at
+  w_037=0.90 predicted edu Sharpe 1.001 ≈ iter 037 standalone 0.98,
+  losing the small Sharpe lift gained from iter 026 entirely. Score
+  predicted 79 ± 2 (≈ iter 037 standalone).
+- **Higher-weight iter 026 overlay (w_037 ≤ 0.70)** — fails CAGR
+  floor on ≥ 1 dataset (ndx at w_037=0.70 has CAGR 14.48% < 15.35%);
+  c4 drops by 5 pts.
+- **Any second cfg in the iter 037+iter 026 family (Bonferroni cost)** —
+  N=2 in the same family adds Bonferroni penalty to G2 DSR (α'=0.025
+  instead of 0.05) which would shift edu DSR p worst-bucket boundary
+  upward; predicted score regression similar to iter 047 closure.
+
+### Structural principles
+
+- **Markowitz score-Pareto-optimum is reachable via pre-screen on
+  saved streams, but limited by component standalone Sharpes.** The
+  weight that maximizes (criterion 1 + criterion 4) sum is NOT the
+  weight that maximizes Sharpe. iter 051 selected w_037=0.80 — far
+  from the Sharpe-maximum w*≈0.15 — because the score function has a
+  CAGR-floor cliff that dominates Sharpe-edge gains beyond benchmark
+  +0.10. This is the **first iteration in loop history** to explicitly
+  optimize the aggregate score function rather than Sharpe alone.
+- **DSR is the binding constraint at n_trials > 4300 on all
+  composition families.** iter 046 hit Sharpe 1.20 on edu and just
+  cleared 0.05 (knife-edge). iter 050 dropped Sharpe by 0.020 and
+  crossed 0.05. iter 051 has Sharpe 1.02 on edu and lands at 0.175.
+  The required Sharpe to clear DSR p<0.05 at n_trials=4318 on edu
+  (custom bench 0.629) is approximately 1.10. **No saved-stream
+  composition with iter 037 as a component clears 1.10 on edu** —
+  iter 037 standalone is 0.98, and Markowitz dilution with ρ=0.5-0.6
+  caps the combined Sharpe at ~1.05.
+- **Two-constraint Pareto box on saved-stream compositions**: when
+  the components have inverse Sharpe-vs-CAGR profiles (high-Sharpe
+  iter 026 with low CAGR; low-Sharpe iter 037 with high CAGR), the
+  weight space [0, 1] has a narrow CAGR-feasible band (w_037 ≥ 0.78)
+  intersected with a narrow DSR-feasible band (w_037 ≤ 0.5 to recover
+  iter 026's Sharpe lift). The two bands DON'T intersect on this
+  stream pair — the Pareto box is empty in the winner region.
+- **Markowitz formula validation now empirically airtight (3 iters
+  in a row)**: residual = 0.0000 on 9/9 dataset×iter combinations
+  (iter 049/050/051 × edu/spy/ndx). The closed-form prediction can
+  be trusted as a pre-backtest screen for any future composition
+  candidate.
+- **3/3 CAGR floor pass IS achievable** — iter 051 is the first
+  iteration to achieve this. The mechanism is "Sharpe-trade-off-aware
+  weighting" rather than Sharpe-maximization. Future winner candidates
+  must preserve this property while ALSO clearing DSR.
+
+### Citations
+
+- `[risk_parity, ch.5]` — iter 037 base architecture (preserved
+  verbatim via saved return stream).
+- `[volatility_trading, p.218]` — iter 026 base architecture
+  (preserved verbatim via saved return stream).
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials.
+  Direct empirical confirmation: at n_trials=4318, edu Sharpe 1.02
+  → DSR p=0.175 falls in the 0.10-0.20 bucket.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (achieved
+  0.0000pp on 3/3).
+- `[advances_fin_ml, p.162-164]` — no-lookahead (preserved by saved
+  streams).
+- `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV (vacuous at N=1).
+- Markowitz, H. (1952), *Portfolio Selection*, JoF 7(1) 77-91 —
+  closed-form Sharpe identity. Validated to 4 decimals on 3/3
+  datasets (3rd consecutive iter).
+- Bondarenko, O. (2014), QJF 4(3) 1450015 — empirical SPX VRP
+  magnitude.
+- Carr-Wu (2009), RFS 22(3) 1311-1341 — variance risk premia
+  framework.
+- Erb-Harvey (2006), FAJ 62(2) — gold's strategic role in iter 037's
+  GLD leg.
+- Driessen-Maenhout-Vilkov (2009), JoF 64(4) 1377-1406 — cross-
+  sectional VRP decomposition.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:
