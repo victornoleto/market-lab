@@ -1,0 +1,578 @@
+{
+  "total_score": 71,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 21,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "7",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 5,
+      "max": 15,
+      "worst_p_value": 0.10104882731257048,
+      "cumulative_n_trials": 4283
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "per_dataset": {
+        "educational": false,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count across 9 total windows",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              0.885167913728172,
+              1.5863515667813801,
+              1.1476504570369086
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.8821312374702084,
+              1.0505311609126793,
+              1.2848193842130278
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.8359907556323247,
+              1.0387720209485738,
+              1.0646558924746998
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 1.1389583044715546,
+      "cagr": 0.04498969991194324,
+      "mdd": 0.14465723343285555,
+      "dsr_p_value": 0.08199337864764478
+    },
+    "spy_real": {
+      "sharpe": 1.3619972800379014,
+      "cagr": 0.04783574052790818,
+      "mdd": 0.07119882041919376,
+      "dsr_p_value": 0.03452163589916868
+    },
+    "ndx_real": {
+      "sharpe": 1.236813325379693,
+      "cagr": 0.054918284607508916,
+      "mdd": 0.0817678415018299,
+      "dsr_p_value": 0.10104882731257048
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4283,
+  "configs_tested": 1,
+  "primary_citation": "[volatility_trading, p.218] Sinclair sustained-vs-transient \u2192 relative-shock interpretation; [volatility_trading, p.39, p.58-59] vol-of-vol + cone middle horizon; [volatility_trading, ch.3] VRP mechanics; Whaley (2009) JPM 35(3) VIX innovation analysis; Bondarenko (2014) QJF 4(3) \u00a73 persistent regimes; Carr-Wu (2009) RFS 22(3) VRP decomposition",
+  "hypothesis_slug": "vix-zscore-vrp-primary",
+  "pre_committed_cfg": {
+    "cfg_id": "vrp_z_z2_h1_5_10_1m",
+    "rf": 0.02,
+    "harvest_notional": 1.0,
+    "k_long_pct": 0.95,
+    "k_short_pct": 0.9,
+    "dte_days": 21,
+    "cost_bps_per_roll": 5.0,
+    "z_threshold": 2.0,
+    "z_window": 60,
+    "rebalance": "daily MtM, monthly roll, gated open at NOT (VIX z-score over 60d >= 2.0)"
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "vrp_z_z2_h1_5_10_1m",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.08199337864764478,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.1874438747323077,
+          "mdd": 0.043109009375040225,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 0.566329545530645,
+          "mdd": 0.1184545056818979,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 1.2967684209236086,
+          "mdd": 0.05015568701069688,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.4272096848866929,
+          "mdd": 0.031794920750491534,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.590386518307315,
+          "mdd": 0.020838547326995943,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.456057231898949,
+          "mdd": 0.047450632580426144,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.8892561144433762,
+          "mdd": 0.051082758324007806,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.279422328944086,
+          "mdd": 0.047903005950550484,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.3339849921441602,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.1102703729155803,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.38504060807064855,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0
+    },
+    "spy_real": {
+      "cfg_id": "vrp_z_z2_h1_5_10_1m",
+      "n_passed": "7",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": true,
+      "G2_dsr_p": 0.03452163589916868,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 2.0059724769583616,
+          "mdd": 0.04163134034913872,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.7603384630125878,
+          "mdd": 0.03836833546512333,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 1.4437140609707328,
+          "mdd": 0.04243450405481843,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.333432576301412,
+          "mdd": 0.03150457471508173,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 0.6269127610073375,
+          "mdd": 0.06996832598250854,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.7170630494817711,
+          "mdd": 0.0380423293872792,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.48894922849582495,
+          "mdd": 0.06467007432686334,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 3.23763408757992,
+          "mdd": 0.008969855346718859,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.156614378105472,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.3241338396282214,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.5854432176568248,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0
+    },
+    "ndx_real": {
+      "cfg_id": "vrp_z_z2_h1_5_10_1m",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.10104882731257048,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.735469758546041,
+          "mdd": 0.03847952946707674,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 3.1447682575000133,
+          "mdd": 0.011423829034965817,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.5664860759078727,
+          "mdd": 0.04717273388220501,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.9661024912954363,
+          "mdd": 0.024521815041654068,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 0.5759439102318064,
+          "mdd": 0.045081258725620105,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 2.112336659851445,
+          "mdd": 0.02894135233865083,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.5430909370852139,
+          "mdd": 0.08176784149005294,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.138341384528842,
+          "mdd": 0.038615946273879515,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.9786065499260443,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.0858533944222446,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.5695198419149923,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0
+    }
+  },
+  "crosslib": {
+    "educational": {
+      "cagr_pandas": 0.04498969991194324,
+      "cagr_numpy": 0.04498969991194324,
+      "abs_diff_pp": 0.0,
+      "max_abs_return_diff": 0.0
+    },
+    "spy_real": {
+      "cagr_pandas": 0.04783574052790818,
+      "cagr_numpy": 0.04783574052790818,
+      "abs_diff_pp": 0.0,
+      "max_abs_return_diff": 0.0
+    },
+    "ndx_real": {
+      "cagr_pandas": 0.054918284607508916,
+      "cagr_numpy": 0.054918284607508916,
+      "abs_diff_pp": 0.0,
+      "max_abs_return_diff": 0.0
+    }
+  },
+  "benchmarks_used_custom": {
+    "educational": {
+      "sharpe": 0.6274107005006827,
+      "cagr": 0.10775107206419254,
+      "mdd": 0.5520110457219881,
+      "n_bars": 5100,
+      "first": "2006-01-04",
+      "last": "2026-04-14"
+    },
+    "spy_real": {
+      "sharpe": 0.8935486911220474,
+      "cagr": 0.14872337254086343,
+      "mdd": 0.33699940470536127,
+      "n_bars": 4225,
+      "first": "2009-06-26",
+      "last": "2026-04-14"
+    },
+    "ndx_real": {
+      "sharpe": 0.9473068950283667,
+      "cagr": 0.1890422501212914,
+      "mdd": 0.35122525674827487,
+      "n_bars": 4065,
+      "first": "2010-02-16",
+      "last": "2026-04-14"
+    }
+  },
+  "kill_criteria": {
+    "A_post_gfc_recovery": {
+      "deltas_vs_iter026": {
+        "educational": 0.005558304471554587,
+        "spy_real": 0.0800972800379014,
+        "ndx_real": -0.13048667462030705
+      },
+      "spy_regress": false,
+      "ndx_regress": true,
+      "triggered": true,
+      "threshold": -0.05,
+      "note": "R-2 must NOT regress more than 0.05 vs iter 026 on either post-GFC dataset; failing means relative-shock theory adds no value over no-filter on those regimes"
+    },
+    "B_educational_lift_preserved": {
+      "edu_sharpe": 1.1389583044715546,
+      "iter028_edu_sharpe": 1.2596,
+      "delta_vs_iter028": -0.1206416955284455,
+      "floor": 1.1596,
+      "triggered": true,
+      "threshold_delta": -0.1,
+      "note": "Z-score might legitimately let some sustained-period rolls through. Looser than iter 029 Kill B (0.05). Trigger means edu collapsed below iter 026 baseline (~1.13)"
+    },
+    "C_21d_loss": {
+      "worst_21d": {
+        "educational": -0.05108699320385107,
+        "spy_real": -0.04863302361210838,
+        "ndx_real": -0.05722638626936118
+      },
+      "exceeders": {},
+      "triggered": false,
+      "threshold": -0.3
+    },
+    "D_engine_dirty": {
+      "diffs_pp": {
+        "educational": 0.0,
+        "spy_real": 0.0,
+        "ndx_real": 0.0
+      },
+      "exceeders": {},
+      "triggered": false,
+      "threshold_pp": 3.0
+    },
+    "E_educational_filter_active": {
+      "edu_rolls_skipped_zscore": 19,
+      "triggered": false,
+      "note": "GFC must produce some 2\u03c3 shocks on educational; zero triggers means gate is mis-implemented or window mis-calibrated"
+    },
+    "F_post_gfc_filter_active": {
+      "spy_rolls_skipped_zscore": 17,
+      "ndx_rolls_skipped_zscore": 16,
+      "triggered": false,
+      "note": "Mar-2020 was a >5\u03c3 shock; z-gate with threshold=2.0 must fire on at least one of spy/ndx for the gate to be valid"
+    },
+    "any_triggered": true
+  },
+  "iter026_reference_metrics": {
+    "educational": {
+      "sharpe": 1.1334,
+      "cagr": 0.0485,
+      "mdd": 0.1682,
+      "dsr_p": 0.0828
+    },
+    "spy_real": {
+      "sharpe": 1.2819,
+      "cagr": 0.0497,
+      "mdd": 0.0635,
+      "dsr_p": 0.0698
+    },
+    "ndx_real": {
+      "sharpe": 1.3673,
+      "cagr": 0.0631,
+      "mdd": 0.0818,
+      "dsr_p": 0.0376
+    }
+  },
+  "iter028_reference_metrics": {
+    "educational": {
+      "sharpe": 1.2596,
+      "cagr": 0.0504,
+      "mdd": 0.0663,
+      "dsr_p": 0.0287
+    },
+    "spy_real": {
+      "sharpe": 1.1811,
+      "cagr": 0.0446,
+      "mdd": 0.0635,
+      "dsr_p": 0.1364
+    },
+    "ndx_real": {
+      "sharpe": 1.3005,
+      "cagr": 0.059,
+      "mdd": 0.0818,
+      "dsr_p": 0.064
+    }
+  },
+  "iter029_reference_metrics": {
+    "educational": {
+      "sharpe": 1.2735,
+      "cagr": 0.0511,
+      "mdd": 0.0663,
+      "dsr_p": 0.0251
+    },
+    "spy_real": {
+      "sharpe": 1.2295,
+      "cagr": 0.0471,
+      "mdd": 0.0635,
+      "dsr_p": 0.1002
+    },
+    "ndx_real": {
+      "sharpe": 1.3005,
+      "cagr": 0.059,
+      "mdd": 0.0818,
+      "dsr_p": 0.064
+    }
+  },
+  "delta_vs_iter026": {
+    "educational": {
+      "sharpe": 0.005558304471554587,
+      "cagr": -0.003510300088056764,
+      "mdd": -0.023542766567144435,
+      "dsr_p": -0.0008066213523552218
+    },
+    "spy_real": {
+      "sharpe": 0.0800972800379014,
+      "cagr": -0.001864259472091824,
+      "mdd": 0.007698820419193758,
+      "dsr_p": -0.03527836410083132
+    },
+    "ndx_real": {
+      "sharpe": -0.13048667462030705,
+      "cagr": -0.008181715392491087,
+      "mdd": -3.2158498170092864e-05,
+      "dsr_p": 0.06344882731257048
+    }
+  },
+  "delta_vs_iter028": {
+    "educational": {
+      "sharpe": -0.1206416955284455,
+      "cagr": -0.005410300088056763,
+      "mdd": 0.07835723343285556,
+      "dsr_p": 0.053293378647644774
+    },
+    "spy_real": {
+      "sharpe": 0.1808972800379014,
+      "cagr": 0.0032357405279081763,
+      "mdd": 0.007698820419193758,
+      "dsr_p": -0.10187836410083131
+    },
+    "ndx_real": {
+      "sharpe": -0.06368667462030708,
+      "cagr": -0.004081715392491081,
+      "mdd": -3.2158498170092864e-05,
+      "dsr_p": 0.037048827312570476
+    }
+  },
+  "delta_vs_iter029": {
+    "educational": {
+      "sharpe": -0.13454169552844553,
+      "cagr": -0.006110300088056762,
+      "mdd": 0.07835723343285556,
+      "dsr_p": 0.05689337864764478
+    },
+    "spy_real": {
+      "sharpe": 0.1324972800379014,
+      "cagr": 0.0007357405279081741,
+      "mdd": 0.007698820419193758,
+      "dsr_p": -0.06567836410083132
+    },
+    "ndx_real": {
+      "sharpe": -0.06368667462030708,
+      "cagr": -0.004081715392491081,
+      "mdd": -3.2158498170092864e-05,
+      "dsr_p": 0.037048827312570476
+    }
+  }
+}

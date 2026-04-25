@@ -2085,6 +2085,104 @@ Complete study: `studies/strategy_hunt_loop/iterations/029-2026-04-24-2236-vix-p
 
 ---
 
+## From iteration 030 — VIX z-score VRP-primary (R-2)
+
+Complete study: `studies/strategy_hunt_loop/iterations/030-2026-04-24-2259-vix-zscore-vrp-primary/final_report.md`.
+
+### What failed (do NOT re-test exactly)
+
+1. **`vrp_z_z2_h1_5_10_1m`** — single pre-committed cfg with
+   `z_window=60, z_threshold=2.0` z-score gate on iter 026 base.
+   Score 71/100 PROMISING (ties iter 028/029); Kill A clean 2.6×
+   threshold on ndx (Sharpe −0.131 vs iter 026); Kill B on
+   educational (Sharpe −0.121 vs iter 028, below the −0.10 floor).
+   spy_real cleared 7/7 gates AND DSR p=0.0345 (1st sub-0.05 spy
+   DSR ever) — a genuine record — but the per-dataset trade-offs
+   prevent winner status.
+
+2. **THE STRUCTURAL CLOSURE — single-axis VIX-gate family on iter
+   026 base**: three successive iterations (028 level / 029 level +
+   persistence / 030 z-score) testing three orthogonal single-axis
+   gates **all converge on score 71/100**, each producing sub-0.05
+   DSR on a *different* dataset:
+
+   | iter | gate | best DSR (ds) | regression cost |
+   |---|---|---|---|
+   | 028 | level (VIX < 35) | edu 0.029 | spy −0.10 / ndx −0.07 (Kill A) |
+   | 029 | level + 3-day persistence | edu 0.025 | spy −0.05 / ndx −0.07 (Kill A 2bp) |
+   | 030 | z-score (60d, 2σ) | **spy 0.035** | edu −0.13 / ndx −0.13 (Kill A+B) |
+
+   No single-parameter, single-axis VIX gate can simultaneously
+   optimize all 3 hunt-loop datasets because each dataset has a
+   fundamentally different high-VIX regime structure (educational
+   deeply-persistent GFC; spy_real innovation-shock-dominated
+   post-GFC; ndx_real relatively-quiet post-GFC). The DSR record
+   rotates by iteration — never simultaneously across datasets.
+
+### Don't re-test
+
+- The exact cfg `vrp_z_z2_h1_5_10_1m` (already tested, PROMISING 71).
+- **Single-axis VIX-gate parameter sweeps** within
+  {level threshold, persistence days, z-score threshold + window}
+  on iter 026 base. Likely to produce another 71-tied result; the
+  dataset-asymmetry binding dominates parameter choice within the
+  family.
+- **R-1+R-2 OR-composite** (skip if EITHER fires) — would aggregate
+  the weaknesses (over-filter ndx; let edu sustained through);
+  strictly worse than either alone.
+- Combining iter 027 leverage with any single-axis or composite
+  variant — the rf-dilution channel compounds spy/ndx Sharpe damage.
+
+### What this DOES NOT close
+
+- **R-1+R-2 AND-composite** (persistence AND z-score, BOTH must fire
+  to skip) — the *intersection* should be very selective, only the
+  genuinely worst regimes (GFC initial ramp where both fire;
+  Mar-2020 where both fire). Strongest remaining VIX-gate
+  candidate.
+- **R-3 VIX > VXV term-structure gate** — qualitatively different
+  signal source (market-derived expectation curve, not historical
+  VIX distribution). VXV starts 2007.
+- **Multi-feature learned regime classifiers** with non-VIX
+  features (yield-curve regimes, macro indicators, options-skew
+  z-score). Genuinely orthogonal axes.
+- **Asset-conditional gates** (different threshold per dataset) —
+  only acceptable with purged-CV calibration to avoid per-asset
+  overfitting.
+- **iter 026 unfiltered base at N=1.0** — still STRONG #5 at score 76
+  (the actual baseline being refined).
+
+### Structural principles
+
+- **Single-axis VIX gates on VRP-primary cap at score 71/100**:
+  three successive single-axis attempts converge at the same score
+  with rotating DSR records. The single-axis family is exhausted on
+  iter 026 base.
+- **DSR worst-p must be < 0.05 simultaneously across all 3 datasets
+  for criterion 3 to award full 15 pts**: the loop has now
+  produced sub-0.05 DSR on each individual dataset (iter 026 ndx,
+  iter 028/029 edu, iter 030 spy) but never simultaneously. The
+  next breakthrough requires a gate axis that benefits all 3
+  datasets, not just one — composite intersection or
+  qualitatively different signal.
+- **Z-score gates have an inherent regime-absorption blind spot**:
+  60d rolling mean catches up to a sustained spike within ~3 months,
+  after which the gate stops firing even though the underlying
+  regime remains genuinely stressed. This makes z-score
+  fundamentally unsuitable for *sustained* regime detection on its
+  own. The level component (iter 028) is the proper signal for
+  sustained regimes; z-score is the proper signal for *innovation*
+  events. The two are complementary, not substitutes — motivating
+  the AND-composite as iter 031's strongest path.
+- **Reducing-to-parent tests (TDD) remain critical**: iter 030's
+  TDD spec includes `test_zscore_threshold_inf_matches_iter026`
+  (vacuous gate → iter 026 to 1e-12) and the precomputed-z-series
+  architecture means any future iteration can swap in different
+  signals (term structure, MOVE z, realised-vol z) without touching
+  the state machine.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:
