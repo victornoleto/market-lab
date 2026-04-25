@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 72
+total_iterations: 73
 winners_found: 0
 status: iterating
-latest_iteration: "072-2026-04-25-1633"
-cumulative_n_trials: 4348
+latest_iteration: "073-2026-04-25-1659"
+cumulative_n_trials: 4360
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -56,12 +56,13 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
 
-### 072 — 2026-04-25 — iter064-vix-cond-r-mr-allocation (🥇 STRONG, 85/100, ties iter 058 at TOP-K #5; regression from joint TOP-K #1 of 90)
-- **Hypothesis:** VIX-binary regime-conditional allocation of validated calm-aggressive r_mr (iter 071) on iter 064 base — composes iter 069 classifier + iter 071 r_mr (direction #1 from iter 071 final).
-- **Citations:** `[algo_trading_chan, p.95, p.153-154, ch.6]` + Whaley 2009 JPM DOI 10.3905/JPM.2009.35.3.098 + Bekaert-Hoerova 2014 SSRN 2294327 + Connors-Alvarez 2009 + Faber 2007 SSRN 962461 + iter 064/071 final reports.
-- **Scope:** 4 cfgs sweep w_calm × w_stress ∈ {(0.10,0.00), (0.15,0.00), (0.10,0.05), (0.20,0.00)}; 3 datasets; RSI fixed at iter 071 best (10); vix_threshold=20.
-- **Result:** Best cfg `iter064_vix_cond_calm010_stress005` — S edu/spy/ndx 1.2300/1.3502/1.3912 (Δ064 +0.013/+0.019/+0.016 KILL A 3/3 under +0.02, Δ071 −0.004/+0.001/+0.001 KILL C 3/3), CAGR 9.08/9.57/9.72% (edu BELOW 9.18% unlock by 10bps KILL B), MDD 16.33/14.34/13.77% (Δ064 −0.94 to −0.99pp tighter), gates 7/7/7×3, PBO 0.03/0.23/0.32, DSR p=0.0333 spy (n=4348), G7=0pp×3, robustness 9/9, 16/16 TDD. **KILL E INVERTED 3/3**: r_072 calm_S/stress_S < 1.0; r_064 calm 1.04-1.07 < stress 1.48-1.95 — **iter 064 base itself calm-defensive at bar level**. All 4 cfgs score 85 (Pareto-flat). Winner=4/5; score 1:25 2:25 3:15 4:0 5:15 6:5 = 85; 6/10 KILLS A+B+C+D+E+I.
-- **Lesson:** STRUCTURAL CLOSURE of regime-conditional 3rd-stream allocation on iter 064. KILL E inversion reveals iter 064 base is CALM-DEFENSIVE at bar level — up-weighting r_mr in calm regime concentrates exposure in iter 064's WORST conditional segment. Static (iter 071) > regime-cond (iter 072) because uniform captures iter 064 stress-S (1.95) AND r_mr calm-S (0.82) additively. **5-iter pattern (064/068/069/070/071/072) PROVES 90 ceiling is hard-anchored in iter 064 base, NOT mechanism choice**. ALL 5 regime-allocation axes CLOSED. **Direction #2 (fresh higher-CAGR anchor, NOT iter 046 family) is now ONLY remaining structural lever.** See `iterations/072-*/`.
+### 073 — 2026-04-25 — gayed-ma-gate-on-iter016 (🥈 PROMISING, 62/100; closes Gayed-MA-gate-as-fresh-anchor axis)
+- **Result:** Best cfg `gayed_g16_vt15_L21_cap25` — S edu/spy/ndx 0.99/0.97/1.03 (Δcustom-bench +0.36/+0.07/+0.08 KILL A 2/3 below +0.10), CAGR 16.0/15.7/19.2%, MDD 31/31/27%, gates 5/5/5×3, PBO 0.96/0.92/0.68 (KILL F), DSR p 0.24/0.41/0.35 (KILL H, n=4360), G7 0.002-0.144pp, 13/13 TDD. vs iter 016: Sharpe DROPS −0.16 spy/ndx; MDD RISES +4-5pp — gate **net harmful**. Edu CAGR 16% > iter 064's 9.5% (fresh anchor vindicated absolutely; Sharpe lift fails). winner=1/5; score 1:10 2:17 3:0 4:15 5:15 6:5 = 62; 4/9 KILLS A+B+F+H.
+- **Lesson:** Gayed's edge non-stationary — 1929/1973/2000/2008 mega-bears absent from post-GFC Tiingo. False-positive whipsaws (2010/2011/2015/2018 Q4) cost more than real-bear protections save. **Closes Gayed-MA-gate-as-overlay axis at 62**. iter 016 RE-CONFIRMED as 2nd-best anchor. Recommend iter 074 = iter 016 + iter 064 50/50 ensemble. See `iterations/073-*/`.
+
+### 072 — 2026-04-25 — iter064-vix-cond-r-mr-allocation (🥇 STRONG, 85/100)
+- **Result:** Best cfg `iter064_vix_cond_calm010_stress005` — S edu/spy/ndx 1.2300/1.3502/1.3912 (Δ064 +0.013/+0.019/+0.016 KILL A 3/3), CAGR 9.08/9.57/9.72% (edu < 9.18% KILL B), MDD 16/14/14%, gates 7/7/7×3, PBO 0.03/0.23/0.32, DSR p=0.033 spy (n=4348), G7=0pp×3, 16/16 TDD. KILL E INVERTED 3/3 (r_064 calm-defensive); winner=4/5; score 1:25 2:25 3:15 4:0 5:15 6:5 = 85; 6/10 KILLS A+B+C+D+E+I.
+- **Lesson:** Closes regime-conditional 3rd-stream allocation on iter 064. **5-iter pattern (064/068/069/070/071/072) PROVES 90 ceiling hard-anchored in iter 064 base, NOT mechanism choice**. Fresh higher-CAGR anchor is now ONLY remaining lever. See `iterations/072-*/`.
 
 ### 071 — 2026-04-25 — iter064-plus-spy-mr-rsi2 (🥇 STRONG, 90/100, 4-way TIES iter 064/069/070 for joint TOP-K #1)
 - **Result:** Best cfg `iter064_plus_spy_mr_rsi2_th10_w005` — S edu/spy/ndx 1.2339/1.3491/1.3901 (Δ064 +0.016/+0.018/+0.015 KILL A 3/3), CAGR 9.27/9.76/9.93%, MDD 16.41/14.67/14.11%, gates 7/7/7×3, PBO 0.08/0.25/0.31, DSR p=0.0335 spy (n=4344), G7 0pp×3, robustness 9/9, 15/15 TDD. KILL D **vindicated** (r_mr calm S 0.82/0.88/0.80 > stress 0.68/0.70/0.70 on 3/3); KILL G fires (corr=0.999). winner=4/5; score 1:25 2:25 3:15 4:5 5:15 6:5 = 90; 2/10 KILLS A+G.
@@ -106,15 +107,17 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-**072**. **iter 064 still TOP-K #1 STRONG 90 (4-WAY TIED with iter 069/070/071), 0/7 KILLS.** iter 072 (VIX-binary regime-conditional r_mr allocation on iter 064) → 85, 6/10 KILLS A+B+C+D+E+I; KILL E **INVERTED** (r_064 itself calm-defensive at bar level, calm_S 1.04-1.07 < stress_S 1.48-1.95). **5-iter pattern (064/068/069/070/071/072) PROVES 90 ceiling hard-anchored in iter 064 base's calm-defensive bar-level distribution, NOT mechanism choice** — regime reweighting / continuous regime / static 3rd stream / regime-conditional 3rd stream all saturate or regress. **11-axis-closed strict LOCAL OPTIMUM**: saved-stream-pair / internal-LETF / weight-sweep / output-VIX / calm-cond-ext-lev / bar-meta-label / σ⁻² cap / VIX inner-weight BOTH dirs / continuous T10Y3M inner weight / calm-aggressive RSI(2) 3rd stream / **VIX-binary regime-cond 3rd-stream allocation**.
+Consumed/closed: 002-005/007/009-014/017/019-**073**. **iter 064 still TOP-K #1 STRONG 90 (4-WAY TIED with iter 069/070/071), 0/7 KILLS.** iter 073 (Gayed-MA-gate-as-fresh-anchor on iter 016 vol-managed stack) → 62 PROMISING, 4/9 KILLS A+B+F+H; **falsifies the recommended iter 072 direction #1(b)** — Gayed's edge is non-stationary (1929/1973/2000/2008 mega-bears absent from post-GFC Tiingo window), gate REDUCES Sharpe vs iter 016 baseline by 0.16 spy/ndx. **6-iter pattern (064/068/069/070/071/072 ON iter 064; 073 ON iter 016) confirms 90 ceiling persistent across DIFFERENT base anchors** when overlay mechanism is regime-binary. Direction shift: iter 016 RE-CONFIRMED as highest-Sharpe non-iter-064 anchor; remaining lever = composition (ensemble of validated bases).
 
-### Iter 073 candidates (5-iter pattern on iter 064 base proves 90 ceiling is base-anchored, NOT mechanism-choice; ALL regime-allocation axes on iter 064 base CLOSED; ONLY remaining structural lever is fresh higher-CAGR base anchor)
+### Iter 074 candidates (Gayed-MA-gate closed at 62; iter 016 re-confirmed as 2nd-best anchor; remaining lever = ENSEMBLE of validated bases)
 
-- **#1 Fresh higher-CAGR anchor (NOT iter 046 family) — RECOMMENDED, ONLY remaining structural lever.** 5-iter pattern (064/068/069/070/071/072) provably PROVES iter 064 base anchor is binding constraint. Sub-options: (a) NTSX 90/60 leveraged stack at higher vol target ~14% (Asvanunt-Richardson 2017); (b) **vol-targeted SPY+TLT at HIGHER target with TSM overlay (Moreira-Muir 2017 + Asness-Moskowitz-Pedersen 2013)** — RECOMMENDED sub-option, lowest implementation cost (reuses iter 016/024 infra); (c) multi-asset Hurst-regime trend follower 5-asset basket (Mandelbrot 1971, Peters 1991, Lo-MacKinlay 1988). Predicted 70-95, high variance; cost ~3-5 iterations to build new anchor before composing iter 071's r_mr.
-- **#2 Forward 5-day Sharpe meta-label on iter 064** — different cadence than bar-level regime; ~120 flips/yr at weekly horizon. Predicted 65-85, lower priority (same iter 064 base constraint).
-- **#3 Plano C sleeve** (≤70 ceiling). **#4 CRSP/Norgate** (data budget).
+- **#1 iter 016 + iter 064 ENSEMBLE (50/50 saved-stream blend) — RECOMMENDED.** iter 016 (S 1.14 spy, vol-managed inverse-σ²) ⊥ iter 064 (S 1.33 spy, iter046+QQQt 3-leg). Likely corr 0.6-0.8 → composite Sharpe ~1.40 cross-ds + drop DSR p<0.05 via lift. Predicted 80-95, low cost.
+- **#2 iter 016 + iter 071 r_mr 3rd-stream** — iter 016 not calm-defensive so KILL E inversion of iter 072 doesn't apply. Predicted 75-95.
+- **#3 Multi-asset Hurst-regime trend on iter 016** (Mandelbrot/Peters/Lo-MacKinlay) — continuous adaptive regime vs Gayed binary. Higher cost. Predicted 65-85.
+- **#4 Forward 5-day Sharpe meta-label on iter 064** (open from iter 067). Predicted 65-85.
+- **#5 Plano C sleeve** (≤70). **#6 CRSP/Norgate** (data budget).
 
-DEAD-LETTER (all iter 064 base regime-allocation axes / saved-stream-pairs / 046-family / HYG / HMM-2 / FX carry / MTUM-QUAL-USMV not cached / cross-sectional mom Tiingo / broader-region VRP 5-leg / ext-lev / commodity TSM basket / eq075 / internal-LETF / Faber QQQ-200d / VIX-calm-cond ext lev / bar-level RF meta-label / σ⁻² cap-1.0 overlay / VIX-cond inner-weight BOTH DIRECTIONS / continuous T10Y3M z-score inner weight / Connors RSI(2) calm-aggressive 3rd stream / **VIX-binary regime-conditional 3rd-stream allocation**): see iters 045/047-072 entries.
+DEAD-LETTER (all iter 064 base regime-allocation axes / saved-stream-pairs / 046-family / HYG / HMM-2 / FX carry / MTUM-QUAL-USMV not cached / cross-sectional mom Tiingo / broader-region VRP 5-leg / ext-lev / commodity TSM basket / eq075 / internal-LETF / Faber QQQ-200d / VIX-calm-cond ext lev / bar-level RF meta-label / σ⁻² cap-1.0 overlay / VIX-cond inner-weight BOTH DIRECTIONS / continuous T10Y3M z-score inner weight / Connors RSI(2) calm-aggressive 3rd stream / VIX-binary regime-conditional 3rd-stream allocation / **Gayed (2016) 200-day MA regime gate on iter 016 vol-managed stack**): see iters 045/047-073 entries.
 
 ### Deeper backlog
 
@@ -140,6 +143,7 @@ DEAD-LETTER (all iter 064 base regime-allocation axes / saved-stream-pairs / 046
 - **iter 065-070 closures (compressed)**: 065 VIX-calm-cond ext lev 1.5× → 74 (2/7 KILLS); 066 RF meta-label → 37 (AUC~0.50, 5/8 KILLS, extends iter 013 closure to trees); 067 MM σ⁻² overlay cap=1.0 → 74 (3/8 KILLS, σ⁻² family saturates 74); 068 VIX inner-swap original → 79 (KILL I 3/3 — both sub-streams defensive in stress); 069 REVERSE VIX inner-swap → 90 TIES 064 (1/9 KILLS A; closes inner-swap BOTH DIRECTIONS at 90); 070 continuous T10Y3M z-score INNER weight → 90 TIES 064/069 (4/11 KILLS A/F/H/I; KILL J clean — T10Y3M orthogonal to VIX yet saturates 90). Decisively closes regime-classifier resolution × signal-orthogonality.
 - **iter 071 (Connors RSI(2) MR calm-aggressive 3rd stream on 064; 4 cfgs)**: 90 TIES 064/069/070, 2/10 KILLS A/G. KILL D vindicated (r_mr calm S 0.82/0.88/0.80 > stress 0.68/0.70/0.70). Pareto-binding: w_mr=0.10 lifts Δ064>+0.02 but drops edu CAGR<9.18%. Closes calm-aggressive-3rd-stream axis at 90.
 - **iter 072 (VIX-binary regime-conditional r_mr allocation on 064; 4 cfgs)**: 🥇 STRONG 85 — REGRESSION vs joint TOP-K #1 of 90. 6/10 KILLS A+B+C+D+E+I. Engine perfect (16/16 TDD, G7=0pp). **KILL E INVERTED 3/3**: r_064 itself calm-defensive at bar level (calm S 1.04-1.07 < stress 1.48-1.95). Best cfg edu CAGR 9.08% < 9.18% unlock (KILL B). Δ064 +0.013/+0.019/+0.016 KILL A 3/3; Δ071 ≈ 0 KILL C 3/3 (no benefit over static). **5-iter pattern (064/068/069/070/071/072) PROVES 90 ceiling hard-anchored in iter 064 base, NOT mechanism choice — ALL 5 regime-allocation axes closed**. Direction #2 (fresh higher-CAGR anchor) is now ONLY remaining lever.
+- **iter 073 (Gayed-MA-gate on iter 016 vol-managed stack; 4 cfgs)**: 🥈 PROMISING 62, 4/9 KILLS A+B+F+H. Falsifies iter 072 dir #1(b). Sharpe edge +0.36/+0.07/+0.08 (KILL A 2/3). vs iter 016: Sharpe −0.16 spy/ndx, MDD +4-5pp — gate **net harmful** post-GFC. PBO 0.96/0.92/0.68 (corr~0.99 cfgs). DSR p 0.24/0.41/0.35 (Sharpe insufficient n=4360). Closes Gayed-MA-gate axis — edge non-stationary (mega-bears absent from post-2009). iter 074 = iter 016+iter 064 50/50 ensemble.
 
 ---
 

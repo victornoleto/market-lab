@@ -5422,3 +5422,123 @@ target base anchor that does NOT have iter 064's calm-defensive bias.
 - `[advances_fin_ml, p.208-211]` — PBO via CSCV (G1, N=4 cfgs).
 - `[systematic_trading, ch.11]` — Carver IDM ≤ 2.5 (Σw ≡ 1.0).
 - iter 064/071 final reports — TOP-K #1 baseline + validated r_mr.
+
+---
+
+## From iteration 073 — Gayed (2016) 200-day MA regime gate × iter 016 vol-managed stack
+
+Complete study: `studies/strategy_hunt_loop/iterations/073-2026-04-25-1659-gayed-ma-gate-on-iter016/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Gayed (2016) `[leverage_for_the_long_run, p.13]` 200-day SMA
+   regime gate × iter 016 vol-managed SPY+IEF stack with IEF
+   off-market (4-cfg sweep on target_vol ∈ {0.15, 0.18, 0.20} ×
+   max_leverage ∈ {2.0, 2.5})** — Score **62 PROMISING** (13 below
+   STRONG threshold). 4/9 pre-committed kills fired:
+   - **KILL A** (Sharpe < bench + 0.10 on ≥ 2 ds): 1/3 datasets
+     clear (only edu +0.36 vs custom IEF-aligned bench; spy +0.07,
+     ndx +0.08 — both miss).
+   - **KILL B** (Score < 75): 62 < 75 (PROMISING, not STRONG).
+   - **KILL F** (PBO grid > 0.5 on any ds): 0.96/0.92/0.68 — 3/3
+     fail. The 4 cfgs are correlation ~0.99 by construction —
+     CSCV cannot differentiate IS-best vs OOS-best.
+   - **KILL H** (DSR worst p > 0.10): 0.24/0.41/0.35 — Sharpe
+     0.97-1.04 insufficient at cumulative n_trials = 4360.
+
+2. **vs iter 016 baseline (no-gate)**: Sharpe DROPS by 0.16 on
+   spy_real (1.14 → 0.97) and 0.16 on ndx_real (1.19 → 1.03).
+   MDD RISES by 4.6pp on spy and 4.0pp on ndx. The gate is
+   **net harmful** on post-GFC equity windows — the OPPOSITE of
+   the hypothesis.
+
+3. **Specific root cause: gate's edge is non-stationary**.
+   Gayed's 92-year backtest derives Sharpe 0.65 LRS-200 from
+   protection during the 1929/1973/2000/2008 mega-bears (~30-50%
+   drawdown protection across 4 events). The 17-year Tiingo
+   windows (spy_real 2009-2026, ndx_real 2010-2026) include
+   only 2018 Q4, 2020 COVID, 2022 inflation — three short
+   bears. The false-positive whipsaws (2010 flash crash, 2011
+   debt ceiling, 2015 vol shock, 2018 early Q4) cost more in
+   turnover + opportunity cost than the few real-bear
+   protections save in drawdown reduction.
+
+4. **Engine integrity perfect**: 13/13 TDD tests pass; G7
+   cross-library parity 0.002-0.144 pp on all 4 cfgs × 3 ds.
+   The failure is **structural**, not engine-related.
+
+5. **Pareto sensitivity FLAT**: all 4 cfgs score 62 — no
+   meaningful differentiation across (target_vol, max_leverage).
+   Higher vol-target trades CAGR for MDD without changing Sharpe.
+   The gate's failure mode is invariant to inner-stack sizing.
+
+### Don't re-test
+
+- **Binary regime gate (200-day SMA or any fixed-window SMA)
+  layered on top of vol-managed SPY+IEF stack on post-GFC
+  data**. The gate's edge is regime-specific (mega-bears) and
+  the post-2009 window does not have enough mega-bears to
+  amortize the false-positive whipsaw cost.
+- **Gayed (2016) canonical with IEF off-market (NOT cash)**.
+  IEF off-market does provide marginal duration safe-haven
+  benefit (~1pp/yr in CAGR vs Gayed cash) but doesn't change
+  the Sharpe outcome — Gayed's gate cost is too large to
+  recover via off-market choice.
+- **Naive 4-cfg sweep on (target_vol, max_leverage) of a
+  vol-managed stack with regime gate** — the cfgs are too
+  correlated for CSCV to give informative PBO.
+
+### Structural principles derived
+
+- **Gayed's edge is non-stationary on the post-GFC window**.
+  Gayed (2016) explicitly notes the strategy's primary value
+  is in mega-bear protection [p.17, Table 8], with documented
+  drawdown reductions from −97% to −33% on 2x leverage during
+  1928-2020. The post-2009 window has structurally fewer
+  mega-bears. Any strategy that derives its edge from
+  protection during mega-bears must be tested on a window
+  that includes at least one mega-bear AND replicate on
+  windows that don't.
+
+- **iter 016 vol-managed inverse-σ² scaling is robust on its
+  own, but DSR-bound at Sharpe 0.98-1.19 cross-ds**. iter 016
+  itself scored 79 STRONG (4/5 winner conditions, only DSR
+  failing). Adding a regime gate that whipsaws REDUCES Sharpe
+  AND lengthens cumulative n_trials → strictly worse DSR. The
+  way past iter 016's DSR ceiling is COMPOSITION (ensemble
+  with another validated base), NOT overlay (regime gate).
+
+- **iter 016 + iter 064 ENSEMBLE is the structurally clean
+  next direction**: both are validated bases with 4/5 winner
+  conditions cleared individually; their mechanisms are
+  orthogonal (vol-managed inverse-σ² vs Markowitz-blended
+  3-leg with QQQ-trend); likely correlation 0.6-0.8 →
+  diversification could lift composite Sharpe past 90 ceiling
+  AND clear DSR via Sharpe lift. (See iter 074 candidates.)
+
+**Citations applied**:
+
+- **Primary**: `[leverage_for_the_long_run, p.13, p.16, p.21]` —
+  Gayed (2016) "Leverage for the Long Run", SSRN 2741701.
+  Defines LRS-200 canonical (Sharpe 0.65-0.68 across 1928-2020,
+  Table 6/8). **Falsified on post-GFC Tiingo window**.
+- `[leverage_for_the_long_run, p.6-9]` — MA as volatility
+  regime indicator: positive autocorrelation (streaks) above
+  MA, negative (seesaw) below. Validated on long horizon.
+- `[risk_parity, p.10-11, ch.1]` — naïve risk parity primitive
+  (iter 016 base inheritance).
+- `[risk_parity, p.80-81, ch.4]` — SPY-bond anti-correlation →
+  IEF off-market (NOT cash) — structural innovation vs Gayed
+  canonical to capture duration safe-haven.
+- `[systematic_trading, p.40, ch.2]` — vol standardisation.
+- `[systematic_trading, p.170-171, ch.11]` — Carver IDM ≤ 2.5.
+- Moreira & Muir (2017). "Volatility-Managed Portfolios."
+  *JoF* 72(4), 1611-1644 — variance-target scaling.
+- `[advances_fin_ml, p.162-164]` — strict shift(1) on signals.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity.
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV (G1).
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials.
+- `[advances_fin_ml, p.196-202]` — bootstrap CI G6.
+- iter 016 final report — vol-managed SPY+IEF baseline.
+- iter 023 final report — TSM-on-3-asset closure.
+- iter 005 final report — single-asset SMA crossover with LETF closure.
