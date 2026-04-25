@@ -2447,6 +2447,94 @@ breakdown.
 
 ---
 
+## From iteration 034 — NTSX bond-carry sleeve (zero-net-notional duration spread on iter 015)
+
+### What failed
+
+3-leg static stack `0.9 SPY + 0.4 IEF + 0.2 TLT` (α=0.2, total bond
+notional preserved at iter 015's 0.6) reached 🥈 PROMISING **72/100**
+— **score-tied byte-for-byte with iter 032 (composition) and iter 033
+(substitution)** with identical breakdown 1:25 + 2:17 + 3:0 + 4:15 +
+5:10 + 6:5. Three structurally distinct bond-axis mechanisms now all
+converge at the same DSR-bound 72 ceiling, definitively confirming
+iter 015 plateau at 77 as the bond-axis efficient frontier.
+
+The variance-control hypothesis was vindicated empirically:
+- Bond-leg vol(0.4 IEF + 0.2 TLT) ≈ 5.4% (vs iter 033's 8.4% for
+  0.6 TLT alone, vs iter 015's 4.2% for 0.6 IEF).
+- MDD on **ndx_real improved from 47.04% (iter 033) to 42.11%
+  (iter 034)** — 4.93pp reduction.
+- MDD on **spy_real improved from 38.47% to 33.05%** — 5.42pp reduction.
+- Sharpe Δ vs iter 015 **POSITIVE on all 3 datasets** (+0.011/+0.014/+0.012)
+  — kill A clean, no Sharpe regress.
+
+But the Sharpe uplift is structurally too small to clear DSR:
+- DSR p-value: edu **0.529**, spy 0.250, ndx 0.253 (n_trials=4291).
+- iter 034 hypothesis pre-committed Kill C threshold 0.20 — fired on
+  all 3 datasets.
+- The +0.01 Sharpe gain is roughly 1/3 of the magnitude needed to
+  shift DSR worst-p below 0.20 at this n_trials.
+
+### Don't re-test
+
+- **Any further bond-axis variation on a static iter 015-style base.**
+  Three independent mechanism paths (032 layered VRP composition, 033
+  full-duration substitution, 034 zero-net-notional spread sleeve)
+  have all hit the 72 PROMISING ceiling with identical DSR cause.
+- **α-sweep on iter 034** (e.g., α ∈ {0.1, 0.3, 0.4}). Would inflate
+  n_trials by 9 (PBO concern) without addressing DSR root cause —
+  the spread mechanism is sound but Sharpe-ceiling-bound.
+- **ZROZ / EDV ultra-long-duration substitution** at any weight.
+  Variance scaling is monotonic in duration — would only worsen the
+  Sharpe trade-off documented in iter 033.
+- **Bond + commodity blend at static weights** (e.g., 0.9 SPY + 0.4 IEF
+  + 0.2 GLD). Still bond-anchored on the diversification side; gold
+  carry premium is structurally different from bond carry but the
+  variance-control hypothesis is the same shape and would land in
+  the same DSR-bound region without the orthogonality of FX or VRP-IWM.
+
+### Structural principles
+
+1. **Bond-axis variations on a static stack saturate at 72/77.** Three
+   mechanisms (composition / substitution / spread sleeve) extracting
+   roughly the same Sharpe-equivalent diversification per unit of
+   variance is empirical proof that the iter 015 static-stack base
+   is already at the bond-axis efficient frontier. Marginal Sharpe
+   gain from any further bond-axis tweak is ~+0.01 — below DSR
+   resolution at n_trials ≥ 4288 with Sharpe ≤ 1.10.
+2. **MDD improvements ≠ Sharpe improvements.** iter 034 reduced ndx
+   MDD by 4.93pp vs iter 033 but produced essentially the same Sharpe
+   (Δ +0.011). On a vol-constrained portfolio the MDD/Sharpe curves
+   are NOT proportional — variance shape can move while location
+   doesn't. Future iterations targeting MDD will not shift score if
+   they don't also shift Sharpe.
+3. **Variance-control hypothesis works mechanically but not
+   statistically.** ρ(IEF, TLT) = +0.916 (per iter 034 measurement)
+   confirms the spread-vol-low argument is real and quantifiable.
+   But the carry premium that the spread harvests is small enough
+   that it disappears in the Sharpe statistical noise floor at this
+   n_trials. To clear DSR at n_trials ≥ 4291, future iterations
+   need Sharpe ≥ 1.30 cross-ds — bond carry alone cannot deliver this.
+
+### Open paths (post-iter-034)
+
+These remain untested and structurally orthogonal to iter 034's
+closure:
+
+- **F-FX FX carry overlay** (long AUDUSD / short USDJPY) on iter 015
+  base. **Most distribution-orthogonal axis** — FX carry has its own
+  crash pattern (carry-trade unwinds, NOT synchronous with bond
+  duration shocks). Data already cached. Citation: Lustig-Verdelhan
+  (2007) JFE 102(1); Burnside et al. (2011) RFS 24(3).
+- **C-VRP IWM** (Russell 2000 small-cap put-credit-spread VRP) on
+  iter 015 base — small-cap stress decorrelated from large-cap.
+  Citation: KMPV 2018 + AMP 2013.
+- **Non-static architecture** (regime/ML/CS) — only path to clear
+  DSR at n_trials ≥ 4291 with Sharpe ≥ 1.30 cross-ds. Higher
+  implementation cost.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:

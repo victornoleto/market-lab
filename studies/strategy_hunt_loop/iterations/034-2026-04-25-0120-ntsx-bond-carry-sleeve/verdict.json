@@ -1,0 +1,400 @@
+{
+  "total_score": 72,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 17,
+      "max": 25,
+      "per_dataset": {
+        "educational": "5",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.5290933083406171,
+      "cumulative_n_trials": 4291
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": false
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count across 9 total windows",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              0.5799855941806723,
+              1.2879294202418776,
+              0.7842027617816386
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.6628443373472976,
+              1.0057460692919633,
+              0.690644615399702
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.5796637502211872,
+              1.2502507488438677,
+              0.6498188432847577
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.7947870249781291,
+      "cagr": 0.12470640309689607,
+      "mdd": 0.4378309708502293,
+      "dsr_p_value": 0.5290933083406171
+    },
+    "spy_real": {
+      "sharpe": 1.0579898674987709,
+      "cagr": 0.15713302595174783,
+      "mdd": 0.33045255346239233,
+      "dsr_p_value": 0.25003264825485594
+    },
+    "ndx_real": {
+      "sharpe": 1.0752757065607355,
+      "cagr": 0.194818860350906,
+      "mdd": 0.4210840618064389,
+      "dsr_p_value": 0.25311832846211213
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4291,
+  "configs_tested": 1,
+  "primary_citation": "[risk_parity, ch.5]; [risk_parity, p.5, p.10-11, ch.1]; [leverage_for_the_long_run, p.19-20]; Asness-Frazzini-Pedersen (2012), FAJ 68(1), SSRN 1728082; Koijen-Moskowitz-Pedersen-Vrugt (2018), JFE 127(2), DOI 10.1016/j.jfineco.2017.11.002; Cochrane-Piazzesi (2005), AER 95(1), DOI 10.1257/0002828053828581; Ilmanen (2011) Expected Returns ch.6-7",
+  "hypothesis_slug": "ntsx-bond-carry-sleeve",
+  "pre_committed_cfg": {
+    "cfg_id": "ntsx_synth_90_spy_40_ief_20_tlt",
+    "eq_w": 0.9,
+    "bd_short_w": 0.4,
+    "bd_long_w": 0.2,
+    "rebalance": "daily",
+    "funding_cost_modeled": false
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "ntsx_synth_90_spy_40_ief_20_tlt",
+      "n_passed": "5",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.5290933083406171,
+      "G3_wf_pass": false,
+      "G3_wf_profitable": 5,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.8422330598365351,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.7393671398619472,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.13026791266440996,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.025989830053307905
+    },
+    "spy_real": {
+      "cfg_id": "ntsx_synth_90_spy_40_ief_20_tlt",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.25003264825485594,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 6,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.6905915547491396,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.7393671398619472,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.3190243676548502,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.01626854693532742
+    },
+    "ndx_real": {
+      "cfg_id": "ntsx_synth_90_spy_40_ief_20_tlt",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.25311832846211213,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.6229154470156041,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 0.8129800869541214,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.29903846840486314,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.08666059944379967
+    }
+  },
+  "leg_correlations": {
+    "educational": {
+      "eq_bd_short": -0.29654051245040597,
+      "eq_bd_long": -0.3084356619651489,
+      "bd_short_bd_long": 0.9106812381893824
+    },
+    "spy_real": {
+      "eq_bd_short": -0.26524768193075826,
+      "eq_bd_long": -0.2952247053508441,
+      "bd_short_bd_long": 0.91617404692079
+    },
+    "ndx_real": {
+      "eq_bd_short": -0.20036826257874585,
+      "eq_bd_long": -0.2251995652762236,
+      "bd_short_bd_long": 0.9152782512632821
+    }
+  },
+  "benchmarks_used_custom": {
+    "educational": {
+      "sharpe": 0.6293436372653917,
+      "cagr": 0.10815914739227761,
+      "mdd": 0.5520110457219881,
+      "label": "SPY b&h 2006-01-04\u21922026-04-15 (iter 034 IEF+TLT-aligned)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "score_with_custom_benchmark": {
+    "total_score": 72,
+    "winner_conditions_met": false,
+    "tier": "PROMISING",
+    "criteria": {
+      "1_sharpe_edge": {
+        "points": 25,
+        "max": 25,
+        "datasets_beat": 3,
+        "required_minimum_dataset_count": 2
+      },
+      "2_gates": {
+        "points": 17,
+        "max": 25,
+        "per_dataset": {
+          "educational": "5",
+          "spy_real": "6",
+          "ndx_real": "6"
+        },
+        "thresholds": {
+          "educational": 5,
+          "spy_real": 4,
+          "ndx_real": 4
+        },
+        "cross_dataset_thresholds_met": true
+      },
+      "3_dsr": {
+        "points": 0,
+        "max": 15,
+        "worst_p_value": 0.5290933083406171,
+        "cumulative_n_trials": 4291
+      },
+      "4_cagr_floor": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": true
+        }
+      },
+      "5_mdd_ceiling": {
+        "points": 10,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": false
+        }
+      },
+      "6_robustness_bonus": {
+        "points": 0,
+        "max": 5,
+        "note": "Populated by caller if rolling-window data provided"
+      }
+    }
+  },
+  "iter015_reference_metrics": {
+    "educational": {
+      "sharpe": 0.7835159394528711,
+      "cagr": 0.12334380196139882,
+      "mdd": 0.4449292329656862
+    },
+    "spy_real": {
+      "sharpe": 1.0441595976415032,
+      "cagr": 0.15535185853597655,
+      "mdd": 0.30320169616664866
+    },
+    "ndx_real": {
+      "sharpe": 1.0637515002341693,
+      "cagr": 0.19244115126849937,
+      "mdd": 0.3951308189467023
+    }
+  },
+  "iter033_reference_metrics": {
+    "educational": {
+      "sharpe": 0.8501913762169779,
+      "cagr": 0.13361678856058212,
+      "mdd": 0.4260362189606878
+    },
+    "spy_real": {
+      "sharpe": 1.0371635669364674,
+      "cagr": 0.15948616434535556,
+      "mdd": 0.3847168514914342
+    },
+    "ndx_real": {
+      "sharpe": 1.0648290004990286,
+      "cagr": 0.1983204740099216,
+      "mdd": 0.4704221656779127
+    }
+  },
+  "delta_vs_iter015": {
+    "educational": {
+      "sharpe_delta": 0.011271085525258018,
+      "cagr_delta": 0.0013626011354972434,
+      "mdd_delta": -0.007098262115456888
+    },
+    "spy_real": {
+      "sharpe_delta": 0.013830269857267652,
+      "cagr_delta": 0.0017811674157712787,
+      "mdd_delta": 0.02725085729574367
+    },
+    "ndx_real": {
+      "sharpe_delta": 0.011524206326566144,
+      "cagr_delta": 0.0023777090824066427,
+      "mdd_delta": 0.025953242859736603
+    }
+  },
+  "delta_vs_iter033": {
+    "educational": {
+      "sharpe_delta": -0.05540435123884879,
+      "cagr_delta": -0.008910385463686055,
+      "mdd_delta": 0.011794751889541544
+    },
+    "spy_real": {
+      "sharpe_delta": 0.0208263005623035,
+      "cagr_delta": -0.0023531383936077344,
+      "mdd_delta": -0.05426429802904187
+    },
+    "ndx_real": {
+      "sharpe_delta": 0.010446706061706834,
+      "cagr_delta": -0.003501613659015579,
+      "mdd_delta": -0.04933810387147375
+    }
+  },
+  "funding_cost_sensitivity_note": "Synthetic NTSX-on-(IEF+TLT) does NOT subtract futures-stacking funding cost on the 50% additional notional. Real product would have ~50-100 bps annual drag depending on rate regime (same magnitude as iter 015/033). Estimated Sharpe haircut: ~0.05-0.10 across 17y. Iter 035 should test funded variant (iter 018-style replay).",
+  "pre_committed_kills": {
+    "A_sharpe_regress_vs_iter015": {
+      "fired": false,
+      "datasets_below": 0,
+      "threshold": "\u2265 2 of 3 datasets with Sharpe \u0394 vs iter 015 < 0"
+    },
+    "B_ndx_mdd_above_45pct": {
+      "fired": false,
+      "ndx_mdd": 0.4210840618064389,
+      "threshold": "> 0.45"
+    },
+    "C_dsr_worst_p_above_0p20": {
+      "fired": true,
+      "worst_p": 0.5290933083406171,
+      "threshold": "> 0.20"
+    },
+    "D_g7_crosslib_above_3pp": {
+      "fired": false,
+      "max_diff_pp": 0.08666059944379967,
+      "threshold": "> 3.0 pp"
+    },
+    "E_score_below_60": {
+      "fired": false,
+      "score": 72,
+      "threshold": "< 60"
+    },
+    "F_robustness_below_7_of_9": {
+      "fired": false,
+      "positive_windows": 9,
+      "threshold": "< 7/9 sub-windows positive"
+    }
+  },
+  "n_kills_fired": 1,
+  "status": "promising"
+}
