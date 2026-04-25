@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 66
+total_iterations: 67
 winners_found: 0
 status: iterating
-latest_iteration: "066-2026-04-25-1411"
-cumulative_n_trials: 4336
+latest_iteration: "067-2026-04-25-1436"
+cumulative_n_trials: 4337
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -55,21 +55,25 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
 
+### 067 — 2026-04-25 — iter064-vol-target-cap10 (🥈 PROMISING, 74/100)
+- **Result:** Sharpe edu/spy/ndx 1.17/1.26/1.28 (Δ frozen +0.49/+0.36/+0.33 beats SPY/QQQ by 3-5×; Δ064 −0.046/−0.076/−0.093 KILL A 2/3), CAGR 7.61/7.93/7.93% (Δ064 −1.88/−2.04/−2.24pp KILL D edu 7.61<9.18), MDD 13.25/13.32/11.95% (−2 to −4pp ✓), gates 6/6/6, DSR worst-p 0.0757 spy (n=4337), scale_mean 0.88/0.88/0.88, pct_at_cap 65-67%, corr 0.94-0.96, winner=3/5; score 1:25 2:19 3:10 4:0 5:15 6:5 = 74. 3/8 KILLS A+C+D.
+- **Lesson:** Moreira-Muir σ⁻² overlay with cap=1.0 (no-lev, 21d lookback, σ_target=full-window σ_064) on iter 064 saturated composite hits same PROMISING ceiling 74 as iter 065's +1.5× calm-lev. Both leverage variants (065 +lev; 067 cap-1.0) fail at 74 because iter 064's inner iter_046/iter_039/iter_041 stack is already vol-managed-via-iter-016, leaving no residual conditional-variance autocorrelation. Mean-exposure cap (0.88) drops mean faster than variance drops. iter 064's 90 = strict LOCAL OPTIMUM across 7 closed mechanism axes. See `iterations/067-*/`.
+
 ### 066 — 2026-04-25 — meta-label-rf-iter064 (📉 NEAR_FAIL, 37/100)
-- **Result:** Sharpe edu/spy/ndx 0.66/0.81/0.65 (Δ frozen −0.02/−0.09/−0.30; Δ064 −0.56/−0.52/−0.72 KILL A 3/3), CAGR 4.10/4.54/3.28% (Δ064 −5.39/−5.43/−6.90pp KILL D edu unlock destroyed), MDD 13.65/11.99/12.49%, gates 5/6/5, DSR worst-p 0.8498 ndx (KILL B 21.6× 064's 0.039; n=4336), avg AUC 0.503/0.503/0.492 (KILL H 3/3 = at chance), pct_traded 66.5/54.1/43.2%, flips 703/622/622, winner=1/5; score 1:0 2:17 3:0 4:0 5:15 6:5 = 37. 5/8 KILLS A+B+C+D+H.
-- **Lesson:** Bar-level 1-day sign of Markowitz-saturated composite is informationally null in the standard regime/vol/momentum feature canon regardless of model class — extends iter 013's LR closure to tree models (2 model classes × 2 bases). Friction cost binding for any binary daily-cadence gate (700 flips × 5 bps ≈ 30 pp drag). iter 064's 90 = strict LOCAL OPTIMUM across 6 closed axes. Future meta-labels must target forward-N-day Sharpe (regime cadence ≥ 5d), not 1-day sign. Citations: `[advances_fin_ml, ch.3]` + `[advances_fin_ml, ch.7]` + Breiman (2001). See `iterations/066-*/`.
+- **Result:** Sharpe edu/spy/ndx 0.66/0.81/0.65 (Δ064 −0.56/−0.52/−0.72 KILL A 3/3), CAGR 4.10/4.54/3.28% (Δ064 −5.39/−5.43/−6.90pp KILL D), MDD 13.65/11.99/12.49%, gates 5/6/5, DSR worst-p 0.8498 ndx (n=4336), avg AUC 0.503/0.503/0.492 (KILL H 3/3), winner=1/5; score 1:0 2:17 3:0 4:0 5:15 6:5 = 37. 5/8 KILLS A+B+C+D+H.
+- **Lesson:** Bar-level 1-day sign of Markowitz-saturated composite is informationally null in standard regime/vol/momentum feature canon regardless of model class — extends iter 013's LR closure to tree models. Friction binds for any binary daily-cadence gate. See `iterations/066-*/`.
 
 ### 065 — 2026-04-25 — iter064-vix-output-lev-gate (🥈 PROMISING, 74/100)
-- **Result:** Sharpe edu/spy/ndx 1.12/1.19/1.23 (Δ064 −0.10/−0.14/−0.14 KILL A 2/3), CAGR 10.96/11.47/11.80% (Δ064 +1.47/+1.49/+1.63pp; spy floor gap −2.01→−0.51 not cleared), gates 6/6/6, DSR p=0.1140 worst-spy (n=4335, tripled from 064's 0.039), winner=3/5; score 1:25 2:19 3:5 4:5 5:15 6:5 = 74. 2/7 KILLS A+C.
-- **Lesson:** iter 060's Sharpe-convention closure GENERALIZES to calm-only application — empirical drag 1.5-2× calm-fraction-discounted prediction; closes "regime-conditional ext lev" at lev=1.5× / borrow=rf+25bps. iter 064's 90 is strict LOCAL OPTIMUM under linear/scalar transforms. See `iterations/065-*/`.
+- **Result:** Sharpe edu/spy/ndx 1.12/1.19/1.23 (Δ064 −0.10/−0.14/−0.14 KILL A 2/3), CAGR 10.96/11.47/11.80% (Δ064 +1.47/+1.49/+1.63pp; spy floor gap −0.51 not cleared), gates 6/6/6, DSR p=0.1140 worst-spy (n=4335, tripled from 064's 0.039), winner=3/5; score 1:25 2:19 3:5 4:5 5:15 6:5 = 74. 2/7 KILLS A+C.
+- **Lesson:** iter 060 Sharpe-convention closure GENERALIZES to calm-only application — empirical drag 1.5-2× calm-fraction-discounted prediction; closes "regime-conditional ext lev" at lev=1.5× / borrow=rf+25bps. iter 064's 90 = strict LOCAL OPTIMUM under linear/scalar transforms. See `iterations/065-*/`.
 
 ### Iters 015-064 (compressed 1-line; full detail in `iterations/NNN-*/`)
 - **064** (🥇 90 TOP-K #1, 0/7 KILLS, iter058-qqq-trend-substitution) S 1.22/1.33/1.38, CAGR 9.49/9.97/10.17% (1/3 floor — edu 1st-ever non-LETF unlock), MDD 17/15/15%, gates 7/7×3, DSR worst-p 0.0392 spy. **NEW TOP-K #1, breaks 85 ceiling held since iter 046.** Faber 2007 QQQ-200d-trend (S~0.80, CAGR~12-14%) at w=0.10 strictly Pareto-dominant over HYG_TSM (iter 058) for iter 046 anchor. Path 95+ = close spy (−2.01pp) or ndx (−5.18pp) CAGR floor.
 - **063** (🥇 81, 1/6 KILLS A, iter058-internal-letf-iter041-only) S 1.17/1.26/1.35 (Δ058 −0.05/−0.09/−0.06 KILL A 3/3), CAGR 9.46/9.67/11.12% (1/3 floor — edu 1st unlock on 058 family), MDD 17.51/15.51/18.01%, DSR worst-p 0.0762 REGRESSED from 058's 0.0494 (ndx 0.0426 PASS only). **Internal-LETF axis EXHAUSTED across both Pareto branches** (037-anchor → 79; 058-anchor → 81). Drag per-unit-LETF-weight INVARIANT across base Sharpe regimes; Sharpe-headroom thesis FALSIFIED. Path 90+ → novel anchor (S≥1.20 ∧ CAGR≥12%) OR CAGR-additive 3rd stream (S≥0.7 ∧ CAGR≥9.5%) — **SOLVED in iter 064 via QQQ-200d-trend**.
-- **062** (🥇 79, 1/6 KILLS B, iter037-upro-substitution-internal-letf) S 0.95/1.07/1.10, CAGR 16.26/17.08/19.07% (3/3 floor PASS, +1.3-2.1pp uplift vs 037), MDD 35.90/30.51/37.33%, DSR worst-p 0.263 REGRESSED vs 037's 0.222. **Internal-LETF on iter 037 anchor delivers SAME 79 — 4× replication of iter 037-family ceiling (037, 059, 061, 062). Vol decay + financing drag invariant under (a)(b)(c).**
-- **061** (🥇 79, 1/6 KILLS B, iter037-eq075-plus-hyg-tsm) S 0.93/1.16/1.17, CAGR 13.85/15.98/18.57% (3/3 floor PASS), MDD 35.97/24.84/32.48%, DSR worst-p 0.341 REGRESSED vs 037's 0.222. **Closes iter 037-family weight-tuning**: canonical 0.60/0.45/0.45 is Sharpe-optimal; equity-overweight LOWERS Sharpe because bond/gold legs are Sharpe-positive contributors. ΔCAGR/ΔSharpe ≈ 16 pp/Sharpe-unit.
-- **060** (🥇 79, 2/6 KILLS A+B, iter058-levered-150-futures-borrow) S 1.10/1.22/1.28, CAGR 11.7/12.2/12.6% (2/3 floor), MDD 25/21/20%, DSR worst-p 0.125. **Closes external-leverage axis on iter 058 at borrow > 0.5pp above rf**: rf=0 → absolute borrow is drag.
-- **059** (🥇 79, 1/7 KILLS B, iter037-plus-hyg-tsm-w010) S 0.98/1.17/1.18, CAGR 13.0/14.5/16.5% (3/3 floor vs 058's 0/3), MDD 31/23/29%, DSR worst-p 0.268, corr 0.42. **Anchor substitution trades CAGR-floor for DSR-pass; saved-stream-pair Pareto bounded 79-85.**
+- **062** (🥇 79, internal-letf-iter037) Internal-LETF on 037 anchor → SAME 79; 4× replication of iter 037-family ceiling. Vol decay + financing drag invariant.
+- **061** (🥇 79, eq075+hyg-tsm) Closes iter 037-family weight-tuning; canonical 0.60/0.45/0.45 Sharpe-optimal.
+- **060** (🥇 79, 058-levered-150) Closes external-leverage on 058 at borrow > 0.5pp above rf.
+- **059** (🥇 79, 037+hyg-tsm-w010) Anchor substitution trades CAGR-floor for DSR-pass; saved-stream-pair Pareto bounded 79-85.
 - **058** (🥇 85 TOP-K #1 tied, 0/6 KILLS, hyg-credit-carry-3rd-stream) S 1.22/1.35/1.40, gates 7/7/7, DSR 0.049/0.034/0.026, CAGR 8.7/9.0/9.3% (0/3 floor), MDD 17/14/13%, corr 0.44. **3rd-stream-Sharpe thesis vindicated; CAGR floor 0/15 binding on iter-046 anchor.**
 - **057** (🥈 64, commodity-tsm-basket-3leg) S 1.05/1.08/1.14, CAGR 8/8/8% (0/3 floor), DSR 0.223, corr 0.30. **Closes multi-commodity TSM 3rd-stream on iter 046; basket S 0.13-0.29 too low for Markowitz-positive.**
 - **056** (🥈 74, iter046-levered-130) S 1.10/1.21/1.27, CAGR 10.8/11.2/11.6% (1/3 floor), DSR 0.10. **External 1.3× lev at 3.5% borrow closes external-lev axis on iter 046 at borrow ≥ 3%.**
@@ -106,17 +110,17 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-**066**. **iter 064 still TOP-K #1 STRONG 90, 0/7 KILLS.** iter 066 (RF meta-label on 064 daily 1-day sign) → 37 NEAR_FAIL, AUC 0.49-0.50 = at chance — extends iter 013's LR closure to tree models. **iter 064's 90 = 6-axis-closed strict LOCAL OPTIMUM** (saved-stream-pair / internal-LETF / weight-sweep / output-VIX-gate / calm-cond-ext-lev / bar-level-meta-label). Friction binds for any binary daily-cadence gate.
+Consumed/closed: 002-005/007/009-014/017/019-**067**. **iter 064 still TOP-K #1 STRONG 90, 0/7 KILLS.** iter 067 (σ⁻² cap=1.0 overlay on 064) → 74 PROMISING, KILL A+C+D — both leverage variants (065 +1.5× calm-lev; 067 cap-1.0) cap at 74 ceiling. **iter 064's 90 = 7-axis-closed strict LOCAL OPTIMUM** (saved-stream-pair / internal-LETF / weight-sweep / output-VIX-gate / calm-cond-ext-lev / bar-level-meta-label / σ⁻² cap-1.0).
 
-### Iter 067 candidates (iter 064 still TOP-K #1; iter 066 closed bar-level meta-label axis)
+### Iter 068 candidates (iter 064 still TOP-K #1; iter 067 closed σ⁻² cap-1.0 overlay axis)
 
-- **#1 Variance-targeting on iter 064** σ_target=σ_064, hard cap ≤ 1.0; Moreira-Muir 2017; iter 016/040 closed simpler bases. **Predicted 80-90. RECOMMENDED — orthogonal to lev/weight axes.**
-- **#2 Regime-conditional QQQ_TREND WEIGHT** (w_qqqt 0.20 calm / 0.05 stress; anchor floats; total=1.0; NO lev). Predicted 85-93.
-- **#3 Forward 5-day Sharpe meta-label** (regime label, ~120 flips/yr vs 700/yr in iter 066). Predicted 60-85, high variance.
-- **#4 QQQ-trend static weight sweep w=0.15-0.20** (Sharpe regress + Bonferroni). Predicted 85-90.
+- **#1 Regime-conditional QQQ_TREND WEIGHT** (w_qqqt 0.20 calm / 0.05 stress; anchor floats 0.80/0.95; total=1.0; NO lev). Distinct from output-scale lev (065/067) because adjusts INNER Markowitz weight. **Predicted 85-93. RECOMMENDED — orthogonal to lev/σ-overlay axes both now closed.**
+- **#2 Forward 5-day Sharpe meta-label** (regime label, ~120 flips/yr vs 700/yr in iter 066). Predicted 60-85, high variance.
+- **#3 QQQ-trend static weight sweep w=0.15-0.20** (Sharpe regress + Bonferroni). Predicted 85-90.
+- **#4 Fresh anchor (not iter 046-derived)** — search for stream where conditional variance autocorrelation > iter 046's residual. Cross-asset trend on Hurst-based regime, or credit-spread regime as primary signal. High exploration cost.
 - **#5 Plano C sleeve** (≤ 70). **#6 CRSP/Norgate** (data budget required).
 
-DEAD-LETTER (saved-stream-pairs / 046-family / HYG / HMM-2 / FX carry / MTUM-QUAL-USMV not cached / cross-sectional mom Tiingo / broader-region VRP 5-leg / ext-lev / commodity TSM basket / eq075 / internal-LETF / Faber QQQ-200d / VIX-calm-cond ext lev / **bar-level RF meta-label 5-feature daily 1-day sign**): see iters 045/047-058/059/061/062/063/064/065/066 entries.
+DEAD-LETTER (saved-stream-pairs / 046-family / HYG / HMM-2 / FX carry / MTUM-QUAL-USMV not cached / cross-sectional mom Tiingo / broader-region VRP 5-leg / ext-lev / commodity TSM basket / eq075 / internal-LETF / Faber QQQ-200d / VIX-calm-cond ext lev / bar-level RF meta-label / **σ⁻² cap-1.0 overlay**): see iters 045/047-058/059/061/062/063/064/065/066/067 entries.
 
 ### Deeper backlog
 
@@ -139,8 +143,9 @@ DEAD-LETTER (saved-stream-pairs / 046-family / HYG / HMM-2 / FX carry / MTUM-QUA
 - **3rd-stream-S binding (049/050/057/058)**: standalone S ≥ ~0.5 binding for Markowitz-positive at any practical weight, NOT corr alone. 058 vindicates with HYG_TSM (S~0.9, w=0.10) → 85.
 - **iter 059-063 closures (037-anchor + leverage axes)**: 059 037+HYG → 79 (CAGR-DSR dual constraint: NO anchor 0-58 has S≥1.20 ∧ CAGR≥12%); 060 ext-lev 1.5× on 058 → 79 (rf=0 borrow=drag); 061 eq075 → 79 (canonical 0.60/0.45/0.45 Sharpe-optimal); 062 internal-LETF on 037 → 79 (drag invariant); 063 internal-LETF iter 041 within 058 → 81 (Sharpe-headroom thesis FALSIFIED). **Internal-LETF axis EXHAUSTED both branches** (037→79; 058→81).
 - **iter 064 NEW TOP-K #1 (QQQ-200d-trend Faber 2007 sub for HYG_TSM at w=0.10)**: 90 (0/7 KILLS, first 90+). qqqt standalone S 0.80-0.91 / CAGR 11.6-13.9%. Combined Δ058: Sharpe −0.005/−0.016/−0.027, CAGR +0.79/+0.96/+0.91pp, edu 9.49%>9.18% floor 1st-ever non-LETF unlock. Validates iter 063 diagnosis (iter 058 binding = CAGR floor not Sharpe). Closes single-asset-equity-trend-3rd-stream axis at w=0.10.
-- **iter 065 (VIX-calm-conditional ext lev 1.5× on iter 064 base, borrow 2.25%)**: 74 PROMISING regression −16; 2/7 KILLS A+C. CAGR uplift +1.47/+1.49/+1.63pp (spy gap −0.51 not cleared) but Sharpe drag −0.10/−0.14/−0.14 / DSR tripled 0.039→0.114 (all 3 fail 0.05). iter 060's Sharpe-convention closure GENERALIZES to calm-only application — empirical drag 1.5-2× calm-fraction-discounted prediction. iter 064's 90 confirmed as strict LOCAL OPTIMUM under linear/scalar transforms.
-- **iter 066 (RF meta-label on 064 daily 1-day sign, 5 standard features)**: 37 NEAR_FAIL −53; AUC 0.49-0.50 = at chance across 3 ds. Bar-level 1-day sign of Markowitz-saturated composite is informationally null in standard regime/vol/momentum feature canon regardless of model class (extends iter 013 LR closure to trees). Friction binds: 700 flips × 5 bps ≈ 30 pp drag. iter 064's 90 = 6-axis-closed strict LOCAL OPTIMUM.
+- **iter 065 (VIX-calm-cond ext lev 1.5× on 064)**: 74 PROMISING −16, 2/7 KILLS A+C. CAGR +1.47/+1.49/+1.63pp but Sharpe drag −0.10/−0.14/−0.14 + DSR tripled. Closes calm-conditional ext-lev axis at lev=1.5×/borrow=rf+25bps.
+- **iter 066 (RF meta-label on 064 daily 1-day sign, 5 features)**: 37 NEAR_FAIL −53, 5/8 KILLS. AUC 0.49-0.50 at chance × 3 ds. Bar-level 1-day sign of Markowitz-saturated composite is informationally null in standard regime/vol/momentum canon regardless of model class (extends iter 013 LR closure to trees). 700 flips × 5 bps ≈ 30 pp friction.
+- **iter 067 (Moreira-Muir σ⁻² overlay on 064, cap=1.0 no-lev)**: 74 PROMISING −16, 3/8 KILLS A+C+D. Closes σ⁻² cap-1.0 overlay axis on iter 064; combined with iter 065's +1.5× calm-lev closure, the σ⁻² overlay family saturates at **74 ceiling for cap ∈ [1.0, 1.5×]**. Generalises iter 016's MM 79 ceiling to saturated-composite case with mean-exposure-cap-drag constraint. iter 064's 90 closes 7th axis.
 
 ---
 
