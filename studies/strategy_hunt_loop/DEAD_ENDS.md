@@ -4153,3 +4153,137 @@ Citations for iter 061's closure:
   GLD leg's positive Sharpe contribution is the surprising finding
   vindicating Erb-Harvey's "gold-as-diversifier" thesis even at
   reduced 0.40 weight.
+
+---
+
+## From iteration 062 — internal-LETF UPRO substitution preserving equity exposure
+
+Complete study: `studies/strategy_hunt_loop/iterations/062-2026-04-25-1220-iter037-upro-substitution-internal-letf/`.
+
+### What failed (do NOT re-test)
+
+1. **Substituting UPRO (3× SPY LETF) for SPY in iter 037's equity leg
+   at preserved equity exposure (0.20 UPRO + 0.65 IEF + 0.65 GLD =
+   1.50 NAV; 0.20 × 3 = 0.60 SPY-equiv equity exposure)** — TQQQ
+   replaces QQQ on ndx_real via the same logic; synth-UPRO
+   (`r_synth = 3·r_SPY − 0.91%/252` per Hsiao-Williams 2017 daily-reset
+   LETF formula at rf=0 convention) bridges the pre-2009-06-25 educational
+   gap, real UPRO from inception forward. Score **79/100 STRONG**
+   (1/6 KILLS B fired — DSR worst-p 0.263 ≥ iter 037's 0.222 baseline).
+   Same score as iter 037 standalone (79), iter 059 (37+HYG, 79), and
+   iter 061 (37-eq075+HYG, 79).
+
+2. **The specific root cause: UPRO's daily-reset vol decay + visible
+   internal financing drag**. Synth UPRO's daily-return Sharpe equals
+   SPY's Sharpe (because mean and std both scale by 3), but compounded
+   returns suffer Itô vol decay (`CAGR_synth_UPRO ≈ 3·CAGR_SPY −
+   ½·9·var_SPY`). On the educational dataset's 2008 GFC stretch, synth
+   UPRO mechanically compounds 3× SPY's −56% peak-to-trough into ~−95%
+   drawdown. Real UPRO's swap funding (T-bill + 0.95% per ProShares
+   2024-25 prospectus) + expense ratio (0.91%/yr) are baked into the
+   NAV path — visible to the project's `_sharpe()` rf=0 convention as
+   ~1.86%/yr drag at the 0.20 weight, contributing ~0.37%/yr absolute
+   drag on the combined portfolio. Combined effect: equity leg's
+   Sharpe-per-unit-vol drag exceeds the +0.40 diversifier overweight
+   Sharpe lift at this weight scheme.
+
+3. **CAGR-uplift hypothesis CONFIRMED but Sharpe-lift hypothesis
+   FALSIFIED — net score unchanged at 79**. CAGR uplifted +1.3-2.1 pp
+   across 3 datasets vs iter 037 anchor (16.26/17.08/19.07% vs
+   14.16/15.53/17.76%) — confirming the iter 061 finding that bond/gold
+   legs are Sharpe-positive contributors and diversifier overweight
+   harvests more CAGR. MDD ceiling preserved 3/3 (35.90/30.51/37.33%
+   vs ceilings 60.14/38.70/40.12%) — bond+gold cushion held even with
+   3× LETF daily resets. But combined Sharpe DROPPED on 3/3 datasets
+   (Δ −0.029 / −0.088 / −0.073 vs iter 037), and the lower base Sharpe
+   at fixed n_trials=4332 raised DSR worst-p from iter 037's 0.222 to
+   **0.263** (REGRESSED 18%). Score 79 = same as iter 037 / iter 059
+   / iter 061; the FOURTH replication of the iter 037-anchor 79-STRONG
+   ceiling.
+
+### Don't re-test
+
+- Internal-LETF substitution on iter 037 anchor at any equity weight
+  scheme that preserves total NAV ≤ 1.50× (the 0.20/0.65/0.65 case
+  here closes preserved-NAV; 0.30/0.55/0.55 = +equity exposure +0.30
+  SPY-equiv, predicted to drift further toward UPRO-solo Sharpe ~0.80
+  → score < 79).
+- Internal-LETF substitution combined with HYG_TSM 3rd stream on iter
+  037 anchor at any HYG weight (the iter 058/059/061/062 thread shows
+  iter 037 anchor + any 3rd stream + any iter-037-equity-leg variant
+  saturates at 79 STRONG — the DSR ceiling is structural to the iter
+  037 family Sharpe regime, not addressable via 3rd streams or
+  equity-leg substitution at preserved exposure).
+- 2× LETF (SSO, QLD) substitution on iter 037 anchor — predicted to
+  follow the same pattern: less vol decay than 3× UPRO/TQQQ but lower
+  CAGR uplift, net Sharpe likely between SPY-solo and UPRO-solo, score
+  Pareto-bounded at 79.
+- Higher LETF weights (e.g., 0.30 UPRO + 0.55 IEF + 0.55 GLD = 1.40
+  NAV; or 0.40 UPRO + 0.45 IEF + 0.45 GLD = 1.30 NAV) — the iter 061
+  + iter 062 evidence shows equity-tilt direction LOWERS portfolio
+  Sharpe; reducing diversifier weight will worsen the trade.
+
+### Structural principles
+
+- **Internal-LETF financing IS visible** at project's rf=0 convention,
+  even though iter 060's closure stipulated the bookkeeping
+  asymmetry (no separate borrow line subtracted for internal LETF).
+  The iter 060 closure was correct in the *bookkeeping* sense (real
+  UPRO has financing baked in via NAV path, not a separate line) but
+  iter 062 demonstrates that the EFFECT of internal financing IS
+  measured through (a) daily-reset path drift / vol decay and (b)
+  the absolute swap+expense drag baked into r_UPRO. The Sharpe
+  convention reads it as direct return drag, just delivered through
+  a different accounting mechanism than external margin borrow.
+
+- **Synth UPRO daily Sharpe = SPY daily Sharpe** (mean and std both
+  scale by leverage; ratio invariant). This is a useful identity for
+  TDD tests but does NOT mean equivalent portfolio Sharpe — compounded
+  returns differ via vol decay. The Itô correction `−½·n²·var` (for
+  n× LETF) is NOT a Sharpe correction, it's a CAGR correction; the
+  Sharpe IS preserved at the daily timescale but eroded at the multi-
+  day (cumulative) timescale via the AM-GM inequality.
+
+- **The iter 037-anchor 79-STRONG ceiling is now 4× confirmed structural
+  invariant**: across (a) anchor weights (canonical 0.60/0.45/0.45 vs
+  eq075 0.75/0.40/0.40 vs internal-LETF 0.20/0.65/0.65), (b) anchor
+  leverage type (external rf=0 margin vs internal LETF NAV-path swap),
+  (c) 3rd-stream addition (HYG_TSM at w=0.10). **Path to WINNER 90+
+  on the iter 037 family is structurally impossible** — must pivot to
+  the DSR-clearing branch (iter 058 = iter 046 anchor + HYG_TSM, score
+  85) or to a structurally novel anchor with simultaneously Sharpe ≥
+  1.20 AND CAGR ≥ 12% on real data (no anchor in iters 0-62 delivers
+  this combination — fundamental binding constraint identified in
+  iter 059 and confirmed in iter 062).
+
+- **G7 cross-library parity is exactly 0.0000 pp** for both the synth-
+  UPRO formula (`3·r_SPY − 0.91%/252`) AND the 3-leg static stack on
+  all 3 datasets (educational 5101 bars, spy_real 4226 bars, ndx_real
+  4066 bars). Both transformations are linear-pure; floating-point
+  identity is achievable across pandas and numpy implementations
+  with identical inputs.
+
+Citations for iter 062's closure:
+
+- `[leverage_for_the_long_run, p.19-25]` — Hsiao & Williams (2017),
+  *J. Index Investing*. Daily-reset LETF formula and vol decay
+  derivation; preserved-leverage zone (1.5-2.0×) on diversified base.
+- `[risk_parity, ch.5]` — Asness-Frazzini-Pedersen (2012) multi-leg
+  risk-parity decomposition; iter 037 architecture preserved.
+- `[risk_parity, p.5, p.10-11, ch.1]` — AFP 2012 SSRN 1728082, static
+  fixed-weight stack mechanism.
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials
+  (4331 → 4332).
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (numpy
+  reference for synth-UPRO formula AND 3-leg stack; 0.0000 pp parity
+  on all 3 datasets).
+- `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
+- `[advances_fin_ml, p.162-164]` — no-lookahead 1-day shift rule.
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV (vacuous at N=1).
+- Erb, C.B. & Harvey, C.R. (2006), *FAJ* 62(2) 69-97,
+  DOI 10.2469/faj.v62.n2.4084 — gold strategic role; iter 037
+  architecture preserved.
+- Koijen, Moskowitz, Pedersen, Vrugt (2018), *JFE* 127(2) 197-225,
+  DOI 10.1016/j.jfineco.2017.11.002 — bond term-premium harvest.
+- ProShares UPRO prospectus 2024-2025 — expense ratio 0.91%/yr,
+  swap counterparty financing T-bill + 0.95%.
