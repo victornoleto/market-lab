@@ -1982,14 +1982,106 @@ metrics.
 
 ### Path forward (NOT dead — regime-aware gate paths)
 
-- **R-1 VIX-persistence gate** on iter 026 (filter only when VIX > 35
-  for ≥ 3 consecutive days). Preserves post-GFC transient-spike
-  capture AND still skips 2008-Q4 sustained regimes. Single binary
-  param, pre-committed. **Best path to WINNER post-iter-028.**
+- ~~**R-1 VIX-persistence gate**~~ — TESTED in iter 029, **partial closure**.
+  Configuration `vix_threshold=35, persistence_days=3` on iter 026
+  base scored **71/100** (ties iter 028; Kill A triggered). DSR
+  worst-p improved 27 % (0.136 → 0.100) but missed the 10-pt threshold
+  by 0.0003 (would have been 76 STRONG). Closes that exact cfg only.
+  See "From iteration 029" below for what it does NOT close.
 - **R-2 VIX z-score gate** (filter when `(VIX − VIX_60d_mean) /
-  VIX_60d_std > 2`). Relative-shock conditioning.
+  VIX_60d_std > 2`). Relative-shock conditioning. **Now strongest
+  candidate for WINNER post-iter-029** (orthogonal to absolute level
+  AND persistence; should correctly classify 2011 Eurozone gradual
+  buildups as benign while still catching GFC + 2020-Q1).
 - **R-3 VIX > VXV term-structure gate** (`[volatility_trading, p.218]`).
   Front-month backwardation as sustained-stress signal.
+- **R-1 + R-2 composite gate** (persistence AND z-score both fire).
+  More selective; should reduce false positives on transient-but-
+  clustered events.
+
+---
+
+## From iteration 029 — VIX-persistence VRP-primary (R-1)
+
+Complete study: `studies/strategy_hunt_loop/iterations/029-2026-04-24-2236-vix-persistence-vrp-primary/final_report.md`.
+
+### What failed (do NOT re-test exactly)
+
+1. **`vrp_persistence_v35d3_h1_5_10_1m`** — single pre-committed cfg
+   adding `persistence_days=3` to iter 028's `vix_threshold=35`. Score
+   71/100 (ties iter 028); Kill A triggered (spy −0.052 vs iter 026,
+   ndx −0.067). DSR worst-p 0.1002 (0.0003 above the 10-point award
+   threshold). Educational reached new DSR record p=0.0251 (best ever
+   on the longest 5100-bar window) but the score does not reflect this
+   improvement because criterion 3 uses worst-p across datasets and
+   spy_real fractionally missed the second tier.
+
+2. **The structural finding is dataset-asymmetric**: the 3 hunt-loop
+   datasets have qualitatively different high-VIX-event regime
+   structures. educational (GFC-inclusive) is dominated by deeply-
+   persistent vol; spy_real (post-GFC) is mixed transient/persistent
+   (3/6 of iter 028's triggers were transient and correctly let
+   through by R-1, but the other 3 are real persistent clusters);
+   ndx_real (post-GFC tech) is all-clustered (4/4 of iter 028's
+   triggers were already 3+ day persistent → R-1 = iter 028 here,
+   contributing zero refinement). A single constant-parameter
+   persistence gate cannot simultaneously optimize all 3 datasets.
+
+### Don't re-test
+
+- The exact cfg `vrp_persistence_v35d3_h1_5_10_1m` (already tested,
+  PROMISING 71).
+- Variations of `persistence_days` ∈ {3} × `vix_threshold` ∈ {35} on
+  iter 026 base — single value in each dimension, no point sweeping.
+- Combining iter 029 R-1 with iter 027 leverage — leverage channel
+  (rf-dilution) is orthogonal but compounds spy/ndx Sharpe damage.
+
+### What this DOES NOT close
+
+- **Longer persistence horizons** (`persistence_days = 5, 7, 10`)
+  with the same vix_threshold=35 — may reduce false positives on
+  spy_real but the dataset-structure asymmetry still binds. Best-case
+  educational unchanged or slight regression; spy maybe +0.01-0.03;
+  ndx unchanged. Likely score 71-74 PROMISING.
+- **Different threshold + persistence combinations**
+  (`vix_threshold ∈ {30, 40}` × `persistence_days ∈ {3, 5}`).
+  Bondarenko 2014 §3 implies level alone isn't the discriminator;
+  these are likely also-ran refinements.
+- **Orthogonal regime axes** (R-2 z-score; R-3 term-structure;
+  realised-vol z) — the iter 029 dataset-structure finding suggests
+  these are the *real* paths forward.
+- **Composite gates** (persistence AND z-score, both must fire to
+  skip; persistence AND term-structure backwardation).
+- **Conditional strike adjustment** (V-5/V-6 — widen strikes during
+  persistent high-VIX rather than skipping outright; capture some
+  premium decay with reduced tail risk).
+- **iter 026 unfiltered base** at N=1.0 — still STRONG #5 at score 76
+  (the actual baseline being refined).
+
+### Structural principles
+
+- **The 3 hunt-loop datasets have different regime-structure
+  signatures for high-VIX events**: GFC-inclusive samples are
+  dominated by deeply-persistent (weeks at VIX > 50) vol regimes;
+  post-GFC broad-market samples are mixed (some 1-2 day spikes that
+  mean-revert profitably + some 3+ day clusters that breach); post-
+  GFC tech samples have all-clustered high-VIX events (no transient
+  triggers to begin with). A single constant-parameter regime gate
+  optimizes at most 1-2 of the 3 datasets simultaneously.
+- **DSR worst-p threshold is knife-edge categorical**: criterion 3
+  awards 5 pts at p < 0.20, 10 pts at p < 0.10, 15 pts at p < 0.05.
+  An iteration that improves p from 0.136 to 0.1002 (a 27 % relative
+  improvement, materially closer to gates) gets the same 5 pts as if
+  it had not improved at all. Future iterations should target
+  worst-p < 0.10 or < 0.05 specifically, not just "improve DSR
+  marginally".
+- **Reducing-to-parent tests (TDD)** are critical for engine
+  correctness. Iter 029's TDD spec includes
+  `test_persistence_off_at_high_threshold_matches_iter026` (vacuous
+  gate → iter 026) and `test_persistence_days_1_matches_iter028`
+  (persistence horizon = 1 → iter 028); both passed at 1e-12. This
+  pattern should be standard for any iteration that adds parameters
+  to a parent engine.
 
 ---
 
