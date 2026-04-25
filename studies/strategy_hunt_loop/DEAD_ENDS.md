@@ -2687,6 +2687,90 @@ Sinclair 2013 p.218 cross-asset VRP harvest diversification.
 
 ---
 
+## From iteration 040 — Moreira-Muir 2017 σ⁻²-target wrapper on cross-asset VRP basket
+
+### What failed
+
+Applied MM 2017 inverse-realized-variance scaling to iter 039's
+cross-asset VRP basket overlay (target_vol=0.05 ann, lookback=21d,
+max_lev=2.0×). All other parameters preserved verbatim from iter 039.
+
+| dataset | Sharpe | Δ vs iter 039 | DSR p | Δ DSR | MDD | gates |
+|---|---|---|---|---|---|---|
+| educational | 1.036 | **−0.104** ❌Kill A | 0.168 | **+0.094** ❌Kill B | 9.04% (−5.3pp) | 6/7 |
+| spy_real    | 1.213 | −0.075 (under) | 0.112 | +0.051 | 8.94% | 6/7 |
+| ndx_real    | **1.308** | **−0.253** ❌Kill A | 0.070 | +0.064 | 6.42% | 6/7 |
+
+Score: **69/100 PROMISING** (Δ039 −7). 3/6 pre-committed kill
+criteria fired: A (basket-corrupts-Sharpe), B (DSR-no-improvement),
+E (score-regression). Baseline implementation passes all 7 TDD
+specs; G7 cross-lib parity at 0.0000 pp; 9/9 robust sub-windows
+positive — confirms the regression is NOT due to a bug, it is the
+fundamental absorption mechanism.
+
+### Don't re-test
+
+- **Any constant-window MM-style σ⁻² scaling** (target_vol ∈ [3-10%],
+  lookback ∈ [10-60d], max_lev ∈ [1.5-2.5×]) applied to short-vol-
+  harvest streams (single-asset OR multi-leg basket). Different
+  windows tune sensitivity but cannot reverse the sign of the
+  absorption mechanism (MM theorem applies pointwise per bar).
+- **Kelly-fraction notional sizing** (harvest_notional[t] ∝ σ⁻²) by
+  inheritance — same structural absorption with different transfer
+  function on σ̂². Re-confirms iter 027's "rf-bonus dilutes with
+  leverage" finding via the inverse-vol axis.
+- **Adding equity stack underneath the vol-managed basket**: σ²_port
+  absorption (closed iter 032) compounds with MM absorption (closed
+  iter 040) — the floor is double-tight.
+
+### Structural principles
+
+- **MM 2017 σ⁻²-scaling Sharpe-lever theorem requires E[r|σ̂²] ≈
+  constant** (Moreira & Muir 2017 §IV). For equity returns this is
+  approximately true (Sharpe weakly negatively correlated with
+  realized vol). For **short-put-spread basket returns this is
+  violated**: VRP harvest mean SCALES POSITIVELY with IV because
+  put-spread premium = f(IV) (Bondarenko 2014 §II; Carr-Wu 2009 §III).
+  When IV is high, harvest is LARGER per unit notional — so MM
+  removes exposure precisely when expected return is highest. Net:
+  variance ↓, mean ↓ MORE → Sharpe ↓.
+- **Cleanest possible test**: iter 040 has NO equity stack
+  underneath the basket overlay. The σ²_port absorption mechanism
+  that closed iter 032 (composed iter 015 + iter 031) is
+  structurally absent. The fact that MM still degrades Sharpe
+  proves the absorption is intrinsic to short-vol-harvest streams,
+  NOT specific to having a stacked equity leg.
+- **VRP-harvester family ceiling at 76 STRONG** is now confirmed
+  across **4 structurally distinct attacks**: 026 single-asset,
+  031 AND-VIX-gate composite, 039 cross-asset basket, 040 MM
+  vol-target wrapper. The CAGR-floor 0/15 (T-bill collateral) +
+  edu DSR > 0.05 (cluster-correlated tails in 2008Q4) appear to
+  be structural — not parametric — and resist any sizing
+  modulation that tries to LEVER the existing harvest signal.
+- **Open break-76 paths** require either (a) replacing T-bill
+  collateral with a positive-CAGR base-layer (raises CAGR floor
+  score 0 → 5-15) without re-triggering iter 032's σ²_port
+  absorption, or (b) introducing an ML meta-label that
+  ORTHOGONALLY predicts open/skip on the basket (changes the
+  support of the harvest distribution, not its sizing — orthogonal
+  to MM absorption mechanism). See `[advances_fin_ml, ch.3]`
+  meta-labelling.
+
+### Citations
+
+- Moreira & Muir (2017) *J. Finance* 72(4) 1611-1644 — vol-target
+  scaling, the canonical reference being tested.
+- Bondarenko (2014) *QJF* 4(3) 1450015 — empirical SPX VRP magnitude
+  (the IV-correlated mean structure that breaks MM's assumption).
+- Carr & Wu (2009) *RFS* 22(3) 1311-1341 — variance risk premia
+  structural foundation.
+- `[volatility_trading, p.218]` — Sinclair (2013) cross-asset VRP
+  harvest (the iter 039 base being defended).
+- `[advances_fin_ml, ch.3]` — meta-labelling (the recommended
+  alternative for iter 041).
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:

@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 39
+total_iterations: 40
 winners_found: 0
 status: iterating
-latest_iteration: "039-2026-04-25-0313"
-cumulative_n_trials: 4304
+latest_iteration: "040-2026-04-25-0338"
+cumulative_n_trials: 4305
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -60,16 +60,14 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
 
-### 039 — 2026-04-25 — vrp-basket-3etf (🥇 STRONG, 76/100, 0/6 KILLS, hypothesis NOT falsified)
-- **Hypothesis & Citations:** Cross-asset VRP basket T-bill + 1/3 SPY/QQQ/IWM short 5/10% OTM 21-DTE put credit spreads, harvest_notional=1.0, iv_scales=(1.0, 1.10, 1.25). `[volatility_trading, p.218]` + Bondarenko 2014 QJF 4(3); Carr-Wu 2009 RFS 22(3); DMV 2009 JoF 64(4); BM 2006 JFE 81(2); AMP 2013. Scope: 1 cfg, 3 datasets pre-committed.
-- **Result:** Sharpe edu/spy/ndx **1.140/1.288/1.561** (Δ frozen +0.46/+0.39/+0.61; Δ026 +0.010/+0.008/+0.191), gates 6/6/**7**, DSR p=0.0748/0.0612/**0.0059** (n=4304; ndx **loop-record sub-0.01**, 6.4× tighter than iter 026), CAGR 5.09/5.22/6.35%, MDD 14.32/7.07/6.84% (Δ026 −2.48/+0.67/−1.36pp), G7 max **0.0000pp** perfect, robust **9/9**, winner 3/5; score 1:25 2:21 3:10 4:0 5:15 6:5 = **76**.
-- **Lesson:** Cross-asset VRP basket TRIPLE-DOMINATES iter 026 (Sharpe 3/3 ↑, ndx DSR ×6.4 tighter, robust 9/9 perfect) but score-ties at 76: CAGR floor 0/15 structural to T-bill collateral, edu DSR 0.075 structural to GFC cluster (ρ→1 in stress). Confirms VRP-harvester family ceiling at 76 STRONG across single-asset (026) + 3-leg basket (039). Closes 4/5-leg extensions, VIX gates on basket, asymmetric weights, DTE/strike sweeps. Iter 040 PICK: **vol-target wrapper around basket** (Moreira-Muir σ⁻² on basket realized vol; combines iter 016 mechanism with iter 039 basket; σ²_port absorption argument weaker on basket than iter 032 static-stack). See `iterations/039-*/`.
+### 040 — 2026-04-25 — vrp-basket-vol-target (🥈 PROMISING, 69/100, 3/6 KILLS — Hypothesis FALSIFIED)
+- **Hypothesis & Citations:** Moreira-Muir 2017 σ⁻²-target wrapper on iter 039 basket overlay (target_vol=0.05, lookback=21d, max_lev=2.0×). Inherits iter 039 cfg verbatim; ONLY new dim is dynamic notional scaling. `[volatility_trading, p.218]` + MM 2017 JoF 72(4) 1611-1644; `[systematic_trading, p.170-171]` (IDM≤2.5). 1 cfg, 3 datasets pre-committed.
+- **Result:** Sharpe edu/spy/ndx **1.036/1.213/1.308** (Δ frozen +0.36/+0.31/+0.35; Δ039 **−0.104/−0.075/−0.253**), gates 6/6/6, DSR p=**0.168/0.112/0.070** (n=4305; Δ039 +0.094/+0.051/+0.064 ALL DEGRADE), CAGR 5.48/6.40/6.77%, MDD **9.04/8.94/6.42%** (edu −5.3pp), G7 max **0.0000pp**, robust **9/9**, winner 3/5; score 1:25 2:19 3:5 4:0 5:15 6:5 = **69**.
+- **Lesson:** MM 2017 σ⁻² wrapper **ABSORBS** basket VRP harvest — short-vol mean scales POSITIVELY with IV (put-spread premium = f(IV)), so σ⁻² removes exposure when E[harvest] is largest → Sharpe ↓. Cleanest absorption test (NO equity stack, rules out σ²_port). VRP family 76 ceiling confirmed across 4 attacks (026/031/039/040). Closes any constant-window MM σ⁻² scaling + Kelly-fraction sizing. Open: ML meta-label on basket (RECOMMENDED iter 041), positive-CAGR base, cross-sectional factor timing. See `iterations/040-*/`.
 
-### 038 — 2026-04-25 — regime-lev-vix (STRONG, 79/100)
-- **Result:** Sharpe edu/spy/ndx 0.998/1.105/1.149 (Δ frozen +0.32/+0.20/+0.19; Δ037 +0.015/−0.049/−0.025), gates 6/6/6, DSR p=0.204 (n=4303, best static-stack ever > 0.20 partial-credit), MDD 25.11/21.60/28.63% (Δ037 −8.22/−3.64/−3.65pp best of any STRONG), G7 max 0.087pp, avg lev 1.46-1.49, robust 9/9, winner 4/5; score 1:25 2:19 3:0 4:15 5:15 6:5 = **79**.
-- **Lesson:** Static-stack DSR-bound at 79 across 037+038 mechanisms; binary VIX-gate **MDD-additive, Sharpe-neutral, DSR-marginal**; MM 2017 +0.20-0.30 uplift doesn't replicate on diversified base. Two-axis: DSR-bound + MDD freely optimizable. Break-79 in-family: regime-conditional WEIGHTS not LEVERAGE; out-of-family: cross-asset VRP basket / ML meta-label. Closes binary-VIX + predicted-same-ceiling for σ⁻¹/σ⁻²/other-VIX/z-VIX/term-spread/MOVE/EBP. See `iterations/038-*/`.
-
-### Iters 015-037 (compressed 1-line; full detail in `iterations/NNN-*/`)
+### Iters 015-039 (compressed 1-line; full detail in `iterations/NNN-*/`)
+- **039** (🥇 76, basket 3etf 1/3-eq, 0/6 KILLS) Sharpe 1.14/1.29/1.56 (Δ frozen +0.46/+0.39/+0.61; Δ026 +0.01/+0.01/+0.19), gates 6/6/7, DSR p=0.075/0.061/**0.006** (loop-record ndx sub-0.01, 6.4× tighter than 026), MDD 14/7/7%, G7 0.0000pp, robust 9/9; score 1:25 2:21 3:10 4:0 5:15 6:5 = **76**. PRINCIPLE: cross-asset VRP basket TRIPLE-DOMINATES iter 026 operationally but score-ties at 76 — VRP family ceiling structurally CAGR-floor 0/15 + edu DSR > 0.05 (T-bill + GFC cluster ρ→1). Closes 4/5-leg, VIX gates on basket, asymmetric weights, DTE/strike sweeps.
+- **038** (🥇 79, regime-lev-vix) Sharpe 0.998/1.105/1.149 (Δ037 +0.02/−0.05/−0.03), DSR 0.204 (best static-stack > 0.20), MDD 25/22/29% (Δ037 −8/−4/−4pp best of any STRONG), G7 0.087pp, lev avg 1.46-1.49; score 1:25 2:19 3:0 4:15 5:15 6:5 = **79**. PRINCIPLE: static-stack DSR-bound at 79; binary VIX-gate MDD-additive + Sharpe-neutral + DSR-marginal. Two-axis: DSR-bound + MDD freely optimizable.
 
 - **037** (🥇 79, 3-leg preserved-lev) Sharpe 0.98/1.15/1.17 (Δ015 +0.20/+0.11/+0.11), DSR 0.222 (best static-stack until 038), MDD 33/25/32% (1st 3/3 clean), G7 max 0.134pp; score 1:25 2:19 3:0 4:15 5:15 6:5 = **79**. PRINCIPLE: Static-stack 77 ceiling BROKEN at 79; AMP 2013 orthogonality survives 33% equity cut. DSR-bound at 79; ties top-K #1.
 - **036** (🥈 72, 3-leg additive 1.8×) Sharpe 0.92/1.15/1.15, DSR 0.311, MDD ndx 41.53% breach +1.41pp; score 72. PRINCIPLE: +0.30 lev breaks ndx MDD → net 72. Subsumed by 037 strict-dominates.
@@ -123,18 +121,18 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-036/**037**/**038**/**039** (iter 039 cross-asset VRP basket SPY+QQQ+IWM @ 1/3 each ties iter 026/031 at 76 STRONG with **loop-record Sharpe 1.561 ndx + DSR 0.006 ndx + 9/9 robust + G7 0.0000pp**; CAGR floor 0/15 structural to T-bill collateral; edu DSR 0.075 above strict 0.05; basket strictly dominates iter 026 operationally but score-tied at family 76 ceiling). Top-K #1 quintet 016/018/021/037/038 at 79; top-K #5 trio 026/031/039 at 76.
+Consumed/closed: 002-005/007/009-014/017/019-036/**037**/**038**/**039**/**040** (iter 040 MM-vol-target wrapper on iter 039 basket FAILED — 69/100, hypothesis falsified, 3/6 kills fired; Sharpe Δ039 −0.10/−0.07/−0.25, DSR worst-p degrades 0.075→0.168, score regression −7. Confirms VRP family 76 ceiling across 4 attacks: 026/031/039/040). Top-K #1 quintet 016/018/021/037/038 at 79; top-K #5 trio 026/031/039 at 76.
 
-### Iter 040 candidates (VRP family at 76 across 026+031+039; static-stack family at 79 across 037+038)
+### Iter 041 candidates (VRP fam 76 across 4 attacks; static-stack 79 across 037+038)
 
-- **Vol-target wrapper around iter 039 basket (RECOMMENDED)**: Moreira-Muir σ⁻²-scaling on basket realized vol (target_vol=15%, lookback=21d, max_lev=2.0×). Combines iter 016 mechanism with iter 039 basket; σ²_port absorption argument structurally weaker on multi-leg-equity-VRP basket than iter 032 static-stack. Predicted: edu DSR < 0.05 credible PASS, score 78-82 → potential WINNER. ~2h. `[volatility_trading, p.218]` + MM 2017.
-- **Regime-conditional WEIGHTS on iter 037 base** (secondary): VIX<20 → (0.70, 0.40, 0.40); VIX≥20 → (0.30, 0.55, 0.55). Modulates WEIGHTS not leverage. Predicted 81-83 STRONG; one-tier ceiling improvement, not break-WINNER unless all 5 strict met. ~2h. `[risk_parity, ch.5]`.
-- **ML meta-label on iter 039 basket** (AFML ch.3): binary classifier predicts open/skip. Features: VIX/VXN/RVX/VVIX/T10Y3M/EBP/realized-vol/skew. Orthogonal-by-construction; could break edu DSR. ~3-4h.
-- **Kelly-fraction harvest on basket** (lower priority): scale `harvest_notional` ∝ σ_basket⁻²; may rebreak iter 027 closure via non-linear sizing.
+- **ML meta-label on iter 039 basket (RECOMMENDED)**: binary open/skip classifier orthogonal to notional scaling. Features: VIX/VXN/RVX/VVIX/T10Y3M/EBP/realized-vol/skew. AFML ch.3 meta-labelling — changes SUPPORT of harvest distribution, not sizing (iter 040 closed sizing axis). ~3-4h. `[advances_fin_ml, ch.3]`.
+- **Iter 039 basket overlay on iter 037 static-stack base**: replace T-bill collateral with 0.6 SPY + 0.45 IEF + 0.45 GLD. 3-leg basket has 3× smaller per-leg σ²_port absorption than iter 032's 1-leg; if sub-linear, may push 79→82-85. Risk: re-trigger iter 032 closure. ~2h.
+- **Cross-sectional factor timing ≥10 factor ETFs** (out-of-family): MTUM/QUAL/USMV/SIZE/VLUE/SPLV; 12-1 momentum + value composite (AMP 2013). ≥10 assets exits iter 003's ≤20-asset floor. ~3h.
+- **Regime-conditional WEIGHTS on iter 037 base**: VIX<20 → (0.70, 0.40, 0.40); VIX≥20 → (0.30, 0.55, 0.55). Modulates weights not leverage. Predicted 81-83 STRONG. ~2h.
 
 DEAD-LETTER **F-FX FX carry**: DATA-BLOCKED (Tiingo FX span 2020+ only, 6y insufficient). Parked.
 
-NOT recommended (032-039 confirm — predicted ≤+0.02 Sharpe / −0.005 DSR): single-asset diversifier subst on 2/3-leg, weight perturbations of 0.6/0.45/0.45, σ⁻¹/σ⁻²/other-VIX/z-VIX/term-spread/MOVE/EBP gates on 037, 4-leg/5-leg basket, VIX gates on basket, asymmetric basket weights, DTE/strike sweeps.
+NOT recommended (032-040 confirm — predicted ≤+0.02 Sharpe / −0.005 DSR or strict regression): single-asset diversifier subst on 2/3-leg, weight perturbations of 0.6/0.45/0.45, σ⁻¹/σ⁻²/other-VIX/z-VIX/term-spread/MOVE/EBP gates on 037, 4-leg/5-leg basket, VIX gates on basket, asymmetric basket weights, DTE/strike sweeps, **any constant-window MM-style σ⁻² scaling on short-vol overlays (iter 040 closes), Kelly-fraction harvest sizing (predicted same absorption mechanism)**.
 
 ### Deeper backlog
 
@@ -150,7 +148,7 @@ NOT recommended (032-039 confirm — predicted ≤+0.02 Sharpe / −0.005 DSR): 
 - **Iter 001-014**: daily EMA/SMA × LETF + any overlay; drawdown-stops primary; CAPE/EBP/VIX standalone; Clenow ATR/adj-slope on ≤20-asset homogeneous; single-asset σ⁻¹/σ⁻²; TSM 12-1/6-1/18-1 overlay on vol-managed blend; T10Y3M 21d/5d EMA haircut on iter 008; weekly/monthly cadence for vol-managed; meta-LR ρ+VIX_z; EBP credit; pre-val mandatory.
 - **Iter 017/019-021**: 12-1 top-K=1 rotation on ≤3 regions; ρ stock-bond overlay (closes VIX/MOVE/realized-vol overlays by σ²_port cointegration analogy); options-on-equity-leg 5/10%OTM×21DTE either sign on vol-managed 2-leg stack (σ²_port absorbs Sharpe; MDD asymmetric short −1-3pp / long +3-6pp). Open: bare puts / ATM straddles / different DTE on STATIC base.
 - **Iter 022-025**: TOM eq:bd modulator (σ²_port quadratic); TSM-PRIMARY ≤4-asset per-asset vol-target (turnover dominates √N); bond-curve carry-as-ALLOCATION 2-bond static (saturates iter 015 plateau); slow-EWMAC long-only 6-asset basket (long-only sacrifices 50% trend; 6 too narrow vs HOP 67). Open: cross-asset carry, ≥20-asset, long-SHORT EWMAC, carry+value.
-- **VRP-harvester family ceiling 76 STRONG across 026 (single-asset) + 031 (AND-VIX-gate) + 039 (basket)**: vol-target wrapper ABSORBS short-vol overlays (Sharpe-neutral); stand-alone T-bill harvest delivers +0.38-0.45 Sharpe (026); linear leverage NOT total-Sharpe-neutral (027 closes leverage path; rf-bonus dilutes); single-axis VIX-gates capped at 76/71 (028 const, 029 persistence, 030 z-score, 031 AND-composite); cross-asset basket SPY+QQQ+IWM 1/3 each ties 76 with loop-record Sharpe 1.561 ndx + DSR 0.006 ndx + 9/9 robust + G7 0.0000pp (039). CAGR floor 0/15 + edu DSR > 0.05 structural to T-bill collateral. Closes 4/5-leg extensions, basket VIX gates, asymmetric weights, DTE/strike sweeps. Open break-76: vol-target wrapper on basket (RECOMMENDED), ML meta-label on basket, Kelly-fraction notional sizing.
+- **VRP-harvester family ceiling 76 STRONG across 4 attacks: 026/031/039/040**: T-bill harvest delivers +0.38-0.45 Sharpe (026); linear-lev rf-dilutes (027); VIX-gates cap 76/71 (028/029/030/031); basket SPY+QQQ+IWM ties 76 (039); MM-vol-target wrapper on basket strictly regresses to 69 (040 — short-vol mean scales with IV → σ⁻² removes exposure when E[harvest] is largest → variance ↓, mean ↓ MORE → Sharpe ↓; cleanest test, no σ²_port explanation). CAGR floor 0/15 + edu DSR > 0.05 structural to T-bill collateral. Closes 4/5-leg, basket VIX gates, asymmetric weights, DTE/strike sweeps, **any constant-window MM σ⁻² scaling, predicted Kelly-fraction sizing**. Open break-76: ML meta-label on basket (RECOMMENDED iter 041), positive-CAGR base-layer, cross-sectional factor timing.
 - **Static-stack family ceiling 79 STRONG across 037 (preserved-lev) + 038 (regime-gated-lev)**: 032/033/034/036 hit 72; 035 hit 77; 037 = 0.6/0.45/0.45 SPY+IEF+GLD @ 1.5× → Sharpe 0.98/1.15/1.17, DSR 0.222, MDD 33/25/32%; 038 = VIX-regime-gated 1.7↔1.0× (avg 1.46-1.49) → Sharpe 0.998/1.10/1.15, DSR 0.204 (best static-stack ever), MDD 25/22/29% (−4 to −8pp vs 037, two-axis: DSR-bound + MDD freely optimizable). MM 2017 +0.20-0.30 uplift doesn't replicate on diversified base. Closes weight perturbations, binary-VIX, σ⁻¹/σ⁻², z-VIX, term-spread/MOVE/EBP gates on 037. Open break-79 in-family: regime-conditional WEIGHTS not LEVERAGE; out-of-family: vol-target on basket.
 
 ---
