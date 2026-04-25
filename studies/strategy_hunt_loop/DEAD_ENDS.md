@@ -3044,6 +3044,135 @@ Complete study: `studies/strategy_hunt_loop/iterations/047-2026-04-25-0619-iter0
 
 ---
 
+## From iteration 048 — Output-side VIX-regime leverage gate (calm 1.4× / stress 1.0×) on iter 046 combined stream (STRONG 83, **REGRESSION vs iter 046's 85**, 3/6 KILLS, output-leverage axis CLOSED)
+
+Complete study: `studies/strategy_hunt_loop/iterations/048-2026-04-25-0644-iter046-output-lev-gate/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Single pre-committed cfg `iter046_lev_calm14_stress10_vix20`** — apply
+   binary VIX[t-1] regime leverage multiplier to iter 046's COMBINED daily
+   net stream (not to inputs). 1.4× when VIX[t-1] < 20, 1.0× otherwise.
+   Score 83/100 vs iter 046's 85 (regression). Sharpe regresses on all 3
+   datasets (−0.0015 / −0.0333 / −0.0374). **DSR worst-p REGRESSES from
+   iter 046's 0.0414 (edu) to iter 048's 0.0427 (edu) AND 0.0416 → 0.0557
+   on spy_real**, crossing raw α=0.05 and dropping criterion 3 from 15→10
+   (5-pt loss). CAGR uplift ≈ +1.75-1.89pp on all 3 datasets, **below the
+   pre-committed +2pp threshold** → Kill F fires across the board. The
+   only axis with positive trade-off is MDD (17.0-18.5% vs iter 046's
+   14.6-18.0% — slightly higher but well below ceilings).
+
+2. **The specific structural finding: output-side regime leverage gating
+   on a composite that ALREADY consumes the same regime signal at the
+   INPUT level is structurally redundant.** iter 041 (the input layer
+   inside iter 046's 50/50 combo) already classifies bars on VIX[t-1] <
+   20 vs ≥ 20 and re-allocates equity weight from 0.70 to 0.30 on stress
+   bars; applying a SECOND output-side classifier with the same VIX[t-1]
+   threshold double-counts the regime signal. The output multiplier
+   amplifies returns asymmetrically (1.4× on calm, 1.0× on stress), which
+   ALSO amplifies σ asymmetrically: calm-bar σ inflates by 1.4 on 65-70%
+   of bars, raising σ_combined by ≈ 28% while mean-return scales by ≈ 28%
+   too — Sharpe stays roughly flat (σ × 1.4 / μ × 1.4), but n × Sharpe²
+   (the DSR signal-to-noise proxy) is unchanged while n_trials += 1, so
+   p_value rises by exactly the deflator step. This is the OUTPUT-LEVEL
+   ANALOG of iter 044's INPUT-level closure.
+
+3. **Sub-multiplicative compounding eats ~30% of the linear envelope.**
+   Linear envelope predicts CAGR uplift = 0.4 × 0.7 ≈ +2.8pp; realised
+   uplift = +1.7-1.9pp. Reason: returns and σ²_t are correlated (calm
+   bars have lower σ², so multiplying by 1.4 on calm bars
+   doesn't multiply expected return proportionally — it slightly amplifies
+   downside σ on bars where the original strategy was running its
+   correlation diversification hardest). Net realised CAGR uplift ≈ 1.18-
+   1.20× iter 046 CAGR, NOT the 1.28× the linear weighting would predict.
+
+### Don't re-test
+
+- **Any binary-VIX-regime output-side leverage gate on iter 046 with
+  threshold matching iter 041's input gate**: the redundancy mechanism
+  closes the family. Higher lev_calm (e.g., 1.6× / 1.0×) amplifies
+  σ-mismatch further; lower lev_calm (e.g., 1.2× / 1.0×) gives smaller
+  CAGR uplift — both endpoints dominated.
+- **Output-side leverage gate on iter 046 with a DIFFERENT regime
+  classifier correlated with VIX (T10Y3M, EBP, MOVE, BAA spread)** —
+  same redundancy mechanism applies; the input layer's VIX-regime is
+  already conditioned on macro-stress and an output classifier on a
+  VIX-correlated indicator double-counts.
+- **Asymmetric pairs (lev_calm < lev_stress, e.g., 0.8× / 1.4×)** — the
+  envelope predicts CAGR DROP and Sharpe REGRESS in stress (reverse of
+  the original goal) and the variance-amplification mechanism is
+  symmetric, so this would simply be a worse iter 048.
+- **Continuous (non-binary) output-leverage gates** based on `f(VIX)`
+  monotone in VIX — same redundancy with the iter 041 binary input gate;
+  any continuous mapping that reduces to ≈ 1.4× at low VIX and ≈ 1.0× at
+  high VIX hits the same DSR-bucket-crossover failure.
+- **Pre-committing more than N=1 cfg in the iter 046-output-modulation
+  family** — Bonferroni cost from iter 047 already showed N=3 destroys
+  the gates score; iter 048 confirms that even N=1 is dominated.
+
+### Don't re-test on other bases UNLESS
+
+- Output-leverage gate on iter 015/016/037 (NO regime gate at the input
+  level) — the redundancy mechanism does not fire there. Could yield a
+  +5-pt CAGR-floor pass on a base that started without iter 046's
+  cross-correlation reduction. **But this trades back into iter 037-
+  family ceilings (DSR > 0.2)**, so the absolute score is bounded by
+  iter 045's 81 — uninteresting unless the base itself improves.
+- Output-leverage gate on a 3-leg or 4-leg additive composite NOT
+  containing iter 041 — redundancy still applies if any input layer
+  consumes VIX, but breaks if the input layers are macro-orthogonal.
+  Low-priority — the additive composite itself is the thing to test
+  first (iter 049 candidate).
+
+### Structural principles
+
+- **Regime classifier reuse double-counts.** A composite that consumes
+  a regime signal `R[t]` at the input level and also consumes
+  `R[t]` (or any function of `R[t]`) at the output level pays the
+  classification noise twice. The two layers cannot independently
+  improve the strategy when correlated through a common regime
+  indicator. Generalises iter 044's "input gate enrichment" closure
+  to "any regime-signal reuse, input or output".
+- **The DSR deflator increment is a meaningful statistical cost
+  on a near-significant base.** iter 046's worst-p was 0.0414 (1pp
+  inside α=0.05). Adding ANY new cfg increments cumulative_n_trials
+  by 1, which raises the deflator quantile and pushes the implied
+  p-value upward by ≈ 0.001-0.0015 even if raw Sharpe is identical.
+  iter 048 paid this cost (0.0414 → 0.0427 on edu) and ALSO got slight
+  Sharpe regression (−0.0015), so the worst-p crossed 0.0427 — JUST
+  enough to keep edu at 15-pt DSR bucket (under 0.05), but spy went
+  from 0.0416 to 0.0557 (over 0.05) and dropped to the 10-pt bucket.
+  This is the "deflator-quantile-step" mechanism — small Sharpe
+  regressions become large score regressions on near-significant
+  bases.
+- **The iter 046 score function has no remaining "free" axes for
+  modulation.** Three distinct mechanisms (input gate enrichment in
+  iter 044, weight asymmetry in iter 047, output-leverage in iter 048)
+  all FAIL to break 85 because they all trade the same conserved
+  quantity: variance × return. The path to 90 must be ADDITIVE
+  (add a new uncorrelated stream), not MODULATIVE (transform the
+  existing 2 streams).
+
+### Citations
+
+- `[risk_parity, ch.5]` — iter 041 base architecture (preserved verbatim).
+- `[volatility_trading, p.218]` — iter 039 basket architecture (preserved
+  verbatim).
+- `[advances_fin_ml, ch.17-18]` — binary regime detection on VIX[t-1].
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials; deflator
+  increment is the principal score-regression mechanism.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (0.0000pp on 3/3).
+- `[advances_fin_ml, p.162-164]` — no-lookahead 1-day shift rule.
+- `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
+- Whaley (2009), JPM 35(3), DOI 10.3905/JPM.2009.35.3.098 — VIX as
+  ex-ante risk regime indicator.
+- Bekaert-Hoerova (2014), J Econometrics 183(2) 181-192,
+  SSRN 2294327 — VIX uncertainty/risk-aversion decomposition.
+- Markowitz (1952), JoF 7(1) 77-91 — convex combination architecture
+  (preserved as the input to iter 048's gate).
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:

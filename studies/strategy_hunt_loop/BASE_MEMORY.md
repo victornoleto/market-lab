@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 47
+total_iterations: 48
 winners_found: 0
 status: iterating
-latest_iteration: "047-2026-04-25-0619"
-cumulative_n_trials: 4314
+latest_iteration: "048-2026-04-25-0644"
+cumulative_n_trials: 4315
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -60,18 +60,21 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
 
-### 047 — 2026-04-25 — iter046-weight-sweep-3cfg (🥇 STRONG, 79/100 frozen / 84 custom, **2/6 KILLS, weight axis CLOSED**)
-- **Hypothesis & Cfg:** Pre-committed 3-cfg sweep `w_041 ∈ {0.50, 0.65, 0.80}` on iter 046 base; engine reused VERBATIM, Bonferroni-adjusted G2 gate (α'=0.0167). cumulative_n_trials 4311→**4314 (+3)**. `[risk_parity, ch.5]` + `[volatility_trading, p.218]` + `[advances_fin_ml, p.208-211, p.222-223, p.31-34]` + Markowitz 1952 + Bonferroni 1936.
-- **Result:** Best cfg = 50/50 (= iter 046). Sharpe edu/spy/ndx: 1.20/1.32/1.38 → 1.14/1.25/1.28 → 1.08/1.19/1.19 (↓). CAGR: 9.16/9.45/9.76% → 10.34/10.69/10.75% → 11.50/11.91/11.71% (↑). DSR raw worst-p: 0.042/0.074/0.133 (all 3 cfgs FAIL BF α'=0.0167). PBO=0.000 on 3/3, G7=0.0000pp. MDD all ≤ bench+5pp. CAGR floors: 50/50 0/3, 65/35 1/3 (edu PASS), 80/20 1/3 (edu PASS; spy missed by **0.07pp**). Best score: 1:25 2:**19**(BF cost) 3:15 4:0 5:15 6:5 = **79** frozen / 84 custom. Kills A+B fired; C/D/E/F clean. winner_conds=False.
-- **Lesson:** iter 046's 50/50 IS the score-function Pareto-optimum on this component pair. Weight asymmetry trades DSR (Δ−10) faster than CAGR-floor (Δ+5; only 1 floor crossable per 30pp shift). Ndx CAGR 15.35% structurally unreachable from iter 041-based composites (cap 12.97%). Bonferroni penalty for N=3 (6pp gates loss) > grid dispersion gain. Break-90 path: NOT weight asymmetry; 3-leg + factor-timing OR output-leverage gate. See `iterations/047-*/`.
+### 048 — 2026-04-25 — iter046-output-lev-gate (🥇 STRONG, 83/100, **3/6 KILLS, output-leverage axis CLOSED, REGRESSION vs 85**)
+- **Result:** Single cfg `iter046_lev_calm14_stress10_vix20` (1.4× when VIX[t-1]<20; 1.0× otherwise) on iter 046 OUTPUT stream. cumulative_n_trials 4314→4315. Sharpe edu/spy/ndx 1.20/1.29/1.34 (Δ frozen +0.52/+0.39/+0.39; Δ046 **−0.0015/−0.0333/−0.0374** — slight regress on all 3); gates 7/6/7 (spy G2 fails); DSR p=0.0427/0.0557/0.0438 (edu 0.0414→0.0427 deflator step; spy 0.0416→**0.0557** crosses raw α; n=4315); CAGR 10.91/11.22/11.65% (Δ046 +1.75/+1.76/+1.89pp — ALL <2pp Kill F threshold; edu PASS floor, spy/ndx FAIL → 1/3 +5 vs iter 046's 0/3); MDD 18.48/17.72/17.00%; G7 0.0000pp on 3/3; calm_frac 65-71%; robust 9/9; winner 3/5. Score 1:25 2:23 3:10 4:5 5:15 6:5 = **83**. Kills B+D+F fired; A/C/E clean.
+- **Lesson:** **Output-side regime leverage on iter 046 = OUTPUT-LEVEL ANALOG of iter 044's INPUT-gate closure.** Re-using same VIX<20 classifier at input + output double-counts the signal; sub-multiplicative compounding eats ~30% of linear envelope. **3 modulation mechanisms now closed (044 input + 047 weight + 048 output)** — all trade variance×return and all fail to break 85. Path to 90 must be ADDITIVE (new uncorrelated stream), not MODULATIVE. iter 049: single-stock momentum on Tiingo 1695-ticker universe (data available; escapes iter 003 ≤20-asset closure) RECOMMENDED; MTUM/QUAL/USMV NOT in cache. See `iterations/048-*/`.
 
-### 046 — 2026-04-25 — iter039-overlay-on-iter041 (🥇 STRONG, 85/100, 0/6 KILLS, **TOP-K #1 HOLDS**)
-- **Result:** Sharpe edu/spy/ndx 1.20/1.32/1.38 (Δ frozen +0.52/+0.42/+0.43; Δ045 +0.10/+0.04/+0.06 strict-dominates 045), gates 7/7/7 (1st EVER 7/7×3), DSR p=0.0414/0.0416/0.0311 (1st EVER sub-0.05×3) (n=4311; 041's 0.168→0.041 = 75% reduction), CAGR 9.16/9.45/9.76% (0/3 frozen — edu by 0.02pp razor-thin), MDD 17.97/15.22/14.57%, G7 0.0000pp on 3/3, corr(041,039)=0.403/0.425/0.413, WF 8/8 on 3/3, robust 9/9, winner 4/5; score 1:25 2:25 3:15 4:0 5:15 6:5 = **85** (custom-bench 90).
-- **Lesson:** Out-of-family composition score advantage scales **inversely with corr** (037+039 ρ=0.58→DSR 0.096→81; 041+039 ρ=0.41→DSR 0.041→85). iter 047 confirmed 50/50 IS Pareto-optimum (weight axis CLOSED). Remaining open axes: 3-leg + factor-timing OR output-leverage gate. See `iterations/046-*/`.
+### 047 — 2026-04-25 — iter046-weight-sweep-3cfg (🥇 STRONG, 79/100, **2/6 KILLS, weight axis CLOSED**)
+- **Result:** 3-cfg pre-committed sweep `w_041 ∈ {0.50, 0.65, 0.80}` on iter 046; cumulative_n_trials 4311→4314. Best=50/50; Sharpe edu/spy/ndx 1.20/1.32/1.38, DSR raw worst-p 0.042/0.074/0.133 (all 3 cfgs FAIL Bonferroni α'=0.0167), CAGR 9.16/9.45/9.76% (best cfg 0/3 floors; 65/35 + 80/20 each 1/3 edu only); PBO=0.000 on 3/3, G7=0.0000pp; score 1:25 2:19(BF cost) 3:15 4:0 5:15 6:5 = 79 frozen / 84 custom; winner=False. Kills A+B fired.
+- **Lesson:** iter 046's 50/50 IS score-function Pareto-optimum; weight asymmetry trades DSR Δ−10 faster than CAGR Δ+5; Bonferroni N=3 cost (6pp gates) > dispersion gain. Ndx CAGR 15.35% structurally unreachable from iter 041 composites (cap 12.97%). See `iterations/047-*/`.
+
+### 046 — 2026-04-25 — iter039-overlay-on-iter041 (🥇 STRONG, 85/100, **TOP-K #1**, 0/6 KILLS)
+- **Result:** 50/50 convex combo iter 041 + iter 039. Sharpe edu/spy/ndx 1.20/1.32/1.38 (Δ frozen +0.52/+0.42/+0.43; strict-dominates 045 +0.10/+0.04/+0.06), gates 7/7/7 (1st EVER 7/7×3), DSR p=0.0414/0.0416/0.0311 (1st EVER sub-0.05×3) (n=4311), CAGR 9.16/9.45/9.76% (0/3 frozen — edu by 0.02pp razor-thin), MDD 17.97/15.22/14.57%, G7 0.0000pp, corr(041,039) 0.403/0.425/0.413, WF 8/8×3, robust 9/9, winner 4/5; score 1:25 2:25 3:15 4:0 5:15 6:5 = 85.
+- **Lesson:** Out-of-family composition score advantage scales **inversely with corr** (037+039 ρ=0.58→DSR 0.096→81; 041+039 ρ=0.41→DSR 0.041→85). 5-pt gap to WINNER tier is entirely on CAGR-floor (0/15). See `iterations/046-*/`.
 
 ### 045 — 2026-04-25 — iter039-overlay-on-iter037 (🥇 STRONG, 81/100)
-- **Result:** 50/50 iter 037+039. Sharpe 1.10/1.28/1.33, DSR 0.0962/0.0572/0.0495, CAGR 9.7/10.4/10.6%, MDD 22.6/16.3/15.4%, corr 0.587, gates 6/6/7, robust 9/9, winner 3/5; score 1:25 2:21 3:10 4:5 5:15 6:5 = **81**.
-- **Lesson:** Out-of-family composition at moderate corr (ρ≈0.58) compounds DSR. iter 046 (ρ=0.41 base) improved to 85; iter 047 confirmed 50/50 is Pareto-optimum on this score function. See `iterations/045-*/`.
+- **Result:** 50/50 iter 037 + iter 039. Sharpe edu/spy/ndx 1.10/1.28/1.33, DSR 0.0962/0.0572/0.0495, CAGR 9.7/10.4/10.6%, MDD 22.6/16.3/15.4%, corr 0.587, gates 6/6/7, robust 9/9, winner 3/5; score 1:25 2:21 3:10 4:5 5:15 6:5 = 81.
+- **Lesson:** Out-of-family composition at moderate corr (ρ≈0.58) compounds DSR; iter 046 (ρ=0.41 base) improved to 85. See `iterations/045-*/`.
 
 ### Iters 015-044 (compressed 1-line; full detail in `iterations/NNN-*/`)
 - **044** (🥈 74, multifeature-regime-vix-t10y3m) score 1:25 2:19 3:**0** 4:10 5:15 6:5 = 74; DSR 0.240 worst-p DEEPEST 041-perturb. PRINCIPLE: 2-feat composite over-classifies stress + T10Y3M dilutes VIX; 041's 84-ceiling LOCAL PLATEAU; **045+ MUST go OUT-OF-FAMILY** (vindicated by 045/046).
@@ -131,18 +134,18 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-036/**037**-**047**. iter 042+043+044 close 3 axes of iter 041 gate enrichment. iter 045 OPENED out-of-family composition (corr 0.58 → DSR 0.222→0.096; 81). iter 046 transplanted onto iter 041 base → corr 0.41 → DSR 0.041 → **85 TOP-K #1**, strict-dominating iter 041+045. **iter 047 closed weight asymmetry on iter 046**: pre-committed 3-cfg sweep `w_041 ∈ {0.50, 0.65, 0.80}` showed 50/50 IS the score-function Pareto-optimum (Sharpe ↓ + DSR ↓ as `w_041` ↑ trades faster than CAGR-floor ↑); 80/20 missed spy floor by 0.07pp but still 0/3 sufficient. CAGR floor 0/15 remains sole 5-pt blocker; 2 OPEN axes remain for iter 048+.
+Consumed/closed: 002-005/007/009-014/017/019-036/**037**-**048**. iter 042+043+044 close 3 axes of iter 041 gate enrichment. iter 045 OPENED out-of-family composition (corr 0.58 → DSR 0.222→0.096; 81). iter 046 transplanted onto iter 041 base → corr 0.41 → DSR 0.041 → **85 TOP-K #1**. iter 047 closed weight asymmetry (50/50 IS Pareto-optimum; Bonferroni N=3 cost > grid gain). **iter 048 closed output-side regime leverage gating** (binary VIX<20 → 1.4× output multiplier on iter 046 stream): score 83 < iter 046's 85, **REGRESSION; output is OUTPUT-LEVEL ANALOG of iter 044's INPUT-gate closure** — re-using the same regime classifier at both input and output layers double-counts. **3 distinct modulation mechanisms now CLOSED on iter 046**: input gate (044), weight asymmetry (047), output leverage (048). **Path to 90 must be ADDITIVE** (new uncorrelated stream), not MODULATIVE.
 
-### Iter 048 candidates (iter 046 = 85 TOP-K #1; weight axis CLOSED by 047)
+### Iter 049 candidates (iter 046 = 85 TOP-K #1; ALL 3 modulation axes CLOSED by 044/047/048)
 
-- **3-leg 041 + 039 + factor-timing (RECOMMENDED #1)** (MTUM/QUAL/USMV 12-1 mom): 1/3 each; 3rd positive-CAGR uncorrelated stream lifts CAGR at the BASE. Risk: factor × 041 corr might exceed 0.5. ~4h.
-- **iter 046 × OUTPUT-leverage gate (#2)**: VIX<20 → 1.4×; ≥20 → 1.0×. Modulates COMBINED (not inputs); distinct from 044 input closure. Risk: leverage may inflate variance over BF. ~3h.
-- **iter 046 + cross-asset carry leg** (commodity term-structure / FX carry, AMP 2013): risk Tiingo 2020+ only (parked). ~5h.
-- **ML meta-label on iter 046** `[advances_fin_ml, ch.3]`: binary open/skip on (VIX, VXN, RVX, T10Y3M, EBP). ~4h.
+- **iter 046 + single-stock momentum on Tiingo 1695-ticker universe (RECOMMENDED #1)** — 1/3 / 1/3 / 1/3 iter 041 + iter 039 + Clenow-style 12-1 momentum on top 50-100 single-stock universe. Universe heterogeneity escapes iter 003's ≤20-asset closure. Data fully available. Risk: turnover cost. ~5-6h.
+- **3-leg 041 + 039 + factor-timing (#2, BLOCKED by data)** (MTUM/QUAL/USMV 12-1 mom): MTUM/QUAL/USMV NOT in Tiingo cache (verified 2026-04-25). Either bulk-fetch first, or substitute factor proxies (SPYG/SPYV style/value? — also need to verify cache). ~5-6h including data prep.
+- **ML meta-label on iter 046 (#3)** `[advances_fin_ml, ch.3]`: binary open/skip CLASSIFIER on (VIX, T10Y3M, EBP, rolling iter 046 Sharpe). NOT a regime leverage gate (closed by iter 048); a binary include/exclude with logistic regression. ~4h.
+- **iter 046 + commodity term-structure carry (#4, data-uncertain)**: DBC/USO/UNG/SPGSCI 3-month roll yield. Need Tiingo manifest review for commodity ETFs. ~4h.
 
-DEAD-LETTER: HMM-2 (044 closure), FX carry (Tiingo 2020+), **weight asymmetry on 046 (047)**.
+DEAD-LETTER: HMM-2 (044 closure), FX carry (Tiingo 2020+), **weight asymmetry on 046 (047)**, **output-leverage gate on 046 (048)**.
 
-NOT recommended: perturbations of 037/041/046, σ⁻¹/σ⁻²/term-spread/MOVE/EBP gates on 037/041, 4-5-leg basket, VIX/DTE/strike sweeps, MM σ⁻² on short-vol (040), Kelly-fraction, gate-enrichment on 041 (042/043/044), corr>0.85 (032), N>1 cfg in iter 046 family (047 BF closure).
+NOT recommended: perturbations of 037/041/046, σ⁻¹/σ⁻²/term-spread/MOVE/EBP gates on 037/041, 4-5-leg basket within iter 046 family, VIX/DTE/strike sweeps, MM σ⁻² on short-vol (040), Kelly-fraction, gate-enrichment on 041 (042/043/044), corr>0.85 (032), N>1 cfg in iter 046 family (047 BF closure), **any regime-classifier MODULATION on iter 046 (044/047/048 closures together — input + weight + output all dominated)**.
 
 ### Deeper backlog
 
@@ -159,8 +162,9 @@ NOT recommended: perturbations of 037/041/046, σ⁻¹/σ⁻²/term-spread/MOVE/
 - **Iter 022-025**: TOM modulator; TSM-PRIMARY ≤4-asset; bond-curve carry-as-ALLOCATION; slow-EWMAC long-only 6-asset.
 - **VRP-harvester family 76 ceiling (026/031/039/040)**: 4/5-leg, basket VIX gates, asymmetric weights, DTE/strike sweeps, MM σ⁻², Kelly. CAGR floor 0/15 + edu DSR > 0.05 structural to T-bill collateral. Open: ML meta-label, positive-CAGR base.
 - **Static-stack 84-STRONG ceiling (iter 041) = LOCAL DSR PLATEAU across 3 axes (042 amp / 043 freq / 044 input)** all regress DSR. **iter 046 broke 84 at 85 via out-of-family composition** with iter 039 (NOT gate enrichment). Gate-modification axis CLOSED.
-- **Out-of-family composition VINDICATED 2× (iter 045 81 → iter 046 85 TOP-K #1)**: 50/50 convex combo strict-dominates standalone; **score scales inversely with corr** (037+039 ρ=0.58→DSR 0.096; 041+039 ρ=0.41→DSR 0.041). iter 046 = 1st EVER 7/7×3 + DSR sub-0.05×3. **OPEN**: 3-leg + factor-timing, output-leverage gate, ML meta-label. **CLOSED**: corr>0.85 (032), additive overlay (032), input gate-enrichment (042/043/044), **weight asymmetry on iter 046 (iter 047 closure: 50/50 IS score-function Pareto-optimum; shifts cost DSR Δ−10 faster than CAGR Δ+5 gain; spy floor missed by 0.07pp at 80/20)**.
+- **Out-of-family composition VINDICATED 2× (iter 045 81 → iter 046 85 TOP-K #1)**: 50/50 convex combo strict-dominates standalone; **score scales inversely with corr** (037+039 ρ=0.58→DSR 0.096; 041+039 ρ=0.41→DSR 0.041). iter 046 = 1st EVER 7/7×3 + DSR sub-0.05×3. **OPEN**: 3-leg + factor-timing (BLOCKED by data), ML meta-label, single-stock momentum on Tiingo universe. **CLOSED on iter 046**: corr>0.85 (032), additive overlay (032), input gate-enrichment (042/043/044), **weight asymmetry (iter 047 closure: 50/50 IS score-function Pareto-optimum)**, **output-leverage regime gating (iter 048 closure: re-using same classifier at input + output double-counts; OUTPUT-LEVEL ANALOG of iter 044)**.
 - **iter 047 closure**: pre-committing >1 cfg in iter 046 family costs 6pp gates (Bonferroni α'=0.0167 fails even at raw p=0.04). iter 046-base research must keep N=1 OR earn ≥6pp to amortize BF cost. **Ndx CAGR 15.35% structurally unreachable from iter 041 composites** (cap 12.97%) — must accept ndx 0/15 OR swap base.
+- **iter 048 closure**: output-side binary VIX-regime leverage gate (calm 1.4× / stress 1.0×) on iter 046 stream is REDUNDANT with iter 041's input regime gate. **3 modulation mechanisms now closed on iter 046**: input gate (044), weight asymmetry (047), output leverage (048). All 3 trade the same conserved quantity (variance × return) and all 3 fail to break 85. **Path to 90 must be ADDITIVE** (new uncorrelated stream — single-stock momentum on Tiingo 1695-ticker universe is the recommended next direction since data is fully available and universe heterogeneity escapes iter 003's ≤20-asset closure).
 
 ---
 
