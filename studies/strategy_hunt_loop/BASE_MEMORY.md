@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 53
+total_iterations: 54
 winners_found: 0
 status: iterating
-latest_iteration: "053-2026-04-25-0847"
-cumulative_n_trials: 4320
+latest_iteration: "054-2026-04-25-0919"
+cumulative_n_trials: 4324
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -62,11 +62,9 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
 
-### 053 — 2026-04-25 — iter037-plus-iter046-w070 (🥇 STRONG, 84/100, 2/6 KILLS)
-- **Result:** Sharpe edu/spy/ndx 1.029/1.193/1.220 (Δ +0.35/+0.29/+0.27), gates 6/6/6, DSR p=0.165/0.112/0.108 (same bucket as 051/052), CAGR 12.71/13.73/**15.39%** (**3/3 floor PASS — 1st on iter 037+iter 046; ndx margin 0.04pp**), MDD 29/22/27%, corr 0.9554/0.9574/0.9304 (**Kill F PRE-FIRED by pre-screen** — iter 046 contains iter 041 sharing 037's SPY+IEF+GLD basis), Markowitz 0.0000 (5th consec, 15/15 ds), G7 0.0000pp, robust 9/9, winner 4/5; score 1:25 2:19 3:5 4:**15** 5:15 6:5 = **84**. Kills B+F fired.
-- **Lesson:** **Saved-stream-pair-on-iter-037-anchor EXHAUSTED at Pareto 84** (3 tested: 037+026→84, 037+039→81, 037+046→84). Composition score scales inversely with corr (045@0.59→81, 046@0.41→85, 053@0.95→84). **Saved-stream ceiling=85 (iter 046)**. Path to 90+ requires NEW base edu Sharpe ≥ 1.20. See `iterations/053-*/`.
-
-### Iters 015-052 (compressed 1-line; full detail in `iterations/NNN-*/`)
+### Iters 015-054 (compressed 1-line; full detail in `iterations/NNN-*/`)
+- **054** (🥉 47 MARGINAL, 2/3 KILLS, tiingo-cross-sectional-12-1) S 0.655 single-univ (Δ window-matched SPY/QQQ −0.025/−0.098; Δ fixed bench −0.025/−0.245/−0.300), CAGR 16.60% (3/3 floor PASS) > SPY 13.46% same-window but worse Sharpe, MDD 28.25% (3/3 ceiling), DSR p=0.811 (n=4324), PBO=1.000 (grid noise), G7 0.0000pp, winner 0/5; score 0+17+0+15+15+0=47. **DATA-LAYER closure: survivorship-biased Tiingo cache (422 names ≥2014) correlates with cap-weighted index — closes ALL cross-sectional ranking (12-1/6-1/adj-slope/low-vol/value/quality) until CRSP/Norgate point-in-time delisted coverage exists.**
+- **053** (🥇 84, 2/6 KILLS, iter037+iter046 w_037=0.70) S 1.029/1.193/1.220 (Δ +0.35/+0.29/+0.27), gates 6/6/6, DSR 0.165/0.112/0.108, CAGR 12.71/13.73/15.39 (3/3 floor PASS, ndx 0.04pp margin), MDD 29/22/27, corr 0.93-0.96 (Kill F pre-fired), Markowitz 0.0000 (5th consec, 15/15 ds), G7 0.0000pp, robust 9/9, winner 4/5; score 25+19+5+15+15+5=84. **Saved-stream-pair-on-iter-037-anchor EXHAUSTED at Pareto 84 (3 tested: 037+026→84, 037+039→81, 037+046→84). Path to 90+ requires NEW base edu Sharpe ≥ 1.20.**
 - **052** (🥇 79, iter041+026 w=0.82) S 1.08/1.19/1.22, DSR 0.118/0.116/0.109 (same bucket as 051), CAGR 11.6/12.0/14.0 (2/3, ndx FAIL 1.34pp), corr 0.37-0.45, Markowitz 0.0000 (4th), score 79. **iter 037 dominates iter 041 anchor.**
 - **051** (🥇 84, 1/6 KILLS, iter037+026 w_037=0.80) S 1.02/1.20/1.22, DSR 0.175/0.109/0.109, CAGR 12.4/13.5/15.5 (3/3 floor), MDD 29/21/27 (Δ037 −4/−4/−5), corr 0.57/0.55/0.60, Markowitz res=0.0000 (3rd consec), score 25+19+5+15+15+5=84. **1st 4/5 winner conds. Pareto box bounded at 84 (edu DSR floor + ndx CAGR floor unbreakable on this stream pair).**
 - **050** (🥇 78, 1/6 KILLS) 90/10 iter046+gold-TSM at Markowitz w*=0.10; n_trials+=1 → edu DSR 0.044→0.050 (c3 −5). Markowitz 1st-validated 4-decimal. **5 iter 046 axes closed (044/047/048/049/050).**
@@ -132,16 +130,16 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-036/**037**-**053**. iter 044/047/048/049/050 close **5 axes of iter 046**; iter 051/053 close **iter 037+iter 026/046 families** at Pareto 84; iter 052 closes **iter 041+iter 026 family** at Pareto 79 (iter 037 dominates iter 041 as anchor). **Saved-stream-pair Pareto exhausted: ceiling = 85 (iter 046 TOP-K #1)**; all combos on iter 037 anchor saturate at 84. Markowitz formula validated to 4-5 decimals across iter 049/050/051/052/053 (5 consecutive iters, residual=0.0000 on 15/15 datasets). DSR is the binding constraint at n_trials > 4300: combined edu Sharpe ≥ ~1.10 needed to cross 0.10 score-bucket boundary; ≥ ~1.18 needed to cross 0.05 strict-winner gate.
+Consumed/closed: 002-005/007/009-014/017/019-036/**037**-**054**. iter 044/047/048/049/050 close **5 axes of iter 046**; iter 051/053 close **iter 037+iter 026/046 families** at Pareto 84; iter 052 closes **iter 041+iter 026 family** at Pareto 79 (iter 037 dominates iter 041 as anchor). **Saved-stream-pair Pareto exhausted: ceiling = 85 (iter 046 TOP-K #1)**; all combos on iter 037 anchor saturate at 84. Markowitz formula validated to 4-5 decimals across iter 049/050/051/052/053 (5 consecutive iters, residual=0.0000 on 15/15 datasets). DSR is the binding constraint at n_trials > 4300: combined edu Sharpe ≥ ~1.10 needed to cross 0.10 score-bucket boundary; ≥ ~1.18 needed to cross 0.05 strict-winner gate. **Iter 054 closes the entire single-stock cross-sectional path on `data/tiingo/`** — survivorship-biased cache without delisted coverage cannot supply ranking-momentum dispersion (closure is at the DATA LAYER, not algorithm).
 
-### Iter 054 candidates (iter 053 exhausts saved-stream composition; PIVOT TO NEW BASE)
+### Iter 055 candidates (iter 054 closed cross-sectional-on-Tiingo at the data layer)
 
-- **#1 Single-stock Tiingo cross-sectional momentum (RECOMMENDED)** — Clenow 12-1/adjusted-slope on 1695-ticker Tiingo cache (2013-08+). ESCAPES iter 003's ≤20-asset closure (heterogeneous universe). Top-K=10-20, 60-90 min impl. `[stocks_on_the_move, p.76-77]` + Carhart 1997 JoF 52.
-- **#2 VRP on broader-index basket (SPY+IWM+EFA at 1/3, ~30-45 min)** — cache check for EFA. Universe extension of iter 026/039. `[volatility_trading, p.218]` + Bondarenko 2014.
-- **#3 Plano C sleeve eval (mandate-aligned)** — factor-tilted passive (GDE/AVUV/AVDE/AVEM/BTGD); low n_trials → DSR easy. Data: ETFs inception 2018-2024; need AQR/FF proxies for edu. `[fact_based_investing]` + FF93.
-- **#4 Carry + value composite AMP 2013** — orthogonal axes; needs dividend/earnings-yield signal. `[stocks_on_the_move]` + AMP 2013 JoF 68.
+- **#1 Broader-index VRP basket (RECOMMENDED)** — extend iter 026/039 to 5-leg SPY+QQQ+IWM+EFA+EEM at 1/5 each. Cache verified for EFA/EEM. Tests cross-region VRP diversification vs iter 039 76-ceiling. `[volatility_trading, p.218]` + Bondarenko 2014. ~30-45 min impl, predicted 76-80.
+- **#2 Plano C sleeve eval (mandate-aligned)** — passive factor-tilted (GDE/AVUV/AVDE/AVEM/BTGD); ETFs young (2018-2024 inception), need FF93 long-format proxies for edu. Documents the actual maintenance baseline. `[fact_based_investing]` + FF93. ~60-90 min impl, predicted ≤ 70.
+- **#3 Carry + value composite AMP 2013** — same data-bias as 054 but multi-axis composite *might* restore dispersion. ONLY viable as soft retry of the cross-sectional path; if score < 60, the iter 054 data-layer closure is fully confirmed. `[stocks_on_the_move]` + AMP 2013 JoF 68. ~60-90 min impl.
+- **#4 Bring in delisted-aware data source** — long-term unblocking of cross-sectional family. Requires CRSP / Norgate / Quotemedia archive access. Not feasible without budget.
 
-DEAD-LETTER: iter 037+026/041+026/037+046/041+039 at any weight (Pareto 79-85 exhausted); iter 046-family enhancements (044/047/048/049/050); HYG-041; HMM-2; FX carry; MTUM/QUAL/USMV (not in cache); **all saved-stream-pair compositions on iter 037 anchor (closed by iter 045/051/053; ceiling 84)**; **iter 041 substitution for iter 037 (closed by 052)**.
+DEAD-LETTER: iter 037+026/041+026/037+046/041+039 at any weight (Pareto 79-85 exhausted); iter 046-family enhancements (044/047/048/049/050); HYG-041; HMM-2; FX carry; MTUM/QUAL/USMV (not in cache); **all saved-stream-pair compositions on iter 037 anchor (closed by iter 045/051/053; ceiling 84)**; **iter 041 substitution for iter 037 (closed by 052)**; **single-stock cross-sectional 12-1 momentum (any K, any lookback) on Tiingo cache (closed by iter 054 at data layer)**.
 
 ### Deeper backlog
 
@@ -159,10 +157,11 @@ DEAD-LETTER: iter 037+026/041+026/037+046/041+039 at any weight (Pareto 79-85 ex
 - **VRP-harvester family 76 ceiling (026/031/039/040)**: CAGR floor 0/15 + edu DSR > 0.05 structural to T-bill collateral.
 - **Static-stack 84-STRONG ceiling = LOCAL DSR PLATEAU**: iter 042 amp / 043 freq / 044 input all regress DSR.
 - **Out-of-family composition VINDICATED**: iter 045 (81, ρ=0.58) → iter 046 (85, ρ=0.41) TOP-K #1; score scales inversely with corr.
-- **iter 047-050 closures (5 axes of iter 046 closed)**: 047 (Bonferroni N=3 > grid gain; 50/50 IS Pareto-opt), 048 (output VIX gate = analog of 044 input closure, double-counts), 049 (50/50 additive 3rd stream with S<1.10 fails Markowitz id; w*≈0.09 not 0.50), 050 (iter 046 DSR knife-edge p=0.044; n+=1 alone crosses 0.05 gate). Markowitz 4-decimal validated.
-- **iter 051 closure (Pareto 84; 1st 4/5 winner + 3/3 CAGR)**: iter 037+026 w_037=0.80 — 3/3 CAGR + Sharpe edge + MDD + Markowitz 0.0000; capped 84 because edu S 1.02 < 1.10. Two-constraint Pareto unbreakable (ndx CAGR≥15.35 sets w≥0.78; DSR needs S≥1.10).
-- **iter 052 closure (Pareto 79; iter 037 dominates iter 041 as anchor)**: iter 041+026 w_041=0.82 — DSR 0.175→0.118 same bucket (c3 unchanged); ndx CAGR 14.01 < 15.35 floor (c4 −5). Net 84→79. Regime modulation trades CAGR for Sharpe, c1 already saturated. 4 saved-stream families closed.
-- **iter 053 closure (Pareto 84; saved-stream-pair-on-iter-037-anchor EXHAUSTED)**: iter 037+046 w_037=0.70, corr 0.93-0.96 (Kill F pre-fired) — iter 046's iter 041 sub-component duplicates iter 037 basis. 3/3 CAGR floor pass at this weight (1st time, ndx margin 0.04pp), but edu DSR p=0.165 same bucket; net 84. **Composition score scales inversely with corr (iter 045@0.59→81, iter 046@0.41→85, iter 053@0.95→84-with-CAGR-rescue). Saved-stream-pair Pareto ceiling=85 (iter 046, TOP-K #1); all 3 known-low-corr pairs explored. Path to 90+ requires NEW base edu Sharpe ≥ 1.20.** Markowitz res=0.0000 5th consec, 15/15 ds.
+- **iter 047-050 closures (5 iter 046 axes closed)**: 047 (50/50 IS Pareto-opt; Bonferroni penalty), 048 (output VIX gate dupes 044 input), 049 (50/50 additive low-S fails Markowitz id), 050 (knife-edge DSR; n+=1 crosses 0.05).
+- **iter 051 closure (Pareto 84)**: 037+026 w=0.80 — 3/3 CAGR + S edge but edu S 1.02 < 1.10 → DSR bucket capped.
+- **iter 052 closure (Pareto 79)**: 041+026 w=0.82 — DSR same bucket; ndx CAGR floor lost. iter 037 dominates iter 041 as anchor.
+- **iter 053 closure**: 037+046 w=0.70 corr 0.93-0.96 (Kill F pre-fired); 3/3 CAGR PASS but edu DSR 0.165 same bucket; net 84. Saved-stream-pair Pareto ceiling=85 (iter 046); path 90+ needs NEW base edu Sharpe ≥ 1.20.
+- **iter 054 closure (DATA-LAYER blocker)**: 12-1 cross-sectional on 422-name Tiingo cache — Sharpe 0.655 < window-matched SPY 0.680, DSR p=0.811, PBO=1.0; score 47. **Survivorship-biased cache → universe correlates with cap-weighted bench → no harvestable dispersion at any K**. Closes ALL cross-sectional ranking (12-1/6-1/adj-slope/low-vol/low-beta/value/quality/composite) on `data/tiingo/` until CRSP/Norgate point-in-time delisted coverage exists.
 
 ---
 

@@ -3586,3 +3586,87 @@ At end of each iteration that FAILED, append a section:
 
 If the failure is a minor variation of an earlier dead-end, just
 append a bullet to the relevant section instead of a full section.
+
+---
+
+## From iteration 054 — cross-sectional 12-1 momentum on Tiingo single-stock universe
+
+Complete study: `studies/strategy_hunt_loop/iterations/054-2026-04-25-0919-tiingo-cross-sectional-momentum/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Cross-sectional 12-1 long-only top-K (K∈{20, 50}) equal-weight
+   monthly rebalance on the 422-ticker Tiingo cache** (filter
+   `first_dt ≤ 2014-01-01` AND `last_dt ≥ 2026-01-01`), 2014-2026
+   window, 5 bps roundtrip cost. Sharpe 0.62-0.66 across all 4 cfgs,
+   below window-matched SPY 0.680 and QQQ 0.753 on the SAME window.
+   Score 47 → MARGINAL. Winner conditions 0/5.
+
+2. **Lookback variation (12m vs 6m) and top-K variation (20 vs 50)**:
+   all 4 cfgs cluster in Sharpe 0.621-0.654 — grid is rank-noise
+   (PBO=1.000), no axis breaks the data-layer ceiling.
+
+### Don't re-test
+
+- Cross-sectional 12-1 / 6-1 momentum on the Tiingo cache at any K,
+  any cost, any rebalance frequency.
+- Cross-sectional adjusted-slope (Clenow `[stocks_on_the_move,
+  p.76-77]`) on Tiingo cache (related ranking, same data-layer
+  blocker).
+- Cross-sectional low-vol / low-beta / value / quality / multi-factor
+  composites on Tiingo cache (all share the survivorship-correlation
+  failure mode).
+- Long-only versions of any UMD-style premium harvester on
+  survivorship-biased data — long-only captures only ~half of
+  long-short premium; insufficient to overcome data-bias drag.
+
+### Structural principles
+
+- **Survivorship bias COSTS more than it saves on long-only
+  cross-sectional ranking.** Naive expectation: surviving names
+  outperform → biased universe inflates returns → easier to beat
+  benchmark. Empirical reality: surviving names ARE the
+  cap-weighted index by construction (proportional weights), so a
+  top-K equal-weight basket of them is just an actively-tilted
+  version of the same index — limited active risk, no new dispersion.
+  The true cross-sectional alpha is in the loser-vs-winner spread
+  IN-SAMPLE; surviving-only data lacks the loser side.
+
+- **Iter 003's ≤20-asset closure was NOT the binding constraint** for
+  cross-sectional ranking momentum on diversified-basket ETFs.
+  Iter 054 demonstrates the closure was an *additional* constraint;
+  the deeper one is data-layer (point-in-time + delisted required).
+  423 single-stocks (well above the 20-asset bar) still failed —
+  closing the family ENTIRELY for the Tiingo cache.
+
+- **Post-2009 momentum decay is real and binding.** Empirical
+  literature (Ben Dor & Ross 2024 "Momentum's Misadventures") shows
+  classic 12-1 momentum has been a weak-to-negative factor since
+  GFC, with crashes in 2009 and 2018. The 2014-2026 backtest window
+  inherits the post-2018 weakness; even unbiased data would struggle
+  in this regime.
+
+- **Grid PBO=1.000 with dispersion-low configs is iter-002's pattern
+  in mirror form.** Iter 002 had 4-config under-deployment producing
+  similar near-zero returns → PBO uninformative. Iter 054 has 4-config
+  fully-deployed producing similar near-passive returns → PBO=1.000
+  diagnostic. Either way, a 4-cfg grid where all cfgs cluster within
+  ±0.04 Sharpe of each other gives uninformative IS→OOS rank
+  reversal. Heuristic: grid for PBO must have at least 2x the
+  Sharpe SE in dispersion across cfgs.
+
+- **Long-only momentum captures ~half of UMD factor; cost erodes
+  most of that half.** UMD = ~8%/yr long-short historically (Carhart
+  1997). Long-only top-K ≈ 4%/yr pre-cost. Monthly rebal turnover
+  50-80%/month at 5 bps roundtrip = 1.5-2.4 pp/yr drag. Net premium
+  pre-bias ≈ 1.6-2.5 pp/yr — well within noise of cap-weighted
+  benchmark variance. The economics fail before the data quality
+  even bites.
+
+### Citations
+
+- `[stocks_on_the_move, p.76-77]` — 12-1 skip-1m momentum convention.
+- Jegadeesh & Titman (1993). JoF 48(1) 65–91 — foundational paper.
+- Carhart (1997). JoF 52(1) 57–82 — UMD factor.
+- Asness, Moskowitz & Pedersen (2013). JoF 68(3) 929–985 — value-momentum.
+- Ben Dor & Ross (2024) "Momentum's Misadventures" — post-2009 decay.

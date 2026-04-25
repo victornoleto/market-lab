@@ -1,0 +1,128 @@
+{
+  "total_score": 47,
+  "tier": "MARGINAL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 0,
+      "max": 25,
+      "datasets_beat": 0,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 17,
+      "max": 25,
+      "per_dataset": {
+        "educational": 5,
+        "spy_real": 5,
+        "ndx_real": 5
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.8113813315150107,
+      "cumulative_n_trials": 4324
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.6549714960456571,
+      "cagr": 0.1660477699382139,
+      "mdd": 0.28247995143993604,
+      "dsr_p_value": 0.8113813315150107
+    },
+    "spy_real": {
+      "sharpe": 0.6549714960456571,
+      "cagr": 0.1660477699382139,
+      "mdd": 0.28247995143993604,
+      "dsr_p_value": 0.8113813315150107
+    },
+    "ndx_real": {
+      "sharpe": 0.6549714960456571,
+      "cagr": 0.1660477699382139,
+      "mdd": 0.28247995143993604,
+      "dsr_p_value": 0.8113813315150107
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4324,
+  "configs_tested": 4,
+  "primary_citation": "[stocks_on_the_move, p.76-77]",
+  "hypothesis_slug": "tiingo-cross-sectional-momentum",
+  "pbo_value": 1.0,
+  "benchmarks_window_matched": {
+    "SPY": {
+      "sharpe": 0.6800396355953465,
+      "cagr": 0.1346497512440119,
+      "mdd": 0.3369994047053613,
+      "window_start": "2014-01-01 00:00:00",
+      "window_end": "2026-04-20 00:00:00",
+      "n_days": 4490
+    },
+    "QQQ": {
+      "sharpe": 0.75251814640761,
+      "cagr": 0.18578076477316352,
+      "mdd": 0.3512252567482748,
+      "window_start": "2014-01-01 00:00:00",
+      "window_end": "2026-04-20 00:00:00",
+      "n_days": 4490
+    }
+  },
+  "window": {
+    "start": "2012-01-03 00:00:00",
+    "end": "2026-04-20 00:00:00"
+  },
+  "universe_size": 423,
+  "top_cfg": "tk20_lb12_sk1",
+  "g7_delta_pp": 0.0,
+  "status": "marginal"
+}
