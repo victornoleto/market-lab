@@ -1,0 +1,451 @@
+{
+  "total_score": 74,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.24000174061777957,
+      "cumulative_n_trials": 4309
+    },
+    "4_cagr_floor": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count across 9 total windows",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              1.035496560242881,
+              0.5370836255891608,
+              1.2353440555669983
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.1752638476366024,
+              1.1721159314635052,
+              0.9979572500065771
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.002031290127601,
+              1.4834603705278584,
+              0.9117963393827957
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9697529582738412,
+      "cagr": 0.12570790989906877,
+      "mdd": 0.2988689787730025,
+      "dsr_p_value": 0.24000174061777957
+    },
+    "spy_real": {
+      "sharpe": 1.095928181718416,
+      "cagr": 0.13305176817560826,
+      "mdd": 0.2988689787730027,
+      "dsr_p_value": 0.2045044649835952
+    },
+    "ndx_real": {
+      "sharpe": 1.0961536910912997,
+      "cagr": 0.1469287183026058,
+      "mdd": 0.378194570655288,
+      "dsr_p_value": 0.22881369994344902
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4309,
+  "configs_tested": 1,
+  "primary_citation": "[advances_fin_ml, ch.17-18]; [risk_parity, ch.5]; [advances_fin_ml, p.162-164]; Estrella-Hardouvelis (1991), JF 46(2), DOI 10.1111/j.1540-6261.1991.tb04617.x; Bauer-Mertens (2018), FRBSF Economic Letter 2018-07; Whaley (2009), JPM 35(3), DOI 10.3905/JPM.2009.35.3.098; Bekaert-Hoerova (2014), J Econometrics 183(2), SSRN 2294327; Hamilton (1989), Econometrica 57(2), DOI 10.2307/1912559",
+  "hypothesis_slug": "multifeature-regime-vix-t10y3m",
+  "pre_committed_cfg": {
+    "cfg_id": "multifeature_vix_t10y3m_z252_eq_w_tau0_70_40_40_30_55_55",
+    "z_window": 252,
+    "feature_weights": {
+      "vix": 0.5,
+      "neg_t10y3m": 0.5
+    },
+    "stress_threshold": 0.0,
+    "calm_weights": {
+      "eq_w": 0.7,
+      "bd_w": 0.4,
+      "gld_w": 0.4
+    },
+    "stress_weights": {
+      "eq_w": 0.3,
+      "bd_w": 0.55,
+      "gld_w": 0.55
+    },
+    "feature_lag_days": 1,
+    "rebalance": "daily",
+    "regime_signal": "VIX z + (-T10Y3M) z, equal-weighted, threshold 0",
+    "funding_cost_modeled": false
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "multifeature_vix_t10y3m_z252_eq_w_tau0_70_40_40_30_55_55",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.24000174061777957,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.1822101090164596,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.1719358767207884,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.27532743956484407,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.019521013693735156
+    },
+    "spy_real": {
+      "cfg_id": "multifeature_vix_t10y3m_z252_eq_w_tau0_70_40_40_30_55_55",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.2045044649835952,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.0942378717567136,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.1719358767207884,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.35422781978138557,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.006407876830749615
+    },
+    "ndx_real": {
+      "cfg_id": "multifeature_vix_t10y3m_z252_eq_w_tau0_70_40_40_30_55_55",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.22881369994344902,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 0.9030922515131682,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.1104730617608571,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.2656415621633997,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.1232663350380081
+    }
+  },
+  "leg_correlations": {
+    "educational": {
+      "eq_bd": -0.29654051245040597,
+      "eq_gld": 0.05890289379799236,
+      "bd_gld": 0.20708914637626866
+    },
+    "spy_real": {
+      "eq_bd": -0.26524768193075826,
+      "eq_gld": 0.07025783006226116,
+      "bd_gld": 0.25873671953377986
+    },
+    "ndx_real": {
+      "eq_bd": -0.20036826257874585,
+      "eq_gld": 0.05570545681950287,
+      "bd_gld": 0.2797957371933276
+    }
+  },
+  "feature_correlations": {
+    "educational": {
+      "vix_change_vs_t10y3m_change": -0.15416075287774006,
+      "vix_mean": 19.479331503626742,
+      "vix_median": 17.14,
+      "t10y3m_mean": 1.2100999803960006,
+      "t10y3m_median": 1.36
+    },
+    "spy_real": {
+      "vix_change_vs_t10y3m_change": -0.2155300402851064,
+      "vix_mean": 18.63229768102224,
+      "vix_median": 16.92,
+      "t10y3m_mean": 1.2370681495504021,
+      "t10y3m_median": 1.43
+    },
+    "ndx_real": {
+      "vix_change_vs_t10y3m_change": -0.21239054555617842,
+      "vix_mean": 18.42598622725037,
+      "vix_median": 16.69,
+      "t10y3m_mean": 1.150978848991638,
+      "t10y3m_median": 1.37
+    }
+  },
+  "benchmarks_used_custom": {
+    "educational": {
+      "sharpe": 0.6293436372653917,
+      "cagr": 0.10815914739227761,
+      "mdd": 0.5520110457219881,
+      "label": "SPY b&h 2006-01-04\u21922026-04-15 (iter 044 GLD-aligned)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "score_with_custom_benchmark": {
+    "total_score": 74,
+    "winner_conditions_met": false,
+    "tier": "PROMISING",
+    "criteria": {
+      "1_sharpe_edge": {
+        "points": 25,
+        "max": 25,
+        "datasets_beat": 3,
+        "required_minimum_dataset_count": 2
+      },
+      "2_gates": {
+        "points": 19,
+        "max": 25,
+        "per_dataset": {
+          "educational": "6",
+          "spy_real": "6",
+          "ndx_real": "6"
+        },
+        "thresholds": {
+          "educational": 5,
+          "spy_real": 4,
+          "ndx_real": 4
+        },
+        "cross_dataset_thresholds_met": true
+      },
+      "3_dsr": {
+        "points": 0,
+        "max": 15,
+        "worst_p_value": 0.24000174061777957,
+        "cumulative_n_trials": 4309
+      },
+      "4_cagr_floor": {
+        "points": 10,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": false
+        }
+      },
+      "5_mdd_ceiling": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "educational": true,
+          "spy_real": true,
+          "ndx_real": true
+        }
+      },
+      "6_robustness_bonus": {
+        "points": 0,
+        "max": 5,
+        "note": "Populated by caller if rolling-window data provided"
+      }
+    }
+  },
+  "iter041_reference_metrics": {
+    "educational": {
+      "sharpe": 1.0267263096463843,
+      "cagr": 0.13004702547428004,
+      "mdd": 0.2759899442557365
+    },
+    "spy_real": {
+      "sharpe": 1.1304501572051906,
+      "cagr": 0.13521539206586652,
+      "mdd": 0.246544357868176
+    },
+    "ndx_real": {
+      "sharpe": 1.1635612554817927,
+      "cagr": 0.15657072731139676,
+      "mdd": 0.3084224463197457
+    }
+  },
+  "iter043_reference_metrics": {
+    "educational": {
+      "sharpe": 1.033763375846869,
+      "cagr": 0.1306366176170357,
+      "mdd": 0.2568061803184577
+    },
+    "spy_real": {
+      "sharpe": 1.1186387764870431,
+      "cagr": 0.13322192847897818,
+      "mdd": 0.22917991653435404
+    },
+    "ndx_real": {
+      "sharpe": 1.1308332662523093,
+      "cagr": 0.1504509664838738,
+      "mdd": 0.27753069142841597
+    }
+  },
+  "delta_vs_iter041": {
+    "educational": {
+      "sharpe_delta": -0.05697335137254311,
+      "cagr_delta": -0.004339115575211272,
+      "mdd_delta": 0.022879034517266028
+    },
+    "spy_real": {
+      "sharpe_delta": -0.03452197548677449,
+      "cagr_delta": -0.0021636238902582594,
+      "mdd_delta": 0.05232462090482673
+    },
+    "ndx_real": {
+      "sharpe_delta": -0.067407564390493,
+      "cagr_delta": -0.009642009008790975,
+      "mdd_delta": 0.06977212433554231
+    }
+  },
+  "delta_vs_iter043": {
+    "educational": {
+      "sharpe_delta": -0.06401041757302772,
+      "cagr_delta": -0.00492870771796694,
+      "mdd_delta": 0.0420627984545448
+    },
+    "spy_real": {
+      "sharpe_delta": -0.022710594768627024,
+      "cagr_delta": -0.00017016030336991506,
+      "mdd_delta": 0.06968906223864868
+    },
+    "ndx_real": {
+      "sharpe_delta": -0.03467957516100961,
+      "cagr_delta": -0.003522248181268006,
+      "mdd_delta": 0.10066387922687203
+    }
+  },
+  "pre_committed_kills": {
+    "A_sharpe_regress_vs_iter041_by_005": {
+      "fired": true,
+      "datasets_below_005": 2,
+      "threshold": "\u2265 2 of 3 datasets with Sharpe \u0394 vs iter 041 < \u22120.05",
+      "note": "If fired \u2192 multi-feature gate destructively interferes with iter 041"
+    },
+    "B_dsr_no_improvement_vs_iter041": {
+      "fired": true,
+      "worst_dsr_p": 0.24000174061777957,
+      "threshold": "\u2265 0.168 (iter 041's worst-p \u2014 no DSR uplift)",
+      "note": "If fired \u2192 'info per bar' hypothesis FALSIFIED on multi-feature axis"
+    },
+    "C_mdd_breach_any": {
+      "fired": false,
+      "n_breaches": 0,
+      "per_dataset": {
+        "educational": false,
+        "spy_real": false,
+        "ndx_real": false
+      },
+      "threshold": "any dataset with MDD > benchmark + 5pp",
+      "note": "If fired \u2192 multi-feature gate fails to protect tail"
+    },
+    "D_score_below_84": {
+      "fired": true,
+      "score": 74,
+      "threshold": "< 84 (iter 041 ceiling)",
+      "note": "Strict no-regression rule \u2014 84 is the TOP-K #1 ceiling"
+    },
+    "E_g7_crosslib_above_3pp": {
+      "fired": false,
+      "max_diff_pp": 0.1232663350380081,
+      "threshold": "> 3.0 pp"
+    },
+    "F_excessive_regime_churn": {
+      "fired": false,
+      "rt_per_year": {
+        "educational": 8.966477161340913,
+        "spy_real": 8.795551348793184,
+        "ndx_real": 8.707820954254796
+      },
+      "threshold": "> 12 round-trips/year on any dataset",
+      "note": "If fired \u2192 multi-feature gate is overfitting noise"
+    }
+  },
+  "n_kills_fired": 3,
+  "status": "promising"
+}

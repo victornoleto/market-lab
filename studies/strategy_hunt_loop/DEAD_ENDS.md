@@ -2839,6 +2839,106 @@ ndx CAGR slipped under the 0.8×bench floor by 0.30pp (criterion 4 =
 
 ---
 
+## From iteration 044 — Multi-feature composite regime gate (VIX + T10Y3M) on iter 041 weights (PROMISING 74, DEEPEST DSR regression)
+
+### What failed
+
+A two-feature standardised composite stress score
+`s_t = 0.5*z(VIX) + 0.5*z(-T10Y3M)` (252-day rolling z, 1-day lag,
+median split τ=0) was applied as the regime classifier on iter 041's
+preserved weight pair (calm 0.70/0.40/0.40 ↔ stress 0.30/0.55/0.55).
+The hypothesis was that adding T10Y3M (canonical recession leading
+indicator, Estrella-Hardouvelis 1991) as a 2nd orthogonal feature
+(empirical corr(ΔVIX, ΔT10Y3M) = −0.15 to −0.22) would add
+information density per bar at the gate without breaking iter 041's
+instantaneous-update property — the iter 042/043 lesson was "don't
+perturb gate timing", and a multi-feature instantaneous gate honors
+that.
+
+**Reality**: DSR worst-p REGRESSED from iter 041's 0.168 to **0.240**
+(+0.072 — the DEEPEST regression of any iter on iter 041 weights,
+worse than iter 042's 0.216 and iter 043's 0.189). Sharpe regressed
+on educational and ndx_real by 0.057 / 0.067 (Kill A fired on 2/3).
+ndx CAGR slipped under the 0.8×bench floor by 0.66pp. MDD remained
+within +5pp gate but weakened by 2.3-7.0pp vs iter 041 on all 3
+datasets. Final score 74 vs iter 041's 84 (Kills A + B + D fired).
+
+### Don't re-test
+
+- Equal-weight additive composite of (VIX, neg-T10Y3M) standardised
+  z-scores with median-split threshold τ=0 on iter 041 weights — the
+  median-split semantics differ structurally from level-threshold
+  semantics: the composite classifies 13-16% MORE bars as stress than
+  iter 041's binary VIX-20 gate, under-exposing the post-GFC equity
+  recovery period.
+- Any unweighted/equal-weight 2-feature composite gate using
+  T10Y3M as the second feature on iter 041 weights — daily-frequency
+  T10Y3M innovations dilute VIX's sharp recession signal at the
+  decision frequency, raising worst-p variance.
+- Symmetric additive composites of (VIX, X) where X has slow-time-
+  scale signal but daily-frequency noise (term-spread, EBP,
+  inflation expectations) — the rolling z-score amplifies the
+  daily noise into spurious gate flips.
+
+### Structural principles
+
+1. **iter 041's 84-ceiling is a LOCAL DSR PLATEAU across THREE
+   orthogonal structural axes**, not a narrow ridge along one:
+   - **Amplitude axis** (iter 042: compound 1.7×/1.0× swing) → DSR
+     0.168 → 0.216 (+0.048).
+   - **Frequency axis** (iter 043: hysteretic [18, 22]) → DSR 0.168
+     → 0.189 (+0.021).
+   - **Input axis** (iter 044: 2-feature composite τ=0) → DSR 0.168
+     → 0.240 (+0.072) — DEEPEST.
+   Any structural enrichment of iter 041's gate regresses DSR by
+   different mechanisms but qualitatively identical result. The 84
+   ceiling sits on a plateau, not a ridge.
+
+2. **"More features = higher posterior precision" fails when the
+   added feature has a worse signal-to-noise ratio at the decision
+   frequency.** T10Y3M is a strong recession indicator at month-to-
+   year scale, but at daily frequency its innovations are dominated
+   by yield-curve noise. Standardising via 252-day rolling z-score
+   amplifies daily noise into spurious stress signals. The textbook
+   intuition (López de Prado, ch. 17-18) needs a frequency-matching
+   caveat: the feature SNR must match the decision frequency, not
+   merely be empirically informative at SOME frequency.
+
+3. **Median-split semantics on a standardised composite differ
+   STRUCTURALLY from level-threshold semantics on a single feature.**
+   iter 041's "VIX < 20" classifies ~63-68% of bars as calm by
+   construction (the empirical VIX distribution has a heavy right
+   tail). The composite-z<0 median-split classifies ~52% as calm by
+   construction (a standardised composite is approximately N(0, 1)).
+   The 13-16pp shift in classification is a built-in property of the
+   threshold convention, not a regime-detection improvement.
+
+4. **The path forward must go OUT-OF-FAMILY** — return-stream
+   addition (iter 039 basket overlay on iter 037, cross-sectional
+   factor timing), ML meta-label (non-linear functional form on rich
+   feature set), or different gate ASSET class (CDS spreads,
+   gold/copper ratio, DXY) — instead of refining iter 041's gate
+   structure. The gate-modification axis is exhausted across 3
+   independent perturbation directions.
+
+### Citations
+
+- `[advances_fin_ml, ch.17-18]` — multi-feature regime detection
+  (the textbook claim being refined here).
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials.
+- `[risk_parity, ch.5]` — preserved 3-leg risk-parity base.
+- Estrella, A.; Hardouvelis, G.A. (1991). "The Term Structure as a
+  Predictor of Real Economic Activity". *Journal of Finance* 46(2),
+  555-576. DOI 10.1111/j.1540-6261.1991.tb04617.x.
+- Bauer, M.D.; Mertens, T.M. (2018). "Economic Forecasts with the
+  Yield Curve". FRBSF Economic Letter 2018-07.
+- Whaley (2009), JPM 35(3), DOI 10.3905/JPM.2009.35.3.098.
+- Bekaert, G.; Hoerova, M. (2014). *J. Econometrics* 183(2),
+  181-192. SSRN 2294327.
+- Hamilton (1989), *Econometrica* 57(2), DOI 10.2307/1912559.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:
