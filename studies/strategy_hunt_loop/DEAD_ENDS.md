@@ -3173,6 +3173,145 @@ Complete study: `studies/strategy_hunt_loop/iterations/048-2026-04-25-0644-iter0
 
 ---
 
+## From iteration 049 — Gold TSM 90d at 50/50 weight on iter 046 (MARGINAL 59, **REGRESSION vs 85**, 4/6 KILLS, 50/50 additive lower-Sharpe axis CLOSED)
+
+Complete study: `studies/strategy_hunt_loop/iterations/049-2026-04-25-0705-iter046-plus-gold-tsm/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Single pre-committed cfg `iter046_plus_gold_tsm_lookback90`** — 50/50
+   convex combo of iter 046 saved combined stream + gold TSM (90-day
+   boolean trend filter on GLD; cash earning rf=2% otherwise). Score
+   **59/100 frozen / 64/100 custom** vs iter 046's 85 (regression by
+   −26 pts frozen / −21 pts custom). Combined Sharpe edu/spy/ndx
+   0.92/1.02/1.03 (Δ046 −0.29/−0.31/−0.35 — widest 3/3 Sharpe drops in
+   the loop's history). DSR worst-p collapses 0.044 → **0.32** (8× worse,
+   crosses all 3 buckets in a single iter). G2 DSR fails on all 3
+   datasets. CAGR floor 0/3 (all 3 datasets fail; first 0/3 since
+   iter 028). MDD axis IMPROVED slightly (13-19% vs 15-18%, no score
+   gain at iter 046's already-low MDD).
+
+2. **The specific structural finding: at unequal Sharpes, 50/50 weighting
+   is sub-optimal regardless of ρ — dilution effect dominates correlation
+   diversification.** The Markowitz-Sharpe combined-portfolio identity
+   for streams a, b at weights w, (1-w) and correlation ρ:
+
+       σ_combined² = w² σ_a² + (1-w)² σ_b² + 2w(1-w)ρ σ_a σ_b
+       Sharpe_combined = (w μ_a + (1-w) μ_b) / σ_combined
+
+   At iter 046 (μ_a, σ_a, S_a = 0.094, 0.072, 1.32) + gold TSM
+   (μ_b, σ_b, S_b = 0.089, 0.129, 0.69) with w=0.5, ρ=0.53:
+   Sharpe_combined = 1.03 (matches observed 1.02 to 1pp). Even at
+   ρ = 0 (perfect orthogonality): Sharpe_combined = 1.25, **STILL
+   BELOW iter 046's 1.32 standalone**. The mathematically correct
+   weight on gold TSM under quadratic utility is ~9%, not 50%.
+
+3. **corr(r_gold_tsm, r_046) = 0.516-0.531 (predicted 0.10-0.30)** — the
+   decorrelation premise was wrong. iter 041's GLD leg (0.40 calm /
+   0.55 stress weight) shares the GLD price process with gold TSM's
+   long-GLD position (~67% of bars). Both streams overlap when the TSM
+   filter is long. The hypothesis predicted weak correlation; reality
+   is moderate-high correlation.
+
+4. **iter 046's 50/50 base worked ONLY because S_041 ≈ S_039 ≈ 1.04
+   (near-equal Sharpes).** iter 049 inherited the 50/50 weighting
+   without verifying that the new component (gold TSM, S = 0.69) was
+   Sharpe-comparable to iter 046's combined stream (S = 1.32). It wasn't.
+   The pre-commitment to 50/50 in the spec was the kill-bait.
+
+### Don't re-test
+
+- **Any 50/50 additive combination of iter 046 + a 3rd stream with
+  S_3rd < 1.10**: Markowitz identity guarantees combined Sharpe falls
+  below iter 046's 1.32 standalone, regardless of correlation.
+- **Gold TSM 90d at any weight w ≥ 0.20 on iter 046**: shared GLD
+  process with iter 041 means corr ≈ 0.5 floor; the diversification
+  benefit can't overcome the Sharpe-budget transfer.
+- **Single-asset commodity TSM streams on iter 046 at w ≥ 0.30**:
+  the Sharpe cap on single-asset commodity TSM is ~0.30-0.50 (MYP 2012);
+  diluting iter 046's 1.32 with such a stream at significant weight
+  always drops the combined Sharpe.
+- **Symmetric-weight pre-commitments inherited from iter 046's 50/50
+  base WITHOUT first verifying Sharpe-comparability**: this is a
+  procedural anti-pattern. Future additive hypotheses must include a
+  Markowitz-formula check in the spec.
+- **Generalised: any "let's add a 3rd uncorrelated stream at 50/50"
+  pre-commitment on iter 046**: closure applies broadly when the 3rd
+  stream's standalone Sharpe is materially below iter 046's combined
+  Sharpe.
+
+### Don't re-test on other bases UNLESS
+
+- Lower-weight (5-20%) additive on iter 046: NOT closed by iter 049
+  (predicted small positive lift to score 86-88; recommended #1 for
+  iter 050).
+- 50/50 additive with verified Sharpe-comparable 3rd stream
+  (S_3rd ∈ [1.20, 1.40]) and verified ρ < 0.30: NOT closed by iter 049
+  but candidates are sparse in the available cache.
+- 50/50 additive on a DIFFERENT high-Sharpe base (NOT iter 046):
+  the Markowitz argument applies symmetrically but the specific
+  numbers depend on the base's Sharpe and the 3rd stream's correlation.
+  A new high-Sharpe base might tolerate a wider Sharpe gap.
+
+### Structural principles
+
+- **Markowitz dilution dominates ρ-diversification at unequal Sharpes.**
+  The folkloric "diversification is free lunch" applies only when the
+  components have similar Sharpes; at S_a / S_b > 1.5 the lower-Sharpe
+  component drags more than its decorrelation contribution, and 50/50
+  produces a worse combined Sharpe than the high-Sharpe component
+  standalone — UNCONDITIONALLY (formula-derived, not empirically).
+  Generalises iter 048's "modulation closure" to "weight asymmetry
+  closure": any modification of iter 046 that preserves the 50/50
+  symmetry while introducing a Sharpe asymmetry must fail.
+
+- **The DSR worst-p moves through buckets non-linearly when both
+  Sharpe drops AND n_trials += 1.** iter 046's worst-p was 0.044
+  (deep inside bucket 15-pts). iter 049's worst-p is 0.32 (8× worse
+  ≡ entire bucket-traversal in one iter). The deflator-quantile-step
+  (iter 048 finding) is mild when Sharpe is preserved; it's
+  catastrophic when Sharpe drops.
+
+- **Empirical kill criteria are critical for additive hypotheses.**
+  iter 049 fired 4/6 kills; without the pre-committed kills, the
+  60-point custom-bench score might tempt a "marginally good" claim.
+  The kills (Sharpe regress, DSR worst-p, ρ ceiling, score regression)
+  collectively confirmed the failure mode within 30 minutes of analysis.
+
+- **5 distinct iter 046 enhancement axes are now CLOSED**: input gate
+  enrichment (iter 044), weight asymmetry (iter 047), output leverage
+  (iter 048), 50/50 additive lower-Sharpe stream (iter 049), and the
+  trivial gate-perturbation axis (iters 042/043). The iter 046 score=85
+  is now diagnostically a **tightly Pareto-optimal point** — every
+  natural enhancement direction has been tested and dominated.
+
+### Citations
+
+- `[systematic_trading]` (Carver) — TSM single-asset boolean rule.
+- `[stocks_on_the_move, p.76-77]` (Clenow) — Adjusted Slope (boolean
+  return-sign signal is the degenerate case).
+- `[risk_parity, ch.5]` + `[volatility_trading, p.218]` — iter 046
+  base preserved verbatim via saved return stream.
+- `[risk_parity, p.27-29, ch.2]` — gold's price return dominates roll
+  yield; rationale for TSM filter.
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials; the
+  deflator step combined with Sharpe regression is the principal
+  worst-p collapse mechanism.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (0.0000pp).
+- `[advances_fin_ml, p.162-164]` — no-lookahead 1-day shift rule
+  (TSM signal at t computed on prices ≤ t-1).
+- `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
+- Moskowitz-Ooi-Pedersen (2012), JFE 104(2) 228-250,
+  DOI 10.1016/j.jfineco.2011.11.003 — TSM across 24 contracts including
+  commodities; gold standalone TSM Sharpe ~0.30-0.40 cited.
+- Hurst-Ooi-Pedersen (2017), JPM 44(1) 15-29,
+  DOI 10.3905/jpm.2017.44.1.015 — century of evidence on trend-
+  following.
+- Markowitz (1952), JoF 7(1) 77-91 — the convex-combination Sharpe
+  identity used in the post-mortem mathematical analysis.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:

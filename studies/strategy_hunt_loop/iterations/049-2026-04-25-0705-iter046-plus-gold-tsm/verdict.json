@@ -1,0 +1,537 @@
+{
+  "status": "marginal",
+  "tier": "MARGINAL",
+  "total_score": 59,
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 20,
+      "max": 25,
+      "datasets_beat": 2,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.32317376348118787,
+      "cumulative_n_trials": 4316
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "per_dataset": {
+        "educational": false,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count across 9 windows",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              0.8723997126174768,
+              0.6076260476968557,
+              1.2079755592853052
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              0.9367048432248305,
+              1.0451851874381446,
+              1.0831744314819112
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              0.7430291631854822,
+              1.1224616018208529,
+              1.1969570145353396
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9156144889408,
+      "cagr": 0.0891252476161497,
+      "mdd": 0.19063544806607455,
+      "dsr_p_value": 0.32317376348118787
+    },
+    "spy_real": {
+      "sharpe": 1.0153608819710331,
+      "cagr": 0.09355199117222712,
+      "mdd": 0.13418623101999186,
+      "dsr_p_value": 0.3100957899355248
+    },
+    "ndx_real": {
+      "sharpe": 1.0277251941367793,
+      "cagr": 0.0929043093594093,
+      "mdd": 0.13364395427276685,
+      "dsr_p_value": 0.3205236479428063
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4316,
+  "configs_tested": 1,
+  "primary_citation": "[systematic_trading] (Carver TSM single-asset) + [risk_parity, ch.5] + [volatility_trading, p.218] (iter 046 base preserved) + [advances_fin_ml, p.222-223] (DSR cumulative) + [advances_fin_ml, p.31-34] (G7) + Moskowitz-Ooi-Pedersen 2012 JFE 104(2) 228-250 DOI 10.1016/j.jfineco.2011.11.003",
+  "hypothesis_slug": "iter046-plus-gold-tsm",
+  "cfg_id": "iter046_plus_gold_tsm_lookback90",
+  "cfg": {
+    "cfg_id": "iter046_plus_gold_tsm_lookback90",
+    "w_046": 0.5,
+    "w_gold": 0.5,
+    "gold_ticker": "GLD",
+    "lookback": 90,
+    "rf": 0.02,
+    "cost_bps": 5.0,
+    "rebalance": "daily; gold TSM long iff trailing-90d return at t-1 > 0",
+    "primary_citation": "[systematic_trading] + [risk_parity, ch.5] + [volatility_trading, p.218]"
+  },
+  "score_custom": 64,
+  "tier_custom": "PROMISING",
+  "winner_conds_custom": false,
+  "criteria_custom": {
+    "1_sharpe_edge": {
+      "points": 20,
+      "max": 25,
+      "datasets_beat": 2,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.32317376348118787,
+      "cumulative_n_trials": 4316
+    },
+    "4_cagr_floor": {
+      "points": 5,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "iter046_plus_gold_tsm_lookback90",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": NaN,
+      "G1_note": "N=1 cfg \u2014 PBO is vacuous; G1 reported as PASS (uninformative)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p_raw": 0.32317376348118787,
+      "G2_alpha_raw": 0.05,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 0.6071278917330282,
+          "mdd": 0.15537270059064848,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 0.9448641468223393,
+          "mdd": 0.11466899321773674,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.7979247550373887,
+          "mdd": 0.09576313644246556,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 0.3357362303998331,
+          "mdd": 0.0738966954650403,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 0.6360724460279202,
+          "mdd": 0.052373236799880714,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.3207255828399667,
+          "mdd": 0.11151055408639263,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.12769536838682993,
+          "mdd": 0.12950274156272795,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.9767064747649978,
+          "mdd": 0.13131276771955794,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.1900361389782053,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.1942265730647474,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.24561372182608504,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0,
+      "dsr_p_value": 0.32317376348118787
+    },
+    "spy_real": {
+      "cfg_id": "iter046_plus_gold_tsm_lookback90",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": NaN,
+      "G1_note": "N=1 cfg \u2014 PBO is vacuous; G1 reported as PASS (uninformative)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p_raw": 0.3100957899355248,
+      "G2_alpha_raw": 0.05,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 7,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.8248385712129458,
+          "mdd": 0.0859243767076581,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 0.34817649835418146,
+          "mdd": 0.09795707262067949,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": -0.07638799763515582,
+          "mdd": 0.07504698384906935,
+          "profitable": "False"
+        },
+        {
+          "window": 3,
+          "sharpe": 0.874397909843006,
+          "mdd": 0.05130414540257974,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.3072198861392017,
+          "mdd": 0.039933869854859125,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 0.7489126155596593,
+          "mdd": 0.11022457500639976,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.5871111707676886,
+          "mdd": 0.13418623091668766,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.9356285114171403,
+          "mdd": 0.13129043521665298,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.235370493878062,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.1870570103262141,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.2852443168127281,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0,
+      "dsr_p_value": 0.3100957899355248
+    },
+    "ndx_real": {
+      "cfg_id": "iter046_plus_gold_tsm_lookback90",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": NaN,
+      "G1_note": "N=1 cfg \u2014 PBO is vacuous; G1 reported as PASS (uninformative)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p_raw": 0.3205236479428063,
+      "G2_alpha_raw": 0.05,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.4214978799390503,
+          "mdd": 0.09533958566110631,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 0.3710423861937322,
+          "mdd": 0.06388194097618555,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.2480588109014258,
+          "mdd": 0.07667012428296772,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 0.6738826036907039,
+          "mdd": 0.05079187455565342,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 0.8611292644928383,
+          "mdd": 0.09701801231559165,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.2373216037924235,
+          "mdd": 0.08305301688933646,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.7219570645206255,
+          "mdd": 0.11531902350499913,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.856217073679106,
+          "mdd": 0.13364395417237432,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.2454794189164469,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.2184142619722806,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.29803032645449856,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0,
+      "dsr_p_value": 0.3205236479428063
+    }
+  },
+  "robustness_bonus": {
+    "total_sub_windows": 9,
+    "positive_sub_windows": 9,
+    "fraction_positive": 1.0,
+    "bonus_awarded": 5,
+    "per_dataset": {
+      "educational": {
+        "window_sharpes": [
+          0.8723997126174768,
+          0.6076260476968557,
+          1.2079755592853052
+        ],
+        "positive_count": 3,
+        "total": 3
+      },
+      "spy_real": {
+        "window_sharpes": [
+          0.9367048432248305,
+          1.0451851874381446,
+          1.0831744314819112
+        ],
+        "positive_count": 3,
+        "total": 3
+      },
+      "ndx_real": {
+        "window_sharpes": [
+          0.7430291631854822,
+          1.1224616018208529,
+          1.1969570145353396
+        ],
+        "positive_count": 3,
+        "total": 3
+      }
+    }
+  },
+  "pre_committed_kills": {
+    "A_sharpe_regress_vs_iter046_2plus_ds": {
+      "fired": true,
+      "n_datasets_dropping_005": 3,
+      "deltas": {
+        "educational": -0.2868359515958392,
+        "spy_real": -0.307392376375345,
+        "ndx_real": -0.35367951061985314
+      },
+      "threshold": "Sharpe \u2264 iter 046 \u2212 0.05 on \u2265 2 of 3 datasets"
+    },
+    "B_dsr_worst_p_above_iter046_worst": {
+      "fired": true,
+      "iter049_worst_p": 0.32317376348118787,
+      "iter046_worst_p": 0.04162005431509497,
+      "threshold": "iter 049 worst DSR p > iter 046 worst DSR p (0.0416)"
+    },
+    "C_corr_gold_046_above_050": {
+      "fired": true,
+      "max_corr": 0.5307005124373232,
+      "per_dataset": {
+        "educational": 0.5278573220787661,
+        "spy_real": 0.5307005124373232,
+        "ndx_real": 0.5160317252505051
+      },
+      "threshold": "max corr(r_gold_tsm, r_046) > 0.50 on any dataset"
+    },
+    "D_score_below_iter046": {
+      "fired": true,
+      "score_frozen": 59,
+      "iter046_score": 85,
+      "threshold": "< 85"
+    },
+    "E_g7_crosslib_above_3pp": {
+      "fired": false,
+      "max_diff_pp": 0.0,
+      "threshold": "> 3.0 pp on any dataset"
+    },
+    "F_standalone_gold_sharpe_below_020": {
+      "fired": false,
+      "gold_sharpe_spy_real": 0.6881511343401447,
+      "threshold": "Standalone gold TSM Sharpe < 0.20 on spy_real"
+    }
+  },
+  "n_kills_fired": 4,
+  "iter046_reference_metrics": {
+    "educational": {
+      "sharpe": 1.2024504405366392,
+      "cagr": 0.09158335290263842,
+      "mdd": 0.17973738142897414
+    },
+    "spy_real": {
+      "sharpe": 1.3227532583463781,
+      "cagr": 0.09451184507178101,
+      "mdd": 0.15223013848877892
+    },
+    "ndx_real": {
+      "sharpe": 1.3814047047566325,
+      "cagr": 0.09760485904202598,
+      "mdd": 0.14574916595961826
+    }
+  },
+  "iter046_reference_score": 85,
+  "iter046_reference_dsr": {
+    "educational": 0.04143446567175557,
+    "spy_real": 0.04162005431509497,
+    "ndx_real": 0.031103417001706934
+  },
+  "iter048_reference_score": 83,
+  "delta_vs_iter046": {
+    "educational": {
+      "sharpe_delta": -0.2868359515958392,
+      "cagr_delta": -0.00245810528648871,
+      "mdd_delta": 0.010898066637100412
+    },
+    "spy_real": {
+      "sharpe_delta": -0.307392376375345,
+      "cagr_delta": -0.0009598538995538863,
+      "mdd_delta": -0.018043907468787063
+    },
+    "ndx_real": {
+      "sharpe_delta": -0.35367951061985314,
+      "cagr_delta": -0.004700549682616684,
+      "mdd_delta": -0.012105211686851414
+    }
+  }
+}
