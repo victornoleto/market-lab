@@ -2338,6 +2338,115 @@ Complete study: `studies/strategy_hunt_loop/iterations/030-2026-04-24-2259-vix-z
 
 ---
 
+## From iteration 033 — NTSX long-duration variant (0.9 SPY + 0.6 TLT static stack)
+
+### What failed
+
+Iter 033 swapped iter 015's IEF (7-10y, ~6y dur) for **TLT (20-30y,
+~17-18y dur)** at preserved 0.9/0.6 NTSX weights — pure single-mech
+duration tilt, no overlay, no timing. Test of Koijen-Moskowitz-
+Pedersen-Vrugt 2018 thesis that long-end term premium is largest.
+
+Single pre-committed cfg `ntsx_synth_90_60_spy_tlt`. Single config,
+3 datasets → +3 cumulative trials (4285→4288).
+
+**Score: 72/100 PROMISING** (1/6 kills fired — Kill C DSR; 5 clean):
+- Sharpe edu/spy/ndx 0.850/1.037/1.065 (Δ frozen +0.170/+0.137/+0.110
+  3/3 clear; **Δ vs iter 015 reference +0.067/−0.007/+0.001 — Sharpe
+  TIED on real-data windows**)
+- Gates 5/6/6, DSR p 0.313/0.277/0.266 (n=4288, all 3 fail Kill C 0.20)
+- MDD 42.60%/38.47%/**47.04%** ndx breach +6.93pp vs 40.12% ceiling
+- CAGR 13.36%/15.95%/19.83% — 3/3 clear floors but only +0.4-0.6pp
+  vs iter 015 on real-data windows
+- ρ(eq,bd) −0.31/−0.30/−0.23 — TLT marginally less anti-correlated
+  than IEF (−0.31/−0.30/−0.23 vs −0.30/−0.30/−0.30 for iter 015)
+- Robustness 9/9 sub-windows positive
+- G7 cross-lib max 1.00pp 3/3 (engine clean)
+- Score: 1:25/25 + 2:17/25 + 3:**0**/15 + 4:15/15 + 5:10/15 + 6:5/5 = **72**
+
+**Score is identical to iter 032** (also 72) but from a
+structurally different mechanism path: iter 032 layered composition,
+iter 033 single-mech duration substitution. Both fail at criterion 3
+(DSR) and criterion 5 (MDD on ndx) with byte-for-byte identical
+breakdown.
+
+### Don't re-test
+
+- **Same NTSX 0.9/0.6 stack at SAME total leverage (1.5×) with TLT
+  bond leg**: specific cfg `ntsx_synth_90_60_spy_tlt` is exhausted
+  at score 72 PROMISING.
+- **TLT at HIGHER weight on the same equity (e.g., 0.9 SPY + 1.0 TLT)
+  — total leverage 1.9×**: would worsen MDD breach proportionally
+  (ndx 2022 → ~70% MDD); Kill B fires hard.
+- **TLT-only static stack (0 SPY + 1.5 TLT, equity-zero)**: kills
+  equity beta; Sharpe falls to ~0.4-0.6 standalone TLT; criterion 1
+  fails 0/25.
+- **TLT-funded variant (subtract r_Tbill × 0.5 financing cost)**:
+  iter 018 showed iter 015 IEF lost ~0.07 Sharpe per 100bps drag;
+  TLT's higher-vol bond would compound funding drag without
+  improving Sharpe — strict-winner condition robustness predictably
+  fails.
+- **Param sweeps on bond ticker between IEF and TLT** (e.g., LQD,
+  AGG, SHV, etc.): same Sharpe-curve trade-off; would inflate PBO
+  without breaking the plateau.
+
+### Structural principles
+
+- **Bond-duration is a CAGR-MDD trade-off, NOT a Sharpe lever** on
+  fixed-weight static stacks at preserved leg notional. Variance
+  scales with duration² (~7% IEF vol → ~14% TLT vol on the post-
+  2009 window) and offsets carry premium gain (~+0.5%→+1.5%/year
+  per KMPV 2018) along the Sharpe ratio:
+
+  ```
+  Sharpe_TLT  ≈ Sharpe_IEF (numerator and denominator scale ~equally)
+  CAGR_TLT    ≈ CAGR_IEF + 0.4-1.0 pp (small term-premium uplift)
+  MDD_TLT     ≈ MDD_IEF + 7-8 pp (variance compounds in stress 2022)
+  ```
+
+- **iter 015 plateau at 77 STRONG is resilient to bond-axis
+  variations**. Independently confirmed by iter 032 (composition
+  short-vol overlay → 72) and iter 033 (longer-duration bond
+  substitution → 72) — both score 72 from different mechanism paths
+  with identical criterion breakdown. Single structural changes on
+  the iter 015 stack shift score by ~±5 points around the plateau
+  without breaking it.
+
+- **DSR is the binding constraint on the static-stack family at
+  cumulative_n_trials ≥ ~4288 with Sharpe ≤ ~1.10**. Iter 033's
+  Sharpe matched iter 015 on real data, so DSR could not improve;
+  the 30 extra trials added ~0.005 p-value drift. Even an exact
+  iter 015 replay at this cumulative_n_trials level would marginally
+  fail DSR (p ~0.13 → ~0.13 + 0.01 ≈ 0.14, just above 0.10
+  threshold). **Future winners on this family must target Sharpe
+  ≥ 1.30 cross-dataset to clear DSR with safety margin**.
+
+- **The +0.067 educational Sharpe uplift in iter 033 is dominated by
+  the 4-year window extension** (2002-07-26 vs iter 015's
+  2006-01-03), capturing the 2002-2008 secular bond bull. On
+  matched-window basis (post-2009 spy_real and ndx_real), the iter
+  033 edge over iter 015 is **noise** (Δ +0.001/−0.007). Window
+  extensions are not legitimate Sharpe lifts.
+
+- **DOES NOT close (still open paths)**:
+  - **Bond carry SLEEVE** (zero-net-notional, e.g., +α TLT − α IEF
+    layered on top of iter 015 base): adds duration spread without
+    aggregate variance increase. Spread vol (TLT-IEF) ~6-8% is
+    much less than TLT vol alone ~14% — preserves iter 015 Sharpe
+    AND adds carry premium. Untested.
+  - **Bond mix at preserved aggregate notional** (e.g., 0.9 SPY +
+    0.3 IEF + 0.3 TLT): rebalances bond leg between durations
+    without changing aggregate. Effectively a duration-targeted
+    variant. Untested.
+  - **TLT at LOWER weight** (e.g., 0.9 SPY + 0.4 TLT): preserves
+    duration tilt but reduces variance contribution. Lower leverage,
+    lower carry, but possibly Sharpe-additive. Untested.
+  - **Cross-asset carry (FX/commodity)**: structurally different
+    asset class with distribution-orthogonal stress timing.
+    Untested.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:
