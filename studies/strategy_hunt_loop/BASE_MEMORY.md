@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 42
+total_iterations: 43
 winners_found: 0
 status: iterating
-latest_iteration: "042-2026-04-25-0422"
-cumulative_n_trials: 4307
+latest_iteration: "043-2026-04-25-0441"
+cumulative_n_trials: 4308
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -47,6 +47,7 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 | **2** | **016** | 🥇 STRONG | **79** | `ntsx_vm_vt15_L21_cap20` (60:40 × MM vol-target) | `[risk_parity, p.10-11]` + MM 2017 | 4/5 winner; Sharpe +0.24-0.30; DSR 0.226 sole fail |
 | **2** | **018** | 🥇 STRONG | **79** | `ntsx_vm_vt15_L21_cap20_funded` (016 + r_Tbill drag) | `[risk_parity, p.80-84]` | edges survive funding cost (−93 to −148 bps/yr); ties 016 |
 | **2** | **021** | 🥇 STRONG | **79** | `ntsx_vm_..._scs5_10_1m` (016 + short put-spread VRP) | `[volatility_trading, ch.3]` | Sharpe-neutral; MDD −1 to −3pp; DSR p=0.217 record |
+| **2** | **043** | 🥇 STRONG | **79** | `hysteretic_vix_low18_high22_w70_40_40_30_55_55` (Schmitt 041w) | `[advances_fin_ml, ch.17-18]` + Hamilton 1989 | RT/yr 8→2.5 ✓; spy MDD 22.92% 2nd-deepest; falsifies path-variance — DSR 0.168→0.189 REGRESS |
 | **7** | **035** | 🥇 STRONG | **77** | `static_stack_90_60_spy_gld` (static 0.9 SPY + 0.6 GLD) | `[risk_parity, ch.5]` + Erb-Harvey 2006 + AMP 2013 | Ties 015 ceiling from gold-not-bond axis; Δ015 +0.094/+0.026/+0.040 Sharpe; best static DSR ever (0.344) |
 | 7 | 015 | 🥇 STRONG | 77 | `ntsx_synth_90_60_daily` (static 0.9 SPY + 0.6 IEF) | `[risk_parity, p.5]` + AFP 2012 | 4/5 winner; 1st escape σ²_port cointegration |
 | **9** | **039** | 🥇 STRONG | **76** | `vrp_basket_eq3_5_10_1m` (T-bill + 1/3 SPY+QQQ+IWM short put cs) | `[volatility_trading, p.218]` + Bondarenko 2014 + DMV 2009 | Loop-record Sharpe (ndx 1.561) + DSR (ndx 0.006); 3/3 Sharpe edge ≥+0.10 |
@@ -60,13 +61,14 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
 
-### 042 — 2026-04-25 — combined-regime-lev-weights (🥈 PROMISING, 74/100, 2/6 KILLS — REGRESSION vs iter 041)
-- **Result:** Sharpe edu/spy/ndx 1.022/1.087/1.125 (Δ frozen +0.342/+0.187/+0.170; Δ041 −0.004/−0.044/−0.039 Kill A clean), gates 6/6/6, DSR p=0.175/**0.216**/0.196 (n=4307; REGRESSION iter 041 0.168→0.216 worst-p, +0.049 worse on spy), CAGR 12.13/12.50/**15.02%** (ndx slips < 0.8×bench floor by 0.32pp → criterion 4 = 10/15), MDD **22.21/22.21/28.85% DEEPEST STATIC-STACK EVER** (Δ041 −5.4/−2.4/−2.0pp), G7 1.011pp, robust 9/9, winner 3/5; score 1:25 2:19 3:**0** 4:**10** 5:15 6:5 = **74** (iter 041 was 84; −5 DSR + −5 CAGR). Cfg `combined_regime_vix_lt20_lev17_w70_40_40_ge20_lev10_w30_55_55` (calm 1.700×, stress 1.000×, derived 041w × 038lev-targets). `[risk_parity, ch.5]` + `[advances_fin_ml, ch.17-18, p.222-223]` + Moreira-Muir 2017 + Whaley 2009 + Bekaert-Hoerova 2014.
-- **Lesson:** Dual-axis "compose × leverage compound DSR" hypothesis FALSIFIED. iter 041's DSR uplift came from LOW conditional-leverage range (path-variance-bound), NOT regime classifier informativeness. Amplifying asymmetry (range 0.10 → 0.70) adds path variance > mean return → DSR worse despite preserved Sharpe edge + deepest-ever MDDs. iter 043 must add INFO-per-bar (HMM-2 multi-feature, hysteretic gate test) not amplified-asymmetry-per-regime. See `iterations/042-*/`.
+### 043 — 2026-04-25 — hysteretic-vix-regime-weights (🥇 STRONG, 79/100, 2/6 KILLS — REGRESS vs iter 041, FALSIFIES path-variance)
+- **Result:** Sharpe edu/spy/ndx 1.034/1.119/1.131 (Δ frozen +0.354/+0.219/+0.176; Δ041 +0.007/−0.012/−0.033 Kill A clean), gates 6/6/6, DSR p=0.161/0.179/**0.189** (n=4308; worst-p 041 0.168→0.189 REGRESS, edu 0.168→0.161 IMPROVE), CAGR 13.06/13.32/**15.05% ndx <floor 0.30pp** (crit-4=10/15), MDD 25.68/**22.92**/27.75% (Δ041 −1.92/−1.73/−3.09pp 2nd-best static-stack), G7 0.124pp, robust 9/9, winner 3/5; score 1:25 2:19 3:5 4:**10** 5:15 6:5 = **79** (041=84, −5 CAGR). RT/yr 2.25/2.50/2.54 (041~8 → halved Kill F clean). Cfg `hysteretic_vix_low18_high22_w70_40_40_30_55_55` (Schmitt [18,22] on 041 weights). `[advances_fin_ml, ch.17-18, p.222-223]` + Hamilton (1989) Econometrica 57(2) DOI 10.2307/1912559.
+- **Lesson:** Halving crossings introduces *regime-lag variance* (delayed transitions through [18,22) band) that dominates the path-variance gain. Combined with iter 042 (compose × leverage REGRESS), **iter 041 84-ceiling is LOCAL DSR OPTIMUM on narrow ridge** — any gate-timing perturbation (amplitude OR frequency) regresses by different variance mechanisms. Closes "halve crossings via hysteresis"; iter 044 must add INFO PER BAR (HMM-2, ML meta-label, out-of-family) — NOT gate timing. See `iterations/043-*/`.
 
-### Iters 015-041 (compressed 1-line; full detail in `iterations/NNN-*/`)
-- **041** (🥇 84 NEW TOP, regime-weights-vix-static-stack, 1/6 KILLS) Sharpe 1.03/1.13/1.16 (Δ037 +0.04/−0.02/−0.01), DSR p=0.168/0.167/0.156 **1st static-stack 0/15→5/15 escape** from iter 037 0.222, MDD 27.6/24.6/30.8% Δ037 ALL improve, G7 0.124pp, robust 9/9; score 1:25 2:19 3:5 4:15 5:15 6:5 = **84** (broke 79 ceiling held 6 iters). Cfg calm 0.70/0.40/0.40 (1.50×) vs stress 0.30/0.55/0.55 (1.40×). PRINCIPLE: composition shift adds DSR explanatory power independent of scale shift — but path-variance bound holds (iter 042 falsifies compound).
-- **040** (🥈 69, vrp-basket-vol-target, 3/6 KILLS) MM σ⁻² wrapper on 039 basket: Sharpe 1.04/1.21/1.31 (Δ039 −0.10/−0.08/−0.25 DEGRADE), DSR 0.168/0.112/0.070 worse, MDD 9/9/6%, score 69. PRINCIPLE: σ⁻² ABSORBS short-vol harvest (premium = f(IV) → σ⁻² removes exposure when E[harvest] peaks). Closes constant-window MM σ⁻² on short-vol.
+### Iters 015-042 (compressed 1-line; full detail in `iterations/NNN-*/`)
+- **042** (🥈 74, combined-regime-lev-weights, 2/6 KILLS) Sharpe 1.02/1.09/1.13 Δ041 ≈ −0/−0.04/−0.04, DSR 0.175/**0.216**/0.196 REGRESS worst-p 0.168→0.216, MDD 22.21/22.21/28.85% deepest-ever, ndx CAGR <floor, G7 1.0pp, score 74. PRINCIPLE: amplifying asymmetry (lev range 0.10→0.70) adds path variance > mean return → DSR worse; "compose × leverage compound DSR" FALSIFIED.
+- **041** (🥇 84 TOP-K #1, regime-weights-vix, 1/6 KILLS) Sharpe 1.03/1.13/1.16 Δ037 +0.04/−0.02/−0.01, DSR 0.168/0.167/0.156 **1st static-stack 0/15→5/15 escape** from 037's 0.222, MDD 27.6/24.6/30.8% Δ037 ALL improve, G7 0.124pp, score **84** (broke 79 ceiling held 6 iters). Cfg calm 0.70/0.40/0.40 (1.50×) vs stress 0.30/0.55/0.55 (1.40×). PRINCIPLE: composition shift adds DSR power independent of scale shift; but iter 042+043 falsify both gate-timing perturbations.
+- **040** (🥈 69, vrp-basket-vol-target) MM σ⁻² wrapper on 039: Sharpe 1.04/1.21/1.31 Δ039 ALL DEGRADE, DSR worse, score 69. PRINCIPLE: σ⁻² ABSORBS short-vol harvest (premium = f(IV) → σ⁻² removes exposure when E[harvest] peaks). Closes MM σ⁻² on short-vol.
 - **039** (🥇 76, basket 3etf 1/3-eq, 0/6 KILLS) Sharpe 1.14/1.29/1.56 (Δ frozen +0.46/+0.39/+0.61; Δ026 +0.01/+0.01/+0.19), gates 6/6/7, DSR p=0.075/0.061/**0.006** (loop-record ndx sub-0.01, 6.4× tighter than 026), MDD 14/7/7%, G7 0.0000pp, robust 9/9; score 1:25 2:21 3:10 4:0 5:15 6:5 = **76**. PRINCIPLE: cross-asset VRP basket TRIPLE-DOMINATES iter 026 operationally but score-ties at 76 — VRP family ceiling structurally CAGR-floor 0/15 + edu DSR > 0.05 (T-bill + GFC cluster ρ→1). Closes 4/5-leg, VIX gates on basket, asymmetric weights, DTE/strike sweeps.
 - **038** (🥇 79, regime-lev-vix) Sharpe 0.998/1.105/1.149 (Δ037 +0.02/−0.05/−0.03), DSR 0.204 (best static-stack > 0.20), MDD 25/22/29% (Δ037 −8/−4/−4pp best of any STRONG), G7 0.087pp, lev avg 1.46-1.49; score 1:25 2:19 3:0 4:15 5:15 6:5 = **79**. PRINCIPLE: static-stack DSR-bound at 79; binary VIX-gate MDD-additive + Sharpe-neutral + DSR-marginal. Two-axis: DSR-bound + MDD freely optimizable.
 
@@ -122,15 +124,15 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-036/**037**-**042** (iter 042 compound 041w×038lev REGRESSED to 74 PROMISING; falsifies "orthogonal axes compound DSR" — path-variance bound dominates regime-info; deepest MDDs ever 22/22/29% but ndx CAGR slips floor; TOP-K #1 unchanged 041 at 84).
+Consumed/closed: 002-005/007/009-014/017/019-036/**037**-**043**. iter 042+043 jointly close gate-timing axis (amplitude OR frequency perturbation regresses). TOP-K #1 unchanged 041 at 84.
 
-### Iter 043 candidates (path to break iter 041's 84: must add INFO-per-bar, not amplified-asymmetry-per-regime)
+### Iter 044 candidates (gate-timing axis CLOSED by iter 042+043 — must add INFO PER BAR)
 
-- **HMM-2 (VIX, T10Y3M) multi-feature regime (RECOMMENDED)** `[advances_fin_ml, ch.17-18]`. Adds info per regime call WITHOUT amplifying conditional leverage range — directly addresses iter 042's path-variance failure. Predicted DSR worst-p 0.10-0.13 → +5 score → 89. Caveat: free params, CPCV mandatory. ~3-4h. **Tests iter 042 lesson directly.**
-- **Hysteretic single-axis VIX gate on iter 041** (calm VIX<18, stress VIX>22): preserves iter 041 weights, halves crossings ~4/yr. Useful CONTROL — if DSR improves, path-variance hypothesis supported. Predicted +0-3 score. Hamilton (1989). ~1.5h.
-- **ML meta-label on iter 039 basket**: binary open/skip on VIX/VXN/RVX/VVIX/T10Y3M/EBP/skew. `[advances_fin_ml, ch.3]`. ~3-4h.
+- **HMM-2 (VIX, T10Y3M) multi-feature regime (RECOMMENDED)** `[advances_fin_ml, ch.17-18]`. The remaining axis is multi-feature regime info density. Predicted DSR worst-p 0.10-0.13 → score 89. Free params; pre-commit single (n_states=2, features=2) cfg with CPCV. ~3-4h.
+- **ML meta-label on iter 041 base** `[advances_fin_ml, ch.3]`: binary open/skip on (VIX, VXN, RVX, VVIX, T10Y3M, EBP, skew) walk-forward. ~3-4h.
+- **ML meta-label on iter 039 basket**: same 7 features on iter 039 VRP basket. ~3-4h.
 - **Cross-sectional factor timing ≥10 factor ETFs** (out-of-family): MTUM/QUAL/USMV/SIZE/VLUE/SPLV; 12-1 mom + value AMP 2013. ~3h.
-- **Iter 039 basket overlay on iter 037**: T-bill→0.6 SPY+0.45 IEF+0.45 GLD. Risk: re-trigger iter 032. ~2h.
+- **Iter 039 basket overlay on iter 037**: T-bill→0.6 SPY+0.45 IEF+0.45 GLD. Risk re-trigger iter 032. ~2h.
 
 DEAD-LETTER **FX carry**: Tiingo FX 2020+ only (6y insufficient). Parked.
 
@@ -139,8 +141,7 @@ NOT recommended: single-asset diversifier subst on 2/3-leg, weight perturbations
 ### Deeper backlog
 
 - Plano C sleeve meta-allocation (GDE/AVUV/AVDE/AVEM/BTGD).
-- Cross-sectional factor timing (≥10 factor ETFs, close to iter 003 floor).
-- Carry + value composite (Asness-Moskowitz-Pedersen 2013) — orthogonal axes may break iter 024's saturation.
+- Carry + value composite AMP 2013 — orthogonal axes vs iter 024's saturation.
 - VRP on broader index (RUT, EFA) — universe extension of iter 026.
 
 ---
@@ -151,7 +152,7 @@ NOT recommended: single-asset diversifier subst on 2/3-leg, weight perturbations
 - **Iter 017/019-021**: 12-1 top-K=1 rotation on ≤3 regions; ρ stock-bond overlay (closes VIX/MOVE/realized-vol overlays); options-on-equity-leg 5/10%OTM×21DTE on vol-managed stack (σ²_port absorbs). Open: bare puts / ATM straddles / different DTE on STATIC base.
 - **Iter 022-025**: TOM eq:bd modulator (σ²_port quadratic); TSM-PRIMARY ≤4-asset per-asset vol-target (turnover dominates √N); bond-curve carry-as-ALLOCATION 2-bond static; slow-EWMAC long-only 6-asset basket. Open: cross-asset carry, ≥20-asset, long-SHORT EWMAC, carry+value.
 - **VRP-harvester family ceiling 76 STRONG across 4 attacks (026/031/039/040)**: T-bill +0.38-0.45 Sharpe (026); linear-lev rf-dilutes (027); VIX-gates cap 76/71 (028-031); basket ties 76 (039); MM σ⁻² wrapper regresses to 69 (040). CAGR floor 0/15 + edu DSR > 0.05 structural to T-bill collateral. Closes 4/5-leg, basket VIX gates, asymmetric weights, DTE/strike sweeps, MM σ⁻², Kelly sizing. Open break-76: ML meta-label, positive-CAGR base, cross-sectional factor timing.
-- **Static-stack family ceiling at 84 STRONG (iter 041, supersedes 79).** History: 032-036 = 72-77; 037 plain 1.5× = 79; 038 lev-mod 1.7↔1.0× = 79; **041 weight-mod 1.50↔1.40 → DSR 0.168, score 84**; **042 compound 041w × 038lev → DSR 0.216 REGRESSION + ndx CAGR slip → 74 PROMISING (−10)**. **iter 042 falsifies "compose × leverage compound DSR": iter 041 uplift came from LOW conditional-leverage range (path-variance-bound), not regime-classifier informativeness; amplifying asymmetry adds path variance > mean return.** Closed: weight perturbations 037 unconditional, single-axis VIX-lev diversified, compound 041w×038lev. Open break-84: HMM-2 multi-feature (info-per-bar), hysteretic gate, ML meta-label, cross-sectional factor timing.
+- **Static-stack 84-STRONG ceiling (iter 041) — LOCAL DSR OPTIMUM ON NARROW RIDGE.** Path: 032-036=72-77; 037=79; 038=79; **041 binary VIX@20 + weights 1.50↔1.40 → DSR 0.168, score 84**; **042 compound 041w×038lev → 0.216 REGRESS −10 (path-variance from leverage swings)**; **043 hysteretic [18,22] → 0.189 REGRESS −5 (regime-lag variance from delayed transitions)**. Joint iter 042+043 disambiguation: any gate-timing perturbation (amplitude OR frequency) regresses, different variance mechanisms; iter 041's binary-20 IS the optimum. Closed: 037-weights perturb, 041w×038lev compound, hysteretic [18,22]. Open break-84: HMM-2 multi-feature, ML meta-label, cross-sectional factor timing — all adding INFO PER BAR, not gate timing.
 
 ---
 

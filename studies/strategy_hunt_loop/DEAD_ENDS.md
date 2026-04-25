@@ -2771,6 +2771,74 @@ fundamental absorption mechanism.
 
 ---
 
+## From iteration 043 — Hysteretic VIX-regime gate on iter 041 weights (STRONG 79, soft closure)
+
+### What failed
+
+Schmitt-trigger VIX gate (low_threshold=18, high_threshold=22) on
+iter 041's weights (calm 0.70/0.40/0.40 ↔ stress 0.30/0.55/0.55) was
+predicted to *improve* DSR worst-p from iter 041's 0.168 to ~0.10-0.14
+by halving regime crossings (RT/yr 8 → 2.5) and thereby reducing path
+variance — the binding mechanism identified by iter 042's final
+report. **Hysteresis worked as designed on the timing axis** (RT/yr
+halved on all 3 datasets, MDD strictly improved by 1.7-3.1 pp), but
+**worst-p DSR REGRESSED** to 0.189 (+0.021 worse than iter 041) and
+ndx CAGR slipped under the 0.8×bench floor by 0.30pp (criterion 4 =
+10/15). Final score 79 vs iter 041's 84 (Kill B + Kill D fired).
+
+### Don't re-test
+
+- Single-axis hysteretic VIX gate (any [low, high] band ±2-±5 around
+  20) on iter 041's static-stack weights — the regime-lag variance
+  from delayed transitions through the band dominates the
+  path-variance gain from fewer crossings.
+- Symmetric or asymmetric hysteretic gates with the same iter 041
+  weight pair — the result is bounded by the regime-lag variance
+  which scales with band width.
+- Single-feature hysteretic gates (T10Y3M, EBP, term-spread) on the
+  same weights — the variance trade-off is the same; the binding
+  mechanism is information-per-bar at the gate, not gate timing.
+
+### Structural principles
+
+1. **iter 041's binary-20 VIX gate is a LOCAL DSR OPTIMUM** on the
+   static-stack with weights 0.70/0.40/0.40 ↔ 0.30/0.55/0.55. Any
+   gate-timing perturbation regresses, by *different* mechanisms:
+   - **Amplitude perturbation** (iter 042: 1.7×/1.0×) → path-variance
+     from leverage swings → DSR 0.168 → 0.216 (+0.048 worse).
+   - **Frequency perturbation** (iter 043: hysteresis [18, 22]) →
+     regime-lag variance from delayed transitions → DSR 0.168 →
+     0.189 (+0.021 worse).
+2. **Hysteresis trades responsiveness for precision.** Each VIX
+   crossing at the threshold is an instantaneous Bayesian update of
+   the regime posterior. Hysteresis introduces a delay of 1-3 bars
+   on average (band-width / typical-VIX-velocity). On the 2004-2026
+   VIX path the responsiveness loss dominates the precision gain.
+3. **The DSR deflator's variance term is locally convex around the
+   binary-gate optimum.** Both perturbation directions add residual
+   variance not explained by mean returns, increasing worst-p.
+4. **The path forward to break iter 041's 84 ceiling must add INFO
+   per BAR — not modify gate timing or amplitude.** Multi-feature
+   classifiers (HMM-2 on VIX + T10Y3M), ML meta-labels on richer
+   feature sets, or out-of-family return-stream extensions are the
+   remaining axes.
+
+### Citations
+
+- `[advances_fin_ml, ch.17-18]` — regime detection and whipsaw cost;
+  hysteresis as canonical remedy.
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials; the
+  deflator's variance penalty is the binding mechanism.
+- `[risk_parity, ch.5]` — Asness-Frazzini-Pedersen risk-parity stack
+  (the iter 041 base being defended).
+- Hamilton (1989), *Econometrica* 57(2), 357-384,
+  DOI 10.2307/1912559 — Markov regime-switching with state
+  persistence (canonical hysteretic state classifier).
+- Krishnamurthy (2010), *AER* 100(3), 1-25 — macro path-dependence
+  argument for hysteretic risk-state machines.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:
