@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 63
+total_iterations: 64
 winners_found: 0
 status: iterating
-latest_iteration: "063-2026-04-25-1246"
-cumulative_n_trials: 4333
+latest_iteration: "064-2026-04-25-1315"
+cumulative_n_trials: 4334
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -41,11 +41,11 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 | rank | iter | tier | score | strategy slug | primary citation | headline |
 |---|---|---|---|---|---|---|
-| **1** | **058** | 🥇 STRONG | **85** | `iter046_plus_hyg_tsm_w010` | Asvanunt-Richardson 2017 + `[risk_parity, ch.5]` | NEW TOP-K (tie); 0/6 kills; 7/7×3; Sharpe ↑/MDD ↓ vs iter 046; vindicates 3rd-stream-Sharpe thesis |
-| **1** | **046** | 🥇 STRONG | **85** | `iter039_on_iter041_50_50` | `[risk_parity, ch.5]` + Whaley + Sinclair | TOP-K (tie); corr 0.41; 1st EVER 7/7×3 + DSR sub-0.05×3; 0/6 kills; CAGR 0/15 sole gap to 90 |
-| **3** | **053** | 🥇 STRONG | **84** | `iter037_plus_iter046_w070` | `[risk_parity, ch.5]` + Sinclair + Markowitz | 3-way tie; 3/3 CAGR (ndx +0.04pp); corr 0.95 Kill F PRE-FIRED; iter 037 anchor exhausted |
-| **3** | **051** | 🥇 STRONG | **84** | `iter037_plus_iter026_w080` | `[risk_parity, ch.5]` + Sinclair + Markowitz | **1st EVER 4/5 winner conds + 3/3 CAGR floor**; 25/19/5/15/15/5; DSR p=0.175 sole gap to 90 |
-| **3** | **041** | 🥇 STRONG | **84** | `regime_weights_vix_lt20_70_40_40_ge20_30_55_55` | `[risk_parity, ch.5]` + Whaley | 1st 84; DSR 0.222→0.168 escape; gate-mod axis closed (042/043/044); used in iter 046 |
+| **1** | **064** | 🥇 STRONG | **90** | `iter046_plus_qqq_trend_w010_lookback200` | Faber 2007 SSRN 962461 + `[stocks_on_the_move, p.21-30]` | **NEW TOP-K #1, breaks 85 ceiling**; 0/7 kills; 7/7×3; DSR <0.05×3; 1st-ever 4/5 winner conds + edu CAGR floor PASS without LETF |
+| **2** | **058** | 🥇 STRONG | **85** | `iter046_plus_hyg_tsm_w010` | Asvanunt-Richardson 2017 + `[risk_parity, ch.5]` | 0/6 kills; 7/7×3; iter 046 + HYG carry (Sharpe-additive but CAGR-dilutive — REPLACED in iter 064) |
+| **2** | **046** | 🥇 STRONG | **85** | `iter039_on_iter041_50_50` | `[risk_parity, ch.5]` + Whaley + Sinclair | corr 0.41; 1st EVER 7/7×3 + DSR sub-0.05×3; 0/6 kills; preserved as 90% anchor in iter 064 |
+| **4** | **053** | 🥇 STRONG | **84** | `iter037_plus_iter046_w070` | `[risk_parity, ch.5]` + Sinclair + Markowitz | 3-way tie; 3/3 CAGR (ndx +0.04pp); corr 0.95 Kill F PRE-FIRED; iter 037 anchor exhausted |
+| **4** | **051** | 🥇 STRONG | **84** | `iter037_plus_iter026_w080` | `[risk_parity, ch.5]` + Sinclair + Markowitz | 4/5 winner conds + 3/3 CAGR floor; 25/19/5/15/15/5; DSR p=0.175 sole gap to 90 |
 
 *(iter 001 ~35/100; see `tests/test_strategy_scoring.py::TestNearMiss`.)*
 
@@ -55,11 +55,12 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
 
-### 063 — 2026-04-25 — iter058-internal-letf-iter041-only (🥇 STRONG, 81/100, 1/6 KILLS A)
-- **Result:** Sharpe edu/spy/ndx 1.17/1.26/1.35 (Δ frozen +0.49/+0.36/+0.39, Δ058 −0.05/−0.09/−0.06; kill A FIRES 3/3), CAGR 9.46/9.67/11.12% (1/3 floor — edu 9.46%>9.18% **1st time on iter 058 family**), MDD 17.51/15.51/18.01% (3/3≤ceiling), gates 6/6/7, DSR worst-p 0.0762 (REGRESSED from 058's 0.0494; ndx 0.0426 PASS only) (n=4333), G7 0.000000pp×3 + Markowitz outer 0/0/0 (perfect closed-form), winner=3/5; score 1:25 2:21 3:10 4:5 5:15 6:5 = **81**.
-- **Lesson:** Internal-LETF axis EXHAUSTED across both Pareto branches (iter 037-anchor → 79 from 062; iter 058-anchor → 81 here). Drag is **per-unit-LETF-weight INVARIANT across base Sharpe regimes** — "Sharpe-headroom absorbs drag" thesis FALSIFIED. Path 90+ requires (a) novel anchor with Sharpe ≥ 1.20 AND CAGR ≥ 12% simultaneously (no iter 0-63 has this) OR (b) novel CAGR-additive 3rd stream beyond HYG with Sharpe ≥ 0.7 AND CAGR ≥ iter 046's 9.5%/yr. See `iterations/063-*/`.
+### 064 — 2026-04-25 — iter058-qqq-trend-substitution (🥇 STRONG, 90/100, 0/7 KILLS — NEW TOP-K #1)
+- **Result:** Sharpe edu/spy/ndx 1.22/1.33/1.38 (Δ058 −0.005/−0.016/−0.027 under kill A 0.05), CAGR 9.49/9.97/10.17% (Δ058 +0.79/+0.96/+0.91 — **edu 9.49%>9.18% floor 1st-ever non-LETF unlock**), MDD 17.27/15.33/14.74%, gates **7/7/7** (1st-ever 7/7×3 + DSR p<0.05×3 + edu CAGR floor pass simultaneously), DSR worst-p 0.0392 spy (n=4334; cleaner than 058's 0.0494), G7 0.000000pp×3 + Markowitz outer 0/0/0 perfect closed-form, qqq_trend standalone S 0.80/0.91/0.87 / CAGR 11.6/13.9/13.1% / pct_long 81-86%, corr(qqqt,r_046) 0.53-0.59, winner_conds=4/5 (CAGR floor 1/3 sole gap); score 1:25 2:25 3:15 4:5 5:15 6:5 = **90**.
+- **Lesson:** **NEW TOP-K #1 — breaks 85 ceiling held since iter 046.** Validates iter 063's diagnosis: iter 058 family's binding constraint IS CAGR floor, not Sharpe. Faber 2007 QQQ-200d-trend (S~0.80, CAGR~12-14%) at w=0.10 is **strictly Pareto-dominant** over HYG_TSM (S~0.99, CAGR~4.85%) for iter 046 anchor: +5 from CAGR-floor unlock with ≤−0.03 Sharpe drag (vs iter 063's internal-LETF that fired kill A 3/3 for same uplift). Path to WINNER 95-100 = close spy (−2.01pp gap) or ndx (−5.18pp gap) CAGR floor. Iter 065 candidate #1: weight sweep w_qqqt ∈ {0.12-0.20}. See `iterations/064-*/`.
 
-### Iters 015-062 (compressed 1-line; full detail in `iterations/NNN-*/`)
+### Iters 015-063 (compressed 1-line; full detail in `iterations/NNN-*/`)
+- **063** (🥇 81, 1/6 KILLS A, iter058-internal-letf-iter041-only) S 1.17/1.26/1.35 (Δ058 −0.05/−0.09/−0.06 KILL A 3/3), CAGR 9.46/9.67/11.12% (1/3 floor — edu 1st unlock on 058 family), MDD 17.51/15.51/18.01%, DSR worst-p 0.0762 REGRESSED from 058's 0.0494 (ndx 0.0426 PASS only). **Internal-LETF axis EXHAUSTED across both Pareto branches** (037-anchor → 79; 058-anchor → 81). Drag per-unit-LETF-weight INVARIANT across base Sharpe regimes; Sharpe-headroom thesis FALSIFIED. Path 90+ → novel anchor (S≥1.20 ∧ CAGR≥12%) OR CAGR-additive 3rd stream (S≥0.7 ∧ CAGR≥9.5%) — **SOLVED in iter 064 via QQQ-200d-trend**.
 - **062** (🥇 79, 1/6 KILLS B, iter037-upro-substitution-internal-letf) S 0.95/1.07/1.10, CAGR 16.26/17.08/19.07% (3/3 floor PASS, +1.3-2.1pp uplift vs 037), MDD 35.90/30.51/37.33%, DSR worst-p 0.263 REGRESSED vs 037's 0.222. **Internal-LETF on iter 037 anchor delivers SAME 79 — 4× replication of iter 037-family ceiling (037, 059, 061, 062). Vol decay + financing drag invariant under (a)(b)(c).**
 - **061** (🥇 79, 1/6 KILLS B, iter037-eq075-plus-hyg-tsm) S 0.93/1.16/1.17, CAGR 13.85/15.98/18.57% (3/3 floor PASS), MDD 35.97/24.84/32.48%, DSR worst-p 0.341 REGRESSED vs 037's 0.222. **Closes iter 037-family weight-tuning**: canonical 0.60/0.45/0.45 is Sharpe-optimal; equity-overweight LOWERS Sharpe because bond/gold legs are Sharpe-positive contributors. ΔCAGR/ΔSharpe ≈ 16 pp/Sharpe-unit.
 - **060** (🥇 79, 2/6 KILLS A+B, iter058-levered-150-futures-borrow) S 1.10/1.22/1.28, CAGR 11.7/12.2/12.6% (2/3 floor), MDD 25/21/20%, DSR worst-p 0.125. **Closes external-leverage axis on iter 058 at borrow > 0.5pp above rf**: rf=0 → absolute borrow is drag.
@@ -124,16 +125,17 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-**063**. **Iter 063 closed internal-LETF axis on iter 058 (DSR-clearing) anchor at preserved-equity weighting → 81 STRONG (1/6 KILLS A).** Internal-LETF axis is now EXHAUSTED across both Pareto branches: iter 037-anchor → 79 (062) and iter 058-anchor → 81 (063). The drag magnitude (−0.05 to −0.09 Sharpe) is **per-unit-LETF-weight INVARIANT across base Sharpe regimes**; "Sharpe-headroom absorbs drag" thesis falsified. Path 90+ requires (a) novel anchor with simultaneous Sharpe ≥ 1.20 AND CAGR ≥ 12% (no iter 0-63 has this) or (b) novel CAGR-additive 3rd stream beyond HYG with Sharpe ≥ 0.7 AND CAGR ≥ iter 046's 9.5%/yr.
+Consumed/closed: 002-005/007/009-014/017/019-**064**. **Iter 064 broke the 85 ceiling held since iter 046 → NEW TOP-K #1 STRONG 90, 0/7 KILLS, edu CAGR floor PASS without LETF.** QQQ-200d-trend (Faber 2007 TAA primitive) at w=0.10 substituted HYG_TSM in iter 058 anchor; CAGR-additive 3rd-stream thesis confirmed. **Path to WINNER 95-100 is now well-defined**: criterion 4 CAGR floor needs ≥ 2 of 3 datasets (currently 1/3 — edu only). Closing spy_real (gap −2.01 pp) or ndx_real (gap −5.18 pp) takes criterion 4 from 5/15 to 10/15 → score 95 → WINNER.
 
-### Iter 064 candidates (iter 058 = TOP-K #1 stays; internal-LETF axis exhausted)
+### Iter 065 candidates (iter 064 = NEW TOP-K #1, path to WINNER well-defined)
 
-- **#1 Higher-CAGR 3rd stream non-equity on iter 058 anchor** (NEW, informed by 063): break 85 ceiling requires 3rd stream with **S ≥ 0.7 AND CAGR ≥ iter 046's 9.5%/yr**. Candidates: QQQ-200d-trend (S~0.8, CAGR~12-14%, kill F risk corr~0.7); EFA+EEM TSM (S≤0.5, dilution); QMOM/VLUE/USMV (verify cache); gold-spread momentum. **Predicted 80-92 — RECOMMENDED for iter 064.**
-- **#2 4-stream composite** (saved-stream-pair gen): iter 058 + iter 037 50/50, or 3-way + gold-TSM. Saved-stream-pair Pareto 79-85; predicted 83-89.
-- **#3 Equity-UNDERWEIGHT iter 037 (0.45/0.55/0.55) + HYG_TSM**: opposite of 061. Predicted S↑ to 1.05-1.20 at cost of CAGR. Low priority post-062 (037-anchor 79 ceiling 4× structural).
-- **#4 Plano C sleeve** (predicted ≤ 70). **#5 CRSP/Norgate delisted** (not feasible without budget).
+- **#1 QQQ-trend weight sweep** (w_qqqt ∈ {0.12, 0.15, 0.18, 0.20}, lookback=200 fixed): does increasing weight close spy or ndx CAGR floor? Pareto trade-off Sharpe drag vs CAGR uplift; current w=0.10 gives Sharpe Δ −0.005/−0.016/−0.027 (well under kill A 0.05), CAGR Δ +0.79/+0.96/+0.91 pp. Linearly extrapolating: w=0.20 → Δ Sharpe ~−0.01/−0.03/−0.05, CAGR uplift +1.6/+1.9/+1.8 pp → spy CAGR ~11.9% (just at floor 11.98%), ndx ~12.0% (still 3.4 pp short). **Predicted 90-94. RECOMMENDED for iter 065 — direct path to WINNER if spy clears.**
+- **#2 4-stream composite** (e.g., 0.85·iter_046 + 0.05·HYG + 0.10·QQQ_TREND): keeps HYG at small weight while QQQ_trend drives CAGR. Predicted 88-92 (incremental over iter 064; HYG keeps DSR tight).
+- **#3 Alternative trend-asset on iter 046 anchor**: TLT-200d-trend (S 0.5-0.7, CAGR 4-6% — too low); GLD-200d-trend (S 0.5-0.6, CAGR 6-8% — borderline); SECTOR-MOM top-3 (pre-val showed S 0.52/0.74/0.71, CAGR 8.4/12.0/11.2% — fails edu Sharpe floor). All probably ≤ 88.
+- **#4 Internal-LETF QQQ_trend with TQQQ substitution**: closed in spirit by iter 062/063 (per-unit-LETF-weight drag invariant) — internal LETF on the QQQ_trend leg likely re-fires kill A.
+- **#5 Plano C sleeve** (predicted ≤ 70). **#6 CRSP/Norgate delisted** (not feasible without budget).
 
-DEAD-LETTER: 037+026/041+026/037+046/041+039 any weight (Pareto 79-85); 046-family 044/047-050; HYG_TSM 3rd stream on 046 at w=0.10 (058 = 85; family Pareto); HYG_TSM 3rd stream on 037 at w=0.10 with CANONICAL weights (059 = 79); HYG-041 substitution (UNTESTED, distinct); HMM-2; FX carry; MTUM/QUAL/USMV (not in cache); all 037-anchor saved-stream-pairs (045/051/053, ceil 84); 041 substitution for 037 (052); cross-sectional momentum on Tiingo cache (054 data layer); broader-region VRP 5-leg (055 at 73); external lev on 046 at borrow ≥ 3% (056 at 74); multi-commodity TSM basket on 046 (057 at 64); external lev on 058 at any borrow > 0.5pp above rf (060 at 79); iter 037 family equity-overweight at 0.75/0.40/0.40 + HYG_TSM at w=0.10 (061 at 79); internal-LETF UPRO substitution on iter 037 anchor at preserved-equity weighting (062 at 79); **internal-LETF UPRO substitution on iter 058 anchor (iter 041 sub-component only) at preserved-equity weighting calm 0.2333/0.6333/0.6333 + stress 0.10/0.65/0.65 (063 at 81; internal-LETF axis EXHAUSTED across both Pareto branches — drag invariant per-unit-LETF-weight regardless of base Sharpe regime)**.
+DEAD-LETTER (closed axes): saved-stream-pairs 037+026/041+026/037+046/041+039 (045/051/052/053 Pareto 79-85); 046-family 044/047-050; HYG_TSM 3rd stream on 046/037 (058=85 Pareto, 059=79); HMM-2; FX carry; MTUM/QUAL/USMV (not in cache); cross-sectional mom on Tiingo (054 data layer); broader-region VRP 5-leg (055=73); external lev on 046 at borrow ≥3% (056=74); multi-commodity TSM basket (057=64); external lev on 058 at borrow >0.5pp (060=79); 037 eq075 (061=79); internal-LETF on 037 (062=79); internal-LETF on 058 (063=81; axis EXHAUSTED both branches); **QQQ-200d-trend Faber 2007 sub for HYG_TSM in iter 058 at w=0.10 (064=90 NEW TOP-K #1; w=0.10 sweet spot exhausted; weight sweep w∈{0.12-0.20} OPEN for iter 065)**.
 
 ### Deeper backlog
 
@@ -154,11 +156,8 @@ DEAD-LETTER: 037+026/041+026/037+046/041+039 any weight (Pareto 79-85); 046-fami
 - **iter 047-053 closures**: 5 iter-046 axes (047 Pareto-opt+Bonf; 048 output-VIX dupes 044; 049 low-S Markowitz; 050 DSR knife-edge); 037+026/041+026/037+046 saved-stream-pairs (84 ceil, Kill F corr 0.93-0.96). Saved-stream-pair ceiling = 85 (iter 046).
 - **iter 054-057 closures**: 054 DATA LAYER (Tiingo survivorship → cross-sectional dead until CRSP); 055 broader-region VRP 5-leg (73<039's 76); 056 external lev on 046 (74); 057 commodity-basket (64, S 0.13-0.29 dilution).
 - **3rd-stream-S binding (049/050/057/058)**: standalone S ≥ ~0.5 binding for Markowitz-positive at any practical weight, NOT corr alone. 058 vindicates with HYG_TSM (S~0.9, w=0.10) → 85.
-- **iter 059 (037+HYG)**: CAGR-floor 3/3 PASS but DSR 0.268≥037's 0.222 → 79. **CAGR-DSR dual constraint**: NO anchor 0-58 has S≥1.20 AND CAGR≥12% simultaneously.
-- **iter 060 (external lev 1.5× on 058 at 2.5% borrow)**: 79. rf=0 → absolute borrow is drag. Closes external-leverage axis on 058 at borrow > 0.5pp above rf.
-- **iter 061 (eq075 + HYG_TSM)**: 79. eq075 standalone S 0.91 < 037's 0.96 (bond/gold are S-positive contributors). DSR REGRESSED to 0.341. **Closes 037-family weight-tuning** — canonical 0.60/0.45/0.45 is Sharpe-optimal.
-- **iter 062 closure (internal-LETF on iter 037 anchor at 0.20/0.65/0.65)**: 79 (1/6 KILLS B). Sharpe LOWER on 3/3 (Δ −0.03/−0.09/−0.07) due to LETF vol decay + visible swap+expense drag. CAGR +1.3-2.1pp via diversifier overweight but DSR worst-p REGRESSED to 0.263. **Iter 037-anchor 79 ceiling 4× confirmed structurally invariant** under (a) weights, (b) lev type, (c) 3rd stream.
-- **iter 063 closure (internal-LETF on iter 041 sub-component within iter 058 anchor)**: 81 (1/6 KILLS A — Sharpe regress 3/3). Drag magnitude (−0.05/−0.09/−0.06) MATCHES iter 062's (−0.03/−0.09/−0.07) — drag is **per-unit-LETF-weight INVARIANT across base Sharpe regimes**. Sharpe-headroom thesis FALSIFIED. CAGR +0.66/+0.66/+1.85pp; edu CAGR-floor unlocks 1st time on 058 family. DSR REGRESSED 2/3 (only ndx clears 0.0426). **Internal-LETF axis EXHAUSTED across both Pareto branches** (037 → 79; 058 → 81). Path 90+ requires novel anchor (S≥1.20 AND CAGR≥12%) OR novel CAGR-additive 3rd stream (S≥0.7 AND CAGR≥9.5%).
+- **iter 059-063 closures (037-anchor + leverage axes)**: 059 037+HYG → 79 (CAGR-DSR dual constraint: NO anchor 0-58 has S≥1.20 ∧ CAGR≥12%); 060 ext-lev 1.5× on 058 → 79 (rf=0 borrow=drag); 061 eq075 → 79 (canonical 0.60/0.45/0.45 Sharpe-optimal); 062 internal-LETF on 037 → 79 (drag invariant); 063 internal-LETF iter 041 within 058 → 81 (Sharpe-headroom thesis FALSIFIED). **Internal-LETF axis EXHAUSTED both branches** (037→79; 058→81).
+- **iter 064 NEW TOP-K #1 (QQQ-200d-trend Faber 2007 sub for HYG_TSM)**: 90 (0/7 KILLS — first 90+). qqqt standalone S 0.80-0.91 / CAGR 11.6-13.9% / MDD 25-26% (replicates Faber 1972-2005 OOS on Tiingo 2006-2026). Combined Δ058: Sharpe −0.005/−0.016/−0.027, CAGR +0.79/+0.96/+0.91pp, **edu 9.49%>9.18% floor 1st-ever non-LETF unlock**; 1st-ever 7/7×3 + DSR p<0.05×3 + edu CAGR floor pass simultaneously. corr(qqqt,r_046) 0.53-0.59. **Validates iter 063's diagnosis** — iter 058 family's binding is CAGR floor, not Sharpe; CAGR-additive trend Pareto-dominates Sharpe-additive carry at iter 046 anchor. Closes single-asset-equity-trend-3rd-stream axis at w=0.10; weight sweep w∈{0.12-0.20} OPEN.
 
 ---
 

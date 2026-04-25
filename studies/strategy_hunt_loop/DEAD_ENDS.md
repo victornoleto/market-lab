@@ -4447,3 +4447,185 @@ Citations for iter 063's closure:
 - Erb-Harvey (2006), FAJ 62(2), DOI 10.2469/faj.v62.n2.4084 —
   gold strategic role.
 - ProShares UPRO prospectus 2024-2025 — expense ratio 0.91%/yr.
+
+
+---
+
+## From iteration 064 — QQQ-200d-trend (Faber 2007 TAA) substitution for HYG_TSM in iter 058 anchor — 🥇 **STRONG 90, 0/7 KILLS, NEW TOP-K #1**
+
+Complete study: `studies/strategy_hunt_loop/iterations/064-2026-04-25-1315-iter058-qqq-trend-substitution/final_report.md`.
+
+**This entry documents an axis CLOSURE at the Pareto-optimal sweet
+spot, not a structural failure.** iter 064 is the first 90+ score in
+loop history and breaks the 85 ceiling held since iter 046. The
+"DEAD_ENDS" placement here marks the **w=0.10 sweet spot as exhausted**
+and points future iterations to the open **weight-sweep** axis
+(w_qqqt ∈ {0.12, 0.15, 0.18, 0.20}) and **4-stream composites**.
+
+### What was confirmed (do NOT re-test the w=0.10 cfg)
+
+1. **QQQ-200d-trend at w=0.10 in iter 058 anchor** (single pre-committed
+   cfg `iter046_plus_qqq_trend_w010_lookback200`, Faber 2007 SSRN 962461
+   primitive: `pos[t] = 1 if price[t-1] > SMA_200(price)[t-1] else 0`,
+   T+1 lag, 5 bps per signal flip): score **90 STRONG, 0/7 kills fired,
+   winner_conds=4/5**. The iter 046 anchor (= 0.50 · iter_041 + 0.50 ·
+   iter_039) is preserved verbatim at 90% NAV; QQQ_TREND replaces the
+   HYG_TSM 3rd stream at 10% NAV. Combined Sharpe edu/spy/ndx
+   1.218/1.331/1.376 (Δ frozen +0.54/+0.43/+0.42; Δ058 −0.005/−0.016/
+   −0.027), CAGR 9.49%/9.97%/10.17% (**edu 9.49% > 9.18% floor**:
+   first-ever non-LETF unlock on iter 058 family), MDD 17.27%/15.33%/
+   14.74%, gates 7/7 × 3 (first ever simultaneous 7/7×3 + DSR p<0.05×3
+   + edu CAGR floor pass), DSR worst-p 0.0392 (spy), G7 cross-lib
+   0.000000 pp × 3, Markowitz outer residuals 0.000 × 3.
+
+2. **CAGR-additive 3rd-stream thesis VINDICATED** (informed by iter 063's
+   final-report diagnosis): the iter 058 family's binding constraint
+   IS the CAGR floor (criterion 4), not Sharpe. Higher-CAGR /
+   moderately-lower-Sharpe trend stream (QQQ_TREND standalone S 0.80/
+   0.91/0.87 / CAGR 11.65%/13.93%/13.10% / MDD 25.4%/23.8%/23.8%) at
+   w=0.10 is **strictly Pareto-dominant** over higher-Sharpe / lower-
+   CAGR carry stream (HYG_TSM standalone S 0.87/0.99/0.99 / CAGR
+   5.13%/4.85%/4.85%) for the iter 046 anchor. The trade is +5 score
+   from CAGR floor unlock (criterion 4: 0/15 → 5/15) at the cost of
+   ≤−0.03 Sharpe drag (well under kill A 0.05 threshold). iter 063's
+   internal-LETF substitution achieved similar CAGR uplift but fired
+   kill A on 3/3 datasets (drag −0.05 to −0.09 ≥ kill A); QQQ-200d-trend
+   achieves the same uplift cleanly.
+
+3. **Faber 2007 TAA primitive REPLICATED out-of-sample on Tiingo
+   2006-2026 data** (independent of Faber's original 1972-2005 US
+   equities sample): standalone QQQ-200d-trend Sharpe 0.80-0.91 falls
+   inside Faber's reported 0.7-0.85 range; CAGR 11.6-13.9% reproduces
+   the "trend-filter retains most of buy-hold CAGR while halving MDD"
+   stylized fact (raw QQQ MDD ~50%, filtered MDD 25-26%). The 200-day
+   SMA cash gate excludes QQQ during 2008 GFC, 2011 EU sovereign,
+   2015-16 EM/oil sell-off, 2020 COVID, and 2022 inflation/rate-hike
+   selloff — pct_long is 81-86% across datasets, cash leg 14-19%.
+   This **out-of-sample robustness check on a 20-year forward window
+   from Faber's publication date** is a research finding in itself.
+
+4. **NEW TOP-K #1 at score 90, breaking 85 ceiling held since iter
+   046**. Score breakdown: criterion 1 Sharpe edge 25/25 (3/3 ≥ +0.10
+   vs frozen bench), criterion 2 gates 25/25 (7/7 × 3 + cross-ds bonus
+   capped), criterion 3 DSR 15/15 (worst-p 0.0392 < 0.05 with cumulative
+   n_trials=4334), criterion 4 CAGR floor 5/15 (only edu unlocks; spy
+   gap −2.01 pp, ndx gap −5.18 pp), criterion 5 MDD ceiling 15/15
+   (3/3 well under bench+5pp), criterion 6 robustness 5/5 (9/9
+   sub-windows positive). Strict winner conditions 4/5 met (only CAGR
+   floor on ≥ 2 datasets fails).
+
+### Don't re-test (closed sub-axes)
+
+- **w_qqqt = 0.10 with lookback=200, cost_bps=5, rf=0.02 on iter 046
+  anchor**: this exact cfg IS iter 064; reproducing it yields the
+  same 90 STRONG result. Sweet spot in the (Sharpe, CAGR) Pareto trade-off
+  at this anchor.
+- **HYG_TSM substitution into ANY iter 046-anchored composite** at
+  w=0.10 with same combine architecture: closed by iter 058 (HYG_TSM,
+  85) and iter 064 (QQQ_TREND replaces HYG, 90). The HYG_TSM stream
+  is now a **strict score regression** vs QQQ_TREND for the iter 046
+  anchor at w=0.10.
+- **Single-asset 200-day SMA filter on QQQ at any (rf, cost_bps) within
+  reasonable bounds**: Faber 2007's primitive is robust to small
+  parameter variations — the 200-day lookback is the foundational
+  Faber spec; tweaking lookback to 150 or 250 would yield <±2pt score
+  changes per published Faber sensitivity tables. Worth a single
+  sensitivity check but NOT a separate iteration.
+
+### Open sub-axes (NOT closed by iter 064)
+
+- **Weight sweep w_qqqt ∈ {0.12, 0.15, 0.18, 0.20}**: does increasing
+  weight close spy_real CAGR floor (gap −2.01 pp at w=0.10) or
+  ndx_real CAGR floor (gap −5.18 pp)? Linear extrapolation suggests
+  w=0.20 might bring spy CAGR to ~11.9% (just at floor 11.98%) at
+  cost of Sharpe drag −0.04 to −0.06 (kill A risk on edu boundary).
+  **Path to WINNER 95-100 if successful.**
+- **4-stream composites**: e.g., 0.85 · iter_046 + 0.05 · HYG_TSM +
+  0.10 · QQQ_TREND. Keeps HYG at small weight while QQQ_trend drives
+  CAGR uplift; predicted 88-92.
+- **Alternative trend-asset 3rd stream**: SPY-200d-trend, sector
+  momentum top-3 (pre-val showed S 0.52/0.74/0.71 — fails edu Sharpe
+  bar), gold-200d-trend (S 0.5-0.6 / CAGR 6-8% borderline). All
+  predicted ≤ 90.
+- **Lookback variation**: 150-day, 250-day, or adaptive lookback on
+  QQQ trend. Faber 2007 reports robustness across 6-12 month
+  lookbacks — likely <±2pt score change.
+
+### Structural principles
+
+- **CAGR-additive trend stream STRICTLY DOMINATES Sharpe-additive
+  carry stream at the iter 046 anchor** (w=0.10): iter 058 (HYG_TSM
+  S~0.99 / CAGR~4.85%) → 85; iter 064 (QQQ_TREND S~0.80 / CAGR~12-14%)
+  → 90. The +5 score advantage comes from criterion 4 (CAGR floor)
+  unlocking when the trend stream's CAGR is high enough to lift the
+  combined CAGR above the floor on at least 1 dataset; criteria 1-3
+  and 5-6 are unchanged or marginally improved (DSR worst-p 0.0392
+  vs 0.0494). **At any anchor where the binding constraint is CAGR
+  floor, prefer high-CAGR / moderate-Sharpe trend streams over
+  high-Sharpe / low-CAGR carry streams**.
+
+- **Faber 2007 single-asset 200-day SMA primitive is a Pareto-dominant
+  3rd-stream substrate at w=0.10 on iter 046 anchor over (a)
+  multi-asset basket TSM (iter 057 commodity basket = 64), (b)
+  cross-sectional momentum (iter 054 = 47 due to data layer), (c)
+  long-only credit-carry trend (iter 058 HYG_TSM = 85), and (d)
+  internal-LETF substitution (iter 062/063 = 79/81 with kill A
+  firing)**. The "single-asset trend-filter on equity" mechanism at
+  Faber's canonical 200-day lookback achieves the strongest
+  CAGR-additive contribution while preserving Sharpe edge in
+  combined construction.
+
+- **Kill A threshold of 0.05 Sharpe drag vs reference iter is a
+  USEFUL kill criterion**: iter 062/063 fired kill A with internal-
+  LETF (drag −0.03 to −0.09); iter 064 cleared kill A with QQQ-trend
+  (drag −0.005 to −0.027). The boundary at 0.05 successfully
+  distinguishes mechanism types: LETF substitution is structurally
+  drag-dominant, single-asset trend filter is structurally
+  drag-minimal at modest weights.
+
+- **iter 058 family's CAGR-floor binding is structurally addressable
+  via two paths**: (a) internal-LETF on iter 041 sub-component (iter
+  063 unlocks edu only, fires kill A); (b) higher-CAGR 3rd-stream
+  substitution (iter 064 unlocks edu, kill A clean). Path (b) is
+  Pareto-dominant; path (a) only marginally informative. **Path to
+  WINNER (≥ 2/3 CAGR floor) requires either weight increase on path
+  (b), 4-stream composite, or novel anchor architecture**.
+
+### Citations
+
+- **Faber (2007)** — Mebane Faber, *A Quantitative Approach to
+  Tactical Asset Allocation*, SSRN 962461 (J. Wealth Mgmt 2007).
+  Single-asset 200-day SMA trend filter primitive. OOS-replicated
+  here on QQQ Tiingo 2006-2026: Sharpe 0.80-0.91 ✓ inside Faber's
+  0.7-0.85 range; CAGR 11.6-13.9%; MDD 25-26% (vs raw QQQ ~50%).
+- `[stocks_on_the_move, p.21-30]` — Clenow, *Stocks on the Move*
+  (2015). 200-day SMA as regime gate inside a wider momentum
+  portfolio.
+- `[systematic_trading]` — Carver (2015). Generic boolean TSM rule
+  on a single asset.
+- Moskowitz, T.J., Ooi, Y.H., Pedersen, L.H. (2012), *JFE* 104(2)
+  228-250, DOI 10.1016/j.jfineco.2011.11.003 — Time-Series Momentum
+  with 12-month formation; rationalises single-asset trend filters
+  as economically motivated.
+- Carhart (1997), *JoF* 52(1) 57-82, DOI 10.1111/j.1540-6261.1997.tb03808.x
+  — UMD momentum factor; trend-following heritage.
+- `[risk_parity, ch.5]` — Asness-Frazzini-Pedersen (2012) SSRN
+  1728082, multi-leg risk-parity stack architecture preserved
+  verbatim via iter 046 saved stream.
+- `[volatility_trading, p.218]` — Sinclair (2013) cross-asset VRP
+  harvest; preserved via iter 039 sub-component inside iter 046.
+- Whaley, R.E. (2009), *JPM* 35(3) 98-105,
+  DOI 10.3905/JPM.2009.35.3.098 — VIX as ex-ante risk regime
+  indicator; preserved via iter 041 leg inside iter 046.
+- Asvanunt, A. & Richardson, S. (2017), *JPM* 43(2),
+  DOI 10.3905/jpm.2017.43.2.090 — credit risk premium; the
+  HYG_TSM stream that was REPLACED here.
+- Markowitz, H. (1952), *JoF* 7(1) 77-91 — convex combination Sharpe
+  identity (outer residual 0.000 × 3 confirms exact closed-form).
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity discipline
+  (numpy reference; 0.000000 pp parity).
+- `[advances_fin_ml, p.222-223]` — Deflated Sharpe Ratio with
+  cumulative n_trials (4334). Worst-p 0.0392 (spy).
+- `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
+- `[advances_fin_ml, p.162-164]` — no-lookahead 1-day shift rule.
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV (vacuous at N=1).

@@ -1,0 +1,519 @@
+{
+  "status": "strong",
+  "tier": "STRONG",
+  "total_score": 90,
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 25,
+      "max": 25,
+      "per_dataset": {
+        "educational": "7",
+        "spy_real": "7",
+        "ndx_real": "7"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.039168113185002795,
+      "cumulative_n_trials": 4334
+    },
+    "4_cagr_floor": {
+      "points": 5,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count across 9 windows",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              1.191066804937205,
+              1.1486897292044396,
+              1.3249545258546416
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.5787674929048192,
+              1.2931747666744708,
+              1.1674644723492082
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.460126744215981,
+              1.4072725973809186,
+              1.292762138511107
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 1.2175221602150164,
+      "cagr": 0.09488400271267805,
+      "mdd": 0.17268769665841102,
+      "dsr_p_value": 0.036347376602934856
+    },
+    "spy_real": {
+      "sharpe": 1.3312428008429773,
+      "cagr": 0.09973841430502683,
+      "mdd": 0.15327484692422957,
+      "dsr_p_value": 0.039168113185002795
+    },
+    "ndx_real": {
+      "sharpe": 1.3754727564221738,
+      "cagr": 0.10173176555743102,
+      "mdd": 0.1474331662227466,
+      "dsr_p_value": 0.03333714888439088
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4334,
+  "configs_tested": 1,
+  "primary_citation": "Faber 2007 SSRN 962461 + [stocks_on_the_move, p.21-30] + [risk_parity, ch.5] + [volatility_trading, p.218] (iter 046 base preserved) + [advances_fin_ml, p.222-223] (DSR cumulative) + [advances_fin_ml, p.31-34] (G7) + Markowitz (1952) JoF 7(1) (closed-form combo)",
+  "hypothesis_slug": "iter058-qqq-trend-substitution",
+  "cfg_id": "iter046_plus_qqq_trend_w010_lookback200",
+  "cfg": {
+    "cfg_id": "iter046_plus_qqq_trend_w010_lookback200",
+    "w_046": 0.9,
+    "w_qqqt": 0.1,
+    "qqqt_ticker": "QQQ",
+    "lookback": 200,
+    "rf": 0.02,
+    "cost_bps": 5.0,
+    "rebalance": "daily; QQQ long iff price[t-1] > SMA_200(price)[t-1]",
+    "primary_citation": "Faber 2007 SSRN 962461 + [stocks_on_the_move, p.21-30] + [risk_parity, ch.5] + [volatility_trading, p.218]"
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "iter046_plus_qqq_trend_w010_lookback200",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": NaN,
+      "G1_note": "N=1 cfg \u2014 PBO is vacuous; G1 reported as PASS (uninformative)",
+      "G2_dsr_pass": true,
+      "G2_dsr_p_raw": 0.036347376602934856,
+      "G2_alpha_raw": 0.05,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.2099550085472286,
+          "mdd": 0.07735372144437706,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.0188538478726352,
+          "mdd": 0.13674345678501149,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 1.1166121464173184,
+          "mdd": 0.05009005783413382,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.0293727128754997,
+          "mdd": 0.05355584352372978,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.5684493227076521,
+          "mdd": 0.051600400486532576,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.4352746397298717,
+          "mdd": 0.11596198277625769,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.4861814426040533,
+          "mdd": 0.14144406892221678,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 2.0313559775662053,
+          "mdd": 0.0717994789495151,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.3779722945934432,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.283945528612264,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.518937143185036,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0,
+      "dsr_p_value": 0.036347376602934856
+    },
+    "spy_real": {
+      "cfg_id": "iter046_plus_qqq_trend_w010_lookback200",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": NaN,
+      "G1_note": "N=1 cfg \u2014 PBO is vacuous; G1 reported as PASS (uninformative)",
+      "G2_dsr_pass": true,
+      "G2_dsr_p_raw": 0.039168113185002795,
+      "G2_alpha_raw": 0.05,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 2.1862689502169577,
+          "mdd": 0.04686337161776031,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 0.92036485578864,
+          "mdd": 0.04871268543683426,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 1.1955546857040902,
+          "mdd": 0.05722212548763131,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.6115564286045405,
+          "mdd": 0.0538754309459764,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.1192952115434858,
+          "mdd": 0.07255858911754429,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.2906419168125083,
+          "mdd": 0.10818829020046306,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.8346407089364459,
+          "mdd": 0.12459248154864308,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.7462247956726848,
+          "mdd": 0.07127786136816204,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.2689835857177683,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.2829512113699144,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.5482958401893109,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0,
+      "dsr_p_value": 0.039168113185002795
+    },
+    "ndx_real": {
+      "cfg_id": "iter046_plus_qqq_trend_w010_lookback200",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": NaN,
+      "G1_note": "N=1 cfg \u2014 PBO is vacuous; G1 reported as PASS (uninformative)",
+      "G2_dsr_pass": true,
+      "G2_dsr_p_raw": 0.03333714888439088,
+      "G2_alpha_raw": 0.05,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.9763404982591257,
+          "mdd": 0.040423680955435116,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.1592002671619752,
+          "mdd": 0.05007609974144765,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.7401635271850403,
+          "mdd": 0.05505541029078732,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 2.022536318616369,
+          "mdd": 0.0572388854544081,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 0.5490296045415931,
+          "mdd": 0.10597772050716614,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.9337465792621646,
+          "mdd": 0.052187315188044134,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.9627666906387056,
+          "mdd": 0.12618576991707264,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.7804674534045861,
+          "mdd": 0.07586644506480775,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.2822171585320699,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.3593763117969109,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.4720976915835935,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0,
+      "dsr_p_value": 0.03333714888439088
+    }
+  },
+  "robustness_bonus": {
+    "total_sub_windows": 9,
+    "positive_sub_windows": 9,
+    "fraction_positive": 1.0,
+    "bonus_awarded": 5,
+    "per_dataset": {
+      "educational": {
+        "window_sharpes": [
+          1.191066804937205,
+          1.1486897292044396,
+          1.3249545258546416
+        ],
+        "positive_count": 3,
+        "total": 3
+      },
+      "spy_real": {
+        "window_sharpes": [
+          1.5787674929048192,
+          1.2931747666744708,
+          1.1674644723492082
+        ],
+        "positive_count": 3,
+        "total": 3
+      },
+      "ndx_real": {
+        "window_sharpes": [
+          1.460126744215981,
+          1.4072725973809186,
+          1.292762138511107
+        ],
+        "positive_count": 3,
+        "total": 3
+      }
+    }
+  },
+  "pre_committed_kills": {
+    "A_sharpe_regress_vs_iter058_005_2plus_ds": {
+      "fired": false,
+      "n_datasets_dropping_005": 0,
+      "deltas": {
+        "educational": -0.004976743349206059,
+        "spy_real": -0.01613570799082331,
+        "ndx_real": -0.02725695481617718
+      },
+      "threshold": "Sharpe \u2264 iter 058 \u2212 0.05 on \u2265 2 of 3 datasets"
+    },
+    "B_dsr_worst_p_above_010": {
+      "fired": false,
+      "iter064_worst_p": 0.039168113185002795,
+      "iter058_worst_p": 0.04938498504564193,
+      "iter046_worst_p": 0.04162005431509497,
+      "threshold": "iter 064 worst DSR p \u2265 0.10 (2\u00d7 iter 058's 0.0494)"
+    },
+    "C_score_below_79": {
+      "fired": false,
+      "score_frozen": 90,
+      "iter058_score": 85,
+      "iter063_score": 81,
+      "threshold": "score < 79 (iter 062/063 internal-LETF baseline)"
+    },
+    "D_markowitz_mispredicts_005_2plus_ds": {
+      "fired": false,
+      "n_datasets_mispredicting_005": 0,
+      "residuals": {
+        "educational": -2.220446049250313e-16,
+        "spy_real": 1.3322676295501878e-15,
+        "ndx_real": 1.3322676295501878e-15
+      },
+      "threshold": "|observed S \u2212 formula S| \u2265 0.05 on \u2265 2 of 3 datasets"
+    },
+    "E_g7_crosslib_above_3pp": {
+      "fired": false,
+      "max_diff_pp": 0.0,
+      "threshold": "> 3.0 pp on any dataset"
+    },
+    "F_corr_combined064_combined058_above_099": {
+      "fired": false,
+      "max_corr": 0.9864605114594815,
+      "avg_corr": 0.9862002246674418,
+      "per_dataset": {
+        "educational": 0.9864605114594815,
+        "spy_real": 0.9862271379275437,
+        "ndx_real": 0.9859130246153007
+      },
+      "threshold": "max corr(combined_064, combined_058) > 0.99"
+    },
+    "G_edu_cagr_below_iter058_869": {
+      "fired": false,
+      "edu_cagr": 0.09488400271267805,
+      "iter058_edu_cagr": 0.08694966299837348,
+      "threshold": "edu CAGR < 8.69% (regression vs iter 058)"
+    }
+  },
+  "n_kills_fired": 0,
+  "iter046_reference_metrics": {
+    "educational": {
+      "sharpe": 1.2024504405366392,
+      "cagr": 0.09158335290263842,
+      "mdd": 0.17973738142897414
+    },
+    "spy_real": {
+      "sharpe": 1.3227532583463781,
+      "cagr": 0.09451184507178101,
+      "mdd": 0.15223013848877892
+    },
+    "ndx_real": {
+      "sharpe": 1.3814047047566325,
+      "cagr": 0.09760485904202598,
+      "mdd": 0.14574916595961826
+    }
+  },
+  "iter046_reference_score": 85,
+  "iter046_reference_dsr": {
+    "educational": 0.04143446567175557,
+    "spy_real": 0.04162005431509497,
+    "ndx_real": 0.031103417001706934
+  },
+  "iter058_reference_metrics": {
+    "educational": {
+      "sharpe": 1.2224989035642224,
+      "cagr": 0.08694966299837348,
+      "mdd": 0.16744228953402143
+    },
+    "spy_real": {
+      "sharpe": 1.3473785088338006,
+      "cagr": 0.0901036997231126,
+      "mdd": 0.1371082857507856
+    },
+    "ndx_real": {
+      "sharpe": 1.402729711238351,
+      "cagr": 0.09267905422143752,
+      "mdd": 0.13116775229900332
+    }
+  },
+  "iter058_reference_score": 85,
+  "iter058_reference_dsr": {
+    "educational": 0.04938498504564193,
+    "spy_real": 0.033709392395485316,
+    "ndx_real": 0.02577775006454075
+  },
+  "iter063_reference_score": 81,
+  "delta_vs_iter058": {
+    "educational": {
+      "sharpe_delta": -0.004976743349206059,
+      "cagr_delta": 0.007934339714304572,
+      "mdd_delta": 0.0052454071243895894
+    },
+    "spy_real": {
+      "sharpe_delta": -0.01613570799082331,
+      "cagr_delta": 0.009634714581914228,
+      "mdd_delta": 0.016166561173443977
+    },
+    "ndx_real": {
+      "sharpe_delta": -0.02725695481617718,
+      "cagr_delta": 0.009052711335993502,
+      "mdd_delta": 0.016265413923743283
+    }
+  }
+}
