@@ -3947,3 +3947,99 @@ Complete study:
   DOI 10.2469/faj.v62.n2.4084 — commodity premia / roll yield.
 - Markowitz, H. M. (1952). Portfolio selection. JoF 7(1) 77-91 —
   convex combination minimum-variance; vindicated and inverted here.
+
+## From iteration 060 — External 1.5× leverage on iter 058 saved stream at 2.5% futures-implied borrow (STRONG 79, **2/6 KILLS A+B**, external-leverage axis on iter 058 CLOSED)
+
+`studies/strategy_hunt_loop/iterations/060-2026-04-25-1126-iter058-levered-150-futures-borrow/final_report.md`
+
+Tested whether NTSX-style Treasury-futures financing (~T-bill + 0.5pp,
+total 2.5%) breaks iter 056's closure pattern (1.3× retail leverage on
+iter 046 at 3.5% borrow → score 74, DSR collapse) when applied to iter
+058's saved combined stream (iter 046 + HYG_TSM at w=0.10) instead of
+iter 046. Hypothesis: 1.0pp lower borrow rate → 3-5× lower Sharpe drag
+(predicted 0.022 vs iter 056's measured 0.105) → DSR survival → WINNER
+candidate.
+
+Empirical result: **score 79 STRONG (+5 over iter 056, -6 below iter
+058)**. Mechanism vindicated for CAGR (kill F clean: leverage adds
++3 pp CAGR per dataset, edu/spy clear floor 2/3 vs iter 058's 0/3) and
+MDD (kill E clean: 3/3 below ceilings) but FAILED on Sharpe drag
+prediction by 5.2× (observed 0.117 vs predicted 0.022).
+
+**Methodological closure**: the project's
+`ai_trade.backtest.metrics.performance.sharpe()` uses
+`risk_free=0.0` default. The standard analytical drag formula
+``(lev−1)×(b−rf)/(lev×σ_annual)`` assumes the Sharpe is excess-Sharpe;
+at this codebase's convention (raw Sharpe), the correct formula is:
+
+```
+Sharpe_drag = (lev − 1) / lev × annualized_borrow / σ_annual
+```
+
+— i.e., the ABSOLUTE annualized borrow rate, not the spread above
+rf, becomes Sharpe drag. Empirical evaluation:
+- edu (σ=0.0703): 0.333 × 0.025 / 0.0703 = 0.118 (matches 0.117 ✓)
+- spy (σ=0.0656): 0.333 × 0.025 / 0.0656 = 0.127 (matches 0.125 ✓)
+- ndx (σ=0.0651): 0.333 × 0.025 / 0.0651 = 0.128 (matches 0.126 ✓)
+
+This means even at b=rf=2.0% (theoretically risk-free borrow,
+infeasible in practice), drag ≈ 0.094 (edu) → DSR worst-p ≥ 0.10. **No
+positive borrow rate ≤ 0.5pp above rf preserves iter 058's DSR pass at
+lev=1.5×.**
+
+Closures (now in DEAD_ENDS):
+
+- **Pure external leverage on iter 058 (saved combined stream =
+  iter 046 + HYG_TSM at w=0.10) at any positive borrow rate
+  ≥ 0.5pp above rf**, regardless of borrow source:
+  - retail Reg-T margin (iter 056-style 3.5%): predicted score ≤ 74
+  - futures-implied (this iter 2.5%): empirical score 79
+  - box spreads (~T-bill + 10-20bps, ~2.1-2.2%): predicted ~83-85
+    (still below iter 058's 85 unlevered)
+  - True risk-free borrow (b = rf = 2.0%): predicted ~84-86 (caps
+    at iter 058's 85, no breakout)
+
+- **Project Sharpe convention generalization**: any external-borrow
+  leverage transform on ANY iter-046-/iter-058-derived combined
+  stream is structurally bounded by the codebase's `_sharpe()` rf=0
+  convention. The empirically achievable score is bounded above by
+  the unlevered base score, regardless of leverage rate or borrow
+  source.
+
+What was NOT closed by this iteration:
+
+- **Internal-LETF leverage** (e.g., UPRO substituting SPY in iter 041
+  calm regime, TQQQ in iter 039 basket): UPRO's funding is realized
+  inside the LETF NAV path (~T-bill + 0.95% via swap counterparty per
+  ProShares 2024-25 prospectus), so no separate borrow line is
+  subtracted in the project's accounting. The project Sharpe
+  convention measures LETF-internal leverage differently than
+  external borrow. UNTESTED for iter 058 stream construction.
+- **Regime-conditional external leverage** (lever 1.7× in calm,
+  1.0× in stress): partially tested by iter 048 (output VIX gate on
+  iter 046 → 83) but NOT on iter 058 base. Combining external
+  leverage with calm-regime gating MAY reduce average drag by ~30-
+  35% (calm fraction × full drag), potentially bringing edu DSR p to
+  ~0.07 at lev=1.5× calm-only. UNTESTED on iter 058.
+- **Equity-overweight iter 037 base** (BASE_MEMORY direction #2):
+  unrelated to the leverage axis — tests anchor-side overweight
+  before any leverage step. UNTESTED.
+
+Citations for iter 060's closure:
+
+- `[leverage_for_the_long_run, ch.5]` — Hsiao & Williams 2017
+  *J. Index Investing*. NTSX architecture; this iteration cited the
+  futures-financing rationale but the binding constraint turned out
+  to be the codebase Sharpe convention, not the borrow rate level.
+- `[risk_parity, ch.5]` — iter 058 base preserved verbatim.
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials
+  (4329 → 4330).
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (0.0000 pp
+  on all 3 datasets — linear transform identity).
+- Frazzini-Pedersen (2014), JFE 111(1) 1-25,
+  DOI 10.1016/j.jfineco.2013.10.005 — borrow frictions on levered
+  low-vol strategies. **Re-vindicated**: borrow source matters less
+  than absolute borrow level given the codebase's Sharpe-without-rf
+  convention.
+- IBKR Pro Tier 1 margin schedule (2025-04) — 3.5% retail rate
+  (iter 056 datum, contrast).
