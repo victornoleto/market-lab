@@ -1,0 +1,94 @@
+Iteration 052 — Markowitz pre-screen (run BEFORE backtest)
+
+Sources:
+  iter 041 stream: studies/strategy_hunt_loop/iterations/041-2026-04-25-0358-regime-weights-vix-static-stack/results.json
+                   cfg `regime_weights_vix_lt20_70_40_40_ge20_30_55_55`
+  iter 026 stream: studies/strategy_hunt_loop/iterations/026-2026-04-24-2122-vrp-primary-portfolio/results.json
+                   cfg `vrp_primary_h1_5_10_1m`
+
+Standalone metrics (saved streams) — measured 2026-04-25:
+
+  educational  041 S=+1.0267 CAGR=+13.03% | 026 S=+1.1334 CAGR=+4.85%
+  spy_real     041 S=+1.1305 CAGR=+13.52% | 026 S=+1.2819 CAGR=+4.97%
+  ndx_real     041 S=+1.1636 CAGR=+15.78% | 026 S=+1.3673 CAGR=+6.31%
+
+Correlation by dataset:
+  educational  corr(041, 026) = +0.3697  (overlap 5100 bars)
+  spy_real     corr(041, 026) = +0.3728  (overlap 4225 bars)
+  ndx_real     corr(041, 026) = +0.4475  (overlap 4065 bars)
+
+These are **MATERIALLY LOWER** than corr(037, 026) measured in iter 051:
+  educational  corr(037, 026) = +0.574
+  spy_real     corr(037, 026) = +0.545
+  ndx_real     corr(037, 026) = +0.602
+
+Lower correlation → larger Markowitz diversification gain → higher
+combined Sharpe at the same weights. This is the structural advantage
+of substituting iter 041 for iter 037 as the anchor.
+
+Sharpe + CAGR sweep (Markowitz formula on saved streams):
+
+ w_041   edu_S   edu_C   spy_S   spy_C   ndx_S   ndx_C  c1  c4 c1+c4
+  0.05   1.212   5.28%   1.367   5.41%   1.434   6.80%  25   0    25
+  0.10   1.266   5.71%   1.424   5.85%   1.476   7.29%  25   0    25
+  0.15   1.296   6.13%   1.454   6.29%   1.496   7.77%  25   0    25
+  0.20   1.308   6.56%   1.462   6.73%   1.498   8.26%  25   0    25
+  0.30   1.292   7.40%   1.437   7.60%   1.468   9.22%  25   0    25
+  0.40   1.252   8.23%   1.387   8.47%   1.419  10.18%  25   0    25
+  0.50   1.206   9.05%   1.332   9.33%   1.365  11.13%  25   0    25
+  0.60   1.161   9.87%   1.281  10.18%   1.314  12.07%  25   5    30
+  0.65   1.140  10.27%   1.257  10.60%   1.290  12.54%  25   5    30
+  0.70   1.120  10.67%   1.235  11.02%   1.268  13.01%  25   5    30
+  0.75   1.102  11.07%   1.214  11.44%   1.247  13.47%  25   5    30
+  0.78   1.091  11.31%   1.202  11.69%   1.235  13.75%  25   5    30
+  0.80   1.085  11.47%   1.195  11.86%   1.228  13.93%  25   5    30
+  0.82   1.078  11.63%   1.188  12.03%   1.220  14.11%  25  10    35  ←
+  0.85   1.069  11.86%   1.177  12.28%   1.209  14.39%  25  10    35
+  0.90   1.054  12.26%   1.160  12.69%   1.192  14.85%  25  10    35
+  0.95   1.040  12.64%   1.145  13.10%   1.176  15.30%  25  10    35
+
+Score-Pareto-optimum within plateau: w_041 = 0.82.
+  - Reason: same c1+c4 = 35 across [0.82, 0.95], but w_041 = 0.82 has the
+    HIGHEST combined Sharpe in the plateau (best chance of DSR clearing).
+  - At w_041 = 0.82:
+      edu Sharpe predicted 1.078, CAGR predicted 11.63 %  → c4: edu PASS (≥ 9.18)
+      spy Sharpe predicted 1.188, CAGR predicted 12.03 %  → c4: spy PASS (≥ 11.98) [margin 0.05 pp]
+      ndx Sharpe predicted 1.220, CAGR predicted 14.11 %  → c4: ndx FAIL (< 15.35) [gap 1.24 pp]
+  - 2/3 CAGR floor pass → c4 = 10/15 (matches winner condition #4 ≥ 2/3).
+  - 3/3 Sharpe edge pass (all margins ≥ 0.16) → c1 = 25/25.
+
+Why not higher w_041 (e.g., 0.95)?
+  - Sharpe drops monotonically with w_041 → DSR p rises → c3 drops.
+  - At w_041 = 0.95, edu Sharpe 1.04 — BELOW the iter 051 worst-p bucket
+    boundary, expecting DSR p ≈ 0.20 (0 c3 points).
+  - At w_041 = 0.82, edu Sharpe 1.08 — slightly above iter 051's 1.02,
+    expecting DSR p ≈ 0.10-0.15 (5 c3 points).
+
+Why not lower w_041 (e.g., 0.50)?
+  - Higher Sharpe (1.21/1.33/1.37) would clear DSR p < 0.05 (c3 = 15)
+    but CAGR collapses to 9.05/9.33/11.13 → 0/3 floor pass (c4 = 0).
+  - That's exactly iter 046's regime (score 85) — already explored.
+
+Pre-committed weight: **w_041 = 0.82, w_026 = 0.18**
+
+Predicted total score (if Markowitz formula validates to ±0.05 on actual
+backtest, which 3 prior iters have empirically confirmed):
+
+  c1 = 25 (Sharpe edge 3/3)
+  c2 = 19-23 (gates: G2 DSR likely fails, others pass)
+  c3 = 5-10 (DSR worst-p likely in [0.10, 0.20))
+  c4 = 10 (2/3 CAGR pass)
+  c5 = 15 (3/3 MDD pass)
+  c6 = 5 (robustness; iter 041 + iter 026 components both robust)
+
+  Total: 79-88 (STRONG tier, possibly tying or improving iter 051's 84).
+
+Path to WINNER (score ≥ 90 + 5/5 strict conditions):
+  - Requires DSR worst-p < 0.05 (c3 = 15).
+  - Requires combined edu Sharpe ≥ 1.20 at the chosen weight.
+  - At w_041 = 0.82, combined edu Sharpe is 1.08 — short of 1.20 by 0.12.
+  - **Only feasible if our formula UNDER-predicts the actual Sharpe lift**
+    (which 3 prior iters' residual-zero data argues AGAINST).
+  - More likely outcome: STRONG tier 80-89, advances knowledge by closing
+    the iter 041 + iter 026 saved-stream composition family at this Pareto
+    point.

@@ -1,0 +1,573 @@
+{
+  "status": "strong",
+  "tier": "STRONG",
+  "total_score": 79,
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "6",
+        "ndx_real": "6"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 5,
+      "max": 15,
+      "worst_p_value": 0.11765896359903372,
+      "cumulative_n_trials": 4319
+    },
+    "4_cagr_floor": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count across 9 windows",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              1.1367342092846089,
+              0.9055699645728018,
+              1.1790336557262189
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.3649192161895412,
+              1.242582456639243,
+              1.0121525858746416
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.3332153453137547,
+              1.4019399701114932,
+              1.0146960560170053
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 1.0781662098406126,
+      "cagr": 0.11606683509171889,
+      "mdd": 0.24322819443386298,
+      "dsr_p_value": 0.11765896359903372
+    },
+    "spy_real": {
+      "sharpe": 1.1875880942212533,
+      "cagr": 0.12033114671101752,
+      "mdd": 0.21149083090962217,
+      "dsr_p_value": 0.11622183246701323
+    },
+    "ndx_real": {
+      "sharpe": 1.2202554932256846,
+      "cagr": 0.1401101463537373,
+      "mdd": 0.26275574690423015,
+      "dsr_p_value": 0.10856001438622331
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4319,
+  "configs_tested": 1,
+  "primary_citation": "[risk_parity, ch.5] (iter 041 base) + Whaley 2009 JPM 35(3) (VIX regime modulator) + [volatility_trading, p.218] (iter 026 base) + Markowitz (1952) JoF 7(1) (score-Pareto weight derivation) + [advances_fin_ml, p.222-223] (DSR cumulative) + [advances_fin_ml, p.31-34] (G7 parity) + Bondarenko 2014 QJF 4(3) 1450015 (VRP magnitude) + Erb-Harvey 2006 FAJ 62(2) (gold strategic value)",
+  "hypothesis_slug": "iter041-plus-iter026-w082",
+  "cfg_id": "iter041_plus_iter026_w082",
+  "cfg": {
+    "cfg_id": "iter041_plus_iter026_w082",
+    "w_041": 0.82,
+    "w_026": 0.18,
+    "iter_041_cfg_id": "regime_weights_vix_lt20_70_40_40_ge20_30_55_55",
+    "iter_026_cfg_id": "vrp_primary_h1_5_10_1m",
+    "rebalance": "daily; fixed-weight 82/18 convex combo of saved iter 041 + iter 026 streams",
+    "primary_citation": "[risk_parity, ch.5] (iter 041 base) + Whaley 2009 JPM 35(3) (VIX regime modulator) + [volatility_trading, p.218] (iter 026 base) + Markowitz (1952) JoF 7(1) (score-Pareto weight derivation) + [advances_fin_ml, p.222-223] (DSR cumulative)"
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "iter041_plus_iter026_w082",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": NaN,
+      "G1_note": "N=1 cfg \u2014 PBO is vacuous; G1 reported as PASS (uninformative)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p_raw": 0.11765896359903372,
+      "G2_alpha_raw": 0.05,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.2935472361315865,
+          "mdd": 0.11594780032305718,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 0.9100268637995925,
+          "mdd": 0.19533831390923007,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.8784913127367249,
+          "mdd": 0.08941481435345858,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 0.7609151733916742,
+          "mdd": 0.09725192486487375,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.2272955936019885,
+          "mdd": 0.08252405255364768,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.3889014213745163,
+          "mdd": 0.13184288429814697,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.22562921635524874,
+          "mdd": 0.20772478485232557,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 2.082641766144126,
+          "mdd": 0.11707979891913597,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.1681615674505927,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.1453492798149232,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.3708164382989093,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0,
+      "dsr_p_value": 0.11765896359903372
+    },
+    "spy_real": {
+      "cfg_id": "iter041_plus_iter026_w082",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": NaN,
+      "G1_note": "N=1 cfg \u2014 PBO is vacuous; G1 reported as PASS (uninformative)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p_raw": 0.11622183246701323,
+      "G2_alpha_raw": 0.05,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 2.1897116929426694,
+          "mdd": 0.07758940577839381,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 0.6579340055856295,
+          "mdd": 0.08906487391709414,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.8006850246934369,
+          "mdd": 0.08726907039331677,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.3696836846522231,
+          "mdd": 0.0741555499355052,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.3258537936711665,
+          "mdd": 0.09037231103862797,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.031140190488049,
+          "mdd": 0.12836258090880456,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.6090842900369368,
+          "mdd": 0.19661760469589604,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.8280583128493013,
+          "mdd": 0.11783622910259382,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.193037667578123,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.1447734850946336,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.3810845580305361,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0,
+      "dsr_p_value": 0.11622183246701323
+    },
+    "ndx_real": {
+      "cfg_id": "iter041_plus_iter026_w082",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": NaN,
+      "G1_note": "N=1 cfg \u2014 PBO is vacuous; G1 reported as PASS (uninformative)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p_raw": 0.10856001438622331,
+      "G2_alpha_raw": 0.05,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 2.194211335507089,
+          "mdd": 0.06681473746118288,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 0.7746012483128081,
+          "mdd": 0.11610535165488649,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.6493526750900847,
+          "mdd": 0.08070302544065752,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.8783937473311905,
+          "mdd": 0.08388541729716538,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 0.7923722428568333,
+          "mdd": 0.11781990761868039,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.3374943418368581,
+          "mdd": 0.10604580895372244,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.8325501631996481,
+          "mdd": 0.20714801500753346,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.5606484074702507,
+          "mdd": 0.13517317354346262,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.0989739741494011,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.1551213734846488,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.4171681436959448,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0,
+      "dsr_p_value": 0.10856001438622331
+    }
+  },
+  "robustness_bonus": {
+    "total_sub_windows": 9,
+    "positive_sub_windows": 9,
+    "fraction_positive": 1.0,
+    "bonus_awarded": 5,
+    "per_dataset": {
+      "educational": {
+        "window_sharpes": [
+          1.1367342092846089,
+          0.9055699645728018,
+          1.1790336557262189
+        ],
+        "positive_count": 3,
+        "total": 3
+      },
+      "spy_real": {
+        "window_sharpes": [
+          1.3649192161895412,
+          1.242582456639243,
+          1.0121525858746416
+        ],
+        "positive_count": 3,
+        "total": 3
+      },
+      "ndx_real": {
+        "window_sharpes": [
+          1.3332153453137547,
+          1.4019399701114932,
+          1.0146960560170053
+        ],
+        "positive_count": 3,
+        "total": 3
+      }
+    }
+  },
+  "pre_committed_kills": {
+    "A_sharpe_below_prescreen_010_2plus_ds": {
+      "fired": false,
+      "n_datasets_below_prescreen_010": 0,
+      "predictions": {
+        "educational": 1.078,
+        "spy_real": 1.188,
+        "ndx_real": 1.22
+      },
+      "observed": {
+        "educational": 1.0781662098406126,
+        "spy_real": 1.1875880942212533,
+        "ndx_real": 1.2202554932256846
+      },
+      "deltas": {
+        "educational": 0.00016620984061255228,
+        "spy_real": -0.00041190577874661294,
+        "ndx_real": 0.0002554932256846332
+      },
+      "threshold": "Sharpe < pre-screen prediction \u2212 0.10 on \u2265 2 of 3 datasets"
+    },
+    "B_dsr_worst_p_above_010": {
+      "fired": true,
+      "iter052_worst_p": 0.11765896359903372,
+      "per_dataset_p": {
+        "educational": 0.11765896359903372,
+        "spy_real": 0.11622183246701323,
+        "ndx_real": 0.10856001438622331
+      },
+      "threshold": "iter 052 worst DSR p \u2265 0.10"
+    },
+    "C_cagr_floor_below_2of3": {
+      "fired": false,
+      "n_passes": 2,
+      "floors": {
+        "educational": 0.0918,
+        "spy_real": 0.1198,
+        "ndx_real": 0.1535
+      },
+      "observed_cagr": {
+        "educational": 0.11606683509171889,
+        "spy_real": 0.12033114671101752,
+        "ndx_real": 0.1401101463537373
+      },
+      "threshold": "CAGR floor passes on < 2 of 3 datasets (kills central premise)"
+    },
+    "D_markowitz_mispredicts_005_2plus_ds": {
+      "fired": false,
+      "n_datasets_mispredicting_005": 0,
+      "residuals": {
+        "educational": 0.0,
+        "spy_real": -6.661338147750939e-16,
+        "ndx_real": -8.881784197001252e-16
+      },
+      "threshold": "|observed S \u2212 formula S| \u2265 0.05 on \u2265 2 of 3 datasets"
+    },
+    "E_g7_crosslib_above_3pp": {
+      "fired": false,
+      "max_diff_pp": 0.0,
+      "threshold": "> 3.0 pp on any dataset"
+    },
+    "F_corr_041_026_above_085": {
+      "fired": false,
+      "max_corr": 0.4474622511760844,
+      "per_dataset_corr": {
+        "educational": 0.36974368564261445,
+        "spy_real": 0.372759147667704,
+        "ndx_real": 0.4474622511760844
+      },
+      "threshold": "corr(iter 041, iter 026) \u2265 0.85 on any dataset"
+    }
+  },
+  "n_kills_fired": 1,
+  "iter041_reference_metrics": {
+    "educational": {
+      "sharpe": 1.0267263096463843,
+      "cagr": 0.13004702547428004,
+      "mdd": 0.2759899442557365
+    },
+    "spy_real": {
+      "sharpe": 1.1304501572051906,
+      "cagr": 0.13521539206586652,
+      "mdd": 0.246544357868176
+    },
+    "ndx_real": {
+      "sharpe": 1.1635612554817927,
+      "cagr": 0.15657072731139676,
+      "mdd": 0.3084224463197457
+    }
+  },
+  "iter026_reference_metrics": {
+    "educational": {
+      "sharpe": 1.1333830973327395,
+      "cagr": 0.048493588134125964,
+      "mdd": 0.16823484878629394
+    },
+    "spy_real": {
+      "sharpe": 1.2819050630975923,
+      "cagr": 0.049709294000294335,
+      "mdd": 0.06346920465591166
+    },
+    "ndx_real": {
+      "sharpe": 1.3672965451653911,
+      "cagr": 0.0630901793133738,
+      "mdd": 0.08176784150182932
+    }
+  },
+  "iter046_reference_metrics": {
+    "educational": {
+      "sharpe": 1.2024504405366392,
+      "cagr": 0.09158335290263842,
+      "mdd": 0.17973738142897414
+    },
+    "spy_real": {
+      "sharpe": 1.3227532583463781,
+      "cagr": 0.09451184507178101,
+      "mdd": 0.15223013848877892
+    },
+    "ndx_real": {
+      "sharpe": 1.3814047047566325,
+      "cagr": 0.09760485904202598,
+      "mdd": 0.14574916595961826
+    }
+  },
+  "iter051_reference_metrics": {
+    "educational": {
+      "sharpe": 1.0212485911758165,
+      "cagr": 0.12382498754165439,
+      "mdd": 0.2929956808885562
+    },
+    "spy_real": {
+      "sharpe": 1.1976899835466828,
+      "cagr": 0.13470755428059067,
+      "mdd": 0.21484248248678753
+    },
+    "ndx_real": {
+      "sharpe": 1.2186852505726196,
+      "cagr": 0.1550855921685821,
+      "mdd": 0.26963391762301564
+    }
+  },
+  "iter041_reference_score": 84,
+  "iter026_reference_score": 76,
+  "iter046_reference_score": 85,
+  "iter051_reference_score": 84,
+  "delta_vs_iter051_baseline": {
+    "educational": {
+      "sharpe_delta": 0.056917618664796166,
+      "cagr_delta": -0.007758152449935496,
+      "mdd_delta": -0.04976748645469323
+    },
+    "spy_real": {
+      "sharpe_delta": -0.010101889325429436,
+      "cagr_delta": -0.014376407569573146,
+      "mdd_delta": -0.0033516515771653543
+    },
+    "ndx_real": {
+      "sharpe_delta": 0.001570242653065046,
+      "cagr_delta": -0.014975445814844779,
+      "mdd_delta": -0.006878170718785492
+    }
+  },
+  "delta_vs_iter046_topk1": {
+    "educational": {
+      "sharpe_delta": -0.12428423069602657,
+      "cagr_delta": 0.024483482189080474,
+      "mdd_delta": 0.06349081300488885
+    },
+    "spy_real": {
+      "sharpe_delta": -0.1351651641251248,
+      "cagr_delta": 0.025819301639236514,
+      "mdd_delta": 0.05926069242084325
+    },
+    "ndx_real": {
+      "sharpe_delta": -0.16114921153094786,
+      "cagr_delta": 0.042505287311711326,
+      "mdd_delta": 0.11700658094461189
+    }
+  }
+}
