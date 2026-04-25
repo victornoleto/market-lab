@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 55
+total_iterations: 56
 winners_found: 0
 status: iterating
-latest_iteration: "055-2026-04-25-0938"
-cumulative_n_trials: 4325
+latest_iteration: "056-2026-04-25-0958"
+cumulative_n_trials: 4326
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -57,6 +57,10 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 ## Iteration log (newest first)
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
+
+### 056 — 2026-04-25 — iter046-levered-130 (🥈 PROMISING, 74/100)
+- **Result:** Sharpe edu/spy/ndx 1.097/1.210/1.267 (Δ frozen +0.42/+0.31/+0.31; Δ046 −0.105/−0.113/−0.114), CAGR 10.79/11.20/11.61% (1/3 floor: edu PASS only; spy −0.78pp, ndx −3.74pp short), MDD 23/20/19% (3/3 ceiling), gates 6/6/6 (G2 DSR FAIL × 3), DSR worst-p 0.1023 edu (n=4326), G7 0.0000pp, winner 0/5; score 1:25 2:19 3:5 4:5 5:15 6:5 = 74. **2 kills fired (B + D) → hypothesis FALSIFIED.**
+- **Lesson:** External 1.3× leverage on iter 046 at 3.5% retail borrow trades CAGR for Sharpe; c4 +5pts is overwhelmed by c2/c3 −16pts (Sharpe drag 0.105 = √252×(lev−1)×daily_borrow/(lev×σ_daily) pushes DSR p 0.041→0.10). Closes external leverage axis on iter 046 family at any retail borrow ≥ 3%; iter 046's 85 STRONG is the Pareto ceiling for the iter 041+iter 039 composition family. See `iterations/056-*/`.
 
 ### Iters 015-055 (compressed 1-line; full detail in `iterations/NNN-*/`)
 - **055** (🥈 73 PROMISING, 0/6 KILLS, vrp-basket-5etf-cross-region) S 1.07/1.40/1.60 (Δ frozen +0.39/+0.50/+0.64; Δ iter039 −0.07/+0.12/+0.04), CAGR 4.74/5.38/6.20% (0/3 floor; T-bill cap unchanged), MDD 16.18/5.99/4.70% (3/3 ceiling), gates 6/7/7, DSR worst-p edu 0.130 (10→5pts vs 039), G7 0.0000pp, winner 0/5; score 25+23+5+0+15+5=73. **Cross-region VRP basket NET NEGATIVE: EFA/EEM legs help post-GFC (Sharpe +0.04 to +0.12) but hurt 2006-2010 edu (−0.07) due to EM tail asymmetry not captured by static VXEEM/VIX=1.30 proxy. iter 039 confirmed Pareto-opt within VRP family at 76 STRONG; broader-region extension axis closed.**
@@ -129,14 +133,15 @@ Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
 Consumed/closed: 002-005/007/009-014/017/019-036/**037**-**055**. iter 044/047-050 close 5 iter-046 axes; iter 051/053 close 037+026/046 families at Pareto 84; iter 052 closes 041+026 at Pareto 79 (037 dominates 041 as anchor); iter 055 closes broader-region VRP at 73 (iter 039 Pareto-opt at 76). Saved-stream-pair Pareto exhausted: ceiling = 85 (iter 046). DSR binding at n_trials > 4300: edu Sharpe ≥ 1.10 to cross 0.10 bucket, ≥ 1.18 for strict-winner. iter 054 closes single-stock cross-sectional at DATA LAYER (survivorship-biased Tiingo cache).
 
-### Iter 056 candidates (iter 055 closed broader-region VRP at 73 PROMISING)
+### Iter 057 candidates (iter 056 closed external leverage on iter 046 at 74 PROMISING)
 
-- **#1 Levered iter 046 1.2-1.3× notional (RECOMMENDED)** — sole untested axis (closed: 044/047/048/049/050). At 1.3× CAGR 9.16/9.45/9.76 → ~11.6/12.0/12.3 (edu vs floor 9.18 marginal PASS, spy ≈ 11.98 marginal, ndx 15.35 MISS); MDD 18/15/15 → 23/20/20 (under ceilings). Distinct from iter 027 (closed harvest_notional > 1 on T-bill VRP). Predicted 85-92 (potential WINNER if 2/3 CAGR PASS). `[advances_fin_ml, p.31-34]` + `[risk_parity, ch.5]`. ~30-45 min.
-- **#2 AMP 2013 global value-momentum overlay** — long-only top-K composite 8-10 macro ETFs (equity/bond/commodity), CAPE-style value + 12-1 mom. Distinct from iter 023 (HOP needs 67 markets) + iter 054 (data-layer closure). ~90 min, predicted 70-80.
-- **#3 Plano C sleeve eval (mandate-aligned)** — GDE/AVUV/AVDE/AVEM/BTGD passive factor-tilted; ETFs young (2018-2024), need FF93 proxies for edu. Documents maintenance baseline. ~60-90 min, predicted ≤ 70.
-- **#4 Bring in delisted-aware data source** — long-term unblock of cross-sectional family (CRSP/Norgate/Quotemedia). Not feasible without budget.
+- **#1 Add a third uncorrelated return stream to iter 046 (RECOMMENDED)** — out-of-family addition at corr<0.4 with both r_041 and r_039. Candidates: trend on G10 FX carry, CTA momentum on liquid futures, time-series momentum on commodity rolls. Same compositional mechanism as iter 045/046 (vindicated for corr<0.6) but at the next layer; DSR penalty bound at corr=0.40 predicts ~30% reduction in worst-p (0.04 → 0.028). Score predicted 88-92 — potentially crosses 90 threshold via additional DSR compounding. `[risk_parity, ch.5]` + new third-leg source. ~60-90 min.
+- **#2 Term-spread (T10Y3M) regime architecture as iter 041 alternative** — single-feature **forward-looking** regime gate (T10Y3M lead-time ~12mo) on the SPY+IEF+GLD stack at preserved 1.4-1.5× leverage. Distinct from iter 044 (closed 2-feature composite VIX+T10Y3M). Cite `[advances_fin_ml, ch.17-18]` + Estrella-Mishkin (1998) NBER 6649. If T10Y3M-iter-041 has corr < 0.85 with iter 039, fresh 84-ceiling family. Predicted 76-84.
+- **#3 Asymmetric-weight VRP basket (rescue iter 055)** — same 5-leg SPY+QQQ+IWM+EFA+EEM but per-region weights tuned to time-zone tail asymmetry (e.g., 0.5/0.3/0.2/0/0 = back to iter 039 essentially). Distinct from iter 055 only if weights actually differ from equal. Predicted ≤ 76 (iter 039 ceiling).
+- **#4 Plano C sleeve eval (mandate-aligned)** — GDE/AVUV/AVDE/AVEM/BTGD passive factor-tilted; ETFs young (2018-2024), need FF93 proxies for edu. Documents maintenance baseline. ~60-90 min, predicted ≤ 70.
+- **#5 Bring in delisted-aware data source** — long-term unblock of cross-sectional family (CRSP/Norgate/Quotemedia). Not feasible without budget.
 
-DEAD-LETTER: iter 037+026/041+026/037+046/041+039 at any weight (Pareto 79-85 exhausted); iter 046-family enhancements (044/047/048/049/050); HYG-041; HMM-2; FX carry; MTUM/QUAL/USMV (not in cache); **all saved-stream-pair compositions on iter 037 anchor (closed by iter 045/051/053; ceiling 84)**; **iter 041 substitution for iter 037 (closed by 052)**; **single-stock cross-sectional 12-1 momentum (any K, any lookback) on Tiingo cache (closed by iter 054 at data layer)**; **broader-region VRP basket 5-leg US+EAFE+EM equal-weight (closed by iter 055 at score 73 < iter 039's 76)**.
+DEAD-LETTER: iter 037+026/041+026/037+046/041+039 at any weight (Pareto 79-85 exhausted); iter 046-family enhancements (044/047/048/049/050); HYG-041; HMM-2; FX carry; MTUM/QUAL/USMV (not in cache); **all saved-stream-pair compositions on iter 037 anchor (closed by iter 045/051/053; ceiling 84)**; **iter 041 substitution for iter 037 (closed by 052)**; **single-stock cross-sectional 12-1 momentum (any K, any lookback) on Tiingo cache (closed by iter 054 at data layer)**; **broader-region VRP basket 5-leg US+EAFE+EM equal-weight (closed by iter 055 at score 73 < iter 039's 76)**; **external leverage on iter 046 at any retail borrow rate ≥ 3% (closed by iter 056 at 74 PROMISING vs iter 046's 85)**.
 
 ### Deeper backlog
 
@@ -158,6 +163,7 @@ DEAD-LETTER: iter 037+026/041+026/037+046/041+039 at any weight (Pareto 79-85 ex
 - **iter 051-053 closures**: 037+026 (84, edu S 1.02 < 1.10 DSR cap), 041+026 (79, ndx CAGR lost), 037+046 (84 corr 0.93-0.96 Kill F). Saved-stream-pair ceiling = 85 (iter 046); path 90+ needs NEW base edu Sharpe ≥ 1.20.
 - **iter 054 closure (DATA LAYER)**: 12-1 cross-sectional on 422-name Tiingo — Sharpe 0.655 < SPY 0.680, DSR 0.811, PBO=1.0; score 47. Survivorship-biased cache correlates with cap-weighted bench → no dispersion at any K. Closes ALL cross-sectional ranking on `data/tiingo/` until CRSP/Norgate delisted coverage.
 - **iter 055 closure (broader-region VRP)**: 5-leg SPY+QQQ+IWM+EFA+EEM equal-weight; Δ039 Sharpe −0.07/+0.12/+0.04, CAGR floor 0/3 (T-bill cap unchanged), edu DSR 0.130 (vs 039's 0.075); score 73. Cross-region diversification asymmetric: helps post-GFC, hurts pre-GFC edu (EM tail not captured by VXEEM/VIX=1.30 proxy). iter 039 Pareto-opt at 76 STRONG; broader-VRP axis closed.
+- **iter 056 closure (external leverage on iter 046)**: 1.3× notional on iter 046 combined stream financed at 3.5% retail borrow; Sharpe 1.097/1.210/1.267 (Δ046 −0.105/−0.113/−0.114 — drag matches √252×(lev−1)×daily_borrow/(lev×σ_daily)); CAGR 10.79/11.20/11.61% (1/3 floor: edu PASS only); MDD 23/20/19% (3/3 ceiling well under); G2 DSR FAIL × 3 (worst-p 0.10 vs iter 046's 0.04); score 74 PROMISING. Closes external leverage axis on iter 046 at any retail borrow rate ≥ 3% — Sharpe drag overwhelms CAGR-floor gain. iter 046's 85 STRONG is the Pareto ceiling for the iter 041+iter 039 composition family; further improvement requires Sharpe enhancement (e.g., third uncorrelated stream), not risk amplification.
 
 ---
 

@@ -3755,3 +3755,100 @@ Complete study: `studies/strategy_hunt_loop/iterations/055-2026-04-25-0938-vrp-b
 - Asness, Moskowitz & Pedersen (2013). JoF 68(3) 929-985 — cross-
   asset orthogonality.
 - `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials.
+
+
+---
+
+## From iteration 056 — external leverage on iter 046 at retail borrow rates
+
+Complete study: `studies/strategy_hunt_loop/iterations/056-2026-04-25-0958-iter046-levered-130/`.
+
+### What failed (do NOT re-test)
+
+1. **External 1.3× notional on iter 046's combined return stream
+   financed at 3.5% retail borrow rate (T-bill 2.0% + IBKR Pro Tier 1
+   spread 1.5%)** — score 74 PROMISING (vs iter 046's 85 STRONG). Two
+   of six pre-committed kills fired (B score < 85 + D DSR worst-p
+   ≥ 0.05). The hypothesis "external leverage converts unused MDD slack
+   into CAGR while preserving Sharpe" is **mechanically correct on c4
+   (CAGR floor +5pts: 0/15 → 5/15 with edu PASSing 9.18% floor at
+   10.79%) but net-negative on the score**, because the Sharpe drag
+   from the 3.5% borrow spread (~0.10–0.11 across all 3 datasets)
+   pushes DSR worst-p from 0.0416 → 0.1023 — a c2 G2 + c3 DSR loss of
+   −16pts that overwhelms the c4 gain.
+
+2. **Why the analytic prediction missed**: the Sharpe drag formula is
+   `Sharpe_drag = √252 × (lev−1) × daily_borrow_rate / (lev × σ_daily)`
+   — the √252 factor (≈ 15.87) annualizes the per-bar drag against the
+   daily volatility. The iter 056 hypothesis prediction omitted this
+   factor and computed drag ≈ 0.058, leading to a predicted Sharpe of
+   1.14/1.26/1.32 instead of the actual 1.10/1.21/1.27. With correct
+   drag, predicted score 74 matches actual 74 PROMISING.
+
+3. **The CAGR-floor gap on ndx is structurally unbridgeable by pure
+   leverage at retail borrow rates**: iter 046 ndx CAGR is 9.76%
+   while the floor is 15.35% (5.59pp gap). Closing this gap via pure
+   leverage requires `lev ≈ 1.78×`, where Sharpe drag becomes ~0.21
+   — DSR p worst-case > 0.20, c2 + c3 lost entirely, score collapses
+   to MARGINAL or worse.
+
+### Don't re-test
+
+- **External notional leverage on iter 046 at any leverage level
+  ≥ 1.1× combined with any retail borrow rate ≥ 3%.** The DSR/Sharpe
+  trade-off is monotonically negative across this entire region. The
+  only leverage rate that preserves iter 046's score is `lev = 1.0` =
+  the iter 046 baseline.
+
+- **Any iter 046-derivative strategy that adds notional leverage as
+  primary edge mechanism** — same DSR collapse signature applies to
+  any iter 045/046/051/053-style composition financed at retail rates.
+  The composition family's Pareto ceiling at 85 STRONG (iter 046) is
+  bound by Sharpe, not by CAGR.
+
+### Structural principles
+
+- **Frazzini-Pedersen (2014) borrow frictions vindicate empirically on
+  low-vol composites**: realistic broker margin spreads (~1.5pp over
+  T-bill) collapse Sharpe by ~0.1 per 0.3 leverage units on a σ ≈ 6%
+  strategy. This is qualitatively the same effect as the
+  Frazzini-Pedersen "betting against beta" finding — leverage costs
+  destroy the alpha of low-vol strategies once spreads are modeled.
+
+- **DSR (Bailey-López de Prado) is acutely sensitive to small Sharpe
+  changes near n_trials > 4000**: a Sharpe drop from 1.20 to 1.10
+  (8% relative) raises DSR p from 0.04 to 0.10 (2.5× absolute). For
+  any strategy at the borderline of DSR significance, even small
+  cost-model additions (borrow spread, slippage upgrades, more
+  realistic transaction cost) can collapse the gate. **Implication**:
+  leverage on a marginally-significant strategy is uniquely fragile.
+
+- **Path to break the iter 046 ceiling requires Sharpe enhancement,
+  not risk amplification**. Candidate axes (none yet tested in this
+  loop):
+  - Adding a third uncorrelated return stream at corr<0.4 (compounds
+    DSR per Markowitz) — but the available cross-asset universe
+    (FX carry, CTA momentum on futures, commodity term-structure)
+    has been ad-hoc cited but not empirically built.
+  - Reframing iter 041's binary VIX gate as a forward-looking
+    term-spread (T10Y3M) gate — distinct from iter 044's 2-feature
+    composite closure.
+  - Both axes preserve the iter 046 base architecture while seeking
+    Sharpe gain rather than CAGR gain — orthogonal to the leverage
+    trade-off this iteration closed.
+
+### Citations
+
+- `[risk_parity, ch.5]` — iter 046 base architecture.
+- `[advances_fin_ml, p.222-223]` — DSR sensitivity at large n_trials.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity (verified at
+  0.0000 pp this iteration).
+- Frazzini, A., & Pedersen, L. H. (2014). Betting against beta. JFE
+  111(1) 1-25. DOI 10.1016/j.jfineco.2013.10.005 — borrow frictions
+  on levered low-vol strategies, vindicated empirically here.
+- IBKR Pro Tier 1 margin schedule (public, 2025-04) — 3.5% effective
+  borrow rate at 2025 yields. Pre-committed; not optimized.
+- Bailey, D. H., & López de Prado, M. (2014). The Deflated Sharpe
+  Ratio: Correcting for Selection Bias, Backtest Overfitting, and
+  Non-Normality. JPM 40(5) 94-107 — DSR test mechanics that drove
+  the c2/c3 collapse here.
