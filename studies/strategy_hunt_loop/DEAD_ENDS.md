@@ -3670,3 +3670,88 @@ Complete study: `studies/strategy_hunt_loop/iterations/054-2026-04-25-0919-tiing
 - Carhart (1997). JoF 52(1) 57–82 — UMD factor.
 - Asness, Moskowitz & Pedersen (2013). JoF 68(3) 929–985 — value-momentum.
 - Ben Dor & Ross (2024) "Momentum's Misadventures" — post-2009 decay.
+
+---
+
+## From iteration 055 — broader-region 5-leg VRP basket
+
+Complete study: `studies/strategy_hunt_loop/iterations/055-2026-04-25-0938-vrp-basket-5etf-cross-region/final_report.md`.
+
+### What failed (do NOT re-test)
+
+1. **Cross-region 5-leg VRP basket SPY+QQQ+IWM+EFA+EEM at 1/5 each,
+   harvest_notional=1.0, IV scales 1.0/1.10/1.25/1.05/1.30** —
+   score 73 PROMISING (vs iter 039's 76 STRONG, the 3-leg US-only
+   baseline). Sharpe 1.07/1.40/1.60 (Δ iter039 −0.07/+0.12/+0.04).
+   Cross-region diversification hurts educational long-window Sharpe
+   (1.14 → 1.07) more than it helps post-GFC windows (spy +0.11, ndx
+   +0.04). Net DSR penalty at cumulative_n_trials=4325 costs 5 score
+   points.
+
+2. **Static VXEEM/VIX = 1.30 IV proxy under-prices EM tail risk in
+   pre-2008 era**. CBOE VXEEM only began publishing late 2007; for
+   the 2006-2007 segment of educational the proxy retroactively
+   applies a post-2008 ratio that is conservative on calm periods
+   but undersells crisis volatility. The EEM short-put-spread leg
+   under-charges for tail asymmetry, eroding harvest mean during
+   2007-2008 EM-stress.
+
+3. **CAGR floor remains structural across basket composition**. iter
+   039 (3-leg US): 5.09/5.22/6.35%. iter 055 (5-leg US+EAFE+EM):
+   4.74/5.38/6.20%. CAGR is essentially basket-size-invariant when
+   harvest_notional=1.0 and rf=2% on T-bill — the harvest premium
+   is structurally capped at ~3-4 pp/yr above T-bill regardless of
+   leg count or region.
+
+### Don't re-test
+
+- Broader-region VRP basket at any equal-weight composition larger
+  than 3 legs (US-only) on the iter 055 ETF set (SPY/QQQ/IWM/EFA/EEM)
+  with static VIX-multiplier IV proxies.
+- Any VRP basket configuration at harvest_notional ≤ 1.0 expecting to
+  break iter 039's score 76 ceiling — the family is now Pareto-saturated
+  with iter 039 as the locked anchor.
+
+### Structural principles
+
+- **VRP-harvester family CONFIRMED Pareto-saturated at score 76
+  (iter 039 STRONG)** across 9 iterations: 026 (single-asset SPY) +
+  027 (levered single-asset, rf-bonus diluted) + 028-031 (gates + AND-
+  composite) + 039 (3-leg US basket) + 040 (vol-target on 039) + 055
+  (5-leg cross-region basket). All hit either the CAGR floor structural
+  cap (T-bill collateral ~5-6% CAGR) or the DSR cumulative-n_trials
+  penalty.
+
+- **Cross-region diversification has asymmetric benefit across
+  regimes**. Post-GFC windows (2009+) benefit from EFA/EEM legs
+  reducing US-tech-stress correlation; long-history windows (2006+)
+  pay a Sharpe premium for under-priced EM tail asymmetry. This is
+  the IV-proxy quality limitation, not a fundamental flaw of the
+  cross-region thesis. With per-leg VXEFA/VXEEM/VXN data the
+  Sharpe regression on educational might be eliminated, but the CAGR
+  floor structural cap remains regardless.
+
+- **Path to break the 76 VRP ceiling requires structural change of
+  collateral or harvest scaling**. Three doors are documented closed:
+  (a) iter 027 closed harvest_notional > 1 (rf-bonus dilution by
+  borrow cost); (b) iter 032 closed equity-collateralized VRP overlay
+  (ρ_SPY ≈ 0.97 absorption corrupts both legs); (c) iter 055 closed
+  basket-composition extension (region diversification in long-only
+  short-vol). The remaining unblocked path is per-leg IV signal
+  data — not feasible without VXEFA/VXEEM time series.
+
+### Citations
+
+- `[volatility_trading, p.218]` — Sinclair (2013) cross-asset VRP
+  diversification (primary).
+- `[volatility_trading, ch.3, p.41, p.217]` — VRP mechanics + capped
+  tail.
+- Bondarenko (2014). QJF 4(3) 1450015 — empirical SPX VRP magnitude.
+- Carr & Wu (2009). RFS 22(3) 1311-1341 — variance risk premia.
+- Driessen, Maenhout & Vilkov (2009). JoF 64(4) 1377-1406 — cross-
+  sectional decomposition of index VRP.
+- Bakshi & Madan (2006). JFE 81(2) 471-518 — implied-vol premia
+  decomposition.
+- Asness, Moskowitz & Pedersen (2013). JoF 68(3) 929-985 — cross-
+  asset orthogonality.
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials.

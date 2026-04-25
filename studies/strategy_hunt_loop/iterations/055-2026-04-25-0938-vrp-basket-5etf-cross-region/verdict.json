@@ -1,0 +1,456 @@
+{
+  "total_score": 73,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 23,
+      "max": 25,
+      "per_dataset": {
+        "educational": "6",
+        "spy_real": "7",
+        "ndx_real": "7"
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 5,
+      "max": 15,
+      "worst_p_value": 0.13005314093143672,
+      "cumulative_n_trials": 4325
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "per_dataset": {
+        "educational": false,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "method": "3 non-overlapping sub-windows per dataset; positive count across 9 total windows",
+      "detail": {
+        "total_sub_windows": 9,
+        "positive_sub_windows": 9,
+        "fraction_positive": 1.0,
+        "bonus_awarded": 5,
+        "per_dataset": {
+          "educational": {
+            "window_sharpes": [
+              0.6439418742927522,
+              1.4624874853559475,
+              1.3247100339466222
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "spy_real": {
+            "window_sharpes": [
+              1.6649112067285474,
+              0.9820043348722957,
+              1.5818979793069425
+            ],
+            "positive_count": 3,
+            "total": 3
+          },
+          "ndx_real": {
+            "window_sharpes": [
+              1.778736538653628,
+              1.3812488314868787,
+              1.6366542425699078
+            ],
+            "positive_count": 3,
+            "total": 3
+          }
+        }
+      }
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 1.0720210632033176,
+      "cagr": 0.04735776655336177,
+      "mdd": 0.1617668392667786,
+      "dsr_p_value": 0.13005314093143672
+    },
+    "spy_real": {
+      "sharpe": 1.4020300552218894,
+      "cagr": 0.053752183855374946,
+      "mdd": 0.05988512000731192,
+      "dsr_p_value": 0.024993903221832592
+    },
+    "ndx_real": {
+      "sharpe": 1.5978175577879996,
+      "cagr": 0.06198050710974479,
+      "mdd": 0.046952877705493,
+      "dsr_p_value": 0.004247051149605219
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4325,
+  "configs_tested": 1,
+  "primary_citation": "[volatility_trading, p.218]; [volatility_trading, ch.3, p.41, p.217]; Bondarenko (2014) QJF 4(3) 1450015; Carr-Wu (2009) RFS 22(3) 1311-1341; Driessen-Maenhout-Vilkov (2009) JoF 64(4) 1377-1406; Bakshi-Madan (2006) JFE 81(2) 471-518; AMP (2013) JoF 68(3) 929-985",
+  "hypothesis_slug": "vrp-basket-5etf-cross-region",
+  "pre_committed_cfg": {
+    "cfg_id": "vrp_basket_eq5_5_10_1m_5regions",
+    "rf": 0.02,
+    "harvest_notional": 1.0,
+    "weights": {
+      "SPY": 0.2,
+      "QQQ": 0.2,
+      "IWM": 0.2,
+      "EFA": 0.2,
+      "EEM": 0.2
+    },
+    "iv_scales": {
+      "SPY": 1.0,
+      "QQQ": 1.1,
+      "IWM": 1.25,
+      "EFA": 1.05,
+      "EEM": 1.3
+    },
+    "k_long_pct": 0.95,
+    "k_short_pct": 0.9,
+    "dte_days": 21,
+    "cost_bps_per_roll": 5.0,
+    "rebalance": "daily MtM, monthly roll per leg, basket weight rebalance daily",
+    "funding_cost_modeled": true
+  },
+  "gate_details": {
+    "educational": {
+      "cfg_id": "vrp_basket_eq5_5_10_1m_5regions",
+      "n_passed": "6",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": false,
+      "G2_dsr_p": 0.13005314093143672,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 0.636434283144077,
+          "mdd": 0.043953871718632985,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 0.3566354661388481,
+          "mdd": 0.1406084200597253,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 1.253445451672125,
+          "mdd": 0.055208876851051775,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.0806971192933335,
+          "mdd": 0.035561237201637265,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 1.8261148794530264,
+          "mdd": 0.022702660962549533,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.5622126061210442,
+          "mdd": 0.06601111673359918,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 0.9702701635723215,
+          "mdd": 0.054882598500455335,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.562117986335086,
+          "mdd": 0.049516201796517,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.4924906113688263,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.292504748558707,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.3853528377929976,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0
+    },
+    "spy_real": {
+      "cfg_id": "vrp_basket_eq5_5_10_1m_5regions",
+      "n_passed": "7",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": true,
+      "G2_dsr_p": 0.024993903221832592,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 2.1547927242040195,
+          "mdd": 0.043947541749208854,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 1.1054843679735524,
+          "mdd": 0.043985976503964574,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 1.557111189016888,
+          "mdd": 0.03972766765585951,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 1.2661067211050265,
+          "mdd": 0.04228089357715421,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 0.7879089611818044,
+          "mdd": 0.05988512005056106,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 1.903502273724883,
+          "mdd": 0.0523005988670927,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 1.0563847485341253,
+          "mdd": 0.04981700798607735,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.4958622862508237,
+          "mdd": 0.050006605287026266,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.3408333052992545,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.47045755748746,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.5662359155580569,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0
+    },
+    "ndx_real": {
+      "cfg_id": "vrp_basket_eq5_5_10_1m_5regions",
+      "n_passed": "7",
+      "G1_pbo_pass": true,
+      "G1_pbo_value": null,
+      "G1_note": "N=1 \u2192 PBO undefined; vacuous PASS (no grid, no overfit)",
+      "G2_dsr_pass": true,
+      "G2_dsr_p": 0.004247051149605219,
+      "G3_wf_pass": true,
+      "G3_wf_profitable": 8,
+      "G3_wf_windows": [
+        {
+          "window": 0,
+          "sharpe": 1.6064277503019266,
+          "mdd": 0.044594227405637135,
+          "profitable": true
+        },
+        {
+          "window": 1,
+          "sharpe": 2.519663291810781,
+          "mdd": 0.0179680720094564,
+          "profitable": true
+        },
+        {
+          "window": 2,
+          "sharpe": 0.8161349721203085,
+          "mdd": 0.04062134618399971,
+          "profitable": true
+        },
+        {
+          "window": 3,
+          "sharpe": 2.073020933652829,
+          "mdd": 0.025586445090613506,
+          "profitable": true
+        },
+        {
+          "window": 4,
+          "sharpe": 0.6784503325997117,
+          "mdd": 0.044710129052216586,
+          "profitable": true
+        },
+        {
+          "window": 5,
+          "sharpe": 3.0955545598981784,
+          "mdd": 0.023150263632893932,
+          "profitable": true
+        },
+        {
+          "window": 6,
+          "sharpe": 1.163281304819672,
+          "mdd": 0.046952877917673136,
+          "profitable": true
+        },
+        {
+          "window": 7,
+          "sharpe": 1.6737777608553916,
+          "mdd": 0.031805666598478485,
+          "profitable": true
+        }
+      ],
+      "G4_oos_pass": "True",
+      "G4_oos_sharpe": 1.486268860753756,
+      "G5_fwd_pass": "True",
+      "G5_fwd_sharpe": 1.6889359847968635,
+      "G6_boot_pass": true,
+      "G6_boot_ci_low": 0.7666601083694292,
+      "G7_xlib_pass": true,
+      "G7_xlib_diff_pp": 0.0
+    }
+  },
+  "crosslib": {
+    "educational": {
+      "cagr_pandas": 0.04735776655336177,
+      "cagr_numpy": 0.04735776655336177,
+      "abs_diff_pp": 0.0,
+      "max_abs_return_diff": 0.0
+    },
+    "spy_real": {
+      "cagr_pandas": 0.053752183855374946,
+      "cagr_numpy": 0.053752183855374946,
+      "abs_diff_pp": 0.0,
+      "max_abs_return_diff": 0.0
+    },
+    "ndx_real": {
+      "cagr_pandas": 0.06198050710974479,
+      "cagr_numpy": 0.06198050710974479,
+      "abs_diff_pp": 0.0,
+      "max_abs_return_diff": 0.0
+    }
+  },
+  "benchmarks_used_custom": {
+    "educational": {
+      "sharpe": 0.6274107005006827,
+      "cagr": 0.10775107206419254,
+      "mdd": 0.5520110457219881,
+      "n_bars": 5100,
+      "first": "2006-01-04",
+      "last": "2026-04-14"
+    },
+    "spy_real": {
+      "sharpe": 0.8935486911220474,
+      "cagr": 0.14872337254086343,
+      "mdd": 0.33699940470536127,
+      "n_bars": 4225,
+      "first": "2009-06-26",
+      "last": "2026-04-14"
+    },
+    "ndx_real": {
+      "sharpe": 0.9473068950283667,
+      "cagr": 0.1890422501212914,
+      "mdd": 0.35122525674827487,
+      "n_bars": 4065,
+      "first": "2010-02-16",
+      "last": "2026-04-14"
+    }
+  },
+  "iter039_reference_metrics": {
+    "educational": {
+      "sharpe": 1.1397,
+      "cagr": 0.0509,
+      "mdd": 0.1432,
+      "dsr_p": 0.0748
+    },
+    "spy_real": {
+      "sharpe": 1.2875,
+      "cagr": 0.0522,
+      "mdd": 0.0707,
+      "dsr_p": 0.0612
+    },
+    "ndx_real": {
+      "sharpe": 1.561,
+      "cagr": 0.0635,
+      "mdd": 0.0684,
+      "dsr_p": 0.0059
+    }
+  },
+  "delta_vs_iter039": {
+    "educational": {
+      "sharpe": -0.06767893679668235,
+      "cagr": -0.003542233446638232,
+      "mdd": 0.0185668392667786,
+      "dsr_p": 0.05525314093143671
+    },
+    "spy_real": {
+      "sharpe": 0.1145300552218893,
+      "cagr": 0.0015521838553749431,
+      "mdd": -0.010814879992688077,
+      "dsr_p": -0.036206096778167406
+    },
+    "ndx_real": {
+      "sharpe": 0.036817557787999666,
+      "cagr": -0.001519492890255214,
+      "mdd": -0.021447122294507,
+      "dsr_p": -0.001652948850394781
+    }
+  }
+}
