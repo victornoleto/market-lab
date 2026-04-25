@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 37
+total_iterations: 38
 winners_found: 0
 status: iterating
-latest_iteration: "037-2026-04-25-0224"
-cumulative_n_trials: 4300
+latest_iteration: "038-2026-04-25-0246"
+cumulative_n_trials: 4303
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -60,14 +60,15 @@ winner:
 
 | rank | iter | tier | score | strategy slug | primary citation | headline |
 |---|---|---|---|---|---|---|
+| **1** | **038** | 🥇 STRONG | **79** | `regime_lev_vix_lt20_lo10_hi17` (VIX-gated 1.7/1.0× on iter 037) | `[advances_fin_ml, ch.17-18]` + MM 2017 | Ties 79; MDD −4/−8pp vs 037 best of STRONG; DSR 0.204 best ever; MM uplift NOT on diversified |
 | **1** | **037** | 🥇 STRONG | **79** | `ntsx_3leg_preserved_60_45_45_spy_ief_gld` (0.6 SPY+0.45 IEF+0.45 GLD, 1.5×) | `[risk_parity, ch.5]` + AMP 2013 | 1st plain static-stack at 79; **breaks 77 ceiling**; 4/5 winner; Sharpe +0.30/+0.25/+0.22; DSR 0.222 sole fail |
 | **1** | **016** | 🥇 STRONG | **79** | `ntsx_vm_vt15_L21_cap20` (60:40 × MM vol-target) | `[risk_parity, p.10-11]` + MM 2017 | 4/5 winner; Sharpe +0.24-0.30; DSR 0.226 sole fail |
 | **1** | **018** | 🥇 STRONG | **79** | `ntsx_vm_vt15_L21_cap20_funded` (016 + r_Tbill drag) | `[risk_parity, p.80-84]` | edges survive funding cost (−93 to −148 bps/yr); ties 016 |
 | **1** | **021** | 🥇 STRONG | **79** | `ntsx_vm_..._scs5_10_1m` (016 + short put-spread VRP) | `[volatility_trading, ch.3]` | Sharpe-neutral; MDD −1 to −3pp; DSR p=0.217 record |
-| **5** | **035** | 🥇 STRONG | **77** | `static_stack_90_60_spy_gld` (static 0.9 SPY + 0.6 GLD) | `[risk_parity, ch.5]` + Erb-Harvey 2006 + AMP 2013 | TIES 015 ceiling from gold-not-bond axis; Δ015 +0.094/+0.026/+0.040 Sharpe; best static DSR ever (0.344) |
-| 5 | 015 | 🥇 STRONG | 77 | `ntsx_synth_90_60_daily` (static 0.9 SPY + 0.6 IEF) | `[risk_parity, p.5]` + AFP 2012 | 4/5 winner; 1st escape σ²_port cointegration |
-| **7** | **031** | 🥇 STRONG | **76** | `vrp_and_v3p35_z2_h1_5_10_1m` (R-1 ∧ R-2 AND-VIX gate) | `[volatility_trading, p.217-218]` | 1st all-3 DSR<0.10 (0.054/0.070/0.050); ndx 7/7+DSR preserved |
-| **7** | **026** | 🥇 STRONG | **76** | `vrp_primary_h1_5_10_1m` (T-bill + short SPY put cs) | `[volatility_trading, ch.3, p.41]` | 1st DSR PASS (ndx 0.038); 1st 7/7 gates; Sharpe Δ +0.38-0.45 |
+| **6** | **035** | 🥇 STRONG | **77** | `static_stack_90_60_spy_gld` (static 0.9 SPY + 0.6 GLD) | `[risk_parity, ch.5]` + Erb-Harvey 2006 + AMP 2013 | TIES 015 ceiling from gold-not-bond axis; Δ015 +0.094/+0.026/+0.040 Sharpe; best static DSR ever (0.344) |
+| 6 | 015 | 🥇 STRONG | 77 | `ntsx_synth_90_60_daily` (static 0.9 SPY + 0.6 IEF) | `[risk_parity, p.5]` + AFP 2012 | 4/5 winner; 1st escape σ²_port cointegration |
+| **8** | **031** | 🥇 STRONG | **76** | `vrp_and_v3p35_z2_h1_5_10_1m` (R-1 ∧ R-2 AND-VIX gate) | `[volatility_trading, p.217-218]` | 1st all-3 DSR<0.10 (0.054/0.070/0.050); ndx 7/7+DSR preserved |
+| **8** | **026** | 🥇 STRONG | **76** | `vrp_primary_h1_5_10_1m` (T-bill + short SPY put cs) | `[volatility_trading, ch.3, p.41]` | 1st DSR PASS (ndx 0.038); 1st 7/7 gates; Sharpe Δ +0.38-0.45 |
 
 *(iter 001 ~35/100 approximate; back-fill in `tests/test_strategy_scoring.py::TestNearMiss`.)*
 
@@ -81,16 +82,14 @@ the 18 KB ceiling. Full hypothesis, citations, scope and score
 breakdown for compressed iters are recoverable from
 `iterations/NNN-*/hypothesis.md` + `verdict.json` + `final_report.md`.
 
-### 037 — 2026-04-25 — ntsx-3leg-preserved-lev (🥇 STRONG, 79/100, 1/7 KILLS — Kill C only)
-- **Hypothesis:** Redistribute weights from iter 036's 0.9/0.6/0.3 (1.8×) to **0.6 SPY + 0.45 IEF + 0.45 GLD = 1.5× lev** — preserves iter 015 leverage budget while adding 3rd leg via 33% equity-cut.
-- **Citations:** `[risk_parity, ch.5]` + `[risk_parity, p.5, p.10-11, ch.1]` (AFP 2012) + AMP 2013 (JF 68(3) DOI 10.1111/jofi.12021) + `[leverage_for_the_long_run, p.19-20]` + Erb-Harvey 2006 + KMPV 2018 + Ilmanen 2011.
-- **Scope:** 1 cfg, 3 datasets (edu SPY+IEF+GLD 21y, spy_real 17y, ndx_real 16y); GLD-aligned windows from iter 035/036.
-- **Result:** Sharpe edu/spy/ndx **0.983/1.154/1.174** (Δ frozen **+0.303/+0.254/+0.219** — largest static-stack edge ever; Δ015 +0.199/+0.110/+0.110 ALL 3; Δ036 +0.062/+0.007/+0.020 strict-dominates 036), gates 6/6/6, DSR p=**0.222**/0.144/0.146 (n=4300, beats iter 036's 0.311 by −29% — Kill C just above 0.20), CAGR 14.16/15.53/17.76% (3/3 clear), MDD **33.33/25.24/32.28%** (**1st plain static-stack with 3/3 MDD clean**, margins 22/8/3pp), G7 max 0.134pp, winner 4/5 (only DSR), robust 9/9; **score 1:25 2:19 3:0 4:15 5:15 6:5 = 79**.
-- **Lesson:** **Static-stack 77 ceiling BROKEN at 79 STRONG** (ties top-K #1 016/018/021) — first plain static-stack at 79 without overlays. AMP 2013 orthogonality DOES survive 33% equity-cut; diversifier-sleeve variance reduction (0.45/0.45 IEF/GLD vs 0.6 single) outweighs equity drag. **Static-stack now DSR-bound at 79** (not leverage-bound) — clearing DSR p<0.05 needs Sharpe ~1.30+ cross-ds, mechanically lev>2.0× MDD breach OR non-static. See `iterations/037-*/`.
+### 038 — 2026-04-25 — regime-lev-vix (🥇 STRONG, 79/100, 1/7 KILLS — Kill C only)
+- **Result:** Sharpe edu/spy/ndx 0.998/1.105/1.149 (Δ frozen +0.32/+0.20/+0.19; Δ037 +0.015/−0.049/−0.025), gates 6/6/6, DSR p=0.204 (n=4303, best static-stack ever; still > 0.20 partial-credit), CAGR 12.42/13.22/15.69%, MDD **25.11/21.60/28.63%** (Δ037 **−8.22/−3.64/−3.65pp** — best of any STRONG), G7 max 0.087pp, avg lev 1.46-1.49 ≈ iter 037's 1.50, low-vol fracs 0.65/0.68/0.71, robust 9/9, winner 4/5; score 1:25 2:19 3:0 4:15 5:15 6:5 = **79**.
+- **Lesson:** Static-stack DSR ceiling 79 confirmed across TWO mechanisms (037 preserved-lev + 038 regime-gated-lev). Binary VIX-gate is **MDD-additive, Sharpe-neutral on net, DSR-marginal**; Moreira-Muir 2017 +0.20-0.30 uplift does NOT replicate on already-diversified 3-leg base. Two-axis characterization: **DSR-bound at 79, MDD freely optimizable**. To break 79 within static-stack: regime must modulate WEIGHTS not LEVERAGE; outside: cross-asset VRP basket / ML meta-label. Closes binary-VIX-level + predicted-same-ceiling for σ⁻¹/σ⁻², other VIX thresholds, z-score VIX, term-spread/MOVE/EBP regime gates on iter 037 base. See `iterations/038-*/`.
 
-### Iters 015-036 (compressed 1-line; full detail in `iterations/NNN-*/`)
+### Iters 015-037 (compressed 1-line; full detail in `iterations/NNN-*/`)
 
-- **036** (🥈 72, 1/6 KILLS — C only, 3-leg additive @ 1.8×) `ntsx_3leg_add_90_60_30_spy_ief_gld`: Sharpe 0.921/1.147/1.154 (Δ015 +0.138/+0.103/+0.090; Δ035 +0.044/+0.077/+0.051 — 1st empirical proof 3rd leg adds Sharpe), DSR 0.311/0.151/0.164 (n=4297), MDD 42.83/32.41/**41.53%** ndx breach +1.41pp; G7 max 0.142pp; score 1:25 2:17 3:0 4:15 5:10 6:5 = **72**. PRINCIPLE: 3-leg @ 1.8× extracts +0.05 Sharpe but +0.30 lev breaks ndx MDD → net 72. Subsumed by iter 037 (preserved-lev variant strict-dominates on Sharpe + MDD + DSR).
+- **037** (🥇 79, 3-leg preserved-lev) Sharpe 0.98/1.15/1.17 (Δ015 +0.20/+0.11/+0.11), DSR 0.222 (best static-stack until 038), MDD 33/25/32% (1st 3/3 clean), G7 max 0.134pp; score 1:25 2:19 3:0 4:15 5:15 6:5 = **79**. PRINCIPLE: Static-stack 77 ceiling BROKEN at 79; AMP 2013 orthogonality survives 33% equity cut. DSR-bound at 79; ties top-K #1.
+- **036** (🥈 72, 3-leg additive 1.8×) Sharpe 0.92/1.15/1.15, DSR 0.311, MDD ndx 41.53% breach +1.41pp; score 72. PRINCIPLE: +0.30 lev breaks ndx MDD → net 72. Subsumed by 037 strict-dominates.
 
 - **035** (🥇 77, GLD substitution) Sharpe 0.877/1.070/1.103 (Δ015 +0.094/+0.026/+0.040), DSR 0.344/0.236/0.219, MDD 3/3 clean; score 1:25 2:17 3:0 4:15 5:15 6:5 = **77**. PRINCIPLE: 77 ceiling asset-class-agnostic; iter 015 edge was DIVERSIFICATION not bond-carry.
 - **034** (🥈 72, 3-leg bond-carry sleeve) Sharpe 0.795/1.058/1.075 (Δ015 +0.011/+0.014/+0.012), DSR 0.529/0.250/0.253, MDD ndx 42.11% breach; score 72. PRINCIPLE: subsumed by 035 — 77 ceiling architecture-bound, not bond-specific.
@@ -141,18 +140,18 @@ breakdown for compressed iters are recoverable from
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-036/**037** (iter 037 STRONG 79 — 0.6 SPY+0.45 IEF+0.45 GLD @ 1.5× **broke 77 ceiling**; 4/5 winner conds, only DSR fails 0.222; first plain static-stack at 79 ties top-K #1; first 3-leg with 3/3 MDD clean. Corrected characterization: **static-stack DSR-bound at 79 absolute** at preserved 1.5× lev). Top-K #1 quartet 016/018/021/037 at 79.
+Consumed/closed: 002-005/007/009-014/017/019-036/**037**/**038** (iter 038 ties 79 with strict-MDD-dominance −4/−8pp vs 037; DSR 0.204 best static-stack ever but > 0.20; confirms **DSR-bound at 79, MDD freely optimizable**). Top-K #1 quintet 016/018/021/037/038 at 79.
 
-### Iter 038 candidates (static-stack ceiling re-characterized as DSR-bound at 79; pivot to non-static OR VRP basket; 4-leg static = marginal)
+### Iter 039 candidates (static-stack DSR ceiling now hardened across 037+038 mechanisms; pivot decisively to cross-asset VRP basket OR regime-conditional WEIGHTS)
 
-- **HMM regime-aware lev scaling on iter 037 base (RECOMMENDED)**: keep 0.6/0.45/0.45 weights, lever 1.7× in low-vol regime (VIX < 20 or z < 0) and 1.0× in high-vol regime. **Highest-yield remaining test** — direct DSR-bottleneck attack via regime-conditional lev. Predicted: Sharpe ~1.20-1.30 + ndx MDD ≤ 35% → DSR worst-p clears 0.10 (10pts on criterion 3) and possibly 0.05 (15pts → 89-94 score = STRONG/WINNER candidate). `[advances_fin_ml, ch.17-18]`. ~2-4h.
-- **C-VRP basket extension**: iter 026 architecture (T-bill + short equity put credit spread) on basket SPY+QQQ+IWM at 1/3 notional each. Iter 026 ndx unique 7/7+DSR PASS; basket may break SPY-edu DSR bottleneck while preserving ndx PASS. ~60-90 min. `[volatility_trading, p.218]` + AMP 2013.
-- **4-leg lev-preserved static**: e.g., `0.45 SPY + 0.30 IEF + 0.30 GLD + 0.45 DBC` (commodity broad) or VNQ — at total lev 1.50×. Tests if 79 ceiling extends to 4 legs. Predicted marginal (035→036 = +0.05; 036→037 = +0.06; next ~+0.02-0.03). Likely 79-81, NOT a winner break. ~30 min. `[risk_parity, ch.5]` + AMP 2013.
-- **Non-static (other)** (Sharpe ≥ 1.30): ML meta-label `[advances_fin_ml, ch.3]`, CS factor timing 5+ ETFs. Credible DSR PASS path at n ≥ 4300. ~2-4h.
+- **C-VRP basket (RECOMMENDED)**: iter 026 (T-bill + short equity put cs) on SPY+QQQ+IWM @ 1/3 notional each. Iter 026 ndx unique 7/7+DSR PASS (p=0.038); basket may break SPY-edu DSR bottleneck. Predicted Sharpe 1.10-1.30, MDD 5-15pp, credible DSR PASS path. ~60-90 min. `[volatility_trading, p.218]` + AMP 2013 + Bondarenko 2014.
+- **Regime-conditional WEIGHTS on iter 037 base**: VIX<20 → (0.70, 0.40, 0.40) equity-tilt; VIX≥20 → (0.30, 0.55, 0.55) defensive. Avg ≈ (0.6, 0.45, 0.45). Tests "regime-conditional risk parity" — modulates WEIGHTS not leverage. Predicted may break 79 to 81-83. ~2h. `[risk_parity, ch.5]` + MM 2017.
+- **ML meta-label on iter 037 base** (AFML ch.3): binary classifier predicts trade/skip. Features: VIX, T10Y3M, EBP, momentum, realized vol. Orthogonal-by-construction. Higher risk/reward; could break to 85+. ~3h. `[advances_fin_ml, ch.3]`.
+- **4-leg lev-preserved static** (lower priority): 0.45 SPY+0.30 IEF+0.30 GLD+0.45 DBC/VNQ @ 1.5×. Marginal (predicted 79-81). ~30 min.
 
 DEAD-LETTER **F-FX FX carry**: **DATA-BLOCKED** (audusd/usdjpy span 2020+ only, 6y insufficient). Parked.
 
-NOT recommended (032/033/034/035/036/**037** confirm): single-asset diversifier substitutions on 2-leg, 3-leg additive at >1.5× lev, AND minor weight perturbations of iter 037's 0.6/0.45/0.45 (e.g., 0.5/0.5/0.5 or 0.7/0.4/0.4 will land within ±2pts of 79). Architecture characterized; further weight sweeps within static-stack family = noise. Includes DBC/GSG/USO single-leg subst, VNQ single-leg subst, EMB, ZROZ/EDV.
+NOT recommended (032/033/034/035/036/**037**/**038** confirm): single-asset diversifier substitutions on 2-leg, 3-leg additive at >1.5× lev, minor weight perturbations of iter 037's 0.6/0.45/0.45 (will land within ±2pts of 79), **other leverage modulators (continuous σ⁻¹/σ⁻², other VIX thresholds, term-spread/MOVE/EBP regime gates) on iter 037 base** — all predicted 79 ± 2-3pts at the same DSR ceiling. Architecture characterized across 037+038. Includes DBC/GSG/USO/VNQ single-leg subst, EMB, ZROZ/EDV, VIX z-score gate (iter 030 closed for VRP base; predicted same ceiling on 037 base).
 
 ### Deeper backlog
 
@@ -172,7 +171,7 @@ NOT recommended (032/033/034/035/036/**037** confirm): single-asset diversifier 
 - **Tightening iter 027**: linear leverage on T-bill+harvest is NOT total-Sharpe-neutral (rf-bonus dilutes); N=3.5 total Sharpe→overlay_sharpe; closes leverage-only path.
 - **Tightening iter 028-031** (single-axis VIX-gate family on iter 026 base): constant `VIX<35` (028 lifts edu Kill A 2/3), `level+3d-persistence` (029 ties 71 +0.0003 of 10pt threshold), `z(60,2)` regime-relative (030 1st spy 7/7+DSR PASS but Kill A+B), AND-composite R-1∧R-2 (031 ties 76 ceiling, 1st all-3 DSR<0.10 but criterion-4 CAGR 0/15 structural). All 5 iters capped at 76/71 by harvest_notional=1.0 T-bill architecture. Single-axis family CLOSED. Open: R-3 VXV term-structure, multi-asset, non-VIX gates.
 - **iter 032-036 (superseded by 037)**: 032/033/034/036 hit 72; 035 hit 77; iter 037 strict-dominates 036 on Sharpe+MDD+DSR. Closed: single-asset diversifier substitutions on 2-leg + 3-leg additive at >1.5× lev.
-- **iter 037 (static-stack DSR-bound at 79 absolute ceiling)**: 0.6 SPY + 0.45 IEF + 0.45 GLD @ 1.5× → Sharpe 0.98/1.15/1.17 (largest static-stack edge ever +0.30/+0.25/+0.22), 3/3 MDD clean (1st plain static-stack), DSR worst-p 0.222 (beats 036's 0.311 by −29%). Score 79 STRONG ties top-K #1 016/018/021. **Breaks 77 ceiling.** 4/5 winner conds (DSR fails). Closes: minor weight perturbations of 0.6/0.45/0.45 (±2pts of 79). **Static-stack now DSR-bound at 79** — clearing p<0.05 needs Sharpe ~1.30+ (lev>2.0× MDD breach OR non-static). Open: HMM regime on iter 037 base, cross-asset VRP basket, 4-leg lev-preserved (marginal).
+- **iter 037+038 (static-stack DSR-bound at 79; two-axis: DSR-bound + MDD freely optimizable)**: 037 preserved-lev 1.5× → Sharpe 0.98/1.15/1.17, DSR 0.222, MDD 33/25/32%; 038 VIX-regime-gated 1.7↔1.0× (avg 1.46-1.49) → Sharpe 0.998/1.10/1.15, DSR 0.204, MDD 25/22/29% (−4 to −8pp vs 037). Both 79 STRONG, DSR sole gap. Moreira-Muir 2017 uplift DOES NOT replicate on diversified base. Closes: weight perturbations of 0.6/0.45/0.45, binary VIX gate, predicted-same-ceiling for σ⁻¹/σ⁻²/other-VIX-thresholds/z-VIX/term-spread/MOVE/EBP gates on iter 037. Break-79 paths: regime-conditional WEIGHTS in-family; cross-asset VRP basket / ML meta-label / factor timing out-of-family.
 
 ---
 

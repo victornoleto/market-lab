@@ -2535,6 +2535,62 @@ closure:
 
 ---
 
+## From iteration 038 — VIX-regime-gated leverage on iter 037 base (STRONG 79, ties 037)
+
+Single pre-committed cfg `regime_lev_vix_lt20_lo10_hi17` — VIX_{t−1} < 20
+→ 1.70× total leverage; ≥ 20 → 1.00×; weights (0.6, 0.45, 0.45)
+preserved proportionally on iter 037's 3-leg static stack. Avg lev
+1.46-1.49 ≈ iter 037's 1.50× (leverage-neutral on average). Tested
+Moreira-Muir 2017 Table IV unconditional Sharpe uplift (+0.20-0.30) on
+already-diversified base.
+
+### What happened
+- Score 79 STRONG ties iter 037 (top-K #1 quintet
+  016/018/021/037/038).
+- Sharpe edu/spy/ndx 0.998/1.105/1.149 (Δ frozen +0.32/+0.20/+0.19;
+  **Δ037 +0.015/−0.049/−0.025** — knife-edge clean of Kill A by 0.001
+  on spy_real).
+- DSR worst-p 0.204 (best static-stack ever; beats 037's 0.222 by 8%
+  relative; still > 0.20 partial-credit and >> 0.05 strict).
+- MDD 25.11/21.60/28.63% — **−8.22/−3.64/−3.65pp vs iter 037**, best
+  of any STRONG candidate; clears benchmarks by 35/17/12pp.
+- 9/9 robust sub-windows, G7 max 0.087pp, gates 6/6/6.
+
+### Don't re-test (predicted-same-ceiling on iter 037 base)
+- Continuous vol-managed scaling (σ⁻¹, σ⁻²) on the 3-leg base.
+- Other VIX threshold values (15, 25, 30) — predicted 79 ± 2pts.
+- VIX z-score gates (any window/threshold) on iter 037 base.
+- Other macro regime gates (T10Y3M, MOVE, EBP) on the same 3-leg
+  static-stack base.
+- ANY leverage-only modulator on iter 037's (0.6, 0.45, 0.45) base —
+  the DSR ceiling at 79 is characterized across two independent
+  mechanisms and is robust to the lever choice.
+
+### Structural principle
+**Static-stack family has a two-axis ceiling:**
+1. **DSR-bound at score 79** across both preserved-lev (037) and
+   regime-gated-lev (038) mechanisms holding average exposure
+   constant. To break 79 within static-stack: regime must modulate
+   **WEIGHTS** (eq:bd:gld ratio), not just total leverage.
+2. **MDD freely optimizable**: regime gating delivers −4 to −8pp MDD
+   improvement at zero score cost. Future static-stack variants
+   should optimize MDD as a tiebreaker, not a primary score lever.
+
+Moreira-Muir 2017's +0.20-0.30 unconditional Sharpe uplift was
+measured on **single-asset** factor portfolios. On a 3-leg
+diversified stack with cross-leg orthogonality (ρ_avg ≈ −0.04), the
+mechanism's marginal benefit shrinks — the stack's conditional vol
+is already dampened across regimes, so the regime gate contributes
+only MDD-control, not Sharpe-uplift.
+
+### Open paths to break 79 (out-of-static-stack)
+- Cross-asset VRP basket (iter 026 × SPY+QQQ+IWM at 1/3 each) —
+  strongest credible DSR-PASS path.
+- Regime-conditional **weights** on iter 037 base (not leverage).
+- ML meta-label on iter 037 (AFML ch.3) — orthogonal by construction.
+
+---
+
 ## How to add to this file
 
 At end of each iteration that FAILED, append a section:
