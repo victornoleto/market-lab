@@ -1,0 +1,434 @@
+{
+  "total_score": 93,
+  "tier": "WINNER",
+  "winner_conditions_met": true,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 23,
+      "max": 25,
+      "per_dataset": {
+        "educational": 6,
+        "spy_real": 7,
+        "ndx_real": 7
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.0026598682149217012,
+      "cumulative_n_trials": 4573
+    },
+    "4_cagr_floor": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.992602530734424,
+      "cagr": 0.12007278855490644,
+      "mdd": 0.24738275077760677,
+      "dsr_p_value": 0.0026598682149217012
+    },
+    "spy_real": {
+      "sharpe": 1.0942970514512043,
+      "cagr": 0.13004310283940934,
+      "mdd": 0.24738275077760605,
+      "dsr_p_value": 0.0018362153781120716
+    },
+    "ndx_real": {
+      "sharpe": 1.0856162456768117,
+      "cagr": 0.12685404710233517,
+      "mdd": 0.24738275077760602,
+      "dsr_p_value": 0.002656797256570198
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4573,
+  "n_trials_per_iter": 9,
+  "configs_tested": 9,
+  "primary_citation": "[stocks_on_the_move, p.21-30, p.81] + Antonacci (2014) Dual Momentum Investing ISBN 978-0071849449 + Faber (2007) JWM 9(4) + Jegadeesh-Titman (1993) JoF 48(1) + [advances_fin_ml, p.162-164]",
+  "hypothesis_slug": "iter079-multi-asset-topk-momentum",
+  "best_cfg_id": "iter079_topk_lb06m_k3",
+  "kills": {
+    "A_topk_degenerate_to_us_eq": {
+      "fired": false,
+      "spy_qqq_combined_spy_real": 0.4697674418604651
+    },
+    "B_abs_momentum_inactive": {
+      "fired": false,
+      "frac_agg_spy_real": 0.1193798449612403
+    },
+    "C_sharpe_regress_vs_bench_2ds": {
+      "fired": false,
+      "n_regress_010": 0,
+      "deltas_vs_bench": {
+        "educational": 0.3126025307344239,
+        "spy_real": 0.19429705145120424,
+        "ndx_real": 0.13061624567681174
+      }
+    },
+    "D_score_below_60": {
+      "fired": false,
+      "score": 93
+    },
+    "E_g7_crosslib_above_3pp": {
+      "fired": false,
+      "max_diff_pp": 0.0
+    },
+    "F_pbo_above_05_2ds": {
+      "fired": false,
+      "n_above_05": 1,
+      "pbo_per_ds": {
+        "educational": 0.5714285714285714,
+        "spy_real": 0.3055555555555556,
+        "ndx_real": 0.4126984126984127
+      }
+    },
+    "G_dsr_worst_p_ge_005": {
+      "fired": false,
+      "worst_p": 0.0026598682149217012,
+      "per_ds": {
+        "educational": 0.0026598682149217012,
+        "spy_real": 0.0018362153781120716,
+        "ndx_real": 0.002656797256570198
+      }
+    },
+    "H_no_winner_cfg": {
+      "fired": false,
+      "n_winners_in_grid": 1
+    }
+  },
+  "n_kills_fired": 0,
+  "robustness_bonus": {
+    "total_sub_windows": 9,
+    "positive_sub_windows": 9,
+    "fraction_positive": 1.0,
+    "bonus_awarded": 5,
+    "per_dataset": {
+      "educational": {
+        "window_sharpes": [
+          0.7828981119708108,
+          0.9610253077109422,
+          1.249677164756385
+        ],
+        "positive_count": 3,
+        "total": 3
+      },
+      "spy_real": {
+        "window_sharpes": [
+          1.264688632651155,
+          1.0160330563536872,
+          1.0037765333610171
+        ],
+        "positive_count": 3,
+        "total": 3
+      },
+      "ndx_real": {
+        "window_sharpes": [
+          1.170516568998353,
+          0.9817741976996988,
+          1.1103911577434904
+        ],
+        "positive_count": 3,
+        "total": 3
+      }
+    }
+  },
+  "all_cfgs_summary": [
+    {
+      "cfg_id": "iter079_topk_lb06m_k3",
+      "score": 93,
+      "tier": "WINNER",
+      "gates_by_ds": {
+        "educational": 6,
+        "spy_real": 7,
+        "ndx_real": 7
+      },
+      "winner_conditions_met": true,
+      "n_kills_fired": 0,
+      "sharpe_by_ds": {
+        "educational": 0.992602530734424,
+        "spy_real": 1.0942970514512043,
+        "ndx_real": 1.0856162456768117
+      },
+      "cagr_by_ds": {
+        "educational": 0.12007278855490644,
+        "spy_real": 0.13004310283940934,
+        "ndx_real": 0.12685404710233517
+      },
+      "mdd_by_ds": {
+        "educational": 0.24738275077760677,
+        "spy_real": 0.24738275077760605,
+        "ndx_real": 0.24738275077760602
+      }
+    },
+    {
+      "cfg_id": "iter079_topk_lb06m_k2",
+      "score": 78,
+      "tier": "STRONG",
+      "gates_by_ds": {
+        "educational": 6,
+        "spy_real": 7,
+        "ndx_real": 7
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 0,
+      "sharpe_by_ds": {
+        "educational": 0.897747780162145,
+        "spy_real": 0.9673872569875879,
+        "ndx_real": 0.968104074786614
+      },
+      "cagr_by_ds": {
+        "educational": 0.1242184398569004,
+        "spy_real": 0.13184347354835646,
+        "ndx_real": 0.13116380213958156
+      },
+      "mdd_by_ds": {
+        "educational": 0.253761453670427,
+        "spy_real": 0.2537614536704264,
+        "ndx_real": 0.2537614536704254
+      }
+    },
+    {
+      "cfg_id": "iter079_topk_lb03m_k2",
+      "score": 78,
+      "tier": "STRONG",
+      "gates_by_ds": {
+        "educational": 6,
+        "spy_real": 7,
+        "ndx_real": 7
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 0,
+      "sharpe_by_ds": {
+        "educational": 0.9564476494720426,
+        "spy_real": 0.9665627032087222,
+        "ndx_real": 0.9267914952342783
+      },
+      "cagr_by_ds": {
+        "educational": 0.135331811508149,
+        "spy_real": 0.13328239798066854,
+        "ndx_real": 0.12648602666200626
+      },
+      "mdd_by_ds": {
+        "educational": 0.24342181714319416,
+        "spy_real": 0.2434218171431942,
+        "ndx_real": 0.24342181714319389
+      }
+    },
+    {
+      "cfg_id": "iter079_topk_lb03m_k1",
+      "score": 78,
+      "tier": "STRONG",
+      "gates_by_ds": {
+        "educational": 6,
+        "spy_real": 7,
+        "ndx_real": 7
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 0,
+      "sharpe_by_ds": {
+        "educational": 0.7901511816474052,
+        "spy_real": 0.854596265816788,
+        "ndx_real": 0.8142693750897101
+      },
+      "cagr_by_ds": {
+        "educational": 0.13586019951464956,
+        "spy_real": 0.14373558279959964,
+        "ndx_real": 0.1356630727828163
+      },
+      "mdd_by_ds": {
+        "educational": 0.3089749403196338,
+        "spy_real": 0.2514840315091899,
+        "ndx_real": 0.25148403150919013
+      }
+    },
+    {
+      "cfg_id": "iter079_topk_lb03m_k3",
+      "score": 73,
+      "tier": "PROMISING",
+      "gates_by_ds": {
+        "educational": 6,
+        "spy_real": 7,
+        "ndx_real": 7
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 0,
+      "sharpe_by_ds": {
+        "educational": 0.9399788593103127,
+        "spy_real": 0.9578590569475579,
+        "ndx_real": 0.9103413377152834
+      },
+      "cagr_by_ds": {
+        "educational": 0.1139487986544363,
+        "spy_real": 0.11214679286312168,
+        "ndx_real": 0.1046628311448623
+      },
+      "mdd_by_ds": {
+        "educational": 0.19689666274997733,
+        "spy_real": 0.19689666274997816,
+        "ndx_real": 0.19689666274997714
+      }
+    },
+    {
+      "cfg_id": "iter079_topk_lb12m_k3",
+      "score": 73,
+      "tier": "PROMISING",
+      "gates_by_ds": {
+        "educational": 6,
+        "spy_real": 7,
+        "ndx_real": 7
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 0,
+      "sharpe_by_ds": {
+        "educational": 0.8640996742726391,
+        "spy_real": 0.920973255598082,
+        "ndx_real": 0.9184807990646707
+      },
+      "cagr_by_ds": {
+        "educational": 0.10769060338938408,
+        "spy_real": 0.11363169077361102,
+        "ndx_real": 0.1138510662461949
+      },
+      "mdd_by_ds": {
+        "educational": 0.23813086685368598,
+        "spy_real": 0.2381308668536863,
+        "ndx_real": 0.2381308668536866
+      }
+    },
+    {
+      "cfg_id": "iter079_topk_lb12m_k2",
+      "score": 63,
+      "tier": "PROMISING",
+      "gates_by_ds": {
+        "educational": 6,
+        "spy_real": 7,
+        "ndx_real": 7
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 0,
+      "sharpe_by_ds": {
+        "educational": 0.7527201472957463,
+        "spy_real": 0.812023477225512,
+        "ndx_real": 0.7996023129949615
+      },
+      "cagr_by_ds": {
+        "educational": 0.10489538146165356,
+        "spy_real": 0.11124973519705761,
+        "ndx_real": 0.11014729261219425
+      },
+      "mdd_by_ds": {
+        "educational": 0.29670699166292125,
+        "spy_real": 0.29670699166292164,
+        "ndx_real": 0.29670699166292114
+      }
+    },
+    {
+      "cfg_id": "iter079_topk_lb12m_k1",
+      "score": 38,
+      "tier": "NEAR_FAIL",
+      "gates_by_ds": {
+        "educational": 3,
+        "spy_real": 5,
+        "ndx_real": 4
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 3,
+      "sharpe_by_ds": {
+        "educational": 0.6389402087203454,
+        "spy_real": 0.7164495562746952,
+        "ndx_real": 0.6582429788584356
+      },
+      "cagr_by_ds": {
+        "educational": 0.10929082440529303,
+        "spy_real": 0.11961751584410418,
+        "ndx_real": 0.10851854647284043
+      },
+      "mdd_by_ds": {
+        "educational": 0.3627246278641118,
+        "spy_real": 0.362724627864112,
+        "ndx_real": 0.3627246278641122
+      }
+    },
+    {
+      "cfg_id": "iter079_topk_lb06m_k1",
+      "score": 26,
+      "tier": "NEAR_FAIL",
+      "gates_by_ds": {
+        "educational": 4,
+        "spy_real": 5,
+        "ndx_real": 5
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 3,
+      "sharpe_by_ds": {
+        "educational": 0.5607202750014003,
+        "spy_real": 0.565082594767821,
+        "ndx_real": 0.5317882170785615
+      },
+      "cagr_by_ds": {
+        "educational": 0.09270094681998331,
+        "spy_real": 0.09037857459993459,
+        "ndx_real": 0.08469190700229179
+      },
+      "mdd_by_ds": {
+        "educational": 0.4194894059494425,
+        "spy_real": 0.4194894059494419,
+        "ndx_real": 0.4194894059494416
+      }
+    }
+  ],
+  "status": "winner"
+}

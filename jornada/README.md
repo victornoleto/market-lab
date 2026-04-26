@@ -29,22 +29,41 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-24 — MODO MAINTENANCE; alocação 100% Plano C; repo consolidado via cleanup)
+## Onde estamos hoje (2026-04-26 — 🏆 PRIMEIRO WINNER em 79 iterações; mandate §1 inalterado pendente §7 deliberação)
 
-**Estado:** ⛵ **MAINTENANCE MODE.** Após 113/113 honest FAIL em 2 semanas
-(71 phases Plano A/B + Strategy D + 42 Phase E-MVP multi-market), usuário
-consolidou mandate §1 em **100% Plano C passive factor-tilted**
-(`portfolio-aposentadoria.md` + `reports/portfolio_aposentadoria_v2/`);
-Strategy A/B/D marcadas DORMANT (0% capital, infra retida). Override
-`docs/mandate_overrides/2026-04-23-consolidate-plano-c-final.md` **Signed**.
-§7 do mandate registra a consolidação. CLAUDE.md + `.claude/CLAUDE.md`
-atualizados. Infra preservada para reativação futura: engine cross-lib
-validada (3 libs + numpy reference concordam a 1e-6), 33 livros em
-`books/summaries/`, gates honest, cost/tax models BR+US.
+**Estado:** 🏆 **HUNT LOOP HALTED — WINNER candidate produced.** Após 78
+iterações sem vencedor (113/113 prior phases FAIL + iters 001-078 todas
+abaixo do threshold 90), iter 079 cravou **5/5 strict winner conditions
+met**, score **93/100**, **0/8 kills fired**. Estratégia: multi-asset
+top-K relative+absolute momentum sobre universo cross-classe 5+1 ativos
+(SPY/QQQ/EFA/TLT/GLD + AGG fallback). Primeiro hunt loop a produzir
+um candidato deployment-grade.
 
-**Revisão programada:** 6 meses (2026-10-23) e 12 meses (2027-04-23) —
-re-rodar grids contra novos dados OOS; se nada passar, projeto fecha como
-"proof of rigor" / due-diligence infrastructure.
+**Mandate inalterado:** §1 continua **MAINTENANCE 100% Plano C
+passive factor-tilted** (`portfolio-aposentadoria.md` +
+`reports/portfolio_aposentadoria_v2/`). Strategy A/B/D continuam
+DORMANT (0% capital). O hunt loop produz **CANDIDATOS, não posições
+live** — deployment requer §7 override assinado pelo usuário com
+evidência completa (final_report iter 079 + paper trading 3-6 meses).
+
+**Próximas decisões do usuário (fora do hunt loop):**
+
+1. **Ler `studies/strategy_hunt_loop/iterations/079-2026-04-26-1100-multi-asset-topk-momentum/final_report.md`** —
+   verdict completo + 3 caveats honestos (ndx CAGR floor missed; PBO
+   0.5714 edu marginal; single-cfg winner — K=3 ridge 73/93/73).
+2. **Decidir confirmatory grid sweep** (lookbacks {4,5,7,8 mo} × top_k
+   {2,3,4} no mesmo universo) — fortalece evidência antes de paper
+   trading. Estudo separado, não nova iter.
+3. **Decidir paper trading** 3-6 meses pra validar implementação ≡ backtest.
+4. **Decidir compatibilidade de broker** — rebalance mensal de 6 ETFs
+   provavelmente NÃO é Pepperstone CFD (short-hold). Possivelmente Inter
+   Internacional como Plano B com 15% IR sobre lucro.
+5. **Decidir §7 override** após paper trading.
+
+**Revisão programada (mantida):** 6 meses (2026-10-23) e 12 meses
+(2027-04-23) — re-rodar grids contra novos dados OOS independentemente
+do iter 079 candidate. Se hipótese 079 sobreviver post-2026 OOS e paper
+trading, §7 override é justificável.
 
 **2026-04-24 repo cleanup:** ops/ removido (39 arquivos, zero imports —
 substituído por `/app` GUI). 15+ subpastas DORMANT em `reports/` consolidadas
@@ -150,6 +169,9 @@ Termos que aparecem ao longo das entradas do changelog:
 📦 **Retratadas arquivadas (9 entries):** ver
 [`_archive/2026-04-16-retracted-entries.md`](_archive/2026-04-16-retracted-entries.md)
 — bug Tiingo IEX em US holidays.
+
+### 2026-04-26
+- [2026-04-26 12h30 — 🏆 **Hunt loop iter 079: PRIMEIRO WINNER em 79 iterações.** Multi-asset top-K relative+absolute momentum sobre universo cross-classe 5+1 ativos (SPY/QQQ/EFA/TLT/GLD selecionáveis + AGG fallback defensivo) com K=3 equal-weight rotation, lookback 6 meses, per-leg abs-mom AGG routing, monthly rebalance, 5 bps trans-cost. **Score 93/100, 5/5 strict winner conditions met, 0/8 kills fired.** Best cfg `iter079_topk_lb06m_k3` Sharpe 0.99/1.09/1.09 (Δ_bench +0.31/+0.19/+0.13 — **3/3 Sharpe edge, primeira vez na loop**), CAGR 12.01/13.00/12.69% (**primeira vez clearing spy_real 11.98% floor** — gargalo estrutural diagnosticado em iter 078), MDD 24.74% nos 3 datasets, gates 6/7/7, DSR p≤2.66e-3 (v2 n=9), G7=0.0000pp 27 cfgs, robust 9/9 sub-windows positive. Pesos médios: SPY 22% / QQQ 25% / EFA 14% / TLT 12% / GLD 16% / AGG 12% — **diversificação cross-classe genuína**. **Insight estrutural**: o teto CAGR 2009-2026 não era sample-level binding (a tese descartada de iter 078) — era **universe-level binding**. Estratégias single-equity-universe modulam exposição equity-vs-cash e pagam imposto de CAGR; iter 079 modula QUAL CLASSE ATIVA manter mantendo ~67% equity-equivalente. Honest caveats: ndx_real CAGR floor missed (12.69% < 15.35%; rubric só exige 2/3); PBO 0.5714 educational (mild grid overfit em edu, spy/ndx clean 0.31/0.41); single-cfg winner (1/9 cfgs em K=3 ridge 73/93/73). **Mandate §1 MAINTENANCE 100% Plano C remains in force; deployment requires §7 override deliberation.** Hunt loop produziu CANDIDATO; deliberação humana é o próximo passo. Citações: `[stocks_on_the_move, p.21-30, p.81]` (primária) + Antonacci (2014/2017) + Faber (2007) + Jegadeesh-Titman (1993) + AMP (2013) + Markowitz (1952) + `[advances_fin_ml, p.162-164, p.31-34, p.222-223, p.196-202, p.208-211]` + `[systematic_trading, p.42 (ch.2)]` + `[risk_parity, ch.5]`. n_trials 4546→4573. Iter dir: `studies/strategy_hunt_loop/iterations/079-2026-04-26-1100-multi-asset-topk-momentum/` [HUNT LOOP HALTED 🏆]](2026-04-26-1230-hunt-loop-iter-079-FIRST-WINNER.md) — Pesquisa em background (mandate §1 segue 100% Plano C; loop halted após winner).
 
 ### 2026-04-25
 - [2026-04-25 10h19 — **Hunt loop iter 057: basket de TSM em commodities (USO+UNG+SLV equal-weight, boolean trend 90d) como 3ª stream em iter 046 a w=0.20 vira 64/100 PROMISING — REGRESSÃO de 21 pts vs iter 046's 85, **4/6 KILLS firando** (A: Sharpe regress −0.155/−0.241/−0.237 nos 3 datasets; B: DSR worst-p 0.041→0.223 5.4× pior; C: CAGR floor 0/3 com Δ046 −1.06/−1.58/−1.54 pp; D: 64<78 iter 050's gold-TSM-w0.10 baseline) → **fecha multi-commodity TSM como 3rd-stream-overlay axis em iter 046**. **PREMISSA DE ORTOGONALIDADE VINDICADA**: corr(r_csm, r_046) = 0.319/0.315/0.296 nos 3 datasets — mais baixa que iter 049's gold-TSM ≈ 0.50, exatamente como argumento estrutural previu (excluir GLD do basket porque iter 041 já carrega; non-gold commodities verdadeiramente low-corr com SPY/IEF/GLD stack + SPY/QQQ/IWM put-cs VRP). MDD melhora −2.2/−4.7/−3.3 pp em todos 3 datasets — diversification works at variance layer. MAS Sharpe combinado COLAPSOU (1.05/1.08/1.14 vs iter 046's 1.20/1.32/1.38) porque standalone basket Sharpe = 0.13/0.29/0.16 (commodity bear pós-2014 dominates; boolean trend coloca em cash 50-70% das barras). Markowitz convex-combo identity prediz exatamente: combined Sharpe ≈ (0.80×1.32 + 0.20×0.20) / σ_comb ≈ 1.16, drag −0.16. **LIÇÃO META-ESTRUTURAL** (iter 049/050/057 estabelecem em conjunto): **3rd-stream-Sharpe ≥ ~0.5 é binding constraint pra Markowitz-positive contribution em iter 046 base, NÃO correlação alone**. Lower correlation does NOT compensate for lower absolute Sharpe — variance-reduction is overwhelmed by mean-dilution. iter 046's 85 STRONG agora protegido por 7 axes fechados (042/043/044/047/048/049/050/057) — Pareto ceiling apertado. iter 058 PICK: **#1 HYG long-only com filtro de trend 60d** (Asvanunt-Richardson 2017 "Credit Risk Premium" JPM 43(2)) — clears ≥0.5 Sharpe filter, ~0.5-0.7 corr (less orthogonal mas Sharpe-suficiente; trade-off invertido), predição 80-87. G7 cross-lib 0.0000pp 3/3 (9ª iter consecutiva), 16/16 TDD specs pass. n_trials 4326→4327 [HUNT LOOP]](2026-04-25-1019-hunt-loop-iter-057-commodity-tsm-basket-promising-64.md) — Pesquisa em background (mandate §1 segue 100% Plano C).

@@ -6069,3 +6069,130 @@ intl universe) with US-equity-bench. Instead pursue:
 - `[systematic_trading, p.42 (ch.2)]` — Carver's Law of Active
   Management.
 - iter 078 final report — full grid + per-cfg gates + KILL detail.
+
+
+---
+
+## From iteration 079 — 🏆 WINNER (multi-asset top-K cross-class momentum)
+
+**THIS IS NOT A DEAD-END — preserved here per loop convention for the
+"strategies fully closed" record. The iter 079 mechanism is the FIRST
+WINNER tier in 79 iterations and the loop has halted.**
+
+Complete study: `studies/strategy_hunt_loop/iterations/079-2026-04-26-1100-multi-asset-topk-momentum/final_report.md`.
+
+### What the iteration produced
+
+**Multi-asset top-K relative+absolute momentum on 5+1-asset cross-class
+universe** (SPY/QQQ/EFA/TLT/GLD selectable + AGG defensive fallback)
+with K∈{1,2,3} equal-weight rotation, 3-12 month lookback grid,
+per-leg abs-mom AGG routing, 5 bps trans-cost, monthly rebalance.
+
+**Best cfg: `iter079_topk_lb06m_k3`** (lookback=6mo, top_k=3,
+abs_threshold=0.0%, monthly last-business-day rebalance). Score
+**93/100**, tier **🏆 WINNER**, 5/5 strict winner conditions met,
+0/8 kills fired.
+
+### Headline metrics (best cfg)
+
+| dataset | Sharpe (Δ bench) | CAGR (Δ floor) | MDD (Δ ceiling) | gates | DSR p (v2 n=9) |
+|---|---|---|---|---|---|
+| educational | 0.993 (+0.313) | 12.01% (+2.83 pp) | 24.74% (−35.4 pp) | 6/7 | 2.66e-3 |
+| spy_real    | 1.094 (+0.194) | 13.00% (+1.02 pp) | 24.74% (−14.0 pp) | 7/7 | 1.84e-3 |
+| ndx_real    | 1.086 (+0.131) | 12.69% (−2.66 pp) | 24.74% (−15.4 pp) | 7/7 | 2.66e-3 |
+
+Sharpe edge cleared on **3/3 datasets** (first iter ever); CAGR floor
+on 2/3 datasets (first iter to clear spy_real 11.98% floor); MDD
+ceiling on 3/3 with massive margin; DSR worst-p = 2.66e-3 (18× under
+0.05); G7 cross-lib parity exact to 1e-9 across 27 cfg×ds.
+
+### What broke through — the structural insight
+
+The iter 078 lesson "the 2009-2026 sample's CAGR floor is sample-level
+binding" was proven WRONG by iter 079: the floor is **universe-level**
+binding, not sample-level. Specifically:
+
+- **Iter 005/064/078 CAGR ceiling was a single-equity-universe
+  constraint.** Any strategy that modulates equity exposure (vol-
+  managed scaling, saved-stream ensembles, 3-asset GEM rotation) on a
+  same-class universe pays a CAGR tax proportional to the modulation
+  frequency, capped at SPY's 14.97% CAGR.
+- **Iter 079's mechanism does NOT modulate equity-vs-cash.** It
+  modulates WHICH 3 of 5 cross-class assets to hold. The K=3
+  equal-weight floor maintains 60-67% equity-equivalent exposure
+  (when 1-2 of 3 picks are non-equity TLT/GLD) which is sufficient
+  to keep up with SPY's CAGR baseline. The non-equity legs add
+  diversification without forfeiting exposure.
+- **The per-leg AGG fallback** (each top-K leg routed to AGG
+  independently if abs-mom < 0) provides cross-asset stress defense
+  ~12% of months without the iter 078 100/0 binary cost.
+
+### Cfg landscape
+
+| lookback | k=1 | k=2 | k=3 |
+|---|---|---|---|
+| **3 mo** | 78 (STRONG) | 78 (STRONG) | 73 (PROMISING) |
+| **6 mo** | 26 (NEAR_FAIL) | 78 (STRONG) | **93 (WINNER)** |
+| **12 mo** | 38 (NEAR_FAIL) | 63 (PROMISING) | 73 (PROMISING) |
+
+K=3 column ridge 73/93/73; K=2 column 78/78/63; K=1 has high variance
+(78 / 26 / 38) — concentrated single-bet is structurally fragile when
+the chosen leg is wrong. Lookback=6mo, K=3 is the Goldilocks corner.
+
+### Cfg diagnostics (best cfg, spy_real signal)
+
+- 100 rebalance flips over 17y (~6/yr — moderate turnover)
+- AGG defensive fallback fires 11.9% of months (active rotation)
+- SPY+QQQ combined avg weight: 47.0% (NOT degenerate to US equity)
+- Per-asset average weights: SPY 22.2% / QQQ 24.8% / EFA 13.6% /
+  TLT 11.8% / GLD 15.7% / AGG 11.9%
+
+### Honest caveats (preserved for paper-trading deliberation)
+
+1. **ndx_real CAGR floor missed**: 12.69% < 15.35% required. Strategy
+   beats QQQ on Sharpe (+0.131) and MDD (−10.4 pp) but underperforms
+   on CAGR by 2.66 pp. Rubric requires 2/3 datasets — passes via
+   educational + spy_real. A user demanding QQQ-equivalent CAGR
+   would not see this as a win.
+2. **PBO 0.5714 educational**: 0.0714 above the 0.5 noise floor —
+   mild grid overfit signal on educational only. Real datasets clean
+   (spy 0.31, ndx 0.41). Worth confirming with a wider grid sweep
+   before paper trading.
+3. **Single-cfg winner**: 1 of 9 cfgs meets 5/5 strict conditions.
+   K=3 column ridge is consistent (73/93/73) but only lb=6m hits
+   WINNER tier. A confirmation grid sweep on lookbacks {4, 5, 7, 8}
+   × top_k {2, 3, 4} would map the score landscape and strengthen
+   the case.
+
+### Citations (primary)
+
+- `[stocks_on_the_move, p.21-30, p.81]` — Clenow's momentum framework
+  + lookback rationale.
+- **Antonacci, G.** (2014). *Dual Momentum Investing.* McGraw-Hill.
+  ISBN 978-0071849449 (extended from 3 to 5+1 assets).
+- **Antonacci, G.** (2017). "Risk Premia Harvesting Through Dual
+  Momentum." *J. Portfolio Management* 16(1), 27-55.
+  DOI 10.3905/joi.2017.16.1.027.
+- **Faber, M.** (2007). DOI 10.3905/jwm.2007.690606 — per-leg abs-mom.
+- **Jegadeesh-Titman** (1993). DOI 10.1111/j.1540-6261.1993.tb04702.x —
+  cross-sectional ranking.
+- **Asness-Moskowitz-Pedersen** (2013). DOI 10.1111/jofi.12021 —
+  momentum cross-asset-class.
+- **Markowitz** (1952). *Portfolio Selection.* JoF 7(1) — top-K
+  equal-weight as constrained Markowitz.
+- `[advances_fin_ml, p.162-164]` — T-1 lag.
+- `[advances_fin_ml, p.31-34]` — G7 parity.
+- `[advances_fin_ml, p.222-223]` — DSR n_trials (v2 per-iter).
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV.
+- `[systematic_trading, p.42 (ch.2)]` — Carver's Law of Active Mgmt.
+- `[risk_parity, ch.5]` — equal-weight as degenerate risk-parity.
+
+### Status
+
+🏆 **WINNER** — `status: winner` set in `BASE_MEMORY.md` frontmatter.
+Shell loop reads the flag and halts. **Do NOT propose iter 080** —
+that's outside the hunt loop's mandate. The user-facing decision is
+binary: paper-trade the candidate or do not (mandate §7 deliberation).
+Mandate §1 MAINTENANCE 100% Plano C remains in force pending §7
+override.
+
