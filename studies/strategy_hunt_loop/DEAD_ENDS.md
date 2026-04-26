@@ -5871,3 +5871,116 @@ re-test this without changing one of the 3 conditions above.**
 - `[advances_fin_ml, p.162-164]` — T-1 lag (no look-ahead).
 - iter 076 final report — full 4×5 cfg score grid + per-cfg gates +
   KILL detail.
+
+---
+
+## From iteration 077 — Long-short MTUM-VLUE factor sleeve + iter 064 ensemble (joint-constraint falsified)
+
+### What the iteration resolved
+
+iter 077 tested whether a dollar-neutral long-short factor pair (MTUM
+long, VLUE short) — explicitly recommended by iter 076's final-report
+as candidate #2 — could resolve the iter 075/076 joint constraint
+(`ρ < 0.5` AND pre-borrow Sharpe ≥ 0.7-1.0). The hypothesis was that
+the academic value-momentum spread (Asness-Moskowitz-Pedersen 2013
+JoF 68(3) reports Sharpe 0.7-1.1 cross-sectionally) would translate to
+a liquid factor-ETF long-short.
+
+20 cfgs on 5 target_vol × 4 w_sleeve grid (leg_cap=1.5,
+short_borrow=1%/yr, trans_cost=5 bps, vol_lookback=21). 3 datasets
+× 20 cfgs = 60 trials. cumulative_n_trials 4462 → 4522.
+
+### What failed (do NOT re-test)
+
+- **MTUM-VLUE long-short Sharpe 0.13-0.22** in 2013-2026 across all 5
+  target_vol values × 3 datasets — NOT 0.6-0.8 as AMP 2013 reported.
+  The decay is consistent with McLean-Pontiff (2016) JoF 71(1) DOI
+  10.1111/jofi.12365 post-publication factor-anomaly attenuation.
+- **Combined Sharpe TIED with iter 064**: best cfg Δ −0.013 / +0.002 /
+  −0.007 on edu/spy/ndx — sleeve adds essentially no information.
+- **Combined CAGR 8.95 / 9.34 / 9.48%** vs strict winner floors
+  9.18 / 11.98 / 15.35% — 0/3 datasets clear (KILL H fired). Sleeve too
+  weak (CAGR ~1.5%) to lift the iter 064 anchor.
+- **The cross-sectional academic deciles spread does NOT translate to
+  factor-ETF long-short**: MTUM and VLUE are market-cap weighted with
+  methodology constraints, structurally weaker than the academic decile
+  cuts. Don't re-test other liquid US factor-ETF pairs (QUAL/USMV/SIZE)
+  expecting Sharpe ≥ 0.7 — same decay applies.
+
+### Structural principle (do NOT re-test)
+
+If you propose a 2nd-leg ensemble for iter 064 with:
+
+1. a long-short factor-ETF pair (MTUM/VLUE, QUAL/USMV, SPMO/SPLV,
+   etc.) on US large-cap,
+2. constructed dollar-neutral with leg_cap ≤ 2 and borrow ≥ 1%/yr,
+
+then the post-2013 Sharpe will be 0.1-0.3 (not 0.5+), the combined
+Sharpe will TIE iter 064 (not lift it), and the combined CAGR will be
+SAME OR SLIGHTLY BELOW iter 064's 9.97%. **Don't re-test US factor-ETF
+long-short ensembles on iter 064 anchor.**
+
+### Mechanism comparison: iter 075 vs iter 076 vs iter 077
+
+| dimension | iter 075 (UNLEV non-eq) | iter 076 (LEV non-eq) | iter 077 (LS factor) |
+|---|---|---|---|
+| 2nd leg | GLD+TLT trend tv=0.10 | GLD+TLT trend tv=0.15, lev=3, borrow=4.5% | LS MTUM−VLUE tv=0.06, lev=1.5, borrow=1% |
+| 2nd leg Sharpe (spy) | 0.47 | 0.43 | **0.19** |
+| 2nd leg CAGR (spy) | 2.78% | 3.74% | **1.55%** |
+| corr(064, 2nd leg) spy | 0.241 | 0.238 | **0.132** (lowest) |
+| corr(2nd leg, SPY) | ~0.10 | ~0.10 | **0.062** (lowest) |
+| Δ combined Sharpe vs 064 (spy) | +0.008 | −0.006 | **+0.002** |
+| Δ combined CAGR vs 064 (spy) | −1.07 pp | −0.86 pp | **−0.63 pp** |
+| Combined CAGR (spy) — best | 8.91% | 9.10% | **9.34%** (closest to floor) |
+| Best cfg gates | 6/6/7 | 7/7/7 | **7/7/7** |
+| PBO grid-level (edu/spy/ndx) | 0.86/0.60/0.46 | 0.048/0/0 | **0.242/0.194/0.060** |
+| Score (v2 native) | 81 STRONG | 85 STRONG | **85 STRONG** |
+| Strict winner conds met | 4/5 | 4/5 | **4/5** (CAGR floor) |
+| n KILLS fired | 1/7 (F PBO) | 1/7 (B borrow-drag) | **2/8 (B+H)** |
+
+### KILL H establishes the deepest finding
+
+**The combined CAGR ceiling at ~9.5% on iter 064 is structural to the
+ANCHOR, not the SLEEVE selection.** Three independent sleeve mechanism
+classes (unlevered non-equity trend, levered non-equity trend, factor
+long-short) all converge at the same combined CAGR (8.91 / 9.10 /
+9.34% on spy_real best cfg) regardless of:
+
+- correlation with iter 064 (0.13 to 0.24)
+- correlation with SPY (0.06 to 0.10)
+- borrow regime (0% / 1% / 4.5%)
+- sleeve mechanism (long-only trend / levered trend / dollar-neutral LS)
+
+Path to 95+ requires **abandoning iter 064 anchor** for a higher-CAGR
+base — not adding more diversifying sleeves.
+
+### Path forward (NOT dead — but requires ANCHOR change)
+
+- **Antonacci Dual Momentum** as STANDALONE base (SPY/EFA/cash absolute
+  + relative momentum). Documented Sharpe 0.85-1.0 + CAGR 12-14% on
+  1974-2014 (Antonacci 2014 + JoPM 16(1)). All ETFs cached; no data
+  ops. Structurally novel as base — first iter to break iter 064 anchor.
+- **Carver multi-asset slow-trend at portfolio-vol-target on N≥10
+  instruments** (`[systematic_trading]` + Carver 2015) — iter 023/025
+  closed at smaller N (3-6); test at proper N=10-15.
+- **DBMF managed-futures as STANDALONE base** (Tiingo download required;
+  ~6.5y post-2019 data). Tests "does CTA trend natively deliver
+  Sharpe ≥ 1.0 + CAGR ≥ 8% in post-2019 era?".
+
+### Citations used
+
+- Carhart (1997) JoF 52(1) DOI 10.1111/j.1540-6261.1997.tb03808.x
+  — UMD long-short momentum factor (primitive that the hypothesis tested).
+- Asness-Moskowitz-Pedersen (2013) JoF 68(3) DOI 10.1111/jofi.12021
+  — value-momentum cross-sectional documented Sharpe 0.7-1.1 (FALSIFIED
+  for ETF proxy pair via iter 077 KILL B).
+- McLean-Pontiff (2016) JoF 71(1) DOI 10.1111/jofi.12365 — factor
+  post-publication decay; predicts the AMP→MTUM/VLUE Sharpe gap.
+- Frazzini-Pedersen (2014) JFE 111(1) DOI 10.1016/j.jfineco.2013.10.005
+  — short-leg borrow charge primitive.
+- `[advances_fin_ml, ch.3, p.222-223]` — DSR per-iter v2 convention.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity discipline.
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV.
+- `[advances_fin_ml, p.162-164]` — T-1 lag (no look-ahead).
+- iter 077 final report — full 5×4 cfg score grid + per-cfg gates +
+  KILL detail.

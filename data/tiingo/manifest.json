@@ -11088,6 +11088,17 @@
       "requested_start": "2014-01-02T00:00:00"
     }
   },
+  "MTUM": {
+    "daily": {
+      "asset_class": "etf",
+      "fetched_at": "2026-04-26T00:30:14",
+      "first_dt": "2013-04-18T00:00:00",
+      "last_dt": "2026-04-20T00:00:00",
+      "n_bars": 3271,
+      "requested_end": "2026-04-20T00:00:00",
+      "requested_start": "2013-01-01T00:00:00"
+    }
+  },
   "MTUS": {
     "daily": {
       "asset_class": "equity",
@@ -17117,6 +17128,17 @@
       "n_bars": 633,
       "requested_end": "2026-04-14T00:00:00",
       "requested_start": "2023-10-04T00:00:00"
+    }
+  },
+  "VLUE": {
+    "daily": {
+      "asset_class": "etf",
+      "fetched_at": "2026-04-26T00:30:15",
+      "first_dt": "2013-04-18T00:00:00",
+      "last_dt": "2026-04-20T00:00:00",
+      "n_bars": 3271,
+      "requested_end": "2026-04-20T00:00:00",
+      "requested_start": "2013-01-01T00:00:00"
     }
   },
   "VLY": {
