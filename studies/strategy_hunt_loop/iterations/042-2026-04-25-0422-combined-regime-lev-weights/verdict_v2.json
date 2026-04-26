@@ -1,0 +1,119 @@
+{
+  "total_score": 69,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": 6,
+        "spy_real": 6,
+        "ndx_real": 6
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.21605972788879968,
+      "cumulative_n_trials": 4307
+    },
+    "4_cagr_floor": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 1.0222802355130558,
+      "cagr": 0.1213106038197278,
+      "mdd": 0.22212763182304496,
+      "dsr_p_value": 0.17455876567165363
+    },
+    "spy_real": {
+      "sharpe": 1.0864583789305313,
+      "cagr": 0.12504559195960896,
+      "mdd": 0.22212763182304482,
+      "dsr_p_value": 0.21605972788879968
+    },
+    "ndx_real": {
+      "sharpe": 1.1249425208889086,
+      "cagr": 0.15018126932130205,
+      "mdd": 0.2885480883227696,
+      "dsr_p_value": 0.19607258835429608
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4307,
+  "configs_tested": 1,
+  "primary_citation": "[risk_parity, ch.5]; [advances_fin_ml, ch.17-18]; [advances_fin_ml, p.162-164]; [advances_fin_ml, p.222-223]; Whaley (2009), JPM 35(3), DOI 10.3905/JPM.2009.35.3.098; Bekaert-Hoerova (2014), J Econometrics 183(2), SSRN 2294327; Erb-Harvey (2006), FAJ 62(2), DOI 10.2469/faj.v62.n2.4084; Asness-Moskowitz-Pedersen (2013), JF 68(3), DOI 10.1111/jofi.12021; Moreira-Muir (2017), JF 72(4), DOI 10.1111/jofi.12513",
+  "hypothesis_slug": "combined-regime-lev-weights",
+  "iter_id": 42,
+  "v2_meta": {
+    "convention": "per-iter DSR n_trials (relaxed 2026-04-25)",
+    "n_trials_v2": 1,
+    "n_trials_v1_cumulative": 4307,
+    "v1_score": 74,
+    "v1_winner_met": false,
+    "v1_dsr_p_per_dataset": {
+      "educational": 0.17455876567165363,
+      "spy_real": 0.21605972788879968,
+      "ndx_real": 0.19607258835429608
+    },
+    "v2_dsr_p_per_dataset": {
+      "educational": 0.17455876567165363,
+      "spy_real": 0.21605972788879968,
+      "ndx_real": 0.19607258835429608
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "total_score": 80,
+  "tier": "STRONG",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 25,
+      "max": 25,
+      "per_dataset": {
+        "educational": 7,
+        "spy_real": 7,
+        "ndx_real": 7
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 6.014100723872318e-06,
+      "cumulative_n_trials": 4348
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "per_dataset": {
+        "educational": false,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 1.2299725877160854,
+      "cagr": 0.09080181374509588,
+      "mdd": 0.16332201276426872,
+      "dsr_p_value": 5.371002920862011e-06
+    },
+    "spy_real": {
+      "sharpe": 1.35019018268605,
+      "cagr": 0.09572537479419108,
+      "mdd": 0.14339422996758164,
+      "dsr_p_value": 6.014100723872318e-06
+    },
+    "ndx_real": {
+      "sharpe": 1.3912316785496974,
+      "cagr": 0.09723793261047109,
+      "mdd": 0.1377308435988724,
+      "dsr_p_value": 4.524119962101558e-06
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4348,
+  "configs_tested": 4,
+  "primary_citation": "[algo_trading_chan, p.95, p.153-154] (momentum filter + MR/momentum complementarity in regime allocation) + Whaley (2009) JPM 35(3) DOI 10.3905/JPM.2009.35.3.098 (VIX threshold 20) + Bekaert-Hoerova (2014) SSRN 2294327 (VIX risk-aversion proxy) + Connors-Alvarez (2009) ISBN 978-0-9755513-2-7 (RSI(2) + VIX timing) + Faber (2007) SSRN 962461 + [risk_parity, ch.5] + [advances_fin_ml, p.162-164] (no peek) + [advances_fin_ml, p.222-223] (DSR cumulative) + [advances_fin_ml, p.31-34] (G7 cross-lib) + iter 064/071 final reports (TOP-K #1 baseline + validated r_mr stream)",
+  "hypothesis_slug": "iter064-vix-cond-r-mr-allocation",
+  "iter_id": 72,
+  "v2_meta": {
+    "convention": "per-iter DSR n_trials (relaxed 2026-04-25)",
+    "n_trials_v2": 4,
+    "n_trials_v1_cumulative": 4348,
+    "v1_score": 85,
+    "v1_winner_met": false,
+    "v1_dsr_p_per_dataset": {
+      "educational": 0.032305597861904456,
+      "spy_real": 0.03325849415293469,
+      "ndx_real": 0.029086234674784772
+    },
+    "v2_dsr_p_per_dataset": {
+      "educational": 5.371002920862011e-06,
+      "spy_real": 6.014100723872318e-06,
+      "ndx_real": 4.524119962101558e-06
+    }
+  }
+}

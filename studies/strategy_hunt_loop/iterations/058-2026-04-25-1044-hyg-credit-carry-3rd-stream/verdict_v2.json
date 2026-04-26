@@ -1,0 +1,119 @@
+{
+  "total_score": 80,
+  "tier": "STRONG",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 25,
+      "max": 25,
+      "per_dataset": {
+        "educational": 7,
+        "spy_real": 7,
+        "ndx_real": 7
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.04938498504564193,
+      "cumulative_n_trials": 4328
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "per_dataset": {
+        "educational": false,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 1.2224989035642224,
+      "cagr": 0.08694966299837348,
+      "mdd": 0.16744228953402143,
+      "dsr_p_value": 0.04938498504564193
+    },
+    "spy_real": {
+      "sharpe": 1.3473785088338006,
+      "cagr": 0.0901036997231126,
+      "mdd": 0.1371082857507856,
+      "dsr_p_value": 0.033709392395485316
+    },
+    "ndx_real": {
+      "sharpe": 1.402729711238351,
+      "cagr": 0.09267905422143752,
+      "mdd": 0.13116775229900332,
+      "dsr_p_value": 0.02577775006454075
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4328,
+  "configs_tested": 1,
+  "primary_citation": "Asvanunt-Richardson 2017 JPM 43(2) DOI 10.3905/jpm.2017.43.2.090 + [risk_parity, ch.5] + [volatility_trading, p.218] (iter 046 base preserved) + [systematic_trading] (Carver TSM) + [advances_fin_ml, p.222-223] (DSR cumulative) + [advances_fin_ml, p.31-34] (G7) + Markowitz (1952) JoF 7(1) (closed-form combo)",
+  "hypothesis_slug": "iter046-plus-hyg-tsm-w010",
+  "iter_id": 58,
+  "v2_meta": {
+    "convention": "per-iter DSR n_trials (relaxed 2026-04-25)",
+    "n_trials_v2": 1,
+    "n_trials_v1_cumulative": 4328,
+    "v1_score": 85,
+    "v1_winner_met": false,
+    "v1_dsr_p_per_dataset": {
+      "educational": 0.04938498504564193,
+      "spy_real": 0.033709392395485316,
+      "ndx_real": 0.02577775006454075
+    },
+    "v2_dsr_p_per_dataset": {
+      "educational": 0.04938498504564193,
+      "spy_real": 0.033709392395485316,
+      "ndx_real": 0.02577775006454075
+    }
+  }
+}

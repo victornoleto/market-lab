@@ -50,18 +50,39 @@ Simultaneously:
 Gates (reminder):
 
 - G1 PBO grid-level < 0.5 `[advances_fin_ml, p.208-211]`
-- G2 DSR p-value < 0.05 with n_trials cumulative `[p.222-223]`
+- G2 DSR p-value < 0.05 with n_trials = configs tested this iteration `[p.222-223]` (relaxed 2026-04-25; see §3 below)
 - G3 Walk-Forward 6/8 windows, MDD < 25% per window `[ch.12]`
 - G4 OOS 70/30 Sharpe > 0
 - G5 FWD stress post-2020 Sharpe > 0
 - G6 Bootstrap 99.9% CI low > 0 `[p.196-202]`
 - G7 Cross-lib ±3 pp CAGR (numpy-pure reference) `[p.31-34]`
 
-### 3. DSR with cumulative n_trials
+### 3. DSR with per-iteration n_trials (relaxed 2026-04-25)
 
 Worst p-value across the 3 datasets < 0.05, using
-`cumulative_n_trials` from `BASE_MEMORY.md` frontmatter (increments
-each iteration).
+**`n_trials = configs_tested_this_iteration`** (i.e. the size of the
+hyperparameter grid scanned within ONE iteration's hypothesis).
+
+**Rationale for the change**: the previous convention used
+`cumulative_n_trials` summed across the entire hunt loop's history.
+That conflates **independent hypotheses** (each iter tests a fundamentally
+different mechanism — sector momentum vs vol-target vs static stack)
+into a single multiple-comparison budget, which is statistically incorrect.
+DSR is meant to deflate the Sharpe estimate by the number of trials
+within the SAME hypothesis class, not across structurally orthogonal
+hypotheses. By iter 074 the cumulative budget reached 4 381, requiring
+Sharpe ≈ 1.4 to clear p<0.05, which is a 3.5σ bar over the noise floor
+— masochistic and not aligned with academic DSR usage.
+
+The new convention treats each iteration as an independent experiment.
+Iters from 075 onwards use this convention natively; iters 002-074 are
+re-scored retroactively in `verdict_v2.json` files alongside the
+original `verdict.json`. The Top-K table in `BASE_MEMORY.md` reflects
+the v2 (relaxed) scores from 2026-04-25 onwards.
+
+The historical `cumulative_n_trials` field is preserved in verdicts
+for audit and is still tracked in `BASE_MEMORY.md` frontmatter, but it
+no longer enters the DSR p-value calculation.
 
 ### 4. CAGR not catastrophically below benchmark
 

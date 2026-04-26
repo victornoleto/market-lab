@@ -1,0 +1,119 @@
+{
+  "total_score": 71,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 21,
+      "max": 25,
+      "per_dataset": {
+        "educational": 6,
+        "spy_real": 6,
+        "ndx_real": 7
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 10,
+      "max": 15,
+      "worst_p_value": 0.0698782722786655,
+      "cumulative_n_trials": 4284
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "per_dataset": {
+        "educational": false,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 1.1894781883852306,
+      "cagr": 0.04951883769127585,
+      "mdd": 0.13802991843938614,
+      "dsr_p_value": 0.05348996314620724
+    },
+    "spy_real": {
+      "sharpe": 1.2819050630975923,
+      "cagr": 0.049709294000294335,
+      "mdd": 0.06346920465591166,
+      "dsr_p_value": 0.0698782722786655
+    },
+    "ndx_real": {
+      "sharpe": 1.332731248397406,
+      "cagr": 0.060898162830008706,
+      "mdd": 0.08176784150183061,
+      "dsr_p_value": 0.04985975567102541
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4284,
+  "configs_tested": 1,
+  "primary_citation": "[volatility_trading, p.217-218] Sinclair level + sustained \u2192 AND-composite intersection of both axes; [volatility_trading, p.39, p.58-59] vol-of-vol + cone middle horizon; [volatility_trading, ch.3] VRP mechanics; Bondarenko (2014) QJF 4(3) \u00a73 level AND persistence both matter; Whaley (2009) JPM 35(3) VIX innovation analysis (z-score); Carr-Wu (2009) RFS 22(3) VRP decomposition",
+  "hypothesis_slug": "vix-and-composite-vrp-primary",
+  "iter_id": 31,
+  "v2_meta": {
+    "convention": "per-iter DSR n_trials (relaxed 2026-04-25)",
+    "n_trials_v2": 1,
+    "n_trials_v1_cumulative": 4284,
+    "v1_score": 76,
+    "v1_winner_met": false,
+    "v1_dsr_p_per_dataset": {
+      "educational": 0.05348996314620724,
+      "spy_real": 0.0698782722786655,
+      "ndx_real": 0.04985975567102541
+    },
+    "v2_dsr_p_per_dataset": {
+      "educational": 0.05348996314620724,
+      "spy_real": 0.0698782722786655,
+      "ndx_real": 0.04985975567102541
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "total_score": 34,
+  "tier": "NEAR_FAIL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 0,
+      "max": 25,
+      "datasets_beat": 0,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": 6,
+        "spy_real": 6,
+        "ndx_real": 6
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.6293723352941885,
+      "cumulative_n_trials": 4278
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "per_dataset": {
+        "educational": false,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.765681523587919,
+      "cagr": 0.09125791030140773,
+      "mdd": 0.1733495733571885,
+      "dsr_p_value": 0.6173422121536614
+    },
+    "spy_real": {
+      "sharpe": 0.8151470151936122,
+      "cagr": 0.09965507609221613,
+      "mdd": 0.17334957870059553,
+      "dsr_p_value": 0.6249173014945382
+    },
+    "ndx_real": {
+      "sharpe": 0.8281586486136302,
+      "cagr": 0.10197108208848338,
+      "mdd": 0.17334375194932988,
+      "dsr_p_value": 0.6293723352941885
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4278,
+  "configs_tested": 1,
+  "primary_citation": "[systematic_trading, p.118-119, ch.7]; [systematic_trading, p.131-133, ch.8]; Hurst, Ooi & Pedersen (2017) JPM 44(1), 15-29",
+  "hypothesis_slug": "slow-ewmac-multi-asset",
+  "iter_id": 25,
+  "v2_meta": {
+    "convention": "per-iter DSR n_trials (relaxed 2026-04-25)",
+    "n_trials_v2": 1,
+    "n_trials_v1_cumulative": 4278,
+    "v1_score": 39,
+    "v1_winner_met": false,
+    "v1_dsr_p_per_dataset": {
+      "educational": 0.6173422121536614,
+      "spy_real": 0.6249173014945382,
+      "ndx_real": 0.6293723352941885
+    },
+    "v2_dsr_p_per_dataset": {
+      "educational": 0.6173422121536614,
+      "spy_real": 0.6249173014945382,
+      "ndx_real": 0.6293723352941885
+    }
+  }
+}

@@ -171,8 +171,10 @@ Rules:
 **Step 4a — Gate battery** (per dataset, run on top-5 by composite):
 
 - G1 PBO (grid-level per dataset) < 0.5
-- G2 DSR p-value < 0.05 with **n_trials = cumulative from
-  `BASE_MEMORY.md` frontmatter + configs tested this iteration**
+- G2 DSR p-value < 0.05 with **n_trials = configs tested THIS iteration
+  only** (per-iteration hypothesis budget — relaxed 2026-04-25; see
+  `WINNER_AND_RANKING.md` §3 for rationale). Do NOT add cumulative
+  count from `BASE_MEMORY.md`.
 - G3 Walk-Forward 6/8 + MDD<25% per window
 - G4 OOS 70/30 Sharpe > 0
 - G5 FWD post-2020 Sharpe > 0
@@ -201,7 +203,8 @@ gates = {
     "spy_real":    Gates(...),
     "ndx_real":    Gates(...),
 }
-# cumulative_n_trials = BASE_MEMORY.md frontmatter value + configs tested this iter
+# cumulative_n_trials is preserved for audit only; DSR p-value above
+# already used n_trials = configs_tested_this_iter (per relaxed convention 2026-04-25)
 result = score_strategy(metrics, gates, cumulative_n_trials=NNNN)
 # result.total_score (0-100 int)
 # result.tier (Tier enum: WINNER / STRONG / PROMISING / MARGINAL / NEAR_FAIL / FAIL)

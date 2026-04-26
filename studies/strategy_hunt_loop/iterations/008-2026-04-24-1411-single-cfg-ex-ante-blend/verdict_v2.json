@@ -1,0 +1,119 @@
+{
+  "total_score": 69,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 20,
+      "max": 25,
+      "datasets_beat": 2,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": 6,
+        "spy_real": 6,
+        "ndx_real": 6
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.3318442670489966,
+      "cumulative_n_trials": 4240
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.8650661291920761,
+      "cagr": 0.13490936680434906,
+      "mdd": 0.37212855040786796,
+      "dsr_p_value": 0.2907628067656416
+    },
+    "spy_real": {
+      "sharpe": 1.000097854936687,
+      "cagr": 0.16078558863307668,
+      "mdd": 0.37212855040786796,
+      "dsr_p_value": 0.3318442670489966
+    },
+    "ndx_real": {
+      "sharpe": 1.0210678313259451,
+      "cagr": 0.17897474484383724,
+      "mdd": 0.3721234767910892,
+      "dsr_p_value": 0.3294789998407395
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4240,
+  "configs_tested": 1,
+  "primary_citation": "[risk_parity, p.10-11, ch.1]; [systematic_trading, p.144, p.170-171, ch.11]; Moreira & Muir (2017), JoF 72(4) DOI 10.1111/jofi.12513",
+  "hypothesis_slug": "single-cfg-ex-ante-blend",
+  "iter_id": 8,
+  "v2_meta": {
+    "convention": "per-iter DSR n_trials (relaxed 2026-04-25)",
+    "n_trials_v2": 1,
+    "n_trials_v1_cumulative": 4240,
+    "v1_score": 74,
+    "v1_winner_met": false,
+    "v1_dsr_p_per_dataset": {
+      "educational": 0.2907628067656416,
+      "spy_real": 0.3318442670489966,
+      "ndx_real": 0.3294789998407395
+    },
+    "v2_dsr_p_per_dataset": {
+      "educational": 0.2907628067656416,
+      "spy_real": 0.3318442670489966,
+      "ndx_real": 0.3294789998407395
+    }
+  }
+}

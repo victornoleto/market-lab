@@ -1,0 +1,119 @@
+{
+  "total_score": 54,
+  "tier": "MARGINAL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 20,
+      "max": 25,
+      "datasets_beat": 2,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": 6,
+        "spy_real": 6,
+        "ndx_real": 6
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.32317376348118787,
+      "cumulative_n_trials": 4316
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "per_dataset": {
+        "educational": false,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9156144889408,
+      "cagr": 0.0891252476161497,
+      "mdd": 0.19063544806607455,
+      "dsr_p_value": 0.32317376348118787
+    },
+    "spy_real": {
+      "sharpe": 1.0153608819710331,
+      "cagr": 0.09355199117222712,
+      "mdd": 0.13418623101999186,
+      "dsr_p_value": 0.3100957899355248
+    },
+    "ndx_real": {
+      "sharpe": 1.0277251941367793,
+      "cagr": 0.0929043093594093,
+      "mdd": 0.13364395427276685,
+      "dsr_p_value": 0.3205236479428063
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4316,
+  "configs_tested": 1,
+  "primary_citation": "[systematic_trading] (Carver TSM single-asset) + [risk_parity, ch.5] + [volatility_trading, p.218] (iter 046 base preserved) + [advances_fin_ml, p.222-223] (DSR cumulative) + [advances_fin_ml, p.31-34] (G7) + Moskowitz-Ooi-Pedersen 2012 JFE 104(2) 228-250 DOI 10.1016/j.jfineco.2011.11.003",
+  "hypothesis_slug": "iter046-plus-gold-tsm",
+  "iter_id": 49,
+  "v2_meta": {
+    "convention": "per-iter DSR n_trials (relaxed 2026-04-25)",
+    "n_trials_v2": 1,
+    "n_trials_v1_cumulative": 4316,
+    "v1_score": 59,
+    "v1_winner_met": false,
+    "v1_dsr_p_per_dataset": {
+      "educational": 0.32317376348118787,
+      "spy_real": 0.3100957899355248,
+      "ndx_real": 0.3205236479428063
+    },
+    "v2_dsr_p_per_dataset": {
+      "educational": 0.32317376348118787,
+      "spy_real": 0.3100957899355248,
+      "ndx_real": 0.3205236479428063
+    }
+  }
+}

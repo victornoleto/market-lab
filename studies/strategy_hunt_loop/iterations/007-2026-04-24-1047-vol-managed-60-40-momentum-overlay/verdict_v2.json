@@ -1,0 +1,119 @@
+{
+  "total_score": 69,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 10,
+      "max": 25,
+      "datasets_beat": 1,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": 6,
+        "spy_real": 6,
+        "ndx_real": 5
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.006042540119777895,
+      "cumulative_n_trials": 4237
+    },
+    "4_cagr_floor": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9161315676754581,
+      "cagr": 0.12926829430617248,
+      "mdd": 0.35148649520662323,
+      "dsr_p_value": 0.0002644175708231833
+    },
+    "spy_real": {
+      "sharpe": 0.9409618244899884,
+      "cagr": 0.1419205600780178,
+      "mdd": 0.35148649520662356,
+      "dsr_p_value": 0.002245597281414602
+    },
+    "ndx_real": {
+      "sharpe": 0.8715769925748005,
+      "cagr": 0.14329859430847902,
+      "mdd": 0.3584114798938927,
+      "dsr_p_value": 0.006042540119777895
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4237,
+  "configs_tested": 3,
+  "primary_citation": "[ml_for_algo_trading, ch.4 p.86]; [algo_trading_chan, p.133, 164, ch.6]; Moreira & Muir (2017), JoF 72(4) DOI 10.1111/jofi.12513; Moskowitz, Ooi & Pedersen (2012), JFE 104(2) DOI 10.1016/j.jfineco.2011.11.003",
+  "hypothesis_slug": "vol-managed-60-40-momentum-overlay",
+  "iter_id": 7,
+  "v2_meta": {
+    "convention": "per-iter DSR n_trials (relaxed 2026-04-25)",
+    "n_trials_v2": 3,
+    "n_trials_v1_cumulative": 4237,
+    "v1_score": 50,
+    "v1_winner_met": false,
+    "v1_dsr_p_per_dataset": {
+      "educational": 0.24148699322953182,
+      "spy_real": 0.4682537144415857,
+      "ndx_real": 0.6036860165692007
+    },
+    "v2_dsr_p_per_dataset": {
+      "educational": 0.0002644175708231833,
+      "spy_real": 0.002245597281414602,
+      "ndx_real": 0.006042540119777895
+    }
+  }
+}

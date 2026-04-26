@@ -1,0 +1,119 @@
+{
+  "total_score": 74,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": 6,
+        "spy_real": 6,
+        "ndx_real": 6
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 10,
+      "max": 15,
+      "worst_p_value": 0.05933009490700025,
+      "cumulative_n_trials": 4338
+    },
+    "4_cagr_floor": {
+      "points": 5,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 1.1743533210141888,
+      "cagr": 0.09527786791726833,
+      "mdd": 0.1855233544982277,
+      "dsr_p_value": 0.05427909050563595
+    },
+    "spy_real": {
+      "sharpe": 1.2809024983367918,
+      "cagr": 0.10036533286824367,
+      "mdd": 0.17067117949435978,
+      "dsr_p_value": 0.05933009490700025
+    },
+    "ndx_real": {
+      "sharpe": 1.3263497890566174,
+      "cagr": 0.10300228861870653,
+      "mdd": 0.1649385609748872,
+      "dsr_p_value": 0.05031631604631803
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4338,
+  "configs_tested": 1,
+  "primary_citation": "[stocks_on_the_move, p.21-30] (Clenow regime-conditional momentum) + Faber 2007 SSRN 962461 + [risk_parity, ch.5] + Whaley 2009 JPM 35(3) (VIX threshold 20) + [advances_fin_ml, p.162-164] (no peek) + [advances_fin_ml, p.222-223] (DSR cumulative) + [advances_fin_ml, p.31-34] (G7 cross-lib)",
+  "hypothesis_slug": "iter064-vix-inner-weight-swap",
+  "iter_id": 68,
+  "v2_meta": {
+    "convention": "per-iter DSR n_trials (relaxed 2026-04-25)",
+    "n_trials_v2": 1,
+    "n_trials_v1_cumulative": 4338,
+    "v1_score": 79,
+    "v1_winner_met": false,
+    "v1_dsr_p_per_dataset": {
+      "educational": 0.05427909050563595,
+      "spy_real": 0.05933009490700025,
+      "ndx_real": 0.05031631604631803
+    },
+    "v2_dsr_p_per_dataset": {
+      "educational": 0.05427909050563595,
+      "spy_real": 0.05933009490700025,
+      "ndx_real": 0.05031631604631803
+    }
+  }
+}

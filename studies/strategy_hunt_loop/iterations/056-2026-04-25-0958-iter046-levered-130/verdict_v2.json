@@ -1,0 +1,119 @@
+{
+  "total_score": 69,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": 6,
+        "spy_real": 6,
+        "ndx_real": 6
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 5,
+      "max": 15,
+      "worst_p_value": 0.10234011865289117,
+      "cumulative_n_trials": 4326
+    },
+    "4_cagr_floor": {
+      "points": 5,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 1.097084174745525,
+      "cagr": 0.10792275351719627,
+      "mdd": 0.23372403022925625,
+      "dsr_p_value": 0.10234011865289117
+    },
+    "spy_real": {
+      "sharpe": 1.2095543061626253,
+      "cagr": 0.11195227431437749,
+      "mdd": 0.20195492428012146,
+      "dsr_p_value": 0.10037040810072884
+    },
+    "ndx_real": {
+      "sharpe": 1.2674188223678036,
+      "cagr": 0.11605540764759614,
+      "mdd": 0.19403022254795182,
+      "dsr_p_value": 0.07825495375103819
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4326,
+  "configs_tested": 1,
+  "primary_citation": "[risk_parity, ch.5] (iter 046 base architecture inherited verbatim); [advances_fin_ml, p.31-34] (G7 cross-library parity); [advances_fin_ml, p.222-223] (DSR cumulative n_trials=4326); [advances_fin_ml, p.196-202] (bootstrap CI gate G6); [volatility_trading, p.218] (Sinclair VRP \u2014 iter 039 component); [advances_fin_ml, p.162-164] (no-lookahead lag \u2014 iter 041 component); Frazzini-Pedersen (2014), JFE 111(1) 1-25, DOI 10.1016/j.jfineco.2013.10.005 \u2014 borrow frictions; Whaley (2009), JPM 35(3) 98-105, DOI 10.3905/JPM.2009.35.3.098 \u2014 VIX; Markowitz (1952), JoF 7(1) 77-91 \u2014 convex combination; IBKR Pro Tier 1 margin schedule (public 2025-04)",
+  "hypothesis_slug": "iter046-levered-130",
+  "iter_id": 56,
+  "v2_meta": {
+    "convention": "per-iter DSR n_trials (relaxed 2026-04-25)",
+    "n_trials_v2": 1,
+    "n_trials_v1_cumulative": 4326,
+    "v1_score": 74,
+    "v1_winner_met": false,
+    "v1_dsr_p_per_dataset": {
+      "educational": 0.10234011865289117,
+      "spy_real": 0.10037040810072884,
+      "ndx_real": 0.07825495375103819
+    },
+    "v2_dsr_p_per_dataset": {
+      "educational": 0.10234011865289117,
+      "spy_real": 0.10037040810072884,
+      "ndx_real": 0.07825495375103819
+    }
+  }
+}
