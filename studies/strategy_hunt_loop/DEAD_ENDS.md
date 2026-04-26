@@ -5542,3 +5542,111 @@ Complete study: `studies/strategy_hunt_loop/iterations/073-2026-04-25-1659-gayed
 - iter 016 final report — vol-managed SPY+IEF baseline.
 - iter 023 final report — TSM-on-3-asset closure.
 - iter 005 final report — single-asset SMA crossover with LETF closure.
+
+---
+
+## From iteration 074 — iter 016 + iter 064 saved-stream ensemble (7 weight cfgs)
+
+Complete study: `studies/strategy_hunt_loop/iterations/074-2026-04-25-1724-iter016-iter064-ensemble/`.
+
+### What failed (do NOT re-test)
+
+1. **Saved-stream Markowitz blend of two SPY-co-exposed iter-064-family
+   anchors over 7 weight cfgs `w_016 ∈ {0.20, 0.30, 0.40, 0.50, 0.60,
+   0.70, 0.80}`** — Best cfg `iter074_ensemble_w016_050` (50/50 blend)
+   scores **89/100 STRONG**, missing the WINNER threshold by exactly
+   1 point. **4/5 strict winner conditions met**: Sharpe edge, gates,
+   CAGR floor, and MDD ceiling all clear; **DSR is the sole strict
+   failure** (worst p = 0.0944 educational, just above 0.05). Engine
+   perfect (15/15 TDD specs green, Markowitz residual = 0, G7 =
+   0 pp on all 3 datasets, PBO 0.04/0.13/0.17 — best-of-hunt-loop
+   on a real 7-cfg weight grid, robustness 9/9 sub-windows positive).
+
+2. **The specific root cause: empirical correlation between iter 016
+   and iter 064 streams is 0.79-0.84 (above BASE_MEMORY's 0.6-0.8
+   prediction).** Both streams carry SPY market beta substantially:
+   iter 016 directly via 0.6×SPY + Moreira-Muir vol-target leverage;
+   iter 064 via iter_041's regime-conditional 0.7-0.3×SPY weight tilt
+   inside iter_046 (the 90% leg of iter 064). The Moreira-Muir
+   vol-management in iter 016 doesn't decorrelate enough from the
+   regime-conditional weights in iter 064 to deliver Markowitz
+   variance reduction. Combined Sharpe ≈ linear average of legs
+   (1.24 spy vs iter 064 standalone 1.33) — only ~0.6% bonus from
+   ρ-not-1, far short of the ~5-10% lift needed to crack DSR p<0.05
+   at cumulative n_trials = 4381.
+
+3. **The 7-cfg weight sweep produces an inverted-U score curve with
+   peak at w_016=0.50 (89), surrounded by 83-86 at flanking weights.**
+   Below w_016=0.40 the CAGR floor binds (low w_016 = mostly iter 064's
+   lower-CAGR component, fails 0.8 × bench on spy/ndx); above
+   w_016=0.50 the Sharpe edge erodes faster than CAGR adds. The peak
+   at 0.50 is interpretable as the balance between iter 064's higher
+   Sharpe and iter 016's higher CAGR, modulated by the strict winner
+   gate constraints.
+
+### Don't re-test
+
+- iter 016 + iter 064 saved-stream ensemble at any weight in
+  {0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80}.
+- ANY two-stream Markowitz blend where both legs carry SPY market
+  beta substantially (predicted ρ > 0.7) — the variance reduction
+  benefit will be insufficient to lift combined Sharpe above iter
+  064's 1.33 standalone, regardless of weighting.
+- Saved-stream ensembles using **iter_046, iter_041, iter_037, or
+  iter 016** as a leg paired with another SPY-tilted leg from the
+  same family. The 7-iter pattern (064/068/069/070/071/072 overlays
+  + iter 074 ensemble) shows the 90 ceiling is iter-064-base-anchored
+  AND ensemble-anchored when SPY beta is shared.
+
+### Structural principles
+
+- **Saved-stream ensemble Markowitz benefit requires asset-class
+  orthogonality, not just mechanism orthogonality.** Iter 016's
+  vol-management vs iter 064's regime-conditional + VRP + trend
+  filter looks orthogonal MECHANICALLY, but both streams share SPY
+  market beta and post-2009 broad equity exposure. The Markowitz
+  variance reduction `(σ_combined²) = w_a²σ_a² + w_b²σ_b² + 2 w_a w_b
+  ρ σ_a σ_b` is dominated by ρ when both legs share macro beta. To
+  achieve ρ < 0.5, the 2nd leg must be in a structurally different
+  asset class (commodities, FX, international equities, crypto, or
+  long-short market-beta-neutral construction).
+
+- **The 90 → 95 unlock requires a non-equity 2nd leg.** Iter 074
+  empirically validates that within the universe of SPY-co-exposed
+  saved streams in the hunt loop, the maximum achievable ensemble
+  score is 89. Future iter 075+ candidates must:
+  - (a) use a 2nd leg with ρ < 0.5 vs iter 064 (e.g., Plano C
+    international + value + emerging + crypto-gold sleeve;
+    DBMF managed futures; long-short factor sleeves); OR
+  - (b) construct a 2nd leg with standalone Sharpe > 1.30 such
+    that linear-average combined Sharpe naturally exceeds iter
+    064's 1.33; OR
+  - (c) use a long-short market-beta-neutral overlay sized to net
+    ~0% market beta when combined with iter 064.
+
+- **Best-of-hunt-loop PBO 0.04/0.13/0.17 confirms the 7-cfg weight
+  grid is honest CSCV-informative.** No grid-overfitting risk in
+  the ensemble weight choice — the weight is a real Pareto-frontier
+  parameter, not a curve-fit. This validates the weight grid as a
+  legitimate methodology for future ensemble searches even when the
+  outcome doesn't cross the winner threshold.
+
+### Citations
+
+- Markowitz, H. (1952). "Portfolio Selection." *Journal of Finance*
+  7(1), 77-91. DOI 10.1111/j.1540-6261.1952.tb01525.x. Foundational
+  convex combination Sharpe identity — the pure-math result that
+  iter 074 mechanically validates (residual = 0).
+- Moreira, A., & Muir, T. (2017). "Volatility-Managed Portfolios."
+  *J. Finance* 72(4), 1611-1644. DOI 10.1111/jofi.12513. iter 016 leg.
+- Faber, M. (2007). "A Quantitative Approach to Tactical Asset
+  Allocation." SSRN 962461. iter 064 leg via QQQ-trend.
+- Asness, Frazzini & Pedersen (2012). "Leverage Aversion and Risk
+  Parity." *FAJ* 68(1). SSRN 1728082.
+- Whaley (2009). JPM 35(3). DOI 10.3905/JPM.2009.35.3.098.
+- `[volatility_trading, p.218]` — Sinclair (2013) VRP harvest leg.
+- `[risk_parity, ch.5]` — risk-parity diversification thesis.
+- `[advances_fin_ml, p.222-223]` — DSR with cumulative n_trials.
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity.
+- iter 074 final report — full 7-cfg score grid and per-cfg gates.
