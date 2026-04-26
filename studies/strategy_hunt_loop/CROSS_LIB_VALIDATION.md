@@ -1,6 +1,6 @@
 # Cross-library metric validation (light)
 
-Generated: 2026-04-25T23:23:44.974843
+Generated: 2026-04-26T01:47:22.716488
 
 Validates Sharpe / CAGR / MDD across 4 independent methods:
 **pandas-native**, **numpy-pure**, **vectorbt**, **quantstats**.
@@ -246,6 +246,32 @@ Caveat: this catches metric bugs only. NOT engine-level validation. For engine-l
 | **cagr** | 9.10% | 9.10% | — | 9.10% | 🟢 GREEN |
 | **mdd** | 16.33% | 16.33% | — | 16.33% | 🟢 GREEN |
 
+## iter 076 (v2 score 80) — `iter064-plus-levered-gld-tlt-trend-sleeve`
+
+### spy_real (cfg `iter076_lev_tv015_w015`, 4226 bars, 2009-06-26 → 2026-04-15)
+
+| metric | pandas | numpy | vectorbt | quantstats | divergence |
+|---|---|---|---|---|---|
+| **sharpe** | 1.325 | 1.325 | — | 1.325 | 🟢 GREEN |
+| **cagr** | 9.10% | 9.10% | — | 9.10% | 🟢 GREEN |
+| **mdd** | 13.99% | 13.99% | — | 13.99% | 🟢 GREEN |
+
+### ndx_real (cfg `iter076_lev_tv015_w015`, 4066 bars, 2010-02-16 → 2026-04-15)
+
+| metric | pandas | numpy | vectorbt | quantstats | divergence |
+|---|---|---|---|---|---|
+| **sharpe** | 1.352 | 1.352 | — | 1.352 | 🟢 GREEN |
+| **cagr** | 9.21% | 9.21% | — | 9.21% | 🟢 GREEN |
+| **mdd** | 13.48% | 13.48% | — | 13.48% | 🟢 GREEN |
+
+### educational (cfg `iter076_lev_tv015_w015`, 5101 bars, 2006-01-04 → 2026-04-15)
+
+| metric | pandas | numpy | vectorbt | quantstats | divergence |
+|---|---|---|---|---|---|
+| **sharpe** | 1.231 | 1.231 | — | 1.231 | 🟢 GREEN |
+| **cagr** | 8.81% | 8.81% | — | 8.81% | 🟢 GREEN |
+| **mdd** | 15.74% | 15.74% | — | 15.74% | 🟢 GREEN |
+
 ## iter 041 (v2 score 79) — `regime-weights-vix-static-stack`
 
 ### spy_real (cfg `regime_weights_vix_lt20_70_40_40_ge20_30_55_55`, 4226 bars, 2009-06-26 → 2026-04-15)
@@ -454,6 +480,32 @@ Caveat: this catches metric bugs only. NOT engine-level validation. For engine-l
 | **cagr** | 9.47% | 9.47% | — | 9.47% | 🟢 GREEN |
 | **mdd** | 17.51% | 17.51% | — | 17.51% | 🟢 GREEN |
 
+## iter 075 (v2 score 76) — `iter064-plus-gld-tlt-trend-sleeve`
+
+### spy_real (cfg `iter075_iter064_plus_gld_tlt_w015`, 4226 bars, 2009-06-26 → 2026-04-15)
+
+| metric | pandas | numpy | vectorbt | quantstats | divergence |
+|---|---|---|---|---|---|
+| **sharpe** | 1.339 | 1.339 | — | 1.339 | 🟢 GREEN |
+| **cagr** | 8.91% | 8.91% | — | 8.91% | 🟢 GREEN |
+| **mdd** | 13.69% | 13.69% | — | 13.69% | 🟢 GREEN |
+
+### ndx_real (cfg `iter075_iter064_plus_gld_tlt_w010`, 4066 bars, 2010-02-16 → 2026-04-15)
+
+| metric | pandas | numpy | vectorbt | quantstats | divergence |
+|---|---|---|---|---|---|
+| **sharpe** | 1.377 | 1.377 | — | 1.377 | 🟢 GREEN |
+| **cagr** | 9.46% | 9.46% | — | 9.46% | 🟢 GREEN |
+| **mdd** | 13.71% | 13.71% | — | 13.71% | 🟢 GREEN |
+
+### educational (cfg `iter075_iter064_plus_gld_tlt_w020`, 5101 bars, 2006-01-04 → 2026-04-15)
+
+| metric | pandas | numpy | vectorbt | quantstats | divergence |
+|---|---|---|---|---|---|
+| **sharpe** | 1.240 | 1.240 | — | 1.240 | 🟢 GREEN |
+| **cagr** | 8.29% | 8.29% | — | 8.29% | 🟢 GREEN |
+| **mdd** | 14.75% | 14.75% | — | 14.75% | 🟢 GREEN |
+
 ## iter 016 (v2 score 74) — `static-stack-vm-hybrid`
 
 ### spy_real (cfg `ntsx_vm_vt15_L21_cap20`, 4205 bars, 2009-07-28 → 2026-04-15)
@@ -479,58 +531,6 @@ Caveat: this catches metric bugs only. NOT engine-level validation. For engine-l
 | **sharpe** | 0.983 | 0.983 | — | 0.983 | 🟢 GREEN |
 | **cagr** | 15.05% | 15.05% | — | 15.05% | 🟢 GREEN |
 | **mdd** | 31.33% | 31.33% | — | 31.33% | 🟢 GREEN |
-
-## iter 018 (v2 score 74) — `funding-cost-modeled-replay`
-
-### spy_real (cfg `ntsx_vm_vt15_L21_cap20_funded`, 4205 bars, 2009-07-28 → 2026-04-15)
-
-| metric | pandas | numpy | vectorbt | quantstats | divergence |
-|---|---|---|---|---|---|
-| **sharpe** | 1.065 | 1.065 | — | 1.065 | 🟢 GREEN |
-| **cagr** | 16.42% | 16.42% | — | 16.42% | 🟢 GREEN |
-| **mdd** | 26.66% | 26.66% | — | 26.66% | 🟢 GREEN |
-
-### ndx_real (cfg `ntsx_vm_vt15_L21_cap20_funded`, 4045 bars, 2010-03-17 → 2026-04-15)
-
-| metric | pandas | numpy | vectorbt | quantstats | divergence |
-|---|---|---|---|---|---|
-| **sharpe** | 1.140 | 1.140 | — | 1.140 | 🟢 GREEN |
-| **cagr** | 19.64% | 19.64% | — | 19.64% | 🟢 GREEN |
-| **mdd** | 23.17% | 23.17% | — | 23.17% | 🟢 GREEN |
-
-### educational (cfg `ntsx_vm_vt15_L21_cap20_funded`, 5080 bars, 2006-02-03 → 2026-04-15)
-
-| metric | pandas | numpy | vectorbt | quantstats | divergence |
-|---|---|---|---|---|---|
-| **sharpe** | 0.887 | 0.887 | — | 0.887 | 🟢 GREEN |
-| **cagr** | 13.36% | 13.36% | — | 13.36% | 🟢 GREEN |
-| **mdd** | 33.28% | 33.28% | — | 33.28% | 🟢 GREEN |
-
-## iter 020 (v2 score 74) — `put-spread-tail-hedge`
-
-### spy_real (cfg `ntsx_vm_vt15_L21_cap20_pp5_10_1m`, 4204 bars, 2009-07-28 → 2026-04-14)
-
-| metric | pandas | numpy | vectorbt | quantstats | divergence |
-|---|---|---|---|---|---|
-| **sharpe** | 1.063 | 1.063 | — | 1.063 | 🟢 GREEN |
-| **cagr** | 15.29% | 15.29% | — | 15.29% | 🟢 GREEN |
-| **mdd** | 29.88% | 29.88% | — | 29.88% | 🟢 GREEN |
-
-### ndx_real (cfg `ntsx_vm_vt15_L21_cap20_pp5_10_1m`, 4044 bars, 2010-03-17 → 2026-04-14)
-
-| metric | pandas | numpy | vectorbt | quantstats | divergence |
-|---|---|---|---|---|---|
-| **sharpe** | 1.142 | 1.142 | — | 1.142 | 🟢 GREEN |
-| **cagr** | 19.05% | 19.05% | — | 19.05% | 🟢 GREEN |
-| **mdd** | 27.84% | 27.84% | — | 27.84% | 🟢 GREEN |
-
-### educational (cfg `ntsx_vm_vt15_L21_cap20_pp5_10_1m`, 5079 bars, 2006-02-03 → 2026-04-14)
-
-| metric | pandas | numpy | vectorbt | quantstats | divergence |
-|---|---|---|---|---|---|
-| **sharpe** | 0.905 | 0.905 | — | 0.905 | 🟢 GREEN |
-| **cagr** | 12.66% | 12.66% | — | 12.66% | 🟢 GREEN |
-| **mdd** | 37.01% | 37.01% | — | 37.01% | 🟢 GREEN |
 
 ## Summary
 

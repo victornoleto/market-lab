@@ -1,0 +1,376 @@
+{
+  "total_score": 75,
+  "tier": "STRONG",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 10,
+      "max": 25,
+      "datasets_beat": 1,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 25,
+      "max": 25,
+      "per_dataset": {
+        "educational": 7,
+        "spy_real": 7,
+        "ndx_real": 7
+      },
+      "thresholds": {
+        "educational": 5,
+        "spy_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.029675676265259243,
+      "cumulative_n_trials": 4546
+    },
+    "4_cagr_floor": {
+      "points": 5,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "spy_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.8137305361857816,
+      "cagr": 0.10794625490373355,
+      "mdd": 0.21323321907346635,
+      "dsr_p_value": 0.01867792408860247
+    },
+    "spy_real": {
+      "sharpe": 0.8788123081413652,
+      "cagr": 0.1142131155778876,
+      "mdd": 0.20956237485099607,
+      "dsr_p_value": 0.017431248529161447
+    },
+    "ndx_real": {
+      "sharpe": 0.8392524607278099,
+      "cagr": 0.10712814886681277,
+      "mdd": 0.20956237485099652,
+      "dsr_p_value": 0.029675676265259243
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPYSIM b&h (40y synth)"
+    },
+    "spy_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY b&h Tiingo (17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.955,
+      "cagr": 0.1918,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 4546,
+  "n_trials_per_iter": 8,
+  "configs_tested": 8,
+  "primary_citation": "Antonacci (2014) Dual Momentum Investing ISBN 978-0071849449 + Antonacci (2017) JoPM 16(1) DOI 10.3905/joi.2017.16.1.027 + Faber (2007) JWM 9(4) + Jegadeesh-Titman (1993) JoF 48(1) + [stocks_on_the_move, p.21-30]",
+  "hypothesis_slug": "iter078-antonacci-dual-momentum-base",
+  "best_cfg_id": "iter078_gem_lb03m_thzero",
+  "kills": {
+    "A_relative_momentum_degenerate": {
+      "fired": false,
+      "n_flips_spy_real": 64
+    },
+    "B_abs_momentum_inactive": {
+      "fired": false,
+      "frac_agg_spy_real": 0.22018348623853212
+    },
+    "C_sharpe_regress_vs_bench_2ds": {
+      "fired": false,
+      "n_regress_010": 1,
+      "deltas_vs_bench": {
+        "educational": 0.13373053618578157,
+        "spy_real": -0.021187691858634783,
+        "ndx_real": -0.11574753927219006
+      }
+    },
+    "D_score_below_60": {
+      "fired": false,
+      "score": 75
+    },
+    "E_g7_crosslib_above_3pp": {
+      "fired": false,
+      "max_diff_pp": 0.0
+    },
+    "F_pbo_above_05_2ds": {
+      "fired": false,
+      "n_above_05": 0,
+      "pbo_per_ds": {
+        "educational": 0.15079365079365079,
+        "spy_real": 0.05952380952380952,
+        "ndx_real": 0.12301587301587301
+      }
+    },
+    "G_dsr_worst_p_ge_005": {
+      "fired": false,
+      "worst_p": 0.029675676265259243,
+      "per_ds": {
+        "educational": 0.01867792408860247,
+        "spy_real": 0.017431248529161447,
+        "ndx_real": 0.029675676265259243
+      }
+    },
+    "H_no_winner_cfg": {
+      "fired": true,
+      "n_winners_in_grid": 0
+    }
+  },
+  "n_kills_fired": 1,
+  "robustness_bonus": {
+    "total_sub_windows": 9,
+    "positive_sub_windows": 9,
+    "fraction_positive": 1.0,
+    "bonus_awarded": 5,
+    "per_dataset": {
+      "educational": {
+        "window_sharpes": [
+          0.8839843345527159,
+          0.6256185120824069,
+          0.9060776783347463
+        ],
+        "positive_count": 3,
+        "total": 3
+      },
+      "spy_real": {
+        "window_sharpes": [
+          1.1688283749129311,
+          0.5506228837823728,
+          0.8898368025914104
+        ],
+        "positive_count": 3,
+        "total": 3
+      },
+      "ndx_real": {
+        "window_sharpes": [
+          0.9764999755431629,
+          0.6185252281929094,
+          0.9199810115917462
+        ],
+        "positive_count": 3,
+        "total": 3
+      }
+    }
+  },
+  "all_cfgs_summary": [
+    {
+      "cfg_id": "iter078_gem_lb03m_thzero",
+      "score": 75,
+      "tier": "STRONG",
+      "gates_by_ds": {
+        "educational": 7,
+        "spy_real": 7,
+        "ndx_real": 7
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 1,
+      "sharpe_by_ds": {
+        "educational": 0.8137305361857816,
+        "spy_real": 0.8788123081413652,
+        "ndx_real": 0.8392524607278099
+      },
+      "cagr_by_ds": {
+        "educational": 0.10794625490373355,
+        "spy_real": 0.1142131155778876,
+        "ndx_real": 0.10712814886681277
+      }
+    },
+    {
+      "cfg_id": "iter078_gem_lb03m_thief",
+      "score": 63,
+      "tier": "PROMISING",
+      "gates_by_ds": {
+        "educational": 7,
+        "spy_real": 7,
+        "ndx_real": 6
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 1,
+      "sharpe_by_ds": {
+        "educational": 0.766559056484318,
+        "spy_real": 0.8437435713200522,
+        "ndx_real": 0.8022577323887302
+      },
+      "cagr_by_ds": {
+        "educational": 0.10224700729098046,
+        "spy_real": 0.11065192292015591,
+        "ndx_real": 0.10345058795541928
+      }
+    },
+    {
+      "cfg_id": "iter078_gem_lb12m_thzero",
+      "score": 42,
+      "tier": "MARGINAL",
+      "gates_by_ds": {
+        "educational": 5,
+        "spy_real": 5,
+        "ndx_real": 5
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 4,
+      "sharpe_by_ds": {
+        "educational": 0.5476692640247764,
+        "spy_real": 0.5964044138966177,
+        "ndx_real": 0.6163769645611853
+      },
+      "cagr_by_ds": {
+        "educational": 0.07828505761037441,
+        "spy_real": 0.08740365701823327,
+        "ndx_real": 0.09155489475208523
+      }
+    },
+    {
+      "cfg_id": "iter078_gem_lb06m_thief",
+      "score": 37,
+      "tier": "NEAR_FAIL",
+      "gates_by_ds": {
+        "educational": 5,
+        "spy_real": 5,
+        "ndx_real": 5
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 4,
+      "sharpe_by_ds": {
+        "educational": 0.6001794240350294,
+        "spy_real": 0.6246513333048272,
+        "ndx_real": 0.5691261184115347
+      },
+      "cagr_by_ds": {
+        "educational": 0.07569055800984281,
+        "spy_real": 0.07776253508194286,
+        "ndx_real": 0.06950859971468182
+      }
+    },
+    {
+      "cfg_id": "iter078_gem_lb06m_thzero",
+      "score": 37,
+      "tier": "NEAR_FAIL",
+      "gates_by_ds": {
+        "educational": 5,
+        "spy_real": 5,
+        "ndx_real": 5
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 4,
+      "sharpe_by_ds": {
+        "educational": 0.548197776157464,
+        "spy_real": 0.5769361859612314,
+        "ndx_real": 0.5230671627092273
+      },
+      "cagr_by_ds": {
+        "educational": 0.07350356810440184,
+        "spy_real": 0.07719400950284294,
+        "ndx_real": 0.06892223366393435
+      }
+    },
+    {
+      "cfg_id": "iter078_gem_lb12m_thief",
+      "score": 35,
+      "tier": "NEAR_FAIL",
+      "gates_by_ds": {
+        "educational": 5,
+        "spy_real": 5,
+        "ndx_real": 4
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 4,
+      "sharpe_by_ds": {
+        "educational": 0.501966399660037,
+        "spy_real": 0.5038875104325108,
+        "ndx_real": 0.507255717531194
+      },
+      "cagr_by_ds": {
+        "educational": 0.06436494872353204,
+        "spy_real": 0.06464752336078905,
+        "ndx_real": 0.06598418690060881
+      }
+    },
+    {
+      "cfg_id": "iter078_gem_lb09m_thief",
+      "score": 35,
+      "tier": "NEAR_FAIL",
+      "gates_by_ds": {
+        "educational": 5,
+        "spy_real": 5,
+        "ndx_real": 4
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 4,
+      "sharpe_by_ds": {
+        "educational": 0.399212917694201,
+        "spy_real": 0.3807263493673151,
+        "ndx_real": 0.3702309351323089
+      },
+      "cagr_by_ds": {
+        "educational": 0.0475512297549292,
+        "spy_real": 0.044721923137278186,
+        "ndx_real": 0.04334071002480955
+      }
+    },
+    {
+      "cfg_id": "iter078_gem_lb09m_thzero",
+      "score": 31,
+      "tier": "NEAR_FAIL",
+      "gates_by_ds": {
+        "educational": 4,
+        "spy_real": 5,
+        "ndx_real": 5
+      },
+      "winner_conditions_met": false,
+      "n_kills_fired": 4,
+      "sharpe_by_ds": {
+        "educational": 0.43639419067802326,
+        "spy_real": 0.5029817739970421,
+        "ndx_real": 0.4993793447927197
+      },
+      "cagr_by_ds": {
+        "educational": 0.05716447037711303,
+        "spy_real": 0.068201427453497,
+        "ndx_real": 0.06772258614004967
+      }
+    }
+  ],
+  "status": "strong",
+  "iter_id": 78,
+  "v2_meta": {
+    "convention": "per-iter DSR n_trials (native \u2014 iter 075+ used relaxed PROMPT)",
+    "n_trials_v2": 8,
+    "n_trials_v1_cumulative": 4546,
+    "v1_score": 75,
+    "v1_winner_met": false,
+    "passthrough": true
+  }
+}

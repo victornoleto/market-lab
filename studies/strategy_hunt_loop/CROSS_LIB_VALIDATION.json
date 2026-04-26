@@ -855,6 +855,101 @@
     "slug": "iter064-vix-cond-r-mr-allocation"
   },
   {
+    "iter_dir": "076-2026-04-25-2356-iter064-plus-levered-gld-tlt-trend-sleeve",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter076_lev_tv015_w015",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3250942063059976,
+          "numpy": 1.3250942063059998,
+          "vectorbt": null,
+          "quantstats": 1.3250942063059976,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09095028163009,
+          "numpy": 0.09095028163009,
+          "vectorbt": null,
+          "quantstats": 0.09095028163009,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.1398825048539717,
+          "numpy": 0.1398825048539717,
+          "vectorbt": null,
+          "quantstats": 0.1398825048539717,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter076_lev_tv015_w015",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3521790451896762,
+          "numpy": 1.3521790451896778,
+          "vectorbt": null,
+          "quantstats": 1.3521790451896762,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09208561997365772,
+          "numpy": 0.09208561997365772,
+          "vectorbt": null,
+          "quantstats": 0.09208561997365772,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.13482739113767028,
+          "numpy": 0.13482739113767028,
+          "vectorbt": null,
+          "quantstats": 0.13482739113767028,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter076_lev_tv015_w015",
+        "n_bars": 5101,
+        "window": [
+          "2006-01-04",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.2308691905172686,
+          "numpy": 1.2308691905172668,
+          "vectorbt": null,
+          "quantstats": 1.2308691905172686,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.08810111525713604,
+          "numpy": 0.08810111525713604,
+          "vectorbt": null,
+          "quantstats": 0.08810111525713604,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.15736081095555576,
+          "numpy": 0.15736081095555576,
+          "vectorbt": null,
+          "quantstats": 0.15736081095555576,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 76,
+    "v2_score": 80,
+    "slug": "iter064-plus-levered-gld-tlt-trend-sleeve"
+  },
+  {
     "iter_dir": "041-2026-04-25-0358-regime-weights-vix-static-stack",
     "datasets": {
       "spy_real": {
@@ -1615,6 +1710,101 @@
     "slug": "iter058-internal-letf-iter041-only"
   },
   {
+    "iter_dir": "075-2026-04-25-2320-iter064-plus-gld-tlt-trend-sleeve",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter075_iter064_plus_gld_tlt_w015",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.339466756923785,
+          "numpy": 1.3394667569237846,
+          "vectorbt": null,
+          "quantstats": 1.339466756923785,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.08912545417869189,
+          "numpy": 0.08912545417869189,
+          "vectorbt": null,
+          "quantstats": 0.08912545417869189,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.1369104009912907,
+          "numpy": 0.1369104009912907,
+          "vectorbt": null,
+          "quantstats": 0.1369104009912907,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter075_iter064_plus_gld_tlt_w010",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3767165172595122,
+          "numpy": 1.3767165172595102,
+          "vectorbt": null,
+          "quantstats": 1.3767165172595122,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09460862377120627,
+          "numpy": 0.09460862377120627,
+          "vectorbt": null,
+          "quantstats": 0.09460862377120627,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.13705374141619986,
+          "numpy": 0.13705374141619986,
+          "vectorbt": null,
+          "quantstats": 0.13705374141619986,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter075_iter064_plus_gld_tlt_w020",
+        "n_bars": 5101,
+        "window": [
+          "2006-01-04",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.2401680081047146,
+          "numpy": 1.2401680081047126,
+          "vectorbt": null,
+          "quantstats": 1.2401680081047146,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.08294162437569885,
+          "numpy": 0.08294162437569885,
+          "vectorbt": null,
+          "quantstats": 0.08294162437569885,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.1475385644760039,
+          "numpy": 0.1475385644760039,
+          "vectorbt": null,
+          "quantstats": 0.1475385644760039,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 75,
+    "v2_score": 76,
+    "slug": "iter064-plus-gld-tlt-trend-sleeve"
+  },
+  {
     "iter_dir": "016-2026-04-24-1729-static-stack-vm-hybrid",
     "datasets": {
       "spy_real": {
@@ -1708,195 +1898,5 @@
     "iter_id": 16,
     "v2_score": 74,
     "slug": "static-stack-vm-hybrid"
-  },
-  {
-    "iter_dir": "018-2026-04-24-1813-funding-cost-modeled-replay",
-    "datasets": {
-      "spy_real": {
-        "cfg": "ntsx_vm_vt15_L21_cap20_funded",
-        "n_bars": 4205,
-        "window": [
-          "2009-07-28",
-          "2026-04-15"
-        ],
-        "sharpe": {
-          "pandas": 1.0645485699523107,
-          "numpy": 1.0645485699523112,
-          "vectorbt": null,
-          "quantstats": 1.0645485699523107,
-          "div": "GREEN"
-        },
-        "cagr": {
-          "pandas": 0.16422191387081408,
-          "numpy": 0.16422191387081408,
-          "vectorbt": null,
-          "quantstats": 0.16422191387081408,
-          "div": "GREEN"
-        },
-        "mdd": {
-          "pandas": 0.2666094130192116,
-          "numpy": 0.2666094130192116,
-          "vectorbt": null,
-          "quantstats": 0.2666094130192116,
-          "div": "GREEN"
-        }
-      },
-      "ndx_real": {
-        "cfg": "ntsx_vm_vt15_L21_cap20_funded",
-        "n_bars": 4045,
-        "window": [
-          "2010-03-17",
-          "2026-04-15"
-        ],
-        "sharpe": {
-          "pandas": 1.1402112708067371,
-          "numpy": 1.1402112708067376,
-          "vectorbt": null,
-          "quantstats": 1.1402112708067371,
-          "div": "GREEN"
-        },
-        "cagr": {
-          "pandas": 0.19638582478167943,
-          "numpy": 0.19638582478167943,
-          "vectorbt": null,
-          "quantstats": 0.19638582478167943,
-          "div": "GREEN"
-        },
-        "mdd": {
-          "pandas": 0.23173010905060498,
-          "numpy": 0.23173010905060498,
-          "vectorbt": null,
-          "quantstats": 0.23173010905060498,
-          "div": "GREEN"
-        }
-      },
-      "educational": {
-        "cfg": "ntsx_vm_vt15_L21_cap20_funded",
-        "n_bars": 5080,
-        "window": [
-          "2006-02-03",
-          "2026-04-15"
-        ],
-        "sharpe": {
-          "pandas": 0.8874313015293674,
-          "numpy": 0.8874313015293672,
-          "vectorbt": null,
-          "quantstats": 0.8874313015293673,
-          "div": "GREEN"
-        },
-        "cagr": {
-          "pandas": 0.1335768395350836,
-          "numpy": 0.1335768395350836,
-          "vectorbt": null,
-          "quantstats": 0.1335768395350836,
-          "div": "GREEN"
-        },
-        "mdd": {
-          "pandas": 0.3327501146623776,
-          "numpy": 0.3327501146623776,
-          "vectorbt": null,
-          "quantstats": 0.3327501146623776,
-          "div": "GREEN"
-        }
-      }
-    },
-    "iter_id": 18,
-    "v2_score": 74,
-    "slug": "funding-cost-modeled-replay"
-  },
-  {
-    "iter_dir": "020-2026-04-24-1850-put-spread-tail-hedge",
-    "datasets": {
-      "spy_real": {
-        "cfg": "ntsx_vm_vt15_L21_cap20_pp5_10_1m",
-        "n_bars": 4204,
-        "window": [
-          "2009-07-28",
-          "2026-04-14"
-        ],
-        "sharpe": {
-          "pandas": 1.0631885053725691,
-          "numpy": 1.0631885053725691,
-          "vectorbt": null,
-          "quantstats": 1.0631885053725691,
-          "div": "GREEN"
-        },
-        "cagr": {
-          "pandas": 0.15291990632931562,
-          "numpy": 0.15291990632931562,
-          "vectorbt": null,
-          "quantstats": 0.15291990632931562,
-          "div": "GREEN"
-        },
-        "mdd": {
-          "pandas": 0.2987582998563333,
-          "numpy": 0.2987582998563333,
-          "vectorbt": null,
-          "quantstats": 0.2987582998563333,
-          "div": "GREEN"
-        }
-      },
-      "ndx_real": {
-        "cfg": "ntsx_vm_vt15_L21_cap20_pp5_10_1m",
-        "n_bars": 4044,
-        "window": [
-          "2010-03-17",
-          "2026-04-14"
-        ],
-        "sharpe": {
-          "pandas": 1.1418635218413207,
-          "numpy": 1.1418635218413202,
-          "vectorbt": null,
-          "quantstats": 1.1418635218413207,
-          "div": "GREEN"
-        },
-        "cagr": {
-          "pandas": 0.19051871751025828,
-          "numpy": 0.19051871751025828,
-          "vectorbt": null,
-          "quantstats": 0.19051871751025828,
-          "div": "GREEN"
-        },
-        "mdd": {
-          "pandas": 0.27840909167645844,
-          "numpy": 0.27840909167645844,
-          "vectorbt": null,
-          "quantstats": 0.27840909167645844,
-          "div": "GREEN"
-        }
-      },
-      "educational": {
-        "cfg": "ntsx_vm_vt15_L21_cap20_pp5_10_1m",
-        "n_bars": 5079,
-        "window": [
-          "2006-02-03",
-          "2026-04-14"
-        ],
-        "sharpe": {
-          "pandas": 0.9047385136046221,
-          "numpy": 0.9047385136046214,
-          "vectorbt": null,
-          "quantstats": 0.9047385136046222,
-          "div": "GREEN"
-        },
-        "cagr": {
-          "pandas": 0.12656504379366695,
-          "numpy": 0.12656504379366695,
-          "vectorbt": null,
-          "quantstats": 0.12656504379366695,
-          "div": "GREEN"
-        },
-        "mdd": {
-          "pandas": 0.3701320865314174,
-          "numpy": 0.3701320865314174,
-          "vectorbt": null,
-          "quantstats": 0.3701320865314174,
-          "div": "GREEN"
-        }
-      }
-    },
-    "iter_id": 20,
-    "v2_score": 74,
-    "slug": "put-spread-tail-hedge"
   }
 ]

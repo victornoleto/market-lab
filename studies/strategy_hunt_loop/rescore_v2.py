@@ -56,6 +56,23 @@ def rescore_iter(iter_dir: Path) -> dict | None:
     res = json.loads(results_path.read_text())
 
     iter_id = int(re.match(r"(\d+)", iter_dir.name).group(1))
+
+    # iters 075+ already use the relaxed per-iter DSR convention natively
+    # (PROMPT.md was updated 2026-04-25 23:20 before iter 075 started).
+    # Their verdict.json is already v2-equivalent — just pass through.
+    if iter_id >= 75:
+        out = dict(v)  # shallow copy
+        out["iter_id"] = iter_id
+        out["v2_meta"] = {
+            "convention": "per-iter DSR n_trials (native — iter 075+ used relaxed PROMPT)",
+            "n_trials_v2": v.get("configs_tested", 1),
+            "n_trials_v1_cumulative": v.get("cumulative_n_trials", 0),
+            "v1_score": v.get("total_score", 0),
+            "v1_winner_met": v.get("winner_conditions_met", False),
+            "passthrough": True,
+        }
+        (iter_dir / "verdict_v2.json").write_text(json.dumps(out, indent=2, default=str))
+        return out
     n_trials_v2 = int(v.get("configs_tested", 1) or 1)
     if n_trials_v2 < 1:
         n_trials_v2 = 1
