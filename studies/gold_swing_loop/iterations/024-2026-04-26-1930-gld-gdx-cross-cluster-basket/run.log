@@ -1,0 +1,31 @@
+[cross_cluster_rsi2_sma200_gld60_gdx40_basket] running on 2 basket datasets (CUMULATIVE_N_TRIALS=24)
+  weights={'gold': 0.6, 'gdx': 0.4}, spreads_rt_bps={'gold': 8.0, 'gdx': 12.0}
+  IC-6 baselines for gld_gdx_basket_long: ['iter003', 'iter011']
+  IC-6 baselines for xau_gdx_basket: ['iter003', 'iter011']
+
+--- gld_gdx_basket_long ---
+  metrics: Sharpe=+0.2022 (bench +0.4695, Δ -0.2673), CAGR=+0.8517% (bench +9.1495%), MDD=13.9443% (bench 61.6755%)
+  hold: mean=4.91d on basket, n_trades_basket=80, per_leg={'gold': 63, 'gdx': 45}
+  gates: 1=True 2=False(p=0.860,rlx=False) 3=False 4=True(oos_Sh=+0.122) 5=True(fwd_Sh=+0.145) 6=False(CI_lo=-0.454) 7=True(diff_pp=0.000000)
+  IC-6 vs iter003: static_rho=+0.668, rolling-60d exceed_frac=94.9% (n_valid=2751)
+  IC-6 vs iter011: static_rho=+0.144, rolling-60d exceed_frac=27.4% (n_valid=2840)
+
+--- xau_gdx_basket ---
+  metrics: Sharpe=-0.1064 (bench +0.9642, Δ -1.0705), CAGR=-0.4476% (bench +21.4373%), MDD=10.3313% (bench 31.6434%)
+  hold: mean=4.70d on basket, n_trades_basket=20, per_leg={'gold': 18, 'gdx': 8}
+  gates: 1=True 2=False(p=0.988,rlx=False) 3=False 4=True(oos_Sh=+0.140) 5=False(fwd_Sh=-0.070) 6=False(CI_lo=-1.197) 7=True(diff_pp=0.000000)
+  IC-6 vs iter003: static_rho=+0.573, rolling-60d exceed_frac=76.5% (n_valid=770)
+  IC-6 vs iter011: static_rho=+0.121, rolling-60d exceed_frac=18.1% (n_valid=755)
+
+=== SCORE ===
+total = 30/100, tier = NEAR_FAIL, winner_conds_met = False, hold_gate_pass = True (mean_hold 4.91d on PRIMARY ∈ [2,10]?), is_winner = False
+
+=== KILLS ===
+  primary Sh = +0.2022, lift vs iter003 = -0.0978
+  IC-6 rolling vs iter003 = 94.9%, vs iter011 = 27.4%
+  primary DSR p = 0.8602, G6 boot = False (CI_lo=-0.454)
+  kills fired: 5 of 6: ['kill_1_sh_lt_0_30', 'kill_2_sh_lift_lt_0_05', 'kill_3_ic6_rho_v003_gt_80pct', 'kill_4_g6_boot_fail', 'kill_5_dsr_p_gt_0_30']
+
+
+wrote /tmp/ai-trade-gold-swing/studies/gold_swing_loop/iterations/024-2026-04-26-1930-gld-gdx-cross-cluster-basket/results.json
+wrote /tmp/ai-trade-gold-swing/studies/gold_swing_loop/iterations/024-2026-04-26-1930-gld-gdx-cross-cluster-basket/verdict.json

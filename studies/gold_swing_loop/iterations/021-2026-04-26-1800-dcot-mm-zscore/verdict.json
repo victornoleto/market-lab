@@ -1,0 +1,132 @@
+{
+  "total_score": 28,
+  "tier": "NEAR_FAIL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "rules_version": "2026-04-26-relaxed-r1",
+    "declared_primary": "gld_long",
+    "declared_corroborating": [
+      "xauusd_real"
+    ],
+    "1_sharpe_edge": {
+      "points": 5,
+      "max": 25,
+      "primary_beat": false,
+      "corr_positive": 1
+    },
+    "2_gates": {
+      "points": 8,
+      "max": 25,
+      "primary_gates": 4,
+      "primary_threshold": 5,
+      "corr_relaxed_pass": 0
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "primary_p": 0.8358235309057941
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "primary_pass": false
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "primary_pass": true
+    },
+    "6_robustness": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "gld_long": {
+      "sharpe": 0.07252007308473031,
+      "cagr": 0.0025382404538807357,
+      "mdd": 0.3021000210299516,
+      "dsr_p_value": 0.8358235309057941
+    },
+    "xauusd_real": {
+      "sharpe": 0.2771617722095818,
+      "cagr": 0.013800657164996455,
+      "mdd": 0.15561317438830147,
+      "dsr_p_value": 0.7140964490582037
+    }
+  },
+  "benchmarks_used": {
+    "gld_long": {
+      "sharpe": 0.6844,
+      "cagr": 0.11318,
+      "mdd": 0.4556,
+      "label": "GLD ETF b&h 2004-11-18\u21922026-04-15 (21.40y, daily)"
+    },
+    "xauusd_real": {
+      "sharpe": 1.0382,
+      "cagr": 0.19928,
+      "mdd": 0.2036,
+      "label": "XAUUSD spot b&h 2020-01-02\u21922026-04-17 (6.29y, daily)"
+    }
+  },
+  "cumulative_n_trials": 21,
+  "iteration": "021",
+  "hypothesis_slug": "dcot-mm-zscore",
+  "configs_tested": 1,
+  "primary_citation": "[trading_systems_methods, p.640]",
+  "broker_track": "pepperstone_cfd",
+  "universe": "single_xau",
+  "timeframes_used": [
+    "1d"
+  ],
+  "hold_time_track": "medium_swing",
+  "primary_mean_hold_days": 27.476190476190474,
+  "corroborating_mean_hold_days": 27.5,
+  "hold_time_gate_pass": true,
+  "pre_committed_kills_fired": {
+    "kill_1_no_standalone_edge": true,
+    "kill_2_dsr_no_progress": true,
+    "kill_3_not_ic7_eligible_vs_iter003": false
+  },
+  "n_kills_fired": 2,
+  "ic7_diagnostic_vs_iter003": {
+    "rho_static_gld_long": 0.02330035335112089,
+    "rolling_60d_exceed_frac_gld_long": 0.021800947867298578,
+    "rho_static_xauusd_real": -0.00021182741659307966,
+    "rolling_60d_exceed_frac_xauusd_real": 0.0,
+    "ic7_eligible_static_below_0_50": true,
+    "ic7_eligible_rolling_below_20pct": true
+  },
+  "ic7_diagnostic_vs_iter018": {
+    "rho_static_gld_long": 0.8530314890461195,
+    "rolling_60d_exceed_frac_gld_long": 0.6852893890675241,
+    "interpretation": "MM bucket and legacy commercials bucket are highly correlated (>+0.85) on gold \u2014 same family signals"
+  },
+  "track_a_metrics": {
+    "gld_long": {
+      "sharpe": 0.07252007308473031,
+      "cagr": 0.0025382404538807357,
+      "mdd": 0.3021000210299516,
+      "n_bars": 4239,
+      "n_trades": 42,
+      "mean_hold_days": 27.476190476190474,
+      "n_years": 16.821428571428573
+    },
+    "xauusd_real": {
+      "sharpe": 0.2771617722095818,
+      "cagr": 0.013800657164996455,
+      "mdd": 0.15561317438830147,
+      "n_bars": 1700,
+      "n_trades": 10,
+      "mean_hold_days": 27.5,
+      "n_years": 6.746031746031746
+    }
+  },
+  "bench_sliced_gld_long": {
+    "label": "GLD ETF b&h 2009-06-09\u21922026-04-15 (sliced post-warmup)",
+    "sharpe": 0.6391324164822986,
+    "cagr": 0.09630801857412363,
+    "mdd": 0.45555013814399525,
+    "n_years": 16.817460317460316
+  }
+}

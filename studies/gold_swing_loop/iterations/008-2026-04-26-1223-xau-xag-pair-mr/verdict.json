@@ -1,0 +1,95 @@
+{
+  "config_id": "xau_xag_pair_mr_lb60_z2_zexit05_to10",
+  "status": "iterating",
+  "tier": "FAIL",
+  "total_score": 0,
+  "winner_conditions_met": false,
+  "hold_time_gate_pass": false,
+  "is_winner": false,
+  "auto_aborted_at_pre_val": true,
+  "pre_val": {
+    "gld_long": {
+      "adf": {
+        "stat": -2.84891983046986,
+        "p_value": 0.05161853377901503,
+        "passed": false,
+        "n_obs": 5022
+      },
+      "cost_aware": {
+        "n_events": 671,
+        "mean_fwd_bps": -41.54861859800301,
+        "std_fwd_bps": 1074.795763270104,
+        "t_stat": -1.0013638368204099,
+        "hit_rate": 0.45454545454545453,
+        "required_edge_bps": 45.0,
+        "cost_floor_bps": 30.0,
+        "min_t_stat": 1.0,
+        "min_hit_rate": 0.5,
+        "min_events": 30,
+        "passed": false,
+        "reason": "directional inversion (mean fwd=-41.55 bps \u2264 0)"
+      },
+      "n_entry_events": 671,
+      "passed_either": false,
+      "passed_both": false
+    },
+    "xauusd_real": {
+      "adf": {
+        "stat": -2.2140880218358907,
+        "p_value": 0.20117210825575882,
+        "passed": false,
+        "n_obs": 1699
+      },
+      "cost_aware": {
+        "n_events": 215,
+        "mean_fwd_bps": -97.64281358887543,
+        "std_fwd_bps": 469.8785198932378,
+        "t_stat": -3.0470103053728748,
+        "hit_rate": 0.4511627906976744,
+        "required_edge_bps": 45.0,
+        "cost_floor_bps": 30.0,
+        "min_t_stat": 1.0,
+        "min_hit_rate": 0.5,
+        "min_events": 30,
+        "passed": false,
+        "reason": "directional inversion (mean fwd=-97.64 bps \u2264 0)"
+      },
+      "n_entry_events": 215,
+      "passed_either": false,
+      "passed_both": false
+    },
+    "xauusd_intraday": {
+      "adf": {
+        "stat": -2.216518496378896,
+        "p_value": 0.2003049124697015,
+        "passed": false,
+        "n_obs": 32161
+      },
+      "cost_aware": {
+        "n_events": 4346,
+        "mean_fwd_bps": -7.672957009821758,
+        "std_fwd_bps": 172.7024672219784,
+        "t_stat": -2.9289306178884456,
+        "hit_rate": 0.4917165209387943,
+        "required_edge_bps": 45.0,
+        "cost_floor_bps": 30.0,
+        "min_t_stat": 1.0,
+        "min_hit_rate": 0.5,
+        "min_events": 30,
+        "passed": false,
+        "reason": "directional inversion (mean fwd=-7.67 bps \u2264 0)"
+      },
+      "n_entry_events": 4351,
+      "passed_either": false,
+      "passed_both": false
+    }
+  },
+  "cumulative_n_trials": 8,
+  "primary_citation": "[algo_trading_chan, p.51-58, ch.2]",
+  "hypothesis_slug": "xau-xag-pair-mr",
+  "broker_track": "pepperstone_cfd",
+  "timeframes_used": [
+    "1d",
+    "1h"
+  ]
+}

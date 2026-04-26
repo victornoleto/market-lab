@@ -1,0 +1,33 @@
+[cross_cluster_rsi2_sma200_gld60_btc40_basket] running on 2 basket datasets (CUMULATIVE_N_TRIALS=25)
+  weights={'gold': 0.6, 'btc': 0.4}, spreads_rt_bps={'gold': 8.0, 'btc': 25.0}, swap_long_bps={'gold': -1.0, 'btc': -5.0}
+  IC-6 baselines for gld_btc_basket_long: ['iter003', 'iter011']
+  IC-6 baselines for xau_btc_basket: ['iter003', 'iter011']
+
+--- gld_btc_basket_long ---
+  metrics: Sharpe=+0.1725 (bench +1.0735, Δ -0.9010), CAGR=+1.1365% (bench +31.1092%), MDD=15.4460% (bench 47.5009%)
+  hold: mean=4.65d on basket, n_trades_basket=65, per_leg={'gold': 34, 'btc': 37}
+  costs (pnl, sum): spread_per_leg={'gold': -0.01632, 'btc': -0.037000000000000005}, swap_per_leg={'gold': -0.01152, 'btc': -0.0476}
+  gates: 1=True 2=False(p=0.918,rlx=False) 3=False 4=True(oos_Sh=+0.702) 5=True(fwd_Sh=+0.646) 6=False(CI_lo=-0.566) 7=True(diff_pp=0.000000)
+  IC-6 vs iter003: static_rho=+0.258, rolling-60d exceed_frac=68.1% (n_valid=1597)
+  IC-6 vs iter011: static_rho=+0.041, rolling-60d exceed_frac=14.8% (n_valid=2027)
+
+--- xau_btc_basket ---
+  metrics: Sharpe=+0.6689 (bench +0.7524, Δ -0.0835), CAGR=+3.4896% (bench +39.8740%), MDD=5.6908% (bench 43.2436%)
+  hold: mean=3.85d on basket, n_trades_basket=41, per_leg={'gold': 24, 'btc': 22}
+  costs (pnl, sum): spread_per_leg={'gold': -0.01152, 'btc': -0.022}, swap_per_leg={'gold': -0.0054600000000000004, 'btc': -0.014600000000000002}
+  gates: 1=True 2=False(p=0.608,rlx=False) 3=True 4=True(oos_Sh=+0.861) 5=True(fwd_Sh=+0.936) 6=False(CI_lo=-0.383) 7=True(diff_pp=0.000000)
+  IC-6 vs iter003: static_rho=+0.393, rolling-60d exceed_frac=70.6% (n_valid=1097)
+  IC-6 vs iter011: static_rho=+0.095, rolling-60d exceed_frac=20.6% (n_valid=1021)
+
+=== SCORE ===
+total = 35/100, tier = NEAR_FAIL, winner_conds_met = False, hold_gate_pass = True (mean_hold 4.65d on PRIMARY ∈ [2,10]?), is_winner = False
+
+=== KILLS ===
+  primary Sh = +0.1725, lift vs iter003 = -0.1275
+  IC-6 rolling vs iter003 = 68.1%, vs iter011 = 14.8%
+  primary DSR p = 0.9179, G6 boot = False (CI_lo=-0.566)
+  kills fired: 4 of 6: ['kill_1_sh_lt_0_30', 'kill_2_sh_lift_lt_0_05', 'kill_4_g6_boot_fail', 'kill_5_dsr_p_gt_0_30']
+
+
+wrote /tmp/ai-trade-gold-swing/studies/gold_swing_loop/iterations/025-2026-04-26-2147-gld-btc-cross-cluster-basket/results.json
+wrote /tmp/ai-trade-gold-swing/studies/gold_swing_loop/iterations/025-2026-04-26-2147-gld-btc-cross-cluster-basket/verdict.json

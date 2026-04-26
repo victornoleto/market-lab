@@ -1,0 +1,183 @@
+{
+  "total_score": 35,
+  "tier": "NEAR_FAIL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "rules_version": "2026-04-26-relaxed-r1",
+    "declared_primary": "gld_long",
+    "declared_corroborating": [
+      "xauusd_real"
+    ],
+    "1_sharpe_edge": {
+      "points": 5,
+      "max": 25,
+      "primary_beat": false,
+      "corr_positive": 1
+    },
+    "2_gates": {
+      "points": 15,
+      "max": 25,
+      "primary_gates": 5,
+      "primary_threshold": 5,
+      "corr_relaxed_pass": 0
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "primary_p": 0.36455220521198684
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "primary_pass": false
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "primary_pass": true
+    },
+    "6_robustness": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "gld_long": {
+      "sharpe": 0.4865333611189876,
+      "cagr": 0.020600853552158016,
+      "mdd": 0.10945599638949025,
+      "dsr_p_value": 0.36455220521198684
+    },
+    "xauusd_real": {
+      "sharpe": 0.44216744815541204,
+      "cagr": 0.018604801170951424,
+      "mdd": 0.09755853266034424,
+      "dsr_p_value": 0.7727686223152426
+    }
+  },
+  "benchmarks_used": {
+    "gld_long": {
+      "sharpe": 0.6844,
+      "cagr": 0.11318,
+      "mdd": 0.4556,
+      "label": "GLD ETF b&h 2004-11-18\u21922026-04-15 (21.40y, daily)"
+    },
+    "xauusd_real": {
+      "sharpe": 1.0382,
+      "cagr": 0.19928,
+      "mdd": 0.2036,
+      "label": "XAUUSD spot b&h 2020-01-02\u21922026-04-17 (6.29y, daily)"
+    }
+  },
+  "cumulative_n_trials": 20,
+  "configs_tested": 1,
+  "primary_citation": "[advances_fin_ml, p.222-223]",
+  "hypothesis_slug": "3stream-ic7-rsi2-cot-dxytrend",
+  "mean_hold_days": 26.300764926129897,
+  "hold_time_gate_pass": true,
+  "broker_track": "pepperstone_cfd",
+  "timeframes_used": [
+    "1d"
+  ],
+  "track_a_metrics": {
+    "gld_long": {
+      "sharpe": 0.4865333611189876,
+      "sharpe_periodic": 0.030648720906124364,
+      "cagr": 0.020600853552158016,
+      "mdd": 0.10945599638949025,
+      "dsr_p_value": 0.36455220521198684
+    },
+    "xauusd_real": {
+      "sharpe": 0.44216744815541204,
+      "sharpe_periodic": 0.02785393108731585,
+      "cagr": 0.018604801170951424,
+      "mdd": 0.09755853266034424,
+      "dsr_p_value": 0.7727686223152426
+    }
+  },
+  "track_b_metrics": {
+    "note": "Track B not modelled in iter 020 (composition primary track is A). Iter 003 component contains short re-entries that Track B forbids."
+  },
+  "weights_per_ds": {
+    "gld_long": {
+      "w_iter_003": 0.5470354826948863,
+      "w_iter_018": 0.31971882830113185,
+      "w_iter_015": 0.1332456890039818,
+      "method": "markowitz_tangency_full_sample_3asset",
+      "clamped_to_corner": false,
+      "natural_unclamped": [
+        0.5470354826948863,
+        0.31971882830113185,
+        0.1332456890039818
+      ]
+    },
+    "xauusd_real": {
+      "w_iter_003": 0.34588462242946094,
+      "w_iter_018": 0.4340505746222758,
+      "w_iter_015": 0.2200648029482634,
+      "method": "markowitz_tangency_full_sample_3asset",
+      "clamped_to_corner": false,
+      "natural_unclamped": [
+        0.34588462242946094,
+        0.4340505746222758,
+        0.2200648029482634
+      ]
+    }
+  },
+  "rho_per_ds": {
+    "gld_long": {
+      "rho_003_018": 0.013362320209724015,
+      "rho_003_015": 0.169797374997863,
+      "rho_018_015": 0.08688698065382978
+    },
+    "xauusd_real": {
+      "rho_003_018": 0.004319324899858353,
+      "rho_003_015": 0.2175548697468253,
+      "rho_018_015": 0.04504169448497518
+    }
+  },
+  "kill_criteria": {
+    "kill_value_destruction": false,
+    "combined_sharpe_primary": 0.4865333611189876,
+    "best_component_sharpe": 0.35163936897209225,
+    "kill_weight_collapse": false,
+    "weights_primary": {
+      "w_iter_003": 0.5470354826948863,
+      "w_iter_018": 0.31971882830113185,
+      "w_iter_015": 0.1332456890039818
+    },
+    "kill_dsr_no_progress": true,
+    "primary_dsr_p": 0.36455220521198684,
+    "kill_pre_val_rolling_rho": true,
+    "pre_val_diag": {
+      "rolling_rho_window": 60,
+      "rolling_rho_limit": 0.3,
+      "exceed_frac_limit": 0.2,
+      "per_pair": {
+        "003_018": {
+          "exceed_n": 32,
+          "exceed_total": 2191,
+          "exceed_frac": 0.01460520310360566,
+          "pass": true
+        },
+        "003_015": {
+          "exceed_n": 459,
+          "exceed_total": 2093,
+          "exceed_frac": 0.21930243669374105,
+          "pass": false
+        },
+        "018_015": {
+          "exceed_n": 435,
+          "exceed_total": 2412,
+          "exceed_frac": 0.18034825870646767,
+          "pass": true
+        }
+      },
+      "pass": false
+    },
+    "any_kill": true
+  },
+  "status": "iterating",
+  "auto_aborted_at_pre_val": false,
+  "rules_version": "2026-04-26-relaxed-r1"
+}

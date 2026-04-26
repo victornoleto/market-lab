@@ -1,0 +1,279 @@
+{
+  "total_score": 15,
+  "tier": "FAIL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 0,
+      "max": 25,
+      "datasets_beat": 0,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 0,
+      "max": 25,
+      "per_dataset": {
+        "gld_long": 2,
+        "xauusd_real": 2,
+        "xauusd_intraday": 2
+      },
+      "thresholds": {
+        "gld_long": 5,
+        "xauusd_real": 4,
+        "xauusd_intraday": 4
+      },
+      "cross_dataset_thresholds_met": false
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.9756719434215,
+      "cumulative_n_trials": 6
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "per_dataset": {
+        "gld_long": false,
+        "xauusd_real": false,
+        "xauusd_intraday": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "gld_long": true,
+        "xauusd_real": true,
+        "xauusd_intraday": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "gld_long": {
+      "sharpe": -0.04393319479744838,
+      "cagr": -0.006436726370191659,
+      "mdd": 0.3601833305177227,
+      "dsr_p_value": 0.9336107582263071
+    },
+    "xauusd_real": {
+      "sharpe": -0.23326262563237884,
+      "cagr": -0.021157044876655928,
+      "mdd": 0.20531903695217552,
+      "dsr_p_value": 0.9756719434215
+    },
+    "xauusd_intraday": {
+      "sharpe": -0.23254950013122588,
+      "cagr": -0.021104309537384625,
+      "mdd": 0.20531903695217552,
+      "dsr_p_value": 0.9755505157917806
+    }
+  },
+  "benchmarks_used": {
+    "gld_long": {
+      "sharpe": 0.6844,
+      "cagr": 0.11318,
+      "mdd": 0.4556,
+      "label": "GLD ETF b&h 2004-11-18\u21922026-04-15 (21.40y, daily)"
+    },
+    "xauusd_real": {
+      "sharpe": 1.0382,
+      "cagr": 0.19928,
+      "mdd": 0.2036,
+      "label": "XAUUSD spot b&h 2020-01-02\u21922026-04-17 (6.29y, daily)"
+    },
+    "xauusd_intraday": {
+      "sharpe": 1.1028,
+      "cagr": 0.20195,
+      "mdd": 0.2442,
+      "label": "XAUUSD spot b&h 2020-01-02\u21922026-04-17 (6.29y, 1h, 5119 bars/yr)"
+    }
+  },
+  "cumulative_n_trials": 6,
+  "configs_tested": 1,
+  "primary_citation": "[trading_systems_methods, p.479]",
+  "hypothesis_slug": "pre-fomc-drift",
+  "mean_hold_days": 4.0,
+  "hold_time_gate_pass": true,
+  "broker_track": "both",
+  "timeframes_used": [
+    "1d"
+  ],
+  "track_a_metrics": {
+    "gld_long": {
+      "sharpe": -0.04393319479744838,
+      "sharpe_periodic": -0.0027675311365382167,
+      "cagr": -0.006436726370191659,
+      "mdd": 0.3601833305177227,
+      "dsr_p_value": 0.9336107582263071,
+      "mean_hold_days": 4.0,
+      "n_trades": 171,
+      "n_swap_nights": 684,
+      "n_weekend_holds": 971,
+      "cost_summary": {
+        "track": "pepperstone_cfd",
+        "gross_total_pnl": 0.13882135954163155,
+        "spread_total_pnl": -0.1368,
+        "swap_total_pnl": -0.0752,
+        "fx_total_pnl": -0.0,
+        "darf_total_pnl": -0.0,
+        "net_total_pnl": -0.07317864045836836,
+        "total_turnover": 342.0,
+        "n_swap_nights": 684,
+        "n_weekend_holds": 971
+      }
+    },
+    "xauusd_real": {
+      "sharpe": -0.23326262563237884,
+      "sharpe_periodic": -0.014694164228315121,
+      "cagr": -0.021157044876655928,
+      "mdd": 0.20531903695217552,
+      "dsr_p_value": 0.9756719434215,
+      "mean_hold_days": 4.0,
+      "n_trades": 43,
+      "n_swap_nights": 172,
+      "n_weekend_holds": 8,
+      "cost_summary": {
+        "track": "pepperstone_cfd",
+        "gross_total_pnl": -0.06426458529004553,
+        "spread_total_pnl": -0.0344,
+        "swap_total_pnl": -0.0172,
+        "fx_total_pnl": -0.0,
+        "darf_total_pnl": -0.0,
+        "net_total_pnl": -0.11586458529004547,
+        "total_turnover": 86.0,
+        "n_swap_nights": 172,
+        "n_weekend_holds": 8
+      }
+    },
+    "xauusd_intraday": {
+      "sharpe": -0.23254950013122588,
+      "sharpe_periodic": -0.014649241544276334,
+      "cagr": -0.021104309537384625,
+      "mdd": 0.20531903695217552,
+      "dsr_p_value": 0.9755505157917806,
+      "mean_hold_days": 4.0,
+      "n_trades": 43,
+      "n_swap_nights": 172,
+      "n_weekend_holds": 8,
+      "cost_summary": {
+        "track": "pepperstone_cfd",
+        "gross_total_pnl": -0.06392210701494017,
+        "spread_total_pnl": -0.0344,
+        "swap_total_pnl": -0.0172,
+        "fx_total_pnl": -0.0,
+        "darf_total_pnl": -0.0,
+        "net_total_pnl": -0.1155221070149401,
+        "total_turnover": 86.0,
+        "n_swap_nights": 172,
+        "n_weekend_holds": 8
+      }
+    }
+  },
+  "track_b_metrics": {
+    "gld_long": {
+      "sharpe": -1.006011457231142,
+      "sharpe_periodic": -0.06337276504560221,
+      "cagr": -0.08081314313755195,
+      "mdd": 0.8365485045299509,
+      "n_trades": 171,
+      "cost_summary": {
+        "track": "inter_etf",
+        "gross_total_pnl": 0.13882135954163155,
+        "spread_total_pnl": -0.0,
+        "swap_total_pnl": -0.0,
+        "fx_total_pnl": -1.7100000000000002,
+        "darf_total_pnl": -0.16241184341307247,
+        "net_total_pnl": -1.733590483871441,
+        "total_turnover": 342.0,
+        "n_swap_nights": 0,
+        "n_weekend_holds": 0
+      },
+      "note": "GS-2 viable: ~8 trades/yr is well below the 15/yr cliff"
+    },
+    "xauusd_real": {
+      "sharpe": -0.9977140366619638,
+      "sharpe_periodic": -0.06285007668014132,
+      "cagr": -0.08152842213319156,
+      "mdd": 0.41423136689994156,
+      "n_trades": 43,
+      "cost_summary": {
+        "track": "inter_etf",
+        "gross_total_pnl": -0.06426458529004553,
+        "spread_total_pnl": -0.0,
+        "swap_total_pnl": -0.0,
+        "fx_total_pnl": -0.43000000000000005,
+        "darf_total_pnl": -0.02036160853100108,
+        "net_total_pnl": -0.5146261938210467,
+        "total_turnover": 86.0,
+        "n_swap_nights": 0,
+        "n_weekend_holds": 0
+      },
+      "note": "GS-2 viable: ~8 trades/yr is well below the 15/yr cliff"
+    },
+    "xauusd_intraday": {
+      "sharpe": -0.9970205138109792,
+      "sharpe_periodic": -0.06280638884699262,
+      "cagr": -0.08147855577755059,
+      "mdd": 0.4140313341319678,
+      "n_trades": 43,
+      "cost_summary": {
+        "track": "inter_etf",
+        "gross_total_pnl": -0.06392210701494017,
+        "spread_total_pnl": -0.0,
+        "swap_total_pnl": -0.0,
+        "fx_total_pnl": -0.43000000000000005,
+        "darf_total_pnl": -0.02036160853100108,
+        "net_total_pnl": -0.5142837155459413,
+        "total_turnover": 86.0,
+        "n_swap_nights": 0,
+        "n_weekend_holds": 0
+      },
+      "note": "GS-2 viable: ~8 trades/yr is well below the 15/yr cliff"
+    }
+  },
+  "pre_validation": {
+    "passed": true,
+    "n_events": 171,
+    "n_dropped_calendar": 7,
+    "n_dropped_window": 0,
+    "mean_4d_log_return": 0.001513658995023324,
+    "std_4d_log_return": 0.025901469185851806,
+    "t_stat": 0.7641906194910337,
+    "hit_rate": 0.52046783625731,
+    "bars_before": 2,
+    "bars_after": 1,
+    "min_events": 50,
+    "min_t_stat": 0.5,
+    "min_hit_rate": 0.5
+  },
+  "kill_criterion": {
+    "n_datasets_with_negative_track_a_sharpe": 3,
+    "n_datasets_with_positive_track_a_sharpe": 0,
+    "fired": true,
+    "implication": "If fired with pre-val passing: pre-FOMC drift exists on long-history gold but is regime-fragile on 2020+ Tiingo coverage (same closure pattern as GS-4/GS-5). Closes calendar-event signals as PRIMARY gold-entry triggers on the short xauusd window; OK as IC-7 secondary."
+  },
+  "ic7_composition_prep": {
+    "available": true,
+    "by_dataset": {
+      "gld_long": {
+        "correlation": 0.10869258456491687,
+        "n_common_bars": 5384
+      },
+      "xauusd_real": {
+        "correlation": 0.2823466565971823,
+        "n_common_bars": 1700
+      },
+      "xauusd_intraday": {
+        "correlation": 0.28471376903027085,
+        "n_common_bars": 1700
+      }
+    }
+  },
+  "status": "iterating"
+}

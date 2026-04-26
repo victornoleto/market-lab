@@ -1,0 +1,359 @@
+{
+  "total_score": 50,
+  "tier": "MARGINAL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 20,
+      "max": 25,
+      "datasets_beat": 2,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 15,
+      "max": 25,
+      "per_dataset": {
+        "gld_long": 4,
+        "xauusd_real": 7,
+        "xauusd_intraday": 7
+      },
+      "thresholds": {
+        "gld_long": 5,
+        "xauusd_real": 4,
+        "xauusd_intraday": 4
+      },
+      "cross_dataset_thresholds_met": false
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.274679478107261,
+      "cumulative_n_trials": 11
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "per_dataset": {
+        "gld_long": false,
+        "xauusd_real": false,
+        "xauusd_intraday": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "gld_long": true,
+        "xauusd_real": true,
+        "xauusd_intraday": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "gld_long": {
+      "sharpe": 0.48147609827286686,
+      "cagr": 0.04801964932872815,
+      "mdd": 0.462905601046747,
+      "dsr_p_value": 0.274679478107261
+    },
+    "xauusd_real": {
+      "sharpe": 1.4182598149178778,
+      "cagr": 0.14146616008727242,
+      "mdd": 0.1042656989717452,
+      "dsr_p_value": 0.018285313652072643
+    },
+    "xauusd_intraday": {
+      "sharpe": 1.59197205956755,
+      "cagr": 0.14241111912920323,
+      "mdd": 0.11092365292601139,
+      "dsr_p_value": 0.008948303245129186
+    }
+  },
+  "benchmarks_used": {
+    "gld_long": {
+      "sharpe": 0.6844,
+      "cagr": 0.11318,
+      "mdd": 0.4556,
+      "label": "GLD ETF b&h 2004-11-18\u21922026-04-15 (21.40y, daily)"
+    },
+    "xauusd_real": {
+      "sharpe": 1.0382,
+      "cagr": 0.19928,
+      "mdd": 0.2036,
+      "label": "XAUUSD spot b&h 2020-01-02\u21922026-04-17 (6.29y, daily)"
+    },
+    "xauusd_intraday": {
+      "sharpe": 1.1028,
+      "cagr": 0.20195,
+      "mdd": 0.2442,
+      "label": "XAUUSD spot b&h 2020-01-02\u21922026-04-17 (6.29y, 1h, 5119 bars/yr)"
+    }
+  },
+  "cumulative_n_trials": 11,
+  "configs_tested": 1,
+  "primary_citation": "[volatility_trading, p.58-59]",
+  "hypothesis_slug": "vol-regime-gate-inverse",
+  "mean_hold_days": 44.07579605391678,
+  "hold_time_gate_pass": false,
+  "broker_track": "both",
+  "timeframes_used": [
+    "1d",
+    "1h"
+  ],
+  "track_a_metrics": {
+    "gld_long": {
+      "sharpe": 0.48147609827286686,
+      "sharpe_periodic": 0.03033014329170717,
+      "cagr": 0.04801964932872815,
+      "mdd": 0.462905601046747,
+      "dsr_p_value": 0.274679478107261,
+      "mean_hold_days": 51.6,
+      "mean_hold_bars": 51.6,
+      "n_trades": 55,
+      "n_swap_nights": 2838,
+      "n_weekend_holds": 971,
+      "cost_summary": {
+        "track": "pepperstone_cfd",
+        "gross_total_pnl": 1.5645095341650335,
+        "spread_total_pnl": -0.044,
+        "swap_total_pnl": -0.3864000000000001,
+        "fx_total_pnl": -0.0,
+        "darf_total_pnl": -0.0,
+        "net_total_pnl": 1.1341095341650336,
+        "total_turnover": 110.0,
+        "n_swap_nights": 2838,
+        "n_weekend_holds": 971
+      },
+      "per_trade_gross_bps": 284.456278939097,
+      "per_trade_cost_bps": 78.25454545454546,
+      "per_trade_net_bps": 206.20173348455157
+    },
+    "xauusd_real": {
+      "sharpe": 1.4182598149178778,
+      "sharpe_periodic": 0.08934197058926663,
+      "cagr": 0.14146616008727242,
+      "mdd": 0.1042656989717452,
+      "dsr_p_value": 0.018285313652072643,
+      "mean_hold_days": 47.06666666666667,
+      "mean_hold_bars": 47.06666666666667,
+      "n_trades": 15,
+      "n_swap_nights": 706,
+      "n_weekend_holds": 8,
+      "cost_summary": {
+        "track": "pepperstone_cfd",
+        "gross_total_pnl": 0.9424200570997988,
+        "spread_total_pnl": -0.012,
+        "swap_total_pnl": -0.07100000000000001,
+        "fx_total_pnl": -0.0,
+        "darf_total_pnl": -0.0,
+        "net_total_pnl": 0.859420057099799,
+        "total_turnover": 30.0,
+        "n_swap_nights": 706,
+        "n_weekend_holds": 8
+      },
+      "per_trade_gross_bps": 628.2800380665325,
+      "per_trade_cost_bps": 55.333333333333336,
+      "per_trade_net_bps": 572.9467047331993
+    },
+    "xauusd_intraday": {
+      "sharpe": 1.59197205956755,
+      "sharpe_periodic": 0.022250658918728468,
+      "cagr": 0.14241111912920323,
+      "mdd": 0.11092365292601139,
+      "dsr_p_value": 0.008948303245129186,
+      "mean_hold_days": 44.07579605391678,
+      "mean_hold_bars": 895.3333333333334,
+      "n_trades": 15,
+      "n_swap_nights": 13430,
+      "n_weekend_holds": 8,
+      "cost_summary": {
+        "track": "pepperstone_cfd",
+        "gross_total_pnl": 0.9285169846297623,
+        "spread_total_pnl": -0.012,
+        "swap_total_pnl": -0.055975000000000004,
+        "fx_total_pnl": -0.0,
+        "darf_total_pnl": -0.0,
+        "net_total_pnl": 0.8605419846297634,
+        "total_turnover": 30.0,
+        "n_swap_nights": 13430,
+        "n_weekend_holds": 8
+      },
+      "per_trade_gross_bps": 619.0113230865081,
+      "per_trade_cost_bps": 45.31666666666667,
+      "per_trade_net_bps": 573.6946564198422
+    }
+  },
+  "track_b_metrics": {
+    "gld_long": {
+      "sharpe": 0.2157223159685616,
+      "sharpe_periodic": 0.013589228578564563,
+      "cagr": 0.017865280310846554,
+      "mdd": 0.5373425342115851,
+      "n_swap_nights": 0,
+      "cost_summary": {
+        "track": "inter_etf",
+        "gross_total_pnl": 1.5645095341650335,
+        "spread_total_pnl": -0.0,
+        "swap_total_pnl": -0.0,
+        "fx_total_pnl": -0.55,
+        "darf_total_pnl": -0.5040320122824153,
+        "net_total_pnl": 0.5104775218826179,
+        "total_turnover": 110.0,
+        "n_swap_nights": 0,
+        "n_weekend_holds": 0
+      }
+    },
+    "xauusd_real": {
+      "sharpe": 0.9958770770495028,
+      "sharpe_periodic": 0.06273435910149748,
+      "cagr": 0.09821847011091323,
+      "mdd": 0.14173931559818903,
+      "n_swap_nights": 0,
+      "cost_summary": {
+        "track": "inter_etf",
+        "gross_total_pnl": 0.9424200570997988,
+        "spread_total_pnl": -0.0,
+        "swap_total_pnl": -0.0,
+        "fx_total_pnl": -0.15000000000000002,
+        "darf_total_pnl": -0.1746224045628666,
+        "net_total_pnl": 0.6177976525369321,
+        "total_turnover": 30.0,
+        "n_swap_nights": 0,
+        "n_weekend_holds": 0
+      }
+    },
+    "xauusd_intraday": {
+      "note": "Track B not viable on intraday (T+1 settlement; daily-only)",
+      "sharpe": 0.0,
+      "cagr": 0.0,
+      "mdd": 0.0
+    }
+  },
+  "kill_criteria": {
+    "sharpes": {
+      "gld_long": 0.48147609827286686,
+      "xauusd_real": 1.4182598149178778,
+      "xauusd_intraday": 1.59197205956755
+    },
+    "primary_dataset": "xauusd_intraday",
+    "primary_negative": false,
+    "n_negative_datasets": 0,
+    "sharpe_kill_fired": false,
+    "sharpe_collapse_50_count": 0,
+    "sharpe_collapse_kill": false,
+    "mdd_breach_5pp_count": 0,
+    "mdd_kill_fired": false,
+    "inverted_vs_iter_010_count": 0,
+    "inverted_kill_fired": false
+  },
+  "pre_val": {
+    "gld_long": {
+      "p_active": 0.5271173848439822,
+      "n_active_bars": 2838,
+      "n_total_bars": 5384,
+      "mu_active_bps_per_bar": 5.053915612003576,
+      "mu_active_bps_per_yr_active": 1273.586734224901,
+      "n_flips": 110,
+      "n_flips_per_yr": 5.139102072141212,
+      "rt_per_yr": 2.569551036070606,
+      "span_yr": 21.404517453798768,
+      "spread_yr_bps": 20.55640828856485,
+      "swap_yr_bps": 192.3978454680535,
+      "cost_yr_bps": 212.95425375661836,
+      "p_active_pass": true,
+      "mu_pass": true,
+      "flips_pass": true,
+      "cost_pass": true,
+      "passed": true,
+      "reason": "passed all conditions"
+    },
+    "xauusd_real": {
+      "p_active": 0.4152941176470588,
+      "n_active_bars": 706,
+      "n_total_bars": 1700,
+      "mu_active_bps_per_bar": 12.960084432755668,
+      "mu_active_bps_per_yr_active": 3265.941277054428,
+      "n_flips": 30,
+      "n_flips_per_yr": 4.7703526338702655,
+      "rt_per_yr": 2.3851763169351328,
+      "span_yr": 6.288843258042436,
+      "spread_yr_bps": 19.081410535481062,
+      "swap_yr_bps": 151.58235294117648,
+      "cost_yr_bps": 170.66376347665755,
+      "p_active_pass": true,
+      "mu_pass": true,
+      "flips_pass": true,
+      "cost_pass": true,
+      "passed": true,
+      "reason": "passed all conditions"
+    },
+    "xauusd_intraday": {
+      "p_active": 0.4152941176470588,
+      "n_active_bars": 706,
+      "n_total_bars": 1700,
+      "mu_active_bps_per_bar": 12.960875196611042,
+      "mu_active_bps_per_yr_active": 3266.140549545982,
+      "n_flips": 30,
+      "n_flips_per_yr": 4.7703526338702655,
+      "rt_per_yr": 2.3851763169351328,
+      "span_yr": 6.288843258042436,
+      "spread_yr_bps": 19.081410535481062,
+      "swap_yr_bps": 151.58235294117648,
+      "cost_yr_bps": 170.66376347665755,
+      "p_active_pass": true,
+      "mu_pass": true,
+      "flips_pass": true,
+      "cost_pass": true,
+      "passed": true,
+      "reason": "passed all conditions"
+    }
+  },
+  "ic7_diagnostic": {
+    "gld_long": {
+      "n_bars": 5384,
+      "vs_iter_003": {
+        "available": true,
+        "rho": 0.10421323118043911,
+        "n_overlap": 5384
+      },
+      "vs_iter_010": {
+        "available": true,
+        "rho": -0.0003225098692541203,
+        "n_overlap": 5384
+      }
+    },
+    "xauusd_real": {
+      "n_bars": 1700,
+      "vs_iter_003": {
+        "available": true,
+        "rho": 0.09646777258327327,
+        "n_overlap": 1700
+      },
+      "vs_iter_010": {
+        "available": true,
+        "rho": -0.0006207825692777422,
+        "n_overlap": 1700
+      }
+    },
+    "xauusd_intraday": {
+      "n_bars": 32195,
+      "vs_iter_003": {
+        "available": true,
+        "rho": 0.0036931233598743165,
+        "n_overlap": 1401
+      },
+      "vs_iter_010": {
+        "available": true,
+        "rho": 0.00010641491302604718,
+        "n_overlap": 32195
+      }
+    }
+  },
+  "status": "iterating",
+  "auto_aborted_at_pre_val": false
+}

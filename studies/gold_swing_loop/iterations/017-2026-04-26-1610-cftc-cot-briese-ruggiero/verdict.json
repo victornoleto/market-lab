@@ -1,0 +1,122 @@
+{
+  "total_score": 28,
+  "tier": "NEAR_FAIL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "rules_version": "2026-04-26-relaxed-r1",
+    "declared_primary": "gld_long",
+    "declared_corroborating": [
+      "xauusd_real"
+    ],
+    "1_sharpe_edge": {
+      "points": 5,
+      "max": 25,
+      "primary_beat": false,
+      "corr_positive": 1
+    },
+    "2_gates": {
+      "points": 8,
+      "max": 25,
+      "primary_gates": 4,
+      "primary_threshold": 5,
+      "corr_relaxed_pass": 0
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "primary_p": 0.7317256378153172
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "primary_pass": false
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "primary_pass": true
+    },
+    "6_robustness": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "gld_long": {
+      "sharpe": 0.13694704177927236,
+      "cagr": 0.008338419183074208,
+      "mdd": 0.31818451311101026,
+      "dsr_p_value": 0.7317256378153172
+    },
+    "xauusd_real": {
+      "sharpe": 0.3099494875271179,
+      "cagr": 0.015104227864407571,
+      "mdd": 0.130325552437347,
+      "dsr_p_value": 0.6746028719156296
+    }
+  },
+  "benchmarks_used": {
+    "gld_long": {
+      "sharpe": 0.6844,
+      "cagr": 0.11318,
+      "mdd": 0.4556,
+      "label": "GLD ETF b&h 2004-11-18\u21922026-04-15 (21.40y, daily)"
+    },
+    "xauusd_real": {
+      "sharpe": 1.0382,
+      "cagr": 0.19928,
+      "mdd": 0.2036,
+      "label": "XAUUSD spot b&h 2020-01-02\u21922026-04-17 (6.29y, daily)"
+    }
+  },
+  "cumulative_n_trials": 17,
+  "iteration": "017",
+  "hypothesis_slug": "cftc-cot-briese-ruggiero",
+  "primary_citation": "[trading_systems_methods, p.639-640]",
+  "configs_tested": 1,
+  "cumulative_n_trials_after_iter": 17,
+  "broker_track": "pepperstone_cfd",
+  "universe": "single_xau",
+  "cost_path": "pep_cfd",
+  "hold_time_track_declared": "medium_swing",
+  "mean_hold_days_observed": 28.289473684210527,
+  "hold_time_gate_pass": true,
+  "kill_criteria": {
+    "1_n_trades_gte_10": true,
+    "2_sharpe_gte_0_30": false,
+    "3_rho_iter003_lt_0_50": true
+  },
+  "any_kill_criterion_fired": true,
+  "is_winner": false,
+  "timeframes_used": [
+    "weekly_cot",
+    "1d"
+  ],
+  "track_a_metrics": {
+    "gld_long": {
+      "sharpe": 0.13694704177927236,
+      "cagr": 0.008338419183074208,
+      "mdd": 0.31818451311101026,
+      "n_bars": 5384,
+      "n_trades": 38,
+      "mean_hold_days": 28.289473684210527,
+      "n_years": 21.365079365079364
+    },
+    "xauusd_real": {
+      "sharpe": 0.3099494875271179,
+      "cagr": 0.015104227864407571,
+      "mdd": 0.130325552437347,
+      "n_bars": 1700,
+      "n_trades": 9,
+      "mean_hold_days": 29.333333333333332,
+      "n_years": 6.746031746031746
+    }
+  },
+  "structural_orthogonality_finding": {
+    "rho_vs_iter003_rsi2_sma200_gld_long": 0.0026938757879585067,
+    "rho_vs_iter011_volregime_gld_long": 0.23727833701461631,
+    "rho_vs_iter015_dxy_trend_gld_long": 0.09972879007118093,
+    "rho_vs_iter003_rsi2_sma200_xauusd_real": -0.00022068914482510854
+  },
+  "status": "iterating"
+}

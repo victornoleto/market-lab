@@ -1,0 +1,41 @@
+{
+  "gld_long": {
+    "p_active": 0.3603268945022288,
+    "n_active_bars": 1940,
+    "n_total_bars": 5384,
+    "n_flips": 31,
+    "mu_active_bps_per_bar": 3.7002582465823743,
+    "span_yr": 21.404517453798768,
+    "p_active_pass": true,
+    "mu_pass": true,
+    "flips_pass": true,
+    "passed": true,
+    "reason": "passed all conditions"
+  },
+  "xauusd_real": {
+    "p_active": 0.42764705882352944,
+    "n_active_bars": 727,
+    "n_total_bars": 1700,
+    "n_flips": 11,
+    "mu_active_bps_per_bar": 3.958050614157033,
+    "span_yr": 6.288843258042436,
+    "p_active_pass": true,
+    "mu_pass": true,
+    "flips_pass": true,
+    "passed": true,
+    "reason": "passed all conditions"
+  },
+  "xauusd_intraday": {
+    "p_active": 0.4282031371330952,
+    "n_active_bars": 13786,
+    "n_total_bars": 32195,
+    "n_flips": 11,
+    "mu_active_bps_per_bar": 0.20776610529776723,
+    "span_yr": 6.288843258042436,
+    "p_active_pass": true,
+    "mu_pass": true,
+    "flips_pass": true,
+    "passed": true,
+    "reason": "passed all conditions"
+  }
+}

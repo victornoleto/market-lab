@@ -1,0 +1,11 @@
+{
+  "n_events": 1940,
+  "mean_fwd_log_return": 0.00017646087597877273,
+  "std_fwd_log_return": 0.011650994219397939,
+  "t_stat": 0.6670928855372935,
+  "hit_rate": 0.5530927835051547,
+  "min_fwd": -0.07490103773385925,
+  "max_fwd": 0.08750418801490056,
+  "passed": true,
+  "reason": "passed all directional checks"
+}

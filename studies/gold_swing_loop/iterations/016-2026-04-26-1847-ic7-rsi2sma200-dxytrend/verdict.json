@@ -1,0 +1,168 @@
+{
+  "total_score": 35,
+  "tier": "NEAR_FAIL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "rules_version": "2026-04-26-relaxed-r1",
+    "declared_primary": "xauusd_intraday",
+    "declared_corroborating": [
+      "gld_long",
+      "xauusd_real"
+    ],
+    "1_sharpe_edge": {
+      "points": 5,
+      "max": 25,
+      "primary_beat": false,
+      "corr_positive": 2
+    },
+    "2_gates": {
+      "points": 15,
+      "max": 25,
+      "primary_gates": 4,
+      "primary_threshold": 4,
+      "corr_relaxed_pass": 0
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "primary_p": 0.7844088973527134
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "primary_pass": false
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "primary_pass": true
+    },
+    "6_robustness": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "gld_long": {
+      "sharpe": 0.35526350933087725,
+      "cagr": 0.015277364212263889,
+      "mdd": 0.16543835680525584,
+      "dsr_p_value": 0.5618940359973817
+    },
+    "xauusd_real": {
+      "sharpe": 0.3460266631398137,
+      "cagr": 0.019207492958231986,
+      "mdd": 0.1277617512549821,
+      "dsr_p_value": 0.8112932928561918
+    },
+    "xauusd_intraday": {
+      "sharpe": 0.38122374681799814,
+      "cagr": 0.019196990043468753,
+      "mdd": 0.12000484761983912,
+      "dsr_p_value": 0.7844088973527134
+    }
+  },
+  "benchmarks_used": {
+    "gld_long": {
+      "sharpe": 0.6844,
+      "cagr": 0.11318,
+      "mdd": 0.4556,
+      "label": "GLD ETF b&h 2004-11-18\u21922026-04-15 (21.40y, daily)"
+    },
+    "xauusd_real": {
+      "sharpe": 1.0382,
+      "cagr": 0.19928,
+      "mdd": 0.2036,
+      "label": "XAUUSD spot b&h 2020-01-02\u21922026-04-17 (6.29y, daily)"
+    },
+    "xauusd_intraday": {
+      "sharpe": 1.1028,
+      "cagr": 0.20195,
+      "mdd": 0.2442,
+      "label": "XAUUSD spot b&h 2020-01-02\u21922026-04-17 (6.29y, 1h, 5119 bars/yr)"
+    }
+  },
+  "cumulative_n_trials": 16,
+  "configs_tested": 1,
+  "primary_citation": "[advances_fin_ml, p.222-223]",
+  "hypothesis_slug": "ic7-rsi2sma200-dxytrend-intra-primary",
+  "mean_hold_days": 37.904761904761905,
+  "hold_time_gate_pass": false,
+  "declared_hold_track": "medium_swing",
+  "declared_primary": "xauusd_intraday",
+  "declared_corroborating": [
+    "gld_long",
+    "xauusd_real"
+  ],
+  "broker_track": "pepperstone_cfd",
+  "timeframes_used": [
+    "1d"
+  ],
+  "track_a_metrics": {
+    "gld_long": {
+      "sharpe": 0.35526350933087725,
+      "sharpe_periodic": 0.022379497513942283,
+      "cagr": 0.015277364212263889,
+      "mdd": 0.16543835680525584,
+      "dsr_p_value": 0.5618940359973817
+    },
+    "xauusd_real": {
+      "sharpe": 0.3460266631398137,
+      "sharpe_periodic": 0.021797630896796844,
+      "cagr": 0.019207492958231986,
+      "mdd": 0.1277617512549821,
+      "dsr_p_value": 0.8112932928561918
+    },
+    "xauusd_intraday": {
+      "sharpe": 0.38122374681799814,
+      "sharpe_periodic": 0.024014838760777955,
+      "cagr": 0.019196990043468753,
+      "mdd": 0.12000484761983912,
+      "dsr_p_value": 0.7844088973527134
+    }
+  },
+  "track_b_metrics": {
+    "note": "Track B not computed \u2014 composition primary track is A; Track B per-stream values exist in iter 003 + iter 015 verdicts."
+  },
+  "weights_per_ds": {
+    "gld_long": {
+      "w_iter_015": 0.22282729428304066,
+      "w_iter_003": 0.7771727057169593,
+      "method": "markowitz_tangency_full_sample",
+      "clamped_to_corner": false
+    },
+    "xauusd_real": {
+      "w_iter_015": 0.4023584617521835,
+      "w_iter_003": 0.5976415382478165,
+      "method": "markowitz_tangency_full_sample",
+      "clamped_to_corner": false
+    },
+    "xauusd_intraday": {
+      "w_iter_015": 0.3350761043701265,
+      "w_iter_003": 0.6649238956298735,
+      "method": "markowitz_tangency_full_sample",
+      "clamped_to_corner": false
+    }
+  },
+  "rho_per_ds": {
+    "gld_long": 0.16979737499786343,
+    "xauusd_real": 0.21755486974682517,
+    "xauusd_intraday": 0.22017183747643845
+  },
+  "kill_criteria": {
+    "primary_dsr_p": 0.7844088973527134,
+    "gld_dsr_p": 0.5618940359973817,
+    "dsr_no_progress_kill_threshold": 0.2,
+    "dsr_no_progress_kill_fired": true,
+    "primary_sharpe": 0.38122374681799814,
+    "sharpe_ceiling_threshold": 0.5,
+    "sharpe_ceiling_confirmed": true,
+    "primary_rho": 0.22017183747643845,
+    "correlation_drift_threshold_abs": 0.2,
+    "correlation_drift_kill_fired": true,
+    "expected_rho_from_iter_015_diagnostic": -0.07
+  },
+  "status": "iterating",
+  "auto_aborted_at_pre_val": false,
+  "rules_version": "2026-04-26-relaxed-r1"
+}

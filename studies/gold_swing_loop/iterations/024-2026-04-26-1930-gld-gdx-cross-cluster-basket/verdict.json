@@ -1,0 +1,119 @@
+{
+  "total_score": 30,
+  "tier": "NEAR_FAIL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "rules_version": "2026-04-26-relaxed-r1",
+    "declared_primary": "gld_gdx_basket_long",
+    "declared_corroborating": [
+      "xau_gdx_basket"
+    ],
+    "1_sharpe_edge": {
+      "points": 0,
+      "max": 25,
+      "primary_beat": false,
+      "corr_positive": 0
+    },
+    "2_gates": {
+      "points": 15,
+      "max": 25,
+      "primary_gates": 4,
+      "primary_threshold": 4,
+      "corr_relaxed_pass": 0
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "primary_p": 0.8602340736156677
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "primary_pass": false
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "primary_pass": true
+    },
+    "6_robustness": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "gld_gdx_basket_long": {
+      "sharpe": 0.2022096421588767,
+      "cagr": 0.008516829008462956,
+      "mdd": 0.13944285181442834,
+      "dsr_p_value": 0.8602340736156677
+    },
+    "xau_gdx_basket": {
+      "sharpe": -0.10635383446423943,
+      "cagr": -0.004475903918245483,
+      "mdd": 0.10331322941578794,
+      "dsr_p_value": 0.9879872740023447
+    }
+  },
+  "benchmarks_used": {
+    "gld_gdx_basket_long": {
+      "sharpe": 0.46946663946338524,
+      "cagr": 0.09149539952107788,
+      "mdd": 0.6167552158811443,
+      "label": "basket 60/40 buy-hold gld_gdx_basket_long"
+    },
+    "xau_gdx_basket": {
+      "sharpe": 0.964151127401168,
+      "cagr": 0.2143731231553183,
+      "mdd": 0.3164335092546202,
+      "label": "basket 60/40 buy-hold xau_gdx_basket"
+    }
+  },
+  "cumulative_n_trials": 24,
+  "configs_tested": 1,
+  "primary_citation": "[risk_parity, ch.7]",
+  "hypothesis_slug": "cross-cluster-gld-gdx-basket",
+  "mean_hold_days": 4.9125,
+  "hold_time_gate_pass": true,
+  "broker_track": "pepperstone_cfd",
+  "timeframes_used": [
+    "1d"
+  ],
+  "universe": "gold_complex",
+  "weights": {
+    "gold": 0.6,
+    "gdx": 0.4
+  },
+  "track_a_metrics": {
+    "gld_gdx_basket_long": {
+      "sharpe": 0.2022096421588767,
+      "cagr": 0.008516829008462956,
+      "mdd": 0.13944285181442834
+    },
+    "xau_gdx_basket": {
+      "sharpe": -0.10635383446423943,
+      "cagr": -0.004475903918245483,
+      "mdd": 0.10331322941578794
+    }
+  },
+  "kills": {
+    "primary_sharpe": 0.2022096421588767,
+    "iter003_gld_sharpe_baseline": 0.3,
+    "sh_lift_vs_iter003": -0.09779035784112328,
+    "ic6_rolling_v_iter003_pct": 94.94729189385677,
+    "ic6_rolling_v_iter011_pct": 27.3943661971831,
+    "primary_dsr_p_value": 0.8602340736156677,
+    "primary_g6_bootstrap_pass": false,
+    "primary_g6_ci_lo": -0.45434742865341166,
+    "kills": {
+      "kill_1_sh_lt_0_30": true,
+      "kill_2_sh_lift_lt_0_05": true,
+      "kill_3_ic6_rho_v003_gt_80pct": true,
+      "kill_4_g6_boot_fail": true,
+      "kill_3b_ic6_rho_v011_gt_30pct": false,
+      "kill_5_dsr_p_gt_0_30": true
+    },
+    "n_kills_fired": 5
+  },
+  "status": "iterating"
+}

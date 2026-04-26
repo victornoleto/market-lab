@@ -1,0 +1,190 @@
+{
+  "total_score": 50,
+  "tier": "MARGINAL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 20,
+      "max": 25,
+      "datasets_beat": 2,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 15,
+      "max": 25,
+      "per_dataset": {
+        "gld_long": 4,
+        "xauusd_real": 7,
+        "xauusd_intraday": 7
+      },
+      "thresholds": {
+        "gld_long": 5,
+        "xauusd_real": 4,
+        "xauusd_intraday": 4
+      },
+      "cross_dataset_thresholds_met": false
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "worst_p_value": 0.2013159813460108,
+      "cumulative_n_trials": 12
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "per_dataset": {
+        "gld_long": false,
+        "xauusd_real": false,
+        "xauusd_intraday": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "gld_long": true,
+        "xauusd_real": true,
+        "xauusd_intraday": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "gld_long": {
+      "sharpe": 0.5424408691478007,
+      "cagr": 0.028718880178300044,
+      "mdd": 0.2511315896402539,
+      "dsr_p_value": 0.2013159813460108
+    },
+    "xauusd_real": {
+      "sharpe": 1.4193643739057407,
+      "cagr": 0.1285537392806977,
+      "mdd": 0.09465538861309397,
+      "dsr_p_value": 0.020154111721614187
+    },
+    "xauusd_intraday": {
+      "sharpe": 1.4238066373530707,
+      "cagr": 0.11807921147013256,
+      "mdd": 0.08780272032693472,
+      "dsr_p_value": 0.02015457814991939
+    }
+  },
+  "benchmarks_used": {
+    "gld_long": {
+      "sharpe": 0.6844,
+      "cagr": 0.11318,
+      "mdd": 0.4556,
+      "label": "GLD ETF b&h 2004-11-18\u21922026-04-15 (21.40y, daily)"
+    },
+    "xauusd_real": {
+      "sharpe": 1.0382,
+      "cagr": 0.19928,
+      "mdd": 0.2036,
+      "label": "XAUUSD spot b&h 2020-01-02\u21922026-04-17 (6.29y, daily)"
+    },
+    "xauusd_intraday": {
+      "sharpe": 1.1028,
+      "cagr": 0.20195,
+      "mdd": 0.2442,
+      "label": "XAUUSD spot b&h 2020-01-02\u21922026-04-17 (6.29y, 1h, 5119 bars/yr)"
+    }
+  },
+  "cumulative_n_trials": 12,
+  "configs_tested": 1,
+  "primary_citation": "[advances_fin_ml, p.222-223]",
+  "hypothesis_slug": "ic7-rsi2-volregime-composition",
+  "mean_hold_days": 37.08496791868358,
+  "hold_time_gate_pass": false,
+  "broker_track": "pepperstone_cfd",
+  "timeframes_used": [
+    "1d"
+  ],
+  "track_a_metrics": {
+    "gld_long": {
+      "sharpe": 0.5424408691478007,
+      "sharpe_periodic": 0.034170562874352606,
+      "cagr": 0.028718880178300044,
+      "mdd": 0.2511315896402539,
+      "dsr_p_value": 0.2013159813460108
+    },
+    "xauusd_real": {
+      "sharpe": 1.4193643739057407,
+      "sharpe_periodic": 0.08941155126522583,
+      "cagr": 0.1285537392806977,
+      "mdd": 0.09465538861309397,
+      "dsr_p_value": 0.020154111721614187
+    },
+    "xauusd_intraday": {
+      "sharpe": 1.4238066373530707,
+      "sharpe_periodic": 0.0896913875590322,
+      "cagr": 0.11807921147013256,
+      "mdd": 0.08780272032693472,
+      "dsr_p_value": 0.02015457814991939
+    }
+  },
+  "track_b_metrics": {
+    "note": "Track B not computed in iter 012 \u2014 composition primary track is A; Track B per-stream values exist in iter 003 + iter 011 verdicts."
+  },
+  "weights_per_ds": {
+    "gld_long": {
+      "w_iter_011": 0.41946035447376484,
+      "w_iter_003": 0.5805396455262352,
+      "method": "markowitz_tangency_full_sample",
+      "clamped_to_corner": false
+    },
+    "xauusd_real": {
+      "w_iter_011": 0.9064327905074272,
+      "w_iter_003": 0.09356720949257279,
+      "method": "markowitz_tangency_full_sample",
+      "clamped_to_corner": false
+    },
+    "xauusd_intraday": {
+      "w_iter_011": 0.8265551182415964,
+      "w_iter_003": 0.17344488175840345,
+      "method": "markowitz_tangency_full_sample",
+      "clamped_to_corner": false
+    }
+  },
+  "rho_per_ds": {
+    "gld_long": 0.10421323118043911,
+    "xauusd_real": 0.09646777258327327,
+    "xauusd_intraday": 0.09125550724875191
+  },
+  "kill_criteria": {
+    "composition_sharpes": {
+      "gld_long": 0.5424408691478007,
+      "xauusd_real": 1.4193643739057407,
+      "xauusd_intraday": 1.4238066373530707
+    },
+    "iter_011_sharpes": {
+      "gld_long": 0.4815,
+      "xauusd_real": 1.4183,
+      "xauusd_intraday": 1.592
+    },
+    "composition_dsr_p": {
+      "gld_long": 0.2013159813460108,
+      "xauusd_real": 0.020154111721614187,
+      "xauusd_intraday": 0.02015457814991939
+    },
+    "iter_011_dsr_p": {
+      "gld_long": 0.275,
+      "xauusd_real": 0.018,
+      "xauusd_intraday": 0.009
+    },
+    "value_destruction_count": 1,
+    "value_destruction_kill": false,
+    "gld_dsr_passed_under_005": false,
+    "xauusd_real_dsr_degraded_by_020": false,
+    "dsr_no_progress_kill": false,
+    "weights_clamped_count": 0,
+    "total_gates": 18,
+    "gate_collapse_kill": false
+  },
+  "status": "iterating",
+  "auto_aborted_at_pre_val": false
+}

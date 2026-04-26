@@ -1,0 +1,19 @@
+{
+  "config_id": "dxy_zscore_recovery_5d_hold",
+  "status": "aborted",
+  "reason": "pre_validation_screen_failed",
+  "pre_validation": {
+    "passed": "False",
+    "n_events": 51,
+    "mean_5d_log_return": -0.0051963461244673706,
+    "std_5d_log_return": 0.019779528537460848,
+    "t_stat": -1.8761485577139834,
+    "hit_rate": 0.45098039215686275,
+    "z_threshold": -1.0,
+    "forward_days": 5,
+    "min_events": 20,
+    "min_t_stat": 0.5,
+    "min_hit_rate": 0.5
+  },
+  "cumulative_n_trials": 5
+}

@@ -1,0 +1,145 @@
+{
+  "total_score": 35,
+  "tier": "NEAR_FAIL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "rules_version": "2026-04-26-relaxed-r1",
+    "declared_primary": "gld_long",
+    "declared_corroborating": [
+      "xauusd_real"
+    ],
+    "1_sharpe_edge": {
+      "points": 5,
+      "max": 25,
+      "primary_beat": false,
+      "corr_positive": 1
+    },
+    "2_gates": {
+      "points": 15,
+      "max": 25,
+      "primary_gates": 5,
+      "primary_threshold": 5,
+      "corr_relaxed_pass": 0
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "primary_p": 0.405470190925163
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "primary_pass": false
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "primary_pass": true
+    },
+    "6_robustness": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "gld_long": {
+      "sharpe": 0.45836936621688384,
+      "cagr": 0.01942392855661179,
+      "mdd": 0.09555812183635717,
+      "dsr_p_value": 0.405470190925163
+    },
+    "xauusd_real": {
+      "sharpe": 0.3464223204965337,
+      "cagr": 0.01180402253902657,
+      "mdd": 0.08326464035393066,
+      "dsr_p_value": 0.8359087337768922
+    }
+  },
+  "benchmarks_used": {
+    "gld_long": {
+      "sharpe": 0.6844,
+      "cagr": 0.11318,
+      "mdd": 0.4556,
+      "label": "GLD ETF b&h 2004-11-18\u21922026-04-15 (21.40y, daily)"
+    },
+    "xauusd_real": {
+      "sharpe": 1.0382,
+      "cagr": 0.19928,
+      "mdd": 0.2036,
+      "label": "XAUUSD spot b&h 2020-01-02\u21922026-04-17 (6.29y, daily)"
+    }
+  },
+  "cumulative_n_trials": 19,
+  "configs_tested": 1,
+  "primary_citation": "[advances_fin_ml, p.222-223]",
+  "hypothesis_slug": "ic7-rsi2sma200-cotzscore",
+  "mean_hold_days": 12.63985550603438,
+  "hold_time_gate_pass": true,
+  "broker_track": "pepperstone_cfd",
+  "timeframes_used": [
+    "1d"
+  ],
+  "track_a_metrics": {
+    "gld_long": {
+      "sharpe": 0.45836936621688384,
+      "sharpe_periodic": 0.02887455599095633,
+      "cagr": 0.01942392855661179,
+      "mdd": 0.09555812183635717,
+      "dsr_p_value": 0.405470190925163
+    },
+    "xauusd_real": {
+      "sharpe": 0.3464223204965337,
+      "sharpe_periodic": 0.02182255496751766,
+      "cagr": 0.01180402253902657,
+      "mdd": 0.08326464035393066,
+      "dsr_p_value": 0.8359087337768922
+    }
+  },
+  "track_b_metrics": {
+    "note": "Track B not modelled in iter 019 (composition primary track is A). Both component streams already net of Pepperstone CFD costs."
+  },
+  "weights_per_ds": {
+    "gld_long": {
+      "w_iter_003": 0.6447319907590197,
+      "w_iter_018": 0.3552680092409804,
+      "method": "markowitz_tangency_full_sample",
+      "clamped_to_corner": false
+    },
+    "xauusd_real": {
+      "w_iter_003": 0.5286694461375152,
+      "w_iter_018": 0.4713305538624847,
+      "method": "markowitz_tangency_full_sample",
+      "clamped_to_corner": false
+    }
+  },
+  "rho_per_ds": {
+    "gld_long": 0.01336232020972404,
+    "xauusd_real": 0.004319324899858351
+  },
+  "kill_criteria": {
+    "kill_value_destruction": false,
+    "combined_sharpe_primary": 0.45836936621688384,
+    "best_component_sharpe": 0.35163936897209225,
+    "kill_weight_collapse": false,
+    "weights_primary": {
+      "w_iter_003": 0.6447319907590197,
+      "w_iter_018": 0.3552680092409804
+    },
+    "kill_dsr_no_progress": true,
+    "primary_dsr_p": 0.405470190925163,
+    "kill_pre_val_rolling_rho": false,
+    "pre_val_diag": {
+      "rolling_rho_window": 60,
+      "rolling_rho_limit": 0.3,
+      "exceed_frac_limit": 0.2,
+      "exceed_n": 32,
+      "exceed_total": 2191,
+      "exceed_frac": 0.01460520310360566,
+      "pass": true
+    },
+    "any_kill": true
+  },
+  "status": "iterating",
+  "auto_aborted_at_pre_val": false,
+  "rules_version": "2026-04-26-relaxed-r1"
+}

@@ -1,0 +1,174 @@
+{
+  "total_score": 35,
+  "tier": "NEAR_FAIL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "rules_version": "2026-04-26-relaxed-r1",
+    "declared_primary": "gld_long",
+    "declared_corroborating": [
+      "xauusd_real"
+    ],
+    "1_sharpe_edge": {
+      "points": 5,
+      "max": 25,
+      "primary_beat": false,
+      "corr_positive": 1
+    },
+    "2_gates": {
+      "points": 15,
+      "max": 25,
+      "primary_gates": 5,
+      "primary_threshold": 5,
+      "corr_relaxed_pass": 0
+    },
+    "3_dsr": {
+      "points": 0,
+      "max": 15,
+      "primary_p": 0.35443514746258464
+    },
+    "4_cagr_floor": {
+      "points": 0,
+      "max": 15,
+      "primary_pass": false
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "primary_pass": true
+    },
+    "6_robustness": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "gld_long": {
+      "sharpe": 0.35163936897209225,
+      "cagr": 0.02916356115562091,
+      "mdd": 0.25298820490224727,
+      "dsr_p_value": 0.35443514746258464
+    },
+    "xauusd_real": {
+      "sharpe": 0.2887312608882009,
+      "cagr": 0.015305033244293886,
+      "mdd": 0.16045520359515741,
+      "dsr_p_value": 0.695577736341026
+    }
+  },
+  "benchmarks_used": {
+    "gld_long": {
+      "sharpe": 0.6844,
+      "cagr": 0.11318,
+      "mdd": 0.4556,
+      "label": "GLD ETF b&h 2004-11-18\u21922026-04-15 (21.40y, daily)"
+    },
+    "xauusd_real": {
+      "sharpe": 1.0382,
+      "cagr": 0.19928,
+      "mdd": 0.2036,
+      "label": "XAUUSD spot b&h 2020-01-02\u21922026-04-17 (6.29y, daily)"
+    }
+  },
+  "cumulative_n_trials": 18,
+  "configs_tested": 1,
+  "primary_citation": "[trading_systems_methods, p.639-640]",
+  "secondary_citations": [
+    "[advances_fin_ml, p.222-223]",
+    "[advances_fin_ml, p.31-34]",
+    "de Roon, Nijman, Veld (2000) J Finance \u2014 z-score commercial net positioning"
+  ],
+  "hypothesis_slug": "cot_zscore_variant_long_zentry_pos1_zexit_zero_window156w_lag1_max30d",
+  "mean_hold_days": {
+    "gld_long": 28.41304347826087,
+    "xauusd_real": 30.0
+  },
+  "hold_time_track_declared": "medium_swing",
+  "hold_time_gate_pass": true,
+  "broker_track": "pepperstone_cfd",
+  "timeframes_used": [
+    "1d"
+  ],
+  "track_a_metrics": {
+    "gld_long": {
+      "sharpe": 0.35163936897209225,
+      "cagr": 0.02916356115562091,
+      "mdd": 0.25298820490224727,
+      "n_bars": 5384,
+      "n_trades": 46,
+      "mean_hold_days": 28.41304347826087,
+      "n_years": 21.365079365079364
+    },
+    "xauusd_real": {
+      "sharpe": 0.2887312608882009,
+      "cagr": 0.015305033244293886,
+      "mdd": 0.16045520359515741,
+      "n_bars": 1700,
+      "n_trades": 11,
+      "mean_hold_days": 30.0,
+      "n_years": 6.746031746031746
+    }
+  },
+  "track_b_metrics": null,
+  "rules_version": "2026-04-26-relaxed-r1",
+  "winner_final": false,
+  "kill_criteria_pre_committed": {
+    "kill_1_catastrophic_sh_le_0_gld": false,
+    "kill_2_no_progress_gld_le_0_3_AND_xau_le_0_4": false,
+    "kill_3_hold_mismatch": false
+  },
+  "correlation_diagnostic": {
+    "gld_long": {
+      "iter003_rsi2_sma200": {
+        "ref_iter": "iter003_rsi2_sma200",
+        "available": true,
+        "n_common": 5384,
+        "rho": 0.01336232020972404
+      },
+      "iter011_volregime": {
+        "ref_iter": "iter011_volregime",
+        "available": true,
+        "n_common": 5384,
+        "rho": 0.27069837130718416
+      },
+      "iter015_dxy_trend": {
+        "ref_iter": "iter015_dxy_trend",
+        "available": true,
+        "n_common": 5384,
+        "rho": 0.08688698065382969
+      },
+      "iter017_cot_briese": {
+        "ref_iter": "iter017_cot_briese",
+        "available": true,
+        "n_common": 5384,
+        "rho": 0.7994290895758843
+      }
+    },
+    "xauusd_real": {
+      "iter003_rsi2_sma200": {
+        "ref_iter": "iter003_rsi2_sma200",
+        "available": true,
+        "n_common": 1700,
+        "rho": 0.00431932489985835
+      },
+      "iter011_volregime": {
+        "ref_iter": "iter011_volregime",
+        "available": true,
+        "n_common": 1700,
+        "rho": 0.30465951950520864
+      },
+      "iter015_dxy_trend": {
+        "ref_iter": "iter015_dxy_trend",
+        "available": true,
+        "n_common": 1700,
+        "rho": 0.0450416944849754
+      },
+      "iter017_cot_briese": {
+        "ref_iter": "iter017_cot_briese",
+        "available": true,
+        "n_common": 1700,
+        "rho": 0.8483014921665769
+      }
+    }
+  },
+  "structural_insight": "z-score variant lifts canonical Briese gld_long Sh from +0.137 (iter 017) to +0.352 (+0.215). MDD also reduced 31.8% \u2192 25.3%. Standalone still trails buy-hold by Sh \u0394 \u22120.43. \u03c1 vs iter 017 canonical Briese = +0.80 on gld_long \u2192 same family confirmed. \u03c1 vs iter 003 RSI = +0.013 on gld_long \u2192 COT-positioning orthogonality to RSI confirmed at 2nd measurement."
+}
