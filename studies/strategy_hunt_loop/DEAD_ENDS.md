@@ -5711,3 +5711,163 @@ Equal-weight blend of two single-asset Faber-trend legs (GLD + TLT), each with S
 - `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
 - `[advances_fin_ml, p.162-164]` — T-1 lag (no look-ahead) discipline.
 - iter 075 final report — full 7-cfg score grid + per-cfg gates + KILL detail.
+
+---
+
+## Iter 076 — iter 064 + LEG-LEVERED GLD/TLT trend sleeve ensemble (CLOSED 2026-04-25 → 2026-04-26 at 85 STRONG, 4/5 winner conds, 1/7 KILL B)
+
+**Hypothesis tested.** Mechanical fix for iter 075's CAGR-floor gap:
+sweep sleeve target_vol up to 0.30 with leg_cap=3.0 and honest leg-
+level borrow drag at 4.5%/yr. 4 target_vol × 5 w_sleeve = 20 cfgs.
+Pre-committed prediction: borrow-Sharpe identity from
+`[leverage_for_the_long_run, ch.5]` says levered sleeve Sharpe drops
+from ~0.50 → ~0.30, combined CAGR likely still fails 11.98% spy floor.
+
+**What the test established.** Best cfg `iter076_lev_tv015_w015`
+(target_vol=0.15, w_sleeve=0.15, leg_cap=3.0, borrow_rate=0.045) scored
+85 STRONG (v2 native per-iter DSR with n_trials=20). 4 of 5 strict
+winner conditions met (Sharpe edge ✓, gates 7/7/7 ✓, DSR p=1.45e-5 ✓,
+MDD 3/3 ✓; CAGR floor 0/3 ✗). 6 of 7 pre-committed kills clean; only
+KILL B fired (sleeve gross CAGR ≤ 6% at tv=0.30 on 3/3 datasets =
+5.45 / 3.94 / 2.65% on edu / spy / ndx).
+
+**Key empirical findings.**
+
+1. **Borrow-Sharpe identity vindicated.** Sleeve gross-of-borrow CAGR
+   scaling vs unlevered iter 075 baseline:
+   - tv=0.10 (iter 075 unlevered): edu 3.28% / spy 2.78% / ndx 2.33%
+   - tv=0.30 (iter 076 levered, 3× nominal): edu 5.45% / spy 3.94% /
+     ndx 2.65%
+   - **Effective scaling: 1.7× / 1.4× / 1.1×** — far below the 3× ratio
+     implied by 3× leverage on a Sharpe-preserving primitive.
+   - Borrow drag eats ~50-65% of the leverage benefit at retail-margin
+     4.5%/yr on a Sharpe-0.5 sleeve.
+
+2. **Combined Sharpe does NOT regress on best cfg.** Δ_064 = +0.010 /
+   −0.006 / −0.028 on edu / spy / ndx. None of the 3 datasets cross
+   the −0.05 KILL C threshold; KILL C requires ≥ 2 ds. The diversifi-
+   cation benefit from low ρ (0.24 spy, same as iter 075) DOES survive
+   leg-level borrow charge at low w_sleeve (0.15).
+
+3. **Wider 4×5 grid solves PBO/gate axes.** PBO grid-level dropped from
+   iter 075's 0.86 / 0.60 / 0.46 to **0.048 / 0.000 / 0.000** (18×
+   improvement on edu). Best cfg gates lifted from 6/6/7 (iter 075) to
+   **7/7/7** — first cross-dataset perfect-gates outcome on any iter-064-
+   anchored ensemble in the hunt loop. The +4 score lift over iter 075
+   is FROM grid-design improvement, NOT from the leverage hypothesis.
+
+4. **CAGR floor still fails 0/3.** Best combined CAGR 8.80 / 9.10 /
+   9.15% — slightly closer to floors 9.18 / 11.98 / 15.35% than iter
+   075 (8.58 / 8.91 / 9.01%) but still all 3 below floor. **No
+   combination of (target_vol ∈ [0.15, 0.30], w_sleeve ∈ [0.15, 0.50])
+   clears the spy_real CAGR floor**, vindicating the pre-committed
+   prediction.
+
+5. **G7 cross-lib = 0 pp on all 20 cfgs × 3 datasets** (max
+   |Δreturn| < 1e-9 element-wise vs pure-numpy reference). 23/23 TDD
+   tests pass. Markowitz residual = 0 (linear-blend math exact).
+
+**Why the leverage axis is now closed for iter-064-anchored ensembles.**
+
+The pre-committed math from `[leverage_for_the_long_run, ch.5]` says:
+
+```
+Sharpe_post_borrow ≈ S_pre - (lev - 1) × spread / σ_T × t_in_position
+```
+
+For S_pre ≈ 0.50, lev = 2.5 (target_vol = 0.25), spread = 0.045,
+σ_T = 0.25, t_in_position ≈ 0.7:
+
+```
+Sharpe_post ≈ 0.50 - (2.5 - 1) × 0.045 / 0.25 × 0.7 ≈ 0.31
+```
+
+Empirically observed at tv=0.25: spy_real sleeve Sharpe = 0.337
+(predicted 0.31 within 0.03 tolerance). At tv=0.30: spy_real sleeve
+Sharpe = 0.300 (predicted ~0.27 within 0.03). The math is honest.
+
+Combined Sharpe with iter 064 weights toward the lower-Sharpe sleeve
+as w_sleeve rises — at w=0.15 the impact is minimal, at w=0.50 the
+sleeve drag dominates and combined Sharpe craters (0.745 / 0.709 /
+0.670 on tv=0.30 cfg = score 39 NEAR_FAIL).
+
+**There is no (target_vol × w_sleeve) cell in the tested grid where
+combined CAGR clears the spy_real 11.98% floor without combined Sharpe
+regressing materially below iter 064's 1.33 spy.** The joint
+constraint exposed in iter 075 (need ρ < 0.5 AND sleeve standalone
+CAGR ≥ 8-10%) cannot be satisfied by leverage-on-Sharpe-0.5 at
+4.5%/yr borrow.
+
+**What's now closed (this iteration).**
+
+- **iter-064 + leg-LEVERED single-cap-borrow-charged Faber-trend non-
+  equity sleeve ensemble axis**: closed at score 85 STRONG.
+- **leverage-as-CAGR-fix sub-axis on iter-064-anchored ensembles**:
+  closed (4 target_vol levels × 5 w_sleeve levels exhausted).
+
+**What's still NOT closed (remaining axes).**
+
+- **Lower borrow rate** (e.g., futures-implied 2.5% per iter 060 / NTSX-
+  style) — would partially mitigate borrow drag but not change the
+  fundamental Sharpe-0.5 ceiling. Marginal further closure value.
+- **Different non-equity 2nd leg with naturally higher pre-borrow Sharpe**
+  (DBMF managed-futures, MTUM-VLUE long-short) — these would test the
+  joint constraint with a 2nd leg that survives the borrow-Sharpe
+  identity at meaningful leverage. **Both require Tiingo data downloads
+  not done in iter 076.**
+
+### How to tell if a new iteration repeats this dead-end
+
+If the hypothesis proposes:
+
+1. iter-064-anchored ensemble (or iter-046/058/041 anchor),
+2. with a non-equity 2nd leg whose trend-on or vol-target sleeve is
+   leveraged at any borrow rate ≥ 2.5%/yr,
+3. on a 2nd leg whose pre-borrow standalone Sharpe is ≤ 0.6,
+
+then the borrow-Sharpe identity predicts post-drag Sharpe ≤ 0.4 and
+combined Sharpe will not lift materially over iter 064. Combined CAGR
+will not clear the 11.98% spy floor at any practical w_sleeve. **Don't
+re-test this without changing one of the 3 conditions above.**
+
+### Mechanism comparison: iter 075 vs iter 076
+
+| dimension | iter 075 (unlevered) | iter 076 (levered) |
+|---|---|---|
+| 2nd leg | GLD+TLT @ tv=0.10, leg_cap=1.0, borrow=0 | GLD+TLT @ tv=0.15, leg_cap=3.0, borrow=4.5% |
+| 2nd leg standalone Sharpe (spy) | 0.47 | 0.43 (drag negligible at tv=0.15) |
+| 2nd leg standalone CAGR (spy) | 2.78% | 3.74% |
+| corr(064, 2nd leg) spy | 0.241 | 0.238 (same, low-ρ thesis preserved) |
+| Δ combined Sharpe vs 064 (spy) | +0.008 (best cfg) | −0.006 (best cfg) |
+| Δ combined CAGR vs 064 (spy) | −1.07 pp | −0.86 pp |
+| Combined CAGR (spy) — best | 8.91% | 9.10% (closer to floor by 0.19 pp) |
+| Best cfg gates | 6/6/7 | **7/7/7** |
+| PBO grid-level (edu/spy/ndx) | 0.86 / 0.60 / 0.46 | **0.048 / 0.000 / 0.000** |
+| Score (v2 native) | 81 STRONG | **85 STRONG** |
+| Strict winner conds met | 4/5 (CAGR floor sole gap) | **4/5 (CAGR floor sole gap)** |
+| n KILLS fired | 1/7 (F — narrow grid PBO) | **1/7 (B — sleeve gross CAGR)** |
+
+### Citations used
+
+- `[leverage_for_the_long_run, ch.5]` — primary borrow-cost primitive
+  + Sharpe-of-leverage identity that drove the pre-committed KILL B
+  prediction.
+- **Faber, M.** (2007). SSRN 962461 — SMA-200 long-only trend filter
+  on multi-asset baskets (inherited from iter 075).
+- **Frazzini, A., & Pedersen, L. H.** (2014). "Betting Against Beta."
+  *JFE* 111(1), 1-25. DOI 10.1016/j.jfineco.2013.10.005 — borrow-
+  frictions on levered low-vol strategies; same primitive used in
+  iter 056 / 060. Iter 076 applies at the leg-level rather than
+  post-stream.
+- `[stocks_on_the_move, p.81]` — trend lookback rationale (inherited).
+- `[risk_parity, ch.5]` — Asness, Frazzini, Pedersen (2012) FAJ 68(1).
+- **Erb, C., & Harvey, C.** (2006). FAJ 62(2). DOI 10.2469/faj.v62.i2.4084.
+- **Markowitz, H.** (1952). JoF 7(1). DOI 10.1111/j.1540-6261.1952.tb01525.x.
+- `[volatility_trading, p.218]` — Sinclair (2013) inverse-vol sizing.
+- `[advances_fin_ml, p.222-223]` — DSR with per-iter n_trials (v2).
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV.
+- `[advances_fin_ml, p.31-34]` — G7 cross-library parity discipline.
+- `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
+- `[advances_fin_ml, p.162-164]` — T-1 lag (no look-ahead).
+- iter 076 final report — full 4×5 cfg score grid + per-cfg gates +
+  KILL detail.
