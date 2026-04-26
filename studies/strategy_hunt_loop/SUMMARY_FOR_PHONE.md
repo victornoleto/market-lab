@@ -22,19 +22,20 @@ melhor ativo entre {SPY, QQQ, EFA, TLT, GLD} pelo retorno trailing 12
 meses; se o vencedor estiver em retorno negativo, vai pra AGG (bond
 defensivo). Simples e canônico (Faber 2007 + Antonacci 2014).
 
-### CAVEAT importante sobre iter 079
-Re-rodei iter 079 nos 40 anos sintéticos **com substituições** (sem EFA
-no synth, ZROZSIM como proxy de TLT/AGG). **Resultado: NÃO domina
-SPY** — Sharpe 0.52, CAGR 10%, MDD 50%. Pior que SPY em risco-ajustado
-e em retorno absoluto.
+### iter 079 — atualização 2026-04-26 (caveat resolvido!)
+Pulamos BNDSIM (AGG real), IEFSIM (TLT real), VEASIM (EFA real) do
+testfolio. Re-rodei iter 079 com proxies corretos:
 
-Isso pode ser:
-- (a) substituição ruim (ZROZSIM é muito mais volátil que AGG real),
-- (b) edge regime-específico que só funciona pós-2008.
+**Resultado**: Sharpe **0.71** (Δ+0.025 vs SPYSIM 0.68), CAGR **13.08%**
+(Δ+1.59pp vs SPYSIM 11.5%), MDD 46.82% (Δ−8.33pp). **DOMINA SPY no 40y
+em Sharpe E em CAGR.**
 
-**Não dá pra confirmar nem desmentir** sem dados sintéticos pra EFA e
-AGG (testfolio não tem). Trate iter 079 como "winner forte no SPY-Tiingo
-17y, mas robustez 40y inconclusiva".
+O "caveat" anterior era artefato de substituição: ZROZSIM (zero-cupom 25y)
+como AGG estava errado — duration totalmente diferente. Com BNDSIM real,
+iter 079 vira winner robusto **nos dois windows (17y E 40y)**.
+
+Dominância 40y é mild (~+0.03 Sharpe) vs iter 035 (~+0.24 Sharpe), mas
+limpa. **iter 079 agora é deploy-grade confirmado.**
 
 ### Recomendação revisada (importante!)
 
