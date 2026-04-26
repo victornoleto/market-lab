@@ -5650,3 +5650,64 @@ Complete study: `studies/strategy_hunt_loop/iterations/074-2026-04-25-1724-iter0
 - `[advances_fin_ml, p.208-211]` — PBO via CSCV.
 - `[advances_fin_ml, p.31-34]` — G7 cross-library parity.
 - iter 074 final report — full 7-cfg score grid and per-cfg gates.
+
+
+## From iteration 075 — iter 064 + GLD/TLT trend sleeve ensemble (non-SPY-co-exposed 2nd leg; 7 cfgs)
+
+Complete study: `studies/strategy_hunt_loop/iterations/075-2026-04-25-2320-iter064-plus-gld-tlt-trend-sleeve/final_report.md`.
+
+**Score 81 STRONG. 4/5 strict winner conditions met. 1/7 KILL F (narrow-grid PBO).** Closes the iter-064 + non-equity Faber-trend single-vol-target sleeve ensemble axis at 81 (5 points below iter 074's 89; 9 points below TOP-K #1's 90). Engine math is exact (15/15 TDD, Markowitz residual = 0, G7 cross-lib = 0 pp on all 3 datasets, robustness 9/9 sub-windows positive).
+
+The decisive structural finding: iter 075 **vindicates BASE_MEMORY direction #1's central claim** (corr 064,sleeve = 0.241 spy = 3.4× lower than iter 074's 0.81) and **proves no Sharpe regression** (Δ vs iter 064 = +0.021 / +0.008 / −0.003), but **fails CAGR floor** (0/3) because the sleeve's standalone CAGR is 3.28 / 2.78 / 2.33% — way below iter 064's 9.5-10.2% baseline.
+
+### What was tested
+
+Equal-weight blend of two single-asset Faber-trend legs (GLD + TLT), each with SMA-200 long-only filter, 21d inverse-realized-vol scaling at 10% annualized portfolio-vol target, leg cap 1.0 (no leverage). Sleeve linearly ensembled with iter 064's saved daily-return stream at 7 weight cfgs `w_sleeve ∈ {0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40}`. n_trials_per_iter = 7 (v2 convention).
+
+### Closing conditions
+
+- **Joint constraint exposed**: 90 → 95 unlock requires SIMULTANEOUSLY (a) ρ < 0.5 vs iter 064 (BASE_MEMORY direction #1), AND (b) sleeve standalone CAGR ≥ 8-10% (CAGR floor preservation). iter 074 had high CAGR (15% spy via iter 016 SPY-co-exposed) but high ρ (0.81); iter 075 has low ρ (0.24) but low CAGR (3%). Neither satisfies the joint constraint.
+- **PBO floor for narrow-weight ensembles**: 7-cfg weight grid spanning only 0.10-0.40 (vs iter 074's wider 0.20-0.80) produces PBO 0.86 / 0.60 / 0.46 due to rank-stability across CSCV folds. Same-cfg-wins-everywhere is statistically informative but inflates PBO above the 0.5 gate.
+- **Sleeve standalone CAGR is not 5pp+ liftable via Faber's SMA-200 filter alone**: GLD trend sat in cash for substantial parts of 2008 + 2022; TLT trend sat in cash for most of 2022 + 2018. Vol-targeting at 10% with leg_cap=1.0 also caps potential leg returns when realized vol drops. Lifting CAGR requires either leverage (target_vol 25-30%) or different non-equity asset class.
+
+### Doesn't generalise to (still open after iter 075)
+
+- **Levered non-equity sleeve** — same GLD/TLT structure with target_vol 25-30% and leg_cap 3.0 (next iter 076 candidate #1; predicted 81-87). Tests whether leverage is the JOINT-constraint solution.
+- **Managed-futures 2nd leg (DBMF)** — uncached. AMP (2013) JoF 68(3) — predicted ρ ≈ 0-0.2, CAGR 7-10%; would satisfy joint if confirmed.
+- **Long-short factor sleeve (MTUM-VLUE pair)** — uncached. Carhart (1997) JoF 52(1). Long-short cancellation decorrelates by construction; CAGR depends on factor regime.
+- **Cross-asset Hurst-regime trend** (open from iter 067 backlog). Continuous adaptive regime vs Faber binary.
+
+### Doesn't apply to (different mechanism)
+
+- **iter 074's SPY-co-exposed saved-stream ensemble** — different ρ regime; closed separately at 89 / 95 v2.
+- **iter 010's 3-leg vol-managed SPY+TLT+GLD blend** — different architecture (3 legs blended into single stack, not iter-064-anchored ensemble); closed separately at structural saturation.
+- **Cross-asset trend-following strategies as PRIMARY** — covered by iter 022 (TOM) / iter 023 (TSM PRIMARY ≤ 4-asset) / iter 024 (bond-curve carry) / iter 057 (commodity TSM basket S=0.13-0.29 dilution).
+
+### Mechanism comparison: iter 074 vs iter 075
+
+| dimension | iter 074 (SPY-co-exposed) | iter 075 (non-equity) |
+|---|---|---|
+| 2nd leg | iter 016 (60:40 SPY+IEF + Moreira-Muir vol-mgmt) | GLD+TLT equal-weight Faber-trend |
+| 2nd leg standalone Sharpe | ~1.14 spy | ~0.47 spy |
+| 2nd leg standalone CAGR | ~15.27% spy | ~2.78% spy |
+| corr(064, 2nd leg) spy | 0.81 | **0.241** ← BASE_MEMORY direction VINDICATED |
+| Δ combined Sharpe vs 064 (spy) | −0.090 KILL A | **+0.008** ← no regression |
+| Δ combined CAGR vs 064 (spy) | +3.95 pp (lifts above 11.98% floor) | −1.07 pp (drags below 11.98% floor) |
+| score (v1 cumulative DSR) | 89 STRONG | **81 STRONG** |
+| strict winner conds met | 4/5 (DSR sole gap) | **4/5 (CAGR floor sole gap)** |
+| n KILLS fired | 3/9 | **1/7** |
+
+### Citations used
+
+- **Faber, M.** (2007). "A Quantitative Approach to Tactical Asset Allocation." SSRN 962461 — primary trend-filter mechanism.
+- `[stocks_on_the_move, p.81]` — trend lookback rationale.
+- **Erb, C., & Harvey, C.** (2006). "The Strategic and Tactical Value of Commodity Returns." *FAJ* 62(2), 69-97. DOI 10.2469/faj.v62.i2.4084 — gold strategic role.
+- `[risk_parity, ch.5]` — Asness, Frazzini, Pedersen (2012) FAJ 68(1) — equal-weight risk parity rationale.
+- **Markowitz, H.** (1952). "Portfolio Selection." *J. Finance* 7(1), 77-91. DOI 10.1111/j.1540-6261.1952.tb01525.x — convex combination Sharpe (ensemble math).
+- `[volatility_trading, p.218]` — Sinclair (2013) inverse-vol sizing primitive.
+- `[advances_fin_ml, p.222-223]` — DSR with per-iter n_trials (v2 relaxed convention).
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV.
+- `[advances_fin_ml, p.31-34]` — cross-library parity discipline (G7).
+- `[advances_fin_ml, p.196-202]` — bootstrap CI gate G6.
+- `[advances_fin_ml, p.162-164]` — T-1 lag (no look-ahead) discipline.
+- iter 075 final report — full 7-cfg score grid + per-cfg gates + KILL detail.

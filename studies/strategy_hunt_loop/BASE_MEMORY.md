@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 74
+total_iterations: 75
 winners_found: 0
 status: iterating
-latest_iteration: "074-2026-04-25-1724"
-cumulative_n_trials: 4381
+latest_iteration: "075-2026-04-25-2320"
+cumulative_n_trials: 4402
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -56,44 +56,48 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
 
-### 074 — 2026-04-25 — iter016-iter064-ensemble (🥇 STRONG, 89/100, 4/5 strict winner conds met, DSR sole gap)
-- **Result:** Best cfg `iter074_ensemble_w016_050` — S edu/spy/ndx 1.112/1.241/1.298 (Δ frozen +0.43/+0.34/+0.34 winner #1 3/3, Δ064 −0.11/−0.09/−0.08 KILL A 3/3), CAGR 12.41/13.93/15.47% (floor 3/3), MDD 21.5/21.0/18.5%, gates 6/6/6×3 (cross-ds bonus), **PBO 0.04/0.13/0.17 best-of-hunt-loop**, DSR p 0.094/0.083/0.065 (KILL B 3/3 above 0.05, n=4381), corr legs 0.79/0.84/0.79, Markowitz res=0, G7=0pp, robust 9/9 (+5 bonus), 15/15 TDD. winner=4/5; score 1:25 2:19 3:10 4:15 5:15 6:5 = **89**; 3/9 KILLS A+B+C.
-- **Lesson:** SPY-co-exposed saved-stream ensemble has hard ρ floor 0.78-0.85 (both legs carry SPY beta) → combined S ≈ linear avg ≈ 1.24 < iter 064's 1.33 → DSR doesn't crack at n=4381. **Closes SPY-co-exposed saved-stream-ensemble axis at 89.** 7-iter pattern (064/068-072 overlays + 074 ensemble) confirms 90 ceiling persists across mechanisms AND ensembles. iter 075 must use 2nd leg ρ<0.5 vs 064 (non-equity) OR S>1.30 OR market-beta-neutral. See `iterations/074-*/`.
+### 075 — 2026-04-25 — iter064-plus-gld-tlt-trend-sleeve (🥇 STRONG, 81/100, 4/5 strict winner conds met, CAGR floor sole gap)
+- **Result:** Best cfg `iter075_iter064_plus_gld_tlt_w015` — S edu/spy/ndx 1.238/1.340/1.373 (Δ064 +0.021/+0.008/−0.003 KILL C 0/3 — **NO regression**), CAGR 8.58/8.91/9.01% (floor 0/3 — sleeve dilutes; sleeve standalone CAGR 3.28/2.78/2.33%), MDD 15.4/13.7/13.2%, gates 6/6/7 (cross-ds bonus), **corr(064,sleeve) 0.241 spy** (3.4× lower than iter 074's 0.81 — **non-SPY-co-exposed thesis VINDICATED**), DSR p 1.96e-5/3.03e-5/2.64e-5 (v2 n=7), PBO 0.86/0.60/0.46 (KILL F 2/3 — narrow grid), Markowitz res=0, G7=0pp, robust 9/9 (+5 bonus), 15/15 TDD. winner=4/5; score 1:25 2:21 3:15 4:0 5:15 6:5 = **81**; 1/7 KILLS F.
+- **Lesson:** **90→95 unlock requires JOINT (ρ<0.5 vs iter 064) AND (sleeve standalone CAGR≥8-10%)** — iter 074 had high CAGR (15% spy) but high ρ (0.81); iter 075 has low ρ but low CAGR (3%). Neither solves alone. **Closes iter-064 + non-equity Faber-trend single-vol-target sleeve ensemble axis at 81 STRONG.** 8-iter pattern (064/068-072 + 074 SPY-co-exposed + 075 non-equity-low-CAGR) confirms 90 ceiling persists across BOTH mechanism types when JOINT unmet. iter 076: leveraged GLD/TLT (target_vol 25-30%), DBMF (uncached), or MTUM-VLUE long-short (uncached). See `iterations/075-*/`.
+
+### 074 — 2026-04-25 — iter016-iter064-ensemble (🥇 STRONG, 89/100)
+- **Result:** S edu/spy/ndx 1.11/1.24/1.30 (Δ064 −0.11/−0.09/−0.08), gates 6/6/6, DSR p 0.094/0.083/0.065 (n=4381), winner=4/5; score 1:25 2:19 3:10 4:15 5:15 6:5 = 89; ρ legs 0.79-0.84.
+- **Lesson:** SPY-co-exposed ensemble has ρ floor 0.78-0.85 → linear-avg combined S < iter 064's 1.33. **Closes SPY-co-exposed saved-stream-ensemble axis at 89**. v2 retroactive = 95 WINNER but loop continues for structural-novelty robust winner. See `iterations/074-*/`.
 
 ### 073 — 2026-04-25 — gayed-ma-gate-on-iter016 (🥈 PROMISING, 62/100)
-- **Result:** S edu/spy/ndx 0.99/0.97/1.03 (Δcustom +0.36/+0.07/+0.08 KILL A 2/3), CAGR 16.0/15.7/19.2%, MDD 31/31/27%, gates 5/5/5×3, PBO 0.96/0.92/0.68 (KILL F), DSR p 0.24/0.41/0.35 (n=4360, KILL H), G7 ≤0.144pp, 13/13 TDD. vs iter 016 Sharpe −0.16 spy/ndx, MDD +4-5pp — gate net harmful post-GFC. winner=1/5; score 1:10 2:17 3:0 4:15 5:15 6:5 = 62; 4/9 KILLS A+B+F+H.
-- **Lesson:** Gayed's edge non-stationary (mega-bears absent from post-GFC Tiingo). **Closes Gayed-MA-gate-as-overlay axis at 62**. See `iterations/073-*/`.
+- **Result:** S 0.99/0.97/1.03 (Δcustom +0.36/+0.07/+0.08), gates 5/5/5, PBO 0.96/0.92/0.68 (KILL F), DSR p 0.24/0.41/0.35 (n=4360, KILL H), winner=1/5; score 1:10 2:17 3:0 4:15 5:15 6:5 = 62; 4/9 KILLS A+B+F+H.
+- **Lesson:** Gayed's edge non-stationary (mega-bears absent from post-GFC Tiingo); gate net-harmful. **Closes Gayed-MA-gate-as-overlay axis at 62**. See `iterations/073-*/`.
 
 ### 072 — 2026-04-25 — iter064-vix-cond-r-mr-allocation (🥇 STRONG, 85/100)
-- **Result:** S 1.23/1.35/1.39 (Δ064 +0.01-0.02 KILL A 3/3), CAGR 9.08/9.57/9.72% (edu<9.18 KILL B), MDD 16/14/14%, gates 7/7/7×3, PBO 0.03/0.23/0.32, DSR p=0.033 spy (n=4348), G7=0pp×3, 16/16 TDD; KILL E INVERTED 3/3. winner=4/5; score 1:25 2:25 3:15 4:0 5:15 6:5 = 85; 6/10 KILLS A+B+C+D+E+I.
+- **Result:** S 1.23/1.35/1.39 (Δ064 +0.01-0.02), CAGR 9.08/9.57/9.72% (edu<9.18 KILL B), gates 7/7/7, DSR p=0.033 spy (n=4348), winner=4/5; score 1:25 2:25 3:15 4:0 5:15 6:5 = 85; 6/10 KILLS A+B+C+D+E+I.
 - **Lesson:** Closes regime-cond 3rd-stream allocation on iter 064. **5-iter pattern (064/068/069/070/071/072) PROVES 90 ceiling iter-064-anchored**. See `iterations/072-*/`.
 
 ### 071 — 2026-04-25 — iter064-plus-spy-mr-rsi2 (🥇 STRONG, 90/100, 4-way TIES iter 064/069/070)
-- **Result:** S 1.234/1.349/1.390 (Δ064 +0.015 ×3), CAGR 9.27/9.76/9.93%, MDD 16/15/14%, gates 7/7/7×3, DSR p=0.0335 spy (n=4344), G7 0pp×3, robust 9/9; KILL D vindicated, KILL G fires (corr=0.999). winner=4/5; score 90; 2/10 KILLS A+G.
-- **Lesson:** Calm-aggressive 3rd stream EMPIRICALLY VINDICATED but saturates at 90 — composition's CAGR ceiling anchored in iter 046+r_qqqt. See `iterations/071-*/`.
+- **Result:** S 1.23/1.35/1.39 (Δ064 +0.015 ×3), CAGR 9.27/9.76/9.93%, gates 7/7/7, DSR p=0.0335 spy (n=4344), winner=4/5; score 90; 2/10 KILLS A+G.
+- **Lesson:** Calm-aggressive 3rd stream vindicated but saturates at 90 — composition's CAGR ceiling anchored in iter 046+r_qqqt. See `iterations/071-*/`.
 
 ### 070 — 2026-04-25 — iter064-t10y3m-cont-inner-weight (🥇 STRONG, 90/100)
-- **Result:** S 1.21/1.32/1.36 (Δ064 ≈0 KILL A 3/3), CAGR 9.69/10.23/10.39%, gates 7/7/7, DSR p=0.0435 spy (n=4340); winner=4/5; score 90; 4/11 KILLS A/F/H/I.
-- **Lesson:** Continuous T10Y3M ≈ binary VIX — both saturate at 90; closes regime-classifier-resolution × signal-orthogonality. See `iterations/070-*/`.
+- **Result:** S 1.21/1.32/1.36 (Δ064 ≈0), CAGR 9.69/10.23/10.39%, gates 7/7/7, DSR p=0.0435 spy (n=4340), winner=4/5; score 90; 4/11 KILLS A/F/H/I.
+- **Lesson:** Continuous T10Y3M ≈ binary VIX — both saturate at 90; closes regime-classifier × signal-orthogonality. See `iterations/070-*/`.
 
 ### 069 — 2026-04-25 — iter064-vix-inner-weight-reverse (🥇 STRONG, 90/100)
-- **Result:** S 1.21/1.32/1.36 (Δ064 ≈0, Δ068 +0.03-0.04 KILL I clean), CAGR 9.36/9.89/9.97%, gates 7/7/7, DSR p=0.0429 spy (n=4339); winner=4/5; score 90; 1/9 KILLS A.
+- **Result:** S 1.21/1.32/1.36 (Δ064 ≈0, Δ068 +0.03-0.04), gates 7/7/7, DSR p=0.0429 spy (n=4339), winner=4/5; score 90; 1/9 KILLS A.
 - **Lesson:** Reverse beats iter 068 original (KILL I generalises) but doesn't lift Sharpe above 064 static. Closes VIX-inner-swap BOTH directions at 90. See `iterations/069-*/`.
 
 ### 068 — 2026-04-25 — iter064-vix-inner-weight-swap (🥇 STRONG, 79/100)
-- **Result:** S 1.17/1.28/1.33 (Δ064 −0.04 to −0.05), CAGR 9.53/10.04/10.30%, MDD +1-2pp, gates 6/6/6, DSR p=0.059 spy; winner=3/5; score 79; 1/9 KILLS I.
+- **Result:** S 1.17/1.28/1.33 (Δ064 −0.04 to −0.05), CAGR 9.53/10.04/10.30%, gates 6/6/6, DSR p=0.059 spy, winner=3/5; score 79; 1/9 KILLS I.
 - **Lesson:** Conditional-Sharpe ordering falsified — BOTH 064 sub-streams defensive in stress 3/3. See `iterations/068-*/`.
 
 ### 067 — 2026-04-25 — iter064-vol-target-cap10 (🥈 PROMISING, 74/100)
-- **Result:** S 1.17/1.26/1.28 (Δ064 −0.05 to −0.09), CAGR 7.61/7.93/7.93% (edu KILL D), gates 6/6/6, DSR p=0.076; winner=3/5; score 74; 3/8 KILLS A+C+D.
+- **Result:** S 1.17/1.26/1.28 (Δ064 −0.05 to −0.09), CAGR 7.61/7.93/7.93% (edu KILL D), gates 6/6/6, DSR p=0.076, winner=3/5; score 74; 3/8 KILLS A+C+D.
 - **Lesson:** MM σ⁻² cap-1.0 overlay on saturated 064 drops mean faster than variance — inner stack already vol-managed. See `iterations/067-*/`.
 
 ### 066 — 2026-04-25 — meta-label-rf-iter064 (📉 NEAR_FAIL, 37/100)
-- **Result:** S 0.66/0.81/0.65 (Δ064 −0.52 to −0.72), AUC 0.50 KILL H 3/3, gates 5/6/5; winner=1/5; score 37; 5/8 KILLS A+B+C+D+H.
+- **Result:** S 0.66/0.81/0.65 (Δ064 −0.52 to −0.72), AUC 0.50 KILL H 3/3, gates 5/6/5, winner=1/5; score 37; 5/8 KILLS A+B+C+D+H.
 - **Lesson:** Bar-level 1-day sign of Markowitz-saturated composite informationally null. Extends iter 013 LR closure to tree models. See `iterations/066-*/`.
 
 ### 065 — 2026-04-25 — iter064-vix-output-lev-gate (🥈 PROMISING, 74/100)
-- **Result:** S 1.12/1.19/1.23 (Δ064 −0.10 to −0.14 KILL A 2/3), CAGR +1.5pp vs 064, gates 6/6/6, DSR p=0.114; winner=3/5; score 74; 2/7 KILLS A+C.
+- **Result:** S 1.12/1.19/1.23 (Δ064 −0.10 to −0.14), CAGR +1.5pp vs 064, gates 6/6/6, DSR p=0.114, winner=3/5; score 74; 2/7 KILLS A+C.
 - **Lesson:** Closes calm-cond ext-lev at 1.5×/borrow=rf+25bps. See `iterations/065-*/`.
 
 ### Iters 001-064 (heavily compressed; full detail in `iterations/NNN-*/`)
@@ -111,18 +115,18 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-**074**. **iter 064 still TOP-K #1 STRONG 90 (4-WAY TIED with iter 069/070/071), 0/7 KILLS.** iter 074 (iter 016 + iter 064 saved-stream ensemble, 7 weight cfgs) → **89 STRONG, 4/5 strict winner conds met (DSR sole gap)**, 3/9 KILLS A+B+C; engine perfect (15/15 TDD, G7=0pp, Markowitz res=0, PBO 0.04-0.17 best-of-hunt-loop, robustness 9/9). **Empirical ρ legs 0.79-0.84 > BASE_MEMORY's 0.6-0.8 prediction** — both streams carry SPY market beta substantially → variance reduction insufficient. Combined Sharpe ≈ linear avg (1.24 spy < iter 064 standalone 1.33). **7-iter pattern (064/068/069/070/071/072 + 074 ensemble) PROVES 90 ceiling persistent across BOTH overlay mechanisms AND SPY-co-exposed ensembles.** Direction shift: 90→95 unlock requires either (a) 2nd leg ρ < 0.5 vs iter 064 (non-equity anchor: commodities/FX/international/crypto) OR (b) 2nd leg standalone Sharpe > 1.30 OR (c) long-short market-beta-neutral overlay.
+Consumed/closed: 002-005/007/009-014/017/019-**075**. **iter 064 still TOP-K #1 STRONG 90 (4-WAY TIED with iter 069/070/071), 0/7 KILLS.** iter 075 (iter 064 + GLD/TLT trend sleeve ensemble, 7 cfgs) → **81 STRONG, 4/5 strict winner conds met** (CAGR floor sole gap), 1/7 KILL F (narrow-grid PBO). Validated BASE_MEMORY direction #1 (corr 0.241 spy = 3.4× lower than iter 074's 0.81) and proved no Sharpe regression (Δ +0.008 spy). **Joint constraint exposed**: 90→95 needs BOTH ρ<0.5 AND sleeve CAGR≥8-10%; iter 074 has high CAGR/high ρ, iter 075 has low ρ/low CAGR (3%). Neither solves alone. **8-iter pattern (064/068-072 + 074 + 075) PROVES 90 ceiling persistent across BOTH mechanism types.**
 
-### Iter 075 candidates (SPY-co-exposed ensemble closed at 89; remaining lever = NON-SPY-CO-EXPOSED 2nd leg)
+### Iter 076 candidates (joint constraint: ρ<0.5 AND CAGR≥8-10% on 2nd leg)
 
-- **#1 Plano C sleeve as 2nd leg — RECOMMENDED** (BASE_MEMORY direction #5 promoted). Build passive factor-tilted Plano C ETF sleeve (GDE/AVUV/AVDE/AVEM/BTGD per `portfolio-aposentadoria.md`) as 2nd leg, ensemble with iter 064. International + small-cap value + emerging + crypto-gold = structurally divergent from SPY beta. Predicted ρ < 0.5; CAGR floor preserved (Plano C targets 7-10% net). Doubly useful: composability finding + Plano C tilt research signal. Citations: AVUV/AVDE/AVEM Avantis prospectuses; Erb-Harvey (2006) FAJ 62(2). Cost: medium (Tiingo factor-ETF cache verify needed).
-- **#2 BTC/Gold (DBMF/GLD) as 2nd leg.** Managed futures or gold-and-crypto overlay structurally orthogonal to SPY. Tiingo cache likely has GLD; BTC via overlay parquet. Predicted ρ < 0.4. Citations: Erb-Harvey (2006), Asness-Moskowitz-Pedersen (2013) JoF 68(3).
-- **#3 Long-short market-beta-neutral factor sleeve** (HML/UMD long-short on factor ETFs MTUM-VLUE / IWF-IWD) sized to net ~0% market beta. Mechanism: long-short cancellation decorrelates by construction. Predicted ρ < 0.3. **Requires Tiingo factor-ETF cache.**
-- **#4 Multi-asset Hurst-regime trend** (Mandelbrot/Peters/Lo-MacKinlay) — continuous adaptive regime vs Gayed binary. Higher cost. Predicted 65-85.
+- **#1 Levered GLD/TLT trend sleeve (target_vol = 25-30%) — RECOMMENDED** (mechanical fix from iter 075). Scale up iter 075's sleeve vol-target from 10% to 25-30% to lift CAGR proportionally (3% → 8-10% expected if Sharpe stays ~0.5). leg_cap raised to 3.0. Tests whether leveraged-non-equity satisfies JOINT constraint. Predicted score 81-87 STRONG. No data needed (already have GLD/TLT cache). Citations: identical to iter 075 + `[leverage_for_the_long_run]` for vol-scaling rationale + Asness-Frazzini-Pedersen (2012) FAJ 68(1) for risk-parity-style leverage.
+- **#2 DBMF managed-futures as 2nd leg** — DBMF tracks SocGen Trend Index of CTA strategies; historical Sharpe 0.5-0.7, CAGR 7-10%, ρ ≈ 0.0-0.2 with SPY (AMP 2013). **NOT in Tiingo cache** — would need download. If available, cleanest test of joint constraint. Citations: Asness-Moskowitz-Pedersen (2013) JoF 68(3) DOI 10.1111/jofi.12021.
+- **#3 Long-short MTUM-VLUE factor sleeve** — momentum minus value, dollar-neutral, market-beta hedged. Standalone Sharpe 0.4-0.6, ρ ≈ 0.0-0.3. **Requires MTUM/VLUE Tiingo cache (currently absent)**. Citations: Carhart (1997) JoF 52(1) + Asness-Moskowitz-Pedersen (2013).
+- **#4 Multi-asset Hurst-regime trend** (Mandelbrot/Peters/Lo-MacKinlay) — continuous adaptive regime. Higher cost. Predicted 65-85.
 - **#5 Forward 5-day Sharpe meta-label on iter 064** (open from iter 067). Predicted 65-85.
 - **#6 CRSP/Norgate** (data budget).
 
-DEAD-LETTER (all iter 064 base regime-allocation axes / saved-stream-pairs / 046-family / HYG / HMM-2 / FX carry / MTUM-QUAL-USMV not cached / cross-sectional mom Tiingo / broader-region VRP 5-leg / ext-lev / commodity TSM basket / eq075 / internal-LETF / Faber QQQ-200d / VIX-calm-cond ext lev / bar-level RF meta-label / σ⁻² cap-1.0 overlay / VIX-cond inner-weight BOTH DIRECTIONS / continuous T10Y3M z-score inner weight / Connors RSI(2) calm-aggressive 3rd stream / VIX-binary regime-conditional 3rd-stream allocation / **Gayed (2016) 200-day MA regime gate on iter 016 vol-managed stack**): see iters 045/047-073 entries.
+DEAD-LETTER (all iter 064 base regime-allocation axes / saved-stream-pairs / 046-family / HYG / HMM-2 / FX carry / MTUM-QUAL-USMV not cached / cross-sectional mom Tiingo / broader-region VRP 5-leg / ext-lev / commodity TSM basket / eq075 / internal-LETF / Faber QQQ-200d / VIX-calm-cond ext lev / bar-level RF meta-label / σ⁻² cap-1.0 overlay / VIX-cond inner-weight BOTH DIRECTIONS / continuous T10Y3M z-score inner weight / Connors RSI(2) calm-aggressive 3rd stream / VIX-binary regime-conditional 3rd-stream allocation / Gayed (2016) 200-day MA regime gate on iter 016 vol-managed stack / **iter 016 + iter 064 SPY-co-exposed saved-stream ensemble** / **iter 064 + GLD/TLT trend non-equity-low-CAGR sleeve ensemble**): see iters 045/047-075 entries.
 
 ### Deeper backlog
 
@@ -146,7 +150,8 @@ DEAD-LETTER (all iter 064 base regime-allocation axes / saved-stream-pairs / 046
 - **iter 059-063 closures (037-anchor + leverage axes)**: 059 037+HYG → 79 (CAGR-DSR dual constraint: NO anchor 0-58 has S≥1.20 ∧ CAGR≥12%); 060 ext-lev 1.5× on 058 → 79 (rf=0 borrow=drag); 061 eq075 → 79 (canonical 0.60/0.45/0.45 Sharpe-optimal); 062 internal-LETF on 037 → 79 (drag invariant); 063 internal-LETF iter 041 within 058 → 81 (Sharpe-headroom thesis FALSIFIED). **Internal-LETF axis EXHAUSTED both branches** (037→79; 058→81).
 - **iter 064 (TOP-K #1, Faber QQQ-200d sub for HYG_TSM at w=0.10)**: 90, 0/7 KILLS, first 90+. edu 9.49%>9.18% (1st non-LETF unlock). Closes single-asset-equity-trend-3rd-stream axis at w=0.10.
 - **iter 065-073 closures**: 065 VIX-calm ext-lev → 74; 066 RF meta-label → 37 (AUC≈0.50, extends iter 013 closure to trees); 067 σ⁻² overlay → 74 (σ⁻² family saturates); 068 VIX inner-swap → 79 (KILL I 3/3 — both sub-streams defensive in stress); 069 REVERSE inner-swap → 90 TIES 064 (closes inner-swap both directions); 070 continuous T10Y3M inner weight → 90 TIES 064 (closes regime-classifier resolution × signal-orthogonality); 071 Connors RSI(2) MR 3rd stream → 90 TIES 064 (calm-aggressive vindicated, saturates 90); 072 VIX-cond r_mr allocation → 85 (KILL E inverted 3/3, closes regime-cond axis); 073 Gayed-MA-gate on iter 016 → 62 (gate net-harmful post-GFC, edge non-stationary).
-- **iter 074 (iter 016 + iter 064 saved-stream ensemble; 7 weight cfgs)**: 🥇 STRONG **89, 4/5 strict winner conds met** (DSR sole gap), 3/9 KILLS A+B+C. Engine perfect (15/15 TDD, Markowitz res=0, G7=0pp, PBO 0.04/0.13/0.17 best-of-hunt, robust 9/9). Best cfg `iter074_ensemble_w016_050`: S 1.11/1.24/1.30 (Δ frozen +0.43/+0.34/+0.34, Δ064 −0.11/−0.09/−0.08), CAGR 12.41/13.93/15.47% (floor 3/3), MDD 21.5/21.0/18.5%, gates 6/6/6×3, DSR p 0.094/0.083/0.065. **Empirical ρ legs 0.79-0.84 > BASE_MEMORY's 0.6-0.8** (both carry SPY beta) → variance reduction insufficient. **Closes SPY-co-exposed saved-stream-ensemble axis at 89**. 7-iter pattern (064/068/069/070/071/072 overlays + 074 ensemble) confirms 90 ceiling persists across BOTH mechanisms AND SPY-co-exposed ensembles. iter 075 must use 2nd leg with ρ<0.5 vs iter 064 (non-equity) OR standalone S>1.30 OR market-beta-neutral overlay.
+- **iter 074 (iter 016 + iter 064 SPY-co-exposed ensemble)**: 🥇 STRONG 89 v1 / 95 v2 retroactive; ρ legs 0.79-0.84; **closes SPY-co-exposed ensemble axis at 89**.
+- **iter 075 (iter 064 + GLD/TLT trend non-equity ensemble)**: 🥇 STRONG **81, 4/5 winner conds**, 1/7 KILL F. corr(064,sleeve)=0.241 ✓ (non-SPY-co-exposed VINDICATED, 3.4× lower than 074), Δ Sharpe vs 064 +0.008 spy ✓ (no regress). CAGR floor 0/3 fails — sleeve standalone CAGR 3% dilutes. **JOINT CONSTRAINT** exposed: 90→95 needs BOTH ρ<0.5 AND sleeve CAGR≥8-10%; iter 074 had CAGR/lacked ρ, iter 075 has ρ/lacks CAGR. 8-iter pattern (064/068-072 + 074 + 075) PROVES 90 ceiling across BOTH mechanism types. **Closes iter-064 + non-equity Faber-trend sleeve ensemble axis at 81**.
 
 ---
 
