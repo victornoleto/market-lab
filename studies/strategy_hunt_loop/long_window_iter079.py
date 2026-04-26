@@ -1,16 +1,19 @@
-"""Long-window 40y synth re-run of iter 079 winner with substitutions.
+"""Long-window 40y synth re-run of iter 079 winner with REAL substitutions.
 
 iter 079 uses universe {SPY, QQQ, EFA, TLT, GLD} + AGG (defensive). Synth
-data has {SPYSIM, QQQSIM, GLDSIM, ZROZSIM} but NO EFA (international
-developed) and NO AGG analog. Two scenarios tested:
+data now has BNDSIM (AGG analog, since 1986), IEFSIM (real IEF since
+1962), and VEASIM (VEA, intl developed since 1970). Three scenarios:
 
-  * **Scenario A** (4-asset, ZROZSIM-as-bond): drop EFA, use ZROZSIM
-    as both TLT and AGG. Universe shrinks 5→4 selectable.
-  * **Scenario B** (5-asset, EFA=QQQSIM-as-proxy): use QQQSIM as the
-    international proxy. Highly imperfect (QQQ ≠ EFA), documented.
+  * **Scenario A** (5-asset, real proxies): SPY=SPYSIM, QQQ=QQQSIM,
+    EFA=VEASIM, TLT=IEFSIM (intermediate Treasury ≈ TLT in iter 079
+    spirit), GLD=GLDSIM, AGG=BNDSIM. Closest to original universe.
+  * **Scenario B** (5-asset, ZROZ as long-bond): same but TLT=ZROZSIM
+    (true 25y zero-coupon, more aggressive bond leg). Compare to A.
+  * **Scenario C** (4-asset, drop EFA): no intl developed leg. Tests
+    whether the EFA leg matters for the strategy.
 
-Both are PARTIAL validation. Cleanest answer requires MSCI-EAFE synth
-back to 1986 which testfolio doesn't ship.
+This SUPERSEDES the earlier ZROZSIM-as-AGG substitutions (which broke
+the bond fallback because ZROZ is far more volatile than AGG).
 """
 from __future__ import annotations
 
@@ -39,16 +42,22 @@ def run_scenario(scenario: str) -> dict:
     mod = _import_iter079_module()
     df = load_synth()
 
-    # Map iter 079's SELECTABLE_ASSETS (5) + AGG to synth tickers
-    if scenario == "A_4asset":
-        # Drop EFA. Use ZROZSIM for both TLT and AGG.
-        synth_map = {"SPY": "SPYSIM", "QQQ": "QQQSIM", "TLT": "ZROZSIM",
-                     "GLD": "GLDSIM", "AGG": "ZROZSIM"}
-        selectable = ["SPY", "QQQ", "TLT", "GLD"]
-    elif scenario == "B_5asset_qqq_as_efa":
-        synth_map = {"SPY": "SPYSIM", "QQQ": "QQQSIM", "EFA": "QQQSIM",
-                     "TLT": "ZROZSIM", "GLD": "GLDSIM", "AGG": "ZROZSIM"}
+    # Map iter 079's SELECTABLE_ASSETS (5) + AGG to synth tickers (REAL proxies)
+    if scenario == "A_5asset_real_proxies":
+        # AGG=BNDSIM (real AGG analog), TLT=IEFSIM (intermediate as iter 079 fallback),
+        # EFA=VEASIM (true intl developed)
+        synth_map = {"SPY": "SPYSIM", "QQQ": "QQQSIM", "EFA": "VEASIM",
+                     "TLT": "IEFSIM", "GLD": "GLDSIM", "AGG": "BNDSIM"}
         selectable = ["SPY", "QQQ", "EFA", "TLT", "GLD"]
+    elif scenario == "B_5asset_zroz_long_bond":
+        # Same as A but TLT=ZROZSIM (more aggressive bond duration)
+        synth_map = {"SPY": "SPYSIM", "QQQ": "QQQSIM", "EFA": "VEASIM",
+                     "TLT": "ZROZSIM", "GLD": "GLDSIM", "AGG": "BNDSIM"}
+        selectable = ["SPY", "QQQ", "EFA", "TLT", "GLD"]
+    elif scenario == "C_4asset_no_efa":
+        synth_map = {"SPY": "SPYSIM", "QQQ": "QQQSIM",
+                     "TLT": "IEFSIM", "GLD": "GLDSIM", "AGG": "BNDSIM"}
+        selectable = ["SPY", "QQQ", "TLT", "GLD"]
     else:
         raise ValueError(scenario)
 
@@ -102,7 +111,7 @@ def run_scenario(scenario: str) -> dict:
 
 def main() -> None:
     results = []
-    for scen in ["A_4asset", "B_5asset_qqq_as_efa"]:
+    for scen in ["A_5asset_real_proxies", "B_5asset_zroz_long_bond", "C_4asset_no_efa"]:
         try:
             r = run_scenario(scen)
             results.append(r)
