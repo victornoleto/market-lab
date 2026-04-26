@@ -1,10 +1,10 @@
 ---
 mission: "beat SPY 1x buy-hold Sharpe risk-adjusted on real data (17y window)"
-total_iterations: 77
+total_iterations: 78
 winners_found: 0
 status: iterating
-latest_iteration: "077-2026-04-26-0023"
-cumulative_n_trials: 4522
+latest_iteration: "078-2026-04-26-0210"
+cumulative_n_trials: 4546
 ---
 
 # Strategy Hunt Loop — BASE MEMORY
@@ -58,13 +58,13 @@ None yet. When found, append yaml block with iteration/hypothesis/config/score/d
 
 Latest iter in 6-field format; older entries compressed once file > 18 KB. Full detail recoverable from `iterations/NNN-*/`.
 
-### 077 — 2026-04-26 — iter064-plus-LS-mtum-vlue-factor-sleeve (🥇 STRONG, 85/100, 4/5 strict winner conds met)
-- **Hypothesis:** dollar-neutral long-short MTUM (long, momentum) − VLUE (short, value) factor pair as 3rd-stream sleeve to iter 064; tests joint-constraint (`ρ < 0.5` AND pre-borrow Sharpe ≥ 0.7) per iter 076 final-report recommendation #2.
-- **Citations:** Carhart (1997) JoF 52(1) DOI 10.1111/j.1540-6261.1997.tb03808.x + Asness-Moskowitz-Pedersen (2013) JoF 68(3) DOI 10.1111/jofi.12021 + `[advances_fin_ml, ch.3, p.222-223]` + McLean-Pontiff (2016) JoF 71(1) DOI 10.1111/jofi.12365 + Frazzini-Pedersen (2014) JFE 111(1).
-- **Scope:** 20 cfgs (5 target_vol × 4 w_sleeve), leg_cap=1.5, short_borrow=1%/yr, trans_cost=5 bps; 3 datasets × 20 cfgs = 60 trials; cumulative 4462→4522. MTUM/VLUE downloaded via Tiingo (3271 bars 2013-04-18 → 2026-04-20). Phase-in combine logic for pre-2013 dates.
-- **Result:** Best cfg `iter077_lsfac_tv006_w010` (tv=0.06, w=0.10); S edu/spy/ndx 1.208/1.333/1.373 (Δ064 −0.013/+0.002/−0.007 — TIED with iter 064), CAGR 8.95/9.34/9.48% (floor 0/3 — same gap as iter 075/076), MDD 17.27/14.24/13.70%, **gates 7/7/7** (matches iter 076 best), PBO 0.242/0.194/0.060 (clean), DSR p 2.57e-4/2.51e-4/2.00e-4 (v2 n=20), G7=0pp on all 20 cfgs, robust 9/9, 22/22 TDD. winner=4/5. **Sleeve standalone Sharpe 0.13-0.22 across 5 tv values × 3 ds (vs hypothesised 0.6-0.8)**. corr(sleeve, SPY)=0.062, corr(sleeve, QQQ)=0.199, corr(sleeve, iter064)=0.118-0.141 — low-ρ thesis vindicated.
-- **Score breakdown:** 1:25 2:25 3:15 4:0 5:15 6:5 = **85**; 2/8 KILLS fired (B — sleeve Sharpe 0.18 << 0.40 threshold; H — combined CAGR 0/3 clears strict floor).
-- **Lesson:** **MTUM-VLUE long-short Sharpe in 2013-2026 is 0.18, NOT 0.6-0.8** — McLean-Pontiff (2016) factor-anomaly post-publication decay vindicated; cross-sectional academic deciles spread (AMP 2013) does NOT translate to factor-ETF long-short pair. **KILL H establishes CAGR floor as STRUCTURAL TO iter 064 ANCHOR, not to sleeve selection**: 3 independent sleeve mechanisms (unlevered non-equity iter 075, levered non-equity iter 076, factor LS iter 077) all hit ~9.5% combined CAGR ceiling. **Closes iter-064 + 2nd-leg-ensemble axis at 85 STRONG across ALL 3 sleeve classes**. **10-iter pattern (064/068-072 + 074-077) PROVES iter-064-anchored family caps at 90 single / 85 ensemble**. 90+→95 unlock now requires ABANDONING iter 064 anchor for higher-CAGR base. Iter 078 candidates: (1) Antonacci dual-momentum SPY/EFA/cash standalone; (2) DBMF-as-base post-2019; (3) Hurst-regime adaptive trend multi-asset. See `iterations/077-*/`.
+### 078 — 2026-04-26 — antonacci-dual-momentum-base-spy-efa-agg (🥇 STRONG, 75/100)
+- **Result:** Best cfg lb03m_thzero; S edu/spy/ndx 0.814/0.879/0.839 (Δ_bench +0.134/−0.021/−0.116, wins 1/3), CAGR 10.79/11.42/10.71% (floor 1/3 — edu only), MDD 21.32/20.96/20.96% (3/3, **best MDD edge of hunt**), gates 7/7/7, PBO 0.15/0.06/0.12, DSR p≤2.97e-2 (v2 n=8), G7=0.0000pp 24cfgs, robust 9/9, 10/10 TDD, winner=3/5; score 1:10 2:25 3:15 4:5 5:15 6:5 = 75; 1/8 KILL H fired (no cfg meets 5/5).
+- **Lesson:** **First STANDALONE BASE tested in 12 iters proves iter-064-ceiling hypothesis was SAMPLE-LEVEL not anchor-level**. Antonacci canonical 12-mo lookback only scores 42 MARGINAL — published 1974-2014 S 0.85-1.0/CAGR 12-14% does NOT replicate in 2009-2026 (US dominance + defensive AGG rotation costs ~1-2.5pp CAGR/yr). Pattern across iters 005/064/078 (vol-managed/saved-stream-ensemble/dual-momentum BASE) PROVES 2009-2026 CAGR floor (≥11.98%spy/15.35%ndx) is the binding constraint, not strategy-design. Iter 079 candidates: multi-asset GEM extension (5-7 assets) / regime-conditional iter-078 / Carver multi-asset slow-trend N≥10. See `iterations/078-*/`.
+
+### 077 — 2026-04-26 — iter064-plus-LS-mtum-vlue-factor-sleeve (🥇 STRONG, 85/100)
+- **Result:** S 1.208/1.333/1.373 (Δ064 −0.013/+0.002/−0.007), CAGR 8.95/9.34/9.48% (floor 0/3), MDD 17.27/14.24/13.70%, gates 7/7/7, PBO 0.24/0.19/0.06, DSR p≤2.57e-4 (v2 n=20), G7=0pp 20cfgs, robust 9/9, winner=4/5; score 1:25 2:25 3:15 4:0 5:15 6:5 = 85; 2/8 KILLS B+H fired.
+- **Lesson:** MTUM-VLUE Sharpe 0.13-0.22 in 2013-2026 (NOT 0.6-0.8 hypothesised); McLean-Pontiff (2016) factor decay vindicated. Closes iter-064 + LS-factor-sleeve axis at 85; 3 sleeve classes (unlev/lev/factor) converge at ~9.5% combined CAGR — CAGR floor structural to iter 064 ANCHOR. See `iterations/077-*/`.
 
 ### 076 — 2026-04-25 — iter064-LEV-gld-tlt-sleeve (🥇 STRONG, 85/100)
 - **Result:** S 1.231/1.325/1.352 (Δ064 +0.010/−0.006/−0.028), CAGR 8.80/9.10/9.15% (floor 0/3), gates 7/7/7, PBO 0.05/0/0, DSR p=1.45e-5 spy (v2 n=20), winner=4/5; score 1:25 2:25 3:15 4:0 5:15 6:5 = 85; 1/7 KILL B (sleeve gross CAGR ≤6% at tv=0.30 — borrow eats lev).
@@ -103,14 +103,14 @@ Latest iter in 6-field format; older entries compressed once file > 18 KB. Full 
 
 Pick ONE per iteration. Strict rule: structural novelty vs past iterations.
 
-Consumed/closed: 002-005/007/009-014/017/019-**077**. **iter 064 still TOP-K #1 STRONG 90 (4-WAY TIED with iter 069/070/071), 0/7 KILLS.** iter 077 (iter 064 + LS MTUM-VLUE factor sleeve, 20 cfgs at tv∈{0.06,0.08,0.10,0.12,0.15}×w∈{0.10,0.20,0.30,0.40}, leg_cap=1.5, short_borrow=1%/yr) → **85 STRONG, 4/5 strict winner conds met** (CAGR floor sole gap, same as iter 075/076), 2/8 KILLS (B — MTUM-VLUE Sharpe 0.13-0.22 << 0.40 threshold; H — combined CAGR 0/3 clears strict floor). MTUM-VLUE in 2013-2026 has Sharpe 0.18, NOT 0.6-0.8 (McLean-Pontiff 2016 factor decay vindicated). **10-iter pattern (064/068-072 + 074-077) PROVES iter-064-anchored family caps at 90 single / 85 ensemble across ALL 3 sleeve mechanism classes (unlevered non-equity, levered non-equity, factor LS).** Hunt loop's deepest finding: **CAGR floor is structural to iter 064 ANCHOR, not to sleeve selection** — 3 independent sleeve mechanisms converge at ~9.5% combined CAGR ceiling regardless of sleeve correlation or borrow regime.
+Consumed/closed: 002-005/007/009-014/017/019-**078**. **iter 064 still TOP-K #1 STRONG 90 (4-WAY TIED with iter 069/070/071), 0/7 KILLS.** iter 078 (Antonacci canonical GEM standalone-base SPY/EFA/AGG, 8 cfgs at lookback ∈ {3,6,9,12 mo} × abs_threshold ∈ {0%, IEF}) → **75 STRONG, 3/5 strict winner conds met**, 1/8 KILL fired (H — no cfg in grid meets 5/5). FIRST standalone-base tested in 12 iters; engine perfect (10/10 TDD, G7=0.0000pp on all 24 cfgs, PBO 0.06-0.15) but Antonacci's 1974-2014 Sharpe 0.85-1.0 / CAGR 12-14% does NOT replicate in 2009-2026 (US dominance + low equity drawdowns penalize defensive rotation). **Pattern across iters 005/064/078 (3 independent strategy classes — vol-managed, saved-stream ensemble, dual-momentum BASE) PROVES the 2009-2026 sample's CAGR floor is the SAMPLE-LEVEL binding constraint, not the strategy-level one.** Defensive MDD edge (21% vs SPY 33.7%) is the strongest documented in any iter — but CAGR cost ~3.5-4pp/yr structurally precludes WINNER in this regime.
 
-### Iter 078 candidates (path: ABANDON iter 064 anchor for higher-CAGR base)
+### Iter 079 candidates (path: extend universe OR regime-condition iter 078 OR higher-CAGR base)
 
-- **#1 Antonacci Dual Momentum (BASE, not sleeve) — RECOMMENDED**. SPY/EFA/cash absolute+relative momentum. All ETFs cached. Documented Sharpe 0.85-1.0 + CAGR 12-14% on 1974-2014 (Antonacci 2014 + JoPM 16(1)). Structurally novel as STANDALONE base. Predicted 85-95.
-- **#2 DBMF managed-futures as STANDALONE base** — Tiingo download required (~6.5y post-2019). Tests "does CTA trend natively deliver Sharpe ≥ 1.0 + CAGR ≥ 8%?". Predicted 65-90.
-- **#3 Multi-asset Hurst-regime adaptive trend** (Mandelbrot/Peters/Lo-MacKinlay) on SPY/EFA/EEM/GLD/TLT. Continuous-regime memory-based vs binary SMA. Predicted 65-85.
-- **#4-6 backlog**: forward-Sharpe meta-label on iter 064 (likely 85 per pattern); Carver multi-asset slow-trend N≥10 (iter 023/025 closed at smaller N); CRSP cross-sectional (Tiingo blocked by survivorship per iter 054).
+- **#1 Multi-asset GEM extension (5-7 asset universe) — RECOMMENDED**. Top-1 by trailing momentum on {SPY, QQQ, EFA, EEM, GLD, TLT, VNQ, AGG} with abs-momentum gate. Builds on iter 078's gate 7/7/7 strength + MDD edge; fixes its single weakness (relative-momentum degeneration on 2-asset SPY/EFA in US-dominant regime). All ETFs cached. Predicted 70-90.
+- **#2 Regime-conditional iter-078 (meta-overlay)**. Run GEM signal but only DEPLOY when past-12mo rolling AGG-trigger frequency > 30%; otherwise hold SPY directly. Restores SPY exposure during raging bull periods while preserving GEM's MDD edge during real drawdowns. Fastest implementation (~1.5h). Predicted 65-85.
+- **#3 Carver multi-asset slow-trend N≥10**. Test slow-trend EWMAC on 10-12 instruments (futures replicas via ETFs SPY/QQQ/EFA/EEM/GLD/TLT/USD-FX/HG/CL/SB), portfolio-level vol-target. Iter 023/025 closed at N=2-4; N≥10 untested. Higher cost (~3-4h). Predicted 70-90.
+- **#4-6 backlog**: DBMF managed-futures as standalone base (Tiingo download required, post-2019 only); forward-Sharpe meta-label on iter 064 (likely 85 per pattern); Hurst-regime adaptive trend (continuous-regime memory-based vs binary SMA).
 
 DEAD-LETTER (full list in `## Structural dead-ends` below + `DEAD_ENDS.md`).
 
@@ -134,6 +134,7 @@ DEAD-LETTER (full list in `## Structural dead-ends` below + `DEAD_ENDS.md`).
 - **iter 065-073 closures (iter-064-anchored variants)**: 065 VIX-calm ext-lev (74); 066 RF meta-label (37, AUC≈0.50 extends iter 013); 067 σ⁻² overlay (74); 068 VIX inner-swap (79, KILL I 3/3); 069-071 reverse-swap/T10Y3M cont/Connors RSI(2) all → 90 TIES 064 (close inner-weight + regime-classifier + calm-aggressive 3rd-stream axes); 072 VIX-cond r_mr (85, closes regime-cond axis); 073 Gayed-MA-gate on iter 016 (62, gate net-harmful post-GFC).
 - **iter 074-076 (iter 064 ensemble closures)**: 074 (iter 016 SPY-co-exposed) → 89 v1 / 95 v2 retro, ρ legs 0.79-0.84, **closes SPY-co-exposed axis at 89**. 075 (UNLEVERED GLD/TLT, 7 cfgs) → 81, ρ=0.24 ✓, sleeve CAGR 3% dilutes, **closes unlevered non-equity axis at 81**. 076 (LEG-LEVERED GLD/TLT @4.5% borrow, 20 cfgs) → 85, gates 7/7/7, PBO 0.05 (wider 4×5 grid), borrow-Sharpe identity vindicated (3× lev→1.7×/1.4×/1.1× CAGR), **closes levered non-equity axis at 85**. **JOINT CONSTRAINT**: 90+→95 needs 2nd leg with both ρ<0.5 AND naturally high pre-borrow Sharpe ≥0.7-1.0 — DBMF / MTUM-VLUE long-short were next candidates.
 - **iter 077 (LS MTUM-VLUE factor sleeve, 20 cfgs)**: → 85, gates 7/7/7, PBO 0.24/0.19/0.06, low-ρ vindicated (corr(sleeve,SPY)=0.06, corr(sleeve,iter064)=0.13), but **MTUM-VLUE Sharpe 0.13-0.22 in 2013-2026 (NOT 0.6-0.8 hypothesised)** — McLean-Pontiff 2016 factor decay vindicated; cross-sectional academic deciles spread (AMP 2013) does NOT translate to factor-ETF LS pair. **Closes LS factor sleeve axis at 85**. KILL H establishes **CAGR floor structural to iter 064 ANCHOR**: 3 independent sleeve mechanisms (unlevered, levered, factor LS) all converge at ~9.5% combined CAGR ceiling. **10-iter pattern (064/068-072 + 074-077) PROVES iter-064-anchored family caps at 90 single / 85 ensemble across ALL 3 sleeve mechanism classes**. Path forward: ABANDON iter 064 anchor.
+- **iter 078 (Antonacci canonical GEM standalone-base SPY/EFA/AGG, 8 cfgs)**: → 75 STRONG (best cfg 3-mo lb, 0% th), 3/5 strict winner conds (gates 7/7/7, DSR<0.05, MDD clear; Sharpe edge+CAGR floor fail cross-ds). 1/8 KILL H. Antonacci 12-mo only 42 MARGINAL — **published 1974-2014 S 0.85-1.0/CAGR 12-14% does NOT replicate 2009-2026** (US dominance + AGG drag ~1-2.5pp/yr). MDD 21% vs SPY 33.7% **strongest MDD edge of hunt** but CAGR cost too high. **Pattern across iters 005/064/078 (vol-managed/saved-stream-ensemble/dual-momentum BASE) PROVES 2009-2026 CAGR floor is SAMPLE-LEVEL binding, not strategy-level**. McLean-Pontiff (2016) factor decay → Antonacci 2014→2026 OOS measured here. **Closes Antonacci-canonical-standalone-base at 75**.
 
 ---
 

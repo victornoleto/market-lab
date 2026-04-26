@@ -5984,3 +5984,88 @@ base — not adding more diversifying sleeves.
 - `[advances_fin_ml, p.162-164]` — T-1 lag (no look-ahead).
 - iter 077 final report — full 5×4 cfg score grid + per-cfg gates +
   KILL detail.
+
+
+---
+
+## DE-78 — Antonacci canonical GEM standalone-base (SPY/EFA/AGG, 2026-04-26)
+
+**Pattern recognized**: Antonacci's canonical Global Equities Momentum
+(GEM) — combining absolute momentum (own-asset trend filter via
+trailing N-month return > 0%) and relative momentum (top-1 by trailing
+return between SPY and EFA) on a 3-asset universe (SPY, EFA, AGG)
+with monthly rebalance — caps at 75 STRONG (best cfg 3-mo lookback,
+0% threshold) in the 2009-2026 sample. Antonacci's published 1974-2014
+Sharpe 0.85-1.0 + CAGR 12-14% **does NOT replicate** because (a) US
+large-cap dominated the relative-momentum step in ~70% of monthly
+observations across 2010-2024 (degenerating SPY-vs-EFA to "always
+SPY"), and (b) defensive AGG rotation (~22% of months on best cfg)
+costs ~1-2.5 pp CAGR/yr in a regime where SPY yields ~14% and AGG
+yields ~3-4%.
+
+**How to tell**: any future iter that proposes
+- 2-asset relative-momentum (SPY-vs-international single-pair, monthly
+  rebalance, 12-mo lookback, 0% absolute-momentum threshold)
+- with AGG / IEF / SHY as the defensive sleeve
+- on a US-equity-bench window covering 2010-2024
+
+is structurally identical to iter 078's tested grid and will hit the
+same 75 STRONG ceiling. **The defensive MDD edge is real (21% MDD vs
+SPY 33.7% = 38% reduction, the strongest documented MDD edge in any
+hunt iter to date), but the CAGR cost ~3.5-4 pp/yr structurally
+precludes WINNER tier in the post-2009 US-dominant regime.**
+
+**Score landscape** (8 cfgs, all 3 datasets):
+
+| lookback | th=zero | th=ief |
+|---|---|---|
+| 3 mo | **75 STRONG** | 63 PROMISING |
+| 6 mo | 37 NEAR_FAIL | 37 NEAR_FAIL |
+| 9 mo | 31 NEAR_FAIL | 35 NEAR_FAIL |
+| 12 mo (Antonacci canonical) | 42 MARGINAL | 35 NEAR_FAIL |
+
+Score concentrated at lb=3 (75 vs all others ≤ 63) — the 3-mo
+variant captures fast V-shaped recoveries (post-COVID 2020,
+post-2022) that 12-mo trailing misses. PBO 0.06-0.15 across 3
+datasets confirms this isn't grid overfit; it's the 3-mo variant
+catching reactive timing genuinely.
+
+**Pattern across iters 005/064/078** (3 independent strategy classes —
+vol-managed iter 005 @ 79, saved-stream-ensemble iter 064 family @
+90/85, dual-momentum BASE iter 078 @ 75): **the 2009-2026 sample's
+CAGR floor (≥ 11.98% spy / 15.35% ndx) is the SAMPLE-LEVEL binding
+constraint on ANY strategy that modulates equity exposure**, not the
+strategy-level one. McLean-Pontiff (2016) factor-anomaly decay (JoF
+71(1)) applied to Antonacci's 2014 publication: 2014→2026 OOS measured
+here with quantitatively meaningful decay.
+
+**Dead-end implication**: do not propose another GEM-like 2-asset
+relative-momentum strategy on SPY/EFA/AGG (or similar 2-asset US-vs-
+intl universe) with US-equity-bench. Instead pursue:
+1. **Universe extension** — 5-7 asset GEM variant (SPY/QQQ/EFA/EEM/
+   GLD/TLT/VNQ/AGG); restores relative-momentum dispersion.
+2. **Regime-conditional deployment** — meta-overlay that runs GEM
+   only when AGG-trigger frequency > 30% recent.
+3. **Higher-CAGR base mechanism class** — multi-asset CTA-style
+   trend on N≥10 instruments (iter 023/025 closed at smaller N).
+
+**Implementation references**:
+- `studies/strategy_hunt_loop/iterations/078-2026-04-26-0210-antonacci-dual-momentum-base/`
+- `antonacci_dual_momentum.py` — pandas implementation
+- `numpy_reference_iter078.py` — numpy parity reference
+- `final_report.md` — full kill-table + score grid + per-cfg analysis
+- 10/10 TDD tests pass; G7 = 0.0000 pp on all 24 dataset×cfg checks
+
+**Citations used**:
+- Antonacci (2014) *Dual Momentum Investing* ISBN 978-0071849449 —
+  primary source (FALSIFIED for 2014-2026 OOS).
+- Antonacci (2017) *J. Portfolio Management* 16(1) 27-55 DOI
+  10.3905/joi.2017.16.1.027 — peer-reviewed academic version.
+- Faber (2007) *J. Wealth Management* 9(4) 69-79 — absolute momentum.
+- Jegadeesh-Titman (1993) JoF 48(1) 65-91 — relative momentum.
+- McLean-Pontiff (2016) JoF 71(1) 5-32 — factor decay (predicts the
+  Antonacci OOS gap measured here).
+- `[stocks_on_the_move, p.21-30]` — Clenow's momentum framework.
+- `[systematic_trading, p.42 (ch.2)]` — Carver's Law of Active
+  Management.
+- iter 078 final report — full grid + per-cfg gates + KILL detail.
