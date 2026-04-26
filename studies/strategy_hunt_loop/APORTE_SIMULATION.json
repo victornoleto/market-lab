@@ -1,0 +1,113 @@
+{
+  "params": {
+    "initial_brl": 50000.0,
+    "monthly_brl": 7500.0,
+    "usd_brl_rate": 5.0,
+    "margin_drag_yr_pct": 4.0,
+    "tax_note": "NOT applied \u2014 Lei 14.754 PF direta defers tax until sale; buy-hold investor has zero realizations during accumulation phase"
+  },
+  "broker_costs": {
+    "Inter": {
+      "fx_spread": 0.0125,
+      "iof": 0.0038,
+      "fixed_fee_usd": 0.0
+    },
+    "IBKR_TransferBank": {
+      "fx_spread": 0.003,
+      "iof": 0.0038,
+      "fixed_fee_usd": 2.0
+    }
+  },
+  "results": [
+    {
+      "final_usd": 111790860.39640126,
+      "final_brl": 558954301.9820063,
+      "total_invested_brl": 3672500.0,
+      "total_invested_usd_gross": 734500.0,
+      "total_fx_cost_brl": 29752.741500000553,
+      "fx_cost_pct_of_invested": 0.008101495302927312,
+      "multiplier_brl": 152.19994608087305,
+      "irr_approx": 0.15254510952886569,
+      "years": 40.27777777777778,
+      "n_aportes": 484,
+      "name": "V0_PURE_no_margin_cost",
+      "broker": "IBKR_TransferBank",
+      "description": "PURE 90/60/30 \u2014 assumes free leverage (unrealistic, kept as upper bound)"
+    },
+    {
+      "final_usd": 27832257.4139423,
+      "final_brl": 139161287.0697115,
+      "total_invested_brl": 3672500.0,
+      "total_invested_usd_gross": 734500.0,
+      "total_fx_cost_brl": 29752.741500000553,
+      "fx_cost_pct_of_invested": 0.008101495302927312,
+      "multiplier_brl": 37.8927943008064,
+      "irr_approx": 0.11343687189462481,
+      "years": 40.27777777777778,
+      "n_aportes": 484,
+      "name": "V0_PURE_with_4pct_margin_drag",
+      "broker": "IBKR_TransferBank",
+      "description": "PURE 90/60/30 with -4%/yr drag on 80% borrowed (HONEST IBKR cost)"
+    },
+    {
+      "final_usd": 36892156.06797049,
+      "final_brl": 184460780.33985245,
+      "total_invested_brl": 3672500.0,
+      "total_invested_usd_gross": 734500.0,
+      "total_fx_cost_brl": 59687.30625000063,
+      "fx_cost_pct_of_invested": 0.01625250000000017,
+      "multiplier_brl": 50.22757803671952,
+      "irr_approx": 0.12125434291296178,
+      "years": 40.27777777777778,
+      "n_aportes": 484,
+      "name": "V1_NTSX_GDE_67_33",
+      "broker": "Inter",
+      "description": "NTSX+GDE Inter cash \u2014 no margin, FX 1.25%"
+    },
+    {
+      "final_usd": 48297409.78507422,
+      "final_brl": 241487048.9253711,
+      "total_invested_brl": 3672500.0,
+      "total_invested_usd_gross": 734500.0,
+      "total_fx_cost_brl": 59687.30625000063,
+      "fx_cost_pct_of_invested": 0.01625250000000017,
+      "multiplier_brl": 65.75549324040057,
+      "irr_approx": 0.12877845801625631,
+      "years": 40.27777777777778,
+      "n_aportes": 484,
+      "name": "V2_LETF_2x_SSO_UBT_UGL_BIL",
+      "broker": "Inter",
+      "description": "2\u00d7 LETFs Inter cash"
+    },
+    {
+      "final_usd": 56836136.68888324,
+      "final_brl": 284180683.44441617,
+      "total_invested_brl": 3672500.0,
+      "total_invested_usd_gross": 734500.0,
+      "total_fx_cost_brl": 59687.30625000063,
+      "fx_cost_pct_of_invested": 0.01625250000000017,
+      "multiplier_brl": 77.38071707131822,
+      "irr_approx": 0.13334997813356186,
+      "years": 40.27777777777778,
+      "n_aportes": 484,
+      "name": "V3_LETF_3x_UPRO_TMF_GLD_BIL",
+      "broker": "Inter",
+      "description": "3\u00d7 LETFs Inter cash"
+    },
+    {
+      "final_usd": 11841171.25474005,
+      "final_brl": 59205856.27370025,
+      "total_invested_brl": 3672500.0,
+      "total_invested_usd_gross": 734500.0,
+      "total_fx_cost_brl": 59687.30625000063,
+      "fx_cost_pct_of_invested": 0.01625250000000017,
+      "multiplier_brl": 16.121404022791083,
+      "irr_approx": 0.09006086194959462,
+      "years": 40.27777777777778,
+      "n_aportes": 484,
+      "name": "BENCH_SPYSIM_buyhold",
+      "broker": "Inter",
+      "description": "SPY buy-and-hold via Inter Internacional"
+    }
+  ]
+}

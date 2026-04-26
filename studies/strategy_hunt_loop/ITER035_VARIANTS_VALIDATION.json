@@ -1,0 +1,162 @@
+{
+  "benchmark": {
+    "name": "SPYSIM b&h",
+    "n_bars": 10150,
+    "sharpe": 0.681941590389081,
+    "cagr": 0.11488421330283116,
+    "mdd": 0.5514127052677147,
+    "start": "1986-01-03",
+    "end": "2026-04-17"
+  },
+  "strategies": [
+    {
+      "name": "V0_iter035_pure_SPY_ZROZ_GLD_180notional",
+      "n_bars": 10150,
+      "sharpe": 0.9216626614422,
+      "cagr": 0.1959957530348777,
+      "mdd": 0.46178972666358276,
+      "start": "1986-01-03",
+      "end": "2026-04-17",
+      "sharpe_delta_vs_spy": 0.23972107105311902,
+      "cagr_delta_pp_vs_spy": 8.111153973204654,
+      "mdd_delta_pp_vs_spy": -8.962297860413193,
+      "g6_bootstrap": {
+        "sharpe_low": 0.411699901683263,
+        "sharpe_high": 1.3864354180084633,
+        "n_boot": 5000,
+        "block_size": 100,
+        "ci_pct": 99.9,
+        "passes_g6": true
+      },
+      "g7_cross_lib": {
+        "name": "V0_iter035_pure_SPY_ZROZ_GLD_180notional",
+        "sharpe_pandas": 0.9216626614422,
+        "sharpe_numpy": 0.9216626614422005,
+        "abs_diff": 5.551115123125783e-16,
+        "passes_g7": "True"
+      },
+      "dsr": {
+        "sharpe": 0.9216626614422,
+        "expected_max_sharpe": 0.16641633005028922,
+        "z": 4.774843327590162,
+        "p_value": 8.992360687187784e-07,
+        "n_trials": 4,
+        "passes_dsr": true
+      }
+    },
+    {
+      "name": "V1_NTSX_GDE_67_33_Inter_cash",
+      "n_bars": 10150,
+      "sharpe": 0.916806904116995,
+      "cagr": 0.15421785318311731,
+      "mdd": 0.44095973923512444,
+      "start": "1986-01-03",
+      "end": "2026-04-17",
+      "sharpe_delta_vs_spy": 0.23486531372791397,
+      "cagr_delta_pp_vs_spy": 3.9333639880286153,
+      "mdd_delta_pp_vs_spy": -11.045296603259025,
+      "g6_bootstrap": {
+        "sharpe_low": 0.4574374021757789,
+        "sharpe_high": 1.3972638466577694,
+        "n_boot": 5000,
+        "block_size": 100,
+        "ci_pct": 99.9,
+        "passes_g6": true
+      },
+      "g7_cross_lib": {
+        "name": "V1_NTSX_GDE_67_33_Inter_cash",
+        "sharpe_pandas": 0.916806904116995,
+        "sharpe_numpy": 0.9168069041169961,
+        "abs_diff": 1.1102230246251565e-15,
+        "passes_g7": "True"
+      },
+      "dsr": {
+        "sharpe": 0.916806904116995,
+        "expected_max_sharpe": 0.16876501513407244,
+        "z": 4.663478056890925,
+        "p_value": 1.554546756543651e-06,
+        "n_trials": 4,
+        "passes_dsr": true
+      }
+    },
+    {
+      "name": "V2_SSO_UBT_UGL_BIL_2x_Inter",
+      "n_bars": 10150,
+      "sharpe": 0.8008577513147496,
+      "cagr": 0.1645435492894558,
+      "mdd": 0.4744099663650123,
+      "start": "1986-01-03",
+      "end": "2026-04-17",
+      "sharpe_delta_vs_spy": 0.11891616092566859,
+      "cagr_delta_pp_vs_spy": 4.965933598662464,
+      "mdd_delta_pp_vs_spy": -7.700273890270237,
+      "g6_bootstrap": {
+        "sharpe_low": 0.29112439656695066,
+        "sharpe_high": 1.261152277803273,
+        "n_boot": 5000,
+        "block_size": 100,
+        "ci_pct": 99.9,
+        "passes_g6": true
+      },
+      "g7_cross_lib": {
+        "name": "V2_SSO_UBT_UGL_BIL_2x_Inter",
+        "sharpe_pandas": 0.8008577513147496,
+        "sharpe_numpy": 0.8008577513147491,
+        "abs_diff": 4.440892098500626e-16,
+        "passes_g7": "True"
+      },
+      "dsr": {
+        "sharpe": 0.8008577513147496,
+        "expected_max_sharpe": 0.16625592242919077,
+        "z": 4.0159716338955525,
+        "p_value": 2.9600688330022606e-05,
+        "n_trials": 4,
+        "passes_dsr": true
+      }
+    },
+    {
+      "name": "V3_UPRO_TMF_GLD_BIL_3x_Inter",
+      "n_bars": 10150,
+      "sharpe": 0.8223831739672802,
+      "cagr": 0.17008541745029238,
+      "mdd": 0.472984483859221,
+      "start": "1986-01-03",
+      "end": "2026-04-17",
+      "sharpe_delta_vs_spy": 0.14044158357819925,
+      "cagr_delta_pp_vs_spy": 5.520120414746121,
+      "mdd_delta_pp_vs_spy": -7.84282214084937,
+      "g6_bootstrap": {
+        "sharpe_low": 0.3115527656025034,
+        "sharpe_high": 1.2852441051287151,
+        "n_boot": 5000,
+        "block_size": 100,
+        "ci_pct": 99.9,
+        "passes_g6": true
+      },
+      "g7_cross_lib": {
+        "name": "V3_UPRO_TMF_GLD_BIL_3x_Inter",
+        "sharpe_pandas": 0.8223831739672802,
+        "sharpe_numpy": 0.8223831739672809,
+        "abs_diff": 6.661338147750939e-16,
+        "passes_g7": "True"
+      },
+      "dsr": {
+        "sharpe": 0.8223831739672802,
+        "expected_max_sharpe": 0.1662851793066202,
+        "z": 4.1512760064710585,
+        "p_value": 1.653133753176661e-05,
+        "n_trials": 4,
+        "passes_dsr": true
+      }
+    }
+  ],
+  "n_trials": 4,
+  "synth_construction": {
+    "NTSX": "0.90 * SPYSIM + 0.60 * IEFSIM - 0.20%/yr ER",
+    "GDE": "0.90 * SPYSIM + 0.90 * GLDSIM - 0.20%/yr ER",
+    "TMF": "3.0 * ZROZSIM - 1.05%/yr ER (ZROZ ~25y duration > TLT ~17y \u2192 conservative vol drag)",
+    "UBT": "2.0 * ZROZSIM - 0.95%/yr ER",
+    "BIL": "constant 4%/yr (long-term US T-bill proxy)"
+  },
+  "cost_bps_per_initial_allocation": 2.0
+}

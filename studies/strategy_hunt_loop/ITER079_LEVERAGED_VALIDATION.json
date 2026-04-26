@@ -1,0 +1,109 @@
+{
+  "benchmark": {
+    "name": "SPYSIM b&h",
+    "n_bars": 9911,
+    "sharpe": 0.6664169859616734,
+    "cagr": 0.11211902955670983,
+    "mdd": 0.5514127052677139,
+    "start": "1986-12-12",
+    "end": "2026-04-17"
+  },
+  "variants": [
+    {
+      "name": "iter079_1x_baseline",
+      "n_bars": 9911,
+      "sharpe": 0.6254247399772944,
+      "cagr": 0.12436898537822216,
+      "mdd": 0.49468495065718743,
+      "start": "1986-12-12",
+      "end": "2026-04-17",
+      "sharpe_delta_vs_spy": -0.040992245984379005,
+      "cagr_delta_pp_vs_spy": 1.2249955821512337,
+      "mdd_delta_pp_vs_spy": -5.672775461052648,
+      "g6_bootstrap": {
+        "sharpe_low": 0.19383328910304654,
+        "sharpe_high": 1.0920059623495808,
+        "passes_g6": true,
+        "n_boot": 5000,
+        "block": 99
+      },
+      "dsr": {
+        "sharpe": 0.6254247399772944,
+        "p_value": 0.0010870397417569455,
+        "n_trials": 3,
+        "passes_dsr": true
+      }
+    },
+    {
+      "name": "iter079_2x_LETF_substitute",
+      "n_bars": 9911,
+      "sharpe": 0.5742348759056886,
+      "cagr": 0.1699676052878356,
+      "mdd": 0.825828763683907,
+      "start": "1986-12-12",
+      "end": "2026-04-17",
+      "sharpe_delta_vs_spy": -0.09218211005598487,
+      "cagr_delta_pp_vs_spy": 5.784857573112578,
+      "mdd_delta_pp_vs_spy": 27.44160584161931,
+      "g6_bootstrap": {
+        "sharpe_low": 0.1425341540065844,
+        "sharpe_high": 1.0440256634456797,
+        "passes_g6": true,
+        "n_boot": 5000,
+        "block": 99
+      },
+      "dsr": {
+        "sharpe": 0.5742348759056886,
+        "p_value": 0.0030205503957807522,
+        "n_trials": 3,
+        "passes_dsr": true
+      }
+    },
+    {
+      "name": "iter079_3x_LETF_substitute",
+      "n_bars": 9911,
+      "sharpe": 0.5191575676512377,
+      "cagr": 0.13690499301361725,
+      "mdd": 0.9657978578552225,
+      "start": "1986-12-12",
+      "end": "2026-04-17",
+      "sharpe_delta_vs_spy": -0.14725941831043576,
+      "cagr_delta_pp_vs_spy": 2.4785963456907423,
+      "mdd_delta_pp_vs_spy": 41.43851525875086,
+      "g6_bootstrap": {
+        "sharpe_low": 0.0889535387881919,
+        "sharpe_high": 0.9969131108609387,
+        "passes_g6": true,
+        "n_boot": 5000,
+        "block": 99
+      },
+      "dsr": {
+        "sharpe": 0.5191575676512377,
+        "p_value": 0.008113614400333757,
+        "n_trials": 3,
+        "passes_dsr": true
+      }
+    }
+  ],
+  "n_trials": 3,
+  "lookback_months": 12,
+  "trans_cost_bps": 5.0,
+  "synth_substitutions": {
+    "iter079_2x": {
+      "SPY": "SSOSIM",
+      "QQQ": "QLDSIM",
+      "EFA": "VEASIM (no 2\u00d7 synth)",
+      "TLT": "2 \u00d7 ZROZSIM - 0.95%/yr ER",
+      "GLD": "UGLSIM",
+      "AGG_fallback": "BNDSIM (1\u00d7)"
+    },
+    "iter079_3x": {
+      "SPY": "UPROSIM",
+      "QQQ": "TQQQSIM",
+      "EFA": "VEASIM (no 3\u00d7 synth)",
+      "TLT": "3 \u00d7 ZROZSIM - 1.05%/yr ER",
+      "GLD": "GLDSIM (no widely-available 3\u00d7)",
+      "AGG_fallback": "BNDSIM (1\u00d7)"
+    }
+  }
+}

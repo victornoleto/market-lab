@@ -221,6 +221,84 @@ obrigatório).
 - Em 40 anos: CAGR 19.6%, MDD 46%
 - **Tradeoff**: drawdown parecido com SPY, mas você ganha 8pp/ano
 - **Implementação**: trivial. 3 ativos, rebalance simples.
+- **⚠️ "180% notional" precisa de margem** — ver "Como deployar
+  o iter 035" abaixo. 4 caminhos validados empiricamente.
+
+### 🆕 Como deployar iter 035 — 4 caminhos validados (2026-04-26)
+
+Empirical: rodamos o iter 035 em 4 implementações diferentes em 40y
+synth + simulação de aporte mensal R$50k inicial + R$7.5k/mês.
+Resultado completo: `ITER035_VARIANTS_VALIDATION.md` +
+`APORTE_SIMULATION.md`. Achados que mudam recomendação:
+
+**Sharpe + MDD ranking (time-weighted, 40y):**
+
+| variant | onde | Sharpe | CAGR | MDD | 2022 stress |
+|---|---|---|---|---|---|
+| V0 PURE (margin) | IBKR | 0.922 | 19.60% | 46% | −38.81% |
+| **V1 NTSX+GDE 67/33** | Inter cash | **0.917** | 15.42% | **44%** | **−21.88%** ✅ |
+| V2 SSO+UBT+UGL+BIL 2× | Inter cash | 0.801 | 16.45% | 47% | −39.76% |
+| V3 UPRO+TMF+GLD+BIL 3× | Inter cash | 0.822 | 17.01% | 47% | −39.47% |
+
+**V1 NTSX+GDE empata Sharpe com V0 (margin) e tem MELHOR MDD.** Em
+2022 perdeu apenas −22% vs −38-40% das outras 3 — porque NTSX usa
+Treasury intermediário (IEF, ~7y duration) em vez de bond longo
+ou LETF 3×.
+
+**Money-weighted IRR (40y de aporte mensal real, com FX cost):**
+
+| variant | broker | final BRL | IRR ~ |
+|---|---|---|---|
+| V0 PURE sem margin cost (irreal) | IBKR | R$558M | 15.25% |
+| **V3 LETF 3×** | Inter | R$284M | 13.33% |
+| V2 LETF 2× | Inter | R$241M | 12.88% |
+| **V1 NTSX+GDE** | Inter | R$184M | 12.13% |
+| **V0 PURE com 4%/yr margin drag (REAL IBKR)** | IBKR | R$139M | **11.34%** |
+| BENCH SPY buy-hold | Inter | R$59M | 9.01% |
+
+**Achado contraintuitivo crítico**: aplicando o custo real de margin
+loan IBKR (4%/yr sobre 80% emprestados), V0 **PERDE** pra todas
+variantes Inter. O custo de margin IBKR é maior que o vol drag dos
+LETFs no Inter.
+
+**O que isso significa pra você**:
+- **Se você quer dormir tranquilo + simplicidade**: V1 NTSX+GDE no
+  Inter (Sharpe quase empata, MDD melhor, sem margem, 2 ETFs apenas)
+- **Se você tolera 96% de drawdown em troca de máximo CAGR de longo
+  prazo**: V3 LETF 3× — entrega R$284M vs R$184M de V1 em 40y, mas
+  perdeu 39% em 2022
+- **IBKR margin direto não vale a pena** — custo de juros come o
+  edge teórico, V0_real perde até pro SPY-melhorado V1
+
+⚠️ Antes de escolher V1: confirme **NTSX e GDE** estão disponíveis
+no Inter Internacional (são WisdomTree menos populares, podem não
+estar no catálogo).
+
+### 🆕 Sobre iter 079 alavancado — testado e refutado
+
+User perguntou "se SPY rendeu mais, por que não comprar SSO/UPRO em
+vez de SPY?". Testamos: 2× e 3× LETF substitutes na execução do
+iter 079 (sinal mantém-se nos 1× underlyings). Resultado:
+
+| variant | Sharpe | CAGR | **MDD** | 2022 |
+|---|---|---|---|---|
+| iter079_1x baseline | 0.625 | 12.44% | 49% | −24% |
+| iter079_2x LETF | 0.574 | 17.00% | **83%** | −39% |
+| iter079_3x LETF | 0.519 | 13.69% | **97%** | −46% |
+
+**Veredito**: idéia destrutiva. Concentração single-asset (top-K=1) +
+leverage = drawdown 83% (2×) ou **97% (3× — wipeout praticamente
+total)**. O 3× tem CAGR MENOR que o 2× porque vol drag come o
+compounding (leverage paradox: existe um leverage ótimo ~2× pra
+equity, acima disso CAGR cai). **Iter 079 deve ser executado em 1×
+sempre.**
+
+Se quer momentum + leverage, o caminho honesto é **iter 016**
+(static stack + vol-target overlay) — Sharpe 0.95 com leverage
+*dinâmico* que reduz quando vol sobe. Não substituir asset por
+LETF estático.
+
+Detalhes: `ITER079_LEVERAGED_VALIDATION.md`.
 
 ### Perfil B — "quero melhor risco-retorno, aceito complexidade"
 **iter 016/074** (`ntsx_vm_vt15_L21_cap20`)
@@ -251,7 +329,8 @@ obrigatório).
 - Zero corretagem em equities/ETFs US
 - Spread FX 0.99-1.50% (custo na conversão BRL → USD)
 - T+1 settlement
-- DARF 15% mensal sobre ganho realizado (seu trabalho declarar)
+- **DARF 15% UMA vez ao ano** sob Lei 14.754/2023 (regime PF direta) —
+  ver seção "Tax" abaixo, NÃO é mais mensal como pré-2024
 
 ### Tickers (verificar disponibilidade no Inter antes de aportar)
 
@@ -286,15 +365,37 @@ trimestral** (não mensal) pra reduzir drag de FX. Por exemplo:
 
 Aportar mensal pequeno destrói retorno via FX repetido.
 
-### Tax (DARF 15%)
+### Tax (Lei 14.754/2023 — UMA DARF anual, não mensal)
 
-Toda venda com ganho gera DARF até último dia útil do mês seguinte.
-- Se no mês não vendeu nada → sem DARF
-- Se vendeu → calcular ganho líquido em BRL (preço venda × cotação −
-  preço compra × cotação) → 15% sobre ganho positivo
-- **Não há isenção R$20k em ETF US** (essa é só pra ações brasileiras)
-- Estratégias com rebalance mensal vão gerar DARF mensal recorrente.
-  Estratégias trimestrais reduzem fricção fiscal.
+**Mudou em Jan/2024.** A regra antiga (DARF mensal por venda) **não
+vale mais** pra investimentos no exterior em conta no seu CPF
+(IBKR Lite / Inter Internacional).
+
+**Como funciona agora (regime PF direta, Art. 1-3º Lei 14.754):**
+
+- Cada venda gera ganho/perda **em BRL** (usa cotação PTAX do dia)
+- Você **acumula** ganhos e perdas no ano todo, dentro da "cesta
+  offshore" (separada da cesta de ações brasileiras)
+- 31/Dez: soma o líquido anual
+- **1 DARF de 15%** sobre o líquido positivo, paga via DAA até último
+  dia útil de Maio do ano seguinte
+
+**Implicação importante**: daily rebalance (iter 016/006) e monthly
+rotation (iter 079) **NÃO geram DARFs extras**. 250 trades no ano
+viram 1 DARF anual com a soma líquida. A Lei 14.754 deliberadamente
+neutralizou rotação vs buy-and-hold.
+
+**Compensação de perdas**: dentro do mesmo ano, dentro da mesma
+cesta (offshore). PF não tem carryforward (só PJ/ECO tem).
+
+**Cesta separada**: prejuízo offshore NÃO compensa lucro de ações BR.
+
+**Não há isenção R$20k/mês** em ETF estrangeiro (essa é só pra
+ações em bolsa BR).
+
+⚠️ **Confirme com contador antes de operar.** Sou modelo, não
+tributarista; interpretação RFB pode evoluir; consulta antes de
+mover capital é essencial.
 
 ### Custos reais previstos
 
