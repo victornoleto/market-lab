@@ -1,0 +1,1902 @@
+[
+  {
+    "iter_dir": "074-2026-04-25-1724-iter016-iter064-ensemble",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter074_ensemble_w016_020",
+        "n_bars": 4205,
+        "window": [
+          "2009-07-28",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3045027215382146,
+          "numpy": 1.3045027215382146,
+          "vectorbt": null,
+          "quantstats": 1.3045027215382146,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.11491648067818683,
+          "numpy": 0.11491648067818683,
+          "vectorbt": null,
+          "quantstats": 0.11491648067818683,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.17471656648380895,
+          "numpy": 0.17471656648380895,
+          "vectorbt": null,
+          "quantstats": 0.17471656648380895,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter074_ensemble_w016_020",
+        "n_bars": 4045,
+        "window": [
+          "2010-03-17",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.358513554148223,
+          "numpy": 1.3585135541482223,
+          "vectorbt": null,
+          "quantstats": 1.358513554148223,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.12233504651803528,
+          "numpy": 0.12233504651803528,
+          "vectorbt": null,
+          "quantstats": 0.12233504651803528,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.16196663751408913,
+          "numpy": 0.16196663751408913,
+          "vectorbt": null,
+          "quantstats": 0.16196663751408913,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter074_ensemble_w016_020",
+        "n_bars": 5080,
+        "window": [
+          "2006-02-03",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.1925097015318131,
+          "numpy": 1.1925097015318133,
+          "vectorbt": null,
+          "quantstats": 1.1925097015318131,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.1066556031112158,
+          "numpy": 0.1066556031112158,
+          "vectorbt": null,
+          "quantstats": 0.1066556031112158,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.17471465566296063,
+          "numpy": 0.17471465566296063,
+          "vectorbt": null,
+          "quantstats": 0.17471465566296063,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 74,
+    "v2_score": 95,
+    "slug": "iter016-iter064-ensemble"
+  },
+  {
+    "iter_dir": "006-2026-04-24-1027-vol-managed-60-40",
+    "datasets": {
+      "spy_real": {
+        "cfg": "vt15_L21_cap20",
+        "n_bars": 4205,
+        "window": [
+          "2009-07-28",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 0.9999789305967383,
+          "numpy": 0.9999789305967387,
+          "vectorbt": null,
+          "quantstats": 0.9999789305967381,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.16107495405897088,
+          "numpy": 0.16107495405897088,
+          "vectorbt": null,
+          "quantstats": 0.16107495405897088,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.37212855018816593,
+          "numpy": 0.37212855018816593,
+          "vectorbt": null,
+          "quantstats": 0.37212855018816593,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "vt15_L21_cap20",
+        "n_bars": 4045,
+        "window": [
+          "2010-03-17",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.020941609942809,
+          "numpy": 1.0209416099428088,
+          "vectorbt": null,
+          "quantstats": 1.0209416099428092,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.17940853254356215,
+          "numpy": 0.17940853254356215,
+          "vectorbt": null,
+          "quantstats": 0.17940853254356215,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.37212347606757923,
+          "numpy": 0.37212347606757923,
+          "vectorbt": null,
+          "quantstats": 0.37212347606757923,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "vt15_L63_cap20",
+        "n_bars": 5904,
+        "window": [
+          "2002-10-25",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 0.9293489973317709,
+          "numpy": 0.9293489973317685,
+          "vectorbt": null,
+          "quantstats": 0.9293489973317709,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.14485642910774277,
+          "numpy": 0.14485642910774277,
+          "vectorbt": null,
+          "quantstats": 0.14485642910774277,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.40101400390184017,
+          "numpy": 0.40101400390184017,
+          "vectorbt": null,
+          "quantstats": 0.40101400390184017,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 6,
+    "v2_score": 86,
+    "slug": "vol-managed-60-40"
+  },
+  {
+    "iter_dir": "064-2026-04-25-1315-iter058-qqq-trend-substitution",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter046_plus_qqq_trend_w010_lookback200",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3310852873935883,
+          "numpy": 1.3310852873935852,
+          "vectorbt": null,
+          "quantstats": 1.3310852873935883,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09973625595562097,
+          "numpy": 0.09973625595562097,
+          "vectorbt": null,
+          "quantstats": 0.09973625595562097,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.15327484692856375,
+          "numpy": 0.15327484692856375,
+          "vectorbt": null,
+          "quantstats": 0.15327484692856375,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter046_plus_qqq_trend_w010_lookback200",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3753036037975255,
+          "numpy": 1.375303603797524,
+          "vectorbt": null,
+          "quantstats": 1.3753036037975255,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.10245255221234784,
+          "numpy": 0.10245255221234784,
+          "vectorbt": null,
+          "quantstats": 0.10245255221234784,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.1474331661589785,
+          "numpy": 0.1474331661589785,
+          "vectorbt": null,
+          "quantstats": 0.1474331661589785,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter046_plus_qqq_trend_w010_lookback200",
+        "n_bars": 5101,
+        "window": [
+          "2006-01-04",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.21740281192231,
+          "numpy": 1.2174028119223108,
+          "vectorbt": null,
+          "quantstats": 1.2174028119223097,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09505550962759624,
+          "numpy": 0.09505550962759624,
+          "vectorbt": null,
+          "quantstats": 0.09505550962759624,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.17268769627571123,
+          "numpy": 0.17268769627571123,
+          "vectorbt": null,
+          "quantstats": 0.17268769627571123,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 64,
+    "v2_score": 85,
+    "slug": "iter058-qqq-trend-substitution"
+  },
+  {
+    "iter_dir": "069-2026-04-25-1518-iter064-vix-inner-weight-reverse",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter064_vix_inner_w_calm005_stress020_vix20",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.321358554205322,
+          "numpy": 1.3213585542053221,
+          "vectorbt": null,
+          "quantstats": 1.321358554205322,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09893639691864897,
+          "numpy": 0.09893639691864897,
+          "vectorbt": null,
+          "quantstats": 0.09893639691864897,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.1438064957833357,
+          "numpy": 0.1438064957833357,
+          "vectorbt": null,
+          "quantstats": 0.1438064957833357,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter064_vix_inner_w_calm005_stress020_vix20",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.35517995118706,
+          "numpy": 1.3551799511870564,
+          "vectorbt": null,
+          "quantstats": 1.35517995118706,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.10040999945428974,
+          "numpy": 0.10040999945428974,
+          "vectorbt": null,
+          "quantstats": 0.10040999945428974,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.13326860677304453,
+          "numpy": 0.13326860677304453,
+          "vectorbt": null,
+          "quantstats": 0.13326860677304453,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter064_vix_inner_w_calm005_stress020_vix20",
+        "n_bars": 5101,
+        "window": [
+          "2006-01-04",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.2124723779312796,
+          "numpy": 1.2124723779312812,
+          "vectorbt": null,
+          "quantstats": 1.2124723779312796,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09374710248850482,
+          "numpy": 0.09374710248850482,
+          "vectorbt": null,
+          "quantstats": 0.09374710248850482,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.1576683631326199,
+          "numpy": 0.1576683631326199,
+          "vectorbt": null,
+          "quantstats": 0.1576683631326199,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 69,
+    "v2_score": 85,
+    "slug": "iter064-vix-inner-weight-reverse"
+  },
+  {
+    "iter_dir": "070-2026-04-25-1540-iter064-t10y3m-cont-inner-weight",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter064_t10y3m_cont_alpha025_lb1260_w005_020",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.319707563258008,
+          "numpy": 1.3197075632580069,
+          "vectorbt": null,
+          "quantstats": 1.3197075632580078,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.10231711693326506,
+          "numpy": 0.10231711693326506,
+          "vectorbt": null,
+          "quantstats": 0.10231711693326506,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.14872313388298697,
+          "numpy": 0.14872313388298697,
+          "vectorbt": null,
+          "quantstats": 0.14872313388298697,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter064_t10y3m_cont_alpha025_lb1260_w005_020",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3576043020436817,
+          "numpy": 1.3576043020436812,
+          "vectorbt": null,
+          "quantstats": 1.3576043020436817,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.10463738117956001,
+          "numpy": 0.10463738117956001,
+          "vectorbt": null,
+          "quantstats": 0.10463738117956001,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.14118361865366236,
+          "numpy": 0.14118361865366236,
+          "vectorbt": null,
+          "quantstats": 0.14118361865366236,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter064_t10y3m_cont_alpha025_lb1260_w005_020",
+        "n_bars": 5101,
+        "window": [
+          "2006-01-04",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.2142689406797382,
+          "numpy": 1.2142689406797393,
+          "vectorbt": null,
+          "quantstats": 1.2142689406797382,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09712342495184645,
+          "numpy": 0.09712342495184645,
+          "vectorbt": null,
+          "quantstats": 0.09712342495184645,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.17093389745534815,
+          "numpy": 0.17093389745534815,
+          "vectorbt": null,
+          "quantstats": 0.17093389745534815,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 70,
+    "v2_score": 85,
+    "slug": "iter064-t10y3m-cont-inner-weight"
+  },
+  {
+    "iter_dir": "071-2026-04-25-1606-iter064-plus-spy-mr-rsi2",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter064_plus_spy_mr_rsi2_th5_w010",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3607694043558047,
+          "numpy": 1.3607694043558065,
+          "vectorbt": null,
+          "quantstats": 1.3607694043558047,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09391436947341325,
+          "numpy": 0.09391436947341325,
+          "vectorbt": null,
+          "quantstats": 0.09391436947341325,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.13958269027691272,
+          "numpy": 0.13958269027691272,
+          "vectorbt": null,
+          "quantstats": 0.13958269027691272,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter064_plus_spy_mr_rsi2_th5_w010",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.4006555481677658,
+          "numpy": 1.4006555481677658,
+          "vectorbt": null,
+          "quantstats": 1.4006555481677658,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09604660951970567,
+          "numpy": 0.09604660951970567,
+          "vectorbt": null,
+          "quantstats": 0.09604660951970567,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.1342354744951324,
+          "numpy": 0.1342354744951324,
+          "vectorbt": null,
+          "quantstats": 0.1342354744951324,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter064_plus_spy_mr_rsi2_th5_w010",
+        "n_bars": 5101,
+        "window": [
+          "2006-01-04",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.2506735060287117,
+          "numpy": 1.2506735060287093,
+          "vectorbt": null,
+          "quantstats": 1.250673506028712,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.08965175498218914,
+          "numpy": 0.08965175498218914,
+          "vectorbt": null,
+          "quantstats": 0.08965175498218914,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.15545425344375607,
+          "numpy": 0.15545425344375607,
+          "vectorbt": null,
+          "quantstats": 0.15545425344375607,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 71,
+    "v2_score": 85,
+    "slug": "iter064-plus-spy-mr-rsi2"
+  },
+  {
+    "iter_dir": "046-2026-04-25-0553-iter039-overlay-on-iter041",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter039_on_iter041_50_50",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3225967488940382,
+          "numpy": 1.322596748894038,
+          "vectorbt": null,
+          "quantstats": 1.3225967488940382,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.0944974452818359,
+          "numpy": 0.0944974452818359,
+          "vectorbt": null,
+          "quantstats": 0.0944974452818359,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.15223013798487628,
+          "numpy": 0.15223013798487628,
+          "vectorbt": null,
+          "quantstats": 0.15223013798487628,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter039_on_iter041_50_50",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3812348234967247,
+          "numpy": 1.3812348234967236,
+          "vectorbt": null,
+          "quantstats": 1.3812348234967247,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09831049148887172,
+          "numpy": 0.09831049148887172,
+          "vectorbt": null,
+          "quantstats": 0.09831049148887172,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.14574916567195362,
+          "numpy": 0.14574916567195362,
+          "vectorbt": null,
+          "quantstats": 0.14574916567195362,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter039_on_iter041_50_50",
+        "n_bars": 5101,
+        "window": [
+          "2006-01-04",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.2023325690798456,
+          "numpy": 1.2023325690798474,
+          "vectorbt": null,
+          "quantstats": 1.2023325690798456,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09171393328186261,
+          "numpy": 0.09171393328186261,
+          "vectorbt": null,
+          "quantstats": 0.09171393328186261,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.17973738186246369,
+          "numpy": 0.17973738186246369,
+          "vectorbt": null,
+          "quantstats": 0.17973738186246369,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 46,
+    "v2_score": 80,
+    "slug": "iter039-overlay-on-iter041"
+  },
+  {
+    "iter_dir": "058-2026-04-25-1044-hyg-credit-carry-3rd-stream",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter046_plus_hyg_tsm_w010_lookback90",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3472190865833076,
+          "numpy": 1.3472190865833067,
+          "vectorbt": null,
+          "quantstats": 1.3472190865833076,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09009001450266751,
+          "numpy": 0.09009001450266751,
+          "vectorbt": null,
+          "quantstats": 0.09009001450266751,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.13710828589945412,
+          "numpy": 0.13710828589945412,
+          "vectorbt": null,
+          "quantstats": 0.13710828589945412,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter046_plus_hyg_tsm_w010_lookback90",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.4025572071416919,
+          "numpy": 1.4025572071416932,
+          "vectorbt": null,
+          "quantstats": 1.4025572071416919,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09331083633278459,
+          "numpy": 0.09331083633278459,
+          "vectorbt": null,
+          "quantstats": 0.09331083633278459,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.1311677522048048,
+          "numpy": 0.1311677522048048,
+          "vectorbt": null,
+          "quantstats": 0.1311677522048048,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter046_plus_hyg_tsm_w010_lookback90",
+        "n_bars": 4783,
+        "window": [
+          "2007-04-12",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.2223711034289126,
+          "numpy": 1.2223711034289118,
+          "vectorbt": null,
+          "quantstats": 1.2223711034289126,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.0870360806776398,
+          "numpy": 0.0870360806776398,
+          "vectorbt": null,
+          "quantstats": 0.0870360806776398,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.1674422895717882,
+          "numpy": 0.1674422895717882,
+          "vectorbt": null,
+          "quantstats": 0.1674422895717882,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 58,
+    "v2_score": 80,
+    "slug": "iter046-plus-hyg-tsm-w010"
+  },
+  {
+    "iter_dir": "072-2026-04-25-1633-iter064-vix-cond-r-mr-allocation",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter064_vix_cond_calm010_stress005",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3500304253099042,
+          "numpy": 1.350030425309906,
+          "vectorbt": null,
+          "quantstats": 1.3500304253099042,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09572330386370109,
+          "numpy": 0.09572330386370109,
+          "vectorbt": null,
+          "quantstats": 0.09572330386370109,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.1433942299438069,
+          "numpy": 0.1433942299438069,
+          "vectorbt": null,
+          "quantstats": 0.1433942299438069,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter064_vix_cond_calm010_stress005",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3910605870020507,
+          "numpy": 1.3910605870020527,
+          "vectorbt": null,
+          "quantstats": 1.3910605870020507,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.097920128586521,
+          "numpy": 0.097920128586521,
+          "vectorbt": null,
+          "quantstats": 0.097920128586521,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.13773084357442955,
+          "numpy": 0.13773084357442955,
+          "vectorbt": null,
+          "quantstats": 0.13773084357442955,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter064_vix_cond_calm010_stress005",
+        "n_bars": 5101,
+        "window": [
+          "2006-01-04",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.2298520199970178,
+          "numpy": 1.2298520199970198,
+          "vectorbt": null,
+          "quantstats": 1.2298520199970178,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09095221964430067,
+          "numpy": 0.09095221964430067,
+          "vectorbt": null,
+          "quantstats": 0.09095221964430067,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.16332201275227742,
+          "numpy": 0.16332201275227742,
+          "vectorbt": null,
+          "quantstats": 0.16332201275227742,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 72,
+    "v2_score": 80,
+    "slug": "iter064-vix-cond-r-mr-allocation"
+  },
+  {
+    "iter_dir": "041-2026-04-25-0358-regime-weights-vix-static-stack",
+    "datasets": {
+      "spy_real": {
+        "cfg": "regime_weights_vix_lt20_70_40_40_ge20_30_55_55",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.1303164002231612,
+          "numpy": 1.1303164002231623,
+          "vectorbt": null,
+          "quantstats": 1.1303164002231614,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.13515067854797858,
+          "numpy": 0.13515067854797858,
+          "vectorbt": null,
+          "quantstats": 0.13515067854797858,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.24654435776686823,
+          "numpy": 0.24654435776686823,
+          "vectorbt": null,
+          "quantstats": 0.24654435776686823,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "regime_weights_vix_lt20_70_40_40_ge20_30_55_55",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.1634181611373375,
+          "numpy": 1.163418161137338,
+          "vectorbt": null,
+          "quantstats": 1.1634181611373375,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.15781136936230977,
+          "numpy": 0.15781136936230977,
+          "vectorbt": null,
+          "quantstats": 0.15781136936230977,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.3084224464311054,
+          "numpy": 0.3084224464311054,
+          "vectorbt": null,
+          "quantstats": 0.3084224464311054,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "regime_weights_vix_lt20_70_40_40_ge20_30_55_55",
+        "n_bars": 5101,
+        "window": [
+          "2006-01-04",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.0266256650023466,
+          "numpy": 1.0266256650023466,
+          "vectorbt": null,
+          "quantstats": 1.0266256650023469,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.1303031574529383,
+          "numpy": 0.1303031574529383,
+          "vectorbt": null,
+          "quantstats": 0.1303031574529383,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.2759899443156395,
+          "numpy": 0.2759899443156395,
+          "vectorbt": null,
+          "quantstats": 0.2759899443156395,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 41,
+    "v2_score": 79,
+    "slug": "regime-weights-vix-static-stack"
+  },
+  {
+    "iter_dir": "051-2026-04-25-0753-iter037-plus-iter026-w080",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter037_plus_iter026_w080",
+        "n_bars": 4225,
+        "window": [
+          "2009-06-26",
+          "2026-04-14"
+        ],
+        "sharpe": {
+          "pandas": 1.1975482345853143,
+          "numpy": 1.1975482345853141,
+          "vectorbt": null,
+          "quantstats": 1.1975482345853143,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.13460177848043853,
+          "numpy": 0.13460177848043853,
+          "vectorbt": null,
+          "quantstats": 0.13460177848043853,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.21484248311338483,
+          "numpy": 0.21484248311338483,
+          "vectorbt": null,
+          "quantstats": 0.21484248311338483,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter037_plus_iter026_w080",
+        "n_bars": 4065,
+        "window": [
+          "2010-02-16",
+          "2026-04-14"
+        ],
+        "sharpe": {
+          "pandas": 1.218535341634758,
+          "numpy": 1.218535341634758,
+          "vectorbt": null,
+          "quantstats": 1.218535341634758,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.1561718913457315,
+          "numpy": 0.1561718913457315,
+          "vectorbt": null,
+          "quantstats": 0.1561718913457315,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.26963391798991276,
+          "numpy": 0.26963391798991276,
+          "vectorbt": null,
+          "quantstats": 0.26963391798991276,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter037_plus_iter026_w080",
+        "n_bars": 5100,
+        "window": [
+          "2006-01-04",
+          "2026-04-14"
+        ],
+        "sharpe": {
+          "pandas": 1.0211484640087805,
+          "numpy": 1.0211484640087827,
+          "vectorbt": null,
+          "quantstats": 1.0211484640087805,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.12401833640485038,
+          "numpy": 0.12401833640485038,
+          "vectorbt": null,
+          "quantstats": 0.12401833640485038,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.2929956809346804,
+          "numpy": 0.2929956809346804,
+          "vectorbt": null,
+          "quantstats": 0.2929956809346804,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 51,
+    "v2_score": 79,
+    "slug": "iter037-plus-iter026-w080"
+  },
+  {
+    "iter_dir": "053-2026-04-25-0847-iter037-plus-iter046-w070",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter037_plus_iter046_w070",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.19249225613866,
+          "numpy": 1.1924922561386597,
+          "vectorbt": null,
+          "quantstats": 1.19249225613866,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.13721019772969578,
+          "numpy": 0.13721019772969578,
+          "vectorbt": null,
+          "quantstats": 0.13721019772969578,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.22274716468091083,
+          "numpy": 0.22274716468091083,
+          "vectorbt": null,
+          "quantstats": 0.22274716468091083,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter037_plus_iter046_w070",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.2198999632723224,
+          "numpy": 1.2198999632723226,
+          "vectorbt": null,
+          "quantstats": 1.2198999632723224,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.15508613722603903,
+          "numpy": 0.15508613722603903,
+          "vectorbt": null,
+          "quantstats": 0.15508613722603903,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.26946382792465084,
+          "numpy": 0.26946382792465084,
+          "vectorbt": null,
+          "quantstats": 0.26946382792465084,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter037_plus_iter046_w070",
+        "n_bars": 5101,
+        "window": [
+          "2006-01-04",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.0292516081846097,
+          "numpy": 1.0292516081846084,
+          "vectorbt": null,
+          "quantstats": 1.02925160818461,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.1272600535631836,
+          "numpy": 0.1272600535631836,
+          "vectorbt": null,
+          "quantstats": 0.1272600535631836,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.28722277715502087,
+          "numpy": 0.28722277715502087,
+          "vectorbt": null,
+          "quantstats": 0.28722277715502087,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 53,
+    "v2_score": 79,
+    "slug": "iter037-plus-iter046-w070"
+  },
+  {
+    "iter_dir": "005-2026-04-24-1008-variance-managed-spy",
+    "datasets": {
+      "spy_real": {
+        "cfg": "vt20_L21_cap15",
+        "n_bars": 4208,
+        "window": [
+          "2009-07-28",
+          "2026-04-20"
+        ],
+        "sharpe": {
+          "pandas": 0.9805447548307311,
+          "numpy": 0.9805447548307332,
+          "vectorbt": null,
+          "quantstats": 0.9805447548307311,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.1794044018140355,
+          "numpy": 0.1794044018140355,
+          "vectorbt": null,
+          "quantstats": 0.1794044018140355,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.2567494868580473,
+          "numpy": 0.2567494868580473,
+          "vectorbt": null,
+          "quantstats": 0.2567494868580473,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "vt20_L21_cap15",
+        "n_bars": 4048,
+        "window": [
+          "2010-03-17",
+          "2026-04-20"
+        ],
+        "sharpe": {
+          "pandas": 1.0519816064904475,
+          "numpy": 1.0519816064904464,
+          "vectorbt": null,
+          "quantstats": 1.0519816064904475,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.21122599718362856,
+          "numpy": 0.21122599718362856,
+          "vectorbt": null,
+          "quantstats": 0.21122599718362856,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.2419912098564181,
+          "numpy": 0.2419912098564181,
+          "vectorbt": null,
+          "quantstats": 0.2419912098564181,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "vt15_L21_cap15",
+        "n_bars": 10129,
+        "window": [
+          "1986-02-03",
+          "2026-04-17"
+        ],
+        "sharpe": {
+          "pandas": 0.8485429458001775,
+          "numpy": 0.8485429458001761,
+          "vectorbt": null,
+          "quantstats": 0.8485429458001774,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.12458563757538332,
+          "numpy": 0.12458563757538332,
+          "vectorbt": null,
+          "quantstats": 0.12458563757538332,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.4693541064896124,
+          "numpy": 0.4693541064896124,
+          "vectorbt": null,
+          "quantstats": 0.4693541064896124,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 5,
+    "v2_score": 78,
+    "slug": "variance-managed-spy"
+  },
+  {
+    "iter_dir": "048-2026-04-25-0644-iter046-output-lev-gate",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter046_lev_calm14_stress10_vix20",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.2892614338198685,
+          "numpy": 1.289261433819868,
+          "vectorbt": null,
+          "quantstats": 1.2892614338198687,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.11214215246712933,
+          "numpy": 0.11214215246712933,
+          "vectorbt": null,
+          "quantstats": 0.11214215246712933,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.17716011315168023,
+          "numpy": 0.17716011315168023,
+          "vectorbt": null,
+          "quantstats": 0.17716011315168023,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter046_lev_calm14_stress10_vix20",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3438050674168196,
+          "numpy": 1.3438050674168187,
+          "vectorbt": null,
+          "quantstats": 1.3438050674168194,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.11725690680437961,
+          "numpy": 0.11725690680437961,
+          "vectorbt": null,
+          "quantstats": 0.11725690680437961,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.17001202033683382,
+          "numpy": 0.17001202033683382,
+          "vectorbt": null,
+          "quantstats": 0.17001202033683382,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter046_lev_calm14_stress10_vix20",
+        "n_bars": 5101,
+        "window": [
+          "2006-01-04",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.200881532564495,
+          "numpy": 1.200881532564494,
+          "vectorbt": null,
+          "quantstats": 1.200881532564495,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.1092906241696523,
+          "numpy": 0.1092906241696523,
+          "vectorbt": null,
+          "quantstats": 0.1092906241696523,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.18483582673816923,
+          "numpy": 0.18483582673816923,
+          "vectorbt": null,
+          "quantstats": 0.18483582673816923,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 48,
+    "v2_score": 78,
+    "slug": "iter046-output-lev-gate"
+  },
+  {
+    "iter_dir": "004-2026-04-24-vol-managed-spy",
+    "datasets": {
+      "spy_real": {
+        "cfg": "tv20_L21_cap15",
+        "n_bars": 4208,
+        "window": [
+          "2009-07-28",
+          "2026-04-20"
+        ],
+        "sharpe": {
+          "pandas": 0.9796667787762681,
+          "numpy": 0.9796667787762682,
+          "vectorbt": null,
+          "quantstats": 0.9796667787762682,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.1783036577289816,
+          "numpy": 0.1783036577289816,
+          "vectorbt": null,
+          "quantstats": 0.1783036577289816,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.24976216061795475,
+          "numpy": 0.24976216061795475,
+          "vectorbt": null,
+          "quantstats": 0.24976216061795475,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "tv20_L21_cap15",
+        "n_bars": 4048,
+        "window": [
+          "2010-03-17",
+          "2026-04-20"
+        ],
+        "sharpe": {
+          "pandas": 1.0429843232575335,
+          "numpy": 1.0429843232575344,
+          "vectorbt": null,
+          "quantstats": 1.0429843232575335,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.2114342888333216,
+          "numpy": 0.2114342888333216,
+          "vectorbt": null,
+          "quantstats": 0.2114342888333216,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.28874168155983415,
+          "numpy": 0.28874168155983415,
+          "vectorbt": null,
+          "quantstats": 0.28874168155983415,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "tv20_L21_cap20",
+        "n_bars": 10129,
+        "window": [
+          "1986-02-03",
+          "2026-04-17"
+        ],
+        "sharpe": {
+          "pandas": 0.8280470023231499,
+          "numpy": 0.8280470023231497,
+          "vectorbt": null,
+          "quantstats": 0.8280470023231498,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.16438631290136718,
+          "numpy": 0.16438631290136718,
+          "vectorbt": null,
+          "quantstats": 0.16438631290136718,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.580574330351399,
+          "numpy": 0.580574330351399,
+          "vectorbt": null,
+          "quantstats": 0.580574330351399,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 4,
+    "v2_score": 76,
+    "slug": "vol-managed-spy"
+  },
+  {
+    "iter_dir": "045-2026-04-25-0528-iter039-overlay-on-iter037",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter039_on_iter037_50_50",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.2842271722040992,
+          "numpy": 1.2842271722040994,
+          "vectorbt": null,
+          "quantstats": 1.2842271722040992,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.10432243569383282,
+          "numpy": 0.10432243569383282,
+          "vectorbt": null,
+          "quantstats": 0.10432243569383282,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.16259336754357157,
+          "numpy": 0.16259336754357157,
+          "vectorbt": null,
+          "quantstats": 0.16259336754357157,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter039_on_iter037_50_50",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3256350236114671,
+          "numpy": 1.3256350236114665,
+          "vectorbt": null,
+          "quantstats": 1.3256350236114671,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.10709783450244847,
+          "numpy": 0.10709783450244847,
+          "vectorbt": null,
+          "quantstats": 0.10709783450244847,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.1535458185976858,
+          "numpy": 0.1535458185976858,
+          "vectorbt": null,
+          "quantstats": 0.1535458185976858,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter039_on_iter037_50_50",
+        "n_bars": 5101,
+        "window": [
+          "2006-01-04",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.1040623354348749,
+          "numpy": 1.1040623354348753,
+          "vectorbt": null,
+          "quantstats": 1.104062335434875,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09754361550732127,
+          "numpy": 0.09754361550732127,
+          "vectorbt": null,
+          "quantstats": 0.09754361550732127,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.22609602006137386,
+          "numpy": 0.22609602006137386,
+          "vectorbt": null,
+          "quantstats": 0.22609602006137386,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 45,
+    "v2_score": 76,
+    "slug": "iter039-overlay-on-iter037"
+  },
+  {
+    "iter_dir": "063-2026-04-25-1246-iter058-internal-letf",
+    "datasets": {
+      "spy_real": {
+        "cfg": "iter058_with_internal_letf_iter041_only",
+        "n_bars": 4226,
+        "window": [
+          "2009-06-26",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.2595172751282555,
+          "numpy": 1.2595172751282564,
+          "vectorbt": null,
+          "quantstats": 1.2595172751282555,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09667056754527481,
+          "numpy": 0.09667056754527481,
+          "vectorbt": null,
+          "quantstats": 0.09667056754527481,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.15512688856580892,
+          "numpy": 0.15512688856580892,
+          "vectorbt": null,
+          "quantstats": 0.15512688856580892,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "iter058_with_internal_letf_iter041_only",
+        "n_bars": 4066,
+        "window": [
+          "2010-02-16",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.3452663262395084,
+          "numpy": 1.3452663262395068,
+          "vectorbt": null,
+          "quantstats": 1.3452663262395084,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.11189674835184338,
+          "numpy": 0.11189674835184338,
+          "vectorbt": null,
+          "quantstats": 0.11189674835184338,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.1800822148198178,
+          "numpy": 0.1800822148198178,
+          "vectorbt": null,
+          "quantstats": 0.1800822148198178,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "iter058_with_internal_letf_iter041_only",
+        "n_bars": 4783,
+        "window": [
+          "2007-04-12",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.1714355525028155,
+          "numpy": 1.1714355525028157,
+          "vectorbt": null,
+          "quantstats": 1.1714355525028155,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.09471353319286324,
+          "numpy": 0.09471353319286324,
+          "vectorbt": null,
+          "quantstats": 0.09471353319286324,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.17509679393458888,
+          "numpy": 0.17509679393458888,
+          "vectorbt": null,
+          "quantstats": 0.17509679393458888,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 63,
+    "v2_score": 76,
+    "slug": "iter058-internal-letf-iter041-only"
+  },
+  {
+    "iter_dir": "016-2026-04-24-1729-static-stack-vm-hybrid",
+    "datasets": {
+      "spy_real": {
+        "cfg": "ntsx_vm_vt15_L21_cap20",
+        "n_bars": 4205,
+        "window": [
+          "2009-07-28",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.1380423816142746,
+          "numpy": 1.1380423816142755,
+          "vectorbt": null,
+          "quantstats": 1.1380423816142746,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.1775725905960297,
+          "numpy": 0.1775725905960297,
+          "vectorbt": null,
+          "quantstats": 0.1775725905960297,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.26653869420310894,
+          "numpy": 0.26653869420310894,
+          "vectorbt": null,
+          "quantstats": 0.26653869420310894,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "ntsx_vm_vt15_L21_cap20",
+        "n_bars": 4045,
+        "window": [
+          "2010-03-17",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.194333660468305,
+          "numpy": 1.1943336604683046,
+          "vectorbt": null,
+          "quantstats": 1.194333660468305,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.20753479286937626,
+          "numpy": 0.20753479286937626,
+          "vectorbt": null,
+          "quantstats": 0.20753479286937626,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.23228048901659726,
+          "numpy": 0.23228048901659726,
+          "vectorbt": null,
+          "quantstats": 0.23228048901659726,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "ntsx_vm_vt15_L21_cap20",
+        "n_bars": 5080,
+        "window": [
+          "2006-02-03",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 0.9826535388168793,
+          "numpy": 0.9826535388168793,
+          "vectorbt": null,
+          "quantstats": 0.9826535388168792,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.15050030694475747,
+          "numpy": 0.15050030694475747,
+          "vectorbt": null,
+          "quantstats": 0.15050030694475747,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.313289561449408,
+          "numpy": 0.313289561449408,
+          "vectorbt": null,
+          "quantstats": 0.313289561449408,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 16,
+    "v2_score": 74,
+    "slug": "static-stack-vm-hybrid"
+  },
+  {
+    "iter_dir": "018-2026-04-24-1813-funding-cost-modeled-replay",
+    "datasets": {
+      "spy_real": {
+        "cfg": "ntsx_vm_vt15_L21_cap20_funded",
+        "n_bars": 4205,
+        "window": [
+          "2009-07-28",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.0645485699523107,
+          "numpy": 1.0645485699523112,
+          "vectorbt": null,
+          "quantstats": 1.0645485699523107,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.16422191387081408,
+          "numpy": 0.16422191387081408,
+          "vectorbt": null,
+          "quantstats": 0.16422191387081408,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.2666094130192116,
+          "numpy": 0.2666094130192116,
+          "vectorbt": null,
+          "quantstats": 0.2666094130192116,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "ntsx_vm_vt15_L21_cap20_funded",
+        "n_bars": 4045,
+        "window": [
+          "2010-03-17",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 1.1402112708067371,
+          "numpy": 1.1402112708067376,
+          "vectorbt": null,
+          "quantstats": 1.1402112708067371,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.19638582478167943,
+          "numpy": 0.19638582478167943,
+          "vectorbt": null,
+          "quantstats": 0.19638582478167943,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.23173010905060498,
+          "numpy": 0.23173010905060498,
+          "vectorbt": null,
+          "quantstats": 0.23173010905060498,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "ntsx_vm_vt15_L21_cap20_funded",
+        "n_bars": 5080,
+        "window": [
+          "2006-02-03",
+          "2026-04-15"
+        ],
+        "sharpe": {
+          "pandas": 0.8874313015293674,
+          "numpy": 0.8874313015293672,
+          "vectorbt": null,
+          "quantstats": 0.8874313015293673,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.1335768395350836,
+          "numpy": 0.1335768395350836,
+          "vectorbt": null,
+          "quantstats": 0.1335768395350836,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.3327501146623776,
+          "numpy": 0.3327501146623776,
+          "vectorbt": null,
+          "quantstats": 0.3327501146623776,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 18,
+    "v2_score": 74,
+    "slug": "funding-cost-modeled-replay"
+  },
+  {
+    "iter_dir": "020-2026-04-24-1850-put-spread-tail-hedge",
+    "datasets": {
+      "spy_real": {
+        "cfg": "ntsx_vm_vt15_L21_cap20_pp5_10_1m",
+        "n_bars": 4204,
+        "window": [
+          "2009-07-28",
+          "2026-04-14"
+        ],
+        "sharpe": {
+          "pandas": 1.0631885053725691,
+          "numpy": 1.0631885053725691,
+          "vectorbt": null,
+          "quantstats": 1.0631885053725691,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.15291990632931562,
+          "numpy": 0.15291990632931562,
+          "vectorbt": null,
+          "quantstats": 0.15291990632931562,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.2987582998563333,
+          "numpy": 0.2987582998563333,
+          "vectorbt": null,
+          "quantstats": 0.2987582998563333,
+          "div": "GREEN"
+        }
+      },
+      "ndx_real": {
+        "cfg": "ntsx_vm_vt15_L21_cap20_pp5_10_1m",
+        "n_bars": 4044,
+        "window": [
+          "2010-03-17",
+          "2026-04-14"
+        ],
+        "sharpe": {
+          "pandas": 1.1418635218413207,
+          "numpy": 1.1418635218413202,
+          "vectorbt": null,
+          "quantstats": 1.1418635218413207,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.19051871751025828,
+          "numpy": 0.19051871751025828,
+          "vectorbt": null,
+          "quantstats": 0.19051871751025828,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.27840909167645844,
+          "numpy": 0.27840909167645844,
+          "vectorbt": null,
+          "quantstats": 0.27840909167645844,
+          "div": "GREEN"
+        }
+      },
+      "educational": {
+        "cfg": "ntsx_vm_vt15_L21_cap20_pp5_10_1m",
+        "n_bars": 5079,
+        "window": [
+          "2006-02-03",
+          "2026-04-14"
+        ],
+        "sharpe": {
+          "pandas": 0.9047385136046221,
+          "numpy": 0.9047385136046214,
+          "vectorbt": null,
+          "quantstats": 0.9047385136046222,
+          "div": "GREEN"
+        },
+        "cagr": {
+          "pandas": 0.12656504379366695,
+          "numpy": 0.12656504379366695,
+          "vectorbt": null,
+          "quantstats": 0.12656504379366695,
+          "div": "GREEN"
+        },
+        "mdd": {
+          "pandas": 0.3701320865314174,
+          "numpy": 0.3701320865314174,
+          "vectorbt": null,
+          "quantstats": 0.3701320865314174,
+          "div": "GREEN"
+        }
+      }
+    },
+    "iter_id": 20,
+    "v2_score": 74,
+    "slug": "put-spread-tail-hedge"
+  }
+]
