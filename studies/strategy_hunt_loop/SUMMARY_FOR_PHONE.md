@@ -5,6 +5,57 @@ Pra ler na cama com tempo. Versão técnica completa em `FINAL_REPORT.md`.*
 
 ---
 
+## 🆕 ATUALIZAÇÃO (loop terminou, novo WINNER apareceu)
+
+**Loop encerrou em iter 079** (não chegou a 100 — parou porque achou
+WINNER, comportamento por design). Cumulativo: **79 iters, 3 v2 winners**:
+
+| pos | iter | v2 score | slug | comentário |
+|---|---|---|---|---|
+| 🏆 #1 | **074** | 95 | `iter016-iter064-ensemble` | melhor v2 mas long-window incerto (HYG sem proxy) |
+| 🏆 #2 | **079** | 93 | `iter079-multi-asset-topk-momentum` | **WINNER REAL** (5/5 strict gates), MAS long-window 40y inconclusivo (ver caveat) |
+| 🏆 #3 | **006** | 86 | `vol-managed-60-40` | **único winner com long-window 40y dominante**: Sharpe 0.93/CAGR 14.4%/MDD 35% |
+
+### O winner-real iter 079 em uma frase:
+**Antonacci-style multi-asset top-K momentum** — todo mês escolhe o
+melhor ativo entre {SPY, QQQ, EFA, TLT, GLD} pelo retorno trailing 12
+meses; se o vencedor estiver em retorno negativo, vai pra AGG (bond
+defensivo). Simples e canônico (Faber 2007 + Antonacci 2014).
+
+### CAVEAT importante sobre iter 079
+Re-rodei iter 079 nos 40 anos sintéticos **com substituições** (sem EFA
+no synth, ZROZSIM como proxy de TLT/AGG). **Resultado: NÃO domina
+SPY** — Sharpe 0.52, CAGR 10%, MDD 50%. Pior que SPY em risco-ajustado
+e em retorno absoluto.
+
+Isso pode ser:
+- (a) substituição ruim (ZROZSIM é muito mais volátil que AGG real),
+- (b) edge regime-específico que só funciona pós-2008.
+
+**Não dá pra confirmar nem desmentir** sem dados sintéticos pra EFA e
+AGG (testfolio não tem). Trate iter 079 como "winner forte no SPY-Tiingo
+17y, mas robustez 40y inconclusiva".
+
+### Recomendação revisada (importante!)
+
+**iter 035** continua sendo a aposta mais robusta pra deploy** porque:
+- Domina SPY em CAGR + Sharpe **nos 17y E nos 40y** (única estratégia
+  com isso)
+- Implementação trivial: 90% SPY + 60% ZROZ + 30% GLD, rebalance mensal
+- Não passa o gate strict de winner v2 só por causa de DSR num grid
+  pequeno — mas o long-window vale mais que o gate
+
+**iter 016/074** continua o "balanced/sleep-well" preferido (Sharpe
+0.95/MDD 35% nos 40y).
+
+**iter 079** seria #1 se confiássemos cegamente no v2, mas a falha do
+long-window me deixa cauteloso. Deploy só se aceitar o risco de
+"funciona só em regime moderno".
+
+---
+
+---
+
 ## TL;DR (pra preguiçoso)
 
 Rodamos 74 iterações em ~32h, achamos **2 estratégias WINNER-tier**

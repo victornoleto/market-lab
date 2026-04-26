@@ -1,17 +1,30 @@
-# Strategy Hunt Loop — Final Report (preliminary)
+# Strategy Hunt Loop — Final Report
 
-**Generated**: 2026-04-25 23:30 (during overnight loop run iter 075-100)
-**Loop status**: in progress — round 1/26, iter 075 running
-**Will be updated when loop ends.**
+**Generated**: 2026-04-25 23:30, updated 2026-04-26 02:00 post-loop-halt
+**Loop status**: HALTED at iter 079 (WINNER detected, run_loop.sh
+self-terminated as designed)
+**Total iterations**: 79 (002-079); loop ran 5 of planned 26 rounds
+before halting on winner
 
 ---
 
 ## Executive summary
 
-After 74 iterations + relaxed-DSR re-scoring + light cross-lib metric
-validation + 40-year synthetic re-runs, **we have 2 confirmed
-WINNER-tier strategies** (5/5 strict conditions met) and **3-5 strong
-deploy candidates** with distinct risk-return profiles.
+After 79 iterations + relaxed-DSR re-scoring + light cross-lib metric
+validation + 40-year synthetic re-runs, **we have 3 confirmed
+WINNER-tier strategies** (5/5 strict conditions met) and several strong
+deploy candidates with distinct risk-return profiles.
+
+The hunt loop self-terminated at iter 079 when `multi_asset_topk_momentum`
+hit all 5 strict winner conditions on the 17y SPY-Tiingo data
+(Sharpe 1.094, CAGR 13.00%, MDD 25%, DSR p=0.002 across all 3 datasets).
+
+**However**, partial 40-year synthetic re-validation of iter 079 with
+substitutions (ZROZSIM-as-AGG, no EFA analog) yields Sharpe 0.52 / CAGR
+10% / MDD 50% — UNDERPERFORMS SPYSIM b&h. This could be (a) substitution
+artifact (ZROZSIM is much more volatile than IEF/AGG) or (b) regime-
+specific edge. **Inconclusive** — would need MSCI-EAFE + AGG synth analogs
+to validate cleanly.
 
 **Top recommendation for deploy** (single-best by long-window evidence):
 
@@ -21,6 +34,12 @@ deploy candidates** with distinct risk-return profiles.
 > **CAGR 19.6% (Δ+8.1pp vs SPYSIM 11.5%)** with MDD 46% (Δ−9pp).
 > Dominates SPYSIM in BOTH risk-adjusted and raw return on the longer
 > window. Simplest possible mechanism that does so.
+>
+> **Note**: iter 035 has v2 score 72 (PROMISING) — does NOT meet strict
+> 5/5 winner conditions on the 17y window (DSR p too high). But the 40y
+> long-window dominance is the stronger evidence: it survives across
+> 4 decades and 6 distinct regimes. The strict-winner gate is probably
+> too tight; long-window robustness matters more for production deploy.
 
 Alternatives by profile:
 
@@ -59,7 +78,8 @@ Source: `studies/strategy_hunt_loop/RESCORE_V2_SUMMARY.md`.
 | rank | iter | v1 → v2 | tier | winner_met (v2) | strategy slug |
 |---|---|---|---|---|---|
 | 1 | **74** | 89 → **95** | 🏆 **WINNER** | ✅ | `iter016-iter064-ensemble` |
-| 2 | **6**  | 67 → **86** | 🏆 **WINNER** | ✅ | `vol-managed-60-40` |
+| 2 | **79** | 93 → **93** | 🏆 **WINNER** | ✅ | `iter079-multi-asset-topk-momentum` |
+| 3 | **6**  | 67 → **86** | 🏆 **WINNER** | ✅ | `vol-managed-60-40` |
 | 3 | 64 | 90 → 85 | 🥇 STRONG | — | `iter058-qqq-trend-substitution` |
 | 4 | 69 | 90 → 85 | 🥇 STRONG | — | `iter064-vix-inner-weight-reverse` |
 | 5 | 70 | 90 → 85 | 🥇 STRONG | — | `iter064-t10y3m-cont-inner-weight` |
@@ -149,6 +169,34 @@ IEF (same effective duration / risk profile, true 40y coverage).
 produced. The static stack (iter 035) wins on raw return; the
 vol-managed hybrid (iter 016/074) wins on risk-adjusted and drawdown.
 
+### iter 079 (v2 #2 winner) — long-window with substitutions
+
+iter 079 uses universe {SPY, QQQ, EFA, TLT, GLD} + AGG. Synth lacks EFA
+and AGG analogs. Two substitution scenarios tried:
+
+| scenario | universe | Sharpe | CAGR | MDD | dominance |
+|---|---|---|---|---|---|
+| A (4-asset, ZROZSIM=AGG) | SPY/QQQ/TLT/GLD | 0.523 (Δ−0.16) | 10.03% (Δ−1.45pp) | 49.52% (Δ−5.62pp) | ❌ neither |
+| B (5-asset, QQQSIM=EFA) | SPY/QQQ/EFA/TLT/GLD | 0.523 (Δ−0.16) | 10.03% (Δ−1.45pp) | 49.52% (Δ−5.62pp) | ❌ neither |
+
+**iter 079 does NOT replicate its 17y dominance on 40y synth.** Both
+scenarios produce identical results because QQQSIM=EFA causes top-K to
+just pick QQQ.
+
+**Why the long-window result might still mean nothing**: ZROZSIM is a
+25-year zero-coupon proxy, FAR more volatile than IEF (intermediate
+duration) or AGG (broad investment-grade). When iter 079 routes to
+"AGG" during defensive periods, the synth puts it into ZROZSIM which
+gets hammered by every rate-hike cycle (1994, 2013, 2022). The bond
+fallback may be the artifact, not the strategy.
+
+**Honest verdict**: iter 079 is a confirmed strict winner on the 17y
+SPY-Tiingo window (Sharpe 1.094, CAGR 13%, MDD 25%, DSR p<0.005 cross
+3 datasets). Its 40y robustness is **inconclusive** — would need real
+MSCI-EAFE + AGG synth (or live IEF/AGG data back to 1986) to validate.
+
+See `LONG_WINDOW_VALIDATION_iter079.md` for raw results.
+
 ### Strategies skipped (synth-unavailable inputs)
 
 The iter 064 family and credit/VIX-overlay variants depend on macro
@@ -203,22 +251,44 @@ established**.
 > - **Use this if you want vol-managed defense without the leverage
 >   complexity** of return-stacking
 
-### Multi-strategy ensemble (highest scoring)
+### v2 winners (3 strict 5/5 candidates)
 
-🏆 **iter 074 `iter016-iter064-ensemble`** is the only strategy meeting
-all 5 strict winner conditions on the 17y window with v2 score 95. It's
-a 50/50 blend of iter 016 (vol-managed hybrid) and iter 064 (qqq-trend
-substitution). However:
+🏆 **iter 074 `iter016-iter064-ensemble`** v2=95 — 50/50 blend of vol-managed
+hybrid (iter 016) and qqq-trend substitution (iter 064). 17y winner. Long-window
+inconclusive (HYG leg can't be re-run on synth).
 
-- iter 064's QQQ-trend leg uses HYG which has no synth analog → cannot
-  validate the iter 074 ensemble cleanly on 40y window
-- The simplification (just iter 016) achieves Sharpe 0.95 on 40y which
-  is essentially identical to the v1 reported number
+🏆 **iter 079 `iter079-multi-asset-topk-momentum`** v2=93 — Antonacci
+GEM-style top-K monthly momentum across SPY/QQQ/EFA/TLT/GLD with AGG
+fallback. **STRICT 5/5 winner on 17y data with DSR p<0.005 across all
+3 datasets** (the cleanest statistical evidence in the loop). Long-window
+40y inconclusive due to substitution issues — see section above.
 
-**My recommendation**: deploy iter 016 OR iter 035 OR iter 006 by profile,
-not the iter 074 ensemble. The ensemble's "winner" status under v2 is
-real on the 17y data but the iter-064 leg is structurally uncertain
-without longer-window validation.
+🏆 **iter 006 `vol-managed-60-40`** v2=86 — 60/40 SPY+TLT with daily
+vol-target rescaling. Strict winner on 17y AND **dominates SPYSIM on
+40y synth** (Sharpe 0.93/CAGR 14.4%/MDD 35%). Only winner that's clean
+on both windows.
+
+### My recommendation hierarchy (revised post-loop-halt):
+
+1. **For balanced sleep-well + clean long-window evidence**: iter 016
+   (`ntsx_vm_vt15_L21_cap20`) OR iter 006 (`vol-managed-60-40`). Both
+   dominate SPYSIM in Sharpe and CAGR on 40y, with massive MDD reduction
+   (-20pp). iter 016 has slightly better numbers; iter 006 simpler implementation.
+
+2. **For max return + clean long-window**: iter 035
+   (`static_stack_90_60_spy_gld`). NOT a strict v2 winner (DSR misses
+   on 17y) but **dominates SPYSIM in CAGR by +8pp on 40y** with similar
+   MDD. The simplest robust strategy in the loop. Worth deploying if you
+   accept SPY-like drawdown profile.
+
+3. **For statistical purity (strict winner)**: iter 079
+   (`multi-asset-topk-momentum`). Real strict 5/5 winner with
+   DSR p<0.005 cross 3 datasets. **But long-window unverified** — deploy
+   only if you accept "validated only on 17y data". Implementation effort:
+   medium (monthly rebalance + 12-month lookback signal across 5 assets).
+
+4. **Avoid for now**: iter 074 ensemble (depends on iter 064's HYG leg
+   which cannot be long-window validated).
 
 ---
 
@@ -237,10 +307,9 @@ without longer-window validation.
 
 ## What's still pending
 
-1. **Loop iter 075-100** running in background (PID 2386820). Started
-   2026-04-25 23:20, expected end ~2026-04-26 06:00-08:00 (or earlier on
-   WINNER). Each new iter that completes will be re-scored under v2 when
-   the loop ends. May surface a higher-score winner.
+1. ~~Loop iter 075-100~~ **DONE**: halted at iter 079 (winner detected).
+   5 of 26 planned rounds executed. Remaining 21 rounds skipped because
+   `run_loop.sh` self-terminates on `status: winner`.
 
 2. **Engine-level cross-validation** of top-3 in vectorbt + backtrader
    from PRICES (not just returns). Currently we only validated the
