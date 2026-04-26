@@ -1,0 +1,130 @@
+{
+  "benchmarks": {
+    "SPYSIM": {
+      "name": "SPYSIM b&h",
+      "n_bars": 10150,
+      "sharpe": 0.681941590389081,
+      "cagr": 0.11488421330283116,
+      "mdd": 0.5514127052677147,
+      "start": "1986-01-03",
+      "end": "2026-04-17"
+    },
+    "QQQSIM": {
+      "name": "QQQSIM b&h",
+      "n_bars": 10150,
+      "sharpe": 0.6583029930832193,
+      "cagr": 0.1457886030478468,
+      "mdd": 0.8297113700361034,
+      "start": "1986-01-03",
+      "end": "2026-04-17"
+    }
+  },
+  "strategies": [
+    {
+      "name": "iter004_vol_managed_spy_SPYSIM",
+      "n_bars": 10149,
+      "sharpe": 0.811335204978241,
+      "cagr": 0.144008846448209,
+      "mdd": 0.5608151903080223,
+      "start": "1986-01-06",
+      "end": "2026-04-17",
+      "primary_bench": "SPYSIM",
+      "sharpe_delta": 0.12939361458916,
+      "cagr_delta_pp": 2.912463314537783,
+      "mdd_delta_pp": 0.9402485040307607
+    },
+    {
+      "name": "iter005_variance_managed_spy_SPYSIM",
+      "n_bars": 10149,
+      "sharpe": 0.792331222781841,
+      "cagr": 0.139584294216206,
+      "mdd": 0.5971179887267135,
+      "start": "1986-01-06",
+      "end": "2026-04-17",
+      "primary_bench": "SPYSIM",
+      "sharpe_delta": 0.11038963239276,
+      "cagr_delta_pp": 2.4700080913374833,
+      "mdd_delta_pp": 4.570528345899882
+    },
+    {
+      "name": "iter006_vol_managed_60_40_SPYSIM_ZROZSIM",
+      "n_bars": 10149,
+      "sharpe": 0.9315749515610783,
+      "cagr": 0.14407785196630885,
+      "mdd": 0.3470279570954159,
+      "start": "1986-01-06",
+      "end": "2026-04-17",
+      "primary_bench": "SPYSIM",
+      "sharpe_delta": 0.2496333611719973,
+      "cagr_delta_pp": 2.9193638663477683,
+      "mdd_delta_pp": -20.438474817229878
+    },
+    {
+      "name": "iter015_ntsx_static_90_60_SPYSIM_ZROZSIM",
+      "n_bars": 10150,
+      "sharpe": 0.840066664623607,
+      "cagr": 0.16948112296576712,
+      "mdd": 0.48814796136305727,
+      "start": "1986-01-03",
+      "end": "2026-04-17",
+      "primary_bench": "SPYSIM",
+      "sharpe_delta": 0.15812507423452604,
+      "cagr_delta_pp": 5.4596909662935955,
+      "mdd_delta_pp": -6.326474390465742
+    },
+    {
+      "name": "iter016_static_stack_vm_SPYSIM_ZROZSIM",
+      "n_bars": 10149,
+      "sharpe": 0.951324505642749,
+      "cagr": 0.15132743555941075,
+      "mdd": 0.3461555820698322,
+      "start": "1986-01-06",
+      "end": "2026-04-17",
+      "primary_bench": "SPYSIM",
+      "sharpe_delta": 0.269382915253668,
+      "cagr_delta_pp": 3.644322225657959,
+      "mdd_delta_pp": -20.525712319788248
+    },
+    {
+      "name": "iter035_static_stack_3leg_SPYSIM_ZROZSIM_GLDSIM",
+      "n_bars": 10150,
+      "sharpe": 0.9217028294454194,
+      "cagr": 0.19600641314204603,
+      "mdd": 0.461789726663583,
+      "start": "1986-01-03",
+      "end": "2026-04-17",
+      "primary_bench": "SPYSIM",
+      "sharpe_delta": 0.2397612390563384,
+      "cagr_delta_pp": 8.112219983921488,
+      "mdd_delta_pp": -8.962297860413171
+    },
+    {
+      "name": "iter074_ensemble_SIMPLIFIED_to_iter016",
+      "n_bars": 10149,
+      "sharpe": 0.951324505642749,
+      "cagr": 0.15132743555941075,
+      "mdd": 0.3461555820698322,
+      "start": "1986-01-06",
+      "end": "2026-04-17",
+      "primary_bench": "SPYSIM",
+      "sharpe_delta": 0.269382915253668,
+      "cagr_delta_pp": 3.644322225657959,
+      "mdd_delta_pp": -20.525712319788248
+    }
+  ],
+  "skipped": {
+    "iter064_qqq_trend_substitution": "needs IEF+HYG (no synth analog)",
+    "iter069_vix_inner_weight_reverse": "needs IEF+HYG+VIX",
+    "iter070_t10y3m_cont_inner_weight": "needs IEF+HYG+T10Y3M",
+    "iter071_iter064_plus_spy_mr_rsi2": "needs IEF+HYG+RSI2 path",
+    "iter058_iter046_plus_hyg_tsm_w010": "needs HYG",
+    "iter041_regime_weights_vix_static_stack": "needs VIX",
+    "iter046_iter039_overlay_on_iter041": "needs IEF",
+    "iter048_iter046_output_lev_gate": "needs IEF",
+    "iter063_iter058_internal_letf_iter041_only": "needs VIX",
+    "iter072_iter064_vix_cond_r_mr_allocation": "needs VIX",
+    "iter073_gayed_ma_gate_on_iter016": "needs Gayed-MA gate (UTIL/SPY ratio)",
+    "iter051_iter037_plus_iter026_w080": "needs IEF+VIX",
+    "iter053_iter037_plus_iter046_w070": "needs IEF"
+  }
+}
