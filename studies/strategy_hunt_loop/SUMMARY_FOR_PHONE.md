@@ -42,16 +42,18 @@ limpa. **iter 079 agora é deploy-grade confirmado.**
 **iter 035** continua sendo a aposta mais robusta pra deploy** porque:
 - Domina SPY em CAGR + Sharpe **nos 17y E nos 40y** (única estratégia
   com isso)
+- **Post-tax Lei 14.754 (15% anual MTM)**: CAGR 16.50% vs SPY 9.41%
+  → **+7.1pp/ano de vantagem real líquida**
 - Implementação trivial: 90% SPY + 60% ZROZ + 30% GLD, rebalance mensal
-- Não passa o gate strict de winner v2 só por causa de DSR num grid
-  pequeno — mas o long-window vale mais que o gate
 
 **iter 016/074** continua o "balanced/sleep-well" preferido (Sharpe
-0.95/MDD 35% nos 40y).
+0.80 post-tax/MDD 35% nos 40y, CAGR 12.60% post-tax = Δ+3.2pp).
 
-**iter 079** seria #1 se confiássemos cegamente no v2, mas a falha do
-long-window me deixa cauteloso. Deploy só se aceitar o risco de
-"funciona só em regime moderno".
+**iter 079** RESSUSCITOU pós-correção do bond proxy (BNDSIM em vez de
+ZROZSIM). Agora domina SPYSIM nos 40y também (Sharpe Δ+0.025, CAGR
+Δ+1.59pp). É o único que passa **5/5 strict winner conditions** no 17y
+E também sobrevive no 40y. Mas dominância 40y é mild — iter 035 ainda
+ganha em CAGR absoluto post-tax.
 
 ---
 

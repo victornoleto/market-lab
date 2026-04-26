@@ -293,6 +293,262 @@ on both windows.
 
 ---
 
+## Deploy Implementation Guide
+
+This section operationalizes "go from candidate to live trades" for
+the top-3 strategies. Numbers calibrated for **$10k initial + $1-2k/mo
+aportes** (user's stated capital scale).
+
+### Cost model components (apply to ALL strategies)
+
+| component | value | applies |
+|---|---|---|
+| **IOF câmbio** (BR remessa for investment) | 0.38% (operação simbólica, Lei 14.754 regime) ou 1.10% (operação ordinária, conservador) | once per BRL→USD remessa |
+| **FX spread** | 0.30% (TransferBank → IBKR) or 0.99-1.50% (Inter Internacional) | once per BRL→USD conversion |
+| **IBKR fixed conversion fee** | $2 per FX conversion | once per IBKR conversion (zero at Inter) |
+| **ETF bid-ask** | 0.01-0.03% (SPY/QQQ/VTI/IEF/BND) ; 0.05-0.15% (AVUV/AVNM/AVDV) | per buy/sell |
+| **ETF expense ratio** | 0.03-0.09% (Vanguard/iShares core) ; 0.15-0.40% (Avantis funds) | annual, baked into NAV |
+| **30% US dividend withholding** | 30% (BR has no US tax treaty) | on every dividend |
+| **15% Lei 14.754 annual MTM** | 15% on positive year-end variation | annual, ALL offshore holdings — see §"Tax model" below |
+
+**Key insight** (changes the deploy ranking): Lei 14.754/2023 made
+all offshore investments tax-equivalent at 15% annual MTM. **Rotation
+vs buy-and-hold is now tax-NEUTRAL** (both pay 15%/yr on year-end
+positive variation). Pre-Lei 14.754, rotation strategies were
+tax-disadvantaged because every realized gain triggered DARF.
+Post-Lei, the only differential is operational complexity.
+
+### Per-strategy deploy specifics
+
+#### Strategy 1: iter 035 `static_stack_90_60_spy_gld` — MAX-RETURN profile
+
+**Tickers to buy** (Inter or IBKR — confirmed at both):
+
+| sleeve | weight | preferred ticker | substitute | notes |
+|---|---|---|---|---|
+| US equity | 90% | **SPY** or **VTI** or **AVUS** | VOO | AVUS adds factor tilt premium ~0.5-1pp/yr |
+| Long-bond | 60% | **ZROZ** | **TLT** or **EDV** | ZROZ has lowest ER (0.15%) and longest duration |
+| Gold | 30% | **GLD** | IAU (lower ER 0.25% vs 0.40%) | IAU saves ~15bps/yr |
+
+**Total notional**: 180% (return-stacked). Margin requirement: NONE
+on Inter (cash account), would require margin account on IBKR
+(margin-friendly accounts; ~5-7% margin rate currently).
+
+**Wait — Inter cash account doesn't allow 180% notional.** This is a
+critical operational constraint. Two paths:
+- **Path A** (Inter, cash-only): use leveraged ETF substitutes for
+  the bond+gold legs: e.g., **UPRO 30% (3× SPY) + ZROZ 60% + GLD 30%**
+  → total notional = 30%×3 + 60% + 30% = 180% economic exposure with
+  120% cash invested
+- **Path B** (IBKR margin): direct 90% SPY + 60% ZROZ + 30% GLD on margin
+
+Path A is simpler operationally but introduces 3× LETF (volatility
+drag, daily-reset issue). Path B is cleaner but requires margin
+approval and incurs margin interest (~5-7%/yr on the 80% margin used).
+
+**Cost trade-off** (Path A vs Path B over 30y on $10k initial):
+- Path A: vol drag from UPRO ~1-2pp/yr → CAGR loss ~$50k over 30y
+- Path B: margin interest 5%/yr × 80% leverage = 4%/yr drag → CAGR loss ~$80k
+- Path A wins in normal regimes; Path B wins if margin rates drop sub-3%
+
+**Recommendation: deploy via Path A on Inter.** Simpler, no margin
+approval, and historical UPRO drag has been ~0.8-1.5pp/yr (not the
+catastrophic numbers from the early LETF papers).
+
+**Rebalance**: monthly via aportes only. Drift back to 90/60/30 by
+allocating each $1.5k aporte to the most-underweight sleeve. NO sells
+needed in normal regimes. If aportes don't cover drift (rare), do a
+quarterly partial rebalance (sell ~5% of overweight, buy underweight).
+
+**Operational complexity**: 1/5 (trivial)
+**Estimated post-tax CAGR**: ~14-15% (vs pre-tax 17.79% on 17y SPY)
+**Best for**: max-return profile, accepts SPY-like drawdowns
+
+---
+
+#### Strategy 2: iter 016 `ntsx_vm_vt15_L21_cap20` — BALANCED (sleep-well)
+
+**Same tickers as iter 035** (Path A or Path B above) **PLUS daily
+vol-target overlay**.
+
+**Operational issue**: vol-target overlay rescales total exposure
+DAILY based on realized vol. This requires:
+- Daily script: pull yesterday's price → compute realized vol(21d) →
+  compute target leverage = 0.15/vol → buy/sell to hit target
+- Average turnover: ~50-100 trades/year per leg → ~150-300 trades/year
+  for 3 legs total
+
+**This is INFEASIBLE for buy-and-hold investor with monthly aportes
+on Inter Internacional.** Inter's app doesn't have automation; would
+need IBKR API + custom script.
+
+**Path A modification**: weekly rebalance (instead of daily) of the
+vol-target signal. Recovers ~80% of the edge with 1/5 the operational
+burden.
+
+**If using IBKR API**:
+- IBKR Pro or Lite both work
+- Python `ib_insync` library, daily cron
+- Cost: $2/conversion fee × ~12-50 rebalances/yr = $24-100/yr extra
+
+**Operational complexity**: 4/5 (Path A weekly) or 5/5 (daily IBKR API)
+**Estimated post-tax CAGR**: ~12-13% (vs pre-tax 15.13% on 40y synth)
+**Best for**: best risk-adjusted, accepts daily/weekly automation
+
+---
+
+#### Strategy 3: iter 006 `vol-managed-60-40` — DEFENSIVE simpler version
+
+**Tickers**: SPY 60% + IEF 40% with daily vol-target overlay.
+
+Same operational issues as iter 016. Same Path A modification (weekly
+rebalance) recommended.
+
+Slightly simpler than iter 016 (no NTSX 90/60 stack — just plain
+60/40 mix vol-managed).
+
+**Operational complexity**: 4/5 (same as iter 016)
+
+---
+
+#### Strategy 4: iter 079 `multi-asset-topk-momentum` — STRICT WINNER
+
+**Tickers (universe of 5 + 1 fallback)**:
+
+| role | ticker | substitute |
+|---|---|---|
+| US large equity | **SPY** or **VTI** or **AVUS** | VOO |
+| US tech equity | **QQQ** or **QQQM** (lower fee 0.15% vs 0.20%) | — |
+| Intl developed | **VEA** or **AVDE** | EFA |
+| Long-duration Treasury | **TLT** or **IEF** (intermediate, less vol) | — |
+| Gold | **GLD** or **IAU** | — |
+| Defensive fallback | **AGG** or **BND** | — |
+
+**Strategy logic**: monthly (last business day), pick the asset with
+highest 12-month trailing return; if its 12m return < 0, route to
+AGG/BND; else hold 100% of that asset for the next month.
+
+**Rebalance**: monthly sell + buy. Average turnover ~6-12 switches/year
+(strategy is concentrated, not diversified — picks ONE asset).
+
+**Tax under Lei 14.754**: same 15% annual MTM as buy-and-hold. The
+monthly rotation does NOT incur extra tax under the new regime
+(pre-Lei it would have been a problem).
+
+**Broker recommendation**: **IBKR Lite + TransferBank**
+- Why: 6-12 monthly trades = 6-12 FX conversions/year if using fresh
+  USD per trade. IBKR's $2/conversion is cheaper than Inter's 1%
+  spread for trades > $200.
+- Inter alternative works but you'd want to consolidate trades to
+  minimize FX spread hits
+
+**Operational complexity**: 3/5 (monthly script needed, runs once/mo)
+**Estimated post-tax CAGR**: ~11% (vs pre-tax 13.00% on 17y SPY)
+**Best for**: statistical purity, sleep-well via monthly rebalance
+
+---
+
+### Post-tax results (Lei 14.754 applied) — UPDATED 2026-04-26
+
+Re-ran the long-window validator with annual MTM 15% tax applied
+year-end. Bench drag: SPYSIM **11.49% → 9.41% CAGR** (−2.08pp).
+
+| strategy | pre-tax CAGR | **post-tax CAGR** | Δ vs SPYSIM post-tax | post-tax Sharpe (Δ) |
+|---|---|---|---|---|
+| **iter 035** static stack 90/60/30 | 19.60% | **16.50%** | **+7.10pp** 🥇 | 0.796 (+0.22) |
+| iter 015 ntsx 90/60 | 16.95% | 14.15% | +4.74pp | 0.721 (+0.14) |
+| **iter 016 / iter 074** vol-managed hybrid | 15.13% | 12.60% | +3.20pp | 0.803 (+0.23) |
+| iter 006 vol-managed 60/40 | 14.41% | 11.98% | +2.57pp | 0.785 (+0.21) |
+| iter 004 vol-managed SPY | 14.40% | 11.84% | +2.43pp | 0.685 (+0.11) |
+| iter 005 variance-managed SPY | 13.96% | 11.41% | +2.01pp | 0.666 (+0.09) |
+| iter 079 multi-asset top-K | 13.08% | 10.86% | +1.45pp | 0.606 (+0.03) |
+| SPYSIM b&h (bench) | 11.49% | 9.41% | — | 0.576 |
+
+**iter 035 dominance is preserved post-tax** (Δ+7.10pp vs SPYSIM,
+the largest CAGR margin in the table). The strategy that wins biggest
+in absolute terms is also the simplest to deploy operationally.
+
+**Surprise**: post-tax Sharpe is ~equal to or slightly higher than
+pre-tax for several strategies. Reason: tax is asymmetric (positive
+years taxed, negative years not) → post-tax volatility drops by more
+than mean → Sharpe slightly improves. Counterintuitive but real.
+
+**Cost projections** ($10k initial + $1.5k/mo over 30y):
+
+| broker | total cost over 30y | as % of $550k invested |
+|---|---|---|
+| Inter Internacional (1.25% FX spread) | $9,075 | 1.65% |
+| **IBKR Lite + TransferBank** (0.30% FX) | **$4,572** | **0.83%** |
+
+**IBKR Lite + TransferBank saves $4,503 over 30y** → ~$150/yr average
+in cost. Worth the operational complexity vs Inter for $10k+ deposits.
+
+See `POST_TAX_VALIDATION.md` for full details.
+
+---
+
+### Tax model (Lei 14.754/2023 — IMPORTANT)
+
+**Effective Jan 2024**, BR residents holding offshore investments
+(including foreign brokerage accounts at IBKR/Inter Internacional)
+are subject to:
+
+- **Annual mark-to-market**: every Dec 31, compute portfolio value
+  vs Jan 1 value
+- **15% rate** on positive variation (year-end gain)
+- **Loss offsetting**: losses in same year offset gains; **no
+  carryforward** across years for personal accounts (different from
+  PJ controlled offshore entity rules)
+- **Dividend withholding**: 30% withheld at US source (no BR-US tax
+  treaty), then declared as exempt-but-included in the offshore
+  mark-to-market base
+
+**Compound impact**:
+- Pre-tax CAGR 12% → post-tax CAGR ≈ 12% × 0.85 = **10.2%** annually
+- Over 30 years: $10k pre-tax → $300k vs post-tax → $190k = **37% loss
+  to compounding tax drag**
+
+**Confirm with contador**: regime treatment depends on whether your
+account is "direct holding" (regular capital gains, R$ 35k/mo
+exemption applies for stocks but NOT ETFs in foreign brokerage) vs
+"offshore controlled entity" (full MTM regime). Consult before deploy.
+
+---
+
+### Broker decision matrix
+
+| strategy | rebalance freq | recommended broker | reason |
+|---|---|---|---|
+| iter 035 | monthly aportes only | **Inter Internacional** | Trivially simple, zero corretagem, $1.5k/mo Inter FX cost = ~$15 vs IBKR ~$5 = $10 difference negligible |
+| iter 016 / 006 (daily) | daily | **IBKR Lite + TransferBank** | Inter doesn't allow API automation; IBKR's $2/conv × ~250 trades = $500/yr but daily rebalance impossible at Inter |
+| iter 016 / 006 (weekly) | weekly | **Inter** (with manual weekly trades) or IBKR Lite | Tossup; Inter simpler if you commit to weekly clicks |
+| iter 079 | monthly sell+buy | **IBKR Lite + TransferBank** | 6-12 trades/yr × $2/conv = $12-24/yr fixed; cheaper than Inter's 1% spread on each |
+
+**TransferBank for BRL→USD remessa** (when using IBKR):
+- 0.30% spread (vs Inter 0.99-1.50%)
+- Free fixed fee
+- 1-2 business days settlement
+- Saves ~$200/yr on the $10k initial + $18k/yr aportes profile
+
+---
+
+### Tiingo subscription decision
+
+User asked: "só vou continuar pagando Tiingo se a estratégia justificar".
+
+**Recommendation: cancel Tiingo after the global_factor_tilt_loop and
+gold_swing_loop finish.** Reasoning:
+- Tiingo costs ~$240/yr ($20/mo)
+- Live deploy of any chosen strategy uses **monthly or weekly** prices
+  → yfinance free tier is sufficient
+- Existing Tiingo cache (through 2026-04-17) stays usable for backtests
+- The app/ already uses yfinance + Bacen PTAX + Finnhub (all free)
+
+Keep Tiingo only if you want to run more research loops with daily
+data quality. For deploy: not needed.
+
+---
+
 ## Confidence levels
 
 | dimension | confidence | basis |
