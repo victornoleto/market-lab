@@ -228,8 +228,8 @@ obrigatório).
 
 Empirical: rodamos o iter 035 em 4 implementações diferentes em 40y
 synth + simulação de aporte mensal R$50k inicial + R$7.5k/mês.
-Resultado completo: `ITER035_VARIANTS_VALIDATION.md` +
-`APORTE_SIMULATION.md`. Achados que mudam recomendação:
+Resultado completo: `deploy_studies/iter035_variants/ITER035_VARIANTS_VALIDATION.md` +
+`deploy_studies/aporte_simulation/APORTE_SIMULATION.md`. Achados que mudam recomendação:
 
 **Sharpe + MDD ranking (time-weighted, 40y):**
 
@@ -298,7 +298,7 @@ Se quer momentum + leverage, o caminho honesto é **iter 016**
 *dinâmico* que reduz quando vol sobe. Não substituir asset por
 LETF estático.
 
-Detalhes: `ITER079_LEVERAGED_VALIDATION.md`.
+Detalhes: `deploy_studies/iter079_leveraged/ITER079_LEVERAGED_VALIDATION.md`.
 
 ### Perfil B — "quero melhor risco-retorno, aceito complexidade"
 **iter 016/074** (`ntsx_vm_vt15_L21_cap20`)

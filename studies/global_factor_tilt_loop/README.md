@@ -1,16 +1,54 @@
 # Global Factor-Tilt Loop — STUDY PREPARATION
 
-**Status**: PREPARATION ONLY. Not yet activated. Will run AFTER
-`gold_swing_loop` completes.
+**Status**: PREPARATION + REFINED 2026-04-26. Ready to activate after
+strategy_hunt_loop deploy_studies session closes.
 
-**Mission**: Find ONE strategy that gives **global equity exposure**
-(US + ex-US developed + emerging) and beats **VT 1x buy-and-hold** in
-risk-adjusted terms (Sharpe) on real data, ideally also in raw return
-(CAGR).
+**Mission**: Find ONE globally-diversified strategy that beats both:
+1. **VT 1x buy-and-hold** (cap-weighted global passive baseline)
+2. **Plano C V3_1 v3.5** (current factor + global with 25% GDE + 12% AVUS
+   + 20% AVDE + 13% AVEM + factor tilts + BTGD)
+3. **V_HYBRID + 10% MF** (the deploy_studies WINNER: V3_1 with NTSX
+   replacing AVUS + 10% managed futures sleeve — Sharpe 0.743, MDD 44.7%,
+   P(rolling 10y < 5%) = 0.6%)
+
+The bar is **higher than VT-only** because deploy_studies already
+identified strong factor + global + capital-efficiency combinations.
+This loop must find something **structurally novel** vs those.
 
 This is a **bifurcation** of `studies/strategy_hunt_loop/` — the
 hypothesis-search infrastructure is reusable, only the universe and
 benchmark change.
+
+## Multi-stacking thesis (NEW — primary research direction)
+
+**User's intuition (2026-04-26)**: "seria muito interessante ter alguma
+forma de implementar multistacking como temos para etfs US."
+
+Why this matters: deploy_studies showed that NTSX (US 90/60 stack) +
+GDE (US 90/90 with gold) gives massive capital efficiency benefit. If we
+can replicate this at the **global** level — i.e., return-stacked
+INTERNATIONAL equity + bonds, or return-stacked GLOBAL equity + alts —
+we may get the "best of both worlds" (capital efficiency + global
+diversification).
+
+Real-world ETFs to investigate:
+- **NTSI** / **NTSE** — WisdomTree intl + EM versions of NTSX (REJECTED
+  by Plano C V3.5 based on real 2021-2026 data showing 2022 rate-shock
+  damage; revisit on 32y synth)
+- **RSST** / **RSBT** / **RSSY** — Newfound/ReSolve "Return Stacked"
+  family (US stocks + managed futures, bonds + MF, etc); inception
+  2023+, only synth backfill via testfolio
+- **RSSB** — Return Stacked Global Stocks & Bonds (100% world equity +
+  100% Treasury bonds via futures; PULLED 2026-04-26, 56y synth available)
+- **RSSX** — 100% S&P + 100% gold/BTC; inception May 2025, no synth
+- **GDE** — already core of Plano C, 90% S&P + 90% gold
+
+Open question: is there a path to a **global return-stacked all-weather**
+portfolio? E.g., 60% RSSB (global eq + Treasury) + 30% GDE (S&P + gold)
++ 10% KMLM (managed futures) = 200%+ notional with full geographic
+coverage + factor tilts + tail-risk hedge.
+
+This is what the loop should explore systematically.
 
 ---
 
@@ -162,6 +200,32 @@ The loop may invent variants or find new directions.
 8. **VT + EM commodity exposure** (DBA, DBC, GLD). Adds inflation
    hedge orthogonal to equity beta.
 
+### Tier 4: multi-stacking (priority, deploy_studies follow-up)
+
+9. **Global return-stacked all-weather**: e.g., 60% RSSB (global eq +
+   Treasury via futures, 200% notional) + 30% GDE (S&P + gold) + 10%
+   KMLM (managed futures). Total notional ~270% via futures stacking,
+   zero margin loan. Tests: does this dominate V_HYBRID+MF in long-window
+   Sharpe + MDD?
+
+10. **Synthetic NTSI/NTSE re-evaluation**: Plano C V3.5 rejected based
+    on real 2021-2026 data only. Loop should re-test with 32-56y synth.
+    Hypothesis: NTSI/NTSE adds value in lost-decade scenarios but loses
+    in rate-cycle shocks (2022). If true, **conditional** allocation
+    (e.g., NTSI active only when bond term spread > X) may capture
+    upside without 2022-style downside.
+
+11. **Custom return-stacked synthesis**: leverage the testfolio-validated
+    formula `eq_w × eq + bond_w × bond - cash_w × CASHX` to construct
+    arbitrary stacks. E.g., "global 90/60 stack" = 0.90 VTSIM + 0.60
+    IEFSIM - 0.50 CASHX (a synth NTSG that doesn't exist as real ETF).
+    Test these as sleeves in larger portfolios.
+
+12. **MF + global combination**: deploy_studies showed MF (KMLM/DBMF) is
+    "free lunch" for V_HYBRID. Loop should test MF integration in
+    global-only portfolios — does adding MF to VT improve Sharpe/MDD as
+    much as it did to V_HYBRID?
+
 ---
 
 ## What's reusable from `strategy_hunt_loop` (CONFIRMED, ready to copy)
@@ -190,8 +254,13 @@ The loop may invent variants or find new directions.
 
 - [x] **Pull VTSIM, VXUSSIM, VEASIM, VWOSIM, VBRSIM, BNDSIM, IEFSIM**
       → done 2026-04-26 (in cache)
+- [x] **Pull GDESIM, RSSBSIM, CASHX, KMLMSIM, DBMFSIM**
+      → done 2026-04-26 deploy_studies session (in cache)
 - [ ] **Pull VTISIM, VSSSIM, EFVSIM, TLTSIM** for completeness
       (`uv run python scripts/testfolio_pull.py VTISIM VSSSIM EFVSIM TLTSIM --refresh-cache`)
+- [ ] **Try pulling NTSXSIM, NTSISIM, NTSESIM, RSSTSIM, AVNMSIM, AVESSIM**
+      again (failed in 2026-04-26 session — testfolio may add them later;
+      meanwhile use synth via formula)
 - [ ] **Confirm tickers at Inter Internacional**: user already
       confirmed Inter has all needed tickers (AVUS/AVDE/AVEM/AVUV/AVDV/
       AVES/AVNM/VT/VTI/VXUS/VWO/VEA/VBR/VSS/IEF/BND/TLT/GLD).

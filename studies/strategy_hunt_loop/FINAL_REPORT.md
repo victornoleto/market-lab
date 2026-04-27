@@ -394,7 +394,7 @@ implementação mais limpa em 2 ETFs sem leverage drag de UPRO/TMF).
 Rodamos as 4 implementações deployments lado a lado em testfolio synth
 (mesmo framework que validou o iter 035 original). Código:
 `iter035_variants_validator.py`. Resultados completos:
-`ITER035_VARIANTS_VALIDATION.md` + `ITER035_VARIANTS_VALIDATION.json`.
+`deploy_studies/iter035_variants/ITER035_VARIANTS_VALIDATION.md` + `deploy_studies/iter035_variants/ITER035_VARIANTS_VALIDATION.json`.
 
 **Construção dos sintéticos**:
 - `NTSX_synth = 0.90 × SPYSIM + 0.60 × IEFSIM − 0.20%/yr ER`
@@ -441,9 +441,9 @@ vs 0.917, Δ=0.005). O bond leg subponderado de V1 (40% vs 60% target)
 inferior" — é uma estratégia distinta com perfil de risco melhor.**
 
 **Plots**:
-- `ITER035_VARIANTS_equity_curves.png` — equity curves log-scale 40y
-- `ITER035_VARIANTS_drawdowns.png` — drawdown histórico
-- `ITER035_VARIANTS_2022_stress.png` — zoom 2022-2024 rate-cycle stress
+- `deploy_studies/iter035_variants/ITER035_VARIANTS_equity_curves.png` — equity curves log-scale 40y
+- `deploy_studies/iter035_variants/ITER035_VARIANTS_drawdowns.png` — drawdown histórico
+- `deploy_studies/iter035_variants/ITER035_VARIANTS_2022_stress.png` — zoom 2022-2024 rate-cycle stress
 
 #### Recomendação final para deploy (revisada empiricamente)
 
@@ -487,7 +487,7 @@ quarterly partial rebalance (sell ~5% of overweight, buy underweight).
 
 Money-weighted simulation com aportes mensais sobre as 4 variantes,
 inclui FX spread + IOF Lei 14.754 simbólico + IBKR fixed fee.
-Código: `aporte_simulation.py`. Resultado: `APORTE_SIMULATION.md`.
+Código: `deploy_studies/aporte_simulation/aporte_simulation.py`. Resultado: `deploy_studies/aporte_simulation/APORTE_SIMULATION.md`.
 
 **Adicionada uma 5ª variante crítica**: V0 com **−4%/yr drag de juros
 de margem** sobre os 80% emprestados (custo IBKR honesto, não
@@ -635,7 +635,7 @@ TLT→UBT/TMF." Sinal de momentum continua nos UNDERLYINGS (1×); só a
 execução é alavancada.
 
 Código: `iter079_leveraged_validator.py`. Resultados:
-`ITER079_LEVERAGED_VALIDATION.md`. Variantes testadas: 1× baseline,
+`deploy_studies/iter079_leveraged/ITER079_LEVERAGED_VALIDATION.md`. Variantes testadas: 1× baseline,
 2× LETF substitutes, 3× LETF substitutes (com mesma lógica top-K=1,
 lookback 12m, abs-mom filter, AGG fallback 1×).
 

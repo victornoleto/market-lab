@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[2]
-OUT_DIR = ROOT / "studies/strategy_hunt_loop"
+ROOT = Path(__file__).resolve().parents[4]
+OUT_DIR = Path(__file__).resolve().parent
 TF_PATH = ROOT / "data/testfolio/cache/history.parquet"
 
 

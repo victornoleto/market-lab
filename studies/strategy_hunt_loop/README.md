@@ -3,16 +3,42 @@
 Self-improve loop to find a strategy that beats SPY 1x buy-hold Sharpe
 on real data. Each iteration = one fresh Claude Code session.
 
-## Files
+## Files (top-level = hunt loop core)
 
 | file | purpose |
 |---|---|
 | `BASE_MEMORY.md` | state between sessions (iteration log, winners, directions) |
 | `PROMPT.md` | iteration prompt template (gets `{{ITERATION_N}}` / `{{STAMP}}` substituted) |
-| `WINNER_CRITERIA.md` | strict 5-condition winner definition |
+| `WINNER_AND_RANKING.md` | strict 5-condition winner definition + ranking rubric |
 | `DEAD_ENDS.md` | structural failures from past iterations — forbidden zones |
+| `INFRASTRUCTURE.md` | Tiingo cache + testfolio synth ticker inventory |
+| `FINAL_REPORT.md` | post-halt consolidated report (iter 079 winner + deploy guide) |
+| `SUMMARY_FOR_PHONE.md` | shorter version of FINAL_REPORT for casual reading |
 | `run_loop.sh` | orchestrator: launches Claude CLI, auto-commits, halts on winner |
-| `iterations/NNN-YYYY-MM-DD-HHmm-slug/` | per-iteration outputs (created by iteration session) |
+| `scoring.py` / `plot_helper.py` | hunt-loop infrastructure used by per-iter sessions |
+| `cross_lib_validator.py` / `long_window_validator.py` | post-hunt validation drivers |
+| `rescore_v2.py` / `RESCORE_V2_SUMMARY.md` | DSR re-score under relaxed n_trials convention |
+| `post_tax_validation.py` / `POST_TAX_VALIDATION.md` | Lei 14.754 post-tax sims |
+| `iterations/NNN-YYYY-MM-DD-HHmm-slug/` | per-iteration outputs |
+| **`deploy_studies/`** | **post-hunt deploy-readiness studies (see deploy_studies/README.md)** |
+
+## Deploy studies (`deploy_studies/`)
+
+After the hunt loop halted at iter 079, several follow-up studies were
+done to compare the winner candidates against external alternatives
+(Plano C V3_1, NTSX+GDE, V_HYBRID variants). Each study is self-contained
+in its own subdirectory:
+
+- `iter035_variants/` — 4 deploy paths for iter 035 (V0/V1/V2/V3)
+- `iter079_leveraged/` — 2× and 3× LETF substitution test (refuted)
+- `aporte_simulation/` — DCA $10k+$1.5k/mo × 40y money-weighted IRR
+- `v1_vs_planoc/` — V1 NTSX+GDE vs Plano C V3_1 v3.5 (32y comparison)
+- `us_vs_global/` — academic US-vs-Global study with rolling 20y/30y
+- `portfolio_4way/` — V1 vs V3_1 vs V_HYBRID vs V_HYBRID_SIMPLE
+- `portfolio_variants/` — 6 V_HYBRID variants; **WINNER**: V_HYBRID + 10% MF
+- `letfs_5way/` — Reddit post 5-portfolio shootout 1986-2026
+
+See `deploy_studies/README.md` for index + final recommendation.
 
 ## How it works
 

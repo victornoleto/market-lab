@@ -40,9 +40,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[4]
 TF_PATH = ROOT / "data/testfolio/cache/history.parquet"
-OUT_DIR = ROOT / "studies/strategy_hunt_loop"
+OUT_DIR = Path(__file__).resolve().parent
 
 TRADING_DAYS = 252
 LOOKBACK_MONTHS = 12  # iter 079 best cfg lookback

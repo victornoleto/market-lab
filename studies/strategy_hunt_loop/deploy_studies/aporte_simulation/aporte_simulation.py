@@ -30,9 +30,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[2]
-OUT_DIR = ROOT / "studies/strategy_hunt_loop"
-RETURNS_PATH = OUT_DIR / "iter035_variants_returns.parquet"
+ROOT = Path(__file__).resolve().parents[4]
+OUT_DIR = Path(__file__).resolve().parent
+RETURNS_PATH = OUT_DIR.parent / "iter035_variants/iter035_variants_returns.parquet"
 TF_PATH = ROOT / "data/testfolio/cache/history.parquet"
 
 # Aporte parameters

@@ -1,6 +1,6 @@
 # Aporte mensal simulation — $10k initial + $1.5k/month over 40y
 
-Generated: 2026-04-26T18:15:53.008869
+Generated: 2026-04-26T21:51:57.962036
 
 Parameters: BRL 50,000 initial + BRL 7,500/month, USD/BRL fixed at 5.00, window 40.3y (1986-01-03 → 2026-04-17).
 
