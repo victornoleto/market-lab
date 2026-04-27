@@ -43,7 +43,7 @@ it suggests the breadth mechanism is competitive with the canary approach.
 `[stocks_on_the_move, ch.6]` — HAA/VAA momentum mechanics, breadth signal
 construction, 13612W weighting scheme.
 
-**Supporting**: `[ilmanen_expected_returns, ch.19]` — MF free-lunch sleeve.
+**Supporting**: `[trading_evolved, p.197]` — MF free-lunch sleeve.
 `[leverage_for_the_long_run, p.40-60]` — return-stacking justification.
 `[advances_fin_ml, p.208-211/222-223/196-202/31-34]` — gate battery.
 

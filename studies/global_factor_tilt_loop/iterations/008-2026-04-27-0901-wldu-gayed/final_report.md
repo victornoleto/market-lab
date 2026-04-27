@@ -261,7 +261,7 @@ Notional factor = 2.0 → G3' adapted gate applies for all datasets.
 1. **HAA gold sleeve** (next candidate): add 5% GLDSIM to HAA SmartStack (iter 005 WINNER).
    Tests if gold sleeve closes the 0.07 Sharpe gap to bestfolio reference (1.18). HAA=1.112,
    target=1.18. Pre-committed: 5% GDESIM → 85% HAA + 10% KMLM + 5% GLD/GDE.
-   `[ilmanen_expected_returns, ch.fx-carry]` (gold as inflation hedge orthogonal to equity).
+   `[risk_parity, ch.5]` (gold as inflation hedge orthogonal to equity).
 
 2. **VAA-G3 SmartStack** (pure-equity offensive): replace iter 006's bond-as-4th offensive
    asset (BNDSIM) with a 3rd pure-equity stack. Tests if removing bond contamination restores

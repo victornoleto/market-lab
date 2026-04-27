@@ -195,7 +195,7 @@ The loop may invent variants or find new directions.
 ### Tier 3: explicit currency / hedge layer
 
 7. **VT + currency hedge overlay**. Hedge USD/EUR/JPY exposure when
-   carry signal flips. `[ilmanen_expected_returns, ch.fx-carry]`.
+   carry signal flips. `[risk_parity, ch.5]`.
 
 8. **VT + EM commodity exposure** (DBA, DBC, GLD). Adds inflation
    hedge orthogonal to equity beta.

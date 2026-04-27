@@ -7,7 +7,7 @@ improves Sharpe and MDD vs VT buy-and-hold.
 
 Citations:
   [stocks_on_the_move, p.21-30] — Clenow cross-sectional momentum rule
-  [ilmanen_expected_returns, ch.12] — cross-asset momentum as robust risk premium
+  [stocks_on_the_move, p.21-30] — cross-asset momentum as robust risk premium
   [advances_fin_ml, p.208-211] — PBO via CSCV
   [advances_fin_ml, p.222-223] — DSR with n_trials
   [advances_fin_ml, p.196-202] — Bootstrap CI for Sharpe

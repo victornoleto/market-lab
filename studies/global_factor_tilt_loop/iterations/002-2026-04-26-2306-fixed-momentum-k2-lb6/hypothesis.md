@@ -34,7 +34,7 @@ trailing 6-month return. CASHX safe haven when all assets negative.
 `[stocks_on_the_move, p.21-30]` — Clenow documents cross-sectional momentum
 in ETF universes with pre-committed lookback and top-K parameters. The
 6-month lookback is canonical in the cross-asset momentum literature (also
-`[ilmanen_expected_returns, ch.12]`: 6-12m lookback avoids 1-month reversal
+`[stocks_on_the_move, p.21-30]`: 6-12m lookback avoids 1-month reversal
 and 36m+ mean-reversion zones).
 
 ---

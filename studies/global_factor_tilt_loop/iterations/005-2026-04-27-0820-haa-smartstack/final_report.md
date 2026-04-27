@@ -184,7 +184,7 @@ The VAA-G4 SmartStack (iter 006 per Tier 0 plan) should test whether breadth mom
 ## Citations
 
 - `[stocks_on_the_move, ch.6]` — momentum mechanics (Clenow, dynamic vs static)
-- `[ilmanen_expected_returns, ch.19]` — managed futures free-lunch sleeve
+- `[trading_evolved, p.197]` — managed futures free-lunch sleeve
 - `[leverage_for_the_long_run, p.40-60]` — return-stacking capital efficiency
 - `[advances_fin_ml, p.208-211]` — G1 PBO (N/A with single config)
 - `[advances_fin_ml, p.222-223]` — G2 DSR significance with n_trials=1

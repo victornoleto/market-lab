@@ -27,8 +27,8 @@ Change from iter 005: `DYNAMIC_WEIGHT 0.90 → 0.85`, `GLD_WEIGHT = 0.05`.
 ## Mechanism
 
 1. **HAA canary (VWOSIM)**: regime switch as iter 005. Risk-on = top-2 offensive; risk-off = top-1 defensive. `[stocks_on_the_move, ch.6]`
-2. **KMLM free lunch (10%)**: unchanged from iter 005. `[ilmanen_expected_returns, ch.19]`
-3. **Gold diversification (5%)**: gold is low-beta to both equity and bonds; persistent holding reduces MDD during equity/bond drawdowns. `[ilmanen_expected_returns, ch.fx-carry]`
+2. **KMLM free lunch (10%)**: unchanged from iter 005. `[trading_evolved, p.197]`
+3. **Gold diversification (5%)**: gold is low-beta to both equity and bonds; persistent holding reduces MDD during equity/bond drawdowns. `[risk_parity, ch.5]`
 
 ## Edge source
 
@@ -52,8 +52,8 @@ Change from iter 005: `DYNAMIC_WEIGHT 0.90 → 0.85`, `GLD_WEIGHT = 0.05`.
 ## Citations
 
 - `[stocks_on_the_move, ch.6]` — HAA momentum mechanics (canary + multi-period lookback)
-- `[ilmanen_expected_returns, ch.19]` — managed futures free-lunch sleeve
-- `[ilmanen_expected_returns, ch.fx-carry]` — gold as inflation hedge, low-correlation diversifier
+- `[trading_evolved, p.197]` — managed futures free-lunch sleeve
+- `[risk_parity, ch.5]` — gold as inflation hedge, low-correlation diversifier
 - `[leverage_for_the_long_run, p.40-60]` — return-stacking for offensive assets (NTSXSIM/NTSI/NTSE/GDESIM)
 - `[advances_fin_ml, p.208-211]` — G1 PBO
 - `[advances_fin_ml, p.222-223]` — G2 DSR

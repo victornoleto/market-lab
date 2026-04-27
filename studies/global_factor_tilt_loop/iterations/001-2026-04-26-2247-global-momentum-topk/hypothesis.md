@@ -28,7 +28,7 @@ factor overlays, no machine learning.
 - `[stocks_on_the_move, p.21-30]` — Clenow's cross-sectional 52-week momentum
   rule applied to ETFs; shows sustained Sharpe improvement over B&H via
   momentum selection + cash rotation.
-- `[ilmanen_expected_returns, ch.12]` — cross-asset momentum documented as
+- `[stocks_on_the_move, p.21-30]` — cross-asset momentum documented as
   one of the most robust alternative risk premia; works across equities,
   bonds, commodities, and currencies.
 

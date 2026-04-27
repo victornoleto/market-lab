@@ -195,7 +195,7 @@ However, given Kill 1 triggered and no Pareto advance, not adding to top-K.
 ## Citations
 
 - `[stocks_on_the_move, ch.6]` — VAA momentum mechanics, 13612W breadth signal
-- `[ilmanen_expected_returns, ch.19]` — managed futures free-lunch sleeve
+- `[trading_evolved, p.197]` — managed futures free-lunch sleeve
 - `[leverage_for_the_long_run, p.40-60]` — return-stacking for offensive assets
 - `[advances_fin_ml, p.196-202]` — G6 bootstrap calibration
 - `[advances_fin_ml, p.222-223]` — G2 DSR deflation
@@ -231,7 +231,7 @@ VAA-G3 with GDESIM is the better choice. But this loop optimizes Sharpe.
 2. **Iter 012 — HAA + 10% GLD (larger gold sleeve)**: iter 009 showed 5% GLD
    improves Sharpe by +0.008-0.012. Test 10% GLD (KMLM reduced to 5%) to see if
    improvement scales linearly. Kill criterion: edu Sharpe ≤ 1.120.
-   `[ilmanen_expected_returns, ch.fx-carry]` + `[leverage_for_the_long_run, p.40-60]`
+   `[risk_parity, ch.5]` + `[leverage_for_the_long_run, p.40-60]`
 
 3. **Tier 2 — Top-K country rotation** (Faber 2007 style): universe SPY, EWJ, EWG,
    EZU, EWU, MCHI, EWZ, INDA — 17y window only (no synth analogs).

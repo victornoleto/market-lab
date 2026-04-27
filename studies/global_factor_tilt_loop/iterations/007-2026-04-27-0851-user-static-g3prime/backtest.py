@@ -30,7 +30,7 @@ Citations:
   [risk_parity, ch.5] — return stacking / capital efficiency (primary)
   [leverage_for_the_long_run, p.40-60] — stacking justification
   [advances_fin_ml, ch.10] — SCV empirical evidence (Fama-French)
-  [ilmanen_expected_returns, ch.19] — MF "free lunch"
+  [trading_evolved, p.197] — MF "free lunch"
   [stocks_on_the_move, p.21-30] — momentum factor
   [advances_fin_ml, p.196-202] — G6 bootstrap CI
   [advances_fin_ml, p.208-211] — G1 PBO (N/A n_configs=1)
@@ -78,7 +78,7 @@ PORTFOLIO_LEGS = {
     "VSSSIM":  0.07,    # AVDV: intl dev SCV proxy
     "VWOSIM":  0.08,    # AVEM: EM proxy
     "GDESIM":  0.12,    # GDE: 90% S&P + 90% gold
-    "KMLMSIM": 0.08,    # KMLM: managed futures [ilmanen_expected_returns, ch.19]
+    "KMLMSIM": 0.08,    # KMLM: managed futures [trading_evolved, p.197]
 }
 RSST_WEIGHT = 0.15      # RSST = SPYSIM + KMLMSIM − CASHX overlay
 SPMO_PROXY  = ("SPYSIM",  0.08)   # US momentum [stocks_on_the_move, p.21-30]

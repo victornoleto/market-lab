@@ -16,7 +16,7 @@ Adding a fixed 10% KMLMSIM sleeve to the iter 002 WINNER (K=2, lb=6m global mome
 produces a confirmed second winner. The portfolio achieves 7/7 gates on all three datasets,
 100% rolling 5-year window robustness, and beats the VT/Plano C/V_HYBRID+MF benchmarks
 on Sharpe and MDD across all long-window periods tested. The MF "free lunch"
-`[ilmanen_expected_returns, ch.19]` holds empirically: Sharpe is maintained or improved
+`[trading_evolved, p.197]` holds empirically: Sharpe is maintained or improved
 vs pure momentum while MDD is reduced by 1-3pp.
 
 Compared to iter 002 pure momentum on the same vt_real window (2008-2026):
@@ -142,7 +142,7 @@ on 5-year horizon), which implies a very low probability of 10-year CAGR < 5% as
 |---|---|---|---|
 | Global momentum signal | 90% | top-2 of: VTISIM/VEASIM/VXUSSIM/IEFSIM (edu); + VWOSIM/GLDSIM (real) | `[stocks_on_the_move, p.21-30]` |
 | CASHX safe haven | (up to 90%) | CASHX — when all momentum assets negative | `[stocks_on_the_move, p.21-30]` |
-| KMLM sleeve | 10% (fixed) | KMLMSIM — KFA Mount Lucas managed futures | `[ilmanen_expected_returns, ch.19]` |
+| KMLM sleeve | 10% (fixed) | KMLMSIM — KFA Mount Lucas managed futures | `[trading_evolved, p.197]` |
 
 **Rebalance**: monthly. KMLM weight resets to exactly 10% each month.
 **No grid**: K=2, lb=6m were pre-committed from iter 002 WINNER.
@@ -161,7 +161,7 @@ on 5-year horizon), which implies a very low probability of 10-year CAGR < 5% as
 
 3. **MF free lunch confirmed**: on the same vt_real window (2008-2026), Sharpe
    marginally improved (+0.004) vs pure momentum while MDD fell 1.2pp. The
-   `[ilmanen_expected_returns, ch.19]` thesis holds.
+   `[trading_evolved, p.197]` thesis holds.
 
 4. **Rolling robustness**: 33/33 positive 5-year windows. No bad decade.
 
@@ -187,7 +187,7 @@ on 5-year horizon), which implies a very low probability of 10-year CAGR < 5% as
 
 ## Lesson
 
-The managed-futures "free lunch" `[ilmanen_expected_returns, ch.19]` translates
+The managed-futures "free lunch" `[trading_evolved, p.197]` translates
 directly from deploy_studies (V_HYBRID+MF beat V_HYBRID on Sharpe and MDD) to the
 global momentum framework. Adding 10% KMLM to the pre-committed global momentum
 strategy maintains or slightly improves Sharpe while reducing drawdowns across all
@@ -211,7 +211,7 @@ naturally exits positions before drawdowns compound to 25%.
 
 ## Citations
 
-- `[ilmanen_expected_returns, ch.19]` — Managed futures as uncorrelated "free lunch"
+- `[trading_evolved, p.197]` — Managed futures as uncorrelated "free lunch"
 - `[stocks_on_the_move, p.21-30]` — Momentum K/lb parameters, monthly rebalance
 - `[advances_fin_ml, p.208-211]` — PBO: N/A for single pre-committed config
 - `[advances_fin_ml, p.222-223]` — DSR/PSR with n_trials=1
@@ -228,11 +228,11 @@ potential future loop iterations or for informing the mandate §7 override delib
 1. **Optimal KMLM weight**: pre-committed K-weight sweep (5%, 10%, 15%, 20%) to check
    if 10% is locally optimal or if a different fixed sleeve weight Pareto-dominates.
    Single pre-committed sweep per spec, no PBO concern if tested all at once with
-   DSR correction. `[ilmanen_expected_returns, ch.19]`
+   DSR correction. `[trading_evolved, p.197]`
 
 2. **KMLM + DBMF dual sleeve**: replace 10% KMLMSIM with 5% KMLMSIM + 5% DBMFSIM.
    Two uncorrelated MF strategies may reduce intra-MF drawdowns without changing
-   total exposure. `[ilmanen_expected_returns, ch.19]`
+   total exposure. `[trading_evolved, p.197]`
 
 3. **Momentum + MF on broader universe**: extend momentum universe to include
    VWOSIM/GLDSIM even in educational (binding date becomes VWOSIM 1994-05-04).

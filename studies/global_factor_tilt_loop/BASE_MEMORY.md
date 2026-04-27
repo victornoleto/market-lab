@@ -78,7 +78,7 @@ Full details: `iterations/NNN-*/`. Mandate §1 MAINTENANCE; §7 override require
 - **Hypothesis:** VAA-G4 (iter 006) with BNDSIM replaced by GDESIM (90% S&P + 90% gold, ~1.8x notional)
   in offensive basket. Tests "bond contamination" hypothesis: BNDSIM in VAA-G4 offensive drags Sharpe.
   `[stocks_on_the_move, ch.6]` PRIMARY. n_trials=1.
-- **Citations:** `[stocks_on_the_move, ch.6]`, `[ilmanen_expected_returns, ch.19]`,
+- **Citations:** `[stocks_on_the_move, ch.6]`, `[trading_evolved, p.197]`,
   `[leverage_for_the_long_run, p.40-60]`, `[advances_fin_ml, p.196-202/208-211/222-223/31-34]`
 - **Scope:** 1 config; 3 datasets; cumulative n_trials=27
 - **Result:** edu S=0.981/C=10.28%/MDD=18.91% 7/7; vt S=0.849/C=8.91%/MDD=18.91% 7/7;
@@ -91,7 +91,7 @@ Full details: `iterations/NNN-*/`. Mandate §1 MAINTENANCE; §7 override require
 
 ### 009 — 2026-04-27 — haa-gold-sleeve (WINNER, 90/100) ← PARETO FRONTIER
 - **Result:** edu S=1.120/C=13.89%/MDD=20.81% 7/7; vt S=1.061/C=12.87%/MDD=14.20% 7/7; ndx S=0.954/C=10.55%/MDD=14.20% 7/7. DSR p=1.21e-04. Rolling 26/26 (100%).
-- **Lesson:** 5% GLDSIM improves Sharpe +0.008-0.012, MDD -0.85pp vs iter 005; CAGR -0.1-0.25pp. Pareto frontier: gap to bestfolio (1.18) = 0.06. `[ilmanen_expected_returns, ch.fx-carry]`. Details: `iterations/009-*/`.
+- **Lesson:** 5% GLDSIM improves Sharpe +0.008-0.012, MDD -0.85pp vs iter 005; CAGR -0.1-0.25pp. Pareto frontier: gap to bestfolio (1.18) = 0.06. `[risk_parity, ch.5]`. Details: `iterations/009-*/`.
 
 ### 008 — 2026-04-27 — wldu-gayed (PROMISING, 61/100)
 - **Result:** edu S=0.609/C=12.69%/MDD=44.45% 7/7; vt S=0.501/10.11%/44.45% 5/7; ndx S=0.473/9.44%/44.45% 6/7. Kill 2: MDD>35%.
@@ -190,7 +190,7 @@ VAA breadth < HAA canary on Sharpe. DEAD END for VAA-breadth-Sharpe-max. Details
 #### iter 012 — HAA SmartStack + 10% GLD (larger gold sleeve)
 
 - **Mechanism**: HAA (iter 009) with 10% GLD + 5% KMLM (swapping weights). Tests if gold's
-  Sharpe/MDD benefit scales beyond 5% GLD. `[ilmanen_expected_returns, ch.fx-carry]`
+  Sharpe/MDD benefit scales beyond 5% GLD. `[risk_parity, ch.5]`
 - **Kill criteria**: edu Sharpe ≤ 1.120 (must beat iter 009)
 
 ### Tier 1 — established factor literature (start here)
@@ -225,7 +225,7 @@ VAA breadth < HAA canary on Sharpe. DEAD END for VAA-breadth-Sharpe-max. Details
 ### Tier 3 — explicit currency / hedge layer
 
 7. **VT + currency hedge overlay**. Hedge USD/EUR/JPY exposure when
-   carry signal flips. `[ilmanen_expected_returns, ch.fx-carry]`.
+   carry signal flips. `[risk_parity, ch.5]`.
 
 8. **VT + commodity exposure** (DBA, DBC, GLD). Adds inflation hedge
    orthogonal to equity beta.

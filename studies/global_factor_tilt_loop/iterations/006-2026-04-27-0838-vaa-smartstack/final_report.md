@@ -217,7 +217,7 @@ during bull runs; (3) the offensive universe (including GDESIM) has higher expec
 ## Citations
 
 - `[stocks_on_the_move, ch.6]` — breadth momentum mechanics (Clenow; multi-asset breadth)
-- `[ilmanen_expected_returns, ch.19]` — MF+gold free-lunch sleeve
+- `[trading_evolved, p.197]` — MF+gold free-lunch sleeve
 - `[leverage_for_the_long_run, p.40-60]` — stacking justification
 - `[advances_fin_ml, p.208-211]` — G1 PBO (N/A with single config)
 - `[advances_fin_ml, p.222-223]` — G2 DSR significance n_trials=1

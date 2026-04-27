@@ -22,7 +22,7 @@ Citations:
   [risk_parity, ch.5] — Return stacking / capital efficiency
   [leverage_for_the_long_run, p.40-60] — Leveraged overlay risk caveats
   [advances_fin_ml, ch.10] — Small-cap value empirical evidence
-  [ilmanen_expected_returns, ch.19] — Managed futures "free lunch"
+  [trading_evolved, p.197] — Managed futures "free lunch"
   [stocks_on_the_move, p.21-30] — Momentum factor
   [risk_parity, ch.3-5] — Multi-asset diversification
   [advances_fin_ml, p.208-211] — PBO: N/A when n_configs=1
@@ -73,7 +73,7 @@ PORTFOLIO_LEGS = {
     "VSSSIM":  0.07,    # AVDV: intl dev small-cap proxy
     "VWOSIM":  0.08,    # AVEM: EM proxy
     "GDESIM":  0.12,    # GDE: 90% S&P + 90% gold direct synth
-    "KMLMSIM": 0.08,    # KMLM: managed futures direct [ilmanen_expected_returns, ch.19]
+    "KMLMSIM": 0.08,    # KMLM: managed futures direct [trading_evolved, p.197]
 }
 # RSST stacking overlay (0.15 × (r_SPYSIM + r_KMLMSIM - r_CASHX)):
 RSST_WEIGHT = 0.15

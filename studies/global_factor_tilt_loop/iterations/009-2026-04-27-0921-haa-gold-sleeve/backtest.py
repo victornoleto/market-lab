@@ -23,8 +23,8 @@ Kill 2: any WF G3' window fails
 
 Citations:
   [stocks_on_the_move, ch.6]              HAA momentum mechanics
-  [ilmanen_expected_returns, ch.19]       MF free-lunch sleeve
-  [ilmanen_expected_returns, ch.fx-carry] gold as inflation hedge
+  [trading_evolved, p.197]       MF free-lunch sleeve
+  [risk_parity, ch.5] gold as inflation hedge
   [leverage_for_the_long_run, p.40-60]    stacking justification
   [advances_fin_ml, p.208-211]            G1 PBO
   [advances_fin_ml, p.222-223]            G2 DSR
@@ -65,8 +65,8 @@ ITER_DIR = Path(__file__).parent
 # [stocks_on_the_move, ch.6]: HAA momentum = unweighted avg 1/3/6/12m
 # ---------------------------------------------------------------------------
 N_CONFIGS = 1
-KMLM_WEIGHT = 0.10       # fixed MF sleeve [ilmanen_expected_returns, ch.19]
-GLD_WEIGHT = 0.05        # fixed gold sleeve [ilmanen_expected_returns, ch.fx-carry]
+KMLM_WEIGHT = 0.10       # fixed MF sleeve [trading_evolved, p.197]
+GLD_WEIGHT = 0.05        # fixed gold sleeve [risk_parity, ch.5]
 DYNAMIC_WEIGHT = 0.85    # HAA dynamic (was 0.90 in iter 005)
 TOP_K_OFFENSIVE = 2      # top-2 when risk-ON, equal-weight
 NOTIONAL_FACTOR = 1.45   # same as iter 005 (stacked offensive assets)

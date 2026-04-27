@@ -143,7 +143,7 @@ This compares favorably to V_HYBRID+MF's `P(rolling 10y CAGR < 5%) = 0.6%`
 | SPMO | 8% | SPYSIM (US momentum proxy, ~1-2%/y premium undoc.) | `[stocks_on_the_move, p.21-30]` |
 | IDMO | 7% | VEASIM (intl momentum proxy) | `[stocks_on_the_move, p.21-30]` |
 | GDE | 12% | GDESIM (90% SPY + 90% gold stacked, direct) | `[risk_parity, ch.5]` |
-| KMLM | 8% | KMLMSIM (managed futures, direct) | `[ilmanen_expected_returns, ch.19]` |
+| KMLM | 8% | KMLMSIM (managed futures, direct) | `[trading_evolved, p.197]` |
 
 Effective notional: RSSB 200% + RSST 200% + GDE 180% ≈ 1.45× on 1× capital.
 No margin loan — all stacking via exchange-traded futures overlays.
@@ -204,7 +204,7 @@ requires a §7 override and acceptance of 44%+ crisis MDD (vs Plano C's 52%).
 - `[risk_parity, ch.5]` — Return stacking / capital efficiency
 - `[leverage_for_the_long_run, p.40-60]` — Leveraged overlay risk caveats
 - `[advances_fin_ml, ch.10]` — Small-cap value empirical evidence (Fama-French)
-- `[ilmanen_expected_returns, ch.19]` — Managed futures "free lunch" uncorrelated return
+- `[trading_evolved, p.197]` — Managed futures "free lunch" uncorrelated return
 - `[stocks_on_the_move, p.21-30]` — Momentum factor (US/intl proxies)
 - `[risk_parity, ch.3-5]` — Multi-asset diversification rationale
 - `[advances_fin_ml, p.208-211]` — PBO: N/A when n_configs < MIN_HONEST_N_CONFIGS
@@ -227,4 +227,4 @@ requires a §7 override and acceptance of 44%+ crisis MDD (vs Plano C's 52%).
 
 3. **KMLM sleeve expansion**: add 5% DBMFSIM alongside KMLMSIM (making total MF 13%)
    since the two MF strategies have low correlation. Test if this improves
-   Sharpe without widening MDD. Cites `[ilmanen_expected_returns, ch.19]` free lunch.
+   Sharpe without widening MDD. Cites `[trading_evolved, p.197]` free lunch.

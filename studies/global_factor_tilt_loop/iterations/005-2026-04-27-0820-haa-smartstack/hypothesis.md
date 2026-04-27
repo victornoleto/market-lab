@@ -32,7 +32,7 @@ Momentum formula: `(r1 + r3 + r6 + r12) / 4`
 ## Primary citation
 
 - `[stocks_on_the_move, ch.6]` — Clenow momentum mechanics (dynamic vs static)
-- `[ilmanen_expected_returns, ch.19]` — managed futures free-lunch sleeve
+- `[trading_evolved, p.197]` — managed futures free-lunch sleeve
 - `[leverage_for_the_long_run, p.40-60]` — return-stacking capital efficiency rationale
 - `[advances_fin_ml, p.208-211/222-223/196-202/31-34]` — gates G1/G2/G6/G7
 - HAA SSRN 4346906 — Keller & Keuning 2023 (supplementary, not in cache)

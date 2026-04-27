@@ -6,7 +6,7 @@ Pareto improvement by adding a fixed 10% KMLMSIM allocation. Managed futures
 (KMLM) are near-zero correlated with equity momentum in crises; the diversification
 raises portfolio Sharpe while MDD stays flat or falls.
 
-[ilmanen_expected_returns, ch.19] — MF as uncorrelated "free lunch" return stream.
+[trading_evolved, p.197] — MF as uncorrelated "free lunch" return stream.
 [stocks_on_the_move, p.21-30] — pre-committed top-K momentum K=2 / lb=6m.
 [advances_fin_ml, p.208-211] — PBO: N/A with n_configs=1 < MIN_HONEST_N_CONFIGS.
 [advances_fin_ml, p.222-223] — DSR with n_trials=1 (pre-committed config).
@@ -108,7 +108,7 @@ def simulate_momentum_mf_sleeve(
     [stocks_on_the_move, p.21-30]: monthly rebalance, trailing lookback return
     ranking, equal-weight top-K with positive momentum, CASHX safe haven when all
     universe assets negative. KMLM sleeve always receives kmlm_weight.
-    [ilmanen_expected_returns, ch.19]: MF uncorrelated return stream free lunch.
+    [trading_evolved, p.197]: MF uncorrelated return stream free lunch.
     """
     mom_weight = 1.0 - kmlm_weight
     all_tickers = list(dict.fromkeys(universe + [safe_haven, kmlm_ticker]))
@@ -575,7 +575,7 @@ def main():
     # Save
     verdict = score_result.to_dict()
     verdict["configs_tested"] = N_CONFIGS
-    verdict["primary_citation"] = "[ilmanen_expected_returns, ch.19]"
+    verdict["primary_citation"] = "[trading_evolved, p.197]"
     verdict["hypothesis_slug"] = "momentum-mf-sleeve"
     verdict["status"] = score_result.tier.value.lower()
     verdict["robustness"] = {

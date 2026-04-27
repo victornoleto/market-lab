@@ -24,7 +24,7 @@ Single pre-committed config (K=2, lb=6m), identical parameters to the iter 002 W
 
 ## Primary citation
 
-`[ilmanen_expected_returns, ch.19]` — managed futures as "alternative risk premium":
+`[trading_evolved, p.197]` — managed futures as "alternative risk premium":
 uncorrelated with equity in tail events; adding an orthogonal return stream raises
 portfolio Sharpe through diversification even when MF standalone Sharpe is lower.
 
@@ -96,7 +96,7 @@ is met.
 
 ## Citations
 
-- `[ilmanen_expected_returns, ch.19]` — MF free lunch, uncorrelated return
+- `[trading_evolved, p.197]` — MF free lunch, uncorrelated return
 - `[stocks_on_the_move, p.21-30]` — momentum mechanism and K/lb parameters
 - `[advances_fin_ml, p.208-211]` — PBO: N/A with single pre-committed config
 - `[advances_fin_ml, p.222-223]` — DSR with n_trials=1

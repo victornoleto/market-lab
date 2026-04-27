@@ -96,7 +96,7 @@
   },
   "cumulative_n_trials": 21,
   "configs_tested": 1,
-  "primary_citation": "[ilmanen_expected_returns, ch.19]",
+  "primary_citation": "[trading_evolved, p.197]",
   "hypothesis_slug": "momentum-mf-sleeve",
   "status": "winner",
   "robustness": {

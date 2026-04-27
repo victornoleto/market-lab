@@ -193,7 +193,7 @@ This qualifies for the maximum robustness bonus.
    search converted G1 PBO from FAIL (0.74) to trivial PASS. The mechanism
    was always sound; the methodological framing was the problem.
 2. **6-month lookback is the sweet spot**: avoids 1-month short-term reversal
-   and 36m+ mean-reversion zones. `[ilmanen_expected_returns, ch.12]`
+   and 36m+ mean-reversion zones. `[stocks_on_the_move, p.21-30]`
 3. **CASHX rotation is the MDD killer**: VT b&h loses 58% in bear markets;
    this strategy loses 23% (edu), 17% (vt_real/ndx_real) — 2-3× better.
 4. **Global diversification provides alpha**: rotating between US/Intl/EM/
@@ -222,7 +222,7 @@ This qualifies for the maximum robustness bonus.
 
 - `[stocks_on_the_move, p.21-30]` — Clenow cross-sectional momentum in
   ETF universes; pre-committed K and lookback parameters.
-- `[ilmanen_expected_returns, ch.12]` — cross-asset momentum as a robust
+- `[stocks_on_the_move, p.21-30]` — cross-asset momentum as a robust
   risk premium; 6-12m lookback avoids reversal zones.
 - `[advances_fin_ml, p.208-211]` — PBO via CSCV; single-config exemption.
 - `[advances_fin_ml, p.222-223]` — DSR with n_trials deflation.
@@ -252,7 +252,7 @@ the operative measure for mandate §7 deliberation.
 ## Next directions (for future iterations, even though loop halts here)
 
 1. **MF sleeve (Tier 1b)**: 10-15% KMLMSIM alongside the momentum portfolio.
-   `[ilmanen_expected_returns, ch.19]`: "free lunch" from managed futures.
+   `[trading_evolved, p.197]`: "free lunch" from managed futures.
    Would push MDD lower and might improve ndx_real Sharpe during 2022.
 
 2. **Overlapping dataset: VT live** once pulled from Tiingo. Replace the

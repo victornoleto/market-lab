@@ -31,7 +31,7 @@ Key difference from iter 009 (HAA+GLD): VAA breadth (4-asset vote) vs HAA
 
 Citations:
   [stocks_on_the_move, ch.6]           momentum mechanics + breadth signal
-  [ilmanen_expected_returns, ch.19]    MF free-lunch sleeve
+  [trading_evolved, p.197]    MF free-lunch sleeve
   [leverage_for_the_long_run, p.40-60] stacking justification
   [advances_fin_ml, p.208-211]         G1 PBO
   [advances_fin_ml, p.222-223]         G2 DSR

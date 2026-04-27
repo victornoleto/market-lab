@@ -186,8 +186,8 @@ Iter 009 dominates all 3 mission benchmarks on all 3 dimensions (Sharpe, CAGR, M
 ## Citations
 
 - `[stocks_on_the_move, ch.6]` — HAA momentum mechanics
-- `[ilmanen_expected_returns, ch.19]` — managed futures free-lunch (KMLM sleeve)
-- `[ilmanen_expected_returns, ch.fx-carry]` — gold as inflation hedge, uncorrelated diversifier
+- `[trading_evolved, p.197]` — managed futures free-lunch (KMLM sleeve)
+- `[risk_parity, ch.5]` — gold as inflation hedge, uncorrelated diversifier
 - `[leverage_for_the_long_run, p.40-60]` — return-stacking for offensive assets
 - `[advances_fin_ml, p.196-202]` — G6 bootstrap calibration
 - `[advances_fin_ml, p.222-223]` — G2 DSR deflation

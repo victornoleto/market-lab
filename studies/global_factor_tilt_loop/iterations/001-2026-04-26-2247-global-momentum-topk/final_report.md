@@ -174,7 +174,7 @@ Worst p = 0.0170 < 0.05. [advances_fin_ml, p.222-223]
 
 - `[stocks_on_the_move, p.21-30]` — Clenow cross-sectional 52-week momentum
   applied to ETF universe; top-K selection + cash rotation methodology.
-- `[ilmanen_expected_returns, ch.12]` — cross-asset momentum as documented
+- `[stocks_on_the_move, p.21-30]` — cross-asset momentum as documented
   robust risk premia across equities, bonds, commodities, currencies.
 - `[advances_fin_ml, p.208-211]` — PBO via CSCV (G1).
 - `[advances_fin_ml, p.222-223]` — Deflated Sharpe Ratio, n_trials deflation (G2).
@@ -211,7 +211,7 @@ RSSBSIM blend) to push CAGR without adding market risk.
    datasets. This would let it score 90+ and qualify for WINNER if Sharpe
    edge condition survives (2 of 3 datasets at the single fixed config).
 
-2. **MF sleeve blend** `[ilmanen_expected_returns, ch.19]`: add 10-15%
+2. **MF sleeve blend** `[trading_evolved, p.197]`: add 10-15%
    KMLMSIM as a fixed allocation alongside the momentum equity/bond
    portfolio. deploy_studies showed MF provides "free lunch" for
    V_HYBRID; test whether same applies to this strategy.

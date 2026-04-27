@@ -26,7 +26,7 @@ Pre-committed single config (no grid) → G1 PBO trivially passes.
   `[leverage_for_the_long_run, p.40-60]`
 - Small-cap value premium: `[advances_fin_ml, ch.10]` (Fama-French / DFA /
   Avantis methodology empirical evidence)
-- Managed futures "free lunch": `[ilmanen_expected_returns, ch.19]`
+- Managed futures "free lunch": `[trading_evolved, p.197]`
 - Momentum factor: `[stocks_on_the_move, p.21-30]`
 - Multi-asset diversification: `[risk_parity, ch.3-5]`
 

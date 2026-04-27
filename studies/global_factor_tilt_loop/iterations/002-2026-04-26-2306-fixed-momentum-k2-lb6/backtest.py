@@ -10,7 +10,7 @@ entirely and makes rolling-window robustness computable.
 
 Citations:
   [stocks_on_the_move, p.21-30] — Clenow pre-committed top-K lookback momentum
-  [ilmanen_expected_returns, ch.12] — 6-12m lookback avoids reversal zones
+  [stocks_on_the_move, p.21-30] — 6-12m lookback avoids reversal zones
   [advances_fin_ml, p.208-211] — PBO: N/A when n_configs < MIN_HONEST_N_CONFIGS
   [advances_fin_ml, p.222-223] — DSR with n_trials=1 (pre-committed config)
   [advances_fin_ml, p.196-202] — Bootstrap CI for Sharpe significance

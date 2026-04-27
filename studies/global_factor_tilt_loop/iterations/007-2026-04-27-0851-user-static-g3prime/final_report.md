@@ -245,7 +245,7 @@ could be deployed as a simple alternative to HAA if mandate §7 were invoked.
 - `[risk_parity, ch.5]` — return stacking / capital efficiency (PRIMARY)
 - `[leverage_for_the_long_run, p.40-60]` — stacking justification and leverage calibration
 - `[advances_fin_ml, ch.10]` — SCV factor empirical evidence (Fama-French)
-- `[ilmanen_expected_returns, ch.19]` — managed futures "free lunch" uncorrelated return
+- `[trading_evolved, p.197]` — managed futures "free lunch" uncorrelated return
 - `[stocks_on_the_move, p.21-30]` — momentum factor (US/intl proxies)
 - `[testing_tuning, ch.5-6]` — G3' benchmark-comparative calibration rationale
 - `[advances_fin_ml, p.196-202]` — G6 block-bootstrap 99.9% CI
