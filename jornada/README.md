@@ -29,9 +29,9 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-27 — 🏆 CINCO WINNERS; iter 009 HAA+GLD = NOVO PARETO FRONTIER)
+## Onde estamos hoje (2026-04-27 — loop FECHADO: híbrido 50/50 domina HAA puro no Sharpe)
 
-**Estado:** 🏆 **LOOPS COM WINNERS. iter 009 HAA+Gold WINNER 90/100. Próximo: VAA-G3 (iter 010).**
+**Estado:** 🏆 **12 iterações concluídas. Loop FROZEN. Fronteira net-of-tax: híbrido 50/50 (S=1.021/C=13.38%/MDD=26.85% edu). Mandate §7 deliberation required.**
 
 1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
    (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
@@ -81,29 +81,18 @@ DORMANT (0% capital). Os loops produzem **CANDIDATOS, não posições
 live** — deployment requer §7 override assinado pelo usuário com
 evidência completa (final_reports + paper trading 3-6 meses).
 
-**Próximas decisões do usuário:**
+**Próximas decisões do usuário (mandate §7):**
 
-- **global_factor_tilt_loop**: iter 009 (HAA+Gold) WINNER. Próximo: **iter 010 VAA-G3 SmartStack**
-  (substituir BNDSIM como 4º ofensivo por equity puro — testa se bond contamination era a
-  única fraqueza do VAA iter 006).
-- **strategy_hunt_loop**: ler `iterations/079-*/final_report.md` e decidir confirmatory sweep
-  + paper trading schedule. Winner iter 079 aguarda deliberação §7.
-- **global_factor_tilt_loop winners (iters 002/004/005/009)**: 4 candidatos prontos para
-  deliberação §7. HAA+Gold (iter 009) é o novo Pareto frontier.
+Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. Três opções concretas:
 
-**Decisões do usuário (fora do hunt loop):**
+1. **Manter Plano C** (mandato atual §1): CAGR ~10.3% líquido, MDD ~52%, zero complexidade.
+2. **Ativar 50/50 Híbrido** (iter 012): CAGR ~13.4% líquido, MDD ~27%, Sharpe **melhor que HAA puro**,
+   rebalanceamento mensal na metade HAA. **Opção dominante se aceitar complexidade moderada.**
+3. **Ativar 100% HAA+Gold** (iter 009/011): CAGR ~12.1% líquido, MDD ~22%, Sharpe ligeiramente
+   abaixo do híbrido, maior proteção de capital. Alta complexidade mensal.
 
-1. **Ler `studies/strategy_hunt_loop/iterations/079-2026-04-26-1100-multi-asset-topk-momentum/final_report.md`** —
-   verdict completo + 3 caveats honestos (ndx CAGR floor missed; PBO
-   0.5714 edu marginal; single-cfg winner — K=3 ridge 73/93/73).
-2. **Decidir confirmatory grid sweep** (lookbacks {4,5,7,8 mo} × top_k
-   {2,3,4} no mesmo universo) — fortalece evidência antes de paper
-   trading. Estudo separado, não nova iter.
-3. **Decidir paper trading** 3-6 meses pra validar implementação ≡ backtest.
-4. **Decidir compatibilidade de broker** — rebalance mensal de 6 ETFs
-   provavelmente NÃO é Pepperstone CFD (short-hold). Possivelmente Inter
-   Internacional como Plano B com 15% IR sobre lucro.
-5. **Decidir §7 override** após paper trading.
+Para strategy_hunt_loop (iter 079 multi-asset):
+- Ler `iterations/079-*/final_report.md` e decidir confirmatory sweep + paper trading schedule.
 
 **Revisão programada (mantida):** 6 meses (2026-10-23) e 12 meses
 (2027-04-23) — re-rodar grids contra novos dados OOS independentemente
@@ -216,6 +205,10 @@ Termos que aparecem ao longo das entradas do changelog:
 — bug Tiingo IEX em US holidays.
 
 ### 2026-04-27
+
+- [2026-04-27 19h30 — **Global Factor-Tilt Loop FECHADO (iter 012): Híbrido 50/50 HAA+Gold + Plano C — STRONG 85/100, Kill PASS, Pareto PASS.** DESCOBERTA INESPERADA: o híbrido tem Sharpe MAIOR que HAA puro líquido em todos os 3 datasets (edu 1.021 vs 0.991, vt 1.058 vs 0.943, ndx 0.972 vs 0.851). CAGR net edu: 13.38% (vs HAA 12.13%, vs Plano C 10.31%). MDD 26.85% (entre HAA 21.83% e Plano C 52.43%). Mecanismo: bônus de diversificação (HAA canário + Plano C factor equity, corr~0.75) + prêmio de rebalanceamento anual + eficiência fiscal da metade Plano C (DARF terminal > DARF mensal). 7/7 gates × 3 datasets. Score 85 STRONG (não WINNER: CAGR floor falha no ndx vs QQQ 18.99%). **LOOP FROZEN. Mandate §7 deliberation required.** `[risk_parity, ch.5]` diversification bonus; `[testing_tuning, ch.5-6]` tax-aware simulation. [GLOBAL TILT LOOP — ENCERRADO 🔒]](2026-04-27-1930-loop-closure-hybrid-winner.md)
+
+- [2026-04-27 19h00 — **Global Factor-Tilt Loop iter 011: HAA+Gold líquido — WINNER 90 net, BORDERLINE (+1.6pp vs Plano C).** DARF 15% mensal + Carnê-Leão 4.7bps + FX 2.76% round-trip. Edu net S=0.991/C=12.13%/MDD=21.83%. Custo DARF: 1.76pp/y edu, 1.56pp vt, 1.23pp ndx. Margem vs Plano C: +1.84pp (edu), +1.43pp (vt), −0.50pp (ndx). Mecanismo: cada DARF pago para de compor (DARF de R$527 no ano 15 = R$4.100 no terminal ao CAGR de 13.89%). `[testing_tuning, ch.5-6]`, Receita Federal IN 1.585/2015. [GLOBAL TILT LOOP — WINNER 011 líquido]](2026-04-27-1900-iter011-darf-net-tax.md)
 
 - [2026-04-27 17h30 — 🏆 **Global Factor-Tilt Loop iter 009: HAA+Gold Sleeve — WINNER 90/100 — NOVO PARETO FRONTIER.** HAA SmartStack + 5% GLDSIM fixo (dynamic=85% + KMLM=10% + GLD=5%). Resultados: edu Sharpe=1.120/CAGR=13.89%/MDD=20.81% 7/7; vt_real Sharpe=1.061/CAGR=12.87%/MDD=14.20% 7/7; ndx_real Sharpe=0.954/CAGR=10.55%/MDD=14.20% 7/7. G3 nominal passa (20.81%<25%). 26/26 rolling-5y positivas. Delta vs iter 005: +0.008-0.012 Sharpe, -0.85pp MDD (vt/ndx), -0.25pp CAGR. Gap bestfolio: 0.06 (era 0.07). `[ilmanen_expected_returns, ch.fx-carry]` gold diversification. [GLOBAL TILT LOOP — WINNER 004 🏆]](2026-04-27-1730-haa-gold-sleeve-winner.md)
 

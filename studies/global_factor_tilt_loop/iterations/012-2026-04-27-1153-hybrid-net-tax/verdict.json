@@ -1,0 +1,28 @@
+{
+  "iteration": "012-2026-04-27-1153-hybrid-net-tax",
+  "score": 85,
+  "tier": "STRONG",
+  "winner_conditions_met": true,
+  "kill_pass_all": true,
+  "pareto_sharpe_all": true,
+  "hybrid_edu_sharpe": 1.0212814172365554,
+  "hybrid_edu_cagr": 0.13376692786873612,
+  "hybrid_edu_mdd": 0.2685102680969322,
+  "hybrid_vt_sharpe": 1.0581653383187546,
+  "hybrid_vt_cagr": 0.14057546039796343,
+  "hybrid_ndx_sharpe": 0.9718040700746222,
+  "hybrid_ndx_cagr": 0.11836366930742548,
+  "planoc_edu_net_sharpe": 0.6309075191369518,
+  "planoc_edu_net_cagr": 0.10306862981210618,
+  "planoc_edu_net_mdd": 0.5243028919789751,
+  "haa_edu_net_sharpe": 0.991,
+  "haa_edu_net_cagr": 0.1213,
+  "tax_model_params": {
+    "darf_rate": 0.15,
+    "fx_cost_one_way": 0.0138,
+    "carne_leao_incremental": 0.00047,
+    "haa_sleeve_weight": 0.5,
+    "planoc_sleeve_weight": 0.5
+  },
+  "loop_status": "FROZEN after iter 012 \u2014 mandate \u00a77 deliberation required"
+}

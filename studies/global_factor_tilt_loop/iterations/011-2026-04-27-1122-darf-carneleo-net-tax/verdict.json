@@ -1,0 +1,126 @@
+{
+  "total_score": 90,
+  "tier": "WINNER",
+  "winner_conditions_met": true,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 20,
+      "max": 25,
+      "datasets_beat": 2,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 25,
+      "max": 25,
+      "per_dataset": {
+        "educational": 7,
+        "vt_real": 7,
+        "ndx_real": 7
+      },
+      "thresholds": {
+        "educational": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.000521736912873827,
+      "cumulative_n_trials": 28
+    },
+    "4_cagr_floor": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9905738327360547,
+      "cagr": 0.1212743571913637,
+      "mdd": 0.21830252732813357,
+      "dsr_p_value": 2.6820230480950613e-08
+    },
+    "vt_real": {
+      "sharpe": 0.9433708258920404,
+      "cagr": 0.11313705850891909,
+      "mdd": 0.14741198038384443,
+      "dsr_p_value": 6.384244614743295e-05
+    },
+    "ndx_real": {
+      "sharpe": 0.850583805674888,
+      "cagr": 0.09314372209387112,
+      "mdd": 0.14741194034602026,
+      "dsr_p_value": 0.000521736912873827
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.6626,
+      "cagr": 0.0999,
+      "mdd": 0.5835,
+      "label": "VTSIM b&h (56y synth)"
+    },
+    "vt_real": {
+      "sharpe": 0.5132,
+      "cagr": 0.088,
+      "mdd": 0.5021,
+      "label": "VTSIM proxy 2008-06+ (~17y; VT live pending)"
+    },
+    "ndx_real": {
+      "sharpe": 0.9472,
+      "cagr": 0.1899,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 28,
+  "configs_tested": 1,
+  "primary_citation": "[testing_tuning, ch.5-6]",
+  "hypothesis_slug": "darf-carneleo-net-tax",
+  "status": "winner",
+  "notional_factor": 1.45,
+  "tax_model": {
+    "darf_rate": 0.15,
+    "carne_leao_incremental_annual": 0.00047,
+    "fx_cost_one_way": 0.0138,
+    "fx_cost_round_trip": 0.0276,
+    "method": "portfolio-level average-cost; 12-month rolling loss carryforward"
+  },
+  "planoc_net_30y": {
+    "gross_cagr": 0.1094,
+    "net_cagr": 0.102671,
+    "annual_tax_drag": 0.006729,
+    "terminal_gross": 22.2131,
+    "darf_paid": 3.184,
+    "net_terminal": 18.7665,
+    "years": 30.0
+  },
+  "robustness": {
+    "n_windows": 26,
+    "pct_positive_sharpe_net": 1.0,
+    "min_rolling_sharpe_net": 0.5264351150528822,
+    "max_rolling_sharpe_net": 1.3744165848104706,
+    "bonus_pts": 5
+  }
+}

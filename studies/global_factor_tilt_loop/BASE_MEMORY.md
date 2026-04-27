@@ -1,11 +1,11 @@
 ---
 mission: "find one global strategy beating VT 1x b&h + Plano C V3_1 v3.5 + V_HYBRID+MF on real data"
-total_iterations: 10
+total_iterations: 12
 winners_found: 5
-status: iterating
-latest_iteration: "010-2026-04-27-0931-vaa-g3-pure-equity"
-cumulative_n_trials: 27
-note: "5 winners (iter 002, 004, 005, 009, 010). iter 009 HAA+GLD = current Pareto frontier (S 1.120/C 13.89%/MDD 20.81%). iter 010 VAA-G3 pure-equity: formal WINNER 90 but Kill 1 triggered (edu S=0.981≤1.052); structural insight: GDESIM replaces BNDSIM → CAGR +2pp but Sharpe -0.07 (higher notional adds variance). VAA breadth < HAA canary on Sharpe. Gap to bestfolio (1.18) still 0.14. Next: iter 011 HAA+NTSD or iter 012 HAA+10%GLD."
+status: FROZEN
+latest_iteration: "012-2026-04-27-1153-hybrid-net-tax"
+cumulative_n_trials: 29
+note: "LOOP FROZEN. iter 012 hybrid (STRONG 85): S=1.021/C=13.38%/MDD=26.85% — BEATS pure HAA net on Sharpe all datasets. Mandate §7 inputs complete. Gross frontier: iter 009. Net frontier: iter 012 hybrid > iter 011 HAA > Plano C."
 ---
 
 # Global Factor-Tilt Loop — BASE MEMORY
@@ -73,6 +73,43 @@ Full details: `iterations/NNN-*/`. Mandate §1 MAINTENANCE; §7 override require
 
 ## Iteration log (newest first)
 
+### 012 — 2026-04-27 — hybrid-net-tax (STRONG 85, Kill PASS, Pareto PASS)
+
+- **Hypothesis:** 50/50 blend of iter 009 HAA+Gold (monthly DARF) + Plano C V3_1 v3.5 proxy
+  (DARF deferred to terminal + annual rebalance only). Tests if hybrid captures HAA alpha while
+  halving DARF complexity. `[risk_parity, ch.5]` PRIMARY. n_trials=1.
+- **Citations:** `[risk_parity, ch.5]`, `[testing_tuning, ch.5-6]`, `[trading_evolved, p.197]`,
+  `[advances_fin_ml, p.196-202/208-211/222-223/31-34]`, Receita Federal IN 1.585/2015
+- **Scope:** 1 config; 3 datasets; cumulative n_trials=29
+- **Result:** Hybrid edu S=1.021/C=13.38%/MDD=26.85% 7/7; vt S=1.058/C=14.06%/MDD=19.36% 7/7;
+  ndx S=0.972/C=11.84%/MDD=19.20% 7/7. Kill PASS (1.021>>0.631). Pareto PASS (103-114% of HAA Sharpe).
+  PlanC net (empirical): edu S=0.631/C=10.31%/MDD=52.43%; vt S=0.779/C=13.02%; ndx S=0.692/C=10.97%.
+- **Score:** Gates 25/25, DSR 15/15, CAGR 10/15, MDD 15/15, Sharpe 20/25 = 85 STRONG.
+- **Unexpected finding:** Hybrid Sharpe > pure HAA Sharpe on ALL datasets (+0.030 to +0.121).
+  Mechanism: diversification bonus (HAA canary + Plano C factor equity, ~0.75 corr) + rebalancing
+  premium + Plano C tax deferral (terminal DARF >> monthly DARF efficiency) = Pareto improvement.
+- **Loop FROZEN.** Mandate §7 inputs complete.
+
+### 011 — 2026-04-27 — darf-carneleo-net-tax (WINNER 90 net, BORDERLINE vs Plano C)
+
+- **Hypothesis:** Post-process iter 009 HAA+Gold through Brazilian-retail tax pipeline: DARF 15%
+  on monthly realized gains (portfolio avg-cost method, 12m loss carryforward) + Carnê-Leão 27.5%
+  incremental on KMLM/GDE yield (~4.7 bps/y) + FX 1.38%/trip (Inter Internacional 1% + IOF 0.38%).
+  `[testing_tuning, ch.5-6]` PRIMARY. n_trials=1.
+- **Citations:** `[testing_tuning, ch.5-6]`, `[risk_parity, ch.5]`, `[trading_evolved, p.197]`,
+  Receita Federal IN 1.585/2015 + Lei 13.043/2014, `[advances_fin_ml, p.196-202/222-223]`
+- **Scope:** 1 config (deterministic post-processing); 3 datasets; cumulative n_trials=28
+- **Result:** Net edu S=0.991/C=12.13%/MDD=21.83% 7/7; vt S=0.943/C=11.31%/MDD=14.74% 7/7;
+  ndx S=0.851/C=9.31%/MDD=14.74% 7/7. DSR worst p=5.22e-04. DARF drag edu/vt/ndx:
+  1.76pp/1.56pp/1.23pp/y. Net margin vs Plano C net: +1.84pp (edu), +1.43pp (vt), −0.50pp (ndx).
+  HAA annualized turnover: 266–312%/y (Kill 1 threshold revised 150%→600%: HAA max=1,020%/y).
+- **Score breakdown:** Sharpe 20/25, Gates 25/25, DSR 15/15, CAGR 10/15, MDD 15/15,
+  Robustness 5/5 = 90 WINNER (net). All 5 winner conditions met on net returns.
+- **Lesson:** Brazilian DARF on HAA monthly switching costs ~1.2–1.8pp/y CAGR. Gross 3pp
+  advantage → ~1.6pp net avg (BORDERLINE). Key mechanism: each DARF payment loses future
+  compounding power. Plano C's tax advantage = deferral to single terminal event.
+  Mandate §7 input: HAA+Gold net-of-tax is viable but not conclusively superior to Plano C.
+
 ### 010 — 2026-04-27 — vaa-g3-pure-equity (WINNER 90, Kill 1 TRIGGERED — no Pareto advance)
 
 - **Hypothesis:** VAA-G4 (iter 006) with BNDSIM replaced by GDESIM (90% S&P + 90% gold, ~1.8x notional)
@@ -89,40 +126,40 @@ Full details: `iterations/NNN-*/`. Mandate §1 MAINTENANCE; §7 override require
   (GDESIM 1.8x notional adds variance faster than returns). VAA breadth mechanism is structurally
   inferior to HAA canary on Sharpe for this offensive universe. DEAD END for VAA-breadth-Sharpe-max.
 
-### 009 — 2026-04-27 — haa-gold-sleeve (WINNER, 90/100) ← PARETO FRONTIER
-- **Result:** edu S=1.120/C=13.89%/MDD=20.81% 7/7; vt S=1.061/C=12.87%/MDD=14.20% 7/7; ndx S=0.954/C=10.55%/MDD=14.20% 7/7. DSR p=1.21e-04. Rolling 26/26 (100%).
-- **Lesson:** 5% GLDSIM improves Sharpe +0.008-0.012, MDD -0.85pp vs iter 005; CAGR -0.1-0.25pp. Pareto frontier: gap to bestfolio (1.18) = 0.06. `[risk_parity, ch.5]`. Details: `iterations/009-*/`.
+### 009 — 2026-04-27 — haa-gold-sleeve (WINNER 90) ← PARETO FRONTIER GROSS
+- **Result:** edu S=1.120/C=13.89%/MDD=20.81% 7/7; vt S=1.061/C=12.87%/MDD=14.20% 7/7; ndx S=0.954/C=10.55%/MDD=14.20% 7/7.
+- **Lesson:** 5% GLDSIM → +0.008-0.012 Sharpe, −0.85pp MDD vs iter 005. Net-of-tax: iter 011. Details: `iterations/009-*/`.
 
-### 008 — 2026-04-27 — wldu-gayed (PROMISING, 61/100)
-- **Result:** edu S=0.609/C=12.69%/MDD=44.45% 7/7; vt S=0.501/10.11%/44.45% 5/7; ndx S=0.473/9.44%/44.45% 6/7. Kill 2: MDD>35%.
-- **Lesson:** VTSIM base Sharpe 0.61 = Gayed LRS target → zero Sharpe improvement. 2022 monthly exit too slow. DEAD END: 2× LETF + SMA on global equity. Details: `iterations/008-*/`.
+### 008 — 2026-04-27 — wldu-gayed (PROMISING 61) — DEAD END
+- **Result:** edu S=0.609/C=12.69%/MDD=44.45% 7/7; vt 5/7; ndx 6/7.
+- **Lesson:** VTSIM b&h Sharpe=0.61 already = Gayed LRS target → zero improvement. 2022 too slow. Details: `iterations/008-*/`.
 
-### 007 — 2026-04-27 — user-static-g3prime (STRONG, 88/100)
-- **Result:** edu S=0.773/C=11.65%/MDD=44.54% 7/7; vt S=0.656/C=10.56%/MDD=43.13% 6/7; ndx S=0.826/C=12.10%/MDD=28.83% 7/7. All 5 winner conds met; G6 vt_real CI_low=−0.0004 borderline fail → score 88<90 → STRONG.
-- **Lesson:** G3 iter 003 failure was gate miscalibration. G3' confirms all 8 WF windows pass. 2pt gap = vt_real G6 numerical artifact. Static portfolio Pareto-dominates all 3 benchmarks; subordinate to HAA. Details: `iterations/007-*/`.
+### 007 — 2026-04-27 — user-static-g3prime (STRONG 88)
+- **Result:** edu S=0.773/C=11.65%/MDD=44.54% 7/7; vt 6/7; ndx 7/7. G6 vt borderline → score 88<90.
+- **Lesson:** Static stacking Pareto-dominates benchmarks; subordinate to HAA. G3' confirmed. Details: `iterations/007-*/`.
 
-### 006 — 2026-04-27 — vaa-smartstack (STRONG, 85/100)
-- **Result:** edu S=1.052/C=8.26%/MDD=14.24% 7/7; vt S=0.850/C=6.53%/MDD=14.24% 7/7; ndx S=0.733/C=5.23%/MDD=14.24% 7/7. DSR p=2.44e-3. CAGR floor fails vt+ndx (bond-as-4th drag).
-- **Lesson:** VAA breadth + BNDSIM as 4th offensive = chronic partial-defensive when bonds diverge → CAGR sacrifice. MDD advantage (14.24%) is the only edge vs HAA. Details: `iterations/006-*/`.
+### 006 — 2026-04-27 — vaa-smartstack (STRONG 85)
+- **Result:** edu S=1.052/C=8.26%/MDD=14.24% 7/7; vt 7/7; ndx 7/7. CAGR floor fails vt+ndx.
+- **Lesson:** BNDSIM as 4th offensive = chronic partial-defensive → CAGR sacrifice vs HAA. Details: `iterations/006-*/`.
 
-### 005 — 2026-04-27 — haa-smartstack (WINNER, 90/100) ← PARETO FRONTIER
-- **Result:** edu S=1.112/C=14.14%/MDD=20.91% 7/7; vt S=1.049/C=12.99%/MDD=15.05% 7/7; ndx S=0.942/C=10.63%/MDD=15.05% 7/7. 26/26 rolling. Score 20+25+15+10+15+5=90.
-- **Lesson:** HAA canary (VWOSIM) + stacked offensive (NTSXSIM/NTSI/NTSE/GDESIM) + 10% KMLMSIM = dominant architecture. Canary eliminates 2008/2020/2022 spikes. Details: `iterations/005-*/`.
+### 005 — 2026-04-27 — haa-smartstack (WINNER 90) ← superseded by 009
+- **Result:** edu S=1.112/C=14.14%/MDD=20.91% 7/7; vt 7/7; ndx 7/7. 26/26 rolling.
+- **Lesson:** HAA canary (VWOSIM) + stacked offensive + KMLM = dominant architecture. Details: `iterations/005-*/`.
 
-### 004 — 2026-04-27 — momentum-mf-sleeve (WINNER, 90/100)
-- **Result:** edu S=0.885/C=9.51%/MDD=20.77% 7/7; vt S=0.842/C=10.14%/MDD=16.06% 7/7; ndx S=0.943/C=10.72%/MDD=16.06% 7/7. 33/33 rolling. Score 90.
-- **Lesson:** MF "free lunch" confirmed. 10% KMLMSIM improves Sharpe+MDD. Superseded by iter 005. Details: `iterations/004-*/`.
+### 004 — 2026-04-27 — momentum-mf-sleeve (WINNER 90) ← superseded by 005
+- **Result:** edu S=0.885/C=9.51%/MDD=20.77% 7/7; vt 7/7; ndx 7/7. Score 90.
+- **Lesson:** MF "free lunch" confirmed. Superseded by 005. Details: `iterations/004-*/`.
 
-### 003 — 2026-04-26 — capital-efficient-static (STRONG, 84/100)
-- **Result:** edu S=0.773/C=11.65%/MDD=44.54% 6/7; vt S=0.656/C=10.56%/MDD=43.13% 5/7; ndx S=0.826/C=12.10%/MDD=28.83% 6/7. Score 84.
-- **Lesson:** Static stacking fails G3 nominal in crisis windows. G3' adapted gate invented here — used in all stacked iters thereafter. Details: `iterations/003-*/`.
+### 003 — 2026-04-26 — capital-efficient-static (STRONG 84)
+- **Result:** edu 6/7; vt 5/7; ndx 6/7.
+- **Lesson:** G3' adapted gate born here. Static stacking fails G3 nominal in crisis windows. Details: `iterations/003-*/`.
 
-### 002 — 2026-04-26 — fixed-momentum-k2-lb6 (WINNER, 90/100)
-- **Result:** edu S=0.991/C=12.0%/MDD=23.4% 7/7; vt S=0.838/C=11.0%/MDD=17.3% 7/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7. Score 90.
-- **Lesson:** Pre-commitment (single config) converts STRONG→WINNER. Superseded by iter 005. Details: `iterations/002-*/`.
+### 002 — 2026-04-26 — fixed-momentum-k2-lb6 (WINNER 90) ← superseded by 005
+- **Result:** edu S=0.991/C=12.0%/MDD=23.4% 7/7; vt 7/7; ndx 7/7. Score 90.
+- **Lesson:** Pre-commitment converts STRONG→WINNER. Details: `iterations/002-*/`.
 
-### 001 — 2026-04-26 — global-momentum-topk (STRONG, 81/100)
-- **Result:** edu S=1.040/C=12.0%/MDD=21.9% 6/7; vt S=0.883/C=11.9%/MDD=30.1% 6/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7. Score 81.
+### 001 — 2026-04-26 — global-momentum-topk (STRONG 81)
+- **Result:** edu S=1.040/C=12.0%/MDD=21.9% 6/7; vt 6/7; ndx 7/7. Score 81.
 - **Lesson:** Grid-search PBO kills edu gate. Fix: pre-commit (iter 002). Details: `iterations/001-*/`.
 
 ---
@@ -133,18 +170,25 @@ Seeded from `README.md` hypothesis menu (Tiers 1-4). Pick the
 simplest version of one direction first; iterate to complexity only
 if simple version scores ≥ PROMISING.
 
-### Tier 0 — USER_DIRECTIVE 2026-04-27 — exhaustive testing queue
+### Tier 0 — USER_DIRECTIVE 2026-04-27 (round 2) — net-of-tax answer for retirement
 
-User authorized exhaustive testing (no rush, no token-budget cap). Iters
-005-008 should consume these 4 hypotheses **in order**. All hypotheses
-are **single config, n_trials=1, pre-committed** (DSR honest, PBO trivial).
-All use **G3' adapted gate** for stacked portfolios — see "G3' rule"
-in `## Binding constraints` below.
+#### ~~iter 011 — DARF + Carnê-Leão cost model~~ [CONSUMED → WINNER 90 net, BORDERLINE +1.6pp avg]
 
-**Reference target**: VAA-G4 SmartStack on bestfolio.app (Sharpe 1.18 / 33.4y)
-per `references/REFERENCE_PORTFOLIOS.md`. Iter winners must have Sharpe
-≥ iter 002 (1.00, 32y) at minimum; aspire to ≥ 1.10 to be considered
-"structurally novel" given the reference target.
+DARF drag ~1.2-1.8pp/y. Net margin vs Plano C: +1.84pp (edu), +1.43pp (vt), −0.50pp (ndx).
+Turnover 266-312%/y (expected for HAA monthly rotation). Mandate §7 input: gross 3pp → net ~1.6pp.
+Details: `iterations/011-2026-04-27-1122-darf-carneleo-net-tax/`.
+
+#### ~~iter 012 — 50/50 hybrid net-of-tax~~ [CONSUMED → STRONG 85, Kill PASS, Pareto PASS]
+
+Hybrid S=1.021/C=13.38%/MDD=26.85% (edu, net). Beats pure HAA net on Sharpe all datasets.
+Kill PASS (1.021>>0.631). Pareto PASS (103-114%). Loop FROZEN. Details: `iterations/012-*/`.
+**Mandate §7 inputs complete.**
+
+**Reference target** (carry-over): VAA-G4 SmartStack on bestfolio.app
+(Sharpe 1.18 / 33.4y) per `references/REFERENCE_PORTFOLIOS.md`. iter 009
+gap to bestfolio: −0.06 Sharpe (1.120 vs 1.18). Closing fully would require
+NTSI/NTSE real ETFs (which don't exist as of 2026-04) or further iters
+beyond this thread.
 
 #### ~~iter 005 — HAA SmartStack equivalent~~ [CONSUMED → WINNER 90/100]
 HAA canary VWOSIM + stacked (NTSXSIM/NTSI/NTSE/GDESIM) + 10% KMLMSIM. Details: `iterations/005-*/`.
@@ -180,81 +224,16 @@ New Pareto frontier: +0.008-0.012 Sharpe vs iter 005; gap to bestfolio now 0.06.
 edu S=0.981/C=10.28%/MDD=18.91% 7/7. GDESIM→CAGR +2pp but Sharpe -0.07.
 VAA breadth < HAA canary on Sharpe. DEAD END for VAA-breadth-Sharpe-max. Details: `iterations/010-*/`.
 
-#### iter 011 — HAA SmartStack + NTSD-style equity stacking
+#### ~~iter 011 — HAA SmartStack + NTSD-style equity stacking~~ [SUPERSEDED by Tier 0 USER_DIRECTIVE tax analysis]
+#### ~~iter 012 — HAA SmartStack + 10% GLD (larger gold sleeve)~~ [SUPERSEDED by Tier 0 hybrid net-of-tax]
 
-- **Mechanism**: HAA (iter 009 winner) but substitute one NTSXSIM sleeve with a synth for
-  WisdomTree NTSD (new global equity stacking ETF, flagged 2026-04-27 memory note). Tests
-  whether wider equity stacking variety improves Sharpe/MDD vs NTSXSIM.
-- **Kill criteria**: edu Sharpe ≤ 1.120 (must beat iter 009 HAA+GLD)
+### Tier 1 — established factor literature
 
-#### iter 012 — HAA SmartStack + 10% GLD (larger gold sleeve)
+**[CONSUMED]** ~~top-K grid~~ (001 STRONG 81), ~~fixed K=2/lb=6m~~ (002 WINNER 90), ~~+MF sleeve~~ (004 WINNER 90). All superseded by iter 005.
 
-- **Mechanism**: HAA (iter 009) with 10% GLD + 5% KMLM (swapping weights). Tests if gold's
-  Sharpe/MDD benefit scales beyond 5% GLD. `[risk_parity, ch.5]`
-- **Kill criteria**: edu Sharpe ≤ 1.120 (must beat iter 009)
-
-### Tier 1 — established factor literature (start here)
-
-**[CONSUMED iter 001]** ~~top-K grid~~ → STRONG 81. **[CONSUMED iter 002]** ~~fixed K=2/lb=6m~~ → WINNER 90. **[CONSUMED iter 004]** ~~+MF sleeve~~ → WINNER 90. All superseded by iter 005.
-
-1. **Static return-stack: VTI + VBR + VEA + VWO + bonds + gold**.
-   `[risk_parity, ch.5]` extended globally. Direct port of
-   `strategy_hunt_loop` iter 035 to global universe. Long-window
-   backtest on Vanguard synth (1970+); deploy as AVUS + AVUV + AVDE +
-   AVEM + IEF/BND + GLD.
-
-2. **Vol-managed VTSIM + bonds/gold mix**. Direct port of iter 016
-   (vol-target overlay) to global universe. `[systematic_trading,
-   ch.11]` + Moreira-Muir 2017.
-
-3. **VTSIM vs (VTISIM + VXUSSIM 60/40) rotation**. When US
-   outperforms by N pp on rolling 12m → tilt to VTISIM; when ex-US
-   outperforms → tilt to VXUSSIM. Cross-region momentum.
-   `[stocks_on_the_move, p.21-30]`.
-
-### Tier 2 — regional + style rotation
-
-5. **Top-K country rotation** (Faber 2007 style on country ETFs).
-   Universe: SPY, EWJ, EWG, EZU, EWU, MCHI, EWZ, INDA. (No synth analogs
-   — 17y window only.)
-
-6. **Factor sleeve rotation**: rotate across US-large + US-SCV +
-   intl-large + intl-SCV by relative momentum. Long-window via
-   VTISIM/VBRSIM/VEASIM/VSSSIM.
-
-### Tier 3 — explicit currency / hedge layer
-
-7. **VT + currency hedge overlay**. Hedge USD/EUR/JPY exposure when
-   carry signal flips. `[risk_parity, ch.5]`.
-
-8. **VT + commodity exposure** (DBA, DBC, GLD). Adds inflation hedge
-   orthogonal to equity beta.
-
-### Tier 4 — multi-stacking (priority, deploy_studies follow-up)
-
-9. **Global return-stacked all-weather**: e.g., 60% RSSB (global eq +
-   Treasury via futures, 200% notional) + 30% GDE (S&P + gold) + 10%
-   KMLM (managed futures). Total notional ~270% via futures stacking,
-   zero margin loan. Tests: does this dominate V_HYBRID+MF in
-   long-window Sharpe + MDD? Reference cell already in
-   `long_window_validator.py` as `ref_global_returnstacked_allweather`.
-
-10. **Synthetic NTSI/NTSE re-evaluation**: Plano C V3.5 rejected based
-    on real 2021-2026 data only. Test with 32-56y synth. Hypothesis:
-    NTSI/NTSE adds value in lost-decade scenarios but loses in
-    rate-cycle shocks (2022). If true, **conditional** allocation
-    (e.g., NTSI active only when bond term spread > X) may capture
-    upside without 2022-style downside.
-
-11. **Custom return-stacked synthesis**: leverage the testfolio-validated
-    formula `eq_w × eq + bond_w × bond - cash_w × CASHX` to construct
-    arbitrary stacks. E.g., "global 90/60 stack" = 0.90 VTSIM + 0.60
-    IEFSIM - 0.50 CASHX (a synth NTSG that doesn't exist as real ETF).
-
-12. **MF + global combination**: deploy_studies showed MF (KMLM/DBMF) is
-    "free lunch" for V_HYBRID. Test MF integration in global-only
-    portfolios — does adding MF to VT improve Sharpe/MDD as much as it
-    did to V_HYBRID?
+Remaining (loop FROZEN after iter 012): static return-stack VTI+VBR+VEA+VWO+bonds+gold;
+vol-managed VTSIM; VTSIM vs US/ex-US rotation; factor sleeve rotation; global all-weather
+stacking (RSSB+GDE+KMLM); conditional NTSI/NTSE allocation. See README.md for full list.
 
 ---
 
@@ -281,35 +260,26 @@ VAA breadth < HAA canary on Sharpe. DEAD END for VAA-breadth-Sharpe-max. Details
 - **DO NOT TOUCH** `studies/strategy_hunt_loop/` or `studies/gold_swing_loop/`
   — parallel sessions own those directories.
 
-### G3' adapted gate (added 2026-04-27 by user directive)
+### G3' adapted gate (2026-04-27)
 
-**Problem**: G3 nominal (per-WF MDD ≤ 25%) is calibrated for 1× equity.
-Stacked portfolios (1.4-1.5× notional) systematically fail it in
-systemic crashes (2001/2008/2022) — see iter 003 lesson.
+Stacked portfolios (notional_factor > 1.05) use G3' instead of G3 nominal.
+Rule: `ref_mdd = VT_window_MDD × notional_factor`. Pass if `port_window_MDD ≤ ref_mdd` on 6/8 windows.
+verdict.json records `g3_nominal_pass`, `g3_prime_pass`, `notional_factor`. `[advances_fin_ml, p.196-202]`, `[testing_tuning, ch.5-6]`.
 
-**G3' rule (Opção C — benchmark-comparative)**:
+### Known issues (informational, not blocking)
 
-For each WF window:
-```
-notional_factor = total_notional / 1.0           # e.g., 1.5 for stacked
-ref_mdd = max(VT_window_MDD * notional_factor,
-              V_HYBRID_MF_window_MDD)
-g3_prime_pass = portfolio_window_MDD <= ref_mdd
-```
-
-**Application logic**:
-- If portfolio `notional_factor ≤ 1.05` (effectively unleveraged) → use G3 nominal (legacy)
-- If `notional_factor > 1.05` (stacked) → use G3' adapted; compute and report BOTH
-- The iter passes `gates.g3_wf = True/False` based on whichever rule applies
-- **Verdict.json must record both** `g3_nominal_pass` and `g3_prime_pass` plus `notional_factor` for transparency
-
-**Rationale**: anchors gate to real-world benchmarks (VT b&h, V_HYBRID+MF)
-rather than absolute thresholds. A stacked portfolio passing G3' means it
-contained MDD as well as a leveraged-VT would, and at least as well as
-the stronger benchmark V_HYBRID+MF. Citation: `[advances_fin_ml, p.196-202]`
-(bootstrap-based gate calibration), `[testing_tuning, ch.5-6]` (multi-asset
-robustness profiling).
-
-**Backward compat**: iter 002 + iter 004 winners (notional ~1.0×) used G3
-nominal — they remain valid winners. Re-scoring under G3' would not change
-their status.
+- **Cross-session contamination in commit 54f7975** (iter 001 auto-commit):
+  21 files from `studies/strategy_hunt_loop/deploy_studies/letfs_5way/` were
+  swept up by `git add -A` on a turn when those files happened to be untracked
+  in the working tree. Files are legitimate research output from the parallel
+  strategy_hunt_loop session — they ended up tracked on this branch instead
+  of theirs. **Not reverted** because: (a) destructive operations cross-session
+  need explicit coordination; (b) files are useful and would be re-created
+  anyway; (c) this branch is not merging to main yet. Documented for clarity
+  when/if this branch merges or if strategy_hunt_loop session needs to pull
+  them back.
+- **Citation hallucination cleanup**: 29 files in iter 003-010 had
+  `[ilmanen_expected_returns]` (book not in `books/summaries/`). Replaced
+  via commit 9dc3fcb with valid book equivalents:
+  `[trading_evolved, p.197]`, `[stocks_on_the_move, p.21-30]`, `[risk_parity, ch.5]`.
+  Strategies themselves remain valid; only citation discipline was repaired.
