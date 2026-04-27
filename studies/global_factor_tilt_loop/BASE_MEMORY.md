@@ -1,10 +1,10 @@
 ---
 mission: "find one global strategy beating VT 1x b&h + Plano C V3_1 v3.5 + V_HYBRID+MF on real data"
-total_iterations: 0
+total_iterations: 1
 winners_found: 0
 status: iterating
-latest_iteration: ""
-cumulative_n_trials: 0
+latest_iteration: "001-2026-04-26-2247-global-momentum-topk"
+cumulative_n_trials: 18
 ---
 
 # Global Factor-Tilt Loop — BASE MEMORY
@@ -43,19 +43,42 @@ override per mandate §7. Loop produces CANDIDATES, not live positions.
 
 ## Winners found
 
-(None yet — first iter pending.)
+(None yet.)
 
 ---
 
 ## Top-K ranked (best across all iters, by score)
 
-(Empty — first iter pending.)
+| rank | iter | slug | score | tier | Sharpe (edu/vt/ndx) | CAGR (edu) | MDD (edu) |
+|---|---|---|---|---|---|---|---|
+| 1 | 001 | global-momentum-topk | 81 | STRONG | 1.040 / 0.883 / 0.929 | 12.0% | 21.9% |
 
 ---
 
 ## Iteration log (newest first)
 
-(Empty — first iter pending.)
+### 001 — 2026-04-26 — global-momentum-topk (STRONG, 81/100)
+
+- **Hypothesis:** Monthly cross-sectional momentum across global universe
+  (VTISIM/VEASIM/VXUSSIM/IEFSIM for educational; +VWOSIM/GLDSIM for vt_real
+  and ndx_real). Top-K equal-weight by trailing N-month return; CASHX safe
+  haven when all assets negative. `[stocks_on_the_move, p.21-30]`
+- **Citations:** `[stocks_on_the_move, p.21-30]`, `[ilmanen_expected_returns, ch.12]`
+- **Scope:** K={1,2,3} × lookback={3,6,12m} = 9 configs per dataset (18 total)
+- **Result:** edu Sharpe=1.040/CAGR=12.0%/MDD=21.9% gates=6/7; vt_real
+  Sharpe=0.883/CAGR=11.9%/MDD=30.1% gates=6/7; ndx_real Sharpe=0.929/
+  CAGR=11.5%/MDD=17.3% gates=7/7. DSR worst p=0.0170 (PASS). 32y window
+  (full_k2_lb6): Sharpe=1.001/CAGR=13.22%/MDD=21.23% — dominates
+  Plano C and V_HYBRID+MF on all 3 dimensions. Gap from WINNER: (a) G1 PBO
+  fails on edu (0.74>0.5 with 9 configs, lb=3 overfits), (b) ndx_real
+  Sharpe 0.93<1.05 needed (structural — QQQ can't be beaten by global div),
+  (c) ndx_real CAGR 11.5% < 15.4% floor.
+- **Score breakdown:** Sharpe 20/25, Gates 21/25, DSR 15/15, CAGR 10/15,
+  MDD 15/15, Bonus 0/5
+- **Lesson:** Global momentum is a structurally sound mechanism (dominates
+  all static benchmarks on 32y), but WINNER requires fixing (a) G1 PBO via
+  pre-specified single config — next iter test k=2/lb=6 as fixed params.
+  ndx_real structural ceiling is not fixable with global diversification alone.
 
 ---
 
@@ -66,6 +89,18 @@ simplest version of one direction first; iterate to complexity only
 if simple version scores ≥ PROMISING.
 
 ### Tier 1 — established factor literature (start here)
+
+**[CONSUMED by iter 001]** ~~4. Multi-asset top-K momentum~~ → 81/100 STRONG.
+Next step: **fixed-param refinement** (k=2, lb=6 pre-specified, no grid).
+
+**1a. Fixed-param global momentum (k=2, lb=6m)** — iter 001 lesson:
+   single pre-specified config eliminates G1 PBO issue and may hit all
+   gates. No grid → no selection bias. Test as iter 002. Citation: same
+   `[stocks_on_the_move, p.21-30]`.
+
+**1b. Global momentum + MF sleeve** — add 10-15% KMLMSIM as fixed
+   allocation alongside momentum portfolio. deploy_studies showed MF
+   provides "free lunch" `[ilmanen_expected_returns, ch.19]`. Iter 003+.
 
 1. **Static return-stack: VTI + VBR + VEA + VWO + bonds + gold**.
    `[risk_parity, ch.5]` extended globally. Direct port of
@@ -81,10 +116,6 @@ if simple version scores ≥ PROMISING.
    outperforms by N pp on rolling 12m → tilt to VTISIM; when ex-US
    outperforms → tilt to VXUSSIM. Cross-region momentum.
    `[stocks_on_the_move, p.21-30]`.
-
-4. **Multi-asset top-K momentum** (port of iter 079 to global).
-   Universe: VTISIM + VEASIM + VWOSIM + IEFSIM + GLDSIM with BNDSIM
-   fallback. Deploy: AVUS + AVDE + AVEM + IEF + GLD with BND fallback.
 
 ### Tier 2 — regional + style rotation
 
@@ -134,10 +165,7 @@ if simple version scores ≥ PROMISING.
 
 ## Structural dead-ends (1-line summaries; full text in `DEAD_ENDS.md`)
 
-(None yet — DEAD_ENDS.md empty initially. Carryover dead-ends from
-`studies/strategy_hunt_loop/DEAD_ENDS.md` are read-only references; do
-not duplicate them here unless this loop independently confirms them on
-the global universe.)
+(None yet — iter 001 produced STRONG, not a dead-end. No direction consumed permanently.)
 
 ---
 
