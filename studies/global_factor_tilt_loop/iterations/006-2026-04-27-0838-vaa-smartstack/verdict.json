@@ -1,0 +1,110 @@
+{
+  "total_score": 85,
+  "tier": "STRONG",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 20,
+      "max": 25,
+      "datasets_beat": 2,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 25,
+      "max": 25,
+      "per_dataset": {
+        "educational": 7,
+        "vt_real": 7,
+        "ndx_real": 7
+      },
+      "thresholds": {
+        "educational": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.002442361849462893,
+      "cumulative_n_trials": 23
+    },
+    "4_cagr_floor": {
+      "points": 5,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": false,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 1.0523977351354163,
+      "cagr": 0.08255060267868641,
+      "mdd": 0.14235977200984487,
+      "dsr_p_value": 3.7635585758977186e-09
+    },
+    "vt_real": {
+      "sharpe": 0.8502283729996144,
+      "cagr": 0.06529615539454814,
+      "mdd": 0.14235977200984398,
+      "dsr_p_value": 0.00028549243791187173
+    },
+    "ndx_real": {
+      "sharpe": 0.732923172080515,
+      "cagr": 0.05230319060710453,
+      "mdd": 0.14235977200984526,
+      "dsr_p_value": 0.002442361849462893
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.6626,
+      "cagr": 0.0999,
+      "mdd": 0.5835,
+      "label": "VTSIM b&h (56y synth)"
+    },
+    "vt_real": {
+      "sharpe": 0.5132,
+      "cagr": 0.088,
+      "mdd": 0.5021,
+      "label": "VTSIM proxy 2008-06+ (~17y; VT live pending)"
+    },
+    "ndx_real": {
+      "sharpe": 0.9472,
+      "cagr": 0.1899,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 23,
+  "configs_tested": 1,
+  "primary_citation": "[stocks_on_the_move, ch.6]",
+  "hypothesis_slug": "vaa-smartstack",
+  "status": "strong",
+  "notional_factor": 1.45,
+  "robustness": {
+    "n_windows": 26,
+    "pct_positive_sharpe": 1.0,
+    "min_rolling_sharpe": 0.4257753043139251,
+    "max_rolling_sharpe": 1.95549249593204,
+    "bonus_pts": 5
+  }
+}

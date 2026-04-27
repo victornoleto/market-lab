@@ -1,11 +1,11 @@
 ---
 mission: "find one global strategy beating VT 1x b&h + Plano C V3_1 v3.5 + V_HYBRID+MF on real data"
-total_iterations: 5
+total_iterations: 6
 winners_found: 3
-status: winner
-latest_iteration: "005-2026-04-27-0820-haa-smartstack"
-cumulative_n_trials: 22
-note: "3 winners (iter 002, iter 004, iter 005). iter 005 HAA SmartStack is the new Pareto frontier: Sharpe 1.112 / CAGR 14.14% / MDD 20.91% on 31y, 7/7 gates × 3 datasets, 26/26 rolling-5y positive. Approaches bestfolio HAA SmartStack reference (gap -0.07 Sharpe). Status: winner."
+status: iterating
+latest_iteration: "006-2026-04-27-0838-vaa-smartstack"
+cumulative_n_trials: 23
+note: "3 winners (iter 002, 004, 005). iter 005 HAA SmartStack = Pareto frontier (S 1.112/C 14.14%/MDD 20.91%). iter 006 VAA-G4 SmartStack = STRONG 85 (S 1.052/C 8.26%/MDD 14.24% edu) — subordinate to HAA on Sharpe+CAGR, superior on MDD margin. Queue remaining: iter 007 (user portfolio+G3'), iter 008 (WLDU+Gayed)."
 ---
 
 # Global Factor-Tilt Loop — BASE MEMORY
@@ -91,48 +91,52 @@ Details: `iterations/004-*/`. `[ilmanen_expected_returns, ch.19]` + `[stocks_on_
 | 1 | 005 | haa-smartstack | **90** | **WINNER** | 1.112 / 1.049 / 0.942 | 14.14% | 20.91% |
 | 1= | 002 | fixed-momentum-k2-lb6 | **90** | **WINNER** | 0.991 / 0.838 / 0.929 | 12.0% | 23.4% |
 | 1= | 004 | momentum-mf-sleeve | **90** | **WINNER** | 0.885 / 0.842 / 0.943 | 9.51% | 20.77% |
-| 4 | 003 | capital-efficient-static | 84 | STRONG | 0.773 / 0.656 / 0.826 | 11.65% | 44.54% |
-| 5 | 001 | global-momentum-topk | 81 | STRONG | 1.040 / 0.883 / 0.929 | 12.0% | 21.9% |
+| 4 | 006 | vaa-smartstack | 85 | STRONG | 1.052 / 0.850 / 0.733 | 8.26% | 14.24% |
+| 5 | 003 | capital-efficient-static | 84 | STRONG | 0.773 / 0.656 / 0.826 | 11.65% | 44.54% |
 
 ---
 
 ## Iteration log (newest first)
 
-### 005 — 2026-04-27 — haa-smartstack (WINNER, 90/100) ← NEW PARETO FRONTIER
+### 006 — 2026-04-27 — vaa-smartstack (STRONG, 85/100)
 
-- **Hypothesis:** HAA (Keller & Keuning 2023, SSRN 4346906) single-canary (VWOSIM)
-  regime switch on stacked offensive universe (NTSXSIM, NTSI-synth, NTSE-synth, GDESIM)
-  + fixed 10% KMLMSIM sleeve. Risk-ON: top-2 offensive 45%+45%; risk-OFF: top-1
-  defensive 90%. Monthly rebalance. `[stocks_on_the_move, ch.6]` + `[leverage_for_the_long_run, p.40-60]`
+- **Hypothesis:** VAA-G4 (Keller & Keuning 2017, SSRN 3002624) breadth momentum on stacked
+  offensive universe (NTSXSIM, NTSI, NTSE, BNDSIM) + 15% fixed sleeve (KMLMSIM 10% + GLDSIM 5%).
+  B = count(offensive assets with 13612W > 0) drives offensive/defensive split. Single pre-committed config.
+  `[stocks_on_the_move, ch.6]` + `[leverage_for_the_long_run, p.40-60]`
 - **Citations:** `[stocks_on_the_move, ch.6]`, `[ilmanen_expected_returns, ch.19]`,
   `[leverage_for_the_long_run, p.40-60]`, `[advances_fin_ml, p.208-211/222-223/196-202/31-34]`,
-  HAA SSRN 4346906 (supplementary)
-- **Scope:** 1 config, pre-committed; 3 datasets; cumulative n_trials=22
-- **Result:** edu S=1.112/C=14.14%/MDD=20.91% gates=7/7; vt_real S=1.049/C=12.99%/
-  MDD=15.05% gates=7/7; ndx_real S=0.942/C=10.63%/MDD=15.05% gates=7/7. DSR worst
-  p=5.38e-10. Rolling 5y: 26/26 positive (100%). Min 5y Sharpe=0.654. 31y vs
-  V_HYBRID+MF: +0.369 Sharpe, +3.23pp CAGR, −23.8pp MDD. Gap to bestfolio: −0.07 Sharpe.
-- **Score breakdown:** Sharpe 20/25, Gates 25/25, DSR 15/15, CAGR 10/15, MDD 15/15,
-  Robustness 5/5
-- **Lesson:** HAA + stacking + MF is the dominant architecture in this loop. Canary
-  mechanism eliminates 2008/2020/2022 drawdown spikes. Stacking boosts risk-ON CAGR
-  by ~5pp vs iter 002's unstacked winner. New Pareto frontier supersedes all prior iters.
+  VAA SSRN 3002624 (primary)
+- **Scope:** 1 config, pre-committed; 3 datasets; cumulative n_trials=23
+- **Result:** edu S=1.052/C=8.26%/MDD=14.24% 7/7; vt_real S=0.850/C=6.53%/MDD=14.24% 7/7;
+  ndx_real S=0.733/C=5.23%/MDD=14.24% 7/7. DSR worst p=2.44e-3. Rolling 5y: 26/26 (100%).
+  Kill 1 triggered: edu Sharpe 1.052 ≤ HAA 1.112 → subordinate to HAA. Winner condition 4
+  (CAGR floor) fails: vt_real 6.53% < 7.04% floor; ndx_real 5.23% << 15.19%.
+- **Score breakdown:** Sharpe 20/25, Gates 25/25, DSR 15/15, CAGR 5/15, MDD 15/15, Robustness 5/5
+- **Lesson:** VAA breadth + BNDSIM as 4th offensive = chronic partial-defensive allocation
+  when equities and bonds diverge. B=3 (bonds negative) routes 25% to defensive even in bull
+  runs → CAGR sacrifice vs HAA. VAA's MDD advantage (14.24% vs HAA 20.91%) is the only edge.
+  HAA canary architecture remains superior. Next: iter 007 user portfolio + G3'.
+
+### 005 — 2026-04-27 — haa-smartstack (WINNER, 90/100) ← PARETO FRONTIER
+- **Result:** edu S=1.112/C=14.14%/MDD=20.91% 7/7; vt S=1.049/C=12.99%/MDD=15.05% 7/7; ndx S=0.942/C=10.63%/MDD=15.05% 7/7. 26/26 rolling. Score 20+25+15+10+15+5=90.
+- **Lesson:** HAA canary (VWOSIM) + stacked offensive (NTSXSIM/NTSI/NTSE/GDESIM) + 10% KMLMSIM = dominant architecture. Canary eliminates 2008/2020/2022 spikes. Details: `iterations/005-*/`.
 
 ### 004 — 2026-04-27 — momentum-mf-sleeve (WINNER, 90/100)
-- **Result:** edu S=0.885/C=9.51%/MDD=20.77% 7/7; vt S=0.842/C=10.14%/MDD=16.06% 7/7; ndx S=0.943/C=10.72%/MDD=16.06% 7/7. 33/33 rolling positive. Details: `iterations/004-*/`.
-- **Lesson:** MF "free lunch" confirmed on global momentum. 10% KMLMSIM sleeve improves Sharpe while reducing MDD. Superseded by iter 005 on all axes.
+- **Result:** edu S=0.885/C=9.51%/MDD=20.77% 7/7; vt S=0.842/C=10.14%/MDD=16.06% 7/7; ndx S=0.943/C=10.72%/MDD=16.06% 7/7. 33/33 rolling. Score 90.
+- **Lesson:** MF "free lunch" confirmed. 10% KMLMSIM improves Sharpe+MDD. Superseded by iter 005. Details: `iterations/004-*/`.
 
 ### 003 — 2026-04-26 — capital-efficient-static (STRONG, 84/100)
-- **Result:** edu S=0.773/C=11.65%/MDD=44.54% 6/7; vt S=0.656/C=10.56%/MDD=43.13% 5/7; ndx S=0.826/C=12.10%/MDD=28.83% 6/7. Details: `iterations/003-*/`.
-- **Lesson:** Static stacking (1.45× notional) fails G3 nominal in crisis windows. G3' adapted gate invented to fix this — applied in iter 005+.
+- **Result:** edu S=0.773/C=11.65%/MDD=44.54% 6/7; vt S=0.656/C=10.56%/MDD=43.13% 5/7; ndx S=0.826/C=12.10%/MDD=28.83% 6/7. Score 84.
+- **Lesson:** Static stacking fails G3 nominal in crisis windows. G3' adapted gate invented here — used in all stacked iters thereafter. Details: `iterations/003-*/`.
 
 ### 002 — 2026-04-26 — fixed-momentum-k2-lb6 (WINNER, 90/100)
-- **Result:** edu S=0.991/C=12.0%/MDD=23.4% 7/7; vt S=0.838/C=11.0%/MDD=17.3% 7/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7. 51/51 rolling positive. Details: `iterations/002-*/`.
-- **Lesson:** Pre-commitment (no grid) converts STRONG→WINNER. Superseded by iter 005.
+- **Result:** edu S=0.991/C=12.0%/MDD=23.4% 7/7; vt S=0.838/C=11.0%/MDD=17.3% 7/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7. Score 90.
+- **Lesson:** Pre-commitment (single config) converts STRONG→WINNER. Superseded by iter 005. Details: `iterations/002-*/`.
 
 ### 001 — 2026-04-26 — global-momentum-topk (STRONG, 81/100)
-- **Result:** edu S=1.040/C=12.0%/MDD=21.9% 6/7; vt S=0.883/C=11.9%/MDD=30.1% 6/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7. PBO failed edu. Details: `iterations/001-*/`.
-- **Lesson:** Grid-search PBO kills edu gate. Fix: pre-commit (done in iter 002).
+- **Result:** edu S=1.040/C=12.0%/MDD=21.9% 6/7; vt S=0.883/C=11.9%/MDD=30.1% 6/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7. Score 81.
+- **Lesson:** Grid-search PBO kills edu gate. Fix: pre-commit (iter 002). Details: `iterations/001-*/`.
 
 ---
 
@@ -156,36 +160,10 @@ per `references/REFERENCE_PORTFOLIOS.md`. Iter winners must have Sharpe
 "structurally novel" given the reference target.
 
 #### ~~iter 005 — HAA SmartStack equivalent~~ [CONSUMED → WINNER 90/100]
+HAA canary VWOSIM + stacked (NTSXSIM/NTSI/NTSE/GDESIM) + 10% KMLMSIM. Details: `iterations/005-*/`.
 
-- **Mechanism**: Hybrid Asset Allocation (Keller & Keuning 2023, SSRN 4346906) —
-  dual momentum (absolute + relative) with single canary asset for risk-on/off.
-  Applied on a **stacked-ETF universe** for capital efficiency.
-- **Offensive universe (stacked)**: NTSXSIM (US 90/60), NTSI-synth (intl 90/60 = `VEASIM × 0.9 + IEFSIM × 0.6`),
-  NTSE-synth (EM 90/60 = `VWOSIM × 0.9 + IEFSIM × 0.6`), GDESIM (S&P + gold).
-- **Defensive universe**: IEFSIM, CASHX, LQD-synth (`AGG-proxy + ~80bps credit`).
-- **Canary**: VWOSIM 13-2-1-1 dual momentum signal per HAA paper.
-  - Offensive when canary uptrend (top-2 equal-weight from offensive)
-  - Full single-best defensive when canary down
-- **Sleeve**: +10% KMLMSIM (managed futures, fixed)
-- **Total notional**: ~1.4× (offensive stacked) + 0.10 (MF) = ~1.5×
-- **Citations**: `[stocks_on_the_move, ch.6]` (momentum mechanic), `[advances_fin_ml, p.208-211/222-223/196-202/31-34]` (gates), `[leverage_for_the_long_run, p.40-60]` (LETF caveat → favor stacking via futures), HAA SSRN 4346906 (supplementary)
-- **Kill criteria**: 32y Sharpe ≤ 1.00 → fail; MDD even with G3' adapted > 30% → fail
-
-#### iter 006 — VAA-G4 SmartStack equivalent
-
-- **Mechanism**: Vigilant Asset Allocation (Keller & Keuning 2017, SSRN 3002624) —
-  breadth momentum: count of assets with positive momentum drives offensive vs
-  defensive split. Applied on stacked universe.
-- **Offensive G4 (stacked)**: NTSXSIM, NTSI-synth, NTSE-synth, BNDSIM (or AGG proxy)
-- **Defensive G3**: IEFSIM, CASHX, LQD-synth
-- **13612W signal**: weighted avg of 1m/3m/6m/12m returns: `12·r1 + 4·r3 + 2·r6 + r12) / 19`
-- **Breadth rule**: B = count of offensive assets with 13612W > 0
-  - B=4: 100% top-1 offensive
-  - B<4: ((4-B)/4) defensive + (B/4) top-(B) offensive
-- **Sleeve**: +10% KMLMSIM + 5% GLDSIM = 15% sleeve fixed
-- **Total notional**: ~1.45× (offensive when full bullish) + 0.15 sleeve = ~1.6×
-- **Citations**: same book set as iter 005 + VAA SSRN 3002624 supplementary
-- **Kill criteria**: 32y Sharpe ≤ HAA SmartStack iter 005 result → mark "structurally subordinate to HAA"
+#### ~~iter 006 — VAA-G4 SmartStack equivalent~~ [CONSUMED → STRONG 85/100]
+VAA-G4 breadth (NTSXSIM/NTSI/NTSE/BNDSIM offensive) + 15% KMLM+GLD sleeve. CAGR floor fails (bonds-as-4th drag). Details: `iterations/006-*/`.
 
 #### iter 007 — User static portfolio + G3' adapted (reality check)
 

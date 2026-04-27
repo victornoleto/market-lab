@@ -29,9 +29,9 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-27 — 🏆 QUATRO WINNERS em loops paralelos; global_factor_tilt iter 005 nova fronteira Pareto)
+## Onde estamos hoje (2026-04-27 — 🏆 QUATRO WINNERS; global_factor_tilt iter 005 Pareto frontier; iter 006 VAA STRONG)
 
-**Estado:** 🏆 **LOOPS HALTED — quatro WINNER candidates produzidos.**
+**Estado:** 🏆 **LOOPS COM WINNERS. global_factor_tilt continua iterando (queue iter 007-008).**
 
 1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
    (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
@@ -44,12 +44,18 @@ trading: palpite disfarçado de análise.
 3. **global_factor_tilt_loop iter 004**: mesmo momentum + 10% KMLMSIM fixo.
    Score 90/100, Sharpe 0.885/0.842/0.943, MDD 20.77%/16.06%.
 
-4. **global_factor_tilt_loop iter 005 — HAA SmartStack** ← **NOVA FRONTEIRA PARETO**
-   HAA (Keller & Keuning 2023) + universo de ETFs empilhados (NTSXSIM/NTSI/NTSE/GDESIM)
+4. **global_factor_tilt_loop iter 005 — HAA SmartStack** ← **FRONTEIRA PARETO**
+   HAA (Keller & Keuning 2023) + universo stackado (NTSXSIM/NTSI/NTSE/GDESIM)
    + canário VWOSIM + 10% KMLMSIM fixo. Score 90/100, **7/7 gates × 3 datasets**,
    **26/26 janelas rolling-5y positivas**. Sharpe **1.112/1.049/0.942**, CAGR **14.14%**,
    MDD **20.91%** (31y). Domina TODAS as três referências em todas as dimensões.
    Gap para bestfolio HAA SmartStack: apenas −0.07 Sharpe (1.112 vs 1.18).
+
+5. **global_factor_tilt_loop iter 006 — VAA-G4 SmartStack** ← **STRONG 85/100**
+   VAA breadth momentum (4 ativos votam regime) + sleeve KMLMSIM+GLDSIM 15%.
+   Sharpe 1.052/0.850/0.733, CAGR 8.26%, MDD 14.24% (31y). Passes 7/7 gates × 3 datasets.
+   Subordinado ao HAA (CAGR 8.26% vs 14.14%). Lição: bonds como 4º ofensivo
+   contamina o sinal e sacrifica CAGR sistematicamente. Queue: iter 007-008.
 
 **Mandate inalterado:** §1 continua **MAINTENANCE 100% Plano C
 passive factor-tilted** (`portfolio-aposentadoria.md` +
