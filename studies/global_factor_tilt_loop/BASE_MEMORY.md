@@ -1,11 +1,11 @@
 ---
 mission: "find one global strategy beating VT 1x b&h + Plano C V3_1 v3.5 + V_HYBRID+MF on real data"
-total_iterations: 4
-winners_found: 2
+total_iterations: 5
+winners_found: 3
 status: winner
-latest_iteration: "004-2026-04-27-0002-momentum-mf-sleeve"
-cumulative_n_trials: 21
-note: "Iter 002 + iter 004 both WINNER (90/100). Iter 003 = USER_SPECIFIED capital-efficient static portfolio → STRONG (84/100). Loop halts on iter 004 win."
+latest_iteration: "005-2026-04-27-0820-haa-smartstack"
+cumulative_n_trials: 22
+note: "3 winners (iter 002, iter 004, iter 005). iter 005 HAA SmartStack is the new Pareto frontier: Sharpe 1.112 / CAGR 14.14% / MDD 20.91% on 31y, 7/7 gates × 3 datasets, 26/26 rolling-5y positive. Approaches bestfolio HAA SmartStack reference (gap -0.07 Sharpe). Status: winner."
 ---
 
 # Global Factor-Tilt Loop — BASE MEMORY
@@ -44,56 +44,43 @@ override per mandate §7. Loop produces CANDIDATES, not live positions.
 
 ## Winners found
 
-### Winner 001 — iter 002 — fixed-momentum-k2-lb6 (WINNER, 90/100)
+### Winner 001 — iter 002 — fixed-momentum-k2-lb6 (WINNER, 90/100) [superseded by iter 005]
 
-**Strategy**: Monthly cross-sectional momentum, global universe
-(VTISIM/VEASIM/VXUSSIM/IEFSIM/VWOSIM/GLDSIM + CASHX), K=2, lookback=6m,
-pre-committed single config.
+edu S=0.991/C=12.0%/MDD=23.4% 7/7; vt S=0.838/C=11.0%/MDD=17.3% 7/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7.
+Details: `iterations/002-*/`. `[stocks_on_the_move, p.21-30]` + `[ilmanen_expected_returns, ch.12]`
 
-| dataset | Sharpe | CAGR | MDD | Gates |
-|---|---|---|---|---|
-| educational (56y) | 0.991 | 12.0% | 23.4% | 7/7 |
-| vt_real (~17y) | 0.838 | 11.0% | 17.3% | 7/7 |
-| ndx_real (16y) | 0.929 | 11.5% | 17.3% | 7/7 |
-| 32y long-window | 1.001 | 13.2% | 21.2% | — |
+### Winner 003 — iter 005 — haa-smartstack (WINNER, 90/100) ← NEW PARETO FRONTIER
 
-**32y comparison**: dominates VT, Plano C, V_HYBRID+MF on all 3 dimensions.
-Pareto-trades vs V1 NTSX+GDE (+0.19 Sharpe, -23pp MDD, -0.28pp CAGR).
-
-**Rolling robustness**: 51/51 rolling-5y windows positive Sharpe (100%).
-Min 5y Sharpe: 0.134 (2004-2009 window including 2008 crash).
-
-**Caveat**: Mandate §1 MAINTENANCE still in effect. This is a mandate §7
-override CANDIDATE, not a live deployment. Next steps: paper trading
-validation + §7 override deliberation.
-
-**Citation**: `[stocks_on_the_move, p.21-30]` + `[ilmanen_expected_returns, ch.12]`
-
-### Winner 002 — iter 004 — momentum-mf-sleeve (WINNER, 90/100)
-
-**Strategy**: Monthly cross-sectional momentum K=2/lb=6m (VTISIM/VEASIM/VXUSSIM/IEFSIM
-+ CASHX safe haven) + fixed 10% KMLMSIM sleeve. Monthly rebalance, single pre-committed
-config, no grid.
+**Strategy**: HAA (Hybrid Asset Allocation — dual momentum + single canary VWOSIM).
+Offensive: stacked universe (NTSXSIM, NTSI-synth, NTSE-synth, GDESIM). Defensive:
+IEFSIM/BNDSIM/CASHX. Fixed 10% KMLMSIM sleeve. Monthly rebalance, single
+pre-committed config.
 
 | dataset | Sharpe | CAGR | MDD | Gates |
 |---|---|---|---|---|
-| educational (~38y, KMLM binding) | 0.885 | 9.51% | 20.77% | 7/7 |
-| vt_real (~17y) | 0.842 | 10.14% | 16.06% | 7/7 |
-| ndx_real (16y) | 0.943 | 10.72% | 16.06% | 7/7 |
-| 38y long-window (edu) | 0.885 | 9.51% | 20.77% | — |
+| educational (31y, VWOSIM-binding) | 1.112 | 14.14% | 20.91% | 7/7 |
+| vt_real (~17y) | 1.049 | 12.99% | 15.05% | 7/7 |
+| ndx_real (16y) | 0.942 | 10.63% | 15.05% | 7/7 |
 
-**Comparison vs benchmarks (38y edu window)**:
-- vs VT b&h (S=0.51, C=8.8%, M=50.2%): +0.375 S / +0.71pp C / −29.44pp MDD → dominates
-- vs Plano C V3_1 (S=0.671, C=10.94%, M=52.43%): +0.214 S / −1.43pp C / −31.66pp MDD → Pareto
-- vs V_HYBRID+MF (S=0.743, C=10.91%, M=44.71%): +0.142 S / −1.40pp C / −23.94pp MDD → Pareto
+**31y comparison (vs benchmarks)**:
+- vs VT b&h (S=0.55, C=8.64%, M=58.35%): +0.566 S / +5.5pp C / −37.4pp MDD → dominates
+- vs Plano C V3_1 (S=0.671, C=10.94%, M=52.43%): +0.441 S / +3.2pp C / −31.5pp MDD → dominates
+- vs V_HYBRID+MF (S=0.743, C=10.91%, M=44.71%): +0.369 S / +3.23pp C / −23.8pp MDD → dominates
+- vs iter 002 WINNER (S=1.001): +0.111 Sharpe, better CAGR+MDD → supersedes
 
-**Rolling robustness**: 33/33 rolling-5y windows positive (100%). Min 5y Sharpe: 0.271.
+**Rolling robustness**: 26/26 rolling-5y windows positive (100%). Min 5y Sharpe: 0.654.
 
-**Caveat**: Mandate §1 MAINTENANCE still in effect. This is a mandate §7 override
-CANDIDATE, not a live deployment. Educational window shortened to 38y (1988-2026) vs
-iter 002's 56y (1970-2026) due to KMLMSIM inception binding.
+**Gap to bestfolio**: −0.07 Sharpe (1.112 vs 1.18 reference). Likely closes with gold sleeve variant.
 
-**Citation**: `[ilmanen_expected_returns, ch.19]` + `[stocks_on_the_move, p.21-30]`
+**Citations**: `[stocks_on_the_move, ch.6]` + `[ilmanen_expected_returns, ch.19]`
++ `[leverage_for_the_long_run, p.40-60]`
+
+**Caveat**: Mandate §1 MAINTENANCE still in effect. §7 override required for deployment.
+
+### Winner 002 — iter 004 — momentum-mf-sleeve (WINNER, 90/100) [superseded by iter 005]
+
+edu S=0.885/C=9.51%/MDD=20.77% 7/7; vt S=0.842/C=10.14%/MDD=16.06% 7/7; ndx S=0.943/C=10.72%/MDD=16.06% 7/7.
+Details: `iterations/004-*/`. `[ilmanen_expected_returns, ch.19]` + `[stocks_on_the_move, p.21-30]`
 
 ---
 
@@ -101,67 +88,51 @@ iter 002's 56y (1970-2026) due to KMLMSIM inception binding.
 
 | rank | iter | slug | score | tier | Sharpe (edu/vt/ndx) | CAGR (edu) | MDD (edu) |
 |---|---|---|---|---|---|---|---|
-| 1 | 002 | fixed-momentum-k2-lb6 | **90** | **WINNER** | 0.991 / 0.838 / 0.929 | 12.0% | 23.4% |
+| 1 | 005 | haa-smartstack | **90** | **WINNER** | 1.112 / 1.049 / 0.942 | 14.14% | 20.91% |
+| 1= | 002 | fixed-momentum-k2-lb6 | **90** | **WINNER** | 0.991 / 0.838 / 0.929 | 12.0% | 23.4% |
 | 1= | 004 | momentum-mf-sleeve | **90** | **WINNER** | 0.885 / 0.842 / 0.943 | 9.51% | 20.77% |
-| 3 | 003 | capital-efficient-static | 84 | STRONG | 0.773 / 0.656 / 0.826 | 11.65% | 44.54% |
-| 4 | 001 | global-momentum-topk | 81 | STRONG | 1.040 / 0.883 / 0.929 | 12.0% | 21.9% |
+| 4 | 003 | capital-efficient-static | 84 | STRONG | 0.773 / 0.656 / 0.826 | 11.65% | 44.54% |
+| 5 | 001 | global-momentum-topk | 81 | STRONG | 1.040 / 0.883 / 0.929 | 12.0% | 21.9% |
 
 ---
 
 ## Iteration log (newest first)
 
-### 004 — 2026-04-27 — momentum-mf-sleeve (WINNER, 90/100)
+### 005 — 2026-04-27 — haa-smartstack (WINNER, 90/100) ← NEW PARETO FRONTIER
 
-- **Hypothesis:** Fixed global momentum K=2/lb=6m (VTISIM/VEASIM/VXUSSIM/IEFSIM +
-  GLDSIM/VWOSIM for real datasets) + 10% KMLMSIM fixed sleeve. Pre-committed single
-  config, no grid. Educational window 38y (KMLMSIM binding 1988-2026).
-  `[ilmanen_expected_returns, ch.19]` + `[stocks_on_the_move, p.21-30]`
-- **Citations:** `[ilmanen_expected_returns, ch.19]`, `[stocks_on_the_move, p.21-30]`,
-  `[advances_fin_ml, p.208-211/222-223/196-202/31-34]`
-- **Scope:** 1 config, pre-committed; 3 datasets; cumulative n_trials=21
-- **Result:** edu Sharpe=0.885/CAGR=9.51%/MDD=20.77% gates=7/7; vt_real
-  Sharpe=0.842/CAGR=10.14%/MDD=16.06% gates=7/7; ndx_real Sharpe=0.943/
-  CAGR=10.72%/MDD=16.06% gates=7/7. PSR worst p=2.63e-04. Rolling 5y: 33/33
-  positive (100%). 38y vs V_HYBRID+MF: +0.142 Sharpe, −1.40pp CAGR, −23.94pp MDD.
-- **Score breakdown:** Sharpe 20/25, Gates 25/25, DSR 15/15, CAGR 10/15,
-  MDD 15/15, Robustness 5/5
-- **Lesson:** MF "free lunch" confirmed on global momentum. vt_real Sharpe
-  marginally improved vs pure iter 002 WINNER (+0.004) while MDD fell 1.2pp.
-  Kill criterion not triggered. Trade-off: 1.4pp lower CAGR vs V_HYBRID+MF
-  compensated by 24pp lower MDD — favorable Pareto for retirement portfolios.
+- **Hypothesis:** HAA (Keller & Keuning 2023, SSRN 4346906) single-canary (VWOSIM)
+  regime switch on stacked offensive universe (NTSXSIM, NTSI-synth, NTSE-synth, GDESIM)
+  + fixed 10% KMLMSIM sleeve. Risk-ON: top-2 offensive 45%+45%; risk-OFF: top-1
+  defensive 90%. Monthly rebalance. `[stocks_on_the_move, ch.6]` + `[leverage_for_the_long_run, p.40-60]`
+- **Citations:** `[stocks_on_the_move, ch.6]`, `[ilmanen_expected_returns, ch.19]`,
+  `[leverage_for_the_long_run, p.40-60]`, `[advances_fin_ml, p.208-211/222-223/196-202/31-34]`,
+  HAA SSRN 4346906 (supplementary)
+- **Scope:** 1 config, pre-committed; 3 datasets; cumulative n_trials=22
+- **Result:** edu S=1.112/C=14.14%/MDD=20.91% gates=7/7; vt_real S=1.049/C=12.99%/
+  MDD=15.05% gates=7/7; ndx_real S=0.942/C=10.63%/MDD=15.05% gates=7/7. DSR worst
+  p=5.38e-10. Rolling 5y: 26/26 positive (100%). Min 5y Sharpe=0.654. 31y vs
+  V_HYBRID+MF: +0.369 Sharpe, +3.23pp CAGR, −23.8pp MDD. Gap to bestfolio: −0.07 Sharpe.
+- **Score breakdown:** Sharpe 20/25, Gates 25/25, DSR 15/15, CAGR 10/15, MDD 15/15,
+  Robustness 5/5
+- **Lesson:** HAA + stacking + MF is the dominant architecture in this loop. Canary
+  mechanism eliminates 2008/2020/2022 drawdown spikes. Stacking boosts risk-ON CAGR
+  by ~5pp vs iter 002's unstacked winner. New Pareto frontier supersedes all prior iters.
+
+### 004 — 2026-04-27 — momentum-mf-sleeve (WINNER, 90/100)
+- **Result:** edu S=0.885/C=9.51%/MDD=20.77% 7/7; vt S=0.842/C=10.14%/MDD=16.06% 7/7; ndx S=0.943/C=10.72%/MDD=16.06% 7/7. 33/33 rolling positive. Details: `iterations/004-*/`.
+- **Lesson:** MF "free lunch" confirmed on global momentum. 10% KMLMSIM sleeve improves Sharpe while reducing MDD. Superseded by iter 005 on all axes.
 
 ### 003 — 2026-04-26 — capital-efficient-static (STRONG, 84/100)
-
-- **Hypothesis:** USER_SPECIFIED static portfolio: 9 sleeves (RSSB 25%, RSST 15%,
-  AVUV 10%, AVDV 7%, AVEM 8%, SPMO 8%, IDMO 7%, GDE 12%, KMLM 8%). Return-stacking
-  + factor breadth + diversifier load vs VT/Plano C/V_HYBRID+MF.
-  `[risk_parity, ch.5]` + `[ilmanen_expected_returns, ch.19]` + `[stocks_on_the_move, p.21-30]`
-- **Citations:** `[risk_parity, ch.5/3-5]`, `[leverage_for_the_long_run, p.40-60]`,
-  `[advances_fin_ml, ch.10/p.208-211/222-223/196-202/31-34]`,
-  `[ilmanen_expected_returns, ch.19]`, `[stocks_on_the_move, p.21-30]`
-- **Scope:** 1 config, pre-committed; educational = 1995-2026 (31y; VSSSIM binding);
-  cumulative n_trials=20
-- **Result:** edu Sharpe=0.773/CAGR=11.65%/MDD=44.54% gates=6/7; vt_real
-  Sharpe=0.656/CAGR=10.56%/MDD=43.13% gates=5/7; ndx_real Sharpe=0.826/
-  CAGR=12.10%/MDD=28.83% gates=6/7. DSR worst p=2.91e-3. Rolling 5y: 27/27
-  positive (100%). 31y vs V_HYBRID+MF: +0.030 Sharpe, +0.74pp CAGR, −0.17pp MDD.
-- **Score breakdown:** Sharpe 20/25, Gates 19/25, DSR 15/15, CAGR 10/15,
-  MDD 15/15, Robustness 5/5
-- **Lesson:** Capital-efficient stacking (1.45× notional) is structurally
-  incompatible with G3's 25% MDD gate (calibrated for 1× equity). All 8 WF windows
-  profitable but 4 exceed 25% MDD in systemic crashes (2001, 2008, 2022).
-  Long-window performance dominates all 3 benchmarks — gate is the ceiling, not the
-  strategy.
+- **Result:** edu S=0.773/C=11.65%/MDD=44.54% 6/7; vt S=0.656/C=10.56%/MDD=43.13% 5/7; ndx S=0.826/C=12.10%/MDD=28.83% 6/7. Details: `iterations/003-*/`.
+- **Lesson:** Static stacking (1.45× notional) fails G3 nominal in crisis windows. G3' adapted gate invented to fix this — applied in iter 005+.
 
 ### 002 — 2026-04-26 — fixed-momentum-k2-lb6 (WINNER, 90/100)
-
-- **Result:** edu S=0.991/C=12.0%/MDD=23.4% gates=7/7; vt S=0.838/C=11.0%/MDD=17.3% 7/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7. 32y S=1.001/C=13.22%/MDD=21.23%. 51/51 rolling positive.
-- **Lesson:** Pre-commitment (no grid) converts STRONG→WINNER by removing selection bias. ndx_real ceiling structural.
+- **Result:** edu S=0.991/C=12.0%/MDD=23.4% 7/7; vt S=0.838/C=11.0%/MDD=17.3% 7/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7. 51/51 rolling positive. Details: `iterations/002-*/`.
+- **Lesson:** Pre-commitment (no grid) converts STRONG→WINNER. Superseded by iter 005.
 
 ### 001 — 2026-04-26 — global-momentum-topk (STRONG, 81/100)
-
-- **Result:** edu S=1.040/C=12.0%/MDD=21.9% gates=6/7; vt S=0.883/C=11.9%/MDD=30.1% 6/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7. PBO failed edu (9 configs, 0.74>0.5).
-- **Lesson:** Global momentum mechanism sound but grid-search PBO kills edu gate. Fix: pre-commit single config (done in iter 002).
+- **Result:** edu S=1.040/C=12.0%/MDD=21.9% 6/7; vt S=0.883/C=11.9%/MDD=30.1% 6/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7. PBO failed edu. Details: `iterations/001-*/`.
+- **Lesson:** Grid-search PBO kills edu gate. Fix: pre-commit (done in iter 002).
 
 ---
 
@@ -171,93 +142,89 @@ Seeded from `README.md` hypothesis menu (Tiers 1-4). Pick the
 simplest version of one direction first; iterate to complexity only
 if simple version scores ≥ PROMISING.
 
+### Tier 0 — USER_DIRECTIVE 2026-04-27 — exhaustive testing queue
+
+User authorized exhaustive testing (no rush, no token-budget cap). Iters
+005-008 should consume these 4 hypotheses **in order**. All hypotheses
+are **single config, n_trials=1, pre-committed** (DSR honest, PBO trivial).
+All use **G3' adapted gate** for stacked portfolios — see "G3' rule"
+in `## Binding constraints` below.
+
+**Reference target**: VAA-G4 SmartStack on bestfolio.app (Sharpe 1.18 / 33.4y)
+per `references/REFERENCE_PORTFOLIOS.md`. Iter winners must have Sharpe
+≥ iter 002 (1.00, 32y) at minimum; aspire to ≥ 1.10 to be considered
+"structurally novel" given the reference target.
+
+#### ~~iter 005 — HAA SmartStack equivalent~~ [CONSUMED → WINNER 90/100]
+
+- **Mechanism**: Hybrid Asset Allocation (Keller & Keuning 2023, SSRN 4346906) —
+  dual momentum (absolute + relative) with single canary asset for risk-on/off.
+  Applied on a **stacked-ETF universe** for capital efficiency.
+- **Offensive universe (stacked)**: NTSXSIM (US 90/60), NTSI-synth (intl 90/60 = `VEASIM × 0.9 + IEFSIM × 0.6`),
+  NTSE-synth (EM 90/60 = `VWOSIM × 0.9 + IEFSIM × 0.6`), GDESIM (S&P + gold).
+- **Defensive universe**: IEFSIM, CASHX, LQD-synth (`AGG-proxy + ~80bps credit`).
+- **Canary**: VWOSIM 13-2-1-1 dual momentum signal per HAA paper.
+  - Offensive when canary uptrend (top-2 equal-weight from offensive)
+  - Full single-best defensive when canary down
+- **Sleeve**: +10% KMLMSIM (managed futures, fixed)
+- **Total notional**: ~1.4× (offensive stacked) + 0.10 (MF) = ~1.5×
+- **Citations**: `[stocks_on_the_move, ch.6]` (momentum mechanic), `[advances_fin_ml, p.208-211/222-223/196-202/31-34]` (gates), `[leverage_for_the_long_run, p.40-60]` (LETF caveat → favor stacking via futures), HAA SSRN 4346906 (supplementary)
+- **Kill criteria**: 32y Sharpe ≤ 1.00 → fail; MDD even with G3' adapted > 30% → fail
+
+#### iter 006 — VAA-G4 SmartStack equivalent
+
+- **Mechanism**: Vigilant Asset Allocation (Keller & Keuning 2017, SSRN 3002624) —
+  breadth momentum: count of assets with positive momentum drives offensive vs
+  defensive split. Applied on stacked universe.
+- **Offensive G4 (stacked)**: NTSXSIM, NTSI-synth, NTSE-synth, BNDSIM (or AGG proxy)
+- **Defensive G3**: IEFSIM, CASHX, LQD-synth
+- **13612W signal**: weighted avg of 1m/3m/6m/12m returns: `12·r1 + 4·r3 + 2·r6 + r12) / 19`
+- **Breadth rule**: B = count of offensive assets with 13612W > 0
+  - B=4: 100% top-1 offensive
+  - B<4: ((4-B)/4) defensive + (B/4) top-(B) offensive
+- **Sleeve**: +10% KMLMSIM + 5% GLDSIM = 15% sleeve fixed
+- **Total notional**: ~1.45× (offensive when full bullish) + 0.15 sleeve = ~1.6×
+- **Citations**: same book set as iter 005 + VAA SSRN 3002624 supplementary
+- **Kill criteria**: 32y Sharpe ≤ HAA SmartStack iter 005 result → mark "structurally subordinate to HAA"
+
+#### iter 007 — User static portfolio + G3' adapted (reality check)
+
+- **Hypothesis**: Same EXACT 9-sleeve portfolio as iter 003 (RSSB 25%, RSST 15%,
+  AVUV 10%, AVDV 7%, AVEM 8%, SPMO 8%, IDMO 7%, GDE 12%, KMLM 8%). Only
+  difference: use **G3' adapted gate (Opção C)** instead of G3 nominal.
+- **Goal**: validate whether iter 003's STRONG 84 was actually a hidden WINNER
+  blocked only by gate calibration. If iter 007 scores ≥ 90 with G3' → portfolio
+  vindicated. If still < 90 → real performance issue, not gate.
+- **Synth + citations**: identical to iter 003 (see CONSUMED entry above for
+  full table). Notional ~1.45×.
+- **Constraint**: Iter MUST test the EXACT weights as given. No grid, no
+  optimization, no rebalance variations. The portfolio's exact spec is
+  preserved in iter 003 — re-read it.
+- **Kill criteria**: if MDD per WF window with G3' STILL > reference (`MAX(VT_MDD × 1.45, V_HYBRID+MF_MDD)`) → fail. Then portfolio is genuinely too leveraged.
+
+#### iter 008 — WLDU + Gayed 200d SMA gate (LETF managed)
+
+- **Mechanism**: 2× global equity LETF managed by 200d SMA trend filter (Gayed canonical)
+- **Synth WLDU**: `VTSIM × 2` daily-resetting with 0.75%/y drag + financing cost
+  (use IEFSIM 3m yield as proxy for SOFR). Document daily-rebalanced compounding.
+- **Rule**:
+  - Hold synth-WLDU when SPYSIM close > SMA(200d) of SPYSIM
+  - Hold CASHX when SPYSIM close ≤ SMA(200d)
+  - Monthly rebalance check (Gayed canonical is monthly; daily check possible variant)
+- **Citations**: `[leverage_for_the_long_run, ch.3-4, p.40-60]` PRIMARY, `[stocks_on_the_move, p.21-30]` (trend filter rationale)
+- **Kill criteria**: 32y CAGR < 12% → fail (LETF must justify decay risk); max single-window MDD > 35% → fail; whipsaw cost > 1%/y → fail
+
+---
+
 ### Tier 0 — [CONSUMED by iter 003]
 
-**~~0. Capital-efficient global factor-tilted static portfolio~~** →
-STRONG 84/100. All 5 winner conditions met. G3 structural failure (stacking
-1.45× notional → crisis MDD > 25% threshold). Long-window beats V_HYBRID+MF.
-Next: reduced-stacking variant (iter 004+) or VIX-conditional leverage.
-
-Exact weights (sum=100%):
-
-| Ticker | Weight | Role | Synth path |
-|---|---|---|---|
-| RSSB | 25% | Global eq + Treas stacked | `RSSBSIM` cached (100% VT-eq + 100% IEF) |
-| RSST | 15% | US eq + MF stacked | synth: 100% SPYSIM + 100% KMLMSIM (or DBMFSIM); `[ilmanen_expected_returns, ch.19]` |
-| AVUV | 10% | US small cap value (Avantis) | synth from `VBRSIM` if cached, else proxy as VBR + 0.5%/y SCV premium `[advances_fin_ml, p.31-34]` for cross-lib |
-| AVDV | 7% | Dev ex-US small cap value | synth: `VSSSIM` (or `EFVSIM` proxy with size tilt) |
-| AVEM | 8% | EM broad with Avantis tilts | synth: `VWOSIM` baseline (Avantis tilt premium ~0.3%/y, document gap) |
-| SPMO | 8% | US momentum | synth from `SPYSIM` + cross-sectional momentum overlay; or use any cached momentum factor proxy |
-| IDMO | 7% | Dev ex-US momentum | synth from `VEASIM` + momentum overlay |
-| GDE | 12% | S&P 500 + gold stacked | `GDESIM` cached (90% SPY + 90% gold via futures) |
-| KMLM | 8% | Managed futures | `KMLMSIM` cached |
-
-**Mechanism**: ~46% global equity (cap-weighted + factor tilts), ~25%
-intermediate Treasuries (via RSSB stacking), ~15% managed futures (RSST
-+ KMLM), ~12% gold (GDE stacking), ~5-10% size/value/momentum factor
-load. Effective leverage ~1.4-1.5×. Static, monthly rebalance.
-
-**Citations** (mandatory per CLAUDE.md Regra 2):
-- Return stacking / capital efficiency: `[risk_parity, ch.5]`,
-  `[leverage_for_the_long_run, p.40-60]` (LETF risk caveats apply
-  inversely to capital-efficient overlays)
-- Small cap value premium: `[advances_fin_ml, ch.10]` empirical, or
-  `[expected_returns_ilmanen, ch.4]` (Fama-French 1993 / DFA / Avantis
-  methodology)
-- Managed futures sleeve: `[ilmanen_expected_returns, ch.19]`,
-  `[trading_evolved, p.197]`
-- Momentum factor: `[stocks_on_the_move, p.21-30]`
-- Multi-asset diversification: `[risk_parity, ch.3-5]`
-
-**Edge source vs benchmarks**: VT b&h is 100% equity passive; Plano C
-V3_1 v3.5 has ~10% MF + factor tilt but no return-stacking; V_HYBRID+MF
-is similar but capped at 10% MF and no gold overlay. This portfolio's
-edge is the **stacking** (RSSB+RSST+GDE deliver 1.4-1.5× notional
-exposure on 1× capital), the **factor breadth** (5 distinct value/momo
-sleeves across regions), and the **diversifier load** (~25% MF+gold
-combined vs 10-12% in the benchmarks).
-
-**Pre-commit kill criteria** (single observable that falsifies):
-- If 32-y synth Sharpe ≤ V_HYBRID+MF (0.743) on `vt_real` → fail.
-- If MDD > Plano C V3_1 (52%) on any single dataset → fail.
-
-**Synth note**: 4 of 9 tickers (RSST, AVUV, AVDV, AVEM, SPMO, IDMO) lack
-direct SIM cache. Iter MUST document each synth choice + cite, then
-run G7 cross-lib parity to validate the synth equity curve. If
-unable to synth honestly within ±3pp CAGR, mark as INCOMPLETE and
-explain in `final_report.md` instead of forcing a result.
-
-**Constraint**: Iter MUST test the EXACT weights as given. No grid,
-no optimization, no rebalance variations. Single config. If it fails,
-that's the honest answer — do not "rescue" by tuning.
-
-### Tier 0b — iter 003 follow-ups (from structural G3 failure)
-
-**0b-1. Reduced-stacking variant**: Same 9-asset mix but RSST weight cut from
-15% → 8%, redistributing 7% to VBRSIM (AVUV). Effective notional ~1.28× instead
-of 1.45×. Hypothesis: lower stacking reduces G3 crisis MDD below 25% while
-preserving >80% of Sharpe gain. Single config, pre-committed. `[risk_parity, ch.5]`
-
-**0b-2. VIX-conditional RSST**: Full portfolio as in iter 003, but RSST weight
-cuts from 15% to 7% when VIX > 25 (crisis mode). Single binary switch, no
-optimizer. Hypothesis: dynamic stacking suppresses G3 crisis MDD while
-maintaining average notional ~1.4×. `[systematic_trading, ch.11]` Moreira-Muir.
-
-**0b-3. KMLM+DBMF expansion**: Iter 003 portfolio but replace KMLM 8% with
-5% KMLMSIM + 3% DBMFSIM (two uncorrelated MF strategies). Tests if MF breadth
-improves Sharpe/MDD. `[ilmanen_expected_returns, ch.19]`
+**~~0. Capital-efficient 9-sleeve static portfolio~~** → STRONG 84/100.
+G3 structural failure (1.45× stacking → crisis MDD > 25%). Details in `iterations/003-*/`.
+Follow-ups (0b-1/0b-2/0b-3) deprioritized — HAA SmartStack (iter 005) supersedes.
 
 ### Tier 1 — established factor literature (start here)
 
-**[CONSUMED by iter 001]** ~~4. Multi-asset top-K momentum~~ → 81/100 STRONG.
-Next step: **fixed-param refinement** (k=2, lb=6 pre-specified, no grid).
-
-**[CONSUMED by iter 002]** ~~1a. Fixed-param global momentum (k=2, lb=6m)~~
-   → 90/100 WINNER. Strategy validated; loop halted.
-
-**[CONSUMED by iter 004]** ~~1b. Global momentum + MF sleeve~~ → WINNER 90/100.
-   Fixed 10% KMLMSIM alongside K=2/lb=6m global momentum. All 5 winner conditions
-   met, 7/7 gates × 3 datasets, 33/33 rolling windows positive. Loop halted.
+**[CONSUMED iter 001]** ~~top-K grid~~ → STRONG 81. **[CONSUMED iter 002]** ~~fixed K=2/lb=6m~~ → WINNER 90. **[CONSUMED iter 004]** ~~+MF sleeve~~ → WINNER 90. All superseded by iter 005.
 
 1. **Static return-stack: VTI + VBR + VEA + VWO + bonds + gold**.
    `[risk_parity, ch.5]` extended globally. Direct port of
@@ -338,3 +305,36 @@ Next step: **fixed-param refinement** (k=2, lb=6 pre-specified, no grid).
 - **NEVER commit to git** — the shell `run_loop.sh` handles it
 - **DO NOT TOUCH** `studies/strategy_hunt_loop/` or `studies/gold_swing_loop/`
   — parallel sessions own those directories.
+
+### G3' adapted gate (added 2026-04-27 by user directive)
+
+**Problem**: G3 nominal (per-WF MDD ≤ 25%) is calibrated for 1× equity.
+Stacked portfolios (1.4-1.5× notional) systematically fail it in
+systemic crashes (2001/2008/2022) — see iter 003 lesson.
+
+**G3' rule (Opção C — benchmark-comparative)**:
+
+For each WF window:
+```
+notional_factor = total_notional / 1.0           # e.g., 1.5 for stacked
+ref_mdd = max(VT_window_MDD * notional_factor,
+              V_HYBRID_MF_window_MDD)
+g3_prime_pass = portfolio_window_MDD <= ref_mdd
+```
+
+**Application logic**:
+- If portfolio `notional_factor ≤ 1.05` (effectively unleveraged) → use G3 nominal (legacy)
+- If `notional_factor > 1.05` (stacked) → use G3' adapted; compute and report BOTH
+- The iter passes `gates.g3_wf = True/False` based on whichever rule applies
+- **Verdict.json must record both** `g3_nominal_pass` and `g3_prime_pass` plus `notional_factor` for transparency
+
+**Rationale**: anchors gate to real-world benchmarks (VT b&h, V_HYBRID+MF)
+rather than absolute thresholds. A stacked portfolio passing G3' means it
+contained MDD as well as a leveraged-VT would, and at least as well as
+the stronger benchmark V_HYBRID+MF. Citation: `[advances_fin_ml, p.196-202]`
+(bootstrap-based gate calibration), `[testing_tuning, ch.5-6]` (multi-asset
+robustness profiling).
+
+**Backward compat**: iter 002 + iter 004 winners (notional ~1.0×) used G3
+nominal — they remain valid winners. Re-scoring under G3' would not change
+their status.

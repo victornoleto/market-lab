@@ -77,6 +77,25 @@ Citation: `[stocks_on_the_move, p.21-30]` (Clenow), Jegadeesh-Titman
 
 ---
 
+## Leveraged ETF (LETF) — daily-reset
+
+| Ticker | Product | Cache | Notes |
+|---|---|---|---|
+| **WLDU** | iShares Edge MSCI World 2x | missing — synth via testfol.io `VTSIM?L=2` with 0.75% drag | **Added 2026-04-27** by user. Daily-reset 2× global equity. LETF decay literature: `[leverage_for_the_long_run, p.40-60]` — daily decay can be substantial in choppy markets but mild in strong trending markets. |
+
+WLDU vs stacked alternatives (RSSB+NTSD+GDE):
+- **WLDU pro**: single instrument; 2× notional global equity in one ticker
+- **WLDU con**: 0.75% expense + ~SOFR financing + daily-reset decay
+- **Stacked pro**: futures-based overlay has lower decay, can pair with bonds/MF/gold for diversification
+- **Stacked con**: more tickers to rebalance, more counterparty surface
+
+Primary citation for LETF caveat: `[leverage_for_the_long_run, p.40-60,
+ch.3-4]` — Gayed's 200-day SMA gate dramatically reduces LETF decay
+risk by avoiding choppy/bearish regimes. A WLDU-with-SMA strategy
+deserves its own iter slot (Tier 1 reactivation candidate).
+
+---
+
 ## Update protocol
 
 When user flags a new instrument:

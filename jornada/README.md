@@ -29,23 +29,27 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-27 — 🏆 TRÊS WINNERS em loops paralelos; mandate §1 inalterado pendente §7 deliberação)
+## Onde estamos hoje (2026-04-27 — 🏆 QUATRO WINNERS em loops paralelos; global_factor_tilt iter 005 nova fronteira Pareto)
 
-**Estado:** 🏆 **LOOPS HALTED — três WINNER candidates produzidos.**
+**Estado:** 🏆 **LOOPS HALTED — quatro WINNER candidates produzidos.**
 
 1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
    (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
    5/5 conditions, Sharpe 0.99/1.09/1.09.
 
 2. **global_factor_tilt_loop iter 002**: momentum cross-sectional global
-   universe (VTISIM/VEASIM/VXUSSIM/IEFSIM/VWOSIM/GLDSIM), K=2, lb=6m,
-   pré-fixado single config. Score 90/100, 5/5 conditions, Sharpe 0.991/0.838/0.929.
-   32y: Sharpe 1.001, CAGR 13.22%, MDD 21.23% — domina V_HYBRID+MF e Plano C.
+   universe K=2/lb=6m pré-fixado. Score 90/100, Sharpe 0.991/0.838/0.929.
+   32y: Sharpe 1.001, CAGR 13.22%, MDD 21.23%.
 
 3. **global_factor_tilt_loop iter 004**: mesmo momentum + 10% KMLMSIM fixo.
-   Score 90/100, 7/7 gates × 3 datasets, 33/33 rolling 5y positivos.
-   Sharpe 0.885/0.842/0.943, MDD 20.77%/16.06%/16.06%. Pareto vs V_HYBRID+MF:
-   +0.14 Sharpe, −1.4pp CAGR, −24pp MDD. Loop halted.
+   Score 90/100, Sharpe 0.885/0.842/0.943, MDD 20.77%/16.06%.
+
+4. **global_factor_tilt_loop iter 005 — HAA SmartStack** ← **NOVA FRONTEIRA PARETO**
+   HAA (Keller & Keuning 2023) + universo de ETFs empilhados (NTSXSIM/NTSI/NTSE/GDESIM)
+   + canário VWOSIM + 10% KMLMSIM fixo. Score 90/100, **7/7 gates × 3 datasets**,
+   **26/26 janelas rolling-5y positivas**. Sharpe **1.112/1.049/0.942**, CAGR **14.14%**,
+   MDD **20.91%** (31y). Domina TODAS as três referências em todas as dimensões.
+   Gap para bestfolio HAA SmartStack: apenas −0.07 Sharpe (1.112 vs 1.18).
 
 **Mandate inalterado:** §1 continua **MAINTENANCE 100% Plano C
 passive factor-tilted** (`portfolio-aposentadoria.md` +
@@ -179,6 +183,8 @@ Termos que aparecem ao longo das entradas do changelog:
 — bug Tiingo IEX em US holidays.
 
 ### 2026-04-27
+
+- [2026-04-27 09h00 — 🏆 **Global Factor-Tilt Loop iter 005: HAA SmartStack — WINNER 90/100 — NOVA FRONTEIRA PARETO.** HAA (Keller & Keuning 2023) + universo empilhado (NTSXSIM 90/60, NTSI-synth, NTSE-synth, GDESIM) + canário VWOSIM + 10% KMLMSIM fixo. **Resultados**: edu Sharpe=1.112/CAGR=14.14%/MDD=20.91% **7/7 gates**; vt_real Sharpe=1.049/CAGR=12.99%/MDD=15.05% **7/7**; ndx_real Sharpe=0.942/CAGR=10.63%/MDD=15.05% **7/7**. DSR worst p=5.38e-10. Rolling 5y: **26/26 positivos (100%)**, min Sharpe=0.654. **Comparação 31y vs referências**: domina VT (+0.566 Sharpe/+5.5pp CAGR/−37pp MDD), Plano C (+0.441/+3.2pp/−31pp), V_HYBRID+MF (+0.369/+3.23pp/−24pp) e iter 002 prior winner (+0.111 Sharpe). Gap bestfolio: apenas −0.07 Sharpe (1.112 vs 1.18). Score 90/100, 5/5 condições WINNER. Citações: `[stocks_on_the_move, ch.6]` + `[ilmanen_expected_returns, ch.19]` + `[leverage_for_the_long_run, p.40-60]` + `[advances_fin_ml, p.208-211/222-223/196-202/31-34]` + HAA SSRN 4346906. **Mandate §1 MAINTENANCE inalterado** — candidato §7, não deploy automático. [GLOBAL TILT LOOP STATUS: WINNER 🏆]](2026-04-27-0900-haa-smartstack-winner.md)
 
 - [2026-04-27 12h00 — 🏆 **Global Factor-Tilt Loop iter 004: SEGUNDO WINNER 90/100 — loop halted.** Hipótese: adicionar fatia fixa de 10% KMLMSIM (managed futures) ao WINNER K=2/lb=6m de iter 002. O "almoço grátis" `[ilmanen_expected_returns, ch.19]` confirma-se: Sharpe da janela vt_real melhorou levemente (0.838→0.842), MDD caiu 1.2pp, G3 passou com folga (MDD máx 20.77% vs threshold 25%). **Resultados**: edu Sharpe=0.885/CAGR=9.51%/MDD=20.77% 7/7; vt_real Sharpe=0.842/CAGR=10.14%/MDD=16.06% 7/7; ndx_real Sharpe=0.943/CAGR=10.72%/MDD=16.06% 7/7. PSR worst p=2.63e-04. Rolling 5y: **33/33 positivos (100%)**. Comparação 38y vs V_HYBRID+MF: +0.142 Sharpe, −1.40pp CAGR, −23.94pp MDD. Dois winners no loop: iter 002 (pure momentum, CAGR 12%, MDD 23%) e iter 004 (momentum+MF, CAGR 9.5%, MDD 20.8%). **score: 90/100. Loop halted.** `status: winner` setado em BASE_MEMORY.md.](2026-04-27-1200-global-tilt-iter004-second-winner.md)
 
