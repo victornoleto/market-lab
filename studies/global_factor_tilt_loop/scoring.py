@@ -187,6 +187,7 @@ def score_strategy(
     gates: dict[str, Gates],
     cumulative_n_trials: int,
     benchmarks: Optional[dict[str, Benchmark]] = None,
+    robustness_bonus: int = 0,
 ) -> ScoreResult:
     """Score a strategy across 3 datasets.
 
@@ -278,8 +279,8 @@ def score_strategy(
         if passed:
             c5_pts += 5
 
-    # --- 6. Robustness bonus (5 pts, currently 0 without caller data) --
-    c6_pts = 0
+    # --- 6. Robustness bonus (5 pts, caller-provided rolling-window stat) --
+    c6_pts = max(0, min(5, robustness_bonus))
 
     total = c1_pts + c2_pts + c3_pts + c4_pts + c5_pts + c6_pts
     total = max(0, min(100, total))

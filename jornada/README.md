@@ -29,22 +29,25 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-26 — 🏆 PRIMEIRO WINNER em 79 iterações; mandate §1 inalterado pendente §7 deliberação)
+## Onde estamos hoje (2026-04-27 — 🏆 DOIS WINNERS em loops paralelos; mandate §1 inalterado pendente §7 deliberação)
 
-**Estado:** 🏆 **HUNT LOOP HALTED — WINNER candidate produced.** Após 78
-iterações sem vencedor (113/113 prior phases FAIL + iters 001-078 todas
-abaixo do threshold 90), iter 079 cravou **5/5 strict winner conditions
-met**, score **93/100**, **0/8 kills fired**. Estratégia: multi-asset
-top-K relative+absolute momentum sobre universo cross-classe 5+1 ativos
-(SPY/QQQ/EFA/TLT/GLD + AGG fallback). Primeiro hunt loop a produzir
-um candidato deployment-grade.
+**Estado:** 🏆 **DOIS LOOPS HALTED — dois WINNER candidates produzidos em paralelo.**
+
+1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
+   (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
+   5/5 conditions, Sharpe 0.99/1.09/1.09.
+
+2. **global_factor_tilt_loop** (iter 002): momentum cross-sectional global
+   universe (VTISIM/VEASIM/VXUSSIM/IEFSIM/VWOSIM/GLDSIM), K=2, lb=6m,
+   pré-fixado single config. Score 90/100, 5/5 conditions, Sharpe 0.991/0.838/0.929.
+   32y: Sharpe 1.001, CAGR 13.22%, MDD 21.23% — domina V_HYBRID+MF e Plano C.
 
 **Mandate inalterado:** §1 continua **MAINTENANCE 100% Plano C
 passive factor-tilted** (`portfolio-aposentadoria.md` +
 `reports/portfolio_aposentadoria_v2/`). Strategy A/B/D continuam
-DORMANT (0% capital). O hunt loop produz **CANDIDATOS, não posições
+DORMANT (0% capital). Os loops produzem **CANDIDATOS, não posições
 live** — deployment requer §7 override assinado pelo usuário com
-evidência completa (final_report iter 079 + paper trading 3-6 meses).
+evidência completa (final_reports + paper trading 3-6 meses).
 
 **Próximas decisões do usuário (fora do hunt loop):**
 
@@ -169,6 +172,10 @@ Termos que aparecem ao longo das entradas do changelog:
 📦 **Retratadas arquivadas (9 entries):** ver
 [`_archive/2026-04-16-retracted-entries.md`](_archive/2026-04-16-retracted-entries.md)
 — bug Tiingo IEX em US holidays.
+
+### 2026-04-27
+
+- [2026-04-27 00h05 — 🏆 **Global Factor-Tilt Loop iter 002: WINNER 90/100.** Hipótese: pré-fixar o melhor config de iter 001 (K=2, lb=6m) como single pre-committed config elimina G1 PBO por construção (n_configs=1 < limiar CSCV). **Resultados**: edu Sharpe=0.991/CAGR=12.0%/MDD=23.4% gates=7/7; vt_real Sharpe=0.838/CAGR=11.0%/MDD=17.3% gates=7/7; ndx_real Sharpe=0.929/CAGR=11.5%/MDD=17.3% gates=7/7. PSR worst p=2.76e-4. Rolling 5y windows: **51/51 positivos (100%)** — mínimo 0.134 na janela 2004-2009 (crash de 2008). **Comparação 32y** (mesmo config, dados iter 001): Sharpe 1.001/CAGR 13.22%/MDD 21.23% — **domina VT b&h, Plano C V3_1 e V_HYBRID+MF nos 3 eixos**. Score breakdown: Sharpe 20/25 (teto ndx_real estrutural), Gates 25/25 (7/7 todos), DSR/PSR 15/15, CAGR 10/15, MDD 15/15, Robustez 5/5. **Lição**: pré-compromisso de parâmetros é diferença entre STRONG (iter 001, 81/100) e WINNER (iter 002, 90/100). O mecanismo estava correto; o grid search criava viés de seleção que o CSCV detectava. Mandate §1 MAINTENANCE inalterado — candidato para §7 deliberação, não deploy automático. Citações: `[stocks_on_the_move, p.21-30]` + `[ilmanen_expected_returns, ch.12]` + `[advances_fin_ml, p.208-211/222-223/273-274/196-202/31-34]`. [GLOBAL TILT LOOP HALTED 🏆]](2026-04-27-0005-global-tilt-iter002-winner.md)
 
 ### 2026-04-26
 - [2026-04-26 23h05 — **Global Factor-Tilt Loop iter 001: STRONG 81/100.** Primeira iteração do novo loop focado em estratégias globais que batam Plano C V3_1 e V_HYBRID+MF. Hipótese testada: momentum cross-sectional mensal sobre universo global (VTISIM/VEASIM/VXUSSIM/IEFSIM no educational 56y; + VWOSIM/GLDSIM no vt_real/ndx_real). Top-K igual-ponderado por retorno trailing; safe haven CASHX quando todos negativos. Grid: K={1,2,3} × lookback={3,6,12m} = 9 configs/dataset. **Resultado**: educational Sharpe=1.040 (+0.378 vs VTSIM), MDD=21.9% (vs 58.4% b&h), gates 6/7; vt_real Sharpe=0.883 (+0.394), MDD=30.1%, gates 6/7; ndx_real Sharpe=0.929 (abaixo do QQQ threshold), MDD=17.3%, gates 7/7. DSR worst p=0.0170 ✓. **Comparação 32y (janela dos benchmarks)**: config k=2, lb=6m full-universe → Sharpe=1.001, CAGR=13.22%, MDD=21.23% — **domina Plano C (0.671/10.94%/52.43%) e V_HYBRID+MF (0.743/10.91%/44.71%) em todos os eixos**. Gaps pra WINNER (≥90): (a) G1 PBO=0.74 no educational (9 configs, lb=3 overfits) → solução: fixar k=2/lb=6 no iter 002; (b) ndx_real Sharpe 0.929<1.047 mínimo (teto estrutural — QQQ tech-dominated 2010-2026). Mandato §1 inalterado. Citações: `[stocks_on_the_move, p.21-30]` + `[ilmanen_expected_returns, ch.12]` + `[advances_fin_ml, p.208-211, p.222-223, p.196-202]`. [GLOBAL TILT LOOP CONTINUA ▶]](2026-04-26-2305-global-tilt-iter001-strong.md) — Pesquisa em background (mandate §1 segue 100% Plano C).

@@ -1,5 +1,9 @@
 # Is there anything actually better than NTSX+GDE? 5-portfolio shootout, 1986–2026 (40 years)
 
+**EDIT:** Tested adding a managed futures sleeve on top of the blend. Result: NTSX+GDE+KMLM 40/35/25 pushes Sharpe from 0.82 to 0.96 and cuts max drawdown from −44% to −32%, at the cost of ~70 bps of CAGR (12.5% vs 13.2%). Held up significantly better across every stress period — dot-com, GFC, 2022. Full numbers in the comments below. Charts updated to include all 11 portfolios tested (original 5 + MF variants + RSST variants).
+
+---
+
 I've been holding the NTSX+GDE blend (basically 66% NTSX + 34% GDE, the one floating around here for a couple years) and I keep wondering if I'm leaving something on the table. Picked four other things I see recommended a lot and ran them on the testfolio synth data back to 1986. Posting because I'd like the wisdom of the sub on what I'm missing.
 
 Five portfolios, all yearly rebalance except the last:
@@ -67,14 +71,25 @@ The 2022 row is the one that stings for SSO/ZROZ/GLD. ZROZ dropped ~40% that yea
 
 ## Charts
 
-(Same window 1986–2026 for all.)
+Updated to include all 11 portfolios from the full study (original 5 + MF + RSST variants). Window 1988–2026 (38.3y, bounded by KMLM synth start).
 
-* `LETFS_5WAY_equity.png` — log equity curves
-* `LETFS_5WAY_drawdowns.png` — drawdowns from peak
-* `LETFS_5WAY_rolling10y.png` — rolling 10y CAGR
-* `LETFS_5WAY_rolling5y_sharpe.png` — rolling 5y Sharpe
-* `LETFS_5WAY_rolling20y_hist.png` — distribution of all 20y windows
-* `LETFS_5WAY_stress.png` — 4 stress periods side by side
+**Equity curves (log scale)**
+![Equity curves](LETFS_11WAY_equity.png)
+
+**Drawdowns from peak**
+![Drawdowns](LETFS_11WAY_drawdowns.png)
+
+**Rolling 10y CAGR**
+![Rolling 10y CAGR](LETFS_11WAY_rolling10y.png)
+
+**Rolling 5y Sharpe**
+![Rolling 5y Sharpe](LETFS_11WAY_rolling5y_sharpe.png)
+
+**Rolling 20y CAGR distribution**
+![Rolling 20y histogram](LETFS_11WAY_rolling20y_hist.png)
+
+**Stress periods (4-panel)**
+![Stress periods](LETFS_11WAY_stress.png)
 
 ## Caveats I'm aware of
 
@@ -83,6 +98,7 @@ The 2022 row is the one that stings for SSO/ZROZ/GLD. ZROZ dropped ~40% that yea
 * **Daily reweighting** instead of true monthly/yearly rebal. The drift bias is small at this scale and doesn't change ordering, but if anyone wants the rebal-aware version I can rerun.
 * **Gold synth.** GLDSIM/GDE both lean on gold price proxies pre-2004. Real GLD started 2004. ZROZ live from 2009.
 * **0.89% drag** on P5 (rough mix of SSO 0.91 + ZROZ 0.15 + GLD 0.40). No drag applied to NTSX/GDE because their ERs are already in the synth (or close to it). If anything, this is generous to NTSX+GDE by maybe 10–20 bps.
+* **Synthetic RSST.** testfolio doesn't have RSSTSIM. Built as SPY_TR + KMLM − CASH per the prospectus. No fee drag (~1% ER) applied to the MF variants — adjust CAGRs by 25–80 bps depending on sleeve size.
 
 ## So, what's the actual question
 
