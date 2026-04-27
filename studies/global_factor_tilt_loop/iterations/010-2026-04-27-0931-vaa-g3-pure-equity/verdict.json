@@ -1,0 +1,110 @@
+{
+  "total_score": 90,
+  "tier": "WINNER",
+  "winner_conditions_met": true,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 20,
+      "max": 25,
+      "datasets_beat": 2,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 25,
+      "max": 25,
+      "per_dataset": {
+        "educational": 7,
+        "vt_real": 7,
+        "ndx_real": 7
+      },
+      "thresholds": {
+        "educational": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.0028109995755567496,
+      "cumulative_n_trials": 27
+    },
+    "4_cagr_floor": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9806040326978724,
+      "cagr": 0.10279225282544302,
+      "mdd": 0.18909245329225255,
+      "dsr_p_value": 3.6611901288452486e-08
+    },
+    "vt_real": {
+      "sharpe": 0.8490890318673725,
+      "cagr": 0.08913380929523917,
+      "mdd": 0.18909245329225377,
+      "dsr_p_value": 0.00028559684104434435
+    },
+    "ndx_real": {
+      "sharpe": 0.718818166332497,
+      "cagr": 0.06994052855836563,
+      "mdd": 0.18909245329225507,
+      "dsr_p_value": 0.0028109995755567496
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.6626,
+      "cagr": 0.0999,
+      "mdd": 0.5835,
+      "label": "VTSIM b&h (56y synth)"
+    },
+    "vt_real": {
+      "sharpe": 0.5132,
+      "cagr": 0.088,
+      "mdd": 0.5021,
+      "label": "VTSIM proxy 2008-06+ (~17y; VT live pending)"
+    },
+    "ndx_real": {
+      "sharpe": 0.9472,
+      "cagr": 0.1899,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 27,
+  "configs_tested": 1,
+  "primary_citation": "[stocks_on_the_move, ch.6]",
+  "hypothesis_slug": "vaa-g3-pure-equity",
+  "status": "winner",
+  "notional_factor": 1.5,
+  "robustness": {
+    "n_windows": 26,
+    "pct_positive_sharpe": 1.0,
+    "min_rolling_sharpe": 0.30275797157810763,
+    "max_rolling_sharpe": 1.7826918615024627,
+    "bonus_pts": 5
+  }
+}

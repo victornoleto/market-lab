@@ -1,11 +1,11 @@
 ---
 mission: "find one global strategy beating VT 1x b&h + Plano C V3_1 v3.5 + V_HYBRID+MF on real data"
-total_iterations: 9
-winners_found: 4
+total_iterations: 10
+winners_found: 5
 status: iterating
-latest_iteration: "009-2026-04-27-0921-haa-gold-sleeve"
-cumulative_n_trials: 26
-note: "4 winners (iter 002, 004, 005, 009). iter 009 HAA+GLD = new Pareto frontier (S 1.120/C 13.89%/MDD 20.81%). iter 009 supersedes iter 005 on Sharpe+MDD; gap to bestfolio (1.18) still 0.06. Next: VAA-G3 pure-equity offensive, iter 010."
+latest_iteration: "010-2026-04-27-0931-vaa-g3-pure-equity"
+cumulative_n_trials: 27
+note: "5 winners (iter 002, 004, 005, 009, 010). iter 009 HAA+GLD = current Pareto frontier (S 1.120/C 13.89%/MDD 20.81%). iter 010 VAA-G3 pure-equity: formal WINNER 90 but Kill 1 triggered (edu S=0.981≤1.052); structural insight: GDESIM replaces BNDSIM → CAGR +2pp but Sharpe -0.07 (higher notional adds variance). VAA breadth < HAA canary on Sharpe. Gap to bestfolio (1.18) still 0.14. Next: iter 011 HAA+NTSD or iter 012 HAA+10%GLD."
 ---
 
 # Global Factor-Tilt Loop — BASE MEMORY
@@ -44,29 +44,15 @@ override per mandate §7. Loop produces CANDIDATES, not live positions.
 
 ## Winners found
 
-### Winner 001 — iter 002 — fixed-momentum-k2-lb6 (WINNER, 90/100) [superseded by iter 005]
+| # | iter | slug | status | edu S/C/MDD | note |
+|---|---|---|---|---|---|
+| **1** | **009** | **haa-gold-sleeve** | **← PARETO FRONTIER** | **1.120/13.89%/20.81%** | HAA+KMLM10+GLD5; gap to bestfolio 0.14 |
+| 2 | 005 | haa-smartstack | superseded by 009 | 1.112/14.14%/20.91% | HAA+KMLM10; baseline canary architecture |
+| 3 | 002 | fixed-momentum-k2-lb6 | superseded by 005 | 0.991/12.0%/23.4% | pre-committed K=2/lb=6m momentum |
+| 4 | 004 | momentum-mf-sleeve | superseded by 005 | 0.885/9.51%/20.77% | +MF sleeve free-lunch |
+| 5 | 010 | vaa-g3-pure-equity | Kill 1 triggered (no advance) | 0.981/10.28%/18.91% | VAA+GDESIM; CAGR+2pp but Sharpe−0.07 |
 
-edu S=0.991/C=12.0%/MDD=23.4% 7/7; vt S=0.838/C=11.0%/MDD=17.3% 7/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7.
-Details: `iterations/002-*/`. `[stocks_on_the_move, p.21-30]` + `[ilmanen_expected_returns, ch.12]`
-
-### Winner 004 — iter 009 — haa-gold-sleeve (WINNER, 90/100) ← NEW PARETO FRONTIER
-
-**HAA SmartStack + 5% GLDSIM**: dynamic=85% + KMLM=10% + GLD=5%. G3 nominal passes.
-edu S=1.120/C=13.89%/MDD=20.81% 7/7; vt S=1.061/C=12.87%/MDD=14.20% 7/7; ndx S=0.954/C=10.55%/MDD=14.20% 7/7.
-26/26 rolling (100%). vs 005: +0.008-0.012 Sharpe, -0.85pp MDD on vt/ndx, -0.25pp CAGR. Gap to bestfolio: 0.06.
-Dominates all 3 mission benchmarks. Details: `iterations/009-*/`.
-`[stocks_on_the_move, ch.6]` + `[ilmanen_expected_returns, ch.fx-carry]` + `[leverage_for_the_long_run, p.40-60]`
-**Caveat**: Mandate §1 MAINTENANCE. §7 override required for deployment.
-
-### Winner 003 — iter 005 — haa-smartstack (WINNER, 90/100) [superseded by iter 009]
-
-edu S=1.112/C=14.14%/MDD=20.91% 7/7; vt S=1.049/C=12.99%/MDD=15.05% 7/7; ndx S=0.942/C=10.63%/MDD=15.05% 7/7.
-26/26 rolling. Details: `iterations/005-*/`. `[stocks_on_the_move, ch.6]` + `[leverage_for_the_long_run, p.40-60]`
-
-### Winner 002 — iter 004 — momentum-mf-sleeve (WINNER, 90/100) [superseded by iter 005]
-
-edu S=0.885/C=9.51%/MDD=20.77% 7/7; vt S=0.842/C=10.14%/MDD=16.06% 7/7; ndx S=0.943/C=10.72%/MDD=16.06% 7/7.
-Details: `iterations/004-*/`. `[ilmanen_expected_returns, ch.19]` + `[stocks_on_the_move, p.21-30]`
+Full details: `iterations/NNN-*/`. Mandate §1 MAINTENANCE; §7 override required for deployment.
 
 ---
 
@@ -77,46 +63,39 @@ Details: `iterations/004-*/`. `[ilmanen_expected_returns, ch.19]` + `[stocks_on_
 | 1 | **009** | **haa-gold-sleeve** | **90** | **WINNER** | **1.120 / 1.061 / 0.954** | 13.89% | **20.81%** |
 | 2 | 005 | haa-smartstack | **90** | **WINNER** | 1.112 / 1.049 / 0.942 | 14.14% | 20.91% |
 | 3 | 002 | fixed-momentum-k2-lb6 | **90** | **WINNER** | 0.991 / 0.838 / 0.929 | 12.0% | 23.4% |
-| 4 | 004 | momentum-mf-sleeve | **90** | **WINNER** | 0.885 / 0.842 / 0.943 | 9.51% | 20.77% |
-| 5 | 007 | user-static-g3prime | **88** | STRONG | 0.773 / 0.656 / 0.826 | 11.65% | 44.54% |
-| 6 | 006 | vaa-smartstack | 85 | STRONG | 1.052 / 0.850 / 0.733 | 8.26% | 14.24% |
+| 4 | 010 | vaa-g3-pure-equity | **90** | WINNER† | 0.981 / 0.849 / 0.719 | 10.28% | 18.91% |
+| 5 | 004 | momentum-mf-sleeve | **90** | **WINNER** | 0.885 / 0.842 / 0.943 | 9.51% | 20.77% |
+| 6 | 007 | user-static-g3prime | **88** | STRONG | 0.773 / 0.656 / 0.826 | 11.65% | 44.54% |
+
+† = Kill 1 triggered (edu Sharpe ≤ iter 006 baseline; no Pareto advance vs iter 009)
 
 ---
 
 ## Iteration log (newest first)
 
-### 009 — 2026-04-27 — haa-gold-sleeve (WINNER, 90/100) ← NEW PARETO FRONTIER
+### 010 — 2026-04-27 — vaa-g3-pure-equity (WINNER 90, Kill 1 TRIGGERED — no Pareto advance)
 
-- **Hypothesis:** HAA SmartStack (iter 005) + 5% fixed GLDSIM sleeve. KMLM=10%, GLD=5%,
-  dynamic=85%. Gold as persistent inflation hedge, low-correlation diversifier. n_trials=1.
-  `[ilmanen_expected_returns, ch.fx-carry]` PRIMARY + `[stocks_on_the_move, ch.6]`
-- **Citations:** `[ilmanen_expected_returns, ch.19/ch.fx-carry]`, `[stocks_on_the_move, ch.6]`,
+- **Hypothesis:** VAA-G4 (iter 006) with BNDSIM replaced by GDESIM (90% S&P + 90% gold, ~1.8x notional)
+  in offensive basket. Tests "bond contamination" hypothesis: BNDSIM in VAA-G4 offensive drags Sharpe.
+  `[stocks_on_the_move, ch.6]` PRIMARY. n_trials=1.
+- **Citations:** `[stocks_on_the_move, ch.6]`, `[ilmanen_expected_returns, ch.19]`,
   `[leverage_for_the_long_run, p.40-60]`, `[advances_fin_ml, p.196-202/208-211/222-223/31-34]`
-- **Scope:** 1 config pre-committed; 3 datasets; cumulative n_trials=26
-- **Result:** edu S=1.120/C=13.89%/MDD=20.81% 7/7; vt S=1.061/C=12.87%/MDD=14.20% 7/7;
-  ndx S=0.954/C=10.55%/MDD=14.20% 7/7. G3 nominal passes (20.81% < 25%).
-  DSR worst p=1.21e-04. Rolling 26/26 (100%). Kill 1 NOT triggered; Kill 2 NOT triggered.
-- **Score breakdown:** Sharpe 20/25, Gates 25/25, DSR 15/15, CAGR 10/15, MDD 15/15, Robustness 5/5
-- **Lesson:** 5% GLDSIM improves Sharpe +0.008-0.012 across all datasets via diversification,
-  reduces MDD by 0.85pp on vt/ndx (gold hedges rate-hike + equity stress), at cost of
-  ~0.1-0.25pp CAGR. Gap to bestfolio (1.18): now 0.06 Sharpe (was 0.07 for iter 005).
+- **Scope:** 1 config; 3 datasets; cumulative n_trials=27
+- **Result:** edu S=0.981/C=10.28%/MDD=18.91% 7/7; vt S=0.849/C=8.91%/MDD=18.91% 7/7;
+  ndx S=0.719/C=6.99%/MDD=18.91% 7/7. DSR worst p=2.81e-03. Rolling 26/26 (100%).
+  Kill 1 TRIGGERED: edu Sharpe 0.981 ≤ 1.052 (iter 006 baseline). No Pareto advance vs iter 009.
+- **Score breakdown:** Sharpe 20/25, Gates 25/25, DSR 15/15, CAGR 10/15, MDD 15/15, Robustness 5/5 = 90
+- **Lesson:** GDESIM replacing BNDSIM in VAA offensive: CAGR +2pp (edu: 8.26%→10.28%) but Sharpe −0.07
+  (GDESIM 1.8x notional adds variance faster than returns). VAA breadth mechanism is structurally
+  inferior to HAA canary on Sharpe for this offensive universe. DEAD END for VAA-breadth-Sharpe-max.
+
+### 009 — 2026-04-27 — haa-gold-sleeve (WINNER, 90/100) ← PARETO FRONTIER
+- **Result:** edu S=1.120/C=13.89%/MDD=20.81% 7/7; vt S=1.061/C=12.87%/MDD=14.20% 7/7; ndx S=0.954/C=10.55%/MDD=14.20% 7/7. DSR p=1.21e-04. Rolling 26/26 (100%).
+- **Lesson:** 5% GLDSIM improves Sharpe +0.008-0.012, MDD -0.85pp vs iter 005; CAGR -0.1-0.25pp. Pareto frontier: gap to bestfolio (1.18) = 0.06. `[ilmanen_expected_returns, ch.fx-carry]`. Details: `iterations/009-*/`.
 
 ### 008 — 2026-04-27 — wldu-gayed (PROMISING, 61/100)
-
-- **Hypothesis:** 2× global equity LETF (WLDU = 2×VTSIM daily-reset) with Gayed 200d SMA trend
-  filter on SPYSIM. Monthly check. Risk-ON=WLDU, Risk-OFF=CASHX. 75bps/y drag. n_trials=1.
-  `[leverage_for_the_long_run, ch.3-4, p.40-60]` PRIMARY.
-- **Citations:** `[leverage_for_the_long_run, p.13/16/17]`, `[stocks_on_the_move, p.21-30]`,
-  `[advances_fin_ml, p.196-202/208-211/222-223/31-34]`
-- **Scope:** 1 config pre-committed; 3 datasets; cumulative n_trials=25
-- **Result:** edu S=0.609/C=12.69%/MDD=44.45% 7/7; vt_real S=0.501/C=10.11%/MDD=44.45% 5/7;
-  ndx_real S=0.473/C=9.44%/MDD=44.45% 6/7. DSR worst p=2.97e-2. Rolling 5y: 36/36 (100%).
-  Kill 2 TRIGGERED: edu MDD=44.45%>35% (2022 grinding bear, monthly exit too slow).
-  Sharpe parity: VTSIM b&h Sharpe 0.61 = LRS target Sharpe 0.61 → zero improvement possible.
-- **Score breakdown:** Sharpe 0/25, Gates 21/25, DSR 15/15, CAGR 10/15, MDD 10/15, Robustness 5/5
-- **Lesson:** Gayed LRS improves Sharpe on concentrated equity (S&P 500 0.32→0.61) but cannot
-  improve globally-diversified equity (VTSIM already 0.61). Global diversification pre-achieves
-  the Sharpe level that LRS aspires to on US equity. DEAD END: 2× LETF + binary SMA on global equity.
+- **Result:** edu S=0.609/C=12.69%/MDD=44.45% 7/7; vt S=0.501/10.11%/44.45% 5/7; ndx S=0.473/9.44%/44.45% 6/7. Kill 2: MDD>35%.
+- **Lesson:** VTSIM base Sharpe 0.61 = Gayed LRS target → zero Sharpe improvement. 2022 monthly exit too slow. DEAD END: 2× LETF + SMA on global equity. Details: `iterations/008-*/`.
 
 ### 007 — 2026-04-27 — user-static-g3prime (STRONG, 88/100)
 - **Result:** edu S=0.773/C=11.65%/MDD=44.54% 7/7; vt S=0.656/C=10.56%/MDD=43.13% 6/7; ndx S=0.826/C=12.10%/MDD=28.83% 7/7. All 5 winner conds met; G6 vt_real CI_low=−0.0004 borderline fail → score 88<90 → STRONG.
@@ -196,12 +175,23 @@ Follow-ups (0b-1/0b-2/0b-3) deprioritized — HAA SmartStack (iter 005) supersed
 HAA dynamic=85% + KMLMSIM=10% + GLDSIM=5%. edu S=1.120/C=13.89%/MDD=20.81% 7/7.
 New Pareto frontier: +0.008-0.012 Sharpe vs iter 005; gap to bestfolio now 0.06. Details: `iterations/009-*/`.
 
-#### iter 010 — VAA-G3 SmartStack (pure-equity offensive, no BNDSIM) ← NEXT
+#### ~~iter 010 — VAA-G3 SmartStack (pure-equity offensive, no BNDSIM)~~ [CONSUMED → WINNER 90, Kill 1 triggered]
 
-- **Mechanism**: VAA breadth (iter 006) but replace BNDSIM as 4th offensive asset with
-  a 3rd pure-equity stacked asset (e.g., NTSI or VWO-synth). Tests if bond contamination
-  was VAA's only weakness. If CAGR restores to HAA-competitive level → STRONG or WINNER.
-- **Kill criteria**: edu Sharpe < 1.052 (must beat iter 006 VAA) → discard
+edu S=0.981/C=10.28%/MDD=18.91% 7/7. GDESIM→CAGR +2pp but Sharpe -0.07.
+VAA breadth < HAA canary on Sharpe. DEAD END for VAA-breadth-Sharpe-max. Details: `iterations/010-*/`.
+
+#### iter 011 — HAA SmartStack + NTSD-style equity stacking
+
+- **Mechanism**: HAA (iter 009 winner) but substitute one NTSXSIM sleeve with a synth for
+  WisdomTree NTSD (new global equity stacking ETF, flagged 2026-04-27 memory note). Tests
+  whether wider equity stacking variety improves Sharpe/MDD vs NTSXSIM.
+- **Kill criteria**: edu Sharpe ≤ 1.120 (must beat iter 009 HAA+GLD)
+
+#### iter 012 — HAA SmartStack + 10% GLD (larger gold sleeve)
+
+- **Mechanism**: HAA (iter 009) with 10% GLD + 5% KMLM (swapping weights). Tests if gold's
+  Sharpe/MDD benefit scales beyond 5% GLD. `[ilmanen_expected_returns, ch.fx-carry]`
+- **Kill criteria**: edu Sharpe ≤ 1.120 (must beat iter 009)
 
 ### Tier 1 — established factor literature (start here)
 
@@ -272,6 +262,9 @@ New Pareto frontier: +0.008-0.012 Sharpe vs iter 005; gap to bestfolio now 0.06.
 
 1. **iter 008 — 2× LETF + binary SMA on global equity**: VTSIM base Sharpe (0.61) already
    matches Gayed LRS target Sharpe → zero improvement. Score 61 PROMISING. `[leverage_for_the_long_run, p.17]`
+2. **iter 010 — VAA breadth + higher-notional offensive for Sharpe-max**: GDESIM (1.8x notional)
+   replacing BNDSIM in VAA-G4 offensive improves CAGR (+2pp) but reduces Sharpe (−0.07) because
+   higher notional adds variance faster than returns. VAA breadth < HAA canary on Sharpe.
 
 ---
 
