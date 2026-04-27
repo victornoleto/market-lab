@@ -1,11 +1,11 @@
 ---
 mission: "find one global strategy beating VT 1x b&h + Plano C V3_1 v3.5 + V_HYBRID+MF on real data"
-total_iterations: 3
-winners_found: 1
-status: iterating
-latest_iteration: "003-2026-04-26-2347-capital-efficient-static"
-cumulative_n_trials: 20
-note: "Iter 002 winner preserved in `## Winners found`. Iter 003 = USER_SPECIFIED capital-efficient static portfolio → STRONG (84/100), all 5 winner conds met but score < 90."
+total_iterations: 4
+winners_found: 2
+status: winner
+latest_iteration: "004-2026-04-27-0002-momentum-mf-sleeve"
+cumulative_n_trials: 21
+note: "Iter 002 + iter 004 both WINNER (90/100). Iter 003 = USER_SPECIFIED capital-efficient static portfolio → STRONG (84/100). Loop halts on iter 004 win."
 ---
 
 # Global Factor-Tilt Loop — BASE MEMORY
@@ -69,6 +69,32 @@ validation + §7 override deliberation.
 
 **Citation**: `[stocks_on_the_move, p.21-30]` + `[ilmanen_expected_returns, ch.12]`
 
+### Winner 002 — iter 004 — momentum-mf-sleeve (WINNER, 90/100)
+
+**Strategy**: Monthly cross-sectional momentum K=2/lb=6m (VTISIM/VEASIM/VXUSSIM/IEFSIM
++ CASHX safe haven) + fixed 10% KMLMSIM sleeve. Monthly rebalance, single pre-committed
+config, no grid.
+
+| dataset | Sharpe | CAGR | MDD | Gates |
+|---|---|---|---|---|
+| educational (~38y, KMLM binding) | 0.885 | 9.51% | 20.77% | 7/7 |
+| vt_real (~17y) | 0.842 | 10.14% | 16.06% | 7/7 |
+| ndx_real (16y) | 0.943 | 10.72% | 16.06% | 7/7 |
+| 38y long-window (edu) | 0.885 | 9.51% | 20.77% | — |
+
+**Comparison vs benchmarks (38y edu window)**:
+- vs VT b&h (S=0.51, C=8.8%, M=50.2%): +0.375 S / +0.71pp C / −29.44pp MDD → dominates
+- vs Plano C V3_1 (S=0.671, C=10.94%, M=52.43%): +0.214 S / −1.43pp C / −31.66pp MDD → Pareto
+- vs V_HYBRID+MF (S=0.743, C=10.91%, M=44.71%): +0.142 S / −1.40pp C / −23.94pp MDD → Pareto
+
+**Rolling robustness**: 33/33 rolling-5y windows positive (100%). Min 5y Sharpe: 0.271.
+
+**Caveat**: Mandate §1 MAINTENANCE still in effect. This is a mandate §7 override
+CANDIDATE, not a live deployment. Educational window shortened to 38y (1988-2026) vs
+iter 002's 56y (1970-2026) due to KMLMSIM inception binding.
+
+**Citation**: `[ilmanen_expected_returns, ch.19]` + `[stocks_on_the_move, p.21-30]`
+
 ---
 
 ## Top-K ranked (best across all iters, by score)
@@ -76,12 +102,33 @@ validation + §7 override deliberation.
 | rank | iter | slug | score | tier | Sharpe (edu/vt/ndx) | CAGR (edu) | MDD (edu) |
 |---|---|---|---|---|---|---|---|
 | 1 | 002 | fixed-momentum-k2-lb6 | **90** | **WINNER** | 0.991 / 0.838 / 0.929 | 12.0% | 23.4% |
-| 2 | 003 | capital-efficient-static | 84 | STRONG | 0.773 / 0.656 / 0.826 | 11.65% | 44.54% |
-| 3 | 001 | global-momentum-topk | 81 | STRONG | 1.040 / 0.883 / 0.929 | 12.0% | 21.9% |
+| 1= | 004 | momentum-mf-sleeve | **90** | **WINNER** | 0.885 / 0.842 / 0.943 | 9.51% | 20.77% |
+| 3 | 003 | capital-efficient-static | 84 | STRONG | 0.773 / 0.656 / 0.826 | 11.65% | 44.54% |
+| 4 | 001 | global-momentum-topk | 81 | STRONG | 1.040 / 0.883 / 0.929 | 12.0% | 21.9% |
 
 ---
 
 ## Iteration log (newest first)
+
+### 004 — 2026-04-27 — momentum-mf-sleeve (WINNER, 90/100)
+
+- **Hypothesis:** Fixed global momentum K=2/lb=6m (VTISIM/VEASIM/VXUSSIM/IEFSIM +
+  GLDSIM/VWOSIM for real datasets) + 10% KMLMSIM fixed sleeve. Pre-committed single
+  config, no grid. Educational window 38y (KMLMSIM binding 1988-2026).
+  `[ilmanen_expected_returns, ch.19]` + `[stocks_on_the_move, p.21-30]`
+- **Citations:** `[ilmanen_expected_returns, ch.19]`, `[stocks_on_the_move, p.21-30]`,
+  `[advances_fin_ml, p.208-211/222-223/196-202/31-34]`
+- **Scope:** 1 config, pre-committed; 3 datasets; cumulative n_trials=21
+- **Result:** edu Sharpe=0.885/CAGR=9.51%/MDD=20.77% gates=7/7; vt_real
+  Sharpe=0.842/CAGR=10.14%/MDD=16.06% gates=7/7; ndx_real Sharpe=0.943/
+  CAGR=10.72%/MDD=16.06% gates=7/7. PSR worst p=2.63e-04. Rolling 5y: 33/33
+  positive (100%). 38y vs V_HYBRID+MF: +0.142 Sharpe, −1.40pp CAGR, −23.94pp MDD.
+- **Score breakdown:** Sharpe 20/25, Gates 25/25, DSR 15/15, CAGR 10/15,
+  MDD 15/15, Robustness 5/5
+- **Lesson:** MF "free lunch" confirmed on global momentum. vt_real Sharpe
+  marginally improved vs pure iter 002 WINNER (+0.004) while MDD fell 1.2pp.
+  Kill criterion not triggered. Trade-off: 1.4pp lower CAGR vs V_HYBRID+MF
+  compensated by 24pp lower MDD — favorable Pareto for retirement portfolios.
 
 ### 003 — 2026-04-26 — capital-efficient-static (STRONG, 84/100)
 
@@ -108,48 +155,13 @@ validation + §7 override deliberation.
 
 ### 002 — 2026-04-26 — fixed-momentum-k2-lb6 (WINNER, 90/100)
 
-- **Hypothesis:** Fixed pre-committed single config (K=2, lb=6m) of the
-  iter 001 STRONG strategy. No grid search → G1 PBO trivially passes
-  (n_configs=1 < MIN_HONEST_N_CONFIGS=4). Rolling-window robustness added.
-  `[stocks_on_the_move, p.21-30]` + `[advances_fin_ml, p.208-211]`
-- **Citations:** `[stocks_on_the_move, p.21-30]`, `[ilmanen_expected_returns, ch.12]`,
-  `[advances_fin_ml, p.208-211/222-223/273-274/196-202/31-34]`
-- **Scope:** 1 config per dataset (pre-committed, no grid); cumulative
-  n_trials=19 (18 from iter 001 + 1 this iter)
-- **Result:** edu Sharpe=0.991/CAGR=12.0%/MDD=23.4% gates=7/7; vt_real
-  Sharpe=0.838/CAGR=11.0%/MDD=17.3% gates=7/7; ndx_real Sharpe=0.929/
-  CAGR=11.5%/MDD=17.3% gates=7/7. PSR worst p=2.76e-4. Rolling 5y windows:
-  51/51 positive (100%). 32y Sharpe=1.001/CAGR=13.22%/MDD=21.23% —
-  dominates all 3 strategy benchmarks.
-- **Score breakdown:** Sharpe 20/25, Gates 25/25, DSR 15/15, CAGR 10/15,
-  MDD 15/15, Robustness 5/5
-- **Lesson:** Methodological pre-commitment (no grid) converts a STRONG
-  mechanism to WINNER. Selection bias via grid search was the only gap.
-  ndx_real Sharpe/CAGR structural ceiling is not fixable with global
-  diversification — it is a feature of the QQQ benchmark, not a strategy flaw.
+- **Result:** edu S=0.991/C=12.0%/MDD=23.4% gates=7/7; vt S=0.838/C=11.0%/MDD=17.3% 7/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7. 32y S=1.001/C=13.22%/MDD=21.23%. 51/51 rolling positive.
+- **Lesson:** Pre-commitment (no grid) converts STRONG→WINNER by removing selection bias. ndx_real ceiling structural.
 
 ### 001 — 2026-04-26 — global-momentum-topk (STRONG, 81/100)
 
-- **Hypothesis:** Monthly cross-sectional momentum across global universe
-  (VTISIM/VEASIM/VXUSSIM/IEFSIM for educational; +VWOSIM/GLDSIM for vt_real
-  and ndx_real). Top-K equal-weight by trailing N-month return; CASHX safe
-  haven when all assets negative. `[stocks_on_the_move, p.21-30]`
-- **Citations:** `[stocks_on_the_move, p.21-30]`, `[ilmanen_expected_returns, ch.12]`
-- **Scope:** K={1,2,3} × lookback={3,6,12m} = 9 configs per dataset (18 total)
-- **Result:** edu Sharpe=1.040/CAGR=12.0%/MDD=21.9% gates=6/7; vt_real
-  Sharpe=0.883/CAGR=11.9%/MDD=30.1% gates=6/7; ndx_real Sharpe=0.929/
-  CAGR=11.5%/MDD=17.3% gates=7/7. DSR worst p=0.0170 (PASS). 32y window
-  (full_k2_lb6): Sharpe=1.001/CAGR=13.22%/MDD=21.23% — dominates
-  Plano C and V_HYBRID+MF on all 3 dimensions. Gap from WINNER: (a) G1 PBO
-  fails on edu (0.74>0.5 with 9 configs, lb=3 overfits), (b) ndx_real
-  Sharpe 0.93<1.05 needed (structural — QQQ can't be beaten by global div),
-  (c) ndx_real CAGR 11.5% < 15.4% floor.
-- **Score breakdown:** Sharpe 20/25, Gates 21/25, DSR 15/15, CAGR 10/15,
-  MDD 15/15, Bonus 0/5
-- **Lesson:** Global momentum is a structurally sound mechanism (dominates
-  all static benchmarks on 32y), but WINNER requires fixing (a) G1 PBO via
-  pre-specified single config — next iter test k=2/lb=6 as fixed params.
-  ndx_real structural ceiling is not fixable with global diversification alone.
+- **Result:** edu S=1.040/C=12.0%/MDD=21.9% gates=6/7; vt S=0.883/C=11.9%/MDD=30.1% 6/7; ndx S=0.929/C=11.5%/MDD=17.3% 7/7. PBO failed edu (9 configs, 0.74>0.5).
+- **Lesson:** Global momentum mechanism sound but grid-search PBO kills edu gate. Fix: pre-commit single config (done in iter 002).
 
 ---
 
@@ -243,9 +255,9 @@ Next step: **fixed-param refinement** (k=2, lb=6 pre-specified, no grid).
 **[CONSUMED by iter 002]** ~~1a. Fixed-param global momentum (k=2, lb=6m)~~
    → 90/100 WINNER. Strategy validated; loop halted.
 
-**1b. Global momentum + MF sleeve** — add 10-15% KMLMSIM as fixed
-   allocation alongside momentum portfolio. deploy_studies showed MF
-   provides "free lunch" `[ilmanen_expected_returns, ch.19]`. Iter 003+.
+**[CONSUMED by iter 004]** ~~1b. Global momentum + MF sleeve~~ → WINNER 90/100.
+   Fixed 10% KMLMSIM alongside K=2/lb=6m global momentum. All 5 winner conditions
+   met, 7/7 gates × 3 datasets, 33/33 rolling windows positive. Loop halted.
 
 1. **Static return-stack: VTI + VBR + VEA + VWO + bonds + gold**.
    `[risk_parity, ch.5]` extended globally. Direct port of

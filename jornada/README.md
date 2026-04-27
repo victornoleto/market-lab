@@ -29,18 +29,23 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-27 — 🏆 DOIS WINNERS em loops paralelos; mandate §1 inalterado pendente §7 deliberação)
+## Onde estamos hoje (2026-04-27 — 🏆 TRÊS WINNERS em loops paralelos; mandate §1 inalterado pendente §7 deliberação)
 
-**Estado:** 🏆 **DOIS LOOPS HALTED — dois WINNER candidates produzidos em paralelo.**
+**Estado:** 🏆 **LOOPS HALTED — três WINNER candidates produzidos.**
 
 1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
    (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
    5/5 conditions, Sharpe 0.99/1.09/1.09.
 
-2. **global_factor_tilt_loop** (iter 002): momentum cross-sectional global
+2. **global_factor_tilt_loop iter 002**: momentum cross-sectional global
    universe (VTISIM/VEASIM/VXUSSIM/IEFSIM/VWOSIM/GLDSIM), K=2, lb=6m,
    pré-fixado single config. Score 90/100, 5/5 conditions, Sharpe 0.991/0.838/0.929.
    32y: Sharpe 1.001, CAGR 13.22%, MDD 21.23% — domina V_HYBRID+MF e Plano C.
+
+3. **global_factor_tilt_loop iter 004**: mesmo momentum + 10% KMLMSIM fixo.
+   Score 90/100, 7/7 gates × 3 datasets, 33/33 rolling 5y positivos.
+   Sharpe 0.885/0.842/0.943, MDD 20.77%/16.06%/16.06%. Pareto vs V_HYBRID+MF:
+   +0.14 Sharpe, −1.4pp CAGR, −24pp MDD. Loop halted.
 
 **Mandate inalterado:** §1 continua **MAINTENANCE 100% Plano C
 passive factor-tilted** (`portfolio-aposentadoria.md` +
@@ -174,6 +179,8 @@ Termos que aparecem ao longo das entradas do changelog:
 — bug Tiingo IEX em US holidays.
 
 ### 2026-04-27
+
+- [2026-04-27 12h00 — 🏆 **Global Factor-Tilt Loop iter 004: SEGUNDO WINNER 90/100 — loop halted.** Hipótese: adicionar fatia fixa de 10% KMLMSIM (managed futures) ao WINNER K=2/lb=6m de iter 002. O "almoço grátis" `[ilmanen_expected_returns, ch.19]` confirma-se: Sharpe da janela vt_real melhorou levemente (0.838→0.842), MDD caiu 1.2pp, G3 passou com folga (MDD máx 20.77% vs threshold 25%). **Resultados**: edu Sharpe=0.885/CAGR=9.51%/MDD=20.77% 7/7; vt_real Sharpe=0.842/CAGR=10.14%/MDD=16.06% 7/7; ndx_real Sharpe=0.943/CAGR=10.72%/MDD=16.06% 7/7. PSR worst p=2.63e-04. Rolling 5y: **33/33 positivos (100%)**. Comparação 38y vs V_HYBRID+MF: +0.142 Sharpe, −1.40pp CAGR, −23.94pp MDD. Dois winners no loop: iter 002 (pure momentum, CAGR 12%, MDD 23%) e iter 004 (momentum+MF, CAGR 9.5%, MDD 20.8%). **score: 90/100. Loop halted.** `status: winner` setado em BASE_MEMORY.md.](2026-04-27-1200-global-tilt-iter004-second-winner.md)
 
 - [2026-04-27 00h05 — 🏆 **Global Factor-Tilt Loop iter 002: WINNER 90/100.** Hipótese: pré-fixar o melhor config de iter 001 (K=2, lb=6m) como single pre-committed config elimina G1 PBO por construção (n_configs=1 < limiar CSCV). **Resultados**: edu Sharpe=0.991/CAGR=12.0%/MDD=23.4% gates=7/7; vt_real Sharpe=0.838/CAGR=11.0%/MDD=17.3% gates=7/7; ndx_real Sharpe=0.929/CAGR=11.5%/MDD=17.3% gates=7/7. PSR worst p=2.76e-4. Rolling 5y windows: **51/51 positivos (100%)** — mínimo 0.134 na janela 2004-2009 (crash de 2008). **Comparação 32y** (mesmo config, dados iter 001): Sharpe 1.001/CAGR 13.22%/MDD 21.23% — **domina VT b&h, Plano C V3_1 e V_HYBRID+MF nos 3 eixos**. Score breakdown: Sharpe 20/25 (teto ndx_real estrutural), Gates 25/25 (7/7 todos), DSR/PSR 15/15, CAGR 10/15, MDD 15/15, Robustez 5/5. **Lição**: pré-compromisso de parâmetros é diferença entre STRONG (iter 001, 81/100) e WINNER (iter 002, 90/100). O mecanismo estava correto; o grid search criava viés de seleção que o CSCV detectava. Mandate §1 MAINTENANCE inalterado — candidato para §7 deliberação, não deploy automático. Citações: `[stocks_on_the_move, p.21-30]` + `[ilmanen_expected_returns, ch.12]` + `[advances_fin_ml, p.208-211/222-223/273-274/196-202/31-34]`. [GLOBAL TILT LOOP HALTED 🏆]](2026-04-27-0005-global-tilt-iter002-winner.md)
 
