@@ -1,11 +1,11 @@
 ---
 mission: "find one global strategy beating VT 1x b&h + Plano C V3_1 v3.5 + V_HYBRID+MF on real data"
-total_iterations: 12
-winners_found: 5
-status: FROZEN
-latest_iteration: "012-2026-04-27-1153-hybrid-net-tax"
-cumulative_n_trials: 29
-note: "LOOP FROZEN. iter 012 hybrid (STRONG 85): S=1.021/C=13.38%/MDD=26.85% — BEATS pure HAA net on Sharpe all datasets. Mandate §7 inputs complete. Gross frontier: iter 009. Net frontier: iter 012 hybrid > iter 011 HAA > Plano C."
+total_iterations: 13
+winners_found: 6
+status: winner
+latest_iteration: "013-2026-04-27-1205-haa-zero-coupon-defensive"
+cumulative_n_trials: 30
+note: "iter 013 haa-zero-coupon (WINNER 90, Kill 1 triggered): S=1.011/C=16.35%/MDD=28.98% — new CAGR frontier (+2.46pp vs iter 009). Sharpe Pareto frontier: iter 009 (S=1.120). Net frontier: iter 012 hybrid. ZROZSIM lesson: crisis convexity trades Sharpe for CAGR."
 ---
 
 # Global Factor-Tilt Loop — BASE MEMORY
@@ -46,10 +46,10 @@ override per mandate §7. Loop produces CANDIDATES, not live positions.
 
 | # | iter | slug | status | edu S/C/MDD | note |
 |---|---|---|---|---|---|
-| **1** | **009** | **haa-gold-sleeve** | **← PARETO FRONTIER** | **1.120/13.89%/20.81%** | HAA+KMLM10+GLD5; gap to bestfolio 0.14 |
+| **1** | **009** | **haa-gold-sleeve** | **← SHARPE PARETO FRONTIER** | **1.120/13.89%/20.81%** | HAA+KMLM10+GLD5; gap to bestfolio 0.14 |
 | 2 | 005 | haa-smartstack | superseded by 009 | 1.112/14.14%/20.91% | HAA+KMLM10; baseline canary architecture |
-| 3 | 002 | fixed-momentum-k2-lb6 | superseded by 005 | 0.991/12.0%/23.4% | pre-committed K=2/lb=6m momentum |
-| 4 | 004 | momentum-mf-sleeve | superseded by 005 | 0.885/9.51%/20.77% | +MF sleeve free-lunch |
+| **3** | **013** | **haa-zero-coupon-defensive** | **← CAGR PARETO FRONTIER** | **1.011/16.35%/28.98%** | ZROZSIM defensive; Kill 1 triggered (Sharpe -0.11 vs 009) |
+| 4 | 002 | fixed-momentum-k2-lb6 | superseded by 005 | 0.991/12.0%/23.4% | pre-committed K=2/lb=6m momentum |
 | 5 | 010 | vaa-g3-pure-equity | Kill 1 triggered (no advance) | 0.981/10.28%/18.91% | VAA+GDESIM; CAGR+2pp but Sharpe−0.07 |
 
 Full details: `iterations/NNN-*/`. Mandate §1 MAINTENANCE; §7 override required for deployment.
@@ -62,69 +62,37 @@ Full details: `iterations/NNN-*/`. Mandate §1 MAINTENANCE; §7 override require
 |---|---|---|---|---|---|---|---|
 | 1 | **009** | **haa-gold-sleeve** | **90** | **WINNER** | **1.120 / 1.061 / 0.954** | 13.89% | **20.81%** |
 | 2 | 005 | haa-smartstack | **90** | **WINNER** | 1.112 / 1.049 / 0.942 | 14.14% | 20.91% |
-| 3 | 002 | fixed-momentum-k2-lb6 | **90** | **WINNER** | 0.991 / 0.838 / 0.929 | 12.0% | 23.4% |
-| 4 | 010 | vaa-g3-pure-equity | **90** | WINNER† | 0.981 / 0.849 / 0.719 | 10.28% | 18.91% |
-| 5 | 004 | momentum-mf-sleeve | **90** | **WINNER** | 0.885 / 0.842 / 0.943 | 9.51% | 20.77% |
-| 6 | 007 | user-static-g3prime | **88** | STRONG | 0.773 / 0.656 / 0.826 | 11.65% | 44.54% |
+| **3** | **013** | **haa-zero-coupon-defensive** | **90** | **WINNER†** | **1.011 / 1.002 / 0.900** | **16.35%** | 28.98% |
+| 4 | 002 | fixed-momentum-k2-lb6 | **90** | **WINNER** | 0.991 / 0.838 / 0.929 | 12.0% | 23.4% |
+| 5 | 010 | vaa-g3-pure-equity | **90** | WINNER† | 0.981 / 0.849 / 0.719 | 10.28% | 18.91% |
 
-† = Kill 1 triggered (edu Sharpe ≤ iter 006 baseline; no Pareto advance vs iter 009)
+† = Kill 1 triggered (edu Sharpe ≤ 1.120 Pareto frontier; no Sharpe advance vs iter 009)
+†† iter 013: CAGR frontier; iter 010: Kill 1 ≤ iter 006 baseline
 
 ---
 
 ## Iteration log (newest first)
 
-### 012 — 2026-04-27 — hybrid-net-tax (STRONG 85, Kill PASS, Pareto PASS)
+### 013 — 2026-04-27 — haa-zero-coupon-defensive (WINNER 90, Kill 1 TRIGGERED)
 
-- **Hypothesis:** 50/50 blend of iter 009 HAA+Gold (monthly DARF) + Plano C V3_1 v3.5 proxy
-  (DARF deferred to terminal + annual rebalance only). Tests if hybrid captures HAA alpha while
-  halving DARF complexity. `[risk_parity, ch.5]` PRIMARY. n_trials=1.
-- **Citations:** `[risk_parity, ch.5]`, `[testing_tuning, ch.5-6]`, `[trading_evolved, p.197]`,
-  `[advances_fin_ml, p.196-202/208-211/222-223/31-34]`, Receita Federal IN 1.585/2015
-- **Scope:** 1 config; 3 datasets; cumulative n_trials=29
-- **Result:** Hybrid edu S=1.021/C=13.38%/MDD=26.85% 7/7; vt S=1.058/C=14.06%/MDD=19.36% 7/7;
-  ndx S=0.972/C=11.84%/MDD=19.20% 7/7. Kill PASS (1.021>>0.631). Pareto PASS (103-114% of HAA Sharpe).
-  PlanC net (empirical): edu S=0.631/C=10.31%/MDD=52.43%; vt S=0.779/C=13.02%; ndx S=0.692/C=10.97%.
-- **Score:** Gates 25/25, DSR 15/15, CAGR 10/15, MDD 15/15, Sharpe 20/25 = 85 STRONG.
-- **Unexpected finding:** Hybrid Sharpe > pure HAA Sharpe on ALL datasets (+0.030 to +0.121).
-  Mechanism: diversification bonus (HAA canary + Plano C factor equity, ~0.75 corr) + rebalancing
-  premium + Plano C tax deferral (terminal DARF >> monthly DARF efficiency) = Pareto improvement.
-- **Loop FROZEN.** Mandate §7 inputs complete.
+- **Hypothesis:** Add ZROZSIM (25y zero-coupon) to HAA defensive palette {IEFSIM,BNDSIM,CASHX}→{ZROZSIM,IEFSIM,BNDSIM,CASHX}. HAA's top-1 adaptive selection captures crisis convexity (2008: +64%, 2020: +23%) while automatically falling back to CASHX in inflationary bears (2022: ZROZSIM -39%). `[risk_parity, ch.5]` PRIMARY. n_trials=1.
+- **Citations:** `[risk_parity, ch.5]`, `[stocks_on_the_move, ch.6]`, `[trading_evolved, p.197]`, `[leverage_for_the_long_run, p.40-60]`, `[advances_fin_ml, p.196-202/208-211/222-223/31-34]`
+- **Scope:** 1 config; 3 datasets; cumulative n_trials=30
+- **Result:** edu S=1.011/C=16.35%/MDD=28.98% 7/7; vt S=1.002/C=15.36%/MDD=18.66% 7/7; ndx S=0.900/C=13.25%/MDD=18.66% 7/7. Kill 1 TRIGGERED (1.011<1.120). DSR worst p=2.13e-04. Rolling 26/26 (100%). New CAGR frontier: 16.35% (+2.46pp vs iter 009).
+- **Score breakdown:** Sharpe 20/25, Gates 25/25, DSR 15/15, CAGR 10/15, MDD 15/15, Robustness 5/5 = 90 WINNER (Kill 1 triggered)
+- **Lesson:** ZROZSIM crisis convexity raises CAGR +2.46pp but lowers Sharpe -0.109 (25y duration = high daily vol → Sharpe penalty dominates return uplift). HAA correctly avoids ZROZSIM in 2022. Structural tradeoff: ZROZSIM in defensive = CAGR maximizer, NOT Sharpe maximizer. Bestfolio (S=1.18) almost certainly uses low-variance defensive (CASHX-dominant) rather than long-duration bonds.
+
+### 012 — 2026-04-27 — hybrid-net-tax (STRONG 85, Kill PASS, Pareto PASS)
+- **Result:** Hybrid (net) edu S=1.021/C=13.38%/MDD=26.85% 7/7; vt S=1.058/C=14.06%; ndx S=0.972/C=11.84%. Score 85 STRONG. Loop FROZEN. Mandate §7 inputs complete.
+- **Lesson:** 50/50 HAA+PlanC hybrid Sharpe > pure HAA on ALL datasets (+0.03 to +0.12). Mechanism: diversification bonus + rebalancing premium + PlanC DARF deferral. Details: `iterations/012-*/`.
 
 ### 011 — 2026-04-27 — darf-carneleo-net-tax (WINNER 90 net, BORDERLINE vs Plano C)
-
-- **Hypothesis:** Post-process iter 009 HAA+Gold through Brazilian-retail tax pipeline: DARF 15%
-  on monthly realized gains (portfolio avg-cost method, 12m loss carryforward) + Carnê-Leão 27.5%
-  incremental on KMLM/GDE yield (~4.7 bps/y) + FX 1.38%/trip (Inter Internacional 1% + IOF 0.38%).
-  `[testing_tuning, ch.5-6]` PRIMARY. n_trials=1.
-- **Citations:** `[testing_tuning, ch.5-6]`, `[risk_parity, ch.5]`, `[trading_evolved, p.197]`,
-  Receita Federal IN 1.585/2015 + Lei 13.043/2014, `[advances_fin_ml, p.196-202/222-223]`
-- **Scope:** 1 config (deterministic post-processing); 3 datasets; cumulative n_trials=28
-- **Result:** Net edu S=0.991/C=12.13%/MDD=21.83% 7/7; vt S=0.943/C=11.31%/MDD=14.74% 7/7;
-  ndx S=0.851/C=9.31%/MDD=14.74% 7/7. DSR worst p=5.22e-04. DARF drag edu/vt/ndx:
-  1.76pp/1.56pp/1.23pp/y. Net margin vs Plano C net: +1.84pp (edu), +1.43pp (vt), −0.50pp (ndx).
-  HAA annualized turnover: 266–312%/y (Kill 1 threshold revised 150%→600%: HAA max=1,020%/y).
-- **Score breakdown:** Sharpe 20/25, Gates 25/25, DSR 15/15, CAGR 10/15, MDD 15/15,
-  Robustness 5/5 = 90 WINNER (net). All 5 winner conditions met on net returns.
-- **Lesson:** Brazilian DARF on HAA monthly switching costs ~1.2–1.8pp/y CAGR. Gross 3pp
-  advantage → ~1.6pp net avg (BORDERLINE). Key mechanism: each DARF payment loses future
-  compounding power. Plano C's tax advantage = deferral to single terminal event.
-  Mandate §7 input: HAA+Gold net-of-tax is viable but not conclusively superior to Plano C.
+- **Result:** Net edu S=0.991/C=12.13%/MDD=21.83% 7/7; vt S=0.943/C=11.31%; ndx S=0.851/C=9.31%. DARF drag ~1.2-1.8pp/y. Net margin vs Plano C: +1.84pp (edu), +1.43pp (vt), −0.50pp (ndx). WINNER 90.
+- **Lesson:** HAA monthly DARF ~1.6pp net avg drag. PlanC tax advantage = deferral to terminal. Mandate §7 input: HAA+Gold net viable but not conclusively superior to PlanC. Details: `iterations/011-*/`.
 
 ### 010 — 2026-04-27 — vaa-g3-pure-equity (WINNER 90, Kill 1 TRIGGERED — no Pareto advance)
-
-- **Hypothesis:** VAA-G4 (iter 006) with BNDSIM replaced by GDESIM (90% S&P + 90% gold, ~1.8x notional)
-  in offensive basket. Tests "bond contamination" hypothesis: BNDSIM in VAA-G4 offensive drags Sharpe.
-  `[stocks_on_the_move, ch.6]` PRIMARY. n_trials=1.
-- **Citations:** `[stocks_on_the_move, ch.6]`, `[trading_evolved, p.197]`,
-  `[leverage_for_the_long_run, p.40-60]`, `[advances_fin_ml, p.196-202/208-211/222-223/31-34]`
-- **Scope:** 1 config; 3 datasets; cumulative n_trials=27
-- **Result:** edu S=0.981/C=10.28%/MDD=18.91% 7/7; vt S=0.849/C=8.91%/MDD=18.91% 7/7;
-  ndx S=0.719/C=6.99%/MDD=18.91% 7/7. DSR worst p=2.81e-03. Rolling 26/26 (100%).
-  Kill 1 TRIGGERED: edu Sharpe 0.981 ≤ 1.052 (iter 006 baseline). No Pareto advance vs iter 009.
-- **Score breakdown:** Sharpe 20/25, Gates 25/25, DSR 15/15, CAGR 10/15, MDD 15/15, Robustness 5/5 = 90
-- **Lesson:** GDESIM replacing BNDSIM in VAA offensive: CAGR +2pp (edu: 8.26%→10.28%) but Sharpe −0.07
-  (GDESIM 1.8x notional adds variance faster than returns). VAA breadth mechanism is structurally
-  inferior to HAA canary on Sharpe for this offensive universe. DEAD END for VAA-breadth-Sharpe-max.
+- **Result:** edu S=0.981/C=10.28%/MDD=18.91% 7/7; vt S=0.849/C=8.91%; ndx S=0.719/C=6.99%. Kill 1 TRIGGERED (0.981 ≤ 1.052). WINNER 90 formal.
+- **Lesson:** GDESIM replacing BNDSIM: CAGR +2pp but Sharpe −0.07 (1.8x notional → variance > returns). VAA breadth < HAA canary. DEAD END for VAA-breadth-Sharpe-max. Details: `iterations/010-*/`.
 
 ### 009 — 2026-04-27 — haa-gold-sleeve (WINNER 90) ← PARETO FRONTIER GROSS
 - **Result:** edu S=1.120/C=13.89%/MDD=20.81% 7/7; vt S=1.061/C=12.87%/MDD=14.20% 7/7; ndx S=0.954/C=10.55%/MDD=14.20% 7/7.
@@ -227,13 +195,23 @@ VAA breadth < HAA canary on Sharpe. DEAD END for VAA-breadth-Sharpe-max. Details
 #### ~~iter 011 — HAA SmartStack + NTSD-style equity stacking~~ [SUPERSEDED by Tier 0 USER_DIRECTIVE tax analysis]
 #### ~~iter 012 — HAA SmartStack + 10% GLD (larger gold sleeve)~~ [SUPERSEDED by Tier 0 hybrid net-of-tax]
 
+#### ~~iter 013 — HAA + ZROZSIM defensive~~ [CONSUMED → WINNER 90, Kill 1 triggered]
+
+ZROZSIM added to defensive palette. edu S=1.011/C=16.35%/MDD=28.98% 7/7. Kill 1: Sharpe
+1.011 < 1.120 iter 009. New CAGR frontier (+2.46pp). Lesson: crisis convexity trades Sharpe
+for CAGR — high-duration defensive assets hurt Sharpe even when CAGR improves. Details: `iterations/013-*/`.
+
 ### Tier 1 — established factor literature
 
 **[CONSUMED]** ~~top-K grid~~ (001 STRONG 81), ~~fixed K=2/lb=6m~~ (002 WINNER 90), ~~+MF sleeve~~ (004 WINNER 90). All superseded by iter 005.
 
-Remaining (loop FROZEN after iter 012): static return-stack VTI+VBR+VEA+VWO+bonds+gold;
-vol-managed VTSIM; VTSIM vs US/ex-US rotation; factor sleeve rotation; global all-weather
-stacking (RSSB+GDE+KMLM); conditional NTSI/NTSE allocation. See README.md for full list.
+**Remaining unexplored (from iter 013 next directions):**
+1. **HAA + KMLMSIM-only defensive** — when canary fires, 85% KMLMSIM. Hypothesis: MF positive in
+   both flight-to-safety AND inflationary bears → Sharpe improvement vs CASHX. Kill: edu Sharpe ≤ 1.120.
+2. **HAA dual canary (VWOSIM + VTISIM)** — composite avg of EM + US canary. Reduces false-defensive
+   during EM-bear/US-bull periods (2014-15). Kill: edu Sharpe ≤ 1.120. `[stocks_on_the_move, ch.6]`
+3. **HAA + RSSBSIM in offensive** — replace NTSXSIM with RSSBSIM (global equity+Treasury 100/100).
+   Tests global equity stacking vs US-only. Kill: edu Sharpe ≤ 1.120. `[risk_parity, ch.5]`
 
 ---
 
