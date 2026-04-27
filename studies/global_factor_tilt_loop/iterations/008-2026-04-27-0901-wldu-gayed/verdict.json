@@ -1,0 +1,110 @@
+{
+  "total_score": 61,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 0,
+      "max": 25,
+      "datasets_beat": 0,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 21,
+      "max": 25,
+      "per_dataset": {
+        "educational": 7,
+        "vt_real": 5,
+        "ndx_real": 6
+      },
+      "thresholds": {
+        "educational": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.02973879654014211,
+      "cumulative_n_trials": 25
+    },
+    "4_cagr_floor": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": false
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.6092643141256378,
+      "cagr": 0.1268865805552084,
+      "mdd": 0.4445403279422588,
+      "dsr_p_value": 6.478075639182457e-05
+    },
+    "vt_real": {
+      "sharpe": 0.5007221852138758,
+      "cagr": 0.10113549934785859,
+      "mdd": 0.4445403279422595,
+      "dsr_p_value": 0.018150376087990527
+    },
+    "ndx_real": {
+      "sharpe": 0.47334608357958885,
+      "cagr": 0.09439905501094326,
+      "mdd": 0.4445403279422596,
+      "dsr_p_value": 0.02973879654014211
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.6626,
+      "cagr": 0.0999,
+      "mdd": 0.5835,
+      "label": "VTSIM b&h (56y synth)"
+    },
+    "vt_real": {
+      "sharpe": 0.5132,
+      "cagr": 0.088,
+      "mdd": 0.5021,
+      "label": "VTSIM proxy 2008-06+ (~17y; VT live pending)"
+    },
+    "ndx_real": {
+      "sharpe": 0.9472,
+      "cagr": 0.1899,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 25,
+  "configs_tested": 1,
+  "primary_citation": "[leverage_for_the_long_run, ch.3-4, p.40-60]",
+  "hypothesis_slug": "wldu-gayed",
+  "status": "promising",
+  "notional_factor": 2.0,
+  "robustness": {
+    "n_windows": 36,
+    "pct_positive_sharpe": 1.0,
+    "min_rolling_sharpe": 0.1639964029546801,
+    "max_rolling_sharpe": 1.423325577131945,
+    "bonus_pts": 5
+  }
+}

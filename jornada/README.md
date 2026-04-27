@@ -29,9 +29,9 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-27 — 🏆 QUATRO WINNERS; global_factor_tilt iter 005 Pareto frontier; iter 006 VAA STRONG)
+## Onde estamos hoje (2026-04-27 — 🏆 CINCO WINNERS; iter 009 HAA+GLD = NOVO PARETO FRONTIER)
 
-**Estado:** 🏆 **LOOPS COM WINNERS. global_factor_tilt continua iterando (queue iter 007-008).**
+**Estado:** 🏆 **LOOPS COM WINNERS. iter 009 HAA+Gold WINNER 90/100. Próximo: VAA-G3 (iter 010).**
 
 1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
    (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
@@ -44,18 +44,35 @@ trading: palpite disfarçado de análise.
 3. **global_factor_tilt_loop iter 004**: mesmo momentum + 10% KMLMSIM fixo.
    Score 90/100, Sharpe 0.885/0.842/0.943, MDD 20.77%/16.06%.
 
-4. **global_factor_tilt_loop iter 005 — HAA SmartStack** ← **FRONTEIRA PARETO**
+4. **global_factor_tilt_loop iter 005 — HAA SmartStack** ← **supersedido por iter 009**
    HAA (Keller & Keuning 2023) + universo stackado (NTSXSIM/NTSI/NTSE/GDESIM)
-   + canário VWOSIM + 10% KMLMSIM fixo. Score 90/100, **7/7 gates × 3 datasets**,
-   **26/26 janelas rolling-5y positivas**. Sharpe **1.112/1.049/0.942**, CAGR **14.14%**,
-   MDD **20.91%** (31y). Domina TODAS as três referências em todas as dimensões.
-   Gap para bestfolio HAA SmartStack: apenas −0.07 Sharpe (1.112 vs 1.18).
+   + canário VWOSIM + 10% KMLMSIM fixo. Score 90/100, 7/7 gates × 3 datasets.
+   Sharpe 1.112/1.049/0.942, CAGR 14.14%, MDD 20.91% (31y).
 
-5. **global_factor_tilt_loop iter 006 — VAA-G4 SmartStack** ← **STRONG 85/100**
+5. **global_factor_tilt_loop iter 009 — HAA+Gold Sleeve** ← **NOVO PARETO FRONTIER**
+   HAA SmartStack + 5% GLDSIM fixo. dynamic=85% + KMLM=10% + GLD=5%. Score 90/100,
+   **7/7 gates × 3 datasets, 26/26 rolling-5y**. Sharpe **1.120/1.061/0.954**, CAGR 13.89%,
+   MDD **14.20%** (vt_real). G3 nominal passa (max_mdd 20.81% < 25%).
+   Delta vs iter 005: +0.008-0.012 Sharpe, -0.85pp MDD em vt/ndx, -0.25pp CAGR.
+   Domina TODAS as três referências em todas as dimensões.
+   Gap para bestfolio: **−0.06 Sharpe** (1.120 vs 1.18; reduzido de 0.07).
+
+6. **global_factor_tilt_loop iter 006 — VAA-G4 SmartStack** ← **STRONG 85/100**
    VAA breadth momentum (4 ativos votam regime) + sleeve KMLMSIM+GLDSIM 15%.
    Sharpe 1.052/0.850/0.733, CAGR 8.26%, MDD 14.24% (31y). Passes 7/7 gates × 3 datasets.
    Subordinado ao HAA (CAGR 8.26% vs 14.14%). Lição: bonds como 4º ofensivo
-   contamina o sinal e sacrifica CAGR sistematicamente. Queue: iter 007-008.
+   contamina o sinal e sacrifica CAGR sistematicamente.
+
+7. **global_factor_tilt_loop iter 007 — Static Portfolio + G3'** ← **STRONG 88/100**
+   9 sleeves (RSSB/RSST/AVUV/AVDV/AVEM/SPMO/IDMO/GDE/KMLM), 1.45× notional.
+   Sharpe 0.773/0.656/0.826. G3' CONFIRMADO. Gap: G6 vt_real CI_low=−0.0004 (borderline).
+   Domina todos os 3 benchmarks de mandato. Subordinado ao HAA.
+
+8. **global_factor_tilt_loop iter 008 — WLDU+Gayed** ← **PROMISING 61/100** (DEAD END)
+   LETF 2× equity global + filtro 200d SMA. Sharpe 0.609/0.501/0.473, CAGR 12.69%.
+   **Dead end estrutural**: VTSIM já tem Sharpe 0.61 = target do LRS de Gayed. Nenhuma
+   melhoria possível em equity global diversificada. MDD 44.45% (2022 bear). Documentado
+   em DEAD_ENDS.md DE-001.
 
 **Mandate inalterado:** §1 continua **MAINTENANCE 100% Plano C
 passive factor-tilted** (`portfolio-aposentadoria.md` +
@@ -64,7 +81,17 @@ DORMANT (0% capital). Os loops produzem **CANDIDATOS, não posições
 live** — deployment requer §7 override assinado pelo usuário com
 evidência completa (final_reports + paper trading 3-6 meses).
 
-**Próximas decisões do usuário (fora do hunt loop):**
+**Próximas decisões do usuário:**
+
+- **global_factor_tilt_loop**: iter 009 (HAA+Gold) WINNER. Próximo: **iter 010 VAA-G3 SmartStack**
+  (substituir BNDSIM como 4º ofensivo por equity puro — testa se bond contamination era a
+  única fraqueza do VAA iter 006).
+- **strategy_hunt_loop**: ler `iterations/079-*/final_report.md` e decidir confirmatory sweep
+  + paper trading schedule. Winner iter 079 aguarda deliberação §7.
+- **global_factor_tilt_loop winners (iters 002/004/005/009)**: 4 candidatos prontos para
+  deliberação §7. HAA+Gold (iter 009) é o novo Pareto frontier.
+
+**Decisões do usuário (fora do hunt loop):**
 
 1. **Ler `studies/strategy_hunt_loop/iterations/079-2026-04-26-1100-multi-asset-topk-momentum/final_report.md`** —
    verdict completo + 3 caveats honestos (ndx CAGR floor missed; PBO
@@ -189,6 +216,10 @@ Termos que aparecem ao longo das entradas do changelog:
 — bug Tiingo IEX em US holidays.
 
 ### 2026-04-27
+
+- [2026-04-27 17h30 — 🏆 **Global Factor-Tilt Loop iter 009: HAA+Gold Sleeve — WINNER 90/100 — NOVO PARETO FRONTIER.** HAA SmartStack + 5% GLDSIM fixo (dynamic=85% + KMLM=10% + GLD=5%). Resultados: edu Sharpe=1.120/CAGR=13.89%/MDD=20.81% 7/7; vt_real Sharpe=1.061/CAGR=12.87%/MDD=14.20% 7/7; ndx_real Sharpe=0.954/CAGR=10.55%/MDD=14.20% 7/7. G3 nominal passa (20.81%<25%). 26/26 rolling-5y positivas. Delta vs iter 005: +0.008-0.012 Sharpe, -0.85pp MDD (vt/ndx), -0.25pp CAGR. Gap bestfolio: 0.06 (era 0.07). `[ilmanen_expected_returns, ch.fx-carry]` gold diversification. [GLOBAL TILT LOOP — WINNER 004 🏆]](2026-04-27-1730-haa-gold-sleeve-winner.md)
+
+- [2026-04-27 16h00 — **Global Factor-Tilt Loop iter 008: WLDU+Gayed — PROMISING 61/100 — DEAD END documentado.** Hipótese: LETF 2× em equity global (VTSIM×2) com filtro Gayed 200d SMA (SPYSIM). Resultado: Sharpe 0.609/0.501/0.473, CAGR 12.69%, MDD 44.45%. **Dead end estrutural**: VTSIM b&h Sharpe já é 0.61 = target Sharpe do Gayed LRS sobre S&P 500. Zero melhoria possível. Kill 2 ativado (MDD>35% por 2022 grinding bear). Fila pré-committed (iters 005-008) totalmente consumida. Próximos: HAA+gold (iter 009), VAA-G3 (iter 010). `[leverage_for_the_long_run, p.17, Table 8]`. [GLOBAL TILT LOOP — PROMISING — DEAD END DE-001]](2026-04-27-1600-wldu-gayed-promising.md)
 
 - [2026-04-27 09h00 — 🏆 **Global Factor-Tilt Loop iter 005: HAA SmartStack — WINNER 90/100 — NOVA FRONTEIRA PARETO.** HAA (Keller & Keuning 2023) + universo empilhado (NTSXSIM 90/60, NTSI-synth, NTSE-synth, GDESIM) + canário VWOSIM + 10% KMLMSIM fixo. **Resultados**: edu Sharpe=1.112/CAGR=14.14%/MDD=20.91% **7/7 gates**; vt_real Sharpe=1.049/CAGR=12.99%/MDD=15.05% **7/7**; ndx_real Sharpe=0.942/CAGR=10.63%/MDD=15.05% **7/7**. DSR worst p=5.38e-10. Rolling 5y: **26/26 positivos (100%)**, min Sharpe=0.654. **Comparação 31y vs referências**: domina VT (+0.566 Sharpe/+5.5pp CAGR/−37pp MDD), Plano C (+0.441/+3.2pp/−31pp), V_HYBRID+MF (+0.369/+3.23pp/−24pp) e iter 002 prior winner (+0.111 Sharpe). Gap bestfolio: apenas −0.07 Sharpe (1.112 vs 1.18). Score 90/100, 5/5 condições WINNER. Citações: `[stocks_on_the_move, ch.6]` + `[ilmanen_expected_returns, ch.19]` + `[leverage_for_the_long_run, p.40-60]` + `[advances_fin_ml, p.208-211/222-223/196-202/31-34]` + HAA SSRN 4346906. **Mandate §1 MAINTENANCE inalterado** — candidato §7, não deploy automático. [GLOBAL TILT LOOP STATUS: WINNER 🏆]](2026-04-27-0900-haa-smartstack-winner.md)
 
