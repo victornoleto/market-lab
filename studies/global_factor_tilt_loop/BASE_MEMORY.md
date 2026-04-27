@@ -1,10 +1,11 @@
 ---
 mission: "find one global strategy beating VT 1x b&h + Plano C V3_1 v3.5 + V_HYBRID+MF on real data"
-total_iterations: 2
+total_iterations: 3
 winners_found: 1
-status: winner
-latest_iteration: "002-2026-04-26-2306-fixed-momentum-k2-lb6"
-cumulative_n_trials: 19
+status: iterating
+latest_iteration: "003-2026-04-26-2347-capital-efficient-static"
+cumulative_n_trials: 20
+note: "Iter 002 winner preserved in `## Winners found`. Iter 003 = USER_SPECIFIED capital-efficient static portfolio → STRONG (84/100), all 5 winner conds met but score < 90."
 ---
 
 # Global Factor-Tilt Loop — BASE MEMORY
@@ -75,11 +76,35 @@ validation + §7 override deliberation.
 | rank | iter | slug | score | tier | Sharpe (edu/vt/ndx) | CAGR (edu) | MDD (edu) |
 |---|---|---|---|---|---|---|---|
 | 1 | 002 | fixed-momentum-k2-lb6 | **90** | **WINNER** | 0.991 / 0.838 / 0.929 | 12.0% | 23.4% |
-| 2 | 001 | global-momentum-topk | 81 | STRONG | 1.040 / 0.883 / 0.929 | 12.0% | 21.9% |
+| 2 | 003 | capital-efficient-static | 84 | STRONG | 0.773 / 0.656 / 0.826 | 11.65% | 44.54% |
+| 3 | 001 | global-momentum-topk | 81 | STRONG | 1.040 / 0.883 / 0.929 | 12.0% | 21.9% |
 
 ---
 
 ## Iteration log (newest first)
+
+### 003 — 2026-04-26 — capital-efficient-static (STRONG, 84/100)
+
+- **Hypothesis:** USER_SPECIFIED static portfolio: 9 sleeves (RSSB 25%, RSST 15%,
+  AVUV 10%, AVDV 7%, AVEM 8%, SPMO 8%, IDMO 7%, GDE 12%, KMLM 8%). Return-stacking
+  + factor breadth + diversifier load vs VT/Plano C/V_HYBRID+MF.
+  `[risk_parity, ch.5]` + `[ilmanen_expected_returns, ch.19]` + `[stocks_on_the_move, p.21-30]`
+- **Citations:** `[risk_parity, ch.5/3-5]`, `[leverage_for_the_long_run, p.40-60]`,
+  `[advances_fin_ml, ch.10/p.208-211/222-223/196-202/31-34]`,
+  `[ilmanen_expected_returns, ch.19]`, `[stocks_on_the_move, p.21-30]`
+- **Scope:** 1 config, pre-committed; educational = 1995-2026 (31y; VSSSIM binding);
+  cumulative n_trials=20
+- **Result:** edu Sharpe=0.773/CAGR=11.65%/MDD=44.54% gates=6/7; vt_real
+  Sharpe=0.656/CAGR=10.56%/MDD=43.13% gates=5/7; ndx_real Sharpe=0.826/
+  CAGR=12.10%/MDD=28.83% gates=6/7. DSR worst p=2.91e-3. Rolling 5y: 27/27
+  positive (100%). 31y vs V_HYBRID+MF: +0.030 Sharpe, +0.74pp CAGR, −0.17pp MDD.
+- **Score breakdown:** Sharpe 20/25, Gates 19/25, DSR 15/15, CAGR 10/15,
+  MDD 15/15, Robustness 5/5
+- **Lesson:** Capital-efficient stacking (1.45× notional) is structurally
+  incompatible with G3's 25% MDD gate (calibrated for 1× equity). All 8 WF windows
+  profitable but 4 exceed 25% MDD in systemic crashes (2001, 2008, 2022).
+  Long-window performance dominates all 3 benchmarks — gate is the ceiling, not the
+  strategy.
 
 ### 002 — 2026-04-26 — fixed-momentum-k2-lb6 (WINNER, 90/100)
 
@@ -133,6 +158,82 @@ validation + §7 override deliberation.
 Seeded from `README.md` hypothesis menu (Tiers 1-4). Pick the
 simplest version of one direction first; iterate to complexity only
 if simple version scores ≥ PROMISING.
+
+### Tier 0 — [CONSUMED by iter 003]
+
+**~~0. Capital-efficient global factor-tilted static portfolio~~** →
+STRONG 84/100. All 5 winner conditions met. G3 structural failure (stacking
+1.45× notional → crisis MDD > 25% threshold). Long-window beats V_HYBRID+MF.
+Next: reduced-stacking variant (iter 004+) or VIX-conditional leverage.
+
+Exact weights (sum=100%):
+
+| Ticker | Weight | Role | Synth path |
+|---|---|---|---|
+| RSSB | 25% | Global eq + Treas stacked | `RSSBSIM` cached (100% VT-eq + 100% IEF) |
+| RSST | 15% | US eq + MF stacked | synth: 100% SPYSIM + 100% KMLMSIM (or DBMFSIM); `[ilmanen_expected_returns, ch.19]` |
+| AVUV | 10% | US small cap value (Avantis) | synth from `VBRSIM` if cached, else proxy as VBR + 0.5%/y SCV premium `[advances_fin_ml, p.31-34]` for cross-lib |
+| AVDV | 7% | Dev ex-US small cap value | synth: `VSSSIM` (or `EFVSIM` proxy with size tilt) |
+| AVEM | 8% | EM broad with Avantis tilts | synth: `VWOSIM` baseline (Avantis tilt premium ~0.3%/y, document gap) |
+| SPMO | 8% | US momentum | synth from `SPYSIM` + cross-sectional momentum overlay; or use any cached momentum factor proxy |
+| IDMO | 7% | Dev ex-US momentum | synth from `VEASIM` + momentum overlay |
+| GDE | 12% | S&P 500 + gold stacked | `GDESIM` cached (90% SPY + 90% gold via futures) |
+| KMLM | 8% | Managed futures | `KMLMSIM` cached |
+
+**Mechanism**: ~46% global equity (cap-weighted + factor tilts), ~25%
+intermediate Treasuries (via RSSB stacking), ~15% managed futures (RSST
++ KMLM), ~12% gold (GDE stacking), ~5-10% size/value/momentum factor
+load. Effective leverage ~1.4-1.5×. Static, monthly rebalance.
+
+**Citations** (mandatory per CLAUDE.md Regra 2):
+- Return stacking / capital efficiency: `[risk_parity, ch.5]`,
+  `[leverage_for_the_long_run, p.40-60]` (LETF risk caveats apply
+  inversely to capital-efficient overlays)
+- Small cap value premium: `[advances_fin_ml, ch.10]` empirical, or
+  `[expected_returns_ilmanen, ch.4]` (Fama-French 1993 / DFA / Avantis
+  methodology)
+- Managed futures sleeve: `[ilmanen_expected_returns, ch.19]`,
+  `[trading_evolved, p.197]`
+- Momentum factor: `[stocks_on_the_move, p.21-30]`
+- Multi-asset diversification: `[risk_parity, ch.3-5]`
+
+**Edge source vs benchmarks**: VT b&h is 100% equity passive; Plano C
+V3_1 v3.5 has ~10% MF + factor tilt but no return-stacking; V_HYBRID+MF
+is similar but capped at 10% MF and no gold overlay. This portfolio's
+edge is the **stacking** (RSSB+RSST+GDE deliver 1.4-1.5× notional
+exposure on 1× capital), the **factor breadth** (5 distinct value/momo
+sleeves across regions), and the **diversifier load** (~25% MF+gold
+combined vs 10-12% in the benchmarks).
+
+**Pre-commit kill criteria** (single observable that falsifies):
+- If 32-y synth Sharpe ≤ V_HYBRID+MF (0.743) on `vt_real` → fail.
+- If MDD > Plano C V3_1 (52%) on any single dataset → fail.
+
+**Synth note**: 4 of 9 tickers (RSST, AVUV, AVDV, AVEM, SPMO, IDMO) lack
+direct SIM cache. Iter MUST document each synth choice + cite, then
+run G7 cross-lib parity to validate the synth equity curve. If
+unable to synth honestly within ±3pp CAGR, mark as INCOMPLETE and
+explain in `final_report.md` instead of forcing a result.
+
+**Constraint**: Iter MUST test the EXACT weights as given. No grid,
+no optimization, no rebalance variations. Single config. If it fails,
+that's the honest answer — do not "rescue" by tuning.
+
+### Tier 0b — iter 003 follow-ups (from structural G3 failure)
+
+**0b-1. Reduced-stacking variant**: Same 9-asset mix but RSST weight cut from
+15% → 8%, redistributing 7% to VBRSIM (AVUV). Effective notional ~1.28× instead
+of 1.45×. Hypothesis: lower stacking reduces G3 crisis MDD below 25% while
+preserving >80% of Sharpe gain. Single config, pre-committed. `[risk_parity, ch.5]`
+
+**0b-2. VIX-conditional RSST**: Full portfolio as in iter 003, but RSST weight
+cuts from 15% to 7% when VIX > 25 (crisis mode). Single binary switch, no
+optimizer. Hypothesis: dynamic stacking suppresses G3 crisis MDD while
+maintaining average notional ~1.4×. `[systematic_trading, ch.11]` Moreira-Muir.
+
+**0b-3. KMLM+DBMF expansion**: Iter 003 portfolio but replace KMLM 8% with
+5% KMLMSIM + 3% DBMFSIM (two uncorrelated MF strategies). Tests if MF breadth
+improves Sharpe/MDD. `[ilmanen_expected_returns, ch.19]`
 
 ### Tier 1 — established factor literature (start here)
 

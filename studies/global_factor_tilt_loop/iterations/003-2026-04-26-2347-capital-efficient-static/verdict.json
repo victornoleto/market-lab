@@ -1,0 +1,130 @@
+{
+  "total_score": 84,
+  "tier": "STRONG",
+  "winner_conditions_met": true,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 20,
+      "max": 25,
+      "datasets_beat": 2,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": 6,
+        "vt_real": 5,
+        "ndx_real": 6
+      },
+      "thresholds": {
+        "educational": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.0029051594497906397,
+      "cumulative_n_trials": 20
+    },
+    "4_cagr_floor": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.7727660211159157,
+      "cagr": 0.11645195224386118,
+      "mdd": 0.44537871710852284,
+      "dsr_p_value": 8.97205293215464e-06
+    },
+    "vt_real": {
+      "sharpe": 0.6560013231075007,
+      "cagr": 0.10561789444667391,
+      "mdd": 0.43132194891858355,
+      "dsr_p_value": 0.0029051594497906397
+    },
+    "ndx_real": {
+      "sharpe": 0.825930128994549,
+      "cagr": 0.12096040471956293,
+      "mdd": 0.2882978746192154,
+      "dsr_p_value": 0.0005413012800117301
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.553266580620498,
+      "cagr": 0.08815631671436619,
+      "mdd": 0.5835299332163728,
+      "label": "VTSIM b&h 1995-2026 (~31y; VSSSIM binding)"
+    },
+    "vt_real": {
+      "sharpe": 0.5132,
+      "cagr": 0.088,
+      "mdd": 0.5021,
+      "label": "VTSIM proxy 2008-06+ (~17y; VT live pending)"
+    },
+    "ndx_real": {
+      "sharpe": 0.9472,
+      "cagr": 0.1899,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 20,
+  "configs_tested": 1,
+  "primary_citation": "[risk_parity, ch.5]",
+  "hypothesis_slug": "capital-efficient-static",
+  "status": "strong",
+  "educational_benchmark_note": "Educational benchmark uses VTSIM(1995-2026) not VTSIM(56y) because VSSSIM/VWOSIM are binding constraints starting 1994-12.",
+  "robustness": {
+    "n_windows": 27,
+    "pct_positive_sharpe": 1.0,
+    "min_rolling_sharpe": 0.32420443111060016,
+    "max_rolling_sharpe": 1.6736005375671381,
+    "bonus_pts": 5
+  },
+  "custom_benchmarks": {
+    "educational": {
+      "sharpe": 0.553266580620498,
+      "cagr": 0.08815631671436619,
+      "mdd": 0.5835299332163728,
+      "label": "VTSIM b&h 1995-2026 (~31y; VSSSIM binding)"
+    },
+    "vt_real": {
+      "sharpe": 0.5132,
+      "cagr": 0.088,
+      "mdd": 0.5021,
+      "label": "VTSIM proxy 2008-06+ (~17y; VT live pending)"
+    },
+    "ndx_real": {
+      "sharpe": 0.9472,
+      "cagr": 0.1899,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  }
+}
