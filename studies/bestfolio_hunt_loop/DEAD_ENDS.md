@@ -438,3 +438,62 @@ defensive sleeves `[stocks_on_the_move, ch.6]`.
 | educational | 0.983 | 12.15% | 20.81% | 7/7 |
 | vt_real | 0.954 | 11.49% | 14.20% | 7/7 |
 | ndx_real | 0.860 | 9.44% | 14.20% | 7/7 |
+
+---
+
+## DE-010 — Simple HAA dual broad-equity canary (`VWOSIM` + `VTISIM`)
+
+**Origin**: bestfolio_hunt_loop iter 008 — haa-dual-canary
+**Score**: 73/100 PROMISING
+**Date**: 2026-04-28
+
+### What was tested
+
+- Iter 009 HAA+Gold assets retained exactly: offensive `NTSXSIM`, `NTSI`,
+  `NTSE`, `GDESIM`; defensive `IEFSIM`, `BNDSIM`, `CASHX`; fixed 10%
+  `KMLMSIM` + 5% `GLDSIM`.
+- Changed only the binary HAA risk-on/risk-off trigger.
+- Tested four canary modes:
+  - `vwo_only`: original `VWOSIM` HAA momentum > 0.
+  - `vti_only`: `VTISIM` HAA momentum > 0.
+  - `either_vwo_vti`: either canary > 0.
+  - `both_vwo_vti`: both canaries > 0.
+- Selected config: `vwo_only`, by maximum mean Sharpe divided by iter 009
+  Sharpe across the three datasets.
+- Net-of-tax via `AnnualDarfEngine`.
+- Sources: `[stocks_on_the_move, ch.6]`; `[stocks_on_the_move, p.63-65]`.
+
+### Why it fails structurally
+
+Adding `VTISIM` as a second broad-equity canary did not reduce false-defensive
+drag. The original `VWOSIM` canary was selected again and produced net Sharpe
+**0.983 / 0.954 / 0.860** versus iter 009 HAA+Gold **1.120 / 1.061 / 0.954**.
+Zero datasets beat iter 009 by the required +0.10 Sharpe edge.
+
+`vti_only` was worse on all datasets. The permissive `either_vwo_vti` rule
+held risk assets too often and raised real-window MDD to **18.93%** while
+lowering Sharpe. The strict `both_vwo_vti` rule cut drawdown in real windows
+but sacrificed too much CAGR and Sharpe. The ndx_real PBO failed at **0.552**,
+so even the grid-level canary choice was not stable enough
+`[advances_fin_ml, p.208-211]`.
+
+**Structural insight**: in this HAA universe, a second broad-equity absolute
+momentum canary is not the missing timing edge. `VWOSIM` remains the best
+simple binary risk-state trigger; next canary work must use a qualitatively
+different trend/regime input rather than another equity index.
+
+### What CAN be tried instead
+
+- Gayed/SPY/VT moving-average trend input as an HAA canary, not as standalone
+  2x equity.
+- A tightly pre-committed volatility throttle on the HAA dynamic sleeve.
+- A CAGR-first HAA variant only if the loop objective explicitly changes away
+  from Sharpe frontier hunting.
+
+### Results summary
+
+| dataset | net Sharpe | net CAGR | net MDD | Gates |
+|---|---:|---:|---:|---:|
+| educational | 0.983 | 12.15% | 20.81% | 7/7 |
+| vt_real | 0.954 | 11.49% | 14.20% | 7/7 |
+| ndx_real | 0.860 | 9.44% | 14.20% | 6/7 |

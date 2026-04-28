@@ -29,9 +29,9 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-28 — bestfolio_hunt_loop iter 007: HAA defensive KMLM/CASH STRONG)
+## Onde estamos hoje (2026-04-28 — bestfolio_hunt_loop iter 008: HAA dual-canary PROMISING)
 
-**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). bestfolio_hunt_loop ATIVO, 7/7 sem winner** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 007 HAA defensive KMLM/CASH: **STRONG 75/100**, net Sharpe 0.983/0.954/0.860; passou 7/7 gates nos 3 datasets, mas falhou Sharpe edge 0/3 e o kill educacional (0.983 <= 1.120). Lição: a defesa original `IEFSIM/BNDSIM/CASHX` ganhou novamente; KMLM pesado aumenta MDD para 27.49% e cash puro corta CAGR. Próxima borda precisa mexer no timing do canário, não trocar a cesta defensiva simples. `[stocks_on_the_move, ch.6]`; `[risk_parity, ch.5]`.
+**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). bestfolio_hunt_loop ATIVO, 8/8 sem winner** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 008 HAA dual-canary: **PROMISING 73/100**, net Sharpe 0.983/0.954/0.860; gates 7/7, 7/7, 6/7; falhou Sharpe edge 0/3 e o kill educacional (0.983 <= 1.120). Lição: o canário original `VWOSIM` ganhou novamente; adicionar `VTISIM` piorou Sharpe, seja como substituto, confirmação ou gatilho permissivo. Próxima borda precisa de um input de regime qualitativamente diferente, não outro canário amplo de ações. `[stocks_on_the_move, ch.6]`; `[stocks_on_the_move, p.63-65]`.
 
 1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
    (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
@@ -83,7 +83,7 @@ evidência completa (final_reports + paper trading 3-6 meses).
 
 **Próximas decisões do usuário (mandate §7):**
 
-Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **bestfolio_hunt_loop em andamento** — iter 001 consumiu BAA-G12, iter 002 consumiu Composite Momentum Standard, iter 003 consumiu static global/factor/CTA stack, iter 004 consumiu HAA small/value tilt, iter 005 consumiu HAA RSST/RSSB/CTA, iter 006 consumiu HAA RSIT sintético e iter 007 consumiu defesa HAA KMLM/CASH; todos viraram dead-end estrutural para bater o HAA+Gold. Próximas direções prioritárias: dual-canary HAA ou sinal Gayed/SPY/VT como input de canário para reduzir falsos estados defensivos sem diluir o sleeve ofensivo. Três opções concretas para o predecessor:
+Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **bestfolio_hunt_loop em andamento** — iter 001 consumiu BAA-G12, iter 002 consumiu Composite Momentum Standard, iter 003 consumiu static global/factor/CTA stack, iter 004 consumiu HAA small/value tilt, iter 005 consumiu HAA RSST/RSSB/CTA, iter 006 consumiu HAA RSIT sintético, iter 007 consumiu defesa HAA KMLM/CASH e iter 008 consumiu HAA dual-canary; todos viraram dead-end estrutural para bater o HAA+Gold. Próxima direção prioritária: sinal Gayed/SPY/VT como input de canário para reduzir falsos estados defensivos sem diluir o sleeve ofensivo. Três opções concretas para o predecessor:
 
 1. **Manter Plano C** (mandato atual §1): CAGR ~10.3% líquido, MDD ~52%, zero complexidade.
 2. **Ativar 50/50 Híbrido** (iter 012): CAGR ~13.4% líquido, MDD ~27%, Sharpe **melhor que HAA puro**,

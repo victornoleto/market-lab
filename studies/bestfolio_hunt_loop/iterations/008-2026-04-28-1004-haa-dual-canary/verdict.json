@@ -1,0 +1,124 @@
+{
+  "total_score": 73,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 0,
+      "max": 25,
+      "datasets_beat": 0,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 23,
+      "max": 25,
+      "per_dataset": {
+        "educational": 7,
+        "vt_real": 7,
+        "ndx_real": 6
+      },
+      "thresholds": {
+        "educational": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.011546745102549827,
+      "cumulative_n_trials": 28
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9831672318820831,
+      "cagr": 0.12153248615220358,
+      "mdd": 0.20813662986189768,
+      "dsr_p_value": 8.880900642105338e-06
+    },
+    "vt_real": {
+      "sharpe": 0.9540295455550066,
+      "cagr": 0.11492169361037141,
+      "mdd": 0.1420192845835985,
+      "dsr_p_value": 0.002363515129191085
+    },
+    "ndx_real": {
+      "sharpe": 0.8601318401487787,
+      "cagr": 0.09435055667632875,
+      "mdd": 0.1420192845835988,
+      "dsr_p_value": 0.011546745102549827
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 1.12,
+      "cagr": 0.1389,
+      "mdd": 0.2081,
+      "label": "iter009 HAA+Gold edu (56y synth)"
+    },
+    "vt_real": {
+      "sharpe": 1.061,
+      "cagr": 0.1287,
+      "mdd": 0.142,
+      "label": "iter009 HAA+Gold vt_real (~17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.954,
+      "cagr": 0.1055,
+      "mdd": 0.142,
+      "label": "iter009 HAA+Gold ndx_real (16y)"
+    }
+  },
+  "cumulative_n_trials": 28,
+  "status": "promising",
+  "configs_tested": 4,
+  "primary_citation": "[stocks_on_the_move, ch.6]",
+  "hypothesis_slug": "haa-dual-canary",
+  "selected_config": "vwo_only",
+  "selection_rule": "max mean Sharpe / iter009 Sharpe across educational, vt_real, ndx_real",
+  "tax_model": "AnnualDarfEngine",
+  "notional_factor": 1.45,
+  "canary_configs": {
+    "vwo_only": "vwo_only",
+    "vti_only": "vti_only",
+    "either_vwo_vti": "either_vwo_vti",
+    "both_vwo_vti": "both_vwo_vti"
+  },
+  "defensive_universe": [
+    "IEFSIM",
+    "BNDSIM",
+    "CASHX"
+  ],
+  "robustness": {
+    "bonus_pts": 5,
+    "pct_positive_sharpe": 1.0,
+    "n_windows": 26,
+    "min_rolling_sharpe": 0.5485864404652399,
+    "max_rolling_sharpe": 1.507346830757108
+  }
+}
