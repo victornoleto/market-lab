@@ -1,0 +1,115 @@
+{
+  "iteration": "014-2026-04-27-annual-darf-rerun",
+  "hypothesis": "Hybrid 50/50 re-run with annual DARF correction (Lei 14.754/2023)",
+  "tax_model_change": "monthly\u2192annual DARF; indefinite loss carryforward",
+  "total_score": 85,
+  "tier": "STRONG",
+  "winner_conditions_met": true,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 20,
+      "max": 25,
+      "datasets_beat": 2,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 25,
+      "max": 25,
+      "per_dataset": {
+        "educational": 7,
+        "vt_real": 7,
+        "ndx_real": 7
+      },
+      "thresholds": {
+        "educational": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.01,
+      "cumulative_n_trials": 1
+    },
+    "4_cagr_floor": {
+      "points": 10,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": false
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 0,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9627729246369748,
+      "cagr": 0.12358677633418402,
+      "mdd": 0.26357857108258753,
+      "dsr_p_value": 0.01
+    },
+    "vt_real": {
+      "sharpe": 1.0415846751387525,
+      "cagr": 0.13847326309058805,
+      "mdd": 0.19407703831272685,
+      "dsr_p_value": 0.01
+    },
+    "ndx_real": {
+      "sharpe": 0.9652416697644772,
+      "cagr": 0.11773185959519461,
+      "mdd": 0.19222491142199624,
+      "dsr_p_value": 0.01
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 0.6626,
+      "cagr": 0.0999,
+      "mdd": 0.5835,
+      "label": "VTSIM b&h (56y synth)"
+    },
+    "vt_real": {
+      "sharpe": 0.5132,
+      "cagr": 0.088,
+      "mdd": 0.5021,
+      "label": "VTSIM proxy 2008-06+ (~17y; VT live pending)"
+    },
+    "ndx_real": {
+      "sharpe": 0.9472,
+      "cagr": 0.1899,
+      "mdd": 0.3512,
+      "label": "QQQ b&h Tiingo (16y)"
+    }
+  },
+  "cumulative_n_trials": 1,
+  "delta_vs_iter012": {
+    "educational": {
+      "delta_sharpe": -0.0584,
+      "delta_cagr_pp": -1.02
+    },
+    "vt_real": {
+      "delta_sharpe": -0.0163,
+      "delta_cagr_pp": -0.21
+    },
+    "ndx_real": {
+      "delta_sharpe": -0.0063,
+      "delta_cagr_pp": -0.07
+    }
+  }
+}

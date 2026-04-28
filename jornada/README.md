@@ -29,9 +29,9 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-27 — loop FECHADO: híbrido 50/50 domina HAA puro no Sharpe)
+## Onde estamos hoje (2026-04-27 — bestfolio_hunt_loop lançado; iter 014 DARF anual corrigido)
 
-**Estado:** 🏆 **12 iterações concluídas. Loop FROZEN. Fronteira net-of-tax: híbrido 50/50 (S=1.021/C=13.38%/MDD=26.85% edu). Mandate §7 deliberation required.**
+**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). bestfolio_hunt_loop ATIVO** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 014: modelo anual ≈ mensal para HAA alto-rotatividade (Δ −0.058 Sharpe edu — diferença pequena).
 
 1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
    (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
@@ -83,7 +83,7 @@ evidência completa (final_reports + paper trading 3-6 meses).
 
 **Próximas decisões do usuário (mandate §7):**
 
-Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. Três opções concretas:
+Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **bestfolio_hunt_loop PRONTO** — rodar com `MAX_ITER=6 CLAUDE_MODEL=opus bash studies/bestfolio_hunt_loop/run_loop.sh`. Três opções concretas para o predecessor:
 
 1. **Manter Plano C** (mandato atual §1): CAGR ~10.3% líquido, MDD ~52%, zero complexidade.
 2. **Ativar 50/50 Híbrido** (iter 012): CAGR ~13.4% líquido, MDD ~27%, Sharpe **melhor que HAA puro**,
@@ -205,6 +205,8 @@ Termos que aparecem ao longo das entradas do changelog:
 — bug Tiingo IEX em US holidays.
 
 ### 2026-04-27
+
+- [2026-04-27 22h40 — **bestfolio_hunt_loop lançado + iter 014 DARF anual + plot unificado.** (1) `plot_winners_all.py`: comparação all-winners (iters 005/009/013) vs VT+SPY em escala log. (2) `tax_engine_v2.py`: `AnnualDarfEngine` (Lei 14.754/2023) — DARF anual, carryforward indefinido, modelo correto para backtests futuros. (3) iter 014: rerun híbrido com modelo anual → edu S=0.963 (vs 1.021 modelo mensal) — diferença pequena para HAA alto-turnover. (4) `bestfolio_hunt_loop/` infra completa (10 arquivos) — benchmark = iter 009 S=1.120; hipóteses: BAA-G12, NTSX+GDE+KMLM static, Composite Momentum, HAA+RSIT. (5) `docs/investment-mandate.md` §4.7.2 corrigido com nota DARF anual. [BESTFOLIO HUNT LOOP ATIVO 🚀]](2026-04-27-2240-bestfolio-hunt-loop-launch.md)
 
 - [2026-04-27 19h30 — **Global Factor-Tilt Loop FECHADO (iter 012): Híbrido 50/50 HAA+Gold + Plano C — STRONG 85/100, Kill PASS, Pareto PASS.** DESCOBERTA INESPERADA: o híbrido tem Sharpe MAIOR que HAA puro líquido em todos os 3 datasets (edu 1.021 vs 0.991, vt 1.058 vs 0.943, ndx 0.972 vs 0.851). CAGR net edu: 13.38% (vs HAA 12.13%, vs Plano C 10.31%). MDD 26.85% (entre HAA 21.83% e Plano C 52.43%). Mecanismo: bônus de diversificação (HAA canário + Plano C factor equity, corr~0.75) + prêmio de rebalanceamento anual + eficiência fiscal da metade Plano C (DARF terminal > DARF mensal). 7/7 gates × 3 datasets. Score 85 STRONG (não WINNER: CAGR floor falha no ndx vs QQQ 18.99%). **LOOP FROZEN. Mandate §7 deliberation required.** `[risk_parity, ch.5]` diversification bonus; `[testing_tuning, ch.5-6]` tax-aware simulation. [GLOBAL TILT LOOP — ENCERRADO 🔒]](2026-04-27-1930-loop-closure-hybrid-winner.md)
 

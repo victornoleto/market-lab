@@ -7,6 +7,9 @@ when proposing portfolios; synth paths documented inline.
 Maintained outside `BASE_MEMORY.md` to avoid bloat (BASE_MEMORY auto-
 prunes at 18KB).
 
+Mirrored from `studies/global_factor_tilt_loop/EXTERNAL_INSTRUMENTS.md`
+(same universe; RSIT row added 2026-04-27).
+
 ---
 
 ## WisdomTree Efficient ("NTS-") family

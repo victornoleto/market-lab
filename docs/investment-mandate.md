@@ -543,6 +543,21 @@ direto a NYSE/NASDAQ (~8.000 tickers), não via BDR.
   **Responsabilidade do investidor:** manter planilha própria com
   custo médio em USD e cotação PTAX do dia da operação.
 
+> **DARF model correction (2026-04-27):** Lei 14.754/2023 (vigente jan/2024)
+> mudou o regime de apuração para **anual** via DIRPF (declaração março-maio
+> do ano seguinte) — não mais mensal por operação. Regras-chave:
+> (a) ganho líquido = soma de todos os ganhos/perdas realizados do ano;
+> (b) prejuízos do mesmo ano compensam ganhos (netting completo);
+> (c) saldo negativo (perda líquida anual) **carreia indefinidamente**
+> para anos futuros sem prazo de expiração.
+> Iters 011-012 do `global_factor_tilt_loop` usaram o modelo mensal
+> (incorreto). Iter 014 re-run com `AnnualDarfEngine`
+> (`studies/global_factor_tilt_loop/tax_engine_v2.py`) fornece os
+> números corrigidos. Para HAA (alta rotatividade/bull): modelo anual ≈
+> modelo mensal (mecanismo de custo médio neutraliza o benefício do
+> diferimento). Classe `AnnualDarfEngine` deve ser usada em todos os
+> backtests futuros que modelam DARF.
+
 #### 4.7.3 Catálogo — status dos ETFs-chave do Plano B
 
 | Ticker | Status | Nota |
