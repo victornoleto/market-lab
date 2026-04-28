@@ -497,3 +497,58 @@ different trend/regime input rather than another equity index.
 | educational | 0.983 | 12.15% | 20.81% | 7/7 |
 | vt_real | 0.954 | 11.49% | 14.20% | 7/7 |
 | ndx_real | 0.860 | 9.44% | 14.20% | 6/7 |
+
+---
+
+## DE-011 — Simple Gayed SPY/VT trend input as HAA canary
+
+**Origin**: bestfolio_hunt_loop iter 009 — haa-gayed-trend-canary
+**Score**: 73/100 PROMISING
+**Date**: 2026-04-28
+
+### What was tested
+
+- Iter 009 HAA+Gold assets retained exactly: offensive `NTSXSIM`, `NTSI`,
+  `NTSE`, `GDESIM`; defensive `IEFSIM`, `BNDSIM`, `CASHX`; fixed 10%
+  `KMLMSIM` + 5% `GLDSIM`.
+- Changed only the binary HAA risk-on/risk-off trigger.
+- Tested four canary modes:
+  - `vwo_original`: original `VWOSIM` HAA momentum > 0.
+  - `spy_trend`: `SPYSIM` above 10-month trend.
+  - `vt_trend`: `VTSIM` above 10-month trend.
+  - `vwo_and_spy_trend`: both original `VWOSIM` momentum and `SPYSIM`
+    trend positive.
+- Net-of-tax via `AnnualDarfEngine`.
+- Sources: `[leverage_for_the_long_run, p.40-60]`; `[stocks_on_the_move, ch.6]`.
+
+### Why it fails structurally
+
+The original `VWOSIM` canary was selected again. The selected config produced
+net Sharpe **0.983 / 0.954 / 0.860** versus iter 009 **1.120 / 1.061 /
+0.954**, with zero datasets beating the required +0.10 Sharpe edge.
+
+`SPYSIM` trend was too permissive in real windows, lowering Sharpe and raising
+MDD to **18.93%**. `VTSIM` trend modestly improved ndx_real Sharpe versus the
+selected original canary, but still stayed below iter 009 and below winner
+thresholds. Strict `VWOSIM` + `SPYSIM` confirmation cut too much CAGR.
+
+**Structural insight**: simple broad-equity moving-average trend is not a
+better state classifier than HAA's emerging-market `VWOSIM` canary in this
+universe. Future timing work needs a qualitatively different regime variable,
+not another simple broad-equity price trend `[leverage_for_the_long_run, p.40-60]`.
+
+### What CAN be tried instead
+
+- A tightly pre-committed volatility throttle on the HAA dynamic sleeve.
+- Real VT/VXUS data acquisition to reduce proxy uncertainty before more
+  timing variants.
+- A new non-price macro/regime input only if it is literature-driven and
+  kept to a very small grid.
+
+### Results summary
+
+| dataset | net Sharpe | net CAGR | net MDD | Gates |
+|---|---:|---:|---:|---:|
+| educational | 0.983 | 12.15% | 20.81% | 7/7 |
+| vt_real | 0.954 | 11.49% | 14.20% | 7/7 |
+| ndx_real | 0.860 | 9.44% | 14.20% | 6/7 |
