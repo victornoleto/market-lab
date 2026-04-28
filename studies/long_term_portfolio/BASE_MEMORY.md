@@ -1,15 +1,15 @@
 ---
 mission: "beat avg(SPY 1× b&h, VT 1× b&h) gross-of-tax Sharpe by ≥0.10 on ≥2 of 3 datasets"
-total_iterations: 11
+total_iterations: 12
 winners_found: 1
 status: hunting
-latest_iteration: "011-2026-04-28-1537-ntsx-gde-kmlm-static"
-latest_score: 91
+latest_iteration: "012-2026-04-28-1800-ntsx-gde-rssb-kmlm-global-stack"
+latest_score: 88
 beats_incumbent: false
-cumulative_n_trials: 40
+cumulative_n_trials: 44
 incumbent_winner_iter: "011-2026-04-28-1537-ntsx-gde-kmlm-static"
 incumbent_winner_score: 91
-note: "Renamed from bestfolio_hunt_loop on 2026-04-28. Mission redefined to 'beat avg(SPY,VT)' (gross-of-tax), scoring.py reworked accordingly. WINNER 2026-04-28: iter 011 NTSX+GDE+KMLM 35/25/40 static — 91/100, 5/5 strict, 3/3 +0.10 Sharpe edge. POST-WINNER OVERHAUL 2026-04-28: dataset registry centralized (datasets.py), educational dataset renamed lh_56y with KMLMSIM splice via FF MoM proxy pre-1988 (overstates pre-88 KMLM ~3×), plot_helper.py rewritten (1 PNG per dataset with 4-line equity + 3 rolling-Δ panels + rolling-windows panel). Hunt resumes; halt only when an iter sets beats_incumbent=true (score>91 OR Sharpe edge ≥+0.10 vs iter011 on ≥2 datasets)."
+note: "Renamed from bestfolio_hunt_loop on 2026-04-28. Mission redefined to 'beat avg(SPY,VT)' (gross-of-tax), scoring.py reworked accordingly. WINNER 2026-04-28: iter 011 NTSX+GDE+KMLM 35/25/40 static — 91/100, 5/5 strict, 3/3 +0.10 Sharpe edge. POST-WINNER OVERHAUL 2026-04-28: dataset registry centralized (datasets.py), educational dataset renamed lh_56y with KMLMSIM splice via FF MoM proxy pre-1988 (overstates pre-88 KMLM ~3×), plot_helper.py rewritten (1 PNG per dataset with 4-line equity + 3 rolling-Δ panels + rolling-windows panel). Hunt resumes; halt only when an iter sets beats_incumbent=true (score>91 OR Sharpe edge ≥+0.10 vs iter011 on ≥2 datasets). ITER 012 (RSSB injection into iter 011) — STRONG 88/100 vs avg(SPY,VT) but LOSES vs iter 011 on Sharpe across all 3 datasets; structural finding: RSSB's Treasury overlay overlaps NTSX's IEF and intl equity dragged. DE-013 added; iter 011 stays incumbent."
 ---
 
 # Long-Term Portfolio Loop — BASE MEMORY
@@ -88,13 +88,14 @@ vs KMLM's long-run ~0.5; pre-1988 KMLM-heavy returns are ~3× overstated).
 | rank | iter | slug | score | tier | legacy edu Sharpe | **lh_56y gross Sharpe** | lh_56y window |
 |---|---|---|---|---|---|---|---|
 | 1 | **011** | **ntsx-gde-kmlm-static** | **91 🏆** | **WINNER** | 1.021 (gross) | **1.046** | 1986-2026 (40y) |
-| — | 005 | haa-rsst-rssb-cta | 70 | PROMISING | 0.953 (net) | **1.253** ⭐ | 1994-2026 (32y) |
-| — | 010 | haa-vol-throttle | 60 | PROMISING | 1.020 (net) | **1.179** ⭐ | 1994-2026 (32y) |
-| — | 006 | haa-rsit-synth | 71 | PROMISING | 0.869 (net) | **1.154** ⭐ | 1994-2026 (32y) |
+| 2 | **012** | ntsx-gde-rssb-kmlm-global-stack | **88** | STRONG | 1.011 (gross) | 1.011 | 1986-2026 (40y eff) |
 | — | 007 | haa-defensive-kmlm-cash | 75 | STRONG | 0.983 (net) | **1.150** ⭐ | 1994-2026 (32y) |
-| — | 004 | haa-global-factor-tilt | 69 | PROMISING | 0.990 (net) | **1.117** ⭐ | 1994-2026 (32y) |
 | — | 008 | haa-dual-canary | 73 | PROMISING | 0.983 (net) | 1.120 | 1994-2026 (32y) |
 | — | 009 | haa-gayed-trend-canary | 73 | PROMISING | 0.983 (net) | 1.120 | 1994-2026 (32y) |
+| — | 006 | haa-rsit-synth | 71 | PROMISING | 0.869 (net) | **1.154** ⭐ | 1994-2026 (32y) |
+| — | 005 | haa-rsst-rssb-cta | 70 | PROMISING | 0.953 (net) | **1.253** ⭐ | 1994-2026 (32y) |
+| — | 004 | haa-global-factor-tilt | 69 | PROMISING | 0.990 (net) | **1.117** ⭐ | 1994-2026 (32y) |
+| — | 010 | haa-vol-throttle | 60 | PROMISING | 1.020 (net) | **1.179** ⭐ | 1994-2026 (32y) |
 | — | 001 | baa-g12-balanced | 58 | MARGINAL | 0.975 (net) | 1.094 | 1995-2026 (31y) |
 | — | 002 | composite-momentum-standard | 55 | MARGINAL | 0.940 (net) | 1.024 | 1994-2026 (32y) |
 | — | 003 | global-factor-cta-stack | 54 | MARGINAL | 0.823 (net) | 0.839 | 1994-2026 (32y) |
@@ -110,73 +111,70 @@ dominant on lh_56y. Apples-to-apples comparison requires same-window cropping
 
 ## Iteration log (newest first)
 
+### 012 — 2026-04-28 — ntsx-gde-rssb-kmlm-global-stack (STRONG, 88/100)
+
+- Hypothesis: Inject RSSBSIM (Return Stacked Global Stocks & Bonds, 200% notional) as a 4th sleeve into iter 011's NTSX+GDE+KMLM stack to capture intl-equity + Treasury duration the user's literal "global+factor" thesis demands. Direction A2 from BASE_MEMORY promising directions.
+- Citations: `[risk_parity, ch.5, p.10]`; `[ilmanen, ch.19]`; `[stocks_on_the_move, p.21-30]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
+- Scope: 4 pre-committed configs (`rssb_balanced_30303010`, `rssb_moderate_25252525`, `rssb_iter011_clone_30202525`, `rssb_lite_30253015`); selected `rssb_moderate_25252525` (4-way equal) by max mean(gross_Sharpe / avg(SPY,VT)_Sharpe). Datasets: lh_56y (1986-2026, 40y eff), vt_real (17y), ndx_real (16y).
+- Result: gross Sharpe **1.011 / 0.851 / 1.021** (edges **+0.340 / +0.144 / +0.098** vs avg(SPY,VT) — 2/3 datasets clear +0.10); gates **6/7 / 7/7 / 7/7**; DSR p **5.59e-11 / 5.57e-3 / 1.29e-3**. **All 5 strict winner conditions met vs avg(SPY,VT).** But Sharpe vs **iter 011 incumbent**: −0.035 / −0.109 / −0.083 (LOSES on every dataset) → pre-committed kill #1 fired (best lh_56y config 1.016 < iter 011's 1.046). Tier STRONG, beats_incumbent=false.
+- Net (informational): Sharpe **1.011 / 0.851 / 1.021** ≈ gross (static stack, year-end-only DARF, daily-Sharpe tax-neutral).
+- Score breakdown: Sharpe edge 20/25 (ndx_real +0.098 misses by 0.002); gates 23/25 (lh_56y G3 WF fails — 2 of 8 windows MDD>25% during GFC); DSR 15/15; CAGR floor 10/15 (ndx_real misses 0.8× ceiling); MDD ceiling 15/15; robustness 5/5 (52/52 rolling-5y windows positive).
+- Lesson: RSSB's Treasury overlay overlaps NTSX's 60% IEFSIM exposure → composite portfolio is duration-heavy; intl-equity sleeve dragged in 2010-2026 US-equity-dominant regime. **iter 011's pure-US capital-efficient stack is hard to beat with naive global tilts.** Next attack must use factor tilts (Direction B AVUV/AVDV) or 1× intl-equity overlay (A3 — VXUSSIM) that doesn't duplicate Treasury exposure.
+
 ### 011 — 2026-04-28 — ntsx-gde-kmlm-static (🏆 WINNER, 91/100)
 
-- Hypothesis: User's literal architectural preference — 40% NTSX + 30% GDE + 30% KMLM static capital-efficient stack — untested across 10 prior iters; tested under the redefined avg(SPY,VT) gross-of-tax mission.
-- Citations: `[risk_parity, ch.5, p.10]`; `[stocks_on_the_move, p.21-30]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
-- Scope: 4 pre-committed configs (`user_primary_403030`, `equal_weight_333333`, `equity_tilted_502525`, `mf_tilted_352540`); selected `mf_tilted_352540` by max mean(gross_Sharpe / avg(SPY,VT)_Sharpe). Datasets: educational (1995-2026 31y), vt_real (17y), ndx_real (16y).
-- Result: gross Sharpe **1.021 / 0.960 / 1.104** (edges **+0.350 / +0.253 / +0.180** vs avg(SPY,VT)); gates **7/7 / 6/7 / 6/7**; DSR p **1.79e-6 / 1.36e-3 / 4.07e-4**. All 5 strict winner conditions met. **3/3 datasets clear +0.10 Sharpe edge**; family-level robust (all 4 weight variants pass — user's 40/30/30 also passes WINNER on Sharpe edge).
-- Net (informational): Sharpe **1.021 / 0.960 / 1.104** ≈ gross (static buy-hold + Lei 14.754/2023 PF direta = no realized gains until liquidation; daily-Sharpe tax-neutral).
-- Score breakdown: Sharpe edge 25/25; gates 21/25 (cross-dataset bonus); DSR 15/15; CAGR floor 10/15 (ndx misses by 0.46pp); MDD ceiling 15/15; robustness 5/5 (100% positive 5y rolling Sharpe across 27 windows).
-- Lesson: User's instinct ("diversified + leveraged through stacking, no rotation cost") was correct. Mission redefinition matters — DE-005 closed plain static stacks under iter009 benchmark; under avg(SPY,VT) the same architecture is winner. Capital efficiency via NTSX/GDE futures overlay is the only leverage path that has produced a winner across either loop. Crisis-alpha decoupling via KMLM provides the marginal +0.05-0.15 Sharpe edge. Caveats: G1 PBO fails on vt/ndx (within-family weight selection at noise level — robust at family level); KMLMSIM synth pre-2020.
+- 4 configs of static NTSX/GDE/KMLM stack; selected `mf_tilted_352540` (35/25/40). Gross Sharpe 1.021/0.960/1.104 vs avg(SPY,VT) — 3/3 datasets +0.10 edge. All 5 strict winner conditions met. `[risk_parity, ch.5, p.10]`
+- Lesson: capital-efficient stacking via NTSX/GDE + KMLM crisis-alpha is the only winner architecture across this loop and the predecessor strategy_hunt_loop. Family-level robust (all 4 weight variants pass).
 
-### 010 — 2026-04-28 — haa-vol-throttle (PROMISING, 60/100)
+### 010 — 2026-04-28 — haa-vol-throttle (PROMISING, 60/100, DE-012)
 
-- Hypothesis: Keep iter 009 HAA+Gold assets/canary unchanged and add a Carver-style realized-volatility throttle to only the 85% dynamic sleeve.
-- Citations: `[systematic_trading, p.137-148]`; `[systematic_trading, p.196-197]`; `[stocks_on_the_move, ch.6]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
-- Scope: 4 pre-committed configs (`no_throttle`, `vol12`, `vol15`, `vol18`); selected `vol12` by mean Sharpe / iter009 Sharpe; AnnualDarfEngine net-of-tax; educational/vt_real/ndx_real.
-- Result: net Sharpe **1.020 / 0.955 / 0.881**; gates **7/7 / 7/7 / 7/7**; DSR p **3.67e-06 / 2.34e-03 / 9.38e-03**. Kill fired: edu Sharpe gain vs baseline was +0.037 (< +0.05) and 0 datasets beat iter009 by +0.10.
-- Score breakdown: Sharpe edge 0/25; gates 25/25; DSR 15/15; CAGR floor 0/15; MDD ceiling 15/15; robustness 5/5.
-- Lesson: Vol throttling cleaned drawdowns (edu MDD 14.86%) but converted HAA+Gold into a lower-CAGR defensive variant; useful for capital preservation, not the missing Sharpe-frontier edge.
+- HAA+Gold with 63d vol throttle on 85% dynamic sleeve; selected `vol12`. Net Sharpe 1.020/0.955/0.881; 7/7 gates × 3 but 0 datasets +0.10 edge over iter009. `[systematic_trading, p.137-148]`
+- Lesson: vol throttle reduces MDD but converts HAA+Gold into low-CAGR defensive — not the missing Sharpe edge.
 
-### 009 — 2026-04-28 — haa-gayed-trend-canary (PROMISING, 73/100)
+### 009 — 2026-04-28 — haa-gayed-trend-canary (PROMISING, 73/100, DE-011)
 
-- Hypothesis: Keep iter 009 HAA+Gold assets unchanged and alter only the binary HAA trigger with simple `SPYSIM`/`VTSIM` Gayed-style 10-month trend modes.
-- Citations: `[leverage_for_the_long_run, p.40-60]`; `[stocks_on_the_move, ch.6]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
-- Scope: 4 pre-committed canary modes (`vwo_original`, `spy_trend`, `vt_trend`, `vwo_and_spy_trend`); selected `vwo_original` by mean Sharpe / iter009 Sharpe; AnnualDarfEngine net-of-tax; educational/vt_real/ndx_real.
-- Result: net Sharpe **0.983 / 0.954 / 0.860**; gates **7/7 / 7/7 / 6/7**; DSR p **8.88e-06 / 2.36e-03 / 1.15e-02**. Kill fired: educational Sharpe <= 1.120 and 0 datasets beat iter009 by +0.10.
-- Score breakdown: Sharpe edge 0/25; gates 23/25; DSR 15/15; CAGR floor 15/15; MDD ceiling 15/15; robustness 5/5.
-- Lesson: The original `VWOSIM` canary was selected again; simple SPY/VT trend filters either cut CAGR or raised real-window MDD. The next timing edge must use a qualitatively different non-price/regime input, not broad-equity moving average.
+- HAA+Gold with `SPYSIM`/`VTSIM` 10-month trend canary modes; original `VWOSIM` re-selected. Sharpe 0.983/0.954/0.860; 0 datasets +0.10. `[leverage_for_the_long_run, p.40-60]`
+- Lesson: simple broad-equity trend not a better state classifier than VWO momentum.
 
-### 008 — 2026-04-28 — haa-dual-canary (PROMISING, 73/100)
+### 008 — 2026-04-28 — haa-dual-canary (PROMISING, 73/100, DE-010)
 
-- Hypothesis: `VWOSIM`/`VTISIM` dual canary for HAA+Gold. Result: 0.983/0.954/0.860 Sharpe; gates 7/7, 7/7, 6/7; score 73.
-- Lesson: original `VWOSIM` selected again; second broad-equity canary did not improve state classification. `[stocks_on_the_move, p.63-65]`
+- `VWOSIM`/`VTISIM` dual canary for HAA+Gold; selected `vwo_only`. Sharpe 0.983/0.954/0.860; ndx_real PBO 0.552 fails. `[stocks_on_the_move, p.63-65]`
+- Lesson: second broad-equity canary did not improve state classification.
 
-### 007 — 2026-04-28 — haa-defensive-kmlm-cash (STRONG, 75/100)
+### 007 — 2026-04-28 — haa-defensive-kmlm-cash (STRONG, 75/100, DE-009)
 
-- Hypothesis: swap HAA defensive assets to KMLM/CASH variants. Result: 0.983/0.954/0.860 Sharpe; gates 7/7 x3; score 75.
-- Lesson: original `IEFSIM/BNDSIM/CASHX` defense won; missing edge is canary timing, not simple defensive assets. `[stocks_on_the_move, ch.6]`
+- Swap HAA defensive to KMLM/CASH variants; original `IEFSIM/BNDSIM/CASHX` re-selected. Sharpe 0.983/0.954/0.860; 7/7 × 3. `[stocks_on_the_move, ch.6]`
+- Lesson: missing edge is canary timing, not defensive assets.
 
-### 006 — 2026-04-28 — haa-rsit-synth (PROMISING, 71/100)
+### 006 — 2026-04-28 — haa-rsit-synth (PROMISING, 71/100, DE-008)
 
-- Hypothesis: synthetic `RSIT_PROXY = VEASIM + KMLMSIM - 50bps/y` inside HAA. Result: 0.869/0.897/0.837 Sharpe; gates 6/7, 6/7, 7/7; score 71.
-- Lesson: more embedded managed futures on international equity worsened Sharpe/PBO; closed until live RSIT data exists. `[risk_parity, ch.5]`
+- Synthetic `RSIT_PROXY = VEASIM + KMLMSIM - 50bps/y` inside HAA. Sharpe 0.869/0.897/0.837; PBO 0.714/0.845 fails. `[risk_parity, ch.5]`
+- Lesson: more embedded MF on intl-equity worsened Sharpe/PBO; closed until live RSIT exists.
 
-### 005 — 2026-04-28 — haa-rsst-rssb-cta (PROMISING, 70/100)
+### 005 — 2026-04-28 — haa-rsst-rssb-cta (PROMISING, 70/100, DE-007)
 
-- Hypothesis: RSST/RSSB/CTA offensive substitution in HAA. Result: 0.953/1.028/0.946 Sharpe; gates 7/7 x3; score 70.
-- Lesson: robust, but extra diversifiers traded CAGR for MDD and did not add Sharpe edge. `[risk_parity, ch.5]`
+- RSST/RSSB/CTA offensive substitution in HAA. Sharpe 0.953/1.028/0.946; 7/7 × 3 but no +0.10. `[risk_parity, ch.5]`
+- Lesson: extra stacked diversifiers traded CAGR for MDD; not the Sharpe edge.
 
-### 004 — 2026-04-28 — haa-global-factor-tilt (PROMISING, 69/100)
+### 004 — 2026-04-28 — haa-global-factor-tilt (PROMISING, 69/100, DE-006)
 
-- Hypothesis: simple international small/value tilt inside HAA. Result: 0.990/0.955/0.861 Sharpe; gates 6/7 x3; score 69.
-- Lesson: reshuffled risk-on equity exposure; PBO unstable and no Sharpe-frontier advance. `[stocks_on_the_move, ch.6]`
+- Intl small/value tilt inside HAA offensive. Sharpe 0.990/0.955/0.861; PBO 0.885/0.869/0.694 fails. `[stocks_on_the_move, ch.6]`
+- Lesson: reshuffled risk-on equity exposure; unstable tilt selection.
 
-### 003 — 2026-04-28 — global-factor-cta-stack (MARGINAL, 54/100)
+### 003 — 2026-04-28 — global-factor-cta-stack (MARGINAL, 54/100, DE-005)
 
-- Hypothesis: static global/factor/CTA stack. Result: 0.823/0.742/0.910 Sharpe; gates 6/7 x3; score 54.
-- Lesson: low turnover preserved CAGR but lost HAA drawdown control; MDD 27-42% is too high. `[risk_parity, p.1-2]`
+- Static global/factor/CTA stack; selected `stack_gde_heavy`. Sharpe 0.823/0.742/0.910; MDD 27-42%. `[risk_parity, p.1-2]`
+- Lesson: low turnover preserved CAGR but lost HAA drawdown control.
 
-### 002 — 2026-04-28 — composite-momentum-standard (MARGINAL, 55/100)
+### 002 — 2026-04-28 — composite-momentum-standard (MARGINAL, 55/100, DE-004)
 
-- Hypothesis: SPY200 top-4 inverse-vol composite momentum. Result: 0.940/0.958/0.957 Sharpe; gates 7/7 x3; score 55.
-- Lesson: robust but return-capped; IEF/gold defense and annual DARF drag left too little CAGR. `[stocks_on_the_move, p.21-30]`
+- SPY200 top-4 inverse-vol composite momentum. Sharpe 0.940/0.958/0.957; 7/7 × 3 but return-capped. `[stocks_on_the_move, p.21-30]`
+- Lesson: defensive 60/40 IEF/gold sleeve too low-return; annual DARF drag.
 
-### 001 — 2026-04-28 — baa-g12-balanced (MARGINAL, 58/100)
+### 001 — 2026-04-28 — baa-g12-balanced (MARGINAL, 58/100, DE-003)
 
-- Hypothesis: plain BAA-G12 Balanced. Result: 0.975/0.792/0.782 Sharpe; gates 7/7, 7/7, 6/7; score 58.
-- Lesson: robust drawdown reducer, but too defensive/tax-dragged and never beats HAA+Gold. `[stocks_on_the_move, ch.6]`
+- BAA-G12 Balanced. Sharpe 0.975/0.792/0.782; 7/7, 7/7, 6/7. `[stocks_on_the_move, ch.6]`
+- Lesson: too defensive/tax-dragged; never beats HAA+Gold.
 
 ---
 
@@ -194,12 +192,16 @@ Replace pure-US NTSX with intl variants. Candidate:
    — NTSI is intl-developed 1.5× stacked, NTSE is EM 1.5× stacked. This is
    the literal "global+factor" thesis. Citation: `[risk_parity, ch.5]` + WisdomTree
    prospectus 2024. Test 35/15/10/20/20 starting weight + 4 sensitivity variants.
-2. **NTSX + GDE + RSSB + KMLM** — RSSB is "100% global stocks + 100% bonds"
-   stacked (broader than NTSX's US-only). Tests if global-equity stacking
-   beats US-only at the same leverage. `[ilmanen, ch.19]`.
+   **Status: INFEASIBLE without NTSI/NTSE proxy synthesis** (not in testfolio cache).
+2. ~~**NTSX + GDE + RSSB + KMLM**~~ — **CLOSED iter 012 (DE-013)**: RSSB sleeve
+   regresses Sharpe vs iter 011 across all 3 datasets (−0.030 / −0.109 / −0.083).
+   RSSB's Treasury overlay overlaps NTSX's IEF exposure; intl-equity sleeve dragged
+   in 2010-2026 regime. STRONG vs avg(SPY,VT) but does not advance incumbent.
 3. **NTSX + VXUS overlay + GDE + KMLM** — simpler: keep NTSX core, add ~25%
    VXUS for explicit intl, drop GDE weight. Tests pure intl tilt without
-   adding extra leverage.
+   adding extra leverage. **Now higher priority** after iter 012 DE-013 — VXUS
+   is 1× notional (no Treasury duplication issue) and isolates the intl-equity
+   tilt from RSSB's Treasury overlap.
 
 ### B. Factor tilts on the iter 011 base
 
@@ -275,6 +277,12 @@ full text in `DEAD_ENDS.md`.
     gates across all datasets and reduced MDD, but failed every CAGR floor
     and produced net Sharpe 1.020/0.955/0.881 with zero +0.10 Sharpe edges.
     Drawdown throttling is not the missing return source. `[systematic_trading, p.137-148]`
+13. **NTSX+GDE+RSSB+KMLM 4-asset global stack (iter 011 internationalized)**:
+    selected `rssb_moderate_25252525` produced gross Sharpe 1.011/0.851/1.021
+    — STRONG 88/100 vs avg(SPY,VT) (5/5 strict conditions met) but LOSES vs
+    iter 011 incumbent on Sharpe across all 3 datasets (−0.030 / −0.109 / −0.083).
+    Pre-committed kill #1 fired. RSSB's Treasury overlay overlaps NTSX's IEF;
+    intl-equity sleeve dragged in 2010-2026 regime. `[risk_parity, ch.5, p.10]`
 
 ---
 

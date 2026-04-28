@@ -613,3 +613,92 @@ de-risk the already robust HAA+Gold shell.
 | educational | 1.020 | 10.10% | 14.86% | 7/7 |
 | vt_real | 0.955 | 9.19% | 11.13% | 7/7 |
 | ndx_real | 0.881 | 8.23% | 11.13% | 7/7 |
+
+---
+
+## DE-013 — NTSX + GDE + RSSB + KMLM 4-asset global capital-efficient stack
+
+**Origin**: long_term_portfolio iter 012 — ntsx-gde-rssb-kmlm-global-stack
+**Score**: 88/100 STRONG (winner_conds_met=true vs avg(SPY,VT)) — Pre-committed Kill #1 fired
+**Date**: 2026-04-28
+
+### What was tested
+
+- Iter 011's NTSX+GDE+KMLM static capital-efficient stack architecture
+  retained, with `RSSBSIM` (Return Stacked Global Stocks & Bonds, 200%
+  notional — ~100% global equity + 100% Treasury) added as a 4th
+  sleeve.
+- Tested 4 pre-committed weight grids:
+  - `rssb_balanced_30303010` = 30% NTSX / 30% GDE / 30% RSSB / 10% KMLM
+  - `rssb_moderate_25252525` = 25% NTSX / 25% GDE / 25% RSSB / 25% KMLM
+  - `rssb_iter011_clone_30202525` = 30% NTSX / 20% GDE / 25% RSSB / 25% KMLM
+  - `rssb_lite_30253015` = 30% NTSX / 25% GDE / 30% RSSB / 15% KMLM
+- Selected config: `rssb_moderate_25252525`, by max mean(gross_Sharpe /
+  avg(SPY,VT)_Sharpe) across 3 datasets.
+- Datasets: lh_56y (1986-2026, 40y eff. SPYSIM-bounded), vt_real (17y),
+  ndx_real (16y).
+- Sources: `[risk_parity, ch.5, p.10]` (Carlson capital-efficient stacking);
+  `[ilmanen, ch.19]` (global equity diversification);
+  `[stocks_on_the_move, p.21-30]` (KMLM crisis-alpha).
+
+### Why it fails structurally
+
+The strategy clears all 5 strict winner conditions vs the loop's
+primary benchmark avg(SPY,VT) — beats it by +0.340/+0.144 Sharpe on
+lh_56y/vt_real (criterion 1: 2/3 datasets ≥ +0.10), passes 6/7/7 gates
+(criterion 2), DSR p worst 5.6e-3 (criterion 3), CAGR floor on 2/3
+(criterion 4), MDD ceiling on 3/3 (criterion 5). Score 88/100 STRONG.
+
+**But it loses to iter 011 on Sharpe across every dataset**:
+
+| dataset | iter 012 selected S | iter 011 incumbent S | Δ vs iter 011 |
+|---|---:|---:|---:|
+| lh_56y    | 1.011 | 1.046 | −0.035 |
+| vt_real   | 0.851 | 0.960 | −0.109 |
+| ndx_real  | 1.021 | 1.104 | −0.083 |
+
+Best across the 4-config grid on lh_56y is **1.016** (`rssb_iter011_clone_30202525`),
+still below iter 011's 1.046 — pre-committed kill #1 triggered (best-config
+Sharpe regression on lh_56y).
+
+**Structural insight**: RSSB does not improve the iter 011 architecture
+because:
+
+1. **Treasury overlap**: NTSX already provides 60% IEFSIM exposure. RSSB
+   adds another ~50% Treasury overlay. The composite portfolio ends
+   30-50% Treasury — duration-heavy. Post-2022 rate hikes create the
+   Sharpe drag.
+2. **Intl-equity drag (2010-2026)**: RSSB's ~50% intl-equity sleeve
+   underperformed US equity for the live windows. lh_56y is less
+   affected but still loses.
+3. **KMLM dilution**: iter 011's 40% KMLM provided crisis-alpha. iter
+   012 dilutes KMLM to 25% (or lower) — lower crisis-alpha + extra
+   duration is the wrong direction for Sharpe.
+4. **iter 011's pure-US capital-efficient stack is hard to beat with
+   naive global tilts**. Adding leveraged-equity sleeves with embedded
+   Treasury is **structurally subordinate** to iter 011's NTSX + GDE +
+   KMLM mix.
+
+### What CAN be tried instead
+
+- **Direction A3 (now higher priority)**: NTSX + VXUSSIM (1× intl,
+  no Treasury overlap) + GDE + KMLM — isolates the intl-equity tilt
+  from RSSB's Treasury overlap. Tests if the failure mode is RSSB
+  specifically or intl-equity broadly.
+- **Direction B (factor tilts on iter 011 base)**: replace 50% of NTSX
+  SPY-side with VBRSIM (US small-cap value) + VSSSIM (intl small-cap).
+  Factor premium may be the missing edge that intl-equity beta is not.
+- **Direction A1 (NTSX + NTSI + NTSE + GDE + KMLM)**: requires NTSI/NTSE
+  proxy synthesis (not in testfolio cache). Defer until proxies built.
+
+### Results summary
+
+Selected: `rssb_moderate_25252525` = 25% NTSX + 25% GDE + 25% RSSB + 25% KMLM.
+
+| dataset | gross Sharpe | gross CAGR | gross MDD | Gates | DSR p |
+|---|---:|---:|---:|---:|---:|
+| lh_56y    | 1.011 | 12.20% | 32.45% | 6/7 | 5.59e-11 |
+| vt_real   | 0.851 | 11.52% | 30.77% | 7/7 | 5.57e-3 |
+| ndx_real  | 1.021 | 12.59% | 20.20% | 7/7 | 1.29e-3 |
+
+Net ≈ gross (static stack, year-end-only DARF, daily-Sharpe tax-neutral).
