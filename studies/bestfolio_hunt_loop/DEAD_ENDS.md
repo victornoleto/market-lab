@@ -279,3 +279,54 @@ not the missing bestfolio.app +0.06 to +0.10 Sharpe gap.
 | educational | 0.990 | 12.21% | 20.71% | 6/7 |
 | vt_real | 0.955 | 11.49% | 14.20% | 6/7 |
 | ndx_real | 0.861 | 9.41% | 14.20% | 6/7 |
+
+---
+
+## DE-007 — Simple HAA RSST/RSSB/CTA offensive substitution
+
+**Origin**: bestfolio_hunt_loop iter 005 — haa-rsst-rssb-cta  
+**Score**: 70/100 PROMISING  
+**Date**: 2026-04-28
+
+### What was tested
+
+- Iter 009 HAA+Gold shell retained: `VWOSIM` canary, top-2 offensive,
+  top-1 defensive, 10% `KMLMSIM`, 5% `GLDSIM`.
+- Replaced the risk-on offensive candidates with four pre-committed sets
+  using `RSSBSIM`, `RSST_PROXY = SPYSIM + KMLMSIM - CASHX`, `CTAPSIM`,
+  `NTSXSIM`, `NTSI`, and `GDESIM`.
+- Selected config: `rssb_cta_balanced` = `RSSBSIM`, `NTSXSIM`, `CTAPSIM`,
+  `GDESIM`.
+- Net-of-tax via `AnnualDarfEngine`.
+- Sources: `[risk_parity, ch.5]`; `[stocks_on_the_move, p.21-30]`.
+
+### Why it fails structurally
+
+The HAA shell handled the stacked sleeves cleanly, but the additional
+managed-futures/return-stacked exposure diluted return more than it improved
+risk. The selected config passed **7/7 gates on all three datasets**, but net
+Sharpe was only **0.953 / 1.028 / 0.946** versus iter 009 HAA+Gold **1.120 /
+1.061 / 0.954**. Zero datasets beat iter 009 by +0.10 Sharpe, and the
+pre-committed kill fired because educational Sharpe was below iter 004's 0.990.
+
+**Structural insight**: after iter 009, the frontier problem is not just adding
+more convex diversifiers. HAA already has fixed KMLM/gold sleeves and strong
+drawdown control; adding more MF/stacked sleeves inside the offensive rank
+reduces volatility and MDD, but it also reduces CAGR enough to lose Sharpe.
+
+### What CAN be tried instead
+
+- HAA defensive-state changes that specifically target Sharpe, such as
+  KMLM-only or CASHX-dominant defensive selection.
+- HAA dual-canary variants that reduce false defensive states without diluting
+  the offensive sleeve.
+- RSIT only after real ETF data exists, or explicitly marked as incomplete
+  synthetic exploration.
+
+### Results summary
+
+| dataset | net Sharpe | net CAGR | net MDD | Gates |
+|---|---:|---:|---:|---:|
+| educational | 0.953 | 11.11% | 16.98% | 7/7 |
+| vt_real | 1.028 | 11.99% | 13.97% | 7/7 |
+| ndx_real | 0.946 | 10.12% | 13.97% | 7/7 |

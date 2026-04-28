@@ -1,10 +1,10 @@
 ---
 mission: "beat iter 009 HAA+Gold (Sharpe 1.120 edu) and close the gap to bestfolio #1 (Sharpe 1.18)"
-total_iterations: 4
+total_iterations: 5
 winners_found: 0
 status: in_progress
-latest_iteration: "004-2026-04-28-0158-haa-global-factor-tilt"
-cumulative_n_trials: 12
+latest_iteration: "005-2026-04-28-0918-haa-rsst-rssb-cta"
+cumulative_n_trials: 16
 note: "loop initialized 2026-04-27. benchmark = iter009 HAA+Gold. tax model = AnnualDarfEngine (Lei 14.754/2023). RSIT synth available."
 ---
 
@@ -49,7 +49,7 @@ here is a candidate requiring mandate §7 override before deployment.
 
 ## Winners found
 
-*(empty — no winners after 3 iterations)*
+*(empty — no winners after 5 iterations)*
 
 | # | iter | slug | status | edu S/C/MDD | note |
 |---|---|---|---|---|---|
@@ -60,14 +60,24 @@ here is a candidate requiring mandate §7 override before deployment.
 
 | rank | iter | slug | score | tier | Sharpe (edu/vt/ndx) | CAGR (edu) | MDD (edu) |
 |---|---|---|---|---|---|---|---|
-| 1 | 004 | haa-global-factor-tilt | 69 | PROMISING | 0.990/0.955/0.861 | 12.21% | 20.71% |
-| 2 | 001 | baa-g12-balanced | 58 | MARGINAL | 0.975/0.792/0.782 | 10.60% | 16.34% |
-| 3 | 002 | composite-momentum-standard | 55 | MARGINAL | 0.940/0.958/0.957 | 9.25% | 20.76% |
-| 4 | 003 | global-factor-cta-stack | 54 | MARGINAL | 0.823/0.742/0.910 | 12.09% | 41.76% |
+| 1 | 005 | haa-rsst-rssb-cta | 70 | PROMISING | 0.953/1.028/0.946 | 11.11% | 16.98% |
+| 2 | 004 | haa-global-factor-tilt | 69 | PROMISING | 0.990/0.955/0.861 | 12.21% | 20.71% |
+| 3 | 001 | baa-g12-balanced | 58 | MARGINAL | 0.975/0.792/0.782 | 10.60% | 16.34% |
+| 4 | 002 | composite-momentum-standard | 55 | MARGINAL | 0.940/0.958/0.957 | 9.25% | 20.76% |
+| 5 | 003 | global-factor-cta-stack | 54 | MARGINAL | 0.823/0.742/0.910 | 12.09% | 41.76% |
 
 ---
 
 ## Iteration log (newest first)
+
+### 005 — 2026-04-28 — haa-rsst-rssb-cta (PROMISING, 70/100)
+
+- Hypothesis: Keep iter 009 HAA+Gold intact but replace the offensive candidates with simple RSST/RSSB/CTA return-stacked sets so HAA can rank the diversifiers instead of holding only fixed KMLM/gold.
+- Citations: `[risk_parity, ch.5]`; `[stocks_on_the_move, p.21-30]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
+- Scope: 4 pre-committed HAA offensive-set configs; selected `rssb_cta_balanced` by mean Sharpe / iter009 Sharpe; AnnualDarfEngine net-of-tax; educational/vt_real/ndx_real.
+- Result: net Sharpe **0.953 / 1.028 / 0.946**; gates **7/7 / 7/7 / 7/7**; DSR p **1.74e-05 / 8.75e-04 / 4.55e-03**. Kill fired: educational Sharpe <= iter004 0.990 and 0 datasets beat iter009 by +0.10.
+- Score breakdown: Sharpe edge 0/25; gates 25/25; DSR 15/15; CAGR floor 10/15; MDD ceiling 15/15; robustness 5/5.
+- Lesson: HAA can rank stacked sleeves robustly, but extra RSST/RSSB/CTA exposure mostly trades CAGR for lower MDD; after iter009 the missing edge is incremental return, not more diversifier convexity.
 
 ### 004 — 2026-04-28 — haa-global-factor-tilt (PROMISING, 69/100)
 
@@ -111,7 +121,7 @@ here is a candidate requiring mandate §7 override before deployment.
 
 ### Tier 1 — bestfolio top-15 + user architecture preferences
 
-#### iter 004 — NTSX + GDE + RSST (static, RSST variant)
+#### Later — NTSX + GDE + RSST (static, RSST variant) — DO NOT RUN AS PLAIN STATIC
 
 **Hypothesis**: Replace KMLMSIM with RSSBSIM (global equity + Treasury
 return-stacked) or `SPYSIM + KMLMSIM` proxy for RSST. Tesis: RSST adds
@@ -122,8 +132,11 @@ vs pure MF (KMLM). Compare vs iter 002.
 return-stacking papers. `[stocks_on_the_move, p.21-30]` (MF momentum).
 
 **Kill criterion**: edu Sharpe ≤ iter 002 result (compare static variants only).
+Plain static form is closed by DE-005; only revisit with an explicit drawdown
+control overlay or a CAGR-first objective.
 
-**Priority**: MEDIUM — variant of iter 002; only run if 002 is STRONG+.
+**Priority**: BLOCKED for the active Sharpe-frontier hunt — do not test as a
+pure static stack again.
 
 ---
 
@@ -170,6 +183,9 @@ full text in `DEAD_ENDS.md`.
 6. **Simple HAA international small/value tilt**: preserves HAA MDD but
    sacrifices Sharpe/CAGR; net Sharpe 0.990/0.955/0.861 and PBO
    0.885/0.869/0.694 show unstable tilt selection. `[stocks_on_the_move, ch.6]`
+7. **Simple HAA RSST/RSSB/CTA offensive substitution**: robust 7/7 gates but
+   lower-return; net Sharpe 0.953/1.028/0.946 and zero +0.10 Sharpe edges.
+   Extra stacked diversifiers trade CAGR for MDD after iter009. `[risk_parity, ch.5]`
 
 ---
 
