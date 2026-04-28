@@ -383,3 +383,58 @@ frontier gap is not another MF-overlay sleeve.
 | educational | 0.869 | 11.13% | 22.12% | 6/7 |
 | vt_real | 0.897 | 11.33% | 15.58% | 6/7 |
 | ndx_real | 0.837 | 9.65% | 14.01% | 7/7 |
+
+---
+
+## DE-009 — Simple HAA KMLM/CASH defensive-state swaps
+
+**Origin**: bestfolio_hunt_loop iter 007 — haa-defensive-kmlm-cash
+**Score**: 75/100 STRONG
+**Date**: 2026-04-28
+
+### What was tested
+
+- Iter 009 HAA+Gold offensive shell retained: `VWOSIM` canary, top-2
+  offensive, 10% `KMLMSIM`, 5% `GLDSIM`.
+- Offensive candidates unchanged: `NTSXSIM`, `NTSI`, `NTSE`, `GDESIM`.
+- Tested four defensive-state sets:
+  - `orig_ief_bnd_cash`: `IEFSIM`, `BNDSIM`, `CASHX`
+  - `kmlm_cash`: `KMLMSIM`, `CASHX`
+  - `kmlm_ief_cash`: `KMLMSIM`, `IEFSIM`, `CASHX`
+  - `cash_only`: `CASHX`
+- Net-of-tax via `AnnualDarfEngine`.
+- Sources: `[stocks_on_the_move, ch.6]`; `[risk_parity, ch.5]`.
+
+### Why it fails structurally
+
+The original iter 009 defense was selected again. The selected
+`orig_ief_bnd_cash` config passed **7/7 gates on all three datasets**, but net
+Sharpe was only **0.983 / 0.954 / 0.860** versus iter 009 **1.120 / 1.061 /
+0.954**, with zero datasets beating the required +0.10 Sharpe edge.
+
+KMLM-heavy defense did not solve false-defensive drag. It raised MDD to
+**27.49%** on all datasets and still reduced Sharpe. Cash-only defense kept
+drawdown controlled but cut CAGR. The original `IEFSIM`/`BNDSIM`/`CASHX`
+defensive set remains the best simple Sharpe balance in this universe.
+
+**Structural insight**: after iter 009, replacing defensive assets after the
+canary fires is not enough. The next plausible edge must alter canary timing
+or state classification itself, while preserving the proven offensive and
+defensive sleeves `[stocks_on_the_move, ch.6]`.
+
+### What CAN be tried instead
+
+- Dual-canary HAA variants that preserve binary HAA switching and all iter 009
+  assets.
+- Gayed/SPY/VT trend signal as an HAA canary input, not as a standalone
+  2x single-asset LETF strategy.
+- A tightly pre-committed volatility throttle on the HAA dynamic sleeve, if it
+  avoids broad parameter search.
+
+### Results summary
+
+| dataset | net Sharpe | net CAGR | net MDD | Gates |
+|---|---:|---:|---:|---:|
+| educational | 0.983 | 12.15% | 20.81% | 7/7 |
+| vt_real | 0.954 | 11.49% | 14.20% | 7/7 |
+| ndx_real | 0.860 | 9.44% | 14.20% | 7/7 |

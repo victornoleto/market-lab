@@ -1,11 +1,11 @@
 ---
 mission: "beat iter 009 HAA+Gold (Sharpe 1.120 edu) and close the gap to bestfolio #1 (Sharpe 1.18)"
-total_iterations: 6
+total_iterations: 7
 winners_found: 0
 status: in_progress
-latest_iteration: "006-2026-04-28-0950-haa-rsit-synth"
-cumulative_n_trials: 20
-note: "loop initialized 2026-04-27. benchmark = iter009 HAA+Gold. tax model = AnnualDarfEngine (Lei 14.754/2023). RSIT synth tested and closed until live data."
+latest_iteration: "007-2026-04-28-0958-haa-defensive-kmlm-cash"
+cumulative_n_trials: 24
+note: "loop initialized 2026-04-27. benchmark = iter009 HAA+Gold. tax model = AnnualDarfEngine (Lei 14.754/2023). RSIT synth tested and closed until live data; simple HAA KMLM/CASH defensive swaps closed."
 ---
 
 # Bestfolio Hunt Loop — BASE MEMORY
@@ -49,7 +49,7 @@ here is a candidate requiring mandate §7 override before deployment.
 
 ## Winners found
 
-*(empty — no winners after 6 iterations)*
+*(empty — no winners after 7 iterations)*
 
 | # | iter | slug | status | edu S/C/MDD | note |
 |---|---|---|---|---|---|
@@ -60,15 +60,24 @@ here is a candidate requiring mandate §7 override before deployment.
 
 | rank | iter | slug | score | tier | Sharpe (edu/vt/ndx) | CAGR (edu) | MDD (edu) |
 |---|---|---|---|---|---|---|---|
-| 1 | 006 | haa-rsit-synth | 71 | PROMISING | 0.869/0.897/0.837 | 11.13% | 22.12% |
-| 2 | 005 | haa-rsst-rssb-cta | 70 | PROMISING | 0.953/1.028/0.946 | 11.11% | 16.98% |
-| 3 | 004 | haa-global-factor-tilt | 69 | PROMISING | 0.990/0.955/0.861 | 12.21% | 20.71% |
-| 4 | 001 | baa-g12-balanced | 58 | MARGINAL | 0.975/0.792/0.782 | 10.60% | 16.34% |
-| 5 | 002 | composite-momentum-standard | 55 | MARGINAL | 0.940/0.958/0.957 | 9.25% | 20.76% |
+| 1 | 007 | haa-defensive-kmlm-cash | 75 | STRONG | 0.983/0.954/0.860 | 12.15% | 20.81% |
+| 2 | 006 | haa-rsit-synth | 71 | PROMISING | 0.869/0.897/0.837 | 11.13% | 22.12% |
+| 3 | 005 | haa-rsst-rssb-cta | 70 | PROMISING | 0.953/1.028/0.946 | 11.11% | 16.98% |
+| 4 | 004 | haa-global-factor-tilt | 69 | PROMISING | 0.990/0.955/0.861 | 12.21% | 20.71% |
+| 5 | 001 | baa-g12-balanced | 58 | MARGINAL | 0.975/0.792/0.782 | 10.60% | 16.34% |
 
 ---
 
 ## Iteration log (newest first)
+
+### 007 — 2026-04-28 — haa-defensive-kmlm-cash (STRONG, 75/100)
+
+- Hypothesis: Keep iter 009 HAA+Gold offensive shell intact but replace only the defensive-state candidates with KMLM/CASH variants to reduce false-defensive Sharpe drag.
+- Citations: `[stocks_on_the_move, ch.6]`; `[risk_parity, ch.5]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
+- Scope: 4 pre-committed defensive configs; selected `orig_ief_bnd_cash` by mean Sharpe / iter009 Sharpe; AnnualDarfEngine net-of-tax; educational/vt_real/ndx_real.
+- Result: net Sharpe **0.983 / 0.954 / 0.860**; gates **7/7 / 7/7 / 7/7**; DSR p **8.88e-06 / 2.36e-03 / 1.15e-02**. Kill fired: educational Sharpe <= 1.120 and 0 datasets beat iter009 by +0.10.
+- Score breakdown: Sharpe edge 0/25; gates 25/25; DSR 15/15; CAGR floor 15/15; MDD ceiling 15/15; robustness 5/5.
+- Lesson: The original `IEFSIM/BNDSIM/CASHX` defense beat KMLM/CASH swaps; KMLM-heavy defense raised MDD to 27.49%, and cash-only cut CAGR. The missing edge is in canary timing, not simple defensive assets.
 
 ### 006 — 2026-04-28 — haa-rsit-synth (PROMISING, 71/100)
 
@@ -128,6 +137,36 @@ here is a candidate requiring mandate §7 override before deployment.
 
 ## Promising unexplored directions (prioritized)
 
+### Tier 1 — active next directions after iter 007
+
+#### Next — dual-canary HAA (`VWOSIM` + `VTISIM`) — CANARY TIMING ONLY
+
+**Hypothesis**: Keep iter 009 HAA+Gold assets unchanged and alter only the
+binary HAA risk-on/risk-off trigger. A second broad-equity canary may reduce
+false defensive states without diluting offensive/defensive sleeves.
+
+**Sources**: `[stocks_on_the_move, ch.6]` (relative/absolute momentum);
+`[advances_fin_ml, p.208-211]` (grid overfit control).
+
+**Kill criterion**: selected educational net Sharpe ≤ 1.120 or zero datasets
+beat iter009 by +0.10 Sharpe.
+
+**Priority**: HIGH — directly follows iter 007 lesson; structurally different
+from BAA breadth because it preserves a binary HAA switch and the same assets.
+
+#### Next — Gayed trend input as HAA canary, not standalone LETF
+
+**Hypothesis**: Replace or augment `VWOSIM` canary with a simple SPY/VT trend
+signal to handle gradual bear markets while keeping HAA+Gold allocation intact.
+
+**Sources**: `[leverage_for_the_long_run, p.40-60]`; `[stocks_on_the_move, ch.6]`.
+
+**Kill criterion**: selected educational net Sharpe ≤ 1.120 or any real-data
+window has MDD > iter009 + 5pp.
+
+**Priority**: MEDIUM — structurally different from DE-001 because the trend
+signal controls HAA risk state only; it is not a 2x single-asset LETF system.
+
 ### Tier 1 — bestfolio top-15 + user architecture preferences
 
 #### Later — NTSX + GDE + RSST (static, RSST variant) — DO NOT RUN AS PLAIN STATIC
@@ -178,6 +217,11 @@ full text in `DEAD_ENDS.md`.
    Sharpe badly; net Sharpe 0.869/0.897/0.837 and PBO 0.714/0.845 on global
    windows. More embedded MF on international equity is not the missing edge.
    `[risk_parity, ch.5]`
+9. **Simple HAA KMLM/CASH defensive swaps**: statistically robust but no
+   improvement; original `IEFSIM/BNDSIM/CASHX` defense was selected with net
+   Sharpe 0.983/0.954/0.860, while KMLM-heavy defense raised MDD to 27.49%.
+   The next edge must change canary timing, not defensive assets.
+   `[stocks_on_the_move, ch.6]`
 
 ---
 

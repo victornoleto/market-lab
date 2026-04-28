@@ -29,9 +29,9 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-28 — bestfolio_hunt_loop iter 006: HAA RSIT synth PROMISING)
+## Onde estamos hoje (2026-04-28 — bestfolio_hunt_loop iter 007: HAA defensive KMLM/CASH STRONG)
 
-**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). bestfolio_hunt_loop ATIVO, 6/6 sem winner** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 006 HAA RSIT sintético: **PROMISING 71/100**, net Sharpe 0.869/0.897/0.837; passou 6/7, 6/7, 7/7 gates, mas falhou Sharpe edge 0/3, PBO nos dois datasets globais (0.714/0.845) e o kill educacional (0.869 <= iter 004 0.990). Lição: RSIT sintético preserva CAGR/MDD, mas não adiciona o retorno por risco que falta; mais managed futures embutido não fecha o gap bestfolio. `[risk_parity, ch.5]`; `[advances_fin_ml, p.208-211]`.
+**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). bestfolio_hunt_loop ATIVO, 7/7 sem winner** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 007 HAA defensive KMLM/CASH: **STRONG 75/100**, net Sharpe 0.983/0.954/0.860; passou 7/7 gates nos 3 datasets, mas falhou Sharpe edge 0/3 e o kill educacional (0.983 <= 1.120). Lição: a defesa original `IEFSIM/BNDSIM/CASHX` ganhou novamente; KMLM pesado aumenta MDD para 27.49% e cash puro corta CAGR. Próxima borda precisa mexer no timing do canário, não trocar a cesta defensiva simples. `[stocks_on_the_move, ch.6]`; `[risk_parity, ch.5]`.
 
 1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
    (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
@@ -83,7 +83,7 @@ evidência completa (final_reports + paper trading 3-6 meses).
 
 **Próximas decisões do usuário (mandate §7):**
 
-Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **bestfolio_hunt_loop em andamento** — iter 001 consumiu BAA-G12, iter 002 consumiu Composite Momentum Standard, iter 003 consumiu static global/factor/CTA stack, iter 004 consumiu HAA small/value tilt, iter 005 consumiu HAA RSST/RSSB/CTA e iter 006 consumiu HAA RSIT sintético; todos viraram dead-end estrutural para bater o HAA+Gold. Próximas direções prioritárias: mudança defensiva HAA focada em Sharpe ou dual-canary HAA para reduzir falsos estados defensivos sem diluir o sleeve ofensivo. Três opções concretas para o predecessor:
+Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **bestfolio_hunt_loop em andamento** — iter 001 consumiu BAA-G12, iter 002 consumiu Composite Momentum Standard, iter 003 consumiu static global/factor/CTA stack, iter 004 consumiu HAA small/value tilt, iter 005 consumiu HAA RSST/RSSB/CTA, iter 006 consumiu HAA RSIT sintético e iter 007 consumiu defesa HAA KMLM/CASH; todos viraram dead-end estrutural para bater o HAA+Gold. Próximas direções prioritárias: dual-canary HAA ou sinal Gayed/SPY/VT como input de canário para reduzir falsos estados defensivos sem diluir o sleeve ofensivo. Três opções concretas para o predecessor:
 
 1. **Manter Plano C** (mandato atual §1): CAGR ~10.3% líquido, MDD ~52%, zero complexidade.
 2. **Ativar 50/50 Híbrido** (iter 012): CAGR ~13.4% líquido, MDD ~27%, Sharpe **melhor que HAA puro**,
@@ -205,6 +205,8 @@ Termos que aparecem ao longo das entradas do changelog:
 — bug Tiingo IEX em US holidays.
 
 ### 2026-04-28
+
+- [2026-04-28 10h02 — **Bestfolio iter 007: HAA defensive KMLM/CASH — STRONG 75/100, sem winner.** Net Sharpe 0.983/0.954/0.860 vs iter 009 HAA+Gold 1.120/1.061/0.954. Passou 7/7 gates nos 3 datasets, mas Sharpe edge foi 0/3; a defesa original `IEFSIM/BNDSIM/CASHX` venceu as variantes KMLM/CASH. Lição: mexer na cesta defensiva simples não fecha o gap; a próxima hipótese deve mexer no timing do canário. `[stocks_on_the_move, ch.6]`; `[risk_parity, ch.5]`.](2026-04-28-1002-bestfolio-iter007-haa-defensive-dead-end.md)
 
 - [2026-04-28 10h00 — **Bestfolio iter 006: HAA RSIT sintético — PROMISING 71/100, dead-end documentado.** Net Sharpe 0.869/0.897/0.837 vs iter 009 HAA+Gold 1.120/1.061/0.954. Passou 6/7, 6/7, 7/7 gates, mas Sharpe edge foi 0/3, PBO falhou nos dois datasets globais e o kill educacional disparou (0.869 <= iter 004 0.990). Lição: RSIT sintético preserva CAGR/MDD, mas mais managed futures embutido não fecha o gap bestfolio. `[risk_parity, ch.5]`; `[advances_fin_ml, p.208-211]`.](2026-04-28-1000-bestfolio-iter006-haa-rsit-synth-dead-end.md)
 
