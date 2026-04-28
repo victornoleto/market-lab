@@ -1,10 +1,10 @@
 ---
 mission: "beat iter 009 HAA+Gold (Sharpe 1.120 edu) and close the gap to bestfolio #1 (Sharpe 1.18)"
-total_iterations: 3
+total_iterations: 4
 winners_found: 0
 status: in_progress
-latest_iteration: "003-2026-04-28-0148-global-factor-cta-stack"
-cumulative_n_trials: 8
+latest_iteration: "004-2026-04-28-0158-haa-global-factor-tilt"
+cumulative_n_trials: 12
 note: "loop initialized 2026-04-27. benchmark = iter009 HAA+Gold. tax model = AnnualDarfEngine (Lei 14.754/2023). RSIT synth available."
 ---
 
@@ -60,13 +60,23 @@ here is a candidate requiring mandate §7 override before deployment.
 
 | rank | iter | slug | score | tier | Sharpe (edu/vt/ndx) | CAGR (edu) | MDD (edu) |
 |---|---|---|---|---|---|---|---|
-| 1 | 001 | baa-g12-balanced | 58 | MARGINAL | 0.975/0.792/0.782 | 10.60% | 16.34% |
-| 2 | 002 | composite-momentum-standard | 55 | MARGINAL | 0.940/0.958/0.957 | 9.25% | 20.76% |
-| 3 | 003 | global-factor-cta-stack | 54 | MARGINAL | 0.823/0.742/0.910 | 12.09% | 41.76% |
+| 1 | 004 | haa-global-factor-tilt | 69 | PROMISING | 0.990/0.955/0.861 | 12.21% | 20.71% |
+| 2 | 001 | baa-g12-balanced | 58 | MARGINAL | 0.975/0.792/0.782 | 10.60% | 16.34% |
+| 3 | 002 | composite-momentum-standard | 55 | MARGINAL | 0.940/0.958/0.957 | 9.25% | 20.76% |
+| 4 | 003 | global-factor-cta-stack | 54 | MARGINAL | 0.823/0.742/0.910 | 12.09% | 41.76% |
 
 ---
 
 ## Iteration log (newest first)
+
+### 004 — 2026-04-28 — haa-global-factor-tilt (PROMISING, 69/100)
+
+- Hypothesis: Keep iter 009 HAA+Gold intact but replace the plain international stacked offensive sleeve with a simple `VEASIM/VBRSIM/VSSSIM` small/value tilt ladder.
+- Citations: `[stocks_on_the_move, ch.6]`; `[leverage_for_the_long_run, p.40-60]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
+- Scope: 4 pre-committed HAA factor-tilt configs; selected `tilt_scv20` by mean Sharpe / iter009 Sharpe; AnnualDarfEngine net-of-tax; educational/vt_real/ndx_real.
+- Result: net Sharpe **0.990 / 0.955 / 0.861**; gates **6/7 / 6/7 / 6/7**; DSR p **7.62e-06 / 2.32e-03 / 1.15e-02**. Kill fired: educational Sharpe <= 1.120 and 0 datasets beat iter009 by +0.10.
+- Score breakdown: Sharpe edge 0/25; gates 19/25; DSR 15/15; CAGR floor 15/15; MDD ceiling 15/15; robustness 5/5.
+- Lesson: HAA's canary still protects drawdown, but simple international small/value tilting mostly reshuffles risk-on equity exposure; PBO 0.885/0.869/0.694 makes the chosen tilt unstable and not a Sharpe-frontier advance.
 
 ### 003 — 2026-04-28 — global-factor-cta-stack (MARGINAL, 54/100)
 
@@ -117,22 +127,6 @@ return-stacking papers. `[stocks_on_the_move, p.21-30]` (MF momentum).
 
 ---
 
-#### iter 005 — HAA + global factor tilt (AVDV/VBRSIM offensive)
-
-**Hypothesis**: HAA architecture (iter 009) but replace VEASIM in offensive
-with `0.7 VEASIM + 0.3 VBRSIM` (intl + small-cap value tilt). Tests whether
-Avantis-style factor tilt on international sleeve adds Sharpe above plain VEA.
-
-**Sources**: Fama-French 1993 (SCV premium). `[stocks_on_the_move, ch.6]`
-(canary architecture). `[advances_fin_ml, p.222-223]` (DSR).
-AVDV vs VEA: ~+0.8pp/y Avantis live (6.5y track record).
-
-**Kill criterion**: edu Sharpe ≤ 1.120 (must beat iter 009).
-
-**Priority**: MEDIUM — incremental HAA variant; directionally correct per Avantis rationale.
-
----
-
 #### iter 006 — HAA + RSIT synth (deferred, prefer real data at launch)
 
 **Hypothesis**: When RSIT (Return Stacked International Stocks + MF) launches
@@ -173,6 +167,9 @@ full text in `DEAD_ENDS.md`.
 5. **Plain static global/factor/CTA stack**: low turnover restores CAGR
    floors but gives up HAA canary drawdown control; net Sharpe
    0.823/0.742/0.910 and MDD 27-42% fail the Sharpe/MDD frontier.
+6. **Simple HAA international small/value tilt**: preserves HAA MDD but
+   sacrifices Sharpe/CAGR; net Sharpe 0.990/0.955/0.861 and PBO
+   0.885/0.869/0.694 show unstable tilt selection. `[stocks_on_the_move, ch.6]`
 
 ---
 

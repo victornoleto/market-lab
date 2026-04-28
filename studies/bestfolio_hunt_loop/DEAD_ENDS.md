@@ -232,3 +232,50 @@ but it is subordinate for Sharpe-frontier hunting.
 | educational | 0.823 | 12.09% | 41.76% | 6/7 |
 | vt_real | 0.742 | 11.77% | 40.41% | 6/7 |
 | ndx_real | 0.910 | 13.11% | 27.49% | 6/7 |
+
+---
+
+## DE-006 — Simple HAA international small/value tilt
+
+**Origin**: bestfolio_hunt_loop iter 004 — haa-global-factor-tilt  
+**Score**: 69/100 PROMISING  
+**Date**: 2026-04-28
+
+### What was tested
+
+- Iter 009 HAA+Gold shell retained: `VWOSIM` canary, top-2 offensive,
+  top-1 defensive, 10% `KMLMSIM`, 5% `GLDSIM`.
+- Replaced the plain international stacked offensive sleeve with four
+  pre-committed `VEASIM` + `VBRSIM` + `VSSSIM` blends.
+- Selected config: `tilt_scv20` = 80% `VEASIM`, 10% `VBRSIM`, 10% `VSSSIM`.
+- Net-of-tax via `AnnualDarfEngine`.
+- Sources: `[stocks_on_the_move, ch.6]`; `[leverage_for_the_long_run, p.40-60]`.
+
+### Why it fails structurally
+
+The HAA canary still controls drawdown, but the small/value tilt does not add
+enough independent return to advance the Sharpe frontier. Net Sharpe was
+**0.990 / 0.955 / 0.861** versus iter 009 **1.120 / 1.061 / 0.954**, with
+zero datasets beating the required +0.10 Sharpe edge. G1 PBO also failed in
+all three datasets (**0.885 / 0.869 / 0.694**), meaning the chosen tilt level
+is an unstable grid selection `[advances_fin_ml, p.208-211]`.
+
+**Structural insight**: within the existing HAA offensive set, changing the
+international equity beta into a simple small/value blend mostly reshuffles
+risk-on equity exposure. It preserves MDD but sacrifices CAGR/Sharpe, so it is
+not the missing bestfolio.app +0.06 to +0.10 Sharpe gap.
+
+### What CAN be tried instead
+
+- Return-stacked RSST/RSSB variants inside a HAA shell, not as static stacks.
+- A qualitatively different HAA offensive return source, not another simple
+  developed/international factor blend.
+- RSIT only after real ETF data exists, or explicitly marked as incomplete synth.
+
+### Results summary
+
+| dataset | net Sharpe | net CAGR | net MDD | Gates |
+|---|---:|---:|---:|---:|
+| educational | 0.990 | 12.21% | 20.71% | 6/7 |
+| vt_real | 0.955 | 11.49% | 14.20% | 6/7 |
+| ndx_real | 0.861 | 9.41% | 14.20% | 6/7 |

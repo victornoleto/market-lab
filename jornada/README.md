@@ -29,9 +29,9 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-28 — bestfolio_hunt_loop iter 003: Static Stack MARGINAL)
+## Onde estamos hoje (2026-04-28 — bestfolio_hunt_loop iter 004: HAA factor tilt PROMISING)
 
-**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). bestfolio_hunt_loop ATIVO, 3/3 sem winner** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 003 Global Factor + CTA Stack: **MARGINAL 54/100**, net Sharpe 0.823/0.742/0.910; passou 6/7 gates nos 3 datasets, mas drawdown de 27-42% mostrou que stack estático não substitui o canário do HAA.
+**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). bestfolio_hunt_loop ATIVO, 4/4 sem winner** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 004 HAA Global Factor Tilt: **PROMISING 69/100**, net Sharpe 0.990/0.955/0.861; passou 6/7 gates nos 3 datasets e preservou MDD, mas falhou Sharpe edge 0/3 e PBO 0.885/0.869/0.694. Lição: o canário HAA segue essencial; simples tilt small/value internacional não fecha o gap bestfolio.
 
 1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
    (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
@@ -83,7 +83,7 @@ evidência completa (final_reports + paper trading 3-6 meses).
 
 **Próximas decisões do usuário (mandate §7):**
 
-Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **bestfolio_hunt_loop em andamento** — iter 001 consumiu BAA-G12, iter 002 consumiu Composite Momentum Standard e iter 003 consumiu static global/factor/CTA stack; os três viraram dead-end estrutural. Próxima direção prioritária é HAA com tilt global/fator ou RSST/RSSB dentro de shell risk-on/risk-off. Três opções concretas para o predecessor:
+Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **bestfolio_hunt_loop em andamento** — iter 001 consumiu BAA-G12, iter 002 consumiu Composite Momentum Standard, iter 003 consumiu static global/factor/CTA stack e iter 004 consumiu HAA small/value tilt; todos viraram dead-end estrutural para bater o HAA+Gold. Próxima direção prioritária é RSST/RSSB dentro de shell HAA/risk-on-risk-off, não stack estático. Três opções concretas para o predecessor:
 
 1. **Manter Plano C** (mandato atual §1): CAGR ~10.3% líquido, MDD ~52%, zero complexidade.
 2. **Ativar 50/50 Híbrido** (iter 012): CAGR ~13.4% líquido, MDD ~27%, Sharpe **melhor que HAA puro**,
@@ -205,6 +205,8 @@ Termos que aparecem ao longo das entradas do changelog:
 — bug Tiingo IEX em US holidays.
 
 ### 2026-04-28
+
+- [2026-04-28 02h05 — **Bestfolio iter 004: HAA Global Factor Tilt — PROMISING 69/100, dead-end documentado.** Net Sharpe 0.990/0.955/0.861 vs iter 009 HAA+Gold 1.120/1.061/0.954. Passou 6/7 gates nos 3 datasets e manteve MDD ~14-21%, mas Sharpe edge foi 0/3 e PBO falhou nos 3 datasets (0.885/0.869/0.694). Lição: o canário HAA protege drawdown; simples tilt internacional small/value não adiciona retorno independente suficiente. `[stocks_on_the_move, ch.6]`; `[advances_fin_ml, p.208-211]`.](2026-04-28-0205-bestfolio-iter004-haa-factor-tilt-dead-end.md)
 
 - [2026-04-28 01h54 — **Bestfolio iter 003: Global Factor + CTA Stack — MARGINAL 54/100, dead-end documentado.** Net Sharpe 0.823/0.742/0.910 vs iter 009 HAA+Gold 1.120/1.061/0.954. Passou 6/7 gates nos 3 datasets; DSR worst p=3.40e-02; CAGR floor passou nos 3, mas MDD 27-42% falhou todos os ceilings. Lição: baixo giro/static stack preserva CAGR, mas sem canário HAA o drawdown explode. `[risk_parity, p.1-2, p.10]`; `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.](2026-04-28-0154-bestfolio-iter003-static-stack-dead-end.md)
 

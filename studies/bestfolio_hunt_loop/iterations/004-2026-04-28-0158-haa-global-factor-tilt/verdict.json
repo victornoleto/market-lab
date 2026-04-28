@@ -1,0 +1,113 @@
+{
+  "total_score": 69,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 0,
+      "max": 25,
+      "datasets_beat": 0,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": 6,
+        "vt_real": 6,
+        "ndx_real": 6
+      },
+      "thresholds": {
+        "educational": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.011481870294033691,
+      "cumulative_n_trials": 12
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9897698728781613,
+      "cagr": 0.12205310203983277,
+      "mdd": 0.20706123662113277,
+      "dsr_p_value": 7.623532590095294e-06
+    },
+    "vt_real": {
+      "sharpe": 0.9554891150329927,
+      "cagr": 0.11486903810553306,
+      "mdd": 0.1420192845835985,
+      "dsr_p_value": 0.0023240700794789904
+    },
+    "ndx_real": {
+      "sharpe": 0.8607800868314214,
+      "cagr": 0.09414504012636171,
+      "mdd": 0.14201928458359947,
+      "dsr_p_value": 0.011481870294033691
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 1.12,
+      "cagr": 0.1389,
+      "mdd": 0.2081,
+      "label": "iter009 HAA+Gold edu (56y synth)"
+    },
+    "vt_real": {
+      "sharpe": 1.061,
+      "cagr": 0.1287,
+      "mdd": 0.142,
+      "label": "iter009 HAA+Gold vt_real (~17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.954,
+      "cagr": 0.1055,
+      "mdd": 0.142,
+      "label": "iter009 HAA+Gold ndx_real (16y)"
+    }
+  },
+  "cumulative_n_trials": 12,
+  "status": "promising",
+  "configs_tested": 4,
+  "primary_citation": "[stocks_on_the_move, ch.6]",
+  "hypothesis_slug": "haa-global-factor-tilt",
+  "selected_config": "tilt_scv20",
+  "selection_rule": "max mean Sharpe / iter009 Sharpe across educational, vt_real, ndx_real",
+  "tax_model": "AnnualDarfEngine",
+  "notional_factor": 1.45,
+  "robustness": {
+    "bonus_pts": 5,
+    "pct_positive_sharpe": 1.0,
+    "n_windows": 26,
+    "min_rolling_sharpe": 0.5889340361104225,
+    "max_rolling_sharpe": 1.5537444809697958
+  }
+}
