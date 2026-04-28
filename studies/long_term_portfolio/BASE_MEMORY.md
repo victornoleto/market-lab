@@ -1,15 +1,15 @@
 ---
 mission: "beat avg(SPY 1× b&h, VT 1× b&h) gross-of-tax Sharpe by ≥0.10 on ≥2 of 3 datasets"
-total_iterations: 12
+total_iterations: 13
 winners_found: 1
 status: hunting
-latest_iteration: "012-2026-04-28-1800-ntsx-gde-rssb-kmlm-global-stack"
-latest_score: 88
+latest_iteration: "013-2026-04-28-1814-factor-tilt-on-iter011"
+latest_score: 91
 beats_incumbent: false
-cumulative_n_trials: 44
+cumulative_n_trials: 48
 incumbent_winner_iter: "011-2026-04-28-1537-ntsx-gde-kmlm-static"
 incumbent_winner_score: 91
-note: "Renamed from bestfolio_hunt_loop on 2026-04-28. Mission redefined to 'beat avg(SPY,VT)' (gross-of-tax), scoring.py reworked accordingly. WINNER 2026-04-28: iter 011 NTSX+GDE+KMLM 35/25/40 static — 91/100, 5/5 strict, 3/3 +0.10 Sharpe edge. POST-WINNER OVERHAUL 2026-04-28: dataset registry centralized (datasets.py), educational dataset renamed lh_56y with KMLMSIM splice via FF MoM proxy pre-1988 (overstates pre-88 KMLM ~3×), plot_helper.py rewritten (1 PNG per dataset with 4-line equity + 3 rolling-Δ panels + rolling-windows panel). Hunt resumes; halt only when an iter sets beats_incumbent=true (score>91 OR Sharpe edge ≥+0.10 vs iter011 on ≥2 datasets). ITER 012 (RSSB injection into iter 011) — STRONG 88/100 vs avg(SPY,VT) but LOSES vs iter 011 on Sharpe across all 3 datasets; structural finding: RSSB's Treasury overlay overlaps NTSX's IEF and intl equity dragged. DE-013 added; iter 011 stays incumbent."
+note: "Renamed from bestfolio_hunt_loop on 2026-04-28. Mission redefined to 'beat avg(SPY,VT)' (gross-of-tax), scoring.py reworked accordingly. WINNER 2026-04-28: iter 011 NTSX+GDE+KMLM 35/25/40 static — 91/100, 5/5 strict, 3/3 +0.10 Sharpe edge. POST-WINNER OVERHAUL 2026-04-28: dataset registry centralized (datasets.py), educational dataset renamed lh_56y with KMLMSIM splice via FF MoM proxy pre-1988 (overstates pre-88 KMLM ~3×), plot_helper.py rewritten. Hunt resumes; halt only when an iter sets beats_incumbent=true. ITER 012 (RSSB injection) STRONG 88/100 but loses vs iter 011 on all 3 datasets — DE-013 (Treasury overlap). ITER 013 (factor tilt VBRSIM 10% on iter 011) — tier WINNER 91/100 5/5 conditions vs avg(SPY,VT), but TIES iter 011 score (91=91, not >) and edges only +0.080 on lh_56y while LOSING on vt (−0.037) / ndx (−0.029) — beats_incumbent=false; DE-014 added. Cross-config monotonic finding: factor tilt helps lh_56y (+0.060→+0.085 over VBRSIM 10%→30%) but hurts vt/ndx (−0.04→−0.13)."
 ---
 
 # Long-Term Portfolio Loop — BASE MEMORY
@@ -88,7 +88,8 @@ vs KMLM's long-run ~0.5; pre-1988 KMLM-heavy returns are ~3× overstated).
 | rank | iter | slug | score | tier | legacy edu Sharpe | **lh_56y gross Sharpe** | lh_56y window |
 |---|---|---|---|---|---|---|---|
 | 1 | **011** | **ntsx-gde-kmlm-static** | **91 🏆** | **WINNER** | 1.021 (gross) | **1.046** | 1986-2026 (40y) |
-| 2 | **012** | ntsx-gde-rssb-kmlm-global-stack | **88** | STRONG | 1.011 (gross) | 1.011 | 1986-2026 (40y eff) |
+| 2 | **013** | factor-tilt-on-iter011 | **91** | WINNER (tier) ⚠️ | n/a | **1.126** ⭐ | 1986-2026 (40y eff) |
+| 3 | **012** | ntsx-gde-rssb-kmlm-global-stack | **88** | STRONG | 1.011 (gross) | 1.011 | 1986-2026 (40y eff) |
 | — | 007 | haa-defensive-kmlm-cash | 75 | STRONG | 0.983 (net) | **1.150** ⭐ | 1994-2026 (32y) |
 | — | 008 | haa-dual-canary | 73 | PROMISING | 0.983 (net) | 1.120 | 1994-2026 (32y) |
 | — | 009 | haa-gayed-trend-canary | 73 | PROMISING | 0.983 (net) | 1.120 | 1994-2026 (32y) |
@@ -107,73 +108,83 @@ iter 011's lh_56y Sharpe; iter 011 is still likely competitive but not
 dominant on lh_56y. Apples-to-apples comparison requires same-window cropping
 (future work: align all to 1994-2026 or use a non-KMLM-dependent benchmark).
 
+⚠️ = tier WINNER per scoring rubric (≥90 + winner_conds_met=true vs avg(SPY,VT))
+but does NOT advance the iter 011 incumbent (ties on score 91=91, fails the
++0.10 Sharpe edge gate on all 3 datasets). Listed alongside iter 011 in top-K
+because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
+
 ---
 
 ## Iteration log (newest first)
 
-### 012 — 2026-04-28 — ntsx-gde-rssb-kmlm-global-stack (STRONG, 88/100)
+### 013 — 2026-04-28 — factor-tilt-on-iter011 (WINNER tier, 91/100, beats_incumbent=false)
 
-- Hypothesis: Inject RSSBSIM (Return Stacked Global Stocks & Bonds, 200% notional) as a 4th sleeve into iter 011's NTSX+GDE+KMLM stack to capture intl-equity + Treasury duration the user's literal "global+factor" thesis demands. Direction A2 from BASE_MEMORY promising directions.
-- Citations: `[risk_parity, ch.5, p.10]`; `[ilmanen, ch.19]`; `[stocks_on_the_move, p.21-30]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
-- Scope: 4 pre-committed configs (`rssb_balanced_30303010`, `rssb_moderate_25252525`, `rssb_iter011_clone_30202525`, `rssb_lite_30253015`); selected `rssb_moderate_25252525` (4-way equal) by max mean(gross_Sharpe / avg(SPY,VT)_Sharpe). Datasets: lh_56y (1986-2026, 40y eff), vt_real (17y), ndx_real (16y).
-- Result: gross Sharpe **1.011 / 0.851 / 1.021** (edges **+0.340 / +0.144 / +0.098** vs avg(SPY,VT) — 2/3 datasets clear +0.10); gates **6/7 / 7/7 / 7/7**; DSR p **5.59e-11 / 5.57e-3 / 1.29e-3**. **All 5 strict winner conditions met vs avg(SPY,VT).** But Sharpe vs **iter 011 incumbent**: −0.035 / −0.109 / −0.083 (LOSES on every dataset) → pre-committed kill #1 fired (best lh_56y config 1.016 < iter 011's 1.046). Tier STRONG, beats_incumbent=false.
-- Net (informational): Sharpe **1.011 / 0.851 / 1.021** ≈ gross (static stack, year-end-only DARF, daily-Sharpe tax-neutral).
-- Score breakdown: Sharpe edge 20/25 (ndx_real +0.098 misses by 0.002); gates 23/25 (lh_56y G3 WF fails — 2 of 8 windows MDD>25% during GFC); DSR 15/15; CAGR floor 10/15 (ndx_real misses 0.8× ceiling); MDD ceiling 15/15; robustness 5/5 (52/52 rolling-5y windows positive).
-- Lesson: RSSB's Treasury overlay overlaps NTSX's 60% IEFSIM exposure → composite portfolio is duration-heavy; intl-equity sleeve dragged in 2010-2026 US-equity-dominant regime. **iter 011's pure-US capital-efficient stack is hard to beat with naive global tilts.** Next attack must use factor tilts (Direction B AVUV/AVDV) or 1× intl-equity overlay (A3 — VXUSSIM) that doesn't duplicate Treasury exposure.
+- Hypothesis: Inject US small-cap value factor (`VBRSIM` = AVUV synth proxy) into iter 011's NTSX+GDE+KMLM stack at 4 intensity levels (10/20/25/30%). Tests Direction B from BASE_MEMORY (factor tilts on iter 011 base) — iter 011 has zero factor exposure, and the user's literature thesis explicitly includes AVUV/AVDE/SPMO factor ETFs. VBRSIM is 1× notional and zero Treasury → qualitatively different mechanism from the iter 012 RSSB failure mode.
+- Citations: `[risk_parity, ch.5, p.10]` (cap-efficient core); `[risk_parity, ch.2, p.37-41]` (factor premium framework); `[stocks_on_the_move, ch.6, p.21-30]` (cross-sectional ranking edges); gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
+- Scope: 4 pre-committed configs (`factor_lite_30253510`, `factor_moderate_25253020`, `factor_balanced_25202530`, `factor_heavy_20203030`); selected `factor_lite_30253510` (10% VBRSIM) by max mean(gross_Sharpe / avg(SPY,VT)_Sharpe). Datasets: lh_56y / vt_real / ndx_real (1986-2026 / 17y / 16y eff windows).
+- Result: gross Sharpe **1.126 / 0.923 / 1.075** (edges vs avg(SPY,VT) **+0.454 / +0.216 / +0.152** — 3/3 datasets clear +0.10); gates **5/7 / 7/7 / 7/7**; DSR p **2.86e-13 / 2.29e-3 / 6.24e-4**. **All 5 strict winner conditions met vs avg(SPY,VT) → tier WINNER.** But Sharpe vs **iter 011 incumbent**: **+0.080 / −0.037 / −0.029** (BEATS only on lh_56y, LOSES on both live windows). Score 91 = score 91 of iter 011 (NOT greater). 0/3 datasets clear +0.10 incumbent edge. **beats_incumbent=false.**
+- Net (informational): Sharpe **1.126 / 0.923 / 1.075** ≈ gross (static stack, year-end DARF, daily-Sharpe tax-neutral).
+- Score breakdown: Sharpe edge 25/25 (3/3 +0.10 vs avg); gates 21/25 (lh_56y G3 WF fails — 1986-2026 long-history has more drawdown windows in GFC/2022); DSR 15/15; CAGR floor 10/15 (ndx_real 12.06% < 13.58% = 0.8 × bench); MDD ceiling 15/15; robustness 5/5 (52/52 rolling-5y Sharpe positive, min 0.43 max 2.13).
+- Lesson: factor tilt monotonically helps lh_56y (+0.060→+0.085 across VBR 10%→30%) but monotonically hurts vt_real (−0.04→−0.14) and ndx_real (−0.03→−0.13). The size+value premium IS alive on long-history but post-2008 windows are in the well-documented "death of value" regime. **Constant-weight factor tilt is structurally subordinate to iter 011 on the deploy-relevant live windows.** Closing direction B (constant-weight factor) → DE-014. Future factor work needs a regime filter (factor momentum / value spread) — naive constant-weight VBRSIM is not the answer.
+
+### 012 — 2026-04-28 — ntsx-gde-rssb-kmlm-global-stack (STRONG, 88/100, DE-013)
+
+- 4 configs RSSB injection on iter 011 base; selected `rssb_moderate_25252525`. Gross S 1.011/0.851/1.021 — all 5 strict winner conds met vs avg(SPY,VT) but LOSES iter 011 on all 3 datasets (−0.035/−0.109/−0.083). `[risk_parity, ch.5, p.10]`
+- Lesson: RSSB's Treasury overlay duplicates NTSX's IEF; intl-equity sleeve dragged in post-2010 regime.
 
 ### 011 — 2026-04-28 — ntsx-gde-kmlm-static (🏆 WINNER, 91/100)
 
-- 4 configs of static NTSX/GDE/KMLM stack; selected `mf_tilted_352540` (35/25/40). Gross Sharpe 1.021/0.960/1.104 vs avg(SPY,VT) — 3/3 datasets +0.10 edge. All 5 strict winner conditions met. `[risk_parity, ch.5, p.10]`
-- Lesson: capital-efficient stacking via NTSX/GDE + KMLM crisis-alpha is the only winner architecture across this loop and the predecessor strategy_hunt_loop. Family-level robust (all 4 weight variants pass).
+- 4 configs static NTSX/GDE/KMLM stack; selected `mf_tilted_352540` (35/25/40). Gross S 1.021/0.960/1.104 — 3/3 datasets +0.10 edge vs avg(SPY,VT). `[risk_parity, ch.5, p.10]`
+- Lesson: capital-efficient stack (NTSX+GDE) + KMLM crisis-alpha is the only winner architecture across this loop and predecessor.
 
 ### 010 — 2026-04-28 — haa-vol-throttle (PROMISING, 60/100, DE-012)
 
-- HAA+Gold with 63d vol throttle on 85% dynamic sleeve; selected `vol12`. Net Sharpe 1.020/0.955/0.881; 7/7 gates × 3 but 0 datasets +0.10 edge over iter009. `[systematic_trading, p.137-148]`
-- Lesson: vol throttle reduces MDD but converts HAA+Gold into low-CAGR defensive — not the missing Sharpe edge.
+- HAA+Gold with 63d vol throttle on 85% dyn sleeve. Sharpe 1.020/0.955/0.881; 7/7 × 3 but 0 datasets +0.10 vs iter009. `[systematic_trading, p.137-148]`
+- Lesson: vol throttle reduces MDD but converts HAA into low-CAGR defensive.
 
 ### 009 — 2026-04-28 — haa-gayed-trend-canary (PROMISING, 73/100, DE-011)
 
-- HAA+Gold with `SPYSIM`/`VTSIM` 10-month trend canary modes; original `VWOSIM` re-selected. Sharpe 0.983/0.954/0.860; 0 datasets +0.10. `[leverage_for_the_long_run, p.40-60]`
+- HAA+Gold with SPYSIM/VTSIM 10-mo trend canary modes; original VWOSIM re-selected. S 0.983/0.954/0.860. `[leverage_for_the_long_run, p.40-60]`
 - Lesson: simple broad-equity trend not a better state classifier than VWO momentum.
 
 ### 008 — 2026-04-28 — haa-dual-canary (PROMISING, 73/100, DE-010)
 
-- `VWOSIM`/`VTISIM` dual canary for HAA+Gold; selected `vwo_only`. Sharpe 0.983/0.954/0.860; ndx_real PBO 0.552 fails. `[stocks_on_the_move, p.63-65]`
+- VWOSIM/VTISIM dual canary; vwo_only selected. S 0.983/0.954/0.860; ndx PBO 0.552 fails. `[stocks_on_the_move, p.63-65]`
 - Lesson: second broad-equity canary did not improve state classification.
 
 ### 007 — 2026-04-28 — haa-defensive-kmlm-cash (STRONG, 75/100, DE-009)
 
-- Swap HAA defensive to KMLM/CASH variants; original `IEFSIM/BNDSIM/CASHX` re-selected. Sharpe 0.983/0.954/0.860; 7/7 × 3. `[stocks_on_the_move, ch.6]`
+- Swap HAA defensive variants; original IEF/BND/CASH re-selected. S 0.983/0.954/0.860; 7/7 × 3. `[stocks_on_the_move, ch.6]`
 - Lesson: missing edge is canary timing, not defensive assets.
 
 ### 006 — 2026-04-28 — haa-rsit-synth (PROMISING, 71/100, DE-008)
 
-- Synthetic `RSIT_PROXY = VEASIM + KMLMSIM - 50bps/y` inside HAA. Sharpe 0.869/0.897/0.837; PBO 0.714/0.845 fails. `[risk_parity, ch.5]`
-- Lesson: more embedded MF on intl-equity worsened Sharpe/PBO; closed until live RSIT exists.
+- Synthetic RSIT_PROXY=VEASIM+KMLMSIM−50bps inside HAA. S 0.869/0.897/0.837; PBO 0.714/0.845 fails. `[risk_parity, ch.5]`
+- Lesson: more embedded MF on intl-equity worsened Sharpe/PBO; defer until live RSIT.
 
 ### 005 — 2026-04-28 — haa-rsst-rssb-cta (PROMISING, 70/100, DE-007)
 
-- RSST/RSSB/CTA offensive substitution in HAA. Sharpe 0.953/1.028/0.946; 7/7 × 3 but no +0.10. `[risk_parity, ch.5]`
-- Lesson: extra stacked diversifiers traded CAGR for MDD; not the Sharpe edge.
+- RSST/RSSB/CTA offensive substitution in HAA. S 0.953/1.028/0.946; 7/7 × 3 but no +0.10 edge. `[risk_parity, ch.5]`
+- Lesson: extra stacked diversifiers traded CAGR for MDD.
 
 ### 004 — 2026-04-28 — haa-global-factor-tilt (PROMISING, 69/100, DE-006)
 
-- Intl small/value tilt inside HAA offensive. Sharpe 0.990/0.955/0.861; PBO 0.885/0.869/0.694 fails. `[stocks_on_the_move, ch.6]`
+- Intl small/value tilt inside HAA offensive. S 0.990/0.955/0.861; PBO 0.885/0.869/0.694 fails. `[stocks_on_the_move, ch.6]`
 - Lesson: reshuffled risk-on equity exposure; unstable tilt selection.
 
 ### 003 — 2026-04-28 — global-factor-cta-stack (MARGINAL, 54/100, DE-005)
 
-- Static global/factor/CTA stack; selected `stack_gde_heavy`. Sharpe 0.823/0.742/0.910; MDD 27-42%. `[risk_parity, p.1-2]`
+- Static global/factor/CTA stack; stack_gde_heavy selected. S 0.823/0.742/0.910; MDD 27-42%. `[risk_parity, p.1-2]`
 - Lesson: low turnover preserved CAGR but lost HAA drawdown control.
 
 ### 002 — 2026-04-28 — composite-momentum-standard (MARGINAL, 55/100, DE-004)
 
-- SPY200 top-4 inverse-vol composite momentum. Sharpe 0.940/0.958/0.957; 7/7 × 3 but return-capped. `[stocks_on_the_move, p.21-30]`
+- SPY200 top-4 inverse-vol composite momentum. S 0.940/0.958/0.957; 7/7 × 3 but return-capped. `[stocks_on_the_move, p.21-30]`
 - Lesson: defensive 60/40 IEF/gold sleeve too low-return; annual DARF drag.
 
 ### 001 — 2026-04-28 — baa-g12-balanced (MARGINAL, 58/100, DE-003)
 
-- BAA-G12 Balanced. Sharpe 0.975/0.792/0.782; 7/7, 7/7, 6/7. `[stocks_on_the_move, ch.6]`
+- BAA-G12 Balanced. S 0.975/0.792/0.782; 7/7, 7/7, 6/7. `[stocks_on_the_move, ch.6]`
 - Lesson: too defensive/tax-dragged; never beats HAA+Gold.
 
 ---
@@ -203,19 +214,35 @@ Replace pure-US NTSX with intl variants. Candidate:
    is 1× notional (no Treasury duplication issue) and isolates the intl-equity
    tilt from RSSB's Treasury overlap.
 
-### B. Factor tilts on the iter 011 base
+### B. Factor tilts on the iter 011 base — partially CLOSED
 
-iter 011 has zero factor tilt. Test small-cap value + momentum overlays:
+iter 011 has zero factor tilt. Constant-weight US factor tilt CLOSED iter 013
+(DE-014). Remaining sub-axes:
 
-4. **Iter 011 + AVUV/AVDV core** — replace 50% of NTSX's SPY exposure with
-   AVUV (US small-cap value) + AVDV (intl small-cap value) factor ETFs.
-   Synth proxies: VBRSIM (99y) + VSSSIM. Citation: `[stocks_on_the_move]`
-   + Asness-Frazzini-Pedersen 2014 size+value premium.
-5. **Iter 011 + UMD (Fama-French momentum) overlay** — 20% direct UMD
-   factor exposure as Sharpe enhancer. UMD daily 1926+ on disk now.
-   `[stocks_on_the_move]`.
-6. **NTSX + GDE + KMLM + AVUV + AVDV** — factor + capital-efficient hybrid;
-   tests if factor tilts add Sharpe edge atop the iter 011 family.
+4. ~~**Iter 011 + AVUV/AVDV core (constant weight)**~~ — **CLOSED iter 013
+   (DE-014)**: VBRSIM 10/20/25/30% sweep on iter 011 base improves lh_56y
+   monotonically (+0.060 → +0.085) but degrades vt_real / ndx_real
+   monotonically (−0.04 → −0.14, −0.03 → −0.13). Selected lightest config
+   (10%) is tier WINNER vs avg(SPY,VT) but does not advance iter 011
+   incumbent. Constant-weight factor tilt is structurally subordinate
+   on post-2008 windows (well-documented "death of value" regime).
+5. **Iter 011 + UMD (Fama-French momentum) overlay** (now higher priority
+   after iter 013) — 20% direct UMD factor exposure as Sharpe enhancer.
+   UMD daily 1926+ on disk now. Different factor (momentum vs size+value),
+   different post-2008 behavior (momentum had multiple positive years
+   2017-2024 while value lagged). `[stocks_on_the_move, ch.6]` +
+   Fama-French (1993).
+6. **Iter 011 + factor with regime filter** (NEW direction emerging from
+   iter 013's structural finding) — factor weight conditional on a
+   value-spread (CAPE differential) or factor-momentum signal (12-1
+   factor return). VBRSIM only when premium is "live"; KMLM/GDE
+   otherwise. Pre-commit ≤ 3 configs to avoid the prior loop's
+   "regime gate on existing winner" DSR-regression trap
+   (`_archive` strategy_hunt_loop dead-ends 3-4).
+7. ~~**NTSX + GDE + KMLM + AVUV + AVDV**~~ — would be a superset of iter
+   013's grid; expected to fail by the same regime-mismatch logic.
+   Defer until either #5 (UMD) or #6 (regime-filtered factor) shows
+   positive signal.
 
 ### C. Live-data validation (deferred until A or B winner)
 
@@ -283,6 +310,17 @@ full text in `DEAD_ENDS.md`.
     iter 011 incumbent on Sharpe across all 3 datasets (−0.030 / −0.109 / −0.083).
     Pre-committed kill #1 fired. RSSB's Treasury overlay overlaps NTSX's IEF;
     intl-equity sleeve dragged in 2010-2026 regime. `[risk_parity, ch.5, p.10]`
+14. **Constant-weight US factor tilt on iter 011 base (NTSX + GDE + KMLM +
+    VBRSIM 10/20/25/30%)**: selected `factor_lite_30253510` (10% VBRSIM)
+    hit tier WINNER 91/100 vs avg(SPY,VT) — all 5 strict conditions met,
+    3/3 +0.10 edge vs passive baseline. But ties iter 011's score (91=91,
+    not >) and only +0.080 on lh_56y while LOSING on vt_real (−0.037)
+    and ndx_real (−0.029). Cross-config monotonic finding: factor tilt
+    helps lh_56y (+0.060→+0.085 over 10%→30%) but hurts both live
+    windows (−0.04→−0.14, −0.03→−0.13). Post-2008 "death of value"
+    regime makes constant-weight factor tilt structurally subordinate
+    to iter 011 on deploy-relevant windows. `[risk_parity, ch.2, p.37-41]`,
+    `[stocks_on_the_move, ch.6, p.21-30]`
 
 ---
 

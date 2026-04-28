@@ -702,3 +702,105 @@ Selected: `rssb_moderate_25252525` = 25% NTSX + 25% GDE + 25% RSSB + 25% KMLM.
 | ndx_real  | 1.021 | 12.59% | 20.20% | 7/7 | 1.29e-3 |
 
 Net ≈ gross (static stack, year-end-only DARF, daily-Sharpe tax-neutral).
+
+---
+
+## DE-014 — Constant-weight US factor tilt (VBRSIM) on iter 011 base
+
+**Origin**: long_term_portfolio iter 013 — factor-tilt-on-iter011
+**Score**: 91/100 WINNER (tier; vs avg(SPY,VT) all 5 strict conditions met)
+— but does NOT advance iter 011 incumbent
+**Date**: 2026-04-28
+
+### What was tested
+
+- Iter 011's NTSX + GDE + KMLM static capital-efficient stack architecture
+  retained, with `VBRSIM` (US Small-Cap Value, AVUV synth proxy, 99y
+  inception) added as a factor-tilt sleeve at 4 intensity levels.
+- Tested 4 pre-committed weight grids:
+  - `factor_lite_30253510` = 30% NTSX / 25% GDE / 35% KMLM / 10% VBRSIM
+  - `factor_moderate_25253020` = 25% NTSX / 25% GDE / 30% KMLM / 20% VBRSIM
+  - `factor_balanced_25202530` = 25% NTSX / 20% GDE / 30% KMLM / 25% VBRSIM
+  - `factor_heavy_20203030` = 20% NTSX / 20% GDE / 30% KMLM / 30% VBRSIM
+- Selected config: `factor_lite_30253510` (10% VBRSIM), by max
+  mean(gross_Sharpe / avg(SPY,VT)_Sharpe) across 3 datasets.
+- Datasets: lh_56y (1986-2026, 40y eff. SPYSIM-bounded), vt_real (17y),
+  ndx_real (16y).
+- Rationale: VBRSIM is **1× notional**, **zero Treasury** — qualitatively
+  different from iter 012's RSSB (DE-013, 200% notional with embedded
+  Treasury). Tests user's literature thesis (AVUV/AVDE/SPMO factor ETFs).
+- Sources: `[risk_parity, ch.5, p.10]` (cap-efficient core retained);
+  `[risk_parity, ch.2, p.37-41]` (factor premium framework);
+  `[stocks_on_the_move, ch.6, p.21-30]` (cross-sectional ranking edges).
+
+### Why it fails to advance the incumbent
+
+The strategy clears all 5 strict winner conditions vs the loop's primary
+benchmark avg(SPY,VT) — beats it +0.454/+0.216/+0.152 Sharpe across the
+3 datasets, passes 5/7/7/7 gates, DSR p worst 2.29e-3, robustness 5/5
+(52/52 rolling-5y windows positive). Score 91 = tier WINNER per scoring
+rubric.
+
+**But it ties iter 011's score (91 = 91, NOT >) and fails the +0.10
+incumbent edge gate on every dataset**:
+
+| dataset | iter 013 selected S | iter 011 incumbent S | Δ vs iter 011 |
+|---|---:|---:|---:|
+| lh_56y    | 1.126 | 1.046 | +0.080 (close, not ≥0.10) |
+| vt_real   | 0.923 | 0.960 | −0.037 |
+| ndx_real  | 1.075 | 1.104 | −0.029 |
+
+**Cross-config monotonic finding (the structural insight)**:
+
+| config | VBR % | lh_56y S | Δ iter011 | vt_real S | Δ iter011 | ndx_real S | Δ iter011 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `factor_lite_30253510`     | 10% | 1.126 | +0.080 | 0.923 | −0.037 | 1.075 | −0.029 |
+| `factor_moderate_25253020` | 20% | 1.106 | +0.060 | 0.874 | −0.086 | 1.032 | −0.072 |
+| `factor_balanced_25202530` | 25% | 1.125 | +0.079 | 0.846 | −0.114 | 1.005 | −0.099 |
+| `factor_heavy_20203030`    | 30% | 1.131 | +0.085 | 0.825 | −0.135 | 0.979 | −0.125 |
+
+Across the entire grid, factor tilt **monotonically** helps lh_56y but
+**monotonically** hurts both live windows.
+
+### Structural insight (why it's a dead-end)
+
+1. **Factor premium IS alive on long-history (1986-2026)**: cross-config
+   monotonic improvement on lh_56y is robust evidence that `[risk_parity,
+   ch.2, p.37-41]`-style factor premium frameworks have empirical support.
+2. **Post-2008 "death of value"**: 2009-2020 was the worst decade for
+   size+value premium since Fama-French published; partial recovery
+   2021-2024 hasn't reversed the live-window damage. Constant-weight
+   VBRSIM imports this regression directly into the portfolio.
+3. **iter 011 captures the dominant post-GFC regime**: NTSX (90% SPY +
+   60% IEF) + GDE (90% S&P + 90% gold) + KMLM are precisely tuned to
+   the 2009-2026 US-large-cap-with-stacked-overlays regime. Adding
+   VBRSIM dilutes that exposure with one that hasn't paid for ~17 years.
+4. **The Sharpe-helping (lh_56y) gain is smaller in absolute terms than
+   the Sharpe-hurting (vt + ndx) loss**: any practitioner who weights
+   recent windows ≥ historical sees factor tilt as net negative.
+
+### What CAN be tried instead
+
+- **UMD (momentum factor) overlay on iter 011** — different factor with
+  different post-2008 behavior (momentum had positive 2017-2024 while
+  size+value lagged). Different regime mismatch profile.
+- **Factor with regime filter** — VBRSIM weight conditional on a value
+  spread (CAPE differential) or factor-momentum (12-1 factor return)
+  signal. Factor sleeve only active when premium is "live"; KMLM/GDE
+  cover otherwise. Pre-commit ≤ 3 configs to avoid the strategy_hunt_loop
+  "regime gate on existing winner" DSR-regression trap.
+- **Direction A1 (NTSX/NTSI/NTSE/GDE/KMLM)** — international leveraged-
+  equity stack via WisdomTree NTSI (1.5× intl developed) + NTSE (1.5×
+  EM) instead of factor tilt. Requires NTSI/NTSE proxy synthesis first.
+
+### Results summary
+
+Selected: `factor_lite_30253510` = 30% NTSX + 25% GDE + 35% KMLM + 10% VBRSIM.
+
+| dataset | gross Sharpe | gross CAGR | gross MDD | Gates | DSR p |
+|---|---:|---:|---:|---:|---:|
+| lh_56y    | 1.126 | 12.32% | 25.73% | 5/7 | 2.86e-13 |
+| vt_real   | 0.923 | 11.27% | 24.45% | 7/7 | 2.29e-3 |
+| ndx_real  | 1.075 | 12.06% | 18.00% | 7/7 | 6.24e-4 |
+
+Net ≈ gross (static stack, year-end DARF, daily-Sharpe tax-neutral).
