@@ -1,11 +1,11 @@
 ---
 mission: "beat avg(SPY 1× b&h, VT 1× b&h) gross-of-tax Sharpe by ≥0.10 on ≥2 of 3 datasets"
-total_iterations: 10
-winners_found: 0
-status: in_progress
-latest_iteration: "010-2026-04-28-1019-haa-vol-throttle"
-cumulative_n_trials: 36
-note: "Renamed from bestfolio_hunt_loop on 2026-04-28. Mission redefined to 'beat avg(SPY,VT)' (gross-of-tax), scoring.py reworked accordingly. Net-of-tax (Lei 14.754/2023, _shared/tax_engine.py) is reported as deploy-readiness diagnostic but does NOT gate. Top-K and dead-end log below were generated under the previous iter-009-benchmark mission and are kept for continuity — re-evaluate against the new thresholds before promoting any past iter to top-K."
+total_iterations: 11
+winners_found: 1
+status: winner
+latest_iteration: "011-2026-04-28-1537-ntsx-gde-kmlm-static"
+cumulative_n_trials: 40
+note: "Renamed from bestfolio_hunt_loop on 2026-04-28. Mission redefined to 'beat avg(SPY,VT)' (gross-of-tax), scoring.py reworked accordingly. Net-of-tax (Lei 14.754/2023, _shared/tax_engine.py) is reported as deploy-readiness diagnostic but does NOT gate. WINNER 2026-04-28: iter 011 NTSX+GDE+KMLM static stack — score 91/100, all 5 strict winner conditions met, 3/3 datasets clear +0.10 Sharpe edge, family-level robust (all 4 weight variants pass). Shell loop halts."
 ---
 
 # Long-Term Portfolio Loop — BASE MEMORY
@@ -62,10 +62,9 @@ requiring mandate §7 override before deployment.
 
 ## Winners found
 
-*(empty — no winners after 9 iterations)*
-
-| # | iter | slug | status | edu S/C/MDD | note |
-|---|---|---|---|---|---|
+| # | iter | slug | status | edu S/CAGR/MDD | vt S/CAGR/MDD | ndx S/CAGR/MDD | note |
+|---|---|---|---|---|---|---|---|
+| 1 | 011 | ntsx-gde-kmlm-static | 🏆 WINNER (91/100) | 1.021 / 11.58% / 26.04% | 0.960 / 10.95% / 21.22% | 1.104 / 11.64% / 14.12% | Static 35% NTSX + 25% GDE + 40% KMLM stack. All 5 strict conditions met. 3/3 datasets beat avg(SPY,VT) +0.10 Sharpe edge (edu +0.350, vt +0.253, ndx +0.180). Net ≈ Gross (static buy-hold = no DARF until liquidation under Lei 14.754/2023). Family-level robust: all 4 weight variants pass; user's primary 40/30/30 also passes. Caveat: G1 PBO fails on real-data slots (config-noise within tightly-correlated grid), KMLMSIM synth pre-2020. |
 
 ---
 
@@ -73,15 +72,25 @@ requiring mandate §7 override before deployment.
 
 | rank | iter | slug | score | tier | Sharpe (edu/vt/ndx) | CAGR (edu) | MDD (edu) |
 |---|---|---|---|---|---|---|---|
-| 1 | 007 | haa-defensive-kmlm-cash | 75 | STRONG | 0.983/0.954/0.860 | 12.15% | 20.81% |
-| 2 | 009 | haa-gayed-trend-canary | 73 | PROMISING | 0.983/0.954/0.860 | 12.15% | 20.81% |
-| 3 | 008 | haa-dual-canary | 73 | PROMISING | 0.983/0.954/0.860 | 12.15% | 20.81% |
-| 4 | 006 | haa-rsit-synth | 71 | PROMISING | 0.869/0.897/0.837 | 11.13% | 22.12% |
-| 5 | 005 | haa-rsst-rssb-cta | 70 | PROMISING | 0.953/1.028/0.946 | 11.11% | 16.98% |
+| 1 | **011** | **ntsx-gde-kmlm-static** | **91** | 🏆 **WINNER** | **1.021/0.960/1.104** (gross) | **11.58%** | **26.04%** |
+| 2 | 007 | haa-defensive-kmlm-cash | 75 | STRONG | 0.983/0.954/0.860 (net) | 12.15% | 20.81% |
+| 3 | 009 | haa-gayed-trend-canary | 73 | PROMISING | 0.983/0.954/0.860 (net) | 12.15% | 20.81% |
+| 4 | 008 | haa-dual-canary | 73 | PROMISING | 0.983/0.954/0.860 (net) | 12.15% | 20.81% |
+| 5 | 006 | haa-rsit-synth | 71 | PROMISING | 0.869/0.897/0.837 (net) | 11.13% | 22.12% |
 
 ---
 
 ## Iteration log (newest first)
+
+### 011 — 2026-04-28 — ntsx-gde-kmlm-static (🏆 WINNER, 91/100)
+
+- Hypothesis: User's literal architectural preference — 40% NTSX + 30% GDE + 30% KMLM static capital-efficient stack — untested across 10 prior iters; tested under the redefined avg(SPY,VT) gross-of-tax mission.
+- Citations: `[risk_parity, ch.5, p.10]`; `[stocks_on_the_move, p.21-30]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
+- Scope: 4 pre-committed configs (`user_primary_403030`, `equal_weight_333333`, `equity_tilted_502525`, `mf_tilted_352540`); selected `mf_tilted_352540` by max mean(gross_Sharpe / avg(SPY,VT)_Sharpe). Datasets: educational (1995-2026 31y), vt_real (17y), ndx_real (16y).
+- Result: gross Sharpe **1.021 / 0.960 / 1.104** (edges **+0.350 / +0.253 / +0.180** vs avg(SPY,VT)); gates **7/7 / 6/7 / 6/7**; DSR p **1.79e-6 / 1.36e-3 / 4.07e-4**. All 5 strict winner conditions met. **3/3 datasets clear +0.10 Sharpe edge**; family-level robust (all 4 weight variants pass — user's 40/30/30 also passes WINNER on Sharpe edge).
+- Net (informational): Sharpe **1.021 / 0.960 / 1.104** ≈ gross (static buy-hold + Lei 14.754/2023 PF direta = no realized gains until liquidation; daily-Sharpe tax-neutral).
+- Score breakdown: Sharpe edge 25/25; gates 21/25 (cross-dataset bonus); DSR 15/15; CAGR floor 10/15 (ndx misses by 0.46pp); MDD ceiling 15/15; robustness 5/5 (100% positive 5y rolling Sharpe across 27 windows).
+- Lesson: User's instinct ("diversified + leveraged through stacking, no rotation cost") was correct. Mission redefinition matters — DE-005 closed plain static stacks under iter009 benchmark; under avg(SPY,VT) the same architecture is winner. Capital efficiency via NTSX/GDE futures overlay is the only leverage path that has produced a winner across either loop. Crisis-alpha decoupling via KMLM provides the marginal +0.05-0.15 Sharpe edge. Caveats: G1 PBO fails on vt/ndx (within-family weight selection at noise level — robust at family level); KMLMSIM synth pre-2020.
 
 ### 010 — 2026-04-28 — haa-vol-throttle (PROMISING, 60/100)
 
@@ -145,31 +154,32 @@ requiring mandate §7 override before deployment.
 
 ## Promising unexplored directions (prioritized)
 
-### Tier 1 — active next directions after iter 009
+**Loop status: WINNER (iter 011) — shell loop halts.** The directions below
+are deferred follow-ups, not active hunt items.
 
-No remaining pre-approved simple Sharpe-frontier direction. The next iteration
-should either add real VT/VXUS data to reduce proxy uncertainty or stop the
-active Sharpe hunt until a new literature-backed non-price regime input
-appears. The small volatility-throttle grid was tested in iter 010 and closed.
+### Deferred — live-data validation of iter 011 winner (highest priority)
 
-### Tier 1 — bestfolio top-15 + user architecture preferences
+1. **Pull live VT and KMLM daily prices** from Tiingo to replace VTSIM/KMLMSIM
+   proxies. Re-run gates on the live-data window only (KMLM live since
+   2020-12) to confirm the synth period is not the source of the Sharpe edge.
+2. **Sensitivity grid**: re-run iter 011 with KMLM swapped for DBMF or
+   `RSST_PROXY` to see if the MF sleeve effect generalizes vs a KMLM-specific
+   artifact.
+3. **Mandate §7 override draft**: prepare the mandate override request for
+   Plano C deployment of iter 011. Does NOT auto-deploy — requires signed
+   user override per CLAUDE.md mandate §1.
 
-#### Later — NTSX + GDE + RSST (static, RSST variant) — DO NOT RUN AS PLAIN STATIC
+### Deferred — international stack expansion
 
-**Hypothesis**: Replace KMLMSIM with RSSBSIM (global equity + Treasury
-return-stacked) or `SPYSIM + KMLMSIM` proxy for RSST. Tesis: RSST adds
-explicit MF exposure with equity component — better in bull equity regimes
-vs pure MF (KMLM). Compare vs iter 002.
+Add NTSI / NTSE / RSSB to the iter 011 family for a "global capital-efficient
+stack" candidate. Worth testing only if the live-data validation above
+confirms the iter 011 edge holds. Otherwise it is premature complexity.
 
-**Sources**: `[risk_parity, ch.5]` (return stacking). SSRN — Newfound/ReSolve
-return-stacking papers. `[stocks_on_the_move, p.21-30]` (MF momentum).
+### Closed by iter 011
 
-**Kill criterion**: edu Sharpe ≤ iter 002 result (compare static variants only).
-Plain static form is closed by DE-005; only revisit with an explicit drawdown
-control overlay or a CAGR-first objective.
-
-**Priority**: BLOCKED for the active Sharpe-frontier hunt — do not test as a
-pure static stack again.
+- ~~NTSX + GDE + RSST static (RSST variant)~~ — superseded; static stack
+  family is now confirmed winner under the redefined mission. RSST swap is
+  a sensitivity question, not a fresh direction.
 
 ---
 

@@ -29,9 +29,9 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-28 — long_term_portfolio iter 010: HAA volatility throttle PROMISING)
+## Onde estamos hoje (2026-04-28 — long_term_portfolio iter 011: 🏆 NTSX+GDE+KMLM static stack WINNER 91/100)
 
-**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). long_term_portfolio ATIVO, 10/10 sem winner** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 010 HAA volatility throttle: **PROMISING 60/100**, net Sharpe 1.020/0.955/0.881; gates 7/7 nos 3 datasets; falhou Sharpe edge 0/3 e CAGR floor 0/3. Lição: throttle de volatilidade melhora drawdown, mas sacrifica CAGR e vira ferramenta defensiva, não avanço da fronteira de Sharpe. `[systematic_trading, p.137-148]`; `[stocks_on_the_move, ch.6]`.
+**Estado:** 🏆 **long_term_portfolio iter 011 — WINNER após 10 iters de FAIL/PROMISING.** Stack estático **35% NTSX + 25% GDE + 40% KMLM** (preferência arquitetural literal do usuário, não testada nas 10 iters anteriores). Missão redefinida em 28/04 (avg(SPY,VT) gross em vez de iter 009 HAA+Gold) tornou a família "static stack" fechada por DE-005 em vencedora — não foi a engenharia que mudou, foi o alvo. Score 91/100, **5/5 condições estritas cumpridas**, Sharpe gross **1.021/0.960/1.104** (edges +0.350/+0.253/+0.180 vs avg(SPY,VT)), gates 7/7-6/7-6/7. Família-level robusto: as 4 variantes (incluindo o 40/30/30 do usuário) batem +0.10 Sharpe em 3/3 datasets. **Net Sharpe = Gross Sharpe** (buy-hold estático + Lei 14.754/2023 PF direta = zero realizações até liquidação → daily-Sharpe tax-neutro). Loop shell para. `[risk_parity, ch.5, p.10]`; `[stocks_on_the_move, p.21-30]`. Caveats: G1 PBO falha em vt/ndx (seleção dentro da família ao nível do ruído); KMLMSIM synth pré-2020.
 
 1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
    (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
@@ -83,7 +83,7 @@ evidência completa (final_reports + paper trading 3-6 meses).
 
 **Próximas decisões do usuário (mandate §7):**
 
-Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **long_term_portfolio em andamento** — iter 001 consumiu BAA-G12, iter 002 consumiu Composite Momentum Standard, iter 003 consumiu static global/factor/CTA stack, iter 004 consumiu HAA small/value tilt, iter 005 consumiu HAA RSST/RSSB/CTA, iter 006 consumiu HAA RSIT sintético, iter 007 consumiu defesa HAA KMLM/CASH, iter 008 consumiu HAA dual-canary, iter 009 consumiu Gayed SPY/VT trend canary e iter 010 consumiu HAA volatility throttle; todos viraram dead-end estrutural para bater o HAA+Gold. Próxima direção só deve avançar se reduzir incerteza de dados reais VT/VXUS ou trouxer uma fonte de regime diferente de preço/tendência ampla. Três opções concretas para o predecessor:
+Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **long_term_portfolio FECHADO 2026-04-28 com WINNER (iter 011)**. Próximos passos pós-winner: (1) puxar VT live e KMLM live do Tiingo e re-rodar gates só no período live (KMLM live since 2020-12); (2) sensibilidade trocando KMLM por DBMF/RSST para confirmar generalização do MF sleeve; (3) draft mandate §7 override para deploy de iter 011 em Plano C (não auto-deploy — exige override assinado pelo usuário). Três opções concretas para o predecessor:
 
 1. **Manter Plano C** (mandato atual §1): CAGR ~10.3% líquido, MDD ~52%, zero complexidade.
 2. **Ativar 50/50 Híbrido** (iter 012): CAGR ~13.4% líquido, MDD ~27%, Sharpe **melhor que HAA puro**,
@@ -205,6 +205,8 @@ Termos que aparecem ao longo das entradas do changelog:
 — bug Tiingo IEX em US holidays.
 
 ### 2026-04-28
+
+- [2026-04-28 15h47 — **🏆 Long-term iter 011: NTSX+GDE+KMLM static stack — WINNER 91/100.** Stack estático 35% NTSX + 25% GDE + 40% KMLM (preferência arquitetural literal do usuário). Sob a missão redefinida (avg(SPY,VT) gross em vez de iter 009 HAA+Gold), Sharpe gross **1.021/0.960/1.104** com edges +0.350/+0.253/+0.180 vs avg(SPY,VT) — 5/5 condições estritas, 3/3 datasets clearam +0.10. Família-level robusto: as 4 variantes (incluindo 40/30/30 do usuário) passam. **Net = Gross** (buy-hold + Lei 14.754/2023 PF direta = zero realizações até liquidação). Loop shell para. Caveats: G1 PBO falha em vt/ndx (seleção dentro da família ao nível do ruído); KMLMSIM synth pré-2020. `[risk_parity, ch.5, p.10]`; `[stocks_on_the_move, p.21-30]`.](2026-04-28-1547-longterm-iter011-WINNER-ntsx-gde-kmlm.md)
 
 - [2026-04-28 10h19 — **Bestfolio iter 010: HAA volatility throttle — PROMISING 60/100, sem winner.** Net Sharpe 1.020/0.955/0.881 vs iter 009 HAA+Gold 1.120/1.061/0.954. Passou 7/7 gates nos 3 datasets, mas Sharpe edge foi 0/3 e CAGR floor 0/3; `vol12` reduziu MDD, porém virou variante defensiva de menor CAGR. `[systematic_trading, p.137-148]`.](2026-04-28-1019-bestfolio-iter010-haa-vol-throttle-dead-end.md)
 
