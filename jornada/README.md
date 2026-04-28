@@ -29,9 +29,9 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-27 — bestfolio_hunt_loop lançado; iter 014 DARF anual corrigido)
+## Onde estamos hoje (2026-04-28 — bestfolio_hunt_loop iter 001: BAA-G12 MARGINAL)
 
-**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). bestfolio_hunt_loop ATIVO** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 014: modelo anual ≈ mensal para HAA alto-rotatividade (Δ −0.058 Sharpe edu — diferença pequena).
+**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). bestfolio_hunt_loop ATIVO, 1/1 sem winner** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 001 BAA-G12 Balanced: **MARGINAL 58/100**, net Sharpe 0.975/0.792/0.782; robusto em drawdown, mas sem Sharpe/CAGR para avançar a fronteira.
 
 1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
    (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
@@ -83,7 +83,7 @@ evidência completa (final_reports + paper trading 3-6 meses).
 
 **Próximas decisões do usuário (mandate §7):**
 
-Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **bestfolio_hunt_loop PRONTO** — rodar com `MAX_ITER=6 CLAUDE_MODEL=opus bash studies/bestfolio_hunt_loop/run_loop.sh`. Três opções concretas para o predecessor:
+Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **bestfolio_hunt_loop em andamento** — iter 001 consumiu BAA-G12 e documentou dead-end; próxima direção prioritária é NTSX+GDE+KMLM static capital-efficient. Três opções concretas para o predecessor:
 
 1. **Manter Plano C** (mandato atual §1): CAGR ~10.3% líquido, MDD ~52%, zero complexidade.
 2. **Ativar 50/50 Híbrido** (iter 012): CAGR ~13.4% líquido, MDD ~27%, Sharpe **melhor que HAA puro**,
@@ -203,6 +203,10 @@ Termos que aparecem ao longo das entradas do changelog:
 📦 **Retratadas arquivadas (9 entries):** ver
 [`_archive/2026-04-16-retracted-entries.md`](_archive/2026-04-16-retracted-entries.md)
 — bug Tiingo IEX em US holidays.
+
+### 2026-04-28
+
+- [2026-04-28 01h25 — **Bestfolio iter 001: BAA-G12 Balanced — MARGINAL 58/100, dead-end documentado.** Net Sharpe 0.975/0.792/0.782 vs iter 009 HAA+Gold 1.120/1.061/0.954. Gates 7/7, 7/7, 6/7; DSR worst p=0.00137; MDD ótimo (16.34%/13.93%/12.73%), mas CAGR falha em todos os datasets. Lição: BAA é defensivo demais neste universo; HAA+Gold continua superior para Sharpe/CAGR. `[stocks_on_the_move, ch.6]`; `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.](2026-04-28-0125-bestfolio-iter001-baa-dead-end.md)
 
 ### 2026-04-27
 

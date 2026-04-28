@@ -1,10 +1,10 @@
 ---
 mission: "beat iter 009 HAA+Gold (Sharpe 1.120 edu) and close the gap to bestfolio #1 (Sharpe 1.18)"
-total_iterations: 0
+total_iterations: 1
 winners_found: 0
 status: in_progress
-latest_iteration: ""
-cumulative_n_trials: 0
+latest_iteration: "001-2026-04-28-0116-baa-g12-balanced"
+cumulative_n_trials: 1
 note: "loop initialized 2026-04-27. benchmark = iter009 HAA+Gold. tax model = AnnualDarfEngine (Lei 14.754/2023). RSIT synth available."
 ---
 
@@ -67,37 +67,20 @@ here is a candidate requiring mandate §7 override before deployment.
 
 ## Iteration log (newest first)
 
-*(empty — loop not started)*
+### 001 — 2026-04-28 — baa-g12-balanced (MARGINAL, 58/100)
+
+- Hypothesis: BAA-G12 Balanced would improve HAA+Gold by using broader canary breadth and a wider offensive universe.
+- Citations: Keller BAA SSRN 4166845; `[stocks_on_the_move, ch.6]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
+- Scope: 1 pre-committed config; BAA four-canary 13612W, top-6 offensive SMA(12), top-3 defensive with `CASHX` replacement; AnnualDarfEngine net-of-tax; educational/vt_real/ndx_real.
+- Result: net Sharpe **0.975 / 0.792 / 0.782**; gates **7/7 / 7/7 / 6/7**; DSR p **4.85e-08 / 6.78e-04 / 1.37e-03**. Kill fired: educational Sharpe ≤ 1.120.
+- Score breakdown: Sharpe edge 0/25; gates 23/25; DSR 15/15; CAGR floor 0/15; MDD ceiling 15/15; robustness 5/5.
+- Lesson: plain BAA-G12 is robust but too defensive/tax-dragged; it lowers MDD but sacrifices too much CAGR and never beats iter 009 Sharpe.
 
 ---
 
 ## Promising unexplored directions (prioritized)
 
 ### Tier 1 — bestfolio top-15 + user architecture preferences
-
-#### iter 001 — BAA-G12 Balanced Asset Allocation
-
-**Hypothesis**: Bold Asset Allocation (Keller & Keuning, SSRN 4346906)
-with 12-asset universe in balanced mode. BAA uses a dual canary (BIL+DBND
-safety net) + 12-asset offensive rotation. bestfolio.app reports BAA
-balanced Sharpe ~1.13 (33y). Close to our gap.
-
-**Sources**: SSRN 4346906 (Keller & Keuning 2023 — BAA). `[stocks_on_the_move, ch.6]`
-(Clenow momentum) for the rotation mechanism. `[advances_fin_ml, p.208-211]` (PBO).
-
-**Why iter 009 misses it**: HAA canary=VWOSIM only; BAA uses dual-canary
-(safer) + 12 broader assets including small-cap and commodity ETFs.
-The wider asset universe captures crisis opportunities HAA misses.
-
-**Kill criterion**: edu Sharpe ≤ 1.120 (no Pareto advance vs iter 009).
-
-**Implementation**: testfolio synths for BAA-compatible universe:
-VTISIM, VEASIM, VWOSIM, VBRSIM, IEFSIM, BNDSIM, GLDSIM, KMLMSIM,
-DBMFSIM. For small-cap use VBRSIM (AVUV proxy).
-
-**Priority**: HIGH — bestfolio benchmark evidence, close to gap closure.
-
----
 
 #### iter 002 — NTSX + GDE + KMLM (static capital-efficient)
 
@@ -199,6 +182,9 @@ full text in `DEAD_ENDS.md`.
 2. **VAA breadth with higher-notional equity (for Sharpe-max)**: GDESIM
    in offensive adds variance faster than returns; HAA canary dominates
    VAA breadth on Sharpe.
+3. **Plain BAA-G12 Balanced in current universe**: robust drawdown reducer
+   but too defensive/tax-dragged; net Sharpe 0.975/0.792/0.782 and CAGR
+   below 0.8× iter009 on all datasets. `[stocks_on_the_move, ch.6]`
 
 ---
 

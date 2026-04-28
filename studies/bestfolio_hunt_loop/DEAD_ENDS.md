@@ -90,3 +90,50 @@ creates "mixed regime" states — partial equity + partial bonds simultaneously
 | educational (~31y) | 0.9806 | 10.28% | 18.91% | 7/7 | Kill triggered (0.981 ≤ 1.052) |
 | vt_real (~17y) | 0.8491 | 8.91% | 18.91% | 7/7 | — |
 | ndx_real (16y) | 0.7188 | 6.99% | 18.91% | 7/7 | — |
+
+---
+
+## DE-003 — Plain BAA-G12 Balanced in the current testfolio universe
+
+**Origin**: bestfolio_hunt_loop iter 001 — baa-g12-balanced  
+**Score**: 58/100 MARGINAL  
+**Date**: 2026-04-28
+
+### What was tested
+
+- BAA-G12 Balanced, monthly.
+- Canary: `SPYSIM`, `VEASIM`, `VWOSIM`, `BNDSIM`.
+- Canary signal: 13612W absolute momentum.
+- Offensive: top 6 of 12 by SMA(12) relative momentum.
+- Defensive: top 3 defensive-risk assets by SMA(12), with `CASHX` replacement.
+- Net-of-tax via `AnnualDarfEngine`.
+- Sources: Keller BAA SSRN 4166845 + `[stocks_on_the_move, ch.6]`.
+
+### Why it fails structurally
+
+BAA-G12 is a good drawdown reducer but too defensive for the current
+Sharpe/CAGR frontier. Net Sharpe was **0.975 / 0.792 / 0.782**, below iter
+009 HAA+Gold **1.120 / 1.061 / 0.954** on all datasets. Net CAGR missed the
+0.8 x iter009 floor on all three datasets. Gross educational Sharpe reached
+1.101, but AnnualDarfEngine tax drag reduced it to 0.975.
+
+**Structural insight**: HAA+Gold already gets enough crash protection from
+the `VWOSIM` canary plus fixed diversifier sleeves. BAA's broader canary
+breadth buys lower MDD, but it pays for that with too much low-return
+defensive exposure. For this objective, that is subordinate to HAA's cleaner
+binary canary architecture.
+
+### What CAN be tried instead
+
+- Static capital-efficient stack with lower turnover/tax drag.
+- Composite multi-lookback momentum, if kept simple and not just BAA breadth.
+- HAA offensive-sleeve changes; do not re-test plain BAA-G12 Balanced without
+  a materially different asset universe.
+
+### Results summary
+
+| dataset | net Sharpe | net CAGR | net MDD | Gates |
+|---|---:|---:|---:|---:|
+| educational | 0.975 | 10.60% | 16.34% | 7/7 |
+| vt_real | 0.792 | 8.42% | 13.93% | 7/7 |
+| ndx_real | 0.782 | 7.66% | 12.73% | 6/7 |
