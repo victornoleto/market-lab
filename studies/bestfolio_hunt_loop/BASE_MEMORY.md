@@ -1,11 +1,11 @@
 ---
 mission: "beat iter 009 HAA+Gold (Sharpe 1.120 edu) and close the gap to bestfolio #1 (Sharpe 1.18)"
-total_iterations: 5
+total_iterations: 6
 winners_found: 0
 status: in_progress
-latest_iteration: "005-2026-04-28-0918-haa-rsst-rssb-cta"
-cumulative_n_trials: 16
-note: "loop initialized 2026-04-27. benchmark = iter009 HAA+Gold. tax model = AnnualDarfEngine (Lei 14.754/2023). RSIT synth available."
+latest_iteration: "006-2026-04-28-0950-haa-rsit-synth"
+cumulative_n_trials: 20
+note: "loop initialized 2026-04-27. benchmark = iter009 HAA+Gold. tax model = AnnualDarfEngine (Lei 14.754/2023). RSIT synth tested and closed until live data."
 ---
 
 # Bestfolio Hunt Loop — BASE MEMORY
@@ -49,7 +49,7 @@ here is a candidate requiring mandate §7 override before deployment.
 
 ## Winners found
 
-*(empty — no winners after 5 iterations)*
+*(empty — no winners after 6 iterations)*
 
 | # | iter | slug | status | edu S/C/MDD | note |
 |---|---|---|---|---|---|
@@ -60,15 +60,24 @@ here is a candidate requiring mandate §7 override before deployment.
 
 | rank | iter | slug | score | tier | Sharpe (edu/vt/ndx) | CAGR (edu) | MDD (edu) |
 |---|---|---|---|---|---|---|---|
-| 1 | 005 | haa-rsst-rssb-cta | 70 | PROMISING | 0.953/1.028/0.946 | 11.11% | 16.98% |
-| 2 | 004 | haa-global-factor-tilt | 69 | PROMISING | 0.990/0.955/0.861 | 12.21% | 20.71% |
-| 3 | 001 | baa-g12-balanced | 58 | MARGINAL | 0.975/0.792/0.782 | 10.60% | 16.34% |
-| 4 | 002 | composite-momentum-standard | 55 | MARGINAL | 0.940/0.958/0.957 | 9.25% | 20.76% |
-| 5 | 003 | global-factor-cta-stack | 54 | MARGINAL | 0.823/0.742/0.910 | 12.09% | 41.76% |
+| 1 | 006 | haa-rsit-synth | 71 | PROMISING | 0.869/0.897/0.837 | 11.13% | 22.12% |
+| 2 | 005 | haa-rsst-rssb-cta | 70 | PROMISING | 0.953/1.028/0.946 | 11.11% | 16.98% |
+| 3 | 004 | haa-global-factor-tilt | 69 | PROMISING | 0.990/0.955/0.861 | 12.21% | 20.71% |
+| 4 | 001 | baa-g12-balanced | 58 | MARGINAL | 0.975/0.792/0.782 | 10.60% | 16.34% |
+| 5 | 002 | composite-momentum-standard | 55 | MARGINAL | 0.940/0.958/0.957 | 9.25% | 20.76% |
 
 ---
 
 ## Iteration log (newest first)
+
+### 006 — 2026-04-28 — haa-rsit-synth (PROMISING, 71/100)
+
+- Hypothesis: Keep iter 009 HAA+Gold intact but add synthetic `RSIT_PROXY = VEASIM + KMLMSIM - 50bps/y` as a rankable international-equity + managed-futures offensive sleeve.
+- Citations: `[risk_parity, ch.5]`; `[stocks_on_the_move, ch.6]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
+- Scope: 4 pre-committed RSIT-centered HAA offensive-set configs; selected `rsit_with_ntsi` by mean Sharpe / iter009 Sharpe; AnnualDarfEngine net-of-tax; educational/vt_real/ndx_real. Marked INCOMPLETE synthetic until live RSIT data exists.
+- Result: net Sharpe **0.869 / 0.897 / 0.837**; gates **6/7 / 6/7 / 7/7**; DSR p **1.23e-04 / 4.93e-03 / 1.52e-02**. Kill fired: educational Sharpe <= iter004 0.990 and 0 datasets beat iter009 by +0.10.
+- Score breakdown: Sharpe edge 0/25; gates 21/25; DSR 15/15; CAGR floor 15/15; MDD ceiling 15/15; robustness 5/5.
+- Lesson: RSIT-style MF-on-international-equity clears CAGR/MDD floors but worsens Sharpe and PBO stability; HAA+Gold already has enough MF convexity, so the missing edge is not another embedded managed-futures layer.
 
 ### 005 — 2026-04-28 — haa-rsst-rssb-cta (PROMISING, 70/100)
 
@@ -140,27 +149,6 @@ pure static stack again.
 
 ---
 
-#### iter 006 — HAA + RSIT synth (deferred, prefer real data at launch)
-
-**Hypothesis**: When RSIT (Return Stacked International Stocks + MF) launches
-(~mai/2026), replace VEASIM + KMLMSIM in HAA offensive with RSIT proxy:
-`VEASIM × 1.0 + KMLMSIM × 1.0 − 50bps/y`. Tesis: stacking MF on top of
-international equity in one sleeve reduces complexity vs separate KMLM
-allocation.
-
-**Sources**: `[risk_parity, ch.5]`. SEC 485APOS 2026-02-18 (RSIT filing).
-Same team as RSST (Hoffstein + Gordillo + Butler + Philbrick).
-
-**Kill criterion**: edu Sharpe ≤ iter 004 result (must beat plain HAA+VEA).
-
-**Priority**: LOW — deferred. RSIT synth available now but incomplete;
-prefer real ETF data. Re-activate after RSIT launches.
-
-**Notes**: RSIT synth = `VEASIM × 1.0 + KMLMSIM × 1.0 − 50bps/y`.
-Mark as INCOMPLETE synth in any iter that uses it. See `EXTERNAL_INSTRUMENTS.md`.
-
----
-
 ## Structural dead-ends (carry-over from global_factor_tilt_loop)
 
 These were proven dead-ends in the predecessor loop. Same universe:
@@ -186,6 +174,10 @@ full text in `DEAD_ENDS.md`.
 7. **Simple HAA RSST/RSSB/CTA offensive substitution**: robust 7/7 gates but
    lower-return; net Sharpe 0.953/1.028/0.946 and zero +0.10 Sharpe edges.
    Extra stacked diversifiers trade CAGR for MDD after iter009. `[risk_parity, ch.5]`
+8. **Synthetic HAA RSIT offensive sleeve**: clears CAGR/MDD and DSR but loses
+   Sharpe badly; net Sharpe 0.869/0.897/0.837 and PBO 0.714/0.845 on global
+   windows. More embedded MF on international equity is not the missing edge.
+   `[risk_parity, ch.5]`
 
 ---
 

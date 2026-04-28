@@ -1,0 +1,114 @@
+{
+  "total_score": 71,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 0,
+      "max": 25,
+      "datasets_beat": 0,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 21,
+      "max": 25,
+      "per_dataset": {
+        "educational": 6,
+        "vt_real": 6,
+        "ndx_real": 7
+      },
+      "thresholds": {
+        "educational": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.015248210181095345,
+      "cumulative_n_trials": 20
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.8691677936388162,
+      "cagr": 0.1112781982343709,
+      "mdd": 0.22117596065640213,
+      "dsr_p_value": 0.00012281196244279258
+    },
+    "vt_real": {
+      "sharpe": 0.8970464528616783,
+      "cagr": 0.11334679049870422,
+      "mdd": 0.15581235191531811,
+      "dsr_p_value": 0.004927807384795924
+    },
+    "ndx_real": {
+      "sharpe": 0.8365654122492463,
+      "cagr": 0.09649018150747479,
+      "mdd": 0.14006801977800412,
+      "dsr_p_value": 0.015248210181095345
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 1.12,
+      "cagr": 0.1389,
+      "mdd": 0.2081,
+      "label": "iter009 HAA+Gold edu (56y synth)"
+    },
+    "vt_real": {
+      "sharpe": 1.061,
+      "cagr": 0.1287,
+      "mdd": 0.142,
+      "label": "iter009 HAA+Gold vt_real (~17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.954,
+      "cagr": 0.1055,
+      "mdd": 0.142,
+      "label": "iter009 HAA+Gold ndx_real (16y)"
+    }
+  },
+  "cumulative_n_trials": 20,
+  "status": "promising",
+  "configs_tested": 4,
+  "primary_citation": "[risk_parity, ch.5]",
+  "hypothesis_slug": "haa-rsit-synth",
+  "selected_config": "rsit_with_ntsi",
+  "selection_rule": "max mean Sharpe / iter009 Sharpe across educational, vt_real, ndx_real",
+  "tax_model": "AnnualDarfEngine",
+  "notional_factor": 1.85,
+  "synthetic_caveat": "RSIT_PROXY = VEASIM + KMLMSIM - 50bps/year; incomplete until live RSIT ETF data exists",
+  "robustness": {
+    "bonus_pts": 5,
+    "pct_positive_sharpe": 1.0,
+    "n_windows": 26,
+    "min_rolling_sharpe": 0.4081982398321531,
+    "max_rolling_sharpe": 1.1505631832941121
+  }
+}

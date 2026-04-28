@@ -330,3 +330,56 @@ reduces volatility and MDD, but it also reduces CAGR enough to lose Sharpe.
 | educational | 0.953 | 11.11% | 16.98% | 7/7 |
 | vt_real | 1.028 | 11.99% | 13.97% | 7/7 |
 | ndx_real | 0.946 | 10.12% | 13.97% | 7/7 |
+
+---
+
+## DE-008 — Synthetic HAA RSIT offensive sleeve
+
+**Origin**: bestfolio_hunt_loop iter 006 — haa-rsit-synth  
+**Score**: 71/100 PROMISING  
+**Date**: 2026-04-28
+
+### What was tested
+
+- Iter 009 HAA+Gold shell retained: `VWOSIM` canary, top-2 offensive,
+  top-1 defensive, 10% `KMLMSIM`, 5% `GLDSIM`.
+- Added synthetic `RSIT_PROXY = VEASIM + KMLMSIM - 50bps/year` as a rankable
+  international-equity + managed-futures offensive candidate.
+- Tested four RSIT-centered offensive sets using `NTSXSIM`, `NTSI`,
+  `RSIT_PROXY`, `NTSE`, `GDESIM`, and `RSSBSIM`.
+- Selected config: `rsit_with_ntsi` = `NTSXSIM`, `NTSI`, `RSIT_PROXY`,
+  `GDESIM`.
+- Net-of-tax via `AnnualDarfEngine`.
+- Sources: `[risk_parity, ch.5]`; `[stocks_on_the_move, ch.6]`.
+- Caveat: **INCOMPLETE synthetic** until live RSIT ETF data exists.
+
+### Why it fails structurally
+
+The RSIT-style sleeve clears many risk controls but does not add the missing
+Sharpe edge. Net Sharpe was **0.869 / 0.897 / 0.837** versus iter 009 HAA+Gold
+**1.120 / 1.061 / 0.954**, with zero datasets beating the required +0.10
+Sharpe edge. The pre-committed kill fired because educational Sharpe was below
+iter 004's **0.990**. PBO also failed on the two global windows
+(**0.714 / 0.845**), so the selected RSIT mix is unstable
+`[advances_fin_ml, p.208-211]`.
+
+**Structural insight**: HAA+Gold already carries fixed managed-futures and gold
+convexity. Embedding more managed futures inside international equity preserves
+CAGR and MDD floors, but it lowers Sharpe and destabilizes selection. The
+frontier gap is not another MF-overlay sleeve.
+
+### What CAN be tried instead
+
+- HAA defensive-state changes that reduce false defensive exposure without
+  diluting the offensive sleeve.
+- Dual-canary HAA variants that preserve iter 009 offensive exposure.
+- Retest RSIT only after real ETF data exists, and only as a live-tracking
+  comparison against this synthetic proxy.
+
+### Results summary
+
+| dataset | net Sharpe | net CAGR | net MDD | Gates |
+|---|---:|---:|---:|---:|
+| educational | 0.869 | 11.13% | 22.12% | 6/7 |
+| vt_real | 0.897 | 11.33% | 15.58% | 6/7 |
+| ndx_real | 0.837 | 9.65% | 14.01% | 7/7 |
