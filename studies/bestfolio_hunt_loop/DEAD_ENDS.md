@@ -185,3 +185,50 @@ keeping drawdown comparable.
 | educational | 0.940 | 9.25% | 20.76% | 7/7 |
 | vt_real | 0.958 | 9.94% | 20.76% | 7/7 |
 | ndx_real | 0.957 | 9.59% | 20.76% | 7/7 |
+
+---
+
+## DE-005 — Plain static global/factor/CTA capital-efficient stack
+
+**Origin**: bestfolio_hunt_loop iter 003 — global-factor-cta-stack  
+**Score**: 54/100 MARGINAL  
+**Date**: 2026-04-28
+
+### What was tested
+
+- Six pre-committed static capital-efficient stacks around `RSSBSIM`,
+  `GDESIM`, `KMLMSIM`, `VBRSIM`, `VSSSIM`, `VWOSIM`, `SPYSIM`, and an
+  `RSST_PROXY = SPYSIM + KMLMSIM - CASHX`.
+- Selected config: `stack_gde_heavy`, chosen by maximum mean Sharpe divided
+  by iter 009 Sharpe across the three datasets.
+- Net-of-tax via `AnnualDarfEngine`.
+- Source: `[risk_parity, p.1-2, p.10]`.
+
+### Why it fails structurally
+
+Static stacking can preserve CAGR, but it does not control drawdown enough
+to compete with HAA+Gold's canary architecture. The selected config cleared
+the CAGR floor on all datasets and passed 6/7 gates everywhere, but net
+Sharpe was only **0.823 / 0.742 / 0.910** versus iter 009 **1.120 / 1.061 /
+0.954**. MDD was **41.76% / 40.41% / 27.49%**, breaching the iter 009 + 5pp
+ceiling on all datasets.
+
+**Structural insight**: lower turnover is not enough. For this objective,
+the `VWOSIM` canary and explicit defensive switching in HAA are doing
+essential variance suppression. A plain static stack may be useful for CAGR,
+but it is subordinate for Sharpe-frontier hunting.
+
+### What CAN be tried instead
+
+- HAA offensive-sleeve factor tilt, keeping the canary and fixed diversifiers.
+- Return-stacked RSST/RSSB variants only inside a risk-on/risk-off shell.
+- Static stacks only with an explicit drawdown-control overlay or a different
+  CAGR-first objective.
+
+### Results summary
+
+| dataset | net Sharpe | net CAGR | net MDD | Gates |
+|---|---:|---:|---:|---:|
+| educational | 0.823 | 12.09% | 41.76% | 6/7 |
+| vt_real | 0.742 | 11.77% | 40.41% | 6/7 |
+| ndx_real | 0.910 | 13.11% | 27.49% | 6/7 |

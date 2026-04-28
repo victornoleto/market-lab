@@ -53,6 +53,18 @@ online).
 |---|---|---|---|
 | **KMLM** | KFA Mount Lucas Managed Futures | `KMLMSIM` ✅ | In user portfolio (8%) |
 | **DBMF** | iMGP DBi Managed Futures | `DBMFSIM` ✅ | Alternative MF sleeve |
+| **CTA** | Simplify Managed Futures Strategy ETF | missing | Active CTA ETF; proxy with `KMLMSIM`/`DBMFSIM` only with caveat |
+
+KMLM vs CTA: both are managed-futures/CTA exposures, but they are not the
+same instrument. `KMLM` tracks the KFA MLM Index style: rules-based trend
+following over futures markets, with transparent index exposure and long
+synthetic history in testfolio. `CTA` is an active ETF wrapper around a CTA
+program; it can vary exposures/implementation and has shorter live history.
+For backtests, `KMLMSIM` is the better long-window proxy; using it for `CTA`
+tests the managed-futures sleeve concept, not CTA ETF tracking accuracy.
+Managed futures are treated as a crisis/convexity diversifier per
+`[ilmanen_expected_returns, ch.19]` and trend-following/momentum per
+`[stocks_on_the_move, p.21-30]`.
 
 ---
 
@@ -97,6 +109,40 @@ Primary citation for LETF caveat: `[leverage_for_the_long_run, p.40-60,
 ch.3-4]` — Gayed's 200-day SMA gate dramatically reduces LETF decay
 risk by avoiding choppy/bearish regimes. A WLDU-with-SMA strategy
 deserves its own iter slot (Tier 1 reactivation candidate).
+
+---
+
+## User-expanded stacking watchlist (2026-04-28)
+
+These are user-provided building blocks for future iterations. Only the rows
+with clear synth/cache support should be used in immediate tests; the others
+need real ETF data or explicit synthetic assumptions.
+
+### High-priority synthable now
+
+| Theme | Tickers | Stack | Immediate synth path |
+|---|---|---|---|
+| Global stock + bonds | RSSB, NTSG | VT + GOVT/Treasury overlay | `RSSBSIM` ✅; NTSG proxy `0.9*VTSIM + 0.6*IEFSIM - 0.5*CASHX` |
+| US stock + MF/CTA | RSST, CTAP, HOLD, MATE, JPM/Direxion upcoming | SPY + managed futures | proxy `SPYSIM + KMLMSIM - financing`; flag as RSST/CTAP concept |
+| Intl stock + MF/CTA | RSIT/Tidal upcoming | VXUS/VEA + managed futures | proxy `VEASIM + KMLMSIM - financing`; incomplete until ETF launches |
+| Stock + gold | GDE, ISSG | SPY + gold | `GDESIM` ✅ or proxy `SPYSIM + GLDSIM - financing` |
+| Global/factor tilt | AVUV/AVDV/AVEM sleeves | SCV/value/factor exposure | `VBRSIM`, `VSSSIM`, `EFVSIM`, `VWOSIM` proxies |
+| Classic NTS family | NTSX/NTSI/NTSE/NTSD | equity + Treasury or intl overlay | `NTSXSIM`; NTSI/NTSE synth from VEA/VWO + IEFSIM |
+
+### Interesting but blocked or high-caveat
+
+| Theme | Tickers | Blocker/caveat |
+|---|---|---|
+| Crypto stack | BTGD, RSSX, OOSB, OOQB, BEGS, ISBG, ISSB, ISBT | BTC/ETH synth and regime handling needed; high volatility may dominate gates |
+| Income-option wrappers | ISTG, ISSG, ISST, ISBG, ISSB, ISBT | Option-income path dependency not representable by simple total-return stack |
+| Gold/miners stack | GDMN | Gold miners proxy/data needed; miner beta differs from gold |
+| Macro/carry/MNA | ASGM, RSBY, RSSY, RSBA | Need carry/MNA/AHLT/long-short proxy; avoid fake precision |
+| Commodity/broad inflation | ALLW, RPAR, UPAR, WTIP, WTLS | DBC/LTPZ/long-short/oil/BTC components need cache/proxy decisions |
+
+Immediate research implication: next tests should favor **global equity +
+factor tilt + managed futures/CTA + gold/bonds** with low turnover, because
+iters 001-002 failed mainly from defensive rotation and tax drag. `[risk_parity,
+ch.5]`, `[ilmanen_expected_returns, ch.19]`, `[stocks_on_the_move, p.21-30]`.
 
 ---
 

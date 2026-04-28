@@ -1,10 +1,10 @@
 ---
 mission: "beat iter 009 HAA+Gold (Sharpe 1.120 edu) and close the gap to bestfolio #1 (Sharpe 1.18)"
-total_iterations: 2
+total_iterations: 3
 winners_found: 0
 status: in_progress
-latest_iteration: "002-2026-04-28-0134-composite-momentum-standard"
-cumulative_n_trials: 2
+latest_iteration: "003-2026-04-28-0148-global-factor-cta-stack"
+cumulative_n_trials: 8
 note: "loop initialized 2026-04-27. benchmark = iter009 HAA+Gold. tax model = AnnualDarfEngine (Lei 14.754/2023). RSIT synth available."
 ---
 
@@ -49,7 +49,7 @@ here is a candidate requiring mandate §7 override before deployment.
 
 ## Winners found
 
-*(empty — loop not started)*
+*(empty — no winners after 3 iterations)*
 
 | # | iter | slug | status | edu S/C/MDD | note |
 |---|---|---|---|---|---|
@@ -62,10 +62,20 @@ here is a candidate requiring mandate §7 override before deployment.
 |---|---|---|---|---|---|---|---|
 | 1 | 001 | baa-g12-balanced | 58 | MARGINAL | 0.975/0.792/0.782 | 10.60% | 16.34% |
 | 2 | 002 | composite-momentum-standard | 55 | MARGINAL | 0.940/0.958/0.957 | 9.25% | 20.76% |
+| 3 | 003 | global-factor-cta-stack | 54 | MARGINAL | 0.823/0.742/0.910 | 12.09% | 41.76% |
 
 ---
 
 ## Iteration log (newest first)
+
+### 003 — 2026-04-28 — global-factor-cta-stack (MARGINAL, 54/100)
+
+- Hypothesis: A low-turnover static global/factor/CTA stack would improve HAA+Gold by holding persistent `RSSBSIM/GDESIM/KMLMSIM/VBRSIM/VSSSIM/VWOSIM/SPYSIM` exposure instead of paying rotation and defensive-state drag.
+- Citations: `[risk_parity, p.1-2, p.10]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
+- Scope: 6 pre-committed static configs; selected `stack_gde_heavy` by mean Sharpe / iter009 Sharpe; AnnualDarfEngine net-of-tax; educational/vt_real/ndx_real.
+- Result: net Sharpe **0.823 / 0.742 / 0.910**; gates **6/7 / 6/7 / 6/7**; DSR p **5.26e-04 / 3.40e-02 / 1.01e-02**. Kill fired: educational Sharpe <= 1.120 and 0 datasets beat iter009 by +0.10.
+- Score breakdown: Sharpe edge 0/25; gates 19/25; DSR 15/15; CAGR floor 15/15; MDD ceiling 0/15; robustness 5/5.
+- Lesson: static stacking restores CAGR but loses the HAA canary's drawdown control; drawdowns of 27-42% make the low-turnover tax advantage insufficient for a Sharpe-frontier advance.
 
 ### 002 — 2026-04-28 — composite-momentum-standard (MARGINAL, 55/100)
 
@@ -90,28 +100,6 @@ here is a candidate requiring mandate §7 override before deployment.
 ## Promising unexplored directions (prioritized)
 
 ### Tier 1 — bestfolio top-15 + user architecture preferences
-
-#### iter 003 — NTSX + GDE + KMLM (static capital-efficient)
-
-**Hypothesis**: User-specified architecture: 40% NTSXSIM + 30% GDESIM +
-30% KMLMSIM (static). No rotation. Capital-efficient (notional ~1.8×).
-Tesis: low-turnover capital-efficient stack matches HAA Sharpe without
-monthly rotation cost (DARF drag, trading cost).
-
-**Sources**: `[risk_parity, ch.5]` (WisdomTree 90/60 capital efficiency).
-`[leverage_for_the_long_run, p.40-60]` (futures overlay). `[stocks_on_the_move, p.21-30]`
-(managed futures "free lunch"). iter 007 global_factor_tilt_loop (static G3' confirmed, STRONG 88).
-
-**Why iter 009 misses it**: iter 007 user-static scored 88 (not 90; G6 vt_real
-CI_low borderline). A clean 40/30/30 split without the iter 007 exact weights
-may pass G6. NTSX (90/60) vs NTSXSIM synth: validate.
-
-**Kill criterion**: edu Sharpe ≤ 0.900 (static portfolio; lower kill because
-static inherently lower-Sharpe than HAA; raise bar if this is close).
-
-**Priority**: HIGH — explicit user preference; addresses DARF drag question.
-
----
 
 #### iter 004 — NTSX + GDE + RSST (static, RSST variant)
 
@@ -182,6 +170,9 @@ full text in `DEAD_ENDS.md`.
 4. **Composite Momentum Standard with SPY200 top-4 inverse-vol**: robust
    7/7 gates × 3 but return-capped; net Sharpe 0.940/0.958/0.957, CAGR
    below HAA+Gold on all datasets, MDD too high on vt/ndx.
+5. **Plain static global/factor/CTA stack**: low turnover restores CAGR
+   floors but gives up HAA canary drawdown control; net Sharpe
+   0.823/0.742/0.910 and MDD 27-42% fail the Sharpe/MDD frontier.
 
 ---
 

@@ -1,0 +1,111 @@
+{
+  "total_score": 54,
+  "tier": "MARGINAL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 0,
+      "max": 25,
+      "datasets_beat": 0,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "educational": 6,
+        "vt_real": 6,
+        "ndx_real": 6
+      },
+      "thresholds": {
+        "educational": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.033975018778199306,
+      "cumulative_n_trials": 8
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 0,
+      "max": 15,
+      "per_dataset": {
+        "educational": false,
+        "vt_real": false,
+        "ndx_real": false
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.8230355494496702,
+      "cagr": 0.12094189329640881,
+      "mdd": 0.41758483137865293,
+      "dsr_p_value": 0.0005255718599209702
+    },
+    "vt_real": {
+      "sharpe": 0.7420698731692006,
+      "cagr": 0.11774819550464732,
+      "mdd": 0.40408027525983836,
+      "dsr_p_value": 0.033975018778199306
+    },
+    "ndx_real": {
+      "sharpe": 0.9100422268588517,
+      "cagr": 0.1310618724873991,
+      "mdd": 0.27485750672573944,
+      "dsr_p_value": 0.01009123081866603
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 1.12,
+      "cagr": 0.1389,
+      "mdd": 0.2081,
+      "label": "iter009 HAA+Gold edu (56y synth)"
+    },
+    "vt_real": {
+      "sharpe": 1.061,
+      "cagr": 0.1287,
+      "mdd": 0.142,
+      "label": "iter009 HAA+Gold vt_real (~17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.954,
+      "cagr": 0.1055,
+      "mdd": 0.142,
+      "label": "iter009 HAA+Gold ndx_real (16y)"
+    }
+  },
+  "cumulative_n_trials": 8,
+  "status": "marginal",
+  "configs_tested": 6,
+  "primary_citation": "[risk_parity, p.1-2, p.10]",
+  "hypothesis_slug": "global-factor-cta-stack",
+  "selected_config": "stack_gde_heavy",
+  "selection_rule": "max mean Sharpe / iter009 Sharpe across educational, vt_real, ndx_real",
+  "robustness": {
+    "bonus_pts": 5,
+    "pct_positive_sharpe": 1.0,
+    "n_windows": 27,
+    "min_rolling_sharpe": 0.3251192633921526,
+    "max_rolling_sharpe": 1.492832412479881
+  }
+}
