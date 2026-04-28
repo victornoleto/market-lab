@@ -1,11 +1,11 @@
 ---
 mission: "beat iter 009 HAA+Gold (Sharpe 1.120 edu) and close the gap to bestfolio #1 (Sharpe 1.18)"
-total_iterations: 9
+total_iterations: 10
 winners_found: 0
 status: in_progress
-latest_iteration: "009-2026-04-28-1011-haa-gayed-trend-canary"
-cumulative_n_trials: 32
-note: "loop initialized 2026-04-27. benchmark = iter009 HAA+Gold. tax model = AnnualDarfEngine (Lei 14.754/2023). RSIT synth, simple defensive swaps, dual broad-equity canary, and simple Gayed SPY/VT trend canary closed."
+latest_iteration: "010-2026-04-28-1019-haa-vol-throttle"
+cumulative_n_trials: 36
+note: "loop initialized 2026-04-27. benchmark = iter009 HAA+Gold. tax model = AnnualDarfEngine (Lei 14.754/2023). RSIT synth, simple defensive swaps, dual broad-equity canary, simple Gayed SPY/VT trend canary, and simple HAA volatility throttle closed."
 ---
 
 # Bestfolio Hunt Loop — BASE MEMORY
@@ -70,6 +70,15 @@ here is a candidate requiring mandate §7 override before deployment.
 
 ## Iteration log (newest first)
 
+### 010 — 2026-04-28 — haa-vol-throttle (PROMISING, 60/100)
+
+- Hypothesis: Keep iter 009 HAA+Gold assets/canary unchanged and add a Carver-style realized-volatility throttle to only the 85% dynamic sleeve.
+- Citations: `[systematic_trading, p.137-148]`; `[systematic_trading, p.196-197]`; `[stocks_on_the_move, ch.6]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
+- Scope: 4 pre-committed configs (`no_throttle`, `vol12`, `vol15`, `vol18`); selected `vol12` by mean Sharpe / iter009 Sharpe; AnnualDarfEngine net-of-tax; educational/vt_real/ndx_real.
+- Result: net Sharpe **1.020 / 0.955 / 0.881**; gates **7/7 / 7/7 / 7/7**; DSR p **3.67e-06 / 2.34e-03 / 9.38e-03**. Kill fired: edu Sharpe gain vs baseline was +0.037 (< +0.05) and 0 datasets beat iter009 by +0.10.
+- Score breakdown: Sharpe edge 0/25; gates 25/25; DSR 15/15; CAGR floor 0/15; MDD ceiling 15/15; robustness 5/5.
+- Lesson: Vol throttling cleaned drawdowns (edu MDD 14.86%) but converted HAA+Gold into a lower-CAGR defensive variant; useful for capital preservation, not the missing Sharpe-frontier edge.
+
 ### 009 — 2026-04-28 — haa-gayed-trend-canary (PROMISING, 73/100)
 
 - Hypothesis: Keep iter 009 HAA+Gold assets unchanged and alter only the binary HAA trigger with simple `SPYSIM`/`VTSIM` Gayed-style 10-month trend modes.
@@ -126,9 +135,9 @@ here is a candidate requiring mandate §7 override before deployment.
 ### Tier 1 — active next directions after iter 009
 
 No remaining pre-approved simple Sharpe-frontier direction. The next iteration
-should either add real VT/VXUS data to reduce proxy uncertainty, test a very
-small volatility-throttle grid, or stop the active Sharpe hunt until a new
-literature-backed non-price regime input appears.
+should either add real VT/VXUS data to reduce proxy uncertainty or stop the
+active Sharpe hunt until a new literature-backed non-price regime input
+appears. The small volatility-throttle grid was tested in iter 010 and closed.
 
 ### Tier 1 — bestfolio top-15 + user architecture preferences
 
@@ -193,6 +202,10 @@ full text in `DEAD_ENDS.md`.
     selected again; SPY/VT trend filters either cut CAGR or raised real-window
     MDD, with net Sharpe 0.983/0.954/0.860 and no +0.10 Sharpe edge.
     `[leverage_for_the_long_run, p.40-60]`
+12. **Simple HAA dynamic-sleeve volatility throttle**: `vol12` passed 7/7
+    gates across all datasets and reduced MDD, but failed every CAGR floor
+    and produced net Sharpe 1.020/0.955/0.881 with zero +0.10 Sharpe edges.
+    Drawdown throttling is not the missing return source. `[systematic_trading, p.137-148]`
 
 ---
 

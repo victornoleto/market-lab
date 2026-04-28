@@ -29,9 +29,9 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-28 — bestfolio_hunt_loop iter 009: HAA Gayed trend canary PROMISING)
+## Onde estamos hoje (2026-04-28 — bestfolio_hunt_loop iter 010: HAA volatility throttle PROMISING)
 
-**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). bestfolio_hunt_loop ATIVO, 9/9 sem winner** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 009 HAA Gayed trend canary: **PROMISING 73/100**, net Sharpe 0.983/0.954/0.860; gates 7/7, 7/7, 6/7; falhou Sharpe edge 0/3 e o kill educacional (0.983 <= 1.120). Lição: o canário original `VWOSIM` ganhou novamente; filtros simples de tendência `SPYSIM`/`VTSIM` cortaram CAGR ou elevaram MDD real. A próxima borda não deve ser outro trend filter amplo de ações. `[leverage_for_the_long_run, p.40-60]`; `[stocks_on_the_move, ch.6]`.
+**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). bestfolio_hunt_loop ATIVO, 10/10 sem winner** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 010 HAA volatility throttle: **PROMISING 60/100**, net Sharpe 1.020/0.955/0.881; gates 7/7 nos 3 datasets; falhou Sharpe edge 0/3 e CAGR floor 0/3. Lição: throttle de volatilidade melhora drawdown, mas sacrifica CAGR e vira ferramenta defensiva, não avanço da fronteira de Sharpe. `[systematic_trading, p.137-148]`; `[stocks_on_the_move, ch.6]`.
 
 1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
    (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
@@ -83,7 +83,7 @@ evidência completa (final_reports + paper trading 3-6 meses).
 
 **Próximas decisões do usuário (mandate §7):**
 
-Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **bestfolio_hunt_loop em andamento** — iter 001 consumiu BAA-G12, iter 002 consumiu Composite Momentum Standard, iter 003 consumiu static global/factor/CTA stack, iter 004 consumiu HAA small/value tilt, iter 005 consumiu HAA RSST/RSSB/CTA, iter 006 consumiu HAA RSIT sintético, iter 007 consumiu defesa HAA KMLM/CASH, iter 008 consumiu HAA dual-canary e iter 009 consumiu Gayed SPY/VT trend canary; todos viraram dead-end estrutural para bater o HAA+Gold. Próxima direção só deve avançar se reduzir incerteza de dados reais VT/VXUS, testar um throttle de volatilidade muito pequeno, ou trouxer uma fonte de regime diferente de preço/tendência ampla. Três opções concretas para o predecessor:
+Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **bestfolio_hunt_loop em andamento** — iter 001 consumiu BAA-G12, iter 002 consumiu Composite Momentum Standard, iter 003 consumiu static global/factor/CTA stack, iter 004 consumiu HAA small/value tilt, iter 005 consumiu HAA RSST/RSSB/CTA, iter 006 consumiu HAA RSIT sintético, iter 007 consumiu defesa HAA KMLM/CASH, iter 008 consumiu HAA dual-canary, iter 009 consumiu Gayed SPY/VT trend canary e iter 010 consumiu HAA volatility throttle; todos viraram dead-end estrutural para bater o HAA+Gold. Próxima direção só deve avançar se reduzir incerteza de dados reais VT/VXUS ou trouxer uma fonte de regime diferente de preço/tendência ampla. Três opções concretas para o predecessor:
 
 1. **Manter Plano C** (mandato atual §1): CAGR ~10.3% líquido, MDD ~52%, zero complexidade.
 2. **Ativar 50/50 Híbrido** (iter 012): CAGR ~13.4% líquido, MDD ~27%, Sharpe **melhor que HAA puro**,
@@ -205,6 +205,8 @@ Termos que aparecem ao longo das entradas do changelog:
 — bug Tiingo IEX em US holidays.
 
 ### 2026-04-28
+
+- [2026-04-28 10h19 — **Bestfolio iter 010: HAA volatility throttle — PROMISING 60/100, sem winner.** Net Sharpe 1.020/0.955/0.881 vs iter 009 HAA+Gold 1.120/1.061/0.954. Passou 7/7 gates nos 3 datasets, mas Sharpe edge foi 0/3 e CAGR floor 0/3; `vol12` reduziu MDD, porém virou variante defensiva de menor CAGR. `[systematic_trading, p.137-148]`.](2026-04-28-1019-bestfolio-iter010-haa-vol-throttle-dead-end.md)
 
 - [2026-04-28 10h11 — **Bestfolio iter 009: HAA Gayed trend canary — PROMISING 73/100, sem winner.** Net Sharpe 0.983/0.954/0.860 vs iter 009 HAA+Gold 1.120/1.061/0.954. Passou 7/7, 7/7, 6/7 gates, mas Sharpe edge foi 0/3; o canário original `VWOSIM` venceu novamente contra filtros `SPYSIM`/`VTSIM`. Lição: trend filter amplo de ações não fecha o gap; próxima borda precisa de outro tipo de regime ou pausar o hunt. `[leverage_for_the_long_run, p.40-60]`.](2026-04-28-1011-bestfolio-iter009-gayed-trend-canary-dead-end.md)
 

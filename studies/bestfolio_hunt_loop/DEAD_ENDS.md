@@ -552,3 +552,64 @@ not another simple broad-equity price trend `[leverage_for_the_long_run, p.40-60
 | educational | 0.983 | 12.15% | 20.81% | 7/7 |
 | vt_real | 0.954 | 11.49% | 14.20% | 7/7 |
 | ndx_real | 0.860 | 9.44% | 14.20% | 6/7 |
+
+---
+
+## DE-012 — Simple HAA dynamic-sleeve volatility throttle
+
+**Origin**: bestfolio_hunt_loop iter 010 — haa-vol-throttle  
+**Score**: 60/100 PROMISING  
+**Date**: 2026-04-28
+
+### What was tested
+
+- Iter 009 HAA+Gold assets retained exactly: offensive `NTSXSIM`, `NTSI`,
+  `NTSE`, `GDESIM`; defensive `IEFSIM`, `BNDSIM`, `CASHX`; fixed 10%
+  `KMLMSIM` + 5% `GLDSIM`.
+- Canary retained exactly: original `VWOSIM` HAA momentum > 0.
+- Added a trailing 63-trading-day realized-volatility throttle to only the
+  85% dynamic sleeve.
+- Tested four pre-committed configs:
+  - `no_throttle`
+  - `vol12`
+  - `vol15`
+  - `vol18`
+- Selected config: `vol12`, by maximum mean Sharpe divided by iter 009 Sharpe
+  across the three datasets.
+- Net-of-tax via `AnnualDarfEngine`.
+- Sources: `[systematic_trading, p.137-148]`; `[systematic_trading, p.196-197]`;
+  `[stocks_on_the_move, ch.6]`.
+
+### Why it fails structurally
+
+The volatility throttle improved drawdown but did not create enough return.
+Selected `vol12` passed **7/7 gates on all three datasets**, but net Sharpe was
+only **1.020 / 0.955 / 0.881** versus iter 009 HAA+Gold **1.120 / 1.061 /
+0.954**. Zero datasets beat iter 009 by the required +0.10 Sharpe edge.
+
+The pre-committed kill fired because educational Sharpe improved only **+0.037**
+versus the `no_throttle` baseline, below the required +0.05. More importantly,
+the selected config failed the 0.8 x iter009 CAGR floor on every dataset:
+**10.10% / 9.19% / 8.23%** net CAGR.
+
+**Structural insight**: a simple volatility throttle on HAA is a capital
+preservation overlay. It cuts high-volatility risk-on exposure and improves
+MDD, but it also removes too much of the return engine. For this Sharpe-frontier
+mission, the missing edge must add return or improve timing quality, not merely
+de-risk the already robust HAA+Gold shell.
+
+### What CAN be tried instead
+
+- Add real VT/VXUS data to reduce proxy uncertainty before further HAA timing
+  variants.
+- Use a genuinely new non-price regime input if the hunt continues.
+- Revisit `vol12` only under a drawdown-minimization or capital-preservation
+  objective, not as a Sharpe-frontier candidate.
+
+### Results summary
+
+| dataset | net Sharpe | net CAGR | net MDD | Gates |
+|---|---:|---:|---:|---:|
+| educational | 1.020 | 10.10% | 14.86% | 7/7 |
+| vt_real | 0.955 | 9.19% | 11.13% | 7/7 |
+| ndx_real | 0.881 | 8.23% | 11.13% | 7/7 |
