@@ -214,19 +214,28 @@ def plot_dataset(iter_dir: Path, ds: str, cfg_id: str) -> Path | None:
     ax_eq.set_yscale("log")
     ax_eq.set_ylabel("Equity (growth of $1, log)")
     ax_eq.grid(True, which="both", alpha=0.25)
-    ax_eq.legend(loc="upper left", fontsize=9, framealpha=0.85)
+    # Legend OUTSIDE the axes (right side) so it doesn't collide with the title.
+    ax_eq.legend(loc="center left", bbox_to_anchor=(1.005, 0.5),
+                 fontsize=9, framealpha=0.85, borderaxespad=0.0)
+
     s_sharpe, s_cagr, s_mdd = _stats(r_strat_aligned)
-    bench_summary = "  |  ".join(
-        f"{n}: S={st[0]:.2f} CAGR={st[1]*100:.1f}% MDD={st[2]*100:.1f}%"
-        for n, st in bench_stats.items()
-    )
+    # Concise title: iter + dataset + window only. Stats go in a text box.
     ax_eq.set_title(
         f"{iter_dir.name} — {ds}  "
         f"({r_strat_aligned.index[0].year}-{r_strat_aligned.index[-1].year}, "
-        f"{len(r_strat_aligned)/252:.1f}y)\n"
-        f"strat: S={s_sharpe:.2f} CAGR={s_cagr*100:.1f}% MDD={s_mdd*100:.1f}%   "
-        f"|   {bench_summary}",
-        fontsize=10,
+        f"{len(r_strat_aligned)/252:.1f}y)",
+        fontsize=11, loc="left",
+    )
+    # Stats panel: strategy first, then each benchmark. Right-aligned text box at bottom-right.
+    stats_lines = [f"Strat:  S={s_sharpe:.2f}  CAGR={s_cagr*100:.1f}%  MDD={s_mdd*100:.1f}%"]
+    for n, st in bench_stats.items():
+        stats_lines.append(f"{n}: S={st[0]:.2f}  CAGR={st[1]*100:.1f}%  MDD={st[2]*100:.1f}%")
+    ax_eq.text(
+        0.99, 0.02, "\n".join(stats_lines),
+        transform=ax_eq.transAxes, ha="right", va="bottom",
+        fontsize=8.5, family="monospace",
+        bbox=dict(boxstyle="round,pad=0.4", facecolor="white",
+                  edgecolor="#bbb", alpha=0.92),
     )
 
     # Three sub-panels: rolling 1y Sharpe Δ vs each benchmark
@@ -318,12 +327,24 @@ def plot_rolling_windows(iter_dir: Path, ds: str, cfg_id: str) -> Path | None:
                     lw=1.1, ls="--", label=name, alpha=0.85)
         ax.axhline(0, color="#888", lw=0.6)
         ax.grid(True, alpha=0.25)
-        footer = " | ".join(
-            f"{name}: {outperf[name][w]['pct_strat_wins']*100:.0f}% wins (n={outperf[name][w]['n_windows']})"
-            for name in ("SPY", "VT", "NDX") if name in outperf
-        )
-        ax.set_title(f"{w}y rolling Sharpe — {footer}", fontsize=9)
+
+        # Short subplot title — just the window size.
+        ax.set_title(f"{w}y rolling Sharpe", fontsize=10)
         ax.set_ylabel("Sharpe (ann.)" if i % n_cols == 0 else "")
+
+        # Win stats inside the plot area as a small text box (top-left).
+        win_lines = [
+            f"{name}: {outperf[name][w]['pct_strat_wins']*100:.0f}% wins"
+            f"  (n={outperf[name][w]['n_windows']})"
+            for name in ("SPY", "VT", "NDX") if name in outperf
+        ]
+        ax.text(
+            0.02, 0.98, "\n".join(win_lines),
+            transform=ax.transAxes, ha="left", va="top",
+            fontsize=8, family="monospace",
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
+                      edgecolor="#bbb", alpha=0.85),
+        )
         if i == 0:
             ax.legend(loc="lower left", fontsize=8, framealpha=0.85)
 
@@ -333,7 +354,7 @@ def plot_rolling_windows(iter_dir: Path, ds: str, cfg_id: str) -> Path | None:
 
     fig.suptitle(
         f"{iter_dir.name} — {ds} — rolling Sharpe at multiple windows "
-        f"(% wins = strategy beats benchmark in that fraction of overlapping windows)",
+        f"(strategy = solid blue; benchmarks dashed; % wins shown per panel)",
         fontsize=10,
     )
     out = iter_dir / f"plot_rolling_windows_{ds}.png"
