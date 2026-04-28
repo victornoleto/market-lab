@@ -1,10 +1,10 @@
 ---
 mission: "beat iter 009 HAA+Gold (Sharpe 1.120 edu) and close the gap to bestfolio #1 (Sharpe 1.18)"
-total_iterations: 1
+total_iterations: 2
 winners_found: 0
 status: in_progress
-latest_iteration: "001-2026-04-28-0116-baa-g12-balanced"
-cumulative_n_trials: 1
+latest_iteration: "002-2026-04-28-0134-composite-momentum-standard"
+cumulative_n_trials: 2
 note: "loop initialized 2026-04-27. benchmark = iter009 HAA+Gold. tax model = AnnualDarfEngine (Lei 14.754/2023). RSIT synth available."
 ---
 
@@ -56,16 +56,25 @@ here is a candidate requiring mandate §7 override before deployment.
 
 ---
 
-## Top-K ranked
-
-*(empty — loop not started)*
+## Top-K strategies ranked
 
 | rank | iter | slug | score | tier | Sharpe (edu/vt/ndx) | CAGR (edu) | MDD (edu) |
 |---|---|---|---|---|---|---|---|
+| 1 | 001 | baa-g12-balanced | 58 | MARGINAL | 0.975/0.792/0.782 | 10.60% | 16.34% |
+| 2 | 002 | composite-momentum-standard | 55 | MARGINAL | 0.940/0.958/0.957 | 9.25% | 20.76% |
 
 ---
 
 ## Iteration log (newest first)
+
+### 002 — 2026-04-28 — composite-momentum-standard (MARGINAL, 55/100)
+
+- Hypothesis: Composite Momentum Standard would improve HAA+Gold by using a simpler SPY 200-day regime gate, 8-month top-4 absolute/relative momentum, and inverse-vol sizing.
+- Citations: `[stocks_on_the_move, p.21-30]`; gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
+- Scope: 1 pre-committed config; risk-on top 4 from `SPYSIM/QQQSIM/VEASIM/TLTSIM/IEFSIM/GLDSIM/KMLMSIM`, inverse 63d vol; risk-off 60% `IEFSIM` + 40% `GLDSIM`; AnnualDarfEngine net-of-tax; educational/vt_real/ndx_real.
+- Result: net Sharpe **0.940 / 0.958 / 0.957**; gates **7/7 / 7/7 / 7/7**; DSR p **6.12e-09 / 4.80e-05 / 1.08e-04**. Kill fired: educational Sharpe <= 1.120.
+- Score breakdown: Sharpe edge 0/25; gates 25/25; DSR 15/15; CAGR floor 5/15; MDD ceiling 5/15; robustness 5/5.
+- Lesson: SPY200 top-4 inverse-vol is statistically robust but return-capped; the IEF/gold risk-off sleeve and annual DARF drag leave too little CAGR to beat HAA+Gold.
 
 ### 001 — 2026-04-28 — baa-g12-balanced (MARGINAL, 58/100)
 
@@ -82,7 +91,7 @@ here is a candidate requiring mandate §7 override before deployment.
 
 ### Tier 1 — bestfolio top-15 + user architecture preferences
 
-#### iter 002 — NTSX + GDE + KMLM (static capital-efficient)
+#### iter 003 — NTSX + GDE + KMLM (static capital-efficient)
 
 **Hypothesis**: User-specified architecture: 40% NTSXSIM + 30% GDESIM +
 30% KMLMSIM (static). No rotation. Capital-efficient (notional ~1.8×).
@@ -104,7 +113,7 @@ static inherently lower-Sharpe than HAA; raise bar if this is close).
 
 ---
 
-#### iter 003 — NTSX + GDE + RSST (static, RSST variant)
+#### iter 004 — NTSX + GDE + RSST (static, RSST variant)
 
 **Hypothesis**: Replace KMLMSIM with RSSBSIM (global equity + Treasury
 return-stacked) or `SPYSIM + KMLMSIM` proxy for RSST. Tesis: RSST adds
@@ -120,7 +129,7 @@ return-stacking papers. `[stocks_on_the_move, p.21-30]` (MF momentum).
 
 ---
 
-#### iter 004 — HAA + global factor tilt (AVDV/VBRSIM offensive)
+#### iter 005 — HAA + global factor tilt (AVDV/VBRSIM offensive)
 
 **Hypothesis**: HAA architecture (iter 009) but replace VEASIM in offensive
 with `0.7 VEASIM + 0.3 VBRSIM` (intl + small-cap value tilt). Tests whether
@@ -133,21 +142,6 @@ AVDV vs VEA: ~+0.8pp/y Avantis live (6.5y track record).
 **Kill criterion**: edu Sharpe ≤ 1.120 (must beat iter 009).
 
 **Priority**: MEDIUM — incremental HAA variant; directionally correct per Avantis rationale.
-
----
-
-#### iter 005 — Composite Momentum Standard (bestfolio #2)
-
-**Hypothesis**: bestfolio.app #2 "Composite Momentum Standard" (Sharpe 1.17,
-33y). Dual momentum across multiple lookbacks (3m, 6m, 12m), cross-asset
-(equity + bonds + gold + MF), averaging signals rather than single lookback.
-`[stocks_on_the_move, p.21-30]` (Clenow momentum). Antonacci *Dual Momentum
-Investing* (GEM framework — absolute + relative momentum).
-
-**Kill criterion**: edu Sharpe ≤ 1.120 (must beat iter 009).
-
-**Priority**: MEDIUM — bestfolio evidence supports S=1.17. Second strongest
-bestfolio entry behind HAA SmartStack.
 
 ---
 
@@ -185,6 +179,9 @@ full text in `DEAD_ENDS.md`.
 3. **Plain BAA-G12 Balanced in current universe**: robust drawdown reducer
    but too defensive/tax-dragged; net Sharpe 0.975/0.792/0.782 and CAGR
    below 0.8× iter009 on all datasets. `[stocks_on_the_move, ch.6]`
+4. **Composite Momentum Standard with SPY200 top-4 inverse-vol**: robust
+   7/7 gates × 3 but return-capped; net Sharpe 0.940/0.958/0.957, CAGR
+   below HAA+Gold on all datasets, MDD too high on vt/ndx.
 
 ---
 

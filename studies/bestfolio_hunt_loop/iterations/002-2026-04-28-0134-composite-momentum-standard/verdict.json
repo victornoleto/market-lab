@@ -1,0 +1,142 @@
+{
+  "total_score": 55,
+  "tier": "MARGINAL",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 0,
+      "max": 25,
+      "datasets_beat": 0,
+      "required_minimum_dataset_count": 2
+    },
+    "2_gates": {
+      "points": 25,
+      "max": 25,
+      "per_dataset": {
+        "educational": 7,
+        "vt_real": 7,
+        "ndx_real": 7
+      },
+      "thresholds": {
+        "educational": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.00010797775603588189,
+      "cumulative_n_trials": 2
+    },
+    "4_cagr_floor": {
+      "points": 5,
+      "max": 15,
+      "per_dataset": {
+        "educational": false,
+        "vt_real": false,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 5,
+      "max": 15,
+      "per_dataset": {
+        "educational": true,
+        "vt_real": false,
+        "ndx_real": false
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "educational": {
+      "sharpe": 0.9399495690012594,
+      "cagr": 0.09254049823999311,
+      "mdd": 0.20762110288585656,
+      "dsr_p_value": 6.12299277946704e-09
+    },
+    "vt_real": {
+      "sharpe": 0.9581689836674547,
+      "cagr": 0.09941596586189294,
+      "mdd": 0.2076211028858573,
+      "dsr_p_value": 4.8019503235852135e-05
+    },
+    "ndx_real": {
+      "sharpe": 0.9574656067419026,
+      "cagr": 0.09592738978267645,
+      "mdd": 0.20762110288591057,
+      "dsr_p_value": 0.00010797775603588189
+    }
+  },
+  "benchmarks_used": {
+    "educational": {
+      "sharpe": 1.12,
+      "cagr": 0.1389,
+      "mdd": 0.2081,
+      "label": "iter009 HAA+Gold edu (56y synth)"
+    },
+    "vt_real": {
+      "sharpe": 1.061,
+      "cagr": 0.1287,
+      "mdd": 0.142,
+      "label": "iter009 HAA+Gold vt_real (~17y)"
+    },
+    "ndx_real": {
+      "sharpe": 0.954,
+      "cagr": 0.1055,
+      "mdd": 0.142,
+      "label": "iter009 HAA+Gold ndx_real (16y)"
+    }
+  },
+  "cumulative_n_trials": 2,
+  "status": "marginal",
+  "configs_tested": 1,
+  "primary_citation": "[stocks_on_the_move, p.21-30]",
+  "hypothesis_slug": "composite-momentum-standard",
+  "robustness": {
+    "points": 5,
+    "pct_positive": 1.0,
+    "n_windows": 33,
+    "sharpes": [
+      1.0423796912626526,
+      0.4429219991162759,
+      1.1562359190366376,
+      1.2843744524404201,
+      1.3149325098290694,
+      1.1733875265767448,
+      1.2132475602759907,
+      0.8737364444111821,
+      0.7442745528964384,
+      0.7984422968293322,
+      0.8701435781902684,
+      0.9618195096654194,
+      0.9086874504441652,
+      1.000268214594552,
+      1.0586960318950445,
+      0.5984226218720894,
+      0.9832371849374222,
+      1.0670887660844643,
+      0.8727134714544155,
+      0.7248530817491741,
+      1.075112848465969,
+      0.8350721102460633,
+      0.7759903651002311,
+      0.9449963229365509,
+      1.2431020693631771,
+      0.7343735715848476,
+      0.9049544254844505,
+      1.1848615068164599,
+      1.3586437445535755,
+      0.508278093475841,
+      0.872920063301246,
+      0.9803943710114403,
+      0.9768900456127343
+    ]
+  }
+}

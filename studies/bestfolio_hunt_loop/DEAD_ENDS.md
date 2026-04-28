@@ -137,3 +137,51 @@ binary canary architecture.
 | educational | 0.975 | 10.60% | 16.34% | 7/7 |
 | vt_real | 0.792 | 8.42% | 13.93% | 7/7 |
 | ndx_real | 0.782 | 7.66% | 12.73% | 6/7 |
+
+---
+
+## DE-004 — Composite Momentum Standard with SPY200 top-4 inverse-vol and IEF/gold defense
+
+**Origin**: bestfolio_hunt_loop iter 002 — composite-momentum-standard
+**Score**: 55/100 MARGINAL
+**Date**: 2026-04-28
+
+### What was tested
+
+- Monthly SPY 200-day SMA risk gate.
+- Risk-on: top 4 from `SPYSIM`, `QQQSIM`, `VEASIM`, `TLTSIM`, `IEFSIM`,
+  `GLDSIM`, `KMLMSIM` by positive 8-month return.
+- Sizing: inverse 63-day volatility.
+- Risk-off: 60% `IEFSIM` + 40% `GLDSIM`.
+- Net-of-tax via `AnnualDarfEngine`.
+- Source: `[stocks_on_the_move, p.21-30]`.
+
+### Why it fails structurally
+
+Composite Momentum Standard is robust but return-capped in this universe.
+It passed **7/7 gates on all three datasets**, but net Sharpe was only
+**0.940 / 0.958 / 0.957**, below iter 009 HAA+Gold **1.120 / 1.061 /
+0.954** and never beat by the required +0.10. Net CAGR also missed the
+0.8 x iter009 floor on educational and vt_real.
+
+**Structural insight**: the SPY200 gate plus 60/40 IEF/gold risk-off sleeve
+avoids catastrophic drawdown, but it sits in low-return protection too often
+and pays enough annual DARF drag to lose the Sharpe/CAGR frontier. HAA's
+`VWOSIM` canary with fixed KMLM/gold sleeves preserves more upside while
+keeping drawdown comparable.
+
+### What CAN be tried instead
+
+- Static capital-efficient stacks with lower turnover/tax drag.
+- HAA offensive-sleeve changes, especially factor or return-stacked sleeves.
+- Composite Momentum only after real/synthetic `VNQ` and broad-commodity
+  (`DBC`) proxies are added; do not re-test the same SPY200/top4/inverse-vol
+  architecture with this reduced universe.
+
+### Results summary
+
+| dataset | net Sharpe | net CAGR | net MDD | Gates |
+|---|---:|---:|---:|---:|
+| educational | 0.940 | 9.25% | 20.76% | 7/7 |
+| vt_real | 0.958 | 9.94% | 20.76% | 7/7 |
+| ndx_real | 0.957 | 9.59% | 20.76% | 7/7 |

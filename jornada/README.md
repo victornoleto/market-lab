@@ -29,9 +29,9 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-28 — bestfolio_hunt_loop iter 001: BAA-G12 MARGINAL)
+## Onde estamos hoje (2026-04-28 — bestfolio_hunt_loop iter 002: Composite Momentum MARGINAL)
 
-**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). bestfolio_hunt_loop ATIVO, 1/1 sem winner** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 001 BAA-G12 Balanced: **MARGINAL 58/100**, net Sharpe 0.975/0.792/0.782; robusto em drawdown, mas sem Sharpe/CAGR para avançar a fronteira.
+**Estado:** 🚀 **global_factor_tilt_loop FROZEN (13 iters, 6 winners). bestfolio_hunt_loop ATIVO, 2/2 sem winner** — benchmark = iter 009 HAA+Gold (S=1.120). Modelo DARF corrigido para anual (Lei 14.754/2023). Iter 002 Composite Momentum Standard: **MARGINAL 55/100**, net Sharpe 0.940/0.958/0.957; passou 7/7 gates nos 3 datasets, mas sem Sharpe/CAGR suficiente para avançar a fronteira.
 
 1. **strategy_hunt_loop** (iter 079): multi-asset top-K momentum cross-classe
    (SPY/QQQ/EFA/TLT/GLD), K=3, lb=6m, abs-mom AGG fallback. Score 93/100,
@@ -83,7 +83,7 @@ evidência completa (final_reports + paper trading 3-6 meses).
 
 **Próximas decisões do usuário (mandate §7):**
 
-Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **bestfolio_hunt_loop em andamento** — iter 001 consumiu BAA-G12 e documentou dead-end; próxima direção prioritária é NTSX+GDE+KMLM static capital-efficient. Três opções concretas para o predecessor:
+Loop global_factor_tilt_loop FECHADO com mandato §7 inputs completos. **bestfolio_hunt_loop em andamento** — iter 001 consumiu BAA-G12 e iter 002 consumiu Composite Momentum Standard; ambos viraram dead-end estrutural. Próxima direção prioritária é NTSX+GDE+KMLM static capital-efficient. Três opções concretas para o predecessor:
 
 1. **Manter Plano C** (mandato atual §1): CAGR ~10.3% líquido, MDD ~52%, zero complexidade.
 2. **Ativar 50/50 Híbrido** (iter 012): CAGR ~13.4% líquido, MDD ~27%, Sharpe **melhor que HAA puro**,
@@ -205,6 +205,8 @@ Termos que aparecem ao longo das entradas do changelog:
 — bug Tiingo IEX em US holidays.
 
 ### 2026-04-28
+
+- [2026-04-28 01h38 — **Bestfolio iter 002: Composite Momentum Standard — MARGINAL 55/100, dead-end documentado.** Net Sharpe 0.940/0.958/0.957 vs iter 009 HAA+Gold 1.120/1.061/0.954. Passou 7/7 gates nos 3 datasets; DSR worst p=1.08e-04. Falha principal: zero datasets com Sharpe edge +0.10; CAGR também baixo nas janelas globais. Lição: SPY200 top-4 inverse-vol é robusto, mas return-capped e fiscalmente arrastado no universo atual. `[stocks_on_the_move, p.21-30]`; `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.](2026-04-28-0138-bestfolio-iter002-composite-dead-end.md)
 
 - [2026-04-28 01h25 — **Bestfolio iter 001: BAA-G12 Balanced — MARGINAL 58/100, dead-end documentado.** Net Sharpe 0.975/0.792/0.782 vs iter 009 HAA+Gold 1.120/1.061/0.954. Gates 7/7, 7/7, 6/7; DSR worst p=0.00137; MDD ótimo (16.34%/13.93%/12.73%), mas CAGR falha em todos os datasets. Lição: BAA é defensivo demais neste universo; HAA+Gold continua superior para Sharpe/CAGR. `[stocks_on_the_move, ch.6]`; `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.](2026-04-28-0125-bestfolio-iter001-baa-dead-end.md)
 
