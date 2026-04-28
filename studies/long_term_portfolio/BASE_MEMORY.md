@@ -2,10 +2,14 @@
 mission: "beat avg(SPY 1× b&h, VT 1× b&h) gross-of-tax Sharpe by ≥0.10 on ≥2 of 3 datasets"
 total_iterations: 11
 winners_found: 1
-status: winner
+status: hunting
 latest_iteration: "011-2026-04-28-1537-ntsx-gde-kmlm-static"
+latest_score: 91
+beats_incumbent: false
 cumulative_n_trials: 40
-note: "Renamed from bestfolio_hunt_loop on 2026-04-28. Mission redefined to 'beat avg(SPY,VT)' (gross-of-tax), scoring.py reworked accordingly. Net-of-tax (Lei 14.754/2023, _shared/tax_engine.py) is reported as deploy-readiness diagnostic but does NOT gate. WINNER 2026-04-28: iter 011 NTSX+GDE+KMLM static stack — score 91/100, all 5 strict winner conditions met, 3/3 datasets clear +0.10 Sharpe edge, family-level robust (all 4 weight variants pass). Shell loop halts."
+incumbent_winner_iter: "011-2026-04-28-1537-ntsx-gde-kmlm-static"
+incumbent_winner_score: 91
+note: "Renamed from bestfolio_hunt_loop on 2026-04-28. Mission redefined to 'beat avg(SPY,VT)' (gross-of-tax), scoring.py reworked accordingly. WINNER 2026-04-28: iter 011 NTSX+GDE+KMLM 35/25/40 static — 91/100, 5/5 strict, 3/3 +0.10 Sharpe edge. POST-WINNER OVERHAUL 2026-04-28: dataset registry centralized (datasets.py), educational dataset renamed lh_56y with KMLMSIM splice via FF MoM proxy pre-1988 (overstates pre-88 KMLM ~3×), plot_helper.py rewritten (1 PNG per dataset with 4-line equity + 3 rolling-Δ panels + rolling-windows panel). Hunt resumes; halt only when an iter sets beats_incumbent=true (score>91 OR Sharpe edge ≥+0.10 vs iter011 on ≥2 datasets)."
 ---
 
 # Long-Term Portfolio Loop — BASE MEMORY
@@ -27,12 +31,17 @@ floor / MDD ceiling.
 
 | dataset | benchmarks averaged | avg Sharpe | avg CAGR | max MDD (ceiling base) |
 |---|---|---:|---:|---:|
-| educational (56y) | VTSIM 56y + SPYSIM 40y | **0.671** | 10.73% | 58.35% |
+| **lh_56y** (1970+) | VTSIM 56y + SPYSIM 40y | **0.671** | 10.73% | 58.35% |
 | vt_real (17y) | VTSIM 17y + SPY 17y | **0.707** | 11.88% | 50.21% |
 | ndx_real (16y) | QQQ 16y + SPY 16y | **0.924** | 16.98% | 35.12% |
 
 **Winner threshold (Sharpe edge gate)**: candidate must reach Sharpe
 ≥ **0.77 / 0.81 / 1.02** on ≥ 2 of 3 datasets (avg + 0.10).
+
+**Beat-incumbent threshold (additional gate after 2026-04-28)**: a NEW iter
+becomes the incumbent winner only if `total_score > 91` (iter 011's score)
+OR Sharpe edge ≥ +0.10 vs iter 011 on ≥ 2 of 3 datasets — i.e., lh_56y
+≥ 1.121, vt_real ≥ 1.060, ndx_real ≥ 1.204.
 
 **Context from related research (read alongside)**:
 - `_archive/strategy_hunt_loop/FINAL_REPORT.md` — 78 iters, 1 strict
@@ -60,23 +69,42 @@ requiring mandate §7 override before deployment.
 
 ---
 
-## Winners found
+## Incumbent winner (the bar to beat)
 
-| # | iter | slug | status | edu S/CAGR/MDD | vt S/CAGR/MDD | ndx S/CAGR/MDD | note |
-|---|---|---|---|---|---|---|---|
-| 1 | 011 | ntsx-gde-kmlm-static | 🏆 WINNER (91/100) | 1.021 / 11.58% / 26.04% | 0.960 / 10.95% / 21.22% | 1.104 / 11.64% / 14.12% | Static 35% NTSX + 25% GDE + 40% KMLM stack. All 5 strict conditions met. 3/3 datasets beat avg(SPY,VT) +0.10 Sharpe edge (edu +0.350, vt +0.253, ndx +0.180). Net ≈ Gross (static buy-hold = no DARF until liquidation under Lei 14.754/2023). Family-level robust: all 4 weight variants pass; user's primary 40/30/30 also passes. Caveat: G1 PBO fails on real-data slots (config-noise within tightly-correlated grid), KMLMSIM synth pre-2020. |
+| iter | slug | score | edu/lh_56y S/CAGR/MDD | vt S/CAGR/MDD | ndx S/CAGR/MDD | note |
+|---|---|---|---|---|---|---|
+| **011** | ntsx-gde-kmlm-static | **91/100 🏆** | 1.021 / 11.58% / 26.04% (1995-2026 31y) | 0.960 / 10.95% / 21.22% | 1.104 / 11.64% / 14.12% | Static 35% NTSX + 25% GDE + 40% KMLM stack. All 5 strict conditions met. 3/3 datasets beat avg(SPY,VT) +0.10 Sharpe edge (edu +0.350, vt +0.253, ndx +0.180). Family-level robust (all 4 weight variants pass). Caveats: tested on legacy `educational` window (1995-2026, 31y) NOT lh_56y (1970-2026); G1 PBO fails on real-data slots (within-family weight noise); KMLMSIM synth pre-2020. **Pending retro re-backtest on lh_56y** (FF MoM proxy 1970-87, expected to overstate Sharpe slightly). |
 
 ---
 
 ## Top-K strategies ranked
 
-| rank | iter | slug | score | tier | Sharpe (edu/vt/ndx) | CAGR (edu) | MDD (edu) |
+Original score earned on legacy `educational` window (1995-2026, 31y). After
+retro re-backtest 2026-04-28, every iter also has lh_56y numbers — note the
+ranking shifts substantially under lh_56y (iters using KMLM benefit from the
+FF-MoM splice 1986-1988, an academic equity-momentum proxy with Sharpe ~1.9
+vs KMLM's long-run ~0.5; pre-1988 KMLM-heavy returns are ~3× overstated).
+
+| rank | iter | slug | score | tier | legacy edu Sharpe | **lh_56y gross Sharpe** | lh_56y window |
 |---|---|---|---|---|---|---|---|
-| 1 | **011** | **ntsx-gde-kmlm-static** | **91** | 🏆 **WINNER** | **1.021/0.960/1.104** (gross) | **11.58%** | **26.04%** |
-| 2 | 007 | haa-defensive-kmlm-cash | 75 | STRONG | 0.983/0.954/0.860 (net) | 12.15% | 20.81% |
-| 3 | 009 | haa-gayed-trend-canary | 73 | PROMISING | 0.983/0.954/0.860 (net) | 12.15% | 20.81% |
-| 4 | 008 | haa-dual-canary | 73 | PROMISING | 0.983/0.954/0.860 (net) | 12.15% | 20.81% |
-| 5 | 006 | haa-rsit-synth | 71 | PROMISING | 0.869/0.897/0.837 (net) | 11.13% | 22.12% |
+| 1 | **011** | **ntsx-gde-kmlm-static** | **91 🏆** | **WINNER** | 1.021 (gross) | **1.046** | 1986-2026 (40y) |
+| — | 005 | haa-rsst-rssb-cta | 70 | PROMISING | 0.953 (net) | **1.253** ⭐ | 1994-2026 (32y) |
+| — | 010 | haa-vol-throttle | 60 | PROMISING | 1.020 (net) | **1.179** ⭐ | 1994-2026 (32y) |
+| — | 006 | haa-rsit-synth | 71 | PROMISING | 0.869 (net) | **1.154** ⭐ | 1994-2026 (32y) |
+| — | 007 | haa-defensive-kmlm-cash | 75 | STRONG | 0.983 (net) | **1.150** ⭐ | 1994-2026 (32y) |
+| — | 004 | haa-global-factor-tilt | 69 | PROMISING | 0.990 (net) | **1.117** ⭐ | 1994-2026 (32y) |
+| — | 008 | haa-dual-canary | 73 | PROMISING | 0.983 (net) | 1.120 | 1994-2026 (32y) |
+| — | 009 | haa-gayed-trend-canary | 73 | PROMISING | 0.983 (net) | 1.120 | 1994-2026 (32y) |
+| — | 001 | baa-g12-balanced | 58 | MARGINAL | 0.975 (net) | 1.094 | 1995-2026 (31y) |
+| — | 002 | composite-momentum-standard | 55 | MARGINAL | 0.940 (net) | 1.024 | 1994-2026 (32y) |
+| — | 003 | global-factor-cta-stack | 54 | MARGINAL | 0.823 (net) | 0.839 | 1994-2026 (32y) |
+
+⭐ = retro lh_56y gross Sharpe ABOVE iter 011 (1.046). Caveat: iter 011 has
+40y window (8y more than HAA-style iters bottlenecked by VWOSIM 1994). The
+1986-1994 KMLM portion uses FF MoM proxy → expected to slightly overstate
+iter 011's lh_56y Sharpe; iter 011 is still likely competitive but not
+dominant on lh_56y. Apples-to-apples comparison requires same-window cropping
+(future work: align all to 1994-2026 or use a non-KMLM-dependent benchmark).
 
 ---
 
@@ -154,32 +182,50 @@ requiring mandate §7 override before deployment.
 
 ## Promising unexplored directions (prioritized)
 
-**Loop status: WINNER (iter 011) — shell loop halts.** The directions below
-are deferred follow-ups, not active hunt items.
+**Loop status: HUNTING past incumbent iter 011.** The user's explicit thesis
+is "exposição global + fatores" — iter 011 has zero international equity and
+zero factor tilt. Next iters should attack that gap.
 
-### Deferred — live-data validation of iter 011 winner (highest priority)
+### A. Global capital-efficient stack (iter 011 architecture, internationalized)
 
-1. **Pull live VT and KMLM daily prices** from Tiingo to replace VTSIM/KMLMSIM
-   proxies. Re-run gates on the live-data window only (KMLM live since
-   2020-12) to confirm the synth period is not the source of the Sharpe edge.
-2. **Sensitivity grid**: re-run iter 011 with KMLM swapped for DBMF or
-   `RSST_PROXY` to see if the MF sleeve effect generalizes vs a KMLM-specific
-   artifact.
-3. **Mandate §7 override draft**: prepare the mandate override request for
-   Plano C deployment of iter 011. Does NOT auto-deploy — requires signed
-   user override per CLAUDE.md mandate §1.
+Replace pure-US NTSX with intl variants. Candidate:
 
-### Deferred — international stack expansion
+1. **NTSX + NTSI + NTSE + GDE + KMLM** (5-asset capital-efficient global stack)
+   — NTSI is intl-developed 1.5× stacked, NTSE is EM 1.5× stacked. This is
+   the literal "global+factor" thesis. Citation: `[risk_parity, ch.5]` + WisdomTree
+   prospectus 2024. Test 35/15/10/20/20 starting weight + 4 sensitivity variants.
+2. **NTSX + GDE + RSSB + KMLM** — RSSB is "100% global stocks + 100% bonds"
+   stacked (broader than NTSX's US-only). Tests if global-equity stacking
+   beats US-only at the same leverage. `[ilmanen, ch.19]`.
+3. **NTSX + VXUS overlay + GDE + KMLM** — simpler: keep NTSX core, add ~25%
+   VXUS for explicit intl, drop GDE weight. Tests pure intl tilt without
+   adding extra leverage.
 
-Add NTSI / NTSE / RSSB to the iter 011 family for a "global capital-efficient
-stack" candidate. Worth testing only if the live-data validation above
-confirms the iter 011 edge holds. Otherwise it is premature complexity.
+### B. Factor tilts on the iter 011 base
+
+iter 011 has zero factor tilt. Test small-cap value + momentum overlays:
+
+4. **Iter 011 + AVUV/AVDV core** — replace 50% of NTSX's SPY exposure with
+   AVUV (US small-cap value) + AVDV (intl small-cap value) factor ETFs.
+   Synth proxies: VBRSIM (99y) + VSSSIM. Citation: `[stocks_on_the_move]`
+   + Asness-Frazzini-Pedersen 2014 size+value premium.
+5. **Iter 011 + UMD (Fama-French momentum) overlay** — 20% direct UMD
+   factor exposure as Sharpe enhancer. UMD daily 1926+ on disk now.
+   `[stocks_on_the_move]`.
+6. **NTSX + GDE + KMLM + AVUV + AVDV** — factor + capital-efficient hybrid;
+   tests if factor tilts add Sharpe edge atop the iter 011 family.
+
+### C. Live-data validation (deferred until A or B winner)
+
+Run only if a candidate from A/B beats iter 011 — then validate on
+post-2020 live KMLM, post-2018 live NTSX, post-live VT (when pulled).
+This is the deploy-readiness gate, not a hunt direction.
 
 ### Closed by iter 011
 
-- ~~NTSX + GDE + RSST static (RSST variant)~~ — superseded; static stack
-  family is now confirmed winner under the redefined mission. RSST swap is
-  a sensitivity question, not a fresh direction.
+- ~~NTSX + GDE + RSST static~~ — superseded by iter 011; sensitivity question.
+- ~~NTSX + GDE + KMLM 40/30/30 (user primary)~~ — same family as iter 011's
+  35/25/40 winner (passes too); not a fresh direction.
 
 ---
 

@@ -5,7 +5,14 @@
 # between sessions is studies/long_term_portfolio/BASE_MEMORY.md.
 #
 # The loop reads BASE_MEMORY.md frontmatter `status` field after each
-# iteration; halts when `status: winner` appears or MAX_ITER is reached.
+# iteration. Halt logic:
+#   1. status: hunting     → keep iterating up to MAX_ITER
+#   2. status: winner      → halt (legacy behavior; first-ever winner)
+#   3. beats_incumbent: true → halt (a NEW iter strictly beat the incumbent
+#                              winner per BASE_MEMORY's incumbent_winner_score
+#                              field — set by the iter prompt at STAGE 5)
+# Otherwise continue. This lets the loop hunt past iter 011 while still
+# halting promptly when a stronger candidate emerges.
 #
 # Usage:
 #   bash studies/long_term_portfolio/run_loop.sh                   # default 5 iterations
@@ -115,12 +122,21 @@ echo "" | tee -a "$RUN_LOG"
 
 check_memory_size
 
-# Check if already a winner
+# Check halt state. The legacy halt is `status: winner` (first-ever winner).
+# Post-iter-011, the loop runs in "hunting" mode with an incumbent winner
+# tracked in BASE_MEMORY frontmatter; halt only when a NEW iter sets
+# `beats_incumbent: true` (i.e., score > incumbent_winner_score OR
+# Sharpe edge ≥ +0.10 vs incumbent on ≥2 datasets — the iter prompt sets
+# this flag at STAGE 5).
 STATUS=$(read_memory_key "status")
+INCUMBENT_ITER=$(read_memory_key "incumbent_winner_iter")
 if [[ "$STATUS" == "winner" ]]; then
-    echo "=== BASE_MEMORY already has status: winner — loop stopped ===" | tee -a "$RUN_LOG"
+    echo "=== BASE_MEMORY status: winner — loop halted ===" | tee -a "$RUN_LOG"
     echo "=== inspect BASE_MEMORY.md + iterations/ for the winner details ===" | tee -a "$RUN_LOG"
     exit 0
+fi
+if [[ -n "$INCUMBENT_ITER" ]]; then
+    echo "=== Hunting past incumbent winner: $INCUMBENT_ITER ===" | tee -a "$RUN_LOG"
 fi
 
 # Dry run: print prompt and exit
@@ -176,12 +192,19 @@ EOF
 
     STATUS=$(read_memory_key "status")
     WINNERS=$(read_memory_key "winners_found")
-    echo "--- iteration $NEXT_N done | status=$STATUS winners=$WINNERS ---" | tee -a "$RUN_LOG"
+    BEATS=$(read_memory_key "beats_incumbent")
+    LATEST_SCORE=$(read_memory_key "latest_score")
+    echo "--- iteration $NEXT_N done | status=$STATUS winners=$WINNERS score=$LATEST_SCORE beats_incumbent=$BEATS ---" | tee -a "$RUN_LOG"
 
-    if [[ "$STATUS" == "winner" ]]; then
+    # Halt: first-ever winner (legacy) OR strict beat of incumbent winner.
+    if [[ "$STATUS" == "winner" || "$BEATS" == "true" ]]; then
         echo "" | tee -a "$RUN_LOG"
         echo "=================================================================" | tee -a "$RUN_LOG"
-        echo "=== 🏆 WINNER FOUND at iteration $NEXT_N ===" | tee -a "$RUN_LOG"
+        if [[ "$BEATS" == "true" ]]; then
+            echo "=== 🏆 NEW WINNER at iteration $NEXT_N — beats incumbent ===" | tee -a "$RUN_LOG"
+        else
+            echo "=== 🏆 WINNER FOUND at iteration $NEXT_N ===" | tee -a "$RUN_LOG"
+        fi
         echo "=== inspect BASE_MEMORY.md '## Winners found' section ===" | tee -a "$RUN_LOG"
         echo "=== iteration dir: $ITER_BASE_DIR/${NEXT_N}-* ===" | tee -a "$RUN_LOG"
         echo "=================================================================" | tee -a "$RUN_LOG"

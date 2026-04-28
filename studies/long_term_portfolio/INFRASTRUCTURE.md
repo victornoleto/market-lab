@@ -41,9 +41,25 @@ modules. Build new modules only when the mechanism is qualitatively new
 
 ## Loop-local helpers (this directory)
 
-- `scoring.py` — score rubric + tier classification
-  (BENCHMARKS = iter 009 HAA+Gold: edu S=1.120, vt S=1.061, ndx S=0.954)
-- `plot_helper.py` — equity-vs-benchmark plotting (mirrors global_factor_tilt_loop)
+- `scoring.py` — score rubric + tier classification. Mission shifted
+  2026-04-28 to "beat avg(SPY,VT)" gross-of-tax. BENCHMARKS dict now keyed
+  by `lh_56y` (preferred) with `educational` retained as deprecated alias.
+- `datasets.py` — central dataset registry with `load_prices(name)` for
+  `lh_56y` / `vt_real` / `ndx_real`. The lh_56y loader splices the KMLMSIM
+  column with the FF MoM proxy pre-1988 so KMLM-using strategies can run
+  on the full 56y window.
+- `ff_momentum_proxy.py` — pre-1988 KMLM proxy via Ken French daily
+  momentum factor (UMD + RF) from `data/ken_french/`. Caveat: UMD is
+  cross-sectional EQUITY momentum, not multi-asset trend; expect ~3× the
+  long-run KMLM Sharpe (overstates pre-1988 returns of any KMLM-using
+  strategy). Disclose in every iter's `final_report.md` "lh_56y caveats".
+- `rolling_windows.py` — `rolling_sharpe_at_windows()` and
+  `rolling_outperformance_pct()` over [3, 5, 10, 15, 20, 30] year windows
+  (auto-skips windows that don't fit dataset length).
+- `plot_helper.py` — produces TWO files per dataset:
+  `plot_<dataset>.png` (equity strategy + SPY + VT + NDX, with rolling 1y
+  Sharpe Δ sub-panels) and `plot_rolling_windows_<dataset>.png` (Sharpe
+  at multi-year windows + % windows strategy beats each benchmark).
 - `studies/global_factor_tilt_loop/cross_lib_validator.py` — 4-method metric parity
 - `studies/global_factor_tilt_loop/rescore_v2.py` — DSR per-iter convention rescoring
 

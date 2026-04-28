@@ -11,10 +11,19 @@ is apples-to-apples. Net-of-tax (Lei 14.754/2023, `_shared/tax_engine.py`)
 is reported separately in `final_report.md` as a deploy-readiness
 diagnostic — it does NOT change tier / winner status.
 
-Datasets (3, unchanged):
-- ``educational`` — VTSIM 56y synth (1970+)
-- ``vt_real``    — VTSIM proxy 17y (2008-06+, real VT pending)
-- ``ndx_real``   — QQQ Tiingo 16y (NDX-specific stretch test)
+Datasets:
+- ``lh_56y``     — VTSIM 56y synth (1970+); replaces the legacy ``educational``
+                   key. Benchmark Sharpe values were always computed on this
+                   56y window — the legacy iter 011 backtest sliced strategy
+                   returns to 1995-2026 (31y) due to KMLMSIM inception, which
+                   created an apples-to-oranges window mismatch. The new
+                   ``datasets.py`` splice (FF MoM proxy pre-1988) lets
+                   strategies actually run on the full 56y window.
+- ``educational`` — DEPRECATED alias for ``lh_56y`` (same Benchmark values).
+                   Kept so prior-iter results.json stay readable; new iters
+                   should use ``lh_56y``.
+- ``vt_real``    — VTSIM proxy 17y (2008-06+, real VT pending).
+- ``ndx_real``   — QQQ Tiingo 16y (NDX-specific stretch test).
 
 Citations
 ---------
@@ -62,13 +71,17 @@ class Benchmark:
 # ---------------------------------------------------------------------------
 
 
+_LH_56Y_BENCHMARKS = {
+    "vt":  Benchmark(sharpe=0.6626, cagr=0.0999, mdd=0.5835,
+                    label="VTSIM b&h 56y synth (gross)"),
+    "spy": Benchmark(sharpe=0.6800, cagr=0.1147, mdd=0.5514,
+                    label="SPYSIM b&h 40y synth (gross)"),
+}
+
+
 BENCHMARKS: dict[str, dict[str, Benchmark]] = {
-    "educational": {
-        "vt":  Benchmark(sharpe=0.6626, cagr=0.0999, mdd=0.5835,
-                        label="VTSIM b&h 56y synth (gross)"),
-        "spy": Benchmark(sharpe=0.6800, cagr=0.1147, mdd=0.5514,
-                        label="SPYSIM b&h 40y synth (gross)"),
-    },
+    "lh_56y": _LH_56Y_BENCHMARKS,
+    "educational": _LH_56Y_BENCHMARKS,  # deprecated alias for lh_56y
     "vt_real": {
         "vt":  Benchmark(sharpe=0.5132, cagr=0.0880, mdd=0.5021,
                         label="VTSIM proxy 17y (gross; VT live pending)"),
@@ -185,7 +198,8 @@ def tier_from_score(score: int, *, winner_conditions_met: bool) -> Tier:
 
 
 GATE_THRESHOLDS = {
-    "educational": 5,
+    "lh_56y": 5,
+    "educational": 5,  # deprecated alias for lh_56y
     "vt_real": 4,
     "ndx_real": 4,
 }
@@ -239,7 +253,7 @@ def score_strategy(
     conditions (see ``_check_winner_conditions``).
     """
     bm = benchmarks or primary_benchmarks()
-    datasets = ["educational", "vt_real", "ndx_real"]
+    datasets = list(metrics.keys())  # infer from caller; supports both lh_56y and legacy educational
 
     # --- 1. Sharpe edge (25 pts) ---------------------------------------
     datasets_beat_sharpe = sum(
@@ -387,8 +401,13 @@ def _check_winner_conditions(
     """Strict 5/5 winner conditions per WINNER_AND_RANKING.md."""
     if datasets_beat_sharpe < 2:
         return False
-    for ds, th in GATE_THRESHOLDS.items():
-        if gates[ds].n_passed < th:
+    # Iterate gates per dataset present in the caller's metrics, looking up
+    # threshold from GATE_THRESHOLDS (which has both lh_56y and educational).
+    for ds in metrics.keys():
+        threshold = GATE_THRESHOLDS.get(ds)
+        if threshold is None:
+            continue
+        if gates[ds].n_passed < threshold:
             return False
     if worst_p >= 0.05:
         return False
