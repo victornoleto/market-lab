@@ -9,7 +9,7 @@ import pandas as pd
 
 MODULE_PATH = (
     Path(__file__).parents[1]
-    / "studies/bestfolio_hunt_loop/iterations/001-2026-04-28-0116-baa-g12-balanced/baa_g12.py"
+    / "studies/long_term_portfolio/iterations/001-2026-04-28-0116-baa-g12-balanced/baa_g12.py"
 )
 spec = importlib.util.spec_from_file_location("baa_g12_iter001", MODULE_PATH)
 baa = importlib.util.module_from_spec(spec)

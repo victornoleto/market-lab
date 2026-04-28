@@ -83,6 +83,9 @@ packages = ["src/ai_trade", "ops"]
 # (scripts/ is a directory of CLI entrypoints, not a distributed package).
 # src/ai_trade is importable as `ai_trade` via `pip install -e .` (hatch layout).
 pythonpath = ["."]
+# Skip archived test files (cover code that no longer exists in studies/)
+# and archived studies (read-only historical artifacts).
+norecursedirs = ["tests/_archive", "studies/_archive", "app/backend"]
 
 [tool.ruff]
 line-length = 100
