@@ -804,3 +804,126 @@ Selected: `factor_lite_30253510` = 30% NTSX + 25% GDE + 35% KMLM + 10% VBRSIM.
 | ndx_real  | 1.075 | 12.06% | 18.00% | 7/7 | 6.24e-4 |
 
 Net ≈ gross (static stack, year-end DARF, daily-Sharpe tax-neutral).
+
+---
+
+## DE-015 — Constant-weight international equity tilt (VXUSSIM) on iter 011 base
+
+**Origin**: long_term_portfolio iter 014 — intl-equity-tilt-on-iter011
+**Score**: 93/100 WINNER (tier; vs avg(SPY,VT) all 5 strict conditions met;
+mechanically advanced iter 011 incumbent on score gate but FAILS the
+substantive Sharpe-edge gate on the live windows)
+**Date**: 2026-04-28
+
+### What was tested
+
+- Iter 011's NTSX + GDE + KMLM static capital-efficient stack architecture
+  retained, with `VXUSSIM` (Total International ex-US Stock Market,
+  testfolio synth analog of Vanguard VXUS — 1× notional, zero embedded
+  Treasury) added as a 4th sleeve at 4 intensity levels.
+- Tested 4 pre-committed weight grids:
+  - `intl_lite_35253010`     = 35% NTSX / 10% VXUSSIM / 25% GDE / 30% KMLM
+  - `intl_moderate_30202525` = 30% NTSX / 20% VXUSSIM / 25% GDE / 25% KMLM
+  - `intl_balanced_25252525` = 25% NTSX / 25% VXUSSIM / 25% GDE / 25% KMLM
+  - `intl_heavy_25302025`    = 25% NTSX / 30% VXUSSIM / 20% GDE / 25% KMLM
+- Selected config: `intl_lite_35253010` (10% VXUSSIM), by max
+  mean(gross_Sharpe / avg(SPY,VT)_Sharpe) across 3 datasets.
+- Datasets: lh_56y (1986-2026, 40y eff. SPYSIM-bounded), vt_real (17y),
+  ndx_real (16y).
+- Rationale: VXUSSIM is **1× notional** with **zero Treasury** —
+  qualitatively different from iter 012's RSSB (DE-013, 200% notional with
+  embedded Treasury overlap with NTSX's IEF) AND from iter 013's VBRSIM
+  (DE-014, US factor sleeve subject to post-2008 "death of value"). VXUSSIM
+  isolates pure broad intl-equity diversification.
+- Sources: `[risk_parity, ch.5, p.10]` (cap-efficient core retained);
+  `[ilmanen, ch.19]` (global equity diversification rationale);
+  `[stocks_on_the_move, p.21-30]` (KMLM crisis-alpha retained).
+
+### Why it fails to substantively advance the incumbent
+
+The strategy clears all 5 strict winner conditions vs the loop's primary
+benchmark avg(SPY,VT) — beats it +0.384/+0.178/+0.129 Sharpe across the
+3 datasets, passes 6/7/7/7 gates, DSR p worst 3.66e-3, robustness 5/5
+(52/52 rolling-5y windows positive). Score 93/100 = tier WINNER per
+scoring rubric. Score advances iter 011's 91 → mechanically takes
+incumbent slot per `BASE_MEMORY.md` rule (score-OR clause).
+
+**But it LOSES Sharpe to iter 011 on the deploy-relevant live windows**:
+
+| dataset | iter 014 selected S | iter 011 incumbent S | Δ vs iter 011 |
+|---|---:|---:|---:|
+| lh_56y    | 1.055 | 1.046 | +0.009 (within noise) |
+| vt_real   | 0.885 | 0.960 | **−0.075** |
+| ndx_real  | 1.052 | 1.104 | **−0.052** |
+
+**0/3 datasets clear the +0.10 substantive incumbent edge gate.** The
+score advance 93 > 91 is partially a benchmark-migration artifact — iter
+011 was originally scored on the legacy `educational` window, iter 014 on
+the new lh_56y framework with different per-criterion scaling. Within
+the new framework, iter 014 is mildly stronger than iter 013 (gates
+23 vs 21) but mildly weaker than iter 011 on raw Sharpe.
+
+**Cross-config monotonic finding (the key structural insight)**:
+
+| config | VXUS % | lh_56y S | Δ iter011 | vt_real S | Δ iter011 | ndx_real S | Δ iter011 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `intl_lite_35253010`     | 10% | 1.055 | +0.009 | 0.885 | −0.075 | 1.052 | −0.052 |
+| `intl_moderate_30202525` | 20% | 1.004 | −0.042 | 0.811 | −0.149 | 0.985 | −0.119 |
+| `intl_balanced_25252525` | 25% | 0.995 | −0.051 | 0.781 | −0.179 | 0.953 | −0.151 |
+| `intl_heavy_25302025`    | 30% | 0.989 | −0.057 | 0.744 | −0.216 | 0.917 | −0.187 |
+
+Across the entire grid, intl-equity tilt **monotonically REDUCES Sharpe
+on ALL 3 datasets** as VXUSSIM weight rises. This is a stronger structural
+signal than iter 013 (where factor tilt monotonically helped lh_56y and
+hurt live windows). intl-equity tilt is even less compatible with iter
+011's architecture than US factor tilt was.
+
+### Structural insight (why it's a dead-end)
+
+1. **iter 011 is the architectural ceiling for constant-weight stacks**:
+   012 (RSSB) lost on all 3 datasets, 013 (VBRSIM) lost on 2 of 3, and
+   014 (VXUSSIM) loses on 2 of 3 (with the lh_56y "win" inside noise).
+   3 consecutive sleeve-injection iters confirm: any sleeve added to
+   iter 011's NTSX+GDE+KMLM stack at constant weight DRAGS the deploy-
+   relevant 2010-2026 windows.
+2. **Treasury overlap was NOT the dominant iter 012 failure mode**:
+   stripping RSSB's Treasury overlay (going to 1× VXUSSIM with zero
+   Treasury) helps modestly on lh_56y (1.055 vs 1.011) but does NOT
+   recover the iter 011 vt_real / ndx_real Sharpe. The intl-equity drag
+   is an independent failure axis.
+3. **Factor premium and intl-equity premium are BOTH dormant in 2010-2026**:
+   the post-GFC US-large-cap regime is so dominant that any non-US,
+   non-cap-weighted equity sleeve drags Sharpe.
+4. **The score-vs-substance gap is real**: iter 014 scores 93 because
+   the new lh_56y avg(SPY,VT) baseline is low (Sharpe 0.671), making
+   it easy to beat by +0.10. But the deploy-relevant comparison is vs
+   iter 011 (Sharpe 0.96-1.10 on live windows), and iter 014 fails that.
+
+### What CAN be tried instead
+
+- **B.6 — Regime-conditional factor tilt** (highest priority): VBRSIM
+  weight = f(value spread or factor momentum signal). Pre-commit ≤ 3
+  configs. The factor sleeve only fires when the premium is "live"; KMLM/
+  GDE cover otherwise. `[advances_fin_ml, p.208-211]` discipline + `[risk_parity, ch.2]`.
+- **A.1 — NTSI / NTSE proxy synthesis** (deferred dependency): build
+  testfolio-style synth for NTSI (1.5× intl developed) and NTSE (1.5× EM)
+  so the literal user thesis (5-asset NTSX + NTSI + NTSE + GDE + KMLM
+  global stack) becomes testable. Needed for direction A.1.
+- **C — Replace iter 011 sleeves, not augment** (architectural pivot):
+  swap NTSX out for NTSI entirely; test whether the leverage architecture
+  transports across geographies. Structurally different from iter 012/013/014
+  (which all augment iter 011 with a new sleeve).
+- Antonacci GEM-style cross-class top-K (iter 079 archive style) or
+  vol-managed 60/40 (iter 006 archive) as completely different mechanism.
+
+### Results summary
+
+Selected: `intl_lite_35253010` = 35% NTSX + 10% VXUSSIM + 25% GDE + 30% KMLM.
+
+| dataset | gross Sharpe | gross CAGR | gross MDD | Gates | DSR p |
+|---|---:|---:|---:|---:|---:|
+| lh_56y    | 1.055 | 11.78% | 29.52% | 6/7 | 7.74e-12 |
+| vt_real   | 0.885 | 11.14% | 27.99% | 7/7 | 3.66e-3 |
+| ndx_real  | 1.052 | 12.11% | 18.40% | 7/7 | 8.53e-4 |
+
+Net ≈ gross (static stack, year-end DARF, daily-Sharpe tax-neutral).

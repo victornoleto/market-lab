@@ -1,15 +1,15 @@
 ---
 mission: "beat avg(SPY 1× b&h, VT 1× b&h) gross-of-tax Sharpe by ≥0.10 on ≥2 of 3 datasets"
-total_iterations: 13
-winners_found: 1
+total_iterations: 14
+winners_found: 2
 status: hunting
-latest_iteration: "013-2026-04-28-1814-factor-tilt-on-iter011"
-latest_score: 91
-beats_incumbent: false
-cumulative_n_trials: 48
-incumbent_winner_iter: "011-2026-04-28-1537-ntsx-gde-kmlm-static"
-incumbent_winner_score: 91
-note: "Renamed from bestfolio_hunt_loop on 2026-04-28. Mission redefined to 'beat avg(SPY,VT)' (gross-of-tax), scoring.py reworked accordingly. WINNER 2026-04-28: iter 011 NTSX+GDE+KMLM 35/25/40 static — 91/100, 5/5 strict, 3/3 +0.10 Sharpe edge. POST-WINNER OVERHAUL 2026-04-28: dataset registry centralized (datasets.py), educational dataset renamed lh_56y with KMLMSIM splice via FF MoM proxy pre-1988 (overstates pre-88 KMLM ~3×), plot_helper.py rewritten. Hunt resumes; halt only when an iter sets beats_incumbent=true. ITER 012 (RSSB injection) STRONG 88/100 but loses vs iter 011 on all 3 datasets — DE-013 (Treasury overlap). ITER 013 (factor tilt VBRSIM 10% on iter 011) — tier WINNER 91/100 5/5 conditions vs avg(SPY,VT), but TIES iter 011 score (91=91, not >) and edges only +0.080 on lh_56y while LOSING on vt (−0.037) / ndx (−0.029) — beats_incumbent=false; DE-014 added. Cross-config monotonic finding: factor tilt helps lh_56y (+0.060→+0.085 over VBRSIM 10%→30%) but hurts vt/ndx (−0.04→−0.13)."
+latest_iteration: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
+latest_score: 93
+beats_incumbent: true
+cumulative_n_trials: 52
+incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
+incumbent_winner_score: 93
+note: "Renamed from bestfolio_hunt_loop on 2026-04-28. Mission redefined to 'beat avg(SPY,VT)' (gross-of-tax), scoring.py reworked accordingly. WINNER 2026-04-28: iter 011 NTSX+GDE+KMLM 35/25/40 static — 91/100. POST-WINNER OVERHAUL 2026-04-28: datasets.py + lh_56y splice + plot_helper.py rewritten. ITER 012 (RSSB) DE-013 (Treasury overlap). ITER 013 (VBRSIM US factor) DE-014 (death-of-value). ITER 014 (VXUSSIM intl-eq tilt) — tier WINNER 93/100 5/5 conds vs avg(SPY,VT), score 93 > 91 → mechanically beats_incumbent=true per rule, but iter 014 LOSES Sharpe to iter 011 on 2/3 datasets (lh_56y +0.009, vt_real −0.075, ndx_real −0.052). Score advance is partly benchmark-migration artifact (iter 011 scored on legacy `educational`, iter 014 on new lh_56y). Cross-config monotonic finding (3rd time confirmed): constant-weight sleeve injection on iter 011 is a CLOSED axis (012/013/014 all subordinate). Next direction: regime-conditional factor (B.6) or replace-not-augment (A.1 NTSI/NTSE)."
 ---
 
 # Long-Term Portfolio Loop — BASE MEMORY
@@ -38,10 +38,20 @@ floor / MDD ceiling.
 **Winner threshold (Sharpe edge gate)**: candidate must reach Sharpe
 ≥ **0.77 / 0.81 / 1.02** on ≥ 2 of 3 datasets (avg + 0.10).
 
-**Beat-incumbent threshold (additional gate after 2026-04-28)**: a NEW iter
-becomes the incumbent winner only if `total_score > 91` (iter 011's score)
-OR Sharpe edge ≥ +0.10 vs iter 011 on ≥ 2 of 3 datasets — i.e., lh_56y
-≥ 1.121, vt_real ≥ 1.060, ndx_real ≥ 1.204.
+**Beat-incumbent threshold (current incumbent: iter 014, score 93)**: a NEW iter
+becomes the incumbent winner only if `total_score > 93` (iter 014's score)
+OR Sharpe edge ≥ +0.10 vs iter 014 on ≥ 2 of 3 datasets — i.e., lh_56y
+≥ 1.155, vt_real ≥ 0.985, ndx_real ≥ 1.152.
+
+**Caveat on iter 014 incumbency** (read every iter): iter 014 advanced the
+incumbent on the score gate (93 > 91) but FAILS the Sharpe-edge gate vs
+iter 011 (loses Sharpe on vt_real and ndx_real, ties on lh_56y). The score
+advance is partially a benchmark-migration artifact (iter 011 was scored on
+legacy `educational` window, iter 014 on the new lh_56y framework). Future
+hunting should treat iter 011 (NTSX+GDE+KMLM 35/25/40) as the substantive
+benchmark for live windows even though iter 014 holds the rule-defined
+incumbent slot. **For deploy-readiness conversations, iter 011 is still
+the architectural reference.**
 
 **Context from related research (read alongside)**:
 - `_archive/strategy_hunt_loop/FINAL_REPORT.md` — 78 iters, 1 strict
@@ -71,9 +81,10 @@ requiring mandate §7 override before deployment.
 
 ## Incumbent winner (the bar to beat)
 
-| iter | slug | score | edu/lh_56y S/CAGR/MDD | vt S/CAGR/MDD | ndx S/CAGR/MDD | note |
+| iter | slug | score | lh_56y S/CAGR/MDD | vt_real S/CAGR/MDD | ndx_real S/CAGR/MDD | note |
 |---|---|---|---|---|---|---|
-| **011** | ntsx-gde-kmlm-static | **91/100 🏆** | 1.021 / 11.58% / 26.04% (1995-2026 31y) | 0.960 / 10.95% / 21.22% | 1.104 / 11.64% / 14.12% | Static 35% NTSX + 25% GDE + 40% KMLM stack. All 5 strict conditions met. 3/3 datasets beat avg(SPY,VT) +0.10 Sharpe edge (edu +0.350, vt +0.253, ndx +0.180). Family-level robust (all 4 weight variants pass). Caveats: tested on legacy `educational` window (1995-2026, 31y) NOT lh_56y (1970-2026); G1 PBO fails on real-data slots (within-family weight noise); KMLMSIM synth pre-2020. **Pending retro re-backtest on lh_56y** (FF MoM proxy 1970-87, expected to overstate Sharpe slightly). |
+| **014** | intl-equity-tilt-on-iter011 | **93/100 🏆** | 1.055 / 11.78% / 29.52% (1986-2026 40y eff) | 0.885 / 11.14% / 27.99% | 1.052 / 12.11% / 18.40% | Static 35% NTSX + 10% VXUSSIM + 25% GDE + 30% KMLM. All 5 strict conds met vs avg(SPY,VT) (3/3 +0.10 edges). Score 93 > iter 011's 91 → mechanical beats_incumbent=true. **CAVEAT**: substantively LOSES Sharpe to iter 011 on 2/3 datasets (lh_56y +0.009, vt_real −0.075, ndx_real −0.052). Score advance partially due to benchmark migration (iter 011 was on legacy `educational`). For deploy-readiness conversations, iter 011 (NTSX+GDE+KMLM 35/25/40) is the substantive architectural reference. iter 014 differs from iter 011 only by a 10% VXUSSIM swap (35/10/25/30 vs 35/0/25/40) — modest diversification benefit on long-history balanced against modest live-window drag. |
+| **011** | ntsx-gde-kmlm-static | 91/100 (legacy benchmarks) | 1.046 (lh_56y retro) / 11.58% / 26.04% (1995-2026 31y legacy) | 0.960 / 10.95% / 21.22% | 1.104 / 11.64% / 14.12% | (PRIOR INCUMBENT 2026-04-28 → demoted to substantive reference 2026-04-28). Static 35% NTSX + 25% GDE + 40% KMLM stack. All 5 strict conditions met under legacy edu benchmarks. **Wins Sharpe vs iter 014 on vt_real and ndx_real**; tied on lh_56y. The architectural ceiling for constant-weight stacks; iter 014's incumbency is rule-mechanical (score advance), not substantive (Sharpe regression on live windows). |
 
 ---
 
@@ -87,9 +98,10 @@ vs KMLM's long-run ~0.5; pre-1988 KMLM-heavy returns are ~3× overstated).
 
 | rank | iter | slug | score | tier | legacy edu Sharpe | **lh_56y gross Sharpe** | lh_56y window |
 |---|---|---|---|---|---|---|---|
-| 1 | **011** | **ntsx-gde-kmlm-static** | **91 🏆** | **WINNER** | 1.021 (gross) | **1.046** | 1986-2026 (40y) |
-| 2 | **013** | factor-tilt-on-iter011 | **91** | WINNER (tier) ⚠️ | n/a | **1.126** ⭐ | 1986-2026 (40y eff) |
-| 3 | **012** | ntsx-gde-rssb-kmlm-global-stack | **88** | STRONG | 1.011 (gross) | 1.011 | 1986-2026 (40y eff) |
+| 1 | **014** | **intl-equity-tilt-on-iter011** | **93 🏆** | **WINNER** (current incumbent ⚠️) | n/a | **1.055** | 1986-2026 (40y eff) |
+| 2 | **011** | ntsx-gde-kmlm-static | **91** | WINNER (substantive ref) | 1.021 (gross) | 1.046 | 1986-2026 (40y) |
+| 3 | **013** | factor-tilt-on-iter011 | **91** | WINNER (tier) ⚠️ | n/a | **1.126** ⭐ | 1986-2026 (40y eff) |
+| 4 | **012** | ntsx-gde-rssb-kmlm-global-stack | **88** | STRONG | 1.011 (gross) | 1.011 | 1986-2026 (40y eff) |
 | — | 007 | haa-defensive-kmlm-cash | 75 | STRONG | 0.983 (net) | **1.150** ⭐ | 1994-2026 (32y) |
 | — | 008 | haa-dual-canary | 73 | PROMISING | 0.983 (net) | 1.120 | 1994-2026 (32y) |
 | — | 009 | haa-gayed-trend-canary | 73 | PROMISING | 0.983 (net) | 1.120 | 1994-2026 (32y) |
@@ -117,15 +129,20 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 
 ## Iteration log (newest first)
 
-### 013 — 2026-04-28 — factor-tilt-on-iter011 (WINNER tier, 91/100, beats_incumbent=false)
+### 014 — 2026-04-28 — intl-equity-tilt-on-iter011 (WINNER, 93/100, beats_incumbent=true mechanically — but iter 011 wins Sharpe on 2/3 live windows)
 
-- Hypothesis: Inject US small-cap value factor (`VBRSIM` = AVUV synth proxy) into iter 011's NTSX+GDE+KMLM stack at 4 intensity levels (10/20/25/30%). Tests Direction B from BASE_MEMORY (factor tilts on iter 011 base) — iter 011 has zero factor exposure, and the user's literature thesis explicitly includes AVUV/AVDE/SPMO factor ETFs. VBRSIM is 1× notional and zero Treasury → qualitatively different mechanism from the iter 012 RSSB failure mode.
-- Citations: `[risk_parity, ch.5, p.10]` (cap-efficient core); `[risk_parity, ch.2, p.37-41]` (factor premium framework); `[stocks_on_the_move, ch.6, p.21-30]` (cross-sectional ranking edges); gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
-- Scope: 4 pre-committed configs (`factor_lite_30253510`, `factor_moderate_25253020`, `factor_balanced_25202530`, `factor_heavy_20203030`); selected `factor_lite_30253510` (10% VBRSIM) by max mean(gross_Sharpe / avg(SPY,VT)_Sharpe). Datasets: lh_56y / vt_real / ndx_real (1986-2026 / 17y / 16y eff windows).
-- Result: gross Sharpe **1.126 / 0.923 / 1.075** (edges vs avg(SPY,VT) **+0.454 / +0.216 / +0.152** — 3/3 datasets clear +0.10); gates **5/7 / 7/7 / 7/7**; DSR p **2.86e-13 / 2.29e-3 / 6.24e-4**. **All 5 strict winner conditions met vs avg(SPY,VT) → tier WINNER.** But Sharpe vs **iter 011 incumbent**: **+0.080 / −0.037 / −0.029** (BEATS only on lh_56y, LOSES on both live windows). Score 91 = score 91 of iter 011 (NOT greater). 0/3 datasets clear +0.10 incumbent edge. **beats_incumbent=false.**
-- Net (informational): Sharpe **1.126 / 0.923 / 1.075** ≈ gross (static stack, year-end DARF, daily-Sharpe tax-neutral).
-- Score breakdown: Sharpe edge 25/25 (3/3 +0.10 vs avg); gates 21/25 (lh_56y G3 WF fails — 1986-2026 long-history has more drawdown windows in GFC/2022); DSR 15/15; CAGR floor 10/15 (ndx_real 12.06% < 13.58% = 0.8 × bench); MDD ceiling 15/15; robustness 5/5 (52/52 rolling-5y Sharpe positive, min 0.43 max 2.13).
-- Lesson: factor tilt monotonically helps lh_56y (+0.060→+0.085 across VBR 10%→30%) but monotonically hurts vt_real (−0.04→−0.14) and ndx_real (−0.03→−0.13). The size+value premium IS alive on long-history but post-2008 windows are in the well-documented "death of value" regime. **Constant-weight factor tilt is structurally subordinate to iter 011 on the deploy-relevant live windows.** Closing direction B (constant-weight factor) → DE-014. Future factor work needs a regime filter (factor momentum / value spread) — naive constant-weight VBRSIM is not the answer.
+- Hypothesis: Inject `VXUSSIM` (Total International ex-US Stock Market, testfolio synth analog of Vanguard VXUS, 1× notional, zero Treasury) into iter 011's NTSX+GDE+KMLM stack at 4 weight intensities (10/20/25/30%). Tests Direction A.3 from BASE_MEMORY — the residual clean axis after iter 012 closed RSSB-style intl exposure (Treasury overlap, DE-013) and iter 013 closed US factor tilt (post-2008 "death of value", DE-014). VXUSSIM isolates pure intl-equity diversification, sidestepping both prior failure modes.
+- Citations: `[risk_parity, ch.5, p.10]` (Carlson cap-efficient stacking, NTSX/GDE retained); `[ilmanen, ch.19]` (global equity diversification rationale); `[stocks_on_the_move, p.21-30]` (KMLM crisis-alpha retained); gates `[advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34]`.
+- Scope: 4 pre-committed configs (`intl_lite_35253010`, `intl_moderate_30202525`, `intl_balanced_25252525`, `intl_heavy_25302025`); selected `intl_lite_35253010` (10% VXUSSIM) by max mean(gross_Sharpe / avg(SPY,VT)_Sharpe). Datasets: lh_56y / vt_real / ndx_real.
+- Result: gross Sharpe **1.055 / 0.885 / 1.052** (edges vs avg(SPY,VT) **+0.384 / +0.178 / +0.129** — 3/3 datasets clear +0.10); gates **6/7 / 7/7 / 7/7**; DSR p **7.74e-12 / 3.66e-3 / 8.53e-4**. **All 5 strict winner conditions met → tier WINNER, score 93/100.** **Score 93 > iter 011's 91 → beats_incumbent mechanically true** per rule (score-OR clause). **BUT vs iter 011 substantively**: Sharpe Δ **+0.009 / −0.075 / −0.052** (LOSES on vt_real and ndx_real, ties on lh_56y). 0/3 datasets clear +0.10 vs iter 011. Score advance is partly benchmark-migration artifact (iter 011 scored on legacy `educational`). Per rule, iter 014 takes incumbent slot; report flags substantive caveat.
+- Net (informational): Sharpe **1.055 / 0.885 / 1.052** ≈ gross (static stack, year-end DARF, daily-Sharpe tax-neutral).
+- Score breakdown: Sharpe edge 25/25 (3/3 +0.10 vs avg); gates 23/25 (lh_56y G3 WF fails — one window MDD 29.5% > 25%); DSR 15/15; CAGR floor 10/15 (ndx_real 12.11% < 13.58% = 0.8 × bench); MDD ceiling 15/15; robustness 5/5 (52/52 rolling-5y windows positive, min 0.33 max 1.94).
+- Lesson: VXUSSIM 10% → 30% Sharpe **MONOTONICALLY DECREASES on ALL 3 datasets** (including lh_56y where iter 013's factor tilt monotonically helped). Stronger structural signal than iter 013 — intl-equity tilt is even less compatible with iter 011's architecture than US factor tilt was. **3 sleeve-injection iters in a row (012/013/014) confirm: constant-weight sleeve injection on iter 011 is a CLOSED axis.** Closing direction A.3 → DE-015. Next iter must pivot: regime-conditional factor (B.6) OR replace-not-augment (A.1 NTSI/NTSE proxy synthesis required first) OR fundamentally different mechanism (Antonacci GEM, vol-managed 60/40 from archive).
+
+### 013 — 2026-04-28 — factor-tilt-on-iter011 (WINNER tier, 91/100, DE-014)
+
+- 4 configs VBRSIM (US small-cap value, 10/20/25/30%) on iter 011 base; selected `factor_lite_30253510` (10%). Gross S 1.126/0.923/1.075 — 5/5 strict conds vs avg(SPY,VT), but Sharpe vs iter 011 +0.080/−0.037/−0.029 (only beats lh_56y, score TIES at 91). `[risk_parity, ch.2, p.37-41]`
+- Lesson: factor tilt monotonically helps lh_56y (+0.06→+0.085) but hurts vt/ndx (−0.04→−0.14) — post-2008 "death of value" regime. Closing constant-weight factor; needs regime filter.
 
 ### 012 — 2026-04-28 — ntsx-gde-rssb-kmlm-global-stack (STRONG, 88/100, DE-013)
 
@@ -208,11 +225,15 @@ Replace pure-US NTSX with intl variants. Candidate:
    regresses Sharpe vs iter 011 across all 3 datasets (−0.030 / −0.109 / −0.083).
    RSSB's Treasury overlay overlaps NTSX's IEF exposure; intl-equity sleeve dragged
    in 2010-2026 regime. STRONG vs avg(SPY,VT) but does not advance incumbent.
-3. **NTSX + VXUS overlay + GDE + KMLM** — simpler: keep NTSX core, add ~25%
-   VXUS for explicit intl, drop GDE weight. Tests pure intl tilt without
-   adding extra leverage. **Now higher priority** after iter 012 DE-013 — VXUS
-   is 1× notional (no Treasury duplication issue) and isolates the intl-equity
-   tilt from RSSB's Treasury overlap.
+3. ~~**NTSX + VXUS overlay + GDE + KMLM**~~ — **CLOSED iter 014 (DE-015)**:
+   VXUSSIM 10/20/25/30% sweep on iter 011 base → tier WINNER 93/100 vs
+   avg(SPY,VT) (5/5 strict conds) and mechanically takes incumbent (score
+   93 > 91). BUT cross-config monotonic finding: Sharpe **decreases on
+   ALL 3 datasets** as VXUSSIM rises 10%→30% (lh_56y 1.055→0.989,
+   vt_real 0.885→0.744, ndx_real 1.052→0.917). **Loses Sharpe to iter
+   011 on vt_real and ndx_real**, ties on lh_56y. Cleaner failure
+   pattern than iter 012 (RSSB) — confirms intl-equity drag in
+   2010-2026 is real and independent of Treasury overlap.
 
 ### B. Factor tilts on the iter 011 base — partially CLOSED
 
@@ -321,6 +342,19 @@ full text in `DEAD_ENDS.md`.
     regime makes constant-weight factor tilt structurally subordinate
     to iter 011 on deploy-relevant windows. `[risk_parity, ch.2, p.37-41]`,
     `[stocks_on_the_move, ch.6, p.21-30]`
+15. **Constant-weight intl-equity tilt on iter 011 base (NTSX + VXUSSIM +
+    GDE + KMLM, VXUSSIM 10/20/25/30%)**: selected `intl_lite_35253010`
+    (10% VXUSSIM) hit tier WINNER 93/100 vs avg(SPY,VT) — all 5 strict
+    conditions met, 3/3 +0.10 edge vs passive baseline; score 93 > 91 →
+    mechanically advances iter 011 incumbent. BUT cross-config monotonic
+    finding: Sharpe DECREASES on **all 3 datasets** as VXUSSIM rises 10%
+    → 30% (lh_56y −0.066, vt_real −0.141, ndx_real −0.135). Substantively
+    LOSES Sharpe to iter 011 on vt_real (−0.075) and ndx_real (−0.052),
+    ties on lh_56y (+0.009). 3rd consecutive sleeve-injection failure
+    (012, 013, 014) confirms iter 011 is the architectural ceiling for
+    constant-weight stacks; next research must pivot to regime-conditional
+    weighting OR architectural replacement (NTSI/NTSE proxy synthesis).
+    `[risk_parity, ch.5, p.10]`, `[ilmanen, ch.19]`, `[stocks_on_the_move, p.21-30]`
 
 ---
 
