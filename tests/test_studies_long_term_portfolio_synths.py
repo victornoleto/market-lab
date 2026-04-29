@@ -41,3 +41,54 @@ def test_ntsd_synth_inception_window():
     assert s.index[0].year <= 1987
     assert s.index[-1].year >= 2025
     assert len(s) > 9000
+
+
+def test_avuv_synth_formula():
+    """AVUV = VBRSIM + (75bps/y / 252) per day."""
+    from studies.long_term_portfolio.synths import factor_tilt_synth_returns
+
+    vbr = pd.Series([0.01, 0.0, -0.005], index=pd.date_range("2024-01-02", periods=3, freq="B"))
+    result = factor_tilt_synth_returns(vbr, tilt_premium_annual=0.0075)
+
+    expected_day1 = 0.01 + 0.0075 / 252
+    assert abs(result.iloc[0] - expected_day1) < 1e-8
+
+
+def test_avdv_synth_formula():
+    """AVDV = VSSSIM + (100bps/y / 252)."""
+    from studies.long_term_portfolio.synths import factor_tilt_synth_returns
+
+    vss = pd.Series([0.01], index=pd.date_range("2024-01-02", periods=1, freq="B"))
+    result = factor_tilt_synth_returns(vss, tilt_premium_annual=0.0100)
+
+    expected = 0.01 + 0.0100 / 252
+    assert abs(result.iloc[0] - expected) < 1e-8
+
+
+def test_avem_synth_formula():
+    """AVEM = VWOSIM + (125bps/y / 252)."""
+    from studies.long_term_portfolio.synths import factor_tilt_synth_returns
+
+    vwo = pd.Series([0.01], index=pd.date_range("2024-01-02", periods=1, freq="B"))
+    result = factor_tilt_synth_returns(vwo, tilt_premium_annual=0.0125)
+
+    expected = 0.01 + 0.0125 / 252
+    assert abs(result.iloc[0] - expected) < 1e-8
+
+
+def test_avuv_synth_from_cache():
+    """AVUV synth from VBRSIM cache: 1926+ window."""
+    from studies.long_term_portfolio.synths import avuv_synth_returns_from_cache
+
+    s = avuv_synth_returns_from_cache()
+    assert s.index[0].year <= 1927
+    assert len(s) > 25000
+
+
+def test_avem_synth_from_cache_window():
+    """AVEM synth from VWOSIM cache: 1994+ window (32y bottleneck)."""
+    from studies.long_term_portfolio.synths import avem_synth_returns_from_cache
+
+    s = avem_synth_returns_from_cache()
+    assert s.index[0].year >= 1994
+    assert s.index[0].year <= 1995

@@ -46,3 +46,44 @@ def ntsd_synth_returns_from_cache() -> pd.Series:
     spy = load_testfolio_series("SPYSIM").pct_change().dropna()
     vea = load_testfolio_series("VEASIM").pct_change().dropna()
     return ntsd_synth_returns(spy, vea)
+
+
+def factor_tilt_synth_returns(
+    proxy_returns: pd.Series,
+    tilt_premium_annual: float,
+) -> pd.Series:
+    """Avantis-style factor synth: proxy returns + annual tilt premium.
+
+    INCOMPLETE: VBRSIM/VSSSIM/VWOSIM are broad index proxies; Avantis
+    AVUV/AVDV/AVEM concentrate SCV+profitability+value tilts. Real Avantis
+    premium may be larger or smaller than the literature midpoint.
+
+    Citations: [risk_parity, ch.2, p.37-41] Fama-French SCV;
+    [ilmanen_expected_returns, ch.19] intl/EM factor diversification;
+    [advances_fin_ml, p.31-34] factor framework.
+
+    Args:
+        proxy_returns: VBRSIM/VSSSIM/VWOSIM daily returns.
+        tilt_premium_annual: annualized tilt premium added (decimal).
+            Spec midpoints: 0.0075 (AVUV), 0.0100 (AVDV), 0.0125 (AVEM).
+    """
+    daily_premium = _annual_drag_to_daily(tilt_premium_annual)
+    return proxy_returns + daily_premium
+
+
+def avuv_synth_returns_from_cache() -> pd.Series:
+    """AVUV synth: VBRSIM + 75bps/y tilt premium."""
+    vbr = load_testfolio_series("VBRSIM").pct_change().dropna()
+    return factor_tilt_synth_returns(vbr, tilt_premium_annual=0.0075)
+
+
+def avdv_synth_returns_from_cache() -> pd.Series:
+    """AVDV synth: VSSSIM + 100bps/y tilt premium."""
+    vss = load_testfolio_series("VSSSIM").pct_change().dropna()
+    return factor_tilt_synth_returns(vss, tilt_premium_annual=0.0100)
+
+
+def avem_synth_returns_from_cache() -> pd.Series:
+    """AVEM synth: VWOSIM + 125bps/y tilt premium. INCOMPLETE - VWOSIM 1994+ bottleneck."""
+    vwo = load_testfolio_series("VWOSIM").pct_change().dropna()
+    return factor_tilt_synth_returns(vwo, tilt_premium_annual=0.0125)
