@@ -1,13 +1,13 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 27
+total_iterations: 28
 winners_found: 4
 status: hunting
-latest_iteration: "027-2026-04-29-NTSD-swap"
-latest_score: 90  # WINNER NEW; KILL #1 and KILL #2 both fired (sleeve closed)
+latest_iteration: "028-2026-04-29-AVUV-add"
+latest_score: 88  # STRONG NEW; KILL #2 fired, KILL #1 narrowly survived (1/3)
 beats_incumbent: false
-cumulative_n_trials: 98  # +4 (023) +3 (024) +4 (025) +0 (026 not run) +4 (027) = 98
+cumulative_n_trials: 102  # +4 (023) +3 (024) +4 (025) +0 (026) +4 (027) +4 (028) = 102
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -155,6 +155,16 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 028 — 2026-04-29 — AVUV-add (STRONG NEW 88 — KILL #2 fired, KILL #1 cosmetic 1/3)
+
+- Phase 1 single-axis isolation iter 2/6. Hypothesis: Avantis US small-cap value factor (size+value+profitability) at 1x notional outside the wrapper recovers what iter 013's VBRSIM tilt couldn't (post-2008 "death of value" regime). 4 configs sweep AVUV 5/10/15/20%; NTSX+KMLM each absorb the cut. Citation `[risk_parity, ch.2, p.37-41]` Fama-French SCV.
+- Synth: AVUVSIM = `VBRSIM + 75bps/y tilt premium`. INCOMPLETE — VBRSIM is passive (no quality screen), 75bps tilt is estimate.
+- Selected `avuv_lite` (5% AVUV). Gross Sharpe **1.115 / 0.996 / 1.140**. NEW: 3/3 +0.05 vs SPY ✓ (winner_conds=True). Score 88/100.
+- vs iter 023 substantively: **−0.074 / −0.008 / +0.005** — beats iter 023 on **1/3** datasets (ndx_real +0.005 cosmetic).
+- **KILL #1 (no-positive-config) survives** — barely (criterion: ≥1/3 datasets; 1/3 passes but the edge is below noise).
+- **KILL #2 (monotonic regression) ✅ FIRED**: Sharpe falls monotonically with AVUV weight 5%→20% on ALL 3 datasets (Δ lh_56y −0.026, vt_real −0.059, ndx_real −0.042). Same structural pattern as iter 013 VBRSIM tilt.
+- **Decision**: sleeve **marginal/closed substantively**. AVUV at 5% may still be relevant for Phase 2 F3 Hybrid (iter 034) given +0.005 ndx_real edge survives KILL #1, but does not beat iter 023 on 2/3 datasets. F2 US Factor-only (iter 033) probability reduced to ~25% — 1× factor stack unlikely to beat 1.5×-leveraged iter 023. Confirms iter 013's findings: small-cap value factor at 2010-2024 underperformance regime is absorbed by KMLM crisis-alpha.
 
 ### 027 — 2026-04-29 — NTSD-swap (WINNER NEW 90 — but BOTH KILLs fired, sleeve CLOSED)
 
