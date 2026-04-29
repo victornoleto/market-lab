@@ -87,3 +87,57 @@ def avem_synth_returns_from_cache() -> pd.Series:
     """AVEM synth: VWOSIM + 125bps/y tilt premium. INCOMPLETE - VWOSIM 1994+ bottleneck."""
     vwo = load_testfolio_series("VWOSIM").pct_change().dropna()
     return factor_tilt_synth_returns(vwo, tilt_premium_annual=0.0125)
+
+
+def momentum_synth_returns(
+    base_equity_returns: pd.Series,
+    umd_factor_returns: pd.Series,
+    capture_coef: float = 0.60,
+    expense_annual: float = 0.0035,
+) -> pd.Series:
+    """SPMO/IDMO-style momentum synth: base equity + UMD overlay - expense.
+
+    INCOMPLETE: Frazzini-Israel-Moskowitz 2018 capture rate (~60-70%) is
+    literature-cited, not direct SPMO/IDMO inception data. Real SPMO/IDMO
+    tracking error unmeasured. Engine differs from Ken French academic UMD
+    (long-short market-neutral, gross of cost).
+
+    Citations: [stocks_on_the_move, p.21-30] Clenow time-series momentum;
+    Jegadeesh-Titman 1993 cross-sectional momentum; Frazzini-Israel-Moskowitz
+    2018 long-only momentum capture.
+    """
+    daily_expense = _annual_drag_to_daily(expense_annual)
+    aligned = pd.concat({"base": base_equity_returns, "umd": umd_factor_returns}, axis=1).dropna()
+    return aligned["base"] + capture_coef * aligned["umd"] - daily_expense
+
+
+def _load_umd_kf_returns() -> pd.Series:
+    """Load Ken French daily UMD factor returns from data/ken_french/.
+
+    File format: F-F_Momentum_Factor_daily.csv has skip rows then columns
+    Date, Mom (in percent units, e.g. 0.50 means +0.50%). Convert to decimal.
+    """
+    import pathlib
+    csv_path = pathlib.Path("data/ken_french/F-F_Momentum_Factor_daily.csv")
+    if not csv_path.exists():
+        raise FileNotFoundError(f"Ken French UMD daily file not found at {csv_path}")
+    df = pd.read_csv(csv_path, skiprows=13, index_col=0, parse_dates=False)
+    df = df[df.index.astype(str).str.match(r"^\d{8}$")]
+    df.index = pd.to_datetime(df.index, format="%Y%m%d")
+    # Column header may have trailing whitespace; find the Mom column
+    mom_col = next(c for c in df.columns if c.strip() == "Mom")
+    return (df[mom_col].astype(float) / 100.0).rename("UMD_KF")
+
+
+def spmo_synth_returns_from_cache() -> pd.Series:
+    """SPMO synth: SPYSIM + 0.60 * UMD_KF - 35bps/y."""
+    spy = load_testfolio_series("SPYSIM").pct_change().dropna()
+    umd = _load_umd_kf_returns()
+    return momentum_synth_returns(spy, umd_factor_returns=umd, capture_coef=0.60, expense_annual=0.0035)
+
+
+def idmo_synth_returns_from_cache() -> pd.Series:
+    """IDMO synth: VEASIM + 0.60 * UMD_KF - 60bps/y. INCOMPLETE - US UMD proxy for intl."""
+    vea = load_testfolio_series("VEASIM").pct_change().dropna()
+    umd = _load_umd_kf_returns()
+    return momentum_synth_returns(vea, umd_factor_returns=umd, capture_coef=0.60, expense_annual=0.0060)

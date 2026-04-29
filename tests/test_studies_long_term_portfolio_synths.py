@@ -92,3 +92,42 @@ def test_avem_synth_from_cache_window():
     s = avem_synth_returns_from_cache()
     assert s.index[0].year >= 1994
     assert s.index[0].year <= 1995
+
+
+def test_spmo_synth_formula():
+    """SPMO = SPYSIM + 0.60 * UMD_KF - (35bps/y / 252)."""
+    from studies.long_term_portfolio.synths import momentum_synth_returns
+
+    spy = pd.Series([0.01, 0.0], index=pd.date_range("2024-01-02", periods=2, freq="B"))
+    umd = pd.Series([0.005, -0.001], index=pd.date_range("2024-01-02", periods=2, freq="B"))
+
+    result = momentum_synth_returns(
+        spy, umd_factor_returns=umd, capture_coef=0.60, expense_annual=0.0035
+    )
+
+    expected_day1 = 0.01 + 0.60 * 0.005 - 0.0035 / 252
+    assert abs(result.iloc[0] - expected_day1) < 1e-8
+
+
+def test_idmo_synth_formula():
+    """IDMO = VEASIM + 0.60 * UMD_KF - (60bps/y / 252)."""
+    from studies.long_term_portfolio.synths import momentum_synth_returns
+
+    vea = pd.Series([0.01], index=pd.date_range("2024-01-02", periods=1, freq="B"))
+    umd = pd.Series([0.005], index=pd.date_range("2024-01-02", periods=1, freq="B"))
+
+    result = momentum_synth_returns(
+        vea, umd_factor_returns=umd, capture_coef=0.60, expense_annual=0.0060
+    )
+
+    expected = 0.01 + 0.60 * 0.005 - 0.0060 / 252
+    assert abs(result.iloc[0] - expected) < 1e-8
+
+
+def test_spmo_synth_no_free_lunch_check():
+    """KILL #3: SPMO standalone Sharpe must be < 1.5 vs literature ~0.6-0.8."""
+    from studies.long_term_portfolio.synths import spmo_synth_returns_from_cache
+
+    spmo = spmo_synth_returns_from_cache()
+    annualized_sharpe = spmo.mean() / spmo.std() * np.sqrt(252)
+    assert annualized_sharpe < 1.5, f"SPMO standalone Sharpe {annualized_sharpe:.2f} > 1.5; synth broken (KILL #3)"
