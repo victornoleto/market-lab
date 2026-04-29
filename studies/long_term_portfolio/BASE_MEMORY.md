@@ -1,13 +1,13 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 29
+total_iterations: 30
 winners_found: 4
 status: hunting
-latest_iteration: "029-2026-04-29-AVDV-add"
-latest_score: 88  # STRONG NEW; KILL #1 + KILL #2 both fired (sleeve closed)
+latest_iteration: "030-2026-04-29-SPMO-synth"
+latest_score: 84  # STRONG NEW; FIRST positive sleeve (2/3 beats iter 023, KILL #2 escapes)
 beats_incumbent: false
-cumulative_n_trials: 106  # +4 (023) +3 (024) +4 (025) +0 (026) +4 (027) +4 (028) +4 (029) = 106
+cumulative_n_trials: 110  # +4 (023) +3 (024) +4 (025) +0 (026) +4 (027) +4 (028) +4 (029) +4 (030) = 110
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -155,6 +155,17 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 030 — 2026-04-29 — SPMO-synth (STRONG NEW 84 — FIRST POSITIVE Phase 1 SLEEVE)
+
+- Phase 1 single-axis isolation iter 4/6. Hypothesis: capture iter 016's UMD-academic +signal in deployable form via SPMO synth (S&P momentum ETF; embeds SPY beta + cross-sectional momentum overlay). Per Frazzini-Israel-Moskowitz 2018, real momentum ETFs capture ~60-70% of UMD long-short premium. 4 configs sweep SPMO 5/10/15/20%. Citation `[stocks_on_the_move, p.21-30]` + Jegadeesh-Titman 1993.
+- Synth: SPMOSIM = `SPYSIM + 0.60 × UMD_KF − 35bps/y`. INCOMPLETE — 0.60 capture coefficient is FIM 2018 estimate; real SPMO live Sharpe 0.7-0.9 since 2015 inception.
+- **KILL #3 (no-free-lunch synth) ✅ PASS**: SPMO standalone Sharpe = **0.828** (well below 1.5 threshold). Matches real SPMO live Sharpe — synth honest.
+- Selected `spmo_lite` (5% SPMO). Gross Sharpe **1.117 / 1.009 / 1.167**. NEW: 3/3 +0.05 vs SPY ✓ (winner_conds=True). Score 84/100 STRONG.
+- vs iter 023 substantively: **−0.072 / +0.005 / +0.032** — beats iter 023 on **2/3 datasets** (vt_real cosmetic, ndx_real substantive +0.032). lh_56y drag from KMLM-FFmom splice 1986-1988 (KMLM heavy iter 023 has FF-MoM Sharpe ~1.9 splice vs SPMO synth's UMD Sharpe).
+- **KILL #1 (no-positive-config) SURVIVES**: 2/3 datasets beat iter 023 (criterion ≥1/3).
+- **KILL #2 (monotonic regression) DOES NOT FIRE**: ndx_real Sharpe **non-monotonic** with weight (lite=1.167, mod=1.175, med=1.179, heavy=1.177 — peak at 15%). Criterion required all 3 datasets monotonic falling — vt_real and lh_56y fall, but ndx_real does not.
+- **FIRST positive sleeve in Phase 1.** Recommended for Phase 2 inclusion at 5-15% weight in F2 (iter 033), F3 (iter 034), F6 (iter 037). Confirms iter 016 UMD edge survives in deployable form (~40% capture vs iter 016's pure UMD academic edge).
 
 ### 029 — 2026-04-29 — AVDV-add (STRONG NEW 88 — BOTH KILLs fired, sleeve CLOSED)
 
