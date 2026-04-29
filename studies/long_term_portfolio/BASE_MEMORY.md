@@ -1,13 +1,13 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 28
+total_iterations: 29
 winners_found: 4
 status: hunting
-latest_iteration: "028-2026-04-29-AVUV-add"
-latest_score: 88  # STRONG NEW; KILL #2 fired, KILL #1 narrowly survived (1/3)
+latest_iteration: "029-2026-04-29-AVDV-add"
+latest_score: 88  # STRONG NEW; KILL #1 + KILL #2 both fired (sleeve closed)
 beats_incumbent: false
-cumulative_n_trials: 102  # +4 (023) +3 (024) +4 (025) +0 (026) +4 (027) +4 (028) = 102
+cumulative_n_trials: 106  # +4 (023) +3 (024) +4 (025) +0 (026) +4 (027) +4 (028) +4 (029) = 106
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -155,6 +155,16 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 029 — 2026-04-29 — AVDV-add (STRONG NEW 88 — BOTH KILLs fired, sleeve CLOSED)
+
+- Phase 1 single-axis isolation iter 3/6. Hypothesis: intl mirror of AVUV (Avantis Intl Small-Cap Value); user-cited 2025 ~40% return suggests intl SCV regime cycle inverted vs US 2025. Tests factor + geographic combined axis. 4 configs sweep AVDV 5/10/15/20%; NTSX+KMLM each absorb the cut. Citation `[ilmanen_expected_returns, ch.19]` intl factor diversification.
+- Synth: AVDVSIM = `VSSSIM + 100bps/y tilt premium`. INCOMPLETE — VSSSIM is passive intl small-cap, no quality screen.
+- Selected `avdv_lite` (5% AVDV). Gross Sharpe **1.081 / 0.985 / 1.123**. Score 88/100 STRONG NEW.
+- vs iter 023 substantively: **−0.108 / −0.019 / −0.012** — loses on **3/3 datasets**. Worse than AVUV (iter 028) on long-history.
+- **KILL #1 (no-positive-config) ✅ FIRED**: best config beats iter 023 on **0/3** datasets (criterion: ≥1/3). Hard fire.
+- **KILL #2 (monotonic regression) ✅ FIRED**: Sharpe falls monotonically with AVDV weight on ALL 3 datasets (Δ lh_56y −0.035, vt_real −0.078, ndx_real −0.076).
+- **AVDV sleeve CLOSED.** F5 Global Factor-only (iter 036) probability reduced significantly — both AVUV and AVDV failed. F6 Global Hybrid (iter 037) also weakened. User's 2025 +40% AVDV is single-year regime artifact; lh_56y window says intl SCV at 1× cannot beat iter 023 levered stack at any weight.
 
 ### 028 — 2026-04-29 — AVUV-add (STRONG NEW 88 — KILL #2 fired, KILL #1 cosmetic 1/3)
 
