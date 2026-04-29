@@ -1,16 +1,16 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 42
-winners_found: 5
+total_iterations: 43
+winners_found: 6
 status: hunting
-latest_iteration: "042-2026-04-30-MF-sensitivity"
-latest_score: 88  # STRONG NEW; Phase 3 MF sleeve sensitivity on iter 023; selected mf_kmlm by full-window rule but apples-to-apples 26y intersection ⇒ deploy recommendation = SPLIT (50/50 KMLM+DBMF)
+latest_iteration: "043-2026-04-30-F1-TLT-variation"
+latest_score: 90  # WINNER NEW; Phase 3B TLT-slot sensitivity on F1+SPLIT; baseline (TLT 15%) wins Sharpe 3/3 vs all 3 alternatives — recommendation reaffirmed
 recommended_mf_sleeve: SPLIT  # 50/50 KMLMSIM + DBMFSIM for iter 023 chassis: best 26y-intersection Sharpe (1.0004) + best MDD (19.91%) + AUM stability via $3.2B DBMF
 final_report_complete: true  # FINAL_REPORT_seven_portfolios.md produced 2026-04-30 (Task 23); 4 finalists scored (F4/F5/F6 skipped per Phase 1 routing — no global sleeves survived)
-final_recommendation: "F1-iter023-with-SPLIT"  # iter 023 chassis (NTSX 25 / GDE 25 / KMLM 17.5 / DBMF 17.5 / TLT 15) = highest multi-criteria score 62.07/100 (post-SPLIT C4 adjust) vs F3 60.33, F2 60.39, F7 59.76
+final_recommendation: "F1-iter023-with-SPLIT"  # CONFIRMED iter 043: iter 023 chassis (NTSX 25 / GDE 25 / KMLM 17.5 / DBMF 17.5 / TLT 15) — TLT slot variations all degrade Sharpe (KILL #1 fires); equity-heavy (no_tlt_to_equity) +1.68pp CAGR but +7.22pp MDD; RSSB-replaces-TLT redundant with NTSX bond leg (+7.28pp MDD); MF-only fallback ≈ baseline (Sharpe −0.04, MDD +0.13pp)
 beats_incumbent: false  # iter 014 incumbent score 93 still > 91
-cumulative_n_trials: 152  # 148 + 4 (iter 042 MF sensitivity)
+cumulative_n_trials: 156  # 152 + 4 (iter 043 TLT variation)
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -158,6 +158,24 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 043 — 2026-04-30 — F1-TLT-variation (WINNER NEW 90 — Phase 3B TLT-slot sensitivity; baseline reaffirmed, KILL #1 fires for all 3 alternatives)
+
+- **Phase 3B TLT-slot variation diagnostic.** Hypothesis: F1+SPLIT recommendation (NTSX 25 + GDE 25 + KMLM 17.5 + DBMF 17.5 + TLT 15) keeps 15% TLT as duration hedge — does removing/replacing TLT improve the portfolio? User-driven question pre-finalisation: equity > bonds for accumulation, but does the data support removing TLT? Citation `[risk_parity, ch.5, p.10]` Carlson cap-efficient stacking + `[ilmanen_expected_returns, ch.19]` duration-vs-MF crisis-alpha + ReSolve/Newfound RSSB methodology (2023).
+- 4 configs: `f1_split_baseline` (TLT 15%, current rec), `f1_no_tlt_to_equity` (TLT→NTSX/GDE +7.5 each), `f1_no_tlt_to_mf` (TLT→KMLM/DBMF +3.75 each), `f1_rssb_replaces_tlt` (TLT 15%→RSSB 15%).
+- **Means across 3 datasets (lh_56y, vt_real, ndx_real)**:
+  - `f1_split_baseline` (baseline): Sharpe **1.067**, CAGR 10.62%, MDD 17.63% ← winner
+  - `f1_no_tlt_to_equity`:           Sharpe 0.992, CAGR **12.30%**, MDD 24.84% (Δ Sharpe −0.075, Δ CAGR +1.68pp, Δ MDD +7.22pp)
+  - `f1_no_tlt_to_mf`:                Sharpe 1.026, CAGR 10.68%, MDD 17.76% (Δ Sharpe −0.041, Δ CAGR +0.06pp, Δ MDD +0.13pp)
+  - `f1_rssb_replaces_tlt`:           Sharpe 0.955, CAGR 11.44%, MDD 24.91% (Δ Sharpe −0.112, Δ CAGR +0.82pp, Δ MDD +7.28pp)
+- **KILL #1 ✅ FIRES**: no alternative beats baseline mean Sharpe on ≥1/3 datasets — baseline wins Sharpe **3/3** vs every alternative.
+- **KILL #6 (capital accumulation: CAGR > +0.5pp AND MDD ≤ +5pp on ≥2/3)**: f1_no_tlt_to_equity fails MDD (+7.22pp); f1_rssb_replaces_tlt fails MDD (+7.28pp); f1_no_tlt_to_mf fails CAGR (+0.06pp < +0.5pp threshold). All 3 alternatives **fail** capital-accumulation test.
+- **Surprise finding — RSSB is structurally redundant**: f1_rssb_replaces_tlt is the worst alternative (Sharpe −0.112, MDD +7.28pp) despite the appealing "stocks AND bonds in one ticker" thesis. Mechanism: RSSB (100% global stocks + 100% Treasury via derivatives) at 15% becomes 30% effective exposure, but the 15% Treasury leg is correlated with NTSX's embedded 15% IEF bond leg (already in baseline), so the marginal duration is degraded; meanwhile the 15% added stocks dominate drawdowns since NTSX+GDE already provide 45% equity exposure. Replacing pure-bond TLT with stocks-overlaid RSSB **reduces effective bond hedge AND adds equity beta** — the worst-of-both-worlds in a portfolio that already saturates the 60/40 frontier with NTSX+GDE.
+- **f1_no_tlt_to_mf is deploy-equivalent fallback**: Δ Sharpe −0.041, Δ MDD +0.13pp, Δ CAGR +0.06pp — basically baseline. Useful if real-money MF AUM concentration becomes a deploy concern (50% in two MF tickers); otherwise no improvement.
+- **f1_no_tlt_to_equity is the canonical CAGR-vs-MDD trade**: +1.68pp CAGR for +7.22pp MDD — typical "more equity = more compounding, bigger crashes". Sharpe degrades. Not recommended for any user not already pre-committed to high-equity stacks.
+- **Final recommendation reaffirmed**: F1+SPLIT (`f1_split_baseline`) stands as the production recommendation. User-decision-relevant insight: in a portfolio that already contains levered equity-plus-bonds stacks (NTSX 25 + GDE 25 = 45% equity-stack with embedded ~30% bond exposure), the dedicated 15% TLT sleeve is **not redundant** — it's the cheapest marginal drawdown insurance available. Removing it for more equity (no_tlt_to_equity) or for stacked-equity-plus-bonds (RSSB) trades 1.0-1.7pp CAGR for 7+pp MDD.
+- **Mandate score**: 90/100 WINNER NEW (winner_conds met), DSR p=2.58e-05 / 5.50e-04 / 1.50e-04 (cumulative_n_trials=156). Score is per-config metric for `f1_split_baseline` selected (baseline = winner of variation sweep).
+- **Phase 3 implication**: F1+SPLIT confirmed end-to-end (Phase 3 MF sleeve diagnostic + Phase 3B TLT slot diagnostic). FINAL_REPORT_seven_portfolios.md recommendation `F1-iter023-with-SPLIT` is robust to both deploy-relevant axes tested. Task 24 (user decision + mandate §7 override) ready to execute.
 
 ### 042 — 2026-04-30 — MF-sensitivity (STRONG NEW 88 — Phase 3 deploy diagnostic; deploy recommendation = SPLIT 50/50 KMLM+DBMF on apples-to-apples 26y intersection)
 
