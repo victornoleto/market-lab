@@ -1,13 +1,13 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 34
+total_iterations: 35
 winners_found: 4
 status: hunting
-latest_iteration: "034-2026-04-29-AVUV-realloc"
-latest_score: 86  # STRONG NEW; KILL #1 reaffirmed under all 3 sub sources (Phase 1B retest)
+latest_iteration: "035-2026-04-29-AVDV-realloc"
+latest_score: 84  # STRONG NEW; KILL #1 reaffirmed under all 3 sub sources (Phase 1B retest)
 beats_incumbent: false
-cumulative_n_trials: 124  # 121 + 3 (Phase 1B iter 034)
+cumulative_n_trials: 127  # 124 + 3 (Phase 1B iter 035)
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -155,6 +155,21 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 035 — 2026-04-29 — AVDV-realloc (STRONG NEW 84 — Phase 1B sub-source variation, KILL #1 reaffirmed)
+
+- **Phase 1B sub-source variation iter 3/6.** Hypothesis: Phase 1A iter 029 AVDV (intl SCV) failure (BOTH KILLs fired, Δ −0.108 / −0.019 / −0.012) used balanced 50/50 substitution. Retests at fixed 10% under 3 sub sources. Citation `[ilmanen_expected_returns, ch.19]`.
+- Synth: AVDVSIM = `VSSSIM + 100bps/y tilt premium`. INCOMPLETE.
+- Selected `avdv10_subGDE` (10% AVDV, sub from GDE). Gross Sharpe **1.111 / 0.957 / 1.092**. Score 84/100 STRONG.
+- vs iter 023 substantively: **−0.078 / −0.047 / −0.043** — loses on **3/3 datasets**.
+- **Substitution source comparison (10% AVDV, fixed weight)**:
+  - `subGDE` (selected): 1.1113 / 0.9569 / 1.0920 → Δ −0.078 / −0.047 / −0.043
+  - `subNTSX`:           1.0872 / 0.9614 / 1.0855 → Δ −0.102 / −0.043 / −0.050
+  - `subKMLM`:           1.0519 / 0.9532 / 1.1063 → Δ −0.137 / −0.051 / −0.029
+  - **Best sub = GDE**; **worst = KMLM** (lh_56y −0.137).
+- **KILL #1 (no-positive-config) ✅ REAFFIRMED**: 0/3 datasets beat iter 023 under any sub source. Same pattern as Phase 1A.
+- vs Phase 1A best: subGDE 10% improves lh_56y (+0.030) but degrades vt_real (−0.028) and ndx_real (−0.031). Net no improvement.
+- **AVDV sleeve closure REAFFIRMED.** All 3 Avantis factor sleeves (AVUV/AVDV/AVEM) confirmed subordinate under sub-source variation. F5 Global Factor-only finalist (iter 036 original sweep) cannot proceed.
 
 ### 034 — 2026-04-29 — AVUV-realloc (STRONG NEW 86 — Phase 1B sub-source variation, KILL #1 fires, lh_56y near-parity)
 
