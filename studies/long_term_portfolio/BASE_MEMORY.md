@@ -7,6 +7,8 @@ status: hunting
 latest_iteration: "042-2026-04-30-MF-sensitivity"
 latest_score: 88  # STRONG NEW; Phase 3 MF sleeve sensitivity on iter 023; selected mf_kmlm by full-window rule but apples-to-apples 26y intersection ⇒ deploy recommendation = SPLIT (50/50 KMLM+DBMF)
 recommended_mf_sleeve: SPLIT  # 50/50 KMLMSIM + DBMFSIM for iter 023 chassis: best 26y-intersection Sharpe (1.0004) + best MDD (19.91%) + AUM stability via $3.2B DBMF
+final_report_complete: true  # FINAL_REPORT_seven_portfolios.md produced 2026-04-30 (Task 23); 4 finalists scored (F4/F5/F6 skipped per Phase 1 routing — no global sleeves survived)
+final_recommendation: "F1-iter023-with-SPLIT"  # iter 023 chassis (NTSX 25 / GDE 25 / KMLM 17.5 / DBMF 17.5 / TLT 15) = highest multi-criteria score 62.07/100 (post-SPLIT C4 adjust) vs F3 60.33, F2 60.39, F7 59.76
 beats_incumbent: false  # iter 014 incumbent score 93 still > 91
 cumulative_n_trials: 152  # 148 + 4 (iter 042 MF sensitivity)
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
