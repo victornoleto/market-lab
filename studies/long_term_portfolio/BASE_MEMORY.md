@@ -1,13 +1,13 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 37
+total_iterations: 38
 winners_found: 4
 status: hunting
-latest_iteration: "037-2026-04-29-IDMO-realloc"
-latest_score: 81  # STRONG NEW; KILL #1 fires, cosmetic ndx_real edge lost vs Phase 1A
+latest_iteration: "038-2026-04-29-AVEM-realloc"
+latest_score: 79  # STRONG NEW; KILL #1 fires, worst Phase 1B sleeve (32y window caveat retained)
 beats_incumbent: false
-cumulative_n_trials: 133  # 130 + 3 (Phase 1B iter 037)
+cumulative_n_trials: 136  # 133 + 3 (Phase 1B iter 038); Phase 1B complete
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -155,6 +155,22 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 038 — 2026-04-29 — AVEM-realloc (STRONG NEW 79 — Phase 1B sub-source variation FINAL, KILL #1 fires, worst Phase 1B sleeve)
+
+- **Phase 1B sub-source variation iter 6/6 (FINAL).** Hypothesis: Phase 1A iter 032 AVEM failure (BOTH KILLs fired, steepest decline of all 6 Phase 1A sleeves, Δ −0.107 / −0.035 / −0.020). Retests at fixed 10% under 3 sub sources. Citation `[ilmanen_expected_returns, ch.19]`.
+- Synth: AVEMSIM = `VWOSIM + 125bps/y tilt premium`. INCOMPLETE — VWOSIM passive EM, 125bps highest of AV* family.
+- **WINDOW CAVEAT (CRITICAL)**: VWOSIM starts 1994-05-04 → effective lh_56y = 32y (1994-2026), NOT 56y. Sub-source variation does not change this. 1994-2026 was US-large-cap regime ~3-4pp/yr CAGR ahead of EM, biasing test. vt_real (2008+) and ndx_real (2010+) apples-to-apples vs other iters.
+- Selected `avem10_subGDE` (10% AVEM, sub from GDE). Gross Sharpe **1.093 / 0.920 / 1.070**. Score 79/100 STRONG.
+- vs iter 023 substantively: **−0.096 / −0.084 / −0.065** — loses on **3/3 datasets**.
+- **Substitution source comparison (10% AVEM, fixed weight)**:
+  - `subGDE` (selected): 1.0928 / 0.9203 / 1.0704 → Δ −0.096 / −0.084 / −0.065
+  - `subNTSX`:           1.0727 / 0.9284 / 1.0664 → Δ −0.116 / −0.076 / −0.069
+  - `subKMLM`:           1.0247 / 0.9181 / 1.0879 → Δ −0.164 / −0.086 / −0.047
+  - **Best sub = GDE**; **worst = KMLM** (lh_56y −0.164).
+- **KILL #1 (no-positive-config) ✅ FIRES**: 0/3 datasets beat iter 023 under any sub source. Live windows (vt_real and ndx_real, apples-to-apples) confirm subordination — window caveat does not save AVEM.
+- **AVEM sleeve closure REAFFIRMED.** Worst Phase 1B sleeve overall (Δ vt_real −0.084 vs second-worst IDMO −0.070).
+- **Phase 1A+1B combined finding**: ALL 3 Avantis factor sleeves (AVUV/AVDV/AVEM) closed under sub-source variation. F5 Global Factor-only finalist cannot proceed with non-momentum factors. **Phase 1B COMPLETE (6/6 iters).**
 
 ### 037 — 2026-04-29 — IDMO-realloc (STRONG NEW 81 — Phase 1B sub-source variation, KILL #1 fires, cosmetic edge lost)
 
