@@ -1,13 +1,13 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 36
+total_iterations: 37
 winners_found: 4
 status: hunting
-latest_iteration: "036-2026-04-29-SPMO-realloc"
-latest_score: 86  # STRONG NEW; KILL #1 SURVIVES, ndx_real +signal confirmed robust across all 3 sub sources
+latest_iteration: "037-2026-04-29-IDMO-realloc"
+latest_score: 81  # STRONG NEW; KILL #1 fires, cosmetic ndx_real edge lost vs Phase 1A
 beats_incumbent: false
-cumulative_n_trials: 130  # 127 + 3 (Phase 1B iter 036)
+cumulative_n_trials: 133  # 130 + 3 (Phase 1B iter 037)
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -155,6 +155,21 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 037 — 2026-04-29 — IDMO-realloc (STRONG NEW 81 — Phase 1B sub-source variation, KILL #1 fires, cosmetic edge lost)
+
+- **Phase 1B sub-source variation iter 5/6.** Hypothesis: Phase 1A iter 031 IDMO failure (KILL #2 fired, KILL #1 cosmetic 1/3 ndx_real +0.005). Retests at fixed 10% under 3 sub sources. Citation `[ilmanen_expected_returns, ch.19]` + `[stocks_on_the_move, p.21-30]`.
+- Synth: IDMOSIM = `VEASIM + 0.60 × UMD_KF − 60bps/y`. INCOMPLETE — uses US UMD_KF as proxy for intl momentum (per AMP 2013, intl momentum has 0.5-0.7 corr with US, may overstate edge by 10-30%). KILL #3 PASS (synth standalone Sharpe ~0.726).
+- Selected `idmo10_subGDE` (10% IDMO, sub from GDE). Gross Sharpe **1.137 / 0.934 / 1.102**. Score 81/100 STRONG.
+- vs iter 023 substantively: **−0.052 / −0.070 / −0.033** — loses on **3/3 datasets**.
+- **Substitution source comparison (10% IDMO, fixed weight)**:
+  - `subGDE` (selected): 1.1375 / 0.9339 / 1.1019 → Δ −0.052 / −0.070 / −0.033
+  - `subNTSX`:           1.1028 / 0.9465 / 1.1034 → Δ −0.086 / −0.058 / −0.032
+  - `subKMLM`:           1.0659 / 0.9453 / 1.1291 → Δ −0.123 / −0.059 / −0.006
+  - **Best sub = GDE**; **worst = KMLM** (lh_56y −0.123).
+- **KILL #1 (no-positive-config) ✅ FIRES**: 0/3 datasets beat iter 023 under any sub source. Phase 1A's cosmetic ndx_real +0.005 edge lost at 10% under any sub source (drops to −0.033 subGDE, −0.006 subKMLM).
+- **IDMO clearly subordinate to SPMO** at every sub source. SPMO at 10% subKMLM gave ndx_real **+0.044**; IDMO at 10% subKMLM gives **−0.006** (−0.050 worse). Confirms intl momentum factor structurally weaker (AMP 2013 + IDMOSIM US-UMD proxy weakness).
+- **IDMO sleeve closure REAFFIRMED.** SPMO is the only momentum sleeve for Phase 2.
 
 ### 036 — 2026-04-29 — SPMO-realloc (STRONG NEW 86 — Phase 1B sub-source variation, ndx_real +signal CONFIRMED ROBUST)
 
