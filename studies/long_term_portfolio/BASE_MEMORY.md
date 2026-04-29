@@ -1,13 +1,13 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 32
+total_iterations: 33
 winners_found: 4
 status: hunting
-latest_iteration: "032-2026-04-29-AVEM-add"
-latest_score: 90  # WINNER NEW; BOTH KILLs fired with 32y window caveat (sleeve closed)
+latest_iteration: "033-2026-04-29-NTSD-realloc"
+latest_score: 81  # STRONG NEW; KILL #1 reaffirmed under all 3 sub sources (Phase 1B retest)
 beats_incumbent: false
-cumulative_n_trials: 118  # +4 each iter 023-031 (excl 026), +4 (032) = 118
+cumulative_n_trials: 121  # 118 + 3 (Phase 1B iter 033)
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -155,6 +155,21 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 033 — 2026-04-29 — NTSD-realloc (STRONG NEW 81 — Phase 1B sub-source variation, KILL #1 reaffirmed)
+
+- **Phase 1B sub-source variation iter 1/6.** Hypothesis: Phase 1A iter 027 NTSD failure (KILL #1+#2 fired, Δ vs iter 023 −0.097 / −0.024 / −0.010) used balanced 50/50 substitution from NTSX+KMLM. Phase 1B retests at fixed 10% NTSD weight under 3 alternative sub sources: NTSX-only, GDE-only, KMLM-only. Citation `[risk_parity, ch.5, p.10]` + WisdomTree NTSD prospectus 2026-03-19. KILL #3 N/A (NTSDSIM is literal blueprint).
+- Synth: NTSDSIM = `0.90 SPYSIM + 0.60 VEASIM − 75bps/y`. INCOMPLETE — active management unmodeled.
+- Selected `ntsd10_subGDE` (10% NTSD, sub from GDE 25%→15%). Gross Sharpe **1.101 / 0.946 / 1.109**. NEW: 2/3 +0.05 vs SPY (vt_real 0.946 misses by 0.004). Score 81/100 STRONG (winner_conds=True per gates+DSR; vt_real Sharpe just below the +0.05 hurdle but cross-dataset thresholds clear).
+- vs iter 023 substantively: **−0.088 / −0.058 / −0.026** — loses on **3/3 datasets**.
+- **Substitution source comparison (10% NTSD, fixed weight)**:
+  - `subGDE` (selected): 1.1008 / 0.9461 / 1.1089 → Δ −0.088 / −0.058 / −0.026
+  - `subNTSX`:           1.0716 / 0.9562 / 1.1077 → Δ −0.117 / −0.048 / −0.027
+  - `subKMLM`:           1.0225 / 0.9369 / 1.1149 → Δ −0.166 / −0.067 / −0.020
+  - **Best sub = GDE** (cuts equity carry); **worst sub = KMLM** (cuts crisis-alpha; lh_56y −0.166).
+- **KILL #1 (no-positive-config) ✅ REAFFIRMED**: 0/3 datasets beat iter 023 under any sub source (criterion ≥1/3). Phase 1A failure was **not** a sub-source artifact — structural sleeve subordination.
+- vs Phase 1A best: subGDE 10% improves lh_56y (+0.009) but degrades vt_real (−0.034) and ndx_real (−0.016). Net no improvement.
+- **NTSD sleeve closure REAFFIRMED.** F4 Global Stacking finalist (iter 035) confirmed not viable via NTSD-stacking alone.
 
 ### 032 — 2026-04-29 — AVEM-add (WINNER NEW 90 — BOTH KILLs fired, sleeve CLOSED, 32y window)
 
