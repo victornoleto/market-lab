@@ -1,13 +1,13 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 31
+total_iterations: 32
 winners_found: 4
 status: hunting
-latest_iteration: "031-2026-04-29-IDMO-synth"
-latest_score: 90  # WINNER NEW; KILL #1 cosmetic 1/3, KILL #2 fired (sleeve marginal)
+latest_iteration: "032-2026-04-29-AVEM-add"
+latest_score: 90  # WINNER NEW; BOTH KILLs fired with 32y window caveat (sleeve closed)
 beats_incumbent: false
-cumulative_n_trials: 114  # +4 each iter 023-030 (excl 026), +4 (031) = 114
+cumulative_n_trials: 118  # +4 each iter 023-031 (excl 026), +4 (032) = 118
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -155,6 +155,17 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 032 — 2026-04-29 — AVEM-add (WINNER NEW 90 — BOTH KILLs fired, sleeve CLOSED, 32y window)
+
+- Phase 1 single-axis isolation iter 6/6 (LAST). Hypothesis: Avantis EM Equity factor-tilted at 1x notional adds Sharpe via low-correlation diversification to iter 023's developed-market stack. 4 configs sweep AVEM 5/10/15/20%. Citation `[ilmanen_expected_returns, ch.19]` intl + EM diversification.
+- Synth: AVEMSIM = `VWOSIM + 125bps/y tilt premium`. INCOMPLETE — VWOSIM passive, 125bps highest of AV* family.
+- **WINDOW CAVEAT (CRITICAL)**: VWOSIM starts 1994-05-04 → effective lh_56y window = **32y (1994-2026)**, NOT 56y. Verified at runtime: 8042 daily obs vs iter 023's full 56y. vt_real (2008+) and ndx_real (2010+) windows unaffected (apples-to-apples).
+- Selected `avem_lite` (5% AVEM). Gross Sharpe **1.082 / 0.969 / 1.115**. Score 90/100 WINNER NEW (iter 023 base still beats SPY).
+- vs iter 023 substantively: **−0.107 / −0.035 / −0.020** — loses on **3/3 datasets**.
+- **KILL #1 (no-positive-config) ✅ FIRED**: 0/3 datasets beat iter 023 (criterion ≥1/3). lh_56y caveat: 32y window 1994-2026 was a US-large-cap regime ~3-4pp/yr CAGR ahead of EM, so window is biased against EM-tilted portfolios — but vt_real and ndx_real losses are on identical windows to iter 023.
+- **KILL #2 (monotonic regression) ✅ FIRED**: Sharpe falls monotonically with AVEM weight 5%→20% on ALL 3 datasets (Δ −0.107 / −0.133 / −0.110). Steepest decline of all 6 Phase 1 sleeves.
+- **AVEM sleeve CLOSED.** Combined with iter 029 AVDV closure: **all 3 Avantis factor sleeves (AVUV/AVDV/AVEM) failed.** F5 Global Factor-only (iter 036) cannot proceed with non-momentum factors — only SPMO remains positive. **F5 should be skipped or rebuilt as SPMO-only.** F6 Global Hybrid (iter 037) likely degenerates to "iter 023 + 5-15% SPMO" ≈ F3 US Hybrid.
 
 ### 031 — 2026-04-29 — IDMO-synth (WINNER NEW 90 — KILL #2 fired, KILL #1 cosmetic, sleeve subordinate to SPMO)
 
