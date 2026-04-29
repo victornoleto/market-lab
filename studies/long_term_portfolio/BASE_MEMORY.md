@@ -1,13 +1,13 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 35
+total_iterations: 36
 winners_found: 4
 status: hunting
-latest_iteration: "035-2026-04-29-AVDV-realloc"
-latest_score: 84  # STRONG NEW; KILL #1 reaffirmed under all 3 sub sources (Phase 1B retest)
+latest_iteration: "036-2026-04-29-SPMO-realloc"
+latest_score: 86  # STRONG NEW; KILL #1 SURVIVES, ndx_real +signal confirmed robust across all 3 sub sources
 beats_incumbent: false
-cumulative_n_trials: 127  # 124 + 3 (Phase 1B iter 035)
+cumulative_n_trials: 130  # 127 + 3 (Phase 1B iter 036)
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -155,6 +155,22 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 036 — 2026-04-29 — SPMO-realloc (STRONG NEW 86 — Phase 1B sub-source variation, ndx_real +signal CONFIRMED ROBUST)
+
+- **Phase 1B sub-source variation iter 4/6.** Highest-priority Phase 1B test — Phase 1A iter 030 SPMO was the only sleeve to survive both KILLs (Δ −0.072 / +0.005 / +0.032). Retests at fixed 10% under 3 sub sources to test if reallocating sub source amplifies ndx_real +signal or recovers lh_56y drag. Citation `[stocks_on_the_move, p.21-30]` Clenow + JT 1993.
+- Synth: SPMOSIM = `SPYSIM + 0.60 × UMD_KF − 35bps/y`. KILL #3 PASS: standalone Sharpe = 0.828 (< 1.5).
+- Selected `spmo10_subGDE` (10% SPMO, sub from GDE). Gross Sharpe **1.161 / 0.987 / 1.157**. Score 86/100 STRONG.
+- vs iter 023 substantively: **−0.028 / −0.017 / +0.022** — beats iter 023 on **1/3 datasets** (ndx_real +0.022 substantive).
+- **Substitution source comparison (10% SPMO, fixed weight)**:
+  - `subGDE` (selected): 1.1611 / 0.9873 / 1.1570 → Δ −0.028 / −0.017 / **+0.022**
+  - `subNTSX`:           1.1300 / 0.9998 / 1.1587 → Δ −0.059 / −0.004 / **+0.024**
+  - `subKMLM`:           1.0869 / 0.9939 / 1.1789 → Δ −0.102 / −0.010 / **+0.044** ⭐
+  - **All 3 sub sources beat iter 023 on ndx_real**. subKMLM maximizes ndx_real edge (+0.044, larger than Phase 1A's +0.032) at the cost of worst lh_56y. subGDE preserves lh_56y best.
+- **KILL #1 (no-positive-config) ✅ SURVIVES**: 1/3 datasets beat iter 023 under every sub source. ndx_real +signal **structural and robust**.
+- **SPMO is the ONLY Phase 1A/1B sleeve with robust ndx_real +signal across all reallocation patterns.** Range +0.022 to +0.044 across 6 configs (4 Phase 1A + 3 Phase 1B − overlap). Cross-sectional momentum on QQQ universe is the binding mechanism.
+- vs Phase 1A best: subGDE 10% improves lh_56y (+0.044, 1.117→1.161) but loses cosmetic vt_real edge and ndx_real (+0.032→+0.022). subKMLM 10% pushes ndx_real to new high (+0.044) but at lh_56y cost.
+- **Phase 2 implication**: SPMO at 5-10% remains the strongest single Phase 1 finding. F2 US Factor-only / F3 US Hybrid both should include SPMO. subGDE preferred for lh_56y preservation; subKMLM for ndx_real maximization. Phase 1A's `spmo_lite` (5% balanced) is the highest 2/3-dataset blend.
 
 ### 035 — 2026-04-29 — AVDV-realloc (STRONG NEW 84 — Phase 1B sub-source variation, KILL #1 reaffirmed)
 
