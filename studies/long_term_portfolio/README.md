@@ -1,28 +1,56 @@
 # Long-Term Portfolio Loop
 
-**Status**: ACTIVE — launched 2026-04-27.
+**Status**: ACTIVE — launched 2026-04-27 as `bestfolio_hunt_loop`,
+**renamed 2026-04-28** to `long_term_portfolio` when the mission was
+re-anchored to "beat avg(SPY,VT) gross by ≥0.10 Sharpe on ≥2/3 datasets".
+**Mandate reframing 2026-04-29 (A.1-A.4)**: SPY-only baseline +0.05 hurdle,
+CAGR warning-only, MDD ≤ SPY strict.
 
-**Mission**: Find ONE strategy that Pareto-advances iter 009 HAA+Gold
-(Sharpe 1.120 edu / 1.061 vt_real / 0.954 ndx_real) — the Sharpe
-frontier from `global_factor_tilt_loop` (13 iters, FROZEN).
+**Mission (NEW iter 023+)**: Find ONE long-term portfolio that beats
+**SPY 1× b&h (gross-of-tax)** by ≥ 0.05 Sharpe on ≥ 2 of 3 datasets, with
+MDD ≤ SPY on ≥2/3 and passing the 7-gate battery. CAGR floor warning-only.
 
-Gap to bestfolio.app #1 (HAA SmartStack, Sharpe 1.18): **−0.06 Sharpe**.
+**Mission (LEGACY iters 001-022)**: beat avg(SPY,VT) by ≥0.10 Sharpe on
+≥2/3 with MDD ≤ avg+5pp and CAGR ≥ 0.8 × avg on ≥2/3. Retained for
+cross-iter score consistency; published scores anchored here.
+
+Per-dataset NEW benchmarks (SPY-only): lh_56y 0.680 / vt_real 0.900 /
+ndx_real 0.900. NEW hurdles (+0.05): 0.730 / 0.950 / 0.950. See
+`WINNER_AND_RANKING.md` for full thresholds; `scoring.py` `BENCHMARKS`
+is the single source of truth (with `spy_benchmark()` for NEW and
+`avg_benchmark()` / `legacy_benchmarks()` for LEGACY).
 
 ---
 
-## Context
+## Status snapshot (updated post-iter 014)
 
-`global_factor_tilt_loop` found 6 winners in 13 iters. Best gross
-result: iter 009 HAA+KMLM10+GLD5 (S=1.120 edu). The loop converged on
-the HAA architecture as dominant — the 0.06 gap to bestfolio #1 likely
-requires either a wider offensive universe or a more defensive canary.
+- **Substantive incumbent: iter 011** (NTSX+GDE+KMLM 35/25/40 static) —
+  Sharpe 1.046 / 0.960 / 1.104 on (lh_56y / vt_real / ndx_real), 91/100,
+  3/3 +0.10 Sharpe edges vs avg(SPY,VT). User's literature thesis from
+  Carlson `[risk_parity, ch.5, p.10]`.
+- **Mechanical incumbent (rule-defined): iter 014** (35% NTSX + 10%
+  VXUSSIM + 25% GDE + 30% KMLM) — Sharpe 1.055 / 0.885 / 1.052, score
+  93/100. Beats iter 011's score (93 > 91) but **loses Sharpe to iter
+  011 on vt_real and ndx_real** (substantive caveat — see BASE_MEMORY).
+- **Constant-weight sleeve injection on iter 011 = closed direction**
+  (3 consecutive failures: 012 RSSB / 013 VBRSIM / 014 VXUSSIM). Next
+  research must pivot: regime-conditional (B.6), architectural
+  replacement (A.1 — NTSI/NTSE), or fundamentally different mechanism.
+- bestfolio.app strategies tested in iters 001-010 (BAA-G12, Composite
+  Momentum, 5 HAA variants) — **all MARGINAL/PROMISING (54-75 pts);
+  none reached WINNER**. Only the user's own literature thesis
+  (NTSX+GDE+KMLM, iter 011) cleared the bar.
 
-This loop explores:
-1. **BAA (Bold Asset Allocation)** — 12-asset dual-canary, bestfolio #5
-2. **NTSX + GDE + KMLM static** — user's capital-efficient architecture
-3. **Composite Momentum Standard** — bestfolio #2 (Sharpe 1.17)
-4. **HAA + global factor tilt** — AVDV/VBRSIM in offensive
-5. **HAA + RSIT** (deferred — awaiting launch ~mai/2026)
+---
+
+## Original loop directions (history)
+
+The loop initially explored bestfolio.app rankings:
+1. ~~BAA (Bold Asset Allocation)~~ — iter 001 MARGINAL, dead-end
+2. **NTSX + GDE + KMLM static** — iter 011 WINNER (substantive incumbent)
+3. ~~Composite Momentum Standard~~ — iter 002 MARGINAL, dead-end
+4. ~~HAA + global factor tilt~~ — iter 004 PROMISING, PBO failure
+5. ~~HAA + RSIT (synth)~~ — iter 006 PROMISING, PBO failure
 
 ---
 
@@ -38,18 +66,34 @@ This loop explores:
 
 ---
 
-## Scoring benchmark
+## Scoring benchmark (post-2026-04-29 reframing)
 
-Any strategy tested here is scored against **iter 009 HAA+Gold**:
+iter 023+ scored against **SPY 1× b&h (gross-of-tax)** per dataset
+(NEW primary). iters 001-022 retain LEGACY avg(SPY,VT) scoring for
+cross-iter consistency.
 
-| dataset | Sharpe | CAGR | MDD |
-|---|---|---|---|
-| educational (56y) | 1.120 | 13.89% | 20.81% |
-| vt_real (~17y) | 1.061 | 12.87% | 14.20% |
-| ndx_real (16y) | 0.954 | 10.55% | 14.20% |
+### NEW (SPY-only, iter 023+)
 
-Winner requires beating iter 009 by ≥ 0.10 Sharpe on ≥ 2 datasets
-(minimum Sharpe: edu 1.220 / vt_real 1.161 / ndx_real 1.054).
+| dataset | benchmark | Sharpe | CAGR | MDD |
+|---|---|---|---|---|
+| lh_56y (1970+) | SPYSIM 40y synth | **0.680** | 11.47% | 55.14% |
+| vt_real (~17y) | SPY Tiingo 17y | **0.900** | 14.97% | 33.70% |
+| ndx_real (16y) | SPY Tiingo 16y | **0.900** | 14.97% | 33.70% |
+
+Winner requires beating these by ≥ 0.05 Sharpe on ≥ 2 datasets
+(minimum Sharpe: lh_56y 0.730 / vt_real 0.950 / ndx_real 0.950).
+MDD strict ≤ SPY on ≥2/3. CAGR floor warning-only.
+
+### LEGACY (avg(SPY,VT), iters 001-022)
+
+| dataset | benchmark (avg of) | Sharpe | CAGR | MDD (worst) |
+|---|---|---|---|---|
+| lh_56y (1970+) | VTSIM 56y + SPYSIM 40y synth | **0.671** | 10.73% | 58.35% |
+| vt_real (~17y) | VTSIM 17y + SPY Tiingo 17y | **0.707** | 11.89% | 50.21% |
+| ndx_real (16y) | QQQ Tiingo 16y + SPY Tiingo 16y | **0.924** | 16.98% | 35.12% |
+
+LEGACY winner: avg + 0.10 Sharpe on ≥2/3, MDD ≤ avg + 5pp.
+See `WINNER_AND_RANKING.md` for the full rubric (NEW + LEGACY tables).
 
 ---
 
@@ -88,10 +132,14 @@ DRY_RUN=1 bash studies/long_term_portfolio/run_loop.sh
 ## Tax model
 
 Always use `AnnualDarfEngine` (Lei 14.754/2023) from
-`studies/global_factor_tilt_loop/tax_engine_v2.py` for any
-net-of-tax analysis. The old `DarfCostBasisEngine` (monthly DARF)
-was incorrect — iter 014 confirmed the annual model produces a
-slightly different result for high-turnover strategies.
+`studies/_shared/tax_engine.py` for any net-of-tax analysis. The
+old `DarfCostBasisEngine` (monthly DARF, predecessor loop) was
+incorrect — the annual model is what the law actually prescribes
+and was validated in `global_factor_tilt_loop` post-mortem.
+
+Net-of-tax is reported in `final_report.md` as deploy-readiness
+diagnostic; it does **not** influence tier or winner status (mission
+is gross-of-tax per `scoring.py` BENCHMARKS).
 
 ---
 

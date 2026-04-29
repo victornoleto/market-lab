@@ -927,3 +927,335 @@ Selected: `intl_lite_35253010` = 35% NTSX + 10% VXUSSIM + 25% GDE + 30% KMLM.
 | ndx_real  | 1.052 | 12.11% | 18.40% | 7/7 | 8.53e-4 |
 
 Net ≈ gross (static stack, year-end DARF, daily-Sharpe tax-neutral).
+
+---
+
+## DE-016 — A.1 — 5-asset global capital-efficient stack (NTSX + NTSI + NTSE + GDE + KMLM, component-swap inside the 1.5× wrapper)
+
+**Origin**: long_term_portfolio iter 015 — A1-5asset-global-stack
+(2026-04-28). Pivot from sleeve-injection failures (012 RSSB / 013
+VBRSIM / 014 VXUSSIM) to **architectural rebalance** of the equity
+sleeve INSIDE the 1.5× capital-efficient wrapper. Tested the literal
+user thesis (NTSX + NTSI + NTSE + GDE + KMLM, 5-asset global stack)
+by synthesizing NTSI/NTSE testfolio-style for the first time:
+
+  - NTSI = 0.90 VEASIM + 0.60 IEFSIM − 0.50 CASHX  (intl-developed 1.5× stack)
+  - NTSE = 0.90 VWOSIM + 0.60 IEFSIM − 0.50 CASHX  (EM 1.5× stack)
+
+Same 90/60/−50 WisdomTree blueprint as NTSX (validated deploy_studies
+2026-04-26). New shared module `studies/long_term_portfolio/proxies.py`
+hosts the synth.
+
+### Pre-committed grid
+
+Mix of 4-asset (no NTSE, full lh_56y) and 5-asset (with NTSE, 1994+
+eff via VWOSIM bottleneck) to isolate EM-as-component contribution:
+
+  - `intl_dev_3025_GK_2025`        = 30% NTSX / 25% NTSI / 0% NTSE / 20% GDE / 25% KMLM (4-asset)
+  - `intl_dev_lite_3515_GK_2030`   = 35% NTSX / 15% NTSI / 0% NTSE / 20% GDE / 30% KMLM (4-asset)
+  - `global_lit_3015_10_GK_2520`   = 30% NTSX / 15% NTSI / 10% NTSE / 25% GDE / 20% KMLM (5-asset)
+  - `global_em_heavy_2520_15_2020` = 25% NTSX / 20% NTSI / 15% NTSE / 20% GDE / 20% KMLM (5-asset)
+
+Selected: `intl_dev_lite_3515_GK_2030` (4-asset variant) by max mean
+selection rule.
+
+### Why it's a dead-end
+
+#### KILL #2 fired: 5-asset configs uniformly Sharpe-regress vs 4-asset
+
+| metric | best 4-asset | best 5-asset | Δ |
+|---|---:|---:|---:|
+| lh_56y    | 1.081 | 0.964 | −0.117 |
+| vt_real   | 0.877 | 0.796 | −0.081 |
+| ndx_real  | 1.048 | 0.974 | −0.074 |
+
+EM exposure within the 1.5× wrapper is structurally subordinate to no-EM
+variants on every dataset.
+
+#### KILL #3 fired: cross-config monotonic regression with intl-equity weight
+
+| config | NTSI+NTSE % | lh_56y S | vt_real S | ndx_real S |
+|---|---:|---:|---:|---:|
+| `intl_dev_lite_3515_GK_2030`   | 15% | **1.081** | **0.877** | **1.048** |
+| `intl_dev_3025_GK_2025`        | 25% | 1.034 | 0.820 | 0.995 |
+| `global_lit_3015_10_GK_2520`   | 25% | 0.964 | 0.796 | 0.974 |
+| `global_em_heavy_2520_15_2020` | 35% | 0.958 | 0.739 | 0.915 |
+
+Sharpe monotonically decreases on ALL 3 datasets as intl-equity weight rises.
+Same monotonic pattern as iter 014 (VXUSSIM at 1× notional outside wrapper) —
+now confirmed inside the leveraged wrapper too.
+
+### Comparison vs iter 011 (substantive incumbent)
+
+| dataset | iter 015 selected | iter 011 (loose) | Δ vs iter 011 (loose) | iter 011 (strict) | Δ vs iter 011 (strict) |
+|---|---:|---:|---:|---:|---:|
+| lh_56y    | 1.081 | 1.046 | **+0.035** | 1.045 | **−0.038** (strict, honest) |
+| vt_real   | 0.877 | 0.960 | **−0.083** | n/a   | (strict ≈ loose, no NaN legs) |
+| ndx_real  | 1.048 | 1.104 | **−0.056** | n/a   | (strict ≈ loose, no NaN legs) |
+
+Loose convention (used by 011/012/013/014/015 for cross-iter consistency)
+gives a +0.035 win on lh_56y, but this is an artifact of partial-stack
+pre-1986 Sharpe inflation. Strict convention (drops rows with any-leg-NaN)
+shows iter 015 LOSES iter 011 on ALL 3 datasets.
+
+### Comparison vs iter 014 (mechanical incumbent)
+
+| dataset | iter 015 | iter 014 | Δ vs iter 014 |
+|---|---:|---:|---:|
+| lh_56y    | 1.081 | 1.055 | +0.026 (within noise) |
+| vt_real   | 0.877 | 0.885 | −0.008 |
+| ndx_real  | 1.048 | 1.052 | −0.004 |
+
+Score TIES at 93=93, fails the +0.10 Sharpe-edge gate on all 3.
+
+### Structural insight (why it's a dead-end)
+
+1. **Direction A is now CLOSED end-to-end.** Both structural variants of
+   the global+factor thesis on iter 011's architecture have been exhausted:
+     - **Sleeve-add** (012 RSSB / 013 VBRSIM / 014 VXUSSIM): adding a
+       constant-weight sleeve at 1× or 2× notional outside the wrapper
+       drags every live window.
+     - **Component-swap** (015 NTSI/NTSE): moving the equity sleeve from
+       US to intl inside the 1.5× wrapper drags every live window.
+2. **The lesson is now overdetermined** (4 consecutive iters, same
+   conclusion): the 2010-2026 US-large-cap-dominant regime is so strong
+   that ANY deviation from pure US equity in the equity sleeve costs
+   Sharpe — whether the deviation is at 1× notional outside the wrapper
+   or at 1.5× notional inside it.
+3. **Iter 011 NTSX is the architectural ceiling for static cap-efficient
+   stacks in this regime.** Pure-US equity in the leveraged wrapper +
+   GDE + KMLM is genuinely the local optimum.
+4. **EM-as-component is independently dead** (KILL #2): NTSE adds no
+   value at any tested weight, even inside the wrapper. EM premium is
+   too dormant in 2010-2026 to justify the basis-point allocation.
+
+### What CAN be tried instead
+
+- **B.6 — Regime-conditional factor tilt** (highest priority): VBRSIM
+  weight = f(value spread or factor momentum 12-1). Pre-commit ≤ 3
+  configs. Factor sleeve only fires when premium is "live"; KMLM/GDE
+  cover otherwise. `[advances_fin_ml, p.208-211]` (PBO discipline) +
+  `[risk_parity, ch.2]` (factor framework). Carries DSR-regression
+  trap risk from strategy_hunt_loop "regime gate on existing winner"
+  experience — must keep grid small.
+- **C — Fundamentally different mechanism**: Antonacci GEM cross-class
+  top-K (iter 079 archive style) or vol-managed 60/40 (iter 006
+  archive). Different optimization target entirely. Would break out
+  of the static-cap-efficient-stack frame that iter 011 anchors.
+- **Stop hunting; declare iter 011 deploy-ready**: 4 consecutive iters
+  fail to substantively beat iter 011, the literature thesis has been
+  fully tested at the static-stack level. Defensible to prepare
+  mandate §7 override request and reactivate hunting in 6-12 months
+  when post-2026 OOS data is meaningful.
+
+### Results summary
+
+Selected: `intl_dev_lite_3515_GK_2030` = 35% NTSX + 15% NTSI + 20% GDE + 30% KMLM (4-asset variant).
+
+| dataset | gross Sharpe (loose) | gross Sharpe (strict) | gross CAGR | gross MDD | Gates | DSR p |
+|---|---:|---:|---:|---:|---:|---:|
+| lh_56y    | 1.081 | 1.007 | 11.63% | 27.99% | 6/7 | 2.03e-12 |
+| vt_real   | 0.877 | 0.877 | 10.64% | 26.50% | 7/7 | 4.00e-3  |
+| ndx_real  | 1.048 | 1.048 | 11.57% | 17.54% | 7/7 | 9.03e-4  |
+
+Net ≈ gross (static stack, year-end DARF, daily-Sharpe tax-neutral).
+
+---
+
+## DE-017 — B.6 — VBRSIM regime-gated factor tilt (worse than constant-weight iter 013)
+
+**Origin**: long_term_portfolio iter 017 — B6-VBRSIM-regime-gated (2026-04-28).
+
+Test: does a binary regime gate on VBRSIM (weight = 25% when signal ON, 0% when OFF, KMLM absorbs slack) recover iter 013's lh_56y advantage without the live-window cost?
+
+3 pre-committed configs (≤3 to limit DSR penalty per `[advances_fin_ml, p.222-223]`):
+- mom12: VBRSIM trailing 12-1m return > 0
+- value: VBRSIM trailing 36m Sharpe > 0.5
+- dual: mom12 OR value
+
+Selected: `vbrsim_value` (pct_on avg 66%).
+
+### Why it's a dead-end
+
+Regime gate makes things **worse** than constant-weight iter 013 on EVERY dataset:
+
+| dataset | iter 013 (constant) | iter 017 (gated) | Δ |
+|---|---:|---:|---:|
+| lh_56y | 1.126 | 1.043 | **−0.083** |
+| vt_real | 0.923 | 0.884 | −0.039 |
+| ndx_real | 1.075 | 0.967 | **−0.108** |
+
+Three failure mechanisms:
+1. **Signal lag**: 36m Sharpe / 12-1m return turn ON 6-12m after the regime starts, missing the early premium reset.
+2. **Whipsaw cost**: ON→OFF→ON transitions are rebalances; +5-15bp/yr in deploy via DARF.
+3. **Regime classification noise**: ~30y data → wide CIs on Sharpe estimates → gate fires on noise.
+
+Classic "regime-gate-on-existing-winner" DSR-regression trap that PBO discipline (López de Prado p.208-211) was designed to detect. PBO doesn't fire here only because N=3 triggers the framework's CSCV-instability warning.
+
+### KILL #1 fired
+
+Best-of-grid loses iter 011 substantively on 3/3 strict AND fails to match iter 013's +0.080 lh_56y advantage (iter 017 is +0.003 vs iter 013's +0.080).
+
+### Family-level conclusion
+
+**B-direction is now CLOSED end-to-end**:
+- B.4 constant-weight VBRSIM (iter 013): tier WINNER but no advance vs iter 011
+- B.5 UMD overlay direct (iter 016): WINNER tier 91/100, **first positive signal — only B-direction with real edge**
+- B.6 VBRSIM regime-gated (iter 017): STRONG, worse than B.4
+
+The only B-direction with a genuine substantive edge is **B.5 UMD overlay**.
+
+### What CAN be tried instead
+
+- Investable momentum sub-iter (deferred): test MTUM/SPMO/IDMO live (2013+) instead of academic UMD; quantify how much B.5 edge survives long-only constraint + transaction costs.
+- C-direction breadth (iters 018-022 per the loop plan).
+
+### Results summary
+
+Selected: `vbrsim_value` = signal `VBRSIM 36m Sharpe > 0.5`, weights ON/OFF skeletons.
+
+| dataset | gross Sharpe (loose) | gross Sharpe (strict) | gross CAGR | gross MDD | gates |
+|---|---:|---:|---:|---:|---:|
+| lh_56y | 1.043 | 0.970 | 12.15% | 26.39% | 5/7 |
+| vt_real | 0.884 | 0.886 | 11.20% | 22.49% | 6/7 |
+| ndx_real | 0.967 | 0.969 | 11.37% | 22.49% | 6/7 |
+
+`[advances_fin_ml, p.208-211]`, `[stocks_on_the_move, p.21-30]`, `[risk_parity, ch.5, p.10]`
+
+---
+
+## DE-018 — C.1 — Antonacci GEM cross-class top-K (testfolio universe)
+
+**Origin**: long_term_portfolio iter 018 (2026-04-28).
+
+4 configs varying universe (5/6/7-asset) and K (top-K). Selected `gem_6asset_K2` (SPY/QQQ/VEA/TLT/GLD/KMLM, K=2, fallback KMLM).
+
+**Why it's a dead-end**: best-of-grid (Sharpe 0.763/0.888/0.889) loses iter 011 substantively on lh_56y (−0.283) and ndx_real (−0.215). Only vt_real positive (+0.182, helped by 2008 crisis rotation). Sharpe-edge winner condition fails (only 1/3 +0.10).
+
+Tier PROMISING 74/100, **winner_conditions_met=FALSE**.
+
+**KILL #1 fired**.
+
+**Why iter 079 archive (similar approach) was a winner but iter 018 isn't**:
+1. iter 079 universe was wider (8-12 equity diversifiers); iter 018 only 5-7 broad asset classes.
+2. iter 079 evaluated on Tiingo SPY 17y only; iter 018 includes lh_56y where 14y of US-equity dominance penalize monthly switching.
+3. iter 079 may have used 1m/3m lookback; iter 018 uses 12-1m (Antonacci classic — known to lag in rapid regime shifts).
+
+`[stocks_on_the_move, ch.6]`, Antonacci 2014.
+
+---
+
+## DE-024 — B.2 — MDD-trigger defensive (rare-event regime gate)
+
+**Origin**: long_term_portfolio iter 024 (2026-04-29).
+
+3 pre-committed configs (≤3 to limit DSR penalty per advances_fin_ml p.222):
+mdd_trigger_10pct_TLT, _15pct_TLT, _15pct_CASH. Forward-looking signal
+(`pct_change(21).shift(1)` — no peek). When SPY 21d < threshold, reduce 50%
+NTSX, add 17.5% TLT or CASH defensive sleeve.
+
+Selected `mdd_trigger_10pct_TLT`. Gross Sharpe 1.145 / 0.982 / 1.123. NEW
+STRONG 82/100 winner_conds=True, LEGACY STRONG 87/100. vs iter 011: +0.099 /
++0.022 / +0.019 loose (3/3 marginal positive).
+
+**Why it's a dead-end**: trigger fires only 1-2% of trading days (10% threshold
+on SPY 21d return is rare event). Strategy is iter 011 base 99% of time +
+brief defensive shifts during 2008/2020/2022. **Dominated by iter 023 TLT-static**
+in every dataset:
+- lh_56y: iter 023 1.189 > iter 024 1.145 (Δ +0.044)
+- vt_real: 1.004 > 0.982 (Δ +0.022)
+- ndx_real: 1.135 > 1.123 (Δ +0.012)
+
+PBO N=3 warning (CSCV unstable below N=4) reported informationally.
+
+**Lesson**: rare-event regime trigger fires too rarely to drive significant
+alpha in long-history portfolio mandate. Continuous defensive sleeve (iter 023)
+captures duration alpha better than gated defensive shift. **Direction B.2
+(regime-trigger defensive on iter 011) closed.**
+
+`[risk_parity, ch.5, p.10]`, `[systematic_trading, p.137-148]` Carver,
+`[advances_fin_ml, p.208-211, p.222-223]`.
+
+---
+
+## DE-025 — B.3 — Continuous tail-hedge with deployable VXX
+
+**Origin**: long_term_portfolio iter 025 (2026-04-29).
+
+4 configs sweep VXX 2.5/5/7.5/10% on iter 011 base, substituting from KMLM.
+**Methodological diagnostic** to quantify gap between iter 022's synthetic
++5pp Sharpe model artifact and deployable reality (VXX real, Tiingo cache,
+inception 2009-01-30).
+
+Pre-run no-free-lunch sanity check ✅: VXX standalone Sharpe **−0.738**, CAGR
+**−51%/yr**, MDD **−100%** (legitimate destroyer of capital).
+
+Selected `vxx_lite_3525_375_25` (2.5% VXX). Gross Sharpe 1.107 / 0.921 / 1.097.
+NEW STRONG 83/100 (2/3 +0.05 vs SPY; vt_real misses by 0.029), LEGACY WINNER
+93/100. vs iter 011: +0.061 / **−0.039** / **−0.007** (1/3 positive substantively).
+
+**KILL #1 (no-free-lunch monotonic) ✅ PASS**: Sharpe DECREASES monotonically
+as VXX% rises 2.5% → 10% in ALL 3 datasets:
+- lh_56y: 1.107 → 0.982 (Δ −0.125 over 7.5pp)
+- vt_real: 0.921 → 0.641 (Δ −0.280)
+- ndx_real: 1.097 → 0.854 (Δ −0.243)
+
+**Quantified gap iter 022 synthetic vs iter 025 real (10% hedge)**:
+- lh_56y: 1.520 → 0.982 (Δ −0.538)
+- vt_real: 1.710 → 0.641 (Δ −1.069)
+- ndx_real: 1.684 → 0.854 (Δ −0.830)
+
+iter 022 synthetic model **overstated Sharpe by 0.5-1.1 points** across
+datasets — confirms iter 022 score 100/100 was 100% model failure (4 bugs
+documented: hindsight via 21d trigger, no vega cost, wrong path-dependence,
+no spread/liquidity drag).
+
+**Lesson**: continuous tail-hedge with deployable VXX is a net Sharpe loss
+at every tested weight. Spitznagel's Universa real-implementation +1-2pp
+CAGR uplift requires OTM puts + short-vol overlay, not VXX alone. iter 025
+captures only the negative side of that ledger. **Direction B.3 (continuous
+VXX hedge) closed.**
+
+Spitznagel *Safe Haven* (2021); `[risk_parity, ch.5]`; `[advances_fin_ml,
+p.208-211]` PBO + monotonic.
+
+---
+
+## DE-026 — B.4 — DATA-LIMITED dead-end (MTUM/SPMO/IDMO unavailable)
+
+**Origin**: long_term_portfolio iter 026 (2026-04-29).
+
+**Status**: backtest never run. Data unavailable.
+
+**Plan**: test investable momentum (MTUM/SPMO/IDMO live) as deployable
+substitute for iter 016's UMD academic factor (which showed +0.088 lh_56y
+strict edge). 4 configs sweep MTUM 10-25% on iter 011 base.
+
+**Pre-run inventory (2026-04-29 02:30 UTC)**:
+- MTUM (iShares MSCI USA Momentum, live 2013-04+): ❌ Tiingo cache + ❌ testfolio
+- SPMO (Invesco S&P 500 Momentum, live 2015-10+): ❌ ❌
+- IDMO (Invesco S&P Intl Developed Momentum, live 2015-08+): ❌ ❌
+- MTUMSIM (potential testfolio synth): n/a — not constructed
+- TIINGO_API_KEY: ❌ empty (subscription cancelled)
+
+Tiingo bulk download script (`scripts/tiingo_bulk_download.py`) inventory:
+broad ETFs, sector SPDRs, bonds, commodities/vol, leveraged — **no factor ETFs**.
+
+**Implications**:
+1. iter 016 UMD academic edge (+0.088 lh_56y, +0.047 ndx_real, −0.016 vt_real
+   strict) stays the standing momentum reference until investable data
+   becomes available.
+2. **B.5 momentum direction is paused, NOT closed** — per
+   [stocks_on_the_move, p.21-30] Clenow + Frazzini-Israel-Moskowitz 2018
+   (Trading Costs of Asset Pricing Anomalies), MTUM/SPMO capture ~60-70%
+   of UMD edge after long-only constraint + 10-30bp/yr turnover.
+   Estimated MTUM real edge: ~+0.05 lh_56y, marginal but positive.
+3. Reactivation requires Tiingo subscription resumption OR MTUMSIM
+   testfolio synth construction (would need iShares prospectus + MSCI
+   Momentum Index history).
+
+Similar to DE-021 (sector rotation 4-asset, Tiingo limited to 4 sectors
+with full history). iter 026 has zero data, so no run was attempted.
+
+`[stocks_on_the_move, p.21-30]` Clenow; Frazzini-Israel-Moskowitz 2018;
+iter 016 UMD academic — proxy result.
