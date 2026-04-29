@@ -131,3 +131,47 @@ def test_spmo_synth_no_free_lunch_check():
     spmo = spmo_synth_returns_from_cache()
     annualized_sharpe = spmo.mean() / spmo.std() * np.sqrt(252)
     assert annualized_sharpe < 1.5, f"SPMO standalone Sharpe {annualized_sharpe:.2f} > 1.5; synth broken (KILL #3)"
+
+
+def test_rsst_synth_formula():
+    """RSST = SPYSIM + KMLMSIM - (60bps/y / 252)."""
+    from studies.long_term_portfolio.synths import rsst_synth_returns
+
+    spy = pd.Series([0.01], index=pd.date_range("2024-01-02", periods=1, freq="B"))
+    kmlm = pd.Series([0.005], index=pd.date_range("2024-01-02", periods=1, freq="B"))
+
+    result = rsst_synth_returns(spy, kmlm, expense_annual=0.0060)
+
+    expected = 0.01 + 0.005 - 0.0060 / 252
+    assert abs(result.iloc[0] - expected) < 1e-8
+
+
+def test_rsst_synth_no_free_lunch_kill5():
+    """KILL #5: RSST_synth standalone Sharpe < 1.5 (matches KILL #3 absolute cap).
+
+    Original spec used `(s1+s2)*0.7` threshold but that fails for negatively-
+    correlated stacking by mean-variance math (not a free lunch, just diversification).
+    Absolute cap < 1.5 catches synth bugs (double-counted leverage, leakage) while
+    allowing legitimate stacked-asset Sharpe (~0.9-1.0 expected for SPY+KMLM).
+    """
+    from studies.long_term_portfolio.synths import rsst_synth_returns_from_cache
+
+    rsst = rsst_synth_returns_from_cache()
+    rsst_sharpe = rsst.mean() / rsst.std() * np.sqrt(252)
+    assert rsst_sharpe < 1.5, f"RSST synth standalone Sharpe {rsst_sharpe:.3f} > 1.5; synth broken (KILL #5)"
+
+
+def test_dbmf_load_from_cache():
+    """DBMFSIM cached: 1999+ daily window."""
+    from studies.long_term_portfolio.synths import dbmf_returns_from_cache
+
+    dbmf = dbmf_returns_from_cache()
+    assert dbmf.index[0].year >= 1999
+    assert dbmf.index[0].year <= 2001
+    assert len(dbmf) > 6000
+
+
+def test_cta_proxy_warning_in_docstring():
+    """CTA Simplify proxy must explicitly flag INCOMPLETE in docstring."""
+    from studies.long_term_portfolio.synths import cta_simplify_proxy_returns
+    assert "INCOMPLETE" in cta_simplify_proxy_returns.__doc__

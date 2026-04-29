@@ -141,3 +141,55 @@ def idmo_synth_returns_from_cache() -> pd.Series:
     vea = load_testfolio_series("VEASIM").pct_change().dropna()
     umd = _load_umd_kf_returns()
     return momentum_synth_returns(vea, umd_factor_returns=umd, capture_coef=0.60, expense_annual=0.0060)
+
+
+def rsst_synth_returns(
+    spy_returns: pd.Series,
+    kmlm_returns: pd.Series,
+    expense_annual: float = 0.0060,
+) -> pd.Series:
+    """Return Stacked US + MF (RSST) synth: 100% S&P + 100% MF - expense.
+
+    INCOMPLETE: real RSST uses Newfound/ReSolve trend MF engine, not KFA
+    MLM Index. Engine differs. Real RSST inception 2023-09. Long-history
+    backtest using KMLMSIM as MF proxy will track imperfectly.
+
+    Citation: ReSolve/Newfound Return Stacked methodology (2023);
+    [risk_parity, ch.5] Carlson cap-efficient stacking.
+    """
+    daily_expense = _annual_drag_to_daily(expense_annual)
+    aligned = pd.concat({"spy": spy_returns, "kmlm": kmlm_returns}, axis=1).dropna()
+    return aligned["spy"] + aligned["kmlm"] - daily_expense
+
+
+def rsst_synth_returns_from_cache() -> pd.Series:
+    """RSST synth from cache."""
+    spy = load_testfolio_series("SPYSIM").pct_change().dropna()
+    kmlm = load_testfolio_series("KMLMSIM").pct_change().dropna()
+    return rsst_synth_returns(spy, kmlm)
+
+
+def dbmf_returns_from_cache() -> pd.Series:
+    """DBMFSIM daily returns from cache: 1999+, 26y. Direct testfolio synth.
+
+    Citation: testfolio extracts DBMFSIM as iMGP DBi Managed Futures
+    proxy following SG CTA Index methodology.
+    """
+    return load_testfolio_series("DBMFSIM").pct_change().dropna()
+
+
+def cta_simplify_proxy_returns(scaling: float = 1.0) -> pd.Series:
+    """CTA Simplify proxy via KMLMSIM - INCOMPLETE for real CTA Simplify.
+
+    Real CTA Simplify uses Altis Partners multi-strategy engine (trend +
+    carry + mean-reversion + risk-off). KMLMSIM is single-strategy (KFA
+    MLM rules-based trend). This proxy is KMLMSIM scaled by `scaling`
+    (default 1.0 = pure KMLMSIM passthrough).
+
+    Use only as DIAGNOSTIC in iter 039 MF sleeve sensitivity, with explicit
+    INCOMPLETE caveat in final_report.md.
+
+    Citation: Simplify Asset Mgmt CTA prospectus + Altis Partners docs.
+    """
+    kmlm = load_testfolio_series("KMLMSIM").pct_change().dropna()
+    return kmlm * scaling
