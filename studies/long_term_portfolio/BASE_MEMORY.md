@@ -1,13 +1,14 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 41
+total_iterations: 42
 winners_found: 5
 status: hunting
-latest_iteration: "041-2026-04-30-F7-US-Stacked-MF"
-latest_score: 91  # WINNER NEW; F7 finalist, f7_lite selected, KILL #4 vs iter 023 baseline FIRES (lh_56y −0.117) but mandate winner_conds met (3/3 SPY+0.05, gates, MDD strict, DSR p<0.05)
+latest_iteration: "042-2026-04-30-MF-sensitivity"
+latest_score: 88  # STRONG NEW; Phase 3 MF sleeve sensitivity on iter 023; selected mf_kmlm by full-window rule but apples-to-apples 26y intersection ⇒ deploy recommendation = SPLIT (50/50 KMLM+DBMF)
+recommended_mf_sleeve: SPLIT  # 50/50 KMLMSIM + DBMFSIM for iter 023 chassis: best 26y-intersection Sharpe (1.0004) + best MDD (19.91%) + AUM stability via $3.2B DBMF
 beats_incumbent: false  # iter 014 incumbent score 93 still > 91
-cumulative_n_trials: 148  # 136 + 4 (iter 039) + 4 (iter 040) + 4 (iter 041); Phase 2 complete (F2/F3/F7 only; F4/F5/F6 skipped)
+cumulative_n_trials: 152  # 148 + 4 (iter 042 MF sensitivity)
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -155,6 +156,22 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 042 — 2026-04-30 — MF-sensitivity (STRONG NEW 88 — Phase 3 deploy diagnostic; deploy recommendation = SPLIT 50/50 KMLM+DBMF on apples-to-apples 26y intersection)
+
+- **Phase 3 MF-sleeve deploy diagnostic.** Hypothesis: substitute iter 023's 35% KMLMSIM with DBMF / 50-50 split / CTA-proxy and determine deploy-ready MF sleeve recommendation under AUM stability constraint (DBMF $3.2B vs KMLM $600M for 20-30y). Holds NTSX 25 / GDE 25 / TLT 15 constant. KILL #1 not applicable (deploy diagnostic, not sleeve test). Citation `[ilmanen_expected_returns, ch.19]` MF crisis-alpha + iMGP DBi DBMF prospectus + KFA MLM Index prospectus + Simplify CTA prospectus.
+- 4 configs: `mf_kmlm` (baseline iter 023), `mf_dbmf` (full DBMF), `mf_split` (50/50 KMLM+DBMF 17.5%/17.5%), `mf_cta_proxy` (INCOMPLETE — structurally = mf_kmlm because Altis multi-strategy engine not modeled in testfolio).
+- Selector picked `mf_kmlm` (full 38y lh_56y window Sharpe 1.111) by `max mean(Sharpe/SPY_Sharpe)` across datasets — **but this is window-biased**: KMLMSIM 1988+ vs DBMFSIM 2000+. The selector compares kmlm on 38y vs dbmf/split on 26y on lh_56y — NOT apples-to-apples.
+- **Apples-to-apples 26y intersection (2000-2026)** on lh_56y:
+  - mf_kmlm  truncated: Sharpe **0.9626**, CAGR 9.73%, MDD 21.13% ← worst
+  - mf_dbmf  native:    Sharpe **0.9947**, CAGR 10.42%, MDD 21.78%
+  - mf_split native:    Sharpe **1.0004**, CAGR 10.10%, MDD 19.91% ← best Sharpe + best MDD
+- **Deploy recommendation = SPLIT** (50/50 KMLMSIM + DBMFSIM, 17.5% each). Rationale per hypothesis decision rule: split Sharpe ≥ both within 0.05 (split−DBMF=+0.006, split−KMLM=+0.038) ⇒ recommend split for engine diversification. Bonus: best 26y MDD (19.91%), AUM stability (50% sleeve at $3.2B DBMF), engine diversification (KMLM pure-trend KFA Index + DBMF SG CTA Index replication). CAGR cost vs DBMF: −0.32pp; acceptable trade-off.
+- **Why not pure KMLM?** Full-window Sharpe 1.111 is a window artifact — 1988-1999 includes KMLM Index's golden trend era (LTCM '98 vol harvest, '90s commodity trends) not representative of 20-30y forward.
+- **Why not pure DBMF?** Hypothesis rule "DBMF Sharpe ≈ KMLM within 0.05 ⇒ recommend DBMF for AUM" fires (Δ+0.032), but split rule trumps because split captures the AUM advantage of DBMF (50% of sleeve at $3.2B issuer) while retaining KMLM track record + transparency.
+- **CTA Simplify INCOMPLETE flag**: `mf_cta_proxy` is KMLMSIM duplicated. Simplify CTA's Altis Partners engine (multi-strategy: trend + carry + mean-reversion + risk-off overlay) needs a sub-strategy synth before honest comparison. Future work.
+- **Mandate score**: 88/100 STRONG NEW (winner_conds met), DSR p=2.96e-09 / 9.59e-04 / 5.18e-04 (cumulative_n_trials=152). The selected `mf_kmlm` row is the full-window incumbent metrics; the deploy-ready sleeve choice from this iter is `SPLIT`, not the auto-selected baseline.
+- **Phase 3 implication**: Deploy diagnostic complete. The iter 023 chassis (NTSX 25 / GDE 25 / MF 35 / TLT 15) is robust to MF engine choice — all 3 honest configs pass SPY+0.05 winner conditions. Deploy recommendation **SPLIT** maximises Sharpe + minimises MDD + diversifies issuer/engine; pure-DBMF is acceptable second choice (CAGR-leader); pure-KMLM for users prioritising 38y history quote (acknowledging window bias). Task 23 (FINAL_REPORT_seven_portfolios.md) should anchor the iter 023 chassis MF sleeve as `SPLIT` for production deploy guidance.
 
 ### 041 — 2026-04-30 — F7-US-Stacked-MF (WINNER NEW 91 — Phase 2 finalist 3/3, RSST stacked-MF, KILL #2 fires monotonic, KILL #4 vs iter 023 fires lh_56y)
 
