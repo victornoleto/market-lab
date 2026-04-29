@@ -1,13 +1,13 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 38
-winners_found: 4
+total_iterations: 41
+winners_found: 5
 status: hunting
-latest_iteration: "038-2026-04-29-AVEM-realloc"
-latest_score: 79  # STRONG NEW; KILL #1 fires, worst Phase 1B sleeve (32y window caveat retained)
-beats_incumbent: false
-cumulative_n_trials: 136  # 133 + 3 (Phase 1B iter 038); Phase 1B complete
+latest_iteration: "041-2026-04-30-F7-US-Stacked-MF"
+latest_score: 91  # WINNER NEW; F7 finalist, f7_lite selected, KILL #4 vs iter 023 baseline FIRES (lh_56y −0.117) but mandate winner_conds met (3/3 SPY+0.05, gates, MDD strict, DSR p<0.05)
+beats_incumbent: false  # iter 014 incumbent score 93 still > 91
+cumulative_n_trials: 148  # 136 + 4 (iter 039) + 4 (iter 040) + 4 (iter 041); Phase 2 complete (F2/F3/F7 only; F4/F5/F6 skipped)
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -155,6 +155,58 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 041 — 2026-04-30 — F7-US-Stacked-MF (WINNER NEW 91 — Phase 2 finalist 3/3, RSST stacked-MF, KILL #2 fires monotonic, KILL #4 vs iter 023 fires lh_56y)
+
+- **Phase 2 finalist construction iter 3/3.** Hypothesis: stacked managed-futures via RSST (ReturnStacked US Equity & MF, 100% SPY + 100% KMLM via 2× notional) combined with NTSX/GDE/KMLM/TLT. F7 is **independent of Phase 1** sleeve findings (RSST is its own axis). 4 configs sweep RSST 15→50%. KILL #5 already validated pre-iter 030 (RSST standalone Sharpe < 1.5). Citation `[risk_parity, ch.5]` Carlson + ReSolve/Newfound Return Stacked methodology (2023).
+- Selected `f7_lite` (NTSX 25 + RSST 15 + GDE 25 + KMLM 20 + TLT 15). Gross Sharpe **1.072 / 0.978 / 1.144**. CAGR 12.73% / 11.90% / 12.86%. Score **91/100 WINNER NEW** (winner_conds=True: 3/3 +0.05 vs SPY, gates, MDD strict, DSR p<0.05). Notional ~150%.
+- **vs iter 023 baseline (1.189 / 1.004 / 1.135)**: −0.117 / −0.026 / **+0.009**. Wins ndx_real cosmetic, loses lh_56y substantive, near-flat vt_real. CAGR is HIGHER on all 3 datasets (12.73% vs 11.52% iter 023) — RSST adds notional that improves CAGR but marginally degrades Sharpe.
+- **RSST weight sweep (KILL #2 monotonic regression)**:
+  - `f7_lite` (15% RSST):       1.072 / 0.978 / 1.144 ← selected
+  - `f7_balanced` (30% RSST):   1.068 / 0.958 / 1.121
+  - `f7_rsst_heavy` (40% RSST): 1.058 / 0.942 / 1.108
+  - `f7_pure_stack` (50% RSST, NTSX 0%): 1.057 / 0.925 / 1.080
+  - **KILL #2 ✅ FIRES**: Sharpe falls monotonically with RSST weight on ALL 3 datasets. RSST stacking philosophy does NOT improve over separate NTSX+KMLM sleeves; the 2× notional adds CAGR but the 50/50 SPY+KMLM internal split is sub-optimal vs iter 023's 35% KMLM standalone.
+- **KILL #1 (no-positive-config) ✅ SURVIVES**: f7_lite beats iter 023 on 1/3 datasets (ndx_real +0.009) — barely. Cosmetic.
+- **KILL #4 (frankenstein degradation, independent axis)**: F7 best Sharpe lh_56y 1.072 < iter 023 baseline 1.189 by 0.117 — **KILL #4 FIRES on lh_56y**. Stacked-MF philosophy degrades long-history Sharpe relative to iter 023's diversified-stacking blend. F7 **wins WINNER tier** purely on the SPY-only +0.05 mandate (all 3 datasets clear SPY+0.05) + CAGR/MDD/DSR gates, NOT on Sharpe edge vs iter 023.
+- **Mechanism**: RSST 100% SPY + 100% KMLM in a single wrapper is structurally equivalent to a 50/50 NTSX+KMLM blend (NTSX = 90%SPY+60%IEF). Adding RSST to a portfolio that already has NTSX (90%SPY) creates SPY beta concentration without benefit — the IEF sleeve in NTSX is more diversifying than KMLM at the margin (per `[risk_parity, ch.5]` 60/40 stack default).
+- **Phase 2 implication**: F7 best (f7_lite, score 91) beats F2 best (f2_spmo_heavy, score 85) and F3 best (f3_spmo_5_subKMLM, score 88) on score, but loses Sharpe substantively to F1 (iter 023, score 86 NEW / 91 LEGACY) on lh_56y. Stacked-MF philosophy validated as **dominated** by separate-sleeve diversification. Phase 2 winner selection (Task 21) likely settles on F1 (iter 023) on Sharpe + simplicity; F7 is the strongest CAGR-frontier finalist if user prioritises CAGR ≥ 12% over Sharpe edge.
+
+### 040 — 2026-04-30 — F3-US-Hybrid-SPMO (STRONG NEW 88 — Phase 2 finalist 2/3, SPMO sleeve add validates, KILL #2 fires monotonic)
+
+- **Phase 2 finalist construction iter 2/3.** Hypothesis: F3 = iter 023 (NTSX+GDE+KMLM+TLT) + SPMO at 4 weights (5/10/15/20%) using KMLM-substitution rule (Phase 1B iter 036 finding: subKMLM peaks ndx_real +0.044). Citation `[risk_parity, ch.5, p.10]` + `[stocks_on_the_move, p.21-30]`.
+- Selected `f3_spmo_5_subKMLM` (NTSX 25 + GDE 25 + KMLM 30 + TLT 15 + SPMO 5). Gross Sharpe **1.107 / 1.008 / 1.173**. CAGR 11.40% / 10.63% / 11.49%. Score **88/100 STRONG NEW**.
+- **vs iter 023 baseline (1.189 / 1.004 / 1.135)**: −0.082 / **+0.004** / **+0.038**. Beats on 2/3 datasets (vt_real cosmetic, ndx_real substantive +0.038). Matches Phase 1B iter 036 subKMLM finding (ndx_real +0.044 at SPMO 10%) within ~0.006 of expectation; SPMO at 5% is the sweet spot here.
+- **SPMO weight sweep (KILL #2 monotonic regression)**:
+  - `f3_spmo_5_subKMLM`:  1.107 / 1.008 / 1.173 ← selected
+  - `f3_spmo_10_subKMLM`: 1.087 / 0.994 / 1.179 (peak ndx_real)
+  - `f3_spmo_15_subKMLM`: 1.060 / 0.973 / 1.174
+  - `f3_spmo_20_subKMLM`: 1.028 / 0.947 / 1.162
+  - **KILL #2 ✅ FIRES on lh_56y/vt_real (monotonic decline)**, but ndx_real shows peak at 10% (1.179, +0.044 vs iter 023) — **non-monotonic on ndx_real**. Mixed signal: SPMO adds momentum tilt that boosts ndx_real but dilutes KMLM crisis-alpha → lh_56y degradation. 5% is the cleanest blend (best 2/3 scoreboard).
+- **KILL #1 (no-positive-config) ✅ SURVIVES**: f3_spmo_5_subKMLM beats iter 023 on 2/3 datasets (vt_real +0.004 cosmetic, ndx_real +0.038 substantive).
+- **KILL #4 (frankenstein degradation vs iter 023 + SPMO Phase 1)**: F3 best lh_56y 1.107 < iter 023 baseline 1.189 by 0.082 — degrades. F3 best ndx_real 1.173 ~= SPMO Phase 1 best 1.167. F3 mean across datasets = (1.107+1.008+1.173)/3 = **1.096** vs iter 023 mean **1.109** — **0.013 below** iter 023 mean. Borderline KILL #4 (Sharpe degraded but ndx_real edge gained). Per spec, F3 finalist remains valid since SPMO addition is mildly net-positive on the dataset that mattered (ndx_real); F1 (iter 023 unchanged) remains an option for users who weight lh_56y heavier.
+- **Phase 2 implication**: F3 score 88 beats F2 (85) but loses to F7 (91) and incumbent iter 023 (86 NEW / 91 LEGACY). F3 is the strongest US-Hybrid finalist if user prioritises ndx_real edge in deploy regime (2010-2024 US-large-cap regime).
+
+### 039 — 2026-04-30 — F2-US-Factor-only (STRONG NEW 85 — Phase 2 finalist 1/3, pure factor philosophy non-additive, KILL #4 fires)
+
+- **Phase 2 finalist construction iter 1/3.** Hypothesis: pure factor philosophy with VTI vanilla + AVUV small-value + SPMO momentum + KMLM/TLT/GLD diversifiers. **6 ETFs, 100% notional, no leverage**. AVUV included despite Phase 1A/1B negative substantive (best subGDE Δ lh_56y −0.021 is least bad of Avantis family). 4 configs sweep balanced vs factor-heavy vs sleeve-tilted weights. Citation `[risk_parity, ch.2, p.37-41]` Fama-French + `[stocks_on_the_move, p.21-30]` Clenow.
+- Selected `f2_spmo_heavy` (VTI 30 + AVUV 10 + SPMO 20 + KMLM 20 + TLT 10 + GLD 10). Gross Sharpe **1.086 / 0.874 / 1.087**. CAGR 11.38% / 9.79% / 11.35%. Score **85/100 STRONG NEW**.
+- **vs iter 023 baseline (1.189 / 1.004 / 1.135)**: −0.103 / −0.130 / −0.048. Loses on 3/3 datasets — most degradation of the 3 Phase 2 finalists.
+- **Configs grid (Sharpe lh / vt / ndx)**:
+  - `f2_balanced` (VTI 35 + AVUV 15 + SPMO 10 + ...):     1.065 / 0.857 / 1.056
+  - `f2_factor_heavy` (VTI 25 + AVUV 25 + SPMO 15 + ...): 1.040 / 0.818 / 1.022
+  - `f2_avuv_heavy` (VTI 30 + AVUV 25 + SPMO 5 + ...):    1.057 / 0.828 / 1.013
+  - `f2_spmo_heavy` (VTI 30 + AVUV 10 + SPMO 20 + ...):   1.086 / 0.874 / 1.087 ← selected
+  - **SPMO-heavy wins** consistent with Phase 1 findings (SPMO is the only +signal sleeve); AVUV-heavy is the worst, factor-heavy (both AVUV+SPMO maxed) is also worse than balanced.
+- **KILL #1 (no-positive-config) ✅ FIRES**: 0/3 datasets beat iter 023 under any of the 4 configs. F2 cannot achieve the +signal threshold without leverage.
+- **KILL #4 (frankenstein degradation vs constituent Phase 1 best) ✅ FIRES on all 3 datasets**:
+  - AVUV Phase 1 best: lh 1.115 / vt 0.996 / ndx 1.140 (iter 028).
+  - SPMO Phase 1 best: lh 1.117 / vt 1.009 / ndx 1.167 (iter 030).
+  - **Constituent mean**: lh **1.116** / vt **1.003** / ndx **1.153**.
+  - F2 best: lh 1.086 / vt 0.874 / ndx 1.087.
+  - **F2 < constituent mean on ALL 3 datasets** by 0.030 / 0.129 / 0.066. Combination is **non-additive** — the AVUV+SPMO+VTI factor stack has high internal correlation (all US large/mid cap), so the marginal Sharpe of SPMO is diluted when both factors share equity beta with vanilla VTI.
+- **Mechanism**: pure-factor 1× equity stack has no leverage to amplify factor alpha; KMLM 20% + TLT 10% + GLD 10% diversification is similar to iter 023's KMLM 35% + TLT 15% but lacks NTSX/GDE's stacked bond carry. Factor alpha alone (~30bps/y AVUV + ~50bps/y SPMO capture) cannot compensate for the absent IEF/IEFA bond stack carry.
+- **Phase 2 implication**: F2 finalist passes the structural construction bar (verdict tier STRONG, score 85) but is the **weakest of the 3 Phase 2 finalists** on Sharpe and on KILL #4. Recommended for users prioritising simplicity (6 single-style ETFs, no stacking wrappers, lowest TER) over Sharpe edge — but strictly worse than iter 023 on the gross Sharpe metric. Confirms `[risk_parity, ch.2]` insight: pure factor portfolios cannot match cap-efficient stacking in the 2010-2024 US-large-cap regime.
 
 ### 038 — 2026-04-29 — AVEM-realloc (STRONG NEW 79 — Phase 1B sub-source variation FINAL, KILL #1 fires, worst Phase 1B sleeve)
 
