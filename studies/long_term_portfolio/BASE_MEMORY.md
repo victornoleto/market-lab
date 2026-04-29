@@ -3,7 +3,8 @@ mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MD
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
 total_iterations: 43
 winners_found: 6
-status: hunting
+status: pick_complete  # 2026-04-29 1725: F1+SPLIT deploy-ready after 17-iter sweep (027-043), n_trials=156. Awaiting INTER_CHECK.md fill + mandate §7 override.
+sweep_jornada: "jornada/2026-04-29-1725-longterm-final-pick-F1-SPLIT.md"
 latest_iteration: "043-2026-04-30-F1-TLT-variation"
 latest_score: 90  # WINNER NEW; Phase 3B TLT-slot sensitivity on F1+SPLIT; baseline (TLT 15%) wins Sharpe 3/3 vs all 3 alternatives — recommendation reaffirmed
 recommended_mf_sleeve: SPLIT  # 50/50 KMLMSIM + DBMFSIM for iter 023 chassis: best 26y-intersection Sharpe (1.0004) + best MDD (19.91%) + AUM stability via $3.2B DBMF
