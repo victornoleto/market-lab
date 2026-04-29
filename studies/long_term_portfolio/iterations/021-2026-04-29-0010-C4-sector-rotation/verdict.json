@@ -1,0 +1,183 @@
+{
+  "total_score": 69,
+  "tier": "PROMISING",
+  "winner_conditions_met": false,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 0,
+      "max": 25,
+      "datasets_beat": 0,
+      "required_minimum_dataset_count": 2,
+      "note": "Sharpe edge measured vs avg(SPY, VT) per dataset (gross)."
+    },
+    "2_gates": {
+      "points": 19,
+      "max": 25,
+      "per_dataset": {
+        "lh_56y": 6,
+        "vt_real": 5,
+        "ndx_real": 5
+      },
+      "thresholds": {
+        "lh_56y": 5,
+        "educational": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.021205782700431164,
+      "cumulative_n_trials": 79
+    },
+    "4_cagr_floor": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "lh_56y": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "lh_56y": true,
+        "vt_real": true,
+        "ndx_real": true
+      }
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "lh_56y": {
+      "sharpe": 0.7083715276326126,
+      "cagr": 0.1258444502558751,
+      "mdd": 0.42789556717008187,
+      "dsr_p_value": 0.01177927779105592,
+      "net_sharpe": 0.7083715276326141,
+      "net_cagr": 0.12584445025587487,
+      "net_mdd": 0.4278955671700824
+    },
+    "vt_real": {
+      "sharpe": 0.762144045421939,
+      "cagr": 0.13130747064754078,
+      "mdd": 0.3429656529668132,
+      "dsr_p_value": 0.018414738892554183,
+      "net_sharpe": 0.7621440454219406,
+      "net_cagr": 0.13130747064754078,
+      "net_mdd": 0.3429656529668135
+    },
+    "ndx_real": {
+      "sharpe": 0.7876581188877627,
+      "cagr": 0.13608517869754833,
+      "mdd": 0.34296565296681314,
+      "dsr_p_value": 0.021205782700431164,
+      "net_sharpe": 0.7876581188877646,
+      "net_cagr": 0.13608517869754877,
+      "net_mdd": 0.3429656529668131
+    }
+  },
+  "benchmarks_used": {
+    "lh_56y": {
+      "sharpe": 0.6713,
+      "cagr": 0.1073,
+      "mdd": 0.5835,
+      "label": "AVG of 2: VTSIM b&h 56y synth (gross) + SPYSIM b&h 40y synth (gross)"
+    },
+    "vt_real": {
+      "sharpe": 0.7066,
+      "cagr": 0.11885,
+      "mdd": 0.5021,
+      "label": "AVG of 2: VTSIM proxy 17y (gross; VT live pending) + SPY b&h Tiingo 17y (gross)"
+    },
+    "ndx_real": {
+      "sharpe": 0.9236,
+      "cagr": 0.1698,
+      "mdd": 0.3512,
+      "label": "AVG of 2: QQQ b&h Tiingo 16y (gross) + SPY b&h Tiingo 16y (gross, ndx_real-aligned)"
+    }
+  },
+  "raw_benchmarks": {
+    "lh_56y": {
+      "vt": {
+        "sharpe": 0.6626,
+        "cagr": 0.0999,
+        "mdd": 0.5835,
+        "label": "VTSIM b&h 56y synth (gross)"
+      },
+      "spy": {
+        "sharpe": 0.68,
+        "cagr": 0.1147,
+        "mdd": 0.5514,
+        "label": "SPYSIM b&h 40y synth (gross)"
+      }
+    },
+    "vt_real": {
+      "vt": {
+        "sharpe": 0.5132,
+        "cagr": 0.088,
+        "mdd": 0.5021,
+        "label": "VTSIM proxy 17y (gross; VT live pending)"
+      },
+      "spy": {
+        "sharpe": 0.9,
+        "cagr": 0.1497,
+        "mdd": 0.337,
+        "label": "SPY b&h Tiingo 17y (gross)"
+      }
+    },
+    "ndx_real": {
+      "qqq": {
+        "sharpe": 0.9472,
+        "cagr": 0.1899,
+        "mdd": 0.3512,
+        "label": "QQQ b&h Tiingo 16y (gross)"
+      },
+      "spy": {
+        "sharpe": 0.9,
+        "cagr": 0.1497,
+        "mdd": 0.337,
+        "label": "SPY b&h Tiingo 16y (gross, ndx_real-aligned)"
+      }
+    }
+  },
+  "cumulative_n_trials": 79,
+  "status": "promising",
+  "configs_tested": 4,
+  "primary_citation": "[stocks_on_the_move, ch.6]",
+  "hypothesis_slug": "C4-sector-rotation",
+  "selected_config": "sec4_K2_TLT",
+  "selection_rule": "max mean(gross_Sharpe / avg(SPY,VT)_Sharpe) across 3 datasets",
+  "net_metrics": {
+    "lh_56y": {
+      "sharpe": 0.7083715276326141,
+      "cagr": 0.12584445025587487,
+      "mdd": 0.4278955671700824
+    },
+    "vt_real": {
+      "sharpe": 0.7621440454219406,
+      "cagr": 0.13130747064754078,
+      "mdd": 0.3429656529668135
+    },
+    "ndx_real": {
+      "sharpe": 0.7876581188877646,
+      "cagr": 0.13608517869754877,
+      "mdd": 0.3429656529668131
+    }
+  },
+  "robustness": {
+    "bonus_pts": 5,
+    "pct_positive_sharpe": 1.0,
+    "n_windows": 18,
+    "min_rolling_sharpe": 0.32662904347470567,
+    "max_rolling_sharpe": 1.09027984050687
+  }
+}
