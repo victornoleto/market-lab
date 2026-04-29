@@ -1,13 +1,13 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 33
+total_iterations: 34
 winners_found: 4
 status: hunting
-latest_iteration: "033-2026-04-29-NTSD-realloc"
-latest_score: 81  # STRONG NEW; KILL #1 reaffirmed under all 3 sub sources (Phase 1B retest)
+latest_iteration: "034-2026-04-29-AVUV-realloc"
+latest_score: 86  # STRONG NEW; KILL #1 reaffirmed under all 3 sub sources (Phase 1B retest)
 beats_incumbent: false
-cumulative_n_trials: 121  # 118 + 3 (Phase 1B iter 033)
+cumulative_n_trials: 124  # 121 + 3 (Phase 1B iter 034)
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -155,6 +155,21 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 034 — 2026-04-29 — AVUV-realloc (STRONG NEW 86 — Phase 1B sub-source variation, KILL #1 fires, lh_56y near-parity)
+
+- **Phase 1B sub-source variation iter 2/6.** Hypothesis: Phase 1A iter 028 AVUV failure (KILL #2 fired, KILL #1 cosmetic 1/3 ndx_real +0.005) used balanced 50/50 substitution from NTSX+KMLM. Retests at fixed 10% AVUV under 3 sub sources. Citation `[risk_parity, ch.2, p.37-41]` Fama-French SCV.
+- Synth: AVUVSIM = `VBRSIM + 75bps/y tilt premium`. INCOMPLETE.
+- Selected `avuv10_subGDE` (10% AVUV, sub from GDE 25%→15%). Gross Sharpe **1.168 / 0.975 / 1.122**. Score 86/100 STRONG.
+- vs iter 023 substantively: **−0.021 / −0.029 / −0.013** — loses on **3/3 datasets**.
+- **Substitution source comparison (10% AVUV, fixed weight)**:
+  - `subGDE` (selected): 1.1681 / 0.9753 / 1.1219 → Δ −0.021 / −0.029 / −0.013 *(lh_56y near-parity!)*
+  - `subNTSX`:           1.1324 / 0.9841 / 1.1194 → Δ −0.057 / −0.020 / −0.016
+  - `subKMLM`:           1.0832 / 0.9683 / 1.1327 → Δ −0.106 / −0.036 / −0.002
+  - **Best sub = GDE** (cleanest lh_56y improvement of any Phase 1B iter); **worst = KMLM** (lh_56y −0.106).
+- **KILL #1 (no-positive-config) ✅ FIRED**: 0/3 datasets beat iter 023 under any sub source. Phase 1A's cosmetic ndx_real +0.005 edge is lost at 10% weight under any sub source.
+- vs Phase 1A best: `subGDE` 10% improves lh_56y substantially (+0.052) but loses Phase 1A's cosmetic ndx_real edge (−0.018) and degrades vt_real (−0.021). Net no improvement on the +signal criterion.
+- **AVUV sleeve subordinate to iter 023 reaffirmed.** subGDE's near-parity lh_56y (1.168 vs 1.189) is the cleanest sub-source improvement in Phase 1B but does not cross the +signal threshold. AVUV at 5% in F3 Hybrid (Phase 2 iter 034 original sweep) remains plausible per Phase 1A cosmetic edge; Phase 1B does **not** elevate AVUV to winner candidate.
 
 ### 033 — 2026-04-29 — NTSD-realloc (STRONG NEW 81 — Phase 1B sub-source variation, KILL #1 reaffirmed)
 
