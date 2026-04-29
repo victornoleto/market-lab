@@ -8,15 +8,7 @@ that should be disclosed in any iter's final_report.md.
 
 from __future__ import annotations
 
-import numpy as np
-import pandas as pd
-
-from src.ai_trade.backtest.data.testfolio_loader import (
-    load_testfolio_frame,
-    load_testfolio_series,
-)
-
-TRADING_DAYS_PER_YEAR = 252
+TRADING_DAYS_PER_YEAR = 252  # standard US equity trading-days/yr [advances_fin_ml]
 
 
 def _annual_drag_to_daily(annual_drag_decimal: float) -> float:

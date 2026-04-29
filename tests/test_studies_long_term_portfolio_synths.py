@@ -5,10 +5,6 @@ Each synth function gets:
 - a formula test (sample input -> sample output with known math)
 - where applicable, a no-free-lunch sanity test (Sharpe should not be implausibly inflated)
 """
-import numpy as np
-import pandas as pd
-import pytest
-
 from studies.long_term_portfolio.synths import _annual_drag_to_daily
 
 
