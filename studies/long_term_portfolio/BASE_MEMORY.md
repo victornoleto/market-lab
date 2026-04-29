@@ -1,13 +1,13 @@
 ---
 mission: "beat SPY 1× b&h gross-of-tax Sharpe by ≥0.05 on ≥2/3 datasets, MDD ≤ SPY, CAGR floor warning-only (mandate reframing 2026-04-29)"
 mission_legacy: "beat avg(SPY 1× b&h, VT 1× b&h) Sharpe by ≥0.10 on ≥2/3 (iters 001-022 published scores anchored here)"
-total_iterations: 30
+total_iterations: 31
 winners_found: 4
 status: hunting
-latest_iteration: "030-2026-04-29-SPMO-synth"
-latest_score: 84  # STRONG NEW; FIRST positive sleeve (2/3 beats iter 023, KILL #2 escapes)
+latest_iteration: "031-2026-04-29-IDMO-synth"
+latest_score: 90  # WINNER NEW; KILL #1 cosmetic 1/3, KILL #2 fired (sleeve marginal)
 beats_incumbent: false
-cumulative_n_trials: 110  # +4 (023) +3 (024) +4 (025) +0 (026) +4 (027) +4 (028) +4 (029) +4 (030) = 110
+cumulative_n_trials: 114  # +4 each iter 023-030 (excl 026), +4 (031) = 114
 incumbent_winner_iter: "014-2026-04-28-1920-intl-equity-tilt-on-iter011"
 incumbent_winner_score: 93
 strongest_substantive_advance: "023-2026-04-29-0150-iter011-plus-TLT-sleeve"
@@ -155,6 +155,17 @@ because rubric says WINNER, but BASE_MEMORY's `incumbent_winner_iter` stays 011.
 ---
 
 ## Iteration log (newest first)
+
+### 031 — 2026-04-29 — IDMO-synth (WINNER NEW 90 — KILL #2 fired, KILL #1 cosmetic, sleeve subordinate to SPMO)
+
+- Phase 1 single-axis isolation iter 5/6. Hypothesis: intl mirror of SPMO (Invesco S&P Intl Developed Momentum). Tests intl cross-sectional momentum factor; per Jegadeesh-Titman 1993 + Asness-Moskowitz-Pedersen 2013, intl momentum has ~0.5-0.7 correlation with US momentum (lower than passive intl-equity). 4 configs sweep IDMO 5/10/15/20%. Citation `[ilmanen_expected_returns, ch.19]` + `[stocks_on_the_move, p.21-30]`.
+- Synth: IDMOSIM = `VEASIM + 0.60 × UMD_KF − 60bps/y`. INCOMPLETE — uses **US UMD_KF** as proxy for intl momentum factor (biggest caveat); 60bps reflects IDMO's higher TER vs SPMO; may overstate edge by 10-30% per AMP 2013 correlation.
+- **KILL #3 (no-free-lunch) ✅ PASS**: standalone Sharpe = **0.726** (< 1.5). Matches real IDMO live 0.5-0.7 since 2017.
+- Selected `idmo_lite` (5% IDMO). Gross Sharpe **1.107 / 0.984 / 1.140**. NEW: 3/3 +0.05 vs SPY ✓ (winner_conds=True). Score 90/100 WINNER.
+- vs iter 023 substantively: **−0.082 / −0.020 / +0.005** — beats iter 023 on **1/3 datasets** (ndx_real +0.005 cosmetic).
+- **KILL #1 (no-positive-config) survives narrowly**: 1/3 datasets beat iter 023 (cosmetic, criterion ≥1/3).
+- **KILL #2 (monotonic regression) ✅ FIRED**: Sharpe falls monotonically with IDMO weight 5%→20% on ALL 3 datasets (Δ −0.069 / −0.105 / −0.066).
+- **IDMO subordinate to SPMO** at every weight: SPMO ndx_real +0.032 substantive vs IDMO ndx_real +0.005 cosmetic. SPMO non-monotonic (peak at 15%) vs IDMO strictly monotonic-falling. **NOT recommended for Phase 2.** F5/F6 finalists lose another sleeve; only AVEM remains for Global side.
 
 ### 030 — 2026-04-29 — SPMO-synth (STRONG NEW 84 — FIRST POSITIVE Phase 1 SLEEVE)
 
