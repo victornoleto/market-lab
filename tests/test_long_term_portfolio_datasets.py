@@ -6,10 +6,12 @@ import pandas as pd
 import pytest
 
 
-def test_dataset_registry_lists_three_datasets() -> None:
+def test_dataset_registry_lists_expected_datasets() -> None:
     from studies.long_term_portfolio.datasets import DATASETS
 
-    assert set(DATASETS.keys()) == {"lh_56y", "vt_real", "ndx_real"}
+    # 2026-04-29: spy_real added for spy_beater_hunt (replaces vt_real/ndx_real
+    # in that hunt; long_term_portfolio still uses lh_56y/vt_real/ndx_real).
+    assert set(DATASETS.keys()) == {"lh_56y", "vt_real", "ndx_real", "spy_real"}
     for name, meta in DATASETS.items():
         assert "start" in meta and "end" in meta and "benchmark" in meta
 

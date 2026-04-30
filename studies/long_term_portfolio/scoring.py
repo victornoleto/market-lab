@@ -96,10 +96,29 @@ class Benchmark:
 # ---------------------------------------------------------------------------
 
 
+# BENCHMARK CORRECTION 2026-04-29:
+#   The vt_real["spy"] and ndx_real["spy"] entries previously held copy-paste
+#   numbers (CAGR 14.97%, MDD 33.70%, Sharpe 0.90) that were ndx_real-aligned
+#   but mistakenly applied to vt_real, where the actual SPY benchmark over
+#   2008-06-01 → 2026-04-24 is **CAGR 11.54%, MDD 50.70%, Sharpe 0.65**
+#   (vt_real starts inside the GFC peak-to-trough so MDD is much deeper than
+#   the 2010+ window). All numbers below recomputed via canonical
+#   src.ai_trade.backtest.metrics.performance helpers on 2026-04-29.
+#
+#   Impact: the 43 prior iters of long_term_portfolio (027-043) were scored
+#   against the BUGGY benchmark (CAGR bar inflated, MDD bar artificially tight
+#   on vt_real). FINAL PICK F1+SPLIT scoring may re-rank under corrected
+#   benchmarks. Historical iter verdicts in iterations/*/verdict.json are
+#   FROZEN as published — they reflect the bar at scoring time, not retro
+#   correction. Future iters auto-pick up corrected values.
+#
+#   spy_beater_hunt is unaffected (its hunt uses lh_56y + spy_real which
+#   were always correct).
+
 _LH_56Y_BENCHMARKS = {
-    "vt":  Benchmark(sharpe=0.6626, cagr=0.0999, mdd=0.5835,
-                    label="VTSIM b&h 56y synth (gross)"),
-    "spy": Benchmark(sharpe=0.6800, cagr=0.1147, mdd=0.5514,
+    "vt":  Benchmark(sharpe=0.6100, cagr=0.0965, mdd=0.5835,
+                    label="VTSIM b&h lh_56y synth (gross, recomputed 2026-04-29)"),
+    "spy": Benchmark(sharpe=0.6820, cagr=0.1147, mdd=0.5514,
                     label="SPYSIM b&h 40y synth (gross)"),
 }
 
@@ -108,16 +127,16 @@ BENCHMARKS: dict[str, dict[str, Benchmark]] = {
     "lh_56y": _LH_56Y_BENCHMARKS,
     "educational": _LH_56Y_BENCHMARKS,  # deprecated alias for lh_56y
     "vt_real": {
-        "vt":  Benchmark(sharpe=0.5132, cagr=0.0880, mdd=0.5021,
-                        label="VTSIM proxy 17y (gross; VT live pending)"),
-        "spy": Benchmark(sharpe=0.9000, cagr=0.1497, mdd=0.3370,
-                        label="SPY b&h Tiingo 17y (gross)"),
+        "vt":  Benchmark(sharpe=0.4890, cagr=0.0829, mdd=0.5462,
+                        label="VTSIM proxy 17y (gross, recomputed 2026-04-29)"),
+        "spy": Benchmark(sharpe=0.6480, cagr=0.1154, mdd=0.5070,
+                        label="SPY b&h Tiingo adj_close 17y (gross, recomputed 2026-04-29)"),
     },
     "ndx_real": {
-        "qqq": Benchmark(sharpe=0.9472, cagr=0.1899, mdd=0.3512,
-                        label="QQQ b&h Tiingo 16y (gross)"),
-        "spy": Benchmark(sharpe=0.9000, cagr=0.1497, mdd=0.3370,
-                        label="SPY b&h Tiingo 16y (gross, ndx_real-aligned)"),
+        "qqq": Benchmark(sharpe=0.9580, cagr=0.1919, mdd=0.3512,
+                        label="QQQ b&h Tiingo 16y (gross, recomputed 2026-04-29)"),
+        "spy": Benchmark(sharpe=0.8580, cagr=0.1409, mdd=0.3370,
+                        label="SPY b&h Tiingo adj_close 16y (gross, recomputed 2026-04-29)"),
     },
     "spy_real": {
         "spy": Benchmark(sharpe=0.6522, cagr=0.1095, mdd=0.5520,
