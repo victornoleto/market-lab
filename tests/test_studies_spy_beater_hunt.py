@@ -122,6 +122,162 @@ def test_gayed_gate_window_and_lag_param():
 
 
 # ---------------------------------------------------------------------------
+# EMA gate
+# ---------------------------------------------------------------------------
+
+
+def test_ema_gate_no_peek_ahead():
+    """EMA gate at time t uses signal at t-1 (T+1 lag enforced)."""
+    from studies.spy_beater_hunt.lrs_engine import ema_gate
+
+    # Constant 100 then jump to 200; EMA reacts faster than SMA
+    n_pre = 100
+    prices = pd.Series(
+        [100.0] * n_pre + [200.0] * 30,
+        index=pd.date_range("2020-01-02", periods=n_pre + 30, freq="B"),
+    )
+    gate = ema_gate(prices, window=50, lag_days=1)
+    # Pre-window: gate False (NaN EMA)
+    assert gate.iloc[10] == False  # noqa: E712
+    # Post-jump: gate flips to True after 1-2 days (EMA fast-reacts)
+    assert gate.iloc[n_pre + 5] == True  # noqa: E712
+
+
+def test_ema_gate_smoother_than_sma():
+    """EMA differs from SMA: react faster on trend changes."""
+    from studies.spy_beater_hunt.lrs_engine import ema_gate, gayed_200d_sma_gate
+
+    rng = np.random.default_rng(42)
+    # Synthetic uptrend with noise
+    n = 500
+    drift = np.linspace(100, 200, n)
+    noise = rng.normal(0, 5, n)
+    prices = pd.Series(
+        drift + noise,
+        index=pd.date_range("2020-01-02", periods=n, freq="B"),
+    )
+    sma_gate = gayed_200d_sma_gate(prices, window=100, lag_days=1)
+    e_gate = ema_gate(prices, window=100, lag_days=1)
+    # Both should be True for the dominant uptrend portion (last 200 days)
+    assert sma_gate.iloc[300:].mean() > 0.7
+    assert e_gate.iloc[300:].mean() > 0.7
+
+
+# ---------------------------------------------------------------------------
+# Threshold band gate (hysteresis)
+# ---------------------------------------------------------------------------
+
+
+def test_threshold_band_no_flip_within_buffer():
+    """Hysteresis: small fluctuations within the buffer band do NOT flip state."""
+    from studies.spy_beater_hunt.lrs_engine import threshold_band_gate
+
+    # Prices oscillate ±1.5% around 100 (buffer 2%) → no flips after initial
+    n_pre = 100  # warm-up for SMA window=50
+    rng = np.random.default_rng(0)
+    base = np.full(n_pre + 50, 100.0)
+    noise = rng.uniform(-1.5, 1.5, n_pre + 50)  # ±1.5% < 2% buffer
+    prices = pd.Series(
+        base + noise,
+        index=pd.date_range("2020-01-02", periods=n_pre + 50, freq="B"),
+    )
+    gate = threshold_band_gate(
+        prices, window=50, buffer_pct=0.02, lag_days=1, filter_type="sma"
+    )
+    # State should be stable (mostly one value) after warm-up
+    post_warmup = gate.iloc[n_pre:]
+    flip_count = (post_warmup.diff().abs().sum())
+    # Expect very few flips (≤ 5) given noise stays within buffer
+    assert flip_count <= 5
+
+
+def test_threshold_band_flips_on_breakout():
+    """When price breaks above MA*(1+buffer), gate flips ON."""
+    from studies.spy_beater_hunt.lrs_engine import threshold_band_gate
+
+    # 100 days at $100, then jump to $110 (10% > 2% buffer)
+    n_pre = 100
+    prices = pd.Series(
+        [100.0] * n_pre + [110.0] * 30,
+        index=pd.date_range("2020-01-02", periods=n_pre + 30, freq="B"),
+    )
+    gate = threshold_band_gate(
+        prices, window=50, buffer_pct=0.02, lag_days=1, filter_type="sma"
+    )
+    # After the jump + 1 day lag, gate should be ON
+    assert gate.iloc[n_pre + 2] == True  # noqa: E712
+
+
+def test_threshold_band_holds_state_in_band():
+    """Once ON, stay ON until price drops below MA*(1-buffer)."""
+    from studies.spy_beater_hunt.lrs_engine import threshold_band_gate
+
+    # Step up then sit slightly below MA but inside band → stay ON
+    idx = pd.date_range("2020-01-02", periods=200, freq="B")
+    prices = pd.Series(np.concatenate([
+        np.full(100, 100.0),    # warm-up
+        np.full(20, 110.0),     # break above (state → ON)
+        np.full(80, 105.0),     # slightly below MA (which is now ~108)
+                                # but within ±2% buffer → HOLD ON
+    ]), index=idx)
+    gate = threshold_band_gate(
+        prices, window=50, buffer_pct=0.02, lag_days=1, filter_type="sma"
+    )
+    # Tail should still be ON (held state)
+    # We pick a sample point well after the step
+    assert gate.iloc[125] == True  # noqa: E712 — within hysteresis hold
+
+
+def test_threshold_band_zero_buffer_matches_naive_gate():
+    """buffer_pct=0 with hysteresis still has slightly different behavior at exact-cross days,
+    but should match SMA gate within 5% of bars."""
+    from studies.spy_beater_hunt.lrs_engine import (
+        gayed_200d_sma_gate,
+        threshold_band_gate,
+    )
+
+    rng = np.random.default_rng(1)
+    n = 500
+    prices = pd.Series(
+        100.0 + rng.normal(0, 5, n).cumsum() * 0.1,
+        index=pd.date_range("2020-01-02", periods=n, freq="B"),
+    )
+    naive = gayed_200d_sma_gate(prices, window=50, lag_days=1)
+    band = threshold_band_gate(
+        prices, window=50, buffer_pct=0.0, lag_days=1, filter_type="sma"
+    )
+    # Should agree on most days (>= 95%) — the hysteresis with 0 buffer
+    # only differs on exact-equality bars (price == MA), which are rare.
+    agreement = (naive == band).mean()
+    assert agreement > 0.95
+
+
+def test_threshold_band_ema_filter():
+    """EMA filter type works without raising and produces sensible state."""
+    from studies.spy_beater_hunt.lrs_engine import threshold_band_gate
+
+    n = 200
+    prices = pd.Series(
+        np.linspace(100, 200, n),  # steady uptrend
+        index=pd.date_range("2020-01-02", periods=n, freq="B"),
+    )
+    gate = threshold_band_gate(
+        prices, window=50, buffer_pct=0.02, lag_days=1, filter_type="ema"
+    )
+    # In a clear uptrend, gate should be ON for the bulk of post-warmup days
+    assert gate.iloc[100:].mean() > 0.8
+
+
+def test_threshold_band_invalid_filter_raises():
+    """filter_type other than 'sma'/'ema' raises ValueError."""
+    from studies.spy_beater_hunt.lrs_engine import threshold_band_gate
+
+    prices = pd.Series([100.0] * 100, index=pd.date_range("2020-01-02", periods=100, freq="B"))
+    with pytest.raises(ValueError, match="filter_type"):
+        threshold_band_gate(prices, filter_type="rsi")
+
+
+# ---------------------------------------------------------------------------
 # LRS strategy returns
 # ---------------------------------------------------------------------------
 

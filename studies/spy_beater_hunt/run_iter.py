@@ -61,8 +61,15 @@ from studies.long_term_portfolio.scoring import (
     spy_benchmark,
 )
 from studies.spy_beater_hunt.lrs_engine import (
+    ema_gate,
     gayed_200d_sma_gate,
     lrs_strategy_returns,
+    threshold_band_gate,
+)
+from studies.spy_beater_hunt.plot_helper import (
+    plot_cagr_mdd_scatter,
+    plot_gate_heatmap,
+    plot_overlay_per_dataset,
 )
 from studies.spy_beater_hunt.scoring import score_strategy_spy_beater
 
@@ -91,21 +98,48 @@ def returns_from_spec(spec: dict, dataset: str) -> pd.Series:
 
 
 def _lrs_returns_from_spec(spec: dict, dataset: str) -> pd.Series:
-    """Build LRS daily returns: rotate on_weights ↔ off_weights via SMA gate."""
+    """Build LRS daily returns: rotate on_weights ↔ off_weights via regime gate.
+
+    Supported gate types (via spec["filter"] field, default "sma"):
+      - "sma": classical SMA cross (no buffer)
+      - "ema": EMA cross (no buffer)
+      - "sma_band" / "ema_band": hysteresis band around MA, requires
+        spec["buffer_pct"] (default 0.02 = 2%)
+
+    Backwards-compat: spec["sma_window"] is the window for any filter type.
+    spec["filter"] absent → defaults to "sma" (matches iter 001 behavior).
+    """
     on_returns = portfolio_returns_from_config(spec["on_weights"], dataset)
     off_returns = portfolio_returns_from_config(spec["off_weights"], dataset)
 
     signal_ticker = spec.get("signal_ticker", "SPYSIM")
-    sma_window = int(spec.get("sma_window", 200))
+    window = int(spec.get("sma_window", 200))
     lag_days = int(spec.get("lag_days", 1))
+    filter_type = spec.get("filter", "sma").lower()
+    buffer_pct = float(spec.get("buffer_pct", 0.0))
 
-    # signal_prices uses the FULL testfolio cache (not sliced to dataset)
-    # so the SMA is well-defined at the dataset start. The gate is later
-    # aligned to on/off returns via lrs_strategy_returns' inner concat.
     signal_prices = load_testfolio_series(signal_ticker)
-    gate = gayed_200d_sma_gate(
-        signal_prices, window=sma_window, lag_days=lag_days
-    )
+
+    if filter_type == "sma" and buffer_pct == 0.0:
+        gate = gayed_200d_sma_gate(signal_prices, window=window, lag_days=lag_days)
+    elif filter_type == "ema" and buffer_pct == 0.0:
+        gate = ema_gate(signal_prices, window=window, lag_days=lag_days)
+    elif filter_type in ("sma", "sma_band"):
+        gate = threshold_band_gate(
+            signal_prices, window=window, buffer_pct=buffer_pct,
+            lag_days=lag_days, filter_type="sma",
+        )
+    elif filter_type in ("ema", "ema_band"):
+        gate = threshold_band_gate(
+            signal_prices, window=window, buffer_pct=buffer_pct,
+            lag_days=lag_days, filter_type="ema",
+        )
+    else:
+        raise ValueError(
+            f"unknown filter_type {filter_type!r}; "
+            "choose 'sma', 'ema', 'sma_band', or 'ema_band'"
+        )
+
     return lrs_strategy_returns(on_returns, off_returns, gate)
 
 
@@ -332,6 +366,16 @@ def run_iter_spy_beater(
         iter_dir, iter_n, hypothesis_slug, primary_citation,
         configs, verdict, datasets_to_test,
     )
+
+    # ------------------------------------------------------------------
+    # 9) Comparative plots (overlay equity + drawdown, scatter, heatmap)
+    # ------------------------------------------------------------------
+    try:
+        plot_overlay_per_dataset(iter_dir, config_returns, datasets_to_test)
+        plot_cagr_mdd_scatter(iter_dir, config_results, datasets_to_test)
+        plot_gate_heatmap(iter_dir, gate_details, config_results, datasets_to_test)
+    except Exception as exc:  # pragma: no cover - plotting must not abort verdict
+        print(f"[run_iter:plots] non-fatal plot error: {exc!r}")
 
     return verdict
 

@@ -1,15 +1,24 @@
 ---
 mission: "Find ONE long-term strategy with mean CAGR ≥ SPY (13.80%) AND mean MDD ≤ SPY (40.85%) AND surviving 7-gate battery on ≥ 2/3 datasets"
-total_iterations: 1
+target_total_iterations: 50
+total_iterations: 2
 winners_found: 0
+closest_to_winner: "a2_sma150_2xsso (iter 002): CAGR 14.82% PASS, MDD 43.49% (gap +2.64pp from 40.85% ceiling), gates 4/4/4 PASS"
 status: hunting
-latest_iteration: "001-2026-04-29-A1-Gayed-LRS-UPRO"
-latest_score: 67
+latest_iteration: "002-2026-04-29-A2-LRS-sensitivity-sweep"
+latest_score: 63
 latest_tier: PROMISING
 latest_bars_met: 2  # CAGR ✓, gates ✓, MDD ✗
-cumulative_n_trials: 4
+cumulative_n_trials: 10
+direction_status:
+  A1_200d_SMA_3x_UPRO: "PROMISING (iter 001) — CAGR-rich, MDD-bottlenecked"
+  A2_faster_signal: "CLOSED (iter 002 KILL #7) — faster SMA/EMA make MDD WORSE"
+  A2_threshold_buffer: "CLOSED (iter 002 KILL #8) — buffer ≥5% makes MDD worse"
+  A2_lower_leverage: "PROMISING (iter 002) — 2× SSO best near-miss yet"
+  B1_HFEA_classical: "NOT YET RUN — TMFSIM ready"
+  C1_vol_targeted: "NOT YET RUN"
 parent_loop: "studies/long_term_portfolio (43 iters, F1+SPLIT incumbent fallback)"
-note: "Forked 2026-04-29 from long_term_portfolio after F1+SPLIT (mean CAGR 10.76%) failed user's CAGR-vs-SPY criterion. Mission redefined: CAGR-anchored. Iter 001 (A1 Gayed LRS UPRO) PROMISING 67/100: CAGR bar PASS (mean 19.01%, +5.21pp above 13.80%), MDD bar FAIL (mean 50.57%, +9.72pp above 40.85% ceiling), gates bar PASS (6/6/5 — 2/3 datasets meet threshold). KILL #6 NOT triggered (a1_pure_lrs CAGR 21.04% well above bar). Direction is CAGR-rich but MDD-bottlenecked: 200d SMA too laggy for tail-risk (G3 within-window MDD 0.40-0.55 across all 3 datasets). F1+SPLIT remains deploy fallback if hunt fails."
+note: "Forked 2026-04-29. Iter 001 PROMISING 67/100: CAGR✓ MDD✗ Gates✓. Iter 002 PROMISING 63/100 sensitivity sweep: KILL #7+#8 fired — faster signal/buffer make MDD WORSE not better. KILL #9 NOT fired — 2× SSO is the only lever that helped (closest config to WINNER yet, gap only +2.64pp on MDD). Next iter 003 should test variants of (lower leverage + 200d SMA + alternative off-regime) since that's the only direction not yet exhausted within Tier 1. F1+SPLIT remains deploy fallback if 50-iter hunt fails."
 ---
 
 # spy_beater_hunt — BASE MEMORY
@@ -62,6 +71,32 @@ NEW synths likely needed (NOT in long_term_portfolio):
 ---
 
 ## Iteration log (newest first)
+
+### iter 002 — A2 LRS sensitivity sweep (SMA/EMA × window × buffer × leverage) (2026-04-29)
+
+- **Tier**: PROMISING **63/100** (winner_conditions_met = False, 2/3 bars)
+- **Selected**: `a2_sma200_th2_3xupro` (highest Sharpe — but NOT the closest-to-winner)
+- **Closest-to-winner**: `a2_sma150_2xsso` (CAGR 14.82% PASS, MDD 43.49% — gap +2.64pp from ceiling)
+- **Configs tested (6)**: SMA100/SMA200+th2/SMA200+th5/EMA150+th2/SMA150-2xSSO/EMA100+th2-2xSSO
+- **KILL #7 FIRED** (signal speed): SMA100 MDD 64.07% > SMA200 50.57% → faster signal HURTS MDD
+- **KILL #8 FIRED** (threshold buffer): th2 ≈ pure (no benefit), th5 MDD 65.94% (active harm)
+- **KILL #9 NOT FIRED**: 2× SSO MDD 43.49% (best of all configs) → lower leverage IS the lever
+- **Per-config (mean across 3 datasets)**:
+  | config                  | CAGR    | MDD    | bars (CAGR/MDD/gates) |
+  |-------------------------|--------:|-------:|:----------------------|
+  | a2_sma100_3xupro        | 19.01%  | 64.07% | ✓/✗/?                 |
+  | a2_sma200_th2_3xupro    | 21.62%  | 57.57% | ✓/✗/✓                 |
+  | a2_sma200_th5_3xupro    | 19.57%  | 65.94% | ✓/✗/?                 |
+  | a2_ema150_th2_3xupro    | 19.55%  | 71.69% | ✓/✗/?                 |
+  | **a2_sma150_2xsso**     | **14.82%** | **43.49%** | **✓/✗/✓ (closest)** |
+  | a2_ema100_th2_2xsso     | 14.58%  | 56.28% | ✓/✗/?                 |
+- **Key finding**: 200d SMA + 2× SSO + IEF off is the ONLY surviving direction
+  in Tier 1. Next iter 003 should test: 1.5× lev variants, 2× SSO with longer
+  windows (250d/300d), 2× SSO with KMLM/DBMF off-regime.
+- **DSR caveat**: worst p = 0.0516 just above 0.05 threshold (n_trials=10
+  starting to bite); future iters should test 4 configs not 6 to slow inflation.
+- **Citations**: `[leverage_for_the_long_run, ch.3-4, p.40-60]` (validated);
+  `[advances_fin_ml, p.222-223]` DSR multi-testing penalty.
 
 ### iter 001 — A1 Gayed LRS UPRO + 200d SMA gate (2026-04-29)
 
