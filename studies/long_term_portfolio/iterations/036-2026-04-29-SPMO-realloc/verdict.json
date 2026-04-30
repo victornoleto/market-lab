@@ -1,0 +1,493 @@
+{
+  "total_score": 86,
+  "tier": "STRONG",
+  "winner_conditions_met": true,
+  "criteria": {
+    "1_sharpe_edge": {
+      "points": 25,
+      "max": 25,
+      "datasets_beat": 3,
+      "required_minimum_dataset_count": 2,
+      "hurdle": 0.05,
+      "note": "Sharpe edge \u2265 bench + +0.05. Default benchmark SPY-only (2026-04-29 reframing). Pass `legacy_benchmarks()` for avg(SPY,VT) baseline."
+    },
+    "2_gates": {
+      "points": 21,
+      "max": 25,
+      "per_dataset": {
+        "lh_56y": 7,
+        "vt_real": 6,
+        "ndx_real": 6
+      },
+      "thresholds": {
+        "lh_56y": 5,
+        "educational": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_thresholds_met": true
+    },
+    "3_dsr": {
+      "points": 15,
+      "max": 15,
+      "worst_p_value": 0.0004960730661398571,
+      "cumulative_n_trials": 130
+    },
+    "4_cagr_floor": {
+      "points": 5,
+      "max": 15,
+      "per_dataset": {
+        "lh_56y": true,
+        "vt_real": false,
+        "ndx_real": false
+      },
+      "warning_only": true,
+      "note": "WARNING-ONLY since 2026-04-29 reframing \u2014 pts still in rubric but does NOT contribute to winner_conditions_met. Defensive Sharpe-frontier strategies (iter 019/020) eligible for WINNER. [risk_parity, ch.5]"
+    },
+    "5_mdd_ceiling": {
+      "points": 15,
+      "max": 15,
+      "per_dataset": {
+        "lh_56y": true,
+        "vt_real": true,
+        "ndx_real": true
+      },
+      "slack": 0.0,
+      "note": "Slack tightened 2026-04-29 (was +5pp; SPY-only mandate \u21d2 strict)."
+    },
+    "6_robustness_bonus": {
+      "points": 5,
+      "max": 5,
+      "note": "Populated by caller if rolling-window data provided"
+    }
+  },
+  "metrics_used": {
+    "lh_56y": {
+      "sharpe": 1.1611257565817685,
+      "cagr": 0.11121772121192919,
+      "mdd": 0.1987422829095017,
+      "dsr_p_value": 1.731439436269966e-10,
+      "net_sharpe": 1.1611257565817685,
+      "net_cagr": 0.11121772121192919,
+      "net_mdd": 0.1987422829095017
+    },
+    "vt_real": {
+      "sharpe": 0.9872855001631158,
+      "cagr": 0.09375868613724303,
+      "mdd": 0.15992903505080636,
+      "dsr_p_value": 0.0004960730661398571,
+      "net_sharpe": 0.9872855001631158,
+      "net_cagr": 0.09375868613724303,
+      "net_mdd": 0.15992903505080636
+    },
+    "ndx_real": {
+      "sharpe": 1.157019432206374,
+      "cagr": 0.10273564785332279,
+      "mdd": 0.10384330890729777,
+      "dsr_p_value": 9.448389273114532e-05,
+      "net_sharpe": 1.157019432206374,
+      "net_cagr": 0.10273564785332279,
+      "net_mdd": 0.10384330890729777
+    }
+  },
+  "benchmarks_used": {
+    "lh_56y": {
+      "sharpe": 0.68,
+      "cagr": 0.1147,
+      "mdd": 0.5514,
+      "label": "SPY-only: SPYSIM b&h 40y synth (gross)"
+    },
+    "vt_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY-only: SPY b&h Tiingo 17y (gross)"
+    },
+    "ndx_real": {
+      "sharpe": 0.9,
+      "cagr": 0.1497,
+      "mdd": 0.337,
+      "label": "SPY-only: SPY b&h Tiingo 16y (gross, ndx_real-aligned)"
+    }
+  },
+  "raw_benchmarks": {
+    "lh_56y": {
+      "vt": {
+        "sharpe": 0.6626,
+        "cagr": 0.0999,
+        "mdd": 0.5835,
+        "label": "VTSIM b&h 56y synth (gross)"
+      },
+      "spy": {
+        "sharpe": 0.68,
+        "cagr": 0.1147,
+        "mdd": 0.5514,
+        "label": "SPYSIM b&h 40y synth (gross)"
+      }
+    },
+    "vt_real": {
+      "vt": {
+        "sharpe": 0.5132,
+        "cagr": 0.088,
+        "mdd": 0.5021,
+        "label": "VTSIM proxy 17y (gross; VT live pending)"
+      },
+      "spy": {
+        "sharpe": 0.9,
+        "cagr": 0.1497,
+        "mdd": 0.337,
+        "label": "SPY b&h Tiingo 17y (gross)"
+      }
+    },
+    "ndx_real": {
+      "qqq": {
+        "sharpe": 0.9472,
+        "cagr": 0.1899,
+        "mdd": 0.3512,
+        "label": "QQQ b&h Tiingo 16y (gross)"
+      },
+      "spy": {
+        "sharpe": 0.9,
+        "cagr": 0.1497,
+        "mdd": 0.337,
+        "label": "SPY b&h Tiingo 16y (gross, ndx_real-aligned)"
+      }
+    }
+  },
+  "cumulative_n_trials": 130,
+  "status": "strong",
+  "configs_tested": 3,
+  "primary_citation": "[stocks_on_the_move, p.21-30]",
+  "hypothesis_slug": "SPMO-realloc",
+  "selected_config": "spmo10_subGDE",
+  "selection_rule": "NEW (2026-04-29 reframing): max mean(gross_Sharpe / SPY_Sharpe) across datasets",
+  "scoring_basis": "NEW SPY-only +0.05 (mandate reframing 2026-04-29)",
+  "score_legacy": {
+    "total_score": 86,
+    "tier": "STRONG",
+    "winner_conditions_met": true,
+    "criteria": {
+      "1_sharpe_edge": {
+        "points": 25,
+        "max": 25,
+        "datasets_beat": 3,
+        "required_minimum_dataset_count": 2,
+        "hurdle": 0.05,
+        "note": "Sharpe edge \u2265 bench + +0.05. Default benchmark SPY-only (2026-04-29 reframing). Pass `legacy_benchmarks()` for avg(SPY,VT) baseline."
+      },
+      "2_gates": {
+        "points": 21,
+        "max": 25,
+        "per_dataset": {
+          "lh_56y": 7,
+          "vt_real": 6,
+          "ndx_real": 6
+        },
+        "thresholds": {
+          "lh_56y": 5,
+          "educational": 5,
+          "vt_real": 4,
+          "ndx_real": 4
+        },
+        "cross_dataset_thresholds_met": true
+      },
+      "3_dsr": {
+        "points": 15,
+        "max": 15,
+        "worst_p_value": 0.0004960730661398571,
+        "cumulative_n_trials": 130
+      },
+      "4_cagr_floor": {
+        "points": 5,
+        "max": 15,
+        "per_dataset": {
+          "lh_56y": true,
+          "vt_real": false,
+          "ndx_real": false
+        },
+        "warning_only": true,
+        "note": "WARNING-ONLY since 2026-04-29 reframing \u2014 pts still in rubric but does NOT contribute to winner_conditions_met. Defensive Sharpe-frontier strategies (iter 019/020) eligible for WINNER. [risk_parity, ch.5]"
+      },
+      "5_mdd_ceiling": {
+        "points": 15,
+        "max": 15,
+        "per_dataset": {
+          "lh_56y": true,
+          "vt_real": true,
+          "ndx_real": true
+        },
+        "slack": 0.0,
+        "note": "Slack tightened 2026-04-29 (was +5pp; SPY-only mandate \u21d2 strict)."
+      },
+      "6_robustness_bonus": {
+        "points": 5,
+        "max": 5,
+        "note": "Populated by caller if rolling-window data provided"
+      }
+    },
+    "metrics_used": {
+      "lh_56y": {
+        "sharpe": 1.1611257565817685,
+        "cagr": 0.11121772121192919,
+        "mdd": 0.1987422829095017,
+        "dsr_p_value": 1.731439436269966e-10,
+        "net_sharpe": 1.1611257565817685,
+        "net_cagr": 0.11121772121192919,
+        "net_mdd": 0.1987422829095017
+      },
+      "vt_real": {
+        "sharpe": 0.9872855001631158,
+        "cagr": 0.09375868613724303,
+        "mdd": 0.15992903505080636,
+        "dsr_p_value": 0.0004960730661398571,
+        "net_sharpe": 0.9872855001631158,
+        "net_cagr": 0.09375868613724303,
+        "net_mdd": 0.15992903505080636
+      },
+      "ndx_real": {
+        "sharpe": 1.157019432206374,
+        "cagr": 0.10273564785332279,
+        "mdd": 0.10384330890729777,
+        "dsr_p_value": 9.448389273114532e-05,
+        "net_sharpe": 1.157019432206374,
+        "net_cagr": 0.10273564785332279,
+        "net_mdd": 0.10384330890729777
+      }
+    },
+    "benchmarks_used": {
+      "lh_56y": {
+        "sharpe": 0.6713,
+        "cagr": 0.1073,
+        "mdd": 0.5835,
+        "label": "AVG of 2: VTSIM b&h 56y synth (gross) + SPYSIM b&h 40y synth (gross)"
+      },
+      "vt_real": {
+        "sharpe": 0.7066,
+        "cagr": 0.11885,
+        "mdd": 0.5021,
+        "label": "AVG of 2: VTSIM proxy 17y (gross; VT live pending) + SPY b&h Tiingo 17y (gross)"
+      },
+      "ndx_real": {
+        "sharpe": 0.9236,
+        "cagr": 0.1698,
+        "mdd": 0.3512,
+        "label": "AVG of 2: QQQ b&h Tiingo 16y (gross) + SPY b&h Tiingo 16y (gross, ndx_real-aligned)"
+      }
+    },
+    "raw_benchmarks": {
+      "lh_56y": {
+        "vt": {
+          "sharpe": 0.6626,
+          "cagr": 0.0999,
+          "mdd": 0.5835,
+          "label": "VTSIM b&h 56y synth (gross)"
+        },
+        "spy": {
+          "sharpe": 0.68,
+          "cagr": 0.1147,
+          "mdd": 0.5514,
+          "label": "SPYSIM b&h 40y synth (gross)"
+        }
+      },
+      "vt_real": {
+        "vt": {
+          "sharpe": 0.5132,
+          "cagr": 0.088,
+          "mdd": 0.5021,
+          "label": "VTSIM proxy 17y (gross; VT live pending)"
+        },
+        "spy": {
+          "sharpe": 0.9,
+          "cagr": 0.1497,
+          "mdd": 0.337,
+          "label": "SPY b&h Tiingo 17y (gross)"
+        }
+      },
+      "ndx_real": {
+        "qqq": {
+          "sharpe": 0.9472,
+          "cagr": 0.1899,
+          "mdd": 0.3512,
+          "label": "QQQ b&h Tiingo 16y (gross)"
+        },
+        "spy": {
+          "sharpe": 0.9,
+          "cagr": 0.1497,
+          "mdd": 0.337,
+          "label": "SPY b&h Tiingo 16y (gross, ndx_real-aligned)"
+        }
+      }
+    },
+    "cumulative_n_trials": 130
+  },
+  "all_configs_metrics": {
+    "spmo10_subNTSX": {
+      "lh_56y": {
+        "sharpe": 1.1299667483567435,
+        "cagr": 0.11314664588099976,
+        "mdd": 0.19861866280135818
+      },
+      "vt_real": {
+        "sharpe": 0.9998328825308486,
+        "cagr": 0.10147286150893575,
+        "mdd": 0.17114073637349142
+      },
+      "ndx_real": {
+        "sharpe": 1.1586676652808598,
+        "cagr": 0.11024876912232995,
+        "mdd": 0.11322941525039751
+      }
+    },
+    "spmo10_subGDE": {
+      "lh_56y": {
+        "sharpe": 1.1611257565817685,
+        "cagr": 0.11121772121192919,
+        "mdd": 0.1987422829095017
+      },
+      "vt_real": {
+        "sharpe": 0.9872855001631158,
+        "cagr": 0.09375868613724303,
+        "mdd": 0.15992903505080636
+      },
+      "ndx_real": {
+        "sharpe": 1.157019432206374,
+        "cagr": 0.10273564785332279,
+        "mdd": 0.10384330890729777
+      }
+    },
+    "spmo10_subKMLM": {
+      "lh_56y": {
+        "sharpe": 1.086855677337299,
+        "cagr": 0.11755125529277666,
+        "mdd": 0.22833403776460662
+      },
+      "vt_real": {
+        "sharpe": 0.993938814829727,
+        "cagr": 0.11093668300417492,
+        "mdd": 0.2114997187536214
+      },
+      "ndx_real": {
+        "sharpe": 1.178909630232047,
+        "cagr": 0.12225811864496716,
+        "mdd": 0.14840733877475876
+      }
+    }
+  },
+  "gate_details": {
+    "lh_56y": {
+      "g1_pbo": 0.3492063492063492,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 1.731439436269966e-10,
+      "g3_wf_returns": [
+        0.8778503829274804,
+        1.0014021565337226,
+        0.23076611611739684,
+        0.30592622314937423,
+        0.6065022745521798,
+        0.36508885979013805,
+        0.672243207537236,
+        0.41389406561292197
+      ],
+      "g3_wf_mdds": [
+        0.08255912426876626,
+        0.10203463946893794,
+        0.19874228290950233,
+        0.1716155122934143,
+        0.08879264043497054,
+        0.0921583664970854,
+        0.10384330890729769,
+        0.10110285190131915
+      ],
+      "g3_max_wf_mdd": 0.19874228290950233,
+      "g4_oos_sharpe": 1.0854959101176986,
+      "g5_fwd_sharpe": 1.1147544791620771,
+      "g6_ci_low": 0.6876537410345385,
+      "g7_crosslib_delta_pp": 0.0
+    },
+    "vt_real": {
+      "g1_pbo": 0.9682539682539683,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 0.0004960730661398571,
+      "g3_wf_returns": [
+        0.3272575802752722,
+        0.09380807542043557,
+        0.2955329657575334,
+        0.03819396644735029,
+        0.20141691020385566,
+        0.3196545733804832,
+        0.10275430292243937,
+        0.32975131023143023
+      ],
+      "g3_wf_mdds": [
+        0.06285416665755103,
+        0.05724202063137831,
+        0.06370121936885395,
+        0.09215836649708467,
+        0.10384330890729765,
+        0.055241552082732424,
+        0.1011028519013197,
+        0.09254303309946162
+      ],
+      "g3_max_wf_mdd": 0.10384330890729765,
+      "g4_oos_sharpe": 1.101080455648364,
+      "g5_fwd_sharpe": 1.1147544791620771,
+      "g6_ci_low": 0.3448043393521583,
+      "g7_crosslib_delta_pp": 0.0
+    },
+    "ndx_real": {
+      "g1_pbo": 0.8809523809523809,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 9.448389273114532e-05,
+      "g3_wf_returns": [
+        0.07501532107347808,
+        0.23497939911319543,
+        0.10013899379042512,
+        0.05733425399007519,
+        0.36532656061907165,
+        0.1338576294120961,
+        0.1403367002159166,
+        0.30502666014403435
+      ],
+      "g3_wf_mdds": [
+        0.05724202063137813,
+        0.05790607713343486,
+        0.09215836649708546,
+        0.08586308937783994,
+        0.10384330890729739,
+        0.09269868584655339,
+        0.07945350717435612,
+        0.09254303309946088
+      ],
+      "g3_max_wf_mdd": 0.10384330890729739,
+      "g4_oos_sharpe": 1.0331667161451394,
+      "g5_fwd_sharpe": 1.1147544791620771,
+      "g6_ci_low": 0.47870482804738773,
+      "g7_crosslib_delta_pp": 0.0
+    }
+  },
+  "net_metrics": {
+    "lh_56y": {
+      "sharpe": 1.1611257565817685,
+      "cagr": 0.11121772121192919,
+      "mdd": 0.1987422829095017
+    },
+    "vt_real": {
+      "sharpe": 0.9872855001631158,
+      "cagr": 0.09375868613724303,
+      "mdd": 0.15992903505080636
+    },
+    "ndx_real": {
+      "sharpe": 1.157019432206374,
+      "cagr": 0.10273564785332279,
+      "mdd": 0.10384330890729777
+    }
+  },
+  "robustness": {
+    "bonus_pts": 5,
+    "pct_positive_sharpe": 1.0,
+    "n_windows": 34,
+    "min_rolling_sharpe": 0.49226000247178475,
+    "max_rolling_sharpe": 2.0627613866479333,
+    "anchor_dataset": "lh_56y"
+  }
+}

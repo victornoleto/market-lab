@@ -5,6 +5,30 @@ HAA+Gold by +0.10 Sharpe (apples-to-oranges due to gross/net mismatch),
 this loop scores against the **average of SPY and VT 1× buy-and-hold**
 per dataset — the user's literal "above-the-average" mandate.
 
+Reframing 2026-04-29 (mandate update, user-approved A.1-A.4):
+    A.1) Primary benchmark switches from avg(SPY,VT) to **SPY-only** per
+         dataset — VT averaged in a regime-mismatched intl-equity-drag
+         penalty that lowered the bar artificially. avg(SPY,VT) retained
+         as `LEGACY_BENCHMARKS` for cross-iter compat (iters 001-022 keep
+         their published scores; iter 023+ scored under SPY-only).
+    A.2) Sharpe edge gate **+0.05** (was +0.10) — under SPY-only the
+         hurdle is genuinely tougher (SPY Sharpe 0.68 lh_56y vs avg 0.67),
+         and 0.05 separates signal from noise per [advances_fin_ml,
+         p.222-223] DSR analysis on this n_trials regime.
+    A.3) CAGR floor (≥0.8 × bench) becomes **WARNING-ONLY**: still
+         scored 15 pts in the rubric and reported in verdict.json, but
+         no longer blocks tier=WINNER (`winner_conditions_met`). User
+         decision: defensive Sharpe-frontier strategies (iter 020 Browne
+         All-Weather, iter 019 vol-managed) deserve WINNER consideration
+         when MDD-cleanest. Rationale: [risk_parity, ch.5] — risk-parity
+         frontier sacrifices CAGR for Sharpe by design.
+    A.4) MDD ceiling tightens: **≤ SPY MDD strictly** (was ≤ bench + 5pp
+         slack). Under SPY-only the slack inflated the bar artificially;
+         strict-equality is what production deploy requires.
+
+iters 001-022 keep their LEGACY scores for cross-iter consistency. The
+new SPY-only criteria apply prospectively (iter 023+).
+
 All benchmarks below are **gross-of-tax** (no DARF applied), and the
 gating below evaluates **gross** candidate metrics so the comparison
 is apples-to-apples. Net-of-tax (Lei 14.754/2023, `_shared/tax_engine.py`)
@@ -31,6 +55,7 @@ Citations
 * DSR penalty with cumulative n_trials — `[advances_fin_ml, p.222-223]`
 * PBO grid-level — `[advances_fin_ml, p.208-211]`
 * Bootstrap CI — `[advances_fin_ml, p.196-202]`
+* Risk-parity Sharpe-frontier rationale — `[risk_parity, ch.5]`
 """
 
 from __future__ import annotations
@@ -98,10 +123,11 @@ BENCHMARKS: dict[str, dict[str, Benchmark]] = {
 
 
 def avg_benchmark(dataset_benchmarks: dict[str, Benchmark]) -> Benchmark:
-    """Synthetic 'avg of SPY and VT (and QQQ)' per dataset.
+    """Synthetic 'avg of SPY and VT (and QQQ)' per dataset (LEGACY).
 
     Sharpe and CAGR averaged; MDD takes the worst (most permissive ceiling).
-    This is the threshold the candidate must beat by ≥0.10 Sharpe.
+    Was the threshold the candidate must beat by ≥0.10 Sharpe pre-2026-04-29.
+    Retained for cross-iter compat (iters 001-022 keep avg(SPY,VT) scores).
     """
     bms = list(dataset_benchmarks.values())
     n = len(bms)
@@ -113,11 +139,37 @@ def avg_benchmark(dataset_benchmarks: dict[str, Benchmark]) -> Benchmark:
     )
 
 
+def spy_benchmark(dataset_benchmarks: dict[str, Benchmark]) -> Benchmark:
+    """SPY-only benchmark per dataset (NEW primary, mandate reframing 2026-04-29).
+
+    Picks the SPY entry from the dataset's benchmark dict (or QQQ if SPY
+    absent — ndx_real has both). Falls back to the first entry as a
+    defensive guard (no current dataset hits this branch).
+    """
+    if "spy" in dataset_benchmarks:
+        b = dataset_benchmarks["spy"]
+        return Benchmark(b.sharpe, b.cagr, b.mdd, label=f"SPY-only: {b.label}")
+    if "qqq" in dataset_benchmarks:
+        b = dataset_benchmarks["qqq"]
+        return Benchmark(b.sharpe, b.cagr, b.mdd, label=f"QQQ-only: {b.label}")
+    b = next(iter(dataset_benchmarks.values()))
+    return Benchmark(b.sharpe, b.cagr, b.mdd, label=f"first-only: {b.label}")
+
+
 def primary_benchmarks() -> dict[str, Benchmark]:
-    """Per-dataset primary benchmark = avg of SPY/VT/QQQ.
+    """Per-dataset primary benchmark = SPY-only (mandate reframing 2026-04-29).
 
     Used internally by score_strategy. Override via the ``benchmarks`` arg
-    to score_strategy when testing alternative thresholds.
+    to score_strategy when testing alternative thresholds. Pass
+    ``legacy_benchmarks()`` for the pre-2026-04-29 avg(SPY,VT) baseline.
+    """
+    return {ds: spy_benchmark(BENCHMARKS[ds]) for ds in BENCHMARKS}
+
+
+def legacy_benchmarks() -> dict[str, Benchmark]:
+    """Per-dataset LEGACY benchmark = avg(SPY,VT) — for retro/cross-iter compat.
+
+    Used by iters 001-022 (their published scores remain anchored on this).
     """
     return {ds: avg_benchmark(BENCHMARKS[ds]) for ds in BENCHMARKS}
 
@@ -229,6 +281,10 @@ class ScoreResult:
         }
 
 
+SHARPE_EDGE_HURDLE = 0.05  # Was +0.10 pre-reframing (2026-04-29). [advances_fin_ml, p.222-223]
+MDD_CEILING_SLACK = 0.0    # Was +0.05 (5pp slack) pre-reframing. SPY-only mandate ⇒ strict equality.
+
+
 def score_strategy(
     metrics: dict[str, DatasetMetrics],
     gates: dict[str, Gates],
@@ -240,17 +296,18 @@ def score_strategy(
 
     Rubric (total 100 + 5 bonus):
 
-    1. **Sharpe edge** (25 pts) — beats ``avg(SPY, VT) + 0.10`` per dataset.
-       avg = mean of named benchmarks per dataset (e.g. educational: avg of
-       VTSIM and SPYSIM b&h).
+    1. **Sharpe edge** (25 pts) — beats ``SPY + 0.05`` per dataset
+       (mandate reframing 2026-04-29: SPY-only baseline + 0.05 hurdle).
     2. **Gate pass** (25 pts) — 7-gate battery per dataset + cross-dataset bonus.
     3. **DSR significance** (15 pts) — p-value with cumulative n_trials.
-    4. **CAGR floor** (15 pts) — ≥ 0.8 × avg-benchmark CAGR per dataset.
-    5. **MDD ceiling** (15 pts) — ≤ avg-benchmark MDD + 5pp per dataset.
+    4. **CAGR floor** (15 pts) — ≥ 0.8 × benchmark CAGR per dataset (WARNING-ONLY
+       2026-04-29: still scored, but does NOT block winner_conditions_met).
+    5. **MDD ceiling** (15 pts) — ≤ benchmark MDD per dataset (was +5pp slack;
+       reframing 2026-04-29 → strict equality, SPY-only).
     6. **Robustness bonus** (5 pts) — when caller provides rolling-window stat.
 
-    Score is clamped to [0, 100]. Tier WINNER requires ALL 5 strict
-    conditions (see ``_check_winner_conditions``).
+    Score is clamped to [0, 100]. Tier WINNER requires winner conditions met
+    (see ``_check_winner_conditions``).
     """
     bm = benchmarks or primary_benchmarks()
     datasets = list(metrics.keys())  # infer from caller; supports both lh_56y and legacy educational
@@ -258,7 +315,7 @@ def score_strategy(
     # --- 1. Sharpe edge (25 pts) ---------------------------------------
     datasets_beat_sharpe = sum(
         1 for ds in datasets
-        if metrics[ds].sharpe >= bm[ds].sharpe + 0.10
+        if metrics[ds].sharpe >= bm[ds].sharpe + SHARPE_EDGE_HURDLE
     )
     c1_pts = 0
     if datasets_beat_sharpe >= 1:
@@ -318,7 +375,7 @@ def score_strategy(
     c5_pts = 0
     mdd_per_dataset: dict[str, bool] = {}
     for ds in datasets:
-        ceiling = bm[ds].mdd + 0.05
+        ceiling = bm[ds].mdd + MDD_CEILING_SLACK  # 2026-04-29: 0pp slack vs SPY-only
         passed = metrics[ds].mdd <= ceiling
         mdd_per_dataset[ds] = passed
         if passed:
@@ -342,7 +399,12 @@ def score_strategy(
             "max": 25,
             "datasets_beat": datasets_beat_sharpe,
             "required_minimum_dataset_count": 2,
-            "note": "Sharpe edge measured vs avg(SPY, VT) per dataset (gross).",
+            "hurdle": SHARPE_EDGE_HURDLE,
+            "note": (
+                f"Sharpe edge ≥ bench + {SHARPE_EDGE_HURDLE:+.2f}. "
+                "Default benchmark SPY-only (2026-04-29 reframing). "
+                "Pass `legacy_benchmarks()` for avg(SPY,VT) baseline."
+            ),
         },
         "2_gates": {
             "points": c2_pts,
@@ -361,11 +423,20 @@ def score_strategy(
             "points": c4_pts,
             "max": 15,
             "per_dataset": cagr_per_dataset,
+            "warning_only": True,
+            "note": (
+                "WARNING-ONLY since 2026-04-29 reframing — pts still in rubric "
+                "but does NOT contribute to winner_conditions_met. "
+                "Defensive Sharpe-frontier strategies (iter 019/020) eligible "
+                "for WINNER. [risk_parity, ch.5]"
+            ),
         },
         "5_mdd_ceiling": {
             "points": c5_pts,
             "max": 15,
             "per_dataset": mdd_per_dataset,
+            "slack": MDD_CEILING_SLACK,
+            "note": "Slack tightened 2026-04-29 (was +5pp; SPY-only mandate ⇒ strict).",
         },
         "6_robustness_bonus": {
             "points": c6_pts,
@@ -398,7 +469,18 @@ def _check_winner_conditions(
     cagr_per_dataset: dict[str, bool],
     mdd_per_dataset: dict[str, bool],
 ) -> bool:
-    """Strict 5/5 winner conditions per WINNER_AND_RANKING.md."""
+    """Winner conditions (post-reframing 2026-04-29).
+
+    Active gating conditions (4):
+      - Sharpe edge ≥ +0.05 vs bench on ≥2/3 datasets (A.2)
+      - 7-gate battery threshold per dataset
+      - DSR worst p < 0.05
+      - MDD ≤ bench (strict, no slack) on ≥2/3 (A.4)
+
+    Removed from gating (still rubric-scored):
+      - CAGR floor (was condition 4, now warning-only per A.3) —
+        defensive Sharpe-frontier strategies eligible for WINNER.
+    """
     if datasets_beat_sharpe < 2:
         return False
     # Iterate gates per dataset present in the caller's metrics, looking up
@@ -411,8 +493,7 @@ def _check_winner_conditions(
             return False
     if worst_p >= 0.05:
         return False
-    if sum(cagr_per_dataset.values()) < 2:
-        return False
+    # CAGR floor is now warning-only (A.3 reframing 2026-04-29) — not gating.
     if sum(mdd_per_dataset.values()) < 2:
         return False
     return True
