@@ -1,15 +1,15 @@
 ---
 mission: "Find ONE long-term strategy with mean CAGR ≥ SPY (11.21%) AND mean MDD ≤ SPY (55.17%) AND surviving 7-gate battery on ≥ 2/2 datasets"
 target_total_iterations: 50
-total_iterations: 3
+total_iterations: 4
 winners_found: 0
-closest_to_winner: "iter 003 a3_lrs_split_kmlm20: CAGR 14.99% PASS, MDD 41.87% PASS, gates 6/6 PASS cross_met — winner_conditions_met=TRUE, score 64 (tier PROMISING; tier WINNER requires score ≥ 90)"
+closest_to_winner: "iter 004 a4_lrs_split_kmlm30: CAGR 14.39% PASS, MDD 36.79% PASS, gates 6/6 PASS cross_met — winner_conditions_met=TRUE, score 66 (tier PROMISING; tier WINNER requires score ≥ 90)"
 status: hunting
-latest_iteration: "003-2026-04-30-A3-mixed-gayed-crisis-alpha"
-latest_score: 64
+latest_iteration: "004-2026-04-30-A3-kmlm-dose-response"
+latest_score: 66
 latest_tier: PROMISING
 latest_bars_met: 3  # CAGR ✓, MDD ✓, Gates ✓
-cumulative_n_trials: 14
+cumulative_n_trials: 17
 datasets:
   - "lh_56y (1986+, ~40y, SPYSIM synth, GATE thresh 5)"
   - "spy_real (2003+, ~22.7y, SPY Tiingo adj_close, GATE thresh 5)"
@@ -18,13 +18,14 @@ spy_benchmarks:
   mdd_mean: 0.5517
   sharpe_mean: 0.6661
 direction_status:
-  A1_200d_SMA_3x_UPRO: "DISPLACED (iter 001 was closest @ 60; iter 003 KMLM20 wins @ 64)"
+  A1_200d_SMA_3x_UPRO: "CLOSED (displaced iter 003 KMLM20 then iter 004 KMLM30)"
   A2_faster_signal: "CLOSED (iter 002 KILL #7) — faster SMA/EMA make MDD WORSE"
   A2_threshold_buffer: "CLOSED (iter 002 KILL #8) — buffer ≥5% makes MDD worse"
-  A2_lower_leverage: "DOMINATED — bars 3/3 met but score < 60 (CAGR drag > MDD pts gain)"
-  A3_mixed_gayed_crisis_alpha: "PROMISING (best so far, iter 003) — KMLM 20% in ON sleeve drops MDD 9.73pp; score 64"
-  A3_kmlm_dose_response: "NEW PROMISING — monotonic positive 10→20%; explore 25-30% in iter 004"
-  A3_tlt_dose_response: "NEW PROMISING — 15% TLT competitive with KMLM 10%; strict dose-comparison needed (TLT 20% vs KMLM 20%)"
+  A2_lower_leverage: "CLOSED — bars 3/3 met but score < 60 (CAGR drag > MDD pts gain)"
+  A3_mixed_gayed_crisis_alpha: "DOMINATED by iter 004 KMLM 30% (same architecture, lower scores)"
+  A3_kmlm_dose_response: "PROMISING (best so far, iter 004 KMLM30 score 66) — monotonic positive 0→30%, no inflection found"
+  A3_kmlm_extreme: "NEW PROMISING — explore 35% / 40% in iter 005 to find inflection point"
+  A3_tlt_dose_response: "PROMISING but subordinate — TLT 20% Sharpe slightly > KMLM 20%, but KMLM scales better at 25-30%; revisit with KMLM+TLT blends iter 006+"
   B1_HFEA_classical: "NOT YET RUN — TMFSIM ready"
   C1_vol_targeted: "NOT YET RUN"
 parent_loop: "studies/long_term_portfolio (43 iters, F1+SPLIT incumbent fallback)"
@@ -81,6 +82,37 @@ NEW synths likely needed (NOT in long_term_portfolio):
 ---
 
 ## Iteration log (newest first)
+
+### iter 004 — A3 KMLM dose-response (extend to 25/30%) — PROMISING 66/100, NEW closest-to-winner (2026-04-30)
+
+- **Tier**: PROMISING **66/100** (winner_conditions_met = **TRUE**, all 3 bars pass)
+- **Selected**: `a4_lrs_split_kmlm30` (35% UPRO + 35% SSO + 30% KMLM ON; 100% IEF OFF; SMA 200, no buffer)
+- **Bars**: CAGR ✓ (14.39% mean ≥ 11.21%), MDD ✓ (36.79% ≤ 55.17%), Gates ✓ (6/6, cross_met TRUE)
+- **All 3 configs PASSED all 3 bars** — direction A3 KMLM dose-response robust:
+  | config                   | mean CAGR | mean MDD | Sharpe (lh, spy_real) |
+  |--------------------------|----------:|---------:|----------------------:|
+  | a4_lrs_split_kmlm25      | 14.70%    | 39.37%   | 0.741 / 0.706         |
+  | **a4_lrs_split_kmlm30**  | **14.39%** | **36.79%** | **0.765 / 0.722**   |
+  | a4_lrs_split_tlt20       | 15.01%    | 42.59%   | 0.724 / 0.698         |
+- **Per-dataset (selected)**:
+  | dataset  | Sharpe | CAGR    | MDD    | gates | DSR p     |
+  |----------|-------:|--------:|-------:|------:|----------:|
+  | lh_56y   | 0.765  | 15.13%  | 37.39% | 6/7   | 6.53e-05  |
+  | spy_real | 0.722  | 13.65%  | 36.20% | 6/7   | 5.56e-03  |
+- **Score lift vs iter 003 a3_kmlm20 (64→66)**: MDD 10→12 (+2), Sharpe 1→2 (+1), CAGR 20→19 (−1). Net +2.
+- **Pre-committed KILLs**:
+  - KILL #6 NOT FIRED (CAGR floor): all 3 configs CAGR ≥ 14.39% >> 11.21%.
+  - KILL #13 NOT FIRED (KMLM 25% inflection): `a4_kmlm25` Sharpe (0.741, 0.706) > `a3_kmlm20` (0.719, 0.692) in BOTH ds. Monotonic positive 20→25%.
+  - KILL #14 NOT FIRED (KMLM 30% vs 25%): `a4_kmlm30` (0.765, 0.722) > `a4_kmlm25` (0.741, 0.706) in BOTH ds. Monotonic positive 25→30%.
+  - KILL #15 NOT FIRED (TLT 20% dominated): `a4_tlt20` Sharpe (0.724, 0.698) marginally > `a3_kmlm20` (0.719, 0.692) in BOTH ds; MDD 42.59% slightly worse than KMLM 20% MDD 41.87%. TLT 20% NOT dominated. KMLM scales better at 25-30%.
+- **KMLM dose-response curve (5 data points)**: 0%→16.23/51.60, 10%→15.47/46.65, 20%→14.99/41.87, 25%→14.70/39.37, 30%→14.39/36.79 (CAGR/MDD). Marginal cost ~0.6pp CAGR per +5% KMLM, marginal benefit ~2.5-5pp MDD. Curve concave, NO inflection found in 0-30%.
+- **Multi-horizon robustness 10/10**: 5y pass-rate 83.3%, 10/15/20y all 100%.
+- **Next iter direction**: A3 KMLM extreme (35% / 40%) + KMLM30+TLT10 blend (3 configs).
+- **Citations**: `[leverage_for_the_long_run, ch.3-4, p.40-60]` Gayed gate;
+  `[risk_parity, ch.5, p.10]` Carlson capital-efficient stacking — KMLM
+  dose-response curve is concave with sustained marginal MDD relief
+  (5.08pp from KMLM 20% → 30%) and only 0.60pp CAGR drag;
+  `[advances_fin_ml, p.222-223]` DSR n_trials=17 worst p 5.56e-03 << 0.05.
 
 ### iter 003 — A3 mixed Gayed (crisis-alpha buffer in ON sleeve) — PROMISING 64/100, NEW closest-to-winner (2026-04-30)
 
