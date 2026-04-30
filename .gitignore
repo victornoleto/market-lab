@@ -81,6 +81,9 @@ reports/grid_*/
 # stays under .cache/grid_runs/ (already covered by .cache/ above).
 logs/
 
+# spy_beater_hunt rerun stdout (rerun_all_iters.sh writes one per iter)
+studies/spy_beater_hunt/iterations/*/rerun.log
+
 # OS
 .DS_Store
 Thumbs.db

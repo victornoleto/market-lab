@@ -681,3 +681,171 @@ def test_resolve_tickers_routes_tmfsim_to_synth():
     )
     assert isinstance(hfea_returns, pd.Series)
     assert len(hfea_returns) > 8000
+
+
+# ---------------------------------------------------------------------------
+# Iter 018 — meta-portfolio "blend" spec type
+# ---------------------------------------------------------------------------
+
+
+def test_blend_spec_50_50_static_constituents():
+    """blend type: weighted sum of two static constituents at daily-return level.
+
+    Iter 018 H1 META-ENSEMBLE introduces "blend" as a 4th spec type alongside
+    static / lrs / vol_target. A blend composes daily portfolio returns from
+    multiple sub-specs, weighted at the strategy level (not asset level).
+
+    On dates where both constituents have data, blend_t = sum_i w_i * r_i_t.
+    """
+    from studies.spy_beater_hunt.run_iter import returns_from_spec
+
+    spec_a = {"type": "static", "weights": {"SPYSIM": 1.0}}
+    spec_b = {"type": "static", "weights": {"IEFSIM": 1.0}}
+    blend_spec = {
+        "type": "blend",
+        "constituents": [
+            {"weight": 0.5, "spec": spec_a},
+            {"weight": 0.5, "spec": spec_b},
+        ],
+    }
+
+    r_a = returns_from_spec(spec_a, "spy_real")
+    r_b = returns_from_spec(spec_b, "spy_real")
+    r_blend = returns_from_spec(blend_spec, "spy_real")
+
+    assert isinstance(r_blend, pd.Series)
+    aligned = pd.concat({"a": r_a, "b": r_b, "blend": r_blend}, axis=1).dropna()
+    expected = 0.5 * aligned["a"] + 0.5 * aligned["b"]
+    diff = (aligned["blend"] - expected).abs().max()
+    assert diff < 1e-10, f"blend mismatch: max abs diff {diff}"
+
+
+def test_blend_spec_validates_weight_sum():
+    """blend type must validate constituent weights sum to 1.0 (sanity guard)."""
+    from studies.spy_beater_hunt.run_iter import returns_from_spec
+
+    bad_spec = {
+        "type": "blend",
+        "constituents": [
+            {"weight": 0.4, "spec": {"type": "static", "weights": {"SPYSIM": 1.0}}},
+            {"weight": 0.4, "spec": {"type": "static", "weights": {"IEFSIM": 1.0}}},
+        ],
+    }
+    with pytest.raises(ValueError, match="must sum to 1.0"):
+        returns_from_spec(bad_spec, "spy_real")
+
+
+def test_blend_spec_supports_nested_lrs_constituent():
+    """blend type composes LRS sub-specs (meta-portfolio of strategies).
+
+    Iter 018 specifically blends iter-006 A2 (LRS QQQ-gated) with iter-017
+    G2 IEF (LRS SPY-gated) and iter-015 F1 stack (static always-on). This
+    test verifies that nested LRS constituents resolve via returns_from_spec
+    recursion.
+    """
+    from studies.spy_beater_hunt.run_iter import returns_from_spec
+
+    a2_spec = {
+        "type": "lrs",
+        "filter": "sma",
+        "sma_window": 200,
+        "buffer_pct": 0.0,
+        "on_weights": {"TQQQSIM": 0.5, "QLDSIM": 0.5},
+        "off_weights": {"IEFSIM": 1.0},
+        "signal_ticker": "QQQSIM",
+        "lag_days": 1,
+    }
+    f1_spec = {
+        "type": "static",
+        "weights": {"SPYSIM": 0.5, "TLTSIM": 0.5},
+    }
+    blend_spec = {
+        "type": "blend",
+        "constituents": [
+            {"weight": 0.6, "spec": a2_spec},
+            {"weight": 0.4, "spec": f1_spec},
+        ],
+    }
+
+    r = returns_from_spec(blend_spec, "spy_real")
+    assert isinstance(r, pd.Series)
+    assert len(r) > 5_000
+    ann_std = float(r.std() * (252 ** 0.5))
+    assert 0.05 < ann_std < 0.50, f"blended ann std out of range: {ann_std}"
+
+
+# ---------------------------------------------------------------------------
+# Net-of-tax layer (Lei 14.754/2023 — DARF anual)
+# ---------------------------------------------------------------------------
+
+
+def test_classify_for_tax_per_spec_type():
+    """static -> buy_hold; lrs/vol_target -> annual_realize; blend inherits."""
+    from studies.spy_beater_hunt.tax_layer import (
+        TaxClassification,
+        classify_for_tax,
+    )
+
+    assert classify_for_tax({"type": "static"}) == TaxClassification.BUY_HOLD
+    assert classify_for_tax({"type": "lrs"}) == TaxClassification.ANNUAL_REALIZE
+    assert classify_for_tax({"type": "vol_target"}) == TaxClassification.ANNUAL_REALIZE
+
+    # blend with all-static constituents -> buy_hold
+    blend_static = {
+        "type": "blend",
+        "constituents": [{"spec": {"type": "static"}}, {"spec": {"type": "static"}}],
+    }
+    assert classify_for_tax(blend_static) == TaxClassification.BUY_HOLD
+
+    # blend with any non-static constituent -> annual_realize
+    blend_mixed = {
+        "type": "blend",
+        "constituents": [{"spec": {"type": "static"}}, {"spec": {"type": "lrs"}}],
+    }
+    assert classify_for_tax(blend_mixed) == TaxClassification.ANNUAL_REALIZE
+
+
+def test_net_returns_buy_hold_drag_smaller_than_annual_realize():
+    """For positive constant returns, buy_hold drag < annual_realize drag.
+
+    Rationale: buy_hold defers all DARF to terminal liquidation -> tax-deferred
+    compounding benefit. annual_realize pays DARF every year -> loses
+    compounding on the tax money.
+    """
+    from studies.spy_beater_hunt.tax_layer import net_returns_from_spec
+
+    n_days = 10 * 252
+    daily = (1.12) ** (1.0 / 252.0) - 1.0
+    idx = pd.date_range("2010-01-04", periods=n_days, freq="B")
+    gross = pd.Series([daily] * n_days, index=idx)
+
+    static_spec = {"type": "static", "weights": {"X": 1.0}}
+    lrs_spec = {"type": "lrs", "on_weights": {}, "off_weights": {}}
+
+    _, summary_static = net_returns_from_spec(static_spec, gross)
+    _, summary_lrs = net_returns_from_spec(lrs_spec, gross)
+
+    assert summary_static.classification == "buy_hold"
+    assert summary_lrs.classification == "annual_realize"
+    assert summary_static.drag_pct_pts > 0  # any tax > 0 drag
+    assert summary_lrs.drag_pct_pts > summary_static.drag_pct_pts
+    # Sanity: 10y / 12% gross / 15% DARF -> drag should land in [0.5, 3.0] pp
+    assert 0.5 < summary_static.drag_pct_pts < 1.5
+    assert 1.0 < summary_lrs.drag_pct_pts < 3.0
+
+
+def test_net_returns_zero_gain_zero_darf():
+    """If gross returns sum to zero gain, terminal DARF is zero."""
+    from studies.spy_beater_hunt.tax_layer import net_returns_from_spec
+
+    n_days = 252
+    # alternating +1% / -1% (approximately zero net)
+    idx = pd.date_range("2020-01-02", periods=n_days, freq="B")
+    arr = np.array([0.01 if i % 2 == 0 else -0.01 for i in range(n_days)])
+    gross = pd.Series(arr, index=idx)
+
+    static_spec = {"type": "static", "weights": {"X": 1.0}}
+    _, summary = net_returns_from_spec(static_spec, gross)
+
+    assert summary.terminal_darf == 0.0
+    assert summary.total_darf_paid == 0.0
