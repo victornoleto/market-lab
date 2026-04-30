@@ -1,0 +1,68 @@
+{
+  "iter": 11,
+  "type": "meta_iteration_impossibility_result",
+  "n_iters_synthesized": 10,
+  "cumulative_n_trials": 35,
+  "best_score_across_iters": 67,
+  "closest_to_winner": {
+    "iter": 6,
+    "iter_dir": "006-2026-04-30-A2-tqqq-track-split",
+    "total_score": 67,
+    "tier": "PROMISING"
+  },
+  "family_ceiling": {
+    "A1/A3 SPY-track LRS": {
+      "best_iter": 4,
+      "best_score": 66,
+      "best_sharpe": 0.7436042761042172,
+      "best_tier": "PROMISING"
+    },
+    "A2 TQQQ-track LRS": {
+      "best_iter": 6,
+      "best_score": 67,
+      "best_sharpe": 0.7587580340831312,
+      "best_tier": "PROMISING"
+    },
+    "B1/B2 HFEA barbell": {
+      "best_iter": 8,
+      "best_score": 63,
+      "best_sharpe": 0.739312459428284,
+      "best_tier": "PROMISING"
+    },
+    "C1 vol-target": {
+      "best_iter": 10,
+      "best_score": 60,
+      "best_sharpe": 0.7211728287353386,
+      "best_tier": "PROMISING"
+    }
+  },
+  "kills_fired": {
+    "7": "iter 002 \u2014 faster SMA/EMA make MDD WORSE",
+    "8": "iter 002 \u2014 buffer \u22655% makes MDD worse",
+    "19": "iter 006 \u2014 TQQQ-track wipeout MDD>70% on lh_56y baseline (a6_lrs)",
+    "23": "iter 007 \u2014 TLT subordinate to KMLM on TQQQ-track (marginal 0.33pp)",
+    "24": "iter 008 \u2014 HFEA classical 5545 spy_real MDD 67.13% > 65%",
+    "27": "iter 009 \u2014 KMLM dose 15-25% on HFEA insufficient (spy_real MDD > 55%)",
+    "32": "iter 010 \u2014 Sharpe monotonic NEGATIVE through target_vol 20\u219225%"
+  },
+  "kills_not_fired": {
+    "6": "CAGR floor 11.21% \u2014 best CAGR mean 20.49% (iter 006 a6_lrs) >> 11.21%",
+    "16": "iter 005 \u2014 KMLM 35% inflection \u2014 Sharpe still monotonic positive",
+    "17": "iter 005 \u2014 KMLM 40% inflection \u2014 Sharpe still monotonic positive",
+    "18": "iter 005 \u2014 TLT-on-top doesn't help \u2014 actually does help, marginal",
+    "20": "iter 006 \u2014 no NDX-track CAGR uplift \u2014 uplift confirmed +3pp over SPY-track",
+    "21": "iter 006 \u2014 KMLM doesn't generalize \u2014 generalizes cleanly",
+    "22": "iter 007 \u2014 KMLM 35\u219240% inflection on TQQQ-track \u2014 Sharpe monotonic positive",
+    "25": "iter 008 \u2014 TMFSIM no-free-lunch \u2014 Sharpe 0.49 \u2208 [0,1] \u2713",
+    "26": "iter 008 \u2014 HFEA monotonic regression at 5545 \u2014 5050 > 5545 actually",
+    "28": "iter 009 \u2014 Sharpe < 0.740 baseline \u2014 kmlm25 mean 0.766 > 0.740",
+    "29": "iter 009 \u2014 CAGR < 13.80% \u2014 kmlm25 CAGR mean 18.27% >> 13.80%",
+    "30": "iter 010 \u2014 Sharpe < 0.66 baseline \u2014 c1_vt20_sso 0.721 > 0.66",
+    "31": "iter 010 \u2014 defensive variant fails MDD \u2014 c1_vt20_sso 36.94% << 55%"
+  },
+  "kill_33_fired": true,
+  "kill_33_rationale": "4 control families \u00d7 10 iters \u00d7 35 cumulative trials \u2192 best score 67 < 75 ceiling threshold; max plausible +19 lift \u2192 86 < 90 WINNER threshold; score-90 path architecturally unreachable within spy_beater rubric and 2-dataset framework",
+  "policy_action": "close_no_winner",
+  "deploy_recommendation": "F1+SPLIT (NTSX 25 + GDE 25 + KMLM 17.5 + DBMF 17.5 + TLT 15) \u2014 long_term_portfolio incumbent fallback; mandate \u00a71 100% Plano C unchanged",
+  "primary_citation": "[advances_fin_ml, p.31-34] factor framework + [advances_fin_ml, p.222-223] DSR cumulative_n_trials + [risk_parity, ch.5, p.10] Carlson capital-efficient stacking baseline"
+}

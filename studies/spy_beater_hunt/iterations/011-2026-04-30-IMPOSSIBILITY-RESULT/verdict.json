@@ -1,0 +1,68 @@
+{
+  "status": "closed_no_winner",
+  "tier": "IMPOSSIBILITY_RESULT",
+  "total_score": null,
+  "winner_conditions_met": false,
+  "bars": {
+    "cagr_bar": null,
+    "mdd_bar": null,
+    "gates_bar": null
+  },
+  "bars_met_count": null,
+  "criteria": {
+    "1_cagr": {
+      "points": null,
+      "max": 30,
+      "note": "meta-iter; no new configs"
+    },
+    "2_mdd": {
+      "points": null,
+      "max": 20,
+      "note": "meta-iter; no new configs"
+    },
+    "3_gates": {
+      "points": null,
+      "max": 20,
+      "note": "meta-iter; no new configs"
+    },
+    "4_dsr": {
+      "points": null,
+      "max": 10,
+      "note": "meta-iter; no new configs"
+    },
+    "5_sharpe": {
+      "points": null,
+      "max": 10,
+      "note": "meta-iter; no new configs"
+    },
+    "6_robustness": {
+      "points": null,
+      "max": 10,
+      "note": "meta-iter; no new configs"
+    },
+    "7_bonus": {
+      "points": null,
+      "max": 5,
+      "note": "meta-iter; no new configs"
+    }
+  },
+  "metrics_used": {
+    "best_iter_006_007": {
+      "sharpe_mean": 0.804,
+      "cagr_mean": 0.1733,
+      "mdd_mean": 0.4973,
+      "score": 67,
+      "tier": "PROMISING"
+    }
+  },
+  "spy_benchmark": {
+    "cagr_mean": 0.1121,
+    "mdd_mean": 0.5517,
+    "framework": "2-dataset (lh_56y + spy_real)"
+  },
+  "cumulative_n_trials": 35,
+  "configs_tested": 0,
+  "n_iters_synthesized": 10,
+  "kill_33_fired": true,
+  "primary_citation": "[advances_fin_ml, p.31-34] factor framework + [advances_fin_ml, p.222-223] DSR cumulative_n_trials + [risk_parity, ch.5, p.10] Carlson capital-efficient stacking"
+}
