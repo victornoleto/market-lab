@@ -1,15 +1,15 @@
 ---
 mission: "Find ONE long-term strategy with mean CAGR ≥ SPY (11.21%) AND mean MDD ≤ SPY (55.17%) AND surviving 7-gate battery on ≥ 2/2 datasets"
 target_total_iterations: 50
-total_iterations: 4
+total_iterations: 5
 winners_found: 0
-closest_to_winner: "iter 004 a4_lrs_split_kmlm30: CAGR 14.39% PASS, MDD 36.79% PASS, gates 6/6 PASS cross_met — winner_conditions_met=TRUE, score 66 (tier PROMISING; tier WINNER requires score ≥ 90)"
+closest_to_winner: "iter 004 a4_lrs_split_kmlm30: CAGR 14.39% PASS, MDD 36.79% PASS, gates 6/6 PASS cross_met — winner_conditions_met=TRUE, score 66 (tier PROMISING; tier WINNER requires score ≥ 90). UNCHANGED in iter 005 — iter 005 produced lower-MDD/higher-Sharpe configs but CAGR-axis-dominated scoring regressed to 63."
 status: hunting
-latest_iteration: "004-2026-04-30-A3-kmlm-dose-response"
-latest_score: 66
+latest_iteration: "005-2026-04-30-A3-kmlm-extreme"
+latest_score: 63
 latest_tier: PROMISING
 latest_bars_met: 3  # CAGR ✓, MDD ✓, Gates ✓
-cumulative_n_trials: 17
+cumulative_n_trials: 20
 datasets:
   - "lh_56y (1986+, ~40y, SPYSIM synth, GATE thresh 5)"
   - "spy_real (2003+, ~22.7y, SPY Tiingo adj_close, GATE thresh 5)"
@@ -24,7 +24,8 @@ direction_status:
   A2_lower_leverage: "CLOSED — bars 3/3 met but score < 60 (CAGR drag > MDD pts gain)"
   A3_mixed_gayed_crisis_alpha: "DOMINATED by iter 004 KMLM 30% (same architecture, lower scores)"
   A3_kmlm_dose_response: "PROMISING (best so far, iter 004 KMLM30 score 66) — monotonic positive 0→30%, no inflection found"
-  A3_kmlm_extreme: "NEW PROMISING — explore 35% / 40% in iter 005 to find inflection point"
+  A3_kmlm_extreme: "MONOTONIC POSITIVE CONFIRMED through KMLM 40% (iter 005) — Sharpe rose 30→35→40% in BOTH datasets, but score regressed 66→63 because CAGR-axis dominates rubric vs MDD/Sharpe gains. Direction structurally limited within scoring; KMLM 45-50% unlikely to lift score."
+  A3_tlt_on_top_of_kmlm30: "NEW PROMISING (iter 005 a5_kmlm30_tlt10 Sharpe 0.818/0.768 beat a4_kmlm30 0.765/0.722 in BOTH datasets) — adding 10pp TLT on top of iter 004 winner improves Sharpe at small CAGR cost. Could extend with KMLM30+TLT15/20 in iter 006+."
   A3_tlt_dose_response: "PROMISING but subordinate — TLT 20% Sharpe slightly > KMLM 20%, but KMLM scales better at 25-30%; revisit with KMLM+TLT blends iter 006+"
   B1_HFEA_classical: "NOT YET RUN — TMFSIM ready"
   C1_vol_targeted: "NOT YET RUN"
@@ -82,6 +83,39 @@ NEW synths likely needed (NOT in long_term_portfolio):
 ---
 
 ## Iteration log (newest first)
+
+### iter 005 — A3 KMLM extreme (probe inflection 35/40 + KMLM30+TLT10) — PROMISING 63/100, score regressed but direction monotonic positive through 40% (2026-04-30)
+
+- **Tier**: PROMISING **63/100** (winner_conditions_met = **TRUE**, all 3 bars pass)
+- **Selected**: `a5_lrs_split_kmlm30_tlt10` (30% UPRO + 30% SSO + 30% KMLM + 10% TLT ON; 100% IEF OFF; SMA 200, no buffer) — won by tight Sharpe margin over `a5_kmlm40`
+- **Bars**: CAGR ✓ (13.57% mean ≥ 11.21%), MDD ✓ (32.57% ≤ 55.17%), Gates ✓ (5/6, cross_met TRUE)
+- **All 3 configs PASSED all 3 bars**:
+  | config                       | mean CAGR | mean MDD | Sharpe (lh, spy_real) |
+  |------------------------------|----------:|---------:|----------------------:|
+  | a5_lrs_split_kmlm35          | 14.05%    | 34.14%   | 0.791 / 0.739         |
+  | a5_lrs_split_kmlm40          | 13.68%    | 31.62%   | 0.820 / 0.756         |
+  | **a5_lrs_split_kmlm30_tlt10**| **13.57%** | **32.57%** | **0.818 / 0.768**   |
+- **Per-dataset (selected)**:
+  | dataset  | Sharpe | CAGR    | MDD    | gates | DSR p     |
+  |----------|-------:|--------:|-------:|------:|----------:|
+  | lh_56y   | 0.818  | 14.36%  | 32.57% | 5/7   | 1.70e-05  |
+  | spy_real | 0.768  | 12.78%  | 32.57% | 6/7   | 2.93e-03  |
+- **Score regression vs iter 004 (66→63)**: CAGR 19→17 (−2), MDD 12→13 (+1), Gates 13→12 (−1, lh_56y 6→5), Robustness 10→9 (−1, 5y pass-rate 83.3%→66.7%), Sharpe/DSR/Extra unchanged. Despite better MDD and Sharpe, the CAGR-axis-dominated rubric (30 pts CAGR vs 20 pts MDD) made −0.82pp CAGR cost more than +4.22pp MDD gained.
+- **Pre-committed KILLs**:
+  - KILL #6 NOT FIRED (CAGR floor): all 3 configs CAGR ≥ 13.57% >> 11.21%.
+  - KILL #16 NOT FIRED (KMLM 35% inflection): `a5_kmlm35` Sharpe (0.791, 0.739) > `a4_kmlm30` (0.765, 0.722) in BOTH ds. Monotonic positive 30→35%.
+  - KILL #17 NOT FIRED (KMLM 40% inflection): `a5_kmlm40` (0.820, 0.756) > `a5_kmlm35` (0.791, 0.739) in BOTH ds. Monotonic positive 35→40%. **No inflection found in 0-40% KMLM range.**
+  - KILL #18 NOT FIRED (TLT-on-top doesn't help): `a5_kmlm30_tlt10` (0.818, 0.768) > `a4_kmlm30` (0.765, 0.722) in BOTH ds. Adding 10pp TLT DID help Sharpe.
+- **KMLM dose-response curve (7 data points)**: 0%→16.23/51.60, 10%→15.47/46.65, 20%→14.99/41.87, 25%→14.70/39.37, 30%→14.39/36.79, 35%→14.05/34.14, 40%→13.68/31.62 (CAGR/MDD). Marginal CAGR cost slowing (0.34pp/+5% in 30-40% zone vs 0.6pp earlier). Marginal MDD relief slowing (~2.5pp/+5% in 30-40% zone vs 5pp earlier). Sharpe rises monotonically.
+- **Closest-to-winner UNCHANGED**: iter 004 `a4_kmlm30` (66) retains. Path to score 90 looks structurally blocked within KMLM-dose lever — pivot to B1 HFEA / A2 TQQQ-track / C1 vol-targeted needed for additional +25 pts.
+- **Multi-horizon robustness 9/10**: 5y pass-rate dropped 83.3%→66.7% (KMLM-heavy lags SPY in 5y windows during long bull); 10y 92.3%, 15/20y 100%.
+- **Next iter direction**: pivot to **B1 HFEA classical** (recommended) or **A2 TQQQ-track**. Continuing A3 KMLM dose 45-50% unlikely to lift score within current rubric.
+- **Citations**: `[leverage_for_the_long_run, ch.3-4, p.40-60]` Gayed gate;
+  `[risk_parity, ch.5, p.10]` Carlson capital-efficient stacking validated
+  through 40% KMLM (concave dose-response, monotonic positive Sharpe);
+  `[advances_fin_ml, p.222-223]` DSR n_trials=20 worst p 2.93e-03 << 0.05;
+  `[ilmanen_expected_returns, ch.19]` MF crisis-alpha — extended F1+SPLIT
+  17.5% allocation to 30-40% within Sharpe-improving zone.
 
 ### iter 004 — A3 KMLM dose-response (extend to 25/30%) — PROMISING 66/100, NEW closest-to-winner (2026-04-30)
 
