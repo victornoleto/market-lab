@@ -97,7 +97,7 @@ if __name__ == "__main__":
         hypothesis_slug=HYPOTHESIS_SLUG,
         primary_citation=PRIMARY_CITATION,
         configs=CONFIGS,
-        datasets_to_test=("lh_56y", "vt_real", "ndx_real"),
+        datasets_to_test=("lh_56y", "spy_real"),
         cumulative_n_trials=CUMULATIVE_N_TRIALS,
     )
 

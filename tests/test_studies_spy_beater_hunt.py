@@ -352,21 +352,22 @@ def test_scoring_cagr_above_ceiling_max_pts():
 
 
 def test_scoring_mdd_at_spy_mean_yields_proportional_pts():
-    """MDD criterion: 20 × clamp((0.50 - mean_mdd) / 0.40, 0, 1).
+    """MDD criterion: 20 × clamp((0.70 - mean_mdd) / (0.70 - 0.15), 0, 1).
 
-    SPY mean (0.4085) → (0.50 - 0.4085) / 0.40 = 0.2287 → 20 × 0.2287 = 4.6 → 4 pts.
+    Post-2026-04-29 refactor: MDD floor 15%, ceiling 70% (was 10%/50%).
+    SPY mean (0.5517) → (0.70 - 0.5517) / 0.55 = 0.2696 → 20 × 0.2696 = 5.39 → 5 pts.
     """
     from studies.spy_beater_hunt.scoring import compute_mdd_points
 
-    pts = compute_mdd_points(mean_mdd=0.4085)
-    assert pts == 4
+    pts = compute_mdd_points(mean_mdd=0.5517)
+    assert pts == 5
 
 
 def test_scoring_mdd_above_ceiling_zero():
-    """MDD ≥ 50% → 0 points."""
+    """MDD ≥ 70% → 0 points (post-refactor ceiling)."""
     from studies.spy_beater_hunt.scoring import compute_mdd_points
 
-    assert compute_mdd_points(mean_mdd=0.55) == 0
+    assert compute_mdd_points(mean_mdd=0.75) == 0
 
 
 def test_scoring_winner_requires_all_three_bars():

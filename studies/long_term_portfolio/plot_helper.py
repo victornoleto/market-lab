@@ -74,6 +74,9 @@ BENCHMARK_SOURCES: dict[str, dict[str, tuple[str, str]]] = {
         "VT":  ("testfolio:VTSIM", "VT (VTSIM proxy until live)"),
         "NDX": ("tiingo:QQQ.parquet", "NDX (QQQ Tiingo)"),
     },
+    "spy_real": {
+        "SPY": ("tiingo:SPY.parquet", "SPY (Tiingo adj_close)"),
+    },
 }
 
 

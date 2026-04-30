@@ -60,6 +60,20 @@ DATASETS: dict[str, dict[str, str]] = {
         "benchmark": "QQQSIM",
         "description": "Live-QQQ-era NDX stretch test (16y).",
     },
+    "spy_real": {
+        "start": "2003-08-20",
+        "end": "2026-04-14",
+        "benchmark": "SPY",
+        "description": (
+            "SPY Tiingo daily real (22.7y, 2003-08-20 → 2026-04-14). "
+            "Captures 2003-07 housing bull, 2007-09 GFC peak-to-trough -56%, "
+            "2009-19 super-bull, 2020 COVID, 2022 inflation. "
+            "Strategy returns still use testfolio synths (UPROSIM/SSOSIM/IEFSIM); "
+            "the 'real' part is the SPY benchmark reference (Tiingo adj_close) "
+            "in scoring.py — replaces vt_real/ndx_real as the post-GFC anchor "
+            "for spy_beater_hunt 2-dataset setup."
+        ),
+    },
 }
 
 

@@ -32,6 +32,10 @@ import pandas as pd
 
 from src.ai_trade.backtest.data.testfolio_loader import load_testfolio_series
 from studies.long_term_portfolio import datasets as datasets_mod
+from studies.spy_beater_hunt.rolling_metrics import (
+    DEFAULT_WINDOWS_YEARS,
+    rolling_cagr_mdd_at_windows,
+)
 from studies.spy_beater_hunt.scoring import SPY_CAGR_MEAN, SPY_MDD_MEAN
 
 
@@ -173,6 +177,116 @@ def plot_cagr_mdd_scatter(
     fig.savefig(path, dpi=120)
     plt.close(fig)
     return path
+
+
+def plot_rolling_cagr_mdd(
+    iter_dir: Path,
+    config_returns: dict[str, dict[str, pd.Series]],
+    datasets_to_test: tuple[str, ...],
+) -> list[Path]:
+    """Per-dataset rolling-window CAGR + MDD overlay (5/10/15/20y windows).
+
+    One PNG per dataset:
+      - 4 rows × 2 columns subplot grid: row = window_years (5/10/15/20),
+        col = CAGR (left) / MDD (right). Each cell shows time series of
+        the rolling metric for every config + SPY benchmark.
+      - SPY CAGR/MDD strict bars marked with dashed lines.
+      - Windows that don't fit the dataset length are blanked with a note.
+    """
+    out_paths: list[Path] = []
+    windows = DEFAULT_WINDOWS_YEARS  # [5, 10, 15, 20]
+
+    for ds in datasets_to_test:
+        try:
+            spy_ret = _spy_returns_for_dataset(ds)
+        except Exception:
+            spy_ret = None
+
+        # Pre-compute rolling per config and SPY
+        config_rolling: dict[str, dict[int, list[dict]]] = {}
+        for cfg, ds_returns in config_returns.items():
+            r = ds_returns.get(ds)
+            if r is None or len(r) < 252:
+                continue
+            config_rolling[cfg] = rolling_cagr_mdd_at_windows(r, windows)
+        spy_rolling = (
+            rolling_cagr_mdd_at_windows(spy_ret, windows)
+            if spy_ret is not None and len(spy_ret) > 252
+            else {w: [] for w in windows}
+        )
+
+        fig, axes = plt.subplots(
+            nrows=len(windows), ncols=2,
+            figsize=(15, 3 * len(windows)),
+            sharex=False,
+        )
+
+        for row, w in enumerate(windows):
+            ax_cagr = axes[row, 0]
+            ax_mdd = axes[row, 1]
+            any_data = False
+            for cfg, roll_per_w in config_rolling.items():
+                rows = roll_per_w.get(w, [])
+                if not rows:
+                    continue
+                any_data = True
+                xs = [r["end"] for r in rows]
+                cagrs = [r["cagr"] * 100 for r in rows]
+                mdds = [r["mdd"] * 100 for r in rows]
+                ax_cagr.plot(xs, cagrs, label=cfg, linewidth=1.0, alpha=0.85)
+                ax_mdd.plot(xs, mdds, label=cfg, linewidth=1.0, alpha=0.85)
+
+            spy_rows = spy_rolling.get(w, [])
+            if spy_rows:
+                xs = [r["end"] for r in spy_rows]
+                ax_cagr.plot(
+                    xs, [r["cagr"] * 100 for r in spy_rows],
+                    label="SPY", linewidth=2.0, color="black", linestyle="--",
+                )
+                ax_mdd.plot(
+                    xs, [r["mdd"] * 100 for r in spy_rows],
+                    label="SPY", linewidth=2.0, color="black", linestyle="--",
+                )
+
+            ax_cagr.set_title(f"{w}y rolling CAGR (%)")
+            ax_cagr.grid(True, alpha=0.3)
+            ax_cagr.set_ylabel("CAGR %")
+            ax_cagr.axhline(
+                SPY_CAGR_MEAN * 100, color="green", linestyle=":",
+                alpha=0.4, label="CAGR bar",
+            )
+
+            ax_mdd.set_title(f"{w}y rolling MDD (%)")
+            ax_mdd.grid(True, alpha=0.3)
+            ax_mdd.set_ylabel("MDD %")
+            ax_mdd.axhline(
+                SPY_MDD_MEAN * 100, color="red", linestyle=":",
+                alpha=0.4, label="MDD ceiling",
+            )
+
+            if not any_data:
+                for a in (ax_cagr, ax_mdd):
+                    a.text(
+                        0.5, 0.5, f"window {w}y > dataset length",
+                        ha="center", va="center", transform=a.transAxes,
+                        fontsize=10, color="gray",
+                    )
+
+            if row == 0:
+                ax_cagr.legend(loc="best", fontsize=7, ncol=2)
+                ax_mdd.legend(loc="best", fontsize=7, ncol=2)
+
+        fig.suptitle(
+            f"{ds} — rolling CAGR & MDD across windows (per config + SPY)",
+            fontsize=12, y=1.001,
+        )
+        fig.tight_layout()
+        path = iter_dir / f"plot_rolling_{ds}.png"
+        fig.savefig(path, dpi=120, bbox_inches="tight")
+        plt.close(fig)
+        out_paths.append(path)
+
+    return out_paths
 
 
 def plot_gate_heatmap(

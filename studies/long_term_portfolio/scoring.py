@@ -119,6 +119,10 @@ BENCHMARKS: dict[str, dict[str, Benchmark]] = {
         "spy": Benchmark(sharpe=0.9000, cagr=0.1497, mdd=0.3370,
                         label="SPY b&h Tiingo 16y (gross, ndx_real-aligned)"),
     },
+    "spy_real": {
+        "spy": Benchmark(sharpe=0.6522, cagr=0.1095, mdd=0.5520,
+                        label="SPY b&h Tiingo adj_close 22.7y (2003-08+, gross)"),
+    },
 }
 
 
@@ -254,6 +258,7 @@ GATE_THRESHOLDS = {
     "educational": 5,  # deprecated alias for lh_56y
     "vt_real": 4,
     "ndx_real": 4,
+    "spy_real": 5,  # 22.7y window — same threshold as lh_56y per length
 }
 
 

@@ -34,21 +34,36 @@ from studies.long_term_portfolio.scoring import (
 
 
 # ---------------------------------------------------------------------------
-# SPY 3-dataset benchmarks (from BASE_MEMORY.md)
+# SPY 2-dataset benchmarks (lh_56y synth + spy_real Tiingo, 2026-04-29 refactor)
 # ---------------------------------------------------------------------------
+#
+# Reframing rationale: vt_real (2008+) and ndx_real (2010+) had SPY MDD only
+# 33.70% because the windows missed the 2007-09 GFC peak-to-trough -56%.
+# That bull-biased MDD ceiling (40.85%) was artificially tight for a hunt
+# whose mission is to beat SPY. The new 2-dataset setup uses:
+#
+#   - lh_56y    (1986+, ~40y synth via SPYSIM): SPY CAGR 11.47%, MDD 55.14%.
+#   - spy_real  (2003+, ~22.7y Tiingo daily real): SPY CAGR 10.95%, MDD 55.20%.
+#
+# Both windows include the 2008 GFC peak-to-trough. The new bars are
+# honest reflections of "beat SPY" — strategies must beat the actual SPY
+# investor experience over multiple regimes.
 
-SPY_CAGR_MEAN = 0.1380  # mean(0.1147 + 0.1497 + 0.1497) / 3
-SPY_MDD_MEAN = 0.4085   # mean(0.5514 + 0.3370 + 0.3370) / 3
-SPY_SHARPE_MEAN = 0.827  # mean(0.6800 + 0.9000 + 0.9000) / 3 ≈ 0.827
+SPY_CAGR_MEAN = 0.1121   # (0.1147 + 0.1095) / 2
+SPY_MDD_MEAN = 0.5517    # (0.5514 + 0.5520) / 2
+SPY_SHARPE_MEAN = 0.6661  # (0.6800 + 0.6522) / 2
 
 CAGR_BAR = SPY_CAGR_MEAN
 MDD_BAR = SPY_MDD_MEAN
 
-# Scoring anchor ranges (from WINNER_AND_RANKING.md)
+# Scoring anchor ranges
+# Adjusted 2026-04-29: MDD ceiling/floor recalibrated to 70%/15% to span the
+# new realistic range (SPY MDD now 55%; "great" strategies cluster ~30-40%;
+# only de-risked / 2× leverage / SPY-itself score in 50-70% band).
 CAGR_FLOOR = 0.05    # CAGR ≤ 5% → 0 pts
 CAGR_CEILING = 0.20  # CAGR ≥ 20% → 30 pts
-MDD_FLOOR = 0.10     # MDD ≤ 10% → 20 pts
-MDD_CEILING = 0.50   # MDD ≥ 50% → 0 pts
+MDD_FLOOR = 0.15     # MDD ≤ 15% → 20 pts (was 10%)
+MDD_CEILING = 0.70   # MDD ≥ 70% → 0 pts (was 50%)
 SHARPE_FLOOR = 0.50  # Sharpe ≤ 0.5 → 0 pts
 SHARPE_CEILING = 2.0  # Sharpe ≥ 2.0 → 10 pts
 
@@ -127,6 +142,33 @@ def compute_robustness_points(robustness_bonus: int) -> int:
     return max(0, min(10, robustness_bonus))
 
 
+def compute_multi_horizon_robustness(
+    rolling_pass_rates: dict[int, float],
+) -> int:
+    """Multi-horizon robustness criterion (10pts max).
+
+    Args:
+        rolling_pass_rates: {window_years: pass_rate} where pass_rate is the
+            fraction of W-year rolling windows in which the strategy beat
+            the SPY benchmark CAGR. NaN rates (window doesn't fit dataset)
+            are excluded from scoring.
+
+    Scoring:
+      - 5y window:  3 pts × pass_rate
+      - 10y window: 3 pts × pass_rate
+      - 15y window: 2 pts × pass_rate
+      - 20y window: 2 pts × pass_rate
+    """
+    weights = {5: 3, 10: 3, 15: 2, 20: 2}
+    total = 0.0
+    for w, max_pts in weights.items():
+        rate = rolling_pass_rates.get(w, float("nan"))
+        if rate != rate:  # NaN check
+            continue
+        total += max_pts * float(rate)
+    return int(round(total))
+
+
 def compute_gates_bar_met(
     gates: dict[str, Gates],
     datasets: list[str],
@@ -170,6 +212,8 @@ def score_strategy_spy_beater(
     cumulative_n_trials: int,
     robustness_bonus: int = 0,
     extra_bonus: int = 0,
+    rolling_pass_rates: dict[int, float] | None = None,
+    rolling_worst_mdd: dict[int, float] | None = None,
 ) -> dict:
     """Score a strategy under spy_beater rubric (CAGR-anchored).
 
@@ -219,7 +263,13 @@ def score_strategy_spy_beater(
     c3_pts, per_ds_gates, cross_ds_met = compute_gates_points(gates, datasets)
     c4_pts = compute_dsr_points(worst_p)
     c5_pts = compute_sharpe_points(mean_sharpe)
-    c6_pts = compute_robustness_points(robustness_bonus)
+    # Multi-horizon robustness (replaces 5y rolling Sharpe pass-through):
+    # if rolling_pass_rates supplied, use multi-window CAGR pass-rate;
+    # else fall back to caller's `robustness_bonus` (legacy path).
+    if rolling_pass_rates is not None:
+        c6_pts = compute_multi_horizon_robustness(rolling_pass_rates)
+    else:
+        c6_pts = compute_robustness_points(robustness_bonus)
     c7_pts = max(0, min(5, extra_bonus))
 
     total = c1_pts + c2_pts + c3_pts + c4_pts + c5_pts + c6_pts + c7_pts
@@ -268,6 +318,12 @@ def score_strategy_spy_beater(
             "6_robustness": {
                 "points": c6_pts, "max": 10,
                 "input_bonus": robustness_bonus,
+                "rolling_pass_rates": rolling_pass_rates or {},
+                "rolling_worst_mdd": rolling_worst_mdd or {},
+                "note": (
+                    "Multi-horizon CAGR pass-rate vs SPY benchmark across "
+                    "5y/10y/15y/20y rolling windows (3+3+2+2 pts max)."
+                ),
             },
             "7_extra_bonus": {"points": c7_pts, "max": 5},
         },

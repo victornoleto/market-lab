@@ -70,6 +70,13 @@ from studies.spy_beater_hunt.plot_helper import (
     plot_cagr_mdd_scatter,
     plot_gate_heatmap,
     plot_overlay_per_dataset,
+    plot_rolling_cagr_mdd,
+)
+from studies.spy_beater_hunt.rolling_metrics import (
+    DEFAULT_WINDOWS_YEARS as ROLLING_WINDOWS_YEARS,
+    cagr_pass_rate_vs_benchmark,
+    rolling_cagr_mdd_at_windows,
+    worst_window_mdd,
 )
 from studies.spy_beater_hunt.scoring import score_strategy_spy_beater
 
@@ -182,7 +189,7 @@ def run_iter_spy_beater(
     hypothesis_slug: str,
     primary_citation: str,
     configs: dict[str, dict],
-    datasets_to_test: tuple[str, ...] = ("lh_56y", "vt_real", "ndx_real"),
+    datasets_to_test: tuple[str, ...] = ("lh_56y", "spy_real"),
     cumulative_n_trials: int | None = None,
 ) -> dict[str, Any]:
     """Execute a spy_beater iter sweep: configs × datasets → score → artifacts.
@@ -266,23 +273,78 @@ def run_iter_spy_beater(
         }
 
     # ------------------------------------------------------------------
-    # 4) Robustness bonus
+    # 4) Robustness — multi-horizon rolling CAGR pass-rate vs SPY benchmark
     # ------------------------------------------------------------------
     anchor_ds = "lh_56y" if "lh_56y" in datasets_to_test else datasets_to_test[0]
-    rob_pts_5, pct_pos, n_roll, roll_sharpes = _rolling_robustness(
+    legacy_rob_pts_5, pct_pos, n_roll, roll_sharpes = _rolling_robustness(
         config_returns[selected_cfg][anchor_ds]
     )
-    # _rolling_robustness returns 0-5 pts; spy_beater rubric allows up to 10
-    # (per WINNER_AND_RANKING.md). Scale: 5/5 → 10/10, 3/5 → 6/10, 1/5 → 2/10.
-    rob_pts_10 = int(round(rob_pts_5 * 2))
+
+    # Multi-window CAGR pass-rate per dataset → averaged across datasets
+    selected_returns_per_ds = {
+        ds: config_returns[selected_cfg][ds] for ds in datasets_to_test
+    }
+    spy_returns_per_ds = {
+        ds: load_testfolio_series("SPYSIM").pct_change().dropna().loc[
+            datasets_mod.get_meta(ds)["start"]:datasets_mod.get_meta(ds)["end"]
+        ]
+        for ds in datasets_to_test
+    }
+
+    rolling_pass_rates_per_window: dict[int, list[float]] = {
+        w: [] for w in ROLLING_WINDOWS_YEARS
+    }
+    rolling_worst_mdd_per_window: dict[int, list[float]] = {
+        w: [] for w in ROLLING_WINDOWS_YEARS
+    }
+    rolling_per_dataset: dict[str, dict] = {}
+
+    for ds in datasets_to_test:
+        strat_r = selected_returns_per_ds[ds]
+        spy_r = spy_returns_per_ds[ds]
+        strat_roll = rolling_cagr_mdd_at_windows(strat_r)
+        spy_roll = rolling_cagr_mdd_at_windows(spy_r)
+        per_ds_payload: dict[int, dict] = {}
+        for w in ROLLING_WINDOWS_YEARS:
+            pct, n_eval = cagr_pass_rate_vs_benchmark(
+                strat_roll[w], spy_roll[w]
+            )
+            wmdd = worst_window_mdd(strat_roll[w])
+            per_ds_payload[w] = {
+                "pct_strat_beats_spy_cagr": pct,
+                "n_windows": n_eval,
+                "worst_strat_mdd": wmdd,
+            }
+            if pct == pct:  # not NaN
+                rolling_pass_rates_per_window[w].append(pct)
+            if wmdd == wmdd:
+                rolling_worst_mdd_per_window[w].append(wmdd)
+        rolling_per_dataset[ds] = per_ds_payload
+
+    # Average pass-rate / worst-mdd across datasets per window
+    rolling_pass_rates = {
+        w: (
+            float(np.mean(rolling_pass_rates_per_window[w]))
+            if rolling_pass_rates_per_window[w] else float("nan")
+        )
+        for w in ROLLING_WINDOWS_YEARS
+    }
+    rolling_worst_mdd = {
+        w: (
+            float(np.max(rolling_worst_mdd_per_window[w]))
+            if rolling_worst_mdd_per_window[w] else float("nan")
+        )
+        for w in ROLLING_WINDOWS_YEARS
+    }
 
     # ------------------------------------------------------------------
-    # 5) CAGR-anchored score
+    # 5) CAGR-anchored score (with multi-horizon robustness)
     # ------------------------------------------------------------------
     score_dict = score_strategy_spy_beater(
         metrics_map, gates_map,
         cumulative_n_trials=cumulative_n_trials,
-        robustness_bonus=rob_pts_10,
+        rolling_pass_rates=rolling_pass_rates,
+        rolling_worst_mdd=rolling_worst_mdd,
     )
 
     # ------------------------------------------------------------------
@@ -299,12 +361,11 @@ def run_iter_spy_beater(
         "all_configs_metrics": config_results,
         "gate_details": gate_details,
         "robustness": {
-            "bonus_pts_5_scale": rob_pts_5,
-            "bonus_pts_10_scale": rob_pts_10,
-            "pct_positive_sharpe": pct_pos,
-            "n_windows": n_roll,
-            "min_rolling_sharpe": float(min(roll_sharpes)) if roll_sharpes else None,
-            "max_rolling_sharpe": float(max(roll_sharpes)) if roll_sharpes else None,
+            "legacy_5y_sharpe_pct_positive": pct_pos,
+            "legacy_5y_sharpe_n_windows": n_roll,
+            "rolling_pass_rates_avg_across_datasets": rolling_pass_rates,
+            "rolling_worst_mdd_max_across_datasets": rolling_worst_mdd,
+            "rolling_per_dataset": rolling_per_dataset,
             "anchor_dataset": anchor_ds,
         },
         "configs": _serialise_configs(configs),
@@ -374,6 +435,7 @@ def run_iter_spy_beater(
         plot_overlay_per_dataset(iter_dir, config_returns, datasets_to_test)
         plot_cagr_mdd_scatter(iter_dir, config_results, datasets_to_test)
         plot_gate_heatmap(iter_dir, gate_details, config_results, datasets_to_test)
+        plot_rolling_cagr_mdd(iter_dir, config_returns, datasets_to_test)
     except Exception as exc:  # pragma: no cover - plotting must not abort verdict
         print(f"[run_iter:plots] non-fatal plot error: {exc!r}")
 
@@ -488,13 +550,27 @@ def _write_final_report(
         f"input_bonus = {cri['6_robustness']['input_bonus']} |",
         f"| 7. Extra bonus | {cri['7_extra_bonus']['points']} | 5 | — |",
         "",
-        "## Robustness (5y rolling Sharpe, anchor dataset)",
+        "## Robustness — multi-horizon CAGR pass-rate vs SPY benchmark",
         "",
-        f"- bonus_pts (5-scale): {verdict['robustness']['bonus_pts_5_scale']}/5",
-        f"- bonus_pts (10-scale): {verdict['robustness']['bonus_pts_10_scale']}/10",
-        f"- pct_positive_sharpe: {verdict['robustness']['pct_positive_sharpe']:.2%}",
-        f"- n_windows: {verdict['robustness']['n_windows']}",
-        f"- anchor_dataset: {verdict['robustness']['anchor_dataset']}",
+        "| window | pass-rate (avg across datasets) | worst MDD across datasets |",
+        "|---:|---:|---:|",
+    ])
+    rolling_pass = verdict["robustness"].get("rolling_pass_rates_avg_across_datasets", {})
+    rolling_mdd = verdict["robustness"].get("rolling_worst_mdd_max_across_datasets", {})
+    for w_str, pct in rolling_pass.items():
+        try:
+            w = int(w_str)
+        except (TypeError, ValueError):
+            w = w_str
+        wmdd = rolling_mdd.get(w_str, float("nan"))
+        pct_str = f"{pct*100:.1f}%" if isinstance(pct, (int, float)) and pct == pct else "n/a"
+        wmdd_str = f"{wmdd*100:.2f}%" if isinstance(wmdd, (int, float)) and wmdd == wmdd else "n/a"
+        lines.append(f"| {w}y | {pct_str} | {wmdd_str} |")
+    lines.extend([
+        "",
+        f"Legacy 5y rolling-Sharpe (anchor `{verdict['robustness'].get('anchor_dataset', 'n/a')}`): "
+        f"pct_positive = {verdict['robustness'].get('legacy_5y_sharpe_pct_positive', 0):.2%}, "
+        f"n_windows = {verdict['robustness'].get('legacy_5y_sharpe_n_windows', 0)}",
         "",
         "## INCOMPLETE flags",
         "",

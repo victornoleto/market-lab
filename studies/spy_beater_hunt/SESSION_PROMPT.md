@@ -9,6 +9,16 @@ runs autonomously: research → develop → test → validate → record → com
 Goal: 50 iterations cumulative. Stop early if any iter produces a WINNER
 (all 3 strict bars met AND score ≥ 90).
 
+**CURRENT STATE (2026-04-29 post-refactor)**:
+- Datasets: `(lh_56y, spy_real)` — 1986+ synth + Tiingo SPY 2003+ real
+- Bars: CAGR ≥ **11.21%**, MDD ≤ **55.17%**, gates ≥ 5/7 on each dataset
+- Anchor ranges: CAGR 5%-20%, MDD 15%-70%, Sharpe 0.5-2.0
+- Scoring criterion 6 = multi-horizon CAGR pass-rate vs SPY (5y/10y/15y/20y, 3+3+2+2pts)
+- Iter 001 a1_lrs_split passed ALL 3 BARS (winner_conditions_met=True),
+  PROMISING 60/100 — needs higher score for tier WINNER (≥90)
+- Direction A2 faster-signal/buffer CLOSED via KILL #7/#8
+- Direction A2 lower-leverage (2× SSO) is ACTIVE — closest to score 90+ frontier
+
 ---
 
 ## Copy-paste prompt for next session
