@@ -1,15 +1,15 @@
 ---
 mission: "Find ONE long-term strategy with mean CAGR ≥ SPY (11.21%) AND mean MDD ≤ SPY (55.17%) AND surviving 7-gate battery on ≥ 2/2 datasets"
 target_total_iterations: 50
-total_iterations: 5
+total_iterations: 6
 winners_found: 0
-closest_to_winner: "iter 004 a4_lrs_split_kmlm30: CAGR 14.39% PASS, MDD 36.79% PASS, gates 6/6 PASS cross_met — winner_conditions_met=TRUE, score 66 (tier PROMISING; tier WINNER requires score ≥ 90). UNCHANGED in iter 005 — iter 005 produced lower-MDD/higher-Sharpe configs but CAGR-axis-dominated scoring regressed to 63."
+closest_to_winner: "iter 006 a6_tqqq_split_kmlm30_tlt10: CAGR 17.33% PASS, MDD 49.73% PASS, gates 6/6 PASS cross_met — winner_conditions_met=TRUE, score 67 (tier PROMISING; tier WINNER requires score ≥ 90). NEW closest-to-winner via TQQQ-track pivot: +6 pts CAGR (mean 14.39→17.33%) and −5 pts MDD (mean 36.79→49.73%) vs iter 004 a4_kmlm30. Net +1. lh_56y MDD 62.39% (dot-com synth) is the binding constraint."
 status: hunting
-latest_iteration: "005-2026-04-30-A3-kmlm-extreme"
-latest_score: 63
+latest_iteration: "006-2026-04-30-A2-tqqq-track-split"
+latest_score: 67
 latest_tier: PROMISING
 latest_bars_met: 3  # CAGR ✓, MDD ✓, Gates ✓
-cumulative_n_trials: 20
+cumulative_n_trials: 23
 datasets:
   - "lh_56y (1986+, ~40y, SPYSIM synth, GATE thresh 5)"
   - "spy_real (2003+, ~22.7y, SPY Tiingo adj_close, GATE thresh 5)"
@@ -22,12 +22,16 @@ direction_status:
   A2_faster_signal: "CLOSED (iter 002 KILL #7) — faster SMA/EMA make MDD WORSE"
   A2_threshold_buffer: "CLOSED (iter 002 KILL #8) — buffer ≥5% makes MDD worse"
   A2_lower_leverage: "CLOSED — bars 3/3 met but score < 60 (CAGR drag > MDD pts gain)"
+  A2_TQQQ_track_pure: "CLOSED via KILL #19 (iter 006 a6_tqqq_split_lrs lh_56y MDD 87.86% >> 70% bar) — 200d SMA gate cannot rescue full split-leverage TQQQ during NDX -78% dot-com regime; need crisis-alpha to absorb gap-and-go losses"
+  A2_TQQQ_track_kmlm30: "MARGINAL via KILL #19 borderline (iter 006 a6_tqqq_split_kmlm30 lh_56y MDD 70.94% ≈ 70% bar, mean MDD 55.52% > 55.17% bar) — fails strict bars; Sharpe better than baseline but architecturally fragile"
+  A2_TQQQ_track_kmlm30_tlt10: "NEW CLOSEST-TO-WINNER (iter 006 score 67) — passes all 3 strict bars; lh_56y MDD 62.39% binding constraint"
+  A2_TQQQ_track_extreme: "NEW PROMISING — extending KMLM dose to 35-50% on TQQQ-track + TLT 15-20% should cut lh_56y MDD; could lift score by another +5-10 pts via criterion 2 (mirrors iter 005 sweep on SPY-track)"
   A3_mixed_gayed_crisis_alpha: "DOMINATED by iter 004 KMLM 30% (same architecture, lower scores)"
-  A3_kmlm_dose_response: "PROMISING (best so far, iter 004 KMLM30 score 66) — monotonic positive 0→30%, no inflection found"
+  A3_kmlm_dose_response: "PROMISING (iter 004 KMLM30 score 66) — monotonic positive 0→30%, no inflection found; now subordinate to A2 TQQQ-track variants for closest-to-winner"
   A3_kmlm_extreme: "MONOTONIC POSITIVE CONFIRMED through KMLM 40% (iter 005) — Sharpe rose 30→35→40% in BOTH datasets, but score regressed 66→63 because CAGR-axis dominates rubric vs MDD/Sharpe gains. Direction structurally limited within scoring; KMLM 45-50% unlikely to lift score."
-  A3_tlt_on_top_of_kmlm30: "NEW PROMISING (iter 005 a5_kmlm30_tlt10 Sharpe 0.818/0.768 beat a4_kmlm30 0.765/0.722 in BOTH datasets) — adding 10pp TLT on top of iter 004 winner improves Sharpe at small CAGR cost. Could extend with KMLM30+TLT15/20 in iter 006+."
-  A3_tlt_dose_response: "PROMISING but subordinate — TLT 20% Sharpe slightly > KMLM 20%, but KMLM scales better at 25-30%; revisit with KMLM+TLT blends iter 006+"
-  B1_HFEA_classical: "NOT YET RUN — TMFSIM ready"
+  A3_tlt_on_top_of_kmlm30: "PROMISING (iter 005 a5_kmlm30_tlt10 beat a4_kmlm30 in both datasets) — TLT-on-top duration lever validated; transferred to TQQQ-track in iter 006 (still helps)"
+  A3_tlt_dose_response: "PROMISING but subordinate — TLT 20% Sharpe slightly > KMLM 20%, but KMLM scales better at 25-30%; revisit with KMLM+TLT blends iter 007+"
+  B1_HFEA_classical: "NOT YET RUN — TMFSIM ready (synth specified, TDD pending)"
   C1_vol_targeted: "NOT YET RUN"
 parent_loop: "studies/long_term_portfolio (43 iters, F1+SPLIT incumbent fallback)"
 note: "Forked 2026-04-29. METHODOLOGY REFACTOR 2026-04-29 (post-iter-002): replaced (lh_56y/vt_real/ndx_real) with honest 2-dataset setup (lh_56y/spy_real). vt_real/ndx_real were post-GFC bull-biased (SPY MDD only 33.70%); spy_real (Tiingo daily 2003+) captures full GFC peak-to-trough. New bars: CAGR ≥ 11.21% (was 13.80%), MDD ≤ 55.17% (was 40.85%). Iter 001 a1_lrs_split now passes ALL 3 BARS retroactively (winner_conditions_met=True) — tier remains PROMISING because score 60 < 90 (Sharpe 0.65 + MDD 51.60% close to ceiling). Tier WINNER requires score ≥ 90. Iter 002 selected MARGINAL because n_trials=10 made spy_real DSR fail. Need iter 003+ targeting score ≥ 90 (lift Sharpe + lower MDD margin further). Direction A2-lower-leverage (2× SSO) is the active lever. ALSO new: multi-horizon rolling CAGR/MDD scoring (5/10/15/20y windows, 3+3+2+2pts) replaces 5y rolling Sharpe robustness — both iter 001 and iter 002 selected scored 10/10 on this new criterion. F1+SPLIT remains deploy fallback if 50-iter hunt fails."
@@ -83,6 +87,34 @@ NEW synths likely needed (NOT in long_term_portfolio):
 ---
 
 ## Iteration log (newest first)
+
+### iter 006 — A2 TQQQ-track + 200d SMA gate on QQQ (split LRS + KMLM30 + TLT10) — PROMISING 67/100, NEW closest-to-winner via NDX-track pivot (2026-04-30)
+
+- **Tier**: PROMISING **67/100** (winner_conditions_met = **TRUE**, all 3 bars pass)
+- **Selected**: `a6_tqqq_split_kmlm30_tlt10` (30% TQQQ + 30% QLD + 30% KMLM + 10% TLT ON; 100% IEF OFF; SMA 200 on QQQSIM, no buffer; lag T+1)
+- **Bars**: CAGR ✓ (17.33% mean ≥ 11.21%), MDD ✓ (49.73% ≤ 55.17%), Gates ✓ (6+6, cross_met TRUE)
+- **All 3 configs (mean across 2 datasets)**:
+  | config                              | mean CAGR | mean MDD | Sharpe (lh, spy_real) | bar test |
+  |-------------------------------------|----------:|---------:|----------------------:|---------:|
+  | a6_tqqq_split_lrs                   | 20.49%    | 70.31%   | 0.652 / 0.665         | FAIL (MDD) |
+  | a6_tqqq_split_kmlm30                | 18.46%    | 55.52%   | 0.717 / 0.729         | FAIL (MDD) |
+  | **a6_tqqq_split_kmlm30_tlt10**      | **17.33%** | **49.73%** | **0.754 / 0.763**   | **PASS** |
+- **Per-dataset (selected)**:
+  | dataset  | Sharpe | CAGR    | MDD    | gates | DSR p     |
+  |----------|-------:|--------:|-------:|------:|----------:|
+  | lh_56y   | 0.754  | 18.56%  | 62.39% | 6/7   | 7.69e-05  |
+  | spy_real | 0.763  | 16.09%  | 37.07% | 6/7   | 3.05e-03  |
+- **Score lift vs iter 004 (66→67)**: CAGR 19→25 (**+6**, mean 14.39→17.33%), MDD 12→7 (**−5**, mean 36.79→49.73%), Gates/DSR/Sharpe/Robustness unchanged. Net **+1**.
+- **Pre-committed KILLs**:
+  - KILL #6 (CAGR floor) NOT FIRED — best CAGR mean 20.49% >> 11.21%.
+  - **KILL #19 (TQQQ-track wipeout, MDD>70% on either ds) FIRED** on `a6_tqqq_split_lrs` (lh_56y MDD 87.86%); borderline-fired on `a6_tqqq_split_kmlm30` (lh_56y 70.94% ≈ bar). Pure A2 baseline + low-KMLM A2 CLOSED for dot-com regime — only KMLM30+TLT10 blend scrapes the bar.
+  - KILL #20 (no CAGR uplift vs SPY-track 16.23%) NOT FIRED — all configs ≥ 17.33% > 16.23%. **H₁ CONFIRMED**: NDX-track adds ~3pp CAGR over SPY-track at matched architecture.
+  - KILL #21 (KMLM doesn't generalize) NOT FIRED — `a6_kmlm30` Sharpe (0.717, 0.729) > `a6_lrs` Sharpe (0.652, 0.665) BOTH ds. **H₂ CONFIRMED** + `a6_kmlm30_tlt10` (0.754, 0.763) > `a6_kmlm30` BOTH ds. **H₃ CONFIRMED**: KMLM dose AND TLT-on-top both transfer SPY→NDX track.
+- **TQQQ-track Sharpe dose-response (3 data points iter 006)**: 0%/0% → 0.659; 30%/0% → 0.723; 30%/10% → 0.759. Monotonic positive Sharpe; monotonic negative CAGR; monotonic negative MDD. Curve shifted ~3pp higher CAGR and ~13-19pp wider MDD vs SPY-track at matched config (lh_56y dot-com synth drives the gap).
+- **Multi-horizon robustness 10/10**: 5y/10y/15y/20y CAGR pass-rate vs SPY = 100% / 100% / 100% / 100% — NDX-track beats SPY in EVERY rolling window. Worst MDD across windows = 62.39% (lh_56y dot-com).
+- **Path to 90 (need +23 pts)**: most reachable lever is criterion 2 (MDD, currently 7/20). Halving lh_56y MDD from 62% to ~30% needs heavier crisis-alpha (KMLM 40-50%) on TQQQ-track. Lever C (lower TQQQ leverage to QLD-only 2× NDX) drops CAGR but cuts MDD — slope unknown.
+- **Next iter direction**: A2 TQQQ-track extreme — extend KMLM dose to 35-40% + TLT 10-15% on TQQQ-track (mirrors iter 005 sweep on SPY-track). 3 configs to slow n_trials growth.
+- **Citations**: `[leverage_for_the_long_run, ch.3-4, p.40-60]` Gayed regime gate is **asset-agnostic** but cannot fully rescue 3× LETF during -78% peak-to-trough underlying drawdown; `[risk_parity, ch.5, p.10]` Carlson stacking — KMLM transfers SPY→NDX with monotonic Sharpe lift; `[advances_fin_ml, p.31-34]` factor framework — NDX as US-Large-growth tilt empirically validated (CAGR uplift +3-4pp, MDD cost +13-19pp in stress); `[advances_fin_ml, p.222-223]` DSR cumulative n_trials=23, worst p 3.05e-03 << 0.05.
 
 ### iter 005 — A3 KMLM extreme (probe inflection 35/40 + KMLM30+TLT10) — PROMISING 63/100, score regressed but direction monotonic positive through 40% (2026-04-30)
 

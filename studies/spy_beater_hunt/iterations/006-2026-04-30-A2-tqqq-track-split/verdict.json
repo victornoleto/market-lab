@@ -1,0 +1,322 @@
+{
+  "status": "promising",
+  "tier": "PROMISING",
+  "total_score": 67,
+  "winner_conditions_met": true,
+  "bars": {
+    "cagr_bar": true,
+    "mdd_bar": true,
+    "gates_bar": true
+  },
+  "bars_met_count": 3,
+  "criteria": {
+    "1_cagr": {
+      "points": 25,
+      "max": 30,
+      "mean_cagr": 0.17327817887695085,
+      "spy_bar": 0.1121,
+      "anchor_range": [
+        0.05,
+        0.2
+      ]
+    },
+    "2_mdd": {
+      "points": 7,
+      "max": 20,
+      "mean_mdd": 0.49731194281829144,
+      "spy_bar": 0.5517,
+      "anchor_range": [
+        0.7,
+        0.15
+      ]
+    },
+    "3_gates": {
+      "points": 13,
+      "max": 20,
+      "per_dataset": {
+        "lh_56y": 6,
+        "spy_real": 6
+      },
+      "thresholds": {
+        "lh_56y": 5,
+        "spy_real": 5
+      },
+      "cross_dataset_met": true
+    },
+    "4_dsr": {
+      "points": 10,
+      "max": 10,
+      "worst_p_value": 0.0030464005426840135,
+      "cumulative_n_trials": 23
+    },
+    "5_sharpe": {
+      "points": 2,
+      "max": 10,
+      "mean_sharpe": 0.7587580340831312,
+      "anchor_range": [
+        0.5,
+        2.0
+      ]
+    },
+    "6_robustness": {
+      "points": 10,
+      "max": 10,
+      "input_bonus": 0,
+      "rolling_pass_rates": {
+        "5": 1.0,
+        "10": 1.0,
+        "15": 1.0,
+        "20": 1.0
+      },
+      "rolling_worst_mdd": {
+        "5": 0.6239280220573891,
+        "10": 0.6239280220573897,
+        "15": 0.6239280220573897,
+        "20": 0.6239280220573897
+      },
+      "note": "Multi-horizon CAGR pass-rate vs SPY benchmark across 5y/10y/15y/20y rolling windows (3+3+2+2 pts max)."
+    },
+    "7_extra_bonus": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "lh_56y": {
+      "sharpe": 0.7541178183513472,
+      "cagr": 0.18561376560564447,
+      "mdd": 0.6239280220573883,
+      "dsr_p_value": 7.686315572619229e-05
+    },
+    "spy_real": {
+      "sharpe": 0.7633982498149154,
+      "cagr": 0.16094259214825724,
+      "mdd": 0.3706958635791946,
+      "dsr_p_value": 0.0030464005426840135
+    }
+  },
+  "spy_benchmark": {
+    "cagr_mean": 0.1121,
+    "mdd_mean": 0.5517
+  },
+  "cumulative_n_trials": 23,
+  "configs_tested": 3,
+  "primary_citation": "[leverage_for_the_long_run, ch.3-4, p.40-60] Gayed gate (asset-agnostic) + [risk_parity, ch.5, p.10] Carlson capital-efficient stacking (KMLM transfer) + [advances_fin_ml, p.31-34] factor framework (NDX as US-Large-growth tilt)",
+  "hypothesis_slug": "A2-tqqq-track-split",
+  "selected_config": "a6_tqqq_split_kmlm30_tlt10",
+  "selection_rule": "max mean(Sharpe / SPY_Sharpe) across datasets",
+  "scoring_basis": "CAGR-anchored (spy_beater_hunt rubric, WINNER_AND_RANKING.md)",
+  "all_configs_metrics": {
+    "a6_tqqq_split_lrs": {
+      "lh_56y": {
+        "sharpe": 0.6520029038186747,
+        "cagr": 0.21138367375763,
+        "mdd": 0.8786041364692013
+      },
+      "spy_real": {
+        "sharpe": 0.6651110262975186,
+        "cagr": 0.198391041878625,
+        "mdd": 0.5275359487551267
+      }
+    },
+    "a6_tqqq_split_kmlm30": {
+      "lh_56y": {
+        "sharpe": 0.7169216476644413,
+        "cagr": 0.19585748720930063,
+        "mdd": 0.7093610194746437
+      },
+      "spy_real": {
+        "sharpe": 0.7287391185866494,
+        "cagr": 0.17339889738672687,
+        "mdd": 0.4011289667756353
+      }
+    },
+    "a6_tqqq_split_kmlm30_tlt10": {
+      "lh_56y": {
+        "sharpe": 0.7541178183513472,
+        "cagr": 0.18561376560564447,
+        "mdd": 0.6239280220573883
+      },
+      "spy_real": {
+        "sharpe": 0.7633982498149154,
+        "cagr": 0.16094259214825724,
+        "mdd": 0.3706958635791946
+      }
+    }
+  },
+  "gate_details": {
+    "lh_56y": {
+      "g1_pbo": 0.0,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 7.686315572619229e-05,
+      "g3_wf_returns": [
+        0.8019969628081847,
+        4.962681140845983,
+        0.3186270610187487,
+        0.10658474185617339,
+        0.5099837020470119,
+        1.6026332778371053,
+        2.1334459617741017,
+        0.5428529441128078
+      ],
+      "g3_wf_mdds": [
+        0.2622115620481325,
+        0.4985384852179211,
+        0.3943148494241901,
+        0.289388540252149,
+        0.33999421342298325,
+        0.17519132177404506,
+        0.3094954464928231,
+        0.35463172131491905
+      ],
+      "g3_max_wf_mdd": 0.4985384852179211,
+      "g4_oos_sharpe": 0.9083009216121284,
+      "g5_fwd_sharpe": 0.9570718403450741,
+      "g6_ci_low": 0.3274234484967415,
+      "g7_crosslib_delta_pp": 0.0
+    },
+    "spy_real": {
+      "g1_pbo": 0.0,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 0.0030464005426840135,
+      "g3_wf_returns": [
+        0.11777165291523706,
+        0.5929523113914983,
+        0.14897198906342202,
+        0.7654820947717578,
+        0.7917698448864305,
+        0.5617924338505473,
+        0.330936877995035,
+        0.7139437288897423
+      ],
+      "g3_wf_mdds": [
+        0.24804171701181632,
+        0.33999421342298436,
+        0.2380201748198706,
+        0.1600889814584026,
+        0.16098629514987758,
+        0.30949544649282307,
+        0.3706958635791956,
+        0.2073225610765365
+      ],
+      "g3_max_wf_mdd": 0.3706958635791956,
+      "g4_oos_sharpe": 0.9726657958538911,
+      "g5_fwd_sharpe": 0.9324578843495249,
+      "g6_ci_low": 0.0924334300920601,
+      "g7_crosslib_delta_pp": 0.0
+    }
+  },
+  "robustness": {
+    "legacy_5y_sharpe_pct_positive": 1.0,
+    "legacy_5y_sharpe_n_windows": 34,
+    "rolling_pass_rates_avg_across_datasets": {
+      "5": 1.0,
+      "10": 1.0,
+      "15": 1.0,
+      "20": 1.0
+    },
+    "rolling_worst_mdd_max_across_datasets": {
+      "5": 0.6239280220573891,
+      "10": 0.6239280220573897,
+      "15": 0.6239280220573897,
+      "20": 0.6239280220573897
+    },
+    "rolling_per_dataset": {
+      "lh_56y": {
+        "5": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.6239280220573891
+        },
+        "10": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.6239280220573897
+        },
+        "15": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.6239280220573897
+        },
+        "20": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.6239280220573897
+        }
+      },
+      "spy_real": {
+        "5": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 18,
+          "worst_strat_mdd": 0.3706958635791957
+        },
+        "10": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 13,
+          "worst_strat_mdd": 0.37069586357919526
+        },
+        "15": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 8,
+          "worst_strat_mdd": 0.37069586357919526
+        },
+        "20": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 3,
+          "worst_strat_mdd": 0.37069586357919504
+        }
+      }
+    },
+    "anchor_dataset": "lh_56y"
+  },
+  "configs": {
+    "a6_tqqq_split_lrs": {
+      "type": "lrs",
+      "filter": "sma",
+      "sma_window": 200,
+      "buffer_pct": 0.0,
+      "on_weights": {
+        "TQQQSIM": 0.5,
+        "QLDSIM": 0.5
+      },
+      "off_weights": {
+        "IEFSIM": 1.0
+      },
+      "signal_ticker": "QQQSIM",
+      "lag_days": 1
+    },
+    "a6_tqqq_split_kmlm30": {
+      "type": "lrs",
+      "filter": "sma",
+      "sma_window": 200,
+      "buffer_pct": 0.0,
+      "on_weights": {
+        "TQQQSIM": 0.35,
+        "QLDSIM": 0.35,
+        "KMLMSIM": 0.3
+      },
+      "off_weights": {
+        "IEFSIM": 1.0
+      },
+      "signal_ticker": "QQQSIM",
+      "lag_days": 1
+    },
+    "a6_tqqq_split_kmlm30_tlt10": {
+      "type": "lrs",
+      "filter": "sma",
+      "sma_window": 200,
+      "buffer_pct": 0.0,
+      "on_weights": {
+        "TQQQSIM": 0.3,
+        "QLDSIM": 0.3,
+        "KMLMSIM": 0.3,
+        "TLTSIM": 0.1
+      },
+      "off_weights": {
+        "IEFSIM": 1.0
+      },
+      "signal_ticker": "QQQSIM",
+      "lag_days": 1
+    }
+  }
+}
