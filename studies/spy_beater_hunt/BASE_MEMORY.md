@@ -1,15 +1,15 @@
 ---
 mission: "Find ONE long-term strategy with mean CAGR ≥ SPY (11.21%) AND mean MDD ≤ SPY (55.17%) AND surviving 7-gate battery on ≥ 2/2 datasets"
 target_total_iterations: 50
-total_iterations: 8
+total_iterations: 9
 winners_found: 0
-closest_to_winner: "iter 006 a6_tqqq_split_kmlm30_tlt10 RETAINS (tie-breaker by older iter): CAGR 17.33% PASS, MDD 49.73% PASS, gates 6/6 PASS cross_met — score 67. Iter 008 B1 HFEA classical scored 63 (BELOW iter 006/007 67), winner_conditions_met FALSE due to MDD bar fail (mean 67.48% > 55.17% bar). KILL #24 fired (HFEA 2022-stress MDD on spy_real 67.13% > 65% bar). HFEA delivers highest CAGR among all 8 iters (29/30 pts on criterion 1) but 0/20 on MDD. Score-90 path now: B2 HFEA+KMLM crisis-alpha (iter 009) → C1 vol-targeted (iter 010 fallback)."
+closest_to_winner: "iter 006 a6_tqqq_split_kmlm30_tlt10 RETAINS (tie-breaker by older iter): CAGR 17.33% PASS, MDD 49.73% PASS, gates 6/6 PASS cross_met — score 67. Iter 009 B2 HFEA+KMLM scored 63 (TIE iter 008, 4 BELOW iter 006/007 67), winner_conditions_met FALSE due to MDD bar fail (mean 61.51% > 55.17% bar). KILL #27 fired (KMLM 15-25% dose insufficient on HFEA backbone — both kmlm15 and kmlm25 spy_real MDD > 55% bar). KMLM dose-response on HFEA is OPPOSITE SPY-track: flat-to-negative on Sharpe within 15-25%, monotonic NEGATIVE on MDD (more KMLM = MORE MDD). Both B1 and B2 leveraged-barbell directions now CLOSED. Score-90 path now: C1 vol-targeted (iter 010 only remaining candidate within Tier 1-2 architecture) → IMPOSSIBILITY_RESULT (iter 011+ fallback)."
 status: hunting
-latest_iteration: "008-2026-04-30-B1-hfea-classical"
+latest_iteration: "009-2026-04-30-B2-hfea-kmlm"
 latest_score: 63
 latest_tier: PROMISING
 latest_bars_met: 2  # CAGR ✓, MDD ✗, Gates ✓
-cumulative_n_trials: 29
+cumulative_n_trials: 32
 datasets:
   - "lh_56y (1986+, ~40y, SPYSIM synth, GATE thresh 5)"
   - "spy_real (2003+, ~22.7y, SPY Tiingo adj_close, GATE thresh 5)"
@@ -33,8 +33,8 @@ direction_status:
   A3_tlt_on_top_of_kmlm30: "PROMISING (iter 005 a5_kmlm30_tlt10 beat a4_kmlm30 in both datasets) — TLT-on-top duration lever validated; transferred to TQQQ-track in iter 006 (still helps)"
   A3_tlt_dose_response: "PROMISING but subordinate — TLT 20% Sharpe slightly > KMLM 20%, but KMLM scales better at 25-30%; revisit with KMLM+TLT blends iter 007+"
   B1_HFEA_classical: "CLOSED via KILL #24 (iter 008) — canonical 55/45 spy_real MDD 67.13% > 65% bar; all 3 weights in [50,60] UPRO range fail MDD bar (mean 67-72%). Highest CAGR among 8 iters (29/30 pts) but 0/20 MDD pts. Bogleheads risk-parity claim REJECTED: Sharpe is monotonic NEGATIVE on UPRO weight in [50,60] (5050 > 5545 > 6040). Architecture fundamentally subordinate to LRS-style regime-gated strategies on 2022 stress."
-  B2_HFEA_KMLM: "PROMISING NEXT (recommended iter 009) — literature-aware response to B1 2022 weakness. Add 15-20% KMLM crisis-alpha to HFEA backbone; iter 003-005 SPY-track empirically validated KMLM dose-response (cuts MDD 15pp at <2pp CAGR drag, monotonic positive Sharpe through 40%). Target MDD 50-55% range, score ~70-72."
-  C1_vol_targeted: "NOT YET RUN — fallback iter 010 if B2 also caps at ~70 or fails MDD bar."
+  B2_HFEA_KMLM: "CLOSED via KILL #27 (iter 009) — KMLM 15-25% dose on HFEA backbone insufficient to clear MDD bar (kmlm15 spy_real 61.27%, kmlm25 spy_real 61.78%, both > 55%). KMLM dose-response on HFEA is OPPOSITE SPY-track: flat-to-negative on Sharpe within 15-25%, monotonic NEGATIVE on MDD (more KMLM = MORE MDD). The first 15pp KMLM dose cuts ~6pp MDD relief from HFEA-only (67→61%); subsequent KMLM dose at 20-25% adds 0.5pp MDD instead. KMLM-for-TMF substitution is pareto-trade not pareto-improve at HFEA's 165% UPRO notional. Net 0 score vs HFEA classical (iter 008): +3 MDD pts gained, −2 CAGR pts + −1 Gates pt lost."
+  C1_vol_targeted: "ONLY REMAINING Tier 1-2 candidate — recommended iter 010. Different geometry (dynamic leverage scaling) may unlock the architectural ceiling at score 63-67 set by static-weight barbells (B1, B2) and LRS-track strategies (A1-A3, A2-TQQQ-track). If C1 also caps near 67, IMPOSSIBILITY_RESULT triggers iter 011+."
 parent_loop: "studies/long_term_portfolio (43 iters, F1+SPLIT incumbent fallback)"
 note: "Forked 2026-04-29. METHODOLOGY REFACTOR 2026-04-29 (post-iter-002): replaced (lh_56y/vt_real/ndx_real) with honest 2-dataset setup (lh_56y/spy_real). vt_real/ndx_real were post-GFC bull-biased (SPY MDD only 33.70%); spy_real (Tiingo daily 2003+) captures full GFC peak-to-trough. New bars: CAGR ≥ 11.21% (was 13.80%), MDD ≤ 55.17% (was 40.85%). Iter 001 a1_lrs_split now passes ALL 3 BARS retroactively (winner_conditions_met=True) — tier remains PROMISING because score 60 < 90 (Sharpe 0.65 + MDD 51.60% close to ceiling). Tier WINNER requires score ≥ 90. Iter 002 selected MARGINAL because n_trials=10 made spy_real DSR fail. Need iter 003+ targeting score ≥ 90 (lift Sharpe + lower MDD margin further). Direction A2-lower-leverage (2× SSO) is the active lever. ALSO new: multi-horizon rolling CAGR/MDD scoring (5/10/15/20y windows, 3+3+2+2pts) replaces 5y rolling Sharpe robustness — both iter 001 and iter 002 selected scored 10/10 on this new criterion. F1+SPLIT remains deploy fallback if 50-iter hunt fails."
 ---
@@ -89,6 +89,44 @@ NEW synths likely needed (NOT in long_term_portfolio):
 ---
 
 ## Iteration log (newest first)
+
+### iter 009 — B2 HFEA + KMLM crisis-alpha (UPRO 50% + TMF 35-25% + KMLM 15-25%) — PROMISING 63/100, TIE iter 008, BELOW closest-to-winner, KILL #27 fired (2026-04-30)
+
+- **Tier**: PROMISING **63/100** (winner_conditions_met = **FALSE**, mdd_bar fail)
+- **Selected**: `b2_hfea_kmlm20` (50% UPRO + 30% TMF + 20% KMLM, max Sharpe / SPY_Sharpe rule)
+- **Bars**: CAGR ✓ (18.65% mean ≥ 11.21%), **MDD ✗ (61.51% > 55.17% bar)**, Gates ✓ (5+5, cross_met)
+- **All 3 configs FAIL MDD bar** — KMLM 15-25% dose on HFEA backbone is insufficient to clear 55.17%:
+  | config             | mean CAGR | mean MDD | Sharpe (lh, spy_real) | bar test |
+  |--------------------|----------:|---------:|----------------------:|---------:|
+  | b2_hfea_kmlm15     | 18.97%    | 61.27%   | 0.787 / 0.754         | FAIL (MDD) |
+  | **b2_hfea_kmlm20** | **18.65%** | **61.51%** | **0.785 / 0.756** | **FAIL (MDD)** |
+  | b2_hfea_kmlm25     | 18.27%    | 61.78%   | 0.780 / 0.754         | FAIL (MDD) |
+- **Per-dataset (selected)**:
+  | dataset  | Sharpe | CAGR    | MDD    | gates | DSR p     |
+  |----------|-------:|--------:|-------:|------:|----------:|
+  | lh_56y   | 0.785  | 19.21%  | 61.51% | 5/7   | 3.26e-05  |
+  | spy_real | 0.756  | 18.09%  | 61.51% | 5/7   | 3.07e-03  |
+- **Score breakdown vs iter 008 (63 → 63, TIE)**: CAGR 29 → 27 (**−2**), MDD 0 → **3 (+3)**, Gates 12 → 11 (**−1**), DSR/Sharpe-pts/Robustness unchanged. Net **0**. KMLM-for-TMF substitution trades 2pp CAGR + 1pp Gates for 3pp MDD pts within the rubric. Sharpe lifted +0.030 mean but doesn't cross 2-pt boundary (anchor 0.5-2.0 too wide).
+- **Score breakdown vs iter 006/007 (67 → 63, −4)**: CAGR 25 → 27 (+2), MDD 7 → 3 (−4), Gates 13 → 11 (−2). Closest-to-winner UNCHANGED.
+- **Pre-committed KILLs**:
+  - KILL #6 (CAGR floor) NOT FIRED — best CAGR mean 18.97% >> 11.21%.
+  - **KILL #27 (KMLM dose insufficient on HFEA backbone) FIRED** — `b2_hfea_kmlm15` spy_real MDD 61.27% > 55% bar AND `b2_hfea_kmlm25` spy_real MDD 61.78% > 55% bar. Both conditions of KILL #27 met. **Direction B2 CLOSED**.
+  - KILL #28 (Sharpe < 0.740 baseline) NOT FIRED — kmlm25 Sharpe mean 0.766 > 0.740; kmlm20 mean 0.770 > 0.740. KMLM addition does NOT degrade Sharpe vs HFEA-only baseline.
+  - KILL #29 (CAGR < 13.80%) NOT FIRED — kmlm25 CAGR mean 18.27% >> 13.80%. KMLM-for-TMF substitution preserves CAGR profile (drag ~0.4pp per +5% KMLM).
+- **KMLM dose-response on HFEA backbone (4 data points, 0-25% KMLM)**:
+  - 0% (HFEA-only iter 008): Sharpe 0.740, CAGR 19.68%, MDD 67.48%
+  - 15%: Sharpe 0.770, CAGR 18.97%, MDD 61.27% (jump!)
+  - 20%: Sharpe 0.770 (flat), CAGR 18.65%, MDD 61.51% (slight up)
+  - 25%: Sharpe 0.766 (slight regression), CAGR 18.27%, MDD 61.78% (slight up)
+  - **Pattern**: strong 0→15% improvement (first dose effect), then flat-to-degrading at 20-25%. Sharpe NOT monotonic positive within 15-25%; MDD MONOTONIC NEGATIVE within 15-25% (more KMLM ADDS MDD).
+- **Surprising finding**: KMLM dose-response on HFEA is **OPPOSITE SPY-track**. SPY-track (iter 003-005) showed monotonic positive Sharpe through 40% with MDD cut 14.8pp from 0→30%. On HFEA, KMLM 15→25% adds 0.5pp MDD because TMF and KMLM compete for the **same diversifier slot** rather than stacking — at 165% UPRO notional, the effective concentrated risk is UPRO not TMF, so swapping TMF→KMLM reshuffles regime exposures (gain stagflation hedge, lose GFC duration hedge) at roughly equal MDD weight.
+- **Multi-horizon robustness 10/10**: 5y pass-rate 88.9%, 10/15/20y all 100%. spy_real 5y window includes 2022-2024 lag where HFEA+KMLM underperforms SPY (similar to iter 008 86.1%, slight improvement from KMLM crisis-alpha hedge of 2022).
+- **H₁ REJECTED**: HFEA + KMLM 15% does NOT clear MDD bar (61.27% mean > 55.17%). Even minimum KMLM dose insufficient.
+- **H₂ REJECTED at narrow margin**: KMLM dose-response on Sharpe FLAT (0.770/0.770/0.766) and on MDD MONOTONIC NEGATIVE within 15-25%. Expected SPY-track-style monotonic positive does NOT transfer to HFEA backbone.
+- **H₃ PARTIALLY CONFIRMED**: CAGR drag ~0.4pp per +5% KMLM (consistent with prediction). KMLM-for-TMF substitution preserves CAGR profile, but **diversification quality differs** — TMF and KMLM are both inversely correlated to UPRO but in **different regimes**, so they don't stack additively.
+- **Path to 90 (need +27 pts)**: leveraged-barbell architecture (B1, B2) confirmed structurally capped at score 63-67. Only remaining Tier 1-2 candidate is C1 vol-targeted (iter 010). If C1 also caps near 67, **architectural ceiling confirmed** → IMPOSSIBILITY_RESULT (iter 011+) → F1+SPLIT incumbent fallback deploy-ready.
+- **Next iter direction**: **C1 vol-targeted SPY** (1.5× SPY when 60d vol < 15%, else 0.5× → IEF). Dynamic leverage scaling = different control geometry from regime gates and static barbells. Pre-committed KILL #30/#31/#32 sketched in final_report.md.
+- **Citations**: `[leverage_for_the_long_run, ch.3-4, p.40-60]` Gayed LETF decay validated empirically — HFEA+KMLM 2022 MDD 61% mirrors HFEA-only 67% reduced by KMLM crisis-alpha; `[ilmanen_expected_returns, ch.19]` MF crisis-alpha — KMLM at 15-25% dose delivered ~6pp MDD relief at first dose but ZERO additional at 20-25% range (saturation effect not documented in SPY-track); `[risk_parity, ch.5, p.10]` Carlson capital-efficient stacking — TMF+KMLM compete for same diversifier slot on HFEA, NOT stacking additively; HFEA Bogleheads 2019 + crisis-alpha extension proposed by some users — falsified at 15-25% KMLM dose on spy_beater MDD bar; `[advances_fin_ml, p.31-34]` factor framework — leveraged duration vs trend-following are distinct factors with rates-falling vs stagflation betas, but combining doesn't symmetrically reduce concentrated risk because **UPRO is the concentrated risk** at 165% notional, not TMF; `[advances_fin_ml, p.222-223]` DSR cumulative n_trials=32, worst p 3.07e-03 << 0.05 bar.
 
 ### iter 008 — B1 HFEA classical (UPRO + TMF leveraged barbell, weights 50/55/60% UPRO) — PROMISING 63/100, BELOW closest-to-winner, KILL #24 fired (2026-04-30)
 
