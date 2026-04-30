@@ -1,11 +1,18 @@
 # spy_beater_hunt iter 001 — Final Report — `A1-Gayed-LRS-UPRO`
 
-**Tier**: **PROMISING** — `score=60/100`, `winner_conditions_met=True`
+**Gross tier**: **PROMISING** — `gross_score=60/100`, `gross_winner_met=True`
 
-**Strict bars** (CAGR-anchored, spy_beater rubric):
-- CAGR bar (mean ≥ 13.80%): PASS (mean = 16.23%)
-- MDD bar (mean ≤ 40.85%): PASS (mean = 51.60%)
+**Net tier**: **MARGINAL** — `net_score=55/100`, `net_winner_met=True`
+
+**Strict bars (gross-of-tax, CAGR-anchored)**:
+- CAGR bar (mean ≥ 11.21%): PASS (mean = 16.23%)
+- MDD bar (mean ≤ 55.17%): PASS (mean = 51.60%)
 - Gates bar (≥ 2/3 datasets at threshold): PASS
+
+**Strict bars (net-of-tax, Lei 14.754/2023 — DARF 15% anual)**:
+- CAGR bar: PASS (mean = 14.22%)
+- MDD bar: PASS (mean = 53.59%)
+- Gates bar (same as gross): PASS
 
 **Primary citation**: [leverage_for_the_long_run, ch.3-4, p.40-60]
 
@@ -31,12 +38,16 @@ Spec:
 }
 ```
 
-## Per-dataset metrics (gross-of-tax)
+## Per-dataset metrics — pre vs post taxes
 
-| dataset | Sharpe | CAGR | MDD | gates | DSR p |
-|---|---:|---:|---:|---:|---:|
-| **lh_56y** | 0.670 | 16.91% | 54.70% | 6/7 | 7.91e-04 |
-| **spy_real** | 0.643 | 15.55% | 48.50% | 5/7 | 2.42e-02 |
+| dataset | gross Sharpe | gross CAGR | gross MDD | net Sharpe | net CAGR | net MDD | drag (pp) | gates |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| **lh_56y** | 0.670 | 16.91% | 54.70% | 0.609 | 14.83% | 55.40% | 2.08 | 6/7 |
+| **spy_real** | 0.643 | 15.55% | 48.50% | 0.583 | 13.62% | 51.78% | 1.94 | 5/7 |
+
+**Tax model** (`tax_layer.py` / Lei 14.754/2023):
+- `lh_56y` — annual_realize, 40 year-end settlements, total DARF $405,063 (terminal $0), drag 2.08pp
+- `spy_real` — annual_realize, 23 year-end settlements, total DARF $27,550 (terminal $0), drag 1.94pp
 
 ## Configs grid (Sharpe per config × dataset)
 

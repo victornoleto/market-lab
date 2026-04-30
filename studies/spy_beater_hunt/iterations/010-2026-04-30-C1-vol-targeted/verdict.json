@@ -318,5 +318,121 @@
       "underlying_leverage_factor": 3.0,
       "target_vol_annual": 0.25
     }
+  },
+  "net_total_score": 57,
+  "net_tier": "MARGINAL",
+  "net_winner_conditions_met": true,
+  "net_bars": {
+    "cagr_bar": true,
+    "mdd_bar": true,
+    "gates_bar": true
+  },
+  "net_criteria": {
+    "1_cagr": {
+      "points": 14,
+      "max": 30,
+      "mean_cagr": 0.11833753641450506,
+      "spy_bar": 0.1121,
+      "anchor_range": [
+        0.05,
+        0.2
+      ]
+    },
+    "2_mdd": {
+      "points": 10,
+      "max": 20,
+      "mean_mdd": 0.4187496791752694,
+      "spy_bar": 0.5517,
+      "anchor_range": [
+        0.7,
+        0.15
+      ]
+    },
+    "3_gates": {
+      "points": 13,
+      "max": 20,
+      "per_dataset": {
+        "lh_56y": 6,
+        "spy_real": 6
+      },
+      "thresholds": {
+        "lh_56y": 5,
+        "spy_real": 5
+      },
+      "cross_dataset_met": true
+    },
+    "4_dsr": {
+      "points": 10,
+      "max": 10,
+      "worst_p_value": 0.005024390015854419,
+      "cumulative_n_trials": 35
+    },
+    "5_sharpe": {
+      "points": 1,
+      "max": 10,
+      "mean_sharpe": 0.6447131348108157,
+      "anchor_range": [
+        0.5,
+        2.0
+      ]
+    },
+    "6_robustness": {
+      "points": 9,
+      "max": 10,
+      "input_bonus": 0,
+      "rolling_pass_rates": {
+        "5": 0.75,
+        "10": 0.9838709677419355,
+        "15": 1.0,
+        "20": 1.0
+      },
+      "rolling_worst_mdd": {
+        "5": 0.4677790073308725,
+        "10": 0.46777900733087263,
+        "15": 0.46777900733087263,
+        "20": 0.4677790073308731
+      },
+      "note": "Multi-horizon CAGR pass-rate vs SPY benchmark across 5y/10y/15y/20y rolling windows (3+3+2+2 pts max)."
+    },
+    "7_extra_bonus": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "net_metrics_used": {
+    "lh_56y": {
+      "sharpe": 0.6392654921418811,
+      "cagr": 0.11756255603346943,
+      "mdd": 0.46777900733087235
+    },
+    "spy_real": {
+      "sharpe": 0.6501607774797503,
+      "cagr": 0.11911251679554069,
+      "mdd": 0.3697203510196664
+    }
+  },
+  "tax_summary": {
+    "lh_56y": {
+      "classification": "annual_realize",
+      "initial_capital": 10000.0,
+      "final_port_gross": 1604687.98,
+      "final_port_net": 878756.1,
+      "total_darf_paid": 130460.81,
+      "n_year_end_settlements": 40,
+      "terminal_darf": 982.62,
+      "drag_pct_pts": 1.6833,
+      "darf_rate": 0.15
+    },
+    "spy_real": {
+      "classification": "annual_realize",
+      "initial_capital": 10000.0,
+      "final_port_gross": 178656.07,
+      "final_port_net": 126423.95,
+      "total_darf_paid": 17877.12,
+      "n_year_end_settlements": 23,
+      "terminal_darf": 0.0,
+      "drag_pct_pts": 1.7242,
+      "darf_rate": 0.15
+    }
   }
 }
