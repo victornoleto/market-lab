@@ -1,0 +1,322 @@
+{
+  "status": "promising",
+  "tier": "PROMISING",
+  "total_score": 60,
+  "winner_conditions_met": true,
+  "bars": {
+    "cagr_bar": true,
+    "mdd_bar": true,
+    "gates_bar": true
+  },
+  "bars_met_count": 3,
+  "criteria": {
+    "1_cagr": {
+      "points": 17,
+      "max": 30,
+      "mean_cagr": 0.1353805915608134,
+      "spy_bar": 0.1121,
+      "anchor_range": [
+        0.05,
+        0.2
+      ]
+    },
+    "2_mdd": {
+      "points": 10,
+      "max": 20,
+      "mean_mdd": 0.41856750502944085,
+      "spy_bar": 0.5517,
+      "anchor_range": [
+        0.7,
+        0.15
+      ]
+    },
+    "3_gates": {
+      "points": 13,
+      "max": 20,
+      "per_dataset": {
+        "lh_56y": 6,
+        "spy_real": 6
+      },
+      "thresholds": {
+        "lh_56y": 5,
+        "spy_real": 5
+      },
+      "cross_dataset_met": true
+    },
+    "4_dsr": {
+      "points": 10,
+      "max": 10,
+      "worst_p_value": 0.005024390015854419,
+      "cumulative_n_trials": 35
+    },
+    "5_sharpe": {
+      "points": 1,
+      "max": 10,
+      "mean_sharpe": 0.7211728287353386,
+      "anchor_range": [
+        0.5,
+        2.0
+      ]
+    },
+    "6_robustness": {
+      "points": 9,
+      "max": 10,
+      "input_bonus": 0,
+      "rolling_pass_rates": {
+        "5": 0.75,
+        "10": 0.9838709677419355,
+        "15": 1.0,
+        "20": 1.0
+      },
+      "rolling_worst_mdd": {
+        "5": 0.4677790073308725,
+        "10": 0.46777900733087263,
+        "15": 0.46777900733087263,
+        "20": 0.4677790073308731
+      },
+      "note": "Multi-horizon CAGR pass-rate vs SPY benchmark across 5y/10y/15y/20y rolling windows (3+3+2+2 pts max)."
+    },
+    "7_extra_bonus": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "lh_56y": {
+      "sharpe": 0.7143594289133215,
+      "cagr": 0.13439798965766725,
+      "mdd": 0.4677790073308731,
+      "dsr_p_value": 0.00015375382134497073
+    },
+    "spy_real": {
+      "sharpe": 0.7279862285573557,
+      "cagr": 0.13636319346395953,
+      "mdd": 0.3693560027280086,
+      "dsr_p_value": 0.005024390015854419
+    }
+  },
+  "spy_benchmark": {
+    "cagr_mean": 0.1121,
+    "mdd_mean": 0.5517
+  },
+  "cumulative_n_trials": 35,
+  "configs_tested": 3,
+  "primary_citation": "[systematic_trading, ch.10] Carver vol-targeting canonical + [advances_fin_ml, p.31-34] factor framework (vol as state variable) + [risk_parity, ch.5, p.10] Carlson capital-efficient stacking via dynamic weight + [leverage_for_the_long_run, ch.3-4, p.40-60] Gayed LETF decay rationale",
+  "hypothesis_slug": "C1-vol-targeted",
+  "selected_config": "c1_vt20_sso",
+  "selection_rule": "max mean(Sharpe / SPY_Sharpe) across datasets",
+  "scoring_basis": "CAGR-anchored (spy_beater_hunt rubric, WINNER_AND_RANKING.md)",
+  "all_configs_metrics": {
+    "c1_vt20_sso": {
+      "lh_56y": {
+        "sharpe": 0.7143594289133215,
+        "cagr": 0.13439798965766725,
+        "mdd": 0.4677790073308731
+      },
+      "spy_real": {
+        "sharpe": 0.7279862285573557,
+        "cagr": 0.13636319346395953,
+        "mdd": 0.3693560027280086
+      }
+    },
+    "c1_vt22_upro": {
+      "lh_56y": {
+        "sharpe": 0.6877568878317114,
+        "cagr": 0.14286356500685082,
+        "mdd": 0.5013293078955171
+      },
+      "spy_real": {
+        "sharpe": 0.7070654430881474,
+        "cagr": 0.14634296976964611,
+        "mdd": 0.39883739648744243
+      }
+    },
+    "c1_vt25_upro": {
+      "lh_56y": {
+        "sharpe": 0.6592982304611927,
+        "cagr": 0.14880999308135823,
+        "mdd": 0.5626499476621586
+      },
+      "spy_real": {
+        "sharpe": 0.68562417039232,
+        "cagr": 0.15576089512500446,
+        "mdd": 0.4616301117497623
+      }
+    }
+  },
+  "gate_details": {
+    "lh_56y": {
+      "g1_pbo": 0.031746031746031744,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 0.00015375382134497073,
+      "g3_wf_returns": [
+        0.46005648093095775,
+        2.93740044876001,
+        -0.1954220900415029,
+        0.6336781326590628,
+        0.3526111193340886,
+        1.2191644517021776,
+        1.1783592136664724,
+        0.510910454357691
+      ],
+      "g3_wf_mdds": [
+        0.26251415337391243,
+        0.19311028789896847,
+        0.46777900733087274,
+        0.16990931822869737,
+        0.31134748740067586,
+        0.21390573698246168,
+        0.2994272776541817,
+        0.32584354033671514
+      ],
+      "g3_max_wf_mdd": 0.46777900733087274,
+      "g4_oos_sharpe": 0.7375260099242981,
+      "g5_fwd_sharpe": 0.6399716789726979,
+      "g6_ci_low": 0.2670984147333778,
+      "g7_crosslib_delta_pp": 0.0
+    },
+    "spy_real": {
+      "g1_pbo": 0.1984126984126984,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 0.005024390015854419,
+      "g3_wf_returns": [
+        0.07683822407427354,
+        0.4341960117756125,
+        0.34792590556906644,
+        0.3319227312871669,
+        0.9258575459169034,
+        0.24089008308504067,
+        0.06360129300905171,
+        0.6827926514297298
+      ],
+      "g3_wf_mdds": [
+        0.2409348898345104,
+        0.23074223132264526,
+        0.20260686534782604,
+        0.21390573698246107,
+        0.18601625384156717,
+        0.2994272776541817,
+        0.3258435403367145,
+        0.23510696722378674
+      ],
+      "g3_max_wf_mdd": 0.3258435403367145,
+      "g4_oos_sharpe": 0.6760746929146345,
+      "g5_fwd_sharpe": 0.6198214463567884,
+      "g6_ci_low": 0.10848924958908739,
+      "g7_crosslib_delta_pp": 0.0
+    }
+  },
+  "robustness": {
+    "legacy_5y_sharpe_pct_positive": 0.9722222222222222,
+    "legacy_5y_sharpe_n_windows": 36,
+    "rolling_pass_rates_avg_across_datasets": {
+      "5": 0.75,
+      "10": 0.9838709677419355,
+      "15": 1.0,
+      "20": 1.0
+    },
+    "rolling_worst_mdd_max_across_datasets": {
+      "5": 0.4677790073308725,
+      "10": 0.46777900733087263,
+      "15": 0.46777900733087263,
+      "20": 0.4677790073308731
+    },
+    "rolling_per_dataset": {
+      "lh_56y": {
+        "5": {
+          "pct_strat_beats_spy_cagr": 0.7222222222222222,
+          "n_windows": 36,
+          "worst_strat_mdd": 0.4677790073308725
+        },
+        "10": {
+          "pct_strat_beats_spy_cagr": 0.967741935483871,
+          "n_windows": 31,
+          "worst_strat_mdd": 0.46777900733087263
+        },
+        "15": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 26,
+          "worst_strat_mdd": 0.46777900733087263
+        },
+        "20": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 21,
+          "worst_strat_mdd": 0.4677790073308731
+        }
+      },
+      "spy_real": {
+        "5": {
+          "pct_strat_beats_spy_cagr": 0.7777777777777778,
+          "n_windows": 18,
+          "worst_strat_mdd": 0.3693560027280077
+        },
+        "10": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 13,
+          "worst_strat_mdd": 0.3693560027280086
+        },
+        "15": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 8,
+          "worst_strat_mdd": 0.3693560027280086
+        },
+        "20": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 3,
+          "worst_strat_mdd": 0.3693560027280086
+        }
+      }
+    },
+    "anchor_dataset": "lh_56y"
+  },
+  "configs": {
+    "c1_vt20_sso": {
+      "type": "vol_target",
+      "cash_weights": {
+        "IEFSIM": 1.0
+      },
+      "signal_ticker": "SPYSIM",
+      "vol_window": 60,
+      "vol_lag_days": 1,
+      "weight_min": 0.0,
+      "weight_max": 1.0,
+      "underlying_weights": {
+        "SSOSIM": 1.0
+      },
+      "underlying_leverage_factor": 2.0,
+      "target_vol_annual": 0.2
+    },
+    "c1_vt22_upro": {
+      "type": "vol_target",
+      "cash_weights": {
+        "IEFSIM": 1.0
+      },
+      "signal_ticker": "SPYSIM",
+      "vol_window": 60,
+      "vol_lag_days": 1,
+      "weight_min": 0.0,
+      "weight_max": 1.0,
+      "underlying_weights": {
+        "UPROSIM": 1.0
+      },
+      "underlying_leverage_factor": 3.0,
+      "target_vol_annual": 0.22
+    },
+    "c1_vt25_upro": {
+      "type": "vol_target",
+      "cash_weights": {
+        "IEFSIM": 1.0
+      },
+      "signal_ticker": "SPYSIM",
+      "vol_window": 60,
+      "vol_lag_days": 1,
+      "weight_min": 0.0,
+      "weight_max": 1.0,
+      "underlying_weights": {
+        "UPROSIM": 1.0
+      },
+      "underlying_leverage_factor": 3.0,
+      "target_vol_annual": 0.25
+    }
+  }
+}

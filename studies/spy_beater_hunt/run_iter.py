@@ -79,6 +79,11 @@ from studies.spy_beater_hunt.rolling_metrics import (
     worst_window_mdd,
 )
 from studies.spy_beater_hunt.scoring import score_strategy_spy_beater
+from studies.spy_beater_hunt.vol_target_engine import (
+    realized_vol,
+    vol_target_strategy_returns,
+    vol_target_weight,
+)
 
 
 TRADING_DAYS_PER_YEAR = 252
@@ -92,15 +97,20 @@ TRADING_DAYS_PER_YEAR = 252
 def returns_from_spec(spec: dict, dataset: str) -> pd.Series:
     """Build daily portfolio returns from a StrategySpec dict.
 
-    Supports two strategy types: ``static`` (delegate to
-    portfolio_returns_from_config) and ``lrs`` (Gayed 200d SMA gate
-    rotation between on_weights and off_weights sleeves).
+    Supports three strategy types:
+      - ``static``: delegate to :func:`portfolio_returns_from_config`
+      - ``lrs``: Gayed 200d SMA gate rotation between
+        ``on_weights`` and ``off_weights`` sleeves
+      - ``vol_target``: Carver vol-targeted scaling of an
+        ``underlying_weights`` sleeve against ``cash_weights``
     """
     stype = spec.get("type", "static")
     if stype == "static":
         return portfolio_returns_from_config(spec["weights"], dataset)
     if stype == "lrs":
         return _lrs_returns_from_spec(spec, dataset)
+    if stype == "vol_target":
+        return _vol_target_returns_from_spec(spec, dataset)
     raise ValueError(f"unknown strategy type: {stype!r}")
 
 
@@ -148,6 +158,52 @@ def _lrs_returns_from_spec(spec: dict, dataset: str) -> pd.Series:
         )
 
     return lrs_strategy_returns(on_returns, off_returns, gate)
+
+
+def _vol_target_returns_from_spec(spec: dict, dataset: str) -> pd.Series:
+    """Build vol-targeted daily returns: weight × underlying + (1−w) × cash.
+
+    Required spec fields:
+      - ``underlying_weights``: dict[ticker, weight] for the leveraged sleeve
+      - ``cash_weights``: dict[ticker, weight] for the cash sleeve
+      - ``target_vol_annual``: target portfolio vol (e.g., 0.20 for 20%)
+
+    Optional spec fields (with defaults):
+      - ``signal_ticker`` (default ``'SPYSIM'``): asset whose realised vol
+        drives weight scaling.
+      - ``underlying_leverage_factor`` (default 1.0): SSO=2, UPRO=3, etc.
+      - ``vol_window`` (default 60): rolling window for realised vol.
+      - ``vol_lag_days`` (default 1): T+1 execution lag.
+      - ``weight_min`` (default 0.0): minimum weight on underlying.
+      - ``weight_max`` (default 1.0): maximum weight on underlying.
+    """
+    underlying_returns = portfolio_returns_from_config(
+        spec["underlying_weights"], dataset
+    )
+    cash_returns = portfolio_returns_from_config(spec["cash_weights"], dataset)
+
+    signal_ticker = spec.get("signal_ticker", "SPYSIM")
+    target_vol = float(spec["target_vol_annual"])
+    factor = float(spec.get("underlying_leverage_factor", 1.0))
+    window = int(spec.get("vol_window", 60))
+    lag_days = int(spec.get("vol_lag_days", 1))
+    weight_min = float(spec.get("weight_min", 0.0))
+    weight_max = float(spec.get("weight_max", 1.0))
+
+    signal_prices = load_testfolio_series(signal_ticker)
+    signal_returns = signal_prices.pct_change().dropna()
+
+    rv = realized_vol(signal_returns, window=window)
+    weight = vol_target_weight(
+        rv,
+        target_vol_annual=target_vol,
+        underlying_factor=factor,
+        weight_min=weight_min,
+        weight_max=weight_max,
+        lag_days=lag_days,
+    )
+
+    return vol_target_strategy_returns(underlying_returns, cash_returns, weight)
 
 
 # ---------------------------------------------------------------------------

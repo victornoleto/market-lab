@@ -434,6 +434,166 @@ def test_scoring_score_clamped_0_100():
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# Vol-target engine (Carver canonical, [systematic_trading, ch.10])
+# ---------------------------------------------------------------------------
+
+
+def test_realized_vol_formula():
+    """Annualised rolling std with sqrt(252) scaling (default annualization)."""
+    from studies.spy_beater_hunt.vol_target_engine import realized_vol
+
+    returns = pd.Series(
+        [0.01, 0.02, -0.01, 0.005, 0.0],
+        index=pd.date_range("2024-01-02", periods=5, freq="B"),
+    )
+    rv = realized_vol(returns, window=3, annualization=252)
+
+    expected = float(np.std([0.01, 0.02, -0.01], ddof=1)) * np.sqrt(252)
+    assert abs(rv.iloc[2] - expected) < 1e-10
+    assert pd.isna(rv.iloc[0])  # window not yet filled
+    assert pd.isna(rv.iloc[1])
+
+
+def test_vol_target_weight_no_peek():
+    """Weight at time t is shifted by lag_days from the realised vol input."""
+    from studies.spy_beater_hunt.vol_target_engine import vol_target_weight
+
+    rv = pd.Series(
+        [0.20, 0.10, 0.40, 0.20],
+        index=pd.date_range("2024-01-02", periods=4, freq="B"),
+    )
+    w = vol_target_weight(
+        rv, target_vol_annual=0.20, underlying_factor=1.0,
+        weight_min=0.0, weight_max=1.0, lag_days=1,
+    )
+
+    # First day: NaN (lagged) → fills weight_min=0.0
+    assert w.iloc[0] == 0.0
+    # Day 1 reflects rv from day 0 = 0.20 → weight = 0.20/0.20 = 1.0
+    assert abs(w.iloc[1] - 1.0) < 1e-10
+    # Day 2 reflects rv from day 1 = 0.10 → raw 2.0, clipped to 1.0
+    assert abs(w.iloc[2] - 1.0) < 1e-10
+    # Day 3 reflects rv from day 2 = 0.40 → 0.20/0.40 = 0.5
+    assert abs(w.iloc[3] - 0.5) < 1e-10
+
+
+def test_vol_target_weight_underlying_factor():
+    """Weight inversely scales with underlying_factor (SPY-equivalent target)."""
+    from studies.spy_beater_hunt.vol_target_engine import vol_target_weight
+
+    rv = pd.Series([0.16] * 5, index=pd.date_range("2024-01-02", periods=5, freq="B"))
+
+    # Factor 1 (raw SPY): weight = 0.16/0.16 = 1.0
+    w_spy = vol_target_weight(
+        rv, target_vol_annual=0.16, underlying_factor=1.0, lag_days=1
+    )
+    assert abs(w_spy.iloc[2] - 1.0) < 1e-10
+
+    # Factor 2 (SSO): weight = 0.16/(2*0.16) = 0.5
+    w_sso = vol_target_weight(
+        rv, target_vol_annual=0.16, underlying_factor=2.0, lag_days=1
+    )
+    assert abs(w_sso.iloc[2] - 0.5) < 1e-10
+
+    # Factor 3 (UPRO): weight = 0.16/(3*0.16) = 1/3
+    w_upro = vol_target_weight(
+        rv, target_vol_annual=0.16, underlying_factor=3.0, lag_days=1
+    )
+    assert abs(w_upro.iloc[2] - 1.0 / 3.0) < 1e-10
+
+
+def test_vol_target_weight_clipping():
+    """Weight clipped to [weight_min, weight_max]."""
+    from studies.spy_beater_hunt.vol_target_engine import vol_target_weight
+
+    # Very low rv → high raw weight, clipped UP to weight_max
+    rv_low = pd.Series([0.05] * 5, index=pd.date_range("2024-01-02", periods=5, freq="B"))
+    w = vol_target_weight(
+        rv_low, target_vol_annual=0.20, underlying_factor=1.0,
+        weight_min=0.0, weight_max=1.0, lag_days=1,
+    )
+    # Raw = 0.20/0.05 = 4.0 → clipped to 1.0
+    assert abs(w.iloc[2] - 1.0) < 1e-10
+
+    # Very high rv → low raw weight, clipped DOWN to weight_min if specified
+    rv_high = pd.Series([0.80] * 5, index=pd.date_range("2024-01-02", periods=5, freq="B"))
+    w_floor = vol_target_weight(
+        rv_high, target_vol_annual=0.20, underlying_factor=1.0,
+        weight_min=0.5, weight_max=1.0, lag_days=1,
+    )
+    # Raw = 0.20/0.80 = 0.25 → clipped UP to weight_min=0.5
+    assert abs(w_floor.iloc[2] - 0.5) < 1e-10
+
+
+def test_vol_target_strategy_returns_formula():
+    """Strategy returns = weight × underlying + (1 − weight) × cash."""
+    from studies.spy_beater_hunt.vol_target_engine import vol_target_strategy_returns
+
+    idx = pd.date_range("2024-01-02", periods=4, freq="B")
+    underlying = pd.Series([0.01, 0.02, -0.01, 0.005], index=idx)
+    cash = pd.Series([0.0001, 0.0001, 0.0001, 0.0001], index=idx)
+    weight = pd.Series([0.5, 1.0, 0.0, 0.75], index=idx)
+
+    result = vol_target_strategy_returns(underlying, cash, weight)
+
+    expected = [
+        0.5 * 0.01 + 0.5 * 0.0001,
+        1.0 * 0.02 + 0.0 * 0.0001,
+        0.0 * -0.01 + 1.0 * 0.0001,
+        0.75 * 0.005 + 0.25 * 0.0001,
+    ]
+    np.testing.assert_allclose(result.values, expected, atol=1e-10)
+
+
+def test_vol_target_strategy_returns_alignment():
+    """Aligns inputs on intersection of indices (drops misaligned dates)."""
+    from studies.spy_beater_hunt.vol_target_engine import vol_target_strategy_returns
+
+    underlying = pd.Series(
+        [0.01, 0.02, 0.03],
+        index=pd.to_datetime(["2024-01-02", "2024-01-03", "2024-01-04"]),
+    )
+    cash = pd.Series(
+        [0.0001, 0.0001],
+        index=pd.to_datetime(["2024-01-02", "2024-01-03"]),
+    )
+    weight = pd.Series(
+        [0.5, 1.0],
+        index=pd.to_datetime(["2024-01-02", "2024-01-03"]),
+    )
+
+    result = vol_target_strategy_returns(underlying, cash, weight)
+    # Only 2024-01-02 and 2024-01-03 have all three series.
+    assert len(result) == 2
+
+
+def test_returns_from_spec_routes_vol_target_type():
+    """``returns_from_spec`` dispatches type='vol_target' to the engine."""
+    from studies.spy_beater_hunt.run_iter import returns_from_spec
+
+    spec = {
+        "type": "vol_target",
+        "underlying_weights": {"SSOSIM": 1.0},
+        "cash_weights": {"IEFSIM": 1.0},
+        "signal_ticker": "SPYSIM",
+        "target_vol_annual": 0.20,
+        "underlying_leverage_factor": 2.0,
+        "vol_window": 60,
+        "vol_lag_days": 1,
+        "weight_min": 0.0,
+        "weight_max": 1.0,
+    }
+    returns = returns_from_spec(spec, "spy_real")
+    assert isinstance(returns, pd.Series)
+    # spy_real spans 2003-08-20 → 2026-04-14 (~22.7y); vol-target consumes 60d
+    # warm-up plus 1 trading day lag, so length should be 5500+ daily bars.
+    assert len(returns) > 5_000
+    # Ann std should be in a sensible band for a 1.25× SPY-effective strategy
+    ann_std = float(returns.std() * (252 ** 0.5))
+    assert 0.10 < ann_std < 0.30
+
+
 def test_resolve_tickers_routes_tmfsim_to_synth():
     """`portfolio_returns_from_config` must route TMFSIM to tmf_synth_returns_from_cache.
 
