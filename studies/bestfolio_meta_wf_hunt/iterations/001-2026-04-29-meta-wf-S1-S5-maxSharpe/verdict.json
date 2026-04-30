@@ -1,0 +1,42 @@
+{
+  "iter": 1,
+  "verdict": "DEAD_END",
+  "gates": {
+    "sharpe_edge_pass": false,
+    "sharpe_edge_count": 0,
+    "mdd_delta_pass": true,
+    "mdd_delta_count": 3,
+    "wf_pass": true,
+    "wf_min_winners": 7,
+    "bootstrap_pass": true,
+    "dsr_pass": false,
+    "kill_K2_concentration": false,
+    "kill_K3_turnover_no_edge": true,
+    "kill_K4_mdd_blow": false,
+    "any_kill_triggered": true,
+    "verdict": "DEAD_END"
+  },
+  "summary": {
+    "lh_56y": {
+      "meta_sharpe": 1.1371721550787568,
+      "meta_cagr": 0.10313064746127165,
+      "meta_mdd": 0.17421712550890545,
+      "edge_sharpe": 0.011854226614943508,
+      "edge_mdd_pp": -2.484707989395668
+    },
+    "vt_real": {
+      "meta_sharpe": 1.1059391594935137,
+      "meta_cagr": 0.09812635360533561,
+      "meta_mdd": 0.1273483092601902,
+      "edge_sharpe": -0.01228226512834052,
+      "edge_mdd_pp": -1.8843531172278605
+    },
+    "ndx_real": {
+      "meta_sharpe": 1.102042769327632,
+      "meta_cagr": 0.09899018059950526,
+      "meta_mdd": 0.12734830926019142,
+      "edge_sharpe": -0.0256428521575649,
+      "edge_mdd_pp": -1.8843531172276968
+    }
+  }
+}
