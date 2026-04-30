@@ -42,10 +42,20 @@ This is a **harder bar than long_term_portfolio's** — that loop's mission was 
 | `README.md` | this file |
 | `SPEC.md` | mission spec + gate definitions + winner criteria |
 | `BASE_MEMORY.md` | iteration log + frontmatter (loop state) |
-| `WINNER_AND_RANKING.md` | tier rubric (CAGR/MDD-anchored, distinct from long_term_portfolio) |
+| `WINNER_AND_RANKING.md` | tier rubric (CAGR/MDD-anchored, distinct from long_term_portfolio); includes pre/post-tax ranking |
 | `INFRASTRUCTURE.md` | what to reuse from long_term_portfolio (synths.py / run_iter.py / scoring.py adaptations) |
 | `PROMISING_DIRECTIONS.md` | ranked list of hypotheses pre-loaded for the hunt |
+| `tax_layer.py` | net-of-tax computation (Lei 14.754/2023, 15% DARF anual) wrapping `_shared/tax_engine.py` |
+| `rerun_all_iters.sh` | re-execute every iter's backtest.py after pipeline-level changes |
 | `iterations/` | one dir per iter (bootstrapped empty) |
+
+---
+
+## Pre/post tax reporting (2026-04-30)
+
+Each iter's `verdict.json` reports BOTH gross (`total_score`) and net (`net_total_score`). Tax model: Lei 14.754/2023 vigente jan/2024 — DARF 15% anual, apuração única na DAA, perdas compensam dentro do ano, carry-forward indefinido. Implementation in `tax_layer.py`; per-strategy classification (`static`=buy_hold defer-to-end vs `lrs`/`vol_target`/`blend`=annual-realize). FX modeled flat (caveat documented).
+
+Observed drag (gross_cagr − net_cagr): **0.59-0.74 pp** for buy-hold static; **1.63-2.35 pp** for swing strategies. The structural ~1.5pp spread re-shuffles ranking — see `WINNER_AND_RANKING.md` for the consolidated table.
 
 ---
 
