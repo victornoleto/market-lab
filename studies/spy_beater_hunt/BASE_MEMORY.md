@@ -1,15 +1,15 @@
 ---
 mission: "Find ONE long-term strategy with mean CAGR ≥ SPY (11.21%) AND mean MDD ≤ SPY (55.17%) AND surviving 7-gate battery on ≥ 2/2 datasets"
 target_total_iterations: 50
-total_iterations: 11
+total_iterations: 12
 winners_found: 0
-closest_to_winner: "iter 006 a6_tqqq_split_kmlm30_tlt10 RETAINS as final closest-to-winner: CAGR 17.33% PASS, MDD 49.73% PASS, gates 6/6 PASS cross_met — score **67/100** (4 control families × 10 iters × 35 trials, no architecture exceeds). Iter 011 (meta-iter, no new configs) declared **IMPOSSIBILITY_RESULT** + KILL #33 (NEW — structural architectural ceiling) FIRED: 4 distinct families tested (A1/A3 SPY-track LRS best 66, A2 TQQQ-track LRS best 67, B1/B2 HFEA barbell best 63, C1 vol-target best 60), best 67 < 75 ceiling threshold, max plausible single-criterion lift CAGR +5 + MDD +12 + Sharpe +2 = +19 → optimistic ceiling 86 < 90 WINNER threshold; real Pareto-feasible ceiling ≈ 75. Score-90 path **architecturally unreachable** within spy_beater rubric and 2-dataset framework. KILL #34 (methodology stability) NOT FIRED — alternative rubrics confirm 67-cap is real, not artifact. KILL #35 (F1+SPLIT comparison sanity) NOT FIRED — F1+SPLIT scores ~59 under spy_beater rubric (below 67 by design). FINAL_REPORT_spy_beater_failed.md written at loop level. F1+SPLIT (NTSX 25 + GDE 25 + KMLM 17.5 + DBMF 17.5 + TLT 15) confirmed empirically as best honest deploy candidate after 53 cumulative iters (long_term_portfolio 43 + spy_beater 10). Mandate §1 100% Plano C UNCHANGED."
+closest_to_winner: "iter 006 a6_tqqq_split_kmlm30_tlt10 RETAINS as final closest-to-winner: CAGR 17.33% PASS, MDD 49.73% PASS, gates 6/6 PASS cross_met — score **67/100** (now across 5 control families × 11 substantive iters × 38 trials, no architecture exceeds). Iter 012 (D2 stacked equity heavy NTSX+UPRO+AVUV) tested as **post-impossibility 5th-family sanity check** — best D2 score = 52/100 (d2_ntsx_avuv 50% NTSX + 50% AVUV, MARGINAL tier, all 3 bars met but score WORST in entire hunt). KILL #36 FIRED (D2 ≤ 67, reinforces KILL #33 across 5 families). KILL #37 NOT FIRED (no D2 config ≥ 75). KILL #38 FIRED (d2_upro_avuv MDD 85.48% >> 55.17% bar — pure LETF + factor without regime gate is catastrophic). 5-family ceiling diagnostic: A2 TQQQ-track 67, A1/A3 SPY-track 66, B1/B2 HFEA 63, C1 vol-target 60, **D2 stacked equity 52** — D2 furthest below ceiling. Architectural ceiling **strengthened from 4-family to 5-family evidence**. Hunt remains CLOSED. F1+SPLIT (NTSX 25 + GDE 25 + KMLM 17.5 + DBMF 17.5 + TLT 15) confirmed empirically as best honest deploy candidate after 56 cumulative iters (long_term_portfolio 43 + spy_beater 11 substantive + 1 sanity-check + 1 meta). Mandate §1 100% Plano C UNCHANGED."
 status: closed_no_winner
-latest_iteration: "011-2026-04-30-IMPOSSIBILITY-RESULT"
-latest_score: null  # meta-iter, no new configs
-latest_tier: IMPOSSIBILITY_RESULT
-latest_bars_met: null  # meta-iter, no new configs
-cumulative_n_trials: 35  # preserved (meta-iter, no new configs)
+latest_iteration: "012-2026-04-30-D2-stacked-equity-heavy"
+latest_score: 52
+latest_tier: MARGINAL
+latest_bars_met: "3/3 (winner_conditions_met=True for d2_ntsx_avuv but score 52 << closest-to-winner 67)"
+cumulative_n_trials: 38  # iter 011 preserved 35; iter 012 added 3
 datasets:
   - "lh_56y (1986+, ~40y, SPYSIM synth, GATE thresh 5)"
   - "spy_real (2003+, ~22.7y, SPY Tiingo adj_close, GATE thresh 5)"
@@ -35,8 +35,10 @@ direction_status:
   B1_HFEA_classical: "CLOSED via KILL #24 (iter 008) — canonical 55/45 spy_real MDD 67.13% > 65% bar; all 3 weights in [50,60] UPRO range fail MDD bar (mean 67-72%). Highest CAGR among 8 iters (29/30 pts) but 0/20 MDD pts. Bogleheads risk-parity claim REJECTED: Sharpe is monotonic NEGATIVE on UPRO weight in [50,60] (5050 > 5545 > 6040). Architecture fundamentally subordinate to LRS-style regime-gated strategies on 2022 stress."
   B2_HFEA_KMLM: "CLOSED via KILL #27 (iter 009) — KMLM 15-25% dose on HFEA backbone insufficient to clear MDD bar (kmlm15 spy_real 61.27%, kmlm25 spy_real 61.78%, both > 55%). KMLM dose-response on HFEA is OPPOSITE SPY-track: flat-to-negative on Sharpe within 15-25%, monotonic NEGATIVE on MDD (more KMLM = MORE MDD). The first 15pp KMLM dose cuts ~6pp MDD relief from HFEA-only (67→61%); subsequent KMLM dose at 20-25% adds 0.5pp MDD instead. KMLM-for-TMF substitution is pareto-trade not pareto-improve at HFEA's 165% UPRO notional. Net 0 score vs HFEA classical (iter 008): +3 MDD pts gained, −2 CAGR pts + −1 Gates pt lost."
   C1_vol_targeted: "TESTED iter 010, score 60 PROMISING (BELOW iter 008/009 63, BELOW iter 006/007 67). All 3 configs PASS all 3 bars (rare 3/3 honest result). KILL #32 FIRED — Sharpe monotonic NEGATIVE through target_vol 20→22→25% on BOTH datasets. Conservative end (c1_vt20_sso target 20% on SSO 2×) viable but CAGR caps at 13.5% vs 17.3% needed for 67-score parity. Carver canonical's Sharpe-improving property does NOT transfer cleanly to LETF-on-SPY because daily-reset decay (1-3%/y) dominates at high mean weight, AND vol-target underperforms SPY in low-vol bull regimes (5y rolling pass-rate 75% vs iter 006/007 100%) since SSO/UPRO daily-reset decay drags compounding-positive low-vol rallies that 1× SPY captures cleanly. Direction at HIGH-target end CLOSED via KILL #32; conservative end structurally subordinate to A2 TQQQ-track + crisis-alpha within rubric."
-  ARCHITECTURAL_CEILING: "DECLARED FIRED iter 011 via NEW KILL #33 (structural architectural ceiling). Empirically confirmed at score 67 across 4 distinct control families with 10 iters / 35 cumulative trials. Optimistic Pareto-loose ceiling 86 < 90 WINNER threshold; real Pareto-feasible ceiling ≈ 75. Score-90 path architecturally unreachable within spy_beater rubric. spy_beater_hunt CLOSED."
+  D2_stacked_equity_heavy: "TESTED iter 012 as post-impossibility 5th-family sanity check, score 52/100 MARGINAL — WORST family in entire hunt. d2_ntsx_avuv (50% NTSX + 50% AVUV) passes 3/3 bars (CAGR 12.23%, MDD 52.65%, gates cross_met) but score 52 << 67 closest-to-winner because mean CAGR caps at 12.23% (anchor lift at 14pts/30) and Sharpe lift over closest-to-winner is NEGATIVE −0.021. d2_ntsx_upro_avuv (35/35/30 mixed stacking + LETF + factor) MDD 76.91% FAIL bar; d2_upro_avuv (50/50 pure LETF + factor) MDD 85.48% catastrophic FAIL. KILL #36 FIRED — 5th family ≤ 67 reinforces KILL #33. KILL #37 NOT FIRED — no D2 config ≥ 75. KILL #38 FIRED — pure equity LETF + factor MDD > 55%, confirms regime-gate or duration-stacking is NECESSARY for spy_beater MDD bar. D2 family CLOSED."
+  ARCHITECTURAL_CEILING: "DECLARED FIRED iter 011 via NEW KILL #33 (structural architectural ceiling). REINFORCED iter 012 across **5 distinct control families** with 11 substantive iters + 1 sanity-check + 1 meta = 13 total iters / 38 cumulative trials. 5-family ceiling table: A2 TQQQ-track 67, A1/A3 SPY-track 66, B1/B2 HFEA 63, C1 vol-target 60, D2 stacked equity 52. Optimistic Pareto-loose ceiling 86 < 90 WINNER threshold; real Pareto-feasible ceiling ≈ 75. Score-90 path architecturally unreachable within spy_beater rubric. spy_beater_hunt CLOSED."
   iter_011_IMPOSSIBILITY_RESULT: "META-ITER (no new configs, n_trials=35 preserved). Synthesized iters 001-010 → 4 families × 10 iters → best score 67 < 75 ceiling threshold → KILL #33 FIRED. Aggregator (studies/spy_beater_hunt/iterations/011-*/aggregator.py) wrote results.json + verdict.json (tier=IMPOSSIBILITY_RESULT, status=closed_no_winner). Loop-level FINAL_REPORT_spy_beater_failed.md written. KILL #34 (methodology stability) NOT FIRED. KILL #35 (F1+SPLIT comparison sanity) NOT FIRED. F1+SPLIT incumbent fallback DEPLOY-READY; mandate §1 100% Plano C UNCHANGED. Negative result has policy value: 53 cumulative iters across two loops failed to find a strategy beating SPY in BOTH CAGR and MDD."
+  iter_012_D2_sanity_check: "POST-IMPOSSIBILITY SANITY CHECK on KILL #33. 3 configs (d2_ntsx_avuv, d2_ntsx_upro_avuv, d2_upro_avuv) tested as 5th distinct architectural family (no regime gate, no leveraged duration, no vol target — pure stacking + factor + LETF). Best score 52/100 MARGINAL << 67 closest-to-winner. KILL #36 FIRED reinforcing KILL #33; KILL #38 FIRED confirming regime-gate/stacking necessity. KILL #37 NOT FIRED. Hunt remains CLOSED. cumulative_n_trials = 38, worst DSR p = 9.40e-03 << 0.05. Statistical confidence preserved. Architectural-ceiling claim now rests on 5-family evidence + 13 total iters + 38 trials."
 parent_loop: "studies/long_term_portfolio (43 iters, F1+SPLIT incumbent fallback)"
 note: "Forked 2026-04-29. METHODOLOGY REFACTOR 2026-04-29 (post-iter-002): replaced (lh_56y/vt_real/ndx_real) with honest 2-dataset setup (lh_56y/spy_real). vt_real/ndx_real were post-GFC bull-biased (SPY MDD only 33.70%); spy_real (Tiingo daily 2003+) captures full GFC peak-to-trough. New bars: CAGR ≥ 11.21% (was 13.80%), MDD ≤ 55.17% (was 40.85%). Iter 001 a1_lrs_split now passes ALL 3 BARS retroactively (winner_conditions_met=True) — tier remains PROMISING because score 60 < 90 (Sharpe 0.65 + MDD 51.60% close to ceiling). Tier WINNER requires score ≥ 90. Iter 002 selected MARGINAL because n_trials=10 made spy_real DSR fail. Need iter 003+ targeting score ≥ 90 (lift Sharpe + lower MDD margin further). Direction A2-lower-leverage (2× SSO) is the active lever. ALSO new: multi-horizon rolling CAGR/MDD scoring (5/10/15/20y windows, 3+3+2+2pts) replaces 5y rolling Sharpe robustness — both iter 001 and iter 002 selected scored 10/10 on this new criterion. F1+SPLIT remains deploy fallback if 50-iter hunt fails."
 ---
@@ -91,6 +93,51 @@ NEW synths likely needed (NOT in long_term_portfolio):
 ---
 
 ## Iteration log (newest first)
+
+### iter 012 — D2 stacked equity heavy (NTSX + UPRO + AVUV) — POST-IMPOSSIBILITY 5TH-FAMILY SANITY CHECK — MARGINAL 52/100, KILL #36 + KILL #38 FIRED, KILL #33 REINFORCED (2026-04-30)
+
+- **Tier**: **MARGINAL 52/100** (winner_conditions_met = **TRUE** for d2_ntsx_avuv but score 52 << 67 closest-to-winner; D2 = WORST family in entire hunt)
+- **Selected**: `d2_ntsx_avuv` (50% NTSXSIM + 50% AVUVSIM, max Sharpe / SPY_Sharpe rule)
+- **Bars** (selected, 2-dataset framework): CAGR ✓ (12.23% mean ≥ 11.21%), MDD ✓ (52.65% mean ≤ 55.17%), Gates ✓ (6+6, cross_met TRUE)
+- **All 3 configs**:
+  | config              | mean CAGR | mean MDD | Sharpe (lh, spy_real) | bar test |
+  |---------------------|----------:|---------:|----------------------:|---------:|
+  | **d2_ntsx_avuv**    | **12.23%**| **52.65%**| **0.799 / 0.678**    | **PASS 3/3** |
+  | d2_ntsx_upro_avuv   | 15.22%    | 76.91%   | 0.625 / 0.608        | FAIL (MDD) |
+  | d2_upro_avuv        | 15.66%    | 85.48%   | 0.586 / 0.572        | FAIL (MDD) |
+- **Per-dataset (selected)**:
+  | dataset  | Sharpe | CAGR    | MDD    | gates | DSR p     |
+  |----------|-------:|--------:|-------:|------:|----------:|
+  | lh_56y   | 0.799  | 12.88%  | 52.65% | 6/7   | 1.75e-05  |
+  | spy_real | 0.678  | 11.59%  | 52.65% | 6/7   | 9.40e-03  |
+- **Score breakdown vs iter 006 closest-to-winner (67 → 52, −15)**: CAGR 25→14 (**−11**, mean 17.33→12.23%), MDD 7→6 (−1, mean 49.73→52.65%), Gates 13→13 (0), DSR 10→10 (0), Sharpe 2→2 (0), Robustness 10→7 (**−3**). Net **−15**. D2 trades CAGR + Robustness for marginal MDD parity.
+- **Score breakdown vs iter 010 C1 vol-target (60 → 52, −8)**: D2 even WORSE than the previous-worst PROMISING family. Removing the regime-gate framework structurally degrades score; gate is a NECESSARY component for score ≥ 60.
+- **Pre-committed KILLs**:
+  - **KILL #36 (D2 reinforces KILL #33 — 5th family ≤ 67) FIRED**: best D2 score = 52 << 67 ceiling; 5-family architectural ceiling claim **strengthened from 4-family to 5-family evidence**.
+  - **KILL #37 (sanity-check breaks ceiling — KILL #33 INVALIDATED) NOT FIRED**: no D2 config scored ≥ 75 (best 52). KILL #33 stands; hunt does NOT reopen.
+  - **KILL #38 (pure equity LETF + factor fails MDD bar) FIRED**: `d2_upro_avuv` mean MDD = 85.48% >> 55.17% bar — massively fails. **Regime gate OR stacking with bonds/cash is a NECESSARY component** for MDD bar in spy_beater rubric.
+- **D2 dose-response (UPRO weight)**: Sharpe **monotonic NEGATIVE** as UPRO grows: 0% (d2_ntsx_avuv) 0.738 → 35% (d2_ntsx_upro_avuv) 0.617 → 50% (d2_upro_avuv) 0.579. CAGR monotonic positive (12.23 → 15.22 → 15.66%); MDD monotonic NEGATIVE (52.65 → 76.91 → 85.48%). Mirrors HFEA iter 008 finding: at >1× equity notional with no regime gate, more leverage = WORSE Sharpe. Consistent factor-framework prediction `[advances_fin_ml, p.31-34]`.
+- **Multi-horizon robustness 7/10**: 5y pass-rate 58.3% (LOW), 10y 65.6% (LOW), 15y 81.7%, 20y 81.0%. D2 underperforms SPY in low-vol bull regimes because AVUV (SCV) lags growth-led rallies + NTSX 90/60 caps equity at 0.95×. F1+SPLIT had similar problem in long_term_portfolio (low-beta in growth regimes).
+- **5-family architectural ceiling diagnostic (UPDATED)**:
+  | family                  | best score | best Sharpe |
+  |:------------------------|-----------:|------------:|
+  | A2 TQQQ-track LRS       | **67**     | 0.804       |
+  | A1/A3 SPY-track LRS     | 66         | 0.744       |
+  | B1/B2 HFEA barbell      | 63         | 0.739       |
+  | C1 vol-target           | 60         | 0.721       |
+  | **D2 stacked equity** ⬅ | **52**     | 0.738       |
+- **Cross-family knowledge added by iter 012**:
+  1. Regime gate is **necessary, not contingent** for spy_beater rubric score ≥ 60. Pure stacking + factor (no gate) tops at 52.
+  2. Pure LETF + factor MDD is catastrophic (d2_upro_avuv 85.48% on lh_56y) — 2008 GFC + 2022 stress compound on 1.5× concentrated equity.
+  3. Stacking (NTSX) without leverage helps MDD modestly but caps CAGR at 12% — F1+SPLIT (bonds-heavy stacking) already represents the stacking architecture's score-ceiling neighborhood (~59 estimated for F1+SPLIT in spy_beater rubric).
+  4. AVUV factor tilt does NOT lift CAGR significantly over SPY in 1986+ window: d2_ntsx_avuv CAGR 12.23% ≈ SPY 11.21% + ~1pp factor premium (consistent with FF lit but insufficient for score-67+).
+- **H₁ CONFIRMED**: D2 cannot exceed 67 (best 52). H₂ CONFIRMED: pure LETF + factor fails MDD bar (d2_upro_avuv 85.48%). H₃ PARTIALLY CONFIRMED: d2_ntsx_avuv passes 3/3 bars but CAGR-caps at 12.23% (predicted ≤ 14%) and scores 52 (predicted ~55-62 — slightly below prediction).
+- **Surprising finding**: D2 is **WORSE** than C1 vol-target by 8pts (52 vs 60), even though both use no regime gate. Vol-target has dynamic de-risking; D2 is static. Removing both regime gate AND dynamic vol scaling drops score further. **Both regime control AND/OR vol control are necessary** for score ≥ 60.
+- **Path to 90 (D2 architecture)**: ARCHITECTURALLY UNREACHABLE. Best D2 score 52 → gap 38 to 90. Max plausible single-criterion lift (independent maxima): CAGR +10 + MDD +12 + Sharpe +2 + Rob +3 = +27 → optimistic ceiling 79 < 90. Real Pareto-feasible ceiling ≈ 65 (CAGR↔MDD trade-off visible in D2 grid).
+- **Why this iter was worth doing despite hunt being CLOSED**: iter 011 INCOMPLETE flags listed Tier 3 D1/C2/D2 as untested. KILL #33 fired on 4-family evidence; testing a 5th family was a **due diligence step** that confirmed KILL #33 (5th family scores 52 << 67) AND confirmed KILL #38 (regime-gate or duration-stacking is necessary for MDD bar). Strengthened the negative-result policy claim from "4 families, 53 cumulative iters" to "5 families, 56 cumulative iters" — robust enough for mandate §1 confirmation.
+- **Suggested iter 013+**: NONE — hunt remains CLOSED. Tier 3 D1 (concentrated growth + monthly momentum) and C2 (CAPE-timing) untested but per KILL #36 firing, additional Tier 3 testing would NOT change the architectural-ceiling conclusion. D1 is similar architecture to A2 TQQQ-track (already 67); C2 has 20+ years of out-of-sample failure.
+- **Citations**: `[risk_parity, ch.5, p.10]` Carlson capital-efficient stacking — NTSX 90/60 confirmed; mean CAGR 12.23% with NTSX+AVUV matches F1+SPLIT neighborhood; `[advances_fin_ml, p.31-34]` factor framework — AVUV SCV factor premium ~1pp over SPY in 1986+ window, consistent with FF lit; `[advances_fin_ml, p.222-223]` DSR cumulative_n_trials = 38, worst p = 9.40e-03 << 0.05; `[advances_fin_ml, p.208-211]` PBO N=3 warning pre-existing; `[advances_fin_ml, p.196-202]` bootstrap CI G6 passed; `[leverage_for_the_long_run, ch.3-4, p.40-60]` Gayed LETF decay — UPRO leg confirmed catastrophic without regime gate (d2_upro_avuv 85.48% MDD); HFEA Bogleheads 2019 — D2 confirms regime-specific issue: pure equity stacking + LETF without bonds is structurally worse than HFEA classical (which at least has TMF buffer); Avantis 2019 AVUV mandate — SCV factor ~1pp premium confirmed.
+- **Infrastructure**: NO new module. 3 static configs (NTSXSIM proxy + UPROSIM cache + AVUVSIM synth) reused existing run_iter wiring. 762 tests baseline preserved.
 
 ### iter 011 — IMPOSSIBILITY_RESULT — meta-iter, hunt CLOSED, KILL #33 FIRED (2026-04-30)
 
