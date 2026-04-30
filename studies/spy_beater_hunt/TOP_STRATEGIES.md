@@ -34,6 +34,12 @@ Estratégias com baixa probabilidade de overfit (PBO ≤ 0.20) e que passam todo
 
 ### #1 — Iter 026 H6 (4-way meta-ensemble) ⭐ recomendação principal
 
+**Plots**: [equity overlay lh_56y](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_overlay_lh_56y.png) · [equity overlay spy_real](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_cagr_mdd_scatter.png) · [gate heatmap](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_gate_heatmap.png)
+
+![iter 026 equity overlay lh_56y](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_overlay_lh_56y.png)
+
+![iter 026 rolling lh_56y](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_rolling_lh_56y.png)
+
 **Spec**: 30% A2 (TQQQ-track LRS) + 25% G2 IEF (F1-LETF SMA-gate) + 25% F1 stack (Levered All-Weather) + 20% E1g (TSMOM-6m gate × TQQQ-track)
 
 ```json
@@ -76,6 +82,12 @@ Estratégias com baixa probabilidade de overfit (PBO ≤ 0.20) e que passam todo
 
 ### #2 — Iter 019 H2 (3-way meta-ensemble) — versão simplificada
 
+**Plots**: [equity lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_overlay_lh_56y.png) · [equity spy_real](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_cagr_mdd_scatter.png) · [gate heatmap](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_gate_heatmap.png)
+
+![iter 019 equity overlay lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_overlay_lh_56y.png)
+
+![iter 019 rolling lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_rolling_lh_56y.png)
+
 **Spec**: 33% A2 + 33% G2 IEF + 34% F1 stack (sem o 4th TSMOM constituent).
 
 ```json
@@ -103,6 +115,10 @@ Estratégias com baixa probabilidade de overfit (PBO ≤ 0.20) e que passam todo
 
 ### #3 — Iter 028 H8 (3-way meta-ensemble com TSMOM gate replacement)
 
+**Plots**: [equity lh_56y](iterations/028-2026-04-30-H8-meta-ensemble-3way-1st-position-gate-substitution/plot_overlay_lh_56y.png) · [equity spy_real](iterations/028-2026-04-30-H8-meta-ensemble-3way-1st-position-gate-substitution/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/028-2026-04-30-H8-meta-ensemble-3way-1st-position-gate-substitution/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/028-2026-04-30-H8-meta-ensemble-3way-1st-position-gate-substitution/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/028-2026-04-30-H8-meta-ensemble-3way-1st-position-gate-substitution/plot_cagr_mdd_scatter.png)
+
+![iter 028 equity overlay lh_56y](iterations/028-2026-04-30-H8-meta-ensemble-3way-1st-position-gate-substitution/plot_overlay_lh_56y.png)
+
 **Spec**: 25% E1 (TSMOM-126d × TQQQ-track) + 50% G2 IEF + 25% F1 stack.
 
 | | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
@@ -114,6 +130,10 @@ Estratégias com baixa probabilidade de overfit (PBO ≤ 0.20) e que passam todo
 ---
 
 ### #4 — Iter 034 H14 (4-way + GLD-momentum)
+
+**Plots**: [equity lh_56y](iterations/034-2026-04-30-H14-meta-ensemble-5way-gld-mom-as-5th-constituent/plot_overlay_lh_56y.png) · [equity spy_real](iterations/034-2026-04-30-H14-meta-ensemble-5way-gld-mom-as-5th-constituent/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/034-2026-04-30-H14-meta-ensemble-5way-gld-mom-as-5th-constituent/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/034-2026-04-30-H14-meta-ensemble-5way-gld-mom-as-5th-constituent/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/034-2026-04-30-H14-meta-ensemble-5way-gld-mom-as-5th-constituent/plot_cagr_mdd_scatter.png)
+
+![iter 034 equity overlay lh_56y](iterations/034-2026-04-30-H14-meta-ensemble-5way-gld-mom-as-5th-constituent/plot_overlay_lh_56y.png)
 
 **Spec**: 25% A2 + 25% G2 IEF + 25% F1 stack + 25% E1g (GLD-momentum 126d).
 
@@ -129,6 +149,10 @@ Estratégias com baixa probabilidade de overfit (PBO ≤ 0.20) e que passam todo
 
 ### #5 — Iter 020 H3 (4-way com G1 IEF — best MDD)
 
+**Plots**: [equity lh_56y](iterations/020-2026-04-30-H3-meta-ensemble-4way-25-25-25-25-with-g1/plot_overlay_lh_56y.png) · [equity spy_real](iterations/020-2026-04-30-H3-meta-ensemble-4way-25-25-25-25-with-g1/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/020-2026-04-30-H3-meta-ensemble-4way-25-25-25-25-with-g1/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/020-2026-04-30-H3-meta-ensemble-4way-25-25-25-25-with-g1/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/020-2026-04-30-H3-meta-ensemble-4way-25-25-25-25-with-g1/plot_cagr_mdd_scatter.png)
+
+![iter 020 equity overlay lh_56y](iterations/020-2026-04-30-H3-meta-ensemble-4way-25-25-25-25-with-g1/plot_overlay_lh_56y.png)
+
 **Spec**: 25% A2 + 25% G1 IEF (SMA × F1 stack no-decay) + 25% G2 IEF + 25% F1 stack.
 
 | | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
@@ -142,6 +166,12 @@ Estratégias com baixa probabilidade de overfit (PBO ≤ 0.20) e que passam todo
 ---
 
 ### #6 — Iter 015 F1 Stack (static buy-hold) ⭐ implementação mais simples
+
+**Plots**: [equity lh_56y](iterations/015-2026-04-30-F1-levered-all-weather/plot_overlay_lh_56y.png) · [equity spy_real](iterations/015-2026-04-30-F1-levered-all-weather/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/015-2026-04-30-F1-levered-all-weather/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/015-2026-04-30-F1-levered-all-weather/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/015-2026-04-30-F1-levered-all-weather/plot_cagr_mdd_scatter.png)
+
+![iter 015 equity overlay lh_56y](iterations/015-2026-04-30-F1-levered-all-weather/plot_overlay_lh_56y.png)
+
+![iter 015 rolling lh_56y](iterations/015-2026-04-30-F1-levered-all-weather/plot_rolling_lh_56y.png)
 
 **Spec**: 35% NTSX + 30% GDE + 20% TLT + 15% KMLM. **STATIC, sem regime gate**.
 
@@ -168,6 +198,78 @@ Estratégias com baixa probabilidade de overfit (PBO ≤ 0.20) e que passam todo
 **Caveat overfit (PBO 0.81 ⚠)**: PBO grid-level alto em lh_56y (com apenas 3 configs no iter 015, CSCV é instável estatisticamente). Para **single-config deploy** (não competition de grid), PBO grid não se aplica diretamente — você não está escolhendo entre F1 baseline / F1 stack / F1 LETF. Mas vale registrar que a **escolha do stack 1.41× sobre as alternativas** tem incerteza.
 
 **Trade-off real**: CAGR margem de SÓ 0.14pp acima do SPY no rubric net — qualquer FX move adverso elimina a margem. Para perfil **mais conservador**, F1+SPLIT (incumbent Plano C atual) é arquiteturalmente similar.
+
+---
+
+## LRS Sensitivity — EMA vs SMA, threshold buffer, lag days
+
+Quase todos os top picks (`A2`, `G2`, `E1`) usam o gate clássico **Gayed 200d SMA com `lag_days=1`** (T+1 execution, sem peek-ahead). Mas você perguntou se nós exploramos as variantes. Resposta: **iter 002 fez sweep explícito** e os resultados informam por que SMA-200/buffer 2%/lag 1 ficou como default.
+
+### Sweep iter 002 (resultado canônico)
+
+6 configs cobrindo {SMA, EMA} × {window 100, 150, 200} × {buffer 0%, 2%, 5%} sobre UPRO 3× e SSO 2× (lh_56y + spy_real, mean):
+
+| config | filter | window | buffer | leverage | CAGR | MDD | Sharpe |
+|---|---|---:|---:|---|---:|---:|---:|
+| `a2_sma200_th2_3xupro` ⭐ selected | SMA | 200 | 2% | UPRO 3× | **18.96%** | **57.57%** | **0.663** |
+| `a2_sma200_th5_3xupro` | SMA | 200 | 5% | UPRO 3× | 18.55% | 69.41% | 0.648 |
+| `a2_sma100_3xupro` | SMA | 100 | 0% | UPRO 3× | 15.93% | 70.34% | 0.606 |
+| `a2_ema150_th2_3xupro` | EMA | 150 | 2% | UPRO 3× | 16.20% | 73.03% | 0.599 |
+| `a2_ema100_th2_2xsso` | EMA | 100 | 2% | SSO 2× | 12.76% | 61.36% | 0.630 |
+| `a2_sma150_2xsso` | SMA | 150 | 0% | SSO 2× | 13.05% | **45.98%** | 0.639 |
+
+### KILLs disparados (registrados em `BASE_MEMORY.md`)
+
+- **KILL #7 (faster signal)**: SMA100 e EMA150/100 produzem **MDD pior** que SMA200. EMA150 MDD = 73.03% vs SMA200 MDD = 57.57% — o tradeoff "menos lag → menos crash capture" só vale na teoria; na prática **EMA whipsaws mais** em mercados sideways e o custo supera o ganho de bear avoidance.
+- **KILL #8 (threshold buffer ≥5%)**: buffer 5% MDD = 69.41% (PIOR que 2% e até que 0%). Buffer grande = exit lazy = drawdown maior. Buffer 2% é o sweet spot empírico — reduz whipsaw sem sacrificar exit speed.
+
+### Recomendação canônica
+
+**SMA-200 + buffer 2% + lag 1** é o default usado em todos os top meta-ensembles (#1-#5). A literatura Gayed `[leverage_for_the_long_run, ch.3-4]` usa 200d SMA original (buffer 0%) — nossa adição do buffer 2% é uma **refinação empírica do hunt** que melhora MDD ~5pp sem custo de CAGR significativo.
+
+---
+
+## ⚠️ Lag days e settlement T+1 do Inter — caveat operacional crítico
+
+Você levantou um ponto importante. Vou ser honesto: **isso NÃO foi auditado a fundo no backtest**. Atualmente todas as 30 iters usam `lag_days=1` (T+1: signal computado no close de T → execução no open de T+1). O engine doc:
+
+```python
+# lrs_engine.py:gayed_200d_sma_gate
+# lag_days=1 mirrors live trading
+# T+0 (lag=0) would peek; T+1 mirrors live trading.
+```
+
+### O problema real no Inter
+
+Settlement industry-padrão US (DTCC) é **T+1 desde 2024-05-28** — quando você vende um ETF no dia T, o cash entra na sua conta no dia T+1. O Inter (via Apex Clearing) segue esse mesmo cycle. Implicação prática:
+
+- **Cenário A (good-faith trading)**: vende SSO no close de T → cash settles T+1 → compra IEF no open de T+1 usando o cash que vai settlare hoje. Apex permite isso por **good-faith convention** (você está negociando "em boa fé" porque o cash VAI chegar). ✅ Compatible com `lag_days=1` do backtest.
+
+- **Cenário B (free-riding violation)**: se você vender IEF no T+1 antes do cash do SSO settlare, configura **free-ride violation** — Apex restringe sua conta por 90 dias a usar só "settled cash". Não comum em rotation trading mas pode acontecer com flips frequentes. Solução: aguardar settlement.
+
+- **Cenário C (Inter-specific delays)**: a documentação do Inter menciona que **dividend crediting às vezes atrasa** e **suporte demora ~8 dias** a responder. Isso indica friction operacional que pode atrasar o settlement na prática para 2-3 dias em casos pontuais. Essa friction NÃO está modelada nos backtests.
+
+### O que isso significa para deploy
+
+O `lag_days=1` do backtest **modela bem o caso comum** (good-faith T+1) mas **subestima** os casos de delay operacional. Para um deploy honesto via Inter, recomendo:
+
+1. **Re-rodar a estratégia escolhida com `lag_days=2`** como sensitivity test antes do deploy real. Se a degradação de Sharpe/MDD for < 5%, o caso comum domina e você pode deploy com `lag_days=1`. Se for ≥ 10%, considere re-otimizar pesos com lag=2.
+
+2. **Não usar gate signals de close-do-dia** se a estratégia exige rotação intra-mensal frequente (LRS típico flipa 1-3×/ano, então é tolerável). Para meta-ensembles 4-way, cada constituinte LRS pode flipar independentemente, mas a soma de flips raramente excede 5-8/ano.
+
+3. **Buy-hold static (#6 F1 stack)** é **imune a esse problema** — só rebalanceia 1×/ano em data fixa. Você tem horas/dias pra colocar a ordem. Mais um ponto a favor da implementação simples.
+
+### TODO honesto pré-deploy
+
+Esse é um **gap conhecido** do backtest. Não é overfit — é modelo operacional incompleto. Antes de deploy real do meta-ensemble (#1, #2 ou #3), vale **re-rodar o iter selecionado com `lag_days=2`** e comparar:
+
+```python
+# Quick sensitivity test (1 iter, 5 minutes)
+# Modify iter spec lag_days: 1 → 2, re-run backtest.py
+# Compare net_total_score, net Sharpe, net MDD.
+```
+
+Se o usuário sinalizar GO, eu rodo essa sensitivity test rapidamente antes de qualquer recomendação final.
 
 ---
 
