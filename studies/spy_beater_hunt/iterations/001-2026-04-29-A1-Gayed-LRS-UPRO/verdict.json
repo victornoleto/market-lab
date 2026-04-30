@@ -1,0 +1,327 @@
+{
+  "status": "promising",
+  "tier": "PROMISING",
+  "total_score": 67,
+  "winner_conditions_met": false,
+  "bars": {
+    "cagr_bar": true,
+    "mdd_bar": false,
+    "gates_bar": true
+  },
+  "bars_met_count": 2,
+  "criteria": {
+    "1_cagr": {
+      "points": 28,
+      "max": 30,
+      "mean_cagr": 0.19006967487458945,
+      "spy_bar": 0.138,
+      "anchor_range": [
+        0.05,
+        0.2
+      ]
+    },
+    "2_mdd": {
+      "points": 0,
+      "max": 20,
+      "mean_mdd": 0.5056802504188161,
+      "spy_bar": 0.4085,
+      "anchor_range": [
+        0.5,
+        0.1
+      ]
+    },
+    "3_gates": {
+      "points": 17,
+      "max": 20,
+      "per_dataset": {
+        "lh_56y": 6,
+        "vt_real": 6,
+        "ndx_real": 5
+      },
+      "thresholds": {
+        "lh_56y": 5,
+        "vt_real": 4,
+        "ndx_real": 4
+      },
+      "cross_dataset_met": true
+    },
+    "4_dsr": {
+      "points": 10,
+      "max": 10,
+      "worst_p_value": 0.026272751392177773,
+      "cumulative_n_trials": 4
+    },
+    "5_sharpe": {
+      "points": 2,
+      "max": 10,
+      "mean_sharpe": 0.7356558402293479,
+      "anchor_range": [
+        0.5,
+        2.0
+      ]
+    },
+    "6_robustness": {
+      "points": 10,
+      "max": 10,
+      "input_bonus": 10
+    },
+    "7_extra_bonus": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "lh_56y": {
+      "sharpe": 0.6703126355749922,
+      "cagr": 0.1690758197272586,
+      "mdd": 0.5470167684920292,
+      "dsr_p_value": 0.0007909785780818579
+    },
+    "vt_real": {
+      "sharpe": 0.7836276274846083,
+      "cagr": 0.20684831925677227,
+      "mdd": 0.4850119913822094,
+      "dsr_p_value": 0.013389792524022726
+    },
+    "ndx_real": {
+      "sharpe": 0.7530272576284434,
+      "cagr": 0.19428488563973745,
+      "mdd": 0.48501199138220963,
+      "dsr_p_value": 0.026272751392177773
+    }
+  },
+  "spy_benchmark": {
+    "cagr_mean": 0.138,
+    "mdd_mean": 0.4085
+  },
+  "cumulative_n_trials": 4,
+  "configs_tested": 4,
+  "primary_citation": "[leverage_for_the_long_run, ch.3-4, p.40-60]",
+  "hypothesis_slug": "A1-Gayed-LRS-UPRO",
+  "selected_config": "a1_lrs_split",
+  "selection_rule": "max mean(Sharpe / SPY_Sharpe) across datasets",
+  "scoring_basis": "CAGR-anchored (spy_beater_hunt rubric, WINNER_AND_RANKING.md)",
+  "all_configs_metrics": {
+    "a1_pure_lrs": {
+      "lh_56y": {
+        "sharpe": 0.6406288961209805,
+        "cagr": 0.17977288340189257,
+        "mdd": 0.6525889717778358
+      },
+      "vt_real": {
+        "sharpe": 0.7704440651689382,
+        "cagr": 0.2332596456688072,
+        "mdd": 0.5470230213048158
+      },
+      "ndx_real": {
+        "sharpe": 0.7409590310765869,
+        "cagr": 0.2183008409977043,
+        "mdd": 0.5470230213048162
+      }
+    },
+    "a1_lrs_cash": {
+      "lh_56y": {
+        "sharpe": 0.604840380816064,
+        "cagr": 0.16397003292977064,
+        "mdd": 0.7120379966528347
+      },
+      "vt_real": {
+        "sharpe": 0.7606526002107906,
+        "cagr": 0.22810806466466627,
+        "mdd": 0.5143297743628393
+      },
+      "ndx_real": {
+        "sharpe": 0.7425553171907697,
+        "cagr": 0.21813260612794605,
+        "mdd": 0.5143297743628392
+      }
+    },
+    "a1_lrs_split": {
+      "lh_56y": {
+        "sharpe": 0.6703126355749922,
+        "cagr": 0.1690758197272586,
+        "mdd": 0.5470167684920292
+      },
+      "vt_real": {
+        "sharpe": 0.7836276274846083,
+        "cagr": 0.20684831925677227,
+        "mdd": 0.4850119913822094
+      },
+      "ndx_real": {
+        "sharpe": 0.7530272576284434,
+        "cagr": 0.19428488563973745,
+        "mdd": 0.48501199138220963
+      }
+    },
+    "a1_lrs_kmlm_off": {
+      "lh_56y": {
+        "sharpe": 0.6063295698148796,
+        "cagr": 0.16603534621266403,
+        "mdd": 0.6656046800669044
+      },
+      "vt_real": {
+        "sharpe": 0.7523553073534007,
+        "cagr": 0.22643987168644264,
+        "mdd": 0.5453062229821429
+      },
+      "ndx_real": {
+        "sharpe": 0.7276527822560688,
+        "cagr": 0.21274386953162572,
+        "mdd": 0.5453062229821429
+      }
+    }
+  },
+  "gate_details": {
+    "lh_56y": {
+      "g1_pbo": 0.0,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 0.0007909785780818579,
+      "g3_wf_returns": [
+        0.38017904230399746,
+        6.6948578955070435,
+        -0.23026645809792012,
+        -0.03503027209496701,
+        0.49932625773308037,
+        1.9858321664977998,
+        2.262394324218445,
+        0.5607368067463596
+      ],
+      "g3_wf_mdds": [
+        0.26163484818343036,
+        0.3301406001545439,
+        0.5470167684920301,
+        0.32792992048084385,
+        0.4521408357592814,
+        0.2065199935330467,
+        0.40126517915067117,
+        0.48501199138220935
+      ],
+      "g3_max_wf_mdd": 0.5470167684920301,
+      "g4_oos_sharpe": 0.759274267835124,
+      "g5_fwd_sharpe": 0.736943391949505,
+      "g6_ci_low": 0.2123942854225145,
+      "g7_crosslib_delta_pp": 0.0
+    },
+    "vt_real": {
+      "g1_pbo": 0.4007936507936508,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 0.013389792524022726,
+      "g3_wf_returns": [
+        -0.06834747449941947,
+        1.3328032749113112,
+        0.10795751886068095,
+        0.8439606707186849,
+        -0.05704824362063543,
+        1.1649983991308779,
+        0.3329790138448421,
+        0.36290216077894133
+      ],
+      "g3_wf_mdds": [
+        0.3768616964357061,
+        0.17723131364162284,
+        0.20651999353304695,
+        0.2460530987419352,
+        0.4012651791506711,
+        0.312111396612011,
+        0.2693734134951214,
+        0.2476557028805807
+      ],
+      "g3_max_wf_mdd": 0.4012651791506711,
+      "g4_oos_sharpe": 0.8142958575443439,
+      "g5_fwd_sharpe": 0.736943391949505,
+      "g6_ci_low": 0.0743820702922135,
+      "g7_crosslib_delta_pp": 0.0
+    },
+    "ndx_real": {
+      "g1_pbo": 0.5793650793650794,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 0.026272751392177773,
+      "g3_wf_returns": [
+        0.760195562628843,
+        0.806044967973649,
+        0.1880576351561709,
+        0.3058085663998784,
+        0.4882565137375412,
+        0.3587251761013339,
+        0.5796079121762714,
+        0.3127801274421227
+      ],
+      "g3_wf_mdds": [
+        0.23221856805880906,
+        0.16347467900710028,
+        0.20311126250890646,
+        0.24809944795045988,
+        0.40126517915067117,
+        0.3469917429885461,
+        0.22777963627885855,
+        0.24765570288058028
+      ],
+      "g3_max_wf_mdd": 0.40126517915067117,
+      "g4_oos_sharpe": 0.6277546520436085,
+      "g5_fwd_sharpe": 0.736943391949505,
+      "g6_ci_low": 0.04167531610325515,
+      "g7_crosslib_delta_pp": 0.0
+    }
+  },
+  "robustness": {
+    "bonus_pts_5_scale": 5,
+    "bonus_pts_10_scale": 10,
+    "pct_positive_sharpe": 1.0,
+    "n_windows": 36,
+    "min_rolling_sharpe": 0.03645126148361463,
+    "max_rolling_sharpe": 1.307091806688973,
+    "anchor_dataset": "lh_56y"
+  },
+  "configs": {
+    "a1_pure_lrs": {
+      "type": "lrs",
+      "on_weights": {
+        "UPROSIM": 1.0
+      },
+      "off_weights": {
+        "IEFSIM": 1.0
+      },
+      "signal_ticker": "SPYSIM",
+      "sma_window": 200,
+      "lag_days": 1
+    },
+    "a1_lrs_cash": {
+      "type": "lrs",
+      "on_weights": {
+        "UPROSIM": 1.0
+      },
+      "off_weights": {
+        "CASHX": 1.0
+      },
+      "signal_ticker": "SPYSIM",
+      "sma_window": 200,
+      "lag_days": 1
+    },
+    "a1_lrs_split": {
+      "type": "lrs",
+      "on_weights": {
+        "UPROSIM": 0.5,
+        "SSOSIM": 0.5
+      },
+      "off_weights": {
+        "IEFSIM": 1.0
+      },
+      "signal_ticker": "SPYSIM",
+      "sma_window": 200,
+      "lag_days": 1
+    },
+    "a1_lrs_kmlm_off": {
+      "type": "lrs",
+      "on_weights": {
+        "UPROSIM": 1.0
+      },
+      "off_weights": {
+        "IEFSIM": 0.5,
+        "KMLMSIM": 0.5
+      },
+      "signal_ticker": "SPYSIM",
+      "sma_window": 200,
+      "lag_days": 1
+    }
+  }
+}

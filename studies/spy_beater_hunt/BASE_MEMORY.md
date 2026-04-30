@@ -1,13 +1,15 @@
 ---
 mission: "Find ONE long-term strategy with mean CAGR ≥ SPY (13.80%) AND mean MDD ≤ SPY (40.85%) AND surviving 7-gate battery on ≥ 2/3 datasets"
-total_iterations: 0
+total_iterations: 1
 winners_found: 0
-status: bootstrapped
-latest_iteration: null
-latest_score: null
-cumulative_n_trials: 0
+status: hunting
+latest_iteration: "001-2026-04-29-A1-Gayed-LRS-UPRO"
+latest_score: 67
+latest_tier: PROMISING
+latest_bars_met: 2  # CAGR ✓, gates ✓, MDD ✗
+cumulative_n_trials: 4
 parent_loop: "studies/long_term_portfolio (43 iters, F1+SPLIT incumbent fallback)"
-note: "Forked 2026-04-29 from long_term_portfolio after F1+SPLIT (mean CAGR 10.76%) failed user's CAGR-vs-SPY criterion. Mission redefined: CAGR-anchored. Most defensible hypothesis directions: Gayed LRS [leverage_for_the_long_run, ch.3-4] (UPRO/TQQQ + 200d SMA gate) and HFEA-style leveraged barbells (UPRO + TMF synth). F1+SPLIT remains deploy fallback if hunt fails."
+note: "Forked 2026-04-29 from long_term_portfolio after F1+SPLIT (mean CAGR 10.76%) failed user's CAGR-vs-SPY criterion. Mission redefined: CAGR-anchored. Iter 001 (A1 Gayed LRS UPRO) PROMISING 67/100: CAGR bar PASS (mean 19.01%, +5.21pp above 13.80%), MDD bar FAIL (mean 50.57%, +9.72pp above 40.85% ceiling), gates bar PASS (6/6/5 — 2/3 datasets meet threshold). KILL #6 NOT triggered (a1_pure_lrs CAGR 21.04% well above bar). Direction is CAGR-rich but MDD-bottlenecked: 200d SMA too laggy for tail-risk (G3 within-window MDD 0.40-0.55 across all 3 datasets). F1+SPLIT remains deploy fallback if hunt fails."
 ---
 
 # spy_beater_hunt — BASE MEMORY
@@ -61,7 +63,24 @@ NEW synths likely needed (NOT in long_term_portfolio):
 
 ## Iteration log (newest first)
 
-(Empty — bootstrapped 2026-04-29.)
+### iter 001 — A1 Gayed LRS UPRO + 200d SMA gate (2026-04-29)
+
+- **Tier**: PROMISING **67/100** (winner_conditions_met = False, 2/3 bars)
+- **Selected**: `a1_lrs_split` (50% UPROSIM + 50% SSOSIM when SPY > 200d MA, 100% IEFSIM when off)
+- **Bars**: CAGR ✓ (mean 19.01%, +5.21pp), MDD ✗ (mean 50.57%, +9.72pp over ceiling), Gates ✓ (6/6/5)
+- **KILL #6 monitor**: NOT triggered (a1_pure_lrs CAGR 21.04% >> 13.80%)
+- **Per-dataset (selected)**:
+  | dataset  | Sharpe | CAGR    | MDD    | gates | DSR p     |
+  |----------|-------:|--------:|-------:|------:|----------:|
+  | lh_56y   | 0.670  | 16.91%  | 54.70% | 6/7   | 7.91e-04  |
+  | vt_real  | 0.784  | 20.68%  | 48.50% | 6/7   | 1.34e-02  |
+  | ndx_real | 0.753  | 19.43%  | 48.50% | 5/7   | 2.63e-02  |
+- **Lesson**: Gayed LRS is structurally CAGR-rich but MDD-bottlenecked.
+  WF within-window max_mdd 0.40-0.55 across all 3 datasets — 200d SMA is
+  too laggy for tail-risk (1987, 2008, 2020, 2022). Citation:
+  `[leverage_for_the_long_run, ch.3-4, p.40-60]`.
+- **Direction status**: not WINNER. Continue per user plan to iter 002 (B1
+  HFEA classical) per `PROMISING_DIRECTIONS.md` ranking.
 
 ---
 

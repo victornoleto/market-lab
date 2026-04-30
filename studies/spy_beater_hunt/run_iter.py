@@ -1,0 +1,465 @@
+"""Per-iter execution helper for spy_beater_hunt.
+
+Reuses gate functions from ``studies.long_term_portfolio.run_iter`` (PBO,
+DSR, Walk-Forward, OOS70/30, FWD, Bootstrap, Cross-lib, Robustness) but
+applies CAGR-anchored scoring per ``WINNER_AND_RANKING.md``.
+
+Each config is a ``StrategySpec`` dict — one of:
+
+  Static portfolio (same as long_term_portfolio):
+    {"type": "static", "weights": {ticker: weight, ...}}
+
+  LRS-gated rotation (Gayed 200d SMA gate):
+    {
+      "type": "lrs",
+      "on_weights": {ticker: weight, ...},   # leveraged equity sleeve
+      "off_weights": {ticker: weight, ...},  # defensive sleeve
+      "signal_ticker": "SPYSIM",             # what to compute SMA on
+      "sma_window": 200,
+      "lag_days": 1,
+    }
+
+The wrapper:
+1. Builds per (config × dataset) returns Series.
+2. Computes metrics (Sharpe / CAGR / MDD).
+3. Selects best config by max mean(Sharpe / SPY_Sharpe).
+4. Runs 7-gate battery on selected config per dataset.
+5. Computes CAGR-anchored score via spy_beater_hunt.scoring.
+6. Persists verdict.json + final_report.md.
+
+Citations:
+  - [leverage_for_the_long_run, ch.3-4, p.40-60] Gayed LRS rationale.
+  - [advances_fin_ml, p.208-211, p.222-223, p.196-202, p.31-34] gate framework.
+"""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import pandas as pd
+
+from src.ai_trade.backtest.data.testfolio_loader import load_testfolio_series
+from studies.long_term_portfolio import datasets as datasets_mod
+from studies.long_term_portfolio.run_iter import (
+    _compute_metrics,
+    _gate_bootstrap,
+    _gate_crosslib_self,
+    _gate_dsr,
+    _gate_fwd,
+    _gate_oos_70_30,
+    _gate_pbo,
+    _gate_walk_forward,
+    _rolling_robustness,
+    portfolio_returns_from_config,
+)
+from studies.long_term_portfolio.scoring import (
+    BENCHMARKS,
+    DatasetMetrics,
+    Gates,
+    spy_benchmark,
+)
+from studies.spy_beater_hunt.lrs_engine import (
+    gayed_200d_sma_gate,
+    lrs_strategy_returns,
+)
+from studies.spy_beater_hunt.scoring import score_strategy_spy_beater
+
+
+TRADING_DAYS_PER_YEAR = 252
+
+
+# ---------------------------------------------------------------------------
+# Public: returns from a StrategySpec
+# ---------------------------------------------------------------------------
+
+
+def returns_from_spec(spec: dict, dataset: str) -> pd.Series:
+    """Build daily portfolio returns from a StrategySpec dict.
+
+    Supports two strategy types: ``static`` (delegate to
+    portfolio_returns_from_config) and ``lrs`` (Gayed 200d SMA gate
+    rotation between on_weights and off_weights sleeves).
+    """
+    stype = spec.get("type", "static")
+    if stype == "static":
+        return portfolio_returns_from_config(spec["weights"], dataset)
+    if stype == "lrs":
+        return _lrs_returns_from_spec(spec, dataset)
+    raise ValueError(f"unknown strategy type: {stype!r}")
+
+
+def _lrs_returns_from_spec(spec: dict, dataset: str) -> pd.Series:
+    """Build LRS daily returns: rotate on_weights ↔ off_weights via SMA gate."""
+    on_returns = portfolio_returns_from_config(spec["on_weights"], dataset)
+    off_returns = portfolio_returns_from_config(spec["off_weights"], dataset)
+
+    signal_ticker = spec.get("signal_ticker", "SPYSIM")
+    sma_window = int(spec.get("sma_window", 200))
+    lag_days = int(spec.get("lag_days", 1))
+
+    # signal_prices uses the FULL testfolio cache (not sliced to dataset)
+    # so the SMA is well-defined at the dataset start. The gate is later
+    # aligned to on/off returns via lrs_strategy_returns' inner concat.
+    signal_prices = load_testfolio_series(signal_ticker)
+    gate = gayed_200d_sma_gate(
+        signal_prices, window=sma_window, lag_days=lag_days
+    )
+    return lrs_strategy_returns(on_returns, off_returns, gate)
+
+
+# ---------------------------------------------------------------------------
+# Internal: best-config selection (mirror long_term_portfolio rule)
+# ---------------------------------------------------------------------------
+
+
+def _select_best_config(
+    config_results: dict[str, dict[str, dict[str, float]]],
+    datasets_to_test: tuple[str, ...],
+) -> str:
+    """Pick config with max mean(Sharpe / SPY_Sharpe)."""
+    spy_sharpes = {ds: spy_benchmark(BENCHMARKS[ds]).sharpe for ds in datasets_to_test}
+    best, best_score = "", float("-inf")
+    for cfg, ds_metrics in config_results.items():
+        ratios = []
+        for ds in datasets_to_test:
+            s = ds_metrics[ds]["sharpe"]
+            if not np.isnan(s):
+                ratios.append(s / spy_sharpes[ds])
+        if not ratios:
+            continue
+        score = float(np.mean(ratios))
+        if score > best_score:
+            best, best_score = cfg, score
+    if not best:
+        best = next(iter(config_results.keys()))
+    return best
+
+
+# ---------------------------------------------------------------------------
+# Public: run_iter_spy_beater
+# ---------------------------------------------------------------------------
+
+
+def run_iter_spy_beater(
+    iter_n: int,
+    iter_dir: Path,
+    hypothesis_slug: str,
+    primary_citation: str,
+    configs: dict[str, dict],
+    datasets_to_test: tuple[str, ...] = ("lh_56y", "vt_real", "ndx_real"),
+    cumulative_n_trials: int | None = None,
+) -> dict[str, Any]:
+    """Execute a spy_beater iter sweep: configs × datasets → score → artifacts.
+
+    Args:
+        iter_n: iter number.
+        iter_dir: iteration directory; created if missing.
+        hypothesis_slug: e.g. ``'A1-Gayed-LRS-UPRO'``.
+        primary_citation: e.g. ``'[leverage_for_the_long_run, ch.3-4]'``.
+        configs: ``{config_name: StrategySpec, ...}``.
+        datasets_to_test: dataset names (default: all 3).
+        cumulative_n_trials: prior + this iter's count; for DSR penalty.
+
+    Returns:
+        verdict dict (also written as ``verdict.json``).
+    """
+    iter_dir = Path(iter_dir)
+    iter_dir.mkdir(parents=True, exist_ok=True)
+
+    if cumulative_n_trials is None:
+        cumulative_n_trials = len(configs)
+
+    # ------------------------------------------------------------------
+    # 1) Per (config × dataset) backtest
+    # ------------------------------------------------------------------
+    config_results: dict[str, dict[str, dict[str, Any]]] = {}
+    config_returns: dict[str, dict[str, pd.Series]] = {}
+
+    for cfg_name, spec in configs.items():
+        config_results[cfg_name] = {}
+        config_returns[cfg_name] = {}
+        for ds in datasets_to_test:
+            returns = returns_from_spec(spec, ds)
+            config_returns[cfg_name][ds] = returns
+            config_results[cfg_name][ds] = _compute_metrics(returns)
+
+    # ------------------------------------------------------------------
+    # 2) Best-config selection
+    # ------------------------------------------------------------------
+    selected_cfg = _select_best_config(config_results, datasets_to_test)
+
+    # ------------------------------------------------------------------
+    # 3) 7-gate battery on selected config per dataset
+    # ------------------------------------------------------------------
+    metrics_map: dict[str, DatasetMetrics] = {}
+    gates_map: dict[str, Gates] = {}
+    gate_details: dict[str, dict[str, Any]] = {}
+
+    for ds in datasets_to_test:
+        ds_returns_per_cfg = {c: config_returns[c][ds] for c in configs}
+        g1_pass, pbo_value, n_combos = _gate_pbo(ds_returns_per_cfg)
+        sel = config_returns[selected_cfg][ds]
+        g2_pass, dsr_p = _gate_dsr(sel, n_trials=max(2, len(configs)))
+        g3_pass, wf_returns, wf_mdds = _gate_walk_forward(sel)
+        g4_pass, oos_s = _gate_oos_70_30(sel)
+        g5_pass, fwd_s = _gate_fwd(sel)
+        g6_pass, ci_low = _gate_bootstrap(sel)
+        g7_pass, crosslib_delta = _gate_crosslib_self(sel)
+
+        m = config_results[selected_cfg][ds]
+        metrics_map[ds] = DatasetMetrics(
+            sharpe=m["sharpe"], cagr=m["cagr"], mdd=m["mdd"],
+            dsr_p_value=dsr_p,
+            net_sharpe=m["sharpe"], net_cagr=m["cagr"], net_mdd=m["mdd"],
+        )
+        gates_map[ds] = Gates(
+            g1_pbo=g1_pass, g2_dsr=g2_pass, g3_wf=g3_pass, g4_oos=g4_pass,
+            g5_fwd=g5_pass, g6_bootstrap=g6_pass, g7_crosslib=g7_pass,
+        )
+        gate_details[ds] = {
+            "g1_pbo": pbo_value,
+            "g1_pbo_n_combinations": n_combos,
+            "g2_dsr_p": dsr_p,
+            "g3_wf_returns": wf_returns,
+            "g3_wf_mdds": wf_mdds,
+            "g3_max_wf_mdd": max(wf_mdds) if wf_mdds else 0.0,
+            "g4_oos_sharpe": oos_s,
+            "g5_fwd_sharpe": fwd_s,
+            "g6_ci_low": ci_low,
+            "g7_crosslib_delta_pp": crosslib_delta,
+        }
+
+    # ------------------------------------------------------------------
+    # 4) Robustness bonus
+    # ------------------------------------------------------------------
+    anchor_ds = "lh_56y" if "lh_56y" in datasets_to_test else datasets_to_test[0]
+    rob_pts_5, pct_pos, n_roll, roll_sharpes = _rolling_robustness(
+        config_returns[selected_cfg][anchor_ds]
+    )
+    # _rolling_robustness returns 0-5 pts; spy_beater rubric allows up to 10
+    # (per WINNER_AND_RANKING.md). Scale: 5/5 → 10/10, 3/5 → 6/10, 1/5 → 2/10.
+    rob_pts_10 = int(round(rob_pts_5 * 2))
+
+    # ------------------------------------------------------------------
+    # 5) CAGR-anchored score
+    # ------------------------------------------------------------------
+    score_dict = score_strategy_spy_beater(
+        metrics_map, gates_map,
+        cumulative_n_trials=cumulative_n_trials,
+        robustness_bonus=rob_pts_10,
+    )
+
+    # ------------------------------------------------------------------
+    # 6) Build verdict + artifacts
+    # ------------------------------------------------------------------
+    verdict = dict(score_dict)
+    verdict.update({
+        "configs_tested": len(configs),
+        "primary_citation": primary_citation,
+        "hypothesis_slug": hypothesis_slug,
+        "selected_config": selected_cfg,
+        "selection_rule": "max mean(Sharpe / SPY_Sharpe) across datasets",
+        "scoring_basis": "CAGR-anchored (spy_beater_hunt rubric, WINNER_AND_RANKING.md)",
+        "all_configs_metrics": config_results,
+        "gate_details": gate_details,
+        "robustness": {
+            "bonus_pts_5_scale": rob_pts_5,
+            "bonus_pts_10_scale": rob_pts_10,
+            "pct_positive_sharpe": pct_pos,
+            "n_windows": n_roll,
+            "min_rolling_sharpe": float(min(roll_sharpes)) if roll_sharpes else None,
+            "max_rolling_sharpe": float(max(roll_sharpes)) if roll_sharpes else None,
+            "anchor_dataset": anchor_ds,
+        },
+        "configs": _serialise_configs(configs),
+    })
+
+    # results.json (returns_series for plot rendering)
+    returns_series: dict[str, dict[str, dict[str, list]]] = {ds: {} for ds in datasets_to_test}
+    for ds in datasets_to_test:
+        top_cfg = max(
+            configs.keys(),
+            key=lambda c: config_results[c][ds]["sharpe"]
+            if not np.isnan(config_results[c][ds]["sharpe"]) else float("-inf"),
+        )
+        for c in {selected_cfg, top_cfg}:
+            r = config_returns[c][ds]
+            returns_series[ds][c] = {
+                "index": [str(d.date()) for d in r.index],
+                "gross_returns": r.tolist(),
+                "net_returns": r.tolist(),
+            }
+
+    runs = {
+        ds: {
+            cfg_name: {
+                "sharpe": config_results[cfg_name][ds]["sharpe"],
+                "cagr": config_results[cfg_name][ds]["cagr"],
+                "mdd": config_results[cfg_name][ds]["mdd"],
+            }
+            for cfg_name in configs
+        }
+        for ds in datasets_to_test
+    }
+    results_payload = {
+        "hypothesis_slug": hypothesis_slug,
+        "selected_config": selected_cfg,
+        "configs_tested": len(configs),
+        "configs": _serialise_configs(configs),
+        "runs": runs,
+        "returns_series": returns_series,
+    }
+
+    def _default_json(obj: Any) -> Any:
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, pd.Timestamp):
+            return str(obj.date())
+        return str(obj)
+
+    (iter_dir / "verdict.json").write_text(
+        json.dumps(verdict, indent=2, default=_default_json) + "\n"
+    )
+    (iter_dir / "results.json").write_text(
+        json.dumps(results_payload, indent=2, default=_default_json) + "\n"
+    )
+
+    _write_final_report(
+        iter_dir, iter_n, hypothesis_slug, primary_citation,
+        configs, verdict, datasets_to_test,
+    )
+
+    return verdict
+
+
+# ---------------------------------------------------------------------------
+# Internal: helpers
+# ---------------------------------------------------------------------------
+
+
+def _serialise_configs(configs: dict[str, dict]) -> dict[str, dict]:
+    """Make StrategySpecs JSON-serialisable (no Series, all scalars)."""
+    out: dict[str, dict] = {}
+    for name, spec in configs.items():
+        out[name] = dict(spec)  # shallow copy; weights dicts are already json-safe
+    return out
+
+
+def _write_final_report(
+    iter_dir: Path,
+    iter_n: int,
+    slug: str,
+    citation: str,
+    configs: dict[str, dict],
+    verdict: dict[str, Any],
+    datasets_to_test: tuple[str, ...],
+) -> None:
+    """Write a concise final_report.md for the iter."""
+    selected = verdict["selected_config"]
+    bars = verdict["bars"]
+    cri = verdict["criteria"]
+
+    lines = [
+        f"# spy_beater_hunt iter {iter_n:03d} — Final Report — `{slug}`",
+        "",
+        f"**Tier**: **{verdict['tier']}** — `score={verdict['total_score']}/100`, "
+        f"`winner_conditions_met={verdict['winner_conditions_met']}`",
+        "",
+        f"**Strict bars** (CAGR-anchored, spy_beater rubric):",
+        f"- CAGR bar (mean ≥ 13.80%): {'PASS' if bars['cagr_bar'] else 'FAIL'} "
+        f"(mean = {cri['1_cagr']['mean_cagr'] * 100:.2f}%)",
+        f"- MDD bar (mean ≤ 40.85%): {'PASS' if bars['mdd_bar'] else 'FAIL'} "
+        f"(mean = {cri['2_mdd']['mean_mdd'] * 100:.2f}%)",
+        f"- Gates bar (≥ 2/3 datasets at threshold): "
+        f"{'PASS' if bars['gates_bar'] else 'FAIL'}",
+        "",
+        f"**Primary citation**: {citation}",
+        "",
+        "---",
+        "",
+        f"## Selected config: `{selected}`",
+        "",
+        "Spec:",
+        "",
+        "```json",
+        json.dumps(verdict["configs"][selected], indent=2),
+        "```",
+        "",
+        "## Per-dataset metrics (gross-of-tax)",
+        "",
+        "| dataset | Sharpe | CAGR | MDD | gates | DSR p |",
+        "|---|---:|---:|---:|---:|---:|",
+    ]
+    for ds in datasets_to_test:
+        m = verdict["metrics_used"][ds]
+        gates_passed = cri["3_gates"]["per_dataset"][ds]
+        dsr_p = m.get("dsr_p_value")
+        dsr_str = f"{dsr_p:.2e}" if dsr_p is not None else "n/a"
+        lines.append(
+            f"| **{ds}** | {m['sharpe']:.3f} | {m['cagr'] * 100:.2f}% | "
+            f"{m['mdd'] * 100:.2f}% | {gates_passed}/7 | {dsr_str} |"
+        )
+
+    lines.extend([
+        "",
+        "## Configs grid (Sharpe per config × dataset)",
+        "",
+        "| config | " + " | ".join(datasets_to_test) + " |",
+        "|---" + "|---:" * len(datasets_to_test) + "|",
+    ])
+    for cfg in configs:
+        row_cells = [cfg]
+        for ds in datasets_to_test:
+            s = verdict["all_configs_metrics"][cfg][ds]["sharpe"]
+            row_cells.append(
+                f"{s:.3f}" if not (isinstance(s, float) and np.isnan(s)) else "n/a"
+            )
+        lines.append("| " + " | ".join(row_cells) + " |")
+
+    lines.extend([
+        "",
+        "## CAGR-anchored scoring breakdown",
+        "",
+        "| criterion | points | max | detail |",
+        "|---|---:|---:|---|",
+        f"| 1. CAGR vs SPY | {cri['1_cagr']['points']} | 30 | "
+        f"mean = {cri['1_cagr']['mean_cagr'] * 100:.2f}%, bar = "
+        f"{cri['1_cagr']['spy_bar'] * 100:.2f}% |",
+        f"| 2. MDD vs SPY | {cri['2_mdd']['points']} | 20 | "
+        f"mean = {cri['2_mdd']['mean_mdd'] * 100:.2f}%, bar = "
+        f"{cri['2_mdd']['spy_bar'] * 100:.2f}% |",
+        f"| 3. Gates | {cri['3_gates']['points']} | 20 | "
+        f"per_ds = {cri['3_gates']['per_dataset']}, "
+        f"cross_met = {cri['3_gates']['cross_dataset_met']} |",
+        f"| 4. DSR | {cri['4_dsr']['points']} | 10 | "
+        f"worst_p = {cri['4_dsr']['worst_p_value']:.2e}, "
+        f"n_trials = {cri['4_dsr']['cumulative_n_trials']} |",
+        f"| 5. Sharpe | {cri['5_sharpe']['points']} | 10 | "
+        f"mean = {cri['5_sharpe']['mean_sharpe']:.3f} |",
+        f"| 6. Robustness | {cri['6_robustness']['points']} | 10 | "
+        f"input_bonus = {cri['6_robustness']['input_bonus']} |",
+        f"| 7. Extra bonus | {cri['7_extra_bonus']['points']} | 5 | — |",
+        "",
+        "## Robustness (5y rolling Sharpe, anchor dataset)",
+        "",
+        f"- bonus_pts (5-scale): {verdict['robustness']['bonus_pts_5_scale']}/5",
+        f"- bonus_pts (10-scale): {verdict['robustness']['bonus_pts_10_scale']}/10",
+        f"- pct_positive_sharpe: {verdict['robustness']['pct_positive_sharpe']:.2%}",
+        f"- n_windows: {verdict['robustness']['n_windows']}",
+        f"- anchor_dataset: {verdict['robustness']['anchor_dataset']}",
+        "",
+        "## INCOMPLETE flags",
+        "",
+        "(Document any synth caveats here per spec §Synth formulas reference.)",
+        "",
+        "## Lesson",
+        "",
+        "(Append after manual review.)",
+        "",
+    ])
+
+    (iter_dir / "final_report.md").write_text("\n".join(lines))

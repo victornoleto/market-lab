@@ -178,6 +178,37 @@ def dbmf_returns_from_cache() -> pd.Series:
     return load_testfolio_series("DBMFSIM").pct_change().dropna()
 
 
+def tmf_synth_returns(
+    tlt_returns: pd.Series,
+    leverage: float = 3.0,
+    daily_reset_decay_annual: float = 0.015,
+) -> pd.Series:
+    """TMF synth: 3x LTT (TLT) with daily-reset decay + borrow + expense drag.
+
+    Daily formula: r_TMF = leverage * r_TLT - daily_decay.
+    Volatility decay emerges naturally from daily compounding asymmetry
+    (geometric vs arithmetic) — the constant `daily_reset_decay_annual`
+    captures borrow + ER + tracking-error drag (~1-2%/y for real TMF).
+
+    INCOMPLETE: real TMF (Direxion 3x 20+y Treasury Bull) tracks daily 3x
+    TLT return; vol decay magnitude depends on realised TLT vol. The 1.5%/y
+    constant approximates borrow (~Fed Funds + 50bps) + ER (1.06%/y) net
+    of any swap dividend; in low-vol regimes drag is closer to 1%/y, in
+    high-vol regimes (2022) closer to 3-5%/y.
+
+    Citation: [leverage_for_the_long_run, ch.3-4, p.40-60] LETF decay; HFEA
+    Bogleheads 2019 thread for empirical TMF behaviour.
+    """
+    daily_decay = _annual_drag_to_daily(daily_reset_decay_annual)
+    return leverage * tlt_returns - daily_decay
+
+
+def tmf_synth_returns_from_cache() -> pd.Series:
+    """TMF synth from TLTSIM cache: 3x TLT - 1.5%/y daily-reset decay."""
+    tlt = load_testfolio_series("TLTSIM").pct_change().dropna()
+    return tmf_synth_returns(tlt)
+
+
 def cta_simplify_proxy_returns(scaling: float = 1.0) -> pd.Series:
     """CTA Simplify proxy via KMLMSIM - INCOMPLETE for real CTA Simplify.
 
