@@ -163,6 +163,11 @@ def _resolve_tickers_to_returns(tickers: list[str]) -> dict[str, pd.Series]:
             # DBMFSIM is in the testfolio cache; pass through synths.dbmf_returns_from_cache
             # for citation traceability + future flexibility.
             out[t] = synths.dbmf_returns_from_cache()
+        elif t == "TMFSIM":
+            # TMFSIM is NOT in the testfolio cache; synth = 3× TLTSIM − 1.5%/y
+            # daily-reset decay per [leverage_for_the_long_run, ch.3-4]. Used by
+            # spy_beater_hunt iter 008+ HFEA configs (UPRO + TMF leveraged barbell).
+            out[t] = synths.tmf_synth_returns_from_cache()
         else:
             out[t] = load_testfolio_series(t).pct_change().dropna()
     return out

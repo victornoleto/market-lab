@@ -427,3 +427,35 @@ def test_scoring_score_clamped_0_100():
         metrics, gates, cumulative_n_trials=4, robustness_bonus=10, extra_bonus=5
     )
     assert 0 <= result["total_score"] <= 100
+
+
+# ---------------------------------------------------------------------------
+# TMFSIM routing in _resolve_tickers_to_returns (HFEA backbone)
+# ---------------------------------------------------------------------------
+
+
+def test_resolve_tickers_routes_tmfsim_to_synth():
+    """`portfolio_returns_from_config` must route TMFSIM to tmf_synth_returns_from_cache.
+
+    iter 008 introduces HFEA (UPRO + TMF). TMFSIM is NOT in the testfolio
+    parquet cache; the synth lives at studies.long_term_portfolio.synths
+    .tmf_synth_returns_from_cache (3× TLT − 1.5%/y daily-reset decay).
+    The dispatcher in studies.long_term_portfolio.run_iter must wire
+    'TMFSIM' to that synth — without it, HFEA configs raise FileNotFoundError.
+    """
+    from studies.long_term_portfolio.run_iter import portfolio_returns_from_config
+
+    # 100% TMFSIM portfolio: returns equal the synth output (within window).
+    returns = portfolio_returns_from_config({"TMFSIM": 1.0}, "lh_56y")
+    assert isinstance(returns, pd.Series)
+    assert len(returns) > 8000  # 1986+ ~40y, ~252/y trading days
+    # Std is bounded by 3× TLT vol (~12-15% → 36-45% annualised)
+    ann_std = float(returns.std() * (252 ** 0.5))
+    assert 0.30 < ann_std < 0.50
+
+    # 55/45 HFEA: weights sum to 1.0, no error raised.
+    hfea_returns = portfolio_returns_from_config(
+        {"UPROSIM": 0.55, "TMFSIM": 0.45}, "lh_56y"
+    )
+    assert isinstance(hfea_returns, pd.Series)
+    assert len(hfea_returns) > 8000

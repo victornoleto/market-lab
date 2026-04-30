@@ -1,15 +1,15 @@
 ---
 mission: "Find ONE long-term strategy with mean CAGR ≥ SPY (11.21%) AND mean MDD ≤ SPY (55.17%) AND surviving 7-gate battery on ≥ 2/2 datasets"
 target_total_iterations: 50
-total_iterations: 7
+total_iterations: 8
 winners_found: 0
-closest_to_winner: "iter 006 a6_tqqq_split_kmlm30_tlt10 RETAINS (tie-breaker by older iter): CAGR 17.33% PASS, MDD 49.73% PASS, gates 6/6 PASS cross_met — score 67. Iter 007 a7_tqqq_split_kmlm40_tlt10 also scored 67 with structurally different profile (CAGR 16.08% / MDD 42.33% / Sharpe 0.804) — Sharpe better but rubric is CAGR-anchored. TQQQ-track now SATURATED near 67 within current rubric (KMLM/TLT extension trades CAGR 1:1 for MDD). Score-90 path requires regime change: B1 HFEA classical (TMFSIM synth needed) recommended for iter 008."
+closest_to_winner: "iter 006 a6_tqqq_split_kmlm30_tlt10 RETAINS (tie-breaker by older iter): CAGR 17.33% PASS, MDD 49.73% PASS, gates 6/6 PASS cross_met — score 67. Iter 008 B1 HFEA classical scored 63 (BELOW iter 006/007 67), winner_conditions_met FALSE due to MDD bar fail (mean 67.48% > 55.17% bar). KILL #24 fired (HFEA 2022-stress MDD on spy_real 67.13% > 65% bar). HFEA delivers highest CAGR among all 8 iters (29/30 pts on criterion 1) but 0/20 on MDD. Score-90 path now: B2 HFEA+KMLM crisis-alpha (iter 009) → C1 vol-targeted (iter 010 fallback)."
 status: hunting
-latest_iteration: "007-2026-04-30-A2-tqqq-track-extreme"
-latest_score: 67
+latest_iteration: "008-2026-04-30-B1-hfea-classical"
+latest_score: 63
 latest_tier: PROMISING
-latest_bars_met: 3  # CAGR ✓, MDD ✓, Gates ✓
-cumulative_n_trials: 26
+latest_bars_met: 2  # CAGR ✓, MDD ✗, Gates ✓
+cumulative_n_trials: 29
 datasets:
   - "lh_56y (1986+, ~40y, SPYSIM synth, GATE thresh 5)"
   - "spy_real (2003+, ~22.7y, SPY Tiingo adj_close, GATE thresh 5)"
@@ -32,8 +32,9 @@ direction_status:
   A3_kmlm_extreme: "MONOTONIC POSITIVE CONFIRMED through KMLM 40% (iter 005) — Sharpe rose 30→35→40% in BOTH datasets, but score regressed 66→63 because CAGR-axis dominates rubric vs MDD/Sharpe gains. Direction structurally limited within scoring; KMLM 45-50% unlikely to lift score."
   A3_tlt_on_top_of_kmlm30: "PROMISING (iter 005 a5_kmlm30_tlt10 beat a4_kmlm30 in both datasets) — TLT-on-top duration lever validated; transferred to TQQQ-track in iter 006 (still helps)"
   A3_tlt_dose_response: "PROMISING but subordinate — TLT 20% Sharpe slightly > KMLM 20%, but KMLM scales better at 25-30%; revisit with KMLM+TLT blends iter 007+"
-  B1_HFEA_classical: "NOT YET RUN — TMFSIM ready (synth specified, TDD pending)"
-  C1_vol_targeted: "NOT YET RUN"
+  B1_HFEA_classical: "CLOSED via KILL #24 (iter 008) — canonical 55/45 spy_real MDD 67.13% > 65% bar; all 3 weights in [50,60] UPRO range fail MDD bar (mean 67-72%). Highest CAGR among 8 iters (29/30 pts) but 0/20 MDD pts. Bogleheads risk-parity claim REJECTED: Sharpe is monotonic NEGATIVE on UPRO weight in [50,60] (5050 > 5545 > 6040). Architecture fundamentally subordinate to LRS-style regime-gated strategies on 2022 stress."
+  B2_HFEA_KMLM: "PROMISING NEXT (recommended iter 009) — literature-aware response to B1 2022 weakness. Add 15-20% KMLM crisis-alpha to HFEA backbone; iter 003-005 SPY-track empirically validated KMLM dose-response (cuts MDD 15pp at <2pp CAGR drag, monotonic positive Sharpe through 40%). Target MDD 50-55% range, score ~70-72."
+  C1_vol_targeted: "NOT YET RUN — fallback iter 010 if B2 also caps at ~70 or fails MDD bar."
 parent_loop: "studies/long_term_portfolio (43 iters, F1+SPLIT incumbent fallback)"
 note: "Forked 2026-04-29. METHODOLOGY REFACTOR 2026-04-29 (post-iter-002): replaced (lh_56y/vt_real/ndx_real) with honest 2-dataset setup (lh_56y/spy_real). vt_real/ndx_real were post-GFC bull-biased (SPY MDD only 33.70%); spy_real (Tiingo daily 2003+) captures full GFC peak-to-trough. New bars: CAGR ≥ 11.21% (was 13.80%), MDD ≤ 55.17% (was 40.85%). Iter 001 a1_lrs_split now passes ALL 3 BARS retroactively (winner_conditions_met=True) — tier remains PROMISING because score 60 < 90 (Sharpe 0.65 + MDD 51.60% close to ceiling). Tier WINNER requires score ≥ 90. Iter 002 selected MARGINAL because n_trials=10 made spy_real DSR fail. Need iter 003+ targeting score ≥ 90 (lift Sharpe + lower MDD margin further). Direction A2-lower-leverage (2× SSO) is the active lever. ALSO new: multi-horizon rolling CAGR/MDD scoring (5/10/15/20y windows, 3+3+2+2pts) replaces 5y rolling Sharpe robustness — both iter 001 and iter 002 selected scored 10/10 on this new criterion. F1+SPLIT remains deploy fallback if 50-iter hunt fails."
 ---
@@ -88,6 +89,36 @@ NEW synths likely needed (NOT in long_term_portfolio):
 ---
 
 ## Iteration log (newest first)
+
+### iter 008 — B1 HFEA classical (UPRO + TMF leveraged barbell, weights 50/55/60% UPRO) — PROMISING 63/100, BELOW closest-to-winner, KILL #24 fired (2026-04-30)
+
+- **Tier**: PROMISING **63/100** (winner_conditions_met = **FALSE**, mdd_bar fail)
+- **Selected**: `b1_balanced_5050` (50% UPRO + 50% TMF, max Sharpe / SPY_Sharpe rule)
+- **Bars**: CAGR ✓ (19.68% mean ≥ 11.21%), **MDD ✗ (67.48% > 55.17% bar)**, Gates ✓ (6+5, cross_met)
+- **All 3 configs FAIL MDD bar** — leveraged-barbell architecture incompatible with 55.17% mean MDD requirement:
+  | config             | mean CAGR | mean MDD | Sharpe (lh, spy_real) | bar test |
+  |--------------------|----------:|---------:|----------------------:|---------:|
+  | b1_classic_5545    | 20.00%    | 67.13%   | 0.737 / 0.723         | FAIL (MDD) |
+  | b1_modern_6040     | 20.14%    | 72.70%   | 0.713 / 0.713         | FAIL (MDD) |
+  | **b1_balanced_5050** | **19.68%** | **67.48%** | **0.755 / 0.724** | **FAIL (MDD)** |
+- **Per-dataset (selected)**:
+  | dataset  | Sharpe | CAGR    | MDD    | gates | DSR p     |
+  |----------|-------:|--------:|-------:|------:|----------:|
+  | lh_56y   | 0.755  | 20.62%  | 67.48% | 6/7   | 4.96e-05  |
+  | spy_real | 0.724  | 18.73%  | 67.48% | 5/7   | 4.91e-03  |
+- **Score breakdown vs iter 006 (67 → 63, −4)**: CAGR 25→**29 (+4)** highest in all iters; MDD 7→**0 (−7)** structural fail; Gates 13→12 (−1); DSR/Sharpe/Robustness unchanged. Net **−4** — HFEA gives up 7pp MDD pts to gain 4pp CAGR pts within saturated criterion 1.
+- **Pre-committed KILLs**:
+  - KILL #6 (CAGR floor) NOT FIRED — best CAGR mean 20.14% >> 11.21%.
+  - **KILL #24 (HFEA 2022-stress MDD > 65% on spy_real) FIRED** — `b1_classic_5545` spy_real MDD 67.13% > 65% bar. The 2022 inflation regime breaks leveraged barbell at canonical weights. **Direction CLOSED**.
+  - KILL #25 (TMFSIM no-free-lunch synth Sharpe ∉ [0,1]) NOT FIRED — TMF 1986+ Sharpe 0.49 ∈ [0,1] (verified pre-iter, synth integrity confirmed).
+  - KILL #26 (HFEA monotonic regression at 55/45) NOT FIRED — 5050 (0.755, 0.724) > 5545 (0.737, 0.723) on BOTH ds; condition required BOTH 6040<5545 AND 5050<5545 on Sharpe BOTH ds. Bogleheads risk-parity claim **REJECTED**: optimal Sharpe is at 5050 or LOWER UPRO%, not at 5545.
+- **HFEA dose-response on UPRO weight (3 data points iter 008)**: 50%→0.740 mean Sharpe; 55%→0.730; 60%→0.713. **Monotonic NEGATIVE Sharpe** as UPRO grows in [50,60]. CAGR rises only 0.46pp across 10pp UPRO range (very weak slope); MDD rises 5.2pp (strong slope at 55→60 inflection). At 165%+ leveraged equity notional, marginal UPRO contribution is diminishing while marginal MDD is accelerating.
+- **Multi-horizon robustness 10/10**: 5y pass-rate 86.1%, 10/15/20y all 100%. spy_real 5y window includes 2022-2024 lag where HFEA underperforms SPY (MDD recovery).
+- **H₁ REJECTED**: HFEA classical fails MDD bar. **H₂ REJECTED**: dose-response not monotonic positive on UPRO weight (Sharpe is monotonic NEGATIVE). **H₃ CONFIRMED**: spy_real 2022 stress drives binding constraint identically to lh_56y (both datasets MDD 67.48% — same 2022 trough captured by both synth and real).
+- **Path to 90 (need +27 pts)**: structurally blocked within B1 architecture. Pivot to B2 HFEA + KMLM (iter 009) — adds known-effective crisis-alpha. Best-case CAGR ~17% / MDD ~50% → score ~70-72.
+- **Next iter direction**: B2 HFEA + KMLM (50% UPRO + 35% TMF + 15% KMLM and variants). Pre-committed KILL #27/#28/#29 sketched in final_report.md.
+- **Citations**: `[leverage_for_the_long_run, ch.3-4, p.40-60]` Gayed LETF decay validated empirically — HFEA 2022 MDD 67-73% mirrors documented Bogleheads 2022 stress (~−65% peak-to-trough); decay constant 1.5%/y understates real 2022 drag (real ~3-5%/y in high-vol regime). `[risk_parity, ch.5, p.10]` Carlson capital-efficient stacking — unhedged 165-180% leverage cannot deliver MDD ≤ 55% on 2022 regime; stacking alone insufficient at 3× barbell. HFEA Bogleheads 2019 risk-parity 55/45 claim **falsified by our synth** (Sharpe peaks at 50/50 or lower) — claim is regime-specific to 1986-2019 declining-rate environment. `[advances_fin_ml, p.31-34]` factor framework — leveraged duration (TMF) is concentrated risk in rates-RISING regime, not diversifier. `[advances_fin_ml, p.222-223]` DSR cumulative n_trials=29, worst p 4.91e-03 << 0.05 bar.
+- **TMFSIM routing (one-time infra change)**: added route in `studies/long_term_portfolio/run_iter.py` `_resolve_tickers_to_returns` mapping `TMFSIM` → `synths.tmf_synth_returns_from_cache()`. TDD-tested via new `test_resolve_tickers_routes_tmfsim_to_synth` in `tests/test_studies_spy_beater_hunt.py`. All 25 spy_beater tests pass.
 
 ### iter 007 — A2 TQQQ-track extreme (KMLM/TLT dose extension 35/40/15) — PROMISING 67/100, TIE with iter 006, TQQQ-track saturated (2026-04-30)
 
