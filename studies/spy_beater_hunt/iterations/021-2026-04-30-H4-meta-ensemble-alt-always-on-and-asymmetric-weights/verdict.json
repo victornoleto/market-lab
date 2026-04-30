@@ -1,0 +1,765 @@
+{
+  "status": "promising",
+  "tier": "PROMISING",
+  "total_score": 70,
+  "winner_conditions_met": true,
+  "bars": {
+    "cagr_bar": true,
+    "mdd_bar": true,
+    "gates_bar": true
+  },
+  "bars_met_count": 3,
+  "criteria": {
+    "1_cagr": {
+      "points": 20,
+      "max": 30,
+      "mean_cagr": 0.1489862469073857,
+      "spy_bar": 0.1121,
+      "anchor_range": [
+        0.05,
+        0.2
+      ]
+    },
+    "2_mdd": {
+      "points": 15,
+      "max": 20,
+      "mean_mdd": 0.2817555349894513,
+      "spy_bar": 0.5517,
+      "anchor_range": [
+        0.7,
+        0.15
+      ]
+    },
+    "3_gates": {
+      "points": 12,
+      "max": 20,
+      "per_dataset": {
+        "lh_56y": 6,
+        "spy_real": 5
+      },
+      "thresholds": {
+        "lh_56y": 5,
+        "spy_real": 5
+      },
+      "cross_dataset_met": true
+    },
+    "4_dsr": {
+      "points": 10,
+      "max": 10,
+      "worst_p_value": 0.00012551574784958053,
+      "cumulative_n_trials": 74
+    },
+    "5_sharpe": {
+      "points": 4,
+      "max": 10,
+      "mean_sharpe": 1.0371455582255384,
+      "anchor_range": [
+        0.5,
+        2.0
+      ]
+    },
+    "6_robustness": {
+      "points": 9,
+      "max": 10,
+      "input_bonus": 0,
+      "rolling_pass_rates": {
+        "5": 0.8333333333333334,
+        "10": 0.7692307692307693,
+        "15": 1.0,
+        "20": 1.0
+      },
+      "rolling_worst_mdd": {
+        "5": 0.28175553498945116,
+        "10": 0.2817555349894514,
+        "15": 0.28175553498945194,
+        "20": 0.2817555349894515
+      },
+      "note": "Multi-horizon CAGR pass-rate vs SPY benchmark across 5y/10y/15y/20y rolling windows (3+3+2+2 pts max)."
+    },
+    "7_extra_bonus": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "lh_56y": {
+      "sharpe": 1.0192289400427548,
+      "cagr": 0.15274624198032227,
+      "mdd": 0.28175553498945105,
+      "dsr_p_value": 3.656562890252957e-07
+    },
+    "spy_real": {
+      "sharpe": 1.0550621764083223,
+      "cagr": 0.14522625183444915,
+      "mdd": 0.28175553498945144,
+      "dsr_p_value": 0.00012551574784958053
+    }
+  },
+  "spy_benchmark": {
+    "cagr_mean": 0.1121,
+    "mdd_mean": 0.5517
+  },
+  "cumulative_n_trials": 74,
+  "configs_tested": 6,
+  "primary_citation": "[advances_fin_ml, ch.16, p.241-256] portfolio construction over multiple alpha streams \u2014 alternative always-on constituent substitution test at 3-way meta-ensemble axis + [risk_parity, ch.5, p.10] Carlson capital-efficient stacking generalized to higher-CAGR-runway always-on (F1 LETF 2.25\u00d7) vs no-decay stack (F1 stack 1.41\u00d7) + [leverage_for_the_long_run, ch.3-4, p.40-60] Gayed 200d SMA gate (A2 QQQ-track + G2 SPY-track gated constituents preserved) + [ilmanen_expected_returns, ch.19] MF crisis-alpha (KMLM) \u2014 present in 5 of 6 configs (NTSX 100% H4.2 has no KMLM) + Bridgewater All-Weather (Dalio 1996) F1 stack composition variants (with-TLT iter-019 baseline + no-TLT 2\u00d7 variant H4.3 + LETF variant H4.1) + [advances_fin_ml, p.31-34] factor framework \u2014 meta-ensemble axis weight + always-on substitution depth probe + [advances_fin_ml, p.222-223] DSR cumulative_n_trials = 74 + [advances_fin_ml, p.208-211] PBO grid-level N=6 stability maintained per iter-019 KILL #64 resolution",
+  "hypothesis_slug": "H4-meta-ensemble-alt-always-on-and-asymmetric-weights",
+  "selected_config": "h4_meta_3way_30a2_35g2_35f1",
+  "selection_rule": "max mean(Sharpe / SPY_Sharpe) across datasets",
+  "scoring_basis": "CAGR-anchored (spy_beater_hunt rubric, WINNER_AND_RANKING.md)",
+  "all_configs_metrics": {
+    "h4_meta_3way_33a2_33g2_34f1letf2x": {
+      "lh_56y": {
+        "sharpe": 0.9889915768741182,
+        "cagr": 0.17059931868222122,
+        "mdd": 0.3593959686996145
+      },
+      "spy_real": {
+        "sharpe": 1.015011880079846,
+        "cagr": 0.1616375093430269,
+        "mdd": 0.3593959686996154
+      }
+    },
+    "h4_meta_3way_33a2_33g2_34ntsx100": {
+      "lh_56y": {
+        "sharpe": 0.9742215645321162,
+        "cagr": 0.158209217640489,
+        "mdd": 0.32675914839930703
+      },
+      "spy_real": {
+        "sharpe": 0.9859056543463084,
+        "cagr": 0.14486434143615412,
+        "mdd": 0.3109757921071471
+      }
+    },
+    "h4_meta_3way_33a2_33g2_34f1stack_no_tlt": {
+      "lh_56y": {
+        "sharpe": 1.003418849614573,
+        "cagr": 0.15797033479687106,
+        "mdd": 0.302833576743228
+      },
+      "spy_real": {
+        "sharpe": 1.0413119539978577,
+        "cagr": 0.1501362517253344,
+        "mdd": 0.2718605002135915
+      }
+    },
+    "h4_meta_3way_30a2_35g2_35f1": {
+      "lh_56y": {
+        "sharpe": 1.0192289400427548,
+        "cagr": 0.15274624198032227,
+        "mdd": 0.28175553498945105
+      },
+      "spy_real": {
+        "sharpe": 1.0550621764083223,
+        "cagr": 0.14522625183444915,
+        "mdd": 0.28175553498945144
+      }
+    },
+    "h4_meta_3way_35a2_30g2_35f1": {
+      "lh_56y": {
+        "sharpe": 0.9990440791055554,
+        "cagr": 0.15539480776291104,
+        "mdd": 0.29109355434858203
+      },
+      "spy_real": {
+        "sharpe": 1.0365869933119884,
+        "cagr": 0.14657938796445302,
+        "mdd": 0.2861896225404142
+      }
+    },
+    "h4_meta_3way_30a2_40g2_30f1": {
+      "lh_56y": {
+        "sharpe": 1.0164331961802733,
+        "cagr": 0.1539875073951109,
+        "mdd": 0.28486411862634176
+      },
+      "spy_real": {
+        "sharpe": 1.0503119260637594,
+        "cagr": 0.14599724305641093,
+        "mdd": 0.2848641186263419
+      }
+    }
+  },
+  "gate_details": {
+    "lh_56y": {
+      "g1_pbo": 0.15079365079365079,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 3.656562890252957e-07,
+      "g3_wf_returns": [
+        0.9455591040738212,
+        1.7818266933309146,
+        0.4486819092024945,
+        0.3481051929641341,
+        0.761723289710224,
+        0.903453162703646,
+        1.374326679956829,
+        0.45406226884231593
+      ],
+      "g3_wf_mdds": [
+        0.14184209255554386,
+        0.23387617624399265,
+        0.16988717777180756,
+        0.15779957644320308,
+        0.14382838035545306,
+        0.11515779568727781,
+        0.18532250834399655,
+        0.27285088715007605
+      ],
+      "g3_max_wf_mdd": 0.27285088715007605,
+      "g4_oos_sharpe": 1.062647929497263,
+      "g5_fwd_sharpe": 1.0522851412442087,
+      "g6_ci_low": 0.6006984480692762,
+      "g7_crosslib_delta_pp": 0.0
+    },
+    "spy_real": {
+      "g1_pbo": 0.5079365079365079,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 0.00012551574784958053,
+      "g3_wf_returns": [
+        0.23419332858654762,
+        0.5435454548507477,
+        0.2470971363918275,
+        0.4955040434731135,
+        0.391366969526892,
+        0.5724825508951936,
+        0.06802272863765557,
+        0.7899768818606965
+      ],
+      "g3_wf_mdds": [
+        0.09707103615399239,
+        0.14382838035545412,
+        0.10076884728825491,
+        0.07629511500399028,
+        0.12118749776110356,
+        0.18532250834399683,
+        0.28175553498945116,
+        0.10866574967232234
+      ],
+      "g3_max_wf_mdd": 0.28175553498945116,
+      "g4_oos_sharpe": 1.0866110382864238,
+      "g5_fwd_sharpe": 1.0317889741655653,
+      "g6_ci_low": 0.33247337955262285,
+      "g7_crosslib_delta_pp": 0.0
+    }
+  },
+  "robustness": {
+    "legacy_5y_sharpe_pct_positive": 1.0,
+    "legacy_5y_sharpe_n_windows": 34,
+    "rolling_pass_rates_avg_across_datasets": {
+      "5": 0.8333333333333334,
+      "10": 0.7692307692307693,
+      "15": 1.0,
+      "20": 1.0
+    },
+    "rolling_worst_mdd_max_across_datasets": {
+      "5": 0.28175553498945116,
+      "10": 0.2817555349894514,
+      "15": 0.28175553498945194,
+      "20": 0.2817555349894515
+    },
+    "rolling_per_dataset": {
+      "lh_56y": {
+        "5": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.28175553498945083
+        },
+        "10": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.2817555349894514
+        },
+        "15": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.28175553498945194
+        },
+        "20": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.2817555349894507
+        }
+      },
+      "spy_real": {
+        "5": {
+          "pct_strat_beats_spy_cagr": 0.8333333333333334,
+          "n_windows": 18,
+          "worst_strat_mdd": 0.28175553498945116
+        },
+        "10": {
+          "pct_strat_beats_spy_cagr": 0.7692307692307693,
+          "n_windows": 13,
+          "worst_strat_mdd": 0.2817555349894505
+        },
+        "15": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 8,
+          "worst_strat_mdd": 0.28175553498945116
+        },
+        "20": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 3,
+          "worst_strat_mdd": 0.2817555349894515
+        }
+      }
+    },
+    "anchor_dataset": "lh_56y"
+  },
+  "configs": {
+    "h4_meta_3way_33a2_33g2_34f1letf2x": {
+      "type": "blend",
+      "constituents": [
+        {
+          "weight": 0.33,
+          "spec": {
+            "type": "lrs",
+            "filter": "sma",
+            "sma_window": 200,
+            "buffer_pct": 0.0,
+            "on_weights": {
+              "TQQQSIM": 0.3,
+              "QLDSIM": 0.3,
+              "KMLMSIM": 0.3,
+              "TLTSIM": 0.1
+            },
+            "off_weights": {
+              "IEFSIM": 1.0
+            },
+            "signal_ticker": "QQQSIM",
+            "lag_days": 1
+          }
+        },
+        {
+          "weight": 0.33,
+          "spec": {
+            "type": "lrs",
+            "on_weights": {
+              "UPROSIM": 0.3,
+              "TMFSIM": 0.25,
+              "IEFSIM": 0.15,
+              "UGLSIM": 0.15,
+              "KMLMSIM": 0.15
+            },
+            "off_weights": {
+              "IEFSIM": 1.0
+            },
+            "signal_ticker": "SPYSIM",
+            "sma_window": 200,
+            "filter": "sma",
+            "lag_days": 1
+          }
+        },
+        {
+          "weight": 0.34,
+          "spec": {
+            "type": "static",
+            "weights": {
+              "UPROSIM": 0.3,
+              "TMFSIM": 0.25,
+              "IEFSIM": 0.15,
+              "UGLSIM": 0.15,
+              "KMLMSIM": 0.15
+            }
+          }
+        }
+      ]
+    },
+    "h4_meta_3way_33a2_33g2_34ntsx100": {
+      "type": "blend",
+      "constituents": [
+        {
+          "weight": 0.33,
+          "spec": {
+            "type": "lrs",
+            "filter": "sma",
+            "sma_window": 200,
+            "buffer_pct": 0.0,
+            "on_weights": {
+              "TQQQSIM": 0.3,
+              "QLDSIM": 0.3,
+              "KMLMSIM": 0.3,
+              "TLTSIM": 0.1
+            },
+            "off_weights": {
+              "IEFSIM": 1.0
+            },
+            "signal_ticker": "QQQSIM",
+            "lag_days": 1
+          }
+        },
+        {
+          "weight": 0.33,
+          "spec": {
+            "type": "lrs",
+            "on_weights": {
+              "UPROSIM": 0.3,
+              "TMFSIM": 0.25,
+              "IEFSIM": 0.15,
+              "UGLSIM": 0.15,
+              "KMLMSIM": 0.15
+            },
+            "off_weights": {
+              "IEFSIM": 1.0
+            },
+            "signal_ticker": "SPYSIM",
+            "sma_window": 200,
+            "filter": "sma",
+            "lag_days": 1
+          }
+        },
+        {
+          "weight": 0.34,
+          "spec": {
+            "type": "static",
+            "weights": {
+              "NTSXSIM": 1.0
+            }
+          }
+        }
+      ]
+    },
+    "h4_meta_3way_33a2_33g2_34f1stack_no_tlt": {
+      "type": "blend",
+      "constituents": [
+        {
+          "weight": 0.33,
+          "spec": {
+            "type": "lrs",
+            "filter": "sma",
+            "sma_window": 200,
+            "buffer_pct": 0.0,
+            "on_weights": {
+              "TQQQSIM": 0.3,
+              "QLDSIM": 0.3,
+              "KMLMSIM": 0.3,
+              "TLTSIM": 0.1
+            },
+            "off_weights": {
+              "IEFSIM": 1.0
+            },
+            "signal_ticker": "QQQSIM",
+            "lag_days": 1
+          }
+        },
+        {
+          "weight": 0.33,
+          "spec": {
+            "type": "lrs",
+            "on_weights": {
+              "UPROSIM": 0.3,
+              "TMFSIM": 0.25,
+              "IEFSIM": 0.15,
+              "UGLSIM": 0.15,
+              "KMLMSIM": 0.15
+            },
+            "off_weights": {
+              "IEFSIM": 1.0
+            },
+            "signal_ticker": "SPYSIM",
+            "sma_window": 200,
+            "filter": "sma",
+            "lag_days": 1
+          }
+        },
+        {
+          "weight": 0.34,
+          "spec": {
+            "type": "static",
+            "weights": {
+              "NTSXSIM": 0.5,
+              "GDESIM": 0.3,
+              "KMLMSIM": 0.2
+            }
+          }
+        }
+      ]
+    },
+    "h4_meta_3way_30a2_35g2_35f1": {
+      "type": "blend",
+      "constituents": [
+        {
+          "weight": 0.3,
+          "spec": {
+            "type": "lrs",
+            "filter": "sma",
+            "sma_window": 200,
+            "buffer_pct": 0.0,
+            "on_weights": {
+              "TQQQSIM": 0.3,
+              "QLDSIM": 0.3,
+              "KMLMSIM": 0.3,
+              "TLTSIM": 0.1
+            },
+            "off_weights": {
+              "IEFSIM": 1.0
+            },
+            "signal_ticker": "QQQSIM",
+            "lag_days": 1
+          }
+        },
+        {
+          "weight": 0.35,
+          "spec": {
+            "type": "lrs",
+            "on_weights": {
+              "UPROSIM": 0.3,
+              "TMFSIM": 0.25,
+              "IEFSIM": 0.15,
+              "UGLSIM": 0.15,
+              "KMLMSIM": 0.15
+            },
+            "off_weights": {
+              "IEFSIM": 1.0
+            },
+            "signal_ticker": "SPYSIM",
+            "sma_window": 200,
+            "filter": "sma",
+            "lag_days": 1
+          }
+        },
+        {
+          "weight": 0.35,
+          "spec": {
+            "type": "static",
+            "weights": {
+              "NTSXSIM": 0.35,
+              "GDESIM": 0.3,
+              "TLTSIM": 0.2,
+              "KMLMSIM": 0.15
+            }
+          }
+        }
+      ]
+    },
+    "h4_meta_3way_35a2_30g2_35f1": {
+      "type": "blend",
+      "constituents": [
+        {
+          "weight": 0.35,
+          "spec": {
+            "type": "lrs",
+            "filter": "sma",
+            "sma_window": 200,
+            "buffer_pct": 0.0,
+            "on_weights": {
+              "TQQQSIM": 0.3,
+              "QLDSIM": 0.3,
+              "KMLMSIM": 0.3,
+              "TLTSIM": 0.1
+            },
+            "off_weights": {
+              "IEFSIM": 1.0
+            },
+            "signal_ticker": "QQQSIM",
+            "lag_days": 1
+          }
+        },
+        {
+          "weight": 0.3,
+          "spec": {
+            "type": "lrs",
+            "on_weights": {
+              "UPROSIM": 0.3,
+              "TMFSIM": 0.25,
+              "IEFSIM": 0.15,
+              "UGLSIM": 0.15,
+              "KMLMSIM": 0.15
+            },
+            "off_weights": {
+              "IEFSIM": 1.0
+            },
+            "signal_ticker": "SPYSIM",
+            "sma_window": 200,
+            "filter": "sma",
+            "lag_days": 1
+          }
+        },
+        {
+          "weight": 0.35,
+          "spec": {
+            "type": "static",
+            "weights": {
+              "NTSXSIM": 0.35,
+              "GDESIM": 0.3,
+              "TLTSIM": 0.2,
+              "KMLMSIM": 0.15
+            }
+          }
+        }
+      ]
+    },
+    "h4_meta_3way_30a2_40g2_30f1": {
+      "type": "blend",
+      "constituents": [
+        {
+          "weight": 0.3,
+          "spec": {
+            "type": "lrs",
+            "filter": "sma",
+            "sma_window": 200,
+            "buffer_pct": 0.0,
+            "on_weights": {
+              "TQQQSIM": 0.3,
+              "QLDSIM": 0.3,
+              "KMLMSIM": 0.3,
+              "TLTSIM": 0.1
+            },
+            "off_weights": {
+              "IEFSIM": 1.0
+            },
+            "signal_ticker": "QQQSIM",
+            "lag_days": 1
+          }
+        },
+        {
+          "weight": 0.4,
+          "spec": {
+            "type": "lrs",
+            "on_weights": {
+              "UPROSIM": 0.3,
+              "TMFSIM": 0.25,
+              "IEFSIM": 0.15,
+              "UGLSIM": 0.15,
+              "KMLMSIM": 0.15
+            },
+            "off_weights": {
+              "IEFSIM": 1.0
+            },
+            "signal_ticker": "SPYSIM",
+            "sma_window": 200,
+            "filter": "sma",
+            "lag_days": 1
+          }
+        },
+        {
+          "weight": 0.3,
+          "spec": {
+            "type": "static",
+            "weights": {
+              "NTSXSIM": 0.35,
+              "GDESIM": 0.3,
+              "TLTSIM": 0.2,
+              "KMLMSIM": 0.15
+            }
+          }
+        }
+      ]
+    }
+  },
+  "net_total_score": 64,
+  "net_tier": "PROMISING",
+  "net_winner_conditions_met": true,
+  "net_bars": {
+    "cagr_bar": true,
+    "mdd_bar": true,
+    "gates_bar": true
+  },
+  "net_criteria": {
+    "1_cagr": {
+      "points": 16,
+      "max": 30,
+      "mean_cagr": 0.12984938146823644,
+      "spy_bar": 0.1121,
+      "anchor_range": [
+        0.05,
+        0.2
+      ]
+    },
+    "2_mdd": {
+      "points": 14,
+      "max": 20,
+      "mean_mdd": 0.2996558351170373,
+      "spy_bar": 0.5517,
+      "anchor_range": [
+        0.7,
+        0.15
+      ]
+    },
+    "3_gates": {
+      "points": 12,
+      "max": 20,
+      "per_dataset": {
+        "lh_56y": 6,
+        "spy_real": 5
+      },
+      "thresholds": {
+        "lh_56y": 5,
+        "spy_real": 5
+      },
+      "cross_dataset_met": true
+    },
+    "4_dsr": {
+      "points": 10,
+      "max": 10,
+      "worst_p_value": 0.00012551574784958053,
+      "cumulative_n_trials": 74
+    },
+    "5_sharpe": {
+      "points": 3,
+      "max": 10,
+      "mean_sharpe": 0.9108734103464976,
+      "anchor_range": [
+        0.5,
+        2.0
+      ]
+    },
+    "6_robustness": {
+      "points": 9,
+      "max": 10,
+      "input_bonus": 0,
+      "rolling_pass_rates": {
+        "5": 0.8333333333333334,
+        "10": 0.7692307692307693,
+        "15": 1.0,
+        "20": 1.0
+      },
+      "rolling_worst_mdd": {
+        "5": 0.28175553498945116,
+        "10": 0.2817555349894514,
+        "15": 0.28175553498945194,
+        "20": 0.2817555349894515
+      },
+      "note": "Multi-horizon CAGR pass-rate vs SPY benchmark across 5y/10y/15y/20y rolling windows (3+3+2+2 pts max)."
+    },
+    "7_extra_bonus": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "net_metrics_used": {
+    "lh_56y": {
+      "sharpe": 0.8974322398921544,
+      "cagr": 0.13321266239094376,
+      "mdd": 0.29965583511703703
+    },
+    "spy_real": {
+      "sharpe": 0.9243145808008408,
+      "cagr": 0.1264861005455291,
+      "mdd": 0.29965583511703764
+    }
+  },
+  "tax_summary": {
+    "lh_56y": {
+      "classification": "annual_realize",
+      "initial_capital": 10000.0,
+      "final_port_gross": 2316892.83,
+      "final_port_net": 1204636.0,
+      "total_darf_paid": 179722.89,
+      "n_year_end_settlements": 38,
+      "terminal_darf": 3516.63,
+      "drag_pct_pts": 1.9534,
+      "darf_rate": 0.15
+    },
+    "spy_real": {
+      "classification": "annual_realize",
+      "initial_capital": 10000.0,
+      "final_port_gross": 213819.8,
+      "final_port_net": 147250.71,
+      "total_darf_paid": 20657.72,
+      "n_year_end_settlements": 23,
+      "terminal_darf": 0.0,
+      "drag_pct_pts": 1.8734,
+      "darf_rate": 0.15
+    }
+  }
+}
