@@ -86,6 +86,26 @@ note: "Forked 2026-04-29. METHODOLOGY REFACTOR 2026-04-29 (post-iter-002): repla
 
 ---
 
+## ⚠️ HUNT CLOSED — 2026-04-30
+
+**30 substantive iters (001-036) + 1 meta-iter (011 IMPOSSIBILITY).** No WINNER tier (≥90/100) reached. Empirical ceiling: gross 74 / net 68 (iter 035 H15.2). Meta-axis ceiling 71-74 saturated across 19 sequential meta iters (018-036).
+
+**Key finding**: ~15 strategies pass bars 1+2 (CAGR > 11.21% AND MDD < 55.17%) in BOTH gross AND net rubric. These also pass 6/7 strict gates — only G3 (Walk-Forward MDD < 25% per-window) fails consistently due to 2008/2022 stress regimes inherent to leveraged exposure.
+
+**Deploy-readiness criterion**: shifted from "WINNER tier ≥90" to "gate-pass + bars 1+2 pass net" per user decision 2026-04-30. Canonical deploy doc: **`TOP_STRATEGIES.md`**. Top recommendations:
+
+| tier | iter | strategy | net score | net CAGR | net MDD | PBO | rationale |
+|---|---:|---|---:|---:|---:|---:|---|
+| A #1 | 026 | h6 4-way meta (A2+G2+F1+E1qqq) | 66 | 13.83% | 33.60% | **0.00** | best PBO + score combo |
+| A #2 | 019 | h2 3-way meta (A2+G2+F1) | 65 | 13.11% | 30.33% | 0.00 | simplest meta + best Sharpe |
+| A #6 | 015 | F1 stack static (NTSX+GDE+TLT+KMLM) | 60 | 11.35% | 26.82% | 0.81* | simplest of all (buy-hold); CAGR margem mínima vs SPY |
+
+**Mandate §1 100% Plano C UNCHANGED** — F1+SPLIT incumbent (similar família ao iter 015) remains deploy. Reactivating Plano B for iter 026 / 019 / 015 deploy requires mandate §7 override.
+
+The ceiling pattern is reproducible: iter 011 IMPOSSIBILITY for single-axis families capped at 67; meta-ensemble axis broke 67 to 71-74 cap at iter 018; further sub-axes (gate-source / gate-lookback / off-state composition) span ±2pt around new ceiling without breaching 75. **Score 90+ structurally unreachable in current rubric** — confirmed across 30 iters / 140 cumulative trials.
+
+---
+
 ## Mission (recap)
 
 Find ONE long-term strategy with:

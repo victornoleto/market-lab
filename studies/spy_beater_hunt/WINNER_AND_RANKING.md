@@ -1,5 +1,7 @@
 # Winner conditions + ranking tiers — spy_beater_hunt
 
+> **Status (2026-04-30 closure)**: hunt fechado em 30 iters. Nenhum WINNER tier (≥90 + bars) emergiu. Para **deploy-readiness** ver `TOP_STRATEGIES.md` que substitui o critério "WINNER tier" por **gate-pass anti-overfit** (decisão usuário 2026-04-30: "se passaram nos gates, por mim tudo certo"). Esta página agora documenta o rubric ORIGINAL pelo qual as iters foram scoreadas e a ranking history pre/post tax — não é mais a referência canônica de deploy.
+
 Two separate mechanisms (same pattern as long_term_portfolio):
 
 1. **WINNER conditions** — must hold for a strategy to be declared winner. This is what halts the hunt.
@@ -158,38 +160,41 @@ The **gross-vs-net spread** is structurally about **1.5 pp** wider for swing str
 
 ---
 
-## Final ranking — gross vs net (iters 001-018, after 2026-04-30 backfill)
+## Final ranking — gross vs net (iters 001-036 closure 2026-04-30)
 
-Sorted by net_score desc; column "shift" = (gross_rank − net_rank). Positive shift = strategy moved UP after tax accounting (typically buy-hold); negative = moved DOWN (typically LRS/blend with high turnover).
+Hunt fechou em **30 iters substantivas + 1 meta** (iter 011 IMPOSSIBILITY, sem backtest), totalizando **30 verdicts** com pre/post tax. Sorted by net_score desc.
 
-| rank | iter | strategy | gross_score | net_score | gross_tier | net_tier | shift |
-|---:|---:|---|---:|---:|---|---|---:|
-| 1 | 018 | h1_meta_50a2_50g2ief (blend) | 70 | 64 | PROMISING | PROMISING | — |
-| 2 | 009 | b2_hfea_kmlm20 (HFEA static) | 63 | 62 | PROMISING | PROMISING | +6 |
-| 3 | 007 | a7_tqqq_split_kmlm40_tlt10 (LRS) | 67 | 61 | PROMISING | PROMISING | -1 |
-| 4 | 008 | b1_balanced_5050 (HFEA static) | 63 | 61 | PROMISING | PROMISING | +5 |
-| 5 | 006 | a6_tqqq_split_kmlm30_tlt10 (LRS) | 67 | 60 | PROMISING | PROMISING | -2 |
-| 6 | 004 | a4_lrs_split_kmlm30 (LRS) | 66 | 60 | PROMISING | PROMISING | -2 |
-| 7 | 015 | f1_aw_stack_15x (F1 levered AW) | 61 | 60 | PROMISING | PROMISING | +4 |
-| 8 | 014 | e1_tqqq_split_kmlm30_tlt10_tsmom | 65 | 59 | PROMISING | MARGINAL | -3 |
-| 9 | 003 | a3_lrs_split_kmlm20 | 64 | 59 | PROMISING | MARGINAL | -3 |
-| 10 | 017 | g2_f1_letf_2x_sma200_ief | 64 | 58 | PROMISING | MARGINAL | -3 |
-| 11 | 005 | a5_lrs_split_kmlm30_tlt10 | 63 | 58 | PROMISING | MARGINAL | -1 |
-| 12 | 016 | g1_f1_stack_sma200_ief | 61 | 57 | PROMISING | MARGINAL | — |
-| 13 | 010 | c1_vt20_sso (vol_target) | 60 | 57 | PROMISING | MARGINAL | — |
-| 14 | 001 | a1_lrs_split (Gayed LRS UPRO) | 60 | 55 | PROMISING | MARGINAL | — |
-| 15 | 013 | d1_qqq_6m_tsmom | 59 | 54 | MARGINAL | MARGINAL | — |
-| 16 | 002 | a2_sma200_th2_3xupro | 57 | 52 | MARGINAL | MARGINAL | — |
-| 17 | 012 | d2_ntsx_avuv | 52 | 50 | MARGINAL | MARGINAL | — |
+> Para **deploy-readiness ranking** (com gate-audit por iter), ver `TOP_STRATEGIES.md`. Esta tabela é o ranking puro do score CAGR-anchored.
 
-**Headline shifts under net rubric**:
+| rank | iter | strategy | gross | net | gross tier | net tier |
+|---:|---:|---|---:|---:|---|---|
+| 1 | **035** | h15 4-way GLD-mom off var (blend) | **74** | **68** | PROMISING | PROMISING |
+| 2 | 034 | h14 4-way + GLD-mom (blend) | 73 | 67 | PROMISING | PROMISING |
+| 3 | 036 | h16 4-way A2 off var (blend) | 73 | 67 | PROMISING | PROMISING |
+| 4 | **026** | h6 4-way 30/25/25/20 (blend) ⭐ best PBO | 71 | **66** | PROMISING | PROMISING |
+| 5 | 030 | h10 4-way TSMOM signal QQQ | 72 | 66 | PROMISING | PROMISING |
+| 6 | 031-033 | h11/h12/h13 4-way GLD variations | 72 | 66 | PROMISING | PROMISING |
+| 7 | 019 | h2 3-way 33/33/34 (blend) ⭐ simplest | 71 | 65 | PROMISING | PROMISING |
+| 8 | 018 | h1 50/50 A2+G2 IEF (blend) | 70 | 64 | PROMISING | PROMISING |
+| 9 | 021/025/027 | various 4-way blends | 70 | 64 | PROMISING | PROMISING |
+| 10 | 028 | h8 25/50/25 with E1 gate sub | 69 | 64 | PROMISING | PROMISING |
+| 11 | 029 | h9 4-way 12m TSMOM | 69 | 64 | PROMISING | PROMISING |
+| 12 | 020 | h3 4-way + G1 IEF ⭐ best MDD | 67 | 62 | PROMISING | PROMISING |
+| 13 | 009 | b2 hfea_kmlm20 (HFEA static buy-hold) | 63 | 62 | PROMISING | PROMISING |
+| 14 | 007 | a7 tqqq+kmlm40+tlt10 (LRS) | 67 | 61 | PROMISING | PROMISING |
+| 15 | 008 | b1 hfea 50/50 (HFEA static) | 63 | 61 | PROMISING | PROMISING |
+| 16 | 006 | a6 tqqq+kmlm30+tlt10 (LRS) | 67 | 60 | PROMISING | PROMISING |
+| 17 | 004 | a4 lrs+kmlm30 | 66 | 60 | PROMISING | PROMISING |
+| 18 | 024 | g3 LRS-gated HFEA 40/40 | 66 | 60 | PROMISING | PROMISING |
+| 19 | 015 | f1 stack (NTSX/GDE/TLT/KMLM) ⭐ simplest | 61 | 60 | PROMISING | PROMISING |
+| 20 | 003/005/014/017 | LRS variants | 63-65 | 58-59 | PROMISING | MARGINAL |
+| 21 | 010/016/022/023 | misc passers | 57-61 | 56-57 | various | MARGINAL |
+| 22 | 001/002/012/013 | early iters | 52-60 | 50-55 | MARGINAL | MARGINAL |
 
-- **HFEA family (008/009)** rises from rank 9-10 → rank 2-4. HFEA's combination of high gross CAGR (≥18%) + buy-hold tax-efficiency = best-in-hunt **net-of-tax** competitor. MDD bar still fails (61-67%) so not a WINNER, but **score-relative** they win.
-- **F1 stack (015)** rises from rank 11 → rank 7. The previously flagged "Sharpe-king" is now also tax-king among CAGR-bar passers.
-- **TQQQ-track LRS (006/007)** stays in top 5 but loses absolute score (≥6pt drag).
-- **Iter 018 H1 meta-ensemble** stays #1 by score but its 2.07pp drag means net_score 64 is below the closest gross winner-target (90).
-- **No strategy reaches WINNER tier** under either rubric. Gates_bar fails for HFEA (high MDD); CAGR_bar by-margin under net for several LRS configs.
+**Closing observations**:
 
-**Implication for deploy**: F1+SPLIT incumbent (Plano C 100%) remains unchanged. The hunt's `closest-to-winner` shifts from "iter 006/007 TQQQ-track LRS" (under gross rubric) to **"iter 009 HFEA+KMLM static"** (under net rubric, score 62 with 0.66pp drag) — but HFEA fails the MDD bar (61.5% vs 55.17%), so it's still not deployable.
-
-The **buy-hold static** family is structurally tax-efficient. Future hunt iters should consider: (a) buy-hold portfolios with concentrated growth (closer to SPY CAGR without LRS gate cost); (b) NOT discount SBuy-hold candidates for being "boring" — they have a structural net-rubric advantage of ~1.5pp.
+- **Top 12 todos PROMISING net (≥60)**, dominados por meta-ensemble blends. Teto empírico: gross 74 / net 68 (iter 035). Nenhum WINNER (≥90).
+- **Buy-hold static climbs structurally** sob rubric net: HFEA family (008/009), F1 stack (015) sobem 4-6 ranks vs gross.
+- **Meta-ensemble axis** (iters 018-036, 19 iters) é a única classe que quebra o teto histórico de 67 atingido por single-axis (iter 006 A2). Saturação confirmada em ~71-74 gross / 64-68 net via 13 iters consecutivas variando dimensões ortogonais.
+- **PBO warning emerge** em iters 030-036 (PBO 0.5-0.9 grid-level) — cumulative_n_trials inflation. Iter 026 H6 mantém PBO 0.00 e é o **anchor honesto** para deploy.
+- **Implicação para deploy**: F1+SPLIT (Plano C 100% incumbent) inalterado. Para reativar Plano B/D, ver `TOP_STRATEGIES.md` Tier A (iter 026 / 019 / 015 são as recomendações estratificadas por perfil de risco).

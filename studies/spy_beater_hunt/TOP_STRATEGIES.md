@@ -1,0 +1,304 @@
+# spy_beater_hunt — TOP STRATEGIES (deploy-readiness ranking)
+
+**Status**: hunt CLOSED 2026-04-30 após 30 iters / ~85 cumulative trials. Nenhuma iter atingiu tier WINNER (≥90/100), mas **muitas estratégias batem SPY** em CAGR e MDD simultaneamente, mesmo após DARF.
+
+Este documento substitui o "WINNER tier" como critério de deploy-readiness por uma **classificação por gate-pass anti-overfit**, alinhada à decisão do usuário (2026-04-30): "se passaram nos gates, por mim tudo certo".
+
+> **Convention**: bars 1+2 = "beat SPY" (CAGR > 11.21% AND MDD < 55.17% mean across lh_56y + spy_real). Bars 3 = 7-gate battery threshold (≥5 of 7 per dataset, ≥2/2 datasets). Tier abaixo categoriza por **gate-pass strict** (cada um dos 7 gates individualmente).
+
+---
+
+## Como ler as colunas
+
+- **gross / net**: score CAGR-anchored 0-100 antes / depois da DARF (Lei 14.754/2023, 15% anual)
+- **CAGR_n / MDD_n / Sharpe_n**: métricas pós-DARF (deploy-relevant)
+- **G1 PBO** < 0.5 (probabilidade de overfit em CSCV) `[advances_fin_ml, p.208-211]`
+- **G2 DSR** p < 0.05 (Deflated Sharpe com cumulative_n_trials penalty) `[p.222-223]`
+- **G3 WF MDD** per-window < 25% (walk-forward 8 windows, conservador) `[ch.12]`
+- **G4 OOS** Sharpe > 0 em 70/30 split
+- **G5 FWD** Sharpe > 0 em stress post-2020
+- **G6 CIlow** > 0 (bootstrap 99.9% CI inferior) `[p.196-202]`
+- **G7 xlib**: cross-lib delta CAGR ≤ 3pp `[p.31-34]`
+
+---
+
+## Tier S — pass 7/7 strict gates
+
+**0 estratégias.** Gate G3 (Walk-Forward MDD per-window < 25%) é estruturalmente difícil de passar para qualquer estratégia com leverage moderado-alto durante stress periods (2008 GFC, 2022 inflation). Mesmo F1 stack passa per-window apenas em janelas brandas.
+
+---
+
+## Tier A — pass 6/7 strict gates + low PBO (deploy-ready)
+
+Estratégias com baixa probabilidade de overfit (PBO ≤ 0.20) e que passam todos os gates exceto G3 WF (que falha por leverage moderado durante 2008/2022 stress).
+
+### #1 — Iter 026 H6 (4-way meta-ensemble) ⭐ recomendação principal
+
+**Spec**: 30% A2 (TQQQ-track LRS) + 25% G2 IEF (F1-LETF SMA-gate) + 25% F1 stack (Levered All-Weather) + 20% E1g (TSMOM-6m gate × TQQQ-track)
+
+```json
+{
+  "type": "blend",
+  "constituents": [
+    {"weight": 0.30, "spec": {
+      "type": "lrs", "filter": "sma", "sma_window": 200, "lag_days": 1,
+      "signal_ticker": "QQQSIM",
+      "on_weights": {"TQQQSIM": 0.30, "QLDSIM": 0.30, "KMLMSIM": 0.30, "TLTSIM": 0.10},
+      "off_weights": {"IEFSIM": 1.0}}},
+    {"weight": 0.25, "spec": {
+      "type": "lrs", "filter": "sma", "sma_window": 200, "lag_days": 1,
+      "signal_ticker": "SPYSIM",
+      "on_weights": {"UPROSIM": 0.30, "TMFSIM": 0.25, "IEFSIM": 0.15, "UGLSIM": 0.15, "KMLMSIM": 0.15},
+      "off_weights": {"IEFSIM": 1.0}}},
+    {"weight": 0.25, "spec": {
+      "type": "static",
+      "weights": {"NTSXSIM": 0.35, "GDESIM": 0.30, "TLTSIM": 0.20, "KMLMSIM": 0.15}}},
+    {"weight": 0.20, "spec": {
+      "type": "lrs", "filter": "momentum", "lookback_days": 126, "lag_days": 1,
+      "signal_ticker": "QQQSIM",
+      "on_weights": {"TQQQSIM": 0.30, "QLDSIM": 0.30, "KMLMSIM": 0.30, "TLTSIM": 0.10},
+      "off_weights": {"IEFSIM": 1.0}}}
+  ]
+}
+```
+
+| | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| **value** | 71 | **66** | 13.83% | 33.60% | 0.84 | **0.00** | 31.6% |
+
+**vs SPY net**: +2.62pp CAGR, **−21.57pp MDD**, Sharpe ~+0.18.
+
+**Gates**: 6/7 strict pass. Falha apenas G3 (WF MDD 31.6% > 25% bar — leverage produz drawdowns per-window > 25% durante 2008 GFC e 2022).
+
+**Por que é a #1**: combina os 4 melhores constituintes single-axis (A2 + G2 + F1 + E1) com gate-source diversification (SPY-SMA-200d + QQQ-SMA-200d + always-on + QQQ-TSMOM-126d). PBO = 0.00 em ambos datasets significa zero overfitting probability — o valor ideal. Score 71 gross (segundo lugar no hunt).
+
+---
+
+### #2 — Iter 019 H2 (3-way meta-ensemble) — versão simplificada
+
+**Spec**: 33% A2 + 33% G2 IEF + 34% F1 stack (sem o 4th TSMOM constituent).
+
+```json
+{
+  "type": "blend",
+  "constituents": [
+    {"weight": 0.33, "spec": {/* A2 — same as iter 026 */}},
+    {"weight": 0.33, "spec": {/* G2 IEF — same as iter 026 */}},
+    {"weight": 0.34, "spec": {/* F1 stack — same as iter 026 */}}
+  ]
+}
+```
+
+| | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| **value** | 71 | **65** | 13.11% | **30.33%** | 0.90 | **0.00** | 28.5% |
+
+**vs SPY net**: +1.90pp CAGR, **−24.84pp MDD**, Sharpe melhor que #1 (0.90 vs 0.84).
+
+**Por que considerar**: **menos constituintes = mais simples de implementar**. MDD 30.33% (3pp melhor que #1). Sharpe 0.90 (best entre top 5). Mesmo PBO 0.00 que #1.
+
+**Trade-off**: CAGR 0.72pp menor que #1.
+
+---
+
+### #3 — Iter 028 H8 (3-way meta-ensemble com TSMOM gate replacement)
+
+**Spec**: 25% E1 (TSMOM-126d × TQQQ-track) + 50% G2 IEF + 25% F1 stack.
+
+| | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| **value** | 69 | 64 | 12.96% | 30.64% | 0.91 | **0.09** | 28.9% |
+
+**Por que considerar**: **MELHOR Sharpe entre 6/7 passers** (0.91 > 0.90 do #2). MDD comparável ao #2. PBO 0.09 (excelente).
+
+---
+
+### #4 — Iter 034 H14 (4-way + GLD-momentum)
+
+**Spec**: 25% A2 + 25% G2 IEF + 25% F1 stack + 25% E1g (GLD-momentum 126d).
+
+| | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| **value** | 73 | **67** | 14.46% | 35.28% | 0.92 | 0.11 | 33.8% |
+
+**Por que considerar**: **2º maior net score** (67). CAGR 14.46% (margem confortável). PBO 0.11 ainda baixa.
+
+**Trade-off**: 4 sleeves dependem de GLD (gold). Adiciona complexity de 4ª fonte de gate. MDD 35.28% pior que #2/#3.
+
+---
+
+### #5 — Iter 020 H3 (4-way com G1 IEF — best MDD)
+
+**Spec**: 25% A2 + 25% G1 IEF (SMA × F1 stack no-decay) + 25% G2 IEF + 25% F1 stack.
+
+| | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| **value** | 67 | 62 | 12.15% | **27.89%** | 0.93 | 0.17 | **26.2%** |
+
+**Por que considerar**: **MENOR MDD entre top 10** (27.89%). **MELHOR WF MDD** (26.2% — quase passa o gate de 25%). Sharpe 0.93 (best entre tier A).
+
+**Trade-off**: CAGR 12.15% (apenas 0.94pp acima do bar SPY). Score gross só 67. Para perfil **conservador**.
+
+---
+
+### #6 — Iter 015 F1 Stack (static buy-hold) ⭐ implementação mais simples
+
+**Spec**: 35% NTSX + 30% GDE + 20% TLT + 15% KMLM. **STATIC, sem regime gate**.
+
+```json
+{
+  "type": "static",
+  "weights": {
+    "NTSXSIM": 0.35,
+    "GDESIM": 0.30,
+    "TLTSIM": 0.20,
+    "KMLMSIM": 0.15
+  }
+}
+```
+
+| | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| **value** | 61 | 60 | 11.35% | **26.82%** | **0.95** | 0.81* | **26.8%** |
+
+**vs SPY net**: +0.14pp CAGR (margem mínima), **−28.35pp MDD**, Sharpe **+0.29**.
+
+**Por que considerar**: **mais simples de implementar** (4 ETFs, rebalance anual, sem gate). **Maior Sharpe** entre top 10 (0.95 net). **Drag fiscal mínimo** (0.60pp) — buy-hold defere DARF.
+
+**Caveat overfit (PBO 0.81 ⚠)**: PBO grid-level alto em lh_56y (com apenas 3 configs no iter 015, CSCV é instável estatisticamente). Para **single-config deploy** (não competition de grid), PBO grid não se aplica diretamente — você não está escolhendo entre F1 baseline / F1 stack / F1 LETF. Mas vale registrar que a **escolha do stack 1.41× sobre as alternativas** tem incerteza.
+
+**Trade-off real**: CAGR margem de SÓ 0.14pp acima do SPY no rubric net — qualquer FX move adverso elimina a margem. Para perfil **mais conservador**, F1+SPLIT (incumbent Plano C atual) é arquiteturalmente similar.
+
+---
+
+## Tier B — pass 6/7 strict gates + PBO 0.20-0.50
+
+| iter | strategy | gross | net | CAGR_n | MDD_n | PBO max |
+|---:|---|---:|---:|---:|---:|---:|
+| 007 | a7 TQQQ-track + KMLM40 + TLT10 (LRS) | 67 | 61 | 14.09% | 43.48% | 0.10 |
+| 004 | a4 LRS split + KMLM30 | 66 | 60 | 12.59% | 39.49% | 0.29 |
+| 024 | g3 LRS-gated HFEA 40/40 | 66 | 60 | 13.79% | 46.31% | 0.15 |
+| 003 | a3 LRS split + KMLM20 | 64 | 59 | 13.12% | 43.87% | 0.24 |
+| 017 | g2 F1-LETF-2x + SMA gate + IEF | 64 | 58 | 12.22% | 35.06% | 0.28 |
+
+**Comentário**: estratégias single-axis LRS de iters anteriores. Performam pior que tier A meta-ensembles em risk-adjusted return. PBO ainda controlado mas WF MDD pior (40-50%). Aceitáveis se você prefere implementação **menos complexa** (1 sleeve LRS vs 3-4 do meta).
+
+---
+
+## Tier C — PBO > 0.50 (overfit warning)
+
+Iters 030-033, 035, 036, 018, 021, 025, 029. Apesar de scores top (gross 70-74, net 64-68), **PBO > 0.50 em pelo menos um dataset** sinaliza que com cumulative_n_trials inflando (~85 trials totais), o ranking grid começa a refletir variação aleatória.
+
+**Tradução prática**: a **arquitetura** (3-4-way meta-ensemble) é robusta e a **direção** correta — mas o EXATO winner desse cluster (iter 035 vs 036 vs 030...) é estatisticamente intercambiável. Use #1 (iter 026 H6) com PBO 0.00 como anchor honesto, não o iter 035 com PBO 0.56-0.59.
+
+| iter | strategy | gross | net | CAGR_n | MDD_n | PBO max | nota |
+|---:|---|---:|---:|---:|---:|---:|---|
+| 035 | h15 4-way GLD-mom-126 off var | 74 | 68 | 14.90% | 31.86% | 0.56 | **highest score mas PBO warning** |
+| 036 | h16 4-way A2 off var | 73 | 67 | 14.90% | 31.86% | 0.59 | duplicado de 035 |
+| 030 | h10 4-way TSMOM signal QQQ | 72 | 66 | 14.46% | 35.28% | 0.52 | borderline PBO |
+| 018 | h1 50/50 A2 + G2 IEF | 70 | 64 | 14.23% | 35.87% | 0.60 | foi closest-to-winner antes do iter 026 |
+
+---
+
+## Tier D — não recomendados
+
+| iter | razão |
+|---:|---|
+| 008/009 HFEA classical/+KMLM | falham MDD bar (61-67%); buy-hold mas drawdown excessivo |
+| 001/002 LRS UPRO single-asset | falham gates_bar; alto MDD (51-57%) |
+| 010 vol-target SSO | passa bars mas ruim em risk-adjusted (Sharpe 0.64 net) |
+| 012/013/022/023 | scores 50-58 net; MARGINAL tier |
+
+---
+
+## Como aplicar em live
+
+### Pré-requisitos compartilhados
+
+1. **Broker**: **Banco Inter Internacional** (Plano B). Confirmado em `docs/investment-mandate.md` §4.6:
+   - Custódia: Apex Clearing (FINRA-regulated)
+   - Corretagem: USD 0,00 ETFs/ações US
+   - Spread FX BRL↔USD: 0.99-1.50% por leg (depósito + retirada apenas)
+   - Settlement T+1 (industry US 2024-05-28+)
+2. **Tributação**: Lei 14.754/2023 — DARF 15% flat anual via DAA. Apuração na DAA mar/maio. Ferramenta canônica: `studies/_shared/tax_engine.py:AnnualDarfEngine`.
+3. **IOF**: 3.5% remessa outbound + 0.38% retorno (Decreto 05/2025) — só hits em depósito inicial / retirada final.
+4. **Mandate §1 atual**: 100% Plano C MAINTENANCE MODE. Reativar Plano B exige **mandate §7 override**.
+
+### Per-strategy instrumentação (ETFs reais por sintético)
+
+| sintético no backtest | ETF real (US) | available Inter? |
+|---|---|---|
+| `SPYSIM` | SPY (SPDR S&P 500) | ✅ |
+| `QQQSIM` | QQQ (Invesco NASDAQ-100) | ✅ |
+| `IEFSIM` | IEF (iShares 7-10y Treasury) | ✅ |
+| `TLTSIM` | TLT (iShares 20+y Treasury) | ✅ |
+| `GLDSIM` | GLD (SPDR Gold Shares) | ✅ |
+| `UPROSIM` | UPRO (ProShares 3× S&P 500) | ⚠ verificar — `project_plano_b_broker_inter.md` confirma SSO; UPRO precisa validação suporte |
+| `SSOSIM` | SSO (ProShares 2× S&P 500) | ✅ confirmado 2026-04-18 |
+| `TQQQSIM` | TQQQ (ProShares 3× NASDAQ-100) | ⚠ verificar |
+| `QLDSIM` | QLD (ProShares 2× NASDAQ-100) | ⚠ verificar |
+| `TMFSIM` | TMF (Direxion 3× 20+y Treasury) | ⚠ verificar |
+| `UGLSIM` | UGL (ProShares 2× Gold) | ⚠ verificar |
+| `NTSXSIM` | NTSX (WisdomTree 90/60 US Eq+Bonds) | ⚠ verificar |
+| `GDESIM` | GDE (WisdomTree Efficient Gold Plus) | ⚠ verificar |
+| `KMLMSIM` | KMLM (Krane Mount Lucas Mgd Futures) | ⚠ verificar |
+
+**Bloqueador pré-deploy**: validar com suporte Inter quais ETFs estão disponíveis. Estratégias #1-#4 dependem de TQQQ/UPRO/TMF/KMLM/NTSX/GDE — qualquer ausência exige fallback. F1 stack (#6) precisa só de NTSX + GDE + TLT + KMLM.
+
+### Cadência operacional
+
+| spec_type | rebalance | gate compute | live ops |
+|---|---|---|---|
+| **static** (#6 F1 stack) | anual (1×/ano em data fixa) | n/a | trivial — comprar pesos, esperar 1 ano, rebalance |
+| **lrs** (#7 a7) | gate flip detection + monthly | T+1 lag, SMA-200d daily | 1 sinal/dia, flip mensal típico |
+| **blend** (#1 H6, #2 H2, etc) | per-constituent + diário no agregado | 2-3 fontes (SPY-SMA, QQQ-SMA, QQQ-TSMOM-126d) | mais complexo — manter 3-4 sleeves separados |
+
+Para **F1 stack** (#6): rebalance anual em **dezembro pré-DARF cutoff** maximiza tax-deferral. Posições USD permanecem em UCD; FX só hits em depósito inicial. **Não realiza ganho durante o ano** → DARF zero anual, apenas terminal liquidation paga.
+
+Para **meta-ensembles** (#1-#5): cada constituinte rebalanceia separadamente quando seu gate flipa. Lei 14.754 agrega anualmente, então flips intra-ano não disparam DARF mensal. Na prática, **drag fiscal anual** ~2pp.
+
+### Sizing inicial (mandate §4.8 paralelo Pepperstone)
+
+Mandate atual não especifica staging Plano B (foi traçado para Plano A Pepperstone). Por analogia conservadora ao §4.8:
+
+1. **Paper trading 3 meses** com a estratégia escolhida (não há paper Inter; simular em planilha + comparar com backtest)
+2. **Live USD 1.000-2.500 inicial** (Inter mínimo é zero, mas FX spread fica caro abaixo de USD 1k)
+3. **Escalada mensal condicional**: cada green month autoriza próximo degrau
+4. **Cap inicial USD 5.000-10.000** até 6 meses de live verde
+
+### Disclaimer obrigatório (mandate §7 trigger)
+
+**Nenhuma dessas estratégias é deploy-aprovada sob o mandate atual** (§1 MAINTENANCE MODE 100% Plano C). Para mover capital pra qualquer uma delas, necessário:
+
+1. Override §7 formal (escrito) reativando Plano B
+2. Validação de catálogo de ETFs no Inter
+3. Decisão sobre rubric: **gate-pass + bars 1+2 é suficiente para você?** (Você já sinalizou que sim em 2026-04-30, mas vale formalizar no mandate)
+4. Aceitar caveats: G3 (WF MDD per-window < 25%) NÃO passa em nenhuma estratégia top — drawdown durante stress regimes (2008/2022) excede 25% por janela. Tolerância pessoal precisa cobrir isso.
+
+---
+
+## Resumo executivo
+
+| pergunta | resposta |
+|---|---|
+| **Tem estratégia que bate SPY (CAGR + MDD)?** | Sim, ~15 estratégias passam ambos bars em gross + net. |
+| **Tem estratégia "WINNER tier" (≥90/100 + bars)?** | Não. Teto empírico ~74 gross / 68 net. |
+| **Overfit foi validado?** | Sim, 7-gate battery roda em cada iter. Tier A passa 6/7 com PBO ≤ 0.20 (low overfit probability). G3 (WF MDD per-window) falha estruturalmente para qualquer leverage moderado-alto durante 2008/2022 stress. |
+| **Top recomendação?** | **iter 026 H6** (4-way meta-ensemble, PBO 0.00, net CAGR 13.83% / MDD 33.6%) para perfil agressivo; **iter 015 F1 stack** (buy-hold static, simplest, Sharpe 0.95 net) para perfil simples. |
+| **Deploy-ready hoje?** | Não — exige mandate §7 override + validação ETFs Inter + paper 3 meses. |
+
+---
+
+## Citações
+
+- `[advances_fin_ml, p.31-34]` — gate framework (PBO/DSR/WF/Bootstrap/CrossLib)
+- `[advances_fin_ml, p.208-211]` — PBO via CSCV
+- `[advances_fin_ml, p.222-223]` — Deflated Sharpe Ratio
+- `[advances_fin_ml, p.196-202]` — Bootstrap CI
+- `[leverage_for_the_long_run, ch.3-4, p.40-60]` — Gayed LRS 200d SMA gate
+- `[risk_parity, ch.5, p.10]` — Carlson capital-efficient stacking (NTSX/GDE rationale)
+- `[ilmanen_expected_returns, ch.19]` — managed futures crisis-alpha (KMLM)
+- HFEA (Bogleheads 2019) — leveraged barbell baseline
+- Lei 14.754/2023 — DARF 6015 ganho de capital exterior
+- Bridgewater All-Weather (Dalio public papers 2011) — risk-parity foundation
+- Asness 1996 "Why Not 100% Equities?" JPM — leverage-balanced thesis

@@ -1,6 +1,6 @@
 # spy_beater_hunt
 
-**Status**: PROPOSED — bootstrapped 2026-04-29 after long_term_portfolio sweep concluded with F1+SPLIT (CAGR 10.76% < SPY 13.80%).
+**Status**: **CLOSED 2026-04-30** após 30 iters / ~85 cumulative trials. Nenhuma estratégia atingiu tier WINNER (≥90/100 + bars), mas **~15 estratégias batem SPY em CAGR + MDD simultaneamente** mesmo após DARF. Veredito de deploy-readiness em `TOP_STRATEGIES.md`. Hunt original bootstrap foi 2026-04-29.
 
 **Mission**: Find ONE long-term portfolio strategy with **mean CAGR ≥ SPY (13.80%)** AND **mean MDD ≤ SPY (40.85%)** AND surviving the 7-gate battery (PBO/DSR/WF/Bootstrap/CrossLib) on ≥ 2/3 datasets (lh_56y / vt_real / ndx_real).
 
@@ -42,12 +42,13 @@ This is a **harder bar than long_term_portfolio's** — that loop's mission was 
 | `README.md` | this file |
 | `SPEC.md` | mission spec + gate definitions + winner criteria |
 | `BASE_MEMORY.md` | iteration log + frontmatter (loop state) |
-| `WINNER_AND_RANKING.md` | tier rubric (CAGR/MDD-anchored, distinct from long_term_portfolio); includes pre/post-tax ranking |
+| `WINNER_AND_RANKING.md` | tier rubric (CAGR/MDD-anchored); includes pre/post-tax ranking |
+| **`TOP_STRATEGIES.md`** | **deploy-readiness ranking + per-gate audit + live-deploy instructions** (canonical doc post-closure 2026-04-30) |
 | `INFRASTRUCTURE.md` | what to reuse from long_term_portfolio (synths.py / run_iter.py / scoring.py adaptations) |
 | `PROMISING_DIRECTIONS.md` | ranked list of hypotheses pre-loaded for the hunt |
 | `tax_layer.py` | net-of-tax computation (Lei 14.754/2023, 15% DARF anual) wrapping `_shared/tax_engine.py` |
 | `rerun_all_iters.sh` | re-execute every iter's backtest.py after pipeline-level changes |
-| `iterations/` | one dir per iter (bootstrapped empty) |
+| `iterations/` | one dir per iter (30 completed) |
 
 ---
 
