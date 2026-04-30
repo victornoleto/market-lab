@@ -1,15 +1,15 @@
 ---
 mission: "Find ONE long-term strategy with mean CAGR ≥ SPY (11.21%) AND mean MDD ≤ SPY (55.17%) AND surviving 7-gate battery on ≥ 2/2 datasets"
 target_total_iterations: 50
-total_iterations: 2
+total_iterations: 3
 winners_found: 0
-closest_to_winner: "iter 001 a1_lrs_split (re-run): CAGR 16.23% PASS, MDD 51.60% PASS, gates 6/5 PASS — winner_conditions_met=TRUE, score 60 (tier PROMISING; tier WINNER requires score ≥ 90)"
+closest_to_winner: "iter 003 a3_lrs_split_kmlm20: CAGR 14.99% PASS, MDD 41.87% PASS, gates 6/6 PASS cross_met — winner_conditions_met=TRUE, score 64 (tier PROMISING; tier WINNER requires score ≥ 90)"
 status: hunting
-latest_iteration: "002-2026-04-29-A2-LRS-sensitivity-sweep"
-latest_score: 57
-latest_tier: MARGINAL
-latest_bars_met: 1  # CAGR ✓, gates ✗ (DSR n_trials=10 hits spy_real), MDD ✗
-cumulative_n_trials: 10
+latest_iteration: "003-2026-04-30-A3-mixed-gayed-crisis-alpha"
+latest_score: 64
+latest_tier: PROMISING
+latest_bars_met: 3  # CAGR ✓, MDD ✓, Gates ✓
+cumulative_n_trials: 14
 datasets:
   - "lh_56y (1986+, ~40y, SPYSIM synth, GATE thresh 5)"
   - "spy_real (2003+, ~22.7y, SPY Tiingo adj_close, GATE thresh 5)"
@@ -18,10 +18,13 @@ spy_benchmarks:
   mdd_mean: 0.5517
   sharpe_mean: 0.6661
 direction_status:
-  A1_200d_SMA_3x_UPRO: "WINNER-conditions MET (iter 001 re-run); tier PROMISING due to score < 90"
+  A1_200d_SMA_3x_UPRO: "DISPLACED (iter 001 was closest @ 60; iter 003 KMLM20 wins @ 64)"
   A2_faster_signal: "CLOSED (iter 002 KILL #7) — faster SMA/EMA make MDD WORSE"
   A2_threshold_buffer: "CLOSED (iter 002 KILL #8) — buffer ≥5% makes MDD worse"
-  A2_lower_leverage: "PROMISING (iter 002) — 2× SSO direction WINNER on bars but Sharpe lower"
+  A2_lower_leverage: "DOMINATED — bars 3/3 met but score < 60 (CAGR drag > MDD pts gain)"
+  A3_mixed_gayed_crisis_alpha: "PROMISING (best so far, iter 003) — KMLM 20% in ON sleeve drops MDD 9.73pp; score 64"
+  A3_kmlm_dose_response: "NEW PROMISING — monotonic positive 10→20%; explore 25-30% in iter 004"
+  A3_tlt_dose_response: "NEW PROMISING — 15% TLT competitive with KMLM 10%; strict dose-comparison needed (TLT 20% vs KMLM 20%)"
   B1_HFEA_classical: "NOT YET RUN — TMFSIM ready"
   C1_vol_targeted: "NOT YET RUN"
 parent_loop: "studies/long_term_portfolio (43 iters, F1+SPLIT incumbent fallback)"
@@ -78,6 +81,36 @@ NEW synths likely needed (NOT in long_term_portfolio):
 ---
 
 ## Iteration log (newest first)
+
+### iter 003 — A3 mixed Gayed (crisis-alpha buffer in ON sleeve) — PROMISING 64/100, NEW closest-to-winner (2026-04-30)
+
+- **Tier**: PROMISING **64/100** (winner_conditions_met = **TRUE**, all 3 bars pass)
+- **Selected**: `a3_lrs_split_kmlm20` (40% UPRO + 40% SSO + 20% KMLM ON; 100% IEF OFF; SMA 200, no buffer)
+- **Bars**: CAGR ✓ (14.99% mean ≥ 11.21%), MDD ✓ (41.87% ≤ 55.17%), Gates ✓ (6/6, cross_met TRUE)
+- **All 4 configs PASSED all 3 bars** — direction A3 robust:
+  | config                  | CAGR     | MDD     | Sharpe (lh, spy_real) |
+  |-------------------------|---------:|--------:|----------------------:|
+  | a3_lrs_split_kmlm10     | 15.47%   | 46.65%  | 0.681 / 0.665         |
+  | **a3_lrs_split_kmlm20** | **14.99%** | **41.87%** | **0.719 / 0.692**   |
+  | a3_lrs_split_tlt15      | 15.34%   | 44.60%  | 0.709 / 0.682         |
+  | a3_lrs_split_blend      | 14.86%   | 42.13%  | 0.713 / 0.696         |
+- **Per-dataset (selected)**:
+  | dataset  | Sharpe | CAGR    | MDD    | gates | DSR p     |
+  |----------|-------:|--------:|-------:|------:|----------:|
+  | lh_56y   | 0.719  | 15.58%  | 43.22% | 6/7   | 4.04e-04  |
+  | spy_real | 0.692  | 14.39%  | 40.53% | 6/7   | 1.39e-02  |
+- **Score lift vs iter 001 a1_lrs_split (60→64)**: MDD 6→10 (+4), Gates 12→13 (+1), Robustness 9→10 (+1), CAGR 22→20 (−2). Net +4.
+- **Pre-committed KILLs**:
+  - KILL #6 NOT FIRED (CAGR floor): all 4 configs CAGR ≥ 14.86% >> 11.21%.
+  - KILL #10 NOT FIRED (no MDD relief): all 4 configs MDD < 51.60% (iter 001 baseline). Direction CONFIRMED.
+  - KILL #11 NOT FIRED (KMLM monotonic harm): KMLM20 Sharpe > KMLM10 in BOTH ds — **monotonic positive** in 10-20% range.
+  - KILL #12 NOT FIRED (TLT subordinate): TLT 15% MDD 44.60% < KMLM 10% MDD 46.65%; TLT competitive but KMLM dose wins at 20%.
+- **Next iter direction**: A3 KMLM dose-response — try 25% / 30% KMLM + TLT 20% (3 configs to slow n_trials growth).
+- **Multi-horizon robustness 10/10**: 5y pass-rate 83.3%, 10/15/20y all 100%.
+- **Citations**: `[leverage_for_the_long_run, ch.3-4, p.40-60]` Gayed gate;
+  `[risk_parity, ch.5, p.10]` Carlson capital-efficient stacking VALIDATED
+  empirically (KMLM 20% drops MDD 9.73pp with only 1.24pp CAGR drag);
+  `[advances_fin_ml, p.222-223]` DSR n_trials=14 still PASS (worst p 1.39e-02).
 
 ### Methodology refactor — lh_56y + spy_real, new bars, multi-horizon robustness (2026-04-29)
 
