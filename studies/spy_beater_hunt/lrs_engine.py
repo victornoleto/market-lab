@@ -135,6 +135,40 @@ def threshold_band_gate(
     return out.shift(lag_days).fillna(False).astype(bool)
 
 
+def momentum_gate(
+    signal_prices: pd.Series,
+    lookback_days: int = 126,
+    lag_days: int = 1,
+) -> pd.Series:
+    """Time-series momentum (TSMOM) gate: True if price[t] > price[t-lookback].
+
+    Single-anchor regime check, distinct from SMA cross (which compares to a
+    rolling mean over the lookback window). TSMOM only considers the price
+    `lookback_days` ago vs current — operationally equivalent to the sign of
+    the lookback-window simple return.
+
+    Citation: Moskowitz, Ooi, Pedersen (2012) "Time Series Momentum",
+    J. Financial Economics 104(2): 228-250. Faber 2007 GTAA monthly TSMOM
+    (10m / 6m typical). 126 trading days ≈ 6 calendar months.
+
+    Args:
+        signal_prices: equity-curve series (e.g. QQQSIM cache prices).
+        lookback_days: number of trading days to look back (default 126).
+            Common choices: 63 (3m), 126 (6m), 252 (12m).
+        lag_days: T+1 execution lag (default 1) — gate at time t reflects
+            the signal computed from prices at time t-1, ensuring no
+            peek-ahead.
+
+    Returns:
+        Boolean Series indexed identically to ``signal_prices`` where
+        True = bullish (price now > price lookback_days ago), False =
+        bearish or pre-lookback warmup.
+    """
+    past = signal_prices.shift(lookback_days)
+    on_off = signal_prices > past
+    return on_off.shift(lag_days).fillna(False)
+
+
 def lrs_strategy_returns(
     on_returns: pd.Series,
     off_returns: pd.Series,

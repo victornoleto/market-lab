@@ -1,0 +1,313 @@
+{
+  "status": "marginal",
+  "tier": "MARGINAL",
+  "total_score": 59,
+  "winner_conditions_met": true,
+  "bars": {
+    "cagr_bar": true,
+    "mdd_bar": true,
+    "gates_bar": true
+  },
+  "bars_met_count": 3,
+  "criteria": {
+    "1_cagr": {
+      "points": 16,
+      "max": 30,
+      "mean_cagr": 0.12830940827590875,
+      "spy_bar": 0.1121,
+      "anchor_range": [
+        0.05,
+        0.2
+      ]
+    },
+    "2_mdd": {
+      "points": 12,
+      "max": 20,
+      "mean_mdd": 0.35269516550178187,
+      "spy_bar": 0.5517,
+      "anchor_range": [
+        0.7,
+        0.15
+      ]
+    },
+    "3_gates": {
+      "points": 11,
+      "max": 20,
+      "per_dataset": {
+        "lh_56y": 5,
+        "spy_real": 5
+      },
+      "thresholds": {
+        "lh_56y": 5,
+        "spy_real": 5
+      },
+      "cross_dataset_met": true
+    },
+    "4_dsr": {
+      "points": 10,
+      "max": 10,
+      "worst_p_value": 0.0029939563413687864,
+      "cumulative_n_trials": 41
+    },
+    "5_sharpe": {
+      "points": 2,
+      "max": 10,
+      "mean_sharpe": 0.7785236091167038,
+      "anchor_range": [
+        0.5,
+        2.0
+      ]
+    },
+    "6_robustness": {
+      "points": 8,
+      "max": 10,
+      "input_bonus": 0,
+      "rolling_pass_rates": {
+        "5": 0.625,
+        "10": 0.7655086848635235,
+        "15": 0.8173076923076923,
+        "20": 1.0
+      },
+      "rolling_worst_mdd": {
+        "5": 0.3649405622904488,
+        "10": 0.3649405622904489,
+        "15": 0.364940562290449,
+        "20": 0.364940562290449
+      },
+      "note": "Multi-horizon CAGR pass-rate vs SPY benchmark across 5y/10y/15y/20y rolling windows (3+3+2+2 pts max)."
+    },
+    "7_extra_bonus": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "lh_56y": {
+      "sharpe": 0.7911959330938048,
+      "cagr": 0.14102872910222608,
+      "mdd": 0.3649405622904485,
+      "dsr_p_value": 1.940552995205458e-05
+    },
+    "spy_real": {
+      "sharpe": 0.7658512851396029,
+      "cagr": 0.11559008744959143,
+      "mdd": 0.3404497687131152,
+      "dsr_p_value": 0.0029939563413687864
+    }
+  },
+  "spy_benchmark": {
+    "cagr_mean": 0.1121,
+    "mdd_mean": 0.5517
+  },
+  "cumulative_n_trials": 41,
+  "configs_tested": 3,
+  "primary_citation": "Moskowitz, Ooi, Pedersen (2012) Time Series Momentum, JFE 104(2):228-250 + Faber 2007 GTAA (10m TSMOM equivalent at monthly frequency) + [leverage_for_the_long_run, ch.3-4, p.40-60] Gayed gate-family rationale + [advances_fin_ml, p.222-223] DSR cumulative_n_trials",
+  "hypothesis_slug": "D1-concentrated-growth-tsmom",
+  "selected_config": "d1_qqq_6m_tsmom",
+  "selection_rule": "max mean(Sharpe / SPY_Sharpe) across datasets",
+  "scoring_basis": "CAGR-anchored (spy_beater_hunt rubric, WINNER_AND_RANKING.md)",
+  "all_configs_metrics": {
+    "d1_qqq_6m_tsmom": {
+      "lh_56y": {
+        "sharpe": 0.7911959330938048,
+        "cagr": 0.14102872910222608,
+        "mdd": 0.3649405622904485
+      },
+      "spy_real": {
+        "sharpe": 0.7658512851396029,
+        "cagr": 0.11559008744959143,
+        "mdd": 0.3404497687131152
+      }
+    },
+    "d1_qqq_12m_tsmom": {
+      "lh_56y": {
+        "sharpe": 0.7922950458628535,
+        "cagr": 0.15274206474610397,
+        "mdd": 0.4712153959671241
+      },
+      "spy_real": {
+        "sharpe": 0.7038472383318372,
+        "cagr": 0.11652646314789106,
+        "mdd": 0.3246904652110769
+      }
+    },
+    "d1_qld_6m_tsmom": {
+      "lh_56y": {
+        "sharpe": 0.6518675870271273,
+        "cagr": 0.18850814866050136,
+        "mdd": 0.6917502745237112
+      },
+      "spy_real": {
+        "sharpe": 0.6843254576616309,
+        "cagr": 0.17843458829887404,
+        "mdd": 0.5537711472492898
+      }
+    }
+  },
+  "gate_details": {
+    "lh_56y": {
+      "g1_pbo": 0.9920634920634921,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 1.940552995205458e-05,
+      "g3_wf_returns": [
+        0.4183002752388809,
+        2.975995792155095,
+        1.217428124860728,
+        0.2724368717863517,
+        0.2683470243481869,
+        1.1501681947686309,
+        1.14874114171635,
+        0.42199099258860007
+      ],
+      "g3_wf_mdds": [
+        0.22346864576986755,
+        0.28244177765485484,
+        0.36494056229044874,
+        0.1434435873092223,
+        0.24412676952806323,
+        0.13941654607158419,
+        0.314234260998296,
+        0.34044976871311516
+      ],
+      "g3_max_wf_mdd": 0.36494056229044874,
+      "g4_oos_sharpe": 0.8637412787446872,
+      "g5_fwd_sharpe": 0.7371627431004688,
+      "g6_ci_low": 0.3255160438772038,
+      "g7_crosslib_delta_pp": 0.0
+    },
+    "spy_real": {
+      "g1_pbo": 0.6904761904761905,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 0.0029939563413687864,
+      "g3_wf_returns": [
+        0.18577657725233898,
+        0.41518765007788705,
+        0.0895569143435706,
+        0.34608712220883375,
+        0.8167934010769484,
+        0.3355045053231709,
+        0.06255480465752772,
+        0.5506274417050505
+      ],
+      "g3_wf_mdds": [
+        0.12111842409015018,
+        0.15743534258566352,
+        0.244126769528064,
+        0.13941654607158407,
+        0.10519663336254831,
+        0.314234260998296,
+        0.3404497687131148,
+        0.13557738235760652
+      ],
+      "g3_max_wf_mdd": 0.3404497687131148,
+      "g4_oos_sharpe": 0.7704997980685558,
+      "g5_fwd_sharpe": 0.711538208785885,
+      "g6_ci_low": 0.08411824272374119,
+      "g7_crosslib_delta_pp": 0.0
+    }
+  },
+  "robustness": {
+    "legacy_5y_sharpe_pct_positive": 1.0,
+    "legacy_5y_sharpe_n_windows": 36,
+    "rolling_pass_rates_avg_across_datasets": {
+      "5": 0.625,
+      "10": 0.7655086848635235,
+      "15": 0.8173076923076923,
+      "20": 1.0
+    },
+    "rolling_worst_mdd_max_across_datasets": {
+      "5": 0.3649405622904488,
+      "10": 0.3649405622904489,
+      "15": 0.364940562290449,
+      "20": 0.364940562290449
+    },
+    "rolling_per_dataset": {
+      "lh_56y": {
+        "5": {
+          "pct_strat_beats_spy_cagr": 0.6388888888888888,
+          "n_windows": 36,
+          "worst_strat_mdd": 0.3649405622904488
+        },
+        "10": {
+          "pct_strat_beats_spy_cagr": 0.8387096774193549,
+          "n_windows": 31,
+          "worst_strat_mdd": 0.3649405622904489
+        },
+        "15": {
+          "pct_strat_beats_spy_cagr": 0.8846153846153846,
+          "n_windows": 26,
+          "worst_strat_mdd": 0.364940562290449
+        },
+        "20": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 21,
+          "worst_strat_mdd": 0.364940562290449
+        }
+      },
+      "spy_real": {
+        "5": {
+          "pct_strat_beats_spy_cagr": 0.6111111111111112,
+          "n_windows": 18,
+          "worst_strat_mdd": 0.3404497687131156
+        },
+        "10": {
+          "pct_strat_beats_spy_cagr": 0.6923076923076923,
+          "n_windows": 13,
+          "worst_strat_mdd": 0.3404497687131157
+        },
+        "15": {
+          "pct_strat_beats_spy_cagr": 0.75,
+          "n_windows": 8,
+          "worst_strat_mdd": 0.34044976871311505
+        },
+        "20": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 3,
+          "worst_strat_mdd": 0.34044976871311516
+        }
+      }
+    },
+    "anchor_dataset": "lh_56y"
+  },
+  "configs": {
+    "d1_qqq_6m_tsmom": {
+      "type": "lrs",
+      "on_weights": {
+        "QQQSIM": 1.0
+      },
+      "off_weights": {
+        "IEFSIM": 1.0
+      },
+      "signal_ticker": "QQQSIM",
+      "filter": "momentum",
+      "lookback_days": 126,
+      "lag_days": 1
+    },
+    "d1_qqq_12m_tsmom": {
+      "type": "lrs",
+      "on_weights": {
+        "QQQSIM": 1.0
+      },
+      "off_weights": {
+        "IEFSIM": 1.0
+      },
+      "signal_ticker": "QQQSIM",
+      "filter": "momentum",
+      "lookback_days": 252,
+      "lag_days": 1
+    },
+    "d1_qld_6m_tsmom": {
+      "type": "lrs",
+      "on_weights": {
+        "QLDSIM": 1.0
+      },
+      "off_weights": {
+        "IEFSIM": 1.0
+      },
+      "signal_ticker": "QQQSIM",
+      "filter": "momentum",
+      "lookback_days": 126,
+      "lag_days": 1
+    }
+  }
+}

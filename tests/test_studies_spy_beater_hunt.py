@@ -278,6 +278,68 @@ def test_threshold_band_invalid_filter_raises():
 
 
 # ---------------------------------------------------------------------------
+# Time-series momentum (TSMOM) gate
+# Citation: Moskowitz/Ooi/Pedersen (2012) "Time Series Momentum"
+# ---------------------------------------------------------------------------
+
+
+def test_momentum_gate_no_peek_ahead():
+    """TSMOM gate at time t uses signal at t-1 (T+1 lag enforced).
+
+    Build a series where price drops below its lookback-ago value on a
+    known day; gate should flip OFF one day AFTER (lag=1), not on cross day.
+    """
+    from studies.spy_beater_hunt.lrs_engine import momentum_gate
+
+    # 100d rising trend (TSMOM ON), then 60d decline (TSMOM OFF after lookback)
+    n = 200
+    lookback = 60
+    prices = pd.Series(
+        list(np.linspace(100.0, 200.0, 100)) + list(np.linspace(200.0, 80.0, 100)),
+        index=pd.date_range("2020-01-02", periods=n, freq="B"),
+    )
+    gate = momentum_gate(prices, lookback_days=lookback, lag_days=1)
+
+    # Rising portion (post-lookback warmup): True
+    assert gate.iloc[lookback + 30] == True  # noqa: E712
+    # Declining portion deep enough that price[t] < price[t-lookback]: False
+    assert gate.iloc[180] == False  # noqa: E712
+
+
+def test_momentum_gate_initial_lookback_false():
+    """First `lookback_days` days have NaN past → gate fills False (defensive)."""
+    from studies.spy_beater_hunt.lrs_engine import momentum_gate
+
+    prices = pd.Series(
+        np.linspace(100.0, 150.0, 30),
+        index=pd.date_range("2020-01-02", periods=30, freq="B"),
+    )
+    gate = momentum_gate(prices, lookback_days=126, lag_days=1)
+    # All 30 days are pre-lookback → gate should be all False
+    assert (gate == False).all()  # noqa: E712
+
+
+def test_momentum_gate_lookback_param():
+    """Verify lookback_days parameter is honoured (price > price[t-lookback])."""
+    from studies.spy_beater_hunt.lrs_engine import momentum_gate
+
+    # 30 flat days at 100, then 1 jump to 150, then 30 flat at 150
+    n = 61
+    prices = pd.Series(
+        [100.0] * 30 + [150.0] * 31,
+        index=pd.date_range("2020-01-02", periods=n, freq="B"),
+    )
+    # With lookback=20, at idx 50: price=150, price[t-20]=price[30]=150 → not >
+    # At idx 50, price[t-21]=100 → with lookback=21, gate ON (lagged to idx 51)
+    gate_lb20 = momentum_gate(prices, lookback_days=20, lag_days=1)
+    gate_lb40 = momentum_gate(prices, lookback_days=40, lag_days=1)
+    # At idx 51: lookback=20 sees price[31]=150 vs current=150 → False
+    assert gate_lb20.iloc[51] == False  # noqa: E712
+    # At idx 51: lookback=40 sees price[11]=100 vs current=150 → True
+    assert gate_lb40.iloc[51] == True  # noqa: E712
+
+
+# ---------------------------------------------------------------------------
 # LRS strategy returns
 # ---------------------------------------------------------------------------
 

@@ -64,6 +64,7 @@ from studies.spy_beater_hunt.lrs_engine import (
     ema_gate,
     gayed_200d_sma_gate,
     lrs_strategy_returns,
+    momentum_gate,
     threshold_band_gate,
 )
 from studies.spy_beater_hunt.plot_helper import (
@@ -137,7 +138,12 @@ def _lrs_returns_from_spec(spec: dict, dataset: str) -> pd.Series:
 
     signal_prices = load_testfolio_series(signal_ticker)
 
-    if filter_type == "sma" and buffer_pct == 0.0:
+    if filter_type == "momentum":
+        lookback_days = int(spec.get("lookback_days", 126))
+        gate = momentum_gate(
+            signal_prices, lookback_days=lookback_days, lag_days=lag_days,
+        )
+    elif filter_type == "sma" and buffer_pct == 0.0:
         gate = gayed_200d_sma_gate(signal_prices, window=window, lag_days=lag_days)
     elif filter_type == "ema" and buffer_pct == 0.0:
         gate = ema_gate(signal_prices, window=window, lag_days=lag_days)
@@ -154,7 +160,7 @@ def _lrs_returns_from_spec(spec: dict, dataset: str) -> pd.Series:
     else:
         raise ValueError(
             f"unknown filter_type {filter_type!r}; "
-            "choose 'sma', 'ema', 'sma_band', or 'ema_band'"
+            "choose 'sma', 'ema', 'sma_band', 'ema_band', or 'momentum'"
         )
 
     return lrs_strategy_returns(on_returns, off_returns, gate)

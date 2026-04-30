@@ -1,15 +1,15 @@
 ---
 mission: "Find ONE long-term strategy with mean CAGR ≥ SPY (11.21%) AND mean MDD ≤ SPY (55.17%) AND surviving 7-gate battery on ≥ 2/2 datasets"
 target_total_iterations: 50
-total_iterations: 12
+total_iterations: 13
 winners_found: 0
-closest_to_winner: "iter 006 a6_tqqq_split_kmlm30_tlt10 RETAINS as final closest-to-winner: CAGR 17.33% PASS, MDD 49.73% PASS, gates 6/6 PASS cross_met — score **67/100** (now across 5 control families × 11 substantive iters × 38 trials, no architecture exceeds). Iter 012 (D2 stacked equity heavy NTSX+UPRO+AVUV) tested as **post-impossibility 5th-family sanity check** — best D2 score = 52/100 (d2_ntsx_avuv 50% NTSX + 50% AVUV, MARGINAL tier, all 3 bars met but score WORST in entire hunt). KILL #36 FIRED (D2 ≤ 67, reinforces KILL #33 across 5 families). KILL #37 NOT FIRED (no D2 config ≥ 75). KILL #38 FIRED (d2_upro_avuv MDD 85.48% >> 55.17% bar — pure LETF + factor without regime gate is catastrophic). 5-family ceiling diagnostic: A2 TQQQ-track 67, A1/A3 SPY-track 66, B1/B2 HFEA 63, C1 vol-target 60, **D2 stacked equity 52** — D2 furthest below ceiling. Architectural ceiling **strengthened from 4-family to 5-family evidence**. Hunt remains CLOSED. F1+SPLIT (NTSX 25 + GDE 25 + KMLM 17.5 + DBMF 17.5 + TLT 15) confirmed empirically as best honest deploy candidate after 56 cumulative iters (long_term_portfolio 43 + spy_beater 11 substantive + 1 sanity-check + 1 meta). Mandate §1 100% Plano C UNCHANGED."
+closest_to_winner: "iter 006 a6_tqqq_split_kmlm30_tlt10 RETAINS as final closest-to-winner: CAGR 17.33% PASS, MDD 49.73% PASS, gates 6/6 PASS cross_met — score **67/100** (now across **6 control families × 12 substantive iters × 41 trials**, no architecture exceeds). Iter 013 (D1 concentrated growth + TSMOM gate, 1× QQQ + 6m/12m TSMOM, 2× QLD + 6m TSMOM) tested as **post-impossibility 6th-family sanity check** — best D1 score = 59/100 (d1_qqq_6m_tsmom 1× QQQ + 126d TSMOM gate vs IEF, MARGINAL tier, all 3 bars met but score 8pts BELOW closest-to-winner). KILL #39 FIRED (D1 ≤ 67, reinforces KILL #33 across 6 families). KILL #40 NOT FIRED (no D1 config ≥ 75). KILL #41 NOT FIRED (Sharpe direction mixed across datasets: lh_56y 6m→12m UP +0.0011, spy_real 6m→12m DOWN −0.0621). 6-family ceiling diagnostic: A2 TQQQ-track 67, A1/A3 SPY-track 66, B1/B2 HFEA 63, C1 vol-target 60, **D1 concentrated+TSMOM 59 (best mean MDD 35.27% in entire hunt)**, D2 stacked equity 52. Architectural ceiling **strengthened from 5-family to 6-family evidence**. **Notable counterweight**: D1 d1_qqq_6m_tsmom has BEST mean MDD across all 6 families (35.27% vs iter 006 closest 49.73%) — would rank significantly higher under MDD-anchored or Sharpe-anchored rubric. Hunt remains CLOSED. F1+SPLIT (NTSX 25 + GDE 25 + KMLM 17.5 + DBMF 17.5 + TLT 15) confirmed empirically as best honest deploy candidate after 57 cumulative iters (long_term_portfolio 43 + spy_beater 12 substantive + 1 sanity-check + 1 meta). Mandate §1 100% Plano C UNCHANGED."
 status: closed_no_winner
-latest_iteration: "012-2026-04-30-D2-stacked-equity-heavy"
-latest_score: 52
+latest_iteration: "013-2026-04-30-D1-concentrated-growth-tsmom"
+latest_score: 59
 latest_tier: MARGINAL
-latest_bars_met: "3/3 (winner_conditions_met=True for d2_ntsx_avuv but score 52 << closest-to-winner 67)"
-cumulative_n_trials: 38  # iter 011 preserved 35; iter 012 added 3
+latest_bars_met: "3/3 (winner_conditions_met=True for d1_qqq_6m_tsmom but score 59 << closest-to-winner 67)"
+cumulative_n_trials: 41  # iter 012 = 38; iter 013 added 3
 datasets:
   - "lh_56y (1986+, ~40y, SPYSIM synth, GATE thresh 5)"
   - "spy_real (2003+, ~22.7y, SPY Tiingo adj_close, GATE thresh 5)"
@@ -18,6 +18,7 @@ spy_benchmarks:
   mdd_mean: 0.5517
   sharpe_mean: 0.6661
 direction_status:
+  D1_concentrated_TSMOM: "TESTED iter 013 as post-impossibility 6th-family sanity check, score 59/100 MARGINAL — ALL 3 bars met for d1_qqq_6m_tsmom but score 8pts BELOW closest-to-winner. CLOSED at TSMOM gate family ceiling. **Notable**: d1_qqq_6m_tsmom achieves BEST mean MDD across all 6 families tested (35.27% vs iter 006 closest 49.73%). TSMOM 6m gate is *more conservative* than 200d SMA — slower entry/exit lag → captures fewer drawdown re-entries → better MDD at cost of CAGR. Lookback dose-response is dataset-regime dependent (12m better lh_56y +0.0011, 6m better spy_real +0.0621). 2× QLD variant FAILS MDD bar (62.28% > 55.17%) confirming KILL #38: pure LETF + concentration + TSMOM = catastrophic MDD. Direction CLOSED at score 59; under spy_beater CAGR-anchored rubric not viable, but under MDD-anchored rubric d1_qqq_6m_tsmom would be top-rank candidate."
   A1_200d_SMA_3x_UPRO: "CLOSED (displaced iter 003 KMLM20 then iter 004 KMLM30)"
   A2_faster_signal: "CLOSED (iter 002 KILL #7) — faster SMA/EMA make MDD WORSE"
   A2_threshold_buffer: "CLOSED (iter 002 KILL #8) — buffer ≥5% makes MDD worse"
@@ -36,7 +37,8 @@ direction_status:
   B2_HFEA_KMLM: "CLOSED via KILL #27 (iter 009) — KMLM 15-25% dose on HFEA backbone insufficient to clear MDD bar (kmlm15 spy_real 61.27%, kmlm25 spy_real 61.78%, both > 55%). KMLM dose-response on HFEA is OPPOSITE SPY-track: flat-to-negative on Sharpe within 15-25%, monotonic NEGATIVE on MDD (more KMLM = MORE MDD). The first 15pp KMLM dose cuts ~6pp MDD relief from HFEA-only (67→61%); subsequent KMLM dose at 20-25% adds 0.5pp MDD instead. KMLM-for-TMF substitution is pareto-trade not pareto-improve at HFEA's 165% UPRO notional. Net 0 score vs HFEA classical (iter 008): +3 MDD pts gained, −2 CAGR pts + −1 Gates pt lost."
   C1_vol_targeted: "TESTED iter 010, score 60 PROMISING (BELOW iter 008/009 63, BELOW iter 006/007 67). All 3 configs PASS all 3 bars (rare 3/3 honest result). KILL #32 FIRED — Sharpe monotonic NEGATIVE through target_vol 20→22→25% on BOTH datasets. Conservative end (c1_vt20_sso target 20% on SSO 2×) viable but CAGR caps at 13.5% vs 17.3% needed for 67-score parity. Carver canonical's Sharpe-improving property does NOT transfer cleanly to LETF-on-SPY because daily-reset decay (1-3%/y) dominates at high mean weight, AND vol-target underperforms SPY in low-vol bull regimes (5y rolling pass-rate 75% vs iter 006/007 100%) since SSO/UPRO daily-reset decay drags compounding-positive low-vol rallies that 1× SPY captures cleanly. Direction at HIGH-target end CLOSED via KILL #32; conservative end structurally subordinate to A2 TQQQ-track + crisis-alpha within rubric."
   D2_stacked_equity_heavy: "TESTED iter 012 as post-impossibility 5th-family sanity check, score 52/100 MARGINAL — WORST family in entire hunt. d2_ntsx_avuv (50% NTSX + 50% AVUV) passes 3/3 bars (CAGR 12.23%, MDD 52.65%, gates cross_met) but score 52 << 67 closest-to-winner because mean CAGR caps at 12.23% (anchor lift at 14pts/30) and Sharpe lift over closest-to-winner is NEGATIVE −0.021. d2_ntsx_upro_avuv (35/35/30 mixed stacking + LETF + factor) MDD 76.91% FAIL bar; d2_upro_avuv (50/50 pure LETF + factor) MDD 85.48% catastrophic FAIL. KILL #36 FIRED — 5th family ≤ 67 reinforces KILL #33. KILL #37 NOT FIRED — no D2 config ≥ 75. KILL #38 FIRED — pure equity LETF + factor MDD > 55%, confirms regime-gate or duration-stacking is NECESSARY for spy_beater MDD bar. D2 family CLOSED."
-  ARCHITECTURAL_CEILING: "DECLARED FIRED iter 011 via NEW KILL #33 (structural architectural ceiling). REINFORCED iter 012 across **5 distinct control families** with 11 substantive iters + 1 sanity-check + 1 meta = 13 total iters / 38 cumulative trials. 5-family ceiling table: A2 TQQQ-track 67, A1/A3 SPY-track 66, B1/B2 HFEA 63, C1 vol-target 60, D2 stacked equity 52. Optimistic Pareto-loose ceiling 86 < 90 WINNER threshold; real Pareto-feasible ceiling ≈ 75. Score-90 path architecturally unreachable within spy_beater rubric. spy_beater_hunt CLOSED."
+  ARCHITECTURAL_CEILING: "DECLARED FIRED iter 011 via NEW KILL #33 (structural architectural ceiling). REINFORCED iter 012 (5 families) and iter 013 (6 families) across **6 distinct control families** with 12 substantive iters + 2 sanity-checks + 1 meta = 14 total iters / 41 cumulative trials. 6-family ceiling table: A2 TQQQ-track 67, A1/A3 SPY-track 66, B1/B2 HFEA 63, C1 vol-target 60, D1 concentrated+TSMOM 59 (best mean MDD 35.27% in entire hunt), D2 stacked equity 52. Optimistic Pareto-loose ceiling 86 < 90 WINNER threshold; real Pareto-feasible ceiling ≈ 75. Score-90 path architecturally unreachable within spy_beater rubric. spy_beater_hunt CLOSED. Only Tier 3 family remaining untested = C2 CAPE-timing (low-credibility per PROMISING_DIRECTIONS.md, 20+ years of OOS failure)."
+  iter_013_D1_sanity_check: "POST-IMPOSSIBILITY SANITY CHECK on KILL #33 (6th distinct architectural family). 3 configs tested: d1_qqq_6m_tsmom (1× QQQ + 126d TSMOM gate vs IEF) score 59 MARGINAL all 3 bars met; d1_qqq_12m_tsmom (252d lookback) similar score ~57; d1_qld_6m_tsmom (2× QLD + 126d TSMOM) FAILS MDD bar (62.28% > 55.17%). KILL #39 FIRED reinforcing KILL #33 (6 families ≤ 67); KILL #40 NOT FIRED (no D1 ≥ 75); KILL #41 NOT FIRED (Sharpe direction mixed across datasets — 12m better lh_56y, 6m better spy_real). Hunt remains CLOSED. Notable: d1_qqq_6m_tsmom is **best-MDD strategy** in entire spy_beater hunt (35.27% mean MDD). cumulative_n_trials = 41, worst DSR p = 2.99e-03 << 0.05. Statistical confidence preserved. NEW module: momentum_gate added to lrs_engine.py via TDD (3 tests). 762 → 765 tests baseline preserved."
   iter_011_IMPOSSIBILITY_RESULT: "META-ITER (no new configs, n_trials=35 preserved). Synthesized iters 001-010 → 4 families × 10 iters → best score 67 < 75 ceiling threshold → KILL #33 FIRED. Aggregator (studies/spy_beater_hunt/iterations/011-*/aggregator.py) wrote results.json + verdict.json (tier=IMPOSSIBILITY_RESULT, status=closed_no_winner). Loop-level FINAL_REPORT_spy_beater_failed.md written. KILL #34 (methodology stability) NOT FIRED. KILL #35 (F1+SPLIT comparison sanity) NOT FIRED. F1+SPLIT incumbent fallback DEPLOY-READY; mandate §1 100% Plano C UNCHANGED. Negative result has policy value: 53 cumulative iters across two loops failed to find a strategy beating SPY in BOTH CAGR and MDD."
   iter_012_D2_sanity_check: "POST-IMPOSSIBILITY SANITY CHECK on KILL #33. 3 configs (d2_ntsx_avuv, d2_ntsx_upro_avuv, d2_upro_avuv) tested as 5th distinct architectural family (no regime gate, no leveraged duration, no vol target — pure stacking + factor + LETF). Best score 52/100 MARGINAL << 67 closest-to-winner. KILL #36 FIRED reinforcing KILL #33; KILL #38 FIRED confirming regime-gate/stacking necessity. KILL #37 NOT FIRED. Hunt remains CLOSED. cumulative_n_trials = 38, worst DSR p = 9.40e-03 << 0.05. Statistical confidence preserved. Architectural-ceiling claim now rests on 5-family evidence + 13 total iters + 38 trials."
 parent_loop: "studies/long_term_portfolio (43 iters, F1+SPLIT incumbent fallback)"
@@ -93,6 +95,56 @@ NEW synths likely needed (NOT in long_term_portfolio):
 ---
 
 ## Iteration log (newest first)
+
+### iter 013 — D1 concentrated growth + TSMOM gate (QQQ + 6m/12m time-series momentum) — POST-IMPOSSIBILITY 6TH-FAMILY SANITY CHECK — MARGINAL 59/100, KILL #39 FIRED, KILL #33 REINFORCED ACROSS 6 FAMILIES (2026-04-30)
+
+- **Tier**: **MARGINAL 59/100** (winner_conditions_met = **TRUE** for d1_qqq_6m_tsmom but score 59 << 67 closest-to-winner; D1 = 5th-worst score in entire hunt out of 6 families)
+- **Selected**: `d1_qqq_6m_tsmom` (1× QQQSIM ON, 1× IEFSIM OFF, signal=QQQSIM, filter=momentum, lookback_days=126, lag_days=1)
+- **Bars** (selected, 2-dataset framework): CAGR ✓ (12.83% mean ≥ 11.21%), MDD ✓ (35.27% mean ≤ 55.17%), Gates ✓ (5+5, cross_met TRUE)
+- **All 3 configs**:
+  | config              | mean CAGR | mean MDD | Sharpe (lh, spy_real) | bar test |
+  |---------------------|----------:|---------:|----------------------:|---------:|
+  | **d1_qqq_6m_tsmom** | **12.83%**| **35.27%**| **0.791 / 0.766**    | **PASS 3/3** |
+  | d1_qqq_12m_tsmom    | 13.46%    | 39.80%   | 0.792 / 0.704        | PASS 3/3 |
+  | d1_qld_6m_tsmom     | 18.35%    | 62.28%   | 0.652 / 0.684        | FAIL (MDD) |
+- **Per-dataset (selected)**:
+  | dataset  | Sharpe | CAGR    | MDD    | gates | DSR p     |
+  |----------|-------:|--------:|-------:|------:|----------:|
+  | lh_56y   | 0.791  | 14.10%  | 36.49% | 5/7   | 1.94e-05  |
+  | spy_real | 0.766  | 11.56%  | 34.04% | 5/7   | 2.99e-03  |
+- **Score breakdown vs iter 006 closest-to-winner (67 → 59, −8)**: CAGR 25→16 (**−9**, mean 17.33→12.83%), MDD 7→12 (**+5**, mean 49.73→35.27% — BEST MDD in entire hunt), Gates 13→11 (−2, gates 6/7 each → 5/7 each), DSR 10→10 (0), Sharpe 2→2 (0), Robustness 10→8 (−2). Net **−8**. D1 trades 9 CAGR pts for 5 MDD pts within rubric.
+- **Pre-committed KILLs**:
+  - **KILL #39 (D1 reinforces KILL #33 — 6th family ≤ 67) FIRED**: best D1 score = 59 << 67 ceiling; 6-family architectural ceiling claim **strengthened from 5-family to 6-family evidence**.
+  - **KILL #40 (sanity-check breaks ceiling — KILL #33 INVALIDATED) NOT FIRED**: no D1 config scored ≥ 75 (best 59). KILL #33 stands; hunt does NOT reopen.
+  - **KILL #41 (TSMOM lookback monotonic 6m→12m) NOT FIRED**: Sharpe direction MIXED across datasets — lh_56y 6m=0.7912 → 12m=0.7923 (+0.0011 UP), spy_real 6m=0.7659 → 12m=0.7038 (−0.0621 DOWN). Lookback dose-response is **dataset-regime dependent**: longer lookback favours very-long-history (40y), shorter favours recent (22y). Validates `[advances_fin_ml, p.31-34]` factor framework concern: lookback selection introduces bias.
+- **D1 vs D2 vs A2 architecture comparison** (cross-family knowledge):
+  - D1 1× QQQ + TSMOM = 59 (best MDD 35.27%, slow gate)
+  - A2 3× TQQQ + 200d SMA = 67 (CAGR 17.33%, faster gate, decay-heavy)
+  - D2 NTSX + AVUV stack = 52 (no gate, factor only)
+  - **TSMOM gate is more conservative than SMA**: trades CAGR for MDD. TSMOM 6m delays entry/exit by ~1-2 months vs daily SMA cross.
+- **6-family architectural ceiling diagnostic (UPDATED)**:
+  | family                  | best score | best Sharpe | best mean MDD |
+  |:------------------------|-----------:|------------:|--------------:|
+  | A2 TQQQ-track LRS       | **67**     | 0.804       | 49.73%        |
+  | A1/A3 SPY-track LRS     | 66         | 0.744       | 51.60%        |
+  | B1/B2 HFEA barbell      | 63         | 0.739       | 67.48%        |
+  | C1 vol-target           | 60         | 0.721       | 41.86%        |
+  | **D1 concentrated+TSMOM**| **59**    | 0.779       | **35.27%** ⬅ BEST MDD |
+  | D2 stacked equity       | 52         | 0.738       | 52.65%        |
+- **Notable counterweight**: d1_qqq_6m_tsmom is the **best-MDD strategy in the entire spy_beater hunt** (35.27% mean MDD). Under MDD-anchored or Sharpe-anchored rubric, D1 would rank significantly higher than under CAGR-anchored spy_beater rubric. Independent value as candidate for variant studies.
+- **Multi-horizon robustness 8/10**: 5y pass-rate 62.5% (LOW — D1 underperforms SPY in low-vol bull regimes due to IEF off-state drag), 10y 76.6%, 15y 81.7%, 20y 100.0%. Long-horizon robustness excellent; short-horizon limited by gate's IEF off-state dragging during bull rallies.
+- **Cross-family knowledge added by iter 013**:
+  1. **TSMOM gate is more conservative than SMA gate** in MDD control: trades CAGR for MDD.
+  2. **TSMOM lookback dose-response is dataset-regime dependent** — 12m wins long history, 6m wins shorter recent samples; no universal optimum.
+  3. **NDX-track unleveraged (D1) scores below NDX-track LETF (A2)** under CAGR-anchored rubric (59 vs 67), but D1 has dramatically better MDD (35% vs 50%).
+  4. **2× LETF (QLD) bridges LETF/unleveraged badly** — d1_qld_6m_tsmom CAGR 18.35% but MDD 62.28%; 2× combines worst-of-both at TSMOM gate. Confirms KILL #38: pure LETF + concentration without bonds = catastrophic MDD across leverage levels (2× and 3×).
+- **H₁ CONFIRMED**: D1 cannot exceed 67 (best 59). H₂ PARTIALLY CONFIRMED: TSMOM lookback dose-response is non-monotonic (mixed across datasets, not strictly worse at 12m). H₃ CONFIRMED: 2× QLD + TSMOM fails MDD bar (62.28% > 55.17%); LETF decay erodes leverage advantage.
+- **Surprising finding**: D1 has **best MDD in entire hunt** despite being 5th-worst on score. TSMOM gate's slower reaction (vs SMA) actually helps MDD by avoiding false-positive re-entries during bear rallies. Counter-intuitive vs literature suggestion that "faster gate = better drawdown control".
+- **Path to 90 (D1 architecture)**: ARCHITECTURALLY UNREACHABLE under CAGR-anchored rubric. Best D1 score 59 → gap 31 to 90. Optimistic single-criterion lift +41 (CAGR +14 + MDD +8 + Gates +9 + Sharpe +8 + Robustness +2); real Pareto-feasible ceiling ≈ 70 (CAGR↔MDD trade-off seen in QLD config).
+- **Why this iter was worth doing despite hunt being CLOSED**: iter 011/012 INCOMPLETE flags listed Tier 3 D1 as untested. KILL #33 fired on 5-family evidence (post-iter-012); testing a 6th family was a **due diligence step** that confirmed KILL #33 (6th family scores 59 << 67) AND surfaced an unexpected positive artefact (best-MDD strategy = d1_qqq_6m_tsmom). Strengthened the negative-result policy claim from "5 families, 56 cumulative iters" to "6 families, 57 cumulative iters" — robust enough for mandate §1 confirmation. Only Tier 3 family remaining untested = C2 CAPE-timing (low-credibility per literature).
+- **Suggested iter 014+**: NONE — hunt remains CLOSED. C2 CAPE-timing is the only Tier 3 family untested but per PROMISING_DIRECTIONS.md "CAPE has been 'high' for 20+ years and timing has been wrong" — additional testing would not change the architectural-ceiling conclusion.
+- **Citations**: Moskowitz/Ooi/Pedersen (2012) "Time Series Momentum" JFE 104(2):228-250 — TSMOM canonical 12m lookback validated; Faber 2007 GTAA — 6m TSMOM at monthly frequency operationalised at daily granularity; `[leverage_for_the_long_run, ch.3-4, p.40-60]` Gayed gate-family rationale — TSMOM is structurally complementary to 200d SMA (slower, better MDD, lower CAGR); `[advances_fin_ml, p.31-34]` factor framework — gate-family dimension distinct from leverage/regime axes; lookback selection bias validated by mixed direction; `[advances_fin_ml, p.222-223]` DSR cumulative_n_trials = 41, worst p = 2.99e-03 << 0.05; `[advances_fin_ml, p.196-202]` bootstrap CI passed (lh_56y 0.3255, spy_real 0.0841 > 0).
+- **Infrastructure**: NEW module added — `momentum_gate` in `lrs_engine.py` via TDD (3 tests: no-peek-ahead + initial-lookback-false + lookback-param). Wired into `_lrs_returns_from_spec` via `filter="momentum"` + `lookback_days` field. Backwards-compat preserved for sma/ema/sma_band/ema_band filters. 762 → 765 tests baseline.
 
 ### iter 012 — D2 stacked equity heavy (NTSX + UPRO + AVUV) — POST-IMPOSSIBILITY 5TH-FAMILY SANITY CHECK — MARGINAL 52/100, KILL #36 + KILL #38 FIRED, KILL #33 REINFORCED (2026-04-30)
 
