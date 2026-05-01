@@ -42,22 +42,22 @@ I picked 4 named profiles from a 14-config sweep + 3 references. Each profile ta
 
 ### Equity curves
 
-![Equity curves 1986-2026](https://i.imgur.com/PLACEHOLDER_1.png)
+![Equity curves 1986-2026](reddit_plot_1_equity.png)
 *All 7 portfolios, $10k start, log scale. Aggressive (T1) and Balanced (B2) lead the pack on terminal value AND have lower drawdowns than SPY.*
 
 ### Drawdowns
 
-![Drawdown comparison 1986-2026](https://i.imgur.com/PLACEHOLDER_2.png)
+![Drawdown comparison 1986-2026](reddit_plot_2_drawdown.png)
 *Static stacks max out around -22% to -36% drawdown. SPY and the popular 50/25/25 SSO mix both cross -47% to -55%. The Conservative (B4) and Sleeping pills (L1) profiles cap drawdown at -22% to -28% — sleep-better territory.*
 
 ### Risk-return scatter (Pareto frontier)
 
-![CAGR vs Max DD scatter](https://i.imgur.com/PLACEHOLDER_3.png)
+![CAGR vs Max DD scatter](reddit_plot_3_scatter.png)
 *Bottom-left is the dominated zone. Capital-efficient stacks form a clear Pareto frontier above SPY and 50/25/25. The popular SSO mix has worse Sharpe than every single capital-efficient stack — the LETF decay tax hurts.*
 
 ### Rolling 5-year CAGR
 
-![Rolling 5y CAGR](https://i.imgur.com/PLACEHOLDER_4.png)
+![Rolling 5y CAGR](reddit_plot_4_rolling5y.png)
 *Static stacks rarely go negative on rolling 5y windows. SPY does. Aggressive consistently leads while keeping drawdowns reasonable.*
 
 ---
