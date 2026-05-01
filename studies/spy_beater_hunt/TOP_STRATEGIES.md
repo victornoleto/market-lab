@@ -82,11 +82,11 @@ Estratégias com baixa probabilidade de overfit (PBO ≤ 0.20) e que passam todo
 
 ### #2 — Iter 019 H2 (3-way meta-ensemble) — versão simplificada
 
-**Plots**: [equity lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_overlay_lh_56y.png) · [equity spy_real](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_cagr_mdd_scatter.png) · [gate heatmap](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_gate_heatmap.png)
+**Plots**: [equity lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_overlay_lh_56y.png) · [equity spy_real](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_cagr_mdd_scatter.png) · [gate heatmap](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_gate_heatmap.png)
 
-![iter 019 equity overlay lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_overlay_lh_56y.png)
+![iter 019 equity overlay lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_overlay_lh_56y.png)
 
-![iter 019 rolling lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-33-33-34/plot_rolling_lh_56y.png)
+![iter 019 rolling lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_rolling_lh_56y.png)
 
 **Spec**: 33% A2 + 33% G2 IEF + 34% F1 stack (sem o 4th TSMOM constituent).
 
@@ -149,9 +149,9 @@ Estratégias com baixa probabilidade de overfit (PBO ≤ 0.20) e que passam todo
 
 ### #5 — Iter 020 H3 (4-way com G1 IEF — best MDD)
 
-**Plots**: [equity lh_56y](iterations/020-2026-04-30-H3-meta-ensemble-4way-25-25-25-25-with-g1/plot_overlay_lh_56y.png) · [equity spy_real](iterations/020-2026-04-30-H3-meta-ensemble-4way-25-25-25-25-with-g1/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/020-2026-04-30-H3-meta-ensemble-4way-25-25-25-25-with-g1/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/020-2026-04-30-H3-meta-ensemble-4way-25-25-25-25-with-g1/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/020-2026-04-30-H3-meta-ensemble-4way-25-25-25-25-with-g1/plot_cagr_mdd_scatter.png)
+**Plots**: [equity lh_56y](iterations/020-2026-04-30-H3-meta-ensemble-4way-and-alt-3way-g1-ief/plot_overlay_lh_56y.png) · [equity spy_real](iterations/020-2026-04-30-H3-meta-ensemble-4way-and-alt-3way-g1-ief/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/020-2026-04-30-H3-meta-ensemble-4way-and-alt-3way-g1-ief/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/020-2026-04-30-H3-meta-ensemble-4way-and-alt-3way-g1-ief/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/020-2026-04-30-H3-meta-ensemble-4way-and-alt-3way-g1-ief/plot_cagr_mdd_scatter.png)
 
-![iter 020 equity overlay lh_56y](iterations/020-2026-04-30-H3-meta-ensemble-4way-25-25-25-25-with-g1/plot_overlay_lh_56y.png)
+![iter 020 equity overlay lh_56y](iterations/020-2026-04-30-H3-meta-ensemble-4way-and-alt-3way-g1-ief/plot_overlay_lh_56y.png)
 
 **Spec**: 25% A2 + 25% G1 IEF (SMA × F1 stack no-decay) + 25% G2 IEF + 25% F1 stack.
 
@@ -260,6 +260,14 @@ O `lag_days=1` do backtest **modela bem o caso comum** (good-faith T+1) mas **su
 3. **Buy-hold static (#6 F1 stack)** é **imune a esse problema** — só rebalanceia 1×/ano em data fixa. Você tem horas/dias pra colocar a ordem. Mais um ponto a favor da implementação simples.
 
 ### Resultado do sensitivity test (iter 037 — 2026-04-30)
+
+**Plots iter 037**: [equity overlay lh_56y](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_overlay_lh_56y.png) · [equity overlay spy_real](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_cagr_mdd_scatter.png) · [gate heatmap](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_gate_heatmap.png)
+
+![iter 037 sensitivity equity overlay lh_56y](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_overlay_lh_56y.png)
+
+![iter 037 sensitivity rolling lh_56y](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_rolling_lh_56y.png)
+
+![iter 037 CAGR vs MDD scatter](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_cagr_mdd_scatter.png)
 
 Rodei `studies/spy_beater_hunt/iterations/037-*/backtest.py` testando 4 variantes da iter 026 H6:
 
