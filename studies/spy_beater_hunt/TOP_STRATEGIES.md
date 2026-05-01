@@ -259,17 +259,42 @@ O `lag_days=1` do backtest **modela bem o caso comum** (good-faith T+1) mas **su
 
 3. **Buy-hold static (#6 F1 stack)** é **imune a esse problema** — só rebalanceia 1×/ano em data fixa. Você tem horas/dias pra colocar a ordem. Mais um ponto a favor da implementação simples.
 
-### TODO honesto pré-deploy
+### Resultado do sensitivity test (iter 037 — 2026-04-30)
 
-Esse é um **gap conhecido** do backtest. Não é overfit — é modelo operacional incompleto. Antes de deploy real do meta-ensemble (#1, #2 ou #3), vale **re-rodar o iter selecionado com `lag_days=2`** e comparar:
+Rodei `studies/spy_beater_hunt/iterations/037-*/backtest.py` testando 4 variantes da iter 026 H6:
 
-```python
-# Quick sensitivity test (1 iter, 5 minutes)
-# Modify iter spec lag_days: 1 → 2, re-run backtest.py
-# Compare net_total_score, net Sharpe, net MDD.
-```
+| variant | NET Sharpe | NET CAGR | NET MDD | Δ vs baseline (NET) |
+|---|---:|---:|---:|---|
+| `h6_baseline` (iter 026 verbatim) | 0.845 | 13.83% | 33.60% | anchor |
+| `h6_buffer2` (SMA buffer 2%) | 0.824 | 13.52% | **32.66%** | MDD **−0.94pp** ✅ / CAGR −0.31pp / Sharpe −0.021 |
+| `h6_lag2` (lag_days=2) | 0.847 | 13.99% | 34.93% | MDD +1.33pp / CAGR +0.16pp / Sharpe +0.002 ≈ neutral |
+| `h6_buffer2_lag2` (combo) | 0.842 | 13.99% | **32.74%** | MDD **−0.86pp** ✅ / CAGR +0.16pp / Sharpe −0.003 ≈ baseline |
 
-Se o usuário sinalizar GO, eu rodo essa sensitivity test rapidamente antes de qualquer recomendação final.
+**Reprodutibilidade verificada**: `h6_baseline` rendeu métricas IDÊNTICAS a iter 026 H6.4 (Sharpe 0.9424, CAGR 16.61%, MDD 34.20% per-dataset lh_56y, batendo até a 4ª casa decimal). Confirma que a sensitivity é apples-to-apples.
+
+### Diagnóstico
+
+1. **Buffer 2% no meta-ensemble**: MDD melhora **−0.94pp** apenas. Magnitude bem menor que a iter 002 single-asset UPRO 3× (−12pp) porque a **diversificação entre os 4 sleeves já absorve a maior parte do whipsaw cost**. Custo na CAGR/Sharpe é proporcionalmente similar (−0.31pp / −0.021). Net Pareto: **win pequeno em MDD, custo proporcional em CAGR**.
+
+2. **Lag 2 (Inter T+2 worst-case)**: MDD piora ligeiramente (+1.33pp) — esperado, porque lag maior atrasa o exit durante crashes, capturando mais drawdown. **MAS Sharpe e CAGR essencialmente inalterados**. **Strategy é robust ao Inter T+2 settlement friction** — bom sinal pro deploy real.
+
+3. **Buffer 2% + Lag 2 combinado**: o **best operational config** — buffer compensa o exit-delay do lag 2, MDD volta a 32.74% (melhor que baseline lag 1!), Sharpe idêntico ao baseline. Você ganha a resiliência operacional sem custo.
+
+### Caveat: PBO inflation no iter 037
+
+PBO grid-level disparou pra **0.87/0.89** vs iter 026's **0.00/0.00**. Isso é **Principle M** (iter 034) em ação: PBO é grid-composition-dependent, e as 4 variantes do iter 037 são MUITO similares entre si (mesma estratégia base com tweaks de parâmetro), então CSCV considera elas estatisticamente indistinguíveis → PBO infla artificialmente.
+
+**A estratégia é a mesma** — anchor PBO honestamente em iter 026 (0.00), não no iter 037.
+
+### Recomendação operacional
+
+**Deploy iter 026 H6 com 2 ajustes**:
+- `buffer_pct: 0.02` em ambos os SMA constituents (A2 + G2 IEF) — reduz whipsaw, melhora MDD ~1pp, custo CAGR ~0.3pp
+- `lag_days: 2` em todos os constituents — operacionalmente seguro, sem degradação material
+
+Ambos juntos (`h6_buffer2_lag2`) entregam **NET CAGR 13.99% / NET MDD 32.74% / NET Sharpe 0.842** — empilhado contra o iter 026 baseline (CAGR 13.83% / MDD 33.60% / Sharpe 0.845), o combo **ganha em CAGR (+0.16pp) e MDD (−0.86pp)** com Sharpe idêntico.
+
+Esse é o **deploy spec recomendado** se você for por Plano B reativado.
 
 ---
 
