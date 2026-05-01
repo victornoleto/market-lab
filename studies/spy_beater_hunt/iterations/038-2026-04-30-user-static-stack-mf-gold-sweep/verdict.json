@@ -1,0 +1,649 @@
+{
+  "status": "promising",
+  "tier": "PROMISING",
+  "total_score": 70,
+  "winner_conditions_met": true,
+  "bars": {
+    "cagr_bar": true,
+    "mdd_bar": true,
+    "gates_bar": true
+  },
+  "bars_met_count": 3,
+  "criteria": {
+    "1_cagr": {
+      "points": 23,
+      "max": 30,
+      "mean_cagr": 0.1646930324484719,
+      "spy_bar": 0.1121,
+      "anchor_range": [
+        0.05,
+        0.2
+      ]
+    },
+    "2_mdd": {
+      "points": 13,
+      "max": 20,
+      "mean_mdd": 0.33420422077026407,
+      "spy_bar": 0.5517,
+      "anchor_range": [
+        0.7,
+        0.15
+      ]
+    },
+    "3_gates": {
+      "points": 11,
+      "max": 20,
+      "per_dataset": {
+        "lh_56y": 5,
+        "spy_real": 5
+      },
+      "thresholds": {
+        "lh_56y": 5,
+        "spy_real": 5
+      },
+      "cross_dataset_met": true
+    },
+    "4_dsr": {
+      "points": 10,
+      "max": 10,
+      "worst_p_value": 0.000924115410397941,
+      "cumulative_n_trials": 158
+    },
+    "5_sharpe": {
+      "points": 4,
+      "max": 10,
+      "mean_sharpe": 1.0341416197481506,
+      "anchor_range": [
+        0.5,
+        2.0
+      ]
+    },
+    "6_robustness": {
+      "points": 9,
+      "max": 10,
+      "input_bonus": 0,
+      "rolling_pass_rates": {
+        "5": 0.7777777777777778,
+        "10": 0.7692307692307693,
+        "15": 1.0,
+        "20": 1.0
+      },
+      "rolling_worst_mdd": {
+        "5": 0.334204220770265,
+        "10": 0.33420422077026524,
+        "15": 0.3342042207702649,
+        "20": 0.33420422077026524
+      },
+      "note": "Multi-horizon CAGR pass-rate vs SPY benchmark across 5y/10y/15y/20y rolling windows (3+3+2+2 pts max)."
+    },
+    "7_extra_bonus": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "lh_56y": {
+      "sharpe": 1.0453594691603616,
+      "cagr": 0.1653725532564092,
+      "mdd": 0.3342042207702639,
+      "dsr_p_value": 1.2626214956901194e-06
+    },
+    "spy_real": {
+      "sharpe": 1.0229237703359395,
+      "cagr": 0.16401351164053457,
+      "mdd": 0.33420422077026424,
+      "dsr_p_value": 0.000924115410397941
+    }
+  },
+  "spy_benchmark": {
+    "cagr_mean": 0.1121,
+    "mdd_mean": 0.5517
+  },
+  "cumulative_n_trials": 158,
+  "configs_tested": 14,
+  "primary_citation": "User-proposed 2026-04-30 baseline (testfol.io 1987+ CAGR 13.79% / MDD 30.91%) + RiskParityChronicles CEGB (40 NTSX + 35 RSBT + 25 GDE) + [risk_parity, ch.5, p.10] Carlson stacking + [ilmanen_expected_returns, ch.19] MF crisis-alpha + [leverage_for_the_long_run, ch.3-4] LETF decay (TMF) + optimizedportfolio.com fund reviews + Bogleheads NTSX template",
+  "hypothesis_slug": "user-static-stack-mf-gold-sweep",
+  "selected_config": "T1_gold_heavy",
+  "selection_rule": "max mean(Sharpe / SPY_Sharpe) across datasets",
+  "scoring_basis": "CAGR-anchored (spy_beater_hunt rubric, WINNER_AND_RANKING.md)",
+  "all_configs_metrics": {
+    "B1_user_baseline_25tmf": {
+      "lh_56y": {
+        "sharpe": 1.0502714045116284,
+        "cagr": 0.16612448400929436,
+        "mdd": 0.3673062507384543
+      },
+      "spy_real": {
+        "sharpe": 0.9778026083967607,
+        "cagr": 0.15420137661445166,
+        "mdd": 0.3673062507384554
+      }
+    },
+    "B2_tmf10_balanced": {
+      "lh_56y": {
+        "sharpe": 1.0239663692669045,
+        "cagr": 0.16199569026818694,
+        "mdd": 0.3468014979445347
+      },
+      "spy_real": {
+        "sharpe": 1.013371943432495,
+        "cagr": 0.16162930172117473,
+        "mdd": 0.34441843171813896
+      }
+    },
+    "B3_tlt_instead_of_tmf": {
+      "lh_56y": {
+        "sharpe": 1.0333611873006778,
+        "cagr": 0.13671158667528793,
+        "mdd": 0.29407463269177836
+      },
+      "spy_real": {
+        "sharpe": 1.0227193125317704,
+        "cagr": 0.13643259564976495,
+        "mdd": 0.29314328990045513
+      }
+    },
+    "B4_zroz_instead_of_tmf": {
+      "lh_56y": {
+        "sharpe": 1.0265020129153546,
+        "cagr": 0.14622422790510092,
+        "mdd": 0.2838470232471194
+      },
+      "spy_real": {
+        "sharpe": 1.0236075352842702,
+        "cagr": 0.1422204360680046,
+        "mdd": 0.2765918024245774
+      }
+    },
+    "B5_no_duration": {
+      "lh_56y": {
+        "sharpe": 0.9171665433461833,
+        "cagr": 0.1543373289789023,
+        "mdd": 0.41447431711870625
+      },
+      "spy_real": {
+        "sharpe": 0.9326132208759307,
+        "cagr": 0.16299382876272506,
+        "mdd": 0.41447431711870675
+      }
+    },
+    "M1_kmlm_no_rsst": {
+      "lh_56y": {
+        "sharpe": 1.0205861901705506,
+        "cagr": 0.13633567300618799,
+        "mdd": 0.3295592860398195
+      },
+      "spy_real": {
+        "sharpe": 0.9115680074908116,
+        "cagr": 0.12451455039492054,
+        "mdd": 0.32955928603982
+      }
+    },
+    "M2_dbmf_no_rsst": {
+      "lh_56y": {
+        "sharpe": 0.9068887190788696,
+        "cagr": 0.12338519624037336,
+        "mdd": 0.3442697969089644
+      },
+      "spy_real": {
+        "sharpe": 0.9276117607853132,
+        "cagr": 0.12755375961353477,
+        "mdd": 0.3442697969089643
+      }
+    },
+    "M3_kmlm_dbmf_blend": {
+      "lh_56y": {
+        "sharpe": 0.8966410160473739,
+        "cagr": 0.1208947601619248,
+        "mdd": 0.3362659616968901
+      },
+      "spy_real": {
+        "sharpe": 0.9251526119909175,
+        "cagr": 0.12616440456123468,
+        "mdd": 0.3362659616968898
+      }
+    },
+    "M4_rsst_kmlm_blend": {
+      "lh_56y": {
+        "sharpe": 1.045462142385192,
+        "cagr": 0.15142671667227825,
+        "mdd": 0.346123400140375
+      },
+      "spy_real": {
+        "sharpe": 0.9563880470177071,
+        "cagr": 0.1395690253607944,
+        "mdd": 0.3461234001403752
+      }
+    },
+    "L1_cegb_proxy": {
+      "lh_56y": {
+        "sharpe": 1.0251519369634912,
+        "cagr": 0.11572578769139019,
+        "mdd": 0.25831478510483474
+      },
+      "spy_real": {
+        "sharpe": 1.0335062044916614,
+        "cagr": 0.11884338828222152,
+        "mdd": 0.25831478510483524
+      }
+    },
+    "L2_bogleheads_67ntsx": {
+      "lh_56y": {
+        "sharpe": 1.0145552236910271,
+        "cagr": 0.11579385617632543,
+        "mdd": 0.24870328548630238
+      },
+      "spy_real": {
+        "sharpe": 0.985384079354705,
+        "cagr": 0.1095154478874445,
+        "mdd": 0.2487032854863026
+      }
+    },
+    "T1_gold_heavy": {
+      "lh_56y": {
+        "sharpe": 1.0453594691603616,
+        "cagr": 0.1653725532564092,
+        "mdd": 0.3342042207702639
+      },
+      "spy_real": {
+        "sharpe": 1.0229237703359395,
+        "cagr": 0.16401351164053457,
+        "mdd": 0.33420422077026424
+      }
+    },
+    "T2_equity_heavy": {
+      "lh_56y": {
+        "sharpe": 1.0449422148507257,
+        "cagr": 0.16074281742813623,
+        "mdd": 0.31165144921122556
+      },
+      "spy_real": {
+        "sharpe": 1.0140225317098344,
+        "cagr": 0.15521687361457803,
+        "mdd": 0.311651449211226
+      }
+    },
+    "T3_rssb_global": {
+      "lh_56y": {
+        "sharpe": 1.0117929749602634,
+        "cagr": 0.16109853761370108,
+        "mdd": 0.3880876173236634
+      },
+      "spy_real": {
+        "sharpe": 0.9381725841276979,
+        "cagr": 0.1517764652932796,
+        "mdd": 0.38808761732366287
+      }
+    }
+  },
+  "gate_details": {
+    "lh_56y": {
+      "g1_pbo": 0.9087301587301587,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 1.2626214956901194e-06,
+      "g3_wf_returns": [
+        1.3107741766659293,
+        1.3686972745993398,
+        0.43025648669518346,
+        0.5020958180894026,
+        1.2415117221476248,
+        0.8179234926059469,
+        1.3595593770323005,
+        0.4735193095701453
+      ],
+      "g3_wf_mdds": [
+        0.1538994766429188,
+        0.13523371299869796,
+        0.27162664631797206,
+        0.3029401784708438,
+        0.13011701041764082,
+        0.15877194999149374,
+        0.22624815102994117,
+        0.3288292631127314
+      ],
+      "g3_max_wf_mdd": 0.3288292631127314,
+      "g4_oos_sharpe": 0.9555549953359108,
+      "g5_fwd_sharpe": 0.8735749236804794,
+      "g6_ci_low": 0.5988753763112404,
+      "g7_crosslib_delta_pp": 0.0
+    },
+    "spy_real": {
+      "g1_pbo": 0.5873015873015873,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 0.000924115410397941,
+      "g3_wf_returns": [
+        0.3289212148742984,
+        0.5373785344399806,
+        0.4044589641316878,
+        0.5530955319012361,
+        0.22259857262362548,
+        0.7479699546058793,
+        -0.0668676606484987,
+        1.004537571036506
+      ],
+      "g3_wf_mdds": [
+        0.1319756607329122,
+        0.22439175822647875,
+        0.1301170104176406,
+        0.12862902364664208,
+        0.15877194999149283,
+        0.22624815102994109,
+        0.33420422077026546,
+        0.139112877224203
+      ],
+      "g3_max_wf_mdd": 0.33420422077026546,
+      "g4_oos_sharpe": 0.9046919602891407,
+      "g5_fwd_sharpe": 0.8651693764089755,
+      "g6_ci_low": 0.3934332771204191,
+      "g7_crosslib_delta_pp": 0.0
+    }
+  },
+  "robustness": {
+    "legacy_5y_sharpe_pct_positive": 1.0,
+    "legacy_5y_sharpe_n_windows": 34,
+    "rolling_pass_rates_avg_across_datasets": {
+      "5": 0.7777777777777778,
+      "10": 0.7692307692307693,
+      "15": 1.0,
+      "20": 1.0
+    },
+    "rolling_worst_mdd_max_across_datasets": {
+      "5": 0.334204220770265,
+      "10": 0.33420422077026524,
+      "15": 0.3342042207702649,
+      "20": 0.33420422077026524
+    },
+    "rolling_per_dataset": {
+      "lh_56y": {
+        "5": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.3342042207702647
+        },
+        "10": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.33420422077026524
+        },
+        "15": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.33420422077026424
+        },
+        "20": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.334204220770265
+        }
+      },
+      "spy_real": {
+        "5": {
+          "pct_strat_beats_spy_cagr": 0.7777777777777778,
+          "n_windows": 18,
+          "worst_strat_mdd": 0.334204220770265
+        },
+        "10": {
+          "pct_strat_beats_spy_cagr": 0.7692307692307693,
+          "n_windows": 13,
+          "worst_strat_mdd": 0.3342042207702648
+        },
+        "15": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 8,
+          "worst_strat_mdd": 0.3342042207702649
+        },
+        "20": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 3,
+          "worst_strat_mdd": 0.33420422077026524
+        }
+      }
+    },
+    "anchor_dataset": "lh_56y"
+  },
+  "configs": {
+    "B1_user_baseline_25tmf": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.25,
+        "GDESIM": 0.25,
+        "RSSTSIM": 0.25,
+        "TMFSIM": 0.25
+      }
+    },
+    "B2_tmf10_balanced": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.3,
+        "GDESIM": 0.3,
+        "RSSTSIM": 0.3,
+        "TMFSIM": 0.1
+      }
+    },
+    "B3_tlt_instead_of_tmf": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.25,
+        "GDESIM": 0.25,
+        "RSSTSIM": 0.25,
+        "TLTSIM": 0.25
+      }
+    },
+    "B4_zroz_instead_of_tmf": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.25,
+        "GDESIM": 0.25,
+        "RSSTSIM": 0.25,
+        "ZROZSIM": 0.25
+      }
+    },
+    "B5_no_duration": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.35,
+        "GDESIM": 0.35,
+        "RSSTSIM": 0.3
+      }
+    },
+    "M1_kmlm_no_rsst": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.25,
+        "GDESIM": 0.25,
+        "KMLMSIM": 0.25,
+        "TMFSIM": 0.25
+      }
+    },
+    "M2_dbmf_no_rsst": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.25,
+        "GDESIM": 0.25,
+        "DBMFSIM": 0.25,
+        "TMFSIM": 0.25
+      }
+    },
+    "M3_kmlm_dbmf_blend": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.25,
+        "GDESIM": 0.25,
+        "KMLMSIM": 0.125,
+        "DBMFSIM": 0.125,
+        "TMFSIM": 0.25
+      }
+    },
+    "M4_rsst_kmlm_blend": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.25,
+        "GDESIM": 0.25,
+        "RSSTSIM": 0.125,
+        "KMLMSIM": 0.125,
+        "TMFSIM": 0.25
+      }
+    },
+    "L1_cegb_proxy": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.4,
+        "GDESIM": 0.25,
+        "KMLMSIM": 0.175,
+        "TLTSIM": 0.175
+      }
+    },
+    "L2_bogleheads_67ntsx": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.67,
+        "GLDSIM": 0.11,
+        "KMLMSIM": 0.11,
+        "ZROZSIM": 0.11
+      }
+    },
+    "T1_gold_heavy": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.2,
+        "GDESIM": 0.35,
+        "RSSTSIM": 0.25,
+        "TMFSIM": 0.2
+      }
+    },
+    "T2_equity_heavy": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.35,
+        "GDESIM": 0.25,
+        "RSSTSIM": 0.25,
+        "TMFSIM": 0.15
+      }
+    },
+    "T3_rssb_global": {
+      "type": "static",
+      "weights": {
+        "RSSBSIM": 0.25,
+        "GDESIM": 0.25,
+        "RSSTSIM": 0.25,
+        "TMFSIM": 0.25
+      }
+    }
+  },
+  "net_total_score": 68,
+  "net_tier": "PROMISING",
+  "net_winner_conditions_met": true,
+  "net_bars": {
+    "cagr_bar": true,
+    "mdd_bar": true,
+    "gates_bar": true
+  },
+  "net_criteria": {
+    "1_cagr": {
+      "points": 22,
+      "max": 30,
+      "mean_cagr": 0.1582079556889553,
+      "spy_bar": 0.1121,
+      "anchor_range": [
+        0.05,
+        0.2
+      ]
+    },
+    "2_mdd": {
+      "points": 13,
+      "max": 20,
+      "mean_mdd": 0.334204220770265,
+      "spy_bar": 0.5517,
+      "anchor_range": [
+        0.7,
+        0.15
+      ]
+    },
+    "3_gates": {
+      "points": 11,
+      "max": 20,
+      "per_dataset": {
+        "lh_56y": 5,
+        "spy_real": 5
+      },
+      "thresholds": {
+        "lh_56y": 5,
+        "spy_real": 5
+      },
+      "cross_dataset_met": true
+    },
+    "4_dsr": {
+      "points": 10,
+      "max": 10,
+      "worst_p_value": 0.000924115410397941,
+      "cumulative_n_trials": 158
+    },
+    "5_sharpe": {
+      "points": 3,
+      "max": 10,
+      "mean_sharpe": 0.9896831361260883,
+      "anchor_range": [
+        0.5,
+        2.0
+      ]
+    },
+    "6_robustness": {
+      "points": 9,
+      "max": 10,
+      "input_bonus": 0,
+      "rolling_pass_rates": {
+        "5": 0.7777777777777778,
+        "10": 0.7692307692307693,
+        "15": 1.0,
+        "20": 1.0
+      },
+      "rolling_worst_mdd": {
+        "5": 0.334204220770265,
+        "10": 0.33420422077026524,
+        "15": 0.3342042207702649,
+        "20": 0.33420422077026524
+      },
+      "note": "Multi-horizon CAGR pass-rate vs SPY benchmark across 5y/10y/15y/20y rolling windows (3+3+2+2 pts max)."
+    },
+    "7_extra_bonus": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "net_metrics_used": {
+    "lh_56y": {
+      "sharpe": 1.010587969388448,
+      "cagr": 0.16044911326257472,
+      "mdd": 0.3342042207702641
+    },
+    "spy_real": {
+      "sharpe": 0.9687783028637285,
+      "cagr": 0.15596679811533587,
+      "mdd": 0.33420422077026596
+    }
+  },
+  "tax_summary": {
+    "lh_56y": {
+      "classification": "buy_hold",
+      "initial_capital": 10000.0,
+      "final_port_gross": 3565206.3,
+      "final_port_net": 3031925.35,
+      "total_darf_paid": 533280.94,
+      "n_year_end_settlements": 0,
+      "terminal_darf": 533280.94,
+      "drag_pct_pts": 0.4925,
+      "darf_rate": 0.15
+    },
+    "spy_real": {
+      "classification": "buy_hold",
+      "initial_capital": 10000.0,
+      "final_port_gross": 308974.57,
+      "final_port_net": 264128.38,
+      "total_darf_paid": 44846.19,
+      "n_year_end_settlements": 0,
+      "terminal_darf": 44846.19,
+      "drag_pct_pts": 0.8044,
+      "darf_rate": 0.15
+    }
+  }
+}

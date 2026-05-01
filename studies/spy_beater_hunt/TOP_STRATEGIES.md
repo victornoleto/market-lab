@@ -22,6 +22,118 @@ Este documento substitui o "WINNER tier" como critério de deploy-readiness por 
 
 ---
 
+## ⭐ Tier 0 — User-proposed static stack family (iter 038 sweep, 2026-04-30)
+
+After extensive sweep of 14 variants of the simple capital-efficient stack family + literature research (RiskParityChronicles CEGB, optimizedportfolio.com, Bogleheads), this is the **deploy-recommended family**. Tier 0 = simpler than meta-ensembles AND with similar/better deploy-readiness metrics.
+
+**Plots iter 038**: [equity overlay lh_56y](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_overlay_lh_56y.png) · [equity overlay spy_real](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_cagr_mdd_scatter.png) · [gate heatmap](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_gate_heatmap.png)
+
+![iter 038 equity overlay lh_56y](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_overlay_lh_56y.png)
+
+![iter 038 CAGR×MDD scatter (Pareto frontier visualization)](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_cagr_mdd_scatter.png)
+
+### Sweep results (NET-of-tax means, sorted by 30y compounding terminal value)
+
+| config | NET CAGR | NET MDD | NET Sharpe | $100k → 30y |
+|---|---:|---:|---:|---:|
+| **T1 gold-heavy** ⭐ | **15.82%** | 33.42% | **0.990** | **$8.20M** |
+| B2 TMF10 balanced | 15.54% | 34.56% | 0.974 | $7.61M |
+| B1 user baseline 25 TMF | 15.37% | 36.73% | 0.970 | $7.30M |
+| B5 no duration | 15.22% | 41.45% | 0.886 | $7.01M |
+| T2 equity-heavy | 15.16% | 31.17% | 0.983 | $6.90M |
+| T3 RSSB global | 15.00% | 38.81% | 0.932 | $6.63M |
+| M4 RSST+KMLM blend | 13.92% | 34.61% | 0.952 | $4.99M |
+| **B4 ZROZ instead of TMF** ⭐ | **13.79%** | **28.02%** | 0.973 | $4.83M |
+| B3 TLT instead of TMF | 13.04% | 29.36% | 0.973 | $3.95M |
+| M1 KMLM no RSST | 12.43% | 32.96% | 0.914 | $3.36M |
+| M2 DBMF no RSST | 11.84% | 34.43% | 0.860 | $2.87M |
+| M3 KMLM+DBMF blend | 11.65% | 33.63% | 0.853 | $2.73M |
+| L1 CEGB proxy (literature) | 11.13% | 25.83% | 0.963 | $2.37M |
+| L2 Bogleheads 67% NTSX | 10.68% | 24.87% | 0.934 | $2.10M |
+| SPY 1× buy-hold (~9.5% net) | ~9.5% | ~55% | ~0.55 | $1.41M |
+
+**Pareto-frontier configs** (dominate everything else on CAGR×MDD trade-off):
+1. T1 gold-heavy (15.82% / 33.42%)
+2. T2 equity-heavy (15.16% / 31.17%)
+3. B4 ZROZ (13.79% / 28.02%)
+4. L1 CEGB (11.13% / 25.83%)
+5. L2 Bogleheads 67 NTSX (10.68% / 24.87%)
+
+### Key empirical findings
+
+1. **TMF (3× LTT) é caro em MDD**: dose-response confirma literatura — 25% TMF (B1) → 36.73% MDD; 10% TMF (B2) → 34.56%; **ZROZ instead of TMF (B4) → 28.02% MDD com Sharpe 0.973 idêntico**. ZROZ é zero-coupon LTT (mais duration que TLT, sem LETF decay). Wins risk-adjusted return.
+
+2. **Gold-heavy (35% GDE) bate equal-weight (25% GDE)**: T1 gold-heavy tem CAGR 15.82% > B1 baseline 15.37% **E** MDD 33.42% < 36.73%. Move TMF 25→20 + GDE 25→35 + reduz NTSX 25→20. **Pareto-improvement** sobre user's baseline.
+
+3. **MF source matters**: RSST (com SPY interno) é o melhor MF source nessa janela:
+   - RSST: CAGR 15.37% / Sharpe 0.97 (B1 baseline)
+   - KMLM only: CAGR 12.43% / Sharpe 0.91 (M1)
+   - DBMF only: CAGR 11.84% / Sharpe 0.86 (M2 — pior MF source)
+   - KMLM+DBMF blend: CAGR 11.65% / Sharpe 0.85 (M3 — combinação ruim)
+   - **NÃO substitua RSST por KMLM/DBMF puros** — perde 3pp+ CAGR.
+
+4. **No-duration falha**: B5 (sem TLT/TMF/ZROZ) tem MDD 41.45% — 5pp pior. **Duration matters mesmo se for só 25% TLT 1×.**
+
+5. **Global vs US**: T3 RSSB (global stocks+bonds) ≈ B1 NTSX (US-only) em CAGR, mas RSSB MDD pior (38.81% vs 36.73%). Provavelmente efeito de US bull-market predominância no período. Consider RSSB como hedge se você acha que próxima década é international > US.
+
+6. **Conservative camp (CEGB / Bogleheads)**: 11% CAGR / 25% MDD. Dominados em CAGR mas mantêm Pareto status como alternativa de menor risk profile.
+
+### Deploy recommendations por perfil
+
+| profile | recommendation | NET CAGR | NET MDD | Sharpe | rationale |
+|---|---|---:|---:|---:|---|
+| **MAX RETURN** (aceita 33% MDD) | **T1 gold-heavy** | 15.82% | 33.42% | **0.990** | best Sharpe + best CAGR; melhor deploy candidato |
+| **BEST RISK-ADJUSTED** | **B4 ZROZ** | 13.79% | **28.02%** | 0.973 | troca TMF→ZROZ; -8pp MDD com Sharpe similar |
+| **MODERATE** (good balance) | **B2 TMF10 balanced** | 15.54% | 34.56% | 0.974 | TMF dose 10% per literatura; balanced trade-off |
+| **CONSERVATIVE** (sleep well) | **L1 CEGB proxy** | 11.13% | 25.83% | 0.963 | RiskParityChronicles published template |
+
+### Spec final — T1 gold-heavy (recomendação principal)
+
+```python
+# 20% NTSX + 35% GDE + 25% RSST + 20% TMF
+# Annual rebalance via aportes mensais (lazy rebal, no realize)
+# Lei 14.754: drag ~0.5-0.7pp; DARF apenas em terminal liquidation
+{
+  "type": "static",
+  "weights": {
+    "NTSXSIM": 0.20,  # NTSX  — WisdomTree 90/60 SPY/Treasuries
+    "GDESIM":  0.35,  # GDE   — WisdomTree 90/90 SPY/Gold
+    "RSSTSIM": 0.25,  # RSST  — ReturnStacked 100/100 SPY/MF
+    "TMFSIM":  0.20,  # TMF   — Direxion 3× LTT (LETF, 1.05% expense)
+  }
+}
+```
+
+Notional total: 20×1.5 + 35×1.8 + 25×2.0 + 20×3.0 = 30 + 63 + 50 + 60 = **203% effective leverage**.
+
+### Spec alternativo — B4 ZROZ (best risk-adjusted)
+
+```python
+# 25% NTSX + 25% GDE + 25% RSST + 25% ZROZ
+# Substitui TMF por ZROZ (zero-coupon Long-Term Treasury)
+# ZROZ = ~25y duration sem LETF decay. Mais duration que TLT, menos volatilidade que TMF.
+{
+  "type": "static",
+  "weights": {
+    "NTSXSIM": 0.25,
+    "GDESIM":  0.25,
+    "RSSTSIM": 0.25,
+    "ZROZSIM": 0.25,
+  }
+}
+```
+
+⚠ **ZROZ disponibilidade no Inter — VALIDAR**. ETF ticker `ZROZ` (PIMCO 25+ Year Zero Coupon US Treasury Index ETF). Liquidez menor que TLT/TMF. Se Inter não tiver, usar TLT 1× (B3 — CAGR 13.04% / MDD 29.36%) como fallback.
+
+### Caveats honestos pré-deploy
+
+- **PBO inflation**: iter 038 tem N=14 configs → PBO grid-level inflado 0.91/0.59 para o selected. Esse é Principle M ao quadrado. **Anchor honest**: cada strategy individualmente é sólida; o ranking entre elas tem ruído ±1-2pp por grid composition. Use o ranking como guia, não como verdade absoluta.
+- **MF ETFs são novos**: KMLM (Dec 2020), DBMF (May 2019), RSST (Sep 2022). Synth proxies extendem pra 1987 mas usam SPY+factor combinations — pode não capturar exatamente as dinâmicas live OOS.
+- **TMF 2022 stress**: TMF caiu −71% em 2022. Ao 25% allocation = −17.7pp portfolio drag em ano único. T1 gold-heavy reduz isso pra −14pp (com 20% TMF). B4 ZROZ elimina (ZROZ caiu −53% em 2022 ao 25% = −13pp). Trade-off real.
+- **Portfolio drift**: rebal anual via aportes mantém pesos só se aportes são proporcionais. Em portfólios maduros (alocação muito > aportes), 5-10pp deviation triggers obriga venda + DARF realizada. Documentar bands.
+
+---
+
 ## Tier S — pass 7/7 strict gates
 
 **0 estratégias.** Gate G3 (Walk-Forward MDD per-window < 25%) é estruturalmente difícil de passar para qualquer estratégia com leverage moderado-alto durante stress periods (2008 GFC, 2022 inflation). Mesmo F1 stack passa per-window apenas em janelas brandas.
