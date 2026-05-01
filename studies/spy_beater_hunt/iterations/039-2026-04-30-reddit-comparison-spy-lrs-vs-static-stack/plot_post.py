@@ -35,8 +35,12 @@ SERIES_STYLE = {
     "l1_sleeping_pills": {"color": "#1f77b4", "lw": 1.6, "ls": "-",  "label": "Sleeping pills (L1 CEGB)"},
     "l2_bogleheads":     {"color": "#aec7e8", "lw": 1.4, "ls": "-",  "label": "Bogleheads 67% NTSX (L2)"},
     "b4_conservative":   {"color": "#2ca02c", "lw": 2.0, "ls": "-",  "label": "Conservative (B4 ZROZ)"},
-    "b2_balanced":       {"color": "#ff7f0e", "lw": 2.0, "ls": "-",  "label": "Balanced (B2)"},
-    "t1_aggressive":     {"color": "#d62728", "lw": 2.5, "ls": "-",  "label": "Aggressive (T1 gold-heavy)"},
+    # Note: T1 and B2 labels swapped 2026-04-30 — testfol.io shows B2 has
+    # higher CAGR AND worse MDD than T1, so B2 is genuinely the aggressive
+    # one (more equity exposure: 84% vs 74.5%). T1's extra gold/duration
+    # makes it actually more balanced. See REDDIT_POST.md "What the data tells us".
+    "t1_aggressive":     {"color": "#ff7f0e", "lw": 2.0, "ls": "-",  "label": "Balanced (T1 gold-heavy)"},
+    "b2_balanced":       {"color": "#d62728", "lw": 2.5, "ls": "-",  "label": "Aggressive (B2 high-equity)"},
     "lrs_sso_200sma":    {"color": "#9467bd", "lw": 1.5, "ls": "--", "label": "Gayed LRS 2x (SSO 200d)"},
     "lrs_upro_200sma":   {"color": "#bcbd22", "lw": 2.0, "ls": "--", "label": "Gayed LRS 3x (UPRO 200d)"},
 }
@@ -205,30 +209,45 @@ def plot_drawdown(series: list[Series], out_path: Path):
     print(f"  wrote {out_path}", file=sys.stderr)
 
 
-def plot_rolling_cagr(series: list[Series], out_path: Path):
-    fig, ax = plt.subplots(figsize=(14, 6))
+def _rolling_annualized(equity: np.ndarray, years: int) -> np.ndarray:
+    """Rolling annualized return over `years` years, assuming ~252 bus days/yr.
+
+    Output array length = len(equity) - n_days. Aligns with dates[n_days:].
+    """
+    n = years * 252
+    if equity.size <= n:
+        return np.array([])
+    rolled = equity[n:] / equity[:-n]
+    return (rolled ** (1.0 / years) - 1.0) * 100.0
+
+
+def plot_rolling_grid(series: list[Series], out_path: Path):
+    """2x2 grid: rolling 5y / 10y / 15y / 20y CAGR."""
+    fig, axs = plt.subplots(2, 2, figsize=(16, 10), sharex=True)
     fig.patch.set_facecolor("white")
 
-    for s in series:
-        if s.roll_cagr.size == 0:
-            continue
-        st = _style(s.slug)
-        ax.plot(s.roll_dates, s.roll_cagr, color=st["color"], lw=st["lw"], ls=st["ls"],
-                label=st["label"])
+    windows = [(5, axs[0, 0]), (10, axs[0, 1]), (15, axs[1, 0]), (20, axs[1, 1])]
+    for years, ax in windows:
+        for s in series:
+            roll = _rolling_annualized(s.equity, years)
+            if roll.size == 0:
+                continue
+            n = years * 252
+            roll_dates = s.dates[n:]
+            st = _style(s.slug)
+            ax.plot(roll_dates, roll, color=st["color"], lw=st["lw"], ls=st["ls"],
+                    label=st["label"])
+        ax.axhline(0, color="#999999", linewidth=0.6)
+        _setup_axes(ax, f"Rolling {years}-year CAGR", "Annualized return (%)")
+        ax.xaxis.set_major_locator(mdates.YearLocator(5))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
 
-    ax.axhline(0, color="#999999", linewidth=0.6)
-    _setup_axes(ax, "Rolling 5-year CAGR  |  testfol.io",
-                "Annualized return over 5y window (%)")
-    ax.xaxis.set_major_locator(mdates.YearLocator(5))
-    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
-    ax.legend(loc="upper right", fontsize=8, frameon=False, ncol=2, labelspacing=0.3)
-
-    for year, label in [(2000, "Dotcom"), (2008, "GFC"), (2022, "Inflation")]:
-        ax.axvline(datetime(year, 1, 1, tzinfo=timezone.utc),
-                   color="#cccccc", linewidth=0.5, linestyle=":")
-        ax.text(datetime(year, 6, 1, tzinfo=timezone.utc),
-                ax.get_ylim()[1] * 0.97, label, fontsize=7, color="#888")
-
+    # Single legend across the whole figure (top of fig)
+    handles, labels = axs[0, 0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="upper center", bbox_to_anchor=(0.5, 1.02),
+               ncol=3, fontsize=9, frameon=False)
+    fig.suptitle("Rolling CAGR consistency  |  testfol.io 1987-2026",
+                 fontsize=14, weight="bold", y=1.05)
     fig.tight_layout()
     fig.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close(fig)
@@ -288,13 +307,15 @@ def print_summary(series: list[Series]):
         "l1_sleeping_pills": "**Sleeping pills (L1 CEGB)**",
         "l2_bogleheads": "Bogleheads 67% NTSX (L2)",
         "b4_conservative": "**Conservative (B4 ZROZ)**",
-        "b2_balanced": "**Balanced (B2)**",
-        "t1_aggressive": "**Aggressive (T1)**",
+        "t1_aggressive": "**Balanced (T1 gold-heavy)**",
+        "b2_balanced": "**Aggressive (B2 high-equity)**",
         "lrs_sso_200sma": "Gayed LRS 2x (SSO 200d)",
         "lrs_upro_200sma": "Gayed LRS 3x (UPRO 200d)",
     }
+    # Order: benchmarks → popular → low-risk → high-risk → LRS reference.
+    # Swapped t1↔b2 2026-04-30: B2 is more aggressive than T1 by MDD.
     order = ["spy_1x", "popular_50_25_25", "l1_sleeping_pills", "l2_bogleheads",
-             "b4_conservative", "b2_balanced", "t1_aggressive",
+             "b4_conservative", "t1_aggressive", "b2_balanced",
              "lrs_sso_200sma", "lrs_upro_200sma"]
     by_slug = {s.slug: s for s in series}
     for slug in order:
@@ -312,10 +333,10 @@ def main() -> int:
     print(f"  loaded {len(series)} series", file=sys.stderr)
 
     print("\nGenerating plots...", file=sys.stderr)
-    plot_equity_log(series,        SCRIPT_DIR / "testfolio_01_equity.png")
-    plot_drawdown(series,          SCRIPT_DIR / "testfolio_02_drawdown.png")
-    plot_rolling_cagr(series,      SCRIPT_DIR / "testfolio_03_rolling5y.png")
-    plot_cagr_mdd_scatter(series,  SCRIPT_DIR / "testfolio_04_scatter.png")
+    plot_equity_log(series,       SCRIPT_DIR / "testfolio_01_equity.png")
+    plot_drawdown(series,         SCRIPT_DIR / "testfolio_02_drawdown.png")
+    plot_cagr_mdd_scatter(series, SCRIPT_DIR / "testfolio_03_scatter.png")
+    plot_rolling_grid(series,     SCRIPT_DIR / "testfolio_04_rolling_grid.png")
 
     print_summary(series)
     print(f"\nDone. PNGs in {SCRIPT_DIR}", file=sys.stderr)

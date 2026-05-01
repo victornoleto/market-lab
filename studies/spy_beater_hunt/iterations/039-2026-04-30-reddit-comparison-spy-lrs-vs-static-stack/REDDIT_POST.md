@@ -12,15 +12,17 @@ I picked 4 named profiles from a 14-config sweep + 3 references. Each profile ta
 
 | profile | strategy | weights |
 |---|---|---|
-| 🔴 **Aggressive** | T1 gold-heavy | 20% NTSX + **35% GDE** + 25% RSST + 20% TMF |
-| 🟠 **Balanced** | B2 TMF-lite | 30% NTSX + 30% GDE + 30% RSST + **10% TMF** |
-| 🟢 **Conservative** | B4 ZROZ-anchored | 25% NTSX + 25% GDE + 25% RSST + **25% ZROZ** |
-| 🔵 **Sleeping pills** | L1 CEGB (literature) | 40% NTSX + 25% GDE + 17.5% KMLM + 17.5% TLT |
+| 🔴 **Aggressive (B2 high-equity)** | TMF-lite, more equity exposure | 30% NTSX + 30% GDE + 30% RSST + **10% TMF** |
+| 🟠 **Balanced (T1 gold-heavy)** | gold-heavy, more diversification | 20% NTSX + **35% GDE** + 25% RSST + 20% TMF |
+| 🟢 **Conservative (B4 ZROZ)** | ZROZ-anchored, no LETF decay | 25% NTSX + 25% GDE + 25% RSST + **25% ZROZ** |
+| 🔵 **Sleeping pills (L1 CEGB)** | RiskParityChronicles literature | 40% NTSX + 25% GDE + 17.5% KMLM + 17.5% TLT |
 | ⚪ Reference | Bogleheads template | 67% NTSX + 11% GLD + 11% KMLM + 11% ZROZ |
 | ⚪ Reference | Popular 50/25/25 | 50% SSO + 25% GLD + 25% ZROZ |
 | ⚫ Benchmark | SPY 1× buy-hold | 100% SPY |
 | ⚫ Benchmark | SSO LRS 200d SMA (Gayed) | 100% SSO if SPY > 200d SMA, else IEF |
 | ⚫ Benchmark | UPRO LRS 200d SMA (Gayed) | 100% UPRO if SPY > 200d SMA, else IEF |
+
+**Note on labels — based on REALIZED risk, not allocation intent**: at first glance B2 (10% TMF) seems "less aggressive" than T1 (20% TMF) because TMF is the most-leveraged sleeve. But realized MDD is what hurts your account. B2 ends up with **higher net equity exposure (84% vs 74.5%)** because cutting TMF freed weight for SPY/RSST sleeves. T1's bigger gold (35% GDE) + duration leverage (20% TMF) act as diversifier ballast — that lowers MDD despite the higher TMF weight. **What matters to the investor is the experienced drawdown.** Risk-return ordering on testfol.io: **B2 (max CAGR + max MDD) > T1 (good CAGR + better diversification) > B4 ZROZ (best Sharpe) > L1/L2 (sleep-well)**.
 
 ---
 
@@ -35,31 +37,31 @@ All portfolios share the same start date because **KMLM (managed futures synth) 
 | 🔵 **Sleeping pills (L1 CEGB)** | 11.56% | **-22.27%** | 0.782 | 1.117 | 10.97% | $2.7M |
 | ⚪ Bogleheads 67% NTSX (L2) | 11.55% | -22.48% | 0.778 | 1.117 | 11.04% | $2.7M |
 | 🟢 **Conservative (B4 ZROZ)** | 13.96% | -28.65% | **0.798** ⭐ | 1.146 | 13.88% | $5.0M |
-| 🟠 **Balanced (B2)** | **14.61%** | -36.21% | 0.772 | 1.103 | 15.37% | $6.0M |
-| 🔴 **Aggressive (T1)** | 14.19% | -30.66% | 0.744 | 1.063 | 15.46% | $5.4M |
-| Gayed LRS 2× (SSO 200d) †† | ~12.7% | ~-44% | ~0.62 | n/a | ~18% | ~$3.7M |
-| Gayed LRS 3× (UPRO 200d) †† | ~17.5% | ~-60% | ~0.63 | n/a | ~28% | ~$12.6M (extreme MDD) |
+| 🟠 **Balanced (T1 gold-heavy)** | 14.19% | -30.66% | 0.744 | 1.063 | 15.46% | $5.4M |
+| 🔴 **Aggressive (B2 high-equity)** | **14.61%** | -36.21% | 0.772 | 1.103 | 15.37% | $6.0M |
+| Gayed LRS 2× (SSO 200d) | **15.62%** | -43.49% | 0.595 | 0.823 | 24.49% | $7.8M |
+| Gayed LRS 3× (UPRO 200d) | **18.77%** | **-57.59%** | 0.575 | 0.795 | 36.47% | $17.5M (extreme MDD) |
 
-†† LRS strategies aren't natively supported in testfol.io (no regime-rotation primitive). Numbers from internal Python backtest using identical SIM data; methodology and code links at bottom.
+LRS uses signal `SPYSIM SMA-200 < Price` with 2% buffer; off-state is 100% IEF (intermediate Treasuries). All numbers above are testfol.io output with daily rebalance for the LRS strategies and `$100k → 30y` projected from the realized CAGR.
 
 ### Equity curves (common start 1987-12-31)
 
-![Equity curves 1987-2026](reddit_plot_1_equity.png)
-*All 7 portfolios, $10k start at 1987-12-31, log scale. Aggressive (T1), Balanced (B2), and Conservative (B4) lead the pack on terminal value AND have lower drawdowns than SPY.*
+![Equity curves 1987-2026](testfolio_01_equity.png)
+*All 7 portfolios, $10k start at 1987-12-31, log scale. Aggressive (B2), Balanced (T1), and Conservative (B4) lead the pack on terminal value AND have lower drawdowns than SPY.*
 
 ### Drawdowns
 
-![Drawdown comparison 1987-2026](reddit_plot_2_drawdown.png)
+![Drawdown comparison 1987-2026](testfolio_02_drawdown.png)
 *Static stacks max out around -22% to -36% drawdown. SPY crosses -55% in 2008. The popular 50/25/25 SSO mix hits -40% (better than SPY but worse than every capital-efficient stack). Conservative (B4) and Sleeping pills (L1) cap drawdown at -22% to -28% — sleep-better territory.*
 
 ### Risk-return scatter (Pareto frontier)
 
-![CAGR vs Max DD scatter](reddit_plot_3_scatter.png)
+![CAGR vs Max DD scatter](testfolio_03_scatter.png)
 *Bottom-left is the dominated zone. Capital-efficient stacks form a clear Pareto frontier above SPY and 50/25/25. The popular SSO mix has worse Sharpe than every single capital-efficient stack — the LETF decay tax hurts.*
 
 ### Rolling CAGR consistency (5y / 10y / 15y / 20y windows)
 
-![Rolling CAGR grid](reddit_plot_4_rolling_grid.png)
+![Rolling CAGR grid](testfolio_04_rolling_grid.png)
 *Top-left = 5y rolling, top-right = 10y, bottom-left = 15y, bottom-right = 20y. Static stacks rarely go negative on rolling windows beyond 5y. SPY can go to ~0% on 5y windows during 2000s. Aggressive consistently leads on long-horizon windows while keeping drawdowns manageable. The Bogleheads (L2) and Sleeping pills (L1) profiles have the most stable rolling returns — boring AND consistent.*
 
 ---
@@ -72,17 +74,19 @@ Beats SPY's Sharpe (0.53) — but **all 4 capital-efficient stacks beat 50/25/25
 
 The 50/25/25 mix has 13.47% CAGR (+2pp over SPY) but eats a -40% drawdown. The Conservative (B4) profile gets **+0.5pp more CAGR with -11pp lower drawdown** AND better Sharpe (0.80 vs 0.64). Same compounding power, much better ride.
 
-### 2. UPRO LRS (Gayed-Hedgefundie-lite) gets the highest CAGR but worst Sharpe
+### 2. LRS gets higher raw CAGR but loses on Sharpe AND drawdown
 
-UPRO LRS hits 17.5% gross CAGR, but with -60% drawdown and Sharpe 0.63. The Aggressive (T1) static gets 14.2% CAGR / -31% MDD / Sharpe 0.74 — **less peak CAGR but 47% better Sharpe**. Per dollar of risk taken, T1 produces more compounding.
+UPRO LRS hits the highest CAGR in the table (18.77%), but with **-57.59% drawdown** (worse than SPY's -55.14%) and Sharpe 0.575 — second-worst in the field, only ahead of SPY (0.528). SSO LRS at 2× hits 15.62% CAGR / -43.49% MDD / 0.595 Sharpe.
 
-Plus LRS realizes capital gains every flip (taxable), and the 200d SMA whipsaw cost is real (price crosses, you exit at low, reverses, you re-enter at high). Backtests usually under-model this friction.
+Compare to **Aggressive (B2 high-equity)** static — 14.61% CAGR / -36.21% MDD / Sharpe 0.772. Lower peak CAGR than UPRO LRS (-4.16pp), but **34% better Sharpe** (0.772 / 0.575) and **21pp lower drawdown**. Per dollar of risk taken, B2 compounds more efficiently. Even **Balanced (T1)** at 14.19% / -30.66% / 0.744 is a Sharpe-better, MDD-better deal than UPRO LRS while only giving up 4.6pp of peak CAGR.
+
+Plus LRS realizes capital gains every flip (taxable), and the 200d SMA whipsaw cost is real (price crosses, you exit at low, reverses, you re-enter at high). Backtests usually under-model this friction. The 30+ regime flips between 1987-2026 each carry slippage and execution risk.
 
 ### 3. The Conservative (B4 ZROZ) profile has the BEST Sharpe in our entire 14-config sweep
 
-ZROZ (zero-coupon long-Treasury) gives long-duration exposure WITHOUT the LETF decay penalty of TMF. **B4 ZROZ trades 0.65pp of CAGR for -7.6pp lower MDD** vs the Balanced (B2) profile that uses TMF. Best risk-adjusted return.
+ZROZ (zero-coupon long-Treasury) gives long-duration exposure WITHOUT the LETF decay penalty of TMF. **B4 ZROZ trades 0.65pp of CAGR for -7.6pp lower MDD** vs the Aggressive (B2) profile that uses TMF. Best risk-adjusted return.
 
-The order on Sharpe is: **B4 ZROZ (0.798) > L1 CEGB (0.782) ≈ L2 Bogleheads (0.778) > B2 (0.772) > T1 (0.744) > 50/25/25 SSO (0.637) > UPRO LRS (~0.63) > SPY (0.528)**.
+The full order on Sharpe is: **B4 ZROZ (0.798) > L1 CEGB (0.782) ≈ L2 Bogleheads (0.778) > B2 (0.772) > T1 (0.744) > Popular 50/25/25 (0.637) > SSO LRS 2× (0.595) > UPRO LRS 3× (0.575) > SPY (0.528)**. Every static stack (T1/B2/B4/L1/L2) beats both LRS variants on risk-adjusted return.
 
 ### 4. Even the boring 67% NTSX Bogleheads template matches SPY in CAGR with HALF the drawdown
 
@@ -176,7 +180,7 @@ For the LRS strategies, additional cautions: G3 fails harder (UPRO LRS has windo
 
 ## Honest caveats
 
-1. **TMF (3× LTT) is the elephant in the room**. In 2022 alone, TMF lost -71%. At 25% allocation = -17.7pp portfolio drag in a single year. The Aggressive profile (T1) reduces TMF to 20% (-14pp single-year drag). Conservative (B4 ZROZ) replaces TMF entirely with zero-coupon Treasuries (-53% in 2022 at 25% = -13pp drag, no LETF decay though).
+1. **TMF (3× LTT) is the elephant in the room**. In 2022 alone, TMF lost -71%. At 25% allocation = -17.7pp portfolio drag in a single year. The Aggressive profile (B2) reduces TMF to 10% (-7pp single-year drag); Balanced (T1) holds 20% (-14pp drag). Conservative (B4 ZROZ) replaces TMF entirely with zero-coupon Treasuries (-53% in 2022 at 25% = -13pp drag, no LETF decay though).
 
 2. **NTSX/GDE/RSST are recent ETFs**. NTSX inception 2018, GDE 2022, RSST 2022. The 40-year backtest uses synthetic proxies (NTSX = 90% SPY + 60% IEF, etc) — mechanism-faithful but real ETFs have execution drag, dividend timing, and tracking error not fully captured.
 
@@ -192,13 +196,45 @@ For the LRS strategies, additional cautions: G3 fails harder (UPRO LRS has windo
 
 ---
 
-## My pick (for what it's worth)
+## My pick — what I'd actually hold for the next 30 years
 
-**Aggressive (T1 gold-heavy)** — 20 NTSX + 35 GDE + 25 RSST + 20 TMF — for max long-horizon return with manageable drawdown.
+If you forced me to commit a single allocation for the next 30 years and not touch it again, **Balanced (T1 gold-heavy)** — 20 NTSX + 35 GDE + 25 RSST + 20 TMF — is my answer. Here's the reasoning:
 
-If TMF makes you nervous (it should), **Conservative (B4 ZROZ)** swaps TMF for ZROZ and gets the highest Sharpe of the entire sweep. Sleep better, give up 0.65pp CAGR.
+| candidate | CAGR | MDD | Sharpe | 30y verdict |
+|---|---:|---:|---:|---|
+| Aggressive (B2 high-equity) | 14.61% | -36.21% | 0.772 | Highest CAGR but **worst tail risk** of the static stacks. -36% MDD over 18-24 months is brutal psychologically; 84% net equity = SPY-correlated downside in inflation regimes. |
+| 🏆 **Balanced (T1 gold-heavy)** | **14.19%** | **-30.66%** | 0.744 | **Sweet spot**: ~95% of B2's CAGR with **6pp lower MDD**. 35% gold via GDE provides crisis-alpha that bonds can't (works in 2022 inflation, 2008 GFC, 2000s stagflation-lite). Best diversification across regimes. |
+| Conservative (B4 ZROZ) | 13.96% | -28.65% | **0.798** | Highest Sharpe in the sweep. ZROZ instead of TMF removes LETF decay penalty. Trade-off: -0.23pp CAGR vs T1. **My #2 pick** if ZROZ is available at your broker. |
+| Sleeping pills (L1 CEGB) | 11.56% | -22.27% | 0.782 | Lowest risk but you give up 2.6pp CAGR vs T1 — over 30y that's **$2.7M vs $5.4M** on $100k starting capital. Only worth it if you're genuinely fragile to drawdowns. |
 
-For sleep-well, **Sleeping pills (L1 CEGB)** is the published literature template ([RiskParityChronicles](https://www.riskparitychronicles.com/announcing-the-capital-efficient-golden-butterfly/)) — 11.5% CAGR with -22% MDD.
+**Why T1 wins for me:**
+
+1. **Gold-heavy (35% GDE) is a regime-uncorrelated alpha source**. In 2022 (the worst-case bond+stock simultaneous crash), gold was flat while everything else burned. In 2008 (deflationary stress), gold rallied. In stagflation, gold thrives. Bonds only protect against deflation.
+2. **20% TMF gives you long-duration leverage** without consuming a huge slice of capital, but the **gold sleeve covers the regime where TMF fails** (2022 inflation). This is the Bridgewater All-Weather logic, scaled by capital efficiency.
+3. **Sharpe 0.744** is only marginally below B4 (0.798) but with **+0.23pp CAGR** that compounds to meaningful real money over 30y.
+4. **Behavioral durability**: I can mentally hold through -30% MDD; -36% (B2) is closer to my panic threshold; -22% (L1) is over-comfortable and leaves return on the table.
+
+**If you're younger than 30 with a 40+ year horizon and stable income**: B2 (Aggressive) is defensible — extra MDD is recoverable with continued contributions, and the +0.42pp CAGR compounds for longer.
+
+**If you're older than 50 or have lumpy income**: B4 ZROZ (Conservative) is the better Sharpe and lower MDD makes drawdowns less likely to force a forced sale at a bottom. Validate ZROZ availability at your broker first — it's less common than TLT.
+
+**What I would NOT pick**:
+- ❌ UPRO LRS — highest CAGR (18.77%) but -57.59% MDD will break your discipline. Plus tax-inefficient.
+- ❌ Popular 50/25/25 SSO/GLD/ZROZ — 0.637 Sharpe is **worse than every capital-efficient stack**. SSO LETF decay tax is real. Switch SSO → NTSX+IEF futures-stacking and your Sharpe jumps.
+- ❌ HFEA (UPRO+TMF 55/45) — 17%+ CAGR but **-65% MDD** during 2022. Survivable in theory; in practice destroys discipline.
+
+### Single-portfolio commitment for next 30y: 🟠 T1 gold-heavy
+
+```
+20% NTSX  (90% SPY + 60% Treasury futures = 1.5x notional)
+35% GDE   (90% SPY + 90% Gold futures      = 1.8x notional)
+25% RSST  (100% SPY + 100% Trend           = 2.0x notional)
+20% TMF   (3x daily LETF on 20+y Treasury)
+=========
+100% capital, ~203% notional exposure, ~74.5% equity beta
+```
+
+Annual rebal via contributions only (don't sell unless ±10pp drift). No regime gates, no signals to watch, no whipsaw cost. Boring buy-and-hold.
 
 ---
 
@@ -207,8 +243,8 @@ For sleep-well, **Sleeping pills (L1 CEGB)** is the published literature templat
 All 4 profiles are backtest-able on [testfol.io](https://testfol.io) with annual rebal:
 
 ```
-Aggressive (T1):       43 SPYSIM, 35 GDESIM, 25 KMLMSIM, 20 TLTSIM?L=3&E=1.05, 12 IEFSIM, -35 CASHX
-Balanced (B2):         57 SPYSIM, 30 GDESIM, 30 KMLMSIM, 18 IEFSIM, 10 TLTSIM?L=3&E=1.05, -45 CASHX
+Balanced (T1):         43 SPYSIM, 35 GDESIM, 25 KMLMSIM, 20 TLTSIM?L=3&E=1.05, 12 IEFSIM, -35 CASHX
+Aggressive (B2):       57 SPYSIM, 30 GDESIM, 30 KMLMSIM, 18 IEFSIM, 10 TLTSIM?L=3&E=1.05, -45 CASHX
 Conservative (B4):     47.5 SPYSIM, 25 GDESIM, 25 KMLMSIM, 25 ZROZSIM, 15 IEFSIM, -37.5 CASHX
 Sleeping pills (L1):   36 SPYSIM, 25 GDESIM, 24 IEFSIM, 17.5 KMLMSIM, 17.5 TLTSIM, -20 CASHX
 Bogleheads (L2):       60.3 SPYSIM, 40.2 IEFSIM, 11 GLDSIM, 11 KMLMSIM, 11 ZROZSIM, -33.5 CASHX
@@ -216,6 +252,15 @@ Popular (50/25/25):    50 SPYSIM?L=2&E=0.89, 25 GLDSIM, 25 ZROZSIM
 ```
 
 These are the SIM-decomposed equivalents — NTSX → 0.9 SPYSIM + 0.6 IEFSIM - 0.5 CASHX (capital efficient stacking modeled correctly). Use rebalance "Yearly", invest_dividends=true.
+
+For the LRS strategies, use the [testfol.io tactical builder](https://testfol.io/tactical) with this signal:
+
+```
+Signal: SMA(SPYSIM, 200) < Price(SPYSIM)   tolerance: 2%
+  IF TRUE:  100% SPYSIM?L=2 (SSO) or SPYSIM?L=3 (UPRO)
+  IF FALSE: 100% IEFSIM (defensive sleeve, intermediate Treasuries)
+Rebalance: Daily. Trading frequency: Daily.
+```
 
 ---
 
