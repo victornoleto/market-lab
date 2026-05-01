@@ -1,0 +1,508 @@
+{
+  "status": "promising",
+  "tier": "PROMISING",
+  "total_score": 71,
+  "winner_conditions_met": true,
+  "bars": {
+    "cagr_bar": true,
+    "mdd_bar": true,
+    "gates_bar": true
+  },
+  "bars_met_count": 3,
+  "criteria": {
+    "1_cagr": {
+      "points": 23,
+      "max": 30,
+      "mean_cagr": 0.1646930324484719,
+      "spy_bar": 0.1121,
+      "anchor_range": [
+        0.05,
+        0.2
+      ]
+    },
+    "2_mdd": {
+      "points": 13,
+      "max": 20,
+      "mean_mdd": 0.33420422077026407,
+      "spy_bar": 0.5517,
+      "anchor_range": [
+        0.7,
+        0.15
+      ]
+    },
+    "3_gates": {
+      "points": 12,
+      "max": 20,
+      "per_dataset": {
+        "lh_56y": 6,
+        "spy_real": 5
+      },
+      "thresholds": {
+        "lh_56y": 5,
+        "spy_real": 5
+      },
+      "cross_dataset_met": true
+    },
+    "4_dsr": {
+      "points": 10,
+      "max": 10,
+      "worst_p_value": 0.00026614467419761034,
+      "cumulative_n_trials": 165
+    },
+    "5_sharpe": {
+      "points": 4,
+      "max": 10,
+      "mean_sharpe": 1.0341416197481506,
+      "anchor_range": [
+        0.5,
+        2.0
+      ]
+    },
+    "6_robustness": {
+      "points": 9,
+      "max": 10,
+      "input_bonus": 0,
+      "rolling_pass_rates": {
+        "5": 0.7777777777777778,
+        "10": 0.7692307692307693,
+        "15": 1.0,
+        "20": 1.0
+      },
+      "rolling_worst_mdd": {
+        "5": 0.334204220770265,
+        "10": 0.33420422077026524,
+        "15": 0.3342042207702649,
+        "20": 0.33420422077026524
+      },
+      "note": "Multi-horizon CAGR pass-rate vs SPY benchmark across 5y/10y/15y/20y rolling windows (3+3+2+2 pts max)."
+    },
+    "7_extra_bonus": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "metrics_used": {
+    "lh_56y": {
+      "sharpe": 1.0453594691603616,
+      "cagr": 0.1653725532564092,
+      "mdd": 0.3342042207702639,
+      "dsr_p_value": 2.1396565264009126e-07
+    },
+    "spy_real": {
+      "sharpe": 1.0229237703359395,
+      "cagr": 0.16401351164053457,
+      "mdd": 0.33420422077026424,
+      "dsr_p_value": 0.00026614467419761034
+    }
+  },
+  "spy_benchmark": {
+    "cagr_mean": 0.1121,
+    "mdd_mean": 0.5517
+  },
+  "cumulative_n_trials": 165,
+  "configs_tested": 7,
+  "primary_citation": "Reddit r/LETFs comparison post + [leverage_for_the_long_run, ch.3-4] Gayed 200d SMA LRS canonical + iter 038 sweep results (capital-efficient stacking) + Bridgewater All-Weather (Dalio) + RiskParityChronicles CEGB",
+  "hypothesis_slug": "reddit-comparison-spy-lrs-vs-static-stack",
+  "selected_config": "T1_gold_heavy",
+  "selection_rule": "max mean(Sharpe / SPY_Sharpe) across datasets",
+  "scoring_basis": "CAGR-anchored (spy_beater_hunt rubric, WINNER_AND_RANKING.md)",
+  "all_configs_metrics": {
+    "R1_spy_1x_buy_hold": {
+      "lh_56y": {
+        "sharpe": 0.6819751860533318,
+        "cagr": 0.11472198803680933,
+        "mdd": 0.5514127052677147
+      },
+      "spy_real": {
+        "sharpe": 0.6562034365292233,
+        "cagr": 0.11071731395549489,
+        "mdd": 0.5514127052677141
+      }
+    },
+    "R2_sso_lrs_200sma": {
+      "lh_56y": {
+        "sharpe": 0.7138464539782055,
+        "cagr": 0.15423349792248398,
+        "mdd": 0.42958351461054817
+      },
+      "spy_real": {
+        "sharpe": 0.6661862605757842,
+        "cagr": 0.1370727592326655,
+        "mdd": 0.41610014779318544
+      }
+    },
+    "R3_upro_lrs_200sma": {
+      "lh_56y": {
+        "sharpe": 0.6406288961209805,
+        "cagr": 0.17977288340189257,
+        "mdd": 0.6525889717778358
+      },
+      "spy_real": {
+        "sharpe": 0.6268916624432611,
+        "cagr": 0.17029974895146638,
+        "mdd": 0.5470230213048156
+      }
+    },
+    "T1_gold_heavy": {
+      "lh_56y": {
+        "sharpe": 1.0453594691603616,
+        "cagr": 0.1653725532564092,
+        "mdd": 0.3342042207702639
+      },
+      "spy_real": {
+        "sharpe": 1.0229237703359395,
+        "cagr": 0.16401351164053457,
+        "mdd": 0.33420422077026424
+      }
+    },
+    "B2_tmf10_balanced": {
+      "lh_56y": {
+        "sharpe": 1.0239663692669045,
+        "cagr": 0.16199569026818694,
+        "mdd": 0.3468014979445347
+      },
+      "spy_real": {
+        "sharpe": 1.013371943432495,
+        "cagr": 0.16162930172117473,
+        "mdd": 0.34441843171813896
+      }
+    },
+    "B4_zroz_instead": {
+      "lh_56y": {
+        "sharpe": 1.0265020129153546,
+        "cagr": 0.14622422790510092,
+        "mdd": 0.2838470232471194
+      },
+      "spy_real": {
+        "sharpe": 1.0236075352842702,
+        "cagr": 0.1422204360680046,
+        "mdd": 0.2765918024245774
+      }
+    },
+    "L2_bogleheads_67ntsx": {
+      "lh_56y": {
+        "sharpe": 1.0145552236910271,
+        "cagr": 0.11579385617632543,
+        "mdd": 0.24870328548630238
+      },
+      "spy_real": {
+        "sharpe": 0.985384079354705,
+        "cagr": 0.1095154478874445,
+        "mdd": 0.2487032854863026
+      }
+    }
+  },
+  "gate_details": {
+    "lh_56y": {
+      "g1_pbo": 0.44841269841269843,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 2.1396565264009126e-07,
+      "g3_wf_returns": [
+        1.3107741766659293,
+        1.3686972745993398,
+        0.43025648669518346,
+        0.5020958180894026,
+        1.2415117221476248,
+        0.8179234926059469,
+        1.3595593770323005,
+        0.4735193095701453
+      ],
+      "g3_wf_mdds": [
+        0.1538994766429188,
+        0.13523371299869796,
+        0.27162664631797206,
+        0.3029401784708438,
+        0.13011701041764082,
+        0.15877194999149374,
+        0.22624815102994117,
+        0.3288292631127314
+      ],
+      "g3_max_wf_mdd": 0.3288292631127314,
+      "g4_oos_sharpe": 0.9555549953359108,
+      "g5_fwd_sharpe": 0.8735749236804794,
+      "g6_ci_low": 0.5988753763112404,
+      "g7_crosslib_delta_pp": 0.0
+    },
+    "spy_real": {
+      "g1_pbo": 0.5952380952380952,
+      "g1_pbo_n_combinations": 252,
+      "g2_dsr_p": 0.00026614467419761034,
+      "g3_wf_returns": [
+        0.3289212148742984,
+        0.5373785344399806,
+        0.4044589641316878,
+        0.5530955319012361,
+        0.22259857262362548,
+        0.7479699546058793,
+        -0.0668676606484987,
+        1.004537571036506
+      ],
+      "g3_wf_mdds": [
+        0.1319756607329122,
+        0.22439175822647875,
+        0.1301170104176406,
+        0.12862902364664208,
+        0.15877194999149283,
+        0.22624815102994109,
+        0.33420422077026546,
+        0.139112877224203
+      ],
+      "g3_max_wf_mdd": 0.33420422077026546,
+      "g4_oos_sharpe": 0.9046919602891407,
+      "g5_fwd_sharpe": 0.8651693764089755,
+      "g6_ci_low": 0.3934332771204191,
+      "g7_crosslib_delta_pp": 0.0
+    }
+  },
+  "robustness": {
+    "legacy_5y_sharpe_pct_positive": 1.0,
+    "legacy_5y_sharpe_n_windows": 34,
+    "rolling_pass_rates_avg_across_datasets": {
+      "5": 0.7777777777777778,
+      "10": 0.7692307692307693,
+      "15": 1.0,
+      "20": 1.0
+    },
+    "rolling_worst_mdd_max_across_datasets": {
+      "5": 0.334204220770265,
+      "10": 0.33420422077026524,
+      "15": 0.3342042207702649,
+      "20": 0.33420422077026524
+    },
+    "rolling_per_dataset": {
+      "lh_56y": {
+        "5": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.3342042207702647
+        },
+        "10": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.33420422077026524
+        },
+        "15": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.33420422077026424
+        },
+        "20": {
+          "pct_strat_beats_spy_cagr": NaN,
+          "n_windows": 0,
+          "worst_strat_mdd": 0.334204220770265
+        }
+      },
+      "spy_real": {
+        "5": {
+          "pct_strat_beats_spy_cagr": 0.7777777777777778,
+          "n_windows": 18,
+          "worst_strat_mdd": 0.334204220770265
+        },
+        "10": {
+          "pct_strat_beats_spy_cagr": 0.7692307692307693,
+          "n_windows": 13,
+          "worst_strat_mdd": 0.3342042207702648
+        },
+        "15": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 8,
+          "worst_strat_mdd": 0.3342042207702649
+        },
+        "20": {
+          "pct_strat_beats_spy_cagr": 1.0,
+          "n_windows": 3,
+          "worst_strat_mdd": 0.33420422077026524
+        }
+      }
+    },
+    "anchor_dataset": "lh_56y"
+  },
+  "configs": {
+    "R1_spy_1x_buy_hold": {
+      "type": "static",
+      "weights": {
+        "SPYSIM": 1.0
+      }
+    },
+    "R2_sso_lrs_200sma": {
+      "type": "lrs",
+      "filter": "sma",
+      "sma_window": 200,
+      "buffer_pct": 0.0,
+      "on_weights": {
+        "SSOSIM": 1.0
+      },
+      "off_weights": {
+        "IEFSIM": 1.0
+      },
+      "signal_ticker": "SPYSIM",
+      "lag_days": 1
+    },
+    "R3_upro_lrs_200sma": {
+      "type": "lrs",
+      "filter": "sma",
+      "sma_window": 200,
+      "buffer_pct": 0.0,
+      "on_weights": {
+        "UPROSIM": 1.0
+      },
+      "off_weights": {
+        "IEFSIM": 1.0
+      },
+      "signal_ticker": "SPYSIM",
+      "lag_days": 1
+    },
+    "T1_gold_heavy": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.2,
+        "GDESIM": 0.35,
+        "RSSTSIM": 0.25,
+        "TMFSIM": 0.2
+      }
+    },
+    "B2_tmf10_balanced": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.3,
+        "GDESIM": 0.3,
+        "RSSTSIM": 0.3,
+        "TMFSIM": 0.1
+      }
+    },
+    "B4_zroz_instead": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.25,
+        "GDESIM": 0.25,
+        "RSSTSIM": 0.25,
+        "ZROZSIM": 0.25
+      }
+    },
+    "L2_bogleheads_67ntsx": {
+      "type": "static",
+      "weights": {
+        "NTSXSIM": 0.67,
+        "GLDSIM": 0.11,
+        "KMLMSIM": 0.11,
+        "ZROZSIM": 0.11
+      }
+    }
+  },
+  "net_total_score": 69,
+  "net_tier": "PROMISING",
+  "net_winner_conditions_met": true,
+  "net_bars": {
+    "cagr_bar": true,
+    "mdd_bar": true,
+    "gates_bar": true
+  },
+  "net_criteria": {
+    "1_cagr": {
+      "points": 22,
+      "max": 30,
+      "mean_cagr": 0.1582079556889553,
+      "spy_bar": 0.1121,
+      "anchor_range": [
+        0.05,
+        0.2
+      ]
+    },
+    "2_mdd": {
+      "points": 13,
+      "max": 20,
+      "mean_mdd": 0.334204220770265,
+      "spy_bar": 0.5517,
+      "anchor_range": [
+        0.7,
+        0.15
+      ]
+    },
+    "3_gates": {
+      "points": 12,
+      "max": 20,
+      "per_dataset": {
+        "lh_56y": 6,
+        "spy_real": 5
+      },
+      "thresholds": {
+        "lh_56y": 5,
+        "spy_real": 5
+      },
+      "cross_dataset_met": true
+    },
+    "4_dsr": {
+      "points": 10,
+      "max": 10,
+      "worst_p_value": 0.00026614467419761034,
+      "cumulative_n_trials": 165
+    },
+    "5_sharpe": {
+      "points": 3,
+      "max": 10,
+      "mean_sharpe": 0.9896831361260883,
+      "anchor_range": [
+        0.5,
+        2.0
+      ]
+    },
+    "6_robustness": {
+      "points": 9,
+      "max": 10,
+      "input_bonus": 0,
+      "rolling_pass_rates": {
+        "5": 0.7777777777777778,
+        "10": 0.7692307692307693,
+        "15": 1.0,
+        "20": 1.0
+      },
+      "rolling_worst_mdd": {
+        "5": 0.334204220770265,
+        "10": 0.33420422077026524,
+        "15": 0.3342042207702649,
+        "20": 0.33420422077026524
+      },
+      "note": "Multi-horizon CAGR pass-rate vs SPY benchmark across 5y/10y/15y/20y rolling windows (3+3+2+2 pts max)."
+    },
+    "7_extra_bonus": {
+      "points": 0,
+      "max": 5
+    }
+  },
+  "net_metrics_used": {
+    "lh_56y": {
+      "sharpe": 1.010587969388448,
+      "cagr": 0.16044911326257472,
+      "mdd": 0.3342042207702641
+    },
+    "spy_real": {
+      "sharpe": 0.9687783028637285,
+      "cagr": 0.15596679811533587,
+      "mdd": 0.33420422077026596
+    }
+  },
+  "tax_summary": {
+    "lh_56y": {
+      "classification": "buy_hold",
+      "initial_capital": 10000.0,
+      "final_port_gross": 3565206.3,
+      "final_port_net": 3031925.35,
+      "total_darf_paid": 533280.94,
+      "n_year_end_settlements": 0,
+      "terminal_darf": 533280.94,
+      "drag_pct_pts": 0.4925,
+      "darf_rate": 0.15
+    },
+    "spy_real": {
+      "classification": "buy_hold",
+      "initial_capital": 10000.0,
+      "final_port_gross": 308974.57,
+      "final_port_net": 264128.38,
+      "total_darf_paid": 44846.19,
+      "n_year_end_settlements": 0,
+      "terminal_darf": 44846.19,
+      "drag_pct_pts": 0.8044,
+      "darf_rate": 0.15
+    }
+  }
+}
