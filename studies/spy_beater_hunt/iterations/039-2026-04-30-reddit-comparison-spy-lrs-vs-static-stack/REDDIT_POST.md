@@ -1,6 +1,6 @@
-# [Backtest 1986-2026] Boring static stacks beat both SPY 1× AND Gayed 200d-SMA LRS (SSO/UPRO) on every metric — plus the popular 50/25/25 SSO/GLD/ZROZ has surprisingly weak Sharpe
+# [Backtest 1987-2026] Boring static stacks beat SPY 1×, Gayed 200d-SMA LRS, AND the popular 50/25/25 SSO/GLD/ZROZ — capital-efficient stacking dominates LETF rotation
 
-**TL;DR**: I tested 7 portfolios across 40 years on testfol.io (annual rebalance, dividends reinvested, full SIM proxies for newer ETFs). Boring 4-ETF capital-efficient stacks (NTSX/GDE/RSST/TMF/ZROZ) **destroy classical Gayed LRS strategies** AND dominate the popular `50 SSO / 25 GLD / 25 ZROZ` template on **risk-adjusted return**. Capital-efficient stacking via futures > LETF whipsaw + decay tax. The boring stuff wins.
+**TL;DR**: I tested 7 portfolios over 38 years on testfol.io (common start 1987-12-31 → 2026-04-30, annual rebalance, dividends reinvested, full SIM proxies for newer ETFs). Boring 4-ETF capital-efficient stacks (NTSX/GDE/RSST/TMF/ZROZ) **dominate classical Gayed LRS strategies** on risk-adjusted return AND beat the popular `50 SSO / 25 GLD / 25 ZROZ` template (Sharpe 0.64 vs 0.74-0.80 for the stacks). Capital-efficient stacking via futures > LETF whipsaw + decay tax. The boring stuff wins.
 
 I ran this through a 7-gate anti-overfit battery (PBO/DSR/Walk-Forward/OOS/Bootstrap CI/cross-library) so it's not just curve-fitting. Section at the bottom explains.
 
@@ -24,12 +24,14 @@ I picked 4 named profiles from a 14-config sweep + 3 references. Each profile ta
 
 ---
 
-## Results — testfol.io (annual rebal, full 1986-2026)
+## Results — testfol.io (common start 1987-12-31 → 2026-04-30, ~38y)
+
+All portfolios share the same start date because **KMLM (managed futures synth) only goes back to 1987**. Clipping to a common window keeps the comparison fair (the 50/25/25 SSO/GLD/ZROZ would otherwise show pre-1980 numbers that the stacks can't access).
 
 | portfolio | CAGR | Max DD | Sharpe | Sortino | StdDev | $100k → 30y |
 |---|---:|---:|---:|---:|---:|---:|
 | SPY 1× buy-hold | 11.48% | **-55.14%** | 0.528 | 0.748 | 18.06% | $2.6M |
-| **Popular 50/25/25 SSO/GLD/ZROZ** | 12.55% | -47.31% | **0.490** ⚠ | 0.691 | 18.51% | $3.5M |
+| **Popular 50/25/25 SSO/GLD/ZROZ** | 13.47% | -39.84% | **0.637** ⚠ | 0.902 | 17.65% | $4.4M |
 | 🔵 **Sleeping pills (L1 CEGB)** | 11.56% | **-22.27%** | 0.782 | 1.117 | 10.97% | $2.7M |
 | ⚪ Bogleheads 67% NTSX (L2) | 11.55% | -22.48% | 0.778 | 1.117 | 11.04% | $2.7M |
 | 🟢 **Conservative (B4 ZROZ)** | 13.96% | -28.65% | **0.798** ⭐ | 1.146 | 13.88% | $5.0M |
@@ -40,35 +42,35 @@ I picked 4 named profiles from a 14-config sweep + 3 references. Each profile ta
 
 †† LRS strategies aren't natively supported in testfol.io (no regime-rotation primitive). Numbers from internal Python backtest using identical SIM data; methodology and code links at bottom.
 
-### Equity curves
+### Equity curves (common start 1987-12-31)
 
-![Equity curves 1986-2026](reddit_plot_1_equity.png)
-*All 7 portfolios, $10k start, log scale. Aggressive (T1) and Balanced (B2) lead the pack on terminal value AND have lower drawdowns than SPY.*
+![Equity curves 1987-2026](reddit_plot_1_equity.png)
+*All 7 portfolios, $10k start at 1987-12-31, log scale. Aggressive (T1), Balanced (B2), and Conservative (B4) lead the pack on terminal value AND have lower drawdowns than SPY.*
 
 ### Drawdowns
 
-![Drawdown comparison 1986-2026](reddit_plot_2_drawdown.png)
-*Static stacks max out around -22% to -36% drawdown. SPY and the popular 50/25/25 SSO mix both cross -47% to -55%. The Conservative (B4) and Sleeping pills (L1) profiles cap drawdown at -22% to -28% — sleep-better territory.*
+![Drawdown comparison 1987-2026](reddit_plot_2_drawdown.png)
+*Static stacks max out around -22% to -36% drawdown. SPY crosses -55% in 2008. The popular 50/25/25 SSO mix hits -40% (better than SPY but worse than every capital-efficient stack). Conservative (B4) and Sleeping pills (L1) cap drawdown at -22% to -28% — sleep-better territory.*
 
 ### Risk-return scatter (Pareto frontier)
 
 ![CAGR vs Max DD scatter](reddit_plot_3_scatter.png)
 *Bottom-left is the dominated zone. Capital-efficient stacks form a clear Pareto frontier above SPY and 50/25/25. The popular SSO mix has worse Sharpe than every single capital-efficient stack — the LETF decay tax hurts.*
 
-### Rolling 5-year CAGR
+### Rolling CAGR consistency (5y / 10y / 15y / 20y windows)
 
-![Rolling 5y CAGR](reddit_plot_4_rolling5y.png)
-*Static stacks rarely go negative on rolling 5y windows. SPY does. Aggressive consistently leads while keeping drawdowns reasonable.*
+![Rolling CAGR grid](reddit_plot_4_rolling_grid.png)
+*Top-left = 5y rolling, top-right = 10y, bottom-left = 15y, bottom-right = 20y. Static stacks rarely go negative on rolling windows beyond 5y. SPY can go to ~0% on 5y windows during 2000s. Aggressive consistently leads on long-horizon windows while keeping drawdowns manageable. The Bogleheads (L2) and Sleeping pills (L1) profiles have the most stable rolling returns — boring AND consistent.*
 
 ---
 
 ## What the data tells us
 
-### 1. The popular 50/25/25 SSO/GLD/ZROZ has the WORST Sharpe of the bunch (0.49)
+### 1. The popular 50/25/25 SSO/GLD/ZROZ has worst Sharpe among capital-efficient candidates (0.64)
 
-Even worse than SPY (0.53). Why? **SSO is a daily-rebalanced 2× LETF**, which has volatility decay (~1-1.5%/year drag at 2×). Compare to **NTSX**, which provides 1.5× notional via Treasury *futures* without daily reset — same effective leverage, no decay tax.
+Beats SPY's Sharpe (0.53) — but **all 4 capital-efficient stacks beat 50/25/25 on Sharpe** (0.74-0.80). Why? **SSO is a daily-rebalanced 2× LETF**, which has volatility decay (~1-1.5%/year drag at 2×). Compare to **NTSX**, which provides 1.5× notional via Treasury *futures* without daily reset — same effective leverage, no decay tax.
 
-The 50/25/25 mix has 12.55% CAGR (only +1pp over SPY) but eats a -47% drawdown. The Conservative (B4) profile gets **+2.5pp more CAGR with -19pp lower drawdown**.
+The 50/25/25 mix has 13.47% CAGR (+2pp over SPY) but eats a -40% drawdown. The Conservative (B4) profile gets **+0.5pp more CAGR with -11pp lower drawdown** AND better Sharpe (0.80 vs 0.64). Same compounding power, much better ride.
 
 ### 2. UPRO LRS (Gayed-Hedgefundie-lite) gets the highest CAGR but worst Sharpe
 
@@ -80,7 +82,7 @@ Plus LRS realizes capital gains every flip (taxable), and the 200d SMA whipsaw c
 
 ZROZ (zero-coupon long-Treasury) gives long-duration exposure WITHOUT the LETF decay penalty of TMF. **B4 ZROZ trades 0.65pp of CAGR for -7.6pp lower MDD** vs the Balanced (B2) profile that uses TMF. Best risk-adjusted return.
 
-The order on Sharpe is: **B4 ZROZ (0.798) > L1 CEGB (0.782) ≈ L2 Bogleheads (0.778) > B2 (0.772) > T1 (0.744) > UPRO LRS (~0.63) > SPY (0.528) > 50/25/25 SSO (0.490)**.
+The order on Sharpe is: **B4 ZROZ (0.798) > L1 CEGB (0.782) ≈ L2 Bogleheads (0.778) > B2 (0.772) > T1 (0.744) > 50/25/25 SSO (0.637) > UPRO LRS (~0.63) > SPY (0.528)**.
 
 ### 4. Even the boring 67% NTSX Bogleheads template matches SPY in CAGR with HALF the drawdown
 
