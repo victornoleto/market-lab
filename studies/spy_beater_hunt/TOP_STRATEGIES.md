@@ -26,6 +26,8 @@ Este documento substitui o "WINNER tier" como critério de deploy-readiness por 
 
 After extensive sweep of 14 variants of the simple capital-efficient stack family + literature research (RiskParityChronicles CEGB, optimizedportfolio.com, Bogleheads), this is the **deploy-recommended family**. Tier 0 = simpler than meta-ensembles AND with similar/better deploy-readiness metrics.
 
+> **Tabela completa com TODAS as 14 configs** (per-dataset gross + net + means + 30y terminal + Pareto frontier + specs): ver [`iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/SWEEP_RESULTS.md`](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/SWEEP_RESULTS.md).
+
 **Plots iter 038**: [equity overlay lh_56y](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_overlay_lh_56y.png) · [equity overlay spy_real](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_cagr_mdd_scatter.png) · [gate heatmap](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_gate_heatmap.png)
 
 ![iter 038 equity overlay lh_56y](iterations/038-2026-04-30-user-static-stack-mf-gold-sweep/plot_overlay_lh_56y.png)
