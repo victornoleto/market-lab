@@ -70,6 +70,21 @@ Small Bitcoin sleeves were tested via `BTCSIM` on corrected B4. The common windo
 
 Interpretation: **2.5% BTC is the cleanest optional satellite**, 5% is aggressive but plausible if the user explicitly wants crypto convexity, and 10% should not be treated as a retirement-core default. Details: [`iterations/047-2026-05-03-bitcoin-sleeve-b4/SUMMARY.md`](iterations/047-2026-05-03-bitcoin-sleeve-b4/SUMMARY.md).
 
+### Iters 050-051 follow-up — taxed overlays and LETF risk-on sleeves
+
+Restricted regime overlays were tested on B4 without BTC using a 15% annual DARF model on realized positive gains. The best after-tax no-LETF row was `overlay_sma150_12mdd_10pp`: 12.35% net CAGR / -28.00% MDD / 0.901 Sharpe versus forced-monthly static B4 at 12.18% / -30.88% / 0.880. This is a small but directionally useful improvement; it remains research, not full gate-equivalent deploy.
+
+The LETF risk-on grid (SSO/QLD/UPRO/TQQQ at 5-50% in 5pp steps, funded only from ZROZ or NTSX in risk-on states) did **not** improve the balanced candidate. It increased CAGR, but no LETF row beat the no-LETF overlay on both after-tax Sharpe and MDD.
+
+| candidate | net CAGR | MDD | Sharpe | implication |
+|---|---:|---:|---:|---|
+| B4 static forced monthly | 12.18% | -30.88% | 0.880 | tax/conservative baseline |
+| no-LETF overlay SMA150 | 12.35% | **-28.00%** | **0.901** | cleanest overlay hypothesis |
+| QLD 5% SMA150 from ZROZ | 12.87% | -28.92% | 0.900 | best LETF Sharpe, but worse MDD/Sharpe than no-LETF |
+| TQQQ 45% SMA150 from NTSX | **16.78%** | -44.64% | 0.742 | best LETF CAGR, but no longer comparable risk profile |
+
+Details: [`iterations/050-2026-05-03-b4-overlay-tax-sma-ema/SUMMARY.md`](iterations/050-2026-05-03-b4-overlay-tax-sma-ema/SUMMARY.md) and [`iterations/051-2026-05-03-letf-risk-on-overlay/SUMMARY.md`](iterations/051-2026-05-03-letf-risk-on-overlay/SUMMARY.md). Trend gating remains tied to LRS rationale `[leverage_for_the_long_run, ch.3-4, p.40-60]`; grid restraint and rejection criteria follow anti-overfit discipline `[advances_fin_ml, p.208-211]`.
+
 ---
 
 **Methodology** (single, consistent across all rankings in this doc):

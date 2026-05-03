@@ -1,0 +1,25 @@
+{
+  "static_b4_btc5": {
+    "neutral": 191
+  },
+  "overlay_200d_12mdd_5pp": {
+    "risk_on": 130,
+    "defensive": 32,
+    "neutral": 29
+  },
+  "overlay_200d_24mdd_5pp": {
+    "risk_on": 122,
+    "neutral": 43,
+    "defensive": 26
+  },
+  "overlay_10m_12mdd_5pp": {
+    "risk_on": 130,
+    "defensive": 32,
+    "neutral": 29
+  },
+  "overlay_200d_12mdd_10pp": {
+    "risk_on": 130,
+    "defensive": 32,
+    "neutral": 29
+  }
+}

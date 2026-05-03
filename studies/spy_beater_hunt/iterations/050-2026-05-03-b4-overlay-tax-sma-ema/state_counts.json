@@ -1,0 +1,67 @@
+{
+  "static_b4_forced_monthly": {
+    "neutral": 462,
+    "risk_on": 0,
+    "defensive": 0
+  },
+  "overlay_sma126_12mdd_10pp": {
+    "neutral": 45,
+    "risk_on": 293,
+    "defensive": 124
+  },
+  "overlay_sma150_12mdd_10pp": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "overlay_sma180_12mdd_10pp": {
+    "neutral": 53,
+    "risk_on": 303,
+    "defensive": 106
+  },
+  "overlay_sma200_12mdd_10pp": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "overlay_sma210_12mdd_10pp": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "overlay_sma252_12mdd_10pp": {
+    "neutral": 66,
+    "risk_on": 306,
+    "defensive": 90
+  },
+  "overlay_ema126_12mdd_10pp": {
+    "neutral": 42,
+    "risk_on": 294,
+    "defensive": 126
+  },
+  "overlay_ema150_12mdd_10pp": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "overlay_ema180_12mdd_10pp": {
+    "neutral": 54,
+    "risk_on": 305,
+    "defensive": 103
+  },
+  "overlay_ema200_12mdd_10pp": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "overlay_ema210_12mdd_10pp": {
+    "neutral": 60,
+    "risk_on": 305,
+    "defensive": 97
+  },
+  "overlay_ema252_12mdd_10pp": {
+    "neutral": 66,
+    "risk_on": 306,
+    "defensive": 90
+  }
+}

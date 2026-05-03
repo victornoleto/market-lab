@@ -80,8 +80,23 @@ The study tested many candidates. This document keeps the review short because t
 | HFEA / LETF-heavy stacks | high CAGR but path-dependent and behaviorally fragile; 2022 and 2000-2002 are binding risks |
 | global/factor tilts | tested in iter 046; did not improve B4 without worsening MDD |
 | walk-forward optimized weights | iter 043 showed static weights beat rolling max-Sharpe optimization; re-fitting added overfit risk |
+| B4 regime overlay without LETF | promising research, but not default yet; after-tax edge is small and still needs full gate/OOS treatment |
+| B4 + LETF risk-on overlay | higher CAGR, but worse drawdown and lower risk-adjusted return versus the cleaner no-LETF overlay |
 
 The practical conclusion is that simple static stacking won the core decision, and BTC won only as a small capped satellite.
+
+### 4.1 Post-Selection Overlay Review
+
+After the live-candidate decision, iters 048-051 tested whether B4 should be replaced by a tactical overlay or by LETF risk-on variants. The answer is no for the default allocation.
+
+| approach | net CAGR | MDD | Sharpe | conclusion |
+|---|---:|---:|---:|---|
+| B4 static forced monthly | 12.18% | -30.88% | 0.880 | conservative tax baseline; real contribution-only implementation may be better than this forced-monthly model |
+| B4 overlay without LETF | 12.35% | -28.00% | 0.901 | best risk-adjusted overlay hypothesis, but edge is modest and not full gate-equivalent |
+| QLD 5% risk-on overlay | 12.87% | -28.92% | 0.900 | best LETF by Sharpe; adds CAGR but fails to improve Sharpe/MDD versus no-LETF overlay |
+| TQQQ 45% risk-on overlay | 16.78% | -44.64% | 0.742 | best LETF by CAGR; materially different risk profile, not a core replacement |
+
+Interpretation: the no-LETF overlay is worth keeping on the research watchlist, but it does not yet justify replacing static B4 as the default live implementation. The LETF overlays mostly buy extra return by adding effective equity beta in risk-on states; they do not improve the quality of the allocation under the selected Sharpe/MDD discipline. This follows the same anti-overfit discipline used throughout the project: a tactical variant should clear a pre-declared risk-adjusted hurdle before replacing a simpler static allocation `[advances_fin_ml, p.208-211]`, and LETF trend exposure remains path-dependent even when motivated by LRS-style moving-average gates `[leverage_for_the_long_run, ch.3-4, p.40-60]`.
 
 ---
 
