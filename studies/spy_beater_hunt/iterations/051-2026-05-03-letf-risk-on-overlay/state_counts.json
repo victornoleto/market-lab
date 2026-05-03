@@ -1,0 +1,1617 @@
+{
+  "static_b4_forced_monthly": {
+    "neutral": 462,
+    "risk_on": 0,
+    "defensive": 0
+  },
+  "overlay_sma150_12mdd_10pp": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "overlay_sma200_12mdd_10pp": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_5_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_5_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_5_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_5_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_5_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_5_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_5_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_5_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_10_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_10_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_10_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_10_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_10_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_10_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_10_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_10_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_15_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_15_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_15_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_15_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_15_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_15_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_15_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_15_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_20_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_20_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_20_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_20_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_20_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_20_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_20_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_20_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_25_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_25_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_25_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_25_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_25_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_25_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_25_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_25_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_30_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_30_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_30_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_30_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_30_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_30_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_30_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_30_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_35_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_35_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_35_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_35_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_35_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_35_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_35_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_35_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_40_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_40_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_40_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_40_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_40_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_40_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_40_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_40_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_45_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_45_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_45_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_45_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_45_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_45_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_45_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_45_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_50_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_50_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "sso_50_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_50_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "sso_50_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_50_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "sso_50_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "sso_50_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_5_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_5_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_5_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_5_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_5_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_5_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_5_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_5_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_10_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_10_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_10_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_10_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_10_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_10_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_10_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_10_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_15_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_15_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_15_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_15_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_15_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_15_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_15_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_15_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_20_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_20_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_20_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_20_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_20_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_20_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_20_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_20_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_25_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_25_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_25_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_25_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_25_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_25_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_25_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_25_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_30_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_30_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_30_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_30_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_30_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_30_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_30_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_30_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_35_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_35_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_35_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_35_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_35_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_35_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_35_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_35_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_40_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_40_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_40_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_40_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_40_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_40_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_40_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_40_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_45_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_45_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_45_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_45_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_45_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_45_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_45_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_45_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_50_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_50_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "qld_50_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_50_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "qld_50_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_50_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "qld_50_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "qld_50_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_5_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_5_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_5_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_5_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_5_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_5_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_5_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_5_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_10_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_10_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_10_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_10_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_10_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_10_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_10_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_10_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_15_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_15_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_15_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_15_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_15_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_15_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_15_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_15_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_20_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_20_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_20_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_20_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_20_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_20_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_20_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_20_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_25_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_25_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_25_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_25_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_25_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_25_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_25_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_25_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_30_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_30_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_30_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_30_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_30_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_30_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_30_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_30_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_35_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_35_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_35_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_35_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_35_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_35_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_35_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_35_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_40_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_40_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_40_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_40_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_40_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_40_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_40_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_40_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_45_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_45_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_45_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_45_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_45_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_45_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_45_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_45_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_50_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_50_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "upro_50_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_50_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "upro_50_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_50_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "upro_50_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "upro_50_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_5_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_5_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_5_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_5_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_5_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_5_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_5_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_5_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_10_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_10_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_10_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_10_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_10_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_10_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_10_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_10_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_15_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_15_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_15_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_15_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_15_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_15_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_15_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_15_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_20_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_20_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_20_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_20_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_20_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_20_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_20_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_20_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_25_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_25_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_25_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_25_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_25_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_25_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_25_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_25_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_30_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_30_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_30_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_30_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_30_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_30_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_30_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_30_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_35_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_35_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_35_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_35_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_35_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_35_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_35_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_35_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_40_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_40_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_40_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_40_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_40_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_40_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_40_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_40_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_45_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_45_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_45_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_45_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_45_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_45_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_45_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_45_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_50_sma150_from_ZROZ": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_50_sma150_from_NTSX": {
+    "neutral": 50,
+    "risk_on": 299,
+    "defensive": 113
+  },
+  "tqqq_50_sma200_from_ZROZ": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_50_sma200_from_NTSX": {
+    "neutral": 53,
+    "risk_on": 304,
+    "defensive": 105
+  },
+  "tqqq_50_ema150_from_ZROZ": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_50_ema150_from_NTSX": {
+    "neutral": 47,
+    "risk_on": 297,
+    "defensive": 118
+  },
+  "tqqq_50_ema200_from_ZROZ": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  },
+  "tqqq_50_ema200_from_NTSX": {
+    "neutral": 57,
+    "risk_on": 305,
+    "defensive": 100
+  }
+}

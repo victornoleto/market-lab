@@ -15,6 +15,8 @@
 
 **Update 2026-05-03 — iter 047 Bitcoin sleeve:** pequena exposicao a `BTCSIM` sobre B4 corrigido foi testada. Janela comum cai para 2010-07-19 -> 2026-05-01, favoravel ao Bitcoin. Resultado: 2.5% BTC tirado de ZROZ melhora para 17.80% CAGR / -26.97% MDD / Sharpe 1.151; 5% BTC melhora para 22.01% / -27.90% / 1.311. Estritamente, MDD piora levemente vs B4 da janela (-26.42%), mas economicamente 2.5-5% e o primeiro upgrade de CAGR realmente forte encontrado. Caveat: isto e sleeve especulativa com historia curta, nao expectativa forward. Detalhes: `iterations/047-2026-05-03-bitcoin-sleeve-b4/SUMMARY.md`.
 
+**Update 2026-05-03 — iters 048-051 overlays:** overlays restritos sobre B4 foram testados com DARF anual. Sem BTC e com janela 1987+, `overlay_sma150_12mdd_10pp` ficou em 12.35% CAGR liquido / -28.00% MDD / Sharpe 0.901 contra B4 estatico mensal 12.18% / -30.88% / 0.880. A sensibilidade SMA/EMA 126-252d foi robusta, reduzindo a suspeita de depender do 200d SMA. O iter 051 testou LETF risk-on (SSO/QLD/UPRO/TQQQ, 5-50% em passos de 5pp) e rejeitou como core: melhor LETF por Sharpe, `qld_5_sma150_from_ZROZ`, fez 12.87% / -28.92% / 0.900, abaixo do overlay sem LETF em Sharpe/MDD; melhor CAGR, `tqqq_45_sma150_from_NTSX`, fez 16.78% / -44.64% / 0.742. Detalhes: `iterations/050-2026-05-03-b4-overlay-tax-sma-ema/SUMMARY.md` e `iterations/051-2026-05-03-letf-risk-on-overlay/SUMMARY.md`.
+
 **Mission**: Find ONE long-term portfolio strategy with **mean CAGR ≥ SPY (13.80%)** AND **mean MDD ≤ SPY (40.85%)** AND surviving the 7-gate battery (PBO/DSR/WF/Bootstrap/CrossLib) on ≥ 2/3 datasets (lh_56y / vt_real / ndx_real).
 
 This is a **harder bar than long_term_portfolio's** — that loop's mission was Sharpe-edge anchored (CAGR was warning-only). User feedback after 43-iter sweep: "MUITO DIFÍCIL seguir uma estratégia que não vai bater o SPY em CAGR." This hunt directly addresses that.
@@ -71,6 +73,8 @@ This is a **harder bar than long_term_portfolio's** — that loop's mission was 
 | `iterations/045-2026-05-02-rsst-proxy-7030-rebaseline/SUMMARY.md` | **RSST-corrected** rebaseline: same configs on common 2000+ window with `RSST = SPY + 70% DBMF + 30% KMLM - CASHX?E=-2` |
 | `iterations/046-2026-05-03-factor-tilt-and-ndx-deleveraged/SUMMARY.md` | Factor tilt + no_simpsons/NDX follow-up; B4 corrected baseline retained |
 | `iterations/047-2026-05-03-bitcoin-sleeve-b4/SUMMARY.md` | Small Bitcoin sleeve test on corrected B4; 2.5-5% BTC materially improves 2010+ CAGR with modest MDD penalty |
+| `iterations/050-2026-05-03-b4-overlay-tax-sma-ema/SUMMARY.md` | B4 no-BTC overlay with annual DARF and SMA/EMA sensitivity; small after-tax improvement versus forced-monthly static |
+| `iterations/051-2026-05-03-letf-risk-on-overlay/SUMMARY.md` | LETF risk-on sleeves on B4 overlay; higher CAGR variants rejected as balanced-core improvements due worse MDD/Sharpe |
 
 > **RSST proxy note:** iter 038/040/044 expandiram `RSST` como `SPYSIM + KMLMSIM - CASHX`. O iter 045 substitui isso por `SPYSIM + 70% DBMFSIM + 30% KMLMSIM - CASHX?E=-2`; use o iter 045 para leitura corrigida do RSST, e o iter 044 apenas como histórico de janela longa pré-correção.
 

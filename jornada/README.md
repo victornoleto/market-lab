@@ -29,7 +29,42 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-05-03 — MyFxBook Gold Tier 2 falhou; Plano C inalterado)
+## Onde estamos hoje (2026-05-03 — LETF overlay rejeitado; Plano C formal inalterado)
+
+**B4 LETF overlay 2026-05-03:** rodei o iter 051 para testar SSO/QLD/UPRO/TQQQ
+como sleeve de risk-on de 5% a 50% em passos de 5pp sobre o B4 overlay, com DARF anual. Resultado:
+LETF aumenta CAGR, mas nao melhora a versao balanceada. O overlay sem LETF
+`overlay_sma150_12mdd_10pp` ficou em 12.35% CAGR liquido / -28.00% MDD /
+Sharpe 0.901. O melhor LETF por Sharpe, `qld_5_sma150_from_ZROZ`, ficou em
+12.87% / -28.92% / 0.900; o melhor por CAGR, `tqqq_45_sma150_from_NTSX`, foi a
+16.78%, mas com -44.64% MDD e Sharpe 0.742. Conclusao: rejeitar LETF sleeves
+como melhoria core; sao apenas variante agressiva. Detalhe em
+`jornada/2026-05-03-1600-b4-letf-overlay-rejeitado.md`.
+
+## Onde estávamos antes (2026-05-03 — B4 overlay com DARF ainda promissor; Plano C formal inalterado)
+
+**B4 overlay tax/SMA/EMA 2026-05-03:** rodei o iter 050 para testar DARF anual
+e sensibilidade de janelas. Em B4 sem BTC, 1987-12-31 a 2026-05-01, com RSST
+`DBMFSIM?FB=KMLMSIM`, o melhor overlay pos-imposto foi
+`overlay_sma150_12mdd_10pp`: 12.35% CAGR liquido / -28.00% MDD / Sharpe 0.901.
+O B4 estatico forçado mensal ficou em 12.18% / -30.88% / 0.880. A vantagem
+liquida existe mas e pequena; DARF recorrente come parte relevante da melhoria
+bruta. O sinal nao depende so do 200d SMA: SMA/EMA 126-252d ficaram em faixa
+proxima, com SMA 150d melhor. Detalhe em
+`jornada/2026-05-03-1546-b4-overlay-tax-ema-sma.md`.
+
+## Onde estávamos antes (2026-05-03 — B4 overlay sem BTC promissor; Plano C formal inalterado)
+
+**B4 no-BTC overlay 2026-05-03:** para remover a restricao do Bitcoin em 2010,
+rodei o iter 049 sem BTC e com RSST usando `DBMFSIM?FB=KMLMSIM` como fallback
+pre-2000. Janela 1987-12-31 a 2026-05-01. B4 estatico ficou em 12.51% CAGR /
+-29.81% MDD / Sharpe 0.894; o melhor overlay restrito
+`overlay_200d_12mdd_10pp` ficou em 13.05% CAGR / -26.65% MDD / Sharpe 0.933.
+Isto e promissor, mas ainda nao e regra live: o fallback nao e DBMF puro antes
+de 2000 e faltam checks estilo gate/OOS. Detalhe em
+`jornada/2026-05-03-1541-b4-overlay-sem-btc.md`.
+
+## Onde estávamos antes (2026-05-03 — MyFxBook Gold Tier 2 falhou; Plano C inalterado)
 
 **MyFxBook Gold Tier 2 forense 2026-05-03:** rodei o teste opcional para
 separar "a regra dispara demais" de "a regra nao tem sinal". Cada stream
