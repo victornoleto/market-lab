@@ -1,6 +1,19 @@
 # spy_beater_hunt
 
-**Status**: **CLOSED 2026-04-30** após 30 iters / ~85 cumulative trials. Nenhuma estratégia atingiu tier WINNER (≥90/100 + bars), mas **~15 estratégias batem SPY em CAGR + MDD simultaneamente** mesmo após DARF. Veredito de deploy-readiness em `TOP_STRATEGIES.md`. Hunt original bootstrap foi 2026-04-29.
+**Status**: **CLOSED 2026-04-30** após 30 iters / ~85 cumulative trials. **2026-05-01: 5 community-feedback iterations (040-044) added** após Reddit Post 1 publication (r/LETFs):
+- Iter 040 — Monthly rebal + ERs validation (perky_python)
+- Iter 041 — TQQQ regime-gate test, 6 variants, none beat B4 (Fun-Sundae4060 + no_simpsons)
+- Iter 042 — International stack test, US-bias only ~4% of edge (Grouchy_Release_2321)
+- Iter 043 — Walk-forward weight drift gate G8 PASS (laurenthu)
+- Iter 044 — Re-baseline iter 038's 14 configs com Monthly + ERs + terminal DARF (user feedback methodology consistency)
+
+**B4 Conservative (25 NTSX / 25 GDE / 25 RSST / 25 ZROZ) confirmed as canonical deploy candidate**: net CAGR 12.84% / MDD -28.94% / Sharpe 0.745. Replaces T1 from Post 1 (T1 Sharpe dropped to 0.688 with Monthly + ERs). Veredito canonical em `TOP_STRATEGIES.md` seção "CANONICAL DEPLOY RANKING".
+
+**Update 2026-05-02 — iter 045 RSST proxy corrected:** a validação live-vs-proxy do RSST real mostrou que `SPY + 70% DBMF + 30% KMLM - cash` replica melhor o ETF real do que `SPY + KMLM - cash`. O iter 045 re-rodou os 14 configs do iter 044 em janela comum 2000-01-03 -> 2026-05-01 com esse proxy corrigido e financiamento `CASHX?E=-2`. Para cenários static buy-and-hold/lazy-rebal, **não aplicamos DARF**; imposto fica reservado para estratégias swing/táticas que realizam ganho via trocas de posição. Resultado: **B4 ZROZ fica #2 por Sharpe** (CAGR 11.00% / MDD -29.60% / Sharpe 0.671), atrás de L1 CEGB (Sharpe 0.696, CAGR 9.66%). B4 continua sendo o melhor compromisso entre CAGR e MDD entre os stacks com RSST, mas a tabela de deploy deve usar `iterations/045-.../SUMMARY.md` para a leitura metodologicamente corrigida. Rationale: RSST é return stacking de equity + managed futures `[risk_parity, ch.5, p.10]`, e managed futures são melhor tratados como sleeve diversificada de trend/carry do que como um único índice KMLM `[ilmanen_expected_returns, ch.19]`.
+
+**Update 2026-05-03 — iter 046 factor/NDX follow-up:** GPT-5.5 testou follow-ups pedidos pelo usuario: B4 sem RSST leverage, tilts VBR/EFV/MTUM sobre B4, e variantes NDX deleveraged estilo no_simpsons. Resultado: nenhum bate o B4 corrigido em CAGR sem piorar drawdown. `B4_scv10_from_ntsx` e o unico mild CAGR upgrade memoravel (11.23% / -31.06% / Sharpe 0.681), mas aceita MDD pior que B4. `B4_unstacked_mf7030` vira low-stress champion (9.91% / -20.91% / Sharpe 0.749), nao CAGR winner. NDX deleveraged ainda falha por MDD -72% a -76%. Detalhes: `iterations/046-2026-05-03-factor-tilt-and-ndx-deleveraged/SUMMARY.md`.
+
+**Update 2026-05-03 — iter 047 Bitcoin sleeve:** pequena exposicao a `BTCSIM` sobre B4 corrigido foi testada. Janela comum cai para 2010-07-19 -> 2026-05-01, favoravel ao Bitcoin. Resultado: 2.5% BTC tirado de ZROZ melhora para 17.80% CAGR / -26.97% MDD / Sharpe 1.151; 5% BTC melhora para 22.01% / -27.90% / 1.311. Estritamente, MDD piora levemente vs B4 da janela (-26.42%), mas economicamente 2.5-5% e o primeiro upgrade de CAGR realmente forte encontrado. Caveat: isto e sleeve especulativa com historia curta, nao expectativa forward. Detalhes: `iterations/047-2026-05-03-bitcoin-sleeve-b4/SUMMARY.md`.
 
 **Mission**: Find ONE long-term portfolio strategy with **mean CAGR ≥ SPY (13.80%)** AND **mean MDD ≤ SPY (40.85%)** AND surviving the 7-gate battery (PBO/DSR/WF/Bootstrap/CrossLib) on ≥ 2/3 datasets (lh_56y / vt_real / ndx_real).
 
@@ -45,10 +58,21 @@ This is a **harder bar than long_term_portfolio's** — that loop's mission was 
 | `WINNER_AND_RANKING.md` | tier rubric (CAGR/MDD-anchored); includes pre/post-tax ranking |
 | **`TOP_STRATEGIES.md`** | **deploy-readiness ranking + per-gate audit + live-deploy instructions** (canonical doc post-closure 2026-04-30) |
 | `INFRASTRUCTURE.md` | what to reuse from long_term_portfolio (synths.py / run_iter.py / scoring.py adaptations) |
-| `PROMISING_DIRECTIONS.md` | ranked list of hypotheses pre-loaded for the hunt |
 | `tax_layer.py` | net-of-tax computation (Lei 14.754/2023, 15% DARF anual) wrapping `_shared/tax_engine.py` |
 | `rerun_all_iters.sh` | re-execute every iter's backtest.py after pipeline-level changes |
-| `iterations/` | one dir per iter (30 completed) |
+| `iterations/` | one dir per iter (30 completed + 4 Reddit feedback iters 040-043 in 2026-05-01) |
+| `iterations/039-2026-04-30-reddit-comparison-spy-lrs-vs-static-stack/REDDIT_POST_1_discovery.md` | Reddit Post 1 (published) — discovery format |
+| `iterations/039-.../REDDIT_POST_2_technical.md` | Reddit Post 2 (drafted) — technical deep-dive with iter 040-043 findings |
+| `iterations/040-2026-05-01-baseline-monthly-rebal-explicit-ers/SUMMARY.md` | Monthly rebal + ERs baseline (perky_python feedback) |
+| `iterations/041-2026-05-01-g3-ndx-regime-gate-tqqq-multi-asset/SUMMARY.md` | TQQQ × 200d × multi-asset (Fun-Sundae4060 + no_simpsons feedback) |
+| `iterations/042-2026-05-01-g4-international-stack-ntsi-rssb/SUMMARY.md` | NTSD/RSSB stacks (Grouchy_Release_2321 feedback) |
+| `iterations/043-2026-05-01-g8-walkforward-weight-drift-gate/SUMMARY.md` | Walk-forward weight optimization vs static (laurenthu feedback) |
+| `iterations/044-2026-05-01-iter038-rebaseline-monthly-ers-terminal-darf/SUMMARY.md` | **Canonical** unified 14-config ranking with Monthly + ERs + terminal DARF (replaces both iter 038 and iter 040 isolated tables) |
+| `iterations/045-2026-05-02-rsst-proxy-7030-rebaseline/SUMMARY.md` | **RSST-corrected** rebaseline: same configs on common 2000+ window with `RSST = SPY + 70% DBMF + 30% KMLM - CASHX?E=-2` |
+| `iterations/046-2026-05-03-factor-tilt-and-ndx-deleveraged/SUMMARY.md` | Factor tilt + no_simpsons/NDX follow-up; B4 corrected baseline retained |
+| `iterations/047-2026-05-03-bitcoin-sleeve-b4/SUMMARY.md` | Small Bitcoin sleeve test on corrected B4; 2.5-5% BTC materially improves 2010+ CAGR with modest MDD penalty |
+
+> **RSST proxy note:** iter 038/040/044 expandiram `RSST` como `SPYSIM + KMLMSIM - CASHX`. O iter 045 substitui isso por `SPYSIM + 70% DBMFSIM + 30% KMLMSIM - CASHX?E=-2`; use o iter 045 para leitura corrigida do RSST, e o iter 044 apenas como histórico de janela longa pré-correção.
 
 ---
 

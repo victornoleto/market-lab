@@ -1,0 +1,30 @@
+{
+  "system_id": 7603723,
+  "url": "https://www.myfxbook.com/members/HappyForex/old-happy-neuron-v10-aggressive/7603723",
+  "name": "OLD Happy Neuron v1.0 (Aggressive Risk) Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+87.79%",
+    "absolute_gain": "+48.44%",
+    "daily": "0.03%",
+    "monthly": "10.83%",
+    "drawdown": "72.66%",
+    "balance": "$7,422.05",
+    "equity": "(66.63%) $4,945.22",
+    "highest": "(Jun 16) $7,422.05",
+    "profit": "$2,422.05",
+    "interest": "$0.00",
+    "deposits": "$5,000.00",
+    "withdrawals": "$0.00",
+    "updated": "Jun 16, 2021 at 19:07",
+    "tracking": "3"
+  },
+  "account": {
+    "raw": "Real (USD), Fort Financial Services , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Fort Financial Services",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/fort-financial-services/814372,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

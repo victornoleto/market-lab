@@ -1,0 +1,32 @@
+{
+  "status": "review_only_not_full_gate_verdict",
+  "tier": "PROMISING_BASELINE_RETAINED",
+  "winner_conditions_met": false,
+  "reason": "No tested follow-up beats corrected B4 on CAGR without worse drawdown. Static factor tilts increase CAGR only by accepting materially higher MDD; NDX deleveraged variants remain >70% MDD.",
+  "baseline": {
+    "slug": "B4_rsst7030_baseline",
+    "cagr_pct": 10.9997,
+    "mdd_pct": -29.6005,
+    "sharpe": 0.671
+  },
+  "best_low_drawdown": {
+    "slug": "B4_unstacked_mf7030",
+    "cagr_pct": 9.9126,
+    "mdd_pct": -20.9111,
+    "sharpe": 0.7486
+  },
+  "best_mild_cagr_upgrade": {
+    "slug": "B4_scv10_from_ntsx",
+    "cagr_pct": 11.2273,
+    "mdd_pct": -31.0611,
+    "sharpe": 0.6813
+  },
+  "best_ndx_deleveraged": {
+    "slug": "NS3_q140kmlm30iei30_q50iei50",
+    "cagr_pct": 13.38,
+    "mdd_pct": -72.51,
+    "sharpe": 0.621
+  },
+  "gate_equivalence": "not_equivalent_to_iters_001_039_verdict_json; PBO/DSR/WF/bootstrap not recomputed",
+  "source": "SUMMARY.md + unified_metrics.json"
+}

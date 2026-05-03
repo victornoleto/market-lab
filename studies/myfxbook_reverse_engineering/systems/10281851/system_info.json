@@ -1,0 +1,30 @@
+{
+  "system_id": 10281851,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-gold-eightcap-m30/10281851",
+  "name": "Happy Gold - Eightcap (M30)  Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+3,376.60%",
+    "absolute_gain": "+3,376.61%",
+    "daily": "0.30%",
+    "monthly": "9.46%",
+    "drawdown": "11.70%",
+    "balance": "$34,766.07",
+    "equity": "(100.00%) $34,766.07",
+    "highest": "(Apr 30) $34,766.07",
+    "profit": "$33,766.07",
+    "interest": "-$12.13",
+    "deposits": "$1,000.00",
+    "withdrawals": "$0.00",
+    "updated": "6 hours ago",
+    "tracking": "191"
+  },
+  "account": {
+    "raw": "Real (USD), Eightcap , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Eightcap",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/eightcap/1057189,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

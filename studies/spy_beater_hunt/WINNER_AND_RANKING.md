@@ -1,6 +1,30 @@
 # Winner conditions + ranking tiers — spy_beater_hunt
 
-> **Status (2026-04-30 closure)**: hunt fechado em 30 iters. Nenhum WINNER tier (≥90 + bars) emergiu. Para **deploy-readiness** ver `TOP_STRATEGIES.md` que substitui o critério "WINNER tier" por **gate-pass anti-overfit** (decisão usuário 2026-04-30: "se passaram nos gates, por mim tudo certo"). Esta página agora documenta o rubric ORIGINAL pelo qual as iters foram scoreadas e a ranking history pre/post tax — não é mais a referência canônica de deploy.
+> **Status (2026-05-01 post-Reddit-feedback update)**: hunt fechado em 30 iters em 2026-04-30. Iter 040-043 adicionadas em 2026-05-01 após Reddit Post 1 publication (r/LETFs) — 4 testes adversariais de community feedback (perky_python, Fun-Sundae4060, Grouchy_Release_2321, laurenthu) sobre Monthly rebal + ERs + G3 NDX regime-gate + G4 international + G8 walk-forward weight drift. **B4 Conservative confirmado como deploy candidate** (substitui T1 do Post 1). Para deploy ranking pós-feedback ver `TOP_STRATEGIES.md` seção "POST-CLOSURE: Reddit feedback integration (2026-05-01)". Esta página continua documentando o rubric ORIGINAL pelo qual iters 001-036 foram scoreadas.
+
+## Update 2026-05-01 — canonical ranking (Monthly + ERs + terminal DARF, iter 044)
+
+After Reddit Post 1 community feedback drove 5 follow-up iterations (040-044), all 14 iter 038 configs were re-rodados com metodologia consistente: **Monthly rebal + ERs reais via testfol.io + terminal DARF** (lazy rebal: user contribuir mensalmente, nunca vende durante accumulation → DARF 15% só no terminal).
+
+### Top 3 by Sharpe (iter 044 unified)
+
+| # | strategy | gross CAGR | **net CAGR** | MDD | Sharpe | Calmar |
+|---|---|---:|---:|---:|---:|---:|
+| 🏆 | **Conservative (B4 ZROZ)** | 13.31% | **12.84%** | -28.94% | **0.745** | 0.460 |
+| 2 | B3 TLT instead of TMF | 12.44% | 11.98% | -30.06% | 0.735 | 0.414 |
+| 🥈 | Sleeping pills (L1 CEGB) | 11.06% | 10.60% | **-25.43%** | 0.729 | 0.435 |
+
+### Special tier — best MDD in entire study
+
+| # | strategy | gross CAGR | net CAGR | MDD | Sharpe | Calmar |
+|---|---|---:|---:|---:|---:|---:|
+| 🛡️ | **G4d (RSSB+GDE+ZROZ+KMLM)** 🆕 | 10.54% | 10.10% | **-22.56%** | 0.678 | **0.467** ⭐ |
+
+B4 sobreviveu aos 4 testes adversariais (Monthly+ERs, TQQQ regime-gate, international, walk-forward weight drift). **T1 gold-heavy demoted from Post 1 pick** — TMF 20% × monthly rebal magnificou drawdowns (-3.99pp MDD vs B4's -0.29pp). Para deploy ranking completo (todos 14 iter 044 configs + G3 + G4 + LRS + SPY) ver `TOP_STRATEGIES.md` seção "CANONICAL DEPLOY RANKING".
+
+**Update 2026-05-02 — iter 045 RSST proxy corrected:** o ranking canônico acima usa o proxy antigo `RSST = SPYSIM + KMLMSIM - CASHX`. O iter 045 re-rodou os mesmos configs em janela comum 2000+ com `SPY + 70% DBMF + 30% KMLM - cash`. Para esses cenários static buy-and-hold/lazy-rebal, não aplicamos DARF; imposto fica reservado para swing/táticas com realização por trocas. Resultado: B4 ZROZ fica #2 por Sharpe (CAGR 11.00% / MDD -29.60% / Sharpe 0.671), atrás de L1 CEGB (CAGR 9.66% / MDD -25.43% / Sharpe 0.696). A mudança é metodológica, não uma nova otimização de pesos: RSST é equity + managed futures stacked `[risk_parity, ch.5, p.10]`, e a perna trend deve representar diversificação entre engines `[ilmanen_expected_returns, ch.19]`.
+
+---
 
 Two separate mechanisms (same pattern as long_term_portfolio):
 
@@ -196,5 +220,5 @@ Hunt fechou em **30 iters substantivas + 1 meta** (iter 011 IMPOSSIBILITY, sem b
 - **Top 12 todos PROMISING net (≥60)**, dominados por meta-ensemble blends. Teto empírico: gross 74 / net 68 (iter 035). Nenhum WINNER (≥90).
 - **Buy-hold static climbs structurally** sob rubric net: HFEA family (008/009), F1 stack (015) sobem 4-6 ranks vs gross.
 - **Meta-ensemble axis** (iters 018-036, 19 iters) é a única classe que quebra o teto histórico de 67 atingido por single-axis (iter 006 A2). Saturação confirmada em ~71-74 gross / 64-68 net via 13 iters consecutivas variando dimensões ortogonais.
-- **PBO warning emerge** em iters 030-036 (PBO 0.5-0.9 grid-level) — cumulative_n_trials inflation. Iter 026 H6 mantém PBO 0.00 e é o **anchor honesto** para deploy.
-- **Implicação para deploy**: F1+SPLIT (Plano C 100% incumbent) inalterado. Para reativar Plano B/D, ver `TOP_STRATEGIES.md` Tier A (iter 026 / 019 / 015 são as recomendações estratificadas por perfil de risco).
+- **PBO warning emerge** em iters 030-036 (PBO 0.5-0.9 grid-level) — cumulative_n_trials inflation. Iter 026 H6 mantinha PBO 0.00 e era o anchor honesto **pre-feedback**.
+- **Implicação para deploy (atualizado 2026-05-02)**: pre-feedback ranking usava pipeline interno com Yearly rebal + no ER drag. Iter 044 trouxe Monthly + ERs, mas ainda com RSST `KMLM-only`. Iter 045 corrigiu o proxy para `70 DBMF / 30 KMLM` em janela comum 2000+ e removeu DARF dos cenários buy-and-hold. **B4 ZROZ continua como balanced deploy pick**, mas não como maior Sharpe absoluto: L1 CEGB tem Sharpe maior e CAGR menor. Ver `TOP_STRATEGIES.md` seção "RSST-CORRECTED RANKING".

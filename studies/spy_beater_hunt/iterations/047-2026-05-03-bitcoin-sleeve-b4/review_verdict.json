@@ -1,0 +1,35 @@
+{
+  "status": "review_only_not_full_gate_verdict",
+  "tier": "SPECULATIVE_SLEEVE_PROMISING",
+  "winner_conditions_met": false,
+  "reason": "Small BTC sleeves substantially improve CAGR/Sharpe in the 2010+ BTCSIM window, but every BTC variant has slightly worse MDD than corrected B4 and the sample is structurally favorable to Bitcoin's early adoption path.",
+  "baseline_window_constrained": {
+    "slug": "B4_base",
+    "cagr_pct": 13.55,
+    "mdd_pct": -26.42,
+    "sharpe": 0.911
+  },
+  "best_practical_candidate": {
+    "slug": "B4_btc2p5_from_zroz",
+    "cagr_pct": 17.80,
+    "mdd_pct": -26.97,
+    "sharpe": 1.151,
+    "interpretation": "Cleaner retirement-compatible crypto sleeve; +4.25pp CAGR for +0.55pp MDD in sample, but Bitcoin-specific regime risk remains."
+  },
+  "higher_speculation_candidate": {
+    "slug": "B4_btc5_from_zroz",
+    "cagr_pct": 22.01,
+    "mdd_pct": -27.90,
+    "sharpe": 1.311,
+    "interpretation": "Attractive historical trade-off, but larger dependence on Bitcoin adoption path."
+  },
+  "rejected_for_core": {
+    "slug": "B4_btc10_from_zroz",
+    "cagr_pct": 30.30,
+    "mdd_pct": -29.85,
+    "sharpe": 1.453,
+    "interpretation": "Too speculation-heavy for a retirement core despite excellent backtest."
+  },
+  "gate_equivalence": "not_equivalent_to_iters_001_039_verdict_json; PBO/DSR/WF/bootstrap not recomputed",
+  "source": "SUMMARY.md + unified_metrics.json"
+}

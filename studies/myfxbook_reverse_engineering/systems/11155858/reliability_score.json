@@ -1,0 +1,29 @@
+{
+  "system_id": "11155858",
+  "reliability": 0.8009277858265484,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 1.0,
+    "family_clarity": 0.38,
+    "timing_concentration": 0.8020304568527918,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.9952169445598998,
+    "vendor_quality": 0.65,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "FACTOR_SCALPING",
+  "confidence": 0.38,
+  "n_trades": 197,
+  "n_pairs": 1,
+  "last_trade_date": "2026-04-23 12:36:35+00:00",
+  "account_type": "Real",
+  "name": "Happy Brexit FM (HR) Forex Trading System by Forex Trader Ha",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 329.1376519203186,
+  "band_rank": 0,
+  "dir_pred": 1.0,
+  "timing_conc": 0.8020304568527918,
+  "age_fresh": 0.9952169445598998
+}

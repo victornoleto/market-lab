@@ -1,0 +1,29 @@
+{
+  "system_id": "9843883",
+  "reliability": 0.6374233890159421,
+  "band": "MEDIUM",
+  "components": {
+    "direction_predictability": 0.35541868932038856,
+    "family_clarity": 0.32,
+    "timing_concentration": 0.6739130434782609,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.997861079901928,
+    "vendor_quality": 1.0,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "UNCATEGORIZED",
+  "confidence": 0.32,
+  "n_trades": 2576,
+  "n_pairs": 2,
+  "last_trade_date": "2026-04-28 16:37:51+00:00",
+  "account_type": "Real",
+  "name": "Happy Algorithm PRO FM - REAL (SET2)  Forex Trading System b",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 454.28060483932495,
+  "band_rank": 1,
+  "dir_pred": 0.35541868932038856,
+  "timing_conc": 0.6739130434782609,
+  "age_fresh": 0.997861079901928
+}

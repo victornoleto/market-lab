@@ -1,0 +1,30 @@
+{
+  "system_id": 8577996,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-fast-money-fm-real/8577996",
+  "name": "Happy Fast Money FM - REAL (Hedge) Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+445.65%",
+    "absolute_gain": "+185.14%",
+    "daily": "0.10%",
+    "monthly": "2.91%",
+    "drawdown": "48.09%",
+    "balance": "$11,257.15",
+    "equity": "(99.25%) $11,172.58",
+    "highest": "(Mar 19) $11,372.81",
+    "profit": "$9,257.15",
+    "interest": "$0.00",
+    "deposits": "$5,000.00",
+    "withdrawals": "$3,000.00",
+    "updated": "6 hours ago",
+    "tracking": "16"
+  },
+  "account": {
+    "raw": "Real (USD), ForexMart , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "ForexMart",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/forexmart/1065344,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

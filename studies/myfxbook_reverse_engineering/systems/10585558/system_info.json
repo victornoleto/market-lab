@@ -1,0 +1,30 @@
+{
+  "system_id": 10585558,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-news-8ec/10585558",
+  "name": "Happy News - 8EC Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+7,464.75%",
+    "absolute_gain": "+7,464.73%",
+    "daily": "0.37%",
+    "monthly": "11.66%",
+    "drawdown": "9.14%",
+    "balance": "$75,647.34",
+    "equity": "(100.00%) $75,647.34",
+    "highest": "(Mar 06) $76,857.26",
+    "profit": "$74,647.34",
+    "interest": "-$0.09",
+    "deposits": "$1,000.00",
+    "withdrawals": "$0.00",
+    "updated": "7 hours ago",
+    "tracking": "113"
+  },
+  "account": {
+    "raw": "Real (USD), Eightcap , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Eightcap",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/eightcap/1057189,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

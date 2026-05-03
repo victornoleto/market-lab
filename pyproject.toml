@@ -59,6 +59,23 @@ cross_lib = [
     "quantstats>=0.0.64",
     "pyfolio-reloaded>=0.9.5",
 ]
+# Optional — install only when running studies/myfxbook_reverse_engineering scrapers.
+# Cloudflare blocks naive requests; Playwright Chromium fingerprint passes the
+# challenge transparently. Install via:
+#   uv pip install -e '.[myfxbook_scrape]'
+#   uv run playwright install chromium
+myfxbook_scrape = [
+    "playwright>=1.45",
+]
+# Optional — install only when running the strategy decoder pipeline
+# (studies/myfxbook_reverse_engineering Phase 5+6+7).
+#   uv pip install -e '.[myfxbook_decoder]'
+# dukascopy-python: free 1m OHLC bars for FX history (2003+)
+# wittgenstein: RIPPER rule mining for top-K candidate rule extraction
+myfxbook_decoder = [
+    "dukascopy-python>=4.0",
+    "wittgenstein>=0.3",
+]
 
 [project.scripts]
 ops = "ops.cli.main:app"

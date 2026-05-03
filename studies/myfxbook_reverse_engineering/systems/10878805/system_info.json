@@ -1,0 +1,30 @@
+{
+  "system_id": 10878805,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-index-fm/10878805",
+  "name": "Happy Index - FM Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+318.25%",
+    "absolute_gain": "+231.03%",
+    "daily": "0.16%",
+    "monthly": "5.08%",
+    "drawdown": "26.53%",
+    "balance": "$6,620.59",
+    "equity": "(80.67%) $5,341.03",
+    "highest": "(Mar 04) $6,685.29",
+    "profit": "$4,620.59",
+    "interest": "$0.00",
+    "deposits": "$2,000.00",
+    "withdrawals": "$0.00",
+    "updated": "Mar 31 at 13:36",
+    "tracking": "43"
+  },
+  "account": {
+    "raw": "Real (USD), ForexMart , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "ForexMart",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/forexmart/1065344,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

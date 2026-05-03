@@ -1,0 +1,20 @@
+{
+  "status": "review_only_not_full_gate_verdict",
+  "tier": "BALANCED_DEPLOY_PICK_CANDIDATE",
+  "winner_conditions_met": false,
+  "reason": "Corrected RSST proxy makes B4 the balanced CAGR/MDD pick, but not the highest Sharpe absolute strategy. L1 CEGB has better Sharpe/MDD and lower CAGR. Full PBO/DSR/WF/bootstrap gates were not recomputed for iter 045.",
+  "balanced_pick": {
+    "slug": "B4_zroz_instead_of_tmf",
+    "cagr_pct": 11.00,
+    "mdd_pct": -29.60,
+    "sharpe": 0.671
+  },
+  "highest_sharpe_low_risk": {
+    "slug": "L1_cegb_proxy",
+    "cagr_pct": 9.66,
+    "mdd_pct": -25.43,
+    "sharpe": 0.696
+  },
+  "gate_equivalence": "not_equivalent_to_iters_001_039_verdict_json; PBO/DSR/WF/bootstrap not recomputed",
+  "source": "SUMMARY.md + unified_metrics.json"
+}

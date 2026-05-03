@@ -1,0 +1,30 @@
+{
+  "system_id": 10067081,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-frequency-fm-real/10067081",
+  "name": "Happy Frequency FM - REAL Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+477.09%",
+    "absolute_gain": "+476.94%",
+    "daily": "0.14%",
+    "monthly": "4.13%",
+    "drawdown": "80.92%",
+    "balance": "$11,538.84",
+    "equity": "(29.44%) $3,397.51",
+    "highest": "(Apr 30) $11,538.84",
+    "profit": "$9,538.84",
+    "interest": "$0.00",
+    "deposits": "$2,000.00",
+    "withdrawals": "$0.00",
+    "updated": "7 hours ago",
+    "tracking": "13"
+  },
+  "account": {
+    "raw": "Real (USD), ForexMart , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "ForexMart",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/forexmart/1065344,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

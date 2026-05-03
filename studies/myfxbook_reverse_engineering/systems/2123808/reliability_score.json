@@ -1,0 +1,31 @@
+{
+  "system_id": "2123808",
+  "reliability": 0.45168650038205516,
+  "band": "LOW",
+  "components": {
+    "direction_predictability": 0.33177570093457964,
+    "family_clarity": 0.38,
+    "timing_concentration": 0.27686915887850466,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.02368743372709281,
+    "vendor_quality": 0.85,
+    "pair_coverage": 1.0
+  },
+  "notes": [
+    "UNCATEGORIZED family demotes to LOW band"
+  ],
+  "family": "UNCATEGORIZED",
+  "confidence": 0.38,
+  "n_trades": 856,
+  "n_pairs": 5,
+  "last_trade_date": "2021-06-15 14:30:55+00:00",
+  "account_type": "Real",
+  "name": "OLD Happy Way v1.2 - REAL Forex Trading System by Forex Trad",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 2834.9483897686005,
+  "band_rank": 2,
+  "dir_pred": 0.33177570093457964,
+  "timing_conc": 0.27686915887850466,
+  "age_fresh": 0.02368743372709281
+}

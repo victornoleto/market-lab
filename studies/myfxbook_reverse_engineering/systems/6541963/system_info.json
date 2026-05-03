@@ -1,0 +1,30 @@
+{
+  "system_id": 6541963,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-gold-tickmill-m15/6541963",
+  "name": "Happy Gold - Tickmill (M15) Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+129,771.75%",
+    "absolute_gain": "+129,771.74%",
+    "daily": "0.27%",
+    "monthly": "8.57%",
+    "drawdown": "54.81%",
+    "balance": "$1,298,717.39",
+    "equity": "(100.00%) $1,298,717.39",
+    "highest": "(Apr 30) $1,298,717.39",
+    "profit": "$1,297,717.39",
+    "interest": "-$1,596.82",
+    "deposits": "$1,000.00",
+    "withdrawals": "$0.00",
+    "updated": "5 hours ago",
+    "tracking": "81"
+  },
+  "account": {
+    "raw": "Demo (USD), Tickmill , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Demo",
+    "currency": "USD",
+    "broker": "Tickmill",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/tickmill/875542,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

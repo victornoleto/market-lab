@@ -1,0 +1,29 @@
+{
+  "system_id": "9841939",
+  "reliability": 0.49043533064718925,
+  "band": "MEDIUM",
+  "components": {
+    "direction_predictability": 0.04499999999999993,
+    "family_clarity": 0.38,
+    "timing_concentration": 0.26625,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.9993533064718925,
+    "vendor_quality": 1.0,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "FACTOR_SCALPING",
+  "confidence": 0.38,
+  "n_trades": 4000,
+  "n_pairs": 1,
+  "last_trade_date": "2026-05-01 09:51:51+00:00",
+  "account_type": "Real",
+  "name": "Happy Power FM Forex Trading System by Forex Trader HappyFor",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 431.7798180580139,
+  "band_rank": 1,
+  "dir_pred": 0.04499999999999993,
+  "timing_conc": 0.26625,
+  "age_fresh": 0.9993533064718925
+}

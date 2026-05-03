@@ -1,0 +1,29 @@
+{
+  "system_id": "8577442",
+  "reliability": 0.6183235004471903,
+  "band": "MEDIUM",
+  "components": {
+    "direction_predictability": 0.475970571590266,
+    "family_clarity": 0.52,
+    "timing_concentration": 0.3029978586723769,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.9973128581514841,
+    "vendor_quality": 0.85,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "OVERLAP_NY_LONDON_RANGE",
+  "confidence": 0.52,
+  "n_trades": 934,
+  "n_pairs": 5,
+  "last_trade_date": "2026-04-27 15:17:32+00:00",
+  "account_type": "Real",
+  "name": "Happy Way FM - REAL Forex Trading System by Forex Trader Hap",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 2772.735731124878,
+  "band_rank": 1,
+  "dir_pred": 0.475970571590266,
+  "timing_conc": 0.3029978586723769,
+  "age_fresh": 0.9973128581514841
+}

@@ -1,0 +1,30 @@
+{
+  "system_id": 11206045,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-japanese-market-fm/11206045",
+  "name": "Happy Japanese Market FM Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+275.65%",
+    "absolute_gain": "+130.54%",
+    "daily": "0.22%",
+    "monthly": "6.66%",
+    "drawdown": "26.04%",
+    "balance": "$8,527.02",
+    "equity": "(100.00%) $8,527.02",
+    "highest": "(May 01) $8,527.02",
+    "profit": "$6,527.02",
+    "interest": "$0.00",
+    "deposits": "$5,000.00",
+    "withdrawals": "$3,000.00",
+    "updated": "7 hours ago",
+    "tracking": "18"
+  },
+  "account": {
+    "raw": "Real (USD), ForexMart , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "ForexMart",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/forexmart/1065344,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

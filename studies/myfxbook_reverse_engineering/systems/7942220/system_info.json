@@ -1,0 +1,30 @@
+{
+  "system_id": 7942220,
+  "url": "https://www.myfxbook.com/members/HappyForex/old-happy-neuron-v10-conservative/7942220",
+  "name": "OLD Happy Neuron v1.0 (Conservative  Risk) Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+53.52%",
+    "absolute_gain": "+53.52%",
+    "daily": "0.02%",
+    "monthly": "6.58%",
+    "drawdown": "45.94%",
+    "balance": "$7,675.77",
+    "equity": "(64.02%) $4,913.66",
+    "highest": "(Jun 16) $7,675.77",
+    "profit": "$2,675.77",
+    "interest": "$0.00",
+    "deposits": "$5,000.00",
+    "withdrawals": "$0.00",
+    "updated": "Jun 16, 2021 at 16:03",
+    "tracking": "2"
+  },
+  "account": {
+    "raw": "Real (USD), Fort Financial Services , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Fort Financial Services",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/fort-financial-services/814372,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

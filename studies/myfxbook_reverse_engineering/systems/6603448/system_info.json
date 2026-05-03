@@ -1,0 +1,30 @@
+{
+  "system_id": 6603448,
+  "url": "https://www.myfxbook.com/members/HappyForex/old-happy-fast-money-v131/6603448",
+  "name": "OLD Happy Fast Money v1.3.1 - REAL (Hedge) Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+28.23%",
+    "absolute_gain": "+28.23%",
+    "daily": "0.01%",
+    "monthly": "2.36%",
+    "drawdown": "32.41%",
+    "balance": "$6,411.28",
+    "equity": "(97.07%) $6,223.70",
+    "highest": "(Mar 05) $6,813.78",
+    "profit": "$1,411.28",
+    "interest": "$0.00",
+    "deposits": "$5,000.00",
+    "withdrawals": "$0.00",
+    "updated": "Jun 16, 2021 at 19:06",
+    "tracking": "7"
+  },
+  "account": {
+    "raw": "Real (USD), Fort Financial Services , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Fort Financial Services",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/fort-financial-services/814372,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

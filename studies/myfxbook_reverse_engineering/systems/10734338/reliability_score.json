@@ -1,0 +1,29 @@
+{
+  "system_id": "10734338",
+  "reliability": 0.7337560128774695,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 1.0,
+    "family_clarity": 0.52,
+    "timing_concentration": 0.3739424703891709,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.9996751879963534,
+    "vendor_quality": 0.55,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "FACTOR_SCALPING",
+  "confidence": 0.52,
+  "n_trades": 591,
+  "n_pairs": 1,
+  "last_trade_date": "2026-05-01 15:33:53+00:00",
+  "account_type": "Demo",
+  "name": "Happy Bitcoin - ICMarkets Forex Trading System by Forex Trad",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 248.51679134368896,
+  "band_rank": 0,
+  "dir_pred": 1.0,
+  "timing_conc": 0.3739424703891709,
+  "age_fresh": 0.9996751879963534
+}

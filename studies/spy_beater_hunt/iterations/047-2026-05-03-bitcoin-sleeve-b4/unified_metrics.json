@@ -1,0 +1,154 @@
+[
+  {
+    "slug": "B4_btc10_from_zroz",
+    "label": "B4 + 10 BTC from ZROZ",
+    "window": "2010-07-19 -> 2026-05-01 (15.78y)",
+    "cagr_pct": 30.30432997695658,
+    "mdd_pct": -29.84803097840054,
+    "sharpe": 1.4526888867881338,
+    "sortino": 2.2260996279327507,
+    "calmar": 1.0152874070281634,
+    "end_val": 652344.6207118665,
+    "drag_pct": 0.395,
+    "allocation_sim": {
+      "SPYSIM": 47.5,
+      "IEFSIM": 15.0,
+      "CASHX": -12.5,
+      "GDESIM": 25.0,
+      "DBMFSIM": 17.5,
+      "KMLMSIM": 7.5,
+      "CASHX?E=-2": -25.0,
+      "ZROZSIM": 15.0,
+      "BTCSIM": 10.0
+    }
+  },
+  {
+    "slug": "B4_btc5_from_zroz",
+    "label": "B4 + 5 BTC from ZROZ",
+    "window": "2010-07-19 -> 2026-05-01 (15.78y)",
+    "cagr_pct": 22.007013102482965,
+    "mdd_pct": -27.89770739806478,
+    "sharpe": 1.3109622720751841,
+    "sortino": 1.9207881829599682,
+    "calmar": 0.7888466528260152,
+    "end_val": 230925.8423586649,
+    "drag_pct": 0.39,
+    "allocation_sim": {
+      "SPYSIM": 47.5,
+      "IEFSIM": 15.0,
+      "CASHX": -12.5,
+      "GDESIM": 25.0,
+      "DBMFSIM": 17.5,
+      "KMLMSIM": 7.5,
+      "CASHX?E=-2": -25.0,
+      "ZROZSIM": 20.0,
+      "BTCSIM": 5.0
+    }
+  },
+  {
+    "slug": "B4_btc5_from_rsst",
+    "label": "B4 + 5 BTC from RSST",
+    "window": "2010-07-19 -> 2026-05-01 (15.78y)",
+    "cagr_pct": 21.292791418009017,
+    "mdd_pct": -30.246266008952897,
+    "sharpe": 1.304642952141642,
+    "sortino": 1.9176475497713312,
+    "calmar": 0.7039808289627006,
+    "end_val": 210487.91564618913,
+    "drag_pct": 0.348,
+    "allocation_sim": {
+      "SPYSIM": 42.5,
+      "IEFSIM": 15.0,
+      "CASHX": -12.5,
+      "GDESIM": 25.0,
+      "DBMFSIM": 14.0,
+      "KMLMSIM": 6.0,
+      "CASHX?E=-2": -20.0,
+      "ZROZSIM": 25.0,
+      "BTCSIM": 5.0
+    }
+  },
+  {
+    "slug": "B4_btc5_from_ntsx",
+    "label": "B4 + 5 BTC from NTSX",
+    "window": "2010-07-19 -> 2026-05-01 (15.78y)",
+    "cagr_pct": 21.404787202773722,
+    "mdd_pct": -28.82320645611357,
+    "sharpe": 1.3032662305443894,
+    "sortino": 1.9131249299632866,
+    "calmar": 0.7426233870046628,
+    "end_val": 213576.57189808285,
+    "drag_pct": 0.3875,
+    "allocation_sim": {
+      "SPYSIM": 43.0,
+      "IEFSIM": 12.0,
+      "CASHX": -10.0,
+      "BTCSIM": 5.0,
+      "GDESIM": 25.0,
+      "DBMFSIM": 17.5,
+      "KMLMSIM": 7.5,
+      "CASHX?E=-2": -25.0,
+      "ZROZSIM": 25.0
+    }
+  },
+  {
+    "slug": "B4_btc2p5_from_zroz",
+    "label": "B4 + 2.5 BTC from ZROZ",
+    "window": "2010-07-19 -> 2026-05-01 (15.78y)",
+    "cagr_pct": 17.801418920959943,
+    "mdd_pct": -26.969323371961764,
+    "sharpe": 1.1510635378124012,
+    "sortino": 1.6517893889995017,
+    "calmar": 0.6600617551817006,
+    "end_val": 132745.30928759716,
+    "drag_pct": 0.3875,
+    "allocation_sim": {
+      "SPYSIM": 47.5,
+      "IEFSIM": 15.0,
+      "CASHX": -12.5,
+      "GDESIM": 25.0,
+      "DBMFSIM": 17.5,
+      "KMLMSIM": 7.5,
+      "CASHX?E=-2": -25.0,
+      "ZROZSIM": 22.5,
+      "BTCSIM": 2.5
+    }
+  },
+  {
+    "slug": "B4_base",
+    "label": "B4 corrected baseline",
+    "window": "2010-07-19 -> 2026-05-01 (15.78y)",
+    "cagr_pct": 13.549778062622963,
+    "mdd_pct": -26.42340013591889,
+    "sharpe": 0.9108640704613311,
+    "sortino": 1.2920004220071257,
+    "calmar": 0.5127946438734032,
+    "end_val": 74309.50717894087,
+    "drag_pct": 0.385,
+    "allocation_sim": {
+      "SPYSIM": 47.5,
+      "IEFSIM": 15.0,
+      "CASHX": -12.5,
+      "GDESIM": 25.0,
+      "DBMFSIM": 17.5,
+      "KMLMSIM": 7.5,
+      "CASHX?E=-2": -25.0,
+      "ZROZSIM": 25.0
+    }
+  },
+  {
+    "slug": "SPY_1x",
+    "label": "SPY 1x benchmark",
+    "window": "2010-07-19 -> 2026-05-01 (15.78y)",
+    "cagr_pct": 14.859158710126618,
+    "mdd_pct": -33.69994047053618,
+    "sharpe": 0.8140213841866284,
+    "sortino": 1.1466015660425113,
+    "calmar": 0.4409253696788564,
+    "end_val": 89050.60167559078,
+    "drag_pct": 0.0945,
+    "allocation_sim": {
+      "SPYSIM": 100.0
+    }
+  }
+]

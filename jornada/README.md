@@ -29,7 +29,107 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-04-29 — long_term_portfolio: **43 iters, FINAL PICK = F1+SPLIT, deploy-ready**)
+## Onde estamos hoje (2026-05-03 — MyFxBook Gold Tier 2 falhou; Plano C inalterado)
+
+**MyFxBook Gold Tier 2 forense 2026-05-03:** rodei o teste opcional para
+separar "a regra dispara demais" de "a regra nao tem sinal". Cada stream
+sintetico Gold foi reduzido para `k = n_real_trades`. O seletor honesto
+`uniform_time_k_n_real` falhou nos 7 systems no cenario M5 + custo XAU 45p:
+Sharpe negativo, bootstrap full low negativo e OOS bootstrap low negativo em
+todos. O oracle ex-post (`oracle_best_net_pips_k_n_real_nontradeable`) passou
+em varios, mas escolhe os melhores trades olhando PnL futuro; portanto nao e
+regra executavel. Conclusao: o over-fire sozinho nao salva HappyForex. Detalhe
+em `studies/myfxbook_reverse_engineering/_diagnostics/DERIVED_GOLD_BACKTEST.md`.
+Capital segue 100% Plano C; Plano A DORMANT.
+
+## Onde estávamos antes (2026-05-03 — B4 + 5% BTC candidato live; Plano C formal inalterado)
+
+**B4 + 5% BTC live-candidate 2026-05-03:** apos revisar o satellite Bitcoin, o
+usuario escolheu seguir com a versao 5% BTC: 25% NTSX / 25% GDE / 25% RSST /
+20% ZROZ / 5% BTC. Criei o documento operacional
+`studies/spy_beater_hunt/LIVE_STRATEGY_B4_BTC5.md`, com tese, comparacao curta
+contra alternativas, 7 gates anti-overfit, caveats de BTC, plots contra SPY e
+politica de rebalance via aportes mensais. A leitura continua honesta: B4 vem da
+familia static-stack auditada; o BTC sleeve e decisao explicita de risk budget,
+nao full gate-equivalent. Detalhe em
+`jornada/2026-05-03-1155-b4-btc5-live-candidate.md`.
+
+## Onde estávamos antes (2026-05-03 — Bitcoin satellite revisado; Plano C inalterado)
+
+**Bitcoin satellite review 2026-05-03:** o iter 047 do `spy_beater_hunt`
+testou sleeves de `BTCSIM` sobre B4 corrigido na janela 2010-07-19 a
+2026-05-01. A melhora historica foi grande: 2.5% BTC de ZROZ levou B4 de
+13.55% para 17.80% CAGR com MDD de -26.42% para -26.97%; 5% BTC foi a 22.01%
+CAGR com MDD -27.90%. A leitura externa, porem, limita isso a satellite
+especulativo: Bitcoin e melhor tratado como ativo monetario escasso e separado
+de ETH/altcoins, mas segue sujeito a volatilidade extrema, risco de custodia,
+regulacao, protocolo e perda permanente. Plano C permanece inalterado. Detalhe
+em `jornada/2026-05-03-1141-bitcoin-satellite-review.md`.
+
+## Onde estávamos antes (2026-05-03 — MyFxBook Gold derivado sem robustez; Plano C inalterado)
+
+**MyFxBook derived Gold backtest 2026-05-03:** depois da falha de fidelidade
+M5/M1, rodei uma trilha separada `derived_strategy_backtest` para as regras
+Gold/XAUUSD absorvidas. Isto nao confirma reverse engineering do EA original;
+testa apenas se a logica extraida teria valor economico proprio. No cenario
+principal M5 + custo XAU conservador de 45 pips round-trip, nenhum dos 7 systems
+testados teve bootstrap full e OOS positivos simultaneamente. O melhor
+`H1_MOMENTUM_GOLD` foi `10281851` (Sharpe 0.162), mas com bootstrap 99.9% low
+negativo e OOS bootstrap low negativo. Detalhe em
+`studies/myfxbook_reverse_engineering/_diagnostics/DERIVED_GOLD_BACKTEST.md`.
+Capital segue 100% Plano C; Plano A DORMANT.
+
+## Onde estávamos antes (2026-05-03 — MyFxBook M1 forense falhou; Plano C inalterado)
+
+**MyFxBook M1 forensic review 2026-05-03:** o ultimo teste forense rodou M1
+apenas nos 13 systems `needs_m1_review`, gravando em `systems/<id>/decoding_m1/`
+sem tocar os outputs M5 em `decoding/`. Resultado: 13/13 processados, 0 falhas,
+0 skips, todos banda `NONE`, nenhum `fidelity_score >= 0.60`. Conclusao
+provisoria: decodificacao operacional nao recuperavel com OHLC publico M5/M1 pelo
+pipeline atual. Isto nao e ranking final e nao autoriza 6R, Stage 3, paper trading
+ou decisao de estrategia; `final_ranking_allowed=false` e
+`strategy_decision_allowed=false` permanecem. Detalhes em
+`jornada/2026-05-03-0113-myfxbook-m1-forensic-review.md` e
+`studies/myfxbook_reverse_engineering/_diagnostics/5R1_M1_FORENSIC_REVIEW.md`.
+
+## Onde estávamos antes (2026-05-03 — spy_beater_hunt em revisao GPT-5.5; Plano C inalterado)
+
+**Revisao spy_beater_hunt 2026-05-03:** GPT-5.5 iniciou auditoria independente
+em `studies/spy_beater_hunt` antes de seguir para `long_term_portfolio` e
+`global_factor_tilt_loop`. Leitura preliminar: o estudo cobre bem LRS/Gayed,
+TQQQ gated, HFEA, meta-ensembles e static stacks, mas a decisao pratica deve usar
+o iter 045 com proxy RSST corrigido (`SPY + 70% DBMF + 30% KMLM - cash`), nao a
+tabela longa antiga do iter 044. B4 continua como compromisso balanceado, mas nao
+como maior Sharpe absoluto; L1 CEGB tem Sharpe/MDD melhores com CAGR menor. Plano
+C permanece inalterado; ainda ha lacunas antes de qualquer deploy: gates formais
+para iters 040-045, proxy RSST curto, tax/rebal operacional e algumas familias
+nao testadas. Iter 046 testou as lacunas imediatas (VBR/EFV/MTUM tilts, B4 sem
+RSST leverage, NDX deleveraged) e manteve B4 corrigido como baseline balanceado:
+nenhuma variante bateu B4 em CAGR sem piorar MDD. Detalhes em
+`jornada/2026-05-03-0047-spy-beater-review-gpt55.md`.
+
+## Onde estávamos antes (2026-05-03 — MyFxBook R1 frozen_rules v3 promovido; Plano C inalterado)
+
+**Atualizacao MyFxBook 2026-05-03:** R1 re-decode auditado e promovido para
+`frozen_rules/` v3: 30/30 signal rules mudaram SHA vs manifest pre-R1, 30/30
+passaram taxonomy strict, e os 30 frozen rules ficaram read-only (`444`). O
+relatorio final esta em
+`studies/myfxbook_reverse_engineering/_diagnostics/R1_FINAL_REPORT.md`. Isto
+limpa o contrato semantico, mas nao declara replicabilidade nem deployabilidade.
+Pause gates antes da proxima fase: `NEWS_RELEASE_MOMENTUM` ainda n=1 e 13/30
+systems marcados `needs_m1_review`. Os 22 `NOT_DECODED` seguem no universo 52,
+fora do R1. Proximo passo, apenas com aprovacao explicita: 5R-1
+replicator/comparator/score. Capital segue 100% Plano C; Plano A DORMANT.
+
+**5R-1 condicionado executado:** por aprovacao do usuario, rodei apenas a parte
+deterministica de `replicator/comparator/score` nos 30 R1 v3. Resultado: 30/30
+systems processados, 0 falhas, nenhum `fidelity_score >= 0.60` (2 LOW, 28 NONE).
+Isto nao vira ranking final: `_diagnostics/batch_summary.json` e os score JSONs
+marcam `final_ranking_allowed=false` e `strategy_decision_allowed=false` porque
+os pause gates seguem bloqueantes. Detalhe em
+`studies/myfxbook_reverse_engineering/_diagnostics/5R1_DETERMINISTIC_RUN.md`.
+
+## Onde estávamos antes (2026-04-29 — long_term_portfolio: **43 iters, FINAL PICK = F1+SPLIT, deploy-ready**)
 
 **Estado:** Sweep iter 027-043 completo (16 iters substantivos pós-iter-026 + 1 TLT variation final). Final pick: **F1 (iter 023 architecture) com SPLIT MF sleeve** = NTSX 25 + GDE 25 + KMLM 17.5 + DBMF 17.5 + TLT 15 (5 ETFs). Score multi-critério 62.07/100. n_trials cumulative 156. Aguardando INTER_CHECK.md fill + mandate §7 override formalization pra deploy.
 
@@ -103,6 +203,8 @@ F4 Gl-Stk / F5 Gl-Fct / F6 Gl-Hyb **skipped** porque nenhum sleeve global passou
 3. Setup execution: comprar ETFs em proporção, definir cronograma rebalance anual.
 4. **Vertente bestfolio_meta_wf_hunt — CLOSED 2026-04-29 (iter 001 DEAD_END, kill K3, decisão do usuário).** Meta walk-forward max-Sharpe sobre 5 sleeves vencedores rendeu Sharpe 1.137/1.106/1.102 vs F1+SPLIT 1.125/1.118/1.128 — edges +0.012/-0.012/-0.026, kill K3 fires (turnover 177-222%/yr sem edge), DSR falha 2/3 a n_trials=157. **Reforça F1+SPLIT como único deploy-ready candidate**. Closure formal em `studies/bestfolio_meta_wf_hunt/SPEC.md` §12; iter 002 não executado. Solver `studies/_shared/wf_solver.py` preservado (reutilizável em estudos futuros).
 5. **Vertente spy_beater_hunt — STATUS UPDATE 2026-04-30 (iter 020): META-AXIS CEILING CONSOLIDA EMPIRICAMENTE EM 71. Trajetória meta-axis NÃO-MONOTÔNICA: iter 018 → 019 → 020 (70 → 71 → 67). 4-way structure entrega NEW BEST mean Sharpe (1.058) + NEW BEST mean MDD (26.17%) entre CAGR-passers em 20 iters / 68 trials, mas score cai −4pts via rubric saturation (Sharpe/MDD invisíveis ao rubric naqueles níveis). 3-way 33/33/34 (A2 + G2 IEF + F1 stack) do iter-019 é o local optimum. Hunt status MANTÉM REOPENED at meta-ensemble axis com ceiling consolidado.** Inicialmente CLOSED em iter 011 (10 iters / 35 trials, KILL #33 ceiling estrutural fired) com 4 famílias de controle todas <= 67. Sanity checks iters 012-017 abriram 4 novas famílias (D2, D1, F1, G1, G2) + 3 cross-product hybrids (E1, G1, G2 ao 3×, 1.41×, 2.25× decay regimes) confirmando 8 famílias + 3 hybrids todas ≤ 67. Inicialmente CLOSED em iter 011 (10 iters / 35 trials, KILL #33 ceiling estrutural fired) com 4 famílias de controle todas <= 67. Sanity checks iters 012-017 abriram 4 novas famílias (D2, D1, F1, G1, G2) + 3 cross-product hybrids (E1, G1, G2 ao 3×, 1.41×, 2.25× decay regimes) confirmando 8 famílias + 3 hybrids todas ≤ 67. **Iter 018 introduziu o NOVO eixo arquitetural meta-portfolio (strategy-level blend) e quebrou o 67-cap pela primeira vez** (h1_meta_50a2_50g2ief score 70, KILL #59 fired, KILL #33 INVALIDATED at meta-axis). **Iter 019 confirmou + estendeu o ceiling pra 71** via 3-way 33/33/34 (A2 + G2 IEF + F1 stack), com KILL #65 fired (3-way Pareto-domina 2-way), KILL #64 NOT FIRED (reprodutibilidade exata sob PBO N=6, resolvendo warning long-standing N=3) e **FIRST mean Sharpe > 1.0 EVER entre CAGR-passers** (1.025) + **6/6 100% bar-pass sweep — primeiro do hunt**. cumulative_n_trials = 62, worst DSR p = 1.55e-04, 19 substantive iters totais. Tier ainda PROMISING (71 < 90 WINNER threshold) — mandate §1 100% Plano C UNCHANGED, F1+SPLIT incumbent fallback retém deploy-ready, iter-020+ exploration é RESEARCH ONLY (4-way blends + alternative 3-way pairs sugeridos). Trajetória empírica positiva monotônica iters 18→19 (70→71) é a ÚNICA tendência consistente do hunt inteiro — todos os 17 iters anteriores mostraram +/- 1-3pt noise dentro de family ceilings. **Strengthens mandate §7 rubric-revision review case**: 3-way blend tem Sharpe 1.025 + MDD 28.50% + CAGR 15.04% — sob rubric MDD-anchored ou Sharpe-anchored, top-1 strategy passando CAGR bar no hunt inteiro; sob rubric CAGR-anchored, ainda 19pts shy de WINNER. Tabela atualizada (12 famílias mapeadas): META-ENSEMBLE 3-WAY iter-019 71 (NEW BEST), META-ENSEMBLE 2-WAY iter-018 70, A2 TQQQ-track 67, A1/A3 SPY-track 66, E1 hybrid 65, G2 hybrid 64, B1/B2 HFEA 63, F1/G1 61, C1 vol-target 60, D1 concentrated+TSMOM 59, D2 stacked equity 52.
+
+**Nota 2026-05-02 sobre spy_beater_hunt:** iter 045 re-rodou o ranking com proxy corrigido `RSST = SPY + 70% DBMF + 30% KMLM - cash`, janela comum 2000+ e sem DARF para static buy-and-hold/lazy-rebal. B4 permanece como balanced pick; L1 tem maior Sharpe/menor stress. Refresh do Reddit Post 1 adicionou dois caveats ao Post 2: `ZROZ/GOVZ` são duration/convexity bets, não hedge garantido, e screenshots sem pesos/testfol.io não entram no estudo.
 
 Detalhes completos em `jornada/2026-04-29-1725-longterm-final-pick-F1-SPLIT.md` + `studies/long_term_portfolio/FINAL_REPORT_seven_portfolios.md`.
 
@@ -188,6 +290,17 @@ substituído por `/app` GUI). 15+ subpastas DORMANT em `reports/` consolidadas
 em `reports/_dormant_summary.md` + arquivos-chave em `reports/_archive/`.
 38 jornadas DORMANT consolidadas em `jornada/_archive/DORMANT_HUNTS.md`.
 Ver `docs/CLEANUP_2026-04-24_LOG.md` para audit trail completo.
+
+**Estudo paralelo (2026-05-01) — MyFxBook reverse-engineering:** após o probe
+partial-pass do system HappyForex/Happy Market Hours v2.3.1 (id 1407880, gate
+4 OOS bootstrap CI low FAIL por amostra estatisticamente pequena), o ROADMAP
+expandiu pra catalog sweep do vendor inteiro (~60 systems). **Phase 0 (infra
+refactor) completa 2026-05-01:** 7 módulos em `studies/myfxbook_reverse_engineering/shared/`
+(config, fetcher, parser, catalog, sanity, eda, gates) + smoke test 109/109
+checks PASS contra prototype id 1407880. Todos os números (Sharpe full 2.507,
+OOS 1.894, bootstrap CI, WF 7/8, per-pair net) reproduzidos a 3 decimais.
+Capital permanece 100% Plano C; Plano A continua DORMANT. Próximo: Phase 1
+catálogo (gate ≥ 5 systems Tier 1+2 ou encerra como Folclore puro).
 
 ---
 
@@ -287,6 +400,31 @@ Termos que aparecem ao longo das entradas do changelog:
 📦 **Retratadas arquivadas (9 entries):** ver
 [`_archive/2026-04-16-retracted-entries.md`](_archive/2026-04-16-retracted-entries.md)
 — bug Tiingo IEX em US holidays.
+
+### 2026-05-03
+
+- [2026-05-03 12h15 — **MyFxBook reverse-engineering — Tier 2 Gold forense fecha over-fire.** O teste reduziu cada stream sintetico Gold para `k = n_real_trades`. O seletor honesto `uniform_time_k_n_real` falhou nos 7 systems em M5 + 45p (Sharpe/boot/OOS negativos). O oracle ex-post passou em varios, mas olha PnL futuro e nao e regra executavel. Conclusao: over-fire sozinho nao salva HappyForex; capital segue 100% Plano C e Plano A DORMANT.](2026-05-03-1215-myfxbook-gold-tier2-forensic.md)
+- [2026-05-03 01h30 — **MyFxBook reverse-engineering — backtest derivado das regras Gold sem robustez.** Teste separado `derived_strategy_backtest` rodou 7 systems Gold/XAUUSD com trades sinteticos do replicator e custos 0p/45p/80p. No cenario principal M5 + 45p, nenhum teve bootstrap full e OOS positivos simultaneamente; melhor H1_MOMENTUM_GOLD foi `10281851` com Sharpe 0.162, mas bootstrap/OOS low negativos. Isto nao confirma reverse engineering; capital segue 100% Plano C e Plano A DORMANT.](2026-05-03-0130-myfxbook-derived-gold-backtest.md)
+- [2026-05-03 01h13 — **MyFxBook reverse-engineering — M1 forense nao recuperou fidelidade operacional.** Teste M1 nos 13 `needs_m1_review` rodou 13/13 sem falhas em `systems/<id>/decoding_m1/`, todos banda NONE e nenhum `fidelity_score >= 0.60`. Conclusao provisoria: decodificacao operacional nao recuperavel com OHLC publico M5/M1 pelo pipeline atual; sem 6R, Stage 3, paper trading ou decisao de estrategia.](2026-05-03-0113-myfxbook-m1-forensic-review.md)
+- [2026-05-03 00h49 — **MyFxBook reverse-engineering — 5R-1 deterministico executado com gates bloqueantes.** Batch `replicator/comparator/score` rodou nos 30 systems R1 v3, 30/30 sem falhas, escrevendo `systems/<id>/decoding/*` e `_diagnostics/batch_summary.json`. Nenhum system atingiu `fidelity_score >= 0.60` (2 LOW, 28 NONE), mas isto nao e ranking final: `final_ranking_allowed=false` e `strategy_decision_allowed=false` porque `NEWS_RELEASE_MOMENTUM` n=1 e 13/30 `needs_m1_review` seguem bloqueando qualquer decisao. Capital segue 100% Plano C; Plano A DORMANT.](2026-05-03-0049-myfxbook-5r1-deterministic-run.md)
+- [2026-05-03 00h20 — **MyFxBook reverse-engineering — R1 promovido para frozen_rules v3.** 30/30 signal rules mudaram SHA vs manifest pre-R1, 30/30 passaram taxonomy strict, `frozen_rules/` agora tem 30 rules read-only, backup pre-v3 criado em `_pre_v3_R1_2026-05-03T0000Z/`, e relatorio final escrito em `_diagnostics/R1_FINAL_REPORT.md`. Pause gates: `NEWS_RELEASE_MOMENTUM` permanece n=1 e 13/30 systems precisam `needs_m1_review`. Nao ha deployabilidade; capital segue 100% Plano C e Plano A DORMANT.](2026-05-03-0020-myfxbook-r1-frozen-rules-v3.md)
+
+### 2026-05-02
+
+- [2026-05-02 23h48 — **spy_beater_hunt — Post 2 volta para proxy RSST long-window.** O draft foi ajustado para usar `RSST = SPY + KMLM - cash` como metodologia principal porque mantém a janela 1987-12-30 → 2026-04-29. A versão `SPY + 70% DBMF + 30% KMLM - cash` provavelmente acompanha melhor o RSST real, mas corta a amostra para 2000+; agora fica como caveat/sensitivity final. Os quatro gráficos principais foram regenerados com a metodologia long-window e um script reproduzível foi adicionado no iter 044. Capital segue 100% Plano C.](2026-05-02-2348-spy-beater-post2-long-window-proxy.md)
+- [2026-05-02 23h34 — **spy_beater_hunt — gráficos do Post 2 corrigidos para janela 2000+.** Os quatro PNGs principais (`testfolio_01..04`) foram regenerados a partir dos JSONs do iter 045: janela comum 2000-01-03 → 2026-05-01, monthly rebal, ERs explícitos, sem DARF para static buy-and-hold/lazy-rebal, e proxy `RSST = SPY + 70% DBMF + 30% KMLM - cash`. O draft do Post 2 não mistura mais tabela 2000+ corrigida com imagens 1987-2026 do proxy antigo. Script reproduzível adicionado em `iterations/045.../plot_post2_charts.py`. Capital segue 100% Plano C.](2026-05-02-2334-spy-beater-post2-charts-corrected.md)
+- [2026-05-02 23h25 — **spy_beater_hunt — refresh do Reddit Post 1 ajusta caveats do Post 2.** `fetch_reddit.py` atualizou o contexto do post para 30 comentários (hash novo `sha256:a24ae...`). Comentários novos reforçaram que o proxy RSST 70/30 DBMF/KMLM é mais defensável que KMLM-only, mas ainda proxy imperfeito; BTOP50 ficou inconclusivo como alternativa de backfill; e ZROZ/GOVZ devem ser tratados como apostas de duration/convexidade, não seguro garantido em crises futuras com term premium/deficits. O review interno e o draft do Post 2 foram atualizados; nenhum novo ranking foi aberto. Capital segue 100% Plano C.](2026-05-02-2325-spy-beater-reddit-refresh-post2-caveats.md)
+- [2026-05-02 19h16 — **spy_beater_hunt — re-run do RSST 70/30 concluído.** Iter 045 re-rodou os 14 configs com proxy corrigido `RSST = SPY + 70% DBMF + 30% KMLM - cash`, financiamento `CASHX?E=-2`, e janela comum 2000-01-03 → 2026-05-01. Para static buy-and-hold/lazy-rebal, **sem DARF**; imposto fica para swing/táticas com trocas. Resultado: **L1 CEGB passa B4 em Sharpe** (0.696 vs 0.671), mas B4 mantém melhor compromisso CAGR/MDD entre stacks com RSST: CAGR 11.00% / MDD -29.60% / Sharpe 0.671. T1/B2/B5 têm mais CAGR mas MDD 35.8-44.6%. TOP_STRATEGIES/WINNER/iter044 docs atualizados; capital segue 100% Plano C, sem deploy.](2026-05-02-1916-spy-beater-rsst-proxy-rerun.md)
+- [2026-05-02 19h04 — **spy_beater_hunt — proxy do RSST precisa mudar antes de deploy.** Revisão do RSST simulado confirmou que os rankings canônicos do iter 044 ainda usam `RSST = SPY + KMLM - cash`. Teste direto no testfol.io contra RSST real (2023-09-06 -> 2026-05-01) mostrou que `SPY + 70% DBMF + 30% KMLM - cash` replica melhor o ETF real: corr diária 0.927 / CAGR 20.30% vs RSST real 20.04%, enquanto o proxy KMLM-only tem corr 0.856 / CAGR 12.58%. B4 Conservative continua sendo o pick documentado, mas agora com caveat: re-rodar rankings com proxy 70/30 DBMF/KMLM + `CASHX?E=-2` antes de qualquer mandate §7 override. Capital permanece 100% Plano C.](2026-05-02-1904-spy-beater-rsst-proxy-caveat.md)
+- [2026-05-02 16h30 — **MyFxBook reverse-engineering — par 6R diagnóstico evaporou; sobra um par sobrevivente.** Phase 5R-0 Opus 4.7 re-decode (Wave 1+2+3, 15 systems críticos) reclassificou 73% dos labels Sonnet. **Par primário (decisivo) SOBREVIVE**: `1407880` (OLD HMH v2.3.1, 3304 trades) ↔ `10224499` (HMH FM REAL, 221 trades) confirmados ambos `LATE_NY_BREAKOUT` (conf 0.62 / 0.72) — Wave 1 ainda removeu `11206045` da família (era Tokyo Open momentum, não NY breakout). **Par diagnóstico EVAPORA**: `2373850` ↔ `11171596` ambos viraram `UNCATEGORIZED` após Opus (`11171596` era "always-Sell EUR/USDCHF p95=561h"; label degenerate, não estratégia). Vira **caso negativo sobre vendor library HappyForex**, não diagnóstico-de-coisa-nenhuma. **Famílias colapsadas**: NY_SESSION_REVERSAL 2→0 (vendor não tem reversal genuíno), FACTOR_SCALPING 6→0 (hold NaN não comprovava <30min; várias trees degenerate = baseline). **Phase 6R protocol roda apenas no par primário sobrevivente.** Narrativa do estudo passa de "dois pares 6R replicáveis" para "um par principal + um caso negativo sobre vendor library". Detalhes: `frozen_rules/CHANGELOG.md` v2 (com SHA-256 + chmod log adicionado pelo 5R-1-hardening Wave A item 4) + `_diagnostics/5R-1-hardening.md`/`5R-1-hardening-plan.md`. Mandate §1 100% Plano C continua, Plano A DORMANT.](2026-05-02-1630-myfxbook-reeng-6R-pair-evaporated.md)
+- [2026-05-02 11h53 — **MyFxBook reverse-engineering — consenso adversarial fechado, Etapa 0 + skeleton prontos.** 7 turnos de chat adversarial Opus↔GPT (`adversarial_chat/001..007`) consensaram que o pipeline atual mede *decodabilidade* (prever Buy/Sell *dado que* o system entrou em t), não *replicabilidade* nem *edge econômico*. `OVERNIGHT_VALIDATION_REPORT` re-rotulado HIGH/MEDIUM/LOW → DECODED/PARTIAL_DECODED/NOT_DECODED com disclaimer literal no topo. Plano: Etapa 0 ✅ (relabel + sanity flags + offset diagnóstico broker), Etapa 1 (replicator-lite case-control M5 nos top-10), Etapa 2 (frozen-rule cross-system par primário 1407880→10224499 + diagnóstico 2373850→11171596), Etapa 3 (decisão binária Stage 3 sim/não). Defer absoluto: Stage 3 proper, Opus re-review, RuleFit/SPA, features novas (DXY/news), agregação cohort. Apenas 4 dos top-10 DECODED passam todos os 3 sanity gates (DD<30%, p95<168h, gap<30d) — flag informativo, não exclui da Etapa 1. Entregáveis: `adversarial_chat/001..007.md`, `specs/replicator_lite_pre_reg.md`, 12 frozen rules read-only, `shared/replicator_lite.py` (skeleton smoke 221/221 trades em 10224499). Mandate §1 100% Plano C continua, Plano A DORMANT.](2026-05-02-1153-myfxbook-reeng-consenso-adversarial-fechado.md)
+
+### 2026-05-01
+
+- [2026-05-01 17h00 — **spy_beater_hunt iter 040-044: feedback do Reddit Post 1 integrado + methodology consistency.** (1) **Iter 040 baseline ajustada** Monthly rebal + ERs reais → Popular 50/25/25 quebra (MDD -10.71pp) mas stacks NTSX/GDE/RSST quase imunes. (2) **Iter 041 G3 NDX regime-gate** — 6 variantes, NENHUMA bate B4. Folk-wisdom "10,000% TQQQ" é cherry-picked sobre 2012-2025. (3) **Iter 042 G4 international** — US-bias custa só ~4% do Sharpe edge. G4d (25 RSSB / 25 GDE / 25 ZROZ / 25 KMLM) quebra recorde de MDD do estudo: **-22.56%, Calmar 0.467**. (4) **Iter 043 G8 walk-forward** — pesos drift 60-75pp em rolling 5y MAS portfolio static VENCE walk-forward em Sharpe (DeMiguel et al. 2009 RFS — 1/N optimal shrinkage). (5) **Iter 044 re-baseline iter 038** com Monthly + ERs + terminal DARF (lazy rebal: user nunca vende → DARF 15% só no terminal): tabela unificada de 14 configs substitui as duas anteriores inconsistentes. **Canonical**: B4 ZROZ gross 13.31% / **net 12.84%** / MDD -28.94% / Sharpe 0.745 — 9 estratégias batem SPY em net CAGR + MDD. T1 demoted; B4 promoted. TOP_STRATEGIES, WINNER_AND_RANKING, README e Post 2 todos atualizados com numbers consistentes. Mandate §1 100% Plano C UNCHANGED.](2026-05-01-1700-spy-beater-iter040-043-reddit-feedback-integrated.md)
+- [2026-05-01 11h41 — **MyFxBook reverse-engineering Phase 0 done.** Sete módulos em `studies/myfxbook_reverse_engineering/shared/` parametrizados por `system_id` (config, fetcher, parser, catalog, sanity, eda, gates) substituem os scripts hardcoded do prototype. Smoke test 109/109 checks ✅ contra parquet do system 1407880 (Sharpe full 2.507, OOS 1.894, bootstrap CI [1.075, 4.013] full e [-1.668, 8.114] OOS, WF 7/8 windows positivas, todos os net-pips por par/ano, distribuição entry-hour/DOW/peaks per pair — todos a 3 decimais idênticos). Pytest baseline (771 testes) preservado. Próximo: Phase 1 catálogo do vendor HappyForex (~60 systems via `paging.html?pt=90&p=N&name=HappyForex`).](2026-05-01-1141-myfxbook-reeng-phase0-infra-pronta.md)
+- [2026-05-01 01h05 — **Probe MyFxBook HappyForex / OLD Happy Market Hours v2.3.1 (id 1407880) — PARTIAL PASS / decisão pendente do usuário.** Usuário pediu reverse-engineering do perfil + cookies de sessão; probe sob mandate §3 com kill-switches K1-K5 explícitos. Capital permanece 100% Plano C. Scrape via Playwright (cf_clearance no browser context bypass) extraiu 3 305 trades + 95 depósitos sobre 7,8 anos (2013-09 → 2021-06). **K1 (martingale) NÃO triggered**: 0 doubling-after-loss em janela <24h, per-month max/median ratio 1,06, lots crescem 0,25→17 monotônica = % risk sizing puro acompanhando equity. **Strategy fingerprint identificada com alta confiança**: 99,97% das entradas em 23:00-01:00 UTC (Asian session opening), 6 pares FX (GBPUSD/USDCAD/EURUSD/EURCHF/USDCHF/EURGBP, sem JPY/AUD), exit 94% time-based (P50=1h, P95=3,2h), SL/TP 40/60→80/120 pips (R:R 1:1.5) raramente disparados. Direction signal não-determinado sem 1m OHLC. **Edge real na amostra**: full-sample annualized Sharpe **2,51** após cost model Pepperstone Razor 2025; DSR p<0,0001 (gate 2 PASS); WF 7/8 windows positivas (gate 3 PASS, só 2019-10→2020-08 COVID negativa); full bootstrap 99,9% CI [+1,07, +4,01] (gate 6 PASS). **Mas single-block OOS gate 4 FAIL**: Sharpe OOS 1,89 com bootstrap 99,9% CI [-1,67, +8,11] — lower bound negativo (binding constraint do mandate; falha ESTATÍSTICA por sample 192 dias, não estrutural). **Edge decay yearly**: gross 4,03→1,38 pips/trade (peak 2016 → 2021); cost Pepperstone come 1,3 pips. **Cost economics per-pair**: USDCHF +3,05 net / EURCHF +2,93 / GBPUSD +1,75 / EURGBP +0,55 / EURUSD +0,43 / **USDCAD −0,10 (cost > gross)** — strategy precisaria filtrar USDCAD pra ser viável. **5-year blackout (2021-07→2026-05)** impede verificação atual; vendor classificou sistema como "OLD" sugerindo substituição interna. Decision memo recomenda **Opção 2 — Spec V3 + paper-trading 90d MT5 demo Pepperstone** (resolve blackout via observação forward, custo 1-2d setup + 0h monitoring 90d, capital zero). Opção 1 (Folclore puro) e Opção 3 (probe completo P3-P5 replicador + transferability) também viáveis. Decisão final aguarda sign-off do usuário. NO infra mainline tocada — probe vive em `studies/myfxbook_reverse_engineering/`, baseline 461 testes preservado. Citações: `[evidence_based_ta, Aronson, p.367-380]` (session effects), `[advances_fin_ml, p.196-211]` (DSR/PBO), `[fooled_by_randomness, Taleb]` (vendor track-record bias), `[systematic_trading, Carver, p.185-188]` (cost model retail). Mandate §1 100% Plano C UNCHANGED — Plano A continua DORMANT até decisão.](2026-05-01-0105-happyforex-probe-edge-real-mas-blackout-de-5-anos.md)
+- [2026-05-01 00h24 — spy_beater_hunt iter 005 (KMLM 35-40% monotonic positive, score 63 regrediu — separate vertente, mesmo dia)](2026-05-01-0024-spy-beater-iter005-kmlm-extreme-monotonic-but-score-regrediu.md)
 
 ### 2026-04-30
 

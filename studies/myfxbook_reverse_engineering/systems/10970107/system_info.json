@@ -1,0 +1,30 @@
+{
+  "system_id": 10970107,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-news-decodefx/10970107",
+  "name": "Happy News - DecodeFx Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+8,462.75%",
+    "absolute_gain": "+8,462.77%",
+    "daily": "0.50%",
+    "monthly": "17.97%",
+    "drawdown": "11.23%",
+    "balance": "$85,627.67",
+    "equity": "(100.00%) $85,627.67",
+    "highest": "(Jan 22) $86,566.06",
+    "profit": "$84,627.67",
+    "interest": "-$1.98",
+    "deposits": "$1,000.00",
+    "withdrawals": "$0.00",
+    "updated": "Jan 30 at 14:36",
+    "tracking": "65"
+  },
+  "account": {
+    "raw": "Real (USD), DecodeFX , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "DecodeFX",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/decodefx/2902069,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

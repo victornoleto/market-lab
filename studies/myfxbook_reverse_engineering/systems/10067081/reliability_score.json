@@ -1,0 +1,29 @@
+{
+  "system_id": "10067081",
+  "reliability": 0.5512315130396962,
+  "band": "MEDIUM",
+  "components": {
+    "direction_predictability": 0.258,
+    "family_clarity": 0.43,
+    "timing_concentration": 0.254,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.9993151303969622,
+    "vendor_quality": 1.0,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "UNCATEGORIZED",
+  "confidence": 0.43,
+  "n_trades": 4000,
+  "n_pairs": 6,
+  "last_trade_date": "2026-04-30 22:10:51+00:00",
+  "account_type": "Real",
+  "name": "Happy Frequency FM - REAL Forex Trading System by Forex Trad",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 1263.9188306331635,
+  "band_rank": 1,
+  "dir_pred": 0.258,
+  "timing_conc": 0.254,
+  "age_fresh": 0.9993151303969622
+}

@@ -1,0 +1,32 @@
+{
+  "system_id": "10814265",
+  "reliability": 0.3,
+  "band": "LOW",
+  "components": {
+    "direction_predictability": 1.0,
+    "family_clarity": 0.82,
+    "timing_concentration": 0.35841170323928945,
+    "sanity_pass": 0.0,
+    "age_freshness": 0.7848358300232433,
+    "vendor_quality": 0.85,
+    "pair_coverage": 1.0
+  },
+  "notes": [
+    "sanity FAIL \u2014 martingale signature detected",
+    "forced LOW: martingale/grid signature"
+  ],
+  "family": "MARTINGALE_GRID",
+  "confidence": 0.82,
+  "n_trades": 957,
+  "n_pairs": 3,
+  "last_trade_date": "2025-04-04 13:44:52+00:00",
+  "account_type": "Real",
+  "name": "Happy Breakout AdroFX Forex Trading System by Forex Trader H",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 331.22088742256165,
+  "band_rank": 2,
+  "dir_pred": 1.0,
+  "timing_conc": 0.35841170323928945,
+  "age_fresh": 0.7848358300232433
+}

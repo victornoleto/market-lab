@@ -1,0 +1,30 @@
+{
+  "system_id": 9830783,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-galaxy-fm-real/9830783",
+  "name": "Happy Galaxy FM - REAL Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+119.18%",
+    "absolute_gain": "+119.11%",
+    "daily": "0.06%",
+    "monthly": "1.81%",
+    "drawdown": "70.88%",
+    "balance": "$4,382.24",
+    "equity": "(39.33%) $1,723.69",
+    "highest": "(May 01) $4,382.24",
+    "profit": "$2,382.24",
+    "interest": "$0.00",
+    "deposits": "$2,000.00",
+    "withdrawals": "$0.00",
+    "updated": "7 hours ago",
+    "tracking": "5"
+  },
+  "account": {
+    "raw": "Real (USD), ForexMart , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "ForexMart",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/forexmart/1065344,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "system_id": 5542332,
+  "url": "https://www.myfxbook.com/members/HappyForex/old-happy-frequency-v11-real/5542332",
+  "name": "OLD Happy Frequency v1.1 - REAL Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+2,650.55%",
+    "absolute_gain": "+170.94%",
+    "daily": "0.12%",
+    "monthly": "9.86%",
+    "drawdown": "76.83%",
+    "balance": "$107,761.25",
+    "equity": "(62.74%) $67,604.63",
+    "highest": "(Jun 16) $107,761.25",
+    "profit": "$67,988.39",
+    "interest": "$0.00",
+    "deposits": "$39,772.86",
+    "withdrawals": "$0.00",
+    "updated": "Jun 16, 2021 at 13:53",
+    "tracking": "26"
+  },
+  "account": {
+    "raw": "Real (USD), Fort Financial Services , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Fort Financial Services",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/fort-financial-services/814372,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

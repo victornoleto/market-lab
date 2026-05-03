@@ -1,0 +1,30 @@
+{
+  "scope": "explicit_only",
+  "approval_scope": "5R-1 deterministic replicator/comparator/score only",
+  "freq": "M1",
+  "output_dir_name": "decoding_m1_smoke",
+  "final_ranking_allowed": false,
+  "strategy_decision_allowed": false,
+  "blocking_pause_gates": [
+    "NEWS_RELEASE_MOMENTUM remains provisional with n=1 after R1",
+    "needs_m1_review is high after R1: 13/30 systems"
+  ],
+  "passed": [
+    {
+      "system_id": "10281851",
+      "family": "H1_MOMENTUM_GOLD",
+      "fidelity_score": 0.2518,
+      "score_band": "NONE",
+      "n_real": 652,
+      "n_synthetic": 1651,
+      "n_matched": 13
+    }
+  ],
+  "failed": {},
+  "skipped": {},
+  "wallclock_seconds": 34.7,
+  "n_total": 1,
+  "n_passed": 1,
+  "n_failed": 0,
+  "n_skipped": 0
+}

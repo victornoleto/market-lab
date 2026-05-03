@@ -1,0 +1,29 @@
+{
+  "system_id": "1152318",
+  "reliability": 0.6687362092721842,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 0.9761759315821625,
+    "family_clarity": 0.62,
+    "timing_concentration": 0.24557116676847893,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.015779930229477546,
+    "vendor_quality": 1.0,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "UNCATEGORIZED",
+  "confidence": 0.62,
+  "n_trades": 1637,
+  "n_pairs": 2,
+  "last_trade_date": "2021-06-01 02:31:00+00:00",
+  "account_type": "Real",
+  "name": "OLD Happy Forex v2.4.1 - REAL (FortFS- set 3) Forex Trading ",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 2798.3225944042206,
+  "band_rank": 0,
+  "dir_pred": 0.9761759315821625,
+  "timing_conc": 0.24557116676847893,
+  "age_fresh": 0.015779930229477546
+}

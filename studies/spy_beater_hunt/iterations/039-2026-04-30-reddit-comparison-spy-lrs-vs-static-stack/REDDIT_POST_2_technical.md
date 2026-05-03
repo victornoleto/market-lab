@@ -2,6 +2,8 @@
 
 **TL;DR**: Follow-up to my [Post 1](https://www.reddit.com/r/LETFs/comments/1t0i3qm/) where I shared 4 boring static portfolios that beat SPY on **both** CAGR and Max DD over 1987-2026. The 4 candidates are simple buy-and-hold stacks built on capital-efficient ETFs — **NTSX** (90% SPY + 60% Treasury futures), **GDE** (90% SPY + 90% gold futures), **RSST** (100% SPY + 100% systematic managed futures) — plus a duration sleeve (TMF / ZROZ / TLT). No signals, no regime gates, no rebal whipsaw.
 
+**2026-05-02 methodology note before posting:** I made one tax correction and one explicit proxy choice. First, for static buy-and-hold/lazy-rebal portfolios I should **not** apply terminal DARF in the comparison; tax drag belongs in swing/tactical strategies that realize gains through position changes, not in these buy-and-hold stacks. Second, this post intentionally uses the longer-window RSST proxy `SPY + KMLM - cash` so the main study can run back to 1987. A live RSST tracking check suggests real RSST is closer to `SPY + 70% DBMF + 30% KMLM - cash`, but DBMFSIM starts in 2000, which would cut the study to 26 years. I prefer the longer backtest for the main post and treat the 70/30 DBMF/KMLM version as a final caveat/sensitivity check. Return stacking rationale: `[risk_parity, ch.5, p.10]`; diversified managed-futures engine rationale: `[ilmanen_expected_returns, ch.19]`.
+
 **This Post 2 is the methodology + the community-critique integration.** After Post 1 went up, you gave me 4 specific empirical critiques. I ran each one as a separate iteration:
 
 - **u/perky_python** — "your sim ignores rebal cadence + ERs" → **monthly rebal + explicit ERs across all configs**
@@ -13,7 +15,7 @@ Plus the full **7-gate anti-overfit battery** (PBO / DSR / Walk-Forward / OOS 70
 
 **Headline change from Post 1**: top-level rebalance is now **monthly** (not yearly) and **expense ratios are explicit**. This shifts the Pareto frontier in interesting ways — most notably, **Popular 50/25/25 SSO/GLD/ZROZ loses 10.71pp of MDD** (-39.84% → -50.55%) when you rebalance monthly. The capital-efficient stacks (NTSX/GDE/RSST) are virtually immune.
 
-**Headline finding**: B4 Conservative (25 NTSX / 25 GDE / 25 RSST / 25 ZROZ) survived all 4 adversarial tests and replaces T1 as my pick. G4d (RSSB-based) breaks the MDD record at -22.56% — lowest in the entire study.
+**Headline finding**: on the longer 1987-2026 window, B4 Conservative (25 NTSX / 25 GDE / 25 RSST-like KMLM trend stack / 25 ZROZ) is still the best balanced pick: high enough CAGR, materially lower drawdown than SPY, and the best Sharpe among the long-window static stacks. L1 CEGB remains the lower-stress alternative; B5/B2/T1 buy more CAGR with materially deeper drawdowns.
 
 ---
 
@@ -22,11 +24,11 @@ Plus the full **7-gate anti-overfit battery** (PBO / DSR / Walk-Forward / OOS 70
 | Critic | Critique | Test | Verdict |
 |---|---|---|---|
 | u/perky_python | "Your sim ignores rebal cadence + ERs. Real CAGR is ~1pp lower." | **Re-ran with Monthly rebal + explicit ERs (NTSX 0.20%, GDE 0.20%, RSST 0.99%, KMLM 0.92%, GLD 0.40%, ZROZ 0.15%, etc).** | ⚠️ Partial. CAGR drops 0.5-0.9pp on stacks (less than 1pp). MDD on Popular 50/25/25 worsens **-10.71pp** (huge finding). |
-| u/Fun-Sundae4060 + u/no_simpsons | "Try TQQQ/QQQ regime-gate × diversifiers above/below 200d SMA. ~10,000% return." | **Tested 6 G3 variants** (Fun-Sundae spec, NDX-heavy, with bonds, minimal, Gayed-NDX, pure TQQQ/QQQ swap). | ❌ None beat B4 Conservative. The "~10,000%" return is computed over 2012-2025 (cherry-picked window without dotcom). On 1987-2026 with 2000-2002 included, the regime gate fails badly. |
-| u/Grouchy_Release_2321 + u/perky_python | "SPY-only base is US-survivorship-bias. Try VT/RSSB/NTSI." | **Tested 5 G4 variants** with NTSD, RSSB, mixed US/International. | ⚠️ US-bias accounts for **only ~4% of B4's Sharpe edge**. Best international variant (G4c with 50/50 US/Intl split) gets Sharpe 0.716 vs B4 0.745. **G4d (RSSB-based) breaks the MDD record at -22.56%** — the lowest in the entire study. |
+| u/Fun-Sundae4060 + u/no_simpsons | "Try TQQQ/QQQ regime-gate × diversifiers above/below 200d SMA. ~10,000% return." | **Tested 6 G3 variants** (Fun-Sundae spec, NDX-heavy, with bonds, minimal, Gayed-NDX, pure TQQQ/QQQ swap). | ❌ The "~10,000%" return is computed over 2012-2025 (cherry-picked window without dotcom). On 1987-2026 with 2000-2002 included, the regime gate produces much worse drawdowns than B4. |
+| u/Grouchy_Release_2321 + u/perky_python | "SPY-only base is US-survivorship-bias. Try VT/RSSB/NTSI." | **Tested 5 G4 variants** with NTSD, RSSB, mixed US/International. | ⚠️ In the long-window table, US-bias accounted for only ~4% of B4's Sharpe edge. This is directional because synthetic international/stacked proxies add their own uncertainty. **G4d (RSSB-based) breaks the MDD record at -22.56%** — the lowest in the broader study. |
 | u/laurenthu | "Re-fit weights on rolling 5y windows. If they drift, edge is window-specific." | **Walk-forward max-Sharpe optimization on B4/B2/T1 universes.** | ✅ G8 PASS. Weights drift wildly (60-75pp range) BUT static portfolio Sharpe **beats** walk-forward in all 3 universes. Static = optimal shrinkage estimator (DeMiguel/Garlappi/Uppal 2009 RFS). |
 
-**Overall**: B4 Conservative survives all 4 adversarial tests. Becomes the new "My pick" (replacing T1 from Post 1 — see Recommendation section).
+**Overall**: B4 Conservative survives the critique process as the balanced pick on the long-window study. The final caveat is that live RSST may be better approximated by a 70/30 DBMF/KMLM trend sleeve, which starts only in 2000 and produces somewhat different absolute numbers.
 
 ---
 
@@ -48,6 +50,7 @@ ERs used (per issuer prospectus):
 | KMLM | 0.92 |
 | GLD | 0.40 |
 | ZROZ / TLT / IEF | 0.15 each |
+| GOVZ | 0.10 |
 | SPY | 0.0945 |
 | SSO (= SPYSIM?L=2&E=0.89) | 0.89 |
 | UPRO (= SPYSIM?L=3&E=0.91) | 0.91 |
@@ -63,79 +66,67 @@ Per-portfolio drag (weighted ER):
 
 ---
 
-## Updated results — Monthly rebal + ERs + terminal DARF (1987-12-31 → 2026-04-30, 38.33y)
+## Updated results — Monthly rebal + ERs, no DARF for buy-and-hold (long 1987-2026 window)
 
-**Tax model**: I assume the realistic deployment behavior — monthly contributions to whatever's most underweight (lazy rebal via aportes), **never selling during accumulation**. Therefore realized gains intra-year = 0 → DARF = 0 each year. DARF only applies at terminal liquidation (15% × cumulative profit). Formula: `net_final = 0.85 × gross_final + 0.15 × initial`.
+**Tax model**: no DARF applied for the static buy-and-hold/lazy-rebal portfolios in this section. Taxes should be modeled for swing/tactical strategies that realize gains through position changes, not for static stacks that are accumulated and held.
 
-This is the canonical methodology used across **all** numbers in this post (no more dual-table inconsistency).
+**RSST proxy for this main study**: `SPY + KMLM - CASHX`. This is not the closest live RSST tracking proxy; it is the longer-history managed-futures proxy that lets the study run from `1987-12-30 → 2026-04-29`.
+
+Why use KMLM-only here? Because DBMFSIM starts in 2000. A 70/30 DBMF/KMLM trend sleeve probably tracks live RSST better, but it removes 12+ years of useful stress history. For this post I prefer the longer regime sample and explicitly caveat that the absolute RSST-containing results may shift under the shorter 70/30 proxy.
+
+This is the main long-window methodology for the post. The 2000+ `70% DBMF / 30% KMLM` version is a tracking-sensitivity check, not the headline table.
 
 ### Main contenders (Pareto frontier)
 
-| portfolio | gross CAGR | **net CAGR** | Max DD | Sharpe | Sortino | $100k → 30y (net) |
-|---|---:|---:|---:|---:|---:|---:|
-| SPY 1× buy-hold | 11.37% | **10.91%** | -55.20% | 0.523 | 0.740 | $2.3M |
-| Popular 50/25/25 SSO/GLD/ZROZ | 12.58% | 12.11% | **-50.55%** ⚠️ | 0.576 | 0.818 | $3.0M |
-| 🔵 **Sleeping pills (L1 CEGB)** | 11.06% | 10.60% | **-25.43%** | 0.729 | 1.044 | $2.0M |
-| ⚪ Bogleheads 67% NTSX (L2) | 11.06% | 10.60% | -26.30% | 0.722 | 1.037 | $2.0M |
-| 🟢 **Conservative (B4 ZROZ)** ⭐ | **13.31%** | **12.84%** | -28.94% | **0.745** | 1.071 | $3.7M |
-| 🟠 **Balanced (T1 gold-heavy)** | 13.34% | 12.87% | -34.65% | 0.688 | 0.984 | $3.8M |
-| 🔴 **Aggressive (B2 high-equity)** | 13.89% | 13.42% | -36.38% | 0.717 | 1.028 | $4.4M |
-| Gayed LRS 2× (SSO 200d) ‡ | 16.01% | ~14.0% ‡ | -43.48% | 0.609 | 0.843 | ~$5.5M (after annual realize) |
-| Gayed LRS 3× (UPRO 200d) ‡ | 19.61% | ~17.0% ‡ | -57.57% | 0.595 | 0.822 | ~$11M (after annual realize) |
+| portfolio | CAGR | Max DD | Sharpe | Sortino | Calmar |
+|---|---:|---:|---:|---:|---:|
+| SPY 1× buy-hold | 11.37% | -55.20% | 0.523 | 0.740 | 0.206 |
+| 🔵 **Sleeping pills (L1 CEGB)** | 11.06% | **-25.43%** | 0.729 | 1.044 | 0.435 |
+| ⚪ Bogleheads 67% NTSX (L2) | 11.06% | -26.30% | 0.722 | 1.037 | 0.420 |
+| 🟢 **Conservative (B4 ZROZ)** ⭐ | **13.31%** | -28.94% | **0.745** | **1.071** | **0.460** |
+| 🟠 **T1 gold-heavy** | 13.34% | -34.65% | 0.688 | 0.984 | 0.385 |
+| 🔴 **B2 TMF10** | 13.89% | -36.38% | 0.718 | 1.028 | 0.382 |
+| B5 no duration | **14.22%** | -41.12% | 0.687 | 0.981 | 0.346 |
 
-‡ Gayed LRS strategies flip regimes 1-3×/year, forcing realized gains → annual DARF (~1.5-2pp drag). Net ranking penalty larger than buy-hold static stacks. Estimates based on iter 038 internal pipeline net classification.
+Tax note: Gayed/LRS strategies still need a separate after-tax model because regime flips realize gains. The static stacks above do not get recurring DARF in this comparison.
 
-**Equity curves** ($10k start, log scale, 1987-12-31 → 2026-04-30):
+**Equity curves** ($10k start, log scale, long-window proxy `1987-12-30 → 2026-04-29`):
 
-![Equity curves 1987-2026](testfolio_01_equity.png)
-*Visual ranking by terminal value. Plot uses Post 1's testfol.io snapshot (yearly rebal, no ERs) — Post 2's monthly+ERs shifts the absolute terminal values down ~0.5pp CAGR but the structural ordering is preserved. Conservative (B4) and Aggressive (B2) lead the named profiles; the Sleeping pills (L1) curve runs nearly identical to Bogleheads 67% NTSX (L2). Gayed LRS 3× UPRO has the highest terminal but ate -57% drawdowns to get there.*
+![Equity curves 1987-2026 long-window RSST proxy](testfolio_01_equity.png)
+*Visual ranking by terminal value using the longer-history RSST proxy (`SPY + KMLM - cash`), monthly rebalance, explicit ERs, and no DARF for static buy-and-hold/lazy-rebal. B5 has the highest terminal value but much higher drawdown; B4 remains the best Sharpe/CAGR/MDD compromise; L1 has the smoothest ride.*
 
 **Pareto frontier — CAGR vs Max DD** (the "interesting zone" is the upper-right quadrant, where CAGR > SPY AND |MaxDD| < SPY):
 
 ![Pareto CAGR vs MaxDD](testfolio_03_scatter.png)
-*Green region = beats SPY on both axes. Red region = worse on both. The 4 named CE-stack profiles (B2/T1/B4/L1) all sit in the green quadrant, comfortably north-east of SPY. Popular 50/25/25 sits very close to the SPY MDD line on yearly basis but **crosses into the red on monthly rebal** (-50.55% MDD per Post 2 tables). Gayed LRS 2x/3x are in the lower-right (better CAGR, worse MDD) — they trade drawdown for return.*
+*Green region = beats SPY on both axes. This chart shows the long-window static-stack universe; DBMF-only/blend variants are omitted from the scatter because DBMFSIM starts in 2000 and is not directly comparable. The practical frontier is L1/L2 for lowest stress, B4 for balanced Sharpe/CAGR/MDD, and B5/B2/T1 if you accept progressively larger drawdowns.*
 
-**Key changes vs Post 1** (now using consistent Monthly + ERs + terminal DARF):
-- B4 Sharpe: 0.798 → **0.745** (-0.053). Still highest among the 4 candidates.
-- T1 Sharpe: 0.744 → **0.688** (-0.056). T1's TMF 20% × monthly rebal magnifies duration drawdowns.
-- B2 Sharpe: 0.772 → **0.717** (-0.055). Still high but B4 widens its lead.
-- Popular 50/25/25 MDD: -39.84% → **-50.55%** ⚠️. Broke much harder than expected.
+**Key changes vs Post 1** (after monthly ERs + explicit long-window RSST proxy):
+- B4 remains the **highest-Sharpe balanced pick**: CAGR 13.31%, MDD -28.94%, Sharpe 0.745 over ~38.3y.
+- L1 CEGB remains the **lowest-stress reference**: CAGR 11.06%, MDD -25.43%, Sharpe 0.729.
+- B2/T1/B5 still offer more CAGR than B4, but require accepting much deeper drawdowns (34.6-41.1%).
+- Popular 50/25/25's monthly-rebal MDD blowup remains an important caution from the earlier monthly/ER test.
 
-### Updated full sweep — 14 iter 038 configs + G3/G4 variants (consistent Monthly + ERs + terminal DARF)
+### Updated full sweep — long-window static stack table (Monthly + ERs, no DARF)
 
-| config | family | gross CAGR | **net CAGR** | Max DD | Sharpe | Notes |
-|---|---|---:|---:|---:|---:|---|
-| **Conservative (B4 ZROZ)** | B/Static | 13.31% | **12.84%** | -28.94% | **0.745** ⭐ | canonical winner |
-| B3 TLT instead of TMF | B/Static | 12.44% | 11.98% | -30.06% | 0.735 | TLT 1× backup if ZROZ unavailable |
-| Sleeping pills (L1 CEGB) | L/Static | 11.06% | 10.60% | -25.43% | 0.729 | low-risk reference |
-| Bogleheads 67 NTSX (L2) | L/Static | 11.06% | 10.60% | -26.30% | 0.722 | low-risk reference |
-| **Balanced (B2 TMF10)** | B/Static | 13.89% | 13.42% | -36.38% | 0.717 | high-CAGR alternative |
-| **G4c (mixed US/Intl 50/50)** 🆕 | G4/Static | 13.31% | 12.84% | -32.65% | 0.716 | best international |
-| T2 equity-heavy | B/Static | 13.40% | 12.93% | -33.14% | 0.708 | NTSX 35% |
-| G3c (with bonds) 🆕 | G3/RegimeGate | 13.36% | 12.89% | -42.63% | 0.703 | best G3, still loses to B4 |
-| **Aggressive (T1 gold-heavy)** | B/Static | 13.34% | 12.87% | -34.65% | 0.688 | demoted from Post 1 |
-| B5 no duration | B/Static | **14.22%** | **13.74%** | -41.12% | 0.687 | high CAGR, high MDD |
-| G4a (NTSD swap) 🆕 | G4/Static | 13.29% | 12.82% | -36.24% | 0.684 | full swap US→Intl |
-| **G4d (RSSB+GDE+ZROZ+KMLM)** 🆕 | G4/Static | 10.54% | 10.10% | **-22.56%** ⭐ | 0.678 | **best MDD/Calmar in entire study** |
-| B1 user baseline 25 TMF | B/Static | 12.93% | 12.46% | -38.78% | 0.665 | original spec — TMF 25% costs MDD |
-| G3a (Fun-Sundae 33/33/33) 🆕 | G3/RegimeGate | 15.60% | 15.05% | -58.53% | 0.661 | TQQQ × KMLM × GLD |
-| M4 RSST+KMLM blend | M/Static | 11.85% | 11.38% | -37.27% | 0.645 | dual MF source |
-| G3d (TQQQ/KMLM 50/50) 🆕 | G3/RegimeGate | 18.58% | 17.86% | -75.47% | 0.629 | minimal |
-| T3 RSSB global | B/Static | 12.31% | 11.85% | -41.39% | 0.623 | global stack, MDD inflado |
-| G3b (NDX-heavy 50/25/25) 🆕 | G3/RegimeGate | 18.34% | 17.63% | -75.98% | 0.621 | high CAGR, brutal MDD |
-| G4b (RSSB-heavy) 🆕 | G4/Static | 10.59% | 10.15% | -34.35% | 0.610 | RSSB ER drag |
-| M2 DBMF no RSST ⚠ | M/Static | 9.76% | 9.15% | -37.97% | 0.610 | 26y window only (DBMFSIM start 2000) |
-| M1 KMLM no RSST | M/Static | 10.74% | 10.29% | -35.92% | 0.610 | KMLM-only stack |
-| Gayed LRS 2× | LRS | 16.01% | ~14.0%‡ | -43.48% | 0.609 | annual realize → tax drag |
-| M3 KMLM+DBMF blend ⚠ | M/Static | 9.56% | 8.95% | -36.94% | 0.600 | 26y window only |
-| Gayed LRS 3× | LRS | 19.61% | ~17.0%‡ | -57.57% | 0.595 | extreme LRS |
-| Popular 50/25/25 SSO/GLD/ZROZ | Reference | 12.58% | 12.11% | -50.55% | 0.576 | hurt by monthly rebal |
-| **G3f (pure TQQQ/QQQ swap)** 🆕 | G3/RegimeGate | **19.97%** | 19.18% | **-96.90%** ⚠️ | 0.556 | highest CAGR, worst MDD |
-| G4e (full Intl) 🆕 | G4/Static | 11.57% | 11.11% | -48.52% | 0.555 | no US, no duration — bad combo |
-| G3e (Gayed-NDX 100/IEF) 🆕 | G3/RegimeGate | 18.61% | 17.88% | -90.05% | 0.535 | NDX analog of canonical Gayed |
-| SPY 1× | Benchmark | 11.37% | **10.91%** | -55.20% | 0.523 | floor |
+| config | family | CAGR | Max DD | Sharpe | Notes |
+|---|---|---:|---:|---:|---|
+| **Conservative (B4 ZROZ)** | B/Static | 13.31% | -28.94% | **0.745** ⭐ | balanced pick: best Sharpe, sub-30% MDD |
+| B3 TLT instead of TMF | B/Static | 12.44% | -30.06% | 0.735 | second-line backup if ZROZ/GOVZ unavailable |
+| Sleeping pills (L1 CEGB) | L/Static | 11.06% | **-25.43%** | 0.729 | lowest stress |
+| Bogleheads 67 NTSX (L2) | L/Static | 11.06% | -26.30% | 0.722 | low-risk reference |
+| **B2 TMF10** | B/Static | 13.89% | -36.38% | 0.718 | high-CAGR alternative |
+| T2 equity-heavy | B/Static | 13.40% | -33.14% | 0.707 | NTSX 35% |
+| **T1 gold-heavy** | B/Static | 13.34% | -34.65% | 0.688 | more CAGR, worse drawdown |
+| B5 no duration | B/Static | **14.22%** | -41.12% | 0.687 | highest CAGR, high MDD |
+| B1 user baseline 25 TMF | B/Static | 12.93% | -38.78% | 0.665 | original spec — TMF 25% costs MDD |
+| M4 RSST+KMLM blend | M/Static | 11.85% | -37.27% | 0.645 | dual MF source, still long-window |
+| T3 RSSB global | B/Static | 12.31% | -41.39% | 0.623 | global stack, MDD inflated |
+| M1 KMLM no RSST | M/Static | 10.74% | -35.92% | 0.610 | KMLM-only stack |
+| M2 DBMF no RSST | M/Static | 9.76% | -37.97% | 0.610 | DBMF-only MF source; 2000+ window only |
+| M3 KMLM+DBMF blend | M/Static | 9.56% | -36.94% | 0.600 | split MF no RSST; 2000+ window only |
+| SPY 1× | Benchmark | 11.37% | -55.20% | 0.523 | floor |
 
-⚠ M2 / M3 = janela 26y (DBMFSIM start 2000) — não comparáveis em CAGR absoluto. ‡ LRS net CAGR estimado considerando ~1.5-2pp/yr drag de annual realization (regime flips force realized gains).
+All rows except M2/M3 share the same ~38.3y window. M2/M3 contain DBMF directly and are shown for context only because DBMFSIM starts in 2000. Regime-gated LRS and G3 variants are omitted from this long-window static-stack table because their tax treatment differs and must include realization drag.
 
 ---
 
@@ -163,10 +154,10 @@ In bear markets:
 | Balanced (B2 high-equity) | -0.17pp |
 | Gayed LRS variants (signal-driven) | ±0pp |
 
-**Underwater chart** (peak-to-trough drawdown, all portfolios, 1987-2026):
+**Underwater chart** (peak-to-trough drawdown, long-window proxy `1987-12-30 → 2026-04-29`):
 
-![Drawdown 1987-2026](testfolio_02_drawdown.png)
-*Notice how SSO 2× / UPRO 3× buy-hold (not in chart but referenced) and the Gayed LRS 3× UPRO punch through -50%. SPY hits -55% in 2008. The CE stacks (B2/T1/B4/L1) all stay above -36% even in the worst stress. Popular 50/25/25 looks similar at the yearly basis but the monthly rebal pushes it to -50.55% — about as bad as SPY. The deepest drawdowns cluster in 2000-2002 (dotcom) and 2008 (GFC); 2022 (joint stock+bond crash) shows up as a smaller but ugly synchronized dip.*
+![Drawdown 1987-2026 long-window RSST proxy](testfolio_02_drawdown.png)
+*SPY still hits roughly -55% in the GFC. L1/B4 keep drawdowns materially shallower, while B2/T1/B5 buy more CAGR by accepting deeper stress. The deepest drawdowns cluster around 2000-2002, 2008, and 2022; the 2022 joint stock/bond shock is where duration-heavy sleeves show their main weakness.*
 
 **Implication**: if you're a real investor making monthly contributions (which most are), the popular 50/25/25 SSO mix is **strictly dominated** by every capital-efficient stack — both on Sharpe AND on realized MDD.
 
@@ -183,7 +174,7 @@ Tested 6 variants (G3a-G3f) per Fun-Sundae4060 + no_simpsons specs:
 | G3e Gayed-NDX | TQQQ 100 | IEF 100 | 18.61% | -90.05% | 0.535 |
 | G3f pure swap | TQQQ 100 | QQQ 100 | **19.97%** | **-96.90%** | 0.556 |
 
-**Best G3 = G3c (with bonds) with Sharpe 0.703 — still 0.042 below B4's 0.745.**
+**Best G3 = G3c (with bonds) with Sharpe 0.703, but with MDD -42.63%.** This is a different risk profile from B4's -28.94% MDD, and G3/LRS variants need separate after-tax treatment because they realize gains through regime flips.
 
 The community-cited "~10,000% return on TQQQ + 200d SMA" comes from Bogleheads/Petrou backtests over **2012-2025** — a cherry-picked window without a dotcom-equivalent crash. On 1987-2026 (which includes 2000-2002):
 - TQQQ standalone buy-hold MDD: -99.98% (you lost ~99% of capital in 2002).
@@ -207,7 +198,7 @@ Tested 5 G4 variants per Grouchy_Release_2321 + perky_python:
 
 Two findings here:
 
-(a) **G4c (50/50 US/Intl split) gets Sharpe 0.716** — only 0.029 below B4's 0.745. **US-equity premium contributes ~4% of the edge**, not 50%+. The structural diversification (capital-efficient stacking via NTSX/GDE/RSST embedding leverage across asset classes) is the dominant driver.
+(a) **G4c (50/50 US/Intl split) got Sharpe 0.716 in the long-window table** — only 0.029 below B4's Sharpe of 0.745. Read this as directional rather than final because RSSB/NTSD synthetic histories add uncertainty, but the structural diversification (capital-efficient stacking via NTSX/GDE/RSST embedding leverage across asset classes) still appears to be the dominant driver.
 
 (b) **G4d (RSSB-based 4-sleeve) breaks the MDD record at -22.56%** — the lowest of any portfolio in the entire study. Calmar ratio 0.467 (also a record). Trade-off: CAGR 10.54% (below SPY's 11.37%). For a CAGR-flexible investor with strong MDD aversion, G4d is a new top-tier candidate.
 
@@ -246,10 +237,10 @@ Optimal weights pick **corner solutions** (0% or 100% in many windows). On the s
 
 **G8 verdict: PASS. Static weights are not curve-fit.** Drift is real; curve-fit is not.
 
-**Rolling CAGR consistency** (5y / 10y / 15y / 20y windows, all portfolios):
+**Rolling CAGR consistency** (5y / 10y / 15y / 20y windows, named static contenders):
 
 ![Rolling CAGR grid](testfolio_04_rolling_grid.png)
-*The CE stacks (B2/T1/B4/L1) maintain positive rolling CAGR across virtually all windows ≥10y — even the worst rolling-10y for B4 stays around +5%. SPY dips negative in rolling-10y around 2008-2010. Gayed LRS strategies show wild rolling-5y swings (high variance from regime flips). The static stacks aren't just optimal in aggregate — they're more **consistent** across overlapping windows, which is the practical definition of "non-curve-fit."*
+*The CE stacks (B2/T1/B4/L1) maintain positive rolling CAGR across virtually all windows >=10y. SPY dips negative in rolling-10y around 2008-2010, while B4/L1 stay materially steadier. The static stacks aren't just better in aggregate — they're more **consistent** across overlapping windows, which is the practical definition of "non-curve-fit."*
 
 ---
 
@@ -308,7 +299,7 @@ Gates pass:
 
 1. **TMF (3× LTT) lost -71% in 2022 alone**. At 25% allocation = -17.7pp portfolio drag. Aggressive (B2) reduces to 10% (-7pp drag). Conservative (B4 ZROZ) replaces TMF entirely with zero-coupon Treasuries (-53% in 2022 at 25% = -13pp drag, but no LETF decay).
 
-2. **NTSX/GDE/RSST are recent ETFs**. NTSX 2018, GDE 2022, RSST 2022. The 38-year backtest uses synthetic proxies. Real ETFs have execution drag and tracking error not fully captured (see u/perky_python's critique addressed in this post).
+2. **NTSX/GDE/RSST are recent ETFs**. NTSX 2018, GDE 2022, RSST 2022. The main table and charts use synthetic proxies over 1987-2026, including `RSST = SPY + KMLM - cash`. Real ETFs have execution drag and tracking error not fully captured (see u/perky_python's critique addressed in this post).
 
 3. **RSSB has only ~2 years of live data** (launched Jan 2024). G4d (which has the best MDD in the study) is partially synthetic. Take with extra skepticism.
 
@@ -320,27 +311,31 @@ Gates pass:
 
 7. **Pre-1987 data limitation**: backtest can't extend before KMLM SIM start. u/Fit-Librarian279 correctly pointed out that 1980-1982 was a tough drawdown for both gold and ZROZ (verified: gold -53% peak-to-trough, long-bonds bottomed 1981-82 with negative real returns through 1979). The Hurst/Ooi/Pedersen 2017 "Century of Evidence" extends MF data further back; backfilling is on the roadmap but won't be in this Post 2.
 
+8. **ZROZ/GOVZ are duration bets, not guaranteed crisis hedges.** A commenter correctly flagged the forward-looking risk: deficits, rising term premia, sticky inflation, or central-bank reserve shifts could make long STRIPS fail to rally in a future equity crisis. I still prefer ZROZ/GOVZ over TMF because they avoid daily-reset decay and give more convexity than TLT, but this sleeve is not magic insurance.
+
+9. **RSST proxy caveat**: the longer-window study uses `SPY + KMLM - cash` because KMLMSIM lets us start in 1987. A live tracking check suggests actual RSST is closer to `SPY + 70% DBMF + 30% KMLM - cash`; using that proxy cuts the common window to 2000+ and shifts B4 to roughly CAGR 11.00% / MDD -29.60% / Sharpe 0.671. I use the KMLM-only proxy here to gain 12+ years of regime history, not because it is a perfect RSST reconstruction.
+
 ---
 
 ## My pick — what I'd actually hold for the next 30 years (UPDATED)
 
-**Post 1 had T1 gold-heavy as my pick. Post 2 update: switching to B4 Conservative.**
+**Post 1 had T1 gold-heavy as my pick. Post 2 update: switching to B4 Conservative, with L1 CEGB as the higher-Sharpe low-risk alternative.**
 
 | candidate | CAGR | MDD | Sharpe | 30y verdict |
 |---|---:|---:|---:|---|
-| 🏆 **Conservative (B4 ZROZ)** | **13.31%** | -28.94% | **0.745** | **NEW PICK**: Highest Sharpe in study. ZROZ removes LETF decay. Survived all 4 community critiques: monthly+ERs (-0.05 Sharpe vs Post 1), G8 walk-forward (static beats WF), G3 NDX regime-gate (none beat B4), G4 international (only 4% of edge from US-bias). |
-| Aggressive (B2 high-equity) | 13.89% | -36.38% | 0.717 | Highest CAGR static. -36% MDD over 18-24 months is brutal. 84% net equity = SPY-correlated downside. |
-| Balanced (T1 gold-heavy) | 13.34% | -34.65% | 0.688 | Was Post 1 pick; lost relatively to Monthly+ERs. T1's TMF 20% × monthly rebal magnified duration drawdowns. |
+| 🏆 **Conservative (B4 ZROZ)** | **13.31%** | -28.94% | **0.745** | **MY PICK**: best Sharpe in the long-window static sweep and the cleanest CAGR/MDD compromise. |
+| 🔵 Sleeping pills (L1 CEGB) | 11.06% | **-25.43%** | 0.729 | Lowest stress. Give up 2.25pp CAGR vs B4. Pick this if drawdown tolerance is the binding constraint. |
+| B2 TMF10 | 13.89% | -36.38% | 0.718 | Higher CAGR, much larger drawdown. |
+| T1 gold-heavy | 13.34% | -34.65% | 0.688 | Was Post 1 pick; demoted because B4 has similar CAGR with materially lower MDD. |
 | 🛡️ G4d (RSSB+GDE+ZROZ+KMLM) 🆕 | 10.54% | **-22.56%** | 0.678 | **Best MDD in entire study.** Lower CAGR (below SPY) is the trade-off. Consider as complement, not substitute, to B4. |
-| Sleeping pills (L1 CEGB) | 11.06% | -25.43% | 0.729 | Lowest risk. Give up 2.25pp CAGR vs B4 — over 30y that's $4.5M vs $2.4M on $100k. Only worth it if you're genuinely fragile. |
 
 **Why B4 wins now:**
 
-1. **Highest Sharpe in the study (0.745)** even after 4 adversarial tests.
-2. **ZROZ instead of TMF removes the LETF decay tax** — same notional duration exposure, no daily-reset decay.
-3. **Smallest CAGR/MDD penalty from monthly rebal** (ΔMDD only -0.29pp; T1 went -3.99pp). Monthly cadence is the *real* deployment cadence for retail aporters.
-4. **Survives G8 walk-forward gate**: static B4 25/25/25/25 has Sharpe 0.940 vs walk-forward 0.879 on the same universe. Equal-weight is the optimum shrinkage.
-5. **Structural diversification holds geographically**: G4c (50/50 US/Intl swap) only loses 0.029 Sharpe vs B4. The edge isn't a US-equity-premium curve fit.
+1. **Best balanced trade-off on the long-window study**: B4 adds +2.25pp CAGR over L1 while keeping MDD below 30%.
+2. **ZROZ instead of TMF removes the LETF decay tax** — same duration role, no daily-reset decay. `GOVZ` is an operationally close substitute for `ZROZ` because both target long Treasury STRIPS / zero-coupon duration.
+3. **Small CAGR/MDD penalty from monthly rebal** in the prior cadence test (B4 was much less sensitive than T1 or Popular 50/25/25).
+4. **Survives G8 walk-forward gate**: static B4 25/25/25/25 beats rolling max-Sharpe optimization on the same universe. Equal-weight is the optimum shrinkage.
+5. **Structural diversification holds geographically**: G4c (50/50 US/Intl swap) only lost modest Sharpe vs B4 in the prior G4 test. The edge isn't purely a US-equity-premium curve fit.
 
 ### Single-portfolio commitment for next 30y: 🟢 B4 Conservative
 
@@ -348,14 +343,14 @@ Gates pass:
 25% NTSX  (90% SPY  + 60% Treasury futures = 1.5x notional)
 25% GDE   (90% SPY  + 90% Gold futures      = 1.8x notional)
 25% RSST  (100% SPY + 100% Trend            = 2.0x notional)
-25% ZROZ  (zero-coupon 25y Treasuries, no LETF decay)
+25% ZROZ  (zero-coupon 25y Treasuries, no LETF decay; GOVZ is a close substitute)
 =========
 100% capital, ~163% notional exposure, ~74.5% equity beta
 ```
 
 Monthly rebalance via contributions only (don't sell unless ±10pp drift). No regime gates, no signals to watch, no whipsaw cost. Boring buy-and-hold.
 
-**Validate ZROZ availability at your broker.** It's less common than TLT. If unavailable, fallback to B3 (TLT 1×) — slight CAGR drop but similar MDD profile.
+**Validate ZROZ/GOVZ availability at your broker.** `GOVZ` (iShares 25+ Year Treasury STRIPS Bond ETF) is a close operational substitute for `ZROZ` (PIMCO 25+ Year Zero Coupon U.S. Treasury Index ETF). In quick testfol.io checks their behavior was practically the same because both are long-duration STRIPS/zero-coupon Treasury exposure. If `ZROZ` is unavailable but `GOVZ` is available with acceptable spread/liquidity, I would use `GOVZ` before falling back to `TLT`. `TLT` is the second-line fallback because it changes the sleeve more: lower duration/convexity than STRIPS, even if still long Treasury exposure.
 
 ### Optional MDD-extreme tier: 🛡️ G4d (RSSB + GDE + ZROZ + KMLM)
 
@@ -374,11 +369,20 @@ CAGR 10.54% (below SPY's 11.37%) but MDD only -22.56% — lowest in the entire s
 
 Set rebalance "Monthly", invest_dividends=true. Apply ER drag per portfolio (sum of weighted ERs).
 
+Long-window `RSST` expansion used in the main table:
+
 ```
-B4 Conservative:    47.5 SPYSIM, 25 GDESIM, 25 KMLMSIM, 25 ZROZSIM, 15 IEFSIM, -37.5 CASHX  (drag 0.385%)
-B2 Aggressive:      57 SPYSIM, 30 GDESIM, 30 KMLMSIM, 18 IEFSIM, 10 TLTSIM?L=3&E=1.05, -45 CASHX  (drag 0.417%)
-T1 Balanced:        43 SPYSIM, 35 GDESIM, 25 KMLMSIM, 20 TLTSIM?L=3&E=1.05, 12 IEFSIM, -35 CASHX  (drag 0.358%)
-G4d MDD-extreme:    25 RSSBSIM, 25 GDESIM, 25 ZROZSIM, 25 KMLMSIM  (drag 0.490%)
+RSST proxy = 100 SPYSIM + 100 KMLMSIM - 100 CASHX
+B4 Conservative = 47.5 SPYSIM + 25 GDESIM + 25 KMLMSIM + 25 ZROZSIM + 15 IEFSIM - 37.5 CASHX  (drag 0.385%)
+B2 TMF10        = 57 SPYSIM + 30 GDESIM + 30 KMLMSIM + 18 IEFSIM + 10 TLTSIM?L=3&E=1.05 - 45 CASHX  (drag 0.417%)
+T1 gold-heavy   = 43 SPYSIM + 35 GDESIM + 25 KMLMSIM + 20 TLTSIM?L=3&E=1.05 + 12 IEFSIM - 35 CASHX  (drag 0.358%)
+G4d MDD-extreme = 25 RSSBSIM + 25 GDESIM + 25 ZROZSIM + 25 KMLMSIM  (drag 0.490%)
+```
+
+The 70/30 DBMF/KMLM tracking-sensitivity version is:
+
+```
+RSST tracking proxy = 100 SPYSIM + 70 DBMFSIM + 30 KMLMSIM - 100 CASHX?E=-2
 ```
 
 The capital-efficient SIMs (NTSX/GDE/RSST/RSSB/NTSD) decompose into base equity + leveraged sleeves via CASHX (the -X% leg models the implicit T-bill borrow funding the futures notional).
@@ -402,6 +406,7 @@ Rebal: Daily. Trading freq: Daily.
 
 - **Did I miss something in the G4 international tests?** I tested NTSD/RSSB/VT-base but didn't run NTSI (US+Intl combined stack) since NTSI isn't a SIM on testfol.io.
 - **The G3 NDX regime-gate finding is uncomfortable.** TQQQ does very well on cherry-picked windows but breaks on full 1987-2026. Is there a version (with smarter signal, shorter MA, dual-signal like u/no_simpsons suggested) I should test?
+- **If you posted a screenshot that beats B4, please share weights or a testfol.io link.** One LOWDDPORT screenshot looked excellent (roughly 12.7% CAGR / -26.6% MDD / 0.84 Sharpe), but without allocation details it isn't replicable.
 - **G4d (RSSB+GDE+ZROZ+KMLM) is the new MDD record (-22.56%).** Anyone running this live? Does the synthetic backfill of RSSB pre-2024 trustworthy?
 - **Is there a known issue with the "static beats walk-forward" finding in G8?** This is documented in DeMiguel et al. 2009 RFS for 1/N portfolios but I want to make sure nothing's wrong with my SLSQP implementation.
 
@@ -409,4 +414,4 @@ Rebal: Daily. Trading freq: Daily.
 
 Happy to share the spec JSONs, full per-config metrics tables, and the Python pipeline if anyone wants to replicate.
 
-**Anyone holding something not in my expanded sweep that lands in the upper-right quadrant of the Pareto frontier (CAGR > B4 13.31% AND |MaxDD| < B4 28.94%)? Or something with MDD < G4d 22.56% AND CAGR > G4d 10.54%?**
+**Anyone holding something not in my expanded sweep that lands in the upper-right quadrant of the long-window Pareto frontier (CAGR > B4 13.31% AND |MaxDD| < B4 28.94%)? Or something with MDD < G4d 22.56% AND CAGR > G4d 10.54%?**

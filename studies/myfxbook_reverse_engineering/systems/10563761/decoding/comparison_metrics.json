@@ -1,0 +1,20 @@
+{
+  "system_id": "10563761",
+  "n_real": 436,
+  "n_synthetic": 2497,
+  "n_matched": 32,
+  "entry_timing_precision": 0.0128,
+  "entry_timing_recall": 0.0734,
+  "entry_timing_f1": 0.0218,
+  "direction_acc_at_matched": 0.8125,
+  "hold_KS_stat": 0.9988,
+  "hold_similarity": 0.0012,
+  "count_ratio": 5.7271,
+  "pnl_correlation": NaN,
+  "baseline_always_buy_combined_hit_rate": 0.3028,
+  "baseline_hour_majority_combined_hit_rate": 0.3119,
+  "baseline_pair_hour_majority_combined_hit_rate": 0.3119,
+  "max_baseline_combined_hit_rate": 0.3119,
+  "synthetic_combined_hit_rate": 0.0596,
+  "lift_vs_baseline_pp": -25.23
+}

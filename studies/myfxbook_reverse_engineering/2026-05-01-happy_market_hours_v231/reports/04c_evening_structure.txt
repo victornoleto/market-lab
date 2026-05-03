@@ -1,0 +1,72 @@
+========================================================================
+## Trades per (session, pair)
+========================================================================
+  Distinct (session, pair) groups: 2681
+  Distribution of trades per (session, pair):
+1    2193
+2     383
+3      78
+4      23
+5       4
+Name: count, dtype: int64
+
+========================================================================
+## Trades per (session date) — all pairs combined
+========================================================================
+  Distinct sessions: 1262
+  P50: 2.0 | P95: 6 | max: 14
+  Sessions with single trade: 419
+  Sessions with 2-3 trades: 527
+  Sessions with 4-6 trades: 273
+  Sessions with 7+ trades: 43
+
+========================================================================
+## Pairs traded per session — diversification
+========================================================================
+symbol
+1    476
+2    387
+3    248
+4     86
+5     47
+6     18
+Name: count, dtype: int64
+
+========================================================================
+## Direction consistency within (session, pair)
+========================================================================
+  (session, pair) groups with 2+ trades: 488
+  All same direction within group: 265 (54.3%)
+  Mixed direction within group: 223 (45.7%)
+
+========================================================================
+## Spacing between consecutive opens (same session, same pair)
+========================================================================
+  Pairs with consecutive same-session entries: 624
+  Spacing P25: 22.0 min | P50: 1272.0 | P95: 1420.0 | max: 1436
+
+========================================================================
+## Direction following loss — does it FLIP after a losing trade?
+========================================================================
+  Trades preceded by loss in same (session, pair): 84
+  Direction flip rate after loss: 39.3% (50% = random; >70% = anti-martingale)
+
+========================================================================
+## Sample evenings — pairs and direction together
+========================================================================
+
+  2013-09-02:
+    00:00 GBPUSD  Sell lots= 0.25 pips=+23.0 dur=2h 3m
+    00:00 USDCHF  Sell lots= 0.25 pips=-12.0 dur=4h 1m
+    00:00 EURCHF  Sell lots= 0.25 pips= +0.0 dur=4h 10m
+    00:01 EURGBP  Buy  lots= 0.25 pips=-18.0 dur=8h 4m
+
+  2017-02-16:
+    00:05 EURCHF  Buy  lots= 2.48 pips= +7.0 dur=5m
+    00:29 EURCHF  Buy  lots= 2.49 pips= +6.0 dur=1m
+    23:00 USDCAD  Sell lots= 2.49 pips= +8.0 dur=45m
+
+  2020-01-14:
+    23:05 EURUSD  Buy  lots=11.16 pips= -1.0 dur=2h 16m
+    23:34 GBPUSD  Buy  lots=11.16 pips= -2.0 dur=1h 26m
+    23:39 USDCAD  Sell lots=11.16 pips= +8.0 dur=26m

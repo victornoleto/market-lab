@@ -1,0 +1,30 @@
+{
+  "system_id": 10814265,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-breakout-adrofx/10814265",
+  "name": "Happy Breakout AdroFX Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+479.33%",
+    "absolute_gain": "+479.33%",
+    "daily": "0.14%",
+    "monthly": "6.36%",
+    "drawdown": "34.71%",
+    "balance": "$57,933.26",
+    "equity": "(100.00%) $57,933.26",
+    "highest": "(Mar 10) $61,315.76",
+    "profit": "$47,933.26",
+    "interest": "-$442.59",
+    "deposits": "$10,000.00",
+    "withdrawals": "$0.00",
+    "updated": "Apr 04, 2025 at 13:45",
+    "tracking": "10"
+  },
+  "account": {
+    "raw": "Real (USD), AdroFx , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "AdroFx",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/adrofx/2673747,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

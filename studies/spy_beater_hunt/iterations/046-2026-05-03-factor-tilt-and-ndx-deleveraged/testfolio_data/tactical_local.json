@@ -1,0 +1,44 @@
+[
+  {
+    "kind": "tactical_local",
+    "slug": "NS1_q140iei100_q50cash",
+    "label": "no_simpsons proxy 1: bull 140 QQQ + 100 IEI - cash; bear 50 QQQ + 50 cash",
+    "window": "2000-01-03 -> 2026-04-17 (26.24y local)",
+    "cagr_pct": 12.755809516943707,
+    "mdd_pct": -76.23560430497301,
+    "sharpe": 0.5979095081438508,
+    "sortino": 0.0,
+    "calmar": 0.16732089465593203,
+    "end_val": 233359.85139304018,
+    "drag_pct": null,
+    "allocation_sim": null
+  },
+  {
+    "kind": "tactical_local",
+    "slug": "NS2_q140iei60_q50iei50",
+    "label": "no_simpsons proxy 2: bull 140 QQQ + 60 IEI - cash; bear 50 QQQ + 50 IEI",
+    "window": "2000-01-03 -> 2026-04-17 (26.24y local)",
+    "cagr_pct": 12.73111387629864,
+    "mdd_pct": -74.09469644010007,
+    "sharpe": 0.5995732976804355,
+    "sortino": 0.0,
+    "calmar": 0.1718222016955124,
+    "end_val": 232022.5171287967,
+    "drag_pct": null,
+    "allocation_sim": null
+  },
+  {
+    "kind": "tactical_local",
+    "slug": "NS3_q140kmlm30iei30_q50iei50",
+    "label": "NDX deleveraged + diversifiers: bull 140 QQQ + 30 KMLM + 30 IEI; bear 50 QQQ + 50 IEI",
+    "window": "2000-01-03 -> 2026-04-17 (26.24y local)",
+    "cagr_pct": 13.382947309966497,
+    "mdd_pct": -72.51495509266496,
+    "sharpe": 0.6207808727604155,
+    "sortino": 0.0,
+    "calmar": 0.18455430735445924,
+    "end_val": 269916.1366251283,
+    "drag_pct": null,
+    "allocation_sim": null
+  }
+]

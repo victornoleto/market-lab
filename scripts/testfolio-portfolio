@@ -1,0 +1,190 @@
+#!/usr/bin/env python3
+"""testfolio-portfolio — convert a real ETF portfolio into the equivalent
+testfol.io simulated (SIM) portfolio.
+
+Usage:
+    ./scripts/testfolio-portfolio 25 NTSX 26 GDE 25 RSST 24 TMF
+
+Weights are percentages (0..100) and must sum to 100. Output is also
+in percent (e.g. 47.5 means 47.5% of capital).
+
+ETFs are resolved in this order:
+    1. live SIM list from https://testfol.io/api/search/SIM (e.g. GDE -> GDESIM)
+    2. MAPPINGS table below — decomposes stacked/leveraged ETFs into SIM
+       building blocks (NTSX -> 0.9 SPYSIM + 0.6 IEFSIM - 0.5 CASHX,
+       TMF -> TLTSIM?L=3&E=1.05)
+    3. raw SIM ticker (user passed e.g. "SPYSIM" directly)
+
+Stacked ETFs decomposed by hand carry a negative CASHX leg equal to
+(leverage - 1) so the portfolio's gross long exposure stays funded by
+the borrowed cash rate (3-month T-Bills). Each $1 of NTSX therefore
+becomes 0.90 SPYSIM + 0.60 IEFSIM - 0.50 CASHX, summing to 1.00 capital.
+
+Daily LETFs use testfol.io's native ?L=N&E=ER syntax instead — its
+synthetic engine applies geometric daily rebalancing and cash drag
+internally, so no manual CASHX leg is required.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+import urllib.error
+import urllib.request
+from collections import defaultdict
+from pathlib import Path
+
+CACHE_PATH = Path.home() / ".cache" / "ai-trade" / "testfolio_sim_list.json"
+SEARCH_URL = "https://testfol.io/api/search/SIM"
+USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) testfolio-portfolio/1.0"
+SUM_TOLERANCE = 1e-3  # accept 99.999..100.001 to absorb float noise
+
+# Decomposition table for ETFs that lack a direct *SIM ticker on testfol.io.
+# Each entry: real ticker -> list of (sim_token, exposure_per_$1_of_ETF).
+# Edit/extend freely; the live SIM list takes precedence so adding a row
+# here for an ETF that later gets a SIM is harmless.
+MAPPINGS: dict[str, list[tuple[str, float]]] = {
+    # WisdomTree Efficient Core 90/60 — 90% equity + 60% Treasury futures
+    # (intermediate ladder ~6yr duration, closest SIM proxy is IEFSIM).
+    # CASHX -0.50 funds the 0.50 of leverage at the 3M T-Bill rate.
+    # https://www.wisdomtree.com/investments/etfs/efficient-core/ntsx
+    "NTSX": [("SPYSIM", 0.90), ("IEFSIM", 0.60), ("CASHX", -0.50)],
+    "NTSI": [("EFASIM", 0.90), ("IEFSIM", 0.60), ("CASHX", -0.50)],
+    "NTSE": [("VWOSIM", 0.90), ("IEFSIM", 0.60), ("CASHX", -0.50)],
+
+    # ReturnStacked 100/100 — Newfound/ReSolve.
+    # https://www.returnstackedetfs.com/
+    # RSST: U.S. equity beta + systematic managed futures.
+    # RSBT: intermediate U.S. Treasuries + managed futures.
+    # RSSY: U.S. equity beta + futures yield/carry; no SIM for carry,
+    #       KMLM is the least-bad managed-futures stand-in.
+    # CASHX -1.00 funds the second 100% sleeve at the 3M T-Bill rate.
+    "RSST": [("SPYSIM", 1.00), ("KMLMSIM", 1.00), ("CASHX", -1.00)],
+    "RSBT": [("IEFSIM", 1.00), ("KMLMSIM", 1.00), ("CASHX", -1.00)],
+    "RSSY": [("SPYSIM", 1.00), ("KMLMSIM", 1.00), ("CASHX", -1.00)],
+
+    # Daily-rebalanced LETFs — testfol.io supports custom leverage via
+    # ?L=N&E=ER suffix, which models geometric decay correctly.
+    "TMF":  [("TLTSIM?L=3&E=1.05", 1.0)],
+    "TYD":  [("IEFSIM?L=3&E=0.95", 1.0)],
+    "TYO":  [("IEFSIM?L=-3&E=0.95", 1.0)],
+    "UPRO": [("SPYSIM?L=3&E=0.91", 1.0)],
+    "SPXL": [("SPYSIM?L=3&E=0.95", 1.0)],
+    "SSO":  [("SPYSIM?L=2&E=0.89", 1.0)],
+    "SPUU": [("SPYSIM?L=2&E=0.65", 1.0)],
+    "TQQQ": [("QQQSIM?L=3&E=0.84", 1.0)],
+    "QLD":  [("QQQSIM?L=2&E=0.95", 1.0)],
+    "UGL":  [("GLDSIM?L=2&E=0.95", 1.0)],
+    "TNA":  [("IWMSIM?L=3&E=1.00", 1.0)],
+    "TZA":  [("IWMSIM?L=-3&E=1.00", 1.0)],
+    "EDC":  [("VWOSIM?L=3&E=1.45", 1.0)],
+    "EDZ":  [("VWOSIM?L=-3&E=1.07", 1.0)],
+}
+
+
+def fetch_sim_list(use_cache_only: bool = False) -> set[str]:
+    """Return the set of available SIM tickers, preferring live API."""
+    if use_cache_only and CACHE_PATH.exists():
+        return set(json.loads(CACHE_PATH.read_text()))
+    try:
+        req = urllib.request.Request(SEARCH_URL, headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read())
+        sims = {d["ticker"] for d in data if d["ticker"].endswith("SIM")}
+        CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        CACHE_PATH.write_text(json.dumps(sorted(sims)))
+        return sims
+    except (urllib.error.URLError, json.JSONDecodeError, OSError) as e:
+        if CACHE_PATH.exists():
+            print(f"warn: live fetch failed ({e}); falling back to cache", file=sys.stderr)
+            return set(json.loads(CACHE_PATH.read_text()))
+        raise SystemExit(f"fatal: cannot reach testfol.io and no cache at {CACHE_PATH}: {e}")
+
+
+def parse_pairs(args: list[str]) -> list[tuple[float, str]]:
+    """Parse alternating <pct> <ticker> pairs into [(fraction, ticker), ...].
+
+    Input weights are percent values (0..100) and must sum to 100. The
+    returned fractions are pct/100, so the rest of the pipeline keeps
+    operating in fraction space.
+    """
+    if not args or len(args) % 2 != 0:
+        raise SystemExit(
+            "usage: testfolio-portfolio <pct> <ticker> [<pct> <ticker> ...]\n"
+            "example: testfolio-portfolio 25 NTSX 26 GDE 25 RSST 24 TMF\n"
+            "weights are percent (0..100) and must sum to 100"
+        )
+    pairs = []
+    total_pct = 0.0
+    for i in range(0, len(args), 2):
+        try:
+            pct = float(args[i])
+        except ValueError:
+            raise SystemExit(f"error: expected weight at position {i + 1}, got {args[i]!r}")
+        total_pct += pct
+        pairs.append((pct / 100.0, args[i + 1].upper()))
+    if abs(total_pct - 100.0) > SUM_TOLERANCE:
+        raise SystemExit(
+            f"error: input weights sum to {total_pct:g}, must sum to 100"
+        )
+    return pairs
+
+
+def expand(weight: float, ticker: str, sim_list: set[str]) -> list[tuple[str, float]]:
+    sim = f"{ticker}SIM"
+    if sim in sim_list:
+        return [(sim, weight)]
+    if ticker in MAPPINGS:
+        return [(token, weight * w) for token, w in MAPPINGS[ticker]]
+    if ticker in sim_list:
+        return [(ticker, weight)]
+    raise SystemExit(
+        f"error: no SIM and no mapping for {ticker!r}. "
+        f"Add it to MAPPINGS in {Path(__file__).name} or pass an existing SIM ticker."
+    )
+
+
+def main(argv: list[str] | None = None) -> int:
+    p = argparse.ArgumentParser(
+        prog="testfolio-portfolio",
+        description="Convert a real ETF portfolio to its testfol.io SIM equivalent.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__,
+    )
+    p.add_argument("portfolio", nargs="+",
+                   help="alternating pct/ticker pairs summing to 100, e.g. 25 NTSX 25 RSST 25 GDE 25 TMF")
+    p.add_argument("--normalize", action="store_true",
+                   help="rescale output to sum to 100 (drops leverage info)")
+    p.add_argument("--precision", type=int, default=2,
+                   help="decimal places in output (default: 2)")
+    p.add_argument("--no-fetch", action="store_true",
+                   help="skip live API fetch, use cached SIM list only")
+    p.add_argument("--list-sims", action="store_true",
+                   help="print the available SIM tickers and exit")
+    args = p.parse_args(argv)
+
+    sim_list = fetch_sim_list(use_cache_only=args.no_fetch)
+
+    if args.list_sims:
+        for s in sorted(sim_list):
+            print(s)
+        return 0
+
+    pairs = parse_pairs(args.portfolio)
+    agg: dict[str, float] = defaultdict(float)
+    for weight, ticker in pairs:
+        for token, w in expand(weight, ticker, sim_list):
+            agg[token] += w
+
+    if args.normalize:
+        total = sum(agg.values())
+        if total > 0:
+            agg = {k: v / total for k, v in agg.items()}
+
+    for token, w in sorted(agg.items(), key=lambda kv: (-kv[1], kv[0])):
+        print(f"{w * 100:.{args.precision}f} {token}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

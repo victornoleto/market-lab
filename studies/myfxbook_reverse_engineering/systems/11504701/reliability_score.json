@@ -1,0 +1,32 @@
+{
+  "system_id": "11504701",
+  "reliability": 0.3,
+  "band": "LOW",
+  "components": {
+    "direction_predictability": 0.7051282051282053,
+    "family_clarity": 0.92,
+    "timing_concentration": 0.802547770700637,
+    "sanity_pass": 0.0,
+    "age_freshness": 0.9951808645938293,
+    "vendor_quality": 0.75,
+    "pair_coverage": 0.9936305732484076
+  },
+  "notes": [
+    "sanity FAIL \u2014 martingale signature detected",
+    "forced LOW: martingale/grid signature"
+  ],
+  "family": "MARTINGALE_GRID",
+  "confidence": 0.92,
+  "n_trades": 314,
+  "n_pairs": 5,
+  "last_trade_date": "2026-04-23 11:30:01+00:00",
+  "account_type": "Real",
+  "name": "Happy News - DPrime Forex Trading System by Forex Trader Hap",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 255.5040032863617,
+  "band_rank": 2,
+  "dir_pred": 0.7051282051282053,
+  "timing_conc": 0.802547770700637,
+  "age_fresh": 0.9951808645938293
+}

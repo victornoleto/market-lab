@@ -1,0 +1,29 @@
+{
+  "system_id": "2421356",
+  "reliability": 0.7843137018767465,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 1.0,
+    "family_clarity": 0.72,
+    "timing_concentration": 0.35224049914917754,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.9989396279563483,
+    "vendor_quality": 0.7,
+    "pair_coverage": 0.9994327850255247
+  },
+  "notes": [],
+  "family": "FACTOR_SCALPING",
+  "confidence": 0.72,
+  "n_trades": 1763,
+  "n_pairs": 2,
+  "last_trade_date": "2026-04-30 11:04:08+00:00",
+  "account_type": "Demo",
+  "name": "Happy Gold - ICMarkets (M30) Forex Trading System by Forex T",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 992.6314649581909,
+  "band_rank": 0,
+  "dir_pred": 1.0,
+  "timing_conc": 0.35224049914917754,
+  "age_fresh": 0.9989396279563483
+}

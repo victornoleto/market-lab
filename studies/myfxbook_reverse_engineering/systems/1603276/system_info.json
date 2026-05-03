@@ -1,0 +1,30 @@
+{
+  "system_id": 1603276,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-breakout-v10-closed-au/1603276",
+  "name": "Happy Breakout v1.0 - (Closed AU account) Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+77.32%",
+    "absolute_gain": "+28.85%",
+    "daily": "0.02%",
+    "monthly": "2.91%",
+    "drawdown": "29.71%",
+    "balance": "€0.00",
+    "equity": "(0%) €0.00",
+    "highest": "(Aug 11) €1,647.76",
+    "profit": "€338.71",
+    "interest": "€0.57",
+    "deposits": "€1,174.01",
+    "withdrawals": "€1,512.72",
+    "updated": "Sep 11, 2017 at 06:00",
+    "tracking": "31"
+  },
+  "account": {
+    "raw": "Real (EUR), Pepperstone , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "EUR",
+    "broker": "Pepperstone",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/pepperstone/78970,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

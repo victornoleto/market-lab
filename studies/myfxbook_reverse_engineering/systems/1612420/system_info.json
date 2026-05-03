@@ -1,0 +1,30 @@
+{
+  "system_id": 1612420,
+  "url": "https://www.myfxbook.com/members/HappyForex/old-happy-news-v141/1612420",
+  "name": "OLD Happy News v1.4.1 Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+447.06%",
+    "absolute_gain": "+215.88%",
+    "daily": "0.05%",
+    "monthly": "2.67%",
+    "drawdown": "39.26%",
+    "balance": "$21,375.23",
+    "equity": "(100.00%) $21,375.23",
+    "highest": "(Feb 03) $28,912.13",
+    "profit": "$14,608.27",
+    "interest": "$0.00",
+    "deposits": "$6,766.96",
+    "withdrawals": "$0.00",
+    "updated": "Jun 16, 2021 at 18:08",
+    "tracking": "51"
+  },
+  "account": {
+    "raw": "Demo (USD), Fort Financial Services , Fundamental , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Demo",
+    "currency": "USD",
+    "broker": "Fort Financial Services",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/fort-financial-services/814372,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

@@ -1,0 +1,470 @@
+{
+  "10062918": {
+    "drawdown_pct": 51.79,
+    "p95_hold_h": 960.45,
+    "max_gap_d": 22.06,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "10067081": {
+    "drawdown_pct": 80.92,
+    "p95_hold_h": 213.72,
+    "max_gap_d": 97.45,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "10192401": {
+    "drawdown_pct": 36.95,
+    "p95_hold_h": 4.32,
+    "max_gap_d": 6.85,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "10224499": {
+    "drawdown_pct": 52.89,
+    "p95_hold_h": 5.03,
+    "max_gap_d": 41.05,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "10249298": {
+    "drawdown_pct": 18.25,
+    "p95_hold_h": 1460.7,
+    "max_gap_d": 48.0,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "10251631": {
+    "drawdown_pct": 33.74,
+    "p95_hold_h": 13.62,
+    "max_gap_d": 14.95,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "10281851": {
+    "drawdown_pct": 11.7,
+    "p95_hold_h": 0.19,
+    "max_gap_d": 8.35,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": true
+  },
+  "10475089": {
+    "drawdown_pct": 40.56,
+    "p95_hold_h": 627.89,
+    "max_gap_d": 16.0,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "10563761": {
+    "drawdown_pct": 12.05,
+    "p95_hold_h": 0.18,
+    "max_gap_d": 7.82,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": true
+  },
+  "10585558": {
+    "drawdown_pct": 9.14,
+    "p95_hold_h": 0.12,
+    "max_gap_d": 14.46,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": true
+  },
+  "10716398": {
+    "drawdown_pct": 16.7,
+    "p95_hold_h": 311.92,
+    "max_gap_d": 307.91,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "10734338": {
+    "drawdown_pct": 37.08,
+    "p95_hold_h": 0.26,
+    "max_gap_d": 6.54,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "10746260": {
+    "drawdown_pct": 17.84,
+    "p95_hold_h": 0.14,
+    "max_gap_d": 12.33,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": true
+  },
+  "10814265": {
+    "drawdown_pct": 34.71,
+    "p95_hold_h": 4.39,
+    "max_gap_d": 8.44,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "10878805": {
+    "drawdown_pct": 26.53,
+    "p95_hold_h": 16.86,
+    "max_gap_d": 13.86,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": true
+  },
+  "10970107": {
+    "drawdown_pct": 11.23,
+    "p95_hold_h": 0.13,
+    "max_gap_d": 14.51,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": true
+  },
+  "11155858": {
+    "drawdown_pct": 37.02,
+    "p95_hold_h": 972.58,
+    "max_gap_d": 32.0,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "11171596": {
+    "drawdown_pct": 20.08,
+    "p95_hold_h": 560.65,
+    "max_gap_d": 34.0,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "11206045": {
+    "drawdown_pct": 26.04,
+    "p95_hold_h": 396.39,
+    "max_gap_d": 22.0,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "11207608": {
+    "drawdown_pct": 32.94,
+    "p95_hold_h": 0.06,
+    "max_gap_d": 7.81,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "11355455": {
+    "drawdown_pct": 8.16,
+    "p95_hold_h": 0.03,
+    "max_gap_d": 7.94,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": true
+  },
+  "11504701": {
+    "drawdown_pct": 8.26,
+    "p95_hold_h": 0.06,
+    "max_gap_d": 14.46,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": true
+  },
+  "1152318": {
+    "drawdown_pct": 23.7,
+    "p95_hold_h": 872.01,
+    "max_gap_d": 30.48,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "11628637": {
+    "drawdown_pct": 16.41,
+    "p95_hold_h": 0.23,
+    "max_gap_d": 5.99,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": true
+  },
+  "1407880": {
+    "drawdown_pct": 10.16,
+    "p95_hold_h": 3.15,
+    "max_gap_d": 33.92,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "1603276": {
+    "drawdown_pct": 29.71,
+    "p95_hold_h": 0.06,
+    "max_gap_d": 9.06,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": true
+  },
+  "1612420": {
+    "drawdown_pct": 39.26,
+    "p95_hold_h": 0.46,
+    "max_gap_d": 34.83,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "2123808": {
+    "drawdown_pct": 32.31,
+    "p95_hold_h": 1914.06,
+    "max_gap_d": 22.25,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "2373850": {
+    "drawdown_pct": 39.53,
+    "p95_hold_h": 507.54,
+    "max_gap_d": 222.18,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "2421356": {
+    "drawdown_pct": 22.61,
+    "p95_hold_h": 0.32,
+    "max_gap_d": 63.91,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "2483126": {
+    "drawdown_pct": 62.97,
+    "p95_hold_h": 1822.51,
+    "max_gap_d": 26.96,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "3568877": {
+    "drawdown_pct": 73.97,
+    "p95_hold_h": 303.83,
+    "max_gap_d": 4.92,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "5542332": {
+    "drawdown_pct": 76.83,
+    "p95_hold_h": 351.0,
+    "max_gap_d": 116.05,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "612872": {
+    "drawdown_pct": 22.31,
+    "p95_hold_h": 218.79,
+    "max_gap_d": 39.92,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "6541963": {
+    "drawdown_pct": 54.81,
+    "p95_hold_h": 0.29,
+    "max_gap_d": 63.81,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "6603448": {
+    "drawdown_pct": 32.41,
+    "p95_hold_h": 2035.14,
+    "max_gap_d": 43.98,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "7603723": {
+    "drawdown_pct": 72.66,
+    "p95_hold_h": 274.2,
+    "max_gap_d": 3.17,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "7942220": {
+    "drawdown_pct": 45.94,
+    "p95_hold_h": 330.32,
+    "max_gap_d": 3.17,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "8286716": {
+    "drawdown_pct": 54.43,
+    "p95_hold_h": 283.34,
+    "max_gap_d": 3.84,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "8397136": {
+    "drawdown_pct": 12.78,
+    "p95_hold_h": 753.3,
+    "max_gap_d": 16.0,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "8574205": {
+    "drawdown_pct": 22.47,
+    "p95_hold_h": 1526.99,
+    "max_gap_d": 63.75,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "8577442": {
+    "drawdown_pct": 24.22,
+    "p95_hold_h": 2052.79,
+    "max_gap_d": 40.95,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "8577996": {
+    "drawdown_pct": 48.09,
+    "p95_hold_h": 1809.09,
+    "max_gap_d": 30.47,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "8599269": {
+    "drawdown_pct": 18.96,
+    "p95_hold_h": 566.8,
+    "max_gap_d": 41.54,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "8599392": {
+    "drawdown_pct": 64.23,
+    "p95_hold_h": 679.77,
+    "max_gap_d": 19.99,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "8647517": {
+    "drawdown_pct": 25.95,
+    "p95_hold_h": 0.25,
+    "max_gap_d": 8.35,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": true
+  },
+  "9375654": {
+    "drawdown_pct": 21.52,
+    "p95_hold_h": 0.11,
+    "max_gap_d": 8.35,
+    "sanity_dd_pass": true,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": true
+  },
+  "9607500": {
+    "drawdown_pct": 36.36,
+    "p95_hold_h": 2.92,
+    "max_gap_d": 8.41,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": true,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "9830783": {
+    "drawdown_pct": 70.88,
+    "p95_hold_h": 675.62,
+    "max_gap_d": 8.04,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "9841939": {
+    "drawdown_pct": 35.65,
+    "p95_hold_h": 726.25,
+    "max_gap_d": 6.89,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": true,
+    "tradeable_sanity_pass": false
+  },
+  "9843883": {
+    "drawdown_pct": 52.43,
+    "p95_hold_h": 1014.43,
+    "max_gap_d": 36.0,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  },
+  "9912554": {
+    "drawdown_pct": 34.93,
+    "p95_hold_h": 4930.81,
+    "max_gap_d": 189.0,
+    "sanity_dd_pass": false,
+    "sanity_hold_pass": false,
+    "sanity_gap_pass": false,
+    "tradeable_sanity_pass": false
+  }
+}

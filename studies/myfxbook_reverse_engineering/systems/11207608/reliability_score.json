@@ -1,0 +1,29 @@
+{
+  "system_id": "11207608",
+  "reliability": 0.7781572353412266,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 1.0,
+    "family_clarity": 0.72,
+    "timing_concentration": 0.3712871287128713,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.8489980959865233,
+    "vendor_quality": 0.75,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "FACTOR_SCALPING",
+  "confidence": 0.72,
+  "n_trades": 202,
+  "n_pairs": 1,
+  "last_trade_date": "2025-07-30 16:33:34+00:00",
+  "account_type": "Real",
+  "name": "Happy Gold - BBM Forex Trading System by Forex Trader HappyF",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 285.43413972854614,
+  "band_rank": 0,
+  "dir_pred": 1.0,
+  "timing_conc": 0.3712871287128713,
+  "age_fresh": 0.8489980959865233
+}

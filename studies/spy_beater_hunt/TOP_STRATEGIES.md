@@ -1,10 +1,163 @@
 # spy_beater_hunt — TOP STRATEGIES (deploy-readiness ranking)
 
-**Status**: hunt CLOSED 2026-04-30 após 30 iters / ~85 cumulative trials. Nenhuma iter atingiu tier WINNER (≥90/100), mas **muitas estratégias batem SPY** em CAGR e MDD simultaneamente, mesmo após DARF.
+**Status**: hunt CLOSED 2026-04-30 após 30 iters / ~85 cumulative trials. Reddit feedback iters 040-044 promoted B4 Conservative. Iter 045 corrected the RSST proxy; **B4 remains the balanced deploy pick**, while L1 CEGB is now the highest-Sharpe low-risk reference.
 
 Este documento substitui o "WINNER tier" como critério de deploy-readiness por uma **classificação por gate-pass anti-overfit**, alinhada à decisão do usuário (2026-04-30): "se passaram nos gates, por mim tudo certo".
 
 > **Convention**: bars 1+2 = "beat SPY" (CAGR > 11.21% AND MDD < 55.17% mean across lh_56y + spy_real). Bars 3 = 7-gate battery threshold (≥5 of 7 per dataset, ≥2/2 datasets). Tier abaixo categoriza por **gate-pass strict** (cada um dos 7 gates individualmente).
+
+---
+
+## Historical Canonical Ranking (iter 044, 2026-05-01) — Monthly + ERs + terminal DARF
+
+> **Superseded for RSST-containing portfolios by iter 045 (2026-05-02).** Iter 044 remains useful as the 1987+ long-window table, but it uses the old `RSST = SPY + KMLM - cash` proxy. For corrected RSST methodology, use the iter 045 table immediately below.
+
+## ⭐⭐ RSST-CORRECTED RANKING (iter 045, 2026-05-02) — common 2000+ window
+
+**Methodology**:
+- **Top-level rebal**: Monthly via testfol.io API
+- **Tax model**: no DARF for static buy-and-hold/lazy-rebal scenarios; tax is reserved for swing/tactical strategies that realize gains through position changes
+- **Window**: common 2000-01-03 -> 2026-05-01 for all rows, because `DBMFSIM` starts in 2000
+- **RSST proxy**: `SPYSIM + 70% DBMFSIM + 30% KMLMSIM - CASHX?E=-2`
+- **Rationale**: proxy correction based on live RSST tracking, not a new weight optimization; return stacking `[risk_parity, ch.5, p.10]` + diversified managed futures `[ilmanen_expected_returns, ch.19]`
+
+| # | strategy | CAGR (no tax) | MDD | Sharpe | Calmar | tier |
+|---:|---|---:|---:|---:|---:|---|
+| 1 | L1 CEGB proxy | 9.66% | **-25.43%** | **0.696** | **0.380** | low-risk reference |
+| 2 | **B4 ZROZ** | 11.00% | -29.60% | 0.671 | 0.372 | **balanced deploy pick** |
+| 3 | L2 Bogleheads 67% NTSX | 8.97% | -26.30% | 0.653 | 0.341 | low-risk reference |
+| 4 | B3 TLT instead of TMF | 10.34% | -32.68% | 0.646 | 0.316 | TLT backup |
+| 5 | T1 gold-heavy | 11.65% | -35.80% | 0.643 | 0.325 | high-CAGR alternative |
+| 6 | B2 TMF10 balanced | 11.59% | -37.91% | 0.631 | 0.306 | high-CAGR alternative |
+| 7 | T2 equity-heavy | 11.08% | -34.46% | 0.627 | 0.321 | NTSX 35% |
+| 8 | M2 DBMF no RSST | 9.77% | -37.97% | 0.611 | 0.257 | DBMF-only MF |
+| 9 | M4 RSST+KMLM blend | 10.07% | -38.32% | 0.602 | 0.263 | dual MF source |
+| 10 | M3 KMLM+DBMF blend | 9.56% | -36.94% | 0.601 | 0.259 | split MF no RSST |
+| 11 | B1 user baseline 25 TMF | 10.75% | -40.82% | 0.600 | 0.263 | original spec |
+| 12 | B5 no duration | **12.00%** | -44.56% | 0.599 | 0.269 | highest CAGR, high MDD |
+| 13 | M1 KMLM no RSST | 9.33% | -35.92% | 0.583 | 0.260 | KMLM-only |
+| 14 | T3 RSSB global | 10.39% | -43.34% | 0.569 | 0.240 | global stack |
+| — | SPY 1x buy-hold | 8.06% | -55.26% | 0.400 | 0.146 | benchmark |
+
+**Interpretation:** B4 is no longer the highest Sharpe portfolio once RSST is corrected; L1 CEGB takes that title. B4 remains the balanced deploy pick because it keeps materially higher CAGR than L1 (+1.34pp) while preserving a sub-30% MDD. B5/T1/B2 offer more CAGR, but with 35-45% drawdowns.
+
+Detailed raw outputs: [`iterations/045-2026-05-02-rsst-proxy-7030-rebaseline/SUMMARY.md`](iterations/045-2026-05-02-rsst-proxy-7030-rebaseline/SUMMARY.md).
+
+### Iter 046 follow-up — factor tilts and NDX deleveraged variants
+
+GPT-5.5 follow-up (2026-05-03) tested static factor tilts and local no_simpsons-style NDX deleveraging. Verdict: **corrected B4 remains the balanced baseline**. No tested variant beats B4's CAGR while keeping MDD no worse than B4.
+
+| candidate | CAGR | MDD | Sharpe | implication |
+|---|---:|---:|---:|---|
+| B4 unstacked MF70/30 | 9.91% | **-20.91%** | **0.749** | low-stress alternative; gives up CAGR |
+| B4 corrected baseline | 11.00% | -29.60% | 0.671 | balanced baseline |
+| B4 + 10 VBR from NTSX | 11.23% | -31.06% | 0.681 | mild CAGR upgrade, slightly worse MDD |
+| B4 aggressive SCV15 | 11.86% | -40.89% | 0.639 | higher CAGR but risk profile worsens materially |
+| best NDX deleveraged local | 13.38% | -72.51% | 0.621 | drawdown still unacceptable |
+
+Details: [`iterations/046-2026-05-03-factor-tilt-and-ndx-deleveraged/SUMMARY.md`](iterations/046-2026-05-03-factor-tilt-and-ndx-deleveraged/SUMMARY.md). This is a review/testfol.io summary, not a full PBO/DSR/WF `verdict.json` gate run.
+
+### Iter 047 follow-up — Bitcoin sleeve
+
+Small Bitcoin sleeves were tested via `BTCSIM` on corrected B4. The common window starts only in 2010, so this is **not** comparable to 1987+/2000+ stress history and is structurally favorable to Bitcoin's early adoption path. Still, it is the first add-on that materially improves CAGR without a large MDD penalty.
+
+| candidate | CAGR | MDD | Sharpe | implication |
+|---|---:|---:|---:|---|
+| B4 base in BTC window | 13.55% | -26.42% | 0.911 | window-constrained baseline |
+| B4 + 2.5% BTC from ZROZ | 17.80% | -26.97% | 1.151 | best retirement-compatible speculation sleeve |
+| B4 + 5% BTC from ZROZ | 22.01% | -27.90% | 1.311 | attractive but more speculative |
+| B4 + 10% BTC from ZROZ | 30.30% | -29.85% | 1.453 | too speculation-heavy for core |
+
+Interpretation: **2.5% BTC is the cleanest optional satellite**, 5% is aggressive but plausible if the user explicitly wants crypto convexity, and 10% should not be treated as a retirement-core default. Details: [`iterations/047-2026-05-03-bitcoin-sleeve-b4/SUMMARY.md`](iterations/047-2026-05-03-bitcoin-sleeve-b4/SUMMARY.md).
+
+---
+
+**Methodology** (single, consistent across all rankings in this doc):
+- **Top-level rebal**: Monthly via testfol.io API
+- **ERs**: explicit per portfolio via `drag` (NTSX 0.20%, GDE 0.20%, RSST 0.99%, KMLM 0.92%, etc.)
+- **Tax model**: lazy rebal via aportes (user contribuir mensalmente, NUNCA vende durante accumulation) → realized gains intra-ano = 0 → DARF 15% só no terminal sobre lucro acumulado: `net_final = 0.85 × gross_final + 0.15 × $10k`
+- **Window**: 1987-12-31 → 2026-04-30 (38.33y) para configs sem DBMF; 26.32y para M2/M3 (DBMFSIM start 2000-01)
+- **Source**: testfol.io API direct, with raw stats `cagr`, `max_drawdown`, `sharpe` (Rf-adjusted)
+
+**RSST proxy caveat (resolved by iter 045):** this table uses the old iter 044 expansion `RSST = SPYSIM + KMLMSIM - CASHX` plus RSST ER in portfolio drag. The corrected `70/30 DBMF/KMLM` proxy was re-run in iter 045 above. Treat this table as historical long-window context, not the deploy table for RSST-containing portfolios.
+
+### Unified ranking — 14 iter 038 configs + G4 additions + LRS benchmarks + SPY
+
+| # | strategy | gross CAGR | **net CAGR** | MDD | Sharpe | Calmar | tier |
+|---|---|---:|---:|---:|---:|---:|---|
+| 🏆 | **Conservative (B4 ZROZ)** | 13.31% | **12.84%** | **-28.94%** | **0.745** | 0.460 | **DEPLOY PICK** |
+| 2 | B3 TLT instead of TMF | 12.44% | 11.98% | -30.06% | 0.735 | 0.414 | TLT 1× backup |
+| 🥈 | Sleeping pills (L1 CEGB) | 11.06% | 10.60% | **-25.43%** | 0.729 | 0.435 | low-risk reference |
+| 🥉 | Bogleheads 67% NTSX (L2) | 11.06% | 10.60% | -26.30% | 0.722 | 0.420 | low-risk reference |
+| 5 | Balanced (B2 TMF10) | 13.89% | **13.42%** | -36.38% | 0.717 | 0.382 | high-CAGR alternative |
+| 6 | **G4c mixed US/Intl** 🆕 | 13.31% | 12.84% | -32.65% | 0.716 | 0.408 | best international |
+| 7 | T2 equity-heavy | 13.40% | 12.93% | -33.14% | 0.708 | 0.404 | NTSX 35% |
+| 8 | Aggressive (T1 gold-heavy) | 13.34% | 12.87% | -34.65% | 0.688 | 0.385 | demoted from Post 1 |
+| 9 | B5 no duration | **14.22%** | **13.74%** | -41.12% | 0.687 | 0.346 | high CAGR, high MDD |
+| 🛡️ | **G4d (RSSB+GDE+ZROZ+KMLM)** 🆕 | 10.54% | 10.10% | **-22.56%** | 0.678 | **0.467** ⭐ | **best MDD/Calmar in study** |
+| 11 | B1 user baseline 25 TMF | 12.93% | 12.46% | -38.78% | 0.665 | 0.333 | original spec — TMF 25% costs MDD |
+| 12 | M4 RSST+KMLM blend | 11.85% | 11.38% | -37.27% | 0.645 | 0.318 | dual MF source |
+| 13 | T3 RSSB global | 12.31% | 11.85% | -41.39% | 0.623 | 0.298 | global stack, MDD inflado |
+| 14 | M2 DBMF no RSST ⚠ | 9.76% | 9.15% | -37.97% | 0.610 | 0.257 | 26y window only |
+| 15 | M1 KMLM no RSST | 10.74% | 10.29% | -35.92% | 0.610 | 0.299 | KMLM-only stack |
+| 16 | M3 KMLM+DBMF blend ⚠ | 9.56% | 8.95% | -36.94% | 0.600 | 0.259 | 26y window only |
+| 17 | Gayed LRS 2× (SSO 200d) | 16.01% | — | -43.48% | 0.609 | 0.368 | LRS — annual realize → bigger tax drag |
+| 18 | Gayed LRS 3× (UPRO 200d) | 19.61% | — | -57.57% | 0.595 | 0.341 | extreme LRS |
+| — | Popular 50/25/25 SSO/GLD/ZROZ | 12.58% | 12.11% | -50.55% | 0.576 | 0.249 | reference |
+| — | **SPY 1× buy-hold** | 11.37% | **10.91%** | -55.20% | 0.523 | 0.206 | **benchmark** |
+
+⚠ M2 / M3 = janela 26y (DBMFSIM start 2000) — não comparáveis em CAGR absoluto. Gayed LRS net não computado (LRS regime-flips força annual realize, drag tax estimado ~1.5-2pp/yr per iter 038's net classification).
+
+### Beats SPY on BOTH net CAGR AND MDD (9 strategies above SPY net 10.91% / |MDD| 55.20%)
+
+B4 ZROZ ✅, B3 TLT ✅, B2 TMF10 ✅, T2 equity-heavy ✅, T1 gold-heavy ✅, B5 no duration ✅, B1 user baseline ✅, M4 ✅, T3 RSSB ✅. (G4d perde por CAGR < SPY.)
+
+### Where the iter 044 numbers come from
+
+Iter 044 re-rodou todos os 14 configs do iter 038 sweep com a mesma metodologia dos iter 040/041/042 — **Monthly rebal + ERs reais via testfol.io**. Aplicou tax model **lazy rebal terminal DARF** (consistent com Lei 14.754/2023 quando user nunca vende durante o ano).
+
+Detalhes completos: [`iterations/044-2026-05-01-iter038-rebaseline-monthly-ers-terminal-darf/SUMMARY.md`](iterations/044-2026-05-01-iter038-rebaseline-monthly-ers-terminal-darf/SUMMARY.md).
+
+### Iter 040-043 verdicts (Reddit Post 1 community feedback)
+
+| iter | trigger | verdict |
+|---|---|---|
+| 040 | u/perky_python — Monthly rebal + ERs | ⚠️ Partial validate. CAGR drops 0.5-0.9pp on stacks. Popular 50/25/25 MDD blowup -10.71pp. |
+| 041 | u/Fun-Sundae4060 + u/no_simpsons — TQQQ × 200d (G3) | ❌ 6 variants. Best (G3c) Sharpe 0.703 — below B4. "10,000% TQQQ" = cherry-picked 2012-2025. |
+| 042 | u/Grouchy_Release_2321 + u/perky_python — international (G4) | ⚠️ US-bias only ~4% of edge. G4d (RSSB-based) breaks MDD record at -22.56%. |
+| 043 | u/laurenthu — walk-forward weight drift (G8) | ✅ Drift 60-75pp em rolling 5y MAS static Sharpe BEATS walk-forward in 3/3 universes. G8 PASS. |
+| 044 | user — re-baseline iter 038 com Monthly + ERs + lazy DARF | ✅ Unified ranking. B4 ZROZ confirmed canonical. T1 demoted. |
+
+### NEW DEPLOY SPEC — B4 Conservative (with Monthly rebal + ERs)
+
+```python
+# 25% NTSX + 25% GDE + 25% RSST + 25% ZROZ
+# Monthly rebal via contributions (lazy rebal preferred)
+# Drag: 0.385%/yr from real ERs
+# Historical proxy note: RSSTSIM below was KMLM-only in iter 044.
+# Corrected re-run: iter 045 models RSST trend as 70% DBMFSIM +
+# 30% KMLMSIM, funded with CASHX?E=-2.
+# Lei 14.754: defer DARF até liquidação terminal
+{
+  "type": "static",
+  "weights": {
+    "NTSXSIM": 0.25,  # NTSX  — WisdomTree 90/60 SPY/Treasuries (ER 0.20%)
+    "GDESIM":  0.25,  # GDE   — WisdomTree 90/90 SPY/Gold      (ER 0.20%)
+    "RSSTSIM": 0.25,  # RSST  — ReturnStacked 100/100 SPY/MF   (ER 0.99%)
+    "ZROZSIM": 0.25,  # ZROZ  — PIMCO 25y zero-coupon Treasury (ER 0.15%)
+  }
+}
+```
+
+Notional: 25×1.5 + 25×1.8 + 25×2.0 + 25×1.0 = **163% effective leverage**.
+
+**Why B4 over T1 (Post 1 pick)**:
+- B4 has highest Sharpe in study (0.745).
+- ZROZ removes LETF decay tax that TMF carries.
+- Monthly rebal cost is minimal for B4 (-0.29pp MDD) vs T1 (-3.99pp MDD). Real-world deployment uses monthly aporters → B4 has the structural advantage.
+- Survives all 4 adversarial tests.
+
+**Validate ZROZ availability at your broker.** Inter Internacional confirmed available. Fallback to TLT 1× (B3 spec) if unavailable.
 
 ---
 
@@ -22,7 +175,15 @@ Este documento substitui o "WINNER tier" como critério de deploy-readiness por 
 
 ---
 
-## ⭐ Tier 0 — User-proposed static stack family (iter 038 sweep, 2026-04-30)
+## 📚 Tier 0 — User-proposed static stack family (iter 038 sweep, 2026-04-30) — REPLACED BY ITER 044
+
+> ⚠️ **REPLACED by iter 044 unified ranking (top of doc, "CANONICAL DEPLOY RANKING").**
+>
+> Iter 038 era o sweep original (Yearly rebal + no ER + internal pipeline post-tax). Iter 044 (2026-05-01) re-rodou os mesmos 14 configs com **metodologia consistente** com o resto do doc (Monthly rebal + ERs reais via testfol.io + terminal DARF lazy rebal). **Use a tabela "CANONICAL DEPLOY RANKING" no topo deste doc.**
+>
+> Os números desta seção (NET CAGR 15.82% T1, etc.) são **historical** — pipeline interno com Yearly rebal e tax model anual (não lazy). Não são comparáveis com a tabela canônica e foram substituídos.
+
+### Histórico — pre-feedback (Yearly rebal + no ER + post-DARF anual; SUBSTITUÍDO)
 
 After extensive sweep of 14 variants of the simple capital-efficient stack family + literature research (RiskParityChronicles CEGB, optimizedportfolio.com, Bogleheads), this is the **deploy-recommended family**. Tier 0 = simpler than meta-ensembles AND with similar/better deploy-readiness metrics.
 
@@ -80,16 +241,21 @@ After extensive sweep of 14 variants of the simple capital-efficient stack famil
 
 6. **Conservative camp (CEGB / Bogleheads)**: 11% CAGR / 25% MDD. Dominados em CAGR mas mantêm Pareto status como alternativa de menor risk profile.
 
-### Deploy recommendations por perfil
+### Deploy recommendations por perfil — pre-feedback histórico (SUPERSEDED)
 
-| profile | recommendation | NET CAGR | NET MDD | Sharpe | rationale |
+> ⚠️ Esta tabela ainda usa Yearly rebal + no ER + post-DARF. **Para decisão de deploy use a tabela post-feedback no topo do doc.** Mantida aqui como evidência histórica.
+
+| profile | recommendation | NET CAGR | NET MDD | Sharpe | rationale (pre-feedback) |
 |---|---|---:|---:|---:|---|
-| **MAX RETURN** (aceita 33% MDD) | **T1 gold-heavy** | 15.82% | 33.42% | **0.990** | best Sharpe + best CAGR; melhor deploy candidato |
-| **BEST RISK-ADJUSTED** | **B4 ZROZ** | 13.79% | **28.02%** | 0.973 | troca TMF→ZROZ; -8pp MDD com Sharpe similar |
-| **MODERATE** (good balance) | **B2 TMF10 balanced** | 15.54% | 34.56% | 0.974 | TMF dose 10% per literatura; balanced trade-off |
-| **CONSERVATIVE** (sleep well) | **L1 CEGB proxy** | 11.13% | 25.83% | 0.963 | RiskParityChronicles published template |
+| **MAX RETURN** (aceita 33% MDD) | **T1 gold-heavy** | 15.82% | 33.42% | **0.990** | era best Sharpe + best CAGR — **demoted após iter 040 Monthly+ERs** (caiu para Sharpe 0.688) |
+| **BEST RISK-ADJUSTED** | **B4 ZROZ** | 13.79% | **28.02%** | 0.973 | era #2 — **promoted após iter 040** (subiu para Sharpe 0.745, novo #1) |
+| **MODERATE** (good balance) | **B2 TMF10 balanced** | 15.54% | 34.56% | 0.974 | TMF dose 10% per literatura; pós-feedback Sharpe 0.717 |
+| **CONSERVATIVE** (sleep well) | **L1 CEGB proxy** | 11.13% | 25.83% | 0.963 | RiskParityChronicles published template; pós-feedback Sharpe 0.729 |
 
-### Spec final — T1 gold-heavy (recomendação principal)
+### Spec final — T1 gold-heavy (era recomendação principal pre-feedback — SUPERSEDED)
+
+> ⚠️ T1 foi demoted em 2026-05-01 após iter 040. **Use B4 ZROZ spec na seção POST-CLOSURE no topo do doc.** Mantido aqui apenas como referência histórica.
+
 
 ```python
 # 20% NTSX + 35% GDE + 25% RSST + 20% TMF
@@ -130,333 +296,22 @@ Notional total: 20×1.5 + 35×1.8 + 25×2.0 + 20×3.0 = 30 + 63 + 50 + 60 = **20
 ### Caveats honestos pré-deploy
 
 - **PBO inflation**: iter 038 tem N=14 configs → PBO grid-level inflado 0.91/0.59 para o selected. Esse é Principle M ao quadrado. **Anchor honest**: cada strategy individualmente é sólida; o ranking entre elas tem ruído ±1-2pp por grid composition. Use o ranking como guia, não como verdade absoluta.
-- **MF ETFs são novos**: KMLM (Dec 2020), DBMF (May 2019), RSST (Sep 2022). Synth proxies extendem pra 1987 mas usam SPY+factor combinations — pode não capturar exatamente as dinâmicas live OOS.
+- **MF ETFs são novos**: KMLM (Dec 2020), DBMF (May 2019), RSST (Sep 2022). Synth proxies extendem pra 1987 mas usam SPY+factor combinations — pode não capturar exatamente as dinâmicas live OOS. Update 2026-05-02: proxy `SPY+KMLM` subestima a curva live do RSST; `SPY+70% DBMF+30% KMLM` replica melhor o ETF real e deve substituir o proxy em próximos re-runs.
 - **TMF 2022 stress**: TMF caiu −71% em 2022. Ao 25% allocation = −17.7pp portfolio drag em ano único. T1 gold-heavy reduz isso pra −14pp (com 20% TMF). B4 ZROZ elimina (ZROZ caiu −53% em 2022 ao 25% = −13pp). Trade-off real.
 - **Portfolio drift**: rebal anual via aportes mantém pesos só se aportes são proporcionais. Em portfólios maduros (alocação muito > aportes), 5-10pp deviation triggers obriga venda + DARF realizada. Documentar bands.
 
 ---
 
-## Tier S — pass 7/7 strict gates
-
-**0 estratégias.** Gate G3 (Walk-Forward MDD per-window < 25%) é estruturalmente difícil de passar para qualquer estratégia com leverage moderado-alto durante stress periods (2008 GFC, 2022 inflation). Mesmo F1 stack passa per-window apenas em janelas brandas.
-
----
-
-## Tier A — pass 6/7 strict gates + low PBO (deploy-ready)
-
-Estratégias com baixa probabilidade de overfit (PBO ≤ 0.20) e que passam todos os gates exceto G3 WF (que falha por leverage moderado durante 2008/2022 stress).
-
-### #1 — Iter 026 H6 (4-way meta-ensemble) ⭐ recomendação principal
-
-**Plots**: [equity overlay lh_56y](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_overlay_lh_56y.png) · [equity overlay spy_real](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_cagr_mdd_scatter.png) · [gate heatmap](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_gate_heatmap.png)
-
-![iter 026 equity overlay lh_56y](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_overlay_lh_56y.png)
-
-![iter 026 rolling lh_56y](iterations/026-2026-04-30-H6-meta-ensemble-4way-tsmom-gate-source-diversity/plot_rolling_lh_56y.png)
-
-**Spec**: 30% A2 (TQQQ-track LRS) + 25% G2 IEF (F1-LETF SMA-gate) + 25% F1 stack (Levered All-Weather) + 20% E1g (TSMOM-6m gate × TQQQ-track)
-
-```json
-{
-  "type": "blend",
-  "constituents": [
-    {"weight": 0.30, "spec": {
-      "type": "lrs", "filter": "sma", "sma_window": 200, "lag_days": 1,
-      "signal_ticker": "QQQSIM",
-      "on_weights": {"TQQQSIM": 0.30, "QLDSIM": 0.30, "KMLMSIM": 0.30, "TLTSIM": 0.10},
-      "off_weights": {"IEFSIM": 1.0}}},
-    {"weight": 0.25, "spec": {
-      "type": "lrs", "filter": "sma", "sma_window": 200, "lag_days": 1,
-      "signal_ticker": "SPYSIM",
-      "on_weights": {"UPROSIM": 0.30, "TMFSIM": 0.25, "IEFSIM": 0.15, "UGLSIM": 0.15, "KMLMSIM": 0.15},
-      "off_weights": {"IEFSIM": 1.0}}},
-    {"weight": 0.25, "spec": {
-      "type": "static",
-      "weights": {"NTSXSIM": 0.35, "GDESIM": 0.30, "TLTSIM": 0.20, "KMLMSIM": 0.15}}},
-    {"weight": 0.20, "spec": {
-      "type": "lrs", "filter": "momentum", "lookback_days": 126, "lag_days": 1,
-      "signal_ticker": "QQQSIM",
-      "on_weights": {"TQQQSIM": 0.30, "QLDSIM": 0.30, "KMLMSIM": 0.30, "TLTSIM": 0.10},
-      "off_weights": {"IEFSIM": 1.0}}}
-  ]
-}
-```
-
-| | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| **value** | 71 | **66** | 13.83% | 33.60% | 0.84 | **0.00** | 31.6% |
-
-**vs SPY net**: +2.62pp CAGR, **−21.57pp MDD**, Sharpe ~+0.18.
-
-**Gates**: 6/7 strict pass. Falha apenas G3 (WF MDD 31.6% > 25% bar — leverage produz drawdowns per-window > 25% durante 2008 GFC e 2022).
-
-**Por que é a #1**: combina os 4 melhores constituintes single-axis (A2 + G2 + F1 + E1) com gate-source diversification (SPY-SMA-200d + QQQ-SMA-200d + always-on + QQQ-TSMOM-126d). PBO = 0.00 em ambos datasets significa zero overfitting probability — o valor ideal. Score 71 gross (segundo lugar no hunt).
-
----
-
-### #2 — Iter 019 H2 (3-way meta-ensemble) — versão simplificada
-
-**Plots**: [equity lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_overlay_lh_56y.png) · [equity spy_real](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_cagr_mdd_scatter.png) · [gate heatmap](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_gate_heatmap.png)
-
-![iter 019 equity overlay lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_overlay_lh_56y.png)
-
-![iter 019 rolling lh_56y](iterations/019-2026-04-30-H2-meta-ensemble-3way-weight-sweep/plot_rolling_lh_56y.png)
-
-**Spec**: 33% A2 + 33% G2 IEF + 34% F1 stack (sem o 4th TSMOM constituent).
-
-```json
-{
-  "type": "blend",
-  "constituents": [
-    {"weight": 0.33, "spec": {/* A2 — same as iter 026 */}},
-    {"weight": 0.33, "spec": {/* G2 IEF — same as iter 026 */}},
-    {"weight": 0.34, "spec": {/* F1 stack — same as iter 026 */}}
-  ]
-}
-```
-
-| | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| **value** | 71 | **65** | 13.11% | **30.33%** | 0.90 | **0.00** | 28.5% |
-
-**vs SPY net**: +1.90pp CAGR, **−24.84pp MDD**, Sharpe melhor que #1 (0.90 vs 0.84).
-
-**Por que considerar**: **menos constituintes = mais simples de implementar**. MDD 30.33% (3pp melhor que #1). Sharpe 0.90 (best entre top 5). Mesmo PBO 0.00 que #1.
-
-**Trade-off**: CAGR 0.72pp menor que #1.
-
----
-
-### #3 — Iter 028 H8 (3-way meta-ensemble com TSMOM gate replacement)
-
-**Plots**: [equity lh_56y](iterations/028-2026-04-30-H8-meta-ensemble-3way-1st-position-gate-substitution/plot_overlay_lh_56y.png) · [equity spy_real](iterations/028-2026-04-30-H8-meta-ensemble-3way-1st-position-gate-substitution/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/028-2026-04-30-H8-meta-ensemble-3way-1st-position-gate-substitution/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/028-2026-04-30-H8-meta-ensemble-3way-1st-position-gate-substitution/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/028-2026-04-30-H8-meta-ensemble-3way-1st-position-gate-substitution/plot_cagr_mdd_scatter.png)
-
-![iter 028 equity overlay lh_56y](iterations/028-2026-04-30-H8-meta-ensemble-3way-1st-position-gate-substitution/plot_overlay_lh_56y.png)
-
-**Spec**: 25% E1 (TSMOM-126d × TQQQ-track) + 50% G2 IEF + 25% F1 stack.
-
-| | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| **value** | 69 | 64 | 12.96% | 30.64% | 0.91 | **0.09** | 28.9% |
-
-**Por que considerar**: **MELHOR Sharpe entre 6/7 passers** (0.91 > 0.90 do #2). MDD comparável ao #2. PBO 0.09 (excelente).
-
----
-
-### #4 — Iter 034 H14 (4-way + GLD-momentum)
-
-**Plots**: [equity lh_56y](iterations/034-2026-04-30-H14-meta-ensemble-5way-gld-mom-as-5th-constituent/plot_overlay_lh_56y.png) · [equity spy_real](iterations/034-2026-04-30-H14-meta-ensemble-5way-gld-mom-as-5th-constituent/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/034-2026-04-30-H14-meta-ensemble-5way-gld-mom-as-5th-constituent/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/034-2026-04-30-H14-meta-ensemble-5way-gld-mom-as-5th-constituent/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/034-2026-04-30-H14-meta-ensemble-5way-gld-mom-as-5th-constituent/plot_cagr_mdd_scatter.png)
-
-![iter 034 equity overlay lh_56y](iterations/034-2026-04-30-H14-meta-ensemble-5way-gld-mom-as-5th-constituent/plot_overlay_lh_56y.png)
-
-**Spec**: 25% A2 + 25% G2 IEF + 25% F1 stack + 25% E1g (GLD-momentum 126d).
-
-| | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| **value** | 73 | **67** | 14.46% | 35.28% | 0.92 | 0.11 | 33.8% |
-
-**Por que considerar**: **2º maior net score** (67). CAGR 14.46% (margem confortável). PBO 0.11 ainda baixa.
-
-**Trade-off**: 4 sleeves dependem de GLD (gold). Adiciona complexity de 4ª fonte de gate. MDD 35.28% pior que #2/#3.
-
----
-
-### #5 — Iter 020 H3 (4-way com G1 IEF — best MDD)
-
-**Plots**: [equity lh_56y](iterations/020-2026-04-30-H3-meta-ensemble-4way-and-alt-3way-g1-ief/plot_overlay_lh_56y.png) · [equity spy_real](iterations/020-2026-04-30-H3-meta-ensemble-4way-and-alt-3way-g1-ief/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/020-2026-04-30-H3-meta-ensemble-4way-and-alt-3way-g1-ief/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/020-2026-04-30-H3-meta-ensemble-4way-and-alt-3way-g1-ief/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/020-2026-04-30-H3-meta-ensemble-4way-and-alt-3way-g1-ief/plot_cagr_mdd_scatter.png)
-
-![iter 020 equity overlay lh_56y](iterations/020-2026-04-30-H3-meta-ensemble-4way-and-alt-3way-g1-ief/plot_overlay_lh_56y.png)
-
-**Spec**: 25% A2 + 25% G1 IEF (SMA × F1 stack no-decay) + 25% G2 IEF + 25% F1 stack.
-
-| | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| **value** | 67 | 62 | 12.15% | **27.89%** | 0.93 | 0.17 | **26.2%** |
-
-**Por que considerar**: **MENOR MDD entre top 10** (27.89%). **MELHOR WF MDD** (26.2% — quase passa o gate de 25%). Sharpe 0.93 (best entre tier A).
-
-**Trade-off**: CAGR 12.15% (apenas 0.94pp acima do bar SPY). Score gross só 67. Para perfil **conservador**.
-
----
-
-### #6 — Iter 015 F1 Stack (static buy-hold) ⭐ implementação mais simples
-
-**Plots**: [equity lh_56y](iterations/015-2026-04-30-F1-levered-all-weather/plot_overlay_lh_56y.png) · [equity spy_real](iterations/015-2026-04-30-F1-levered-all-weather/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/015-2026-04-30-F1-levered-all-weather/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/015-2026-04-30-F1-levered-all-weather/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/015-2026-04-30-F1-levered-all-weather/plot_cagr_mdd_scatter.png)
-
-![iter 015 equity overlay lh_56y](iterations/015-2026-04-30-F1-levered-all-weather/plot_overlay_lh_56y.png)
-
-![iter 015 rolling lh_56y](iterations/015-2026-04-30-F1-levered-all-weather/plot_rolling_lh_56y.png)
-
-**Spec**: 35% NTSX + 30% GDE + 20% TLT + 15% KMLM. **STATIC, sem regime gate**.
-
-```json
-{
-  "type": "static",
-  "weights": {
-    "NTSXSIM": 0.35,
-    "GDESIM": 0.30,
-    "TLTSIM": 0.20,
-    "KMLMSIM": 0.15
-  }
-}
-```
-
-| | gross | net | CAGR | MDD | Sharpe | G1 PBO | G3 WF |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| **value** | 61 | 60 | 11.35% | **26.82%** | **0.95** | 0.81* | **26.8%** |
-
-**vs SPY net**: +0.14pp CAGR (margem mínima), **−28.35pp MDD**, Sharpe **+0.29**.
-
-**Por que considerar**: **mais simples de implementar** (4 ETFs, rebalance anual, sem gate). **Maior Sharpe** entre top 10 (0.95 net). **Drag fiscal mínimo** (0.60pp) — buy-hold defere DARF.
-
-**Caveat overfit (PBO 0.81 ⚠)**: PBO grid-level alto em lh_56y (com apenas 3 configs no iter 015, CSCV é instável estatisticamente). Para **single-config deploy** (não competition de grid), PBO grid não se aplica diretamente — você não está escolhendo entre F1 baseline / F1 stack / F1 LETF. Mas vale registrar que a **escolha do stack 1.41× sobre as alternativas** tem incerteza.
-
-**Trade-off real**: CAGR margem de SÓ 0.14pp acima do SPY no rubric net — qualquer FX move adverso elimina a margem. Para perfil **mais conservador**, F1+SPLIT (incumbent Plano C atual) é arquiteturalmente similar.
-
----
-
-## LRS Sensitivity — EMA vs SMA, threshold buffer, lag days
-
-Quase todos os top picks (`A2`, `G2`, `E1`) usam o gate clássico **Gayed 200d SMA com `lag_days=1`** (T+1 execution, sem peek-ahead). Mas você perguntou se nós exploramos as variantes. Resposta: **iter 002 fez sweep explícito** e os resultados informam por que SMA-200/buffer 2%/lag 1 ficou como default.
-
-### Sweep iter 002 (resultado canônico)
-
-6 configs cobrindo {SMA, EMA} × {window 100, 150, 200} × {buffer 0%, 2%, 5%} sobre UPRO 3× e SSO 2× (lh_56y + spy_real, mean):
-
-| config | filter | window | buffer | leverage | CAGR | MDD | Sharpe |
-|---|---|---:|---:|---|---:|---:|---:|
-| `a2_sma200_th2_3xupro` ⭐ selected | SMA | 200 | 2% | UPRO 3× | **18.96%** | **57.57%** | **0.663** |
-| `a2_sma200_th5_3xupro` | SMA | 200 | 5% | UPRO 3× | 18.55% | 69.41% | 0.648 |
-| `a2_sma100_3xupro` | SMA | 100 | 0% | UPRO 3× | 15.93% | 70.34% | 0.606 |
-| `a2_ema150_th2_3xupro` | EMA | 150 | 2% | UPRO 3× | 16.20% | 73.03% | 0.599 |
-| `a2_ema100_th2_2xsso` | EMA | 100 | 2% | SSO 2× | 12.76% | 61.36% | 0.630 |
-| `a2_sma150_2xsso` | SMA | 150 | 0% | SSO 2× | 13.05% | **45.98%** | 0.639 |
-
-### KILLs disparados (registrados em `BASE_MEMORY.md`)
-
-- **KILL #7 (faster signal)**: SMA100 e EMA150/100 produzem **MDD pior** que SMA200. EMA150 MDD = 73.03% vs SMA200 MDD = 57.57% — o tradeoff "menos lag → menos crash capture" só vale na teoria; na prática **EMA whipsaws mais** em mercados sideways e o custo supera o ganho de bear avoidance.
-- **KILL #8 (threshold buffer ≥5%)**: buffer 5% MDD = 69.41% (PIOR que 2% e até que 0%). Buffer grande = exit lazy = drawdown maior. Buffer 2% é o sweet spot empírico — reduz whipsaw sem sacrificar exit speed.
-
-### Recomendação canônica
-
-**SMA-200 + buffer 2% + lag 1** é o default usado em todos os top meta-ensembles (#1-#5). A literatura Gayed `[leverage_for_the_long_run, ch.3-4]` usa 200d SMA original (buffer 0%) — nossa adição do buffer 2% é uma **refinação empírica do hunt** que melhora MDD ~5pp sem custo de CAGR significativo.
-
----
-
-## ⚠️ Lag days e settlement T+1 do Inter — caveat operacional crítico
-
-Você levantou um ponto importante. Vou ser honesto: **isso NÃO foi auditado a fundo no backtest**. Atualmente todas as 30 iters usam `lag_days=1` (T+1: signal computado no close de T → execução no open de T+1). O engine doc:
-
-```python
-# lrs_engine.py:gayed_200d_sma_gate
-# lag_days=1 mirrors live trading
-# T+0 (lag=0) would peek; T+1 mirrors live trading.
-```
-
-### O problema real no Inter
-
-Settlement industry-padrão US (DTCC) é **T+1 desde 2024-05-28** — quando você vende um ETF no dia T, o cash entra na sua conta no dia T+1. O Inter (via Apex Clearing) segue esse mesmo cycle. Implicação prática:
-
-- **Cenário A (good-faith trading)**: vende SSO no close de T → cash settles T+1 → compra IEF no open de T+1 usando o cash que vai settlare hoje. Apex permite isso por **good-faith convention** (você está negociando "em boa fé" porque o cash VAI chegar). ✅ Compatible com `lag_days=1` do backtest.
-
-- **Cenário B (free-riding violation)**: se você vender IEF no T+1 antes do cash do SSO settlare, configura **free-ride violation** — Apex restringe sua conta por 90 dias a usar só "settled cash". Não comum em rotation trading mas pode acontecer com flips frequentes. Solução: aguardar settlement.
-
-- **Cenário C (Inter-specific delays)**: a documentação do Inter menciona que **dividend crediting às vezes atrasa** e **suporte demora ~8 dias** a responder. Isso indica friction operacional que pode atrasar o settlement na prática para 2-3 dias em casos pontuais. Essa friction NÃO está modelada nos backtests.
-
-### O que isso significa para deploy
-
-O `lag_days=1` do backtest **modela bem o caso comum** (good-faith T+1) mas **subestima** os casos de delay operacional. Para um deploy honesto via Inter, recomendo:
-
-1. **Re-rodar a estratégia escolhida com `lag_days=2`** como sensitivity test antes do deploy real. Se a degradação de Sharpe/MDD for < 5%, o caso comum domina e você pode deploy com `lag_days=1`. Se for ≥ 10%, considere re-otimizar pesos com lag=2.
-
-2. **Não usar gate signals de close-do-dia** se a estratégia exige rotação intra-mensal frequente (LRS típico flipa 1-3×/ano, então é tolerável). Para meta-ensembles 4-way, cada constituinte LRS pode flipar independentemente, mas a soma de flips raramente excede 5-8/ano.
-
-3. **Buy-hold static (#6 F1 stack)** é **imune a esse problema** — só rebalanceia 1×/ano em data fixa. Você tem horas/dias pra colocar a ordem. Mais um ponto a favor da implementação simples.
-
-### Resultado do sensitivity test (iter 037 — 2026-04-30)
-
-**Plots iter 037**: [equity overlay lh_56y](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_overlay_lh_56y.png) · [equity overlay spy_real](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_overlay_spy_real.png) · [rolling lh_56y](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_rolling_lh_56y.png) · [rolling spy_real](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_rolling_spy_real.png) · [CAGR×MDD scatter](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_cagr_mdd_scatter.png) · [gate heatmap](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_gate_heatmap.png)
-
-![iter 037 sensitivity equity overlay lh_56y](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_overlay_lh_56y.png)
-
-![iter 037 sensitivity rolling lh_56y](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_rolling_lh_56y.png)
-
-![iter 037 CAGR vs MDD scatter](iterations/037-2026-04-30-sensitivity-h6-buffer-lag/plot_cagr_mdd_scatter.png)
-
-Rodei `studies/spy_beater_hunt/iterations/037-*/backtest.py` testando 4 variantes da iter 026 H6:
-
-| variant | NET Sharpe | NET CAGR | NET MDD | Δ vs baseline (NET) |
-|---|---:|---:|---:|---|
-| `h6_baseline` (iter 026 verbatim) | 0.845 | 13.83% | 33.60% | anchor |
-| `h6_buffer2` (SMA buffer 2%) | 0.824 | 13.52% | **32.66%** | MDD **−0.94pp** ✅ / CAGR −0.31pp / Sharpe −0.021 |
-| `h6_lag2` (lag_days=2) | 0.847 | 13.99% | 34.93% | MDD +1.33pp / CAGR +0.16pp / Sharpe +0.002 ≈ neutral |
-| `h6_buffer2_lag2` (combo) | 0.842 | 13.99% | **32.74%** | MDD **−0.86pp** ✅ / CAGR +0.16pp / Sharpe −0.003 ≈ baseline |
-
-**Reprodutibilidade verificada**: `h6_baseline` rendeu métricas IDÊNTICAS a iter 026 H6.4 (Sharpe 0.9424, CAGR 16.61%, MDD 34.20% per-dataset lh_56y, batendo até a 4ª casa decimal). Confirma que a sensitivity é apples-to-apples.
-
-### Diagnóstico
-
-1. **Buffer 2% no meta-ensemble**: MDD melhora **−0.94pp** apenas. Magnitude bem menor que a iter 002 single-asset UPRO 3× (−12pp) porque a **diversificação entre os 4 sleeves já absorve a maior parte do whipsaw cost**. Custo na CAGR/Sharpe é proporcionalmente similar (−0.31pp / −0.021). Net Pareto: **win pequeno em MDD, custo proporcional em CAGR**.
-
-2. **Lag 2 (Inter T+2 worst-case)**: MDD piora ligeiramente (+1.33pp) — esperado, porque lag maior atrasa o exit durante crashes, capturando mais drawdown. **MAS Sharpe e CAGR essencialmente inalterados**. **Strategy é robust ao Inter T+2 settlement friction** — bom sinal pro deploy real.
-
-3. **Buffer 2% + Lag 2 combinado**: o **best operational config** — buffer compensa o exit-delay do lag 2, MDD volta a 32.74% (melhor que baseline lag 1!), Sharpe idêntico ao baseline. Você ganha a resiliência operacional sem custo.
-
-### Caveat: PBO inflation no iter 037
-
-PBO grid-level disparou pra **0.87/0.89** vs iter 026's **0.00/0.00**. Isso é **Principle M** (iter 034) em ação: PBO é grid-composition-dependent, e as 4 variantes do iter 037 são MUITO similares entre si (mesma estratégia base com tweaks de parâmetro), então CSCV considera elas estatisticamente indistinguíveis → PBO infla artificialmente.
-
-**A estratégia é a mesma** — anchor PBO honestamente em iter 026 (0.00), não no iter 037.
-
-### Recomendação operacional
-
-**Deploy iter 026 H6 com 2 ajustes**:
-- `buffer_pct: 0.02` em ambos os SMA constituents (A2 + G2 IEF) — reduz whipsaw, melhora MDD ~1pp, custo CAGR ~0.3pp
-- `lag_days: 2` em todos os constituents — operacionalmente seguro, sem degradação material
-
-Ambos juntos (`h6_buffer2_lag2`) entregam **NET CAGR 13.99% / NET MDD 32.74% / NET Sharpe 0.842** — empilhado contra o iter 026 baseline (CAGR 13.83% / MDD 33.60% / Sharpe 0.845), o combo **ganha em CAGR (+0.16pp) e MDD (−0.86pp)** com Sharpe idêntico.
-
-Esse é o **deploy spec recomendado** se você for por Plano B reativado.
-
----
-
-## Tier B — pass 6/7 strict gates + PBO 0.20-0.50
-
-| iter | strategy | gross | net | CAGR_n | MDD_n | PBO max |
-|---:|---|---:|---:|---:|---:|---:|
-| 007 | a7 TQQQ-track + KMLM40 + TLT10 (LRS) | 67 | 61 | 14.09% | 43.48% | 0.10 |
-| 004 | a4 LRS split + KMLM30 | 66 | 60 | 12.59% | 39.49% | 0.29 |
-| 024 | g3 LRS-gated HFEA 40/40 | 66 | 60 | 13.79% | 46.31% | 0.15 |
-| 003 | a3 LRS split + KMLM20 | 64 | 59 | 13.12% | 43.87% | 0.24 |
-| 017 | g2 F1-LETF-2x + SMA gate + IEF | 64 | 58 | 12.22% | 35.06% | 0.28 |
-
-**Comentário**: estratégias single-axis LRS de iters anteriores. Performam pior que tier A meta-ensembles em risk-adjusted return. PBO ainda controlado mas WF MDD pior (40-50%). Aceitáveis se você prefere implementação **menos complexa** (1 sleeve LRS vs 3-4 do meta).
-
----
-
-## Tier C — PBO > 0.50 (overfit warning)
-
-Iters 030-033, 035, 036, 018, 021, 025, 029. Apesar de scores top (gross 70-74, net 64-68), **PBO > 0.50 em pelo menos um dataset** sinaliza que com cumulative_n_trials inflando (~85 trials totais), o ranking grid começa a refletir variação aleatória.
-
-**Tradução prática**: a **arquitetura** (3-4-way meta-ensemble) é robusta e a **direção** correta — mas o EXATO winner desse cluster (iter 035 vs 036 vs 030...) é estatisticamente intercambiável. Use #1 (iter 026 H6) com PBO 0.00 como anchor honesto, não o iter 035 com PBO 0.56-0.59.
-
-| iter | strategy | gross | net | CAGR_n | MDD_n | PBO max | nota |
-|---:|---|---:|---:|---:|---:|---:|---|
-| 035 | h15 4-way GLD-mom-126 off var | 74 | 68 | 14.90% | 31.86% | 0.56 | **highest score mas PBO warning** |
-| 036 | h16 4-way A2 off var | 73 | 67 | 14.90% | 31.86% | 0.59 | duplicado de 035 |
-| 030 | h10 4-way TSMOM signal QQQ | 72 | 66 | 14.46% | 35.28% | 0.52 | borderline PBO |
-| 018 | h1 50/50 A2 + G2 IEF | 70 | 64 | 14.23% | 35.87% | 0.60 | foi closest-to-winner antes do iter 026 |
-
----
-
-## Tier D — não recomendados
-
-| iter | razão |
-|---:|---|
-| 008/009 HFEA classical/+KMLM | falham MDD bar (61-67%); buy-hold mas drawdown excessivo |
-| 001/002 LRS UPRO single-asset | falham gates_bar; alto MDD (51-57%) |
-| 010 vol-target SSO | passa bars mas ruim em risk-adjusted (Sharpe 0.64 net) |
-| 012/013/022/023 | scores 50-58 net; MARGINAL tier |
+## Histórico — meta-ensembles e LRS variants (iter 001-036)
+
+> 📚 Esta seção foi removida em 2026-05-01 cleanup. Os ranking tiers A/B/C/D originais (com iter 026 H6 / iter 019 H2 / iter 015 F1 stack como top picks) **ficaram desatualizados** após iter 040-044 re-baseline com Monthly + ERs + lazy DARF. Os iters individuais não foram re-rodados na nova metodologia, então não há comparação apples-to-apples com a CANONICAL DEPLOY RANKING acima.
+>
+> Para o histórico completo dos iter 001-036 (meta-ensembles, LRS sensitivity, lag/buffer sensitivity iter 037), ver:
+> - `BASE_MEMORY.md` — frontmatter de loop com KILLs e rationale por iter
+> - `iterations/NNN-*/final_report.md` — per-iter detailed rationale + plots + specs
+> - `iterations/037-*/SUMMARY.md` — buffer 2% + lag 2 sensitivity findings
+>
+> Por que esta seção foi descontinuada: as métricas dos iter 001-036 usavam pipeline interno (lh_56y / spy_real datasets, Yearly rebal, no ER drag) que produzia ranking diferente do testfol.io Monthly + ERs + lazy DARF baseline. Os iter 040-044 mostraram que o ranking muda materialmente quando methodology troca — não é safe deploy iter 026 H6 ou iter 015 F1 baseado em métricas pre-feedback.
 
 ---
 
@@ -473,38 +328,34 @@ Iters 030-033, 035, 036, 018, 021, 025, 029. Apesar de scores top (gross 70-74, 
 3. **IOF**: 3.5% remessa outbound + 0.38% retorno (Decreto 05/2025) — só hits em depósito inicial / retirada final.
 4. **Mandate §1 atual**: 100% Plano C MAINTENANCE MODE. Reativar Plano B exige **mandate §7 override**.
 
-### Per-strategy instrumentação (ETFs reais por sintético)
+### ETFs necessários para B4 Conservative (deploy spec)
 
-| sintético no backtest | ETF real (US) | available Inter? |
+| sintético no backtest | ETF real (US) | ER | available Inter? |
+|---|---|---:|---|
+| `NTSXSIM` | NTSX (WisdomTree 90/60 SPY/Treasuries) | 0.20% | ⚠ verificar |
+| `GDESIM` | GDE (WisdomTree 90/90 SPY/Gold) | 0.20% | ⚠ verificar |
+| `RSSTSIM` | RSST (Return Stacked 100/100 SPY/MF) | 0.99% | ⚠ verificar |
+| `ZROZSIM` | ZROZ (PIMCO 25y zero-coupon Treasury) | 0.15% | ⚠ verificar |
+
+**Fallback ETFs** (se algum NTSX/GDE/RSST/ZROZ indisponível):
+- ZROZ unavailable → **TLT 1×** (B3 spec — Sharpe 0.735, MDD -30.06% vs B4's 0.745 / -28.94%)
+- RSST unavailable → KMLM (M1 spec — Sharpe 0.610, significativamente inferior)
+- NTSX unavailable → SPY direct + IEF futures (manual stack — complica operacionalmente)
+
+**Bloqueador pré-deploy**: validar com suporte Inter (Apex Clearing) quais dos 4 ETFs estão disponíveis. Inter Internacional já confirmou catálogo de ações/ETFs US largos; ETFs menos comuns (RSST especialmente, lançado 2022) podem precisar adição via support ticket.
+
+### Cadência operacional — B4 Conservative
+
+| ação | frequência | observação |
 |---|---|---|
-| `SPYSIM` | SPY (SPDR S&P 500) | ✅ |
-| `QQQSIM` | QQQ (Invesco NASDAQ-100) | ✅ |
-| `IEFSIM` | IEF (iShares 7-10y Treasury) | ✅ |
-| `TLTSIM` | TLT (iShares 20+y Treasury) | ✅ |
-| `GLDSIM` | GLD (SPDR Gold Shares) | ✅ |
-| `UPROSIM` | UPRO (ProShares 3× S&P 500) | ⚠ verificar — `project_plano_b_broker_inter.md` confirma SSO; UPRO precisa validação suporte |
-| `SSOSIM` | SSO (ProShares 2× S&P 500) | ✅ confirmado 2026-04-18 |
-| `TQQQSIM` | TQQQ (ProShares 3× NASDAQ-100) | ⚠ verificar |
-| `QLDSIM` | QLD (ProShares 2× NASDAQ-100) | ⚠ verificar |
-| `TMFSIM` | TMF (Direxion 3× 20+y Treasury) | ⚠ verificar |
-| `UGLSIM` | UGL (ProShares 2× Gold) | ⚠ verificar |
-| `NTSXSIM` | NTSX (WisdomTree 90/60 US Eq+Bonds) | ⚠ verificar |
-| `GDESIM` | GDE (WisdomTree Efficient Gold Plus) | ⚠ verificar |
-| `KMLMSIM` | KMLM (Krane Mount Lucas Mgd Futures) | ⚠ verificar |
+| Aporte mensal | 1×/mês (data fixa) | Comprar o ETF mais underweight para fechar gap de alocação |
+| Rebal forçado | apenas se drift > ±10pp | Se aportes mensais não fecham o gap em 6 meses, considerar venda parcial |
+| DARF | 1×/ano (apuração anual) | Lazy rebal → realized gains intra-ano = 0 → DARF efetivo só no terminal |
 
-**Bloqueador pré-deploy**: validar com suporte Inter quais ETFs estão disponíveis. Estratégias #1-#4 dependem de TQQQ/UPRO/TMF/KMLM/NTSX/GDE — qualquer ausência exige fallback. F1 stack (#6) precisa só de NTSX + GDE + TLT + KMLM.
-
-### Cadência operacional
-
-| spec_type | rebalance | gate compute | live ops |
-|---|---|---|---|
-| **static** (#6 F1 stack) | anual (1×/ano em data fixa) | n/a | trivial — comprar pesos, esperar 1 ano, rebalance |
-| **lrs** (#7 a7) | gate flip detection + monthly | T+1 lag, SMA-200d daily | 1 sinal/dia, flip mensal típico |
-| **blend** (#1 H6, #2 H2, etc) | per-constituent + diário no agregado | 2-3 fontes (SPY-SMA, QQQ-SMA, QQQ-TSMOM-126d) | mais complexo — manter 3-4 sleeves separados |
-
-Para **F1 stack** (#6): rebalance anual em **dezembro pré-DARF cutoff** maximiza tax-deferral. Posições USD permanecem em UCD; FX só hits em depósito inicial. **Não realiza ganho durante o ano** → DARF zero anual, apenas terminal liquidation paga.
-
-Para **meta-ensembles** (#1-#5): cada constituinte rebalanceia separadamente quando seu gate flipa. Lei 14.754 agrega anualmente, então flips intra-ano não disparam DARF mensal. Na prática, **drag fiscal anual** ~2pp.
+**Por que isso é trivial vs LRS/meta-ensembles antigos**:
+- **Sem signal de gate** — não precisa monitorar SMA-200, momentum 126d, etc. Posição é fixa.
+- **Sem flips intra-ano** — você não vende nada (a menos que decida sair completamente). Não há free-ride violation, não há lag operacional.
+- **DARF deferida ao terminal** — você paga 15% só quando vender, sobre o lucro acumulado.
 
 ### Sizing inicial (mandate §4.8 paralelo Pepperstone)
 
@@ -517,12 +368,14 @@ Mandate atual não especifica staging Plano B (foi traçado para Plano A Peppers
 
 ### Disclaimer obrigatório (mandate §7 trigger)
 
-**Nenhuma dessas estratégias é deploy-aprovada sob o mandate atual** (§1 MAINTENANCE MODE 100% Plano C). Para mover capital pra qualquer uma delas, necessário:
+**B4 Conservative não é deploy-aprovada sob o mandate atual** (§1 MAINTENANCE MODE 100% Plano C). Para mover capital pra ela, necessário:
 
 1. Override §7 formal (escrito) reativando Plano B
-2. Validação de catálogo de ETFs no Inter
-3. Decisão sobre rubric: **gate-pass + bars 1+2 é suficiente para você?** (Você já sinalizou que sim em 2026-04-30, mas vale formalizar no mandate)
-4. Aceitar caveats: G3 (WF MDD per-window < 25%) NÃO passa em nenhuma estratégia top — drawdown durante stress regimes (2008/2022) excede 25% por janela. Tolerância pessoal precisa cobrir isso.
+2. Validação de catálogo Inter para NTSX/GDE/RSST/ZROZ
+3. Aceitar caveats:
+   - **G3 (WF MDD per-window < 25%) NÃO passa** — drawdown durante 2008 GFC e 2022 inflation excede 25% por janela. É estrutural para qualquer leveraged stack, não overfit.
+   - **MDD esperado ~29%** num bear market severo. Tolerância psicológica precisa cobrir isso. Se panic-sell at the bottom, destrói a estratégia.
+   - **NTSX/GDE/RSST são ETFs jovens** (2018/2022/2022). Synth proxies extendem para 1987 mas live track record ainda curto. Para RSST especificamente, o proxy `KMLM-only` usado no iter 044 foi marcado como incompleto em 2026-05-02; exigir re-run com `70% DBMF / 30% KMLM` antes de deploy.
 
 ---
 
@@ -530,11 +383,12 @@ Mandate atual não especifica staging Plano B (foi traçado para Plano A Peppers
 
 | pergunta | resposta |
 |---|---|
-| **Tem estratégia que bate SPY (CAGR + MDD)?** | Sim, ~15 estratégias passam ambos bars em gross + net. |
-| **Tem estratégia "WINNER tier" (≥90/100 + bars)?** | Não. Teto empírico ~74 gross / 68 net. |
-| **Overfit foi validado?** | Sim, 7-gate battery roda em cada iter. Tier A passa 6/7 com PBO ≤ 0.20 (low overfit probability). G3 (WF MDD per-window) falha estruturalmente para qualquer leverage moderado-alto durante 2008/2022 stress. |
-| **Top recomendação?** | **iter 026 H6** (4-way meta-ensemble, PBO 0.00, net CAGR 13.83% / MDD 33.6%) para perfil agressivo; **iter 015 F1 stack** (buy-hold static, simplest, Sharpe 0.95 net) para perfil simples. |
-| **Deploy-ready hoje?** | Não — exige mandate §7 override + validação ETFs Inter + paper 3 meses. |
+| **Tem estratégia que bate SPY (CAGR + MDD)?** | Sim, **9 estratégias** passam ambos bars no canonical iter 044 ranking (Monthly + ERs + lazy DARF). |
+| **Tem estratégia "WINNER tier" (≥90/100 + bars)?** | Não. Hunt fechou em 2026-04-30 com user override "gate-pass + bars 1+2 é suficiente". |
+| **Top recomendação canonical?** | **B4 Conservative** (25 NTSX / 25 GDE / 25 RSST / 25 ZROZ): gross 13.31% / net 12.84% / MDD -28.94% / Sharpe 0.745 / Calmar 0.460. |
+| **Best MDD-extreme alternative?** | **G4d** (25 RSSB / 25 GDE / 25 ZROZ / 25 KMLM): MDD -22.56% (recorde do estudo) com CAGR 10.10% (caveat: RSSB ~2y live). |
+| **Overfit foi validado?** | Sim. B4 sobreviveu a 4 testes adversariais (Reddit Post 1 community feedback iter 040-043) + walk-forward weight drift gate G8 (PASS — static beats walk-forward em 3/3 universos). |
+| **Deploy-ready hoje?** | Não — exige mandate §7 override + validação ETFs Inter (NTSX/GDE/RSST/ZROZ) + paper 3 meses. RSST proxy re-run foi feito no iter 045; próximo bloqueador metodológico é broker/catalog + forward/paper. |
 
 ---
 

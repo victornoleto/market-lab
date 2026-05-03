@@ -1,0 +1,155 @@
+{
+  "B4": {
+    "name": "B4",
+    "sleeves": [
+      "NTSX",
+      "GDE",
+      "RSST",
+      "ZROZ"
+    ],
+    "static_weights_pct": {
+      "NTSX": 25.0,
+      "GDE": 25.0,
+      "RSST": 25.0,
+      "ZROZ": 25.0
+    },
+    "sleeve_stats": {
+      "NTSX": {
+        "static_pct": 25.0,
+        "min_pct": 0.0,
+        "max_pct": 86.68354857838094,
+        "mean_pct": 24.247918451308077,
+        "std_pct": 30.43122851358601,
+        "max_dev_from_static_pp": 61.683548578380936
+      },
+      "GDE": {
+        "static_pct": 25.0,
+        "min_pct": 0.0,
+        "max_pct": 85.87354493826405,
+        "mean_pct": 20.96879677703465,
+        "std_pct": 23.165811905022824,
+        "max_dev_from_static_pp": 60.87354493826405
+      },
+      "RSST": {
+        "static_pct": 25.0,
+        "min_pct": 0.0,
+        "max_pct": 100.0,
+        "mean_pct": 29.234464815305664,
+        "std_pct": 32.90358441520358,
+        "max_dev_from_static_pp": 75.0
+      },
+      "ZROZ": {
+        "static_pct": 25.0,
+        "min_pct": 0.0,
+        "max_pct": 74.57522563243627,
+        "mean_pct": 25.54881995635161,
+        "std_pct": 19.333478140466635,
+        "max_dev_from_static_pp": 49.57522563243627
+      }
+    },
+    "overall_max_drift_pp": 75.0,
+    "n_windows": 400
+  },
+  "B2": {
+    "name": "B2",
+    "sleeves": [
+      "NTSX",
+      "GDE",
+      "RSST",
+      "TMF"
+    ],
+    "static_weights_pct": {
+      "NTSX": 30.0,
+      "GDE": 30.0,
+      "RSST": 30.0,
+      "TMF": 10.0
+    },
+    "sleeve_stats": {
+      "NTSX": {
+        "static_pct": 30.0,
+        "min_pct": 0.0,
+        "max_pct": 91.62564122728631,
+        "mean_pct": 27.170926965409958,
+        "std_pct": 33.91252618234501,
+        "max_dev_from_static_pp": 61.62564122728631
+      },
+      "GDE": {
+        "static_pct": 30.0,
+        "min_pct": 0.0,
+        "max_pct": 85.87395269837594,
+        "mean_pct": 25.504618961548758,
+        "std_pct": 27.372054714052627,
+        "max_dev_from_static_pp": 55.873952698375945
+      },
+      "RSST": {
+        "static_pct": 30.0,
+        "min_pct": 0.0,
+        "max_pct": 100.0,
+        "mean_pct": 31.74002416724985,
+        "std_pct": 34.706793953749305,
+        "max_dev_from_static_pp": 70.0
+      },
+      "TMF": {
+        "static_pct": 10.0,
+        "min_pct": 0.0,
+        "max_pct": 59.03298158363208,
+        "mean_pct": 15.58442990579145,
+        "std_pct": 14.610086256074979,
+        "max_dev_from_static_pp": 49.03298158363208
+      }
+    },
+    "overall_max_drift_pp": 70.0,
+    "n_windows": 400
+  },
+  "T1": {
+    "name": "T1",
+    "sleeves": [
+      "NTSX",
+      "GDE",
+      "RSST",
+      "TMF"
+    ],
+    "static_weights_pct": {
+      "NTSX": 20.0,
+      "GDE": 35.0,
+      "RSST": 25.0,
+      "TMF": 20.0
+    },
+    "sleeve_stats": {
+      "NTSX": {
+        "static_pct": 20.0,
+        "min_pct": 0.0,
+        "max_pct": 91.62564122728631,
+        "mean_pct": 27.170926965409958,
+        "std_pct": 33.91252618234501,
+        "max_dev_from_static_pp": 71.62564122728631
+      },
+      "GDE": {
+        "static_pct": 35.0,
+        "min_pct": 0.0,
+        "max_pct": 85.87395269837594,
+        "mean_pct": 25.504618961548758,
+        "std_pct": 27.372054714052627,
+        "max_dev_from_static_pp": 50.873952698375945
+      },
+      "RSST": {
+        "static_pct": 25.0,
+        "min_pct": 0.0,
+        "max_pct": 100.0,
+        "mean_pct": 31.74002416724985,
+        "std_pct": 34.706793953749305,
+        "max_dev_from_static_pp": 75.0
+      },
+      "TMF": {
+        "static_pct": 20.0,
+        "min_pct": 0.0,
+        "max_pct": 59.03298158363208,
+        "mean_pct": 15.58442990579145,
+        "std_pct": 14.610086256074979,
+        "max_dev_from_static_pp": 39.03298158363208
+      }
+    },
+    "overall_max_drift_pp": 75.0,
+    "n_windows": 400
+  }
+}

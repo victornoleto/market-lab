@@ -1,0 +1,30 @@
+{
+  "system_id": 11207608,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-gold-bbm/11207608",
+  "name": "Happy Gold - BBM Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+83.63%",
+    "absolute_gain": "+83.65%",
+    "daily": "0.09%",
+    "monthly": "4.81%",
+    "drawdown": "32.94%",
+    "balance": "$1,836.45",
+    "equity": "(100.00%) $1,836.45",
+    "highest": "(Jul 28) $1,938.67",
+    "profit": "$836.45",
+    "interest": "$0.00",
+    "deposits": "$1,000.00",
+    "withdrawals": "$0.00",
+    "updated": "Aug 01, 2025 at 07:36",
+    "tracking": "11"
+  },
+  "account": {
+    "raw": "Real (USD), Blueberry Markets , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Blueberry Markets",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/blueberry/1348068,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

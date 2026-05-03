@@ -150,3 +150,7 @@ data/phase3_7/**/*.parquet
 data/phase3_7/**/*.csv
 !data/phase3_7/MANIFEST.json
 .testfolio_token
+
+# myfxbook scrape outputs (reproducible via shared/scrape_all_systems.py)
+studies/myfxbook_reverse_engineering/data/trades/
+studies/myfxbook_reverse_engineering/data/ohlc/

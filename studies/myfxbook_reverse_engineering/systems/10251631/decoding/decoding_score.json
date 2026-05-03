@@ -1,0 +1,33 @@
+{
+  "system_id": "10251631",
+  "family_stage2": "UNCATEGORIZED",
+  "fidelity_score": 0.0,
+  "score_band": "NONE",
+  "terms": {
+    "entry_timing_f1": 0.0,
+    "baseline_lift_normalized": 0.0,
+    "lift_vs_baseline_pp": -40.13,
+    "direction_acc_at_matched": 0.0,
+    "hold_similarity": 0.0,
+    "count_ratio_proximity": 0.0,
+    "count_ratio": 0.0,
+    "pnl_correlation_pos": 0.0,
+    "pnl_correlation_raw": NaN
+  },
+  "diagnostics": {
+    "n_real": 461,
+    "n_synthetic": 0,
+    "n_matched": 0,
+    "low_n_flag": false,
+    "low_confidence_dir": false
+  },
+  "phase_guard": {
+    "approval_scope": "5R-1 deterministic replicator/comparator/score only",
+    "final_ranking_allowed": false,
+    "strategy_decision_allowed": false,
+    "blocking_pause_gates": [
+      "NEWS_RELEASE_MOMENTUM remains provisional with n=1 after R1",
+      "needs_m1_review is high after R1: 13/30 systems"
+    ]
+  }
+}
