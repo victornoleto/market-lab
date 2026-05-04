@@ -172,6 +172,24 @@ infraestrutura nao disponivel):
 Nao tentar workarounds que violem guardrails (ex: usar PnL futuro pra "salvar"
 a task). Falhar limpo e melhor que workaround silencioso.
 
+## Validacao bloqueante externa
+
+Quando o loop roda com `VALIDATOR_REQUIRED=1`, uma validacao read-only e executada
+apos a sessao concluir a checklist e antes de iniciar a proxima task.
+
+Contrato do validador:
+
+- Ler os artefatos da iteracao (`PRE_REG.md`, `RESULTS.json`, `SUMMARY.md`,
+  `run.log`) e os arquivos de governanca.
+- Nao editar arquivos, nao commitar, nao fazer push.
+- Responder com uma linha parseavel:
+  - `VALIDATION_VERDICT: PROCEED` — a proxima task pode iniciar.
+  - `VALIDATION_VERDICT: STOP` — o loop aborta com exit 5 para correcao.
+
+Ausencia de verdict parseavel, timeout, ou erro do validador e tratado como
+`STOP` fail-safe. Correcoes pos-STOP devem ser feitas em sessao separada e
+documentadas no `SUMMARY.md`/`run.log` da task afetada.
+
 ## Citacoes obrigatorias (Regra 2 do CLAUDE.md)
 
 Toda escolha tecnica em codigo, comentario, spec ou report cita livro:

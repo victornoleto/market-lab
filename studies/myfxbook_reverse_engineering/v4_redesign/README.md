@@ -40,7 +40,37 @@ DRY_RUN=1 bash studies/myfxbook_reverse_engineering/v4_redesign/loop.sh
 
 # overnight (12 iteracoes, sonnet, timeout 90min cada)
 MAX_ITER=12 ITER_TIMEOUT=5400 CLAUDE_MODEL=sonnet bash studies/myfxbook_reverse_engineering/v4_redesign/loop.sh
+
+# com validacao bloqueante GPT-5.5 apos cada task
+VALIDATOR_REQUIRED=1 VALIDATOR_MODEL=openai/gpt-5.5 MAX_ITER=5 CLAUDE_MODEL=opus \
+  bash studies/myfxbook_reverse_engineering/v4_redesign/loop.sh
 ```
+
+## Validacao bloqueante GPT-5.5
+
+O loop suporta um hook read-only de validacao apos cada iteracao:
+
+- `VALIDATOR_MODEL=openai/gpt-5.5` usa `opencode run --model ...`.
+- `VALIDATOR_CMD="..."` usa um comando alternativo que recebe o prompt via stdin.
+- `VALIDATOR_REQUIRED=1` torna a validacao obrigatoria: sem validador, timeout,
+  erro, `VALIDATION_VERDICT: STOP`, ou ausencia de verdict parseavel aborta o
+  loop com exit 5.
+- Outputs ficam em `iterations/NNN-slug/VALIDATION_PROMPT_*.md` e
+  `iterations/NNN-slug/VALIDATION_*.md`.
+
+O validador deve retornar uma das duas linhas como primeira linha relevante:
+
+```text
+VALIDATION_VERDICT: PROCEED
+```
+
+ou:
+
+```text
+VALIDATION_VERDICT: STOP
+```
+
+`STOP` e fail-safe: o loop para para correcao antes de iniciar a proxima task.
 
 ## Guardrails permanentes (toda sessao)
 
@@ -87,3 +117,5 @@ E uma Fase 1 pronta + framework para chain-planning das fases subsequentes.**
 - Apos 002 verde, considerar `MAX_ITER=3` para tasks 003-005
 - `MAX_ITER=12 overnight` apenas apos confiar na qualidade das primeiras 5
   iteracoes
+- Para overnight, preferir `VALIDATOR_REQUIRED=1 VALIDATOR_MODEL=openai/gpt-5.5`
+  para bloquear automaticamente problemas conceituais antes da proxima task.

@@ -19,12 +19,17 @@
 #   COOLDOWN       (default 30)    segundos entre iteracoes
 #   CLAUDE_MODEL   (default sonnet) opus | sonnet | haiku
 #   DRY_RUN        (default "")    se set, imprime prompt e sai
+#   VALIDATOR_REQUIRED (default 0)  se 1, aborta quando validador nao roda/passa
+#   VALIDATOR_MODEL    (default "") modelo opencode, ex: openai/gpt-5.5
+#   VALIDATOR_CMD      (default "") comando alternativo; recebe prompt via stdin
+#   VALIDATOR_TIMEOUT  (default 1800) segundos para validacao bloqueante
 #
 # Stop conditions:
 #   - Todas tasks DONE ou BLOCKED → exit 0
 #   - Uma task FAILED → exit 1, intervencao humana
 #   - PROGRESS.md nao mudou apos iteracao (sessao nao avancou) → exit 2
 #   - PROTOCOL.md alterado durante sessao → exit 3 (security guard)
+#   - Validacao bloqueante STOP/indeterminada → exit 5
 
 set -euo pipefail
 
@@ -35,6 +40,10 @@ cd "$(dirname "$0")/../../.."
 : "${COOLDOWN:=30}"
 : "${CLAUDE_MODEL:=sonnet}"
 : "${DRY_RUN:=}"
+: "${VALIDATOR_REQUIRED:=0}"
+: "${VALIDATOR_MODEL:=}"
+: "${VALIDATOR_CMD:=}"
+: "${VALIDATOR_TIMEOUT:=1800}"
 
 LOOP_DIR="studies/myfxbook_reverse_engineering/v4_redesign"
 PROGRESS_FILE="$LOOP_DIR/PROGRESS.md"
@@ -54,6 +63,9 @@ done
 if [[ -z "$DRY_RUN" ]]; then
     command -v claude >/dev/null || { echo "FATAL: claude CLI not in PATH" >&2; exit 1; }
     command -v timeout >/dev/null || { echo "FATAL: GNU timeout missing" >&2; exit 1; }
+    if [[ -n "$VALIDATOR_MODEL" ]]; then
+        command -v opencode >/dev/null || { echo "FATAL: VALIDATOR_MODEL set but opencode CLI not in PATH" >&2; exit 1; }
+    fi
 fi
 
 # Helper: contar tasks por status em PROGRESS.md.
@@ -137,6 +149,125 @@ verify_iter_allowlist_compliance() {
         return 1
     fi
     return 0
+}
+
+# Helper: detectar diretorio iterations/NNN-slug criado/modificado nesta rodada.
+detect_iter_dir() {
+    local pre_file="$1"
+    local post_file="$2"
+    local path
+    while IFS= read -r path; do
+        [[ -z "$path" ]] && continue
+        if [[ "$path" == "$LOOP_DIR"/iterations/[0-9][0-9][0-9]-*/* ]]; then
+            echo "${path%/*}"
+            return 0
+        fi
+    done < <(comm -13 "$pre_file" "$post_file" 2>/dev/null || true)
+    return 1
+}
+
+# Helper: escreve prompt de validacao read-only para GPT-5.5/opencode.
+write_validation_prompt() {
+    local iter_dir="$1"
+    local iter_log="$2"
+    local out_file="$3"
+    {
+        echo "# MyFxBook v4 Blocking Validation"
+        echo ""
+        echo "Repo: $(pwd)"
+        echo "Iteration dir: ${iter_dir:-unknown}"
+        echo "Iteration log: $iter_log"
+        echo "Progress snapshot: $(progress_snapshot)"
+        echo ""
+        echo "You are GPT-5.5 acting as a READ-ONLY validator for the last Claude task."
+        echo "Do not edit files, do not commit, do not run destructive commands."
+        echo "Review the last completed task with code-review mindset: correctness, mandate compliance, tests, and documentation."
+        echo "Focus on blockers that should stop the autonomous loop. Non-blocking caveats are allowed."
+        echo ""
+        echo "Mandatory reads:"
+        echo "- CLAUDE.md"
+        echo "- $PROTOCOL_FILE"
+        echo "- $SPEC_FILE"
+        echo "- $PROGRESS_FILE"
+        echo "- $TASKS_FILE"
+        if [[ -n "$iter_dir" ]]; then
+            echo "- $iter_dir/PRE_REG.md"
+            echo "- $iter_dir/RESULTS.json"
+            echo "- $iter_dir/SUMMARY.md"
+            echo "- $iter_dir/run.log"
+        fi
+        echo ""
+        echo "Git status after task:"
+        git status --short
+        echo ""
+        echo "Git diff stat after task:"
+        git diff --stat
+        echo ""
+        echo "Return exactly one verdict line first:"
+        echo "- VALIDATION_VERDICT: PROCEED"
+        echo "- VALIDATION_VERDICT: STOP"
+        echo ""
+        echo "Then provide concise findings. Use STOP only for issues that should block the next task."
+    } > "$out_file"
+}
+
+# Helper: roda validacao bloqueante se configurada.
+run_blocking_validator() {
+    local iter_dir="$1"
+    local iter_log="$2"
+    local round="$3"
+    local stamp="$4"
+
+    if [[ -z "$VALIDATOR_MODEL" && -z "$VALIDATOR_CMD" ]]; then
+        if [[ "$VALIDATOR_REQUIRED" == "1" ]]; then
+            echo "=== VALIDATOR_REQUIRED=1 mas VALIDATOR_MODEL/VALIDATOR_CMD nao configurado. Abortando. ===" | tee -a "$RUN_LOG"
+            exit 5
+        fi
+        return 0
+    fi
+
+    local validation_dir validation_prompt validation_out
+    validation_dir="$iter_dir"
+    if [[ -z "$validation_dir" || ! -d "$validation_dir" ]]; then
+        validation_dir="$LOG_DIR"
+    fi
+    validation_prompt="$validation_dir/VALIDATION_PROMPT_round_${round}_${stamp}.md"
+    validation_out="$validation_dir/VALIDATION_round_${round}_${stamp}.md"
+
+    write_validation_prompt "$iter_dir" "$iter_log" "$validation_prompt"
+
+    echo "=== Rodando validacao bloqueante (${VALIDATOR_MODEL:-VALIDATOR_CMD}) ===" | tee -a "$RUN_LOG"
+    set +e
+    if [[ -n "$VALIDATOR_CMD" ]]; then
+        timeout "$VALIDATOR_TIMEOUT" bash -lc "$VALIDATOR_CMD" < "$validation_prompt" 2>&1 | tee "$validation_out"
+    else
+        timeout "$VALIDATOR_TIMEOUT" opencode run \
+            --model "$VALIDATOR_MODEL" \
+            --dir "$(pwd)" \
+            --dangerously-skip-permissions \
+            "$(<"$validation_prompt")" 2>&1 | tee "$validation_out"
+    fi
+    local validator_exit=${PIPESTATUS[0]}
+    set -e
+
+    if [[ "$validator_exit" -eq 124 ]]; then
+        echo "=== Validacao TIMED OUT (${VALIDATOR_TIMEOUT}s). Abortando loop. ===" | tee -a "$RUN_LOG"
+        exit 5
+    fi
+    if [[ "$validator_exit" -ne 0 ]]; then
+        echo "=== Validador saiu com codigo=$validator_exit. Abortando loop. ===" | tee -a "$RUN_LOG"
+        exit 5
+    fi
+    if grep -Eq '^VALIDATION_VERDICT:[[:space:]]*PROCEED[[:space:]]*$' "$validation_out"; then
+        echo "=== Validacao PROCEED. Loop pode continuar. ===" | tee -a "$RUN_LOG"
+        return 0
+    fi
+    if grep -Eq '^VALIDATION_VERDICT:[[:space:]]*STOP[[:space:]]*$' "$validation_out"; then
+        echo "=== Validacao STOP. Abortando loop para correcao humana/GPT-5.5. ===" | tee -a "$RUN_LOG"
+        exit 5
+    fi
+    echo "=== Validacao sem verdict parseavel. Abortando loop fail-safe. ===" | tee -a "$RUN_LOG"
+    exit 5
 }
 
 echo "=== myfxbook_v4_redesign loop @ $(date -Iseconds) ===" | tee -a "$RUN_LOG"
@@ -228,9 +359,6 @@ for round in $(seq 1 "$MAX_ITER"); do
         echo "=== ALERTA: sessao tocou paths fora da allow-list (PROTOCOL.md). Abortando loop. ===" | tee -a "$RUN_LOG"
         exit 4
     fi
-    rm -f "$PRE_SNAPSHOT" "$POST_SNAPSHOT"
-    trap - EXIT
-
     echo "After:  $(progress_snapshot)" | tee -a "$RUN_LOG"
 
     # Stop se algo failed
@@ -240,6 +368,12 @@ for round in $(seq 1 "$MAX_ITER"); do
         grep -E "^\| [0-9]{3}-[a-z0-9-]+ \| [^|]+\| FAILED " "$PROGRESS_FILE" | tee -a "$RUN_LOG"
         exit 1
     fi
+
+    ITER_DIR=$(detect_iter_dir "$PRE_SNAPSHOT" "$POST_SNAPSHOT" || true)
+    run_blocking_validator "$ITER_DIR" "$ITER_LOG" "$round" "$STAMP"
+
+    rm -f "$PRE_SNAPSHOT" "$POST_SNAPSHOT"
+    trap - EXIT
 
     # Stop se nada mais pendente
     PENDING_NOW=$(count_tasks_with_status "PENDING")
