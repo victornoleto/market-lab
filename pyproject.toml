@@ -75,6 +75,7 @@ myfxbook_scrape = [
 myfxbook_decoder = [
     "dukascopy-python>=4.0",
     "wittgenstein>=0.3",
+    "lightgbm>=4.0",            # Task 005 (adversarial validator) + 015 (LightGBM miner) [advances_fin_ml, ch.5]
 ]
 
 [project.scripts]

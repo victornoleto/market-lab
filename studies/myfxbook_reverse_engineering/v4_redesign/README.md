@@ -44,6 +44,15 @@ MAX_ITER=12 ITER_TIMEOUT=5400 CLAUDE_MODEL=sonnet bash studies/myfxbook_reverse_
 # com validacao bloqueante GPT-5.5 apos cada task
 VALIDATOR_REQUIRED=1 VALIDATOR_MODEL=openai/gpt-5.5 MAX_ITER=5 CLAUDE_MODEL=opus \
   bash studies/myfxbook_reverse_engineering/v4_redesign/loop.sh
+
+# executar as tasks com opencode/GPT em vez de Claude/Opus
+TASK_RUNNER=opencode OPENCODE_MODEL=openai/gpt-5.5 MAX_ITER=5 \
+  bash studies/myfxbook_reverse_engineering/v4_redesign/loop.sh
+
+# opencode/GPT como executor + validacao bloqueante GPT-5.5
+TASK_RUNNER=opencode OPENCODE_MODEL=openai/gpt-5.5 \
+VALIDATOR_REQUIRED=1 VALIDATOR_MODEL=openai/gpt-5.5 MAX_ITER=5 \
+  bash studies/myfxbook_reverse_engineering/v4_redesign/loop.sh
 ```
 
 ## Validacao bloqueante GPT-5.5

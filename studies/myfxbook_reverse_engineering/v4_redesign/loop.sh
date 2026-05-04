@@ -12,12 +12,15 @@
 #   MAX_ITER=5 bash studies/myfxbook_reverse_engineering/v4_redesign/loop.sh
 #   DRY_RUN=1 bash studies/myfxbook_reverse_engineering/v4_redesign/loop.sh
 #   ITER_TIMEOUT=5400 CLAUDE_MODEL=sonnet MAX_ITER=12 bash studies/myfxbook_reverse_engineering/v4_redesign/loop.sh
+#   TASK_RUNNER=opencode OPENCODE_MODEL=openai/gpt-5.5 MAX_ITER=5 bash studies/myfxbook_reverse_engineering/v4_redesign/loop.sh
 #
 # Env vars:
 #   MAX_ITER       (default 1)     hard cap em iteracoes nesta execucao
 #   ITER_TIMEOUT   (default 5400)  segundos por iteracao (90 min)
 #   COOLDOWN       (default 30)    segundos entre iteracoes
+#   TASK_RUNNER    (default claude) claude | opencode
 #   CLAUDE_MODEL   (default sonnet) opus | sonnet | haiku
+#   OPENCODE_MODEL (default openai/gpt-5.5) usado quando TASK_RUNNER=opencode
 #   DRY_RUN        (default "")    se set, imprime prompt e sai
 #   VALIDATOR_REQUIRED (default 0)  se 1, aborta quando validador nao roda/passa
 #   VALIDATOR_MODEL    (default "") modelo opencode, ex: openai/gpt-5.5
@@ -38,7 +41,9 @@ cd "$(dirname "$0")/../../.."
 : "${MAX_ITER:=1}"
 : "${ITER_TIMEOUT:=5400}"
 : "${COOLDOWN:=30}"
+: "${TASK_RUNNER:=claude}"
 : "${CLAUDE_MODEL:=sonnet}"
+: "${OPENCODE_MODEL:=openai/gpt-5.5}"
 : "${DRY_RUN:=}"
 : "${VALIDATOR_REQUIRED:=0}"
 : "${VALIDATOR_MODEL:=}"
@@ -61,7 +66,18 @@ for f in "CLAUDE.md" "jornada/README.md" "$PROGRESS_FILE" "$PROTOCOL_FILE" "$PRO
     [[ -f "$f" ]] || { echo "FATAL: missing $f" >&2; exit 1; }
 done
 if [[ -z "$DRY_RUN" ]]; then
-    command -v claude >/dev/null || { echo "FATAL: claude CLI not in PATH" >&2; exit 1; }
+    case "$TASK_RUNNER" in
+        claude)
+            command -v claude >/dev/null || { echo "FATAL: claude CLI not in PATH" >&2; exit 1; }
+            ;;
+        opencode)
+            command -v opencode >/dev/null || { echo "FATAL: TASK_RUNNER=opencode but opencode CLI not in PATH" >&2; exit 1; }
+            ;;
+        *)
+            echo "FATAL: TASK_RUNNER must be claude|opencode; got '$TASK_RUNNER'" >&2
+            exit 1
+            ;;
+    esac
     command -v timeout >/dev/null || { echo "FATAL: GNU timeout missing" >&2; exit 1; }
     if [[ -n "$VALIDATOR_MODEL" ]]; then
         command -v opencode >/dev/null || { echo "FATAL: VALIDATOR_MODEL set but opencode CLI not in PATH" >&2; exit 1; }
@@ -271,7 +287,7 @@ run_blocking_validator() {
 }
 
 echo "=== myfxbook_v4_redesign loop @ $(date -Iseconds) ===" | tee -a "$RUN_LOG"
-echo "MAX_ITER=$MAX_ITER ITER_TIMEOUT=${ITER_TIMEOUT}s COOLDOWN=${COOLDOWN}s MODEL=$CLAUDE_MODEL" | tee -a "$RUN_LOG"
+echo "MAX_ITER=$MAX_ITER ITER_TIMEOUT=${ITER_TIMEOUT}s COOLDOWN=${COOLDOWN}s RUNNER=$TASK_RUNNER CLAUDE_MODEL=$CLAUDE_MODEL OPENCODE_MODEL=$OPENCODE_MODEL" | tee -a "$RUN_LOG"
 echo "Run log: $RUN_LOG" | tee -a "$RUN_LOG"
 echo "Initial: $(progress_snapshot)" | tee -a "$RUN_LOG"
 echo "" | tee -a "$RUN_LOG"
@@ -322,9 +338,17 @@ for round in $(seq 1 "$MAX_ITER"); do
 
     # Spawn sessao limpa
     set +e
-    timeout "$ITER_TIMEOUT" claude -p "$PROMPT" \
-        --model "$CLAUDE_MODEL" \
-        --dangerously-skip-permissions 2>&1 | tee -a "$ITER_LOG"
+    if [[ "$TASK_RUNNER" == "opencode" ]]; then
+        timeout "$ITER_TIMEOUT" opencode run \
+            --model "$OPENCODE_MODEL" \
+            --dir "$(pwd)" \
+            --dangerously-skip-permissions \
+            "$PROMPT" 2>&1 | tee -a "$ITER_LOG"
+    else
+        timeout "$ITER_TIMEOUT" claude -p "$PROMPT" \
+            --model "$CLAUDE_MODEL" \
+            --dangerously-skip-permissions 2>&1 | tee -a "$ITER_LOG"
+    fi
     EXIT=${PIPESTATUS[0]}
     set -e
 

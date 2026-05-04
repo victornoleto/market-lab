@@ -1,0 +1,47 @@
+=== uv run pytest tests/myfxbook_pipeline/test_adversarial_validator.py -v ===
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.0.3, pluggy-1.6.0 -- /var/www/pessoal/ai-trade/.venv/bin/python3
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /var/www/pessoal/ai-trade
+configfile: pyproject.toml
+plugins: hypothesis-6.152.2, requests-mock-1.12.1
+collecting ... collected 5 items
+
+tests/myfxbook_pipeline/test_adversarial_validator.py::test_exact_copy_yields_auc_near_half PASSED [ 20%]
+tests/myfxbook_pipeline/test_adversarial_validator.py::test_subsample_yields_auc_near_half PASSED [ 40%]
+tests/myfxbook_pipeline/test_adversarial_validator.py::test_random_synth_yields_high_auc PASSED [ 60%]
+tests/myfxbook_pipeline/test_adversarial_validator.py::test_hour_shift_yields_high_auc PASSED [ 80%]
+tests/myfxbook_pipeline/test_adversarial_validator.py::test_determinism_same_seed_same_auc PASSED [100%]
+
+============================== 5 passed in 8.32s ===============================
+
+=== uv run pytest tests/ (full baseline) ===
+tests/test_studies_long_term_portfolio_synths.py::test_spmo_synth_no_free_lunch_check
+  /var/www/pessoal/ai-trade/studies/long_term_portfolio/synths.py:110: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+    aligned = pd.concat({"base": base_equity_returns, "umd": umd_factor_returns}, axis=1).dropna()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_macro_data_loader.py::TestLoaderSmoke::test_ebp_monthly_loads_with_expected_columns
+FAILED tests/test_macro_data_loader.py::TestLoaderSmoke::test_term_spread_daily_loads
+FAILED tests/test_macro_data_loader.py::TestLoaderSmoke::test_cape_monthly_loads
+=========== 3 failed, 795 passed, 14 skipped, 13 warnings in 22.56s ============
+
+=== uv run python -c 'import lightgbm; print(lightgbm.__version__)' ===
+4.6.0
+
+=== GPT-5.5 blocking validation correction (2026-05-04) ===
+Blocker 1: hash-paired KFold fixed exact-copy leakage but was not stratified.
+Correction: replaced it with StratifiedGroupKFold using groups=hash(feature row),
+so duplicate rows stay together and validation folds remain label-balanced.
+Added regression test:
+tests/myfxbook_pipeline/test_adversarial_validator.py::test_paired_stratified_splitter_keeps_duplicates_together_and_balanced
+
+Blocker 2: uv.lock changed but was not allow-listed in PROTOCOL/PRE_REG.
+Correction: PROTOCOL.md and PRE_REG.md now explicitly allow uv.lock for the
+task 005 LightGBM dependency update.
+
+=== uv run pytest tests/myfxbook_pipeline/test_adversarial_validator.py -q ===
+......                                                                   [100%]
+6 passed

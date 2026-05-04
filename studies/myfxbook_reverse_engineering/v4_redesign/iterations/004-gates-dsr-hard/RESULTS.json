@@ -1,0 +1,58 @@
+{
+  "task_id": "004-gates-dsr-hard",
+  "phase": "1",
+  "status": "DONE",
+  "started_utc": "2026-05-04T03:50:00Z",
+  "completed_utc": "2026-05-04T04:25:00Z",
+  "files_created": [
+    "tests/myfxbook_pipeline/test_gates_v4.py",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/004-gates-dsr-hard/PRE_REG.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/004-gates-dsr-hard/RESULTS.json",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/004-gates-dsr-hard/SUMMARY.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/004-gates-dsr-hard/run.log"
+  ],
+  "files_modified": [
+    "studies/myfxbook_reverse_engineering/shared/gates.py"
+  ],
+  "tests_added": [
+    "test_dsr_below_threshold_passes",
+    "test_dsr_above_threshold_fails_with_dsr_p_in_failed_names",
+    "test_pbo_below_threshold_passes",
+    "test_pbo_above_threshold_fails_with_pbo_in_failed_names",
+    "test_partial_pass_sharpe_ok_dsr_fail_means_total_fail",
+    "test_cagr_and_mdd_high_do_not_block_warning_only",
+    "test_wf_purged_none_does_not_block",
+    "test_wf_purged_below_6_fails",
+    "test_oos_missing_blocks_oos_gate",
+    "test_sharpe_bootstrap_ci_low_zero_blocks",
+    "test_compute_gates_backward_compat_no_new_kwargs",
+    "test_compute_gates_with_cpcv_result_populates_pbo",
+    "test_passes_mandate_24_returns_tuple_bool_list",
+    "test_module_exposes_thresholds"
+  ],
+  "tests_passing_in_new_file": 14,
+  "tests_total_in_new_file": 14,
+  "baseline_total_pass": 790,
+  "baseline_total_skip": 15,
+  "baseline_pre_existing_failures": 3,
+  "baseline_pre_existing_failure_files": [
+    "tests/test_macro_data_loader.py::TestLoaderSmoke::test_ebp_monthly_loads_with_expected_columns",
+    "tests/test_macro_data_loader.py::TestLoaderSmoke::test_term_spread_daily_loads",
+    "tests/test_macro_data_loader.py::TestLoaderSmoke::test_cape_monthly_loads"
+  ],
+  "metrics": {
+    "dsr_threshold_hard": 0.05,
+    "pbo_threshold_hard": 0.50,
+    "wf_purged_min_positive": 6,
+    "wf_purged_total_default": 8,
+    "warning_only_tiers": ["cagr", "max_drawdown"]
+  },
+  "citations": [
+    "[advances_fin_ml, p.196-211] — Sharpe bootstrap 99.9% CI gate",
+    "[advances_fin_ml, p.273-275] — DSR hard gate",
+    "[advances_fin_ml, p.208-222] — PBO via CSCV hard gate",
+    "[testing_tuning, p.148-162] — WF purgado >= 6/8",
+    "docs/investment-mandate.md §2.2/§2.3 — CAGR/MDD warning-only"
+  ],
+  "notes": "GateStats agora expoe passes_mandate_24() -> (bool, list[str]). Novos campos opcionais pbo / pbo_pass / wf_purged_* / cagr / max_drawdown ficam None quando insumos nao sao fornecidos pelo caller (Fase 1 sem mining ainda). compute_gates() preserva backward-compat: chamada sem kwargs novos retorna mesma estrutura legada. Test file test_gates.py do task spec NAO existe no repo — referencia incorreta; criamos test_gates_v4.py em tests/myfxbook_pipeline/. test_grid_gates.py (modulo distinto Plano A DORMANT em src/ai_trade/backtest/grid/gates.py) continua passando sem mudanca."
+}

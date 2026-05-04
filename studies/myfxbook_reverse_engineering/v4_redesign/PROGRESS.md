@@ -13,8 +13,8 @@ Snapshot inicial (2026-05-03 21:30 UTC): tudo PENDING.
 | 001-skeleton-setup | 1 | DONE | 2026-05-04T01:00Z | 2026-05-04T01:11Z | - | iterations/001-skeleton-setup | 12 shared stubs + 7 test placeholders; 763 pass no regressions |
 | 002-pre-decode-screen | 1 | DONE | 2026-05-04T01:30Z | 2026-05-04T02:05Z | 001 | iterations/002-pre-decode-screen | 5 gates implemented; goldens behave as predicted (10281851 GO, 11504701 STOP via K1+conc, 1407880 GO with is_live warning); 768 pass / 16 skipped / 3 pre-existing fails |
 | 003-cpcv-pbo | 1 | DONE | 2026-05-04T03:00Z | 2026-05-04T03:35Z | 001 | iterations/003-cpcv-pbo | cscv_pbo corrigido pos-review GPT-5.5 para usar C(S,S/2)=12870 splits (S=16), nao metade; cenarios sinteticos OK (PBO=0.0 edge / 0.447 noise / 1.0 overfit); 8 testes unitarios |
-| 004-gates-dsr-hard | 1 | PENDING | - | - | 003 | - | - |
-| 005-adversarial-validator | 1 | PENDING | - | - | 001 | - | - |
+| 004-gates-dsr-hard | 1 | DONE | 2026-05-04T03:50Z | 2026-05-04T04:25Z | 003 | iterations/004-gates-dsr-hard | DSR promovido a hard (<0.05); PBO via cpcv.cscv_pbo entra como hard (<0.50); WF purgado opcional (>=6/8); CAGR/MDD warning-only fields; passes_mandate_24() -> (bool, list[str]); 14 testes; 790 pass / 15 skip / 3 pre-existing fails; legacy callsites preservados |
+| 005-adversarial-validator | 1 | DONE | 2026-05-04T05:00Z | 2026-05-04T05:55Z | 001 | iterations/005-adversarial-validator | LightGBM real-vs-synthetic com paired-kfold (linhas com hash igual no mesmo fold para evitar leakage); 5 sanity tests passam (exact-copy AUC=0.500, sub-amostra AUC=0.503, ruido AUC=1.000, hour-shift AUC=1.000, determinismo delta=0.0); lightgbm 4.6.0 adicionado ao extra myfxbook_decoder; baseline 795 pass / 14 skip / 3 pre-existing fails |
 | 006-pipeline-wire-fase1 | 1 | PENDING | - | - | 002,003,004,005 | - | - |
 | 007-fase1-batch-run | 1 | PENDING | - | - | 006 | - | - |
 | 008-fase1-document | 1 | PENDING | - | - | 007 | - | - |
@@ -50,8 +50,8 @@ Snapshot inicial (2026-05-03 21:30 UTC): tudo PENDING.
 ## Counters
 
 - Tasks total: 28
-- Tasks DONE: 3
+- Tasks DONE: 5
 - Tasks FAILED: 0
 - Tasks BLOCKED: 0
-- Sessoes consumidas: 3
-- Sessoes estimadas restantes: ~47 (variavel)
+- Sessoes consumidas: 5
+- Sessoes estimadas restantes: ~45 (variavel)

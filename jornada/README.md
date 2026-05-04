@@ -29,7 +29,43 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-05-04 — MyFxBook v4 task 003 PBO/CSCV gate pronto; Plano C formal inalterado)
+## Onde estamos hoje (2026-05-04 — MyFxBook v4 task 005 adversarial validator real-vs-synthetic pronto; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 005 2026-05-04:** entreguei
+`shared/adversarial_validator.py` — classificador binario LightGBM com 10
+features trade-level (`hour_utc`, `dow`, `pair_idx`, `direction_idx`, `lots`,
+`duration_sec`, `pips`, `mfe_pips`, `mae_pips`, `entry_price_normalized`).
+AUC out-of-fold mede **identificabilidade do decode** `[advances_fin_ml,
+ch.5]`: ~0.5 = sintetico indistinguivel do real (decode bom); >0.65 = decode
+ruim. 5 sanity tests passam: copia exata AUC=0.500, sub-amostra AUC=0.503,
+ruido puro AUC=1.000, hour shift AUC=1.000, determinismo delta=0.0. Achado
+nao-obvio: StratifiedKFold padrao da AUC≈0.027 (invertido) quando synth=real
+exato porque permuta classes independentemente e LGBM memoriza features
+ID-like — substitui por paired-kfold (rows com hash igual no mesmo fold);
+registrado em DEAD_ENDS.md. `lightgbm 4.6.0` adicionado ao extra
+`myfxbook_decoder`. Baseline 795 pass / 14 skip / 3 pre-existing fails
+(+5 tests). Proxima sessao: task 006 wire pipeline Fase 1
+(pre_decode_screen + adversarial_validator + passes_mandate_24 em
+workbench/pipeline.py). Fase 1 do redesign: 5/8 DONE. Detalhe em
+`jornada/2026-05-04-0555-myfxbook-v4-task-005-adversarial.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 004 DSR/PBO viram hard gates no veredito agregado; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 004 2026-05-04:** refatorei
+`shared/gates.py` para formalizar `GateStats.passes_mandate_24() ->
+tuple[bool, list[str]]`. Cinco hard gates §2.4 agregados no contrato unico:
+Sharpe bootstrap CI 99.9% > 0, OOS bootstrap CI > 0, DSR p < 0.05 (promovido a
+hard `[advances_fin_ml, p.273-275]`), PBO < 0.50 (NOVO via `cpcv.cscv_pbo`
+`[advances_fin_ml, p.208-222]`), WF purgado >= 6/8 quando aplicavel
+`[testing_tuning, p.148-162]`. CAGR e MDD viram campos warning-only — nunca
+em failed list `[mandate §2.2/§2.3]`. `compute_gates()` ganhou kwargs opcionais
+`cpcv_result` e `wf_purged` para Fase 2B; chamada legada sem novos kwargs
+preserva contrato. 14 testes em `test_gates_v4.py`; baseline 790 pass / 15
+skip / 3 pre-existing fails — sem regressao. Proxima sessao: task 005
+adversarial-validator (LightGBM real-vs-synthetic). Fase 1 do redesign:
+4/8 DONE. Detalhe em `jornada/2026-05-04-0425-myfxbook-v4-task-004-gates-dsr-hard.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 003 PBO/CSCV gate pronto; Plano C formal inalterado)
 
 **Pipeline myfxbook v4 task 003 2026-05-04:** entreguei `shared/cpcv.py` com
 PBO/CSCV `[advances_fin_ml, p.208-222]` — modulo + 7 testes unitarios. Os 3
@@ -615,6 +651,8 @@ Termos que aparecem ao longo das entradas do changelog:
 
 ### 2026-05-04
 
+- [2026-05-04 05h55 — **MyFxBook v4 task 005 adversarial validator real-vs-synthetic pronto.** Modulo `shared/adversarial_validator.py` com classificador binario LightGBM + 10 features trade-level. AUC out-of-fold mede identificabilidade do decode `[advances_fin_ml, ch.5]`: ~0.5 indistinguivel (decode bom), >0.65 ruim. 5 sanity tests: copia exata 0.500, sub-amostra 0.503, ruido 1.000, hour shift 1.000, determinismo delta=0.0. Substituido StratifiedKFold por paired-kfold (rows com hash igual no mesmo fold) para evitar leakage que invertia AUC quando synth=real. `lightgbm 4.6.0` adicionado ao extra `myfxbook_decoder`. Baseline 795 pass / 14 skip / 3 pre-existing fails. Fase 1 do redesign: 5/8 DONE.](2026-05-04-0555-myfxbook-v4-task-005-adversarial.md)
+- [2026-05-04 04h25 — **MyFxBook v4 task 004 DSR/PBO/WF purgado viram hard gates no veredito agregado.** Refatorei `shared/gates.py` formalizando `GateStats.passes_mandate_24() -> tuple[bool, list[str]]` com cinco hard gates §2.4: Sharpe bootstrap CI 99.9% > 0, OOS bootstrap CI > 0, DSR p < 0.05 hard, PBO < 0.50 via cpcv.cscv_pbo, WF purgado >= 6/8 quando aplicavel. CAGR e MDD viram campos warning-only. 14 testes; baseline 790 pass / 15 skip / 3 pre-existing fails. Fase 1 do redesign: 4/8 DONE.](2026-05-04-0425-myfxbook-v4-task-004-gates-dsr-hard.md)
 - [2026-05-04 02h02 — **MyFxBook v4 task 003 PBO/CSCV gate pronto.** Modulo `shared/cpcv.py` implementa CSCV `[advances_fin_ml, p.208-222]` + 7 testes unitarios. Cenarios sinteticos: PBO=0.000 em edge constante, 0.509 em ruido puro, 1.000 em overfit rotativo (S=16, n_paths=6435). Gate `PBO < 0.5` complementa walk-forward (DEAD_ENDS.md rejeitou substituicao). Fase 1 do redesign: 3/8 DONE.](2026-05-04-0202-myfxbook-v4-task-003-pbo.md)
 
 ### 2026-05-03

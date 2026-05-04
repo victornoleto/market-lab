@@ -142,7 +142,8 @@ Apenas estes paths podem ser tocados (criados/modificados/deletados):
 - `tests/test_gates.py` (apenas se task 004 — refactor de gates.py)
 - `jornada/YYYY-MM-DD-HHMM-*.md` (entries de progresso)
 - `jornada/README.md` (lista atualizada)
-- `pyproject.toml` (apenas para `uv add lightgbm` — task 005, decidido em SPEC.md)
+- `pyproject.toml` e `uv.lock` (apenas para dependencia LightGBM — task 005,
+  decidido em SPEC.md)
 - `data/news/**`, `data/ticks/**` (caches Fase 2A — tasks 009, 011)
 
 Paths PROIBIDOS (mesmo com permissao do `--dangerously-skip-permissions`):

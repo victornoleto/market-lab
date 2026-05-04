@@ -5,16 +5,28 @@ Prado), same bootstrap implementation (np.random.default_rng(seed)), same
 8-equal-time-block walk-forward. Smoke test must reproduce
 `reports/06_gates_observed.md` numbers to 3 decimals.
 
-Gates per `docs/investment-mandate.md §2.4`:
-2. DSR p < 0.05  `[advances_fin_ml, p.196-202]`
-3. Walk-forward ≥ 6/8 windows positive
-4. Single-block OOS (last 12mo) Sharpe > 0 AND bootstrap 99.9% CI low > 0
-6. Bootstrap 99.9% CI low > 0 (full sample)
+Gates per `docs/investment-mandate.md §2.4` (post task 004 refactor):
 
-Skipped here (out of scope for trade-history-only analysis):
-1. PBO (no parameter grid)
-5. FWD 3mo stress (subset of OOS)
-7. Cross-lib (numpy reference only)
+| Gate | Threshold | Source |
+|---|---|---|
+| Sharpe bootstrap CI 99.9% low (full) | `> 0` | `[advances_fin_ml, p.196-211]` |
+| OOS bootstrap CI 99.9% low | `> 0` | idem |
+| DSR p (hard) | `< 0.05` | `[advances_fin_ml, p.273-275]` |
+| PBO via CSCV | `< 0.50` | `[advances_fin_ml, p.208-222]` |
+| WF purgado >= 6/8 (quando aplicavel) | `>= 6` | `[testing_tuning, p.148-162]` |
+
+Tiers warning-only (mandate §2.2/§2.3): CAGR e Max Drawdown nao bloqueiam.
+WF simples (8 blocks contiguos sem purge) preservado como diagnostico
+informacional via `n_wf_positive` / `gate3_pass` (legado).
+
+PBO **complementa** WF, nao substitui. PBO mede sorte na selecao entre N
+candidates; WF mede generalizacao temporal de UMA regra. Ver
+`v4_redesign/DEAD_ENDS.md`.
+
+Backward-compat: `compute_gates(trades_df, system_id)` chamado sem kwargs
+novos preserva o comportamento original. Novos campos opcionais
+(`pbo`, `wf_purged_*`) recebem `None` se `cpcv_result` / `wf_purged` nao
+forem fornecidos pelo caller (Fase 1 sem mining ainda).
 """
 from __future__ import annotations
 
@@ -26,6 +38,10 @@ import pandas as pd
 from scipy.stats import norm
 
 from . import config
+from .cpcv import PBO_THRESHOLD, CPCVResult
+
+DSR_HARD_THRESHOLD = 0.05  # `[advances_fin_ml, p.273-275]`
+WF_PURGED_MIN_POSITIVE = 6  # `[testing_tuning, p.148-162]` (>= 6 / 8)
 
 DEFAULT_OOS_CUTOFF = "2020-06-01"
 DEFAULT_N_BOOTSTRAP = 10_000
@@ -86,6 +102,18 @@ class GateBlock:
 
 @dataclass
 class GateStats:
+    """Mandate §2.4 hard gates + warning-only tiers.
+
+    Backward-compat: campos antigos preservados (`gate2_pass` etc.). Novos
+    campos opcionais (default `None`) sao populados por
+    `compute_gates(..., cpcv_result=..., wf_purged=...)` quando o caller
+    fornece insumo (Fase 2B+ apos LightGBM mining; ver SPEC §Decision Gate).
+
+    `passes_mandate_24()` retorna o veredito agregado dos hard gates §2.4.
+    CAGR / Max Drawdown nunca aparecem em failed_gate_names — sao tiers
+    warning-only `[docs/investment-mandate.md §2.2/§2.3]`.
+    """
+
     system_id: str
     cost_model_spread_pips: dict[str, float]
     cost_model_commission_pips: float
@@ -94,12 +122,88 @@ class GateStats:
     walkforward: pd.DataFrame  # window,start,end,n_days,sharpe,mean_net_pips
     n_wf_positive: int
     sharpe_optimistic: float
-    gate2_pass: bool  # DSR p<0.05
-    gate3_pass: bool  # WF ≥ 6/8
+    gate2_pass: bool  # DSR p<0.05 — hard `[advances_fin_ml, p.273-275]`
+    gate3_pass: bool  # WF simples >= 6/8 — informativo (nao bloqueia mandate §2.4 sozinho)
     gate4_pass: bool  # OOS Sharpe>0 AND boot CI low>0
     gate6_pass: bool  # full bootstrap CI low>0
+    pbo: float | None = None  # `[advances_fin_ml, p.208-222]`
+    pbo_pass: bool | None = None
+    wf_purged_n_positive: int | None = None  # `[testing_tuning, p.148-162]`
+    wf_purged_total: int | None = None
+    wf_purged_pass: bool | None = None
+    cagr: float | None = None  # warning-only `[mandate §2.2]`
+    max_drawdown: float | None = None  # warning-only `[mandate §2.3]`
     failed_gates: list[str] = field(default_factory=list)
     passed_gates: list[str] = field(default_factory=list)
+
+    @property
+    def dsr_p(self) -> float:
+        """DSR p-value full sample. `[advances_fin_ml, p.196-202]`."""
+        return self.full.dsr_p
+
+    @property
+    def sharpe_bootstrap_ci_low_999(self) -> float:
+        """Sharpe bootstrap 99.9% lower CI bound (full). `[advances_fin_ml, p.196-211]`."""
+        return self.full.boot_lo
+
+    @property
+    def oos_bootstrap_ci_low_999(self) -> float | None:
+        return self.oos.boot_lo if self.oos is not None else None
+
+    @property
+    def oos_sharpe(self) -> float | None:
+        return self.oos.sharpe if self.oos is not None else None
+
+    @property
+    def sharpe(self) -> float:
+        return self.full.sharpe
+
+    @property
+    def wf_simple_positive(self) -> int:
+        """Alias do `n_wf_positive` (8 blocks contiguos sem purge — informativo)."""
+        return self.n_wf_positive
+
+    @property
+    def wf_simple_total(self) -> int:
+        return len(self.walkforward) if self.walkforward is not None else 0
+
+    def passes_mandate_24(self) -> tuple[bool, list[str]]:
+        """Avaliacao agregada dos hard gates §2.4.
+
+        Returns `(passes_all, failed_gate_names)`. Hard gates avaliados:
+
+        - `sharpe_bootstrap_ci_low_999 > 0` `[advances_fin_ml, p.196-211]`
+        - `oos_bootstrap_ci_low_999 > 0`
+        - `dsr_p < 0.05` `[advances_fin_ml, p.273-275]`
+        - `pbo < 0.50` `[advances_fin_ml, p.208-222]` (opcional: `None` =
+          ainda sem mining em Fase 1, nao bloqueia)
+        - `wf_purged_n_positive >= 6` `[testing_tuning, p.148-162]`
+          (opcional: `None` = sem ohlc embargado, nao bloqueia)
+
+        CAGR / Max Drawdown sao tiers warning-only `[mandate §2.2/§2.3]` —
+        valores altos JAMAIS bloqueiam.
+        """
+        failed: list[str] = []
+        boot_lo = self.full.boot_lo
+        if boot_lo is None or not np.isfinite(boot_lo) or boot_lo <= 0:
+            failed.append("sharpe_bootstrap_ci_low_999")
+        if self.oos is None:
+            failed.append("oos_bootstrap_ci_low_999")
+        else:
+            oos_lo = self.oos.boot_lo
+            if oos_lo is None or not np.isfinite(oos_lo) or oos_lo <= 0:
+                failed.append("oos_bootstrap_ci_low_999")
+        dsr = self.full.dsr_p
+        if dsr is None or not np.isfinite(dsr) or dsr >= DSR_HARD_THRESHOLD:
+            failed.append("dsr_p")
+        if self.pbo is not None and self.pbo >= PBO_THRESHOLD:
+            failed.append("pbo")
+        if (
+            self.wf_purged_n_positive is not None
+            and self.wf_purged_n_positive < WF_PURGED_MIN_POSITIVE
+        ):
+            failed.append("wf_purged_positive")
+        return (len(failed) == 0, failed)
 
 
 def _block_stats(daily: pd.Series, n_trades: int, n_bootstrap: int, seed: int) -> GateBlock:
@@ -127,7 +231,29 @@ def compute_gates(
     seed: int = DEFAULT_BOOTSTRAP_SEED,
     n_wf_windows: int = DEFAULT_WF_WINDOWS,
     min_wf_positive: int = DEFAULT_WF_MIN_POSITIVE,
+    *,
+    cpcv_result: CPCVResult | None = None,
+    wf_purged: tuple[int, int] | None = None,
+    cagr: float | None = None,
+    max_drawdown: float | None = None,
 ) -> GateStats:
+    """Compute mandate §2.4 gates from trade ledger.
+
+    Backward-compat: chamada sem kwargs novos (ex: `_smoke_test.py`,
+    `data/trades/<id>/_convert_and_pipeline.py`) preserva o comportamento
+    pre-task-004. Os campos `pbo`, `wf_purged_*`, `cagr`, `max_drawdown`
+    ficam `None` quando os insumos correspondentes nao sao fornecidos.
+
+    Args:
+        cpcv_result: `CPCVResult` da Fase 2B (LightGBM miner -> CSCV).
+            Quando fornecido, popula `pbo` / `pbo_pass`. PBO < 0.50
+            `[advances_fin_ml, p.208-222]`.
+        wf_purged: tupla `(n_positive, total)` de walk-forward purgado com
+            embargo `[testing_tuning, p.148-162]`. Quando fornecida, popula
+            `wf_purged_*`. Hard gate exige `n_positive >= 6` (default).
+        cagr / max_drawdown: tiers warning-only `[mandate §2.2/§2.3]`.
+            Apenas para reporting; nao bloqueiam `passes_mandate_24()`.
+    """
     cm = cost_model or config.pepperstone_razor_2025()
     df = trades_df
     trades = df[df["is_trade"]].copy().sort_values("close_dt_utc").reset_index(drop=True)
@@ -169,10 +295,23 @@ def compute_gates(
     daily_opt = trades.groupby("close_date")["net_pips_optimistic"].sum()
     sharpe_opt = sharpe_annualized(daily_opt)
 
-    gate2 = full_block.dsr_p < 0.05
+    gate2 = full_block.dsr_p < DSR_HARD_THRESHOLD
     gate3 = n_pos >= min_wf_positive
     gate4 = (oos_block is not None and oos_block.sharpe > 0 and oos_block.boot_lo > 0)
     gate6 = full_block.boot_lo > 0
+
+    pbo_value: float | None = None
+    pbo_pass: bool | None = None
+    if cpcv_result is not None:
+        pbo_value = float(cpcv_result.pbo)
+        pbo_pass = pbo_value < PBO_THRESHOLD
+
+    wf_purged_pos: int | None = None
+    wf_purged_total: int | None = None
+    wf_purged_pass: bool | None = None
+    if wf_purged is not None:
+        wf_purged_pos, wf_purged_total = int(wf_purged[0]), int(wf_purged[1])
+        wf_purged_pass = wf_purged_pos >= WF_PURGED_MIN_POSITIVE
 
     gates = {
         "Gate 2 (DSR)": gate2,
@@ -196,6 +335,13 @@ def compute_gates(
         gate3_pass=gate3,
         gate4_pass=gate4,
         gate6_pass=gate6,
+        pbo=pbo_value,
+        pbo_pass=pbo_pass,
+        wf_purged_n_positive=wf_purged_pos,
+        wf_purged_total=wf_purged_total,
+        wf_purged_pass=wf_purged_pass,
+        cagr=cagr,
+        max_drawdown=max_drawdown,
         failed_gates=failed,
         passed_gates=passed,
     )
@@ -252,13 +398,41 @@ def format_gates_report(stats: GateStats, *, generated: str | None = None) -> st
     lines.append("\n## Cost-model sensitivity (optimistic 50%)")
     lines.append(f"- Sharpe under optimistic costs: {stats.sharpe_optimistic:.3f}")
 
-    lines.append("\n## Final verdict")
-    lines.append(f"- Passed: {stats.passed_gates if stats.passed_gates else 'NONE'}")
-    lines.append(f"- Failed: {stats.failed_gates if stats.failed_gates else 'NONE'}")
-    if stats.failed_gates:
-        lines.append("\n### ❌ K4 TRIGGERED — gates §2.4 FAIL on observed PnL minus cost model")
+    if stats.pbo is not None:
+        lines.append("\n## PBO — CSCV (< 0.50)")
+        lines.append(f"- PBO: {stats.pbo:.3f}")
+        lines.append(f"- **PBO verdict: {'✅ PASS' if stats.pbo_pass else '❌ FAIL'}**")
+
+    if stats.wf_purged_n_positive is not None and stats.wf_purged_total is not None:
+        lines.append("\n## WF purgado (>= 6/8)")
+        lines.append(
+            f"- Positivos: {stats.wf_purged_n_positive}/{stats.wf_purged_total}"
+        )
+        lines.append(
+            f"- **WF purgado verdict: {'✅ PASS' if stats.wf_purged_pass else '❌ FAIL'}**"
+        )
+
+    if stats.cagr is not None or stats.max_drawdown is not None:
+        lines.append("\n## Tiers warning-only (mandate §2.2/§2.3)")
+        if stats.cagr is not None:
+            lines.append(f"- CAGR: {stats.cagr:.2%}")
+        if stats.max_drawdown is not None:
+            lines.append(f"- Max Drawdown: {stats.max_drawdown:.2%}")
+        lines.append("- (Tiers nao bloqueiam veredito §2.4)")
+
+    mandate_pass, mandate_failed = stats.passes_mandate_24()
+    lines.append("\n## Final verdict — mandate §2.4")
+    lines.append(f"- Legacy gates passed: {stats.passed_gates if stats.passed_gates else 'NONE'}")
+    lines.append(f"- Legacy gates failed: {stats.failed_gates if stats.failed_gates else 'NONE'}")
+    lines.append(f"- Mandate §2.4 hard gates passes_all: {mandate_pass}")
+    lines.append(
+        f"- Mandate §2.4 failed gate names: "
+        f"{mandate_failed if mandate_failed else 'NONE'}"
+    )
+    if mandate_failed:
+        lines.append("\n### ❌ K4 TRIGGERED — mandate §2.4 hard gates FAIL")
     else:
-        lines.append("\n### ✅ Gates §2.4 PASS")
+        lines.append("\n### ✅ Mandate §2.4 hard gates PASS")
     return "\n".join(lines)
 
 

@@ -83,3 +83,23 @@ condicoes que reabririam.
   enumera tasks 009-028 com goal + citacao guia. Cada sessao detalha proxima
   antes de encerrar (chain-planning).
 - **Reabre se:** Apenas se o usuario explicitamente pedir spec completo.
+
+### StratifiedKFold em adversarial validator com possivel overlap real/synth
+- **Quando:** 2026-05-04 (task 005-adversarial-validator)
+- **Motivo:** `sklearn.model_selection.StratifiedKFold(shuffle=True,
+  random_state=seed)` aplica permutacoes INDEPENDENTES nas duas classes. Quando
+  `synthetic = real.copy()` (ou subset), a copia label=0 e a copia label=1 do
+  mesmo trade caem em folds diferentes — modelo memoriza features
+  (lots/duration/pips uniformemente distribuidos atuam como IDs) e prediz
+  INVERTIDO na validacao. AUC observado ≈ 0.027 quando esperado ≈ 0.50.
+  Diagnostico empirico em
+  `iterations/005-adversarial-validator/SUMMARY.md`.
+- **Forma final:** `_paired_stratified_kfold_indices(X, y, n_splits, seed)`
+  agrupa rows por hash de feature row (NaN → sentinel) e usa
+  `StratifiedGroupKFold`. Hashes identicos viajam juntos para o mesmo fold,
+  mas cada fold preserva balanceamento aproximado de labels. Isso evita leakage
+  quando ha overlap (sanity test "synth=real.copy()") sem abrir mao da
+  estratificacao exigida para AUC.
+- **Reabre se:** Nunca para adversarial. Para outros casos (DSR, MCPT)
+  StratifiedKFold continua adequado — leakage e especifico de real ∪ synthetic
+  com overlap.

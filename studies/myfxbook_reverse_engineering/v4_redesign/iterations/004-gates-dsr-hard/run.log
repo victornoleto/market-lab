@@ -1,0 +1,43 @@
+## test_gates_v4.py — focused
+platform linux -- Python 3.12.3, pytest-9.0.3, pluggy-1.6.0 -- /var/www/pessoal/ai-trade/.venv/bin/python3
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /var/www/pessoal/ai-trade
+configfile: pyproject.toml
+plugins: hypothesis-6.152.2, requests-mock-1.12.1
+collecting ... collected 14 items
+
+tests/myfxbook_pipeline/test_gates_v4.py::test_dsr_below_threshold_passes PASSED [  7%]
+tests/myfxbook_pipeline/test_gates_v4.py::test_dsr_above_threshold_fails_with_dsr_p_in_failed_names PASSED [ 14%]
+tests/myfxbook_pipeline/test_gates_v4.py::test_pbo_below_threshold_passes PASSED [ 21%]
+tests/myfxbook_pipeline/test_gates_v4.py::test_pbo_above_threshold_fails_with_pbo_in_failed_names PASSED [ 28%]
+tests/myfxbook_pipeline/test_gates_v4.py::test_partial_pass_sharpe_ok_dsr_fail_means_total_fail PASSED [ 35%]
+tests/myfxbook_pipeline/test_gates_v4.py::test_cagr_and_mdd_high_do_not_block_warning_only PASSED [ 42%]
+tests/myfxbook_pipeline/test_gates_v4.py::test_wf_purged_none_does_not_block PASSED [ 50%]
+tests/myfxbook_pipeline/test_gates_v4.py::test_wf_purged_below_6_fails PASSED [ 57%]
+tests/myfxbook_pipeline/test_gates_v4.py::test_oos_missing_blocks_oos_gate PASSED [ 64%]
+tests/myfxbook_pipeline/test_gates_v4.py::test_sharpe_bootstrap_ci_low_zero_blocks PASSED [ 71%]
+tests/myfxbook_pipeline/test_gates_v4.py::test_compute_gates_backward_compat_no_new_kwargs PASSED [ 78%]
+tests/myfxbook_pipeline/test_gates_v4.py::test_compute_gates_with_cpcv_result_populates_pbo PASSED [ 85%]
+tests/myfxbook_pipeline/test_gates_v4.py::test_passes_mandate_24_returns_tuple_bool_list PASSED [ 92%]
+tests/myfxbook_pipeline/test_gates_v4.py::test_module_exposes_thresholds PASSED [100%]
+
+=============================== warnings summary ===============================
+tests/myfxbook_pipeline/test_gates_v4.py::test_compute_gates_backward_compat_no_new_kwargs
+  /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/gates.py:86: RuntimeWarning: invalid value encountered in sqrt
+    se = np.sqrt((1 - skew * observed_sharpe + (kurt - 1) / 4 * observed_sharpe**2) / (n_returns - 1))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 14 passed, 1 warning in 0.87s =========================
+
+## Full baseline pytest tests/ -q
+tests/test_studies_long_term_portfolio_synths.py::test_spmo_synth_no_free_lunch_check
+  /var/www/pessoal/ai-trade/studies/long_term_portfolio/synths.py:110: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+    aligned = pd.concat({"base": base_equity_returns, "umd": umd_factor_returns}, axis=1).dropna()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_macro_data_loader.py::TestLoaderSmoke::test_ebp_monthly_loads_with_expected_columns
+FAILED tests/test_macro_data_loader.py::TestLoaderSmoke::test_term_spread_daily_loads
+FAILED tests/test_macro_data_loader.py::TestLoaderSmoke::test_cape_monthly_loads
+3 failed, 790 passed, 15 skipped, 13 warnings in 17.44s
