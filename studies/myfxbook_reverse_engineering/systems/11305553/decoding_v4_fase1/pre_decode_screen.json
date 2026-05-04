@@ -1,0 +1,14 @@
+{
+  "system_id": "11305553",
+  "decision": "STOP",
+  "k1_sanity_pass": false,
+  "mcpt_p": 0.0004997501249375312,
+  "psr_p": 2.0364331338451613e-05,
+  "concentration_top5": 0.216321524600217,
+  "is_live": true,
+  "n_trades": 575,
+  "sharpe_per_trade": 0.2271484316056709,
+  "notes": [
+    "K1 sanity FAIL: 30 doubling-after-loss trades (>5% of total); per-month max/median P95 = 30.75 (> 3.0) \u2014 within-month doubling"
+  ]
+}

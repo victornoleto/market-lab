@@ -1,0 +1,25 @@
+{
+  "conclusion": "4 systems passed the gates, above the planned 1-3 shortlist. A report task must review concentration/multiple-testing risk without changing thresholds.",
+  "failed_gate_counts": {
+    "cost_drag_ratio_gte_50pct": 3,
+    "monthly_stability_low": 5,
+    "net_expectancy_non_positive_after_2pip_cost": 4,
+    "operational_gap_gt_90d": 2,
+    "single_asset_pnl_share_gt_80pct": 13,
+    "trade_frequency_outside_5_300": 1
+  },
+  "n_pass": 4,
+  "n_stop": 17,
+  "n_systems": 21,
+  "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+  "top_pass_system_ids": [
+    "8577442",
+    "1152318",
+    "10067081"
+  ],
+  "verdict": "TOO_MANY_PASS_REQUIRES_REPORT_REVIEW"
+}
+wrote /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/_diagnostics/COPYABILITY_SCOREBOARD.json
+wrote /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/_diagnostics/COPYABILITY_SCOREBOARD.md
+{'conclusion': '4 systems passed the gates, above the planned 1-3 shortlist. A report task must review concentration/multiple-testing risk without changing thresholds.', 'failed_gate_counts': {'cost_drag_ratio_gte_50pct': 3, 'monthly_stability_low': 5, 'net_expectancy_non_positive_after_2pip_cost': 4, 'operational_gap_gt_90d': 2, 'single_asset_pnl_share_gt_80pct': 13, 'trade_frequency_outside_5_300': 1}, 'n_pass': 4, 'n_stop': 17, 'n_systems': 21, 'ranking_selection_warning': 'Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].', 'top_pass_system_ids': ['8577442', '1152318', '10067081'], 'verdict': 'TOO_MANY_PASS_REQUIRES_REPORT_REVIEW'}
+strict-ish JSON finite check OK

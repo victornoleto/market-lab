@@ -1,0 +1,37 @@
+{
+  "task_id": "030-fase3b-copyability-report",
+  "status": "DONE",
+  "started_utc": "2026-05-04T13:16:08Z",
+  "completed_utc": "2026-05-04T13:16:08Z",
+  "files_created": [
+    "studies/myfxbook_reverse_engineering/_diagnostics/COPYABILITY_REVIEW.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/030-fase3b-copyability-report/PRE_REG.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/030-fase3b-copyability-report/run.log",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/030-fase3b-copyability-report/RESULTS.json",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/030-fase3b-copyability-report/SUMMARY.md",
+    "jornada/2026-05-04-1316-myfxbook-v4-copyability-review-stop.md"
+  ],
+  "files_modified": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/PROGRESS.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/next_prompt.md",
+    "jornada/README.md"
+  ],
+  "tests_added": [],
+  "tests_passing": 0,
+  "tests_total": 0,
+  "metrics": {
+    "n_systems": 21,
+    "n_pass": 4,
+    "n_stop": 17,
+    "verdict": "TOO_MANY_PASS_REQUIRES_HUMAN_GOVERNANCE",
+    "pass_system_ids": [
+      "8577442",
+      "1152318",
+      "10067081",
+      "10062918"
+    ],
+    "main_stop_reason": "single_asset_pnl_share_gt_80pct",
+    "governance_state": "STOP_FOR_HUMAN_DECISION"
+  },
+  "notes": "Governance report written for the 4 PASS result. No top-3 selection, threshold change, monitor, paper/live, real AutoTrade, broker action, or capital allocation was performed. Verification commands are recorded in run.log."
+}

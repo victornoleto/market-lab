@@ -1,0 +1,36 @@
+{
+  "task_id": "031-fase3b-tiebreak-pre-reg",
+  "status": "DONE",
+  "started_utc": "2026-05-04T13:31:32Z",
+  "completed_utc": "2026-05-04T13:34:09Z",
+  "files_created": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/TIEBREAK_PLAN.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/031-fase3b-tiebreak-pre-reg/PRE_REG.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/031-fase3b-tiebreak-pre-reg/run.log",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/031-fase3b-tiebreak-pre-reg/RESULTS.json",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/031-fase3b-tiebreak-pre-reg/SUMMARY.md",
+    "jornada/2026-05-04-1031-myfxbook-v4-tiebreak-prereg-done.md"
+  ],
+  "files_modified": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/PROGRESS.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/next_prompt.md",
+    "jornada/README.md"
+  ],
+  "tests_added": [],
+  "tests_passing": 3,
+  "tests_total": 3,
+  "metrics": {
+    "pass_universe_locked": [
+      "8577442",
+      "1152318",
+      "10067081",
+      "10062918"
+    ],
+    "tiebreak_applied": false,
+    "top3_selected": false,
+    "monitor_started": false,
+    "paper_live_started": false,
+    "autotrade_started": false
+  },
+  "notes": "Pre-registered TIEBREAK_PLAN.md only. No tiebreak application, no top-3 selection, no monitor, no paper/live, no AutoTrade real, no threshold/weight changes."
+}

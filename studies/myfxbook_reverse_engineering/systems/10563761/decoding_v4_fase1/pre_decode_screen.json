@@ -1,0 +1,12 @@
+{
+  "system_id": "10563761",
+  "decision": "GO",
+  "k1_sanity_pass": true,
+  "mcpt_p": 0.011494252873563218,
+  "psr_p": 0.0144013457856641,
+  "concentration_top5": 0.22669088988766625,
+  "is_live": true,
+  "n_trades": 436,
+  "sharpe_per_trade": 0.11228252909124507,
+  "notes": []
+}

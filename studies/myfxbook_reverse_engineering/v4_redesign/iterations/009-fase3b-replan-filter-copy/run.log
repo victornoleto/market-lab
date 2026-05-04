@@ -1,0 +1,24 @@
+2026-05-04T12:29Z — verification
+
+Command:
+
+```bash
+test -f "studies/myfxbook_reverse_engineering/v4_redesign/FILTER_COPY_PLAN.md" && uv run python - <<'PY'
+import json
+from pathlib import Path
+path = Path('studies/myfxbook_reverse_engineering/v4_redesign/iterations/009-fase3b-replan-filter-copy/RESULTS.json')
+data = json.loads(path.read_text())
+print(f"RESULTS status={data['status']} task_id={data['task_id']} tests={data['tests_passing']}/{data['tests_total']}")
+PY
+```
+
+Output:
+
+```text
+RESULTS status=DONE task_id=009-fase3b-replan-filter-copy tests=2/2
+```
+
+Notes:
+
+- No unit tests were added because this task only created governance/reporting documents.
+- No scoring, ranking, paper/live, AutoTrade real, or `frozen_rules/` edits were performed.

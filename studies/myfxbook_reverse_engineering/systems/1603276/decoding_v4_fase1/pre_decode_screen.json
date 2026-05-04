@@ -1,0 +1,14 @@
+{
+  "system_id": "1603276",
+  "decision": "STOP",
+  "k1_sanity_pass": true,
+  "mcpt_p": 0.0004997501249375312,
+  "psr_p": 0.0,
+  "concentration_top5": 0.7593842556580014,
+  "is_live": true,
+  "n_trades": 594,
+  "sharpe_per_trade": 0.23554541216487052,
+  "notes": [
+    "concentration top-5%=0.759 >= 0.5"
+  ]
+}

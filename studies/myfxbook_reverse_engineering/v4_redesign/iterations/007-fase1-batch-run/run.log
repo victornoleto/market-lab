@@ -1,0 +1,191 @@
+[batch] 55 systems to process; force=False; timeout_per_system=300s; freq=M5; output_dir=decoding_v4_fase1
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[ 1/55]   10062918  fam=UNCATEGORIZED                score=0.040 (NONE  ) n_real=731   n_synth=58     (26.5s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[ 2/55]   10067081  fam=UNCATEGORIZED                score=0.000 (NONE  ) n_real=4000  n_synth=0      (12.0s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[ 3/55] 10192401 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[ 4/55] 10224499 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[ 5/55]   10249298  fam=SWING_TREND_MOMENTUM         score=0.000 (NONE  ) n_real=280   n_synth=0      (5.9s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[ 6/55] 10251631 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[ 7/55]   10281851  fam=H1_MOMENTUM_GOLD             score=0.252 (NONE  ) n_real=652   n_synth=1651   (8.8s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[ 8/55] 10475089 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[ 9/55]   10563761  fam=UNCATEGORIZED                score=0.211 (NONE  ) n_real=436   n_synth=2497   (4.5s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[10/55] 10585558 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[11/55] 10716398 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[12/55]   10734338  fam=UNCATEGORIZED                score=0.238 (NONE  ) n_real=591   n_synth=1648   (4.2s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[13/55] 10746260 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[14/55] 10814265 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[15/55] 10878805 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[16/55] 10970107 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[17/55]   11155858  fam=UNCATEGORIZED                score=0.400 (LOW   ) n_real=197   n_synth=106    (13.5s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[18/55] 11171596 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[19/55]   11206045  fam=UNCATEGORIZED                score=0.299 (NONE  ) n_real=212   n_synth=87     (1.2s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[20/55]   11207608  fam=H1_MOMENTUM_GOLD             score=0.209 (NONE  ) n_real=202   n_synth=7257   (5.9s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[21/55] 11305553 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[22/55] 11355455 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[23/55] 11504701 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[24/55]    1152318  fam=UNCATEGORIZED                score=0.120 (NONE  ) n_real=1637  n_synth=668    (42.8s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[25/55]   11628637  fam=UNCATEGORIZED                score=0.238 (NONE  ) n_real=232   n_synth=617    (2.8s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[26/55] 11986417 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[27/55]    1407880  fam=LATE_NY_BREAKOUT             score=0.055 (NONE  ) n_real=3304  n_synth=12366  (48.1s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[28/55] 1603276 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+INFO:DUKASCRIPT:current timestamp :2017-10-30T16:20:00
+[29/55]    1612420  fam=NEWS_RELEASE_MOMENTUM        score=0.043 (NONE  ) n_real=788   n_synth=5488   (11.4s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[30/55] 2123808 FAIL  FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/2123808.md
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[31/55] 2373850 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[32/55]    2421356  fam=H1_MOMENTUM_GOLD             score=0.359 (NONE  ) n_real=1763  n_synth=1773   (45.1s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[33/55] 2483126 FAIL  FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/2483126.md
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[34/55] 3568877 FAIL  FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/3568877.md
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[35/55] 5542332 FAIL  FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/5542332.md
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[36/55] 612872 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[37/55]    6541963  fam=H1_MOMENTUM_GOLD             score=0.221 (NONE  ) n_real=2213  n_synth=16625  (20.8s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[38/55] 6603448 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[39/55] 7603723 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[40/55] 7942220 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[41/55] 8286716 FAIL  FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/8286716.md
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[42/55] 8397136 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[43/55] 8574205 FAIL  FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/8574205.md
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[44/55]    8577442  fam=SWING_TREND_MOMENTUM         score=0.000 (NONE  ) n_real=934   n_synth=0      (28.6s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[45/55] 8577996 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[46/55] 8599269 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[47/55] 8599392 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[48/55]    8647517  fam=H1_MOMENTUM_GOLD             score=0.214 (NONE  ) n_real=1024  n_synth=25135  (20.5s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[49/55]    9375654  fam=OVERLAP_NY_LONDON_RANGE      score=0.180 (NONE  ) n_real=915   n_synth=2261   (8.0s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[50/55] 9526428 FAIL  FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/9526428.md
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[51/55] 9607500 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[52/55]    9830783  fam=UNCATEGORIZED                score=0.135 (NONE  ) n_real=4000  n_synth=164    (28.9s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[53/55]    9841939  fam=UNCATEGORIZED                score=0.000 (NONE  ) n_real=4000  n_synth=0      (1.3s)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[54/55] 9843883 SKIP PRE_SCREEN_STOP  EA rejeitado pelo pre-screen
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+[55/55]    9912554  fam=UNCATEGORIZED                score=0.025 (NONE  ) n_real=103   n_synth=3      (7.8s)
+
+[batch] DONE in 5.9 min
+[batch] 21 passed, 27 skipped, 7 failed
+[batch] summary written to /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/_diagnostics/batch_summary_fase1.json
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/gates.py:86: RuntimeWarning: invalid value encountered in sqrt
+  se = np.sqrt((1 - skew * observed_sharpe + (kurt - 1) / 4 * observed_sharpe**2) / (n_returns - 1))
+WROTE studies/myfxbook_reverse_engineering/v4_redesign/iterations/007-fase1-batch-run/RESULTS.json
+{
+  "n_total": 55,
+  "n_pre_screen_pass": 21,
+  "n_pre_screen_stop": 27,
+  "n_failed": 7,
+  "n_full_gate_survivors": 0,
+  "adversarial_auc_lt_065_count": 0,
+  "mandate_24_pass_count": 0
+}
+{'batch_summary_keys': ['approval_scope', 'blocking_pause_gates', 'enable_adversarial', 'enable_pre_screen', 'failed', 'final_ranking_allowed', 'freq', 'n_failed', 'n_passed', 'n_skipped', 'n_total', 'output_dir_name', 'passed', 'scope', 'skipped', 'strategy_decision_allowed', 'wallclock_seconds'], 'results_status': 'DONE', 'pre_decode_screen_files': 55, 'survivors': []}
+UPDATED RESULTS file lists
+
+[correction 2026-05-04T10:50Z] Validator STOP found survivor-contract ambiguity.
+[correction] User requested correction before next phase.
+[correction] Retained pre_screen_go_systems=21 as audit evidence.
+[correction] Defined downstream survivors=fase2_eligible_survivors = pre_screen_decision=GO AND adversarial_auc<0.65 AND mandate_24_pass=true.
+[correction] Result: n_fase2_eligible_survivors=0; task 008 must document Fase 1 STOP, not start Fase 2.

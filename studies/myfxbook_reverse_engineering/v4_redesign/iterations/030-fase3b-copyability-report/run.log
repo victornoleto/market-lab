@@ -1,0 +1,19 @@
+$ test -f "studies/myfxbook_reverse_engineering/_diagnostics/COPYABILITY_REVIEW.md" && uv run python - <<'PY'
+import json
+from pathlib import Path
+json.loads(Path('studies/myfxbook_reverse_engineering/v4_redesign/iterations/030-fase3b-copyability-report/RESULTS.json').read_text())
+report = Path('studies/myfxbook_reverse_engineering/_diagnostics/COPYABILITY_REVIEW.md').read_text()
+required = [
+    '## Verdict',
+    '## Resumo Dos 4 PASS',
+    '## Risco De Selecao',
+    '## Concentracao E Operacional',
+    '## Opcoes De Governanca',
+    '## Guardrails',
+]
+missing = [item for item in required if item not in report]
+if missing:
+    raise SystemExit(f'missing sections: {missing}')
+print('verification passed')
+PY
+verification passed

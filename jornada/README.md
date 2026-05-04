@@ -29,7 +29,238 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-05-04 — MyFxBook v4 task 005 adversarial validator real-vs-synthetic pronto; Plano C formal inalterado)
+## Onde estamos hoje (2026-05-04 — MyFxBook v4 encerrado sem edge operavel; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 encerrado 2026-05-04:** por decisao humana, fechei o
+estudo como `CLOSED_NO_OPERABLE_EDGE`. A engenharia reversa direta falhou: a Fase
+1 encontrou 21 `pre_screen_go_systems` audit-only, mas zero
+`fase2_eligible_survivors`, entao a trilha Fase 2A/2B/3A permanece bloqueada. O
+pivot filter-and-copy produziu apenas shortlist diagnostica (`10067081`,
+`8577442`, `10062918`), sem recomendacao operacional. Nada de monitor/cron,
+paper/live, broker/API ou AutoTrade real; capital segue 100% Plano C e Plano A
+segue DORMANT. Relatorio final em
+`studies/myfxbook_reverse_engineering/_diagnostics/PIPELINE_V4_CLOSURE.md`.
+Detalhe em `jornada/2026-05-04-1337-myfxbook-v4-closed.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 032 tiebreak aplicado; STOP humano; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 032 2026-05-04:** apliquei exatamente
+`TIEBREAK_PLAN.md` aos 4 PASS (`8577442`, `1152318`, `10067081`, `10062918`). A
+ordem diagnostica ficou `10067081`, `8577442`, `10062918`, `1152318`, e a
+shortlist diagnostica ficou `10067081`, `8577442`, `10062918`. Isso nao e
+recomendacao operacional: nao iniciei monitor/cron, AutoTrade, paper/live,
+broker integration, nem alterei regra/threshold. O loop agora esta em STOP para
+decisao humana; Plano C formal segue inalterado. Detalhe em
+`jornada/2026-05-04-1620-myfxbook-v4-tiebreak-applied.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 032 apply tiebreak autorizada; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 governanca 2026-05-04:** autorizei a task
+`032-fase3b-apply-tiebreak`, que deve aplicar exatamente `TIEBREAK_PLAN.md` aos 4
+PASS (`8577442`, `1152318`, `10067081`, `10062918`). O output permitido e apenas
+`TIEBREAK_RESULT.json/md` com ordem diagnostica e shortlist de ate 3; segue
+proibido buscar novos dados, alterar regra/threshold, iniciar monitor/cron,
+AutoTrade, paper/live ou broker integration. Plano C formal segue inalterado.
+Detalhe em `jornada/2026-05-04-1340-myfxbook-v4-apply-tiebreak-authorized.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 031 tiebreak pre-reg concluida; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 031 2026-05-04:** escrevi
+`TIEBREAK_PLAN.md`, pre-registrando uma regra lexicografica para desempatar em
+task futura os 4 sistemas `PASS` (`8577442`, `1152318`, `10067081`, `10062918`).
+Nao apliquei a regra, nao escolhi top-3, nao iniciei monitor/cron, paper/live,
+broker integration ou AutoTrade real. O racional continua sendo evitar
+data-mining/multiple-testing em selecao top-N `[evidence_based_ta, p.247-260]`
+`[advances_fin_ml, p.273-275]`, priorizando criterios operacionais ja existentes
+como atividade, custos/slippage e diversificacao `[systematic_trading, p.182-197]`.
+MCPT/PSR seguem evidencia limitada de track record `[evidence_based_ta, p.325-328]`
+`[advances_fin_ml, p.260-263]`. Proximo passo exige decisao humana: encerrar ou
+autorizar uma task separada para aplicar exatamente o plano. Plano C formal segue
+inalterado. Detalhe em
+`jornada/2026-05-04-1031-myfxbook-v4-tiebreak-prereg-done.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 031 tiebreak pre-reg autorizada; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 governanca 2026-05-04:** apos a task 030 documentar 4 PASS
+e parar para decisao humana, autorizei `031-fase3b-tiebreak-pre-reg`. A proxima
+sessao deve escrever `TIEBREAK_PLAN.md`, pre-registrando uma regra de desempate
+antes de aplica-la. Nao pode escolher top-3, iniciar monitor/AutoTrade/paper/live,
+nem mudar thresholds da task 029. O racional deve citar multiple-testing
+`[advances_fin_ml, p.273-275]`, data-mining `[evidence_based_ta, p.247-260]` e
+custos/slippage `[systematic_trading, p.182-197]`. Plano C formal segue
+inalterado. Detalhe em
+`jornada/2026-05-04-1325-myfxbook-v4-tiebreak-prereg-authorized.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 copyability review em STOP humano; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 030 2026-05-04:** escrevi
+`COPYABILITY_REVIEW.md` para governanca do resultado da task 029. O estudo tem 4
+systems `PASS` entre 21 EAs audit-only (`8577442`, `1152318`, `10067081`,
+`10062918`), acima da shortlist planejada de 1-3. A decisao e STOP para humano:
+nao escolhi top-3, nao iniciei monitor, AutoTrade, paper/live ou reativacao do
+Plano A. O report explicita multiple-testing `[advances_fin_ml, p.273-275]`,
+data-mining `[evidence_based_ta, p.247-260]`, MCPT/PSR como evidencia limitada
+`[evidence_based_ta, p.325-328]` `[advances_fin_ml, p.260-263]` e custo/slippage
+`[systematic_trading, p.182-197]`. Proxima acao exige decisao humana: encerrar,
+autorizar desempate pre-registrado, ou autorizar plano futuro read-only/manual.
+Plano C formal segue inalterado. Detalhe em
+`jornada/2026-05-04-1316-myfxbook-v4-copyability-review-stop.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 030 copyability report autorizada; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 governanca 2026-05-04:** apos task 029 gerar 4 `PASS`
+(acima da shortlist planejada de 1-3), autorizei apenas a task
+`030-fase3b-copyability-report`. Ela deve documentar os 4 PASS, risco de top-N
+entre 21 EAs `[advances_fin_ml, p.273-275]`, data-mining `[evidence_based_ta,
+p.247-260]`, custos/slippage `[systematic_trading, p.182-197]` e opcoes humanas.
+Nao pode escolher top-3 automaticamente, iniciar monitor, AutoTrade ou paper/live.
+Plano C formal segue inalterado. Detalhe em
+`jornada/2026-05-04-1255-myfxbook-v4-copyability-report-authorized.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 029 copyability score rodou, exige report/STOP; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 029 2026-05-04:** rodei o scoring offline de
+copiabilidade nos 21 `pre_screen_go_systems` audit-only, aplicando sem alteracao
+os gates/pesos de `FILTER_COPY_PLAN.md`. Resultado: 4 `PASS` e 17 `STOP`, com
+veredito `TOO_MANY_PASS_REQUIRES_REPORT_REVIEW` porque a shortlist planejada era
+1-3 sistemas. O principal STOP foi concentracao single-asset >80% em 13 sistemas;
+custos/slippage de 2.0 pips tambem bloquearam candidatos conforme
+`[systematic_trading, p.182-197]`. A proxima sessao deve ser report/STOP de
+governanca, sem monitor, paper/live, AutoTrade real ou relaxar thresholds. Plano
+C 100%, Plano A DORMANT. Detalhe em
+`jornada/2026-05-04-0948-myfxbook-v4-task-029-copyability-score.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 029 copyability score autorizada; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 governanca 2026-05-04:** para evitar colisao com a antiga
+`009-news-calendar` bloqueada, mantive a task 009 historica do pivot como esta e
+adicionei a proxima task como `029-fase3b-copyability-score`. Ela deve implementar
+offline exatamente os gates/pesos de `FILTER_COPY_PLAN.md` nos 21
+`pre_screen_go_systems`, gerando `COPYABILITY_SCOREBOARD.json/md`. O resultado e
+diagnostico, nao deploy: sem paper/live, sem AutoTrade real, sem `frozen_rules/`,
+Plano C 100%. Detalhe em
+`jornada/2026-05-04-1135-myfxbook-v4-copyability-score-authorized.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 filter-and-copy tem contrato, ainda sem scoring; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 009 2026-05-04:** escrevi `FILTER_COPY_PLAN.md`, o
+contrato do pivot Fase 3b/filter-and-copy. Ele usa exatamente os 21
+`pre_screen_go_systems` como universo audit-only, trava gates de copiabilidade e
+formula de `copyability_score` antes de qualquer ranking, e preserva sem
+paper/live, sem AutoTrade real e sem reativar Plano A. As decisoes citam MCPT
+`[evidence_based_ta, p.325-328]`, PSR `[advances_fin_ml, p.260-263]`, multiple
+testing/DSR `[advances_fin_ml, p.273-275]`, custos/slippage `[systematic_trading,
+p.182-197]` e data-mining `[evidence_based_ta, p.247-260]`. Nenhum scoring foi
+executado; a proxima task do pivot precisa ser adicionada/autorizada. Detalhe em
+`jornada/2026-05-04-1228-myfxbook-v4-filter-copy-plan.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 pivot para filter-and-copy autorizado; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 pivot 2026-05-04:** apos Fase 1 STOP, autorizei continuar
+por Fase 3b/filter-and-copy com contrato novo. Fase 2A/decode-self segue bloqueada
+porque `n_fase2_eligible_survivors=0`; os 21 `pre_screen_go_systems` viram apenas
+universo audit-only de copiabilidade, nao survivors de decode. A nova task
+elegivel e `009-fase3b-replan-filter-copy`, que deve escrever
+`FILTER_COPY_PLAN.md` antes de qualquer ranking, citando MCPT `[evidence_based_ta,
+p.325-328]`, PSR `[advances_fin_ml, p.260-263]`, DSR/multiple testing
+`[advances_fin_ml, p.273-275]` e custos/slippage `[systematic_trading,
+p.182-197]`. Plano C formal segue inalterado, sem paper/live e sem AutoTrade
+real. Detalhe em `jornada/2026-05-04-1115-myfxbook-v4-pivot-filter-copy.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 Fase 1 STOP codificado no PROGRESS; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 correcao de estado 2026-05-04:** a validacao bloqueante
+apos a task 008 apontou que `next_prompt.md` bloqueava 009, mas `PROGRESS.md`
+ainda deixava `009-news-calendar` automaticamente elegivel (`PENDING` dependendo
+de `008 DONE`). Corrigi o estado marcando `009-014` como `BLOCKED` por Fase 1
+STOP (`n_fase2_eligible_survivors=0`). Agora nenhuma task PENDING tem dependencias
+todas `DONE` ate nova decisao humana. Plano C formal segue inalterado, sem
+paper/live e sem `frozen_rules/`. Detalhe em
+`jornada/2026-05-04-1058-myfxbook-v4-fase1-stop-state-fix.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 Fase 1 concluida em STOP; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 008 2026-05-04:** documentei a Fase 1 em
+`_diagnostics/PIPELINE_V4_FASE1_REPORT.md`. Resultado final: 55 systems no batch,
+21 `pre_screen_go_systems` audit-only, 27 `PRE_SCREEN_STOP`, 7 falhas por
+`frozen_rules/<id>.md` ausente, e zero `fase2_eligible_survivors`. Os 21 GO passam
+o track record/pre-screen `[evidence_based_ta, p.325-328]`, mas nenhum passa
+simultaneamente adversarial AUC `<0.65` `[advances_fin_ml, ch.5]` e
+`mandate_24`/DSR hard gates `[advances_fin_ml, p.273-275]`; PBO segue
+opcional/ausente nesta fase `[advances_fin_ml, p.208-222]`. Decision Gate Fase 1 =
+STOP: nao iniciar tasks 009-013 sem decisao humana para pivot Fase 3b ou
+encerramento. Plano C formal segue inalterado, sem paper/live. Detalhe em
+`jornada/2026-05-04-1053-myfxbook-v4-fase1-complete.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 007 corrigida: zero eligible para Fase 2; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 007 correcao final 2026-05-04:** por decisao humana,
+separei os 21 systems com `pre_screen_decision=GO` (evidencia audit-only do
+pre-screen `[evidence_based_ta, p.325-328]`) do universo downstream. Agora
+`survivors` e alias de `fase2_eligible_survivors`: `pre_screen_decision=GO AND
+adversarial_auc<0.65 AND mandate_24_pass=true`. Como nenhum system passa
+adversarial/`mandate_24` (`adversarial_auc` calculavel ~1.0 `[advances_fin_ml,
+ch.5]`; DSR/hard gates falham `[advances_fin_ml, p.273-275]`), `survivors=[]` e
+task 008 deve documentar Fase 1 STOP, nao iniciar Fase 2A automaticamente. Plano C
+formal segue inalterado, sem paper/live e sem `frozen_rules/`. Detalhe em
+`jornada/2026-05-04-1050-myfxbook-v4-task-007-survivor-contract-corrected.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 007 FAILED por survivors demais; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 007 correcao 2026-05-04:** a validacao bloqueante
+apontou erro de contrato: survivors da task 007 eram os systems com
+`pre_screen_decision=GO`, nao o criterio adicional adversarial+`mandate_24`.
+Corrigi `RESULTS.json`: existem 21 survivors pelo contrato
+`[evidence_based_ta, p.325-328]`; `n_full_gate_survivors=0` fica apenas como
+diagnostico adicional (`adversarial_auc` ~1.0 `[advances_fin_ml, ch.5]` e nenhum
+`mandate_24`/DSR pass `[advances_fin_ml, p.273-275]`). Como o aceite exigia
+`N<=10`, task 007 agora esta `FAILED` e `next_prompt.md` impede iniciar 008 sem
+decisao humana. Plano C formal segue inalterado, sem paper/live e sem
+`frozen_rules/`. Detalhe em
+`jornada/2026-05-04-1045-myfxbook-v4-task-007-validation-stop.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 007 batch Fase 1 sem sobrevivente completo; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 007 2026-05-04:** rodei o batch Fase 1 em 55
+systems disponiveis com pre-screen, adversarial real-vs-synthetic e `mandate_24`.
+Resultado: 21 EAs passaram o pre-screen, 27 pararam em `PRE_SCREEN_STOP`, 7 nao
+rodaram por `frozen_rules/<id>.md` ausente, e **zero** sobreviveram ao criterio
+completo pre-registrado (`adversarial_auc < 0.65` + `mandate_24_pass=true`).
+Todos os AUC calculaveis ficaram ~1.0 `[advances_fin_ml, ch.5]`, indicando que
+os synthetics ainda sao trivialmente distinguiveis do real; DSR/mandate hard gate
+tambem nao passou `[advances_fin_ml, p.273-275]`. Plano C segue 100%, Plano A
+DORMANT, sem paper/live e sem `frozen_rules/`. Detalhe em
+`jornada/2026-05-04-1029-myfxbook-v4-task-007-fase1-batch.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 006 corrigida apos validacao STOP; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 006 correcao 2026-05-04:** a validacao encontrou
+dois bloqueios na Fase 1: pre-screen STOP ainda podia continuar e o batch nao
+aceitava as flags novas. Corrigi `--enable-pre-screen` para abortar cedo por
+padrao em `decision=STOP` com `PRE_SCREEN_STOP`/"EA rejeitado pelo pre-screen",
+e pluguei `--enable-pre-screen` + `--enable-adversarial` em
+`run_replicator_batch.py`, acumulando os novos campos no `batch_summary.json`.
+Teste focado: `tests/myfxbook_pipeline` 38 pass / 4 skip. Plano C formal segue
+inalterado, sem paper/live e sem `frozen_rules/`. Detalhe em
+`jornada/2026-05-04-0630-myfxbook-v4-task-006-validation-stop-fix.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 006 Fase 1 plugada no pipeline; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 006 2026-05-04:** pluguei os gates da Fase 1 em
+`workbench/pipeline.py` como flags opt-in: `--enable-pre-screen`,
+`--enable-adversarial`, alias `--system-id` e `--out-dir`. Sem flags, o schema
+legado de `pipeline_summary.json` fica preservado.
+No smoke `1407880`, `pre_decode_screen.json` foi gerado com `decision=GO` e Demo
+warning-only; `adversarial_auc=1.0` mostrou synthetic trivialmente distinguivel
+do real `[advances_fin_ml, ch.5]`; `mandate_24_pass=false` por bootstrap full,
+bootstrap OOS e `dsr_p` hard gate `[advances_fin_ml, p.273-275]`. PBO continua
+opcional nesta fase porque `cpcv_result` so vem depois `[advances_fin_ml,
+p.208-222]`. Testes: `tests/myfxbook_pipeline` 36 pass / 4 skip; baseline geral
+799 pass / 14 skip / 3 falhas preexistentes em macro cache. Proxima sessao:
+task 007 batch Fase 1 para listar sobreviventes. Detalhe em
+`jornada/2026-05-04-0326-myfxbook-v4-task-006-pipeline-wire.md`.
+
+## Onde estavamos antes (2026-05-04 — MyFxBook v4 task 005 adversarial validator real-vs-synthetic pronto; Plano C formal inalterado)
 
 **Pipeline myfxbook v4 task 005 2026-05-04:** entreguei
 `shared/adversarial_validator.py` — classificador binario LightGBM com 10
@@ -651,6 +882,13 @@ Termos que aparecem ao longo das entradas do changelog:
 
 ### 2026-05-04
 
+- [2026-05-04 12h55 — **MyFxBook v4 task 030 copyability report autorizada.** A task 029 teve 4 PASS, acima da shortlist planejada de 1-3. Proxima task: `030-fase3b-copyability-report`, apenas para documentar/revisar os 4 PASS, multiple-testing `[advances_fin_ml, p.273-275]`, data-mining `[evidence_based_ta, p.247-260]` e custos/slippage `[systematic_trading, p.182-197]`. Sem desempate automatico, sem monitor, sem AutoTrade, sem paper/live.](2026-05-04-1255-myfxbook-v4-copyability-report-authorized.md)
+- [2026-05-04 11h35 — **MyFxBook v4 task 029 copyability score autorizada.** Sem renomear a task 009 historica, a proxima task do pivot vira `029-fase3b-copyability-score` para evitar colisao com `009-news-calendar`. Vai gerar scoring offline dos 21 `pre_screen_go_systems` usando `FILTER_COPY_PLAN.md`; sem paper/live, sem AutoTrade real, sem `frozen_rules/`, Plano C 100%.](2026-05-04-1135-myfxbook-v4-copyability-score-authorized.md)
+- [2026-05-04 11h15 — **MyFxBook v4 pivot para filter-and-copy autorizado.** Fase 2A/decode-self segue bloqueada (`n_fase2_eligible_survivors=0`), mas o loop continua por `009-fase3b-replan-filter-copy`: contrato novo para avaliar copiabilidade dos 21 `pre_screen_go_systems` audit-only. Sem paper/live, sem AutoTrade real, sem `frozen_rules/`. Citacoes alvo: MCPT `[evidence_based_ta, p.325-328]`, PSR `[advances_fin_ml, p.260-263]`, DSR/multiple testing `[advances_fin_ml, p.273-275]`, custos/slippage `[systematic_trading, p.182-197]`.](2026-05-04-1115-myfxbook-v4-pivot-filter-copy.md)
+- [2026-05-04 10h58 — **MyFxBook v4 Fase 1 STOP codificado no PROGRESS.** Validacao bloqueante apontou que `009-news-calendar` ainda era elegivel em `PROGRESS.md` apesar do STOP no prompt. Corrigido: `009-014` marcadas como `BLOCKED` por `n_fase2_eligible_survivors=0`; nenhuma task PENDING tem dependencias todas DONE ate nova decisao humana. Plano C 100%, sem paper/live e sem `frozen_rules/`.](2026-05-04-1058-myfxbook-v4-fase1-stop-state-fix.md)
+- [2026-05-04 10h53 — **MyFxBook v4 Fase 1 concluida em STOP.** Report `_diagnostics/PIPELINE_V4_FASE1_REPORT.md` consolida 55 systems: 21 `pre_screen_go_systems` audit-only `[evidence_based_ta, p.325-328]`, 27 `PRE_SCREEN_STOP`, 7 falhas por `frozen_rules/<id>.md` ausente, e `fase2_eligible_survivors=[]`. Nenhum GO passa adversarial AUC `<0.65` `[advances_fin_ml, ch.5]` mais `mandate_24`/DSR `[advances_fin_ml, p.273-275]`; PBO segue ausente/opcional nesta fase `[advances_fin_ml, p.208-222]`. Decision Gate Fase 1 = STOP; nao iniciar 009-013 sem decisao humana para pivot Fase 3b ou encerramento.](2026-05-04-1053-myfxbook-v4-fase1-complete.md)
+- [2026-05-04 10h50 — **MyFxBook v4 task 007 contrato de survivors corrigido.** Por decisao humana, `pre_screen_go_systems` (21 systems) virou evidencia audit-only `[evidence_based_ta, p.325-328]`; downstream `survivors` agora e alias de `fase2_eligible_survivors = pre_screen_decision=GO AND adversarial_auc<0.65 AND mandate_24_pass=true`. Resultado: `n_fase2_eligible_survivors=0`; task 008 deve documentar Fase 1 STOP, sem iniciar Fase 2A. Citacoes: adversarial `[advances_fin_ml, ch.5]`, DSR/hard gates `[advances_fin_ml, p.273-275]`, PBO ausente/opcional `[advances_fin_ml, p.208-222]`. Plano C 100%, sem paper/live.](2026-05-04-1050-myfxbook-v4-task-007-survivor-contract-corrected.md)
+- [2026-05-04 10h29 — **MyFxBook v4 task 007 batch Fase 1 fecha sem sobrevivente completo.** Batch em 55 systems com pre-screen, adversarial e `mandate_24`: 21 `GO`, 27 `PRE_SCREEN_STOP`, 7 falhas por `frozen_rules/<id>.md` ausente. Sob criterio completo pre-registrado (`adversarial_auc < 0.65` `[advances_fin_ml, ch.5]` + `mandate_24_pass=true` `[advances_fin_ml, p.273-275]`), survivors = 0. MCPT usado no pre-screen `[evidence_based_ta, p.325-328]`; PBO ainda ausente/opcional `[advances_fin_ml, p.208-222]`. Plano C segue 100%, Plano A DORMANT, sem paper/live.](2026-05-04-1029-myfxbook-v4-task-007-fase1-batch.md)
 - [2026-05-04 05h55 — **MyFxBook v4 task 005 adversarial validator real-vs-synthetic pronto.** Modulo `shared/adversarial_validator.py` com classificador binario LightGBM + 10 features trade-level. AUC out-of-fold mede identificabilidade do decode `[advances_fin_ml, ch.5]`: ~0.5 indistinguivel (decode bom), >0.65 ruim. 5 sanity tests: copia exata 0.500, sub-amostra 0.503, ruido 1.000, hour shift 1.000, determinismo delta=0.0. Substituido StratifiedKFold por paired-kfold (rows com hash igual no mesmo fold) para evitar leakage que invertia AUC quando synth=real. `lightgbm 4.6.0` adicionado ao extra `myfxbook_decoder`. Baseline 795 pass / 14 skip / 3 pre-existing fails. Fase 1 do redesign: 5/8 DONE.](2026-05-04-0555-myfxbook-v4-task-005-adversarial.md)
 - [2026-05-04 04h25 — **MyFxBook v4 task 004 DSR/PBO/WF purgado viram hard gates no veredito agregado.** Refatorei `shared/gates.py` formalizando `GateStats.passes_mandate_24() -> tuple[bool, list[str]]` com cinco hard gates §2.4: Sharpe bootstrap CI 99.9% > 0, OOS bootstrap CI > 0, DSR p < 0.05 hard, PBO < 0.50 via cpcv.cscv_pbo, WF purgado >= 6/8 quando aplicavel. CAGR e MDD viram campos warning-only. 14 testes; baseline 790 pass / 15 skip / 3 pre-existing fails. Fase 1 do redesign: 4/8 DONE.](2026-05-04-0425-myfxbook-v4-task-004-gates-dsr-hard.md)
 - [2026-05-04 02h02 — **MyFxBook v4 task 003 PBO/CSCV gate pronto.** Modulo `shared/cpcv.py` implementa CSCV `[advances_fin_ml, p.208-222]` + 7 testes unitarios. Cenarios sinteticos: PBO=0.000 em edge constante, 0.509 em ruido puro, 1.000 em overfit rotativo (S=16, n_paths=6435). Gate `PBO < 0.5` complementa walk-forward (DEAD_ENDS.md rejeitou substituicao). Fase 1 do redesign: 3/8 DONE.](2026-05-04-0202-myfxbook-v4-task-003-pbo.md)

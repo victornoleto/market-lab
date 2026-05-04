@@ -1,0 +1,14 @@
+{
+  "system_id": "10746260",
+  "decision": "STOP",
+  "k1_sanity_pass": false,
+  "mcpt_p": 0.0004997501249375312,
+  "psr_p": 5.344078812807851e-08,
+  "concentration_top5": 0.3171359121531654,
+  "is_live": true,
+  "n_trades": 636,
+  "sharpe_per_trade": 0.20042078067004454,
+  "notes": [
+    "K1 sanity FAIL: per-month max/median P95 = 128.08 (> 3.0) \u2014 within-month doubling"
+  ]
+}

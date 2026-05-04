@@ -1,0 +1,16 @@
+CHECK report_exists: True studies/myfxbook_reverse_engineering/_diagnostics/PIPELINE_V4_FASE1_REPORT.md
+CHECK jornada_entry_exists: True jornada/2026-05-04-1053-myfxbook-v4-fase1-complete.md
+CHECK next_prompt_exists: True studies/myfxbook_reverse_engineering/v4_redesign/next_prompt.md
+CHECK results_exists: True studies/myfxbook_reverse_engineering/v4_redesign/iterations/008-fase1-document/RESULTS.json
+CHECK summary_exists: True studies/myfxbook_reverse_engineering/v4_redesign/iterations/008-fase1-document/SUMMARY.md
+CHECK pre_reg_exists: True studies/myfxbook_reverse_engineering/v4_redesign/iterations/008-fase1-document/PRE_REG.md
+CHECK results_parseable: True status=DONE decision_gate=STOP checks=15/15
+CHECK report_has_Section_1: True
+CHECK report_has_Section_2: True
+CHECK report_has_Section_3: True
+CHECK report_has_Section_4: True
+CHECK report_has_Section_5: True
+CHECK next_prompt_stop_decisao: True
+CHECK next_prompt_no_auto_task_009: True
+CHECK progress_008_done: True
+CHECK progress_gate_stop: True

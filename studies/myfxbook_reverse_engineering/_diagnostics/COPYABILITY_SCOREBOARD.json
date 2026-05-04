@@ -1,0 +1,1254 @@
+{
+  "contract": "FILTER_COPY_PLAN.md gates and weights, unchanged after ranking",
+  "generated_utc": "2026-05-04T12:50:17Z",
+  "summary": {
+    "conclusion": "4 systems passed the gates, above the planned 1-3 shortlist. A report task must review concentration/multiple-testing risk without changing thresholds.",
+    "failed_gate_counts": {
+      "cost_drag_ratio_gte_50pct": 3,
+      "monthly_stability_low": 5,
+      "net_expectancy_non_positive_after_2pip_cost": 4,
+      "operational_gap_gt_90d": 2,
+      "single_asset_pnl_share_gt_80pct": 13,
+      "trade_frequency_outside_5_300": 1
+    },
+    "n_pass": 4,
+    "n_stop": 17,
+    "n_systems": 21,
+    "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+    "top_pass_system_ids": [
+      "8577442",
+      "1152318",
+      "10067081"
+    ],
+    "verdict": "TOO_MANY_PASS_REQUIRES_REPORT_REVIEW"
+  },
+  "systems": [
+    {
+      "components": {
+        "concentration_component": 0.621215,
+        "cost_component": 0.889335,
+        "drawdown_component": 0.901928,
+        "frequency_component": 0.5,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.25,
+        "psr_component": 1.0,
+        "stability_component": 0.9
+      },
+      "copyability_score": 0.892554,
+      "copyability_status": "PASS",
+      "failed_copyability_gates": [],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.0398,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999",
+          "dsr_p"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 18.843092,
+        "cost_drag_ratio": 0.055332,
+        "first_close": "2022-08-23T16:45:22+00:00",
+        "historical_max_drawdown": 1182.8,
+        "last_close": "2025-11-19T03:05:22+00:00",
+        "max_no_trade_gap_days": 76.81831,
+        "median_monthly_trades": 17.5,
+        "n_symbols": 2,
+        "n_symbols_with_positive_pnl": 2,
+        "n_trades": 731,
+        "positive_month_ratio": 0.9,
+        "recent_90d_drawdown": 145.0,
+        "recent_dd_ratio": 0.12259,
+        "top_symbol": "EURCHF",
+        "top_symbol_pnl_share": 0.575223,
+        "total_cost_pips": 1462.0,
+        "total_gross_pips": 15236.3,
+        "total_net_pips": 13774.3
+      },
+      "pre_screen": {
+        "concentration_top5": 0.18939271061287327,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 4.263256414560601e-14
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "10062918"
+    },
+    {
+      "components": {
+        "concentration_component": 0.340589,
+        "cost_component": 0.708703,
+        "drawdown_component": 0.642419,
+        "frequency_component": 0.5,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 1.0,
+        "psr_component": 1.0,
+        "stability_component": 1.0
+      },
+      "copyability_score": 0.896255,
+      "copyability_status": "PASS",
+      "failed_copyability_gates": [],
+      "fase1_diagnostics": {
+        "adversarial_auc": null,
+        "fidelity_score": 0.0,
+        "mandate_24_failed": [],
+        "mandate_24_pass": null
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 5.000975,
+        "cost_drag_ratio": 0.145648,
+        "first_close": "2025-04-01T10:45:02+00:00",
+        "historical_max_drawdown": 1079.7,
+        "last_close": "2026-04-30T22:10:51+00:00",
+        "max_no_trade_gap_days": 3.923044,
+        "median_monthly_trades": 294.0,
+        "n_symbols": 6,
+        "n_symbols_with_positive_pnl": 6,
+        "n_trades": 4000,
+        "positive_month_ratio": 1.0,
+        "recent_90d_drawdown": 482.6,
+        "recent_dd_ratio": 0.446976,
+        "top_symbol": "USDJPY",
+        "top_symbol_pnl_share": 0.415179,
+        "total_cost_pips": 8000.0,
+        "total_gross_pips": 28003.9,
+        "total_net_pips": 20003.9
+      },
+      "pre_screen": {
+        "concentration_top5": 0.3297055456525802,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 0.0
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "10067081"
+    },
+    {
+      "components": {
+        "concentration_component": 0.291469,
+        "cost_component": 0.949353,
+        "drawdown_component": 0.93686,
+        "frequency_component": 0.5,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 0.999999,
+        "stability_component": 0.795918
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "operational_gap_gt_90d",
+        "single_asset_pnl_share_gt_80pct"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": null,
+        "fidelity_score": 0.0,
+        "mandate_24_failed": [],
+        "mandate_24_pass": null
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 46.593143,
+        "cost_drag_ratio": 0.025323,
+        "first_close": "2022-04-20T12:09:58+00:00",
+        "historical_max_drawdown": 1985.43,
+        "last_close": "2026-04-29T21:45:21+00:00",
+        "max_no_trade_gap_days": 118.240567,
+        "median_monthly_trades": 5.0,
+        "n_symbols": 1,
+        "n_symbols_with_positive_pnl": 1,
+        "n_trades": 280,
+        "positive_month_ratio": 0.795918,
+        "recent_90d_drawdown": 156.7,
+        "recent_dd_ratio": 0.078925,
+        "top_symbol": "EURUSD",
+        "top_symbol_pnl_share": 1.0,
+        "total_cost_pips": 560.0,
+        "total_gross_pips": 13606.08,
+        "total_net_pips": 13046.08
+      },
+      "pre_screen": {
+        "concentration_top5": 0.3542653293283722,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 5.998323659994753e-08
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "10249298"
+    },
+    {
+      "components": {
+        "concentration_component": 0.111503,
+        "cost_component": 0.939378,
+        "drawdown_component": 0.2,
+        "frequency_component": 0.5,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 1.0,
+        "stability_component": 0.897436
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "single_asset_pnl_share_gt_80pct"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.2518,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 49.788451,
+        "cost_drag_ratio": 0.030311,
+        "first_close": "2023-02-14T15:32:57+00:00",
+        "historical_max_drawdown": 754.07,
+        "last_close": "2026-04-30T11:04:07+00:00",
+        "max_no_trade_gap_days": 8.346192,
+        "median_monthly_trades": 16.0,
+        "n_symbols": 1,
+        "n_symbols_with_positive_pnl": 1,
+        "n_trades": 652,
+        "positive_month_ratio": 0.897436,
+        "recent_90d_drawdown": 754.07,
+        "recent_dd_ratio": 1.0,
+        "top_symbol": "XAUUSD",
+        "top_symbol_pnl_share": 1.0,
+        "total_cost_pips": 1304.0,
+        "total_gross_pips": 33766.07,
+        "total_net_pips": 32462.07
+      },
+      "pre_screen": {
+        "concentration_top5": 0.4442484285410124,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 0.0
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "10281851"
+    },
+    {
+      "components": {
+        "concentration_component": 0.546618,
+        "cost_component": 0.150454,
+        "drawdown_component": 0.953318,
+        "frequency_component": 1.0,
+        "live_component": 1.0,
+        "mcpt_component": 0.770115,
+        "multi_asset_component": 0.0,
+        "psr_component": 0.711973,
+        "stability_component": 0.428571
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "monthly_stability_low",
+        "net_expectancy_non_positive_after_2pip_cost"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 0.9999908045977012,
+        "fidelity_score": 0.2108,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": -0.574633,
+        "cost_drag_ratio": 0.424773,
+        "first_close": "2024-05-13T10:14:27+00:00",
+        "historical_max_drawdown": 548.39,
+        "last_close": "2026-01-29T16:36:11+00:00",
+        "max_no_trade_gap_days": 7.821007,
+        "median_monthly_trades": 20.0,
+        "n_symbols": 1,
+        "n_symbols_with_positive_pnl": 0,
+        "n_trades": 436,
+        "positive_month_ratio": 0.428571,
+        "recent_90d_drawdown": 32.0,
+        "recent_dd_ratio": 0.058353,
+        "top_symbol": "BTCUSD",
+        "top_symbol_pnl_share": 0.0,
+        "total_cost_pips": 872.0,
+        "total_gross_pips": 621.46,
+        "total_net_pips": -250.54
+      },
+      "pre_screen": {
+        "concentration_top5": 0.22669088988766625,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.011494252873563218,
+        "notes": [],
+        "psr_p": 0.0144013457856641
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "10563761"
+    },
+    {
+      "components": {
+        "concentration_component": 0.459173,
+        "cost_component": 0.873657,
+        "drawdown_component": 0.998482,
+        "frequency_component": 1.0,
+        "live_component": 0.5,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 1.0,
+        "stability_component": 0.724138
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "single_asset_pnl_share_gt_80pct"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 0.9999948638931689,
+        "fidelity_score": 0.2385,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 17.621032,
+        "cost_drag_ratio": 0.063171,
+        "first_close": "2024-01-26T11:45:57+00:00",
+        "historical_max_drawdown": 827.33,
+        "last_close": "2026-05-01T15:33:53+00:00",
+        "max_no_trade_gap_days": 6.534977,
+        "median_monthly_trades": 21.0,
+        "n_symbols": 1,
+        "n_symbols_with_positive_pnl": 1,
+        "n_trades": 591,
+        "positive_month_ratio": 0.724138,
+        "recent_90d_drawdown": 1.57,
+        "recent_dd_ratio": 0.001898,
+        "top_symbol": "BTCUSD",
+        "top_symbol_pnl_share": 1.0,
+        "total_cost_pips": 1182.0,
+        "total_gross_pips": 11596.03,
+        "total_net_pips": 10414.03
+      },
+      "pre_screen": {
+        "concentration_top5": 0.27041360983472873,
+        "decision": "GO",
+        "is_live": false,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [
+          "is_live=False (account_type='Demo'); warning-only, does not block"
+        ],
+        "psr_p": 6.694644838489694e-14
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "10734338"
+    },
+    {
+      "components": {
+        "concentration_component": 0.173019,
+        "cost_component": 0.692971,
+        "drawdown_component": 0.946065,
+        "frequency_component": 0.5,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 0.99999,
+        "stability_component": 0.884615
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "single_asset_pnl_share_gt_80pct"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.4004,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 6.452386,
+        "cost_drag_ratio": 0.153515,
+        "first_close": "2024-03-29T03:56:04+00:00",
+        "historical_max_drawdown": 319.79,
+        "last_close": "2026-04-23T12:36:35+00:00",
+        "max_no_trade_gap_days": 68.502697,
+        "median_monthly_trades": 6.0,
+        "n_symbols": 1,
+        "n_symbols_with_positive_pnl": 1,
+        "n_trades": 197,
+        "positive_month_ratio": 0.884615,
+        "recent_90d_drawdown": 21.56,
+        "recent_dd_ratio": 0.067419,
+        "top_symbol": "EURGBP",
+        "top_symbol_pnl_share": 1.0,
+        "total_cost_pips": 394.0,
+        "total_gross_pips": 1665.12,
+        "total_net_pips": 1271.12
+      },
+      "pre_screen": {
+        "concentration_top5": 0.41349042947686526,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 5.096570437901349e-07
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "11155858"
+    },
+    {
+      "components": {
+        "concentration_component": 0.368593,
+        "cost_component": 0.924177,
+        "drawdown_component": 0.624604,
+        "frequency_component": 0.5,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 0.999896,
+        "stability_component": 1.0
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "single_asset_pnl_share_gt_80pct"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.2992,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999",
+          "dsr_p"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 28.78783,
+        "cost_drag_ratio": 0.037912,
+        "first_close": "2024-08-26T01:43:15+00:00",
+        "historical_max_drawdown": 749.63,
+        "last_close": "2026-05-01T09:47:20+00:00",
+        "max_no_trade_gap_days": 38.65037,
+        "median_monthly_trades": 9.5,
+        "n_symbols": 1,
+        "n_symbols_with_positive_pnl": 1,
+        "n_trades": 212,
+        "positive_month_ratio": 1.0,
+        "recent_90d_drawdown": 351.76,
+        "recent_dd_ratio": 0.469245,
+        "top_symbol": "GBPJPY",
+        "top_symbol_pnl_share": 1.0,
+        "total_cost_pips": 424.0,
+        "total_gross_pips": 6527.02,
+        "total_net_pips": 6103.02
+      },
+      "pre_screen": {
+        "concentration_top5": 0.3157036855601443,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 5.194784796214158e-06
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "11206045"
+    },
+    {
+      "components": {
+        "concentration_component": 0.491843,
+        "cost_component": 0.626462,
+        "drawdown_component": 0.871116,
+        "frequency_component": 0.5,
+        "live_component": 1.0,
+        "mcpt_component": 0.56022,
+        "multi_asset_component": 0.0,
+        "psr_component": 0.441381,
+        "stability_component": 0.615385
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "single_asset_pnl_share_gt_80pct"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.2095,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999",
+          "dsr_p"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 2.140842,
+        "cost_drag_ratio": 0.186769,
+        "first_close": "2024-07-15T14:20:13+00:00",
+        "historical_max_drawdown": 659.32,
+        "last_close": "2025-07-30T16:33:34+00:00",
+        "max_no_trade_gap_days": 7.809514,
+        "median_monthly_trades": 16.0,
+        "n_symbols": 1,
+        "n_symbols_with_positive_pnl": 1,
+        "n_trades": 202,
+        "positive_month_ratio": 0.615385,
+        "recent_90d_drawdown": 106.22,
+        "recent_dd_ratio": 0.161105,
+        "top_symbol": "XAUUSD",
+        "top_symbol_pnl_share": 1.0,
+        "total_cost_pips": 404.0,
+        "total_gross_pips": 836.45,
+        "total_net_pips": 432.45
+      },
+      "pre_screen": {
+        "concentration_top5": 0.25407837237624475,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.021989005497251374,
+        "notes": [],
+        "psr_p": 0.02793093335471053
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "11207608"
+    },
+    {
+      "components": {
+        "concentration_component": 0.540512,
+        "cost_component": 0.877345,
+        "drawdown_component": 0.971631,
+        "frequency_component": 1.0,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.25,
+        "psr_component": 0.999986,
+        "stability_component": 0.897436
+      },
+      "copyability_score": 0.940662,
+      "copyability_status": "PASS",
+      "failed_copyability_gates": [],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.1202,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999",
+          "dsr_p"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 9.14215,
+        "cost_drag_ratio": 0.061327,
+        "first_close": "2015-01-14T04:20:00+00:00",
+        "historical_max_drawdown": 5891.0,
+        "last_close": "2021-06-01T02:31:00+00:00",
+        "max_no_trade_gap_days": 78.027396,
+        "median_monthly_trades": 22.5,
+        "n_symbols": 2,
+        "n_symbols_with_positive_pnl": 2,
+        "n_trades": 1637,
+        "positive_month_ratio": 0.897436,
+        "recent_90d_drawdown": 208.9,
+        "recent_dd_ratio": 0.035461,
+        "top_symbol": "AUDUSD",
+        "top_symbol_pnl_share": 0.526551,
+        "total_cost_pips": 3274.0,
+        "total_gross_pips": 18239.7,
+        "total_net_pips": 14965.7
+      },
+      "pre_screen": {
+        "concentration_top5": 0.22974421533578446,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 7.018952800086353e-07
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "1152318"
+    },
+    {
+      "components": {
+        "concentration_component": 0.537587,
+        "cost_component": 0.911199,
+        "drawdown_component": 0.2,
+        "frequency_component": 1.0,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 0.998337,
+        "stability_component": 0.75
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "single_asset_pnl_share_gt_80pct"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 0.9997545582047686,
+        "fidelity_score": 0.2378,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 24.58569,
+        "cost_drag_ratio": 0.0444,
+        "first_close": "2025-06-25T12:08:10+00:00",
+        "historical_max_drawdown": 715.47,
+        "last_close": "2026-05-01T15:34:00+00:00",
+        "max_no_trade_gap_days": 5.989861,
+        "median_monthly_trades": 22.0,
+        "n_symbols": 1,
+        "n_symbols_with_positive_pnl": 1,
+        "n_trades": 232,
+        "positive_month_ratio": 0.75,
+        "recent_90d_drawdown": 715.47,
+        "recent_dd_ratio": 1.0,
+        "top_symbol": "BTCUSD",
+        "top_symbol_pnl_share": 1.0,
+        "total_cost_pips": 464.0,
+        "total_gross_pips": 6167.88,
+        "total_net_pips": 5703.88
+      },
+      "pre_screen": {
+        "concentration_top5": 0.23120666156243722,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 8.316244804729145e-05
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "11628637"
+    },
+    {
+      "components": {
+        "concentration_component": 0.86933,
+        "cost_component": 0.0,
+        "drawdown_component": 0.982195,
+        "frequency_component": 1.0,
+        "live_component": 0.5,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 1.0,
+        "stability_component": 0.0
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "monthly_stability_low",
+        "cost_drag_ratio_gte_50pct",
+        "net_expectancy_non_positive_after_2pip_cost"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.055,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999",
+          "dsr_p"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": -0.801916,
+        "cost_drag_ratio": 1.669332,
+        "first_close": "2013-09-02T02:03:00+00:00",
+        "historical_max_drawdown": 2649.0828,
+        "last_close": "2021-06-16T00:46:00+00:00",
+        "max_no_trade_gap_days": 33.970833,
+        "median_monthly_trades": 34.0,
+        "n_symbols": 6,
+        "n_symbols_with_positive_pnl": 0,
+        "n_trades": 3304,
+        "positive_month_ratio": 0.0,
+        "recent_90d_drawdown": 58.9595,
+        "recent_dd_ratio": 0.022257,
+        "top_symbol": "EURGBP",
+        "top_symbol_pnl_share": 0.0,
+        "total_cost_pips": 6608.0,
+        "total_gross_pips": 3958.4708,
+        "total_net_pips": -2649.5292
+      },
+      "pre_screen": {
+        "concentration_top5": 0.06533495207290653,
+        "decision": "GO",
+        "is_live": false,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [
+          "is_live=False (account_type='Demo'); warning-only, does not block"
+        ],
+        "psr_p": 0.0
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "1407880"
+    },
+    {
+      "components": {
+        "concentration_component": 0.373179,
+        "cost_component": 0.778533,
+        "drawdown_component": 0.930769,
+        "frequency_component": 0.5,
+        "live_component": 0.5,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 1.0,
+        "stability_component": 0.646154
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "single_asset_pnl_share_gt_80pct"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.0425,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999",
+          "dsr_p"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 16.0614,
+        "cost_drag_ratio": 0.110733,
+        "first_close": "2016-02-25T15:30:55+00:00",
+        "historical_max_drawdown": 99.15931,
+        "last_close": "2021-06-10T15:40:55+00:00",
+        "max_no_trade_gap_days": 34.833426,
+        "median_monthly_trades": 11.0,
+        "n_symbols": 4,
+        "n_symbols_with_positive_pnl": 1,
+        "n_trades": 788,
+        "positive_month_ratio": 0.646154,
+        "recent_90d_drawdown": 8.58117,
+        "recent_dd_ratio": 0.086539,
+        "top_symbol": "USDJPY",
+        "top_symbol_pnl_share": 1.0,
+        "total_cost_pips": 1576.0,
+        "total_gross_pips": 14232.38282,
+        "total_net_pips": 12656.38282
+      },
+      "pre_screen": {
+        "concentration_top5": 0.31341055509916366,
+        "decision": "GO",
+        "is_live": false,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [
+          "is_live=False (account_type='Demo'); warning-only, does not block"
+        ],
+        "psr_p": 0.0
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "1612420"
+    },
+    {
+      "components": {
+        "concentration_component": 0.769406,
+        "cost_component": 0.998012,
+        "drawdown_component": 1.0,
+        "frequency_component": 0.5,
+        "live_component": 0.5,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 1.0,
+        "stability_component": 0.990385
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "single_asset_pnl_share_gt_80pct"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.3589,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 2010.091214,
+        "cost_drag_ratio": 0.000994,
+        "first_close": "2017-09-04T10:04:49+00:00",
+        "historical_max_drawdown": 2.0,
+        "last_close": "2026-04-30T11:04:08+00:00",
+        "max_no_trade_gap_days": 63.913507,
+        "median_monthly_trades": 17.0,
+        "n_symbols": 2,
+        "n_symbols_with_positive_pnl": 1,
+        "n_trades": 1763,
+        "positive_month_ratio": 0.990385,
+        "recent_90d_drawdown": 0.0,
+        "recent_dd_ratio": 0.0,
+        "top_symbol": "XAUUSD",
+        "top_symbol_pnl_share": 1.0,
+        "total_cost_pips": 3526.0,
+        "total_gross_pips": 3547316.81,
+        "total_net_pips": 3543790.81
+      },
+      "pre_screen": {
+        "concentration_top5": 0.11529713637277299,
+        "decision": "GO",
+        "is_live": false,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [
+          "is_live=False (account_type='Demo'); warning-only, does not block"
+        ],
+        "psr_p": 0.0
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "2421356"
+    },
+    {
+      "components": {
+        "concentration_component": 0.78321,
+        "cost_component": 0.998048,
+        "drawdown_component": 1.0,
+        "frequency_component": 1.0,
+        "live_component": 0.5,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 1.0,
+        "stability_component": 0.988372
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "single_asset_pnl_share_gt_80pct"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.2212,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 2047.219801,
+        "cost_drag_ratio": 0.000976,
+        "first_close": "2019-03-05T17:01:25+00:00",
+        "historical_max_drawdown": 0.0,
+        "last_close": "2026-04-30T11:04:07+00:00",
+        "max_no_trade_gap_days": 63.812558,
+        "median_monthly_trades": 24.0,
+        "n_symbols": 1,
+        "n_symbols_with_positive_pnl": 1,
+        "n_trades": 2213,
+        "positive_month_ratio": 0.988372,
+        "recent_90d_drawdown": 0.0,
+        "recent_dd_ratio": 0.0,
+        "top_symbol": "XAUUSD",
+        "top_symbol_pnl_share": 1.0,
+        "total_cost_pips": 4426.0,
+        "total_gross_pips": 4534923.42,
+        "total_net_pips": 4530497.42
+      },
+      "pre_screen": {
+        "concentration_top5": 0.10839515786134266,
+        "decision": "GO",
+        "is_live": false,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [
+          "is_live=False (account_type='Demo'); warning-only, does not block"
+        ],
+        "psr_p": 0.0
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "6541963"
+    },
+    {
+      "components": {
+        "concentration_component": 0.627357,
+        "cost_component": 0.930386,
+        "drawdown_component": 0.688859,
+        "frequency_component": 0.5,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 1.0,
+        "psr_component": 1.0,
+        "stability_component": 0.966102
+      },
+      "copyability_score": 0.958673,
+      "copyability_status": "PASS",
+      "failed_copyability_gates": [],
+      "fase1_diagnostics": {
+        "adversarial_auc": null,
+        "fidelity_score": 0.0,
+        "mandate_24_failed": [],
+        "mandate_24_pass": null
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 28.501713,
+        "cost_drag_ratio": 0.034807,
+        "first_close": "2021-06-22T19:58:23+00:00",
+        "historical_max_drawdown": 1477.4,
+        "last_close": "2026-04-27T15:17:32+00:00",
+        "max_no_trade_gap_days": 86.800208,
+        "median_monthly_trades": 13.0,
+        "n_symbols": 5,
+        "n_symbols_with_positive_pnl": 5,
+        "n_trades": 934,
+        "positive_month_ratio": 0.966102,
+        "recent_90d_drawdown": 574.6,
+        "recent_dd_ratio": 0.388926,
+        "top_symbol": "USDCAD",
+        "top_symbol_pnl_share": 0.421647,
+        "total_cost_pips": 1868.0,
+        "total_gross_pips": 28488.6,
+        "total_net_pips": 26620.6
+      },
+      "pre_screen": {
+        "concentration_top5": 0.18632128715759463,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 4.218847493575595e-15
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "8577442"
+    },
+    {
+      "components": {
+        "concentration_component": 0.21291,
+        "cost_component": 0.982612,
+        "drawdown_component": 0.561048,
+        "frequency_component": 0.5,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 1.0,
+        "stability_component": 0.813559
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "single_asset_pnl_share_gt_80pct"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.2141,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 157.958428,
+        "cost_drag_ratio": 0.008694,
+        "first_close": "2021-06-15T17:19:32+00:00",
+        "historical_max_drawdown": 5345.28,
+        "last_close": "2026-04-30T11:04:07+00:00",
+        "max_no_trade_gap_days": 8.345556,
+        "median_monthly_trades": 17.0,
+        "n_symbols": 1,
+        "n_symbols_with_positive_pnl": 1,
+        "n_trades": 1024,
+        "positive_month_ratio": 0.813559,
+        "recent_90d_drawdown": 2932.9,
+        "recent_dd_ratio": 0.54869,
+        "top_symbol": "XAUUSD",
+        "top_symbol_pnl_share": 1.0,
+        "total_cost_pips": 2048.0,
+        "total_gross_pips": 163797.43,
+        "total_net_pips": 161749.43
+      },
+      "pre_screen": {
+        "concentration_top5": 0.39354488997517306,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 0.0
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "8647517"
+    },
+    {
+      "components": {
+        "concentration_component": 0.254079,
+        "cost_component": 0.937446,
+        "drawdown_component": 0.547196,
+        "frequency_component": 0.5,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 1.0,
+        "stability_component": 0.87037
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "single_asset_pnl_share_gt_80pct"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.1798,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 41.536011,
+        "cost_drag_ratio": 0.031277,
+        "first_close": "2021-11-22T08:51:50+00:00",
+        "historical_max_drawdown": 1387.09,
+        "last_close": "2026-04-30T11:04:07+00:00",
+        "max_no_trade_gap_days": 8.345637,
+        "median_monthly_trades": 17.0,
+        "n_symbols": 1,
+        "n_symbols_with_positive_pnl": 1,
+        "n_trades": 915,
+        "positive_month_ratio": 0.87037,
+        "recent_90d_drawdown": 785.1,
+        "recent_dd_ratio": 0.566005,
+        "top_symbol": "XAUUSD",
+        "top_symbol_pnl_share": 1.0,
+        "total_cost_pips": 1830.0,
+        "total_gross_pips": 39835.45,
+        "total_net_pips": 38005.45
+      },
+      "pre_screen": {
+        "concentration_top5": 0.3729602612171624,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 2.220446049250313e-16
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "9375654"
+    },
+    {
+      "components": {
+        "concentration_component": 0.243568,
+        "cost_component": 0.0,
+        "drawdown_component": 0.951998,
+        "frequency_component": 1.0,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 0.982225,
+        "stability_component": 0.0
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "monthly_stability_low",
+        "cost_drag_ratio_gte_50pct",
+        "net_expectancy_non_positive_after_2pip_cost"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.1347,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999",
+          "dsr_p"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": -1.440182,
+        "cost_drag_ratio": 1.109642,
+        "first_close": "2022-10-04T18:02:53+00:00",
+        "historical_max_drawdown": 5760.78,
+        "last_close": "2026-05-01T15:21:04+00:00",
+        "max_no_trade_gap_days": 17.746076,
+        "median_monthly_trades": 78.0,
+        "n_symbols": 5,
+        "n_symbols_with_positive_pnl": 0,
+        "n_trades": 4000,
+        "positive_month_ratio": 0.0,
+        "recent_90d_drawdown": 345.66,
+        "recent_dd_ratio": 0.060002,
+        "top_symbol": "EURCHF",
+        "top_symbol_pnl_share": 0.0,
+        "total_cost_pips": 8000.0,
+        "total_gross_pips": 2239.27,
+        "total_net_pips": -5760.73
+      },
+      "pre_screen": {
+        "concentration_top5": 0.3782158805693694,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 0.0008887617907130663
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "9830783"
+    },
+    {
+      "components": {
+        "concentration_component": 0.525003,
+        "cost_component": 0.0,
+        "drawdown_component": 0.793033,
+        "frequency_component": 0.5,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 1.0,
+        "stability_component": 0.0
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "monthly_stability_low",
+        "cost_drag_ratio_gte_50pct",
+        "net_expectancy_non_positive_after_2pip_cost"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": null,
+        "fidelity_score": 0.0,
+        "mandate_24_failed": [],
+        "mandate_24_pass": null
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": -1.126525,
+        "cost_drag_ratio": 1.196874,
+        "first_close": "2025-04-10T11:17:53+00:00",
+        "historical_max_drawdown": 4552.65,
+        "last_close": "2026-05-01T09:51:51+00:00",
+        "max_no_trade_gap_days": 15.201898,
+        "median_monthly_trades": 222.5,
+        "n_symbols": 1,
+        "n_symbols_with_positive_pnl": 0,
+        "n_trades": 4000,
+        "positive_month_ratio": 0.0,
+        "recent_90d_drawdown": 1177.81,
+        "recent_dd_ratio": 0.258709,
+        "top_symbol": "EURCHF",
+        "top_symbol_pnl_share": 0.0,
+        "total_cost_pips": 8000.0,
+        "total_gross_pips": 3493.9,
+        "total_net_pips": -4506.1
+      },
+      "pre_screen": {
+        "concentration_top5": 0.237498303670351,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 0.0
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "9841939"
+    },
+    {
+      "components": {
+        "concentration_component": 0.425243,
+        "cost_component": 0.939999,
+        "drawdown_component": 0.974314,
+        "frequency_component": 0.0,
+        "live_component": 1.0,
+        "mcpt_component": 0.990005,
+        "multi_asset_component": 0.0,
+        "psr_component": 0.999862,
+        "stability_component": 0.4375
+      },
+      "copyability_score": null,
+      "copyability_status": "STOP",
+      "failed_copyability_gates": [
+        "monthly_stability_low",
+        "operational_gap_gt_90d",
+        "trade_frequency_outside_5_300",
+        "single_asset_pnl_share_gt_80pct"
+      ],
+      "fase1_diagnostics": {
+        "adversarial_auc": 1.0,
+        "fidelity_score": 0.0246,
+        "mandate_24_failed": [
+          "sharpe_bootstrap_ci_low_999",
+          "oos_bootstrap_ci_low_999",
+          "dsr_p"
+        ],
+        "mandate_24_pass": false
+      },
+      "operational_metrics": {
+        "avg_net_pips_per_trade": 48.294563,
+        "cost_drag_ratio": 0.03,
+        "first_close": "2022-05-23T18:19:41+00:00",
+        "historical_max_drawdown": 629.44,
+        "last_close": "2026-04-30T17:56:20+00:00",
+        "max_no_trade_gap_days": 524.270486,
+        "median_monthly_trades": 0.0,
+        "n_symbols": 1,
+        "n_symbols_with_positive_pnl": 1,
+        "n_trades": 103,
+        "positive_month_ratio": 0.4375,
+        "recent_90d_drawdown": 20.21,
+        "recent_dd_ratio": 0.032108,
+        "top_symbol": "EURGBP",
+        "top_symbol_pnl_share": 1.0,
+        "total_cost_pips": 206.0,
+        "total_gross_pips": 5180.34,
+        "total_net_pips": 4974.34
+      },
+      "pre_screen": {
+        "concentration_top5": 0.287378724777443,
+        "decision": "GO",
+        "is_live": true,
+        "k1_sanity_pass": true,
+        "mcpt_p": 0.0004997501249375312,
+        "notes": [],
+        "psr_p": 6.894373291710387e-06
+      },
+      "ranking_selection_warning": "Top-N selection across 21 EAs is multiple testing / data-mining risk; shortlist is diagnostic only [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+      "system_id": "9912554"
+    }
+  ]
+}

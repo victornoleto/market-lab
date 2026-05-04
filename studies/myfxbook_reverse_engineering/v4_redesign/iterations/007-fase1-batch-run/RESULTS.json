@@ -1,0 +1,957 @@
+{
+  "task_id": "007-fase1-batch-run",
+  "status": "DONE",
+  "started_utc": "2026-05-04T10:20:47Z",
+  "completed_utc": "2026-05-04T10:29:13Z",
+  "files_created": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/007-fase1-batch-run/PRE_REG.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/007-fase1-batch-run/run.log",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/007-fase1-batch-run/RESULTS.json",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/007-fase1-batch-run/SUMMARY.md",
+    "studies/myfxbook_reverse_engineering/_diagnostics/batch_summary_fase1.json",
+    "jornada/2026-05-04-1029-myfxbook-v4-task-007-fase1-batch.md"
+  ],
+  "files_modified": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/PROGRESS.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/next_prompt.md",
+    "jornada/README.md"
+  ],
+  "tests_added": [],
+  "tests_passing": 0,
+  "tests_total": 0,
+  "n_systems_total": 55,
+  "n_systems_completed_decode": 21,
+  "n_systems_failed": 7,
+  "n_systems_skipped": 27,
+  "n_pre_screen_pass": 21,
+  "n_pre_screen_stop": 27,
+  "stop_reasons": {
+    "concentration_high": 6,
+    "k1_sanity_fail": 15,
+    "mcpt_p_high": 8,
+    "psr_p_high": 6
+  },
+  "pre_screen_go_systems": [
+    "10062918",
+    "10067081",
+    "10249298",
+    "10281851",
+    "10563761",
+    "10734338",
+    "11155858",
+    "11206045",
+    "11207608",
+    "1152318",
+    "11628637",
+    "1407880",
+    "1612420",
+    "2421356",
+    "6541963",
+    "8577442",
+    "8647517",
+    "9375654",
+    "9830783",
+    "9841939",
+    "9912554"
+  ],
+  "n_pre_screen_survivors": 21,
+  "pre_screen_survivors": [
+    "10062918",
+    "10067081",
+    "10249298",
+    "10281851",
+    "10563761",
+    "10734338",
+    "11155858",
+    "11206045",
+    "11207608",
+    "1152318",
+    "11628637",
+    "1407880",
+    "1612420",
+    "2421356",
+    "6541963",
+    "8577442",
+    "8647517",
+    "9375654",
+    "9830783",
+    "9841939",
+    "9912554"
+  ],
+  "n_fase2_eligible_survivors": 0,
+  "fase2_eligible_survivors": [],
+  "n_survivors": 0,
+  "survivors": [],
+  "survivor_definition": "user-corrected downstream definition after validation STOP: pre_screen_decision=GO AND adversarial_auc<0.65 AND mandate_24_pass=true; thresholds from SPEC, no post-result optimization [evidence_based_ta, p.325-328] [advances_fin_ml, ch.5] [advances_fin_ml, p.273-275]",
+  "pre_screen_survivor_definition": "audit-only list of systems with pre_screen_decision=GO; retained separately because the original task 007 wording used this definition",
+  "acceptance_status": "DONE_AFTER_USER_CORRECTION_N_FASE2_ELIGIBLE_SURVIVORS_EQ_0",
+  "acceptance_failure_reason": null,
+  "n_full_gate_survivors": 0,
+  "full_gate_survivor_definition_diagnostic_only": "same as fase2_eligible_survivors; retained for backward audit naming [advances_fin_ml, ch.5] [advances_fin_ml, p.273-275]",
+  "survivor_metrics": {
+    "10062918": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 4.263256414560601e-14,
+      "concentration_top5": 0.18939271061287327,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.0398,
+      "score_band": "NONE",
+      "n_real": 731,
+      "n_synthetic": 58,
+      "n_matched": 0,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "duration_sec",
+        "hour_utc",
+        "pips",
+        "dow",
+        "entry_price_normalized"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999",
+        "dsr_p"
+      ]
+    },
+    "10067081": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 0.0,
+      "concentration_top5": 0.3297055456525802,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.0,
+      "score_band": "NONE",
+      "n_real": 4000,
+      "n_synthetic": 0,
+      "n_matched": 0,
+      "adversarial_auc": null,
+      "adversarial_ci_low_95": null,
+      "adversarial_ci_high_95": null,
+      "adversarial_n_features": null,
+      "adversarial_top_features": [],
+      "adversarial_notes": [
+        "adversarial_error: ValueError: real_trades e synthetic_trades nao podem estar vazios (n_real=4000, n_synthetic=0)."
+      ],
+      "mandate_24_pass": null,
+      "mandate_24_failed": []
+    },
+    "10249298": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 5.998323659994753e-08,
+      "concentration_top5": 0.3542653293283722,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.0,
+      "score_band": "NONE",
+      "n_real": 280,
+      "n_synthetic": 0,
+      "n_matched": 0,
+      "adversarial_auc": null,
+      "adversarial_ci_low_95": null,
+      "adversarial_ci_high_95": null,
+      "adversarial_n_features": null,
+      "adversarial_top_features": [],
+      "adversarial_notes": [
+        "adversarial_error: ValueError: real_trades e synthetic_trades nao podem estar vazios (n_real=280, n_synthetic=0)."
+      ],
+      "mandate_24_pass": null,
+      "mandate_24_failed": []
+    },
+    "10281851": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 0.0,
+      "concentration_top5": 0.4442484285410124,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.2518,
+      "score_band": "NONE",
+      "n_real": 652,
+      "n_synthetic": 1651,
+      "n_matched": 13,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "duration_sec",
+        "hour_utc",
+        "pips",
+        "entry_price_normalized",
+        "dow"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999"
+      ]
+    },
+    "10563761": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.011494252873563218,
+      "psr_p": 0.0144013457856641,
+      "concentration_top5": 0.22669088988766625,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.2108,
+      "score_band": "NONE",
+      "n_real": 436,
+      "n_synthetic": 2497,
+      "n_matched": 32,
+      "adversarial_auc": 0.9999908045977012,
+      "adversarial_ci_low_95": 0.9999724137931034,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "duration_sec",
+        "pips",
+        "hour_utc",
+        "dow",
+        "entry_price_normalized"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999"
+      ]
+    },
+    "10734338": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 6.694644838489694e-14,
+      "concentration_top5": 0.27041360983472873,
+      "is_live": false,
+      "pre_screen_notes": [
+        "is_live=False (account_type='Demo'); warning-only, does not block"
+      ],
+      "fidelity_score": 0.2385,
+      "score_band": "NONE",
+      "n_real": 591,
+      "n_synthetic": 1648,
+      "n_matched": 22,
+      "adversarial_auc": 0.9999948638931689,
+      "adversarial_ci_low_95": 0.9999845916795069,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "lots",
+        "duration_sec",
+        "hour_utc",
+        "pips",
+        "dow"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999"
+      ]
+    },
+    "11155858": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 5.096570437901349e-07,
+      "concentration_top5": 0.41349042947686526,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.4004,
+      "score_band": "LOW",
+      "n_real": 197,
+      "n_synthetic": 106,
+      "n_matched": 10,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "lots",
+        "duration_sec",
+        "hour_utc",
+        "dow",
+        "entry_price_normalized"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999"
+      ]
+    },
+    "11206045": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 5.194784796214158e-06,
+      "concentration_top5": 0.3157036855601443,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.2992,
+      "score_band": "NONE",
+      "n_real": 212,
+      "n_synthetic": 87,
+      "n_matched": 1,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "lots",
+        "duration_sec",
+        "entry_price_normalized",
+        "pips",
+        "direction_idx"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999",
+        "dsr_p"
+      ]
+    },
+    "11207608": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.021989005497251374,
+      "psr_p": 0.02793093335471053,
+      "concentration_top5": 0.25407837237624475,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.2095,
+      "score_band": "NONE",
+      "n_real": 202,
+      "n_synthetic": 7257,
+      "n_matched": 79,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "lots",
+        "duration_sec",
+        "entry_price_normalized",
+        "hour_utc",
+        "pips"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999",
+        "dsr_p"
+      ]
+    },
+    "1152318": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 7.018952800086353e-07,
+      "concentration_top5": 0.22974421533578446,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.1202,
+      "score_band": "NONE",
+      "n_real": 1637,
+      "n_synthetic": 668,
+      "n_matched": 0,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "duration_sec",
+        "dow",
+        "hour_utc",
+        "pips",
+        "entry_price_normalized"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999",
+        "dsr_p"
+      ]
+    },
+    "11628637": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 8.316244804729145e-05,
+      "concentration_top5": 0.23120666156243722,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.2378,
+      "score_band": "NONE",
+      "n_real": 232,
+      "n_synthetic": 617,
+      "n_matched": 7,
+      "adversarial_auc": 0.9997545582047686,
+      "adversarial_ci_low_95": 0.9992636746143058,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "duration_sec",
+        "hour_utc",
+        "pips",
+        "dow",
+        "lots"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999"
+      ]
+    },
+    "1407880": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 0.0,
+      "concentration_top5": 0.06533495207290653,
+      "is_live": false,
+      "pre_screen_notes": [
+        "is_live=False (account_type='Demo'); warning-only, does not block"
+      ],
+      "fidelity_score": 0.055,
+      "score_band": "NONE",
+      "n_real": 3304,
+      "n_synthetic": 12366,
+      "n_matched": 0,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "entry_price_normalized",
+        "lots",
+        "duration_sec",
+        "pips",
+        "hour_utc"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999",
+        "dsr_p"
+      ]
+    },
+    "1612420": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 0.0,
+      "concentration_top5": 0.31341055509916366,
+      "is_live": false,
+      "pre_screen_notes": [
+        "is_live=False (account_type='Demo'); warning-only, does not block"
+      ],
+      "fidelity_score": 0.0425,
+      "score_band": "NONE",
+      "n_real": 788,
+      "n_synthetic": 5488,
+      "n_matched": 0,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "lots",
+        "entry_price_normalized",
+        "hour_utc",
+        "pips",
+        "dow"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999",
+        "dsr_p"
+      ]
+    },
+    "2421356": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 0.0,
+      "concentration_top5": 0.11529713637277299,
+      "is_live": false,
+      "pre_screen_notes": [
+        "is_live=False (account_type='Demo'); warning-only, does not block"
+      ],
+      "fidelity_score": 0.3589,
+      "score_band": "NONE",
+      "n_real": 1763,
+      "n_synthetic": 1773,
+      "n_matched": 19,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "duration_sec",
+        "lots",
+        "entry_price_normalized",
+        "pips",
+        "hour_utc"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999"
+      ]
+    },
+    "6541963": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 0.0,
+      "concentration_top5": 0.10839515786134266,
+      "is_live": false,
+      "pre_screen_notes": [
+        "is_live=False (account_type='Demo'); warning-only, does not block"
+      ],
+      "fidelity_score": 0.2212,
+      "score_band": "NONE",
+      "n_real": 2213,
+      "n_synthetic": 16625,
+      "n_matched": 266,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "lots",
+        "entry_price_normalized",
+        "hour_utc",
+        "pips",
+        "duration_sec"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999"
+      ]
+    },
+    "8577442": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 4.218847493575595e-15,
+      "concentration_top5": 0.18632128715759463,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.0,
+      "score_band": "NONE",
+      "n_real": 934,
+      "n_synthetic": 0,
+      "n_matched": 0,
+      "adversarial_auc": null,
+      "adversarial_ci_low_95": null,
+      "adversarial_ci_high_95": null,
+      "adversarial_n_features": null,
+      "adversarial_top_features": [],
+      "adversarial_notes": [
+        "adversarial_error: ValueError: real_trades e synthetic_trades nao podem estar vazios (n_real=934, n_synthetic=0)."
+      ],
+      "mandate_24_pass": null,
+      "mandate_24_failed": []
+    },
+    "8647517": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 0.0,
+      "concentration_top5": 0.39354488997517306,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.2141,
+      "score_band": "NONE",
+      "n_real": 1024,
+      "n_synthetic": 25135,
+      "n_matched": 303,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "lots",
+        "duration_sec",
+        "pips",
+        "hour_utc",
+        "entry_price_normalized"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999"
+      ]
+    },
+    "9375654": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 2.220446049250313e-16,
+      "concentration_top5": 0.3729602612171624,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.1798,
+      "score_band": "NONE",
+      "n_real": 915,
+      "n_synthetic": 2261,
+      "n_matched": 31,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "lots",
+        "duration_sec",
+        "hour_utc",
+        "entry_price_normalized",
+        "dow"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999"
+      ]
+    },
+    "9830783": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 0.0008887617907130663,
+      "concentration_top5": 0.3782158805693694,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.1347,
+      "score_band": "NONE",
+      "n_real": 4000,
+      "n_synthetic": 164,
+      "n_matched": 10,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "lots",
+        "duration_sec",
+        "entry_price_normalized",
+        "pips",
+        "hour_utc"
+      ],
+      "adversarial_notes": [],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999",
+        "dsr_p"
+      ]
+    },
+    "9841939": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 0.0,
+      "concentration_top5": 0.237498303670351,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.0,
+      "score_band": "NONE",
+      "n_real": 4000,
+      "n_synthetic": 0,
+      "n_matched": 0,
+      "adversarial_auc": null,
+      "adversarial_ci_low_95": null,
+      "adversarial_ci_high_95": null,
+      "adversarial_n_features": null,
+      "adversarial_top_features": [],
+      "adversarial_notes": [
+        "adversarial_error: ValueError: real_trades e synthetic_trades nao podem estar vazios (n_real=4000, n_synthetic=0)."
+      ],
+      "mandate_24_pass": null,
+      "mandate_24_failed": []
+    },
+    "9912554": {
+      "pre_screen_decision": "GO",
+      "mcpt_p": 0.0004997501249375312,
+      "psr_p": 6.894373291710387e-06,
+      "concentration_top5": 0.287378724777443,
+      "is_live": true,
+      "pre_screen_notes": [],
+      "fidelity_score": 0.0246,
+      "score_band": "NONE",
+      "n_real": 103,
+      "n_synthetic": 3,
+      "n_matched": 0,
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "lots",
+        "duration_sec",
+        "pips",
+        "entry_price_normalized",
+        "hour_utc"
+      ],
+      "adversarial_notes": [
+        "cv_folds_reduced: solicitado 5, usado 3 (min_class=3)."
+      ],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999",
+        "dsr_p"
+      ]
+    }
+  },
+  "failed_systems": {
+    "2123808": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/2123808.md",
+    "2483126": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/2483126.md",
+    "3568877": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/3568877.md",
+    "5542332": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/5542332.md",
+    "8286716": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/8286716.md",
+    "8574205": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/8574205.md",
+    "9526428": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/9526428.md"
+  },
+  "skipped_systems": {
+    "10192401": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10192401/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "MCPT p=0.1139 >= 0.05",
+        "PSR p=0.1173 >= 0.05"
+      ]
+    },
+    "10224499": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10224499/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "MCPT p=1.0000 >= 0.05",
+        "PSR p=1.0000 >= 0.05"
+      ]
+    },
+    "10251631": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10251631/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "MCPT p=0.1049 >= 0.05",
+        "PSR p=0.1246 >= 0.05",
+        "concentration top-5%=0.743 >= 0.5"
+      ]
+    },
+    "10475089": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10475089/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "MCPT p=0.1009 >= 0.05"
+      ]
+    },
+    "10585558": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10585558/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 126.41 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "10716398": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10716398/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 139.40 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "10746260": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10746260/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 128.08 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "10814265": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10814265/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 125.92 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "10878805": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10878805/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "concentration top-5%=0.540 >= 0.5"
+      ]
+    },
+    "10970107": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10970107/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 127.98 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "11171596": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11171596/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "MCPT p=0.0535 >= 0.05"
+      ]
+    },
+    "11305553": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11305553/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: 30 doubling-after-loss trades (>5% of total); per-month max/median P95 = 30.75 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "11355455": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11355455/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "concentration top-5%=0.502 >= 0.5"
+      ]
+    },
+    "11504701": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11504701/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 119.47 (> 3.0) \u2014 within-month doubling",
+        "concentration top-5%=0.531 >= 0.5"
+      ]
+    },
+    "11986417": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11986417/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "concentration top-5%=0.638 >= 0.5"
+      ]
+    },
+    "1603276": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/1603276/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "concentration top-5%=0.759 >= 0.5"
+      ]
+    },
+    "2373850": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/2373850/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "MCPT p=0.1024 >= 0.05",
+        "PSR p=0.0899 >= 0.05"
+      ]
+    },
+    "612872": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/612872/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 32.90 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "6603448": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/6603448/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 4.35 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "7603723": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/7603723/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 5.10 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "7942220": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/7942220/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 5.95 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "8397136": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/8397136/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "MCPT p=0.2679 >= 0.05",
+        "PSR p=0.2499 >= 0.05"
+      ]
+    },
+    "8577996": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/8577996/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 4.10 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "8599269": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/8599269/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 5.00 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "8599392": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/8599392/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 209.40 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "9607500": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/9607500/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "K1 sanity FAIL: per-month max/median P95 = 144.59 (> 3.0) \u2014 within-month doubling"
+      ]
+    },
+    "9843883": {
+      "status": "PRE_SCREEN_STOP",
+      "pre_screen_decision": "STOP",
+      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/9843883/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_notes": [
+        "MCPT p=0.0510 >= 0.05",
+        "PSR p=0.0525 >= 0.05"
+      ]
+    }
+  },
+  "metrics": {
+    "wallclock_seconds": 351.2,
+    "adversarial_auc_lt_065_count": 0,
+    "mandate_24_pass_count": 0,
+    "synthetic_zero_count": 4
+  },
+  "notes": "Batch Fase 1 executado. 21 systems passaram pre-screen; nenhum passou o filtro completo adversarial<0.65 + mandate_24. 7 systems falharam por frozen_rules ausente; nao foram for\u00e7ados nem recriados por guardrail read-only de frozen_rules."
+}

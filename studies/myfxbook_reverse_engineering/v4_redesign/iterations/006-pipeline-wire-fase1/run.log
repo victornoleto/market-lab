@@ -1,0 +1,81 @@
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/gates.py:86: RuntimeWarning: invalid value encountered in sqrt
+  se = np.sqrt((1 - skew * observed_sharpe + (kurt - 1) / 4 * observed_sharpe**2) / (n_returns - 1))
+
+=== MyFxBook Workbench Summary ===
+system_id: 1407880
+
+Decoded pattern:
+  miner: tree
+  candidate_match_rate_cv: 0.64
+  rule: DecisionTree(max_depth=4) — top features: bb_pos_20_2_M15=0.62, bb_pos_20_2_M5=0.26, range_norm_H1=0.12
+  executor: tree_rank1
+  features_used: ['bb_pos_20_2_M15', 'bb_pos_20_2_M5', 'range_norm_H1']
+  entry_hours_utc: [0, 1, 23]
+  pairs: ['EURCHF', 'EURGBP', 'EURUSD', 'GBPUSD', 'USDCAD', 'USDCHF']
+  max_holding_hours: 2.056666666666668
+
+Score A - fidelity to MyFxBook system:
+  fidelity_score: 0.2249 (NONE)
+  n_real: 3304
+  n_synthetic: 24720
+  n_matched_+-5min: 549
+  entry_timing_f1: 0.0392
+  direction_acc_at_matched: 0.7158
+  count_ratio: 7.4818
+  lift_vs_baseline_pp: -43.49
+
+Score B - decoded strategy efficacy:
+  efficacy_score: 0.0 (NONE)
+  synthetic_trades: 24720
+  total_net_pips: -28962.46
+  avg_net_pips: -1.1716
+  daily_sharpe: -4.5965
+  full_bootstrap_999_low: -6.5404
+  oos_sharpe: -4.6757
+  oos_bootstrap_999_low: -7.1777
+  profit_factor: 0.7047
+  wf_positive: 0/8
+  max_drawdown_pips: 28961.36
+Workbench complete in 64.7s
+Outputs: /tmp/v4_smoke_1407880
+
+=== MyFxBook Workbench Summary ===
+system_id: 1407880
+
+Decoded pattern:
+  miner: tree
+  candidate_match_rate_cv: 0.64
+  rule: DecisionTree(max_depth=4) — top features: bb_pos_20_2_M15=0.62, bb_pos_20_2_M5=0.26, range_norm_H1=0.12
+  executor: tree_rank1
+  features_used: ['bb_pos_20_2_M15', 'bb_pos_20_2_M5', 'range_norm_H1']
+  entry_hours_utc: [0, 1, 23]
+  pairs: ['EURCHF', 'EURGBP', 'EURUSD', 'GBPUSD', 'USDCAD', 'USDCHF']
+  max_holding_hours: 2.056666666666668
+
+Score A - fidelity to MyFxBook system:
+  fidelity_score: 0.2249 (NONE)
+  n_real: 3304
+  n_synthetic: 24720
+  n_matched_+-5min: 549
+  entry_timing_f1: 0.0392
+  direction_acc_at_matched: 0.7158
+  count_ratio: 7.4818
+  lift_vs_baseline_pp: -43.49
+
+Score B - decoded strategy efficacy:
+  efficacy_score: 0.0 (NONE)
+  synthetic_trades: 24720
+  total_net_pips: -28962.46
+  avg_net_pips: -1.1716
+  daily_sharpe: -4.5965
+  full_bootstrap_999_low: -6.5404
+  oos_sharpe: -4.6757
+  oos_bootstrap_999_low: -7.1777
+  profit_factor: 0.7047
+  wf_positive: 0/8
+  max_drawdown_pips: 28961.36
+Workbench complete in 38.9s
+Outputs: /tmp/v4_smoke_1407880_legacy
+[validation] flagged fields present; pre_decode_screen exists; adversarial_auc in [0,1]; legacy schema preserved

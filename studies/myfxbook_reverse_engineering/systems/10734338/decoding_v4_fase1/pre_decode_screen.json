@@ -1,0 +1,14 @@
+{
+  "system_id": "10734338",
+  "decision": "GO",
+  "k1_sanity_pass": true,
+  "mcpt_p": 0.0004997501249375312,
+  "psr_p": 6.694644838489694e-14,
+  "concentration_top5": 0.27041360983472873,
+  "is_live": false,
+  "n_trades": 591,
+  "sharpe_per_trade": 0.2839112676304179,
+  "notes": [
+    "is_live=False (account_type='Demo'); warning-only, does not block"
+  ]
+}

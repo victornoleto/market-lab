@@ -1,0 +1,63 @@
+{
+  "task_id": "006-pipeline-wire-fase1",
+  "status": "DONE",
+  "started_utc": "2026-05-04T03:12:00Z",
+  "completed_utc": "2026-05-04T03:26:12Z",
+  "files_created": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/006-pipeline-wire-fase1/PRE_REG.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/006-pipeline-wire-fase1/RESULTS.json",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/006-pipeline-wire-fase1/SUMMARY.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/006-pipeline-wire-fase1/run.log",
+    "tests/myfxbook_pipeline/test_pipeline_v4_wiring.py"
+  ],
+  "files_modified": [
+    "studies/myfxbook_reverse_engineering/workbench/pipeline.py"
+  ],
+  "tests_added": [
+    "tests/myfxbook_pipeline/test_pipeline_v4_wiring.py"
+  ],
+  "tests_passing": 799,
+  "tests_total": 802,
+  "metrics": {
+    "myfxbook_pipeline_tests": {
+      "passed": 36,
+      "skipped": 4,
+      "failed": 0
+    },
+    "full_pytest": {
+      "passed": 799,
+      "skipped": 14,
+      "failed_pre_existing": 3,
+      "pre_existing_fail_file": "tests/test_macro_data_loader.py"
+    },
+    "smoke_1407880": {
+      "pre_screen_decision": "GO",
+      "pre_screen_is_live": false,
+      "pre_screen_notes": [
+        "is_live=False (account_type='Demo'); warning-only, does not block"
+      ],
+      "adversarial_auc": 1.0,
+      "adversarial_ci_low_95": 1.0,
+      "adversarial_ci_high_95": 1.0,
+      "adversarial_n_real": 3304,
+      "adversarial_n_synthetic": 24720,
+      "adversarial_n_features": 10,
+      "adversarial_top_features": [
+        "entry_price_normalized",
+        "lots",
+        "duration_sec",
+        "pips",
+        "hour_utc"
+      ],
+      "mandate_24_pass": false,
+      "mandate_24_failed": [
+        "sharpe_bootstrap_ci_low_999",
+        "oos_bootstrap_ci_low_999",
+        "dsr_p"
+      ],
+      "legacy_schema_preserved": true,
+      "legacy_new_keys_present": []
+    }
+  },
+  "notes": "Pipeline v4 Fase 1 flags wired in workbench/pipeline.py. Sem flags, output legacy preserva schema sem pre_screen/adversarial/mandate_24 keys. Full pytest tem apenas as 3 falhas preexistentes de macro cache ausente. Sem commit/push."
+}
