@@ -1,0 +1,63 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.0.3, pluggy-1.6.0 -- /var/www/pessoal/ai-trade/.venv/bin/python3
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /var/www/pessoal/ai-trade
+configfile: pyproject.toml
+plugins: hypothesis-6.152.2, requests-mock-1.12.1
+collecting ... collected 7 items
+
+tests/myfxbook_pipeline/test_cpcv.py::test_constant_edge_low_pbo PASSED  [ 14%]
+tests/myfxbook_pipeline/test_cpcv.py::test_pure_noise_pbo_around_half PASSED [ 28%]
+tests/myfxbook_pipeline/test_cpcv.py::test_adversarial_overfit_high_pbo PASSED [ 42%]
+tests/myfxbook_pipeline/test_cpcv.py::test_npaths_too_small_raises PASSED [ 57%]
+tests/myfxbook_pipeline/test_cpcv.py::test_purging_no_period_reuse PASSED [ 71%]
+tests/myfxbook_pipeline/test_cpcv.py::test_determinism PASSED            [ 85%]
+tests/myfxbook_pipeline/test_cpcv.py::test_build_metric_matrix_smoke PASSED [100%]
+
+============================== 7 passed in 3.31s ===============================
+    _EPOCH_DATETIME_NAIVE = datetime.datetime.utcfromtimestamp(0)
+
+tests/myfxbook_pipeline/test_pre_decode_screen.py::test_golden_pass_real
+tests/myfxbook_pipeline/test_pre_decode_screen.py::test_golden_stop_martingale
+tests/myfxbook_pipeline/test_pre_decode_screen.py::test_golden_demo_warning_only
+tests/myfxbook_pipeline/test_pre_decode_screen.py::test_concentration_high_synthetic
+  /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+    trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+
+tests/test_grid_gates.py::test_gate_evaluator_dsr_flags_configs_below_alpha
+  /var/www/pessoal/ai-trade/src/ai_trade/backtest/grid/gates.py:98: UserWarning: PBO called with N=2 configurations (<4). CSCV is statistically unstable with small N — a single run can swing wildly by chance. The gate is informative only over a grid of trials declared exogenously to the strategy. See reports/phase_3_5d/ESCALATION_PENDING.md for the incident that motivated this warning.
+    result = pbo(matrix, n_blocks=self.n_blocks_pbo)
+
+tests/test_grid_gates.py::test_gate_evaluator_walk_forward_filters_by_verdict
+tests/test_grid_gates.py::test_gate_evaluator_overall_pass_requires_all_three_gates
+tests/test_grid_gates.py::test_gate_evaluator_best_config_id_is_none_when_no_pass
+tests/test_grid_gates.py::test_gate_evaluator_best_config_picks_highest_sharpe_among_passers
+  /var/www/pessoal/ai-trade/src/ai_trade/backtest/grid/gates.py:98: UserWarning: PBO called with N=3 configurations (<4). CSCV is statistically unstable with small N — a single run can swing wildly by chance. The gate is informative only over a grid of trials declared exogenously to the strategy. See reports/phase_3_5d/ESCALATION_PENDING.md for the incident that motivated this warning.
+    result = pbo(matrix, n_blocks=self.n_blocks_pbo)
+
+tests/test_studies_long_term_portfolio_synths.py::test_ntsd_synth_inception_window
+  /var/www/pessoal/ai-trade/studies/long_term_portfolio/synths.py:40: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+    aligned = pd.concat({"spy": spy_returns, "vea": vea_returns}, axis=1).dropna()
+
+tests/test_studies_long_term_portfolio_synths.py::test_spmo_synth_no_free_lunch_check
+  /var/www/pessoal/ai-trade/studies/long_term_portfolio/synths.py:110: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+    aligned = pd.concat({"base": base_equity_returns, "umd": umd_factor_returns}, axis=1).dropna()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+770 passed, 15 skipped, 12 warnings in 12.68s
+=== GPT-5.5 validation correction (2026-05-04) ===
+Issue: initial implementation enumerated C(S,S/2)/2 canonical split representatives.
+Correction: enumerate all C(S,S/2) splits because J train / J^c test and
+J^c train / J test can select different best-in-sample strategies and produce
+different OOS ranks.
+
+Corrected metrics:
+constant 12870 0.0000 0.0000 0.0000 10.0
+noise 12870 0.4474 0.4354 0.4570 6.0
+overfit 12870 1.0000 1.0000 1.0000 2.0
+
+Corrected unit tests:
+uv run pytest tests/myfxbook_pipeline/test_cpcv.py -q
+........                                                                 [100%]
+8 passed in 6.76s

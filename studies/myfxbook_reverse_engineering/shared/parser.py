@@ -110,6 +110,21 @@ def parse_history_html(html: str) -> pd.DataFrame:
         def text(i: int) -> str:
             return visible[i].get_text(" ", strip=True) if i < len(visible) else ""
 
+        try:
+            symbol_idx = visible.index(symbol_td)
+        except ValueError:
+            symbol_idx = 2
+
+        def text_after_symbol(offset: int) -> str:
+            return text(symbol_idx + offset)
+
+        def attr_any(*names: str) -> str | None:
+            for name in names:
+                value = symbol_td.get(name)
+                if value is not None:
+                    return value
+            return None
+
         symbol = ""
         sym_link = symbol_td.select_one(".symbolName")
         if sym_link:
@@ -119,21 +134,21 @@ def parse_history_html(html: str) -> pd.DataFrame:
 
         rows.append({
             "record": tr.get("data-record"),
-            "opentime_ms": symbol_td.get("opentime"),
-            "closetime_ms": symbol_td.get("closetime"),
+            "opentime_ms": attr_any("opentime", "openTime"),
+            "closetime_ms": attr_any("closetime", "closeTime"),
             "broker_open": broker_times[0] if len(broker_times) > 0 else None,
             "broker_close": broker_times[1] if len(broker_times) > 1 else None,
             "user_open": user_times[0] if len(user_times) > 0 else None,
             "user_close": user_times[1] if len(user_times) > 1 else None,
             "symbol": symbol,
-            "action": text(4),
-            "lots": text(5),
-            "open_price": text(6),
-            "close_price": text(7),
-            "pips": text(8),
-            "profit": text(9),
-            "duration": text(10),
-            "pct": text(11),
+            "action": text_after_symbol(1),
+            "lots": text_after_symbol(2),
+            "open_price": text_after_symbol(3),
+            "close_price": text_after_symbol(4),
+            "pips": text_after_symbol(5),
+            "profit": text_after_symbol(6),
+            "duration": text_after_symbol(7),
+            "pct": text_after_symbol(8),
             "sl_price": None,
             "sl_pips": None,
             "sl_profit": None,

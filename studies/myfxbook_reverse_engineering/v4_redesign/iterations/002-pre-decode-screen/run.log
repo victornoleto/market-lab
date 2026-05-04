@@ -1,0 +1,37 @@
+=== Smoke test on goldens ===
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+  trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+10281851 -> GO | k1= True | mcpt=0.0020 | psr=0.0000 | conc=0.444 | live= True | n= 652 | sr_per_trade=0.2694
+11504701 -> STOP | k1= False | mcpt=0.0020 | psr=0.0000 | conc=0.531 | live= True | n= 314 | sr_per_trade=0.1601
+    note: K1 sanity FAIL: per-month max/median P95 = 119.47 (> 3.0) — within-month doubling
+    note: concentration top-5%=0.531 >= 0.5
+1407880 -> GO | k1= True | mcpt=0.0020 | psr=0.0000 | conc=0.065 | live= False | n= 3304 | sr_per_trade=6.6939
+    note: is_live=False (account_type='Demo'); warning-only, does not block
+
+=== Unit tests ===
+tests/myfxbook_pipeline/test_pre_decode_screen.py::test_golden_stop_martingale PASSED [ 40%]
+tests/myfxbook_pipeline/test_pre_decode_screen.py::test_golden_demo_warning_only PASSED [ 60%]
+tests/myfxbook_pipeline/test_pre_decode_screen.py::test_concentration_high_synthetic PASSED [ 80%]
+tests/myfxbook_pipeline/test_pre_decode_screen.py::test_mcpt_determinism PASSED [100%]
+
+=============================== warnings summary ===============================
+tests/myfxbook_pipeline/test_pre_decode_screen.py::test_golden_pass_real
+tests/myfxbook_pipeline/test_pre_decode_screen.py::test_golden_stop_martingale
+tests/myfxbook_pipeline/test_pre_decode_screen.py::test_golden_demo_warning_only
+tests/myfxbook_pipeline/test_pre_decode_screen.py::test_concentration_high_synthetic
+  /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/shared/sanity.py:112: UserWarning: Converting to PeriodArray/Index representation will drop timezone information.
+    trades["yyyymm"] = trades["close_dt_utc"].dt.to_period("M").astype(str)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 5 passed, 4 warnings in 0.91s =========================
+
+=== Baseline ===
+=========================== short test summary info ============================
+FAILED tests/test_macro_data_loader.py::TestLoaderSmoke::test_ebp_monthly_loads_with_expected_columns
+FAILED tests/test_macro_data_loader.py::TestLoaderSmoke::test_term_spread_daily_loads
+FAILED tests/test_macro_data_loader.py::TestLoaderSmoke::test_cape_monthly_loads
+3 failed, 768 passed, 16 skipped, 12 warnings in 11.08s

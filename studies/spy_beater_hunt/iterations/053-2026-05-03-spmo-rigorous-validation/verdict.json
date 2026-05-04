@@ -1,0 +1,286 @@
+{
+  "verdict": "research_promising_not_gate_equivalent",
+  "reason": "SPMO live and B4+BTC5 sleeve improve the observed windows, but live sleeve window is 2022+ and bootstrap 99.9% / full PBO-DSR cannot be honestly satisfied.",
+  "candidate_slug": "B4_btc5_spmo5_from_zroz",
+  "candidate_allocation": {
+    "NTSX": 0.25,
+    "GDE": 0.25,
+    "RSST": 0.25,
+    "ZROZ": 0.15,
+    "BTC": 0.05,
+    "SPMO": 0.05
+  },
+  "live_candidate": {
+    "window": "2022-03-17 -> 2026-05-01 (4.12y)",
+    "years": 4.123203285420945,
+    "cagr_pct": 14.229596256164667,
+    "mdd_pct": -25.145830738409845,
+    "sharpe": 0.8717454201414438,
+    "end_val": 17307.45
+  },
+  "live_baseline": {
+    "window": "2022-03-17 -> 2026-05-01 (4.12y)",
+    "years": 4.123203285420945,
+    "cagr_pct": 12.284055331448918,
+    "mdd_pct": -25.98306776040967,
+    "sharpe": 0.7817848019708761,
+    "end_val": 16123.96
+  },
+  "live_delta": {
+    "cagr_pct": 1.9455409247157487,
+    "mdd_improved_pp": 0.837237021999826,
+    "sharpe": 0.08996061817056777
+  },
+  "standalone_spmo_window": [
+    {
+      "slug": "SPMO",
+      "window": "2015-10-12 -> 2026-05-01 (10.55y)",
+      "years": 10.55167693360712,
+      "cagr_pct": 18.491146547826798,
+      "mdd_pct": -30.94270524817765,
+      "sharpe": 0.9571739840207784,
+      "end_val": 59911.45
+    },
+    {
+      "slug": "SPY",
+      "window": "2015-10-12 -> 2026-05-01 (10.55y)",
+      "years": 10.55167693360712,
+      "cagr_pct": 14.721826043057028,
+      "mdd_pct": -33.69990905870559,
+      "sharpe": 0.8616867188283072,
+      "end_val": 42595.71
+    },
+    {
+      "slug": "SCHG",
+      "window": "2015-10-12 -> 2026-05-01 (10.55y)",
+      "years": 10.55167693360712,
+      "cagr_pct": 17.384268633311706,
+      "mdd_pct": -34.61929664879248,
+      "sharpe": 0.860437419650211,
+      "end_val": 54262.67
+    },
+    {
+      "slug": "SSO",
+      "window": "2015-10-12 -> 2026-05-01 (10.55y)",
+      "years": 10.55167693360712,
+      "cagr_pct": 22.788292268203424,
+      "mdd_pct": -59.34106318388561,
+      "sharpe": 0.7570691943361628,
+      "end_val": 87247.99
+    }
+  ],
+  "neighborhood_rank_live": [
+    {
+      "slug": "B4_btc5_spmo5_from_zroz",
+      "window": "2022-03-17 -> 2026-05-01 (4.12y)",
+      "years": 4.123203285420945,
+      "cagr_pct": 14.229596256164667,
+      "mdd_pct": -25.145830738409845,
+      "sharpe": 0.8717454201414438,
+      "end_val": 17307.45
+    },
+    {
+      "slug": "B4_btc5_mtum5_from_zroz",
+      "window": "2022-03-17 -> 2026-05-01 (4.12y)",
+      "years": 4.123203285420945,
+      "cagr_pct": 13.871611700941466,
+      "mdd_pct": -25.41081958709509,
+      "sharpe": 0.8514487821279546,
+      "end_val": 17084.9
+    },
+    {
+      "slug": "B4_btc5_vbr5_from_zroz",
+      "window": "2022-03-17 -> 2026-05-01 (4.12y)",
+      "years": 4.123203285420945,
+      "cagr_pct": 13.538424647248991,
+      "mdd_pct": -25.24815879117742,
+      "sharpe": 0.8357831641022665,
+      "end_val": 16879.72
+    },
+    {
+      "slug": "B4_btc5_spmo2p5_from_zroz",
+      "window": "2022-03-17 -> 2026-05-01 (4.12y)",
+      "years": 4.123203285420945,
+      "cagr_pct": 13.255036000170595,
+      "mdd_pct": -25.56509504639277,
+      "sharpe": 0.8279793200675406,
+      "end_val": 16706.68
+    },
+    {
+      "slug": "B4_btc5",
+      "window": "2022-03-17 -> 2026-05-01 (4.12y)",
+      "years": 4.123203285420945,
+      "cagr_pct": 12.284055331448918,
+      "mdd_pct": -25.98306776040967,
+      "sharpe": 0.7817848019708761,
+      "end_val": 16123.96
+    }
+  ],
+  "split_stats": {
+    "train70": {
+      "candidate": {
+        "window": "2022-03-17 -> 2025-02-04 (2.89y)",
+        "years": 2.8884325804243667,
+        "cagr_pct": 10.189372497952153,
+        "mdd_pct": -25.145830738409845,
+        "sharpe": 0.6894259206564687,
+        "end_val": 13234.81
+      },
+      "baseline": {
+        "window": "2022-03-17 -> 2025-02-04 (2.89y)",
+        "years": 2.8884325804243667,
+        "cagr_pct": 8.146358501486151,
+        "mdd_pct": -25.98306776040967,
+        "sharpe": 0.5759735281809062,
+        "end_val": 12538.37
+      },
+      "delta_cagr_pct": 2.0430139964660015,
+      "delta_sharpe": 0.11345239247556249,
+      "mdd_improved_pp": 0.837237021999826
+    },
+    "oos30": {
+      "candidate": {
+        "window": "2025-02-05 -> 2026-05-01 (1.23y)",
+        "years": 1.2320328542094456,
+        "cagr_pct": 23.47452545606292,
+        "mdd_pct": -16.355638989768284,
+        "sharpe": 1.2046602689596126,
+        "end_val": 17307.45
+      },
+      "baseline": {
+        "window": "2025-02-05 -> 2026-05-01 (1.23y)",
+        "years": 1.2320328542094456,
+        "cagr_pct": 21.73022859364371,
+        "mdd_pct": -15.417959903020972,
+        "sharpe": 1.1637337386023696,
+        "end_val": 16123.96
+      },
+      "delta_cagr_pct": 1.744296862419212,
+      "delta_sharpe": 0.04092653035724303,
+      "mdd_improved_pp": -0.9376790867473126
+    }
+  },
+  "rolling_1y": {
+    "years": 1,
+    "n_windows": 783,
+    "cagr_win_rate": 1.0,
+    "mdd_no_worse_rate": 0.4444444444444444,
+    "both_rate": 0.4444444444444444
+  },
+  "rolling_2y": {
+    "years": 2,
+    "n_windows": 531,
+    "cagr_win_rate": 1.0,
+    "mdd_no_worse_rate": 0.4915254237288136,
+    "both_rate": 0.4915254237288136
+  },
+  "rolling_3y": {
+    "years": 3,
+    "n_windows": 279,
+    "cagr_win_rate": 1.0,
+    "mdd_no_worse_rate": 0.37992831541218636,
+    "both_rate": 0.37992831541218636
+  },
+  "bootstrap_live_excess": {
+    "mean_annual_excess_pct": 1.655527872413662,
+    "ci_5_pct": 0.6187450946861739,
+    "ci_1_pct": 0.17714220704455333,
+    "ci_0p1_pct": -0.26240175004244143,
+    "prob_excess_gt_0": 0.9952,
+    "block_days": 21,
+    "reps": 5000
+  },
+  "calendar_years_live": [
+    {
+      "year": 2022,
+      "candidate_return_pct": -17.801499999999994,
+      "baseline_return_pct": -19.193199999999997,
+      "delta_pct": 1.3917000000000068
+    },
+    {
+      "year": 2023,
+      "candidate_return_pct": 22.93651101270362,
+      "baseline_return_pct": 21.78507893536534,
+      "delta_pct": 1.151432077338277
+    },
+    {
+      "year": 2024,
+      "candidate_return_pct": 25.92548182927157,
+      "baseline_return_pct": 22.551378227229012,
+      "delta_pct": 3.374103602042555
+    },
+    {
+      "year": 2025,
+      "candidate_return_pct": 26.33538063593175,
+      "baseline_return_pct": 24.821084997740584,
+      "delta_pct": 1.5142956381911654
+    },
+    {
+      "year": 2026,
+      "candidate_return_pct": 7.133970000544743,
+      "baseline_return_pct": 6.4453604653926355,
+      "delta_pct": 0.6886095351521071
+    }
+  ],
+  "long_proxy_no_btc": {
+    "rows": [
+      {
+        "slug": "B4_rsst7030_baseline",
+        "window": "2000-01-03 -> 2026-05-01 (26.32y)",
+        "years": 26.324435318275153,
+        "cagr_pct": 10.999686985738633,
+        "mdd_pct": -29.600492853908023,
+        "sharpe": 0.8048975291588445,
+        "end_val": 155980.24
+      },
+      {
+        "slug": "B4_scv10_from_zroz",
+        "window": "2000-01-03 -> 2026-05-01 (26.32y)",
+        "years": 26.324435318275153,
+        "cagr_pct": 11.363904829573034,
+        "mdd_pct": -37.19671636290932,
+        "sharpe": 0.7708668026076427,
+        "end_val": 170028.32
+      },
+      {
+        "slug": "B4_scv10_from_ntsx",
+        "window": "2000-01-03 -> 2026-05-01 (26.32y)",
+        "years": 26.324435318275153,
+        "cagr_pct": 11.227313060836597,
+        "mdd_pct": -31.06114847116399,
+        "sharpe": 0.8142867518105449,
+        "end_val": 164622.89
+      },
+      {
+        "slug": "B4_mtum10_from_zroz",
+        "window": "2000-01-03 -> 2026-05-01 (26.32y)",
+        "years": 26.324435318275153,
+        "cagr_pct": 11.20992986982472,
+        "mdd_pct": -37.0933112699949,
+        "sharpe": 0.7629589675416493,
+        "end_val": 163946.95
+      }
+    ],
+    "bootstrap_mtum10_vs_base": {
+      "mean_annual_excess_pct": 0.36388969279336586,
+      "ci_5_pct": -0.5956751516256298,
+      "ci_1_pct": -0.9960644132432117,
+      "ci_0p1_pct": -1.4954862093497714,
+      "prob_excess_gt_0": 0.7364,
+      "block_days": 21,
+      "reps": 5000
+    },
+    "source": "iter046 cached testfol.io curves; no BTC; MTUMSIM proxy over 2000+ common window"
+  },
+  "gates": {
+    "G1_PBO": "not_applicable_single_predeclared_candidate; neighborhood reported instead",
+    "G2_DSR": "not_claimed; live candidate has only 4.12y due SPMO inception/availability in B4+BTC window",
+    "G3_WF": "partial; rolling windows reported, no enough independent 5y folds",
+    "G4_OOS_70_30": "reported",
+    "G5_recent_forward": "reported via OOS30 and calendar years",
+    "G6_bootstrap_99p9_low_gt_0": "reported; promote only if ci_0p1_pct > 0",
+    "G7_cross_lib": "not_run; source is testfol.io only",
+    "G6_pass": false
+  },
+  "overall_gate_equivalent": false
+}

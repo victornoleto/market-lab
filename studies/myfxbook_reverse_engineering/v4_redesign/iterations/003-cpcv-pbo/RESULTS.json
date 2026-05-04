@@ -1,0 +1,66 @@
+{
+  "task_id": "003-cpcv-pbo",
+  "status": "DONE",
+  "started_utc": "2026-05-04T03:00:00Z",
+  "completed_utc": "2026-05-04T03:35:00Z",
+  "files_created": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/003-cpcv-pbo/PRE_REG.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/003-cpcv-pbo/run.log",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/003-cpcv-pbo/RESULTS.json",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/003-cpcv-pbo/SUMMARY.md"
+  ],
+  "files_modified": [
+    "studies/myfxbook_reverse_engineering/shared/cpcv.py",
+    "tests/myfxbook_pipeline/test_cpcv.py",
+    "studies/myfxbook_reverse_engineering/v4_redesign/PROGRESS.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/next_prompt.md"
+  ],
+  "tests_added": [
+    "tests/myfxbook_pipeline/test_cpcv.py::test_constant_edge_low_pbo",
+    "tests/myfxbook_pipeline/test_cpcv.py::test_pure_noise_pbo_around_half",
+    "tests/myfxbook_pipeline/test_cpcv.py::test_adversarial_overfit_high_pbo",
+    "tests/myfxbook_pipeline/test_cpcv.py::test_npaths_too_small_raises",
+    "tests/myfxbook_pipeline/test_cpcv.py::test_purging_no_period_reuse",
+    "tests/myfxbook_pipeline/test_cpcv.py::test_complementary_splits_are_kept",
+    "tests/myfxbook_pipeline/test_cpcv.py::test_determinism",
+    "tests/myfxbook_pipeline/test_cpcv.py::test_build_metric_matrix_smoke"
+  ],
+  "tests_passing": 8,
+  "tests_total": 8,
+  "baseline_passing": 770,
+  "baseline_skipped": 15,
+  "baseline_failing_pre_existing": 3,
+  "metrics": {
+    "constant_edge_synthetic": {
+      "S": 16,
+      "N": 10,
+      "n_paths": 12870,
+      "pbo": 0.0,
+      "pbo_ci_low_99": 0.0,
+      "pbo_ci_high_99": 0.0,
+      "median_oos_rank_of_best_is": 10.0,
+      "verdict": "PASS (PBO < 0.5 hard gate)"
+    },
+    "pure_noise_synthetic": {
+      "S": 16,
+      "N": 10,
+      "n_paths": 12870,
+      "pbo": 0.4474,
+      "pbo_ci_low_99": 0.4354,
+      "pbo_ci_high_99": 0.4570,
+      "median_oos_rank_of_best_is": 6.0,
+      "verdict": "DIAGNOSTIC (PBO near 0.5; iid noise seed can fall on either side)"
+    },
+    "adversarial_overfit_synthetic": {
+      "S": 16,
+      "N": 16,
+      "n_paths": 12870,
+      "pbo": 1.0,
+      "pbo_ci_low_99": 1.0,
+      "pbo_ci_high_99": 1.0,
+      "median_oos_rank_of_best_is": 2.0,
+      "verdict": "FAIL (PBO=1; spike rotativo detectado)"
+    }
+  },
+  "notes": "Corrected after GPT-5.5 review: PBO now enumerates all C(S, S/2) splits, not canonical half-splits, because J train / J^c test and J^c train / J test can select different best-in-sample strategies. For S=16 this is 12870 paths. Logit lambda=log(w/(1-w)) where w=rank_oos_of_best_is/(N+1). PBO = mean(lambda<=0). CI 99% via bootstrap dos indicadores (n_boot=1000). Synthetic scenarios after correction: edge constante -> PBO=0, iid noise seed -> PBO=0.447 (near 0.5; noise may land either side), adversarial overfit rotativo -> PBO=1.0. Added regression test to keep complementary splits. Helper build_metric_matrix_from_candidates assumes boolean mask in extra['predicted_mask']; NaN for sub-periods with <2 trades or std=0 must be filtered before cscv_pbo."
+}

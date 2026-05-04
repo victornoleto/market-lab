@@ -1,0 +1,546 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_crypto_momentum_vol_throttle.py",
+    "DATA_AUDIT_D1.csv",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "baselines": {
+    "assets": {
+      "BTCUSD": {
+        "base": {
+          "always_flat": {
+            "bars": 2987,
+            "cagr": 0.0,
+            "entries": 0,
+            "max_drawdown": 0.0,
+            "sharpe": null,
+            "total_return": 0.0,
+            "turnover": 0.0
+          },
+          "buy_and_hold": {
+            "bars": 2987,
+            "cagr": 0.1605600848069102,
+            "entries": 1,
+            "max_drawdown": -0.8154201848420027,
+            "sharpe": 0.5496698482190405,
+            "total_return": 4.841396779835857,
+            "turnover": 1.0
+          },
+          "random_entry_matched_turnover_mean": {
+            "bars": 2987,
+            "cagr": 0.09736395548190391,
+            "matched_entries": 75,
+            "max_drawdown": -0.5416644981831777,
+            "runs": 200,
+            "sharpe": 0.47622668465013945,
+            "total_return": 2.008041242644734
+          },
+          "uniform_frequency": {
+            "bars": 2987,
+            "cagr": 0.11500695358111446,
+            "entries": 75,
+            "max_drawdown": -0.6814468859441545,
+            "sharpe": 0.4748082545665584,
+            "total_return": 2.634037134688449,
+            "turnover": 150.0
+          }
+        },
+        "conservative": {
+          "always_flat": {
+            "bars": 2987,
+            "cagr": 0.0,
+            "entries": 0,
+            "max_drawdown": 0.0,
+            "sharpe": null,
+            "total_return": 0.0,
+            "turnover": 0.0
+          },
+          "buy_and_hold": {
+            "bars": 2987,
+            "cagr": 0.16041296964220142,
+            "entries": 1,
+            "max_drawdown": -0.8154201848420027,
+            "sharpe": 0.5494372124074745,
+            "total_return": 4.832625913800078,
+            "turnover": 1.0
+          },
+          "random_entry_matched_turnover_mean": {
+            "bars": 2987,
+            "cagr": 0.07755043955445284,
+            "matched_entries": 75,
+            "max_drawdown": -0.5511720784320069,
+            "runs": 200,
+            "sharpe": 0.4100732399458427,
+            "total_return": 1.4237545427061105
+          },
+          "uniform_frequency": {
+            "bars": 2987,
+            "cagr": 0.09398773518782577,
+            "entries": 75,
+            "max_drawdown": -0.6871618080927832,
+            "sharpe": 0.42554400007184495,
+            "total_return": 1.9001563940838286,
+            "turnover": 150.0
+          }
+        },
+        "stress": {
+          "always_flat": {
+            "bars": 2987,
+            "cagr": 0.0,
+            "entries": 0,
+            "max_drawdown": 0.0,
+            "sharpe": null,
+            "total_return": 0.0,
+            "turnover": 0.0
+          },
+          "buy_and_hold": {
+            "bars": 2987,
+            "cagr": 0.16016732696414882,
+            "entries": 1,
+            "max_drawdown": -0.815420184842003,
+            "sharpe": 0.549048709287035,
+            "total_return": 4.818007803740376,
+            "turnover": 1.0
+          },
+          "random_entry_matched_turnover_mean": {
+            "bars": 2987,
+            "cagr": 0.04531633408654323,
+            "matched_entries": 75,
+            "max_drawdown": -0.5665833911073852,
+            "runs": 200,
+            "sharpe": 0.29982096808969577,
+            "total_return": 0.6910123682967921
+          },
+          "uniform_frequency": {
+            "bars": 2987,
+            "cagr": 0.05976494486629469,
+            "entries": 75,
+            "max_drawdown": -0.7019181128058909,
+            "sharpe": 0.3433731849734612,
+            "total_return": 0.9898172642193215,
+            "turnover": 150.0
+          }
+        }
+      },
+      "ETHUSD": {
+        "base": {
+          "always_flat": {
+            "bars": 2982,
+            "cagr": 0.0,
+            "entries": 0,
+            "max_drawdown": 0.0,
+            "sharpe": null,
+            "total_return": 0.0,
+            "turnover": 0.0
+          },
+          "buy_and_hold": {
+            "bars": 2982,
+            "cagr": 0.09891864833566255,
+            "entries": 1,
+            "max_drawdown": -0.9431477094958849,
+            "sharpe": 0.4975109156739305,
+            "total_return": 2.0532258386887587,
+            "turnover": 1.0
+          },
+          "random_entry_matched_turnover_mean": {
+            "bars": 2982,
+            "cagr": 0.08485941293781019,
+            "matched_entries": 75,
+            "max_drawdown": -0.7382372397290549,
+            "runs": 200,
+            "sharpe": 0.4062180831361466,
+            "total_return": 1.6217179150556515
+          },
+          "uniform_frequency": {
+            "bars": 2982,
+            "cagr": -0.03734582288268473,
+            "entries": 75,
+            "max_drawdown": -0.7878776207844648,
+            "sharpe": 0.18331473125701295,
+            "total_return": -0.36261983279164045,
+            "turnover": 150.0
+          }
+        },
+        "conservative": {
+          "always_flat": {
+            "bars": 2982,
+            "cagr": 0.0,
+            "entries": 0,
+            "max_drawdown": 0.0,
+            "sharpe": null,
+            "total_return": 0.0,
+            "turnover": 0.0
+          },
+          "buy_and_hold": {
+            "bars": 2982,
+            "cagr": 0.09877911342032886,
+            "entries": 1,
+            "max_drawdown": -0.9431477094958849,
+            "sharpe": 0.49733579562461844,
+            "total_return": 2.0486414155075314,
+            "turnover": 1.0
+          },
+          "random_entry_matched_turnover_mean": {
+            "bars": 2982,
+            "cagr": 0.06522893714379285,
+            "matched_entries": 75,
+            "max_drawdown": -0.7433659909907557,
+            "runs": 200,
+            "sharpe": 0.3561284719089732,
+            "total_return": 1.1122321150201122
+          },
+          "uniform_frequency": {
+            "bars": 2982,
+            "cagr": -0.05553425364814679,
+            "entries": 75,
+            "max_drawdown": -0.8036091341820408,
+            "sharpe": 0.1461278161559498,
+            "total_return": -0.4914072426256504,
+            "turnover": 150.0
+          }
+        },
+        "stress": {
+          "always_flat": {
+            "bars": 2982,
+            "cagr": 0.0,
+            "entries": 0,
+            "max_drawdown": 0.0,
+            "sharpe": null,
+            "total_return": 0.0,
+            "turnover": 0.0
+          },
+          "buy_and_hold": {
+            "bars": 2982,
+            "cagr": 0.09854612778199767,
+            "entries": 1,
+            "max_drawdown": -0.9431477094958849,
+            "sharpe": 0.49704353038810917,
+            "total_return": 2.041000710205508,
+            "turnover": 1.0
+          },
+          "random_entry_matched_turnover_mean": {
+            "bars": 2982,
+            "cagr": 0.03329431492231194,
+            "matched_entries": 75,
+            "max_drawdown": -0.7516924550559327,
+            "runs": 200,
+            "sharpe": 0.27264941657581854,
+            "total_return": 0.47339029911257335
+          },
+          "uniform_frequency": {
+            "bars": 2982,
+            "cagr": -0.08514640214888602,
+            "entries": 75,
+            "max_drawdown": -0.8496095340964234,
+            "sharpe": 0.084157348349428,
+            "total_return": -0.6511324266605214,
+            "turnover": 150.0
+          }
+        }
+      }
+    },
+    "portfolio": {
+      "base": {
+        "always_flat_crypto_mean_metrics": {
+          "cagr": 0.0,
+          "max_drawdown": 0.0,
+          "sharpe": null,
+          "total_return": 0.0
+        },
+        "buy_and_hold_crypto_mean_metrics": {
+          "cagr": 0.12973936657128637,
+          "max_drawdown": -0.8792839471689438,
+          "sharpe": 0.5235903819464856,
+          "total_return": 3.4473113092623078
+        },
+        "random_entry_matched_turnover_mean_crypto_mean_metrics": {
+          "cagr": 0.09111168420985705,
+          "max_drawdown": -0.6399508689561163,
+          "sharpe": 0.44122238389314306,
+          "total_return": 1.8148795788501928
+        },
+        "uniform_frequency_crypto_mean_metrics": {
+          "cagr": 0.03883056534921486,
+          "max_drawdown": -0.7346622533643097,
+          "sharpe": 0.32906149291178566,
+          "total_return": 1.1357086509484042
+        }
+      },
+      "conservative": {
+        "always_flat_crypto_mean_metrics": {
+          "cagr": 0.0,
+          "max_drawdown": 0.0,
+          "sharpe": null,
+          "total_return": 0.0
+        },
+        "buy_and_hold_crypto_mean_metrics": {
+          "cagr": 0.12959604153126514,
+          "max_drawdown": -0.8792839471689438,
+          "sharpe": 0.5233865040160465,
+          "total_return": 3.440633664653805
+        },
+        "random_entry_matched_turnover_mean_crypto_mean_metrics": {
+          "cagr": 0.07138968834912285,
+          "max_drawdown": -0.6472690347113813,
+          "sharpe": 0.38310085592740795,
+          "total_return": 1.2679933288631113
+        },
+        "uniform_frequency_crypto_mean_metrics": {
+          "cagr": 0.01922674076983949,
+          "max_drawdown": -0.7453854711374119,
+          "sharpe": 0.28583590811389736,
+          "total_return": 0.7043745757290891
+        }
+      },
+      "stress": {
+        "always_flat_crypto_mean_metrics": {
+          "cagr": 0.0,
+          "max_drawdown": 0.0,
+          "sharpe": null,
+          "total_return": 0.0
+        },
+        "buy_and_hold_crypto_mean_metrics": {
+          "cagr": 0.12935672737307324,
+          "max_drawdown": -0.879283947168944,
+          "sharpe": 0.5230461198375721,
+          "total_return": 3.429504256972942
+        },
+        "random_entry_matched_turnover_mean_crypto_mean_metrics": {
+          "cagr": 0.039305324504427586,
+          "max_drawdown": -0.659137923081659,
+          "sharpe": 0.2862351923327572,
+          "total_return": 0.5822013337046827
+        },
+        "uniform_frequency_crypto_mean_metrics": {
+          "cagr": -0.012690728641295668,
+          "max_drawdown": -0.7757638234511571,
+          "sharpe": 0.2137652666614446,
+          "total_return": 0.16934241877940004
+        }
+      }
+    },
+    "source": "../001-tsmom-data-audit/RESULTS.json baselines.D1 crypto subset",
+    "strategy_matched_random_entry_mean": {
+      "bars": 2988,
+      "cagr": 0.09489633667641106,
+      "max_drawdown": -0.5800879815092008,
+      "runs": 200,
+      "sharpe": 0.47129972275035675,
+      "total_return": 1.929890015247259
+    }
+  },
+  "cost_scenarios": {
+    "CRYPTO": {
+      "base": 10.0,
+      "conservative": 25.0,
+      "stress": 50.0
+    }
+  },
+  "frequencies": [
+    "D1"
+  ],
+  "gates": {
+    "K1_data_reliability": "PASS",
+    "beats_buy_and_hold_crypto_sharpe_base": "PASS",
+    "beats_iter001_random_entry_crypto_sharpe_base": "PASS",
+    "beats_strategy_matched_random_entry_sharpe_base": "PASS",
+    "beats_uniform_frequency_crypto_sharpe_base": "PASS",
+    "bootstrap_full_ci_low_gt_0": "PASS",
+    "bootstrap_oos_ci_low_gt_0": "FAIL",
+    "cost_stress_positive": "PASS",
+    "no_crypto_only_winner_declared": "PASS",
+    "oos_single_block_positive": "PASS",
+    "pbo": "NOT_APPLICABLE_SINGLE_CONFIG"
+  },
+  "hypothesis": "Crypto momentum D1 with realized-volatility percentile throttle",
+  "iteration": "006-crypto-momentum-vol-throttle-diagnostic",
+  "kill_switches": [
+    "K6_CRYPTO_ONLY_DIAGNOSTIC_NO_WINNER",
+    "K4_OOS_BOOTSTRAP_LOW_LE_0"
+  ],
+  "n_trials": 1,
+  "notes": "Research-only diagnostic. BTCUSD/ETHUSD-only cannot be a winner; no paper/live.",
+  "pre_registered": true,
+  "status": "dead-end",
+  "strategy_results": {
+    "assets": {
+      "BTCUSD": {
+        "base": {
+          "avg_exposure": 0.43639102778707733,
+          "bars": 2987,
+          "cagr": 0.27744540388726735,
+          "entries": 76,
+          "max_drawdown": -0.5822278221033144,
+          "sharpe": 0.9374760911998667,
+          "total_return": 17.217736651546,
+          "turnover": 165.0
+        },
+        "conservative": {
+          "avg_exposure": 0.43639102778707733,
+          "bars": 2987,
+          "cagr": 0.25080732683518825,
+          "entries": 76,
+          "max_drawdown": -0.595717910959976,
+          "sharpe": 0.8690792876971211,
+          "total_return": 13.191064598483294,
+          "turnover": 165.0
+        },
+        "stress": {
+          "avg_exposure": 0.43639102778707733,
+          "bars": 2987,
+          "cagr": 0.20756397771048118,
+          "entries": 76,
+          "max_drawdown": -0.6180074390193008,
+          "sharpe": 0.7552588298780001,
+          "total_return": 8.351801962807372,
+          "turnover": 165.0
+        }
+      },
+      "ETHUSD": {
+        "base": {
+          "avg_exposure": 0.45539906103286387,
+          "bars": 2982,
+          "cagr": 0.3483451449345043,
+          "entries": 62,
+          "max_drawdown": -0.5243032605393663,
+          "sharpe": 0.9102364427182303,
+          "total_return": 33.35416488463129,
+          "turnover": 126.0
+        },
+        "conservative": {
+          "avg_exposure": 0.45539906103286387,
+          "bars": 2982,
+          "cagr": 0.3266802289198443,
+          "entries": 62,
+          "max_drawdown": -0.5441645966663823,
+          "sharpe": 0.8720457979951551,
+          "total_return": 27.36181642157911,
+          "turnover": 126.0
+        },
+        "stress": {
+          "avg_exposure": 0.45539906103286387,
+          "bars": 2982,
+          "cagr": 0.29128040247781195,
+          "entries": 62,
+          "max_drawdown": -0.5755026457080192,
+          "sharpe": 0.8084000467891579,
+          "total_return": 19.594122503071038,
+          "turnover": 126.0
+        }
+      }
+    },
+    "portfolio": {
+      "base": {
+        "bootstrap_full": {
+          "annualized_mean": 0.34190702253289773,
+          "ci": 0.999,
+          "ci_low": 0.0592680712847845,
+          "runs": 2000
+        },
+        "bootstrap_oos": {
+          "annualized_mean": 0.23803517559783294,
+          "ci": 0.999,
+          "ci_low": -0.1966310636233621,
+          "runs": 2000
+        },
+        "full": {
+          "bars": 2988,
+          "cagr": 0.3301569921586627,
+          "max_drawdown": -0.5473295287926644,
+          "sharpe": 1.0163030525564496,
+          "total_return": 28.45333019039763
+        },
+        "in_sample_pre_2024": {
+          "bars": 2136,
+          "cagr": 0.37517100773776124,
+          "max_drawdown": -0.5473295287926644,
+          "sharpe": 1.0659596277257881,
+          "total_return": 13.884621931277207
+        },
+        "oos_2024_plus": {
+          "bars": 852,
+          "cagr": 0.2236764427685627,
+          "max_drawdown": -0.31837536814870593,
+          "sharpe": 0.8825410560686973,
+          "total_return": 0.9787758349781785
+        }
+      },
+      "conservative": {
+        "bootstrap_full": {
+          "annualized_mean": 0.32350039602687364,
+          "ci": 0.999,
+          "ci_low": 0.04041838905586882,
+          "runs": 2000
+        },
+        "bootstrap_oos": {
+          "annualized_mean": 0.21629573897811458,
+          "ci": 0.999,
+          "ci_low": -0.21659873615857342,
+          "runs": 2000
+        },
+        "full": {
+          "bars": 2988,
+          "cagr": 0.3057443079805986,
+          "max_drawdown": -0.5635390319390272,
+          "sharpe": 0.9605322300043024,
+          "total_return": 22.64539279760445
+        },
+        "in_sample_pre_2024": {
+          "bars": 2136,
+          "cagr": 0.351728329318753,
+          "max_drawdown": -0.5635390319390272,
+          "sharpe": 1.0175065521409796,
+          "total_return": 11.866002141809828
+        },
+        "oos_2024_plus": {
+          "bars": 852,
+          "cagr": 0.1972203801903556,
+          "max_drawdown": -0.3406801496170815,
+          "sharpe": 0.8005360336684465,
+          "total_return": 0.8378197467234614
+        }
+      },
+      "stress": {
+        "bootstrap_full": {
+          "annualized_mean": 0.29282268518350013,
+          "ci": 0.999,
+          "ci_low": 0.009002252007676025,
+          "runs": 2000
+        },
+        "bootstrap_oos": {
+          "annualized_mean": 0.18006334461191742,
+          "ci": 0.999,
+          "ci_low": -0.2591428689462806,
+          "runs": 2000
+        },
+        "full": {
+          "bars": 2988,
+          "cagr": 0.26600844428174075,
+          "max_drawdown": -0.5893048445650703,
+          "sharpe": 0.8676435172359245,
+          "total_return": 15.390999192569101
+        },
+        "in_sample_pre_2024": {
+          "bars": 2136,
+          "cagr": 0.3135030681370983,
+          "max_drawdown": -0.5893048445650703,
+          "sharpe": 0.9367663079450361,
+          "total_return": 9.08891563524326
+        },
+        "oos_2024_plus": {
+          "bars": 852,
+          "cagr": 0.15435062485393902,
+          "max_drawdown": -0.37627757494862357,
+          "sharpe": 0.6642213097743151,
+          "total_return": 0.6246542032040576
+        }
+      }
+    }
+  },
+  "universe": [
+    "BTCUSD",
+    "ETHUSD"
+  ]
+}

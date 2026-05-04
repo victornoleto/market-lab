@@ -1,0 +1,65 @@
+{
+  "task_id": "002-pre-decode-screen",
+  "status": "DONE",
+  "started_utc": "2026-05-04T01:30:00Z",
+  "completed_utc": "2026-05-04T02:05:00Z",
+  "files_created": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/002-pre-decode-screen/PRE_REG.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/002-pre-decode-screen/run.log",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/002-pre-decode-screen/RESULTS.json",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/002-pre-decode-screen/SUMMARY.md"
+  ],
+  "files_modified": [
+    "studies/myfxbook_reverse_engineering/shared/pre_decode_screen.py",
+    "tests/myfxbook_pipeline/test_pre_decode_screen.py",
+    "studies/myfxbook_reverse_engineering/v4_redesign/PROGRESS.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/next_prompt.md"
+  ],
+  "tests_added": [
+    "tests/myfxbook_pipeline/test_pre_decode_screen.py::test_golden_pass_real",
+    "tests/myfxbook_pipeline/test_pre_decode_screen.py::test_golden_stop_martingale",
+    "tests/myfxbook_pipeline/test_pre_decode_screen.py::test_golden_demo_warning_only",
+    "tests/myfxbook_pipeline/test_pre_decode_screen.py::test_concentration_high_synthetic",
+    "tests/myfxbook_pipeline/test_pre_decode_screen.py::test_mcpt_determinism"
+  ],
+  "tests_passing": 5,
+  "tests_total": 5,
+  "baseline_passing": 768,
+  "baseline_skipped": 16,
+  "baseline_failing_pre_existing": 3,
+  "metrics": {
+    "10281851": {
+      "decision": "GO",
+      "k1_sanity_pass": true,
+      "mcpt_p": 0.002,
+      "psr_p": 0.0,
+      "concentration_top5": 0.444,
+      "is_live": true,
+      "n_trades": 652,
+      "sharpe_per_trade": 0.2694
+    },
+    "11504701": {
+      "decision": "STOP",
+      "k1_sanity_pass": false,
+      "mcpt_p": 0.002,
+      "psr_p": 0.0,
+      "concentration_top5": 0.531,
+      "is_live": true,
+      "n_trades": 314,
+      "sharpe_per_trade": 0.1601,
+      "fail_reasons": ["K1 martingale signature", "concentration top-5% >= 0.50"]
+    },
+    "1407880": {
+      "decision": "GO",
+      "k1_sanity_pass": true,
+      "mcpt_p": 0.002,
+      "psr_p": 0.0,
+      "concentration_top5": 0.065,
+      "is_live": false,
+      "n_trades": 3304,
+      "sharpe_per_trade": 6.6939,
+      "warning": "is_live=False (Demo); warning-only, does not block"
+    }
+  },
+  "notes": "All 5 acceptance criteria met. Goldens behave as predicted by spec: 10281851 GO, 11504701 STOP via K1, 1407880 GO with is_live warning. PSR p=0 across all three goldens reflects extremely strong per-trade signal in HappyForex track records; MCPT p=2/(n+1)=floor with n_perm=500 means observed Sharpe was higher than every permuted Sharpe (consistent with HappyForex vendor curve). Concentration test caught 11504701 in addition to K1 (defense in depth)."
+}

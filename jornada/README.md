@@ -29,7 +29,184 @@ trading: palpite disfarçado de análise.
 
 ---
 
-## Onde estamos hoje (2026-05-03 — LETF overlay rejeitado; Plano C formal inalterado)
+## Onde estamos hoje (2026-05-04 — MyFxBook v4 task 003 PBO/CSCV gate pronto; Plano C formal inalterado)
+
+**Pipeline myfxbook v4 task 003 2026-05-04:** entreguei `shared/cpcv.py` com
+PBO/CSCV `[advances_fin_ml, p.208-222]` — modulo + 7 testes unitarios. Os 3
+cenarios sinteticos canonicos comportam-se como esperado: PBO=0.000 em edge
+constante, 0.509 em ruido puro, 1.000 em overfit rotativo (S=16, n_paths=6435).
+PBO entra como hard gate §2.4 complementando walk-forward (rejeitado virar
+substituto em DEAD_ENDS.md). Proxima sessao: task 004 refatora `gates.py` para
+promover DSR de informativo para hard gate e integrar PBO. Fase 1 do redesign:
+3/8 DONE. Detalhe em `jornada/2026-05-04-0202-myfxbook-v4-task-003-pbo.md`.
+
+## Onde estavamos antes (2026-05-03 — VBRSIM/MTUMSIM long proxy rejeita satellite como melhoria core; Plano C formal inalterado)
+
+**spy_beater_hunt iter 055 2026-05-03:** removi a limitacao do FMTM testando
+10% VBRSIM / 10% MTUMSIM / 5% BTCSIM desde 2010 e 10% VBRSIM / 10% MTUMSIM sem
+BTC desde 2000. Com BTC, B4+BTC5 continuou melhor por Sharpe: 23.18% CAGR /
+-27.26% MDD / 1.472; a melhor variante moderada por CAGR (`from_zroz_ntsx`) fez
+24.40% / -29.90% / 1.412. Sem BTC, B4 base venceu por Sharpe/MDD: 12.27% /
+-29.02% / 0.881, enquanto satellites pioraram MDD para -35% a -43%. Conclusao:
+satellite fator/crypto e preferencia agressiva, nao melhoria core. Detalhe em
+`jornada/2026-05-03-2208-vbr-mtum-btc-long-proxy.md`.
+
+## Onde estavamos antes (2026-05-03 — Funding do satellite AVUV/SPMO/FMTM/BTC revisado; Plano C formal inalterado)
+
+**spy_beater_hunt iter 054 2026-05-03:** testei a cesta 25% satellite (10% AVUV
+/ 5% SPMO / 5% FMTM / 5% BTC) com diferentes fontes de funding. FMTM limita a
+janela comum a 2025-03-20 -> 2026-05-01, entao isto e mecanica de funding, nao
+validacao permanente. Tirar tudo de ZROZ venceu no curto prazo (38.77% / -15.15%
+/ 1.603), mas zera convexidade de duration. Melhor compromisso: 15% NTSX / 25%
+GDE / 25% RSST / 10% ZROZ / 10% AVUV / 5% SPMO / 5% FMTM / 5% BTC; fez 34.97% /
+-14.21% / 1.553 e preserva GDE+RSST. Detalhe em
+`jornada/2026-05-03-2157-satellite-funding-policy.md`.
+
+## Onde estavamos antes (2026-05-03 — SPMO validado como promissor, nao gate-passed; Plano C formal inalterado)
+
+**spy_beater_hunt iter 053 2026-05-03:** rodei a validacao mais rigorosa do
+candidato 25% NTSX / 25% GDE / 25% RSST / 15% ZROZ / 5% BTC / 5% SPMO. Na janela
+2022-03-17 -> 2026-05-01, melhorou B4+BTC5 de 12.28% / -25.98% / Sharpe raw
+0.782 para 14.23% / -25.15% / 0.872. O split 70/30 manteve CAGR melhor no OOS,
+mas com MDD OOS ligeiramente pior. O bootstrap em blocos teve excesso medio
+anual +1.66pp e probabilidade positiva 99.52%, mas CI 99.9% low = -0.26pp. Verdict
+`research_promising_not_gate_equivalent`: SPMO fica promissor, nao substitui o
+winner. Detalhe em `jornada/2026-05-03-2147-spmo-rigorous-validation.md`.
+
+## Onde estavamos antes (2026-05-03 — SPMO momentum sleeve promissor; Plano C formal inalterado)
+
+**spy_beater_hunt iter 052 2026-05-03:** revisei SPMO/FMTM/MTUM/SCV como
+satellites para melhorar o B4/BTC5. SPMO live foi bom desde 2015: 18.49% CAGR /
+-30.94% MDD / Sharpe 0.848 contra SPY 14.72% / -33.70% / 0.740 e SSO 22.79% /
+-59.34% / 0.696. FMTM venceu desde 2025-03, mas 1.11 ano e curto demais para
+promocao. No B4+BTC5, `B4_btc5_spmo5_from_zroz` melhorou a janela 2022+ de
+12.28% / -25.98% / 0.531 para 14.23% / -25.15% / 0.625; fica como hipotese
+promissora, nao gate-equivalent. Detalhe em
+`jornada/2026-05-03-2141-spy-beater-spmo-momentum-sleeve.md`.
+
+## Onde estavamos antes (2026-05-03 — MyFxBook catalogo geral iniciado; PipsHunterFx falhou; Plano C formal inalterado)
+
+**MyFxBook catalogo geral 2026-05-03:** rodei o scraper geral de ranking com
+filtros reais/atividade/DD e gerei 255 systems em
+`studies/myfxbook_reverse_engineering/data/catalog/systems_rank/systems_gain_desc.*`.
+O primeiro candidato baixo-DD/alto-ganho testado foi `11986417` (`PipsHunterFx-AI`):
+download completo 246/246 paginas, 4.899 trades. O decode falhou: fidelidade
+`0.1481 (NONE)`, `entry_timing_f1=0.0153`, `count_ratio=0.038`, e a regra
+sintetica perdeu `-14448.9` pips com Sharpe diario `-1.2617`. Sem paper/live,
+sem `frozen_rules/`; proximo passo e testar outros candidatos baixo-DD como
+`3534905`, `12000793` e `9493882`. Detalhe em
+`jornada/2026-05-03-2132-myfxbook-catalog-pipshunter-fail.md`.
+
+## Onde estavamos antes (2026-05-03 — Pipeline myfxbook v4 redesenho aprovado; Plano A DORMANT mantido)
+
+**Pipeline myfxbook v4 2026-05-03:** apos os 30 systems R1 v3 falharem
+economicamente e o diagnostico `5R1_M1_FORENSIC_REVIEW.md` decretar
+"decodificacao operacional nao recuperavel com OHLC publico M5/M1 pelo pipeline
+atual", aprovei um redesenho em 8-12 semanas dividido em 3 fases. Trilha
+travada: dados gratuitos apenas (Forex Factory + Dukascopy ticks + Tiingo);
+objetivo hibrido (decode-self e filter-and-copy ambos rodam apos decision gate
+na semana 6). Fase 1 (semanas 1-2) cria pre-filtro de tradeability do EA com
+MCPT + DSR p<0.05 hard + PBO via CSCV + concentration test + adversarial AUC.
+Plano A continua DORMANT, frozen rules intocadas, capital 100% Plano C. Detalhe
+em `jornada/2026-05-03-2107-myfxbook-pipeline-v4-redesign-plan.md`.
+
+## Onde estavamos antes (2026-05-03 — Day/swing ciclo A-E fechado sem winner; Plano C formal inalterado)
+
+**Day/swing strategy hunt iter 007 2026-05-03:** fechei o ciclo inicial das
+Familias A-E em
+`studies/day_swing_strategy_hunt/iterations/007-cycle-close-audit/`. Foi uma
+auditoria conservadora, sem backtest novo: apenas `SUMMARY.md` e `RESULTS.json`
+das iteracoes 001-006. Verdict `dead-end`: A falhou PBO/OOS bootstrap, B falhou
+bootstrap/buy-and-hold, C ficou bloqueada por falta de rates/carry confiavel, D
+falhou como XAU-only e E falhou bootstrap OOS alem de ser crypto-only. Sem
+extensao pequena multi-asset claramente pre-registravel; hunt encerrado por ora.
+Detalhe em `jornada/2026-05-03-1818-day-swing-cycle-close-dead-end.md`.
+
+## Onde estavamos antes (2026-05-03 — Day/swing iter 006 Crypto Momentum rejeitado; Plano C formal inalterado)
+
+**Day/swing strategy hunt iter 006 2026-05-03:** testei a Familia E em
+`studies/day_swing_strategy_hunt/iterations/006-crypto-momentum-vol-throttle-diagnostic/`
+como diagnostico BTCUSD/ETHUSD-only. A regra D1 pre-registrada usou momentum 60d
+e throttle por percentil de volatilidade realizada 20d. Resultado pontual forte:
+33.02% CAGR / Sharpe 1.016 / MDD -54.73% no custo base e stress ainda positivo.
+Mesmo assim, verdict `dead-end`: bootstrap OOS 99.9% low negativo (-19.66%
+anualizado) e crypto-only nao pode virar winner sozinho. Sem paper/live e sem
+ajuste ex-post de thresholds. Detalhe em
+`jornada/2026-05-03-1815-day-swing-iter006-crypto-momentum-dead-end.md`.
+
+## Onde estavamos antes (2026-05-03 — Day/swing iter 005 Gold Regime Split rejeitado; Plano C formal inalterado)
+
+**Day/swing strategy hunt iter 005 2026-05-03:** testei a Familia D em
+`studies/day_swing_strategy_hunt/iterations/005-gold-regime-split-diagnostic/`
+como diagnostico XAUUSD-only, com pre-registro explicito de que single-asset nao
+pode virar winner. A regra D1 usou tendencia SMA100/retorno 100 barras e regime
+ATR(14)/close percentil 252 para separar trend/range. Resultado: `dead-end`.
+Custo base ficou em -6.18% CAGR / Sharpe -0.442 / MDD -51.14%; OOS 2024+ e
+bootstrap full/OOS falharam, e custo stress foi negativo. Sem winner, sem
+paper/live e sem ajuste ex-post de thresholds. Detalhe em
+`jornada/2026-05-03-1811-day-swing-iter005-gold-regime-dead-end.md`.
+
+## Onde estavamos antes (2026-05-03 — Day/swing iter 004 Carry/Trend FX data-blocked; Plano C formal inalterado)
+
+**Day/swing strategy hunt iter 004 2026-05-03:** testei apenas o data gate da
+Familia C em `studies/day_swing_strategy_hunt/iterations/004-carry-trend-fx-data-gate/`.
+O pre-registro exigia dados confiaveis de rates/carry para EUR, GBP, USD, JPY,
+CHF, CAD, AUD e NZD antes de qualquer backtest. O repo tinha spot FX e caches
+auxiliares, mas nao uma matriz historica confiavel de juros/carry por moeda.
+Verdict `inconclusive`; sem estrategia rodada, sem winner e sem paper/live.
+Detalhe em
+`jornada/2026-05-03-1806-day-swing-iter004-carry-trend-data-blocked.md`.
+
+## Onde estavamos antes (2026-05-03 — Day/swing iter 003 Vol Breakout H4 rejeitado; Plano C formal inalterado)
+
+**Day/swing strategy hunt iter 003 2026-05-03:** testei a primeira estrategia
+minima da Familia B em `studies/day_swing_strategy_hunt/iterations/003-vol-breakout-h4-minimal/`:
+Volatility Breakout H4 com canais Donchian 20/55 e filtro ATR p50/p70. O melhor
+ponto estimado foi `donchian55_atrp50`, com 8.07% CAGR / Sharpe 0.477 / MDD
+-31.24%. Passou PBO (0.000), ficou positivo sob custo stress e bateu random-entry,
+mas nao bateu buy-and-hold H4 em Sharpe e falhou bootstrap full/OOS 99.9% low
+negativo. Verdict `dead-end`; sem winner, sem paper/live e sem ajuste ex-post de
+canal/ATR. Detalhe em
+`jornada/2026-05-03-1803-day-swing-iter003-vol-breakout-h4-dead-end.md`.
+
+## Onde estavamos antes (2026-05-03 — Day/swing iter 002 TSMOM D1 rejeitado; Plano C formal inalterado)
+
+**Day/swing strategy hunt iter 002 2026-05-03:** testei a primeira estrategia
+minima da Familia A em `studies/day_swing_strategy_hunt/iterations/002-tsmom-d1-minimal/`:
+Time-Series Momentum D1 long/flat nos 10 simbolos, com lookbacks pre-registrados
+20/60/120. O melhor ponto estimado foi lookback 60, com 13.35% CAGR / Sharpe
+0.988 / MDD -24.58%, batendo buy-and-hold e random-entry em Sharpe. Mesmo assim,
+verdict `dead-end`: PBO = 0.557 falhou o limite <0.5 e o bootstrap OOS 99.9%
+low ficou negativo (-10.64% anualizado). Nao ha winner, sem paper/live e sem
+ajustar lookback/threshold depois de ver resultado. Detalhe em
+`jornada/2026-05-03-1747-day-swing-iter002-tsmom-d1-dead-end.md`.
+
+## Onde estavamos antes (2026-05-03 — Day/swing iter 001 auditado; Plano C formal inalterado)
+
+**Day/swing strategy hunt iter 001 2026-05-03:** rodei a primeira iteracao em
+`studies/day_swing_strategy_hunt/iterations/001-tsmom-data-audit/` sem testar
+estrategia completa. A auditoria Dukascopy BID retornou dados D1/H4 para os 10
+simbolos do universo inicial entre 2018-01-01 e 2026-05-01. Baselines minimos
+foram gravados: buy-and-hold, always-flat, uniform-frequency e random-entry
+matched-turnover. Verdict `positive` apenas para infraestrutura/auditoria; sem
+winner, sem paper/live. Licao: H4 e sensivel a custo e qualquer TSMOM futuro
+precisa bater baselines multi-asset/turnover, nao single-asset winner. Detalhe
+em `jornada/2026-05-03-1733-day-swing-iter001-data-audit.md`.
+
+## Onde estavamos antes (2026-05-03 — Day/swing hunt bootstrap criado; Plano C formal inalterado)
+
+**Day/swing strategy hunt 2026-05-03:** criei o bootstrap do novo loop
+`studies/day_swing_strategy_hunt/` para buscar, ou rejeitar cedo, estrategias
+simples de day/swing trade em FX, Gold e Crypto. O estudo nasce research-only:
+capital segue 100% Plano C, Plano A DORMANT, sem paper/live, sem HappyForex
+como treino e sem mexer em `docs/investment-mandate.md` ou `frozen_rules/`.
+Foram criados `README.md`, `SPEC.md`, `MEMORY.md`, `DEAD_ENDS.md`,
+`LOOP_PROTOCOL.md`, `iterations/` e `next_prompt.md`. Nenhuma hipotese foi
+testada ainda; a proxima sessao sugerida e a iteracao 001 com DATA_AUDIT +
+baselines minimos para Time-Series Momentum H4/D1. Detalhe em
+`jornada/2026-05-03-1709-day-swing-loop-bootstrap.md`.
+
+## Onde estavamos antes (2026-05-03 — LETF overlay rejeitado; Plano C formal inalterado)
 
 **B4 LETF overlay 2026-05-03:** rodei o iter 051 para testar SSO/QLD/UPRO/TQQQ
 como sleeve de risk-on de 5% a 50% em passos de 5pp sobre o B4 overlay, com DARF anual. Resultado:
@@ -436,8 +613,22 @@ Termos que aparecem ao longo das entradas do changelog:
 [`_archive/2026-04-16-retracted-entries.md`](_archive/2026-04-16-retracted-entries.md)
 — bug Tiingo IEX em US holidays.
 
+### 2026-05-04
+
+- [2026-05-04 02h02 — **MyFxBook v4 task 003 PBO/CSCV gate pronto.** Modulo `shared/cpcv.py` implementa CSCV `[advances_fin_ml, p.208-222]` + 7 testes unitarios. Cenarios sinteticos: PBO=0.000 em edge constante, 0.509 em ruido puro, 1.000 em overfit rotativo (S=16, n_paths=6435). Gate `PBO < 0.5` complementa walk-forward (DEAD_ENDS.md rejeitou substituicao). Fase 1 do redesign: 3/8 DONE.](2026-05-04-0202-myfxbook-v4-task-003-pbo.md)
+
 ### 2026-05-03
 
+- [2026-05-03 21h32 — **MyFxBook catalogo geral iniciado; PipsHunterFx-AI rejeitado.** Scraper geral baixou 255 systems reais em `systems_gain_desc.*`. Primeiro candidato triado, `11986417`, teve download completo 246/246 paginas e 4.899 trades, mas o decode falhou: fidelidade `0.1481 (NONE)`, timing F1 `0.0153`, regra sintetica `-14448.9` pips e Sharpe diario `-1.2617`. Sem paper/live e sem `frozen_rules/`.](2026-05-03-2132-myfxbook-catalog-pipshunter-fail.md)
+- [2026-05-03 21h07 — **MyFxBook reverse engineering — pipeline v4 redesenho aprovado em 8-12 semanas.** Avaliacao minuciosa do pipeline `studies.myfxbook_reverse_engineering.workbench.pipeline` apos 30/30 systems R1 v3 falharem economicamente. Identificou 8 modos de falha; aprovou redesenho hibrido em 3 fases com dados gratuitos apenas (Forex Factory + Dukascopy ticks + Tiingo). Fase 1 (sem 1-2): pre_decode_screen.py com MCPT/DSR hard/PBO via CSCV/concentration test/adversarial AUC. Fase 2 (sem 3-6): features cross-asset/news/tick/RV regime + LightGBM purged-CV + meta-labeling Lopez de Prado. Fase 3 (sem 7-12): decode-self (Transformer+HMM) e filter-and-copy (signal ranking + forward monitor 60d) ambos rodam apos decision gate. Plano A DORMANT mantido; frozen rules intocadas; capital 100% Plano C.](2026-05-03-2107-myfxbook-pipeline-v4-redesign-plan.md)
+- [2026-05-03 18h18 — **Day/swing strategy hunt iter 007 — ciclo A-E fechado sem winner.** Auditoria em `studies/day_swing_strategy_hunt/iterations/007-cycle-close-audit/` revisou apenas artefatos 001-006, sem backtest novo. A-E nao produziram winner e nao ha extensao multi-asset pre-registravel sem tese literaria nova; verdict `dead-end`, sem paper/live.](2026-05-03-1818-day-swing-cycle-close-dead-end.md)
+- [2026-05-03 18h15 — **Day/swing strategy hunt iter 006 — Crypto Momentum Vol Throttle falhou bootstrap OOS.** Iteracao em `studies/day_swing_strategy_hunt/iterations/006-crypto-momentum-vol-throttle-diagnostic/` testou BTCUSD/ETHUSD-only D1 com momentum 60d e throttle por volatilidade. Base 33.02% CAGR / Sharpe 1.016, mas bootstrap OOS 99.9% low negativo e crypto-only e diagnostico apenas; verdict `dead-end`, sem winner e sem paper/live.](2026-05-03-1815-day-swing-iter006-crypto-momentum-dead-end.md)
+- [2026-05-03 18h11 — **Day/swing strategy hunt iter 005 — Gold Regime Split XAU-only falhou.** Iteracao em `studies/day_swing_strategy_hunt/iterations/005-gold-regime-split-diagnostic/` testou uma regra D1 pre-registrada de regime trend/range para XAUUSD. Resultado base -6.18% CAGR / Sharpe -0.442 / MDD -51.14%; OOS 2024+, custo stress e bootstrap full/OOS falharam. Verdict `dead-end`; sem winner, sem paper/live e sem ajuste ex-post de thresholds.](2026-05-03-1811-day-swing-iter005-gold-regime-dead-end.md)
+- [2026-05-03 18h06 — **Day/swing strategy hunt iter 004 — Carry/Trend FX bloqueado por falta de rates/carry confiavel.** Iteracao em `studies/day_swing_strategy_hunt/iterations/004-carry-trend-fx-data-gate/` criou pre-registro e parou no data gate: nao havia fonte historica documentada de rates/carry para EUR, GBP, USD, JPY, CHF, CAD, AUD e NZD. Verdict `inconclusive`; sem backtest, sem winner e sem paper/live.](2026-05-03-1806-day-swing-iter004-carry-trend-data-blocked.md)
+- [2026-05-03 18h03 — **Day/swing strategy hunt iter 003 — Vol Breakout H4 minimo falhou bootstrap.** Iteracao em `studies/day_swing_strategy_hunt/iterations/003-vol-breakout-h4-minimal/` testou Donchian 20/55 + ATR p50/p70 em H4. Melhor `donchian55_atrp50` teve 8.07% CAGR e Sharpe 0.477, mas nao bateu buy-and-hold H4 e falhou bootstrap full/OOS 99.9% low; verdict `dead-end`, sem winner e sem paper/live.](2026-05-03-1803-day-swing-iter003-vol-breakout-h4-dead-end.md)
+- [2026-05-03 17h47 — **Day/swing strategy hunt iter 002 — TSMOM D1 minimo falhou PBO/OOS bootstrap.** Iteracao em `studies/day_swing_strategy_hunt/iterations/002-tsmom-d1-minimal/` testou Time-Series Momentum D1 long/flat nos 10 simbolos com lookbacks 20/60/120 pre-registrados. Melhor lb=60 teve 13.35% CAGR e Sharpe 0.988, mas falhou PBO 0.557 e bootstrap OOS 99.9% low negativo; verdict `dead-end`, sem winner e sem paper/live.](2026-05-03-1747-day-swing-iter002-tsmom-d1-dead-end.md)
+- [2026-05-03 17h33 — **Day/swing strategy hunt iter 001 — dados e baselines auditados.** Iteracao em `studies/day_swing_strategy_hunt/iterations/001-tsmom-data-audit/` criou pre-registro, auditoria Dukascopy BID D1/H4 para 10 simbolos, baselines buy-and-hold/flat/uniform/random matched-turnover e resumo. Verdict `positive` apenas para infraestrutura; sem estrategia completa, sem winner e sem paper/live.](2026-05-03-1733-day-swing-iter001-data-audit.md)
+- [2026-05-03 17h09 — **Day/swing strategy hunt — loop operacional criado.** Bootstrap em `studies/day_swing_strategy_hunt/` com README, SPEC, MEMORY, DEAD_ENDS, LOOP_PROTOCOL, `iterations/` e `next_prompt.md`. Nenhuma hipotese testada; proxima sessao sugerida e DATA_AUDIT + baselines para Time-Series Momentum H4/D1. Capital segue 100% Plano C; Plano A DORMANT; sem paper/live.](2026-05-03-1709-day-swing-loop-bootstrap.md)
 - [2026-05-03 12h15 — **MyFxBook reverse-engineering — Tier 2 Gold forense fecha over-fire.** O teste reduziu cada stream sintetico Gold para `k = n_real_trades`. O seletor honesto `uniform_time_k_n_real` falhou nos 7 systems em M5 + 45p (Sharpe/boot/OOS negativos). O oracle ex-post passou em varios, mas olha PnL futuro e nao e regra executavel. Conclusao: over-fire sozinho nao salva HappyForex; capital segue 100% Plano C e Plano A DORMANT.](2026-05-03-1215-myfxbook-gold-tier2-forensic.md)
 - [2026-05-03 01h30 — **MyFxBook reverse-engineering — backtest derivado das regras Gold sem robustez.** Teste separado `derived_strategy_backtest` rodou 7 systems Gold/XAUUSD com trades sinteticos do replicator e custos 0p/45p/80p. No cenario principal M5 + 45p, nenhum teve bootstrap full e OOS positivos simultaneamente; melhor H1_MOMENTUM_GOLD foi `10281851` com Sharpe 0.162, mas bootstrap/OOS low negativos. Isto nao confirma reverse engineering; capital segue 100% Plano C e Plano A DORMANT.](2026-05-03-0130-myfxbook-derived-gold-backtest.md)
 - [2026-05-03 01h13 — **MyFxBook reverse-engineering — M1 forense nao recuperou fidelidade operacional.** Teste M1 nos 13 `needs_m1_review` rodou 13/13 sem falhas em `systems/<id>/decoding_m1/`, todos banda NONE e nenhum `fidelity_score >= 0.60`. Conclusao provisoria: decodificacao operacional nao recuperavel com OHLC publico M5/M1 pelo pipeline atual; sem 6R, Stage 3, paper trading ou decisao de estrategia.](2026-05-03-0113-myfxbook-m1-forensic-review.md)

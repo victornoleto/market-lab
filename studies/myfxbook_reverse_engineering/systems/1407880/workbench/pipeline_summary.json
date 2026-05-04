@@ -1,0 +1,139 @@
+{
+  "system_id": "1407880",
+  "generated_at": "2026-05-03T21:55:54+00:00",
+  "research_only": true,
+  "paper_live_allowed": false,
+  "freq": "M5",
+  "download_summary": null,
+  "stage1_summary": null,
+  "selected_candidate": {
+    "rank": 1,
+    "miner": "tree",
+    "rule_text": "DecisionTree(max_depth=4) \u2014 top features: bb_pos_20_2_M15=0.62, bb_pos_20_2_M5=0.26, range_norm_H1=0.12\n\n|--- bb_pos_20_2_M15 <= 0.15\n|   |--- range_norm_H1 <= 0.72\n|   |   |--- class: 1\n|   |--- range_norm_H1 >  0.72\n|   |   |--- class: 0\n|--- bb_pos_20_2_M15 >  0.15\n|   |--- bb_pos_20_2_M5 <= 0.55\n|   |   |--- class: 0\n|   |--- bb_pos_20_2_M5 >  0.55\n|   |   |--- class: 0\n",
+    "match_rate_cv": 0.64,
+    "match_rate_std": 0.054365021434333645,
+    "coverage": 1.0,
+    "n_features": 3,
+    "p_value_corrected": null,
+    "extra": {
+      "fold_accs": [
+        0.6,
+        0.7166666666666667,
+        0.5666666666666667,
+        0.6333333333333333,
+        0.6833333333333333
+      ]
+    }
+  },
+  "auto_rule_summary": {
+    "family": "AUTO_TREE",
+    "confidence": 0.64,
+    "executor": "tree_rank1",
+    "features_used": [
+      "bb_pos_20_2_M15",
+      "bb_pos_20_2_M5",
+      "range_norm_H1"
+    ],
+    "entry_hours_utc": [
+      0,
+      1,
+      23
+    ],
+    "pairs": [
+      "EURCHF",
+      "EURGBP",
+      "EURUSD",
+      "GBPUSD",
+      "USDCAD",
+      "USDCHF"
+    ],
+    "max_holding_hours": 2.056666666666668,
+    "used_default_holding": false,
+    "frozen_rules_modified": false
+  },
+  "fidelity_score": {
+    "system_id": "1407880",
+    "family_stage2": "AUTO_TREE",
+    "fidelity_score": 0.2249,
+    "score_band": "NONE",
+    "terms": {
+      "entry_timing_f1": 0.0392,
+      "baseline_lift_normalized": 0.0,
+      "lift_vs_baseline_pp": -43.49,
+      "direction_acc_at_matched": 0.7158,
+      "hold_similarity": 0.2237,
+      "count_ratio_proximity": 0.2562,
+      "count_ratio": 7.4818,
+      "pnl_correlation_pos": 0.0,
+      "pnl_correlation_raw": -0.0006
+    },
+    "diagnostics": {
+      "n_real": 3304,
+      "n_synthetic": 24720,
+      "n_matched": 549,
+      "low_n_flag": false,
+      "low_confidence_dir": false
+    }
+  },
+  "efficacy_score": {
+    "score": 0.0,
+    "band": "NONE",
+    "n_trades": 24720,
+    "total_net_pips": -28962.46,
+    "avg_net_pips": -1.1716,
+    "daily_sharpe": -4.5965,
+    "full_bootstrap_sharpe_low_999": -6.5404,
+    "oos_sharpe": -4.6757,
+    "oos_bootstrap_sharpe_low_999": -7.1777,
+    "profit_factor": 0.7047,
+    "max_drawdown_pips": 28961.36,
+    "wf_positive": 0,
+    "wf_total": 8,
+    "terms": {
+      "sharpe_term": 0.0,
+      "full_bootstrap_term": 0.0,
+      "oos_term": 0.0,
+      "oos_bootstrap_term": 0.0,
+      "profit_factor_term": 0.0,
+      "wf_term": 0.0
+    },
+    "notes": []
+  },
+  "comparison_metrics": {
+    "system_id": "1407880",
+    "n_real": 3304,
+    "n_synthetic": 24720,
+    "n_matched": 549,
+    "entry_timing_precision": 0.0222,
+    "entry_timing_recall": 0.1662,
+    "entry_timing_f1": 0.0392,
+    "direction_acc_at_matched": 0.7158,
+    "hold_KS_stat": 0.7763,
+    "hold_similarity": 0.2237,
+    "count_ratio": 7.4818,
+    "pnl_correlation": -0.0006,
+    "baseline_always_buy_combined_hit_rate": 0.4815,
+    "baseline_hour_majority_combined_hit_rate": 0.5269,
+    "baseline_pair_hour_majority_combined_hit_rate": 0.5539,
+    "max_baseline_combined_hit_rate": 0.5539,
+    "synthetic_combined_hit_rate": 0.1189,
+    "lift_vs_baseline_pp": -43.49
+  },
+  "smoke_invariants": {
+    "I1_schema": true,
+    "I2_count_ratio": false,
+    "I3_entry_hours": true,
+    "I4_direction_sanity": true
+  },
+  "artifacts": [
+    "pipeline_summary.json",
+    "pipeline_report.md",
+    "candidate_window.parquet",
+    "synthetic_trades.parquet"
+  ],
+  "caveats": [
+    "auto_rule is an ephemeral candidate derived from Stage 1; it is not promoted to frozen_rules/.",
+    "fidelity_score measures replication of public MyFxBook entries from OHLC-derived rules, not economic edge.",
+    "efficacy_score measures the decoded synthetic stream after simple cost overlay; it is not a mandate PASS."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "system_id": 11986417,
+  "url": "https://www.myfxbook.com/members/PipsHunterFx/pipshunterfx-ai/11986417",
+  "name": "PipsHunterFx-AI Forex Trading System by Forex Trader PipsHunterFx",
+  "stats": {
+    "gain": "+7,082.90%",
+    "absolute_gain": "+6,227.09%",
+    "daily": "4.81%",
+    "monthly": "322.76%",
+    "drawdown": "9.18%",
+    "balance": "$1,163,543.39",
+    "equity": "(100.00%) $1,163,543.39",
+    "highest": "(Apr 21) $2,975,907.90",
+    "profit": "$3,113,543.39",
+    "interest": "-$3,645.57",
+    "deposits": "$50,000.00",
+    "withdrawals": "$2,000,000.00",
+    "updated": "7 hours ago",
+    "tracking": "30"
+  },
+  "account": {
+    "raw": "Real (USD), PU Prime , Automated , 1:500 , MetaTrader 5",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "PU Prime",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/pu-prime/2989191,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 5"
+  }
+}

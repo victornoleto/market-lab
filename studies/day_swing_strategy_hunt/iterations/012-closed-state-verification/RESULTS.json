@@ -1,0 +1,36 @@
+{
+  "iteration": "012-closed-state-verification",
+  "status": "dead-end",
+  "hypothesis": "Closed-state verification only; no new hunt hypothesis",
+  "pre_registered": false,
+  "universe": [],
+  "frequencies": [],
+  "cost_scenarios": [],
+  "baselines": {},
+  "strategy_results": {},
+  "gates": {
+    "mandatory_documents_read": "PASS",
+    "iteration_007_pre_reg_readable": "PASS",
+    "iteration_007_results_readable": "PASS",
+    "iteration_007_summary_readable": "PASS",
+    "new_hunt_started": "PASS_FALSE",
+    "new_backtest_run": "PASS_FALSE",
+    "thresholds_tested_or_optimized": "PASS_FALSE",
+    "paper_or_live_started": "PASS_FALSE",
+    "docs_investment_mandate_modified": "PASS_FALSE",
+    "frozen_rules_modified": "PASS_FALSE",
+    "commit_or_push_done": "PASS_FALSE"
+  },
+  "kill_switches": [
+    "K7_INITIAL_FAMILIES_A_E_NO_WINNER_STILL_ACTIVE"
+  ],
+  "n_trials": 0,
+  "artifacts": [
+    "studies/day_swing_strategy_hunt/iterations/007-cycle-close-audit/PRE_REG.md",
+    "studies/day_swing_strategy_hunt/iterations/007-cycle-close-audit/RESULTS.json",
+    "studies/day_swing_strategy_hunt/iterations/007-cycle-close-audit/SUMMARY.md",
+    "studies/day_swing_strategy_hunt/iterations/012-closed-state-verification/RESULTS.json",
+    "studies/day_swing_strategy_hunt/iterations/012-closed-state-verification/SUMMARY.md"
+  ],
+  "notes": "Automated loop iteration 012 followed next_prompt.md conservatively. No new thesis, no reliable rates/carry dataset, no backtest, no threshold test, no paper/live, no commit/push. Hunt remains closed by iteration 007 verdict dead-end. Statistical hard-block rationale remains AFML PBO/OOS bootstrap discipline [advances_fin_ml, p.31-34, p.208-211]."
+}

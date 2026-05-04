@@ -1,0 +1,98 @@
+{
+  "iteration": "007-cycle-close-audit",
+  "status": "dead-end",
+  "hypothesis": "Cycle close audit for initial families A-E",
+  "pre_registered": true,
+  "universe": [
+    "EURUSD",
+    "GBPUSD",
+    "USDJPY",
+    "USDCHF",
+    "USDCAD",
+    "AUDUSD",
+    "NZDUSD",
+    "XAUUSD",
+    "BTCUSD",
+    "ETHUSD"
+  ],
+  "frequencies": [
+    "D1",
+    "H4"
+  ],
+  "cost_scenarios": [
+    "no_new_costs_reviewed_existing_artifacts_only"
+  ],
+  "baselines": {
+    "source": "001-tsmom-data-audit SUMMARY.md and RESULTS.json; no new baseline computed"
+  },
+  "strategy_results": {
+    "reviewed_iterations": [
+      {
+        "iteration": "001-tsmom-data-audit",
+        "family": "A infrastructure",
+        "status": "positive for audit only",
+        "blocking_reason": "no strategy tested; no winner"
+      },
+      {
+        "iteration": "002-tsmom-d1-minimal",
+        "family": "A Time-Series Momentum D1",
+        "status": "dead-end",
+        "blocking_reason": "PBO 0.557 and OOS bootstrap 99.9% CI low -10.64% annualized"
+      },
+      {
+        "iteration": "003-vol-breakout-h4-minimal",
+        "family": "B Volatility Breakout H4",
+        "status": "dead-end",
+        "blocking_reason": "bootstrap full/OOS lows negative and failed buy-and-hold Sharpe gate"
+      },
+      {
+        "iteration": "004-carry-trend-fx-data-gate",
+        "family": "C Carry/Trend FX",
+        "status": "inconclusive data-blocked",
+        "blocking_reason": "no reliable historical rates/carry dataset before backtest"
+      },
+      {
+        "iteration": "005-gold-regime-split-diagnostic",
+        "family": "D Gold Regime Split",
+        "status": "dead-end",
+        "blocking_reason": "negative base/OOS/stress, bootstrap lows negative, XAU-only diagnostic"
+      },
+      {
+        "iteration": "006-crypto-momentum-vol-throttle-diagnostic",
+        "family": "E Crypto Momentum Vol Throttle",
+        "status": "dead-end",
+        "blocking_reason": "OOS bootstrap 99.9% CI low -19.66% annualized and crypto-only diagnostic"
+      }
+    ],
+    "cycle_verdict": "No initial family A-E produced a deployable winner; no clearly pre-registrable multi-asset extension exists without new literature or new data."
+  },
+  "gates": {
+    "review_scope_limited_to_existing_summaries_and_results": "PASS",
+    "no_new_strategy_backtest": "PASS",
+    "no_threshold_tuning_after_results": "PASS",
+    "no_single_asset_winner": "PASS",
+    "no_ex_post_pnl_selection": "PASS",
+    "no_happyforex_training": "PASS",
+    "no_paper_live": "PASS",
+    "family_A": "FAIL_HARD_GATES_PBO_AND_OOS_BOOTSTRAP",
+    "family_B": "FAIL_HARD_GATES_FULL_AND_OOS_BOOTSTRAP_BASELINE",
+    "family_C": "DATA_BLOCKED_NO_RELIABLE_CARRY_RATES",
+    "family_D": "FAIL_HARD_GATES_COST_STRESS_OOS_BOOTSTRAP_SINGLE_ASSET",
+    "family_E": "FAIL_HARD_GATE_OOS_BOOTSTRAP_AND_CRYPTO_ONLY"
+  },
+  "kill_switches": [
+    "K7_INITIAL_FAMILIES_A_E_NO_WINNER",
+    "K3_FAMILY_A_PBO_GE_0_5",
+    "K4_MULTIPLE_FAMILIES_OOS_BOOTSTRAP_LOW_LE_0",
+    "K1_FAMILY_C_NO_RELIABLE_CARRY_DATA",
+    "K5_FAMILY_D_COST_STRESS_ELIMINATES_EDGE",
+    "K6_FAMILIES_D_E_SINGLE_ASSET_OR_SINGLE_CLASS_DIAGNOSTIC_ONLY"
+  ],
+  "n_trials": 0,
+  "artifacts": [
+    "PRE_REG.md",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "notes": "Audit-only iteration. No new market data, no new backtest, no threshold optimization, no paper/live. Verdict closes the initial A-E cycle as no winner."
+}

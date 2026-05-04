@@ -1,0 +1,57 @@
+=== Task 001-skeleton-setup run log ===
+Date: 2026-05-04T01:11:28Z
+
+=== Files created ===
+studies/myfxbook_reverse_engineering/shared/adversarial_validator.py
+studies/myfxbook_reverse_engineering/shared/cpcv.py
+studies/myfxbook_reverse_engineering/shared/cross_asset_features.py
+studies/myfxbook_reverse_engineering/shared/forward_monitor.py
+studies/myfxbook_reverse_engineering/shared/hmm_regime_mixture.py
+studies/myfxbook_reverse_engineering/shared/lightgbm_miner.py
+studies/myfxbook_reverse_engineering/shared/meta_labeler.py
+studies/myfxbook_reverse_engineering/shared/news_calendar.py
+studies/myfxbook_reverse_engineering/shared/out_of_domain_transfer.py
+studies/myfxbook_reverse_engineering/shared/pre_decode_screen.py
+studies/myfxbook_reverse_engineering/shared/signal_score_consolidated.py
+studies/myfxbook_reverse_engineering/shared/transformer_encoder.py
+tests/myfxbook_pipeline/__init__.py
+tests/myfxbook_pipeline/test_adversarial_validator.py
+tests/myfxbook_pipeline/test_cpcv.py
+tests/myfxbook_pipeline/test_cross_asset_features.py
+tests/myfxbook_pipeline/test_lightgbm_miner.py
+tests/myfxbook_pipeline/test_meta_labeler.py
+tests/myfxbook_pipeline/test_news_calendar.py
+tests/myfxbook_pipeline/test_pre_decode_screen.py
+
+=== pytest collect-only (new tests) ===
+tests/myfxbook_pipeline/test_adversarial_validator.py::test_placeholder
+tests/myfxbook_pipeline/test_cpcv.py::test_placeholder
+tests/myfxbook_pipeline/test_cross_asset_features.py::test_placeholder
+tests/myfxbook_pipeline/test_cross_asset_features.py::test_placeholder
+tests/myfxbook_pipeline/test_lightgbm_miner.py::test_placeholder
+tests/myfxbook_pipeline/test_meta_labeler.py::test_placeholder
+tests/myfxbook_pipeline/test_news_calendar.py::test_placeholder
+tests/myfxbook_pipeline/test_pre_decode_screen.py::test_placeholder
+
+7 tests collected in 0.08s
+
+=== pytest full suite (with --ignore pre-existing failures) ===
+758 passed, 17 skipped, 8 warnings in 9.56s  (excluding tests/test_macro_data_loader.py)
+
+=== pytest full suite (unfiltered) ===
+FAILED tests/test_macro_data_loader.py::TestLoaderSmoke::test_ebp_monthly_loads_with_expected_columns
+FAILED tests/test_macro_data_loader.py::TestLoaderSmoke::test_term_spread_daily_loads
+FAILED tests/test_macro_data_loader.py::TestLoaderSmoke::test_cape_monthly_loads
+3 failed, 763 passed, 17 skipped, 8 warnings in 9.87s
+
+=== Pre-existing failure analysis ===
+All 3 failures in tests/test_macro_data_loader.py are pre-existing.
+Root cause: missing data files (data/external/macro/*.parquet — Phase 2 fetch step not run).
+Confirmed: git stash + isolated run returns same failures before any new files created.
+No regressions introduced by task 001.
+
+=== Baseline check ===
+CLAUDE.md baseline: 461 tests (established early in project).
+Current baseline (post multiple hunts/studies): 763 passing + 3 pre-existing failures.
+New files added by task 001: 7 skipped tests in tests/myfxbook_pipeline/ (placeholder).
+Verdict: BASELINE PRESERVED — no new failures introduced.

@@ -1,0 +1,2 @@
+symbol,frequency,source,status,bars,start,end,duplicate_timestamps,missing_close,max_gap_hours,caveats
+XAUUSD,D1,Dukascopy BID via dukascopy-python,ok,2593,2018-01-01 00:00:00+00:00,2026-05-01 00:00:00+00:00,0,0,72.0,BID-only OHLC; no broker-specific swap/commission history; weekend/holiday gaps expected.
