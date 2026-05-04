@@ -77,8 +77,9 @@ Convencoes:
 - Effort: 1 (ou 2 dependendo do compute)
 - depends_on: [006]
 - Goal: Rodar `run_replicator_batch` com flags Fase 1 em todos os 30 systems R1
-  v3 e os 22 NOT_DECODED restantes. Output: tabela "EAs sobreviventes" (max 10)
-  em `iterations/007-fase1-batch-run/RESULTS.json`. Comparar baseline pre-Fase 1
+  v3 e os 22 NOT_DECODED restantes. Output: tabela `pre_screen_go_systems` e
+  `fase2_eligible_survivors` (max 10) em
+  `iterations/007-fase1-batch-run/RESULTS.json`. Comparar baseline pre-Fase 1
   vs pos-Fase 1.
 
 ### 008-fase1-document
@@ -86,8 +87,18 @@ Convencoes:
 - Effort: 1
 - depends_on: [007]
 - Goal: Escrever `_diagnostics/PIPELINE_V4_FASE1_REPORT.md` consolidando os 30+22
-  resultados, lista N≤10 sobreviventes, decisao GO/STOP para Fase 2. Atualizar
-  jornada com entry "Fase 1 concluida".
+  resultados, lista N≤10 `fase2_eligible_survivors`, decisao GO/STOP para Fase 2.
+  Atualizar jornada com entry "Fase 1 concluida".
+
+### 009-fase3b-replan-filter-copy
+- Phase: 3b
+- Effort: 1
+- depends_on: [008]
+- Goal: Apos Fase 1 STOP (`n_fase2_eligible_survivors=0`), replanejar a trilha
+  filter-and-copy usando os 21 `pre_screen_go_systems` como universo audit-only.
+  Escrever contrato novo antes de qualquer ranking: objetivo, gates de
+  copiabilidade, dados permitidos, outputs, kill-switches e proximas tasks. Sem
+  paper/live, sem AutoTrade real e sem alterar thresholds pos-resultado.
 
 ---
 
@@ -256,6 +267,47 @@ Convencoes:
 - Goal: Documentar Fase 3b com setup do monitor e racional do top-3. Forward
   monitor 60d roda em background; nao bloqueia tasks subsequentes.
 
+### 029-fase3b-copyability-score
+- Phase: 3b
+- Effort: 1-2
+- depends_on: [009-fase3b-replan-filter-copy]
+- Goal: Implementar scoring offline dos 21 `pre_screen_go_systems` usando
+  exatamente os gates e pesos pre-registrados em `FILTER_COPY_PLAN.md`. Output:
+  `_diagnostics/COPYABILITY_SCOREBOARD.json` e `.md`, com `copyability_status`,
+  `failed_copyability_gates`, `copyability_score` apenas para PASS e warning de
+  multiple testing/ranking selection. Sem paper/live, sem AutoTrade real, sem
+  alterar thresholds apos ver ranking.
+
+### 030-fase3b-copyability-report
+- Phase: 3b
+- Effort: 1
+- depends_on: [029-fase3b-copyability-score]
+- Goal: Escrever report/revisao do resultado `TOO_MANY_PASS_REQUIRES_REPORT_REVIEW`
+  da task 029. Documentar os 4 PASS, o risco de selecionar top-N entre 21 EAs,
+  concentracao por simbolo, caveats operacionais e opcoes de governanca. Nao
+  iniciar monitor, nao escolher top-3 automaticamente, nao alterar thresholds e
+  nao autorizar paper/live ou AutoTrade real.
+
+### 031-fase3b-tiebreak-pre-reg
+- Phase: 3b
+- Effort: 1
+- depends_on: [030-fase3b-copyability-report]
+- Goal: Pre-registrar uma regra de desempate para os 4 PASS da task 029 antes de
+  aplica-la. A regra deve reduzir 4 para 1-3 candidatos diagnosticos usando
+  apenas criterios operacionais ja disponiveis, sem alterar gates/pesos da task
+  029, sem iniciar monitor e sem paper/live/AutoTrade. Output:
+  `v4_redesign/TIEBREAK_PLAN.md`.
+
+### 032-fase3b-apply-tiebreak
+- Phase: 3b
+- Effort: 1
+- depends_on: [031-fase3b-tiebreak-pre-reg]
+- Goal: Aplicar exatamente a regra lexicografica pre-registrada em
+  `TIEBREAK_PLAN.md` aos 4 PASS (`8577442`, `1152318`, `10067081`, `10062918`).
+  Output: `_diagnostics/TIEBREAK_RESULT.json` e `.md` com ordem diagnostica e
+  shortlist de ate 3. Sem alterar regra, sem buscar novos dados, sem monitor,
+  sem paper/live e sem AutoTrade real.
+
 ---
 
 ## Final (semanas 11-12)
@@ -285,6 +337,7 @@ Convencoes:
 019 → {020, 021, 025}
 020 → 022 → 023 → 024
 025 → 026 → 027
+009-fase3b-replan-filter-copy → 029 → 030 → 031 → 032
 {024, 027} → 028
 ```
 

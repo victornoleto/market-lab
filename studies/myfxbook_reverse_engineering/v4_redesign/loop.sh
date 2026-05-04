@@ -99,6 +99,44 @@ count_tasks_with_status() {
     ' "$PROGRESS_FILE"
 }
 
+# Helper: contar tasks PENDING cujas dependencias estao todas DONE.
+# PENDING por si so nao significa trabalho elegivel; apos um decision gate STOP,
+# tasks futuras podem permanecer PENDING mas depender de uma cadeia BLOCKED.
+count_eligible_pending_tasks() {
+    awk '
+        /^\| [0-9][0-9][0-9]-[a-z0-9-]+ \|/ {
+            split($0, parts, /\|/)
+            gsub(/^[ \t]+|[ \t]+$/, "", parts[2])
+            gsub(/^[ \t]+|[ \t]+$/, "", parts[4])
+            gsub(/^[ \t]+|[ \t]+$/, "", parts[7])
+            id = parts[2]
+            ids[++n] = id
+            status[id] = parts[4]
+            status[substr(id, 1, 3)] = parts[4]
+            depends[id] = parts[7]
+        }
+        END {
+            for (i = 1; i <= n; i++) {
+                id = ids[i]
+                if (status[id] != "PENDING") continue
+                if (depends[id] == "-") {
+                    count++
+                    continue
+                }
+                split(depends[id], deps, /,/)
+                ok = 1
+                for (j in deps) {
+                    dep = deps[j]
+                    gsub(/^[ \t]+|[ \t]+$/, "", dep)
+                    if (status[dep] != "DONE") ok = 0
+                }
+                if (ok) count++
+            }
+            print count + 0
+        }
+    ' "$PROGRESS_FILE"
+}
+
 # Helper: imprimir snapshot resumido do PROGRESS
 progress_snapshot() {
     local pending done_count failed blocked in_progress
@@ -296,6 +334,7 @@ echo "" | tee -a "$RUN_LOG"
 PENDING_INIT=$(count_tasks_with_status "PENDING")
 IN_PROG_INIT=$(count_tasks_with_status "IN_PROGRESS")
 FAILED_INIT=$(count_tasks_with_status "FAILED")
+ELIGIBLE_INIT=$(count_eligible_pending_tasks)
 
 if [[ "$FAILED_INIT" -gt 0 ]]; then
     echo "=== ${FAILED_INIT} task(s) em FAILED — intervencao humana necessaria. Saindo. ===" | tee -a "$RUN_LOG"
@@ -305,6 +344,11 @@ fi
 
 if [[ "$PENDING_INIT" -eq 0 && "$IN_PROG_INIT" -eq 0 ]]; then
     echo "=== Todas tasks DONE/BLOCKED. Loop nada a fazer. ===" | tee -a "$RUN_LOG"
+    exit 0
+fi
+
+if [[ "$ELIGIBLE_INIT" -eq 0 && "$IN_PROG_INIT" -eq 0 ]]; then
+    echo "=== Nenhuma task PENDING elegivel (dependencias DONE). Intervencao humana/decision gate necessaria. Saindo. ===" | tee -a "$RUN_LOG"
     exit 0
 fi
 
@@ -402,11 +446,20 @@ for round in $(seq 1 "$MAX_ITER"); do
     # Stop se nada mais pendente
     PENDING_NOW=$(count_tasks_with_status "PENDING")
     IN_PROG_NOW=$(count_tasks_with_status "IN_PROGRESS")
+    ELIGIBLE_NOW=$(count_eligible_pending_tasks)
     if [[ "$PENDING_NOW" -eq 0 && "$IN_PROG_NOW" -eq 0 ]]; then
         echo "" | tee -a "$RUN_LOG"
         echo "=================================================================" | tee -a "$RUN_LOG"
         echo "=== TODAS TASKS DONE/BLOCKED apos iteracao $round @ $(date -Iseconds) ===" | tee -a "$RUN_LOG"
         echo "=== Inspect: studies/myfxbook_reverse_engineering/_diagnostics/PIPELINE_V4_FINAL.md ===" | tee -a "$RUN_LOG"
+        echo "=================================================================" | tee -a "$RUN_LOG"
+        exit 0
+    fi
+    if [[ "$ELIGIBLE_NOW" -eq 0 && "$IN_PROG_NOW" -eq 0 ]]; then
+        echo "" | tee -a "$RUN_LOG"
+        echo "=================================================================" | tee -a "$RUN_LOG"
+        echo "=== NENHUMA TASK PENDING ELEGIVEL apos iteracao $round @ $(date -Iseconds) ===" | tee -a "$RUN_LOG"
+        echo "=== Decision gate/intervencao humana necessaria; loop parado limpo. ===" | tee -a "$RUN_LOG"
         echo "=================================================================" | tee -a "$RUN_LOG"
         exit 0
     fi

@@ -38,6 +38,10 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from studies.myfxbook_reverse_engineering.shared import config, parser  # noqa: E402
+from studies.myfxbook_reverse_engineering.shared import gates  # noqa: E402
+from studies.myfxbook_reverse_engineering.shared.adversarial_validator import (  # noqa: E402
+    adversarial_validate,
+)
 from studies.myfxbook_reverse_engineering.shared.download_data import (  # noqa: E402
     WARMUP_URL,
     _csrf,
@@ -45,6 +49,11 @@ from studies.myfxbook_reverse_engineering.shared.download_data import (  # noqa:
     scrape_one_system,
 )
 from studies.myfxbook_reverse_engineering.shared.ohlc_dukascopy import OhlcLoader  # noqa: E402
+from studies.myfxbook_reverse_engineering.shared.pre_decode_screen import (  # noqa: E402
+    PreScreenResult,
+    screen_system,
+    write_pre_screen_json,
+)
 from studies.myfxbook_reverse_engineering.shared.replicator import (  # noqa: E402
     BAR_FREQ,
     DEFAULT_MAX_HOLDING_HOURS,
@@ -93,6 +102,10 @@ def workbench_dir(system_id: str) -> Path:
     return config.system_report_dir(system_id) / "workbench"
 
 
+def _resolve_out_dir(system_id: str, out_dir: str | None = None) -> Path:
+    return Path(out_dir) if out_dir else workbench_dir(system_id)
+
+
 def _load_candidates(system_id: str) -> list[dict[str, Any]]:
     path = config.system_report_dir(system_id) / "decoder" / "candidates.json"
     if not path.exists():
@@ -105,6 +118,12 @@ def _load_trades(system_id: str) -> pd.DataFrame:
     if not path.exists():
         raise FileNotFoundError(f"trades parquet missing at {path}; run with --download or provide cached data")
     return pd.read_parquet(path)
+
+
+def _trade_rows(df: pd.DataFrame) -> pd.DataFrame:
+    if "is_trade" not in df.columns:
+        return df.copy()
+    return df[df["is_trade"] == True].copy()
 
 
 def _top_executable_candidate(candidates: list[dict[str, Any]]) -> dict[str, Any]:
@@ -413,6 +432,72 @@ def _jsonable(obj: Any) -> Any:
     return str(obj)
 
 
+def _synthetic_for_gates(synth: pd.DataFrame) -> pd.DataFrame:
+    trades = synth.copy()
+    if "is_trade" not in trades.columns:
+        trades["is_trade"] = True
+    trades["close_dt_utc"] = pd.to_datetime(trades["close_dt_utc"], utc=True)
+    return trades
+
+
+def _mandate_24_summary(system_id: str, synth: pd.DataFrame) -> dict[str, Any]:
+    """Expose mandate §2.4 aggregate verdict for synthetic trades.
+
+    DSR is a hard gate `[advances_fin_ml, p.273-275]`; PBO is optional at this
+    Fase 1 callsite because `cpcv_result` only exists after candidate families
+    are mined in later phases `[advances_fin_ml, p.208-222]`.
+    """
+    if synth.empty:
+        return {
+            "mandate_24_pass": None,
+            "mandate_24_failed": ["synthetic_trades_empty"],
+        }
+    try:
+        stats = gates.compute_gates(
+            _synthetic_for_gates(synth),
+            system_id,
+            n_bootstrap=BOOTSTRAP_N,
+        )
+        mandate_pass, mandate_failed = stats.passes_mandate_24()
+        return {
+            "mandate_24_pass": bool(mandate_pass),
+            "mandate_24_failed": mandate_failed,
+        }
+    except Exception as exc:
+        return {
+            "mandate_24_pass": None,
+            "mandate_24_failed": [f"mandate_24_error: {type(exc).__name__}: {exc}"],
+        }
+
+
+def _adversarial_summary(real_trades: pd.DataFrame, synth: pd.DataFrame) -> dict[str, Any]:
+    """Run real-vs-synthetic AUC validation `[advances_fin_ml, ch.5]`."""
+    try:
+        adv = adversarial_validate(real_trades, synth)
+        top_features = list(adv.feature_importance.keys())[:5]
+        return {
+            "adversarial_auc": adv.auc,
+            "adversarial_ci_low_95": adv.auc_ci_low_95,
+            "adversarial_ci_high_95": adv.auc_ci_high_95,
+            "adversarial_n_real": adv.n_real,
+            "adversarial_n_synthetic": adv.n_synthetic,
+            "adversarial_n_features": adv.n_features,
+            "adversarial_top_features": top_features,
+            "adversarial_notes": adv.notes,
+        }
+    except Exception as exc:
+        return {
+            "adversarial_auc": None,
+            "adversarial_ci_low_95": None,
+            "adversarial_ci_high_95": None,
+            "adversarial_n_real": int(len(real_trades)),
+            "adversarial_n_synthetic": int(len(synth)),
+            "adversarial_n_features": None,
+            "adversarial_top_features": [],
+            "adversarial_notes": [f"adversarial_error: {type(exc).__name__}: {exc}"],
+        }
+
+
 def _sanitize_json(obj: Any) -> Any:
     if isinstance(obj, dict):
         return {str(k): _sanitize_json(v) for k, v in obj.items()}
@@ -427,8 +512,17 @@ def _sanitize_json(obj: Any) -> Any:
     return obj
 
 
-def write_outputs(system_id: str, result: dict[str, Any], *, freq: str, stage1_summary: dict[str, Any] | None, download_summary: dict[str, Any] | None) -> Path:
-    out_dir = workbench_dir(system_id)
+def write_outputs(
+    system_id: str,
+    result: dict[str, Any],
+    *,
+    freq: str,
+    stage1_summary: dict[str, Any] | None,
+    download_summary: dict[str, Any] | None,
+    out_dir: Path | None = None,
+    extra_summary: dict[str, Any] | None = None,
+) -> Path:
+    out_dir = out_dir or workbench_dir(system_id)
     out_dir.mkdir(parents=True, exist_ok=True)
     synth: pd.DataFrame = result["synthetic_trades"]
     cw: pd.DataFrame = result["candidate_window"]
@@ -474,6 +568,8 @@ def write_outputs(system_id: str, result: dict[str, Any], *, freq: str, stage1_s
             "efficacy_score measures the decoded synthetic stream after simple cost overlay; it is not a mandate PASS.",
         ],
     }
+    if extra_summary:
+        summary.update(extra_summary)
     (out_dir / "pipeline_summary.json").write_text(
         json.dumps(_sanitize_json(summary), indent=2, default=_jsonable, allow_nan=False)
     )
@@ -598,6 +694,7 @@ def _print_terminal_summary(summary_path: Path) -> None:
 
 def run_pipeline(args: argparse.Namespace) -> Path:
     system_id = str(args.account_oid)
+    out_dir = _resolve_out_dir(system_id, args.out_dir)
     download_summary = None
     if args.download:
         download_summary = maybe_download_system(
@@ -615,7 +712,6 @@ def run_pipeline(args: argparse.Namespace) -> Path:
     trades = _load_trades(system_id)
     n_trades = int(trades["is_trade"].sum()) if "is_trade" in trades.columns else 0
     if n_trades == 0:
-        out_dir = workbench_dir(system_id)
         out_dir.mkdir(parents=True, exist_ok=True)
         summary = {
             "system_id": system_id,
@@ -638,17 +734,68 @@ def run_pipeline(args: argparse.Namespace) -> Path:
         )
         return out_dir
 
+    pre_screen_result: PreScreenResult | None = None
+    pre_screen_extra: dict[str, Any] = {}
+    if args.enable_pre_screen:
+        # MCPT is the pre-decode tradeability screen `[evidence_based_ta, p.325-328]`.
+        pre_screen_result = screen_system(system_id, trades_df=_trade_rows(trades))
+        pre_screen_path = write_pre_screen_json(
+            pre_screen_result,
+            output_path=out_dir / "pre_decode_screen.json",
+        )
+        pre_screen_extra = {
+            "pre_screen_decision": pre_screen_result.decision,
+            "pre_screen_path": str(pre_screen_path),
+            "pre_screen_notes": pre_screen_result.notes,
+        }
+        if pre_screen_result.decision != "GO":
+            out_dir.mkdir(parents=True, exist_ok=True)
+            summary = {
+                "system_id": system_id,
+                "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                "status": "PRE_SCREEN_STOP",
+                "research_only": True,
+                "paper_live_allowed": False,
+                "download_summary": download_summary,
+                **pre_screen_extra,
+                "message": "EA rejeitado pelo pre-screen; synthetic backtest skipped.",
+            }
+            (out_dir / "pipeline_summary.json").write_text(json.dumps(summary, indent=2, allow_nan=False))
+            (out_dir / "pipeline_report.md").write_text(
+                f"# MyFxBook workbench — system `{system_id}`\n\n"
+                "Status: `PRE_SCREEN_STOP`\n\n"
+                "EA rejeitado pelo pre-screen; Stage 1/backtest foram pulados.\n"
+            )
+            return out_dir
+
     stage1_summary = None
     if args.force_stage1 or not (config.system_report_dir(system_id) / "decoder" / "candidates.json").exists():
         stage1_summary = run_stage1(system_id, sample=args.sample)
 
     result = run_candidate_backtest(system_id, freq=args.freq)
-    return write_outputs(system_id, result, freq=args.freq, stage1_summary=stage1_summary, download_summary=download_summary)
+    extra_summary: dict[str, Any] = {}
+    if args.enable_pre_screen:
+        extra_summary.update(pre_screen_extra)
+    if args.enable_adversarial:
+        extra_summary.update(_adversarial_summary(_trade_rows(trades), result["synthetic_trades"]))
+    if args.enable_pre_screen or args.enable_adversarial:
+        extra_summary.update(_mandate_24_summary(system_id, result["synthetic_trades"]))
+    return write_outputs(
+        system_id,
+        result,
+        freq=args.freq,
+        stage1_summary=stage1_summary,
+        download_summary=download_summary,
+        out_dir=out_dir,
+        extra_summary=extra_summary,
+    )
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Run MyFxBook single-system reverse-engineering workbench")
-    ap.add_argument("--account-oid", required=True, help="MyFxBook accountOid/system id")
+    ap.add_argument("--account-oid", dest="account_oid", default=None, help="MyFxBook accountOid/system id")
+    ap.add_argument("--system-id", dest="account_oid", default=None, help="Alias for --account-oid")
+    ap.add_argument("--out-dir", default=None, help="Optional output directory; defaults to systems/<id>/workbench")
     ap.add_argument("--download", action="store_true", help="Download system info + trade history via Playwright before analysis")
     ap.add_argument("--url", default=None, help="Full MyFxBook system URL. Recommended when using --download for non-catalog systems.")
     ap.add_argument("--name", default=None, help="Optional human-readable system name for manifests")
@@ -660,7 +807,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     ap.add_argument("--timeout-ms", type=int, default=60_000)
     ap.add_argument("--max-history-pages", type=int, default=200)
     ap.add_argument("--rate-limit-ms", type=int, default=1500)
-    return ap.parse_args(argv)
+    ap.add_argument("--enable-pre-screen", action="store_true", help="Run pre_decode_screen before Stage 1/backtest; aborts if decision=STOP")
+    ap.add_argument("--enable-adversarial", action="store_true", help="Run adversarial_validator after synthetic backtest")
+    args = ap.parse_args(argv)
+    if not args.account_oid:
+        ap.error("one of --account-oid or --system-id is required")
+    return args
 
 
 def main(argv: list[str] | None = None) -> int:

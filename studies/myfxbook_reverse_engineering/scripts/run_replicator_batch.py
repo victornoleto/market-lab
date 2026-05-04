@@ -27,6 +27,12 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 
+from studies.myfxbook_reverse_engineering.shared import config
+from studies.myfxbook_reverse_engineering.shared.adversarial_validator import adversarial_validate
+from studies.myfxbook_reverse_engineering.shared.pre_decode_screen import (
+    screen_system,
+    write_pre_screen_json,
+)
 from studies.myfxbook_reverse_engineering.shared.replicator import (
     run_one_full,
     load_frozen_rule,
@@ -39,6 +45,48 @@ PAUSE_GATES_BLOCKING_FINAL_RANKING = [
     "NEWS_RELEASE_MOMENTUM remains provisional with n=1 after R1",
     "needs_m1_review is high after R1: 13/30 systems",
 ]
+
+
+def _trade_rows(df: pd.DataFrame) -> pd.DataFrame:
+    if "is_trade" not in df.columns:
+        return df.copy()
+    return df[df["is_trade"] == True].copy()
+
+
+def _load_real_trades(system_id: str) -> pd.DataFrame:
+    path = config.trades_parquet_path(system_id)
+    if not path.exists() and system_id == "1407880":
+        path = config.STUDY_ROOT / "2026-05-01-happy_market_hours_v231" / "data" / "trades_1407880.parquet"
+    if not path.exists():
+        raise FileNotFoundError(f"trades.parquet not found at {path}")
+    return pd.read_parquet(path)
+
+
+def _adversarial_summary(real_trades: pd.DataFrame, synth: pd.DataFrame) -> dict:
+    """Run real-vs-synthetic AUC validation `[advances_fin_ml, ch.5]`."""
+    try:
+        adv = adversarial_validate(real_trades, synth)
+        return {
+            "adversarial_auc": adv.auc,
+            "adversarial_ci_low_95": adv.auc_ci_low_95,
+            "adversarial_ci_high_95": adv.auc_ci_high_95,
+            "adversarial_n_real": adv.n_real,
+            "adversarial_n_synthetic": adv.n_synthetic,
+            "adversarial_n_features": adv.n_features,
+            "adversarial_top_features": list(adv.feature_importance.keys())[:5],
+            "adversarial_notes": adv.notes,
+        }
+    except Exception as exc:
+        return {
+            "adversarial_auc": None,
+            "adversarial_ci_low_95": None,
+            "adversarial_ci_high_95": None,
+            "adversarial_n_real": int(len(real_trades)),
+            "adversarial_n_synthetic": int(len(synth)),
+            "adversarial_n_features": None,
+            "adversarial_top_features": [],
+            "adversarial_notes": [f"adversarial_error: {type(exc).__name__}: {exc}"],
+        }
 
 
 def _r1_pool_ids(base: Path) -> list[str]:
@@ -164,7 +212,11 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                          "Use decoding_m1 for forensic M1 runs to avoid touching M5 outputs.")
     ap.add_argument("--summary-name", default=None,
                     help="Diagnostics summary filename. Defaults to batch_summary.json for decoding, "
-                         "or batch_summary_<output-dir-name>.json otherwise.")
+                          "or batch_summary_<output-dir-name>.json otherwise.")
+    ap.add_argument("--enable-pre-screen", action="store_true",
+                    help="Run pre_decode_screen per system before decode; skip if decision=STOP.")
+    ap.add_argument("--enable-adversarial", action="store_true",
+                    help="Run adversarial_validator on real vs synthetic trades per system.")
     return ap.parse_args(argv)
 
 
@@ -201,6 +253,8 @@ def main(argv: list[str] | None = None) -> None:
         "approval_scope": "5R-1 deterministic replicator/comparator/score only",
         "freq": args.freq,
         "output_dir_name": args.output_dir_name,
+        "enable_pre_screen": bool(args.enable_pre_screen),
+        "enable_adversarial": bool(args.enable_adversarial),
         "final_ranking_allowed": False,
         "strategy_decision_allowed": False,
         "blocking_pause_gates": PAUSE_GATES_BLOCKING_FINAL_RANKING,
@@ -220,6 +274,41 @@ def main(argv: list[str] | None = None) -> None:
             continue
 
         t0 = time.time()
+        pre_screen_extra = {}
+        real_trade_rows = None
+        if args.enable_pre_screen:
+            try:
+                real_trades = _load_real_trades(sid)
+                real_trade_rows = _trade_rows(real_trades)
+                pre_screen = screen_system(sid, trades_df=real_trade_rows)
+                pre_screen_path = write_pre_screen_json(
+                    pre_screen,
+                    output_path=out_dir / "pre_decode_screen.json",
+                )
+                pre_screen_extra = {
+                    "pre_screen_decision": pre_screen.decision,
+                    "pre_screen_path": str(pre_screen_path),
+                    "pre_screen_notes": pre_screen.notes,
+                }
+                if pre_screen.decision != "GO":
+                    summary["skipped"][sid] = {
+                        "status": "PRE_SCREEN_STOP",
+                        **pre_screen_extra,
+                    }
+                    print(
+                        f"[{i+1:>2}/{len(all_ids)}] {sid} SKIP PRE_SCREEN_STOP  "
+                        "EA rejeitado pelo pre-screen",
+                        flush=True,
+                    )
+                    continue
+            except Exception as e:
+                err = f"pre_screen_error: {type(e).__name__}: {e}"
+                summary["skipped"][sid] = err
+                print(f"[{i+1:>2}/{len(all_ids)}] {sid} SKIP  {err}", flush=True)
+                with open(log_path, "a") as f:
+                    f.write(f"[{time.strftime('%FT%T')}] [batch] {sid} SKIP: {err}\n")
+                continue
+
         try:
             with _hard_timeout(args.timeout_per_system, f"run_one_full({sid})"):
                 result = run_one_full(sid, base, loader=loader, bar_freq=args.freq)
@@ -240,7 +329,10 @@ def main(argv: list[str] | None = None) -> None:
             continue
 
         if result["status"] != "ok":
-            summary["skipped"][sid] = result["status"]
+            if pre_screen_extra:
+                summary["skipped"][sid] = {"status": result["status"], **pre_screen_extra}
+            else:
+                summary["skipped"][sid] = result["status"]
             print(
                 f"[{i+1:>2}/{len(all_ids)}] {sid} SKIP {result['status']}  "
                 f"({time.time()-t0:.1f}s)",
@@ -261,6 +353,11 @@ def main(argv: list[str] | None = None) -> None:
         }
         synth = result["synthetic_trades"]
         invariants = smoke_invariants(result, rule)
+        adversarial_extra = {}
+        if args.enable_adversarial:
+            if real_trade_rows is None:
+                real_trade_rows = _trade_rows(_load_real_trades(sid))
+            adversarial_extra = _adversarial_summary(real_trade_rows, synth)
 
         out_dir = systems_dir / sid / args.output_dir_name
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -292,6 +389,8 @@ def main(argv: list[str] | None = None) -> None:
                 "n_real": report.n_real,
                 "n_synthetic": report.n_synthetic,
                 "n_matched": report.n_matched,
+                **pre_screen_extra,
+                **adversarial_extra,
             }
         )
         elapsed = time.time() - t0

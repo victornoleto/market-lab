@@ -24,6 +24,21 @@ do usuario** registrada em `jornada/`. Source of truth: o plano aprovado em
 | Allow-list explicita de paths | PROTOCOL.md secao "Allow-list" enumera | Task scope vs guardrail clarity |
 | Spec completeness | Apenas Fases 1 (tasks 001-008) sao detalhadas; 009-028 detalhadas on-demand | YAGNI; spec depende dos sobreviventes da Fase 1 |
 
+## Decisao humana apos task 007 (2026-05-04)
+
+| Item | Decisao | Razao |
+|---|---|---|
+| Survivor para Fase 2 | **`fase2_eligible_survivors` = `pre_screen_decision=GO AND adversarial_auc<0.65 AND mandate_24_pass=true`** | O batch gerou 21 `pre_screen GO`, acima do limite N<=10. A correcao separa pre-screen como evidencia operacional de elegibilidade downstream; thresholds ja estavam no SPEC e nao foram otimizados apos resultado `[evidence_based_ta, p.325-328]` `[advances_fin_ml, ch.5]` `[advances_fin_ml, p.273-275]`. |
+| `pre_screen_go_systems` | **Audit-only** | Mantem a lista de EAs com track record estatisticamente aceitavel, mas nao autoriza Fase 2 se synthetic continua distinguivel ou falha hard gates. |
+
+## Decisao humana apos Fase 1 STOP (2026-05-04)
+
+| Item | Decisao | Razao |
+|---|---|---|
+| Proxima trilha | **Pivot para Fase 3b/filter-and-copy replanejado** | Fase 2A/decode-self nao tem universo valido (`n_fase2_eligible_survivors=0`), mas os 21 `pre_screen_go_systems` ainda sao evidencia auditavel de track records que passaram MCPT/PSR/concentration. Avaliar como sistemas externos filtraveis, nao como regras a reverse-engineer. |
+| Primeira task do pivot | **`009-fase3b-replan-filter-copy`** | Criar contrato novo antes de rodar qualquer ranking/copy-monitor; sem paper/live, sem AutoTrade real, sem relaxar thresholds apos resultado. |
+| Universo inicial | **21 `pre_screen_go_systems` audit-only** | Entrada para triagem de copiabilidade; nao sao survivors de decode-self nem autorizacao de deploy. |
+
 ## 8 modos de falha enderecados
 
 1. Assimetria informacional (M5/M1 nao contem trigger do EA)
@@ -62,7 +77,7 @@ do usuario** registrada em `jornada/`. Source of truth: o plano aprovado em
 
 | Sem | Fase | Output |
 |---|---|---|
-| 1-2 | Fase 1 | `pre_decode_screen.py` (K1+MCPT+PSR+concentration), `cpcv.py` (PBO), `adversarial_validator.py`. Gates §2.4 hard refactor — DSR aplicado sobre **synthetic post-mining** (nao na track record do EA). **Output: lista N≤10 EAs sobreviventes** |
+| 1-2 | Fase 1 | `pre_decode_screen.py` (K1+MCPT+PSR+concentration), `cpcv.py` (PBO), `adversarial_validator.py`. Gates §2.4 hard refactor — DSR aplicado sobre **synthetic post-mining** (nao na track record do EA). **Output: lista N≤10 `fase2_eligible_survivors`** |
 | 3-4 | Fase 2A (A1-A4) | News + cross-asset + tick volume + RV regime em `decoder_features.py` |
 | 5-6 | Fase 2B (B1-B2) | LightGBM miner + meta-labeling. **Decision gate sem 6** |
 | 7-8 | Fase 3a + 3b | Transformer + HMM (3a); ranking score + start forward monitor 60d (3b) |
@@ -71,7 +86,7 @@ do usuario** registrada em `jornada/`. Source of truth: o plano aprovado em
 
 ## Decision Gate Fase 2 → 3 (semana 6)
 
-Avaliar nos N≤10 EAs sobreviventes:
+Avaliar nos N≤10 `fase2_eligible_survivors`:
 
 - F1 timing > 0.30 em ≥ 3 systems?
 - Adversarial AUC < 0.65 nesses 3?
