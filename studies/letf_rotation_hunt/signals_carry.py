@@ -34,10 +34,11 @@ _ASSET_CARRY_MAP: dict[str, _AssetCarryConfig] = {
     "UGL":  _AssetCarryConfig("none",       "",    2.0, "gold"),
 }
 
-# Initial scalars; calibrated empirically in Task 11.
+# Empirically calibrated 2026-05-08 via scripts/calibrate_carry_scalars.py
+# Target: carry forecast SD ≈ 10 (Carver convention).
 _CARRY_SCALAR_BY_CLASS: dict[str, float] = {
-    "equity": 10.0,
-    "bond": 10.0,
+    "equity": 0.6135,
+    "bond": 0.8599,
     "gold": 0.0,
 }
 
