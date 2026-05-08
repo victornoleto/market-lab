@@ -50,3 +50,30 @@ def test_carry_clipped_at_pm_20(monkeypatch):
     prices = _const_series(100.0)
     f = sc.compute_carry_forecast("UPRO", prices, ffr).dropna()
     assert (f.abs() <= 20.0).all()
+
+
+def test_bond_carry_uses_30y_cmt(monkeypatch):
+    monkeypatch.setattr(
+        sc, "_load_yield_for_asset",
+        lambda asset: _const_series(0.045),  # 30y at 4.5%
+    )
+    # FFR 0.5% annual → 0.005/252 daily (matches Task 4 daily-FFR convention)
+    ffr = _const_series(0.005 / 252.0)
+    prices = _const_series(100.0)
+    f = sc.compute_carry_forecast("TMF", prices, ffr)
+    # carry_raw = 0.045 - 3*0.005 = 0.030 > 0 → forecast positive
+    assert (f.dropna() > 0).all()
+
+
+def test_gold_carry_returns_zero():
+    prices = _const_series(100.0)
+    ffr = _const_series(0.02 / 252.0)
+    f = sc.compute_carry_forecast("UGL", prices, ffr)
+    assert (f == 0.0).all()
+
+
+def test_unknown_asset_raises():
+    prices = _const_series(100.0)
+    ffr = _const_series(0.01 / 252.0)
+    with pytest.raises(ValueError, match="not in carry map"):
+        sc.compute_carry_forecast("XYZ", prices, ffr)
