@@ -24,8 +24,14 @@ def build_positions(
     idm: float,
     position_inertia: float,
     off_asset: str,
+    external_weights: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     """Carver vol-targeted positions (long-only).
+
+    When ``external_weights`` is provided, it replaces the ``idm`` uniform
+    multiplier per asset. Each asset's allocation is multiplied by
+    ``external_weights[asset, t]`` instead of ``idm``. Weights must sum
+    to 1 across the pool (will be normalized). See spec §3.3.
 
     Parameters
     ----------
@@ -41,13 +47,17 @@ def build_positions(
         Don't rebalance if delta < this fraction (e.g. 0.10 = 10%) [p.174].
     off_asset : str
         Cash residual ticker.
+    external_weights : pd.DataFrame | None, optional
+        Per-asset portfolio weights (HRP/ERC). When provided, replaces the
+        ``idm`` multiplier: each asset uses ``w * N_assets`` as multiplier.
+        Configs should set ``idm=1.0`` when using this path (spec §3.3).
 
     Returns
     -------
     pd.DataFrame
         Daily weights. Long-only (forecasts < 0 → 0).
     """
-    if idm > 2.5:
+    if external_weights is None and idm > 2.5:
         raise ValueError(f"idm must be ≤ 2.5 per Carver [p.170-171], got {idm}")
 
     assets = list(forecasts.columns)
@@ -68,8 +78,17 @@ def build_positions(
                 continue
             # Carver: vol_scalar = daily_vol_target / instrument_vol [p.133]
             vol_scalar = daily_vol_target / v
-            # subsystem_position = vol_scalar × forecast / 10 × IDM
-            target_row[a] = vol_scalar * f / 10.0 * idm
+            if external_weights is not None:
+                w = external_weights.loc[date, a] if date in external_weights.index else 0.0
+                if pd.isna(w):
+                    w = 0.0
+                # Per-asset allocation: vol_scalar * f/10 * weight * N_assets
+                # The N_assets factor maintains parity with IDM=N case under equal weights
+                multiplier = w * len(forecasts.columns)
+            else:
+                multiplier = idm
+            # subsystem_position = vol_scalar × forecast / 10 × multiplier
+            target_row[a] = vol_scalar * f / 10.0 * multiplier
 
         # Cap total long allocation at 1.0 (long-only, no leverage beyond targets)
         long_total = target_row.sum()
