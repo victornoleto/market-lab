@@ -72,7 +72,7 @@ Citações vão em docstrings, comentários de decisão, PR descriptions, report
 ## Referências rápidas
 
 - Estado atual snapshot: `docs/CURRENT_STATE.md`
-- Cleanup playbook: `CLEANUP.md`; logs forenses em `docs/CLEANUP_*_LOG.md`
+- Cleanup playbook: `docs/CLEANUP.md`; logs forenses em `docs/CLEANUP_*_LOG.md`
 - Skill loadable: `knowledge/SKILL.md`
 - Inventário livros (slug ↔ título): `books/MAPPING.md`
 - Logs unificados: `logs/grid.log`, `logs/tiingo.log`

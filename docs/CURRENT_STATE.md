@@ -109,7 +109,7 @@ Sumário do mandate (`docs/investment-mandate.md` é canônico):
 
 - **Mandate canônico:** `docs/investment-mandate.md`
 - **Setup + arquitetura:** `README.md`
-- **Cleanup playbook:** `CLEANUP.md`; logs forenses `docs/CLEANUP_2026-04-24_LOG.md` + `docs/CLEANUP_2026-05-05_LOG.md`
+- **Cleanup playbook:** `docs/CLEANUP.md`; logs forenses `docs/CLEANUP_2026-04-24_LOG.md` + `docs/CLEANUP_2026-05-05_LOG.md`
 - **Histórico público:** `docs/PROJECT_HISTORY.md`
 - **Knowledge base:** `books/MAPPING.md` + `knowledge/SKILL.md`
 - **Convenções:** `CLAUDE.md`

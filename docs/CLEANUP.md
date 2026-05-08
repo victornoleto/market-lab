@@ -22,7 +22,7 @@ NÃO usar:
 ## Prompt pro executor (copiar/colar numa nova sessão)
 
 > Rode um cleanup agressivo no repo ai-trade seguindo
-> `CLEANUP.md`. Baseline atual: quantos tests? Quantos arquivos em
+> `docs/CLEANUP.md`. Baseline atual: quantos tests? Quantos arquivos em
 > cada pasta-alvo? Crie tag `pre-cleanup-YYYY-MM-DD` antes de qualquer
 > delete. Commits isolados por área. HANDS-OFF: liste pastas que estão
 > ativas antes de começar (verifique com user se tem sessão paralela

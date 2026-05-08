@@ -4,7 +4,7 @@
 **User:** Victor Noleto
 **Plan file:** `/home/victor/.claude/plans/snuggly-drifting-cascade.md`
 **Recovery tag:** `pre-cleanup-2026-05-05`
-**Playbook:** `CLEANUP.md` (run anterior: `docs/CLEANUP_2026-04-24_LOG.md`)
+**Playbook:** `docs/CLEANUP.md` (run anterior: `docs/CLEANUP_2026-04-24_LOG.md`)
 
 ---
 
