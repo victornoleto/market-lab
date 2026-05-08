@@ -61,9 +61,6 @@ def load_dividend_yield(underlying: str) -> pd.Series:
         return pd.read_parquet(cache_path).iloc[:, 0]
     dividends = _yfinance_fetch_dividends(underlying)
     prices = _yfinance_fetch_adj_close(underlying)
-    # Normalize both indices to date only (yfinance dividends have time components)
-    dividends.index = dividends.index.normalize()
-    prices.index = prices.index.normalize()
     if not dividends.index.intersection(prices.index).size:
         raise RuntimeError(f"No overlapping dates for {underlying} dividends/prices")
     div_aligned = dividends.reindex(prices.index, fill_value=0.0)
@@ -75,18 +72,20 @@ def load_dividend_yield(underlying: str) -> pd.Series:
 
 
 def _yfinance_fetch_dividends(ticker: str) -> pd.Series:
-    """Raw dividends Series from yfinance."""
+    """Raw dividends Series from yfinance (tz-naive index)."""
     import yfinance as yf  # local import: keep top-level light
     divs = yf.Ticker(ticker).dividends
     if divs.empty:
         raise RuntimeError(f"yfinance returned no dividends for {ticker}")
+    divs.index = divs.index.tz_localize(None)  # strip tz-aware label; daily data, local date preserved
     return divs
 
 
 def _yfinance_fetch_adj_close(ticker: str) -> pd.Series:
-    """Auto-adjusted close prices from yfinance."""
+    """Auto-adjusted close prices from yfinance (tz-naive index)."""
     import yfinance as yf  # local import: keep top-level light
     hist = yf.Ticker(ticker).history(period="max", auto_adjust=True)
     if hist.empty:
         raise RuntimeError(f"yfinance returned empty for {ticker}")
+    hist.index = hist.index.tz_localize(None)  # strip tz-aware label; daily data, local date preserved
     return hist["Close"].rename(ticker)
