@@ -12,7 +12,7 @@
 
 ## Pre-flight
 
-- [ ] **Confirm baseline:** `cd /var/www/github/finances/market-lab && uv run pytest -q` — must show 813 passing tests before starting. If fewer/more, investigate before proceeding.
+- [ ] **Confirm baseline:** `cd /var/www/github/finances/market-lab && uv run --active pytest -q` — must show 941 passed, 21 skipped (baseline as of branch `feat/letf-t5-expansion` HEAD `420ffc6`, 2026-05-08). CLAUDE.md mentions 813 but is outdated. If fewer pass, investigate before proceeding.
 - [ ] **Confirm data dir:** `ls data/external/yields/ 2>/dev/null || mkdir -p data/external/yields && touch data/external/yields/.gitkeep` — create cache dir.
 - [ ] **Confirm yfinance available:** `uv run python -c "import yfinance; print(yfinance.__version__)"`. If missing: `uv add yfinance`.
 
@@ -64,7 +64,7 @@ def test_load_cmt_unknown_tenor_raises():
 - [ ] **Step 2: Run test, verify failure**
 
 ```
-uv run pytest studies/letf_rotation_hunt/tests/test_data_loader_yields.py -v
+uv run --active pytest studies/letf_rotation_hunt/tests/test_data_loader_yields.py -v
 ```
 Expected: FAIL — `ModuleNotFoundError: data_loader_yields`.
 
@@ -127,7 +127,7 @@ def _yfinance_fetch_yield(ticker: str) -> pd.Series:
 - [ ] **Step 4: Run test, verify pass**
 
 ```
-uv run pytest studies/letf_rotation_hunt/tests/test_data_loader_yields.py -v
+uv run --active pytest studies/letf_rotation_hunt/tests/test_data_loader_yields.py -v
 ```
 Expected: 2 PASS.
 
@@ -171,7 +171,7 @@ def test_load_dividend_yield_trailing_12m(monkeypatch, tmp_path):
 - [ ] **Step 2: Run test, verify failure**
 
 ```
-uv run pytest studies/letf_rotation_hunt/tests/test_data_loader_yields.py::test_load_dividend_yield_trailing_12m -v
+uv run --active pytest studies/letf_rotation_hunt/tests/test_data_loader_yields.py::test_load_dividend_yield_trailing_12m -v
 ```
 Expected: FAIL — `AttributeError: ... load_dividend_yield`.
 
@@ -223,7 +223,7 @@ def _yfinance_fetch_adj_close(ticker: str) -> pd.Series:
 - [ ] **Step 4: Run, verify pass**
 
 ```
-uv run pytest studies/letf_rotation_hunt/tests/test_data_loader_yields.py -v
+uv run --active pytest studies/letf_rotation_hunt/tests/test_data_loader_yields.py -v
 ```
 Expected: 3 PASS (cumulative).
 
@@ -337,7 +337,7 @@ def test_carry_clipped_at_pm_20(monkeypatch):
 - [ ] **Step 2: Run, verify failure**
 
 ```
-uv run pytest studies/letf_rotation_hunt/tests/test_signals_carry.py -v
+uv run --active pytest studies/letf_rotation_hunt/tests/test_signals_carry.py -v
 ```
 Expected: FAIL — `ModuleNotFoundError: signals_carry`.
 
@@ -425,7 +425,7 @@ def _ffr_daily_to_annual(ffr_daily: pd.Series) -> pd.Series:
 - [ ] **Step 4: Run, verify pass**
 
 ```
-uv run pytest studies/letf_rotation_hunt/tests/test_signals_carry.py -v
+uv run --active pytest studies/letf_rotation_hunt/tests/test_signals_carry.py -v
 ```
 Expected: 3 PASS.
 
@@ -477,7 +477,7 @@ def test_unknown_asset_raises():
 - [ ] **Step 2: Run, verify pass**
 
 ```
-uv run pytest studies/letf_rotation_hunt/tests/test_signals_carry.py -v
+uv run --active pytest studies/letf_rotation_hunt/tests/test_signals_carry.py -v
 ```
 Expected: 6 PASS (3 from Task 4 + 3 new).
 
@@ -709,7 +709,7 @@ def _cluster_var(cov: np.ndarray, indices: list[int]) -> float:
 - [ ] **Step 4: Run, verify pass**
 
 ```
-uv run pytest studies/letf_rotation_hunt/tests/test_hrp_weighter.py -v
+uv run --active pytest studies/letf_rotation_hunt/tests/test_hrp_weighter.py -v
 ```
 Expected: 3 PASS.
 
@@ -957,14 +957,14 @@ def build_positions(
 - [ ] **Step 4: Run new + existing vol_targeted tests**
 
 ```
-uv run pytest studies/letf_rotation_hunt/tests/test_vol_targeted_external_weights.py studies/letf_rotation_hunt/tests/ -k "vol_targeted" -v
+uv run --active pytest studies/letf_rotation_hunt/tests/test_vol_targeted_external_weights.py studies/letf_rotation_hunt/tests/ -k "vol_targeted" -v
 ```
 Expected: All PASS — 2 new + any pre-existing T5 tests still passing.
 
 - [ ] **Step 5: Run full T5 baseline regression**
 
 ```
-uv run pytest studies/letf_rotation_hunt/tests/ -v
+uv run --active pytest studies/letf_rotation_hunt/tests/ -v
 ```
 Expected: All PASS, no regressions.
 
@@ -1355,7 +1355,7 @@ def _finalize_extended(
 - [ ] **Step 4: Run, verify pass**
 
 ```
-uv run pytest studies/letf_rotation_hunt/tests/test_run_iter_t5_extended.py -v
+uv run --active pytest studies/letf_rotation_hunt/tests/test_run_iter_t5_extended.py -v
 ```
 Expected: 1 PASS (backward-compat test).
 
@@ -1399,7 +1399,7 @@ def test_extended_hrp_weighting_runs(tmp_path):
 
 Run:
 ```
-uv run pytest studies/letf_rotation_hunt/tests/test_run_iter_t5_extended.py -v
+uv run --active pytest studies/letf_rotation_hunt/tests/test_run_iter_t5_extended.py -v
 ```
 Expected: 3 PASS.
 
@@ -1516,7 +1516,7 @@ _CARRY_SCALAR_BY_CLASS: dict[str, float] = {
 - [ ] **Step 4: Re-run carry tests with new scalars**
 
 ```
-uv run pytest studies/letf_rotation_hunt/tests/test_signals_carry.py -v
+uv run --active pytest studies/letf_rotation_hunt/tests/test_signals_carry.py -v
 ```
 Expected: All 8 still PASS (sign tests are scalar-invariant; clipping test still bounded by ±20).
 
@@ -1748,7 +1748,7 @@ if __name__ == "__main__":
 - [ ] **Step 4: Run, verify pass**
 
 ```
-uv run pytest studies/letf_rotation_hunt/tests/test_dsr_recompute_cumulative.py -v
+uv run --active pytest studies/letf_rotation_hunt/tests/test_dsr_recompute_cumulative.py -v
 ```
 Expected: 1 PASS.
 
@@ -1898,7 +1898,7 @@ Only update if the expansion materially changed the narrative (e.g., if Track A 
 - [ ] **Step 5: Run full test suite — final regression check**
 
 ```
-uv run pytest -q
+uv run --active pytest -q
 ```
 Expected: 813 baseline + new tests (≥18 added across Tasks 1-13) all PASS.
 
