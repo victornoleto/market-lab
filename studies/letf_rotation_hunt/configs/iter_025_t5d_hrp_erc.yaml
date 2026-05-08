@@ -1,0 +1,64 @@
+iter: 025-2026-05-08-T5d-hrp-erc
+tier: T5d
+hypothesis: |
+  HRP and ERC replace IDM uniform. Tests if cluster-aware weighting
+  (López de Prado [ch.16]) or Equal Risk Contribution improves over IDM=2.5
+  on the 4-LETF pool. 2x sigma_target levels (0.25, 0.30) per scheme.
+primary_citation: "[advances_fin_ml, ch.16 p.221-228]; spec §2.6 T5d (optional)"
+configs_tested:
+  - name: hrp_multi4_sigma025
+    pool:
+      - UPRO
+      - QLD
+      - UGL
+      - TMF
+    off_asset: ZROZ
+    sigma_target: 0.25
+    idm: 1.0
+    position_inertia: 0.10
+    weighting_scheme: hrp
+  - name: hrp_multi4_sigma030
+    pool:
+      - UPRO
+      - QLD
+      - UGL
+      - TMF
+    off_asset: ZROZ
+    sigma_target: 0.30
+    idm: 1.0
+    position_inertia: 0.10
+    weighting_scheme: hrp
+  - name: erc_multi4_sigma025
+    pool:
+      - UPRO
+      - QLD
+      - UGL
+      - TMF
+    off_asset: ZROZ
+    sigma_target: 0.25
+    idm: 1.0
+    position_inertia: 0.10
+    weighting_scheme: erc
+  - name: erc_multi4_sigma030
+    pool:
+      - UPRO
+      - QLD
+      - UGL
+      - TMF
+    off_asset: ZROZ
+    sigma_target: 0.30
+    idm: 1.0
+    position_inertia: 0.10
+    weighting_scheme: erc
+cumulative_n_trials_at_iter: 422
+datasets:
+  - lh_56y
+  - modern_1990
+  - spy_real
+  - ndx_real
+windows_used:
+  lh_56y: 1970-01-01..2026-04-30
+  modern_1990: 1990-01-01..2026-04-30
+  spy_real: 2003-01-01..2026-04-30
+  ndx_real: 2010-02-01..2026-04-30
+random_seed: 42

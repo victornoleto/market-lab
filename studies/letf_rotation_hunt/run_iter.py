@@ -114,11 +114,11 @@ def main(argv: list[str] | None = None) -> int:
         verdict = run_t4(config, verdict, out_dir)
     elif tier.startswith("T5"):
         try:
-            from studies.letf_rotation_hunt.run_iter_t5 import run as run_t5
+            dispatcher = _select_t5_dispatcher(config)
         except ImportError:
             print(f"[run_iter] tier {tier} dispatcher not implemented yet", file=sys.stderr)
             return 2
-        verdict = run_t5(config, verdict, out_dir)
+        verdict = dispatcher(config, verdict, out_dir)
     else:
         print(f"[run_iter] tier {tier} dispatcher not implemented (final tier T5)", file=sys.stderr)
         return 2
@@ -137,6 +137,27 @@ def main(argv: list[str] | None = None) -> int:
     print(f"[run_iter] verdict written: {verdict_path}")
 
     return 0
+
+
+def _select_t5_dispatcher(config: dict):
+    """Route to extended dispatcher when config has forecast_type/weighting_scheme,
+    or when tier is T5b/T5d (always extended).
+
+    Invariant:
+      - T5a or T5c with no extended keys → run_iter_t5.run (backward compat for iters 020-021)
+      - T5b or T5d → run_iter_t5_extended.run (always, even if no extended keys present)
+      - Any T5* with forecast_type or weighting_scheme keys → run_iter_t5_extended.run
+    """
+    tier = config.get("tier", "")
+    has_extended_keys = any(
+        ("forecast_type" in c) or ("weighting_scheme" in c)
+        for c in config.get("configs_tested", [])
+    )
+    if tier in {"T5b", "T5d"} or has_extended_keys:
+        from studies.letf_rotation_hunt import run_iter_t5_extended
+        return run_iter_t5_extended.run
+    from studies.letf_rotation_hunt import run_iter_t5
+    return run_iter_t5.run
 
 
 def _get_git_sha() -> str:
