@@ -3,8 +3,8 @@
 **Tier:** T3d
 **Hypothesis:** T3d Vote-K=2 with alternative ON-asset (UPRO/TQQQ) and alternative OFF-asset (IEF/EDV/TLT) — not covered in iter 014 (only QLD/ZROZ) nor iter 022 (only sma200/50 variations on QLD/ZROZ). 12 configs: 3 ON-assets {UPRO, QLD, TQQQ} × 4 OFF-assets {ZROZ, IEF, EDV, TLT} × K=2 fixed × canonical signal subset. Pre-registered per spec §3.4 anti-curve-fit: T3d-multi-asset winner only beats T3d K=2 if Sharpe > 0.853 + 0.05 = 0.903; goal is to fill the iter 014/022 gap (no UPRO/TQQQ tested in Vote-K context).
 **Primary citation:** spec §2.4 T3d composite (multi-asset variant for completeness)
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:12:15.998262+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:15:46.020062+00:00
 **Configs tested:** 12
 
 ## TL;DR

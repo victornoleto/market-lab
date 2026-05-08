@@ -3,8 +3,8 @@
 **Tier:** T5c
 **Hypothesis:** Carver vol-targeted multi-asset {UPRO, QLD, UGL, TMF}. EWMAC composite per asset. IDM=2.5 (max per Carver [p.170-171]). σ_target=0.25. Tests if multi-asset diversification (Carver ch.10-11) lifts Sharpe vs single-asset T5a.
 **Primary citation:** [systematic_trading, ch.10-11]; spec §2.6 T5c
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:11:52.551302+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:14:50.931658+00:00
 **Configs tested:** 1
 
 ## TL;DR

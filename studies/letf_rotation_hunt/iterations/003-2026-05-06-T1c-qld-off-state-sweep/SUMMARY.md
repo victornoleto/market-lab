@@ -3,8 +3,8 @@
 **Tier:** T1c
 **Hypothesis:** QLD SMA200 rotation OFF-state: BIL is reference. Leveraged OFF (TMF) only wins if Sharpe > BIL_OFF + 0.10 AND MDD ≤ TMF_buy-hold_MDD/2. Treasury duration (IEF/TLT/ZROZ/EDV) tested for crisis-alpha contribution.
 **Primary citation:** [leverage_for_the_long_run, p.17 Table 8 (BIL OFF baseline); ilmanen_expected_returns, ch.19 (treasury crisis-alpha)]
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:10:29.683689+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:15:25.604596+00:00
 **Configs tested:** 6
 
 ## TL;DR

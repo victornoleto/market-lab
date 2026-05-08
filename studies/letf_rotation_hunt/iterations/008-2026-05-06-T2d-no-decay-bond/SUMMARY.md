@@ -3,8 +3,8 @@
 **Tier:** T2d
 **Hypothesis:** Replace TMF (3× leveraged 20y, 2022 rate-collapse drag) with unleveraged long-duration bond. UPRO+ZROZ 60/40 and UPRO+EDV 60/40 — directly tests T1c/T1d finding that ZROZ > TMF universally as OFF-state.
 **Primary citation:** [risk_parity, ch.5]; [leverage_for_the_long_run, p.21 Table 12] (TMF tracking drag); T1c/T1d empirical (this study)
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:10:43.568099+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:15:08.792629+00:00
 **Configs tested:** 2
 
 ## TL;DR

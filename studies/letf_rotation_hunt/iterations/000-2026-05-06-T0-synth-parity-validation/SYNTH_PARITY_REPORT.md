@@ -13,15 +13,15 @@ Citation: [leverage_for_the_long_run, p.16, footnote 22-23]
 
 | Ticker | Status | Synth CAGR | Real CAGR | Delta | Threshold | Window |
 |--------|--------|----------:|----------:|------:|----------:|--------|
-| UPRO | SKIP | — | — | — | 0.030 | "ticker 'UPRO' not in cache — available: ['BNDSIM', 'CASHX', 'DBMFSIM', 'EFVSIM', 'GDESIM', 'GLDSIM', 'IEFSIM', 'KMLMSIM', 'QLDSIM', 'QQQSIM', 'RSSBSIM', 'SPYSIM', 'SSOSIM', 'TLTSIM', 'TQQQSIM', 'UGLSIM', 'UPROSIM', 'VBRSIM', 'VEASIM', 'VSSSIM', 'VTISIM', 'VTSIM', 'VWOSIM', 'VXUSSIM', 'ZROZSIM']" |
-| SSO | SKIP | — | — | — | 0.010 | "ticker 'SSO' not in cache — available: ['BNDSIM', 'CASHX', 'DBMFSIM', 'EFVSIM', 'GDESIM', 'GLDSIM', 'IEFSIM', 'KMLMSIM', 'QLDSIM', 'QQQSIM', 'RSSBSIM', 'SPYSIM', 'SSOSIM', 'TLTSIM', 'TQQQSIM', 'UGLSIM', 'UPROSIM', 'VBRSIM', 'VEASIM', 'VSSSIM', 'VTISIM', 'VTSIM', 'VWOSIM', 'VXUSSIM', 'ZROZSIM']" |
-| TQQQ | SKIP | — | — | — | 0.030 | "ticker 'TQQQ' not in cache — available: ['BNDSIM', 'CASHX', 'DBMFSIM', 'EFVSIM', 'GDESIM', 'GLDSIM', 'IEFSIM', 'KMLMSIM', 'QLDSIM', 'QQQSIM', 'RSSBSIM', 'SPYSIM', 'SSOSIM', 'TLTSIM', 'TQQQSIM', 'UGLSIM', 'UPROSIM', 'VBRSIM', 'VEASIM', 'VSSSIM', 'VTISIM', 'VTSIM', 'VWOSIM', 'VXUSSIM', 'ZROZSIM']" |
-| QLD | SKIP | — | — | — | 0.010 | "ticker 'QLD' not in cache — available: ['BNDSIM', 'CASHX', 'DBMFSIM', 'EFVSIM', 'GDESIM', 'GLDSIM', 'IEFSIM', 'KMLMSIM', 'QLDSIM', 'QQQSIM', 'RSSBSIM', 'SPYSIM', 'SSOSIM', 'TLTSIM', 'TQQQSIM', 'UGLSIM', 'UPROSIM', 'VBRSIM', 'VEASIM', 'VSSSIM', 'VTISIM', 'VTSIM', 'VWOSIM', 'VXUSSIM', 'ZROZSIM']" |
-| TMF | SKIP | — | — | — | 0.015 | "ticker 'TMF' not in cache — available: ['BNDSIM', 'CASHX', 'DBMFSIM', 'EFVSIM', 'GDESIM', 'GLDSIM', 'IEFSIM', 'KMLMSIM', 'QLDSIM', 'QQQSIM', 'RSSBSIM', 'SPYSIM', 'SSOSIM', 'TLTSIM', 'TQQQSIM', 'UGLSIM', 'UPROSIM', 'VBRSIM', 'VEASIM', 'VSSSIM', 'VTISIM', 'VTSIM', 'VWOSIM', 'VXUSSIM', 'ZROZSIM']" |
-| UGL | SKIP | — | — | — | 0.010 | "ticker 'UGL' not in cache — available: ['BNDSIM', 'CASHX', 'DBMFSIM', 'EFVSIM', 'GDESIM', 'GLDSIM', 'IEFSIM', 'KMLMSIM', 'QLDSIM', 'QQQSIM', 'RSSBSIM', 'SPYSIM', 'SSOSIM', 'TLTSIM', 'TQQQSIM', 'UGLSIM', 'UPROSIM', 'VBRSIM', 'VEASIM', 'VSSSIM', 'VTISIM', 'VTSIM', 'VWOSIM', 'VXUSSIM', 'ZROZSIM']" |
+| UPRO | PASS | 0.3253 | 0.3237 | 0.0015 | 0.030 | 2009-06-25 to 2026-04-24 |
+| SSO | PASS | 0.1594 | 0.1538 | 0.0057 | 0.010 | 2006-06-21 to 2026-04-24 |
+| TQQQ | PASS | 0.4140 | 0.4232 | 0.0092 | 0.030 | 2010-02-11 to 2026-04-24 |
+| QLD | PASS | 0.2502 | 0.2484 | 0.0018 | 0.010 | 2006-06-21 to 2026-04-24 |
+| TMF | PASS | -0.0544 | -0.0588 | 0.0044 | 0.015 | 2009-04-16 to 2026-04-24 |
+| UGL | PASS | 0.1450 | 0.1455 | 0.0004 | 0.010 | 2008-12-03 to 2026-04-17 |
 
 ---
 
-Summary: 0 PASS, 0 FAIL, 6 SKIP out of 6 tickers.
+Summary: 6 PASS, 0 FAIL, 0 SKIP out of 6 tickers.
 
 Decision: ADVANCE to T1 implementation.

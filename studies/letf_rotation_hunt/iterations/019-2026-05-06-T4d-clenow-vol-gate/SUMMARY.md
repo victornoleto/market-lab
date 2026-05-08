@@ -3,8 +3,8 @@
 **Tier:** T4d
 **Hypothesis:** Clenow ranking + per-asset vol_21d<40% filter, top-2 of {UPRO, QLD, SOXL, UGL, TMF} (5 assets, 2010+ window because SOXL inception). Master SPY>SMA200, OFF=ZROZ. Tests if filtering high-vol assets out of pool improves selection.
 **Primary citation:** [stocks_on_the_move]; [leverage_for_the_long_run, p.5-6]; spec §2.5 T4d
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:11:37.161666+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:14:31.815705+00:00
 **Configs tested:** 1
 
 ## TL;DR

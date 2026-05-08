@@ -3,8 +3,8 @@
 **Tier:** T2c
 **Hypothesis:** HFEA-NDX TQQQ+TMF {55/45, 60/40} with SMA200 on QQQ signal, full-off cash. NDX-based HFEA basket for tech-heavy regime.
 **Primary citation:** [risk_parity, ch.5]; [leverage_for_the_long_run, ch.4] (NDX LETF rotation)
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:10:40.649418+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:15:05.973697+00:00
 **Configs tested:** 2
 
 ## TL;DR

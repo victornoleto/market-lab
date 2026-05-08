@@ -3,8 +3,8 @@
 **Tier:** T2f
 **Hypothesis:** Half-off explicit variant on T2-best basket (HFEA-NDX TQQQ+TMF 55/45). Half-off mode keeps bond sleeve at full weight when signal=0; tests whether residual bond exposure during equity OFF improves Sharpe vs full-off cash.
 **Primary citation:** [risk_parity, ch.5, p.10]; spec §2.3 T2f
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:10:48.689033+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:13:35.159771+00:00
 **Configs tested:** 1
 
 ## TL;DR

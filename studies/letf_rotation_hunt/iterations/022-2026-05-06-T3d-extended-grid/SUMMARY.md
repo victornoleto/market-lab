@@ -3,8 +3,8 @@
 **Tier:** T3d
 **Hypothesis:** T3d-extended (12-config grid for G1 PBO statistical power). 6 diverse signal-subsets × K∈{2,3} on QLD/ZROZ. Pre-registered per spec §3.4: T3d-extended winner only beats T3d K=2 if Sharpe > 0.853 + 0.05 = 0.903; goal is G1 PBO statistical power, not param-sweep curve-fit.
 **Primary citation:** spec §2.4 T3d composite (extended grid for G1 PBO power per advances_fin_ml p.208-211)
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:12:03.768041+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:15:34.215383+00:00
 **Configs tested:** 12
 
 ## TL;DR

@@ -3,8 +3,8 @@
 **Tier:** T3a
 **Hypothesis:** SMA200 AND realized-vol_21d < 40% on QLD/ZROZ. Vol-gate filters dot-com/2008/2022 high-vol regimes that SMA200 alone admits. Anti-curve-fit threshold T3 winner: Sharpe > T1c+0.05 = 0.802.
 **Primary citation:** [leverage_for_the_long_run, p.5-6] (vol-decay above 40% threshold)
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:10:50.981359+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:13:40.533278+00:00
 **Configs tested:** 1
 
 ## TL;DR

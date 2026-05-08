@@ -3,8 +3,8 @@
 **Tier:** T2e
 **Hypothesis:** HFEA-trinity UPRO+TMF+UGL 50/30/20: equity LETF + leveraged bond + leveraged gold. Tests if adding gold (uncorrelated commodity) improves Sharpe via diversification beyond classic 2-asset HFEA.
 **Primary citation:** [risk_parity, ch.5]; [ilmanen_expected_returns, ch.13] (gold as portfolio diversifier)
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:10:46.435142+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:13:32.753418+00:00
 **Configs tested:** 1
 
 ## TL;DR

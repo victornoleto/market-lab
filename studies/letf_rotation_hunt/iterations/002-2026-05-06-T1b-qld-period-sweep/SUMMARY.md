@@ -3,8 +3,8 @@
 **Tier:** T1b
 **Hypothesis:** Among QLD 2× NDX rotation params, no period beats SMA200 by ≥0.05 Sharpe (lh_56y) — anti-curve-fit pre-registered. T1a winner (QLD SMA200) Sharpe 0.678; threshold to claim T1b winner = 0.728.
 **Primary citation:** [leverage_for_the_long_run, p.13]
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:10:23.494526+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:12:32.736268+00:00
 **Configs tested:** 10
 
 ## TL;DR

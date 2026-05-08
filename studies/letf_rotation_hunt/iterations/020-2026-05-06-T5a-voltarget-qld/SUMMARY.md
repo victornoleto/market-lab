@@ -3,8 +3,8 @@
 **Tier:** T5a
 **Hypothesis:** Carver vol-targeted single-asset QLD with EWMAC composite forecast (16/64+64/256, FDM=1.41), σ_target=0.25 (Half-Kelly), IDM=1.0 (single-asset), position inertia 10%. Tests if continuous sizing > T3d K=2 binary signal.
 **Primary citation:** [systematic_trading, ch.7-12 p.98-202]; spec §2.6 T5a
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:11:46.575136+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:14:45.187384+00:00
 **Configs tested:** 1
 
 ## TL;DR

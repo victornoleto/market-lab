@@ -3,8 +3,8 @@
 **Tier:** T4c
 **Hypothesis:** EWMAC composite (16/64 + 64/256) ranking instead of Clenow, top-2 of {UPRO, QLD, UGL, TMF}, master SPY>SMA200, OFF=ZROZ. Tests if Carver-style trend forecast beats Clenow regression-slope ranking.
 **Primary citation:** [systematic_trading, ch.7-8]; spec §2.5 T4c
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:11:28.622087+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:14:23.517808+00:00
 **Configs tested:** 1
 
 ## TL;DR

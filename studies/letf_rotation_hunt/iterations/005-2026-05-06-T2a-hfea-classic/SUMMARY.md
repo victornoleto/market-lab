@@ -3,8 +3,8 @@
 **Tier:** T2a
 **Hypothesis:** HFEA classic UPRO+TMF 55/45 with SMA200 on SPY: full-off (cash) and half-off (zero LETF, keep bond) variants. Tests Carlson capital-efficient stacking at the canonical HFEA weight.
 **Primary citation:** [risk_parity, ch.5, p.10] (Carlson HFEA basis); [leverage_for_the_long_run, p.13] (signal asset)
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:10:34.323020+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:12:49.150860+00:00
 **Configs tested:** 2
 
 ## TL;DR

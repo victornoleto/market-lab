@@ -3,8 +3,8 @@
 **Tier:** T3e
 **Hypothesis:** HMM 2-state regime classifier (bull/bear) on QLD underlying returns; gate ON in bull state. Sticky 3-day transition prevents whipsaw. Optional sub-fase per spec §2.4.
 **Primary citation:** [knowledge/indicators/regime_hmm]; [ml_for_algo_trading, ch.9]
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:11:02.979822+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:13:53.105404+00:00
 **Configs tested:** 1
 
 ## TL;DR

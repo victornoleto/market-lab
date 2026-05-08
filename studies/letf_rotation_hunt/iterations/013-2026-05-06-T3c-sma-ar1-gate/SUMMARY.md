@@ -3,8 +3,8 @@
 **Tier:** T3c
 **Hypothesis:** SMA200 AND AR(1)_30d > 0 on QLD/ZROZ. Positive AR(1) = momentum regime favourable to LETFs; negative AR(1) = mean-reversion that compounds against LETF.
 **Primary citation:** [paper.hsieh_2025_letf_compounding] (AR(1) regime for LETFs)
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:10:55.552074+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:13:50.170954+00:00
 **Configs tested:** 1
 
 ## TL;DR

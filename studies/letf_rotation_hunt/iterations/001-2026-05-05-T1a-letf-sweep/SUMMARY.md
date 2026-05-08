@@ -3,8 +3,8 @@
 **Tier:** T1a
 **Hypothesis:** Gayed canonical SMA200 LRS reproducible em SSO/UPRO/QLD/TQQQ/SOXL/UGL — single LETF rotation com BIL como OFF-state.
 **Primary citation:** [leverage_for_the_long_run, p.13, p.17 Table 8]
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:10:18.834664+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:12:09.680223+00:00
 **Configs tested:** 6
 
 ## TL;DR

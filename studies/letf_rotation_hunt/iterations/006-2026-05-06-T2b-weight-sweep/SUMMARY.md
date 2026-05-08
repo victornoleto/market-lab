@@ -3,8 +3,8 @@
 **Tier:** T2b
 **Hypothesis:** UPRO+TMF weight sweep {60/40, 65/35, 70/30} with SMA200 SPY signal, full-off cash. Higher equity tilts trade off Sharpe for CAGR; finds optimal point on efficient frontier.
 **Primary citation:** [risk_parity, ch.5, p.10]
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:10:37.268788+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:15:14.651681+00:00
 **Configs tested:** 3
 
 ## TL;DR

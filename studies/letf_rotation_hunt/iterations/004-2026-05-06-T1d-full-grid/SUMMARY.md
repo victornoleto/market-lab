@@ -3,8 +3,8 @@
 **Tier:** T1d
 **Hypothesis:** Robustness mapping check: grid sweep of all (on, off, signal, period) combos. Tests whether T1c sequential winner (qld_sma200_off_zroz Sharpe 0.752) is robust to perturbations in the on/period/signal axes. Anti-curve-fit pre-registered: T1d-best Sharpe must exceed T1c-best + 0.05 = 0.802 to claim a new T1 winner; otherwise T1c stands.
 **Primary citation:** [leverage_for_the_long_run, p.13, p.17 Table 8]; spec §2.2 + §3.4
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:12:28.224731+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:16:02.824358+00:00
 **Configs tested:** 360
 
 ## TL;DR

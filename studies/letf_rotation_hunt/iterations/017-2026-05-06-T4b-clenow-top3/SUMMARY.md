@@ -3,8 +3,8 @@
 **Tier:** T4b
 **Hypothesis:** Same Clenow ranking as T4a but top-3 (vs top-2). Tests if more diversification across pool reduces Sharpe more than the gain in stability.
 **Primary citation:** [stocks_on_the_move, p.98-99]; spec §2.5 T4b
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:11:18.441242+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:14:11.033441+00:00
 **Configs tested:** 1
 
 ## TL;DR

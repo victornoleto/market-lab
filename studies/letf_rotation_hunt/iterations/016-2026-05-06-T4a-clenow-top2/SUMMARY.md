@@ -3,8 +3,8 @@
 **Tier:** T4a
 **Hypothesis:** Cross-sectional Clenow slope×R² 90d ranking, top-2 of {UPRO, QLD, UGL, TMF}, master gate SPY>SMA200, OFF=ZROZ. Tests if dynamic ranking among 4 LETFs beats single-asset T3d K=2 (Sharpe 0.853).
 **Primary citation:** [stocks_on_the_move, p.98-99]; spec §2.5 T4a
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:11:08.269046+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:14:01.372907+00:00
 **Configs tested:** 1
 
 ## TL;DR

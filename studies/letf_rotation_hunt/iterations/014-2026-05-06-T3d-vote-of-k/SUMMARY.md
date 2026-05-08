@@ -3,8 +3,8 @@
 **Tier:** T3d
 **Hypothesis:** Vote-of-K (K=2,3,4) over 4 signals: SMA200, SMA50, vol_21d<40%, AR(1)_30d>0. K=2 lenient, K=3 medium, K=4 strict (all-must-agree). Anti-whipsaw via composite consensus.
 **Primary citation:** spec §2.4 T3d composite
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:10:58.318072+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:15:17.831141+00:00
 **Configs tested:** 3
 
 ## TL;DR

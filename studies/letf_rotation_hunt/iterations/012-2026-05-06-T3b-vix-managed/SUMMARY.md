@@ -3,8 +3,8 @@
 **Tier:** T3b
 **Hypothesis:** VIX-managed continuous weight via VXX (252d/21d ratio, clipped 0-1). Tests whether market-implied vol scaling outperforms simple SMA gating. Note: VXX inception 2009 → pre-2009 NaN excluded.
 **Primary citation:** [paper.bozovic_2024_vix_managed]
-**Engine SHA:** `ad8bab2`
-**Datetime UTC:** 2026-05-06T18:10:53.229506+00:00
+**Engine SHA:** `255e5d8`
+**Datetime UTC:** 2026-05-08T14:13:43.938072+00:00
 **Configs tested:** 1
 
 ## TL;DR
