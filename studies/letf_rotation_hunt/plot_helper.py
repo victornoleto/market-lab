@@ -21,7 +21,13 @@ import pandas as pd
 
 SPY_STYLE = {"color": "gray", "linestyle": "--", "linewidth": 1.5, "label": "SPY 1× b&h"}
 GAYED_STYLE = {"color": "black", "linestyle": "--", "linewidth": 1.5, "label": "Gayed canon"}
-CONFIG_PALETTE = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f"]
+CONFIG_PALETTE = [
+    "#0066ff",  # rank #1: blue
+    "#ff8c00",  # rank #2: orange
+    "#16a34a",  # rank #3: green
+    "#ff1493",  # rank #4: pink
+    "#d62728",  # rank #5: red
+]
 
 
 def plot_tier_relative_to_spy(
@@ -105,8 +111,8 @@ def plot_tier_relative_to_spy(
         ratio = ratios[label]
         if label in top_set:
             continue
-        ax.plot(ratio.index, ratio.values, color="#888888",
-                linewidth=0.8, alpha=0.25, zorder=1)
+        ax.plot(ratio.index, ratio.values, color="#cfcfcf",
+                linewidth=0.8, alpha=0.35, zorder=1)
 
     # Plot top configs bold + colored on top
     for label in ranked:
@@ -126,6 +132,100 @@ def plot_tier_relative_to_spy(
     ax.set_ylabel("Ratio strategy_eq / SPY_eq (renormalised)")
     ax.set_xlabel("Date")
     ax.set_title(title or "All configs ratio to SPY (top-N bold; rest faded)")
+    ax.grid(True, which="both", linestyle="-", linewidth=0.3, alpha=0.4)
+    ax.legend(loc="upper left", fontsize=8, framealpha=0.85)
+    plt.tight_layout()
+    plt.savefig(out_path, dpi=80, bbox_inches="tight")
+    plt.close(fig)
+
+
+def plot_tier_equity_overlay(
+    equity_curves: dict[str, pd.Series],
+    spy_equity: pd.Series,
+    out_path: Path,
+    title: str = "",
+    top_n_bold: int = 5,
+    rank_by: dict[str, float] | None = None,
+) -> None:
+    """All-configs-in-tier equity overlay, normalized to first common date.
+
+    Top ``top_n_bold`` configs are colored and bold; remaining configs are very
+    light gray. SPY benchmark is plotted as a black line so it remains visually
+    distinct from the background strategy cloud.
+    """
+    if not equity_curves:
+        fig, ax = plt.subplots(figsize=(11, 7))
+        ax.text(0.5, 0.5, "No configs to plot", ha="center", va="center")
+        plt.savefig(out_path, dpi=80, bbox_inches="tight")
+        plt.close(fig)
+        return
+
+    spy = spy_equity.dropna()
+    if len(spy) < 2:
+        return
+
+    normalized: dict[str, pd.Series] = {}
+    for label, eq in equity_curves.items():
+        eq_clean = eq.dropna()
+        common = eq_clean.index.intersection(spy.index)
+        if len(common) < 2:
+            continue
+        eq_aligned = eq_clean.loc[common]
+        normalized[label] = eq_aligned / float(eq_aligned.iloc[0])
+
+    if not normalized:
+        return
+
+    if rank_by is not None:
+        ranked = sorted(normalized.keys(), key=lambda n: -rank_by.get(n, float("-inf")))
+    else:
+        ranked = sorted(normalized.keys(), key=lambda n: -float(normalized[n].iloc[-1]))
+    top_set = set(ranked[:top_n_bold])
+
+    fig, ax = plt.subplots(figsize=(11, 7))
+
+    common_start = max(series.index[0] for series in normalized.values())
+    spy_plot = spy.loc[spy.index >= common_start]
+    if len(spy_plot) >= 2:
+        spy_norm = spy_plot / float(spy_plot.iloc[0])
+        ax.plot(
+            spy_norm.index,
+            spy_norm.values,
+            color="black",
+            linewidth=1.8,
+            alpha=0.95,
+            label="SPY 1× b&h",
+            zorder=3,
+        )
+
+    for label in ranked:
+        if label in top_set:
+            continue
+        eq = normalized[label]
+        ax.plot(eq.index, eq.values, color="#cfcfcf", linewidth=0.8, alpha=0.35, zorder=1)
+
+    palette_idx = 0
+    for label in ranked:
+        if label not in top_set:
+            continue
+        eq = normalized[label]
+        color = CONFIG_PALETTE[palette_idx % len(CONFIG_PALETTE)]
+        palette_idx += 1
+        terminal = float(eq.iloc[-1])
+        ax.plot(
+            eq.index,
+            eq.values,
+            color=color,
+            linewidth=2.0,
+            alpha=0.95,
+            zorder=2,
+            label=f"{label} ({terminal:.1f}×)",
+        )
+
+    ax.set_yscale("log")
+    ax.set_ylabel("Equity growth (normalized to 1.0, log scale)")
+    ax.set_xlabel("Date")
+    ax.set_title(title or "All configs equity growth (top-N bold; rest faded)")
     ax.grid(True, which="both", linestyle="-", linewidth=0.3, alpha=0.4)
     ax.legend(loc="upper left", fontsize=8, framealpha=0.85)
     plt.tight_layout()

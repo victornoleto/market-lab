@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Generate per-tier "all-configs relative to SPY" overlay plots.
+"""Generate per-tier all-configs equity and relative-to-SPY overlay plots.
 
 For each tier (T1, T2, T3, T4, T5), collects all configs that appeared in
 that tier's iters, recomputes their equity curves, and produces a single
-plot showing each as a renormalised ratio to SPY. Top-5 configs (by lh_56y
-Sharpe) are colored bold; rest are faded.
+plots: normalized equity growth and renormalised ratio to SPY. Top-5 configs
+(by lh_56y Sharpe) are colored bold; rest are faded.
 
 Output:
+    reports/tier_1_plots/tier1_all_configs_equity.png
     reports/tier_1_plots/tier1_all_configs_relative_to_spy.png
+    reports/tier_2_plots/tier2_all_configs_equity.png
     reports/tier_2_plots/tier2_all_configs_relative_to_spy.png
     ...
     reports/tier_5_plots/tier5_all_configs_relative_to_spy.png
@@ -25,7 +27,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from studies.letf_rotation_hunt.data_loader import load_ffr_daily, load_testfolio_series
-from studies.letf_rotation_hunt.plot_helper import plot_tier_relative_to_spy
+from studies.letf_rotation_hunt.plot_helper import plot_tier_equity_overlay, plot_tier_relative_to_spy
 from studies.letf_rotation_hunt.run_iter_t1 import _run_single_config
 from studies.letf_rotation_hunt.run_iter_t2 import _run_single_basket_config
 from studies.letf_rotation_hunt.run_iter_t3 import _run_single_composite_config
@@ -43,22 +45,22 @@ DISPATCH_BY_TIER = {
     "T5": _run_single_voltarget_config,
 }
 
-# Output filename per tier prefix
+# Output filenames per tier prefix
 TIER_OUT_DIRS = {
-    "T1": ("tier_1_plots", "tier1_all_configs_relative_to_spy.png"),
-    "T2": ("tier_2_plots", "tier2_all_configs_relative_to_spy.png"),
-    "T3": ("tier_3_plots", "tier3_all_configs_relative_to_spy.png"),
-    "T4": ("tier_4_plots", "tier4_all_configs_relative_to_spy.png"),
-    "T5": ("tier_5_plots", "tier5_all_configs_relative_to_spy.png"),
+    "T1": ("tier_1_plots", "tier1_all_configs_equity.png", "tier1_all_configs_relative_to_spy.png"),
+    "T2": ("tier_2_plots", "tier2_all_configs_equity.png", "tier2_all_configs_relative_to_spy.png"),
+    "T3": ("tier_3_plots", "tier3_all_configs_equity.png", "tier3_all_configs_relative_to_spy.png"),
+    "T4": ("tier_4_plots", "tier4_all_configs_equity.png", "tier4_all_configs_relative_to_spy.png"),
+    "T5": ("tier_5_plots", "tier5_all_configs_equity.png", "tier5_all_configs_relative_to_spy.png"),
 }
 
 # Friendly tier title
 TIER_TITLES = {
-    "T1": "T1 — Single-LETF Gayed rotation (all configs ratio to SPY)",
-    "T2": "T2 — HFEA basket family (all configs ratio to SPY)",
-    "T3": "T3 — Composite signal family + extended grids (all configs ratio to SPY)",
-    "T4": "T4 — Cross-sectional rotation (all configs ratio to SPY)",
-    "T5": "T5 — Carver vol-target (all configs ratio to SPY)",
+    "T1": "T1 — Single-LETF Gayed rotation",
+    "T2": "T2 — HFEA basket family",
+    "T3": "T3 — Composite signal family + extended grids",
+    "T4": "T4 — Cross-sectional rotation",
+    "T5": "T5 — Carver vol-target",
 }
 
 
@@ -136,19 +138,29 @@ def main() -> int:
             rank_by[c["name"]] = c["sharpe_lh56y"]
         print(f"  Recomputed {len(equities)} equities")
 
-        out_subdir, out_name = TIER_OUT_DIRS[tier_prefix]
+        out_subdir, equity_name, relative_name = TIER_OUT_DIRS[tier_prefix]
         out_dir = REPORTS_DIR / out_subdir
         out_dir.mkdir(parents=True, exist_ok=True)
-        out_path = out_dir / out_name
-        plot_tier_relative_to_spy(
+        equity_path = out_dir / equity_name
+        relative_path = out_dir / relative_name
+        plot_tier_equity_overlay(
             equity_curves=equities,
             spy_equity=spy,
-            out_path=out_path,
-            title=TIER_TITLES[tier_prefix],
+            out_path=equity_path,
+            title=f"{TIER_TITLES[tier_prefix]} (all configs equity growth)",
             top_n_bold=5,
             rank_by=rank_by,
         )
-        print(f"  Wrote: {out_path} ({out_path.stat().st_size} bytes)")
+        plot_tier_relative_to_spy(
+            equity_curves=equities,
+            spy_equity=spy,
+            out_path=relative_path,
+            title=f"{TIER_TITLES[tier_prefix]} (all configs ratio to SPY)",
+            top_n_bold=5,
+            rank_by=rank_by,
+        )
+        print(f"  Wrote: {equity_path} ({equity_path.stat().st_size} bytes)")
+        print(f"  Wrote: {relative_path} ({relative_path.stat().st_size} bytes)")
 
     print("\n✓ Per-tier overlay plots complete.")
     return 0
