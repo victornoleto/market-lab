@@ -34,7 +34,7 @@ def load_constant_maturity_yield(tenor: str) -> pd.Series:
     cache_path = _CACHE_DIR / f"cmt_{tenor}.parquet"
     if cache_path.exists():
         return pd.read_parquet(cache_path).iloc[:, 0]
-    series = _yfinance_fetch_yield(ticker)
+    series = _yfinance_fetch_yield(ticker).rename(tenor)
     _CACHE_DIR.mkdir(parents=True, exist_ok=True)
     series.to_frame(name=tenor).to_parquet(cache_path)
     return series
