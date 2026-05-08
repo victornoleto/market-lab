@@ -52,9 +52,8 @@ def compute_carry_forecast(
         return pd.Series(0.0, index=asset_prices.index, name=f"carry_{asset}")
 
     yield_series = _load_yield_for_asset(asset).reindex(asset_prices.index).ffill()
-    # ffr_daily is expected as the annualized rate (callers pre-annualize from daily returns
-    # via _ffr_daily_to_annual before passing in; tests supply annual directly).
-    ffr_annual = ffr_daily.reindex(asset_prices.index).ffill()
+    # ffr_daily must be daily pct returns (e.g., from load_ffr_daily()); annualized here.
+    ffr_annual = _ffr_daily_to_annual(ffr_daily).reindex(asset_prices.index).ffill()
 
     carry_raw = yield_series - cfg.leverage * ffr_annual
     # min_periods=126 means ~6 months of history before emitting a forecast;

@@ -17,23 +17,25 @@ def _const_series(value: float, n: int = 500) -> pd.Series:
 
 
 def test_equity_carry_positive_when_div_yield_exceeds_financing(monkeypatch):
-    # SPY div yield 2%, FFR 0.5%, UPRO leverage 3 → carry_raw = 0.02 - 3*0.005 = +0.005
+    # SPY div yield 2% (annual), FFR 0.5% annual → 0.005/252 daily.
+    # UPRO leverage 3 → carry_raw = 0.02 - 3*0.005 = +0.005 → positive forecast.
     monkeypatch.setattr(
         sc, "_load_yield_for_asset",
         lambda asset: _const_series(0.02),
     )
-    ffr = _const_series(0.005)
+    ffr = _const_series(0.005 / 252.0)
     prices = _const_series(100.0)
     f = sc.compute_carry_forecast("UPRO", prices, ffr)
     assert (f.dropna() > 0).all(), "expected positive forecast when div yield > 3*FFR"
 
 
 def test_equity_carry_negative_when_financing_exceeds_div_yield(monkeypatch):
+    # Div yield 1% annual, FFR 5% annual = 0.05/252 daily, leverage 3 → carry_raw = 0.01 - 0.15 < 0.
     monkeypatch.setattr(
         sc, "_load_yield_for_asset",
         lambda asset: _const_series(0.01),
     )
-    ffr = _const_series(0.05)  # high rate regime
+    ffr = _const_series(0.05 / 252.0)  # high rate regime
     prices = _const_series(100.0)
     f = sc.compute_carry_forecast("UPRO", prices, ffr)
     assert (f.dropna() < 0).all(), "expected negative forecast when 3*FFR > div yield"
