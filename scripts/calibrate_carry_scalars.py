@@ -25,7 +25,6 @@ def main() -> None:
     for cls, assets in CALIBRATION_ASSETS_BY_CLASS.items():
         sds: list[float] = []
         for a in assets:
-            tf_ticker, _ = sc._ASSET_CARRY_MAP[a].yield_kind, None  # noqa
             # Build raw normalized signal with scalar=1, fdm=1, then measure SD
             prices = load_testfolio_series("SPYSIM" if a == "UPRO" else
                                             "QLDSIM" if a in ("QLD", "TQQQ") else

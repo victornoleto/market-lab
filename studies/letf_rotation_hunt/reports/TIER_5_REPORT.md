@@ -27,7 +27,7 @@
 > - **T5c grid** (iter_024): 7 configs (IDM × pool variants)
 > - **T5d HRP/ERC** (iter_025): 4 configs (HRP × σ_target=0.25/0.30, ERC × σ_target=0.25/0.30)
 >
-> See §18 of `STUDY_FINAL_REPORT.md` for full disclosure.
+> See §17 of `STUDY_FINAL_REPORT.md` for full disclosure.
 >
 > **Verdict update:** T5-expansion-best is `025-2026-05-08-T5d-hrp-erc/erc_multi4_sigma030` with Sortino
 > = 1.1399 (Sharpe = 0.7993) on lh_56y. **KILL T5-expansion: FIRES**

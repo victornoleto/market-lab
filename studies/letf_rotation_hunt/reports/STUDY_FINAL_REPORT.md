@@ -934,6 +934,17 @@ The DSR recompute (`scripts/dsr_recompute_cumulative.py`) was applied across all
 configs that the higher cumulative N now correctly identifies as
 statistically-underpowered.
 
+### 17.3a Known deviation: pre-inception yield data
+
+Spec §3.2 called for a fallback to historical mean (with `logger.warning`)
+when yield data is requested for dates before yfinance/FRED inception
+(SPY pre-1993, QQQ pre-1999). The implementation uses `.reindex().ffill()`
+instead, which forward-fills from the first available date. Functionally,
+the carry forecast's `min_periods=126` warmup ensures no forecast is
+emitted until ≥6 months of yield data are available, so pre-inception
+dates produce no signal regardless. The carry results are unaffected by
+this deviation, but the documented behavior differs from the spec.
+
 ### 17.4 T5-expansion verdict
 
 **T5-expansion-best:** `025-2026-05-08-T5d-hrp-erc/erc_multi4_sigma030` (Sortino lh_56y = 1.1399,
