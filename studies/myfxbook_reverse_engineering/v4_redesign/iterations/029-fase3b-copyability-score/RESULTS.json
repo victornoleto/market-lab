@@ -1,0 +1,45 @@
+{
+  "task_id": "029-fase3b-copyability-score",
+  "status": "DONE",
+  "started_utc": "2026-05-04T12:40:00Z",
+  "completed_utc": "2026-05-04T12:48:19Z",
+  "files_created": [
+    "studies/myfxbook_reverse_engineering/scripts/copyability_scoreboard.py",
+    "studies/myfxbook_reverse_engineering/_diagnostics/COPYABILITY_SCOREBOARD.json",
+    "studies/myfxbook_reverse_engineering/_diagnostics/COPYABILITY_SCOREBOARD.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/029-fase3b-copyability-score/PRE_REG.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/029-fase3b-copyability-score/run.log",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/029-fase3b-copyability-score/RESULTS.json",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/029-fase3b-copyability-score/SUMMARY.md",
+    "jornada/2026-05-04-0948-myfxbook-v4-task-029-copyability-score.md"
+  ],
+  "files_modified": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/PROGRESS.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/next_prompt.md",
+    "jornada/README.md"
+  ],
+  "tests_added": [],
+  "tests_passing": 0,
+  "tests_total": 0,
+  "metrics": {
+    "n_systems": 21,
+    "n_pass": 4,
+    "n_stop": 17,
+    "verdict": "TOO_MANY_PASS_REQUIRES_REPORT_REVIEW",
+    "top_pass_system_ids": [
+      "8577442",
+      "1152318",
+      "10067081"
+    ],
+    "failed_gate_counts": {
+      "cost_drag_ratio_gte_50pct": 3,
+      "monthly_stability_low": 5,
+      "net_expectancy_non_positive_after_2pip_cost": 4,
+      "operational_gap_gt_90d": 2,
+      "single_asset_pnl_share_gt_80pct": 13,
+      "trade_frequency_outside_5_300": 1
+    },
+    "verification": "uv run python inline JSON contract check passed"
+  },
+  "notes": "Offline scorer applied FILTER_COPY_PLAN gates and weights unchanged. Four systems passed, above the 1-3 diagnostic shortlist expectation, so next step is report/human review only; no monitor, paper/live, AutoTrade, or threshold relaxation."
+}

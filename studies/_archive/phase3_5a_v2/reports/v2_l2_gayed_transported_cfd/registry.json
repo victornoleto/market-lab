@@ -1,0 +1,878 @@
+{
+  "schema_version": 1,
+  "phase": "phase3_5a_v2",
+  "lead_id": "V2-L2",
+  "lead_slug": "v2_l2_gayed_transported_cfd",
+  "lead_title": "Gayed LETF rotation transported to CFD (3 signals x 3 leverages x 3 off-regime)",
+  "citations_seed": [
+    "leverage_for_the_long_run, p.7, p.11, p.13, p.14, p.16, p.17, p.21",
+    "leverage_space, Vince \u2014 PoR vs leverage cap",
+    "math_money_mgmt, Vince \u2014 Kelly f/2 cross-check",
+    "systematic_trading, ch.8 \u2014 off-regime asset selection (risk-parity)"
+  ],
+  "started_at": "2026-04-18T17:13:16+00:00",
+  "last_updated_at": "2026-04-18T19:01:40+00:00",
+  "configs": [
+    {
+      "name": "gayed_sma200_L2_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 2,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L2_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 2,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L2_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 2,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L3_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 3,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L3_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 3,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L3_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 3,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L5_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 5,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L5_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 5,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_sma200_L5_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "sma200",
+      "regime_lookback": 200,
+      "leverage": 5,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L2_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 2,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L2_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 2,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L2_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 2,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L3_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 3,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L3_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 3,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L3_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 3,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L5_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 5,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L5_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 5,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_ema100_L5_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "ema100",
+      "regime_lookback": 100,
+      "leverage": 5,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L2_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 2,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L2_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 2,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L2_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 2,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L3_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 3,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L3_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 3,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L3_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 3,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L5_off_cash",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 5,
+      "off_regime_asset": "cash",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L5_off_tlt",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 5,
+      "off_regime_asset": "tlt",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    },
+    {
+      "name": "gayed_lrs_L5_off_gld",
+      "type": "plano_a_leveraged_rotation",
+      "regime_signal": "lrs",
+      "regime_lookback": "composite_lrs",
+      "leverage": 5,
+      "off_regime_asset": "gld",
+      "risk_on_assets": [
+        "SPY",
+        "QQQ"
+      ],
+      "rebalance_cadence": "daily_close",
+      "direction": "long_only",
+      "broker_model": "pepperstone_razor_cfd"
+    }
+  ],
+  "tickers_pending": [],
+  "tickers_done": [
+    {
+      "ticker": "gayed_sma200_L2_off_cash",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 16,
+      "n_configs_tested": 1,
+      "best_config": "gayed_sma200_L2_off_cash",
+      "best_sharpe_oos": 1.5453039408637923,
+      "best_cagr": 0.4812919733306287,
+      "best_maxdd": -0.2187964813697122,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L2_off_cash.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L2_off_cash.json"
+    },
+    {
+      "ticker": "gayed_sma200_L2_off_tlt",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 17,
+      "n_configs_tested": 1,
+      "best_config": "gayed_sma200_L2_off_tlt",
+      "best_sharpe_oos": 1.4669090503154805,
+      "best_cagr": 0.4796829324714258,
+      "best_maxdd": -0.36554737188782116,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L2_off_tlt.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L2_off_tlt.json"
+    },
+    {
+      "ticker": "gayed_sma200_L2_off_gld",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 18,
+      "n_configs_tested": 1,
+      "best_config": "gayed_sma200_L2_off_gld",
+      "best_sharpe_oos": 1.6450501757243807,
+      "best_cagr": 0.5444501465329152,
+      "best_maxdd": -0.21906767341979283,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L2_off_gld.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L2_off_gld.json"
+    },
+    {
+      "ticker": "gayed_sma200_L3_off_cash",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 19,
+      "n_configs_tested": 1,
+      "best_config": "gayed_sma200_L3_off_cash",
+      "best_sharpe_oos": 1.5560412561539358,
+      "best_cagr": 0.757897382093502,
+      "best_maxdd": -0.3163130387887634,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L3_off_cash.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L3_off_cash.json"
+    },
+    {
+      "ticker": "gayed_sma200_L3_off_tlt",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 20,
+      "n_configs_tested": 1,
+      "best_config": "gayed_sma200_L3_off_tlt",
+      "best_sharpe_oos": 1.5256245020433867,
+      "best_cagr": 0.756734628424667,
+      "best_maxdd": -0.3880287675302253,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L3_off_tlt.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L3_off_tlt.json"
+    },
+    {
+      "ticker": "gayed_sma200_L3_off_gld",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 21,
+      "n_configs_tested": 1,
+      "best_config": "gayed_sma200_L3_off_gld",
+      "best_sharpe_oos": 1.6372556599234853,
+      "best_cagr": 0.8330907756924133,
+      "best_maxdd": -0.31631303878876305,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L3_off_gld.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L3_off_gld.json"
+    },
+    {
+      "ticker": "gayed_sma200_L5_off_cash",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 22,
+      "n_configs_tested": 1,
+      "best_config": "gayed_sma200_L5_off_cash",
+      "best_sharpe_oos": 1.5646168653514398,
+      "best_cagr": 1.329827606392406,
+      "best_maxdd": -0.4876283851025556,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L5_off_cash.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L5_off_cash.json"
+    },
+    {
+      "ticker": "gayed_sma200_L5_off_tlt",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 23,
+      "n_configs_tested": 1,
+      "best_config": "gayed_sma200_L5_off_tlt",
+      "best_sharpe_oos": 1.5582334334641648,
+      "best_cagr": 1.3302821060008876,
+      "best_maxdd": -0.4876283851025556,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L5_off_tlt.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L5_off_tlt.json"
+    },
+    {
+      "ticker": "gayed_sma200_L5_off_gld",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 24,
+      "n_configs_tested": 1,
+      "best_config": "gayed_sma200_L5_off_gld",
+      "best_sharpe_oos": 1.620552308449025,
+      "best_cagr": 1.4301440048819467,
+      "best_maxdd": -0.48762838510255546,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L5_off_gld.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_sma200_L5_off_gld.json"
+    },
+    {
+      "ticker": "gayed_ema100_L2_off_cash",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 25,
+      "n_configs_tested": 1,
+      "best_config": "gayed_ema100_L2_off_cash",
+      "best_sharpe_oos": 2.1710889174108883,
+      "best_cagr": 0.6896143791280616,
+      "best_maxdd": -0.20129196829830087,
+      "any_pass_5gate": true,
+      "median_hold_days": 6.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L2_off_cash.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L2_off_cash.json"
+    },
+    {
+      "ticker": "gayed_ema100_L2_off_tlt",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 26,
+      "n_configs_tested": 1,
+      "best_config": "gayed_ema100_L2_off_tlt",
+      "best_sharpe_oos": 2.0167180666362476,
+      "best_cagr": 0.6892623700140377,
+      "best_maxdd": -0.2768545440536796,
+      "any_pass_5gate": false,
+      "median_hold_days": 6.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L2_off_tlt.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L2_off_tlt.json"
+    },
+    {
+      "ticker": "gayed_ema100_L2_off_gld",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 27,
+      "n_configs_tested": 1,
+      "best_config": "gayed_ema100_L2_off_gld",
+      "best_sharpe_oos": 2.2841543236131474,
+      "best_cagr": 0.7914497780129464,
+      "best_maxdd": -0.21021160547888407,
+      "any_pass_5gate": true,
+      "median_hold_days": 6.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L2_off_gld.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L2_off_gld.json"
+    },
+    {
+      "ticker": "gayed_ema100_L3_off_cash",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 28,
+      "n_configs_tested": 1,
+      "best_config": "gayed_ema100_L3_off_cash",
+      "best_sharpe_oos": 2.192334200772099,
+      "best_cagr": 1.159604927813974,
+      "best_maxdd": -0.29240824786659914,
+      "any_pass_5gate": false,
+      "median_hold_days": 6.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L3_off_cash.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L3_off_cash.json"
+    },
+    {
+      "ticker": "gayed_ema100_L3_off_tlt",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 29,
+      "n_configs_tested": 1,
+      "best_config": "gayed_ema100_L3_off_tlt",
+      "best_sharpe_oos": 2.1239694763356782,
+      "best_cagr": 1.159364674604447,
+      "best_maxdd": -0.29191022136054,
+      "any_pass_5gate": false,
+      "median_hold_days": 6.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L3_off_tlt.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L3_off_tlt.json"
+    },
+    {
+      "ticker": "gayed_ema100_L3_off_gld",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 30,
+      "n_configs_tested": 1,
+      "best_config": "gayed_ema100_L3_off_gld",
+      "best_sharpe_oos": 2.293509656007833,
+      "best_cagr": 1.2893166978166004,
+      "best_maxdd": -0.30044299693461485,
+      "any_pass_5gate": false,
+      "median_hold_days": 6.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L3_off_gld.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L3_off_gld.json"
+    },
+    {
+      "ticker": "gayed_ema100_L5_off_cash",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 31,
+      "n_configs_tested": 1,
+      "best_config": "gayed_ema100_L5_off_cash",
+      "best_sharpe_oos": 2.2092827948362577,
+      "best_cagr": 2.3523365939514114,
+      "best_maxdd": -0.45564493630485825,
+      "any_pass_5gate": false,
+      "median_hold_days": 6.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L5_off_cash.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L5_off_cash.json"
+    },
+    {
+      "ticker": "gayed_ema100_L5_off_tlt",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 32,
+      "n_configs_tested": 1,
+      "best_config": "gayed_ema100_L5_off_tlt",
+      "best_sharpe_oos": 2.1879959266202413,
+      "best_cagr": 2.3526579497473987,
+      "best_maxdd": -0.455248490095842,
+      "any_pass_5gate": false,
+      "median_hold_days": 6.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L5_off_tlt.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L5_off_tlt.json"
+    },
+    {
+      "ticker": "gayed_ema100_L5_off_gld",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 33,
+      "n_configs_tested": 1,
+      "best_config": "gayed_ema100_L5_off_gld",
+      "best_sharpe_oos": 2.2830687307315523,
+      "best_cagr": 2.5523055229072327,
+      "best_maxdd": -0.4620408726047529,
+      "any_pass_5gate": false,
+      "median_hold_days": 6.0,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L5_off_gld.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L5_off_gld.json"
+    },
+    {
+      "ticker": "gayed_lrs_L2_off_cash",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 34,
+      "n_configs_tested": 1,
+      "best_config": "gayed_lrs_L2_off_cash",
+      "best_sharpe_oos": 2.0722180655469207,
+      "best_cagr": 0.6498926295494063,
+      "best_maxdd": -0.21879648136971253,
+      "any_pass_5gate": true,
+      "median_hold_days": 5.5,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L2_off_cash.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L2_off_cash.json"
+    },
+    {
+      "ticker": "gayed_lrs_L2_off_tlt",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 35,
+      "n_configs_tested": 1,
+      "best_config": "gayed_lrs_L2_off_tlt",
+      "best_sharpe_oos": 1.9106694693793638,
+      "best_cagr": 0.6411113525582108,
+      "best_maxdd": -0.26152123925491955,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.5,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L2_off_tlt.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L2_off_tlt.json"
+    },
+    {
+      "ticker": "gayed_lrs_L2_off_gld",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 36,
+      "n_configs_tested": 1,
+      "best_config": "gayed_lrs_L2_off_gld",
+      "best_sharpe_oos": 2.1777458831116068,
+      "best_cagr": 0.7415462064501839,
+      "best_maxdd": -0.2187964813697123,
+      "any_pass_5gate": true,
+      "median_hold_days": 5.5,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L2_off_gld.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L2_off_gld.json"
+    },
+    {
+      "ticker": "gayed_lrs_L3_off_cash",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 37,
+      "n_configs_tested": 1,
+      "best_config": "gayed_lrs_L3_off_cash",
+      "best_sharpe_oos": 2.0922373681849957,
+      "best_cagr": 1.0824732094612592,
+      "best_maxdd": -0.3163130387887634,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.5,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L3_off_cash.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L3_off_cash.json"
+    },
+    {
+      "ticker": "gayed_lrs_L3_off_tlt",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 38,
+      "n_configs_tested": 1,
+      "best_config": "gayed_lrs_L3_off_tlt",
+      "best_sharpe_oos": 2.016924146110364,
+      "best_cagr": 1.0716834782818645,
+      "best_maxdd": -0.3163130387887634,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.5,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L3_off_tlt.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L3_off_tlt.json"
+    },
+    {
+      "ticker": "gayed_lrs_L3_off_gld",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 39,
+      "n_configs_tested": 1,
+      "best_config": "gayed_lrs_L3_off_gld",
+      "best_sharpe_oos": 2.1867916870878688,
+      "best_cagr": 1.197853985744458,
+      "best_maxdd": -0.3163130387887634,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.5,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L3_off_gld.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L3_off_gld.json"
+    },
+    {
+      "ticker": "gayed_lrs_L5_off_cash",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 40,
+      "n_configs_tested": 1,
+      "best_config": "gayed_lrs_L5_off_cash",
+      "best_sharpe_oos": 2.108209597837165,
+      "best_cagr": 2.1501551557065186,
+      "best_maxdd": -0.48762838510255535,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.5,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L5_off_cash.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L5_off_cash.json"
+    },
+    {
+      "ticker": "gayed_lrs_L5_off_tlt",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 41,
+      "n_configs_tested": 1,
+      "best_config": "gayed_lrs_L5_off_tlt",
+      "best_sharpe_oos": 2.08156830328985,
+      "best_cagr": 2.1347575373579444,
+      "best_maxdd": -0.48762838510255546,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.5,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L5_off_tlt.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L5_off_tlt.json"
+    },
+    {
+      "ticker": "gayed_lrs_L5_off_gld",
+      "frequency": "daily",
+      "window_start": "2001-05-14",
+      "window_end": "2026-04-14",
+      "iter": 42,
+      "n_configs_tested": 1,
+      "best_config": "gayed_lrs_L5_off_gld",
+      "best_sharpe_oos": 2.1771858752097444,
+      "best_cagr": 2.323807519224168,
+      "best_maxdd": -0.48762838510255535,
+      "any_pass_5gate": false,
+      "median_hold_days": 5.5,
+      "result_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L5_off_gld.md",
+      "result_file_json": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_lrs_L5_off_gld.json"
+    }
+  ],
+  "tickers_errored": [],
+  "status": "done",
+  "aggregation_iter": 43,
+  "aggregate_file_md": "reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/AGGREGATE.md",
+  "aggregate_jornada": "jornada/2026-04-19/01-phase3.5a-v2-L2-gayed-transported-PASS.md",
+  "work_unit_kind": "config",
+  "universe": [
+    "SPY",
+    "QQQ"
+  ],
+  "universe_source": "data/universe_plano_a_v2.json",
+  "universe_size": 2,
+  "cost_model": {
+    "broker": "pepperstone_razor",
+    "spread_half_bps": 2,
+    "commission_per_side_usd": 3.5,
+    "slippage_bps_round": 2,
+    "swap_daily_pct_long": -0.005,
+    "swap_daily_pct_short": -0.008,
+    "citation": "docs/investment-mandate.md \u00a73, specs/phase_3_5a_v2.md \u00a73"
+  }
+}

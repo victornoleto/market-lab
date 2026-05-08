@@ -1,0 +1,30 @@
+{
+  "system_id": 10734338,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-bitcoin-icmarkets/10734338",
+  "name": "Happy Bitcoin - ICMarkets Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+1,159.62%",
+    "absolute_gain": "+1,159.60%",
+    "daily": "0.31%",
+    "monthly": "9.59%",
+    "drawdown": "37.08%",
+    "balance": "$12,596.03",
+    "equity": "(100.00%) $12,596.03",
+    "highest": "(May 01) $12,596.03",
+    "profit": "$11,596.03",
+    "interest": "$0.00",
+    "deposits": "$1,000.00",
+    "withdrawals": "$0.00",
+    "updated": "2 hours ago",
+    "tracking": "5"
+  },
+  "account": {
+    "raw": "Demo (USD), IC Markets , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Demo",
+    "currency": "USD",
+    "broker": "IC Markets",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/ic-markets/175981,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

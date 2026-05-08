@@ -1,0 +1,30 @@
+{
+  "system_id": 9526428,
+  "url": "https://www.myfxbook.com/members/leapfx/money-tree/9526428",
+  "name": "The Money Tree Forex Trading System by Forex Trader leapfx",
+  "stats": {
+    "gain": "+25,305.14%",
+    "absolute_gain": "+123.06%",
+    "daily": "0.36%",
+    "monthly": "11.41%",
+    "drawdown": "46.52%",
+    "balance": "$921,824.92",
+    "equity": "(100.00%) $921,824.92",
+    "highest": "(Apr 19) $921,824.92",
+    "profit": "$633,232.07",
+    "interest": "-$39,716.12",
+    "deposits": "$501,000.00",
+    "withdrawals": "$225,995.00",
+    "updated": "Apr 23 at 02:32",
+    "tracking": "1493"
+  },
+  "account": {
+    "raw": "Real (USD), Blaze Markets , Technical , Automated , 1:200 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Blaze Markets",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/blaze-markets/2497239,1",
+    "leverage": "1:200",
+    "platform": "MetaTrader 4"
+  }
+}

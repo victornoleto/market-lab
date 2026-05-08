@@ -1,0 +1,29 @@
+{
+  "system_id": "1603276",
+  "reliability": 0.6756666666666666,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 1.0,
+    "family_clarity": 0.62,
+    "timing_concentration": 0.3333333333333333,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.0,
+    "vendor_quality": 0.85,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "LONDON_OPEN_MOMENTUM",
+  "confidence": 0.62,
+  "n_trades": 594,
+  "n_pairs": 4,
+  "last_trade_date": "2017-09-07 10:46:12+00:00",
+  "account_type": "Real",
+  "name": "Happy Breakout v1.0 - (Closed AU account) Forex Trading Syst",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 921.7569894790649,
+  "band_rank": 0,
+  "dir_pred": 1.0,
+  "timing_conc": 0.3333333333333333,
+  "age_fresh": 0.0
+}

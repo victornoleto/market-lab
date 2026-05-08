@@ -1,0 +1,17 @@
+{
+  "task_id": "007-fase1-batch-run",
+  "correction_id": "survivor-contract-fase2-eligible",
+  "status": "DONE",
+  "started_utc": "2026-05-04T10:45:00Z",
+  "completed_utc": "2026-05-04T10:50:00Z",
+  "decision": "pre_screen_go_systems are audit evidence; survivors for downstream Fase 2 are fase2_eligible_survivors",
+  "n_pre_screen_go_systems": 21,
+  "n_fase2_eligible_survivors": 0,
+  "thresholds_changed_after_result": false,
+  "citations": [
+    "[evidence_based_ta, p.325-328]",
+    "[advances_fin_ml, ch.5]",
+    "[advances_fin_ml, p.273-275]",
+    "[advances_fin_ml, p.208-222]"
+  ]
+}

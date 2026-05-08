@@ -1,0 +1,30 @@
+{
+  "system_id": 8397136,
+  "url": "https://www.myfxbook.com/members/HappyForex/old-happy-algorithm-pro-v14/8397136",
+  "name": "OLD Happy Algorithm PRO v1.4 - REAL (SET2) Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+9.65%",
+    "absolute_gain": "+9.65%",
+    "daily": "0.00%",
+    "monthly": "1.57%",
+    "drawdown": "12.78%",
+    "balance": "$1,096.47",
+    "equity": "(95.80%) $1,050.37",
+    "highest": "(Apr 12) $1,163.60",
+    "profit": "$96.47",
+    "interest": "$0.00",
+    "deposits": "$1,000.00",
+    "withdrawals": "$0.00",
+    "updated": "Jun 16, 2021 at 19:07",
+    "tracking": "0"
+  },
+  "account": {
+    "raw": "Real (USD), Fort Financial Services , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Fort Financial Services",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/fort-financial-services/814372,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "system_id": "10192401",
+  "reliability": 0.7116372096867499,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 1.0,
+    "family_clarity": 0.52,
+    "timing_concentration": 0.3380952380952381,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.650181620677023,
+    "vendor_quality": 0.75,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "FACTOR_SCALPING",
+  "confidence": 0.52,
+  "n_trades": 420,
+  "n_pairs": 1,
+  "last_trade_date": "2024-08-01 18:17:03+00:00",
+  "account_type": "Real",
+  "name": "Happy Bitcoin - TMGM Forex Trading System by Forex Trader Ha",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 543.8069384098053,
+  "band_rank": 0,
+  "dir_pred": 1.0,
+  "timing_conc": 0.3380952380952381,
+  "age_fresh": 0.650181620677023
+}

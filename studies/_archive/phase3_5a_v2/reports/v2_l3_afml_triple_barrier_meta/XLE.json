@@ -1,0 +1,184 @@
+{
+  "ticker": "XLE",
+  "frequency": "daily",
+  "config_entry": {
+    "name": "afml_ema50_tb_2atr_1atr_20d_rf_meta",
+    "type": "afml_triple_barrier_meta_label",
+    "primary_model": "ema_crossover",
+    "primary_fast": 50,
+    "primary_slow_kind": "price_vs_ema50",
+    "barrier_tp_atr_mult": 2.0,
+    "barrier_sl_atr_mult": 1.0,
+    "barrier_atr_lookback": 20,
+    "barrier_time_bars": 20,
+    "meta_model": "sklearn_random_forest",
+    "meta_n_estimators": 100,
+    "meta_max_depth": 5,
+    "meta_random_state": 42,
+    "meta_features": [
+      "ret_5d",
+      "vol_20d",
+      "rsi_14d",
+      "atr_ratio_20d"
+    ],
+    "meta_label_threshold_p": 0.55,
+    "cv_scheme": "cpcv",
+    "cv_n_folds": 8,
+    "cv_n_test_splits": 2,
+    "cv_embargo_frac": 0.01,
+    "rebalance_cadence": "daily_close",
+    "direction": "long_only",
+    "broker_model": "pepperstone_razor_cfd"
+  },
+  "window": {
+    "start": "2003-08-20",
+    "end": "2026-04-14",
+    "n_bars": 5698
+  },
+  "splits": {
+    "IS": {
+      "range": [
+        "2003-08-20",
+        "2019-06-24"
+      ],
+      "n_bars": 3988,
+      "sharpe": 0.3713777997888264,
+      "cagr": 0.01854193866392162,
+      "max_drawdown": -0.10485730352188605,
+      "final_equity": 1.3374252240274085
+    },
+    "OOS": {
+      "range": [
+        "2019-06-25",
+        "2024-01-03"
+      ],
+      "n_bars": 1140,
+      "sharpe": 0.7885989293162424,
+      "cagr": 0.0690397903196267,
+      "max_drawdown": -0.091223288195879,
+      "final_equity": 1.3525793297942739
+    },
+    "FWD": {
+      "range": [
+        "2024-01-04",
+        "2026-04-14"
+      ],
+      "n_bars": 570,
+      "sharpe": 0.8734937230760457,
+      "cagr": 0.07867950105984356,
+      "max_drawdown": -0.0761953137142446,
+      "final_equity": 1.186860111358158
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 0.625,
+    "max_window_drawdown": 0.10485730352188571,
+    "pass": false,
+    "min_profitable_ratio": 0.75,
+    "max_drawdown_cap": 0.25
+  },
+  "hold_metrics": {
+    "median_hold_days": 9.0,
+    "n_events_total": 222,
+    "n_events_taken": 39,
+    "per_bin_counts": {
+      "-1": 104,
+      "1": 103,
+      "0": 15
+    }
+  },
+  "costs": {
+    "cum_transaction_cost_pct": 0.053040000000000004,
+    "cum_swap_cost_pct": 0.013849999999999944,
+    "spread_half_bps": 2.0,
+    "commission_round_trip_bps": 6.6,
+    "slippage_bps_round_trip": 3.0,
+    "swap_daily_pct_long": -5e-05
+  },
+  "cv": {
+    "n_folds": 8,
+    "n_test_splits": 2,
+    "embargo_frac": 0.01,
+    "fold_accuracies": [
+      0.48214285714285715,
+      0.44642857142857145,
+      0.5,
+      0.5892857142857143,
+      0.4642857142857143,
+      0.4727272727272727,
+      0.509090909090909,
+      0.48214285714285715,
+      0.42857142857142855,
+      0.5535714285714286,
+      0.42857142857142855,
+      0.43636363636363634,
+      0.4727272727272727,
+      0.4107142857142857,
+      0.4642857142857143,
+      0.375,
+      0.41818181818181815,
+      0.45454545454545453,
+      0.5178571428571429,
+      0.5892857142857143,
+      0.4727272727272727,
+      0.5272727272727272,
+      0.6071428571428571,
+      0.6,
+      0.45454545454545453,
+      0.6,
+      0.509090909090909,
+      0.42592592592592593
+    ]
+  },
+  "runtime_seconds": 2.31,
+  "iter": 50,
+  "produced_at": "2026-04-18T19:30:16+00:00",
+  "verdict_per_config": {
+    "checks": [
+      {
+        "name": "oos_sharpe_gt_0",
+        "pass": true,
+        "value": "0.789"
+      },
+      {
+        "name": "fwd_sharpe_gt_0",
+        "pass": true,
+        "value": "0.873"
+      },
+      {
+        "name": "wf_pass",
+        "pass": false,
+        "value": "6/8"
+      },
+      {
+        "name": "median_hold_ge_3d",
+        "pass": true,
+        "value": "9.0d"
+      },
+      {
+        "name": "oos_cagr_ge_30pct",
+        "pass": false,
+        "value": "6.9%"
+      },
+      {
+        "name": "oos_sharpe_ge_2",
+        "pass": false,
+        "value": "0.789"
+      },
+      {
+        "name": "oos_maxdd_le_25pct",
+        "pass": true,
+        "value": "-9.1%"
+      }
+    ],
+    "n_passed": 4,
+    "n_total": 7,
+    "all_pass_except_cross_config_gates": false,
+    "failed_subset_gates": [
+      "wf_pass",
+      "oos_cagr_ge_30pct",
+      "oos_sharpe_ge_2"
+    ]
+  }
+}

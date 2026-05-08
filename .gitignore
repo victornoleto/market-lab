@@ -1,0 +1,125 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.tox/
+.coverage
+htmlcov/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+.testfolio_token
+*.pem
+*.key
+*.p12
+*.pfx
+*.token
+secrets.json
+credentials.json
+
+# Local agent/editor state
+.claude/
+.worktrees/
+.vscode/
+.idea/
+*.swp
+
+# Personal/local narrative and drafts
+jornada/
+personal/
+docs/superpowers/
+docs/POST_reddit.md
+docs/self_improvement/memory.md
+
+# Books and non-redistributable reference material
+books/raw/
+books/extracted/
+books/code/
+books/summaries/.partials/
+books/summaries/.validation/
+books/summaries/.logs/
+books/summaries/.progress*
+
+# Market data, caches and generated datasets
+.cache/
+data/tiingo/prices/
+data/tiingo/meta/
+data/tiingo/daily/prices/
+data/tiingo/daily/meta/
+data/tiingo/1hour/prices/
+data/tiingo/1hour/meta/
+data/tiingo/*.tar.gz
+data/tiingo/bulk_summary_*.json
+!data/tiingo/manifest.json
+data/tiingo/**/*.bak_*
+data/tiingo_adhoc/
+data/tiingo_backup_*.tar.gz
+data/*.tar.gz
+data/testfolio/*
+!data/testfolio/README.md
+data/external/*
+!data/external/README.md
+data/phase3_7/**/*.parquet
+data/phase3_7/**/*.csv
+!data/phase3_7/MANIFEST.json
+data/**/*.csv
+!data/**/README.md
+
+# Generated API/data snapshots kept local
+docs/_archive/reference_backups/
+studies/myfxbook_reverse_engineering/data/catalog/pages/
+studies/myfxbook_reverse_engineering/data/catalog/systems_rank/raw_pages/
+studies/myfxbook_reverse_engineering/data/catalog/systems_rank/*.json
+
+# Generated study/report artifacts
+/reports/
+studies/**/*.png
+studies/**/*.csv
+studies/**/plots*/
+studies/**/*_plots/
+studies/**/post_plots/
+studies/**/live_strategy_plots/
+studies/**/results.json
+studies/**/verdict.json
+studies/**/metrics.json
+studies/**/unified_metrics.json
+studies/**/comparison.json
+studies/**/state_counts.json
+studies/**/review_verdict.json
+studies/**/wf_portfolio_results.json
+studies/**/data/raw/
+studies/**/testfolio_data/
+studies/**/systems/*/decoder/*.parquet
+studies/**/systems/*/decoding*/
+studies/**/_diagnostics/**/logs/
+studies/spy_beater_hunt/iterations/*/rerun.log
+
+# Heavy/generated binary artifacts
+*.parquet
+*.pkl
+*.joblib
+*.h5
+*.npz
+*.sqlite
+*.sqlite3
+*.db
+db/*.sqlite*
+db/*.db
+
+# Logs and OS files
+logs/
+*.log
+.DS_Store
+Thumbs.db
+
+# Jupyter
+*.ipynb
+.ipynb_checkpoints/

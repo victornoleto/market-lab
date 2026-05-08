@@ -1,0 +1,97 @@
+iter: 022-2026-05-06-T3d-extended-grid
+tier: T3d
+hypothesis: 'T3d-extended (12-config grid for G1 PBO statistical power). 6 diverse signal-subsets ×
+  K∈{2,3} on QLD/ZROZ. Pre-registered per spec §3.4: T3d-extended winner only beats T3d K=2 if Sharpe
+  > 0.853 + 0.05 = 0.903; goal is G1 PBO statistical power, not param-sweep curve-fit.'
+primary_citation: "spec \xA72.4 T3d composite (extended grid for G1 PBO power per advances_fin_ml p.208-211)"
+configs_tested:
+# Subset 1: T3d original (baseline) — SMA200/SMA50/vol21<40/AR(1)_30
+- name: qld_voteK2_sma200_50_vol21_40_ar30_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 2
+- name: qld_voteK3_sma200_50_vol21_40_ar30_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 3
+# Subset 2: longer SMAs — SMA250/SMA100/vol21<40/AR(1)_30
+- name: qld_voteK2_sma250_100_vol21_40_ar30_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 2
+  sma_long_period: 250
+  sma_short_period: 100
+- name: qld_voteK3_sma250_100_vol21_40_ar30_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 3
+  sma_long_period: 250
+  sma_short_period: 100
+# Subset 3: EMA family — EMA200/EMA50/vol21<40/AR(1)_30
+- name: qld_voteK2_ema200_50_vol21_40_ar30_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 2
+  use_ema: true
+- name: qld_voteK3_ema200_50_vol21_40_ar30_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 3
+  use_ema: true
+# Subset 4: stricter vol — SMA200/SMA50/vol21<30/AR(1)_30
+- name: qld_voteK2_sma200_50_vol21_30_ar30_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 2
+  vol_threshold: 0.30
+- name: qld_voteK3_sma200_50_vol21_30_ar30_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 3
+  vol_threshold: 0.30
+# Subset 5: longer vol window — SMA200/SMA50/vol42<40/AR(1)_30
+- name: qld_voteK2_sma200_50_vol42_40_ar30_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 2
+  vol_window: 42
+- name: qld_voteK3_sma200_50_vol42_40_ar30_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 3
+  vol_window: 42
+# Subset 6: longer AR window — SMA200/SMA50/vol21<40/AR(1)_60
+- name: qld_voteK2_sma200_50_vol21_40_ar60_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 2
+  ar1_window: 60
+- name: qld_voteK3_sma200_50_vol21_40_ar60_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 3
+  ar1_window: 60
+cumulative_n_trials_at_iter: 406
+datasets:
+- lh_56y
+- modern_1990
+- spy_real
+- ndx_real
+windows_used:
+  lh_56y: 1970-01-01..2026-04-30
+  modern_1990: 1990-01-01..2026-04-30
+  spy_real: 2003-01-01..2026-04-30
+  ndx_real: 2010-02-01..2026-04-30
+random_seed: 42

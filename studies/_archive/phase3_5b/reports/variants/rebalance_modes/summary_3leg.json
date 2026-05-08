@@ -1,0 +1,67 @@
+{
+  "variant": "3leg_ew",
+  "window_start": "2004-11-18",
+  "window_end": "2026-04-14",
+  "n_bars": 5383,
+  "years": 21.36111111111111,
+  "initial_capital": 100000.0,
+  "monthly_deposit": 500.0,
+  "tax_rate": 0.15,
+  "target_weights": {
+    "LETF_2x": 0.3333333333333333,
+    "QQQ": 0.3333333333333333,
+    "GLD": 0.3333333333333333
+  },
+  "modes": {
+    "daily": {
+      "equity_final": 12940148.582716728,
+      "cagr": 0.2555604552929467,
+      "sharpe": 2.107560027446975,
+      "volatility_ann": 0.1109539463290368,
+      "max_drawdown": 0.10855440197847646,
+      "max_abs_drift": 0.0,
+      "mean_max_drift": 0.0,
+      "taxable_events": 0,
+      "taxable_events_per_year": 0.0,
+      "total_tax_paid": 0.0,
+      "tax_per_year": 0.0,
+      "total_deposits": 0.0,
+      "deposits_per_year": 0.0
+    },
+    "monthly_sell": {
+      "equity_final": 9569236.731230656,
+      "cagr": 0.23794385459011025,
+      "sharpe": 1.963806849450267,
+      "volatility_ann": 0.11193073370660209,
+      "max_drawdown": 0.10942657192991136,
+      "max_abs_drift": 0.0480993269942952,
+      "mean_max_drift": 0.008161469720702405,
+      "taxable_events": 383,
+      "taxable_events_per_year": 17.929778933680105,
+      "total_tax_paid": 656641.7213810388,
+      "tax_per_year": 30740.054577005718,
+      "total_deposits": 0.0,
+      "deposits_per_year": 0.0
+    },
+    "monthly_cashflow": {
+      "equity_final": 142231702.84489748,
+      "cagr": 0.40469740307971036,
+      "sharpe": 1.9440280132342354,
+      "volatility_ann": 0.1835977103586569,
+      "max_drawdown": 0.17780609543290896,
+      "max_abs_drift": 0.6505478272373038,
+      "mean_max_drift": 0.40098543774240447,
+      "taxable_events": 0,
+      "taxable_events_per_year": 0.0,
+      "total_tax_paid": 0.0,
+      "tax_per_year": 0.0,
+      "total_deposits": 129000.0,
+      "deposits_per_year": 6039.011703511053
+    }
+  },
+  "winner_ref": {
+    "sharpe": 2.107560027446974,
+    "cagr_pct": 0.2555604552929469,
+    "max_drawdown_pct": 0.10855440197847699
+  }
+}

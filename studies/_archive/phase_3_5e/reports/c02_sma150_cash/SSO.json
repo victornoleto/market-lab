@@ -1,0 +1,106 @@
+{
+  "ticker": "SSO",
+  "frequency": "daily",
+  "phase": "phase_3_5e",
+  "lead_id": "c02",
+  "lead_slug": "c02_sma150_cash",
+  "iter": 25,
+  "source": "reference_prices.parquet (Stage 1, Tiingo-first post-2026-04-21)",
+  "config": {
+    "name": "c02_sma150_cash",
+    "off_leg": "cash",
+    "window_start": "2001-05-15",
+    "window_end": "2026-04-17",
+    "window_years": 24.919917864476385,
+    "n_bars": 6267,
+    "metrics_is": {
+      "cagr": 0.07777575286567107,
+      "cagr_net": 0.0661093899358204,
+      "sharpe": 0.456733324426004,
+      "sharpe_net": 0.3882233257621034,
+      "max_dd": -0.4427755753698084,
+      "calmar": 0.17565502071949737
+    },
+    "wf": {
+      "sharpes": [
+        0.17020894352905905,
+        0.0831265048556167,
+        0.2767594877817675,
+        0.753474342690204,
+        0.24188139607531836,
+        0.6592064437048323,
+        0.19015770521220726,
+        1.158922208861723
+      ],
+      "positive": 8,
+      "total": 8,
+      "pass": true
+    },
+    "oos": {
+      "is_sharpe": 0.3984673904119162,
+      "oos_sharpe": 0.68105102187362,
+      "oos_pass": true,
+      "is_start": "2001-05-16",
+      "is_end": "2021-04-20",
+      "oos_start": "2021-04-21",
+      "oos_end": "2026-04-17"
+    },
+    "fwd": {
+      "fwd_sharpe": 0.26144503720117784,
+      "fwd_pass": true,
+      "fwd_start": "2026-01-16",
+      "fwd_end": "2026-04-17"
+    },
+    "spy_benchmark": {
+      "spy_cagr_gross": 0.07186042386192182,
+      "spy_cagr_net": 0.06108136028263354,
+      "spy_sharpe": 0.46003306935095606,
+      "spy_max_dd": -0.5647366900495071,
+      "corr_vs_spy": 0.5662624436623466
+    },
+    "dsr": {
+      "dsr": 0.7029222448896765,
+      "p_value": 0.2970777551103235,
+      "pass": false,
+      "n_trials_used": 14
+    },
+    "gates": {
+      "gate1_pbo": "AGGREGATE_LEVEL",
+      "gate2_dsr": false,
+      "gate3_wf": true,
+      "gate4_oos": true,
+      "gate5_fwd": true,
+      "overfit_pass_no_pbo": false,
+      "eco1_beats_spy": true,
+      "eco2_calmar": false,
+      "eco3_sharpe_net": false,
+      "eco_pass": false,
+      "pre_pass_pending_pbo": false,
+      "fail_reason": "DSR, CALMAR, SHARPE_NET"
+    }
+  },
+  "best_config": "c02_sma150_cash",
+  "any_prepass_pending_pbo": false,
+  "best_sharpe_oos": 0.68105102187362,
+  "best_cagr": 0.07777575286567107,
+  "best_maxdd": -0.4427755753698084,
+  "stage2_ssosim": {
+    "source": "testfol.io SSOSIM (SPYSIM?L=2)",
+    "s2_cagr": 0.07948018563343151,
+    "s2_sharpe": 0.4631873488329935,
+    "s1_cagr": 0.07777575286567107,
+    "delta_cagr_pp": 0.17044327677604443,
+    "concordant": true,
+    "note": "\u0394CAGR=0.17pp \u2014 CONCORDANT (\u22643pp)"
+  },
+  "cross_lib_bt": {
+    "bt_cagr": 0.12081236257454919,
+    "bt_sharpe": 0.6378823692794178
+  },
+  "citations": [
+    "leverage_for_the_long_run, p.30",
+    "advances_fin_ml, p.208-211",
+    "advances_fin_ml, p.298-299"
+  ],
+  "generated_at": "2026-04-21T18:20:54.666999+00:00"
+}

@@ -1,0 +1,29 @@
+{
+  "system_id": "10251631",
+  "reliability": 0.5851816588376901,
+  "band": "MEDIUM",
+  "components": {
+    "direction_predictability": 0.4468546637744035,
+    "family_clarity": 0.38,
+    "timing_concentration": 0.5357917570498916,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.6530964148411086,
+    "vendor_quality": 0.75,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "FACTOR_SCALPING",
+  "confidence": 0.38,
+  "n_trades": 461,
+  "n_pairs": 1,
+  "last_trade_date": "2024-08-07 02:32:52+00:00",
+  "account_type": "Real",
+  "name": "Happy Gold FM - REAL (GN) Forex Trading System by Forex Trad",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 593.9574444293976,
+  "band_rank": 1,
+  "dir_pred": 0.4468546637744035,
+  "timing_conc": 0.5357917570498916,
+  "age_fresh": 0.6530964148411086
+}

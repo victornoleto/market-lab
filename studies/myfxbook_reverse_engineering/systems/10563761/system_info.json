@@ -1,0 +1,30 @@
+{
+  "system_id": 10563761,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-bitcoin-decodefx/10563761",
+  "name": "Happy Bitcoin - DecodeFX Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+40.84%",
+    "absolute_gain": "+55.08%",
+    "daily": "0.05%",
+    "monthly": "1.65%",
+    "drawdown": "12.05%",
+    "balance": "$1,749.84",
+    "equity": "(100.00%) $1,749.84",
+    "highest": "(Jul 31) $3,034.57",
+    "profit": "$621.46",
+    "interest": "$0.00",
+    "deposits": "$2,560.45",
+    "withdrawals": "$0.00",
+    "updated": "Jan 31 at 17:25",
+    "tracking": "10"
+  },
+  "account": {
+    "raw": "Real (USD), DecodeFX , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "DecodeFX",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/decodefx/2902069,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "system_id": "8574205",
+  "reliability": 0.499497253144767,
+  "band": "LOW",
+  "components": {
+    "direction_predictability": 0.19529293940911385,
+    "family_clarity": 0.28,
+    "timing_concentration": 0.22358537806710066,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.9995694267906836,
+    "vendor_quality": 1.0,
+    "pair_coverage": 1.0
+  },
+  "notes": [
+    "UNCATEGORIZED family demotes to LOW band"
+  ],
+  "family": "UNCATEGORIZED",
+  "confidence": 0.28,
+  "n_trades": 3994,
+  "n_pairs": 5,
+  "last_trade_date": "2026-05-01 17:21:35+00:00",
+  "account_type": "Real",
+  "name": "Happy MartiGrid (Multipairs) FM - REAL Forex Trading System ",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 1977.769552230835,
+  "band_rank": 2,
+  "dir_pred": 0.19529293940911385,
+  "timing_conc": 0.22358537806710066,
+  "age_fresh": 0.9995694267906836
+}

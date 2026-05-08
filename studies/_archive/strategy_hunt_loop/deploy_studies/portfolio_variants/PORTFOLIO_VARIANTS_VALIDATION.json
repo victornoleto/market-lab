@@ -1,0 +1,482 @@
+{
+  "window": {
+    "start": "1994-05-05",
+    "end": "2026-04-17",
+    "years": 31.91269841269841
+  },
+  "designs": {
+    "V1_NTSX_GDE_67_33": {
+      "NTSX": 0.67,
+      "GDE": 0.33
+    },
+    "V3_1_PlanoC_v3.5": {
+      "GDE": 0.25,
+      "AVUS_proxy": 0.12,
+      "AVDE_proxy": 0.2,
+      "AVEM_proxy": 0.13,
+      "AVUV_proxy": 0.1,
+      "AVDV_proxy": 0.05,
+      "SPMO_proxy": 0.07,
+      "IDMO_proxy": 0.03,
+      "BTGD_proxy": 0.05
+    },
+    "V_HYBRID_baseline": {
+      "GDE": 0.25,
+      "NTSX": 0.12,
+      "AVDE_proxy": 0.2,
+      "AVEM_proxy": 0.13,
+      "AVUV_proxy": 0.1,
+      "AVDV_proxy": 0.05,
+      "SPMO_proxy": 0.07,
+      "IDMO_proxy": 0.03,
+      "BTGD_proxy": 0.05
+    },
+    "V_HYBRID_PLUS_MF": {
+      "GDE": 0.225,
+      "NTSX": 0.108,
+      "AVDE_proxy": 0.18,
+      "AVEM_proxy": 0.117,
+      "AVUV_proxy": 0.09,
+      "AVDV_proxy": 0.045,
+      "SPMO_proxy": 0.063,
+      "IDMO_proxy": 0.027,
+      "BTGD_proxy": 0.045,
+      "KMLM": 0.1
+    },
+    "V_HYBRID_GLOBAL_STACK": {
+      "GDE": 0.25,
+      "NTSX": 0.12,
+      "NTSI": 0.1,
+      "NTSE": 0.05,
+      "AVDE_proxy": 0.1,
+      "AVEM_proxy": 0.08,
+      "AVUV_proxy": 0.1,
+      "AVDV_proxy": 0.05,
+      "SPMO_proxy": 0.05,
+      "IDMO_proxy": 0.05,
+      "BTGD_proxy": 0.05
+    },
+    "V_HYBRID_RSST_substitute": {
+      "GDE": 0.25,
+      "RSST": 0.12,
+      "AVDE_proxy": 0.2,
+      "AVEM_proxy": 0.13,
+      "AVUV_proxy": 0.1,
+      "AVDV_proxy": 0.05,
+      "SPMO_proxy": 0.07,
+      "IDMO_proxy": 0.03,
+      "BTGD_proxy": 0.05
+    },
+    "V_HYBRID_KITCHEN_SINK": {
+      "GDE": 0.2,
+      "NTSX": 0.1,
+      "NTSI": 0.08,
+      "NTSE": 0.04,
+      "RSST": 0.05,
+      "AVDE_proxy": 0.1,
+      "AVEM_proxy": 0.1,
+      "AVUV_proxy": 0.1,
+      "AVDV_proxy": 0.05,
+      "SPMO_proxy": 0.05,
+      "IDMO_proxy": 0.03,
+      "BTGD_proxy": 0.04,
+      "KMLM": 0.06
+    },
+    "V_HYBRID_50_50_with_V1": {
+      "NTSX": 0.395,
+      "GDE": 0.29000000000000004,
+      "AVDE_proxy": 0.1,
+      "AVEM_proxy": 0.065,
+      "AVUV_proxy": 0.05,
+      "AVDV_proxy": 0.025,
+      "SPMO_proxy": 0.035,
+      "IDMO_proxy": 0.015,
+      "BTGD_proxy": 0.025
+    }
+  },
+  "metrics_full": {
+    "SPYSIM b&h": {
+      "name": "SPYSIM b&h",
+      "n_bars": 8042,
+      "sharpe": 0.6510711976563304,
+      "cagr": 0.11073035085869831,
+      "mdd": 0.5514127052677141
+    },
+    "V1_NTSX_GDE_67_33": {
+      "name": "V1_NTSX_GDE_67_33",
+      "n_bars": 8042,
+      "sharpe": 0.8090077168235592,
+      "cagr": 0.13500669559484502,
+      "mdd": 0.4437190597917007
+    },
+    "V3_1_PlanoC_v3.5": {
+      "name": "V3_1_PlanoC_v3.5",
+      "n_bars": 8042,
+      "sharpe": 0.671296024856678,
+      "cagr": 0.10937687882394109,
+      "mdd": 0.5243028919789763
+    },
+    "V_HYBRID_baseline": {
+      "name": "V_HYBRID_baseline",
+      "n_bars": 8042,
+      "sharpe": 0.6854999855749535,
+      "cagr": 0.11055581286304372,
+      "mdd": 0.5128168980596188
+    },
+    "V_HYBRID_PLUS_MF": {
+      "name": "V_HYBRID_PLUS_MF",
+      "n_bars": 8042,
+      "sharpe": 0.7432004109963426,
+      "cagr": 0.10913150870602073,
+      "mdd": 0.44712170554637765
+    },
+    "V_HYBRID_GLOBAL_STACK": {
+      "name": "V_HYBRID_GLOBAL_STACK",
+      "n_bars": 8042,
+      "sharpe": 0.7019001185949993,
+      "cagr": 0.11168055896811957,
+      "mdd": 0.49842486562322397
+    },
+    "V_HYBRID_RSST_substitute": {
+      "name": "V_HYBRID_RSST_substitute",
+      "n_bars": 8042,
+      "sharpe": 0.7156974517867446,
+      "cagr": 0.11659883691562523,
+      "mdd": 0.49557676969376985
+    },
+    "V_HYBRID_KITCHEN_SINK": {
+      "name": "V_HYBRID_KITCHEN_SINK",
+      "n_bars": 8042,
+      "sharpe": 0.7446652396507597,
+      "cagr": 0.11225539317276767,
+      "mdd": 0.45796085722827984
+    },
+    "V_HYBRID_50_50_with_V1": {
+      "name": "V_HYBRID_50_50_with_V1",
+      "n_bars": 8042,
+      "sharpe": 0.7578636674341965,
+      "cagr": 0.12319503363161388,
+      "mdd": 0.4765301526878002
+    }
+  },
+  "rolling": {
+    "10y": {
+      "V1_NTSX_GDE_67_33": {
+        "n": 5523,
+        "cagr_mean": 0.11777575759975409,
+        "cagr_min": 0.011602587600229919,
+        "cagr_5pct": 0.05292827310725216,
+        "p_below_5": 0.04073872895165671,
+        "sharpe_mean": 0.734934065254642,
+        "mdd_mean": 0.3698443975401212
+      },
+      "V3_1_PlanoC_v3.5": {
+        "n": 5523,
+        "cagr_mean": 0.09716667860381957,
+        "cagr_min": 0.025006864589662836,
+        "cagr_5pct": 0.0652289993899734,
+        "p_below_5": 0.023537932283179432,
+        "sharpe_mean": 0.6052690360864004,
+        "mdd_mean": 0.4210624478199321
+      },
+      "V_HYBRID_baseline": {
+        "n": 5523,
+        "cagr_mean": 0.09924923968944549,
+        "cagr_min": 0.029157380904795138,
+        "cagr_5pct": 0.06935238005810304,
+        "p_below_5": 0.01828716277385479,
+        "sharpe_mean": 0.6225404345276956,
+        "mdd_mean": 0.41036313948858877
+      },
+      "V_HYBRID_PLUS_MF": {
+        "n": 5523,
+        "cagr_mean": 0.0972345196163334,
+        "cagr_min": 0.03768906197661481,
+        "cagr_5pct": 0.07183644321234464,
+        "p_below_5": 0.0056128915444504796,
+        "sharpe_mean": 0.6675526855993829,
+        "mdd_mean": 0.3585854051739572
+      },
+      "V_HYBRID_GLOBAL_STACK": {
+        "n": 5523,
+        "cagr_mean": 0.10150236463600396,
+        "cagr_min": 0.03393820218247945,
+        "cagr_5pct": 0.07346356248768907,
+        "p_below_5": 0.011950027159152634,
+        "sharpe_mean": 0.6431332018486999,
+        "mdd_mean": 0.39723308590091033
+      },
+      "V_HYBRID_RSST_substitute": {
+        "n": 5523,
+        "cagr_mean": 0.10292238615054296,
+        "cagr_min": 0.032855373186585046,
+        "cagr_5pct": 0.07278986674804547,
+        "p_below_5": 0.011044722071338041,
+        "sharpe_mean": 0.6403665080538645,
+        "mdd_mean": 0.40213170108986124
+      },
+      "V_HYBRID_KITCHEN_SINK": {
+        "n": 5523,
+        "cagr_mean": 0.10071473114032048,
+        "cagr_min": 0.03869692355230381,
+        "cagr_5pct": 0.0751822279132667,
+        "p_below_5": 0.0043454644215100485,
+        "sharpe_mean": 0.6737798054699395,
+        "mdd_mean": 0.3660609641081061
+      },
+      "V_HYBRID_50_50_with_V1": {
+        "n": 5523,
+        "cagr_mean": 0.1088661450769642,
+        "cagr_min": 0.02126227331954955,
+        "cagr_5pct": 0.0626495763889475,
+        "p_below_5": 0.031142495020822017,
+        "sharpe_mean": 0.6827156007890272,
+        "mdd_mean": 0.3878352451370573
+      }
+    },
+    "20y": {
+      "V1_NTSX_GDE_67_33": {
+        "n": 3003,
+        "cagr_mean": 0.1179387525677595,
+        "cagr_min": 0.0871739073187634,
+        "cagr_5pct": 0.09616590584890268,
+        "p_below_5": 0.0,
+        "sharpe_mean": 0.7153421870919606,
+        "mdd_mean": 0.4437190597917006
+      },
+      "V3_1_PlanoC_v3.5": {
+        "n": 3003,
+        "cagr_mean": 0.09710371630936747,
+        "cagr_min": 0.06326414629792709,
+        "cagr_5pct": 0.08201834069710763,
+        "p_below_5": 0.0,
+        "sharpe_mean": 0.5778077569410667,
+        "mdd_mean": 0.5243028919789757
+      },
+      "V_HYBRID_baseline": {
+        "n": 3003,
+        "cagr_mean": 0.09929570560697666,
+        "cagr_min": 0.06685097136528584,
+        "cagr_5pct": 0.08483805675716902,
+        "p_below_5": 0.0,
+        "sharpe_mean": 0.5956009463685344,
+        "mdd_mean": 0.5128168980596195
+      },
+      "V_HYBRID_PLUS_MF": {
+        "n": 3003,
+        "cagr_mean": 0.09742266757334178,
+        "cagr_min": 0.0677180855852968,
+        "cagr_5pct": 0.084089997225127,
+        "p_below_5": 0.0,
+        "sharpe_mean": 0.6393322541682713,
+        "mdd_mean": 0.44712170554637826
+      },
+      "V_HYBRID_GLOBAL_STACK": {
+        "n": 3003,
+        "cagr_mean": 0.10168089240878588,
+        "cagr_min": 0.07094874795543626,
+        "cagr_5pct": 0.08797050869179672,
+        "p_below_5": 0.0,
+        "sharpe_mean": 0.6169837800154908,
+        "mdd_mean": 0.4984248656232237
+      },
+      "V_HYBRID_RSST_substitute": {
+        "n": 3003,
+        "cagr_mean": 0.10301378958198858,
+        "cagr_min": 0.0685787539154965,
+        "cagr_5pct": 0.08741936042119987,
+        "p_below_5": 0.0,
+        "sharpe_mean": 0.6128737300071981,
+        "mdd_mean": 0.4955767696937696
+      },
+      "V_HYBRID_KITCHEN_SINK": {
+        "n": 3003,
+        "cagr_mean": 0.10091676481445701,
+        "cagr_min": 0.07070142615059449,
+        "cagr_5pct": 0.08775066446004409,
+        "p_below_5": 0.0,
+        "sharpe_mean": 0.6451652029374052,
+        "mdd_mean": 0.4579608572282798
+      },
+      "V_HYBRID_50_50_with_V1": {
+        "n": 3003,
+        "cagr_mean": 0.10902695535407657,
+        "cagr_min": 0.07738119922605624,
+        "cagr_5pct": 0.09168698804572446,
+        "p_below_5": 0.0,
+        "sharpe_mean": 0.661250140546969,
+        "mdd_mean": 0.4765301526878005
+      }
+    }
+  },
+  "stress_tests": {
+    "2000-2013_lost_decade": {
+      "V1_NTSX_GDE_67_33": {
+        "return": 1.75886131732384,
+        "mdd": -0.44371905979170057,
+        "n_bars": 3269
+      },
+      "V3_1_PlanoC_v3.5": {
+        "return": 1.622628242664034,
+        "mdd": -0.5243028919789767,
+        "n_bars": 3269
+      },
+      "V_HYBRID_baseline": {
+        "return": 1.7787851953037324,
+        "mdd": -0.5128168980596188,
+        "n_bars": 3269
+      },
+      "V_HYBRID_PLUS_MF": {
+        "return": 1.8203161532053165,
+        "mdd": -0.44712170554637776,
+        "n_bars": 3269
+      },
+      "V_HYBRID_GLOBAL_STACK": {
+        "return": 1.9713555261302709,
+        "mdd": -0.49842486562322397,
+        "n_bars": 3269
+      },
+      "V_HYBRID_RSST_substitute": {
+        "return": 1.837325810834304,
+        "mdd": -0.4955767696937693,
+        "n_bars": 3269
+      },
+      "V_HYBRID_KITCHEN_SINK": {
+        "return": 1.9287289763038928,
+        "mdd": -0.45796085722828006,
+        "n_bars": 3269
+      },
+      "V_HYBRID_50_50_with_V1": {
+        "return": 1.7876588646023026,
+        "mdd": -0.47653015268780075,
+        "n_bars": 3269
+      }
+    },
+    "2008_GFC": {
+      "V1_NTSX_GDE_67_33": {
+        "return": -0.3221185359883283,
+        "mdd": -0.44371905979170057,
+        "n_bars": 378
+      },
+      "V3_1_PlanoC_v3.5": {
+        "return": -0.41057114554201957,
+        "mdd": -0.5243028919789752,
+        "n_bars": 378
+      },
+      "V_HYBRID_baseline": {
+        "return": -0.39624091201439804,
+        "mdd": -0.5128168980596188,
+        "n_bars": 378
+      },
+      "V_HYBRID_PLUS_MF": {
+        "return": -0.32402738222428584,
+        "mdd": -0.44712170554637864,
+        "n_bars": 378
+      },
+      "V_HYBRID_GLOBAL_STACK": {
+        "return": -0.37844714280746494,
+        "mdd": -0.4984248656232232,
+        "n_bars": 378
+      },
+      "V_HYBRID_RSST_substitute": {
+        "return": -0.37346157180610584,
+        "mdd": -0.4955767696937692,
+        "n_bars": 378
+      },
+      "V_HYBRID_KITCHEN_SINK": {
+        "return": -0.3334311712126522,
+        "mdd": -0.45796085722827995,
+        "n_bars": 378
+      },
+      "V_HYBRID_50_50_with_V1": {
+        "return": -0.35941937450138683,
+        "mdd": -0.47653015268780086,
+        "n_bars": 378
+      }
+    },
+    "2020_COVID": {
+      "V1_NTSX_GDE_67_33": {
+        "return": -0.07146753182689924,
+        "mdd": -0.29482929687071846,
+        "n_bars": 52
+      },
+      "V3_1_PlanoC_v3.5": {
+        "return": -0.14236276406487736,
+        "mdd": -0.33269512579962623,
+        "n_bars": 52
+      },
+      "V_HYBRID_baseline": {
+        "return": -0.135361724791492,
+        "mdd": -0.3258367889461231,
+        "n_bars": 52
+      },
+      "V_HYBRID_PLUS_MF": {
+        "return": -0.10340690687479459,
+        "mdd": -0.2859322853788824,
+        "n_bars": 52
+      },
+      "V_HYBRID_GLOBAL_STACK": {
+        "return": -0.12693573248628953,
+        "mdd": -0.3174052530536673,
+        "n_bars": 52
+      },
+      "V_HYBRID_RSST_substitute": {
+        "return": -0.12315825960973681,
+        "mdd": -0.31988875126296745,
+        "n_bars": 52
+      },
+      "V_HYBRID_KITCHEN_SINK": {
+        "return": -0.10632731439115839,
+        "mdd": -0.29285107629696694,
+        "n_bars": 52
+      },
+      "V_HYBRID_50_50_with_V1": {
+        "return": -0.10380743897659706,
+        "mdd": -0.31042886767228617,
+        "n_bars": 52
+      }
+    },
+    "2022_rate_cycle": {
+      "V1_NTSX_GDE_67_33": {
+        "return": -0.22964330667903066,
+        "mdd": -0.2981281522720459,
+        "n_bars": 251
+      },
+      "V3_1_PlanoC_v3.5": {
+        "return": -0.1532550245199722,
+        "mdd": -0.2514504601332388,
+        "n_bars": 251
+      },
+      "V_HYBRID_baseline": {
+        "return": -0.1621010187868559,
+        "mdd": -0.25880886051120866,
+        "n_bars": 251
+      },
+      "V_HYBRID_PLUS_MF": {
+        "return": -0.11866429445329929,
+        "mdd": -0.20258339335593034,
+        "n_bars": 251
+      },
+      "V_HYBRID_GLOBAL_STACK": {
+        "return": -0.17285675816474766,
+        "mdd": -0.2682705865578858,
+        "n_bars": 251
+      },
+      "V_HYBRID_RSST_substitute": {
+        "return": -0.12354183549604236,
+        "mdd": -0.2192565742485182,
+        "n_bars": 251
+      },
+      "V_HYBRID_KITCHEN_SINK": {
+        "return": -0.13240525764039512,
+        "mdd": -0.2138051842976958,
+        "n_bars": 251
+      },
+      "V_HYBRID_50_50_with_V1": {
+        "return": -0.19614820996603743,
+        "mdd": -0.2784326048762955,
+        "n_bars": 251
+      }
+    }
+  }
+}

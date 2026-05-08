@@ -1,0 +1,151 @@
+[
+  {
+    "rank": 1,
+    "miner": "tree",
+    "rule_text": "DecisionTree(max_depth=4) \u2014 top features: ret_3_H4=0.17, bb_pos_20_2_M5=0.13, ret_10_M1=0.12, range_norm_M15=0.12, ret_1_M5=0.10\n\n|--- ret_3_H4 <= -0.00\n|   |--- is_first_min_of_hour <= 0.50\n|   |   |--- bb_pos_20_2_M1 <= 0.82\n|   |   |   |--- ret_10_M1 <= -0.00\n|   |   |   |   |--- class: 1\n|   |   |   |--- ret_10_M1 >  -0.00\n|   |   |   |   |--- class: 0\n|   |   |--- bb_pos_20_2_M1 >  0.82\n|   |   |   |--- ret_1_M5 <= 0.00\n|   |   |   |   |--- class: 1\n|   |   |   |--- ret_1_M5 >  0.00\n|   |   |   |   |--- class: 1\n|   |--- is_first_min_of_hour >  0.50\n|   |   |--- class: 0\n|--- ret_3_H4 >  -0.00\n|   |--- range_norm_M15 <= 1.07\n|   |   |--- range_norm_M15 <= 0.95\n|   |   |   |--- bb_pos_20_2_M5 <= 0.97\n|   |   |   |   |--- class: 0\n|   |   |   |--- bb_pos_20_2_M5 >  0.97\n|   |   |   |   |--- class: 0\n|   |   |--- range_norm_M15 >  0.95\n|   |   |   |--- ret_1_H1 <= -0.00\n|   |   |   |   |--- class: 0\n|   |   |   |--- ret_1_H1 >  -0.00\n|   |   |   |   |--- class: 0\n|   |--- range_norm_M15 >  1.07\n|   |   |--- bb_pos_20_2_M5 <= -0.14\n|   |   |   |--- dollar_index_proxy <= 0.50\n|   |   |   |   |--- class: 1\n|   |   |   |--- dollar_index_proxy >  0.50\n|   |   |   |   |--- class: 1\n|   |   |--- bb_pos_20_2_M5 >  -0.14\n|   |   |   |--- ret_1_H1 <= 0.00\n|   |   |   |   |--- class: 0\n|   |   |   |--- ret_1_H1 >  0.00\n|   |   |   |   |--- class: 1\n",
+    "match_rate_cv": 0.5137499999999999,
+    "match_rate_std": 0.006937218462755804,
+    "coverage": 1.0,
+    "n_features": 9,
+    "p_value_corrected": NaN,
+    "extra": {
+      "fold_accs": [
+        0.5075,
+        0.50375,
+        0.51625,
+        0.52,
+        0.52125
+      ]
+    }
+  },
+  {
+    "rank": 2,
+    "miner": "ripper",
+    "rule_text": "RIPPER ruleset:\n[[close_vs_session_open_M5=-1.0]]",
+    "match_rate_cv": 0.5126262626262627,
+    "match_rate_std": 0.011978324470334758,
+    "coverage": 1.0,
+    "n_features": 1,
+    "p_value_corrected": NaN,
+    "extra": {
+      "fold_accs": [
+        0.5303030303030303,
+        0.49747474747474746,
+        0.5151515151515151,
+        0.5189393939393939,
+        0.5012626262626263
+      ]
+    }
+  },
+  {
+    "rank": 3,
+    "miner": "baseline",
+    "rule_text": "Always-Buy (y_buy mean = 0.4998); Always-Sell = 0.5002",
+    "match_rate_cv": 0.50025,
+    "match_rate_std": 0.0,
+    "coverage": 1.0,
+    "n_features": 0,
+    "p_value_corrected": NaN,
+    "extra": {
+      "buy_rate": 0.49975
+    }
+  },
+  {
+    "rank": 4,
+    "miner": "univariate",
+    "rule_text": "ret_10_H1 > -0.0006821 \u21d2 Sell",
+    "match_rate_cv": 0.527,
+    "match_rate_std": 0.0,
+    "coverage": 0.49975,
+    "n_features": 1,
+    "p_value_corrected": 0.18181084820098717,
+    "extra": {
+      "raw_p": 0.00033668675592775404,
+      "n_tests": 540
+    }
+  },
+  {
+    "rank": 5,
+    "miner": "univariate",
+    "rule_text": "ret_3_H4 > -0.0006104 \u21d2 Sell",
+    "match_rate_cv": 0.52575,
+    "match_rate_std": 0.0,
+    "coverage": 0.5,
+    "n_features": 1,
+    "p_value_corrected": 0.3204995667531316,
+    "extra": {
+      "raw_p": 0.0005935177162095031,
+      "n_tests": 540
+    }
+  },
+  {
+    "rank": 6,
+    "miner": "univariate",
+    "rule_text": "ema_dist_20_H1 > -0.3432 \u21d2 Sell",
+    "match_rate_cv": 0.52425,
+    "match_rate_std": 0.0,
+    "coverage": 0.5,
+    "n_features": 1,
+    "p_value_corrected": 0.6135103856416415,
+    "extra": {
+      "raw_p": 0.0011361303437808176,
+      "n_tests": 540
+    }
+  },
+  {
+    "rank": 7,
+    "miner": "univariate",
+    "rule_text": "bb_pos_20_2_H1 > -0.2151 \u21d2 Sell",
+    "match_rate_cv": 0.5215,
+    "match_rate_std": 0.0,
+    "coverage": 0.49975,
+    "n_features": 1,
+    "p_value_corrected": 1.0,
+    "extra": {
+      "raw_p": 0.003424452072573115,
+      "n_tests": 540
+    }
+  },
+  {
+    "rank": 8,
+    "miner": "univariate",
+    "rule_text": "bb_pos_20_2_H4 > -0.3195 \u21d2 Sell",
+    "match_rate_cv": 0.51825,
+    "match_rate_std": 0.0,
+    "coverage": 0.5,
+    "n_features": 1,
+    "p_value_corrected": 1.0,
+    "extra": {
+      "raw_p": 0.010928186255160595,
+      "n_tests": 540
+    }
+  },
+  {
+    "rank": 9,
+    "miner": "univariate",
+    "rule_text": "close_vs_session_open_M5 > -1 \u21d2 Sell",
+    "match_rate_cv": 0.5184343434343435,
+    "match_rate_std": 0.0,
+    "coverage": 0.47525,
+    "n_features": 1,
+    "p_value_corrected": 1.0,
+    "extra": {
+      "raw_p": 0.010599811053016212,
+      "n_tests": 540
+    }
+  },
+  {
+    "rank": 10,
+    "miner": "univariate",
+    "rule_text": "close_vs_session_open_H4 > -1 \u21d2 Sell",
+    "match_rate_cv": 0.5174242424242425,
+    "match_rate_std": 0.0,
+    "coverage": 0.47425,
+    "n_features": 1,
+    "p_value_corrected": 1.0,
+    "extra": {
+      "raw_p": 0.014731172174933384,
+      "n_tests": 540
+    }
+  }
+]

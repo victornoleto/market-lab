@@ -1,0 +1,29 @@
+{
+  "system_id": "2373850",
+  "reliability": 0.7251375866066321,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 1.0,
+    "family_clarity": 0.44,
+    "timing_concentration": 0.6777054997043169,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.015964866657686372,
+    "vendor_quality": 1.0,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "UNCATEGORIZED",
+  "confidence": 0.44,
+  "n_trades": 1691,
+  "n_pairs": 2,
+  "last_trade_date": "2021-06-01 12:29:55+00:00",
+  "account_type": "Real",
+  "name": "OLD Happy Algorithm PRO v1.4 - REAL (SET1) Forex Trading Sys",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 834.3635406494141,
+  "band_rank": 0,
+  "dir_pred": 1.0,
+  "timing_conc": 0.6777054997043169,
+  "age_fresh": 0.015964866657686372
+}

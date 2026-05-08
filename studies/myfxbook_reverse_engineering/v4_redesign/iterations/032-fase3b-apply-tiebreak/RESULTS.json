@@ -1,0 +1,41 @@
+{
+  "task_id": "032-fase3b-apply-tiebreak",
+  "status": "DONE",
+  "started_utc": "2026-05-04T16:20:40Z",
+  "completed_utc": "2026-05-04T16:20:40Z",
+  "files_created": [
+    "studies/myfxbook_reverse_engineering/_diagnostics/TIEBREAK_RESULT.json",
+    "studies/myfxbook_reverse_engineering/_diagnostics/TIEBREAK_RESULT.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/032-fase3b-apply-tiebreak/PRE_REG.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/032-fase3b-apply-tiebreak/run.log",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/032-fase3b-apply-tiebreak/RESULTS.json",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/032-fase3b-apply-tiebreak/SUMMARY.md",
+    "jornada/2026-05-04-1620-myfxbook-v4-tiebreak-applied.md"
+  ],
+  "files_modified": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/PROGRESS.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/next_prompt.md",
+    "jornada/README.md"
+  ],
+  "tests_added": [],
+  "tests_passing": 1,
+  "tests_total": 1,
+  "metrics": {
+    "status": "DONE",
+    "ordered_systems": [
+      "10067081",
+      "8577442",
+      "10062918",
+      "1152318"
+    ],
+    "diagnostic_shortlist": [
+      "10067081",
+      "8577442",
+      "10062918"
+    ],
+    "n_universe": 4,
+    "n_shortlist": 3,
+    "sort_decisive_at_field": "activity_staleness_days"
+  },
+  "notes": "Applied the pre-registered tiebreak exactly. Diagnostic only; no monitor, cron, paper/live, broker/API, AutoTrade, threshold change, or operational recommendation."
+}

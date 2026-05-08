@@ -1,0 +1,30 @@
+{
+  "system_id": 9912554,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-brexit-fm-real/9912554",
+  "name": "Happy Brexit FM - REAL Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+259.01%",
+    "absolute_gain": "+259.02%",
+    "daily": "0.09%",
+    "monthly": "2.69%",
+    "drawdown": "34.93%",
+    "balance": "$7,180.34",
+    "equity": "(100.03%) $7,182.38",
+    "highest": "(Apr 30) $7,180.34",
+    "profit": "$5,180.34",
+    "interest": "$0.00",
+    "deposits": "$2,000.00",
+    "withdrawals": "$0.00",
+    "updated": "7 hours ago",
+    "tracking": "51"
+  },
+  "account": {
+    "raw": "Real (USD), ForexMart , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "ForexMart",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/forexmart/1065344,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

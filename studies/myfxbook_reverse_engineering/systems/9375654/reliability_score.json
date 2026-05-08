@@ -1,0 +1,29 @@
+{
+  "system_id": "9375654",
+  "reliability": 0.7741089434941366,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 1.0,
+    "family_clarity": 0.58,
+    "timing_concentration": 0.366120218579235,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.9988489977828957,
+    "vendor_quality": 0.85,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "NY_SESSION_REVERSAL",
+  "confidence": 0.58,
+  "n_trades": 915,
+  "n_pairs": 1,
+  "last_trade_date": "2026-04-30 11:04:07+00:00",
+  "account_type": "Real",
+  "name": "Happy Gold - TMGM (M30) Forex Trading System by Forex Trader",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 271.3266248703003,
+  "band_rank": 0,
+  "dir_pred": 1.0,
+  "timing_conc": 0.366120218579235,
+  "age_fresh": 0.9988489977828957
+}

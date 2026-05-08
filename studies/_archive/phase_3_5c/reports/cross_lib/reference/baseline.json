@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-04-20T11:36:02.227634+00:00",
+  "git_commit": "10eb9f824030c58717dbedd4bada2dae23a9a87c",
+  "integrity_hash": "c130ef614411c81a7e6b4ea51bba2c99da8de800165d12e18037efbc251c2a4f",
+  "metric_units": {
+    "cagr": "percent (e.g. 37.92 means 37.92%/yr)",
+    "max_dd": "percent, negative (e.g. -16.91 means 16.91% drawdown)",
+    "return_ann": "percent, same scale as cagr",
+    "sharpe": "ratio (dimensionless)",
+    "volatility_ann": "percent or null if unavailable"
+  },
+  "variants": {
+    "leg_qld_only": {
+      "canonical": {
+        "cagr": 17.403924053933363,
+        "max_dd": -12.78851224401985,
+        "return_ann": 17.361543415355428,
+        "sharpe": 1.3889878056490708,
+        "volatility_ann": 12.079850871204025
+      }
+    },
+    "leg_sso_only": {
+      "canonical": {
+        "cagr": 44.693959570539036,
+        "max_dd": -20.549286254091374,
+        "return_ann": 44.72270799516585,
+        "sharpe": 1.8476194909688326,
+        "volatility_ann": 21.22961564799752
+      }
+    },
+    "leg_ugl_only": {
+      "canonical": {
+        "cagr": 11.464118838802605,
+        "max_dd": -14.354414902198032,
+        "return_ann": 11.4395889798232,
+        "sharpe": 0.9367516543098318,
+        "volatility_ann": 12.413416165162458
+      }
+    },
+    "plano_b_v4_threshold_10": {
+      "canonical": {
+        "cagr": 37.92,
+        "max_dd": -16.91,
+        "return_ann": 37.92,
+        "sharpe": 1.973,
+        "volatility_ann": null
+      },
+      "extended": {
+        "cagr": 26.96,
+        "max_dd": -10.12,
+        "return_ann": 26.96,
+        "sharpe": 2.028,
+        "volatility_ann": null
+      }
+    },
+    "v1_fallback": {
+      "canonical": {
+        "cagr": 25.556045529294693,
+        "max_dd": -10.855440197847699,
+        "return_ann": 25.496463511407995,
+        "sharpe": 2.107560027446974,
+        "volatility_ann": 11.095394632903686
+      }
+    }
+  }
+}

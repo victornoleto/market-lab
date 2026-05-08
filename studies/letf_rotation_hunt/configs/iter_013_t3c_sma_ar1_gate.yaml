@@ -1,0 +1,24 @@
+iter: 013-2026-05-06-T3c-sma-ar1-gate
+tier: T3c
+hypothesis: SMA200 AND AR(1)_30d > 0 on QLD/ZROZ. Positive AR(1) = momentum regime favourable to LETFs; negative AR(1) = mean-reversion
+  that compounds against LETF.
+primary_citation: '[paper.hsieh_2025_letf_compounding] (AR(1) regime for LETFs)'
+configs_tested:
+- name: qld_sma200_ar1pos_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: sma_ar1_gate
+  period: 200
+  ar1_window: 30
+cumulative_n_trials_at_iter: 395
+datasets:
+- lh_56y
+- modern_1990
+- spy_real
+- ndx_real
+windows_used:
+  lh_56y: 1970-01-01..2026-04-30
+  modern_1990: 1990-01-01..2026-04-30
+  spy_real: 2003-01-01..2026-04-30
+  ndx_real: 2010-02-01..2026-04-30
+random_seed: 42

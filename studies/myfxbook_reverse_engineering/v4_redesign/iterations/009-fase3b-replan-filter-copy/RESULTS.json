@@ -1,0 +1,31 @@
+{
+  "task_id": "009-fase3b-replan-filter-copy",
+  "status": "DONE",
+  "started_utc": "2026-05-04T12:26:58Z",
+  "completed_utc": "2026-05-04T12:28:24Z",
+  "files_created": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/FILTER_COPY_PLAN.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/009-fase3b-replan-filter-copy/PRE_REG.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/009-fase3b-replan-filter-copy/run.log",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/009-fase3b-replan-filter-copy/RESULTS.json",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/009-fase3b-replan-filter-copy/SUMMARY.md",
+    "jornada/2026-05-04-1228-myfxbook-v4-filter-copy-plan.md"
+  ],
+  "files_modified": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/PROGRESS.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/next_prompt.md",
+    "jornada/README.md"
+  ],
+  "tests_added": [],
+  "tests_passing": 2,
+  "tests_total": 2,
+  "metrics": {
+    "universe_size": 21,
+    "n_fase2_eligible_survivors": 0,
+    "copyability_score_preregistered": true,
+    "scoring_executed": false,
+    "paper_live_enabled": false,
+    "autotrade_real_enabled": false
+  },
+  "notes": "FILTER_COPY_PLAN.md criou contrato explicito de Fase 3b/filter-and-copy usando os 21 pre_screen_go_systems como universo audit-only. Nenhum scoring/ranking foi executado nesta sessao."
+}

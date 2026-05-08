@@ -1,0 +1,33 @@
+iter: 014-2026-05-06-T3d-vote-of-k
+tier: T3d
+hypothesis: 'Vote-of-K (K=2,3,4) over 4 signals: SMA200, SMA50, vol_21d<40%, AR(1)_30d>0. K=2 lenient, K=3 medium, K=4 strict
+  (all-must-agree). Anti-whipsaw via composite consensus.'
+primary_citation: "spec \xA72.4 T3d composite"
+configs_tested:
+- name: qld_vote_k2_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 2
+- name: qld_vote_k3_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 3
+- name: qld_vote_k4_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vote_of_k
+  k: 4
+cumulative_n_trials_at_iter: 396
+datasets:
+- lh_56y
+- modern_1990
+- spy_real
+- ndx_real
+windows_used:
+  lh_56y: 1970-01-01..2026-04-30
+  modern_1990: 1990-01-01..2026-04-30
+  spy_real: 2003-01-01..2026-04-30
+  ndx_real: 2010-02-01..2026-04-30
+random_seed: 42

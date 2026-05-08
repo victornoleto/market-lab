@@ -1,0 +1,30 @@
+{
+  "system_id": 8599392,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-frequency-orbex-real/8599392",
+  "name": "Happy Frequency Orbex - REAL  Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+411.24%",
+    "absolute_gain": "+807.58%",
+    "daily": "0.08%",
+    "monthly": "2.33%",
+    "drawdown": "64.23%",
+    "balance": "$22,619.41",
+    "equity": "(49.45%) $11,186.31",
+    "highest": "(Feb 09) $31,839.32",
+    "profit": "$20,215.01",
+    "interest": "-$2.70",
+    "deposits": "$12,001.04",
+    "withdrawals": "$97.76",
+    "updated": "6 hours ago",
+    "tracking": "9"
+  },
+  "account": {
+    "raw": "Real (USD), ORBEX , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "ORBEX",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/orbex/736993,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

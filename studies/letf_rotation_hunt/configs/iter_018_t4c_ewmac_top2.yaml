@@ -1,0 +1,29 @@
+iter: 018-2026-05-06-T4c-ewmac-top2
+tier: T4c
+hypothesis: EWMAC composite (16/64 + 64/256) ranking instead of Clenow, top-2 of {UPRO, QLD, UGL, TMF}, master SPY>SMA200,
+  OFF=ZROZ. Tests if Carver-style trend forecast beats Clenow regression-slope ranking.
+primary_citation: "[systematic_trading, ch.7-8]; spec \xA72.5 T4c"
+configs_tested:
+- name: xs_ewmac_top2_zroz_spysma200
+  pool:
+  - UPRO
+  - QLD
+  - UGL
+  - TMF
+  top_k: 2
+  off_asset: ZROZ
+  score_method: ewmac_composite
+  master_signal_asset: SPYSIM
+  master_signal_period: 200
+cumulative_n_trials_at_iter: 402
+datasets:
+- lh_56y
+- modern_1990
+- spy_real
+- ndx_real
+windows_used:
+  lh_56y: 1970-01-01..2026-04-30
+  modern_1990: 1990-01-01..2026-04-30
+  spy_real: 2003-01-01..2026-04-30
+  ndx_real: 2010-02-01..2026-04-30
+random_seed: 42

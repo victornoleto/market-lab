@@ -1,0 +1,272 @@
+{
+  "window": {
+    "start": "1994-05-05",
+    "end": "2026-04-17",
+    "years": 31.91269841269841,
+    "bars": 8042
+  },
+  "designs": {
+    "V1_NTSX_GDE_67_33": "67% NTSX_synth + 33% GDE; 2 ETFs; US-only",
+    "V3_1_PlanoC_v3.5": "11 ETFs; factor + global + 1.25\u00d7 via stacking",
+    "V_HYBRID_NTSX_replaces_AVUS": "V3_1 with 12% AVUS \u2192 12% NTSX_synth; 11 ETFs",
+    "V_HYBRID_SIMPLE_AVNM_proxy": "V_HYBRID with AVDE+AVEM \u2192 33% AVNM (VXUS proxy); 9 ETFs"
+  },
+  "metrics_full": {
+    "SPYSIM b&h": {
+      "name": "SPYSIM b&h",
+      "n_bars": 8042,
+      "sharpe": 0.6510711976563304,
+      "cagr": 0.11073035085869831,
+      "mdd": 0.5514127052677141,
+      "start": "1994-05-05",
+      "end": "2026-04-17",
+      "years": 31.91269841269841
+    },
+    "V1_NTSX_GDE_67_33": {
+      "name": "V1_NTSX_GDE_67_33",
+      "n_bars": 8042,
+      "sharpe": 0.8090077168235592,
+      "cagr": 0.13500669559484502,
+      "mdd": 0.4437190597917007,
+      "start": "1994-05-05",
+      "end": "2026-04-17",
+      "years": 31.91269841269841
+    },
+    "V3_1_PlanoC_v3.5": {
+      "name": "V3_1_PlanoC_v3.5",
+      "n_bars": 8042,
+      "sharpe": 0.671296024856678,
+      "cagr": 0.10937687882394109,
+      "mdd": 0.5243028919789763,
+      "start": "1994-05-05",
+      "end": "2026-04-17",
+      "years": 31.91269841269841
+    },
+    "V_HYBRID_NTSX_replaces_AVUS": {
+      "name": "V_HYBRID_NTSX_replaces_AVUS",
+      "n_bars": 8042,
+      "sharpe": 0.6854999855749535,
+      "cagr": 0.11055581286304372,
+      "mdd": 0.5128168980596188,
+      "start": "1994-05-05",
+      "end": "2026-04-17",
+      "years": 31.91269841269841
+    },
+    "V_HYBRID_SIMPLE_AVNM_proxy": {
+      "name": "V_HYBRID_SIMPLE_AVNM_proxy",
+      "n_bars": 8042,
+      "sharpe": 0.685993120794396,
+      "cagr": 0.10837666337793861,
+      "mdd": 0.5136367244873047,
+      "start": "1994-05-05",
+      "end": "2026-04-17",
+      "years": 31.91269841269841
+    }
+  },
+  "rolling": {
+    "10y": {
+      "V1_NTSX_GDE_67_33": {
+        "n_windows": 5523,
+        "cagr_mean": 0.11777575759975409,
+        "cagr_5pct": 0.05292827310725216,
+        "cagr_95pct": 0.16503518601621633,
+        "cagr_min": 0.011602587600229919,
+        "cagr_max": 0.1915705045031595,
+        "sharpe_mean": 0.734934065254642,
+        "mdd_mean": 0.3698443975401212,
+        "p_below_5pct": 0.04073872895165671
+      },
+      "V3_1_PlanoC_v3.5": {
+        "n_windows": 5523,
+        "cagr_mean": 0.09716667860381957,
+        "cagr_5pct": 0.0652289993899734,
+        "cagr_95pct": 0.13834416583486403,
+        "cagr_min": 0.025006864589662836,
+        "cagr_max": 0.17141179468802692,
+        "sharpe_mean": 0.6052690360864004,
+        "mdd_mean": 0.4210624478199321,
+        "p_below_5pct": 0.023537932283179432
+      },
+      "V_HYBRID_NTSX_replaces_AVUS": {
+        "n_windows": 5523,
+        "cagr_mean": 0.09924923968944549,
+        "cagr_5pct": 0.06935238005810304,
+        "cagr_95pct": 0.13941376791350912,
+        "cagr_min": 0.029157380904795138,
+        "cagr_max": 0.168968874168548,
+        "sharpe_mean": 0.6225404345276956,
+        "mdd_mean": 0.41036313948858877,
+        "p_below_5pct": 0.01828716277385479
+      },
+      "V_HYBRID_SIMPLE_AVNM_proxy": {
+        "n_windows": 5523,
+        "cagr_mean": 0.09582734373401458,
+        "cagr_5pct": 0.06097480276404539,
+        "cagr_95pct": 0.13502041704922782,
+        "cagr_min": 0.019621854703397723,
+        "cagr_max": 0.16832125467835124,
+        "sharpe_mean": 0.6155154750509754,
+        "mdd_mean": 0.41283889057586887,
+        "p_below_5pct": 0.030418250950570342
+      }
+    },
+    "20y": {
+      "V1_NTSX_GDE_67_33": {
+        "n_windows": 3003,
+        "cagr_mean": 0.1179387525677595,
+        "cagr_5pct": 0.09616590584890268,
+        "cagr_95pct": 0.14035782340393557,
+        "cagr_min": 0.0871739073187634,
+        "cagr_max": 0.1475429512428752,
+        "sharpe_mean": 0.7153421870919606,
+        "mdd_mean": 0.4437190597917006,
+        "p_below_5pct": 0.0
+      },
+      "V3_1_PlanoC_v3.5": {
+        "n_windows": 3003,
+        "cagr_mean": 0.09710371630936747,
+        "cagr_5pct": 0.08201834069710763,
+        "cagr_95pct": 0.11432277826372572,
+        "cagr_min": 0.06326414629792709,
+        "cagr_max": 0.11849902112762156,
+        "sharpe_mean": 0.5778077569410667,
+        "mdd_mean": 0.5243028919789757,
+        "p_below_5pct": 0.0
+      },
+      "V_HYBRID_NTSX_replaces_AVUS": {
+        "n_windows": 3003,
+        "cagr_mean": 0.09929570560697666,
+        "cagr_5pct": 0.08483805675716902,
+        "cagr_95pct": 0.11581481867436598,
+        "cagr_min": 0.06685097136528584,
+        "cagr_max": 0.12086015498961333,
+        "sharpe_mean": 0.5956009463685344,
+        "mdd_mean": 0.5128168980596195,
+        "p_below_5pct": 0.0
+      },
+      "V_HYBRID_SIMPLE_AVNM_proxy": {
+        "n_windows": 3003,
+        "cagr_mean": 0.09579898700598648,
+        "cagr_5pct": 0.080222236425907,
+        "cagr_95pct": 0.11304463051545688,
+        "cagr_min": 0.06262966419462734,
+        "cagr_max": 0.11628700231984412,
+        "sharpe_mean": 0.591463047290865,
+        "mdd_mean": 0.5136367244873044,
+        "p_below_5pct": 0.0
+      }
+    }
+  },
+  "stress_tests": {
+    "2000-2013_lost_decade": {
+      "V1_NTSX_GDE_67_33": {
+        "return": 1.75886131732384,
+        "mdd": -0.44371905979170057,
+        "n_bars": 3269
+      },
+      "V3_1_PlanoC_v3.5": {
+        "return": 1.622628242664034,
+        "mdd": -0.5243028919789767,
+        "n_bars": 3269
+      },
+      "V_HYBRID_NTSX_replaces_AVUS": {
+        "return": 1.7787851953037324,
+        "mdd": -0.5128168980596188,
+        "n_bars": 3269
+      },
+      "V_HYBRID_SIMPLE_AVNM_proxy": {
+        "return": 1.5435976847747268,
+        "mdd": -0.5136367244873044,
+        "n_bars": 3269
+      }
+    },
+    "2008_GFC": {
+      "V1_NTSX_GDE_67_33": {
+        "return": -0.3221185359883283,
+        "mdd": -0.44371905979170057,
+        "n_bars": 378
+      },
+      "V3_1_PlanoC_v3.5": {
+        "return": -0.41057114554201957,
+        "mdd": -0.5243028919789752,
+        "n_bars": 378
+      },
+      "V_HYBRID_NTSX_replaces_AVUS": {
+        "return": -0.39624091201439804,
+        "mdd": -0.5128168980596188,
+        "n_bars": 378
+      },
+      "V_HYBRID_SIMPLE_AVNM_proxy": {
+        "return": -0.4023458994250705,
+        "mdd": -0.5136367244873046,
+        "n_bars": 378
+      }
+    },
+    "2008_full_year": {
+      "V1_NTSX_GDE_67_33": {
+        "return": -0.26849627768548434,
+        "mdd": -0.43841734577975733,
+        "n_bars": 253
+      },
+      "V3_1_PlanoC_v3.5": {
+        "return": -0.3507272092360475,
+        "mdd": -0.5087760819382927,
+        "n_bars": 253
+      },
+      "V_HYBRID_NTSX_replaces_AVUS": {
+        "return": -0.3381635930149498,
+        "mdd": -0.5016663541115547,
+        "n_bars": 253
+      },
+      "V_HYBRID_SIMPLE_AVNM_proxy": {
+        "return": -0.3354285765470868,
+        "mdd": -0.4940584933009091,
+        "n_bars": 253
+      }
+    },
+    "2020_COVID": {
+      "V1_NTSX_GDE_67_33": {
+        "return": -0.07146753182689924,
+        "mdd": -0.29482929687071846,
+        "n_bars": 52
+      },
+      "V3_1_PlanoC_v3.5": {
+        "return": -0.14236276406487736,
+        "mdd": -0.33269512579962623,
+        "n_bars": 52
+      },
+      "V_HYBRID_NTSX_replaces_AVUS": {
+        "return": -0.135361724791492,
+        "mdd": -0.3258367889461231,
+        "n_bars": 52
+      },
+      "V_HYBRID_SIMPLE_AVNM_proxy": {
+        "return": -0.13651294148307191,
+        "mdd": -0.32802903662046046,
+        "n_bars": 52
+      }
+    },
+    "2022_rate_cycle": {
+      "V1_NTSX_GDE_67_33": {
+        "return": -0.22964330667903066,
+        "mdd": -0.2981281522720459,
+        "n_bars": 251
+      },
+      "V3_1_PlanoC_v3.5": {
+        "return": -0.1532550245199722,
+        "mdd": -0.2514504601332388,
+        "n_bars": 251
+      },
+      "V_HYBRID_NTSX_replaces_AVUS": {
+        "return": -0.1621010187868559,
+        "mdd": -0.25880886051120866,
+        "n_bars": 251
+      },
+      "V_HYBRID_SIMPLE_AVNM_proxy": {
+        "return": -0.1617239860972992,
+        "mdd": -0.25967423328279104,
+        "n_bars": 251
+      }
+    }
+  }
+}

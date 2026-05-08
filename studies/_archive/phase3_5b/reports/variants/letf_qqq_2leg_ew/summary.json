@@ -1,0 +1,70 @@
+{
+  "strategy": "Portfolio 2-leg EW (LETF+QQQ)",
+  "params": "weights=(1/2,1/2) rebalance=daily tax_per_leg=15%",
+  "window_start": "2001-05-14",
+  "window_end": "2026-04-14",
+  "initial_capital": 100000.0,
+  "tax_rate": 0.15,
+  "metrics": {
+    "strategy_name": "Portfolio 2-leg EW (LETF+QQQ)",
+    "params": "weights=(1/2,1/2) rebalance=daily tax_per_leg=15%",
+    "start": "2001-05-14T00:00:00",
+    "end": "2026-04-14T00:00:00",
+    "duration_days": 9101.0,
+    "exposure_time_pct": 1.0,
+    "equity_start": 100000.0,
+    "equity_final": 92077311.58007441,
+    "equity_peak": 92109336.43324418,
+    "return_pct": 919.7731158007441,
+    "return_ann_pct": 0.31510429610091073,
+    "volatility_ann_pct": 0.15157977673079664,
+    "cagr_pct": 0.3159169642352053,
+    "sharpe": 1.8878837028050532,
+    "sortino": 2.918542755508032,
+    "calmar": 2.1916673827103037,
+    "max_drawdown_pct": 0.1441445753709807,
+    "avg_drawdown_pct": 0.018593385179560256,
+    "max_drawdown_duration_days": 252.0,
+    "avg_drawdown_duration_days": 16.808163265306124,
+    "n_trades": 250.0,
+    "win_rate_pct": 0.852,
+    "best_trade_pct": 0.7987106693349542,
+    "worst_trade_pct": -0.07154150197880202,
+    "avg_trade_pct": 0.06684601740338669,
+    "max_trade_duration_days": 452.0,
+    "avg_trade_duration_days": 43.544,
+    "profit_factor": 21.834232324599366,
+    "expectancy_pct": 0.06684601740338669,
+    "sqn": 8.64505287992866,
+    "kelly": 0.8129787059451546
+  },
+  "spy_benchmark": {
+    "return_pct": 7.705617413137668,
+    "cagr_pct": 0.09094283463283137,
+    "max_drawdown_pct": 0.5520110457219888,
+    "sharpe": 0.552568973319736
+  },
+  "vs_spy": {
+    "excess_return_pct": 912.0674983876064,
+    "excess_cagr_pct": 0.22497412960237395,
+    "delta_max_dd_pct": -0.4078664703510081,
+    "information_ratio": 1.157590538150062,
+    "correlation": 0.6024817841806885,
+    "beta": 0.47975989061157504
+  },
+  "blend_meta": {
+    "pearson_full": 0.5551102242626877,
+    "dr_full": 1.12075141898306,
+    "dr_is": 1.1350077327242027,
+    "leg_names": [
+      "LETF_2x",
+      "QQQ"
+    ],
+    "weights": [
+      0.5,
+      0.5
+    ]
+  },
+  "n_trades": 250,
+  "n_bars": 6266
+}

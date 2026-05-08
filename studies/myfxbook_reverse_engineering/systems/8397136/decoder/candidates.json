@@ -1,0 +1,151 @@
+[
+  {
+    "rank": 1,
+    "miner": "ripper",
+    "rule_text": "RIPPER ruleset:\n[[hour_utc=<10.1^dollar_index_proxy=1.0^prior_bar_sign_H1=-1.0]]",
+    "match_rate_cv": 0.527431289640592,
+    "match_rate_std": 0.1715684549983594,
+    "coverage": 1.0,
+    "n_features": 1,
+    "p_value_corrected": NaN,
+    "extra": {
+      "fold_accs": [
+        0.7558139534883721,
+        0.5581395348837209,
+        0.23255813953488372,
+        0.4883720930232558,
+        0.6022727272727273
+      ]
+    }
+  },
+  {
+    "rank": 2,
+    "miner": "baseline",
+    "rule_text": "Always-Buy (y_buy mean = 0.4769); Always-Sell = 0.5231",
+    "match_rate_cv": 0.5231481481481481,
+    "match_rate_std": 0.0,
+    "coverage": 1.0,
+    "n_features": 0,
+    "p_value_corrected": NaN,
+    "extra": {
+      "buy_rate": 0.47685185185185186
+    }
+  },
+  {
+    "rank": 3,
+    "miner": "tree",
+    "rule_text": "DecisionTree(max_depth=4) \u2014 top features: hour_utc=0.53, ema_dist_20_H4=0.23, range_norm_M15=0.15, ret_3_H4=0.10\n\n|--- hour_utc <= 12.50\n|   |--- class: 1\n|--- hour_utc >  12.50\n|   |--- ema_dist_20_H4 <= -0.95\n|   |   |--- class: 0\n|   |--- ema_dist_20_H4 >  -0.95\n|   |   |--- range_norm_M15 <= 0.84\n|   |   |   |--- class: 1\n|   |   |--- range_norm_M15 >  0.84\n|   |   |   |--- ret_3_H4 <= -0.00\n|   |   |   |   |--- class: 1\n|   |   |   |--- ret_3_H4 >  -0.00\n|   |   |   |   |--- class: 0\n",
+    "match_rate_cv": 0.5114164904862579,
+    "match_rate_std": 0.04807296740758042,
+    "coverage": 1.0,
+    "n_features": 4,
+    "p_value_corrected": NaN,
+    "extra": {
+      "fold_accs": [
+        0.5348837209302325,
+        0.5465116279069767,
+        0.4186046511627907,
+        0.5116279069767442,
+        0.5454545454545454
+      ]
+    }
+  },
+  {
+    "rank": 4,
+    "miner": "univariate",
+    "rule_text": "bb_pos_20_2_M1 > -0.6534 \u21d2 Sell",
+    "match_rate_cv": 0.5370370370370371,
+    "match_rate_std": 0.0,
+    "coverage": 0.7962962962962963,
+    "n_features": 1,
+    "p_value_corrected": 1.0,
+    "extra": {
+      "raw_p": 0.06787049623780866,
+      "n_tests": 520
+    }
+  },
+  {
+    "rank": 5,
+    "miner": "univariate",
+    "rule_text": "range_norm_M15 > 0.8184 \u21d2 Sell",
+    "match_rate_cv": 0.5509259259259259,
+    "match_rate_std": 0.0,
+    "coverage": 0.6990740740740741,
+    "n_features": 1,
+    "p_value_corrected": 1.0,
+    "extra": {
+      "raw_p": 0.019219087788069675,
+      "n_tests": 520
+    }
+  },
+  {
+    "rank": 6,
+    "miner": "univariate",
+    "rule_text": "bb_pos_20_2_H4 > -0.1559 \u21d2 Buy",
+    "match_rate_cv": 0.5717592592592593,
+    "match_rate_std": 0.0,
+    "coverage": 0.5995370370370371,
+    "n_features": 1,
+    "p_value_corrected": 0.8555445739318168,
+    "extra": {
+      "raw_p": 0.0016452780267919554,
+      "n_tests": 520
+    }
+  },
+  {
+    "rank": 7,
+    "miner": "univariate",
+    "rule_text": "is_first_min_of_hour > 0 \u21d2 Sell",
+    "match_rate_cv": 0.5416666666666666,
+    "match_rate_std": 0.0,
+    "coverage": 0.5740740740740741,
+    "n_features": 1,
+    "p_value_corrected": 1.0,
+    "extra": {
+      "raw_p": 0.04603914496840865,
+      "n_tests": 520
+    }
+  },
+  {
+    "rank": 8,
+    "miner": "univariate",
+    "rule_text": "ret_3_H4 > 0.0001512 \u21d2 Buy",
+    "match_rate_cv": 0.5509259259259259,
+    "match_rate_std": 0.0,
+    "coverage": 0.5,
+    "n_features": 1,
+    "p_value_corrected": 1.0,
+    "extra": {
+      "raw_p": 0.019219087788069675,
+      "n_tests": 520
+    }
+  },
+  {
+    "rank": 9,
+    "miner": "univariate",
+    "rule_text": "ret_1_H4 > 4.482e-05 \u21d2 Buy",
+    "match_rate_cv": 0.5416666666666666,
+    "match_rate_std": 0.0,
+    "coverage": 0.5,
+    "n_features": 1,
+    "p_value_corrected": 1.0,
+    "extra": {
+      "raw_p": 0.04603914496840865,
+      "n_tests": 520
+    }
+  },
+  {
+    "rank": 10,
+    "miner": "univariate",
+    "rule_text": "ema_dist_20_H4 > 0.5305 \u21d2 Buy",
+    "match_rate_cv": 0.5833333333333334,
+    "match_rate_std": 0.0,
+    "coverage": 0.39814814814814814,
+    "n_features": 1,
+    "p_value_corrected": 0.16097622057046368,
+    "extra": {
+      "raw_p": 0.0003095696549431994,
+      "n_tests": 520
+    }
+  }
+]

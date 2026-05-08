@@ -1,0 +1,30 @@
+{
+  "system_id": 8574205,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-martigrid-multipairs-fm-real/8574205",
+  "name": "Happy MartiGrid (Multipairs) FM - REAL Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+591.00%",
+    "absolute_gain": "+105.01%",
+    "daily": "0.11%",
+    "monthly": "3.32%",
+    "drawdown": "22.47%",
+    "balance": "$13,650.85",
+    "equity": "(91.85%) $12,538.78",
+    "highest": "(May 01) $13,650.85",
+    "profit": "$13,650.85",
+    "interest": "$0.00",
+    "deposits": "$13,000.00",
+    "withdrawals": "$13,000.00",
+    "updated": "8 hours ago",
+    "tracking": "13"
+  },
+  "account": {
+    "raw": "Real (USD), ForexMart , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "ForexMart",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/forexmart/1065344,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

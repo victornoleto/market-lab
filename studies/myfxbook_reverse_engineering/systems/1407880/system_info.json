@@ -1,0 +1,30 @@
+{
+  "system_id": 1407880,
+  "url": "https://www.myfxbook.com/members/HappyForex/old-happy-market-hours-v231/1407880",
+  "name": "OLD Happy Market Hours v2.3.1 Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+4,550.23%",
+    "absolute_gain": "+644.65%",
+    "daily": "0.08%",
+    "monthly": "4.13%",
+    "drawdown": "10.16%",
+    "balance": "$341,078.78",
+    "equity": "(100.00%) $341,078.78",
+    "highest": "(Jun 16) $341,366.51",
+    "profit": "$295,274.98",
+    "interest": "-$29,536.85",
+    "deposits": "$45,803.80",
+    "withdrawals": "$0.00",
+    "updated": "Jul 11, 2021 at 22:51",
+    "tracking": "152"
+  },
+  "account": {
+    "raw": "Demo (USD), Fort Financial Services , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Demo",
+    "currency": "USD",
+    "broker": "Fort Financial Services",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/fort-financial-services/814372,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "system_id": 10224499,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-market-hours-fm-real/10224499",
+  "name": "Happy Market Hours FM - REAL Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "-50.00%",
+    "absolute_gain": "-50.00%",
+    "daily": "-0.06%",
+    "monthly": "-1.85%",
+    "drawdown": "52.89%",
+    "balance": "$50.00",
+    "equity": "(100.00%) $50.00",
+    "highest": "(Jun 19) $101.02",
+    "profit": "-$50.00",
+    "interest": "$0.00",
+    "deposits": "$100.00",
+    "withdrawals": "$0.00",
+    "updated": "7 hours ago",
+    "tracking": "0"
+  },
+  "account": {
+    "raw": "Real (USD), ForexMart , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "ForexMart",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/forexmart/1065344,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "task_id": "008-fase1-document",
+  "status": "DONE",
+  "started_utc": "2026-05-04T10:53:21Z",
+  "completed_utc": "2026-05-04T10:55:23Z",
+  "files_created": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/008-fase1-document/PRE_REG.md",
+    "studies/myfxbook_reverse_engineering/_diagnostics/PIPELINE_V4_FASE1_REPORT.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/008-fase1-document/run.log",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/008-fase1-document/RESULTS.json",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/008-fase1-document/SUMMARY.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/iterations/008-fase1-document/CORRECTION.md",
+    "jornada/2026-05-04-1053-myfxbook-v4-fase1-complete.md"
+  ],
+  "files_modified": [
+    "studies/myfxbook_reverse_engineering/v4_redesign/PROGRESS.md",
+    "studies/myfxbook_reverse_engineering/v4_redesign/next_prompt.md",
+    "jornada/README.md"
+  ],
+  "tests_added": [],
+  "tests_passing": 15,
+  "tests_total": 15,
+  "metrics": {
+    "n_systems_total": 55,
+    "n_pre_screen_pass": 21,
+    "n_pre_screen_stop": 27,
+    "n_failed_frozen_rules_missing": 7,
+    "adversarial_auc_lt_065_count": 0,
+    "mandate_24_pass_count": 0,
+    "n_fase2_eligible_survivors": 0,
+    "pre_screen_go_systems": [
+      "10062918",
+      "10067081",
+      "10249298",
+      "10281851",
+      "10563761",
+      "10734338",
+      "11155858",
+      "11206045",
+      "11207608",
+      "1152318",
+      "11628637",
+      "1407880",
+      "1612420",
+      "2421356",
+      "6541963",
+      "8577442",
+      "8647517",
+      "9375654",
+      "9830783",
+      "9841939",
+      "9912554"
+    ],
+    "fase2_eligible_survivors": [],
+    "survivors": [],
+    "decision_gate_fase1": "STOP"
+  },
+  "notes": "Fase 1 documentada como STOP para Fase 2A: 21 pre-screen GO audit-only, zero fase2_eligible_survivors sob adversarial+mandate_24. Correcao pos-validacao: PROGRESS.md bloqueia 009-014 para impedir elegibilidade automatica."
+}

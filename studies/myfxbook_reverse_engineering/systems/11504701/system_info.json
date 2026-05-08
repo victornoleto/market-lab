@@ -1,0 +1,30 @@
+{
+  "system_id": 11504701,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-news-dprime/11504701",
+  "name": "Happy News - DPrime Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+16,425.52%",
+    "absolute_gain": "-177.46%",
+    "daily": "0.77%",
+    "monthly": "25.75%",
+    "drawdown": "8.26%",
+    "balance": "$66,213.29",
+    "equity": "(100.00%) $66,213.29",
+    "highest": "(Feb 13) $144,294.45",
+    "profit": "$151,692.85",
+    "interest": "$0.00",
+    "deposits": "$1,000.00",
+    "withdrawals": "$0.00",
+    "updated": "7 hours ago",
+    "tracking": "4"
+  },
+  "account": {
+    "raw": "Real (USD), D Prime , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "D Prime",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/d-prime/1812447,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

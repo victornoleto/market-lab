@@ -1,0 +1,30 @@
+{
+  "system_id": 10746260,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-news-um/10746260",
+  "name": "Happy News - UM Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+1,174.99%",
+    "absolute_gain": "+803.95%",
+    "daily": "0.24%",
+    "monthly": "21.55%",
+    "drawdown": "17.84%",
+    "balance": "$1,539.54",
+    "equity": "(100.00%) $1,539.54",
+    "highest": "(Feb 27) $8,529.99",
+    "profit": "$8,039.54",
+    "interest": "$0.00",
+    "deposits": "$1,000.00",
+    "withdrawals": "$7,500.00",
+    "updated": "Jun 19, 2024 at 17:01",
+    "tracking": "33"
+  },
+  "account": {
+    "raw": "Real (USD), Ultima Markets , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Ultima Markets",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/ultima-markets/3039967,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "system_id": 9607500,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-breakout-vtmarkets/9607500",
+  "name": "Happy Breakout VTMarkets Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+958.65%",
+    "absolute_gain": "+958.65%",
+    "daily": "0.16%",
+    "monthly": "4.94%",
+    "drawdown": "36.36%",
+    "balance": "$52,932.62",
+    "equity": "(100.00%) $52,932.62",
+    "highest": "(Nov 14) $67,405.80",
+    "profit": "$47,932.62",
+    "interest": "$179.85",
+    "deposits": "$5,000.00",
+    "withdrawals": "$0.00",
+    "updated": "8 hours ago",
+    "tracking": "33"
+  },
+  "account": {
+    "raw": "Real (USD), VT Markets , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "VT Markets",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/vt-markets/1612970,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

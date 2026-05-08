@@ -1,0 +1,30 @@
+{
+  "system_id": 2123808,
+  "url": "https://www.myfxbook.com/members/HappyForex/old-happy-way-v12-real/2123808",
+  "name": "OLD Happy Way v1.2 - REAL Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+44.79%",
+    "absolute_gain": "+44.79%",
+    "daily": "0.01%",
+    "monthly": "0.75%",
+    "drawdown": "32.31%",
+    "balance": "$43,041.43",
+    "equity": "(88.22%) $37,970.52",
+    "highest": "(May 28) $44,010.74",
+    "profit": "$13,315.43",
+    "interest": "$0.00",
+    "deposits": "$29,726.00",
+    "withdrawals": "$0.00",
+    "updated": "Jun 16, 2021 at 18:07",
+    "tracking": "20"
+  },
+  "account": {
+    "raw": "Real (USD), Fort Financial Services , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Fort Financial Services",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/fort-financial-services/814372,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "system_id": 612872,
+  "url": "https://www.myfxbook.com/members/HappyForex/old-happy-martigrid-v191-real/612872",
+  "name": "OLD Happy MartiGrid v1.9.1 - REAL Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+237.18%",
+    "absolute_gain": "+148.10%",
+    "daily": "0.03%",
+    "monthly": "1.26%",
+    "drawdown": "22.31%",
+    "balance": "$118,302.63",
+    "equity": "(100.00%) $118,302.63",
+    "highest": "(Jun 02) $228,561.44",
+    "profit": "$190,006.53",
+    "interest": "$0.00",
+    "deposits": "$158,323.36",
+    "withdrawals": "$200,000.49",
+    "updated": "Jun 18, 2021 at 07:29",
+    "tracking": "159"
+  },
+  "account": {
+    "raw": "Real (USD), Fort Financial Services , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Fort Financial Services",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/fort-financial-services/814372,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

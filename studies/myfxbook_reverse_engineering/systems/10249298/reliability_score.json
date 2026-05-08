@@ -1,0 +1,29 @@
+{
+  "system_id": "10249298",
+  "reliability": 0.6744458486977072,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 0.5428571428571427,
+    "family_clarity": 0.38,
+    "timing_concentration": 0.6892857142857143,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.9987442012627854,
+    "vendor_quality": 0.75,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "UNCATEGORIZED",
+  "confidence": 0.38,
+  "n_trades": 280,
+  "n_pairs": 1,
+  "last_trade_date": "2026-04-29 21:45:21+00:00",
+  "account_type": "Real",
+  "name": "Happy Trend FM - REAL Forex Trading System by Forex Trader H",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 439.0514483451843,
+  "band_rank": 0,
+  "dir_pred": 0.5428571428571427,
+  "timing_conc": 0.6892857142857143,
+  "age_fresh": 0.9987442012627854
+}

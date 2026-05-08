@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "phase": "phase_3_5e",
+  "lead_id": "c05",
+  "lead_slug": "c05_mom12mo_abs_momentum",
+  "lead_title": "Absolute momentum 12-month (Antonacci) \u2014 3 off-legs \u00d7 4 LETFs [dual_momentum, ch.6]",
+  "citations_seed": [
+    "dual_momentum, ch.6",
+    "advances_fin_ml, p.208-211"
+  ],
+  "started_at": "2026-04-21T19:12:52+00:00",
+  "last_updated_at": "2026-04-21T19:44:35Z",
+  "configs": [
+    {
+      "name": "c05_mom12mo_cash",
+      "type": "abs_momentum",
+      "lookback_months": 12,
+      "signal_asset": "self",
+      "off_leg": "cash",
+      "rebal_freq": "monthly",
+      "citation": "dual_momentum, ch.6"
+    },
+    {
+      "name": "c05_mom12mo_gld",
+      "type": "abs_momentum",
+      "lookback_months": 12,
+      "signal_asset": "self",
+      "off_leg": "GLD",
+      "rebal_freq": "monthly",
+      "citation": "dual_momentum, ch.6"
+    },
+    {
+      "name": "c05_mom12mo_tlt",
+      "type": "abs_momentum",
+      "lookback_months": 12,
+      "signal_asset": "self",
+      "off_leg": "TLT",
+      "rebal_freq": "monthly",
+      "citation": "dual_momentum, ch.6"
+    }
+  ],
+  "tickers_pending": [],
+  "tickers_done": [
+    {
+      "ticker": "QLD",
+      "frequency": "daily",
+      "window_start": "2004-11-18",
+      "window_end": "2026-04-15",
+      "iter": 36,
+      "n_configs_tested": 3,
+      "best_config": "c05_mom12mo_gld",
+      "best_sharpe_oos": 0.45661816851801273,
+      "best_cagr": 0.18661478714627022,
+      "best_maxdd": -0.523660749106746,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c05_mom12mo_abs_momentum/QLD.md",
+      "result_file_json": "reports/phase_3_5e/c05_mom12mo_abs_momentum/QLD.json"
+    },
+    {
+      "ticker": "SSO",
+      "frequency": "daily",
+      "window_start": "2004-11-18",
+      "window_end": "2026-04-15",
+      "iter": 37,
+      "n_configs_tested": 3,
+      "best_config": "c05_mom12mo_gld",
+      "best_sharpe_oos": 0.5207105063308717,
+      "best_cagr": 0.1557333506366958,
+      "best_maxdd": -0.5934105720502095,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c05_mom12mo_abs_momentum/SSO.md",
+      "result_file_json": "reports/phase_3_5e/c05_mom12mo_abs_momentum/SSO.json"
+    },
+    {
+      "ticker": "TQQQ",
+      "frequency": "daily",
+      "window_start": "2004-11-18",
+      "window_end": "2026-04-15",
+      "iter": 38,
+      "n_configs_tested": 3,
+      "best_config": "c05_mom12mo_gld",
+      "best_sharpe_oos": 0.44704114612831375,
+      "best_cagr": 0.20499988161927152,
+      "best_maxdd": -0.7927110370188217,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c05_mom12mo_abs_momentum/TQQQ.md",
+      "result_file_json": "reports/phase_3_5e/c05_mom12mo_abs_momentum/TQQQ.json"
+    },
+    {
+      "ticker": "UPRO",
+      "frequency": "daily",
+      "window_start": "2004-11-18",
+      "window_end": "2026-04-15",
+      "iter": 39,
+      "n_configs_tested": 3,
+      "best_config": "c05_mom12mo_gld",
+      "best_sharpe_oos": 0.4797291386090833,
+      "best_cagr": 0.16159376504635858,
+      "best_maxdd": -0.8313116596579475,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c05_mom12mo_abs_momentum/UPRO.md",
+      "result_file_json": "reports/phase_3_5e/c05_mom12mo_abs_momentum/UPRO.json"
+    }
+  ],
+  "tickers_errored": [],
+  "status": "done",
+  "aggregation_iter": 40,
+  "aggregate_file_md": "reports/phase_3_5e/c05_mom12mo_abs_momentum/AGGREGATE.md",
+  "aggregate_jornada": "jornada/2026-04-21-1644-c05-mom12mo-dead.md"
+}

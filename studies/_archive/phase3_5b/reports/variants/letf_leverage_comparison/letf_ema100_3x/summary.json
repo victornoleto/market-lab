@@ -1,0 +1,117 @@
+{
+  "strategy": "LETF Rotation EMA100/0%/3x synthetic",
+  "params": "filter=EMA lookback=100 band=0.00 leverage=3.00 off=CASH annual_fee=0.010 tax=0.15 synthetic_formula=gayed_p16",
+  "window_start": "1970-01-02",
+  "window_end": "2026-04-14",
+  "initial_capital": 100000.0,
+  "tax_rate": 0.15,
+  "leverage": 3.0,
+  "leverage_slug": "3x",
+  "synthetic": true,
+  "metrics": {
+    "strategy_name": "LETF Rotation EMA100/0%/3x synthetic",
+    "params": "filter=EMA lookback=100 band=0.00 leverage=3.00 off=CASH annual_fee=0.010 tax=0.15 synthetic_formula=gayed_p16",
+    "start": "1970-01-02T00:00:00",
+    "end": "2026-04-14T00:00:00",
+    "duration_days": 20556.0,
+    "exposure_time_pct": 0.7265168064266084,
+    "equity_start": 100000.0,
+    "equity_final": 3.706596857194077e+18,
+    "equity_peak": 3.706596857194077e+18,
+    "return_pct": 37065968571939.77,
+    "return_ann_pct": 0.7422112342978981,
+    "volatility_ann_pct": 0.3171994663384757,
+    "cagr_pct": 0.741691500543274,
+    "sharpe": 1.9095333767985783,
+    "sortino": 2.9800156623118066,
+    "calmar": 2.606937006177753,
+    "max_drawdown_pct": 0.2845068748441795,
+    "avg_drawdown_pct": 0.040472881815702404,
+    "max_drawdown_duration_days": 411.0,
+    "avg_drawdown_duration_days": 17.914480077745385,
+    "n_trades": 296.0,
+    "win_rate_pct": 1.0,
+    "best_trade_pct": 2.780927161157245,
+    "worst_trade_pct": 0.0021074457659526757,
+    "avg_trade_pct": 0.16004007378524882,
+    "max_trade_duration_days": 565.0,
+    "avg_trade_duration_days": 49.11824324324324,
+    "profit_factor": Infinity,
+    "expectancy_pct": 0.16004007378524882,
+    "sqn": 8.559168145069156,
+    "kelly": 0.0
+  },
+  "spy_benchmark": {
+    "return_pct": 7.705617413137668,
+    "cagr_pct": 0.09094283463283137,
+    "max_drawdown_pct": 0.5520110457219888,
+    "sharpe": 0.552568973319736
+  },
+  "vs_spy": {
+    "excess_return_pct": 1437979.6672915153,
+    "excess_cagr_pct": 0.677887793711784,
+    "delta_max_dd_pct": -0.28532719128157324,
+    "information_ratio": 1.9633896583150117,
+    "correlation": 0.5899402168507812,
+    "beta": 1.0152755940333644
+  },
+  "wf_maxdd": [
+    {
+      "window": "WF1",
+      "start": "1970-01-02",
+      "end": "1977-12-30",
+      "n_bars": 2021,
+      "maxdd_pct": -0.28450687484417947
+    },
+    {
+      "window": "WF2",
+      "start": "1978-01-02",
+      "end": "1985-12-31",
+      "n_bars": 2022,
+      "maxdd_pct": -0.2719814068324644
+    },
+    {
+      "window": "WF3",
+      "start": "1986-01-02",
+      "end": "1993-12-31",
+      "n_bars": 2024,
+      "maxdd_pct": -0.2332141415414709
+    },
+    {
+      "window": "WF4",
+      "start": "1994-01-03",
+      "end": "2001-12-31",
+      "n_bars": 2015,
+      "maxdd_pct": -0.24494965536240743
+    },
+    {
+      "window": "WF5",
+      "start": "2002-01-02",
+      "end": "2009-12-31",
+      "n_bars": 2015,
+      "maxdd_pct": -0.19392598144152318
+    },
+    {
+      "window": "WF6",
+      "start": "2010-01-04",
+      "end": "2017-12-29",
+      "n_bars": 2013,
+      "maxdd_pct": -0.22165283525894386
+    },
+    {
+      "window": "WF7",
+      "start": "2018-01-02",
+      "end": "2025-12-31",
+      "n_bars": 2011,
+      "maxdd_pct": -0.26668385444041554
+    },
+    {
+      "window": "WF8",
+      "start": "2026-01-02",
+      "end": "2026-04-14",
+      "n_bars": 70,
+      "maxdd_pct": -0.1263503710824201
+    }
+  ],
+  "n_trades": 296
+}

@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "phase": "phase_3_5e",
+  "lead_id": "c03",
+  "lead_slug": "c03_ema100_tlt",
+  "lead_title": "Binary EMA100 regime filter + TLT off-leg \u2014 Gayed TLT variant [leverage_for_the_long_run, p.31]",
+  "citations_seed": [
+    "leverage_for_the_long_run, p.31",
+    "advances_fin_ml, p.208-211"
+  ],
+  "started_at": "2026-04-21T18:39:45+00:00",
+  "last_updated_at": "2026-04-21T19:03:06+00:00",
+  "configs": [
+    {
+      "name": "c03_ema100_tlt",
+      "type": "binary_ma",
+      "ma_type": "EMA",
+      "ma_period": 100,
+      "signal_asset": "SPY",
+      "off_leg": "TLT",
+      "citation": "leverage_for_the_long_run, p.31"
+    }
+  ],
+  "tickers_pending": [],
+  "tickers_done": [
+    {
+      "ticker": "QLD",
+      "frequency": "daily",
+      "window_start": "2002-07-26",
+      "window_end": "2026-04-15",
+      "iter": 30,
+      "n_configs_tested": 1,
+      "best_config": "c03_ema100_tlt",
+      "best_sharpe_oos": 0.17518881117725038,
+      "best_cagr": 0.14146137525342128,
+      "best_maxdd": -0.6482996489916638,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c03_ema100_tlt/QLD.md",
+      "result_file_json": "reports/phase_3_5e/c03_ema100_tlt/QLD.json"
+    },
+    {
+      "ticker": "SSO",
+      "frequency": "daily",
+      "window_start": "2002-07-26",
+      "window_end": "2026-04-15",
+      "iter": 31,
+      "n_configs_tested": 1,
+      "best_config": "c03_ema100_tlt",
+      "best_sharpe_oos": 0.11797070493453388,
+      "best_cagr": 0.08463407781264753,
+      "best_maxdd": -0.5791424301502205,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c03_ema100_tlt/SSO.md",
+      "result_file_json": "reports/phase_3_5e/c03_ema100_tlt/SSO.json"
+    },
+    {
+      "ticker": "TQQQ",
+      "frequency": "daily",
+      "window_start": "2002-07-26",
+      "window_end": "2026-04-15",
+      "iter": 32,
+      "n_configs_tested": 1,
+      "best_config": "c03_ema100_tlt",
+      "best_sharpe_oos": 0.25096374283346984,
+      "best_cagr": 0.17948410152877248,
+      "best_maxdd": -0.7631256068996841,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c03_ema100_tlt/TQQQ.md",
+      "result_file_json": "reports/phase_3_5e/c03_ema100_tlt/TQQQ.json"
+    },
+    {
+      "ticker": "UPRO",
+      "frequency": "daily",
+      "window_start": "2002-07-26",
+      "window_end": "2026-04-15",
+      "iter": 33,
+      "n_configs_tested": 1,
+      "best_config": "c03_ema100_tlt",
+      "best_sharpe_oos": 0.21147245781384294,
+      "best_cagr": 0.10389740031092631,
+      "best_maxdd": -0.6846685834724837,
+      "any_pass_5gate": false,
+      "pbo_local": NaN,
+      "result_file_md": "reports/phase_3_5e/c03_ema100_tlt/UPRO.md",
+      "result_file_json": "reports/phase_3_5e/c03_ema100_tlt/UPRO.json"
+    }
+  ],
+  "tickers_errored": [],
+  "status": "done",
+  "aggregation_iter": 34,
+  "aggregate_file_md": "reports/phase_3_5e/c03_ema100_tlt/AGGREGATE.md",
+  "aggregate_jornada": "jornada/2026-04-21-1640-c03-ema100-tlt-dead.md",
+  "aggregate_verdict": "DEAD — 0/4 pre-pass",
+  "aggregate_note": "c04 sma200_shv SKIPPED (SHV not in reference_prices.parquet). Next: c05 mom12mo."
+}

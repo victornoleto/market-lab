@@ -1,0 +1,30 @@
+{
+  "system_id": 9375654,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-gold-tmgm-m30/9375654",
+  "name": "Happy Gold - TMGM (M30) Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+4,795.33%",
+    "absolute_gain": "+676.73%",
+    "daily": "0.24%",
+    "monthly": "7.44%",
+    "drawdown": "21.52%",
+    "balance": "$24,835.45",
+    "equity": "(100.00%) $24,835.45",
+    "highest": "(Apr 30) $24,835.45",
+    "profit": "$39,835.45",
+    "interest": "$0.00",
+    "deposits": "$11,862.93",
+    "withdrawals": "$20,886.46",
+    "updated": "5 hours ago",
+    "tracking": "173"
+  },
+  "account": {
+    "raw": "Real (USD), TMGM , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "TMGM",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/tmgm/1576894,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

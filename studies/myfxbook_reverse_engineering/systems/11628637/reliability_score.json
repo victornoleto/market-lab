@@ -1,0 +1,29 @@
+{
+  "system_id": "11628637",
+  "reliability": 0.7756879208232035,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 1.0,
+    "family_clarity": 0.62,
+    "timing_concentration": 0.38362068965517243,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.9996378289216895,
+    "vendor_quality": 0.75,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "FACTOR_SCALPING",
+  "confidence": 0.62,
+  "n_trades": 232,
+  "n_pairs": 1,
+  "last_trade_date": "2026-05-01 15:34:00+00:00",
+  "account_type": "Real",
+  "name": "Happy Bitcoin - VM Forex Trading System by Forex Trader Happ",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 266.5293879508972,
+  "band_rank": 0,
+  "dir_pred": 1.0,
+  "timing_conc": 0.38362068965517243,
+  "age_fresh": 0.9996378289216895
+}

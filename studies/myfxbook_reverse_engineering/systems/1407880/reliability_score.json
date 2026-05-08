@@ -1,0 +1,29 @@
+{
+  "system_id": "1407880",
+  "reliability": 0.7296776042613479,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 0.6533333333333333,
+    "family_clarity": 0.72,
+    "timing_concentration": 0.9996973365617433,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.02404803615665896,
+    "vendor_quality": 0.7,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "LATE_NY_BREAKOUT",
+  "confidence": 0.72,
+  "n_trades": 3304,
+  "n_pairs": 6,
+  "last_trade_date": "2021-06-16 00:46:00+00:00",
+  "account_type": "Demo",
+  "name": "OLD Happy Market Hours v2.3.1 Forex Trading System by Forex ",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 0.028826236724853516,
+  "band_rank": 0,
+  "dir_pred": 0.6533333333333333,
+  "timing_conc": 0.9996973365617433,
+  "age_fresh": 0.02404803615665896
+}

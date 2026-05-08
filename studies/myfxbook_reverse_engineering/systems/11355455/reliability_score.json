@@ -1,0 +1,29 @@
+{
+  "system_id": "11355455",
+  "reliability": 0.743519487703644,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 1.0,
+    "family_clarity": 0.52,
+    "timing_concentration": 0.326271186440678,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.9990084363584728,
+    "vendor_quality": 0.75,
+    "pair_coverage": 0.9872881355932204
+  },
+  "notes": [],
+  "family": "FACTOR_SCALPING",
+  "confidence": 0.52,
+  "n_trades": 236,
+  "n_pairs": 2,
+  "last_trade_date": "2026-04-30 11:04:37+00:00",
+  "account_type": "Real",
+  "name": "Happy Gold - DooPrime Forex Trading System by Forex Trader H",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 232.5250208377838,
+  "band_rank": 0,
+  "dir_pred": 1.0,
+  "timing_conc": 0.326271186440678,
+  "age_fresh": 0.9990084363584728
+}

@@ -1,0 +1,66 @@
+{
+  "iteration": "004-carry-trend-fx-data-gate",
+  "status": "inconclusive",
+  "hypothesis": "Carry/Trend FX data gate",
+  "pre_registered": true,
+  "universe": [
+    "EURUSD",
+    "GBPUSD",
+    "USDJPY",
+    "USDCHF",
+    "USDCAD",
+    "AUDUSD",
+    "NZDUSD"
+  ],
+  "frequencies": [
+    "D1"
+  ],
+  "cost_scenarios": [
+    "base",
+    "conservative",
+    "stress"
+  ],
+  "baselines": {},
+  "strategy_results": {},
+  "gates": {
+    "data_reliability": {
+      "status": "FAIL",
+      "reason": "No reliable historical carry/rates dataset for EUR, GBP, USD, JPY, CHF, CAD, AUD and NZD was available and documented before backtest. Strategy not tested."
+    },
+    "cost_stress": {
+      "status": "NOT_RUN",
+      "reason": "Blocked by data reliability gate."
+    },
+    "oos_single_block": {
+      "status": "NOT_RUN",
+      "reason": "Blocked by data reliability gate."
+    },
+    "bootstrap_full": {
+      "status": "NOT_RUN",
+      "reason": "Blocked by data reliability gate."
+    },
+    "bootstrap_oos": {
+      "status": "NOT_RUN",
+      "reason": "Blocked by data reliability gate."
+    },
+    "pbo": {
+      "status": "NOT_APPLICABLE",
+      "reason": "No config selection was run."
+    },
+    "no_single_asset_winner": {
+      "status": "PASS",
+      "reason": "No winner declared; no single-asset result used."
+    }
+  },
+  "kill_switches": [
+    "K1_NO_RELIABLE_CARRY_DATA"
+  ],
+  "n_trials": 0,
+  "artifacts": [
+    "PRE_REG.md",
+    "DATA_GATE.md",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "notes": "Research-only. Carry/Trend FX was not backtested because reliable rates/carry data were not available before the test. No paper/live, no winner."
+}

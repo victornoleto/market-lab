@@ -1,0 +1,102 @@
+{
+  "ticker": "SSO",
+  "frequency": "daily",
+  "phase": "phase_3_5e",
+  "lead_id": "c03",
+  "lead_slug": "c03_ema100_tlt",
+  "iter": 31,
+  "source": "reference_prices.parquet (Stage 1, synthetic pre-2006 SSO)",
+  "config": {
+    "name": "c03_ema100_tlt",
+    "off_leg": "TLT",
+    "window_start": "2002-07-26",
+    "window_end": "2026-04-15",
+    "window_years": 23.71252566735113,
+    "n_bars": 5967,
+    "metrics_is": {
+      "cagr": 0.08463407781264753,
+      "cagr_net": 0.0719389661407504,
+      "sharpe": 0.4571730886210512,
+      "sharpe_net": 0.38859712532789353,
+      "max_dd": -0.5791424301502205,
+      "calmar": 0.14613689725806273
+    },
+    "wf": {
+      "sharpes": [
+        0.31260376865954953,
+        -0.3525731893791277,
+        0.796381846811305,
+        0.8698069845382478,
+        0.25637879991409646,
+        0.4861350234291908,
+        0.10281799367907148,
+        1.002722166218035
+      ],
+      "positive": 7,
+      "total": 8,
+      "pass": true
+    },
+    "oos": {
+      "is_sharpe": 0.5429524830285967,
+      "oos_sharpe": 0.11797070493453388,
+      "oos_pass": false,
+      "is_start": "2002-07-29",
+      "is_end": "2021-07-13",
+      "oos_start": "2021-07-14",
+      "oos_end": "2026-04-15"
+    },
+    "fwd": {
+      "fwd_sharpe": -0.17151304117271501,
+      "fwd_pass": false,
+      "fwd_start": "2026-01-14",
+      "fwd_end": "2026-04-15"
+    },
+    "spy_benchmark": {
+      "spy_cagr_gross": 0.0926610023562533,
+      "spy_cagr_net": 0.0787618520028153,
+      "spy_sharpe": 0.563528383127185,
+      "spy_max_dd": -0.5647366900495063,
+      "corr_vs_spy": 0.43609578925587256
+    },
+    "dsr": {
+      "dsr": 0.6434047551851398,
+      "p_value": 0.35659524481486016,
+      "pass": false,
+      "n_trials_used": 18
+    },
+    "gates": {
+      "gate1_pbo": "AGGREGATE_LEVEL",
+      "gate2_dsr": false,
+      "gate3_wf": true,
+      "gate4_oos": false,
+      "gate5_fwd": false,
+      "overfit_pass_no_pbo": false,
+      "eco1_beats_spy": false,
+      "eco2_calmar": false,
+      "eco3_sharpe_net": false,
+      "eco_pass": false,
+      "pre_pass_pending_pbo": false,
+      "fail_reason": "DSR, OOS, FWD, SPY_BEAT, CALMAR, SHARPE_NET"
+    },
+    "stage2": {
+      "note": "Tiingo SSO data unavailable or too short"
+    }
+  },
+  "best_config": "c03_ema100_tlt",
+  "any_prepass_pending_pbo": false,
+  "best_sharpe_oos": 0.11797070493453388,
+  "best_cagr": 0.08463407781264753,
+  "best_maxdd": -0.5791424301502205,
+  "cross_lib_bt": {
+    "bt_cagr": 0.09808160184584835,
+    "bt_sharpe": 0.5078559654583662
+  },
+  "stage2": null,
+  "citations": [
+    "leverage_for_the_long_run, p.31",
+    "leverage_for_the_long_run, ch.2",
+    "advances_fin_ml, p.208-211",
+    "advances_fin_ml, p.298-299"
+  ],
+  "generated_at": "2026-04-21T18:51:13.178940+00:00"
+}

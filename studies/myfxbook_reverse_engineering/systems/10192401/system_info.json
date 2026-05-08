@@ -1,0 +1,30 @@
+{
+  "system_id": 10192401,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-bitcoin-tmgm/10192401",
+  "name": "Happy Bitcoin - TMGM Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+113.74%",
+    "absolute_gain": "+113.74%",
+    "daily": "0.06%",
+    "monthly": "3.68%",
+    "drawdown": "36.95%",
+    "balance": "$10,688.57",
+    "equity": "(100.00%) $10,688.57",
+    "highest": "(Oct 30) $13,222.52",
+    "profit": "$5,687.77",
+    "interest": "-$80.58",
+    "deposits": "$5,000.80",
+    "withdrawals": "$0.00",
+    "updated": "Aug 03, 2024 at 21:12",
+    "tracking": "15"
+  },
+  "account": {
+    "raw": "Real (USD), TMGM , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "TMGM",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/tmgm/1576894,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

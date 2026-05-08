@@ -1,0 +1,21 @@
+iter: "010-2026-05-06-T2f-half-off-explicit"
+tier: "T2f"
+hypothesis: "Half-off explicit variant on T2-best basket (HFEA-NDX TQQQ+TMF 55/45). Half-off mode keeps bond sleeve at full weight when signal=0; tests whether residual bond exposure during equity OFF improves Sharpe vs full-off cash."
+primary_citation: "[risk_parity, ch.5, p.10]; spec §2.3 T2f"
+configs_tested:
+  - name: "hfea_ndx_tqqq_tmf_55_45_half_off"
+    on_basket: {TQQQ: 0.55, TMF: 0.45}
+    off_asset: "BIL"
+    off_mode: "half_off"
+    bond_sleeve_assets: ["TMF"]
+    signal_asset: "TQQQ"
+    signal: "sma"
+    period: 200
+datasets: ["lh_56y", "modern_1990", "spy_real", "ndx_real"]
+windows_used:
+  lh_56y:      "1970-01-01..2026-04-30"
+  modern_1990: "1990-01-01..2026-04-30"
+  spy_real:    "2003-01-01..2026-04-30"
+  ndx_real:    "2010-02-01..2026-04-30"
+random_seed: 42
+cumulative_n_trials_at_iter: 392

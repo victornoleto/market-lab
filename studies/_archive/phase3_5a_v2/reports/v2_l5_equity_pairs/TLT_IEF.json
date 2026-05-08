@@ -1,0 +1,145 @@
+{
+  "pair": "TLT_IEF",
+  "frequency": "daily",
+  "config_entry": {
+    "name": "kalman_eg_2sigma_30d",
+    "type": "pairs_cointegration",
+    "cointegration_test": "engle_granger_adf",
+    "adf_alpha": 0.05,
+    "beta_estimator": "kalman_filter",
+    "kalman_delta": 1e-05,
+    "kalman_ve": 0.001,
+    "entry_z": 2.0,
+    "exit_z": 0.0,
+    "stop_z": 4.0,
+    "hold_cap_days": 30,
+    "direction": "market_neutral",
+    "lookback_adf_days": 252,
+    "z_window_days": 60
+  },
+  "window": {
+    "start": "2014-01-02",
+    "end": "2026-04-14",
+    "n_bars": 3088
+  },
+  "cointegration": {
+    "pass": false,
+    "reason": "p=0.9919",
+    "ols_alpha": -2.9492269576309185,
+    "ols_beta": 1.6753926521733207,
+    "adf_stat": 0.8188545505776523,
+    "adf_p_value": 0.9919344996173118,
+    "n_bars": 3088
+  },
+  "splits": {
+    "IS": {
+      "range": [
+        "2014-01-02",
+        "2022-08-02"
+      ],
+      "n_bars": 2161,
+      "sharpe": 0.0,
+      "cagr": 0.0,
+      "max_drawdown": 0.0,
+      "final_equity": 1.0
+    },
+    "OOS": {
+      "range": [
+        "2022-08-03",
+        "2025-01-17"
+      ],
+      "n_bars": 618,
+      "sharpe": 0.0,
+      "cagr": 0.0,
+      "max_drawdown": 0.0,
+      "final_equity": 1.0
+    },
+    "FWD": {
+      "range": [
+        "2025-01-21",
+        "2026-04-14"
+      ],
+      "n_bars": 309,
+      "sharpe": 0.0,
+      "cagr": 0.0,
+      "max_drawdown": 0.0,
+      "final_equity": 1.0
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 0.0,
+    "max_window_drawdown": 0.0,
+    "pass": false,
+    "min_profitable_ratio": 0.75,
+    "max_drawdown_cap": 0.25
+  },
+  "hold_metrics": {
+    "median_hold_days": 0.0,
+    "n_events_total": 0,
+    "n_events_taken": 0,
+    "n_trades": 0
+  },
+  "costs": {
+    "cum_transaction_cost_pct": 0.0,
+    "cum_swap_cost_pct": 0.0,
+    "spread_half_bps": 2.0,
+    "commission_round_trip_bps": 6.6,
+    "slippage_bps_round_trip": 3.0,
+    "swap_daily_pct_long_per_leg": -5e-05
+  },
+  "kalman_final_beta": 1.6708975848926555,
+  "runtime_seconds": 0.09,
+  "iter": 63,
+  "produced_at": "2026-04-18T20:28:44+00:00",
+  "verdict_per_config": {
+    "checks": [
+      {
+        "name": "oos_sharpe_gt_0",
+        "pass": false,
+        "value": "0.000"
+      },
+      {
+        "name": "fwd_sharpe_gt_0",
+        "pass": false,
+        "value": "0.000"
+      },
+      {
+        "name": "wf_pass",
+        "pass": false,
+        "value": "6/8"
+      },
+      {
+        "name": "median_hold_ge_3d",
+        "pass": false,
+        "value": "0.0d"
+      },
+      {
+        "name": "oos_cagr_ge_30pct",
+        "pass": false,
+        "value": "0.0%"
+      },
+      {
+        "name": "oos_sharpe_ge_2",
+        "pass": false,
+        "value": "0.000"
+      },
+      {
+        "name": "oos_maxdd_le_25pct",
+        "pass": true,
+        "value": "0.0%"
+      }
+    ],
+    "n_passed": 1,
+    "n_total": 7,
+    "all_pass_except_cross_config_gates": false,
+    "failed_subset_gates": [
+      "oos_sharpe_gt_0",
+      "fwd_sharpe_gt_0",
+      "wf_pass",
+      "median_hold_ge_3d",
+      "oos_cagr_ge_30pct",
+      "oos_sharpe_ge_2"
+    ]
+  }
+}

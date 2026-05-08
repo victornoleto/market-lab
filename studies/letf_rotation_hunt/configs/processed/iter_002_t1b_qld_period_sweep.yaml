@@ -1,0 +1,29 @@
+iter: "002-2026-05-06-T1b-qld-period-sweep"
+tier: "T1b"
+hypothesis: "Among QLD 2× NDX rotation params, no period beats SMA200 by ≥0.05 Sharpe (lh_56y) — anti-curve-fit pre-registered. T1a winner (QLD SMA200) Sharpe 0.678; threshold to claim T1b winner = 0.728."
+primary_citation: "[leverage_for_the_long_run, p.13]"
+configs_tested:
+  # SMA family
+  - {name: "qld_sma50_off_bil",  on_asset: "QLD", off_asset: "BIL", signal: "sma", period: 50}
+  - {name: "qld_sma100_off_bil", on_asset: "QLD", off_asset: "BIL", signal: "sma", period: 100}
+  - {name: "qld_sma150_off_bil", on_asset: "QLD", off_asset: "BIL", signal: "sma", period: 150}
+  - {name: "qld_sma200_off_bil", on_asset: "QLD", off_asset: "BIL", signal: "sma", period: 200}
+  - {name: "qld_sma250_off_bil", on_asset: "QLD", off_asset: "BIL", signal: "sma", period: 250}
+  # EMA family
+  - {name: "qld_ema50_off_bil",  on_asset: "QLD", off_asset: "BIL", signal: "ema", period: 50}
+  - {name: "qld_ema100_off_bil", on_asset: "QLD", off_asset: "BIL", signal: "ema", period: 100}
+  - {name: "qld_ema150_off_bil", on_asset: "QLD", off_asset: "BIL", signal: "ema", period: 150}
+  - {name: "qld_ema200_off_bil", on_asset: "QLD", off_asset: "BIL", signal: "ema", period: 200}
+  - {name: "qld_ema250_off_bil", on_asset: "QLD", off_asset: "BIL", signal: "ema", period: 250}
+datasets:
+  - "lh_56y"
+  - "modern_1990"
+  - "spy_real"
+  - "ndx_real"
+windows_used:
+  lh_56y:      "1970-01-01..2026-04-30"
+  modern_1990: "1990-01-01..2026-04-30"
+  spy_real:    "2003-01-01..2026-04-30"
+  ndx_real:    "2010-02-01..2026-04-30"
+random_seed: 42
+cumulative_n_trials_at_iter: 6

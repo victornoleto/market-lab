@@ -1,0 +1,29 @@
+{
+  "system_id": "6541963",
+  "reliability": 0.7596845689577854,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 1.0,
+    "family_clarity": 0.62,
+    "timing_concentration": 0.3289652056032535,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.9989152783713471,
+    "vendor_quality": 0.7,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "FACTOR_SCALPING",
+  "confidence": 0.62,
+  "n_trades": 2213,
+  "n_pairs": 1,
+  "last_trade_date": "2026-04-30 11:04:07+00:00",
+  "account_type": "Demo",
+  "name": "Happy Gold - Tickmill (M15) Forex Trading System by Forex Tr",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 338.6505355834961,
+  "band_rank": 0,
+  "dir_pred": 1.0,
+  "timing_conc": 0.3289652056032535,
+  "age_fresh": 0.9989152783713471
+}

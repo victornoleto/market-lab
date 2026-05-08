@@ -1,0 +1,30 @@
+{
+  "system_id": 11355455,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-gold-dooprime/11355455",
+  "name": "Happy Gold - DooPrime Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+2,395.12%",
+    "absolute_gain": "-2,288.55%",
+    "daily": "0.48%",
+    "monthly": "15.50%",
+    "drawdown": "8.16%",
+    "balance": "$19,241.98",
+    "equity": "(100.00%) $19,241.98",
+    "highest": "(Apr 30) $19,241.98",
+    "profit": "$20,121.19",
+    "interest": "$0.00",
+    "deposits": "$1,000.00",
+    "withdrawals": "$0.00",
+    "updated": "6 hours ago",
+    "tracking": "15"
+  },
+  "account": {
+    "raw": "Real (USD), D Prime , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "D Prime",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/d-prime/1812447,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

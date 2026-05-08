@@ -1,0 +1,30 @@
+{
+  "system_id": 9841939,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-power-fm/9841939",
+  "name": "Happy Power FM Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+1,008.45%",
+    "absolute_gain": "+47.42%",
+    "daily": "0.15%",
+    "monthly": "4.48%",
+    "drawdown": "35.65%",
+    "balance": "$18,546.90",
+    "equity": "(99.41%) $18,436.89",
+    "highest": "(Sep 21) $36,210.88",
+    "profit": "$17,546.90",
+    "interest": "$0.00",
+    "deposits": "$37,000.00",
+    "withdrawals": "$36,000.00",
+    "updated": "7 hours ago",
+    "tracking": "18"
+  },
+  "account": {
+    "raw": "Real (USD), ForexMart , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "ForexMart",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/forexmart/1065344,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

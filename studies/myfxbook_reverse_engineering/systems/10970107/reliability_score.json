@@ -1,0 +1,32 @@
+{
+  "system_id": "10970107",
+  "reliability": 0.3,
+  "band": "LOW",
+  "components": {
+    "direction_predictability": 0.6155688622754489,
+    "family_clarity": 0.95,
+    "timing_concentration": 0.8251497005988024,
+    "sanity_pass": 0.0,
+    "age_freshness": 0.9498130642331621,
+    "vendor_quality": 0.85,
+    "pair_coverage": 1.0
+  },
+  "notes": [
+    "sanity FAIL \u2014 martingale signature detected",
+    "forced LOW: martingale/grid signature"
+  ],
+  "family": "MARTINGALE_GRID",
+  "confidence": 0.95,
+  "n_trades": 835,
+  "n_pairs": 4,
+  "last_trade_date": "2026-01-30 15:49:42+00:00",
+  "account_type": "Real",
+  "name": "Happy News - DecodeFx Forex Trading System by Forex Trader H",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 279.6944029331207,
+  "band_rank": 2,
+  "dir_pred": 0.6155688622754489,
+  "timing_conc": 0.8251497005988024,
+  "age_fresh": 0.9498130642331621
+}

@@ -1,0 +1,307 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_gold_regime_split.py",
+    "DATA_AUDIT_D1.csv",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "baselines": {
+    "source": "../001-tsmom-data-audit/RESULTS.json baselines.D1.assets.XAUUSD",
+    "strategy_matched_random_entry_mean": {
+      "bars": 2593,
+      "cagr": -0.01667236857818677,
+      "matched_entries": 199,
+      "matched_hold_bars": 7,
+      "max_drawdown": -0.16065312176869073,
+      "runs": 200,
+      "sharpe": -2.38303018717988,
+      "total_return": -0.15886202963687324
+    },
+    "xauusd": {
+      "base": {
+        "always_flat": {
+          "bars": 2593,
+          "cagr": 0.0,
+          "entries": 0,
+          "max_drawdown": 0.0,
+          "sharpe": null,
+          "total_return": 0.0,
+          "turnover": 0.0
+        },
+        "buy_and_hold": {
+          "bars": 2593,
+          "cagr": 0.13037402766346018,
+          "entries": 1,
+          "max_drawdown": -0.21378054473805508,
+          "sharpe": 0.8886853884770725,
+          "total_return": 2.528899061077757,
+          "turnover": 1.0
+        },
+        "random_entry_matched_turnover_mean": {
+          "bars": 2593,
+          "cagr": 0.05982603364986039,
+          "matched_entries": 65,
+          "max_drawdown": -0.12337321038399007,
+          "runs": 200,
+          "sharpe": 0.8029467798839602,
+          "total_return": 0.8182594429904084
+        },
+        "uniform_frequency": {
+          "bars": 2593,
+          "cagr": 0.10609067822013629,
+          "entries": 65,
+          "max_drawdown": -0.1445705226484263,
+          "sharpe": 1.0417620245793298,
+          "total_return": 1.8222321375575352,
+          "turnover": 130.0
+        }
+      },
+      "conservative": {
+        "always_flat": {
+          "bars": 2593,
+          "cagr": 0.0,
+          "entries": 0,
+          "max_drawdown": 0.0,
+          "sharpe": null,
+          "total_return": 0.0,
+          "turnover": 0.0
+        },
+        "buy_and_hold": {
+          "bars": 2593,
+          "cagr": 0.1303190602259734,
+          "entries": 1,
+          "max_drawdown": -0.2137805447380544,
+          "sharpe": 0.8883606541393605,
+          "total_return": 2.5271337288811346,
+          "turnover": 1.0
+        },
+        "random_entry_matched_turnover_mean": {
+          "bars": 2593,
+          "cagr": 0.053399407448085245,
+          "matched_entries": 65,
+          "max_drawdown": -0.13760587092317078,
+          "runs": 200,
+          "sharpe": 0.7228925340643287,
+          "total_return": 0.7079514253564763
+        },
+        "uniform_frequency": {
+          "bars": 2593,
+          "cagr": 0.09912705773446184,
+          "entries": 65,
+          "max_drawdown": -0.1479960710669287,
+          "sharpe": 0.9796064250058129,
+          "total_return": 1.6446600327461058,
+          "turnover": 130.0
+        }
+      },
+      "stress": {
+        "always_flat": {
+          "bars": 2593,
+          "cagr": 0.0,
+          "entries": 0,
+          "max_drawdown": 0.0,
+          "sharpe": null,
+          "total_return": 0.0,
+          "turnover": 0.0
+        },
+        "buy_and_hold": {
+          "bars": 2593,
+          "cagr": 0.1302090507978042,
+          "entries": 1,
+          "max_drawdown": -0.21378054473805297,
+          "sharpe": 0.887708344363497,
+          "total_return": 2.523603064487852,
+          "turnover": 1.0
+        },
+        "random_entry_matched_turnover_mean": {
+          "bars": 2593,
+          "cagr": 0.04066232260759217,
+          "matched_entries": 65,
+          "max_drawdown": -0.16602609309078276,
+          "runs": 200,
+          "sharpe": 0.5627632403030431,
+          "total_return": 0.5069979693069655
+        },
+        "uniform_frequency": {
+          "bars": 2593,
+          "cagr": 0.08532077502390956,
+          "entries": 65,
+          "max_drawdown": -0.15481117760342655,
+          "sharpe": 0.854586605063305,
+          "total_return": 1.3221043296802515,
+          "turnover": 130.0
+        }
+      }
+    }
+  },
+  "cost_scenarios": {
+    "XAU": {
+      "base": 5.0,
+      "conservative": 10.0,
+      "stress": 20.0
+    }
+  },
+  "frequencies": [
+    "D1"
+  ],
+  "gates": {
+    "K1_data_available": "PASS",
+    "beats_always_flat_xau_cagr_base": "FAIL",
+    "beats_buy_and_hold_xau_sharpe_base": "FAIL",
+    "beats_iter001_random_entry_xau_sharpe_base": "FAIL",
+    "beats_iter001_uniform_frequency_xau_sharpe_base": "FAIL",
+    "beats_strategy_matched_random_entry_sharpe_base": "PASS",
+    "bootstrap_full_ci_low_gt_0": "FAIL",
+    "bootstrap_oos_ci_low_gt_0": "FAIL",
+    "cost_stress_positive": "FAIL",
+    "no_single_asset_winner_declared": "PASS",
+    "oos_single_block_positive": "FAIL",
+    "pbo": "not_applicable_single_pre_registered_config"
+  },
+  "hypothesis": "XAUUSD D1 Gold Regime Trend/MR Split diagnostic",
+  "iteration": "005-gold-regime-split-diagnostic",
+  "kill_switches": [
+    "K6_XAUUSD_ONLY_DIAGNOSTIC_NO_WINNER",
+    "K4_OOS_BOOTSTRAP_LOW_LE_0",
+    "K5_COST_STRESS_ELIMINATES_EDGE"
+  ],
+  "n_trials": 1,
+  "notes": "Research-only. No winner declared; XAUUSD-only is diagnostic only and cannot justify paper/live.",
+  "pbo": {
+    "reason": "single pre-registered configuration; no config selection",
+    "status": "not_applicable"
+  },
+  "pre_registered": true,
+  "status": "dead-end",
+  "strategy_results": {
+    "by_cost_scenario": {
+      "base": {
+        "avg_hold_bars": 7.065326633165829,
+        "bootstrap_full": {
+          "annualized_mean": -0.0557994846819776,
+          "ci": 0.999,
+          "ci_low": -0.18384406122834093,
+          "runs": 2000
+        },
+        "bootstrap_oos": {
+          "annualized_mean": -0.045597273374597895,
+          "ci": 0.999,
+          "ci_low": -0.36180367394247426,
+          "runs": 2000
+        },
+        "entries": 199,
+        "full": {
+          "bars": 2593,
+          "cagr": -0.06181167933925669,
+          "max_drawdown": -0.5113901074239081,
+          "sharpe": -0.44235662219398486,
+          "total_return": -0.4813515012435059
+        },
+        "in_sample_pre_2024": {
+          "bars": 1865,
+          "cagr": -0.06283644355266493,
+          "max_drawdown": -0.4405376757755286,
+          "sharpe": -0.591970633892143,
+          "total_return": -0.38139769964019976
+        },
+        "oos_2024_plus": {
+          "bars": 728,
+          "cagr": -0.05918130959699519,
+          "max_drawdown": -0.23626520179188615,
+          "sharpe": -0.26074280160330016,
+          "total_return": -0.16158006775139522
+        },
+        "turnover": 398.0
+      },
+      "conservative": {
+        "avg_hold_bars": 7.065326633165829,
+        "bootstrap_full": {
+          "annualized_mean": -0.07513924557669416,
+          "ci": 0.999,
+          "ci_low": -0.20303760769960974,
+          "runs": 2000
+        },
+        "bootstrap_oos": {
+          "annualized_mean": -0.06359727337459792,
+          "ci": 0.999,
+          "ci_low": -0.3810143470193973,
+          "runs": 2000
+        },
+        "entries": 199,
+        "full": {
+          "bars": 2593,
+          "cagr": -0.07979298453377681,
+          "max_drawdown": -0.5909149861302366,
+          "sharpe": -0.5954508207230366,
+          "total_return": -0.5749953608778633
+        },
+        "in_sample_pre_2024": {
+          "bars": 1865,
+          "cagr": -0.08127279176330449,
+          "max_drawdown": -0.5063062043220266,
+          "sharpe": -0.7887191346655329,
+          "total_return": -0.4659874518827207
+        },
+        "oos_2024_plus": {
+          "bars": 728,
+          "cagr": -0.07599111116292379,
+          "max_drawdown": -0.2695678296385353,
+          "sharpe": -0.36339593648068513,
+          "total_return": -0.20412986432521574
+        },
+        "turnover": 398.0
+      },
+      "stress": {
+        "avg_hold_bars": 7.065326633165829,
+        "bootstrap_full": {
+          "annualized_mean": -0.11381876736612724,
+          "ci": 0.999,
+          "ci_low": -0.24142470064214733,
+          "runs": 2000
+        },
+        "bootstrap_oos": {
+          "annualized_mean": -0.09959727337459791,
+          "ci": 0.999,
+          "ci_low": -0.41943569317324353,
+          "runs": 2000
+        },
+        "entries": 199,
+        "full": {
+          "bars": 2593,
+          "cagr": -0.1147545782777919,
+          "max_drawdown": -0.7146997391178485,
+          "sharpe": -0.8998765667066358,
+          "total_return": -0.7146997391178485
+        },
+        "in_sample_pre_2024": {
+          "bars": 1865,
+          "cagr": -0.11709145855148684,
+          "max_drawdown": -0.6174816539284225,
+          "sharpe": -1.1793406058106586,
+          "total_return": -0.602137148076769
+        },
+        "oos_2024_plus": {
+          "bars": 728,
+          "cagr": -0.1087396694058862,
+          "max_drawdown": -0.331925724787711,
+          "sharpe": -0.5677956588215914,
+          "total_return": -0.28291807213707587
+        },
+        "turnover": 398.0
+      }
+    },
+    "position_diagnostics": {
+      "avg_hold_bars_base": 7.065326633165829,
+      "entries_base": 199,
+      "flat_bars": 1187,
+      "long_bars": 887,
+      "short_bars": 519,
+      "turnover_base": 398.0
+    },
+    "single_config": "sma100_ret100_atr14_atr_pct252_60_40_sma20_1atr_bands"
+  },
+  "universe": [
+    "XAUUSD"
+  ]
+}

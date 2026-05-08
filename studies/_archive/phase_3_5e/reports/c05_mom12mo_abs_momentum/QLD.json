@@ -1,0 +1,255 @@
+{
+  "ticker": "QLD",
+  "frequency": "daily",
+  "phase": "phase_3_5e",
+  "lead_id": "c05",
+  "lead_slug": "c05_mom12mo_abs_momentum",
+  "iter": 36,
+  "source": "reference_prices.parquet (Stage 1, Tiingo-first)",
+  "configs": [
+    {
+      "name": "c05_mom12mo_cash",
+      "off_leg": "cash",
+      "window_start": "2001-05-15",
+      "window_end": "2026-04-17",
+      "window_years": 24.919917864476385,
+      "n_bars": 6267,
+      "metrics_is": {
+        "cagr": 0.14506072072631637,
+        "cagr_net": 0.12330161261736891,
+        "sharpe": 0.5754741949535754,
+        "sharpe_net": 0.4891530657105391,
+        "max_dd": -0.5593464938171405,
+        "calmar": 0.2593396442630408
+      },
+      "wf": {
+        "sharpes": [
+          0.6451475182575064,
+          -0.2283318810702025,
+          0.12437897124914445,
+          1.117576015991009,
+          0.5862727214121,
+          0.8594625606431557,
+          0.3481957633388175,
+          0.9815126953066979
+        ],
+        "positive": 7,
+        "total": 8,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.5741861496619296,
+        "oos_sharpe": 0.5853506152922725,
+        "oos_pass": true,
+        "is_start": "2001-05-16",
+        "is_end": "2021-04-20",
+        "oos_start": "2021-04-21",
+        "oos_end": "2026-04-17"
+      },
+      "fwd": {
+        "fwd_sharpe": 0.8520298271062373,
+        "fwd_pass": true,
+        "fwd_start": "2026-01-16",
+        "fwd_end": "2026-04-17"
+      },
+      "spy_benchmark": {
+        "spy_cagr_gross": 0.07186042386192182,
+        "spy_cagr_net": 0.06108136028263354,
+        "spy_sharpe": 0.46003306935095606,
+        "spy_max_dd": -0.5647366900495071,
+        "corr_vs_spy": 0.6612435438162206
+      },
+      "dsr": {
+        "dsr": 0.8264853958931699,
+        "p_value": 0.17351460410683006,
+        "pass": false,
+        "n_trials_used": 21
+      },
+      "stage2": {
+        "note": "N/A \u2014 QLD is QQQ-based 2\u00d7; no QQQSIM in testfol.io; yfinance forbidden per spec \u00a73.1"
+      },
+      "gates": {
+        "gate1_pbo": "AGGREGATE_LEVEL",
+        "gate2_dsr": false,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": true,
+        "overfit_pass_no_pbo": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": false,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "pre_pass_pending_pbo": false,
+        "fail_reason": "DSR, CALMAR, SHARPE_NET"
+      }
+    },
+    {
+      "name": "c05_mom12mo_gld",
+      "off_leg": "GLD",
+      "window_start": "2004-11-18",
+      "window_end": "2026-04-15",
+      "window_years": 21.401779603011637,
+      "n_bars": 5383,
+      "metrics_is": {
+        "cagr": 0.18661478714627022,
+        "cagr_net": 0.15862256907432967,
+        "sharpe": 0.6590070471834718,
+        "sharpe_net": 0.5601559901059511,
+        "max_dd": -0.523660749106746,
+        "calmar": 0.35636581023992236
+      },
+      "wf": {
+        "sharpes": [
+          0.04670040292205876,
+          0.3643638682119233,
+          0.651071904118064,
+          1.6637495887597296,
+          0.754968066771288,
+          0.5841305778941006,
+          0.43709276711711603,
+          0.7779423406706982
+        ],
+        "positive": 8,
+        "total": 8,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.7169821086886163,
+        "oos_sharpe": 0.45661816851801273,
+        "oos_pass": true,
+        "is_start": "2004-11-19",
+        "is_end": "2021-12-28",
+        "oos_start": "2021-12-29",
+        "oos_end": "2026-04-15"
+      },
+      "fwd": {
+        "fwd_sharpe": 0.3471597200834639,
+        "fwd_pass": true,
+        "fwd_start": "2026-01-14",
+        "fwd_end": "2026-04-15"
+      },
+      "spy_benchmark": {
+        "spy_cagr_gross": 0.08642558974255432,
+        "spy_cagr_net": 0.07346175128117118,
+        "spy_sharpe": 0.5322334564126762,
+        "spy_max_dd": -0.5647366900495059,
+        "corr_vs_spy": 0.6818553746838005
+      },
+      "dsr": {
+        "dsr": 0.8630196758850528,
+        "p_value": 0.1369803241149472,
+        "pass": false,
+        "n_trials_used": 22
+      },
+      "stage2": {
+        "note": "N/A \u2014 QLD is QQQ-based 2\u00d7; no QQQSIM in testfol.io; yfinance forbidden per spec \u00a73.1"
+      },
+      "gates": {
+        "gate1_pbo": "AGGREGATE_LEVEL",
+        "gate2_dsr": false,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": true,
+        "overfit_pass_no_pbo": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": false,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "pre_pass_pending_pbo": false,
+        "fail_reason": "DSR, CALMAR, SHARPE_NET"
+      }
+    },
+    {
+      "name": "c05_mom12mo_tlt",
+      "off_leg": "TLT",
+      "window_start": "2002-07-26",
+      "window_end": "2026-04-15",
+      "window_years": 23.71252566735113,
+      "n_bars": 5967,
+      "metrics_is": {
+        "cagr": 0.14875321681971787,
+        "cagr_net": 0.12644023429676018,
+        "sharpe": 0.5742554652052938,
+        "sharpe_net": 0.48811714542449974,
+        "max_dd": -0.5668925458430187,
+        "calmar": 0.2624010809641338
+      },
+      "wf": {
+        "sharpes": [
+          0.2456062748199807,
+          -0.10104473483239826,
+          0.6960341508726465,
+          1.1133376802294377,
+          0.8671438353091722,
+          0.19072796798054256,
+          0.5619749075928546,
+          0.8761667985721303
+        ],
+        "positive": 7,
+        "total": 8,
+        "pass": true
+      },
+      "oos": {
+        "is_sharpe": 0.6163629844421125,
+        "oos_sharpe": 0.43423511348400573,
+        "oos_pass": true,
+        "is_start": "2002-07-29",
+        "is_end": "2021-07-13",
+        "oos_start": "2021-07-14",
+        "oos_end": "2026-04-15"
+      },
+      "fwd": {
+        "fwd_sharpe": 0.3471597200834639,
+        "fwd_pass": true,
+        "fwd_start": "2026-01-14",
+        "fwd_end": "2026-04-15"
+      },
+      "spy_benchmark": {
+        "spy_cagr_gross": 0.0926610023562533,
+        "spy_cagr_net": 0.0787618520028153,
+        "spy_sharpe": 0.563528383127185,
+        "spy_max_dd": -0.5647366900495063,
+        "corr_vs_spy": 0.6215099534614106
+      },
+      "dsr": {
+        "dsr": 0.7958246182225802,
+        "p_value": 0.20417538177741978,
+        "pass": false,
+        "n_trials_used": 23
+      },
+      "stage2": {
+        "note": "N/A \u2014 QLD is QQQ-based 2\u00d7; no QQQSIM in testfol.io; yfinance forbidden per spec \u00a73.1"
+      },
+      "gates": {
+        "gate1_pbo": "AGGREGATE_LEVEL",
+        "gate2_dsr": false,
+        "gate3_wf": true,
+        "gate4_oos": true,
+        "gate5_fwd": true,
+        "overfit_pass_no_pbo": false,
+        "eco1_beats_spy": true,
+        "eco2_calmar": false,
+        "eco3_sharpe_net": false,
+        "eco_pass": false,
+        "pre_pass_pending_pbo": false,
+        "fail_reason": "DSR, CALMAR, SHARPE_NET"
+      }
+    }
+  ],
+  "best_config": "c05_mom12mo_gld",
+  "any_prepass_pending_pbo": false,
+  "best_sharpe_oos": 0.45661816851801273,
+  "best_cagr": 0.18661478714627022,
+  "best_maxdd": -0.523660749106746,
+  "cross_lib_bt": {
+    "bt_cagr": 0.18524693599990605,
+    "bt_sharpe": 0.6552412897376978
+  },
+  "citations": [
+    "dual_momentum, ch.6",
+    "advances_fin_ml, p.208-211",
+    "advances_fin_ml, p.298-299",
+    "advances_fin_ml, ch.12"
+  ],
+  "generated_at": "2026-04-21T19:20:31.909879+00:00"
+}

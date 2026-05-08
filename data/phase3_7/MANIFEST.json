@@ -1,0 +1,101 @@
+{
+  "intraday/QQQ_1min.parquet": {
+    "size_bytes": 15108136,
+    "sha256": "dd6de991b0cbb250f1131afbd1113ef5962c104164c6fbc47d2f4c8653e320c7",
+    "n_rows": 917169,
+    "n_cols": 4,
+    "columns": [
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "index_first": "2017-01-03 14:30:00+00:00",
+    "index_last": "2026-04-14 19:59:00+00:00",
+    "index_monotonic_increasing": true,
+    "index_duplicates": 0
+  },
+  "intraday/SPY_1min.parquet": {
+    "size_bytes": 15024219,
+    "sha256": "829a29b14bf269598de862e82f34864214b4091b36d960298abe311c6aabee2c",
+    "n_rows": 917371,
+    "n_cols": 4,
+    "columns": [
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "index_first": "2017-01-03 14:30:00+00:00",
+    "index_last": "2026-04-14 19:59:00+00:00",
+    "index_monotonic_increasing": true,
+    "index_duplicates": 0
+  },
+  "vix/VIXCLS.parquet": {
+    "size_bytes": 110273,
+    "sha256": "2550750221d043bc3445eba03837e5e514d4a80d3f1c627af0554d6455eebc1b",
+    "n_rows": 9164,
+    "n_cols": 1,
+    "columns": [
+      "close"
+    ],
+    "index_first": "1990-01-02 00:00:00",
+    "index_last": "2026-04-14 00:00:00",
+    "index_monotonic_increasing": true,
+    "index_duplicates": 0
+  },
+  "vix/VIXM.parquet": {
+    "size_bytes": 158445,
+    "sha256": "54eb39d94496eb2ab245d706f200be9ead0b56d12d07da68cae77e596e7da033",
+    "n_rows": 3841,
+    "n_cols": 6,
+    "columns": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "adj_close",
+      "volume"
+    ],
+    "index_first": "2011-01-04 00:00:00",
+    "index_last": "2026-04-14 00:00:00",
+    "index_monotonic_increasing": true,
+    "index_duplicates": 0
+  },
+  "vix/VIXY.parquet": {
+    "size_bytes": 157497,
+    "sha256": "51fd1a5027c48002deaf0e1d904b9d8789bb1ffb58e59e820d39ad8214d12c93",
+    "n_rows": 3841,
+    "n_cols": 6,
+    "columns": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "adj_close",
+      "volume"
+    ],
+    "index_first": "2011-01-04 00:00:00",
+    "index_last": "2026-04-14 00:00:00",
+    "index_monotonic_increasing": true,
+    "index_duplicates": 0
+  },
+  "vix/VXX.parquet": {
+    "size_bytes": 179645,
+    "sha256": "89ef7825ad2d5fdf4e7c72653140602b7f4a9ac0ed51ebbe24c6e6027c023cad",
+    "n_rows": 4327,
+    "n_cols": 6,
+    "columns": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "adj_close",
+      "volume"
+    ],
+    "index_first": "2009-01-30 00:00:00",
+    "index_last": "2026-04-14 00:00:00",
+    "index_monotonic_increasing": true,
+    "index_duplicates": 0
+  }
+}

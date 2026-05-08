@@ -1,0 +1,30 @@
+{
+  "system_id": 2421356,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-gold-icmarkets-m30/2421356",
+  "name": "Happy Gold - ICMarkets (M30) Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+220,189.74%",
+    "absolute_gain": "-227,910.54%",
+    "daily": "0.24%",
+    "monthly": "7.57%",
+    "drawdown": "22.61%",
+    "balance": "$438,740.32",
+    "equity": "(100.00%) $438,740.32",
+    "highest": "(Apr 30) $438,740.32",
+    "profit": "$438,932.91",
+    "interest": "-$165.15",
+    "deposits": "$200.00",
+    "withdrawals": "$0.00",
+    "updated": "4 hours ago",
+    "tracking": "185"
+  },
+  "account": {
+    "raw": "Demo (USD), IC Markets , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Demo",
+    "currency": "USD",
+    "broker": "IC Markets",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/ic-markets/175981,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

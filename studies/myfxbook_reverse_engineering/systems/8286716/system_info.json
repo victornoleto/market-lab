@@ -1,0 +1,30 @@
+{
+  "system_id": 8286716,
+  "url": "https://www.myfxbook.com/members/HappyForex/old-happy-power-v10-high/8286716",
+  "name": "OLD Happy Power v1.0 (High Risk) Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+105.16%",
+    "absolute_gain": "+116.57%",
+    "daily": "0.04%",
+    "monthly": "22.36%",
+    "drawdown": "54.43%",
+    "balance": "$2,165.67",
+    "equity": "(91.72%) $1,986.27",
+    "highest": "(Jun 11) $2,165.67",
+    "profit": "$1,165.67",
+    "interest": "$0.00",
+    "deposits": "$1,000.00",
+    "withdrawals": "$0.00",
+    "updated": "Jun 16, 2021 at 19:08",
+    "tracking": "6"
+  },
+  "account": {
+    "raw": "Real (USD), Fort Financial Services , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Fort Financial Services",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/fort-financial-services/814372,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

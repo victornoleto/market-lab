@@ -1,0 +1,151 @@
+[
+  {
+    "rank": 1,
+    "miner": "tree",
+    "rule_text": "DecisionTree(max_depth=4) \u2014 top features: ret_10_H1=0.54, atr_ratio_M1=0.25, ema_dist_20_H1=0.21\n\n|--- ret_10_H1 <= 0.00\n|   |--- atr_ratio_M1 <= 0.08\n|   |   |--- class: 1\n|   |--- atr_ratio_M1 >  0.08\n|   |   |--- class: 0\n|--- ret_10_H1 >  0.00\n|   |--- ema_dist_20_H1 <= 1.45\n|   |   |--- class: 1\n|   |--- ema_dist_20_H1 >  1.45\n|   |   |--- class: 1\n",
+    "match_rate_cv": 0.5964285714285714,
+    "match_rate_std": 0.11157499537009508,
+    "coverage": 1.0,
+    "n_features": 3,
+    "p_value_corrected": NaN,
+    "extra": {
+      "fold_accs": [
+        0.6428571428571429,
+        0.6607142857142857,
+        0.7142857142857143,
+        0.5714285714285714,
+        0.39285714285714285
+      ]
+    }
+  },
+  {
+    "rank": 2,
+    "miner": "baseline",
+    "rule_text": "Always-Buy (y_buy mean = 0.5429); Always-Sell = 0.4571",
+    "match_rate_cv": 0.5428571428571428,
+    "match_rate_std": 0.0,
+    "coverage": 1.0,
+    "n_features": 0,
+    "p_value_corrected": NaN,
+    "extra": {
+      "buy_rate": 0.5428571428571428
+    }
+  },
+  {
+    "rank": 3,
+    "miner": "univariate",
+    "rule_text": "ema_dist_20_H1 > -1.755 \u21d2 Buy",
+    "match_rate_cv": 0.5928571428571429,
+    "match_rate_std": 0.0,
+    "coverage": 0.8,
+    "n_features": 1,
+    "p_value_corrected": 0.5798007800621121,
+    "extra": {
+      "raw_p": 0.0011236449226009924,
+      "n_tests": 516
+    }
+  },
+  {
+    "rank": 4,
+    "miner": "univariate",
+    "rule_text": "ret_1_H4 > -0.001375 \u21d2 Buy",
+    "match_rate_cv": 0.5928571428571429,
+    "match_rate_std": 0.0,
+    "coverage": 0.8,
+    "n_features": 1,
+    "p_value_corrected": 0.5798007800621121,
+    "extra": {
+      "raw_p": 0.0011236449226009924,
+      "n_tests": 516
+    }
+  },
+  {
+    "rank": 5,
+    "miner": "ripper",
+    "rule_text": "RIPPER ruleset:\n[[close_vs_session_open_H4=1.0^prior_bar_sign_H4=1.0^ret_1_M1=2.6e-05-5.5e-05] V [dow=0^ret_1_M5=>0.00043] V [ret_3_H4=0.0022-0.0038^ret_10_H1=0.0024-0.0035]]",
+    "match_rate_cv": 0.5214285714285715,
+    "match_rate_std": 0.12079667518062685,
+    "coverage": 1.0,
+    "n_features": 3,
+    "p_value_corrected": NaN,
+    "extra": {
+      "fold_accs": [
+        0.5178571428571429,
+        0.5178571428571429,
+        0.48214285714285715,
+        0.35714285714285715,
+        0.7321428571428571
+      ]
+    }
+  },
+  {
+    "rank": 6,
+    "miner": "univariate",
+    "rule_text": "ret_10_H4 > -0.009079 \u21d2 Buy",
+    "match_rate_cv": 0.5785714285714286,
+    "match_rate_std": 0.0,
+    "coverage": 0.8,
+    "n_features": 1,
+    "p_value_corrected": 1.0,
+    "extra": {
+      "raw_p": 0.005025611489931632,
+      "n_tests": 516
+    }
+  },
+  {
+    "rank": 7,
+    "miner": "univariate",
+    "rule_text": "ema_dist_20_H4 > -1.527 \u21d2 Buy",
+    "match_rate_cv": 0.6071428571428571,
+    "match_rate_std": 0.0,
+    "coverage": 0.7,
+    "n_features": 1,
+    "p_value_corrected": 0.1039718669066186,
+    "extra": {
+      "raw_p": 0.00020149586609809805,
+      "n_tests": 516
+    }
+  },
+  {
+    "rank": 8,
+    "miner": "univariate",
+    "rule_text": "bb_pos_20_2_H4 > -0.7492 \u21d2 Buy",
+    "match_rate_cv": 0.6071428571428571,
+    "match_rate_std": 0.0,
+    "coverage": 0.7,
+    "n_features": 1,
+    "p_value_corrected": 0.1039718669066186,
+    "extra": {
+      "raw_p": 0.00020149586609809805,
+      "n_tests": 516
+    }
+  },
+  {
+    "rank": 9,
+    "miner": "univariate",
+    "rule_text": "ret_3_H4 > -0.001013 \u21d2 Buy",
+    "match_rate_cv": 0.6357142857142857,
+    "match_rate_std": 0.0,
+    "coverage": 0.6,
+    "n_features": 1,
+    "p_value_corrected": 0.0016863512465605198,
+    "extra": {
+      "raw_p": 3.2681225708537207e-06,
+      "n_tests": 516
+    }
+  },
+  {
+    "rank": 10,
+    "miner": "univariate",
+    "rule_text": "bb_pos_20_2_H1 > -0.2312 \u21d2 Buy",
+    "match_rate_cv": 0.6,
+    "match_rate_std": 0.0,
+    "coverage": 0.6,
+    "n_features": 1,
+    "p_value_corrected": 0.25248250457849813,
+    "extra": {
+      "raw_p": 0.000489307179415694,
+      "n_tests": 516
+    }
+  }
+]

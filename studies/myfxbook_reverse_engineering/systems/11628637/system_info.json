@@ -1,0 +1,30 @@
+{
+  "system_id": 11628637,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-bitcoin-vm/11628637",
+  "name": "Happy Bitcoin - VM Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+616.84%",
+    "absolute_gain": "+616.79%",
+    "daily": "0.60%",
+    "monthly": "19.55%",
+    "drawdown": "16.41%",
+    "balance": "$7,167.88",
+    "equity": "(100.00%) $7,167.88",
+    "highest": "(May 01) $7,167.88",
+    "profit": "$6,167.88",
+    "interest": "$0.00",
+    "deposits": "$1,000.00",
+    "withdrawals": "$0.00",
+    "updated": "25 minutes ago",
+    "tracking": "8"
+  },
+  "account": {
+    "raw": "Real (USD), Vantage Markets , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "Vantage Markets",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/vantage/33593,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

@@ -1,0 +1,2568 @@
+{
+  "artifacts": [
+    "DATA_AUDIT.csv",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "baselines": {
+    "D1": {
+      "assets": {
+        "AUDUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": -0.007737144915484828,
+              "entries": 1,
+              "max_drawdown": -0.29242237555446104,
+              "sharpe": -0.03724889335847288,
+              "total_return": -0.07721025299088347,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": -0.00615145562691255,
+              "matched_entries": 66,
+              "max_drawdown": -0.16282223330303813,
+              "runs": 200,
+              "sharpe": -0.10618259513519863,
+              "total_return": -0.06184004192725323
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": -0.024934280930818398,
+              "entries": 66,
+              "max_drawdown": -0.318226853763795,
+              "sharpe": -0.36409686526993895,
+              "total_return": -0.2298896501608857,
+              "turnover": 131.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": -0.007765929053746734,
+              "entries": 1,
+              "max_drawdown": -0.29242237555446104,
+              "sharpe": -0.037561258938442824,
+              "total_return": -0.07748714529344736,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": -0.009795651601381294,
+              "matched_entries": 66,
+              "max_drawdown": -0.1850222901873254,
+              "runs": 200,
+              "sharpe": -0.18352272435331357,
+              "total_return": -0.09682410143016973
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": -0.02863126425675877,
+              "entries": 66,
+              "max_drawdown": -0.3395665273023101,
+              "sharpe": -0.4237334675381642,
+              "total_return": -0.2595670609509815,
+              "turnover": 131.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": -0.007813919965264149,
+              "entries": 1,
+              "max_drawdown": -0.29242237555446027,
+              "sharpe": -0.03808178122191695,
+              "total_return": -0.07794863246438699,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": -0.015839770903648964,
+              "matched_entries": 66,
+              "max_drawdown": -0.22865489031028474,
+              "runs": 200,
+              "sharpe": -0.31240997683649746,
+              "total_return": -0.15225709938913612
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": -0.034764225524387626,
+              "entries": 66,
+              "max_drawdown": -0.3736719810257204,
+              "sharpe": -0.5228536388851368,
+              "total_return": -0.30652794434253694,
+              "turnover": 131.0
+            }
+          }
+        },
+        "BTCUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 2987,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2987,
+              "cagr": 0.1605600848069102,
+              "entries": 1,
+              "max_drawdown": -0.8154201848420027,
+              "sharpe": 0.5496698482190405,
+              "total_return": 4.841396779835857,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2987,
+              "cagr": 0.09736395548190391,
+              "matched_entries": 75,
+              "max_drawdown": -0.5416644981831777,
+              "runs": 200,
+              "sharpe": 0.47622668465013945,
+              "total_return": 2.008041242644734
+            },
+            "uniform_frequency": {
+              "bars": 2987,
+              "cagr": 0.11500695358111446,
+              "entries": 75,
+              "max_drawdown": -0.6814468859441545,
+              "sharpe": 0.4748082545665584,
+              "total_return": 2.634037134688449,
+              "turnover": 150.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 2987,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2987,
+              "cagr": 0.16041296964220142,
+              "entries": 1,
+              "max_drawdown": -0.8154201848420027,
+              "sharpe": 0.5494372124074745,
+              "total_return": 4.832625913800078,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2987,
+              "cagr": 0.07755043955445284,
+              "matched_entries": 75,
+              "max_drawdown": -0.5511720784320069,
+              "runs": 200,
+              "sharpe": 0.4100732399458427,
+              "total_return": 1.4237545427061105
+            },
+            "uniform_frequency": {
+              "bars": 2987,
+              "cagr": 0.09398773518782577,
+              "entries": 75,
+              "max_drawdown": -0.6871618080927832,
+              "sharpe": 0.42554400007184495,
+              "total_return": 1.9001563940838286,
+              "turnover": 150.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 2987,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2987,
+              "cagr": 0.16016732696414882,
+              "entries": 1,
+              "max_drawdown": -0.815420184842003,
+              "sharpe": 0.549048709287035,
+              "total_return": 4.818007803740376,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2987,
+              "cagr": 0.04531633408654323,
+              "matched_entries": 75,
+              "max_drawdown": -0.5665833911073852,
+              "runs": 200,
+              "sharpe": 0.29982096808969577,
+              "total_return": 0.6910123682967921
+            },
+            "uniform_frequency": {
+              "bars": 2987,
+              "cagr": 0.05976494486629469,
+              "entries": 75,
+              "max_drawdown": -0.7019181128058909,
+              "sharpe": 0.3433731849734612,
+              "total_return": 0.9898172642193215,
+              "turnover": 150.0
+            }
+          }
+        },
+        "ETHUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 2982,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2982,
+              "cagr": 0.09891864833566255,
+              "entries": 1,
+              "max_drawdown": -0.9431477094958849,
+              "sharpe": 0.4975109156739305,
+              "total_return": 2.0532258386887587,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2982,
+              "cagr": 0.08485941293781019,
+              "matched_entries": 75,
+              "max_drawdown": -0.7382372397290549,
+              "runs": 200,
+              "sharpe": 0.4062180831361466,
+              "total_return": 1.6217179150556515
+            },
+            "uniform_frequency": {
+              "bars": 2982,
+              "cagr": -0.03734582288268473,
+              "entries": 75,
+              "max_drawdown": -0.7878776207844648,
+              "sharpe": 0.18331473125701295,
+              "total_return": -0.36261983279164045,
+              "turnover": 150.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 2982,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2982,
+              "cagr": 0.09877911342032886,
+              "entries": 1,
+              "max_drawdown": -0.9431477094958849,
+              "sharpe": 0.49733579562461844,
+              "total_return": 2.0486414155075314,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2982,
+              "cagr": 0.06522893714379285,
+              "matched_entries": 75,
+              "max_drawdown": -0.7433659909907557,
+              "runs": 200,
+              "sharpe": 0.3561284719089732,
+              "total_return": 1.1122321150201122
+            },
+            "uniform_frequency": {
+              "bars": 2982,
+              "cagr": -0.05553425364814679,
+              "entries": 75,
+              "max_drawdown": -0.8036091341820408,
+              "sharpe": 0.1461278161559498,
+              "total_return": -0.4914072426256504,
+              "turnover": 150.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 2982,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2982,
+              "cagr": 0.09854612778199767,
+              "entries": 1,
+              "max_drawdown": -0.9431477094958849,
+              "sharpe": 0.49704353038810917,
+              "total_return": 2.041000710205508,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2982,
+              "cagr": 0.03329431492231194,
+              "matched_entries": 75,
+              "max_drawdown": -0.7516924550559327,
+              "runs": 200,
+              "sharpe": 0.27264941657581854,
+              "total_return": 0.47339029911257335
+            },
+            "uniform_frequency": {
+              "bars": 2982,
+              "cagr": -0.08514640214888602,
+              "entries": 75,
+              "max_drawdown": -0.8496095340964234,
+              "sharpe": 0.084157348349428,
+              "total_return": -0.6511324266605214,
+              "turnover": 150.0
+            }
+          }
+        },
+        "EURUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": -0.0024095423358173607,
+              "entries": 1,
+              "max_drawdown": -0.23302026297910106,
+              "sharpe": -0.0038162804597619447,
+              "total_return": -0.024648508817216586,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": -0.0032029616304060093,
+              "matched_entries": 66,
+              "max_drawdown": -0.13638961013708306,
+              "runs": 200,
+              "sharpe": -0.07863317191985388,
+              "total_return": -0.03264388160007614
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": -0.008741843871303723,
+              "entries": 66,
+              "max_drawdown": -0.19674510817732926,
+              "sharpe": -0.16597359709835688,
+              "total_return": -0.08683077571615971,
+              "turnover": 131.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": -0.002438481020274441,
+              "entries": 1,
+              "max_drawdown": -0.23302026297909972,
+              "sharpe": -0.004257199146066058,
+              "total_return": -0.024941172797363964,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": -0.006857857427084224,
+              "matched_entries": 66,
+              "max_drawdown": -0.1546261580123447,
+              "runs": 200,
+              "sharpe": -0.18790155117340604,
+              "total_return": -0.06871558588336357
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": -0.012499818917864225,
+              "entries": 66,
+              "max_drawdown": -0.21454769666355755,
+              "sharpe": -0.24790499930392804,
+              "total_return": -0.12201748473962037,
+              "turnover": 131.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": -0.0024867296019274177,
+              "entries": 1,
+              "max_drawdown": -0.23302026297910283,
+              "sharpe": -0.004992036725217667,
+              "total_return": -0.025428946097620808,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": -0.012919723932130478,
+              "matched_entries": 66,
+              "max_drawdown": -0.18506786897270788,
+              "runs": 200,
+              "sharpe": -0.370006066859359,
+              "total_return": -0.12587206862723477
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": -0.018733963050457048,
+              "entries": 66,
+              "max_drawdown": -0.25472463521345423,
+              "sharpe": -0.3841473034071881,
+              "total_return": -0.17769646991624055,
+              "turnover": 131.0
+            }
+          }
+        },
+        "GBPUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 2606,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2606,
+              "cagr": 0.00040427244079221936,
+              "entries": 1,
+              "max_drawdown": -0.25208507670850555,
+              "sharpe": 0.044819166693757864,
+              "total_return": 0.0041885932966196915,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2606,
+              "cagr": -0.0011337476357582421,
+              "matched_entries": 66,
+              "max_drawdown": -0.13823097191223077,
+              "runs": 200,
+              "sharpe": -0.007737357150887087,
+              "total_return": -0.011662501121909252
+            },
+            "uniform_frequency": {
+              "bars": 2606,
+              "cagr": 0.0002616958635446309,
+              "entries": 66,
+              "max_drawdown": -0.19238750383732905,
+              "sharpe": 0.03337101784423692,
+              "total_return": 0.00270957778176939,
+              "turnover": 131.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 2606,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2606,
+              "cagr": 0.0003752409957611391,
+              "entries": 1,
+              "max_drawdown": -0.25208507670850644,
+              "sharpe": 0.044453974966602874,
+              "total_return": 0.003887276455262656,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2606,
+              "cagr": -0.004801916755828417,
+              "matched_entries": 66,
+              "max_drawdown": -0.15553592075754796,
+              "runs": 200,
+              "sharpe": -0.09852735242628864,
+              "total_return": -0.048558928690516145
+            },
+            "uniform_frequency": {
+              "bars": 2606,
+              "cagr": -0.003532744703006574,
+              "entries": 66,
+              "max_drawdown": -0.20917669227531432,
+              "sharpe": -0.032506302519929135,
+              "total_return": -0.03593614760135677,
+              "turnover": 131.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 2606,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2606,
+              "cagr": 0.0003268377579654924,
+              "entries": 1,
+              "max_drawdown": -0.2520850767085068,
+              "sharpe": 0.0438451904838625,
+              "total_return": 0.003385081719664784,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2606,
+              "cagr": -0.010885751047266634,
+              "matched_entries": 66,
+              "max_drawdown": -0.18394792517104352,
+              "runs": 200,
+              "sharpe": -0.2498443268175691,
+              "total_return": -0.10701874580563242
+            },
+            "uniform_frequency": {
+              "bars": 2606,
+              "cagr": -0.009827362823940033,
+              "entries": 66,
+              "max_drawdown": -0.2363973547313737,
+              "sharpe": -0.1421722175461277,
+              "total_return": -0.09708789904663817,
+              "turnover": 131.0
+            }
+          }
+        },
+        "NZDUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 2605,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2605,
+              "cagr": -0.017718857271801336,
+              "entries": 1,
+              "max_drawdown": -0.2589576109453512,
+              "sharpe": -0.14803571474247926,
+              "total_return": -0.16873557791355454,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2605,
+              "cagr": -0.010985762932792853,
+              "matched_entries": 66,
+              "max_drawdown": -0.14960697090931963,
+              "runs": 200,
+              "sharpe": -0.2123759302509246,
+              "total_return": -0.10791293084178555
+            },
+            "uniform_frequency": {
+              "bars": 2605,
+              "cagr": -0.04018748664800198,
+              "entries": 66,
+              "max_drawdown": -0.3755484466136767,
+              "sharpe": -0.5984987153590865,
+              "total_return": -0.34558156703642406,
+              "turnover": 131.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 2605,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2605,
+              "cagr": -0.01774737373126456,
+              "entries": 1,
+              "max_drawdown": -0.2589576109453524,
+              "sharpe": -0.14835067093153526,
+              "total_return": -0.1689850071260217,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2605,
+              "cagr": -0.014619592339561449,
+              "matched_entries": 66,
+              "max_drawdown": -0.17700340079257748,
+              "runs": 200,
+              "sharpe": -0.2909456577927431,
+              "total_return": -0.14122019620751491
+            },
+            "uniform_frequency": {
+              "bars": 2605,
+              "cagr": -0.043831145023591866,
+              "entries": 66,
+              "max_drawdown": -0.39944362351812,
+              "sharpe": -0.6568358229342791,
+              "total_return": -0.370812303150734,
+              "turnover": 131.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 2605,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2605,
+              "cagr": -0.017794918348713384,
+              "entries": 1,
+              "max_drawdown": -0.2589576109453533,
+              "sharpe": -0.14887525692663606,
+              "total_return": -0.1694007224801385,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2605,
+              "cagr": -0.020646457376190752,
+              "matched_entries": 66,
+              "max_drawdown": -0.22424172863065783,
+              "runs": 200,
+              "sharpe": -0.421891858348141,
+              "total_return": -0.19399290473068387
+            },
+            "uniform_frequency": {
+              "bars": 2605,
+              "cagr": -0.049875608175103725,
+              "entries": 66,
+              "max_drawdown": -0.4372689709955976,
+              "sharpe": -0.7535737808434296,
+              "total_return": -0.4107358881478924,
+              "turnover": 131.0
+            }
+          }
+        },
+        "USDCAD": {
+          "base": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": 0.007590857567224996,
+              "entries": 1,
+              "max_drawdown": -0.1696241991213615,
+              "sharpe": 0.15723386783935514,
+              "total_return": 0.08137423984199033,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": 0.0022658589208954805,
+              "matched_entries": 66,
+              "max_drawdown": -0.09021424170366155,
+              "runs": 200,
+              "sharpe": 0.08968865854171518,
+              "total_return": 0.02369060073859197
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": 0.02171423739934686,
+              "entries": 66,
+              "max_drawdown": -0.06368952945038553,
+              "sharpe": 0.523975621157643,
+              "total_return": 0.24886453354480276,
+              "turnover": 131.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": 0.007561628785347718,
+              "entries": 1,
+              "max_drawdown": -0.1696241991213625,
+              "sharpe": 0.15674402586589495,
+              "total_return": 0.08104976267459896,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": -0.001408925950891038,
+              "matched_entries": 66,
+              "max_drawdown": -0.0952090486753967,
+              "runs": 200,
+              "sharpe": -0.03123170348448789,
+              "total_return": -0.014480092412080814
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": 0.01783840705594031,
+              "entries": 66,
+              "max_drawdown": -0.06761608071207326,
+              "sharpe": 0.4345931234051045,
+              "total_return": 0.20071343783971285,
+              "turnover": 131.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": 0.007512896533160118,
+              "entries": 1,
+              "max_drawdown": -0.16962419912136284,
+              "sharpe": 0.155926771190799,
+              "total_return": 0.08050896739562985,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": -0.007503781009949195,
+              "matched_entries": 66,
+              "max_drawdown": -0.11424473564415338,
+              "runs": 200,
+              "sharpe": -0.23280293824044687,
+              "total_return": -0.07496260908275088
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": 0.011408770112747657,
+              "entries": 66,
+              "max_drawdown": -0.07804267537667642,
+              "sharpe": 0.2857079942072945,
+              "total_return": 0.12452222017014436,
+              "turnover": 131.0
+            }
+          }
+        },
+        "USDCHF": {
+          "base": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": -0.021158655685135086,
+              "entries": 1,
+              "max_drawdown": -0.25234725679675385,
+              "sharpe": -0.2789456423262449,
+              "total_return": -0.19847590607400312,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": -0.012941115541562409,
+              "matched_entries": 66,
+              "max_drawdown": -0.1506070259297363,
+              "runs": 200,
+              "sharpe": -0.3548889846233793,
+              "total_return": -0.1260680264011419
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": -0.015918214988710266,
+              "entries": 66,
+              "max_drawdown": -0.20528363046304754,
+              "sharpe": -0.3133457407937427,
+              "total_return": -0.15295587429555924,
+              "turnover": 131.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": -0.02118705048440306,
+              "entries": 1,
+              "max_drawdown": -0.25234725679675396,
+              "sharpe": -0.279369806486325,
+              "total_return": -0.19871641140324736,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": -0.01656045200810452,
+              "matched_entries": 66,
+              "max_drawdown": -0.17729448893714628,
+              "runs": 200,
+              "sharpe": -0.45990115360570993,
+              "total_return": -0.1586573422047568
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": -0.019654078446292855,
+              "entries": 66,
+              "max_drawdown": -0.2214293393980259,
+              "sharpe": -0.39241193513579287,
+              "total_return": -0.1856384014709952,
+              "turnover": 131.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": -0.021234392262948543,
+              "entries": 1,
+              "max_drawdown": -0.2523472567967525,
+              "sharpe": -0.2800755825113166,
+              "total_return": -0.1991172536186515,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": -0.022563340015556044,
+              "matched_entries": 66,
+              "max_drawdown": -0.224420879627653,
+              "runs": 200,
+              "sharpe": -0.6349081031666038,
+              "total_return": -0.21029579071501214
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": -0.025851501885907013,
+              "entries": 66,
+              "max_drawdown": -0.26330293213136446,
+              "sharpe": -0.5229701875165578,
+              "total_return": -0.2373511378127563,
+              "turnover": 131.0
+            }
+          }
+        },
+        "USDJPY": {
+          "base": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": 0.032500676800663486,
+              "entries": 1,
+              "max_drawdown": -0.14862291239378822,
+              "sharpe": 0.4408431752053971,
+              "total_return": 0.39219133480532165,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": 0.014653851267055762,
+              "matched_entries": 66,
+              "max_drawdown": -0.08071968241303329,
+              "runs": 200,
+              "sharpe": 0.37885584574083897,
+              "total_return": 0.16241247975814121
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": 0.002413320983250866,
+              "entries": 66,
+              "max_drawdown": -0.14320300499868643,
+              "sharpe": 0.07135266859354905,
+              "total_return": 0.025249812706169106,
+              "turnover": 131.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": 0.032470725420256086,
+              "entries": 1,
+              "max_drawdown": -0.14862291239378822,
+              "sharpe": 0.4404787063014944,
+              "total_return": 0.39177359385668664,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": 0.010933709135360958,
+              "matched_entries": 66,
+              "max_drawdown": -0.08171720409051553,
+              "runs": 200,
+              "sharpe": 0.2883119763631506,
+              "total_return": 0.11906993941751387
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": -0.0013913341704726578,
+              "entries": 66,
+              "max_drawdown": -0.15038294605380453,
+              "sharpe": 0.0021920976271628573,
+              "total_return": -0.014300468662817645,
+              "turnover": 131.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 2607,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2607,
+              "cagr": 0.03242078840168494,
+              "entries": 1,
+              "max_drawdown": -0.1486229123937879,
+              "sharpe": 0.4398699256989757,
+              "total_return": 0.3910773589423051,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2607,
+              "cagr": 0.004763625778546832,
+              "matched_entries": 66,
+              "max_drawdown": -0.08775932605673709,
+              "runs": 200,
+              "sharpe": 0.13741478790270306,
+              "total_return": 0.05039242933041255
+            },
+            "uniform_frequency": {
+              "bars": 2607,
+              "cagr": -0.007702882359225449,
+              "entries": 66,
+              "max_drawdown": -0.1622207683539073,
+              "sharpe": -0.11259631070479972,
+              "total_return": -0.07688056255365738,
+              "turnover": 131.0
+            }
+          }
+        },
+        "XAUUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 2593,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2593,
+              "cagr": 0.13037402766346018,
+              "entries": 1,
+              "max_drawdown": -0.21378054473805508,
+              "sharpe": 0.8886853884770725,
+              "total_return": 2.528899061077757,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2593,
+              "cagr": 0.05982603364986039,
+              "matched_entries": 65,
+              "max_drawdown": -0.12337321038399007,
+              "runs": 200,
+              "sharpe": 0.8029467798839602,
+              "total_return": 0.8182594429904084
+            },
+            "uniform_frequency": {
+              "bars": 2593,
+              "cagr": 0.10609067822013629,
+              "entries": 65,
+              "max_drawdown": -0.1445705226484263,
+              "sharpe": 1.0417620245793298,
+              "total_return": 1.8222321375575352,
+              "turnover": 130.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 2593,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2593,
+              "cagr": 0.1303190602259734,
+              "entries": 1,
+              "max_drawdown": -0.2137805447380544,
+              "sharpe": 0.8883606541393605,
+              "total_return": 2.5271337288811346,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2593,
+              "cagr": 0.053399407448085245,
+              "matched_entries": 65,
+              "max_drawdown": -0.13760587092317078,
+              "runs": 200,
+              "sharpe": 0.7228925340643287,
+              "total_return": 0.7079514253564763
+            },
+            "uniform_frequency": {
+              "bars": 2593,
+              "cagr": 0.09912705773446184,
+              "entries": 65,
+              "max_drawdown": -0.1479960710669287,
+              "sharpe": 0.9796064250058129,
+              "total_return": 1.6446600327461058,
+              "turnover": 130.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 2593,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 2593,
+              "cagr": 0.1302090507978042,
+              "entries": 1,
+              "max_drawdown": -0.21378054473805297,
+              "sharpe": 0.887708344363497,
+              "total_return": 2.523603064487852,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 2593,
+              "cagr": 0.04066232260759217,
+              "matched_entries": 65,
+              "max_drawdown": -0.16602609309078276,
+              "runs": 200,
+              "sharpe": 0.5627632403030431,
+              "total_return": 0.5069979693069655
+            },
+            "uniform_frequency": {
+              "bars": 2593,
+              "cagr": 0.08532077502390956,
+              "entries": 65,
+              "max_drawdown": -0.15481117760342655,
+              "sharpe": 0.854586605063305,
+              "total_return": 1.3221043296802515,
+              "turnover": 130.0
+            }
+          }
+        }
+      },
+      "portfolio": {
+        "base": {
+          "always_flat_equal_weight": {
+            "bars": 2988,
+            "cagr": 0.0,
+            "max_drawdown": 0.0,
+            "sharpe": null,
+            "total_return": 0.0
+          },
+          "buy_and_hold_equal_weight": {
+            "bars": 2988,
+            "cagr": 0.14185757999669057,
+            "max_drawdown": -0.32793462180646216,
+            "sharpe": 0.8066838648440983,
+            "total_return": 3.820732058293384
+          },
+          "random_entry_matched_turnover_equal_weight_mean": {
+            "bars": 2988,
+            "cagr": 0.06442485864097813,
+            "max_drawdown": -0.18613499046182613,
+            "sharpe": 0.7109936182735006,
+            "total_return": 1.096556302625706
+          },
+          "uniform_frequency_equal_weight": {
+            "bars": 2988,
+            "cagr": 0.05445026725790103,
+            "max_drawdown": -0.2850390253205557,
+            "sharpe": 0.4886318380380947,
+            "total_return": 0.8750971411670143
+          }
+        },
+        "conservative": {
+          "always_flat_equal_weight": {
+            "bars": 2988,
+            "cagr": 0.0,
+            "max_drawdown": 0.0,
+            "sharpe": null,
+            "total_return": 0.0
+          },
+          "buy_and_hold_equal_weight": {
+            "bars": 2988,
+            "cagr": 0.14180361641866823,
+            "max_drawdown": -0.3279346218064625,
+            "sharpe": 0.8064283064026251,
+            "total_return": 3.818031395082084
+          },
+          "random_entry_matched_turnover_equal_weight_mean": {
+            "bars": 2988,
+            "cagr": 0.055648888712551026,
+            "max_drawdown": -0.19236163955202812,
+            "sharpe": 0.6230431922054425,
+            "total_return": 0.9005268538113735
+          },
+          "uniform_frequency_equal_weight": {
+            "bars": 2988,
+            "cagr": 0.04538491567082681,
+            "max_drawdown": -0.2899802057466214,
+            "sharpe": 0.4192228266193692,
+            "total_return": 0.6926259821302665
+          }
+        },
+        "stress": {
+          "always_flat_equal_weight": {
+            "bars": 2988,
+            "cagr": 0.0,
+            "max_drawdown": 0.0,
+            "sharpe": null,
+            "total_return": 0.0
+          },
+          "buy_and_hold_equal_weight": {
+            "bars": 2988,
+            "cagr": 0.14171200768322367,
+            "max_drawdown": -0.32793462180646227,
+            "sharpe": 0.8059933598174129,
+            "total_return": 3.813449912848638
+          },
+          "random_entry_matched_turnover_equal_weight_mean": {
+            "bars": 2988,
+            "cagr": 0.0409987182085767,
+            "max_drawdown": -0.2028153208124921,
+            "sharpe": 0.47449205447114273,
+            "total_return": 0.6103098600401162
+          },
+          "uniform_frequency_equal_weight": {
+            "bars": 2988,
+            "cagr": 0.030253818675762822,
+            "max_drawdown": -0.3009901956986145,
+            "sharpe": 0.3019211223444284,
+            "total_return": 0.42390698024163
+          }
+        }
+      }
+    },
+    "H4": {
+      "assets": {
+        "AUDUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": -0.009052297998207948,
+              "entries": 1,
+              "max_drawdown": -0.3154828618230646,
+              "sharpe": -0.03997459593387937,
+              "total_return": -0.07755639529664837,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.020309518031175866,
+              "matched_entries": 336,
+              "max_drawdown": -0.23541087665896487,
+              "runs": 200,
+              "sharpe": -0.3809880233086315,
+              "total_return": -0.16652934582836154
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.008121707357177654,
+              "entries": 336,
+              "max_drawdown": -0.17574509709667485,
+              "sharpe": -0.07664882129931089,
+              "total_return": -0.0698375475576799,
+              "turnover": 672.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": -0.00908579599857251,
+              "entries": 1,
+              "max_drawdown": -0.31548286182306307,
+              "sharpe": -0.04031019522164168,
+              "total_return": -0.07783318373574744,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.041427768019883016,
+              "matched_entries": 336,
+              "max_drawdown": -0.35323540564086753,
+              "runs": 200,
+              "sharpe": -0.8124177163985823,
+              "total_return": -0.3131342197372968
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.030400096649092934,
+              "entries": 336,
+              "max_drawdown": -0.2884889191059654,
+              "sharpe": -0.3902453962778907,
+              "total_return": -0.23972005970610377,
+              "turnover": 672.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": -0.009141645830699652,
+              "entries": 1,
+              "max_drawdown": -0.3154828618230624,
+              "sharpe": -0.04086943480782371,
+              "total_return": -0.0782944978009128,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.07561880235945928,
+              "matched_entries": 336,
+              "max_drawdown": -0.5176218294905006,
+              "runs": 200,
+              "sharpe": -1.5313908280548174,
+              "total_return": -0.5024483172938091
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.06643847669756076,
+              "entries": 336,
+              "max_drawdown": -0.47877797664322963,
+              "sharpe": -0.9083567651236075,
+              "total_return": -0.4568251652790888,
+              "turnover": 672.0
+            }
+          }
+        },
+        "BTCUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 17486,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 17486,
+              "cagr": 0.16342349712230386,
+              "entries": 1,
+              "max_drawdown": -0.8154201848420022,
+              "sharpe": 0.5508741263210096,
+              "total_return": 4.757657666950755,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 17486,
+              "cagr": 0.0496050617417525,
+              "matched_entries": 438,
+              "max_drawdown": -0.5441808732983454,
+              "runs": 200,
+              "sharpe": 0.3134862224504641,
+              "total_return": 0.750494819504431
+            },
+            "uniform_frequency": {
+              "bars": 17486,
+              "cagr": -0.0013565345890074187,
+              "entries": 438,
+              "max_drawdown": -0.8334709368740496,
+              "sharpe": 0.18564374747046586,
+              "total_return": -0.015576139021336144,
+              "turnover": 875.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 17486,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 17486,
+              "cagr": 0.1632723419697526,
+              "entries": 1,
+              "max_drawdown": -0.8154201848420023,
+              "sharpe": 0.5506363389887016,
+              "total_return": 4.749012535318698,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 17486,
+              "cagr": -0.058904016381504776,
+              "matched_entries": 438,
+              "max_drawdown": -0.6727911231953752,
+              "runs": 200,
+              "sharpe": -0.08140411446457888,
+              "total_return": -0.5044572040764255
+            },
+            "uniform_frequency": {
+              "bars": 17486,
+              "cagr": -0.10863328238760617,
+              "entries": 438,
+              "max_drawdown": -0.8724993853502689,
+              "sharpe": -0.1140860260453316,
+              "total_return": -0.7355085253900666,
+              "turnover": 875.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 17486,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 17486,
+              "cagr": 0.1630199546657889,
+              "entries": 1,
+              "max_drawdown": -0.8154201848420025,
+              "sharpe": 0.5502392312313981,
+              "total_return": 4.734603982598566,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 17486,
+              "cagr": -0.21541696599362536,
+              "matched_entries": 438,
+              "max_drawdown": -0.9463896985501802,
+              "runs": 200,
+              "sharpe": -0.739542563011427,
+              "total_return": -0.939532984182811
+            },
+            "uniform_frequency": {
+              "bars": 17486,
+              "cagr": -0.2627164226011043,
+              "entries": 438,
+              "max_drawdown": -0.9790478348611984,
+              "sharpe": -0.6107839514460034,
+              "total_return": -0.9705409863027402,
+              "turnover": 875.0
+            }
+          }
+        },
+        "ETHUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 17473,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 17473,
+              "cagr": 0.1008530337146123,
+              "entries": 1,
+              "max_drawdown": -0.9431477094958851,
+              "sharpe": 0.4922862735214498,
+              "total_return": 2.0355217345536887,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 17473,
+              "cagr": 0.03714872318092999,
+              "matched_entries": 437,
+              "max_drawdown": -0.7309277160305647,
+              "runs": 200,
+              "sharpe": 0.28122537758497235,
+              "total_return": 0.5242719592215122
+            },
+            "uniform_frequency": {
+              "bars": 17473,
+              "cagr": -0.0073746988998469876,
+              "entries": 437,
+              "max_drawdown": -0.8964475795755884,
+              "sharpe": 0.23780838741862043,
+              "total_return": -0.08198304877956841,
+              "turnover": 874.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 17473,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 17473,
+              "cagr": 0.10070990148223324,
+              "entries": 1,
+              "max_drawdown": -0.943147709495885,
+              "sharpe": 0.49210472774713415,
+              "total_return": 2.030963894111421,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 17473,
+              "cagr": -0.06993804836793516,
+              "matched_entries": 437,
+              "max_drawdown": -0.7636203297388533,
+              "runs": 200,
+              "sharpe": -0.021407436697784447,
+              "total_return": -0.5673701997483023
+            },
+            "uniform_frequency": {
+              "bars": 17473,
+              "cagr": -0.11399548397299719,
+              "entries": 437,
+              "max_drawdown": -0.9235895689328733,
+              "sharpe": 0.01253873411164675,
+              "total_return": -0.753078862996069,
+              "turnover": 874.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 17473,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 17473,
+              "cagr": 0.10047091026712218,
+              "entries": 1,
+              "max_drawdown": -0.9431477094958849,
+              "sharpe": 0.49180173673509125,
+              "total_return": 2.023367493374277,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 17473,
+              "cagr": -0.22442894584821937,
+              "matched_entries": 437,
+              "max_drawdown": -0.9588241718584641,
+              "runs": 200,
+              "sharpe": -0.5258053517179607,
+              "total_return": -0.9469795789355236
+            },
+            "uniform_frequency": {
+              "bars": 17473,
+              "cagr": -0.26713871945257817,
+              "entries": 437,
+              "max_drawdown": -0.9832650976412077,
+              "sharpe": -0.36171531601488616,
+              "total_return": -0.9724474134542298,
+              "turnover": 874.0
+            }
+          }
+        },
+        "EURUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": -0.0026741271822331436,
+              "entries": 1,
+              "max_drawdown": -0.2377663646803626,
+              "sharpe": -0.0018054430481371801,
+              "total_return": -0.023491429237501582,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.015972156622023004,
+              "matched_entries": 336,
+              "max_drawdown": -0.18568327537677343,
+              "runs": 200,
+              "sharpe": -0.4321764759039062,
+              "total_return": -0.13319369513293344
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.010686848118091619,
+              "entries": 336,
+              "max_drawdown": -0.20934210498123096,
+              "sharpe": -0.18605571023907821,
+              "total_return": -0.09097678167883483,
+              "turnover": 672.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": -0.002707840790311611,
+              "entries": 1,
+              "max_drawdown": -0.2377663646803616,
+              "sharpe": -0.0022786899124482727,
+              "total_return": -0.0237844404109685,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.03718380773380925,
+              "matched_entries": 336,
+              "max_drawdown": -0.3077706297554885,
+              "runs": 200,
+              "sharpe": -1.0412778193616279,
+              "total_return": -0.2856615782366939
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.03290778009983242,
+              "entries": 336,
+              "max_drawdown": -0.30835626186894594,
+              "sharpe": -0.6310411440369614,
+              "total_return": -0.2569995541704885,
+              "turnover": 672.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": -0.0027640500962720083,
+              "entries": 1,
+              "max_drawdown": -0.23776636468035894,
+              "sharpe": -0.0030674162552621967,
+              "total_return": -0.02427279236673774,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.07152606560437413,
+              "matched_entries": 336,
+              "max_drawdown": -0.4913684426156406,
+              "runs": 200,
+              "sharpe": -2.0562922573322506,
+              "total_return": -0.48254693402909254
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.0688532072580802,
+              "entries": 336,
+              "max_drawdown": -0.4887242517412589,
+              "sharpe": -1.359232697734356,
+              "total_return": -0.4691716198282201,
+              "turnover": 672.0
+            }
+          }
+        },
+        "GBPUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 13422,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13422,
+              "cagr": 0.0007464359970943413,
+              "entries": 1,
+              "max_drawdown": -0.2692765507208026,
+              "sharpe": 0.05178380381316254,
+              "total_return": 0.006645613489656199,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13422,
+              "cagr": -0.013629838632505997,
+              "matched_entries": 336,
+              "max_drawdown": -0.19648518595269227,
+              "runs": 200,
+              "sharpe": -0.2951283146017481,
+              "total_return": -0.11469581460618017
+            },
+            "uniform_frequency": {
+              "bars": 13422,
+              "cagr": -0.01094427011430299,
+              "entries": 336,
+              "max_drawdown": -0.22736283483571706,
+              "sharpe": -0.1536629041316268,
+              "total_return": -0.09306786254045818,
+              "turnover": 672.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 13422,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13422,
+              "cagr": 0.0007126042398950538,
+              "entries": 1,
+              "max_drawdown": -0.2692765507208026,
+              "sharpe": 0.05139217561552044,
+              "total_return": 0.006343559394794029,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13422,
+              "cagr": -0.034917261057075155,
+              "matched_entries": 336,
+              "max_drawdown": -0.2953666337387091,
+              "runs": 200,
+              "sharpe": -0.7987700270180432,
+              "total_return": -0.2705765211644523
+            },
+            "uniform_frequency": {
+              "bars": 13422,
+              "cagr": -0.0331615202921004,
+              "entries": 336,
+              "max_drawdown": -0.3093979707125901,
+              "sharpe": -0.5313514734384889,
+              "total_return": -0.2587118791437837,
+              "turnover": 672.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 13422,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13422,
+              "cagr": 0.000656197948973869,
+              "entries": 1,
+              "max_drawdown": -0.2692765507208065,
+              "sharpe": 0.0507393112930412,
+              "total_return": 0.005840135903347976,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13422,
+              "cagr": -0.06938099566959177,
+              "matched_entries": 336,
+              "max_drawdown": -0.4865855141725579,
+              "runs": 200,
+              "sharpe": -1.6381708623454034,
+              "total_return": -0.47181166734014957
+            },
+            "uniform_frequency": {
+              "bars": 13422,
+              "cagr": -0.06910088807664116,
+              "entries": 336,
+              "max_drawdown": -0.49418327398079176,
+              "sharpe": -1.152379076149288,
+              "total_return": -0.4703987326255231,
+              "turnover": 672.0
+            }
+          }
+        },
+        "NZDUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 13421,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13421,
+              "cagr": -0.020459033333385723,
+              "entries": 1,
+              "max_drawdown": -0.2595845251044051,
+              "sharpe": -0.15604389335790214,
+              "total_return": -0.16763514470770358,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13421,
+              "cagr": -0.023963970146678837,
+              "matched_entries": 336,
+              "max_drawdown": -0.22697615370167346,
+              "runs": 200,
+              "sharpe": -0.4558240353533649,
+              "total_return": -0.19370218639819903
+            },
+            "uniform_frequency": {
+              "bars": 13421,
+              "cagr": -0.0176613443392013,
+              "entries": 336,
+              "max_drawdown": -0.24000198257391592,
+              "sharpe": -0.21044926292776578,
+              "total_return": -0.14629423018851317,
+              "turnover": 672.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 13421,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13421,
+              "cagr": -0.02049215067475363,
+              "entries": 1,
+              "max_drawdown": -0.2595845251044051,
+              "sharpe": -0.15638081030106424,
+              "total_return": -0.1678849041161704,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13421,
+              "cagr": -0.04500038753693125,
+              "matched_entries": 336,
+              "max_drawdown": -0.35771054990728035,
+              "runs": 200,
+              "sharpe": -0.8879354557029165,
+              "total_return": -0.3354894078154703
+            },
+            "uniform_frequency": {
+              "bars": 13421,
+              "cagr": -0.039728206081935835,
+              "entries": 336,
+              "max_drawdown": -0.36140971004376443,
+              "sharpe": -0.5240436610285232,
+              "total_return": -0.3022095957444091,
+              "turnover": 672.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 13421,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13421,
+              "cagr": -0.020547365849491794,
+              "entries": 1,
+              "max_drawdown": -0.2595845251044082,
+              "sharpe": -0.15694198505701207,
+              "total_return": -0.1683011697969572,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13421,
+              "cagr": -0.07905907812727864,
+              "matched_entries": 336,
+              "max_drawdown": -0.5323620899943847,
+              "runs": 200,
+              "sharpe": -1.608102885567729,
+              "total_return": -0.5185960415786666
+            },
+            "uniform_frequency": {
+              "bars": 13421,
+              "cagr": -0.07542427517037187,
+              "entries": 336,
+              "max_drawdown": -0.5336289650455097,
+              "sharpe": -1.0419562790324906,
+              "total_return": -0.5014663020894125,
+              "turnover": 672.0
+            }
+          }
+        },
+        "USDCAD": {
+          "base": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": 0.008838713649042429,
+              "entries": 1,
+              "max_drawdown": -0.1791683444006914,
+              "sharpe": 0.16801818997636933,
+              "total_return": 0.08125480464457202,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.00869106260084096,
+              "matched_entries": 336,
+              "max_drawdown": -0.12100405035214923,
+              "runs": 200,
+              "sharpe": -0.25159522658618527,
+              "total_return": -0.07456687959166763
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.005342304690152289,
+              "entries": 336,
+              "max_drawdown": -0.13618232692821308,
+              "sharpe": -0.09580148571745113,
+              "total_return": -0.04644123517472698,
+              "turnover": 672.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": 0.008804610860843498,
+              "entries": 1,
+              "max_drawdown": -0.17916834440069362,
+              "sharpe": 0.16749712641162526,
+              "total_return": 0.08093036331491121,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.03005962399847284,
+              "matched_entries": 336,
+              "max_drawdown": -0.2508049654356862,
+              "runs": 200,
+              "sharpe": -0.9202758488133619,
+              "total_return": -0.23734670995315676
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.027683082899224942,
+              "entries": 336,
+              "max_drawdown": -0.23909466051996997,
+              "sharpe": -0.5955258419451926,
+              "total_return": -0.22059651498555233,
+              "turnover": 672.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": 0.00874775269094541,
+              "entries": 1,
+              "max_drawdown": -0.1791683444006933,
+              "sharpe": 0.16662780292147908,
+              "total_return": 0.08038962776548009,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.06465592594896474,
+              "matched_entries": 336,
+              "max_drawdown": -0.4520261782381416,
+              "runs": 200,
+              "sharpe": -2.0343696801506437,
+              "total_return": -0.4475482271440885
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.0638223875134597,
+              "entries": 336,
+              "max_drawdown": -0.44623695625560256,
+              "sharpe": -1.4103376333655286,
+              "total_return": -0.44316220054009214,
+              "turnover": 672.0
+            }
+          }
+        },
+        "USDCHF": {
+          "base": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": -0.02461167819607979,
+              "entries": 1,
+              "max_drawdown": -0.2538244845259998,
+              "sharpe": -0.3012671361848409,
+              "total_return": -0.1984656497163526,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.024101800476890256,
+              "matched_entries": 336,
+              "max_drawdown": -0.21547210265121886,
+              "runs": 200,
+              "sharpe": -0.6422309676433404,
+              "total_return": -0.19473827734862192
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.03742368440033683,
+              "entries": 336,
+              "max_drawdown": -0.3253367685232832,
+              "sharpe": -0.7068439054874313,
+              "total_return": -0.2872399898969893,
+              "turnover": 672.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": -0.02464465022708906,
+              "entries": 1,
+              "max_drawdown": -0.25382448452599393,
+              "sharpe": -0.3017250303255267,
+              "total_return": -0.19870615812311632,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.04513833662302824,
+              "matched_entries": 336,
+              "max_drawdown": -0.34522690447873183,
+              "runs": 200,
+              "sharpe": -1.2323347050473903,
+              "total_return": -0.3363814908061862
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.05904496392165837,
+              "entries": 336,
+              "max_drawdown": -0.4436728069607301,
+              "sharpe": -1.1396103234572947,
+              "total_return": -0.41742236742257244,
+              "turnover": 672.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": -0.024699623132239612,
+              "entries": 1,
+              "max_drawdown": -0.25382448452599415,
+              "sharpe": -0.3024869283714328,
+              "total_return": -0.19910700546772575,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.07919707242421559,
+              "matched_entries": 336,
+              "max_drawdown": -0.5226869288863429,
+              "runs": 200,
+              "sharpe": -2.2156648599833555,
+              "total_return": -0.5192884144285351
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.09402032730505205,
+              "entries": 336,
+              "max_drawdown": -0.5971386177783844,
+              "sharpe": -1.845339610203035,
+              "total_return": -0.5837896914729056,
+              "turnover": 672.0
+            }
+          }
+        },
+        "USDJPY": {
+          "base": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": 0.03808743057561714,
+              "entries": 1,
+              "max_drawdown": -0.15919560712258485,
+              "sharpe": 0.47587347612107295,
+              "total_return": 0.393538905589099,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": 0.007075028167546682,
+              "matched_entries": 336,
+              "max_drawdown": -0.08930340035434492,
+              "runs": 200,
+              "sharpe": 0.18498566632229915,
+              "total_return": 0.06458861191730025
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.0037380245967356673,
+              "entries": 336,
+              "max_drawdown": -0.1541509995119228,
+              "sharpe": -0.030337822942369645,
+              "total_return": -0.03270042692684383,
+              "turnover": 672.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": 0.038052339063665785,
+              "entries": 1,
+              "max_drawdown": -0.1591956071225864,
+              "sharpe": 0.47548158325970613,
+              "total_return": 0.3931207602883595,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.014633096563038905,
+              "matched_entries": 336,
+              "max_drawdown": -0.15036338950703432,
+              "runs": 200,
+              "sharpe": -0.320057979324511,
+              "total_return": -0.12266580511875946
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.02611379507243128,
+              "entries": 336,
+              "max_drawdown": -0.27799015110509273,
+              "sharpe": -0.3997889923581809,
+              "total_return": -0.20935778571102293,
+              "turnover": 672.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 13423,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13423,
+              "cagr": 0.03799383243550292,
+              "entries": 1,
+              "max_drawdown": -0.15919560712258463,
+              "sharpe": 0.47482699878564816,
+              "total_return": 0.3924238514538112,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13423,
+              "cagr": -0.049779174799001846,
+              "matched_entries": 336,
+              "max_drawdown": -0.3705254844830458,
+              "runs": 200,
+              "sharpe": -1.1617364619416317,
+              "total_return": -0.36447276726951094
+            },
+            "uniform_frequency": {
+              "bars": 13423,
+              "cagr": -0.06230975534385608,
+              "entries": 336,
+              "max_drawdown": -0.45387721182575913,
+              "sharpe": -1.0087828643741203,
+              "total_return": -0.43512384982722274,
+              "turnover": 672.0
+            }
+          }
+        },
+        "XAUUSD": {
+          "base": {
+            "always_flat": {
+              "bars": 13323,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13323,
+              "cagr": 0.15421740198696354,
+              "entries": 1,
+              "max_drawdown": -0.24235887149459567,
+              "sharpe": 0.9873373401780338,
+              "total_return": 2.5387333484603865,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13323,
+              "cagr": 0.03513185742420655,
+              "matched_entries": 334,
+              "max_drawdown": -0.1982509427387361,
+              "runs": 200,
+              "sharpe": 0.4721634235908163,
+              "total_return": 0.3556091977647289
+            },
+            "uniform_frequency": {
+              "bars": 13323,
+              "cagr": 0.009208543864363872,
+              "entries": 334,
+              "max_drawdown": -0.3063838382870936,
+              "sharpe": 0.13775831495768062,
+              "total_return": 0.08412134559539108,
+              "turnover": 667.0
+            }
+          },
+          "conservative": {
+            "always_flat": {
+              "bars": 13323,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13323,
+              "cagr": 0.1541518598033098,
+              "entries": 1,
+              "max_drawdown": -0.24235887149459578,
+              "sharpe": 0.9869761023753373,
+              "total_return": 2.5369630966602474,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13323,
+              "cagr": -0.0019022299920377073,
+              "matched_entries": 334,
+              "max_drawdown": -0.2765080947003171,
+              "runs": 200,
+              "sharpe": 0.016151046290984145,
+              "total_return": -0.016637518985290756
+            },
+            "uniform_frequency": {
+              "bars": 13323,
+              "cagr": -0.028301415603140145,
+              "entries": 334,
+              "max_drawdown": -0.40279894967541197,
+              "sharpe": -0.19645219035877362,
+              "total_return": -0.22351274740973404,
+              "turnover": 667.0
+            }
+          },
+          "stress": {
+            "always_flat": {
+              "bars": 13323,
+              "cagr": 0.0,
+              "entries": 0,
+              "max_drawdown": 0.0,
+              "sharpe": null,
+              "total_return": 0.0,
+              "turnover": 0.0
+            },
+            "buy_and_hold": {
+              "bars": 13323,
+              "cagr": 0.15402068814600844,
+              "entries": 1,
+              "max_drawdown": -0.2423588714945959,
+              "sharpe": 0.9862502649425734,
+              "total_return": 2.533422593059949,
+              "turnover": 1.0
+            },
+            "random_entry_matched_turnover_mean": {
+              "bars": 13323,
+              "cagr": -0.07204557146035784,
+              "matched_entries": 334,
+              "max_drawdown": -0.5259146572765174,
+              "runs": 200,
+              "sharpe": -0.8957787710988999,
+              "total_return": -0.4825590358334083
+            },
+            "uniform_frequency": {
+              "bars": 13323,
+              "cagr": -0.09924193333672326,
+              "entries": 334,
+              "max_drawdown": -0.63244787137234,
+              "sharpe": -0.857050115805976,
+              "total_return": -0.6018658393396705,
+              "turnover": 667.0
+            }
+          }
+        }
+      },
+      "portfolio": {
+        "base": {
+          "always_flat_equal_weight": {
+            "bars": 17503,
+            "cagr": 0.0,
+            "max_drawdown": 0.0,
+            "sharpe": null,
+            "total_return": 0.0
+          },
+          "buy_and_hold_equal_weight": {
+            "bars": 17503,
+            "cagr": 0.122891577139157,
+            "max_drawdown": -0.415773930808613,
+            "sharpe": 0.590285252424685,
+            "total_return": 2.8257235334699753
+          },
+          "random_entry_matched_turnover_equal_weight_mean": {
+            "bars": 17503,
+            "cagr": 0.02737061694935483,
+            "max_drawdown": -0.27532563551680356,
+            "sharpe": 0.27791453885087547,
+            "total_return": 0.36695451110755295
+          },
+          "uniform_frequency_equal_weight": {
+            "bars": 17503,
+            "cagr": 0.03344617386338533,
+            "max_drawdown": -0.28075233524089793,
+            "sharpe": 0.3003577100678266,
+            "total_return": 0.4635148000541254
+          }
+        },
+        "conservative": {
+          "always_flat_equal_weight": {
+            "bars": 17503,
+            "cagr": 0.0,
+            "max_drawdown": 0.0,
+            "sharpe": null,
+            "total_return": 0.0
+          },
+          "buy_and_hold_equal_weight": {
+            "bars": 17503,
+            "cagr": 0.12283722136017006,
+            "max_drawdown": -0.4157739308086089,
+            "sharpe": 0.590090623829817,
+            "total_return": 2.8235802924271862
+          },
+          "random_entry_matched_turnover_equal_weight_mean": {
+            "bars": 17503,
+            "cagr": -0.029108557739798036,
+            "max_drawdown": -0.4111889784335675,
+            "sharpe": -0.17243944374953643,
+            "total_return": -0.2896261514603632
+          },
+          "uniform_frequency_equal_weight": {
+            "bars": 17503,
+            "cagr": -0.0263621117184627,
+            "max_drawdown": -0.3910767351508957,
+            "sharpe": -0.11230462898997665,
+            "total_return": -0.26601296581450706
+          }
+        },
+        "stress": {
+          "always_flat_equal_weight": {
+            "bars": 17503,
+            "cagr": 0.0,
+            "max_drawdown": 0.0,
+            "sharpe": null,
+            "total_return": 0.0
+          },
+          "buy_and_hold_equal_weight": {
+            "bars": 17503,
+            "cagr": 0.12274494696599847,
+            "max_drawdown": -0.4157739308086097,
+            "sharpe": 0.5897598615163258,
+            "total_return": 2.8199444370868436
+          },
+          "random_entry_matched_turnover_equal_weight_mean": {
+            "bars": 17503,
+            "cagr": -0.117247455091824,
+            "max_drawdown": -0.7694692216304089,
+            "sharpe": -0.9304283553306633,
+            "total_return": -0.7639364900156446
+          },
+          "uniform_frequency_equal_weight": {
+            "bars": 17503,
+            "cagr": -0.11934823270830108,
+            "max_drawdown": -0.7845887268636755,
+            "sharpe": -0.8021393572918806,
+            "total_return": -0.7703585217715654
+          }
+        }
+      }
+    }
+  },
+  "cost_scenarios": {
+    "CRYPTO": {
+      "base": 10.0,
+      "conservative": 25.0,
+      "stress": 50.0
+    },
+    "FX": {
+      "base": 2.0,
+      "conservative": 5.0,
+      "stress": 10.0
+    },
+    "XAU": {
+      "base": 5.0,
+      "conservative": 10.0,
+      "stress": 20.0
+    }
+  },
+  "frequencies": [
+    "D1",
+    "H4"
+  ],
+  "gates": {
+    "K1_data_available": "PASS",
+    "dsr_pbo_wf_oos_bootstrap": "not_applicable_no_strategy_or_selector",
+    "no_strategy_tested": "PASS",
+    "no_winner_declared": "PASS"
+  },
+  "hypothesis": "TSMOM D1/H4 data audit plus minimal baselines",
+  "iteration": "001-tsmom-data-audit",
+  "kill_switches": [],
+  "n_trials": 0,
+  "notes": "Research-only baselines; no strategy signal and no winner declaration.",
+  "pre_registered": true,
+  "status": "positive",
+  "strategy_results": {},
+  "universe": [
+    "EURUSD",
+    "GBPUSD",
+    "USDJPY",
+    "USDCHF",
+    "USDCAD",
+    "AUDUSD",
+    "NZDUSD",
+    "XAUUSD",
+    "BTCUSD",
+    "ETHUSD"
+  ]
+}

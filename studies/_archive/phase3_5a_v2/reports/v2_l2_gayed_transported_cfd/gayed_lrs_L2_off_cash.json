@@ -1,0 +1,145 @@
+{
+  "config_name": "gayed_lrs_L2_off_cash",
+  "config_entry": {
+    "name": "gayed_lrs_L2_off_cash",
+    "type": "plano_a_leveraged_rotation",
+    "regime_signal": "lrs",
+    "regime_lookback": "composite_lrs",
+    "leverage": 2,
+    "off_regime_asset": "cash",
+    "risk_on_assets": [
+      "SPY",
+      "QQQ"
+    ],
+    "rebalance_cadence": "daily_close",
+    "direction": "long_only",
+    "broker_model": "pepperstone_razor_cfd"
+  },
+  "universe": [
+    "SPY",
+    "QQQ"
+  ],
+  "universe_size": 2,
+  "off_regime_asset": "cash",
+  "window": {
+    "start": "2001-05-14",
+    "end": "2026-04-14",
+    "n_bars": 6266,
+    "n_switches_total": 578
+  },
+  "splits": {
+    "IS": {
+      "range": [
+        "2001-05-14",
+        "2017-12-31"
+      ],
+      "n_bars": 4185,
+      "sharpe": 1.9122994893145335,
+      "cagr": 0.4761250918133395,
+      "max_drawdown": -0.12340958518346778,
+      "final_equity": 643.6540735428133
+    },
+    "OOS": {
+      "range": [
+        "2018-01-01",
+        "2023-12-31"
+      ],
+      "n_bars": 1509,
+      "sharpe": 2.0722180655469207,
+      "cagr": 0.6498926295494063,
+      "max_drawdown": -0.21879648136971253,
+      "final_equity": 20.05142935829544
+    },
+    "FWD": {
+      "range": [
+        "2024-01-01",
+        "2026-04-14"
+      ],
+      "n_bars": 572,
+      "sharpe": 1.8990681038694588,
+      "cagr": 0.5729145998437954,
+      "max_drawdown": -0.13982041597916828,
+      "final_equity": 2.7956928317225422
+    }
+  },
+  "walk_forward": {
+    "n_windows": 8,
+    "profitable_ratio": 1.0,
+    "max_window_drawdown": 0.21879648136971264,
+    "pass": true,
+    "min_profitable_ratio": 0.75,
+    "max_drawdown_cap": 0.25
+  },
+  "hold_metrics": {
+    "median_hold_days": 5.5,
+    "n_switches_total": 578,
+    "switches_by_ticker": {
+      "SPY": 287,
+      "QQQ": 291
+    }
+  },
+  "costs": {
+    "cum_transaction_cost_pct": 1.180480000000008,
+    "cum_swap_cost_pct": -0.44274999999996667,
+    "spread_half_bps": 2.0,
+    "commission_round_trip_bps": 6.6,
+    "slippage_bps_round_trip": 3.0,
+    "swap_daily_pct_long": -0.005
+  },
+  "last_bar_positions": [
+    {
+      "leg": "SPY",
+      "weight": 1.0
+    },
+    {
+      "leg": "QQQ",
+      "weight": 1.0
+    }
+  ],
+  "runtime_seconds": 0.35,
+  "iter": 34,
+  "produced_at": "2026-04-18T18:19:38+00:00",
+  "verdict_per_config": {
+    "checks": [
+      {
+        "name": "oos_sharpe_gt_0",
+        "pass": true,
+        "value": "2.072"
+      },
+      {
+        "name": "fwd_sharpe_gt_0",
+        "pass": true,
+        "value": "1.899"
+      },
+      {
+        "name": "wf_pass",
+        "pass": true,
+        "value": "6/8"
+      },
+      {
+        "name": "median_hold_ge_3d",
+        "pass": true,
+        "value": "5.5d"
+      },
+      {
+        "name": "oos_cagr_ge_30pct",
+        "pass": true,
+        "value": "65.0%"
+      },
+      {
+        "name": "oos_sharpe_ge_2",
+        "pass": true,
+        "value": "2.072"
+      },
+      {
+        "name": "oos_maxdd_le_25pct",
+        "pass": true,
+        "value": "-21.9%"
+      }
+    ],
+    "n_passed": 7,
+    "n_total": 7,
+    "all_pass_except_cross_config_gates": true,
+    "failed_subset_gates": []
+  }
+}

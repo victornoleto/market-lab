@@ -1,0 +1,24 @@
+iter: 012-2026-05-06-T3b-vix-managed
+tier: T3b
+hypothesis: "VIX-managed continuous weight via VXX (252d/21d ratio, clipped 0-1). Tests whether market-implied vol scaling\
+  \ outperforms simple SMA gating. Note: VXX inception 2009 \u2192 pre-2009 NaN excluded."
+primary_citation: '[paper.bozovic_2024_vix_managed]'
+configs_tested:
+- name: qld_vix_managed_off_zroz
+  on_asset: QLD
+  off_asset: ZROZ
+  signal_type: vix_managed
+  vix_baseline_days: 252
+  vix_prev_days: 21
+cumulative_n_trials_at_iter: 394
+datasets:
+- lh_56y
+- modern_1990
+- spy_real
+- ndx_real
+windows_used:
+  lh_56y: 1970-01-01..2026-04-30
+  modern_1990: 1990-01-01..2026-04-30
+  spy_real: 2003-01-01..2026-04-30
+  ndx_real: 2010-02-01..2026-04-30
+random_seed: 42

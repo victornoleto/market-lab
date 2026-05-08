@@ -1,0 +1,30 @@
+{
+  "system_id": 8647517,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-gold-vtmarkets-m30/8647517",
+  "name": "Happy Gold - VTMarkets (M30) Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+13,909.30%",
+    "absolute_gain": "+3,275.95%",
+    "daily": "0.28%",
+    "monthly": "8.65%",
+    "drawdown": "25.95%",
+    "balance": "$153,797.43",
+    "equity": "(100.00%) $153,797.43",
+    "highest": "(Apr 30) $153,797.43",
+    "profit": "$163,797.43",
+    "interest": "-$65.76",
+    "deposits": "$5,000.00",
+    "withdrawals": "$15,000.00",
+    "updated": "5 hours ago",
+    "tracking": "275"
+  },
+  "account": {
+    "raw": "Real (USD), VT Markets , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "VT Markets",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/vt-markets/1612970,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

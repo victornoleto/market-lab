@@ -1,0 +1,28 @@
+iter: 021-2026-05-06-T5c-voltarget-multi
+tier: T5c
+hypothesis: "Carver vol-targeted multi-asset {UPRO, QLD, UGL, TMF}. EWMAC composite per asset. IDM=2.5 (max per Carver [p.170-171]).\
+  \ \u03C3_target=0.25. Tests if multi-asset diversification (Carver ch.10-11) lifts Sharpe vs single-asset T5a."
+primary_citation: "[systematic_trading, ch.10-11]; spec \xA72.6 T5c"
+configs_tested:
+- name: voltarget_multi4_sigma025_idm25_off_zroz
+  pool:
+  - UPRO
+  - QLD
+  - UGL
+  - TMF
+  off_asset: ZROZ
+  sigma_target: 0.25
+  idm: 2.5
+  position_inertia: 0.1
+cumulative_n_trials_at_iter: 405
+datasets:
+- lh_56y
+- modern_1990
+- spy_real
+- ndx_real
+windows_used:
+  lh_56y: 1970-01-01..2026-04-30
+  modern_1990: 1990-01-01..2026-04-30
+  spy_real: 2003-01-01..2026-04-30
+  ndx_real: 2010-02-01..2026-04-30
+random_seed: 42

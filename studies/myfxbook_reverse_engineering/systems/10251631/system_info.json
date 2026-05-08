@@ -1,0 +1,30 @@
+{
+  "system_id": 10251631,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-gold-fm-real-gn/10251631",
+  "name": "Happy Gold FM - REAL (GN) Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+124.77%",
+    "absolute_gain": "+29.93%",
+    "daily": "0.05%",
+    "monthly": "2.81%",
+    "drawdown": "33.74%",
+    "balance": "$7,190.65",
+    "equity": "(66.26%) $4,764.65",
+    "highest": "(Apr 26) $15,956.65",
+    "profit": "$4,190.65",
+    "interest": "$0.00",
+    "deposits": "$14,000.00",
+    "withdrawals": "$11,000.00",
+    "updated": "Aug 11, 2024 at 19:00",
+    "tracking": "34"
+  },
+  "account": {
+    "raw": "Real (USD), ForexMart , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "ForexMart",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/forexmart/1065344,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

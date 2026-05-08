@@ -1,0 +1,30 @@
+{
+  "system_id": 11171596,
+  "url": "https://www.myfxbook.com/members/HappyForex/happy-algorithm-pro-fm-real/11171596",
+  "name": "Happy Algorithm PRO FM - REAL (SET1) Forex Trading System by Forex Trader HappyForex",
+  "stats": {
+    "gain": "+93.80%",
+    "absolute_gain": "+93.78%",
+    "daily": "0.09%",
+    "monthly": "2.76%",
+    "drawdown": "20.08%",
+    "balance": "$968.89",
+    "equity": "(90.72%) $878.94",
+    "highest": "(Mar 13) $996.90",
+    "profit": "$468.89",
+    "interest": "$0.00",
+    "deposits": "$500.00",
+    "withdrawals": "$0.00",
+    "updated": "7 hours ago",
+    "tracking": "14"
+  },
+  "account": {
+    "raw": "Real (USD), ForexMart , Technical , Automated , 1:500 , MetaTrader 4",
+    "account_type": "Real",
+    "currency": "USD",
+    "broker": "ForexMart",
+    "broker_url": "https://www.myfxbook.com/reviews/brokers/forexmart/1065344,1",
+    "leverage": "1:500",
+    "platform": "MetaTrader 4"
+  }
+}

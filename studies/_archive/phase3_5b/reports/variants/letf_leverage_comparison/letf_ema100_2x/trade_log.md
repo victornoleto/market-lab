@@ -1,0 +1,1 @@
+../../../letf_rotation_ema100_2x/trade_log.md

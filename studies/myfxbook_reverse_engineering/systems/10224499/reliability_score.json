@@ -1,0 +1,29 @@
+{
+  "system_id": "10224499",
+  "reliability": 0.8712368388240141,
+  "band": "HIGH",
+  "components": {
+    "direction_predictability": 0.8416289592760182,
+    "family_clarity": 0.68,
+    "timing_concentration": 1.0,
+    "sanity_pass": 1.0,
+    "age_freshness": 0.9982959900500952,
+    "vendor_quality": 0.75,
+    "pair_coverage": 1.0
+  },
+  "notes": [],
+  "family": "LATE_NY_BREAKOUT",
+  "confidence": 0.68,
+  "n_trades": 221,
+  "n_pairs": 3,
+  "last_trade_date": "2026-04-29 02:00:08+00:00",
+  "account_type": "Real",
+  "name": "Happy Market Hours FM - REAL Forex Trading System by Forex T",
+  "status": "OK",
+  "reason": "OK",
+  "elapsed_sec": 1111.2321510314941,
+  "band_rank": 0,
+  "dir_pred": 0.8416289592760182,
+  "timing_conc": 1.0,
+  "age_fresh": 0.9982959900500952
+}

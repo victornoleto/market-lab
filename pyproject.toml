@@ -1,0 +1,120 @@
+[project]
+name = "market-lab"
+version = "0.1.0"
+description = "Deterministic systematic-trading research and backtest toolkit"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Victor Noleto" }]
+
+# NOTE: No `anthropic` / `openai` / any LLM SDK here. All LLM work runs inside
+# Claude Code (subagents + slash commands). These Python scripts/modules are
+# strictly deterministic: PDF extraction, validation, aggregation, market data,
+# strategy execution.
+dependencies = [
+    # Phase 0 — knowledge base pipeline (PDFs → summaries → Claude Skill)
+    "pymupdf>=1.24",            # Primary PDF → text
+    "pdfplumber>=0.11",         # Fallback for tables/math-heavy pages
+    "rich>=13.7",               # CLI output
+    # Phase 1 — Pepperstone/cTrader infra (note: ctrader-open-api, twisted,
+    # and protobuf are declared in the optional `ctrader` group below because
+    # the current release of ctrader-open-api (0.9.2) hard-pins protobuf==3.20.1
+    # and Twisted==21.7.0, which conflict with anything modern. They only need
+    # to be installed when the Phase 1 runtime client is being built.
+    "psycopg[binary]>=3.2",     # Postgres driver (sync)
+    "pydantic>=2.6",            # Typed models + validation
+    "pydantic-settings>=2.2",   # .env → typed Settings
+    "tenacity>=8.2",            # Retry logic (reconnects, backoff)
+    # Phase 2 — Backtest data sources + analytics
+    "pandas>=2.2",              # Dataframes for OHLCV + features
+    "numpy>=1.26",              # Numerical backend for pandas and strategies
+    "scipy>=1.11",              # norm CDF/PPF for DSR/PSR, combinatorics for CPCV
+    "pyarrow>=15.0",            # Parquet-backed cache (yfinance/wikipedia)
+    "yfinance>=0.2",            # Yahoo Finance daily OHLCV (research, Etapa 1)
+    "lxml>=5.0",                # HTML parsing for pandas.read_html (Wikipedia)
+    "matplotlib>=3.8",          # Equity/drawdown PNG charts in backtest reports
+    "joblib>=1.3",              # Parallel grid execution (Fase 2.5) — generator_unordered
+    "tqdm>=4.66",               # Progress bars for long grid runs (Fase 2.5)
+    "scikit-learn>=1.4",        # RandomForest/GBM for AFML meta-labeling (Fase 2.5 Run 4)
+    "typer>=0.12",              # ops/ CLI
+    "requests>=2.31",           # BCB SGS HTTP client
+    "holidays>=0.50",           # BR feriados bancários
+    "cryptography>=42.0",       # encrypted backup
+    "jsonschema>=4.0",           # verdict.json validation (letf_rotation_hunt)
+    "hmmlearn>=0.3",             # HMM regime gate [advances_fin_ml, ch.3]
+    "tabulate>=0.9",             # pandas.DataFrame.to_markdown() in report renderers
+    "pyyaml>=6.0",               # yaml.safe_load for letf_rotation_hunt run_iter configs
+]
+
+[project.optional-dependencies]
+# Install only when wiring the Phase 1 runtime (post Spotware app approval):
+#   .venv/bin/pip install -e '.[ctrader]'
+# The pins below come from ctrader-open-api's own setup.py; loosening them
+# requires a fork or patch of the SDK.
+ctrader = [
+    "ctrader-open-api>=0.9",
+    "twisted==21.7.0",
+    "protobuf==3.20.1",
+]
+cross_lib = [
+    "bt>=1.0",
+    "vectorbt>=0.27",
+    "backtrader>=1.9",
+    "quantstats>=0.0.64",
+    "pyfolio-reloaded>=0.9.5",
+]
+# Optional — install only when running studies/myfxbook_reverse_engineering scrapers.
+# Cloudflare blocks naive requests; Playwright Chromium fingerprint passes the
+# challenge transparently. Install via:
+#   uv pip install -e '.[myfxbook_scrape]'
+#   uv run playwright install chromium
+myfxbook_scrape = [
+    "playwright>=1.45",
+]
+# Optional — install only when running the strategy decoder pipeline
+# (studies/myfxbook_reverse_engineering Phase 5+6+7).
+#   uv pip install -e '.[myfxbook_decoder]'
+# dukascopy-python: free 1m OHLC bars for FX history (2003+)
+# wittgenstein: RIPPER rule mining for top-K candidate rule extraction
+myfxbook_decoder = [
+    "dukascopy-python>=4.0",
+    "wittgenstein>=0.3",
+    "lightgbm>=4.0",            # Task 005 (adversarial validator) + 015 (LightGBM miner) [advances_fin_ml, ch.5]
+]
+
+[project.scripts]
+ops = "ops.cli.main:app"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+    "requests-mock>=1.12",      # mock BCB/yfinance in tests
+    "hypothesis>=6.100",        # property-based (Phase 2, opt)
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ai_trade", "ops"]
+
+[tool.pytest.ini_options]
+# Put repo root on sys.path so `from scripts import ...` works in tests,
+# and `src/` so the package imports as `ai_trade` in local public checkouts.
+pythonpath = ["src", "."]
+# Skip archived test files (cover code that no longer exists in studies/)
+# and archived studies (read-only historical artifacts).
+norecursedirs = ["tests/_archive", "studies/_archive"]
+testpaths = [
+    "tests",
+    "studies/letf_rotation_hunt/tests",
+]
+markers = [
+    "slow: end-to-end tests that dispatch full pipelines (typically 30-90s)",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

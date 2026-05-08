@@ -1,0 +1,18 @@
+{
+  "system_id": "10878805",
+  "reliability": 0.0,
+  "band": "LOW",
+  "components": {},
+  "notes": [
+    "only 0% pair coverage; unsupported (top): ['DJ30.X']"
+  ],
+  "family": "UNKNOWN",
+  "confidence": 0.0,
+  "n_trades": 0,
+  "n_pairs": 0,
+  "last_trade_date": null,
+  "account_type": null,
+  "status": "SKIP_PRECHECK",
+  "reason": "only 0% pair coverage; unsupported (top): ['DJ30.X']",
+  "band_rank": 2
+}

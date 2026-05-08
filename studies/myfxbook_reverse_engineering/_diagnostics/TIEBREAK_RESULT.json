@@ -1,0 +1,88 @@
+{
+  "status": "DONE",
+  "generated_utc": "2026-05-04T16:20:40Z",
+  "source_scoreboard_generated_utc": "2026-05-04T12:50:17Z",
+  "plan": "studies/myfxbook_reverse_engineering/v4_redesign/TIEBREAK_PLAN.md",
+  "universe": [
+    "8577442",
+    "1152318",
+    "10067081",
+    "10062918"
+  ],
+  "ordered_systems": [
+    "10067081",
+    "8577442",
+    "10062918",
+    "1152318"
+  ],
+  "diagnostic_shortlist": [
+    "10067081",
+    "8577442",
+    "10062918"
+  ],
+  "tiebreak_key": {
+    "10067081": {
+      "activity_staleness_days": 3.610718,
+      "cost_drag_ratio": 0.145648,
+      "avg_net_pips_per_trade": 5.000975,
+      "n_symbols_with_positive_pnl": 6,
+      "top_symbol_pnl_share": 0.415179,
+      "positive_month_ratio": 1.0,
+      "recent_dd_ratio": 0.446976,
+      "copyability_score": 0.896255,
+      "system_id": "10067081"
+    },
+    "8577442": {
+      "activity_staleness_days": 6.897743,
+      "cost_drag_ratio": 0.034807,
+      "avg_net_pips_per_trade": 28.501713,
+      "n_symbols_with_positive_pnl": 5,
+      "top_symbol_pnl_share": 0.421647,
+      "positive_month_ratio": 0.966102,
+      "recent_dd_ratio": 0.388926,
+      "copyability_score": 0.958673,
+      "system_id": "8577442"
+    },
+    "10062918": {
+      "activity_staleness_days": 166.406192,
+      "cost_drag_ratio": 0.055332,
+      "avg_net_pips_per_trade": 18.843092,
+      "n_symbols_with_positive_pnl": 2,
+      "top_symbol_pnl_share": 0.575223,
+      "positive_month_ratio": 0.9,
+      "recent_dd_ratio": 0.12259,
+      "copyability_score": 0.892554,
+      "system_id": "10062918"
+    },
+    "1152318": {
+      "activity_staleness_days": 1798.430058,
+      "cost_drag_ratio": 0.061327,
+      "avg_net_pips_per_trade": 9.14215,
+      "n_symbols_with_positive_pnl": 2,
+      "top_symbol_pnl_share": 0.526551,
+      "positive_month_ratio": 0.897436,
+      "recent_dd_ratio": 0.035461,
+      "copyability_score": 0.940662,
+      "system_id": "1152318"
+    }
+  },
+  "sort_rule": [
+    "activity_staleness_days ASC",
+    "cost_drag_ratio ASC",
+    "avg_net_pips_per_trade DESC",
+    "n_symbols_with_positive_pnl DESC",
+    "top_symbol_pnl_share ASC",
+    "positive_month_ratio DESC",
+    "recent_dd_ratio ASC",
+    "copyability_score DESC",
+    "system_id ASC"
+  ],
+  "notes": [
+    "Diagnostic shortlist only; not an operational recommendation, capital allocation, Plano A reactivation, paper/live authorization, or AutoTrade authorization.",
+    "No new data, broker/API, monitor, cron, paper/live, or AutoTrade was used or started.",
+    "The first lexicographic field, activity_staleness_days, fully determined the order; later fields were retained for auditability only.",
+    "Top-N selection across 21 EAs remains multiple-testing/data-mining risk [advances_fin_ml, p.273-275] [evidence_based_ta, p.247-260].",
+    "Cost/slippage fields remain operational caveats for copyability [systematic_trading, p.182-197].",
+    "MCPT/PSR are limited historical evidence, not deployment proof [evidence_based_ta, p.325-328] [advances_fin_ml, p.260-263]."
+  ]
+}
