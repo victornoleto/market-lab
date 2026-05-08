@@ -48,3 +48,43 @@ def _yfinance_fetch_yield(ticker: str) -> pd.Series:
         raise RuntimeError(f"yfinance returned empty for {ticker}")
     # ^TNX etc. quote yield * 100 (e.g., 4.4 = 4.4%); convert to decimal
     return (hist["Close"] / 100.0).rename(ticker)
+
+
+def load_dividend_yield(underlying: str) -> pd.Series:
+    """Trailing 12m dividend yield for an underlying ETF (decimal).
+
+    Cache: data/external/yields/{underlying}_divyield.parquet.
+    Computation: rolling 365-day sum of dividends / current Adj Close.
+    """
+    cache_path = _CACHE_DIR / f"{underlying}_divyield.parquet"
+    if cache_path.exists():
+        return pd.read_parquet(cache_path).iloc[:, 0]
+    dividends = _yfinance_fetch_dividends(underlying)
+    prices = _yfinance_fetch_adj_close(underlying)
+    common = dividends.index.intersection(prices.index)
+    if len(common) == 0:
+        raise RuntimeError(f"No overlapping dates for {underlying} dividends/prices")
+    div_aligned = dividends.reindex(prices.index, fill_value=0.0)
+    rolling_div = div_aligned.rolling("365D").sum()
+    ttm_yield = (rolling_div / prices).rename(f"{underlying}_divyield")
+    _CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    ttm_yield.to_frame().to_parquet(cache_path)
+    return ttm_yield
+
+
+def _yfinance_fetch_dividends(ticker: str) -> pd.Series:
+    import yfinance as yf
+    divs = yf.Ticker(ticker).dividends
+    if divs.empty:
+        raise RuntimeError(f"yfinance returned no dividends for {ticker}")
+    divs.index = divs.index.tz_localize(None)
+    return divs
+
+
+def _yfinance_fetch_adj_close(ticker: str) -> pd.Series:
+    import yfinance as yf
+    hist = yf.Ticker(ticker).history(period="max", auto_adjust=True)
+    if hist.empty:
+        raise RuntimeError(f"yfinance returned empty for {ticker}")
+    hist.index = hist.index.tz_localize(None)
+    return hist["Close"].rename(ticker)

@@ -57,3 +57,47 @@ def test_load_cmt_uses_cache_on_second_call(monkeypatch, tmp_path):
 def test_load_cmt_unknown_tenor_raises():
     with pytest.raises(ValueError, match="tenor"):
         dly.load_constant_maturity_yield("7y")
+
+
+def test_load_dividend_yield_trailing_12m(monkeypatch, tmp_path):
+    monkeypatch.setattr(dly, "_CACHE_DIR", tmp_path)
+    dates = pd.date_range("2024-01-01", periods=400, freq="D")
+    dividends = pd.Series(0.0, index=dates)
+    # 4 quarterly dividends of $0.50 each → $2/yr
+    for d in [dates[60], dates[150], dates[240], dates[330]]:
+        dividends[d] = 0.50
+    prices = pd.Series(100.0, index=dates)
+    monkeypatch.setattr(dly, "_yfinance_fetch_dividends", lambda t: dividends)
+    monkeypatch.setattr(dly, "_yfinance_fetch_adj_close", lambda t: prices)
+    s = dly.load_dividend_yield("SPY")
+    assert isinstance(s, pd.Series)
+    # After full year of dividends, trailing 12m sum = $2 / $100 = 0.02
+    last_year_yield = s.iloc[-1]
+    assert 0.018 < last_year_yield < 0.022, last_year_yield
+
+
+def test_load_dividend_yield_uses_cache_on_second_call(monkeypatch, tmp_path):
+    """Second call must read from parquet and not invoke yfinance again."""
+    monkeypatch.setattr(dly, "_CACHE_DIR", tmp_path)
+    dates = pd.date_range("2024-01-01", periods=400, freq="D")
+    dividends = pd.Series(0.0, index=dates)
+    for d in [dates[60], dates[150], dates[240], dates[330]]:
+        dividends[d] = 0.50
+    prices = pd.Series(100.0, index=dates)
+    call_count = {"n": 0}
+
+    def counting_divs(ticker: str) -> pd.Series:
+        call_count["n"] += 1
+        if call_count["n"] > 1:
+            raise AssertionError("_yfinance_fetch_dividends called more than once — cache not used")
+        return dividends
+
+    monkeypatch.setattr(dly, "_yfinance_fetch_dividends", counting_divs)
+    monkeypatch.setattr(dly, "_yfinance_fetch_adj_close", lambda t: prices)
+
+    s1 = dly.load_dividend_yield("SPY")  # cache-miss: writes parquet
+    s2 = dly.load_dividend_yield("SPY")  # cache-hit: must NOT call yfinance
+
+    assert call_count["n"] == 1, "yfinance should only be called once (cache-miss path)"
+    assert s1.name == s2.name == "SPY_divyield"
+    assert (s1 == s2).all()
