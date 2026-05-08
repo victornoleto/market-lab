@@ -83,3 +83,46 @@ def _cluster_var(cov: np.ndarray, indices: list[int]) -> float:
     inv_diag = 1.0 / np.diag(sub)
     w = inv_diag / inv_diag.sum()
     return float(w @ sub @ w)
+
+
+def compute_erc_weights(
+    returns: pd.DataFrame, lookback: int = 252, min_periods: int = 126,
+    max_iter: int = 100, tol: float = 1e-8,
+) -> pd.DataFrame:
+    """Equal Risk Contribution weights via Newton iteration.
+
+    Each asset's marginal risk contribution is equalised so that
+    RC_i = w_i * (Σw)_i / σ_p = σ_p / n for all i.
+
+    Citation: Maillard, Roncalli, Teïletche (2010); spec §3.3.
+    """
+    out = pd.DataFrame(index=returns.index, columns=returns.columns, dtype=float)
+    for i, date in enumerate(returns.index):
+        if i + 1 < min_periods:
+            continue
+        window = returns.iloc[max(0, i + 1 - lookback): i + 1]
+        if len(window) < min_periods:
+            continue
+        cov = window.cov().values
+        out.loc[date] = _erc_single(cov, max_iter, tol)
+    return out
+
+
+def _erc_single(cov: np.ndarray, max_iter: int, tol: float) -> np.ndarray:
+    """Fixed-point iteration toward equal risk contribution weights."""
+    n = cov.shape[0]
+    w = np.full(n, 1.0 / n)
+    for _ in range(max_iter):
+        port_vol = np.sqrt(w @ cov @ w)
+        marginal = (cov @ w) / port_vol
+        rc = w * marginal  # risk contributions
+        target = port_vol / n
+        # gradient step toward equal RC
+        delta = (target - rc) / marginal
+        w_new = w + 0.5 * delta
+        w_new = np.clip(w_new, 1e-8, None)
+        w_new /= w_new.sum()
+        if np.max(np.abs(w_new - w)) < tol:
+            return w_new
+        w = w_new
+    return w
