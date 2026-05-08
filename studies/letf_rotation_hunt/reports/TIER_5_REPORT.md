@@ -68,14 +68,23 @@ below T3d K=2's compounding pace.*
 
 ![All T5 configs relative to SPY](tier_5_plots/tier5_all_configs_relative_to_spy.png)
 
-*Only 2 T5 configs (T5a single-asset QLD vol-target, T5c multi-asset 4-LETF)
-as strategy_eq / SPY_eq ratio, log-scale. SPY = 1.0 black dashed.
-**Both bold** (n=2 < top_n_bold=5). T5c (multi-asset, IDM=2.5) sustains a
-ratio > 1.0 but with visible volatility; T5a (single-asset) spends extended
-periods below SPY — continuous sizing under-allocates during clear uptrends.
-Visual proof of the T5 finding: **Carver framework does not generalize to
-a small-pool LETF universe** (designed for futures with 10+ uncorrelated
-instruments).*
+*All 22 T5 configs (2 original from iters 020-021 + 20 from T5 expansion
+iters 022-025: T5a σ-sweep ×5, T5b carry ×4, T5c grid ×7, T5d HRP/ERC ×4)
+as strategy_eq / SPY_eq ratio, log-scale. SPY = 1.0 black dashed. Top 5
+by Sharpe lh_56y are highlighted (bold): `erc_multi4_sigma030` (T5d,
+Sharpe 0.7993, T5-expansion-best), `erc_multi4_sigma025` (T5d, 0.7956),
+`ewmac_carry_multi4_sigma025` (T5b, 0.7522), and the two original T5c
+variants (`voltarget_multi4_sigma025_idm25_off_zroz` and
+`voltarget_multi4_idm25`, both 0.7400). Remaining 17 configs faded gray.
+**None clears the KILL T5-expansion threshold (Sortino 1.272 = Track A
+canonical + 0.05 anti-curve-fit); T5-expansion-best Sortino 1.1399 falls
+0.1321 short.** Most configs spend extended periods near or below SPY.
+Visual proof of the reinforced T5 finding: **Carver framework does not
+generalize to a small-pool LETF universe even with expanded coverage**
+(carry forecast, HRP/ERC weighting, IDM and σ_target sweeps tried).
+Designed for futures with 10+ uncorrelated instruments; small LETF pools
+of correlated equity/bond/gold families do not realize Carver's
+diversification benefits.*
 
 ---
 
