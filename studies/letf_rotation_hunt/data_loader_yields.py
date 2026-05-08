@@ -22,6 +22,11 @@ _CACHE_DIR = Path("data/external/yields")
 _TENOR_TO_TICKER = {"3m": "^IRX", "10y": "^TNX", "30y": "^TYX"}
 
 
+def _strip_tz(s: pd.Series) -> pd.Series:
+    """Defensive: cache files may have been written with tz-aware indices."""
+    return s.tz_localize(None) if s.index.tz is not None else s
+
+
 def load_constant_maturity_yield(tenor: str) -> pd.Series:
     """Daily constant-maturity Treasury yield (decimal annual).
 
@@ -33,7 +38,7 @@ def load_constant_maturity_yield(tenor: str) -> pd.Series:
     ticker = _TENOR_TO_TICKER[tenor]
     cache_path = _CACHE_DIR / f"cmt_{tenor}.parquet"
     if cache_path.exists():
-        return pd.read_parquet(cache_path).iloc[:, 0]
+        return _strip_tz(pd.read_parquet(cache_path).iloc[:, 0])
     series = _yfinance_fetch_yield(ticker).rename(tenor)
     _CACHE_DIR.mkdir(parents=True, exist_ok=True)
     series.to_frame(name=tenor).to_parquet(cache_path)
@@ -41,11 +46,13 @@ def load_constant_maturity_yield(tenor: str) -> pd.Series:
 
 
 def _yfinance_fetch_yield(ticker: str) -> pd.Series:
-    """Fetch CMT yield from yfinance (decimal annual)."""
+    """Fetch CMT yield from yfinance (decimal annual, tz-naive midnight index)."""
     import yfinance as yf  # local import: keep top-level light
     hist = yf.Ticker(ticker).history(period="max", auto_adjust=False)
     if hist.empty:
         raise RuntimeError(f"yfinance returned empty for {ticker}")
+    # strip tz then zero time component for stable date-level alignment
+    hist.index = hist.index.tz_localize(None).normalize()
     # ^TNX etc. quote yield * 100 (e.g., 4.4 = 4.4%); convert to decimal
     return (hist["Close"] / 100.0).rename(ticker)
 
@@ -58,7 +65,7 @@ def load_dividend_yield(underlying: str) -> pd.Series:
     """
     cache_path = _CACHE_DIR / f"{underlying}_divyield.parquet"
     if cache_path.exists():
-        return pd.read_parquet(cache_path).iloc[:, 0]
+        return _strip_tz(pd.read_parquet(cache_path).iloc[:, 0])
     dividends = _yfinance_fetch_dividends(underlying)
     prices = _yfinance_fetch_adj_close(underlying)
     if not dividends.index.intersection(prices.index).size:

@@ -104,6 +104,33 @@ def test_load_dividend_yield_uses_cache_on_second_call(monkeypatch, tmp_path):
     assert (s1 == s2).all()
 
 
+def test_load_cmt_strips_tz_from_cached_parquet(monkeypatch, tmp_path):
+    """Regression: cache files written with tz-aware indices were silently
+    returned as tz-aware on read, breaking downstream reindex against
+    tz-naive price series."""
+    monkeypatch.setattr(dly, "_CACHE_DIR", tmp_path)
+    # Manually write a parquet with tz-aware index (simulating an older cache)
+    tz_aware_idx = pd.date_range(
+        "2020-01-01", periods=5, freq="D", tz="America/Chicago"
+    )
+    cached_series = pd.Series([0.045, 0.046, 0.047, 0.048, 0.049], index=tz_aware_idx, name="10y")
+    cached_series.to_frame().to_parquet(tmp_path / "cmt_10y.parquet")
+    # Loader must strip tz on read
+    s = dly.load_constant_maturity_yield("10y")
+    assert s.index.tz is None, f"expected tz-naive index, got {s.index.tz}"
+
+
+def test_load_dividend_yield_strips_tz_from_cached_parquet(monkeypatch, tmp_path):
+    monkeypatch.setattr(dly, "_CACHE_DIR", tmp_path)
+    tz_aware_idx = pd.date_range(
+        "2020-01-01", periods=5, freq="D", tz="America/New_York"
+    )
+    cached_series = pd.Series([0.018, 0.018, 0.019, 0.019, 0.020], index=tz_aware_idx, name="SPY_divyield")
+    cached_series.to_frame().to_parquet(tmp_path / "SPY_divyield.parquet")
+    s = dly.load_dividend_yield("SPY")
+    assert s.index.tz is None
+
+
 def test_load_dividend_yield_handles_yfinance_timestamp_skew(monkeypatch, tmp_path):
     """Regression: yfinance returns dividend index with 09:30 ET tz-aware
     timestamps and price index with midnight tz-naive timestamps. The loader
