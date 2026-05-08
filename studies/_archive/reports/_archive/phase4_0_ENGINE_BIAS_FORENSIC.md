@@ -13,7 +13,7 @@ engine that contained a **look-ahead bias** (fixed 2026-04-22, commit
 winner against SPX TR + QQQ adj_close + GLD adj_close using the
 Pepperstone Index CFD cost model (commission=0, spread=5bps half,
 swap=−0.008%). Because it reused the same engine
-(`src/ai_trade/backtest/strategies/plano_a_leveraged_rotation.py:462`)
+(`src/market_lab/backtest/strategies/plano_a_leveraged_rotation.py:462`)
 with the bug at `new_w[bar_i] × ret[bar_i]`, the reported Index CFD
 improvements (OOS Sharpe 2.400, CAGR 85.76%, MDD −21.51%) are
 **inflated by the same look-ahead mechanism**.

@@ -1,4 +1,4 @@
-"""Tests for ``ai_trade.backtest.grid.diagnostic`` — DiagnosticAnalyzer.
+"""Tests for ``market_lab.backtest.grid.diagnostic`` — DiagnosticAnalyzer.
 
 When the gate evaluator reports ``overall_pass=False``, DiagnosticAnalyzer
 classifies the failure mode and surfaces enough structured data for the
@@ -25,9 +25,9 @@ import pytest
 
 
 def _mk_grid(sharpes: list[float]):
-    from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.result import GridResult, TrialResult
+    from market_lab.backtest.engine.runner import BacktestResult
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.result import GridResult, TrialResult
 
     trials = []
     rng = np.random.default_rng(42)
@@ -60,8 +60,8 @@ def _mk_verdict(
     pbo_value: float = 0.3,
     n_configs: int = 3,
 ):
-    from ai_trade.backtest.grid.gates import GateVerdict
-    from ai_trade.backtest.validation.pbo import PBOResult
+    from market_lab.backtest.grid.gates import GateVerdict
+    from market_lab.backtest.validation.pbo import PBOResult
 
     pbo_result = PBOResult(
         pbo=pbo_value, logits=np.zeros(10), n_blocks=10, n_combinations=252,
@@ -83,7 +83,7 @@ def _mk_verdict(
 
 
 def _mk_wf_results(config_ids: list[int]):
-    from ai_trade.backtest.grid.walk_forward import WFResult
+    from market_lab.backtest.grid.walk_forward import WFResult
 
     return {
         i: WFResult(
@@ -97,7 +97,7 @@ def _mk_wf_results(config_ids: list[int]):
 
 
 def test_diagnostic_pbo_high_mode():
-    from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
+    from market_lab.backtest.grid.diagnostic import DiagnosticAnalyzer
 
     grid = _mk_grid([0.5, 1.2, 0.8])
     verdict = _mk_verdict(
@@ -115,7 +115,7 @@ def test_diagnostic_pbo_high_mode():
 
 
 def test_diagnostic_dsr_all_fail_mode():
-    from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
+    from market_lab.backtest.grid.diagnostic import DiagnosticAnalyzer
 
     grid = _mk_grid([0.5, 0.8, 1.2])
     verdict = _mk_verdict(
@@ -131,7 +131,7 @@ def test_diagnostic_dsr_all_fail_mode():
 
 
 def test_diagnostic_wf_insufficient_mode():
-    from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
+    from market_lab.backtest.grid.diagnostic import DiagnosticAnalyzer
 
     grid = _mk_grid([0.5, 0.8, 1.2])
     verdict = _mk_verdict(
@@ -147,7 +147,7 @@ def test_diagnostic_wf_insufficient_mode():
 
 
 def test_diagnostic_combined_mode_tagged_when_multiple_gates_fail():
-    from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
+    from market_lab.backtest.grid.diagnostic import DiagnosticAnalyzer
 
     grid = _mk_grid([0.5, 0.8, 1.2])
     verdict = _mk_verdict(
@@ -166,7 +166,7 @@ def test_diagnostic_best_config_has_highest_sharpe_regardless_of_gates():
     """best_config is selected by cached Sharpe, independent of gate verdicts.
     Useful to surface "how close did we get?" even when everything fails.
     """
-    from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
+    from market_lab.backtest.grid.diagnostic import DiagnosticAnalyzer
 
     grid = _mk_grid([0.5, 0.8, 1.9])
     verdict = _mk_verdict(
@@ -182,7 +182,7 @@ def test_diagnostic_best_config_has_highest_sharpe_regardless_of_gates():
 
 
 def test_diagnostic_per_config_metrics_has_expected_columns():
-    from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
+    from market_lab.backtest.grid.diagnostic import DiagnosticAnalyzer
 
     grid = _mk_grid([0.5, 0.8, 1.2])
     verdict = _mk_verdict(
@@ -203,7 +203,7 @@ def test_diagnostic_per_config_metrics_has_expected_columns():
 
 
 def test_diagnostic_recommendation_text_is_nonempty_and_cites_failure_modes():
-    from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
+    from market_lab.backtest.grid.diagnostic import DiagnosticAnalyzer
 
     grid = _mk_grid([0.5, 0.8, 1.2])
     verdict = _mk_verdict(
@@ -223,10 +223,10 @@ def test_diagnostic_recommendation_text_is_nonempty_and_cites_failure_modes():
 
 def test_diagnostic_handles_grid_with_error_trials_gracefully():
     """Error trials (status='error') appear in per_config_metrics as NaN rows."""
-    from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
-    from ai_trade.backtest.grid.result import GridResult, TrialResult
+    from market_lab.backtest.engine.runner import BacktestResult
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.diagnostic import DiagnosticAnalyzer
+    from market_lab.backtest.grid.result import GridResult, TrialResult
 
     idx = pd.date_range("2020-01-01", periods=30, freq="B")
     eq = pd.Series(100_000.0 + np.arange(30, dtype=float) * 10.0, index=idx)
@@ -262,8 +262,8 @@ def test_diagnostic_handles_grid_with_error_trials_gracefully():
 
 def _mk_grid_all_errored(n: int = 4):
     """Grid where ALL trials errored upstream of the backtest (no equity curve)."""
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.result import GridResult, TrialResult
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.result import GridResult, TrialResult
 
     trials = []
     for i in range(n):
@@ -284,7 +284,7 @@ def _mk_grid_all_errored(n: int = 4):
 
 def _mk_verdict_no_pbo(n_configs: int = 4):
     """Verdict for grids where PBO/DSR/WF couldn't be computed."""
-    from ai_trade.backtest.grid.gates import GateVerdict
+    from market_lab.backtest.grid.gates import GateVerdict
 
     return GateVerdict(
         pbo_result=None,
@@ -305,7 +305,7 @@ def test_diagnostic_handles_all_trials_errored():
     failure mode and a degenerate best_config that the report layer can
     handle gracefully (per existing report.py:263 defensive check).
     """
-    from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
+    from market_lab.backtest.grid.diagnostic import DiagnosticAnalyzer
 
     grid = _mk_grid_all_errored(n=4)
     verdict = _mk_verdict_no_pbo(n_configs=4)

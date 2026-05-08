@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "studies/global_factor_tilt_loop"))
 
-from ai_trade.backtest.validation.dsr import dsr  # noqa: E402
+from market_lab.backtest.validation.dsr import dsr  # noqa: E402
 from scoring import (BENCHMARKS, DatasetMetrics, Gates,  # noqa: E402
                      score_strategy)
 

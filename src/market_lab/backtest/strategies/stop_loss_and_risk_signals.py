@@ -55,7 +55,7 @@ from typing import Literal
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.strategies.ema_sma_threshold_educational import (
+from market_lab.backtest.strategies.ema_sma_threshold_educational import (
     EMASMAThresholdConfig,
     Trade,
     compute_threshold_regime,

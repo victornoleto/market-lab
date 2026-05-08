@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 
-from ai_trade.backtest.grid.ema_sma_threshold_grid import (
+from market_lab.backtest.grid.ema_sma_threshold_grid import (
     ConfigMetrics,
     EMASMAThresholdAxes,
     GateFlags,
@@ -33,13 +33,13 @@ from ai_trade.backtest.grid.ema_sma_threshold_grid import (
     compute_config_metrics,
     evaluate_gates,
 )
-from ai_trade.backtest.grid.real_etf_regime_runner import (
+from market_lab.backtest.grid.real_etf_regime_runner import (
     RealETFMarket,
     benchmark_signal_buy_hold,
     build_data_bundle,
     simulate_config_with_real_legs,
 )
-from ai_trade.backtest.strategies.ema_sma_threshold_educational import (
+from market_lab.backtest.strategies.ema_sma_threshold_educational import (
     EMASMAThresholdConfig,
     ThresholdResult,
 )

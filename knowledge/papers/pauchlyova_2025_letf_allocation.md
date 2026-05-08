@@ -30,7 +30,7 @@ LETFs **do not work as buy-and-hold** (volatility decay compounds over long hori
 - Confirms Gayed 2020 conclusion: LETF requires active regime management to beat passive alternatives
 - The research **does not explicitly test swing-trading or short-hold horizons** — operates at monthly signal frequency
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **MEDIUM relevance.** Reinforces LETF-in-asset-allocation framing but does not provide a standalone winning strategy.
 - Usable as supporting citation for Plano B swing rotation configurations (`strategies/letf_rotation.md`).

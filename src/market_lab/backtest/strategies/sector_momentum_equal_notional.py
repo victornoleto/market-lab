@@ -41,10 +41,10 @@ from dataclasses import dataclass, field
 
 import pandas as pd
 
-from ai_trade.backtest.engine.execution import Bar, Order
-from ai_trade.backtest.engine.portfolio import Portfolio
-from ai_trade.backtest.strategies.base import StrategyBase
-from ai_trade.backtest.strategies.sector_momentum_clenow import (
+from market_lab.backtest.engine.execution import Bar, Order
+from market_lab.backtest.engine.portfolio import Portfolio
+from market_lab.backtest.strategies.base import StrategyBase
+from market_lab.backtest.strategies.sector_momentum_clenow import (
     adjusted_slope,
     disqualify_gap,
     disqualify_trend,

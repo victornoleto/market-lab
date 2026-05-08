@@ -21,10 +21,10 @@ import pandas as pd
 REPO_ROOT = Path(__file__).parents[4]
 sys.path.insert(0, str(REPO_ROOT))
 
-from ai_trade.backtest.metrics.performance import cagr, max_drawdown, sharpe
-from ai_trade.backtest.validation.dsr import dsr as compute_dsr
-from ai_trade.backtest.validation.pbo import pbo
-from ai_trade.backtest.validation.walk_forward import walk_forward_splits
+from market_lab.backtest.metrics.performance import cagr, max_drawdown, sharpe
+from market_lab.backtest.validation.dsr import dsr as compute_dsr
+from market_lab.backtest.validation.pbo import pbo
+from market_lab.backtest.validation.walk_forward import walk_forward_splits
 
 
 def _load_module(name, path):

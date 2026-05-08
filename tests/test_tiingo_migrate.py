@@ -1,4 +1,4 @@
-"""Tests for ai_trade.backtest.data.tiingo_migrate.
+"""Tests for market_lab.backtest.data.tiingo_migrate.
 
 Tests cover:
 - Layout detection (old single-freq vs new nested)
@@ -80,7 +80,7 @@ def old_layout_root(tmp_path: Path) -> Path:
 
 
 def test_detects_old_layout_and_plans_moves(old_layout_root: Path):
-    from ai_trade.backtest.data.tiingo_migrate import migrate_to_freq_layout
+    from market_lab.backtest.data.tiingo_migrate import migrate_to_freq_layout
 
     report = migrate_to_freq_layout(old_layout_root, dry_run=True)
 
@@ -94,7 +94,7 @@ def test_detects_old_layout_and_plans_moves(old_layout_root: Path):
 
 
 def test_dry_run_does_not_write(old_layout_root: Path):
-    from ai_trade.backtest.data.tiingo_migrate import migrate_to_freq_layout
+    from market_lab.backtest.data.tiingo_migrate import migrate_to_freq_layout
 
     manifest_before = (old_layout_root / "manifest.json").read_text()
     files_before = sorted(str(p) for p in old_layout_root.rglob("*"))
@@ -107,7 +107,7 @@ def test_dry_run_does_not_write(old_layout_root: Path):
 
 
 def test_real_migration_moves_files_and_rekeys_manifest(old_layout_root: Path):
-    from ai_trade.backtest.data.tiingo_migrate import migrate_to_freq_layout
+    from market_lab.backtest.data.tiingo_migrate import migrate_to_freq_layout
 
     report = migrate_to_freq_layout(
         old_layout_root, dry_run=False, skip_backup=True,
@@ -138,7 +138,7 @@ def test_real_migration_moves_files_and_rekeys_manifest(old_layout_root: Path):
 
 
 def test_idempotent_on_already_migrated_root(old_layout_root: Path):
-    from ai_trade.backtest.data.tiingo_migrate import migrate_to_freq_layout
+    from market_lab.backtest.data.tiingo_migrate import migrate_to_freq_layout
 
     migrate_to_freq_layout(
         old_layout_root, dry_run=False, skip_backup=True,
@@ -151,7 +151,7 @@ def test_idempotent_on_already_migrated_root(old_layout_root: Path):
 
 
 def test_raises_on_corrupt_manifest(tmp_path: Path):
-    from ai_trade.backtest.data.tiingo_migrate import migrate_to_freq_layout
+    from market_lab.backtest.data.tiingo_migrate import migrate_to_freq_layout
 
     (tmp_path / "prices").mkdir()
     (tmp_path / "manifest.json").write_text("{{{", encoding="utf-8")
@@ -161,7 +161,7 @@ def test_raises_on_corrupt_manifest(tmp_path: Path):
 
 
 def test_preserves_datetime_semantics_daily_at_midnight(old_layout_root: Path):
-    from ai_trade.backtest.data.tiingo_migrate import migrate_to_freq_layout
+    from market_lab.backtest.data.tiingo_migrate import migrate_to_freq_layout
 
     migrate_to_freq_layout(
         old_layout_root, dry_run=False, skip_backup=True,
@@ -173,7 +173,7 @@ def test_preserves_datetime_semantics_daily_at_midnight(old_layout_root: Path):
 
 
 def test_pgrep_guard_blocks_when_bulk_running(old_layout_root: Path):
-    from ai_trade.backtest.data import tiingo_migrate
+    from market_lab.backtest.data import tiingo_migrate
 
     def fake_pgrep(*args, **kwargs):
         # subprocess.run mock — retorna returncode=0 (process found)
@@ -192,7 +192,7 @@ def test_pgrep_guard_blocks_when_bulk_running(old_layout_root: Path):
 def test_force_ignore_running_bypasses_guard_with_warning(
     old_layout_root: Path, caplog,
 ):
-    from ai_trade.backtest.data import tiingo_migrate
+    from market_lab.backtest.data import tiingo_migrate
     import logging
 
     with patch.object(tiingo_migrate, "_pgrep_bulk", return_value=[12345]):
@@ -210,7 +210,7 @@ def test_force_ignore_running_bypasses_guard_with_warning(
 def test_backup_automatico_cria_tarball_e_opt_out_via_skip_backup(
     old_layout_root: Path,
 ):
-    from ai_trade.backtest.data import tiingo_migrate
+    from market_lab.backtest.data import tiingo_migrate
 
     # Default: backup acontece
     with patch.object(tiingo_migrate, "_pgrep_bulk", return_value=[]):
@@ -227,7 +227,7 @@ def test_migration_rollback_lockfile_persists_on_manifest_failure(
     old_layout_root: Path,
 ):
     """Se _save_manifest falha, lockfile persiste e arquivos são recuperáveis."""
-    from ai_trade.backtest.data import tiingo_migrate
+    from market_lab.backtest.data import tiingo_migrate
 
     def boom(path, content):
         raise OSError("disk full simulated")
@@ -247,7 +247,7 @@ def test_migration_rollback_lockfile_persists_on_manifest_failure(
 
 
 def test_lockfile_blocks_concurrent_storage_init(old_layout_root: Path):
-    from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+    from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
     (old_layout_root / ".migration.lock").write_text("x", encoding="utf-8")
     with pytest.raises(RuntimeError, match="migração incompleta"):

@@ -41,16 +41,16 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.data.testfolio_loader import load_testfolio_series
-from ai_trade.backtest.metrics.performance import (
+from market_lab.backtest.data.testfolio_loader import load_testfolio_series
+from market_lab.backtest.metrics.performance import (
     cagr as _cagr_fn,
     max_drawdown as _mdd_fn,
     sharpe as _sharpe_fn,
 )
-from ai_trade.backtest.validation.dsr import dsr as compute_dsr
-from ai_trade.backtest.validation.dsr import psr as compute_psr
-from ai_trade.backtest.validation.pbo import pbo as compute_pbo
-from ai_trade.backtest.validation.walk_forward import walk_forward_splits
+from market_lab.backtest.validation.dsr import dsr as compute_dsr
+from market_lab.backtest.validation.dsr import psr as compute_psr
+from market_lab.backtest.validation.pbo import pbo as compute_pbo
+from market_lab.backtest.validation.walk_forward import walk_forward_splits
 from studies.long_term_portfolio import datasets as datasets_mod
 from studies.long_term_portfolio import synths
 from studies.long_term_portfolio.proxies import (

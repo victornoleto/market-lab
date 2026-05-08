@@ -37,14 +37,14 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.grid.ema_sma_threshold_grid import (
+from market_lab.backtest.grid.ema_sma_threshold_grid import (
     ConfigMetrics,
     GateFlags,
     compute_composite_scores,
     compute_config_metrics,
     evaluate_gates,
 )
-from ai_trade.backtest.metrics.performance import (
+from market_lab.backtest.metrics.performance import (
     cagr as _cagr,
     calmar as _calmar,
     max_drawdown as _max_drawdown,
@@ -52,7 +52,7 @@ from ai_trade.backtest.metrics.performance import (
     sortino as _sortino,
     volatility as _volatility,
 )
-from ai_trade.backtest.strategies.ema_sma_threshold_educational import (
+from market_lab.backtest.strategies.ema_sma_threshold_educational import (
     DEFAULT_FEE,
     EMASMAThresholdConfig,
     ThresholdResult,

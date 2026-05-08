@@ -62,7 +62,7 @@ DISPATCH_BY_TIER = {
 }
 
 # Suppress harmless warnings during bulk backtests
-warnings.filterwarnings("ignore", category=UserWarning, module="ai_trade.backtest.validation.pbo")
+warnings.filterwarnings("ignore", category=UserWarning, module="market_lab.backtest.validation.pbo")
 warnings.filterwarnings("ignore", category=FutureWarning)
 
 

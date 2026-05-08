@@ -14,9 +14,9 @@ Generated: 2026-05-03T22:39:10+00:00
 
 ## Outputs
 
-- CSV: `/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/data/catalog/systems_rank/systems_gain_desc_smoke.csv`
-- JSON: `/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/data/catalog/systems_rank/systems_gain_desc_smoke.json`
-- Parquet: `/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/data/catalog/systems_rank/systems_gain_desc_smoke.parquet`
+- CSV: `/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/data/catalog/systems_rank/systems_gain_desc_smoke.csv`
+- JSON: `/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/data/catalog/systems_rank/systems_gain_desc_smoke.json`
+- Parquet: `/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/data/catalog/systems_rank/systems_gain_desc_smoke.parquet`
 
 ## Caveat
 

@@ -22,7 +22,7 @@ Full Kelly yields **highest median terminal wealth** in long-horizon simulations
 - **Period:** January 2000 – December 2018 (daily)
 - **Rolling OOS:** 24-month lookback windows, monthly/daily rebalance comparison
 - **Single-stock case study:** Banca Intesa 2007–2018
-- **Cost model:** **NO transaction costs** — hard limitation for direct transport to ai-trade mandate (gate 13 cost-sensitivity binding)
+- **Cost model:** **NO transaction costs** — hard limitation for direct transport to market-lab mandate (gate 13 cost-sensitivity binding)
 
 ## Key results
 
@@ -31,7 +31,7 @@ Full Kelly yields **highest median terminal wealth** in long-horizon simulations
 - Kelly portfolios lie on efficient frontier but concentrate in 2–3 assets
 - Longer rolling windows hurt; monthly rebalance degrades daily's edge
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **MEDIUM relevance.** Frictionless assumption prevents direct use. Insight **usable**: Kelly on equities rewards daily rebalance + 2-yr rolling vol estimation, at the cost of elevated drawdown.
 - For Phase 3.7-3, combine with Wysocki 2024 fractional-Kelly × VIX scaling (H4) to cap drawdown back to acceptable range.

@@ -1,7 +1,7 @@
 """LETF rotation Lead B1c — gate aggregation over the full grid.
 
 Consumes per-config net daily-return series produced by
-:func:`ai_trade.backtest.strategies.letf_rotation.simulate_letf_rotation`
+:func:`market_lab.backtest.strategies.letf_rotation.simulate_letf_rotation`
 on the full 1970-2026 SPX TR window, and applies the Phase 3 gates in
 order:
 
@@ -24,7 +24,7 @@ Citations
 * PBO / CSCV and overfit threshold 0.5: ``[advances_fin_ml, p.208-211]``.
 * DSR / PSR framework: ``[advances_fin_ml, p.196-202]``,
   ``[advances_fin_ml, p.273-275]``.
-* Walk-forward ≥ 6/8 gate: Pardo (2008) ch.10-11 + ai-trade rule #5.
+* Walk-forward ≥ 6/8 gate: Pardo (2008) ch.10-11 + market-lab rule #5.
 * Stationary block bootstrap for Sharpe CI on serially-correlated trades:
   ``[advances_fin_ml, p.196-202, ch.11]``.
 * Gayed canonical splits (IS 1970-2000 / OOS 2001-2015):
@@ -40,13 +40,13 @@ from typing import Sequence
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.strategies.letf_rotation import (
+from market_lab.backtest.strategies.letf_rotation import (
     LETFRotationConfig,
     RotationResult,
 )
-from ai_trade.backtest.validation.bootstrap import stationary_bootstrap_trades
-from ai_trade.backtest.validation.dsr import dsr, sharpe_periodic
-from ai_trade.backtest.validation.pbo import pbo as cscv_pbo
+from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
+from market_lab.backtest.validation.dsr import dsr, sharpe_periodic
+from market_lab.backtest.validation.pbo import pbo as cscv_pbo
 
 
 log = logging.getLogger(__name__)

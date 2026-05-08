@@ -29,7 +29,7 @@ Direct extension of Zarattini-Aziz-Barbon 2024 noise-boundary framework with imp
 - Best exit strategies: VWAP, VWAP+Ladder, Ladder
 - **⚠ Reported numbers are IS-biased until independently validated with CSCV/PBO on the same instrument.**
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **Secondary lead for Phase 3.7-3 hunt (H1 refinement).** Should ONLY be tested as extension of H1 Zarattini 2024 baseline, not as standalone.
 - Must be subjected to the Phase 3.6 13-gate stack rigorously — headline Sharpe > 3 is **exactly the pattern** (e.g., V2-L2 Gayed Sharpe 2.28 → 0.56 honest) that the engine look-ahead investigation exposed.

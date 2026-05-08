@@ -58,7 +58,7 @@ The first iter MUST:
 1. **Measure exact buy-hold benchmarks** for the 3 datasets (gld_long, xauusd_real, xauusd_intraday) and **update `scoring.py BENCHMARKS` dict** with measured values. Current values are placeholders.
 2. **Calibrate Pepperstone cost model** — verify spread + swap assumptions against Pepperstone live spec or recent fills (default: 8 bps round-trip spread + −1 bps/night swap; intraday-close = swap-free).
 3. **Pre-commit dataset slicing** — gld_long 2004-2024 (15y train), xauusd_real 2020-2024 walk-forward, xauusd_intraday 4h-resampled or 1h-direct.
-4. **Decide simulator architecture** — extend `src/ai_trade/backtest/strategies/` for single-asset day/swing OR use lightweight per-iter scripts.
+4. **Decide simulator architecture** — extend `src/market_lab/backtest/strategies/` for single-asset day/swing OR use lightweight per-iter scripts.
 
 After iter 001, the loop runs identically to the sister loop.
 

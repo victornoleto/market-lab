@@ -1,6 +1,6 @@
 """Progress observers + logging setup for grid runs.
 
-Observers are plain callables with the :data:`ai_trade.backtest.grid.runner.
+Observers are plain callables with the :data:`market_lab.backtest.grid.runner.
 ProgressCb` signature ``(completed, total, trial) -> None``. Composing a few
 (JSONL, status.md, ...) is how the CLI wires per-run and cross-run
 observability without entangling the core runner.
@@ -27,7 +27,7 @@ from typing import Callable
 
 import numpy as np
 
-from ai_trade.backtest.grid.result import TrialResult
+from market_lab.backtest.grid.result import TrialResult
 
 
 ProgressCb = Callable[[int, int, TrialResult], None]
@@ -139,7 +139,7 @@ def setup_grid_logging(
     unified_log_path: Path,
     level: int = logging.INFO,
 ) -> None:
-    """Attach 3 logging handlers to ``ai_trade.grid``:
+    """Attach 3 logging handlers to ``market_lab.grid``:
 
     * console (stderr) at ``level``
     * per-run debug file at DEBUG
@@ -155,7 +155,7 @@ def setup_grid_logging(
     unified_log_path = Path(unified_log_path)
     unified_log_path.parent.mkdir(parents=True, exist_ok=True)
 
-    logger = logging.getLogger("ai_trade.grid")
+    logger = logging.getLogger("market_lab.grid")
     logger.setLevel(logging.DEBUG)  # handlers filter per-handler
 
     console = logging.StreamHandler()

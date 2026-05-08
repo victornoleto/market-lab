@@ -21,7 +21,7 @@
       "n_synthetic": 58,
       "n_matched": 0,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10062918/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10062918/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": 1.0,
       "adversarial_ci_low_95": 1.0,
@@ -47,7 +47,7 @@
       "n_synthetic": 0,
       "n_matched": 0,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10067081/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10067081/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": null,
       "adversarial_ci_low_95": null,
@@ -69,7 +69,7 @@
       "n_synthetic": 0,
       "n_matched": 0,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10249298/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10249298/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": null,
       "adversarial_ci_low_95": null,
@@ -91,7 +91,7 @@
       "n_synthetic": 1651,
       "n_matched": 13,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10281851/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10281851/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": 1.0,
       "adversarial_ci_low_95": 1.0,
@@ -117,7 +117,7 @@
       "n_synthetic": 2497,
       "n_matched": 32,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10563761/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10563761/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": 0.9999908045977012,
       "adversarial_ci_low_95": 0.9999724137931034,
@@ -143,7 +143,7 @@
       "n_synthetic": 1648,
       "n_matched": 22,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10734338/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10734338/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "is_live=False (account_type='Demo'); warning-only, does not block"
       ],
@@ -171,7 +171,7 @@
       "n_synthetic": 106,
       "n_matched": 10,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11155858/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/11155858/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": 1.0,
       "adversarial_ci_low_95": 1.0,
@@ -197,7 +197,7 @@
       "n_synthetic": 87,
       "n_matched": 1,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11206045/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/11206045/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": 1.0,
       "adversarial_ci_low_95": 1.0,
@@ -223,7 +223,7 @@
       "n_synthetic": 7257,
       "n_matched": 79,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11207608/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/11207608/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": 1.0,
       "adversarial_ci_low_95": 1.0,
@@ -249,7 +249,7 @@
       "n_synthetic": 668,
       "n_matched": 0,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/1152318/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/1152318/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": 1.0,
       "adversarial_ci_low_95": 1.0,
@@ -275,7 +275,7 @@
       "n_synthetic": 617,
       "n_matched": 7,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11628637/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/11628637/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": 0.9997545582047686,
       "adversarial_ci_low_95": 0.9992636746143058,
@@ -301,7 +301,7 @@
       "n_synthetic": 12366,
       "n_matched": 0,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/1407880/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/1407880/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "is_live=False (account_type='Demo'); warning-only, does not block"
       ],
@@ -329,7 +329,7 @@
       "n_synthetic": 5488,
       "n_matched": 0,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/1612420/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/1612420/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "is_live=False (account_type='Demo'); warning-only, does not block"
       ],
@@ -357,7 +357,7 @@
       "n_synthetic": 1773,
       "n_matched": 19,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/2421356/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/2421356/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "is_live=False (account_type='Demo'); warning-only, does not block"
       ],
@@ -385,7 +385,7 @@
       "n_synthetic": 16625,
       "n_matched": 266,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/6541963/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/6541963/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "is_live=False (account_type='Demo'); warning-only, does not block"
       ],
@@ -413,7 +413,7 @@
       "n_synthetic": 0,
       "n_matched": 0,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/8577442/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/8577442/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": null,
       "adversarial_ci_low_95": null,
@@ -435,7 +435,7 @@
       "n_synthetic": 25135,
       "n_matched": 303,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/8647517/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/8647517/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": 1.0,
       "adversarial_ci_low_95": 1.0,
@@ -461,7 +461,7 @@
       "n_synthetic": 2261,
       "n_matched": 31,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/9375654/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/9375654/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": 1.0,
       "adversarial_ci_low_95": 1.0,
@@ -487,7 +487,7 @@
       "n_synthetic": 164,
       "n_matched": 10,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/9830783/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/9830783/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": 1.0,
       "adversarial_ci_low_95": 1.0,
@@ -513,7 +513,7 @@
       "n_synthetic": 0,
       "n_matched": 0,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/9841939/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/9841939/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": null,
       "adversarial_ci_low_95": null,
@@ -535,7 +535,7 @@
       "n_synthetic": 3,
       "n_matched": 0,
       "pre_screen_decision": "GO",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/9912554/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/9912554/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [],
       "adversarial_auc": 1.0,
       "adversarial_ci_low_95": 1.0,
@@ -556,19 +556,19 @@
     }
   ],
   "failed": {
-    "2123808": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/2123808.md",
-    "2483126": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/2483126.md",
-    "3568877": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/3568877.md",
-    "5542332": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/5542332.md",
-    "8286716": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/8286716.md",
-    "8574205": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/8574205.md",
-    "9526428": "FileNotFoundError: /var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/frozen_rules/9526428.md"
+    "2123808": "FileNotFoundError: /var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/frozen_rules/2123808.md",
+    "2483126": "FileNotFoundError: /var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/frozen_rules/2483126.md",
+    "3568877": "FileNotFoundError: /var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/frozen_rules/3568877.md",
+    "5542332": "FileNotFoundError: /var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/frozen_rules/5542332.md",
+    "8286716": "FileNotFoundError: /var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/frozen_rules/8286716.md",
+    "8574205": "FileNotFoundError: /var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/frozen_rules/8574205.md",
+    "9526428": "FileNotFoundError: /var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/frozen_rules/9526428.md"
   },
   "skipped": {
     "10192401": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10192401/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10192401/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "MCPT p=0.1139 >= 0.05",
         "PSR p=0.1173 >= 0.05"
@@ -577,7 +577,7 @@
     "10224499": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10224499/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10224499/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "MCPT p=1.0000 >= 0.05",
         "PSR p=1.0000 >= 0.05"
@@ -586,7 +586,7 @@
     "10251631": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10251631/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10251631/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "MCPT p=0.1049 >= 0.05",
         "PSR p=0.1246 >= 0.05",
@@ -596,7 +596,7 @@
     "10475089": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10475089/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10475089/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "MCPT p=0.1009 >= 0.05"
       ]
@@ -604,7 +604,7 @@
     "10585558": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10585558/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10585558/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 126.41 (> 3.0) \u2014 within-month doubling"
       ]
@@ -612,7 +612,7 @@
     "10716398": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10716398/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10716398/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 139.40 (> 3.0) \u2014 within-month doubling"
       ]
@@ -620,7 +620,7 @@
     "10746260": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10746260/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10746260/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 128.08 (> 3.0) \u2014 within-month doubling"
       ]
@@ -628,7 +628,7 @@
     "10814265": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10814265/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10814265/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 125.92 (> 3.0) \u2014 within-month doubling"
       ]
@@ -636,7 +636,7 @@
     "10878805": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10878805/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10878805/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "concentration top-5%=0.540 >= 0.5"
       ]
@@ -644,7 +644,7 @@
     "10970107": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/10970107/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/10970107/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 127.98 (> 3.0) \u2014 within-month doubling"
       ]
@@ -652,7 +652,7 @@
     "11171596": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11171596/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/11171596/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "MCPT p=0.0535 >= 0.05"
       ]
@@ -660,7 +660,7 @@
     "11305553": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11305553/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/11305553/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: 30 doubling-after-loss trades (>5% of total); per-month max/median P95 = 30.75 (> 3.0) \u2014 within-month doubling"
       ]
@@ -668,7 +668,7 @@
     "11355455": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11355455/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/11355455/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "concentration top-5%=0.502 >= 0.5"
       ]
@@ -676,7 +676,7 @@
     "11504701": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11504701/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/11504701/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 119.47 (> 3.0) \u2014 within-month doubling",
         "concentration top-5%=0.531 >= 0.5"
@@ -685,7 +685,7 @@
     "11986417": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/11986417/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/11986417/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "concentration top-5%=0.638 >= 0.5"
       ]
@@ -693,7 +693,7 @@
     "1603276": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/1603276/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/1603276/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "concentration top-5%=0.759 >= 0.5"
       ]
@@ -701,7 +701,7 @@
     "2373850": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/2373850/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/2373850/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "MCPT p=0.1024 >= 0.05",
         "PSR p=0.0899 >= 0.05"
@@ -710,7 +710,7 @@
     "612872": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/612872/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/612872/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 32.90 (> 3.0) \u2014 within-month doubling"
       ]
@@ -718,7 +718,7 @@
     "6603448": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/6603448/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/6603448/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 4.35 (> 3.0) \u2014 within-month doubling"
       ]
@@ -726,7 +726,7 @@
     "7603723": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/7603723/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/7603723/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 5.10 (> 3.0) \u2014 within-month doubling"
       ]
@@ -734,7 +734,7 @@
     "7942220": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/7942220/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/7942220/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 5.95 (> 3.0) \u2014 within-month doubling"
       ]
@@ -742,7 +742,7 @@
     "8397136": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/8397136/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/8397136/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "MCPT p=0.2679 >= 0.05",
         "PSR p=0.2499 >= 0.05"
@@ -751,7 +751,7 @@
     "8577996": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/8577996/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/8577996/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 4.10 (> 3.0) \u2014 within-month doubling"
       ]
@@ -759,7 +759,7 @@
     "8599269": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/8599269/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/8599269/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 5.00 (> 3.0) \u2014 within-month doubling"
       ]
@@ -767,7 +767,7 @@
     "8599392": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/8599392/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/8599392/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 209.40 (> 3.0) \u2014 within-month doubling"
       ]
@@ -775,7 +775,7 @@
     "9607500": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/9607500/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/9607500/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "K1 sanity FAIL: per-month max/median P95 = 144.59 (> 3.0) \u2014 within-month doubling"
       ]
@@ -783,7 +783,7 @@
     "9843883": {
       "status": "PRE_SCREEN_STOP",
       "pre_screen_decision": "STOP",
-      "pre_screen_path": "/var/www/pessoal/ai-trade/studies/myfxbook_reverse_engineering/systems/9843883/decoding_v4_fase1/pre_decode_screen.json",
+      "pre_screen_path": "/var/www/github/finances/market-lab/studies/myfxbook_reverse_engineering/systems/9843883/decoding_v4_fase1/pre_decode_screen.json",
       "pre_screen_notes": [
         "MCPT p=0.0510 >= 0.05",
         "PSR p=0.0525 >= 0.05"

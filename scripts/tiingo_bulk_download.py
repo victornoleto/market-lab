@@ -102,7 +102,7 @@ FOREX_TICKERS = [
 
 # Buckets that need network/cache (Wikipedia) are resolved lazily.
 
-log = logging.getLogger("ai_trade.tiingo_bulk")
+log = logging.getLogger("market_lab.tiingo_bulk")
 
 
 # ---------------------------------------------------------------------------
@@ -165,7 +165,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def _resolve_spx500(start: date) -> list[str]:
     """Wikipedia: current ∪ point-in-time at start date."""
-    from ai_trade.backtest.data.wikipedia_spx import WikipediaSPX
+    from market_lab.backtest.data.wikipedia_spx import WikipediaSPX
     wiki = WikipediaSPX()
     current = wiki.current_tickers()
     historical = wiki.constituents_on(start)
@@ -251,8 +251,8 @@ def _summary_path(storage_root: Path, run_id: str) -> Path:
 
 
 def main(argv: list[str] | None = None) -> int:
-    from ai_trade.backtest.data.tiingo_source import TiingoSource
-    from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+    from market_lab.backtest.data.tiingo_source import TiingoSource
+    from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
     args = _parse_args(argv)
     _setup_logging(getattr(logging, args.log_level))

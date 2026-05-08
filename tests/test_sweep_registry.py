@@ -1,4 +1,4 @@
-"""Tests for ai_trade.backtest.sweeps.registry.
+"""Tests for market_lab.backtest.sweeps.registry.
 
 Covers:
 
@@ -22,7 +22,7 @@ from typing import Any, Dict
 
 import pytest
 
-from ai_trade.backtest.sweeps.registry import (
+from market_lab.backtest.sweeps.registry import (
     SCHEMA_VERSION,
     RegistryValidationError,
     advance_status,

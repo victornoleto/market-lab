@@ -1,6 +1,6 @@
 # CLEANUP.md — playbook de consolidação de repo
 
-Procedimento padrão pra rodar um cleanup agressivo no `ai-trade` sem
+Procedimento padrão pra rodar um cleanup agressivo no `market-lab` sem
 perder informação relevante. Baseado no cleanup de 2026-04-24
 (reduziu ~40% dos tests, removeu ~150 arquivos, zero regressão em
 core engine). Log forense daquele run: `docs/CLEANUP_2026-04-24_LOG.md`.
@@ -21,7 +21,7 @@ NÃO usar:
 
 ## Prompt pro executor (copiar/colar numa nova sessão)
 
-> Rode um cleanup agressivo no repo ai-trade seguindo
+> Rode um cleanup agressivo no repo market-lab seguindo
 > `docs/CLEANUP.md`. Baseline atual: quantos tests? Quantos arquivos em
 > cada pasta-alvo? Crie tag `pre-cleanup-YYYY-MM-DD` antes de qualquer
 > delete. Commits isolados por área. HANDS-OFF: liste pastas que estão
@@ -39,7 +39,7 @@ NÃO usar:
    `reports/portfolio_aposentadoria_v2/`, `docs/investment-mandate.md`,
    qualquer doc de rationale factor-tilted — PRESERVE integral.
 
-2. **Core engine (src/ai_trade/backtest/) é intocável.** Módulos:
+2. **Core engine (src/market_lab/backtest/) é intocável.** Módulos:
    `engine/`, `grid/` (core runners: runner, observers, result, report,
    walk_forward, gates, diagnostic), `data/`, `validation/`, `metrics/`
    (core: performance, rebalance_modes, report, stress_periods,
@@ -77,7 +77,7 @@ NÃO usar:
 ### Etapa 0 — Baseline + tag (OBRIGATÓRIO)
 
 ```bash
-cd /var/www/pessoal/ai-trade
+cd /var/www/github/finances/market-lab
 git status                                  # working tree limpo? (ou confirmar)
 git log --oneline -5                        # último commit conhecido
 git tag pre-cleanup-YYYY-MM-DD              # snapshot recovery
@@ -179,7 +179,7 @@ Mandate overrides (`docs/mandate_overrides/`):
 - Preserve em `docs/mandate_overrides/` se ainda "load-bearing" (ex:
   consolidation-final.md signed).
 
-### Etapa 8+9 — src/ai_trade/ + tests/ (acoplado — fazer juntos)
+### Etapa 8+9 — src/market_lab/ + tests/ (acoplado — fazer juntos)
 
 **Mandatório rodar em sequência** porque imports quebrados em
 strategies fazem collection de tests falhar.
@@ -188,7 +188,7 @@ strategies fazem collection de tests falhar.
 
 1. Listar strategies DORMANT:
    ```bash
-   ls src/ai_trade/backtest/strategies/*.py | grep -E "phase3_|plano_a|bollinger|donchian|etf_rotation|kalman|ranking_br|regime|session|tsmom"
+   ls src/market_lab/backtest/strategies/*.py | grep -E "phase3_|plano_a|bollinger|donchian|etf_rotation|kalman|ranking_br|regime|session|tsmom"
    ```
 
 2. Grep cascata pra verificar imports em `app/` e `studies/` **antes
@@ -204,18 +204,18 @@ strategies fazem collection de tests falhar.
 3. Delete strategies + infra correlata (grid/, metrics/ que só os
    dormant usam):
    ```bash
-   git rm -q src/ai_trade/backtest/strategies/<dormant>.py ...
-   git rm -q src/ai_trade/backtest/grid/<dormant_infra>.py ...
-   git rm -q src/ai_trade/backtest/metrics/<dormant_infra>.py ...
+   git rm -q src/market_lab/backtest/strategies/<dormant>.py ...
+   git rm -q src/market_lab/backtest/grid/<dormant_infra>.py ...
+   git rm -q src/market_lab/backtest/metrics/<dormant_infra>.py ...
    ```
 
-4. Atualizar `src/ai_trade/backtest/strategies/__init__.py` — remover
+4. Atualizar `src/market_lab/backtest/strategies/__init__.py` — remover
    imports stale (senão pytest quebra em collection).
 
 5. Delete tests correspondentes:
    ```bash
    git rm -q tests/test_<dormant>.py ...
-   rm -rf src/ai_trade/backtest/{strategies,grid,metrics}/__pycache__
+   rm -rf src/market_lab/backtest/{strategies,grid,metrics}/__pycache__
    ```
 
 6. **Ciclo de validação iterativo** (crítico):
@@ -374,4 +374,4 @@ reativar; mandate overrides). Outros: consolidar + delete.
 - Log forense do run 2026-04-24: `docs/CLEANUP_2026-04-24_LOG.md`
 - Plan file do run 2026-04-24: `/home/victor/.claude/plans/sharded-wondering-spindle.md`
 - Mandate (não-cleanup rules permanentes): `docs/investment-mandate.md`
-- Memory rules: `/home/victor/.claude/projects/-var-www-pessoal-ai-trade/memory/`
+- Memory rules: `/home/victor/.claude/projects/-var-www-github-finances-market-lab/memory/`

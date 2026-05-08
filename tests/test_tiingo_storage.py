@@ -1,4 +1,4 @@
-"""Tests for ``ai_trade.backtest.data.tiingo_storage``.
+"""Tests for ``market_lab.backtest.data.tiingo_storage``.
 
 TiingoStorage is the persistent layer that survives Tiingo subscription
 cancellation. Layout under ``root/``:
@@ -48,7 +48,7 @@ def _mk_df(start: str = "2023-01-02", n: int = 10) -> pd.DataFrame:
 
 class TestLayout:
     def test_init_creates_subdirs(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path / "tiingo")
         # Nested layout: root/{frequency}/{prices,meta}/. `daily` is created
@@ -66,7 +66,7 @@ class TestLayout:
 
 class TestRoundTrip:
     def test_write_then_read_returns_same_frame(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         df = _mk_df(start="2023-01-02", n=5)
@@ -81,7 +81,7 @@ class TestRoundTrip:
         )
 
     def test_write_creates_parquet_file(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         storage.write("KR", _mk_df(), asset_class="equity")
@@ -90,7 +90,7 @@ class TestRoundTrip:
         assert (tmp_path / "daily" / "prices" / "KR.parquet").exists()
 
     def test_manifest_records_metadata(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         df = _mk_df(start="2020-06-01", n=20)
@@ -106,7 +106,7 @@ class TestRoundTrip:
         assert "fetched_at" in entry  # ISO timestamp
 
     def test_manifest_persists_to_disk(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         storage.write("KR", _mk_df(), asset_class="equity")
@@ -123,7 +123,7 @@ class TestRoundTrip:
 
 class TestRangeQuery:
     def test_has_returns_true_when_range_covered(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         storage.write("KR", _mk_df(start="2023-01-02", n=20), "equity")
@@ -132,7 +132,7 @@ class TestRangeQuery:
         assert storage.has("KR", date(2023, 1, 5), date(2023, 1, 20))
 
     def test_has_returns_false_when_range_extends(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         storage.write("KR", _mk_df(start="2023-01-02", n=20), "equity")
@@ -141,13 +141,13 @@ class TestRangeQuery:
         assert not storage.has("KR", date(2023, 1, 5), date(2024, 12, 31))
 
     def test_has_returns_false_for_unknown_ticker(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         assert not storage.has("BOGUS", date(2023, 1, 1), date(2023, 12, 31))
 
     def test_has_tolerates_weekend_holiday_slack(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         # Data begins 2014-01-02 (first trading day; 2014-01-01 is New Year).
@@ -161,7 +161,7 @@ class TestRangeQuery:
         assert not storage.has("AAPL", date(2014, 1, 1), date(2014, 2, 10))
 
     def test_read_with_date_range_slices(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         df = _mk_df(start="2023-01-02", n=20)
@@ -174,7 +174,7 @@ class TestRangeQuery:
         assert len(sliced) <= 5
 
     def test_read_unknown_ticker_raises(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         with pytest.raises(KeyError, match="BOGUS"):
@@ -188,7 +188,7 @@ class TestRangeQuery:
 
 class TestMerge:
     def test_second_write_extends_existing_range(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         a = _mk_df(start="2023-01-02", n=5)
@@ -204,7 +204,7 @@ class TestMerge:
 
     def test_overlap_keeps_latest_values(self, tmp_path: Path):
         """If two writes overlap on a date, the second one wins."""
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         a = _mk_df(start="2023-01-02", n=5)
@@ -227,7 +227,7 @@ class TestMerge:
 
 class TestListing:
     def test_list_tickers_returns_all(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         storage.write("KR", _mk_df(), "equity")
@@ -237,7 +237,7 @@ class TestListing:
         assert set(storage.list_tickers()) == {"KR", "SPY", "BTCUSD"}
 
     def test_list_tickers_filters_by_asset_class(self, tmp_path: Path):
-        from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+        from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
         storage = TiingoStorage(root=tmp_path)
         storage.write("KR", _mk_df(), "equity")
@@ -254,7 +254,7 @@ class TestListing:
 
 def test_manifest_nested_schema_roundtrip(tmp_path: Path):
     """Manifest grava e carrega formato nested {ticker: {freq: entry}}."""
-    from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+    from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
     storage = TiingoStorage(root=tmp_path)
     df = pd.DataFrame(
@@ -285,7 +285,7 @@ def test_manifest_nested_schema_roundtrip(tmp_path: Path):
 
 def test_has_with_frequency_kwarg(tmp_path: Path):
     """has() respeita frequency isolado (AAPL daily ≠ AAPL 1hour)."""
-    from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+    from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
     storage = TiingoStorage(root=tmp_path)
     df_daily = pd.DataFrame(
@@ -304,7 +304,7 @@ def test_has_accepts_date_or_datetime(tmp_path: Path):
     """has() aceita date e datetime sem crash."""
     from datetime import datetime
 
-    from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+    from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
     storage = TiingoStorage(root=tmp_path)
     df = pd.DataFrame(
@@ -327,7 +327,7 @@ def test_slack_per_asset_class_and_freq(tmp_path: Path):
     """Crypto 1h slack é menor que equity 1h (24/7 vs RTH)."""
     from datetime import datetime
 
-    from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+    from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
     storage = TiingoStorage(root=tmp_path)
 
@@ -385,7 +385,7 @@ def test_slack_per_asset_class_and_freq(tmp_path: Path):
 
 def test_init_raises_on_lockfile_present(tmp_path: Path):
     """TiingoStorage(__post_init__) raise se lockfile .migration.lock existe."""
-    from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+    from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
     (tmp_path / ".migration.lock").write_text("in-progress\n", encoding="utf-8")
 
@@ -397,7 +397,7 @@ def test_write_stores_requested_range_when_provided(tmp_path: Path):
     """write() aceita requested_start/end e grava no manifest."""
     from datetime import datetime
 
-    from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+    from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
     storage = TiingoStorage(root=tmp_path)
     df = pd.DataFrame(

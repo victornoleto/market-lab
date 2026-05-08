@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.helpers.synthetic_letf import (
+from market_lab.backtest.helpers.synthetic_letf import (
     DEFAULT_ANNUAL_FEE,
     DEFAULT_EXPENSE_RATIO,
     DEFAULT_FFR_SPREAD,

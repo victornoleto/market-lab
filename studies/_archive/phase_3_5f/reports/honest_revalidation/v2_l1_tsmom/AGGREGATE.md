@@ -6,7 +6,7 @@
 **Branch:** `phase3.5f/plano-a-v2-l2-cross-lib-redo-20260422`
 **F2 engine-fix commit:** `7b90a8f` — `fix(backtest): shift weight×return alignment to remove lookahead bias`
 **F1 scope audit:** `docs/superpowers/findings/2026-04-22-engine-lookahead-scope.md` (lead listed under **CLEAN**)
-**Strategy module:** `src/ai_trade/backtest/strategies/tsmom_multi_asset.py` — confirmed CLEAN in F1 (no `w_i × r_i` pattern)
+**Strategy module:** `src/market_lab/backtest/strategies/tsmom_multi_asset.py` — confirmed CLEAN in F1 (no `w_i × r_i` pattern)
 **Original report:** `reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/` (12 configs)
 
 ---

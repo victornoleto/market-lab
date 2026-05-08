@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.data.adjust import adjust_ohlc
+from market_lab.backtest.data.adjust import adjust_ohlc
 
 
 def _frame(closes_raw, closes_adj):

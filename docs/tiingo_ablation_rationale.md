@@ -146,7 +146,7 @@ ground truth; option 1 challenges the premise.
 ## 6. Post-subscription execution plan
 
 1. **Data source integration.** Create
-   `src/ai_trade/backtest/data/tiingo_source.py` replicating the
+   `src/market_lab/backtest/data/tiingo_source.py` replicating the
    `YFinanceSource` interface (`fetch_many(symbols, start, end) → dict[str, pd.DataFrame]`
    OHLCV + parquet cache). Keep the survivorship-free marker so the
    report disclaimer adjusts automatically.
@@ -176,6 +176,6 @@ ground truth; option 1 challenges the premise.
 - `reports/ehlers_replication_notes.md` — single-instrument ^GSPC 2022-2023
 - `reports/grid_20260414-1813/diagnostic.md` — Run 1 fail (PBO+DSR)
 - `reports/grid_ehlers_20260414-1944/diagnostic.md` — Run 2 fail (DSR)
-- `src/ai_trade/backtest/data/yfinance_source.py` — data source to be
+- `src/market_lab/backtest/data/yfinance_source.py` — data source to be
   mirrored by `tiingo_source.py`
-- `src/ai_trade/backtest/validation/dsr.py` — AFML p.222-223 implementation
+- `src/market_lab/backtest/validation/dsr.py` — AFML p.222-223 implementation

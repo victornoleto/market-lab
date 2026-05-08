@@ -12,8 +12,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.engine.portfolio import Trade
-from ai_trade.backtest.helpers.leverage import (
+from market_lab.backtest.engine.portfolio import Trade
+from market_lab.backtest.helpers.leverage import (
     bootstrap_prob_of_ruin,
     intra_bar_ruin_scan,
     kelly_fraction_from_trades,

@@ -10,7 +10,7 @@ Reports in this directory were produced by a version of the simulation
 engine that contained a **look-ahead bias** (fixed 2026-04-22, commit
 `7b90a8f`). The engine used `new_w[bar_i] × ret[bar_i]` instead of the
 correct `prev_w[bar_i] × ret[bar_i]` in the return compounding line of
-`src/ai_trade/backtest/strategies/plano_a_leveraged_rotation.py:462`.
+`src/market_lab/backtest/strategies/plano_a_leveraged_rotation.py:462`.
 Because the regime signal at bar `i` was computed from `close[i]` and
 the return at bar `i` was also computed from `close[i]`, the simulator
 effectively got to see the day's close before sizing into it.

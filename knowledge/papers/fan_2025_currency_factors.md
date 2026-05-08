@@ -30,7 +30,7 @@ Introduces a framework that **dynamically optimizes currency factor strategies**
 - **Carry strategy Sharpe rises from 0.71 (naïve) to 1.29 (after real-time hedging of unpriced risks)**
 - Framework applicable to both symmetric and asymmetric (TSMOM) factor portfolios
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **MEDIUM–HIGH relevance.** This is the **state-of-art framework** for G10 FX factor investing 2022-2026.
 - **Pepperstone fit: HIGH** for instrument (majors spreads 0.1-0.2 pips Razor + $3.50/lot/side commission)

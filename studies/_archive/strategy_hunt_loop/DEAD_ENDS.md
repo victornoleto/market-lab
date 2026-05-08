@@ -3967,7 +3967,7 @@ MDD (kill E clean: 3/3 below ceilings) but FAILED on Sharpe drag
 prediction by 5.2× (observed 0.117 vs predicted 0.022).
 
 **Methodological closure**: the project's
-`ai_trade.backtest.metrics.performance.sharpe()` uses
+`market_lab.backtest.metrics.performance.sharpe()` uses
 `risk_free=0.0` default. The standard analytical drag formula
 ``(lev−1)×(b−rf)/(lev×σ_annual)`` assumes the Sharpe is excess-Sharpe;
 at this codebase's convention (raw Sharpe), the correct formula is:

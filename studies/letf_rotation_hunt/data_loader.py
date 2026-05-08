@@ -21,7 +21,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from ai_trade.backtest.data.testfolio_loader import load_testfolio_series as _load_testfolio
+from market_lab.backtest.data.testfolio_loader import load_testfolio_series as _load_testfolio
 
 _TIINGO_DIR = Path("data/tiingo/daily/prices")
 

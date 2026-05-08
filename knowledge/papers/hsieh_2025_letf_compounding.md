@@ -28,7 +28,7 @@ LETF performance depends fundamentally on **return autocorrelation and return dy
 
 No specific Sharpe ratio, CAGR, or MaxDD figures appear in the abstract. The paper documents empirical confirmation of theoretical predictions; quantitative metrics require full PDF access. Qualitative finding: **LETF outperforms in momentum regimes, underperforms in mean-reverting regimes**; daily rebalance is optimal in former, infrequent rebalance in latter.
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **HIGH relevance.** Hypothesis H2 (VIX-gated LETF rotation) in Phase 3.7-3 hunt draws directly from this paper's regime-conditional framing.
 - Provides theoretical justification for extending Gayed 2016/2020 with an explicit autocorrelation / regime classifier (AR(1) or HMM).

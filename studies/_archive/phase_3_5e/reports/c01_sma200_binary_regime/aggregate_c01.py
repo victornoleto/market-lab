@@ -21,11 +21,11 @@ import numpy as np
 import pandas as pd
 import warnings
 
-sys.path.insert(0, "/var/www/pessoal/ai-trade")
-sys.path.insert(0, "/var/www/pessoal/ai-trade/src")
+sys.path.insert(0, "/var/www/github/finances/market-lab")
+sys.path.insert(0, "/var/www/github/finances/market-lab/src")
 
-from ai_trade.backtest.validation.pbo import pbo as compute_pbo_cscv
-from ai_trade.backtest.sweeps.registry import (
+from market_lab.backtest.validation.pbo import pbo as compute_pbo_cscv
+from market_lab.backtest.sweeps.registry import (
     load_registry,
     atomic_write_registry,
 )

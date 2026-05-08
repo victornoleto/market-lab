@@ -32,7 +32,7 @@ The documented **overnight return premium in US equities is substantially explai
 - **Explicit author statement:** "Because of the extreme turnover required to trade the over-intra effect, our findings fall short of being a viable trading strategy."
 - Useful only for institutional market timing / inventory positioning — NOT retail
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **ZERO relevance as a standalone trading strategy.** Authors explicitly disclaim viability at retail scale.
 - **Indirect value:** confirms the overnight anomaly is information-driven (not structural), supporting the Alpha Architect 2021 conclusion that net-of-cost overnight strategies do not work for retail CFD.

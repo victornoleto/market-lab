@@ -29,9 +29,9 @@ Under **uncertainty in edge estimates**, the growth-rate-maximizing bet size shr
 - Full Kelly: X% probability of drawdown to X% of starting bankroll (Kelly's drawdown property)
 - Uncertainty in edge estimate materially lowers the optimal fraction
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
-- **HIGH relevance as rationale.** This is the clearest quantification of why ai-trade mandate §3.3 requires **Kelly / 2 cross-check** on every leverage sweep.
+- **HIGH relevance as rationale.** This is the clearest quantification of why market-lab mandate §3.3 requires **Kelly / 2 cross-check** on every leverage sweep.
 - Full Kelly without shrinkage is **reject-on-sight** (SKILL.md §Inviolable Rules rule 6).
 - Half-Kelly is the **upper-bound operating point** consistent with retail prob-of-ruin ≤ 5% targets.
 

@@ -89,7 +89,7 @@ Seguindo `docs/investment-mandate.md` §1 e §4.7:
 
 ```
 Capital total (100%)
-├── 60-80% Passive (portfolio-aposentadoria, NÃO tocado por ai-trade)
+├── 60-80% Passive (portfolio-aposentadoria, NÃO tocado por market-lab)
 └── 20-40% Active
     ├── Strategy A (Plano A) — Pepperstone CFD short-hold
     │   └── Status: Phase 3.5a pendente. Se não produzir winner → active cai pra 25%, tudo em Plano B.
@@ -102,7 +102,7 @@ Capital total (100%)
 | Allocation | Valor USD | Notas |
 |------------|-----------|-------|
 | Total | $10,000 | — |
-| Passive (aposentadoria) | $7,000 (70%) | Fora do scope ai-trade |
+| Passive (aposentadoria) | $7,000 (70%) | Fora do scope market-lab |
 | Active | $3,000 (30%) | — |
 | — Plano A (Pepperstone) | $0 (por enquanto) | Phase 3.5a pending |
 | — **Plano B (3-leg EW)** | **$3,000** | **100% do active até Strategy A landar** |

@@ -56,5 +56,5 @@
 
 - Time-series momentum family: `[algo_trading_chan, p.133, ch.6]`, `[systematic_trading, ch.8-9]` (Carver), `[trend_following_covel, ch.5-6]`.
 - Vol-target no-look-ahead sizing: `[advances_fin_ml, p.162-164]`.
-- Walk-forward 6/8 gate + 25% DD cap: `[advances_fin_ml, ch.11]`, Pardo (2008) ch.10-11, ai-trade gate convention.
+- Walk-forward 6/8 gate + 25% DD cap: `[advances_fin_ml, ch.11]`, Pardo (2008) ch.10-11, market-lab gate convention.
 - Retail Pepperstone Razor cost model: Phase 3.5a-V2 spec §3.

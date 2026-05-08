@@ -1,7 +1,7 @@
 # Global Factor-Tilt Loop — Iteration {{ITERATION_N}}
 
 You are Claude Code resuming the **Global Factor-Tilt Loop** at
-`/var/www/pessoal/ai-trade`. Conversation history is empty; this prompt
+`/var/www/github/finances/market-lab`. Conversation history is empty; this prompt
 + files on disk are your only context. CLAUDE.md is auto-loaded.
 
 **Mission**: find ONE global strategy that beats VT 1x b&h **and**

@@ -43,7 +43,7 @@ Citations
 
 This module stays inside the iter 006 folder. If the mechanism proves
 to be the winner a follow-up PR promotes a cleaned version into
-``src/ai_trade/backtest/metrics/``.
+``src/market_lab/backtest/metrics/``.
 """
 
 from __future__ import annotations

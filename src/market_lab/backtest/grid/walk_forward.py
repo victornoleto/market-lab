@@ -19,11 +19,11 @@ from dataclasses import dataclass, field
 import pandas as pd
 from joblib import Parallel, delayed
 
-from ai_trade.backtest.grid.result import GridResult
-from ai_trade.backtest.validation.walk_forward import walk_forward_gate
+from market_lab.backtest.grid.result import GridResult
+from market_lab.backtest.validation.walk_forward import walk_forward_gate
 
 
-_log = logging.getLogger("ai_trade.grid.wf")
+_log = logging.getLogger("market_lab.grid.wf")
 
 
 @dataclass

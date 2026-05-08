@@ -34,7 +34,7 @@ from pathlib import Path
 import pandas as pd
 import requests
 
-from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
 log = logging.getLogger(__name__)
 

@@ -66,7 +66,7 @@ cobrindo:
 ## Caveats / decisoes nao-obvias
 
 - **`tests/test_gates.py` nao existe** no repo — referencia incorreta no spec
-  e no `next_prompt.md`. O unico arquivo `test_grid_gates.py` (`src/ai_trade/
+  e no `next_prompt.md`. O unico arquivo `test_grid_gates.py` (`src/market_lab/
   backtest/grid/gates.py`) e modulo distinto do Plano A DORMANT e continua
   passando sem mudanca. Optei por criar somente `tests/myfxbook_pipeline/
   test_gates_v4.py` — mesmo padrao de outras tasks v4 (`test_cpcv.py`,

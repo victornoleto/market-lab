@@ -57,7 +57,7 @@ Cleanup agressivo focado em `studies/` após confirmação de hunt closures rece
 ### REMOVED (tracked → git rm)
 - `happyforex-landing.png` (788 KB) — órfão da hunt myfxbook v1
 - `AGENTS.md` (593 B) — residual da bestfolio-hunt phase
-- `ai-trade-library-audit.md` (20 KB) — audit pré-Phase 3.5; preservado em git history
+- `market-lab-library-audit.md` (20 KB) — audit pré-Phase 3.5; preservado em git history
 
 ### REMOVED (untracked → rm)
 - `.codex` (0 B) — marker stale
@@ -201,7 +201,7 @@ Tudo em `logs/` é gitignored (zero tracked).
 
 **Causa raiz:** `data/external/macro/{ebp_monthly,t10y3m_daily,cape_monthly}.parquet` ausentes (cache nunca foi commitado; tag também tem dir vazio).
 
-**Verificação:** rodei `git checkout pre-cleanup-2026-05-05 -- tests/test_macro_data_loader.py src/ai_trade/backtest/data/macro_data_loader.py && pytest tests/test_macro_data_loader.py` — mesmo 3 falhas. Cleanup neutro.
+**Verificação:** rodei `git checkout pre-cleanup-2026-05-05 -- tests/test_macro_data_loader.py src/market_lab/backtest/data/macro_data_loader.py && pytest tests/test_macro_data_loader.py` — mesmo 3 falhas. Cleanup neutro.
 
 **Recomendação separada:** rodar fetch dos 3 caches FRED/Shiller (não é escopo deste cleanup).
 

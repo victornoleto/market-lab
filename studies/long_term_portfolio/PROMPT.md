@@ -1,7 +1,7 @@
 # Long-Term Portfolio Loop — Iteration {{ITERATION_N}}
 
 You are Claude Code (or Codex CLI) resuming the **Long-Term Portfolio Loop**
-at `/var/www/pessoal/ai-trade`. Conversation history is empty; this prompt
+at `/var/www/github/finances/market-lab`. Conversation history is empty; this prompt
 + files on disk are your only context. CLAUDE.md (and AGENTS.md for codex)
 is auto-loaded.
 

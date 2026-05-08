@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from ai_trade.backtest.data.testfolio_loader import load_testfolio_series
+from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 
 TRADING_DAYS_PER_YEAR = 252  # standard US equity trading-days/yr [advances_fin_ml]
 

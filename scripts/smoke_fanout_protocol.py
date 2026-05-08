@@ -38,7 +38,7 @@ from typing import Any, Dict, List
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "src"))
 
-from ai_trade.backtest.sweeps.registry import (  # noqa: E402
+from market_lab.backtest.sweeps.registry import (  # noqa: E402
     advance_status,
     append_done,
     atomic_write_registry,
@@ -218,7 +218,7 @@ def iter_aggregate(sandbox: Path, lead_dir: Path, iter_num: int) -> None:
 
 
 def main() -> int:
-    sandbox = Path(tempfile.mkdtemp(prefix="ai_trade_smoke_fanout_"))
+    sandbox = Path(tempfile.mkdtemp(prefix="market_lab_smoke_fanout_"))
     print(f"[smoke] sandbox: {sandbox}")
     try:
         git(sandbox, "init", "-q", "-b", "smoke")

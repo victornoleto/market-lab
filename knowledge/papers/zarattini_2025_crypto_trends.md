@@ -31,7 +31,7 @@ A classic breakout methodology (Donchian channel ensemble across multiple lookba
 - **Annualized alpha 10.8% versus BTC buy-and-hold**
 - Positive skewness characteristic of trend-following
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **HIGH relevance.** This is the **Phase 3.7-3 hypothesis H3 anchor** (crypto Donchian ensemble).
 - **Pepperstone fit: partial.** Razor crypto CFDs BTC/ETH no commission, spread-only; leverage retail 2:1 (ASIC/CySEC); **swap long −20%/yr** caps holding to ~≤2 days.

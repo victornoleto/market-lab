@@ -1,6 +1,6 @@
 # MyFxBook v4 Blocking Validation
 
-Repo: /var/www/pessoal/ai-trade
+Repo: /var/www/github/finances/market-lab
 Iteration dir: studies/myfxbook_reverse_engineering/v4_redesign/iterations/009-fase3b-replan-filter-copy
 Iteration log: logs/myfxbook_v4_redesign/iter_1_20260504-092616.log
 Progress snapshot: PENDING=14 DONE=9 FAILED=0 BLOCKED=6 IN_PROGRESS=0

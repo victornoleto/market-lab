@@ -30,13 +30,13 @@ Simultaneously **shorting** a bull LETF (e.g. UPRO) and its inverse pair (SPXU) 
 - **Constraint:** 90% margin maintenance hugely reduces capital efficiency vs alternative equity strategies
 - Specific Sharpe/CAGR/MDD not extracted during sprint
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **VERY LOW relevance.** **Pepperstone Razor retail does NOT offer UltraPro Bear (SPXU) or equivalent inverse LETFs as CFDs.** Short-selling CFDs also has financing costs distinct from FINRA margin math.
 - **Do NOT dedicate Phase 3.7-3 tokens to this thesis** (H9 excluded from shortlist).
-- **Re-emergence condition:** if ai-trade ever adds a broker with access to SPXU/SQQQ (Inter with suitability override, IBKR BR), this paper becomes a primary reference.
+- **Re-emergence condition:** if market-lab ever adds a broker with access to SPXU/SQQQ (Inter with suitability override, IBKR BR), this paper becomes a primary reference.
 
 ## Related knowledge-base entries
 
-- `books/leverage_for_the_long_run.md` (Gayed) — long-only LETF rotation baseline (preferred path for ai-trade current mandate).
+- `books/leverage_for_the_long_run.md` (Gayed) — long-only LETF rotation baseline (preferred path for market-lab current mandate).
 - `paper.lin_2025_letf_arbitrage` — modern 2025 extension with US-vs-Japan asymmetry insight.

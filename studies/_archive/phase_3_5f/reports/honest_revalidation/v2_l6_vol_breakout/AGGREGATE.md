@@ -17,7 +17,7 @@
 
 **FAIL (reconfirmed — 12/12 OOS Sharpe negative, engine was clean).**
 
-V2-L6 uses `src/ai_trade/backtest/strategies/donchian_breakout.py`, which F1
+V2-L6 uses `src/market_lab/backtest/strategies/donchian_breakout.py`, which F1
 confirmed **does NOT contain the `w_i × r_i` lookahead pattern** isolated to
 `plano_a_leveraged_rotation.py:462` (fixed in F2 commit `7b90a8f`). The engine
 driving L6 was honest from the start; therefore the original DEAD verdict

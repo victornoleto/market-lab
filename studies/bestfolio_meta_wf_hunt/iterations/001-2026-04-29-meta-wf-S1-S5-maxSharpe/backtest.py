@@ -30,13 +30,13 @@ sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "studies"))
 
 from _shared.wf_solver import walk_forward_solve  # noqa: E402
-from ai_trade.backtest.metrics.performance import (  # noqa: E402
+from market_lab.backtest.metrics.performance import (  # noqa: E402
     cagr,
     max_drawdown,
     sharpe,
 )
-from ai_trade.backtest.validation.dsr import dsr as compute_dsr  # noqa: E402
-from ai_trade.backtest.validation.walk_forward import (  # noqa: E402
+from market_lab.backtest.validation.dsr import dsr as compute_dsr  # noqa: E402
+from market_lab.backtest.validation.walk_forward import (  # noqa: E402
     walk_forward_splits,
 )
 

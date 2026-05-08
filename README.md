@@ -20,12 +20,11 @@ See:
 
 ## What Is Included
 
-- `src/ai_trade/` — Python package with data adapters, backtest engine,
+- `src/market_lab/` — Python package with data adapters, backtest engine,
   strategies, metrics, validation and grid tooling.
 - `tests/` — core test suite.
 - `studies/` — reproducible research studies. Each study should keep its own
   hypotheses, scripts, results and reports together.
-- `docs/specs/` — location for future executable specs, if needed.
 - `books/summaries/` and `knowledge/` — derived research notes used for
   citation discipline.
 - `scripts/` — deterministic utility scripts.
@@ -59,7 +58,7 @@ uv run pytest
 
 ```text
 market-lab/
-├── src/ai_trade/       # core Python package
+├── src/market_lab/       # core Python package
 ├── tests/              # pytest suite
 ├── scripts/            # deterministic utilities
 ├── studies/            # research studies and archived studies

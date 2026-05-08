@@ -18,15 +18,15 @@ from dataclasses import MISSING, dataclass, field, fields
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.grid.gates import GateVerdict
-from ai_trade.backtest.grid.result import GridResult, TrialResult
-from ai_trade.backtest.grid.walk_forward import WFResult
+from market_lab.backtest.grid.gates import GateVerdict
+from market_lab.backtest.grid.result import GridResult, TrialResult
+from market_lab.backtest.grid.walk_forward import WFResult
 
 
 def _varied_field_names(config) -> tuple[str, ...]:
     """Field names of a grid-config dataclass that are swept (no default).
 
-    Convention used across ``ai_trade.backtest.grid``: grid axes are
+    Convention used across ``market_lab.backtest.grid``: grid axes are
     declared as fields WITHOUT a default (so callers have to set them),
     and fixed literature constants are declared WITH defaults. This
     helper lets the diagnostic/report layer be strategy-agnostic.
@@ -38,7 +38,7 @@ def _varied_field_names(config) -> tuple[str, ...]:
     )
 
 
-_log = logging.getLogger("ai_trade.grid.diagnostic")
+_log = logging.getLogger("market_lab.grid.diagnostic")
 
 
 @dataclass

@@ -1,4 +1,4 @@
-"""Tests for :mod:`ai_trade.backtest.metrics.rebalance_modes` (Phase 3.5b
+"""Tests for :mod:`market_lab.backtest.metrics.rebalance_modes` (Phase 3.5b
 Addendum Task C1 [SWING BROKER]).
 
 Covers:
@@ -21,7 +21,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.metrics.rebalance_modes import (
+from market_lab.backtest.metrics.rebalance_modes import (
     RebalanceResult,
     TaxableEvent,
     _rebalance_dates,

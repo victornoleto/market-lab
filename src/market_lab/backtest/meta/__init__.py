@@ -19,14 +19,14 @@ Re-exports purged K-Fold from ``backtest.validation.cpcv`` (already
 implemented there) for convenience when training the secondary classifier.
 """
 
-from ai_trade.backtest.meta.triple_barrier import apply_triple_barrier
-from ai_trade.backtest.meta.sample_weights import (
+from market_lab.backtest.meta.triple_barrier import apply_triple_barrier
+from market_lab.backtest.meta.sample_weights import (
     get_avg_uniqueness,
     get_concurrent_events,
     get_sample_weights_by_return,
 )
-from ai_trade.backtest.meta.meta_labeler import MetaLabeler
-from ai_trade.backtest.validation.cpcv import purged_kfold_splits
+from market_lab.backtest.meta.meta_labeler import MetaLabeler
+from market_lab.backtest.validation.cpcv import purged_kfold_splits
 
 __all__ = [
     "apply_triple_barrier",

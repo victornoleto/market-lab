@@ -16,7 +16,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).parent
 DATA_DIR = SCRIPT_DIR / "testfolio_data"
-ITER039_DATA = Path("/var/www/pessoal/ai-trade/studies/spy_beater_hunt/iterations/"
+ITER039_DATA = Path("/var/www/github/finances/market-lab/studies/spy_beater_hunt/iterations/"
                     "039-2026-04-30-reddit-comparison-spy-lrs-vs-static-stack/testfolio_data")
 
 # Slug -> human-readable name (matches iter 039 naming for delta comparison)

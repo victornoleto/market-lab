@@ -372,7 +372,7 @@ def test_cost_linear_in_position_change(synthetic_3etf):
 def test_numpy_reference_parity(synthetic_3etf):
     """Hand-rolled numpy version must agree with pandas version within 3 pp CAGR."""
     from numpy_reference_3etf import trend_3etf_numpy
-    from ai_trade.backtest.metrics.performance import cagr as _cagr
+    from market_lab.backtest.metrics.performance import cagr as _cagr
 
     net_pd, _, _, _ = apply_trend_3etf(
         synthetic_3etf,

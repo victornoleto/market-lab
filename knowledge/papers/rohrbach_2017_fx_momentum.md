@@ -29,7 +29,7 @@ EMA-based momentum / trend-following applied to currencies decomposes into diffe
 - EM and crypto: momentum Sharpe materially higher (volatile currencies favor TSMOM)
 - Time-series momentum superior in fiat; cross-sectional superior in crypto
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **HIGH relevance as anti-pattern reference.** If Phase 3.7-3 ever considers G10 FX momentum as standalone, cite this paper as **literature-level null finding**.
 - **EM FX leads (H6)** can be considered — but Tiingo FX pre-2020 is limited, so Phase 3.7-2 data sprint would need additional feed (Dukascopy / OANDA historical).

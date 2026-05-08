@@ -4,9 +4,9 @@
   "lead_slug": "v2_l4_carver_risk_parity",
   "produced_at": "2026-04-18T20:01:22+00:00",
   "inputs": {
-    "L1_tsmom_lb12m_vt10": "/var/www/pessoal/ai-trade/reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/tsmom_lb12m_vt10_daily_returns.parquet",
-    "L2_gayed_ema100_L3_off_gld": "/var/www/pessoal/ai-trade/reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L3_off_gld_daily_returns.parquet",
-    "L3_afml_XLF": "/var/www/pessoal/ai-trade/reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/XLF_daily_returns.parquet"
+    "L1_tsmom_lb12m_vt10": "/var/www/github/finances/market-lab/reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/tsmom_lb12m_vt10_daily_returns.parquet",
+    "L2_gayed_ema100_L3_off_gld": "/var/www/github/finances/market-lab/reports/phase3_5a_v2/v2_l2_gayed_transported_cfd/gayed_ema100_L3_off_gld_daily_returns.parquet",
+    "L3_afml_XLF": "/var/www/github/finances/market-lab/reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/XLF_daily_returns.parquet"
   },
   "weighting_method": "carver_vol_target_is_scaled_equal_weight",
   "target_vol_annualised": 0.15,

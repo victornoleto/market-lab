@@ -54,8 +54,8 @@ REPO = Path(__file__).resolve().parents[4]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-from ai_trade.backtest.data.testfolio_loader import load_testfolio_series
-from ai_trade.backtest.metrics.performance import (
+from market_lab.backtest.data.testfolio_loader import load_testfolio_series
+from market_lab.backtest.metrics.performance import (
     cagr as _cagr_fn,
     max_drawdown as _mdd_fn,
     sharpe as _sharpe_fn,

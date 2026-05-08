@@ -25,7 +25,7 @@ Peer-reviewed backtest in crypto (post-2020) demonstrating that **systematic str
 
 - Not extracted during Phase 3.7-1 (abstract not in public search snippet).
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **POTENTIAL HIGH relevance pending full read.** Flagged for Phase 3.7-2 team to obtain full text (Wiley subscription or interlibrary loan).
 - If methodology is generalizable: reinforces Phase 3.7-3 H3 (crypto Donchian) or introduces a new strategy family.

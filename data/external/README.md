@@ -36,7 +36,7 @@ Com:
 
 ## ⚠️ Discrepância crítica vs nossa `synthesize_letf_returns`
 
-Nossa função em `src/ai_trade/backtest/helpers/synthetic_letf.py` usa:
+Nossa função em `src/market_lab/backtest/helpers/synthetic_letf.py` usa:
 
 ```
 r_synth[t] = L * r_SPX_TR[t] - annual_fee / 252
@@ -91,7 +91,7 @@ modelo de custo de leverage.** Fora disso, o dataset é secundário.
 
 1. Ler `data/external/testfolio_spysim_leverage.parquet`, truncar em
    1962-01-01 → 2026-04-16.
-2. Alinhar com `src/ai_trade/backtest/data/spx_tr_loader.py` na mesma
+2. Alinhar com `src/market_lab/backtest/data/spx_tr_loader.py` na mesma
    janela.
 3. 3-way comparação de equity:
    - Nossa `synthesize_letf_returns(spx_tr, L=2, fee=0.01)`

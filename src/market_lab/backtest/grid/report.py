@@ -10,7 +10,7 @@ Two entry points:
   decides the next move.
 
 Both reports emit the survivorship disclaimer for biased sources (same
-contract as :mod:`ai_trade.backtest.metrics.report`).
+contract as :mod:`market_lab.backtest.metrics.report`).
 """
 
 from __future__ import annotations
@@ -27,11 +27,11 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 
-from ai_trade.backtest.grid.diagnostic import DiagnosticReport  # noqa: E402
-from ai_trade.backtest.grid.gates import GateVerdict  # noqa: E402
-from ai_trade.backtest.grid.result import GridResult  # noqa: E402
-from ai_trade.backtest.grid.walk_forward import WFResult  # noqa: E402
-from ai_trade.backtest.metrics._fmt import (  # noqa: E402
+from market_lab.backtest.grid.diagnostic import DiagnosticReport  # noqa: E402
+from market_lab.backtest.grid.gates import GateVerdict  # noqa: E402
+from market_lab.backtest.grid.result import GridResult  # noqa: E402
+from market_lab.backtest.grid.walk_forward import WFResult  # noqa: E402
+from market_lab.backtest.metrics._fmt import (  # noqa: E402
     _dataframe_to_markdown,
     _fmt_num,
     _fmt_pct,
@@ -41,7 +41,7 @@ from ai_trade.backtest.metrics._fmt import (  # noqa: E402
 def _varied_field_names(config) -> tuple[str, ...]:
     """Names of the grid-varied (no-default) fields of a config dataclass.
 
-    Same convention as :mod:`ai_trade.backtest.grid.diagnostic` — grid
+    Same convention as :mod:`market_lab.backtest.grid.diagnostic` — grid
     axes have no default; fixed literature constants have defaults.
     """
     return tuple(
@@ -62,7 +62,7 @@ def _fmt_value(name: str, raw) -> str:
     return str(raw)
 
 
-_log = logging.getLogger("ai_trade.grid.report")
+_log = logging.getLogger("market_lab.grid.report")
 
 
 _BIASED_MARKERS = ("yfinance", "wikipedia", "yahoo")

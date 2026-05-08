@@ -33,9 +33,9 @@ from pathlib import Path
 import pandas as pd
 import yfinance as yf
 
-from ai_trade.backtest.data.spx_tr_loader import load_spx_tr_daily
-from ai_trade.backtest.data.tiingo_storage import TiingoStorage
-from ai_trade.backtest.helpers.synthetic_letf import (
+from market_lab.backtest.data.spx_tr_loader import load_spx_tr_daily
+from market_lab.backtest.data.tiingo_storage import TiingoStorage
+from market_lab.backtest.helpers.synthetic_letf import (
     DEFAULT_EXPENSE_RATIO,
     DEFAULT_FFR_SPREAD,
     DEFAULT_SWAP_EXPOSURE,
@@ -45,11 +45,11 @@ from ai_trade.backtest.helpers.synthetic_letf import (
 # ---------------------------------------------------------------------------
 # Module-level Tiingo singleton — absolute path to main repo bulk cache.
 # The worktree data/tiingo/ only holds the manifest; parquet files live in
-# the main repo at /var/www/pessoal/ai-trade/data/tiingo.
+# the main repo at /var/www/github/finances/market-lab/data/tiingo.
 # Driven by AI_TRADE_TIINGO_ROOT env var; default points to main repo.
 # ---------------------------------------------------------------------------
 _TIINGO_ROOT = Path(
-    os.environ.get("AI_TRADE_TIINGO_ROOT", "/var/www/pessoal/ai-trade/data/tiingo")
+    os.environ.get("AI_TRADE_TIINGO_ROOT", "/var/www/github/finances/market-lab/data/tiingo")
 )
 _STORAGE = TiingoStorage(root=_TIINGO_ROOT)
 
@@ -376,7 +376,7 @@ def _load_ffr_series(start: str, end: str) -> pd.Series:
     FFR-aware cost model: ``[leverage_for_the_long_run, p.16-17]``.
     """
     ffr_path = Path(
-        os.environ.get("AI_TRADE_ROOT", "/var/www/pessoal/ai-trade")
+        os.environ.get("AI_TRADE_ROOT", "/var/www/github/finances/market-lab")
     ) / "data" / "external" / "ffr.csv"
     if ffr_path.exists():
         df = pd.read_csv(ffr_path, parse_dates=["date"]).set_index("date")["rate"]

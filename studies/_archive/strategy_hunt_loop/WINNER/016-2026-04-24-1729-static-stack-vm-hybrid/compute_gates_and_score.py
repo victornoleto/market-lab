@@ -35,12 +35,12 @@ from scoring import (  # noqa: E402
     tier_from_score,
 )
 
-from ai_trade.backtest.metrics.performance import (  # noqa: E402
+from market_lab.backtest.metrics.performance import (  # noqa: E402
     cagr as _cagr,
     max_drawdown,
     sharpe,
 )
-from ai_trade.backtest.validation.dsr import dsr as dsr_test  # noqa: E402
+from market_lab.backtest.validation.dsr import dsr as dsr_test  # noqa: E402
 
 from numpy_reference_stack_vm import apply_static_stack_vm_np  # noqa: E402
 

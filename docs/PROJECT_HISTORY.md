@@ -22,7 +22,7 @@ validation did not justify live deployment.
 
 ## Phase 2: Backtest Engine
 
-The core Python backtest stack was implemented under `src/ai_trade/backtest/`:
+The core Python backtest stack was implemented under `src/market_lab/backtest/`:
 
 - data sources and storage adapters;
 - execution and portfolio accounting;

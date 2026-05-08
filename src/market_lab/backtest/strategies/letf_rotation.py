@@ -4,7 +4,7 @@ Return-series simulator for the Leverage Rotation Strategy described in
 ``books/summaries/leverage_for_the_long_run.md`` (Gayed 2016/2020):
 
 * **RISK_ON** (index above MA ± band): hold daily-leveraged S&P 500
-  synthesized via :func:`ai_trade.backtest.helpers.synthetic_letf.synthesize_letf_returns`.
+  synthesized via :func:`market_lab.backtest.helpers.synthetic_letf.synthesize_letf_returns`.
 * **RISK_OFF** (index below MA ∓ band): rotate to cash or a
   blended cash/gold allocation.
 
@@ -15,7 +15,7 @@ realized gains at each RISK_ON → RISK_OFF transition.
 Design choices
 --------------
 
-Unlike :class:`ai_trade.backtest.strategies.etf_rotation.ETFRotationStrategy`
+Unlike :class:`market_lab.backtest.strategies.etf_rotation.ETFRotationStrategy`
 this module does **not** use the bar-level engine. Gayed's LRS is a
 pure return-series strategy: each day the rule produces a single
 leveraged or cash return, and the compounded equity curve follows
@@ -68,7 +68,7 @@ from typing import Literal
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.helpers.synthetic_letf import (
+from market_lab.backtest.helpers.synthetic_letf import (
     DEFAULT_ANNUAL_FEE,
     DEFAULT_EXPENSE_RATIO,
     DEFAULT_FFR_SPREAD,
@@ -506,7 +506,7 @@ def get_trades(
       ``[leverage_for_the_long_run, p.16]``.
     * BR 15% swing capital-gains tax: Investment Mandate §4.
     """
-    from ai_trade.backtest.metrics.standard_report import Trade
+    from market_lab.backtest.metrics.standard_report import Trade
 
     label = asset_label or f"LETF_{config.leverage:g}x"
     on_returns = synthesize_letf_returns(

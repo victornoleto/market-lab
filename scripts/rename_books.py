@@ -194,7 +194,7 @@ MAPPINGS: tuple[BookMapping, ...] = (
         "Stefan Jansen",
         2020,
     ),
-    # --- 9 new books (ai-trade-library-audit.md §4) ---
+    # --- 9 new books (market-lab-library-audit.md §4) ---
     BookMapping(
         "algo_trading_chan",
         "Algorithmic Trading - Winning Strategies and Their Rationale 2013.pdf",

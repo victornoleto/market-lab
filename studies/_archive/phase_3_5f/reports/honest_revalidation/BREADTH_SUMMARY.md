@@ -26,7 +26,7 @@ User must decide between four options (see §6 below).
 ## 1. Context (for future agents)
 
 On 2026-04-22, a **look-ahead bias** was discovered in
-`src/ai_trade/backtest/strategies/plano_a_leveraged_rotation.py:462`:
+`src/market_lab/backtest/strategies/plano_a_leveraged_rotation.py:462`:
 the return-compounding line used `new_w[bar_i] * ret[bar_i]` (weight
 at bar `i` times return at bar `i`) instead of the correct
 `prev_w[bar_i] * ret[bar_i]` (yesterday's decision earns today's

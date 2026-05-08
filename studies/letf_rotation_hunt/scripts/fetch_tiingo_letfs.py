@@ -41,8 +41,8 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from ai_trade.backtest.data.tiingo_source import TiingoSource
-from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+from market_lab.backtest.data.tiingo_source import TiingoSource
+from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
 # 10 in-scope tickers. SSO/QLD/UPRO/TQQQ are listed in scripts/tiingo_bulk_download.py
 # ETF_TICKERS but the bulk run never picked them up (cache empty as of 2026-05-05).

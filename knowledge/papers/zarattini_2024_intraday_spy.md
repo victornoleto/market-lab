@@ -33,7 +33,7 @@ Intraday momentum in SPY can be exploited by initiating trend-following position
 - Outperforms buy-and-hold materially with ~zero beta (−0.042 in a parallel opening-range-breakout framing)
 - Statistical tests support robustness to volatility regimes
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **HIGHEST relevance of the Phase 3.7-1 sprint.** This is the **lead candidate for Phase 3.7-3 hunt (hypothesis H1)**.
 - **Pepperstone-universe fit: EXCELLENT** — SPX500 CFD has spread ~0.4-0.6 pts, zero commission on Razor standard, intraday-only design avoids swap overnight, retail tier-1 leverage 20:1 supports sizing.

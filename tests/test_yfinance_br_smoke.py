@@ -24,7 +24,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.data.yfinance_source import YFinanceSource
+from market_lab.backtest.data.yfinance_source import YFinanceSource
 
 
 _SKIP_NETWORK = os.getenv("AI_TRADE_RUN_NETWORK_TESTS") != "1"
@@ -100,7 +100,7 @@ def test_ibrx100_tickers_suffix_matches_yfinance_convention():
     """Sanity: every IBRX100_TICKERS entry ends with .SA, which yfinance
     dispatches to B3 (no code change in YFinanceSource needed).
     """
-    from ai_trade.backtest.data.br_tickers import IBRX100_TICKERS
+    from market_lab.backtest.data.br_tickers import IBRX100_TICKERS
 
     assert all(t.endswith(".SA") for t in IBRX100_TICKERS)
     assert all("/" not in t for t in IBRX100_TICKERS)  # cache path safety

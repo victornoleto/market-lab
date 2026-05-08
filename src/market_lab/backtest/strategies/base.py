@@ -24,9 +24,9 @@ from dataclasses import dataclass, field
 
 import pandas as pd
 
-from ai_trade.backtest.engine.execution import Bar, Order
-from ai_trade.backtest.engine.portfolio import Portfolio
-from ai_trade.backtest.engine.runner import Strategy
+from market_lab.backtest.engine.execution import Bar, Order
+from market_lab.backtest.engine.portfolio import Portfolio
+from market_lab.backtest.engine.runner import Strategy
 
 __all__ = ["Strategy", "StrategyBase", "StrategyContext"]
 
@@ -45,13 +45,13 @@ class StrategyContext:
         separate from :class:`StrategyBase` instance attributes so strategies
         can be cloned with modified params for walk-forward / CPCV.
     logger
-        Per-strategy logger. Defaults to ``ai_trade.strategy``.
+        Per-strategy logger. Defaults to ``market_lab.strategy``.
     """
 
     universe: set[str] = field(default_factory=set)
     params: dict = field(default_factory=dict)
     logger: logging.Logger = field(
-        default_factory=lambda: logging.getLogger("ai_trade.strategy")
+        default_factory=lambda: logging.getLogger("market_lab.strategy")
     )
 
 

@@ -19,9 +19,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.engine.execution import ExecutionConfig, ExecutionSimulator
-from ai_trade.backtest.engine.runner import Runner
-from ai_trade.backtest.strategies.sector_momentum_equal_notional import (
+from market_lab.backtest.engine.execution import ExecutionConfig, ExecutionSimulator
+from market_lab.backtest.engine.runner import Runner
+from market_lab.backtest.strategies.sector_momentum_equal_notional import (
     SectorMomentumEqualNotional,
     position_size_shares_equal_notional,
 )
@@ -185,7 +185,7 @@ class TestStrategyIntegration:
         Clenow ATR-risk-parity variant from iter 002 on the same synthetic
         data — measure exposure/equity at final bar.
         """
-        from ai_trade.backtest.strategies.sector_momentum_clenow import (
+        from market_lab.backtest.strategies.sector_momentum_clenow import (
             SectorMomentumClenow,
         )
 

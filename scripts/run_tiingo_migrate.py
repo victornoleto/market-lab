@@ -17,7 +17,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-from ai_trade.backtest.data.tiingo_migrate import migrate_to_freq_layout
+from market_lab.backtest.data.tiingo_migrate import migrate_to_freq_layout
 
 
 def _log(msg: str) -> None:

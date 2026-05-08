@@ -35,10 +35,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ai_trade.backtest.strategies.ema_sma_threshold_educational import (
+from market_lab.backtest.strategies.ema_sma_threshold_educational import (
     EMASMAThresholdConfig,
 )
-from ai_trade.backtest.strategies.stop_loss_and_risk_signals import (
+from market_lab.backtest.strategies.stop_loss_and_risk_signals import (
     StopLossConfig,
 )
 

@@ -6,7 +6,7 @@ metrics (Sharpe, CAGR, max DD) are cached so gate evaluation doesn't
 re-compute them per trial.
 
 A :class:`GridResult` stacks trials and exposes ``returns_matrix`` (T, N)
-— the input format :func:`ai_trade.backtest.validation.pbo.pbo` expects.
+— the input format :func:`market_lab.backtest.validation.pbo.pbo` expects.
 Error trials are excluded from the matrix.
 
 The config type is generic (``ConfigT``) — ``TrialResult`` and
@@ -34,10 +34,10 @@ from typing import Any, Generic, TypeVar
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.engine.execution import Fill, Order
-from ai_trade.backtest.engine.portfolio import Trade
-from ai_trade.backtest.engine.runner import BacktestResult
-from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+from market_lab.backtest.engine.execution import Fill, Order
+from market_lab.backtest.engine.portfolio import Trade
+from market_lab.backtest.engine.runner import BacktestResult
+from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
 
 
 ConfigT = TypeVar("ConfigT")
@@ -86,7 +86,7 @@ class GridResult(Generic[ConfigT]):
         Configs with larger lookbacks start trading later, so the equity
         curves have different DatetimeIndexes. We intersect indices and
         compute ``pct_change`` on the aligned slice. The result is ready
-        to feed :func:`ai_trade.backtest.validation.pbo.pbo`.
+        to feed :func:`market_lab.backtest.validation.pbo.pbo`.
         """
         ok = self.ok_trials
         if not ok:

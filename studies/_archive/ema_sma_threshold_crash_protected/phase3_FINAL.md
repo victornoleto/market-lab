@@ -196,11 +196,11 @@ Zakrajšek EBP, Shiller CAPE, Estrella-Mishkin yield curve):
 3. **Lições documentadas em jornada/** para não re-fazer esse mesmo
    experimento daqui 6-12 meses sem consultar este resultado.
 4. **Código preservado para futura reativação de slot** (se houver):
-   * `src/ai_trade/backtest/strategies/stop_loss_and_risk_signals.py`
+   * `src/market_lab/backtest/strategies/stop_loss_and_risk_signals.py`
      (vectorized + numpy-pure + 3 simulators).
-   * `src/ai_trade/backtest/data/macro_data_loader.py` + cache
+   * `src/market_lab/backtest/data/macro_data_loader.py` + cache
      `data/external/macro/`.
-   * `src/ai_trade/backtest/signals/risk_score.py`.
+   * `src/market_lab/backtest/signals/risk_score.py`.
    * 57 testes novos cobrindo o pipeline (todos passing).
 
 ## Tests/baseline preservados

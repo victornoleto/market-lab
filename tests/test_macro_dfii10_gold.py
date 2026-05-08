@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.strategies.macro_dfii10_gold import (
+from market_lab.backtest.strategies.macro_dfii10_gold import (
     dfii10_falling_flag,
     dfii10_falling_flag_numpy,
     align_signal_to_index,

@@ -190,7 +190,7 @@ def test_no_lookahead_from_tom_flag(synthetic_data):
 def test_numpy_reference_parity(synthetic_data):
     """numpy_reference_tom CAGR agrees with pandas version within 3pp."""
     from numpy_reference_tom import tom_static_stack_vm_numpy
-    from ai_trade.backtest.metrics.performance import cagr as _cagr
+    from market_lab.backtest.metrics.performance import cagr as _cagr
 
     r_eq, r_bd = synthetic_data
     net_pd, _, _, _, _ = apply_tom_static_stack_vm(

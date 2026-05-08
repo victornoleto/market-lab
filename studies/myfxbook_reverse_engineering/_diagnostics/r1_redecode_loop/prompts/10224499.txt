@@ -1,7 +1,7 @@
 Execute a clean R1 Opus re-decode for MyFxBook system 10224499.
 
 Mandatory context:
-- Read /var/www/pessoal/ai-trade/CLAUDE.md first.
+- Read /var/www/github/finances/market-lab/CLAUDE.md first.
 - Read studies/myfxbook_reverse_engineering/_diagnostics/5R-1-hardening.md.
 - Read studies/myfxbook_reverse_engineering/shared/decoder_taxonomy.py and obey the closed enum.
 - Follow .claude/agents/decoder.md workflow and output schema.

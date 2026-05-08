@@ -1,6 +1,6 @@
 # CLOSED — MyFxBook v4 encerrado
 
-Estamos no repo `/var/www/pessoal/ai-trade`, branch atual qualquer (NAO faca commit/push).
+Estamos no repo `/var/www/github/finances/market-lab`, branch atual qualquer (NAO faca commit/push).
 
 O estudo **MyFxBook Pipeline v4 Redesign** foi encerrado por decisao humana apos a task `032-fase3b-apply-tiebreak`.
 

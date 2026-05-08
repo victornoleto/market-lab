@@ -40,7 +40,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.data.testfolio_loader import load_testfolio_series
+from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 from studies.long_term_portfolio import datasets as datasets_mod
 from studies.long_term_portfolio.run_iter import (
     _compute_metrics,

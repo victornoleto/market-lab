@@ -240,7 +240,7 @@ Realista: 2 sessões. Sessão 1 = 5R-0 (se Opus) + 5R-1 + smoke test. Sessão 2 
 
 ---
 
-## Compliance com mandate ai-trade
+## Compliance com mandate market-lab
 
 - Plano A está **DORMANT** (mandate §1, §7) desde 2026-04-23.
 - Phases 5R-7R são **research-only**, sem capital allocation.

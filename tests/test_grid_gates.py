@@ -1,4 +1,4 @@
-"""Tests for ``ai_trade.backtest.grid.gates`` — GateEvaluator.
+"""Tests for ``market_lab.backtest.grid.gates`` — GateEvaluator.
 
 The gate evaluator applies the three anti-overfit rules from
 ``knowledge/SKILL.md`` against a :class:`GridResult` + per-config walk-forward
@@ -28,10 +28,10 @@ def _build_grid_from_returns(returns_per_config: list[np.ndarray]):
     Each column becomes an equity curve 100_000 × cumprod(1 + r), stored as
     a TrialResult with cached Sharpe/CAGR/DD.
     """
-    from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.result import GridResult, TrialResult
-    from ai_trade.backtest.metrics.performance import (
+    from market_lab.backtest.engine.runner import BacktestResult
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.result import GridResult, TrialResult
+    from market_lab.backtest.metrics.performance import (
         cagr as cagr_fn,
         max_drawdown as max_dd_fn,
         returns_from_equity,
@@ -63,7 +63,7 @@ def _build_grid_from_returns(returns_per_config: list[np.ndarray]):
 
 
 def test_gate_evaluator_pbo_pass_when_below_threshold():
-    from ai_trade.backtest.grid.gates import GateEvaluator
+    from market_lab.backtest.grid.gates import GateEvaluator
 
     rng = np.random.default_rng(seed=7)
     # 4 independent iid columns → PBO ≈ 0.5 (roughly random rank)
@@ -79,7 +79,7 @@ def test_gate_evaluator_pbo_pass_when_below_threshold():
 
 def test_gate_evaluator_pbo_rejects_overfit_matrix():
     """A mirror matrix (second half = -first half) exhibits near-maximal PBO."""
-    from ai_trade.backtest.grid.gates import GateEvaluator
+    from market_lab.backtest.grid.gates import GateEvaluator
 
     rng = np.random.default_rng(seed=13)
     first = rng.normal(0.001, 0.01, (400, 10))
@@ -95,7 +95,7 @@ def test_gate_evaluator_pbo_rejects_overfit_matrix():
 
 def test_gate_evaluator_dsr_flags_configs_below_alpha():
     """p_value < 0.05 → dsr_pass_id includes that config."""
-    from ai_trade.backtest.grid.gates import GateEvaluator
+    from market_lab.backtest.grid.gates import GateEvaluator
 
     rng = np.random.default_rng(seed=3)
     # High-Sharpe config with many bars → DSR p < 0.05 is plausible
@@ -110,7 +110,7 @@ def test_gate_evaluator_dsr_flags_configs_below_alpha():
 
 
 def test_gate_evaluator_walk_forward_filters_by_verdict():
-    from ai_trade.backtest.grid.gates import GateEvaluator
+    from market_lab.backtest.grid.gates import GateEvaluator
 
     rng = np.random.default_rng(seed=5)
     grid = _build_grid_from_returns([rng.normal(0.001, 0.01, 500) for _ in range(3)])
@@ -121,7 +121,7 @@ def test_gate_evaluator_walk_forward_filters_by_verdict():
 
 def test_gate_evaluator_overall_pass_requires_all_three_gates():
     """A config passes iff: PBO-pass AND DSR-pass AND WF-pass."""
-    from ai_trade.backtest.grid.gates import GateEvaluator
+    from market_lab.backtest.grid.gates import GateEvaluator
 
     rng = np.random.default_rng(seed=11)
     # Build a synthetic where only config 0 will realistically pass all:
@@ -140,7 +140,7 @@ def test_gate_evaluator_overall_pass_requires_all_three_gates():
 
 def test_gate_evaluator_best_config_id_is_none_when_no_pass():
     """If no config passes all 3 gates, best_config_id is None."""
-    from ai_trade.backtest.grid.gates import GateEvaluator
+    from market_lab.backtest.grid.gates import GateEvaluator
 
     rng = np.random.default_rng(seed=4)
     grid = _build_grid_from_returns([rng.normal(0.0, 0.02, 200) for _ in range(3)])
@@ -152,7 +152,7 @@ def test_gate_evaluator_best_config_id_is_none_when_no_pass():
 
 def test_gate_evaluator_best_config_picks_highest_sharpe_among_passers():
     """Among configs that pass all gates, the best is the one with max Sharpe."""
-    from ai_trade.backtest.grid.gates import GateEvaluator
+    from market_lab.backtest.grid.gates import GateEvaluator
 
     rng = np.random.default_rng(seed=9)
     # Three strong configs; we'll fake WF verdicts so all pass
@@ -169,8 +169,8 @@ def test_gate_evaluator_best_config_picks_highest_sharpe_among_passers():
 
 
 def test_gate_evaluator_handles_empty_grid_gracefully():
-    from ai_trade.backtest.grid.gates import GateEvaluator
-    from ai_trade.backtest.grid.result import GridResult
+    from market_lab.backtest.grid.gates import GateEvaluator
+    from market_lab.backtest.grid.result import GridResult
 
     grid = GridResult(trials=[], run_id="empty")
     verdict = GateEvaluator().evaluate(grid=grid, wf_verdicts={})

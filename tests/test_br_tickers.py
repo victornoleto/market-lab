@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.data.br_tickers import (
+from market_lab.backtest.data.br_tickers import (
     IBRX100_TICKERS,
     SECTOR_MAP,
     UniverseConfig,
@@ -202,7 +202,7 @@ class TestGetUniverseOn:
 # ---------------------------------------------------------------------------
 def test_data_subpackage_reexports():
     """Re-exports in ``backtest.data.__init__`` should match module exports."""
-    from ai_trade.backtest import data as data_pkg
+    from market_lab.backtest import data as data_pkg
 
     assert data_pkg.IBRX100_TICKERS == IBRX100_TICKERS
     assert data_pkg.sector_of("PETR4.SA") == "Energy"

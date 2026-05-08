@@ -1,7 +1,7 @@
-"""Tests for ``ai_trade.backtest.grid.observers`` — JSONL + status.md.
+"""Tests for ``market_lab.backtest.grid.observers`` — JSONL + status.md.
 
 Observers are callables with signature ``(completed, total, trial) -> None``,
-matching :data:`ai_trade.backtest.grid.runner.ProgressCb`. The CLI wires
+matching :data:`market_lab.backtest.grid.runner.ProgressCb`. The CLI wires
 them in parallel: after each trial completes, the runner calls every
 registered observer. The runner core itself stays unaware of file layouts.
 """
@@ -17,9 +17,9 @@ import pytest
 
 
 def _mk_trial(config_id: int, status: str = "ok", sharpe: float = 0.82):
-    from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.result import TrialResult
+    from market_lab.backtest.engine.runner import BacktestResult
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.result import TrialResult
 
     cfg = BollingerMRGridConfig(window=20, std_mult=2.0)
     if status == "error":
@@ -41,7 +41,7 @@ def _mk_trial(config_id: int, status: str = "ok", sharpe: float = 0.82):
 
 
 def test_jsonl_trial_observer_writes_one_line_per_trial(tmp_path: Path):
-    from ai_trade.backtest.grid.observers import JsonlTrialObserver
+    from market_lab.backtest.grid.observers import JsonlTrialObserver
 
     path = tmp_path / "trials.jsonl"
     obs = JsonlTrialObserver(path=path, run_id="run-A")
@@ -65,7 +65,7 @@ def test_jsonl_trial_observer_encodes_nan_as_string(tmp_path: Path):
     """Error trials have sharpe=NaN — JSON can't represent NaN natively,
     so we emit "nan" / "inf" / "-inf" strings for consistency.
     """
-    from ai_trade.backtest.grid.observers import JsonlTrialObserver
+    from market_lab.backtest.grid.observers import JsonlTrialObserver
 
     path = tmp_path / "trials.jsonl"
     obs = JsonlTrialObserver(path=path, run_id="nan-run")
@@ -80,7 +80,7 @@ def test_status_file_observer_writes_markdown_snapshot(tmp_path: Path):
     """After each trial the observer overwrites status.md with the latest
     aggregate: completed/total, best Sharpe so far, ETA.
     """
-    from ai_trade.backtest.grid.observers import StatusFileObserver
+    from market_lab.backtest.grid.observers import StatusFileObserver
 
     path = tmp_path / "status.md"
     obs = StatusFileObserver(path=path, run_id="status-run")
@@ -99,7 +99,7 @@ def test_status_file_observer_writes_markdown_snapshot(tmp_path: Path):
 
 def test_status_file_observer_overwrites_each_call(tmp_path: Path):
     """Only the latest snapshot must be on disk (no append)."""
-    from ai_trade.backtest.grid.observers import StatusFileObserver
+    from market_lab.backtest.grid.observers import StatusFileObserver
 
     path = tmp_path / "status.md"
     obs = StatusFileObserver(path=path, run_id="overwrite-run")
@@ -115,7 +115,7 @@ def test_status_file_observer_overwrites_each_call(tmp_path: Path):
 
 def test_multiple_observers_can_be_composed(tmp_path: Path):
     """CLI wires multiple observers — runner calls each one per trial."""
-    from ai_trade.backtest.grid.observers import (
+    from market_lab.backtest.grid.observers import (
         JsonlTrialObserver,
         StatusFileObserver,
         compose_observers,
@@ -133,17 +133,17 @@ def test_multiple_observers_can_be_composed(tmp_path: Path):
 
 
 def test_setup_grid_logging_installs_four_handlers(tmp_path: Path):
-    """setup_grid_logging attaches 4 handlers to the ai_trade.grid logger:
+    """setup_grid_logging attaches 4 handlers to the market_lab.grid logger:
     console, per-run debug file, per-run JSONL (not used directly — that's
     what the observer is for), and unified append log.
     """
     import logging
-    from ai_trade.backtest.grid.observers import setup_grid_logging
+    from market_lab.backtest.grid.observers import setup_grid_logging
 
     run_dir = tmp_path / "run-logs"
     unified = tmp_path / "unified.log"
 
-    handlers_before = list(logging.getLogger("ai_trade.grid").handlers)
+    handlers_before = list(logging.getLogger("market_lab.grid").handlers)
     try:
         setup_grid_logging(
             run_id="abc",
@@ -151,7 +151,7 @@ def test_setup_grid_logging_installs_four_handlers(tmp_path: Path):
             unified_log_path=unified,
             level=logging.INFO,
         )
-        logger = logging.getLogger("ai_trade.grid")
+        logger = logging.getLogger("market_lab.grid")
         logger.info("hello grid")
         # Per-run debug file should exist after a log
         assert (run_dir / "debug.log").exists()
@@ -163,7 +163,7 @@ def test_setup_grid_logging_installs_four_handlers(tmp_path: Path):
         assert "hello grid" in unified_text
     finally:
         # Remove the handlers we added so other tests aren't affected.
-        for h in list(logging.getLogger("ai_trade.grid").handlers):
+        for h in list(logging.getLogger("market_lab.grid").handlers):
             if h not in handlers_before:
-                logging.getLogger("ai_trade.grid").removeHandler(h)
+                logging.getLogger("market_lab.grid").removeHandler(h)
                 h.close()

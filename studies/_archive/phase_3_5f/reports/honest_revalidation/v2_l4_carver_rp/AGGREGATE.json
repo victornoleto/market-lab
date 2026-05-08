@@ -6,9 +6,9 @@
   "produced_at": "2026-04-22T01:38:16+00:00",
   "engine_fix_commit": "7b90a8f",
   "inputs": {
-    "L1_tsmom_lb12m_vt10": "/var/www/pessoal/ai-trade/reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/tsmom_lb12m_vt10_daily_returns.parquet",
-    "L2_gayed_ema100_L3_off_gld_honest": "/var/www/pessoal/ai-trade/reports/phase_3_5f/honest_revalidation/v2_l4_carver_rp/L2_honest_daily_returns.parquet",
-    "L3_afml_XLF": "/var/www/pessoal/ai-trade/reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/XLF_daily_returns.parquet"
+    "L1_tsmom_lb12m_vt10": "/var/www/github/finances/market-lab/reports/phase3_5a_v2/v2_l1_tsmom_multi_asset_daily/tsmom_lb12m_vt10_daily_returns.parquet",
+    "L2_gayed_ema100_L3_off_gld_honest": "/var/www/github/finances/market-lab/reports/phase_3_5f/honest_revalidation/v2_l4_carver_rp/L2_honest_daily_returns.parquet",
+    "L3_afml_XLF": "/var/www/github/finances/market-lab/reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/XLF_daily_returns.parquet"
   },
   "l2_config": {
     "regime_signal": "ema100",

@@ -51,23 +51,23 @@ Todos os três:
 
 ### 1.2 Código reusável (não reinventar)
 
-- **Simulator core**: `src/ai_trade/backtest/strategies/ema_sma_threshold_educational.py`
+- **Simulator core**: `src/market_lab/backtest/strategies/ema_sma_threshold_educational.py`
   - `EMASMAThresholdConfig` (filter, lookback, threshold_pct, buy_leverage, sell_leverage, tax_rate, fee, switch_cost_bps)
   - `simulate_ema_sma_threshold(prices, returns, cfg)` — synth path
   - `simulate_regime_threshold_with_legs(signal_prices, buy_leg, sell_leg, cfg)` — real path
   - `compute_threshold_regime(prices, cfg)` — histerese band signal
   - `Trade` dataclass e `ThresholdResult` com trade ledger
-- **Grid orchestrator**: `src/ai_trade/backtest/grid/ema_sma_threshold_grid.py`
+- **Grid orchestrator**: `src/market_lab/backtest/grid/ema_sma_threshold_grid.py`
   - `EMASMAThresholdAxes` (cartesian)
   - `compute_config_metrics`, `compute_composite_scores`, `evaluate_gates`
-- **Real ETF runner**: `src/ai_trade/backtest/grid/real_etf_regime_runner.py`
+- **Real ETF runner**: `src/market_lab/backtest/grid/real_etf_regime_runner.py`
   - `RealETFMarket` (SPY_MARKET, NDX_MARKET)
   - `build_data_bundle`, `simulate_config_with_real_legs`
-- **Report helpers**: `src/ai_trade/backtest/grid/real_etf_report_helpers.py`
+- **Report helpers**: `src/market_lab/backtest/grid/real_etf_report_helpers.py`
   - `emit_all_artifacts` — gera FINAL.md + configs.csv + per-config subfolders
-- **Analyses**: `src/ai_trade/backtest/grid/real_etf_analyses.py`
+- **Analyses**: `src/market_lab/backtest/grid/real_etf_analyses.py`
   - `run_rolling_windows_analysis` — rolling 3/5/7/10y
-- **Validation gates** (todos ativos): `src/ai_trade/backtest/validation/`
+- **Validation gates** (todos ativos): `src/market_lab/backtest/validation/`
   - `pbo.py`, `dsr.py`, `walk_forward.py`, `bootstrap.py`, `cpcv.py`
 
 ### 1.3 Descobertas-chave das análises
@@ -228,7 +228,7 @@ Ou seja: base axes (384) × stop_loss variants (7) × risk-signal variants
 
 ### 4.1 Novo módulo: `stop_loss_and_risk_signals.py`
 
-Localização: `src/ai_trade/backtest/strategies/stop_loss_and_risk_signals.py`
+Localização: `src/market_lab/backtest/strategies/stop_loss_and_risk_signals.py`
 
 **Contém**:
 - `StopLossConfig` dataclass (`stop_loss_pct`, `reentry_mode`, `reentry_param`)
@@ -239,7 +239,7 @@ Localização: `src/ai_trade/backtest/strategies/stop_loss_and_risk_signals.py`
 
 ### 4.2 Loader de dados macro: `macro_data_loader.py`
 
-Localização: `src/ai_trade/backtest/data/macro_data_loader.py`
+Localização: `src/market_lab/backtest/data/macro_data_loader.py`
 
 **Funções**:
 - `load_ebp(vintage_date=None) -> pd.Series` — EBP mensal do Fed, com
@@ -257,7 +257,7 @@ Localização: `src/ai_trade/backtest/data/macro_data_loader.py`
 
 ### 4.3 Indicador LPPLS — módulo separado
 
-Localização: `src/ai_trade/backtest/signals/lppls_confidence.py`
+Localização: `src/market_lab/backtest/signals/lppls_confidence.py`
 
 Wrapper fino sobre biblioteca `lppls` do PyPI. Custo alto → rodar uma vez
 offline, salvar `pd.Series` em parquet, carregar no sweep.
@@ -439,10 +439,10 @@ existe em `ema_sma_threshold_grid.py:_evaluate_g7_cross_lib`.
 ## 7. Deliverables da próxima sessão
 
 1. **Código**:
-   - `src/ai_trade/backtest/strategies/stop_loss_and_risk_signals.py`
-   - `src/ai_trade/backtest/data/macro_data_loader.py`
-   - `src/ai_trade/backtest/signals/lppls_confidence.py`
-   - `src/ai_trade/backtest/grid/crash_protected_grid.py` (extensão)
+   - `src/market_lab/backtest/strategies/stop_loss_and_risk_signals.py`
+   - `src/market_lab/backtest/data/macro_data_loader.py`
+   - `src/market_lab/backtest/signals/lppls_confidence.py`
+   - `src/market_lab/backtest/grid/crash_protected_grid.py` (extensão)
    - Testes unitários: `tests/test_stop_loss.py`, `tests/test_risk_signals.py`,
      `tests/test_macro_loader.py` (mock dados Fed/FRED)
    - Baseline pytest não quebra (hoje 1097 passed).

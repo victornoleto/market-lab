@@ -3,7 +3,7 @@
 **Path tag:** [SWING BROKER]
 **Phase:** 3.5b-addendum, Task C (C1 module / C2 3-leg / C3 2-leg / C4
 threshold sweep).
-**Module:** `src/ai_trade/backtest/metrics/rebalance_modes.py`
+**Module:** `src/market_lab/backtest/metrics/rebalance_modes.py`
 (**4 pure functions, 39 unit tests** — see C1 + C4 jornadas).
 
 The canonical Phase 3.5b portfolios — 3-leg `{LETF+QQQ+GLD}` (main

@@ -27,14 +27,14 @@ from typing import Protocol
 
 import pandas as pd
 
-from ai_trade.backtest.engine.execution import (
+from market_lab.backtest.engine.execution import (
     Bar,
     ExecutionSimulator,
     Fill,
     Order,
     SwapModel,
 )
-from ai_trade.backtest.engine.portfolio import Portfolio, Trade
+from market_lab.backtest.engine.portfolio import Portfolio, Trade
 
 
 class Strategy(Protocol):

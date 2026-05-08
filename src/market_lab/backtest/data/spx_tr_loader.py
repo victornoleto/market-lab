@@ -30,7 +30,7 @@ Data flow
 3. ``load_spx_tr_daily(start, end, cutoff_date, ...)`` stitches the
    pre-cutoff KF Mkt return with post-cutoff Tiingo SPY ``adj_close``
    pct-change. Result: a single, monotone-indexed daily TR series ready
-   for :class:`ai_trade.backtest.strategies.letf_rotation.LETFRotationStrategy`.
+   for :class:`market_lab.backtest.strategies.letf_rotation.LETFRotationStrategy`.
 
 Stitching rules
 ---------------
@@ -257,7 +257,7 @@ def load_spx_tr_daily(
 
     # Post-cutoff: Tiingo SPY adj_close pct_change. Importing here avoids a
     # hard dependency for callers that only use the parser/fetcher.
-    from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+    from market_lab.backtest.data.tiingo_storage import TiingoStorage
 
     storage = TiingoStorage(Path(tiingo_storage_root))
     spy_df = storage.read(spy_ticker, frequency="daily")

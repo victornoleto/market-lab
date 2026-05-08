@@ -1,4 +1,4 @@
-"""Tests for ai_trade.backtest.data.spx_tr_loader."""
+"""Tests for market_lab.backtest.data.spx_tr_loader."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.data.spx_tr_loader import (
+from market_lab.backtest.data.spx_tr_loader import (
     DEFAULT_TIINGO_CUTOFF,
     compute_market_total_return,
     fetch_ken_french_daily,

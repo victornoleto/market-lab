@@ -6,31 +6,31 @@ modules. Build new modules only when the mechanism is qualitatively new
 
 ## Simulators
 
-- `src/ai_trade/backtest/strategies/ema_sma_threshold_educational.py`
-- `src/ai_trade/backtest/strategies/stop_loss_and_risk_signals.py`
+- `src/market_lab/backtest/strategies/ema_sma_threshold_educational.py`
+- `src/market_lab/backtest/strategies/stop_loss_and_risk_signals.py`
   (stop + risk + combined + numpy cross-lib)
 
 ## Data loaders
 
-- `src/ai_trade/backtest/data/testfolio_loader.py` (synth long-window)
-- `src/ai_trade/backtest/data/macro_data_loader.py` (EBP / T10Y3M / CAPE / VIX)
-- `src/ai_trade/backtest/grid/real_etf_regime_runner.py` (SPY/UPRO, QQQ/TQQQ bundles)
+- `src/market_lab/backtest/data/testfolio_loader.py` (synth long-window)
+- `src/market_lab/backtest/data/macro_data_loader.py` (EBP / T10Y3M / CAPE / VIX)
+- `src/market_lab/backtest/grid/real_etf_regime_runner.py` (SPY/UPRO, QQQ/TQQQ bundles)
 
 ## Validation
 
-- `src/ai_trade/backtest/validation/pbo.py` (PBO via CSCV)
-- `src/ai_trade/backtest/validation/dsr.py` (Deflated Sharpe Ratio)
-- `src/ai_trade/backtest/validation/walk_forward.py`
-- `src/ai_trade/backtest/validation/cpcv.py`
-- `src/ai_trade/backtest/validation/permutation.py`
+- `src/market_lab/backtest/validation/pbo.py` (PBO via CSCV)
+- `src/market_lab/backtest/validation/dsr.py` (Deflated Sharpe Ratio)
+- `src/market_lab/backtest/validation/walk_forward.py`
+- `src/market_lab/backtest/validation/cpcv.py`
+- `src/market_lab/backtest/validation/permutation.py`
 
 ## Metrics
 
-- `src/ai_trade/backtest/metrics/performance.py` (CAGR / Sharpe / MDD / etc.)
+- `src/market_lab/backtest/metrics/performance.py` (CAGR / Sharpe / MDD / etc.)
 
 ## Signals
 
-- `src/ai_trade/backtest/signals/risk_score.py` (z-score sigmoid composite)
+- `src/market_lab/backtest/signals/risk_score.py` (z-score sigmoid composite)
 
 ## Loop-local helpers (this directory)
 

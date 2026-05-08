@@ -43,7 +43,7 @@ PASSO 1 — Ler estado em ORDEM (não execute nada antes):
      (especialmente a section "Lesson")
 
 PASSO 2 — Verificar baseline:
-  cd /var/www/pessoal/ai-trade && source .venv/bin/activate
+  cd /var/www/github/finances/market-lab && source .venv/bin/activate
   pytest --collect-only -q 2>&1 | tail -3
   git log --oneline -5
 

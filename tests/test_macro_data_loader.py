@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.data.macro_data_loader import (
+from market_lab.backtest.data.macro_data_loader import (
     align_monthly_to_daily,
     apply_publish_lag,
     load_cape_monthly,

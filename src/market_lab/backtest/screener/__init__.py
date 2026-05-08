@@ -1,4 +1,4 @@
-"""ai_trade.backtest.screener — multi-asset universe screener (Phase 3 A2).
+"""market_lab.backtest.screener — multi-asset universe screener (Phase 3 A2).
 
 Pure functions + a thin orchestrator. Inputs: a TiingoStorage instance and a
 list of (ticker, asset_class) candidates. Outputs: a DataFrame ranked by

@@ -30,12 +30,12 @@ from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, "/var/www/pessoal/ai-trade")
-sys.path.insert(0, "/var/www/pessoal/ai-trade/src")
+sys.path.insert(0, "/var/www/github/finances/market-lab")
+sys.path.insert(0, "/var/www/github/finances/market-lab/src")
 
-from ai_trade.backtest.validation.pbo import pbo as compute_pbo_cscv
-from ai_trade.backtest.validation.dsr import dsr as compute_dsr
-from ai_trade.backtest.sweeps.registry import (
+from market_lab.backtest.validation.pbo import pbo as compute_pbo_cscv
+from market_lab.backtest.validation.dsr import dsr as compute_dsr
+from market_lab.backtest.sweeps.registry import (
     load_registry,
     pop_pending,
     append_done,

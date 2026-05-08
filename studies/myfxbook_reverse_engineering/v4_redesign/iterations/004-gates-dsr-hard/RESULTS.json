@@ -54,5 +54,5 @@
     "[testing_tuning, p.148-162] — WF purgado >= 6/8",
     "docs/investment-mandate.md §2.2/§2.3 — CAGR/MDD warning-only"
   ],
-  "notes": "GateStats agora expoe passes_mandate_24() -> (bool, list[str]). Novos campos opcionais pbo / pbo_pass / wf_purged_* / cagr / max_drawdown ficam None quando insumos nao sao fornecidos pelo caller (Fase 1 sem mining ainda). compute_gates() preserva backward-compat: chamada sem kwargs novos retorna mesma estrutura legada. Test file test_gates.py do task spec NAO existe no repo — referencia incorreta; criamos test_gates_v4.py em tests/myfxbook_pipeline/. test_grid_gates.py (modulo distinto Plano A DORMANT em src/ai_trade/backtest/grid/gates.py) continua passando sem mudanca."
+  "notes": "GateStats agora expoe passes_mandate_24() -> (bool, list[str]). Novos campos opcionais pbo / pbo_pass / wf_purged_* / cagr / max_drawdown ficam None quando insumos nao sao fornecidos pelo caller (Fase 1 sem mining ainda). compute_gates() preserva backward-compat: chamada sem kwargs novos retorna mesma estrutura legada. Test file test_gates.py do task spec NAO existe no repo — referencia incorreta; criamos test_gates_v4.py em tests/myfxbook_pipeline/. test_grid_gates.py (modulo distinto Plano A DORMANT em src/market_lab/backtest/grid/gates.py) continua passando sem mudanca."
 }

@@ -8,7 +8,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.data.yfinance_source import YFinanceSource, _normalize
+from market_lab.backtest.data.yfinance_source import YFinanceSource, _normalize
 
 
 def _make_raw_yf(tz: str | None = None, multiindex: bool = False) -> pd.DataFrame:

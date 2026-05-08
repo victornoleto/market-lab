@@ -38,7 +38,7 @@ Quando o cleanup geral rodar após Phase 3.5a-V2:
    `run_plano_b_variants_letf_execution.py`,
    `run_plano_b_variants_gates.py`.**
    Todos são reproducíveis para os artefatos acima.
-3. **Não mexer em `src/ai_trade/backtest/data/testfolio_loader.py`.**
+3. **Não mexer em `src/market_lab/backtest/data/testfolio_loader.py`.**
 4. **Não mexer em `data/testfolio/`** (raw JSON + cache parquet).
 5. **Não mexer em jornadas `phase3.5b-*`** (history record).
 

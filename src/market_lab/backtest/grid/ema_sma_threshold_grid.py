@@ -5,7 +5,7 @@ computes per-config metrics, applies 7 informational gates, and ranks
 by a composite CAGR/Sharpe/MDD score.
 
 Citations and signal definition live in
-:mod:`ai_trade.backtest.strategies.ema_sma_threshold_educational` and
+:mod:`market_lab.backtest.strategies.ema_sma_threshold_educational` and
 :doc:`specs/ema_sma_threshold_educational.md`.
 """
 
@@ -18,8 +18,8 @@ import numpy as np
 import pandas as pd
 from scipy import stats as _stats
 
-from ai_trade.backtest.grid.letf_rotation_b1c import bootstrap_sharpe_ci
-from ai_trade.backtest.metrics.performance import (
+from market_lab.backtest.grid.letf_rotation_b1c import bootstrap_sharpe_ci
+from market_lab.backtest.metrics.performance import (
     cagr,
     calmar,
     max_drawdown,
@@ -27,16 +27,16 @@ from ai_trade.backtest.metrics.performance import (
     sortino,
     volatility,
 )
-from ai_trade.backtest.strategies.ema_sma_threshold_educational import (
+from market_lab.backtest.strategies.ema_sma_threshold_educational import (
     EMASMAThresholdConfig,
     ThresholdResult,
     compute_threshold_regime,
     simulate_ema_sma_threshold,
     TRADING_DAYS_PER_YEAR,
 )
-from ai_trade.backtest.validation.dsr import dsr
-from ai_trade.backtest.validation.pbo import pbo
-from ai_trade.backtest.validation.walk_forward import (
+from market_lab.backtest.validation.dsr import dsr
+from market_lab.backtest.validation.pbo import pbo
+from market_lab.backtest.validation.walk_forward import (
     walk_forward_gate,
     walk_forward_splits,
 )

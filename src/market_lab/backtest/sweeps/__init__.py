@@ -1,4 +1,4 @@
-"""ai_trade.backtest.sweeps — fan-out sweep registry helpers.
+"""market_lab.backtest.sweeps — fan-out sweep registry helpers.
 
 See specs/self_improve_fanout_mode.md and
 docs/self_improvement/fanout_protocol.md for the full protocol. This
@@ -17,7 +17,7 @@ change to the schema requires bumping ``SCHEMA_VERSION`` and writing
 a migration helper alongside it.
 """
 
-from ai_trade.backtest.sweeps.registry import (
+from market_lab.backtest.sweeps.registry import (
     SCHEMA_VERSION,
     RegistryValidationError,
     append_done,

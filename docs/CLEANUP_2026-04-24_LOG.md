@@ -19,7 +19,7 @@ Plan file: `/home/victor/.claude/plans/sharded-wondering-spindle.md`
   - specs/ : 12 MDs root + 1 _archive
   - docs/ : 5 MDs root + 8 subpastas
   - ops/ : 75 files (standalone CLI platform)
-  - src/ai_trade/backtest/strategies/ : 40 files
+  - src/market_lab/backtest/strategies/ : 40 files
   - tests/ : 83 test files (~1168 tests)
 
 ---
@@ -36,7 +36,7 @@ Plan file: `/home/victor/.claude/plans/sharded-wondering-spindle.md`
   - specs/ : 1 active + _archive/ (12 files)
   - docs/ : 4 MDs root + 7 subpastas (2 ativos overrides + 6 infra + _archive/)
   - ops/ : REMOVIDO
-  - src/ai_trade/backtest/strategies/ : 5 files (base + 4 studies modules)
+  - src/market_lab/backtest/strategies/ : 5 files (base + 4 studies modules)
   - tests/ : 49 test files
 
 ---
@@ -167,7 +167,7 @@ verdict-por-phase + pointers pros BREADTH_NO_WINNER em
 
 **Criado**: `docs/_archive/DORMANT_STRATEGIES_SPEC.md` (120L overview).
 
-### Etapa 8+9 — src/ai_trade + tests/ (31 strategies + 10 infra + 33 tests)
+### Etapa 8+9 — src/market_lab + tests/ (31 strategies + 10 infra + 33 tests)
 
 **Preservado strategies** (5 files):
 - `base.py`, `__init__.py`, `ema_sma_threshold_educational.py`,
@@ -186,9 +186,9 @@ verdict-por-phase + pointers pros BREADTH_NO_WINNER em
 - `metrics/`: rolling_correlation, slippage_sensitivity, allocation_comparison
 
 **Restaurados** (cascata de dependência da sessão studies):
-- `src/ai_trade/backtest/grid/bollinger_mr_config.py`
-- `src/ai_trade/backtest/grid/letf_rotation_b1c.py`
-- `src/ai_trade/backtest/strategies/letf_rotation.py`
+- `src/market_lab/backtest/grid/bollinger_mr_config.py`
+- `src/market_lab/backtest/grid/letf_rotation_b1c.py`
+- `src/market_lab/backtest/strategies/letf_rotation.py`
 (imported por `studies/ema_sma_threshold_grid.py` via
 `studies/ema_sma_threshold_educational/` — ver diff vs tag).
 

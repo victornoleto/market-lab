@@ -1,4 +1,4 @@
-"""ai_trade.backtest — backtest engine, data sources, validation, metrics.
+"""market_lab.backtest — backtest engine, data sources, validation, metrics.
 
 The architectural principle is source-agnostic testing: research data adapters
 and execution/calibration data can vary while the engine contract stays stable.

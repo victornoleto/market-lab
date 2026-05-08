@@ -27,12 +27,12 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from ai_trade.backtest.grid.result import GridResult, TrialResult
-from ai_trade.backtest.validation.dsr import DSRResult, dsr, psr
-from ai_trade.backtest.validation.pbo import PBOResult, pbo, pbo_gate
+from market_lab.backtest.grid.result import GridResult, TrialResult
+from market_lab.backtest.validation.dsr import DSRResult, dsr, psr
+from market_lab.backtest.validation.pbo import PBOResult, pbo, pbo_gate
 
 
-_log = logging.getLogger("ai_trade.grid.gates")
+_log = logging.getLogger("market_lab.grid.gates")
 
 
 @dataclass

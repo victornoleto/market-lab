@@ -1,7 +1,7 @@
 """7-gate battery for letf_rotation_hunt per spec §3.5.
 
 Thin wrappers over the public validation utilities in
-``src/ai_trade/backtest/validation/`` (pbo, dsr, walk_forward, bootstrap).
+``src/market_lab/backtest/validation/`` (pbo, dsr, walk_forward, bootstrap).
 Same contract as the canonical implementations in
 ``studies/long_term_portfolio/run_iter.py:_gate_*`` (which spy_beater_hunt
 imports verbatim) but exposed as a standalone module so letf_rotation_hunt
@@ -29,10 +29,10 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.validation.dsr import dsr as _dsr_compute
-from ai_trade.backtest.validation.dsr import psr as _psr_compute
-from ai_trade.backtest.validation.pbo import pbo as _pbo_compute
-from ai_trade.backtest.validation.walk_forward import walk_forward_splits
+from market_lab.backtest.validation.dsr import dsr as _dsr_compute
+from market_lab.backtest.validation.dsr import psr as _psr_compute
+from market_lab.backtest.validation.pbo import pbo as _pbo_compute
+from market_lab.backtest.validation.walk_forward import walk_forward_splits
 
 # Constants
 TRADING_DAYS_PER_YEAR = 252

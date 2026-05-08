@@ -45,11 +45,11 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.strategies.ema_sma_threshold_educational import (
+from market_lab.backtest.strategies.ema_sma_threshold_educational import (
     EMASMAThresholdConfig,
     TRADING_DAYS_PER_YEAR,
 )
-from ai_trade.backtest.strategies.stop_loss_and_risk_signals import (
+from market_lab.backtest.strategies.stop_loss_and_risk_signals import (
     RiskSignalConfig,
     StopLossConfig,
 )

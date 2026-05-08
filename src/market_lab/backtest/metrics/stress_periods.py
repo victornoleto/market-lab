@@ -36,8 +36,8 @@ from typing import Iterable, Sequence
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.metrics._fmt import _fmt_num, _fmt_pct
-from ai_trade.backtest.metrics.performance import (
+from market_lab.backtest.metrics._fmt import _fmt_num, _fmt_pct
+from market_lab.backtest.metrics.performance import (
     cagr as _cagr,
     max_drawdown as _max_drawdown,
     returns_from_equity,
@@ -45,7 +45,7 @@ from ai_trade.backtest.metrics.performance import (
     sortino as _sortino,
     volatility as _volatility,
 )
-from ai_trade.backtest.metrics.standard_report import Trade
+from market_lab.backtest.metrics.standard_report import Trade
 
 # ---------------------------------------------------------------------------
 # Canonical stress windows

@@ -5,7 +5,7 @@ lookback, max_leverage)` which scales daily returns by
 ``s_t = target_vol**2 / sigma_hat**2_{t-1}`` clipped to ``[0, cap]``.
 This is the canonical formulation from Moreira & Muir (2017) *JoF* 72(4),
 distinct from the vol-scaling (`σ^{-1}`) form already shipped in
-`ai_trade.backtest.metrics.vol_target.apply_vol_target`.
+`market_lab.backtest.metrics.vol_target.apply_vol_target`.
 
 Citations:
 * Moreira & Muir (2017), *Journal of Finance* 72(4), 1611-1644.
@@ -126,7 +126,7 @@ def test_variance_scaling_stronger_than_vol_scaling_on_vol_shock() -> None:
     gives ``s=0.5``; variance-scaling gives ``s=0.25``. This encodes the
     core Moreira-Muir claim (2× responsiveness exponent).
     """
-    from ai_trade.backtest.metrics.vol_target import apply_vol_target
+    from market_lab.backtest.metrics.vol_target import apply_vol_target
 
     # Build a returns series whose rolling vol is ≈ 2× target_vol for a stretch.
     n = 100

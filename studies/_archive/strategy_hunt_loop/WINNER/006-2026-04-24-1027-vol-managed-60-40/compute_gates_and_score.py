@@ -41,12 +41,12 @@ from scoring import (  # noqa: E402
     score_strategy,
 )
 
-from ai_trade.backtest.metrics.performance import (  # noqa: E402
+from market_lab.backtest.metrics.performance import (  # noqa: E402
     max_drawdown,
     sharpe,
 )
-from ai_trade.backtest.validation.dsr import dsr as dsr_test  # noqa: E402
-from ai_trade.backtest.validation.pbo import pbo as pbo_test  # noqa: E402
+from market_lab.backtest.validation.dsr import dsr as dsr_test  # noqa: E402
+from market_lab.backtest.validation.pbo import pbo as pbo_test  # noqa: E402
 
 from numpy_reference import (  # noqa: E402
     apply_blend_variance_target_np,

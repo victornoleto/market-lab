@@ -51,7 +51,7 @@ def test_tmf_synth_from_cache_smoke():
 def test_tmf_synth_realistic_amplification():
     """TMF daily returns should be ~3x TLT in magnitude on the active days."""
     from studies.long_term_portfolio.synths import tmf_synth_returns_from_cache
-    from ai_trade.backtest.data.testfolio_loader import load_testfolio_series
+    from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 
     tlt = load_testfolio_series("TLTSIM").pct_change().dropna()
     tmf = tmf_synth_returns_from_cache()

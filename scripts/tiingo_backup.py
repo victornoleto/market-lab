@@ -8,7 +8,7 @@ archive is your portable, restorable cache.
 
 Restore::
 
-    cd /path/to/ai-trade
+    cd /path/to/market-lab
     tar -xzf data/tiingo_backup_<date>.tar.gz
 
 Usage::
@@ -27,7 +27,7 @@ import tarfile
 from datetime import datetime
 from pathlib import Path
 
-log = logging.getLogger("ai_trade.tiingo_backup")
+log = logging.getLogger("market_lab.tiingo_backup")
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -80,7 +80,7 @@ def main(argv: list[str] | None = None) -> int:
         # We store as `tiingo/...` so an extract from the project root
         # restores to `data/tiingo/...` when run with `cd data && tar -xzf`,
         # or to `tiingo/...` when run from elsewhere — the README example
-        # shows `cd ai-trade && tar -xzf data/tiingo_backup_*.tar.gz`,
+        # shows `cd market-lab && tar -xzf data/tiingo_backup_*.tar.gz`,
         # which would extract to `data/tiingo/`. Match that:
         tf.add(args.storage_root, arcname="data/tiingo")
 

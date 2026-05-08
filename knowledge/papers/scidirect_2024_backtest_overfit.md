@@ -29,7 +29,7 @@ ML strategies are **especially vulnerable to backtest overfitting**. Synthetic c
 - CSCV-based PBO remains a reliable detector in synthetic test
 - No single OOS method dominates; triangulation (PBO + DSR + WF) is required
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **HIGH relevance as methodology justification.** This paper validates the Phase 3.6 13-gate stack (gates 11 PBO, 12 DSR, 6 WF) at the synthetic-ground-truth level.
 - Complements the Phase 3.6 null interpretation: ML leads that pass the gates are statistically rare; most ML leads don't survive honest testing.

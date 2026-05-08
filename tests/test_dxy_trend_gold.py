@@ -22,7 +22,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.strategies.dxy_trend_gold import (
+from market_lab.backtest.strategies.dxy_trend_gold import (
     align_signal_to_index,
     dxy_sma_falling_flag,
     dxy_sma_falling_flag_numpy,

@@ -103,7 +103,7 @@ class Benchmark:
 #   2008-06-01 → 2026-04-24 is **CAGR 11.54%, MDD 50.70%, Sharpe 0.65**
 #   (vt_real starts inside the GFC peak-to-trough so MDD is much deeper than
 #   the 2010+ window). All numbers below recomputed via canonical
-#   ai_trade.backtest.metrics.performance helpers on 2026-04-29.
+#   market_lab.backtest.metrics.performance helpers on 2026-04-29.
 #
 #   Impact: the 43 prior iters of long_term_portfolio (027-043) were scored
 #   against the BUGGY benchmark (CAGR bar inflated, MDD bar artificially tight

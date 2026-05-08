@@ -235,7 +235,7 @@ Qualquer um desses, se desejado depois, requer novo round adversarial.
 
 ---
 
-## 8. Compliance com mandate ai-trade
+## 8. Compliance com mandate market-lab
 
 - Plano A está DORMANT (mandate §1, §7). Replicator-lite é **research-only**, sem capital allocation.
 - Citações obrigatórias preservadas no `signal_rule.md` original (Aronson, López de Prado, Chan, Carver) — replicator-lite não cita nada novo, apenas opera sobre as regras citadas.

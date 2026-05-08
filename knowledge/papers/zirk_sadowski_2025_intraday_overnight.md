@@ -29,7 +29,7 @@ Within NYSE small-cap equities, market efficiency is **horizon-dependent**. Very
 - "11 AM effect" (Tue-Thu) and "reversed Monday 10 AM effect" statistically significant
 - No Sharpe / CAGR / cost-adjusted returns — not a tradable-strategy paper
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **LOW direct relevance.** Small-cap NYSE is NOT in Pepperstone CFD universe; short Sep-Nov 2022 window is narrow; minute data at small-cap granularity not efficiently served by Tiingo.
 - **Indirect value:** confirms that mid-horizon intraday inefficiency exists in liquid-ish markets — complementary to Zarattini 2024 evidence on SPY-level liquid ETF.

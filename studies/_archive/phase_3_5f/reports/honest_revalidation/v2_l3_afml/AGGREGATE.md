@@ -15,7 +15,7 @@
 
 - 0/12 tickers PASS the 13-gate framework (§5.5 of the plan).
 - The V2-L3 family was ALREADY DEAD END under the original sweep (iter 57, 2026-04-19).
-- **No re-simulation is required.** F1 scope audit (`docs/superpowers/findings/2026-04-22-engine-lookahead-scope.md`) confirmed that `src/ai_trade/backtest/strategies/afml_tb_meta.py` is **single-ticker** meta-labeling: no multi-asset weight vector, no `w_i × r_i` pattern, no look-ahead bug to fix. The V2-L3 report was listed under **CLEAN** in F1 alongside L1/L5/L6. The F2 fix (commit `7b90a8f`) touched `plano_a_leveraged_rotation.py` only.
+- **No re-simulation is required.** F1 scope audit (`docs/superpowers/findings/2026-04-22-engine-lookahead-scope.md`) confirmed that `src/market_lab/backtest/strategies/afml_tb_meta.py` is **single-ticker** meta-labeling: no multi-asset weight vector, no `w_i × r_i` pattern, no look-ahead bug to fix. The V2-L3 report was listed under **CLEAN** in F1 alongside L1/L5/L6. The F2 fix (commit `7b90a8f`) touched `plano_a_leveraged_rotation.py` only.
 - The previous DEAD-END reasoning stands: meta-labeling is a **precision filter on an existing edge, not an edge generator** `[advances_fin_ml, p.50]`. The EMA-50 cross primary on single-asset ETFs is too thin; residual CAGR (best 2.50% XLF) is dwarfed by Pepperstone Razor round-trip + swap costs on 6-14d holds `[systematic_trading, p.185-188]`.
 
 ---
@@ -76,7 +76,7 @@ Gate 3 notes: even with the user-approved CDI-floor soft-gate (~13%/yr net per m
 
 Per `docs/superpowers/findings/2026-04-22-engine-lookahead-scope.md` (F1, commit `7c280a2`):
 
-- The engine module `src/ai_trade/backtest/strategies/afml_tb_meta.py` is **single-ticker**: it produces a labeled event-return series from a single primary+meta pipeline and compounds it directly. There is **no multi-asset weight vector** and thus no `w_i × r_i` multiplication at any bar, which is the specific shape of the F2-fixed bug in `plano_a_leveraged_rotation.py:462`.
+- The engine module `src/market_lab/backtest/strategies/afml_tb_meta.py` is **single-ticker**: it produces a labeled event-return series from a single primary+meta pipeline and compounds it directly. There is **no multi-asset weight vector** and thus no `w_i × r_i` multiplication at any bar, which is the specific shape of the F2-fixed bug in `plano_a_leveraged_rotation.py:462`.
 - `reports/phase3_5a_v2/v2_l3_afml_triple_barrier_meta/` was explicitly categorized as **CLEAN** in the F1 inventory table (alongside V2-L1, V2-L5, V2-L6).
 - The F2 fix (commit `7b90a8f`) shifted the weight×return alignment to `w_{i-1} × r_i` in `plano_a_leveraged_rotation.py` only — no other engine was touched, no V2-L3 code path was modified.
 - Consequently, the original iter-57 numbers ARE the honest numbers for V2-L3. Running the sweep again would reproduce identical output within numerical noise.

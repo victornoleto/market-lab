@@ -122,7 +122,7 @@ def load_prices(name: str) -> pd.DataFrame:
             f"unknown dataset {name!r}; choose from {list(DATASETS.keys())}"
         )
 
-    from ai_trade.backtest.data.testfolio_loader import load_testfolio_frame
+    from market_lab.backtest.data.testfolio_loader import load_testfolio_frame
 
     meta = DATASETS[name]
     df = load_testfolio_frame()

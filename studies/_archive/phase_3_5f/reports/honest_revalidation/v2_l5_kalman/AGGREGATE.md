@@ -23,7 +23,7 @@ DEAD verdict is **structurally independent of engine math**.
 ## Why this reconfirm required zero simulation
 
 F1 inventory (`docs/superpowers/findings/2026-04-22-engine-lookahead-scope.md`)
-audited `src/ai_trade/backtest/strategies/kalman_pair_cointegration.py`
+audited `src/market_lab/backtest/strategies/kalman_pair_cointegration.py`
 and listed it as **CLEAN** — it is a pair stat-arb with a different
 return computation (residual z-score on spread), not the `w_i × r_i`
 leveraged-rotation pattern where the look-ahead bug lived. The F2 fix

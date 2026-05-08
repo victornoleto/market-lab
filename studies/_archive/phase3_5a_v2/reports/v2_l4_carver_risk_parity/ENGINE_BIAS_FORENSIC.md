@@ -9,7 +9,7 @@
 Reports in this directory were produced by a simulator stack that
 **partially** included the buggy Plano A engine. Specifically, the
 L2 Gayed sleeve of the Carver risk-parity blend was computed via
-`src/ai_trade/backtest/strategies/plano_a_leveraged_rotation.py:462`,
+`src/market_lab/backtest/strategies/plano_a_leveraged_rotation.py:462`,
 which contained a **look-ahead bias** (fixed 2026-04-22, commit
 `7b90a8f`). The L1 (TSMOM) and L3 (AFML) sleeves were computed via
 clean engines.

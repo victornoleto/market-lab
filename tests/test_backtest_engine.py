@@ -21,7 +21,7 @@ import pytest
 
 class TestPortfolio:
     def test_starts_flat_with_initial_cash(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         assert p.cash == 10_000.0
@@ -30,7 +30,7 @@ class TestPortfolio:
         assert p.equity == 10_000.0
 
     def test_open_long_position_debits_cash_and_creates_position(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         ts = pd.Timestamp("2024-01-02")
@@ -45,7 +45,7 @@ class TestPortfolio:
         assert pos.mark_price == 150.0  # mark defaults to entry
 
     def test_open_short_position_credits_cash_and_creates_position(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         ts = pd.Timestamp("2024-01-02")
@@ -56,7 +56,7 @@ class TestPortfolio:
         assert p.positions["AAPL"].side == "short"
 
     def test_open_same_side_position_updates_weighted_avg_price(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=100_000.0)
         ts = pd.Timestamp("2024-01-02")
@@ -68,7 +68,7 @@ class TestPortfolio:
         assert pos.avg_entry_price == pytest.approx(110.0)
 
     def test_open_opposite_side_raises_without_closing_first(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         ts = pd.Timestamp("2024-01-02")
@@ -78,7 +78,7 @@ class TestPortfolio:
             p.open_position("AAPL", side="short", volume=5, price=150.0, timestamp=ts)
 
     def test_close_full_long_position_realizes_pnl(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         t_open = pd.Timestamp("2024-01-02")
@@ -99,7 +99,7 @@ class TestPortfolio:
         assert p.cash == pytest.approx(10_100.0)
 
     def test_close_full_short_position_realizes_pnl(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         ts = pd.Timestamp("2024-01-02")
@@ -113,7 +113,7 @@ class TestPortfolio:
         assert p.cash == pytest.approx(10_100.0)
 
     def test_partial_close_is_proportional(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         ts = pd.Timestamp("2024-01-02")
@@ -128,7 +128,7 @@ class TestPortfolio:
         assert p.positions["AAPL"].avg_entry_price == 150.0
 
     def test_close_more_than_open_raises(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         ts = pd.Timestamp("2024-01-02")
@@ -138,7 +138,7 @@ class TestPortfolio:
             p.close_position("AAPL", volume=11, price=150.0, timestamp=ts)
 
     def test_update_mark_drives_unrealized_pnl(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         ts = pd.Timestamp("2024-01-02")
@@ -154,7 +154,7 @@ class TestPortfolio:
         assert p.equity == pytest.approx(10_100.0)
 
     def test_equity_equals_cash_plus_unrealized_sum(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=100_000.0)
         ts = pd.Timestamp("2024-01-02")
@@ -168,7 +168,7 @@ class TestPortfolio:
         assert p.equity == pytest.approx(100_100.0)
 
     def test_apply_cash_flow_changes_cash_only(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         p.apply_cash_flow(-5.0, reason="commission")
@@ -177,7 +177,7 @@ class TestPortfolio:
         assert p.equity == pytest.approx(9_995.0)
 
     def test_record_equity_appends_timestamped_point(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         t1 = pd.Timestamp("2024-01-02")
@@ -200,7 +200,7 @@ class TestPortfolio:
 # ---------------------------------------------------------------------------
 
 def _bar(symbol: str = "AAPL", close: float = 100.0, ts: str = "2024-01-02"):
-    from ai_trade.backtest.engine.execution import Bar
+    from market_lab.backtest.engine.execution import Bar
 
     price = close
     return Bar(
@@ -216,7 +216,7 @@ def _bar(symbol: str = "AAPL", close: float = 100.0, ts: str = "2024-01-02"):
 
 class TestExecution:
     def test_market_buy_fills_at_close_when_no_costs(self):
-        from ai_trade.backtest.engine.execution import (
+        from market_lab.backtest.engine.execution import (
             ExecutionConfig,
             ExecutionSimulator,
             Order,
@@ -231,7 +231,7 @@ class TestExecution:
         assert fill.slippage_cost == 0.0
 
     def test_market_sell_fills_at_close_when_no_costs(self):
-        from ai_trade.backtest.engine.execution import (
+        from market_lab.backtest.engine.execution import (
             ExecutionConfig,
             ExecutionSimulator,
             Order,
@@ -243,7 +243,7 @@ class TestExecution:
         assert fill.fill_price == pytest.approx(150.0)
 
     def test_market_buy_pays_half_spread_and_slippage(self):
-        from ai_trade.backtest.engine.execution import (
+        from market_lab.backtest.engine.execution import (
             ExecutionConfig,
             ExecutionSimulator,
             Order,
@@ -258,7 +258,7 @@ class TestExecution:
         assert fill.slippage_cost == pytest.approx((0.05 + 0.02) * 10)
 
     def test_market_sell_receives_close_minus_half_spread_minus_slippage(self):
-        from ai_trade.backtest.engine.execution import (
+        from market_lab.backtest.engine.execution import (
             ExecutionConfig,
             ExecutionSimulator,
             Order,
@@ -271,7 +271,7 @@ class TestExecution:
         assert fill.slippage_cost == pytest.approx((0.05 + 0.02) * 10)
 
     def test_commission_per_unit_multiplied_by_volume(self):
-        from ai_trade.backtest.engine.execution import (
+        from market_lab.backtest.engine.execution import (
             ExecutionConfig,
             ExecutionSimulator,
             Order,
@@ -282,7 +282,7 @@ class TestExecution:
         assert fill.commission == pytest.approx(1.0)
 
     def test_simulate_fill_rejects_zero_volume(self):
-        from ai_trade.backtest.engine.execution import (
+        from market_lab.backtest.engine.execution import (
             ExecutionConfig,
             ExecutionSimulator,
             Order,
@@ -293,8 +293,8 @@ class TestExecution:
             sim.simulate_fill(Order("AAPL", side="buy", volume=0), _bar())
 
     def test_swap_model_debits_long_at_configured_rate(self):
-        from ai_trade.backtest.engine.execution import SwapModel
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.execution import SwapModel
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         ts = pd.Timestamp("2024-01-02")
@@ -309,8 +309,8 @@ class TestExecution:
         assert p.cash == pytest.approx(cash_before - 0.10)
 
     def test_swap_model_debits_short_at_configured_rate(self):
-        from ai_trade.backtest.engine.execution import SwapModel
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.execution import SwapModel
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         ts = pd.Timestamp("2024-01-02")
@@ -324,8 +324,8 @@ class TestExecution:
         assert p.cash == pytest.approx(cash_before - 10 * 100 * 0.0002)
 
     def test_swap_model_is_noop_on_flat_portfolio(self):
-        from ai_trade.backtest.engine.execution import SwapModel
-        from ai_trade.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.engine.execution import SwapModel
+        from market_lab.backtest.engine.portfolio import Portfolio
 
         p = Portfolio(initial_cash=10_000.0)
         SwapModel(long_rate_per_day=0.01, short_rate_per_day=0.01).charge(
@@ -363,7 +363,7 @@ class _BuyOnceHoldStrategy:
         self._bought = False
 
     def on_bar(self, bars, portfolio, context):
-        from ai_trade.backtest.engine.execution import Order
+        from market_lab.backtest.engine.execution import Order
 
         if self._bought or self.symbol not in bars:
             return []
@@ -381,7 +381,7 @@ class _BuyThenSellStrategy:
         self._seen = 0
 
     def on_bar(self, bars, portfolio, context):
-        from ai_trade.backtest.engine.execution import Order
+        from market_lab.backtest.engine.execution import Order
 
         if self.symbol not in bars:
             return []
@@ -396,8 +396,8 @@ class _BuyThenSellStrategy:
 
 class TestRunner:
     def test_buy_and_hold_no_costs_equity_matches_position_value(self):
-        from ai_trade.backtest.engine.execution import ExecutionConfig, ExecutionSimulator
-        from ai_trade.backtest.engine.runner import Runner
+        from market_lab.backtest.engine.execution import ExecutionConfig, ExecutionSimulator
+        from market_lab.backtest.engine.runner import Runner
 
         data = {"AAPL": _ohlcv([100.0, 110.0, 120.0])}
         runner = Runner(executor=ExecutionSimulator(ExecutionConfig()))
@@ -418,8 +418,8 @@ class TestRunner:
         assert result.trades == []  # never closed, so no closed trades
 
     def test_buy_then_sell_realizes_pnl_and_emits_trade(self):
-        from ai_trade.backtest.engine.execution import ExecutionConfig, ExecutionSimulator
-        from ai_trade.backtest.engine.runner import Runner
+        from market_lab.backtest.engine.execution import ExecutionConfig, ExecutionSimulator
+        from market_lab.backtest.engine.runner import Runner
 
         data = {"AAPL": _ohlcv([100.0, 110.0, 120.0])}
         runner = Runner(executor=ExecutionSimulator(ExecutionConfig()))
@@ -435,8 +435,8 @@ class TestRunner:
         assert len(result.fills) == 2
 
     def test_half_spread_reduces_final_equity_by_spread_cost(self):
-        from ai_trade.backtest.engine.execution import ExecutionConfig, ExecutionSimulator
-        from ai_trade.backtest.engine.runner import Runner
+        from market_lab.backtest.engine.execution import ExecutionConfig, ExecutionSimulator
+        from market_lab.backtest.engine.runner import Runner
 
         data = {"AAPL": _ohlcv([100.0, 110.0, 120.0])}
         runner = Runner(
@@ -452,8 +452,8 @@ class TestRunner:
         assert result.final_equity == pytest.approx(10_199.0)
 
     def test_commission_is_deducted_as_cash_flow(self):
-        from ai_trade.backtest.engine.execution import ExecutionConfig, ExecutionSimulator
-        from ai_trade.backtest.engine.runner import Runner
+        from market_lab.backtest.engine.execution import ExecutionConfig, ExecutionSimulator
+        from market_lab.backtest.engine.runner import Runner
 
         data = {"AAPL": _ohlcv([100.0, 110.0, 120.0])}
         runner = Runner(
@@ -471,12 +471,12 @@ class TestRunner:
         assert result.fills[0].commission == pytest.approx(1.0)
 
     def test_runner_raises_on_order_for_missing_bar(self):
-        from ai_trade.backtest.engine.execution import (
+        from market_lab.backtest.engine.execution import (
             ExecutionConfig,
             ExecutionSimulator,
             Order,
         )
-        from ai_trade.backtest.engine.runner import Runner
+        from market_lab.backtest.engine.runner import Runner
 
         data = {"AAPL": _ohlcv([100.0, 110.0])}
 
@@ -489,12 +489,12 @@ class TestRunner:
             runner.run(strategy=OrdersForMSFT(), data=data, initial_cash=10_000.0)
 
     def test_swap_model_debits_each_bar_for_open_position(self):
-        from ai_trade.backtest.engine.execution import (
+        from market_lab.backtest.engine.execution import (
             ExecutionConfig,
             ExecutionSimulator,
             SwapModel,
         )
-        from ai_trade.backtest.engine.runner import Runner
+        from market_lab.backtest.engine.runner import Runner
 
         # 3 bars at price 100. Hold 10 shares → notional 1000/day. Swap 0.001 = $1/day.
         data = {"AAPL": _ohlcv([100.0, 100.0, 100.0])}
@@ -514,8 +514,8 @@ class TestRunner:
 
     def test_runner_skips_timestamps_with_no_bars(self):
         """Symbol A has bar at T1, symbol B at T2 — Runner calls strategy for both ts."""
-        from ai_trade.backtest.engine.execution import ExecutionConfig, ExecutionSimulator
-        from ai_trade.backtest.engine.runner import Runner
+        from market_lab.backtest.engine.execution import ExecutionConfig, ExecutionSimulator
+        from market_lab.backtest.engine.runner import Runner
 
         df_a = _ohlcv([100.0], start="2024-01-02")  # just T1
         df_b = _ohlcv([200.0], start="2024-01-03")  # just T2

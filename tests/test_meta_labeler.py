@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.meta.meta_labeler import MetaLabeler
+from market_lab.backtest.meta.meta_labeler import MetaLabeler
 
 
 class DummyClassifier:

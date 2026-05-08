@@ -1,4 +1,4 @@
-"""Tests for ``ai_trade.backtest.validation.bootstrap``.
+"""Tests for ``market_lab.backtest.validation.bootstrap``.
 
 Stationary bootstrap (Politis & Romano, 1994) on trade sequences.
 Cited in [advances_fin_ml, p.196-202, ch.11] for Sharpe-CI estimation
@@ -11,7 +11,7 @@ import pytest
 
 
 def test_output_shape_matches_n_resamples_x_n_trades():
-    from ai_trade.backtest.validation.bootstrap import stationary_bootstrap_trades
+    from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
 
     rng = np.random.default_rng(0)
     trades = rng.normal(0, 1, 100)
@@ -20,7 +20,7 @@ def test_output_shape_matches_n_resamples_x_n_trades():
 
 
 def test_reproducible_with_same_seed():
-    from ai_trade.backtest.validation.bootstrap import stationary_bootstrap_trades
+    from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
 
     trades = np.arange(20, dtype=float)
     a = stationary_bootstrap_trades(trades, n_resamples=10, seed=42)
@@ -29,7 +29,7 @@ def test_reproducible_with_same_seed():
 
 
 def test_different_seeds_produce_different_resamples():
-    from ai_trade.backtest.validation.bootstrap import stationary_bootstrap_trades
+    from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
 
     trades = np.arange(50, dtype=float)
     a = stationary_bootstrap_trades(trades, n_resamples=10, seed=1)
@@ -38,7 +38,7 @@ def test_different_seeds_produce_different_resamples():
 
 
 def test_resamples_use_only_original_values():
-    from ai_trade.backtest.validation.bootstrap import stationary_bootstrap_trades
+    from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
 
     trades = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
     out = stationary_bootstrap_trades(trades, n_resamples=100, seed=42)
@@ -47,7 +47,7 @@ def test_resamples_use_only_original_values():
 
 def test_block_mean_1_breaks_serial_adjacency():
     """block_mean=1 ⇒ p=1.0 ⇒ every step is a fresh random index (IID)."""
-    from ai_trade.backtest.validation.bootstrap import stationary_bootstrap_trades
+    from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
 
     trades = np.arange(100, dtype=float)
     out = stationary_bootstrap_trades(trades, block_mean=1, n_resamples=200, seed=42)
@@ -60,7 +60,7 @@ def test_block_mean_1_breaks_serial_adjacency():
 
 def test_large_block_mean_preserves_serial_adjacency():
     """block_mean ≫ n ⇒ very few restarts ⇒ blocks are long ⇒ adjacency preserved."""
-    from ai_trade.backtest.validation.bootstrap import stationary_bootstrap_trades
+    from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
 
     trades = np.arange(20, dtype=float)
     out = stationary_bootstrap_trades(trades, block_mean=100, n_resamples=200, seed=42)
@@ -73,7 +73,7 @@ def test_large_block_mean_preserves_serial_adjacency():
 
 def test_bootstrap_mean_is_unbiased_for_population_mean():
     """Mean of bootstrap-sample means converges to original mean."""
-    from ai_trade.backtest.validation.bootstrap import stationary_bootstrap_trades
+    from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
 
     rng = np.random.default_rng(0)
     trades = rng.normal(loc=2.0, scale=1.0, size=200)
@@ -84,28 +84,28 @@ def test_bootstrap_mean_is_unbiased_for_population_mean():
 
 
 def test_rejects_empty_trades():
-    from ai_trade.backtest.validation.bootstrap import stationary_bootstrap_trades
+    from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
 
     with pytest.raises(ValueError, match="non-empty"):
         stationary_bootstrap_trades(np.array([], dtype=float))
 
 
 def test_rejects_non_1d_trades():
-    from ai_trade.backtest.validation.bootstrap import stationary_bootstrap_trades
+    from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
 
     with pytest.raises(ValueError, match="1-D"):
         stationary_bootstrap_trades(np.zeros((5, 5)))
 
 
 def test_rejects_invalid_block_mean():
-    from ai_trade.backtest.validation.bootstrap import stationary_bootstrap_trades
+    from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
 
     with pytest.raises(ValueError, match="block_mean"):
         stationary_bootstrap_trades(np.arange(10.0), block_mean=0)
 
 
 def test_rejects_invalid_n_resamples():
-    from ai_trade.backtest.validation.bootstrap import stationary_bootstrap_trades
+    from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
 
     with pytest.raises(ValueError, match="n_resamples"):
         stationary_bootstrap_trades(np.arange(10.0), n_resamples=0)
@@ -113,7 +113,7 @@ def test_rejects_invalid_n_resamples():
 
 def test_handles_single_trade():
     """n=1 input: every resample is [trade] × 1 = the single value."""
-    from ai_trade.backtest.validation.bootstrap import stationary_bootstrap_trades
+    from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
 
     trades = np.array([42.0])
     out = stationary_bootstrap_trades(trades, n_resamples=5, seed=42)

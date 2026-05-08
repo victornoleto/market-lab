@@ -27,7 +27,7 @@ Stretch: portfolio approach (multi-strategy / regime-conditional / risk-parity) 
 ## Project state anchor (last verified 2026-04-14)
 
 - **Phase 0** (knowledge base): 33/33 books absorbed and validated. Loadable via `Skill knowledge:knowledge`.
-- **Phase 2** (backtest engine): done, 290/290 tests green. CPCV / PBO / DSR / WF / MCPT in `src/ai_trade/backtest/validation/`.
+- **Phase 2** (backtest engine): done, 290/290 tests green. CPCV / PBO / DSR / WF / MCPT in `src/market_lab/backtest/validation/`.
 - **Phase 2.5 results so far:**
   - Run 1 — Clenow grid yfinance SPX 2015-2023: **FAIL** (PBO 0.524, DSR 0/30).
   - Run 2 — Ehlers BP Swing yfinance ^GSPC 2015-2023: **FAIL** (PBO 0.468 pass but DSR 0/24, WF 2/24).
@@ -44,7 +44,7 @@ Stretch: portfolio approach (multi-strategy / regime-conditional / risk-parity) 
 1. **Clenow Run 3** — full survivorship-free SPX via Tiingo bulk. Bulk in progress 2026-04-14 evening; check `pgrep -af tiingo_bulk_download` first. Cmd: `.venv/bin/python scripts/run_grid_clenow.py --data-source tiingo --storage-root data/tiingo --start 2015-01-01 --end 2023-12-31 --output-dir reports/ --n-jobs 4`.
 2. **Combined Clenow + Ehlers regime-conditional portfolio.** Run 2 found correlation between best equity curves was -0.0108 (near-orthogonal). Test if a risk-budgeted blend or regime overlay (Chen `regime_change`) lifts the combined verdict above gates.
 3. **Ehlers SPY long-history 1993-2026** — extends T~2200 → T~8000 for DSR power. May rescue Sharpe-significance even if absolute Sharpe stays at 0.43.
-4. **AFML triple-barrier + meta-labeling** (López de Prado `advances_fin_ml` ch.3) — direction primary + ML confidence secondary. Not yet implemented in `src/ai_trade/backtest/strategies/`.
+4. **AFML triple-barrier + meta-labeling** (López de Prado `advances_fin_ml` ch.3) — direction primary + ML confidence secondary. Not yet implemented in `src/market_lab/backtest/strategies/`.
 5. **Chan mean-reversion / pairs cointegration** (`algo_trading_chan` ch.3, `quant_trading_chan` ch.4). Not yet implemented.
 6. **Carver risk-parity** across diversified Pepperstone-tradable instruments (`systematic_trading` chs.7-9). Not yet implemented.
 7. **Knowledge-base audit** — Are any of the 33 books underused? Any thematic gap (e.g. options/derivatives, microstructure)? See `knowledge/SKILL.md` topic coverage.

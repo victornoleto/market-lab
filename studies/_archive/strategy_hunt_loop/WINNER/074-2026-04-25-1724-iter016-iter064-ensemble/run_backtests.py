@@ -42,7 +42,7 @@ from iter074_ensemble import (  # noqa: E402
 )
 from numpy_reference_iter074 import combine_iter016_iter064_np  # noqa: E402
 
-from ai_trade.backtest.metrics.performance import (  # noqa: E402
+from market_lab.backtest.metrics.performance import (  # noqa: E402
     cagr as _cagr,
     max_drawdown as _max_drawdown,
     sharpe as _sharpe,

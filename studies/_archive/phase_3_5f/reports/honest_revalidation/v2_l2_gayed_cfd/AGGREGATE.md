@@ -233,7 +233,7 @@ triggered by this file.
 
 **Engine fix commit:**
 - `7b90a8f` — `fix(backtest): shift weight×return alignment to remove
-  lookahead bias` (patches `src/ai_trade/backtest/strategies/plano_a_leveraged_rotation.py`
+  lookahead bias` (patches `src/market_lab/backtest/strategies/plano_a_leveraged_rotation.py`
   and the other engines identified in F1 inventory).
 
 **Buggy baseline (preserved, do not edit — forensic record):**

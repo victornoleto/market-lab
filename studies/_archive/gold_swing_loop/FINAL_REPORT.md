@@ -32,7 +32,7 @@ The gold day/swing problem appears **structurally limited**. The user
 decided to halt at iter 25 (2026-04-26 19:05) without reaching the
 planned 100-iter target. Loop can be resumed in the future without loss
 — full state preserved on branch `gold-swing/iter-001`, worktree at
-`/tmp/ai-trade-gold-swing`.
+`/tmp/market-lab-gold-swing`.
 
 ---
 
@@ -261,9 +261,9 @@ When (if) revisiting this problem, the highest-EV directions are:
 ## State preserved (for resume)
 
 - Branch: `gold-swing/iter-001`
-- Worktree: `/tmp/ai-trade-gold-swing` (delete with `git worktree remove`
+- Worktree: `/tmp/market-lab-gold-swing` (delete with `git worktree remove`
   if not resuming soon)
-- Main repo path: `/var/www/pessoal/ai-trade`
+- Main repo path: `/var/www/github/finances/market-lab`
 - Last commit: `366cdf6 gold-swing: iter 025 — iteration 025`
 - BASE_MEMORY: `studies/gold_swing_loop/BASE_MEMORY.md` (frontmatter
   shows `total_iterations: 25`, `cumulative_n_trials: 25`,
@@ -271,7 +271,7 @@ When (if) revisiting this problem, the highest-EV directions are:
 - DEAD_ENDS catalog: `studies/gold_swing_loop/DEAD_ENDS.md` (inherited
   IC-1..IC-8 + gold-specific GS-1..GS-N entries)
 
-To resume: `cd /tmp/ai-trade-gold-swing && MAX_ITER=N nohup bash
+To resume: `cd /tmp/market-lab-gold-swing && MAX_ITER=N nohup bash
 studies/gold_swing_loop/run_loop.sh > /tmp/gold_swing_resume.out 2>&1 &`
 
 ---

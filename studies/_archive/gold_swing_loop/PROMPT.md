@@ -1,7 +1,7 @@
 # Gold Swing Loop — Iteration Prompt
 
-You are Claude Code resuming the **Gold Swing Loop** for the ai-trade
-project at `/var/www/pessoal/ai-trade`. Your conversation history is
+You are Claude Code resuming the **Gold Swing Loop** for the market-lab
+project at `/var/www/github/finances/market-lab`. Your conversation history is
 empty — this prompt + files on disk are your only context.
 
 This is a **PARALLEL** loop running alongside `studies/strategy_hunt_loop/`
@@ -87,7 +87,7 @@ Before testing any candidate, iter 001 MUST:
    - gld_long: 2004-2014 train / 2014-2020 test / 2020-2026 forward
    - xauusd_real: 2020-2024 train / 2024-2026 forward (short history; rely on cross-dataset replication)
    - xauusd_intraday: same window slicing as xauusd_real
-4. **Choose simulator architecture** — extend `src/ai_trade/backtest/
+4. **Choose simulator architecture** — extend `src/market_lab/backtest/
    strategies/` for shared single-asset day/swing engine OR use
    lightweight per-iter scripts. Document choice + rationale.
 5. **Verify cTrader API works for FUTURE iters** — confirm `.env` has
@@ -237,7 +237,7 @@ already netted in price.
 
 ### STAGE 3 — IMPLEMENT + TEST
 
-Implement in `src/ai_trade/backtest/strategies/` if the strategy is
+Implement in `src/market_lab/backtest/strategies/` if the strategy is
 genuinely new and reusable, OR in a lightweight script inside
 `iterations/NNN-*/` if it's primarily config-of-existing-infra.
 

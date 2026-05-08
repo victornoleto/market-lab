@@ -11,16 +11,16 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.metrics.performance import cagr as _cagr
-from ai_trade.backtest.strategies.ema_sma_threshold_educational import (
+from market_lab.backtest.metrics.performance import cagr as _cagr
+from market_lab.backtest.strategies.ema_sma_threshold_educational import (
     EMASMAThresholdConfig,
 )
-from ai_trade.backtest.strategies.stop_loss_and_risk_signals import (
+from market_lab.backtest.strategies.stop_loss_and_risk_signals import (
     RiskSignalConfig,
     StopLossConfig,
     simulate_with_stop_and_risk,
 )
-from ai_trade.backtest.strategies.stop_loss_and_risk_signals_numpy import (
+from market_lab.backtest.strategies.stop_loss_and_risk_signals_numpy import (
     simulate_with_stop_and_risk_numpy,
 )
 

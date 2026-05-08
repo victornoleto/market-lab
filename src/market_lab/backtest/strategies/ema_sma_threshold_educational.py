@@ -3,7 +3,7 @@
 Return-series simulator for a trend-following rule on SPY total return,
 with both long and short leveraged legs selected via a moving-average
 band. Mirror of the Gayed LRS pattern in
-:mod:`ai_trade.backtest.strategies.letf_rotation`, extended to allow
+:mod:`market_lab.backtest.strategies.letf_rotation`, extended to allow
 negative leverage on the SELL leg (inverse / short leveraged ETFs).
 
 Signal (daily, hysteresis band)

@@ -294,7 +294,7 @@ com `{passed, failed: {id: error}, n_total}`.
 
 ---
 
-## 8. Compliance mandate ai-trade
+## 8. Compliance mandate market-lab
 
 - Plano A DORMANT (mandate §1, §7) continua. Replicator é research-only.
 - Pass em 5R **não** autoriza Plano A; apenas Stage 3 proper (Phase 8) que herda gates §2.4.

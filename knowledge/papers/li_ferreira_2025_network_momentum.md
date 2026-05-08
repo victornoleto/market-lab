@@ -36,7 +36,7 @@
 - Real historical Sharpe (NMM-SDDTW-E): **0.328** (below bootstrapped average)
 - Transaction costs = 2–3% annualized drag
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **LOW relevance for Phase 3.7-3.** Best Sharpe 0.35 net is **far below the Phase 3.6 gate 2 of 1.5** — a 4.3× improvement would be needed for viability.
 - **STRONG EVIDENCE supporting the Phase 3.6 null interpretation.** State-of-art ML trend-following in peer-adjacent venue cannot break the gate either — reinforces that the null finding is robust, not an artifact.

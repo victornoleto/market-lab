@@ -383,7 +383,7 @@ Strategy vs SPY:
 ```
 
 The standard report + SPY benchmark block come from the existing
-`src/ai_trade/backtest/metrics/standard_report.py` helper —
+`src/market_lab/backtest/metrics/standard_report.py` helper —
 reuse, do not duplicate.
 
 ---
@@ -406,7 +406,7 @@ entries terse.
 ## 7. Pseudo-code: minimal helpers the agent may reuse
 
 ```python
-from ai_trade.backtest.sweeps.registry import (
+from market_lab.backtest.sweeps.registry import (
     load_registry,
     atomic_write_registry,
     append_done,

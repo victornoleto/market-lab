@@ -213,7 +213,7 @@ from studies.spy_beater_hunt.scoring import score_strategy_spy_beater
 ## Bash command examples (next session)
 
 ```bash
-cd /var/www/pessoal/ai-trade
+cd /var/www/github/finances/market-lab
 source .venv/bin/activate
 
 # Verify foundation in place

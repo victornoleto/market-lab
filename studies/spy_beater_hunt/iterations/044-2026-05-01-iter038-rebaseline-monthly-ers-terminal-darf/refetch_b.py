@@ -9,7 +9,7 @@ Fix:
   batch_b2 (26y): M2, M3 — DBMF-containing, honest 26y window with caveat
 """
 import sys
-sys.path.insert(0, '/var/www/pessoal/ai-trade/studies/spy_beater_hunt/iterations/044-2026-05-01-iter038-rebaseline-monthly-ers-terminal-darf')
+sys.path.insert(0, '/var/www/github/finances/market-lab/studies/spy_beater_hunt/iterations/044-2026-05-01-iter038-rebaseline-monthly-ers-terminal-darf')
 
 import json
 import os

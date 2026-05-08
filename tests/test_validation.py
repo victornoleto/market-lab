@@ -22,7 +22,7 @@ import pytest
 
 class TestPurgedKFold:
     def test_single_horizon_labels_produces_k_splits(self):
-        from ai_trade.backtest.validation.cpcv import purged_kfold_splits
+        from market_lab.backtest.validation.cpcv import purged_kfold_splits
 
         idx = pd.date_range("2024-01-01", periods=20, freq="D")
         times = pd.Series(idx, index=idx)  # t1 == t0: no overlap, no purge
@@ -35,7 +35,7 @@ class TestPurgedKFold:
             assert len(np.intersect1d(train_idx, test_idx)) == 0
 
     def test_union_of_test_sets_covers_all_observations(self):
-        from ai_trade.backtest.validation.cpcv import purged_kfold_splits
+        from market_lab.backtest.validation.cpcv import purged_kfold_splits
 
         idx = pd.date_range("2024-01-01", periods=20, freq="D")
         times = pd.Series(idx, index=idx)
@@ -46,7 +46,7 @@ class TestPurgedKFold:
         assert sorted(all_test.tolist()) == list(range(20))
 
     def test_overlap_labels_purges_train_observations_that_cross_test_boundary(self):
-        from ai_trade.backtest.validation.cpcv import purged_kfold_splits
+        from market_lab.backtest.validation.cpcv import purged_kfold_splits
 
         # 20 obs, each label lasts 3 bars → t1_i = t0_i + 2 days.
         # Split 0 = test[0..3] → test_t0_min = 2024-01-01, test_t1_max = 2024-01-06.
@@ -68,7 +68,7 @@ class TestPurgedKFold:
         assert 19 in train_idx
 
     def test_embargo_extends_purge_beyond_test_end(self):
-        from ai_trade.backtest.validation.cpcv import purged_kfold_splits
+        from market_lab.backtest.validation.cpcv import purged_kfold_splits
 
         idx = pd.date_range("2024-01-01", periods=20, freq="D")
         times = pd.Series(idx, index=idx)  # no label overlap
@@ -84,7 +84,7 @@ class TestPurgedKFold:
         assert 6 in train_idx
 
     def test_middle_split_purges_both_sides(self):
-        from ai_trade.backtest.validation.cpcv import purged_kfold_splits
+        from market_lab.backtest.validation.cpcv import purged_kfold_splits
 
         idx = pd.date_range("2024-01-01", periods=20, freq="D")
         t1 = idx + pd.Timedelta(days=1)  # 2-bar labels
@@ -102,7 +102,7 @@ class TestPurgedKFold:
         assert 13 in train_idx
 
     def test_invalid_n_splits_raises(self):
-        from ai_trade.backtest.validation.cpcv import purged_kfold_splits
+        from market_lab.backtest.validation.cpcv import purged_kfold_splits
 
         idx = pd.date_range("2024-01-01", periods=20, freq="D")
         times = pd.Series(idx, index=idx)
@@ -126,7 +126,7 @@ class TestPBO:
         chance) because CSCV partitions share blocks and are NOT independent.
         Averaging over ≥20 fresh matrices brings the estimate within range.
         """
-        from ai_trade.backtest.validation.pbo import pbo
+        from market_lab.backtest.validation.pbo import pbo
 
         rng = np.random.default_rng(seed=42)
         pbos = [pbo(rng.standard_normal((500, 50)), n_blocks=8).pbo for _ in range(20)]
@@ -140,7 +140,7 @@ class TestPBO:
         ``C(4,2) = 6`` zero-sum partitions out of ``C(8,4) = 70`` → upper bound
         on PBO ≈ 64/70 = 0.914. Assert ≥ 0.90 with slack for numerical ties.
         """
-        from ai_trade.backtest.validation.pbo import pbo
+        from market_lab.backtest.validation.pbo import pbo
 
         rng = np.random.default_rng(seed=42)
         T, N = 400, 20
@@ -151,7 +151,7 @@ class TestPBO:
         assert result.pbo >= 0.90
 
     def test_dominant_strategy_gives_pbo_near_0(self):
-        from ai_trade.backtest.validation.pbo import pbo
+        from market_lab.backtest.validation.pbo import pbo
 
         rng = np.random.default_rng(seed=42)
         T, N = 500, 10
@@ -162,14 +162,14 @@ class TestPBO:
         assert result.pbo < 0.05
 
     def test_pbo_in_unit_interval(self):
-        from ai_trade.backtest.validation.pbo import pbo
+        from market_lab.backtest.validation.pbo import pbo
 
         rng = np.random.default_rng(seed=0)
         result = pbo(rng.standard_normal((200, 10)), n_blocks=6)
         assert 0.0 <= result.pbo <= 1.0
 
     def test_logits_length_matches_number_of_combinations(self):
-        from ai_trade.backtest.validation.pbo import pbo
+        from market_lab.backtest.validation.pbo import pbo
         from math import comb
 
         rng = np.random.default_rng(seed=0)
@@ -177,21 +177,21 @@ class TestPBO:
         assert len(result.logits) == comb(8, 4)
 
     def test_odd_n_blocks_rounded_down_to_even(self):
-        from ai_trade.backtest.validation.pbo import pbo
+        from market_lab.backtest.validation.pbo import pbo
 
         rng = np.random.default_rng(seed=0)
         result = pbo(rng.standard_normal((200, 10)), n_blocks=9)
         assert result.n_blocks == 8
 
     def test_requires_multiple_strategies(self):
-        from ai_trade.backtest.validation.pbo import pbo
+        from market_lab.backtest.validation.pbo import pbo
 
         with pytest.raises(ValueError, match="at least 2"):
             pbo(np.ones((100, 1)), n_blocks=4)
 
     def test_gate_rejects_when_above_threshold(self):
         """PBO > 0.5 → reject. AFML rule p.208-211."""
-        from ai_trade.backtest.validation.pbo import pbo_gate
+        from market_lab.backtest.validation.pbo import pbo_gate
 
         assert pbo_gate(0.6) == "reject"
         assert pbo_gate(0.5) == "reject"  # boundary inclusive on the bad side
@@ -205,7 +205,7 @@ class TestPBO:
         The guard emits a ``UserWarning`` when N < ``MIN_HONEST_N_CONFIGS``.
         """
         import warnings
-        from ai_trade.backtest.validation.pbo import MIN_HONEST_N_CONFIGS, pbo
+        from market_lab.backtest.validation.pbo import MIN_HONEST_N_CONFIGS, pbo
 
         assert MIN_HONEST_N_CONFIGS >= 4
 
@@ -240,7 +240,7 @@ class TestPBO:
         seeds at N=2 spans a much wider range than at N=20. AFML p.208-211.
         """
         import warnings
-        from ai_trade.backtest.validation.pbo import pbo
+        from market_lab.backtest.validation.pbo import pbo
 
         pbos_n2, pbos_n20 = [], []
         with warnings.catch_warnings():
@@ -267,17 +267,17 @@ class TestDSR:
 
     def test_psr_equals_half_when_observed_equals_benchmark(self):
         """PSR[SR* = SR_hat] = Φ(0) = 0.5 (zero numerator)."""
-        from ai_trade.backtest.validation.dsr import psr
+        from market_lab.backtest.validation.dsr import psr
 
         rng = np.random.default_rng(seed=0)
         returns = rng.standard_normal(500) * 0.01 + 0.001
-        from ai_trade.backtest.validation.dsr import sharpe_periodic
+        from market_lab.backtest.validation.dsr import sharpe_periodic
 
         sr = sharpe_periodic(returns)
         assert psr(returns, benchmark=sr) == pytest.approx(0.5, abs=1e-10)
 
     def test_psr_increases_with_higher_observed_sharpe(self):
-        from ai_trade.backtest.validation.dsr import psr
+        from market_lab.backtest.validation.dsr import psr
 
         rng = np.random.default_rng(seed=0)
         noise = rng.standard_normal(500) * 0.01
@@ -287,7 +287,7 @@ class TestDSR:
         assert psr(high_sr, benchmark=0.0) > psr(low_sr, benchmark=0.0)
 
     def test_psr_in_unit_interval(self):
-        from ai_trade.backtest.validation.dsr import psr
+        from market_lab.backtest.validation.dsr import psr
 
         rng = np.random.default_rng(seed=0)
         returns = rng.standard_normal(300) * 0.01
@@ -296,7 +296,7 @@ class TestDSR:
             assert 0.0 <= p <= 1.0
 
     def test_expected_max_sharpe_monotone_in_n(self):
-        from ai_trade.backtest.validation.dsr import expected_max_sharpe
+        from market_lab.backtest.validation.dsr import expected_max_sharpe
 
         # E[SR_max] should grow with N (more trials → higher max of iid draws).
         values = [expected_max_sharpe(n) for n in [2, 5, 10, 100, 1000]]
@@ -304,7 +304,7 @@ class TestDSR:
 
     def test_expected_max_sharpe_matches_monte_carlo(self):
         """Formula from AFML p.222 must track the Monte Carlo max of N iid N(0,1)."""
-        from ai_trade.backtest.validation.dsr import expected_max_sharpe
+        from market_lab.backtest.validation.dsr import expected_max_sharpe
 
         rng = np.random.default_rng(seed=0)
         for n in [5, 10, 100, 1000]:
@@ -313,14 +313,14 @@ class TestDSR:
             assert abs(formula - mc) / mc < 0.05
 
     def test_expected_max_sharpe_rejects_n_less_than_2(self):
-        from ai_trade.backtest.validation.dsr import expected_max_sharpe
+        from market_lab.backtest.validation.dsr import expected_max_sharpe
 
         with pytest.raises(ValueError):
             expected_max_sharpe(1)
 
     def test_dsr_sits_near_half_when_observed_matches_benchmark(self):
         """A Sharpe exactly at the multiple-testing benchmark gives DSR ≈ 0.5."""
-        from ai_trade.backtest.validation.dsr import dsr, expected_max_sharpe
+        from market_lab.backtest.validation.dsr import dsr, expected_max_sharpe
 
         T = 500
         rng = np.random.default_rng(seed=0)
@@ -333,7 +333,7 @@ class TestDSR:
         assert 0.45 <= result.dsr <= 0.55
 
     def test_dsr_accepts_truly_exceptional_sharpe(self):
-        from ai_trade.backtest.validation.dsr import dsr
+        from market_lab.backtest.validation.dsr import dsr
 
         rng = np.random.default_rng(seed=0)
         returns = rng.standard_normal(500) * 0.01 + 0.003  # strong alpha
@@ -341,7 +341,7 @@ class TestDSR:
         assert result.dsr > 0.95
 
     def test_dsr_result_has_p_value_and_benchmark(self):
-        from ai_trade.backtest.validation.dsr import dsr
+        from market_lab.backtest.validation.dsr import dsr
 
         rng = np.random.default_rng(seed=0)
         result = dsr(rng.standard_normal(300) * 0.01, n_trials=10)
@@ -352,14 +352,14 @@ class TestDSR:
         assert result.benchmark_sharpe > 0
 
     def test_sharpe_periodic_matches_mean_over_std(self):
-        from ai_trade.backtest.validation.dsr import sharpe_periodic
+        from market_lab.backtest.validation.dsr import sharpe_periodic
 
         returns = np.array([0.01, -0.02, 0.015, 0.005, -0.01, 0.02])
         expected = returns.mean() / returns.std(ddof=0)
         assert sharpe_periodic(returns) == pytest.approx(expected)
 
     def test_sharpe_annualized_scales_by_sqrt_periods(self):
-        from ai_trade.backtest.validation.dsr import sharpe_annualized, sharpe_periodic
+        from market_lab.backtest.validation.dsr import sharpe_annualized, sharpe_periodic
 
         rng = np.random.default_rng(seed=0)
         returns = rng.standard_normal(252) * 0.01 + 0.0005
@@ -373,14 +373,14 @@ class TestWalkForward:
 
     def test_number_of_windows_matches_formula(self):
         """``n_windows = floor((T - is - oos) / step) + 1``."""
-        from ai_trade.backtest.validation.walk_forward import walk_forward_splits
+        from market_lab.backtest.validation.walk_forward import walk_forward_splits
 
         # T=1000, is=500, oos=100, step=100 → (1000-500-100)//100 + 1 = 5
         splits = list(walk_forward_splits(n_obs=1000, is_size=500, oos_size=100, step=100))
         assert len(splits) == 5
 
     def test_first_window_starts_at_zero(self):
-        from ai_trade.backtest.validation.walk_forward import walk_forward_splits
+        from market_lab.backtest.validation.walk_forward import walk_forward_splits
 
         (train, test), *_ = list(
             walk_forward_splits(n_obs=1000, is_size=500, oos_size=100, step=100)
@@ -389,14 +389,14 @@ class TestWalkForward:
         assert test == range(500, 600)
 
     def test_subsequent_windows_slide_by_step(self):
-        from ai_trade.backtest.validation.walk_forward import walk_forward_splits
+        from market_lab.backtest.validation.walk_forward import walk_forward_splits
 
         splits = list(walk_forward_splits(n_obs=1000, is_size=500, oos_size=100, step=100))
         assert splits[1] == (range(100, 600), range(600, 700))
         assert splits[4] == (range(400, 900), range(900, 1000))
 
     def test_train_and_test_never_overlap(self):
-        from ai_trade.backtest.validation.walk_forward import walk_forward_splits
+        from market_lab.backtest.validation.walk_forward import walk_forward_splits
 
         for train, test in walk_forward_splits(
             n_obs=500, is_size=200, oos_size=50, step=25
@@ -406,19 +406,19 @@ class TestWalkForward:
             assert train_set.isdisjoint(test_set)
 
     def test_last_window_does_not_exceed_data(self):
-        from ai_trade.backtest.validation.walk_forward import walk_forward_splits
+        from market_lab.backtest.validation.walk_forward import walk_forward_splits
 
         *_, last = list(walk_forward_splits(n_obs=500, is_size=200, oos_size=50, step=25))
         assert last[1].stop <= 500
 
     def test_raises_if_data_too_short_for_one_window(self):
-        from ai_trade.backtest.validation.walk_forward import walk_forward_splits
+        from market_lab.backtest.validation.walk_forward import walk_forward_splits
 
         with pytest.raises(ValueError, match="at least"):
             list(walk_forward_splits(n_obs=100, is_size=200, oos_size=50, step=10))
 
     def test_raises_on_invalid_step(self):
-        from ai_trade.backtest.validation.walk_forward import walk_forward_splits
+        from market_lab.backtest.validation.walk_forward import walk_forward_splits
 
         with pytest.raises(ValueError):
             list(walk_forward_splits(n_obs=500, is_size=100, oos_size=50, step=0))
@@ -427,28 +427,28 @@ class TestWalkForward:
 
     def test_gate_passes_when_rule5_satisfied(self):
         """Rule #5: ≥8 windows, ≥6 profitable, max DD ≤ 25%."""
-        from ai_trade.backtest.validation.walk_forward import walk_forward_gate
+        from market_lab.backtest.validation.walk_forward import walk_forward_gate
 
         oos_returns_per_window = [0.05] * 7 + [-0.05]  # 7 profitable out of 8
         drawdowns = [0.10] * 8  # all DD under 25%
         assert walk_forward_gate(oos_returns_per_window, drawdowns) == "pass"
 
     def test_gate_rejects_when_too_few_windows(self):
-        from ai_trade.backtest.validation.walk_forward import walk_forward_gate
+        from market_lab.backtest.validation.walk_forward import walk_forward_gate
 
         assert (
             walk_forward_gate([0.1] * 5, [0.05] * 5) == "reject"
         )  # only 5 windows, need ≥8
 
     def test_gate_rejects_when_drawdown_exceeds_threshold(self):
-        from ai_trade.backtest.validation.walk_forward import walk_forward_gate
+        from market_lab.backtest.validation.walk_forward import walk_forward_gate
 
         assert (
             walk_forward_gate([0.05] * 8, [0.10] * 7 + [0.30]) == "reject"
         )  # one DD at 30% > 25%
 
     def test_gate_rejects_when_too_few_profitable(self):
-        from ai_trade.backtest.validation.walk_forward import walk_forward_gate
+        from market_lab.backtest.validation.walk_forward import walk_forward_gate
 
         assert walk_forward_gate([0.05] * 5 + [-0.05] * 3, [0.10] * 8) == "reject"
 
@@ -457,7 +457,7 @@ class TestPermutation:
     """MCPT from Masters' ``MCPT_TRN.CPP`` / ``MCPT_BARS.CPP``."""
 
     def test_permuted_prices_preserve_first_and_last(self):
-        from ai_trade.backtest.validation.permutation import permute_prices
+        from market_lab.backtest.validation.permutation import permute_prices
 
         rng = np.random.default_rng(seed=0)
         prices = np.log(np.cumsum(rng.standard_normal(100) + 0.01) + 100)
@@ -467,7 +467,7 @@ class TestPermutation:
 
     def test_permuted_prices_preserve_return_distribution(self):
         """Sorted changes must match — only their order is shuffled."""
-        from ai_trade.backtest.validation.permutation import permute_prices
+        from market_lab.backtest.validation.permutation import permute_prices
 
         rng = np.random.default_rng(seed=0)
         prices = np.cumsum(rng.standard_normal(200))
@@ -478,7 +478,7 @@ class TestPermutation:
         np.testing.assert_allclose(orig_changes, perm_changes)
 
     def test_permuted_prices_actually_shuffle_interior(self):
-        from ai_trade.backtest.validation.permutation import permute_prices
+        from market_lab.backtest.validation.permutation import permute_prices
 
         rng = np.random.default_rng(seed=0)
         prices = np.cumsum(rng.standard_normal(200))
@@ -489,7 +489,7 @@ class TestPermutation:
 
     def test_mcpt_p_value_rejects_ar1_momentum_under_null_of_iid(self):
         """AR(1) prices have serial autocorr; shuffling destroys it → low p-value."""
-        from ai_trade.backtest.validation.permutation import monte_carlo_permutation_test
+        from market_lab.backtest.validation.permutation import monte_carlo_permutation_test
 
         rng = np.random.default_rng(seed=42)
         # Strong AR(1) returns: r_t = 0.5·r_{t-1} + ε_t
@@ -511,7 +511,7 @@ class TestPermutation:
 
     def test_mcpt_p_value_for_iid_returns_is_uniform_ish(self):
         """Under the null (iid returns), p-value distribution is ≈ Uniform[0, 1]."""
-        from ai_trade.backtest.validation.permutation import monte_carlo_permutation_test
+        from market_lab.backtest.validation.permutation import monte_carlo_permutation_test
 
         rng = np.random.default_rng(seed=0)
         p_values = []
@@ -530,7 +530,7 @@ class TestPermutation:
         assert 0.30 <= np.mean(p_values) <= 0.70
 
     def test_mcpt_p_value_in_unit_interval(self):
-        from ai_trade.backtest.validation.permutation import monte_carlo_permutation_test
+        from market_lab.backtest.validation.permutation import monte_carlo_permutation_test
 
         rng = np.random.default_rng(seed=0)
         prices = np.cumsum(rng.standard_normal(100))
@@ -540,7 +540,7 @@ class TestPermutation:
         assert 0.0 <= result.p_value <= 1.0
 
     def test_mcpt_deterministic_with_seed(self):
-        from ai_trade.backtest.validation.permutation import monte_carlo_permutation_test
+        from market_lab.backtest.validation.permutation import monte_carlo_permutation_test
 
         def stat(p):
             d = np.diff(p)
@@ -555,7 +555,7 @@ class TestPermutation:
         assert r1.p_value == r2.p_value
 
     def test_mcpt_result_contains_observed_and_distribution(self):
-        from ai_trade.backtest.validation.permutation import monte_carlo_permutation_test
+        from market_lab.backtest.validation.permutation import monte_carlo_permutation_test
 
         rng = np.random.default_rng(seed=0)
         prices = np.cumsum(rng.standard_normal(100))
@@ -569,18 +569,18 @@ class TestPermutation:
 class TestCPCV:
     def test_path_count_formula_N6_k2_gives_5_paths(self):
         """φ[N, k] = C(N,k) · k / N. For N=6, k=2: C(6,2)=15, φ=5 [p.219-220]."""
-        from ai_trade.backtest.validation.cpcv import cpcv_path_count
+        from market_lab.backtest.validation.cpcv import cpcv_path_count
 
         assert cpcv_path_count(6, 2) == 5
 
     def test_path_count_formula_N10_k2_gives_9_paths(self):
-        from ai_trade.backtest.validation.cpcv import cpcv_path_count
+        from market_lab.backtest.validation.cpcv import cpcv_path_count
 
         # C(10, 2) = 45, k/N = 2/10 → φ = 9
         assert cpcv_path_count(10, 2) == 9
 
     def test_path_count_invalid_k_raises(self):
-        from ai_trade.backtest.validation.cpcv import cpcv_path_count
+        from market_lab.backtest.validation.cpcv import cpcv_path_count
 
         with pytest.raises(ValueError):
             cpcv_path_count(5, 6)
@@ -589,7 +589,7 @@ class TestCPCV:
 
     def test_generates_combinations_of_test_groups(self):
         """N=6, k=2 → C(6,2) = 15 splits. [p.219]"""
-        from ai_trade.backtest.validation.cpcv import cpcv_splits
+        from market_lab.backtest.validation.cpcv import cpcv_splits
 
         idx = pd.date_range("2024-01-01", periods=60, freq="D")
         times = pd.Series(idx, index=idx)
@@ -599,7 +599,7 @@ class TestCPCV:
 
     def test_each_group_appears_in_phi_test_sets(self):
         """Each group belongs to φ[N,k] test sets by symmetry. [p.219-220]"""
-        from ai_trade.backtest.validation.cpcv import cpcv_splits
+        from market_lab.backtest.validation.cpcv import cpcv_splits
 
         idx = pd.date_range("2024-01-01", periods=60, freq="D")
         times = pd.Series(idx, index=idx)
@@ -618,7 +618,7 @@ class TestCPCV:
         assert list(counts) == [5, 5, 5, 5, 5, 5]
 
     def test_train_and_test_never_overlap(self):
-        from ai_trade.backtest.validation.cpcv import cpcv_splits
+        from market_lab.backtest.validation.cpcv import cpcv_splits
 
         idx = pd.date_range("2024-01-01", periods=60, freq="D")
         times = pd.Series(idx, index=idx)
@@ -627,7 +627,7 @@ class TestCPCV:
             assert len(np.intersect1d(train_idx, test_idx)) == 0
 
     def test_test_sets_concatenate_two_groups_worth_of_observations(self):
-        from ai_trade.backtest.validation.cpcv import cpcv_splits
+        from market_lab.backtest.validation.cpcv import cpcv_splits
 
         idx = pd.date_range("2024-01-01", periods=60, freq="D")
         times = pd.Series(idx, index=idx)
@@ -637,7 +637,7 @@ class TestCPCV:
 
     def test_purge_and_embargo_applied_per_combination(self):
         """With overlapping labels, each test set's span purges train obs. [p.149-154]"""
-        from ai_trade.backtest.validation.cpcv import cpcv_splits
+        from market_lab.backtest.validation.cpcv import cpcv_splits
 
         idx = pd.date_range("2024-01-01", periods=60, freq="D")
         t1 = idx + pd.Timedelta(days=2)  # 3-bar labels

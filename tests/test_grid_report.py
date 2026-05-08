@@ -1,4 +1,4 @@
-"""Tests for ``ai_trade.backtest.grid.report`` — GridReportGenerator.
+"""Tests for ``market_lab.backtest.grid.report`` — GridReportGenerator.
 
 GridReportGenerator emits Markdown + PNG assets summarizing a grid run.
 Two entry points:
@@ -23,14 +23,14 @@ import pandas as pd
 
 def _build_synthetic_world(n_configs: int = 3, seed: int = 0):
     """Assemble grid + verdict + wf_results + diagnostic for report tests."""
-    from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
-    from ai_trade.backtest.grid.gates import GateVerdict
-    from ai_trade.backtest.grid.result import GridResult, TrialResult
-    from ai_trade.backtest.grid.walk_forward import WFResult
-    from ai_trade.backtest.validation.dsr import DSRResult
-    from ai_trade.backtest.validation.pbo import PBOResult
+    from market_lab.backtest.engine.runner import BacktestResult
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.diagnostic import DiagnosticAnalyzer
+    from market_lab.backtest.grid.gates import GateVerdict
+    from market_lab.backtest.grid.result import GridResult, TrialResult
+    from market_lab.backtest.grid.walk_forward import WFResult
+    from market_lab.backtest.validation.dsr import DSRResult
+    from market_lab.backtest.validation.pbo import PBOResult
 
     rng = np.random.default_rng(seed)
     trials = []
@@ -92,7 +92,7 @@ def _build_synthetic_world(n_configs: int = 3, seed: int = 0):
 
 
 def test_write_pass_report_creates_summary_markdown(tmp_path: Path):
-    from ai_trade.backtest.grid.report import GridReportGenerator
+    from market_lab.backtest.grid.report import GridReportGenerator
 
     grid, verdict, wf_results, _diagnostic = _build_synthetic_world(n_configs=3)
     path = GridReportGenerator().write_pass_report(
@@ -109,7 +109,7 @@ def test_write_pass_report_creates_summary_markdown(tmp_path: Path):
 
 
 def test_write_pass_report_references_best_config(tmp_path: Path):
-    from ai_trade.backtest.grid.report import GridReportGenerator
+    from market_lab.backtest.grid.report import GridReportGenerator
 
     grid, verdict, wf_results, _diagnostic = _build_synthetic_world(n_configs=3)
     path = GridReportGenerator().write_pass_report(
@@ -125,7 +125,7 @@ def test_write_pass_report_references_best_config(tmp_path: Path):
 
 
 def test_write_pass_report_creates_assets_directory(tmp_path: Path):
-    from ai_trade.backtest.grid.report import GridReportGenerator
+    from market_lab.backtest.grid.report import GridReportGenerator
 
     grid, verdict, wf_results, _diagnostic = _build_synthetic_world(n_configs=3)
     GridReportGenerator().write_pass_report(
@@ -138,10 +138,10 @@ def test_write_pass_report_creates_assets_directory(tmp_path: Path):
 
 
 def test_write_fail_report_creates_diagnostic_markdown(tmp_path: Path):
-    from ai_trade.backtest.grid.diagnostic import DiagnosticAnalyzer
-    from ai_trade.backtest.grid.gates import GateVerdict
-    from ai_trade.backtest.grid.report import GridReportGenerator
-    from ai_trade.backtest.validation.pbo import PBOResult
+    from market_lab.backtest.grid.diagnostic import DiagnosticAnalyzer
+    from market_lab.backtest.grid.gates import GateVerdict
+    from market_lab.backtest.grid.report import GridReportGenerator
+    from market_lab.backtest.validation.pbo import PBOResult
 
     grid, _verdict_ok, wf_results, _diag_ok = _build_synthetic_world(n_configs=3)
     # Build a failing verdict
@@ -180,7 +180,7 @@ def test_write_fail_report_creates_diagnostic_markdown(tmp_path: Path):
 
 def test_report_omits_survivorship_disclaimer_for_unbiased_source(tmp_path: Path):
     """If data source is marked ``_sf`` (survivorship-free) no disclaimer."""
-    from ai_trade.backtest.grid.report import GridReportGenerator
+    from market_lab.backtest.grid.report import GridReportGenerator
 
     grid, verdict, wf_results, _diagnostic = _build_synthetic_world(n_configs=3)
     path = GridReportGenerator().write_pass_report(
@@ -192,7 +192,7 @@ def test_report_omits_survivorship_disclaimer_for_unbiased_source(tmp_path: Path
 
 
 def test_write_pass_report_includes_gate_summary_table(tmp_path: Path):
-    from ai_trade.backtest.grid.report import GridReportGenerator
+    from market_lab.backtest.grid.report import GridReportGenerator
 
     grid, verdict, wf_results, _diagnostic = _build_synthetic_world(n_configs=3)
     path = GridReportGenerator().write_pass_report(

@@ -106,7 +106,7 @@ build_prompt() {
             scope_clause="**Scope: RESEARCH ONLY.** You may read any file, run backtests via existing CLIs, write to reports/ and docs/self_improvement/. You MAY NOT edit anything under src/, tests/, or specs/. You MAY NOT run any git mutating command (commit, push, reset, etc.). The shell loop handles git outside iterations."
             ;;
         code)
-            scope_clause="**Scope: CODE-ALLOWED.** You may add new files under src/ai_trade/ and tests/, and modify existing files there. Run pytest after every code change; the suite MUST stay green or revert. You MAY NOT run any git mutating command (commit, push, reset). The shell loop handles git outside iterations."
+            scope_clause="**Scope: CODE-ALLOWED.** You may add new files under src/market_lab/ and tests/, and modify existing files there. Run pytest after every code change; the suite MUST stay green or revert. You MAY NOT run any git mutating command (commit, push, reset). The shell loop handles git outside iterations."
             ;;
         *)
             echo "Unknown SCOPE: $SCOPE (must be research|code)" >&2
@@ -115,7 +115,7 @@ build_prompt() {
     esac
 
     cat <<PROMPT
-You are resuming an autonomous self-improvement loop for the ai-trade project at /var/www/pessoal/ai-trade.
+You are resuming an autonomous self-improvement loop for the market-lab project at /var/www/github/finances/market-lab.
 
 **FIRST ACTION (mandatory):** Read \`docs/self_improvement/memory.md\` in full. Your conversation history is empty — that file is your only continuity. It contains the goal, current phase (A or B), winners found per path, project state anchor, known dead ends, promising leads, binding constraints, and a history of prior iterations.
 
@@ -174,7 +174,7 @@ The loop has TWO phases. Memory.md frontmatter has \`phase: A\` or \`phase: B\` 
 - Phase B does NOT terminate the loop. Only \`status: done\` after Phase B leads exhausted does.
 - All claims of "edge" or "winner" require passing all 3 gates + single-block OOS + forward-window stress. No partial credit.
 - Cite \`[book.slug, p.X]\` for any strategy/parameter choice grounded in the knowledge base.
-- Working directory: /var/www/pessoal/ai-trade.
+- Working directory: /var/www/github/finances/market-lab.
 - The shell loop auto-commits after each iteration on the isolated branch. Do NOT run \`git commit\` yourself.
 - **TIME WINDOW (repeated for emphasis):** ALWAYS use the LONGEST available historical window per (ticker, frequency). Check \`data/tiingo/manifest.json\` before backtesting. Narrower windows = wasted iteration.
 - **Path labelling:** every winner candidate must be tagged \`[SHORT-HOLD CFD]\` (Path A, median hold ≤ 5 days, Pepperstone swap modeled) or \`[SWING BROKER]\` (Path B, daily/swing, 15% BR tax modeled in net Sharpe).
@@ -204,7 +204,7 @@ any lead whose universe is a ticker sweep. Summary of the rules:
    flip status to `done`, clear `active_lead_registry` in memory.md.
 4. NEVER process more than one work unit (bootstrap OR one ticker OR
    aggregator) per iter, and NEVER multiple tickers in one iter.
-5. Registry schema is v1; use the `ai_trade.backtest.sweeps.registry`
+5. Registry schema is v1; use the `market_lab.backtest.sweeps.registry`
    helper (load/validate/atomic_write/append_done/pop_pending).
 6. Commit subject is driven by the memory.md history entry. Formats:
    `iter N — <lead_id> bootstrap registry`,

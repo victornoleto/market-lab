@@ -6,7 +6,7 @@ References
 * Kaufman (2020) *Trading Systems and Methods* ch.21 — Testing.
 * Masters (2018) *Testing and Tuning Market Trading Systems* ch.2-4.
 
-Gate (ai-trade inviolable rule #5)
+Gate (market-lab inviolable rule #5)
 ---------------------------------
 A strategy passes the walk-forward gate when:
 

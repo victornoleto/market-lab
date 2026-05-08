@@ -36,7 +36,7 @@ Three position-sizing frameworks compared for systematic put-writing on SPX opti
 - **VIX9D-based strategies beat VIX30D-based** across most configurations
 - Kelly-VIX hybrid most balanced across regimes; pure Kelly reckless without moneyness constraint
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **MEDIUM–HIGH relevance.** The **sizing framework is transferable** to any Pepperstone-served directional lead (SPX500 CFD, XAUUSD, BTC). Pepperstone does not offer SPX options for non-UK retail, so put-writing itself is out of scope.
 - **Empirical Kelly formula** citable here: `f_empirical = f_kelly × (1 − CV_edge)` where CV_edge is the coefficient of variation of the edge estimate from bootstrap.

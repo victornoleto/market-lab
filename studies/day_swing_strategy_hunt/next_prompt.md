@@ -1,6 +1,6 @@
 # Prompt Para A Proxima Sessao — Hunt Fechado Por Ora
 
-Estamos no repo `/var/www/pessoal/ai-trade`, branch `day_swing_strategy_hunt`.
+Estamos no repo `/var/www/github/finances/market-lab`, branch `day_swing_strategy_hunt`.
 
 Antes de agir, leia obrigatoriamente:
 

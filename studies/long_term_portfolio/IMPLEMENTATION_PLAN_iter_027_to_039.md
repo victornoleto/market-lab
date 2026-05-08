@@ -105,7 +105,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from src.ai_trade.backtest.data.testfolio_loader import (
+from src.market_lab.backtest.data.testfolio_loader import (
     load_testfolio_frame,
     load_testfolio_series,
 )
@@ -833,7 +833,7 @@ def _resolve_tickers_to_returns(tickers: list[str]) -> dict[str, pd.Series]:
         elif t == "RSSTSIM":
             out[t] = synths.rsst_synth_returns_from_cache()
         else:
-            from src.ai_trade.backtest.data.testfolio_loader import load_testfolio_series
+            from src.market_lab.backtest.data.testfolio_loader import load_testfolio_series
             out[t] = load_testfolio_series(t).pct_change().dropna()
     return out
 ```
@@ -1003,7 +1003,7 @@ def _write_plots(
 
 Run a quick smoke from python:
 ```bash
-cd /var/www/pessoal/ai-trade && python -c "
+cd /var/www/github/finances/market-lab && python -c "
 from pathlib import Path
 from studies.long_term_portfolio.run_iter import run_iter_full
 v = run_iter_full(
@@ -1039,7 +1039,7 @@ git commit -m "feat(long_term_portfolio): run_iter helper for per-iter sweep exe
 - [ ] **Step 1: Create iter directory and hypothesis.md**
 
 ```bash
-mkdir -p /var/www/pessoal/ai-trade/studies/long_term_portfolio/iterations/027-2026-04-29-NTSD-swap
+mkdir -p /var/www/github/finances/market-lab/studies/long_term_portfolio/iterations/027-2026-04-29-NTSD-swap
 ```
 
 Create `hypothesis.md`:
@@ -1114,7 +1114,7 @@ if __name__ == "__main__":
 - [ ] **Step 3: Run iter 027**
 
 ```bash
-cd /var/www/pessoal/ai-trade && python studies/long_term_portfolio/iterations/027-2026-04-29-NTSD-swap/backtest.py
+cd /var/www/github/finances/market-lab && python studies/long_term_portfolio/iterations/027-2026-04-29-NTSD-swap/backtest.py
 ```
 
 Expected: prints status (winner/strong/promising/marginal/fail), score, selected config. Files written: verdict.json, final_report.md, plot_*.png.
@@ -1157,7 +1157,7 @@ git commit -m "feat(long_term_portfolio/iter-027): NTSD swap test, status=<statu
 - [ ] **Step 1: Create iter directory and hypothesis.md**
 
 ```bash
-mkdir -p /var/www/pessoal/ai-trade/studies/long_term_portfolio/iterations/028-2026-04-29-AVUV-add
+mkdir -p /var/www/github/finances/market-lab/studies/long_term_portfolio/iterations/028-2026-04-29-AVUV-add
 ```
 
 Create `hypothesis.md`:
@@ -1226,7 +1226,7 @@ if __name__ == "__main__":
 - [ ] **Step 3: Run iter 028**
 
 ```bash
-cd /var/www/pessoal/ai-trade && python studies/long_term_portfolio/iterations/028-2026-04-29-AVUV-add/backtest.py
+cd /var/www/github/finances/market-lab && python studies/long_term_portfolio/iterations/028-2026-04-29-AVUV-add/backtest.py
 ```
 
 - [ ] **Step 4: Review verdict, append to BASE_MEMORY**
@@ -1253,7 +1253,7 @@ git commit -m "feat(long_term_portfolio/iter-028): AVUV factor add test, status=
 - [ ] **Step 1: Create iter directory + hypothesis.md**
 
 ```bash
-mkdir -p /var/www/pessoal/ai-trade/studies/long_term_portfolio/iterations/029-2026-04-29-AVDV-add
+mkdir -p /var/www/github/finances/market-lab/studies/long_term_portfolio/iterations/029-2026-04-29-AVDV-add
 ```
 
 Create `hypothesis.md`:
@@ -1314,7 +1314,7 @@ if __name__ == "__main__":
 - [ ] **Step 3: Execute, review, BASE_MEMORY append, commit**
 
 ```bash
-cd /var/www/pessoal/ai-trade && python studies/long_term_portfolio/iterations/029-2026-04-29-AVDV-add/backtest.py
+cd /var/www/github/finances/market-lab && python studies/long_term_portfolio/iterations/029-2026-04-29-AVDV-add/backtest.py
 # Review verdict.json, update BASE_MEMORY (total_iterations=29, n_trials=106)
 git add studies/long_term_portfolio/iterations/029-2026-04-29-AVDV-add/ studies/long_term_portfolio/BASE_MEMORY.md
 git commit -m "feat(long_term_portfolio/iter-029): AVDV factor add test, status=<status>, score=<score>"
@@ -1331,7 +1331,7 @@ git commit -m "feat(long_term_portfolio/iter-029): AVDV factor add test, status=
 - [ ] **Step 1: Create iter directory + hypothesis.md**
 
 ```bash
-mkdir -p /var/www/pessoal/ai-trade/studies/long_term_portfolio/iterations/030-2026-04-29-SPMO-synth
+mkdir -p /var/www/github/finances/market-lab/studies/long_term_portfolio/iterations/030-2026-04-29-SPMO-synth
 ```
 
 `hypothesis.md`:
@@ -1402,7 +1402,7 @@ if __name__ == "__main__":
 - [ ] **Step 3: Execute, review, BASE_MEMORY, commit**
 
 ```bash
-cd /var/www/pessoal/ai-trade && python studies/long_term_portfolio/iterations/030-2026-04-29-SPMO-synth/backtest.py
+cd /var/www/github/finances/market-lab && python studies/long_term_portfolio/iterations/030-2026-04-29-SPMO-synth/backtest.py
 # n_trials → 110
 git add studies/long_term_portfolio/iterations/030-2026-04-29-SPMO-synth/ studies/long_term_portfolio/BASE_MEMORY.md
 git commit -m "feat(long_term_portfolio/iter-030): SPMO synth add test, status=<status>, score=<score>"
@@ -1463,7 +1463,7 @@ CONFIGS = {
 - [ ] **Step 1: Read all 6 verdict.json files**
 
 ```bash
-cd /var/www/pessoal/ai-trade && for i in 027 028 029 030 031 032; do
+cd /var/www/github/finances/market-lab && for i in 027 028 029 030 031 032; do
   echo "=== iter $i ==="
   cat studies/long_term_portfolio/iterations/$i-*/verdict.json | jq '{slug: .hypothesis_slug, status, score: .total_score, winner_conditions_met, sharpe_per_dataset: [.metrics_used | to_entries | .[] | {ds: .key, sharpe: .value.sharpe}]}'
 done
@@ -1541,7 +1541,7 @@ git commit -m "docs(long_term_portfolio): Phase 1 complete, identify winners + P
 - [ ] **Step 1: Create iter directory and hypothesis.md**
 
 ```bash
-mkdir -p /var/www/pessoal/ai-trade/studies/long_term_portfolio/iterations/033-2026-04-30-F2-US-Factor
+mkdir -p /var/www/github/finances/market-lab/studies/long_term_portfolio/iterations/033-2026-04-30-F2-US-Factor
 ```
 
 `hypothesis.md`:
@@ -1706,7 +1706,7 @@ CONFIGS = {
 - [ ] **Step 1: Aggregate verdicts from iters 033-038**
 
 ```bash
-cd /var/www/pessoal/ai-trade && for i in 033 034 035 036 037 038; do
+cd /var/www/github/finances/market-lab && for i in 033 034 035 036 037 038; do
   echo "=== iter $i ==="
   cat studies/long_term_portfolio/iterations/$i-*/verdict.json | jq '{slug: .hypothesis_slug, score: .total_score, sharpe_per_dataset: [.metrics_used | to_entries | .[] | {ds: .key, s: .value.sharpe}]}'
 done
@@ -1756,7 +1756,7 @@ git commit -m "docs(long_term_portfolio): Phase 2 complete, identify provisional
 - [ ] **Step 1: Create iter dir + hypothesis.md**
 
 ```bash
-mkdir -p /var/www/pessoal/ai-trade/studies/long_term_portfolio/iterations/039-2026-04-30-MF-sensitivity
+mkdir -p /var/www/github/finances/market-lab/studies/long_term_portfolio/iterations/039-2026-04-30-MF-sensitivity
 ```
 
 `hypothesis.md`:
@@ -1837,7 +1837,7 @@ After Task 21, replace `___` with iter number from PHASE_2_WINNERS.md. Re-extrac
 - [ ] **Step 4: Execute**
 
 ```bash
-cd /var/www/pessoal/ai-trade && python studies/long_term_portfolio/iterations/039-2026-04-30-MF-sensitivity/backtest.py
+cd /var/www/github/finances/market-lab && python studies/long_term_portfolio/iterations/039-2026-04-30-MF-sensitivity/backtest.py
 ```
 
 - [ ] **Step 5: Document MF sleeve recommendation**
@@ -1861,7 +1861,7 @@ git commit -m "feat(long_term_portfolio/iter-039): MF sleeve sensitivity on Phas
 - [ ] **Step 1: Aggregate all 7 finalists' metrics**
 
 ```bash
-cd /var/www/pessoal/ai-trade && for i in 023 033 034 035 036 037 038; do
+cd /var/www/github/finances/market-lab && for i in 023 033 034 035 036 037 038; do
   echo "=== iter $i ==="
   cat studies/long_term_portfolio/iterations/$i-*/verdict.json | jq '{slug: .hypothesis_slug, score: .total_score, sharpe: [.metrics_used | to_entries | .[] | {ds: .key, s: .value.sharpe}], cagr: [.metrics_used | to_entries | .[] | {ds: .key, c: .value.cagr}], mdd: [.metrics_used | to_entries | .[] | {ds: .key, m: .value.mdd}]}'
 done

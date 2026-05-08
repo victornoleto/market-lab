@@ -29,7 +29,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.data.testfolio_loader import load_testfolio_returns, load_testfolio_series
+from market_lab.backtest.data.testfolio_loader import load_testfolio_returns, load_testfolio_series
 
 
 SCRIPT_DIR = Path(__file__).parent

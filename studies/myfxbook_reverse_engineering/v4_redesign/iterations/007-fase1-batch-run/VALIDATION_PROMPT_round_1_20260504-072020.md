@@ -1,6 +1,6 @@
 # MyFxBook v4 Blocking Validation
 
-Repo: /var/www/pessoal/ai-trade
+Repo: /var/www/github/finances/market-lab
 Iteration dir: studies/myfxbook_reverse_engineering/v4_redesign/iterations/007-fase1-batch-run
 Iteration log: logs/myfxbook_v4_redesign/iter_1_20260504-072020.log
 Progress snapshot: PENDING=21 DONE=7 FAILED=0 BLOCKED=0 IN_PROGRESS=0

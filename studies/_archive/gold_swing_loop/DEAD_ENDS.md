@@ -2156,7 +2156,7 @@ This is a **mathematical wall, not a strategy weakness**. The 2-stream IC-7 path
 - IC-8 sister-loop closure (046) — single cfg per iter.
 
 **Process notes**:
-- Iter 019 reused iter 012's composition primitives (`markowitz_tangency_weights`, `compose_returns`, weight-clamp fallback) verbatim, plus iter 016's IC-6 rolling-ρ pre-val pattern. TDD coverage: 13 tests in `test_composition.py` (all pass). Cross-loop reuse: `ai_trade.backtest.validation.dsr.dsr`, `bootstrap.stationary_bootstrap_trades`, `walk_forward.walk_forward_gate`.
+- Iter 019 reused iter 012's composition primitives (`markowitz_tangency_weights`, `compose_returns`, weight-clamp fallback) verbatim, plus iter 016's IC-6 rolling-ρ pre-val pattern. TDD coverage: 13 tests in `test_composition.py` (all pass). Cross-loop reuse: `market_lab.backtest.validation.dsr.dsr`, `bootstrap.stationary_bootstrap_trades`, `walk_forward.walk_forward_gate`.
 - Schema awareness: iter 019 handles both Schema A (`returns_series[ds][cfg_id]`, used by iter 003) and Schema B (`datasets[ds].returns_series`, used by iter 018) loaders. Future iters reading mixed-vintage components should reuse this dual-loader pattern.
 - xauusd_intraday absence is structural (iter 018 didn't store intraday returns); not an iter 019 omission. Future composition iters that need intraday will require either re-running iter 018 or a different intraday-capable stream as the second component.
 
@@ -2296,7 +2296,7 @@ need for both screens.
   pattern), generalized to 3-asset (`markowitz_tangency_weights_3asset`,
   `compose_returns_3stream`). TDD coverage: 12 tests in
   `test_composition.py` (all pass). Cross-loop reuse:
-  `ai_trade.backtest.validation.dsr.dsr`,
+  `market_lab.backtest.validation.dsr.dsr`,
   `bootstrap.stationary_bootstrap_trades`, `walk_forward.walk_forward_gate`.
 - Schema awareness: iter 020 handles both Schema A (iter 003 + iter
   015) and Schema B (iter 018) loaders identical to iter 019.

@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.screener.hurst import HurstResult, hurst_exponent
+from market_lab.backtest.screener.hurst import HurstResult, hurst_exponent
 
 
 def _gbm_prices(n: int = 1000, seed: int = 0) -> pd.Series:

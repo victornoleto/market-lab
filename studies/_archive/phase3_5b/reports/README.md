@@ -122,7 +122,7 @@ The addendum-specific artefacts are produced by four scripts under
 `run_phase3_5b_letf_leverage_variant.py`,
 `run_phase3_5b_task_c{2,3}_rebalance_{3,2}leg.py`, and
 `run_phase3_5b_task_c4_threshold_rebalance.py` (C4 — threshold sweep).
-The shared module `src/ai_trade/backtest/metrics/rebalance_modes.py`
+The shared module `src/market_lab/backtest/metrics/rebalance_modes.py`
 (~470 loc, **4 pure functions, 39 unit tests**) implements the four
 cadences (daily / monthly_sell / monthly_cashflow / threshold) with
 proportional cost-basis tax accounting.

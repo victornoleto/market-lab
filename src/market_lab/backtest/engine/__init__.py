@@ -1,4 +1,4 @@
-"""ai_trade.backtest.engine — portfolio accounting, execution, bar runner.
+"""market_lab.backtest.engine — portfolio accounting, execution, bar runner.
 
 Public API is kept small on purpose: strategies depend on the :class:`Portfolio`
 and the :class:`Runner`, not on implementation details of fills or swap
@@ -6,7 +6,7 @@ accounting. The ``Bar``/``Order``/``Fill``/``Trade`` dataclasses form the
 vocabulary used between the components.
 """
 
-from ai_trade.backtest.engine.execution import (
+from market_lab.backtest.engine.execution import (
     Bar,
     ExecutionConfig,
     ExecutionSimulator,
@@ -14,8 +14,8 @@ from ai_trade.backtest.engine.execution import (
     Order,
     SwapModel,
 )
-from ai_trade.backtest.engine.portfolio import Portfolio, Position, Trade
-from ai_trade.backtest.engine.runner import BacktestResult, Runner, Strategy
+from market_lab.backtest.engine.portfolio import Portfolio, Position, Trade
+from market_lab.backtest.engine.runner import BacktestResult, Runner, Strategy
 
 __all__ = [
     "Bar",

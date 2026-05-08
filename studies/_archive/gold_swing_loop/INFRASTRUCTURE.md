@@ -72,7 +72,7 @@ from these instruments (XAU weight ≥ 40% required):
 - `data/tiingo/daily/prices/RGLD.parquet` — gold royalty company (caution: stock-specific risk)
 
 If any ticker is missing, single-fetch via existing Tiingo helper
-(`scripts/tiingo_fetch.py` or equivalent in `src/ai_trade/backtest/data/`).
+(`scripts/tiingo_fetch.py` or equivalent in `src/market_lab/backtest/data/`).
 Cheap (1 request each, < 1 min total).
 
 ### Cross-asset overlays (signal sources, not portfolio members)
@@ -103,8 +103,8 @@ If a strategy needs any of these, iter must include data-fetch step + cache the 
 
 ### Single-asset backtesters (sister loop's)
 
-- `src/ai_trade/backtest/strategies/ema_sma_threshold_educational.py`
-- `src/ai_trade/backtest/strategies/stop_loss_and_risk_signals.py`
+- `src/market_lab/backtest/strategies/ema_sma_threshold_educational.py`
+- `src/market_lab/backtest/strategies/stop_loss_and_risk_signals.py`
 
 ### Multi-asset stack simulators (sister loop's)
 
@@ -113,20 +113,20 @@ If a strategy needs any of these, iter must include data-fetch step + cache the 
 
 ### Validation modules
 
-- `src/ai_trade/backtest/validation/pbo.py` (PBO via CSCV)
-- `src/ai_trade/backtest/validation/dsr.py` (Deflated Sharpe Ratio)
-- `src/ai_trade/backtest/validation/walk_forward.py`
-- `src/ai_trade/backtest/validation/cpcv.py`
-- `src/ai_trade/backtest/validation/permutation.py`
+- `src/market_lab/backtest/validation/pbo.py` (PBO via CSCV)
+- `src/market_lab/backtest/validation/dsr.py` (Deflated Sharpe Ratio)
+- `src/market_lab/backtest/validation/walk_forward.py`
+- `src/market_lab/backtest/validation/cpcv.py`
+- `src/market_lab/backtest/validation/permutation.py`
 
 ### Metrics + signals
 
-- `src/ai_trade/backtest/metrics/performance.py` — CAGR / Sharpe / MDD
-- `src/ai_trade/backtest/signals/risk_score.py` — z-score sigmoid composite
+- `src/market_lab/backtest/metrics/performance.py` — CAGR / Sharpe / MDD
+- `src/market_lab/backtest/signals/risk_score.py` — z-score sigmoid composite
 
 ### Data loaders
 
-- `src/ai_trade/backtest/data/macro_data_loader.py` — EBP / T10Y3M / CAPE / VIX
+- `src/market_lab/backtest/data/macro_data_loader.py` — EBP / T10Y3M / CAPE / VIX
 
 ## Dual-broker execution paths
 

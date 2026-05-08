@@ -23,7 +23,7 @@ import pytest
 
 class TestPerformance:
     def test_volatility_annualizes_by_sqrt_periods(self):
-        from ai_trade.backtest.metrics.performance import volatility
+        from market_lab.backtest.metrics.performance import volatility
 
         # Constant 1% daily std → annualized = 0.01 · √252
         rng = np.random.default_rng(0)
@@ -33,40 +33,40 @@ class TestPerformance:
         assert vol == pytest.approx(0.01 * np.sqrt(252), rel=0.05)
 
     def test_volatility_uses_ddof_zero(self):
-        from ai_trade.backtest.metrics.performance import volatility
+        from market_lab.backtest.metrics.performance import volatility
 
         returns = pd.Series([0.01, -0.01, 0.01, -0.01])
         # Population std of ±0.01 is exactly 0.01.
         assert volatility(returns, periods_per_year=1) == pytest.approx(0.01)
 
     def test_sharpe_zero_mean_returns_zero(self):
-        from ai_trade.backtest.metrics.performance import sharpe
+        from market_lab.backtest.metrics.performance import sharpe
 
         returns = pd.Series([0.01, -0.01, 0.01, -0.01])
         assert sharpe(returns, periods_per_year=1) == pytest.approx(0.0)
 
     def test_sharpe_known_mean_vol(self):
-        from ai_trade.backtest.metrics.performance import sharpe
+        from market_lab.backtest.metrics.performance import sharpe
 
         # mean = 0.02, std (ddof=0) = 0.01 → Sharpe_periodic = 2; annualized × √252
         returns = pd.Series([0.03, 0.01, 0.03, 0.01])
         assert sharpe(returns, periods_per_year=252) == pytest.approx(2.0 * np.sqrt(252))
 
     def test_sharpe_subtracts_risk_free(self):
-        from ai_trade.backtest.metrics.performance import sharpe
+        from market_lab.backtest.metrics.performance import sharpe
 
         returns = pd.Series([0.03, 0.01, 0.03, 0.01])  # mean 0.02, std 0.01
         # With rf=0.01 per period → (0.02 - 0.01) / 0.01 = 1 per period, annualized.
         assert sharpe(returns, periods_per_year=1, risk_free=0.01) == pytest.approx(1.0)
 
     def test_sharpe_zero_std_returns_zero(self):
-        from ai_trade.backtest.metrics.performance import sharpe
+        from market_lab.backtest.metrics.performance import sharpe
 
         returns = pd.Series([0.01, 0.01, 0.01, 0.01])
         assert sharpe(returns, periods_per_year=252) == pytest.approx(0.0)
 
     def test_sortino_uses_downside_deviation_only(self):
-        from ai_trade.backtest.metrics.performance import sortino
+        from market_lab.backtest.metrics.performance import sortino
 
         # mean = 0.02; downside returns (< target 0) = [-0.02]; downside_dev = √(0.02²/4) = 0.01
         returns = pd.Series([0.04, 0.02, 0.04, -0.02])
@@ -76,14 +76,14 @@ class TestPerformance:
         )
 
     def test_sortino_infinite_when_no_downside(self):
-        from ai_trade.backtest.metrics.performance import sortino
+        from market_lab.backtest.metrics.performance import sortino
 
         returns = pd.Series([0.01, 0.02, 0.03, 0.04])
         # All positive → no downside → Sortino is ill-defined; convention: +inf.
         assert np.isposinf(sortino(returns, periods_per_year=1, target=0.0))
 
     def test_cagr_doubles_in_one_year_gives_100pct(self):
-        from ai_trade.backtest.metrics.performance import cagr
+        from market_lab.backtest.metrics.performance import cagr
 
         # 252 bars, equity doubles over that period with daily compounding.
         idx = pd.date_range("2024-01-02", periods=253, freq="B")
@@ -92,7 +92,7 @@ class TestPerformance:
         assert cagr(eq, periods_per_year=252) == pytest.approx(1.0, rel=1e-6)
 
     def test_cagr_half_year_doubling_gives_300pct(self):
-        from ai_trade.backtest.metrics.performance import cagr
+        from market_lab.backtest.metrics.performance import cagr
 
         idx = pd.date_range("2024-01-02", periods=127, freq="B")  # 126 periods = 0.5y
         eq = pd.Series(np.linspace(100.0, 200.0, 127), index=idx)
@@ -100,20 +100,20 @@ class TestPerformance:
         assert cagr(eq, periods_per_year=252) == pytest.approx(3.0, rel=1e-6)
 
     def test_max_drawdown_known_peak_trough(self):
-        from ai_trade.backtest.metrics.performance import max_drawdown
+        from market_lab.backtest.metrics.performance import max_drawdown
 
         # Peak 120, trough 90 → DD = 30/120 = 0.25
         eq = pd.Series([100, 110, 120, 100, 95, 90, 95, 100])
         assert max_drawdown(eq) == pytest.approx(0.25)
 
     def test_max_drawdown_monotone_series_is_zero(self):
-        from ai_trade.backtest.metrics.performance import max_drawdown
+        from market_lab.backtest.metrics.performance import max_drawdown
 
         eq = pd.Series([100, 101, 102, 103, 104])
         assert max_drawdown(eq) == pytest.approx(0.0)
 
     def test_max_drawdown_is_positive_magnitude(self):
-        from ai_trade.backtest.metrics.performance import max_drawdown
+        from market_lab.backtest.metrics.performance import max_drawdown
 
         eq = pd.Series([100, 50])
         dd = max_drawdown(eq)
@@ -121,7 +121,7 @@ class TestPerformance:
         assert dd == pytest.approx(0.5)
 
     def test_calmar_is_cagr_over_abs_max_dd(self):
-        from ai_trade.backtest.metrics.performance import calmar
+        from market_lab.backtest.metrics.performance import calmar
 
         # 1 year, ends 200% of start, DD = 0.25 → Calmar = 1.0 / 0.25 = 4
         idx = pd.date_range("2024-01-02", periods=253, freq="B")
@@ -132,14 +132,14 @@ class TestPerformance:
         assert len(values) == 253
         eq = pd.Series(values, index=idx)
 
-        from ai_trade.backtest.metrics.performance import cagr, max_drawdown
+        from market_lab.backtest.metrics.performance import cagr, max_drawdown
 
         c = cagr(eq, periods_per_year=252)
         dd = max_drawdown(eq)
         assert calmar(eq, periods_per_year=252) == pytest.approx(c / dd, rel=1e-9)
 
     def test_calmar_zero_drawdown_is_inf(self):
-        from ai_trade.backtest.metrics.performance import calmar
+        from market_lab.backtest.metrics.performance import calmar
 
         idx = pd.date_range("2024-01-02", periods=253, freq="B")
         eq = pd.Series(np.linspace(100.0, 200.0, 253), index=idx)
@@ -147,7 +147,7 @@ class TestPerformance:
         assert np.isposinf(calmar(eq, periods_per_year=252))
 
     def test_var_historical_quantile_positive_magnitude(self):
-        from ai_trade.backtest.metrics.performance import var
+        from market_lab.backtest.metrics.performance import var
 
         # 100 returns uniformly in [-0.05, 0.05]; 5% quantile ≈ -0.045 → VaR ≈ 0.045.
         rng = np.random.default_rng(42)
@@ -157,7 +157,7 @@ class TestPerformance:
         assert v > 0  # positive magnitude of loss
 
     def test_var_all_positive_returns_is_zero_floor(self):
-        from ai_trade.backtest.metrics.performance import var
+        from market_lab.backtest.metrics.performance import var
 
         returns = pd.Series([0.01, 0.02, 0.03, 0.04])
         # 5% quantile is positive → no loss at α; convention floor at 0.
@@ -171,7 +171,7 @@ class TestPerformance:
 
 class TestHelpers:
     def test_returns_from_equity_pct_change(self):
-        from ai_trade.backtest.metrics.performance import returns_from_equity
+        from market_lab.backtest.metrics.performance import returns_from_equity
 
         eq = pd.Series([100.0, 110.0, 99.0, 99.0])
         r = returns_from_equity(eq)
@@ -189,9 +189,9 @@ class TestHelpers:
 @pytest.fixture
 def synthetic_backtest_result():
     """Synthetic BacktestResult + validation outputs usable across report tests."""
-    from ai_trade.backtest.engine.execution import Fill, Order
-    from ai_trade.backtest.engine.portfolio import Trade
-    from ai_trade.backtest.engine.runner import BacktestResult
+    from market_lab.backtest.engine.execution import Fill, Order
+    from market_lab.backtest.engine.portfolio import Trade
+    from market_lab.backtest.engine.runner import BacktestResult
 
     idx = pd.date_range("2024-01-02", periods=252, freq="B")
     rng = np.random.default_rng(7)
@@ -234,8 +234,8 @@ def synthetic_backtest_result():
 @pytest.fixture
 def synthetic_validation_outputs():
     """Mocked validation outputs (PBO, DSR, walk-forward, CPCV)."""
-    from ai_trade.backtest.validation.dsr import DSRResult
-    from ai_trade.backtest.validation.pbo import PBOResult
+    from market_lab.backtest.validation.dsr import DSRResult
+    from market_lab.backtest.validation.pbo import PBOResult
 
     pbo = PBOResult(pbo=0.3, logits=np.array([0.1, 0.2, -0.1]), n_blocks=8, n_combinations=70)
     dsr = DSRResult(
@@ -261,7 +261,7 @@ class TestReport:
     def test_generates_markdown_file(
         self, tmp_path, synthetic_backtest_result, synthetic_validation_outputs
     ):
-        from ai_trade.backtest.metrics.report import generate_report
+        from market_lab.backtest.metrics.report import generate_report
 
         path = generate_report(
             result=synthetic_backtest_result,
@@ -277,7 +277,7 @@ class TestReport:
     def test_survivorship_disclaimer_present_for_yfinance(
         self, tmp_path, synthetic_backtest_result, synthetic_validation_outputs
     ):
-        from ai_trade.backtest.metrics.report import generate_report
+        from market_lab.backtest.metrics.report import generate_report
 
         path = generate_report(
             result=synthetic_backtest_result,
@@ -294,7 +294,7 @@ class TestReport:
     def test_survivorship_disclaimer_present_for_wikipedia(
         self, tmp_path, synthetic_backtest_result, synthetic_validation_outputs
     ):
-        from ai_trade.backtest.metrics.report import generate_report
+        from market_lab.backtest.metrics.report import generate_report
 
         path = generate_report(
             result=synthetic_backtest_result,
@@ -309,7 +309,7 @@ class TestReport:
     def test_no_disclaimer_for_survivorship_free_source(
         self, tmp_path, synthetic_backtest_result, synthetic_validation_outputs
     ):
-        from ai_trade.backtest.metrics.report import generate_report
+        from market_lab.backtest.metrics.report import generate_report
 
         path = generate_report(
             result=synthetic_backtest_result,
@@ -326,7 +326,7 @@ class TestReport:
     def test_all_required_sections_present(
         self, tmp_path, synthetic_backtest_result, synthetic_validation_outputs
     ):
-        from ai_trade.backtest.metrics.report import generate_report
+        from market_lab.backtest.metrics.report import generate_report
 
         path = generate_report(
             result=synthetic_backtest_result,
@@ -349,7 +349,7 @@ class TestReport:
     def test_pbo_verdict_shown(
         self, tmp_path, synthetic_backtest_result, synthetic_validation_outputs
     ):
-        from ai_trade.backtest.metrics.report import generate_report
+        from market_lab.backtest.metrics.report import generate_report
 
         path = generate_report(
             result=synthetic_backtest_result,
@@ -365,7 +365,7 @@ class TestReport:
     def test_dsr_p_value_shown(
         self, tmp_path, synthetic_backtest_result, synthetic_validation_outputs
     ):
-        from ai_trade.backtest.metrics.report import generate_report
+        from market_lab.backtest.metrics.report import generate_report
 
         path = generate_report(
             result=synthetic_backtest_result,
@@ -380,7 +380,7 @@ class TestReport:
     def test_png_chart_generated(
         self, tmp_path, synthetic_backtest_result, synthetic_validation_outputs
     ):
-        from ai_trade.backtest.metrics.report import generate_report
+        from market_lab.backtest.metrics.report import generate_report
 
         generate_report(
             result=synthetic_backtest_result,
@@ -396,7 +396,7 @@ class TestReport:
     def test_report_references_png(
         self, tmp_path, synthetic_backtest_result, synthetic_validation_outputs
     ):
-        from ai_trade.backtest.metrics.report import generate_report
+        from market_lab.backtest.metrics.report import generate_report
 
         path = generate_report(
             result=synthetic_backtest_result,
@@ -412,7 +412,7 @@ class TestReport:
     def test_top_trades_section_lists_ten_each_side(
         self, tmp_path, synthetic_backtest_result, synthetic_validation_outputs
     ):
-        from ai_trade.backtest.metrics.report import generate_report
+        from market_lab.backtest.metrics.report import generate_report
 
         path = generate_report(
             result=synthetic_backtest_result,
@@ -429,7 +429,7 @@ class TestReport:
     def test_filename_timestamped(
         self, tmp_path, synthetic_backtest_result, synthetic_validation_outputs
     ):
-        from ai_trade.backtest.metrics.report import generate_report
+        from market_lab.backtest.metrics.report import generate_report
 
         path = generate_report(
             result=synthetic_backtest_result,
@@ -449,8 +449,8 @@ class TestReport:
         self, tmp_path, synthetic_backtest_result, synthetic_validation_outputs
     ):
         """Edge case: strategy made no trades."""
-        from ai_trade.backtest.engine.runner import BacktestResult
-        from ai_trade.backtest.metrics.report import generate_report
+        from market_lab.backtest.engine.runner import BacktestResult
+        from market_lab.backtest.metrics.report import generate_report
 
         empty_result = BacktestResult(
             equity_curve=synthetic_backtest_result.equity_curve,

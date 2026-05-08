@@ -159,4 +159,4 @@ Nenhum desses contratos quebra. Novos campos sao opcionais com default `None`.
 - `jornada/README.md` (lista atualizada)
 
 NADA fora dessa lista. `frozen_rules/`, `docs/investment-mandate.md`,
-`src/ai_trade/backtest/grid/gates.py` (Plano A) nao tocados.
+`src/market_lab/backtest/grid/gates.py` (Plano A) nao tocados.

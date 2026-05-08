@@ -12,7 +12,7 @@ Ticker coverage in the committed cache (1986-01-02 → 2026-04-17):
 * **ZROZSIM** — 25+ year zero-coupon US Treasury proxy.
 
 For SSO (2× leveraged S&P), use
-``ai_trade.backtest.strategies.letf_rotation.synthesize_letf_returns``
+``market_lab.backtest.strategies.letf_rotation.synthesize_letf_returns``
 on ``load_testfolio_returns("SPYSIM")`` — this reuses the same
 synthesis formula validated in Task 7a
 (``reports/phase3_5b/robustness/testfolio_vs_synthetic_letf.md``).

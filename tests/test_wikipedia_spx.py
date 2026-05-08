@@ -7,7 +7,7 @@ from datetime import date
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.data.wikipedia_spx import (
+from market_lab.backtest.data.wikipedia_spx import (
     _flatten_changes_table,
     constituents_on,
 )

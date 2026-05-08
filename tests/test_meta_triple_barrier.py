@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.meta.triple_barrier import apply_triple_barrier
+from market_lab.backtest.meta.triple_barrier import apply_triple_barrier
 
 
 def _close(values):

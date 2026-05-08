@@ -33,7 +33,7 @@ REPO = Path(__file__).resolve().parents[2]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-from ai_trade.backtest.data.testfolio_loader import load_testfolio_series
+from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 from studies.long_term_portfolio.run_iter import portfolio_returns_from_config
 
 

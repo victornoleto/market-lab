@@ -31,9 +31,9 @@ from dataclasses import dataclass, field
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.engine.execution import Bar, Order
-from ai_trade.backtest.engine.portfolio import Portfolio
-from ai_trade.backtest.strategies.base import StrategyBase
+from market_lab.backtest.engine.execution import Bar, Order
+from market_lab.backtest.engine.portfolio import Portfolio
+from market_lab.backtest.strategies.base import StrategyBase
 
 __all__ = [
     "SectorMomentumClenow",

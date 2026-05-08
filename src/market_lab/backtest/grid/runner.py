@@ -21,15 +21,15 @@ from typing import Callable, Generic, TypeVar
 
 from joblib import Parallel, delayed
 
-from ai_trade.backtest.engine.runner import BacktestResult
-from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-from ai_trade.backtest.grid.result import (
+from market_lab.backtest.engine.runner import BacktestResult
+from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+from market_lab.backtest.grid.result import (
     GridResult,
     TrialResult,
     trial_from_dir,
     trial_to_dir,
 )
-from ai_trade.backtest.metrics.performance import (
+from market_lab.backtest.metrics.performance import (
     cagr,
     max_drawdown,
     returns_from_equity,
@@ -37,7 +37,7 @@ from ai_trade.backtest.metrics.performance import (
 )
 
 
-_log = logging.getLogger("ai_trade.grid.runner")
+_log = logging.getLogger("market_lab.grid.runner")
 
 
 ConfigT = TypeVar("ConfigT")

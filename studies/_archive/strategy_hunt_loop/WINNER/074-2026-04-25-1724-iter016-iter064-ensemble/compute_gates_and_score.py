@@ -53,12 +53,12 @@ from scoring import (  # noqa: E402
     tier_from_score,
 )
 
-from ai_trade.backtest.metrics.performance import (  # noqa: E402
+from market_lab.backtest.metrics.performance import (  # noqa: E402
     max_drawdown,
     sharpe,
 )
-from ai_trade.backtest.validation.dsr import dsr as dsr_test  # noqa: E402
-from ai_trade.backtest.validation.pbo import pbo as pbo_test  # noqa: E402
+from market_lab.backtest.validation.dsr import dsr as dsr_test  # noqa: E402
+from market_lab.backtest.validation.pbo import pbo as pbo_test  # noqa: E402
 
 OUT_DIR = ITER_DIR
 RESULTS_PATH = OUT_DIR / "results.json"

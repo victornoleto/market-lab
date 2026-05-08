@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.strategies.sector_momentum_clenow import (
+from market_lab.backtest.strategies.sector_momentum_clenow import (
     SectorMomentumClenow,
     adjusted_slope,
     atr,
@@ -246,11 +246,11 @@ class TestStrategyIntegration:
         }
 
     def test_strategy_runs_without_errors(self, synthetic_data):
-        from ai_trade.backtest.engine.execution import (
+        from market_lab.backtest.engine.execution import (
             ExecutionConfig,
             ExecutionSimulator,
         )
-        from ai_trade.backtest.engine.runner import Runner
+        from market_lab.backtest.engine.runner import Runner
 
         strategy = SectorMomentumClenow(
             universe=["XLK", "XLF", "XLP"],
@@ -266,11 +266,11 @@ class TestStrategyIntegration:
     def test_strategy_favors_strongest_trend(self, synthetic_data):
         """At end of run, the strategy should have concentrated exposure in
         the strongest-trend sector (XLK) more than in the weakest (XLP)."""
-        from ai_trade.backtest.engine.execution import (
+        from market_lab.backtest.engine.execution import (
             ExecutionConfig,
             ExecutionSimulator,
         )
-        from ai_trade.backtest.engine.runner import Runner
+        from market_lab.backtest.engine.runner import Runner
 
         strategy = SectorMomentumClenow(
             universe=["XLK", "XLF", "XLP"],

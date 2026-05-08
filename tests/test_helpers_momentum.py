@@ -1,4 +1,4 @@
-"""Tests for ``ai_trade.backtest.helpers.momentum`` pure helpers.
+"""Tests for ``market_lab.backtest.helpers.momentum`` pure helpers.
 
 Migrated from the deleted ``test_clenow_strategy.py`` (math helpers
 section only) during the 2026-04-16 post-winners cleanup. Strategy-level
@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.helpers.momentum import adjusted_slope, atr, max_gap
+from market_lab.backtest.helpers.momentum import adjusted_slope, atr, max_gap
 
 
 class TestAdjustedSlope:

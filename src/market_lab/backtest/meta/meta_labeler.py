@@ -28,11 +28,11 @@ from typing import Protocol, runtime_checkable
 
 import pandas as pd
 
-from ai_trade.backtest.meta.sample_weights import (
+from market_lab.backtest.meta.sample_weights import (
     get_concurrent_events,
     get_sample_weights_by_return,
 )
-from ai_trade.backtest.meta.triple_barrier import apply_triple_barrier
+from market_lab.backtest.meta.triple_barrier import apply_triple_barrier
 
 
 @runtime_checkable

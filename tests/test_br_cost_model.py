@@ -6,7 +6,7 @@ from datetime import date
 
 import pytest
 
-from ai_trade.backtest.costs.br_cost_model import (
+from market_lab.backtest.costs.br_cost_model import (
     BRCostConfig,
     Sell,
     TaxConfig,
@@ -138,7 +138,7 @@ class TestMonthlyTax:
 # Package re-exports
 # ---------------------------------------------------------------------------
 def test_package_reexports():
-    from ai_trade.backtest.costs import (
+    from market_lab.backtest.costs import (
         BRCostConfig as BRCfgExport,
         Sell as SellExport,
         TaxConfig as TaxCfgExport,

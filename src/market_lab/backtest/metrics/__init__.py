@@ -1,4 +1,4 @@
-"""ai_trade.backtest.metrics — performance metrics and markdown report generation.
+"""market_lab.backtest.metrics — performance metrics and markdown report generation.
 
 Two pieces:
 
@@ -11,7 +11,7 @@ Two pieces:
   disclaimer (ROADMAP inviolable rule) when the data source is biased.
 """
 
-from ai_trade.backtest.metrics.performance import (
+from market_lab.backtest.metrics.performance import (
     cagr,
     calmar,
     max_drawdown,
@@ -21,8 +21,8 @@ from ai_trade.backtest.metrics.performance import (
     var,
     volatility,
 )
-from ai_trade.backtest.metrics.report import generate_report
-from ai_trade.backtest.metrics.standard_report import (
+from market_lab.backtest.metrics.report import generate_report
+from market_lab.backtest.metrics.standard_report import (
     SpyBenchmark,
     SpyComparison,
     StandardReport,

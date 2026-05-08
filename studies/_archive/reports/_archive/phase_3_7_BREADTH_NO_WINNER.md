@@ -214,7 +214,7 @@ H3.b's code payload was staged concurrently with H3.a and landed inside `eee8ac3
 - All ten `reports/phase_3_6/*/AGGREGATE.md` + `reports/phase_3_6/BREADTH_NO_WINNER.md` — untouched
 - `docs/.pending/*` — untouched
 - All existing `docs/strategies/*.md` — untouched (no promotion without user sign-off)
-- Phase 3.6 strategies (`src/ai_trade/backtest/strategies/phase3_6_*.py`) — untouched
+- Phase 3.6 strategies (`src/market_lab/backtest/strategies/phase3_6_*.py`) — untouched
 - Engine F2 patch site (`plano_a_leveraged_rotation.py`) — untouched
 - Frozen forensic reports (`reports/phase3_5a_v2/*`, `docs/superpowers/findings/*`) — untouched
 

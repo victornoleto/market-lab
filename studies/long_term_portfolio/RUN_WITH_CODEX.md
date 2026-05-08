@@ -15,7 +15,7 @@ codex --version
 codex login           # ou OPENAI_API_KEY exportada no shell
 
 # 3. Dentro do repo
-cd /var/www/pessoal/ai-trade
+cd /var/www/github/finances/market-lab
 ```
 
 ---
@@ -33,7 +33,7 @@ Read `CLAUDE.md` (this directory) before taking any action.
 It contains mandatory rules: citation policy, jornada/ update rule,
 investment mandate summary, and coding conventions.
 
-The project working dir is `/var/www/pessoal/ai-trade`.
+The project working dir is `/var/www/github/finances/market-lab`.
 Use `uv run python` (not `python`) for all Python invocations.
 Use `uv run pytest` for running tests.
 EOF
@@ -77,7 +77,7 @@ DRY_RUN=1 bash studies/long_term_portfolio/run_loop_codex.sh
 
 ```bash
 # Gera o prompt para a próxima iter e envia ao codex
-cd /var/www/pessoal/ai-trade
+cd /var/www/github/finances/market-lab
 NEXT_N=001   # ajustar conforme BASE_MEMORY.md total_iterations
 
 PROMPT=$(sed \

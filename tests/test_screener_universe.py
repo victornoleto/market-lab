@@ -9,8 +9,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.data.tiingo_storage import TiingoStorage
-from ai_trade.backtest.screener.universe import Candidate, screen_universe
+from market_lab.backtest.data.tiingo_storage import TiingoStorage
+from market_lab.backtest.screener.universe import Candidate, screen_universe
 
 
 def _write_synth(

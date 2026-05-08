@@ -30,7 +30,7 @@ The overnight anomaly in SPY **does not survive realistic retail transaction cos
 - Only 53% of days have `overnight return > intraday return` — weak statistical persistence
 - Research argues "anomaly is more random walk than repeatable strategy"
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **HIGH relevance as anti-pattern reference.** Definitively disqualifies overnight-only trade of SPY (and by extension SPX500 CFD) as a retail Pepperstone strategy.
 - Reinforces Glasserman 2024 academic finding.

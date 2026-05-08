@@ -23,7 +23,7 @@ def atr_pct(df: pd.DataFrame, *, lookback: int = 20) -> float:
     """Mean ATR(``lookback``) over the last ``lookback`` bars divided by
     mean close. Returned as a *fraction* (0.012 = 1.2%).
 
-    Reuses :func:`ai_trade.backtest.helpers.momentum.atr` (Clenow's simple-mean
+    Reuses :func:`market_lab.backtest.helpers.momentum.atr` (Clenow's simple-mean
     ATR) so the screener stays consistent with sizing logic.
 
     Citation: ``[stocks_on_the_move, p.88]`` (Clenow uses ATR(20) as the

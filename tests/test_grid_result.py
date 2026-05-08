@@ -1,4 +1,4 @@
-"""Tests for ``ai_trade.backtest.grid.result`` — trial + grid containers + I/O.
+"""Tests for ``market_lab.backtest.grid.result`` — trial + grid containers + I/O.
 
 Two concerns:
 
@@ -6,7 +6,7 @@ Two concerns:
    the BacktestResult it produced (plus scalar metrics cached for fast gate
    evaluation). A GridResult stacks trials + exposes the ``returns_matrix``
    (T, N) aligned on a common DatetimeIndex, which is the input to
-   :func:`ai_trade.backtest.validation.pbo.pbo`.
+   :func:`market_lab.backtest.validation.pbo.pbo`.
 
 2. **Safe serialization** — checkpoint/resume uses parquet (for pandas
    structures) + JSON (for scalars). Crash mid-run → re-run reads completed
@@ -37,7 +37,7 @@ def test_align_returns_with_three_equity_curves_of_different_lengths():
     """Configs with larger lookbacks start later — intersection picks the
     overlapping window. No NaN in the final matrix.
     """
-    from ai_trade.backtest.grid.result import _align_returns
+    from market_lab.backtest.grid.result import _align_returns
 
     eq_a = _make_equity("2020-01-01", 100)
     eq_b = _make_equity("2020-02-10", 60)
@@ -53,7 +53,7 @@ def test_align_returns_with_three_equity_curves_of_different_lengths():
 
 
 def test_align_returns_single_series_returns_two_dim_matrix():
-    from ai_trade.backtest.grid.result import _align_returns
+    from market_lab.backtest.grid.result import _align_returns
 
     matrix = _align_returns([_make_equity("2020-01-01", 30)])
     assert matrix.ndim == 2
@@ -62,16 +62,16 @@ def test_align_returns_single_series_returns_two_dim_matrix():
 
 
 def test_align_returns_rejects_empty_input():
-    from ai_trade.backtest.grid.result import _align_returns
+    from market_lab.backtest.grid.result import _align_returns
 
     with pytest.raises(ValueError):
         _align_returns([])
 
 
 def test_trial_result_carries_config_and_scalar_metrics():
-    from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.result import TrialResult
+    from market_lab.backtest.engine.runner import BacktestResult
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.result import TrialResult
 
     equity = _make_equity("2020-01-01", 50)
     result = BacktestResult(
@@ -99,8 +99,8 @@ def test_trial_result_carries_config_and_scalar_metrics():
 
 
 def test_trial_result_error_status_stores_error_message():
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.result import TrialResult
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.result import TrialResult
 
     config = BollingerMRGridConfig(window=20, std_mult=2.0)
     trial = TrialResult(
@@ -122,9 +122,9 @@ def test_trial_to_dir_writes_expected_files(tmp_path: Path):
     """Checkpoint layout: trial_N/ with equity.parquet, trades.parquet,
     fills.parquet, meta.json.
     """
-    from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.result import TrialResult, trial_to_dir
+    from market_lab.backtest.engine.runner import BacktestResult
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.result import TrialResult, trial_to_dir
 
     equity = _make_equity("2020-01-01", 10)
     result = BacktestResult(
@@ -161,9 +161,9 @@ def test_trial_to_dir_writes_expected_files(tmp_path: Path):
 
 def test_trial_round_trip_to_and_from_dir(tmp_path: Path):
     """Round-trip preserves config, metrics, status, equity curve values."""
-    from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.result import (
+    from market_lab.backtest.engine.runner import BacktestResult
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.result import (
         TrialResult,
         trial_from_dir,
         trial_to_dir,
@@ -203,8 +203,8 @@ def test_trial_round_trip_to_and_from_dir(tmp_path: Path):
 
 def test_trial_from_dir_on_error_trial_reconstructs_without_result(tmp_path: Path):
     """Error trials have result=None; meta.json still persists config + error_msg."""
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.result import (
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.result import (
         TrialResult,
         trial_from_dir,
         trial_to_dir,
@@ -232,9 +232,9 @@ def test_trial_from_dir_on_error_trial_reconstructs_without_result(tmp_path: Pat
 
 
 def test_grid_result_exposes_returns_matrix_and_configs():
-    from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.result import GridResult, TrialResult
+    from market_lab.backtest.engine.runner import BacktestResult
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.result import GridResult, TrialResult
 
     trials = []
     for i, (lb, tp, rf) in enumerate([(60, 0.10, 0.001), (90, 0.20, 0.001)]):
@@ -270,9 +270,9 @@ def test_grid_result_returns_matrix_excludes_error_trials():
     """Error trials (status='error') must NOT appear in the returns matrix
     (``pbo`` would otherwise crash on the NaN column / missing curve).
     """
-    from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.result import GridResult, TrialResult
+    from market_lab.backtest.engine.runner import BacktestResult
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.result import GridResult, TrialResult
 
     equity = _make_equity("2020-01-01", 50)
     result = BacktestResult(

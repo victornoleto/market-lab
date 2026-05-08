@@ -13,7 +13,7 @@
 
 ## How to use
 
-1. Open a **new Claude Code session** in `/var/www/pessoal/ai-trade`.
+1. Open a **new Claude Code session** in `/var/www/github/finances/market-lab`.
 2. Paste the prompt block below as the first message.
 3. Let Claude execute setup. Claude will pause before launching the loop for
    your go/no-go.
@@ -87,7 +87,7 @@ LETF_SPECS: tuple[LetfSpec, ...] = (
 Adicionar TLT a UNDERLYING_TICKERS. Verificar que Tiingo tem TLT histórico.
 Rebuild parquet:
 ```bash
-cd /var/www/pessoal/ai-trade
+cd /var/www/github/finances/market-lab
 PYTHONPATH=. .venv/bin/python -m reports.phase_3_5c.cross_lib.data.reference_prices
 ```
 
@@ -139,7 +139,7 @@ Rodar adapter smoke test em UPRO single-leg pra confirmar que a infra
 tá pronta:
 
 ```bash
-cd /var/www/pessoal/ai-trade
+cd /var/www/github/finances/market-lab
 PYTHONPATH=. .venv/bin/python -c "
 from reports.phase_3_5c.cross_lib.adapters.bt_adapter import BtAdapter
 from reports.phase_3_5c.cross_lib.types import VariantConfig, LegConfig, RebalanceConfig
@@ -188,7 +188,7 @@ Reportar pra mim (usuário):
 use:
 
 ```bash
-cd /var/www/pessoal/ai-trade
+cd /var/www/github/finances/market-lab
 MAX_ITER=10 SWEEP_MODE=fanout CLAUDE_MODEL=sonnet bash scripts/self_improve_loop.sh
 ```
 

@@ -25,18 +25,18 @@ from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, "/var/www/pessoal/ai-trade")
-sys.path.insert(0, "/var/www/pessoal/ai-trade/src")
+sys.path.insert(0, "/var/www/github/finances/market-lab")
+sys.path.insert(0, "/var/www/github/finances/market-lab/src")
 
-from ai_trade.backtest.validation.dsr import dsr as compute_dsr
-from ai_trade.backtest.sweeps.registry import (
+from market_lab.backtest.validation.dsr import dsr as compute_dsr
+from market_lab.backtest.sweeps.registry import (
     load_registry,
     pop_pending,
     append_done,
     advance_status,
     atomic_write_registry,
 )
-from ai_trade.backtest.data.testfolio_loader import load_testfolio_series
+from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 
 # ─── Constants ────────────────────────────────────────────────────────────────
 REGISTRY_PATH = "reports/phase_3_5e/c02_sma150_cash/registry.json"

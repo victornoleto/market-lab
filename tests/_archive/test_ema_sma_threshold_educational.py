@@ -14,13 +14,13 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.grid.ema_sma_threshold_grid import (
+from market_lab.backtest.grid.ema_sma_threshold_grid import (
     EMASMAThresholdAxes,
     cartesian_configs,
     compute_composite_scores,
     ConfigMetrics,
 )
-from ai_trade.backtest.strategies.ema_sma_threshold_educational import (
+from market_lab.backtest.strategies.ema_sma_threshold_educational import (
     EMASMAThresholdConfig,
     compute_threshold_regime,
     simulate_ema_sma_threshold,

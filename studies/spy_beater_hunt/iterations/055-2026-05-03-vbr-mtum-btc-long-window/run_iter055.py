@@ -21,7 +21,7 @@ from typing import Any
 
 import pandas as pd
 
-from ai_trade.backtest.data.testfolio_loader import load_testfolio_frame
+from market_lab.backtest.data.testfolio_loader import load_testfolio_frame
 
 
 SCRIPT_DIR = Path(__file__).parent

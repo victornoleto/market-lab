@@ -25,7 +25,7 @@ import pytest
 
 class TestStrategyContext:
     def test_defaults_are_empty(self):
-        from ai_trade.backtest.strategies.base import StrategyContext
+        from market_lab.backtest.strategies.base import StrategyContext
 
         ctx = StrategyContext()
         assert ctx.universe == set()
@@ -33,7 +33,7 @@ class TestStrategyContext:
         assert isinstance(ctx.logger, logging.Logger)
 
     def test_accepts_universe_and_params(self):
-        from ai_trade.backtest.strategies.base import StrategyContext
+        from market_lab.backtest.strategies.base import StrategyContext
 
         ctx = StrategyContext(
             universe={"AAPL", "MSFT"},
@@ -43,7 +43,7 @@ class TestStrategyContext:
         assert ctx.params["risk_factor"] == 0.001
 
     def test_universe_is_mutable_on_instance(self):
-        from ai_trade.backtest.strategies.base import StrategyContext
+        from market_lab.backtest.strategies.base import StrategyContext
 
         ctx = StrategyContext()
         ctx.universe.add("NVDA")
@@ -57,8 +57,8 @@ class TestStrategyContext:
 
 class TestStrategyReexport:
     def test_base_module_exposes_strategy_protocol(self):
-        from ai_trade.backtest.engine.runner import Strategy as RunnerStrategy
-        from ai_trade.backtest.strategies.base import Strategy
+        from market_lab.backtest.engine.runner import Strategy as RunnerStrategy
+        from market_lab.backtest.strategies.base import Strategy
 
         # Same object — re-export, not reimplementation.
         assert Strategy is RunnerStrategy
@@ -86,7 +86,7 @@ class _SpyStrategy:
 
 
 def _make_bar(symbol: str, ts: pd.Timestamp, close: float = 100.0):
-    from ai_trade.backtest.engine.execution import Bar
+    from market_lab.backtest.engine.execution import Bar
 
     return Bar(
         symbol=symbol,
@@ -101,8 +101,8 @@ def _make_bar(symbol: str, ts: pd.Timestamp, close: float = 100.0):
 
 class TestStrategyBase:
     def test_on_bar_returns_empty_when_not_rebalance(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
-        from ai_trade.backtest.strategies.base import StrategyBase
+        from market_lab.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.strategies.base import StrategyBase
 
         t_hold = pd.Timestamp("2024-01-02")  # not in rebalance_days
         t_rebalance = pd.Timestamp("2024-01-03")
@@ -118,9 +118,9 @@ class TestStrategyBase:
         assert strat.rebalance_calls == []
 
     def test_on_bar_dispatches_to_on_rebalance_when_flagged(self):
-        from ai_trade.backtest.engine.execution import Order
-        from ai_trade.backtest.engine.portfolio import Portfolio
-        from ai_trade.backtest.strategies.base import StrategyBase
+        from market_lab.backtest.engine.execution import Order
+        from market_lab.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.strategies.base import StrategyBase
 
         t_rebalance = pd.Timestamp("2024-01-03")
 
@@ -136,8 +136,8 @@ class TestStrategyBase:
         assert strat.rebalance_calls == [t_rebalance]
 
     def test_on_bar_empty_bars_returns_empty_without_calling_rebalance(self):
-        from ai_trade.backtest.engine.portfolio import Portfolio
-        from ai_trade.backtest.strategies.base import StrategyBase
+        from market_lab.backtest.engine.portfolio import Portfolio
+        from market_lab.backtest.strategies.base import StrategyBase
 
         class Spy(_SpyStrategy, StrategyBase):
             pass
@@ -147,7 +147,7 @@ class TestStrategyBase:
         assert orders == []
 
     def test_subclass_must_implement_abstract_methods(self):
-        from ai_trade.backtest.strategies.base import StrategyBase
+        from market_lab.backtest.strategies.base import StrategyBase
 
         with pytest.raises(TypeError, match="abstract"):
             StrategyBase()  # type: ignore[abstract]

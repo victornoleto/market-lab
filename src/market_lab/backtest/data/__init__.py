@@ -8,7 +8,7 @@ See README.md and docs/CURRENT_STATE.md for current data-source caveats and
 survivorship-bias disclaimers.
 """
 
-from ai_trade.backtest.data.br_tickers import (
+from market_lab.backtest.data.br_tickers import (
     IBRX100_TICKERS,
     SECTOR_MAP,
     UniverseConfig,
@@ -16,8 +16,8 @@ from ai_trade.backtest.data.br_tickers import (
     get_universe_on,
     sector_of,
 )
-from ai_trade.backtest.data.yfinance_source import YFinanceSource
-from ai_trade.backtest.data.wikipedia_spx import WikipediaSPX, constituents_on
+from market_lab.backtest.data.yfinance_source import YFinanceSource
+from market_lab.backtest.data.wikipedia_spx import WikipediaSPX, constituents_on
 
 __all__ = [
     "IBRX100_TICKERS",

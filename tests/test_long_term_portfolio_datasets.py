@@ -66,7 +66,7 @@ def test_lh_56y_kmlmsim_pct_change_pre_1988_matches_ff_proxy() -> None:
 def test_lh_56y_kmlmsim_post_1988_matches_raw_kmlmsim() -> None:
     """post-1988 KMLMSIM in the spliced frame matches raw testfolio KMLMSIM up to scale."""
     from studies.long_term_portfolio.datasets import load_prices
-    from ai_trade.backtest.data.testfolio_loader import load_testfolio_series
+    from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 
     df = load_prices("lh_56y")
     raw = load_testfolio_series("KMLMSIM")

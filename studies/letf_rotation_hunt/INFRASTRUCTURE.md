@@ -4,8 +4,8 @@
 
 | Component | Source | Use |
 |---|---|---|
-| Synth Gayed methodology | `src/ai_trade/backtest/helpers/synthetic_letf.py` | wrapped by `synths.py` (FFR-aware default) |
-| LETF rotation engine | `src/ai_trade/backtest/strategies/letf_rotation.py` | consumed by strategies (NOT modified) |
+| Synth Gayed methodology | `src/market_lab/backtest/helpers/synthetic_letf.py` | wrapped by `synths.py` (FFR-aware default) |
+| LETF rotation engine | `src/market_lab/backtest/strategies/letf_rotation.py` | consumed by strategies (NOT modified) |
 | Tax engine Lei 14.754 | `studies/_shared/tax_engine.py` (symlink `_shared/tax_engine.py`) | wrapped by `tax_layer.py` |
 | Testfolio cache | `data/testfolio/*.json` | source for SPY/QQQ/GLD/ZROZ/TLT/IEF/UPRO/SSO/QLD/TQQQ/UGL/TMF synth series |
 | Tiingo cache | `data/tiingo/daily/{prices,meta}/` | source for real ETF (parity check + post-inception data) |

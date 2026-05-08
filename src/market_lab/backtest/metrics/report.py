@@ -29,13 +29,13 @@ from typing import Any
 
 import pandas as pd
 
-from ai_trade.backtest.engine.runner import BacktestResult
-from ai_trade.backtest.metrics._fmt import (
+from market_lab.backtest.engine.runner import BacktestResult
+from market_lab.backtest.metrics._fmt import (
     _dataframe_to_markdown,
     _fmt_num,
     _fmt_pct,
 )
-from ai_trade.backtest.metrics.performance import (
+from market_lab.backtest.metrics.performance import (
     cagr,
     calmar,
     max_drawdown,
@@ -125,7 +125,7 @@ def _cpcv_section(cpcv: dict[str, Any] | None) -> str:
 def _pbo_section(pbo_res: Any) -> str:
     if pbo_res is None:
         return "_PBO not run._\n"
-    from ai_trade.backtest.validation.pbo import pbo_gate
+    from market_lab.backtest.validation.pbo import pbo_gate
 
     value = float(pbo_res.pbo)
     verdict = pbo_gate(value)

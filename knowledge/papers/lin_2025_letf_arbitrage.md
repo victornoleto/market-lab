@@ -30,7 +30,7 @@ The "volatility decay" in LETFs is a real phenomenon BUT the **cross-market asym
 - Strategy generates highly positive skewness, offers strong downside protection
 - Asymmetric US-bull vs JP-bear emerges as the optimal decay-harvesting structure
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **LOW relevance for Pepperstone mandate.** Pepperstone Razor does NOT list SPXU (UltraPro Bear) nor Japanese LETFs as CFDs. Short-selling LETFs on CFD platform also has financing costs distinct from FINRA margin.
 - **Indirect value:** confirms that LETF-related edge is often in DECAY CAPTURE, not directional leverage — useful framing for future instrument expansion.

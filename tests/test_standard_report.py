@@ -19,7 +19,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.metrics.standard_report import (
+from market_lab.backtest.metrics.standard_report import (
     DEFAULT_SPY_PARQUET,
     SpyBenchmark,
     StandardReport,

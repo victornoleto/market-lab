@@ -1,4 +1,4 @@
-"""Tests for ``ai_trade.backtest.data.tiingo_source``.
+"""Tests for ``market_lab.backtest.data.tiingo_source``.
 
 TiingoSource is the storage-first fetcher. Behavior:
 
@@ -33,38 +33,38 @@ class TestUrlRouting:
     """Smoke tests for endpoint dispatch by (asset_class, frequency)."""
 
     def test_equity_daily_uses_tiingo_daily_endpoint(self):
-        from ai_trade.backtest.data.tiingo_source import _build_url
+        from market_lab.backtest.data.tiingo_source import _build_url
         url = _build_url("SPY", asset_class="equity", frequency="daily")
         assert url == "https://api.tiingo.com/tiingo/daily/SPY/prices"
 
     def test_equity_1hour_uses_iex_endpoint(self):
-        from ai_trade.backtest.data.tiingo_source import _build_url
+        from market_lab.backtest.data.tiingo_source import _build_url
         url = _build_url("SPY", asset_class="equity", frequency="1hour")
         assert url == "https://api.tiingo.com/iex/SPY/prices"
 
     def test_crypto_1hour_uses_tiingo_crypto_endpoint(self):
-        from ai_trade.backtest.data.tiingo_source import _build_url
+        from market_lab.backtest.data.tiingo_source import _build_url
         url = _build_url("BTCUSD", asset_class="crypto", frequency="1hour")
         assert url == "https://api.tiingo.com/tiingo/crypto/prices"
 
     def test_forex_1hour_uses_tiingo_fx_endpoint(self):
-        from ai_trade.backtest.data.tiingo_source import _build_url
+        from market_lab.backtest.data.tiingo_source import _build_url
         url = _build_url("EURUSD", asset_class="forex", frequency="1hour")
         assert url == "https://api.tiingo.com/tiingo/fx/EURUSD/prices"
 
     def test_rejects_frequency_not_in_whitelist(self):
-        from ai_trade.backtest.data.tiingo_source import _build_url
+        from market_lab.backtest.data.tiingo_source import _build_url
         with pytest.raises(NotImplementedError, match="frequency='5min'"):
             _build_url("SPY", asset_class="equity", frequency="5min")
 
     def test_rejects_index_1hour_with_etf_hint(self):
-        from ai_trade.backtest.data.tiingo_source import _build_url
+        from market_lab.backtest.data.tiingo_source import _build_url
         with pytest.raises(NotImplementedError, match="ETF proxy"):
             _build_url("SPX", asset_class="index", frequency="1hour")
 
 
 def test_build_params_adds_resample_freq_for_1hour():
-    from ai_trade.backtest.data.tiingo_source import _build_params
+    from market_lab.backtest.data.tiingo_source import _build_params
     params = _build_params(
         "SPY", date(2024, 1, 1), date(2024, 12, 31),
         asset_class="equity", frequency="1hour",
@@ -75,7 +75,7 @@ def test_build_params_adds_resample_freq_for_1hour():
 
 
 def test_build_params_crypto_1hour_has_tickers_and_resample():
-    from ai_trade.backtest.data.tiingo_source import _build_params
+    from market_lab.backtest.data.tiingo_source import _build_params
     params = _build_params(
         "BTCUSD", date(2024, 1, 1), date(2024, 12, 31),
         asset_class="crypto", frequency="1hour",
@@ -112,7 +112,7 @@ def tiingo_env(monkeypatch):
 
 @pytest.fixture
 def storage(tmp_path: Path):
-    from ai_trade.backtest.data.tiingo_storage import TiingoStorage
+    from market_lab.backtest.data.tiingo_storage import TiingoStorage
     return TiingoStorage(root=tmp_path)
 
 
@@ -131,7 +131,7 @@ def _mock_response(payload, status_code: int = 200):
 
 class TestNormalize:
     def test_canonical_columns_and_index(self):
-        from ai_trade.backtest.data.tiingo_source import _normalize
+        from market_lab.backtest.data.tiingo_source import _normalize
 
         df = _normalize(_TIINGO_SAMPLE)
 
@@ -144,7 +144,7 @@ class TestNormalize:
         assert len(df) == 2
 
     def test_values_round_trip_correctly(self):
-        from ai_trade.backtest.data.tiingo_source import _normalize
+        from market_lab.backtest.data.tiingo_source import _normalize
 
         df = _normalize(_TIINGO_SAMPLE)
         first = df.iloc[0]
@@ -154,7 +154,7 @@ class TestNormalize:
         assert first["volume"] == 1_234_567
 
     def test_empty_payload_returns_empty_frame_with_canonical_columns(self):
-        from ai_trade.backtest.data.tiingo_source import _normalize
+        from market_lab.backtest.data.tiingo_source import _normalize
 
         df = _normalize([])
         assert df.empty
@@ -172,7 +172,7 @@ class TestAuth:
     def test_fetch_sends_token_in_authorization_header(
         self, tiingo_env, storage, monkeypatch
     ):
-        from ai_trade.backtest.data import tiingo_source
+        from market_lab.backtest.data import tiingo_source
 
         captured: dict = {}
 
@@ -193,7 +193,7 @@ class TestAuth:
         assert captured["params"]["endDate"] == "2023-12-04"
 
     def test_missing_api_key_raises(self, monkeypatch, storage):
-        from ai_trade.backtest.data import tiingo_source
+        from market_lab.backtest.data import tiingo_source
 
         monkeypatch.delenv("TIINGO_API_KEY", raising=False)
         # Also bypass the .env-file fallback so the test is hermetic.
@@ -213,7 +213,7 @@ class TestAuth:
 class TestStorageFirst:
     def test_storage_hit_skips_api(self, tiingo_env, storage, monkeypatch):
         """If storage.has(...) is True, no network call should happen."""
-        from ai_trade.backtest.data import tiingo_source
+        from market_lab.backtest.data import tiingo_source
 
         # Pre-populate storage with the sample range
         df = tiingo_source._normalize(_TIINGO_SAMPLE)
@@ -236,7 +236,7 @@ class TestStorageFirst:
     def test_storage_miss_calls_api_and_persists(
         self, tiingo_env, storage, monkeypatch
     ):
-        from ai_trade.backtest.data import tiingo_source
+        from market_lab.backtest.data import tiingo_source
 
         called = {"n": 0}
 
@@ -257,7 +257,7 @@ class TestStorageFirst:
     def test_second_fetch_inside_window_is_storage_hit(
         self, tiingo_env, storage, monkeypatch
     ):
-        from ai_trade.backtest.data import tiingo_source
+        from market_lab.backtest.data import tiingo_source
 
         called = {"n": 0}
 
@@ -276,7 +276,7 @@ class TestStorageFirst:
     def test_empty_response_returns_empty_frame(
         self, tiingo_env, storage, monkeypatch
     ):
-        from ai_trade.backtest.data import tiingo_source
+        from market_lab.backtest.data import tiingo_source
 
         def fake_get(*args, **kwargs):
             return _mock_response([])
@@ -297,7 +297,7 @@ class TestFetchMany:
     def test_fetch_many_iterates_each_ticker(
         self, tiingo_env, storage, monkeypatch
     ):
-        from ai_trade.backtest.data import tiingo_source
+        from market_lab.backtest.data import tiingo_source
 
         seen = []
 
@@ -327,7 +327,7 @@ class TestAssetClass:
         self, tiingo_env, storage, monkeypatch
     ):
         """Yahoo BF.B → Tiingo BF-B in the outbound URL; storage key stays."""
-        from ai_trade.backtest.data import tiingo_source
+        from market_lab.backtest.data import tiingo_source
 
         captured: dict = {}
 
@@ -349,7 +349,7 @@ class TestAssetClass:
     def test_crypto_asset_class_uses_crypto_endpoint(
         self, tiingo_env, storage, monkeypatch
     ):
-        from ai_trade.backtest.data import tiingo_source
+        from market_lab.backtest.data import tiingo_source
 
         captured: dict = {}
 
@@ -370,7 +370,7 @@ class TestAssetClass:
     def test_forex_asset_class_uses_fx_endpoint(
         self, tiingo_env, storage, monkeypatch
     ):
-        from ai_trade.backtest.data import tiingo_source
+        from market_lab.backtest.data import tiingo_source
 
         captured: dict = {}
 
@@ -398,7 +398,7 @@ class TestErrors:
     def test_401_unauthorized_raises_clear_error(
         self, tiingo_env, storage, monkeypatch
     ):
-        from ai_trade.backtest.data import tiingo_source
+        from market_lab.backtest.data import tiingo_source
         import requests as _r
 
         def fake_get(*args, **kwargs):
@@ -422,7 +422,7 @@ class TestErrors:
         """Delisted/renamed tickers (Tiingo returns 404) must not crash a
         bulk universe fetch — graceful empty-frame return matches yfinance.
         """
-        from ai_trade.backtest.data import tiingo_source
+        from market_lab.backtest.data import tiingo_source
 
         def fake_get(*args, **kwargs):
             mock = MagicMock()
@@ -457,8 +457,8 @@ def test_fetch_with_frequency_1hour_persists_and_serves_cache(
     """Primeira call faz HTTP; segunda lê do cache."""
     from datetime import date
     import pandas as pd
-    from ai_trade.backtest.data.tiingo_source import TiingoSource
-    from ai_trade.backtest.data import tiingo_source as ts_mod
+    from market_lab.backtest.data.tiingo_source import TiingoSource
+    from market_lab.backtest.data import tiingo_source as ts_mod
 
     # Pré-popular daily cache para permitir split adjust (ratio = 1.0 aqui)
     df_daily = pd.DataFrame(
@@ -512,8 +512,8 @@ def test_iex_applies_split_adjust_from_daily_cache(
     """close_intraday × (adj_close_daily/close_daily) vira adj_close_intraday."""
     from datetime import date
     import pandas as pd
-    from ai_trade.backtest.data.tiingo_source import TiingoSource
-    from ai_trade.backtest.data import tiingo_source as ts_mod
+    from market_lab.backtest.data.tiingo_source import TiingoSource
+    from market_lab.backtest.data import tiingo_source as ts_mod
 
     df_daily = pd.DataFrame(
         {"open": [100.0], "high": [100.0], "low": [100.0],
@@ -549,8 +549,8 @@ def test_iex_raises_notimplemented_if_equity_not_in_daily_cache(
 ):
     """equity/etf 1h sem daily cache para o ticker → NotImplementedError."""
     from datetime import date
-    from ai_trade.backtest.data.tiingo_source import TiingoSource
-    from ai_trade.backtest.data import tiingo_source as ts_mod
+    from market_lab.backtest.data.tiingo_source import TiingoSource
+    from market_lab.backtest.data import tiingo_source as ts_mod
     import pytest
 
     IEX_SAMPLE = [
@@ -587,8 +587,8 @@ def test_iex_filters_orphan_holiday_bars_with_warning(
     import logging
     from datetime import date
     import pandas as pd
-    from ai_trade.backtest.data.tiingo_source import TiingoSource
-    from ai_trade.backtest.data import tiingo_source as ts_mod
+    from market_lab.backtest.data.tiingo_source import TiingoSource
+    from market_lab.backtest.data import tiingo_source as ts_mod
 
     df_daily = pd.DataFrame(
         {
@@ -622,7 +622,7 @@ def test_iex_filters_orphan_holiday_bars_with_warning(
         lambda *a, **kw: _mock_response(IEX_SAMPLE, 200),
     )
 
-    caplog.set_level(logging.WARNING, logger="ai_trade.backtest.data.tiingo_source")
+    caplog.set_level(logging.WARNING, logger="market_lab.backtest.data.tiingo_source")
     source = TiingoSource(storage=storage)
     df = source.fetch(
         "XLK", date(2024, 1, 12), date(2024, 1, 16),
@@ -658,8 +658,8 @@ def test_iex_no_filter_warning_when_all_intraday_dates_in_daily(
     import logging
     from datetime import date
     import pandas as pd
-    from ai_trade.backtest.data.tiingo_source import TiingoSource
-    from ai_trade.backtest.data import tiingo_source as ts_mod
+    from market_lab.backtest.data.tiingo_source import TiingoSource
+    from market_lab.backtest.data import tiingo_source as ts_mod
 
     df_daily = pd.DataFrame(
         {"open": [100.0, 100.0], "high": [100.0, 100.0], "low": [100.0, 100.0],
@@ -683,7 +683,7 @@ def test_iex_no_filter_warning_when_all_intraday_dates_in_daily(
         lambda *a, **kw: _mock_response(IEX_SAMPLE, 200),
     )
 
-    caplog.set_level(logging.WARNING, logger="ai_trade.backtest.data.tiingo_source")
+    caplog.set_level(logging.WARNING, logger="market_lab.backtest.data.tiingo_source")
     source = TiingoSource(storage=storage)
     source.fetch(
         "SPY", date(2024, 1, 2), date(2024, 1, 3),
@@ -705,8 +705,8 @@ def test_crypto_and_forex_use_close_as_adj_close_no_split(
 ):
     """Crypto/forex 1h não tem split — adj_close := close."""
     from datetime import date
-    from ai_trade.backtest.data.tiingo_source import TiingoSource
-    from ai_trade.backtest.data import tiingo_source as ts_mod
+    from market_lab.backtest.data.tiingo_source import TiingoSource
+    from market_lab.backtest.data import tiingo_source as ts_mod
 
     CRYPTO_SAMPLE = [{
         "ticker": "btcusd",
@@ -734,7 +734,7 @@ def test_crypto_and_forex_use_close_as_adj_close_no_split(
 
 def test_iex_payload_normalizes_without_adjclose():
     """IEX payload sem adjClose — _normalize usa close."""
-    from ai_trade.backtest.data.tiingo_source import _normalize
+    from market_lab.backtest.data.tiingo_source import _normalize
 
     payload = [
         {"date": "2024-01-02T14:00:00.000Z",

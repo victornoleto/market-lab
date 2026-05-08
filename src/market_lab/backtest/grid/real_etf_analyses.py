@@ -16,17 +16,17 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 
-from ai_trade.backtest.grid.real_etf_regime_runner import (
+from market_lab.backtest.grid.real_etf_regime_runner import (
     RealETFMarket,
     build_data_bundle,
     simulate_config_with_real_legs,
 )
-from ai_trade.backtest.metrics.performance import (
+from market_lab.backtest.metrics.performance import (
     cagr as _cagr,
     max_drawdown as _max_drawdown,
     sharpe as _sharpe,
 )
-from ai_trade.backtest.strategies.ema_sma_threshold_educational import (
+from market_lab.backtest.strategies.ema_sma_threshold_educational import (
     EMASMAThresholdConfig,
 )
 

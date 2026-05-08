@@ -153,7 +153,7 @@ build_prompt() {
     local prompt_body
     prompt_body=$(cat "$PROMPT_FILE")
     cat <<EOF
-Estamos no repo /var/www/pessoal/ai-trade, branch day_swing_strategy_hunt.
+Estamos no repo /var/www/github/finances/market-lab, branch day_swing_strategy_hunt.
 
 Esta e uma execucao automatica do loop, rodada para a iteracao ${next_n}, em uma sessao zerada. Siga exatamente o arquivo studies/day_swing_strategy_hunt/next_prompt.md abaixo. Nao espere resposta do usuario no meio da iteracao: se houver decisao ambigua, escolha a opcao mais conservadora que preserve os guardrails e registre no SUMMARY.md.
 

@@ -49,11 +49,11 @@ import pandas as pd
 REPO_ROOT = Path(__file__).parents[4]
 sys.path.insert(0, str(REPO_ROOT))
 
-from ai_trade.backtest.data.testfolio_loader import load_testfolio_frame
-from ai_trade.backtest.metrics.performance import sharpe, cagr, max_drawdown
-from ai_trade.backtest.validation.pbo import MIN_HONEST_N_CONFIGS
-from ai_trade.backtest.validation.dsr import dsr as compute_dsr, psr as compute_psr
-from ai_trade.backtest.validation.walk_forward import walk_forward_splits
+from market_lab.backtest.data.testfolio_loader import load_testfolio_frame
+from market_lab.backtest.metrics.performance import sharpe, cagr, max_drawdown
+from market_lab.backtest.validation.pbo import MIN_HONEST_N_CONFIGS
+from market_lab.backtest.validation.dsr import dsr as compute_dsr, psr as compute_psr
+from market_lab.backtest.validation.walk_forward import walk_forward_splits
 
 LOOP_ROOT = REPO_ROOT / "studies" / "global_factor_tilt_loop"
 sys.path.insert(0, str(LOOP_ROOT))

@@ -1,4 +1,4 @@
-"""Tests for ``ai_trade.backtest.grid.walk_forward`` — per-config WF gate.
+"""Tests for ``market_lab.backtest.grid.walk_forward`` — per-config WF gate.
 
 Design choice: for fixed-config strategies (Clenow is one — no per-window
 re-optimization) running the full backtest once and slicing the equity curve
@@ -38,7 +38,7 @@ def _equity_from_window_returns(window_returns: list[float], periods_per_window:
 
 def test_wf_for_config_returns_verdict_pass_for_trending_equity():
     """8 windows all positive → 8/8 profitable, no DD → verdict pass."""
-    from ai_trade.backtest.grid.walk_forward import wf_for_config
+    from market_lab.backtest.grid.walk_forward import wf_for_config
 
     equity = _equity_from_window_returns([0.02] * 8, periods_per_window=30)
     wf = wf_for_config(equity_curve=equity, config_id=7, n_windows=8)
@@ -51,7 +51,7 @@ def test_wf_for_config_returns_verdict_pass_for_trending_equity():
 
 def test_wf_for_config_rejects_when_too_few_profitable():
     """4/8 profitable fails the ≥6/8 rule."""
-    from ai_trade.backtest.grid.walk_forward import wf_for_config
+    from market_lab.backtest.grid.walk_forward import wf_for_config
 
     equity = _equity_from_window_returns(
         [0.02, -0.02, 0.02, -0.02, 0.02, -0.02, 0.02, -0.02],
@@ -64,7 +64,7 @@ def test_wf_for_config_rejects_when_too_few_profitable():
 
 def test_wf_for_config_rejects_when_drawdown_exceeds_25_percent():
     """Any window with DD > 25% → reject regardless of profitability."""
-    from ai_trade.backtest.grid.walk_forward import wf_for_config
+    from market_lab.backtest.grid.walk_forward import wf_for_config
 
     # One window with a 40% loss (way over the 25% DD gate)
     equity = _equity_from_window_returns(
@@ -78,7 +78,7 @@ def test_wf_for_config_rejects_when_drawdown_exceeds_25_percent():
 
 def test_wf_for_config_captures_per_window_breakdown():
     """Result carries OOS returns + drawdowns per window for diagnostics."""
-    from ai_trade.backtest.grid.walk_forward import wf_for_config
+    from market_lab.backtest.grid.walk_forward import wf_for_config
 
     equity = _equity_from_window_returns([0.01] * 8, periods_per_window=30)
     wf = wf_for_config(equity_curve=equity, config_id=2, n_windows=8)
@@ -91,7 +91,7 @@ def test_wf_for_config_captures_per_window_breakdown():
 
 def test_wf_for_config_handles_equity_too_short_for_8_windows():
     """< 80 bars (8 windows × 10 bars) → verdict reject, n_windows may be 0."""
-    from ai_trade.backtest.grid.walk_forward import wf_for_config
+    from market_lab.backtest.grid.walk_forward import wf_for_config
 
     idx = pd.date_range("2020-01-01", periods=20, freq="B")
     equity = pd.Series(np.linspace(100_000.0, 101_000.0, 20), index=idx)
@@ -101,7 +101,7 @@ def test_wf_for_config_handles_equity_too_short_for_8_windows():
 
 def test_wf_for_config_respects_custom_n_windows():
     """Caller can request a different window count (10 windows, for example)."""
-    from ai_trade.backtest.grid.walk_forward import wf_for_config
+    from market_lab.backtest.grid.walk_forward import wf_for_config
 
     equity = _equity_from_window_returns([0.01] * 10, periods_per_window=30)
     wf = wf_for_config(equity_curve=equity, config_id=0, n_windows=10)
@@ -113,10 +113,10 @@ def test_wf_for_config_over_all_grid_delegates_to_single_config_impl():
     """wf_for_grid runs wf_for_config per trial in parallel (via joblib or
     sequential) and returns dict[config_id, WFResult]. We test the shape.
     """
-    from ai_trade.backtest.engine.runner import BacktestResult
-    from ai_trade.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
-    from ai_trade.backtest.grid.result import GridResult, TrialResult
-    from ai_trade.backtest.grid.walk_forward import wf_for_grid
+    from market_lab.backtest.engine.runner import BacktestResult
+    from market_lab.backtest.grid.bollinger_mr_config import BollingerMRGridConfig
+    from market_lab.backtest.grid.result import GridResult, TrialResult
+    from market_lab.backtest.grid.walk_forward import wf_for_grid
 
     equities = [
         _equity_from_window_returns([0.01] * 8, periods_per_window=30),

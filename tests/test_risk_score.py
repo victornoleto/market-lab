@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.signals.risk_score import (
+from market_lab.backtest.signals.risk_score import (
     IndicatorSpec,
     RISKY_SIGN,
     compute_composite_risk,

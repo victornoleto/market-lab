@@ -207,7 +207,7 @@ The user retains full authority to override. In particular, if R5 is preferred o
 - `docs/self_improvement/*` — untouched
 - All frozen reports (`reports/phase_3_5a_v2/*`, `reports/phase_3_5f/*`, `reports/phase_3_6/*`, `reports/phase_3_7/*`, `docs/superpowers/findings/*`) — untouched
 - Phase 3.6 / 3.7 strategy files — untouched
-- `src/ai_trade/backtest/strategies/letf_rotation.py` — untouched (canonical reference)
+- `src/market_lab/backtest/strategies/letf_rotation.py` — untouched (canonical reference)
 - `.claude/CLAUDE.md` — untouched
 
 ---

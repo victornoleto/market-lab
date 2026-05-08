@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.screener.metrics import (
+from market_lab.backtest.screener.metrics import (
     atr_pct,
     dollar_volume,
     realized_vol_annualized,

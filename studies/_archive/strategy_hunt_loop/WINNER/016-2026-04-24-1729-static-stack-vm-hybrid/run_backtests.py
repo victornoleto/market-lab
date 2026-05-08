@@ -28,7 +28,7 @@ ROOT = ITER_DIR.parents[3]
 sys.path.insert(0, str(ITER_DIR))
 from static_stack_vm import apply_static_stack_vol_managed  # noqa: E402
 
-from ai_trade.backtest.metrics.performance import (  # noqa: E402
+from market_lab.backtest.metrics.performance import (  # noqa: E402
     cagr as _cagr,
     max_drawdown as _max_drawdown,
     sharpe as _sharpe,

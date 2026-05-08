@@ -22,7 +22,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).parent
 DATA_DIR = SCRIPT_DIR / "testfolio_data"
-ITER040_DATA = Path("/var/www/pessoal/ai-trade/studies/spy_beater_hunt/iterations/"
+ITER040_DATA = Path("/var/www/github/finances/market-lab/studies/spy_beater_hunt/iterations/"
                     "040-2026-05-01-baseline-monthly-rebal-explicit-ers/testfolio_data")
 
 BATCHES = ["a", "b", "c", "d"]   # d = 26y window (DBMF-containing)

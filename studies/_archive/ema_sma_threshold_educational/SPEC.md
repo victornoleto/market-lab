@@ -96,7 +96,7 @@ justificativa econômica:
 
 ## Métricas computadas (por config)
 
-Via `ai_trade.backtest.metrics.performance`:
+Via `market_lab.backtest.metrics.performance`:
 
 - `cagr(equity, 252)` — CAGR anualizado.
 - `sharpe(returns, 252)` — Sharpe anualizado, ddof=0.

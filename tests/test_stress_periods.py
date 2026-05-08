@@ -11,8 +11,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.metrics.standard_report import Trade
-from ai_trade.backtest.metrics.stress_periods import (
+from market_lab.backtest.metrics.standard_report import Trade
+from market_lab.backtest.metrics.stress_periods import (
     STANDARD_STRESS_WINDOWS,
     StressWindow,
     compute_all_stress_reports,

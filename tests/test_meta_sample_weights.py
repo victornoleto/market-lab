@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.meta.sample_weights import (
+from market_lab.backtest.meta.sample_weights import (
     get_avg_uniqueness,
     get_concurrent_events,
     get_sample_weights_by_return,

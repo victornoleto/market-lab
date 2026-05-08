@@ -4,14 +4,14 @@ from __future__ import annotations
 
 import pytest
 
-from ai_trade.backtest.grid.stop_loss_variants import (
+from market_lab.backtest.grid.stop_loss_variants import (
     DEFAULT_COOLDOWNS,
     DEFAULT_RECOVERY_PCTS,
     DEFAULT_STOP_LEVELS,
     Variant,
     expand_stop_loss_variants,
 )
-from ai_trade.backtest.strategies.ema_sma_threshold_educational import (
+from market_lab.backtest.strategies.ema_sma_threshold_educational import (
     EMASMAThresholdConfig,
 )
 

@@ -69,11 +69,11 @@ reports/phase3_5a_v2/
 ### A.2 Código fonte V2 (src/)
 
 **Strategy implementation (imutável):**
-- `src/ai_trade/backtest/strategies/plano_a_leveraged_rotation.py` — strategy do winner V2-L2
+- `src/market_lab/backtest/strategies/plano_a_leveraged_rotation.py` — strategy do winner V2-L2
 - `tests/test_plano_a_leveraged_rotation.py` — testes (preservar baseline pytest)
 
 **Infra fan-out (criada em V2, reutilizada em futuras fases):**
-- `src/ai_trade/backtest/sweeps/registry.py` + `__init__.py` — registry schema v1
+- `src/market_lab/backtest/sweeps/registry.py` + `__init__.py` — registry schema v1
 - `tests/test_sweep_registry.py` — 32 testes de race condition + invariantes
 - `scripts/smoke_fanout_protocol.py` — E2E smoke verifier (para regressão futura)
 - `docs/self_improvement/fanout_protocol.md` — protocolo lido pelos agentes em SWEEP_MODE=fanout
@@ -202,7 +202,7 @@ DEAD e não vão ser re-testadas.
 ### C.3 Strategy e test V1 refutados (2 arquivos)
 
 ```bash
-rm src/ai_trade/backtest/strategies/donchian_breakout.py
+rm src/market_lab/backtest/strategies/donchian_breakout.py
 rm tests/test_donchian_breakout.py
 ```
 
@@ -267,7 +267,7 @@ Após executar os `rm`s acima:
 ## Cleanup script copy-paste (executar em ordem)
 
 ```bash
-cd /var/www/pessoal/ai-trade
+cd /var/www/github/finances/market-lab
 
 # Safety: verificar que estamos em branch V2 (não merged em main ainda)
 git branch --show-current
@@ -291,7 +291,7 @@ rm scripts/run_t4_fanout_ticker.py
 rm scripts/run_t5_fanout_ticker.py
 
 # C.3: V1 strategy + test (CUIDADO: pytest drop esperado)
-rm src/ai_trade/backtest/strategies/donchian_breakout.py
+rm src/market_lab/backtest/strategies/donchian_breakout.py
 rm tests/test_donchian_breakout.py
 
 # C.4: V1 spec
@@ -334,7 +334,7 @@ Quando cleanup adicional rodar após Phase 4 ou Phase 5:
 
 1. **Não mexer em nada sob `reports/phase3_5a_v2/`.**
 2. **Não deletar** `scripts/iter_v2_l*.py`, `scripts/smoke_fanout_protocol.py`,
-   `src/ai_trade/backtest/sweeps/`, `src/ai_trade/backtest/strategies/plano_a_leveraged_rotation.py`,
+   `src/market_lab/backtest/sweeps/`, `src/market_lab/backtest/strategies/plano_a_leveraged_rotation.py`,
    `tests/test_sweep_registry.py`, `tests/test_plano_a_leveraged_rotation.py`.
 3. **Não mexer em jornadas `phase3.5a-v2`** (todas as 20+ arquivos).
 4. **Não mexer em `docs/strategies/plano_a_v2_l2_gayed_cfd.md`** — living doc.

@@ -28,7 +28,7 @@
 - **With transaction costs, the advantage becomes substantial** — VIX scaling wins on net Sharpe because it reduces turnover
 - Specific Sharpe/CAGR/drawdown figures not in the public abstract; alpha significance is the reported metric
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **HIGH relevance.** This is the science paper behind Phase 3.7-3 hypothesis H2 (VIX-gated LETF rotation).
 - Can **substitute or augment the 200-day SMA filter** in Gayed 2016 — regime gate becomes `scale = L × clip(VIX_baseline / VIX_prior_month, 0, 1)`.

@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ai_trade.backtest.metrics.vol_target import (
+from market_lab.backtest.metrics.vol_target import (
     CANONICAL_LOOKBACKS,
     CANONICAL_MAX_LEVERAGES,
     CANONICAL_TARGET_VOL,

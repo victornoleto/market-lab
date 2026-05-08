@@ -1,6 +1,6 @@
 # Rebalance modes — implementation notes
 
-Module: `src/ai_trade/backtest/metrics/rebalance_modes.py` (Tasks C1 + C4).
+Module: `src/market_lab/backtest/metrics/rebalance_modes.py` (Tasks C1 + C4).
 Tests: `tests/test_rebalance_modes.py` (**39 cases** — 28 for C1's 3
 functions, 11 for C4's `apply_threshold_rebalance`).
 Consumers: `scripts/run_phase3_5b_task_c2_rebalance_3leg.py` (C2),
@@ -195,7 +195,7 @@ Numba / no Cython — pure NumPy + Pandas.
 
 ## 9. Related artefacts
 
-* **Module:** `src/ai_trade/backtest/metrics/rebalance_modes.py`
+* **Module:** `src/market_lab/backtest/metrics/rebalance_modes.py`
   (4 functions).
 * **Tests:** `tests/test_rebalance_modes.py` (**39 cases**, pytest
   baseline 670 → 698 → 709 across C1 + C4).

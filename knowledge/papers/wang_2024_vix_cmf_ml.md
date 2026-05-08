@@ -34,7 +34,7 @@ VIX **term-structure features** (roll yield, price changes) combined with seven 
 - **Best config (LR C-MVO): IR 2.291, average annualized return 5.1%**
 - Models incorporating both `μt` (price change) and `ΔRoll` (roll-yield change) beat simple-feature alternatives
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **MEDIUM relevance.** Frictionless cost model is a hard limiter for direct Pepperstone transport.
 - **Feature-level insight usable as regime filter:** roll-yield sign (contango vs backwardation) can feed into SPX500 CFD entry logic without needing to trade VIX futures directly.

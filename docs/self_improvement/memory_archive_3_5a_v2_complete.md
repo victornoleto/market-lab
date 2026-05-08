@@ -101,19 +101,19 @@ spread+commission-dominant, 6 famílias novas.
 ## 🚫 Winners IMUTÁVEIS (não modificar)
 
 **Plano B (Phase 3.5b) — production, NÃO TOCAR:**
-- `src/ai_trade/backtest/strategies/letf_rotation.py`
-- `src/ai_trade/backtest/strategies/tsmom.py`
-- `src/ai_trade/backtest/grid/portfolio_3leg.py`
-- `src/ai_trade/helpers/synthetic_letf.py`
-- `src/ai_trade/backtest/metrics/rebalance_modes.py`
+- `src/market_lab/backtest/strategies/letf_rotation.py`
+- `src/market_lab/backtest/strategies/tsmom.py`
+- `src/market_lab/backtest/grid/portfolio_3leg.py`
+- `src/market_lab/helpers/synthetic_letf.py`
+- `src/market_lab/backtest/metrics/rebalance_modes.py`
 
 **Plano A baseline (NÃO modificar):**
-- `src/ai_trade/backtest/strategies/bollinger_mr.py`
-- `src/ai_trade/helpers/momentum.py`
+- `src/market_lab/backtest/strategies/bollinger_mr.py`
+- `src/market_lab/helpers/momentum.py`
 
 **Infra reusável (NÃO duplicar):**
-- `src/ai_trade/backtest/metrics/standard_report.py`
-- `src/ai_trade/backtest/sweeps/registry.py` (fan-out helpers)
+- `src/market_lab/backtest/metrics/standard_report.py`
+- `src/market_lab/backtest/sweeps/registry.py` (fan-out helpers)
 
 ---
 
@@ -129,7 +129,7 @@ mandate §7 formal.
 ## Execution mode — SWEEP_MODE=fanout (ACTIVE)
 
 Ler `docs/self_improvement/fanout_protocol.md` antes de trabalhar em qualquer
-lead `[sweep-*]`. Helpers: `ai_trade.backtest.sweeps.registry`.
+lead `[sweep-*]`. Helpers: `market_lab.backtest.sweeps.registry`.
 
 Leads `[atomic]` continuam legacy (1 iter = 1 lead).
 
@@ -205,8 +205,8 @@ ETA ~7h autônomas com Opus 4.7.
 
 - Pytest: `.venv/bin/pytest -q`
 - Tiingo manifest: `python3 -c "import json; m=json.load(open('data/tiingo/manifest.json')); print(len(m))"`
-- Sweep registry helper: `from ai_trade.backtest.sweeps.registry import ...`
-- Standard report: `from ai_trade.backtest.metrics.standard_report import ...`
+- Sweep registry helper: `from market_lab.backtest.sweeps.registry import ...`
+- Standard report: `from market_lab.backtest.metrics.standard_report import ...`
 - V1 artifacts (research log, NÃO deletar): `reports/phase3_5a/`, jornadas `2026-04-18-*phase3.5a*.md`
 - Spec: `specs/phase_3_5a_v2.md` (leitura obrigatória iter 1)
 - Fan-out protocol: `docs/self_improvement/fanout_protocol.md`

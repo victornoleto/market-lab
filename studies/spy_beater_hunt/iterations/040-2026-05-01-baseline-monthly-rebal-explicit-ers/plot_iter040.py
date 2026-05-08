@@ -133,7 +133,7 @@ with open("/tmp/testfolio_metrics_common_start.json") as f:
     iter039_metrics = json.load(f)
 
 # Use raw testfolio sharpes from iter 039 (re-extracted)
-ITER039_DATA = Path("/var/www/pessoal/ai-trade/studies/spy_beater_hunt/iterations/"
+ITER039_DATA = Path("/var/www/github/finances/market-lab/studies/spy_beater_hunt/iterations/"
                     "039-2026-04-30-reddit-comparison-spy-lrs-vs-static-stack/testfolio_data")
 iter039_corrected: dict[str, dict] = {}
 for letter in ("a", "b"):

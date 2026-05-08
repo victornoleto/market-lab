@@ -90,7 +90,7 @@ Isso é consistente com:
 Rodar 1 última experiência antes de consolidar:
 
 - **AFML Meta-Labeling ensemble sobre os 113 leads falhados**. Infra existe em
-  `src/ai_trade/backtest/meta/` mas nunca foi testada como ensemble
+  `src/market_lab/backtest/meta/` mas nunca foi testada como ensemble
   dinâmico sobre multiple weak signals simultaneamente.
 - Hipótese: se combinarmos 113 signals-com-falha-individual em meta-labeled
   ensemble, o weak alpha cumulativo pode ter Sharpe > 0.5 net.

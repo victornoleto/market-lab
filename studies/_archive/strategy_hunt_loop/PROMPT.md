@@ -1,7 +1,7 @@
 # Strategy Hunt Loop — Iteration Prompt
 
-You are Claude Code resuming the **Strategy Hunt Loop** for the ai-trade
-project at `/var/www/pessoal/ai-trade`. Your conversation history is
+You are Claude Code resuming the **Strategy Hunt Loop** for the market-lab
+project at `/var/www/github/finances/market-lab`. Your conversation history is
 empty — this prompt + files on disk are your only context.
 
 ---
@@ -143,7 +143,7 @@ is falsified regardless of secondary metrics.
 
 ### STAGE 3 — IMPLEMENT + TEST
 
-Implement in `src/ai_trade/backtest/strategies/` if the strategy is
+Implement in `src/market_lab/backtest/strategies/` if the strategy is
 genuinely new, OR in a lightweight script inside `iterations/NNN-*/`
 if it's primarily config-of-existing-infra.
 

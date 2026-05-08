@@ -144,7 +144,7 @@ def intra_bar_ruin_scan(
 
     Parameters
     ----------
-    trades : iterable of ai_trade.backtest.engine.portfolio.Trade
+    trades : iterable of market_lab.backtest.engine.portfolio.Trade
     bar_data : pd.DataFrame
         OHLCV indexed by timestamp.
     initial_cash : float

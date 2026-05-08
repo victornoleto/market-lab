@@ -47,8 +47,8 @@ from typing import Literal
 import numpy as np
 import pandas as pd
 
-from ai_trade.backtest.metrics._fmt import _fmt_num, _fmt_pct
-from ai_trade.backtest.metrics.performance import (
+from market_lab.backtest.metrics._fmt import _fmt_num, _fmt_pct
+from market_lab.backtest.metrics.performance import (
     cagr as _cagr,
     calmar as _calmar,
     max_drawdown as _max_drawdown,
@@ -687,7 +687,7 @@ def render_trade_log(
         lambda x: f"{x:,.2f}"
     )
 
-    from ai_trade.backtest.metrics._fmt import _dataframe_to_markdown
+    from market_lab.backtest.metrics._fmt import _dataframe_to_markdown
 
     md_text = _dataframe_to_markdown(md_df) + "\n"
     return csv_text, md_text

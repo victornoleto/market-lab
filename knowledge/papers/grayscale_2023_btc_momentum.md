@@ -32,7 +32,7 @@ Bitcoin exhibits pronounced momentum (gains follow gains, losses follow losses).
 - **BTC buy-and-hold benchmark: annualized 110%, Sharpe 1.3**
 - Drawdown reduction via filter is the primary source of edge
 
-## Applicability to ai-trade
+## Applicability to market-lab
 
 - **LOW–MEDIUM relevance.** Illustrative baseline but **in-sample only**, with no OOS hold-out, no PBO, no CSCV. Numbers are anchored to a BTC era (early adoption) that is not representative going forward.
 - Usable as **secondary supporting citation** for Phase 3.7-3 H3, not a primary lead.
