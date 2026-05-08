@@ -358,6 +358,17 @@ def _write_iter_artifacts(
                 title=f"{title_base} — Sharpe (lh_56y) heatmap, full grid",
             )
 
+    # Persist strategy_returns so dsr_recompute_cumulative.py can re-run G2
+    # with updated cumulative n_trials without re-running the full backtest.
+    # Written before verdict.json serialization (while _strategy_returns is
+    # still in each result dict). The _strategy_returns_csv key survives into
+    # verdict.json because the pop loop in run() only strips _strategy_returns.
+    for r in valid_results:
+        if "_strategy_returns" in r:
+            rel_path = f"{r['config_name']}_strategy_returns.csv"
+            r["_strategy_returns"].to_csv(out_dir / rel_path, header=["ret"])
+            r["_strategy_returns_csv"] = rel_path
+
     _write_metrics_csv(valid_results, tables_dir / "per_config_metrics.csv")
     _write_gates_csv(valid_results, tables_dir / "gates_pass_fail.csv")
 

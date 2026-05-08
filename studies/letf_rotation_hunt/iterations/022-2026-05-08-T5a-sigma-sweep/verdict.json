@@ -4,8 +4,8 @@
   "tier_inheritance": null,
   "hypothesis": "Sweep sigma_target over {0.15, 0.20, 0.25, 0.30, 0.35} on T5a single-asset\nQLD vol-target. 0.25 = Half-Kelly Carver baseline [systematic_trading, ch.10 p.198].\nTests if T5a Sharpe 0.587 was driven by sigma choice or by structural\nunder-allocation (per TIER_5_REPORT \u00a73).\n",
   "primary_citation": "[systematic_trading, ch.10 p.198]; spec \u00a72.6 T5a; T5-expansion \u00a73.1",
-  "datetime_utc": "2026-05-08T13:45:27.562949+00:00",
-  "engine_version": "c0e1285",
+  "datetime_utc": "2026-05-08T13:58:11.691391+00:00",
+  "engine_version": "a0bc44b",
   "configs_tested": [
     {
       "name": "voltarget_qld_sigma015",
@@ -153,7 +153,8 @@
         "g5_fwd_post2020_sharpe": 0.29415013054715455,
         "g5_fwd_n_obs": 1581,
         "g6_bootstrap_99_low": 0.24289819911011878,
-        "g7_xlib_cagr_delta": 0.0
+        "g7_xlib_cagr_delta": 0.0,
+        "g2_dsr_p_cumulative_v2_post_t5_expansion": 0.27700884553324534
       },
       "score_breakdown": {
         "1_sharpe_edge": 0,
@@ -179,7 +180,8 @@
         "QLD"
       ],
       "sigma_target": 0.15,
-      "idm": 1.0
+      "idm": 1.0,
+      "_strategy_returns_csv": "voltarget_qld_sigma015_strategy_returns.csv"
     },
     {
       "config_name": "voltarget_qld_sigma020",
@@ -263,7 +265,8 @@
         "g5_fwd_post2020_sharpe": 0.3162064054468585,
         "g5_fwd_n_obs": 1581,
         "g6_bootstrap_99_low": 0.24502551499983527,
-        "g7_xlib_cagr_delta": 0.0
+        "g7_xlib_cagr_delta": 0.0,
+        "g2_dsr_p_cumulative_v2_post_t5_expansion": 0.2613247756785386
       },
       "score_breakdown": {
         "1_sharpe_edge": 0,
@@ -289,7 +292,8 @@
         "QLD"
       ],
       "sigma_target": 0.2,
-      "idm": 1.0
+      "idm": 1.0,
+      "_strategy_returns_csv": "voltarget_qld_sigma020_strategy_returns.csv"
     },
     {
       "config_name": "voltarget_qld_sigma025",
@@ -373,7 +377,8 @@
         "g5_fwd_post2020_sharpe": 0.3590168048732565,
         "g5_fwd_n_obs": 1581,
         "g6_bootstrap_99_low": 0.2562860013035496,
-        "g7_xlib_cagr_delta": 0.0
+        "g7_xlib_cagr_delta": 0.0,
+        "g2_dsr_p_cumulative_v2_post_t5_expansion": 0.25112219955318427
       },
       "score_breakdown": {
         "1_sharpe_edge": 0,
@@ -399,7 +404,8 @@
         "QLD"
       ],
       "sigma_target": 0.25,
-      "idm": 1.0
+      "idm": 1.0,
+      "_strategy_returns_csv": "voltarget_qld_sigma025_strategy_returns.csv"
     },
     {
       "config_name": "voltarget_qld_sigma030",
@@ -483,7 +489,8 @@
         "g5_fwd_post2020_sharpe": 0.4029654343974031,
         "g5_fwd_n_obs": 1581,
         "g6_bootstrap_99_low": 0.26944775093577233,
-        "g7_xlib_cagr_delta": 0.0
+        "g7_xlib_cagr_delta": 0.0,
+        "g2_dsr_p_cumulative_v2_post_t5_expansion": 0.23318875104997627
       },
       "score_breakdown": {
         "1_sharpe_edge": 0,
@@ -509,7 +516,8 @@
         "QLD"
       ],
       "sigma_target": 0.3,
-      "idm": 1.0
+      "idm": 1.0,
+      "_strategy_returns_csv": "voltarget_qld_sigma030_strategy_returns.csv"
     },
     {
       "config_name": "voltarget_qld_sigma035",
@@ -593,7 +601,8 @@
         "g5_fwd_post2020_sharpe": 0.450918464391444,
         "g5_fwd_n_obs": 1581,
         "g6_bootstrap_99_low": 0.2732880662615956,
-        "g7_xlib_cagr_delta": 0.0
+        "g7_xlib_cagr_delta": 0.0,
+        "g2_dsr_p_cumulative_v2_post_t5_expansion": 0.2290180764503693
       },
       "score_breakdown": {
         "1_sharpe_edge": 0,
@@ -619,7 +628,8 @@
         "QLD"
       ],
       "sigma_target": 0.35,
-      "idm": 1.0
+      "idm": 1.0,
+      "_strategy_returns_csv": "voltarget_qld_sigma035_strategy_returns.csv"
     }
   ],
   "best_config": "voltarget_qld_sigma035",

@@ -7,8 +7,8 @@ Tests if T5a Sharpe 0.587 was driven by sigma choice or by structural
 under-allocation (per TIER_5_REPORT §3).
 
 **Primary citation:** [systematic_trading, ch.10 p.198]; spec §2.6 T5a; T5-expansion §3.1
-**Engine SHA:** `c0e1285`
-**Datetime UTC:** 2026-05-08T13:45:27.562949+00:00
+**Engine SHA:** `a0bc44b`
+**Datetime UTC:** 2026-05-08T13:58:11.691391+00:00
 **Configs tested:** 5
 
 ## TL;DR
