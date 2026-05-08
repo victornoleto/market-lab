@@ -59,14 +59,19 @@ def test_load_cmt_unknown_tenor_raises():
         dly.load_constant_maturity_yield("7y")
 
 
-def test_load_dividend_yield_trailing_12m(monkeypatch, tmp_path):
-    monkeypatch.setattr(dly, "_CACHE_DIR", tmp_path)
+def _make_div_fixture():
     dates = pd.date_range("2024-01-01", periods=400, freq="D")
     dividends = pd.Series(0.0, index=dates)
-    # 4 quarterly dividends of $0.50 each → $2/yr
     for d in [dates[60], dates[150], dates[240], dates[330]]:
         dividends[d] = 0.50
     prices = pd.Series(100.0, index=dates)
+    return dates, dividends, prices
+
+
+def test_load_dividend_yield_trailing_12m(monkeypatch, tmp_path):
+    monkeypatch.setattr(dly, "_CACHE_DIR", tmp_path)
+    _dates, dividends, prices = _make_div_fixture()
+    # 4 quarterly dividends of $0.50 each → $2/yr
     monkeypatch.setattr(dly, "_yfinance_fetch_dividends", lambda t: dividends)
     monkeypatch.setattr(dly, "_yfinance_fetch_adj_close", lambda t: prices)
     s = dly.load_dividend_yield("SPY")
@@ -79,11 +84,7 @@ def test_load_dividend_yield_trailing_12m(monkeypatch, tmp_path):
 def test_load_dividend_yield_uses_cache_on_second_call(monkeypatch, tmp_path):
     """Second call must read from parquet and not invoke yfinance again."""
     monkeypatch.setattr(dly, "_CACHE_DIR", tmp_path)
-    dates = pd.date_range("2024-01-01", periods=400, freq="D")
-    dividends = pd.Series(0.0, index=dates)
-    for d in [dates[60], dates[150], dates[240], dates[330]]:
-        dividends[d] = 0.50
-    prices = pd.Series(100.0, index=dates)
+    _dates, dividends, prices = _make_div_fixture()
     call_count = {"n": 0}
 
     def counting_divs(ticker: str) -> pd.Series:
