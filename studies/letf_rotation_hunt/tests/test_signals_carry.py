@@ -77,3 +77,21 @@ def test_unknown_asset_raises():
     ffr = _const_series(0.01 / 252.0)
     with pytest.raises(ValueError, match="not in carry map"):
         sc.compute_carry_forecast("XYZ", prices, ffr)
+
+
+def test_compose_ewmac_carry_50_50_blend_with_fdm():
+    idx = pd.date_range("2010-01-04", periods=10, freq="B")
+    ewmac = pd.Series(10.0, index=idx)
+    carry = pd.Series(2.0, index=idx)
+    composed = sc.compose_ewmac_carry(ewmac, carry, fdm=1.41)
+    expected = ((10.0 + 2.0) / 2.0) * 1.41  # = 8.46
+    np.testing.assert_allclose(composed.values, expected, rtol=1e-9)
+
+
+def test_compose_ewmac_carry_clipped_at_pm_20():
+    idx = pd.date_range("2010-01-04", periods=5, freq="B")
+    ewmac = pd.Series(20.0, index=idx)
+    carry = pd.Series(20.0, index=idx)
+    composed = sc.compose_ewmac_carry(ewmac, carry, fdm=2.0)
+    # ((20+20)/2)*2 = 40 → clip to 20
+    assert (composed == 20.0).all()

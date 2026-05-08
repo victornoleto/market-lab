@@ -76,3 +76,16 @@ def _load_yield_for_asset(asset: str) -> pd.Series:
 def _ffr_daily_to_annual(ffr_daily: pd.Series) -> pd.Series:
     """ffr_daily is daily pct return ≈ FFR/252. Re-annualize."""
     return ffr_daily * 252.0
+
+
+def compose_ewmac_carry(
+    ewmac: pd.Series, carry: pd.Series, fdm: float = 1.41,
+) -> pd.Series:
+    """50/50 blend of EWMAC and carry forecasts with FDM.
+
+    Both inputs must already be individually scaled to SD≈10.
+    FDM=1.41 = 2-forecast diversification multiplier [Carver ch.9 p.185],
+    [Carver Table 49 p.285].
+    """
+    blended = (ewmac + carry) / 2.0 * fdm
+    return blended.clip(-20.0, 20.0)
