@@ -102,3 +102,39 @@ def test_load_dividend_yield_uses_cache_on_second_call(monkeypatch, tmp_path):
     assert call_count["n"] == 1, "yfinance should only be called once (cache-miss path)"
     assert s1.name == s2.name == "SPY_divyield"
     assert (s1 == s2).all()
+
+
+def test_load_dividend_yield_handles_yfinance_timestamp_skew(monkeypatch, tmp_path):
+    """Regression: yfinance returns dividend index with 09:30 ET tz-aware
+    timestamps and price index with midnight tz-naive timestamps. The loader
+    must align both at the date level so the intersection is non-empty.
+    """
+    monkeypatch.setattr(dly, "_CACHE_DIR", tmp_path)
+    # Real-shape: dividend timestamps with 09:30 ET, tz-aware
+    div_dates = pd.DatetimeIndex(
+        ["2024-01-15 09:30", "2024-04-15 09:30", "2024-07-15 09:30", "2024-10-15 09:30"],
+        tz="America/New_York",
+    )
+    raw_dividends = pd.Series([0.50, 0.50, 0.50, 0.50], index=div_dates)
+    # Real-shape: tz-naive midnight prices, daily over the year
+    price_dates = pd.date_range("2024-01-01", "2024-12-31", freq="D")
+    raw_prices = pd.Series(100.0, index=price_dates)
+
+    # Bypass _yfinance_fetch_* and mock at the network boundary instead, so the
+    # tz_localize/normalize logic inside the helpers is what's under test.
+    class _FakeTicker:
+        def __init__(self, t): self.t = t
+        @property
+        def dividends(self): return raw_dividends
+        def history(self, period, auto_adjust):
+            return pd.DataFrame({"Close": raw_prices})
+
+    import yfinance as yf
+    monkeypatch.setattr(yf, "Ticker", _FakeTicker)
+
+    s = dly.load_dividend_yield("FAKE")
+    assert isinstance(s, pd.Series)
+    assert len(s) > 0, "intersection between dividend and price dates was empty"
+    # Last value should reflect ~$2/yr on $100 = ~2%
+    last = s.iloc[-1]
+    assert 0.018 < last < 0.022, last

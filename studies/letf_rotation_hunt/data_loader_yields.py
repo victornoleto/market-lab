@@ -72,20 +72,23 @@ def load_dividend_yield(underlying: str) -> pd.Series:
 
 
 def _yfinance_fetch_dividends(ticker: str) -> pd.Series:
-    """Raw dividends Series from yfinance (tz-naive index)."""
+    """Raw dividends Series from yfinance (tz-naive, normalized to date)."""
     import yfinance as yf  # local import: keep top-level light
     divs = yf.Ticker(ticker).dividends
     if divs.empty:
         raise RuntimeError(f"yfinance returned no dividends for {ticker}")
-    divs.index = divs.index.tz_localize(None)  # strip tz-aware label; daily data, local date preserved
+    # strip tz then zero time component — yfinance dividend timestamps carry
+    # 09:30 ET (declaration time) which prevents alignment with midnight prices.
+    divs.index = divs.index.tz_localize(None).normalize()
     return divs
 
 
 def _yfinance_fetch_adj_close(ticker: str) -> pd.Series:
-    """Auto-adjusted close prices from yfinance (tz-naive index)."""
+    """Auto-adjusted close prices from yfinance (tz-naive, normalized to date)."""
     import yfinance as yf  # local import: keep top-level light
     hist = yf.Ticker(ticker).history(period="max", auto_adjust=True)
     if hist.empty:
         raise RuntimeError(f"yfinance returned empty for {ticker}")
-    hist.index = hist.index.tz_localize(None)  # strip tz-aware label; daily data, local date preserved
+    # strip tz then zero time component for stable date-level alignment
+    hist.index = hist.index.tz_localize(None).normalize()
     return hist["Close"].rename(ticker)
