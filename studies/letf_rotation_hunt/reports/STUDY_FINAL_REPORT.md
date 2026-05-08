@@ -888,7 +888,94 @@ thresholds — new universe needs new canonical), tax comparison, and live paper
 
 ---
 
-## 17. Citations (full bibliography, including post-close additions)
+## 17. Methodology change disclosure (2026-05-08, T5 expansion)
+
+After the post-close Sortino re-analysis (§16), the T5 tier was identified as
+having insufficient sub-phase coverage compared to peer tiers (T5=2 configs vs
+T2=11, T3=7, T4=4, T1d=360). T5b (carry forecast) and T5d (HRP/ERC weighting)
+were skipped during the original study per scope. This section documents the
+formal post-close re-opening that addressed those gaps.
+
+### 17.1 Trigger and rationale
+
+Spec: `docs/specs/2026-05-08-t5-expansion-design.md` (committed 2026-05-08 in
+`feat/letf-t5-expansion`). User requested coherence with peer tiers and a focused
+robustness grid on the Carver framework.
+
+### 17.2 What was added
+
+20 new configs across 4 iters:
+- iter_022 (T5a sigma sweep): 5 configs
+- iter_023 (T5b carry forecast): 4 configs
+- iter_024 (T5c grid): 7 configs
+- iter_025 (T5d HRP/ERC): 4 configs
+
+New modules:
+- `studies/letf_rotation_hunt/signals_carry.py` — per-asset carry forecast (Carver ch.9)
+- `studies/letf_rotation_hunt/data_loader_yields.py` — CMT + dividend yield data sources
+- `studies/letf_rotation_hunt/strategies/hrp_weighter.py` — HRP + ERC weighting (López de Prado ch.16; Maillard 2010)
+- `studies/letf_rotation_hunt/run_iter_t5_extended.py` — extended dispatcher
+
+### 17.3 Cumulative DSR impact
+
+`n_trials` grew from 406 to 426. `_write_iter_artifacts` was modified to persist
+per-config `strategy_returns.csv` (commit 255e5d8). All 25 prior iterations were
+re-run to backfill returns; canonical Sharpe values matched bit-for-bit (diff =
+0.00e+00 across 435 configs verified).
+
+The DSR recompute (`scripts/dsr_recompute_cumulative.py`) was applied across all
+~450 configs. **22 configs flipped PASS→FAIL** at N=426:
+- T1a: 5 single-LETF + SMA200 + BIL off-state configs
+- T1b: 10 QLD period/EMA sweep with BIL off-state
+- T1c: 5 qld_sma200 with IEF/TLT/TMF/EDV/BIL off-states
+- T1d: 2 borderline configs (qld_sma100_off_ief, soxl_ema250_off_ief)
+
+**None of the flipped configs are study winners.** All are early-tier exploration
+configs that the higher cumulative N now correctly identifies as
+statistically-underpowered.
+
+### 17.4 T5-expansion verdict
+
+**T5-expansion-best:** `025-2026-05-08-T5d-hrp-erc/erc_multi4_sigma030` (Sortino lh_56y = 1.1399,
+Sharpe lh_56y = 0.7993).
+
+**KILL T5-expansion: FIRES** (threshold = canonical Sortino 1.272
+per Track A reanalysis + 0.05 anti-curve-fit per `[advances_fin_ml, p.208-211]`).
+
+Per-iter best (Sortino lh_56y):
+- iter_022 (T5a sigma sweep): best `voltarget_qld_sigma035`, Sortino 0.8450
+- iter_023 (T5b carry):       best `ewmac_carry_multi4_sigma025`, Sortino 1.0673
+- iter_024 (T5c grid):        best `voltarget_multi4_idm25`, Sortino 1.0553
+- iter_025 (T5d HRP/ERC):     best `erc_multi4_sigma030`, Sortino 1.1399
+
+### 17.5 Updated cross-tier ranking
+
+Extending the §2 cross-tier comparison table:
+
+| Tier | Winner | Sortino (lh_56y) | KILL verdict |
+|---|---|---:|---|
+| T3d K=2 sma250/100 (Track A canonical) | qld_voteK2_sma250_100_vol21_40_ar30_off_zroz | 1.3246 | — (incumbent) |
+| T5-expansion (post-2026-05-08) | erc_multi4_sigma030 | 1.1399 | FIRES |
+
+T3d K=2 stands as the canonical winner; T5 expansion does not displace it.
+
+### 17.6 Mandate alignment
+
+Per `CLAUDE.md` mandate §1, capital remains 100% Plano C; Strategy A/B/D remain
+DORMANT. This expansion is **post-mortem methodology completeness work**, not
+capital allocation. No mandate change.
+
+### 17.7 Closing
+
+The T5 expansion delivers stronger statistical evidence for the original T5
+verdict — Carver vol-target framework does not generalize to the small-pool
+LETF universe. The expansion adds defensible coverage of the Carver framework's
+key dimensions (sigma_target, IDM, pool composition, carry forecast, HRP/ERC
+weighting) without changing the canonical winner.
+
+---
+
+## 18. Citations (full bibliography, including post-close additions)
 
 **Books (33 absorbed in books/summaries/, 9 cited):**
 - `[sortino_1991]` — Sortino, F.A. (1991) "Performance Measurement in a Downside Risk Framework", Financial Executive, 17(8): 31-34

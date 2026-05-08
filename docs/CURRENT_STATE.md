@@ -1,4 +1,4 @@
-# Estado atual — market-lab (2026-05-05)
+# Estado atual — market-lab (2026-05-08)
 
 > **Propósito:** onboard rápido para humanos e agentes. Este doc é o
 > snapshot vivo — a verdade canônica vive nos arquivos referenciados.
@@ -62,6 +62,12 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 - 14 iters (6 winners). iter 009 (HAA+Gold) Sharpe pareto frontier; iter 014 (annual-DARF) prova rotation tax-neutral sob Lei 14.754.
 - Reativação aguarda completion de gold_swing_loop + sinal usuário.
 
+### studies/letf_rotation_hunt/ 🛑 CLOSED 2026-05-06 (post-close expansions ongoing)
+- **26 iters** (iters 000-025); study winner: **`qld_voteK2_sma250_100_vol21_40_ar30_off_zroz`** (T3d K=2, Sortino lh_56y 1.3246, Sharpe 0.9191). DSR PASS at N=426 (p_v2=0.0024).
+- **2026-05-08 — T5 expansion** (post-close methodology amendment): 20 new configs across iters 022-025 (T5a σ-sweep, T5b carry, T5c-grid, T5d HRP/ERC). DSR cumulative re-computed for all ~426 configs; 22 early-tier T1 configs flipped PASS→FAIL (none are winners). KILL T5-expansion: **FIRES** (best Sortino 1.1399 < threshold 1.272); T3d K=2 remains canonical winner.
+- Spec: `docs/specs/2026-05-08-t5-expansion-design.md`; §17 disclosure in `STUDY_FINAL_REPORT.md`.
+- Refs: `studies/letf_rotation_hunt/reports/{STUDY_FINAL_REPORT,SORTINO_REANALYSIS_REPORT,TIER_5_REPORT}.md`.
+
 ### studies/day_swing_strategy_hunt/ 🌱 BOOTSTRAP
 - Sem iter ainda. Docs/protocol prontos. Pode resumir a qualquer momento.
 
@@ -81,10 +87,10 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 
 | Componente | Status | Ref |
 |---|---|---|
-| `src/ai_trade/backtest/strategies/plano_a_leveraged_rotation.py` | ✅ HONEST (fix 7b90a8f) | `tests/test_plano_a_lookahead_bias.py` |
+| `src/market_lab/backtest/strategies/plano_a_leveraged_rotation.py` | ✅ HONEST (fix 7b90a8f) | `tests/test_plano_a_lookahead_bias.py` |
 | `letf_rotation.py` | ✅ NEVER HAD BUG | F1 audit |
 | Cross-lib validation (bt/vectorbt/backtrader/numpy) | ✅ 1e-6 concordance | `studies/_archive/phase_3_5f/reports/v2_l2_gayed_redo/cross_lib_report.md` |
-| Pytest baseline | ✅ **813 collected** (5/5 cleanup 2026-05-05) | — |
+| Pytest baseline | ✅ **969 collected** (updated 2026-05-08 T5 expansion) | — |
 
 ---
 
@@ -118,6 +124,7 @@ Sumário do mandate (`docs/investment-mandate.md` é canônico):
 
 ## Changelog
 
+- **2026-05-08:** T5 expansion of `letf_rotation_hunt` completed (post-close methodology amendment). 20 new configs added (iters 022-025); DSR cumulative re-computed at N=426; KILL T5-expansion FIRES (best Sortino 1.1399 < 1.272); Track A winner confirmed. Pytest baseline updated to 969. §17 disclosure in STUDY_FINAL_REPORT.md. `studies/letf_rotation_hunt/` entry added to state.
 - **2026-05-05:** refresh total. MAINTENANCE MODE consolidado; status de studies/ atualizado (myfxbook CLOSED 2026-05-04, spy_beater B4 deploy-ready, long_term_portfolio BLOCKED, factor_tilt FROZEN, day_swing bootstrap). Pytest baseline 813.
 - **2026-04-23:** rewrite total após Phase 3.5f fechar sem winner. Plano A V2 encerrado; Plano B c06-c12 pausado.
 - **2026-04-19:** versão inicial.

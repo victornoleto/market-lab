@@ -15,6 +15,29 @@
 > **For non-technical reader:** see `SORTINO_RESUMO_EXECUTIVO.md` (PT-BR plain-language summary).
 > **For technical detail:** see `SORTINO_REANALYSIS_REPORT.md` (13 sections, full tables).
 
+> ## ⚠️ Post-close T5 expansion (2026-05-08)
+>
+> The original T5 tier ran 2 configs (T5a, T5c). Sub-phases T5b (carry forecast)
+> and T5d (HRP/ERC weighting) were skipped per scope. After post-close review,
+> T5 was reopened with a formal methodology amendment to add 20 new configs
+> across iters 022-025:
+>
+> - **T5a sigma sweep** (iter_022): 5 configs sweeping σ_target ∈ {0.15..0.35}
+> - **T5b carry forecast** (iter_023): 4 configs (carry_only + ewmac_carry, single + multi-asset)
+> - **T5c grid** (iter_024): 7 configs (IDM × pool variants)
+> - **T5d HRP/ERC** (iter_025): 4 configs (HRP × σ_target=0.25/0.30, ERC × σ_target=0.25/0.30)
+>
+> See §18 of `STUDY_FINAL_REPORT.md` for full disclosure.
+>
+> **Verdict update:** T5-expansion-best is `025-2026-05-08-T5d-hrp-erc/erc_multi4_sigma030` with Sortino
+> = 1.1399 (Sharpe = 0.7993) on lh_56y. **KILL T5-expansion: FIRES**
+> (threshold 1.272 = Track A canonical Sortino + 0.05 anti-curve-fit).
+> Track A canonical winner `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` retains
+> DSR PASS at N=426 (p_v2 = 0.0024). 22 early-tier T1 configs flipped PASS→FAIL
+> with the higher cumulative N (none are winners).
+>
+> **Body of report below preserved as-is for historical fidelity.**
+
 ---
 
 **Status:** T5 tier complete (2026-05-06). 2 sub-phases (T5a, T5c), 2 configs, iters 020-021.
