@@ -1,11 +1,11 @@
 ---
 mission: "post-close strategy hunt: research new strategies and benchmark vs T3d-K2 study winner"
 status: open
-total_iterations: 1
+total_iterations: 2
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 6
-cumulative_n_trials_global: 432
+cumulative_n_trials_loop: 12
+cumulative_n_trials_global: 438
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -15,9 +15,9 @@ beats_winner_threshold_sortino: 1.3746
 beats_winner_threshold_pct_above_spy: 0.95
 beats_winner_threshold_winner_conditions_met: true
 loop_winner_iter: null
-latest_iteration: "001-2026-05-09-adaptive-off-yieldcurve"
-latest_score: 72.5
-latest_tier_label: PROMISING
+latest_iteration: "002-2026-05-09-on-vol-dd-killswitch"
+latest_score: 76.5
+latest_tier_label: STRONG
 latest_beats_winner: false
 ---
 
@@ -55,6 +55,54 @@ allowed as a diagnostic, but cannot support `beats_winner=true` unless the
 global-trials DSR still passes `[advances_fin_ml, p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 002 — 2026-05-09 — on-vol-dd-killswitch
+
+**Hypothesis:** Vol-adjusted drawdown master-gate (Carver-style kill switch:
+DD_252d > X × σ_price_21d, half-threshold re-arm hysteresis) overlaid on top
+of the winner's vote-of-K trend signal. Targets the 2022_rates loss
+identified in iter 001 as an ON-leg latency problem. Citation:
+`[systematic_trading, p.212 ch.13]` (Carver semi-automatic stop, X*sigma
+from tracking extreme).
+
+**Configs tested (6):**
+
+| name | kind | param | sortino_lh56y | killpct | score | tier |
+|---|---|--:|---:|---:|---:|---|
+| **`..._dd_off`** (winner replica) | no killswitch | — | **1.2841** ← best | 0.0% | 76.5 | STRONG |
+| `..._dd_x2_252_vol21` | vol-adj | 2 | 1.0824 | 38.1% | 71.0 | PROMISING |
+| `..._dd_x3_252_vol21` | vol-adj | 3 | 1.1526 | 27.7% | 76.5 | STRONG |
+| `..._dd_x4_252_vol21` (Carver) | vol-adj | 4 | 1.1779 | 21.7% | 76.5 | STRONG |
+| `..._dd_x5_252_vol21` | vol-adj | 5 | 1.2240 | 17.5% | 79.5 | STRONG |
+| `..._dd_pct25_252` | abs % | 25% | 1.1365 | 31.2% | 76.0 | STRONG |
+
+**KILL_LOOP results (pre-registered):**
+- KILL_LOOP #1 (success-tag) — **NOT FIRED** (best Sortino 1.2841 < 1.3746)
+- KILL_LOOP #2 (decisive-fail) — **NOT FIRED** (4 of 5 ks-configs ≥ 1.10 floor)
+- KILL_LOOP #3 (replica-sanity) — **NOT FIRED** (baseline 1.2841 = iter 001 baseline exactly)
+- KILL_LOOP #4 (whipsaw-detector) — **NOT FIRED** (kill-switch turnover lower than baseline 9.3/y)
+
+**Key finding:** Carver's sigma-price stop does NOT generalise from
+single-trade single-asset position management to a regime overlay on a
+leveraged trend system. LETF natural vol means even normal pullbacks cross
+3-4σ DD thresholds; the kill switch fires too often (21.7% of days at
+Carver-default X=4) and locks out compounding rallies. Sortino is
+monotonically below baseline across the entire X sweep. The original target
+crisis (2022_rates) is not rescued by any variant — 2022 was a duration
+problem (slow grinding bear), not a magnitude problem. **Structural
+positive:** G1 PBO=0.159 passes cleanly across all configs (vs iter 001's
+universal G1=0.575 fail) — kill-switch dimension is genuinely orthogonal,
+confirming CSCV behaves correctly when configs vary in distinct mechanics.
+
+**beats_winner:** **false** (best Sortino edge -0.0405 = baseline replica
+drift only; no kill-switch variant adds Sortino).
+
+**Next iter ideas:** (a) Equity-bond correlation regime classifier — flip OFF
+when 60d QLD↔ZROZ correlation goes positive (would have fired in 2022 when
+both fell together) `[regime_change]`/`[ml_for_algo_trading]`; (b)
+Multi-asset ON rotation with inverse-vol weighting `[risk_parity, ch.5]` +
+`[stocks_on_the_move, p.98]`; (c) Calendar/seasonal master-gate as 5th vote
+member `[trading_systems_methods, p.388]`/`[evidence_based_ta, ch.7]`.
 
 ### 001 — 2026-05-09 — adaptive-off-yieldcurve
 
