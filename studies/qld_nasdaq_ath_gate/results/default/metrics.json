@@ -1,0 +1,116 @@
+{
+  "date_start": "2007-05-04",
+  "date_end": "2026-04-14",
+  "config": {
+    "signal_ticker": "QQQ",
+    "risk_on_ticker": "QLD",
+    "risk_off_ticker": "CASHX",
+    "threshold_pct": 0.85,
+    "lookback_weeks": 46,
+    "initial_cash": 10000.0,
+    "signal_freq": "W-FRI",
+    "tiingo_dir": "data/tiingo/daily/prices",
+    "out_dir": "/var/www/github/finances/market-lab/studies/qld_nasdaq_ath_gate/results/default"
+  },
+  "metrics": {
+    "strategy": {
+      "total_return": 50.83544892043903,
+      "cagr": 0.23214008313731838,
+      "mdd": -0.49330315421609516,
+      "sharpe": 0.7761200908427583,
+      "sortino": 1.0748220091134224,
+      "calmar": 0.47058300996718877,
+      "vol_annual": 0.3474390106065348,
+      "best_day": 0.19054070698474024,
+      "worst_day": -0.18508481381025932
+    },
+    "qqq": {
+      "total_return": 14.690365740549625,
+      "cagr": 0.1566941362396559,
+      "mdd": -0.534055307890039,
+      "sharpe": 0.7641254356370277,
+      "sortino": 1.0878494199080608,
+      "calmar": 0.29340432334382666,
+      "vol_annual": 0.2231616700356892,
+      "best_day": 0.12164750957947601,
+      "worst_day": -0.11978787563699056
+    },
+    "qld": {
+      "total_return": 52.99978397360174,
+      "cagr": 0.23480793128960853,
+      "mdd": -0.831604981716393,
+      "sharpe": 0.6981520373965091,
+      "sortino": 0.9896405679151419,
+      "calmar": 0.2823551282785442,
+      "vol_annual": 0.4440306838751168,
+      "best_day": 0.24587211051661773,
+      "worst_day": -0.24280984895367996
+    },
+    "cashx": {
+      "total_return": 0.31386637452999966,
+      "cagr": 0.014538047298302104,
+      "mdd": -3.567790596514797e-06,
+      "sharpe": 12.805220961557733,
+      "sortino": 22401.630498815543,
+      "calmar": 4074.803973221865,
+      "vol_annual": 0.0011272301814747713,
+      "best_day": 0.00021270105454340715,
+      "worst_day": -1.985305973617457e-06
+    }
+  },
+  "rolling_summary": [
+    {
+      "window_years": 1,
+      "n_obs": 4514,
+      "strategy_median_cagr": 0.290960276955468,
+      "qqq_median_cagr": 0.20423159435967497,
+      "qld_median_cagr": 0.36864950683310227,
+      "win_rate_vs_qqq": 0.6592822330527248,
+      "win_rate_vs_qld": 0.47031457687195394,
+      "median_edge_vs_qqq": 0.10336034259076171,
+      "median_edge_vs_qld": -4.440892098500626e-16,
+      "worst_edge_vs_qqq": -0.3832745592457687,
+      "worst_edge_vs_qld": -1.6240917956683445
+    },
+    {
+      "window_years": 3,
+      "n_obs": 4010,
+      "strategy_median_cagr": 0.27027229095973326,
+      "qqq_median_cagr": 0.1766211529073296,
+      "qld_median_cagr": 0.317036583884012,
+      "win_rate_vs_qqq": 0.942643391521197,
+      "win_rate_vs_qld": 0.49551122194513714,
+      "median_edge_vs_qqq": 0.08438872141978604,
+      "median_edge_vs_qld": 0.0,
+      "worst_edge_vs_qqq": -0.13845387089150263,
+      "worst_edge_vs_qld": -0.47180491197548013
+    },
+    {
+      "window_years": 5,
+      "n_obs": 3506,
+      "strategy_median_cagr": 0.2854219554964358,
+      "qqq_median_cagr": 0.18147455563175618,
+      "qld_median_cagr": 0.314449531940863,
+      "win_rate_vs_qqq": 0.9894466628636623,
+      "win_rate_vs_qld": 0.28237307472903594,
+      "median_edge_vs_qqq": 0.09136123925754769,
+      "median_edge_vs_qld": -0.029340236528195618,
+      "worst_edge_vs_qqq": -0.026705725381426904,
+      "worst_edge_vs_qld": -0.2747504002515815
+    },
+    {
+      "window_years": 10,
+      "n_obs": 2246,
+      "strategy_median_cagr": 0.2760099333556255,
+      "qqq_median_cagr": 0.18348670690947166,
+      "qld_median_cagr": 0.3056460163662229,
+      "win_rate_vs_qqq": 1.0,
+      "win_rate_vs_qld": 0.1767586821015138,
+      "median_edge_vs_qqq": 0.0967490426576686,
+      "median_edge_vs_qld": -0.04330633168704279,
+      "worst_edge_vs_qqq": 0.038732520607483556,
+      "worst_edge_vs_qld": -0.14942714698889437
+    }
+  ],
+  "n_trades": 26
+}

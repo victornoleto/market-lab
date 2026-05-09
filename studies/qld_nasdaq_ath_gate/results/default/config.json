@@ -1,0 +1,11 @@
+{
+  "signal_ticker": "QQQ",
+  "risk_on_ticker": "QLD",
+  "risk_off_ticker": "CASHX",
+  "threshold_pct": 0.85,
+  "lookback_weeks": 46,
+  "initial_cash": 10000.0,
+  "signal_freq": "W-FRI",
+  "tiingo_dir": "data/tiingo/daily/prices",
+  "out_dir": "/var/www/github/finances/market-lab/studies/qld_nasdaq_ath_gate/results/default"
+}
