@@ -61,6 +61,9 @@ folder.
 Notable preserved study areas include:
 
 - `studies/letf_rotation_hunt/` for LETF rotation research;
+- `studies/letf_rotation_hunt/loop_iterations/` for isolated post-close LETF
+  research loops that benchmark against the frozen T3d-K2 winner without
+  changing the closed study record or mandate allocation `[advances_fin_ml, p.222-223]`;
 - `studies/long_term_portfolio/` for long-horizon allocation experiments;
 - `studies/_shared/` for reusable study infrastructure;
 - `studies/_archive/` for closed or historical work.

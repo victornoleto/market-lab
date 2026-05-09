@@ -1,0 +1,161 @@
+# LOOP PROTOCOL — letf_rotation_hunt post-close strategy hunt
+
+Operational rules for the autonomous loop driven by `loop.sh` + `LOOP_PROMPT.md`.
+Read once before designing/extending the loop; per-iter agents read this in
+PASSO 1 of the prompt.
+
+## Naming
+
+- **Iter dir:** `loop_iterations/NNN-YYYY-MM-DD-<slug>/`
+  - `NNN` zero-padded 3 digits (001, 002, …, 099, 100). Loop targets 50 iters
+    cumulative (`target_total_iterations` in `LOOP_MEMORY.md` frontmatter).
+  - `YYYY-MM-DD` = UTC date the iter was started.
+  - `<slug>` = kebab-case, max ~40 chars, descriptive of strategy family
+    (e.g., `gold-momo-monthly`, `vix-percentile-on-spy`, `cross-asset-trend`).
+- **Per-iter required artifacts** (mirror of `iterations/014-2026-05-06-T3d-vote-of-k/`):
+  - `hypothesis.md` (pre-commit: written BEFORE running anything)
+  - `backtest.py` (per-iter custom; imports shared modules)
+  - `verdict.json` (validates against `loop_verdict_schema.json`)
+  - `SUMMARY.md` (mirrors `iterations/014.../SUMMARY.md` structure +
+    new "Comparação vs winner" section)
+  - `plots/01_equity_curves.png` … `07_crisis_attribution.png`
+  - `tables/per_config_metrics.csv`
+  - `tables/gates_pass_fail.csv`
+  - `logs/` (optional; per-config debug logs)
+
+## Strategy eligibility checklist (PASSO 3 of prompt)
+
+Before pre-committing `hypothesis.md`, the agent must answer YES to all four:
+
+1. **Citable book/paper:** primary citation in `[book.slug, p.X]` or `[ch.Y]`
+   format. Source must be in `books/summaries/<slug>.md` or `knowledge/`.
+   No citation → reject.
+2. **Distinct from `iterations/`:** the strategy family is not already covered
+   by the closed study (T1 single-LETF Gayed, T2 HFEA basket, T3 composite
+   signal, T4 cross-sectional Clenow/EWMAC, T5 Carver vol-target). Variants
+   inside those families that were *not* tested in iters 001-025 are allowed
+   only if they introduce a genuinely new signal mechanic.
+3. **Distinct from `loop_iterations/`:** read `LOOP_MEMORY.md` iter log; list
+   slugs/tiers already explored. Avoid trivial variants of recent iters.
+4. **Data feasibility:** universe and required series are available in
+   `data/testfolio/`, `data/tiingo/daily/`, or `data/external/`. New external
+   data sources must be documented (provenance, license, date range).
+
+## Config budget (anti-DSR-inflation)
+
+- **n_configs per iter ≤ 8.** Soft cap ≤ 6 preferred. DSR penalty grows with
+  cumulative trials `[advances_fin_ml, p.222-223]`; a small grid that
+  unambiguously decides the hypothesis beats a large grid that triggers
+  DSR-fail by construction.
+- **DSR trial denominator is global.** `LOOP_MEMORY.md` starts from the closed
+  study count (`closed_study_cumulative_n_trials: 426`) and each iter adds its
+  config count to `cumulative_n_trials_loop` and `cumulative_n_trials_global`.
+  Local-only DSR can be reported as diagnostic, but `beats_winner=true` requires
+  the global-trials DSR to pass.
+- **Symmetric naming** within the iter (e.g.,
+  `qld_voteK2_sma200_50_vol21_40_ar30_off_zroz` style) so configs differ in
+  exactly one dimension at a time (param sweep, not multi-axis).
+
+## Beats-winner test (FROZEN)
+
+Hard-coded in every iter's `backtest.py`:
+
+```python
+beats_winner = (
+    sortino_lh56y > 1.3746          # 1.3246 + 0.05 anti-curve-fit margin
+    and winner_conditions_met       # all WINNER strict bars met
+    and pct_time_above_benchmark_lh56y >= 0.95
+)
+```
+
+`sortino_edge_vs_winner = sortino_lh56y - 1.3246` (raw edge; can be negative).
+
+`winner_benchmark_sortino = 1.3246` (immutable for the duration of the loop;
+if the user later wants to advance the benchmark, requires explicit edit
+of `LOOP_MEMORY.md` frontmatter + this protocol).
+
+Every `verdict.json` must include the evidence fields that make this auditable:
+`sortino_lh56y`, `winner_conditions_met`,
+`pct_time_above_benchmark_lh56y`, `sortino_edge_vs_winner`,
+`winner_benchmark_sortino`, and `beats_winner_threshold_sortino`.
+
+## Soft-halt hint (advisory; not enforced by shell)
+
+If 5 consecutive iters all return tier_label ∈ {NEAR_FAIL, FAIL} AND no config
+in any of those 5 had `sortino_edge_vs_winner > -0.1` (i.e., not even close),
+the next iter's agent should:
+
+1. Note the run of failures in `LOOP_MEMORY.md` iter log.
+2. Pick a deliberately different strategy family (regime change — if last 5
+   were trend-based, try mean-reversion; if last 5 were equity-only, try
+   cross-asset).
+3. If 10 consecutive failures, write a brief `loop_iterations/.PAUSE_HINT.md`
+   recommending the user stop the loop and reassess. The shell does not act
+   on this file; it's advisory for the next human review.
+
+The shell loop runs MAX_ITER no matter what — only timeouts (exit 124) or
+hard errors (exit ≠ 0) abort.
+
+## Mandate §1 reinforcement
+
+**Never** treat `beats_winner=true` as a deploy signal. Capital remains 100%
+Plano C per mandate §1 (MAINTENANCE MODE since 2026-04-23). Even if multiple
+iters bat the threshold, the loop only:
+
+- Records `beats_winner: true` in `verdict.json` and `LOOP_MEMORY.md`.
+- Appends to `loop_winner_iter` list in frontmatter.
+- Optionally adds a one-line note in `docs/CURRENT_STATE.md` under "Active
+  Hunts" if a candidate is genuinely promising (score ≥ 90 + WC=Y +
+  beats_winner=true).
+
+Promotion to deploy ⇒ user-driven mandate §7 override request, exactly as
+`spy_beater_hunt/SESSION_PROMPT.md` deploy escalation note. The loop never
+short-circuits this.
+
+## Scope limits (anti-scope-creep)
+
+- Each iter = ONE strategy family + its configs. No "test 3 unrelated
+  hypotheses in one iter."
+- **No refactors of the closed study.** `gates.py`, `scoring.py`,
+  `plot_helper.py`, `data_loader.py`, `signals.py`, `signals_carry.py`, `synths.py`,
+  `tax_layer.py`, `kill_rules.py`, `verdict_schema.json` are all read-only
+  from the loop's perspective. If a bug is found in those, file a separate
+  issue/PR — do not patch mid-iter.
+- New helpers/signals introduced by an iter live INSIDE the iter dir
+  (e.g., `loop_iterations/003-.../my_signal.py`) unless promoted later by a
+  separate user-driven decision.
+- Tests for new modules go in `tests/test_letf_rotation_hunt_loop_NNN.py`
+  and must NOT regress the baseline (mandate §3: ≥ 813 tests passing).
+
+## Commit conventions
+
+- Conventional Commits: `feat(letf-loop): iter NNN — <slug> — Sortino X.XXX (edge ±YY) [tier_label]`
+- Body must include:
+  - KILL pre-conditions disparadas (FIRED) / não-disparadas (NOT FIRED)
+  - `beats_winner: true/false`
+  - 1-2 lines on next-iter ideas (closed direction or open variants)
+  - Citations in `[book.slug, p.X]` form
+- `git add` specific paths only — never `-A` or `.` (avoids accidental
+  inclusion of secrets / artifacts).
+
+## When to extend / pause this loop
+
+- **Extend `target_total_iterations`** beyond 50 only if (a) ≥ 1 iter has
+  `beats_winner=true` AND (b) the user explicitly approves. Default is to
+  stop at 50 and write a final `loop_iterations/FINAL_REPORT.md`.
+- **Pause** anytime — the loop is fully resumable. State lives in
+  `LOOP_MEMORY.md` frontmatter (`total_iterations`) and the numbered iter
+  dirs. Re-running `bash loop.sh` picks up at the next safe number from
+  `total_iterations + 1`, skipping any higher-numbered partial iter directory
+  to avoid collisions.
+
+## References
+
+- `BASE_MEMORY.md` — closed study record (read-only)
+- `iterations/014-2026-05-06-T3d-vote-of-k/SUMMARY.md` — canonical iter
+  report template
+- `iterations/022-2026-05-06-T3d-extended-grid/` — winner iter (benchmark)
+- `WINNER_AND_RANKING.md` — scoring rubric (criterion 1 Sortino-first)
+- `KILL_RULES.md` — study-level KILLs (informational for loop)
+- `studies/spy_beater_hunt/SESSION_PROMPT.md` — sister-loop reference
+- `studies/day_swing_strategy_hunt/loop.sh` — multi-backend shell pattern
