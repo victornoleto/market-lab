@@ -7,8 +7,9 @@ Quick study for the rule:
 
 Implementation notes:
 
-- Signal proxy: `QQQ` adjusted close from Tiingo.
-- Risk-on asset: `QLD` adjusted close from Tiingo.
+- Signal proxy: `QQQSIM` long-history Nasdaq-100 proxy from testfol.io.
+- Risk-on asset: `QQQSIM?L=2`, resolved through the local testfol.io alias map to `QLDSIM`.
+- Comparison leverage: `QQQSIM?L=3`, resolved to `TQQQSIM`.
 - Risk-off asset: `CASHX` from testfol.io cache, used as a T-bill/cash proxy.
 - Weekly signal uses the last available weekly close, then applies the new
   allocation on the next trading day to avoid same-close look-ahead.
@@ -30,4 +31,6 @@ studies/qld_nasdaq_ath_gate/results/default/
 ```
 
 This is a fast diagnostic, not a deployable strategy verdict. Costs, taxes,
-slippage and robustness gates are not modeled here.
+slippage and robustness gates are not modeled here. Pre-inception `QQQSIM`,
+`QLDSIM` and `TQQQSIM` bars are modelled testfol.io approximations, not directly
+tradeable ETF history.

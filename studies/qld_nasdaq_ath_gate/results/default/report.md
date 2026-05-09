@@ -2,45 +2,45 @@
 
 ## Strategy
 
-- Rule: hold `QLD` when `QQQ` is above `85%` of its trailing `46` weekly closes high-watermark; otherwise hold `CASHX`.
-- Signal proxy: `QQQ` adjusted close as Nasdaq-100 ETF proxy; risk-on asset: `QLD`; risk-off asset: `CASHX`.
+- Rule: hold `QQQSIM?L=2` when `QQQSIM` is above `85%` of its trailing `46` weekly closes high-watermark; otherwise hold `CASHX`.
+- Signal proxy: `QQQSIM` long-history Nasdaq-100 proxy from testfol.io; risk-on asset: `QQQSIM?L=2`; comparison leverage: `QQQSIM?L=3`; risk-off asset: `CASHX`.
 - Timing: weekly signal is forward-filled and shifted one trading day before allocation to avoid same-close look-ahead.
 - Source rationale: leveraged equity above a risk gate and cash/T-bills below follows the LRS family `[leverage_for_the_long_run, p.13, p.21]`.
 - High-watermark/breakout-style filters are a classic trend-following family `[trading_systems_methods, p.353]`.
 
 ## Result Summary
 
-- Date range: `2007-05-04` to `2026-04-14`.
-- Trade events: `26`.
-- Strategy CAGR: `23.21%` vs QQQ `15.67%` vs QLD `23.48%`.
-- Strategy MDD: `-49.33%` vs QQQ `-53.41%` vs QLD `-83.16%`.
-- Strategy Sharpe: `0.776` vs QQQ `0.764` vs QLD `0.698`.
-- Terminal wealth vs QQQ: `3.30x`; vs QLD: `0.96x`.
+- Date range: `1986-11-14` to `2026-04-17`.
+- Trade events: `54`.
+- Strategy CAGR: `23.42%` vs QQQSIM `14.66%` vs QQQSIM?L=2 `17.44%` vs QQQSIM?L=3 `12.28%`.
+- Strategy MDD: `-63.67%` vs QQQSIM `-82.97%` vs QQQSIM?L=2 `-98.85%` vs QQQSIM?L=3 `-99.98%`.
+- Strategy Sharpe: `0.744` vs QQQSIM `0.658` vs QQQSIM?L=2 `0.570` vs QQQSIM?L=3 `0.541`.
+- Terminal wealth vs QQQSIM: `18.15x`; vs QQQSIM?L=2: `7.07x`; vs QQQSIM?L=3: `41.55x`.
 
 ## Metrics
 
-| metric | strategy | QQQ | QLD | CASHX |
-|---|---:|---:|---:|---:|
-| total_return | 5083.54% | 1469.04% | 5299.98% | 31.39% |
-| cagr | 23.21% | 15.67% | 23.48% | 1.45% |
-| mdd | -49.33% | -53.41% | -83.16% | -0.00% |
-| sharpe | 0.776 | 0.764 | 0.698 | 12.805 |
-| sortino | 1.075 | 1.088 | 0.990 | 22401.630 |
-| calmar | 0.471 | 0.293 | 0.282 | 4074.804 |
-| vol_annual | 34.74% | 22.32% | 44.40% | 0.11% |
-| best_day | 19.05% | 12.16% | 24.59% | 0.02% |
-| worst_day | -18.51% | -11.98% | -24.28% | -0.00% |
+| metric | Strategy | QQQSIM | QQQSIM?L=2 | QQQSIM?L=3 | CASHX |
+|---|---:|---:|---:|---:|---:|
+| total_return | 398635.18% | 21870.78% | 56325.24% | 9497.00% | 231.89% |
+| cagr | 23.42% | 14.66% | 17.44% | 12.28% | 3.09% |
+| mdd | -63.67% | -82.97% | -98.85% | -99.98% | -0.00% |
+| sharpe | 0.744 | 0.658 | 0.570 | 0.541 | 20.109 |
+| sortino | 1.045 | 0.944 | 0.815 | 0.772 | 68205.780 |
+| calmar | 0.368 | 0.177 | 0.176 | 0.123 | 8664.216 |
+| vol_annual | 38.21% | 25.88% | 51.76% | 77.64% | 0.15% |
+| best_day | 24.69% | 16.84% | 33.65% | 50.46% | 0.04% |
+| worst_day | -30.19% | -15.08% | -30.19% | -45.30% | -0.00% |
 
 ## Rolling Windows
 
 Rolling windows test whether the full-period result survives different start/end regimes `[trading_systems_methods, ch.21]`.
 
-|   window_years |     n_obs |   strategy_median_cagr |   qqq_median_cagr |   qld_median_cagr |   win_rate_vs_qqq |   win_rate_vs_qld |   median_edge_vs_qqq |   median_edge_vs_qld |   worst_edge_vs_qqq |   worst_edge_vs_qld |
-|---------------:|----------:|-----------------------:|------------------:|------------------:|------------------:|------------------:|---------------------:|---------------------:|--------------------:|--------------------:|
-|         1.0000 | 4514.0000 |                 0.2910 |            0.2042 |            0.3686 |            0.6593 |            0.4703 |               0.1034 |              -0.0000 |             -0.3833 |             -1.6241 |
-|         3.0000 | 4010.0000 |                 0.2703 |            0.1766 |            0.3170 |            0.9426 |            0.4955 |               0.0844 |               0.0000 |             -0.1385 |             -0.4718 |
-|         5.0000 | 3506.0000 |                 0.2854 |            0.1815 |            0.3144 |            0.9894 |            0.2824 |               0.0914 |              -0.0293 |             -0.0267 |             -0.2748 |
-|        10.0000 | 2246.0000 |                 0.2760 |            0.1835 |            0.3056 |            1.0000 |            0.1768 |               0.0967 |              -0.0433 |              0.0387 |             -0.1494 |
+|   window_years |     n_obs |   strategy_median_cagr |   signal_median_cagr |   risk_on_median_cagr |   comparison_median_cagr |   win_rate_vs_signal |   win_rate_vs_risk_on |   win_rate_vs_comparison |   median_edge_vs_signal |   median_edge_vs_risk_on |   median_edge_vs_comparison |   worst_edge_vs_signal |   worst_edge_vs_risk_on |   worst_edge_vs_comparison |
+|---------------:|----------:|-----------------------:|---------------------:|----------------------:|-------------------------:|---------------------:|----------------------:|-------------------------:|------------------------:|-------------------------:|----------------------------:|-----------------------:|------------------------:|---------------------------:|
+|         1.0000 | 9678.0000 |                 0.2125 |               0.1771 |                0.2755 |                   0.3300 |               0.6329 |                0.3641 |                   0.3413 |                  0.0736 |                  -0.0000 |                     -0.1174 |                -0.4702 |                 -1.6290 |                    -3.6623 |
+|         3.0000 | 9174.0000 |                 0.2403 |               0.1593 |                0.2561 |                   0.2968 |               0.8479 |                0.3680 |                   0.4004 |                  0.0800 |                  -0.0000 |                     -0.0587 |                -0.2109 |                 -0.5184 |                    -1.3299 |
+|         5.0000 | 8670.0000 |                 0.2429 |               0.1604 |                0.2363 |                   0.2479 |               0.9368 |                0.4125 |                   0.4262 |                  0.0890 |                  -0.0108 |                     -0.0288 |                -0.1139 |                 -0.2978 |                    -0.7546 |
+|        10.0000 | 7410.0000 |                 0.2670 |               0.1417 |                0.1727 |                   0.1599 |               0.9996 |                0.5965 |                   0.5829 |                  0.0997 |                   0.0264 |                      0.0324 |                -0.0014 |                 -0.1786 |                    -0.3389 |
 
 ## Plots
 
@@ -56,25 +56,26 @@ Rolling windows test whether the full-period result survives different start/end
 
 ## Recent Trades
 
-| date       | target   |   risk_on_weight |
-|:-----------|:---------|-----------------:|
-| 2020-03-16 | CASHX    |                0 |
-| 2020-04-20 | QLD      |                1 |
-| 2022-02-22 | CASHX    |                0 |
-| 2022-02-28 | QLD      |                1 |
-| 2022-03-07 | CASHX    |                0 |
-| 2022-03-21 | QLD      |                1 |
-| 2022-04-25 | CASHX    |                0 |
-| 2023-02-06 | QLD      |                1 |
-| 2023-02-13 | CASHX    |                0 |
-| 2023-02-21 | QLD      |                1 |
-| 2025-04-07 | CASHX    |                0 |
-| 2025-04-28 | QLD      |                1 |
+| date       | target     |   risk_on_weight |
+|:-----------|:-----------|-----------------:|
+| 2020-03-16 | CASHX      |                0 |
+| 2020-04-20 | QQQSIM?L=2 |                1 |
+| 2022-02-22 | CASHX      |                0 |
+| 2022-02-28 | QQQSIM?L=2 |                1 |
+| 2022-03-07 | CASHX      |                0 |
+| 2022-03-21 | QQQSIM?L=2 |                1 |
+| 2022-04-25 | CASHX      |                0 |
+| 2023-02-06 | QQQSIM?L=2 |                1 |
+| 2023-02-13 | CASHX      |                0 |
+| 2023-02-21 | QQQSIM?L=2 |                1 |
+| 2025-04-07 | CASHX      |                0 |
+| 2025-04-28 | QQQSIM?L=2 |                1 |
 
 ## Caveats
 
 - This is a fast diagnostic, not a deployable strategy verdict.
-- QQQ is used as a Nasdaq-100 ETF proxy; the test is limited by QLD real-history overlap from 2006 onward.
+- testfol.io `QQQSIM` extends Nasdaq-100 proxy history before live QQQ/QLD/TQQQ inception; pre-inception bars are modelled approximations, not directly tradeable history.
+- Leveraged specs such as `QQQSIM?L=2` and `QQQSIM?L=3` are resolved to local cache aliases (`QLDSIM`, `TQQQSIM`) when available.
 - Costs, taxes, slippage, market impact and operational execution are not modeled.
 - No PBO, DSR, walk-forward, bootstrap or cross-library gate is run here, so mandate promotion is not implied.
 - CASHX is a testfol.io cash/T-bill proxy and not a broker-specific cash sweep implementation.
