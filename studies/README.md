@@ -24,8 +24,41 @@ top-level `reports/` directory was removed during the public-repo cleanup.
   frontier. iter 014 = annual-DARF rerun (proves rotation is tax-neutral
   under Lei 14.754).
 - **Why kept active**: predecessor of `long_term_portfolio/`; iter 014's
-  `tax_engine_v2.py` is the canonical source for `_shared/tax_engine.py`.
+   `tax_engine_v2.py` is the canonical source for `_shared/tax_engine.py`.
 - Entry: `BASE_MEMORY.md`, `README.md`.
+
+### `weekly_momentum/` (bootstrap 🌱)
+- **Mission**: test weekly cross-sectional momentum over cached Tiingo stocks
+  and ETFs.
+- **Initial config**: rank by adjusted-close appreciation over 4 trading days
+  using Thursday close, hold top-1, sell Friday only if the winner changes,
+  and buy Monday/Tuesday via `settlement_delay_days`.
+- **Defensive filters**: stocks default to current S&P 500 constituents and the
+  strategy moves to cash when all ranked assets have non-positive momentum;
+  optional SPY/SMA market filter is available via `--market-filter-sma-days`.
+- **Outputs**: `results/{variation}/{config_slug}/` with CSV/JSON artifacts,
+  SPY benchmark, rolling 1/3/5/10y plots and deterministic `report.md`
+  (`REPORT_SPEC.md`). Walk-forward diagnostics live under `walk_forward/`.
+- **Deploy candidates**: 4 research-only candidates frozen in
+  `DEPLOY_CANDIDATES.md`; comparable validation panel generated under
+  `deploy_candidates/` before costs/slippage/taxes, PIT universe and
+  PBO/DSR/bootstrap gates.
+- **ETF replication**: `ETF_STUDY_REPORT.md` preserves the same strategy family
+  on cached ETFs; initial verdict is weak versus SPY and needs ETF-specific
+  redesign before further promotion.
+- **Caveat**: current-cache universe implies survivorship bias unless replaced
+  with a point-in-time universe.
+- Entry: `README.md`, `core.py`, `data.py`, `run.py`.
+
+### `qld_nasdaq_ath_gate/` (quick diagnostic 🌱)
+- **Mission**: test a fixed Nasdaq-100 high-watermark gate: hold `QLD` when
+  `QQQ` is above 85% of its trailing 46-week high; otherwise hold `CASHX`.
+- **Status**: initial deterministic report generated under `results/default/`
+  with equity, drawdown, signal-line, rolling Sharpe and 1/3/5/10y rolling
+  window plots.
+- **Caveat**: fast diagnostic only; no costs, taxes, slippage, PBO, DSR,
+  walk-forward, bootstrap or cross-library promotion gates.
+- Entry: `README.md`, `run.py`.
 
 ## Shared infrastructure
 
