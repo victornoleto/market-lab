@@ -10,7 +10,7 @@
 > - **2000 dotcom cohort improves dramatically**: canonical -12.7% 5y CAGR → new winner -1.6% under sma250/100.
 > - **New Sortino thresholds**: Track A 1.272, Track B-M1 1.016, Track B-M2 1.144 (canonical Sortino + 0.05 anti-curve-fit margin).
 >
-> **The body of this report below is preserved as-is for historical methodology fidelity.** All Sharpe-based numbers and rankings are accurate at time of writing but should be read alongside the Sortino re-analysis for current operative ranking. **Mandate §1 remains unchanged: capital 100% Plano C; Strategy A/B/D DORMANT.**
+> Historical Sharpe-based numbers are retained below for auditability, but the current tier verdict is Sortino-first. **Mandate §1 remains unchanged: capital 100% Plano C; Strategy A/B/D DORMANT.**
 >
 > **For non-technical reader:** see `SORTINO_RESUMO_EXECUTIVO.md` (PT-BR plain-language summary).
 > **For technical detail:** see `SORTINO_REANALYSIS_REPORT.md` (13 sections, full tables).
@@ -30,24 +30,23 @@
 > See §17 of `STUDY_FINAL_REPORT.md` for full disclosure.
 >
 > **Verdict update:** T5-expansion-best is `025-2026-05-08-T5d-hrp-erc/erc_multi4_sigma030` with Sortino
-> = 1.1399 (Sharpe = 0.7993) on lh_56y. **KILL T5-expansion: FIRES**
+> = 1.1399 (Sharpe = 0.7993, secondary) on lh_56y. **KILL T5-expansion: FIRES**
 > (threshold 1.272 = Track A canonical Sortino + 0.05 anti-curve-fit).
 > Track A canonical winner `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` retains
 > DSR PASS at N=426 (p_v2 = 0.0024). 22 early-tier T1 configs flipped PASS→FAIL
 > with the higher cumulative N (none are winners).
 >
-> **Body of report below preserved as-is for historical fidelity.**
+> The current tier verdict is therefore Sortino-first: expanded T5 improves on the original 2-config run but remains below the T3d sma250/100 operative winner.
 
 ---
 
-**Status:** T5 tier complete (2026-05-06). 2 sub-phases (T5a, T5c), 2 configs, iters 020-021.
-**Tier verdict:** **KILL T4→T5 FIRES.** T5-best Sharpe 0.740 (T5c multi-asset) falls 0.163 below threshold 0.903. Continuous vol-targeting does not improve over T3d K=2 binary signal in this universe.
-**T5-best:** `voltarget_multi4_sigma025_idm25_off_zroz` Sharpe 0.740, score 61, **PROMISING** — but pct_above 76% < 95% strict bar.
-**Final tier — study closes.** T3d K=2 stands as definitive study winner.
+**Status:** T5 tier complete (original close 2026-05-06; post-close expansion 2026-05-08). 22 configs total: 2 original + 20 expansion configs across T5a sigma sweep, T5b carry forecast, T5c grid, and T5d HRP/ERC.
+**Tier verdict:** **KILL T5-expansion FIRES.** Expanded T5-best Sortino 1.1399 falls below the Sortino threshold 1.272. Continuous vol-targeting, carry forecast, and HRP/ERC weighting do not improve over the T3d sma250/100 operative winner in this LETF universe.
+**T5-best (expanded):** `erc_multi4_sigma030` Sortino 1.1399, Sharpe 0.7993 secondary, score 72.5, **PROMISING**.
+**Final tier — study remains closed.** T3d sma250/100 remains the operative Sortino winner.
 
 Spec ref: §2.6, §3.4. T5 inherits T3-best (KILL T3→T4 fired in iter 019).
-**Skipped per scope**: T5b carry forecast (yield-curve data unavailable),
-T5d HRP (optional per spec).
+**Originally skipped per scope, now covered by expansion**: T5b carry forecast and T5d HRP/ERC.
 
 ---
 
@@ -55,7 +54,7 @@ T5d HRP (optional per spec).
 
 ![Underwater vs benchmark](tier_5_plots/tier5_underwater_vs_benchmark.png)
 
-*T5c `voltarget_multi4_sigma025_idm25_off_zroz` (Sharpe 0.740) relative to
+*Original T5c `voltarget_multi4_sigma025_idm25_off_zroz` (Sharpe 0.740, secondary) relative to
 SPY buy-hold. **Only 76.6% of days above SPY** — fails v2 strict bar 0.95.
 Min ratio post-warmup 0.56× (strategy fell to 56% of SPY equity at one point).
 End ratio 15.9× (vs T3d K=2 end ratio 256×). Despite reasonable Sharpe,
@@ -71,8 +70,8 @@ below T3d K=2's compounding pace.*
 *All 22 T5 configs (2 original from iters 020-021 + 20 from T5 expansion
 iters 022-025: T5a σ-sweep ×5, T5b carry ×4, T5c grid ×7, T5d HRP/ERC ×4)
 as strategy_eq / SPY_eq ratio, log-scale. SPY = 1.0 black dashed. Top 5
-by Sharpe lh_56y are highlighted (bold): `erc_multi4_sigma030` (T5d,
-Sharpe 0.7993, T5-expansion-best), `erc_multi4_sigma025` (T5d, 0.7956),
+risk-adjusted candidates are highlighted (bold): `erc_multi4_sigma030` (T5d,
+Sortino 1.1399, Sharpe 0.7993 secondary, T5-expansion-best), `erc_multi4_sigma025` (T5d, 0.7956),
 `ewmac_carry_multi4_sigma025` (T5b, 0.7522), and the two original T5c
 variants (`voltarget_multi4_sigma025_idm25_off_zroz` and
 `voltarget_multi4_idm25`, both 0.7400). Remaining 17 configs faded gray.
@@ -90,32 +89,33 @@ diversification benefits.*
 
 ## 1. Sub-phase summary
 
-| Sub-phase | Variant | Pool | IDM | Sharpe (lh_56y) | KILL T4→T5 |
+| Sub-phase | Variant | Pool | Best Sortino (lh_56y) | Sharpe (secondary) | KILL verdict |
 |---|---|---|---:|---:|---|
-| **T5a** (iter 020) | Single-asset QLD vol-target | {QLD} | 1.0 | 0.587 | FIRES |
-| **T5c** (iter 021) | Multi-asset 4-LETF vol-target | {UPRO, QLD, UGL, TMF} | 2.5 | **0.740** | FIRES |
+| **T5a** (iter 020 original) | Single-asset QLD vol-target | {QLD} | ~0.84 | 0.587 | FIRES |
+| **T5c** (iter 021 original) | Multi-asset 4-LETF vol-target | {UPRO, QLD, UGL, TMF} | ~1.05 | 0.740 | FIRES |
+| **T5a σ-sweep** (iter 022 expansion) | Single-asset QLD vol-target | {QLD} | 0.8450 | 0.598 | FIRES |
+| **T5b carry** (iter 023 expansion) | EWMAC + carry forecast | {UPRO, QLD, UGL, TMF} | 1.0673 | 0.752 | FIRES |
+| **T5c grid** (iter 024 expansion) | IDM × pool sweep | multiple | 1.0553 | 0.740 | FIRES |
+| **T5d HRP/ERC** (iter 025 expansion) | ERC weighting | {UPRO, QLD, UGL, TMF} | **1.1399** | 0.799 | **FIRES vs 1.272** |
 
-(T5b carry forecast skipped — needs yield-curve data; T5d HRP optional.)
-
-Cumulative `n_trials = 406` (T1 22 + T1d 360 + T2 11 + T3 7 + T4 4 + T5 2).
+Cumulative DSR/config trials after expansion: **426**.
 
 ---
 
-## 2. T5 ranking + comparison
+## 2. Original T5 ranking + expanded comparison
 
 | Rank | Sub | Config | Sh lh_56y | Sh mod_1990 | Sh spy_real | Sh ndx_real | CAGR | MDD | pct>b | min_r | Score | Tier |
 |---:|----|--------|---:|---:|---:|---:|---:|---:|---:|---:|---:|------|
 | 1 | T5c | `voltarget_multi4` | 0.740 | 0.744 | 0.768 | 0.844 | 19.4% | -62.9% | 76.1% | 0.56× | 61 | PROMISING |
 | 2 | T5a | `voltarget_qld` | 0.587 | 0.567 | 0.625 | 0.683 | 13.9% | -55.8% | 98.3% | 0.87× | 32 | NEAR_FAIL |
 
-**T3d K=2 incumbent: 0.853**. T5c gap: -0.113. T5a gap: -0.266.
+**Operative T3d sma250/100 incumbent: Sortino 1.3246**. Expanded T5-best gap: -0.1847 Sortino.
 
 ---
 
 ## 3. Why T5 doesn't beat T3
 
-**T5a single-asset (Sharpe 0.587)** is the surprise: it's WORSE than T3d K=2
-(0.853) on the same QLD/ZROZ pair. Three reasons:
+**T5a single-asset** is the surprise: it is worse than T3d K=2 on the same QLD/ZROZ pair even after σ-target sweep. Three reasons:
 
 1. **Continuous sizing under-allocates during uptrends.** When EWMAC forecast
    magnitude is small (e.g., during early trend formation or near SMA200
@@ -126,11 +126,11 @@ Cumulative `n_trials = 406` (T1 22 + T1d 360 + T2 11 + T3 7 + T4 4 + T5 2).
    when uptrends restart.
 3. **Position inertia 10% threshold** further dampens responsiveness.
 
-**T5c multi-asset (Sharpe 0.740)** fares better via diversification:
+**T5c/T5d multi-asset variants** fare better via diversification, with ERC improving the best Sortino to 1.1399:
 - 4-LETF pool gives some uncorrelated exposure
 - IDM=2.5 lifts effective leverage to compensate for under-allocation per asset
 - But: pct_above 76% < 95% — strategy is below SPY equity 24% of the time
-- Compare T3d K=2 pct_above 100% — T5 doesn't dominate SPY consistently
+- Compare T3d K=2 pct_above ~100% — T5 doesn't dominate SPY consistently
 
 The Carver vol-target framework is designed for **liquid futures with Sharpe
 0.5-1.0 across many uncorrelated instruments**. For LETFs in this study:
@@ -142,16 +142,16 @@ The Carver vol-target framework is designed for **liquid futures with Sharpe
 
 ---
 
-## 4. Decision: KILL T4→T5 FIRES — study closes
+## 4. Decision: KILL T5-expansion FIRES — study remains closed
 
-T5-best Sharpe 0.740 << threshold 0.903. **No tier in T2-T5 advances over T3.**
+Expanded T5-best Sortino 1.1399 < threshold 1.272. **No tier in T2-T5 advances over T3.**
 
 Final study state:
-- **Study winner**: T3d K=2 `qld_vote_k2_off_zroz` (Sharpe 0.853, score 82, STRONG WC=Y)
+- **Study winner under operative Sortino**: T3d K=2 `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` (Sortino 1.3246, Track A passer)
 - T2 contributed nothing (KILL T1→T2)
 - T3 was the breakthrough (only tier advance)
 - T4 cross-sectional close miss but doesn't beat T3
-- T5 vol-target plateaus around T3 territory or below
+- Expanded T5 vol-target/carry/HRP/ERC improves the best T5 result but remains below the Sortino threshold
 
 See `STUDY_FINAL_REPORT.md` for full study consolidation.
 
@@ -273,4 +273,4 @@ recommended for capital.
 
 ## Post-close addendum (2026-05-07)
 
-Configs from this tier were not re-evaluated in the post-close Sortino sub-study; their Sharpe-based ranking remains the only available metric data. T5's Carver vol-targeting family (led by `voltarget_multi4_sigma025_idm25_off_zroz`, Sharpe 0.740) was eliminated by the KILL T4→T5 gate and did not participate in the Sortino re-analysis. As the final tier, T5 confirmed the study-closing incumbent `qld_vote_k2_off_zroz` (T3d K=2), which anchored the post-close Sortino re-analysis. See `SORTINO_REANALYSIS_REPORT.md` §3–§9 for the Sortino evaluation of the T3d K=2 lineage and the updated operative ranking under the new winner `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz`.
+The 2026-05-08 T5 expansion re-evaluated the Carver family under the Sortino-first framework. Best expanded T5 result: `erc_multi4_sigma030`, Sortino 1.1399, Sharpe 0.7993 secondary. It fails the operative threshold 1.272, so the T3d sma250/100 winner remains operative. See `STUDY_FINAL_REPORT.md` §17 for the methodology disclosure and cumulative DSR impact.

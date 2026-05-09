@@ -2,11 +2,11 @@
 
 > Visual TL;DR of a 25-iteration, 5-tier hunt for a deploy-quality LETF rotation strategy.
 >
-> **Primary metric: Sortino (post-close re-analysis 2026-05-07). Sharpe preserved as secondary.**
+> **Primary metric: Sortino (post-close re-analysis 2026-05-07). Sharpe preserved only as secondary/historical context and where technically required by DSR.**
 > After the study closed under Sharpe ranking (2026-05-06), a post-close Sortino re-analysis
 > (`SORTINO_REANALYSIS_REPORT.md`) was conducted. The findings reshape the study's primary
-> metric framework. This rewritten report leads with Sortino; Sharpe is preserved alongside
-> for transparency.
+> metric framework. This rewritten report leads with Sortino; Sharpe is preserved only
+> as secondary/historical context and where technically required by DSR.
 >
 > **Mandate §1: capital remains 100% Plano C. Strategy A/B/D DORMANT. No deploy authorization.**
 
@@ -21,6 +21,7 @@
 | **H₀ result** | Sortino edge vs SPY **+0.264** vs Sharpe edge +0.171 — Sortino edge ~55% larger (4/4 datasets, gross) |
 | **Dotcom improvement** | Canonical 2000 cohort 5y CAGR **-12.7%** → new winner **-1.6%** (+11.1pp/yr) |
 | **Tax finding** | M1 kills 5/10 top strategies; **M2 preserves all 10** (Lei 14.754 annual mode is sustainable) |
+| **T5 expansion** | T5 expanded from 2 to **22 configs**; best `erc_multi4_sigma030` Sortino **1.1399**, below threshold **1.272** — T3 winner unchanged |
 | **Threshold winner** | `smabuf_5pct` passes **Track B-M1 only** under Sharpe; passes **Track A** under Sortino |
 | **Forward universe** | 4-asset deploy guide ready: **TQQQ + SOXL + DRAM + UPRO/SPXL** (STRATEGY_TQQQ_SOXL_DRAM_DEPLOY_GUIDE.md) |
 | **Mandate §1** | Capital **100% Plano C**; A/B/D **DORMANT**; Cenário B CONFIRMED — STRONG, no deploy |
@@ -50,14 +51,14 @@
 
 4. **Sortino is the right metric.** The Sortino edge vs SPY (+0.264) is 55%
    larger than the Sharpe edge (+0.171). This isn't just a number change — it
-   changed the winner. Under Sortino, sma250/100 (which only cleared the
-   anti-curve-fit threshold marginally in Sharpe space) is the decisive winner.
+   changed the winner. LETF rotation intentionally seeks large positive upside
+   bursts when filters are ON; Sharpe penalizes that upside volatility
+   symmetrically, while Sortino focuses on adverse semideviation. Under Sortino,
+   sma250/100 is the decisive winner.
 
-![Master Sharpe ranking](STUDY_master_sharpe_bar.png)
+![Master ranking, historical Sharpe view](STUDY_master_sharpe_bar.png)
 
-*5 tier-winners ranked by Sharpe (historical). T3d K=2 (green) is the only config to clear
-an anti-curve-fit T<N>→T<N+1> threshold under Sharpe. Under Sortino, sma250/100 is the
-operative winner (Sortino 1.325 vs canonical 1.222).*
+*Historical Sharpe view retained for auditability. T3d K=2 (green) is the only original tier family to clear an anti-curve-fit T<N>→T<N+1> threshold. Under Sortino, sma250/100 is the operative winner (Sortino 1.325 vs canonical 1.222). Expanded T5 does not clear Sortino 1.272.*
 
 ---
 
@@ -112,14 +113,15 @@ T1-T3 G1 failures were small-grid sample-size artifacts.
 ### T5 — Carver vol-target: plateaus
 
 Continuous position sizing per Carver `[systematic_trading, ch.7-12]`.
-T5a single-asset vol-target Sharpe 0.587 — actually **worse** than T3d K=2
-binary signal because forecast-magnitude scaling under-allocates during clear
-uptrends. T5c multi-asset 0.740 still below threshold. Carver framework
-designed for futures with 10+ uncorrelated instruments; 4-LETF pool too small.
+The post-close expansion grew T5 from 2 to **22 configs** (sigma sweep, carry
+forecast, IDM/pool grid, HRP/ERC weighting). Best expanded T5 is
+`erc_multi4_sigma030` with Sortino **1.1399** (Sharpe 0.799 secondary), below
+the Sortino threshold **1.272**. Carver framework was designed for futures with
+10+ uncorrelated instruments; a 4-LETF pool is too small and too correlated.
 
 ![T5 underwater](tier_5_plots/tier5_underwater_vs_benchmark.png)
 
-*T5-best only 76.6% above SPY (fails 0.95 strict bar); end ratio 15.9× (vs T3 256×).*
+*Original T5-best only 76.6% above SPY (fails 0.95 strict bar); expanded T5 improves the best Sortino to 1.1399 but still remains below T3's 1.325 operative winner.*
 
 ---
 
@@ -243,7 +245,7 @@ across 5 window sizes (3y/5y/10y/15y/20y) with month-by-month start increments.
 
 ![Robustness ranking](robustness_plots/robustness_ranking.png)
 
-*Composite robustness rank combines median Sharpe + min Sharpe + pct_above_SPY across all 5 window sizes.*
+*Composite robustness rank is a legacy Sharpe-based stress diagnostic. It is retained for path-dependence audit, while Sortino remains the primary deploy metric.*
 
 **Findings:**
 
@@ -438,7 +440,7 @@ per spec §7.7 Scenario B**; no capital is allocated.
 | Tests | 941 (study + post-close sub-studies) |
 | Iter directories | 25 with verdict.json + SUMMARY.md + 7-8 plots + 2 CSVs each |
 | Reports | 14 (5 tier + FINAL + HIGHLIGHTS + ROBUSTNESS + REDDIT × 2 + post-close sub-studies × 5) |
-| Cumulative trials | 430 + 37k rolling backtests |
+| Cumulative DSR/config trials | 426 + 37k rolling backtests |
 | Wall-clock | ~7 sessions main study + 3 post-close sub-study sessions |
 | Commits | 20+ sequential conventional commits documenting evolution |
 

@@ -18,9 +18,9 @@
 ---
 
 **Status:** T3 tier complete (2026-05-06). 5 sub-phases (T3a-T3e), 7 configs, iters 011-015. **+ iter 022 T3d-extended grid** (12 configs) post initial close.
-**Tier verdict:** **`qld_vote_k2_off_zroz` (T3d K=2) ADVANCES** as study winner. Sharpe 0.853 (lh_56y) clears anti-curve-fit threshold 0.802 by +0.051. **First config in study to clear T<N>→T<N+1> threshold.**
-**T3-best:** `qld_vote_k2_off_zroz` Sharpe 0.853, **score 82/100, STRONG** tier. All WINNER strict bars met (`winner_conditions_met = True`); WINNER tier (≥90) capped by criterion 6 (crisis_attribution: T3d K=2 beats SPY in 2 of 4 crises = 5/10) + criterion 1 (Sharpe edge cap 25/30) + criterion 7 (bonus 0/5 discretionary).
-**Inheritance to T4:** T4 anchor = `qld_vote_k2_off_zroz`; threshold T3→T4 = 0.903 (= 0.853 + 0.05).
+**Tier verdict:** **T3d Vote-K=2 ADVANCES**. Under the historical Sharpe ranking, `qld_vote_k2_off_zroz` cleared the anti-curve-fit threshold. Under the operative Sortino framework, `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` is the T3 and study winner.
+**T3-best (operative):** `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` Sortino 1.325, Track A/B-M1/B-M2 passer. Historical canonical `qld_vote_k2_off_zroz` remains score 82/100 STRONG and is retained for auditability.
+**Inheritance to T4/T5:** historical thresholding used the Sharpe-era anchor; post-close evaluation uses Sortino threshold 1.272.
 
 Spec ref: §2.4, §3.4. Inheritance from T1c canonical (KILL T1→T2 fired in iter 010).
 
@@ -233,20 +233,18 @@ because they're less whipsaw-prone over rolling windows.
 
 | Use case | Pick |
 |---|---|
-| Forward-monitoring as canonical study reference | `sma200/50` |
-| Methodologically-defensible single winner (cite-able) | `sma200/50` (anti-curve-fit margin tighter; tighter dataset consistency) |
-| Real deploy paper-trading staging if it ever happens | `sma250/100` (lower MDD, fewer flips → better NET Sharpe under BR tax) |
+| Forward-monitoring as canonical study reference | `sma250/100` (operative Sortino winner) |
+| Methodologically-defensible single winner (cite-able) | `sma250/100` (Sortino Track A/B-M1/B-M2 passer; lower whipsaw/tax drag) |
+| Real deploy paper-trading staging if it ever happens | `sma250/100` (lower MDD, fewer flips → better net Sortino under BR tax) |
 | Run BOTH in parallel for paper trading | both — they're at different points on the same efficient frontier |
-| Score-rubric "winner" of T3 tier | `sma200/50` (82 STRONG WC=Y) |
+| Legacy score-rubric winner of T3 tier | `sma200/50` (82 STRONG WC=Y under Sharpe-era rubric) |
 | Composite robustness "winner" across 37k rolling windows | `sma250/100` (#1) |
 
-The `sma250/100` Sharpe edge of +0.066 over canonical (clearing the +0.05
-anti-curve-fit margin by only +0.016) is **marginal** in the sense that
-within a 12-config sweep this much edge is plausibly within noise of a
-hand-chosen winner. So per spec §3.4 default-to-incumbent, the canonical
-`sma200/50` retains the "study winner" title, but `sma250/100` is a
-genuinely competitive sibling — not a curve-fit artifact, just a different
-point on the responsiveness-vs-robustness curve.
+The `sma250/100` Sharpe edge of +0.066 over canonical was marginal in the
+historical Sharpe frame. The Sortino re-analysis resolves the ambiguity:
+Sortino edge_vs_canonical is +0.103 and the variant clears all three Sortino
+tracks. Therefore `sma250/100` supersedes `sma200/50` as the operative winner;
+`sma200/50` remains a legacy canonical reference for auditability.
 
 ---
 

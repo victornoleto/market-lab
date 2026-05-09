@@ -86,7 +86,7 @@ Hard-gate thresholds (spec §3.5): G1 PBO < 0.50, G2 DSR p < 0.05, G3 ≥5/8 win
 - **Best config:** `qld_voteK2_off_zroz_alt` (STRONG, score 82.0)
 - **KILL T0:** PASS (study viable)
 - **Advance to next tier:** yes
-- **Cumulative n_trials:** 430
+- **Cumulative n_trials:** 426 after the 2026-05-08 T5 expansion recompute
 - **Deploy escalation eligible:** no
 
 ## Conclusion
@@ -94,4 +94,3 @@ Hard-gate thresholds (spec §3.5): G1 PBO < 0.50, G2 DSR p < 0.05, G3 ≥5/8 win
 T1-best Sharpe 0.853 (lh_56y) clears SPY+0.05 — single-LETF Gayed rotation has prima-facie edge in this universe. Proceeding to T1b period sweep.
 
 ## Next iter
-

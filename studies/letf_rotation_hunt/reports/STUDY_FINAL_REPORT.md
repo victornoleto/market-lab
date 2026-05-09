@@ -1,15 +1,15 @@
 # LETF Rotation Hunt — Study Final Report
 
-**Status:** Study CLOSED 2026-05-06 (re-scored post-G3-redesign + iter 022 + iter 023 + crisis_attribution real + deploy threshold relaxed +0.15). **Post-close Sortino re-analysis completed 2026-05-07 — see §16 and the post-close addendum below.**
-**Cumulative trials:** 430 (T1 22 + T1d 360 + T2 11 + T3 7 + T4 4 + T5 2 + T3d-ext 12 + T3d-multi 12)
-**Total iterations:** 23 (000 + 000-v2 + 001-021 + 022 T3d-extended + 023 T3d-multi-asset)
-**Study winner (under Sharpe ranking):** `qld_vote_k2_off_zroz` (T3d K=2, iter 014 canonical signal; iter 022 N=12 grid context) *(under Sharpe ranking; superseded by sma250/100 under Sortino — see §16.4)*
+**Status:** Study CLOSED 2026-05-06; post-close Sortino re-analysis completed 2026-05-07; T5 expansion completed 2026-05-08. This report is now **Sortino-first**. Sharpe is retained only as secondary/historical context and where technically required by DSR.
+**Cumulative DSR/config trials:** 426 (canonical post-T5-expansion universe)
+**Total iterations:** 25 (000 + 000-v2 + 001-021 + 022 T3d-extended + 023 T3d-multi-asset + 022-025 T5 expansion)
+**Historical Sharpe-era winner (secondary):** `qld_vote_k2_off_zroz` (T3d K=2, iter 014 canonical signal; iter 022 N=12 grid context) *(superseded by sma250/100 under Sortino — see §16.4)*
 **Study winner (under Sortino — operative):** **`qld_voteK2_sma250_100_vol21_40_ar30_off_zroz`** (Sortino 1.325, Track A passer, see §16.4)
 
 > **Post-close addendum (2026-05-07):** After the study closed under Sharpe ranking, a
 > post-close Sortino re-analysis (`SORTINO_REANALYSIS_REPORT.md`) was conducted. The findings
 > reshape the study's primary metric framework. This rewritten report leads with Sortino;
-> Sharpe is preserved alongside for transparency. The winner changed from `qld_vote_k2_off_zroz`
+> Sharpe is preserved only as a secondary/historical metric for transparency. The winner changed from `qld_vote_k2_off_zroz`
 > to `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz`. See §16.4 for the full post-close
 > validation suite, and note that **Mandate §1 is unchanged**: capital remains 100% Plano C.
 
@@ -48,6 +48,8 @@ Spec ref: `docs/superpowers/specs/2026-05-05-letf-rotation-study-design.md`.
 > post-close sub-studies (tax_comparison, cohort_robustness, threshold_sweep,
 > sortino_reanalysis). The Sortino edge over SPY (+0.264) is ~55% larger than the Sharpe
 > edge (+0.171). Winner changed to sma250/100 under Sortino. Cenário B CONFIRMED.
+>
+> **T5 expansion (2026-05-08):** See §17. The final DSR universe is 426 configs. T5 was expanded from 2 to 22 configs; best expanded T5 result is `erc_multi4_sigma030` with Sortino 1.1399, below the Sortino threshold 1.272. The expansion reinforces, but does not change, the operative winner.
 
 ---
 
@@ -61,20 +63,49 @@ Reactivation criteria: `docs/investment-mandate.md` §4b (Strategy B) and §7 (o
 
 ## 0. Master Visual Summary
 
-![Master Sharpe ranking](STUDY_master_sharpe_bar.png)
+![Master ranking, historical Sharpe view](STUDY_master_sharpe_bar.png)
 
-*5 tier-winners ranked. T3d K=2 (green) is the only config to clear an
-anti-curve-fit T<N>→T<N+1> threshold. T2 fell below T1; T4 close-miss; T5
-plateaued. T3d 0.853 Sharpe is the definitive study winner under Sharpe ranking;
-under Sortino, sma250/100 (Sortino 1.325) is the operative winner — see §16.4.*
+*Historical Sharpe view retained for auditability. T3d K=2 (green) was the only family to clear an anti-curve-fit T<N>→T<N+1> threshold in the original tier sequence. Under the operative Sortino framework, sma250/100 (Sortino 1.325) is the winner — see §16.4. Expanded T5 (22 configs) did not displace it — see §17.*
 
 ![Master equity](STUDY_master_equity.png)
 ![Master drawdown](STUDY_master_drawdown.png)
-![Master rolling Sharpe](STUDY_master_rolling_sharpe.png)
+![Master rolling Sharpe, secondary diagnostic](STUDY_master_rolling_sharpe.png)
 
-*40 years of compounding (log scale top): T3d K=2 reaches ~$2.6M from $10k
-seed (~256× SPY's ~$0.8M). All 5 configs beat SPY in CAGR; T3d dominates
-risk-adjusted (Sortino 1.222 / Sharpe 0.853 vs SPY).*
+*40 years of compounding (log scale top): T3d K=2 reaches ~$2.6M from $10k seed (~256× SPY's ~$0.8M). All 5 original tier winners beat SPY in CAGR; T3d dominates on the operative downside-risk metric (Sortino 1.222 canonical, 1.325 sma250/100 winner).*
+
+### 0.1 Sortino-first evidence gallery
+
+![Top 21 equity overlay](STUDY_top21_equity_overlay.png)
+
+*Top 20 LETF rotation candidates plus SPY. This is the broad visual map: the T3d family forms the upper compounding band, while SPY is the low black benchmark line.*
+
+![Top 20 relative to SPY](STUDY_top20_relative_to_spy.png)
+
+*Same candidates as strategy equity / SPY equity. The important question for LETFs is not absolute drawdown in isolation; it is whether the strategy remains above the realistic passive alternative through time.*
+
+![Sortino vs Sharpe scatter](sortino_reanalysis/sortino_vs_sharpe_scatter.png)
+
+*Why Sortino is primary: LETF rotation intentionally captures large upside bursts in risk-on regimes. Sharpe penalizes that upside volatility symmetrically; Sortino focuses on adverse semideviation and is therefore the correct primary metric for this family `[advances_fin_ml, p.275]`, `[sortino_1991]`.*
+
+![Sortino track pass comparison](sortino_reanalysis/track_pass_comparison.png)
+
+*Post-close re-scoring changed the decision surface: Sortino identifies Track A passers that the historical Sharpe frame treated as marginal or non-passers.*
+
+![Tax comparison summary](tax_comparison/master_summary.png)
+
+*Tax model matters almost as much as signal choice. M2 annual Lei 14.754 netting preserves the edge; M1 per-swing taxation is the conservative stress case.*
+
+![Winner cohort heatmap](cohort_robustness/heatmap_qld_voteK2_sma250_100_vol21_40_ar30_off_zroz.png)
+
+*Worst-entry-date view for the operative winner. The sma250/100 variant materially improves the 2000 dotcom cohort versus the historical sma200/50 canonical.*
+
+![Robustness ranking](robustness_plots/robustness_ranking.png)
+
+*Rolling-window robustness audit retained as a legacy Sharpe diagnostic plus benchmark-relative persistence. It checks path dependence across entry dates; Sortino remains the primary deploy metric.*
+
+![T5 expanded relative to SPY](tier_5_plots/tier5_all_configs_relative_to_spy.png)
+
+*Expanded T5 visual proof: even after 22 configs across σ-target, carry, IDM/pool, and HRP/ERC, the Carver family remains below the T3d Sortino threshold.*
 
 ---
 
@@ -101,7 +132,7 @@ Sortino thresholds are: Track A 1.272, B-M1 1.016, B-M2 1.144. Current state:
 - Score **82** < 90
 - **7/7 gates pass**
 - All 4 WINNER strict bars pass: `winner_conditions_met = True`
-- DSR cumulative p=0.008 with n=430 — survives study-wide multiple-testing
+- DSR cumulative p=0.0024 with n=426 — survives study-wide multiple-testing after T5 expansion
 
 **Honest classification per spec §7.7**: Scenario B — STRONG but not deploy.
 Recommendation: monthly forward-monitoring (zero capital) with re-evaluation in 6-12 months.
@@ -111,16 +142,17 @@ Capital remains 100% Plano C per mandate §1.
 
 ## 2. Cross-tier comparison
 
-| Tier | Winner | Sortino (lh_56y) | Sharpe (lh_56y) | Score | Tier | KILL verdict |
+| Tier | Winner | Sortino (lh_56y, primary) | Sharpe (secondary) | Score | Tier | KILL verdict |
 |---|---|---:|---:|---:|---|---|
 | T1c | qld_sma200_off_zroz | ~1.07 | 0.752 | 61 | PROMISING | KILL T0 PASS (vs SPY+0.05) |
 | T1d (validation grid) | (T1c stands; 360-config grid confirms ZROZ universal) | — | 0.787 raw | 58 | MARGINAL | confirms T1c |
 | T2 | hfea_ndx_tqqq_tmf_55_45 | ~0.92 | 0.653 | 46 | MARGINAL | KILL T1→T2 FIRES |
 | **T3** | **qld_vote_k2_off_zroz** ✓ | **1.222** | **0.853** | **69** | PROMISING | **KILL T2→T3 PASS** |
 | T4 | xs_clenow_top3_zroz_spysma200 | ~1.17 | 0.823 | 66 | PROMISING | KILL T3→T4 FIRES (close miss) |
-| T5 | voltarget_multi4_sigma025_idm25 | ~1.05 | 0.740 | 61 | PROMISING | KILL T4→T5 FIRES |
+| T5 original | voltarget_multi4_sigma025_idm25 | ~1.05 | 0.740 | 61 | PROMISING | KILL T4→T5 FIRES |
+| T5 expanded | erc_multi4_sigma030 | **1.1399** | 0.799 | 72.5 | PROMISING | KILL T5-expansion FIRES vs Sortino 1.272 |
 
-**Only T3 advances over the previous tier.** This is the central empirical finding of the study.
+**Only T3 advances over the previous tier.** The expanded T5 grid improved the best Carver-family result but still did not clear the Sortino threshold, so the central empirical finding is unchanged.
 
 ---
 
@@ -686,7 +718,7 @@ for the forward-looking 4-asset universe guide (TQQQ + SOXL + DRAM + UPRO/SPXL).
 After the study closed under Sharpe ranking (2026-05-06), four sub-studies were run to
 validate the findings more deeply. This section is the authoritative consolidation of those
 sub-studies. The operative primary metric from this point forward is Sortino; Sharpe is
-preserved alongside as the historical/secondary reference.
+retained only as the historical/secondary reference.
 
 ### §16.1 Tax comparison (sub-study: `TAX_COMPARISON_REPORT.md`)
 
@@ -696,20 +728,20 @@ Modeled Brazilian Lei 14.754/2023 (15% flat, indefinite carry-forward) in two re
 - **Model 1 (M1, per-swing, worst-case):** 15% on each profitable rotation
 - **Model 2 (M2, annual, realistic):** 15% on net annual gains with carry-forward
 
-**Top-10 strategies — key findings under Sharpe:**
+**Top-10 strategies — key findings under Sortino (primary):**
 
-| Strategy | Gross Sharpe | M1 Sharpe | M2 Sharpe | M2 edge vs SPY |
+| Strategy | Gross Sortino | M1 Sortino | M2 Sortino | M2 Sortino edge vs SPY |
 |---|---:|---:|---:|---:|
-| `qld_voteK2_sma200_50_vol21_40_ar30_off_zroz` (canonical) | 0.853 | 0.687 | 0.768 | +0.086 |
-| `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` **(new winner)** | **0.919** | **0.766** | **0.827** | **+0.145** |
+| `qld_voteK2_sma200_50_vol21_40_ar30_off_zroz` (canonical) | 1.222 | 0.966 | 1.094 | +0.136 |
+| `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` **(operative winner)** | **1.325** | **1.084** | **1.183** | **+0.226** |
 
 **Key findings:**
-- **M1 kills 5 of the top-10 strategies** (Sharpe edge vs SPY turns negative under per-swing 15%)
+- **M1 kills 5 of the top-10 strategies** (Sortino edge vs SPY turns negative under per-swing 15%)
 - **M2 preserves all 10** (annual netting with Lei 14.754 carry-forward keeps all strategies positive)
-- `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` is the **only strategy with M2 edge +0.145** — it was the sole M2 deploy-threshold passer BEFORE the Sortino re-analysis also promoted it
+- `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` is the strongest M2 Sortino result (**+0.226 edge vs SPY**) and remains the only strategy with comfortable M1 survivability (+0.127)
 - The 4-asset universe (TQQQ + SOXL + DRAM + UPRO/SPXL) will have higher M1 drag (~10-15pp/yr); M2 is the realistic deploy regime
 
-**Implication:** deploy under M2 (annual Lei 14.754) if Plano B is ever reactivated. M1 is the worst-case bound.
+**Implication:** if Plano B is ever reactivated, M2 annual Lei 14.754 is the realistic evaluation regime. M1 remains the conservative worst-case bound.
 
 ### §16.2 Cohort robustness (sub-study: `COHORT_ROBUSTNESS_REPORT.md`)
 
@@ -982,7 +1014,7 @@ The T5 expansion delivers stronger statistical evidence for the original T5
 verdict — Carver vol-target framework does not generalize to the small-pool
 LETF universe. The expansion adds defensible coverage of the Carver framework's
 key dimensions (sigma_target, IDM, pool composition, carry forecast, HRP/ERC
-weighting) without changing the canonical winner.
+weighting) without changing the operative winner.
 
 ---
 

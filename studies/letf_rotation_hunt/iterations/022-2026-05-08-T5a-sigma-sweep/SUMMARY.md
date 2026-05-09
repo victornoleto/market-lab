@@ -13,7 +13,7 @@ under-allocation (per TIER_5_REPORT §3).
 
 ## TL;DR
 
-Best config: **`voltarget_qld_sigma035`** (NEAR_FAIL, score 38.5/100). lh_56y: Sharpe 0.598 (edge vs SPY -0.084), CAGR 15.08%, MDD -56.7%.  **KILL T0:** FIRES (threshold: T1-best Sharpe ≥ SPY+0.05 = 0.732).
+Best config: **`voltarget_qld_sigma035`** (NEAR_FAIL, score 38.5/100). lh_56y: Sortino 0.8450 (primary), Sharpe 0.598 (secondary), CAGR 15.08%, MDD -56.7%. **KILL T5-expansion:** FIRES (Sortino threshold 1.272).
 
 ## Configs tested
 
@@ -67,14 +67,13 @@ Hard-gate thresholds (spec §3.5): G1 PBO < 0.50, G2 DSR p < 0.05, G3 ≥5/8 win
 ## Verdict
 
 - **Best config:** `voltarget_qld_sigma035` (NEAR_FAIL, score 38.5)
-- **KILL T0:** FIRES (edge < 0.05 → tag CLOSE_NO_VALUE)
+- **KILL T5-expansion:** FIRES (Sortino 0.8450 < 1.272)
 - **Advance to next tier:** no
 - **Cumulative n_trials:** 411
 - **Deploy escalation eligible:** no
 
 ## Conclusion
 
-T1-best Sharpe 0.598 (lh_56y) sits below SPY+0.05 = 0.732 — single-LETF Gayed rotation does not produce risk-adjusted edge over passive SPY in this universe. Per spec §3.4, KILL T0 is informational: T1b/T1c continue but tagged `CLOSE_NO_VALUE`; T2+ inheritance falls back to T1-best (spec §3.4 inheritance fallback).
+Single-asset QLD vol-target remains structurally below the T3d sma250/100 Sortino benchmark. Raising σ_target improves CAGR slightly but does not fix under-allocation during LETF uptrends.
 
 ## Next iter
-

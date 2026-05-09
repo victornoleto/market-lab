@@ -12,7 +12,7 @@ on the 4-LETF pool. 2x sigma_target levels (0.25, 0.30) per scheme.
 
 ## TL;DR
 
-Best config: **`erc_multi4_sigma030`** (PROMISING, score 72.5/100). lh_56y: Sharpe 0.799 (edge vs SPY +0.117), CAGR 20.57%, MDD -48.6%.  **KILL T0:** FIRES (threshold: T1-best Sharpe ≥ SPY+0.05 = 0.732).
+Best config: **`erc_multi4_sigma030`** (PROMISING, score 72.5/100). lh_56y: Sortino 1.1399 (primary), Sharpe 0.799 (secondary), CAGR 20.57%, MDD -48.6%. **KILL T5-expansion:** FIRES (Sortino threshold 1.272).
 
 ## Configs tested
 
@@ -63,14 +63,13 @@ Hard-gate thresholds (spec §3.5): G1 PBO < 0.50, G2 DSR p < 0.05, G3 ≥5/8 win
 ## Verdict
 
 - **Best config:** `erc_multi4_sigma030` (PROMISING, score 72.5)
-- **KILL T0:** FIRES (edge < 0.05 → tag CLOSE_NO_VALUE)
+- **KILL T5-expansion:** FIRES (Sortino 1.1399 < 1.272)
 - **Advance to next tier:** no
 - **Cumulative n_trials:** 426
 - **Deploy escalation eligible:** no
 
 ## Conclusion
 
-T1-best Sharpe 0.799 (lh_56y) sits below SPY+0.05 = 0.732 — single-LETF Gayed rotation does not produce risk-adjusted edge over passive SPY in this universe. Per spec §3.4, KILL T0 is informational: T1b/T1c continue but tagged `CLOSE_NO_VALUE`; T2+ inheritance falls back to T1-best (spec §3.4 inheritance fallback).
+ERC is the best expanded T5 result and improves risk-adjusted performance versus IDM, but it still fails the Sortino threshold. The T5 expansion therefore reinforces the original conclusion: Carver-style sizing does not displace the binary T3d LETF rotation signal.
 
 ## Next iter
-

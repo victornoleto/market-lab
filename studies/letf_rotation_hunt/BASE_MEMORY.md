@@ -1,27 +1,30 @@
 ---
 mission: "find LETF rotation strategy with deploy-quality risk-adjusted returns; 5-tier hunt"
-status: closed  # T5 fires KILL T4→T5; study closes Scenario B (STRONG/PROMISING but not deploy)
+status: closed  # T5 expansion fires Sortino KILL; study closes Scenario B (STRONG/PROMISING but not deploy)
 total_iterations: 25                # +iter 023 (T3d multi-asset UPRO/TQQQ × Vote-K=2)
-incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"   # canonical T3d K=2 (sma200/50) in N=12 grid context
+incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"   # operative Sortino winner: T3d K=2 sma250/100
 incumbent_winner_score: 82.0        # was 69 → 73 (G3 redesign) → 77 (G1 passes) → 82 (crisis_attribution real)
-cumulative_n_trials: 430            # T1 22 + T1d 360 + T2 11 + T3 7 + T4 4 + T5 2 + T3d-ext 12 + T3d-multi 12
-latest_iteration: "023-2026-05-06-T3d-multi-asset-grid"
+cumulative_n_trials: 426            # canonical post-T5-expansion DSR/config universe
+latest_iteration: "025-2026-05-08-T5d-hrp-erc"
 spec: "pre-publication agent spec removed; see README.md + KILL_RULES.md"
-study_winner: "qld_vote_k2_off_zroz"  # canonical signal name (= qld_voteK2_sma200_50_vol21_40_ar30_off_zroz in extended-grid yaml)
-study_winner_sharpe_lh56y: 0.853
+study_winner: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"  # operative Sortino winner
+study_winner_sortino_lh56y: 1.3246
+study_winner_sharpe_lh56y: 0.919
 study_winner_pct_above_spy: 1.00
 study_winner_end_ratio_vs_spy: 256.0
 study_winner_tier_label: STRONG    # score 82, all WINNER strict bars met (winner_conditions_met=True)
 study_winner_winner_conditions_met: true
 study_winner_crises_beat_spy: 2    # 2 of 4: 2008 GFC + 2020 COVID (loses 2000 dotcom + 2022 rates)
 deploy_threshold_net_edge: 0.15    # relaxed from 0.20 → 0.15 per user decision 2026-05-06
-deploy_escalation_eligible: false  # Sharpe net est. +0.10-0.15 vs +0.15 threshold (boundary); score 82 < 90
+deploy_escalation_eligible: false  # Sortino thresholds pass, but score 82 < 90 and mandate §1 keeps Plano C 100%
 methodology_changes:
   - 2026-05-06_g3_redesign_benchmark_relative   # MDD warning-only per mandate §2.3
   - 2026-05-06_t3d_extended_grid_12_configs     # iter 022: G1 PBO statistical power
   - 2026-05-06_crisis_attribution_real          # 4 crisis windows, relative-to-benchmark
   - 2026-05-06_deploy_threshold_relaxed_015     # +0.20 → +0.15 net edge
   - 2026-05-06_t3d_multi_asset_grid_12_configs  # iter 023: UPRO/TQQQ × OFF assets
+  - 2026-05-07_sortino_reanalysis_primary_metric
+  - 2026-05-08_t5_expansion_20_configs          # final DSR/config universe = 426
 final_report: "reports/STUDY_FINAL_REPORT.md"
 ---
 
@@ -35,8 +38,8 @@ final_report: "reports/STUDY_FINAL_REPORT.md"
 
 Build evidence on whether LETF rotation (single LETF, HFEA basket, composite
 signal, cross-sectional, Carver vol-target) can produce a strategy with
-Sharpe_net > SPY_net + 0.20 + DSR cumulative pass + score ≥ 90 + all 7 gates
-pass — i.e. mandate §7 deploy-eligible.
+Sortino_net above SPY by the pre-registered margin + DSR cumulative pass +
+score ≥ 90 + all 7 gates pass — i.e. mandate §7 deploy-eligible.
 
 ## Tier inheritance state
 
@@ -49,9 +52,9 @@ pass — i.e. mandate §7 deploy-eligible.
 | **T2** | **qld_sma200_off_zroz (T1c stands; KILL T1→T2 FIRES)** | **0.752** | MARGINAL | T2-best `hfea_ndx_tqqq_tmf_55_45` Sharpe 0.653 << threshold 0.802; HFEA basket adds no value; T3 inherits T1-best per §3.4 |
 | **T3** | **qld_vote_k2_off_zroz** | **0.853** | **STRONG** | **First config to clear T<N>→T<N+1>!** Vote-of-K=2 of {SMA200, SMA50, vol<40%, AR(1)>0} on QLD/ZROZ. KILL T2→T3 PASSES (+0.051 over T1c+0.05=0.802). After iter 022 N=12 grid + G3 redesign: 6/7 gates pass, all WINNER strict bars met (WC=Y), score 77 STRONG. G1 PBO confirmed passing (0.421) — original 0.762 was small-grid artifact. |
 | T4 | qld_vote_k2_off_zroz (T3d stands; KILL T3→T4 FIRES) | 0.853 | STRONG | T4-best `xs_clenow_top3` Sharpe 0.823 < threshold 0.903 (-0.080). Cross-sectional ranking does not improve over T3d K=2 single-asset composite signal. T5 inherits T3-best. **G1 PBO finally passes (0.357)** with 4 XS configs — first time in study! |
-| **T5** | **qld_vote_k2_off_zroz (T3d stands; KILL T4→T5 FIRES; STUDY CLOSED)** | **0.853** | **STRONG** | T5-best `voltarget_multi4` Sharpe 0.740 << threshold 0.903 (-0.163). Carver vol-target plateaus below T3 in this universe (forecast magnitude scaling under-allocates during clear uptrends; 4-asset pool too small for IDM=2.5). **STUDY CLOSED — Scenario B per spec §7.7**: STRONG but not deploy. Forward-monitoring optional. |
-| **T3d-ext** | **qld_vote_k2_off_zroz (sma200/50 canonical) — STRONG, WC=Y** | **0.853** | **STRONG** | iter 022, 12-config grid (6 signal-subsets × K∈{2,3}). G1 PBO **0.421** passes. Highest raw Sharpe `sma250/100 K=2` 0.919 (clears 0.903 by +0.016, marginal noise) — declared "tied alternative" not new winner. T3d K=2 canonical score climbs 69 → 77, tier PROMISING → STRONG, winner_conditions_met=True. WINNER tier (≥90) still blocked by crisis_attribution stub returning 0/10. |
-| T5 | — | — | pending | — |
+| **T5 original** | **qld_vote_k2_off_zroz (T3d stands; KILL T4→T5 FIRES)** | **0.853** | **STRONG** | T5-best `voltarget_multi4` Sharpe 0.740 << threshold 0.903 (-0.163). Carver vol-target plateaus below T3 in this universe. |
+| **T3d-ext / Sortino winner** | **qld_voteK2_sma250_100_vol21_40_ar30_off_zroz** | **0.919** | **STRONG** | iter 022, 12-config grid (6 signal-subsets × K∈{2,3}). Under Sharpe, edge over canonical was marginal; under Sortino it becomes decisive (Sortino 1.3246, Track A/B-M1/B-M2 passer). |
+| **T5 expansion** | **erc_multi4_sigma030 (T5 best; does not displace T3d)** | **0.799** | **PROMISING** | 20 new configs: sigma sweep, carry, IDM/pool grid, HRP/ERC. Best Sortino 1.1399 < threshold 1.272. **STUDY CLOSED — Scenario B per spec §7.7**. |
 
 ## Iteration log (newest first)
 
@@ -95,7 +98,7 @@ Score 82 < 90 (criterion 6 caps at 5/10 — beating 2 of 4 crises is structural 
 — scoring v3 redesign would help; criterion 7 bonus 0/5 — discretionary). **Scenario B per spec §7.7 holds**;
 capital remains 100% Plan C per mandate §1.
 
-Cumulative `n_trials = 430` (T1 22 + T1d 360 + T2 11 + T3 7 + T4 4 + T5 2 + T3d-ext 12 + T3d-multi 12).
+Cumulative `n_trials = 426` after the 2026-05-08 T5 expansion DSR recompute.
 
 Engineering: 5 new TDD tests (4 for `crisis_beats_benchmark` + 1 for CRISIS_WINDOWS constant); 2 new tests for relaxed
 deploy threshold; new plot helper `plot_tier_relative_to_spy` + script `scripts/generate_per_tier_overlay_plots.py`
