@@ -1,11 +1,11 @@
 ---
 mission: "post-close strategy hunt: research new strategies and benchmark vs T3d-K2 study winner"
 status: open
-total_iterations: 2
+total_iterations: 3
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 12
-cumulative_n_trials_global: 438
+cumulative_n_trials_loop: 18
+cumulative_n_trials_global: 444
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -15,9 +15,9 @@ beats_winner_threshold_sortino: 1.3746
 beats_winner_threshold_pct_above_spy: 0.95
 beats_winner_threshold_winner_conditions_met: true
 loop_winner_iter: null
-latest_iteration: "002-2026-05-09-on-vol-dd-killswitch"
-latest_score: 76.5
-latest_tier_label: STRONG
+latest_iteration: "003-2026-05-09-calendar-halloween-gate"
+latest_score: 71.5
+latest_tier_label: PROMISING
 latest_beats_winner: false
 ---
 
@@ -55,6 +55,58 @@ allowed as a diagnostic, but cannot support `beats_winner=true` unless the
 global-trials DSR still passes `[advances_fin_ml, p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 003 — 2026-05-09 — calendar-halloween-gate
+
+**Hypothesis:** Calendar-month seasonal master-gate (Hirsch best-6-months /
+Halloween effect: Nov-Apr ON, May-Oct weak) overlaid on the winner's
+vote-of-K trend signal via three aggregation rules: hard veto OFF (May-Oct
+or narrower Jun-Sep), augment as 5th vote member (K=2 or K=3 of 5), or
+replace AR(1) with the calendar indicator. Citation:
+`[trading_systems_methods, p.479-481]` (Hirsch / Halloween / Turn-of-month
+calendar rules).
+
+**Configs tested (6):**
+
+| name | calendar mechanic | sortino_lh56y | score | tier | WC | edge_vs_winner |
+|---|---|---:|---:|---|:---:|---:|
+| `..._cal_off` (winner replica) | none (baseline) | 1.2841 | 76.5 | STRONG | T | -0.0405 |
+| `..._cal_veto_may_oct` | hard veto May-Oct (Hirsch) | 1.1216 | 68.5 | PROMISING | F | -0.2030 |
+| **`..._cal_veto_jun_sep`** ← Sortino-best | hard veto Jun-Sep (narrow) | **1.3061** | 71.5 | PROMISING | T | **-0.0185** |
+| `..._cal_5vote_K2of5_may_oct` ← score-best | 5th vote (Nov-Apr=1), K=2 | 1.2575 | **79.5** | STRONG | T | -0.0671 |
+| `..._cal_5vote_K3of5_may_oct` | 5th vote, stricter K=3 | 1.1128 | 58.5 | MARGINAL | F | -0.2118 |
+| `..._cal_replace_ar_may_oct` | swap AR(1) for Halloween | 1.1515 | 76.5 | STRONG | T | -0.1731 |
+
+**KILL_LOOP results (pre-registered):**
+- KILL_LOOP #1 (success-tag) — **NOT FIRED** (best Sortino 1.3061 < 1.3746)
+- KILL_LOOP #2 (decisive-fail) — **NOT FIRED** (only 1 of 5 calendar configs < 1.10 floor)
+- KILL_LOOP #3 (replica-sanity) — **NOT FIRED** (baseline 1.2841 = bit-exact iter 001/002 baseline)
+- KILL_LOOP #4 (over-suppression) — **NOT FIRED** (all configs pct_time_above_benchmark_lh56y = 1.0000)
+
+**Key finding:** The narrower Jun-Sep "summer stall" veto is the **first loop
+config to lift Sortino above the replica baseline** (1.2841 → 1.3061, +0.022
+edge). The canonical Hirsch May-Oct framing is monotonically worse than
+baseline (-0.20 Sortino) because forcing OFF for 50.5% of trading days costs
+more than it saves in crisis-rescue. The 2022_rates target was NOT rescued
+by any variant: the bear ran Nov-2021 → Oct-2022, spanning ~6 months in
+Hirsch "good" Nov-Apr where ON stayed on. Crisis attribution unchanged
+(2008_GFC only, 1 of 4) for every config. **Augmentation K=2 (config 4)
+produces highest CAGR (31.0%) and highest score (79.5 STRONG)** but lower
+Sortino than baseline because soft tilt keeps Oct-2008 exposure on. G5
+post-2020 FWD Sharpe surfaces clean published-edge decay: baseline 0.708 →
+jun_sep 0.371 → may_oct 0.001. **G1 PBO=0.444 passes universally** (worse
+than iter 002's 0.159 but better than iter 001's 0.575) — calendar layer
+adds modest CSCV variation between veto/augment/replace.
+
+**beats_winner:** **false** (best Sortino edge -0.0185 — closest any loop
+iter has come to +0.05 threshold but still 0.0685 short).
+
+**Next iter ideas:** (a) Stock-bond correlation regime classifier (60d
+QLD↔ZROZ correlation flip; targets 2022 directly via dual-fall regime
+detection) `[risk_parity, ch.5]` / `[ml_for_algo_trading, ch.9]`; (b)
+Multi-asset ON rotation with inverse-vol weighting `[risk_parity, ch.5 p.10]`
++ `[stocks_on_the_move, p.98]`; (c) VIX-percentile / VRP harvesting overlay
+`[machine_trading]` / `[volatility_trading, ch.7]`.
 
 ### 002 — 2026-05-09 — on-vol-dd-killswitch
 
