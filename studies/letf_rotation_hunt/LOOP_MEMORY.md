@@ -3,11 +3,11 @@ mission: "post-close strategy hunt: research new strategies and benchmark vs T3d
 status: open
 active_phase: 3
 active_phase_name: "performance-first beater hunt"
-total_iterations: 12
+total_iterations: 13
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 72
-cumulative_n_trials_global: 498
+cumulative_n_trials_loop: 78
+cumulative_n_trials_global: 504
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -24,12 +24,12 @@ phase3_min_acceptable_sortino_lh56y: 1.20
 loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off"]
 loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off"]
 loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off"]
-latest_iteration: "012-2026-05-10-compound-tqqq-K4-x-ratevol-off"
-latest_score: 76.5
-latest_tier_label: STRONG
-latest_beats_winner: true
-latest_phase3_performance_candidate: true
-latest_strict_superset: true
+latest_iteration: "013-2026-05-10-triple-stack-K4lv25-graded-master"
+latest_score: 74.5
+latest_tier_label: PROMISING
+latest_beats_winner: false
+latest_phase3_performance_candidate: false
+latest_strict_superset: false
 ---
 
 # letf_rotation_hunt — LOOP MEMORY
@@ -93,6 +93,132 @@ statistical hard gates `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
 p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 013 — 2026-05-10 — triple-stack-K4lv25-graded-master
+
+**Hypothesis:** Triple stack of iter 012's K4_AND_lv25 conditional ON-leg
+leverage upgrade (strict-superset Sortino 1.3769 / CAGR 32.50% / crisis
+1/4) with iter 010's graded master-scope ON-blend (gamma in {0, 0.25,
+0.50, 1.0}; iter 010 g25 Sortino 1.4670 / crisis 3/4) on top of iter
+006/007's ratevol-OFF override (CASHX p70). Targets the loop's first
+strict-superset config that ALSO rescues 2022_rates by adding the iter
+010 ON-blend primitive while preserving the iter 012 strict-superset.
+Citation: `[risk_parity, p.80-81, ch.4]` Qian RORO graded master-gate
+(primary); `[risk_parity, ch.5, p.10]` Carlson stacking;
+`[volatility_trading, p.58-60]` Sinclair vol cone; `[stocks_on_the_move,
+p.98]` Clenow trend; `[leverage_for_the_long_run, ch.4-5, p.40-60]` LRS;
+`[advances_fin_ml, p.208-211]` CSCV PBO; `[advances_fin_ml, p.222-223]`
+DSR cumulative (n_global=504).
+
+**Configs tested (6, gamma sweep + upgrade-selectivity ablation grid):**
+
+| name | topology | gamma | upg-active% | sortino_lh56y | edge | cagr_lh56y | edge | end_eq | MDD | score | tier | WC | crisis | phase3 | beats | strict |
+|---|---|--:|--:|---:|---:|---:|---:|---:|---:|---:|---|:---:|:---:|:---:|:---:|:---:|
+| `..._tsgm_baseline_qld_zroz` | none/none/none | — | 0.0% | 1.3240 | -0.0006 | 0.3108 | +0.00pp | 1.000× | -64.5% | 72.5 | PROMISING | F | 1/4 | F | F | F |
+| `..._tsgm_K4lv25_g0_rvp70_cashx` ← iter 012 strict-superset replica | K4_AND_lv25/g=0/p70-cashx | 0.00 | 7.1% | 1.3769 | +0.0523 | 0.3250 | +1.42pp | **1.544×** | -55.8% | 72.5 | PROMISING | F | 1/4 | F | F | F |
+| **`..._tsgm_K4lv25_g25_rvp70_cashx`** ← Sortino/Sharpe/MDD peak | K4_AND_lv25/g=0.25/p70-cashx | 0.25 | 7.1% | **1.3951** | **+0.0705** | 0.3147 | +0.39pp | 1.129× | **-47.7%** | 72.5 | PROMISING | F | 1/4 | F | F | F |
+| `..._tsgm_K4lv25_g50_rvp70_cashx` | K4_AND_lv25/g=0.50/p70-cashx | 0.50 | 7.1% | 1.3943 | +0.0697 | 0.3021 | -0.87pp | 0.765× | -46.3% | 69.5 | PROMISING | F | 1/4 | F | F | F |
+| `..._tsgm_K4_g25_rvp70_cashx` ← upgrade ablation | K4/g=0.25/p70-cashx | 0.25 | 20.1% | 1.3455 | +0.0209 | 0.3193 | +0.85pp | 1.298× | -53.1% | 72.5 | PROMISING | F | 1/4 | F | F | F |
+| `..._tsgm_K4lv25_g100_rvp70_cashx` ← only 2022 rescue | K4_AND_lv25/g=1.00/p70-cashx | 1.00 | 7.1% | 1.3169 | -0.0077 | 0.2699 | -4.09pp | 0.279× | -46.3% | **74.5** | PROMISING | F | **3/4** | F | F | F |
+
+**KILL_LOOP results (pre-registered):**
+- ❌ KILL_LOOP #1 (success_tag) — **NOT FIRED.** No config beats_winner=
+  True (G1 PBO 0.5437 ≥ 0.50 fails WINNER strict bar → WC=False
+  universally even where Sortino > 1.3746 ✓ + pct_above ≥ 0.95 ✓).
+- KILL_LOOP #2 (decisive_fail) — **NOT FIRED** (best Sortino 1.3951 >>
+  1.20 floor; mechanism alive).
+- ✅ KILL_LOOP #3 (replica_sanity_baseline) — **NOT FIRED.** Baseline
+  Sortino 1.3240 = bit-exact match to iter 011/012 (drift 0.0000).
+  Calibration anchor preserved at byte level.
+- 🎯 ✅ KILL_LOOP #4 (replica_sanity_g0) — **NOT FIRED.**
+  K4lv25_g0_rvp70_cashx Sortino **1.3769** = bit-exact match to iter
+  012 strict-superset config (drift 0.0000). **Confirms triple-stack
+  helper reduces bit-exactly to iter 012 compound state machine when
+  gamma=0** — guarantees no silent regression of the loop's first
+  strict-superset returns series.
+- ❌ KILL_LOOP #5 (phase3_perf_candidate) — **NOT FIRED.** No config
+  achieves phase3_performance_candidate=True (G1 PBO 0.5437 ≥ 0.50 hard
+  gate fails the Phase 3 PBO ceiling). **First iter since 011 with 0
+  Phase 3 candidates** — Phase 3 momentum BROKEN this iter (011 5/6 →
+  012 5/6 → 013 0/6).
+- ⚠️ KILL_LOOP #6 (PBO_blowup) — **NOT FIRED at 0.55 ceiling, but
+  breaches 0.50 hard gate.** G1 PBO **0.5437** (regression vs iter 012
+  0.4960; +0.048pp). Iter trajectory: 005 0.881 → 006 0.798 → 007 0.552
+  → 008 0.5675 → 009 0.3770 → 010 0.3929 → 011 0.3056 → 012 0.4960 →
+  **013 0.5437**. Cause: gamma-sweep parametric clustering — 4 of 6
+  configs share K4_AND_lv25 + ratevol-p70-cashx topology; CSCV correctly
+  penalises rank-correlated parametric variants `[advances_fin_ml,
+  p.208-211]`. **Iter 012's 6-distinct-topologies design (G1 PBO 0.4960)
+  is the structural recipe iter 013 broke.**
+- ❌ KILL_LOOP #7 (graded_lifts_strict_superset) — **NOT FIRED.** No g>0
+  config achieves strict_superset=True (PBO blocks all WC-dependent flags).
+  KEY hypothesis test FAILED at the statistical level despite Sortino
+  lift confirmed.
+- ✅ KILL_LOOP #8 (crisis_2022_rescue) — **FIRED — POSITIVE TAG (with
+  caveats).** K4lv25_g100_rvp70_cashx (master-pure) beats SPY in
+  2022_rates window — crisis 3/4 — at the cost of WC=False AND CAGR
+  collapse (26.99% vs T3d-K2 31.08%; end_eq 0.279×). g25 + g50 do NOT
+  rescue 2022 (single-asset QLD/TQQQ ON-leg lacks UGL gold cushion that
+  iter 010's basket3 g25 had). **Crisis profile is structurally tied to
+  ON-leg diversification (gold/UGL needed for 2022 rescue at intermediate
+  gammas), not to gamma alone.**
+- ❌ KILL_LOOP #9 (graded_score_lift) — **NOT FIRED.** No g>0 config
+  achieves total_score >= 80. Best g>0 score is g100's 74.5 (+5pts crisis
+  but WC=False → tier still PROMISING). g25 score 72.5.
+
+**Key finding: ⚠️ HYPOTHESIS PARTIALLY CONFIRMED — Sortino/Sharpe/MDD/DSR
+LIFT REAL but G1 PBO REGRESSION INVALIDATES PHASE 3 STATUS.**
+Best config `qld_voteK2_sma250_100_vol21_40_ar30_tsgm_K4lv25_g25_rvp70_
+cashx` hits Sortino_lh56y **1.3951** (loop's 3rd-best; +0.0705 vs T3d-K2
+1.3246; +0.0182 vs iter 012 strict-superset 1.3769), Sharpe **0.9682
+(LOOP MAX)** (vs iter 012 strict-superset 0.9584 and T3d-K2 winner 0.919),
+MDD **-47.69%** (vs iter 012 -55.79%, baseline -64.50%), G2 DSR p_cum
+**1.06e-03 (LOOP MIN)** at n_trials_global=504 (was 1.31e-03 at n=498),
+G6 99% low **0.605 (LOOP MAX for g50)** vs iter 012 0.596. **Sortino
+curve in gamma is non-monotonic** with peak at gamma≈0.25-0.50 (g25
+1.3951; g50 1.3943; mirrors iter 010 dynamics). **G1 PBO regression
+0.4960 → 0.5437** breaches 0.50 hard gate (KILL_LOOP #6 NOT FIRED at
+0.55 ceiling). Cause: gamma-sweep parametric clustering — 4 of 6 configs
+share K4_AND_lv25/p70-cashx family. **NO strict_superset, NO beats_winner,
+NO phase3_performance_candidate this iter.** Calibration anchors PRESERVED
+bit-exact (KILL_LOOP #3 + #4 NOT FIRED): baseline 1.3240 = iter 011/012;
+g0 1.3769 = iter 012 strict-superset. **2022_rates rescue ONLY by g100
+master-pure** (KILL_LOOP #8 fired but WC=False / CAGR collapse caveats).
+Iter 010 g25's basket3+UGL crisis cushion structurally needed —
+single QLD/TQQQ ON-leg can't replicate it at intermediate gammas.
+**Capital remains 100% Plan C per mandate §1**; iter NOT appended to
+loop_winner_iter / loop_phase3_performance_candidate_iter / loop_strict_
+superset_iter (no positive flags). Score 74.5 < 90 deploy bar; per
+LOOP_PROTOCOL §"Mandate §1 reinforcement", `docs/CURRENT_STATE.md`
+"Active Hunts" entry preserved untouched. **NO automatic capital realloc.**
+
+**beats_winner:** **false** (best Sortino 1.3951 > 1.3746 ✓ AND pct_above
+1.0000 ≥ 0.95 ✓ but **winner_conditions_met=False because G1 PBO 0.5437
+≥ 0.50** is the lone strict-bar blocker).
+
+**phase3_performance_candidate (any):** **false** (G1 PBO regression
+invalidates Phase 3 PBO ceiling for ALL configs).
+
+**strict_superset (any):** **false**.
+
+**Next iter ideas:** (a) **Mechanism-mix-diverse graded blend grid** —
+replace iter 013's gamma sweep (4 configs in same K4_AND_lv25/p70-cashx
+family) with a 6-distinct-topology grid: 1 baseline + 1 K4_AND_lv25_g25
+_p70_cashx (iter 013 PRIMARY) + 1 K4_g25_p80_ief (different upgrade ×
+ratevol × alt-OFF) + 1 tqqq_always_g0 (no upgrade gate; ON=TQQQ always)
++ 1 K4_AND_lv25_g0_basket3 (basket3 with UGL like iter 010 — gold for
+2022) + 1 K4_AND_lv25_g25_basket3 (the "true" triple stack iter 013
+should have tested with multi-asset basket). **Highest expected value:
+addresses BOTH the PBO regression AND the missing 2022 rescue while
+preserving graded blend.** Cite `[risk_parity, p.80-81, ch.4]` +
+`[risk_parity, ch.5, p.10]` + `[advances_fin_ml, p.208-211]`. (b) **2020
+COVID re-entry trigger overlay** — Carver-style re-arm hysteresis on
+ratevol gate so it RELEASES exposure when on_signal flips OFF→ON after
+N days. `[systematic_trading, p.212, ch.13]`. (c) **VIX-percentile / VRP
+overlay** `[volatility_trading, ch.7]` — forward-looking gate orthogonal
+to all current realised-vol mechanics. (d) **AND-gate fine-grid sweep
+on K4_AND_lvN** with mechanism-mix-diverse alt-OFFs / ratevol thresholds.
+(e) **Tax / fees stress on iter 012 strict-superset** — diagnostic.
 
 ### 012 — 2026-05-10 — compound-tqqq-K4-x-ratevol-off
 
