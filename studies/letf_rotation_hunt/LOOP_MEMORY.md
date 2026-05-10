@@ -3,11 +3,11 @@ mission: "post-close strategy hunt: research new strategies and benchmark vs T3d
 status: open
 active_phase: 4
 active_phase_name: "iter 017 focused validation/refinement"
-total_iterations: 21
+total_iterations: 22
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 126
-cumulative_n_trials_global: 552
+cumulative_n_trials_loop: 132
+cumulative_n_trials_global: 558
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -21,27 +21,31 @@ beats_winner_threshold_winner_conditions_met: true
 phase3_performance_threshold_cagr_lh56y: 0.3108
 phase3_performance_threshold_end_equity_ratio_vs_winner: 1.05
 phase3_min_acceptable_sortino_lh56y: 1.20
-loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate"]
-loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate"]
-loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate"]
-latest_iteration: "021-2026-05-10-rearm-component-ablation"
-latest_score: 77.5
+loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate", "022-2026-05-10-rearm-only-indep-pfv-confirm"]
+loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate", "022-2026-05-10-rearm-only-indep-pfv-confirm"]
+loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate", "022-2026-05-10-rearm-only-indep-pfv-confirm"]
+latest_iteration: "022-2026-05-10-rearm-only-indep-pfv-confirm"
+latest_score: 76.5
 latest_tier_label: STRONG
-latest_beats_winner: false
-latest_phase3_performance_candidate: false
-latest_strict_superset: false
+latest_beats_winner: true
+latest_phase3_performance_candidate: true
+latest_strict_superset: true
 latest_strict_superset_is_novel: false
-latest_g1_pbo: 0.5000
+latest_g1_pbo: 0.4960
 latest_g1_pbo_loop_min: false
 latest_phase4_anchor_improved: false
-latest_phase4_anchor_validated: false
+latest_phase4_anchor_validated: true
 latest_phase4_anchor_qualitatively_validated: true
+latest_parity_max_abs_diff: 0.0
+latest_parity_n_diff_days: 0
 phase4_anchor_iter: "017-2026-05-10-postcrash-rearm-tqqq-streak"
 phase4_anchor_config: "qld_voteK2_sma250_100_vol21_40_ar30_rearm_single_K4lv25_g25_rvp70_cashx_T40D60"
 phase4_anchor_cagr_lh56y: 0.3266
 phase4_anchor_sortino_lh56y: 1.4030
 phase4_anchor_end_equity_ratio_vs_winner: 1.61
 phase4_anchor_pbo: 0.4405
+rearmonly_indep_calibration_anchor_sortino: 1.4176
+rearmonly_indep_calibration_anchor_iter: "021-2026-05-10-rearm-component-ablation"
 ---
 
 # letf_rotation_hunt — LOOP MEMORY
@@ -146,6 +150,189 @@ weakened the iter 017 anchor `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
 p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 022 — 2026-05-10 — rearm-only-indep-pfv-confirm
+
+**Hypothesis:** PRIMARY — independent reimplementation of iter 021's
+slot 5 rearm-only T40D60 (Sortino 1.4176, +0.0930 vs winner) must produce
+bit-exact identical strategy returns to iter 017's `reentry_overlay.py`
+module via a from-scratch explicit-loop numpy algorithm in
+`rearm_independent.py` (no module reuse). SECONDARY — a post-flip
+realised-vol confirmation gate (PFV20: fire rearm only if first 5d
+post-flip QLD realised vol < trailing 5y 20th percentile of 5d-realised-
+vol) provides a quality-confirmation filter topologically distinct from
+iter 020's pre-flip MDD-rejection gate. Six configs (mechanism-mix-
+diverse — 6 distinct upgrade-axis topologies). Slot 5 INDEP IMPL is the
+PRIMARY validation; slot 6 PFV20 is the SECONDARY refinement.
+**Primary citation:** `[advances_fin_ml, p.222-223]` Bailey-Lopez-de-
+Prado DSR with cumulative n_trials — independent reimplementation
+reduces single-impl risk in DSR claims.
+**Secondary:** `[advances_fin_ml, p.208-211]` CSCV PBO mechanism-mix-
+diversity; `[leverage_for_the_long_run, p.6-7, ch.3]` Husson-Trifoni
+MA-streak; `[leverage_for_the_long_run, p.4, ch.2]` streaks-vs-
+seesawing; `[volatility_trading, p.58-60]` Sinclair vol cone (PFV);
+`[stocks_on_the_move, p.98]` Clenow trend; `[risk_parity, p.80-81,
+ch.4]` Qian RORO graded; `[risk_parity, ch.5, p.10]` Carlson stacking;
+`[systematic_trading, p.212, ch.13]` Carver re-arm; `[advances_fin_ml,
+p.196-202]` bootstrap CI / DSR (n_global=558).
+
+**Configs tested (6, mechanism-mix-diverse with 6 distinct upgrade-axis topologies):**
+
+| name | ON-leg | upgrade axis | rearm impl | upg% | sortino_lh56y | edge | cagr_lh56y | edge | end_eq | end_eq vs017 | MDD | score | tier | WC | crisis | phase3 | beats | strict | p4_imp | p4_val |
+|---|---|---|---|--:|---:|---:|---:|---:|---:|---:|---:|---:|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| `..._indep_baseline_qld_zroz` | single QLD | none | — | 0.0% | 1.3240 | -0.0006 | 0.3108 | +0.00pp | 1.000× | 0.617× | -64.5% | 76.5 | STRONG | T | 1/4 | F | F | F | F | — |
+| `..._indep_single_K4lv25_g25_rvp70_cashx` ← iter 014 strict_superset replica (10th-gen) | single QLD/TQQQ | K4_AND_QLDlv25 | — | 7.1% | 1.3951 | +0.0705 | 0.3147 | +0.39pp | 1.129× | 0.697× | -47.7% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** | F | — |
+| 🥇 `..._indep_basket3invvol_K4lv25_g25_rvp70_cashx` ← iter 014 LOOP MAX Sortino replica (8th-gen) | basket3-invvol60 | K4_AND_QLDlv25 | — | 7.3% | **1.4689** | +0.1443 | 0.2265 | -8.43pp | 0.056× | 0.035× | **-32.8%** | **81.5** | STRONG | **T** | **3/4** | F | T | F | F | — |
+| 🏆 `..._indep_single_K4lv25_g25_rvp70_cashx_T40D60` ← iter 017 NEW strict_superset replica (5th-gen) | single QLD/TQQQ | K4_AND_QLDlv25 OR rearm | iter017 module | 11.8% | **1.4030** | **+0.0784** | **0.3266** | **+1.58pp** | **1.620×** | 1.000× | -48.2% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** | F | — |
+| 🏆🎯 `..._indep_single_rearmonly_g25_rvp70_cashx_T40D60_indepimpl` ← **PRIMARY (NEW VALIDATION)** rearm-only INDEP IMPL | single QLD/TQQQ | rearm only | INDEPENDENT (rearm_independent.py) | **5.8%** | **1.4176** | **+0.0930** | **0.3244** | **+1.36pp** | **1.516×** | **0.936×** | -48.2% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🏆🎯T-VALIDATED** | F | **🏆 T** |
+| `..._indep_single_rearmonly_g25_rvp70_cashx_T40D60_indepimpl_pfv20` ← NEW (PFV collapsed) | single QLD/TQQQ | rearm only AND PFV20 | INDEPENDENT (rearm_independent.py) | 0.0% | 1.4009 | +0.0763 | 0.3078 | -0.30pp | 0.912× | 0.563× | -49.2% | 76.5 | STRONG | **T** | 1/4 | F | **T** | F | F | — |
+
+**KILL_LOOP results (pre-registered):**
+- 🎯 ✅ KILL_LOOP #1 (success_tag) — **FIRED.** 5 of 6 configs achieve
+  beats_winner=True (slots 2, 3, 4, 5, 6). 9th loop iter to fire
+  success_tag.
+- ✅ KILL_LOOP #2 (decisive_fail) — **NOT FIRED** (best Sortino 1.4176
+  ≫ 1.20 floor).
+- ✅ KILL_LOOP #3 (replica_baseline) — **NOT FIRED.** Baseline Sortino
+  1.3240 = bit-exact iter 011-021 baseline (drift 0.0000). **13th-
+  generation cross-iter reproducibility.**
+- ✅ KILL_LOOP #4 (replica_single_K4lv25_g25) — **NOT FIRED.**
+  Sortino 1.3951 = bit-exact iter 013-021 (drift 0.0000). **10th-gen.**
+- ✅ KILL_LOOP #5 (replica_basket3invvol_K4lv25_g25) — **NOT FIRED.**
+  Sortino 1.4689 = bit-exact iter 014-021 (drift 0.0000). **8th-gen.**
+- ✅ KILL_LOOP #6 (replica_T40D60) — **NOT FIRED.** Sortino 1.4030 =
+  bit-exact iter 017-021 NEW strict_superset (drift 0.0000). **5th-
+  generation reproducibility on iter 017's first novel
+  strict_superset CONFIRMED.**
+- ✅ KILL_LOOP #7 (replica_rearmonly_T40D60) — **NOT FIRED.** Slot 5
+  INDEP IMPL Sortino 1.4176 = bit-exact iter 021 slot 5 (drift 0.0000).
+  **2nd-generation reproducibility on the loop's highest single-leg
+  Sortino finding (iter 021 NEW from rearm-only ablation).**
+- 🏆🎯 ✅ KILL_LOOP #8 (parity_check_indep_impl) — **NOT FIRED — POSITIVE
+  TAG.** `max abs daily-gate diff = 0.000e+00` across 14150 days
+  (n_diff_days=0). The from-scratch explicit-loop numpy algorithm
+  (`rearm_independent.build_postcrash_rearm_gate_independent`) and iter
+  017's vectorised pandas algorithm
+  (`reentry_overlay.build_postcrash_rearm_gate`) produce **bit-exact
+  identical** outputs. **HARD MECHANISM PARITY ESTABLISHED.**
+- ❌ KILL_LOOP #9 (PBO_blowup) — **NOT FIRED.** G1 PBO 0.4960 < 0.55.
+- 🏆🎯 ✅ KILL_LOOP #10 (PBO_held) — **FIRED — POSITIVE TAG.** G1 PBO
+  **0.4960** < 0.50 hard gate (vs iter 021's 0.5000 boundary tie). Iter
+  trajectory: 005 0.881 → 011 0.3056 → 014 0.4405 → 017 0.4405 → 018
+  0.8135 → 019 0.1984 (LOOP MIN) → 020 0.4325 → 021 0.5000 (BOUNDARY) →
+  **022 0.4960 (-0.0040 vs iter 021; just under 0.50)**. The mechanism
+  diversity shift in slot 6 (PFV20 collapsed to zero rearm activation
+  vs iter 021's K4∩rearm at 0.18%) reduces CSCV ranking clustering by
+  exactly the bare minimum needed.
+- ❌ KILL_LOOP #11 (pfv_phase3_perf_candidate) — **NOT FIRED.** Slot 6
+  PFV20 phase3=False (CAGR 30.78% < 31.08%; end_eq 0.912× < 1.05× floor).
+  **CORE WEAK HYPOTHESIS REJECTED ON IMPLEMENTATION** — PFV20 at p20
+  percentile filters 0 of 16 duration-qualified flips (post-flip 5d QLD
+  realised vol almost never lands in trailing 5y bottom-quintile;
+  post-flip windows are inherently elevated-vol).
+- ❌ KILL_LOOP #12 (pfv_dominates_rearmonly) — **NOT FIRED.** Slot 6
+  Sortino 1.4009 < slot 5 1.4176 (-0.0167). PFV20 collapses rearm
+  activation to zero, reverting strategy to QLD/(ZROZ⇄CASHX rvp70-only)
+  baseline. **STRONG HYPOTHESIS REJECTED.**
+
+**Key finding: 🏆 🎯 PHASE 4 ANCHOR VALIDATED — `phase4_anchor_validated
+=True`.** All 5 component tests pass: parity (0.000e+00) ✓; drift vs
+iter 021 (0.0000) ✓; Sortino lift over baseline (+0.0936 ≫ +0.04) ✓;
+CAGR lift over baseline (+1.36pp ≫ +0.5pp) ✓; DSR_global (8.87e-4 <
+0.05) ✓. **First iter to formally validate iter 017's rearm primitive
+via independent implementation + statistical bar combo.** Iter 022's
+slot 5 (rearm-only INDEP IMPL) achieves the loop's first FORMAL
+strict_superset firing for the rearm-only mechanism (iter 021's slot 5
+was bit-exact identical on returns but blocked by PBO 0.5000 boundary
+tie). The mechanism diversity shift in slot 6 (PFV20 collapse) reduces
+CSCV ranking clustering enough to drop PBO from 0.5000 → 0.4960 (-0.0040)
+to clear the 0.50 hard gate.
+
+**🏆 🎯 STRICT_SUPERSET FIRED for slot 5** (Sortino 1.4176 > 1.3746 ✓;
+PBO 0.4960 < 0.50 ✓; pct_above_SPY 1.0 ≥ 0.95 ✓; CAGR 32.44% > 31.08%
+✓; end_eq 1.516× > 1.05× ✓; DSR_global 8.87e-4 < 0.05 ✓). **8th iter
+appended to `loop_strict_superset_iter` but slot 5 mechanism is
+content-equivalent to iter 021's slot 5 — `latest_strict_superset_is_
+novel = false`** (rearm-only T40D60 was first surfaced in iter 021;
+iter 022 validates via independent implementation, not a NEW
+mechanism).
+
+**⚠️ PHASE 4 ANCHOR NOT IMPROVED.** Slot 5 INDEP IMPL CAGR 32.44% vs
+iter 017 anchor 32.66% (-0.22pp); end_eq vs iter017 0.936× < 1.0×.
+Sortino lifts by +0.0146 (1.4176 vs 1.4030) at the cost of -6.4% terminal
+compounding. **Sortino-better-CAGR-worse Pareto-NON-improvement, not a
+Phase 4 strict improvement** per protocol §"Phase 4 objective".
+
+**🎯 SUBPERIOD ROBUSTNESS for slot 5 — edge is TEMPORALLY DISTRIBUTED
+but FRONT-LOADED.** Per-decade Sortino: 1970-1989 = **2.26** (n=1010,
+CAGR 60.4%, MDD -27.3%, vs SPY 17.7%); 1990-2009 = **1.17** (n=5043,
+CAGR 31.3%, MDD -48.2%, vs SPY 8.1%); 2010-2026 = **1.16** (n=4097,
+CAGR 27.6%, MDD -36.4%, vs SPY 14.2%). All 3 subperiods beat SPY CAGR
+by 8-43pp. **Modern-era (1990+) Sortino lands JUST BELOW the Phase 3
+floor of 1.20** — meaningful caveat. Full-period Sortino 1.4176 is
+partly driven by the 1970-1989 super-regime.
+
+**⚠️ SECONDARY HYPOTHESIS REJECTED — PFV20 INCOMPATIBLE WITH POST-CRASH
+REARM WINDOWS BY CONSTRUCTION.** 0 of 16 duration-qualified flips pass
+PFV20 (post-flip 5d QLD realised vol < trailing 5y 20th percentile).
+Mechanism diagnosis: post-flip windows inherit the elevated vol
+characteristic of rapid SMA200 crossover entries; trailing 5y reference
+distribution is dominated by quiet/sideways days; the bottom-quintile
+threshold is mechanically incompatible. Future iters could test PFV at
+p50/p70/p80 with structural mechanism diversity in 4 of 6 slots (PBO-
+clustering risk).
+
+**All 4 prior calibration anchors PRESERVED bit-exact** (KILL_LOOP #3,
+#4, #5, #6 ALL NOT FIRED): baseline 1.3240 (13th-gen replica),
+single_K4lv25_g25 1.3951 (10th-gen), basket3invvol 1.4689 (8th-gen),
+T40D60 OR-anchor 1.4030 (5th-gen). **NEW calibration anchor seeded:**
+rearm-only T40D60 INDEP IMPL Sortino 1.4176 (2nd-gen — established
+by iter 022 as the bit-exact match to iter 021 slot 5).
+
+**Capital remains 100% Plan C per mandate §1**; iter 022 appended to
+`loop_winner_iter` (10th iter), `loop_phase3_performance_candidate_iter`
+(9th iter), AND `loop_strict_superset_iter` (8th iter — but
+content-equivalent to iter 021's rearm-only finding;
+**latest_strict_superset_is_novel = false**). Score 76.5 STRONG < 90
+deploy bar; per LOOP_PROTOCOL §"Mandate §1 reinforcement",
+`docs/CURRENT_STATE.md` "Active Hunts" entry preserved untouched. **NO
+automatic capital realloc.**
+
+**beats_winner:** **true** (5 of 6 configs > 1.3746 threshold; best is
+slot 5 rearm-only INDEP IMPL Sortino 1.4176).
+
+**phase3_performance_candidate (any):** **true** (slots 2 + 4 + 5 NEW).
+
+**strict_superset (any):** **🎯 true** (slots 2 + 4 replicas + slot 5
+NEW; **latest_strict_superset_is_novel = false** — slot 5 is bit-exact
+content-equivalent to iter 021's slot 5; the novelty is in the
+PARITY-VALIDATED-PBO-CLEARED status, not the mechanism itself).
+
+**phase4_anchor_improved (any):** **false** (slot 5 Sortino-better but
+CAGR-worse than iter 017 anchor).
+
+**phase4_anchor_validated:** **true** (formal flag — first iter to fire
+this milestone). All 5 components pass.
+
+**Next iter ideas:** (a) **Mechanism-diverse rearm-window leverage
+overlay** — pump TQQQ to 1.1×-1.3× ONLY during the rearm window (NOT
+the K4 window). Tests whether the rearm-only Sortino lift can be
+CONVERTED into CAGR/equity improvement via in-window leverage scaling.
+**Highest expected value: directly tests whether iter 022's Pareto
+trade-off can be broken.** Cite `[leverage_for_the_long_run, ch.4-5,
+p.40-60]` LRS leverage scaling. PBO-clustering risk requires careful
+pre-registration. (b) **K4 ELSE rearm with STATE-DEPENDENT graded
+base** — split K4 into "K4-during-rearm-window" and "K4-outside-rearm-
+window" subcomponents; test downweighting K4-during-rearm to recover
+Sortino while preserving K4-outside CAGR pump. (c) **PFV at higher
+percentiles (p50 / p70 / p80)** — re-test post-flip vol confirmation
+with looser thresholds; structural mechanism diversity in 4 of 6 slots
+to control PBO-clustering risk. (d) **Modern-era subperiod stress** —
+evaluate iter 017 anchor + slot 5 rearm-only on rolling 10y subperiods
+(1990-1999 … 2017-2026) to test whether modern-era Sortino softness is
+structural (~1.17) or event-driven. (e) **Pivot to entirely different
+family** — calendar/seasonality, cross-asset trend, yield-curve slope.
+iters 018-022 are all variants of T40D60; family change may be due.
 
 ### 021 — 2026-05-10 — rearm-component-ablation
 
