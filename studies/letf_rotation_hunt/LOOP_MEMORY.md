@@ -3,11 +3,11 @@ mission: "post-close strategy hunt: research new strategies and benchmark vs T3d
 status: open
 active_phase: 3
 active_phase_name: "performance-first beater hunt"
-total_iterations: 19
+total_iterations: 20
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 114
-cumulative_n_trials_global: 540
+cumulative_n_trials_loop: 120
+cumulative_n_trials_global: 546
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -21,18 +21,18 @@ beats_winner_threshold_winner_conditions_met: true
 phase3_performance_threshold_cagr_lh56y: 0.3108
 phase3_performance_threshold_end_equity_ratio_vs_winner: 1.05
 phase3_min_acceptable_sortino_lh56y: 1.20
-loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix"]
-loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix"]
-loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix"]
-latest_iteration: "019-2026-05-10-spyrv-pct25-upgrade-mechmix"
+loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate"]
+loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate"]
+loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate"]
+latest_iteration: "020-2026-05-10-spy-mdd-rearm-gate"
 latest_score: 76.5
 latest_tier_label: STRONG
 latest_beats_winner: true
 latest_phase3_performance_candidate: true
 latest_strict_superset: true
-latest_strict_superset_is_novel: false
-latest_g1_pbo: 0.1984
-latest_g1_pbo_loop_min: true
+latest_strict_superset_is_novel: true
+latest_g1_pbo: 0.4325
+latest_g1_pbo_loop_min: false
 ---
 
 # letf_rotation_hunt — LOOP MEMORY
@@ -96,6 +96,154 @@ statistical hard gates `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
 p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 020 — 2026-05-10 — spy-mdd-rearm-gate
+
+**Hypothesis:** Refines iter 017's only NOVEL strict_superset
+(`single_K4lv25_g25_rvp70_cashx_T40D60`, Sortino 1.4030) by gating its
+rearm activation on SPY trailing 200d max drawdown depth at the
+qualifying-flip moment. Six configs (mechanism-mix-diverse — 5 distinct
+upgrade-axis topologies); slots 5+6 are NEW MDD-gated variants
+(thresholds -15% and -25%). Tests whether requiring a real prior
+broader-index drawdown prunes seesaw-induced false positives in iter
+017's 16 qualified flips.
+**Primary citation:** `[leverage_for_the_long_run, p.4-7, ch.2-3]`
+Husson-Trifoni streak-vs-seesawing.
+**Secondary:** `[regime_change, p.5-6, ch.2]` Chen-Tsang regime-change;
+`[regime_change, p.44-46, ch.4]` abnormal-regime onset post-crisis;
+`[regime_change, p.70-71, ch.5]` B-Strict analogue;
+`[stocks_on_the_move, p.98]` Clenow trend re-establishment;
+`[volatility_trading, p.58-60]` Sinclair vol cone; `[risk_parity,
+p.80-81, ch.4]` Qian RORO graded; `[risk_parity, ch.5, p.10]` Carlson
+stacking; `[systematic_trading, p.212, ch.13]` Carver re-arm;
+`[advances_fin_ml, p.208-211]` CSCV PBO; `[advances_fin_ml, p.222-223]`
+DSR cumulative (n_global=546).
+
+**Configs tested (6, mechanism-mix-diverse with 5 distinct upgrade-axis topologies):**
+
+| name | ON-leg | upgrade axis | rearm | mdd_thresh | sortino_lh56y | edge | cagr_lh56y | edge | end_eq | MDD | score | tier | WC | crisis | phase3 | beats | strict |
+|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---|:---:|:---:|:---:|:---:|:---:|
+| `..._mddgate_baseline_qld_zroz` | single QLD | none | — | — | 1.3240 | -0.0006 | 0.3108 | +0.00pp | 1.000× | -64.5% | 76.5 | STRONG | T | 1/4 | F | F | F |
+| `..._mddgate_single_K4lv25_g25_rvp70_cashx` ← iter 014 strict_superset replica | single QLD/TQQQ | K4_AND_QLDlv25 | — | — | 1.3951 | +0.0705 | 0.3147 | +0.39pp | 1.129× | -47.7% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** |
+| 🥇 `..._mddgate_basket3invvol_K4lv25_g25_rvp70_cashx` ← iter 014 LOOP MAX Sortino replica | basket3-invvol60 | K4_AND_QLDlv25 | — | — | **1.4689** | +0.1443 | 0.2265 | -8.43pp | 0.056× | **-32.8%** | **81.5** | STRONG | **T** | 2/4 | F | T | F |
+| 🏆 `..._mddgate_single_K4lv25_g25_rvp70_cashx_T40D60` ← iter 017 NEW strict_superset replica | single QLD/TQQQ | K4_AND_QLDlv25 OR rearm | T40D60 | — | **1.4030** | **+0.0784** | **0.3266** | **+1.58pp** | **1.620×** | -48.2% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** |
+| 🏆 `..._mddgate_single_K4lv25_g25_rvp70_cashx_T40D60_mdd15` ← **PRIMARY (NEW)** | single QLD/TQQQ | K4_AND_QLDlv25 OR rearm_MDD | T40D60 | -0.15 | **1.3973** | +0.0727 | **0.3216** | **+1.08pp** | **1.393×** | -47.7% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T-NEW** |
+| `..._mddgate_single_K4lv25_g25_rvp70_cashx_T40D60_mdd25` ← STRICTER (NEW) | single QLD/TQQQ | K4_AND_QLDlv25 OR rearm_MDD | T40D60 | -0.25 | 1.3808 | +0.0562 | 0.3134 | +0.26pp | 1.086× | -47.7% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T-NEW** |
+
+**KILL_LOOP results (pre-registered):**
+- 🎯 ✅ KILL_LOOP #1 (success_tag) — **FIRED.** 5 of 6 configs achieve
+  beats_winner=True (slots 2, 3, 4 replicas + slots 5, 6 NEW). 8th
+  loop iter to fire success_tag. **2 NEW non-replica beats_winner
+  configs from this iter.**
+- ❌ KILL_LOOP #2 (decisive_fail) — **NOT FIRED** (best Sortino 1.4030
+  ≫ 1.20 floor).
+- ✅ KILL_LOOP #3 (replica_sanity_baseline) — **NOT FIRED.** Baseline
+  Sortino 1.3240 = bit-exact iter 011-019 baseline (drift 0.0000).
+  **11th-generation cross-iter reproducibility.**
+- ✅ KILL_LOOP #4 (replica_sanity_single_K4lv25_g25) — **NOT FIRED.**
+  Sortino 1.3951 = bit-exact iter 013-019 (drift 0.0000).
+- ✅ KILL_LOOP #5 (replica_sanity_basket3invvol_K4lv25_g25) — **NOT
+  FIRED.** Sortino 1.4689 / CAGR 22.65% / MDD -32.82% = bit-exact
+  iter 014-019 (drift 0.0000).
+- ✅ KILL_LOOP #6 (replica_sanity_T40D60) — **NOT FIRED.** Sortino
+  1.4030 = bit-exact iter 017-019 NEW strict_superset (drift 0.0000).
+  **3rd-generation reproducibility on iter 017's first novel
+  strict_superset CONFIRMED.**
+- ❌ KILL_LOOP #7 (PBO_blowup) — **NOT FIRED.** G1 PBO 0.4325 < 0.55.
+- 🎯 ✅ KILL_LOOP #8 (PBO_held) — **FIRED — POSITIVE TAG.** G1 PBO
+  **0.4325** < 0.50 hard gate. Above iter 019's LOOP MIN 0.1984 — the
+  MDD-depth filter adds less mechanism diversity than spyrv25 because
+  it is a refinement of an existing rearm rather than a fully
+  orthogonal axis. Iter trajectory: 005 0.881 → 011 0.3056 → 014
+  0.4405 → 017 0.4405 → 018 0.8135 → 019 0.1984 (LOOP MIN) → **020
+  0.4325**.
+- 🏆 ✅ KILL_LOOP #9 (mddgate_phase3_perf_candidate) — **FIRED.** Both
+  MDD15 and MDD25 achieve phase3=True (CAGR > 0.3108 ✓, end_eq > 1.05×
+  ✓, Sortino ≥ 1.20 ✓, PBO 0.4325 < 0.50 ✓, DSR_global 1.10e-3 / 1.39e-3
+  < 0.05 ✓). **CORE WEAK HYPOTHESIS CONFIRMED.**
+- 🏆 🎯 ✅ KILL_LOOP #10 (mddgate_strict_superset) — **FIRED.** Both
+  MDD15 and MDD25 achieve strict_superset=True. **STRONGEST WEAK
+  HYPOTHESIS CONFIRMED. 2 NEW NON-REPLICA STRICT_SUPERSET CONFIGS
+  FROM THIS ITER (slots 5, 6).**
+- ❌ KILL_LOOP #11 (mddgate_dominates_T40D60) — **NOT FIRED.** Best
+  MDD-gated Sortino is MDD15 1.3973 (-0.0057 vs T40D60 anchor 1.4030).
+  **STRONG HYPOTHESIS REJECTED — depth filter does NOT lift Sortino.**
+- ❌ KILL_LOOP #12 (mddgate_strict_superset_with_crisis_2plus) —
+  **NOT FIRED.** Both MDD-gated strict_supersets are crisis 1/4 only.
+  **LOOP'S FIRST CRISIS-≥2/4 STRICT_SUPERSET STILL NOT ACHIEVED.**
+
+**Key finding: 🏆 🎯 LOOP'S 2ND NOVEL (NON-REPLICA) STRICT_SUPERSET —
+slot 5 MDD15 confirms mechanism robustness at a NEW topology axis.**
+Slot 5 (`single_K4lv25_g25_rvp70_cashx_T40D60_mdd15`): Sortino 1.3973
+(+0.0727 vs winner 1.3246, **-0.0057 vs T40D60 anchor 1.4030**), CAGR
+32.16% (+1.08pp vs T3d-K2 floor 31.08%), end_eq 1.393× (>> 1.05×
+floor), MDD -47.69%. Slot 6 MDD25 also achieves strict_superset (Sortino
+1.3808, CAGR 31.34%, end_eq 1.086× — barely above 1.05× floor). **Both
+add NEW topology entries to `loop_strict_superset_iter` (the loop's 2nd
+and 3rd novel non-replica strict_supersets after iter 017's T40D60).**
+
+**⚠️ STRONG HYPOTHESIS REJECTED — KILL_LOOP #11 NOT FIRED.** SPY 200d
+MDD-depth filter does NOT lift Sortino above T40D60 anchor. MDD15
+drops Sortino by 0.006 (CAGR -0.50pp / end_eq -0.227×); MDD25 drops
+Sortino by 0.022 (CAGR -1.32pp / end_eq -0.534×). **Mechanism
+diagnosis:** the 16 duration-qualified flips include both deep MDD
+events (sample: -33%, -19%, -29%) and shallow ones (-11%, -12%). MDD15
+retains 12/16 (drops 4 with MDD ∈ (-15%, 0%]); MDD25 retains 4/16
+(drops 12 with MDD ∈ (-25%, 0%]). The 4 shallow flips dropped by MDD15
+contribute -0.50pp CAGR / -0.227× end_eq. **Counterintuitively,
+shallow-drawdown flips DO contain alpha** — TQQQ's 3× leverage
+amplifies even moderate post-MA-flip rallies regardless of pre-flip
+drawdown depth. Husson-Trifoni "deeper crashes → stronger streaks"
+qualitatively SUPPORTED (each retained deep flip produces material lift)
+but does NOT generalize to "must be deep" for QLD/TQQQ rotation.
+
+**All 4 calibration anchors PRESERVED bit-exact** (KILL_LOOP #3, #4,
+#5, #6 ALL NOT FIRED): baseline 1.3240 (11th-gen replica),
+single_K4lv25_g25 1.3951 (8th-gen), basket3invvol 1.4689 (6th-gen),
+T40D60 1.4030 (3rd-gen) — **iter 017's first novel strict_superset
+confirmed reproducible across 3 generations.** **G1 PBO 0.4325** <
+0.50 hard gate (above iter 019's LOOP MIN 0.1984; consistent with
+MDD-depth being a refinement of existing rearm rather than wholly
+orthogonal axis). Crisis attribution unchanged at 1/4 for all
+single-asset configs (only 2008 GFC); 2/4 for basket3 (loses 2020
+COVID).
+
+**Capital remains 100% Plan C per mandate §1**; iter appended to
+`loop_winner_iter` (9th iter), `loop_phase3_performance_candidate_iter`
+(8th iter), AND `loop_strict_superset_iter` (7th iter — both NEW
+strict_supersets from this iter; **latest_strict_superset_is_novel =
+true**). Score 76.5 STRONG < 90 deploy bar; per LOOP_PROTOCOL §"Mandate
+§1 reinforcement", `docs/CURRENT_STATE.md` "Active Hunts" entry
+preserved untouched. **NO automatic capital realloc.**
+
+**beats_winner:** **true** (5 of 6 configs > 1.3746 threshold; 3
+replicas + 2 NEW; best is slot 4 T40D60 anchor 1.4030).
+
+**phase3_performance_candidate (any):** **true** (slots 2 + 4 replicas
++ slots 5 + 6 NEW).
+
+**strict_superset (any):** **🎯 true** (slots 2 + 4 replicas + slots
+5 + 6 NEW; **latest_strict_superset_is_novel = true** — 2 NEW
+non-replica strict_supersets from iter 020).
+
+**Next iter ideas:** (a) **T_crash sweep at fixed D_arm=60** — test
+T_crash ∈ {20, 30, 40, 50, 60} keeping all other iter 017 parameters
+fixed. Tests whether T40D60 is the local maximum or whether shorter
+T_crash values (catching more, shallower flips) lift further.
+**Highest expected value: directly tunes iter 017 hyperparameter
+space.** Cite `[leverage_for_the_long_run, p.6-7, ch.3]`. (b)
+**Post-flip realised-vol confirmation gate** — fire rearm only if the
+first 5 trading days following MA-flip-on show realised vol < threshold
+(CONFIRMATION vs MDD15's REJECTION). Cite `[volatility_trading,
+p.58-60]`. (c) **Pivot to entirely different family** — calendar/
+seasonality (post-FOMC, monthly turn, Halloween), cross-asset
+correlation regime (SPY-Treasury), or yield-curve slope. Per
+LOOP_PROTOCOL §"Soft-halt hint", iters 018, 019, 020 all tried T40D60-
+overlay refinements; family change may be due. **Highest expected
+value if loop's CAGR-lift trajectory has plateaued.** (d) **Combined
+T_crash + D_arm joint sweep** {(30,45), (40,60), (50,75), (60,90)}.
+(e) **Post-flip TQQQ-vol confirmation** — QLD-vol percentile in first
+5 days post-flip < 50th.
 
 ### 019 — 2026-05-10 — spyrv-pct25-upgrade-mechmix
 
