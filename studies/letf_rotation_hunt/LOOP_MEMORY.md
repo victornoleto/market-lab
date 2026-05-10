@@ -3,11 +3,11 @@ mission: "post-close strategy hunt: research new strategies and benchmark vs T3d
 status: open
 active_phase: 3
 active_phase_name: "performance-first beater hunt"
-total_iterations: 16
+total_iterations: 17
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 96
-cumulative_n_trials_global: 522
+cumulative_n_trials_loop: 102
+cumulative_n_trials_global: 528
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -21,15 +21,16 @@ beats_winner_threshold_winner_conditions_met: true
 phase3_performance_threshold_cagr_lh56y: 0.3108
 phase3_performance_threshold_end_equity_ratio_vs_winner: 1.05
 phase3_min_acceptable_sortino_lh56y: 1.20
-loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket"]
-loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket"]
-loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket"]
-latest_iteration: "016-2026-05-10-regime-switch-on-leg-basket"
+loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak"]
+loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak"]
+loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak"]
+latest_iteration: "017-2026-05-10-postcrash-rearm-tqqq-streak"
 latest_score: 76.5
 latest_tier_label: STRONG
 latest_beats_winner: true
 latest_phase3_performance_candidate: true
 latest_strict_superset: true
+latest_strict_superset_is_novel: true
 ---
 
 # letf_rotation_hunt — LOOP MEMORY
@@ -93,6 +94,187 @@ statistical hard gates `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
 p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 017 — 2026-05-10 — postcrash-rearm-tqqq-streak
+
+**Hypothesis:** Post-crash re-arm to TQQQ (streak capture overlay).
+Stacks a TIME-domain re-arm window onto iter 014's strict_superset
+(`single_K4lv25_g25_rvp70_cashx`) and triple-stack
+(`basket3invvol_K4lv25_g25_rvp70_cashx`). The overlay strictly ADDS
+upgrade-gate activation (OR-combine with K4_AND_lv25) for D_arm
+trading days following each OFF→ON master-signal flip preceded by ≥
+T_crash days OFF. Targets the loop's first crisis-≥2/4
+strict_superset by capturing asymmetric post-crash rebounds (1974,
+1982, 2002, 2009, 2020 March, 2023 January) with TQQQ exposure that
+the K4_AND_lv25 state-domain gate misses. **First TIME-domain
+mechanism in the loop** — orthogonal axis vs all prior state-domain
+gates (K4 vote, lowvol percentile, ratevol, regime switch).
+**Primary citation:** `[leverage_for_the_long_run, p.6-7, ch.3]`
+Husson-Trifoni — above MA, positive autocorrelation/streaks; below
+MA, seesawing. The MA flip-ON is the empirical streak-window onset.
+**Secondary:** `[leverage_for_the_long_run, p.4, ch.2]` streaks vs
+seesawing thesis; `[stocks_on_the_move, p.98]` Clenow trend
+re-establishment; `[volatility_trading, p.58-60]` Sinclair vol cone;
+`[risk_parity, p.80-81, ch.4]` Qian RORO; `[risk_parity, ch.5,
+p.10]` Carlson stacking; `[systematic_trading, p.212, ch.13]` Carver
+re-arm hysteresis (time-domain memory analogue applied to ENTRY
+leverage); `[advances_fin_ml, p.208-211]` PBO; `[advances_fin_ml,
+p.222-223]` DSR cumulative (n_global=528).
+
+**Configs tested (6, mechanism-mix-diverse with 4 distinct ON-leg-overlay topologies):**
+
+| name | ON-leg | upgrade base | T_crash | D_arm | qual.flips | rearm% | sortino_lh56y | edge | cagr_lh56y | edge | end_eq | MDD | score | tier | WC | crisis | phase3 | beats | strict |
+|---|---|---|--:|--:|--:|--:|---:|---:|---:|---:|---:|---:|---:|---|:---:|:---:|:---:|:---:|:---:|
+| `..._rearm_baseline_qld_zroz` | single QLD | none | — | — | 0 | 0.0% | 1.3240 | -0.0006 | 0.3108 | +0.00pp | 1.000× | -64.5% | 76.5 | STRONG | T | 1/4 | F | F | F |
+| `..._rearm_single_K4lv25_g25_rvp70_cashx` ← anchor (replica) | single QLD/TQQQ | K4_AND_lv25 | disabled | disabled | 0 | 0.0% | 1.3951 | +0.0705 | 0.3147 | +0.39pp | 1.129× | -47.7% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **T** |
+| 🥇 `..._rearm_basket3invvol_K4lv25_g25_rvp70_cashx` ← LOOP MAX Sortino replica | basket3-invvol60 | K4_AND_lv25 | disabled | disabled | 0 | 0.0% | **1.4689** | +0.1443 | 0.2265 | -8.43pp | 0.056× | **-32.8%** | **81.5** | STRONG | **T** | **3/4** | F | T | F |
+| `..._rearm_single_K4lv25_g25_rvp70_cashx_T20D30` ← phase3 only (Sortino 0.003 below threshold) | single QLD/TQQQ | K4_AND_lv25 OR rearm | 20 | 30 | **33** | 9.92% | 1.3716 | +0.0470 | 0.3172 | +0.64pp | 1.217× | -48.2% | 76.5 | STRONG | **T** | 1/4 | F | **T** | F |
+| 🏆 **`..._rearm_single_K4lv25_g25_rvp70_cashx_T40D60`** ← 🎯 LOOP'S FIRST NEW STRICT_SUPERSET / LOOP MAX strict-superset Sortino | single QLD/TQQQ | K4_AND_lv25 OR rearm | 40 | 60 | **16** | 9.70% | **1.4030** | **+0.0784** | **0.3266** | **+1.58pp** | **1.620×** | -48.2% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** |
+| `..._rearm_basket3invvol_K4lv25_g25_rvp70_cashx_T20D30` ← TRADE-OFF RESOLUTION (rejected) | basket3-invvol60 | K4_AND_lv25 OR rearm | 20 | 30 | **33** | 9.92% | 1.4685 | +0.1439 | 0.2276 | -8.32pp | 0.058× | -32.8% | **81.5** | STRONG | **T** | **3/4** | F | T | F |
+
+**KILL_LOOP results (pre-registered):**
+- 🏆 ✅ KILL_LOOP #1 (success_tag) — **FIRED.** 3 of 6 configs
+  achieve beats_winner=True (single replica, basket3 replica, slot 5
+  T40D60 NEW). 6th loop iter to fire success_tag (after
+  009/010/012/014/015/016).
+- KILL_LOOP #2 (decisive_fail) — **NOT FIRED** (best Sortino 1.4030
+  >> 1.20 floor).
+- ✅ KILL_LOOP #3 (replica_sanity_baseline) — **NOT FIRED.** Baseline
+  Sortino 1.3240 = bit-exact match to iter 011-016 baseline (drift
+  0.0000). **8th-generation cross-iter reproducibility.**
+- ✅ KILL_LOOP #4 (replica_sanity_single_K4lv25_g25) — **NOT FIRED.**
+  single_K4lv25_g25_rvp70_cashx Sortino 1.3951 = bit-exact match to
+  iter 013/014/015/016 (drift 0.0000).
+- ✅ KILL_LOOP #5 (replica_sanity_basket3invvol_K4lv25_g25) — **NOT
+  FIRED.** basket3invvol_K4lv25_g25_rvp70_cashx Sortino 1.4689 / CAGR
+  22.65% / MDD -32.82% / crisis 3/4 = bit-exact match to iter
+  014/015/016 triple-stack (drift 0.0000).
+- ✅ KILL_LOOP #6 (PBO_blowup) — **NOT FIRED.** G1 PBO 0.4405 << 0.55.
+- 🎯 ✅ KILL_LOOP #7 (PBO_held) — **FIRED — POSITIVE TAG.** G1 PBO
+  **0.4405** < 0.50 hard gate. **Identical to iter 014** —
+  mechanism-mix-diverse 5-distinct-topology recipe extended with
+  TIME-domain rearm overlay; the (T_crash, D_arm) parametric
+  variation does NOT introduce new CSCV ranking clustering. Iter
+  trajectory: 005 0.881 → 006 0.798 → 007 0.552 → 008 0.5675 → 009
+  0.3770 → 010 0.3929 → 011 0.3056 → 012 0.4960 → 013 0.5437 → 014
+  0.4405 → 015 0.3333 → 016 0.3730 → **017 0.4405**.
+- 🏆 ✅ KILL_LOOP #8 (rearm_phase3_perf_candidate) — **FIRED.** 2 of 3
+  rearm configs achieve phase3_performance_candidate=True (slots 4 +
+  5; slot 6 basket3+rearm fails by structural CAGR ceiling). **CORE
+  HYPOTHESIS CONFIRMED — Husson-Trifoni MA-streak thesis empirically
+  validated for the single ON-leg.**
+- 🏆 🎯 ✅ KILL_LOOP #9 (rearm_strict_superset) — **FIRED.** Slot 5
+  T40D60 strict_superset=True. **LOOP'S FIRST NOVEL (NON-REPLICA)
+  STRICT_SUPERSET CONFIG.** Sortino 1.4030 = LOOP MAX strict_superset
+  Sortino (+0.0079 above iter 012/014's 1.3951 ceiling). CAGR 32.66%
+  > 31.08% Phase 3 floor by +1.58pp; end_eq 1.620× > 1.05 floor.
+  **STRONGEST HYPOTHESIS CONFIRMED.**
+- ❌ KILL_LOOP #10 (rearm_2020_covid_rescue) — **NOT FIRED.** No
+  rearm config beats SPY in 2020_covid window. Strategy was OFF
+  during Feb-March 2020 steepest drawdown (CASHX); MA flip-ON came
+  June 2020; D_arm=60 forced TQQQ for rebound but SPY had already
+  recovered so fast that strategy couldn't catch up. **Rearm
+  overlay's CAGR lift comes from older crisis rebounds
+  (1974/1982/2002/2009/2023 — non-benchmark windows), not from 2020
+  specifically.** Informational, not hypothesis-rejecting (slot 5
+  strict_superset achieved without 2020 rescue).
+- ❌ KILL_LOOP #11 (rearm_strict_superset_with_crisis_2plus) —
+  **NOT FIRED.** Slot 5 strict crisis 1/4 only (2008 GFC); slot 6
+  crisis 3/4 but not strict. Cross-product still empty. **LOOP'S
+  FIRST CRISIS-≥2/4 STRICT_SUPERSET STILL NOT ACHIEVED.**
+- ❌ KILL_LOOP #12 (rearm_basket3_unlocks_phase3) — **NOT FIRED.**
+  Slot 6 CAGR 22.76% << 31.08% floor. TQQQ swap during D_arm=30
+  replaces only the QLD/TQQQ leg (~33% basket weight); UPRO + UGL
+  still run via invvol. CAGR lift over basket3 anchor = +0.11pp —
+  trivial vs 8.4pp gap. **Combined with iter 015 (eqtilt) and iter
+  016 (regsw), this is the THIRD INDEPENDENT REJECTION of the
+  basket3 CAGR ↔ crisis trade-off resolution attempt. The trade-off
+  is overlay-resistant.**
+
+**Key finding: 🏆 🎯 LOOP'S FIRST NOVEL (NON-REPLICA) STRICT_SUPERSET
+— Husson-Trifoni "streak window" thesis empirically validated.**
+Slot 5 `single_K4lv25_g25_rvp70_cashx_T40D60` strictly improves on
+iter 014's single anchor strict_superset across **all three Phase 3
+axes**: Sortino 1.3951 → **1.4030** (+0.0079, LOOP MAX
+strict_superset Sortino); CAGR 31.47% → **32.66%** (+1.19pp, lifts
+above T3d-K2 winner by +1.58pp); end_eq 1.13× → **1.62×** (+0.49,
++43% terminal compounding). 5y rolling win rate 40.1% → 55.3%
+(+15.2pp); 10y rolling win rate 22.9% → 38.0% (+15.1pp). Mechanism:
+post-crash re-arm to TQQQ for D_arm=60 trading days following each
+OFF→ON master-signal flip preceded by ≥ T_crash=40 days OFF — 16
+qualified flips over 56 years (~3.5 year cadence; ~9.7% active
+rate). **First TIME-domain mechanism in the loop** — orthogonal axis
+vs all prior state-domain gates (K4 vote, lowvol percentile,
+ratevol, regime switch). **Surprise:** T40D60 (16 deeper events ×
+60-day harvest) STRICTLY DOMINATES T20D30 (33 shallower events ×
+30-day harvest) on every Phase 3 axis. Pre-registered "more events
+= more lift" expectation CONTRADICTED. The "deeper, fewer" recipe
+captures more concentrated streak regime per active day —
+empirical confirmation of Husson-Trifoni p.6: low volatility →
+investor underreaction → streaks; the streak regime is tighter and
+longer than T20 thresholds admit. **Surprise:** 2020 COVID NOT
+rescued — strategy was OFF during the Feb-March drawdown (CASHX);
+SPY V-recovery faster than rearm-window TQQQ harvest. **Surprise:**
+slot 4 T20D30 phase3=True but Sortino 1.3716 misses 1.3746 beats
+threshold by **just 0.003** — phase3 candidate without crossing
+beats_winner anti-curve-fit margin. **All 3 calibration anchors
+PRESERVED bit-exact** (KILL_LOOP #3, #4, #5 NOT FIRED): baseline
+1.3240 (8th-gen replica), single_K4lv25_g25 1.3951, basket3invvol
+1.4689 / CAGR 22.65% / MDD -32.82% / crisis 3/4. **G1 PBO 0.4405 —
+identical to iter 014** — TIME-domain rearm parametric variation
+does NOT induce new CSCV ranking clustering. **Slot 6 (basket3 +
+rearm) does NOT unlock Phase 3**: CAGR 22.76% lift over basket3
+anchor's 22.65% is only +0.11pp (TQQQ swap replaces ~33% basket
+weight only); structural CAGR ceiling overlay-resistant. Combined
+with iter 015 (eqtilt rejection) + iter 016 (regsw rejection),
+this is the **THIRD INDEPENDENT REJECTION** of the basket3 CAGR ↔
+crisis trade-off resolution attempt. **Capital remains 100% Plan
+C per mandate §1**; iter appended to `loop_winner_iter` (7th iter),
+`loop_phase3_performance_candidate_iter` (6th iter), AND
+`loop_strict_superset_iter` (5th iter — and **the FIRST iter to
+contribute a UNIQUE strategy** rather than a replica of iter
+012/014's strict_superset). Loop's strict_superset list now contains
+4 unique configs:
+  - iter 012's `..._tqqq_K4_AND_lv25_rvp70_cashx`
+  - iter 014's `..._mmix_K4lv25_g0_rvp70_cashx` (iter 012 replica)
+  - iter 014's `..._mmix_K4lv25_g25_rvp70_cashx` (LOOP MAX g25)
+  - **iter 017's `..._rearm_single_K4lv25_g25_rvp70_cashx_T40D60` (NEW)**
+Score 76.5 (slot 5 strict_superset) < 90 deploy bar; per
+LOOP_PROTOCOL §"Mandate §1 reinforcement", `docs/CURRENT_STATE.md`
+"Active Hunts" entry preserved untouched. **NO automatic capital
+realloc.**
+
+**beats_winner:** **true** (3 of 6 configs > 1.3746 threshold:
+single replica 1.3951, basket3 replica 1.4689, **slot 5 T40D60 NEW
+1.4030**).
+
+**phase3_performance_candidate (any):** **true** (3 of 6: single
+replica, slot 4 T20D30, **slot 5 T40D60 NEW**).
+
+**strict_superset (any):** **🎯 true** (2 of 6: single replica AND
+**slot 5 T40D60 NEW** — LOOP'S FIRST NOVEL STRICT_SUPERSET).
+
+**Next iter ideas:** (a) **Combined rearm × leverage overlay on
+slot 5** — stack a 1.1×–1.5× multiplier on the ON-leg returns
+during the rearm window. **Highest expected value: directly extends
+iter 017's confirmed mechanism with a multiplicative boost.** Cite
+`[leverage_for_the_long_run, ch.4-5, p.40-60]`; `[risk_parity,
+ch.5, p.10]`. Risk: PBO regression toward 0.50; Sortino floor
+under leveraged TQQQ pre-rebound vol. (b) **Rearm with VIX-
+percentile guard** — fire rearm only when prior OFF stretch had VIX
+percentile > 75th AND post-flip VIX < 50th. Targets crisis 2/4 by
+adding 2020 COVID rescue via forward-looking gate. Cite
+`[volatility_trading, ch.7]` Sinclair VRP. (c) **Event-driven
+crisis overlay** — slot activates basket3-invvol ONLY during
+pre-defined crisis windows (e.g., 6m post 200d SPY MDD breach >
+20%) and falls back to slot 5 (rearm single) otherwise. Risk:
+in-sample fitting via post-hoc crisis windows; needs OOS validation.
+`[regime_change]`. (d) **AND-gate fine-grid sweep on slot 5 with
+K4_AND_lvN sensitivity** — slot 5's 7.1% K4_AND_lv25 active rate
+under the rearm overlay (total 11.8% upgrade activation) may not be
+optimal; sweep K4 ∩ {lv15, lv20, lv25, lv30, lv40}. Risk: PBO
+regression. (e) **Tax / fees stress on slot 5 strict_superset** —
+turnover 5.32/y; quantify Lei 14.754 swing tax 15%; diagnostic.
 
 ### 016 — 2026-05-10 — regime-switch-on-leg-basket
 
