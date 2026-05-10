@@ -3,11 +3,11 @@ mission: "post-close strategy hunt: research new strategies and benchmark vs T3d
 status: open
 active_phase: 3
 active_phase_name: "performance-first beater hunt"
-total_iterations: 14
+total_iterations: 15
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 84
-cumulative_n_trials_global: 510
+cumulative_n_trials_loop: 90
+cumulative_n_trials_global: 516
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -21,11 +21,11 @@ beats_winner_threshold_winner_conditions_met: true
 phase3_performance_threshold_cagr_lh56y: 0.3108
 phase3_performance_threshold_end_equity_ratio_vs_winner: 1.05
 phase3_min_acceptable_sortino_lh56y: 1.20
-loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend"]
-loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend"]
-loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend"]
-latest_iteration: "014-2026-05-10-mechanism-mix-diverse-graded-blend"
-latest_score: 81.5
+loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery"]
+loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery"]
+loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery"]
+latest_iteration: "015-2026-05-10-equity-tilted-basket-cagr-recovery"
+latest_score: 76.5
 latest_tier_label: STRONG
 latest_beats_winner: true
 latest_phase3_performance_candidate: true
@@ -93,6 +93,142 @@ statistical hard gates `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
 p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 015 — 2026-05-10 — equity-tilted-basket-cagr-recovery
+
+**Hypothesis:** Fixed-weight equity-tilted baskets (basket3-eqtilt66
+weights 2/3+1/6+1/6; basket3-eqtilt85 weights 0.85+0.075+0.075;
+basket2_QU invvol QLD/UPRO no-UGL ablation) test whether reducing UGL
+from basket3-invvol's ~45% (Carver/Clenow inverse-vol) down to 16.7%,
+7.5%, or 0% recovers CAGR_lh56y above 31.08% Phase 3 floor while
+preserving 2022_rates / 2000_dotcom crisis cushion. Six configs,
+mechanism-mix-diverse 5-distinct-ON-leg-topology grid (iter 014
+PBO-0.4405 recipe). Targets the loop's first crisis-≥2/4
+strict_superset. **Primary citation:** `[risk_parity, p.110, ch.5]`
+Qian — diversification return for fixed-weight rebalanced basket.
+**Secondary:** `[risk_parity, p.11, ch.1]` Qian invvol over-allocation;
+`[risk_parity, p.80-81, ch.4]` Qian RORO graded; `[risk_parity, ch.5,
+p.10]` Carlson stacking; `[stocks_on_the_move, p.98]` Clenow;
+`[systematic_trading, ch.10]` Carver; `[volatility_trading, p.58-60]`
+Sinclair; `[leverage_for_the_long_run, ch.4-5, p.40-60]` LRS;
+`[advances_fin_ml, p.208-211]` CSCV PBO; `[advances_fin_ml, p.222-223]`
+DSR cumulative (n_global=516).
+
+**Configs tested (6, mechanism-mix-diverse with 5 distinct ON-leg topologies):**
+
+| name | ON-leg | weights | upg/rv | sortino_lh56y | edge | cagr_lh56y | edge | end_eq | MDD | score | tier | WC | crisis | phase3 | beats | strict |
+|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---|:---:|:---:|:---:|:---:|:---:|
+| `..._eqb_baseline_qld_zroz` | single QLD | — | none/none | 1.3240 | -0.0006 | 0.3108 | +0.00pp | 1.000× | -64.5% | 76.5 | STRONG | T | 1/4 | F | F | F |
+| **`..._eqb_single_K4lv25_g25_rvp70_cashx`** ← strict_superset | single QLD/TQQQ | — | K4lv25/p70-cashx | 1.3951 | +0.0705 | 0.3147 | +0.39pp | 1.129× | -47.7% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** |
+| 🥇 `..._eqb_basket3invvol_K4lv25_g25_rvp70_cashx` ← LOOP MAX Sortino replica | basket3-invvol60 | invvol60 | K4lv25/p70-cashx | **1.4689** | +0.1443 | 0.2265 | -8.43pp | 0.056× | **-32.8%** | **81.5** | STRONG | **T** | **3/4** | F | T | F |
+| **`..._eqb_basket3eq66_K4lv25_g25_rvp70_cashx`** ← PRIMARY (rejected) | basket3-eqtilt | (0.667, 0.167, 0.167) | K4lv25/p70-cashx | 1.4330 | +0.1084 | **0.2781** | -3.27pp | 0.284× | -39.2% | 79.5 | STRONG | T | 1/4 | F | T | F |
+| `..._eqb_basket3eq85_K4lv25_g0_rvp80_ief` | basket3-eqtilt | (0.850, 0.075, 0.075) | K4lv25/p80-ief | 1.3603 | +0.0357 | 0.3005 | -1.03pp | 0.563× | -56.0% | 76.5 | STRONG | T | 1/4 | F | F | F |
+| `..._eqb_basket2QU_K4lv25_g25_rvp70_cashx` ← surprise crisis 2/4 | basket2-invvol60 (QLD/UPRO; no UGL) | invvol60 | K4lv25/p70-cashx | 1.3434 | +0.0188 | 0.2899 | -2.09pp | 0.406× | -43.0% | 79.0 | STRONG | T | **2/4** | F | F | F |
+
+**KILL_LOOP results (pre-registered):**
+- 🏆 ✅ KILL_LOOP #1 (success_tag) — **FIRED.** 3 of 6 configs achieve
+  beats_winner=True (single replica, basket3-invvol replica,
+  basket3eq66). 5th loop iter to fire success_tag.
+- KILL_LOOP #2 (decisive_fail) — **NOT FIRED** (best Sortino 1.4689 >>
+  1.20 floor).
+- ✅ KILL_LOOP #3 (replica_sanity_baseline) — **NOT FIRED.** Baseline
+  Sortino 1.3240 = bit-exact match to iter 011-014 (drift 0.0000).
+  **6th-generation cross-iter reproducibility.**
+- ✅ KILL_LOOP #4 (replica_sanity_single_K4lv25_g25) — **NOT FIRED.**
+  single_K4lv25_g25_rvp70_cashx Sortino 1.3951 = bit-exact match to
+  iter 013/014 (drift 0.0000).
+- ✅ KILL_LOOP #5 (replica_sanity_basket3invvol_K4lv25_g25) — **NOT
+  FIRED.** basket3invvol_K4lv25_g25_rvp70_cashx Sortino 1.4689 / CAGR
+  22.65% / MDD -32.82% / crisis 3/4 = bit-exact match to iter 014
+  triple-stack (drift 0.0000).
+- ✅ KILL_LOOP #6 (PBO_blowup) — **NOT FIRED.** G1 PBO 0.3333 << 0.55
+  ceiling.
+- 🎯 ✅ KILL_LOOP #7 (PBO_held) — **FIRED — POSITIVE TAG.** G1 PBO
+  **0.3333** < 0.50 hard gate. **LOOP 2nd-MIN** (after iter 011's
+  0.3056). Iter trajectory: 005 0.881 → 006 0.798 → 007 0.552 → 008
+  0.5675 → 009 0.3770 → 010 0.3929 → 011 0.3056 → 012 0.4960 → 013
+  0.5437 → 014 0.4405 → **015 0.3333**. Mechanism-mix-diverse
+  5-distinct-ON-leg-topology recipe held even with 4 of 6 configs in
+  K4lv25/g25/p70/CASHX shared axis.
+- ❌ KILL_LOOP #8 (phase3_perf_candidate_eqtilt) — **NOT FIRED.** **0
+  of 3 eqtilt variants achieve phase3_performance_candidate=True.**
+  CORE HYPOTHESIS REJECTED — equity-tilt does not clear Phase 3 CAGR
+  floor.
+- ❌ KILL_LOOP #9 (strict_superset_eqtilt) — **NOT FIRED.** 0 of 3
+  eqtilt variants achieve strict_superset=True. STRONGEST HYPOTHESIS
+  REJECTED.
+- ❌ KILL_LOOP #10 (eqtilt_crisis_2or3_of_4) — **NOT FIRED.** 0 of 3
+  eqtilt achieve crisis ≥ 2/4. **Gold cushion structurally tied to
+  ~45% UGL invvol weight; reducing to 16.7% / 7.5% drops crisis 3/4
+  → 1/4.**
+- 🤔 KILL_LOOP #11 (basket2_QU_no_crisis) — **NOT FIRED — SURPRISE.**
+  basket2_QU (no UGL) crisis count = **2** (>1 threshold), rescuing
+  **2000_dotcom + 2008_GFC**. The QLD+UPRO invvol weighting
+  structurally de-risks during high-vol regimes, providing 2000_dotcom
+  defense WITHOUT any gold sleeve. Pre-registered ablation expectation
+  contradicted.
+- ❌ KILL_LOOP #12 (eqtilt_crisis_strict_superset) — **NOT FIRED.** 0
+  of 3 eqtilt achieve strict_superset AND crisis ≥ 2/4. Loop's first
+  crisis-≥2/4 strict_superset NOT achieved.
+
+**Key finding: ⚠️ EQUITY-TILT vs INVVOL-GOLD HYPOTHESIS REJECTED.**
+Reducing UGL weight from basket3-invvol's ~45% (Carver/Clenow
+inverse-vol equilibrium) down to 16.7% (eqtilt66), 7.5% (eqtilt85),
+or 0% (basket2_QU) recovers some CAGR (22.65% → 27.81% / 30.05% /
+28.99%) but **NEVER clears the 31.08% Phase 3 floor** AND **collapses
+crisis attribution from 3/4 → 1/4** (eqtilt) or 2/4 (no-UGL ablation).
+Across the entire UGL-weight spectrum {0%, 7.5%, 16.7%, 45%}, **no
+fixed-weight tilt simultaneously clears Phase 3 CAGR floor AND
+retains basket3-invvol's crisis 3/4**. The CAGR ↔ crisis-rescue
+trade-off is **structural, not parametric**. **All 3 calibration
+anchors PRESERVED bit-exact** (KILL_LOOP #3, #4, #5 NOT FIRED):
+baseline 1.3240 (6th-gen replica), single_K4lv25_g25 1.3951,
+basket3invvol_K4lv25_g25 1.4689 / CAGR 22.65% / MDD -32.82% / crisis
+3/4. **G1 PBO 0.3333 — LOOP 2nd-MIN** (after iter 011's 0.3056) —
+mechanism-mix-diverse 5-distinct-ON-leg-topology recipe held
+empirically. **Surprise:** basket2_QU (no gold sleeve) rescues
+2000_dotcom + 2008_GFC (crisis 2/4) — invvol QLD/UPRO weighting
+structurally de-risks during high-vol regimes. **Best config =
+single_K4lv25_g25 calibration replica** (iter 014 strict_superset
+bit-exact); NO NEW strict_superset config introduced. **Capital
+remains 100% Plan C per mandate §1**; iter appended to
+`loop_winner_iter` (5th iter), `loop_phase3_performance_candidate_
+iter` (4th iter), AND `loop_strict_superset_iter` (3rd iter — but
+content-equivalent to iter 014's strict_superset config; the
+single_K4lv25_g25 strategy itself is now confirmed across iters 013
+(g25 PBO-blocked) / 014 (strict_superset) / 015 (replica)). Score
+76.5 < 90 deploy bar; per LOOP_PROTOCOL §"Mandate §1 reinforcement",
+`docs/CURRENT_STATE.md` "Active Hunts" entry preserved untouched.
+**NO automatic capital realloc.**
+
+**beats_winner:** **true** (3 of 6 configs > 1.3746 threshold; best
+is calibration replica).
+
+**phase3_performance_candidate (any):** **true** (1 of 6 — only
+single replica).
+
+**strict_superset (any):** **🎯 true** (1 of 6 — only single replica;
+**not a NEW finding**).
+
+**Next iter ideas:** (a) **Dynamic regime-conditional basket weights**
+— switch between single-QLD (high CAGR, crisis 1/4) and basket3-invvol
+(lower CAGR, crisis 3/4) based on regime indicator (VIX percentile,
+ratevol, Gayed yield-curve gate). When equity-favorable: single QLD;
+when defensive regime: basket3-invvol with full UGL weight. **Highest
+expected value: addresses the structural CAGR ↔ crisis trade-off the
+static eqtilt cannot unlock.** Cite `[risk_parity, p.80-81, ch.4]`
+Qian RORO; `[risk_parity, p.110, ch.5]` Qian fixed-weight diversification.
+(b) **2020 COVID re-entry trigger overlay** — Carver-style re-arm
+hysteresis on ratevol gate. Targets the 2020_covid hole in iter 014
+single strict_superset. `[systematic_trading, p.212, ch.13]`. (c)
+**VIX-percentile / VRP overlay** — forward-looking implied-vol gate
+orthogonal to all realised-vol gates. `[volatility_trading, ch.7]`.
+(d) **Leverage overlay on iter 014 strict_superset** — 1.1×-1.5×
+multiplier on ON-leg returns when conditions are very favorable
+(K=4 AND lowvol25 AND VIX<20). `[leverage_for_the_long_run,
+ch.4-5, p.40-60]`. (e) **Tax / fees stress on iter 014 strict_
+superset** — turnover 5.38/y; quantify Lei 14.754 swing tax 15%
+diagnostic.
 
 ### 014 — 2026-05-10 — mechanism-mix-diverse-graded-blend
 
