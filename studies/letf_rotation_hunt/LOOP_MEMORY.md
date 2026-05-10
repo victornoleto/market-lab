@@ -1,11 +1,11 @@
 ---
 mission: "post-close strategy hunt: research new strategies and benchmark vs T3d-K2 study winner"
 status: open
-total_iterations: 3
+total_iterations: 4
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 18
-cumulative_n_trials_global: 444
+cumulative_n_trials_loop: 24
+cumulative_n_trials_global: 450
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -15,9 +15,9 @@ beats_winner_threshold_sortino: 1.3746
 beats_winner_threshold_pct_above_spy: 0.95
 beats_winner_threshold_winner_conditions_met: true
 loop_winner_iter: null
-latest_iteration: "003-2026-05-09-calendar-halloween-gate"
-latest_score: 71.5
-latest_tier_label: PROMISING
+latest_iteration: "004-2026-05-09-corr-regime-stockbond"
+latest_score: 76.5
+latest_tier_label: STRONG
 latest_beats_winner: false
 ---
 
@@ -55,6 +55,69 @@ allowed as a diagnostic, but cannot support `beats_winner=true` unless the
 global-trials DSR still passes `[advances_fin_ml, p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 004 — 2026-05-09 — corr-regime-stockbond
+
+**Hypothesis:** Stock-bond correlation regime master-gate. When 60d/120d
+rolling correlation between QLD↔ZROZ daily returns exceeds 0.00/0.20/0.30,
+redirect either the OFF leg or the entire portfolio to CASHX since the
+diversification hedge has structurally broken. Citation:
+`[risk_parity, p.80-81, ch.4]` (Qian RORO regime — stocks-and-bonds correlation
+flip eliminates diversification value). Targets the 2022_rates loss directly via
+cross-asset second-moment regime detection — orthogonal to iters 001
+(yield-curve), 002 (vol-DD), 003 (calendar).
+
+**Configs tested (6):**
+
+| name | threshold | window | scope | sortino_lh56y | corrpct | score | tier | WC | edge_vs_winner |
+|---|--:|--:|---|---:|---:|---:|---|:---:|---:|
+| `..._corrgate_off_baseline` ← Sortino-best | — | — | none | **1.2841** | 0.0% | 76.5 | STRONG | T | -0.0405 |
+| `..._corrgate_t000_60d_offleg_cashx` | 0.00 | 60d | offleg→CASHX | 1.2211 | 44.7% | 76.5 | STRONG | T | -0.1035 |
+| `..._corrgate_t020_60d_offleg_cashx` | 0.20 | 60d | offleg→CASHX | 1.2133 | 24.0% | 76.5 | STRONG | T | -0.1113 |
+| `..._corrgate_t030_60d_offleg_cashx` (best corr-gate) | 0.30 | 60d | offleg→CASHX | 1.2540 | 14.6% | 76.5 | STRONG | T | -0.0706 |
+| `..._corrgate_t020_120d_offleg_cashx` | 0.20 | 120d | offleg→CASHX | 1.2184 | 21.7% | 76.5 | STRONG | T | -0.1062 |
+| `..._corrgate_t020_60d_master_cashx` (KILL #4 OVER_SUPPRESS) | 0.20 | 60d | master→CASHX | 0.9252 | 24.0% | 42.5 | MARGINAL | F | -0.3994 |
+
+**KILL_LOOP results (pre-registered):**
+- KILL_LOOP #1 (success-tag) — **NOT FIRED** (best Sortino 1.2841 < 1.3746)
+- KILL_LOOP #2 (decisive-fail) — **NOT FIRED** (only master is < 1.10; offleg variants 1.21-1.25)
+- KILL_LOOP #3 (replica-sanity) — **NOT FIRED** (baseline 1.2841 = bit-exact iters 001/002/003 baseline)
+- KILL_LOOP #4 (over-suppression) — **FIRED for `..._master_cashx`** (lh_56y pct_above_bench 0.7039 << 0.85)
+- KILL_LOOP #5 (corr-regime-non-event) — **NOT FIRED** (corrgate fires 14.6%-44.7% — well above 5%)
+
+**Key finding:** Stock-bond correlation regime gating produces no Sortino
+lift on the winner's two-leg structure — the corr-flip is most active when
+the trend signal is *already* defensive, so the gate's marginal
+contribution is just OFF-leg vehicle choice (ZROZ vs CASHX). Across 56
+years, ZROZ duration risk premium > CASHX short-rate yield in
+expectation, so the swap loses Sortino. **`..._master_cashx` is the loop's
+first FIRED KILL_LOOP** (#4 over-suppression: lh_56y pct_above_bench 0.7039
+< 0.85) — forcing whole-portfolio cash during 24% of days collapses
+Sortino by 28%. **G1 PBO=0.071 is the cleanest PBO of the loop** (vs
+003's 0.444, 002's 0.159, 001's 0.575): orthogonal grid design (threshold
+× window × scope) pays off methodologically even when the strategy
+hypothesis fails. Best corr-gate variant (`t030_60d_offleg`) recovers to
+baseline in post-2003 windows (spy_real 1.0911 = baseline; ndx_real 1.2890
+= baseline) but loses 0.030 Sortino in lh_56y. Crisis attribution
+unchanged (2008_GFC only, 1 of 4) — 2022_rates not rescued because the
+QLD↔ZROZ correlation flipped positive *after* the bear was already
+underway, AND the offleg-only override doesn't fire during ON state. The
+t000 variant gives the cleanest MDD reduction of the loop (-7.1pp absolute,
+-11% relative) but at -0.063 Sortino cost.
+
+**beats_winner:** **false** (best Sortino edge -0.0405 = baseline replica
+drift only; no corr-gate variant adds Sortino).
+
+**Next iter ideas:** (a) **Multi-asset ON rotation with inverse-vol
+weighting** {QLD, SOXL, UPRO} `[risk_parity, p.10, ch.1]` +
+`[stocks_on_the_move, p.98]` — distinct from T4 Clenow / T5 Carver / iter
+023 (which used 1 ON asset per config); cross-asset *first* moment
+diversification on ON leg is the natural complement to this iter's
+negative result on cross-asset *second* moment; (b) VIX-percentile / VRP
+overlay `[volatility_trading, ch.7]` (forward-looking implied vol vs
+realised already in stack); (c) Bond duration timing `[systematic_trading,
+ch.9]` — sidestep bond risk directly rather than the cross-asset
+correlation.
 
 ### 003 — 2026-05-09 — calendar-halloween-gate
 
