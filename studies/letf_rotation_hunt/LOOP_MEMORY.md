@@ -3,11 +3,11 @@ mission: "post-close strategy hunt: research new strategies and benchmark vs T3d
 status: open
 active_phase: 3
 active_phase_name: "performance-first beater hunt"
-total_iterations: 17
+total_iterations: 18
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 102
-cumulative_n_trials_global: 528
+cumulative_n_trials_loop: 108
+cumulative_n_trials_global: 534
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -24,13 +24,13 @@ phase3_min_acceptable_sortino_lh56y: 1.20
 loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak"]
 loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak"]
 loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak"]
-latest_iteration: "017-2026-05-10-postcrash-rearm-tqqq-streak"
-latest_score: 76.5
-latest_tier_label: STRONG
-latest_beats_winner: true
-latest_phase3_performance_candidate: true
-latest_strict_superset: true
-latest_strict_superset_is_novel: true
+latest_iteration: "018-2026-05-10-graded-rearm-depth-conditional"
+latest_score: 72.5
+latest_tier_label: PROMISING
+latest_beats_winner: false
+latest_phase3_performance_candidate: false
+latest_strict_superset: false
+latest_strict_superset_is_novel: false
 ---
 
 # letf_rotation_hunt — LOOP MEMORY
@@ -94,6 +94,160 @@ statistical hard gates `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
 p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 018 — 2026-05-10 — graded-rearm-depth-conditional
+
+**Hypothesis:** Graded rearm depth — D_arm linearly proportional to
+prior OFF-stretch length T_off. Refines iter 017's NEW (non-replica)
+strict_superset (`single_K4lv25_g25_rvp70_cashx_T40D60`, Sortino 1.4030,
+CAGR 32.66%, end_eq 1.62×) by making the rearm harvest-window length
+scale with the depth of the crash that preceded each qualifying flip.
+Tests Husson-Trifoni's longer-below-MA → longer-above-MA streak thesis
+at the per-event D_arm level.
+**Primary citation:** `[leverage_for_the_long_run, p.4-7, ch.2-3]`
+Husson-Trifoni streaks-vs-seesawing asymmetry.
+**Secondary:** `[leverage_for_the_long_run, p.7]` trend × streaks ×
+vol-regime; `[stocks_on_the_move, p.98]` Clenow trend re-establishment;
+`[volatility_trading, p.58-60]` Sinclair vol cone; `[risk_parity,
+p.80-81, ch.4]` Qian RORO graded; `[risk_parity, ch.5, p.10]` Carlson
+stacking; `[systematic_trading, p.212, ch.13]` Carver re-arm
+hysteresis; `[advances_fin_ml, p.208-211]` CSCV PBO; `[advances_fin_ml,
+p.222-223]` DSR cumulative (n_global=534).
+
+**Configs tested (6, only 2 distinct ON-leg topologies — STRUCTURAL DEFICIENCY):**
+
+| name | rearm rule | qual.flips | mean D | sortino_lh56y | edge | cagr_lh56y | edge | end_eq | MDD | score | tier | WC | crisis | phase3 | beats | strict |
+|---|---|--:|--:|---:|---:|---:|---:|---:|---:|---:|---|:---:|:---:|:---:|:---:|:---:|
+| `..._grearm_baseline_qld_zroz` | none | 0 | — | 1.3240 | -0.0006 | 0.3108 | +0.00pp | 1.000× | -64.5% | 72.5 | PROMISING | F | 1/4 | F | F | F |
+| `..._grearm_single_K4lv25_g25_rvp70_cashx` (iter 014 replica) | none | 0 | — | 1.3951 | +0.0705 | 0.3147 | +0.39pp | 1.129× | -47.7% | 72.5 | PROMISING | F | 1/4 | F | F | F |
+| 🥇 `..._grearm_single_K4lv25_g25_rvp70_cashx_T40D60` (iter 017 replica) | fixed T=40 D=60 | 16 | 60 | **1.4030** | **+0.0784** | 0.3266 | +1.58pp | 1.620× | -48.2% | 72.5 | PROMISING | F | 1/4 | F | F | F |
+| `..._grearm_single_K4lv25_g25_rvp70_cashx_p075_clamp30_120` ← PRIMARY | graded coef=0.75 [30,120] | 16 | 58.4 | 1.3946 | +0.0700 | 0.3238 | +1.30pp | 1.492× | -48.2% | 72.5 | PROMISING | F | 1/4 | F | F | F |
+| `..._grearm_single_K4lv25_g25_rvp70_cashx_p050_clamp30_90` | graded coef=0.50 [30,90] | 16 | 43.6 | 1.3920 | +0.0674 | 0.3207 | +0.99pp | 1.356× | -47.7% | 72.5 | PROMISING | F | 1/4 | F | F | F |
+| `..._grearm_single_K4lv25_g25_rvp70_cashx_p100_clamp40_150` | graded coef=1.00 [40,150] | 16 | 76.0 | 1.3997 | +0.0751 | **0.3287** | **+1.79pp** | **1.731×** | -48.2% | 72.5 | PROMISING | F | 1/4 | F | F | F |
+
+**KILL_LOOP results (pre-registered):**
+- ❌ KILL_LOOP #1 (success_tag) — **NOT FIRED.** No config achieves
+  beats_winner=True (G1 PBO 0.8135 ≥ 0.50 fails WC strict bar
+  universally, even though Sortino > 1.3746 ✓ + pct_above ≥ 0.95 ✓ for
+  5 of 6 configs).
+- ✅ KILL_LOOP #2 (decisive_fail) — **NOT FIRED** (best Sortino 1.4030
+  ≫ 1.20 floor).
+- ✅ KILL_LOOP #3 (replica_sanity_baseline) — **NOT FIRED.** Baseline
+  Sortino 1.3240 = bit-exact match to iter 011-017 baseline (drift
+  0.0000). **9th-generation cross-iter reproducibility.**
+- ✅ KILL_LOOP #4 (replica_sanity_single_K4lv25_g25) — **NOT FIRED.**
+  single_K4lv25_g25_rvp70_cashx Sortino 1.3951 = bit-exact match to
+  iter 013-017 strict_superset (drift 0.0000).
+- ✅ KILL_LOOP #5 (replica_sanity_T40D60) — **NOT FIRED.**
+  single_K4lv25_g25_T40D60 Sortino 1.4030 = bit-exact match to iter
+  017 LOOP MAX strict_superset (drift 0.0000). **Iter 017's NEW
+  strict_superset confirmed reproducible.**
+- 🛑 KILL_LOOP #6 (PBO_blowup) — **FIRED.** G1 PBO **0.8135** ≥ 0.55
+  hard regression threshold. **Largest single-iter PBO regression in
+  the loop** (iter 017 0.4405 → iter 018 0.8135; +0.373pp). Iter
+  trajectory: 005 0.881 → 006 0.798 → 007 0.552 → 008 0.5675 → 009
+  0.3770 → 010 0.3929 → 011 0.3056 → 012 0.4960 → 013 0.5437 → 014
+  0.4405 → 015 0.3333 → 016 0.3730 → 017 0.4405 → **018 0.8135**.
+  Cause: 5 of 6 configs share K4_AND_lv25/g=0.25/p70-cashx base
+  topology; rearm-overlay variation alone (none/fixed/graded × 3
+  coefficients) does NOT introduce CSCV mechanism diversity. **3rd-time
+  confirmation of iter 008/013 lesson** — "mechanism diversity for
+  CSCV is structural, not parametric" `[advances_fin_ml, p.208-211]`.
+- ❌ KILL_LOOP #7 (PBO_held) — **NOT FIRED.** G1 PBO 0.8135 ≥ 0.50.
+- ❌ KILL_LOOP #8 (graded_rearm_phase3_perf_candidate) — **NOT FIRED.**
+  0 of 3 graded configs achieve phase3=True (PBO blocks all). **CORE
+  HYPOTHESIS REJECTED at the statistical level**, though mechanically
+  the graded variants preserve T40D60's CAGR/end_eq within ±0.27pp.
+- ❌ KILL_LOOP #9 (graded_rearm_strict_superset) — **NOT FIRED.** 0 of 3
+  graded configs achieve strict_superset (PBO blocks). **STRONGEST
+  HYPOTHESIS REJECTED.**
+- ❌ KILL_LOOP #10 (graded_dominates_T40D60) — **NOT FIRED.** Best
+  graded Sortino 1.3997 (slot 6 p100) < T40D60 1.4030 (-0.0033). Graded
+  variation does NOT improve over fixed T40D60 on Sortino.
+  Husson-Trifoni depth-proportional thesis SUPPORTED qualitatively
+  (CAGR/end_eq monotonic in coefficient: 32.07% → 32.38% → 32.87%; end_eq
+  1.36× → 1.49× → 1.73×) but Sortino at the local optimum is fixed
+  T40D60.
+- ❌ KILL_LOOP #11 (graded_rearm_2020_covid_rescue) — **NOT FIRED.** 0
+  of 3 graded configs beat SPY in 2020_covid window. Mechanism-equivalent
+  to iter 017 — graded D_arm doesn't address V-recovery onset timing.
+- ❌ KILL_LOOP #12 (graded_rearm_strict_superset_with_crisis_2plus) —
+  **NOT FIRED.** 0 of 3 graded achieve strict_superset AND crisis ≥ 2/4.
+  **LOOP'S FIRST CRISIS-≥2/4 STRICT_SUPERSET STILL NOT ACHIEVED.**
+
+**Key finding: ⚠️ HYPOTHESIS REJECTED AT THE STATISTICAL LEVEL — G1 PBO
+BLOWUP (KILL_LOOP #6 FIRED).** G1 PBO **0.8135** (vs iter 017's 0.4405;
++0.373pp jump — largest single-iter PBO regression in the loop). Cause:
+5 of 6 configs share the iter 014 strict_superset base topology (`single
+/K4_AND_lv25/g=0.25/p70-cashx`), differing only in rearm specifics
+(none/fixed/graded × 3 coefficients). CSCV correctly penalises this
+parametric clustering — **3rd-time confirmation** of the iter 008/013
+lesson "mechanism diversity for CSCV is structural, not parametric"
+`[advances_fin_ml, p.208-211]`. PBO ≥ 0.50 hard gate fails for every
+config → `winner_conditions_met=False` universally → `beats_winner=
+false`, `phase3_performance_candidate=false`, `strict_superset=false`
+for ALL 6 configs.
+
+**All 3 calibration anchors PRESERVED bit-exact** (KILL_LOOP #3, #4, #5
+NOT FIRED): baseline 1.3240 (9th-gen replica), single_K4lv25_g25
+1.3951, T40D60 1.4030 — **iter 017's NEW strict_superset confirmed
+reproducible across one generation**. Mechanism-level finding (separate
+from the statistical KILL): graded D_arm preserves CAGR/end_eq lift
+within ±0.27pp of T40D60, monotonic in coefficient (slot 5 coef=0.50
+CAGR 32.07% / end_eq 1.36× → slot 4 coef=0.75 CAGR 32.38% / end_eq
+1.49× → slot 6 coef=1.00 CAGR 32.87% / end_eq 1.73×). Slot 6 (longest
+clamp, mean D=76) achieves highest CAGR/end_eq in iter 018; Sortino
+plateaus near 1.40 across the coefficient range. **The fixed T40D60
+mechanism is at or near the local Sortino optimum** for QLD/TQQQ rearm
+in this universe; graded variation captures EXISTING streak structure
+but does not unlock additional Sortino.
+
+**Crisis attribution unchanged at 1/4** for all 6 configs (only
+2008_GFC) — graded D_arm doesn't address V-recovery onset timing for
+2020_covid (same iter 017 root cause: on_signal=OFF during Feb-Mar 2020
+V-bottom). All configs pct_above_SPY = 1.0000 in lh_56y. **All gates
+G2-G7 are CLEAN** for non-baseline configs (DSR cum 1.0e-3, OOS Sharpe
+1.0+, FWD post-2020 Sharpe 0.92-0.97, bootstrap 99% CI low ~0.60); the
+LONE blocker is G1 PBO 0.8135.
+
+**Capital remains 100% Plan C per mandate §1**; iter NOT appended to
+`loop_winner_iter`, `loop_phase3_performance_candidate_iter`, or
+`loop_strict_superset_iter` (no positive flags). Score 72.5 PROMISING
+< 90 deploy bar; per LOOP_PROTOCOL §"Mandate §1 reinforcement",
+`docs/CURRENT_STATE.md` "Active Hunts" entry preserved untouched.
+**NO automatic capital realloc.**
+
+**beats_winner:** **false** (no config achieves `winner_conditions_met
+=True` because G1 PBO 0.8135 ≥ 0.50; Sortino + pct_above thresholds
+cleared by 5 of 6).
+
+**phase3_performance_candidate (any):** **false** (PBO ceiling fails
+for all 6; first iter since 013 with 0 phase3 candidates).
+
+**strict_superset (any):** **false** (no NEW finding; iter 014/017
+strict_supersets remain reproducible but iter 018 contributes nothing).
+
+**Next iter ideas:** (a) **VIX-percentile / SPY-realised-vol gate on
+flip qualification** — forward-volatility gate orthogonal to ALL
+previously-tested mechanics. Use SPY 21d realised-vol percentile (vs
+trailing 5y) as a VIX proxy (no pre-1990 VIX data needed). Add as ONE
+distinct topology alongside basket3 + rearm variants to maintain CSCV
+diversity. **Highest expected value: untested orthogonal mechanism +
+restores PBO diversity.** Cite `[volatility_trading, ch.7]` Sinclair
+VRP. (b) **Mechanism-mix-diverse rearm × basket3** — repeat iter 017's
+4-distinct-topology recipe but stack graded D_arm in slots 4+5; tests
+graded inside diversity. Cite `[advances_fin_ml, p.208-211]` CSCV
+mechanism diversity. (c) **Drawdown-conditional rearm gate** — fire
+rearm only when prior OFF stretch coincides with trailing 200d SPY MDD
+breach > -15%; filters seesaw-induced false positives. Cite
+`[regime_change]` + `[leverage_for_the_long_run, p.4-7]`. (d) **Tax /
+fees stress on iter 017 strict_superset** — turnover ~5.3/y; quantify
+Lei 14.754 swing tax 15% diagnostic (deferred from iter 017). (e)
+**Pivot to entirely different family** — calendar/seasonality beyond
+Halloween (e.g., post-FOMC drift), currency carry baskets, or gold
+momentum. Iter 008/013/018 statistical lessons suggest exhausting the
+K4_AND_lv25/g=0.25/p70-cashx neighbourhood may be subject to diminishing
+returns; a regime change in family choice may be due.
 
 ### 017 — 2026-05-10 — postcrash-rearm-tqqq-streak
 
