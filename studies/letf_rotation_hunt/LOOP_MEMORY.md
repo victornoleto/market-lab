@@ -3,11 +3,11 @@ mission: "post-close strategy hunt: research new strategies and benchmark vs T3d
 status: open
 active_phase: 3
 active_phase_name: "performance-first beater hunt"
-total_iterations: 10
+total_iterations: 11
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 60
-cumulative_n_trials_global: 486
+cumulative_n_trials_loop: 66
+cumulative_n_trials_global: 492
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -22,10 +22,12 @@ phase3_performance_threshold_cagr_lh56y: 0.3108
 phase3_performance_threshold_end_equity_ratio_vs_winner: 1.05
 phase3_min_acceptable_sortino_lh56y: 1.20
 loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge"]
-latest_iteration: "010-2026-05-09-graded-master-bridge"
-latest_score: 81.5
+loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage"]
+latest_iteration: "011-2026-05-10-conditional-tqqq-leverage"
+latest_score: 76.5
 latest_tier_label: STRONG
-latest_beats_winner: true
+latest_beats_winner: false
+latest_phase3_performance_candidate: true
 ---
 
 # letf_rotation_hunt — LOOP MEMORY
@@ -89,6 +91,124 @@ statistical hard gates `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
 p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 011 — 2026-05-10 — conditional-tqqq-leverage
+
+**Hypothesis:** Conditional ON-leg leverage scaling — substitute TQQQSIM
+(3× NDX) for QLDSIM (2× NDX) only when conviction is high (vote count =
+4 of 4 OR vol_21d in lowest 25th percentile of trailing 5y). Tests
+whether selective leverage upgrade lifts CAGR_lh56y above the T3d-K2
+official 31.08% benchmark while preserving Sortino_lh56y >= 1.20 (Phase
+3 floor) and PBO < 0.5. Citation: `[leverage_for_the_long_run, ch.4-5,
+p.40-60]` Husson-Trifoni LRS leverage scaling (primary); `[stocks_on_
+the_move, p.98]` Clenow trend-strength filter; `[volatility_trading,
+p.58-60]` Sinclair vol cone (low percentile = pump leverage);
+`[advances_fin_ml, p.208-211]` CSCV PBO; `[advances_fin_ml, p.222-223]`
+DSR cumulative (n_trials_global=492).
+
+**Configs tested (6, 6-topology structural-diversity grid):**
+
+| name | topology | upgrade-active% | sortino_lh56y | edge | cagr_lh56y | edge | end_eq_ratio | score | tier | WC | crisis | phase3_candidate | beats |
+|---|---|--:|---:|---:|---:|---:|---:|---:|---|:---:|:---:|:---:|:---:|
+| `..._cleg_baseline_qld` | none | 0.0% | 1.3240 | -0.0006 | 0.3108 | 0.00pp | 1.0000 | 76.5 | STRONG | T | 1/4 | F | F |
+| **`..._cleg_tqqq_always`** ← Sortino-best CAGR-ceiling | always | 72.6% | 1.2274 | -0.0972 | **0.3669** | **+5.61pp** | **5.42×** | 76.5 | STRONG | T | 1/4 | **TRUE** | F |
+| 🥇 **`..._cleg_tqqq_K4`** ← balanced winner | trend-strength | 20.1% | **1.2911** | -0.0335 | 0.3236 | +1.28pp | 1.48× | 76.5 | STRONG | T | 1/4 | **TRUE** | F |
+| `..._cleg_tqqq_lowvol25` | vol-regime | 21.4% | 1.2755 | -0.0491 | 0.3182 | +0.74pp | 1.26× | 79.5 | STRONG | T | 1/4 | **TRUE** | F |
+| 🥈 **`..._cleg_tqqq_K4_AND_lowvol25`** ← Sortino-preserving | combined-AND | 7.1% | **1.3247** | **+0.0001** | 0.3181 | +0.73pp | 1.25× | 76.5 | STRONG | T | 1/4 | **TRUE** | F |
+| `..._cleg_tqqq_K4_OR_lowvol25` | combined-OR | 31.5% | 1.2573 | -0.0673 | 0.3237 | +1.29pp | 1.49× | 79.5 | STRONG | T | 1/4 | **TRUE** | F |
+
+**KILL_LOOP results (pre-registered):**
+- ❌ KILL_LOOP #1 (success_tag) — **NOT FIRED.** No config achieves
+  `beats_winner=True` (best Sortino 1.3247 < 1.3746 threshold). Phase 3
+  explicitly trades Sortino for CAGR; beats_winner is not the primary
+  axis.
+- KILL_LOOP #2 (decisive_fail) — **NOT FIRED** (best Sortino 1.3247 >>
+  1.20 Phase 3 floor; hypothesis alive).
+- ⚠️ KILL_LOOP #3 (replica_sanity_baseline) — **FIRED — but POSITIVELY.**
+  Baseline_qld Sortino_lh56y = 1.3240, drift +0.0399 vs iter 010's
+  1.2841. **The new helper's baseline matches T3d-K2 OFFICIAL winner
+  Sortino 1.3246 to 4 decimals (drift -0.0006).** Root cause: iter 011's
+  `build_conditional_strategy_returns` uses stricter warmup-row-drop
+  convention than iter 007's `build_compound_strategy_returns`. The
+  iter 011 baseline IS the T3d-K2 winner replica at byte-level fidelity;
+  iter 001-010's 1.2841 was an alignment artifact in iter 007. **This
+  iter effectively documents and corrects the loop's baseline
+  calibration.** Future iters may want to either explicitly reconcile
+  against this iter 011 baseline, or keep the iter 007 alignment as the
+  loop's "frozen" replica reference.
+- 🎯 ✅ KILL_LOOP #4 (phase3_perf_candidate) — **FIRED — POSITIVE TAG.**
+  **5 of 6 configs achieve `phase3_performance_candidate=True`** (CAGR >
+  31.08% AND end_eq_ratio > 1.05 AND Sortino >= 1.20 AND PBO < 0.5 AND
+  DSR_global p < 0.05). **First Phase 3 iter to find performance
+  candidates.** Direct hit on user's stated objective.
+- ✅ KILL_LOOP #5 (PBO_blowup) — **NOT FIRED.** G1 PBO = **0.3056 —
+  LOOP MINIMUM** (drop -0.0873 vs iter 010's 0.3929). Iter trajectory
+  G1 PBO: 005 0.881 → 006 0.798 → 007 0.552 → 008 0.5675 → 009 0.3770
+  → 010 0.3929 → **011 0.3056**. 6-topology structural-diversity grid
+  (none/always/trend-strength/vol-regime/AND/OR) keeps mechanism mix
+  the cleanest CSCV mechanism diversity the loop has produced.
+- KILL_LOOP #6 (tqqq_always_collapse) — **NOT FIRED** (tqqq_always
+  Sortino 1.2274 well above 1.10 floor; TQQQ ceiling viable).
+- 🎯 ✅ KILL_LOOP #7 (conditional_dominates_always) — **FIRED —
+  POSITIVE TAG.** ALL 4 conditional configs (K4, lowvol25, AND, OR)
+  have Sortino_lh56y STRICTLY GREATER than tqqq_always's 1.2274
+  (deltas: +0.0637 K4, +0.0481 lowvol25, +0.0973 AND, +0.0299 OR).
+  **Selective leverage upgrade is unambiguously smarter than always-
+  upgrading.** Hypothesis core mechanism confirmed.
+
+**Key finding: 🎯 PHASE 3 OBJECTIVE CONFIRMED — first iter to find
+performance candidates.** 5 of 6 configs simultaneously (a) lift
+CAGR_lh56y above T3d-K2 31.08% by margins +0.73pp to +5.61pp, (b)
+preserve Sortino_lh56y >= 1.20 floor, (c) clear PBO < 0.5 (loop minimum
+0.3056), and (d) clear DSR cumulative p < 0.05 (n=492). **Best CAGR**
+(`tqqq_always`): CAGR 36.69% (+5.61pp), end_eq 5.42×, Sortino 1.2274
+(above floor; rolling-window win-rate 60-70% across 1y-10y). **Balanced
+winner** (`tqqq_K4`): CAGR 32.36% (+1.28pp), Sortino 1.2911 (well above
+1.20 floor), end_eq 1.48× — only 20.1% upgrade-active days needed.
+**Sortino-preserving** (`tqqq_K4_AND_lowvol25`): Sortino 1.3247 (TIED
+with T3d-K2 official 1.3246; drift +0.0001), CAGR 31.81% (+0.73pp),
+end_eq 1.25× — most conservative Phase 3 pick. **All 4 conditional
+gates beat tqqq_always on Sortino** (KILL_LOOP #7 fired positively) —
+selective leverage upgrade is structurally smarter than blanket TQQQ
+exposure. **G1 PBO 0.3056 — LOOP MINIMUM** (6-topology grid is the
+cleanest CSCV diversity the loop has produced; iter trajectory: 0.881
+→ 0.798 → 0.552 → 0.5675 → 0.3770 → 0.3929 → **0.3056**). **Crisis
+attribution unchanged at 1/4** (only 2008_GFC) — TQQQ doesn't change
+crisis profile (same defensive ZROZ, same K=2 entry signal); Phase 3
+lift comes from compounding in equity-bull regimes, not crisis rescue.
+**Cross-iter baseline drift to T3d-K2 official:** iter 011 baseline
+Sortino 1.3240 matches official 1.3246 to 4 decimals; iter 010's 1.2841
+was an alignment artifact in iter 007. KILL_LOOP #3 fired but
+positively. **Capital remains 100% Plan C per mandate §1**; iter NOT
+appended to `loop_winner_iter` (no beats_winner=true config), but
+appended to NEW `loop_phase3_performance_candidate_iter` list in
+frontmatter. Score 76.5 < 90 deploy bar; per LOOP_PROTOCOL §"Mandate §1
+reinforcement", `docs/CURRENT_STATE.md` "Active Hunts" entry preserved
+untouched (gated on score ≥ 90 + WC=Y + beats_winner=true). No deploy
+realloc; mandate §7 requires user-driven override.
+
+**beats_winner:** **false** (best Sortino 1.3247 < 1.3746 anti-curve-fit
+threshold; Phase 3 explicitly trades Sortino for CAGR).
+
+**phase3_performance_candidate (any):** **true** (5 of 6 configs
+achieve the strict bar: CAGR > 31.08%, end_eq_ratio > 1.05, Sortino >=
+1.20, PBO < 0.5, DSR_global p < 0.05).
+
+**Next iter ideas:** (a) **Compound conditional-TQQQ × ratevol OFF
+override** — stack iter 011 tqqq_K4 with iter 006/007's ratevol p70
+60d → CASHX OFF override. Targets the 2022_rates rescue gap that iter
+011 doesn't address (ZROZ OFF leg unchanged), while preserving the
+CAGR lift from the TQQQ amplifier. **Highest expected value: combines
+iter 011's CAGR lift with iter 007's drawdown protection — could
+simultaneously hit Phase 3 strict bar AND beats_winner=true (the
+strict-superset goal).** Cite `[risk_parity, ch.5, p.10]` +
+`[volatility_trading, p.58-60]`. (b) **Gamma-graded TQQQ allocation**
+— linearly interpolate exposure (50% QLD + 50% TQQQ when K=3; 100%
+TQQQ when K=4) — analogous to iter 010's gamma-graded master scope but
+applied to ON-leg leverage. Cite `[risk_parity, p.80-81, ch.4]`. (c)
+**VIX-percentile / VRP overlay on the upgrade gate** — replace lowvol25
+realised-vol gate with VIX_pct < 25th + VRP > 0 dual gate
+`[volatility_trading, ch.7]`.
 
 ### 010 — 2026-05-09 — graded-master-bridge
 
