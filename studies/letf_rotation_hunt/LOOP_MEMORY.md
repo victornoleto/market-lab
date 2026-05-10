@@ -3,11 +3,11 @@ mission: "post-close strategy hunt: research new strategies and benchmark vs T3d
 status: open
 active_phase: 3
 active_phase_name: "performance-first beater hunt"
-total_iterations: 15
+total_iterations: 16
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 90
-cumulative_n_trials_global: 516
+cumulative_n_trials_loop: 96
+cumulative_n_trials_global: 522
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -21,10 +21,10 @@ beats_winner_threshold_winner_conditions_met: true
 phase3_performance_threshold_cagr_lh56y: 0.3108
 phase3_performance_threshold_end_equity_ratio_vs_winner: 1.05
 phase3_min_acceptable_sortino_lh56y: 1.20
-loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery"]
-loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery"]
-loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery"]
-latest_iteration: "015-2026-05-10-equity-tilted-basket-cagr-recovery"
+loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket"]
+loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket"]
+loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket"]
+latest_iteration: "016-2026-05-10-regime-switch-on-leg-basket"
 latest_score: 76.5
 latest_tier_label: STRONG
 latest_beats_winner: true
@@ -93,6 +93,152 @@ statistical hard gates `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
 p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 016 — 2026-05-10 — regime-switch-on-leg-basket
+
+**Hypothesis:** Regime-conditional ON-leg basket switching — switch
+between iter 014's two endpoints (single QLD/TQQQ for high CAGR vs
+basket3-invvol QLD/UPRO/UGL for crisis cushion) based on regime
+indicator (lowvol50 vol percentile, K=4 vote of 4 signals). Tests
+whether dynamic switching can recover Phase 3 CAGR floor (>31.08%)
+while retaining basket3-invvol's crisis 3/4 cushion — the structural
+trade-off iter 015's static fixed-weight eqtilt could not unlock.
+Targets the loop's first crisis-≥2/4 strict_superset.
+**Primary citation:** `[risk_parity, p.80-81, ch.4]` Qian RORO regime-
+conditional master-gate.
+**Secondary:** `[risk_parity, p.110, ch.5]` Qian fixed-weight
+diversification (frames dynamic vs static); `[risk_parity, p.11, ch.1]`
+Qian invvol over-allocation; `[risk_parity, ch.5, p.10]` Carlson
+stacking; `[volatility_trading, p.58-60]` Sinclair vol cone (lowvol50);
+`[stocks_on_the_move, p.98]` Clenow trend-strength (K=4);
+`[systematic_trading, ch.10]` Carver inverse-vol;
+`[leverage_for_the_long_run, ch.4-5, p.40-60]` LRS;
+`[advances_fin_ml, p.208-211]` CSCV PBO; `[advances_fin_ml,
+p.222-223]` DSR cumulative (n_global=522).
+
+**Configs tested (6, mechanism-mix-diverse with 4 distinct ON-leg topologies):**
+
+| name | ON-leg | regime gate | upg/rv | sortino_lh56y | edge | cagr_lh56y | edge | end_eq | MDD | score | tier | WC | crisis | phase3 | beats | strict |
+|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---|:---:|:---:|:---:|:---:|:---:|
+| `..._regsw_baseline_qld_zroz` | single QLD | — | none/none | 1.3240 | -0.0006 | 0.3108 | +0.00pp | 1.000× | -64.5% | 76.5 | STRONG | T | 1/4 | F | F | F |
+| **`..._regsw_single_K4lv25_g25_rvp70_cashx`** ← strict_superset replica | single QLD/TQQQ | — | K4lv25/p70-cashx | 1.3951 | +0.0705 | 0.3147 | +0.39pp | 1.129× | -47.7% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** |
+| 🥇 `..._regsw_basket3invvol_K4lv25_g25_rvp70_cashx` ← LOOP MAX Sortino replica | basket3-invvol60 | — | K4lv25/p70-cashx | **1.4689** | +0.1443 | 0.2265 | -8.43pp | 0.056× | **-32.8%** | **81.5** | STRONG | **T** | **3/4** | F | T | F |
+| **`..._regsw_lv50_K4lv25_g25_rvp70_cashx`** ← PRIMARY (rejected) | regsw-lv50 (41.7% single) | vol_21d < 50th pct | K4lv25/p70-cashx | 1.2631 | -0.0615 | 0.2271 | -8.37pp | 0.057× | -33.8% | 78.5 | STRONG | F | **3/4** | F | F | F |
+| **`..._regsw_K4_K4lv25_g25_rvp70_cashx`** ← surprise best regsw Sortino | regsw-K4 (20.2% single) | K=4 vote fires | K4lv25/p70-cashx | **1.3647** | +0.0401 | 0.2361 | -7.47pp | 0.076× | -36.0% | **81.5** | T | **3/4** | F | F | F |
+| `..._regsw_lv50_K4lv25_g0_rvp80_ief` ← surprise COVID rescue | regsw-lv50 (41.7% single) | vol_21d < 50th pct | K4lv25/p80-ief | 1.2412 | -0.0834 | 0.2333 | -7.75pp | 0.070× | -34.7% | 78.5 | STRONG | F | **3/4** | F | F | F |
+
+**KILL_LOOP results (pre-registered):**
+- 🏆 ✅ KILL_LOOP #1 (success_tag) — **FIRED.** 2 of 6 configs achieve
+  beats_winner=True (single replica, basket3-invvol replica). 5th loop
+  iter to fire success_tag (after 009/010/012/014/015).
+- KILL_LOOP #2 (decisive_fail) — **NOT FIRED** (best Sortino 1.3951 >>
+  1.20 floor).
+- ✅ KILL_LOOP #3 (replica_sanity_baseline) — **NOT FIRED.** Baseline
+  Sortino 1.3240 = bit-exact match to iter 011-015 baseline (drift
+  0.0000). **7th-generation cross-iter reproducibility.**
+- ✅ KILL_LOOP #4 (replica_sanity_single_K4lv25_g25) — **NOT FIRED.**
+  single_K4lv25_g25_rvp70_cashx Sortino 1.3951 = bit-exact match to
+  iter 013/014/015 (drift 0.0000).
+- ✅ KILL_LOOP #5 (replica_sanity_basket3invvol_K4lv25_g25) — **NOT
+  FIRED.** basket3invvol_K4lv25_g25_rvp70_cashx Sortino 1.4689 / CAGR
+  22.65% / MDD -32.82% / crisis 3/4 = bit-exact match to iter 014/015
+  triple-stack (drift 0.0000).
+- ✅ KILL_LOOP #6 (PBO_blowup) — **NOT FIRED.** G1 PBO 0.3730 << 0.55
+  ceiling.
+- 🎯 ✅ KILL_LOOP #7 (PBO_held) — **FIRED — POSITIVE TAG.** G1 PBO
+  **0.3730** < 0.50 hard gate. **LOOP 3rd-MIN** (after iter 011's
+  0.3056 and iter 015's 0.3333). Iter trajectory: 005 0.881 → 006
+  0.798 → 007 0.552 → 008 0.5675 → 009 0.3770 → 010 0.3929 → 011
+  0.3056 → 012 0.4960 → 013 0.5437 → 014 0.4405 → 015 0.3333 →
+  **016 0.3730**. 4-distinct-ON-leg-topology recipe held even with
+  slots 4+6 sharing the lv50 regime gate.
+- ❌ KILL_LOOP #8 (regsw_phase3_perf_candidate) — **NOT FIRED.** **0
+  of 3 regsw variants achieve phase3_performance_candidate=True.**
+  CORE HYPOTHESIS REJECTED — regime-switch does not clear Phase 3 CAGR
+  floor.
+- ❌ KILL_LOOP #9 (regsw_strict_superset) — **NOT FIRED.** 0 of 3
+  regsw variants achieve strict_superset=True. STRONGEST HYPOTHESIS
+  REJECTED.
+- 🎯 ✅ KILL_LOOP #10 (regsw_crisis_2or3_of_4) — **FIRED — POSITIVE
+  TAG.** **3 of 3 regsw configs achieve crisis 3/4** (lv50 g25, K4
+  g25, lv50 g0 IEF). Regime switch retains basket3-invvol's crisis
+  cushion bit-exactly with anchor.
+- ❌ KILL_LOOP #11 (regsw_strict_superset_with_crisis) — **NOT
+  FIRED.** 0 of 3 regsw achieve strict_superset AND crisis ≥ 2/4.
+  Loop's first crisis-≥2/4 strict_superset NOT achieved.
+- 🤔 KILL_LOOP #12 (lv50_dominates_K4 — DIAGNOSTIC) — **NOT FIRED —
+  SURPRISE.** Sortino lv50 1.2631 < Sortino K4 1.3647 (-0.1016
+  edge). Pre-registered expectation (lv50 routes single more often
+  → higher Sortino) CONTRADICTED. **K4 trend-conviction is the
+  smarter regime gate by Sortino**: K=4 fires only ~20% of the time
+  but routes single during high-Sharpe trend regimes; lv50 routes
+  single 41.7% of the time including some choppy-but-low-vol windows
+  that don't deliver CAGR/Sortino boost.
+
+**Key finding: ⚠️ DYNAMIC REGIME-SWITCH HYPOTHESIS REJECTED — CAGR ↔
+crisis trade-off is mechanism-agnostic.** All 3 regsw configs preserve
+basket3-invvol's crisis 3/4 cushion (KILL_LOOP #10 FIRED) but NONE
+clear Phase 3 CAGR floor (KILL_LOOP #8/#9/#11 NOT FIRED). Best regsw
+CAGR is K4's 23.61% (-7.47pp); best regsw Sortino is K4's 1.3647 (just
+below 1.3746 beats threshold). **Combined with iter 015's eqtilt
+rejection, the loop now has TWO independent rejections of the trade-
+off resolution attempt** — neither static fixed-weight (iter 015) nor
+dynamic regime-conditional (iter 016) approaches resolve it. The
+basket3-invvol's CAGR penalty is too severe to be diluted by either
+weight-averaging OR part-time deployment. **All 3 calibration anchors
+PRESERVED bit-exact** (KILL_LOOP #3, #4, #5 NOT FIRED): baseline
+1.3240 (7th-gen replica), single_K4lv25_g25 1.3951, basket3invvol
+1.4689 / CAGR 22.65% / MDD -32.82% / crisis 3/4. **G1 PBO 0.3730 —
+LOOP 3rd-MIN** (after iter 011's 0.3056 and iter 015's 0.3333).
+**Surprise #1:** K4 regime > lv50 regime by Sortino (+0.1016 edge);
+trend-conviction K=4 vote despite firing ~20% of time routes single
+during periods of strongest equity compounding. **Surprise #2:** slot
+6 (lv50 + IEF + g0 + p80) achieves 2020_covid rescue instead of
+2022_rates rescue — different OFF-leg + ratevol mechanics decide
+which 3 of 4 crises get rescued, not the regime-switch ON-leg. First
+loop iter to surface this attribution. **Best config = single_K4lv25_
+g25 calibration replica** (iter 014 strict_superset bit-exact); NO
+NEW strict_superset config introduced. **Capital remains 100% Plan C
+per mandate §1**; iter appended to `loop_winner_iter` (6th iter),
+`loop_phase3_performance_candidate_iter` (5th iter), AND
+`loop_strict_superset_iter` (4th iter — but content-equivalent to
+iter 014's strict_superset config; the single_K4lv25_g25 strategy
+itself is now confirmed across iters 013 (g25 PBO-blocked) / 014
+(strict_superset) / 015 (replica) / 016 (replica)). Score 76.5 < 90
+deploy bar; per LOOP_PROTOCOL §"Mandate §1 reinforcement",
+`docs/CURRENT_STATE.md` "Active Hunts" entry preserved untouched.
+**NO automatic capital realloc.**
+
+**beats_winner:** **true** (2 of 6 configs > 1.3746 threshold; best
+is calibration replica).
+
+**phase3_performance_candidate (any):** **true** (1 of 6 — only
+single replica).
+
+**strict_superset (any):** **🎯 true** (1 of 6 — only single replica;
+**not a NEW finding**).
+
+**Next iter ideas:** (a) **Leverage overlay on iter 014 single
+strict_superset** — add 1.1×–1.5× multiplier on ON-leg returns when
+conditions are very favorable (K=4 AND lowvol25 AND VIX < 20 OR
+similar conjunction). **Highest expected value: directly addresses
+the structural CAGR ceiling without trading away the strict_superset
+status** that two consecutive iters (015 eqtilt, 016 regsw) have
+shown CAN'T be unlocked by ON-leg composition tweaks. Cite
+`[leverage_for_the_long_run, ch.4-5, p.40-60]` LRS;
+`[risk_parity, ch.5, p.10]` Carlson stacking. (b) **2020 COVID
+re-entry trigger overlay** on iter 014 single strict_superset —
+Carver-style re-arm hysteresis on ratevol gate. Targets the single
+1/4 crisis hole (specifically COVID); if successful lifts score 76.5
+→ ~82 (criterion 6 +5pts) without touching Phase 3 mechanics.
+`[systematic_trading, p.212, ch.13]`. (c) **VIX-percentile / VRP
+overlay** — forward-looking implied-vol gate orthogonal to all
+realised-vol mechanics. `[volatility_trading, ch.7]`. (d) **Event-
+driven crisis overlay** — slot that activates basket3-invvol ONLY
+during pre-defined crisis windows (e.g., 6m post 200d SPY MDD breach
+> 20%) and falls back to single otherwise. `[regime_change]`.
+(e) **Tax / fees stress on iter 014 strict_superset** — turnover
+5.38/y; quantify Lei 14.754 swing tax 15% diagnostic.
 
 ### 015 — 2026-05-10 — equity-tilted-basket-cagr-recovery
 
