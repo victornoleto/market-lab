@@ -101,6 +101,35 @@ mandate override. Any later deployment still requires user-driven mandate §7.
 The statistical controls remain anchored in CSCV/PBO and global DSR
 `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`.
 
+## Phase 4 objective — focused iter 017 validation/refinement (iters 021+)
+
+Phase 4 is not a broad hunt. The research incumbent is iter 017's post-crash
+rearm family (`T40D60`). Each iter must test the anchor's robustness or a small
+mechanistically justified improvement.
+
+Required Phase 4 diagnostics:
+
+- Compare every best config against both T3d-K2 and the iter 017 anchor.
+- Report `cagr_edge_vs_iter017`, `sortino_edge_vs_iter017`,
+  `end_equity_ratio_vs_iter017`, and rolling 1y/3y/5y/10y win rates vs iter 017.
+- Include at least one anchor replica unless the iter is explicitly an
+  independent implementation/cross-check.
+- Prefer mechanism-diverse grids; avoid pure param sweeps that cluster ranks and
+  inflate PBO, as seen in iter 018 `[advances_fin_ml, p.208-211]`.
+- A candidate is a Phase 4 improvement only if it improves CAGR or terminal
+  equity versus iter 017 while keeping Sortino >= 1.35, PBO < 0.5, and global
+  DSR p < 0.05.
+- Lower drawdown alone is not a Phase 4 success.
+
+Allowed Phase 4 families:
+
+- `T_crash` / `D_arm` local sensitivity with 6-8 max configs.
+- Ablation of rearm vs TQQQ vs OFF-duration vs crash-depth mechanics.
+- Event-level flip audits and subperiod robustness.
+- Independent implementation parity of the iter 017 return stream.
+- Small performance overlays during the rearm window only, if pre-registered and
+  cited.
+
 ## Soft-halt hint (advisory; not enforced by shell)
 
 If 5 consecutive iters all return tier_label ∈ {NEAR_FAIL, FAIL} AND no config

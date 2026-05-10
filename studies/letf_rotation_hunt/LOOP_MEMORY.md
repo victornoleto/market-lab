@@ -1,8 +1,8 @@
 ---
 mission: "post-close strategy hunt: research new strategies and benchmark vs T3d-K2 study winner"
 status: open
-active_phase: 3
-active_phase_name: "performance-first beater hunt"
+active_phase: 4
+active_phase_name: "iter 017 focused validation/refinement"
 total_iterations: 20
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
@@ -33,6 +33,12 @@ latest_strict_superset: true
 latest_strict_superset_is_novel: true
 latest_g1_pbo: 0.4325
 latest_g1_pbo_loop_min: false
+phase4_anchor_iter: "017-2026-05-10-postcrash-rearm-tqqq-streak"
+phase4_anchor_config: "qld_voteK2_sma250_100_vol21_40_ar30_rearm_single_K4lv25_g25_rvp70_cashx_T40D60"
+phase4_anchor_cagr_lh56y: 0.3266
+phase4_anchor_sortino_lh56y: 1.4030
+phase4_anchor_end_equity_ratio_vs_winner: 1.61
+phase4_anchor_pbo: 0.4405
 ---
 
 # letf_rotation_hunt — LOOP MEMORY
@@ -93,6 +99,47 @@ Every iter 011+ `hypothesis.md`, `SUMMARY.md`, and `verdict.json` should add
 the performance-first objective. CAGR/rolling-window comparisons remain
 diagnostics under the mandate, while PBO/DSR/global-trial controls remain the
 statistical hard gates `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
+p.222-223]`.
+
+## Phase 4 — iter 017 focused validation/refinement (from iter 021)
+
+User directive: stop broad hunting for now. Treat iter 017's post-crash rearm
+family (`T40D60`) as the research incumbent and validate/refine it. The goal is
+not another open-ended search; it is to test whether the iter 017 edge is real,
+parameter-robust, and improvable without sacrificing performance.
+
+Phase 4 anchor:
+
+- Iter: `017-2026-05-10-postcrash-rearm-tqqq-streak`
+- Config: `qld_voteK2_sma250_100_vol21_40_ar30_rearm_single_K4lv25_g25_rvp70_cashx_T40D60`
+- Metrics: CAGR 32.66%, Sortino 1.4030, terminal equity 1.61× T3d-K2,
+  PBO 0.4405, global DSR pass.
+
+Phase 4 allowed work:
+
+1. Sensitivity around `T_crash` / `D_arm`, but max 6-8 configs and mechanism-
+   diverse grids. Avoid pure narrow sweeps that caused iter 018 PBO blow-up.
+2. Ablation: no rearm, rearm without TQQQ, TQQQ without rearm, OFF-duration
+   only, crash-depth only, rearm window only.
+3. Temporal robustness: subperiod tables (1987-1999, 2000-2009, 2010-2019,
+   2020-2026) and event-level flip audit.
+4. Independent implementation/cross-check inside iter dir before any claim that
+   improves the anchor.
+5. Any candidate must beat or preserve the Phase 4 anchor on CAGR/equity while
+   preserving PBO < 0.5 and DSR global p < 0.05. A lower-MDD-only variant is a
+   failure unless CAGR/terminal equity also improve.
+
+Phase 4 success tags:
+
+- `phase4_anchor_validated=true`: independent implementation or ablation shows
+  the rearm mechanism, not incidental parameter choice, drives the edge.
+- `phase4_anchor_improved=true`: candidate beats anchor CAGR (>32.66%) OR
+  terminal ratio (>1.61×) while Sortino >= 1.35, PBO < 0.5, DSR global p < 0.05.
+- `phase4_reject_anchor=true`: if sensitivity/cross-check shows T40D60 is a
+  fragile event fit or fails PBO/DSR under fair re-test.
+
+Every iter 021+ should explicitly state whether it validated, improved, or
+weakened the iter 017 anchor `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
 p.222-223]`.
 
 ## Iteration log (newest first)

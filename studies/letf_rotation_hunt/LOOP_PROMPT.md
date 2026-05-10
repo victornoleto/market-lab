@@ -18,6 +18,11 @@ better risk/profit **and** better performance, not safer-but-slower variants.
 Prioritize CAGR/equity-relative improvement vs T3d-K2 while preserving PBO/DSR
 hard gates `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`.
 
+Phase 4 (iters 021+): focused validation/refinement of iter 017. The research
+incumbent is `postcrash-rearm-tqqq-streak` / `T40D60`, not a broad hunt. Each
+iter should validate, ablate, sensitivity-test, independently replicate, or
+slightly improve that family without accepting lower-performance safety trades.
+
 ---
 
 ## Copy-paste prompt (loop.sh embeds this verbatim)
@@ -28,20 +33,20 @@ estratégia que bata o study winner T3d-K2
 (qld_voteK2_sma250_100_vol21_40_ar30_off_zroz, Sortino_lh56y 1.3246).
 Meta: 50 iterações cumulativas. Cada sessão executa UMA iteração e PARA.
 
-FASE ATIVA: **Phase 3 — performance-first beater hunt**.
-Contexto: iters 009-010 já bateram T3d-K2 em Sortino/`beats_winner`, mas com
-CAGR menor. O usuário NÃO quer trocar performance por mais segurança: T3d-K2
-já é seguro o suficiente para o objetivo. A próxima fase deve buscar maior
-CAGR/equity terminal/rolling-window performance vs T3d-K2, mantendo risco/lucro
-aceitável e gates estatísticos. Variantes que só reduzem MDD ou aumentam
-Sortino com CAGR menor devem ser tratadas como resultado negativo de Phase 3.
+FASE ATIVA: **Phase 4 — iter 017 focused validation/refinement**.
+Contexto: Phase 3 encontrou o melhor incumbent balanceado no iter 017
+`postcrash-rearm-tqqq-streak` / `T40D60` (CAGR 32.66%, Sortino 1.4030,
+terminal equity 1.61× T3d-K2, PBO 0.4405). Agora NÃO faça broad hunt.
+Valide/refine a família iter 017 com sensibilidade, ablation, cross-check
+independente e pequenas melhorias mecanicamente justificadas. Rejeite variantes
+que só reduzem risco sacrificando CAGR/equity vs iter 017.
 
 Você é um Claude novo, sem histórico. Toda continuidade está em arquivos.
 
 PASSO 1 — Ler estado em ORDEM (não execute código antes):
   1. studies/letf_rotation_hunt/LOOP_MEMORY.md  ← PRIMEIRO. Frontmatter
      (total_iterations, cumulative_n_trials_*, incumbent_winner_*, beats_winner_threshold_*)
-     e a seção "Phase 3 — performance-first beater hunt".
+     e as seções "Phase 3" + "Phase 4 — iter 017 focused validation/refinement".
      + iteration log (slugs já testados — não repetir).
   2. studies/letf_rotation_hunt/LOOP_PROTOCOL.md  ← regras do loop
      (eligibility checklist, naming, scope, mandate §1).
@@ -83,7 +88,21 @@ PASSO 3 — Escolher hipótese (research):
 
   Se algum NO → escolha outra hipótese. Não force.
 
-  Direção obrigatória para Phase 3:
+  Direção obrigatória para Phase 4:
+  - O anchor é iter 017 `T40D60`: CAGR 32.66%, Sortino 1.4030, terminal equity
+    1.61× T3d-K2, PBO 0.4405.
+  - Escolha UMA destas famílias: sensibilidade local T_crash/D_arm; ablation;
+    subperiod/event-level validation; independent implementation parity; pequena
+    overlay de performance somente na janela rearm.
+  - Inclua uma réplica do anchor iter 017 sempre que possível.
+  - Um improvement Phase 4 precisa melhorar CAGR (>32.66%) OU terminal ratio
+    (>1.61×) vs iter 017, mantendo Sortino >= 1.35, PBO < 0.5, DSR global p < 0.05.
+  - Se melhora só MDD/Sortino mas reduz CAGR/equity vs iter 017, marque como
+    negative result.
+  - Evite sweeps paramétricos estreitos; iter 018 mostrou PBO blow-up por rank
+    clustering. Use grids mecanicamente diversos `[advances_fin_ml, p.208-211]`.
+
+  Direção herdada de Phase 3 (ainda válida):
   - Priorize hipóteses que possam elevar CAGR/equity terminal vs T3d-K2, não
     apenas reduzir drawdown.
   - Use T3d-K2 como performance benchmark: CAGR_lh56y 31.08%, MDD -64.5%,
@@ -93,21 +112,13 @@ PASSO 3 — Escolher hipótese (research):
   - Se uma ideia provavelmente só melhora segurança com CAGR menor, rejeite e
     escolha outra hipótese.
 
-  Famílias de estratégia ainda não exploradas para performance (sugestões — não exaustivo):
-  - Re-entry / crash-rebound accelerators (capturar 2020 COVID sem perder 2022)
-  - Controlled leverage/sizing overlays on iter 010 g25 (performance lift)
-  - ON-leg momentum concentration when breadth/regime confirms risk-on
-  - Dynamic basket weights favoring highest expected return asset under trend
-  - Volatility targeting with leverage-up, not only de-risking
-  - Earnings/seasonality or macro windows only if they improve CAGR vs T3d
-  - Cross-asset trend / risk parity rebalancing (Carlson, Asness)
-  - VIX percentile / VRP harvesting (Bozovic, Israelov)
-  - Calendar / seasonality (Bouchard, Heston-Sadka)
-  - Currency carry baskets (Burnside, Lustig)
-  - Gold momentum / commodity momentum (Erb-Harvey)
-  - Bond duration timing (Ilmanen)
-  - Equity factor tilts: low-vol, profitability, investment (Asness, Frazzini)
-  - Volatility-of-volatility / VVIX-driven (Cont, Bardgett)
+  Phase 4 suggestion queue (não exaustivo, mas mantenha foco no anchor):
+  - T_crash/D_arm mechanism-diverse local sensitivity (ex: T30D60, T40D40, T40D80)
+  - Event-level flip audit: quais rearm flips geram alpha e quais destroem CAGR
+  - Independent implementation parity for T40D60 returns
+  - Rearm ablation: OFF-duration only vs rearm-window only vs TQQQ-only
+  - Controlled rearm-window leverage overlay (1.1×-1.3×) if cited and pre-registered
+  - Subperiod robustness table with no parameter tuning
 
   Cite o livro/paper que motiva ANTES de implementar.
 
@@ -130,6 +141,9 @@ PASSO 4 — Pre-commit hypothesis.md:
      * Phase 3 performance plan: para ser performance candidate, precisa
        cagr_lh56y > 0.3108 AND end_equity_ratio_vs_winner > 1.05 AND
        sortino_lh56y >= 1.20 AND PBO < 0.5 AND DSR global p < 0.05
+     * Phase 4 anchor plan: para melhorar iter 017, precisa
+       cagr_lh56y > 0.3266 OR end_equity_ratio_vs_iter017 > 1.00,
+       com Sortino >= 1.35, PBO < 0.5 e DSR global p < 0.05.
    - INCOMPLETE flags (synth caveats, data gaps, leverage assumptions, etc.)
 
 PASSO 5 — Implementar backtest.py:
@@ -163,7 +177,11 @@ PASSO 5 — Implementar backtest.py:
        sortino_edge_vs_winner = sortino_lh56y - 1.3246
        cagr_edge_vs_winner = cagr_lh56y - 0.3108
        end_equity_ratio_vs_winner = candidate_end_equity / winner_end_equity
+       cagr_edge_vs_iter017 = cagr_lh56y - 0.3266
+       sortino_edge_vs_iter017 = sortino_lh56y - 1.4030
+       end_equity_ratio_vs_iter017 = candidate_end_equity / iter017_end_equity
        rolling_win_rates_vs_winner = {"1y": ..., "3y": ..., "5y": ..., "10y": ...}
+       rolling_win_rates_vs_iter017 = {"1y": ..., "3y": ..., "5y": ..., "10y": ...}
        beats_winner = (
            sortino_lh56y > 1.3746
            and winner_conditions_met
@@ -173,6 +191,12 @@ PASSO 5 — Implementar backtest.py:
            cagr_lh56y > 0.3108
            and end_equity_ratio_vs_winner > 1.05
            and sortino_lh56y >= 1.20
+           and pbo < 0.5
+           and dsr_global_p < 0.05
+       )
+       phase4_anchor_improved = (
+           (cagr_lh56y > 0.3266 or end_equity_ratio_vs_iter017 > 1.00)
+           and sortino_lh56y >= 1.35
            and pbo < 0.5
            and dsr_global_p < 0.05
        )
@@ -213,6 +237,9 @@ PASSO 6 — Gerar artefatos + validar:
    - **Phase 3 performance diagnostics**:
        CAGR/equity/rolling windows vs T3d-K2; diga explicitamente se a estratégia
        melhorou performance ou só trocou retorno por segurança.
+   - **Phase 4 anchor diagnostics**:
+       compare vs iter 017 T40D60: CAGR edge, Sortino edge, terminal equity ratio,
+       rolling windows, ablation/validation result, and `phase4_anchor_improved`.
    - Plots / Tables refs
    - Verdict + KILL status + Conclusion
 
@@ -226,6 +253,8 @@ PASSO 7 — Update LOOP_MEMORY.md:
    - latest_tier_label = best_tier_label
    - latest_beats_winner = best_beats_winner
    - Se disponível, latest_phase3_performance_candidate = best_phase3_performance_candidate
+   - Se disponível, latest_phase4_anchor_improved = best_phase4_anchor_improved
+   - Se disponível, latest_phase4_anchor_validated = true/false
    - Se algum config tem beats_winner=true:
        loop_winner_iter += [iter_id]   (lista; preenche null → ["NNN-..."])
    Iteration log (newest first; insert ABOVE existing entries):
@@ -253,7 +282,9 @@ PASSO 9 — Commit:
      - KILL_LOOP pre-conditions: FIRED / NOT FIRED
      - beats_winner: true/false
      - phase3_performance_candidate: true/false
+     - phase4_anchor_improved / validated: true/false
      - CAGR/equity terminal vs T3d-K2
+     - CAGR/equity terminal vs iter 017 anchor
      - 1-2 linhas próximo passo sugerido
      - Citações [book.slug, p.X]
 
