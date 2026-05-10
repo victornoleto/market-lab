@@ -1,11 +1,11 @@
 ---
 mission: "post-close strategy hunt: research new strategies and benchmark vs T3d-K2 study winner"
 status: open
-total_iterations: 7
+total_iterations: 8
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 42
-cumulative_n_trials_global: 468
+cumulative_n_trials_loop: 48
+cumulative_n_trials_global: 474
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -15,7 +15,7 @@ beats_winner_threshold_sortino: 1.3746
 beats_winner_threshold_pct_above_spy: 0.95
 beats_winner_threshold_winner_conditions_met: true
 loop_winner_iter: null
-latest_iteration: "007-2026-05-09-compound-ratevol-off-x-invvol-on-basket"
+latest_iteration: "008-2026-05-09-compound-4axis-cscv-diversity"
 latest_score: 75.0
 latest_tier_label: STRONG
 latest_beats_winner: false
@@ -55,6 +55,95 @@ allowed as a diagnostic, but cannot support `beats_winner=true` unless the
 global-trials DSR still passes `[advances_fin_ml, p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 008 — 2026-05-09 — compound-4axis-cscv-diversity
+
+**Hypothesis:** Drop G1 PBO < 0.50 (lone strict-bar blocker for
+`winner_conditions_met=True` after iter 007) by widening the compound-
+mechanic family from iter 007's 3 axes to 5 qualitatively distinct
+mechanism dimensions (ON-basket on/off, OFF-mechanic on/off, ratevol
+threshold p70/p80, ratevol window 60d/120d, alt-OFF asset CASHX/IEFSIM).
+Citation: `[advances_fin_ml, p.208-211]` (CSCV diversity rationale) +
+`[stocks_on_the_move, p.98]` + `[volatility_trading, p.58-60]`.
+
+**Configs tested (6, 5-mechanic-axis grid centred on iter 007 winner replica):**
+
+| name | ON-basket | OFF-mechanic | sortino_lh56y | active% | score | tier | WC | edge_vs_winner |
+|---|---|---|---:|---:|---:|---|:---:|---:|
+| `..._4axis_baseline` (replica) | single QLD | always-ZROZ | 1.2841 | 0.0% | 72.5 | PROMISING | F | -0.0405 |
+| **`..._4axis_basket3_x_ratevol_p70_60d_cashx`** ← **iter 007 winner replica (Sortino-best)** | basket3 invvol60 | ratevol-p70-60d→CASHX | **1.4637** | 28.0% | 75.0 | STRONG | F | **+0.1391** |
+| `..._4axis_basket3_only` | basket3 invvol60 | always-ZROZ | 1.3340 | 0.0% | 77.5 | STRONG | F | +0.0094 |
+| `..._4axis_basket3_x_ratevol_p80_60d_cashx` | basket3 invvol60 | ratevol-p80-60d→CASHX | 1.4430 | 19.1% | 77.5 | STRONG | F | +0.1184 |
+| `..._4axis_basket3_x_ratevol_p70_120d_cashx` | basket3 invvol60 | ratevol-p70-120d→CASHX | 1.4442 | 28.0% | 75.0 | STRONG | F | +0.1196 |
+| `..._4axis_basket3_x_ratevol_p70_60d_ief` | basket3 invvol60 | ratevol-p70-60d→IEFSIM | 1.4524 | 28.0% | 75.0 | STRONG | F | +0.1278 |
+
+**KILL_LOOP results (pre-registered):**
+- KILL_LOOP #1 (success-tag) — **NOT FIRED.** No config achieved
+  `beats_winner=true`. 5 of 6 configs cleared Sortino > 1.3746;
+  6 of 6 cleared pct_above ≥ 0.95 (1.0000 universally — first loop
+  iter where this is universal). G1 PBO blocked all configs.
+- KILL_LOOP #2 (decisive-fail) — **NOT FIRED** (best Sortino 1.4637 >>
+  1.30 floor; family alive).
+- KILL_LOOP #3 (replica-sanity) — **NOT FIRED** (baseline 1.2841 =
+  bit-exact match to iters 001-007 baselines).
+- KILL_LOOP #4 (compound-edge-decay) — **NOT FIRED.** Iter 007 winner
+  replica (config 2) Sortino_lh56y = **1.4637**, **bit-exact** match to
+  iter 007 finding (drift = 0.0000). Cross-iter scientific
+  reproducibility confirmed.
+- KILL_LOOP #5 (PBO-still-polluted) — **FIRED.** G1 PBO = **0.5675** ≥
+  0.50, slightly *above* iter 007's 0.552. Hypothesis (parameter-sweep
+  mechanism diversity drops PBO) **rejected** — adding parameter axes
+  within one OFF-leg ratevol mechanic *increased* PBO marginally.
+
+**Key finding: clean negative result. Hypothesis REJECTED.**
+**Mechanism diversity for CSCV is structural, not parametric.** Adding
+parameter sweeps (threshold p70/p80, window 60d/120d, alt-OFF
+CASHX/IEFSIM) within the same OFF-leg ratevol mechanic produced
+*marginally worse* G1 PBO (0.5675 vs iter 007's 0.552), not better.
+Parameter variants share IS-OOS rank correlation by construction —
+CSCV correctly penalises this `[advances_fin_ml, p.208-211]`. Iter
+trajectory: iter 005 0.881 → iter 006 0.798 → iter 007 0.552 → iter
+008 0.5675 (direction reversed). **Sortino spread across the 4
+ratevol-override variants is flat (1.4430-1.4637, range 0.021)** —
+the parameter sweep produces mechanism-equivalent strategies. **Iter
+007 findings replicate bit-exact:** Sortino 1.4637, MDD -32.82%,
+Sharpe 1.0068, G5 FWD post-2020 1.227. Cross-iter reproducibility
+confirmed. **5 of 6 configs clear +0.05 anti-curve-fit margin
+(Sortino > 1.3746); 6 of 6 clear pct_above ≥ 0.95** — but
+`beats_winner=false` universally because **G1 PBO 0.5675 ≥ 0.50** is
+the lone blocker. **threshold_p80 narrowly leads on G5 FWD post-2020
+Sharpe** (1.268 vs winner replica 1.227); **basket3_only and
+threshold_p80 lead on crisis attribution** (3/4 each — add 2020 COVID
+via UGL). Iter 004's clean PBO 0.071 came from a *master-scope*
+override config (whole-portfolio cash, qualitatively different
+mechanism). **The structural-diversity primitive — not the parametric
+one — is what cracks PBO.** Methodological insight: **ceiling reached
+for compound-family CSCV diversity at PBO ~0.55**; further parameter
+sweeps within the family will not break it. **Capital remains 100%
+Plan C per mandate §1.**
+
+**beats_winner:** **false** (G1 PBO 0.5675 ≥ 0.50 universally; Sortino
++ pct_above thresholds both cleared by 5 of 6 configs; first loop iter
+where pct_above ≥ 0.95 is universal but G1 still blocks).
+
+**Next iter ideas:** (a) **Master-scope OFF override (iter 004-style
+structural-diversity primitive)** — keep iter 007 compound winner
+config family but add a master-scope config: when ratevol gate fires,
+override to whole-portfolio CASHX (rather than only when on_signal=OFF).
+That's the qualitatively different mechanism that should restore CSCV
+diversity. 6-config design: anchor (compound winner replica),
+basket3_only, master_basket3_x_ratevol, master_single_x_ratevol,
+threshold_p80, alt_off_ief. Cite `[advances_fin_ml, p.208-211]` +
+`[volatility_trading, p.58-60]`. **Highest expected value: directly
+addresses the iter 008 negative result with iter 004's proven mechanism-
+diversity primitive.** (b) **VIX-percentile / VRP overlay on equity
+ON-leg** `[volatility_trading, ch.7]` Sinclair — forward-looking
+implied-vol gate orthogonal to realised-vol gates and bond-vol gate
+already in stack. Different mechanic family from compound (CSCV-
+diverse). (c) **Bond duration timing on OFF leg**
+`[systematic_trading, ch.9, p.180-190]` — distinct from ratevol gate
+(yields, not return vol); also targets 2022_rates rescue (iter 008
+confirmed all 5 override variants fail 2022_rates).
 
 ### 007 — 2026-05-09 — compound-ratevol-off-x-invvol-on-basket
 
