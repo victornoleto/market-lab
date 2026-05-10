@@ -1,11 +1,11 @@
 ---
 mission: "post-close strategy hunt: research new strategies and benchmark vs T3d-K2 study winner"
 status: open
-total_iterations: 9
+total_iterations: 10
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 54
-cumulative_n_trials_global: 480
+cumulative_n_trials_loop: 60
+cumulative_n_trials_global: 486
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -14,9 +14,9 @@ incumbent_winner_score: 82
 beats_winner_threshold_sortino: 1.3746
 beats_winner_threshold_pct_above_spy: 0.95
 beats_winner_threshold_winner_conditions_met: true
-loop_winner_iter: ["009-2026-05-09-master-scope-off-override"]
-latest_iteration: "009-2026-05-09-master-scope-off-override"
-latest_score: 79.0
+loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge"]
+latest_iteration: "010-2026-05-09-graded-master-bridge"
+latest_score: 81.5
 latest_tier_label: STRONG
 latest_beats_winner: true
 ---
@@ -55,6 +55,127 @@ allowed as a diagnostic, but cannot support `beats_winner=true` unless the
 global-trials DSR still passes `[advances_fin_ml, p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 010 — 2026-05-09 — graded-master-bridge
+
+**Hypothesis:** Graded master-scope bridge — interpolate between iter
+007 offleg-pure (gamma=0) and iter 009 master-pure (gamma=1) compound
+configs via coefficient gamma in (0, 1) applied ONLY to the (ratevol
+fired, on_signal=ON) regime cell. Tests whether a sweet spot at gamma
+in {0.25, 0.50} simultaneously retains iter 009's beats_winner=True
+AND adds the 2022_rates rescue (the trade-off iter 009 master_basket3
+surfaced but failed WC strict bar on). Citation: `[risk_parity, p.80-81,
+ch.4]` Qian RORO graded master-gate (primary); `[advances_fin_ml,
+p.208-211]` CSCV structural diversity; `[advances_fin_ml, p.222-223]`
+DSR cumulative (n_trials_global=486); `[volatility_trading, p.58-60]`
+Sinclair vol cone (iter 006); `[stocks_on_the_move, p.98]` Clenow
+vol-parity (iter 005); `[risk_parity, ch.5, p.10]` Carlson stacking
+(iter 007).
+
+**Configs tested (6, 4-topology structural-diversity grid: none-single
++ none-basket + offleg + 2 graded + master):**
+
+| name | scope | gamma | sortino_lh56y | edge | score | tier | WC | crisis | beats |
+|---|---|--:|---:|---:|---:|---|:---:|:---:|:---:|
+| `..._gmaster_baseline` | none | — | 1.2841 | -0.0405 | 76.5 | STRONG | T | 1/4 | F |
+| `..._gmaster_basket3_only` | none | — | 1.3340 | +0.0094 | 81.5 | STRONG | T | 3/4 | F |
+| **`..._gmaster_offleg_pure`** ← iter 007/009 anchor | offleg | 0.00 | **1.4637** | **+0.1391** | 79.0 | STRONG | **T** | 2/4 | **TRUE** |
+| **`..._gmaster_g25_cashx`** ← **🏆 OVERALL BEST** | **graded** | 0.25 | **1.4670** | **+0.1424** | **81.5** | STRONG | **T** | **3/4** | **TRUE** |
+| **`..._gmaster_g50_cashx`** ← 🥈 | **graded** | 0.50 | **1.4538** | **+0.1292** | **81.5** | STRONG | **T** | **3/4** | **TRUE** |
+| `..._gmaster_master_pure` ← iter 009 anchor | master | 1.00 | 1.3686 | +0.0440 | 78.5 | STRONG | F | 3/4 | F |
+
+**KILL_LOOP results (pre-registered):**
+- 🏆 KILL_LOOP #1 (success_tag) — **FIRED** for the second consecutive
+  iter. THREE configs achieved `beats_winner=true` (offleg_pure +
+  g25 + g50; iter 009 had 2). All three thresholds (Sortino > 1.3746,
+  WC=T, pct_above ≥ 0.95) cleared simultaneously.
+- KILL_LOOP #2 (decisive_fail) — **NOT FIRED** (best Sortino 1.4670 >>
+  1.30 floor; even the worst non-baseline 1.3340 sits well above).
+- KILL_LOOP #3 (replica_sanity_baseline) — **NOT FIRED** (baseline
+  1.2841 = bit-exact match to iters 001-009; **5th-generation
+  reproducibility**).
+- KILL_LOOP #4 (replica_sanity_offleg_pure) — **NOT FIRED.** Offleg_pure
+  (gamma=0) Sortino_lh56y = **1.4637**, **bit-exact** match to iter
+  007/008/009 winner_replica (drift = 0.0000). **4th-generation
+  cross-iter reproducibility confirmed.** Verified by unit test:
+  `test_gamma_zero_matches_iter007_offleg`.
+- KILL_LOOP #5 (replica_sanity_master_pure) — **NOT FIRED.**
+  Master_pure (gamma=1) Sortino_lh56y = **1.3686**, **bit-exact** match
+  to iter 009 master_basket3. Verified by unit test:
+  `test_gamma_one_matches_iter009_master`.
+- ✅ KILL_LOOP #6 (PBO_held) — **FIRED** (positive tag — hypothesis
+  confirmed). G1 PBO = **0.3929** < 0.50, slightly above iter 009's
+  0.3770 (+0.0159) due to graded variants sharing some IS-OOS rank
+  correlation with offleg endpoint, but well below threshold. **Iter
+  trajectory G1 PBO:** iter 005 0.881 → iter 006 0.798 → iter 007
+  0.552 → iter 008 0.5675 → iter 009 0.3770 → **iter 010 0.3929**.
+  Mechanism diversity preserved (4 distinct topologies in 6 configs).
+- 🎯 ✅ KILL_LOOP #7 (graded_2022_rescue) — **FIRED — DIRECTIONAL
+  HYPOTHESIS CONFIRMED.** Both graded configs (g25 AND g50) hit
+  `beats_winner=True` AND beat SPY in 2022_rates window. **First
+  time in the loop ANY config has cleared all of {beats_winner=True,
+  2022_rates_beat=True, score ≥ 80, PBO < 0.50} simultaneously.**
+
+**Key finding: 🏆 LOOP'S STRONGEST RESULT YET — graded master at
+gamma=0.25 hits Sortino 1.4670 (loop max, +0.0033 above iter 007/008/
+009 winner_replica) AND adds 2022_rates rescue while preserving
+beats_winner=True.** Pre-registered hypothesis (graded gamma in (0, 1)
+finds a sweet spot between iter 007 offleg endpoint and iter 009
+master endpoint) **fully confirmed**. Three configs achieve
+beats_winner=True simultaneously: `gmaster_g25_cashx` (Sortino 1.4670,
+edge +0.1424, crisis 3/4, score 81.5 — loop best), `gmaster_g50_cashx`
+(Sortino 1.4538, edge +0.1292, crisis 3/4, score 81.5),
+`gmaster_offleg_pure` (Sortino 1.4637 bit-exact replica, crisis 2/4,
+score 79.0). **Sortino curve in gamma is non-monotonic** — peaks at
+gamma≈0.25 (small graded master *helps* both Sortino AND crisis rescue
+simultaneously), then degrades smoothly to master endpoint at
+gamma=1. By gamma=0.5, Sortino is below offleg (-0.0099) but 2022 still
+rescued; by gamma=1, Sortino has degraded -0.0951 vs offleg AND WC
+fails. **Cross-iter replica reproducibility unprecedented:** 5th-gen
+baseline + 4th-gen offleg_pure + 2nd-gen master_pure all bit-exact.
+Both equivalences (gamma=0 ≡ iter 007 offleg-only; gamma=1 ≡ iter 009
+master_scope) are unit-tested in `tests/test_letf_rotation_hunt_loop_010.py`
+(7 tests, 7 passed; total tests 1062, +7 from this iter, well above
+813 baseline). **G2 DSR p_cumulative for g25 = 3.6e-04** at
+n_trials_global=486 (loop minimum cumulative DSR). **2020 COVID and
+2022_rates remain mechanistically incompatible**: basket3_only catches
+2020 but misses 2022; graded g25/g50 catch 2022 but miss 2020 (ratevol
+fires in March 2020 → diverts to CASHX → misses V-recovery). The 4/4
+sweep would require either a re-entry trigger overlay (next iter idea
+#1) or a different gate family (VIX-percentile, idea #3). **Capital
+remains 100% Plan C per mandate §1**; iter appended to
+`loop_winner_iter` list in this file's frontmatter only. CURRENT_STATE
+"Active Hunts" entry gated on score ≥ 90 (LOOP_PROTOCOL §"Mandate §1
+reinforcement"); best score 81.5 < 90 → conservative skip,
+`docs/CURRENT_STATE.md` preserved untouched. No deploy realloc;
+mandate §7 requires user-driven override.
+
+**beats_winner:** **true** (best config g25_cashx: Sortino 1.4670 >
+1.3746 ✓, WC=True ✓, pct_above 1.0000 ≥ 0.95 ✓; second config g50
+also true; third config offleg_pure also true; loop's first-ever 3
+beats_winner configs in a single iter).
+
+**Next iter ideas:** (a) **2020 COVID re-entry trigger overlay** — add
+a Carver-style re-arm hysteresis to the ratevol gate so that it
+RELEASES exposure when on_signal flips OFF→ON after the gate has been
+active for ≥ N days. Targets the **single remaining unrescued crisis**
+for the g25/g50 family. If successful, would lift crisis count to 4/4
+→ criterion 6 score 10/10 → total score ~90, potentially crossing the
+deploy bar. Cite `[systematic_trading, p.212, ch.13]` Carver
+semi-automatic stop re-arm; `[volatility_trading, p.58-60]` Sinclair
+vol cone re-entry semantics. **Highest expected value: ONLY remaining
+barrier to the score 90 deploy bar.** 6 configs: 1 baseline (g25
+without re-entry), 4 re-entry variants (N day thresholds e.g.
+5/10/20/40 days), 1 control (offleg_pure, no re-entry). (b) **Gamma
+fine-grid** — sweep gamma ∈ {0.10, 0.15, 0.20, 0.25, 0.30, 0.40} with
+the iter 010 anchor topology preserved; the Sortino peak at gamma≈0.25
+may be sharper or flatter than this iter resolves. Cite `[risk_parity,
+p.80-81, ch.4]`. Risk: parametric sweep within graded family may
+regress G1 PBO toward 0.55 (iter 008 lesson). (c) **VIX-percentile /
+VRP overlay on equity ON-leg** `[volatility_trading, ch.7]` Sinclair —
+forward-looking implied-vol gate orthogonal to realised-vol gates and
+bond-vol gate already in stack. Different 2020 COVID handling than
+ratevol (VIX percentile may NOT fire pre-spike → catches 2020).
 
 ### 009 — 2026-05-09 — master-scope-off-override
 
