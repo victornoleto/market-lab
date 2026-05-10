@@ -102,6 +102,16 @@ studies/**/systems/*/decoding*/
 studies/**/_diagnostics/**/logs/
 studies/spy_beater_hunt/iterations/*/rerun.log
 
+# Preserved final evidence for the closed weekly momentum study
+!studies/weekly_momentum/evidence/
+!studies/weekly_momentum/evidence/**
+!studies/weekly_momentum/plots/
+!studies/weekly_momentum/plots/final/
+!studies/weekly_momentum/plots/final/*.png
+!studies/weekly_momentum/plots/phase5/
+!studies/weekly_momentum/plots/phase5/*.png
+!studies/weekly_momentum/plots/phase5/*.csv
+
 # Heavy/generated binary artifacts
 *.parquet
 *.pkl

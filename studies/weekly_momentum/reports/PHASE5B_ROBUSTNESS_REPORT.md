@@ -30,7 +30,7 @@
 - Test block: 2023-01-01..2025-12-31.
 - ADV20 min: $5M.
 - Selected once from train: `lb60_sig3_sell1_sd0_k5_neg0_defcash_mfsma200`.
-- Output: `phase5_single_holdout_adv5m/HOLDOUT_REPORT.md`.
+- Output preserved: `../evidence/phase5_single_holdout_adv5m/HOLDOUT_REPORT.md`.
 
 | series | CAGR | MDD | Sharpe | Sortino | Calmar |
 |:--|--:|--:|--:|--:|--:|

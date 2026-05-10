@@ -14,7 +14,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
 import matplotlib
 
@@ -27,8 +27,8 @@ from market_lab.backtest.metrics.standard_report import load_spy_series
 from studies.weekly_momentum.core import simulate_weekly_momentum
 from studies.weekly_momentum.data import load_variation_prices
 from studies.weekly_momentum.reporting import compute_report_metrics, config_slug
-from studies.weekly_momentum.validate_candidates import _tradability_provider
-from studies.weekly_momentum.walk_forward import _build_configs, _parse_market_filters, _selection_score
+from studies.weekly_momentum.scripts.validate_candidates import _tradability_provider
+from studies.weekly_momentum.scripts.walk_forward import _build_configs, _parse_market_filters, _selection_score
 
 
 def parse_args() -> argparse.Namespace:
