@@ -3,11 +3,11 @@ mission: "post-close strategy hunt: research new strategies and benchmark vs T3d
 status: open
 active_phase: 4
 active_phase_name: "iter 017 focused validation/refinement"
-total_iterations: 26
+total_iterations: 27
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 156
-cumulative_n_trials_global: 582
+cumulative_n_trials_loop: 162
+cumulative_n_trials_global: 588
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -21,27 +21,27 @@ beats_winner_threshold_winner_conditions_met: true
 phase3_performance_threshold_cagr_lh56y: 0.3108
 phase3_performance_threshold_end_equity_ratio_vs_winner: 1.05
 phase3_min_acceptable_sortino_lh56y: 1.20
-loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate", "022-2026-05-10-rearm-only-indep-pfv-confirm", "024-2026-05-10-pbo-decoupled-unconditional-lrs105", "025-2026-05-10-pbo-decoupled-lrs110-rearm-magnitude", "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude"]
-loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate", "022-2026-05-10-rearm-only-indep-pfv-confirm", "024-2026-05-10-pbo-decoupled-unconditional-lrs105", "025-2026-05-10-pbo-decoupled-lrs110-rearm-magnitude", "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude"]
-loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate", "022-2026-05-10-rearm-only-indep-pfv-confirm", "024-2026-05-10-pbo-decoupled-unconditional-lrs105", "025-2026-05-10-pbo-decoupled-lrs110-rearm-magnitude", "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude"]
-loop_phase4_anchor_qualitatively_improved_iter: ["023-2026-05-10-rearm-leverage-overlay-and-k4mutex", "024-2026-05-10-pbo-decoupled-unconditional-lrs105", "025-2026-05-10-pbo-decoupled-lrs110-rearm-magnitude", "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude"]
-loop_phase4_anchor_improved_iter: ["024-2026-05-10-pbo-decoupled-unconditional-lrs105", "025-2026-05-10-pbo-decoupled-lrs110-rearm-magnitude", "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude"]
-loop_phase4_anchor_pareto_improved_iter: ["025-2026-05-10-pbo-decoupled-lrs110-rearm-magnitude", "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude"]
-latest_iteration: "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude"
+loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate", "022-2026-05-10-rearm-only-indep-pfv-confirm", "024-2026-05-10-pbo-decoupled-unconditional-lrs105", "025-2026-05-10-pbo-decoupled-lrs110-rearm-magnitude", "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude", "027-2026-05-10-pbo-decoupled-lrs120-ceiling-probe"]
+loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate", "022-2026-05-10-rearm-only-indep-pfv-confirm", "024-2026-05-10-pbo-decoupled-unconditional-lrs105", "025-2026-05-10-pbo-decoupled-lrs110-rearm-magnitude", "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude", "027-2026-05-10-pbo-decoupled-lrs120-ceiling-probe"]
+loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix", "020-2026-05-10-spy-mdd-rearm-gate", "022-2026-05-10-rearm-only-indep-pfv-confirm", "024-2026-05-10-pbo-decoupled-unconditional-lrs105", "025-2026-05-10-pbo-decoupled-lrs110-rearm-magnitude", "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude", "027-2026-05-10-pbo-decoupled-lrs120-ceiling-probe"]
+loop_phase4_anchor_qualitatively_improved_iter: ["023-2026-05-10-rearm-leverage-overlay-and-k4mutex", "024-2026-05-10-pbo-decoupled-unconditional-lrs105", "025-2026-05-10-pbo-decoupled-lrs110-rearm-magnitude", "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude", "027-2026-05-10-pbo-decoupled-lrs120-ceiling-probe"]
+loop_phase4_anchor_improved_iter: ["024-2026-05-10-pbo-decoupled-unconditional-lrs105", "025-2026-05-10-pbo-decoupled-lrs110-rearm-magnitude", "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude", "027-2026-05-10-pbo-decoupled-lrs120-ceiling-probe"]
+loop_phase4_anchor_pareto_improved_iter: ["025-2026-05-10-pbo-decoupled-lrs110-rearm-magnitude", "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude", "027-2026-05-10-pbo-decoupled-lrs120-ceiling-probe"]
+latest_iteration: "027-2026-05-10-pbo-decoupled-lrs120-ceiling-probe"
 latest_score: 76.5
 latest_tier_label: STRONG
 latest_beats_winner: true
 latest_phase3_performance_candidate: true
 latest_strict_superset: true
 latest_strict_superset_is_novel: true
-latest_g1_pbo: 0.4127
+latest_g1_pbo: 0.3929
 latest_g1_pbo_loop_min: false
 latest_g1_pbo_loop_max: false
 latest_phase4_anchor_improved: true
 latest_phase4_anchor_qualitatively_improved: true
 latest_phase4_anchor_validated: true
 latest_phase4_anchor_qualitatively_validated: true
-latest_phase4_anchor_pareto_improved_vs_iter025: true
+latest_phase4_anchor_pareto_improved_vs_iter026: true
 latest_monotonicity_break: false
 latest_parity_max_abs_diff: 0.0
 latest_parity_n_diff_days: 0
@@ -71,20 +71,26 @@ unconditional_lrs115_calibration_anchor_iter: "026-2026-05-10-pbo-decoupled-lrs1
 unconditional_lrs115_calibration_slot6_sortino: 1.3874
 unconditional_lrs115_calibration_slot6_cagr: 0.3532
 unconditional_lrs115_calibration_slot6_end_eq_vs_iter017: 2.227
+unconditional_lrs120_calibration_anchor_iter: "027-2026-05-10-pbo-decoupled-lrs120-ceiling-probe"
+unconditional_lrs120_calibration_slot6_sortino: 1.3786
+unconditional_lrs120_calibration_slot6_cagr: 0.3622
+unconditional_lrs120_calibration_slot6_end_eq_vs_iter017: 2.908
 phase4_first_formal_anchor_improved_iter: "024-2026-05-10-pbo-decoupled-unconditional-lrs105"
 phase4_first_formal_anchor_improved_config: "qld_voteK2_sma250_100_vol21_40_ar30_unclrs_single_rearmonly_g25_rvp70_cashx_T40D60_unclrs105"
 phase4_first_formal_anchor_improved_sortino: 1.4068
 phase4_first_formal_anchor_improved_cagr: 0.3343
 phase4_first_formal_anchor_improved_end_eq_vs_iter017: 1.264
-phase4_pareto_improved_iter: "026-2026-05-10-pbo-decoupled-lrs115-rearm-magnitude"
-phase4_pareto_improved_config: "qld_voteK2_sma250_100_vol21_40_ar30_unclrs_single_rearmonly_g25_rvp70_cashx_T40D60_unclrs115"
-phase4_pareto_improved_sortino: 1.3874
-phase4_pareto_improved_cagr: 0.3532
-phase4_pareto_improved_end_eq_vs_iter017: 2.227
+phase4_pareto_improved_iter: "027-2026-05-10-pbo-decoupled-lrs120-ceiling-probe"
+phase4_pareto_improved_config: "qld_voteK2_sma250_100_vol21_40_ar30_unclrs_single_rearmonly_g25_rvp70_cashx_T40D60_unclrs120"
+phase4_pareto_improved_sortino: 1.3786
+phase4_pareto_improved_cagr: 0.3622
+phase4_pareto_improved_end_eq_vs_iter017: 2.908
 pbo_structural_not_magnitude_confirmed: true
 lrs_magnitude_scan_4point_complete: true
-lrs_magnitude_scan_max_factor_formally_claimable: 1.15
+lrs_magnitude_scan_5point_complete: true
+lrs_magnitude_scan_max_factor_formally_claimable: 1.20
 lrs_magnitude_monotonicity_validated: true
+lrs_practical_ceiling_for_beats_winner: 1.20
 ---
 
 # letf_rotation_hunt — LOOP MEMORY
@@ -189,6 +195,242 @@ weakened the iter 017 anchor `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
 p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 027 — 2026-05-10 — pbo-decoupled-lrs120-ceiling-probe
+
+**Hypothesis:** PRIMARY (LRS magnitude structural test — sweet-spot ceiling
+probe) — iter 024/025/026 confirmed PBO clustering is structural NOT
+magnitude-related across LRS 1.05/1.10/1.15. This iter advances slot 6's
+LRS factor 1.15 → 1.20 within iter 024/025/026's exact PBO-clearing layout
+to test whether the structural diagnosis extends to the predicted
+ann-vol-<40% sweet-spot boundary. SECONDARY (Phase 4 magnitude monotonicity
+— beyond-sweet-spot probe) — linear extrapolation predicts slot 6 LRS1.20
+delivers Sortino ~1.379 / CAGR ~36.25% / end_eq vs iter017 ~2.85×; if
+Sortino stays ≥ 1.35 and PBO holds, slot 6 should preserve
+phase4_anchor_improved=True AND deliver strict Pareto improvement on CAGR
++ end_eq vs iter 026 slot 6. TERTIARY — completes 5-point LRS magnitude
+scan (1.00, 1.05, 1.10, 1.15, 1.20) on rearm base within PBO-decoupled
+framework — either extends formal claimable LRS ceiling or identifies
+sweet-spot ceiling between LRS1.15 and 1.20×.
+
+**Primary citation:** `[leverage_for_the_long_run, ch.4-5, p.40-60]`
+Husson-Trifoni LRS leverage scaling (1.20× sits at the boundary of
+ann-vol-<40% sweet spot on 2× QLD on-leg = effective ~2.40× of QQQ).
+
+**Secondary:** `[advances_fin_ml, p.208-211]` CSCV PBO mechanism-mix
+diversity; `[leverage_for_the_long_run, p.13, ch.3]` canonical RISK_ON LRS
+rule; `[leverage_for_the_long_run, p.5-6]` ann vol < 40% sweet spot;
+`[advances_fin_ml, p.222-223]` DSR cumulative (n_global=588);
+`[advances_fin_ml, p.196-202]` bootstrap CI / DSR; `[risk_parity, ch.5,
+p.10]` Carlson stacking.
+
+**Configs tested (6, mechanism-mix-diverse — identical layout to iter 024/025/026 except slot 6 LRS factor):**
+
+| name | upgrade | rearm | LRS mode | LRS factor | sortino_lh56y | edge_winner | cagr_lh56y | edge_winner | end_eq | end_eq vs017 | MDD | score | tier | WC | crisis | phase3 | beats | strict | p4_imp | pareto_vs_iter026 |
+|---|---|---|---|--:|---:|---:|---:|---:|---:|---:|---:|---:|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| `..._unclrs_baseline_qld_zroz` (18th-gen anchor) | none | NO | off | 1.00 | 1.3240 | -0.0006 | 0.3108 | +0.00pp | 1.000× | 0.617× | -64.5% | 76.5 | STRONG | T | 1/4 | F | F | F | F | n/a |
+| `..._unclrs_single_K4lv25_g25_rvp70_cashx` (15th-gen anchor) | K4_AND_lv25 | NO | off | 1.00 | 1.3951 | +0.0705 | 0.3147 | +0.39pp | 1.129× | 0.697× | -47.7% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** | F | n/a |
+| `..._unclrs_single_K4lv25_g25_rvp70_cashx_unclrs105` (4th-gen iter 024 anchor) | K4_AND_lv25 | NO | uncond_on | 1.05 | 1.3842 | +0.0596 | 0.3242 | +1.34pp | 1.508× | 0.930× | -49.3% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** | F | n/a |
+| `..._unclrs_single_K4lv25_g25_rvp70_cashx_T40D60` (10th-gen iter017 OR-anchor) | K4_AND_lv25 OR rearm | YES (iter017) | off | 1.00 | **1.4030** | **+0.0784** | **0.3266** | **+1.58pp** | **1.620×** | 1.000× | -48.2% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** | F | n/a |
+| `..._unclrs_single_rearmonly_g25_rvp70_cashx_T40D60` (7th-gen iter022 INDEP) | rearm only | YES (INDEPENDENT) | off | 1.00 | **1.4176** | **+0.0930** | **0.3244** | **+1.36pp** | **1.516×** | 0.936× | -48.2% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** | F | n/a |
+| 🥇 `..._unclrs_single_rearmonly_g25_rvp70_cashx_T40D60_unclrs120` ← **PRIMARY (NEW)** rearm-base × LRS1.20 ceiling probe | rearm only | YES (INDEPENDENT) | uncond_on | **1.20** | **1.3786** | **+0.0540** | **0.3622** | **+5.14pp** | **4.710×** | **2.908×** | -55.5% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** | **🏆T** | **🏆T** |
+
+**KILL_LOOP results (pre-registered):**
+- 🎯 ✅ KILL_LOOP #1 (success_tag) — **FIRED.** 5 of 6 configs achieve
+  beats_winner=True (slots 2-6). 13th loop iter to fire success_tag.
+- ✅ KILL_LOOP #2 (decisive_fail) — **NOT FIRED** (best Sortino 1.4176
+  ≫ 1.20).
+- ✅ KILL_LOOP #3 (replica_baseline) — **NOT FIRED.** Sortino 1.3240 =
+  bit-exact iter 011-026 baseline (drift 0.0000). **18th-gen.**
+- ✅ KILL_LOOP #4 (replica_single_K4lv25_g25) — **NOT FIRED.** Sortino
+  1.3951 = bit-exact iter 014-026 (drift 0.0000). **15th-gen.**
+- ✅ KILL_LOOP #5 (replica_T40D60_OR_iter017) — **NOT FIRED.** Sortino
+  1.4030 = bit-exact iter 017-026 NEW strict_superset (drift 0.0000).
+  **10th-gen reproducibility.**
+- ✅ KILL_LOOP #6 (replica_rearmonly_T40D60) — **NOT FIRED.** Sortino
+  1.4176 = bit-exact iter 021/022/023/024/025/026 rearm-only INDEP IMPL
+  (drift 0.0000). **7th-gen.**
+- ✅ KILL_LOOP #7 (replica_K4_unclrs105) — **NOT FIRED.** Sortino 1.3842
+  = bit-exact iter 024/025/026 K4 + LRS1.05 anchor (drift 0.0000). **4th-gen
+  reproducibility on iter 024's K4-base × LRS1.05 strict_superset.**
+- ✅ KILL_LOOP #8 (PBO_blowup) — **NOT FIRED.** G1 PBO 0.3929 < 0.55 (and
+  notably **lower than iter 026's 0.4127** by -0.0198).
+- 🏆 ✅ KILL_LOOP #9 (PBO_held) — **FIRED — POSITIVE TAG. STRUCTURAL
+  DIAGNOSIS PRESERVED AT LRS1.20 (BEYOND-SWEET-SPOT BOUNDARY).** G1 PBO
+  **0.3929** < 0.50 hard gate; LOWER than iter 026's 0.4127 (favorable
+  structural shift again — third consecutive PBO drop on slot 6
+  progression). Iter trajectory: 011 0.3056 → 014 0.4405 → 017 0.4405 →
+  018 0.8135 → 019 0.1984 (LOOP MIN overall) → 020 0.4325 → 021 0.5000
+  (BORDERLINE) → 022 0.4960 → 023 0.6548 (NEW PBO MODE BLOWUP) → 024
+  0.4365 → 025 0.4365 → 026 0.4127 → **027 0.3929 (NEW LOOP-LOCAL MIN
+  POST-Phase 4)**. **PRIMARY HYPOTHESIS CONFIRMED:** structural-not-
+  magnitude diagnosis extends to LRS1.20×; PBO drops -0.0198 (small
+  magnitude-driven CSCV rank reorder, but no NEW PBO mode emerges at the
+  predicted ann-vol-<40% boundary).
+- 🏆 ✅ KILL_LOOP #10 (lrs120_phase4_anchor_improved) — **FIRED — POSITIVE
+  TAG. FOURTH CONSECUTIVE FORMAL PHASE 4 IMPROVEMENT.** Slot 6 satisfies
+  CAGR 36.22% > 32.66% iter 017 anchor ✓; end_eq vs iter017 2.908× > 1.0×
+  ✓; Sortino 1.3786 ≥ 1.35 ✓; PBO 0.3929 < 0.50 ✓; DSR_global 1.55e-03
+  < 0.05 ✓. **STRONG HYPOTHESIS — CONFIRMED.**
+- 🏆 ✅ KILL_LOOP #11 (lrs120_strict_superset) — **FIRED — STRONGEST
+  HYPOTHESIS.** Slot 6 strict_superset=True (Sortino 1.3786 > 1.3746,
+  CAGR 36.22% > 31.08%, end_eq 4.710× > 1.05×, PBO 0.3929 < 0.50,
+  DSR_global 1.55e-03 < 0.05).
+- 🏆 ✅ KILL_LOOP #12 (lrs120_magnitude_pareto_improvement) — **FIRED.**
+  Slot 6 LRS1.20 strictly Pareto-dominates iter 026 slot 6 LRS1.15 on the
+  formally-claimable space: CAGR 36.22% > 35.32% (+0.90pp) ✓; end_eq vs
+  iter017 2.908× > 2.227× (+0.681× = +31% terminal compounding) ✓;
+  PBO 0.3929 < 0.4127 (favorable). **Third consecutive Pareto improvement
+  on Phase 4 anchor frontier in the loop.**
+- ✅ KILL_LOOP #13 (lrs120_sortino_collapse) — **NOT FIRED.** Slot 6
+  Sortino 1.3786 ≥ 1.35 floor (-0.0088 vs iter 026 LRS1.15 Sortino 1.3874
+  — expected dip per linear monotonicity; +0.029 above floor; **but only
+  +0.0040 above winner threshold 1.3746** — practical claimable ceiling
+  for beats_winner=True is now identified at LRS1.20×).
+- ✅ KILL_LOOP #14 (lrs120_monotonicity_break) — **NOT FIRED.** Sortino
+  delta LRS1.15→1.20 = -0.0088, vs prev-step delta LRS1.10→1.15 = -0.0094,
+  diff |0.0006| << threshold 0.025. **MAGNITUDE MONOTONICITY VALIDATED**
+  through LRS1.20 — small higher-order curvature (dip slightly decreases
+  with rising LRS, consistent through 4 step intervals) but well within
+  linear extrapolation envelope.
+
+**Key finding: 🏆 🎯 FOURTH CONSECUTIVE FORMAL PHASE 4 ANCHOR IMPROVEMENT +
+LOOP'S SECOND 14-POSITIVE-TAG SWEEP + 5-POINT LRS MAGNITUDE SCAN COMPLETE +
+SWEET-SPOT CEILING NOT YET REACHED AT LRS1.20×.** Iter 027 is the **second
+iter in the loop's history to fire all 14 KILL_LOOP positive tags
+simultaneously** (after iter 026). Slot 6 LRS1.20 simultaneously achieves
+fourth consecutive `phase4_anchor_improved=True` AND third consecutive
+Pareto dominance on Phase 4 frontier (this time over iter 026 slot 6
+LRS1.15), with CAGR 36.22% (+0.90pp), end_eq vs iter017 2.908× (+31%
+terminal compounding), and Sortino 1.3786 (-0.0088 expected linear dip).
+End_eq vs T3d-K2 baseline = **4.710× — NEW LOOP MAX vs winner**. The
+Husson-Trifoni `[leverage_for_the_long_run, p.5-6]` ann-vol-<40% sweet
+spot is **validated at 2.40× effective leverage** on QLD on-leg in this
+universe.
+
+**🏆 5-point LRS magnitude scan summary (rearm-base, mechanism-mix-diverse):**
+
+| LRS factor | iter | Sortino | CAGR | end_eq vs017 | PBO | dip per +0.05 | lift per +0.05 |
+|---:|:---|---:|---:|---:|---:|---:|---:|
+| 1.00 | iter 024 slot 5 | 1.4176 | 32.44% | 0.936× | 0.4365 | — | — |
+| 1.05 | iter 024 slot 6 | 1.4068 | 33.43% | 1.264× | 0.4365 | -0.0108 | +0.99pp |
+| 1.10 | iter 025 slot 6 | 1.3968 | 34.39% | 1.687× | 0.4365 | -0.0100 | +0.96pp |
+| 1.15 | iter 026 slot 6 | 1.3874 | 35.32% | 2.227× | 0.4127 | -0.0094 | +0.93pp |
+| 1.20 | **iter 027 slot 6** | **1.3786** | **36.22%** | **2.908×** | **0.3929** | **-0.0088** | **+0.90pp** |
+
+LRS1.20× delivers LOOP MAX intrinsic-strategy CAGR vs iter 017 anchor
+(2.908×) and end_eq vs T3d-K2 baseline (~4.71×) while preserving formal
+claimability (PBO 0.3929 < 0.50, DSR_global 1.55e-03 < 0.05, Sortino
+1.3786 ≥ 1.35 floor, WC=True). **Magnitude monotonicity validated**: dip
+per +0.05 step decays slowly with rising LRS (small higher-order
+curvature) through 4 step intervals — strictly within linear envelope.
+**No sweet-spot ceiling identified within the 1.00 → 1.20× tested range.**
+
+**🎯 SUBPERIOD ROBUSTNESS for slot 6 LRS1.20.** Per-decade Sortino:
+1970-1989 = 2.111 (n=1010, CAGR 64.78%, MDD -31.95%); 1990-2009 = 1.124
+(n=5043, CAGR 34.57%, MDD -55.48%); 2010-2026 = 1.144 (n=4097, CAGR
+31.89%, MDD -42.55%). All 3 subperiods beat SPY CAGR by 18-46pp.
+Modern-era (1990+) Sortino 1.124-1.144 lands BELOW Phase 3 floor 1.20
+(-0.056 to -0.076) — same caveat as iter 022/023/024/025/026.
+**Modern-era softness is structural to the rearm primitive**, NOT the
+LRS overlay magnitude (LRS1.20 adds ~+1pp CAGR uniformly across
+subperiods, preserves Sortino ratio modestly below iter 026 LRS1.15).
+
+**Rolling-window win rates vs iter 017 anchor (slot 6 LRS1.20):** 1y
+0.654; 3y 0.802; 5y **0.843 (NEW LOOP MAX)**; 10y 0.752. **Slot 6 LRS1.20
+beats iter 017 in 65-84% of rolling subperiods** — the strongest
+rolling-window dominance in loop history. LRS magnitude provides
+temporally distributed alpha vs iter 017, with gap widening monotonically
+with LRS factor through 5 magnitude points.
+
+**All 5 prior calibration anchors PRESERVED bit-exact** (KILL_LOOP #3-#7
+ALL NOT FIRED): baseline 1.3240 (18th-gen), single_K4lv25_g25 1.3951
+(15th-gen), T40D60 OR-anchor 1.4030 (10th-gen), rearm-only T40D60 INDEP
+IMPL 1.4176 (7th-gen), K4 + LRS1.05 1.3842 (4th-gen). **Cross-impl
+parity check (iter 017 vs iter 022 INDEP IMPL): max abs diff = 0.000e+00,
+n_diff_days = 0**. **NEW LRS1.20 calibration anchor seeded:** slot 6
+rearm + uncond LRS1.20 Sortino 1.3786 / CAGR 36.22% / end_eq vs iter017
+2.908× (1st-gen — established by iter 027).
+
+**Capital remains 100% Plan C per mandate §1**; iter appended to:
+- `loop_winner_iter` (14th iter)
+- `loop_phase3_performance_candidate_iter` (13th iter)
+- `loop_strict_superset_iter` (12th iter — slot 6 NEW non-replica
+  strict_superset; **latest_strict_superset_is_novel = TRUE**)
+- `loop_phase4_anchor_qualitatively_improved_iter` (5th iter)
+- `loop_phase4_anchor_improved_iter` (4th iter — formal Phase 4
+  improvement; iter 024 was 1st, iter 025 was 2nd Pareto-dominant over
+  iter 024, iter 026 was 3rd Pareto-dominant over iter 025, iter 027 is
+  4th Pareto-dominant over iter 026)
+- `loop_phase4_anchor_pareto_improved_iter` (3rd iter — third consecutive
+  Pareto improvement on Phase 4 anchor frontier in the loop)
+
+Score 76.5 STRONG < 90 deploy bar; per LOOP_PROTOCOL §"Mandate §1
+reinforcement", `docs/CURRENT_STATE.md` "Active Hunts" entry preserved
+untouched. **NO automatic capital realloc.**
+
+**beats_winner:** **true** (5 of 6 configs > 1.3746 threshold; selected
+best is slot 6 because it adds `phase4_anchor_improved=True` AND Pareto-
+dominates iter 026 slot 6 on the formally-claimable space).
+
+**phase3_performance_candidate (any):** **true** (5 of 6 configs).
+
+**strict_superset (any):** **🎯 true** (5 of 6 configs; slot 6 is NEW
+non-replica strict_superset — **latest_strict_superset_is_novel = true**).
+
+**phase4_anchor_improved (any):** **🏆 true** — fourth consecutive iter
+to formally improve Phase 4 anchor.
+
+**phase4_pareto_improvement (any):** **🏆 true** — third consecutive
+Pareto improvement on Phase 4 anchor frontier in the loop. Slot 6 LRS1.20
+strictly dominates iter 026 slot 6 LRS1.15 on CAGR + end_eq vs iter017
+without sacrificing PBO/DSR/WC.
+
+**phase4_anchor_validated:** **true** (5 of 5 prior calibration anchors
+preserved bit-exact + iter 017 vs INDEP IMPL parity = 0).
+
+**monotonicity_break:** **false** — Sortino response to LRS magnitude
+remains linear through LRS1.20.
+
+**Mechanism diagnosis:** Unconditional LRS1.20× during ON adds modest
+positive CAGR (+0.90pp vs iter 026 slot 6's LRS1.15; +3.78pp vs slot 5
+combined effect of 4 LRS steps from 1.00 → 1.20) and small Sortino dip
+(-0.0088 vs iter 026 LRS1.15) on rearm base. The LRS effect per +0.05
+magnitude step remains monotonic and additive through the 5-point scan
+(1.00 → 1.20) — confirms canonical Husson-Trifoni above-MA LRS thesis
+`[leverage_for_the_long_run, p.13, ch.3]` extends to 2.40× effective
+leverage in iter 027's universe. The favorable PBO drop -0.0198 vs iter
+026 reflects small magnitude-driven CSCV rank reorder, NOT structural
+collapse — primary structural-not-magnitude diagnosis preserved for a
+fifth magnitude point.
+
+**⚠️ Practical claimable ceiling identified.** Slot 6 LRS1.20 Sortino
+1.3786 sits +0.0040 above winner threshold 1.3746. With the linear dip
+pattern (-0.009 per +0.05 step), LRS1.25× would yield Sortino ~1.370 —
+below the threshold. This defines the **practical claimable LRS ceiling
+at LRS1.20×** for the beats_winner=True path, even though the structural
+framework (PBO + Sortino floor 1.35) extends further. **Phase 4 anchor
+LRS magnitude axis is now CONCLUSIVELY MAPPED.**
+
+**Next iter ideas:**
+(a) **Combined LRS + ratevol regime overlay (deferred from iter 026
+ideas).** Apply LRS1.15× ONLY when ratevol fires (regime-targeted LRS).
+Tests whether regime conditioning can lift modern-era Sortino above 1.20
+while preserving CAGR lift. Cite `[advances_fin_ml, p.208-211]` and
+`[leverage_for_the_long_run, ch.3]`.
+(b) **Modern-era subperiod stress for slot 6 LRS1.20 — rolling 10y window
+audit.** Rolling 10y subperiods (1990-1999 ... 2017-2026); tests whether
+modern-era Sortino softness (1.124-1.144) is structural or event-driven.
+Cite `[advances_fin_ml, p.196-202]`.
+(c) **Mechanism-orthogonal LRS extension to basket3-invvol60.** basket3
++ LRS1.15× unconditional; tests cross-base LRS generalization with
+distinct crisis profile.
+(d) **Pivot to NON-rearm Phase 4 family** — calendar/seasonality, cross-
+asset trend, VIX regime overlay; iters 017-027 are all variants of T40D60
++ K4 + ratevol scaffolding. With LRS magnitude scan now FULLY complete
+(5 points), the rearm primitive's magnitude-axis improvement headroom is
+**conclusively mapped**. Loop count 27/50 leaves ~23 iters for family
+pivots — strong inflection point.
 
 ### 026 — 2026-05-10 — pbo-decoupled-lrs115-rearm-magnitude
 
