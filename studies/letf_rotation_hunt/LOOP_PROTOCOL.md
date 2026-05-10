@@ -79,6 +79,28 @@ Every `verdict.json` must include the evidence fields that make this auditable:
 `pct_time_above_benchmark_lh56y`, `sortino_edge_vs_winner`,
 `winner_benchmark_sortino`, and `beats_winner_threshold_sortino`.
 
+## Phase 3 objective — performance-first (iters 011+)
+
+Phase 3 starts after the first 10-loop report. The user preference is explicit:
+T3d-K2 already has acceptable safety, so the next loop phase must not optimize
+for lower drawdown or higher Sortino at the cost of weaker compounding. The
+objective is to find a strategy that remains statistically robust while also
+beating T3d-K2 on performance.
+
+Phase 3 diagnostics required in every iter 011+:
+
+- `cagr_lh56y` and `cagr_edge_vs_winner` against T3d-K2 CAGR 31.08%.
+- `end_equity_ratio_vs_winner` against T3d-K2 terminal equity.
+- Rolling end-equity win rates vs T3d-K2 over 1y/3y/5y/10y.
+- `phase3_performance_candidate = true/false`, where true means at minimum:
+  `cagr_lh56y > 0.3108`, `end_equity_ratio_vs_winner > 1.05`,
+  `sortino_lh56y >= 1.20`, PBO < 0.5, and global DSR p < 0.05.
+
+These are performance diagnostics and research prioritization criteria, not a
+mandate override. Any later deployment still requires user-driven mandate §7.
+The statistical controls remain anchored in CSCV/PBO and global DSR
+`[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`.
+
 ## Soft-halt hint (advisory; not enforced by shell)
 
 If 5 consecutive iters all return tier_label ∈ {NEAR_FAIL, FAIL} AND no config

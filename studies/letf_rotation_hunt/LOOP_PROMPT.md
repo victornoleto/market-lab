@@ -12,6 +12,12 @@ T3d-K2 `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` (Sortino_lh56y 1.3246).
 Beat-winner threshold = 1.3746 (= 1.3246 + 0.05). Loop **does NOT halt** on a
 beater — it just records and continues.
 
+Phase 3 (iters 011+): performance-first beater hunt. Iters 009-010 beat the
+T3d-K2 winner on Sortino but reduced CAGR/terminal compounding. The user wants
+better risk/profit **and** better performance, not safer-but-slower variants.
+Prioritize CAGR/equity-relative improvement vs T3d-K2 while preserving PBO/DSR
+hard gates `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`.
+
 ---
 
 ## Copy-paste prompt (loop.sh embeds this verbatim)
@@ -22,11 +28,20 @@ estratégia que bata o study winner T3d-K2
 (qld_voteK2_sma250_100_vol21_40_ar30_off_zroz, Sortino_lh56y 1.3246).
 Meta: 50 iterações cumulativas. Cada sessão executa UMA iteração e PARA.
 
+FASE ATIVA: **Phase 3 — performance-first beater hunt**.
+Contexto: iters 009-010 já bateram T3d-K2 em Sortino/`beats_winner`, mas com
+CAGR menor. O usuário NÃO quer trocar performance por mais segurança: T3d-K2
+já é seguro o suficiente para o objetivo. A próxima fase deve buscar maior
+CAGR/equity terminal/rolling-window performance vs T3d-K2, mantendo risco/lucro
+aceitável e gates estatísticos. Variantes que só reduzem MDD ou aumentam
+Sortino com CAGR menor devem ser tratadas como resultado negativo de Phase 3.
+
 Você é um Claude novo, sem histórico. Toda continuidade está em arquivos.
 
 PASSO 1 — Ler estado em ORDEM (não execute código antes):
   1. studies/letf_rotation_hunt/LOOP_MEMORY.md  ← PRIMEIRO. Frontmatter
      (total_iterations, cumulative_n_trials_*, incumbent_winner_*, beats_winner_threshold_*)
+     e a seção "Phase 3 — performance-first beater hunt".
      + iteration log (slugs já testados — não repetir).
   2. studies/letf_rotation_hunt/LOOP_PROTOCOL.md  ← regras do loop
      (eligibility checklist, naming, scope, mandate §1).
@@ -68,7 +83,23 @@ PASSO 3 — Escolher hipótese (research):
 
   Se algum NO → escolha outra hipótese. Não force.
 
-  Famílias de estratégia ainda não exploradas (sugestões — não exaustivo):
+  Direção obrigatória para Phase 3:
+  - Priorize hipóteses que possam elevar CAGR/equity terminal vs T3d-K2, não
+    apenas reduzir drawdown.
+  - Use T3d-K2 como performance benchmark: CAGR_lh56y 31.08%, MDD -64.5%,
+    Sortino_lh56y 1.3246.
+  - Um bom candidato Phase 3 deve mirar: CAGR_lh56y > 31.08%, terminal equity
+    ratio vs T3d-K2 > 1.05, Sortino_lh56y >= 1.20, PBO < 0.5, DSR global p < 0.05.
+  - Se uma ideia provavelmente só melhora segurança com CAGR menor, rejeite e
+    escolha outra hipótese.
+
+  Famílias de estratégia ainda não exploradas para performance (sugestões — não exaustivo):
+  - Re-entry / crash-rebound accelerators (capturar 2020 COVID sem perder 2022)
+  - Controlled leverage/sizing overlays on iter 010 g25 (performance lift)
+  - ON-leg momentum concentration when breadth/regime confirms risk-on
+  - Dynamic basket weights favoring highest expected return asset under trend
+  - Volatility targeting with leverage-up, not only de-risking
+  - Earnings/seasonality or macro windows only if they improve CAGR vs T3d
   - Cross-asset trend / risk parity rebalancing (Carlson, Asness)
   - VIX percentile / VRP harvesting (Bozovic, Israelov)
   - Calendar / seasonality (Bouchard, Heston-Sadka)
@@ -91,8 +122,14 @@ PASSO 4 — Pre-commit hypothesis.md:
    - Pre-registered KILL conditions deste iter (numera KILL_LOOP #1, #2, ...)
    - Expected outcomes:
      * Sortino_lh56y range esperado
+     * CAGR_lh56y esperado e gap vs T3d-K2 CAGR 31.08%
+     * Terminal equity ratio esperado vs T3d-K2
+     * Rolling-window win-rate esperado vs T3d-K2 (1y/3y/5y/10y)
      * Comparação plan vs winner: para bater, precisa
        sortino > 1.3746 AND winner_conditions_met AND pct_time_above_benchmark_lh56y ≥ 0.95
+     * Phase 3 performance plan: para ser performance candidate, precisa
+       cagr_lh56y > 0.3108 AND end_equity_ratio_vs_winner > 1.05 AND
+       sortino_lh56y >= 1.20 AND PBO < 0.5 AND DSR global p < 0.05
    - INCOMPLETE flags (synth caveats, data gaps, leverage assumptions, etc.)
 
 PASSO 5 — Implementar backtest.py:
@@ -124,10 +161,20 @@ PASSO 5 — Implementar backtest.py:
     [advances_fin_ml, p.222-223].
   - Para o best_config:
        sortino_edge_vs_winner = sortino_lh56y - 1.3246
+       cagr_edge_vs_winner = cagr_lh56y - 0.3108
+       end_equity_ratio_vs_winner = candidate_end_equity / winner_end_equity
+       rolling_win_rates_vs_winner = {"1y": ..., "3y": ..., "5y": ..., "10y": ...}
        beats_winner = (
            sortino_lh56y > 1.3746
            and winner_conditions_met
            and pct_time_above_benchmark_lh56y >= 0.95
+       )
+       phase3_performance_candidate = (
+           cagr_lh56y > 0.3108
+           and end_equity_ratio_vs_winner > 1.05
+           and sortino_lh56y >= 1.20
+           and pbo < 0.5
+           and dsr_global_p < 0.05
        )
   - TDD obrigatório se introduzir módulo novo: tests em
     tests/test_letf_rotation_hunt_loop_NNN.py. Pytest baseline ≥ 813
@@ -162,7 +209,10 @@ PASSO 6 — Gerar artefatos + validar:
    - Results gross + net per dataset (Sortino + Sharpe + CAGR + MDD)
    - Gates per config (G1-G7)
    - **Comparação vs winner** (NOVA seção):
-       | config | sortino_lh56y | edge_vs_1.3246 | WC | pct_time_above_benchmark_lh56y | beats_winner |
+       | config | sortino_lh56y | edge_vs_1.3246 | cagr_lh56y | cagr_edge_vs_31.08% | terminal_ratio_vs_T3d | WC | pct_time_above_benchmark_lh56y | beats_winner | phase3_perf_candidate |
+   - **Phase 3 performance diagnostics**:
+       CAGR/equity/rolling windows vs T3d-K2; diga explicitamente se a estratégia
+       melhorou performance ou só trocou retorno por segurança.
    - Plots / Tables refs
    - Verdict + KILL status + Conclusion
 
@@ -175,6 +225,7 @@ PASSO 7 — Update LOOP_MEMORY.md:
    - latest_score = best_score
    - latest_tier_label = best_tier_label
    - latest_beats_winner = best_beats_winner
+   - Se disponível, latest_phase3_performance_candidate = best_phase3_performance_candidate
    - Se algum config tem beats_winner=true:
        loop_winner_iter += [iter_id]   (lista; preenche null → ["NNN-..."])
    Iteration log (newest first; insert ABOVE existing entries):
@@ -197,10 +248,12 @@ PASSO 8 — Registro público (CLAUDE.md regra 1):
 PASSO 9 — Commit:
    git add caminhos-específicos    # nunca -A ou .
    Mensagem Conventional Commits:
-     feat(letf-loop): iter NNN — <slug> — Sortino X.XXX (edge ±YY) [tier_label]
+     feat(letf-loop): iter NNN — <slug> — CAGR X.X% Sortino X.XXX [tier_label]
    Body deve incluir:
      - KILL_LOOP pre-conditions: FIRED / NOT FIRED
      - beats_winner: true/false
+     - phase3_performance_candidate: true/false
+     - CAGR/equity terminal vs T3d-K2
      - 1-2 linhas próximo passo sugerido
      - Citações [book.slug, p.X]
 

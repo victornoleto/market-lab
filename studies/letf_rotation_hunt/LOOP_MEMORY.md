@@ -1,6 +1,8 @@
 ---
 mission: "post-close strategy hunt: research new strategies and benchmark vs T3d-K2 study winner"
 status: open
+active_phase: 3
+active_phase_name: "performance-first beater hunt"
 total_iterations: 10
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
@@ -10,10 +12,15 @@ incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
 incumbent_winner_sharpe_lh56y: 0.919
+incumbent_winner_cagr_lh56y: 0.3108
+incumbent_winner_mdd_lh56y: -0.6450
 incumbent_winner_score: 82
 beats_winner_threshold_sortino: 1.3746
 beats_winner_threshold_pct_above_spy: 0.95
 beats_winner_threshold_winner_conditions_met: true
+phase3_performance_threshold_cagr_lh56y: 0.3108
+phase3_performance_threshold_end_equity_ratio_vs_winner: 1.05
+phase3_min_acceptable_sortino_lh56y: 1.20
 loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge"]
 latest_iteration: "010-2026-05-09-graded-master-bridge"
 latest_score: 81.5
@@ -53,6 +60,33 @@ only the configs tested inside the current iter. Global trials start at the
 closed-study count (426 after T5) and add every loop config. Local-only DSR is
 allowed as a diagnostic, but cannot support `beats_winner=true` unless the
 global-trials DSR still passes `[advances_fin_ml, p.222-223]`.
+
+## Phase 3 — performance-first beater hunt (from iter 011)
+
+User directive: the original T3d-K2 winner already has acceptable risk control;
+do **not** keep trading performance for more safety. From iter 011 onward,
+the loop should search for strategies with better risk/profit **and** better
+absolute/relative performance. Sortino-only beaters (iters 009-010) are useful
+research leads but not sufficient for the user's preference.
+
+Phase 3 objective metrics:
+
+1. Preserve statistical gates: PBO < 0.5 and DSR global p < 0.05 remain hard.
+2. Prefer `cagr_lh56y > 31.08%` (T3d-K2 benchmark CAGR) and report the gap.
+3. Prefer terminal equity ratio vs T3d-K2 > 1.05 and report rolling-window
+   win rates over 1y/3y/5y/10y.
+4. Maintain reasonable risk/profit: Sortino_lh56y >= 1.20 is the minimum
+   acceptable floor; lower Sortino is not acceptable even if CAGR rises.
+5. Avoid pure de-risking variants unless they also improve CAGR/terminal
+   equity. A lower drawdown alone is not a Phase 3 win.
+
+Every iter 011+ `hypothesis.md`, `SUMMARY.md`, and `verdict.json` should add
+`phase3_performance_candidate` diagnostics: `cagr_lh56y`, `cagr_edge_vs_winner`,
+`end_equity_ratio_vs_winner`, rolling win rates, and whether the config clears
+the performance-first objective. CAGR/rolling-window comparisons remain
+diagnostics under the mandate, while PBO/DSR/global-trial controls remain the
+statistical hard gates `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
+p.222-223]`.
 
 ## Iteration log (newest first)
 
