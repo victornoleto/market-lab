@@ -1,11 +1,11 @@
 ---
 mission: "post-close strategy hunt: research new strategies and benchmark vs T3d-K2 study winner"
 status: open
-total_iterations: 4
+total_iterations: 5
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 24
-cumulative_n_trials_global: 450
+cumulative_n_trials_loop: 30
+cumulative_n_trials_global: 456
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -15,8 +15,8 @@ beats_winner_threshold_sortino: 1.3746
 beats_winner_threshold_pct_above_spy: 0.95
 beats_winner_threshold_winner_conditions_met: true
 loop_winner_iter: null
-latest_iteration: "004-2026-05-09-corr-regime-stockbond"
-latest_score: 76.5
+latest_iteration: "005-2026-05-09-multi-asset-on-invvol"
+latest_score: 77.5
 latest_tier_label: STRONG
 latest_beats_winner: false
 ---
@@ -55,6 +55,74 @@ allowed as a diagnostic, but cannot support `beats_winner=true` unless the
 global-trials DSR still passes `[advances_fin_ml, p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 005 — 2026-05-09 — multi-asset-on-invvol
+
+**Hypothesis:** Replace winner's single-asset (QLD) ON leg with a basket of
+equity-style LETFs ({QLD, UPRO, UGL}) sized by inverse realised volatility
+(60d / 120d) so each asset contributes equal volatility, while keeping
+winner's binary vote-K=2 trend gate (computed on QLD) and ZROZ as OFF.
+Tests cross-asset **first-moment** diversification — orthogonal to iter
+004's (failed) cross-asset second-moment regime gate. Citation:
+`[stocks_on_the_move, p.98]` (Clenow vol-parity sizing) +
+`[systematic_trading, ch.10]` (Carver inverse-vol position sizing).
+
+**Configs tested (6):**
+
+| name | basket | vol_window | sizing | sortino_lh56y | score | tier | WC | edge_vs_winner |
+|---|---|---:|---|---:|---:|---|:---:|---:|
+| `..._on_baseline` (replica) | {QLD} | — | single | 1.2841 | 72.5 | PROMISING | F | -0.0405 |
+| `..._on_basket2_qld_upro_invvol60` | {QLD, UPRO} | 60d | invvol | 1.2695 | 75.5 | STRONG | F | -0.0551 |
+| `..._on_basket2_qld_ugl_invvol60` | {QLD, UGL} | 60d | invvol | 1.2849 | 74.5 | PROMISING | F | -0.0397 |
+| **`..._on_basket3_qld_upro_ugl_invvol60`** ← Sortino-best | {QLD, UPRO, UGL} | 60d | invvol | **1.3340** | 77.5 | STRONG | F | **+0.0094** |
+| `..._on_basket3_qld_upro_ugl_invvol120` | {QLD, UPRO, UGL} | 120d | invvol | 1.3049 | 77.5 | STRONG | F | -0.0197 |
+| `..._on_basket3_qld_upro_ugl_eqweight` ← score-best | {QLD, UPRO, UGL} | — | eqweight | 1.3317 | **78.0** | STRONG | F | +0.0071 |
+
+**KILL_LOOP results (pre-registered):**
+- KILL_LOOP #1 (success-tag) — **NOT FIRED** (best Sortino 1.3340 < 1.3746;
+  AND winner_conditions_met=False universally because G1 PBO 0.881 fails)
+- KILL_LOOP #2 (decisive-fail) — **NOT FIRED** (all multi-asset Sortinos ≥ 1.27)
+- KILL_LOOP #3 (replica-sanity) — **NOT FIRED** (baseline 1.2841 = bit-exact match
+  to iters 001-004 baselines)
+- KILL_LOOP #4 (single-asset-domination) — **NOT FIRED — partially contradicted.**
+  basket3 configs (1.3340 / 1.3317 / 1.3049) all *exceed* baseline. Iter 023's
+  "QLD × Vote-K=2 is asset-specific" finding holds at 1-asset and 2-asset
+  scales but breaks at 3-asset basket via cross-asset diversification.
+  basket2_qld_ugl pct_above 0.93 < 0.95 strict bar (1980-2000 gold drag).
+- KILL_LOOP #5 (turnover-blowup) — **NOT FIRED** (max 5.44/y; baseline 2.61;
+  ratio 2.08× < 3× threshold)
+
+**Key finding:** **First positive Sortino edge in the loop.**
+basket3_qld_upro_ugl_invvol60 hits Sortino 1.3340 (edge +0.0094 vs winner
+1.3246). Three-asset inverse-vol basket beats single-asset baseline by
++0.05 Sortino AND breaks the 1-of-4 crisis-rescue ceiling (3-of-4: dotcom
++ GFC + COVID via UGL gold complement). Two-asset baskets underperform —
+the diversification benefit requires the third (cross-asset) leg. Equal-
+weight ties inverse-vol on Sortino (1.3317 vs 1.3340) but loses 2020_COVID
+rescue (fixed UPRO 3x weight is over-exposed during Mar-2020 -77% trough).
+**G1 PBO 0.881 is the universal blocker** — single-mechanic grid (5 multi-
+asset variants) is high-correlation; CSCV finds significant IS-OOS rank
+divergence. WC=False for all configs despite positive Sortino edges.
+**2022_rates still not rescued** — even gold falls during USD-strength +
+real-rate rebound. **Methodological lesson:** orthogonal multi-mechanic
+grid (iter 004 style, PBO 0.071) → clean PBO; single-mechanic grid (iter
+005 style) → polluted PBO. Future multi-asset iter should redesign with
+3 orthogonal axes.
+
+**beats_winner:** **false** (best Sortino 1.3340 < 1.3746 threshold AND G1
+PBO blocker; first config with positive edge but +0.05 anti-curve-fit
+margin not cleared).
+
+**Next iter ideas:** (a) **Bond duration timing** `[systematic_trading,
+ch.9 p.180-190]` — 10y rate vol > 60d 80th percentile → reduce ZROZ /
+switch to IEF. Iter 005 confirmed multi-asset can't rescue 2022_rates
+(gold also fell); sidestepping bond risk directly is the orthogonal angle
+and targets the unrescued crisis. **Highest expected value.**
+(b) **Multi-asset orthogonal-grid retest** — same {QLD, UPRO, UGL} basket
+but vary across 3 mechanic dimensions (composition × sizing × gate scope)
+in 8 configs, to test whether iter 005's +0.0094 Sortino edge survives
+proper CSCV (G1 PBO < 0.5). (c) VIX-percentile / VRP overlay
+`[volatility_trading, ch.7]`.
 
 ### 004 — 2026-05-09 — corr-regime-stockbond
 
