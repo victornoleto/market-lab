@@ -3,11 +3,11 @@ mission: "post-close strategy hunt: research new strategies and benchmark vs T3d
 status: open
 active_phase: 3
 active_phase_name: "performance-first beater hunt"
-total_iterations: 18
+total_iterations: 19
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 108
-cumulative_n_trials_global: 534
+cumulative_n_trials_loop: 114
+cumulative_n_trials_global: 540
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -21,16 +21,18 @@ beats_winner_threshold_winner_conditions_met: true
 phase3_performance_threshold_cagr_lh56y: 0.3108
 phase3_performance_threshold_end_equity_ratio_vs_winner: 1.05
 phase3_min_acceptable_sortino_lh56y: 1.20
-loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak"]
-loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak"]
-loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak"]
-latest_iteration: "018-2026-05-10-graded-rearm-depth-conditional"
-latest_score: 72.5
-latest_tier_label: PROMISING
-latest_beats_winner: false
-latest_phase3_performance_candidate: false
-latest_strict_superset: false
+loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix"]
+loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix"]
+loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off", "014-2026-05-10-mechanism-mix-diverse-graded-blend", "015-2026-05-10-equity-tilted-basket-cagr-recovery", "016-2026-05-10-regime-switch-on-leg-basket", "017-2026-05-10-postcrash-rearm-tqqq-streak", "019-2026-05-10-spyrv-pct25-upgrade-mechmix"]
+latest_iteration: "019-2026-05-10-spyrv-pct25-upgrade-mechmix"
+latest_score: 76.5
+latest_tier_label: STRONG
+latest_beats_winner: true
+latest_phase3_performance_candidate: true
+latest_strict_superset: true
 latest_strict_superset_is_novel: false
+latest_g1_pbo: 0.1984
+latest_g1_pbo_loop_min: true
 ---
 
 # letf_rotation_hunt — LOOP MEMORY
@@ -94,6 +96,138 @@ statistical hard gates `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
 p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 019 — 2026-05-10 — spyrv-pct25-upgrade-mechmix
+
+**Hypothesis:** SPY 21d realised-vol percentile (< 25th vs trailing
+1260-day window) as an alternative upgrade-gate trigger that is
+OR-combined with iter 014's K4_AND_QLDlv25 and iter 017's T40D60
+post-crash rearm. Six configs (mechanism-mix-diverse — 5 distinct
+upgrade-axis topologies) testing whether broader-market vol-regime
+onsets unlock additional upgrade activation that asset-specific QLD-vol
+misses, in pursuit of the loop's 5th strict_superset on a NEW
+forward-vol-orthogonal axis.
+**Primary citation:** `[volatility_trading, p.58-60]` Sinclair vol cone
+(percentile-based vol-regime gate).
+**Secondary:** `[leverage_for_the_long_run, p.4-7, ch.2-3]`
+Husson-Trifoni low-vol⇒streaks; `[stocks_on_the_move, p.98]` Clenow
+trend re-establishment; `[risk_parity, p.80-81, ch.4]` Qian RORO graded;
+`[risk_parity, ch.5, p.10]` Carlson stacking; `[systematic_trading,
+p.212, ch.13]` Carver re-arm hysteresis (slot 6 inheritance);
+`[advances_fin_ml, p.208-211]` CSCV PBO; `[advances_fin_ml, p.222-223]`
+DSR cumulative (n_global=540).
+
+**Configs tested (6, mechanism-mix-diverse with 5 distinct upgrade-axis topologies):**
+
+| name | ON-leg | upgrade axis | rearm | sortino_lh56y | edge | cagr_lh56y | edge | end_eq | MDD | score | tier | WC | crisis | phase3 | beats | strict |
+|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---|:---:|:---:|:---:|:---:|:---:|
+| `..._spyrv_baseline_qld_zroz` | single QLD | none | — | 1.3240 | -0.0006 | 0.3108 | +0.00pp | 1.000× | -64.5% | 76.5 | STRONG | T | 1/4 | F | F | F |
+| `..._spyrv_single_K4lv25_g25_rvp70_cashx` ← iter 014 strict_superset replica | single QLD/TQQQ | K4_AND_QLDlv25 | — | 1.3951 | +0.0705 | 0.3147 | +0.39pp | 1.129× | -47.7% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** |
+| 🥇 `..._spyrv_basket3invvol_K4lv25_g25_rvp70_cashx` ← iter 014 LOOP MAX Sortino replica | basket3-invvol60 | K4_AND_QLDlv25 | — | **1.4689** | +0.1443 | 0.2265 | -8.43pp | 0.056× | **-32.8%** | **81.5** | STRONG | **T** | **3/4** | F | T | F |
+| 🏆 `..._spyrv_single_K4lv25_g25_rvp70_cashx_T40D60` ← iter 017 NEW strict_superset replica | single QLD/TQQQ | K4_AND_QLDlv25 OR rearm | T40D60 | **1.4030** | **+0.0784** | **0.3266** | **+1.58pp** | **1.620×** | -48.2% | 76.5 | STRONG | **T** | 1/4 | **T** | **T** | **🎯T** |
+| `..._spyrv_single_K4lv25_OR_spyrv25_g25_rvp70_cashx` ← PRIMARY (rejected) | single QLD/TQQQ | K4_AND_QLDlv25 OR SPYRV25 | — | 1.2899 | -0.0347 | 0.3085 | -0.23pp | 0.933× | -48.4% | 76.5 | STRONG | T | 1/4 | F | F | F |
+| `..._spyrv_single_K4lv25_OR_spyrv25_g25_rvp70_cashx_T40D60` ← STRONGEST (phase3 only) | single QLD/TQQQ | K4_AND_QLDlv25 OR SPYRV25 OR rearm | T40D60 | 1.3133 | -0.0113 | 0.3220 | +1.12pp | 1.409× | -48.2% | 76.5 | STRONG | T | 1/4 | **T** | F | F |
+
+**KILL_LOOP results (pre-registered):**
+- 🎯 ✅ KILL_LOOP #1 (success_tag) — **FIRED.** 3 of 6 configs achieve
+  beats_winner=True (single replica, basket3 replica, T40D60 replica).
+  7th loop iter to fire success_tag (after 009/010/012/014/015/016/017).
+- ❌ KILL_LOOP #2 (decisive_fail) — **NOT FIRED** (best Sortino 1.4030
+  ≫ 1.20 floor).
+- ✅ KILL_LOOP #3 (replica_sanity_baseline) — **NOT FIRED.** Baseline
+  Sortino 1.3240 = bit-exact match to iter 011-018 (drift 0.0000).
+  **10th-generation cross-iter reproducibility.**
+- ✅ KILL_LOOP #4 (replica_sanity_single_K4lv25_g25) — **NOT FIRED.**
+  single_K4lv25_g25 Sortino 1.3951 = bit-exact match to iter 013-018
+  (drift 0.0000).
+- ✅ KILL_LOOP #5 (replica_sanity_basket3invvol_K4lv25_g25) — **NOT
+  FIRED.** basket3invvol Sortino 1.4689 / CAGR 22.65% / MDD -32.82% /
+  crisis 3/4 = bit-exact match to iter 014-017 (drift 0.0000).
+- ✅ KILL_LOOP #6 (replica_sanity_T40D60) — **NOT FIRED.** T40D60
+  Sortino 1.4030 = bit-exact match to iter 017-018 NEW strict_superset
+  (drift 0.0000). **2nd-generation reproducibility on iter 017's first
+  novel strict_superset CONFIRMED.**
+- ❌ KILL_LOOP #7 (PBO_blowup) — **NOT FIRED.** G1 PBO 0.1984 ≪ 0.55
+  ceiling.
+- 🏆 🎯 ✅ KILL_LOOP #8 (PBO_held) — **FIRED — POSITIVE TAG.** G1 PBO
+  **0.1984** ≪ 0.50 hard gate. **NEW LOOP MIN** (vs prior 0.3056 iter
+  011, by -0.107pp). Iter trajectory: 005 0.881 → 006 0.798 → 007 0.552
+  → 008 0.5675 → 009 0.3770 → 010 0.3929 → 011 0.3056 → 012 0.4960 →
+  013 0.5437 → 014 0.4405 → 015 0.3333 → 016 0.3730 → 017 0.4405 → 018
+  0.8135 → **019 0.1984 (NEW LOOP MIN)**.
+- 🎯 ✅ KILL_LOOP #9 (spyrv_phase3_perf_candidate) — **FIRED.** Slot 6
+  (3-way OR composite) achieves phase3=True (CAGR 32.20%, end_eq 1.409×,
+  Sortino 1.3133, PBO 0.1984, DSR_global 3.14e-3). **CORE WEAK
+  HYPOTHESIS CONFIRMED.**
+- ❌ KILL_LOOP #10 (spyrv_strict_superset) — **NOT FIRED.** 0 of 2
+  spyrv configs achieve strict_superset (slot 5 Sortino 1.2899 / slot 6
+  Sortino 1.3133, both < 1.3746 threshold). **STRONGEST HYPOTHESIS
+  REJECTED.**
+- ❌ KILL_LOOP #11 (spyrv_2020_covid_rescue) — **NOT FIRED.** No spyrv
+  config beats SPY in 2020_covid window. SPY-RV-pct25 fires too late
+  (post-recovery) for V-bottom capture.
+- ❌ KILL_LOOP #12 (spyrv_strict_superset_with_crisis_2plus) — **NOT
+  FIRED.** Loop's first crisis-≥2/4 strict_superset still not achieved.
+
+**Key finding: ⚠️ STRONG HYPOTHESIS REJECTED — SPY-RV-pct25 OR-add does
+NOT beat K4_AND_QLDlv25 anchor on Sortino, but G1 PBO 0.1984 = NEW LOOP
+MIN (best mechanism-mix-diversity result yet).** Slot 5 Sortino 1.2899
+(-0.1052 vs slot 2 anchor 1.3951); slot 6 Sortino 1.3133 (-0.0897 vs
+slot 4 T40D60 anchor 1.4030). Slot 5 fails Phase 3 floor (CAGR 30.85% <
+31.08%; end_eq 0.933× < 1.05×). Slot 6 PASSES Phase 3 (CAGR 32.20%,
+end_eq 1.409×, Sortino ≥ 1.20) — KILL_LOOP #9 fires — but cannot clear
+the +0.05 anti-curve-fit margin above winner Sortino 1.3246. **Mechanism
+diagnosis:** SPY-RV-pct25 fires 27.6% of valid days vs K4_AND_QLDlv25's
+7.1% — the OR-add expands upgrade activation 4× from 7.1% to 26-30%,
+but the broader-market low-vol regime captures many ranging-market
+windows where leverage drag dominates compounding. **Sinclair vol cone
+gate at 25th percentile on SPY is too inclusive for LETF rotation
+upgrade.** **All 4 calibration anchors PRESERVED bit-exact** (KILL_LOOP
+#3, #4, #5, #6 ALL NOT FIRED): baseline 1.3240 (10th-gen replica),
+single_K4lv25_g25 1.3951 (8th-gen), basket3invvol 1.4689 (5th-gen),
+T40D60 1.4030 (2nd-gen) — **iter 017's first novel strict_superset
+confirmed reproducible across one full generation.** **G1 PBO 0.1984 —
+NEW LOOP MIN** (smashes prior 0.3056 by -0.107pp). 5-distinct-mechanism-
+topology recipe pushes CSCV diversity to its empirical floor —
+methodological contribution: confirms that ADDING a genuinely orthogonal
+upgrade-axis (different vol asset, different fire-rate) reduces ranking-
+clustering substantially even when the new mechanism does not unlock
+alpha. **Capital remains 100% Plan C per mandate §1**; iter NOT a NEW
+strict_superset finding (slots 2 + 4 are replicas of iter 014 + iter 017
+respectively). Score 76.5 STRONG < 90 deploy bar; per LOOP_PROTOCOL
+§"Mandate §1 reinforcement", `docs/CURRENT_STATE.md` "Active Hunts"
+entry preserved untouched. **NO automatic capital realloc.** Iter
+appended to `loop_winner_iter` (8th iter), `loop_phase3_performance_
+candidate_iter` (7th iter), AND `loop_strict_superset_iter` (6th iter
+— but all replicas; slot 4 T40D60 remains the loop's only NOVEL
+strict_superset, content-equivalent to iter 017).
+
+**beats_winner:** **true** (3 of 6 configs > 1.3746 threshold; all
+replicas; best is slot 4 T40D60).
+
+**phase3_performance_candidate (any):** **true** (slot 6 NEW + slots 2
++ 4 replicas).
+
+**strict_superset (any):** **🎯 true** (slots 2 + 4 replicas;
+**latest_strict_superset_is_novel = false** — no NEW iter 019
+strict_superset).
+
+**Next iter ideas:** (a) **AND-combine SPY-RV-pct25 with
+K4_AND_QLDlv25** — test whether intersection (not union) provides better
+selectivity. Activation expected ~6%. Cite `[volatility_trading,
+p.58-60]`. **Highest expected value: directly tests the rejection
+mechanism** (OR was too permissive; AND tests if intersection is more
+selective than QLDlv25 alone). (b) **Tighter percentile (10th instead of
+25th)** — extreme-low-vol only. Activation expected ~10-12%. Combined
+with iter 017 T40D60 rearm. (c) **VIX-based forward-looking signal**
+— VIX percentile (vs trailing 1y) replaces realised-vol percentile.
+1990+ coverage limits to modern_1990 dataset. Cite `[volatility_trading,
+p.217-218]`. (d) **UGL-realised-vol percentile** — different asset
+class (gold), more orthogonal to QLD-equity-vol than SPY. Cite
+`[volatility_trading, p.58-60]` cross-asset. (e) **Crash-MDD-conditional
+rearm** — fire rearm only when prior OFF stretch coincides with
+trailing 200d SPY MDD breach > -15%. Filters seesaw-induced false
+rearms. Cite `[regime_change]` + `[leverage_for_the_long_run, p.4-7]`.
 
 ### 018 — 2026-05-10 — graded-rearm-depth-conditional
 
