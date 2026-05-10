@@ -1,11 +1,11 @@
 ---
 mission: "post-close strategy hunt: research new strategies and benchmark vs T3d-K2 study winner"
 status: open
-total_iterations: 5
+total_iterations: 6
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 30
-cumulative_n_trials_global: 456
+cumulative_n_trials_loop: 36
+cumulative_n_trials_global: 462
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -15,9 +15,9 @@ beats_winner_threshold_sortino: 1.3746
 beats_winner_threshold_pct_above_spy: 0.95
 beats_winner_threshold_winner_conditions_met: true
 loop_winner_iter: null
-latest_iteration: "005-2026-05-09-multi-asset-on-invvol"
-latest_score: 77.5
-latest_tier_label: STRONG
+latest_iteration: "006-2026-05-09-bond-ratevol-regime"
+latest_score: 72.5
+latest_tier_label: PROMISING
 latest_beats_winner: false
 ---
 
@@ -55,6 +55,82 @@ allowed as a diagnostic, but cannot support `beats_winner=true` unless the
 global-trials DSR still passes `[advances_fin_ml, p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 006 — 2026-05-09 — bond-ratevol-regime
+
+**Hypothesis:** Bond rate-vol regime master-gate — when ZROZ realised vol
+(60d/120d) percentile within trailing 5y exceeds 70th/80th, OFF leg
+reroutes from ZROZ (≈ 27y duration) to a shorter-duration alternative
+(CASHX or IEFSIM). Targets the 2022_rates loss directly via own-asset
+OFF-leg second-moment regime detection — orthogonal to all 5 prior loop
+iters. Citation: `[volatility_trading, p.58-60]` (Sinclair volatility cone) +
+`[systematic_trading, p.212, ch.13]` (Carver vol-scaled regime thresholds).
+
+**Configs tested (6, 3-axis grid: pct × window × alt-asset):**
+
+| name | pct | window | alt-OFF | sortino_lh56y | active% | score | tier | WC | edge_vs_winner |
+|---|--:|--:|---|---:|---:|---:|---|:---:|---:|
+| `..._ratevol_off_baseline` (replica) | — | — | — | 1.2841 | 0.0% | 72.5 | PROMISING | F | -0.0405 |
+| **`..._ratevol_p70_60d_to_cashx`** ← Sortino-best | 0.70 | 60d | CASHX | **1.3386** | 28.0% | 72.5 | PROMISING | F | **+0.0140** |
+| `..._ratevol_p80_60d_to_cashx` | 0.80 | 60d | CASHX | 1.3288 | 19.1% | 72.5 | PROMISING | F | +0.0042 |
+| `..._ratevol_p80_120d_to_cashx` | 0.80 | 120d | CASHX | 1.3244 | 19.8% | 72.5 | PROMISING | F | -0.0002 |
+| `..._ratevol_p70_60d_to_ief` | 0.70 | 60d | IEFSIM | 1.3345 | 28.0% | 72.5 | PROMISING | F | +0.0099 |
+| `..._ratevol_p80_60d_to_ief` | 0.80 | 60d | IEFSIM | 1.3241 | 19.1% | 72.5 | PROMISING | F | -0.0005 |
+
+**KILL_LOOP results (pre-registered):**
+- KILL_LOOP #1 (success-tag) — **NOT FIRED** (best Sortino 1.3386 < 1.3746
+  threshold AND winner_conditions_met=False universally because G1 PBO
+  0.798 fails)
+- KILL_LOOP #2 (decisive-fail) — **NOT FIRED** (all 5 ratevol Sortinos
+  ≥ 1.3241; family is *promising*, not dead)
+- KILL_LOOP #3 (replica-sanity) — **NOT FIRED** (baseline 1.2841 =
+  bit-exact match to iters 001-005 baselines)
+- KILL_LOOP #4 (over-suppression) — **NOT FIRED** (pct_above_benchmark
+  = 1.0000 universally; OFF-leg-only override avoided iter 004 master
+  failure mode)
+- KILL_LOOP #5 (ratevol-non-event) — **NOT FIRED** (gate fires 19-28%
+  of post-warmup days, well above 5% underpowered floor)
+
+**Key finding:** **New loop edge maximum:** `ratevol_p70_60d_to_cashx`
+Sortino 1.3386 (edge +0.0140 vs winner 1.3246) — exceeds iter 005's
+basket3_invvol60 (+0.0094) by 0.0046. **All 5 override configs lift
+baseline universally (5×4 wins on Sortino across configs × datasets)** —
+bit-uniform improvement, first loop iter with this property. **G5 FWD
+post-2020 Sharpe massive lift** for every override config (0.708
+baseline → 0.856-0.943) — direct hypothesis confirmation that bond
+rate-vol gating helps in the 2022 regime. MDD reduced ~7-9pp absolute
+(-64.5% → -55.8% best) without sacrificing CAGR (29.9% → 30.5% — CASHX
+yield carries defensive periods). **Crisis attribution count UNCHANGED
+at 1/4** — SPY-relative binary test misses bond-stress episodes that
+don't coincide with equity bear; the Sortino lift is distributed
+across multiple bond-stress regimes (1979-1981 Volcker, 1994 Greenspan
+shock, 2013 taper, 2022). **G1 PBO 0.798 universally fails** (better
+than iter 005's 0.881 but below iter 004's clean 0.071) — 3-axis grid
+(pct × window × alt-asset) reduces pollution but still single-mechanic
+family. **CASHX > IEFSIM** during bond stress (zero duration cleanly
+orthogonal); **p70 > p80** (wider activation gives more dodging
+chances). Methodological insight: **two independent loop mechanics now
+show G5 post-2020 Sharpe lift** (this iter via ratevol gate; iter 005
+via multi-asset basket) — closed-study winner has a real post-2020
+edge-decay problem the loop is starting to triangulate.
+
+**beats_winner:** **false** (best Sortino 1.3386 < 1.3746 threshold AND
+G1 PBO blocker; second consecutive iter with positive edge over winner
+benchmark but +0.05 anti-curve-fit margin not cleared).
+
+**Next iter ideas:** (a) **Combine ratevol-OFF × inverse-vol-ON basket**
+`[volatility_trading, p.58-60]` + `[stocks_on_the_move, p.98]` — orthogonal
+grid spanning OFF-side regime detection (this iter) AND ON-side
+diversification (iter 005). 8 configs: 2 OFF × 2 ON × 2 controls. Tests
+whether the two effects compound or conflict — both already show
+positive edge AND positive G5 lift independently. **Highest expected
+value because compounding is likely AND it would be the first
+multi-mechanic-family grid in the loop, potentially breaking G1 PBO.**
+(b) VIX-percentile / VRP overlay on equity ON-leg `[volatility_trading,
+ch.7]` — forward-looking implied vol gate, distinct from realised-vol
+already in winner stack. (c) Bond carry forecast on OFF rotation
+`[systematic_trading, ch.7 p.119]` — 10y yield − FFR as additional input
+to OFF-leg routing.
 
 ### 005 — 2026-05-09 — multi-asset-on-invvol
 
