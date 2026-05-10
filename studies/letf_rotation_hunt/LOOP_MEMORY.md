@@ -3,11 +3,11 @@ mission: "post-close strategy hunt: research new strategies and benchmark vs T3d
 status: open
 active_phase: 3
 active_phase_name: "performance-first beater hunt"
-total_iterations: 11
+total_iterations: 12
 target_total_iterations: 50
 closed_study_cumulative_n_trials: 426
-cumulative_n_trials_loop: 66
-cumulative_n_trials_global: 492
+cumulative_n_trials_loop: 72
+cumulative_n_trials_global: 498
 incumbent_winner_iter: "022-2026-05-06-T3d-extended-grid"
 incumbent_winner_config: "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz"
 incumbent_winner_sortino_lh56y: 1.3246
@@ -21,13 +21,15 @@ beats_winner_threshold_winner_conditions_met: true
 phase3_performance_threshold_cagr_lh56y: 0.3108
 phase3_performance_threshold_end_equity_ratio_vs_winner: 1.05
 phase3_min_acceptable_sortino_lh56y: 1.20
-loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge"]
-loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage"]
-latest_iteration: "011-2026-05-10-conditional-tqqq-leverage"
+loop_winner_iter: ["009-2026-05-09-master-scope-off-override", "010-2026-05-09-graded-master-bridge", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off"]
+loop_phase3_performance_candidate_iter: ["011-2026-05-10-conditional-tqqq-leverage", "012-2026-05-10-compound-tqqq-K4-x-ratevol-off"]
+loop_strict_superset_iter: ["012-2026-05-10-compound-tqqq-K4-x-ratevol-off"]
+latest_iteration: "012-2026-05-10-compound-tqqq-K4-x-ratevol-off"
 latest_score: 76.5
 latest_tier_label: STRONG
-latest_beats_winner: false
+latest_beats_winner: true
 latest_phase3_performance_candidate: true
+latest_strict_superset: true
 ---
 
 # letf_rotation_hunt — LOOP MEMORY
@@ -91,6 +93,132 @@ statistical hard gates `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
 p.222-223]`.
 
 ## Iteration log (newest first)
+
+### 012 — 2026-05-10 — compound-tqqq-K4-x-ratevol-off
+
+**Hypothesis:** Compound stack of iter 011's TQQQ-K4 leverage upgrade
+(ON-leg amplifier — substitute TQQQSIM for QLDSIM when K=4 vote fires)
+with iter 006/007's ratevol-OFF override (OFF-leg diversion to
+CASHX/IEFSIM when ZROZ realised vol percentile > p70/p80 over trailing
+5y). Two mechanically-orthogonal lifts stacked per Carlson cap-efficient
+stacking. Targets the loop's first **strict-superset** config that
+simultaneously clears `beats_winner=True` AND
+`phase3_performance_candidate=True`. Citation:
+`[risk_parity, ch.5, p.10]` Carlson cap-efficient stacking (primary);
+`[volatility_trading, p.58-60]` Sinclair vol cone; `[stocks_on_the_
+move, p.98]` Clenow trend; `[leverage_for_the_long_run, ch.4-5,
+p.40-60]` LRS leverage scaling; `[advances_fin_ml, p.208-211]` CSCV
+PBO; `[advances_fin_ml, p.222-223]` DSR cumulative (n_trials_global=498).
+
+**Configs tested (6, 6-topology compound mechanism-mix grid):**
+
+| name | topology | upg-active% | rv-active% | sortino_lh56y | edge | cagr_lh56y | edge | end_eq | MDD | score | tier | WC | crisis | phase3 | beats | strict |
+|---|---|--:|--:|---:|---:|---:|---:|---:|---:|---:|---|:---:|:---:|:---:|:---:|:---:|
+| `..._clegrv_baseline_qld_zroz` | none/none | 0.0% | 0.0% | 1.3240 | -0.0006 | 0.3108 | +0.00pp | 1.000× | -64.5% | 76.5 | STRONG | T | 1/4 | F | F | F |
+| `..._clegrv_tqqq_K4_zroz` ← iter 011 K4 anchor | K4/none | 20.1% | 0.0% | 1.2911 | -0.0335 | 0.3236 | +1.28pp | 1.482× | -64.9% | 76.5 | STRONG | T | 1/4 | **TRUE** | F | F |
+| `..._clegrv_tqqq_K4_rvp70_cashx` ← CAGR ceiling | K4/p70-cashx | 20.1% | 10.9% | 1.3355 | +0.0109 | **0.3305** | **+1.97pp** | **1.825×** | -55.8% | 76.5 | STRONG | T | 1/4 | **TRUE** | F | F |
+| `..._clegrv_tqqq_K4_rvp70_ief` | K4/p70-ief | 20.1% | 10.9% | 1.3323 | +0.0077 | 0.3302 | +1.94pp | 1.808× | -57.4% | 76.5 | STRONG | T | 1/4 | **TRUE** | F | F |
+| `..._clegrv_tqqq_K4_rvp80_cashx` | K4/p80-cashx | 20.1% | 9.2% | 1.3272 | +0.0026 | 0.3284 | +1.76pp | 1.715× | -59.9% | 76.5 | STRONG | T | 1/4 | **TRUE** | F | F |
+| 🏆 **`..._clegrv_tqqq_K4_AND_lv25_rvp70_cashx`** ← 🎯 STRICT SUPERSET | K4_AND_lv25/p70-cashx | 7.1% | 10.9% | **1.3769** | **+0.0523** | 0.3250 | +1.42pp | 1.544× | **-55.8%** | 76.5 | STRONG | **T** | 1/4 | **TRUE** | **TRUE** | **🎯 TRUE** |
+
+**KILL_LOOP results (pre-registered):**
+- 🏆 ✅ KILL_LOOP #1 (success_tag) — **FIRED.** `..._tqqq_K4_AND_
+  lv25_rvp70_cashx` achieves `beats_winner=True` (Sortino 1.3769 >
+  1.3746 ✓, WC=True ✓, pct_above 1.0 ✓). 3rd loop iter to achieve
+  beats_winner=true (iters 009, 010, 012; iter 011 missed by Sortino-
+  CAGR trade-off).
+- KILL_LOOP #2 (decisive_fail) — **NOT FIRED** (best Sortino 1.3769
+  >> 1.20 floor).
+- ✅ KILL_LOOP #3 (replica_sanity_baseline) — **NOT FIRED.** Baseline
+  Sortino 1.3240 = bit-exact match to iter 011 baseline (drift
+  0.0000). Confirms iter 012 compound state machine reduces to
+  iter 011 conditional state machine when ratevol disabled +
+  upgrade=0. Calibration anchor preserved.
+- 🎯 ✅ KILL_LOOP #4 (phase3_perf_candidate) — **FIRED — POSITIVE
+  TAG.** 5 of 6 configs achieve `phase3_performance_candidate=True`
+  (same hit rate as iter 011). Phase 3 momentum continues.
+- ⚠️ KILL_LOOP #5 (PBO_blowup) — **NOT FIRED.** G1 PBO 0.4960 < 0.55
+  ceiling AND 0.50 hard gate (barely — by 0.004). Regression vs iter
+  011's loop-min 0.3056 (+0.190pp) due to parametric-variant
+  clustering in compound family. Iter trajectory: 005 0.881 → 006
+  0.798 → 007 0.552 → 008 0.5675 → 009 0.3770 → 010 0.3929 → 011
+  0.3056 → **012 0.4960**.
+- ✅ KILL_LOOP #6 (compound_collapse) — **NOT FIRED.** ALL 4 compound
+  configs (slots 3-6) STRICTLY LIFT Sortino vs K4_zroz anchor (deltas
+  +0.0361 to +0.0858). Cap-efficient stacking confirmed.
+- 🎯 🏆 ✅ KILL_LOOP #7 (strict_superset) — **FIRED — POSITIVE TAG
+  (LOOP'S FIRST!).** `..._tqqq_K4_AND_lv25_rvp70_cashx` achieves BOTH
+  `beats_winner=True` AND `phase3_performance_candidate=True`
+  simultaneously. Hypothesis fully confirmed at the strongest
+  possible level.
+- ❌ KILL_LOOP #8 (crisis_2022_rescue) — **NOT FIRED.** No compound
+  config beats SPY in 2022_rates window. Crisis count unchanged at
+  1/4 (only 2008). Iter 007's 2022 rescue depended on multi-asset
+  basket3 with UGL gold cushion; iter 012's single QLD/TQQQ ON-leg
+  has no equity-side defense for 2022.
+
+**Key finding: 🏆 🎯 LOOP'S FIRST STRICT-SUPERSET CONFIG —
+pre-registered hypothesis fully confirmed at the strongest possible
+level.** `qld_voteK2_sma250_100_vol21_40_ar30_clegrv_tqqq_K4_AND_lv25_
+rvp70_cashx` simultaneously clears all `beats_winner=True` thresholds
+(Sortino 1.3769 > 1.3746 ✓, WC=True ✓, pct_above 1.0 ✓) AND all
+`phase3_performance_candidate=True` strict-bar conditions (CAGR 32.50%
+> 31.08%, end_eq 1.544× > 1.05, Sortino 1.3769 ≥ 1.20, PBO 0.4960 <
+0.50, DSR_global 1.31e-03 < 0.05). MDD improves to -55.79% (+8.71pp
+vs baseline -64.50%). Sharpe 0.9584 (loop max; > T3d-K2 winner 0.919).
+**G4 OOS Sharpe = 1.005** (loop max). **G2 DSR p_cum = 1.31e-03 at
+n=498** (loop minimum). **ALL 4 compound configs lift Sortino vs iter
+011 K4 anchor** (deltas +0.0361 to +0.0858) AND lift CAGR (+0.0014pp
+to +0.0069pp) — Carlson cap-efficient stacking thesis empirically
+confirmed (KILL_LOOP #6 NOT FIRED). **G1 PBO regression to 0.4960**
+(loop-min was iter 011's 0.3056; +0.190pp) is the hypothesis-
+confirmation cost: compound configs share K=2 entry + ratevol gate +
+alt-OFF asset family (parametric-variant cluster), less mechanically
+diverse than iter 011's 6-distinct-topology grid. Still under both
+0.50 hard gate and 0.55 KILL_LOOP ceiling. **Crisis count unchanged
+at 1/4** (only 2008 GFC) — iter 007's 2022 rescue depended on
+multi-asset basket3 with UGL gold cushion; iter 012's single QLD/TQQQ
+ON-leg has no analogous backstop. Crisis profile structurally
+decoupled from strict-superset performance lift. **Cross-iter
+calibration preserved**: baseline Sortino 1.3240 bit-exact match to
+iter 011 baseline (drift 0.0000) — KILL_LOOP #3 NOT FIRED. Future iter
+013+ may continue using 1.3240 as canonical T3d-K2 replica reference.
+**Capital remains 100% Plan C per mandate §1**; iter appended to BOTH
+`loop_winner_iter` AND `loop_phase3_performance_candidate_iter`; new
+`loop_strict_superset_iter` list initialized in frontmatter. Score
+76.5 < 90 deploy bar; deploy escalation per KILL_RULES.md §DEPLOY
+ESCALATION requires Sharpe_net edge > +0.15 AND user-driven mandate
+§7 override. CURRENT_STATE "Active Hunts" entry preserved untouched
+(LOOP_PROTOCOL §"Mandate §1 reinforcement"; gated on score ≥ 90).
+**NO automatic capital realloc.**
+
+**beats_winner:** **true** (best config K4_AND_lv25_rvp70_cashx:
+Sortino 1.3769 > 1.3746 ✓, WC=True ✓, pct_above 1.0000 ≥ 0.95 ✓).
+
+**phase3_performance_candidate (any):** **true** (5 of 6 configs).
+
+**strict_superset (any):** **🎯 true** (1 of 6: K4_AND_lv25_rvp70_cashx
+— loop's first strict-superset config).
+
+**Next iter ideas:** (a) **Strict-superset multi-asset compound** —
+stack iter 010's graded master scope (gamma=0.25 g25_cashx Sortino
+1.4670, crisis 3/4) with iter 012's K4_AND_lv25 upgrade gate. Targets
+the only structural gap in iter 012 (crisis 1/4 → 3/4) while keeping
+the strict-superset Sortino lift. Could push score from 76.5 to ~85
+via crisis criterion (criterion 6 +5pts). Cite `[risk_parity, p.80-81,
+ch.4]` Qian RORO graded + `[risk_parity, ch.5, p.10]` stacking.
+**Highest expected value: would lift score above 80 AND maintain
+beats_winner+phase3+strict-superset triple.** (b) **AND-gate fine-grid
+sweep** — sweep K=4 ∩ lowvol{15, 20, 25, 30, 40} to map AND-gate
+sensitivity. Slot 6's 7.1% activation may not be optimal. Risk: G1 PBO
+may regress further. (c) **Compound triple stack: K4 × ratevol ×
+VIX-percentile** — add forward-looking VIX-percentile gate orthogonal
+to realised-vol gates. Iter 010 idea #3 untouched. `[volatility_
+trading, ch.7]` Sinclair VRP. (d) **Multi-asset basket × compound** —
+replace QLD/TQQQ binary swap with QLD/UGL basket (gold backstop for
+2022 rescue) within iter 012 framework. Direct path to crisis 2/4 or
+3/4. (e) **Tax / fees stress on iter 012 strict-superset** — turnover
+4.84/y; quantify net-of-tax impact (Lei 14.754 swing tax 15%).
 
 ### 011 — 2026-05-10 — conditional-tqqq-leverage
 
