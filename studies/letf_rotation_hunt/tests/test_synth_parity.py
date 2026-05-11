@@ -36,8 +36,8 @@ def test_synth_vs_real_within_threshold(ticker):
       - UGL → re-synth via letf_synth_by_ticker on GLDSIM underlying with
         calibrated ER=0.030 (iter 000 v2 measured ~3pp/yr UGLSIM drift)
     """
-    from studies.letf_rotation_hunt.data_loader import load_tiingo_real_etf
-    from studies.letf_rotation_hunt.run_iter_t0 import build_synth_equity_curve
+    from studies.letf_rotation_hunt.core.data_loader import load_tiingo_real_etf
+    from studies.letf_rotation_hunt.runners.run_iter_t0 import build_synth_equity_curve
 
     try:
         synth = build_synth_equity_curve(ticker)
@@ -68,8 +68,8 @@ def test_synth_vs_real_within_threshold(ticker):
 
 def test_build_synth_equity_curve_direct_sim():
     """For UPRO (and other direct-SIM tickers), returns the testfolio *SIM series."""
-    from studies.letf_rotation_hunt.data_loader import load_testfolio_series
-    from studies.letf_rotation_hunt.run_iter_t0 import build_synth_equity_curve
+    from studies.letf_rotation_hunt.core.data_loader import load_testfolio_series
+    from studies.letf_rotation_hunt.runners.run_iter_t0 import build_synth_equity_curve
 
     series = build_synth_equity_curve("UPRO")
     expected = load_testfolio_series("UPROSIM")
@@ -82,7 +82,7 @@ def test_build_synth_equity_curve_direct_sim():
 
 def test_build_synth_equity_curve_tmf_resynth():
     """TMF has no TMFSIM in testfolio; resynthesizes from TLTSIM via FFR-aware formula."""
-    from studies.letf_rotation_hunt.run_iter_t0 import build_synth_equity_curve
+    from studies.letf_rotation_hunt.runners.run_iter_t0 import build_synth_equity_curve
 
     series = build_synth_equity_curve("TMF")
     assert isinstance(series, pd.Series)
@@ -94,7 +94,7 @@ def test_build_synth_equity_curve_tmf_resynth():
 
 def test_build_synth_equity_curve_unknown_raises():
     """Unknown ticker (no parity source defined) must raise KeyError."""
-    from studies.letf_rotation_hunt.run_iter_t0 import build_synth_equity_curve
+    from studies.letf_rotation_hunt.runners.run_iter_t0 import build_synth_equity_curve
 
     with pytest.raises(KeyError):
         build_synth_equity_curve("DEFINITELY_NOT_A_LETF_XYZ")

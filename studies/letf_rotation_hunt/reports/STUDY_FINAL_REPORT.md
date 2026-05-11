@@ -445,12 +445,12 @@ strict bars. Plano C allocation unchanged.
 ## 11. Engineering deliverables
 
 ### New modules
-- `studies/letf_rotation_hunt/run_iter_t1.py` — single-LETF dispatcher
-- `studies/letf_rotation_hunt/run_iter_t2.py` — basket dispatcher (HFEA)
-- `studies/letf_rotation_hunt/run_iter_t3.py` — composite signal dispatcher
-- `studies/letf_rotation_hunt/run_iter_t4.py` — cross-sectional dispatcher
-- `studies/letf_rotation_hunt/run_iter_t5.py` — Carver vol-target dispatcher
-- `studies/letf_rotation_hunt/gates.py` — 7-gate battery (G1 PBO, G2 DSR,
+- `studies/letf_rotation_hunt/runners/run_iter_t1.py` — single-LETF dispatcher
+- `studies/letf_rotation_hunt/runners/run_iter_t2.py` — basket dispatcher (HFEA)
+- `studies/letf_rotation_hunt/runners/run_iter_t3.py` — composite signal dispatcher
+- `studies/letf_rotation_hunt/runners/run_iter_t4.py` — cross-sectional dispatcher
+- `studies/letf_rotation_hunt/runners/run_iter_t5.py` — Carver vol-target dispatcher
+- `studies/letf_rotation_hunt/core/gates.py` — 7-gate battery (G1 PBO, G2 DSR,
   G3 WF, G4 OOS, G5 FWD, G6 Bootstrap, G7 cross-lib)
 - `studies/letf_rotation_hunt/scripts/fetch_tiingo_letfs.py` — targeted
   Tiingo downloader for the universe
@@ -566,7 +566,7 @@ governance decision.
   `g3_wf_warmup_used_days`, `g3_wf_benchmark_relative`.
 - Backwards-compatible fallback: when called without a benchmark series,
   reverts to legacy Sharpe>0 in ≥5/8 windows (used by existing tests).
-- Implementation: `studies/letf_rotation_hunt/gates.py:g3_walk_forward`;
+- Implementation: `studies/letf_rotation_hunt/core/gates.py:g3_walk_forward`;
   6 new TDD tests in `tests/test_gates.py:TestG3WalkForward`.
 
 **Citation:** mandate §2.3, spec §3.5 (G3 LETF-relaxed precedent already
@@ -943,10 +943,10 @@ robustness grid on the Carver framework.
 - iter_025 (T5d HRP/ERC): 4 configs
 
 New modules:
-- `studies/letf_rotation_hunt/signals_carry.py` — per-asset carry forecast (Carver ch.9)
-- `studies/letf_rotation_hunt/data_loader_yields.py` — CMT + dividend yield data sources
-- `studies/letf_rotation_hunt/strategies/hrp_weighter.py` — HRP + ERC weighting (López de Prado ch.16; Maillard 2010)
-- `studies/letf_rotation_hunt/run_iter_t5_extended.py` — extended dispatcher
+- `studies/letf_rotation_hunt/core/signals_carry.py` — per-asset carry forecast (Carver ch.9)
+- `studies/letf_rotation_hunt/core/data_loader_yields.py` — CMT + dividend yield data sources
+- `studies/letf_rotation_hunt/core/strategies/hrp_weighter.py` — HRP + ERC weighting (López de Prado ch.16; Maillard 2010)
+- `studies/letf_rotation_hunt/runners/run_iter_t5_extended.py` — extended dispatcher
 
 ### 17.3 Cumulative DSR impact
 

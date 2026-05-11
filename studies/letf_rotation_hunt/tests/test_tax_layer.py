@@ -8,7 +8,7 @@ import pytest
 
 def test_apply_annual_darf_15pct():
     """Annual realize: 15% on realized gains per year (Lei 14.754)."""
-    from studies.letf_rotation_hunt.tax_layer import apply_annual_darf
+    from studies.letf_rotation_hunt.core.tax_layer import apply_annual_darf
 
     dates = pd.date_range("2020-01-01", periods=252 * 2, freq="B")
     returns = pd.Series([0.001] * len(dates), index=dates)
@@ -28,7 +28,7 @@ def test_apply_annual_darf_15pct():
 
 def test_apply_buyhold_zero_intra_year_tax():
     """Buy-hold mode: zero tax until terminal liquidation."""
-    from studies.letf_rotation_hunt.tax_layer import apply_annual_darf
+    from studies.letf_rotation_hunt.core.tax_layer import apply_annual_darf
 
     dates = pd.date_range("2020-01-01", periods=252, freq="B")
     returns = pd.Series([0.001] * len(dates), index=dates)
@@ -46,7 +46,7 @@ def test_apply_buyhold_zero_intra_year_tax():
 
 def test_apply_annual_darf_unknown_mode_raises():
     """Unknown mode raises ValueError."""
-    from studies.letf_rotation_hunt.tax_layer import apply_annual_darf
+    from studies.letf_rotation_hunt.core.tax_layer import apply_annual_darf
 
     dates = pd.date_range("2020-01-01", periods=10, freq="B")
     returns = pd.Series([0.001] * 10, index=dates)

@@ -8,7 +8,7 @@ import pytest
 
 def test_carver_position_basic():
     """Carver position = vol_scalar × forecast / 10."""
-    from studies.letf_rotation_hunt.strategies.vol_targeted import build_positions
+    from studies.letf_rotation_hunt.core.strategies.vol_targeted import build_positions
 
     dates = pd.date_range("2020-01-01", periods=10, freq="B")
     # Forecasts in [-20, +20]
@@ -38,7 +38,7 @@ def test_carver_position_basic():
 
 def test_carver_weights_sum_to_one():
     """Total weights (long + cash) sum to 1.0."""
-    from studies.letf_rotation_hunt.strategies.vol_targeted import build_positions
+    from studies.letf_rotation_hunt.core.strategies.vol_targeted import build_positions
 
     dates = pd.date_range("2020-01-01", periods=5, freq="B")
     forecasts = pd.DataFrame(

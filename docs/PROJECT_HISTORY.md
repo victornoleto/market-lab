@@ -61,10 +61,26 @@ folder.
 Notable preserved study areas include:
 
 - `studies/letf_rotation_hunt/` for LETF rotation research;
-- `studies/letf_rotation_hunt/loop_iterations/` for isolated post-close LETF
+- `studies/letf_rotation_hunt/runs/post_close/` for isolated post-close LETF
   research loops that benchmark against the frozen T3d-K2 winner without
   changing the closed study record or mandate allocation `[advances_fin_ml, p.222-223]`;
-- `studies/weekly_momentum/` for weekly cross-sectional momentum diagnostics, including controlled sweeps and walk-forward validation before deeper PBO/DSR/bootstrap gates `[advances_fin_ml, p.208-211]`;
+- `studies/letf_rotation_hunt/reports/POST_CLOSE_LOOP_REPORT.md` for the
+  30-iteration post-close loop continuation. It documents the current research
+  winner `T35D60 + LRS1.20` (Sortino 1.3839, CAGR 36.68%, PBO 0.0357), while
+  preserving the mandate conclusion that no capital is reallocated;
+- `studies/letf_rotation_hunt/runs/post_close/031-2026-05-10-tqqq-cash-proxy-annual-tax/`
+  for the execution-realism diagnostic comparing taxed T3d-K2, a no-margin
+  `80% TQQQ + 20% CASHX` turbo proxy with annual 15% realized-gain tax, and
+  static SPY/NDX buy-and-hold. The proxy modestly beats taxed T3d-K2 but is not
+  deploy-equivalent to the iter 030 gross research result;
+- `studies/letf_rotation_hunt/runs/post_close/032-2026-05-10-taxed-underlying-riskon-variants/`
+  for tax-aware underlying/risk-on variants and plots comparing equity,
+  benchmark-relative equity, and rolling windows across TQQQ, SPY/SSO and
+  SPY/UPRO variants;
+- `studies/letf_rotation_hunt/reports/T3D_K2_TAX_AWARE_CONCLUSION.md` for the
+  consolidated T3d-K2 tax-aware conclusion: simple baseline, balanced iter 30
+  proxy, performance-first TQQQ variant, and rejected SPY transplants;
+- `studies/weekly_momentum/` for weekly cross-sectional momentum diagnostics, including controlled sweeps, walk-forward validation, PIT approximation, Tiingo delisted backfill, and a final rejection after DSR/bootstrap gates `[advances_fin_ml, p.208-211]`;
 - `studies/long_term_portfolio/` for long-horizon allocation experiments;
 - `studies/_shared/` for reusable study infrastructure;
 - `studies/_archive/` for closed or historical work.

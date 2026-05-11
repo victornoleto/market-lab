@@ -8,7 +8,7 @@ import pytest
 
 def test_top_k_selection():
     """Pick top-K by ranking score."""
-    from studies.letf_rotation_hunt.strategies.cross_sectional import build_positions
+    from studies.letf_rotation_hunt.core.strategies.cross_sectional import build_positions
 
     dates = pd.date_range("2020-01-01", periods=2, freq="B")
     # 4 assets, scores per day
@@ -40,7 +40,7 @@ def test_top_k_selection():
 
 def test_master_gate_off_holds_cash():
     """When master_gate=0 (SPY < SMA200): hold cash."""
-    from studies.letf_rotation_hunt.strategies.cross_sectional import build_positions
+    from studies.letf_rotation_hunt.core.strategies.cross_sectional import build_positions
 
     dates = pd.date_range("2020-01-01", periods=2, freq="B")
     scores = pd.DataFrame(

@@ -24,7 +24,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from studies.letf_rotation_hunt.gates import g2_dsr_p_value
+from studies.letf_rotation_hunt.core.gates import g2_dsr_p_value
 
 logger = logging.getLogger(__name__)
 
@@ -71,7 +71,7 @@ def recompute_all(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--iters-root", type=Path,
-                        default=Path("studies/letf_rotation_hunt/iterations"))
+                        default=Path("studies/letf_rotation_hunt/runs/original"))
     parser.add_argument("--n-trials-new", type=int, required=True)
     args = parser.parse_args()
     summary = recompute_all(args.iters_root, args.n_trials_new)

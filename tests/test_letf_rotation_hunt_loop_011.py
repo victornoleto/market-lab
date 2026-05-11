@@ -22,7 +22,7 @@ import pandas as pd
 import pytest
 
 ITER_DIR = (
-    Path("studies/letf_rotation_hunt/loop_iterations/")
+    Path("studies/letf_rotation_hunt/runs/post_close/")
     / "011-2026-05-10-conditional-tqqq-leverage"
 )
 

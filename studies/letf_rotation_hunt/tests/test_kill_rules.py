@@ -6,7 +6,7 @@ import pytest
 
 def test_kill_t0_fires_below_spy():
     """KILL T0: T1-best Sharpe < SPY+0.05 → CLOSE_NO_VALUE."""
-    from studies.letf_rotation_hunt.kill_rules import evaluate_kill
+    from studies.letf_rotation_hunt.core.kill_rules import evaluate_kill
 
     result = evaluate_kill(
         transition="T0",
@@ -19,7 +19,7 @@ def test_kill_t0_fires_below_spy():
 
 def test_kill_t1_t2_passes():
     """KILL T1→T2 passes when T2 advances ≥ 0.05."""
-    from studies.letf_rotation_hunt.kill_rules import evaluate_kill
+    from studies.letf_rotation_hunt.core.kill_rules import evaluate_kill
 
     result = evaluate_kill(
         transition="T1_T2",
@@ -32,7 +32,7 @@ def test_kill_t1_t2_passes():
 
 def test_kill_t4_t5_requires_higher_threshold():
     """KILL T4→T5 requires +0.10 (not +0.05)."""
-    from studies.letf_rotation_hunt.kill_rules import evaluate_kill
+    from studies.letf_rotation_hunt.core.kill_rules import evaluate_kill
 
     # +0.05 not enough for T4→T5
     result = evaluate_kill(
@@ -53,7 +53,7 @@ def test_kill_t4_t5_requires_higher_threshold():
 
 def test_inheritance_fallback_after_kill():
     """When tier KILL fires, next tier inherits from last valid winner."""
-    from studies.letf_rotation_hunt.kill_rules import resolve_inheritance
+    from studies.letf_rotation_hunt.core.kill_rules import resolve_inheritance
 
     # T2 kill fired → T3 should inherit from T1 (skip T2)
     inheritance = resolve_inheritance(
@@ -71,7 +71,7 @@ def test_deploy_escalation_threshold_relaxed_to_015():
 
     A strategy with Sharpe edge +0.15 over SPY (and other criteria met)
     must now be deploy-eligible. +0.10 still fails."""
-    from studies.letf_rotation_hunt.kill_rules import deploy_escalation_eligible
+    from studies.letf_rotation_hunt.core.kill_rules import deploy_escalation_eligible
 
     common = dict(
         spy_net_sharpe=0.65, score=92.0, gates_all_pass=True,
@@ -87,7 +87,7 @@ def test_deploy_escalation_threshold_relaxed_to_015():
 
 def test_deploy_escalation_score_below_90_blocks():
     """Even if Sharpe edge +0.20, score < 90 blocks deploy."""
-    from studies.letf_rotation_hunt.kill_rules import deploy_escalation_eligible
+    from studies.letf_rotation_hunt.core.kill_rules import deploy_escalation_eligible
 
     assert deploy_escalation_eligible(
         sharpe_net=0.85, spy_net_sharpe=0.65,

@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from studies.letf_rotation_hunt.strategies import hrp_weighter as hw
+from studies.letf_rotation_hunt.core.strategies import hrp_weighter as hw
 
 
 def _gaussian_returns(seed: int, n: int, cols: list[str], cov: np.ndarray) -> pd.DataFrame:

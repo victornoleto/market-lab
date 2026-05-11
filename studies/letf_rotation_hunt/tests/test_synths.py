@@ -8,7 +8,7 @@ import pytest
 
 def test_letf_synth_basic_2x():
     """Basic 2× LETF: 2 × underlying - ER/252 - (L-1) × (FFR + spread)/252."""
-    from studies.letf_rotation_hunt.synths import letf_synth_returns
+    from studies.letf_rotation_hunt.core.synths import letf_synth_returns
 
     dates = pd.date_range("2020-01-01", periods=10, freq="B")
     underlying_returns = pd.Series([0.01] * 10, index=dates)  # 1% daily
@@ -29,7 +29,7 @@ def test_letf_synth_basic_2x():
 
 def test_letf_synth_3x_higher_borrow():
     """3× LETF has 2× the borrow cost vs 2×."""
-    from studies.letf_rotation_hunt.synths import letf_synth_returns
+    from studies.letf_rotation_hunt.core.synths import letf_synth_returns
 
     dates = pd.date_range("2020-01-01", periods=5, freq="B")
     underlying_returns = pd.Series([0.0] * 5, index=dates)  # zero return → isolate cost

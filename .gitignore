@@ -102,6 +102,14 @@ studies/**/systems/*/decoding*/
 studies/**/_diagnostics/**/logs/
 studies/spy_beater_hunt/iterations/*/rerun.log
 
+# LETF rotation study: keep reports/code/configs, regenerate bulky artifacts
+studies/letf_rotation_hunt/**/logs/
+studies/letf_rotation_hunt/**/__pycache__/
+studies/letf_rotation_hunt/**/*_strategy_returns.csv
+studies/letf_rotation_hunt/**/annual_tax_events*.csv
+studies/letf_rotation_hunt/**/realized_sale_events*.csv
+studies/letf_rotation_hunt/reports/**/data/*.csv
+
 # Preserved final evidence for the closed weekly momentum study
 !studies/weekly_momentum/evidence/
 !studies/weekly_momentum/evidence/**

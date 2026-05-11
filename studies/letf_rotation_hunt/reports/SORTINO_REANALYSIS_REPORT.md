@@ -304,7 +304,7 @@ No current capital commitment follows from these findings `[advances_fin_ml, p.2
 
 - Spec: `docs/superpowers/specs/2026-05-07-letf-sortino-reanalysis-design.md`
 - Plan: `docs/superpowers/plans/2026-05-07-letf-sortino-reanalysis.md`
-- Code: `studies/letf_rotation_hunt/sortino_reanalysis/`
+- Code: `studies/letf_rotation_hunt/analyses/sortino_reanalysis/`
 - Tests: `studies/letf_rotation_hunt/tests/test_sortino_reanalysis.py` (8 tests)
 - Data: `data/sortino_reanalysis/{sortino_metrics.csv, cohort_extension.csv}`
 - Plots: `studies/letf_rotation_hunt/reports/sortino_reanalysis/{sortino_vs_sharpe_scatter, track_pass_comparison}.png`

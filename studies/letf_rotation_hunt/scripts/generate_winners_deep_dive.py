@@ -31,9 +31,9 @@ REPO = Path(__file__).resolve().parents[3]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-from studies.letf_rotation_hunt.data_loader import load_ffr_daily, load_testfolio_series
-from studies.letf_rotation_hunt.run_iter_t3 import _run_single_composite_config
-from studies.letf_rotation_hunt.run_iter_t5_extended import _run_single_extended
+from studies.letf_rotation_hunt.core.data_loader import load_ffr_daily, load_testfolio_series
+from studies.letf_rotation_hunt.runners.run_iter_t3 import _run_single_composite_config
+from studies.letf_rotation_hunt.runners.run_iter_t5_extended import _run_single_extended
 from studies.long_term_portfolio.run_iter import portfolio_returns_from_config
 
 

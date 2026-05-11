@@ -8,7 +8,7 @@ import pytest
 
 def test_hfea_classic_full_off():
     """HFEA classic 55/45 UPRO+TMF, full-off mode → 100% cash when signal=0."""
-    from studies.letf_rotation_hunt.strategies.hfea_binary import build_positions
+    from studies.letf_rotation_hunt.core.strategies.hfea_binary import build_positions
 
     dates = pd.date_range("2020-01-01", periods=4, freq="B")
     signal = pd.Series([1, 1, 0, 0], index=dates).astype(float)
@@ -33,7 +33,7 @@ def test_hfea_classic_full_off():
 
 def test_hfea_half_off_keeps_bond_sleeve():
     """HFEA half-off: zero LETF, KEEP bond sleeve when signal=0."""
-    from studies.letf_rotation_hunt.strategies.hfea_binary import build_positions
+    from studies.letf_rotation_hunt.core.strategies.hfea_binary import build_positions
 
     dates = pd.date_range("2020-01-01", periods=4, freq="B")
     signal = pd.Series([1, 1, 0, 0], index=dates).astype(float)
@@ -58,7 +58,7 @@ def test_hfea_half_off_keeps_bond_sleeve():
 
 def test_hfea_basket_weights_must_sum_to_one():
     """Invalid basket → raises ValueError."""
-    from studies.letf_rotation_hunt.strategies.hfea_binary import build_positions
+    from studies.letf_rotation_hunt.core.strategies.hfea_binary import build_positions
 
     dates = pd.date_range("2020-01-01", periods=2, freq="B")
     signal = pd.Series([1, 1], index=dates).astype(float)

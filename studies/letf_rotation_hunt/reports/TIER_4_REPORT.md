@@ -234,7 +234,7 @@ T4 contributes nothing new to study incumbent. Loop continues per spec §3.4
 
 ## 9. Methodology notes
 
-- **New module** `studies/letf_rotation_hunt/run_iter_t4.py` — cross-sectional
+- **New module** `studies/letf_rotation_hunt/runners/run_iter_t4.py` — cross-sectional
   dispatcher. Reuses T1's pipeline. Routes 4 sub-types (clenow_top2, clenow_top3,
   ewmac_top2, clenow_volgate_top2).
 - Pre-existing `signals.py:clenow_score` and `ewmac_forecast` used as ranking

@@ -8,7 +8,7 @@ import pytest
 
 def test_sma_gate_above_below():
     """SMA gate: ON when price > SMA, OFF when price < SMA."""
-    from studies.letf_rotation_hunt.signals import sma_gate
+    from studies.letf_rotation_hunt.core.signals import sma_gate
 
     dates = pd.date_range("2020-01-01", periods=300, freq="B")
     # ramp up 200 days, then dip
@@ -28,7 +28,7 @@ def test_sma_gate_above_below():
 
 def test_sma_gate_period_param():
     """SMA gate respects period parameter."""
-    from studies.letf_rotation_hunt.signals import sma_gate
+    from studies.letf_rotation_hunt.core.signals import sma_gate
 
     dates = pd.date_range("2020-01-01", periods=100, freq="B")
     prices = pd.Series(np.linspace(100, 200, 100), index=dates)
@@ -43,7 +43,7 @@ def test_sma_gate_period_param():
 
 def test_ema_gate_decay_param():
     """EMA gate uses α = 2 / (L+1) per Carver [systematic_trading, p.283]."""
-    from studies.letf_rotation_hunt.signals import ema_gate
+    from studies.letf_rotation_hunt.core.signals import ema_gate
 
     dates = pd.date_range("2020-01-01", periods=100, freq="B")
     prices = pd.Series(np.ones(100) * 100.0, index=dates)
@@ -58,7 +58,7 @@ def test_ema_gate_decay_param():
 
 def test_vol_gate_below_threshold():
     """Vol gate: 1 if rolling realized vol < threshold, else 0."""
-    from studies.letf_rotation_hunt.signals import realized_vol_gate
+    from studies.letf_rotation_hunt.core.signals import realized_vol_gate
 
     dates = pd.date_range("2020-01-01", periods=300, freq="B")
     # constant returns ~0% (low vol)
@@ -72,7 +72,7 @@ def test_vol_gate_below_threshold():
 
 def test_vol_gate_above_threshold():
     """Vol gate: 0 when realized vol exceeds 40% (Gayed threshold)."""
-    from studies.letf_rotation_hunt.signals import realized_vol_gate
+    from studies.letf_rotation_hunt.core.signals import realized_vol_gate
 
     dates = pd.date_range("2020-01-01", periods=300, freq="B")
     # Inject high-vol period: alternating ±5% returns (annualized ~80% vol)
@@ -87,7 +87,7 @@ def test_vol_gate_above_threshold():
 
 def test_vix_scaling_baseline():
     """VIX scaling: weight = clip(VIX_baseline / VIX_prev_month, 0, 1)."""
-    from studies.letf_rotation_hunt.signals import vix_scaling
+    from studies.letf_rotation_hunt.core.signals import vix_scaling
 
     dates = pd.date_range("2020-01-01", periods=300, freq="B")
     # VIX constant at 20 (baseline = mean ≈ 20 → weight = 1)
@@ -101,7 +101,7 @@ def test_vix_scaling_baseline():
 
 def test_vix_scaling_high_vix():
     """VIX scaling: weight < 1 when VIX_prev_month > VIX_baseline."""
-    from studies.letf_rotation_hunt.signals import vix_scaling
+    from studies.letf_rotation_hunt.core.signals import vix_scaling
 
     dates = pd.date_range("2020-01-01", periods=300, freq="B")
     vix = pd.Series(np.ones(300) * 15.0, index=dates)
@@ -117,7 +117,7 @@ def test_vix_scaling_high_vix():
 
 def test_ar1_coefficient_positive_regime():
     """AR(1) > 0 → momentum regime; < 0 → mean-reversion."""
-    from studies.letf_rotation_hunt.signals import ar1_coefficient
+    from studies.letf_rotation_hunt.core.signals import ar1_coefficient
 
     dates = pd.date_range("2020-01-01", periods=300, freq="B")
     # Strongly autocorrelated returns (momentum regime)
@@ -138,7 +138,7 @@ def test_ar1_coefficient_positive_regime():
 
 def test_vote_of_k():
     """Vote-of-K gate: sum of indicators ≥ K."""
-    from studies.letf_rotation_hunt.signals import vote_of_k
+    from studies.letf_rotation_hunt.core.signals import vote_of_k
 
     dates = pd.date_range("2020-01-01", periods=10, freq="B")
     s1 = pd.Series([1, 1, 1, 0, 0, 0, 1, 1, 0, 0], index=dates)
@@ -158,7 +158,7 @@ def test_vote_of_k():
 
 def test_hmm_two_state_separates_regimes():
     """HMM 2-state separates bull/bear regimes."""
-    from studies.letf_rotation_hunt.signals import hmm_regime_gate
+    from studies.letf_rotation_hunt.core.signals import hmm_regime_gate
 
     dates = pd.date_range("2020-01-01", periods=600, freq="B")
     rng = np.random.RandomState(42)
@@ -178,7 +178,7 @@ def test_hmm_two_state_separates_regimes():
 
 def test_ewmac_forecast_capped():
     """EWMAC forecast capped at ±20 per Carver."""
-    from studies.letf_rotation_hunt.signals import ewmac_forecast
+    from studies.letf_rotation_hunt.core.signals import ewmac_forecast
 
     dates = pd.date_range("2020-01-01", periods=300, freq="B")
     # Strong uptrend → should produce strongly positive forecast
@@ -194,7 +194,7 @@ def test_ewmac_forecast_capped():
 
 def test_vote_of_k_invalid_k_raises():
     """vote_of_k raises ValueError for k > len(signals) or k < 1."""
-    from studies.letf_rotation_hunt.signals import vote_of_k
+    from studies.letf_rotation_hunt.core.signals import vote_of_k
 
     dates = pd.date_range("2020-01-01", periods=5, freq="B")
     s1 = pd.Series([1] * 5, index=dates)
@@ -212,7 +212,7 @@ def test_vote_of_k_invalid_k_raises():
 
 def test_ewmac_invalid_params_raise():
     """ewmac_forecast raises ValueError for invalid params."""
-    from studies.letf_rotation_hunt.signals import ewmac_forecast
+    from studies.letf_rotation_hunt.core.signals import ewmac_forecast
 
     dates = pd.date_range("2020-01-01", periods=10, freq="B")
     prices = pd.Series([100.0] * 10, index=dates)
@@ -226,7 +226,7 @@ def test_ewmac_invalid_params_raise():
 
 def test_clenow_slope_r_squared_ranking():
     """Clenow score = annualized slope × R² of log price regression."""
-    from studies.letf_rotation_hunt.signals import clenow_score
+    from studies.letf_rotation_hunt.core.signals import clenow_score
 
     dates = pd.date_range("2020-01-01", periods=200, freq="B")
 

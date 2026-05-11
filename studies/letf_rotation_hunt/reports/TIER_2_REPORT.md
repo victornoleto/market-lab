@@ -309,13 +309,13 @@ single-LETF rotation in this universe.
 | `tier2_rolling_sharpe_overlay.png` | 5y rolling Sharpe (annualised) for the same configs. |
 
 Per-iter SUMMARY.md + 7 plots also auto-generated in each
-`iterations/00{5..10}-*/` directory.
+`runs/original/00{5..10}-*/` directory.
 
 ---
 
 ## 8. Methodology notes
 
-- New module `studies/letf_rotation_hunt/run_iter_t2.py` — basket dispatcher
+- New module `studies/letf_rotation_hunt/runners/run_iter_t2.py` — basket dispatcher
   reusing T1's gates/scoring/artifacts pipeline. Differs only in strategy
   (calls `hfea_binary.build_positions` instead of single_letf_gayed).
 - Existing `strategies/hfea_binary.py` and its tests (test_hfea_binary.py)

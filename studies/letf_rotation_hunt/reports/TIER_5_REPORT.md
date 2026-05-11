@@ -159,7 +159,7 @@ See `STUDY_FINAL_REPORT.md` for full study consolidation.
 
 ## 5. Methodology notes
 
-- New module `studies/letf_rotation_hunt/run_iter_t5.py`: Carver vol-target
+- New module `studies/letf_rotation_hunt/runners/run_iter_t5.py`: Carver vol-target
   dispatcher reusing T1's gates/scoring/artifacts pipeline.
 - Pre-existing `signals.py:ewmac_forecast` + `strategies/vol_targeted.py:build_positions`
   used as-is. EWMAC composite (16,64) + (64,256) with FDM=1.41 per

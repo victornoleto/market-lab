@@ -1,4 +1,4 @@
-"""Unit tests for studies/letf_rotation_hunt/gates.py — 7-gate battery.
+"""Unit tests for studies/letf_rotation_hunt/core/gates.py — 7-gate battery.
 
 TDD per spec §3.5. Each gate has 2-3 cases: happy path, fail/edge, threshold
 boundary. Citations follow gate impl docstrings.
@@ -68,7 +68,7 @@ class TestG1PBO:
 
     def test_pbo_with_pure_noise_configs_around_half(self) -> None:
         """N pure-noise configs → PBO clusters around 0.5 (no edge to find)."""
-        from studies.letf_rotation_hunt.gates import g1_pbo
+        from studies.letf_rotation_hunt.core.gates import g1_pbo
 
         rng = np.random.default_rng(42)
         n_configs = 10
@@ -91,7 +91,7 @@ class TestG1PBO:
         PBO failure; PBO is just non-applicable. Caller treats NaN as
         non-blocking.
         """
-        from studies.letf_rotation_hunt.gates import g1_pbo
+        from studies.letf_rotation_hunt.core.gates import g1_pbo
 
         idx = pd.date_range("2010-01-04", periods=500, freq="B")
         per_cfg = {"only_one": pd.Series(np.zeros(500), index=idx)}
@@ -102,7 +102,7 @@ class TestG1PBO:
 
     def test_pbo_aligns_misindexed_configs(self) -> None:
         """Configs with overlapping but non-identical indices align on intersection."""
-        from studies.letf_rotation_hunt.gates import g1_pbo
+        from studies.letf_rotation_hunt.core.gates import g1_pbo
 
         idx_a = pd.date_range("2010-01-04", periods=600, freq="B")
         idx_b = pd.date_range("2010-04-01", periods=600, freq="B")
@@ -125,7 +125,7 @@ class TestG2DSR:
 
     def test_dsr_high_sharpe_low_n_trials_passes(self, positive_drift_returns) -> None:
         """μ=0.0008, σ=0.012 → annualised Sharpe ≈ 1.0 → DSR p<0.05 with n_trials=2."""
-        from studies.letf_rotation_hunt.gates import g2_dsr_p_value
+        from studies.letf_rotation_hunt.core.gates import g2_dsr_p_value
 
         result = g2_dsr_p_value(positive_drift_returns, n_trials=2)
         assert isinstance(result, dict)
@@ -135,7 +135,7 @@ class TestG2DSR:
 
     def test_dsr_zero_sharpe_high_p_value(self) -> None:
         """Pure noise with mean=0 → high p-value (insignificant)."""
-        from studies.letf_rotation_hunt.gates import g2_dsr_p_value
+        from studies.letf_rotation_hunt.core.gates import g2_dsr_p_value
 
         rng = np.random.default_rng(42)
         rets = pd.Series(
@@ -147,7 +147,7 @@ class TestG2DSR:
 
     def test_dsr_n_trials_one_falls_back_to_psr(self, positive_drift_returns) -> None:
         """n_trials=1 → PSR fallback (DSR requires ≥2)."""
-        from studies.letf_rotation_hunt.gates import g2_dsr_p_value
+        from studies.letf_rotation_hunt.core.gates import g2_dsr_p_value
 
         result = g2_dsr_p_value(positive_drift_returns, n_trials=1)
         assert "p_value" in result
@@ -174,7 +174,7 @@ class TestG3WalkForward:
     ) -> None:
         """Strategy μ=0.0008 strictly above benchmark μ=0.0 → most windows
         pct_above_bench > 0.5 → pass even though absolute MDD may be deep."""
-        from studies.letf_rotation_hunt.gates import g3_walk_forward
+        from studies.letf_rotation_hunt.core.gates import g3_walk_forward
 
         # Zero-drift benchmark, same dates
         rng = np.random.default_rng(7)
@@ -197,7 +197,7 @@ class TestG3WalkForward:
     ) -> None:
         """Strategy μ=0.0008 below stronger benchmark μ=0.0015 →
         most windows pct_above_bench < 0.5 → fail (regardless of Sharpe sign)."""
-        from studies.letf_rotation_hunt.gates import g3_walk_forward
+        from studies.letf_rotation_hunt.core.gates import g3_walk_forward
 
         rng = np.random.default_rng(99)
         # Stronger benchmark → strategy will lose vs it
@@ -213,7 +213,7 @@ class TestG3WalkForward:
     ) -> None:
         """Strategy with deep absolute MDD but consistently > benchmark →
         passes (mandate §2.3 MDD warning-only)."""
-        from studies.letf_rotation_hunt.gates import g3_walk_forward
+        from studies.letf_rotation_hunt.core.gates import g3_walk_forward
 
         # Construct a series that grows then crashes 60% then grows again,
         # while benchmark is much weaker. Strategy should still be > benchmark
@@ -236,7 +236,7 @@ class TestG3WalkForward:
     ) -> None:
         """When benchmark_returns is None, fall back to Sharpe>0 in ≥5/8
         windows (legacy mode). MDD becomes warning-only either way."""
-        from studies.letf_rotation_hunt.gates import g3_walk_forward
+        from studies.letf_rotation_hunt.core.gates import g3_walk_forward
 
         result = g3_walk_forward(positive_drift_returns, benchmark_returns=None)
         assert isinstance(result, dict)
@@ -250,7 +250,7 @@ class TestG3WalkForward:
     ) -> None:
         """Negative-drift returns vs zero-drift benchmark → most windows
         below benchmark → fails."""
-        from studies.letf_rotation_hunt.gates import g3_walk_forward
+        from studies.letf_rotation_hunt.core.gates import g3_walk_forward
 
         bench = pd.Series(
             np.zeros(len(negative_drift_returns)),
@@ -261,7 +261,7 @@ class TestG3WalkForward:
 
     def test_wf_insufficient_data_fails(self) -> None:
         """Series too short for 8 windows → fail-with-explanation."""
-        from studies.letf_rotation_hunt.gates import g3_walk_forward
+        from studies.letf_rotation_hunt.core.gates import g3_walk_forward
 
         idx = pd.date_range("2020-01-04", periods=100, freq="B")
         rets = pd.Series(np.zeros(100), index=idx)
@@ -275,7 +275,7 @@ class TestG3WalkForward:
 
         Verifies the warmup logic via a window that is < 5y (use small total
         series so each window is ≤ 1260 days)."""
-        from studies.letf_rotation_hunt.gates import g3_walk_forward
+        from studies.letf_rotation_hunt.core.gates import g3_walk_forward
 
         bench = pd.Series(
             np.zeros(len(positive_drift_returns)),
@@ -296,7 +296,7 @@ class TestG4OOS:
 
     def test_oos_positive_drift_positive_sharpe(self, positive_drift_returns) -> None:
         """Positive drift → OOS Sharpe > 0."""
-        from studies.letf_rotation_hunt.gates import g4_oos_70_30
+        from studies.letf_rotation_hunt.core.gates import g4_oos_70_30
 
         result = g4_oos_70_30(positive_drift_returns)
         assert isinstance(result, dict)
@@ -307,7 +307,7 @@ class TestG4OOS:
 
     def test_oos_negative_drift_negative_sharpe(self, negative_drift_returns) -> None:
         """Negative drift → OOS Sharpe < 0; fail."""
-        from studies.letf_rotation_hunt.gates import g4_oos_70_30
+        from studies.letf_rotation_hunt.core.gates import g4_oos_70_30
 
         result = g4_oos_70_30(negative_drift_returns)
         assert result["oos_sharpe"] < 0
@@ -324,7 +324,7 @@ class TestG5FWD:
 
     def test_fwd_post_2020_returns_only(self, noise_returns_long) -> None:
         """Filter to ≥2020-01-01; compute Sharpe on that slice."""
-        from studies.letf_rotation_hunt.gates import g5_fwd_post_2020
+        from studies.letf_rotation_hunt.core.gates import g5_fwd_post_2020
 
         result = g5_fwd_post_2020(noise_returns_long)
         assert isinstance(result, dict)
@@ -334,7 +334,7 @@ class TestG5FWD:
 
     def test_fwd_no_post_2020_data_fails(self) -> None:
         """Series ending pre-2020 → fail with explanation."""
-        from studies.letf_rotation_hunt.gates import g5_fwd_post_2020
+        from studies.letf_rotation_hunt.core.gates import g5_fwd_post_2020
 
         idx = pd.date_range("2010-01-04", periods=500, freq="B")
         rets = pd.Series(np.random.default_rng(0).normal(0, 0.01, 500), index=idx)
@@ -353,7 +353,7 @@ class TestG6Bootstrap:
 
     def test_bootstrap_strong_positive_drift_ci_low_positive(self) -> None:
         """Series with strong positive drift → 99% CI low > 0."""
-        from studies.letf_rotation_hunt.gates import g6_bootstrap_ci
+        from studies.letf_rotation_hunt.core.gates import g6_bootstrap_ci
 
         rng = np.random.default_rng(42)
         n = 1500
@@ -369,7 +369,7 @@ class TestG6Bootstrap:
 
     def test_bootstrap_zero_mean_ci_low_negative(self) -> None:
         """Pure noise → CI low ≤ 0 (likely < 0); fail."""
-        from studies.letf_rotation_hunt.gates import g6_bootstrap_ci
+        from studies.letf_rotation_hunt.core.gates import g6_bootstrap_ci
 
         rng = np.random.default_rng(0)
         n = 1500
@@ -391,7 +391,7 @@ class TestG7CrossLibCAGR:
 
     def test_xlib_identity_zero_delta(self, positive_drift_returns) -> None:
         """Same returns through pandas and numpy paths → delta ≈ 0."""
-        from studies.letf_rotation_hunt.gates import g7_xlib_cagr_delta
+        from studies.letf_rotation_hunt.core.gates import g7_xlib_cagr_delta
 
         result = g7_xlib_cagr_delta(positive_drift_returns)
         assert isinstance(result, dict)
@@ -402,7 +402,7 @@ class TestG7CrossLibCAGR:
 
     def test_xlib_short_series_fails(self) -> None:
         """Series shorter than 252 days → fail (insufficient for CAGR)."""
-        from studies.letf_rotation_hunt.gates import g7_xlib_cagr_delta
+        from studies.letf_rotation_hunt.core.gates import g7_xlib_cagr_delta
 
         idx = pd.date_range("2024-01-04", periods=100, freq="B")
         rets = pd.Series(np.zeros(100), index=idx)

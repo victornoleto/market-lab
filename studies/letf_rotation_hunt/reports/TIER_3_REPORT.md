@@ -331,7 +331,7 @@ ensemble in this study.
 
 ## 7. Methodology notes
 
-- **New module** `studies/letf_rotation_hunt/run_iter_t3.py`: composite-signal
+- **New module** `studies/letf_rotation_hunt/runners/run_iter_t3.py`: composite-signal
   dispatcher. Reuses T1's gates/scoring/artifacts. Routes 5 signal types
   (`sma_vol_gate`, `sma_ar1_gate`, `vote_of_k`, `vix_managed`, `hmm`) to the
   pre-existing `signals.py` helpers.

@@ -1,11 +1,11 @@
-# Estado atual — market-lab (2026-05-09)
+# Estado atual — market-lab (2026-05-10)
 
 > **Propósito:** onboard rápido para humanos e agentes. Este doc é o
 > snapshot vivo — a verdade canônica vive nos arquivos referenciados.
 
 ---
 
-## TL;DR (2026-05-09)
+## TL;DR (2026-05-10)
 
 🛑 **MAINTENANCE MODE** desde 2026-04-23 (mandate §1, §7).
 
@@ -18,7 +18,7 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 
 ---
 
-## Status por linha de pesquisa (2026-05-09)
+## Status por linha de pesquisa (2026-05-10)
 
 ### Plano C — buy-hold passivo factor-tilted ✅ ATIVO
 - **Status:** sole winner. 100% do capital. Zero alterações.
@@ -39,7 +39,7 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 
 ---
 
-## Linhas exploratórias em studies/ (2026-05-09)
+## Linhas exploratórias em studies/ (2026-05-10)
 
 ### studies/spy_beater_hunt/ 🛑 CLOSED 2026-04-30
 - 55 iters; **B4 Conservative (25 NTSX / 25 GDE / 25 RSST / 25 ZROZ)** declared deploy-ready (Sharpe 0.745 net).
@@ -66,14 +66,15 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 - **Closed study:** 26 iters (iters 000-025); study winner: **`qld_voteK2_sma250_100_vol21_40_ar30_off_zroz`** (T3d K=2, Sortino lh_56y 1.3246, Sharpe 0.9191). DSR PASS at N=426 (p_v2=0.0024).
 - **2026-05-08 — T5 expansion** (post-close methodology amendment): 20 new configs across iters 022-025 (T5a σ-sweep, T5b carry, T5c-grid, T5d HRP/ERC). DSR cumulative re-computed for all ~426 configs; 22 early-tier T1 configs flipped PASS→FAIL (none are winners). KILL T5-expansion: **FIRES** (best Sortino 1.1399 < threshold 1.272); T3d K=2 remains canonical winner.
 - **2026-05-09 — QQQ/NDX benchmark supplement:** Reddit-methodology check re-ran original top-20 strategy universe vs `QQQSIM` instead of SPY. Operative winner remains #1 by composite rolling robustness vs QQQ, with full-history end ratio **224.31× QQQ**, `pct_above_qqq=100.0%`, and average rolling end-ratio win rate **95.8%**. Worst relative windows concentrate in 3y/5y NDX bull-recovery regimes. Report: `studies/letf_rotation_hunt/reports/STUDY_QQQ_BENCHMARK_REPORT.md`.
-- **2026-05-09 — post-close loop scaffold:** autonomous research loop added under `studies/letf_rotation_hunt/{loop.sh,LOOP_PROMPT.md,LOOP_MEMORY.md,LOOP_PROTOCOL.md}`. It writes only to `loop_iterations/`, benchmarks against the frozen T3d-K2 Sortino 1.3246 winner, uses global DSR trial accounting from N=426, and never triggers capital reallocation; mandate §1 remains unchanged `[advances_fin_ml, p.222-223]`.
-- **2026-05-09 — loop 001-010 report:** post-close loop found research beaters in iters 009-010. Best is iter 010 `graded-master-bridge` (Sortino_lh56y 1.4670, edge +0.1424 vs T3d-K2, PBO 0.393, score 81.5 STRONG). Report/plots: `studies/letf_rotation_hunt/loop_iterations/LOOP_10_ITER_REPORT.md`. Not deploy-authorized; score < 90 and mandate §1 remains 100% Plano C `[advances_fin_ml, p.222-223]`.
-- **2026-05-10 — Phase 3 performance-first loop 011-020:** user-directed focus shifted from Sortino-only safety to CAGR/equity performance vs T3d-K2. Phase 3 found strict-supersets: iter 012 first, iter 017 first novel non-replica. Best balanced candidate is iter 017 `postcrash-rearm-tqqq-streak` (CAGR 32.66%, Sortino 1.4030, terminal equity 1.61× T3d-K2, PBO 0.440). Highest CAGR is iter 011 (36.69%, terminal 5.39×, but lower Sortino 1.227). Report/plots: `studies/letf_rotation_hunt/loop_iterations/LOOP_PHASE3_011_020_REPORT.md`. Not deploy-authorized; mandate §1 unchanged `[advances_fin_ml, p.208-211]`.
+- **2026-05-09 — post-close loop scaffold:** autonomous research loop added under `studies/letf_rotation_hunt/{loop.sh,LOOP_PROMPT.md,LOOP_MEMORY.md,LOOP_PROTOCOL.md}`. It writes only to `runs/post_close/`, benchmarks against the frozen T3d-K2 Sortino 1.3246 winner, uses global DSR trial accounting from N=426, and never triggers capital reallocation; mandate §1 remains unchanged `[advances_fin_ml, p.222-223]`.
+- **2026-05-09 — loop 001-010 report:** post-close loop found research beaters in iters 009-010. Best is iter 010 `graded-master-bridge` (Sortino_lh56y 1.4670, edge +0.1424 vs T3d-K2, PBO 0.393, score 81.5 STRONG). Report/plots: `studies/letf_rotation_hunt/runs/post_close/LOOP_10_ITER_REPORT.md`. Not deploy-authorized; score < 90 and mandate §1 remains 100% Plano C `[advances_fin_ml, p.222-223]`.
+- **2026-05-10 — Phase 3 performance-first loop 011-020:** user-directed focus shifted from Sortino-only safety to CAGR/equity performance vs T3d-K2. Phase 3 found strict-supersets: iter 012 first, iter 017 first novel non-replica. Best balanced candidate is iter 017 `postcrash-rearm-tqqq-streak` (CAGR 32.66%, Sortino 1.4030, terminal equity 1.61× T3d-K2, PBO 0.440). Highest CAGR is iter 011 (36.69%, terminal 5.39×, but lower Sortino 1.227). Report/plots: `studies/letf_rotation_hunt/runs/post_close/LOOP_PHASE3_011_020_REPORT.md`. Not deploy-authorized; mandate §1 unchanged `[advances_fin_ml, p.208-211]`.
 - **2026-05-10 — Phase 4 focused loop 021-030:** iter 017's post-crash rearm family was validated/refined. The post-close research winner is now iter 030 **`qld_voteK2_sma250_100_vol21_40_ar30_unclrs_single_rearmonly_g25_rvp70_cashx_T35D60_unclrs120`** (T35D60 + LRS1.20): Sortino 1.3839, CAGR 36.68%, terminal equity ~5.4× T3d-K2, PBO 0.0357, score 79.5 STRONG. It remains research-only: score <90 and mandate §1 keeps capital 100% Plano C `[leverage_for_the_long_run, ch.4-5, p.40-60]`, `[advances_fin_ml, p.222-223]`. Report/plots: `studies/letf_rotation_hunt/reports/POST_CLOSE_LOOP_REPORT.md`.
 - **2026-05-10 — Iter 031 no-margin/tax diagnostic:** fair tax panel added executable proxy `ON normal=100% QLD`, `turbo=80% TQQQ + 20% CASHX`, `OFF=100% ZROZ` plus annual 15% tax on realized net gains (Lei 14.754 semantics), and also taxes T3d-K2 state changes. T3d-K2 annual-tax: CAGR 24.24%, Sortino 1.0826. Proxy state-change annual-tax: CAGR 25.05%, Sortino 1.0966, terminal 1.299× taxed T3d-K2, 378 sale events. SPY/NDX buy-hold static no-tax: CAGR 11.47% / 14.59%. Verdict: proxy beats taxed T3d-K2 modestly, but is not deploy-equivalent to iter 030 gross (36.68%, Sortino 1.3839); no-margin route requires redesign/validation before any monitoring app `[leverage_for_the_long_run, ch.4-5, p.40-60]`.
-- **2026-05-10 — Iter 032 taxed underlying/risk-on variants:** tested T3d-K2 annual-tax variants with risk-on `TQQQ`, `SPY/SSO`, and `SPY/UPRO`, plus plots of equity, benchmark-relative equity, and rolling windows. Best CAGR is `t3d_k2_tqqq_taxed`: CAGR 27.88%, Sortino 1.0279, MDD -70.74%, terminal 3.194× taxed T3d-K2. Best Sortino among dynamic variants remains iter 30 proxy tax-aware: CAGR 25.05%, Sortino 1.0966, MDD -59.29%, terminal 1.299× taxed T3d-K2. SPY/SSO and SPY/UPRO variants underperform static NDX/QQQ and taxed T3d-K2. Report: `studies/letf_rotation_hunt/loop_iterations/032-2026-05-10-taxed-underlying-riskon-variants/REPORT.md` `[leverage_for_the_long_run, ch.4-5, p.40-60]`.
+- **2026-05-10 — Iter 032 taxed underlying/risk-on variants:** tested T3d-K2 annual-tax variants with risk-on `TQQQ`, `SPY/SSO`, and `SPY/UPRO`, plus plots of equity, benchmark-relative equity, and rolling windows. Best CAGR is `t3d_k2_tqqq_taxed`: CAGR 27.88%, Sortino 1.0279, MDD -70.74%, terminal 3.194× taxed T3d-K2. Best Sortino among dynamic variants remains iter 30 proxy tax-aware: CAGR 25.05%, Sortino 1.0966, MDD -59.29%, terminal 1.299× taxed T3d-K2. SPY/SSO and SPY/UPRO variants underperform static NDX/QQQ and taxed T3d-K2. Report: `studies/letf_rotation_hunt/runs/post_close/032-2026-05-10-taxed-underlying-riskon-variants/REPORT.md` `[leverage_for_the_long_run, ch.4-5, p.40-60]`.
+- **2026-05-10 — T3d-K2 tax-aware consolidation:** readable conclusion added at `studies/letf_rotation_hunt/reports/T3D_K2_TAX_AWARE_CONCLUSION.md`. Operational ranking: simple baseline = T3d-K2 annual-tax; balanced upgrade = iter 30 proxy annual-tax; performance-first challenger = T3d-K2 with TQQQ annual-tax; rejected = SPY/SSO and SPY/UPRO transplants. This is a research reference only and does not override mandate §1 `[leverage_for_the_long_run, ch.4-5, p.40-60]`, `[advances_fin_ml, p.222-223]`.
 - Spec: `docs/specs/2026-05-08-t5-expansion-design.md`; §17 disclosure in `STUDY_FINAL_REPORT.md`.
-- Refs: `studies/letf_rotation_hunt/reports/{STUDY_FINAL_REPORT,POST_CLOSE_LOOP_REPORT,STUDY_QQQ_BENCHMARK_REPORT,SORTINO_REANALYSIS_REPORT,TIER_5_REPORT}.md`.
+- Refs: `studies/letf_rotation_hunt/reports/{STUDY_FINAL_REPORT,POST_CLOSE_LOOP_REPORT,T3D_K2_TAX_AWARE_CONCLUSION,STUDY_QQQ_BENCHMARK_REPORT,SORTINO_REANALYSIS_REPORT,TIER_5_REPORT}.md`.
 
 ### studies/day_swing_strategy_hunt/ 🌱 BOOTSTRAP
 - Sem iter ainda. Docs/protocol prontos. Pode resumir a qualquer momento.
@@ -145,12 +146,13 @@ Sumário do mandate (`docs/investment-mandate.md` é canônico):
 ## Changelog
 
 - **2026-05-09:** `studies/letf_rotation_hunt/` ganhou suplemento QQQ/NDX para responder benchmark criticism: top-20 original reavaliado contra `QQQSIM`, sem reotimização; winner T3d sma250/100 permanece #1 por robustez composta vs QQQ.
-- **2026-05-09:** `studies/letf_rotation_hunt/` ganhou loop pós-fechamento isolado em `loop_iterations/`, com state próprio, limite de 50 iters, critério `beats_winner` congelado e trial accounting global para DSR.
+- **2026-05-09:** `studies/letf_rotation_hunt/` ganhou loop pós-fechamento isolado em `runs/post_close/`, com state próprio, limite de 50 iters, critério `beats_winner` congelado e trial accounting global para DSR.
 - **2026-05-09:** `studies/letf_rotation_hunt/` consolidou relatório loop 001-010. Iters 009-010 bateram o winner T3d-K2 pelo critério congelado; iter 010 é o melhor research beater (Sortino 1.4670, score 81.5), sem autorização de deploy.
 - **2026-05-10:** `studies/letf_rotation_hunt/` rodou Phase 3 performance-first (iters 011-020). Iter 012 foi o primeiro strict-superset CAGR+Sortino; iter 017 virou melhor research incumbent balanceado (CAGR 32.66%, Sortino 1.4030, terminal 1.61× T3d-K2), ainda sem deploy.
 - **2026-05-10:** `studies/letf_rotation_hunt/` concluiu Phase 4 focused loop (iters 021-030). Iter 030 `T35D60 + LRS1.20` virou novo research winner pós-fechamento (Sortino 1.3839, CAGR 36.68%, terminal ~5.4× T3d-K2, PBO 0.0357), documentado em `reports/POST_CLOSE_LOOP_REPORT.md`; segue sem deploy por score <90 e mandate §1.
 - **2026-05-10:** `studies/letf_rotation_hunt/` adicionou iter 031 para testar proxy sem margem `80% TQQQ + 20% CASHX` com tributação anual de 15% sobre lucro líquido realizado, comparando também T3d-K2 taxada e SPY/NDX buy-hold sem venda. Proxy annual-tax bate T3d-K2 taxada modestamente (25.05% vs 24.24% CAGR; terminal 1.299×), mas fica muito abaixo da iter 030 gross; veredito continua sem deploy.
 - **2026-05-10:** `studies/letf_rotation_hunt/` adicionou iter 032 para comparar variantes tax-aware de underlying/risk-on. T3d-K2 com TQQQ melhora CAGR/terminal (27.88%, 3.194× taxed T3d-K2), mas com Sortino menor e MDD -70.74%; SPY/SSO e SPY/UPRO não competem.
+- **2026-05-10:** `studies/letf_rotation_hunt/` consolidou a conclusão tax-aware da T3d-K2 em `reports/T3D_K2_TAX_AWARE_CONCLUSION.md`, separando ranking operacional simples/balanceado/performance-first/rejeitado sem mudar o mandate.
 - **2026-05-09:** `studies/weekly_momentum/` bootstrapped for weekly cross-sectional momentum over cached Tiingo stocks/ETFs, then adjusted to an honest daily-bar timing model and standardized report bundle: Thursday signal, Friday sale, Monday/Tuesday buy via `settlement_delay_days`, outputs under `results/{variation}/{config_slug}/`.
 - **2026-05-09:** `studies/weekly_momentum/` added controlled stock sweeps and walk-forward diagnostics over 200 configs per universe. S&P 500 WF: CAGR 42.30%, MDD -50.84%, Sharpe 1.216; full stock cache WF: CAGR 61.83%, MDD -60.52%, Sharpe 1.200. Verdict remains research-only pending PIT universe, costs and PBO/DSR/bootstrap.
 - **2026-05-09:** `studies/weekly_momentum/` froze 4 deploy candidates and generated a comparable validation panel under `deploy_candidates/`; candidates remain research-only pending operational/statistical hard gates.

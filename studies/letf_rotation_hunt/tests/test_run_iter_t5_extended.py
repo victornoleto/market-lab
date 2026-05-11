@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from studies.letf_rotation_hunt import run_iter_t5, run_iter_t5_extended
+from studies.letf_rotation_hunt.runners import run_iter_t5, run_iter_t5_extended
 
 
 def _minimal_config(name: str, extra: dict | None = None) -> dict:

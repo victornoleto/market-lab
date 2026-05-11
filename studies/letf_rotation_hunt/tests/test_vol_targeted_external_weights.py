@@ -7,7 +7,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from studies.letf_rotation_hunt.strategies.vol_targeted import build_positions
+from studies.letf_rotation_hunt.core.strategies.vol_targeted import build_positions
 
 
 def _frame(value: float, idx, cols):

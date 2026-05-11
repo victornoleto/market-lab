@@ -10,7 +10,7 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-from studies.letf_rotation_hunt import data_loader_yields as dly
+from studies.letf_rotation_hunt.core import data_loader_yields as dly
 
 
 def test_load_cmt_known_tenors_return_series(monkeypatch, tmp_path):

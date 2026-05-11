@@ -8,7 +8,7 @@ import pytest
 
 def test_gayed_binary_rotation_basic():
     """ON when signal=1: hold LETF; OFF when signal=0: hold OFF asset."""
-    from studies.letf_rotation_hunt.strategies.single_letf_gayed import build_positions
+    from studies.letf_rotation_hunt.core.strategies.single_letf_gayed import build_positions
 
     dates = pd.date_range("2020-01-01", periods=10, freq="B")
     signal = pd.Series([1, 1, 1, 0, 0, 0, 1, 1, 0, 0], index=dates).astype(float)
@@ -29,7 +29,7 @@ def test_gayed_binary_rotation_basic():
 
 def test_gayed_weights_sum_to_one():
     """All daily weights sum to 1.0 ± 1e-6."""
-    from studies.letf_rotation_hunt.strategies.single_letf_gayed import build_positions
+    from studies.letf_rotation_hunt.core.strategies.single_letf_gayed import build_positions
 
     dates = pd.date_range("2020-01-01", periods=20, freq="B")
     signal = pd.Series(np.random.RandomState(42).choice([0, 1], 20), index=dates).astype(float)
@@ -41,7 +41,7 @@ def test_gayed_weights_sum_to_one():
 
 def test_gayed_warmup_nan_skipped():
     """NaN signal during warmup → 100% OFF asset (defensive)."""
-    from studies.letf_rotation_hunt.strategies.single_letf_gayed import build_positions
+    from studies.letf_rotation_hunt.core.strategies.single_letf_gayed import build_positions
 
     dates = pd.date_range("2020-01-01", periods=10, freq="B")
     signal = pd.Series([np.nan, np.nan, np.nan, 1, 1, 1, 0, 0, 1, 1], index=dates)

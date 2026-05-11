@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from studies.letf_rotation_hunt.sortino_reanalysis.sortino_metric import (
+from studies.letf_rotation_hunt.analyses.sortino_reanalysis.sortino_metric import (
     _annualised_sortino,
     _sortino_edge_vs_spy,
 )
@@ -49,7 +49,7 @@ def test_sortino_edge_vs_spy():
 
 def test_threshold_rebuild():
     """Track A/B-M1/B-M2 thresholds = canonical_sortino + 0.05 (literal)."""
-    from studies.letf_rotation_hunt.sortino_reanalysis.winner_detection import (
+    from studies.letf_rotation_hunt.analyses.sortino_reanalysis.winner_detection import (
         rebuild_thresholds,
     )
     canonical = {"gross": 1.20, "m1": 0.95, "m2": 1.10}
@@ -61,7 +61,7 @@ def test_threshold_rebuild():
 
 def test_winner_changed_detection():
     """Strategy with higher sortino_edge_vs_canonical AND track_a_pass becomes new winner."""
-    from studies.letf_rotation_hunt.sortino_reanalysis.winner_detection import (
+    from studies.letf_rotation_hunt.analyses.sortino_reanalysis.winner_detection import (
         detect_new_winner,
     )
     df = pd.DataFrame([
@@ -79,7 +79,7 @@ def test_winner_changed_detection():
 
 def test_idempotency_no_change():
     """If no strategy passes Track A, winner_changed=False and cohort extension skipped."""
-    from studies.letf_rotation_hunt.sortino_reanalysis.winner_detection import (
+    from studies.letf_rotation_hunt.analyses.sortino_reanalysis.winner_detection import (
         detect_new_winner,
     )
     df = pd.DataFrame([
@@ -100,7 +100,7 @@ def test_recompute_canonical_lh56y():
     Spot-checks the LETF asymmetric-upside hypothesis on canonical lh_56y gross.
     Expected: Sortino ~1.20+ vs Sharpe ~0.85 (per parent study).
     """
-    from studies.letf_rotation_hunt.sortino_reanalysis.recompute import (
+    from studies.letf_rotation_hunt.analyses.sortino_reanalysis.recompute import (
         recompute_canonical,
     )
     rows = recompute_canonical()

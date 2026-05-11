@@ -1,1 +1,0 @@
-../../docs/superpowers/specs/2026-05-05-letf-rotation-study-design.md

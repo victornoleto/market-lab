@@ -54,7 +54,7 @@ def test_t1a_full_run_deterministic(tmp_path: Path) -> None:
     if not _TESTFOLIO_CACHE.exists():
         pytest.skip(_SKIP_REASON)
 
-    from studies.letf_rotation_hunt.run_iter import main
+    from studies.letf_rotation_hunt.runners.run_iter import main
 
     config_path = tmp_path / "test_t1a.yaml"
     config_path.write_text(_T1A_CONFIG_YAML)
@@ -133,8 +133,8 @@ def test_t1a_unknown_asset_raises(tmp_path: Path) -> None:
     if not _TESTFOLIO_CACHE.exists():
         pytest.skip(_SKIP_REASON)
 
-    from studies.letf_rotation_hunt.run_iter_t1 import _run_single_config
-    from studies.letf_rotation_hunt.data_loader import load_ffr_daily
+    from studies.letf_rotation_hunt.runners.run_iter_t1 import _run_single_config
+    from studies.letf_rotation_hunt.core.data_loader import load_ffr_daily
 
     ffr = load_ffr_daily()
     with pytest.raises(ValueError, match="No testfolio mapping for on_asset"):
@@ -156,8 +156,8 @@ def test_t1a_unknown_signal_raises(tmp_path: Path) -> None:
     if not _TESTFOLIO_CACHE.exists():
         pytest.skip(_SKIP_REASON)
 
-    from studies.letf_rotation_hunt.run_iter_t1 import _run_single_config
-    from studies.letf_rotation_hunt.data_loader import load_ffr_daily
+    from studies.letf_rotation_hunt.runners.run_iter_t1 import _run_single_config
+    from studies.letf_rotation_hunt.core.data_loader import load_ffr_daily
 
     ffr = load_ffr_daily()
     with pytest.raises(ValueError, match="Unknown signal"):
@@ -179,8 +179,8 @@ def test_t1a_ema_signal_works(tmp_path: Path) -> None:
     if not _TESTFOLIO_CACHE.exists():
         pytest.skip(_SKIP_REASON)
 
-    from studies.letf_rotation_hunt.run_iter_t1 import _run_single_config
-    from studies.letf_rotation_hunt.data_loader import load_ffr_daily
+    from studies.letf_rotation_hunt.runners.run_iter_t1 import _run_single_config
+    from studies.letf_rotation_hunt.core.data_loader import load_ffr_daily
 
     ffr = load_ffr_daily()
     result = _run_single_config(
@@ -203,8 +203,8 @@ def test_t1a_soxl_tmf_synth_works(tmp_path: Path) -> None:
     if not _TESTFOLIO_CACHE.exists():
         pytest.skip(_SKIP_REASON)
 
-    from studies.letf_rotation_hunt.run_iter_t1 import _run_single_config
-    from studies.letf_rotation_hunt.data_loader import load_ffr_daily
+    from studies.letf_rotation_hunt.runners.run_iter_t1 import _run_single_config
+    from studies.letf_rotation_hunt.core.data_loader import load_ffr_daily
 
     ffr = load_ffr_daily()
 

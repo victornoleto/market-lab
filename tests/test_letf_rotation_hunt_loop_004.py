@@ -14,7 +14,7 @@ import pytest
 
 ITER_DIR = (
     Path(__file__).resolve().parents[1]
-    / "studies/letf_rotation_hunt/loop_iterations/004-2026-05-09-corr-regime-stockbond"
+    / "studies/letf_rotation_hunt/runs/post_close/004-2026-05-09-corr-regime-stockbond"
 )
 
 

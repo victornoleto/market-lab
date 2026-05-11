@@ -1,4 +1,4 @@
-"""Tests for studies/letf_rotation_hunt/data_loader.py.
+"""Tests for studies/letf_rotation_hunt/core/data_loader.py.
 
 Coverage
 --------
@@ -13,7 +13,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from studies.letf_rotation_hunt.data_loader import (
+from studies.letf_rotation_hunt.core.data_loader import (
     load_ffr_daily,
     load_testfolio_series,
     load_tiingo_real_etf,

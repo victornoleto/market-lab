@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from studies.letf_rotation_hunt import signals_carry as sc
+from studies.letf_rotation_hunt.core import signals_carry as sc
 
 
 def _const_series(value: float, n: int = 500) -> pd.Series:

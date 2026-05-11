@@ -11,7 +11,7 @@ def test_verdict_schema_valid_minimal():
     """Minimal valid verdict passes schema."""
     import jsonschema
 
-    schema_path = Path("studies/letf_rotation_hunt/verdict_schema.json")
+    schema_path = Path("studies/letf_rotation_hunt/core/verdict_schema.json")
     schema = json.loads(schema_path.read_text())
 
     minimal_verdict = {
@@ -44,7 +44,7 @@ def test_verdict_schema_rejects_missing_field():
     """Missing required field → ValidationError."""
     import jsonschema
 
-    schema_path = Path("studies/letf_rotation_hunt/verdict_schema.json")
+    schema_path = Path("studies/letf_rotation_hunt/core/verdict_schema.json")
     schema = json.loads(schema_path.read_text())
 
     invalid = {"iter": "001-2026-05-06-T1a-test"}  # missing most required fields

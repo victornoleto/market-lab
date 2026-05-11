@@ -84,9 +84,9 @@ Per `CLAUDE.md` mandate §1, Strategy B is in MAINTENANCE MODE. This expansion i
 
 | File | Change |
 |------|--------|
-| `studies/letf_rotation_hunt/run_iter_t5.py` | Untouched. Existing iters 020-021 keep current behavior. |
-| `studies/letf_rotation_hunt/gates.py` | Untouched. Re-execution uses existing `g2_dsr_p_value`. |
-| `studies/letf_rotation_hunt/scoring.py` | Untouched. |
+| `studies/letf_rotation_hunt/runners/run_iter_t5.py` | Untouched. Existing iters 020-021 keep current behavior. |
+| `studies/letf_rotation_hunt/core/gates.py` | Untouched. Re-execution uses existing `g2_dsr_p_value`. |
+| `studies/letf_rotation_hunt/core/scoring.py` | Untouched. |
 | `studies/letf_rotation_hunt/reports/TIER_5_REPORT.md` | Add post-`> ⚠️ Post-close` note and new §-N for expansion results. |
 | `studies/letf_rotation_hunt/reports/STUDY_FINAL_REPORT.md` | Add §17 "Methodology change disclosure (T5 expansion, 2026-05-08)". |
 | `docs/CURRENT_STATE.md` | Add T5-expansion to active work, then move to history when complete. |
@@ -407,7 +407,7 @@ All 7 gates from `gates.py` unchanged:
 
 **Trigger:** after iter_025 completes, `n_trials_cumulative` becomes 426.
 
-**Action:** `scripts/dsr_recompute_cumulative.py` walks all 21 prior iter directories (iters 000-021 in `iterations/` plus 022, 023 = T3d sortino-era) and recomputes `g2_dsr_p_cumulative` for every config using `n_trials = 426`. Writes back to each config's verdict.json under a new key `g2_dsr_p_cumulative_v2_post_t5_expansion`. Original keys preserved for historical fidelity.
+**Action:** `scripts/dsr_recompute_cumulative.py` walks all 21 prior iter directories (iters 000-021 in `runs/original/` plus 022, 023 = T3d sortino-era) and recomputes `g2_dsr_p_cumulative` for every config using `n_trials = 426`. Writes back to each config's verdict.json under a new key `g2_dsr_p_cumulative_v2_post_t5_expansion`. Original keys preserved for historical fidelity.
 
 **Acceptance:** any prior config whose `g2_dsr_p_cumulative_v2` flips from PASS (<0.05) to FAIL (≥0.05) is flagged in §17 disclosure. **Track A winner `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` MUST remain PASS after re-correction** — if it does not, the expansion is documented as having invalidated the canonical winner and the user is asked to re-evaluate before any further work.
 

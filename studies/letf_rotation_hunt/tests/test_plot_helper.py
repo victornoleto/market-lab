@@ -11,7 +11,7 @@ import pytest
 
 def test_plot_equity_curves_generates_png(tmp_path):
     """Equity curves plot saves PNG without errors."""
-    from studies.letf_rotation_hunt.plot_helper import plot_equity_curves
+    from studies.letf_rotation_hunt.core.plot_helper import plot_equity_curves
 
     dates = pd.date_range("2020-01-01", periods=200, freq="B")
     equity_curves = {
@@ -30,7 +30,7 @@ def test_plot_equity_curves_generates_png(tmp_path):
 
 def test_plot_drawdown_curves(tmp_path):
     """Drawdown plot saves PNG."""
-    from studies.letf_rotation_hunt.plot_helper import plot_drawdown_curves
+    from studies.letf_rotation_hunt.core.plot_helper import plot_drawdown_curves
 
     dates = pd.date_range("2020-01-01", periods=200, freq="B")
     rng = np.random.RandomState(42)

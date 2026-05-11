@@ -17,7 +17,7 @@ import pytest
 
 def test_package_imports():
     """Smoke: package importable."""
-    import studies.letf_rotation_hunt.tax_comparison  # noqa: F401
+    import studies.letf_rotation_hunt.analyses.tax_comparison  # noqa: F401
 
 
 def test_per_swing_buy_and_hold_pays_zero_tax():
@@ -27,7 +27,7 @@ def test_per_swing_buy_and_hold_pays_zero_tax():
     and returns[t] is the return realised during bar t. Bar 0 is the initial
     deploy with no return earned, so a 10-bar buy-and-hold compounds 9 returns
     (matches dispatcher's `positions.shift(1) * returns` formula)."""
-    from studies.letf_rotation_hunt.tax_comparison.per_swing import simulate_per_swing
+    from studies.letf_rotation_hunt.analyses.tax_comparison.per_swing import simulate_per_swing
 
     dates = pd.date_range("2020-01-01", periods=10, freq="D")
     asset_returns = pd.DataFrame({"QLD": [0.01] * 10}, index=dates)  # +1%/day
@@ -47,7 +47,7 @@ def test_per_swing_buy_and_hold_pays_zero_tax():
 
 def test_per_swing_single_winning_trade_taxed_15pct():
     """Buy at $10k, asset doubles over 5 bars, sell on bar 6 — tax 15% on $10k gain."""
-    from studies.letf_rotation_hunt.tax_comparison.per_swing import simulate_per_swing
+    from studies.letf_rotation_hunt.analyses.tax_comparison.per_swing import simulate_per_swing
 
     dates = pd.date_range("2020-01-01", periods=7, freq="D")
     # Asset doubles by bar 5 then flat; second column is OFF cash-equivalent
@@ -76,7 +76,7 @@ def test_per_swing_single_winning_trade_taxed_15pct():
 
 def test_per_swing_single_losing_trade_pays_zero_tax():
     """Buy at $10k, asset halves, sell at trough — no tax (loss)."""
-    from studies.letf_rotation_hunt.tax_comparison.per_swing import simulate_per_swing
+    from studies.letf_rotation_hunt.analyses.tax_comparison.per_swing import simulate_per_swing
 
     dates = pd.date_range("2020-01-01", periods=7, freq="D")
     rets_qld = [0.0, -0.1294, -0.1294, -0.1294, -0.1294, -0.1294, 0.0]  # ~0.5× by bar 5
@@ -98,7 +98,7 @@ def test_per_swing_single_losing_trade_pays_zero_tax():
 def test_per_swing_no_loss_offset_across_swings():
     """First swing loses $1000; second swing gains $1000. Per-swing tax pays
     15% × 1000 = 150 on the win (no offset). Final net = 10000 - 150 = 9850."""
-    from studies.letf_rotation_hunt.tax_comparison.per_swing import simulate_per_swing
+    from studies.letf_rotation_hunt.analyses.tax_comparison.per_swing import simulate_per_swing
 
     dates = pd.date_range("2020-01-01", periods=8, freq="D")
     # Bars 0-1: hold QLD; QLD drops 10% → loss 1000.  Bars 2-3: hold OFF (cash-equiv).
@@ -125,7 +125,7 @@ def test_per_swing_no_loss_offset_across_swings():
 def test_per_swing_partial_reduction_proportional_basis():
     """Hold QLD 100%, asset doubles, reduce to 50%. Half the position is sold;
     realized PnL = 0.5 × initial × (1) = 5000; tax = 750."""
-    from studies.letf_rotation_hunt.tax_comparison.per_swing import simulate_per_swing
+    from studies.letf_rotation_hunt.analyses.tax_comparison.per_swing import simulate_per_swing
 
     dates = pd.date_range("2020-01-01", periods=7, freq="D")
     rets_qld = [0.0, 0.1487, 0.1487, 0.1487, 0.1487, 0.1487, 0.0]  # ~2× by bar 5
@@ -153,8 +153,8 @@ def test_per_swing_never_better_than_annual_when_losses_exist():
     (per-swing) in final net equity, by construction (intra-year loss offset
     can only help). Tested with a strategy that has both winning and losing
     swings within the same calendar year."""
-    from studies.letf_rotation_hunt.tax_comparison.per_swing import simulate_per_swing
-    from studies.letf_rotation_hunt.tax_layer import apply_annual_darf
+    from studies.letf_rotation_hunt.analyses.tax_comparison.per_swing import simulate_per_swing
+    from studies.letf_rotation_hunt.core.tax_layer import apply_annual_darf
 
     dates = pd.date_range("2020-01-01", periods=200, freq="D")
     # Whipsaw: alternating swings, mostly losing then winning within same year
@@ -188,7 +188,7 @@ def test_per_swing_never_better_than_annual_when_losses_exist():
 def _write_fake_verdict(tmp_path, iter_id, tier, datetime_utc, configs_with_scores):
     """Helper: write a minimal verdict.json fixture under tmp_path."""
     import json
-    iter_dir = tmp_path / "iterations" / iter_id
+    iter_dir = tmp_path / "runs/original" / iter_id
     iter_dir.mkdir(parents=True, exist_ok=True)
     verdict = {
         "iter": iter_id,
@@ -207,7 +207,7 @@ def _write_fake_verdict(tmp_path, iter_id, tier, datetime_utc, configs_with_scor
 
 
 def test_select_top10_excludes_t2_static(tmp_path):
-    from studies.letf_rotation_hunt.tax_comparison.select_top10 import select_top10
+    from studies.letf_rotation_hunt.analyses.tax_comparison.select_top10 import select_top10
 
     _write_fake_verdict(tmp_path, "001", "T1c", "2026-05-06T10:00:00+00:00",
                         [("qld_sma200_zroz", 61, 0.75)])
@@ -216,14 +216,14 @@ def test_select_top10_excludes_t2_static(tmp_path):
     _write_fake_verdict(tmp_path, "014", "T3d", "2026-05-06T12:00:00+00:00",
                         [("qld_voteK2", 78, 0.85)])
 
-    top = select_top10(iterations_root=tmp_path / "iterations")
+    top = select_top10(iterations_root=tmp_path / "runs/original")
     names = [t["config_name"] for t in top]
     assert "hfea_55_45" not in names
     assert {"qld_sma200_zroz", "qld_voteK2"} <= set(names)
 
 
 def test_select_top10_dedup_keeps_latest_iter(tmp_path):
-    from studies.letf_rotation_hunt.tax_comparison.select_top10 import select_top10
+    from studies.letf_rotation_hunt.analyses.tax_comparison.select_top10 import select_top10
 
     # Same config name in two iters; later iter has different (lower) score
     _write_fake_verdict(tmp_path, "014", "T3d", "2026-05-06T10:00:00+00:00",
@@ -231,7 +231,7 @@ def test_select_top10_dedup_keeps_latest_iter(tmp_path):
     _write_fake_verdict(tmp_path, "022", "T3d", "2026-05-06T15:00:00+00:00",
                         [("qld_voteK2", 82, 0.85)])  # later, higher score
 
-    top = select_top10(iterations_root=tmp_path / "iterations")
+    top = select_top10(iterations_root=tmp_path / "runs/original")
     assert len(top) == 1
     assert top[0]["config_name"] == "qld_voteK2"
     assert top[0]["score"] == pytest.approx(82.0)
@@ -239,24 +239,24 @@ def test_select_top10_dedup_keeps_latest_iter(tmp_path):
 
 
 def test_select_top10_ranks_by_score_desc_with_sharpe_tiebreaker(tmp_path):
-    from studies.letf_rotation_hunt.tax_comparison.select_top10 import select_top10
+    from studies.letf_rotation_hunt.analyses.tax_comparison.select_top10 import select_top10
 
     _write_fake_verdict(tmp_path, "001", "T1c", "2026-05-06T10:00:00+00:00",
                         [("a", 70, 0.80), ("b", 80, 0.70), ("c", 80, 0.90)])
 
-    top = select_top10(iterations_root=tmp_path / "iterations")
+    top = select_top10(iterations_root=tmp_path / "runs/original")
     names = [t["config_name"] for t in top]
     # Score 80 ties: c (sharpe 0.90) before b (sharpe 0.70); a last
     assert names == ["c", "b", "a"]
 
 
 def test_select_top10_caps_at_ten(tmp_path):
-    from studies.letf_rotation_hunt.tax_comparison.select_top10 import select_top10
+    from studies.letf_rotation_hunt.analyses.tax_comparison.select_top10 import select_top10
 
     configs = [(f"cfg{i:02d}", 50 + i, 0.5 + 0.01*i) for i in range(15)]
     _write_fake_verdict(tmp_path, "001", "T1c", "2026-05-06T10:00:00+00:00", configs)
 
-    top = select_top10(iterations_root=tmp_path / "iterations")
+    top = select_top10(iterations_root=tmp_path / "runs/original")
     assert len(top) == 10
     # Top by score desc: cfg14 (64) ... cfg05 (55)
     assert top[0]["config_name"] == "cfg14"
@@ -267,8 +267,8 @@ def test_dispatcher_t3_exposes_positions_and_asset_returns():
     """Smoke: T3 dispatcher's _run_single_composite_config must return
     `_positions` (DataFrame) and `_asset_returns_aligned` (DataFrame) so that
     tax_comparison can simulate per-swing on the actual position trajectory."""
-    from studies.letf_rotation_hunt.data_loader import load_ffr_daily
-    from studies.letf_rotation_hunt.run_iter_t3 import _run_single_composite_config
+    from studies.letf_rotation_hunt.core.data_loader import load_ffr_daily
+    from studies.letf_rotation_hunt.runners.run_iter_t3 import _run_single_composite_config
 
     cfg = {
         "name": "qld_vote_k2_off_zroz",
@@ -294,13 +294,13 @@ def test_reconstruct_t3_canonical_winner():
     """E2E: reconstruct the canonical T3d K=2 config from its verdict and
     return positions, asset_returns_aligned, gross strategy_returns, gross equity."""
     from pathlib import Path
-    from studies.letf_rotation_hunt.tax_comparison.reconstruct import reconstruct_strategy
+    from studies.letf_rotation_hunt.analyses.tax_comparison.reconstruct import reconstruct_strategy
 
     selected = {
         "config_name": "qld_vote_k2_off_zroz",
         "tier": "T3d",
         "iter_id": "014-2026-05-06-T3d-vote-of-k",
-        "source_iter_path": str(Path("studies/letf_rotation_hunt/iterations/014-2026-05-06-T3d-vote-of-k").resolve()),
+        "source_iter_path": str(Path("studies/letf_rotation_hunt/runs/original/014-2026-05-06-T3d-vote-of-k").resolve()),
     }
     out = reconstruct_strategy(selected, datasets=["lh_56y"])
     assert "positions" in out
@@ -314,7 +314,7 @@ def test_reconstruct_t3_canonical_winner():
 
 
 def test_plot_per_strategy_smoke(tmp_path):
-    from studies.letf_rotation_hunt.tax_comparison.plot_tax_comparison import (
+    from studies.letf_rotation_hunt.analyses.tax_comparison.plot_tax_comparison import (
         plot_per_strategy_equity, plot_per_strategy_ratio,
     )
 

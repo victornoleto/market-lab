@@ -25,15 +25,15 @@ import pytest
 
 ITER_DIR = (
     Path(__file__).resolve().parents[1]
-    / "studies/letf_rotation_hunt/loop_iterations/010-2026-05-09-graded-master-bridge"
+    / "studies/letf_rotation_hunt/runs/post_close/010-2026-05-09-graded-master-bridge"
 )
 ITER007_DIR = (
     Path(__file__).resolve().parents[1]
-    / "studies/letf_rotation_hunt/loop_iterations/007-2026-05-09-compound-ratevol-off-x-invvol-on-basket"
+    / "studies/letf_rotation_hunt/runs/post_close/007-2026-05-09-compound-ratevol-off-x-invvol-on-basket"
 )
 ITER009_DIR = (
     Path(__file__).resolve().parents[1]
-    / "studies/letf_rotation_hunt/loop_iterations/009-2026-05-09-master-scope-off-override"
+    / "studies/letf_rotation_hunt/runs/post_close/009-2026-05-09-master-scope-off-override"
 )
 
 

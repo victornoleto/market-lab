@@ -16,13 +16,13 @@ import pytest
 
 def test_package_imports():
     """Smoke: package importable."""
-    import studies.letf_rotation_hunt.threshold_sweep  # noqa: F401
+    import studies.letf_rotation_hunt.analyses.threshold_sweep  # noqa: F401
 
 
 def test_smabuf_zero_matches_strict_crossover():
     """With on=off=0, output equals plain sma_gate (strict crossover)."""
-    from studies.letf_rotation_hunt.signals import sma_gate
-    from studies.letf_rotation_hunt.threshold_sweep.threshold_signals import sma_gate_with_buffer
+    from studies.letf_rotation_hunt.core.signals import sma_gate
+    from studies.letf_rotation_hunt.analyses.threshold_sweep.threshold_signals import sma_gate_with_buffer
 
     dates = pd.date_range("2020-01-01", periods=400, freq="B")
     np_rng = np.random.default_rng(seed=42)
@@ -44,7 +44,7 @@ def test_smabuf_zero_matches_strict_crossover():
 
 def test_smabuf_symmetric_holds_state_in_band():
     """Price oscillates within ±1% of SMA; with buf=2% should never flip."""
-    from studies.letf_rotation_hunt.threshold_sweep.threshold_signals import sma_gate_with_buffer
+    from studies.letf_rotation_hunt.analyses.threshold_sweep.threshold_signals import sma_gate_with_buffer
 
     # Build prices that have stable SMA at 100 with ±1% oscillation
     dates = pd.date_range("2020-01-01", periods=400, freq="B")
@@ -67,7 +67,7 @@ def test_smabuf_symmetric_holds_state_in_band():
 
 def test_smabuf_asymmetric_fast_off_slow_on():
     """Sequence: state=1 initially, drop 1% → flips OFF; rise back 1% → does NOT flip ON."""
-    from studies.letf_rotation_hunt.threshold_sweep.threshold_signals import sma_gate_with_buffer
+    from studies.letf_rotation_hunt.analyses.threshold_sweep.threshold_signals import sma_gate_with_buffer
 
     # Build prices: 200 bars at 100 (warmup), then drop to 99, then back to 100
     dates = pd.date_range("2020-01-01", periods=400, freq="B")
@@ -89,7 +89,7 @@ def test_smabuf_asymmetric_fast_off_slow_on():
 
 def test_smabuf_first_bar_initialised_from_ratio():
     """First post-warmup bar with price > SMA should yield state=1."""
-    from studies.letf_rotation_hunt.threshold_sweep.threshold_signals import sma_gate_with_buffer
+    from studies.letf_rotation_hunt.analyses.threshold_sweep.threshold_signals import sma_gate_with_buffer
 
     dates = pd.date_range("2020-01-01", periods=210, freq="B")
     # 200 bars at 100, then 10 bars at 110 (above SMA after warmup)
@@ -104,7 +104,7 @@ def test_smabuf_first_bar_initialised_from_ratio():
 
 def test_smabuf_warmup_returns_nan():
     """Bars before period warmup must return NaN."""
-    from studies.letf_rotation_hunt.threshold_sweep.threshold_signals import sma_gate_with_buffer
+    from studies.letf_rotation_hunt.analyses.threshold_sweep.threshold_signals import sma_gate_with_buffer
 
     dates = pd.date_range("2020-01-01", periods=300, freq="B")
     prices = pd.Series(np.linspace(100, 150, 300), index=dates)
@@ -117,8 +117,8 @@ def test_smabuf_warmup_returns_nan():
 
 def test_ar1_buffer_zero_matches_canonical():
     """ar1_gate_with_buffer(threshold=0) matches `(ar1_coefficient > 0).astype(float)`."""
-    from studies.letf_rotation_hunt.signals import ar1_coefficient
-    from studies.letf_rotation_hunt.threshold_sweep.threshold_signals import ar1_gate_with_buffer
+    from studies.letf_rotation_hunt.core.signals import ar1_coefficient
+    from studies.letf_rotation_hunt.analyses.threshold_sweep.threshold_signals import ar1_gate_with_buffer
 
     dates = pd.date_range("2020-01-01", periods=400, freq="B")
     np_rng = np.random.default_rng(seed=42)
@@ -143,7 +143,7 @@ def test_ar1_buffer_zero_matches_canonical():
 def test_ar1_buffer_strict_inequality_at_threshold():
     """With threshold=0.05, a synthetic series where ar1 ≈ 0.05 exactly returns 0
     (strict `>`)."""
-    from studies.letf_rotation_hunt.threshold_sweep.threshold_signals import ar1_gate_with_buffer
+    from studies.letf_rotation_hunt.analyses.threshold_sweep.threshold_signals import ar1_gate_with_buffer
 
     # Construct synthetic returns with known AR(1) ≈ 0.05 over the window.
     # Use a simple AR(1) process: r_t = 0.05 * r_{t-1} + noise
@@ -168,7 +168,7 @@ def test_ar1_buffer_strict_inequality_at_threshold():
 
 def test_variant_grid_has_12_configs():
     """Exactly 12 variants per spec §2.2 (1 baseline + 5 sym SMA + 3 hyst + 3 AR1)."""
-    from studies.letf_rotation_hunt.threshold_sweep.variant_grid import VARIANTS
+    from studies.letf_rotation_hunt.analyses.threshold_sweep.variant_grid import VARIANTS
 
     assert len(VARIANTS) == 12
     required_keys = {
@@ -184,7 +184,7 @@ def test_variant_grid_has_12_configs():
 
 def test_variant_grid_baseline_has_zero_buffers():
     """The baseline variant must have all buffers at 0 (canonical T3d K=2)."""
-    from studies.letf_rotation_hunt.threshold_sweep.variant_grid import VARIANTS
+    from studies.letf_rotation_hunt.analyses.threshold_sweep.variant_grid import VARIANTS
 
     baseline = next((v for v in VARIANTS if v["name"] == "t3d_k2_baseline"), None)
     assert baseline is not None, "Baseline variant 't3d_k2_baseline' missing"
@@ -201,9 +201,9 @@ def test_variant_grid_baseline_has_zero_buffers():
 def test_dispatcher_zero_buffer_matches_canonical_sharpe():
     """Running t3d_k2_baseline (all-zero buffers) through the dispatcher must
     produce Sharpe within ±0.001 of the canonical iter_014 K=2 result (0.853)."""
-    from studies.letf_rotation_hunt.data_loader import load_ffr_daily
-    from studies.letf_rotation_hunt.run_iter_t3 import _run_single_composite_config
-    from studies.letf_rotation_hunt.threshold_sweep.variant_grid import VARIANTS
+    from studies.letf_rotation_hunt.core.data_loader import load_ffr_daily
+    from studies.letf_rotation_hunt.runners.run_iter_t3 import _run_single_composite_config
+    from studies.letf_rotation_hunt.analyses.threshold_sweep.variant_grid import VARIANTS
 
     baseline = next(v for v in VARIANTS if v["name"] == "t3d_k2_baseline")
     ffr_daily = load_ffr_daily()
@@ -219,7 +219,7 @@ def test_dispatcher_zero_buffer_matches_canonical_sharpe():
 
 
 def test_plot_threshold_sweep_smoke(tmp_path):
-    from studies.letf_rotation_hunt.threshold_sweep.plot_threshold_sweep import (
+    from studies.letf_rotation_hunt.analyses.threshold_sweep.plot_threshold_sweep import (
         plot_equity_overlay_top4, plot_sharpe_bar, plot_trade_count_bar,
     )
 

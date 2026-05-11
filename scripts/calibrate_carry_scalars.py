@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 
 from studies.letf_rotation_hunt import signals_carry as sc
-from studies.letf_rotation_hunt.data_loader import load_ffr_daily, load_testfolio_series
+from studies.letf_rotation_hunt.core.data_loader import load_ffr_daily, load_testfolio_series
 
 
 CALIBRATION_ASSETS_BY_CLASS: dict[str, list[str]] = {

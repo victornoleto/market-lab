@@ -93,7 +93,7 @@ This sweep held vol_threshold=0.40 (canonical). The deploy guide notes SOXL may 
 
 ## Where this lives
 
-- Code: `studies/letf_rotation_hunt/soxl_sma_sweep/`
+- Code: `studies/letf_rotation_hunt/analyses/soxl_sma_sweep/`
 - Data: `data/soxl_sma_sweep/sweep_metrics.csv` (46 rows, 23 per asset)
 - Plots: `studies/letf_rotation_hunt/reports/soxl_sma_sweep/{soxl,smh}_sortino_heatmap.png`
 - Report: this file

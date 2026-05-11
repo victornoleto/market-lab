@@ -123,7 +123,7 @@ Cumulative `n_trials = 382` (T1a 6 + T1b 10 + T1c 6 + T1d 360).
 Note SSO is the only config passing G3 walk-forward gate (43% MDD < 50% threshold);
 others fail MDD. 2× LETFs are MDD-friendlier than 3× as expected.
 
-Detail: `iterations/001-2026-05-05-T1a-letf-sweep/SUMMARY.md`.
+Detail: `runs/original/001-2026-05-05-T1a-letf-sweep/SUMMARY.md`.
 
 ---
 
@@ -146,7 +146,7 @@ underperforms SMA family (EMA reactivity adds whipsaw without alpha — confirms
 `[trading_systems_methods, Kaufman, ch.6]`). The spec's choice of SMA200 as
 canonical is empirically supported, not p-hacked.
 
-Detail: `iterations/002-2026-05-06-T1b-qld-period-sweep/SUMMARY.md`.
+Detail: `runs/original/002-2026-05-06-T1b-qld-period-sweep/SUMMARY.md`.
 
 ---
 
@@ -178,7 +178,7 @@ Two findings:
    benefit. Validates `[leverage_for_the_long_run, p.21 Table 12]` on LETF
    tracking drag in rate-rising regimes.
 
-Detail: `iterations/003-2026-05-06-T1c-qld-off-state-sweep/SUMMARY.md`.
+Detail: `runs/original/003-2026-05-06-T1c-qld-off-state-sweep/SUMMARY.md`.
 
 ---
 
@@ -282,7 +282,7 @@ performance.
 
 ### T1d plots
 
-- `iterations/004-2026-05-06-T1d-full-grid/plots/01-07_*.png` — line plots
+- `runs/original/004-2026-05-06-T1d-full-grid/plots/01-07_*.png` — line plots
   filtered to top-15 by Sharpe (auto-truncated when configs > 15)
 - `plots/08_sharpe_heatmap.png` — full 60×6 grid heatmap (rows: on×signal×period,
   cols: off asset). Visualises ZROZ column as universal winner.

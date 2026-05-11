@@ -21,7 +21,7 @@
 ### Task 1: `data_loader_yields.load_constant_maturity_yield`
 
 **Files:**
-- Create: `studies/letf_rotation_hunt/data_loader_yields.py`
+- Create: `studies/letf_rotation_hunt/core/data_loader_yields.py`
 - Test: `studies/letf_rotation_hunt/tests/test_data_loader_yields.py`
 
 - [ ] **Step 1: Write failing test for tenor mapping**
@@ -71,7 +71,7 @@ Expected: FAIL — `ModuleNotFoundError: data_loader_yields`.
 - [ ] **Step 3: Implement minimal `load_constant_maturity_yield`**
 
 ```python
-# studies/letf_rotation_hunt/data_loader_yields.py
+# studies/letf_rotation_hunt/core/data_loader_yields.py
 """Yield data sources for T5b carry forecast.
 
 Loads constant-maturity Treasury yields (^IRX/^TNX/^TYX) and trailing
@@ -134,7 +134,7 @@ Expected: 2 PASS.
 - [ ] **Step 5: Commit**
 
 ```
-git add studies/letf_rotation_hunt/data_loader_yields.py studies/letf_rotation_hunt/tests/test_data_loader_yields.py
+git add studies/letf_rotation_hunt/core/data_loader_yields.py studies/letf_rotation_hunt/tests/test_data_loader_yields.py
 git commit -m "feat(letf-t5): add CMT yield loader for carry forecast"
 ```
 
@@ -143,7 +143,7 @@ git commit -m "feat(letf-t5): add CMT yield loader for carry forecast"
 ### Task 2: `data_loader_yields.load_dividend_yield`
 
 **Files:**
-- Modify: `studies/letf_rotation_hunt/data_loader_yields.py`
+- Modify: `studies/letf_rotation_hunt/core/data_loader_yields.py`
 - Modify: `studies/letf_rotation_hunt/tests/test_data_loader_yields.py`
 
 - [ ] **Step 1: Write failing test**
@@ -230,7 +230,7 @@ Expected: 3 PASS (cumulative).
 - [ ] **Step 5: Commit**
 
 ```
-git add studies/letf_rotation_hunt/data_loader_yields.py studies/letf_rotation_hunt/tests/test_data_loader_yields.py
+git add studies/letf_rotation_hunt/core/data_loader_yields.py studies/letf_rotation_hunt/tests/test_data_loader_yields.py
 git commit -m "feat(letf-t5): add trailing-12m dividend yield loader"
 ```
 
@@ -275,7 +275,7 @@ git commit -m "data(letf-t5): cache CMT and dividend-yield series"
 ### Task 4: `signals_carry.compute_carry_forecast` — equity branch
 
 **Files:**
-- Create: `studies/letf_rotation_hunt/signals_carry.py`
+- Create: `studies/letf_rotation_hunt/core/signals_carry.py`
 - Test: `studies/letf_rotation_hunt/tests/test_signals_carry.py`
 
 - [ ] **Step 1: Write failing test**
@@ -344,7 +344,7 @@ Expected: FAIL — `ModuleNotFoundError: signals_carry`.
 - [ ] **Step 3: Implement equity-branch carry**
 
 ```python
-# studies/letf_rotation_hunt/signals_carry.py
+# studies/letf_rotation_hunt/core/signals_carry.py
 """Per-asset carry forecast for T5b — Carver framework.
 
 carry_raw[t]    = expected_yield[t] - leverage[asset] * FFR[t]
@@ -432,7 +432,7 @@ Expected: 3 PASS.
 - [ ] **Step 5: Commit**
 
 ```
-git add studies/letf_rotation_hunt/signals_carry.py studies/letf_rotation_hunt/tests/test_signals_carry.py
+git add studies/letf_rotation_hunt/core/signals_carry.py studies/letf_rotation_hunt/tests/test_signals_carry.py
 git commit -m "feat(letf-t5): add equity-branch carry forecast (Carver ch.9)"
 ```
 
@@ -493,7 +493,7 @@ git commit -m "test(letf-t5): cover bond/gold/unknown branches of carry forecast
 ### Task 6: `signals_carry.compose_ewmac_carry`
 
 **Files:**
-- Modify: `studies/letf_rotation_hunt/signals_carry.py`
+- Modify: `studies/letf_rotation_hunt/core/signals_carry.py`
 - Modify: `studies/letf_rotation_hunt/tests/test_signals_carry.py`
 
 - [ ] **Step 1: Write failing test**
@@ -547,7 +547,7 @@ Expected: 8 PASS in `test_signals_carry.py`.
 - [ ] **Step 5: Commit**
 
 ```
-git add studies/letf_rotation_hunt/signals_carry.py studies/letf_rotation_hunt/tests/test_signals_carry.py
+git add studies/letf_rotation_hunt/core/signals_carry.py studies/letf_rotation_hunt/tests/test_signals_carry.py
 git commit -m "feat(letf-t5): add EWMAC+carry composition (FDM 1.41)"
 ```
 
@@ -556,7 +556,7 @@ git commit -m "feat(letf-t5): add EWMAC+carry composition (FDM 1.41)"
 ### Task 7: `strategies/hrp_weighter.compute_hrp_weights`
 
 **Files:**
-- Create: `studies/letf_rotation_hunt/strategies/hrp_weighter.py`
+- Create: `studies/letf_rotation_hunt/core/strategies/hrp_weighter.py`
 - Test: `studies/letf_rotation_hunt/tests/test_hrp_weighter.py`
 
 - [ ] **Step 1: Write failing tests**
@@ -618,7 +618,7 @@ Expected: ModuleNotFoundError on `hrp_weighter`.
 - [ ] **Step 3: Implement HRP**
 
 ```python
-# studies/letf_rotation_hunt/strategies/hrp_weighter.py
+# studies/letf_rotation_hunt/core/strategies/hrp_weighter.py
 """HRP and ERC weighting schemes for T5d (multi-asset Carver vol-target).
 
 Citations
@@ -716,7 +716,7 @@ Expected: 3 PASS.
 - [ ] **Step 5: Commit**
 
 ```
-git add studies/letf_rotation_hunt/strategies/hrp_weighter.py studies/letf_rotation_hunt/tests/test_hrp_weighter.py
+git add studies/letf_rotation_hunt/core/strategies/hrp_weighter.py studies/letf_rotation_hunt/tests/test_hrp_weighter.py
 git commit -m "feat(letf-t5): add HRP weighting (López de Prado ch.16)"
 ```
 
@@ -725,7 +725,7 @@ git commit -m "feat(letf-t5): add HRP weighting (López de Prado ch.16)"
 ### Task 8: `hrp_weighter.compute_erc_weights`
 
 **Files:**
-- Modify: `studies/letf_rotation_hunt/strategies/hrp_weighter.py`
+- Modify: `studies/letf_rotation_hunt/core/strategies/hrp_weighter.py`
 - Modify: `studies/letf_rotation_hunt/tests/test_hrp_weighter.py`
 
 - [ ] **Step 1: Write failing test**
@@ -809,7 +809,7 @@ Expected: 6 PASS in `test_hrp_weighter.py`.
 - [ ] **Step 5: Commit**
 
 ```
-git add studies/letf_rotation_hunt/strategies/hrp_weighter.py studies/letf_rotation_hunt/tests/test_hrp_weighter.py
+git add studies/letf_rotation_hunt/core/strategies/hrp_weighter.py studies/letf_rotation_hunt/tests/test_hrp_weighter.py
 git commit -m "feat(letf-t5): add ERC weighting via Newton iteration"
 ```
 
@@ -818,7 +818,7 @@ git commit -m "feat(letf-t5): add ERC weighting via Newton iteration"
 ### Task 9: `build_positions` external_weights parameter
 
 **Files:**
-- Modify: `studies/letf_rotation_hunt/strategies/vol_targeted.py`
+- Modify: `studies/letf_rotation_hunt/core/strategies/vol_targeted.py`
 - Test: `studies/letf_rotation_hunt/tests/test_vol_targeted_external_weights.py`
 
 - [ ] **Step 1: Write failing test (new file)**
@@ -885,7 +885,7 @@ Expected: TypeError — `external_weights` not a valid kwarg.
 
 - [ ] **Step 3: Modify `build_positions`**
 
-Edit `studies/letf_rotation_hunt/strategies/vol_targeted.py:20-93` to add `external_weights` parameter. Replace function signature and body:
+Edit `studies/letf_rotation_hunt/core/strategies/vol_targeted.py:20-93` to add `external_weights` parameter. Replace function signature and body:
 
 ```python
 def build_positions(
@@ -971,7 +971,7 @@ Expected: All PASS, no regressions.
 - [ ] **Step 6: Commit**
 
 ```
-git add studies/letf_rotation_hunt/strategies/vol_targeted.py studies/letf_rotation_hunt/tests/test_vol_targeted_external_weights.py
+git add studies/letf_rotation_hunt/core/strategies/vol_targeted.py studies/letf_rotation_hunt/tests/test_vol_targeted_external_weights.py
 git commit -m "feat(letf-t5): add external_weights param to build_positions for HRP/ERC"
 ```
 
@@ -980,7 +980,7 @@ git commit -m "feat(letf-t5): add external_weights param to build_positions for 
 ### Task 10: `run_iter_t5_extended` dispatcher
 
 **Files:**
-- Create: `studies/letf_rotation_hunt/run_iter_t5_extended.py`
+- Create: `studies/letf_rotation_hunt/runners/run_iter_t5_extended.py`
 - Test: `studies/letf_rotation_hunt/tests/test_run_iter_t5_extended.py`
 
 - [ ] **Step 1: Write failing test (backward compat)**
@@ -1039,7 +1039,7 @@ Expected: ModuleNotFoundError on `run_iter_t5_extended`.
 - [ ] **Step 3: Implement extended dispatcher**
 
 ```python
-# studies/letf_rotation_hunt/run_iter_t5_extended.py
+# studies/letf_rotation_hunt/runners/run_iter_t5_extended.py
 """Extended T5 dispatcher with forecast_type and weighting_scheme.
 
 Routes per-config based on optional keys:
@@ -1406,7 +1406,7 @@ Expected: 3 PASS.
 - [ ] **Step 6: Commit**
 
 ```
-git add studies/letf_rotation_hunt/run_iter_t5_extended.py studies/letf_rotation_hunt/tests/test_run_iter_t5_extended.py
+git add studies/letf_rotation_hunt/runners/run_iter_t5_extended.py studies/letf_rotation_hunt/tests/test_run_iter_t5_extended.py
 git commit -m "feat(letf-t5): add extended dispatcher with forecast_type and weighting_scheme"
 ```
 
@@ -1416,7 +1416,7 @@ git commit -m "feat(letf-t5): add extended dispatcher with forecast_type and wei
 
 **Files:**
 - Create: `scripts/calibrate_carry_scalars.py`
-- Modify: `studies/letf_rotation_hunt/signals_carry.py:36-40` (`_CARRY_SCALAR_BY_CLASS`)
+- Modify: `studies/letf_rotation_hunt/core/signals_carry.py:36-40` (`_CARRY_SCALAR_BY_CLASS`)
 
 - [ ] **Step 1: Write calibration script**
 
@@ -1491,7 +1491,7 @@ Suggested _CARRY_SCALAR_BY_CLASS:
 
 - [ ] **Step 3: Update `_CARRY_SCALAR_BY_CLASS` with empirical values**
 
-Edit `studies/letf_rotation_hunt/signals_carry.py:36-40` replacing:
+Edit `studies/letf_rotation_hunt/core/signals_carry.py:36-40` replacing:
 
 ```python
 _CARRY_SCALAR_BY_CLASS: dict[str, float] = {
@@ -1523,7 +1523,7 @@ Expected: All 8 still PASS (sign tests are scalar-invariant; clipping test still
 - [ ] **Step 5: Commit**
 
 ```
-git add scripts/calibrate_carry_scalars.py studies/letf_rotation_hunt/signals_carry.py
+git add scripts/calibrate_carry_scalars.py studies/letf_rotation_hunt/core/signals_carry.py
 git commit -m "feat(letf-t5): calibrate carry scalars per Carver SD≈10 convention"
 ```
 
@@ -1536,12 +1536,12 @@ git commit -m "feat(letf-t5): calibrate carry scalars per Carver SD≈10 convent
 - Create: `studies/letf_rotation_hunt/configs/iter_023_t5b_carry.yaml`
 - Create: `studies/letf_rotation_hunt/configs/iter_024_t5c_grid.yaml`
 - Create: `studies/letf_rotation_hunt/configs/iter_025_t5d_hrp_erc.yaml`
-- Modify: `studies/letf_rotation_hunt/run_iter.py` (or wherever tier dispatch lives)
+- Modify: `studies/letf_rotation_hunt/runners/run_iter.py` (or wherever tier dispatch lives)
 
 - [ ] **Step 1: Locate dispatch router**
 
 ```
-grep -rn "run_iter_t5\|tier.startswith\|T5a\|T5b" studies/letf_rotation_hunt/run_iter.py studies/letf_rotation_hunt/run_loop.sh 2>/dev/null
+grep -rn "run_iter_t5\|tier.startswith\|T5a\|T5b" studies/letf_rotation_hunt/runners/run_iter.py studies/letf_rotation_hunt/runners/run_loop.sh 2>/dev/null
 ```
 Read the matched file to find where tier-string → dispatcher mapping happens.
 
@@ -1579,7 +1579,7 @@ Create `iter_022_t5a_sigma_sweep.yaml` (5 configs), `iter_023_t5b_carry.yaml` (4
 uv run python -m studies.letf_rotation_hunt.run_iter --iter 022 --config studies/letf_rotation_hunt/configs/iter_022_t5a_sigma_sweep.yaml 2>&1 | tail -30
 ```
 The project's `run_iter` requires both `--iter NNN` and `--config <path>` (no dry-run mode).
-Expected: 5 configs processed under `iterations/022-2026-05-08-T5a-sigma-sweep/`, verdict.json + SUMMARY.md present, no Python tracebacks.
+Expected: 5 configs processed under `runs/original/022-2026-05-08-T5a-sigma-sweep/`, verdict.json + SUMMARY.md present, no Python tracebacks.
 
 - [ ] **Step 5: Commit configs + dispatcher wiring**
 
@@ -1588,7 +1588,7 @@ git add studies/letf_rotation_hunt/configs/iter_022_t5a_sigma_sweep.yaml \
         studies/letf_rotation_hunt/configs/iter_023_t5b_carry.yaml \
         studies/letf_rotation_hunt/configs/iter_024_t5c_grid.yaml \
         studies/letf_rotation_hunt/configs/iter_025_t5d_hrp_erc.yaml \
-        studies/letf_rotation_hunt/run_iter.py
+        studies/letf_rotation_hunt/runners/run_iter.py
 git commit -m "feat(letf-t5): add iter_022-025 configs (T5a-grid, T5b, T5c-grid, T5d)"
 ```
 
@@ -1726,7 +1726,7 @@ def recompute_all(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--iters-root", type=Path,
-                        default=Path("studies/letf_rotation_hunt/iterations"))
+                        default=Path("studies/letf_rotation_hunt/runs/original"))
     parser.add_argument("--n-trials-new", type=int, required=True)
     args = parser.parse_args()
     summary = recompute_all(args.iters_root, args.n_trials_new)
@@ -1764,14 +1764,14 @@ git commit -m "feat(letf-t5): add DSR cumulative re-computation script"
 ### Task 14: End-to-end run + acceptance gate
 
 **Files:**
-- Run-only (writes to `studies/letf_rotation_hunt/iterations/`).
+- Run-only (writes to `studies/letf_rotation_hunt/runs/original/`).
 
 - [ ] **Step 1: Run iter_022 (T5a sigma sweep)**
 
 ```
 uv run python -m studies.letf_rotation_hunt.run_iter --iter 022 --config studies/letf_rotation_hunt/configs/iter_022_t5a_sigma_sweep.yaml 2>&1 | tee logs/iter_022_run.log
 ```
-Expected: 5 configs processed; verdict.json + SUMMARY.md written under `iterations/022-2026-05-08-T5a-sigma-sweep/`.
+Expected: 5 configs processed; verdict.json + SUMMARY.md written under `runs/original/022-2026-05-08-T5a-sigma-sweep/`.
 
 - [ ] **Step 2: Run iter_023 (T5b carry)**
 
@@ -1808,7 +1808,7 @@ uv run python -c "
 import json
 from pathlib import Path
 target = 'qld_voteK2_sma250_100_vol21_40_ar30_off_zroz'
-for d in Path('studies/letf_rotation_hunt/iterations').iterdir():
+for d in Path('studies/letf_rotation_hunt/runs/original').iterdir():
     vp = d / 'verdict.json'
     if not vp.exists():
         continue
@@ -1826,10 +1826,10 @@ Expected: prints `ACCEPTANCE PASS`. **If FAIL: stop and surface to user before a
 - [ ] **Step 7: Commit run artifacts**
 
 ```
-git add studies/letf_rotation_hunt/iterations/022-2026-05-08-T5a-sigma-sweep/ \
-        studies/letf_rotation_hunt/iterations/023-2026-05-08-T5b-carry/ \
-        studies/letf_rotation_hunt/iterations/024-2026-05-08-T5c-grid/ \
-        studies/letf_rotation_hunt/iterations/025-2026-05-08-T5d-hrp-erc/ \
+git add studies/letf_rotation_hunt/runs/original/022-2026-05-08-T5a-sigma-sweep/ \
+        studies/letf_rotation_hunt/runs/original/023-2026-05-08-T5b-carry/ \
+        studies/letf_rotation_hunt/runs/original/024-2026-05-08-T5c-grid/ \
+        studies/letf_rotation_hunt/runs/original/025-2026-05-08-T5d-hrp-erc/ \
         logs/iter_022_run.log logs/iter_023_run.log logs/iter_024_run.log logs/iter_025_run.log logs/dsr_recompute.log
 git commit -m "data(letf-t5): run iter_022-025 + DSR cumulative recompute (N=426)"
 ```

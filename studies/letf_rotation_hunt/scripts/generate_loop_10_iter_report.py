@@ -21,12 +21,12 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
 STUDY = ROOT / "studies" / "letf_rotation_hunt"
-LOOP_DIR = STUDY / "loop_iterations"
+LOOP_DIR = STUDY / "runs/post_close"
 OUT_DIR = LOOP_DIR / "summary_plots"
 REPORT_PATH = LOOP_DIR / "LOOP_10_ITER_REPORT.md"
 BENCHMARK_RETURNS = (
     STUDY
-    / "iterations"
+    / "runs/original"
     / "022-2026-05-06-T3d-extended-grid"
     / "qld_voteK2_sma250_100_vol21_40_ar30_off_zroz_strategy_returns.csv"
 )

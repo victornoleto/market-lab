@@ -8,7 +8,7 @@ import pytest
 
 def test_composite_basket_with_continuous_weight():
     """Composite signal can produce continuous weight (e.g., VIX scaling)."""
-    from studies.letf_rotation_hunt.strategies.composite_signal import build_positions
+    from studies.letf_rotation_hunt.core.strategies.composite_signal import build_positions
 
     dates = pd.date_range("2020-01-01", periods=4, freq="B")
     # Continuous weight 0.5 → 50% basket, 50% off
@@ -37,7 +37,7 @@ def test_composite_basket_with_continuous_weight():
 
 def test_composite_weights_sum_to_one():
     """All composite weights sum to 1.0."""
-    from studies.letf_rotation_hunt.strategies.composite_signal import build_positions
+    from studies.letf_rotation_hunt.core.strategies.composite_signal import build_positions
 
     dates = pd.date_range("2020-01-01", periods=10, freq="B")
     rng = np.random.RandomState(42)

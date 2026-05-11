@@ -8,7 +8,7 @@ import pytest
 
 def test_compute_metrics_basic():
     """Compute CAGR/MDD/Sharpe from equity curve (no benchmark)."""
-    from studies.letf_rotation_hunt.scoring import compute_metrics
+    from studies.letf_rotation_hunt.core.scoring import compute_metrics
 
     dates = pd.date_range("2020-01-01", periods=252 * 3, freq="B")
     equity = pd.Series((1 + 0.0005) ** np.arange(len(dates)) * 10000, index=dates)
@@ -30,7 +30,7 @@ def test_compute_metrics_basic():
 
 def test_compute_metrics_benchmark_strategy_dominates():
     """Strategy strictly above benchmark → pct=1.0, min ratio > 1."""
-    from studies.letf_rotation_hunt.scoring import compute_metrics
+    from studies.letf_rotation_hunt.core.scoring import compute_metrics
 
     dates = pd.date_range("2010-01-01", periods=252 * 4, freq="B")
     strat_eq = pd.Series((1 + 0.0008) ** np.arange(len(dates)) * 10000, index=dates)
@@ -45,7 +45,7 @@ def test_compute_metrics_benchmark_strategy_dominates():
 
 def test_compute_metrics_benchmark_strategy_underperforms():
     """Strategy below benchmark → pct=0.0, min < 1."""
-    from studies.letf_rotation_hunt.scoring import compute_metrics
+    from studies.letf_rotation_hunt.core.scoring import compute_metrics
 
     dates = pd.date_range("2010-01-01", periods=252 * 4, freq="B")
     strat_eq = pd.Series((1 + 0.0001) ** np.arange(len(dates)) * 10000, index=dates)
@@ -59,7 +59,7 @@ def test_compute_metrics_benchmark_strategy_underperforms():
 
 def test_compute_metrics_benchmark_short_series_fallback():
     """Series shorter than warmup → NaN underwater metrics."""
-    from studies.letf_rotation_hunt.scoring import compute_metrics
+    from studies.letf_rotation_hunt.core.scoring import compute_metrics
 
     dates = pd.date_range("2024-01-01", periods=100, freq="B")
     strat_eq = pd.Series(np.linspace(10000, 11000, 100), index=dates)
@@ -74,7 +74,7 @@ def test_compute_metrics_benchmark_short_series_fallback():
 
 def test_score_underwater_full_pass():
     """100% time above benchmark + min ratio ≥ 1.0 → 15 pts criterion 2."""
-    from studies.letf_rotation_hunt.scoring import score_strategy
+    from studies.letf_rotation_hunt.core.scoring import score_strategy
 
     metrics = {
         "lh_56y":   {"cagr": 0.15, "mdd": -0.30, "sharpe": 0.95,
@@ -95,7 +95,7 @@ def test_score_underwater_full_pass():
 
 def test_score_underwater_t1c_like():
     """T1c-like profile: pct=99.83% + min=0.93 → 12 pts (tier 2)."""
-    from studies.letf_rotation_hunt.scoring import score_strategy
+    from studies.letf_rotation_hunt.core.scoring import score_strategy
 
     metrics = {
         "lh_56y": {"cagr": 0.23, "mdd": -0.75, "sharpe": 0.752,
@@ -114,7 +114,7 @@ def test_score_underwater_t1c_like():
 
 def test_score_underwater_below_threshold():
     """pct < 90% → 0 pts."""
-    from studies.letf_rotation_hunt.scoring import score_strategy
+    from studies.letf_rotation_hunt.core.scoring import score_strategy
 
     metrics = {
         "lh_56y": {"cagr": 0.05, "mdd": -0.50, "sharpe": 0.30,
@@ -133,7 +133,7 @@ def test_score_underwater_below_threshold():
 
 def test_score_winner_strict_bars_underwater_blocks():
     """WINNER tier requires pct_time_above_bench >= 0.95 (strict bar)."""
-    from studies.letf_rotation_hunt.scoring import score_strategy
+    from studies.letf_rotation_hunt.core.scoring import score_strategy
 
     metrics = {
         "lh_56y":   {"cagr": 0.20, "mdd": -0.30, "sharpe": 1.00,
@@ -156,7 +156,7 @@ def test_score_winner_strict_bars_underwater_blocks():
 
 def test_score_strategy_full_pass():
     """Score >= 90 with all criteria maxed including underwater 100%."""
-    from studies.letf_rotation_hunt.scoring import score_strategy
+    from studies.letf_rotation_hunt.core.scoring import score_strategy
 
     metrics = {
         "lh_56y":   {"cagr": 0.15, "mdd": -0.10, "sharpe": 0.95,
@@ -182,7 +182,7 @@ def test_score_strategy_full_pass():
 
 def test_crisis_beats_benchmark_strategy_dominates_all():
     """Strategy strictly above benchmark in every crisis → all 4 True."""
-    from studies.letf_rotation_hunt.scoring import crisis_beats_benchmark
+    from studies.letf_rotation_hunt.core.scoring import crisis_beats_benchmark
 
     # Construct a daily index covering all 4 canonical crisis windows
     dates = pd.date_range("1995-01-01", "2024-12-31", freq="B")
@@ -199,7 +199,7 @@ def test_crisis_beats_benchmark_strategy_dominates_all():
 
 def test_crisis_beats_benchmark_strategy_below_all():
     """Strategy strictly below benchmark in every crisis → all 4 False."""
-    from studies.letf_rotation_hunt.scoring import crisis_beats_benchmark
+    from studies.letf_rotation_hunt.core.scoring import crisis_beats_benchmark
 
     dates = pd.date_range("1995-01-01", "2024-12-31", freq="B")
     strat_eq = pd.Series((1 + 0.0001) ** np.arange(len(dates)) * 10000, index=dates)
@@ -211,7 +211,7 @@ def test_crisis_beats_benchmark_strategy_below_all():
 
 def test_crisis_beats_benchmark_pre_crisis_window_returns_false():
     """If equity series ends before a crisis window, that crisis is False."""
-    from studies.letf_rotation_hunt.scoring import crisis_beats_benchmark
+    from studies.letf_rotation_hunt.core.scoring import crisis_beats_benchmark
 
     # Series ends 1990 — all 4 canonical crises after it → all False
     dates = pd.date_range("1986-01-01", "1990-12-31", freq="B")
@@ -225,7 +225,7 @@ def test_crisis_beats_benchmark_pre_crisis_window_returns_false():
 
 def test_crisis_beats_benchmark_mixed():
     """Strategy beats benchmark in 2 crises, loses in 2 → mixed dict."""
-    from studies.letf_rotation_hunt.scoring import (
+    from studies.letf_rotation_hunt.core.scoring import (
         CRISIS_WINDOWS, crisis_beats_benchmark,
     )
 
@@ -257,7 +257,7 @@ def test_crisis_beats_benchmark_mixed():
 
 def test_crisis_windows_constant_has_4_entries():
     """The CRISIS_WINDOWS constant must have the 4 canonical crises with valid date strings."""
-    from studies.letf_rotation_hunt.scoring import CRISIS_WINDOWS
+    from studies.letf_rotation_hunt.core.scoring import CRISIS_WINDOWS
 
     assert len(CRISIS_WINDOWS) == 4
     for name in ("2000_02_dotcom", "2008_gfc", "2020_covid", "2022_rates"):
@@ -270,7 +270,7 @@ def test_score_strategy_g3_benchmark_relative_pass():
     """G3 redesign 2026-05-06: scoring uses new key
     ``g3_wf_windows_pass_pct_above_benchmark`` when present and ignores
     ``g3_wf_max_mdd`` (warning-only per mandate §2.3)."""
-    from studies.letf_rotation_hunt.scoring import score_strategy
+    from studies.letf_rotation_hunt.core.scoring import score_strategy
 
     metrics = {
         "lh_56y": {"cagr": 0.20, "mdd": -0.74, "sharpe": 0.85,
@@ -296,7 +296,7 @@ def test_score_strategy_g3_benchmark_relative_pass():
 
 def test_score_strategy_g3_benchmark_relative_fail_below_threshold():
     """New G3: pct_above_benchmark < 5/8 → G3 fails; MDD value irrelevant."""
-    from studies.letf_rotation_hunt.scoring import score_strategy
+    from studies.letf_rotation_hunt.core.scoring import score_strategy
 
     metrics = {
         "lh_56y": {"cagr": 0.05, "mdd": -0.20, "sharpe": 0.30,
@@ -321,7 +321,7 @@ def test_score_strategy_g3_benchmark_relative_fail_below_threshold():
 
 def test_score_strategy_zero_edge():
     """Score is low when Sharpe edge fails AND underwater fails on all datasets."""
-    from studies.letf_rotation_hunt.scoring import score_strategy
+    from studies.letf_rotation_hunt.core.scoring import score_strategy
 
     metrics = {
         "lh_56y":   {"cagr": 0.05, "mdd": -0.50, "sharpe": 0.30,

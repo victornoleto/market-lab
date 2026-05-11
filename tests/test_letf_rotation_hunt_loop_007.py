@@ -15,7 +15,7 @@ import pytest
 
 ITER_DIR = (
     Path(__file__).resolve().parents[1]
-    / "studies/letf_rotation_hunt/loop_iterations/007-2026-05-09-compound-ratevol-off-x-invvol-on-basket"
+    / "studies/letf_rotation_hunt/runs/post_close/007-2026-05-09-compound-ratevol-off-x-invvol-on-basket"
 )
 
 
