@@ -1,22 +1,5 @@
 # LETF Rotation Hunt — Robustness Analysis (Rolling Windows)
 
-> ## ⚠️ Post-close Sortino re-analysis update (2026-05-07)
->
-> **This report was written under Sharpe ranking** (the study's original primary metric). After the study closed, a post-close re-analysis (`SORTINO_REANALYSIS_REPORT.md`, sister `SORTINO_RESUMO_EXECUTIVO.md`) shifted the operative metric to **Sortino** — which fairly credits the asymmetric upside of leveraged-LETF rotation strategies.
->
-> **Key updates from the post-close re-analysis:**
-> - **New canonical winner under Sortino:** `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` displaces the Sharpe-era winner `qld_vote_k2_off_zroz` (sma250/100 vs sma200/50; Sortino edge_vs_canonical +0.103, Track A passer).
-> - **Sortino edge over SPY is ~55% larger** than Sharpe edge: +0.264 vs +0.171 on lh_56y gross.
-> - **2000 dotcom cohort improves dramatically**: canonical -12.7% 5y CAGR → new winner -1.6% under sma250/100.
-> - **New Sortino thresholds**: Track A 1.272, Track B-M1 1.016, Track B-M2 1.144 (canonical Sortino + 0.05 anti-curve-fit margin).
->
-> **The body of this report below is preserved as-is for historical methodology fidelity.** All Sharpe-based numbers and rankings are accurate at time of writing but should be read alongside the Sortino re-analysis for current operative ranking. **Mandate §1 remains unchanged: capital 100% Plano C; Strategy A/B/D DORMANT.**
->
-> **For non-technical reader:** see `SORTINO_RESUMO_EXECUTIVO.md` (PT-BR plain-language summary).
-> **For technical detail:** see `SORTINO_REANALYSIS_REPORT.md` (13 sections, full tables).
-
----
-
 **Date:** 2026-05-06.
 **Method:** rolling window backtests over 5 window sizes (3y, 5y, 10y, 15y, 20y) with month-by-month start increments. Top-20 strategies + SPY benchmark.
 **Total backtests:** 37359 (across 21 configs).
@@ -72,16 +55,16 @@ Min-data filter: each window requires ≥95% of expected trading days.
 | 8 | `xs_clenow_top3_zroz_spysma200` | T4b | 0.823 | 72 | PROMISING |
 | 9 | `qld_voteK3_sma200_50_vol21_40_ar60_off_zroz` | T3d | 0.818 | 74 | PROMISING |
 | 10 | `tqqq_voteK2_off_zroz` | T3d | 0.814 | 76 | STRONG |
-| 11 | `qld_vote_k3_off_zroz` | T3d | 0.798 | 70 | PROMISING |
-| 12 | `qld_voteK3_sma200_50_vol21_40_ar30_off_zroz` | T3d | 0.798 | 74 | PROMISING |
-| 13 | `qld_voteK2_off_edv` | T3d | 0.794 | 82 | STRONG |
-| 14 | `qld_voteK2_off_tlt` | T3d | 0.794 | 82 | STRONG |
-| 15 | `xs_ewmac_top2_zroz_spysma200` | T4c | 0.791 | 72 | PROMISING |
-| 16 | `qld_ema150_off_zroz` | T1d | 0.787 | 64 | PROMISING |
-| 17 | `qld_voteK2_off_ief` | T3d | 0.781 | 76 | STRONG |
-| 18 | `qld_voteK3_ema200_50_vol21_40_ar30_off_zroz` | T3d | 0.776 | 61 | PROMISING |
-| 19 | `tqqq_voteK2_off_edv` | T3d | 0.774 | 76 | STRONG |
-| 20 | `tqqq_voteK2_off_tlt` | T3d | 0.774 | 76 | STRONG |
+| 11 | `erc_multi4_sigma030` | T5d | 0.799 | 72 | PROMISING |
+| 12 | `qld_vote_k3_off_zroz` | T3d | 0.798 | 70 | PROMISING |
+| 13 | `qld_voteK3_sma200_50_vol21_40_ar30_off_zroz` | T3d | 0.798 | 74 | PROMISING |
+| 14 | `erc_multi4_sigma025` | T5d | 0.796 | 68 | PROMISING |
+| 15 | `qld_voteK2_off_edv` | T3d | 0.794 | 82 | STRONG |
+| 16 | `qld_voteK2_off_tlt` | T3d | 0.794 | 82 | STRONG |
+| 17 | `xs_ewmac_top2_zroz_spysma200` | T4c | 0.791 | 72 | PROMISING |
+| 18 | `qld_ema150_off_zroz` | T1d | 0.787 | 64 | PROMISING |
+| 19 | `qld_voteK2_off_ief` | T3d | 0.781 | 76 | STRONG |
+| 20 | `qld_voteK3_ema200_50_vol21_40_ar30_off_zroz` | T3d | 0.776 | 61 | PROMISING |
 
 + SPY 1× buy-hold benchmark.
 
@@ -109,11 +92,11 @@ Format: median Sharpe / min Sharpe / mean pct_above_SPY (across rolling windows 
 | `xs_ewmac_top2_zroz_spysma200` | 0.73/-0.19/64% | 0.73/-0.08/72% | 0.81/0.34/86% | 0.76/0.61/92% | 0.75/0.58/93% |
 | `qld_voteK3_sma200_50_vol21_40_ar30_off_zroz` | 0.76/-0.49/64% | 0.75/-0.12/68% | 0.76/0.33/84% | 0.72/0.52/91% | 0.74/0.50/92% |
 | `qld_vote_k3_off_zroz` | 0.76/-0.49/64% | 0.75/-0.12/68% | 0.76/0.33/84% | 0.72/0.52/91% | 0.74/0.50/92% |
-| `tqqq_voteK2_off_edv` | 0.81/-0.59/67% | 0.76/-0.13/74% | 0.76/0.10/84% | 0.69/0.49/88% | 0.70/0.54/89% |
-| `tqqq_voteK2_off_tlt` | 0.81/-0.59/67% | 0.76/-0.13/74% | 0.76/0.10/84% | 0.69/0.49/88% | 0.70/0.54/89% |
 | `qld_ema150_off_zroz` | 0.75/-0.27/68% | 0.72/-0.04/74% | 0.78/0.26/84% | 0.70/0.37/89% | 0.67/0.43/93% |
+| `erc_multi4_sigma030` | 0.70/-0.77/60% | 0.69/-0.07/65% | 0.70/0.32/75% | 0.67/0.50/81% | 0.65/0.51/83% |
 | `SPY 1× b&h` | 0.85/-0.63/0% | 0.79/-0.19/0% | 0.64/-0.04/0% | 0.57/0.28/0% | 0.53/0.34/0% |
 | `qld_voteK3_ema200_50_vol21_40_ar30_off_zroz` | 0.66/-0.65/61% | 0.69/-0.10/64% | 0.70/0.16/78% | 0.66/0.45/89% | 0.67/0.42/91% |
+| `erc_multi4_sigma025` | 0.68/-0.69/59% | 0.67/-0.01/64% | 0.69/0.34/75% | 0.66/0.50/82% | 0.64/0.53/84% |
 
 ---
 
@@ -157,14 +140,14 @@ Top 10 by composite robustness (lower = more consistent across all 5 window size
 |---:|---|---:|---:|---:|
 | 1 | `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` | 0.877 | 0.339 | 91.3% |
 | 2 | `qld_voteK2_sma200_50_vol42_40_ar30_off_zroz` | 0.812 | 0.191 | 89.9% |
-| 3 | `qld_voteK2_sma200_50_vol21_40_ar30_off_zroz` | 0.829 | 0.167 | 89.6% |
-| 4 | `qld_voteK2_off_zroz_alt` | 0.829 | 0.167 | 89.6% |
+| 3 | `qld_voteK2_off_zroz_alt` | 0.829 | 0.167 | 89.6% |
+| 4 | `qld_voteK2_sma200_50_vol21_40_ar30_off_zroz` | 0.829 | 0.167 | 89.6% |
 | 5 | `qld_vote_k2_off_zroz` | 0.829 | 0.167 | 89.6% |
 | 6 | `qld_voteK2_sma200_50_vol21_40_ar60_off_zroz` | 0.807 | 0.256 | 88.5% |
 | 7 | `xs_clenow_top3_zroz_spysma200` | 0.761 | 0.345 | 82.2% |
 | 8 | `qld_voteK2_sma200_50_vol21_30_ar30_off_zroz` | 0.801 | 0.122 | 85.3% |
-| 9 | `tqqq_voteK2_off_zroz` | 0.769 | 0.152 | 82.3% |
-| 10 | `xs_ewmac_top2_zroz_spysma200` | 0.757 | 0.253 | 81.3% |
+| 9 | `xs_ewmac_top2_zroz_spysma200` | 0.757 | 0.253 | 81.3% |
+| 10 | `tqqq_voteK2_off_zroz` | 0.769 | 0.152 | 82.3% |
 
 ---
 
@@ -207,12 +190,6 @@ Top 10 by composite robustness (lower = more consistent across all 5 window size
 - Sequential with progress logging via tqdm.
 - Raw rolling-window data preserved at `data/robustness/all_windows.parquet`
   for re-analysis without recomputing.
-
----
-
-## 12a. Sortino-relevant note (2026-05-07)
-
-The rolling-window Sharpe heatmap computed in this analysis (37,359 windows across 21 configs × 5 window sizes × monthly increments) was **not re-run under Sortino**. This was a deliberate cascade choice — deferred per cascade option C in the Sortino re-analysis spec (`docs/superpowers/specs/2026-05-07-letf-sortino-reanalysis-design.md`) — because recomputing 37,359 windows under a new metric would require a separate compute pass and was not required to answer the pre-registered H₀ (pointwise Sortino edge). The heatmap therefore remains **Sharpe-only**; the composite ranking (#5 for `qld_vote_k2_off_zroz`) reflects Sharpe-denominated robustness. Under Sortino, the new operative winner `qld_voteK2_sma250_100_vol21_40_ar30_off_zroz` (sma250/100) would likely rank similarly or higher given its improved cohort performance, but this has not been formally verified. If Plano B is ever reactivated, a future formal sub-study could re-run this rolling-window analysis under Sortino to confirm robustness rank stability. Raw data is preserved at `data/robustness/all_windows.parquet` for that purpose.
 
 ---
 

@@ -1,8 +1,8 @@
 # LETF Tax Comparison — Top-10 Swing Strategies
 
-_Generated 2026-05-06T21:38:29.446147+00:00_
+_Generated 2026-05-11T01:11:28.064546+00:00_
 
-Spec: `docs/superpowers/specs/2026-05-06-letf-tax-comparison-design.md`
+Spec: pre-publication agent spec removed from the public tree.
 
 ## Top-10 selection
 
@@ -46,4 +46,4 @@ Per-strategy plots in `per_strategy_plots/` — `<NN>_<name>_equity.png` and `<N
 
 - Lei 14.754/2023 (Brazil) — 15% flat, indefinite carry-forward.
 - `[advances_fin_ml, p.275]` — net-of-cost Sharpe evaluation.
-- Parent study: `docs/superpowers/specs/2026-05-05-letf-rotation-study-design.md`.
+- Parent study protocol: `README.md`, `BASE_MEMORY.md` and `KILL_RULES.md`.

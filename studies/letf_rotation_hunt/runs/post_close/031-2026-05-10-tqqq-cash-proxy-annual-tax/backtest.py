@@ -26,7 +26,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[4]
+ROOT = Path(__file__).resolve().parents[5]
 sys.path.insert(0, str(ROOT))
 
 from studies.letf_rotation_hunt.core.data_loader import load_testfolio_series
@@ -44,7 +44,7 @@ from studies.letf_rotation_hunt.core.scoring import crisis_beats_benchmark, scor
 
 ITER_DIR = Path(__file__).parent
 LOOP_DIR = ITER_DIR.parent
-STUDY_DIR = LOOP_DIR.parent
+STUDY_DIR = ROOT / "studies" / "letf_rotation_hunt"
 LOG = logging.getLogger("iter031")
 
 ITER_ID = "031-2026-05-10-tqqq-cash-proxy-annual-tax"

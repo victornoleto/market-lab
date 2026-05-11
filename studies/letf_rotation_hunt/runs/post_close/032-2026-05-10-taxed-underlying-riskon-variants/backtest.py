@@ -26,7 +26,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[4]
+ROOT = Path(__file__).resolve().parents[5]
 sys.path.insert(0, str(ROOT))
 
 from studies.letf_rotation_hunt.core.data_loader import load_testfolio_series

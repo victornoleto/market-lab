@@ -1,8 +1,8 @@
 # LETF Threshold Sweep — T3d K=2 with hysteresis buffers
 
-_Generated 2026-05-07T04:17:42.367523+00:00_
+_Generated 2026-05-11T01:14:09.536540+00:00_
 
-Spec: `docs/superpowers/specs/2026-05-07-letf-threshold-sweep-design.md`
+Spec: pre-publication agent spec removed from the public tree.
 
 ## 1. Methodology
 

@@ -27,7 +27,7 @@ forward.
 
 | Config | Sortino | CAGR | MDD | End equity vs taxed T3d-K2 | PBO | DSR global | Score | Tier |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
-| `t3d_k2_gross_reference` | 1.3246 | 31.09% | -64.50% | 8.602x | 0.0119 | 3.42e-03 | 76.5 | STRONG |
+| `t3d_k2_gross_reference` | 1.3240 | 31.08% | -64.50% | 8.557x | 0.0119 | 3.44e-03 | 76.5 | STRONG |
 | `t3d_k2_state_annualtax` | 1.0826 | 24.24% | -59.43% | 1.000x | 0.0119 | 4.27e-02 | 71.5 | PROMISING |
 | `iter030_gross_reference` | 1.3839 | 36.68% | -55.48% | 46.164x | 0.0119 | 1.49e-03 | 79.5 | STRONG |
 | `spy_buyhold_static_notax` | 0.9574 | 11.47% | -55.14% | 0.013x | 0.0119 | 1.16e-01 | 36.0 | NEAR_FAIL |

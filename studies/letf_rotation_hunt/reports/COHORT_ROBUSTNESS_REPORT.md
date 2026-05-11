@@ -1,8 +1,8 @@
 # LETF Cohort Robustness — Top-3 Swing Strategies
 
-_Generated 2026-05-07T03:18:45.542051+00:00_
+_Generated 2026-05-11T01:11:19.632143+00:00_
 
-Spec: `docs/superpowers/specs/2026-05-06-letf-cohort-robustness-design.md`
+Spec: pre-publication agent spec removed from the public tree.
 
 ## 1. Cohort entry-date analysis (worst + control)
 
@@ -70,4 +70,4 @@ Path-dependence empirical findings — auto-generated. Cross-reference cohort ta
 - `[advances_fin_ml, p.31-34, p.222-223]` — multi-window backtest validation.
 - `[leverage_for_the_long_run, p.16, p.21]` — LETF path-dependence.
 - `[trading_systems_methods, ch.21]` — regime sensitivity testing.
-- Parent study spec: `docs/superpowers/specs/2026-05-05-letf-rotation-study-design.md`.
+- Parent study protocol: `README.md`, `BASE_MEMORY.md` and `KILL_RULES.md`.
