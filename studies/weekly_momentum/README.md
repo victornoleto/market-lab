@@ -15,6 +15,15 @@ SPY, and links the final plots. Verdict: no variant is deployable; the best
 research lead is approximate-PIT `lb80/k5/SMA250`, still blocked by DSR and
 survivorship-free/delisted data limitations `[advances_fin_ml, p.273-275]`.
 
+Post-close ETF-specific evolution is summarized in
+`reports/ETF_FOCUS_EVOLUTION_REPORT.md`. A focused ETF WF grid improved the ETF
+diagnostic to 11.29% CAGR / 0.712 Sharpe versus SPY 10.63% / 0.619 when
+leveraged/inverse ETFs are allowed, but falls to 6.65% CAGR without them. Verdict
+remains research-only: the full-universe diagnostic fails DSR (`p=0.152`) and
+the no-leverage diagnostic fails DSR/bootstrap `[advances_fin_ml, p.208-211]`,
+`[advances_fin_ml, p.273-275]`. This post-close ETF branch is now closed; future
+work requires a new pre-registered hypothesis, not more local sweeps.
+
 Phase 4: `reports/PHASE4_REPORT.md` uses Tiingo online backfill plus expanded PIT loading
 for current/start-date/selected-change S&P 500 names. Coverage improved to
 745/769 tickers and 240/260 likely removed/renamed names, but the frozen

@@ -30,6 +30,9 @@ top-level `reports/` directory was removed during the public-repo cleanup.
 ### `weekly_momentum/` (bootstrap 🌱)
 - **Mission**: test weekly cross-sectional momentum over cached Tiingo stocks
   and ETFs.
+- **Final report**: `FINAL_REPORT.md` is the canonical closure document. Final
+  verdict: stop this family after Tiingo backfill plus expanded PIT rerun; no
+  valid/deployable strategy remains.
 - **Initial config**: rank by adjusted-close appreciation over 4 trading days
   using Thursday close, hold top-1, sell Friday only if the winner changes,
   and buy Monday/Tuesday via `settlement_delay_days`.
@@ -43,6 +46,24 @@ top-level `reports/` directory was removed during the public-repo cleanup.
   `DEPLOY_CANDIDATES.md`; comparable validation panel generated under
   `deploy_candidates/` before costs/slippage/taxes, PIT universe and
   PBO/DSR/bootstrap gates.
+- **Phase 2**: `PHASE2_REPORT.md` promotes the fixed-aggressive neighborhood
+  (`lb80_k5_sma200`, `lb80_k5_sma250`) for further validation and keeps filtered
+  all-stocks WF as exploratory after PBO/DSR failures.
+- **Phase 3**: `PHASE3_REPORT.md` adds approximate PIT S&P membership. The
+  original `lb60_k3_sma200` lead weakens; `lb80_k5_sma200/sma250` remain the
+  only worthwhile research leads, still blocked by DSR/feed limitations.
+- **Final tested-strategy summary**: `STRATEGY_TESTED_SUMMARY.md` consolidates
+  every tested family, compares the top-6 decision-relevant variants versus SPY
+  with plots, and freezes the conclusion: no deployable strategy yet.
+- **Phase 4**: `PHASE4_REPORT.md` completed Tiingo online backfill and expanded
+  PIT loading. Coverage improved to 745/769 tickers and 240/260 likely
+  removed/renamed names, but the frozen `lb80/k5` leads weakened and fail
+  DSR/bootstrap; verdict is stop this stock weekly-momentum family.
+- **Phase 5 branch**: `phase5_dynamic_all_stocks/PHASE5_DYNAMIC_ALL_STOCKS_REPORT.md`
+  tests dynamic all-stocks WF with PIT tradability filters instead of S&P 500
+  membership. ADV5M is strong versus SPY/SPMO but still fails PBO/bootstrap.
+- **Deep dive**: `phase3/lb80_k5_sma250_deep_dive/DEEP_DIVE_REPORT.md` explains
+  DSR failure and evaluates every possible 1/3/5/10/15/20y entry window.
 - **ETF replication**: `ETF_STUDY_REPORT.md` preserves the same strategy family
   on cached ETFs; initial verdict is weak versus SPY and needs ETF-specific
   redesign before further promotion.

@@ -1,0 +1,16 @@
+{
+  "stage": "stage2_tiingo_ohlc_grid",
+  "branch": "QQQ",
+  "risk_ons": [
+    "TQQQ_3x"
+  ],
+  "off_leg": "ZROZ",
+  "min_n": 6,
+  "max_n": 6,
+  "signal_count": 47,
+  "estimated_configs": 64425438,
+  "configs_tested": 64425438,
+  "top": 200,
+  "elapsed_seconds": 9765.082746012002,
+  "primary_citation": "[advances_fin_ml, p.222-223]"
+}

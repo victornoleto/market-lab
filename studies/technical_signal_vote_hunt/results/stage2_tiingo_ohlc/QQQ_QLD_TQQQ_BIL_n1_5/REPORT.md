@@ -1,0 +1,222 @@
+# Stage 2 Tiingo OHLC Grid Results
+
+Status: capped exact-grid discovery. This is not a validation verdict.
+
+Branch: `QQQ`
+Risk-ons: `QLD_2x,TQQQ_3x`
+Off leg: `BIL`
+Signal subset range: n=1..5
+Estimated/configs tested: 16,868,018 / 16,868,018
+Windows: QLD_2x: 2007-05-31..2026-04-14 (4,748 bars), TQQQ_3x: 2010-02-12..2026-04-14 (4,066 bars)
+Elapsed seconds: 3392.6
+
+## Top Configs
+
+| branch   | risk_on   |   n |   k |   sortino |   cagr |   sharpe |     mdd |   calmar | signals                                                                           |
+|:---------|:----------|----:|----:|----------:|-------:|---------:|--------:|---------:|:----------------------------------------------------------------------------------|
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4697 | 0.5616 |   1.2152 | -0.4470 |   1.2565 | px_gt_sma20|sma50_gt_sma200|roc20_gt_0|ar1_30_gt_0|atr14_pct_lt_5                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4693 | 0.5715 |   1.1913 | -0.5528 |   1.0337 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_25|bear_power_gt_0                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4628 | 0.6038 |   1.2695 | -0.4761 |   1.2683 | px_gt_sma150|macd_gt_signal|rsi14_rising|ar1_30_gt_0|close_gt_prior_high55        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4628 | 0.6038 |   1.2695 | -0.4761 |   1.2683 | px_gt_sma150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|close_gt_prior_high55        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4590 | 0.6007 |   1.2652 | -0.4761 |   1.2618 | px_gt_sma150|macd_gt_signal|rsi14_rising|ar1_30_gt_0|close_gt_prior_high20        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4590 | 0.6007 |   1.2652 | -0.4761 |   1.2618 | px_gt_sma150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|close_gt_prior_high20        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4541 | 0.5620 |   1.1598 | -0.5579 |   1.0073 | sma100_gt_sma250|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|bear_power_gt_0            |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4534 | 0.5890 |   1.1692 | -0.6822 |   0.8634 | px_gt_ema5|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_25                      |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4526 | 0.5961 |   1.2570 | -0.4706 |   1.2666 | px_gt_ema150|macd_gt_signal|rsi14_rising|ar1_30_gt_0|close_gt_prior_high55        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4526 | 0.5961 |   1.2570 | -0.4706 |   1.2666 | px_gt_ema150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|close_gt_prior_high55        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4521 | 0.5893 |   1.2442 | -0.4764 |   1.2368 | px_gt_sma150|macd_gt_signal|rsi14_rising|ar1_30_gt_0|stoch14_gt_80                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4521 | 0.5893 |   1.2442 | -0.4764 |   1.2368 | px_gt_sma150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|stoch14_gt_80                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4505 | 0.5943 |   1.2545 | -0.4706 |   1.2628 | px_gt_ema150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|close_gt_prior_high20        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4505 | 0.5943 |   1.2545 | -0.4706 |   1.2628 | px_gt_ema150|macd_gt_signal|rsi14_rising|ar1_30_gt_0|close_gt_prior_high20        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4462 | 0.5853 |   1.2375 | -0.4706 |   1.2437 | px_gt_ema150|macd_gt_signal|rsi14_rising|ar1_30_gt_0|stoch14_gt_80                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4462 | 0.5853 |   1.2375 | -0.4706 |   1.2437 | px_gt_ema150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|stoch14_gt_80                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4432 | 0.5572 |   1.1692 | -0.5070 |   1.0992 | sma100_gt_sma250|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high55      |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4428 | 0.5737 |   1.1674 | -0.5957 |   0.9629 | px_gt_ema5|px_gt_sma20|sma100_gt_sma250|roc20_gt_0|ar1_30_gt_0                    |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4427 | 0.5557 |   1.1664 | -0.5070 |   1.0960 | sma100_gt_sma250|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high20      |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4422 | 0.5602 |   1.1709 | -0.4761 |   1.1766 | px_gt_sma150|macd_hist_gt_0|rsi14_rising|rv21_pct_lt_50|ar1_30_gt_0               |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4422 | 0.5602 |   1.1709 | -0.4761 |   1.1766 | px_gt_sma150|macd_gt_signal|rsi14_rising|rv21_pct_lt_50|ar1_30_gt_0               |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4410 | 0.5861 |   1.1509 | -0.5927 |   0.9890 | sma100_gt_sma250|roc20_gt_0|rsi14_gt_50|rv21_lt_40|adx14_gt_25                    |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4404 | 0.5558 |   1.1672 | -0.5070 |   1.0962 | sma100_gt_sma250|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|atr14_pct_lt_5             |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.4402 | 0.5556 |   1.1670 | -0.5070 |   1.0959 | sma100_gt_sma250|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0                            |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4397 | 0.5456 |   1.1950 | -0.4470 |   1.2205 | px_gt_sma20|sma50_gt_sma200|roc20_gt_0|rv21_lt_40|ar1_30_gt_0                     |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4397 | 0.5561 |   1.1600 | -0.5850 |   0.9506 | px_gt_ema20|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_25                     |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4335 | 0.5347 |   1.1325 | -0.4971 |   1.0756 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|atr14_pct_lt_5|stoch14_gt_80                |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.4324 | 0.5854 |   1.2450 | -0.4761 |   1.2296 | px_gt_sma150|macd_gt_signal|rsi14_rising|ar1_30_gt_0                              |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.4324 | 0.5854 |   1.2450 | -0.4761 |   1.2296 | px_gt_sma150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0                              |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4299 | 0.5464 |   1.1503 | -0.5381 |   1.0155 | sma100_gt_sma250|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|cci20_gt_100               |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4293 | 0.5605 |   1.1276 | -0.5237 |   1.0703 | px_gt_ema5|sma100_gt_sma250|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4290 | 0.5482 |   1.1444 | -0.6684 |   0.8201 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_20|bear_power_gt_0                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4282 | 0.5774 |   1.2276 | -0.4761 |   1.2129 | px_gt_sma150|macd_gt_signal|rsi14_rising|ar1_30_gt_0|cci20_gt_100                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4282 | 0.5774 |   1.2276 | -0.4761 |   1.2129 | px_gt_sma150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|cci20_gt_100                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4276 | 0.5472 |   1.1360 | -0.6621 |   0.8264 | px_gt_ema20|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_20                     |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4272 | 0.5442 |   1.1490 | -0.4150 |   1.3113 | sma50_gt_sma200|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|bear_power_gt_0             |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4270 | 0.5408 |   1.1226 | -0.4498 |   1.2023 | roc20_gt_0|roc120_gt_0|rv21_pct_lt_70|atr14_pct_lt_3|atr14_pct_lt_5               |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4270 | 0.5390 |   1.1186 | -0.4498 |   1.1982 | px_gt_sma50|roc20_gt_0|roc120_gt_0|rv21_pct_lt_70|atr14_pct_lt_3                  |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.4268 | 0.5406 |   1.1224 | -0.4498 |   1.2019 | roc20_gt_0|roc120_gt_0|rv21_pct_lt_70|atr14_pct_lt_3                              |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4268 | 0.5406 |   1.1224 | -0.4498 |   1.2019 | roc20_gt_0|roc120_gt_0|rv21_pct_lt_50|rv21_pct_lt_70|atr14_pct_lt_3               |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4268 | 0.5406 |   1.1224 | -0.4498 |   1.2019 | roc20_gt_0|roc120_gt_0|rv21_pct_lt_70|atr14_pct_lt_3|close_gt_prior_high20        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4268 | 0.5406 |   1.1224 | -0.4498 |   1.2019 | roc20_gt_0|roc120_gt_0|rv21_pct_lt_70|atr14_pct_lt_3|close_gt_prior_high55        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4263 | 0.5418 |   1.1810 | -0.5083 |   1.0660 | px_gt_sma20|sma50_gt_sma200|roc20_gt_0|ar1_30_gt_0|stoch14_gt_80                  |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4257 | 0.5473 |   1.1445 | -0.5600 |   0.9774 | sma100_gt_sma250|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|stoch14_gt_80              |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4242 | 0.5538 |   1.1065 | -0.6398 |   0.8656 | roc20_gt_0|rsi14_rising|rv21_lt_40|rv21_pct_lt_70|ar1_30_gt_0                     |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4242 | 0.5596 |   1.1629 | -0.5234 |   1.0693 | px_gt_ema5|px_gt_sma20|sma50_gt_sma200|roc20_gt_0|ar1_30_gt_0                     |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4237 | 0.5742 |   1.2219 | -0.4706 |   1.2200 | px_gt_ema150|macd_gt_signal|rsi14_rising|ar1_30_gt_0|cci20_gt_100                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4237 | 0.5742 |   1.2219 | -0.4706 |   1.2200 | px_gt_ema150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|cci20_gt_100                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4233 | 0.5389 |   1.1161 | -0.4498 |   1.1980 | px_gt_ema100|roc20_gt_0|roc120_gt_0|rv21_pct_lt_70|atr14_pct_lt_3                 |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4224 | 0.5389 |   1.1070 | -0.5728 |   0.9409 | px_gt_sma50|px_gt_ema100|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high20         |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4224 | 0.5389 |   1.1070 | -0.5728 |   0.9409 | px_gt_sma50|px_gt_ema100|rv21_pct_lt_70|ar1_30_gt_0|atr14_pct_lt_5                |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4224 | 0.5389 |   1.1070 | -0.5728 |   0.9409 | px_gt_sma50|px_gt_ema100|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high55         |
+| QQQ      | TQQQ_3x   |   4 |   1 |    1.4224 | 0.5389 |   1.1070 | -0.5728 |   0.9409 | px_gt_sma50|px_gt_ema100|rv21_pct_lt_70|ar1_30_gt_0                               |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4224 | 0.5389 |   1.1070 | -0.5728 |   0.9409 | px_gt_sma50|px_gt_ema100|rv21_pct_lt_50|rv21_pct_lt_70|ar1_30_gt_0                |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4223 | 0.5285 |   1.1257 | -0.4971 |   1.0632 | roc20_gt_0|roc120_gt_0|rv21_lt_40|atr14_pct_lt_3|stoch14_gt_80                    |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.4221 | 0.5777 |   1.2325 | -0.4706 |   1.2276 | px_gt_ema150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0                              |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.4221 | 0.5777 |   1.2325 | -0.4706 |   1.2276 | px_gt_ema150|macd_gt_signal|rsi14_rising|ar1_30_gt_0                              |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4210 | 0.5293 |   1.1900 | -0.5360 |   0.9873 | px_gt_sma20|roc20_gt_0|roc120_gt_0|ar1_30_gt_0|atr14_pct_lt_5                     |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4209 | 0.5448 |   1.1804 | -0.5083 |   1.0719 | px_gt_sma20|sma50_gt_sma200|roc20_gt_0|ar1_30_gt_0|bear_power_gt_0                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4205 | 0.5426 |   1.1646 | -0.4363 |   1.2436 | sma50_gt_sma200|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high20       |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4204 | 0.5523 |   1.1331 | -0.5148 |   1.0729 | px_gt_ema5|sma50_gt_sma200|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0                  |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4194 | 0.5636 |   1.1567 | -0.7089 |   0.7949 | px_gt_ema5|roc20_gt_0|rv21_pct_lt_50|ar1_30_gt_0|adx14_gt_25                      |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4192 | 0.5432 |   1.1523 | -0.4122 |   1.3178 | sma50_gt_sma200|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|stoch14_gt_80               |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4181 | 0.5422 |   1.1450 | -0.5070 |   1.0694 | sma100_gt_sma250|roc20_gt_0|rv21_pct_lt_50|rv21_pct_lt_70|ar1_30_gt_0             |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4180 | 0.5518 |   1.1459 | -0.6467 |   0.8532 | roc20_gt_0|rsi14_gt_50|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_25                     |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4178 | 0.5436 |   1.1657 | -0.6169 |   0.8812 | px_gt_ema5|px_gt_sma20|roc20_gt_0|roc120_gt_0|ar1_30_gt_0                         |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4160 | 0.5398 |   1.1444 | -0.6547 |   0.8246 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_20|cci20_gt_100                    |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4160 | 0.5339 |   1.1126 | -0.4755 |   1.1227 | roc20_gt_0|roc120_gt_0|rv21_pct_lt_70|atr14_pct_lt_3|cci20_gt_100                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4152 | 0.5346 |   1.1091 | -0.6707 |   0.7971 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|atr14_pct_lt_5|bear_power_gt_0              |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4151 | 0.5584 |   1.1558 | -0.6447 |   0.8662 | px_gt_ema5|sma100_gt_sma250|roc20_gt_0|ar1_30_gt_0|bear_power_gt_0                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4148 | 0.5352 |   1.1118 | -0.4881 |   1.0965 | roc20_gt_0|roc120_gt_0|rv21_pct_lt_70|atr14_pct_lt_3|stoch14_gt_80                |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4146 | 0.5115 |   1.1858 | -0.4337 |   1.1794 | px_gt_sma150|sma100_gt_sma250|stochrsi14_gt_50|rv21_pct_lt_70|cci20_gt_0          |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4140 | 0.5339 |   1.1170 | -0.6592 |   0.8099 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|atr14_pct_lt_5|close_gt_prior_high20        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4140 | 0.5339 |   1.1170 | -0.6592 |   0.8099 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|atr14_pct_lt_5|close_gt_prior_high55        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4140 | 0.5339 |   1.1170 | -0.6592 |   0.8099 | roc20_gt_0|rv21_pct_lt_50|rv21_pct_lt_70|ar1_30_gt_0|atr14_pct_lt_5               |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.4140 | 0.5339 |   1.1170 | -0.6592 |   0.8099 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|atr14_pct_lt_5                              |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4137 | 0.5337 |   1.1168 | -0.6592 |   0.8096 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high20|close_gt_prior_high55 |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4137 | 0.5337 |   1.1168 | -0.6592 |   0.8096 | roc20_gt_0|rv21_pct_lt_50|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high20        |
+| QQQ      | TQQQ_3x   |   3 |   1 |    1.4137 | 0.5337 |   1.1168 | -0.6592 |   0.8096 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0                                             |
+| QQQ      | TQQQ_3x   |   4 |   1 |    1.4137 | 0.5337 |   1.1168 | -0.6592 |   0.8096 | roc20_gt_0|rv21_pct_lt_50|rv21_pct_lt_70|ar1_30_gt_0                              |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4137 | 0.5337 |   1.1168 | -0.6592 |   0.8096 | roc20_gt_0|rv21_pct_lt_50|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high55        |
+| QQQ      | TQQQ_3x   |   4 |   1 |    1.4137 | 0.5337 |   1.1168 | -0.6592 |   0.8096 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high55                       |
+| QQQ      | TQQQ_3x   |   4 |   1 |    1.4137 | 0.5337 |   1.1168 | -0.6592 |   0.8096 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high20                       |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4126 | 0.5382 |   1.1708 | -0.6016 |   0.8946 | px_gt_sma20|roc20_gt_0|roc120_gt_0|adx14_gt_25|atr14_pct_lt_3                     |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4120 | 0.5339 |   1.1606 | -0.6266 |   0.8521 | px_gt_sma20|sma100_gt_sma250|roc20_gt_0|ar1_30_gt_0|atr14_pct_lt_5                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4117 | 0.5387 |   1.1625 | -0.5413 |   0.9952 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_25|cci20_gt_100                    |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4112 | 0.5326 |   1.0977 | -0.6065 |   0.8782 | px_gt_sma50|px_gt_ema100|rv21_pct_lt_70|ar1_30_gt_0|cci20_gt_100                  |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4078 | 0.5593 |   1.1339 | -0.6485 |   0.8624 | px_gt_ema5|sma100_gt_sma250|macd_hist_gt_0|roc20_gt_0|ar1_30_gt_0                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4078 | 0.5593 |   1.1339 | -0.6485 |   0.8624 | px_gt_ema5|sma100_gt_sma250|macd_gt_signal|roc20_gt_0|ar1_30_gt_0                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4077 | 0.5516 |   1.1477 | -0.5426 |   1.0166 | px_gt_sma150|macd_gt_signal|roc20_gt_0|rsi14_rising|ar1_30_gt_0                   |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4077 | 0.5516 |   1.1477 | -0.5426 |   1.0166 | px_gt_sma150|macd_hist_gt_0|roc20_gt_0|rsi14_rising|ar1_30_gt_0                   |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.4076 | 0.5318 |   1.1693 | -0.5083 |   1.0464 | px_gt_sma20|sma50_gt_sma200|roc20_gt_0|ar1_30_gt_0                                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4076 | 0.5318 |   1.1693 | -0.5083 |   1.0464 | px_gt_sma20|sma50_gt_sma200|roc20_gt_0|ar1_30_gt_0|close_gt_prior_high20          |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4076 | 0.5318 |   1.1693 | -0.5083 |   1.0464 | px_gt_sma20|sma50_gt_sma200|roc20_gt_0|ar1_30_gt_0|close_gt_prior_high55          |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4074 | 0.5281 |   1.0920 | -0.5728 |   0.9220 | px_gt_sma50|px_gt_sma100|px_gt_ema100|rv21_pct_lt_70|ar1_30_gt_0                  |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4074 | 0.5329 |   1.1459 | -0.4324 |   1.2326 | sma50_gt_sma200|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|cci20_gt_100                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4073 | 0.5365 |   1.1582 | -0.4363 |   1.2297 | sma50_gt_sma200|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high55       |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4072 | 0.5656 |   1.1299 | -0.6206 |   0.9115 | px_gt_sma20|sma100_gt_sma250|roc20_gt_0|rv21_lt_40|adx14_gt_25                    |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4065 | 0.5280 |   1.1016 | -0.4498 |   1.1739 | px_gt_sma100|roc20_gt_0|roc120_gt_0|rv21_pct_lt_70|atr14_pct_lt_3                 |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4065 | 0.5308 |   1.0955 | -0.5728 |   0.9267 | px_gt_sma50|px_gt_ema50|px_gt_ema100|rv21_pct_lt_70|ar1_30_gt_0                   |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.4061 | 0.5222 |   1.1142 | -0.4971 |   1.0504 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|stoch14_gt_80                               |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4061 | 0.5222 |   1.1142 | -0.4971 |   1.0504 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|stoch14_gt_80|close_gt_prior_high20         |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4061 | 0.5222 |   1.1142 | -0.4971 |   1.0504 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|stoch14_gt_80|close_gt_prior_high55         |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4057 | 0.5317 |   1.1036 | -0.6707 |   0.7927 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|cci20_gt_100|bear_power_gt_0                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4054 | 0.5127 |   1.1096 | -0.4945 |   1.0368 | px_gt_sma150|roc20_gt_0|rv21_pct_lt_50|atr14_pct_lt_3|stoch14_gt_80               |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4049 | 0.5337 |   1.1450 | -0.5070 |   1.0528 | sma100_gt_sma250|roc20_gt_0|rv21_lt_40|rv21_pct_lt_70|ar1_30_gt_0                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4045 | 0.5538 |   1.1431 | -0.6638 |   0.8342 | px_gt_ema5|px_gt_ema20|sma100_gt_sma250|roc20_gt_0|ar1_30_gt_0                    |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4043 | 0.5270 |   1.1028 | -0.4498 |   1.1716 | px_gt_ema50|roc20_gt_0|roc120_gt_0|rv21_pct_lt_70|atr14_pct_lt_3                  |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4041 | 0.5348 |   1.1413 | -0.6562 |   0.8149 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_20|close_gt_prior_high20           |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4040 | 0.5402 |   1.1040 | -0.6683 |   0.8083 | px_gt_sma150|roc20_gt_0|rv21_lt_40|ar1_30_gt_0|stoch14_gt_80                      |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4037 | 0.5411 |   1.1036 | -0.6913 |   0.7828 | px_gt_sma150|roc20_gt_0|rv21_lt_40|ar1_30_gt_0|bear_power_gt_0                    |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4033 | 0.5420 |   1.1324 | -0.6049 |   0.8961 | px_gt_sma150|sma50_gt_sma200|roc20_gt_0|ar1_30_gt_0|stoch14_gt_80                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4033 | 0.5761 |   1.2225 | -0.4764 |   1.2092 | px_gt_sma200|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|close_gt_prior_high55        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4033 | 0.5761 |   1.2225 | -0.4764 |   1.2092 | px_gt_sma200|macd_gt_signal|rsi14_rising|ar1_30_gt_0|close_gt_prior_high55        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4031 | 0.5341 |   1.1208 | -0.4079 |   1.3092 | px_gt_ema100|sma50_gt_sma200|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4029 | 0.5203 |   1.1275 | -0.5083 |   1.0236 | px_gt_sma20|sma50_gt_sma200|roc20_gt_0|rv21_pct_lt_50|ar1_30_gt_0                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4028 | 0.5516 |   1.1309 | -0.6527 |   0.8451 | px_gt_ema5|sma100_gt_sma250|roc20_gt_0|rsi14_gt_50|ar1_30_gt_0                    |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4026 | 0.5522 |   1.1531 | -0.5723 |   0.9650 | px_gt_ema5|sma100_gt_sma250|roc20_gt_0|ar1_30_gt_0|close_gt_prior_high20          |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4026 | 0.5522 |   1.1531 | -0.5723 |   0.9650 | px_gt_ema5|sma100_gt_sma250|roc20_gt_0|ar1_30_gt_0|close_gt_prior_high55          |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.4026 | 0.5522 |   1.1531 | -0.5723 |   0.9650 | px_gt_ema5|sma100_gt_sma250|roc20_gt_0|ar1_30_gt_0                                |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4026 | 0.5339 |   1.1547 | -0.4363 |   1.2238 | sma50_gt_sma200|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|atr14_pct_lt_5              |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4026 | 0.5298 |   1.1012 | -0.6707 |   0.7899 | roc20_gt_0|rv21_pct_lt_50|rv21_pct_lt_70|ar1_30_gt_0|bear_power_gt_0              |
+| QQQ      | TQQQ_3x   |   4 |   1 |    1.4026 | 0.5298 |   1.1012 | -0.6707 |   0.7899 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|bear_power_gt_0                             |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4026 | 0.5298 |   1.1012 | -0.6707 |   0.7899 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high20|bear_power_gt_0       |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4026 | 0.5298 |   1.1012 | -0.6707 |   0.7899 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high55|bear_power_gt_0       |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.4024 | 0.5338 |   1.1544 | -0.4363 |   1.2234 | sma50_gt_sma200|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0                             |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4019 | 0.5453 |   1.0830 | -0.6570 |   0.8300 | px_gt_ema5|px_gt_sma50|px_gt_ema100|rv21_pct_lt_70|ar1_30_gt_0                    |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4018 | 0.5385 |   1.1335 | -0.6346 |   0.8485 | px_gt_sma20|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_25                     |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4015 | 0.5356 |   1.1181 | -0.6767 |   0.7915 | px_gt_sma20|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_20                     |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.4012 | 0.5258 |   1.1074 | -0.4498 |   1.1690 | roc20_gt_0|roc120_gt_0|rv21_lt_40|rv21_pct_lt_70|atr14_pct_lt_3                   |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.4008 | 0.5482 |   1.0919 | -0.7210 |   0.7603 | px_gt_ema5|px_gt_ema20|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0                      |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.4004 | 0.5381 |   1.1145 | -0.6049 |   0.8896 | px_gt_sma150|sma100_gt_sma250|roc20_gt_0|ar1_30_gt_0|stoch14_gt_80                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3997 | 0.5321 |   1.1209 | -0.5083 |   1.0469 | px_gt_sma20|sma50_gt_sma200|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0                 |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.3995 | 0.5681 |   1.1081 | -0.8073 |   0.7037 | px_gt_sma20|roc20_gt_0|rv21_lt_40|adx14_gt_25|atr14_pct_lt_5                      |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3990 | 0.5726 |   1.2177 | -0.4764 |   1.2019 | px_gt_sma200|macd_gt_signal|rsi14_rising|ar1_30_gt_0|close_gt_prior_high20        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3990 | 0.5726 |   1.2177 | -0.4764 |   1.2019 | px_gt_sma200|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|close_gt_prior_high20        |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.3983 | 0.5611 |   1.2222 | -0.4586 |   1.2234 | px_gt_sma150|macd_gt_signal|rsi14_rising|ar1_30_gt_0|atr14_pct_lt_5               |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.3983 | 0.5611 |   1.2222 | -0.4586 |   1.2234 | px_gt_sma150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|atr14_pct_lt_5               |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3983 | 0.5556 |   1.1903 | -0.4944 |   1.1238 | px_gt_sma150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|bear_power_gt_0              |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3983 | 0.5556 |   1.1903 | -0.4944 |   1.1238 | px_gt_sma150|macd_gt_signal|rsi14_rising|ar1_30_gt_0|bear_power_gt_0              |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3979 | 0.5370 |   1.0976 | -0.6202 |   0.8658 | rsi14_rising|rv21_lt_40|rv21_pct_lt_70|ar1_30_gt_0|cci20_gt_100                   |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3978 | 0.5218 |   1.1047 | -0.4517 |   1.1552 | px_gt_sma150|roc20_gt_0|rv21_pct_lt_70|atr14_pct_lt_3|bear_power_gt_0             |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.3976 | 0.5599 |   1.1312 | -0.7523 |   0.7443 | px_gt_ema5|px_gt_ema20|roc20_gt_0|ar1_30_gt_0|close_gt_prior_high55               |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.3976 | 0.5599 |   1.1312 | -0.7523 |   0.7443 | px_gt_ema5|px_gt_ema20|roc20_gt_0|ar1_30_gt_0|close_gt_prior_high20               |
+| QQQ      | TQQQ_3x   |   4 |   1 |    1.3976 | 0.5599 |   1.1312 | -0.7523 |   0.7443 | px_gt_ema5|px_gt_ema20|roc20_gt_0|ar1_30_gt_0                                     |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.3976 | 0.5599 |   1.1312 | -0.7523 |   0.7443 | px_gt_ema5|px_gt_ema20|roc20_gt_0|ar1_30_gt_0|stoch14_gt_80                       |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.3976 | 0.5599 |   1.1312 | -0.7523 |   0.7443 | px_gt_ema5|px_gt_ema20|roc20_gt_0|ar1_30_gt_0|bear_power_gt_0                     |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.3976 | 0.5599 |   1.1312 | -0.7523 |   0.7443 | px_gt_ema5|px_gt_ema20|roc20_gt_0|ar1_30_gt_0|cci20_gt_100                        |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3974 | 0.5598 |   1.0840 | -0.8027 |   0.6974 | px_gt_sma50|roc10_gt_0|roc20_gt_0|rv21_lt_40|adx14_gt_25                          |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3974 | 0.5404 |   1.1370 | -0.5364 |   1.0075 | px_gt_sma50|px_gt_sma150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0                  |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3974 | 0.5404 |   1.1370 | -0.5364 |   1.0075 | px_gt_sma50|px_gt_sma150|macd_gt_signal|rsi14_rising|ar1_30_gt_0                  |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3970 | 0.5281 |   1.1338 | -0.3872 |   1.3639 | px_gt_ema100|sma20_gt_sma100|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3968 | 0.5364 |   1.1135 | -0.6695 |   0.8013 | px_gt_sma20|px_gt_sma150|sma50_gt_sma200|roc20_gt_0|ar1_30_gt_0                   |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3966 | 0.5233 |   1.1178 | -0.4478 |   1.1686 | px_gt_sma50|sma50_gt_sma200|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3964 | 0.5640 |   1.0938 | -0.8104 |   0.6959 | px_gt_sma20|roc10_gt_0|roc20_gt_0|rv21_lt_40|adx14_gt_25                          |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3961 | 0.5376 |   1.0922 | -0.6501 |   0.8269 | rsi14_rising|rv21_lt_40|rv21_pct_lt_70|ar1_30_gt_0|bear_power_gt_0                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3961 | 0.5127 |   1.0945 | -0.4971 |   1.0314 | px_gt_ema100|roc20_gt_0|roc120_gt_0|rv21_pct_lt_50|atr14_pct_lt_3                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3956 | 0.5674 |   1.0941 | -0.7992 |   0.7099 | macd_gt_signal|roc20_gt_0|rsi14_gt_50|rv21_lt_40|adx14_gt_25                      |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3956 | 0.5674 |   1.0941 | -0.7992 |   0.7099 | macd_hist_gt_0|roc20_gt_0|rsi14_gt_50|rv21_lt_40|adx14_gt_25                      |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.3954 | 0.5453 |   1.0887 | -0.7210 |   0.7563 | px_gt_ema5|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|bear_power_gt_0                  |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3952 | 0.5238 |   1.1370 | -0.6184 |   0.8470 | px_gt_ema20|roc20_gt_0|rv21_pct_lt_50|ar1_30_gt_0|adx14_gt_25                     |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3949 | 0.5190 |   1.0993 | -0.4532 |   1.1452 | px_gt_ema20|px_gt_sma150|roc20_gt_0|rv21_pct_lt_70|atr14_pct_lt_3                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3947 | 0.5222 |   1.0959 | -0.6631 |   0.7876 | roc20_gt_0|rv21_lt_40|rv21_pct_lt_70|ar1_30_gt_0|bear_power_gt_0                  |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3944 | 0.5499 |   1.1081 | -0.7713 |   0.7129 | px_gt_ema5|roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_20                      |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3943 | 0.5624 |   1.1990 | -0.4764 |   1.1805 | px_gt_sma200|macd_gt_signal|rsi14_rising|ar1_30_gt_0|stoch14_gt_80                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3943 | 0.5624 |   1.1990 | -0.4764 |   1.1805 | px_gt_sma200|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|stoch14_gt_80                |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.3941 | 0.5418 |   1.0948 | -0.6834 |   0.7928 | px_gt_ema5|rv21_pct_lt_70|ar1_30_gt_0|cci20_gt_100|bear_power_gt_0                |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.3941 | 0.5418 |   1.0948 | -0.6834 |   0.7928 | px_gt_ema5|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high55|bear_power_gt_0       |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.3941 | 0.5418 |   1.0948 | -0.6834 |   0.7928 | px_gt_ema5|rv21_pct_lt_70|ar1_30_gt_0|close_gt_prior_high20|bear_power_gt_0       |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.3941 | 0.5418 |   1.0948 | -0.6834 |   0.7928 | px_gt_ema5|rv21_pct_lt_50|rv21_pct_lt_70|ar1_30_gt_0|bear_power_gt_0              |
+| QQQ      | TQQQ_3x   |   4 |   1 |    1.3941 | 0.5418 |   1.0948 | -0.6834 |   0.7928 | px_gt_ema5|rv21_pct_lt_70|ar1_30_gt_0|bear_power_gt_0                             |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3934 | 0.5460 |   1.1431 | -0.6179 |   0.8837 | px_gt_ema5|sma100_gt_sma250|roc20_gt_0|ar1_30_gt_0|stoch14_gt_80                  |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3934 | 0.5127 |   1.0948 | -0.4971 |   1.0314 | roc20_gt_0|roc120_gt_0|rv21_pct_lt_50|atr14_pct_lt_3|stoch14_gt_80                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3933 | 0.5302 |   1.1253 | -0.6624 |   0.8004 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_20|stoch14_gt_80                   |
+| QQQ      | TQQQ_3x   |   5 |   1 |    1.3928 | 0.5404 |   1.0839 | -0.6565 |   0.8232 | px_gt_ema5|px_gt_sma50|rv21_pct_lt_70|ar1_30_gt_0|stoch14_gt_80                   |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3925 | 0.5126 |   1.1042 | -0.4971 |   1.0310 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|cci20_gt_100|close_gt_prior_high20          |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.3925 | 0.5126 |   1.1042 | -0.4971 |   1.0310 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|atr14_pct_lt_5|cci20_gt_100                 |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.3925 | 0.5126 |   1.1042 | -0.4971 |   1.0310 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|cci20_gt_100                                |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3925 | 0.5126 |   1.1042 | -0.4971 |   1.0310 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|cci20_gt_100|close_gt_prior_high55          |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3925 | 0.5299 |   1.1294 | -0.4661 |   1.1369 | px_gt_ema150|macd_hist_gt_0|rsi14_rising|rv21_pct_lt_50|ar1_30_gt_0               |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3925 | 0.5299 |   1.1294 | -0.4661 |   1.1369 | px_gt_ema150|macd_gt_signal|rsi14_rising|rv21_pct_lt_50|ar1_30_gt_0               |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3924 | 0.5379 |   1.1452 | -0.4707 |   1.1428 | px_gt_ema10|px_gt_sma20|sma50_gt_sma200|roc20_gt_0|ar1_30_gt_0                    |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3921 | 0.5324 |   1.1488 | -0.6970 |   0.7638 | roc20_gt_0|ar1_30_gt_0|atr14_pct_lt_5|cci20_gt_100|bear_power_gt_0                |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.3921 | 0.5126 |   1.1054 | -0.4971 |   1.0310 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|atr14_pct_lt_5|close_gt_prior_high55        |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.3921 | 0.5126 |   1.1054 | -0.4971 |   1.0310 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|atr14_pct_lt_5|close_gt_prior_high20        |
+| QQQ      | TQQQ_3x   |   4 |   3 |    1.3921 | 0.5126 |   1.1054 | -0.4971 |   1.0310 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|atr14_pct_lt_5                              |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3920 | 0.5225 |   1.1031 | -0.6372 |   0.8200 | px_gt_sma150|roc20_gt_0|ar1_30_gt_0|atr14_pct_lt_3|stoch14_gt_80                  |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.3918 | 0.5124 |   1.1052 | -0.4971 |   1.0307 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|close_gt_prior_high55                       |
+| QQQ      | TQQQ_3x   |   3 |   2 |    1.3918 | 0.5124 |   1.1052 | -0.4971 |   1.0307 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3                                             |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3918 | 0.5124 |   1.1052 | -0.4971 |   1.0307 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|close_gt_prior_high20|close_gt_prior_high55 |
+| QQQ      | TQQQ_3x   |   4 |   2 |    1.3918 | 0.5124 |   1.1052 | -0.4971 |   1.0307 | roc20_gt_0|roc120_gt_0|atr14_pct_lt_3|close_gt_prior_high20                       |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3917 | 0.5512 |   1.1831 | -0.4944 |   1.1150 | px_gt_ema150|macd_gt_signal|rsi14_rising|ar1_30_gt_0|bear_power_gt_0              |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3917 | 0.5512 |   1.1831 | -0.4944 |   1.1150 | px_gt_ema150|macd_hist_gt_0|rsi14_rising|ar1_30_gt_0|bear_power_gt_0              |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3917 | 0.5507 |   1.0704 | -0.8299 |   0.6635 | roc10_gt_0|roc20_gt_0|rv21_lt_40|rv21_pct_lt_50|adx14_gt_25                       |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3912 | 0.5285 |   1.1334 | -0.6276 |   0.8420 | roc20_gt_0|rv21_pct_lt_70|ar1_30_gt_0|adx14_gt_20|close_gt_prior_high55           |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3912 | 0.5224 |   1.1511 | -0.6301 |   0.8291 | roc20_gt_0|rv21_pct_lt_50|ar1_30_gt_0|adx14_gt_25|bear_power_gt_0                 |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.3909 | 0.5424 |   1.1467 | -0.5723 |   0.9477 | px_gt_ema5|sma100_gt_sma250|roc20_gt_0|ar1_30_gt_0|atr14_pct_lt_5                 |
+| QQQ      | TQQQ_3x   |   5 |   3 |    1.3908 | 0.5226 |   1.1456 | -0.6266 |   0.8341 | px_gt_sma20|sma100_gt_sma250|roc20_gt_0|rv21_lt_40|ar1_30_gt_0                    |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3908 | 0.5212 |   1.1285 | -0.7038 |   0.7405 | roc20_gt_0|rv21_pct_lt_50|ar1_30_gt_0|adx14_gt_20|bear_power_gt_0                 |
+| QQQ      | TQQQ_3x   |   5 |   2 |    1.3906 | 0.5621 |   1.0941 | -0.8139 |   0.6906 | roc20_gt_0|rsi14_gt_50|rv21_lt_40|adx14_gt_25|close_gt_prior_high55               |
+
+## Method Notes
+
+- Top rows are retained by Sortino, then CAGR, then Calmar.
+- Signals are lagged one bar before returns to avoid same-close look-ahead `[advances_fin_ml, p.31-34]`.
+- All evaluated configs must be included in later DSR trial accounting `[advances_fin_ml, p.222-223]`.

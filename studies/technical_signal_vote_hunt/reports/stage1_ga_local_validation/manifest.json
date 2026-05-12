@@ -1,0 +1,16 @@
+{
+  "report": "stage1_validation",
+  "candidates": "studies/technical_signal_vote_hunt/reports/stage1_ga_local_candidates/tables/qqq_final_candidates.csv",
+  "out_dir": "studies/technical_signal_vote_hunt/reports/stage1_ga_local_validation",
+  "n_candidates": 2,
+  "off_leg": "ZROZSIM",
+  "n_trials": 7554054,
+  "bootstrap_n": 2000,
+  "bootstrap_block": 21,
+  "wf_windows": 8,
+  "pbo_blocks": 10,
+  "pbo_group": "branch",
+  "seed": 42,
+  "elapsed_seconds": 4.518973432999701,
+  "primary_citation": "[advances_fin_ml, p.208-211]"
+}

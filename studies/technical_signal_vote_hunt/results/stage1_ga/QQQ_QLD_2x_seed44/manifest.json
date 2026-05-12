@@ -1,0 +1,25 @@
+{
+  "stage": "stage1_ga",
+  "branch": "QQQ",
+  "risk_on": "QLD_2x",
+  "off_leg": "ZROZSIM",
+  "n_signals": 33,
+  "min_n": 7,
+  "max_n": 12,
+  "population": 1024,
+  "generations": 1000,
+  "elite": 20,
+  "mutation_rate": 0.12,
+  "k_mutation_rate": 0.25,
+  "seed": 44,
+  "evaluations": 1024000,
+  "unique_candidates": 444474,
+  "fitness": {
+    "cagr_weight": 0.5,
+    "calmar_weight": 0.2,
+    "mdd_penalty": 0.15,
+    "complexity_penalty": 0.01,
+    "complexity_free_n": 6
+  },
+  "primary_citation": "[advances_fin_ml, p.208-211]"
+}

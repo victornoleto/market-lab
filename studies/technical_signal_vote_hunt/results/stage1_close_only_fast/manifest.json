@@ -1,0 +1,11 @@
+{
+  "stage": "stage1_close_only_fast",
+  "min_n": 1,
+  "max_n": 5,
+  "off_leg": "ZROZSIM",
+  "signal_limit": null,
+  "estimated_configs": 5471268,
+  "configs_tested": 5471268,
+  "benchmarks_tested": 16,
+  "primary_citation": "[advances_fin_ml, p.208-211]"
+}

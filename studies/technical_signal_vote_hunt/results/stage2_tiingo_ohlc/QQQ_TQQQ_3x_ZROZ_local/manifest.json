@@ -1,0 +1,15 @@
+{
+  "stage": "stage2_tiingo_ohlc",
+  "branch": "QQQ",
+  "risk_on": "TQQQ_3x",
+  "off_leg": "ZROZ",
+  "base_signals": "px_gt_sma10|px_gt_sma20|px_gt_ema100|px_gt_ema200|px_gt_ema250|roc20_gt_0|roc60_gt_0|roc120_gt_0",
+  "base_k": 6,
+  "configs_tested": 1086,
+  "signal_count": 47,
+  "ohlc_signal_count": 14,
+  "start": "2010-02-12",
+  "end": "2026-04-14",
+  "elapsed_seconds": 0.5439931159999105,
+  "primary_citation": "[advances_fin_ml, p.208-211]"
+}

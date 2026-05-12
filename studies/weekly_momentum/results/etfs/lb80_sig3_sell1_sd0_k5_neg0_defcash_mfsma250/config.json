@@ -1,0 +1,13 @@
+{
+  "lookback_days": 80,
+  "signal_weekday": 3,
+  "sell_delay_days": 1,
+  "top_k": 5,
+  "settlement_delay_days": 0,
+  "allow_negative_momentum": false,
+  "defensive_asset": null,
+  "market_filter_type": "sma",
+  "market_filter_days": 250,
+  "market_filter_symbol": "SPY",
+  "initial_cash": 10000.0
+}

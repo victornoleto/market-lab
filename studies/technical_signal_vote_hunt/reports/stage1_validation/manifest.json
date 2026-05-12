@@ -1,0 +1,14 @@
+{
+  "report": "stage1_validation",
+  "candidates": "/var/www/github/finances/market-lab/studies/technical_signal_vote_hunt/reports/stage1_top_strategies/tables/selected_top_candidates.csv",
+  "n_candidates": 12,
+  "off_leg": "ZROZSIM",
+  "n_trials": 5471268,
+  "bootstrap_n": 2000,
+  "bootstrap_block": 21,
+  "wf_windows": 8,
+  "pbo_blocks": 10,
+  "seed": 42,
+  "elapsed_seconds": 7.182829021000089,
+  "primary_citation": "[advances_fin_ml, p.208-211]"
+}

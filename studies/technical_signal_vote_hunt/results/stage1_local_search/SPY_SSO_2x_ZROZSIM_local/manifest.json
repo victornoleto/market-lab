@@ -1,0 +1,20 @@
+{
+  "stage": "stage1_local_search",
+  "branch": "SPY",
+  "risk_on": "SSO_2x",
+  "off_leg": "ZROZSIM",
+  "base_k": 5,
+  "base_signals": [
+    "px_gt_sma10",
+    "px_gt_sma20",
+    "px_gt_ema100",
+    "px_gt_ema200",
+    "px_gt_ema250",
+    "roc20_gt_0",
+    "roc60_gt_0"
+  ],
+  "neighbor_subsets": 216,
+  "configs_tested": 1531,
+  "elapsed_seconds": 1.3566076720007914,
+  "primary_citation": "[advances_fin_ml, p.208-211]"
+}

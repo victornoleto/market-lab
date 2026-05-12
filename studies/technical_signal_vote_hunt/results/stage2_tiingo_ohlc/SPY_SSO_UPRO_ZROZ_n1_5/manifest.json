@@ -1,0 +1,17 @@
+{
+  "stage": "stage2_tiingo_ohlc_grid",
+  "branch": "SPY",
+  "risk_ons": [
+    "SSO_2x",
+    "UPRO_3x"
+  ],
+  "off_leg": "ZROZ",
+  "min_n": 1,
+  "max_n": 5,
+  "signal_count": 47,
+  "estimated_configs": 16868018,
+  "configs_tested": 16868018,
+  "top": 200,
+  "elapsed_seconds": 3049.137638357999,
+  "primary_citation": "[advances_fin_ml, p.222-223]"
+}

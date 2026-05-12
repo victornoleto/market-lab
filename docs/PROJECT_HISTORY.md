@@ -80,7 +80,30 @@ Notable preserved study areas include:
 - `studies/letf_rotation_hunt/reports/T3D_K2_TAX_AWARE_CONCLUSION.md` for the
   consolidated T3d-K2 tax-aware conclusion: simple baseline, balanced iter 30
   proxy, performance-first TQQQ variant, and rejected SPY transplants;
-- `studies/weekly_momentum/` for weekly cross-sectional momentum diagnostics, including controlled sweeps, walk-forward validation, PIT approximation, Tiingo delisted backfill, and a final rejection after DSR/bootstrap gates `[advances_fin_ml, p.208-211]`;
+- `studies/technical_signal_vote_hunt/` for a follow-on research scaffold that
+  generalizes T3d-K2 into `n`-signal / `k`-vote technical-indicator grids across
+  branch-native SPY and QQQ LETF variants. Stage 1 uses long-history testfolio
+  close-only signals and closed with 0/12 honest passes after global DSR trial
+  accounting and diagnostic top-k PBO. A later GA/local-search pass found a
+  stronger QQQ→QLD in-sample incumbent, and a QQQ→TQQQ performance-first
+  challenger, but post-GA validation also closed 0/2 after cumulative DSR trial
+  accounting. Stage 2 Tiingo OHLC was then implemented for real-inception ETF
+  diagnostics; first QQQ pass found only marginal QLD improvement and a stronger
+  TQQQ local lead using `ATR14% < 3%`, still discovery-only pending Stage 2
+  honest validation. Overnight exact grids then evaluated 115M+ persisted
+  configs and found mechanically reproducible but unvalidated high-CAGR leads
+  across QQQ/TQQQ, QQQ/QLD, and SPY/UPRO; close-to-close execution sensitivity
+  and cumulative DSR trial count remain the primary blockers. The next Stage 2
+  operational pass added `CASH_USD`, explicit extra execution lag, and same-config
+  redundant-signal exclusion; QQQ cash+lag1 exact `n<=5` grids found stronger
+  discovery leads for TQQQ and QLD, while estimates showed exact `n<=7/8` grids
+  require GA/beam search rather than routine enumeration. A follow-up window audit
+  showed the original TQQQ-vs-QLD comparison was affected by inception windows:
+  same-window QLD used the same top rule as TQQQ with lower CAGR but much lower
+  MDD, while the close-only 1986+ testfolio proxy materially weakened the result
+  `[trading_systems_methods, p.732-733]`, `[advances_fin_ml, p.196-202]`,
+  `[advances_fin_ml, p.208-211]`;
+- `studies/weekly_momentum/` for weekly cross-sectional momentum diagnostics, including controlled sweeps, walk-forward validation, PIT approximation, Tiingo delisted backfill, and a final rejection after DSR/bootstrap gates. A later ETF-specific post-close diagnostic improved WF metrics only when leveraged/inverse ETFs remained available, but still failed DSR; the branch was closed research-only with no further local sweeps `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`;
 - `studies/long_term_portfolio/` for long-horizon allocation experiments;
 - `studies/_shared/` for reusable study infrastructure;
 - `studies/_archive/` for closed or historical work.
