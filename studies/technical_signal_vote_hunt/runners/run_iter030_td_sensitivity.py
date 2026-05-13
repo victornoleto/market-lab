@@ -327,7 +327,7 @@ def _write_report(
         "",
         "## Verdict",
         "",
-        "`T20D120` is the best performance-first variant in this local T/D grid, but it is not a validated winner. It improves full-period CAGR/terminal equity versus iter030 and keeps similar full-period MDD, while prior formal validation still failed DSR and PBO. Treat it as the best economic sensitivity found in this branch, not as a deployable replacement `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`.",
+        "`T20D120` remains the best CAGR/terminal-equity variant in this local T/D grid, but `T20D90` is the best balanced variant by Sortino with nearly identical CAGR and the same full-period MDD. Neither is a validated winner: prior formal validation of the GA strict-Pareto set still failed DSR and PBO. Treat `T20D120` as the performance-first sensitivity and `T20D90` as a local explanatory challenger, not as deployable replacements `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`.",
         "",
         "## T/D Grid",
         "",
@@ -357,7 +357,7 @@ def _write_report(
         "",
         "## Interpretation",
         "",
-        "The local grid shows that longer `D120` rearm persistence is the main source of the GA improvement. That is a plausible economic mechanism, but it is also a small parametric move selected on the same long history. Since the honest validation of the strict Pareto candidates closed 0/7 PASS, the correct conclusion is to stop this optimization branch and keep iter030 as the core anchor.",
+        "The local grid shows that longer rearm persistence (`D90`/`D120`) is the main source of the GA improvement, especially when paired with the faster `T20` crash trigger. That is a plausible economic mechanism, but it is also a small parametric move selected on the same long history. Since the honest validation of the strict Pareto candidates closed 0/7 PASS, the correct conclusion is to stop this optimization branch and keep iter030 as the core anchor.",
     ]
     (args.out_dir / "REPORT.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 

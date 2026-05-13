@@ -1,0 +1,14 @@
+{
+  "name": "evo03_qqq_conservative_turbo",
+  "objective": "qqq_conservative_turbo",
+  "seed": 3071,
+  "evaluated_unique": 13409,
+  "generations": 120,
+  "elapsed_minutes": 115.65245631360013,
+  "best_label": "QQQ_s75_180_vw10_vt0.25_ar20_k4_T25D45_w0.50_lrs1.00_g0.10_rv60_0.60",
+  "best_fitness": 4.52588798474854,
+  "best_sortino": 1.4045724815423153,
+  "best_cagr": 0.27128124668101106,
+  "best_mdd": -0.31996500730034466,
+  "best_calmar": 0.847846609758688
+}

@@ -1,0 +1,14 @@
+{
+  "name": "evo01_qqq_mdd_repair",
+  "objective": "qqq_mdd_repair",
+  "seed": 1071,
+  "evaluated_unique": 19213,
+  "generations": 120,
+  "elapsed_minutes": 166.75977026966672,
+  "best_label": "QQQ_s75_180_vw10_vt0.25_ar20_k4_T30D45_w1.00_lrs1.20_g0.50_rv60_0.70",
+  "best_fitness": 5.417508125806749,
+  "best_sortino": 1.401257593566807,
+  "best_cagr": 0.30809323409870326,
+  "best_mdd": -0.33526853934032275,
+  "best_calmar": 0.9189446606141756
+}

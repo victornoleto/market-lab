@@ -1,0 +1,14 @@
+{
+  "name": "evo02_qqq_rolling_repair",
+  "objective": "qqq_rolling_repair",
+  "seed": 2071,
+  "evaluated_unique": 16209,
+  "generations": 120,
+  "elapsed_minutes": 139.56893156261648,
+  "best_label": "QQQ_s50_225_vw42_vt0.25_ar30_k3_T20D60_w1.00_lrs1.00_g0.50_rv60_0.70",
+  "best_fitness": 5.549763394617172,
+  "best_sortino": 1.3459306873160242,
+  "best_cagr": 0.3244264634524756,
+  "best_mdd": -0.399667518266135,
+  "best_calmar": 0.8117408811702405
+}

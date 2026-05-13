@@ -1,0 +1,14 @@
+{
+  "name": "evo04_qld_simplify",
+  "objective": "qld_simplify",
+  "seed": 1071,
+  "evaluated_unique": 7234,
+  "generations": 38,
+  "elapsed_minutes": 22.884529430100034,
+  "best_label": "QLD_s100_200_vw21_vt0.50_ar30_k2_T15D120_w1.00_lrs1.10_g0.50_rv90_0.80",
+  "best_fitness": 5.544690247681874,
+  "best_sortino": 1.3750573559741504,
+  "best_cagr": 0.43416049244058197,
+  "best_mdd": -0.5273154552939268,
+  "best_calmar": 0.8233411103010057
+}

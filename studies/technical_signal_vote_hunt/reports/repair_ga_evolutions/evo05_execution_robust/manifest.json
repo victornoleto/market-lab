@@ -1,0 +1,14 @@
+{
+  "name": "evo05_execution_robust",
+  "objective": "execution_robust",
+  "seed": 2071,
+  "evaluated_unique": 6531,
+  "generations": 31,
+  "elapsed_minutes": 45.645000558133326,
+  "best_label": "QLD_s100_225_vw21_vt0.50_ar40_k2_T15D120_w1.00_lrs1.00_g0.25_rv90_0.80",
+  "best_fitness": 6.273926693592912,
+  "best_sortino": 1.2423310999296688,
+  "best_cagr": 0.37942061971083035,
+  "best_mdd": -0.5679548999075003,
+  "best_calmar": 0.6933255926631553
+}

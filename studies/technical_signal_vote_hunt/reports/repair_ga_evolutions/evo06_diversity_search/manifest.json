@@ -1,0 +1,14 @@
+{
+  "name": "evo06_diversity_search",
+  "objective": "diversity_search",
+  "seed": 1071,
+  "evaluated_unique": 6027,
+  "generations": 31,
+  "elapsed_minutes": 13.396669552533421,
+  "best_label": "QLD_s50_200_vw42_vt0.50_ar20_k3_T10D45_w1.00_lrs1.20_g0.25_rv90_0.90",
+  "best_fitness": 4.952272058883205,
+  "best_sortino": 1.3329258227802314,
+  "best_cagr": 0.4014073319977145,
+  "best_mdd": -0.5032248695966313,
+  "best_calmar": 0.7976699011705634
+}
