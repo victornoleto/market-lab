@@ -1,0 +1,215 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_vol_scaled_relative_momentum.py",
+    "RESULTS.json",
+    "diagnostics.json"
+  ],
+  "beats_spy_cagr": true,
+  "best_config": "relmom90_3x_vt25_cash",
+  "gates": {
+    "bootstrap": {
+      "annualized_excess_mean": 0.037088830264534,
+      "ci_high_99_9": 0.13667306064405482,
+      "ci_low_99_9": -0.054858375861907005,
+      "n_resamples": 2000,
+      "pass": false
+    },
+    "cross_lib": {
+      "configs": {
+        "relmom90_3x_vt20_cash": {
+          "abs_delta": 0.0,
+          "loop_cagr": 0.12844661648330025,
+          "pass": true,
+          "vector_cagr": 0.12844661648330025
+        },
+        "relmom90_3x_vt25_cash": {
+          "abs_delta": 0.0,
+          "loop_cagr": 0.14685255812068143,
+          "pass": true,
+          "vector_cagr": 0.14685255812068143
+        }
+      },
+      "pass": true
+    },
+    "dsr": {
+      "benchmark_sharpe_periodic": 0.01725640079168215,
+      "computed": true,
+      "dsr": 0.9972030105480083,
+      "n_trials": 14,
+      "observed_sharpe_periodic": 0.045217105290904856,
+      "p_value": 0.002796989451991694,
+      "pass": true
+    },
+    "economic": {
+      "beats_spy_cagr": true,
+      "pass": true,
+      "terminal_beats_spy": true
+    },
+    "fwd": {
+      "candidate_cagr": 0.20359031511204106,
+      "end": "2026-04-17",
+      "excess_cagr": -0.010894105850813407,
+      "pass": false,
+      "spy_cagr": 0.21448442096285447,
+      "start": "2023-04-13"
+    },
+    "oos": {
+      "candidate_cagr": 0.1816678081146912,
+      "end": "2026-04-17",
+      "excess_cagr": 0.02850170909146832,
+      "pass": true,
+      "spy_cagr": 0.15316609902322287,
+      "start": "2016-03-15"
+    },
+    "pbo": {
+      "computed": true,
+      "n_blocks": 10,
+      "n_combinations": 252,
+      "note": "Unstable with only two pre-registered configs.",
+      "pass": true,
+      "value": 0.0
+    },
+    "walk_forward": {
+      "pass": true,
+      "pass_count": 6,
+      "total": 8,
+      "windows": [
+        {
+          "candidate_return": 0.1238734515573463,
+          "end": "1991-01-09",
+          "excess_return": -0.6337375484426522,
+          "pass": false,
+          "spy_return": 0.7576109999999985,
+          "start": "1986-01-03"
+        },
+        {
+          "candidate_return": 1.9786424787602237,
+          "end": "1996-01-16",
+          "excess_return": 0.7401687778104695,
+          "pass": true,
+          "spy_return": 1.2384737009497542,
+          "start": "1991-01-10"
+        },
+        {
+          "candidate_return": 2.174000090675704,
+          "end": "2001-01-25",
+          "excess_return": 0.7654115150322558,
+          "pass": true,
+          "spy_return": 1.4085885756434484,
+          "start": "1996-01-17"
+        },
+        {
+          "candidate_return": 0.13637819544928909,
+          "end": "2006-02-14",
+          "excess_return": 0.1130877000021906,
+          "pass": true,
+          "spy_return": 0.02329049544709849,
+          "start": "2001-01-26"
+        },
+        {
+          "candidate_return": 0.7608398932530807,
+          "end": "2011-03-01",
+          "excess_return": 0.6198117005464059,
+          "pass": true,
+          "spy_return": 0.14102819270667477,
+          "start": "2006-02-15"
+        },
+        {
+          "candidate_return": 1.2002783976529336,
+          "end": "2016-03-16",
+          "excess_return": 0.47129369582710434,
+          "pass": true,
+          "spy_return": 0.7289847018258293,
+          "start": "2011-03-02"
+        },
+        {
+          "candidate_return": 1.8225960903344323,
+          "end": "2021-03-30",
+          "excess_return": 0.6663285054220247,
+          "pass": true,
+          "spy_return": 1.1562675849124076,
+          "start": "2016-03-17"
+        },
+        {
+          "candidate_return": 0.8880226944665519,
+          "end": "2026-04-17",
+          "excess_return": -0.047879960359090035,
+          "pass": false,
+          "spy_return": 0.9359026548256419,
+          "start": "2021-03-31"
+        }
+      ]
+    }
+  },
+  "iteration": "007-2026-05-13-vol-scaled-relative-momentum",
+  "kill_switches": [
+    "fwd",
+    "bootstrap"
+  ],
+  "metrics": {
+    "all_configs": {
+      "relmom90_3x_vt20_cash": {
+        "cagr": 0.12844661648330025,
+        "end": "2026-04-17",
+        "mdd": 0.33799270846346696,
+        "n_returns": 10150,
+        "rolling_10y_cagr_win_rate_vs_spy": 0.848381601362862,
+        "rolling_3y_cagr_win_rate_vs_spy": 0.6162852581160192,
+        "rolling_5y_cagr_win_rate_vs_spy": 0.7000337419862782,
+        "sharpe": 0.752793675839524,
+        "sortino": 1.0391790513921235,
+        "start": "1986-01-03",
+        "terminal_equity": 129.9368602419365,
+        "terminal_ratio_vs_spy": 1.6271303740717864
+      },
+      "relmom90_3x_vt25_cash": {
+        "cagr": 0.14685255812068143,
+        "end": "2026-04-17",
+        "mdd": 0.41748347022069004,
+        "n_returns": 10150,
+        "rolling_10y_cagr_win_rate_vs_spy": 0.8904468614860438,
+        "rolling_3y_cagr_win_rate_vs_spy": 0.7016498137307078,
+        "rolling_5y_cagr_win_rate_vs_spy": 0.7681925542683613,
+        "sharpe": 0.717799293635743,
+        "sortino": 0.9906664167253582,
+        "start": "1986-01-03",
+        "terminal_equity": 249.29815686640632,
+        "terminal_ratio_vs_spy": 3.1218285749106016
+      }
+    },
+    "best": {
+      "cagr": 0.14685255812068143,
+      "end": "2026-04-17",
+      "mdd": 0.41748347022069004,
+      "n_returns": 10150,
+      "rolling_10y_cagr_win_rate_vs_spy": 0.8904468614860438,
+      "rolling_3y_cagr_win_rate_vs_spy": 0.7016498137307078,
+      "rolling_5y_cagr_win_rate_vs_spy": 0.7681925542683613,
+      "sharpe": 0.717799293635743,
+      "sortino": 0.9906664167253582,
+      "start": "1986-01-03",
+      "terminal_equity": 249.29815686640632,
+      "terminal_ratio_vs_spy": 3.1218285749106016
+    }
+  },
+  "n_trials": 2,
+  "notes": "Pre-fixed volatility-scaled Clenow-style 90-day adjusted-slope relative momentum between SPY and QQQ using selected 3x LETF plus CASHX.",
+  "pre_registered": true,
+  "spy_benchmark": {
+    "cagr": 0.11472198803680933,
+    "end": "2026-04-17",
+    "mdd": 0.5514127052677148,
+    "n_returns": 10150,
+    "rolling_10y_cagr_win_rate_vs_spy": 0.0,
+    "rolling_3y_cagr_win_rate_vs_spy": 0.0,
+    "rolling_5y_cagr_win_rate_vs_spy": 0.0,
+    "sharpe": 0.6819751860533318,
+    "sortino": 0.9573826779357162,
+    "start": "1986-01-03",
+    "terminal_equity": 79.85645300000029,
+    "terminal_ratio_vs_spy": 1.0
+  },
+  "status": "fail",
+  "winner": false
+}

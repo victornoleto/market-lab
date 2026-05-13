@@ -1,0 +1,68 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_audit.py",
+    "RESULTS.json",
+    "audit_inventory.json"
+  ],
+  "beats_spy_cagr": false,
+  "best_config": null,
+  "gates": {
+    "bootstrap": {
+      "computed": false,
+      "reason": "infrastructure audit only"
+    },
+    "cross_lib": {
+      "computed": false,
+      "reason": "infrastructure audit only"
+    },
+    "dsr": {
+      "computed": false,
+      "reason": "no candidate returns; cumulative_n_trials remains 0"
+    },
+    "fwd": {
+      "computed": false,
+      "reason": "infrastructure audit only"
+    },
+    "oos": {
+      "computed": false,
+      "reason": "infrastructure audit only"
+    },
+    "pbo": {
+      "computed": false,
+      "reason": "no strategy panel; n_trials=0"
+    },
+    "walk_forward": {
+      "computed": false,
+      "reason": "infrastructure audit only"
+    }
+  },
+  "iteration": "001-2026-05-13-bootstrap-audit",
+  "kill_switches": [],
+  "metrics": {
+    "data_sources_available": 8,
+    "data_sources_checked": 11,
+    "validation_modules_available": 6,
+    "validation_modules_checked": 6
+  },
+  "n_trials": 0,
+  "notes": "Bootstrap/audit only. No strategy configs were tested and no winner can be declared.",
+  "pre_registered": true,
+  "spy_benchmark": {
+    "cagr": 0.11488421330283116,
+    "end": "2026-04-17",
+    "mdd": 0.551412705267714,
+    "n_prices": 10151,
+    "rolling_10y_cagr_win_rate_vs_spy": 0.0,
+    "rolling_3y_cagr_win_rate_vs_spy": 0.0,
+    "rolling_5y_cagr_win_rate_vs_spy": 0.0,
+    "sharpe": 0.6819751860533318,
+    "sortino": 0.9573826779357162,
+    "source": "data/testfolio/cache/history.parquet",
+    "start": "1986-01-02",
+    "terminal_equity": 79.856453,
+    "ticker": "SPYSIM"
+  },
+  "status": "infrastructure_only",
+  "winner": false
+}

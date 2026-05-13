@@ -1,0 +1,99 @@
+{
+  "best_equity_tail": {
+    "2026-04-13": 54.322451820958605,
+    "2026-04-14": 54.876257061691895,
+    "2026-04-15": 55.01978854985917,
+    "2026-04-16": 55.00733667618827,
+    "2026-04-17": 55.49989312690396
+  },
+  "config_metrics": {
+    "static_25_25_25_25": {
+      "cagr": 0.09649289927672666,
+      "end": "2026-04-17",
+      "mdd": 0.14719850085989325,
+      "n_returns": 9645,
+      "rolling_10y_cagr_win_rate_vs_spy": 0.4612685938815605,
+      "rolling_3y_cagr_win_rate_vs_spy": 0.3362204724409449,
+      "rolling_5y_cagr_win_rate_vs_spy": 0.34187932268065824,
+      "sharpe": 1.0635101064563985,
+      "sortino": 1.5560288460099434,
+      "start": "1988-01-04",
+      "terminal_equity": 34.04654323795665,
+      "terminal_ratio_vs_spy": 0.5356825848281009
+    },
+    "static_40_30_20_10": {
+      "cagr": 0.1037734048636616,
+      "end": "2026-04-17",
+      "mdd": 0.2238223264361217,
+      "n_returns": 9645,
+      "rolling_10y_cagr_win_rate_vs_spy": 0.505613247263542,
+      "rolling_3y_cagr_win_rate_vs_spy": 0.39448818897637794,
+      "rolling_5y_cagr_win_rate_vs_spy": 0.3955401860243263,
+      "sharpe": 1.0151000975541309,
+      "sortino": 1.488234852643469,
+      "start": "1988-01-04",
+      "terminal_equity": 44.23810502670364,
+      "terminal_ratio_vs_spy": 0.6960349038366532
+    },
+    "static_50_25_15_10": {
+      "cagr": 0.1072618118250086,
+      "end": "2026-04-17",
+      "mdd": 0.216038341547404,
+      "n_returns": 9645,
+      "rolling_10y_cagr_win_rate_vs_spy": 0.5244176255964075,
+      "rolling_3y_cagr_win_rate_vs_spy": 0.39921259842519685,
+      "rolling_5y_cagr_win_rate_vs_spy": 0.4075840686859051,
+      "sharpe": 1.019775830887062,
+      "sortino": 1.4946647608863752,
+      "start": "1988-01-04",
+      "terminal_equity": 50.1112798635005,
+      "terminal_ratio_vs_spy": 0.7884424488767976
+    },
+    "static_60_20_10_10": {
+      "cagr": 0.11010811029153,
+      "end": "2026-04-17",
+      "mdd": 0.26155682917579015,
+      "n_returns": 9645,
+      "rolling_10y_cagr_win_rate_vs_spy": 0.5583777715408363,
+      "rolling_3y_cagr_win_rate_vs_spy": 0.40674915635545555,
+      "rolling_5y_cagr_win_rate_vs_spy": 0.424517052229907,
+      "sharpe": 0.9774933644900246,
+      "sortino": 1.427442438916454,
+      "start": "1988-01-04",
+      "terminal_equity": 55.49989312690396,
+      "terminal_ratio_vs_spy": 0.8732259836222827
+    }
+  },
+  "configs": {
+    "static_25_25_25_25": {
+      "GLDSIM": 0.25,
+      "KMLMSIM": 0.25,
+      "SPYSIM": 0.25,
+      "ZROZSIM": 0.25
+    },
+    "static_40_30_20_10": {
+      "GLDSIM": 0.2,
+      "KMLMSIM": 0.1,
+      "SPYSIM": 0.4,
+      "ZROZSIM": 0.3
+    },
+    "static_50_25_15_10": {
+      "GLDSIM": 0.15,
+      "KMLMSIM": 0.1,
+      "SPYSIM": 0.5,
+      "ZROZSIM": 0.25
+    },
+    "static_60_20_10_10": {
+      "GLDSIM": 0.1,
+      "KMLMSIM": 0.1,
+      "SPYSIM": 0.6,
+      "ZROZSIM": 0.2
+    }
+  },
+  "data_window": {
+    "end": "2026-04-17",
+    "n_prices": 9646,
+    "start": "1987-12-31"
+  },
+  "iteration": "002-2026-05-13-static-diversifier-control"
+}

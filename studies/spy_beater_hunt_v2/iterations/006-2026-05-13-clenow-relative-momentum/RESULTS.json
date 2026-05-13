@@ -1,0 +1,214 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_clenow_relative_momentum.py",
+    "RESULTS.json",
+    "diagnostics.json"
+  ],
+  "beats_spy_cagr": true,
+  "best_config": "clenow_relmom_90d_3x_cash",
+  "gates": {
+    "bootstrap": {
+      "annualized_excess_mean": 0.18848776113003604,
+      "ci_high_99_9": 0.3825015500560022,
+      "ci_low_99_9": -0.002048467881932156,
+      "n_resamples": 2000,
+      "pass": false
+    },
+    "cross_lib": {
+      "configs": {
+        "clenow_relmom_90d_2x_cash": {
+          "abs_delta": 0.0,
+          "loop_cagr": 0.18899829822893288,
+          "pass": true,
+          "vector_cagr": 0.18899829822893288
+        },
+        "clenow_relmom_90d_3x_cash": {
+          "abs_delta": 0.0,
+          "loop_cagr": 0.22116690089079638,
+          "pass": true,
+          "vector_cagr": 0.22116690089079638
+        }
+      },
+      "pass": true
+    },
+    "dsr": {
+      "benchmark_sharpe_periodic": 0.016525454460937217,
+      "computed": true,
+      "dsr": 0.9938415305076617,
+      "n_trials": 12,
+      "observed_sharpe_periodic": 0.04160610579011111,
+      "p_value": 0.0061584694923383365,
+      "pass": true
+    },
+    "economic": {
+      "beats_spy_cagr": true,
+      "pass": true,
+      "terminal_beats_spy": true
+    },
+    "fwd": {
+      "candidate_cagr": 0.3583335436716937,
+      "end": "2026-04-17",
+      "excess_cagr": 0.1438491227088392,
+      "pass": true,
+      "spy_cagr": 0.21448442096285447,
+      "start": "2023-04-13"
+    },
+    "oos": {
+      "candidate_cagr": 0.3081282096402582,
+      "end": "2026-04-17",
+      "excess_cagr": 0.15496211061703535,
+      "pass": true,
+      "spy_cagr": 0.15316609902322287,
+      "start": "2016-03-15"
+    },
+    "pbo": {
+      "computed": true,
+      "n_blocks": 10,
+      "n_combinations": 252,
+      "note": "Unstable with only two pre-registered configs.",
+      "pass": true,
+      "value": 0.0
+    },
+    "walk_forward": {
+      "pass": true,
+      "pass_count": 7,
+      "total": 8,
+      "windows": [
+        {
+          "candidate_return": -0.22064587470869734,
+          "end": "1991-01-09",
+          "excess_return": -0.9782568747086958,
+          "pass": false,
+          "spy_return": 0.7576109999999985,
+          "start": "1986-01-03"
+        },
+        {
+          "candidate_return": 3.676131159202983,
+          "end": "1996-01-16",
+          "excess_return": 2.437657458253229,
+          "pass": true,
+          "spy_return": 1.2384737009497542,
+          "start": "1991-01-10"
+        },
+        {
+          "candidate_return": 4.968433462001396,
+          "end": "2001-01-25",
+          "excess_return": 3.559844886357948,
+          "pass": true,
+          "spy_return": 1.4085885756434484,
+          "start": "1996-01-17"
+        },
+        {
+          "candidate_return": 0.23614349956177216,
+          "end": "2006-02-14",
+          "excess_return": 0.21285300411467367,
+          "pass": true,
+          "spy_return": 0.02329049544709849,
+          "start": "2001-01-26"
+        },
+        {
+          "candidate_return": 1.5064710003622293,
+          "end": "2011-03-01",
+          "excess_return": 1.3654428076555545,
+          "pass": true,
+          "spy_return": 0.14102819270667477,
+          "start": "2006-02-15"
+        },
+        {
+          "candidate_return": 2.157412296407092,
+          "end": "2016-03-16",
+          "excess_return": 1.4284275945812628,
+          "pass": true,
+          "spy_return": 0.7289847018258293,
+          "start": "2011-03-02"
+        },
+        {
+          "candidate_return": 4.753193484292843,
+          "end": "2021-03-30",
+          "excess_return": 3.596925899380435,
+          "pass": true,
+          "spy_return": 1.1562675849124076,
+          "start": "2016-03-17"
+        },
+        {
+          "candidate_return": 1.5528711502830794,
+          "end": "2026-04-17",
+          "excess_return": 0.6169684954574375,
+          "pass": true,
+          "spy_return": 0.9359026548256419,
+          "start": "2021-03-31"
+        }
+      ]
+    }
+  },
+  "iteration": "006-2026-05-13-clenow-relative-momentum",
+  "kill_switches": [
+    "bootstrap"
+  ],
+  "metrics": {
+    "all_configs": {
+      "clenow_relmom_90d_2x_cash": {
+        "cagr": 0.18899829822893288,
+        "end": "2026-04-17",
+        "mdd": 0.7402007516632815,
+        "n_returns": 10150,
+        "rolling_10y_cagr_win_rate_vs_spy": 0.9724806709474512,
+        "rolling_3y_cagr_win_rate_vs_spy": 0.7944651410324641,
+        "rolling_5y_cagr_win_rate_vs_spy": 0.8365763131256326,
+        "sharpe": 0.7052676630143531,
+        "sortino": 0.9903815622438599,
+        "start": "1986-01-03",
+        "terminal_equity": 1066.4892362730284,
+        "terminal_ratio_vs_spy": 13.355078972428498
+      },
+      "clenow_relmom_90d_3x_cash": {
+        "cagr": 0.22116690089079638,
+        "end": "2026-04-17",
+        "mdd": 0.888825782323879,
+        "n_returns": 10150,
+        "rolling_10y_cagr_win_rate_vs_spy": 0.962914427991089,
+        "rolling_3y_cagr_win_rate_vs_spy": 0.7761575306013837,
+        "rolling_5y_cagr_win_rate_vs_spy": 0.7996850747947363,
+        "sharpe": 0.6604764536548712,
+        "sortino": 0.925781739839965,
+        "start": "1986-01-03",
+        "terminal_equity": 3125.2346024635935,
+        "terminal_ratio_vs_spy": 39.135655104335555
+      }
+    },
+    "best": {
+      "cagr": 0.22116690089079638,
+      "end": "2026-04-17",
+      "mdd": 0.888825782323879,
+      "n_returns": 10150,
+      "rolling_10y_cagr_win_rate_vs_spy": 0.962914427991089,
+      "rolling_3y_cagr_win_rate_vs_spy": 0.7761575306013837,
+      "rolling_5y_cagr_win_rate_vs_spy": 0.7996850747947363,
+      "sharpe": 0.6604764536548712,
+      "sortino": 0.925781739839965,
+      "start": "1986-01-03",
+      "terminal_equity": 3125.2346024635935,
+      "terminal_ratio_vs_spy": 39.135655104335555
+    }
+  },
+  "n_trials": 2,
+  "notes": "Pre-fixed Clenow-style 90-day adjusted-slope relative momentum between SPY and QQQ with SPY SMA200 broad-regime filter.",
+  "pre_registered": true,
+  "spy_benchmark": {
+    "cagr": 0.11472198803680933,
+    "end": "2026-04-17",
+    "mdd": 0.5514127052677148,
+    "n_returns": 10150,
+    "rolling_10y_cagr_win_rate_vs_spy": 0.0,
+    "rolling_3y_cagr_win_rate_vs_spy": 0.0,
+    "rolling_5y_cagr_win_rate_vs_spy": 0.0,
+    "sharpe": 0.6819751860533318,
+    "sortino": 0.9573826779357162,
+    "start": "1986-01-03",
+    "terminal_equity": 79.85645300000029,
+    "terminal_ratio_vs_spy": 1.0
+  },
+  "status": "fail",
+  "winner": false
+}

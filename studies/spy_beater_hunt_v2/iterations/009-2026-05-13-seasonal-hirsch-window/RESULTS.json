@@ -1,0 +1,216 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_seasonal_hirsch_window.py",
+    "RESULTS.json",
+    "diagnostics.json"
+  ],
+  "beats_spy_cagr": true,
+  "best_config": "hirsch_nov_apr_upro_cash",
+  "gates": {
+    "bootstrap": {
+      "annualized_excess_mean": 0.09465433228437,
+      "ci_high_99_9": 0.23687248036641667,
+      "ci_low_99_9": -0.05705344543249067,
+      "n_resamples": 2000,
+      "pass": false
+    },
+    "cross_lib": {
+      "configs": {
+        "hirsch_nov_apr_sso_cash": {
+          "abs_delta": 0.0,
+          "loop_cagr": 0.1342588406657177,
+          "pass": true,
+          "vector_cagr": 0.1342588406657177
+        },
+        "hirsch_nov_apr_upro_cash": {
+          "abs_delta": 0.0,
+          "loop_cagr": 0.1549798157742328,
+          "pass": true,
+          "vector_cagr": 0.1549798157742328
+        }
+      },
+      "pass": true
+    },
+    "dsr": {
+      "benchmark_sharpe_periodic": 0.01840214297770322,
+      "computed": true,
+      "dsr": 0.9592113248173006,
+      "n_trials": 18,
+      "observed_sharpe_periodic": 0.03582695217112325,
+      "p_value": 0.04078867518269935,
+      "pass": true
+    },
+    "economic": {
+      "beats_spy_cagr": true,
+      "pass": true,
+      "terminal_beats_spy": true
+    },
+    "fwd": {
+      "candidate_cagr": 0.15610585996249648,
+      "end": "2026-04-17",
+      "excess_cagr": -0.05837856100035799,
+      "pass": false,
+      "spy_cagr": 0.21448442096285447,
+      "start": "2023-04-13"
+    },
+    "oos": {
+      "candidate_cagr": 0.1292160517042753,
+      "end": "2026-04-17",
+      "excess_cagr": -0.023950047318947565,
+      "pass": false,
+      "spy_cagr": 0.15316609902322287,
+      "start": "2016-03-15"
+    },
+    "pbo": {
+      "computed": true,
+      "n_blocks": 10,
+      "n_combinations": 252,
+      "note": "Unstable with only two pre-registered configs.",
+      "pass": true,
+      "value": 0.0
+    },
+    "walk_forward": {
+      "pass": true,
+      "pass_count": 6,
+      "total": 8,
+      "windows": [
+        {
+          "candidate_return": 1.7745029510527872,
+          "end": "1991-01-09",
+          "excess_return": 1.0168919510527887,
+          "pass": true,
+          "spy_return": 0.7576109999999985,
+          "start": "1986-01-03"
+        },
+        {
+          "candidate_return": 1.8936484984456299,
+          "end": "1996-01-16",
+          "excess_return": 0.6551747974958757,
+          "pass": true,
+          "spy_return": 1.2384737009497542,
+          "start": "1991-01-10"
+        },
+        {
+          "candidate_return": 2.9127281917529113,
+          "end": "2001-01-25",
+          "excess_return": 1.504139616109463,
+          "pass": true,
+          "spy_return": 1.4085885756434484,
+          "start": "1996-01-17"
+        },
+        {
+          "candidate_return": 0.17971054872849024,
+          "end": "2006-02-14",
+          "excess_return": 0.15642005328139175,
+          "pass": true,
+          "spy_return": 0.02329049544709849,
+          "start": "2001-01-26"
+        },
+        {
+          "candidate_return": -0.013684273703814975,
+          "end": "2011-03-01",
+          "excess_return": -0.15471246641048975,
+          "pass": false,
+          "spy_return": 0.14102819270667477,
+          "start": "2006-02-15"
+        },
+        {
+          "candidate_return": 1.7613143139405487,
+          "end": "2016-03-16",
+          "excess_return": 1.0323296121147194,
+          "pass": true,
+          "spy_return": 0.7289847018258293,
+          "start": "2011-03-02"
+        },
+        {
+          "candidate_return": 1.318233982093031,
+          "end": "2021-03-30",
+          "excess_return": 0.16196639718062356,
+          "pass": true,
+          "spy_return": 1.1562675849124076,
+          "start": "2016-03-17"
+        },
+        {
+          "candidate_return": 0.4412489825965715,
+          "end": "2026-04-17",
+          "excess_return": -0.4946536722290704,
+          "pass": false,
+          "spy_return": 0.9359026548256419,
+          "start": "2021-03-31"
+        }
+      ]
+    }
+  },
+  "iteration": "009-2026-05-13-seasonal-hirsch-window",
+  "kill_switches": [
+    "oos",
+    "fwd",
+    "bootstrap"
+  ],
+  "metrics": {
+    "all_configs": {
+      "hirsch_nov_apr_sso_cash": {
+        "cagr": 0.1342588406657177,
+        "end": "2026-04-17",
+        "mdd": 0.6376199290257082,
+        "n_returns": 10150,
+        "rolling_10y_cagr_win_rate_vs_spy": 0.8229589830952693,
+        "rolling_3y_cagr_win_rate_vs_spy": 0.6182011708355508,
+        "rolling_5y_cagr_win_rate_vs_spy": 0.6503205488696434,
+        "sharpe": 0.618437469464655,
+        "sortino": 0.882368049404163,
+        "start": "1986-01-03",
+        "terminal_equity": 161.71258998505985,
+        "terminal_ratio_vs_spy": 2.0250409817858963
+      },
+      "hirsch_nov_apr_upro_cash": {
+        "cagr": 0.1549798157742328,
+        "end": "2026-04-17",
+        "mdd": 0.81900892308012,
+        "n_returns": 10150,
+        "rolling_10y_cagr_win_rate_vs_spy": 0.8399947582230376,
+        "rolling_3y_cagr_win_rate_vs_spy": 0.6379989356040447,
+        "rolling_5y_cagr_win_rate_vs_spy": 0.7022832077381622,
+        "sharpe": 0.5687352340691864,
+        "sortino": 0.8101284194342853,
+        "start": "1986-01-03",
+        "terminal_equity": 337.22067355020675,
+        "terminal_ratio_vs_spy": 4.222835611671928
+      }
+    },
+    "best": {
+      "cagr": 0.1549798157742328,
+      "end": "2026-04-17",
+      "mdd": 0.81900892308012,
+      "n_returns": 10150,
+      "rolling_10y_cagr_win_rate_vs_spy": 0.8399947582230376,
+      "rolling_3y_cagr_win_rate_vs_spy": 0.6379989356040447,
+      "rolling_5y_cagr_win_rate_vs_spy": 0.7022832077381622,
+      "sharpe": 0.5687352340691864,
+      "sortino": 0.8101284194342853,
+      "start": "1986-01-03",
+      "terminal_equity": 337.22067355020675,
+      "terminal_ratio_vs_spy": 4.222835611671928
+    }
+  },
+  "n_trials": 2,
+  "notes": "Pre-fixed Hirsch November-April seasonal exposure mapped to SSO or UPRO with CASHX off-leg.",
+  "pre_registered": true,
+  "spy_benchmark": {
+    "cagr": 0.11472198803680933,
+    "end": "2026-04-17",
+    "mdd": 0.5514127052677148,
+    "n_returns": 10150,
+    "rolling_10y_cagr_win_rate_vs_spy": 0.0,
+    "rolling_3y_cagr_win_rate_vs_spy": 0.0,
+    "rolling_5y_cagr_win_rate_vs_spy": 0.0,
+    "sharpe": 0.6819751860533318,
+    "sortino": 0.9573826779357162,
+    "start": "1986-01-03",
+    "terminal_equity": 79.85645300000029,
+    "terminal_ratio_vs_spy": 1.0
+  },
+  "status": "fail",
+  "winner": false
+}

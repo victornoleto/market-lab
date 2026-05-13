@@ -1,0 +1,219 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_carver_ewmac_trend.py",
+    "RESULTS.json",
+    "diagnostics.json"
+  ],
+  "beats_spy_cagr": false,
+  "best_config": "ewmac_32_128_upro_cash",
+  "gates": {
+    "bootstrap": {
+      "annualized_excess_mean": -0.015057226112565658,
+      "ci_high_99_9": 0.07103215392729409,
+      "ci_low_99_9": -0.10500196728644198,
+      "n_resamples": 2000,
+      "pass": false
+    },
+    "cross_lib": {
+      "configs": {
+        "ewmac_16_64_upro_cash": {
+          "abs_delta": 0.0,
+          "loop_cagr": 0.06462730497434133,
+          "pass": true,
+          "vector_cagr": 0.06462730497434133
+        },
+        "ewmac_32_128_upro_cash": {
+          "abs_delta": 0.0,
+          "loop_cagr": 0.08975495470579564,
+          "pass": true,
+          "vector_cagr": 0.08975495470579564
+        }
+      },
+      "pass": true
+    },
+    "dsr": {
+      "benchmark_sharpe_periodic": 0.015629970284387576,
+      "computed": true,
+      "dsr": 0.941333961065223,
+      "n_trials": 10,
+      "observed_sharpe_periodic": 0.03148530709496355,
+      "p_value": 0.058666038934776954,
+      "pass": false
+    },
+    "economic": {
+      "beats_spy_cagr": false,
+      "pass": false,
+      "terminal_beats_spy": false
+    },
+    "fwd": {
+      "candidate_cagr": 0.1859135777966321,
+      "end": "2026-04-17",
+      "excess_cagr": -0.02857084316622238,
+      "pass": false,
+      "spy_cagr": 0.21448442096285447,
+      "start": "2023-04-13"
+    },
+    "oos": {
+      "candidate_cagr": 0.1352387712730656,
+      "end": "2026-04-17",
+      "excess_cagr": -0.017927327750157263,
+      "pass": false,
+      "spy_cagr": 0.15316609902322287,
+      "start": "2016-03-15"
+    },
+    "pbo": {
+      "computed": true,
+      "n_blocks": 10,
+      "n_combinations": 252,
+      "note": "Unstable with only two pre-registered configs.",
+      "pass": true,
+      "value": 0.0
+    },
+    "walk_forward": {
+      "pass": false,
+      "pass_count": 3,
+      "total": 8,
+      "windows": [
+        {
+          "candidate_return": 0.37770099373086596,
+          "end": "1991-01-09",
+          "excess_return": -0.3799100062691325,
+          "pass": false,
+          "spy_return": 0.7576109999999985,
+          "start": "1986-01-03"
+        },
+        {
+          "candidate_return": 0.9536476133875118,
+          "end": "1996-01-16",
+          "excess_return": -0.28482608756224237,
+          "pass": false,
+          "spy_return": 1.2384737009497542,
+          "start": "1991-01-10"
+        },
+        {
+          "candidate_return": 0.38026383149389753,
+          "end": "2001-01-25",
+          "excess_return": -1.0283247441495509,
+          "pass": false,
+          "spy_return": 1.4085885756434484,
+          "start": "1996-01-17"
+        },
+        {
+          "candidate_return": 0.2748524148434983,
+          "end": "2006-02-14",
+          "excess_return": 0.2515619193963998,
+          "pass": true,
+          "spy_return": 0.02329049544709849,
+          "start": "2001-01-26"
+        },
+        {
+          "candidate_return": 0.5536326880933227,
+          "end": "2011-03-01",
+          "excess_return": 0.4126044953866479,
+          "pass": true,
+          "spy_return": 0.14102819270667477,
+          "start": "2006-02-15"
+        },
+        {
+          "candidate_return": 0.2082097020755853,
+          "end": "2016-03-16",
+          "excess_return": -0.520774999750244,
+          "pass": false,
+          "spy_return": 0.7289847018258293,
+          "start": "2011-03-02"
+        },
+        {
+          "candidate_return": 0.7310242893603649,
+          "end": "2021-03-30",
+          "excess_return": -0.42524329555204265,
+          "pass": false,
+          "spy_return": 1.1562675849124076,
+          "start": "2016-03-17"
+        },
+        {
+          "candidate_return": 1.0714757397704204,
+          "end": "2026-04-17",
+          "excess_return": 0.1355730849447785,
+          "pass": true,
+          "spy_return": 0.9359026548256419,
+          "start": "2021-03-31"
+        }
+      ]
+    }
+  },
+  "iteration": "005-2026-05-13-carver-ewmac-trend",
+  "kill_switches": [
+    "dsr",
+    "walk_forward",
+    "oos",
+    "fwd",
+    "bootstrap",
+    "economic"
+  ],
+  "metrics": {
+    "all_configs": {
+      "ewmac_16_64_upro_cash": {
+        "cagr": 0.06462730497434133,
+        "end": "2026-04-17",
+        "mdd": 0.38723851163241163,
+        "n_returns": 10150,
+        "rolling_10y_cagr_win_rate_vs_spy": 0.15122526536495873,
+        "rolling_3y_cagr_win_rate_vs_spy": 0.25694518360830226,
+        "rolling_5y_cagr_win_rate_vs_spy": 0.18805533685749634,
+        "sharpe": 0.4171751871655683,
+        "sortino": 0.5626600860263581,
+        "start": "1986-01-03",
+        "terminal_equity": 12.458702081603906,
+        "terminal_ratio_vs_spy": 0.15601371728348443
+      },
+      "ewmac_32_128_upro_cash": {
+        "cagr": 0.08975495470579564,
+        "end": "2026-04-17",
+        "mdd": 0.3948406487757967,
+        "n_returns": 10150,
+        "rolling_10y_cagr_win_rate_vs_spy": 0.2614336259992137,
+        "rolling_3y_cagr_win_rate_vs_spy": 0.3435870143693454,
+        "rolling_5y_cagr_win_rate_vs_spy": 0.3856709031604994,
+        "sharpe": 0.4998137551546264,
+        "sortino": 0.6723612795295285,
+        "start": "1986-01-03",
+        "terminal_equity": 31.87842848811636,
+        "terminal_ratio_vs_spy": 0.3991966496197401
+      }
+    },
+    "best": {
+      "cagr": 0.08975495470579564,
+      "end": "2026-04-17",
+      "mdd": 0.3948406487757967,
+      "n_returns": 10150,
+      "rolling_10y_cagr_win_rate_vs_spy": 0.2614336259992137,
+      "rolling_3y_cagr_win_rate_vs_spy": 0.3435870143693454,
+      "rolling_5y_cagr_win_rate_vs_spy": 0.3856709031604994,
+      "sharpe": 0.4998137551546264,
+      "sortino": 0.6723612795295285,
+      "start": "1986-01-03",
+      "terminal_equity": 31.87842848811636,
+      "terminal_ratio_vs_spy": 0.3991966496197401
+    }
+  },
+  "n_trials": 2,
+  "notes": "Pre-fixed Carver EWMAC trend-following forecast with positive forecast mapped to UPRO exposure and cash otherwise.",
+  "pre_registered": true,
+  "spy_benchmark": {
+    "cagr": 0.11472198803680933,
+    "end": "2026-04-17",
+    "mdd": 0.5514127052677148,
+    "n_returns": 10150,
+    "rolling_10y_cagr_win_rate_vs_spy": 0.0,
+    "rolling_3y_cagr_win_rate_vs_spy": 0.0,
+    "rolling_5y_cagr_win_rate_vs_spy": 0.0,
+    "sharpe": 0.6819751860533318,
+    "sortino": 0.9573826779357162,
+    "start": "1986-01-03",
+    "terminal_equity": 79.85645300000029,
+    "terminal_ratio_vs_spy": 1.0
+  },
+  "status": "fail",
+  "winner": false
+}

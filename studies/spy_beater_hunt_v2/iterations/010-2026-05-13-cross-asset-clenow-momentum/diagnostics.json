@@ -1,0 +1,72 @@
+{
+  "assets": [
+    "SPYSIM",
+    "ZROZSIM",
+    "GLDSIM",
+    "KMLMSIM"
+  ],
+  "best_equity_tail": {
+    "2026-04-13": 52.060093933822635,
+    "2026-04-14": 51.67527762559449,
+    "2026-04-15": 51.85852272007755,
+    "2026-04-16": 52.2433390283057,
+    "2026-04-17": 51.088890103621274
+  },
+  "config_metrics": {
+    "clenow_xasset_top1_cash": {
+      "cagr": 0.11065952324428685,
+      "end": "2026-04-17",
+      "mdd": 0.3028792176379802,
+      "n_returns": 9445,
+      "rolling_10y_cagr_win_rate_vs_spy": 0.5954374819520647,
+      "rolling_3y_cagr_win_rate_vs_spy": 0.40115074798619105,
+      "rolling_5y_cagr_win_rate_vs_spy": 0.476301001710237,
+      "sharpe": 0.7683131425160147,
+      "sortino": 1.087007449128637,
+      "start": "1988-10-17",
+      "terminal_equity": 51.088890103621274,
+      "terminal_ratio_vs_spy": 0.9216669848974053
+    },
+    "clenow_xasset_top2_invvol_cash": {
+      "cagr": 0.09525556021882986,
+      "end": "2026-04-17",
+      "mdd": 0.26012911803391975,
+      "n_returns": 9445,
+      "rolling_10y_cagr_win_rate_vs_spy": 0.4709789200115507,
+      "rolling_3y_cagr_win_rate_vs_spy": 0.2828538550057537,
+      "rolling_5y_cagr_win_rate_vs_spy": 0.32030295626679695,
+      "sharpe": 0.9600770835727056,
+      "sortino": 1.360850624972421,
+      "start": "1988-10-17",
+      "terminal_equity": 30.27021132440273,
+      "terminal_ratio_vs_spy": 0.5460884812134923
+    }
+  },
+  "configs": {
+    "clenow_xasset_top1_cash": {
+      "top_k": 1,
+      "weighting": "winner_take_all"
+    },
+    "clenow_xasset_top2_invvol_cash": {
+      "top_k": 2,
+      "weighting": "inverse_vol"
+    }
+  },
+  "data_window": {
+    "end": "2026-04-17",
+    "n_prices": 9646,
+    "start": "1987-12-31"
+  },
+  "iteration": "010-2026-05-13-cross-asset-clenow-momentum",
+  "parameters": {
+    "inverse_vol_lookback": 63,
+    "lookback": 90,
+    "rebalance_weekday": "Wednesday",
+    "regime_sma": 200
+  },
+  "test_window": {
+    "end": "2026-04-17",
+    "n_returns": 9445,
+    "start": "1988-10-17"
+  }
+}
