@@ -1,0 +1,7 @@
+{
+  "stage": "iter030_param_ga",
+  "population": 36,
+  "generations": 8,
+  "evaluated_unique": 195,
+  "primary_citation": "[leverage_for_the_long_run, p.5-7]"
+}

@@ -1,0 +1,18 @@
+{
+  "stage": "stage2_tiingo_ohlc",
+  "branch": "QQQ",
+  "risk_on": "QLD_2x",
+  "off_leg": "CASH_USD",
+  "extra_lag_days": 1,
+  "base_signals": "px_gt_sma10|px_gt_ema200|px_gt_sma250|px_gt_ema250|roc20_gt_0|roc60_gt_0|roc120_gt_0|rsi14_gt_50",
+  "base_k": 6,
+  "start_date": null,
+  "end_date": null,
+  "configs_tested": 1086,
+  "signal_count": 47,
+  "ohlc_signal_count": 14,
+  "start": "2006-06-22",
+  "end": "2026-04-14",
+  "elapsed_seconds": 0.5399893059948226,
+  "primary_citation": "[advances_fin_ml, p.208-211]"
+}

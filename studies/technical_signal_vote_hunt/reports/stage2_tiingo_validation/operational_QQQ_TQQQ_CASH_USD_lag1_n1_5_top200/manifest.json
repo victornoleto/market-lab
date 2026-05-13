@@ -1,0 +1,14 @@
+{
+  "stage": "stage2_tiingo_candidate_validation",
+  "candidates": 200,
+  "source_candidates": "studies/technical_signal_vote_hunt/results/stage2_tiingo_ohlc/QQQ_TQQQ_CASH_USD_lag1_n1_5/tables/stage2_grid_top.csv",
+  "off_leg": "CASH_USD",
+  "extra_lag_days": 1,
+  "start_date": null,
+  "end_date": null,
+  "n_trials": 136784374,
+  "bootstrap_n": 2000,
+  "pbo_group": "branch-risk-on",
+  "elapsed_seconds": 30.46841405199666,
+  "primary_citation": "[advances_fin_ml, p.208-211]"
+}

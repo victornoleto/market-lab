@@ -32,6 +32,10 @@ credentials.json
 .idea/
 *.swp
 
+# JavaScript/frontend dependencies
+node_modules/
+*.tsbuildinfo
+
 # Personal/local narrative and drafts
 jornada/
 personal/

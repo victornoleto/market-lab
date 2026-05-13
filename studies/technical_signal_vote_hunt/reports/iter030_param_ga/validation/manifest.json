@@ -1,0 +1,13 @@
+{
+  "report": "iter030_param_ga_validation",
+  "n_candidates": 7,
+  "pbo_panel_size": 195,
+  "n_trials": 136784569,
+  "bootstrap_n": 2000,
+  "bootstrap_block": 21,
+  "wf_windows": 8,
+  "pbo_blocks": 10,
+  "seed": 42,
+  "elapsed_seconds": 115.34966243499366,
+  "primary_citation": "[advances_fin_ml, p.208-211]"
+}

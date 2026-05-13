@@ -1,0 +1,7 @@
+{
+  "stage": "stage4_hybrid_combo",
+  "start": "1986-01-03",
+  "end": "2026-04-17",
+  "off_leg": "ZROZSIM",
+  "primary_citation": "[advances_fin_ml, p.31-34]"
+}

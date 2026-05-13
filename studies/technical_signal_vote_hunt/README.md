@@ -3,10 +3,12 @@
 Research-only study for broad `n`-signal / `k`-vote risk-on gates, starting
 from the LETF rotation findings in `studies/letf_rotation_hunt/`.
 
-Current Stage 1 verdict: **honest FAIL**. The full selected-candidate validation
-ran with 12 candidates, 2,000 bootstrap paths, and DSR `n_trials=5,471,268`; no
-candidate passed all hard gates. A later GA/local-search validation of the two
-best QQQ candidates also failed DSR with cumulative `n_trials=7,554,054`.
+Current verdict: **no honest winner**. Stage 1, Stage 2 and Stage 3 validations all
+closed with 0 candidates passing the full hard-gate stack. The recurring useful
+signal is economic, not promotable: QQQ/LETF trend/momentum/volatility votes are
+strong in modern samples and often pass OOS/FWD/WF/bootstrap, but fail DSR and PBO
+after cumulative trial accounting `[advances_fin_ml, p.196-202]`,
+`[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`.
 
 Mandate reminder: this study does not authorize capital allocation. Strategy B
 remains dormant and any candidate must pass the hard validation stack before it
@@ -169,6 +171,246 @@ The GA prints one status line per generation with fitness, Sortino, CAGR, MDD,
   the final candidates `[advances_fin_ml, p.222-223]`.
 - Current Stage 1 off-leg default is `ZROZSIM`; rerun with `--off-leg CASHX` to
   isolate defensive-duration contribution.
+- Current research direction is documented in
+  `reports/research_direction_review/REPORT.md`: do not run more unconstrained
+  local GA/exact grids in the same technical-vote family; the next hypothesis
+  should be regime-gated or panel-diversity-aware.
+
+## Research Direction Review
+
+The consolidated post-validation decision is in:
+
+- `reports/research_direction_review/REPORT.md`
+
+Summary:
+
+- T3d-K2 and iter030 remain the robust long-history anchors.
+- Stage 2 QLD/TQQQ cash+lag1 leaders remain modern-regime challengers only.
+- Stage 3 testfolio GA and PBO-proxy follow-up did not solve PBO.
+- The recommended Stage 4 is a regime-gated Tiingo/testfolio bridge, not more
+  local optimization of the same vote family.
+
+## Stage 4 Regime-Gated Bridge
+
+Stage 4 supports an economic-first view requested by the user: PBO/DSR are kept
+out of `economic_pass` and treated as deployment diagnostics, while OOS/FWD/WF,
+bootstrap and rolling 3/5/10/15y cycle behavior remain visible.
+
+Runner:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.runners.run_stage4_regime_bridge \
+  --branch QQQ \
+  --risk-on QLD_2x \
+  --off-leg CASH_USD \
+  --extra-lag-days 1 \
+  --bootstrap-n 500 \
+  --out-name QQQ_QLD_CASH_USD_lag1
+
+uv run python -m studies.technical_signal_vote_hunt.runners.run_stage4_regime_bridge \
+  --branch QQQ \
+  --risk-on TQQQ_3x \
+  --off-leg CASH_USD \
+  --extra-lag-days 1 \
+  --bootstrap-n 500 \
+  --out-name QQQ_TQQQ_CASH_USD_lag1
+```
+
+Initial result report:
+
+- `reports/stage4_regime_bridge/REPORT.md`
+
+Observed result: the ungated base vote remains best. QLD and TQQQ base votes both
+pass the economic-first screen with 100% positive sampled rolling 3y/5y/10y/15y
+CAGR in the 2010+ Tiingo window. Simple regime overlays did not improve the
+frontier; 252-day drawdown gates were near-neutral and passed, while long-MA,
+volatility and QQQ/SPY relative-strength overlays failed WF.
+
+Stage 4 equity/benchmark comparison:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.runners.compare_stage4_equity
+```
+
+Report:
+
+- `reports/stage4_equity_benchmark_comparison/REPORT.md`
+
+This compares Stage 4 QLD/TQQQ base votes against SPY buy-hold, QQQ as NDX proxy,
+T3d-K2 proxy and iter030-like proxy, including absolute equity and relative equity
+plots.
+
+Testfolio long-history reproduction:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.runners.compare_stage4_testfolio --off-leg CASHX
+uv run python -m studies.technical_signal_vote_hunt.runners.compare_stage4_testfolio \
+  --off-leg ZROZSIM \
+  --out-dir studies/technical_signal_vote_hunt/reports/stage4_testfolio_reproduction_zroz
+```
+
+Reports:
+
+- `reports/stage4_testfolio_reproduction/REPORT.md`
+- `reports/stage4_testfolio_reproduction_zroz/REPORT.md`
+
+Observed result: the Stage 4 base vote is reproducible on testfolio, but it is not
+superior to the canonical long-history anchors. With `ZROZSIM`, QLD reaches CAGR
+19.38% / MDD -70.07% and TQQQ reaches CAGR 21.48% / MDD -87.69%, while canonical
+T3d-K2 reaches CAGR 31.06% / MDD -64.50% and canonical iter030 reaches CAGR 36.66%
+/ MDD -55.48%.
+
+Stage4-inside-iter030 turbo test:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.runners.run_stage4_inside_iter030
+```
+
+Report:
+
+- `reports/stage4_inside_iter030/REPORT.md`
+
+Observed result: using Stage4 as the QLD→TQQQ upgrade gate inside the iter030
+defensive shell can raise CAGR/terminal equity, but worsens Sortino and drawdown.
+`inside_rearm_or_stage4` reaches CAGR 38.46% vs iter030 36.66%, but MDD worsens to
+-64.54% and Sortino falls to 1.0838; iter030 remains the better risk-adjusted
+anchor.
+
+Pareto hybrid search:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.runners.run_stage4_pareto_hybrid_search
+```
+
+Report:
+
+- `reports/stage4_pareto_hybrid_search/REPORT.md`
+
+Observed result: 225 economic-first hybrids were tested over Stage4-derived turbo
+gates, partial TQQQ blend weights and LRS factors. No candidate strictly beat
+iter030 on all three target dimensions at once: CAGR, Sortino and MDD. The closest
+variants either reduce LRS/TQQQ to improve Sortino/MDD with lower CAGR, or add
+Stage4 turbo to improve CAGR with worse MDD/Sortino.
+
+Constrained GA follow-up:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.runners.run_stage4_hybrid_ga \
+  --population 72 \
+  --generations 35 \
+  --elite 10 \
+  --seed 42
+```
+
+Report:
+
+- `reports/stage4_hybrid_ga/REPORT.md`
+
+Observed result: the GA converged back to iter030 itself (`rearm`, full TQQQ
+upgrade, LRS1.20). No discovered Stage4-conditioned turbo filter improved iter030
+without worsening Sortino or MDD. This suggests GA is useful as a confirmation
+tool here, but the current search grammar is not enough to create a strict Pareto
+hybrid.
+
+Iter030 parameter GA:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.runners.run_iter030_param_ga \
+  --population 36 \
+  --generations 8 \
+  --elite 8 \
+  --seed 43
+
+uv run python -m studies.technical_signal_vote_hunt.runners.analyze_iter030_param_ga_candidates
+
+uv run python -m studies.technical_signal_vote_hunt.runners.validate_iter030_param_candidates
+```
+
+Reports:
+
+- `reports/iter030_param_ga/REPORT.md`
+- `reports/iter030_param_ga/CANDIDATE_DIAGNOSTICS.md`
+- `reports/iter030_param_ga/validation/REPORT.md`
+
+Observed result: the small GA evaluated 195 unique parameter genes and found 6
+strict Pareto candidates in the top 30. The best candidate changes iter030 mainly
+from `T35D60` to `T20D120`, reaching CAGR 39.01% vs iter030 36.66%, with similar
+Sortino and unchanged full-period MDD. Rolling 5/10/15y minimum CAGR improves, but
+the 3y minimum CAGR worsens and the result is a narrow full-history optimization;
+honest validation of the 6 strict Pareto candidates plus baseline closed 0/7 PASS:
+all pass OOS/FWD/WF/bootstrap, but all fail DSR (`p=0.2985..0.3711`) and the
+195-gene PBO panel fails (`0.619`). It remains a useful economic sensitivity, not
+a winner `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`.
+
+Final local T/D sensitivity and study comparison:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.runners.run_iter030_td_sensitivity
+```
+
+Report:
+
+- `reports/iter030_td_sensitivity/REPORT.md`
+
+Observed result: the constrained `T={20,35,45}` × `D={60,90,120}` grid shows that
+the improvement comes from faster crash trigger plus longer rearm persistence.
+`T20D120` is the best CAGR/terminal-equity variant (CAGR 39.01%, terminal 577.8k×),
+while `T20D90` is the best balanced variant by Sortino (1.2278) with nearly the
+same CAGR (38.99%) and identical full-period MDD. The cross-study comparison plots
+include T3d-K2, iter030, Stage3 shared rules, Stage4 base votes, and Stage4-inside
+iter030. Conclusion unchanged: stop this optimization branch; iter030 remains the
+core anchor, and `T20D120`/`T20D90` remain economic sensitivities, not winners.
+
+Interactive local webapp for the final T/D report:
+
+Backend API:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.webapp.api_server \
+  --host 127.0.0.1 \
+  --port 8765
+```
+
+Frontend React/Vite:
+
+```bash
+cd studies/technical_signal_vote_hunt/webapp/frontend
+npm install
+npm run dev
+```
+
+Open `http://127.0.0.1:5173`. Vite proxies `/api/*` to the Python backend.
+The frontend uses React + TypeScript, uPlot for high-performance equity/drawdown
+charts, and custom Canvas heatmaps for rolling A/B diagnostics. The backend is a
+dependency-free Python JSON API with in-memory series caching.
+
+Legacy single-file app remains available:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.webapp.iter030_td_report_app \
+  --host 127.0.0.1 \
+  --port 8765
+```
+
+Open `http://127.0.0.1:8765` for the legacy no-build HTML version.
+
+Endpoints:
+
+- `/api/strategies` for available strategies and date bounds.
+- `/api/report?start=YYYY-MM-DD&end=YYYY-MM-DD&a=...&b=...` for metrics, equity,
+  drawdowns and initial A/B summary.
+- `/api/heatmap?...` remains available as a backend diagnostic, but the UI no
+  longer calls it for normal A/B changes.
+
+UI notes:
+
+- `Overview` has uPlot equity/drawdown charts optimized for many curves, with
+  short aliases and show/hide buttons.
+- `Rolling A/B Heatmap` has two Plotly heatmaps side-by-side: `% days A>B` and
+  window-end `equity_A/equity_B`.
+- `Metrics` columns are sortable by click.
+- `Strategies` uses accordion sections with implementation details for each
+  strategy.
 
 ## Stage 1 Validation Runner
 
@@ -245,6 +487,107 @@ Current post-validation candidate registry:
 It records the current top tiers: QQQ→QLD+ZROZ balanced incumbent, QQQ→TQQQ+ZROZ
 performance-first challenger, and CASHX diagnostics.
 
+## Stage 3 Testfolio Price-Only GA
+
+After the Tiingo comparison showed exceptional 2010+ results but weak 1986+
+transplants, the next priority is long-history-first discovery. Stage 3 searches
+testfolio 1986+ using only close-derived price signals and explicitly scores
+candidates against T3d-K2 and iter030-like anchors before any Tiingo confirmation
+`[advances_fin_ml, p.222-223]`.
+
+Runner:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.runners.run_stage3_testfolio_price_ga \
+  --branch QQQ \
+  --risk-on QLD_2x \
+  --off-leg ZROZSIM \
+  --min-n 8 \
+  --max-n 14 \
+  --population 256 \
+  --generations 120 \
+  --elite 24 \
+  --seed 42
+```
+
+Outputs land under
+`results/stage3_testfolio_price_ga/<BRANCH>_<RISK_ON>_<OFF>_seed<SEED>/`:
+
+- `anchors.csv`
+- `best_by_generation.csv`
+- `population_history.csv`
+- `final_candidates.csv`
+- `REPORT.md`
+- `manifest.json`
+
+Smoke test already passed:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.runners.run_stage3_testfolio_price_ga \
+  --branch QQQ \
+  --risk-on QLD_2x \
+  --off-leg ZROZSIM \
+  --population 12 \
+  --generations 2 \
+  --elite 4 \
+  --min-n 8 \
+  --max-n 8 \
+  --signal-limit 12 \
+  --seed 7 \
+  --top-final 10
+```
+
+Suggested first real batch, one process at a time unless CPU budget is explicit:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.runners.run_stage3_testfolio_price_ga \
+  --branch QQQ --risk-on QLD_2x --off-leg ZROZSIM \
+  --min-n 8 --max-n 14 --population 256 --generations 120 --elite 24 --seed 42
+
+uv run python -m studies.technical_signal_vote_hunt.runners.run_stage3_testfolio_price_ga \
+  --branch QQQ --risk-on TQQQ_3x --off-leg ZROZSIM \
+  --min-n 8 --max-n 14 --population 256 --generations 120 --elite 24 --seed 42
+
+uv run python -m studies.technical_signal_vote_hunt.runners.run_stage3_testfolio_price_ga \
+  --branch QQQ --risk-on QLD_2x --off-leg CASHX \
+  --min-n 8 --max-n 14 --population 256 --generations 120 --elite 24 --seed 43
+```
+
+Research order from here:
+
+1. Testfolio 1986+ price-only hunt.
+2. Tiingo 2006/2010+ confirmation for fixed long-history candidates.
+3. Only then GA/beam search Tiingo `n>=8`.
+
+Any Stage 3 survivor is still discovery-only until it clears WF/OOS/FWD,
+bootstrap, PBO and DSR with cumulative trial accounting `[advances_fin_ml,
+p.196-202]`, `[advances_fin_ml, p.208-211]`.
+
+First full Stage 3 GA runs completed:
+
+| Run | Unique candidates | Best Sortino | Best CAGR | Best MDD | Best rule |
+|---|---:|---:|---:|---:|---|
+| `QQQ_QLD_2x_ZROZSIM_seed42` | 6,250 | 1.3747 | 32.06% | -57.81% | `n=8/k=6` |
+| `QQQ_TQQQ_3x_ZROZSIM_seed42` | 5,576 | 1.2680 | 40.28% | -64.24% | `n=8/k=6` |
+
+Both best rules beat their branch-native T3d-K2 and iter030-like anchors on
+Sortino, CAGR and MDD in-sample. They are promising long-history leads, but the
+next step is validation, not promotion.
+
+PBO-proxy GA follow-up:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.runners.run_stage3_testfolio_price_ga \
+  --branch QQQ --risk-on QLD_2x --off-leg ZROZSIM \
+  --min-n 8 --max-n 14 --population 256 --generations 120 --elite 24 --seed 52 \
+  --pbo-proxy-weight 0.75 --pbo-proxy-windows 8
+```
+
+This adds a walk-forward stability proxy to the GA fitness. It is not true PBO,
+because true PBO is a panel/ranking statistic. The follow-up validation still
+closed 0/400 pass and did not improve PBO materially; see
+`reports/stage3_validation/REPORT.md`.
+
 ## Stage 2 Tiingo OHLC Runner
 
 Stage 2 uses real Tiingo ETF daily bars and adjusts OHLC before computing
@@ -266,6 +609,35 @@ uv run python -m studies.technical_signal_vote_hunt.runners.run_stage2_tiingo_oh
   --base-k 6 \
   --out-name QQQ_TQQQ_3x_ZROZ_local
 ```
+
+Stage 2 validator for selected Tiingo candidates:
+
+```bash
+uv run python -m studies.technical_signal_vote_hunt.runners.validate_stage2_tiingo_candidates \
+  --candidates studies/technical_signal_vote_hunt/results/stage2_tiingo_ohlc/<RUN>/tables/stage2_local_results.csv \
+  --out-dir studies/technical_signal_vote_hunt/reports/stage2_tiingo_validation/<VALIDATION_RUN> \
+  --off-leg CASH_USD \
+  --extra-lag-days 1 \
+  --n-trials 122648244 \
+  --bootstrap-n 2000 \
+  --top 40 \
+  --progress
+```
+
+Stage 3 fixed-rule Tiingo validation completed 2026-05-12:
+
+- `reports/stage2_tiingo_validation/REPORT.md`
+- Verdict: 0/80 pass.
+- Existing Stage 2 Tiingo operational leads remain better than the Stage 3-derived
+  local OHLC candidates.
+
+Operational Stage 2 top-200 validation completed 2026-05-12:
+
+- `reports/stage2_tiingo_validation/REPORT.md`
+- `QQQ→QLD + CASH_USD lag1` top-200: 0/200 pass; OOS/FWD/bootstrap all pass,
+  WF 187/200, DSR/PBO 0/200.
+- `QQQ→TQQQ + CASH_USD lag1` top-200: 0/200 pass; OOS/FWD/bootstrap all pass,
+  WF 186/200, DSR/PBO 0/200.
 
 Observed first Stage 2 diagnostic:
 

@@ -57,9 +57,12 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--branch", choices=["SPY", "QQQ"], default="QQQ")
     p.add_argument("--risk-on", choices=["SSO_2x", "UPRO_3x", "QLD_2x", "TQQQ_3x"], default="QLD_2x")
     p.add_argument("--off-leg", choices=["ZROZ", "BIL", "CASH_USD"], default="ZROZ")
+    p.add_argument("--extra-lag-days", type=int, default=0)
     p.add_argument("--base-signals", default=DEFAULT_BASE_SIGNALS)
     p.add_argument("--base-k", type=int, default=5)
     p.add_argument("--storage-root", type=Path, default=REPO_ROOT / "data/tiingo")
+    p.add_argument("--start-date", default=None)
+    p.add_argument("--end-date", default=None)
     p.add_argument("--top", type=int, default=30)
     p.add_argument("--out-name", default=None)
     return p.parse_args()
@@ -78,8 +81,10 @@ def main() -> int:
     tables_dir = out_dir / "tables"
     tables_dir.mkdir(parents=True, exist_ok=True)
 
-    prepared = _prepare(spec, args.off_leg, storage)
-    rows = list(_iter_local_rows(prepared, args.base_signals, args.base_k))
+    if args.extra_lag_days < 0:
+        raise SystemExit("--extra-lag-days must be >= 0")
+    prepared = _window_prepared(_prepare(spec, args.off_leg, storage), args.start_date, args.end_date)
+    rows = list(_iter_local_rows(prepared, args.base_signals, args.base_k, args.extra_lag_days))
     results = pd.DataFrame(rows).sort_values(["sortino", "cagr", "calmar"], ascending=[False, False, False])
     results.to_csv(tables_dir / "stage2_local_results.csv", index=False)
 
@@ -90,8 +95,11 @@ def main() -> int:
         "branch": args.branch,
         "risk_on": args.risk_on,
         "off_leg": args.off_leg,
+        "extra_lag_days": args.extra_lag_days,
         "base_signals": args.base_signals,
         "base_k": args.base_k,
+        "start_date": args.start_date,
+        "end_date": args.end_date,
         "configs_tested": int(len(results)),
         "signal_count": int(len(prepared.signal_names)),
         "ohlc_signal_count": int(len(prepared.ohlc_signal_names)),
@@ -160,7 +168,30 @@ def _prepare(spec: Stage2Branch, off_leg: str, storage: TiingoStorage) -> Prepar
     )
 
 
-def _iter_local_rows(prepared: Prepared, base_signals: str, base_k: int):
+def _window_prepared(prepared: Prepared, start_date: str | None, end_date: str | None) -> Prepared:
+    if start_date is None and end_date is None:
+        return prepared
+    mask = np.ones(len(prepared.dates), dtype=bool)
+    if start_date is not None:
+        mask &= prepared.dates >= pd.Timestamp(start_date)
+    if end_date is not None:
+        mask &= prepared.dates <= pd.Timestamp(end_date)
+    if not mask.any():
+        raise SystemExit(f"Date window produced no rows: {start_date=} {end_date=}")
+    return Prepared(
+        spec=prepared.spec,
+        off_leg=prepared.off_leg,
+        dates=prepared.dates[mask],
+        signal_names=prepared.signal_names,
+        ohlc_signal_names=prepared.ohlc_signal_names,
+        signal_matrix=prepared.signal_matrix[mask, :],
+        on_returns=prepared.on_returns[mask],
+        off_returns=prepared.off_returns[mask],
+        benchmark_returns=prepared.benchmark_returns[mask],
+    )
+
+
+def _iter_local_rows(prepared: Prepared, base_signals: str, base_k: int, extra_lag_days: int):
     base = [s for s in base_signals.split("|") if s]
     missing = [s for s in base if s not in prepared.signal_names]
     if missing:
@@ -189,7 +220,7 @@ def _iter_local_rows(prepared: Prepared, base_signals: str, base_k: int):
                 continue
             seen.add(key)
             raw_signal = np.where(valid, counts >= k, False)
-            returns = _simulate_on_off_np(raw_signal, prepared.on_returns, prepared.off_returns)
+            returns = _simulate_on_off_lag_np(raw_signal, prepared.on_returns, prepared.off_returns, extra_lag_days)
             row = _metrics_row_np(
                 returns=returns,
                 benchmark_returns=prepared.benchmark_returns,
@@ -217,6 +248,7 @@ def _summary(prepared: Prepared, results: pd.DataFrame, args: argparse.Namespace
         f"Branch: `{prepared.spec.branch}`",
         f"Risk-on: `{prepared.spec.risk_on_label}` (`{prepared.spec.risk_on_ticker}`)",
         f"Off leg: `{prepared.off_leg}`",
+        f"Extra lag days: `{args.extra_lag_days}`",
         f"Window: `{prepared.dates.min().date()}` to `{prepared.dates.max().date()}` ({len(prepared.dates):,} bars)",
         f"Signals: {len(prepared.signal_names)} total, {len(prepared.ohlc_signal_names)} OHLC-derived",
         f"Configs tested: {len(results):,}",
@@ -237,6 +269,14 @@ def _summary(prepared: Prepared, results: pd.DataFrame, args: argparse.Namespace
         "- This is local discovery on a shorter real-ETF window; final claims still require DSR/PBO/WF/OOS/FWD/bootstrap `[advances_fin_ml, p.208-211]`.",
     ]
     return "\n".join(lines) + "\n"
+
+
+def _simulate_on_off_lag_np(signal: np.ndarray, on_returns: np.ndarray, off_returns: np.ndarray, extra_lag_days: int) -> np.ndarray:
+    lag = 1 + extra_lag_days
+    sig_lag = np.zeros_like(signal, dtype=bool)
+    if lag < len(signal):
+        sig_lag[lag:] = signal[:-lag]
+    return np.where(sig_lag, on_returns, off_returns)
 
 
 if __name__ == "__main__":

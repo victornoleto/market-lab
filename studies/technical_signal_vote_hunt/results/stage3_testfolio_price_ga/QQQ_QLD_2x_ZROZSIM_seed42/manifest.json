@@ -1,0 +1,18 @@
+{
+  "stage": "stage3_testfolio_price_ga",
+  "branch": "QQQ",
+  "risk_on": "QLD_2x",
+  "off_leg": "ZROZSIM",
+  "min_n": 8,
+  "max_n": 14,
+  "signal_limit": null,
+  "n_signals": 33,
+  "population": 256,
+  "generations": 120,
+  "elite": 24,
+  "seed": 42,
+  "unique_candidates": 6250,
+  "minimum_trials_for_dsr": 30720,
+  "elapsed_seconds": 14.516299898998113,
+  "primary_citation": "[advances_fin_ml, p.222-223]"
+}

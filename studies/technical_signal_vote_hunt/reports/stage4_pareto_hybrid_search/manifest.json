@@ -1,0 +1,10 @@
+{
+  "stage": "stage4_pareto_hybrid_search",
+  "start": "1986-01-03",
+  "end": "2026-04-17",
+  "candidates": 225,
+  "strict_pareto_candidates": 0,
+  "base_signals": "sma100_gt_sma250|roc10_gt_0|roc120_gt_0|stochrsi14_gt_50|rv21_pct_lt_70",
+  "base_k": 3,
+  "primary_citation": "[advances_fin_ml, p.31-34]"
+}

@@ -1,0 +1,16 @@
+{
+  "stage": "stage4_regime_bridge",
+  "branch": "QQQ",
+  "risk_on": "TQQQ_3x",
+  "off_leg": "CASH_USD",
+  "extra_lag_days": 1,
+  "base_signals": "sma100_gt_sma250|roc10_gt_0|roc120_gt_0|stochrsi14_gt_50|rv21_pct_lt_70",
+  "base_k": 3,
+  "start_date": "2010-02-12",
+  "end_date": null,
+  "candidates": 10,
+  "elapsed_seconds": 1.0684893489960814,
+  "economic_first": true,
+  "mandate_pass_requires_external_pbo_dsr": true,
+  "primary_citation": "[advances_fin_ml, p.208-211]"
+}

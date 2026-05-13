@@ -1,0 +1,8 @@
+{
+  "stage": "iter030_td_sensitivity",
+  "start": "1986-01-03",
+  "end": "2026-04-17",
+  "t_values": "20,35,45",
+  "d_values": "60,90,120",
+  "primary_citation": "[advances_fin_ml, p.208-211]"
+}

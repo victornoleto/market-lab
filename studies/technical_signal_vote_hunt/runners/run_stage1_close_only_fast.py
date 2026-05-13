@@ -310,7 +310,7 @@ def _metrics_row_np(
     rel = eq / bench_eq
     mdd = _max_drawdown(eq)
     years = len(r) / TRADING_DAYS_PER_YEAR
-    total = float(eq[-1] / eq[0]) if len(eq) else np.nan
+    total = float(eq[-1]) if len(eq) else np.nan
     cagr = total ** (1.0 / years) - 1.0 if years > 0 and total > 0 else np.nan
     vol = float(np.std(r, ddof=1) * np.sqrt(TRADING_DAYS_PER_YEAR)) if len(r) > 1 else np.nan
     mean = float(np.mean(r)) if len(r) else np.nan

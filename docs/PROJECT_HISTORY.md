@@ -101,7 +101,48 @@ Notable preserved study areas include:
   showed the original TQQQ-vs-QLD comparison was affected by inception windows:
   same-window QLD used the same top rule as TQQQ with lower CAGR but much lower
   MDD, while the close-only 1986+ testfolio proxy materially weakened the result
+  versus T3d-K2 and iter030; a dedicated comparison report therefore classifies
+  the selected Cfg01-Cfg05 leads as modern-regime challengers rather than robust
+  long-history replacements. The follow-up priority is now Stage 3: search
+  testfolio 1986+ price-only candidates against T3d-K2/iter030 first, use Tiingo
+  2006/2010+ only as modern confirmation, and defer Tiingo `n>=8` GA/beam search
+  until a long-history candidate exists. The initial Stage 3 GA runner produced
+  first in-sample long-history leads for `QQQ→QLD+ZROZSIM` and
+  `QQQ→TQQQ+ZROZSIM` that beat their branch-native anchors, but they remain
+  discovery-only pending the full validation stack. Their first honest validation
+  closed 0/400 pass after DSR and PBO failures, leaving the shared top rule only
+  as a fixed Tiingo challenger. The subsequent Tiingo confirmation and one-edit
+  OHLC expansion also closed 0/80 pass and did not improve on the existing Stage
+  2 Tiingo frontier. Honest validation of the actual Stage 2 operational top-200
+  QLD/TQQQ leads also closed 0/400 pass after DSR/PBO failures, while a final
+  Stage 3 PBO-proxy GA follow-up failed to reduce PBO materially. A consolidated
+  direction review in `studies/technical_signal_vote_hunt/reports/research_direction_review/REPORT.md`
+  therefore stops unconstrained local optimization in the same technical-vote
+  family and frames the next acceptable hypotheses as regime gating, explicit
+  panel diversity, or PSR diagnostics that do not override DSR/PBO. After the
+  user explicitly chose an economic-first research lens that temporarily treats
+  PBO/DSR as diagnostics, Stage 4 added
+  `studies/technical_signal_vote_hunt/runners/run_stage4_regime_bridge.py` and
+  `reports/stage4_regime_bridge/REPORT.md`: QQQ→QLD/TQQQ `CASH_USD lag1` base
+  vote passed OOS/FWD/WF/bootstrap plus rolling 3/5/10/15y cycle diagnostics in
+  Tiingo 2010+, while simple regime overlays did not improve the frontier
   `[trading_systems_methods, p.732-733]`, `[advances_fin_ml, p.196-202]`,
+  `[advances_fin_ml, p.208-211]`, `[leverage_for_the_long_run, p.5-7]`.
+  Follow-on Stage4/iter030 hybrid work found no strict Pareto improvement in a
+  225-combo search or a constrained GA, but a broader iter030 parameter GA smoke
+  evaluated 195 genes and found 6 economic-first strict Pareto candidates. The
+  best candidate changes the post-crash rearm geometry from `T35D60` to
+  `T20D120`, raising full-period CAGR from 36.66% to 39.01% with essentially
+  unchanged Sortino/MDD; candidate diagnostics show better rolling 5/10/15y
+  minima but a slightly worse rolling 3y minimum. Formal validation of the 6
+  strict Pareto candidates plus baseline then closed 0/7 PASS: all passed
+  OOS/FWD/WF/bootstrap, but all failed DSR and the 195-gene PBO panel failed
+  (`0.619`). A final constrained `T={20,35,45}` × `D={60,90,120}` sensitivity
+  then showed that faster crash trigger plus longer rearm persistence explains
+  the gain: `T20D120` wins by CAGR/terminal equity, while `T20D90` is the best
+  balanced Sortino variant with nearly identical CAGR. The result remains
+  economic sensitivity only, not a mandate winner, and the optimization branch
+  should stop with iter030 preserved as anchor `[advances_fin_ml, p.196-202]`,
   `[advances_fin_ml, p.208-211]`;
 - `studies/weekly_momentum/` for weekly cross-sectional momentum diagnostics, including controlled sweeps, walk-forward validation, PIT approximation, Tiingo delisted backfill, and a final rejection after DSR/bootstrap gates. A later ETF-specific post-close diagnostic improved WF metrics only when leveraged/inverse ETFs remained available, but still failed DSR; the branch was closed research-only with no further local sweeps `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`;
 - `studies/long_term_portfolio/` for long-horizon allocation experiments;

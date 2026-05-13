@@ -1,0 +1,11 @@
+{
+  "stage": "stage4_equity_benchmark_comparison",
+  "start": "2010-02-12",
+  "end": "2026-04-14",
+  "off_leg": "CASH_USD",
+  "extra_lag_days": 1,
+  "base_signals": "sma100_gt_sma250|roc10_gt_0|roc120_gt_0|stochrsi14_gt_50|rv21_pct_lt_70",
+  "base_k": 3,
+  "ndx_proxy": "QQQ",
+  "primary_citation": "[leverage_for_the_long_run, p.13]"
+}

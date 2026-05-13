@@ -1,0 +1,7 @@
+{
+  "stage": "stage4_hybrid_ga",
+  "population": 72,
+  "generations": 35,
+  "evaluated_unique": 623,
+  "primary_citation": "[advances_fin_ml, p.31-34]"
+}

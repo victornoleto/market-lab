@@ -1,0 +1,16 @@
+{
+  "report": "stage1_validation",
+  "candidates": "studies/technical_signal_vote_hunt/results/stage3_testfolio_price_ga/QQQ_TQQQ_3x_ZROZSIM_seed52/final_candidates.csv",
+  "out_dir": "studies/technical_signal_vote_hunt/reports/stage3_validation/pbo_proxy_QQQ_TQQQ_3x_ZROZSIM_seed52_top200",
+  "n_candidates": 200,
+  "off_leg": "ZROZSIM",
+  "n_trials": 136845814,
+  "bootstrap_n": 2000,
+  "bootstrap_block": 21,
+  "wf_windows": 8,
+  "pbo_blocks": 10,
+  "pbo_group": "branch-risk-on",
+  "seed": 42,
+  "elapsed_seconds": 83.94351111400465,
+  "primary_citation": "[advances_fin_ml, p.208-211]"
+}
