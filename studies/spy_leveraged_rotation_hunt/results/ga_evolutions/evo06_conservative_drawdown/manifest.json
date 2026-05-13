@@ -1,0 +1,18 @@
+{
+  "name": "evo06_conservative_drawdown",
+  "objective": "conservative_drawdown",
+  "seed": 2091,
+  "evaluated_unique": 1253,
+  "generations": 28,
+  "elapsed_minutes": 2.598863736349934,
+  "best_label": "SSO_s75_225_vw21_vt0.30_ar20_k3_T20D45_nw0.00_rw0.50_z0.50",
+  "best_signal_asset": "SSO",
+  "best_fitness": 3.2217038369588122,
+  "best_sortino": 1.0613819660388477,
+  "best_cagr": 0.1513957486342845,
+  "best_sharpe": 0.7895111246035367,
+  "best_mdd": -0.36236278857691173,
+  "best_calmar": 0.4178015883718443,
+  "best_corr_to_spy": 0.36548112920389114,
+  "beats_spy_economic": true
+}

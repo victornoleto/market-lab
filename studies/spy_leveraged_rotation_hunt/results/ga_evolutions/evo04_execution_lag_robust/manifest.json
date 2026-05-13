@@ -1,0 +1,18 @@
+{
+  "name": "evo04_execution_lag_robust",
+  "objective": "execution_lag_robust",
+  "seed": 4091,
+  "evaluated_unique": 1109,
+  "generations": 21,
+  "elapsed_minutes": 6.550349686133268,
+  "best_label": "SSO_s150_180_vw42_vt0.45_ar40_k3_T15D60_nw0.00_rw0.00_z0.50",
+  "best_signal_asset": "SSO",
+  "best_fitness": 4.496493012850075,
+  "best_sortino": 1.0101495583052438,
+  "best_cagr": 0.16478870312207405,
+  "best_sharpe": 0.7755592612191423,
+  "best_mdd": -0.45335024169142457,
+  "best_calmar": 0.3881488273493457,
+  "best_corr_to_spy": 0.4886953936273568,
+  "beats_spy_economic": true
+}
