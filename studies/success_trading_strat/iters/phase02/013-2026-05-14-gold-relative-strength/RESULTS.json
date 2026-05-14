@@ -1,0 +1,137 @@
+{
+  "iteration": "013-2026-05-14-gold-relative-strength",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_rs200_m126",
+    "ticker": "xauusd",
+    "rs_sma": 200,
+    "momentum": 126
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "gld_rs100_m63": {
+        "start": "2005-04-15",
+        "end": "2026-05-13",
+        "n_obs": 5303,
+        "cagr": 0.058604522483393984,
+        "sharpe": 0.5131788993082919,
+        "max_drawdown": -0.22041111078556486,
+        "total_return": 2.315036335174946,
+        "same_asset_bh_cagr": 0.116549818727818,
+        "same_asset_bh_sharpe": 0.6969650920014588,
+        "same_asset_bh_max_drawdown": -0.4555501381439966,
+        "spy_bh_cagr": 0.11261836061143304,
+        "spy_bh_sharpe": 0.6553558438516895
+      },
+      "gld_rs200_m126": {
+        "start": "2005-09-07",
+        "end": "2026-05-13",
+        "n_obs": 5203,
+        "cagr": 0.07366896621723362,
+        "sharpe": 0.600100018037542,
+        "max_drawdown": -0.2280275282060863,
+        "total_return": 3.3388612679047975,
+        "same_asset_bh_cagr": 0.11646673577141686,
+        "same_asset_bh_sharpe": 0.6933009490736473,
+        "same_asset_bh_max_drawdown": -0.45555013814399514,
+        "spy_bh_cagr": 0.11111503335613948,
+        "spy_bh_sharpe": 0.6451746698912757
+      },
+      "xau_rs100_m63": {
+        "start": "2021-03-18",
+        "end": "2026-05-13",
+        "n_obs": 1294,
+        "cagr": 0.1141538058556637,
+        "sharpe": 0.8039749679770455,
+        "max_drawdown": -0.20362062876389497,
+        "total_return": 0.7420459645222774,
+        "same_asset_bh_cagr": 0.21207388461507026,
+        "same_asset_bh_sharpe": 1.1919990920943235,
+        "same_asset_bh_max_drawdown": -0.2051174070580397,
+        "spy_bh_cagr": 0.14726344797571156,
+        "spy_bh_sharpe": 0.8958735307144403
+      },
+      "xau_rs200_m126": {
+        "start": "2021-08-10",
+        "end": "2026-05-13",
+        "n_obs": 1194,
+        "cagr": 0.1430998736003568,
+        "sharpe": 0.9149058324894228,
+        "max_drawdown": -0.20090877759436976,
+        "total_return": 0.8845530233409875,
+        "same_asset_bh_cagr": 0.22844465007873915,
+        "same_asset_bh_sharpe": 1.2468317365285495,
+        "same_asset_bh_max_drawdown": -0.2051174070580406,
+        "spy_bh_cagr": 0.13304610514414517,
+        "spy_bh_sharpe": 0.807201419176082
+      }
+    },
+    "best": {
+      "start": "2021-08-10",
+      "end": "2026-05-13",
+      "n_obs": 1194,
+      "cagr": 0.1430998736003568,
+      "sharpe": 0.9149058324894228,
+      "max_drawdown": -0.20090877759436976,
+      "total_return": 0.8845530233409875,
+      "same_asset_bh_cagr": 0.22844465007873915,
+      "same_asset_bh_sharpe": 1.2468317365285495,
+      "same_asset_bh_max_drawdown": -0.2051174070580406,
+      "spy_bh_cagr": 0.13304610514414517,
+      "spy_bh_sharpe": 0.807201419176082
+    },
+    "wf_window_returns": [
+      0.31328564259835456
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -0.00042257567489698054,
+      0.0015686781693625186
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.6507899236847359
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": true,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.48412698412698413,
+    "dsr_p_value": 0.7466535393428333,
+    "is_mcpt_p_value": 0.395,
+    "wf_mcpt_p_value": 0.41,
+    "wf_positive_windows": 1,
+    "wf_total_windows": 1,
+    "oos_total_return": 0.37785869022327123,
+    "fwd_63d_total_return": -0.1044271061645502
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/013-2026-05-14-gold-relative-strength/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/013-2026-05-14-gold-relative-strength/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/013-2026-05-14-gold-relative-strength/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/013-2026-05-14-gold-relative-strength/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/013-2026-05-14-gold-relative-strength/returns.csv"
+  ],
+  "notes": "Daily gold relative-strength filter tested. Intraday files remained physically unavailable, so no 1h/15m test was attempted."
+}

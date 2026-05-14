@@ -1,0 +1,137 @@
+{
+  "iteration": "001-2026-05-14-gold-donchian-compression",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_dc100_rv20_p30",
+    "asset": "xauusd",
+    "breakout_lookback": 100,
+    "exit_lookback": 20,
+    "rv_lookback": 20,
+    "rv_percentile": 0.3
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "gld_dc55_rv20_p40": {
+        "start": "2005-12-19",
+        "end": "2026-05-13",
+        "n_obs": 5131,
+        "cagr": 0.041859342204217276,
+        "sharpe": 0.46758178330107897,
+        "max_drawdown": -0.18609699874020347,
+        "total_return": 1.304691855917,
+        "same_asset_bh_cagr": 0.11143141759607822,
+        "same_asset_bh_sharpe": 0.6675777860366737,
+        "same_asset_bh_max_drawdown": -0.4555501381439945,
+        "spy_bh_cagr": 0.11107746339639979,
+        "spy_bh_sharpe": 0.64276489753964
+      },
+      "gld_dc100_rv20_p30": {
+        "start": "2005-12-19",
+        "end": "2026-05-13",
+        "n_obs": 5131,
+        "cagr": 0.041136233661550836,
+        "sharpe": 0.49633288413378107,
+        "max_drawdown": -0.14820155313670502,
+        "total_return": 1.2723404335470185,
+        "same_asset_bh_cagr": 0.11143141759607822,
+        "same_asset_bh_sharpe": 0.6675777860366737,
+        "same_asset_bh_max_drawdown": -0.4555501381439945,
+        "spy_bh_cagr": 0.11107746339639979,
+        "spy_bh_sharpe": 0.64276489753964
+      },
+      "xau_dc55_rv20_p40": {
+        "start": "2021-09-12",
+        "end": "2026-05-14",
+        "n_obs": 1450,
+        "cagr": 0.07021562286813965,
+        "sharpe": 0.6953883038100304,
+        "max_drawdown": -0.14675397703567983,
+        "total_return": 0.4776679259407086,
+        "same_asset_bh_cagr": 0.18168643648491067,
+        "same_asset_bh_sharpe": 1.0992601895052325,
+        "same_asset_bh_max_drawdown": -0.20362148132383118,
+        "spy_bh_cagr": 0.10689677559546218,
+        "spy_bh_sharpe": 0.7252197649060418
+      },
+      "xau_dc100_rv20_p30": {
+        "start": "2021-09-12",
+        "end": "2026-05-14",
+        "n_obs": 1450,
+        "cagr": 0.0711234108841674,
+        "sharpe": 0.7258998504188043,
+        "max_drawdown": -0.14675397703567994,
+        "total_return": 0.48489451151344864,
+        "same_asset_bh_cagr": 0.18168643648491067,
+        "same_asset_bh_sharpe": 1.0992601895052325,
+        "same_asset_bh_max_drawdown": -0.20362148132383118,
+        "spy_bh_cagr": 0.10689677559546218,
+        "spy_bh_sharpe": 0.7252197649060418
+      }
+    },
+    "best": {
+      "start": "2021-09-12",
+      "end": "2026-05-14",
+      "n_obs": 1450,
+      "cagr": 0.0711234108841674,
+      "sharpe": 0.7258998504188043,
+      "max_drawdown": -0.14675397703567994,
+      "total_return": 0.48489451151344864,
+      "same_asset_bh_cagr": 0.18168643648491067,
+      "same_asset_bh_sharpe": 1.0992601895052325,
+      "same_asset_bh_max_drawdown": -0.20362148132383118,
+      "spy_bh_cagr": 0.10689677559546218,
+      "spy_bh_sharpe": 0.7252197649060418
+    },
+    "wf_window_returns": [
+      0.060204887214481584,
+      0.22909809343676768
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -0.0002323603467838237,
+      0.0008619021416874405
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.6132180468789286
+  },
+  "benchmark": {
+    "primary": "same_asset_buy_hold",
+    "context": "SPY_buy_hold",
+    "best_same_asset": "xauusd"
+  },
+  "gates": {
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": false,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.6150793650793651,
+    "dsr_p_value": 0.7715604268981688,
+    "is_mcpt_p_value": 0.315,
+    "wf_mcpt_p_value": 0.22,
+    "wf_positive_windows": 2,
+    "wf_total_windows": 2,
+    "oos_total_return": 0.26984368432027583,
+    "fwd_63d_total_return": -0.09729853153523949
+  },
+  "kill_switches": [],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/001-2026-05-14-gold-donchian-compression/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/001-2026-05-14-gold-donchian-compression/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/001-2026-05-14-gold-donchian-compression/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/001-2026-05-14-gold-donchian-compression/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/001-2026-05-14-gold-donchian-compression/returns.csv"
+  ],
+  "notes": "1h physical cache absent, so intraday gold/XAUUSD remains data_blocked; daily GLD/xauusd tested only."
+}

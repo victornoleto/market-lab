@@ -1,0 +1,141 @@
+{
+  "iteration": "015-2026-05-14-bollinger-compression-breakout",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_bb20_2_rv20_p30_exit_mid",
+    "ticker": "xauusd",
+    "bb_len": 20,
+    "sigma": 2.0,
+    "rv_len": 20,
+    "rv_percentile": 30.0
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_bb20_2_rv20_p30_exit_mid": {
+        "start": "1993-03-30",
+        "end": "2026-05-13",
+        "n_obs": 8338,
+        "cagr": 0.00874503892237799,
+        "sharpe": 0.21484268053039315,
+        "max_drawdown": -0.30129838004346043,
+        "total_return": 0.33387985654872177,
+        "same_asset_bh_cagr": 0.10803191016419733,
+        "same_asset_bh_sharpe": 0.6444157634111394,
+        "same_asset_bh_max_drawdown": -0.5520110457215849,
+        "spy_bh_cagr": 0.10803191016419733,
+        "spy_bh_sharpe": 0.6444157634111394
+      },
+      "qqq_bb20_2_rv20_p30_exit_mid": {
+        "start": "1999-05-07",
+        "end": "2026-05-13",
+        "n_obs": 6796,
+        "cagr": -0.0062903784237356986,
+        "sharpe": -0.06226422007382621,
+        "max_drawdown": -0.49604116741521176,
+        "total_return": -0.1564839274078279,
+        "same_asset_bh_cagr": 0.10881752807699563,
+        "same_asset_bh_sharpe": 0.518666222075071,
+        "same_asset_bh_max_drawdown": -0.8297113752125541,
+        "spy_bh_cagr": 0.08443193041525232,
+        "spy_bh_sharpe": 0.5171893921077815
+      },
+      "gld_bb20_2_rv20_p30_exit_mid": {
+        "start": "2005-01-19",
+        "end": "2026-05-13",
+        "n_obs": 5363,
+        "cagr": 0.01863131147235797,
+        "sharpe": 0.3510648994757531,
+        "max_drawdown": -0.13161989428573917,
+        "total_return": 0.48120858400862576,
+        "same_asset_bh_cagr": 0.11516115661143811,
+        "same_asset_bh_sharpe": 0.6919399426933361,
+        "same_asset_bh_max_drawdown": -0.4555501381439946,
+        "spy_bh_cagr": 0.109854291895497,
+        "spy_bh_sharpe": 0.6440767635521559
+      },
+      "xau_bb20_2_rv20_p30_exit_mid": {
+        "start": "2020-03-01",
+        "end": "2026-05-14",
+        "n_obs": 1682,
+        "cagr": 0.042461300222432774,
+        "sharpe": 0.6994368126803288,
+        "max_drawdown": -0.0924055864813178,
+        "total_return": 0.31990581557151443,
+        "same_asset_bh_cagr": 0.1758210837271994,
+        "same_asset_bh_sharpe": 0.9935214762743803,
+        "same_asset_bh_max_drawdown": -0.20362148132383096,
+        "spy_bh_cagr": 0.12257334336900794,
+        "spy_bh_sharpe": 0.8207265071223984
+      }
+    },
+    "best": {
+      "start": "2020-03-01",
+      "end": "2026-05-14",
+      "n_obs": 1682,
+      "cagr": 0.042461300222432774,
+      "sharpe": 0.6994368126803288,
+      "max_drawdown": -0.0924055864813178,
+      "total_return": 0.31990581557151443,
+      "same_asset_bh_cagr": 0.1758210837271994,
+      "same_asset_bh_sharpe": 0.9935214762743803,
+      "same_asset_bh_max_drawdown": -0.20362148132383096,
+      "spy_bh_cagr": 0.12257334336900794,
+      "spy_bh_sharpe": 0.8207265071223984
+    },
+    "wf_window_returns": [
+      0.017044309589375972,
+      0.047845863680694656,
+      0.21510008020724425
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -0.00011003599586460902,
+      0.000461596819818866
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.9478127010964768
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": true,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": true,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.23412698412698413,
+    "dsr_p_value": 0.7956922543183012,
+    "is_mcpt_p_value": 0.445,
+    "wf_mcpt_p_value": 0.53,
+    "wf_positive_windows": 3,
+    "wf_total_windows": 3,
+    "oos_total_return": 0.16740737012859963,
+    "fwd_63d_total_return": 0.0068822608366998494
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/015-2026-05-14-bollinger-compression-breakout/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/015-2026-05-14-bollinger-compression-breakout/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/015-2026-05-14-bollinger-compression-breakout/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/015-2026-05-14-bollinger-compression-breakout/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/015-2026-05-14-bollinger-compression-breakout/returns.csv"
+  ],
+  "notes": "Daily Bollinger compression breakout tested. Intraday files remained physically unavailable, so no 1h/15m test was attempted."
+}

@@ -1,0 +1,238 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter009.py",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "benchmark": {
+    "equal_weight": {
+      "cagr": 0.12719148025619464,
+      "mdd": -0.3006124459945394,
+      "sharpe": 1.0486487407746408,
+      "terminal_multiple": 6.8497903927970265
+    },
+    "equal_weight_assets": [
+      "SPY",
+      "QQQ",
+      "TLT"
+    ],
+    "spy": {
+      "cagr": 0.14095885707558753,
+      "mdd": -0.33699940470536127,
+      "sharpe": 0.853598681438811,
+      "terminal_multiple": 8.325502549265853
+    }
+  },
+  "best_config": {
+    "assets": [
+      "SPY",
+      "QQQ",
+      "TLT"
+    ],
+    "fast": 16,
+    "name": "ewmac_16_64_risk3",
+    "slow": 64
+  },
+  "gates": {
+    "bootstrap": {
+      "mean_daily_ci_0_001": 9.245119976829055e-05,
+      "pass": true
+    },
+    "cross_lib": {
+      "delta": 0.0,
+      "numpy_cagr": 0.11401089723136626,
+      "pass": true
+    },
+    "dsr": false,
+    "dsr_benchmark_sharpe_periodic": 0.03111297455031389,
+    "dsr_observed_sharpe_periodic": 0.05124767221443305,
+    "dsr_p_value": 0.101679364045685,
+    "economic_positive_cagr": true,
+    "economic_sharpe_vs_equal_weight": false,
+    "fwd_stress": {
+      "pass": true,
+      "total_return": 0.09331864869299844
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.8135315757020678,
+      "p_value": 0.165,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "total_return": 0.5867200120066822
+    },
+    "pbo": false,
+    "pbo_combinations": 70,
+    "pbo_value": 0.8142857142857143,
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.6309310735996247,
+      "p_value": 0.43,
+      "pass": false
+    },
+    "wf_windows": {
+      "pass": true,
+      "windows": [
+        {
+          "mdd": -0.06532283685784313,
+          "total_return": 0.054247705603446494
+        },
+        {
+          "mdd": -0.17812363921136942,
+          "total_return": -0.12117953008114346
+        },
+        {
+          "mdd": -0.04977130732935653,
+          "total_return": 0.09248636478055539
+        },
+        {
+          "mdd": -0.04243669348013679,
+          "total_return": 0.22805808711212383
+        },
+        {
+          "mdd": -0.1351483335119127,
+          "total_return": -0.012530260471954158
+        },
+        {
+          "mdd": -0.09482530957920088,
+          "total_return": 0.11755796868361967
+        },
+        {
+          "mdd": -0.15727713234889684,
+          "total_return": 0.38247572730542134
+        },
+        {
+          "mdd": -0.07613225073465546,
+          "total_return": 0.19235833245066147
+        },
+        {
+          "mdd": -0.22423048218670227,
+          "total_return": -0.21928266468192847
+        },
+        {
+          "mdd": -0.12158562141122675,
+          "total_return": 0.2514130731664892
+        },
+        {
+          "mdd": -0.11631821349113125,
+          "total_return": 0.11289099376536837
+        },
+        {
+          "mdd": -0.09716593643984839,
+          "total_return": 0.06174107879002477
+        }
+      ]
+    }
+  },
+  "iteration": "009-2026-05-14-multi-asset-ewmac",
+  "kill_switches": [
+    "economic_sharpe_vs_equal_weight",
+    "is_mcpt",
+    "wf_mcpt",
+    "pbo",
+    "dsr"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "all_configs": [
+      {
+        "assets": [
+          "SPY",
+          "QQQ",
+          "TLT"
+        ],
+        "cagr": 0.11401089723136626,
+        "config": "ewmac_16_64_risk3",
+        "fast": 16,
+        "mdd": -0.24970701890531855,
+        "name": "ewmac_16_64_risk3",
+        "sharpe": 0.8135315757020678,
+        "slow": 64,
+        "terminal_multiple": 5.669963609393982
+      },
+      {
+        "assets": [
+          "SPY",
+          "QQQ",
+          "TLT"
+        ],
+        "cagr": 0.09893918132544233,
+        "config": "ewmac_32_128_risk3",
+        "fast": 32,
+        "mdd": -0.2602034603624387,
+        "name": "ewmac_32_128_risk3",
+        "sharpe": 0.7023703685884876,
+        "slow": 128,
+        "terminal_multiple": 4.447328481813691
+      },
+      {
+        "assets": [
+          "SPY",
+          "QQQ",
+          "TLT",
+          "IEF",
+          "GLD"
+        ],
+        "cagr": 0.10389160598980118,
+        "config": "ewmac_16_64_div5",
+        "fast": 16,
+        "mdd": -0.2827208663973828,
+        "name": "ewmac_16_64_div5",
+        "sharpe": 0.7615210268573435,
+        "slow": 64,
+        "terminal_multiple": 4.896537323271077
+      },
+      {
+        "assets": [
+          "SPY",
+          "QQQ",
+          "TLT",
+          "IEF",
+          "GLD"
+        ],
+        "cagr": 0.10395781031006202,
+        "config": "ewmac_32_128_div5",
+        "fast": 32,
+        "mdd": -0.25329324540199416,
+        "name": "ewmac_32_128_div5",
+        "sharpe": 0.7948651983238257,
+        "slow": 128,
+        "terminal_multiple": 4.779682962577327
+      }
+    ],
+    "best": {
+      "assets": [
+        "SPY",
+        "QQQ",
+        "TLT"
+      ],
+      "cagr": 0.11401089723136626,
+      "config": "ewmac_16_64_risk3",
+      "fast": 16,
+      "mdd": -0.24970701890531855,
+      "name": "ewmac_16_64_risk3",
+      "sharpe": 0.8135315757020678,
+      "slow": 64,
+      "terminal_multiple": 5.669963609393982
+    },
+    "bootstrap_mean_daily_ci_0_001": 9.245119976829055e-05,
+    "cross_lib_cagr_delta": 0.0,
+    "fwd_63d_total_return": 0.09331864869299844,
+    "oos_total_return": 0.5867200120066822,
+    "wf_n_windows": 12,
+    "wf_positive_windows": 9,
+    "wf_total_return": 1.610367678696531
+  },
+  "n_trials": 4,
+  "notes": "Multi-asset EWMAC tested with one-bar execution lag; MCPT permutes joint daily return rows to preserve contemporaneous cross-asset structure.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

@@ -1,0 +1,164 @@
+{
+  "iteration": "009-2026-05-14-equity-adx-trend",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "spy_adx14_t25",
+    "ticker": "SPY",
+    "length": 14,
+    "threshold": 25.0
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_adx14_t20": {
+        "start": "1993-04-01",
+        "end": "2026-05-13",
+        "n_obs": 8336,
+        "cagr": 0.031370245787025075,
+        "sharpe": 0.46101914966985835,
+        "max_drawdown": -0.1885978318616386,
+        "total_return": 1.7780905122048773,
+        "same_asset_bh_cagr": 0.10798957908726647,
+        "same_asset_bh_sharpe": 0.6441567885434034,
+        "same_asset_bh_max_drawdown": -0.5520110457215854,
+        "spy_bh_cagr": 0.10798957908726647,
+        "spy_bh_sharpe": 0.6441567885434034
+      },
+      "spy_adx14_t25": {
+        "start": "1993-04-01",
+        "end": "2026-05-13",
+        "n_obs": 8336,
+        "cagr": 0.028578292507629444,
+        "sharpe": 0.5472566990320443,
+        "max_drawdown": -0.1590367927486085,
+        "total_return": 1.5398257355572742,
+        "same_asset_bh_cagr": 0.10798957908726647,
+        "same_asset_bh_sharpe": 0.6441567885434034,
+        "same_asset_bh_max_drawdown": -0.5520110457215854,
+        "spy_bh_cagr": 0.10798957908726647,
+        "spy_bh_sharpe": 0.6441567885434034
+      },
+      "qqq_adx14_t20": {
+        "start": "1999-05-11",
+        "end": "2026-05-13",
+        "n_obs": 6794,
+        "cagr": 0.0553054235889574,
+        "sharpe": 0.5270408089634694,
+        "max_drawdown": -0.20769890774668187,
+        "total_return": 3.2685747256453395,
+        "same_asset_bh_cagr": 0.10783996721637834,
+        "same_asset_bh_sharpe": 0.5153634941937111,
+        "same_asset_bh_max_drawdown": -0.8297113752125542,
+        "spy_bh_cagr": 0.08435473085502809,
+        "spy_bh_sharpe": 0.5167850407859566
+      },
+      "qqq_adx14_t25": {
+        "start": "1999-05-11",
+        "end": "2026-05-13",
+        "n_obs": 6794,
+        "cagr": 0.03984482720951266,
+        "sharpe": 0.472453868323835,
+        "max_drawdown": -0.1917203166217738,
+        "total_return": 1.8673262460482682,
+        "same_asset_bh_cagr": 0.10783996721637834,
+        "same_asset_bh_sharpe": 0.5153634941937111,
+        "same_asset_bh_max_drawdown": -0.8297113752125542,
+        "spy_bh_cagr": 0.08435473085502809,
+        "spy_bh_sharpe": 0.5167850407859566
+      }
+    },
+    "best": {
+      "start": "1993-04-01",
+      "end": "2026-05-13",
+      "n_obs": 8336,
+      "cagr": 0.028578292507629444,
+      "sharpe": 0.5472566990320443,
+      "max_drawdown": -0.1590367927486085,
+      "total_return": 1.5398257355572742,
+      "same_asset_bh_cagr": 0.10798957908726647,
+      "same_asset_bh_sharpe": 0.6441567885434034,
+      "same_asset_bh_max_drawdown": -0.5520110457215854,
+      "spy_bh_cagr": 0.10798957908726647,
+      "spy_bh_sharpe": 0.6441567885434034
+    },
+    "wf_window_returns": [
+      0.032670087784727686,
+      0.19030182914093974,
+      0.012039391277153921,
+      -0.0927674650566851,
+      0.025635141506487935,
+      0.044484676107491294,
+      -0.007191559896760125,
+      0.07143196263616436,
+      0.02670758735924883,
+      0.010921609638784968,
+      0.02356238641039754,
+      0.01108885260884307,
+      0.029010894737421244,
+      0.04814043483479802,
+      0.02472440948806298,
+      0.06279159711985272,
+      -0.038146668031219466,
+      -0.016461059216885454,
+      -0.0005558910289344965,
+      -0.013637207376397398,
+      0.048763101013791,
+      0.06161805293044309,
+      -0.016203102783197365,
+      0.03662175521252542,
+      0.08417059266704863,
+      -0.018798733336709006,
+      -0.020509442735763384,
+      0.21704537393253642,
+      -0.00848505791775056,
+      0.06575345796428533
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      1.2069815648996758e-05,
+      0.00022435692201416916
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 28.73116161664188
+  },
+  "benchmark": {
+    "primary": "SPY_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": false,
+    "dsr": false,
+    "wf_windows": true,
+    "oos": true,
+    "fwd_63d": true,
+    "bootstrap": true,
+    "cross_lib": true,
+    "pbo_value": 0.6349206349206349,
+    "dsr_p_value": 0.3039854718823526,
+    "is_mcpt_p_value": 0.68,
+    "wf_mcpt_p_value": 0.83,
+    "wf_positive_windows": 20,
+    "wf_total_windows": 30,
+    "oos_total_return": 0.43082355327038857,
+    "fwd_63d_total_return": 0.05107723302066014
+  },
+  "kill_switches": [
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/009-2026-05-14-equity-adx-trend/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/009-2026-05-14-equity-adx-trend/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/009-2026-05-14-equity-adx-trend/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/009-2026-05-14-equity-adx-trend/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/009-2026-05-14-equity-adx-trend/returns.csv"
+  ],
+  "notes": "Daily equity ADX/Directional Movement trend family tested. Intraday files remained physically unavailable, so Track B has no claim. MCPT used fixed-rule close-path permutations with high/low approximated from close paths, so OHLC promotion would require stricter permutation audit."
+}

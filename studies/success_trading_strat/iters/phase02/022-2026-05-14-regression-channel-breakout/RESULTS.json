@@ -1,0 +1,160 @@
+{
+  "iteration": "022-2026-05-14-regression-channel-breakout",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_regch63_h30",
+    "ticker": "xauusd",
+    "window": 63,
+    "max_hold": 30
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_regch63_h30": {
+        "start": "1993-05-07",
+        "end": "2026-05-13",
+        "n_obs": 8311,
+        "cagr": 0.023897904429598382,
+        "sharpe": 0.36070353956220064,
+        "max_drawdown": -0.4450655672176489,
+        "total_return": 1.1790444115661716,
+        "same_asset_bh_cagr": 0.10889401089291706,
+        "same_asset_bh_sharpe": 0.6480544358790704,
+        "same_asset_bh_max_drawdown": -0.5520110457215848,
+        "spy_bh_cagr": 0.10889401089291706,
+        "spy_bh_sharpe": 0.6480544358790704,
+        "gld_bh_cagr": 0.07132340145377913,
+        "gld_bh_sharpe": 0.5448873820908323,
+        "xau_bh_cagr": 0.03330251685284913,
+        "xau_bh_sharpe": 0.44928278971821856
+      },
+      "qqq_regch63_h30": {
+        "start": "1999-06-16",
+        "end": "2026-05-13",
+        "n_obs": 6769,
+        "cagr": 0.047952876293658964,
+        "sharpe": 0.49797023872794527,
+        "max_drawdown": -0.3233232358499364,
+        "total_return": 2.5188610193387877,
+        "same_asset_bh_cagr": 0.10979205349020527,
+        "same_asset_bh_sharpe": 0.5220526346328875,
+        "same_asset_bh_max_drawdown": -0.8297113752125543,
+        "spy_bh_cagr": 0.08575055740321935,
+        "spy_bh_sharpe": 0.5232785016381603,
+        "gld_bh_cagr": 0.0882698530646957,
+        "gld_bh_sharpe": 0.6038422243686192,
+        "xau_bh_cagr": 0.04104272752014593,
+        "xau_bh_sharpe": 0.4978721645159224
+      },
+      "gld_regch63_h30": {
+        "start": "2005-02-28",
+        "end": "2026-05-13",
+        "n_obs": 5336,
+        "cagr": 0.02010300326828629,
+        "sharpe": 0.32627399718433353,
+        "max_drawdown": -0.32335425465580914,
+        "total_return": 0.5241714553280419,
+        "same_asset_bh_cagr": 0.11432816519823619,
+        "same_asset_bh_sharpe": 0.6869949144863087,
+        "same_asset_bh_max_drawdown": -0.4555501381439946,
+        "spy_bh_cagr": 0.10958673297544141,
+        "spy_bh_sharpe": 0.6419142472725341,
+        "gld_bh_cagr": 0.11432816519823619,
+        "gld_bh_sharpe": 0.6869949144863087,
+        "xau_bh_cagr": 0.052348996542522785,
+        "xau_bh_sharpe": 0.5608167206315197
+      },
+      "xau_regch63_h30": {
+        "start": "2020-09-13",
+        "end": "2026-05-14",
+        "n_obs": 1655,
+        "cagr": 0.036224257349505296,
+        "sharpe": 0.7874546665504369,
+        "max_drawdown": -0.10778148040378788,
+        "total_return": 0.26325760160738,
+        "same_asset_bh_cagr": 0.14319797122844546,
+        "same_asset_bh_sharpe": 0.9163247947883079,
+        "same_asset_bh_max_drawdown": -0.20362148132383195,
+        "spy_bh_cagr": 0.12310944353267894,
+        "spy_bh_sharpe": 0.8371533977912088,
+        "gld_bh_cagr": 0.14797649378636457,
+        "gld_bh_sharpe": 0.9456423714312584,
+        "xau_bh_cagr": 0.14319797122844546,
+        "xau_bh_sharpe": 0.9163247947883079
+      }
+    },
+    "best": {
+      "start": "2020-09-13",
+      "end": "2026-05-14",
+      "n_obs": 1655,
+      "cagr": 0.036224257349505296,
+      "sharpe": 0.7874546665504369,
+      "max_drawdown": -0.10778148040378788,
+      "total_return": 0.26325760160738,
+      "same_asset_bh_cagr": 0.14319797122844546,
+      "same_asset_bh_sharpe": 0.9163247947883079,
+      "same_asset_bh_max_drawdown": -0.20362148132383195,
+      "spy_bh_cagr": 0.12310944353267894,
+      "spy_bh_sharpe": 0.8371533977912088,
+      "gld_bh_cagr": 0.14797649378636457,
+      "gld_bh_sharpe": 0.9456423714312584,
+      "xau_bh_cagr": 0.14319797122844546,
+      "xau_bh_sharpe": 0.9163247947883079
+    },
+    "wf_window_returns": [
+      0.14233059081175736,
+      0.0406230475164826,
+      0.03385223253875047
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -7.603233126246133e-05,
+      0.0003637550211401941
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.4082983274489123
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold",
+    "gold_context": "GLD_and_xauusd_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": true,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": true,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.4801587301587302,
+    "dsr_p_value": 0.7751442266941488,
+    "is_mcpt_p_value": 0.46,
+    "wf_mcpt_p_value": 0.25,
+    "wf_positive_windows": 3,
+    "wf_total_windows": 3,
+    "oos_total_return": 0.04152595897739242,
+    "fwd_63d_total_return": 0.0068822608366998494
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/022-2026-05-14-regression-channel-breakout/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/022-2026-05-14-regression-channel-breakout/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/022-2026-05-14-regression-channel-breakout/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/022-2026-05-14-regression-channel-breakout/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/022-2026-05-14-regression-channel-breakout/returns.csv"
+  ],
+  "notes": "Daily regression-channel breakout tested on SPY/QQQ/GLD/xauusd. Intraday 1h/15m files remained unavailable, so no Track B hybrid was synthesized."
+}

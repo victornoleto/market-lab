@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter013.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "crypto_equal_weight_buy_hold": {
+      "cagr": 0.9917137076988851,
+      "mdd": -0.8497085922693273,
+      "sharpe": 1.3184458547606803,
+      "terminal_multiple": 1151.1682677966755
+    },
+    "same_asset_buy_hold": {
+      "cagr": 0.9520396552357449,
+      "mdd": -0.9294151668058247,
+      "sharpe": 1.15962062048844,
+      "terminal_multiple": 937.0113590533233
+    }
+  },
+  "best_config": {
+    "asset": "ETHUSD",
+    "lookback": 20,
+    "name": "eth_don20"
+  },
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": true,
+      "value": 0.0005903241521587199
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 0.0,
+      "numpy_cagr": 0.6612331743689659,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-13",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 40,
+      "p_value": 0.003640840664524636,
+      "pass": true
+    },
+    "economic_sharpe_vs_same_asset_bh": {
+      "benchmark": 1.15962062048844,
+      "pass": true,
+      "strategy": 1.3643881418249886
+    },
+    "fwd_63d": {
+      "pass": false,
+      "return": -0.0684832349256419
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 1.3643881418249886,
+      "p_value": 0.0,
+      "pass": true
+    },
+    "oos": {
+      "pass": true,
+      "return": 0.4542900905307212
+    },
+    "pbo": {
+      "pass": true,
+      "value": 0.2857142857142857
+    },
+    "walk_forward": {
+      "n_windows": 6,
+      "pass": false,
+      "positive_windows": 5,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 6,
+      "observed": 1.0002021765689315,
+      "p_value": 0.05,
+      "pass": true
+    }
+  },
+  "iteration": "013-2026-05-14-crypto-donchian-trend",
+  "kill_switches": [
+    "walk_forward",
+    "fwd_63d"
+  ],
+  "mcpt_reps": {
+    "is_mcpt": 200,
+    "wf_mcpt": 100
+  },
+  "metrics": {
+    "cagr": 0.6612331743689659,
+    "mdd": -0.35506751161219496,
+    "sharpe": 1.3643881418249886,
+    "terminal_multiple": 179.90365160411022
+  },
+  "n_trials": 4,
+  "notes": "BTC/ETH Donchian trend tested on local Tiingo weekday/common cache; crypto cache freshness is an explicit promotion gate.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

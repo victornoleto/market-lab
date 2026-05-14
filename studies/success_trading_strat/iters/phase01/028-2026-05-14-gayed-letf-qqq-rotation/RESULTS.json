@@ -1,0 +1,98 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter028.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "cagr": 0.33799330662656324,
+    "mdd": -0.63678774673568,
+    "sharpe": 0.9158053681762572,
+    "terminal_multiple": 112.29497603244681
+  },
+  "best_config": "qld_qqq_sma200_rv70",
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": true,
+      "value": 0.00028790883399127374
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 0.0,
+      "numpy_cagr": 0.2263668861169834,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-13",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 96,
+      "p_value": 0.08159431594114719,
+      "pass": false
+    },
+    "economic_sharpe_vs_benchmark": {
+      "benchmark": 0.9158053681762572,
+      "pass": true,
+      "strategy": 0.9775234379716683
+    },
+    "fwd_63d": {
+      "pass": true,
+      "return": 0.042478493366284065
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.9775234379716683,
+      "p_value": 0.035,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "return": 1.1421379719196487
+    },
+    "pbo": {
+      "pass": false,
+      "value": 0.6857142857142857
+    },
+    "walk_forward": {
+      "n_windows": 12,
+      "pass": true,
+      "positive_windows": 11,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 1.056854386606449,
+      "p_value": 0.01,
+      "pass": true
+    }
+  },
+  "iteration": "028-2026-05-14-gayed-letf-qqq-rotation",
+  "kill_switches": [
+    "is_mcpt",
+    "pbo",
+    "dsr"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "bootstrap_999_mean_daily_low": 0.00028790883399127374,
+    "cagr": 0.2263668861169834,
+    "fwd_63d_return": 0.042478493366284065,
+    "mdd": -0.34540552629524734,
+    "oos_return": 1.1421379719196487,
+    "sharpe": 0.9775234379716683,
+    "terminal_multiple": 27.347443557273365
+  },
+  "n_trials": 4,
+  "notes": "Gayed-style QQQ LETF rotation; no local tuning after validation.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

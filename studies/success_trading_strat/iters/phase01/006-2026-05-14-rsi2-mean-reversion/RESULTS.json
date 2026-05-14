@@ -1,0 +1,140 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter006.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "same_asset_buy_hold": {
+      "cagr": 0.16809126952158704,
+      "mdd": -0.49366401979142516,
+      "sharpe": 0.8067402969700394,
+      "terminal_multiple": 17.229432292029102
+    },
+    "spy": {
+      "cagr": 0.11516839961051617,
+      "mdd": -0.5148622007762396,
+      "sharpe": 0.6487598025222953,
+      "terminal_multiple": 7.367917484883615
+    }
+  },
+  "best_config": {
+    "asset": "QQQ",
+    "entry_rsi": 5.0,
+    "exit_rsi": 70.0,
+    "name": "qqq_rsi2_e5_x70"
+  },
+  "gates": {
+    "bootstrap": true,
+    "cross_lib": false,
+    "dsr": true,
+    "economic_positive_cagr": true,
+    "economic_sharpe_vs_same_asset": false,
+    "fwd_stress": true,
+    "is_mcpt": false,
+    "oos": true,
+    "pbo": true,
+    "wf_mcpt": false,
+    "wf_windows": true
+  },
+  "iteration": "006-2026-05-14-rsi2-mean-reversion",
+  "kill_switches": [
+    "economic_sharpe_vs_same_asset",
+    "is_mcpt",
+    "wf_mcpt",
+    "cross_lib"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "best": {
+      "asset": "QQQ",
+      "cagr": 0.08465893998735874,
+      "config": "qqq_rsi2_e5_x70",
+      "entry_rsi": 5.0,
+      "exit_rsi": 70.0,
+      "mdd": -0.16086671043992862,
+      "name": "qqq_rsi2_e5_x70",
+      "sharpe": 0.7953452189596185,
+      "terminal_multiple": 4.432225475256666
+    },
+    "bootstrap_mean_ci_0_1pct_low": 0.00010655446868624573,
+    "configs": [
+      {
+        "asset": "SPY",
+        "cagr": 0.04968880064901593,
+        "config": "spy_rsi2_e5_x70",
+        "entry_rsi": 5.0,
+        "exit_rsi": 70.0,
+        "mdd": -0.16264101095397587,
+        "name": "spy_rsi2_e5_x70",
+        "sharpe": 0.5763155152127567,
+        "terminal_multiple": 2.4314179163391056
+      },
+      {
+        "asset": "SPY",
+        "cagr": 0.0640849837189017,
+        "config": "spy_rsi2_e10_x70",
+        "entry_rsi": 10.0,
+        "exit_rsi": 70.0,
+        "mdd": -0.26428415177382847,
+        "name": "spy_rsi2_e10_x70",
+        "sharpe": 0.5487352891684014,
+        "terminal_multiple": 3.1206468148971442
+      },
+      {
+        "asset": "QQQ",
+        "cagr": 0.08465893998735874,
+        "config": "qqq_rsi2_e5_x70",
+        "entry_rsi": 5.0,
+        "exit_rsi": 70.0,
+        "mdd": -0.16086671043992862,
+        "name": "qqq_rsi2_e5_x70",
+        "sharpe": 0.7953452189596185,
+        "terminal_multiple": 4.432225475256666
+      },
+      {
+        "asset": "QQQ",
+        "cagr": 0.09245060767743074,
+        "config": "qqq_rsi2_e10_x70",
+        "entry_rsi": 10.0,
+        "exit_rsi": 70.0,
+        "mdd": -0.195065535851206,
+        "name": "qqq_rsi2_e10_x70",
+        "sharpe": 0.7089918562929035,
+        "terminal_multiple": 5.0533110289385865
+      }
+    ],
+    "date_end": "2026-05-13",
+    "date_start": "2008-01-07",
+    "dsr_observed_sharpe_periodic": 0.050102039424080105,
+    "dsr_p_value": 0.04412631187988747,
+    "fwd_63d_total_return": 0.042574938035088605,
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.7953452189596185,
+      "p_value": 0.05
+    },
+    "oos_total_return": 0.5809078161614714,
+    "pbo": 0.21428571428571427,
+    "pbo_combinations": 70,
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 14,
+      "observed": 0.67262300451248,
+      "p_value": 0.35
+    },
+    "wf_positive_windows": 12,
+    "wf_total_windows": 14
+  },
+  "n_trials": 4,
+  "notes": "RSI(2) mean reversion tested as a mechanism pivot. Cross-lib was not computed by design, so winner promotion was impossible.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

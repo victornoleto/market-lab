@@ -1,0 +1,140 @@
+{
+  "iteration": "014-2026-05-14-vidya-adaptive-trend",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_vidya9_30",
+    "ticker": "xauusd",
+    "short_vol": 9,
+    "long_vol": 30,
+    "base_constant": 0.2
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_vidya9_30": {
+        "start": "1993-03-16",
+        "end": "2026-05-13",
+        "n_obs": 8348,
+        "cagr": 0.038698240176172405,
+        "sharpe": 0.3832283076980303,
+        "max_drawdown": -0.4509309496834374,
+        "total_return": 2.5175797574940533,
+        "same_asset_bh_cagr": 0.1078918350347784,
+        "same_asset_bh_sharpe": 0.6439695764346366,
+        "same_asset_bh_max_drawdown": -0.552011045721585,
+        "spy_bh_cagr": 0.1078918350347784,
+        "spy_bh_sharpe": 0.6439695764346366
+      },
+      "qqq_vidya9_30": {
+        "start": "1999-04-23",
+        "end": "2026-05-13",
+        "n_obs": 6806,
+        "cagr": 0.033627040954622656,
+        "sharpe": 0.2799395413763991,
+        "max_drawdown": -0.7233628244553238,
+        "total_return": 1.4430833605045592,
+        "same_asset_bh_cagr": 0.10680558083968017,
+        "same_asset_bh_sharpe": 0.5117831826157531,
+        "same_asset_bh_max_drawdown": -0.8297113752125542,
+        "spy_bh_cagr": 0.08365740009908551,
+        "spy_bh_sharpe": 0.5135503521931577
+      },
+      "gld_vidya9_30": {
+        "start": "2005-01-04",
+        "end": "2026-05-13",
+        "n_obs": 5373,
+        "cagr": 0.08469804292537586,
+        "sharpe": 0.6769592989091096,
+        "max_drawdown": -0.24959201366818107,
+        "total_return": 4.660245439583219,
+        "same_asset_bh_cagr": 0.11407741938720295,
+        "same_asset_bh_sharpe": 0.6868889786647989,
+        "same_asset_bh_max_drawdown": -0.4555501381439949,
+        "spy_bh_cagr": 0.10927876070060849,
+        "spy_bh_sharpe": 0.6416128310658686
+      },
+      "xau_vidya9_30": {
+        "start": "2020-02-18",
+        "end": "2026-05-14",
+        "n_obs": 1692,
+        "cagr": 0.1479975777255631,
+        "sharpe": 0.9886302188882454,
+        "max_drawdown": -0.21491606651072082,
+        "total_return": 1.52615974344556,
+        "same_asset_bh_cagr": 0.17477224698200322,
+        "same_asset_bh_sharpe": 0.9870938069686652,
+        "same_asset_bh_max_drawdown": -0.20362148132383218,
+        "spy_bh_cagr": 0.10019302032873068,
+        "spy_bh_sharpe": 0.685855039194481
+      }
+    },
+    "best": {
+      "start": "2020-02-18",
+      "end": "2026-05-14",
+      "n_obs": 1692,
+      "cagr": 0.1479975777255631,
+      "sharpe": 0.9886302188882454,
+      "max_drawdown": -0.21491606651072082,
+      "total_return": 1.52615974344556,
+      "same_asset_bh_cagr": 0.17477224698200322,
+      "same_asset_bh_sharpe": 0.9870938069686652,
+      "same_asset_bh_max_drawdown": -0.20362148132383218,
+      "spy_bh_cagr": 0.10019302032873068,
+      "spy_bh_sharpe": 0.685855039194481
+    },
+    "wf_window_returns": [
+      0.1169309834877652,
+      0.16669663256090916,
+      0.4403039017265826
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -0.00017602491152786235,
+      0.001332519324945569
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.949096486300545
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": true,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": true,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.29365079365079366,
+    "dsr_p_value": 0.5533646839391179,
+    "is_mcpt_p_value": 0.35,
+    "wf_mcpt_p_value": 0.12,
+    "wf_positive_windows": 3,
+    "wf_total_windows": 3,
+    "oos_total_return": 0.23611450048432325,
+    "fwd_63d_total_return": -0.10376462421827004
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/014-2026-05-14-vidya-adaptive-trend/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/014-2026-05-14-vidya-adaptive-trend/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/014-2026-05-14-vidya-adaptive-trend/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/014-2026-05-14-vidya-adaptive-trend/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/014-2026-05-14-vidya-adaptive-trend/returns.csv"
+  ],
+  "notes": "Daily VIDYA adaptive trend filter tested. Intraday files remained physically unavailable, so no 1h/15m test was attempted."
+}

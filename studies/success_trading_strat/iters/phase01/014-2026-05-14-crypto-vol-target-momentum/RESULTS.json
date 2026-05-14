@@ -1,0 +1,103 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter014.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "pre_registered_benchmark": {
+      "cagr": 0.6850532854628004,
+      "mdd": -0.8314894739619059,
+      "sharpe": 1.1122243347043135,
+      "terminal_multiple": 176.70625335126084
+    }
+  },
+  "best_config": {
+    "asset": "BTCUSD",
+    "lookback": 63,
+    "mode": "single",
+    "name": "btc_mom63_vt20"
+  },
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": true,
+      "value": 0.0002475317780882126
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 4.440892098500626e-14,
+      "numpy_cagr": 0.25569751960678677,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-13",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 44,
+      "p_value": 0.01892352670777775,
+      "pass": true
+    },
+    "economic_sharpe_vs_benchmark": {
+      "benchmark": 1.1122243347043135,
+      "pass": true,
+      "strategy": 1.3769011489700946
+    },
+    "fwd_63d": {
+      "pass": true,
+      "return": 0.0049878486048258175
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 1.3769011489700946,
+      "p_value": 0.015,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "return": 0.2023025639786018
+    },
+    "pbo": {
+      "pass": false,
+      "value": 0.8571428571428571
+    },
+    "walk_forward": {
+      "n_windows": 6,
+      "pass": false,
+      "positive_windows": 5,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 6,
+      "observed": 0.9875576812852035,
+      "p_value": 0.11,
+      "pass": false
+    }
+  },
+  "iteration": "014-2026-05-14-crypto-vol-target-momentum",
+  "kill_switches": [
+    "is_mcpt",
+    "wf_mcpt",
+    "pbo",
+    "walk_forward"
+  ],
+  "mcpt_reps": {
+    "is_mcpt": 200,
+    "wf_mcpt": 100
+  },
+  "metrics": {
+    "cagr": 0.2556975196067872,
+    "mdd": -0.22698408072790877,
+    "sharpe": 1.3769011489700946,
+    "terminal_multiple": 9.563347660678716
+  },
+  "n_trials": 4,
+  "notes": "BTC/ETH volatility-targeted momentum tested on local Tiingo weekday/common cache; no Donchian params were tuned.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

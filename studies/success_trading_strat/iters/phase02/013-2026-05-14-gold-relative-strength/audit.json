@@ -1,0 +1,106 @@
+{
+  "daily_files": [
+    {
+      "ticker": "GLD",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/GLD.parquet",
+      "exists": true,
+      "rows": 5404,
+      "first": "2004-11-18 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03586083853702049
+    },
+    {
+      "ticker": "xauusd",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/xauusd.parquet",
+      "exists": true,
+      "rows": 1723,
+      "first": "2020-01-02 00:00:00",
+      "last": "2026-05-14 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.13124623720650208
+    },
+    {
+      "ticker": "SPY",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SPY.parquet",
+      "exists": true,
+      "rows": 8379,
+      "first": "1993-01-29 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03512206356517733
+    },
+    {
+      "ticker": "SHV",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SHV.parquet",
+      "exists": true,
+      "rows": 4865,
+      "first": "2007-01-11 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03567888999008917
+    }
+  ],
+  "intraday_files": [
+    {
+      "frequency": "1hour",
+      "ticker": "GLD",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/1hour/prices/GLD.parquet",
+      "exists": false
+    },
+    {
+      "frequency": "1hour",
+      "ticker": "xauusd",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/1hour/prices/xauusd.parquet",
+      "exists": false
+    },
+    {
+      "frequency": "15min",
+      "ticker": "GLD",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/15min/prices/GLD.parquet",
+      "exists": false
+    },
+    {
+      "frequency": "15min",
+      "ticker": "xauusd",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/15min/prices/xauusd.parquet",
+      "exists": false
+    }
+  ],
+  "hour_directory_exists": true,
+  "hour_directory_file_count": 0,
+  "min15_directory_exists": false,
+  "min15_directory_file_count": null
+}

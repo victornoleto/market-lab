@@ -1,0 +1,163 @@
+{
+  "iteration": "028-2026-05-14-cmo-momentum-continuation",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_cmo20_e50_x0_sma200_h20",
+    "ticker": "xauusd",
+    "cmo_lookback": 20,
+    "entry_level": 50.0,
+    "exit_level": 0.0,
+    "sma_lookback": 200,
+    "max_hold": 20
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_cmo20_e50_x0_sma200_h20": {
+        "start": "1993-12-14",
+        "end": "2026-05-13",
+        "n_obs": 8158,
+        "cagr": 0.01756382436880055,
+        "sharpe": 0.3709047081842039,
+        "max_drawdown": -0.17199481864107824,
+        "total_return": 0.7570887697559892,
+        "same_asset_bh_cagr": 0.10875723835423723,
+        "same_asset_bh_sharpe": 0.6439270240644269,
+        "same_asset_bh_max_drawdown": -0.5520110457215847,
+        "spy_bh_cagr": 0.10875723835423723,
+        "spy_bh_sharpe": 0.6439270240644269,
+        "gld_bh_cagr": 0.07270854502225377,
+        "gld_bh_sharpe": 0.5499786751259941,
+        "xau_bh_cagr": 0.03393757359638894,
+        "xau_bh_sharpe": 0.4534791729563436
+      },
+      "qqq_cmo20_e50_x0_sma200_h20": {
+        "start": "2000-01-24",
+        "end": "2026-05-13",
+        "n_obs": 6616,
+        "cagr": 0.03340858086985787,
+        "sharpe": 0.5303540447344621,
+        "max_drawdown": -0.1495134856215411,
+        "total_return": 1.3697269012626916,
+        "same_asset_bh_cagr": 0.08632319877140415,
+        "same_asset_bh_sharpe": 0.44442233247099605,
+        "same_asset_bh_max_drawdown": -0.8297113752125544,
+        "spy_bh_cagr": 0.08338124146634307,
+        "spy_bh_sharpe": 0.5118040750418841,
+        "gld_bh_cagr": 0.09040079695808201,
+        "gld_bh_sharpe": 0.6107936485407419,
+        "xau_bh_cagr": 0.04201153872343899,
+        "xau_bh_sharpe": 0.5036009644309145
+      },
+      "gld_cmo20_e50_x0_sma200_h20": {
+        "start": "2005-10-05",
+        "end": "2026-05-13",
+        "n_obs": 5183,
+        "cagr": 0.03648630164668454,
+        "sharpe": 0.45179270091017715,
+        "max_drawdown": -0.18615244340065396,
+        "total_return": 1.0897919018841677,
+        "same_asset_bh_cagr": 0.11433405490580006,
+        "same_asset_bh_sharpe": 0.6823217112120061,
+        "same_asset_bh_max_drawdown": -0.45555013814399514,
+        "spy_bh_cagr": 0.11243392610187186,
+        "spy_bh_sharpe": 0.650597785314922,
+        "gld_bh_cagr": 0.11433405490580006,
+        "gld_bh_sharpe": 0.6823217112120061,
+        "xau_bh_cagr": 0.05393527155233979,
+        "xau_bh_sharpe": 0.5690429668539906
+      },
+      "xau_cmo20_e50_x0_sma200_h20": {
+        "start": "2021-07-13",
+        "end": "2026-05-14",
+        "n_obs": 1502,
+        "cagr": 0.059100607286001194,
+        "sharpe": 0.6381883397827343,
+        "max_drawdown": -0.14675397703568005,
+        "total_return": 0.4081007514651944,
+        "same_asset_bh_cagr": 0.17277781037744844,
+        "same_asset_bh_sharpe": 1.0600799409902162,
+        "same_asset_bh_max_drawdown": -0.2036214813238323,
+        "spy_bh_cagr": 0.1065234487910025,
+        "spy_bh_sharpe": 0.7299564278054262,
+        "gld_bh_cagr": 0.1701648728560743,
+        "gld_bh_sharpe": 1.0487110574141862,
+        "xau_bh_cagr": 0.17277781037744844,
+        "xau_bh_sharpe": 1.0600799409902162
+      }
+    },
+    "best": {
+      "start": "2021-07-13",
+      "end": "2026-05-14",
+      "n_obs": 1502,
+      "cagr": 0.059100607286001194,
+      "sharpe": 0.6381883397827343,
+      "max_drawdown": -0.14675397703568005,
+      "total_return": 0.4081007514651944,
+      "same_asset_bh_cagr": 0.17277781037744844,
+      "same_asset_bh_sharpe": 1.0600799409902162,
+      "same_asset_bh_max_drawdown": -0.2036214813238323,
+      "spy_bh_cagr": 0.1065234487910025,
+      "spy_bh_sharpe": 0.7299564278054262,
+      "gld_bh_cagr": 0.1701648728560743,
+      "gld_bh_sharpe": 1.0487110574141862,
+      "xau_bh_cagr": 0.17277781037744844,
+      "xau_bh_sharpe": 1.0600799409902162
+    },
+    "wf_window_returns": [
+      0.08583931193219607,
+      0.030503102389772607
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -0.00023212863684476113,
+      0.0007303473621065358
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.5855193078661811
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold",
+    "gold_etf_context": "GLD_buy_hold",
+    "gold_spot_context": "xauusd_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": false,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": true,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.8849206349206349,
+    "dsr_p_value": 0.8738112252591037,
+    "is_mcpt_p_value": 0.47,
+    "wf_mcpt_p_value": 0.79,
+    "wf_positive_windows": 2,
+    "wf_total_windows": 2,
+    "oos_total_return": 0.2728957108654122,
+    "fwd_63d_total_return": 0.0068822608366998494
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/028-2026-05-14-cmo-momentum-continuation/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/028-2026-05-14-cmo-momentum-continuation/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/028-2026-05-14-cmo-momentum-continuation/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/028-2026-05-14-cmo-momentum-continuation/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/028-2026-05-14-cmo-momentum-continuation/returns.csv"
+  ],
+  "notes": "Daily CMO momentum-continuation tested on SPY/QQQ/GLD/xauusd. Intraday files remained unavailable, so no 1h/15m hybrid was synthesized."
+}

@@ -1,0 +1,152 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter.py",
+    "config_metrics.csv",
+    "returns_matrix.csv",
+    "RESULTS.json"
+  ],
+  "benchmark": {
+    "qqq_sma100_mom63": {
+      "cagr": 0.16506942244178702,
+      "mdd": -0.49398260476947575,
+      "mean_daily": 0.0007059867762175881,
+      "n_days": 4619,
+      "risk_asset": "QQQ",
+      "sharpe": 0.7945671780381484,
+      "terminal": 16.450778067535545
+    },
+    "qqq_sma200_mom63": {
+      "cagr": 0.16506942244178702,
+      "mdd": -0.49398260476947575,
+      "mean_daily": 0.0007059867762175881,
+      "n_days": 4619,
+      "risk_asset": "QQQ",
+      "sharpe": 0.7945671780381484,
+      "terminal": 16.450778067535545
+    },
+    "spy_sma100_mom63": {
+      "cagr": 0.11352634177300835,
+      "mdd": -0.5185954455411008,
+      "mean_daily": 0.0005050131863232005,
+      "n_days": 4619,
+      "risk_asset": "SPY",
+      "sharpe": 0.6411647571946022,
+      "terminal": 7.177784686891872
+    },
+    "spy_sma200_mom63": {
+      "cagr": 0.11352634177300835,
+      "mdd": -0.5185954455411008,
+      "mean_daily": 0.0005050131863232005,
+      "n_days": 4619,
+      "risk_asset": "SPY",
+      "sharpe": 0.6411647571946022,
+      "terminal": 7.177784686891872
+    }
+  },
+  "best_config": "qqq_sma200_mom63",
+  "gates": {
+    "bootstrap_999_low_gt_0": true,
+    "cross_lib_computed": false,
+    "dsr_p_lt_0_05": true,
+    "economic_beats_same_asset_bh_sharpe": true,
+    "fwd_positive": true,
+    "is_mcpt_p_le_0_01": false,
+    "oos_positive": true,
+    "pbo_lt_0_5": false,
+    "wf_6_of_8_positive": true,
+    "wf_mcpt_p_le_0_05": false
+  },
+  "iteration": "003-2026-05-14-sma-momentum-regime",
+  "kill_switches": [
+    "is_mcpt_p_le_0_01",
+    "wf_mcpt_p_le_0_05",
+    "pbo_lt_0_5",
+    "cross_lib_computed"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 200
+  },
+  "metrics": {
+    "best": {
+      "cagr": 0.11426775048597815,
+      "mdd": -0.18598985908892118,
+      "mean_daily": 0.0004665134694572537,
+      "n_days": 4620,
+      "sharpe": 0.861517267392687,
+      "terminal": 7.269010374875339
+    },
+    "bootstrap_999_mean_daily_low": 9.499337434041205e-05,
+    "configs": [
+      {
+        "cagr": 0.08967456416584096,
+        "config": "spy_sma100_mom63",
+        "mdd": -0.1962366357444849,
+        "mean_daily": 0.00036411248916249045,
+        "momentum_days": 63,
+        "n_days": 4620,
+        "name": "spy_sma100_mom63",
+        "risk_asset": "SPY",
+        "sharpe": 0.848876683717341,
+        "sma_days": 100,
+        "terminal": 4.828085066060959
+      },
+      {
+        "cagr": 0.08579156538733068,
+        "config": "spy_sma200_mom63",
+        "mdd": -0.18483077295056527,
+        "mean_daily": 0.00034889371580405125,
+        "momentum_days": 63,
+        "n_days": 4620,
+        "name": "spy_sma200_mom63",
+        "risk_asset": "SPY",
+        "sharpe": 0.8323683952178768,
+        "sma_days": 200,
+        "terminal": 4.522221534723159
+      },
+      {
+        "cagr": 0.10006455093128896,
+        "config": "qqq_sma100_mom63",
+        "mdd": -0.2135361177278562,
+        "mean_daily": 0.00041590270536548705,
+        "momentum_days": 63,
+        "n_days": 4620,
+        "name": "qqq_sma100_mom63",
+        "risk_asset": "QQQ",
+        "sharpe": 0.764941494285863,
+        "sma_days": 100,
+        "terminal": 5.74556994606394
+      },
+      {
+        "cagr": 0.11426775048597815,
+        "config": "qqq_sma200_mom63",
+        "mdd": -0.18598985908892118,
+        "mean_daily": 0.0004665134694572537,
+        "momentum_days": 63,
+        "n_days": 4620,
+        "name": "qqq_sma200_mom63",
+        "risk_asset": "QQQ",
+        "sharpe": 0.861517267392687,
+        "sma_days": 200,
+        "terminal": 7.269010374875339
+      }
+    ],
+    "dsr_benchmark_sharpe_periodic": 0.015480766528783349,
+    "dsr_observed_sharpe_periodic": 0.054276361042680715,
+    "dsr_p_value": 0.0048607068346865345,
+    "fwd_63d_return": 0.14989021824132465,
+    "is_mcpt_p_value": 0.045,
+    "oos_return": 0.9582495748251698,
+    "pbo": 0.8714285714285714,
+    "pbo_combinations": 70,
+    "wf_mcpt_p_value": 0.17,
+    "wf_positive_windows": 13,
+    "wf_total_windows": 18
+  },
+  "n_trials": 4,
+  "notes": "Cross-lib not computed; MCPT uses cash at 0% on permuted risk path, so no promotion is possible.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

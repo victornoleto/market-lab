@@ -1,0 +1,101 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter021.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "pre_registered_benchmark": {
+      "cagr": 0.19252388806943332,
+      "mdd": -0.35122525674827476,
+      "sharpe": 0.9584442721708876,
+      "terminal_multiple": 17.715586936251846
+    }
+  },
+  "best_config": {
+    "asset": "QQQ",
+    "leg": "close_to_open",
+    "name": "qqq_close_to_open"
+  },
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": true,
+      "value": 0.00014714931393763512
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 0.0,
+      "numpy_cagr": 0.1243913323313266,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-13",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 72,
+      "p_value": 0.060008617208965886,
+      "pass": false
+    },
+    "economic_sharpe_vs_benchmark": {
+      "benchmark": 0.9584442721708876,
+      "pass": true,
+      "strategy": 0.998379475211841
+    },
+    "fwd_63d": {
+      "pass": true,
+      "return": 0.016689795624442283
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.998379475211841,
+      "p_value": 1.0,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "return": 0.7777397693243302
+    },
+    "pbo": {
+      "pass": true,
+      "value": 0.08571428571428572
+    },
+    "walk_forward": {
+      "n_windows": 12,
+      "pass": true,
+      "positive_windows": 11,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.9573775605815881,
+      "p_value": 0.43,
+      "pass": false
+    }
+  },
+  "iteration": "021-2026-05-14-intraday-overnight-decomposition",
+  "kill_switches": [
+    "is_mcpt",
+    "wf_mcpt",
+    "dsr"
+  ],
+  "mcpt_reps": {
+    "is_mcpt": 200,
+    "wf_mcpt": 100
+  },
+  "metrics": {
+    "cagr": 0.1243913323313266,
+    "mdd": -0.2743175435244427,
+    "sharpe": 0.998379475211841,
+    "terminal_multiple": 6.780289141344351
+  },
+  "n_trials": 4,
+  "notes": "Daily adjusted-OHLC intraday/overnight decomposition; no post-result filters or session retuning.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

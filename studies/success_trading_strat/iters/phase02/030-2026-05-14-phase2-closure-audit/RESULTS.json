@@ -1,0 +1,39 @@
+{
+  "iteration": "030-2026-05-14-phase2-closure-audit",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 0,
+  "mcpt_reps": {},
+  "best_config": null,
+  "winner": false,
+  "metrics": {
+    "prior_iteration_count": 29,
+    "phase2_prior_trials": 116,
+    "cumulative_trials_before": 216,
+    "cumulative_trials_after": 216,
+    "strict_winners": 0,
+    "promotional_statuses": 0
+  },
+  "benchmark": {
+    "primary": "not_applicable_closure_audit",
+    "phase2_rule": "prior strategy iterations required same-asset buy-and-hold CAGR outperformance"
+  },
+  "gates": {
+    "artifact_complete": true,
+    "trial_accounting_ok": true,
+    "no_strict_winners": true,
+    "no_promotional_statuses": true,
+    "strategy_gates_recomputed": false
+  },
+  "kill_switches": [
+    "zero strict winners at planned phase cap"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/030-2026-05-14-phase2-closure-audit/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/030-2026-05-14-phase2-closure-audit/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/030-2026-05-14-phase2-closure-audit/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/030-2026-05-14-phase2-closure-audit/phase2_audit_table.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/030-2026-05-14-phase2-closure-audit/RESULTS.json"
+  ],
+  "notes": "Phase 2 closure audit: no strict winners or watchlist promotions found. Closed as fail because the phase objective was strategy discovery and no strategy cleared the gates."
+}

@@ -1,0 +1,104 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter016.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "pre_registered_benchmark": {
+      "cagr": 0.15116783202514128,
+      "mdd": -0.3369994047053614,
+      "sharpe": 0.9126963526079238,
+      "terminal_multiple": 9.274717902728913
+    }
+  },
+  "best_config": {
+    "asset": "SPY",
+    "credit_lookback": 126,
+    "name": "spy_hygief126_m63"
+  },
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": false,
+      "value": -1.8235032354133333e-05
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 0.0,
+      "numpy_cagr": 0.06351568580575595,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-13",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 52,
+      "p_value": 0.2748705078600189,
+      "pass": false
+    },
+    "economic_sharpe_vs_benchmark": {
+      "benchmark": 0.9126963526079238,
+      "pass": false,
+      "strategy": 0.7301091462533033
+    },
+    "fwd_63d": {
+      "pass": true,
+      "return": 0.04776441572360324
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.7301091462533033,
+      "p_value": 0.31,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "return": 0.46655071596332887
+    },
+    "pbo": {
+      "pass": false,
+      "value": 0.9
+    },
+    "walk_forward": {
+      "n_windows": 12,
+      "pass": true,
+      "positive_windows": 9,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.6410991269016066,
+      "p_value": 0.43,
+      "pass": false
+    }
+  },
+  "iteration": "016-2026-05-14-credit-risk-appetite-filter",
+  "kill_switches": [
+    "economic_sharpe_vs_benchmark",
+    "is_mcpt",
+    "wf_mcpt",
+    "pbo",
+    "dsr",
+    "bootstrap_999_mean_daily_low"
+  ],
+  "mcpt_reps": {
+    "is_mcpt": 200,
+    "wf_mcpt": 100
+  },
+  "metrics": {
+    "cagr": 0.06351568580575595,
+    "mdd": -0.2324599947138698,
+    "sharpe": 0.7301091462533033,
+    "terminal_multiple": 2.649272911104863
+  },
+  "n_trials": 4,
+  "notes": "Credit-risk appetite filter tested with lagged HYG/IEF ratio momentum plus own-asset momentum; no post-result parameter additions.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

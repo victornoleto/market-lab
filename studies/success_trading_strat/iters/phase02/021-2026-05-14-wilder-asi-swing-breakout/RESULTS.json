@@ -1,0 +1,161 @@
+{
+  "iteration": "021-2026-05-14-wilder-asi-swing-breakout",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_asi20_10_h20",
+    "ticker": "xauusd",
+    "entry_lookback": 20,
+    "exit_lookback": 10,
+    "max_hold": 20
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_asi20_10_h20": {
+        "start": "1993-03-08",
+        "end": "2026-05-13",
+        "n_obs": 8354,
+        "cagr": 0.0445069953656263,
+        "sharpe": 0.5450492105455005,
+        "max_drawdown": -0.34243856431369823,
+        "total_return": 3.2357113664693866,
+        "same_asset_bh_cagr": 0.10822782110544549,
+        "same_asset_bh_sharpe": 0.6455977721209815,
+        "same_asset_bh_max_drawdown": -0.5520110457215851,
+        "spy_bh_cagr": 0.10822782110544549,
+        "spy_bh_sharpe": 0.6455977721209815,
+        "gld_bh_cagr": 0.07094355905647931,
+        "gld_bh_sharpe": 0.5434817614153853,
+        "xau_bh_cagr": 0.033128292544510884,
+        "xau_bh_sharpe": 0.4481242308119218
+      },
+      "qqq_asi20_10_h20": {
+        "start": "1999-04-15",
+        "end": "2026-05-13",
+        "n_obs": 6812,
+        "cagr": 0.05319752490629548,
+        "sharpe": 0.48728230986769555,
+        "max_drawdown": -0.5236230372508804,
+        "total_return": 3.0595697029148106,
+        "same_asset_bh_cagr": 0.10807996092892203,
+        "same_asset_bh_sharpe": 0.515700227487443,
+        "same_asset_bh_max_drawdown": -0.8297113752125546,
+        "spy_bh_cagr": 0.08447418586882893,
+        "spy_bh_sharpe": 0.5173453723452113,
+        "gld_bh_cagr": 0.08768891597545037,
+        "gld_bh_sharpe": 0.6019308948712304,
+        "xau_bh_cagr": 0.040778438026471076,
+        "xau_bh_sharpe": 0.4962969856923463
+      },
+      "gld_asi20_10_h20": {
+        "start": "2004-12-27",
+        "end": "2026-05-13",
+        "n_obs": 5379,
+        "cagr": 0.05808616318391713,
+        "sharpe": 0.5538169886017043,
+        "max_drawdown": -0.21072174356813067,
+        "total_return": 2.337392854569081,
+        "same_asset_bh_cagr": 0.11244944011425373,
+        "same_asset_bh_sharpe": 0.6788040791757156,
+        "same_asset_bh_max_drawdown": -0.45555013814399514,
+        "spy_bh_cagr": 0.1089478477914303,
+        "spy_bh_sharpe": 0.6402103590037276,
+        "gld_bh_cagr": 0.11244944011425373,
+        "gld_bh_sharpe": 0.6788040791757156,
+        "xau_bh_cagr": 0.05191983629556285,
+        "xau_bh_sharpe": 0.5585682555549314
+      },
+      "xau_asi20_10_h20": {
+        "start": "2020-01-31",
+        "end": "2026-05-14",
+        "n_obs": 1698,
+        "cagr": 0.0880018224971506,
+        "sharpe": 0.6831767997626751,
+        "max_drawdown": -0.18681761807859187,
+        "total_return": 0.7652811642181072,
+        "same_asset_bh_cagr": 0.1751106933355593,
+        "same_asset_bh_sharpe": 0.9895818911438204,
+        "same_asset_bh_max_drawdown": -0.20362148132383107,
+        "spy_bh_cagr": 0.09796766882327135,
+        "spy_bh_sharpe": 0.6730921781960335,
+        "gld_bh_cagr": 0.1521962289774974,
+        "gld_bh_sharpe": 0.9650603364123725,
+        "xau_bh_cagr": 0.1751106933355593,
+        "xau_bh_sharpe": 0.9895818911438204
+      }
+    },
+    "best": {
+      "start": "2020-01-31",
+      "end": "2026-05-14",
+      "n_obs": 1698,
+      "cagr": 0.0880018224971506,
+      "sharpe": 0.6831767997626751,
+      "max_drawdown": -0.18681761807859187,
+      "total_return": 0.7652811642181072,
+      "same_asset_bh_cagr": 0.1751106933355593,
+      "same_asset_bh_sharpe": 0.9895818911438204,
+      "same_asset_bh_max_drawdown": -0.20362148132383107,
+      "spy_bh_cagr": 0.09796766882327135,
+      "spy_bh_sharpe": 0.6730921781960335,
+      "gld_bh_cagr": 0.1521962289774974,
+      "gld_bh_sharpe": 0.9650603364123725,
+      "xau_bh_cagr": 0.1751106933355593,
+      "xau_bh_sharpe": 0.9895818911438204
+    },
+    "wf_window_returns": [
+      0.004889184180112638,
+      0.15013142813760094,
+      0.17754256978053595
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -0.00023169198889172143,
+      0.0011379857481189143
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.966179864084629
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold",
+    "gold_context": "GLD_and_xauusd_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": false,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.5158730158730159,
+    "dsr_p_value": 0.8587153614471877,
+    "is_mcpt_p_value": 0.715,
+    "wf_mcpt_p_value": 0.53,
+    "wf_positive_windows": 3,
+    "wf_total_windows": 3,
+    "oos_total_return": 0.09373060666155109,
+    "fwd_63d_total_return": -0.08165141544388832
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/021-2026-05-14-wilder-asi-swing-breakout/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/021-2026-05-14-wilder-asi-swing-breakout/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/021-2026-05-14-wilder-asi-swing-breakout/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/021-2026-05-14-wilder-asi-swing-breakout/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/021-2026-05-14-wilder-asi-swing-breakout/returns.csv"
+  ],
+  "notes": "Daily Wilder ASI breakout tested on SPY/QQQ/GLD/xauusd. Intraday 1h/15m files remained unavailable, so no Track B hybrid was synthesized."
+}

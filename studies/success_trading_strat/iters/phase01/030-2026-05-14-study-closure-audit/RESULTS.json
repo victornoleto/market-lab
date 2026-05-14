@@ -1,0 +1,38 @@
+{
+  "iteration": "030-2026-05-14-study-closure-audit",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 0,
+  "mcpt_reps": {},
+  "best_config": null,
+  "winner": false,
+  "metrics": {
+    "iteration_dirs_count": 30,
+    "prior_results_parsed": 29,
+    "summed_prior_n_trials": 100,
+    "winner_count_prior": 0
+  },
+  "benchmark": {},
+  "gates": {
+    "artifact_completeness": true,
+    "trial_accounting_matches_memory": true,
+    "no_prior_winners": true,
+    "all_prior_pre_registered": false,
+    "target_iterations_reached": true,
+    "pbo": null,
+    "dsr": null,
+    "is_mcpt": null,
+    "wf_mcpt": null
+  },
+  "kill_switches": [
+    "closure_audit_inconsistent"
+  ],
+  "artifacts": [
+    "PRE_REG.md",
+    "run.py",
+    "AUDIT.json",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "notes": "Closure audit only; no strategy claim, no deploy implication, capital remains 100% Plano C."
+}

@@ -1,0 +1,139 @@
+{
+  "iteration": "017-2026-05-14-woodshedder-roc",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_roc5_252_x2",
+    "ticker": "xauusd",
+    "short_roc": 5,
+    "long_roc": 252,
+    "confirm_bars": 2
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_roc5_252_x2": {
+        "start": "1994-02-01",
+        "end": "2026-05-13",
+        "n_obs": 8124,
+        "cagr": 0.10859117501295046,
+        "sharpe": 0.7887147439300106,
+        "max_drawdown": -0.30401359615117085,
+        "total_return": 26.75525404621762,
+        "same_asset_bh_cagr": 0.10805298846833344,
+        "same_asset_bh_sharpe": 0.639761725326198,
+        "same_asset_bh_max_drawdown": -0.5520110457215845,
+        "spy_bh_cagr": 0.10805298846833344,
+        "spy_bh_sharpe": 0.639761725326198
+      },
+      "qqq_roc5_252_x2": {
+        "start": "2000-03-13",
+        "end": "2026-05-13",
+        "n_obs": 6582,
+        "cagr": 0.10474737489351882,
+        "sharpe": 0.6140568432560638,
+        "max_drawdown": -0.4069609507633044,
+        "total_return": 12.489249557155308,
+        "same_asset_bh_cagr": 0.07958748250501779,
+        "same_asset_bh_sharpe": 0.421807272913712,
+        "same_asset_bh_max_drawdown": -0.8297113752125541,
+        "spy_bh_cagr": 0.08508807574486421,
+        "spy_bh_sharpe": 0.520487006371809
+      },
+      "gld_roc5_252_x2": {
+        "start": "2005-11-22",
+        "end": "2026-05-13",
+        "n_obs": 5149,
+        "cagr": 0.0878464844457767,
+        "sharpe": 0.6107658618546105,
+        "max_drawdown": -0.33799229981197,
+        "total_return": 4.586878095220538,
+        "same_asset_bh_cagr": 0.11222907442509933,
+        "same_asset_bh_sharpe": 0.6715857451812808,
+        "same_asset_bh_max_drawdown": -0.4555501381439935,
+        "spy_bh_cagr": 0.11121545578408765,
+        "spy_bh_sharpe": 0.6440903138234059
+      },
+      "xau_roc5_252_x2": {
+        "start": "2021-08-22",
+        "end": "2026-05-14",
+        "n_obs": 1468,
+        "cagr": 0.1464179416046636,
+        "sharpe": 0.9603453125419286,
+        "max_drawdown": -0.20090877759436987,
+        "total_return": 1.216646163777321,
+        "same_asset_bh_cagr": 0.1800166106622607,
+        "same_asset_bh_sharpe": 1.0939033804081708,
+        "same_asset_bh_max_drawdown": -0.2036214813238315,
+        "spy_bh_cagr": 0.10640782288869799,
+        "spy_bh_sharpe": 0.7252579307422659
+      }
+    },
+    "best": {
+      "start": "2021-08-22",
+      "end": "2026-05-14",
+      "n_obs": 1468,
+      "cagr": 0.1464179416046636,
+      "sharpe": 0.9603453125419286,
+      "max_drawdown": -0.20090877759436987,
+      "total_return": 1.216646163777321,
+      "same_asset_bh_cagr": 0.1800166106622607,
+      "same_asset_bh_sharpe": 1.0939033804081708,
+      "same_asset_bh_max_drawdown": -0.2036214813238315,
+      "spy_bh_cagr": 0.10640782288869799,
+      "spy_bh_sharpe": 0.7252579307422659
+    },
+    "wf_window_returns": [
+      0.2813145522930329,
+      0.3650364897873566
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -0.00019852986870451267,
+      0.001468611542595594
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.6228703906412183
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": false,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.9047619047619048,
+    "dsr_p_value": 0.6475980912207708,
+    "is_mcpt_p_value": 0.305,
+    "wf_mcpt_p_value": 0.46,
+    "wf_positive_windows": 2,
+    "wf_total_windows": 2,
+    "oos_total_return": 0.38311709455598963,
+    "fwd_63d_total_return": -0.13264395959543407
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/017-2026-05-14-woodshedder-roc/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/017-2026-05-14-woodshedder-roc/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/017-2026-05-14-woodshedder-roc/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/017-2026-05-14-woodshedder-roc/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/017-2026-05-14-woodshedder-roc/returns.csv"
+  ],
+  "notes": "Daily Woodshedder ROC tested. Intraday files remained physically unavailable, so no 1h/15m test was attempted."
+}

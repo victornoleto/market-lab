@@ -1,0 +1,101 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter018.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "pre_registered_benchmark": {
+      "cagr": 0.19796224016117048,
+      "mdd": -0.35122525674827454,
+      "sharpe": 0.9801774005431724,
+      "terminal_multiple": 18.622227028587883
+    }
+  },
+  "best_config": {
+    "asset": "QQQ",
+    "cycle_period": 30,
+    "name": "qqq_ehlers_c30_t15",
+    "trend_threshold": 0.015
+  },
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": true,
+      "value": 0.00010995811525824878
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 0.0,
+      "numpy_cagr": 0.12507708072499812,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-13",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 60,
+      "p_value": 0.04756068220727283,
+      "pass": true
+    },
+    "economic_sharpe_vs_benchmark": {
+      "benchmark": 0.9801774005431724,
+      "pass": true,
+      "strategy": 1.0040765442849564
+    },
+    "fwd_63d": {
+      "pass": true,
+      "return": 0.14214150975526008
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 1.0040765442849564,
+      "p_value": 0.075,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "return": 0.5501349905142752
+    },
+    "pbo": {
+      "pass": true,
+      "value": 0.3142857142857143
+    },
+    "walk_forward": {
+      "n_windows": 12,
+      "pass": true,
+      "positive_windows": 9,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.9259081798523527,
+      "p_value": 0.3,
+      "pass": false
+    }
+  },
+  "iteration": "018-2026-05-14-ehlers-cycle-mode",
+  "kill_switches": [
+    "is_mcpt",
+    "wf_mcpt"
+  ],
+  "mcpt_reps": {
+    "is_mcpt": 200,
+    "wf_mcpt": 100
+  },
+  "metrics": {
+    "cagr": 0.12507708072499812,
+    "mdd": -0.18480349952922226,
+    "sharpe": 1.0040765442849564,
+    "terminal_multiple": 6.7400861472949805
+  },
+  "n_trials": 4,
+  "notes": "Ehlers-style cycle/trend mode overlay; no post-result parameter additions.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

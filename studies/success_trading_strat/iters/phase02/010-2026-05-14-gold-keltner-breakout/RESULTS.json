@@ -1,0 +1,139 @@
+{
+  "iteration": "010-2026-05-14-gold-keltner-breakout",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_kel40_20_exit0",
+    "ticker": "xauusd",
+    "ema": 40,
+    "atr": 20,
+    "entry_mult": 2.0,
+    "exit_mult": 0.0
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "gld_kel20_15_exit0": {
+        "start": "2005-02-16",
+        "end": "2026-05-13",
+        "n_obs": 5343,
+        "cagr": 0.04381130209184958,
+        "sharpe": 0.4307858958585503,
+        "max_drawdown": -0.23143279543880924,
+        "total_return": 1.482164907213316,
+        "same_asset_bh_cagr": 0.11529401352284263,
+        "same_asset_bh_sharpe": 0.6920159541579147,
+        "same_asset_bh_max_drawdown": -0.4555501381439946,
+        "spy_bh_cagr": 0.10956501993766454,
+        "spy_bh_sharpe": 0.6420260378622865
+      },
+      "gld_kel40_20_exit0": {
+        "start": "2005-05-13",
+        "end": "2026-05-13",
+        "n_obs": 5283,
+        "cagr": 0.05509880990543525,
+        "sharpe": 0.5007298886757806,
+        "max_drawdown": -0.2522033001493029,
+        "total_return": 2.0783918394709398,
+        "same_asset_bh_cagr": 0.1172051595205208,
+        "same_asset_bh_sharpe": 0.699538719121371,
+        "same_asset_bh_max_drawdown": -0.45555013814399314,
+        "spy_bh_cagr": 0.11298546419360678,
+        "spy_bh_sharpe": 0.6567417716014827
+      },
+      "xau_kel20_15_exit0": {
+        "start": "2020-09-04",
+        "end": "2026-05-14",
+        "n_obs": 1662,
+        "cagr": 0.05384364775419881,
+        "sharpe": 0.5380966531860134,
+        "max_drawdown": -0.1626641237669354,
+        "total_return": 0.4132348669763106,
+        "same_asset_bh_cagr": 0.1436929731689338,
+        "same_asset_bh_sharpe": 0.9206975719791954,
+        "same_asset_bh_max_drawdown": -0.20362148132383207,
+        "spy_bh_cagr": 0.11689767574504595,
+        "spy_bh_sharpe": 0.7991588814735385
+      },
+      "xau_kel40_20_exit0": {
+        "start": "2021-03-15",
+        "end": "2026-05-14",
+        "n_obs": 1602,
+        "cagr": 0.08936512572640609,
+        "sharpe": 0.7824229181373357,
+        "max_drawdown": -0.18048328030404903,
+        "total_return": 0.7231260419507841,
+        "same_asset_bh_cagr": 0.16965616837569764,
+        "same_asset_bh_sharpe": 1.0586089879975302,
+        "same_asset_bh_max_drawdown": -0.20362148132383195,
+        "spy_bh_cagr": 0.11878043691086804,
+        "spy_bh_sharpe": 0.8131824222139569
+      }
+    },
+    "best": {
+      "start": "2021-03-15",
+      "end": "2026-05-14",
+      "n_obs": 1602,
+      "cagr": 0.08936512572640609,
+      "sharpe": 0.7824229181373357,
+      "max_drawdown": -0.18048328030404903,
+      "total_return": 0.7231260419507841,
+      "same_asset_bh_cagr": 0.16965616837569764,
+      "same_asset_bh_sharpe": 1.0586089879975302,
+      "same_asset_bh_max_drawdown": -0.20362148132383195,
+      "spy_bh_cagr": 0.11878043691086804,
+      "spy_bh_sharpe": 0.8131824222139569
+    },
+    "wf_window_returns": [
+      0.11688962048296236,
+      0.1536258277554865,
+      0.4474550158544184
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -0.000172649431586906,
+      0.0009546759723158066
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.7080445114176315
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": true,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.0992063492063492,
+    "dsr_p_value": 0.7390972194975607,
+    "is_mcpt_p_value": 0.5,
+    "wf_mcpt_p_value": 0.53,
+    "wf_positive_windows": 3,
+    "wf_total_windows": 3,
+    "oos_total_return": 0.17116737763551115,
+    "fwd_63d_total_return": -0.06273438639049067
+  },
+  "kill_switches": [
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/010-2026-05-14-gold-keltner-breakout/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/010-2026-05-14-gold-keltner-breakout/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/010-2026-05-14-gold-keltner-breakout/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/010-2026-05-14-gold-keltner-breakout/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/010-2026-05-14-gold-keltner-breakout/returns.csv"
+  ],
+  "notes": "Daily gold Keltner/ATR breakout tested. Intraday files remained physically unavailable, so this is daily-only. MCPT used fixed-rule close-path permutations with high/low approximated from close paths, so OHLC promotion would require stricter permutation audit."
+}

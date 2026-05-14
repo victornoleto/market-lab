@@ -1,0 +1,196 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter008.py",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "benchmark": {
+    "same_asset": {
+      "cagr": 0.14743023718330717,
+      "mdd": -0.3369994047053617,
+      "sharpe": 0.9103293726967427,
+      "terminal_multiple": 7.08966342707548
+    },
+    "spy": {
+      "cagr": 0.14743023718330717,
+      "mdd": -0.3369994047053617,
+      "sharpe": 0.9103293726967427,
+      "terminal_multiple": 7.08966342707548
+    }
+  },
+  "best_config": {
+    "lookback": 21,
+    "name": "vxx_neg21_spy",
+    "risk_asset": "SPY",
+    "signal_asset": "VXX"
+  },
+  "gates": {
+    "bootstrap": {
+      "mean_daily_ci_0_001": 6.649625625017609e-05,
+      "pass": true
+    },
+    "cross_lib": {
+      "delta": 0.0,
+      "numpy_cagr": 0.09856788658432203,
+      "pass": true
+    },
+    "dsr": false,
+    "dsr_benchmark_sharpe_periodic": 0.031731395657437586,
+    "dsr_observed_sharpe_periodic": 0.058901719683781495,
+    "dsr_p_value": 0.055399003876041686,
+    "economic_positive_cagr": true,
+    "economic_sharpe_vs_same_asset": true,
+    "fwd_stress": {
+      "pass": true,
+      "total_return": 0.13973779276938458
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.9350358124639434,
+      "p_value": 0.145,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "total_return": 0.5085123744293683
+    },
+    "pbo": false,
+    "pbo_combinations": 70,
+    "pbo_value": 0.6857142857142857,
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 10,
+      "observed": 0.96109420119033,
+      "p_value": 0.1,
+      "pass": false
+    },
+    "wf_windows": {
+      "pass": true,
+      "windows": [
+        {
+          "mdd": -0.07566338416612628,
+          "total_return": 0.09027209526735214
+        },
+        {
+          "mdd": -0.021443610189478157,
+          "total_return": 0.17724494167696636
+        },
+        {
+          "mdd": -0.08307790952368,
+          "total_return": 0.0014776283207471597
+        },
+        {
+          "mdd": -0.03947621257879563,
+          "total_return": 0.2521683124489922
+        },
+        {
+          "mdd": -0.07314414241474543,
+          "total_return": 0.34577593275081986
+        },
+        {
+          "mdd": -0.08130946815363882,
+          "total_return": 0.09662544525607553
+        },
+        {
+          "mdd": -0.2739698037497197,
+          "total_return": -0.23273530355028704
+        },
+        {
+          "mdd": -0.07768112205615074,
+          "total_return": 0.2309236993037218
+        },
+        {
+          "mdd": -0.07607383237196019,
+          "total_return": 0.157515359849006
+        },
+        {
+          "mdd": -0.0884014847343052,
+          "total_return": 0.06913784523431588
+        }
+      ]
+    }
+  },
+  "iteration": "008-2026-05-14-vxx-vol-carry-proxy",
+  "kill_switches": [
+    "is_mcpt",
+    "wf_mcpt",
+    "pbo",
+    "dsr"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "all_configs": [
+      {
+        "cagr": 0.09856788658432203,
+        "config": "vxx_neg21_spy",
+        "lookback": 21,
+        "mdd": -0.2954087786277654,
+        "name": "vxx_neg21_spy",
+        "risk_asset": "SPY",
+        "sharpe": 0.9350358124639434,
+        "signal_asset": "VXX",
+        "terminal_multiple": 3.8146903918085684
+      },
+      {
+        "cagr": 0.09092075340984662,
+        "config": "vxx_neg63_spy",
+        "lookback": 63,
+        "mdd": -0.2476503992750162,
+        "name": "vxx_neg63_spy",
+        "risk_asset": "SPY",
+        "sharpe": 0.8062867690959242,
+        "signal_asset": "VXX",
+        "terminal_multiple": 3.4037240241836337
+      },
+      {
+        "cagr": 0.11769877039928334,
+        "config": "vxx_neg63_qqq",
+        "lookback": 63,
+        "mdd": -0.3342692810700073,
+        "name": "vxx_neg63_qqq",
+        "risk_asset": "QQQ",
+        "sharpe": 0.8050053941286006,
+        "signal_asset": "VXX",
+        "terminal_multiple": 4.7883993003181144
+      },
+      {
+        "cagr": 0.09163308216796495,
+        "config": "vxx_neg126_spy",
+        "lookback": 126,
+        "mdd": -0.27514332347661563,
+        "name": "vxx_neg126_spy",
+        "risk_asset": "SPY",
+        "sharpe": 0.786107564461028,
+        "signal_asset": "VXX",
+        "terminal_multiple": 3.3606658236748386
+      }
+    ],
+    "best": {
+      "cagr": 0.09856788658432203,
+      "config": "vxx_neg21_spy",
+      "lookback": 21,
+      "mdd": -0.2954087786277654,
+      "name": "vxx_neg21_spy",
+      "risk_asset": "SPY",
+      "sharpe": 0.9350358124639434,
+      "signal_asset": "VXX",
+      "terminal_multiple": 3.8146903918085684
+    },
+    "bootstrap_mean_daily_ci_0_001": 6.649625625017609e-05,
+    "cross_lib_cagr_delta": 0.0,
+    "fwd_63d_total_return": 0.13973779276938458,
+    "oos_total_return": 0.5085123744293683,
+    "wf_n_windows": 10,
+    "wf_positive_windows": 9,
+    "wf_total_return": 1.776345957091666
+  },
+  "n_trials": 4,
+  "notes": "VXX volatility-carry proxy tested with one-bar lag. Verdict cannot promote if any hard gate fails.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

@@ -1,0 +1,167 @@
+{
+  "iteration": "023-2026-05-14-money-flow-pullback",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "gld_mfi14_os20_x50_sma200_h10",
+    "ticker": "GLD",
+    "mfi_period": 14,
+    "oversold": 20.0,
+    "exit_level": 50.0,
+    "trend_sma": 200,
+    "max_hold": 10
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_mfi14_os20_x50_sma200_h10": {
+        "start": "1993-11-16",
+        "end": "2026-05-13",
+        "n_obs": 8177,
+        "cagr": 0.017116686835007222,
+        "sharpe": 0.6264614179929769,
+        "max_drawdown": -0.08434136266593106,
+        "total_return": 0.7344831786722084,
+        "same_asset_bh_cagr": 0.10871982424389803,
+        "same_asset_bh_sharpe": 0.6442283316679763,
+        "same_asset_bh_max_drawdown": -0.552011045721585,
+        "spy_bh_cagr": 0.10871982424389803,
+        "spy_bh_sharpe": 0.6442283316679763,
+        "xau_bh_cagr": 0.03385739645721242,
+        "xau_bh_sharpe": 0.45295165161987166
+      },
+      "qqq_mfi14_os20_x50_sma200_h10": {
+        "start": "1999-12-27",
+        "end": "2026-05-13",
+        "n_obs": 6635,
+        "cagr": 0.013028969749297348,
+        "sharpe": 0.38133013510190517,
+        "max_drawdown": -0.11351909628429191,
+        "total_return": 0.40611272758212547,
+        "same_asset_bh_cagr": 0.08874684352828388,
+        "same_asset_bh_sharpe": 0.45107403537549456,
+        "same_asset_bh_max_drawdown": -0.8297113752125542,
+        "spy_bh_cagr": 0.08255409992831875,
+        "spy_bh_sharpe": 0.507276167524887,
+        "xau_bh_cagr": 0.04188874920650454,
+        "xau_bh_sharpe": 0.5028787751979389
+      },
+      "gld_mfi14_os20_x50_sma200_h10": {
+        "start": "2005-09-08",
+        "end": "2026-05-13",
+        "n_obs": 5202,
+        "cagr": 0.018951373536529204,
+        "sharpe": 0.7299136512906093,
+        "max_drawdown": -0.0487763847196091,
+        "total_return": 0.4733661599841552,
+        "same_asset_bh_cagr": 0.11641712894080247,
+        "same_asset_bh_sharpe": 0.69294299805806,
+        "same_asset_bh_max_drawdown": -0.4555501381439946,
+        "spy_bh_cagr": 0.11104623762458377,
+        "spy_bh_sharpe": 0.6447468105980405,
+        "xau_bh_cagr": 0.05373307604769351,
+        "xau_bh_sharpe": 0.5680016852116677
+      },
+      "gld_mfi20_os30_x50_sma200_h20": {
+        "start": "2005-09-08",
+        "end": "2026-05-13",
+        "n_obs": 5202,
+        "cagr": 0.0207319879524126,
+        "sharpe": 0.5271326426576387,
+        "max_drawdown": -0.1082112570661985,
+        "total_return": 0.5274375619047773,
+        "same_asset_bh_cagr": 0.11641712894080247,
+        "same_asset_bh_sharpe": 0.69294299805806,
+        "same_asset_bh_max_drawdown": -0.4555501381439946,
+        "spy_bh_cagr": 0.11104623762458377,
+        "spy_bh_sharpe": 0.6447468105980405,
+        "xau_bh_cagr": 0.05373307604769351,
+        "xau_bh_sharpe": 0.5680016852116677
+      }
+    },
+    "best": {
+      "start": "2005-09-08",
+      "end": "2026-05-13",
+      "n_obs": 5202,
+      "cagr": 0.018951373536529204,
+      "sharpe": 0.7299136512906093,
+      "max_drawdown": -0.0487763847196091,
+      "total_return": 0.4733661599841552,
+      "same_asset_bh_cagr": 0.11641712894080247,
+      "same_asset_bh_sharpe": 0.69294299805806,
+      "same_asset_bh_max_drawdown": -0.4555501381439946,
+      "spy_bh_cagr": 0.11104623762458377,
+      "spy_bh_sharpe": 0.6447468105980405,
+      "xau_bh_cagr": 0.05373307604769351,
+      "xau_bh_sharpe": 0.5680016852116677
+    },
+    "wf_window_returns": [
+      0.048039458047759664,
+      0.05159286963435594,
+      0.0012004902999591671,
+      -0.02781479763137662,
+      0.0003505235889129654,
+      0.00010504568613178833,
+      2.0440396557130924e-05,
+      0.0028021953868133664,
+      0.0009528531408893315,
+      0.013189557593109358,
+      0.024071140264273927,
+      0.013987282205100593,
+      -0.00043218815529821875,
+      -0.0006520978591628701,
+      0.037340052028511206,
+      0.05437895346408661,
+      0.04449108333144425
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      5.292168494012343e-06,
+      0.00016952439597061526
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 8.711256485450047
+  },
+  "benchmark": {
+    "primary": "GLD_buy_hold",
+    "context": "SPY_buy_hold",
+    "gold_context": "xauusd_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": true,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": true,
+    "dsr": false,
+    "wf_windows": true,
+    "oos": true,
+    "fwd_63d": true,
+    "bootstrap": true,
+    "cross_lib": true,
+    "pbo_value": 0.24603174603174602,
+    "dsr_p_value": 0.283961428032629,
+    "is_mcpt_p_value": 0.475,
+    "wf_mcpt_p_value": 0.1,
+    "wf_positive_windows": 14,
+    "wf_total_windows": 17,
+    "oos_total_return": 0.20871035206278643,
+    "fwd_63d_total_return": 0.04169720062285065
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/023-2026-05-14-money-flow-pullback/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/023-2026-05-14-money-flow-pullback/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/023-2026-05-14-money-flow-pullback/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/023-2026-05-14-money-flow-pullback/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/023-2026-05-14-money-flow-pullback/returns.csv"
+  ],
+  "notes": "Daily Money Flow Index pullback tested on SPY/QQQ/GLD. Intraday files remained unavailable; XAUUSD spot was benchmark context only because MFI requires volume."
+}

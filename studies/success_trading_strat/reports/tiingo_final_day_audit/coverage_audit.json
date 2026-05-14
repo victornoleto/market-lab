@@ -1,0 +1,780 @@
+{
+  "critical_rows": [
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:52:38",
+      "first_dt": "1993-01-29T00:00:00",
+      "frequency": "daily",
+      "group": "broad_us_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 8379,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "SPY"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:52:40",
+      "first_dt": "2000-05-19T00:00:00",
+      "frequency": "daily",
+      "group": "broad_us_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 6534,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "IVV"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:52:42",
+      "first_dt": "2010-09-09T00:00:00",
+      "frequency": "daily",
+      "group": "broad_us_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 3943,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "VOO"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:52:50",
+      "first_dt": "2001-05-31T00:00:00",
+      "frequency": "daily",
+      "group": "broad_us_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 6275,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "VTI"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:52:44",
+      "first_dt": "1999-03-10T00:00:00",
+      "frequency": "daily",
+      "group": "broad_us_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 6837,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "QQQ"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:52:48",
+      "first_dt": "1998-01-20T00:00:00",
+      "frequency": "daily",
+      "group": "broad_us_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 7123,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "DIA"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:52:46",
+      "first_dt": "2000-05-26T00:00:00",
+      "frequency": "daily",
+      "group": "broad_us_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 6529,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "IWM"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:52:52",
+      "first_dt": "2001-08-17T00:00:00",
+      "frequency": "daily",
+      "group": "international_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 6220,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "EFA"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:52:54",
+      "first_dt": "2003-04-14T00:00:00",
+      "frequency": "daily",
+      "group": "international_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 5808,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "EEM"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:52:55",
+      "first_dt": "2007-07-26T00:00:00",
+      "frequency": "daily",
+      "group": "international_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 4730,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "VEA"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:52:57",
+      "first_dt": "2005-03-10T00:00:00",
+      "frequency": "daily",
+      "group": "international_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 5328,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "VWO"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:22",
+      "first_dt": "2002-07-26T00:00:00",
+      "frequency": "daily",
+      "group": "defensive_and_macro_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 5988,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "TLT"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:24",
+      "first_dt": "2002-07-26T00:00:00",
+      "frequency": "daily",
+      "group": "defensive_and_macro_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 5988,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "IEF"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:20",
+      "first_dt": "2003-09-26T00:00:00",
+      "frequency": "daily",
+      "group": "defensive_and_macro_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 5693,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "AGG"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:26",
+      "first_dt": "2002-07-26T00:00:00",
+      "frequency": "daily",
+      "group": "defensive_and_macro_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 5988,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "LQD"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:28",
+      "first_dt": "2007-04-11T00:00:00",
+      "frequency": "daily",
+      "group": "defensive_and_macro_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 4804,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "HYG"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:30",
+      "first_dt": "2007-01-11T00:00:00",
+      "frequency": "daily",
+      "group": "defensive_and_macro_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 4865,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "SHV"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:31",
+      "first_dt": "2004-11-18T00:00:00",
+      "frequency": "daily",
+      "group": "defensive_and_macro_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 5404,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "GLD"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:33",
+      "first_dt": "2006-04-28T00:00:00",
+      "frequency": "daily",
+      "group": "defensive_and_macro_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 5042,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "SLV"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:35",
+      "first_dt": "2006-04-10T00:00:00",
+      "frequency": "daily",
+      "group": "defensive_and_macro_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 5055,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "USO"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:36",
+      "first_dt": "2007-04-18T00:00:00",
+      "frequency": "daily",
+      "group": "defensive_and_macro_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 4799,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "UNG"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:38",
+      "first_dt": "2009-01-30T00:00:00",
+      "frequency": "daily",
+      "group": "defensive_and_macro_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 4348,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "VXX"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:51",
+      "first_dt": "2006-06-21T00:00:00",
+      "frequency": "daily",
+      "group": "leveraged_and_tactical_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 5005,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "SSO"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:53",
+      "first_dt": "2006-06-21T00:00:00",
+      "frequency": "daily",
+      "group": "leveraged_and_tactical_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 5005,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "QLD"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:55",
+      "first_dt": "2009-06-25T00:00:00",
+      "frequency": "daily",
+      "group": "leveraged_and_tactical_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 4247,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "UPRO"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:57",
+      "first_dt": "2010-02-11T00:00:00",
+      "frequency": "daily",
+      "group": "leveraged_and_tactical_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 4088,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "TQQQ"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:54:02",
+      "first_dt": "2010-03-11T00:00:00",
+      "frequency": "daily",
+      "group": "leveraged_and_tactical_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 4069,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "SOXL"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:40",
+      "first_dt": "2000-06-05T00:00:00",
+      "frequency": "daily",
+      "group": "leveraged_and_tactical_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 6524,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "SMH"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:46",
+      "first_dt": "2026-04-02T00:00:00",
+      "frequency": "daily",
+      "group": "leveraged_and_tactical_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 29,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "DRAM"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:46",
+      "first_dt": "2024-12-03T00:00:00",
+      "frequency": "daily",
+      "group": "leveraged_and_tactical_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 361,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "AIS"
+    },
+    {
+      "expected_asset_class": "etf",
+      "fetched_at": "2026-05-14T02:53:48",
+      "first_dt": "2021-03-04T00:00:00",
+      "frequency": "daily",
+      "group": "leveraged_and_tactical_etfs",
+      "last_dt": "2026-05-13T00:00:00",
+      "n_bars": 606,
+      "requested_end": "2026-05-14T00:00:00",
+      "requested_start": "1990-01-01T00:00:00",
+      "status": "covered",
+      "ticker": "POW"
+    },
+    {
+      "expected_asset_class": "crypto",
+      "fetched_at": "2026-04-15T00:27:09",
+      "first_dt": "2014-01-01T00:00:00",
+      "frequency": "daily",
+      "group": "crypto_daily",
+      "last_dt": "2026-04-14T00:00:00",
+      "n_bars": 4483,
+      "requested_end": "2026-04-14T00:00:00",
+      "requested_start": "2014-01-01T00:00:00",
+      "status": "stale",
+      "ticker": "btcusd"
+    },
+    {
+      "expected_asset_class": "crypto",
+      "fetched_at": "2026-04-15T00:27:16",
+      "first_dt": "2015-08-08T00:00:00",
+      "frequency": "daily",
+      "group": "crypto_daily",
+      "last_dt": "2026-04-14T00:00:00",
+      "n_bars": 3882,
+      "requested_end": "2026-04-14T00:00:00",
+      "requested_start": "2015-08-08T00:00:00",
+      "status": "stale",
+      "ticker": "ethusd"
+    },
+    {
+      "expected_asset_class": "crypto",
+      "fetched_at": "2026-04-15T00:27:19",
+      "first_dt": "2021-08-03T00:00:00",
+      "frequency": "daily",
+      "group": "crypto_daily",
+      "last_dt": "2026-04-14T00:00:00",
+      "n_bars": 1033,
+      "requested_end": "2026-04-14T00:00:00",
+      "requested_start": "2021-08-03T00:00:00",
+      "status": "stale",
+      "ticker": "bnbusd"
+    },
+    {
+      "expected_asset_class": "crypto",
+      "fetched_at": "2026-04-17T00:08:05",
+      "first_dt": "2015-02-26T00:00:00",
+      "frequency": "daily",
+      "group": "crypto_daily",
+      "last_dt": "2026-04-14T00:00:00",
+      "n_bars": 3878,
+      "requested_end": "2026-04-14T00:00:00",
+      "requested_start": "2014-11-18T00:00:00",
+      "status": "stale",
+      "ticker": "xrpusd"
+    },
+    {
+      "expected_asset_class": "crypto",
+      "fetched_at": "2026-04-15T00:27:32",
+      "first_dt": "2017-12-29T00:00:00",
+      "frequency": "daily",
+      "group": "crypto_daily",
+      "last_dt": "2026-04-14T00:00:00",
+      "n_bars": 2993,
+      "requested_end": "2026-04-14T00:00:00",
+      "requested_start": "2017-12-29T00:00:00",
+      "status": "stale",
+      "ticker": "adausd"
+    },
+    {
+      "expected_asset_class": "crypto",
+      "fetched_at": "2026-04-15T00:27:36",
+      "first_dt": "2020-08-23T00:00:00",
+      "frequency": "daily",
+      "group": "crypto_daily",
+      "last_dt": "2026-04-14T00:00:00",
+      "n_bars": 2021,
+      "requested_end": "2026-04-14T00:00:00",
+      "requested_start": "2020-08-23T00:00:00",
+      "status": "stale",
+      "ticker": "solusd"
+    },
+    {
+      "expected_asset_class": "crypto",
+      "fetched_at": "2026-04-15T00:27:43",
+      "first_dt": "2017-03-09T00:00:00",
+      "frequency": "daily",
+      "group": "crypto_daily",
+      "last_dt": "2026-04-14T00:00:00",
+      "n_bars": 3294,
+      "requested_end": "2026-04-14T00:00:00",
+      "requested_start": "2017-03-09T00:00:00",
+      "status": "stale",
+      "ticker": "dogeusd"
+    },
+    {
+      "expected_asset_class": "crypto",
+      "fetched_at": "2026-04-15T00:27:47",
+      "first_dt": "2021-05-12T00:00:00",
+      "frequency": "daily",
+      "group": "crypto_daily",
+      "last_dt": "2026-04-14T00:00:00",
+      "n_bars": 1791,
+      "requested_end": "2026-04-14T00:00:00",
+      "requested_start": "2021-05-12T00:00:00",
+      "status": "stale",
+      "ticker": "avaxusd"
+    },
+    {
+      "expected_asset_class": "crypto",
+      "fetched_at": "2026-04-15T00:27:51",
+      "first_dt": "2019-06-07T00:00:00",
+      "frequency": "daily",
+      "group": "crypto_daily",
+      "last_dt": "2025-10-14T00:00:00",
+      "n_bars": 2300,
+      "requested_end": "2025-10-14T00:00:00",
+      "requested_start": "2019-06-07T00:00:00",
+      "status": "stale",
+      "ticker": "maticusd"
+    },
+    {
+      "expected_asset_class": "crypto",
+      "fetched_at": "2026-04-15T00:27:57",
+      "first_dt": "2017-03-09T00:00:00",
+      "frequency": "daily",
+      "group": "crypto_daily",
+      "last_dt": "2026-04-14T00:00:00",
+      "n_bars": 2692,
+      "requested_end": "2026-04-14T00:00:00",
+      "requested_start": "2017-03-09T00:00:00",
+      "status": "stale",
+      "ticker": "dotusd"
+    },
+    {
+      "expected_asset_class": "forex",
+      "fetched_at": "2026-04-18T00:51:47",
+      "first_dt": "2020-01-01T00:00:00",
+      "frequency": "daily",
+      "group": "forex_and_metals",
+      "last_dt": "2026-04-17T00:00:00",
+      "n_bars": 1957,
+      "requested_end": "2026-04-18T00:00:00",
+      "requested_start": "2020-01-01T00:00:00",
+      "status": "stale",
+      "ticker": "eurusd"
+    },
+    {
+      "expected_asset_class": "forex",
+      "fetched_at": "2026-04-18T00:51:48",
+      "first_dt": "2020-01-01T00:00:00",
+      "frequency": "daily",
+      "group": "forex_and_metals",
+      "last_dt": "2026-04-17T00:00:00",
+      "n_bars": 1957,
+      "requested_end": "2026-04-18T00:00:00",
+      "requested_start": "2020-01-01T00:00:00",
+      "status": "stale",
+      "ticker": "gbpusd"
+    },
+    {
+      "expected_asset_class": "forex",
+      "fetched_at": "2026-04-18T00:51:50",
+      "first_dt": "2020-01-01T00:00:00",
+      "frequency": "daily",
+      "group": "forex_and_metals",
+      "last_dt": "2026-04-17T00:00:00",
+      "n_bars": 1958,
+      "requested_end": "2026-04-18T00:00:00",
+      "requested_start": "2020-01-01T00:00:00",
+      "status": "stale",
+      "ticker": "usdjpy"
+    },
+    {
+      "expected_asset_class": "forex",
+      "fetched_at": "2026-04-18T00:51:51",
+      "first_dt": "2020-01-01T00:00:00",
+      "frequency": "daily",
+      "group": "forex_and_metals",
+      "last_dt": "2026-04-17T00:00:00",
+      "n_bars": 1956,
+      "requested_end": "2026-04-18T00:00:00",
+      "requested_start": "2020-01-01T00:00:00",
+      "status": "stale",
+      "ticker": "usdchf"
+    },
+    {
+      "expected_asset_class": "forex",
+      "fetched_at": "2026-04-18T00:51:53",
+      "first_dt": "2020-01-01T00:00:00",
+      "frequency": "daily",
+      "group": "forex_and_metals",
+      "last_dt": "2026-04-17T00:00:00",
+      "n_bars": 1957,
+      "requested_end": "2026-04-18T00:00:00",
+      "requested_start": "2020-01-01T00:00:00",
+      "status": "stale",
+      "ticker": "audusd"
+    },
+    {
+      "expected_asset_class": "forex",
+      "fetched_at": "2026-04-18T00:51:54",
+      "first_dt": "2020-01-01T00:00:00",
+      "frequency": "daily",
+      "group": "forex_and_metals",
+      "last_dt": "2026-04-17T00:00:00",
+      "n_bars": 1957,
+      "requested_end": "2026-04-18T00:00:00",
+      "requested_start": "2020-01-01T00:00:00",
+      "status": "stale",
+      "ticker": "usdcad"
+    },
+    {
+      "expected_asset_class": "forex",
+      "fetched_at": "2026-04-18T00:51:55",
+      "first_dt": "2020-01-01T00:00:00",
+      "frequency": "daily",
+      "group": "forex_and_metals",
+      "last_dt": "2026-04-17T00:00:00",
+      "n_bars": 1956,
+      "requested_end": "2026-04-18T00:00:00",
+      "requested_start": "2020-01-01T00:00:00",
+      "status": "stale",
+      "ticker": "nzdusd"
+    },
+    {
+      "expected_asset_class": "forex",
+      "fetched_at": "2026-04-18T00:52:01",
+      "first_dt": "2020-01-02T00:00:00",
+      "frequency": "daily",
+      "group": "forex_and_metals",
+      "last_dt": "2026-04-17T00:00:00",
+      "n_bars": 1700,
+      "requested_end": "2026-04-18T00:00:00",
+      "requested_start": "2020-01-01T00:00:00",
+      "status": "stale",
+      "ticker": "xauusd"
+    },
+    {
+      "expected_asset_class": "forex",
+      "fetched_at": "2026-04-18T00:52:02",
+      "first_dt": "2020-01-02T00:00:00",
+      "frequency": "daily",
+      "group": "forex_and_metals",
+      "last_dt": "2026-04-17T00:00:00",
+      "n_bars": 1700,
+      "requested_end": "2026-04-18T00:00:00",
+      "requested_start": "2020-01-01T00:00:00",
+      "status": "stale",
+      "ticker": "xagusd"
+    }
+  ],
+  "generated_at": "2026-05-14T03:11:18",
+  "manifest_summary": {
+    "by_asset_class": {
+      "crypto": 11,
+      "equity": 1669,
+      "etf": 74,
+      "forex": 25
+    },
+    "by_frequency": {
+      "1hour": 26,
+      "daily": 1753
+    },
+    "n_tickers": 1755,
+    "top_last_dates_by_asset_class": {
+      "crypto": [
+        [
+          "2026-04-14",
+          9
+        ],
+        [
+          "2026-04-15",
+          1
+        ],
+        [
+          "2025-10-14",
+          1
+        ]
+      ],
+      "equity": [
+        [
+          "2026-04-14",
+          905
+        ],
+        [
+          "2026-05-13",
+          369
+        ],
+        [
+          "2026-05-08",
+          267
+        ],
+        [
+          "2019-06-28",
+          2
+        ],
+        [
+          "2016-07-01",
+          2
+        ],
+        [
+          "2013-10-17",
+          2
+        ],
+        [
+          "2022-09-16",
+          2
+        ],
+        [
+          "2023-01-03",
+          1
+        ],
+        [
+          "2017-01-11",
+          1
+        ],
+        [
+          "2018-11-28",
+          1
+        ],
+        [
+          "2020-05-08",
+          1
+        ],
+        [
+          "2025-03-26",
+          1
+        ]
+      ],
+      "etf": [
+        [
+          "2026-05-13",
+          49
+        ],
+        [
+          "2026-04-14",
+          12
+        ],
+        [
+          "2026-04-30",
+          5
+        ],
+        [
+          "2026-05-08",
+          2
+        ],
+        [
+          "2026-04-20",
+          2
+        ],
+        [
+          "2024-01-05",
+          2
+        ],
+        [
+          "2023-12-29",
+          1
+        ],
+        [
+          "2026-04-15",
+          1
+        ]
+      ],
+      "forex": [
+        [
+          "2026-04-17",
+          24
+        ],
+        [
+          "2026-04-15",
+          1
+        ]
+      ]
+    }
+  },
+  "min_last_dt": "2026-05-08",
+  "storage_root": "data/tiingo"
+}

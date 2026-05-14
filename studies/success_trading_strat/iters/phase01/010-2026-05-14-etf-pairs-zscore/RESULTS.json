@@ -1,0 +1,211 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter010.py",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "benchmark": {
+    "shv": {
+      "cagr": 0.013903196134075424,
+      "mdd": -0.004504029558172529,
+      "sharpe": 5.425166656856167,
+      "terminal_multiple": 1.2487266391964127
+    },
+    "spy": {
+      "cagr": 0.14187567426915892,
+      "mdd": -0.3369994047053615,
+      "sharpe": 0.8585069595545499,
+      "terminal_multiple": 8.451452459627669
+    }
+  },
+  "best_config": {
+    "a": "TLT",
+    "b": "IEF",
+    "entry_z": 1.0,
+    "lookback": 60,
+    "name": "tlt_ief_z60_e1"
+  },
+  "gates": {
+    "bootstrap": {
+      "mean_daily_ci_0_001": -9.257227080415957e-05,
+      "pass": false
+    },
+    "cross_lib": {
+      "delta": 0.0,
+      "numpy_cagr": 0.006856953003149924,
+      "pass": true
+    },
+    "dsr": false,
+    "dsr_benchmark_sharpe_periodic": 0.03211900273556472,
+    "dsr_observed_sharpe_periodic": 0.011523498170835906,
+    "dsr_p_value": 0.9049328581812499,
+    "economic_positive_cagr": true,
+    "economic_sharpe_vs_shv": false,
+    "fwd_stress": {
+      "pass": true,
+      "total_return": 0.010234630662484756
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.18292986236123707,
+      "p_value": 0.365,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "total_return": 0.1558988424760237
+    },
+    "pbo": true,
+    "pbo_combinations": 70,
+    "pbo_value": 0.42857142857142855,
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.16359966638641074,
+      "p_value": 0.53,
+      "pass": false
+    },
+    "wf_windows": {
+      "pass": true,
+      "windows": [
+        {
+          "mdd": -0.06015770916547636,
+          "total_return": -0.060157709165476136
+        },
+        {
+          "mdd": -0.03632006593680659,
+          "total_return": 0.021451976902606917
+        },
+        {
+          "mdd": -0.06851859235416224,
+          "total_return": -0.055427670227358394
+        },
+        {
+          "mdd": -0.01734743539587913,
+          "total_return": 0.02989305328826042
+        },
+        {
+          "mdd": -0.0225108022730085,
+          "total_return": 0.018220212240960487
+        },
+        {
+          "mdd": -0.04873986988843482,
+          "total_return": 0.005994552524691166
+        },
+        {
+          "mdd": -0.05747324528194642,
+          "total_return": 0.020250920568616992
+        },
+        {
+          "mdd": -0.04478037871193852,
+          "total_return": -0.017242094161450616
+        },
+        {
+          "mdd": -0.0793996266326562,
+          "total_return": -0.02148034304263924
+        },
+        {
+          "mdd": -0.04945756988456462,
+          "total_return": 0.028406636173601285
+        },
+        {
+          "mdd": -0.017904846500699123,
+          "total_return": 0.05495767359996373
+        },
+        {
+          "mdd": -0.020583014363806607,
+          "total_return": 0.05310865292398015
+        }
+      ]
+    }
+  },
+  "iteration": "010-2026-05-14-etf-pairs-zscore",
+  "kill_switches": [
+    "economic_sharpe_vs_shv",
+    "is_mcpt",
+    "wf_mcpt",
+    "dsr",
+    "bootstrap"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "all_configs": [
+      {
+        "a": "GLD",
+        "b": "SLV",
+        "cagr": -0.01812999812378857,
+        "config": "gld_slv_z60_e1",
+        "entry_z": 1.0,
+        "lookback": 60,
+        "mdd": -0.4091657609484529,
+        "name": "gld_slv_z60_e1",
+        "sharpe": -0.14167711376694675,
+        "terminal_multiple": 0.7450238354226054
+      },
+      {
+        "a": "GLD",
+        "b": "SLV",
+        "cagr": -0.020361371022415642,
+        "config": "gld_slv_z120_e1",
+        "entry_z": 1.0,
+        "lookback": 120,
+        "mdd": -0.35032334542996824,
+        "name": "gld_slv_z120_e1",
+        "sharpe": -0.16458954238784546,
+        "terminal_multiple": 0.7217746662540117
+      },
+      {
+        "a": "TLT",
+        "b": "IEF",
+        "cagr": 0.006856953003149924,
+        "config": "tlt_ief_z60_e1",
+        "entry_z": 1.0,
+        "lookback": 60,
+        "mdd": -0.12054177805358413,
+        "name": "tlt_ief_z60_e1",
+        "sharpe": 0.18292986236123707,
+        "terminal_multiple": 1.1162037244968879
+      },
+      {
+        "a": "SPY",
+        "b": "QQQ",
+        "cagr": -0.004375184420473688,
+        "config": "spy_qqq_z60_e1",
+        "entry_z": 1.0,
+        "lookback": 60,
+        "mdd": -0.15434063395583264,
+        "name": "spy_qqq_z60_e1",
+        "sharpe": -0.1071774635867394,
+        "terminal_multiple": 0.9318910825495001
+      }
+    ],
+    "best": {
+      "a": "TLT",
+      "b": "IEF",
+      "cagr": 0.006856953003149924,
+      "config": "tlt_ief_z60_e1",
+      "entry_z": 1.0,
+      "lookback": 60,
+      "mdd": -0.12054177805358413,
+      "name": "tlt_ief_z60_e1",
+      "sharpe": 0.18292986236123707,
+      "terminal_multiple": 1.1162037244968879
+    },
+    "bootstrap_mean_daily_ci_0_001": -9.257227080415957e-05,
+    "cross_lib_cagr_delta": 0.0,
+    "fwd_63d_total_return": 0.010234630662484756,
+    "oos_total_return": 0.1558988424760237,
+    "wf_n_windows": 12,
+    "wf_positive_windows": 8,
+    "wf_total_return": 0.07234322068663612
+  },
+  "n_trials": 4,
+  "notes": "ETF pairs z-score family tested with one-bar execution lag; MCPT permutes joint daily return rows to preserve contemporaneous cross-asset structure.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

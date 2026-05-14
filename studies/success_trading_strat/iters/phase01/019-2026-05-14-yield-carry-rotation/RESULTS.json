@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter019.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "pre_registered_benchmark": {
+      "cagr": 0.09945536972466384,
+      "mdd": -0.21018319812184627,
+      "sharpe": 1.0036659749552994,
+      "terminal_multiple": 4.694476013504297
+    }
+  },
+  "best_config": {
+    "bond": "IEF",
+    "bond_tenor": "10y",
+    "equity": "SPY",
+    "kind": "equity_bond",
+    "name": "spy_div_gt_cash_ief_term"
+  },
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": true,
+      "value": 7.45774250646133e-05
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 0.0,
+      "numpy_cagr": 0.11145045102584539,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-08",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 64,
+      "p_value": 0.21940349306706675,
+      "pass": false
+    },
+    "economic_sharpe_vs_benchmark": {
+      "benchmark": 1.0036659749552994,
+      "pass": false,
+      "strategy": 0.7826081045084496
+    },
+    "fwd_63d": {
+      "pass": false,
+      "return": -0.002087533726080948
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.7826081045084496,
+      "p_value": 0.415,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "return": 0.17720151274190976
+    },
+    "pbo": {
+      "pass": false,
+      "value": 0.6285714285714286
+    },
+    "walk_forward": {
+      "n_windows": 12,
+      "pass": true,
+      "positive_windows": 11,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.746178855798944,
+      "p_value": 0.46,
+      "pass": false
+    }
+  },
+  "iteration": "019-2026-05-14-yield-carry-rotation",
+  "kill_switches": [
+    "economic_sharpe_vs_benchmark",
+    "is_mcpt",
+    "wf_mcpt",
+    "pbo",
+    "dsr",
+    "fwd_63d"
+  ],
+  "mcpt_reps": {
+    "is_mcpt": 200,
+    "wf_mcpt": 100
+  },
+  "metrics": {
+    "cagr": 0.11145045102584539,
+    "mdd": -0.3369994047053614,
+    "sharpe": 0.7826081045084496,
+    "terminal_multiple": 5.603324618291615
+  },
+  "n_trials": 4,
+  "notes": "Yield/carry rotation with one-bar-lagged signals; no post-result parameter additions.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

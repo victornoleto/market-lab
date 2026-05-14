@@ -1,0 +1,100 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter026.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "cagr": 0.14218452992803932,
+    "mdd": -0.33699940470536127,
+    "sharpe": 0.8617982772443551,
+    "terminal_multiple": 8.76128037610423
+  },
+  "best_config": "spy_xly_xlp_m126",
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": true,
+      "value": 5.748197058685202e-05
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 0.0,
+      "numpy_cagr": 0.08176293802173329,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-13",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 92,
+      "p_value": 0.2081606598297001,
+      "pass": false
+    },
+    "economic_sharpe_vs_benchmark": {
+      "benchmark": 0.8617982772443551,
+      "pass": false,
+      "strategy": 0.8254302080827283
+    },
+    "fwd_63d": {
+      "pass": true,
+      "return": 0.008526746881555747
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.8254302080827283,
+      "p_value": 0.25,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "return": 0.2183661411333806
+    },
+    "pbo": {
+      "pass": false,
+      "value": 0.8
+    },
+    "walk_forward": {
+      "n_windows": 12,
+      "pass": true,
+      "positive_windows": 10,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.7703522169004815,
+      "p_value": 0.21,
+      "pass": false
+    }
+  },
+  "iteration": "026-2026-05-14-sector-risk-appetite",
+  "kill_switches": [
+    "economic_sharpe_vs_benchmark",
+    "is_mcpt",
+    "wf_mcpt",
+    "pbo",
+    "dsr"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "bootstrap_999_mean_daily_low": 5.748197058685202e-05,
+    "cagr": 0.08176293802173329,
+    "fwd_63d_return": 0.008526746881555747,
+    "mdd": -0.16179984439449446,
+    "oos_return": 0.2183661411333806,
+    "sharpe": 0.8254302080827283,
+    "terminal_multiple": 3.6076138559407016
+  },
+  "n_trials": 4,
+  "notes": "Sector relative-strength risk-appetite filter; no local tuning after validation.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

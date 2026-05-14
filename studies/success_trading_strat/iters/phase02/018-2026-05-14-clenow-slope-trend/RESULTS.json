@@ -1,0 +1,140 @@
+{
+  "iteration": "018-2026-05-14-clenow-slope-trend",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_slope90_sma200",
+    "ticker": "xauusd",
+    "slope_window": 90,
+    "sma_window": 200,
+    "min_score": 0.0
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_slope90_sma200": {
+        "start": "1993-11-15",
+        "end": "2026-05-13",
+        "n_obs": 8178,
+        "cagr": 0.07459091042893062,
+        "sharpe": 0.6923153541574788,
+        "max_drawdown": -0.28367092193754895,
+        "total_return": 9.32559337569175,
+        "same_asset_bh_cagr": 0.10868294800569345,
+        "same_asset_bh_sharpe": 0.6441179293629339,
+        "same_asset_bh_max_drawdown": -0.5520110457215845,
+        "spy_bh_cagr": 0.10868294800569345,
+        "spy_bh_sharpe": 0.6441179293629339
+      },
+      "qqq_slope90_sma200": {
+        "start": "1999-12-23",
+        "end": "2026-05-13",
+        "n_obs": 6636,
+        "cagr": 0.07875946923558819,
+        "sharpe": 0.5621154294626466,
+        "max_drawdown": -0.515855473204303,
+        "total_return": 6.362325558699506,
+        "same_asset_bh_cagr": 0.08921710478124933,
+        "same_asset_bh_sharpe": 0.45272774917806935,
+        "same_asset_bh_max_drawdown": -0.8297113752125544,
+        "spy_bh_cagr": 0.08319103204976397,
+        "spy_bh_sharpe": 0.5103451205995051
+      },
+      "gld_slope90_sma200": {
+        "start": "2005-09-07",
+        "end": "2026-05-13",
+        "n_obs": 5203,
+        "cagr": 0.09552640153826997,
+        "sharpe": 0.7146321760350067,
+        "max_drawdown": -0.34841147896957025,
+        "total_return": 5.57788126331241,
+        "same_asset_bh_cagr": 0.11646673577141686,
+        "same_asset_bh_sharpe": 0.6933009490736473,
+        "same_asset_bh_max_drawdown": -0.45555013814399514,
+        "spy_bh_cagr": 0.11111503335613948,
+        "spy_bh_sharpe": 0.6451746698912757
+      },
+      "xau_slope90_sma200": {
+        "start": "2021-06-18",
+        "end": "2026-05-14",
+        "n_obs": 1522,
+        "cagr": 0.14573934646914055,
+        "sharpe": 0.9942502448191218,
+        "max_drawdown": -0.20090877759436943,
+        "total_return": 1.2743622687661262,
+        "same_asset_bh_cagr": 0.17359708693652953,
+        "same_asset_bh_sharpe": 1.06973427029596,
+        "same_asset_bh_max_drawdown": -0.2036214813238325,
+        "spy_bh_cagr": 0.11211789571897635,
+        "spy_bh_sharpe": 0.7652068572463501
+      }
+    },
+    "best": {
+      "start": "2021-06-18",
+      "end": "2026-05-14",
+      "n_obs": 1522,
+      "cagr": 0.14573934646914055,
+      "sharpe": 0.9942502448191218,
+      "max_drawdown": -0.20090877759436943,
+      "total_return": 1.2743622687661262,
+      "same_asset_bh_cagr": 0.17359708693652953,
+      "same_asset_bh_sharpe": 1.06973427029596,
+      "same_asset_bh_max_drawdown": -0.2036214813238325,
+      "spy_bh_cagr": 0.11211789571897635,
+      "spy_bh_sharpe": 0.7652068572463501
+    },
+    "wf_window_returns": [
+      0.28379048904414295,
+      0.2247566397176637,
+      0.41904505520351965
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -0.00014318471719724962,
+      0.0014109202127999985
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.6294979008857893
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": false,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.8849206349206349,
+    "dsr_p_value": 0.6040099489007436,
+    "is_mcpt_p_value": 0.145,
+    "wf_mcpt_p_value": 0.32,
+    "wf_positive_windows": 3,
+    "wf_total_windows": 3,
+    "oos_total_return": 0.44406997307670637,
+    "fwd_63d_total_return": -0.11535345649679596
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/018-2026-05-14-clenow-slope-trend/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/018-2026-05-14-clenow-slope-trend/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/018-2026-05-14-clenow-slope-trend/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/018-2026-05-14-clenow-slope-trend/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/018-2026-05-14-clenow-slope-trend/returns.csv"
+  ],
+  "notes": "Daily Clenow adjusted-slope trend filter tested. Intraday files remained physically unavailable, so no 1h/15m test was attempted."
+}

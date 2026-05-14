@@ -1,0 +1,97 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter023.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "cagr": 0.19252388806943332,
+    "mdd": -0.35122525674827476,
+    "sharpe": 0.9584442721708876,
+    "terminal_multiple": 17.715586936251846
+  },
+  "best_config": "qqq_obv21",
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": true,
+      "value": 0.0001988855190320344
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 0.0,
+      "numpy_cagr": 0.1409081585826628,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-13",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 80,
+      "p_value": 0.017317983246492474,
+      "pass": true
+    },
+    "economic_sharpe_vs_benchmark": {
+      "benchmark": 0.9584442721708876,
+      "pass": true,
+      "strategy": 1.1356241747549638
+    },
+    "fwd_63d": {
+      "pass": true,
+      "return": 0.22153782311225623
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 1.1356241747549638,
+      "p_value": 0.02,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "return": 0.8414404977845962
+    },
+    "pbo": {
+      "pass": true,
+      "value": 0.08571428571428572
+    },
+    "walk_forward": {
+      "n_windows": 12,
+      "pass": true,
+      "positive_windows": 9,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.9179542002066008,
+      "p_value": 0.18,
+      "pass": false
+    }
+  },
+  "iteration": "023-2026-05-14-obv-volume-confirmation",
+  "kill_switches": [
+    "is_mcpt",
+    "wf_mcpt"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "bootstrap_999_mean_daily_low": 0.0001988855190320344,
+    "cagr": 0.1409081585826628,
+    "fwd_63d_return": 0.22153782311225623,
+    "mdd": -0.21251718097355599,
+    "oos_return": 0.8414404977845962,
+    "sharpe": 1.1356241747549638,
+    "terminal_multiple": 8.602806678818592
+  },
+  "n_trials": 4,
+  "notes": "OBV volume-confirmation family with one-bar lag; no deployment authorization.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

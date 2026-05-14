@@ -1,0 +1,152 @@
+{
+  "iteration": "002-2026-05-14-gold-rsi-exhaustion",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "gld_rsi2_e5_x60_sma200",
+    "rsi_lookback": 2,
+    "entry_rsi": 5.0,
+    "exit_rsi": 60.0,
+    "trend_sma": 200
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "gld_rsi2_e5_x60_sma200": {
+        "start": "2005-09-07",
+        "end": "2026-05-13",
+        "n_obs": 5203,
+        "cagr": 0.06354853231229707,
+        "sharpe": 0.6360079599380628,
+        "max_drawdown": -0.25342942377485134,
+        "total_return": 2.5682359258277203,
+        "same_asset_bh_cagr": 0.11646673577141686,
+        "same_asset_bh_sharpe": 0.6933009490736473,
+        "same_asset_bh_max_drawdown": -0.45555013814399514,
+        "spy_bh_cagr": 0.11111503335613948,
+        "spy_bh_sharpe": 0.6451746698912757
+      },
+      "gld_rsi2_e10_x70_sma200": {
+        "start": "2005-09-07",
+        "end": "2026-05-13",
+        "n_obs": 5203,
+        "cagr": 0.06861048840833717,
+        "sharpe": 0.6354432697863956,
+        "max_drawdown": -0.27094226415665745,
+        "total_return": 2.935770717181573,
+        "same_asset_bh_cagr": 0.11646673577141686,
+        "same_asset_bh_sharpe": 0.6933009490736473,
+        "same_asset_bh_max_drawdown": -0.45555013814399514,
+        "spy_bh_cagr": 0.11111503335613948,
+        "spy_bh_sharpe": 0.6451746698912757
+      },
+      "gld_rsi3_e10_x60_sma150": {
+        "start": "2005-06-27",
+        "end": "2026-05-13",
+        "n_obs": 5253,
+        "cagr": 0.01866975483201272,
+        "sharpe": 0.2705267972177309,
+        "max_drawdown": -0.24653596418141788,
+        "total_return": 0.47047749172467235,
+        "same_asset_bh_cagr": 0.11574573235736674,
+        "same_asset_bh_sharpe": 0.6912487773560441,
+        "same_asset_bh_max_drawdown": -0.4555501381439935,
+        "spy_bh_cagr": 0.11207480968077399,
+        "spy_bh_sharpe": 0.6513709894273187
+      },
+      "gld_rsi3_e15_x70_sma150": {
+        "start": "2005-06-27",
+        "end": "2026-05-13",
+        "n_obs": 5253,
+        "cagr": 0.050384859322985864,
+        "sharpe": 0.5701410572109423,
+        "max_drawdown": -0.2405357121651105,
+        "total_return": 1.7862083301735203,
+        "same_asset_bh_cagr": 0.11574573235736674,
+        "same_asset_bh_sharpe": 0.6912487773560441,
+        "same_asset_bh_max_drawdown": -0.4555501381439935,
+        "spy_bh_cagr": 0.11207480968077399,
+        "spy_bh_sharpe": 0.6513709894273187
+      }
+    },
+    "best": {
+      "start": "2005-09-07",
+      "end": "2026-05-13",
+      "n_obs": 5203,
+      "cagr": 0.06354853231229707,
+      "sharpe": 0.6360079599380628,
+      "max_drawdown": -0.25342942377485134,
+      "total_return": 2.5682359258277203,
+      "same_asset_bh_cagr": 0.11646673577141686,
+      "same_asset_bh_sharpe": 0.6933009490736473,
+      "same_asset_bh_max_drawdown": -0.45555013814399514,
+      "spy_bh_cagr": 0.11111503335613948,
+      "spy_bh_sharpe": 0.6451746698912757
+    },
+    "wf_window_returns": [
+      0.19068707794787665,
+      0.14598662042379762,
+      0.329161574582731,
+      0.05122611910211705,
+      -0.06291626792626448,
+      -0.045106534639674956,
+      -0.048650018235965375,
+      0.0945771171503138,
+      -0.1363689967040328,
+      -0.026375600490366802,
+      0.10347678122871962,
+      0.20702523991908728,
+      0.0006040922707903906,
+      0.015916281476643146,
+      -0.00046372262356442207,
+      0.1350900060411473,
+      0.2265571068384995
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -1.1139256342099523e-05,
+      0.0005475489784223175
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 8.724418341992303
+  },
+  "benchmark": {
+    "primary": "GLD_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": false,
+    "dsr": false,
+    "wf_windows": true,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.5555555555555556,
+    "dsr_p_value": 0.37082121284027136,
+    "is_mcpt_p_value": 0.2,
+    "wf_mcpt_p_value": 0.14,
+    "wf_positive_windows": 11,
+    "wf_total_windows": 17,
+    "oos_total_return": 0.6367790720966608,
+    "fwd_63d_total_return": -0.03808515175269955
+  },
+  "kill_switches": [
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/002-2026-05-14-gold-rsi-exhaustion/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/002-2026-05-14-gold-rsi-exhaustion/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/002-2026-05-14-gold-rsi-exhaustion/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/002-2026-05-14-gold-rsi-exhaustion/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/002-2026-05-14-gold-rsi-exhaustion/returns.csv"
+  ],
+  "notes": "Daily GLD RSI exhaustion tested only; 1h physical cache remains absent, so intraday was not synthesized. MCPT used log-price paths shifted positive and converted back inside the fixed strategy to avoid invalid nonpositive arithmetic-change permutations."
+}

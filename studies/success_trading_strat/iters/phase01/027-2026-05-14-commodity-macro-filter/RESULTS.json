@@ -1,0 +1,22 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter027.py",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "benchmark": {},
+  "best_config": null,
+  "gates": {},
+  "iteration": "027-2026-05-14-commodity-macro-filter",
+  "kill_switches": [
+    "commodity_macro_data_unavailable"
+  ],
+  "mcpt_reps": {},
+  "metrics": {},
+  "n_trials": 0,
+  "notes": "Pre-registered inputs unavailable: FileNotFoundError: missing /var/www/github/finances/market-lab/data/tiingo/daily/prices/DBC.parquet.",
+  "pre_registered": true,
+  "status": "data_blocked",
+  "winner": false
+}

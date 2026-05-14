@@ -1,0 +1,139 @@
+{
+  "iteration": "003-2026-05-14-gold-cci-breakout",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_cci40_e100_x0_sma200",
+    "ticker": "xauusd",
+    "cci_lookback": 40,
+    "entry_cci": 100.0,
+    "exit_cci": 0.0,
+    "trend_sma": 200
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "gld_cci20_e100_x0_sma200": {
+        "start": "2005-09-07",
+        "end": "2026-05-13",
+        "n_obs": 5203,
+        "cagr": 0.04825938625676396,
+        "sharpe": 0.4750615810937849,
+        "max_drawdown": -0.28295625534986046,
+        "total_return": 1.6461527489643988,
+        "same_asset_bh_cagr": 0.11646673577141686,
+        "same_asset_bh_sharpe": 0.6933009490736473,
+        "same_asset_bh_max_drawdown": -0.45555013814399514,
+        "spy_bh_cagr": 0.11111503335613948,
+        "spy_bh_sharpe": 0.6451746698912757
+      },
+      "gld_cci40_e100_x0_sma200": {
+        "start": "2005-09-07",
+        "end": "2026-05-13",
+        "n_obs": 5203,
+        "cagr": 0.05867065035135721,
+        "sharpe": 0.5310940752426907,
+        "max_drawdown": -0.2600313497800547,
+        "total_return": 2.2451399181580567,
+        "same_asset_bh_cagr": 0.11646673577141686,
+        "same_asset_bh_sharpe": 0.6933009490736473,
+        "same_asset_bh_max_drawdown": -0.45555013814399514,
+        "spy_bh_cagr": 0.11111503335613948,
+        "spy_bh_sharpe": 0.6451746698912757
+      },
+      "xau_cci20_e100_x0_sma200": {
+        "start": "2021-06-18",
+        "end": "2026-05-14",
+        "n_obs": 1522,
+        "cagr": 0.06060257615565767,
+        "sharpe": 0.5758517140359991,
+        "max_drawdown": -0.18249387050924726,
+        "total_return": 0.42669145842855816,
+        "same_asset_bh_cagr": 0.17359708693652953,
+        "same_asset_bh_sharpe": 1.06973427029596,
+        "same_asset_bh_max_drawdown": -0.2036214813238325,
+        "spy_bh_cagr": 0.11211789571897635,
+        "spy_bh_sharpe": 0.7652068572463501
+      },
+      "xau_cci40_e100_x0_sma200": {
+        "start": "2021-06-18",
+        "end": "2026-05-14",
+        "n_obs": 1522,
+        "cagr": 0.09922213766512633,
+        "sharpe": 0.8202834083673752,
+        "max_drawdown": -0.14675397703567983,
+        "total_return": 0.7706926029272834,
+        "same_asset_bh_cagr": 0.17359708693652953,
+        "same_asset_bh_sharpe": 1.06973427029596,
+        "same_asset_bh_max_drawdown": -0.2036214813238325,
+        "spy_bh_cagr": 0.11211789571897635,
+        "spy_bh_sharpe": 0.7652068572463501
+      }
+    },
+    "best": {
+      "start": "2021-06-18",
+      "end": "2026-05-14",
+      "n_obs": 1522,
+      "cagr": 0.09922213766512633,
+      "sharpe": 0.8202834083673752,
+      "max_drawdown": -0.14675397703567983,
+      "total_return": 0.7706926029272834,
+      "same_asset_bh_cagr": 0.17359708693652953,
+      "same_asset_bh_sharpe": 1.06973427029596,
+      "same_asset_bh_max_drawdown": -0.2036214813238325,
+      "spy_bh_cagr": 0.11211789571897635,
+      "spy_bh_sharpe": 0.7652068572463501
+    },
+    "wf_window_returns": [
+      0.12912716106617217,
+      0.14112927313568902,
+      0.3520999766773669
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -0.0002044492449659263,
+      0.0010372024753823753
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.6294979008857893
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": true,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.21428571428571427,
+    "dsr_p_value": 0.7022693976730079,
+    "is_mcpt_p_value": 0.28,
+    "wf_mcpt_p_value": 0.45,
+    "wf_positive_windows": 3,
+    "wf_total_windows": 3,
+    "oos_total_return": 0.3322707550873696,
+    "fwd_63d_total_return": -0.06273438639049067
+  },
+  "kill_switches": [
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/003-2026-05-14-gold-cci-breakout/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/003-2026-05-14-gold-cci-breakout/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/003-2026-05-14-gold-cci-breakout/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/003-2026-05-14-gold-cci-breakout/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/003-2026-05-14-gold-cci-breakout/returns.csv"
+  ],
+  "notes": "Daily close-only CCI gold breakout tested; 1h and 15m physical cache absence was recorded and no intraday bars were synthesized."
+}

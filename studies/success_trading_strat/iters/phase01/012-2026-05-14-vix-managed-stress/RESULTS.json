@@ -1,0 +1,239 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter012.py",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "benchmark": {
+    "same_sleeve_buy_hold": {
+      "cagr": 0.18935523208640292,
+      "mdd": -0.35122525674827454,
+      "sharpe": 0.9448946573411613,
+      "sleeve": {
+        "QQQ": 1.0
+      },
+      "terminal_multiple": 16.479332589126525
+    },
+    "shv": {
+      "cagr": 0.013676200258105453,
+      "mdd": -0.004504029558172529,
+      "sharpe": 5.329376116785023,
+      "terminal_multiple": 1.2454445266435843
+    }
+  },
+  "best_config": {
+    "equity_floor": 0.5,
+    "name": "qqq_vix15_w21_floor50",
+    "sleeve": {
+      "QQQ": 1.0
+    },
+    "vix_anchor": 15.0,
+    "vix_window": 21
+  },
+  "gates": {
+    "bootstrap": {
+      "mean_daily_ci_0_001": 0.00015615180035293588,
+      "pass": true
+    },
+    "cross_lib": {
+      "delta": 0.0,
+      "numpy_cagr": 0.16572584822191416,
+      "pass": true
+    },
+    "dsr": true,
+    "dsr_benchmark_sharpe_periodic": 0.033658060061279034,
+    "dsr_observed_sharpe_periodic": 0.06010452056575331,
+    "dsr_p_value": 0.047731843863012435,
+    "economic_positive_cagr": true,
+    "economic_sharpe_vs_same_sleeve": true,
+    "fwd_diagnostics": {
+      "126d_total_return": 0.057139664643979904,
+      "252d_total_return": 0.3407504641711532
+    },
+    "fwd_stress": {
+      "pass": false,
+      "total_return": -0.00406299421623979
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.9541296845265028,
+      "p_value": 0.03,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "total_return": 1.111737040169257
+    },
+    "pbo": false,
+    "pbo_combinations": 70,
+    "pbo_value": 0.7285714285714285,
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.9298245801452574,
+      "p_value": 0.04,
+      "pass": true
+    },
+    "wf_windows": {
+      "pass": true,
+      "windows": [
+        {
+          "mdd": -0.08196588666633842,
+          "total_return": 0.17790343156577282
+        },
+        {
+          "mdd": -0.13937584002495707,
+          "total_return": 0.06805812388470911
+        },
+        {
+          "mdd": -0.09448378523444867,
+          "total_return": 0.1039991932991855
+        },
+        {
+          "mdd": -0.04880509033664038,
+          "total_return": 0.34597262189209443
+        },
+        {
+          "mdd": -0.2090094204823354,
+          "total_return": -0.006520210333433751
+        },
+        {
+          "mdd": -0.10739181772451423,
+          "total_return": 0.34737172681786044
+        },
+        {
+          "mdd": -0.24102291876337567,
+          "total_return": 0.28988411104850553
+        },
+        {
+          "mdd": -0.08935508747324894,
+          "total_return": 0.21975298578559999
+        },
+        {
+          "mdd": -0.2824670821355272,
+          "total_return": -0.2568169391559867
+        },
+        {
+          "mdd": -0.10406161937055336,
+          "total_return": 0.46175282367631754
+        },
+        {
+          "mdd": -0.13495548365208432,
+          "total_return": 0.2399838377232273
+        },
+        {
+          "mdd": -0.20413010140347987,
+          "total_return": 0.20004366485541092
+        }
+      ]
+    }
+  },
+  "iteration": "012-2026-05-14-vix-managed-stress",
+  "kill_switches": [
+    "is_mcpt",
+    "pbo",
+    "fwd_stress"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "all_configs": [
+      {
+        "avg_exposure": 0.8773332276328631,
+        "cagr": 0.15350490259714555,
+        "config": "qqq_vix15_w21_floor25",
+        "equity_floor": 0.25,
+        "mdd": -0.28990924547746955,
+        "name": "qqq_vix15_w21_floor25",
+        "sharpe": 0.9530787598756271,
+        "sleeve": {
+          "QQQ": 1.0
+        },
+        "terminal_multiple": 10.049754929762232,
+        "vix_anchor": 15.0,
+        "vix_window": 21
+      },
+      {
+        "avg_exposure": 0.9182221517552421,
+        "cagr": 0.16572584822191416,
+        "config": "qqq_vix15_w21_floor50",
+        "equity_floor": 0.5,
+        "mdd": -0.3099465994408671,
+        "name": "qqq_vix15_w21_floor50",
+        "sharpe": 0.9541296845265028,
+        "sleeve": {
+          "QQQ": 1.0
+        },
+        "terminal_multiple": 11.915538763287142,
+        "vix_anchor": 15.0,
+        "vix_window": 21
+      },
+      {
+        "avg_exposure": 0.8783019453102142,
+        "cagr": 0.15198226497892176,
+        "config": "qqq_vix15_w42_floor25",
+        "equity_floor": 0.25,
+        "mdd": -0.2764089557756535,
+        "name": "qqq_vix15_w42_floor25",
+        "sharpe": 0.924256450198523,
+        "sleeve": {
+          "QQQ": 1.0
+        },
+        "terminal_multiple": 9.722221403292611,
+        "vix_anchor": 15.0,
+        "vix_window": 42
+      },
+      {
+        "avg_exposure": 0.8773332276328631,
+        "cagr": 0.1337185325939203,
+        "config": "basket_vix15_w21_floor25",
+        "equity_floor": 0.25,
+        "mdd": -0.23683628825017133,
+        "name": "basket_vix15_w21_floor25",
+        "sharpe": 0.9332541806981294,
+        "sleeve": {
+          "QQQ": 0.5,
+          "SPY": 0.5
+        },
+        "terminal_multiple": 7.5986346237565146,
+        "vix_anchor": 15.0,
+        "vix_window": 21
+      }
+    ],
+    "best": {
+      "avg_exposure": 0.9182221517552421,
+      "cagr": 0.16572584822191416,
+      "config": "qqq_vix15_w21_floor50",
+      "equity_floor": 0.5,
+      "mdd": -0.3099465994408671,
+      "name": "qqq_vix15_w21_floor50",
+      "sharpe": 0.9541296845265028,
+      "sleeve": {
+        "QQQ": 1.0
+      },
+      "terminal_multiple": 11.915538763287142,
+      "vix_anchor": 15.0,
+      "vix_window": 21
+    },
+    "bootstrap_mean_daily_ci_0_001": 0.00015615180035293588,
+    "cross_lib_cagr_delta": 0.0,
+    "data_end": "2026-04-14",
+    "data_start": "2010-01-04",
+    "fwd_126d_total_return": 0.057139664643979904,
+    "fwd_252d_total_return": 0.3407504641711532,
+    "fwd_63d_total_return": -0.00406299421623979,
+    "n_observations": 4094,
+    "oos_total_return": 1.111737040169257,
+    "wf_n_windows": 12,
+    "wf_positive_windows": 10,
+    "wf_total_return": 5.364457977256185
+  },
+  "n_trials": 4,
+  "notes": "VIX-managed stress variants tested with floors, longer VIX averaging and SPY/QQQ basket. FWD 63d remains a hard gate.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

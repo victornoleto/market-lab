@@ -1,0 +1,162 @@
+{
+  "iteration": "011-2026-05-14-equity-stochastic-pullback",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "qqq_stoch14_os20_exit50_hold10",
+    "ticker": "QQQ",
+    "lookback": 14,
+    "oversold": 20.0,
+    "exit_level": 50.0,
+    "max_hold": 10,
+    "sma": 200
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_stoch14_os20_exit50_hold10": {
+        "start": "1993-12-20",
+        "end": "2026-05-13",
+        "n_obs": 8154,
+        "cagr": 0.04628737536479455,
+        "sharpe": 0.6616090373502027,
+        "max_drawdown": -0.1476778728749788,
+        "total_return": 3.323642051694189,
+        "same_asset_bh_cagr": 0.10883186494242114,
+        "same_asset_bh_sharpe": 0.6442315567872614,
+        "same_asset_bh_max_drawdown": -0.5520110457215848,
+        "spy_bh_cagr": 0.10883186494242114,
+        "spy_bh_sharpe": 0.6442315567872614
+      },
+      "spy_stoch21_os10_exit50_hold10": {
+        "start": "1993-12-30",
+        "end": "2026-05-13",
+        "n_obs": 8147,
+        "cagr": 0.03593169302333443,
+        "sharpe": 0.6029436319321367,
+        "max_drawdown": -0.0945840525924464,
+        "total_return": 2.130728266525981,
+        "same_asset_bh_cagr": 0.10858679614344013,
+        "same_asset_bh_sharpe": 0.6428753775400178,
+        "same_asset_bh_max_drawdown": -0.552011045721585,
+        "spy_bh_cagr": 0.10858679614344013,
+        "spy_bh_sharpe": 0.6428753775400178
+      },
+      "qqq_stoch14_os20_exit50_hold10": {
+        "start": "2000-01-28",
+        "end": "2026-05-13",
+        "n_obs": 6612,
+        "cagr": 0.06642367330092602,
+        "sharpe": 0.6985483183142288,
+        "max_drawdown": -0.24596622889254083,
+        "total_return": 4.405354197126429,
+        "same_asset_bh_cagr": 0.08890817414164132,
+        "same_asset_bh_sharpe": 0.4535687219376607,
+        "same_asset_bh_max_drawdown": -0.8297113752125546,
+        "spy_bh_cagr": 0.0846492496806841,
+        "spy_bh_sharpe": 0.5179837967080195
+      },
+      "qqq_stoch21_os10_exit50_hold10": {
+        "start": "2000-02-08",
+        "end": "2026-05-13",
+        "n_obs": 6605,
+        "cagr": 0.026133842973967036,
+        "sharpe": 0.3535795945756709,
+        "max_drawdown": -0.24596622889254083,
+        "total_return": 0.9663494177659824,
+        "same_asset_bh_cagr": 0.08551557034390278,
+        "same_asset_bh_sharpe": 0.44203591026698547,
+        "same_asset_bh_max_drawdown": -0.8297113752125541,
+        "spy_bh_cagr": 0.08412047892967456,
+        "spy_bh_sharpe": 0.5156203654849514
+      }
+    },
+    "best": {
+      "start": "2000-01-28",
+      "end": "2026-05-13",
+      "n_obs": 6612,
+      "cagr": 0.06642367330092602,
+      "sharpe": 0.6985483183142288,
+      "max_drawdown": -0.24596622889254083,
+      "total_return": 4.405354197126429,
+      "same_asset_bh_cagr": 0.08890817414164132,
+      "same_asset_bh_sharpe": 0.4535687219376607,
+      "same_asset_bh_max_drawdown": -0.8297113752125546,
+      "spy_bh_cagr": 0.0846492496806841,
+      "spy_bh_sharpe": 0.5179837967080195
+    },
+    "wf_window_returns": [
+      0.22467331580750538,
+      -0.016528324134185368,
+      0.020787757557684916,
+      0.09887691853107117,
+      0.13943065258466647,
+      0.01288642206303825,
+      0.0566989390765833,
+      0.025678674658488276,
+      0.03092222946756351,
+      0.1673494637668005,
+      0.13983906083807307,
+      0.20121246043611207,
+      0.08198793593438025,
+      0.0483186810496079,
+      0.1507882871876436,
+      -0.004349443455062274,
+      0.05571497404394621,
+      -0.023968527814584806,
+      -0.029850668902950517,
+      0.014780416507329308,
+      0.13325667012943487,
+      0.18591452476862047,
+      0.08783774719205795
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      1.3201716673260057e-05,
+      0.0005220834119102034
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 8.345018147786513
+  },
+  "benchmark": {
+    "primary": "QQQ_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": true,
+    "is_mcpt": true,
+    "wf_mcpt": true,
+    "pbo": false,
+    "dsr": false,
+    "wf_windows": true,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": true,
+    "cross_lib": true,
+    "pbo_value": 0.5119047619047619,
+    "dsr_p_value": 0.18152195152526263,
+    "is_mcpt_p_value": 0.005,
+    "wf_mcpt_p_value": 0.01,
+    "wf_positive_windows": 19,
+    "wf_total_windows": 23,
+    "oos_total_return": 0.45306304448417745,
+    "fwd_63d_total_return": -0.009985614211759364
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/011-2026-05-14-equity-stochastic-pullback/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/011-2026-05-14-equity-stochastic-pullback/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/011-2026-05-14-equity-stochastic-pullback/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/011-2026-05-14-equity-stochastic-pullback/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/011-2026-05-14-equity-stochastic-pullback/returns.csv"
+  ],
+  "notes": "Daily SPY/QQQ stochastic close-location pullback tested. Intraday files remained physically unavailable, so no 1h/15m test was attempted."
+}

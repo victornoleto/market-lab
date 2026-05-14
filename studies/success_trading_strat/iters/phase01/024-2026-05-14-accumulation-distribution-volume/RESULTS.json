@@ -1,0 +1,101 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter024.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "cagr": 0.19252388806943332,
+    "mdd": -0.35122525674827476,
+    "sharpe": 0.9584442721708876,
+    "terminal_multiple": 17.715586936251846
+  },
+  "best_config": "qqq_ad21",
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": false,
+      "value": -9.761334746900496e-05
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 0.0,
+      "numpy_cagr": 0.09205016643987496,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-13",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 84,
+      "p_value": 0.36414915091537514,
+      "pass": false
+    },
+    "economic_sharpe_vs_benchmark": {
+      "benchmark": 0.9584442721708876,
+      "pass": false,
+      "strategy": 0.6995433155322538
+    },
+    "fwd_63d": {
+      "pass": true,
+      "return": 0.045191031614418176
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.6995433155322538,
+      "p_value": 0.53,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "return": 0.5457534257142611
+    },
+    "pbo": {
+      "pass": false,
+      "value": 0.9
+    },
+    "walk_forward": {
+      "n_windows": 12,
+      "pass": true,
+      "positive_windows": 11,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.45798137087706425,
+      "p_value": 0.83,
+      "pass": false
+    }
+  },
+  "iteration": "024-2026-05-14-accumulation-distribution-volume",
+  "kill_switches": [
+    "economic_sharpe_vs_benchmark",
+    "is_mcpt",
+    "wf_mcpt",
+    "pbo",
+    "dsr",
+    "bootstrap_999_mean_daily_low"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "bootstrap_999_mean_daily_low": -9.761334746900496e-05,
+    "cagr": 0.09205016643987496,
+    "fwd_63d_return": 0.045191031614418176,
+    "mdd": -0.39935560244132684,
+    "oos_return": 0.5457534257142611,
+    "sharpe": 0.6995433155322538,
+    "terminal_multiple": 4.2104202650862135
+  },
+  "n_trials": 4,
+  "notes": "Accumulation/distribution close-location volume family with one-bar lag; no deployment authorization.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

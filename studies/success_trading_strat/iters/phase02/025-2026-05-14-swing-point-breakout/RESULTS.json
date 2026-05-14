@@ -1,0 +1,160 @@
+{
+  "iteration": "025-2026-05-14-swing-point-breakout",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_swing5_break_prev_high",
+    "ticker": "xauusd",
+    "swing_filter": 0.05
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_swing5_break_prev_high": {
+        "start": "1993-02-03",
+        "end": "2026-05-13",
+        "n_obs": 8376,
+        "cagr": 0.018775625486333825,
+        "sharpe": 0.24298411263166814,
+        "max_drawdown": -0.4147125854378635,
+        "total_return": 0.8557329298469647,
+        "same_asset_bh_cagr": 0.10823280563763849,
+        "same_asset_bh_sharpe": 0.6459512459752722,
+        "same_asset_bh_max_drawdown": -0.5520110457215845,
+        "spy_bh_cagr": 0.10823280563763849,
+        "spy_bh_sharpe": 0.6459512459752722,
+        "gld_bh_cagr": 0.07075078074166097,
+        "gld_bh_sharpe": 0.5427668003113715,
+        "xau_bh_cagr": 0.03303985750320271,
+        "xau_bh_sharpe": 0.4475349350028595
+      },
+      "qqq_swing7_break_prev_high": {
+        "start": "1999-03-15",
+        "end": "2026-05-13",
+        "n_obs": 6834,
+        "cagr": 0.026060127689547574,
+        "sharpe": 0.25743937652502236,
+        "max_drawdown": -0.5153581951159717,
+        "total_return": 1.0090743308247898,
+        "same_asset_bh_cagr": 0.1099009046436894,
+        "same_asset_bh_sharpe": 0.5215046413468035,
+        "same_asset_bh_max_drawdown": -0.8297113752125544,
+        "spy_bh_cagr": 0.08544201271018692,
+        "spy_bh_sharpe": 0.5218405514707392,
+        "gld_bh_cagr": 0.08739463772891587,
+        "gld_bh_sharpe": 0.6009599975113393,
+        "xau_bh_cagr": 0.04064453185634376,
+        "xau_bh_sharpe": 0.49549684002523414
+      },
+      "gld_swing5_break_prev_high": {
+        "start": "2004-11-23",
+        "end": "2026-05-13",
+        "n_obs": 5401,
+        "cagr": 0.053096961766349704,
+        "sharpe": 0.6055872389202644,
+        "max_drawdown": -0.25726386580510163,
+        "total_return": 2.030777212257285,
+        "same_asset_bh_cagr": 0.11117607809820429,
+        "same_asset_bh_sharpe": 0.6728549953317541,
+        "same_asset_bh_max_drawdown": -0.45555013814399636,
+        "spy_bh_cagr": 0.10993592987341216,
+        "spy_bh_sharpe": 0.6456983691627496,
+        "gld_bh_cagr": 0.11117607809820429,
+        "gld_bh_sharpe": 0.6728549953317541,
+        "xau_bh_cagr": 0.0517029750195972,
+        "xau_bh_sharpe": 0.5574282864159212
+      },
+      "xau_swing5_break_prev_high": {
+        "start": "2020-01-06",
+        "end": "2026-05-14",
+        "n_obs": 1720,
+        "cagr": 0.10058974113822083,
+        "sharpe": 1.1168191174995241,
+        "max_drawdown": -0.11133310372922967,
+        "total_return": 0.923580141081755,
+        "same_asset_bh_cagr": 0.17333328774728174,
+        "same_asset_bh_sharpe": 0.9838280870888774,
+        "same_asset_bh_max_drawdown": -0.2036214813238315,
+        "spy_bh_cagr": 0.09926407434798845,
+        "spy_bh_sharpe": 0.6828986308956548,
+        "gld_bh_cagr": 0.15310269985160185,
+        "gld_bh_sharpe": 0.9739598467181934,
+        "xau_bh_cagr": 0.17333328774728174,
+        "xau_bh_sharpe": 0.9838280870888774
+      }
+    },
+    "best": {
+      "start": "2020-01-06",
+      "end": "2026-05-14",
+      "n_obs": 1720,
+      "cagr": 0.10058974113822083,
+      "sharpe": 1.1168191174995241,
+      "max_drawdown": -0.11133310372922967,
+      "total_return": 0.923580141081755,
+      "same_asset_bh_cagr": 0.17333328774728174,
+      "same_asset_bh_sharpe": 0.9838280870888774,
+      "same_asset_bh_max_drawdown": -0.2036214813238315,
+      "spy_bh_cagr": 0.09926407434798845,
+      "spy_bh_sharpe": 0.6828986308956548,
+      "gld_bh_cagr": 0.15310269985160185,
+      "gld_bh_sharpe": 0.9739598467181934,
+      "xau_bh_cagr": 0.17333328774728174,
+      "xau_bh_sharpe": 0.9838280870888774
+    },
+    "wf_window_returns": [
+      -0.005558608823277633,
+      0.18177474981472308,
+      0.2107237689334147
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -4.191276068076344e-05,
+      0.0008096010602139576
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.9773407929448026
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold",
+    "gold_etf_context": "GLD_buy_hold",
+    "gold_spot_context": "xauusd_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": true,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": true,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.2777777777777778,
+    "dsr_p_value": 0.44095894336129804,
+    "is_mcpt_p_value": 0.08,
+    "wf_mcpt_p_value": 0.32,
+    "wf_positive_windows": 2,
+    "wf_total_windows": 3,
+    "oos_total_return": 0.409759518132095,
+    "fwd_63d_total_return": -0.10949570334562442
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/025-2026-05-14-swing-point-breakout/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/025-2026-05-14-swing-point-breakout/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/025-2026-05-14-swing-point-breakout/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/025-2026-05-14-swing-point-breakout/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/025-2026-05-14-swing-point-breakout/returns.csv"
+  ],
+  "notes": "Daily conservative swing-point breakout tested on SPY/QQQ/GLD/xauusd. Intraday files remained unavailable, so no 1h/15m hybrid was synthesized."
+}

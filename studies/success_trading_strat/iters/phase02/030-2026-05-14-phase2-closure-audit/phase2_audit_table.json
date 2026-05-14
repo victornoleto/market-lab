@@ -1,0 +1,205 @@
+[
+  {
+    "iteration": "001-2026-05-14-gold-donchian-compression",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_dc100_rv20_p30"
+  },
+  {
+    "iteration": "002-2026-05-14-gold-rsi-exhaustion",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "gld_rsi2_e5_x60_sma200"
+  },
+  {
+    "iteration": "003-2026-05-14-gold-cci-breakout",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_cci40_e100_x0_sma200"
+  },
+  {
+    "iteration": "004-2026-05-14-equity-volatility-system",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "qqq_vs20_k30"
+  },
+  {
+    "iteration": "005-2026-05-14-equity-gap-continuation",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "spy_gap10_recover"
+  },
+  {
+    "iteration": "006-2026-05-14-equity-momentum-pullback",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "spy_pb3_m2_hold5"
+  },
+  {
+    "iteration": "007-2026-05-14-equity-bollinger-reversion",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "spy_bb20_2_hold10"
+  },
+  {
+    "iteration": "008-2026-05-14-gold-macd-trend",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_macd_12_26_9"
+  },
+  {
+    "iteration": "009-2026-05-14-equity-adx-trend",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "spy_adx14_t25"
+  },
+  {
+    "iteration": "010-2026-05-14-gold-keltner-breakout",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_kel40_20_exit0"
+  },
+  {
+    "iteration": "011-2026-05-14-equity-stochastic-pullback",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "qqq_stoch14_os20_exit50_hold10"
+  },
+  {
+    "iteration": "012-2026-05-14-demark-setup-reversal",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_demark9_sma200_hold13"
+  },
+  {
+    "iteration": "013-2026-05-14-gold-relative-strength",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_rs200_m126"
+  },
+  {
+    "iteration": "014-2026-05-14-vidya-adaptive-trend",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_vidya9_30"
+  },
+  {
+    "iteration": "015-2026-05-14-bollinger-compression-breakout",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_bb20_2_rv20_p30_exit_mid"
+  },
+  {
+    "iteration": "016-2026-05-14-trix-trend-continuation",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_trix18_zero"
+  },
+  {
+    "iteration": "017-2026-05-14-woodshedder-roc",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_roc5_252_x2"
+  },
+  {
+    "iteration": "018-2026-05-14-clenow-slope-trend",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_slope90_sma200"
+  },
+  {
+    "iteration": "019-2026-05-14-force-index-volume-impulse",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "gld_fi13_z126_e05_x0_sma200_h20"
+  },
+  {
+    "iteration": "020-2026-05-14-elder-ray-triple-screen",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_eray_12_26_9_ema13_bear3_h10"
+  },
+  {
+    "iteration": "021-2026-05-14-wilder-asi-swing-breakout",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_asi20_10_h20"
+  },
+  {
+    "iteration": "022-2026-05-14-regression-channel-breakout",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_regch63_h30"
+  },
+  {
+    "iteration": "023-2026-05-14-money-flow-pullback",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "gld_mfi14_os20_x50_sma200_h10"
+  },
+  {
+    "iteration": "024-2026-05-14-dual-ma-atr-breakout",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_ma5_20_atr20_k1"
+  },
+  {
+    "iteration": "025-2026-05-14-swing-point-breakout",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_swing5_break_prev_high"
+  },
+  {
+    "iteration": "026-2026-05-14-price-density-trend-filter",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "spy_pd20_lt4_sma200"
+  },
+  {
+    "iteration": "027-2026-05-14-williams-r-exhaustion",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "qqq_wr14_os90_x50_sma200_h10"
+  },
+  {
+    "iteration": "028-2026-05-14-cmo-momentum-continuation",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "xau_cmo20_e50_x0_sma200_h20"
+  },
+  {
+    "iteration": "029-2026-05-14-fisher-cycle-reversal",
+    "status": "fail",
+    "winner": false,
+    "n_trials": 4,
+    "best_config": "spy_fisher10_reversal_sma200_h10"
+  }
+]

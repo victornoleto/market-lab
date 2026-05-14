@@ -1,0 +1,99 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter022.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "cagr": 0.19252388806943332,
+    "mdd": -0.35122525674827476,
+    "sharpe": 0.9584442721708876,
+    "terminal_multiple": 17.715586936251846
+  },
+  "best_config": "qqq_kama_er20",
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": true,
+      "value": 4.325156744351072e-05
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 0.0,
+      "numpy_cagr": 0.08629081793000504,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-13",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 76,
+      "p_value": 0.12642203169727195,
+      "pass": false
+    },
+    "economic_sharpe_vs_benchmark": {
+      "benchmark": 0.9584442721708876,
+      "pass": false,
+      "strategy": 0.8894179975963041
+    },
+    "fwd_63d": {
+      "pass": true,
+      "return": 0.18530879992049276
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.8894179975963041,
+      "p_value": 0.11,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "return": 0.6727478781432088
+    },
+    "pbo": {
+      "pass": true,
+      "value": 0.2571428571428571
+    },
+    "walk_forward": {
+      "n_windows": 12,
+      "pass": true,
+      "positive_windows": 9,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.7079539633436773,
+      "p_value": 0.52,
+      "pass": false
+    }
+  },
+  "iteration": "022-2026-05-14-kama-efficiency-regime",
+  "kill_switches": [
+    "economic_sharpe_vs_benchmark",
+    "is_mcpt",
+    "wf_mcpt",
+    "dsr"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "bootstrap_999_mean_daily_low": 4.325156744351072e-05,
+    "cagr": 0.08629081793000504,
+    "fwd_63d_return": 0.18530879992049276,
+    "mdd": -0.16570470107659108,
+    "oos_return": 0.6727478781432088,
+    "sharpe": 0.8894179975963041,
+    "terminal_multiple": 3.8621975784341105
+  },
+  "n_trials": 4,
+  "notes": "KAMA/ER adaptive-regime family with one-bar lag; no deployment authorization.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

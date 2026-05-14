@@ -1,0 +1,43 @@
+{
+  "artifacts": [
+    "studies/success_trading_strat/reports/tiingo_final_day_audit/REPORT.md",
+    "studies/success_trading_strat/reports/tiingo_final_day_audit/coverage_audit.json",
+    "data/tiingo/bulk_summary_bulk_etf_daily_20260514-0252.json",
+    "data/tiingo/bulk_summary_bulk_crypto_daily_20260514-0252.json",
+    "data/tiingo/bulk_summary_bulk_forex_daily_20260514-0252.json",
+    "data/tiingo/bulk_summary_bulk_ndx100_daily_20260514-0255.json",
+    "data/tiingo/bulk_summary_bulk_spx500_daily_20260514-0255.json",
+    "data/tiingo_backup_20260514-0311.tar.gz"
+  ],
+  "benchmark": {},
+  "best_config": null,
+  "gates": {
+    "backup_created": {
+      "pass": true,
+      "value": "data/tiingo_backup_20260514-0311.tar.gz"
+    },
+    "critical_missing_after_refresh": {
+      "pass": true,
+      "value": 0
+    },
+    "spx500_refresh_complete": {
+      "pass": false,
+      "value": "423 fetched, 23 empty, 284 errors"
+    }
+  },
+  "iteration": "001-2026-05-14-tiingo-final-day-audit",
+  "kill_switches": [],
+  "mcpt_reps": {},
+  "metrics": {
+    "backup_size_mb": 210.8,
+    "critical_covered_after_refresh": 31,
+    "critical_missing_after_refresh": 0,
+    "critical_stale_after_refresh": 19,
+    "manifest_tickers_after_backup": 1755
+  },
+  "n_trials": 0,
+  "notes": "Infrastructure-only data preservation. ETF, crypto, forex and NDX100 downloads completed with zero errors. SPX500 broad refresh was partial due API/JSON errors late in the run; many S&P tickers already had cache through 2026-05-08.",
+  "pre_registered": true,
+  "status": "infrastructure_only",
+  "winner": false
+}

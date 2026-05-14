@@ -1,0 +1,139 @@
+{
+  "iteration": "008-2026-05-14-gold-macd-trend",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_macd_12_26_9",
+    "ticker": "xauusd",
+    "fast": 12,
+    "slow": 26,
+    "signal": 9,
+    "sma_filter": null
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "gld_macd_12_26_9": {
+        "start": "2007-03-06",
+        "end": "2026-05-13",
+        "n_obs": 4829,
+        "cagr": 0.07737320473077847,
+        "sharpe": 0.6451956811700352,
+        "max_drawdown": -0.20769301454055789,
+        "total_return": 3.1708364012471684,
+        "same_asset_bh_cagr": 0.10555476904981864,
+        "same_asset_bh_sharpe": 0.6479649087730687,
+        "same_asset_bh_max_drawdown": -0.4555501381439959,
+        "spy_bh_cagr": 0.1124978845181357,
+        "spy_bh_sharpe": 0.6396073151122391
+      },
+      "gld_macd_12_26_9_sma200": {
+        "start": "2007-10-29",
+        "end": "2026-05-13",
+        "n_obs": 4664,
+        "cagr": 0.04701179054533866,
+        "sharpe": 0.4848941592335218,
+        "max_drawdown": -0.195370159751857,
+        "total_return": 1.3402509726498142,
+        "same_asset_bh_cagr": 0.0969271671041172,
+        "same_asset_bh_sharpe": 0.6014245698892274,
+        "same_asset_bh_max_drawdown": -0.4555501381439946,
+        "spy_bh_cagr": 0.10919016878880838,
+        "spy_bh_sharpe": 0.6211600906327778
+      },
+      "xau_macd_12_26_9": {
+        "start": "2020-02-24",
+        "end": "2026-05-14",
+        "n_obs": 1687,
+        "cagr": 0.12095761993513032,
+        "sharpe": 0.8747357703864216,
+        "max_drawdown": -0.17833624331327458,
+        "total_return": 1.1476925028356377,
+        "same_asset_bh_cagr": 0.16658669769607193,
+        "same_asset_bh_sharpe": 0.9477725388839584,
+        "same_asset_bh_max_drawdown": -0.20362148132383207,
+        "spy_bh_cagr": 0.10252480794642005,
+        "spy_bh_sharpe": 0.6987903391106538
+      },
+      "xau_macd_12_26_9_sma200": {
+        "start": "2021-06-18",
+        "end": "2026-05-14",
+        "n_obs": 1522,
+        "cagr": 0.0825076002717029,
+        "sharpe": 0.7528786148564938,
+        "max_drawdown": -0.17833624331327458,
+        "total_return": 0.614180263759718,
+        "same_asset_bh_cagr": 0.17359708693652953,
+        "same_asset_bh_sharpe": 1.06973427029596,
+        "same_asset_bh_max_drawdown": -0.2036214813238325,
+        "spy_bh_cagr": 0.11211789571897635,
+        "spy_bh_sharpe": 0.7652068572463501
+      }
+    },
+    "best": {
+      "start": "2020-02-24",
+      "end": "2026-05-14",
+      "n_obs": 1687,
+      "cagr": 0.12095761993513032,
+      "sharpe": 0.8747357703864216,
+      "max_drawdown": -0.17833624331327458,
+      "total_return": 1.1476925028356377,
+      "same_asset_bh_cagr": 0.16658669769607193,
+      "same_asset_bh_sharpe": 0.9477725388839584,
+      "same_asset_bh_max_drawdown": -0.20362148132383207,
+      "spy_bh_cagr": 0.10252480794642005,
+      "spy_bh_sharpe": 0.6987903391106538
+    },
+    "wf_window_returns": [
+      0.17380254431992315,
+      0.05210401944369458,
+      0.2967082117905977
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -0.00016407975627294322,
+      0.0011831866079158085
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.8052545313728858
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": true,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.0992063492063492,
+    "dsr_p_value": 0.6581065242829645,
+    "is_mcpt_p_value": 0.365,
+    "wf_mcpt_p_value": 0.31,
+    "wf_positive_windows": 3,
+    "wf_total_windows": 3,
+    "oos_total_return": 0.17745423653005066,
+    "fwd_63d_total_return": -0.0648993042778998
+  },
+  "kill_switches": [
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/008-2026-05-14-gold-macd-trend/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/008-2026-05-14-gold-macd-trend/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/008-2026-05-14-gold-macd-trend/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/008-2026-05-14-gold-macd-trend/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/008-2026-05-14-gold-macd-trend/returns.csv"
+  ],
+  "notes": "Daily gold MACD trend family tested. Intraday files remained physically unavailable, so Track B has no claim. MCPT used fixed-rule close-path permutations."
+}

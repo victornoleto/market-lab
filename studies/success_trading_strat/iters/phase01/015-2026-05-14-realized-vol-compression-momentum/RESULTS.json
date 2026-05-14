@@ -1,0 +1,104 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter015.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "pre_registered_benchmark": {
+      "cagr": 0.19087622053873088,
+      "mdd": -0.35122525674827465,
+      "sharpe": 0.9476823239005137,
+      "terminal_multiple": 14.33388414245513
+    }
+  },
+  "best_config": {
+    "asset": "QQQ",
+    "name": "qqq_rv20_p60_m63",
+    "rv_percentile_threshold": 0.6
+  },
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": false,
+      "value": -4.2766378729540795e-05
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 0.0,
+      "numpy_cagr": 0.07627489037431734,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-13",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 48,
+      "p_value": 0.28500395521344046,
+      "pass": false
+    },
+    "economic_sharpe_vs_benchmark": {
+      "benchmark": 0.9476823239005137,
+      "pass": false,
+      "strategy": 0.7274287435037886
+    },
+    "fwd_63d": {
+      "pass": true,
+      "return": 0.11139059855740796
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.7274287435037886,
+      "p_value": 0.425,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "return": 0.5960203759290374
+    },
+    "pbo": {
+      "pass": false,
+      "value": 0.5142857142857142
+    },
+    "walk_forward": {
+      "n_windows": 12,
+      "pass": true,
+      "positive_windows": 9,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.7104506516924547,
+      "p_value": 0.49,
+      "pass": false
+    }
+  },
+  "iteration": "015-2026-05-14-realized-vol-compression-momentum",
+  "kill_switches": [
+    "economic_sharpe_vs_benchmark",
+    "is_mcpt",
+    "wf_mcpt",
+    "pbo",
+    "dsr",
+    "bootstrap_999_mean_daily_low"
+  ],
+  "mcpt_reps": {
+    "is_mcpt": 200,
+    "wf_mcpt": 100
+  },
+  "metrics": {
+    "cagr": 0.07627489037431734,
+    "mdd": -0.21198664928470512,
+    "sharpe": 0.7274287435037886,
+    "terminal_multiple": 3.0660241196454963
+  },
+  "n_trials": 4,
+  "notes": "SPY/QQQ realized-volatility compression plus momentum tested on local Tiingo adjusted-close cache; no post-result parameter additions.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

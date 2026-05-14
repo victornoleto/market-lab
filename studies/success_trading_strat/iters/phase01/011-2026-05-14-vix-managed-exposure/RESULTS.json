@@ -1,0 +1,216 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter011.py",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "benchmark": {
+    "same_asset_buy_hold": {
+      "asset": "QQQ",
+      "cagr": 0.18935523208640292,
+      "mdd": -0.35122525674827454,
+      "sharpe": 0.9448946573411613,
+      "terminal_multiple": 16.479332589126525
+    },
+    "shv": {
+      "cagr": 0.013676200258105453,
+      "mdd": -0.004504029558172529,
+      "sharpe": 5.329376116785023,
+      "terminal_multiple": 1.2454445266435843
+    }
+  },
+  "best_config": {
+    "asset": "QQQ",
+    "cap": 1.0,
+    "name": "qqq_vix15_w21",
+    "vix_anchor": 15.0,
+    "vix_window": 21
+  },
+  "gates": {
+    "bootstrap": {
+      "mean_daily_ci_0_001": 0.00013818523651558723,
+      "pass": true
+    },
+    "cross_lib": {
+      "delta": 0.0,
+      "numpy_cagr": 0.14102771066935582,
+      "pass": true
+    },
+    "dsr": true,
+    "dsr_benchmark_sharpe_periodic": 0.032911030879792115,
+    "dsr_observed_sharpe_periodic": 0.05954044183602816,
+    "dsr_p_value": 0.046973006415329976,
+    "economic_positive_cagr": true,
+    "economic_sharpe_vs_same_asset": true,
+    "fwd_stress": {
+      "pass": false,
+      "total_return": -0.011800708676452554
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.9451752122942191,
+      "p_value": 0.0,
+      "pass": true
+    },
+    "oos": {
+      "pass": true,
+      "total_return": 0.9281025255661468
+    },
+    "pbo": true,
+    "pbo_combinations": 70,
+    "pbo_value": 0.4,
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.9261037921214761,
+      "p_value": 0.01,
+      "pass": true
+    },
+    "wf_windows": {
+      "pass": true,
+      "windows": [
+        {
+          "mdd": -0.08144577533957098,
+          "total_return": 0.16726339254196243
+        },
+        {
+          "mdd": -0.13934126009311254,
+          "total_return": 0.047549380574973155
+        },
+        {
+          "mdd": -0.07856757287844585,
+          "total_return": 0.09589165471590655
+        },
+        {
+          "mdd": -0.04880509033664038,
+          "total_return": 0.34597262189209443
+        },
+        {
+          "mdd": -0.1898503019668264,
+          "total_return": -0.00824545301561308
+        },
+        {
+          "mdd": -0.10494711809716195,
+          "total_return": 0.32058530171311506
+        },
+        {
+          "mdd": -0.19606927004052832,
+          "total_return": 0.14722250558426664
+        },
+        {
+          "mdd": -0.06995457685035233,
+          "total_return": 0.18408168271215608
+        },
+        {
+          "mdd": -0.24227458034480231,
+          "total_return": -0.21969011952057826
+        },
+        {
+          "mdd": -0.10032793163619713,
+          "total_return": 0.4054301358656678
+        },
+        {
+          "mdd": -0.13433399923963607,
+          "total_return": 0.222650872411166
+        },
+        {
+          "mdd": -0.18007424038874797,
+          "total_return": 0.1589377677664494
+        }
+      ]
+    }
+  },
+  "iteration": "011-2026-05-14-vix-managed-exposure",
+  "kill_switches": [
+    "fwd_stress"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "all_configs": [
+      {
+        "asset": "SPY",
+        "avg_exposure": 0.836444303510484,
+        "cagr": 0.10331257127698046,
+        "cap": 1.0,
+        "config": "spy_vix15_w21",
+        "mdd": -0.21299565663892972,
+        "name": "spy_vix15_w21",
+        "sharpe": 0.8666130673627288,
+        "terminal_multiple": 4.897276399312179,
+        "vix_anchor": 15.0,
+        "vix_window": 21
+      },
+      {
+        "asset": "SPY",
+        "avg_exposure": 0.9421519003941728,
+        "cagr": 0.1200085011394767,
+        "cap": 1.0,
+        "config": "spy_vix20_w21",
+        "mdd": -0.2558089553641181,
+        "name": "spy_vix20_w21",
+        "sharpe": 0.8521459915940178,
+        "terminal_multiple": 6.242434773344278,
+        "vix_anchor": 20.0,
+        "vix_window": 21
+      },
+      {
+        "asset": "QQQ",
+        "avg_exposure": 0.836444303510484,
+        "cagr": 0.14102771066935582,
+        "cap": 1.0,
+        "config": "qqq_vix15_w21",
+        "mdd": -0.27013710971550453,
+        "name": "qqq_vix15_w21",
+        "sharpe": 0.9451752122942191,
+        "terminal_multiple": 8.430118913754537,
+        "vix_anchor": 15.0,
+        "vix_window": 21
+      },
+      {
+        "asset": "QQQ",
+        "avg_exposure": 0.9421519003941728,
+        "cagr": 0.16309908452033506,
+        "cap": 1.0,
+        "config": "qqq_vix20_w21",
+        "mdd": -0.34316456994420863,
+        "name": "qqq_vix20_w21",
+        "sharpe": 0.9310887343614848,
+        "terminal_multiple": 11.489014397765938,
+        "vix_anchor": 20.0,
+        "vix_window": 21
+      }
+    ],
+    "best": {
+      "asset": "QQQ",
+      "avg_exposure": 0.836444303510484,
+      "cagr": 0.14102771066935582,
+      "cap": 1.0,
+      "config": "qqq_vix15_w21",
+      "mdd": -0.27013710971550453,
+      "name": "qqq_vix15_w21",
+      "sharpe": 0.9451752122942191,
+      "terminal_multiple": 8.430118913754537,
+      "vix_anchor": 15.0,
+      "vix_window": 21
+    },
+    "bootstrap_mean_daily_ci_0_001": 0.00013818523651558723,
+    "cross_lib_cagr_delta": 0.0,
+    "data_end": "2026-04-14",
+    "data_start": "2010-01-04",
+    "fwd_63d_total_return": -0.011800708676452554,
+    "n_observations": 4094,
+    "oos_total_return": 0.9281025255661468,
+    "wf_n_windows": 12,
+    "wf_positive_windows": 10,
+    "wf_total_return": 3.98638884141834
+  },
+  "n_trials": 4,
+  "notes": "VIX-managed exposure tested with one-bar-lagged previous-month VIX mean; MCPT permutes joint daily rows for ETF and VIX changes.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

@@ -1,0 +1,139 @@
+{
+  "iteration": "016-2026-05-14-trix-trend-continuation",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_trix18_zero",
+    "ticker": "xauusd",
+    "trix_len": 18,
+    "threshold": 0.0
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_trix18_zero": {
+        "start": "1993-05-14",
+        "end": "2026-05-13",
+        "n_obs": 8306,
+        "cagr": 0.07570888210579474,
+        "sharpe": 0.6723318734440307,
+        "max_drawdown": -0.3006013009010692,
+        "total_return": 10.083302161264477,
+        "same_asset_bh_cagr": 0.10927209452910214,
+        "same_asset_bh_sharpe": 0.6498210127079078,
+        "same_asset_bh_max_drawdown": -0.5520110457215854,
+        "spy_bh_cagr": 0.10927209452910214,
+        "spy_bh_sharpe": 0.6498210127079078
+      },
+      "qqq_trix18_zero": {
+        "start": "1999-06-23",
+        "end": "2026-05-13",
+        "n_obs": 6764,
+        "cagr": 0.0764937341149845,
+        "sharpe": 0.5159586821629134,
+        "max_drawdown": -0.4588369490931732,
+        "total_return": 6.231518115207825,
+        "same_asset_bh_cagr": 0.10720207481981747,
+        "same_asset_bh_sharpe": 0.5135853836165004,
+        "same_asset_bh_max_drawdown": -0.8297113752125542,
+        "spy_bh_cagr": 0.084815810090338,
+        "spy_bh_sharpe": 0.5188067185507123
+      },
+      "gld_trix18_zero": {
+        "start": "2005-03-07",
+        "end": "2026-05-13",
+        "n_obs": 5331,
+        "cagr": 0.07253949040609387,
+        "sharpe": 0.5603189815264874,
+        "max_drawdown": -0.35387253553236464,
+        "total_return": 3.399323960832329,
+        "same_asset_bh_cagr": 0.11458684465328983,
+        "same_asset_bh_sharpe": 0.6881674538325795,
+        "same_asset_bh_max_drawdown": -0.45555013814399437,
+        "spy_bh_cagr": 0.1091364999762865,
+        "spy_bh_sharpe": 0.6396921900561393
+      },
+      "xau_trix18_zero": {
+        "start": "2020-09-18",
+        "end": "2026-05-14",
+        "n_obs": 1650,
+        "cagr": 0.10993838328645067,
+        "sharpe": 0.8307417535631411,
+        "max_drawdown": -0.1944149177383958,
+        "total_return": 0.9797016511310823,
+        "same_asset_bh_cagr": 0.14301575825639912,
+        "same_asset_bh_sharpe": 0.9146999563545518,
+        "same_asset_bh_max_drawdown": -0.20362148132383218,
+        "spy_bh_cagr": 0.12259314803159538,
+        "spy_bh_sharpe": 0.8340019336675522
+      }
+    },
+    "best": {
+      "start": "2020-09-18",
+      "end": "2026-05-14",
+      "n_obs": 1650,
+      "cagr": 0.10993838328645067,
+      "sharpe": 0.8307417535631411,
+      "max_drawdown": -0.1944149177383958,
+      "total_return": 0.9797016511310823,
+      "same_asset_bh_cagr": 0.14301575825639912,
+      "same_asset_bh_sharpe": 0.9146999563545518,
+      "same_asset_bh_max_drawdown": -0.20362148132383218,
+      "spy_bh_cagr": 0.12259314803159538,
+      "spy_bh_sharpe": 0.8340019336675522
+    },
+    "wf_window_returns": [
+      0.13518965423778684,
+      0.20044908103081305,
+      0.45146845233782606
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -0.0002489146915870281,
+      0.0010679342478762057
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.3994063697145855
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": false,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.5555555555555556,
+    "dsr_p_value": 0.7105500614943754,
+    "is_mcpt_p_value": 0.175,
+    "wf_mcpt_p_value": 0.07,
+    "wf_positive_windows": 3,
+    "wf_total_windows": 3,
+    "oos_total_return": 0.3457312011501852,
+    "fwd_63d_total_return": -0.17152951022143326
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/016-2026-05-14-trix-trend-continuation/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/016-2026-05-14-trix-trend-continuation/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/016-2026-05-14-trix-trend-continuation/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/016-2026-05-14-trix-trend-continuation/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/016-2026-05-14-trix-trend-continuation/returns.csv"
+  ],
+  "notes": "Daily TRIX trend continuation tested. Intraday files remained physically unavailable, so no 1h/15m test was attempted."
+}

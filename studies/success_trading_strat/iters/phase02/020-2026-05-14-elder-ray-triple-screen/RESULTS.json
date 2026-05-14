@@ -1,0 +1,164 @@
+{
+  "iteration": "020-2026-05-14-elder-ray-triple-screen",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_eray_12_26_9_ema13_bear3_h10",
+    "ticker": "xauusd",
+    "macd_fast": 12,
+    "macd_slow": 26,
+    "macd_signal": 9,
+    "ema_len": 13,
+    "bear_rise_lookback": 3,
+    "max_hold": 10
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_eray_12_26_9_ema13_bear3_h10": {
+        "start": "1993-05-11",
+        "end": "2026-05-13",
+        "n_obs": 8309,
+        "cagr": 0.006801668686084783,
+        "sharpe": 0.1963382875046667,
+        "max_drawdown": -0.21942434078721207,
+        "total_return": 0.2504542437179238,
+        "same_asset_bh_cagr": 0.10892160029811615,
+        "same_asset_bh_sharpe": 0.6481343459228325,
+        "same_asset_bh_max_drawdown": -0.5520110457215848,
+        "spy_bh_cagr": 0.10892160029811615,
+        "spy_bh_sharpe": 0.6481343459228325,
+        "gld_bh_cagr": 0.0713411675206792,
+        "gld_bh_sharpe": 0.5449530255077397,
+        "xau_bh_cagr": 0.03331066491492507,
+        "xau_bh_sharpe": 0.4493368951042832
+      },
+      "qqq_eray_12_26_9_ema13_bear3_h10": {
+        "start": "1999-06-18",
+        "end": "2026-05-13",
+        "n_obs": 6767,
+        "cagr": 0.006989714490975629,
+        "sharpe": 0.16029958740979763,
+        "max_drawdown": -0.1854294876856183,
+        "total_return": 0.20567924099949786,
+        "same_asset_bh_cagr": 0.10730229942986202,
+        "same_asset_bh_sharpe": 0.513824409062038,
+        "same_asset_bh_max_drawdown": -0.8297113752125543,
+        "spy_bh_cagr": 0.08463474656180825,
+        "spy_bh_sharpe": 0.517964758032863,
+        "gld_bh_cagr": 0.08829706068002596,
+        "gld_bh_sharpe": 0.6039315671134973,
+        "xau_bh_cagr": 0.041055103443648155,
+        "xau_bh_sharpe": 0.4979457941420909
+      },
+      "gld_eray_12_26_9_ema13_bear3_h10": {
+        "start": "2005-03-02",
+        "end": "2026-05-13",
+        "n_obs": 5334,
+        "cagr": 0.013071661476553365,
+        "sharpe": 0.42453492822685573,
+        "max_drawdown": -0.15689255499964783,
+        "total_return": 0.3163868525910112,
+        "same_asset_bh_cagr": 0.11471342400239881,
+        "same_asset_bh_sharpe": 0.6888232112602558,
+        "same_asset_bh_max_drawdown": -0.45555013814399226,
+        "spy_bh_cagr": 0.109716413913024,
+        "spy_bh_sharpe": 0.6424648003246114,
+        "gld_bh_cagr": 0.11471342400239881,
+        "gld_bh_sharpe": 0.6888232112602558,
+        "xau_bh_cagr": 0.05236913018184142,
+        "xau_bh_sharpe": 0.5609219623311031
+      },
+      "xau_eray_12_26_9_ema13_bear3_h10": {
+        "start": "2020-09-15",
+        "end": "2026-05-14",
+        "n_obs": 1653,
+        "cagr": 0.028509415326132492,
+        "sharpe": 3.105920442475095,
+        "max_drawdown": -0.010346806243301754,
+        "total_return": 0.2024871637299741,
+        "same_asset_bh_cagr": 0.14184475212316716,
+        "same_asset_bh_sharpe": 0.9085759476643497,
+        "same_asset_bh_max_drawdown": -0.20362148132383184,
+        "spy_bh_cagr": 0.12102869960785156,
+        "spy_bh_sharpe": 0.8249415815741895,
+        "gld_bh_cagr": 0.14679293219833833,
+        "gld_bh_sharpe": 0.9388245801574367,
+        "xau_bh_cagr": 0.14184475212316716,
+        "xau_bh_sharpe": 0.9085759476643497
+      }
+    },
+    "best": {
+      "start": "2020-09-15",
+      "end": "2026-05-14",
+      "n_obs": 1653,
+      "cagr": 0.028509415326132492,
+      "sharpe": 3.105920442475095,
+      "max_drawdown": -0.010346806243301754,
+      "total_return": 0.2024871637299741,
+      "same_asset_bh_cagr": 0.14184475212316716,
+      "same_asset_bh_sharpe": 0.9085759476643497,
+      "same_asset_bh_max_drawdown": -0.20362148132383184,
+      "spy_bh_cagr": 0.12102869960785156,
+      "spy_bh_sharpe": 0.8249415815741895,
+      "gld_bh_cagr": 0.14679293219833833,
+      "gld_bh_sharpe": 0.9388245801574367,
+      "xau_bh_cagr": 0.14184475212316716,
+      "xau_bh_sharpe": 0.9085759476643497
+    },
+    "wf_window_returns": [
+      0.037648772028076705,
+      0.04043504277087506,
+      0.03366386977386071
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      7.572274164021034e-05,
+      0.00016249623654677003
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.3871234724322572
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold",
+    "gold_context": "GLD_and_xauusd_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": true,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": true,
+    "dsr": true,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": true,
+    "bootstrap": true,
+    "cross_lib": true,
+    "pbo_value": 0.30158730158730157,
+    "dsr_p_value": 0.0008145014810081452,
+    "is_mcpt_p_value": 0.87,
+    "wf_mcpt_p_value": 0.92,
+    "wf_positive_windows": 3,
+    "wf_total_windows": 3,
+    "oos_total_return": 0.04152595897739242,
+    "fwd_63d_total_return": 0.0068822608366998494
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/020-2026-05-14-elder-ray-triple-screen/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/020-2026-05-14-elder-ray-triple-screen/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/020-2026-05-14-elder-ray-triple-screen/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/020-2026-05-14-elder-ray-triple-screen/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/020-2026-05-14-elder-ray-triple-screen/returns.csv"
+  ],
+  "notes": "Daily Elder-Ray Triple Screen proxy tested on SPY/QQQ/GLD/xauusd. Intraday 1h/15m files remained unavailable, so no Track B hybrid was synthesized."
+}

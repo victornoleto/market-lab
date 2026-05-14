@@ -1,0 +1,150 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter005.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "spy": {
+      "cagr": 0.1186051107752013,
+      "mdd": -0.5070396069942154,
+      "sharpe": 0.6646845201385934,
+      "terminal_multiple": 7.46606550269674
+    },
+    "static_60_40_spy_ief": {
+      "cagr": 0.08835336865133314,
+      "mdd": -0.2978593009770186,
+      "sharpe": 0.7984672605801403,
+      "terminal_multiple": 4.565875511721588
+    }
+  },
+  "best_config": {
+    "name": "vt_35spy_15qqq_30ief_20gld",
+    "weights": {
+      "GLD": 0.2,
+      "IEF": 0.3,
+      "QQQ": 0.15,
+      "SPY": 0.35
+    }
+  },
+  "gates": {
+    "bootstrap": true,
+    "cross_lib": false,
+    "dsr": true,
+    "economic_positive_cagr": true,
+    "economic_sharpe_vs_6040": true,
+    "fwd_stress": true,
+    "is_mcpt": false,
+    "oos": true,
+    "pbo": false,
+    "wf_mcpt": false,
+    "wf_windows": true
+  },
+  "iteration": "005-2026-05-14-vol-target-static-sleeves",
+  "kill_switches": [
+    "is_mcpt",
+    "wf_mcpt",
+    "pbo",
+    "cross_lib"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "best": {
+      "cagr": 0.10394782648946865,
+      "config": "vt_35spy_15qqq_30ief_20gld",
+      "mdd": -0.2034273217293433,
+      "sharpe": 1.00490575219366,
+      "terminal_multiple": 5.893143081037964,
+      "weights": {
+        "GLD": 0.2,
+        "IEF": 0.3,
+        "QQQ": 0.15,
+        "SPY": 0.35
+      }
+    },
+    "bootstrap_mean_ci_0_1pct_low": 0.00015055286292592514,
+    "configs": [
+      {
+        "cagr": 0.0920369603448441,
+        "config": "vt_60spy_40ief",
+        "mdd": -0.18206585828458222,
+        "sharpe": 0.896925079214077,
+        "terminal_multiple": 4.851145568723822,
+        "weights": {
+          "IEF": 0.4,
+          "SPY": 0.6
+        }
+      },
+      {
+        "cagr": 0.09774731759281119,
+        "config": "vt_45spy_35ief_20gld",
+        "mdd": -0.1945799816120103,
+        "sharpe": 0.9748622442514884,
+        "terminal_multiple": 5.326860725672133,
+        "weights": {
+          "GLD": 0.2,
+          "IEF": 0.35,
+          "SPY": 0.45
+        }
+      },
+      {
+        "cagr": 0.10282325967081474,
+        "config": "vt_40spy_20qqq_20ief_20gld",
+        "mdd": -0.20199663924703948,
+        "sharpe": 0.9740315639898776,
+        "terminal_multiple": 5.786390272780517,
+        "weights": {
+          "GLD": 0.2,
+          "IEF": 0.2,
+          "QQQ": 0.2,
+          "SPY": 0.4
+        }
+      },
+      {
+        "cagr": 0.10394782648946865,
+        "config": "vt_35spy_15qqq_30ief_20gld",
+        "mdd": -0.2034273217293433,
+        "sharpe": 1.00490575219366,
+        "terminal_multiple": 5.893143081037964,
+        "weights": {
+          "GLD": 0.2,
+          "IEF": 0.3,
+          "QQQ": 0.15,
+          "SPY": 0.35
+        }
+      }
+    ],
+    "date_end": "2026-05-13",
+    "date_start": "2008-05-27",
+    "dsr_observed_sharpe_periodic": 0.06330311217530296,
+    "dsr_p_value": 0.005326081224568013,
+    "fwd_63d_total_return": 0.019298504271527017,
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 1.00490575219366,
+      "p_value": 0.12
+    },
+    "oos_total_return": 0.8888485745768044,
+    "pbo": 0.6571428571428571,
+    "pbo_combinations": 70,
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 14,
+      "observed": 1.1072384073129842,
+      "p_value": 0.43
+    },
+    "wf_positive_windows": 11,
+    "wf_total_windows": 14
+  },
+  "n_trials": 4,
+  "notes": "Volatility-targeted static sleeves were tested as a non-momentum mechanism. Cross-lib was not computed by design, so winner promotion was impossible.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

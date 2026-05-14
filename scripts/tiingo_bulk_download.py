@@ -10,6 +10,7 @@ Buckets (``--bucket``)
 
 * ``spx500``  — current SPX 500 ∪ historical SPX 500 at ``--start``
                 (Wikipedia point-in-time, includes delistings up to today).
+* ``ndx100``  — current Nasdaq-100 constituents (Wikipedia snapshot).
 * ``spx400``  — current SP MidCap 400 (Wikipedia snapshot).
 * ``spx600``  — current SP SmallCap 600 (Wikipedia snapshot).
 * ``etf``     — broad/sector/bond/commodity ETFs (32 hand-picked).
@@ -73,12 +74,14 @@ ETF_TICKERS = [
     "AGG", "TLT", "IEF", "LQD", "HYG", "SHV",
     # Commodities / volatility
     "GLD", "SLV", "USO", "UNG", "VXX",
+    # Semiconductors / AI / crypto-linked tactical ETFs for final-day cache audit.
+    "SMH", "SOXX", "XSD", "SOXQ", "DRAM", "AIS", "POW", "IBIT", "ETHA",
     # Leveraged ETFs — Plano B Path B LETF rotation universe
     # [leverage_for_the_long_run, ch.2]. Inceptions: SSO/QLD 2006-06-21,
     # UPRO 2009-06-23, TQQQ 2010-02-09. Tiingo serves these as standard
     # daily OHLCV — previously missing from bulk cache so reference_prices.py
     # fell back to yfinance (unstable adjusted-close causes Stage-2 drift).
-    "SSO", "QLD", "UPRO", "TQQQ",
+    "SSO", "QLD", "UPRO", "TQQQ", "SPXL", "TECL", "SOXL",
 ]
 
 # Tiingo does NOT serve index prices directly (^GSPC, ^IXIC, ^DJI, ^RUT,
@@ -118,7 +121,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--bucket",
         required=True,
         choices=[
-            "spx500", "spx400", "spx600", "etf", "index",
+            "spx500", "ndx100", "spx400", "spx600", "etf", "index",
             "crypto", "forex", "all",
         ],
     )
@@ -202,9 +205,33 @@ def _resolve_spx400_or_600(which: str) -> list[str]:
     return sorted(df[symbol_col].dropna().astype(str).unique())
 
 
+def _resolve_ndx100() -> list[str]:
+    """Wikipedia snapshot of current Nasdaq-100 constituents."""
+    import io
+    import pandas as pd
+    import urllib.request
+
+    req = urllib.request.Request(
+        "https://en.wikipedia.org/wiki/Nasdaq-100",
+        headers={"User-Agent": "market-lab/0.1 (research; +github.com)"},
+    )
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        html = resp.read().decode("utf-8")
+    tables = pd.read_html(io.StringIO(html))
+    for df in tables:
+        symbol_col = next(
+            (c for c in df.columns if str(c).lower() in {"ticker", "symbol"}),
+            None,
+        )
+        if symbol_col is not None and len(df) >= 90:
+            return sorted(df[symbol_col].dropna().astype(str).unique())
+    raise ValueError("could not find Nasdaq-100 ticker table on Wikipedia")
+
+
 # (bucket → (resolver, asset_class))
 _RESOLVERS: dict[str, tuple[Callable[[date], list[str]], str]] = {
     "spx500":  (lambda s: _resolve_spx500(s), "equity"),
+    "ndx100":  (lambda s: _resolve_ndx100(), "equity"),
     "spx400":  (lambda s: _resolve_spx400_or_600("spx400"), "equity"),
     "spx600":  (lambda s: _resolve_spx400_or_600("spx600"), "equity"),
     "etf":     (lambda s: ETF_TICKERS, "etf"),
@@ -219,7 +246,7 @@ def _resolve_bucket(bucket: str, start: date) -> list[tuple[str, str]]:
     if bucket == "all":
         out: list[tuple[str, str]] = []
         seen: set[str] = set()
-        for sub in ("spx500", "spx400", "spx600", "etf", "index", "crypto", "forex"):
+        for sub in ("spx500", "ndx100", "spx400", "spx600", "etf", "index", "crypto", "forex"):
             for t, ac in _resolve_bucket(sub, start):
                 if t not in seen:
                     out.append((t, ac))

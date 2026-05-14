@@ -1,0 +1,18 @@
+{
+  "iteration": "030-2026-05-14-study-closure-audit",
+  "audit_pass": false,
+  "iteration_dirs_count": 30,
+  "prior_results_parsed": 29,
+  "status_counts_prior": {
+    "infrastructure_only": 1,
+    "unknown": 1,
+    "fail": 25,
+    "data_blocked": 2
+  },
+  "missing_artifacts": {},
+  "winners_prior": [],
+  "prior_preregistered_all": false,
+  "summed_prior_n_trials": 100,
+  "expected_prior_n_trials": 100,
+  "target_total_iterations_after": 30
+}

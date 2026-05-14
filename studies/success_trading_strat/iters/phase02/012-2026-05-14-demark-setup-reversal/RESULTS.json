@@ -1,0 +1,140 @@
+{
+  "iteration": "012-2026-05-14-demark-setup-reversal",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "xau_demark9_sma200_hold13",
+    "ticker": "xauusd",
+    "setup_count": 9,
+    "compare_lag": 4,
+    "max_hold": 13,
+    "sma": 200
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_demark9_sma200_hold13": {
+        "start": "1993-12-22",
+        "end": "2026-05-13",
+        "n_obs": 8152,
+        "cagr": 0.011958686701289523,
+        "sharpe": 0.7434638340009422,
+        "max_drawdown": -0.05810117063110576,
+        "total_return": 0.468966611567456,
+        "same_asset_bh_cagr": 0.10892909321370103,
+        "same_asset_bh_sharpe": 0.6446458059787081,
+        "same_asset_bh_max_drawdown": -0.5520110457215841,
+        "spy_bh_cagr": 0.10892909321370103,
+        "spy_bh_sharpe": 0.6446458059787081
+      },
+      "qqq_demark9_sma200_hold13": {
+        "start": "2000-02-01",
+        "end": "2026-05-13",
+        "n_obs": 6610,
+        "cagr": 0.015659841310332823,
+        "sharpe": 0.7944190756173067,
+        "max_drawdown": -0.04804211227162036,
+        "total_return": 0.503171322938893,
+        "same_asset_bh_cagr": 0.08932784997510823,
+        "same_asset_bh_sharpe": 0.4552159511195814,
+        "same_asset_bh_max_drawdown": -0.8297113752125547,
+        "spy_bh_cagr": 0.08487914174634215,
+        "spy_bh_sharpe": 0.5193203425039541
+      },
+      "gld_demark9_sma200_hold13": {
+        "start": "2005-10-13",
+        "end": "2026-05-13",
+        "n_obs": 5177,
+        "cagr": 0.01717428483630501,
+        "sharpe": 0.6805448692805749,
+        "max_drawdown": -0.03898188147001069,
+        "total_return": 0.41882210156413335,
+        "same_asset_bh_cagr": 0.11400881172844479,
+        "same_asset_bh_sharpe": 0.6806775592517285,
+        "same_asset_bh_max_drawdown": -0.45555013814399536,
+        "spy_bh_cagr": 0.11426057806510936,
+        "spy_bh_sharpe": 0.6590424301542468
+      },
+      "xau_demark9_sma200_hold13": {
+        "start": "2021-07-20",
+        "end": "2026-05-14",
+        "n_obs": 1496,
+        "cagr": 0.033836789281233015,
+        "sharpe": 1.511645954615159,
+        "max_drawdown": -0.023292913251474423,
+        "total_return": 0.21841239696873482,
+        "same_asset_bh_cagr": 0.17304707752586457,
+        "same_asset_bh_sharpe": 1.0605954843198822,
+        "same_asset_bh_max_drawdown": -0.2036214813238325,
+        "spy_bh_cagr": 0.11222451387439758,
+        "spy_bh_sharpe": 0.7628384207844628
+      }
+    },
+    "best": {
+      "start": "2021-07-20",
+      "end": "2026-05-14",
+      "n_obs": 1496,
+      "cagr": 0.033836789281233015,
+      "sharpe": 1.511645954615159,
+      "max_drawdown": -0.023292913251474423,
+      "total_return": 0.21841239696873482,
+      "same_asset_bh_cagr": 0.17304707752586457,
+      "same_asset_bh_sharpe": 1.0605954843198822,
+      "same_asset_bh_max_drawdown": -0.2036214813238325,
+      "spy_bh_cagr": 0.11222451387439758,
+      "spy_bh_sharpe": 0.7628384207844628
+    },
+    "wf_window_returns": [
+      0.07523711328936122,
+      0.03515423575972276
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      2.8006561381599575e-05,
+      0.00025027170877217484
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 1.5792394973406947
+  },
+  "benchmark": {
+    "primary": "xauusd_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_cagr_vs_same_asset": false,
+    "economic_sharpe_vs_same_asset": true,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": false,
+    "dsr": false,
+    "wf_windows": false,
+    "oos": true,
+    "fwd_63d": true,
+    "bootstrap": true,
+    "cross_lib": true,
+    "pbo_value": 0.7301587301587301,
+    "dsr_p_value": 0.1482860873809665,
+    "is_mcpt_p_value": 0.46,
+    "wf_mcpt_p_value": 0.34,
+    "wf_positive_windows": 2,
+    "wf_total_windows": 2,
+    "oos_total_return": 0.05091814184974597,
+    "fwd_63d_total_return": 0.02330639817304858
+  },
+  "kill_switches": [
+    "CAGR <= same-asset buy-and-hold",
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/012-2026-05-14-demark-setup-reversal/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/012-2026-05-14-demark-setup-reversal/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/012-2026-05-14-demark-setup-reversal/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/012-2026-05-14-demark-setup-reversal/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/012-2026-05-14-demark-setup-reversal/returns.csv"
+  ],
+  "notes": "Daily DeMark setup reversal tested. Intraday files remained physically unavailable, so no 1h/15m test was attempted."
+}

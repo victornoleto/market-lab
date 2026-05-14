@@ -1,0 +1,22 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter007.py",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "benchmark": {},
+  "best_config": null,
+  "gates": {},
+  "iteration": "007-2026-05-14-vol-carry-proxy",
+  "kill_switches": [
+    "required_data_missing"
+  ],
+  "mcpt_reps": {},
+  "metrics": {},
+  "n_trials": 0,
+  "notes": "Pre-registered VIXY signal data unavailable: missing /var/www/github/finances/market-lab/data/tiingo/daily/prices/VIXY.parquet. Conservative handling: do not substitute VXX after pre-registration.",
+  "pre_registered": true,
+  "status": "data_blocked",
+  "winner": false
+}

@@ -1,0 +1,150 @@
+{
+  "iteration": "007-2026-05-14-equity-bollinger-reversion",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 4,
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "best_config": {
+    "name": "spy_bb20_2_hold10",
+    "ticker": "SPY",
+    "band_window": 20,
+    "band_sigma": 2.0,
+    "max_hold": 10
+  },
+  "winner": false,
+  "metrics": {
+    "by_config": {
+      "spy_bb20_2_hold10": {
+        "start": "2007-10-29",
+        "end": "2026-05-13",
+        "n_obs": 4664,
+        "cagr": 0.03377465099223742,
+        "sharpe": 0.5511686628755345,
+        "max_drawdown": -0.17173013801968906,
+        "total_return": 0.8492398647203603,
+        "same_asset_bh_cagr": 0.10919016878880838,
+        "same_asset_bh_sharpe": 0.6211600906327778,
+        "same_asset_bh_max_drawdown": -0.546709909516699,
+        "spy_bh_cagr": 0.10919016878880838,
+        "spy_bh_sharpe": 0.6211600906327778
+      },
+      "spy_bb30_2_hold15": {
+        "start": "2007-10-29",
+        "end": "2026-05-13",
+        "n_obs": 4664,
+        "cagr": 0.02698259798928193,
+        "sharpe": 0.3902866554877889,
+        "max_drawdown": -0.24049948808149824,
+        "total_return": 0.636849824355646,
+        "same_asset_bh_cagr": 0.10919016878880838,
+        "same_asset_bh_sharpe": 0.6211600906327778,
+        "same_asset_bh_max_drawdown": -0.546709909516699,
+        "spy_bh_cagr": 0.10919016878880838,
+        "spy_bh_sharpe": 0.6211600906327778
+      },
+      "qqq_bb20_2_hold10": {
+        "start": "2007-10-29",
+        "end": "2026-05-13",
+        "n_obs": 4664,
+        "cagr": 0.03480648850098267,
+        "sharpe": 0.44655376578992606,
+        "max_drawdown": -0.12959383670903457,
+        "total_return": 0.8837014788373108,
+        "same_asset_bh_cagr": 0.15923236326104484,
+        "same_asset_bh_sharpe": 0.7714235103139356,
+        "same_asset_bh_max_drawdown": -0.5340553078900394,
+        "spy_bh_cagr": 0.10919016878880838,
+        "spy_bh_sharpe": 0.6211600906327778
+      },
+      "qqq_bb30_2_hold15": {
+        "start": "2007-10-29",
+        "end": "2026-05-13",
+        "n_obs": 4664,
+        "cagr": 0.035080077907597484,
+        "sharpe": 0.42158693292321314,
+        "max_drawdown": -0.2298043807211515,
+        "total_return": 0.8929402808365681,
+        "same_asset_bh_cagr": 0.15923236326104484,
+        "same_asset_bh_sharpe": 0.7714235103139356,
+        "same_asset_bh_max_drawdown": -0.5340553078900394,
+        "spy_bh_cagr": 0.10919016878880838,
+        "spy_bh_sharpe": 0.6211600906327778
+      }
+    },
+    "best": {
+      "start": "2007-10-29",
+      "end": "2026-05-13",
+      "n_obs": 4664,
+      "cagr": 0.03377465099223742,
+      "sharpe": 0.5511686628755345,
+      "max_drawdown": -0.17173013801968906,
+      "total_return": 0.8492398647203603,
+      "same_asset_bh_cagr": 0.10919016878880838,
+      "same_asset_bh_sharpe": 0.6211600906327778,
+      "same_asset_bh_max_drawdown": -0.546709909516699,
+      "spy_bh_cagr": 0.10919016878880838,
+      "spy_bh_sharpe": 0.6211600906327778
+    },
+    "wf_window_returns": [
+      -0.009780551677145088,
+      0.04595390431080948,
+      0.07597853106405905,
+      0.02672339485162567,
+      0.07892796408379144,
+      0.060074792373769004,
+      0.07001387624298738,
+      0.00878893166289818,
+      -0.007209210612634687,
+      -0.07202344189657994,
+      0.1335598498352295,
+      0.03841146749714586,
+      0.05377554681301655,
+      0.04669209420172571,
+      0.058449627323919895
+    ],
+    "bootstrap_mean_daily_ci_99_9": [
+      -3.862026757413062e-05,
+      0.00031985950640230174
+    ],
+    "cross_lib_cagr_delta": 0.0,
+    "same_asset_buyhold_total_return": 5.80719834415293
+  },
+  "benchmark": {
+    "primary": "SPY_buy_hold",
+    "context": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_sharpe_vs_same_asset": false,
+    "is_mcpt": false,
+    "wf_mcpt": false,
+    "pbo": false,
+    "dsr": false,
+    "wf_windows": true,
+    "oos": true,
+    "fwd_63d": false,
+    "bootstrap": false,
+    "cross_lib": true,
+    "pbo_value": 0.7341269841269841,
+    "dsr_p_value": 0.5942151029318842,
+    "is_mcpt_p_value": 0.23,
+    "wf_mcpt_p_value": 0.33,
+    "wf_positive_windows": 12,
+    "wf_total_windows": 15,
+    "oos_total_return": 0.23299279064812928,
+    "fwd_63d_total_return": -0.025552827852539428
+  },
+  "kill_switches": [
+    "failed strict validation gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/007-2026-05-14-equity-bollinger-reversion/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/007-2026-05-14-equity-bollinger-reversion/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/007-2026-05-14-equity-bollinger-reversion/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/007-2026-05-14-equity-bollinger-reversion/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase02/007-2026-05-14-equity-bollinger-reversion/returns.csv"
+  ],
+  "notes": "Daily SPY/QQQ Bollinger lower-band mean-reversion tested. Intraday remained physically unavailable and was not synthesized. MCPT used a close-path fixed-rule proxy suitable only for close-only signals."
+}

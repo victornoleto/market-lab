@@ -1,0 +1,104 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter020.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv"
+  ],
+  "benchmark": {
+    "pre_registered_benchmark": {
+      "cagr": 0.14203645420845,
+      "mdd": -0.33699940470536127,
+      "sharpe": 0.8609606576535542,
+      "terminal_multiple": 8.738149300572317
+    }
+  },
+  "best_config": {
+    "asset": "SPY",
+    "first_days": 4,
+    "last_days": 1,
+    "name": "spy_tom_l1_f4"
+  },
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": true,
+      "value": 7.729700810626007e-07
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 0.0,
+      "numpy_cagr": 0.06112233110863463,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-13",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 68,
+      "p_value": 0.2735366331488367,
+      "pass": false
+    },
+    "economic_sharpe_vs_benchmark": {
+      "benchmark": 0.8609606576535542,
+      "pass": false,
+      "strategy": 0.7440267129296467
+    },
+    "fwd_63d": {
+      "pass": true,
+      "return": 0.0437701836395219
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.7440267129296467,
+      "p_value": 0.205,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "return": 0.1776649964866548
+    },
+    "pbo": {
+      "pass": false,
+      "value": 0.5
+    },
+    "walk_forward": {
+      "n_windows": 12,
+      "pass": true,
+      "positive_windows": 9,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 12,
+      "observed": 0.7597374201954542,
+      "p_value": 0.26,
+      "pass": false
+    }
+  },
+  "iteration": "020-2026-05-14-turn-of-month-seasonality",
+  "kill_switches": [
+    "economic_sharpe_vs_benchmark",
+    "is_mcpt",
+    "wf_mcpt",
+    "pbo",
+    "dsr"
+  ],
+  "mcpt_reps": {
+    "is_mcpt": 200,
+    "wf_mcpt": 100
+  },
+  "metrics": {
+    "cagr": 0.06112233110863463,
+    "mdd": -0.1665379831129442,
+    "sharpe": 0.7440267129296467,
+    "terminal_multiple": 2.633473918336638
+  },
+  "n_trials": 4,
+  "notes": "Turn-of-month seasonality with one-bar-lagged exposure; no post-result parameter additions.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

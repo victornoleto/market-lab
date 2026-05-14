@@ -1,0 +1,133 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter004.py",
+    "RESULTS.json",
+    "SUMMARY.md"
+  ],
+  "benchmark": {
+    "equal_weight": {
+      "cagr": 0.11562854469276607,
+      "mdd": -0.2871697776759665,
+      "sharpe": 0.8982995445740356,
+      "terminal_multiple": 7.037739410352973
+    },
+    "spy": {
+      "cagr": 0.12494614893105171,
+      "mdd": -0.4717482920334488,
+      "sharpe": 0.6930550893382426,
+      "terminal_multiple": 8.16298961507419
+    }
+  },
+  "best_config": {
+    "lookback": 126,
+    "name": "mom126_top2",
+    "top_k": 2
+  },
+  "gates": {
+    "bootstrap": true,
+    "cross_lib": false,
+    "dsr": true,
+    "economic_mdd_vs_equal_weight": true,
+    "economic_sharpe_vs_equal_weight": false,
+    "fwd_stress": false,
+    "is_mcpt": false,
+    "oos": true,
+    "pbo": true,
+    "wf_mcpt": false,
+    "wf_windows": true
+  },
+  "iteration": "004-2026-05-14-cross-sectional-etf-momentum",
+  "kill_switches": [
+    "economic_sharpe_vs_equal_weight",
+    "is_mcpt",
+    "wf_mcpt",
+    "fwd_stress",
+    "cross_lib"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "best": {
+      "cagr": 0.10828193308723577,
+      "config": "mom126_top2",
+      "lookback": 126,
+      "mdd": -0.19962784374970977,
+      "name": "mom126_top2",
+      "sharpe": 0.8240413646229913,
+      "terminal_multiple": 6.255511903191201,
+      "top_k": 2
+    },
+    "bootstrap_mean_ci_0_1pct_low": 8.899129399929747e-05,
+    "configs": [
+      {
+        "cagr": 0.07635611835925316,
+        "config": "mom63_top1",
+        "lookback": 63,
+        "mdd": -0.328721118705129,
+        "name": "mom63_top1",
+        "sharpe": 0.5163656168674258,
+        "terminal_multiple": 3.7832993657823075,
+        "top_k": 1
+      },
+      {
+        "cagr": 0.08756645587707701,
+        "config": "mom63_top2",
+        "lookback": 63,
+        "mdd": -0.3084938714481329,
+        "name": "mom63_top2",
+        "sharpe": 0.6464277997456355,
+        "terminal_multiple": 4.562915819626168,
+        "top_k": 2
+      },
+      {
+        "cagr": 0.10673740401114062,
+        "config": "mom126_top1",
+        "lookback": 126,
+        "mdd": -0.2855937209891647,
+        "name": "mom126_top1",
+        "sharpe": 0.6737725523850668,
+        "terminal_multiple": 6.101854075707219,
+        "top_k": 1
+      },
+      {
+        "cagr": 0.10828193308723577,
+        "config": "mom126_top2",
+        "lookback": 126,
+        "mdd": -0.19962784374970977,
+        "name": "mom126_top2",
+        "sharpe": 0.8240413646229913,
+        "terminal_multiple": 6.255511903191201,
+        "top_k": 2
+      }
+    ],
+    "date_end": "2026-05-13",
+    "date_start": "2008-07-02",
+    "dsr_observed_sharpe_periodic": 0.051909726686255556,
+    "dsr_p_value": 0.02293416491959943,
+    "fwd_63d_total_return": -0.003213914292598097,
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.8240413646229913,
+      "p_value": 0.075
+    },
+    "oos_total_return": 0.7802456381740324,
+    "pbo": 0.34285714285714286,
+    "pbo_combinations": 70,
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 14,
+      "observed": 0.7922723623543858,
+      "p_value": 0.29
+    },
+    "wf_positive_windows": 10,
+    "wf_total_windows": 14
+  },
+  "n_trials": 4,
+  "notes": "Monthly cross-sectional ETF momentum failed required gates; cross-lib was not computed by design, so winner promotion was impossible.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

@@ -1,0 +1,105 @@
+{
+  "artifacts": [
+    "PRE_REG.md",
+    "run_iter025.py",
+    "RESULTS.json",
+    "SUMMARY.md",
+    "config_metrics.csv",
+    "wf_windows.csv",
+    "breadth_names.json"
+  ],
+  "benchmark": {
+    "cagr": 0.1507766648246447,
+    "mdd": -0.3369994047053616,
+    "sharpe": 0.9238728832717215,
+    "terminal_multiple": 6.923426548362701
+  },
+  "best_config": "spy_breadth_sma63_gt55",
+  "gates": {
+    "bootstrap_999_mean_daily_low": {
+      "pass": true,
+      "value": 4.001346945609266e-05
+    },
+    "cross_lib_cagr": {
+      "delta_pp": 0.0,
+      "numpy_cagr": 0.08815565198740294,
+      "pass": true
+    },
+    "data_not_stale": {
+      "data_end": "2026-05-13",
+      "pass": true,
+      "threshold": "2026-03-31"
+    },
+    "dsr": {
+      "n_trials": 88,
+      "p_value": 0.21728395347784568,
+      "pass": false
+    },
+    "economic_sharpe_vs_benchmark": {
+      "benchmark": 0.9238728832717215,
+      "pass": false,
+      "strategy": 0.8863757637856081
+    },
+    "fwd_63d": {
+      "pass": true,
+      "return": 0.0690707906157857
+    },
+    "is_mcpt": {
+      "n_permutations": 200,
+      "observed": 0.8863757637856081,
+      "p_value": 0.21,
+      "pass": false
+    },
+    "oos": {
+      "pass": true,
+      "return": 0.3907424352121125
+    },
+    "pbo": {
+      "pass": false,
+      "value": 0.8285714285714286
+    },
+    "survivorship_bias_caveat": {
+      "pass": false,
+      "reason": "current-constituent proxy list is not point-in-time"
+    },
+    "walk_forward": {
+      "n_windows": 9,
+      "pass": true,
+      "positive_windows": 9,
+      "required_positive": 6
+    },
+    "wf_mcpt": {
+      "n_permutations": 100,
+      "n_windows": 9,
+      "observed": 1.203902966106253,
+      "p_value": 0.01,
+      "pass": true
+    }
+  },
+  "iteration": "025-2026-05-14-market-breadth-proxy",
+  "kill_switches": [
+    "economic_sharpe_vs_benchmark",
+    "is_mcpt",
+    "pbo",
+    "dsr",
+    "survivorship_bias_caveat"
+  ],
+  "mcpt_reps": {
+    "is": 200,
+    "wf": 100
+  },
+  "metrics": {
+    "bootstrap_999_mean_daily_low": 4.001346945609266e-05,
+    "cagr": 0.08815565198740294,
+    "fwd_63d_return": 0.0690707906157857,
+    "mdd": -0.16252121305528366,
+    "oos_return": 0.3907424352121125,
+    "sharpe": 0.8863757637856081,
+    "terminal_multiple": 3.2027331122051526
+  },
+  "n_trials": 4,
+  "notes": "Current-constituent breadth proxy; survivorship caveat blocks winner even if numeric gates pass.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}
