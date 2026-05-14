@@ -1,0 +1,13 @@
+output/
+*/frames/
+*/metadata.json
+*/source.*
+*/text.md
+*/transcript.md
+*/transcript.txt
+*.mp4
+*.mkv
+*.webm
+*.m4a
+*.mp3
+*.wav
