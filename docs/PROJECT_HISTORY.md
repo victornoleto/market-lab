@@ -165,6 +165,16 @@ Notable preserved study areas include:
   deployable without OOS/FWD/WF/bootstrap/PBO/DSR and cumulative trial accounting
   `[leverage_for_the_long_run, p.13]`, `[advances_fin_ml, p.222-223]`;
 - `studies/weekly_momentum/` for weekly cross-sectional momentum diagnostics, including controlled sweeps, walk-forward validation, PIT approximation, Tiingo delisted backfill, and a final rejection after DSR/bootstrap gates. A later ETF-specific post-close diagnostic improved WF metrics only when leveraged/inverse ETFs remained available, but still failed DSR; the branch was closed research-only with no further local sweeps `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`;
+- `studies/static_spy_beater_portfolio/` for a 2026-05-15 static-portfolio GA
+  bootstrap. It searches long-only monthly-rebalanced ETF portfolios with 5%
+  weight increments across `core_1986`, `mf_1988`, `global_1994` and `full_2000`
+  universes. The scoring design combines full-period metrics with rolling
+  1/3/5/10/15/20y relative scores versus `SPYSIM` and `QQQSIM`, weighting 10-20y
+  windows most heavily and re-ranking GA finalists with all possible rolling starts.
+  Initial work created the scaffold, universe audit, rolling scorer, GA runner and
+  pareto report generator; the first `core_1986` smoke evaluated 7 portfolios for
+  infrastructure only, with no winner/deploy claim `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`;
 - `studies/spy_beater_hunt_v2/` for a new 2026-05-13 autonomous hunt whose explicit goal is to beat SPY buy-and-hold while preserving hard overfit gates. It uses a short `MEMORY.md` plus a clean-session `loop.sh` orchestrator for OpenCode/GPT-5.5 iterations; initial status is bootstrap/audit only, with no mandate allocation change `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`;
 - `studies/success_trading_strat/` for a 2026-05-14 research loop based on the
   Neurotrader/Masters strategy-development workflow: in-sample excellence,
@@ -324,8 +334,104 @@ Notable preserved study areas include:
       explicitly modeled gross-exposure long/short tests. The spec makes CAGR and
       terminal wealth versus aligned B&H hard economic gates before any label above
       `fail`, while preserving MCPT/PBO/DSR/WF/OOS/FWD/bootstrap/cross-lib and no
-      mandate allocation change `[systematic_trading, p.40]`,
+      mandate allocation change. Phase 3 was then opened operationally with a
+      fresh phase-local counter (`total_iterations=0`, `target_total_iterations=30`)
+      while preserving global DSR trial accounting at `cumulative_n_trials=216`;
+      `LOOP_PROMPT.md` now points future runs to `PHASE3_BH_BEATER_SPEC.md` and
+      `iters/phase03/` `[systematic_trading, p.40]`,
       `[leverage_for_the_long_run, p.13]`, `[advances_fin_ml, p.222-223]`;
+      Phase 3 iteration 001 then tested Nasdaq LETF volatility-targeted exposure
+      over `QLD`/`TQQQ`. Best `qld_vt35_rv21_dd25_half` beat primary `QQQ`
+      buy-and-hold economically (22.12% CAGR and 52.01x terminal wealth vs QQQ
+      17.16% and 22.90x) but closed `economic_beater_not_validated` because IS
+      MCPT (`p=0.050`), WF MCPT (`p=0.310`) and DSR (`p=0.1472`) failed; PBO,
+      WF/OOS/FWD/bootstrap/cross-lib passed, cumulative trial accounting rose to
+      222, and no mandate allocation change occurred `[leverage_for_the_long_run,
+      p.13]`, `[systematic_trading, p.137-148]`, `[advances_fin_ml, p.222-223]`;
+      Phase 3 iteration 002 then tested distinct S&P LETF volatility-targeted
+      exposure over `SSO`/`UPRO`. Best `upro_vt40_rv63_dd30_half` beat primary
+      `SPY` buy-and-hold economically (20.54% CAGR and 22.19x terminal wealth vs
+      SPY 14.57% and 9.56x) but closed `economic_beater_not_validated` because IS
+      MCPT (`p=0.565`), WF MCPT (`p=0.370`), DSR (`p=0.4551`) and bootstrap
+       failed; PBO, WF/OOS/FWD/cross-lib passed, cumulative trial accounting rose
+       to 228, and no mandate allocation change occurred `[leverage_for_the_long_run,
+       p.5-7]`, `[leverage_for_the_long_run, p.13]`, `[systematic_trading,
+       p.137-148]`, `[advances_fin_ml, p.222-223]`;
+      Phase 3 iteration 003 then tested semiconductor/technology LETF volatility
+      targeting over `SOXL`/`TECL`. Best `tecl_vt40_rv63` beat both primary
+      benchmarks economically (`QQQ` and equal-weight `SMH/SOXX`) but closed
+      `economic_beater_not_validated` because IS MCPT (`p=0.490`), WF MCPT
+      (`p=0.670`) and DSR (`p=0.1636`) failed; PBO, WF/OOS/FWD/bootstrap/cross-lib
+      passed and cumulative trial accounting rose to 234. Phase 3 iteration 004
+      then tested Nasdaq crash-rearm (`QQQ` core plus temporary `QLD` booster).
+      Best `qqq_qld_rearm_dd35_sma100_h189` beat `QQQ` buy-and-hold on CAGR and
+      terminal wealth (18.64% and 27.79x vs 16.39% and 19.18x) but again closed
+      `economic_beater_not_validated` because IS MCPT (`p=0.135`), WF MCPT
+      (`p=0.550`) and DSR (`p=0.2006`) failed, with an additional joint-path MCPT
+      caveat. PBO, WF/OOS/FWD/bootstrap/cross-lib passed, cumulative trial
+      accounting rose to 240, and no mandate allocation change occurred. Phase 3
+      iteration 005 then tested the S&P counterpart (`SPY` core plus temporary
+      `SSO` booster). Best `spy_sso_rearm_dd35_sma100_h189` beat `SPY` buy-and-hold
+      on CAGR and terminal wealth (13.05% and 10.87x vs 11.05% and 7.69x) but
+      closed `economic_beater_not_validated` because IS MCPT (`p=0.095`), WF MCPT
+      (`p=0.500`), PBO (`0.778`), DSR (`p=0.4147`) and bootstrap failed, with the
+       same joint-path MCPT caveat. Cumulative trial accounting rose to 246, and no
+       mandate allocation change occurred
+       `[leverage_for_the_long_run, p.16-17]`, `[systematic_trading, p.119]`,
+       `[testing_tuning, p.318-320]`, `[advances_fin_ml, p.222-223]`. Phase 3
+       iteration 006 tested high-beta relative rotation over `QQQ/SMH/SOXX/XLK`,
+       and iteration 008 tested drawdown-adaptive gross exposure on the same
+       universe; both beat the equal-weight opportunity benchmark economically but
+       closed `economic_beater_not_validated` after MCPT/PBO/DSR failures.
+        Iteration 007 attempted crypto/equity rotation but closed `data_blocked`
+        because physical `BTCUSD`/`ETHUSD` daily parquets were absent. Iteration 009
+        then tested explicitly financed high-beta long/short relative momentum;
+        best `ls_m63_top1_bottom1_g100` lost badly to equal-weight buy-and-hold
+        (CAGR -3.77%, terminal wealth 0.48x vs 19.18% and 28.26x), so it closed
+        `fail` despite PBO pass, with cumulative trial accounting at 260 and no
+        mandate allocation change `[stocks_on_the_move, p.66-67]`,
+        `[trading_systems_methods, p.542-544]`, `[systematic_trading, p.137-148]`,
+        `[testing_tuning, p.327-335]`;
+        Phase 3 iterations 010-018 then investigated balanced LETF sleeves,
+        HFEA-style sleeves, crash-rearmed Nasdaq exposure, gross `UPRO/TLT` spread
+        exposure, and follow-up robustness audits. Several configs beat aligned
+        buy-and-hold benchmarks economically, but none cleared the full validation
+        stack. The final rolling 3y/5y economic audit of the iter 010-014 beaters
+        found 128 failed candidate-window rows out of 534, confirming that the
+        apparent economic beaters are not robust enough for promotion. Iteration
+        018 then tested a distinct `VXX`-triggered Nasdaq crash-rearm and also
+        beat `QQQ` buy-and-hold economically, but failed IS MCPT (`p=0.070`), WF
+        MCPT (`p=0.070`), PBO (`0.790`) and DSR (`p=0.1111`). No winner,
+        paper-trade label or mandate allocation change resulted; cumulative trial
+        accounting reached 288
+        `[testing_tuning, p.327-335]`, `[leverage_for_the_long_run, p.4-7]`,
+        `[advances_fin_ml, p.222-223]`. Phase 3 iterations 019-022 then tested
+        LETF-light gross rotation, dynamic LETF risk parity, a consolidation audit,
+        and a `QQQ` core plus conditional `QLD` overlay. Iteration 022's best overlay
+        config beat `QQQ` buy-and-hold economically (23.19% CAGR and 56.02x
+        terminal wealth vs 16.31% and 18.46x) but failed IS MCPT (`p=0.065`), WF
+        MCPT (`p=0.260`), PBO (`0.738`), DSR (`p=0.2723`) and bootstrap. Phase 3
+        therefore remained research-only at `cumulative_n_trials=300`, with zero
+        strict winners and no mandate allocation change `[leverage_for_the_long_run,
+        p.13]`, `[systematic_trading, p.137-148]`, `[testing_tuning, p.327-335]`,
+        `[advances_fin_ml, p.222-223]`. Phase 3 iterations 023-030 then tested a
+        sector-leadership overlay, `QLD/TLT/GLD` risk-migration and volatility-
+        throttle sleeves, financing/rolling robustness stress, and two final
+         closure audits. The strongest late beater (`QLD/TLT/GLD` volatility
+         throttle) beat `QQQ` economically, but failed IS MCPT, WF MCPT and DSR;
+         rolling 3y/5y stress also missed the 90% pass-rate threshold. Final closure
+         parsed 29 prior Phase 3 results: 17 `economic_beater_not_validated`, 11
+         `fail`, 1 `data_blocked`, zero winners and zero promotional labels. Phase 3
+         closed at `cumulative_n_trials=312` with no paper trade, no deployment and
+         no mandate allocation change. A consolidated review with CSV tables and
+         comparative equity/drawdown/relative-performance plots was added at
+         `studies/success_trading_strat/reports/phase3_bh_beater_review/`. A later
+         economic-only Top 10 comparison across Phases 1-3 ranked strategies by
+         terminal `equity/equity_SPY` and saved plots/tables under
+         `studies/success_trading_strat/reports/top10_phase123_spy_relative/`, but
+         did not change the no-deploy/no-winner verdict
+         `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
+         `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`;
 - `studies/long_term_portfolio/` for long-horizon allocation experiments;
   On 2026-05-13, iter 058 combined the B4 core with repair-GA satellites under
   monthly rebalance plus USD 10k initial / USD 1k monthly contributions. The

@@ -1,0 +1,381 @@
+{
+  "daily_files": [
+    {
+      "ticker": "SPY",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SPY.parquet",
+      "exists": true,
+      "rows": 8379,
+      "first": "1993-01-29 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03512206356517733,
+      "has_close": true
+    },
+    {
+      "ticker": "QQQ",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/QQQ.parquet",
+      "exists": true,
+      "rows": 6837,
+      "first": "1999-03-10 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.0358200535890566,
+      "has_close": true
+    },
+    {
+      "ticker": "QLD",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/QLD.parquet",
+      "exists": true,
+      "rows": 5005,
+      "first": "2006-06-21 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03583124638797919,
+      "has_close": true
+    },
+    {
+      "ticker": "TQQQ",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/TQQQ.parquet",
+      "exists": true,
+      "rows": 4088,
+      "first": "2010-02-11 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03584905660377358,
+      "has_close": true
+    },
+    {
+      "ticker": "SSO",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SSO.parquet",
+      "exists": true,
+      "rows": 5005,
+      "first": "2006-06-21 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03583124638797919,
+      "has_close": true
+    },
+    {
+      "ticker": "UPRO",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/UPRO.parquet",
+      "exists": true,
+      "rows": 4247,
+      "first": "2009-06-25 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.035868331441543666,
+      "has_close": true
+    },
+    {
+      "ticker": "SMH",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SMH.parquet",
+      "exists": true,
+      "rows": 6524,
+      "first": "2000-06-05 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "close",
+        "high",
+        "low",
+        "open",
+        "volume",
+        "adj_close",
+        "adj_high",
+        "adj_low",
+        "adj_open",
+        "adj_volume",
+        "divCash",
+        "splitFactor"
+      ],
+      "missing_bday_rate": 0.036052009456264744,
+      "has_close": true
+    },
+    {
+      "ticker": "SOXX",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SOXX.parquet",
+      "exists": true,
+      "rows": 6245,
+      "first": "2001-07-13 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03611668467356077,
+      "has_close": true
+    },
+    {
+      "ticker": "SOXL",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SOXL.parquet",
+      "exists": true,
+      "rows": 4069,
+      "first": "2010-03-11 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03578199052132702,
+      "has_close": true
+    },
+    {
+      "ticker": "TECL",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/TECL.parquet",
+      "exists": true,
+      "rows": 4369,
+      "first": "2008-12-30 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03596646072374232,
+      "has_close": true
+    },
+    {
+      "ticker": "XLK",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/XLK.parquet",
+      "exists": true,
+      "rows": 6889,
+      "first": "1998-12-22 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.036099062543724636,
+      "has_close": true
+    },
+    {
+      "ticker": "IBIT",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/IBIT.parquet",
+      "exists": true,
+      "rows": 586,
+      "first": "2024-01-11 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03934426229508192,
+      "has_close": true
+    },
+    {
+      "ticker": "ETHA",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/ETHA.parquet",
+      "exists": true,
+      "rows": 454,
+      "first": "2024-07-23 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03813559322033899,
+      "has_close": true
+    },
+    {
+      "ticker": "BTCUSD",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/BTCUSD.parquet",
+      "exists": false
+    },
+    {
+      "ticker": "btcusd",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/btcusd.parquet",
+      "exists": true,
+      "rows": 4513,
+      "first": "2014-01-01 00:00:00",
+      "last": "2026-05-14 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.0009296560272699095,
+      "has_close": true
+    },
+    {
+      "ticker": "ETHUSD",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/ETHUSD.parquet",
+      "exists": false
+    },
+    {
+      "ticker": "ethusd",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/ethusd.parquet",
+      "exists": true,
+      "rows": 3912,
+      "first": "2015-08-08 00:00:00",
+      "last": "2026-05-14 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.003915984336062661,
+      "has_close": true
+    },
+    {
+      "ticker": "GLD",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/GLD.parquet",
+      "exists": true,
+      "rows": 5404,
+      "first": "2004-11-18 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03586083853702049,
+      "has_close": true
+    },
+    {
+      "ticker": "TLT",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/TLT.parquet",
+      "exists": true,
+      "rows": 5988,
+      "first": "2002-07-26 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03559349331615402,
+      "has_close": true
+    },
+    {
+      "ticker": "IEF",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/IEF.parquet",
+      "exists": true,
+      "rows": 5988,
+      "first": "2002-07-26 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03559349331615402,
+      "has_close": true
+    },
+    {
+      "ticker": "SHV",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SHV.parquet",
+      "exists": true,
+      "rows": 4865,
+      "first": "2007-01-11 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03567888999008917,
+      "has_close": true
+    }
+  ]
+}

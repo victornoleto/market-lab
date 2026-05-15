@@ -1,12 +1,12 @@
 ---
 mission: "Find an efficient trading strategy using MCPT + WF + repo hard gates"
-status: phase2_closed_no_winner
-active_phase: 2
-active_phase_name: "phase2 intraday short swing and gold/XAUUSD"
+status: phase3_closed_no_winner
+active_phase: 3
+active_phase_name: "phase3 buy-and-hold beater"
 total_iterations: 30
 target_total_iterations: 30
-cumulative_n_trials: 216
-latest_iteration: "030-2026-05-14-phase2-closure-audit"
+cumulative_n_trials: 312
+latest_iteration: "030-2026-05-14-phase3-closure-audit"
 latest_status: "fail"
 latest_winner: false
 latest_best_config: null
@@ -15,7 +15,7 @@ latest_best_mdd: null
 latest_pbo: null
 latest_dsr_p_value: null
 winner_iter: []
-dead_end_families: ["daily_sma_momentum_regime_spy_qqq", "monthly_cross_sectional_etf_momentum", "volatility_targeted_static_sleeves", "rsi2_etf_mean_reversion", "vxx_volatility_carry_proxy", "multi_asset_ewmac_etf_trend", "etf_pairs_zscore_mean_reversion", "vix_managed_equity_exposure_fwd_fail", "vix_managed_floor_window_stress", "crypto_donchian_trend_fwd_fail", "crypto_vol_target_momentum_pbo_fail", "realized_vol_compression_equity_momentum", "credit_risk_appetite_hyg_ief_filter", "carver_multi_asset_positive_ewmac_forecast", "ehlers_cycle_mode_overlay", "yield_carry_rotation", "turn_of_month_seasonality", "intraday_overnight_component_decomposition", "kama_efficiency_regime", "obv_volume_confirmation_mcpt_fail", "accumulation_distribution_volume_pressure", "market_breadth_proxy", "sector_relative_strength_risk_appetite", "gayed_letf_qqq_rotation_pbo_dsr_fail", "correlation_breakdown_risk_filter", "gold_donchian_compression_breakout", "gold_rsi_exhaustion_mean_reversion", "gold_cci_breakout", "equity_volatility_system", "equity_gap_recovery_continuation", "equity_momentum_pullback", "equity_bollinger_reversion", "gold_macd_trend", "equity_adx_trend", "gold_keltner_atr_breakout", "equity_stochastic_close_location_pullback", "demark_setup_reversal", "gold_relative_strength_spy_filter", "vidya_adaptive_trend_filter", "bollinger_compression_breakout", "trix_trend_continuation", "woodshedder_roc", "clenow_adjusted_slope_trend", "force_index_volume_impulse", "elder_ray_triple_screen", "wilder_asi_swing_breakout", "regression_channel_breakout", "money_flow_index_pullback", "dual_ma_atr_breakout", "swing_point_breakout", "price_density_trend_filter", "williams_r_exhaustion_reversal", "cmo_momentum_continuation", "fisher_cycle_reversal"]
+dead_end_families: ["daily_sma_momentum_regime_spy_qqq", "monthly_cross_sectional_etf_momentum", "volatility_targeted_static_sleeves", "rsi2_etf_mean_reversion", "vxx_volatility_carry_proxy", "multi_asset_ewmac_etf_trend", "etf_pairs_zscore_mean_reversion", "vix_managed_equity_exposure_fwd_fail", "vix_managed_floor_window_stress", "crypto_donchian_trend_fwd_fail", "crypto_vol_target_momentum_pbo_fail", "realized_vol_compression_equity_momentum", "credit_risk_appetite_hyg_ief_filter", "carver_multi_asset_positive_ewmac_forecast", "ehlers_cycle_mode_overlay", "yield_carry_rotation", "turn_of_month_seasonality", "intraday_overnight_component_decomposition", "kama_efficiency_regime", "obv_volume_confirmation_mcpt_fail", "accumulation_distribution_volume_pressure", "market_breadth_proxy", "sector_relative_strength_risk_appetite", "gayed_letf_qqq_rotation_pbo_dsr_fail", "correlation_breakdown_risk_filter", "gold_donchian_compression_breakout", "gold_rsi_exhaustion_mean_reversion", "gold_cci_breakout", "equity_volatility_system", "equity_gap_recovery_continuation", "equity_momentum_pullback", "equity_bollinger_reversion", "gold_macd_trend", "equity_adx_trend", "gold_keltner_atr_breakout", "equity_stochastic_close_location_pullback", "demark_setup_reversal", "gold_relative_strength_spy_filter", "vidya_adaptive_trend_filter", "bollinger_compression_breakout", "trix_trend_continuation", "woodshedder_roc", "clenow_adjusted_slope_trend", "force_index_volume_impulse", "elder_ray_triple_screen", "wilder_asi_swing_breakout", "regression_channel_breakout", "money_flow_index_pullback", "dual_ma_atr_breakout", "swing_point_breakout", "price_density_trend_filter", "williams_r_exhaustion_reversal", "cmo_momentum_continuation", "fisher_cycle_reversal", "semis_tech_letf_vol_target_mcpt_dsr_fail", "nasdaq_crash_rearm_mcpt_dsr_fail", "sp500_crash_rearm_pbo_mcpt_dsr_fail", "high_beta_relative_rotation_mcpt_dsr_fail", "crypto_equity_rotation_data_blocked", "drawdown_adaptive_high_beta_sizing_mcpt_pbo_dsr_fail"]
 ---
 
 # MEMORY — success_trading_strat
@@ -1205,7 +1205,421 @@ unless it passes all hard gates and receives explicit human review.
   `[cycle_analytics, p.195-197]`, `[trading_systems_methods, p.284]`,
   `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`.
 
+- **002-2026-05-14-sp500-letf-vol-target (Phase 3):** tested 6 pre-registered
+  controlled S&P LETF volatility-target configs over `SSO`/`UPRO`, with `SPY` as
+  primary buy-and-hold benchmark and `SHV` for residual cash. Best
+  `upro_vt40_rv63_dd30_half` had CAGR 20.54%, Sharpe 0.717, MDD -46.48% and
+  terminal wealth 22.19x versus `SPY` buy-and-hold CAGR 14.57%, Sharpe 0.880,
+  MDD -33.70% and terminal wealth 9.56x. It passed the Phase 3 economic gate,
+  PBO (`0.206`), WF windows (`9/13`), OOS, FWD 63d and cross-lib, but failed IS
+  MCPT (`p=0.565`), WF MCPT (`p=0.370`), DSR (`p=0.4551`, cumulative
+  `n_trials=228`) and bootstrap. It closed `economic_beater_not_validated`, not a
+  winner, and should not be locally tuned without a new mechanism
+  `[leverage_for_the_long_run, p.5-7]`, `[leverage_for_the_long_run, p.13]`,
+  `[systematic_trading, p.137-148]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.222-223]`.
+
+- **003-2026-05-14-semis-letf-vol-target (Phase 3):** tested 6 pre-registered
+  semiconductor/technology LETF volatility-target configs over `SOXL`/`TECL`,
+  with conservative primary economic benchmarks `QQQ` and equal-weight `SMH/SOXX`.
+  Best `tecl_vt40_rv63` had CAGR 34.00%, Sharpe 0.922, MDD -49.24% and terminal
+  wealth 148.14x versus `QQQ` buy-and-hold CAGR 21.02% and terminal wealth 25.99x,
+  and `SMH/SOXX` equal-weight CAGR 27.89% and terminal wealth 66.76x. It passed the
+  Phase 3 economic gate, PBO (`0.206`), WF windows (`10/14`), OOS, FWD 63d,
+  bootstrap and cross-lib, but failed IS MCPT (`p=0.490`), WF MCPT (`p=0.670`) and
+  DSR (`p=0.1636`, cumulative `n_trials=234`). It closed
+  `economic_beater_not_validated`, not a winner, and should not be locally tuned;
+  it also underperformed `TECL` buy-and-hold context in CAGR/terminal wealth
+  `[leverage_for_the_long_run, p.5-7]`, `[leverage_for_the_long_run, p.13]`,
+  `[systematic_trading, p.137-148]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.222-223]`.
+
+- **004-2026-05-14-nasdaq-crash-rearm (Phase 3):** tested 6 pre-registered
+  crash-rearmed Nasdaq configs that hold `QQQ` by default and switch temporarily
+  to `QLD` after a fixed `QQQ` drawdown recovers above a 50d/100d SMA. Best
+  `qqq_qld_rearm_dd35_sma100_h189` beat primary `QQQ` buy-and-hold on aligned
+  CAGR (18.64% vs 16.39%) and terminal wealth (27.79x vs 19.18x), so it closed
+  `economic_beater_not_validated`; however it failed IS MCPT (`p=0.135`), WF
+  MCPT (`p=0.550`) and DSR (`p=0.2006`, cumulative `n_trials=240`) despite
+  passing PBO (`0.230`), WF windows (`15/16`), OOS, FWD 63d, bootstrap and
+  cross-lib. It also has a promotion-blocking MCPT caveat: the scaffold used a
+  synthetic 2x `QQQ` booster proxy rather than joint `QQQ`/`QLD` path
+  permutation. No winner and no deploy implication `[leverage_for_the_long_run,
+  p.16-17]`, `[systematic_trading, p.119]`, `[testing_tuning, p.318-320]`,
+  `[advances_fin_ml, p.222-223]`.
+
+- **005-2026-05-14-sp500-crash-rearm (Phase 3):** tested 6 pre-registered
+  crash-rearmed S&P configs that hold `SPY` by default and switch temporarily to
+  `SSO` after a fixed `SPY` drawdown recovers above a 50d/100d SMA. Best
+  `spy_sso_rearm_dd35_sma100_h189` beat primary `SPY` buy-and-hold on aligned
+  CAGR (13.05% vs 11.05%) and terminal wealth (10.87x vs 7.69x), so it closed
+  `economic_beater_not_validated`; however it failed IS MCPT (`p=0.095`), WF
+  MCPT (`p=0.500`), PBO (`0.778`), DSR (`p=0.4147`, cumulative `n_trials=246`)
+  and bootstrap 99.9% mean-daily CI low (`-0.00000847`) despite passing WF windows
+  (`15/16`), OOS, FWD 63d and cross-lib. It also has the same promotion-blocking
+  MCPT caveat: the scaffold used a synthetic 2x `SPY` booster proxy rather than
+  joint `SPY`/`SSO` path permutation. No winner and no deploy implication
+  `[leverage_for_the_long_run, p.16-17]`, `[systematic_trading, p.119]`,
+  `[testing_tuning, p.318-320]`, `[advances_fin_ml, p.222-223]`.
+
+- **006-2026-05-14-high-beta-relative-rotation (Phase 3):** tested 6
+  pre-registered high-beta relative-rotation configs over `QQQ`/`SMH`/`SOXX`/`XLK`,
+  staying fully invested in top-ranked sleeves by 63d/126d momentum or
+  volatility-adjusted momentum. Best `top2_m63` beat the primary equal-weight
+  opportunity basket on aligned CAGR (15.98% vs 15.50%) and terminal wealth
+  (37.92x vs 34.28x), and also beat `SPY` opportunity cost, so it closed
+  `economic_beater_not_validated`; however it failed IS MCPT (`p=0.055`), WF MCPT
+  (`p=0.850`) and DSR (`p=0.2983`, cumulative `n_trials=252`) despite passing PBO
+  (`0.345`), WF windows (`19/21`), OOS, FWD 63d, bootstrap and cross-lib. It did
+  not beat `SMH` buy-and-hold context and has high annual turnover (`16.05`), so
+  no winner and no deploy implication `[stocks_on_the_move, p.66-67]`,
+  `[trading_systems_methods, p.542-544]`, `[testing_tuning, p.318-320]`,
+  `[advances_fin_ml, p.222-223]`.
+
+- **007-2026-05-14-crypto-equity-rotation (Phase 3):** pre-registered 6
+  crypto/equity relative-rotation configs over `BTCUSD`/`ETHUSD`/`QQQ`/`GLD`, but
+  closed `data_blocked` before any backtest because required physical daily
+  parquets `data/tiingo/daily/prices/BTCUSD.parquet` and `ETHUSD.parquet` were
+  absent. `QQQ`, `GLD`, `SPY` and `SHV` were present through 2026-05-13.
+  `n_trials=0`, cumulative `n_trials` remains 252. No proxy substitution was made
+  after preregistration; future crypto/equity tests require restored/audited
+  physical crypto files `[stocks_on_the_move, p.66-67]`,
+  `[trading_systems_methods, p.542-544]`, `[testing_tuning, p.327-335]`.
+
+- **008-2026-05-14-drawdown-adaptive-high-beta (Phase 3):** tested 4
+  pre-registered drawdown-adaptive gross-exposure configs on the confirmed
+  high-beta universe `QQQ`/`SMH`/`SOXX`/`XLK`. Best
+  `top2_m63_dd15_boost125_cap150` beat the primary equal-weight opportunity
+  basket on aligned CAGR (17.02% vs 15.50%) and terminal wealth (47.19x vs
+  34.28x), and beat `SPY` opportunity CAGR, so it closed
+  `economic_beater_not_validated`; however it failed IS MCPT (`p=0.105`), WF
+  MCPT (`p=0.960`), PBO (`0.623`) and DSR (`p=0.3293`, cumulative
+  `n_trials=256`) despite passing WF windows (`19/21`), OOS, FWD 63d, bootstrap
+  and cross-lib. It also had high annual turnover (`18.03`) and no financing/tax
+  model for gross exposure, so no winner and no deploy implication
+  `[leverage_space, p.149-167]`, `[systematic_trading, p.137-148]`,
+  `[testing_tuning, p.318-320]`, `[advances_fin_ml, p.222-223]`.
+
+- **009-2026-05-14-high-beta-long-short (Phase 3):** tested 4
+  pre-registered high-beta relative-momentum long/short configs over
+  `QQQ`/`SMH`/`SOXX`/`XLK` with explicit gross exposure and a 5% annual
+  financing/borrow proxy. Best `ls_m63_top1_bottom1_g100` failed the Phase 3
+  economic gate badly: CAGR -3.77% and terminal wealth 0.48x versus primary
+  equal-weight buy-and-hold CAGR 19.18% and terminal wealth 28.26x; it also
+  failed IS MCPT (`p=0.750`), WF MCPT (`p=0.640`), DSR (`p=0.999999`,
+  cumulative `n_trials=260`), WF windows (`5/16`) and bootstrap, despite passing
+  PBO (`0.433`), OOS, FWD 63d and cross-lib. Family dead-end: naive high-beta
+  long/short relative momentum with zero net exposure sacrificed common tech/semis
+  beta and compounded negatively; do not tune lookbacks, top/bottom counts, gross
+  or financing locally `[stocks_on_the_move, p.66-67]`,
+  `[trading_systems_methods, p.542-544]`, `[systematic_trading, p.137-148]`,
+  `[testing_tuning, p.327-335]`.
+
+- **010-2026-05-14-levered-balanced-sleeve (Phase 3):** tested 4
+  pre-registered fixed balanced sleeves using real `UPRO` plus `TLT`/`GLD` with
+  monthly or quarterly rebalance. Best `upro50_tlt25_gld25_quarterly` beat the
+  conservative dual primary benchmark in both CAGR and terminal wealth: 24.13% and
+  38.16x versus `SPY` buy-and-hold 15.23% and 10.89x, and equal-weight
+  `UPRO/TLT/GLD` buy-and-hold 18.59% and 17.68x. It closed
+  `economic_beater_not_validated` because WF MCPT failed (`p=0.490`) and DSR failed
+  (`p=0.09769`, cumulative `n_trials=264`) despite passing IS MCPT (`p=0.000`), PBO
+  (`0.357`), WF windows (`12/13`), OOS, FWD 63d, bootstrap and cross-lib. No winner,
+  no paper/live implication; the result may warrant a robustness-stress iteration,
+  not promotion `[leverage_for_the_long_run, p.13]`, `[systematic_trading,
+  p.137-148]`, `[testing_tuning, p.318-320]`, `[advances_fin_ml, p.222-223]`.
+
+- **011-2026-05-14-sso-balanced-sleeve-stress (Phase 3):** tested 4
+  pre-registered robustness-stress sleeves that replace `UPRO` with lower-leverage
+  real `SSO` plus `TLT`/`GLD`. Best `sso75_tlt15_gld10_quarterly` beat the
+  conservative dual primary benchmark in both CAGR and terminal wealth: 14.76% and
+  14.27x versus `SPY` buy-and-hold 10.97% and 7.45x, and equal-weight
+  `SSO/TLT/GLD` buy-and-hold 12.06% and 9.00x. It closed
+  `economic_beater_not_validated` because IS MCPT (`p=0.035`), WF MCPT (`p=0.420`),
+  DSR (`p=0.5123`, cumulative `n_trials=268`) and bootstrap failed despite passing
+  PBO (`0.389`), WF windows (`13/16`), OOS, FWD 63d and cross-lib. It also did not
+  beat raw `SSO` buy-and-hold context in CAGR/terminal wealth, so no winner and no
+  deploy implication `[leverage_for_the_long_run, p.13]`, `[systematic_trading,
+  p.137-148]`, `[testing_tuning, p.318-320]`, `[advances_fin_ml, p.222-223]`.
+
+- **012-2026-05-14-hfea-levered-sleeve (Phase 3):** tested 4 pre-registered
+  HFEA-style fixed sleeves using real `UPRO`/`TMF`/`GLD` with monthly or quarterly
+  rebalance. Physical daily files existed for all required tickers, but `TMF` ended
+  at 2026-04-30, setting the aligned window. Best `upro50_tmf30_gld20_quarterly`
+  beat the conservative dual primary benchmark in both CAGR and terminal wealth:
+  24.43% and 39.43x versus `SPY` buy-and-hold 15.04% and 10.55x, and equal-weight
+  `UPRO/TMF/GLD` buy-and-hold 18.53% and 17.43x. It closed
+  `economic_beater_not_validated` because IS MCPT (`p=0.045`), WF MCPT (`p=0.580`),
+  DSR (`p=0.1149`, cumulative `n_trials=272`) and latest 63d FWD (`-0.42%`) failed
+  despite passing PBO (`0.087`), WF windows (`12/13`), OOS, bootstrap and cross-lib.
+  It also did not beat raw `UPRO` buy-and-hold context in CAGR/terminal wealth; do
+  not locally tune HFEA weights or rebalance cadence after these validation failures
+  `[leverage_for_the_long_run, p.13]`, `[systematic_trading, p.137-148]`,
+  `[leverage_space, p.149-167]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.222-223]`.
+
+- **013-2026-05-14-nasdaq-drawdown-rearm-booster (Phase 3):** tested 4
+  pre-registered Nasdaq drawdown-rearm booster configs using real `QQQ`/`QLD`/`TQQQ`.
+  Physical daily files existed through 2026-05-13. Best
+  `qld_tqqq_dd25_recover_sma50_rv40` beat the conservative dual primary benchmark
+  in both CAGR and terminal wealth: 36.12% and 148.67x versus `QQQ` buy-and-hold
+  19.84% and 18.83x, and equal-weight `QQQ/QLD/TQQQ` buy-and-hold 34.08% and
+  116.35x. It closed `economic_beater_not_validated` because IS MCPT (`p=0.215`),
+  WF MCPT (`p=0.880`) and DSR (`p=0.1932`, cumulative `n_trials=276`) failed despite
+  passing PBO (`0.460`), WF windows (`11/13`), OOS, FWD 63d, bootstrap and cross-lib.
+  It also did not beat raw `TQQQ` buy-and-hold context in CAGR/terminal wealth; do
+  not locally tune drawdown triggers, recovery SMA windows, volatility caps or
+  booster weights `[leverage_for_the_long_run, p.4-7]`,
+  `[leverage_for_the_long_run, p.16-17]`, `[systematic_trading, p.119]`,
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.222-223]`.
+
+- **014-2026-05-14-upro-tlt-gross-spread (Phase 3):** tested 4 pre-registered
+  Track D gross-exposure configs using real `SPY`/`UPRO`/`TLT`/`SHV` daily data and
+  a 5% annual financing/borrow proxy. Best `upro125_tlt25_sma200` beat the dual
+  primary benchmarks in CAGR and terminal wealth: 17.76% and 15.70x versus `SPY`
+  buy-and-hold 15.23% and 10.89x, and equal-weight `UPRO/TLT/SHV` buy-and-hold
+  15.33% and 11.05x. It closed `economic_beater_not_validated` because IS MCPT
+  (`p=0.540`), WF MCPT (`p=0.220`), DSR (`p=0.6641`, cumulative `n_trials=280`),
+  bootstrap 99.9% and MDD-relative gates failed despite passing PBO (`0.381`), WF
+  windows (`9/13`), OOS, FWD 63d and cross-lib. It also materially underperformed
+  raw `UPRO` buy-and-hold context; do not locally tune `UPRO/TLT` gross weights,
+  SMA windows or financing assumptions `[leverage_for_the_long_run, p.4-7]`,
+  `[systematic_trading, p.137-148]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.222-223]`.
+
+- **015-2026-05-14-letf-light-dual-momentum (Phase 3):** tested 4 pre-registered
+  LETF-light dual-momentum rotation configs using real `QLD`/`SSO`/`TLT`/`GLD`/`SHV`
+  plus `SPY` opportunity data. Physical daily files existed through 2026-05-13.
+  Best `top1_m252_monthly` beat `SPY` buy-and-hold in CAGR and terminal wealth
+  (13.74% and 12.01x vs 10.97% and 7.45x) but failed the primary equal-weight
+  `QLD/SSO/TLT/GLD` opportunity benchmark (16.43% and 18.84x), so Phase 3 closed
+  `fail`. It also failed IS MCPT (`p=0.420`), WF MCPT (`p=0.770`), PBO (`0.837`),
+  DSR (`p=0.6558`, cumulative `n_trials=284`) and bootstrap despite passing WF
+  windows (`11/16`), OOS, FWD 63d and cross-lib. Do not locally tune lookbacks,
+  top-k, rebalance cadence or positive-momentum floors for this family
+  `[stocks_on_the_move, p.66-67]`, `[trading_systems_methods, p.542-544]`,
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`.
+
+- **016-2026-05-14-inception-stress-economic-beaters (Phase 3):** performed a
+  pre-registered inception-window sensitivity audit across five prior Phase 3
+  economic beaters without changing any rules, weights, lookbacks or rebalance
+  cadence. Physical daily files existed for `SPY`, `QQQ`, `UPRO`, `SSO`, `QLD`,
+  `TQQQ`, `TLT`, `TMF`, `GLD` and `SHV`. Nineteen of twenty config-window rows
+  retained the economic beater status, but `012_upro50_tmf30_gld20_quarterly` from
+  `2020-01-01` failed the same-market economic gate: CAGR 14.56% and terminal
+  wealth 2.36x versus `SPY` buy-and-hold CAGR 15.22% and terminal wealth 2.44x.
+  The iteration closed `fail`; `n_trials=0`, cumulative `n_trials=284`. Prior
+  MCPT/PBO/DSR and other validation failures remain binding, so no audited beater
+  is promoted or eligible for paper trading `[testing_tuning, p.327-335]`,
+  `[leverage_for_the_long_run, p.13]`, `[leverage_space, p.149-167]`,
+  `[advances_fin_ml, p.222-223]`.
+
+- **017-2026-05-14-rolling-window-economic-beaters (Phase 3):** performed a
+  stricter pre-registered rolling-window economic audit across the same prior
+  economic beaters from iterations 010-014. The audit tested rolling 3y and 5y
+  windows stepped every 63 observations and required each candidate to beat its
+  original dual primary B&H benchmark in both CAGR and terminal wealth. It closed
+  `fail`: 128 of 534 candidate-window rows failed the rolling economic gate
+  (`010` 8/104, `011` 21/124, `012` 21/104, `013` 52/98, `014` 26/104). No new
+  strategy trials were consumed, so `cumulative_n_trials=284`; prior MCPT/PBO/DSR
+  and other validation failures remain binding `[testing_tuning, p.327-335]`,
+  `[leverage_for_the_long_run, p.4-7]`, `[leverage_space, p.149-167]`,
+  `[advances_fin_ml, p.222-223]`.
+
+- **018-2026-05-14-vxx-crash-rearm (Phase 3):** tested a distinct volatility-spike
+  crash-rearm mechanism using physical `VXX` as a signal-only stress sensor and
+  real `QQQ`/`QLD`/`TQQQ` adjusted closes for traded exposure. Best
+  `qqq_tqqq_vxx95_norm70_h126` beat primary `QQQ` buy-and-hold on aligned CAGR
+  (28.85% vs 19.84%) and terminal wealth (61.04x vs 18.83x), and beat `SPY`
+  opportunity cost. It closed `economic_beater_not_validated`: IS MCPT failed
+  (`p=0.070`), WF MCPT failed (`p=0.070`), PBO failed (`0.790`) and DSR failed
+  (`p=0.1111`, `cumulative_n_trials=288`) despite WF 11/13, OOS, FWD 63d,
+  bootstrap and cross-lib passing. Do not locally tune `VXX` thresholds,
+  normalization fractions or booster hold lengths `[leverage_for_the_long_run,
+  p.16-17]`, `[systematic_trading, p.119]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.208-211]`.
+
+- **019-2026-05-14-letf-light-gross-rotation (Phase 3):** tested 4
+  pre-registered LETF-light/high-beta monthly rotation configs using physical
+  `QLD`/`SSO`/`SMH`/`SOXX` adjusted closes, with optional gross 1.25 and explicit
+  5% annual financing drag. Best `top2_m126_g125` beat the primary equal-weight
+  `QLD/SSO/SMH/SOXX` buy-and-hold benchmark in CAGR (23.77% vs 21.42%) and
+  terminal wealth (54.51x vs 38.05x), and beat `SPY` opportunity cost. It closed
+  `economic_beater_not_validated`: IS MCPT failed (`p=0.290`), WF MCPT failed
+  (`p=0.860`), PBO failed (`0.591`), DSR failed (`p=0.4351`, cumulative
+  `n_trials=292`) and bootstrap 99.9% CI low was negative despite WF 13/15, OOS,
+  FWD 63d and cross-lib passing. Do not locally tune the same
+  `QLD/SSO/SMH/SOXX` momentum/gross family `[stocks_on_the_move, p.66-67]`,
+  `[trading_systems_methods, p.542-544]`, `[systematic_trading, p.137-148]`,
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`.
+
+- **020-2026-05-14-dynamic-risk-parity-letf (Phase 3):** tested 4
+  pre-registered dynamic risk-parity LETF sleeve configs using physical
+  `UPRO`/`SSO`/`TLT`/`GLD`/`SPY`/`SHV` adjusted closes. Best `upro_rp126_g125`
+  failed the Phase 3 economic gate: CAGR 12.13% and terminal wealth 6.48x versus
+  primary equal-weight `UPRO/TLT/GLD` buy-and-hold CAGR 17.28% and terminal wealth
+  13.48x, and versus `SPY` buy-and-hold CAGR 14.20% and terminal wealth 8.74x.
+  It passed PBO (`0.000`), WF windows (`9/13`), OOS and cross-lib, but failed IS
+  MCPT (`p=0.745`), WF MCPT (`p=0.680`), DSR (`p=0.2752`, cumulative
+  `n_trials=296`), latest 63d FWD and bootstrap. Family dead-end: inverse-vol
+  risk budgeting improved ride quality but over-allocated away from the equity
+  return engine; do not locally tune risk-parity lookbacks, gross caps or the same
+  `UPRO/SSO` + `TLT/GLD` inverse-vol universe `[leverage_for_the_long_run, p.13]`,
+  `[risk_parity, p.80-81]`, `[systematic_trading, p.137-148]`,
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.222-223]`.
+
+- **021-2026-05-14-phase3-consolidation-audit (Phase 3):** performed a
+  pre-registered consolidation audit over the 20 prior Phase 3 iteration
+  directories without changing any strategy rules, parameters, weights or market
+  data windows. The audit found required artifacts complete, required
+  `RESULTS.json` fields present, all prior iterations pre-registered, local Phase
+  3 `n_trials` reconciled (`80`, moving cumulative trials from `216` to `296`),
+  zero `winner=true`, zero `strict_winner`, and zero `candidate_watchlist`/
+  `paper_trade_candidate` labels. It closed `fail` because no strict winner exists
+  after 20 prior Phase 3 iterations; prior MCPT/PBO/DSR/WF/OOS/FWD/bootstrap and
+  economic failures remain binding and were not recomputed. `n_trials=0`,
+  `cumulative_n_trials=296`; no deploy implication `[testing_tuning, p.327-335]`,
+  `[testing_tuning, p.318-320]`, `[advances_fin_ml, p.222-223]`.
+
+- **022-2026-05-14-qqq-core-qld-overlay (Phase 3):** tested 4 pre-registered
+  Nasdaq core-plus-overlay configs holding `QQQ` permanently and adding partial
+  `QLD` exposure when lagged `QQQ` momentum was positive and lagged realized
+  volatility was below a fixed cap, with 5% annual financing drag on gross exposure
+  above 1.0. Best `mom126_vol63_cap25` beat primary `QQQ` buy-and-hold in CAGR
+  (23.19% vs 16.31%) and terminal wealth (56.02x vs 18.46x), and beat `SPY`
+  opportunity cost, so it closed `economic_beater_not_validated`; however it failed
+  IS MCPT (`p=0.065`), WF MCPT (`p=0.260`), PBO (`0.738`), DSR (`p=0.2723`,
+  cumulative `n_trials=300`) and bootstrap 99.9% despite WF 12/16, OOS, FWD 63d
+  and cross-lib passing. It also did not beat raw `QLD` buy-and-hold context. Do
+  not locally tune the same `QQQ` momentum/vol overlay lookbacks, caps or overlay
+  sizes `[leverage_for_the_long_run, p.13]`, `[leverage_for_the_long_run, p.7]`,
+  `[systematic_trading, p.137-148]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.222-223]`.
+
+- **023-2026-05-14-semis-leadership-overlay (Phase 3):** tested 4
+  pre-registered `QQQ` core plus `SOXL`/`TECL` overlay configs triggered by lagged
+  `SMH`/`SOXX` relative leadership versus `QQQ`, with 5% annual financing drag on
+  gross exposure above 1.0. Best `soxx_qqq_m126_v63_tecl25` beat `QQQ` buy-and-hold
+  in CAGR (20.93% vs 19.34%) and terminal wealth (21.48x vs 17.37x), and beat
+  `SPY`, but closed `fail` because it lost to the pre-registered equal-weight
+  `SMH/SOXX` primary opportunity benchmark (26.80% CAGR and 46.22x terminal
+  wealth). It passed IS MCPT (`p=0.000`), PBO (`0.333`), WF 11/13, OOS, FWD 63d,
+  bootstrap and cross-lib, but failed WF MCPT (`p=0.680`) and DSR (`p=0.1319`,
+  cumulative `n_trials=304`). Family dead-end: do not locally tune `SMH/SOXX`
+  relative-strength overlay lookbacks, vol caps, overlay weights or `SOXL/TECL`
+  variants `[leverage_for_the_long_run, p.13]`, `[stocks_on_the_move, p.66-67]`,
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.222-223]`.
+
+- **024-2026-05-14-qld-migration-sleeve (Phase 3):** tested 4
+  pre-registered monthly `QLD/TLT/GLD` sleeve configs with a drawdown-triggered
+  `QLD` gross boost and 5% annual financing drag on gross exposure above 1.0. Best
+  `qld70_tlt15_gld15_dd25_boost50` beat both primary benchmarks on aligned CAGR
+  and terminal wealth: 23.62% CAGR and 59.95x terminal wealth versus `QQQ` 16.31%
+  and 18.46x, and equal-weight `QLD/TLT/GLD` 15.78% and 16.90x. It closed
+  `economic_beater_not_validated`; however it failed IS MCPT (`p=0.740`), WF MCPT
+  (`p=0.780`), DSR (`p=0.3668`, cumulative `n_trials=308`) and the MDD guard
+  (`-80.45%`, slightly worse than 1.5x `QQQ` MDD), despite passing PBO (`0.135`),
+  WF 14/16, OOS, FWD 63d, bootstrap and cross-lib. Do not locally tune
+  `QLD/TLT/GLD` weights, drawdown triggers, boost sizes, rebalance cadence or
+  financing assumptions `[leverage_space, p.149-167]`,
+  `[leverage_for_the_long_run, p.13]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.222-223]`.
+
+- **025-2026-05-14-economic-beater-financing-stress (Phase 3):** audited 16 prior
+  Phase 3 economic beaters by subtracting pre-registered additional strategy-only
+  annual drags of 25 bps, 50 bps and 100 bps from saved returns, then comparing
+  each candidate with its original primary buy-and-hold benchmark hierarchy. It
+  closed `fail`: 47/48 candidate-stress rows retained the economic gate, but
+  `006_high_beta_rotation` / `top2_m63` failed under 100 bps drag with stressed
+  CAGR 14.43% and terminal wealth 26.36x versus equal-weight `QQQ/SMH/SOXX/XLK`
+  buy-and-hold CAGR 14.82% and terminal wealth 28.63x. `n_trials=0`, cumulative
+  `n_trials=308`; prior MCPT/PBO/DSR failures remain binding. Do not locally tune
+  high-beta rotation, gross overlays, sleeves, drawdown triggers, rebalance cadence
+  or financing assumptions `[leverage_for_the_long_run, p.21]`,
+  `[systematic_trading, p.185-188]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.222-223]`.
+
+- **026-2026-05-14-phase3-gate-consolidation (Phase 3):** performed a
+  conservative consolidation audit of all 25 prior Phase 3 `RESULTS.json` files.
+  It closed `fail`: artifact completeness passed (25/25 parsed), trial
+  reconciliation passed (prior Phase 3 `n_trials` sum `92`, cumulative remains
+  `308`), zero `winner=true` and zero promotional statuses were found, but all 16
+  `economic_beater_not_validated` results still had failed or missing strict gates.
+  No MCPT/PBO/DSR gates were recomputed; prior failures remain binding and no
+  candidate is promotable. `n_trials=0`; cumulative `n_trials=308`. Worktree
+  ambiguity was recorded because public docs and Phase 3 artifacts beyond the
+  supplied `MEMORY.md` state were already modified before this iteration
+  `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`.
+
+- **027-2026-05-14-qld-vol-throttle-sleeve (Phase 3):** tested 4
+  pre-registered monthly `QLD/TLT/GLD` sleeve configs with lagged `QQQ` realized
+  volatility throttling, always-invested exposure and 5% annual financing drag on
+  gross exposure above 1.0. Best `qld70_tlt15_gld15_rv126_q30_70_b50_c20` beat
+  both primary benchmarks on aligned CAGR and terminal wealth: 25.34% CAGR and
+  78.26x terminal wealth versus `QQQ` 16.28% and 18.37x, and equal-weight
+  `QLD/TLT/GLD` 15.71% and 16.73x. It closed
+  `economic_beater_not_validated`; however it failed IS MCPT (`p=0.0746`), WF
+  MCPT (`p=0.3267`) and DSR (`p=0.2121`, cumulative `n_trials=312`) despite
+  passing PBO (`0.377`), WF 14/16, OOS, FWD 63d, bootstrap and cross-lib. Family
+  dead-end: do not locally tune `QLD/TLT/GLD` volatility lookbacks, quantiles,
+  weights, boost/cut sizes, rebalance cadence or financing assumptions
+  `[leverage_for_the_long_run, p.13]`, `[systematic_trading, p.137-148]`,
+  `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.222-223]`.
+
+- **028-2026-05-14-qld-vol-throttle-stress (Phase 3):** stress-only retest of the
+  iteration 027 best `qld70_tlt15_gld15_rv126_q30_70_b50_c20` config with no new
+  strategy trials. The fixed rule still beat the full-window primary benchmarks,
+  including 25/50/100 bps extra annual drag; base CAGR was 25.34% and terminal
+  wealth 78.26x versus `QQQ` 16.31% and 18.46x, and equal-weight `QLD/TLT/GLD`
+  15.78% and 16.90x. It closed `fail` because rolling robustness missed the
+  pre-registered 90% threshold: 3y windows passed 170/196 (`86.73%`) and 5y
+  windows passed 154/172 (`89.53%`) versus both primary benchmarks. Prior
+  iteration 027 IS MCPT, WF MCPT and DSR failures remain binding. `n_trials=0`,
+  cumulative `n_trials=312`. Do not locally tune `QLD/TLT/GLD` volatility
+  lookbacks, quantiles, weights, boost/cut sizes, rolling pass thresholds,
+  rebalance cadence or financing assumptions `[leverage_for_the_long_run, p.13]`,
+  `[leverage_for_the_long_run, p.4-7]`, `[testing_tuning, p.318-320]`,
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.222-223]`.
+
+- **029-2026-05-14-economic-beater-gate-audit (Phase 3):** audit-only
+  consolidation of all 28 prior Phase 3 `RESULTS.json` files. It closed `fail`:
+  artifact completeness passed (28/28 parsed), status counts were
+  `economic_beater_not_validated=17`, `fail=10`, `data_blocked=1`, prior Phase 3
+  local `n_trials` sum was `96`, and zero `winner=true`, zero `strict_winner`,
+  zero `candidate_watchlist` and zero `paper_trade_candidate` were found. All 17
+  economic beaters remained blocked by failed strict gates; MCPT/PBO/DSR were not
+  recomputed and prior failures remain binding. `n_trials=0`; cumulative
+  `n_trials=312`. Family dead-end/audit note: do not use any prior economic
+  beater for promotion or paper trading without a separate human review and new
+  forward-only protocol `[testing_tuning, p.318-320]`,
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`,
+  `[advances_fin_ml, p.222-223]`.
+
+- **030-2026-05-14-phase3-closure-audit (Phase 3):** final audit-only closure at
+  the planned 30-iteration cap. It parsed all 29 prior Phase 3 `RESULTS.json`
+  files and confirmed required artifacts were complete, status counts were
+  `economic_beater_not_validated=17`, `fail=11`, `data_blocked=1`, prior Phase 3
+  local `n_trials` sum was `96`, and zero `winner=true`, zero `strict_winner`,
+  zero `candidate_watchlist` and zero `paper_trade_candidate` were found. All 17
+  economic beaters remained blocked by failed or missing strict gates; MCPT/PBO/DSR
+  were not recomputed and prior failures remain binding. `n_trials=0`; cumulative
+  `n_trials=312`. Phase 3 is closed with no winner, no paper-trade candidate and
+  no deploy implication `[testing_tuning, p.318-320]`,
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`,
+  `[advances_fin_ml, p.222-223]`.
+
 ## Last Result
+
+Phase 3 iteration 030 closed `fail`: final audit-only closure at the planned
+30-iteration cap. It parsed the 29 prior Phase 3 `RESULTS.json` files and found
+17 `economic_beater_not_validated`, 11 `fail` and 1 `data_blocked`; all 17
+economic beaters remained blocked by failed or missing strict gates. No
+`winner=true`, `strict_winner`, `candidate_watchlist` or `paper_trade_candidate`
+was found. `n_trials=0`, cumulative `n_trials=312`; Phase 3 is closed with no
+winner and no deploy implication.
+Artifacts:
+`studies/success_trading_strat/iters/phase03/030-2026-05-14-phase3-closure-audit/`.
 
 Phase 2 iteration 029 closed `fail`: daily Fisher Transform cycle reversal failed
 the Phase 2 CAGR floor, PBO, DSR and latest 63d FWD despite passing same-asset
@@ -1225,13 +1639,71 @@ Artifacts:
 
 ## Next Step
 
-Phase 2 is closed at the planned 30-iteration cap with no winner and no deploy
-implication. Phase 3 guidance now lives in `PHASE3_BH_BEATER_SPEC.md`: the next
-loop should require a buy-and-hold beating return engine before testing, with
-aligned CAGR and terminal wealth versus B&H as hard economic gates. Preferred
-mechanisms are controlled LETF/leverage, high-beta rotation, crash-rearmed exposure
-and explicitly modeled gross-exposure long/short rules `[systematic_trading, p.40]`,
-`[leverage_for_the_long_run, p.13]`, `[advances_fin_ml, p.222-223]`.
+Phase 3 is closed at 30/30 local iterations with no strict winner and no deploy
+implication. Do not locally tune the audited balanced-sleeve, HFEA, Nasdaq
+drawdown-rearm, `UPRO/TLT` gross spread, `VXX` crash-rearm,
+`QLD/SSO/SMH/SOXX` momentum/gross rotation, dynamic LETF risk-parity, `QQQ` core +
+`QLD` overlay, `QQQ` core + `SOXL/TECL` sector-leadership overlay, `QLD/TLT/GLD`
+risk-migration sleeve or `QLD/TLT/GLD` realized-volatility throttle families after
+economic fragility and/or MCPT/DSR/PBO failures. Any future restart should require
+a new spec/mechanism or restored data scope, with fresh pre-registration and
+cumulative trial accounting `[systematic_trading, p.40]`,
+`[leverage_for_the_long_run, p.13]`, `[testing_tuning, p.327-335]`,
+`[advances_fin_ml, p.222-223]`.
+
+Historical pre-closure note: the balanced-sleeve family has economic beaters
+(`UPRO/TLT/GLD`, `SSO/TLT/GLD` and `UPRO/TMF/GLD`) but repeated MCPT/DSR fragility,
+and the inception audit showed the `UPRO/TMF/GLD` variant is not robust to a 2020
+start versus `SPY`. The Nasdaq drawdown-rearm booster and UPRO/TLT gross spread
+are also economic beaters but failed MCPT/DSR and other strict gates. Do not
+promote, paper trade or locally tune weights/rebalance cadence, drawdown triggers,
+recovery SMA windows, volatility caps, booster weights, `UPRO/TLT` gross weights,
+SMA windows or financing assumptions. Next recommended branch is a genuinely
+different mechanism or a stricter out-of-family robustness audit.
+Restoring and auditing physical `BTCUSD` and `ETHUSD` daily files is required
+before attempting crypto/equity rotation again. Do not locally tune prior LETF
+vol-target, crash-rearm, high-beta rotation, HFEA/balanced-sleeve or long/short
+parameters without a new mechanism `[testing_tuning, p.327-335]`.
+
+Historical Phase 3 opening note: Phase 3 opened with a fresh phase-local counter.
+Iteration 001 tested
+Nasdaq LETF volatility-targeted exposure over `QLD`/`TQQQ` after a physical
+daily-file audit of the Phase 3 asset set. Best `qld_vt35_rv21_dd25_half` beat
+primary `QQQ` buy-and-hold on aligned CAGR (22.12% vs 17.16%) and terminal
+wealth (52.01x vs 22.90x), so it closed `economic_beater_not_validated` rather
+than `fail`; however it failed IS MCPT (`p=0.050`), WF MCPT (`p=0.310`) and DSR
+(`p=0.1472`, cumulative `n_trials=222`) despite passing PBO (`0.421`), WF
+windows, OOS, FWD 63d, bootstrap and cross-lib. It also underperformed `QLD`
+buy-and-hold context in CAGR/terminal wealth, so there is no winner and no deploy
+implication `[leverage_for_the_long_run, p.13]`, `[systematic_trading,
+p.137-148]`, `[testing_tuning, p.318-320]`, `[advances_fin_ml, p.222-223]`.
+
+Phase 3 iteration 002 tested a distinct S&P LETF volatility-targeted exposure over
+`SSO`/`UPRO` after physically auditing `SPY`/`SSO`/`UPRO`/`SHV`/`QQQ` daily files.
+Best `upro_vt40_rv63_dd30_half` beat primary `SPY` buy-and-hold on aligned CAGR
+(20.54% vs 14.57%) and terminal wealth (22.19x vs 9.56x), so it closed
+`economic_beater_not_validated`; however it failed IS MCPT (`p=0.565`), WF MCPT
+(`p=0.370`), DSR (`p=0.4551`, cumulative `n_trials=228`) and bootstrap
+(99.9% mean daily CI low `-0.000171`) despite passing PBO (`0.206`), WF windows
+(`9/13`), OOS, FWD 63d and cross-lib. It also underperformed `UPRO` buy-and-hold
+context in CAGR/terminal wealth, so there is no winner and no deploy implication
+`[leverage_for_the_long_run, p.5-7]`, `[leverage_for_the_long_run, p.13]`,
+`[systematic_trading, p.137-148]`, `[testing_tuning, p.318-320]`,
+`[advances_fin_ml, p.222-223]`.
+
+Phase 3 iteration 003 tested a distinct semiconductor/technology LETF
+volatility-targeted exposure over `SOXL`/`TECL` after physically auditing
+`SMH`/`SOXX`/`SOXL`/`TECL`/`XLK`/`QQQ`/`SPY`/`SHV` daily files. Best
+`tecl_vt40_rv63` beat both primary benchmarks on aligned CAGR and terminal wealth:
+34.00% CAGR and 148.14x terminal wealth versus `QQQ` 21.02% and 25.99x, and
+equal-weight `SMH/SOXX` 27.89% and 66.76x. It closed
+`economic_beater_not_validated`; however it failed IS MCPT (`p=0.490`), WF MCPT
+(`p=0.670`) and DSR (`p=0.1636`, cumulative `n_trials=234`) despite passing PBO
+(`0.206`), WF windows (`10/14`), OOS, FWD 63d, bootstrap and cross-lib. It also
+underperformed raw `TECL` buy-and-hold context in CAGR/terminal wealth, so there
+is no winner and no deploy implication `[leverage_for_the_long_run, p.5-7]`,
+`[leverage_for_the_long_run, p.13]`, `[systematic_trading, p.137-148]`,
+`[testing_tuning, p.318-320]`, `[advances_fin_ml, p.222-223]`.
 
 Future work should require restored/audited physical 1h/15m files or the Phase 3
 B&H-beater mechanism set above, preferably away from daily Fisher/CMO oscillator
@@ -1263,3 +1735,12 @@ Triple Screen MACD/EMA/Bear Power/hold parameters, Wilder ASI entry/exit/max-hol
 parameters, regression-channel windows/entry/exit/max-hold parameters, dual MA/ATR
 breakout lengths/multipliers, and gold Keltner EMA/ATR multipliers
 `[testing_tuning, p.327-335]`.
+
+Do not locally tune Phase 3 `qld_vt35_rv21_dd25_half`, `upro_vt40_rv63_dd30_half`,
+`tecl_vt40_rv63`, `qqq_qld_rearm_dd35_sma100_h189`,
+`spy_sso_rearm_dd35_sma100_h189`, Nasdaq/S&P/semis LETF
+vol-target windows, target-vol levels, crash drawdown multipliers, crash-rearm
+drawdown triggers, recovery SMA windows or booster hold lengths without a new
+mechanism. If Phase 3 is ever reopened, work should pivot to high-beta relative
+rotation or crypto/equity rotation after physical file audit, not local tuning of LETF
+vol-target or crash-rearm parameters `[testing_tuning, p.327-335]`.

@@ -1,0 +1,499 @@
+{
+  "iteration": "025-2026-05-14-economic-beater-financing-stress",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 0,
+  "mcpt_reps": {},
+  "best_config": null,
+  "winner": false,
+  "metrics": {
+    "audit_type": "prior_economic_beater_financing_friction_stress",
+    "annual_strategy_only_drags": [
+      0.0025,
+      0.005,
+      0.01
+    ],
+    "candidate_summary": {
+      "001_qld_vt": {
+        "config_name": "qld_vt35_rv21_dd25_half",
+        "aligned_start": "2010-05-17",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4023,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.03805112647599462,
+        "worst_min_excess_terminal_wealth": 11.35064364179344
+      },
+      "002_upro_vt": {
+        "config_name": "upro_vt40_rv63_dd30_half",
+        "aligned_start": "2009-09-28",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4182,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.04766811943062588,
+        "worst_min_excess_terminal_wealth": 9.241168549615654
+      },
+      "003_tecl_vt": {
+        "config_name": "tecl_vt40_rv63",
+        "aligned_start": "2010-06-14",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4004,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.03478627011199831,
+        "worst_min_excess_terminal_wealth": 25.222631534221627
+      },
+      "004_nasdaq_rearm": {
+        "config_name": "qqq_qld_rearm_dd35_sma100_h189",
+        "aligned_start": "2006-11-14",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4903,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.010618581224989265,
+        "worst_min_excess_terminal_wealth": 3.706163672202578
+      },
+      "005_sp500_rearm": {
+        "config_name": "spy_sso_rearm_dd35_sma100_h189",
+        "aligned_start": "2006-11-14",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4903,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.008724964745777886,
+        "worst_min_excess_terminal_wealth": 1.2642700388850932
+      },
+      "006_high_beta_rotation": {
+        "config_name": "top2_m63",
+        "aligned_start": "2002-01-22",
+        "aligned_end": "2026-05-13",
+        "n_obs": 6117,
+        "stress_rows": 3,
+        "failed_rows": 1,
+        "worst_min_excess_cagr": -0.0038912961196140294,
+        "worst_min_excess_terminal_wealth": -2.264536263943441
+      },
+      "008_drawdown_adaptive": {
+        "config_name": "top2_m63_dd15_boost125_cap150",
+        "aligned_start": "2001-10-19",
+        "aligned_end": "2026-05-13",
+        "n_obs": 6180,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.003510637228435032,
+        "worst_min_excess_terminal_wealth": 2.648879712368057
+      },
+      "010_upro_tlt_gld": {
+        "config_name": "upro50_tlt25_gld25_quarterly",
+        "aligned_start": "2009-06-26",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4246,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.04307065969326951,
+        "worst_min_excess_terminal_wealth": 14.56866270724252
+      },
+      "011_sso_tlt_gld": {
+        "config_name": "sso75_tlt15_gld10_quarterly",
+        "aligned_start": "2007-01-12",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4864,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.015627174066390914,
+        "worst_min_excess_terminal_wealth": 2.7590662038739833
+      },
+      "012_upro_tmf_gld": {
+        "config_name": "upro50_tmf30_gld20_quarterly",
+        "aligned_start": "2009-06-26",
+        "aligned_end": "2026-04-30",
+        "n_obs": 4237,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.04660099017906694,
+        "worst_min_excess_terminal_wealth": 15.903223939170708
+      },
+      "013_nasdaq_booster": {
+        "config_name": "qld_tqqq_dd25_recover_sma50_rv40",
+        "aligned_start": "2010-02-12",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4087,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.006888876262852728,
+        "worst_min_excess_terminal_wealth": 10.083235704700229
+      },
+      "014_upro_tlt_spread": {
+        "config_name": "upro125_tlt25_sma200",
+        "aligned_start": "2009-06-26",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4246,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.012578737868478074,
+        "worst_min_excess_terminal_wealth": 2.2164997644714237
+      },
+      "018_vxx_rearm": {
+        "config_name": "qqq_tqqq_vxx95_norm70_h126",
+        "aligned_start": "2010-02-12",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4087,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.07732199355642622,
+        "worst_min_excess_terminal_wealth": 33.08063800381352
+      },
+      "019_letf_gross_rotation": {
+        "config_name": "top2_m126_g125",
+        "aligned_start": "2007-08-02",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4725,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.01119892430947833,
+        "worst_min_excess_terminal_wealth": 7.147567009938889
+      },
+      "022_qqq_qld_overlay": {
+        "config_name": "mom126_vol63_cap25",
+        "aligned_start": "2007-01-12",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4864,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.05658481601161558,
+        "worst_min_excess_terminal_wealth": 27.725721039207475
+      },
+      "024_qld_migration": {
+        "config_name": "qld70_tlt15_gld15_dd25_boost50",
+        "aligned_start": "2007-01-12",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4864,
+        "stress_rows": 3,
+        "failed_rows": 0,
+        "worst_min_excess_cagr": 0.06087536910748592,
+        "worst_min_excess_terminal_wealth": 30.965066163461206
+      }
+    },
+    "total_rows": 48,
+    "failed_rows": 1,
+    "pass_rows": 47,
+    "worst_rows": [
+      {
+        "candidate": "006_high_beta_rotation",
+        "config_name": "top2_m63",
+        "annual_drag": 0.01,
+        "start": "2002-01-22",
+        "end": "2026-05-13",
+        "strategy_cagr_stressed": 0.14430238845570176,
+        "strategy_terminal_wealth_stressed": 26.363819890040215,
+        "benchmark_cagrs": {
+          "ew_bh": 0.1481936845753158
+        },
+        "benchmark_terminal_wealth": {
+          "ew_bh": 28.628356153983656
+        },
+        "min_excess_cagr": -0.0038912961196140294,
+        "min_excess_terminal_wealth": -2.264536263943441,
+        "pass": false
+      },
+      {
+        "candidate": "006_high_beta_rotation",
+        "config_name": "top2_m63",
+        "annual_drag": 0.005,
+        "start": "2002-01-22",
+        "end": "2026-05-13",
+        "strategy_cagr_stressed": 0.15003592955673017,
+        "strategy_terminal_wealth_stressed": 29.76440287019495,
+        "benchmark_cagrs": {
+          "ew_bh": 0.1481936845753158
+        },
+        "benchmark_terminal_wealth": {
+          "ew_bh": 28.628356153983656
+        },
+        "min_excess_cagr": 0.001842244981414387,
+        "min_excess_terminal_wealth": 1.1360467162112933,
+        "pass": true
+      },
+      {
+        "candidate": "008_drawdown_adaptive",
+        "config_name": "top2_m63_dd15_boost125_cap150",
+        "annual_drag": 0.01,
+        "start": "2001-10-19",
+        "end": "2026-05-13",
+        "strategy_cagr_stressed": 0.15854674932012358,
+        "strategy_terminal_wealth_stressed": 36.932103579274894,
+        "benchmark_cagrs": {
+          "ew_bh": 0.15503611209168855
+        },
+        "benchmark_terminal_wealth": {
+          "ew_bh": 34.28322386690684
+        },
+        "min_excess_cagr": 0.003510637228435032,
+        "min_excess_terminal_wealth": 2.648879712368057,
+        "pass": true
+      },
+      {
+        "candidate": "006_high_beta_rotation",
+        "config_name": "top2_m63",
+        "annual_drag": 0.0025,
+        "start": "2002-01-22",
+        "end": "2026-05-13",
+        "strategy_cagr_stressed": 0.15291342125066998,
+        "strategy_terminal_wealth_stressed": 31.625776783481555,
+        "benchmark_cagrs": {
+          "ew_bh": 0.1481936845753158
+        },
+        "benchmark_terminal_wealth": {
+          "ew_bh": 28.628356153983656
+        },
+        "min_excess_cagr": 0.004719736675354191,
+        "min_excess_terminal_wealth": 2.997420629497899,
+        "pass": true
+      },
+      {
+        "candidate": "013_nasdaq_booster",
+        "config_name": "qld_tqqq_dd25_recover_sma50_rv40",
+        "annual_drag": 0.01,
+        "start": "2010-02-12",
+        "end": "2026-05-13",
+        "strategy_cagr_stressed": 0.3477153185911701,
+        "strategy_terminal_wealth_stressed": 126.43169184631182,
+        "benchmark_cagrs": {
+          "QQQ_bh": 0.1984159134222625,
+          "ew_bh": 0.3408264423283174
+        },
+        "benchmark_terminal_wealth": {
+          "QQQ_bh": 18.831178053183866,
+          "ew_bh": 116.34845614161159
+        },
+        "min_excess_cagr": 0.006888876262852728,
+        "min_excess_terminal_wealth": 10.083235704700229,
+        "pass": true
+      },
+      {
+        "candidate": "005_sp500_rearm",
+        "config_name": "spy_sso_rearm_dd35_sma100_h189",
+        "annual_drag": 0.01,
+        "start": "2006-11-14",
+        "end": "2026-05-13",
+        "strategy_cagr_stressed": 0.11924235260727434,
+        "strategy_terminal_wealth_stressed": 8.951278478904003,
+        "benchmark_cagrs": {
+          "SPY_bh": 0.11051738786149645
+        },
+        "benchmark_terminal_wealth": {
+          "SPY_bh": 7.68700844001891
+        },
+        "min_excess_cagr": 0.008724964745777886,
+        "min_excess_terminal_wealth": 1.2642700388850932,
+        "pass": true
+      },
+      {
+        "candidate": "008_drawdown_adaptive",
+        "config_name": "top2_m63_dd15_boost125_cap150",
+        "annual_drag": 0.005,
+        "start": "2001-10-19",
+        "end": "2026-05-13",
+        "strategy_cagr_stressed": 0.1643516284931672,
+        "strategy_terminal_wealth_stressed": 41.74795705445627,
+        "benchmark_cagrs": {
+          "ew_bh": 0.15503611209168855
+        },
+        "benchmark_terminal_wealth": {
+          "ew_bh": 34.28322386690684
+        },
+        "min_excess_cagr": 0.009315516401478652,
+        "min_excess_terminal_wealth": 7.4647331875494345,
+        "pass": true
+      },
+      {
+        "candidate": "004_nasdaq_rearm",
+        "config_name": "qqq_qld_rearm_dd35_sma100_h189",
+        "annual_drag": 0.01,
+        "start": "2006-11-14",
+        "end": "2026-05-13",
+        "strategy_cagr_stressed": 0.1745583813115772,
+        "strategy_terminal_wealth_stressed": 22.882568867998963,
+        "benchmark_cagrs": {
+          "QQQ_bh": 0.16393980008658793
+        },
+        "benchmark_terminal_wealth": {
+          "QQQ_bh": 19.176405195796384
+        },
+        "min_excess_cagr": 0.010618581224989265,
+        "min_excess_terminal_wealth": 3.706163672202578,
+        "pass": true
+      },
+      {
+        "candidate": "019_letf_gross_rotation",
+        "config_name": "top2_m126_g125",
+        "annual_drag": 0.01,
+        "start": "2007-08-02",
+        "end": "2026-05-13",
+        "strategy_cagr_stressed": 0.22538429054081188,
+        "strategy_terminal_wealth_stressed": 45.196601709507625,
+        "benchmark_cagrs": {
+          "ew_bh": 0.21418536623133355
+        },
+        "benchmark_terminal_wealth": {
+          "ew_bh": 38.049034699568736
+        },
+        "min_excess_cagr": 0.01119892430947833,
+        "min_excess_terminal_wealth": 7.147567009938889,
+        "pass": true
+      },
+      {
+        "candidate": "008_drawdown_adaptive",
+        "config_name": "top2_m63_dd15_boost125_cap150",
+        "annual_drag": 0.0025,
+        "start": "2001-10-19",
+        "end": "2026-05-13",
+        "strategy_cagr_stressed": 0.1672649225518097,
+        "strategy_terminal_wealth_stressed": 44.386451200238966,
+        "benchmark_cagrs": {
+          "ew_bh": 0.15503611209168855
+        },
+        "benchmark_terminal_wealth": {
+          "ew_bh": 34.28322386690684
+        },
+        "min_excess_cagr": 0.012228810460121142,
+        "min_excess_terminal_wealth": 10.103227333332129,
+        "pass": true
+      }
+    ]
+  },
+  "benchmark": {
+    "primary": "candidate_specific_phase3_primary_buy_hold",
+    "opportunity": "SPY_buy_hold_context",
+    "details": {
+      "001_qld_vt": {
+        "single": "QQQ",
+        "equal_weight": []
+      },
+      "002_upro_vt": {
+        "single": "SPY",
+        "equal_weight": []
+      },
+      "003_tecl_vt": {
+        "single": "QQQ",
+        "equal_weight": [
+          "SMH",
+          "SOXX"
+        ]
+      },
+      "004_nasdaq_rearm": {
+        "single": "QQQ",
+        "equal_weight": []
+      },
+      "005_sp500_rearm": {
+        "single": "SPY",
+        "equal_weight": []
+      },
+      "006_high_beta_rotation": {
+        "single": null,
+        "equal_weight": [
+          "QQQ",
+          "SMH",
+          "SOXX",
+          "XLK"
+        ]
+      },
+      "008_drawdown_adaptive": {
+        "single": null,
+        "equal_weight": [
+          "QQQ",
+          "SMH",
+          "SOXX",
+          "XLK"
+        ]
+      },
+      "010_upro_tlt_gld": {
+        "single": "SPY",
+        "equal_weight": [
+          "UPRO",
+          "TLT",
+          "GLD"
+        ]
+      },
+      "011_sso_tlt_gld": {
+        "single": "SPY",
+        "equal_weight": [
+          "SSO",
+          "TLT",
+          "GLD"
+        ]
+      },
+      "012_upro_tmf_gld": {
+        "single": "SPY",
+        "equal_weight": [
+          "UPRO",
+          "TMF",
+          "GLD"
+        ]
+      },
+      "013_nasdaq_booster": {
+        "single": "QQQ",
+        "equal_weight": [
+          "QQQ",
+          "QLD",
+          "TQQQ"
+        ]
+      },
+      "014_upro_tlt_spread": {
+        "single": "SPY",
+        "equal_weight": [
+          "UPRO",
+          "TLT",
+          "SHV"
+        ]
+      },
+      "018_vxx_rearm": {
+        "single": "QQQ",
+        "equal_weight": []
+      },
+      "019_letf_gross_rotation": {
+        "single": null,
+        "equal_weight": [
+          "QLD",
+          "SSO",
+          "SMH",
+          "SOXX"
+        ]
+      },
+      "022_qqq_qld_overlay": {
+        "single": "QQQ",
+        "equal_weight": []
+      },
+      "024_qld_migration": {
+        "single": "QQQ",
+        "equal_weight": [
+          "QLD",
+          "TLT",
+          "GLD"
+        ]
+      }
+    }
+  },
+  "gates": {
+    "physical_daily_files": true,
+    "stressed_economic_cagr_all_rows": false,
+    "stressed_economic_terminal_wealth_all_rows": false,
+    "prior_validation_failures_binding": true,
+    "mcpt_recomputed": false,
+    "pbo_recomputed": false,
+    "dsr_recomputed": false
+  },
+  "kill_switches": [
+    "stressed economic gate failed in 1 candidate-stress rows",
+    "prior strict validation failures remain binding"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/025-2026-05-14-economic-beater-financing-stress/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/025-2026-05-14-economic-beater-financing-stress/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/025-2026-05-14-economic-beater-financing-stress/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/025-2026-05-14-economic-beater-financing-stress/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/025-2026-05-14-economic-beater-financing-stress/stress_results.csv"
+  ],
+  "notes": "Conservative stress audit only; no new strategy trials and no deploy implication."
+}

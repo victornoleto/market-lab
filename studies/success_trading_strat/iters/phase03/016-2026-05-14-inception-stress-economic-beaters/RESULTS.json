@@ -1,0 +1,982 @@
+{
+  "iteration": "016-2026-05-14-inception-stress-economic-beaters",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 0,
+  "mcpt_reps": {},
+  "best_config": null,
+  "winner": false,
+  "metrics": {
+    "stress_rows": [
+      {
+        "label": "010_upro50_tlt25_gld25_quarterly",
+        "source_dir": "010-2026-05-14-levered-balanced-sleeve",
+        "config": "upro50_tlt25_gld25_quarterly",
+        "start_rule": "full",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "UPRO/TLT/GLD",
+        "observations": 4246,
+        "skipped": false,
+        "start": "2009-06-26",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.2412741342712874,
+            "terminal_wealth": 38.15894348386523,
+            "max_drawdown": -0.44799996073430803,
+            "annual_vol": 0.24171994492090404,
+            "sharpe": 1.0158204731371618
+          },
+          "same_market_bh": {
+            "cagr": 0.1522684305000246,
+            "terminal_wealth": 10.89257040802119,
+            "max_drawdown": -0.33699940470536127,
+            "annual_vol": 0.17125082518251447,
+            "sharpe": 0.9136906246281296
+          },
+          "equal_weight_bh": {
+            "cagr": 0.1858614481241938,
+            "terminal_wealth": 17.677193250368827,
+            "max_drawdown": -0.36468310448266306,
+            "annual_vol": 0.17931242529989866,
+            "sharpe": 1.0408029981904874
+          },
+          "spy_bh": {
+            "cagr": 0.1522684305000246,
+            "terminal_wealth": 10.89257040802119,
+            "max_drawdown": -0.33699940470536127,
+            "annual_vol": 0.17125082518251447,
+            "sharpe": 0.9136906246281296
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "010_upro50_tlt25_gld25_quarterly",
+        "source_dir": "010-2026-05-14-levered-balanced-sleeve",
+        "config": "upro50_tlt25_gld25_quarterly",
+        "start_rule": "2010-01-01",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "UPRO/TLT/GLD",
+        "observations": 4115,
+        "skipped": false,
+        "start": "2010-01-04",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.22530858536808251,
+            "terminal_wealth": 27.605308331026485,
+            "max_drawdown": -0.44799996073430826,
+            "annual_vol": 0.2406542745389801,
+            "sharpe": 0.9654115368777355
+          },
+          "same_market_bh": {
+            "cagr": 0.14332453212000829,
+            "terminal_wealth": 8.909869930219882,
+            "max_drawdown": -0.3369994047053614,
+            "annual_vol": 0.17143807229900024,
+            "sharpe": 0.8674063765008224
+          },
+          "equal_weight_bh": {
+            "cagr": 0.17473010318936533,
+            "terminal_wealth": 13.868986792112812,
+            "max_drawdown": -0.3646831044826626,
+            "annual_vol": 0.179130478816834,
+            "sharpe": 0.9889960265189199
+          },
+          "spy_bh": {
+            "cagr": 0.14332453212000829,
+            "terminal_wealth": 8.909869930219882,
+            "max_drawdown": -0.3369994047053614,
+            "annual_vol": 0.17143807229900024,
+            "sharpe": 0.8674063765008224
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "010_upro50_tlt25_gld25_quarterly",
+        "source_dir": "010-2026-05-14-levered-balanced-sleeve",
+        "config": "upro50_tlt25_gld25_quarterly",
+        "start_rule": "2015-01-01",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "UPRO/TLT/GLD",
+        "observations": 2857,
+        "skipped": false,
+        "start": "2015-01-02",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.20354994884642696,
+            "terminal_wealth": 8.170450087836773,
+            "max_drawdown": -0.44799996073430814,
+            "annual_vol": 0.24945877024686114,
+            "sharpe": 0.8682261473115265
+          },
+          "same_market_bh": {
+            "cagr": 0.13880274781986457,
+            "terminal_wealth": 4.364894397825696,
+            "max_drawdown": -0.3369994047053615,
+            "annual_vol": 0.1767546395082126,
+            "sharpe": 0.8241320784304179
+          },
+          "equal_weight_bh": {
+            "cagr": 0.162886382161896,
+            "terminal_wealth": 5.533704485587453,
+            "max_drawdown": -0.3646831044826624,
+            "annual_vol": 0.18871489950293396,
+            "sharpe": 0.8944017756356728
+          },
+          "spy_bh": {
+            "cagr": 0.13880274781986457,
+            "terminal_wealth": 4.364894397825696,
+            "max_drawdown": -0.3369994047053615,
+            "annual_vol": 0.1767546395082126,
+            "sharpe": 0.8241320784304179
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "010_upro50_tlt25_gld25_quarterly",
+        "source_dir": "010-2026-05-14-levered-balanced-sleeve",
+        "config": "upro50_tlt25_gld25_quarterly",
+        "start_rule": "2020-01-01",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "UPRO/TLT/GLD",
+        "observations": 1599,
+        "skipped": false,
+        "start": "2020-01-02",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.22580439231825267,
+            "terminal_wealth": 3.639597822608468,
+            "max_drawdown": -0.4479999607343077,
+            "annual_vol": 0.29061432854244396,
+            "sharpe": 0.8467621261444621
+          },
+          "same_market_bh": {
+            "cagr": 0.15718445149594085,
+            "terminal_wealth": 2.525250855958587,
+            "max_drawdown": -0.3369994047053616,
+            "annual_vol": 0.20407501047636814,
+            "sharpe": 0.8178491030258754
+          },
+          "equal_weight_bh": {
+            "cagr": 0.1820724372571474,
+            "terminal_wealth": 2.8903075198206283,
+            "max_drawdown": -0.36468310448266283,
+            "annual_vol": 0.22434841748543585,
+            "sharpe": 0.8581842723073113
+          },
+          "spy_bh": {
+            "cagr": 0.15718445149594085,
+            "terminal_wealth": 2.525250855958587,
+            "max_drawdown": -0.3369994047053616,
+            "annual_vol": 0.20407501047636814,
+            "sharpe": 0.8178491030258754
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "011_sso75_tlt15_gld10_quarterly",
+        "source_dir": "011-2026-05-14-sso-balanced-sleeve-stress",
+        "config": "sso75_tlt15_gld10_quarterly",
+        "start_rule": "full",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "SSO/TLT/GLD",
+        "observations": 4864,
+        "skipped": false,
+        "start": "2007-01-12",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.1476330807666788,
+            "terminal_wealth": 14.265728430473581,
+            "max_drawdown": -0.7121908384673901,
+            "annual_vol": 0.27129780519096636,
+            "sharpe": 0.6438759294072041
+          },
+          "same_market_bh": {
+            "cagr": 0.10966414870370134,
+            "terminal_wealth": 7.451929603433321,
+            "max_drawdown": -0.552011045721585,
+            "annual_vol": 0.1967533799020003,
+            "sharpe": 0.6274161499336461
+          },
+          "equal_weight_bh": {
+            "cagr": 0.12059107428937077,
+            "terminal_wealth": 9.003443727772755,
+            "max_drawdown": -0.34208985128387526,
+            "annual_vol": 0.143385487167732,
+            "sharpe": 0.8659250358332603
+          },
+          "spy_bh": {
+            "cagr": 0.10966414870370134,
+            "terminal_wealth": 7.451929603433321,
+            "max_drawdown": -0.552011045721585,
+            "annual_vol": 0.1967533799020003,
+            "sharpe": 0.6274161499336461
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "011_sso75_tlt15_gld10_quarterly",
+        "source_dir": "011-2026-05-14-sso-balanced-sleeve-stress",
+        "config": "sso75_tlt15_gld10_quarterly",
+        "start_rule": "2010-01-01",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "SSO/TLT/GLD",
+        "observations": 4115,
+        "skipped": false,
+        "start": "2010-01-04",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.20494663176931782,
+            "terminal_wealth": 20.996792781646548,
+            "max_drawdown": -0.42944112816716873,
+            "annual_vol": 0.24469077778993076,
+            "sharpe": 0.8850777377522079
+          },
+          "same_market_bh": {
+            "cagr": 0.14332453212000829,
+            "terminal_wealth": 8.909869930219882,
+            "max_drawdown": -0.3369994047053614,
+            "annual_vol": 0.17143807229900024,
+            "sharpe": 0.8674063765008224
+          },
+          "equal_weight_bh": {
+            "cagr": 0.1345494861076566,
+            "terminal_wealth": 7.856552604737977,
+            "max_drawdown": -0.296488594779003,
+            "annual_vol": 0.13087800942806985,
+            "sharpe": 1.030257060438831
+          },
+          "spy_bh": {
+            "cagr": 0.14332453212000829,
+            "terminal_wealth": 8.909869930219882,
+            "max_drawdown": -0.3369994047053614,
+            "annual_vol": 0.17143807229900024,
+            "sharpe": 0.8674063765008224
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "011_sso75_tlt15_gld10_quarterly",
+        "source_dir": "011-2026-05-14-sso-balanced-sleeve-stress",
+        "config": "sso75_tlt15_gld10_quarterly",
+        "start_rule": "2015-01-01",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "SSO/TLT/GLD",
+        "observations": 2857,
+        "skipped": false,
+        "start": "2015-01-02",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.18593883623617646,
+            "terminal_wealth": 6.912999605504631,
+            "max_drawdown": -0.42944112816716873,
+            "annual_vol": 0.25415136181443915,
+            "sharpe": 0.7989222630929753
+          },
+          "same_market_bh": {
+            "cagr": 0.13880274781986457,
+            "terminal_wealth": 4.364894397825696,
+            "max_drawdown": -0.3369994047053615,
+            "annual_vol": 0.1767546395082126,
+            "sharpe": 0.8241320784304179
+          },
+          "equal_weight_bh": {
+            "cagr": 0.12777631715350735,
+            "terminal_wealth": 3.9090170483984203,
+            "max_drawdown": -0.2964885947790018,
+            "annual_vol": 0.1380883299282876,
+            "sharpe": 0.9400937575059541
+          },
+          "spy_bh": {
+            "cagr": 0.13880274781986457,
+            "terminal_wealth": 4.364894397825696,
+            "max_drawdown": -0.3369994047053615,
+            "annual_vol": 0.1767546395082126,
+            "sharpe": 0.8241320784304179
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "011_sso75_tlt15_gld10_quarterly",
+        "source_dir": "011-2026-05-14-sso-balanced-sleeve-stress",
+        "config": "sso75_tlt15_gld10_quarterly",
+        "start_rule": "2020-01-01",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "SSO/TLT/GLD",
+        "observations": 1599,
+        "skipped": false,
+        "start": "2020-01-02",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.20313722259801037,
+            "terminal_wealth": 3.2330977329511543,
+            "max_drawdown": -0.42944112816716895,
+            "annual_vol": 0.2948307039536815,
+            "sharpe": 0.7756497408258997
+          },
+          "same_market_bh": {
+            "cagr": 0.15718445149594085,
+            "terminal_wealth": 2.525250855958587,
+            "max_drawdown": -0.3369994047053616,
+            "annual_vol": 0.20407501047636814,
+            "sharpe": 0.8178491030258754
+          },
+          "equal_weight_bh": {
+            "cagr": 0.145791346633259,
+            "terminal_wealth": 2.3715850903506364,
+            "max_drawdown": -0.29648859477900225,
+            "annual_vol": 0.16460388516857793,
+            "sharpe": 0.9093614180234494
+          },
+          "spy_bh": {
+            "cagr": 0.15718445149594085,
+            "terminal_wealth": 2.525250855958587,
+            "max_drawdown": -0.3369994047053616,
+            "annual_vol": 0.20407501047636814,
+            "sharpe": 0.8178491030258754
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "012_upro50_tmf30_gld20_quarterly",
+        "source_dir": "012-2026-05-14-hfea-levered-sleeve",
+        "config": "upro50_tmf30_gld20_quarterly",
+        "start_rule": "full",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "UPRO/TMF/GLD",
+        "observations": 4237,
+        "skipped": false,
+        "start": "2009-06-26",
+        "end": "2026-04-30",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.24426873328337484,
+            "terminal_wealth": 39.43110498530117,
+            "max_drawdown": -0.5868622365653502,
+            "annual_vol": 0.251451766009502,
+            "sharpe": 0.995673068698728
+          },
+          "same_market_bh": {
+            "cagr": 0.1503978721612016,
+            "terminal_wealth": 10.54553306493043,
+            "max_drawdown": -0.33699940470536127,
+            "annual_vol": 0.17137049444643832,
+            "sharpe": 0.9036865997575948
+          },
+          "equal_weight_bh": {
+            "cagr": 0.1852959405556911,
+            "terminal_wealth": 17.4295536586254,
+            "max_drawdown": -0.5302353305683494,
+            "annual_vol": 0.20956080108078126,
+            "sharpe": 0.9164650156282271
+          },
+          "spy_bh": {
+            "cagr": 0.1503978721612016,
+            "terminal_wealth": 10.54553306493043,
+            "max_drawdown": -0.33699940470536127,
+            "annual_vol": 0.17137049444643832,
+            "sharpe": 0.9036865997575948
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "012_upro50_tmf30_gld20_quarterly",
+        "source_dir": "012-2026-05-14-hfea-levered-sleeve",
+        "config": "upro50_tmf30_gld20_quarterly",
+        "start_rule": "2010-01-01",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "UPRO/TMF/GLD",
+        "observations": 4106,
+        "skipped": false,
+        "start": "2010-01-04",
+        "end": "2026-04-30",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.23079728429099378,
+            "terminal_wealth": 29.475950264691235,
+            "max_drawdown": -0.5868622365653502,
+            "annual_vol": 0.2509374906461037,
+            "sharpe": 0.9537899716834043
+          },
+          "same_market_bh": {
+            "cagr": 0.1413898315113229,
+            "terminal_wealth": 8.62600143343323,
+            "max_drawdown": -0.3369994047053614,
+            "annual_vol": 0.17156153367578328,
+            "sharpe": 0.8570289263760763
+          },
+          "equal_weight_bh": {
+            "cagr": 0.1760850623602661,
+            "terminal_wealth": 14.050899697957613,
+            "max_drawdown": -0.5302353305683492,
+            "annual_vol": 0.2094789860523844,
+            "sharpe": 0.8794907870176959
+          },
+          "spy_bh": {
+            "cagr": 0.1413898315113229,
+            "terminal_wealth": 8.62600143343323,
+            "max_drawdown": -0.3369994047053614,
+            "annual_vol": 0.17156153367578328,
+            "sharpe": 0.8570289263760763
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "012_upro50_tmf30_gld20_quarterly",
+        "source_dir": "012-2026-05-14-hfea-levered-sleeve",
+        "config": "upro50_tmf30_gld20_quarterly",
+        "start_rule": "2015-01-01",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "UPRO/TMF/GLD",
+        "observations": 2848,
+        "skipped": false,
+        "start": "2015-01-02",
+        "end": "2026-04-30",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.16700180123077146,
+            "terminal_wealth": 5.728154333932909,
+            "max_drawdown": -0.5868622365653504,
+            "annual_vol": 0.26973401272220404,
+            "sharpe": 0.7081448761487338
+          },
+          "same_market_bh": {
+            "cagr": 0.1360113077793632,
+            "terminal_wealth": 4.225828842318459,
+            "max_drawdown": -0.3369994047053615,
+            "annual_vol": 0.17694362990736381,
+            "sharpe": 0.8095639262365186
+          },
+          "equal_weight_bh": {
+            "cagr": 0.13058008977410163,
+            "terminal_wealth": 4.00303758813907,
+            "max_drawdown": -0.5302353305683492,
+            "annual_vol": 0.2262815916601095,
+            "sharpe": 0.6559273176211865
+          },
+          "spy_bh": {
+            "cagr": 0.1360113077793632,
+            "terminal_wealth": 4.225828842318459,
+            "max_drawdown": -0.3369994047053615,
+            "annual_vol": 0.17694362990736381,
+            "sharpe": 0.8095639262365186
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "012_upro50_tmf30_gld20_quarterly",
+        "source_dir": "012-2026-05-14-hfea-levered-sleeve",
+        "config": "upro50_tmf30_gld20_quarterly",
+        "start_rule": "2020-01-01",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "UPRO/TMF/GLD",
+        "observations": 1590,
+        "skipped": false,
+        "start": "2020-01-02",
+        "end": "2026-04-30",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.14558150971375383,
+            "terminal_wealth": 2.3573600678881963,
+            "max_drawdown": -0.5868622365653503,
+            "annual_vol": 0.3203287714026461,
+            "sharpe": 0.5852062466712609
+          },
+          "same_market_bh": {
+            "cagr": 0.1522130865344551,
+            "terminal_wealth": 2.4447963521213483,
+            "max_drawdown": -0.3369994047053616,
+            "annual_vol": 0.2045140558960137,
+            "sharpe": 0.7954685493438619
+          },
+          "equal_weight_bh": {
+            "cagr": 0.10977048022791358,
+            "terminal_wealth": 1.9292999510959807,
+            "max_drawdown": -0.5302353305683495,
+            "annual_vol": 0.2685056796519112,
+            "sharpe": 0.5225394868417579
+          },
+          "spy_bh": {
+            "cagr": 0.1522130865344551,
+            "terminal_wealth": 2.4447963521213483,
+            "max_drawdown": -0.3369994047053616,
+            "annual_vol": 0.2045140558960137,
+            "sharpe": 0.7954685493438619
+          }
+        },
+        "economic_pass": false,
+        "fails": [
+          "CAGR <= SPY buy-and-hold",
+          "terminal wealth <= SPY buy-and-hold"
+        ]
+      },
+      {
+        "label": "013_qld_tqqq_dd25_recover_sma50_rv40",
+        "source_dir": "013-2026-05-14-nasdaq-drawdown-rearm-booster",
+        "config": "qld_tqqq_dd25_recover_sma50_rv40",
+        "start_rule": "full",
+        "same_market_benchmark": "QQQ",
+        "equal_weight_benchmark": "QQQ/QLD/TQQQ",
+        "observations": 4087,
+        "skipped": false,
+        "start": "2010-02-12",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.3612488540633296,
+            "terminal_wealth": 148.6732486963643,
+            "max_drawdown": -0.6714519892398731,
+            "annual_vol": 0.4335242687069015,
+            "sharpe": 0.929899592894564
+          },
+          "same_market_bh": {
+            "cagr": 0.1984159134222625,
+            "terminal_wealth": 18.831178053183866,
+            "max_drawdown": -0.35122525674827454,
+            "annual_vol": 0.2059417031232272,
+            "sharpe": 0.9823368155714041
+          },
+          "equal_weight_bh": {
+            "cagr": 0.3408264423283174,
+            "terminal_wealth": 116.34845614161159,
+            "max_drawdown": -0.6360343408068565,
+            "annual_vol": 0.40867415346362335,
+            "sharpe": 0.9234782175114619
+          },
+          "spy_bh": {
+            "cagr": 0.1465036942403115,
+            "terminal_wealth": 9.182612642413545,
+            "max_drawdown": -0.3369994047053618,
+            "annual_vol": 0.17134246987124296,
+            "sharpe": 0.8840067170608116
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "013_qld_tqqq_dd25_recover_sma50_rv40",
+        "source_dir": "013-2026-05-14-nasdaq-drawdown-rearm-booster",
+        "config": "qld_tqqq_dd25_recover_sma50_rv40",
+        "start_rule": "2010-01-01",
+        "same_market_benchmark": "QQQ",
+        "equal_weight_benchmark": "QQQ/QLD/TQQQ",
+        "observations": 4087,
+        "skipped": false,
+        "start": "2010-02-12",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.3612488540633296,
+            "terminal_wealth": 148.6732486963643,
+            "max_drawdown": -0.6714519892398731,
+            "annual_vol": 0.4335242687069015,
+            "sharpe": 0.929899592894564
+          },
+          "same_market_bh": {
+            "cagr": 0.1984159134222625,
+            "terminal_wealth": 18.831178053183866,
+            "max_drawdown": -0.35122525674827454,
+            "annual_vol": 0.2059417031232272,
+            "sharpe": 0.9823368155714041
+          },
+          "equal_weight_bh": {
+            "cagr": 0.3408264423283174,
+            "terminal_wealth": 116.34845614161159,
+            "max_drawdown": -0.6360343408068565,
+            "annual_vol": 0.40867415346362335,
+            "sharpe": 0.9234782175114619
+          },
+          "spy_bh": {
+            "cagr": 0.1465036942403115,
+            "terminal_wealth": 9.182612642413545,
+            "max_drawdown": -0.3369994047053618,
+            "annual_vol": 0.17134246987124296,
+            "sharpe": 0.8840067170608116
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "013_qld_tqqq_dd25_recover_sma50_rv40",
+        "source_dir": "013-2026-05-14-nasdaq-drawdown-rearm-booster",
+        "config": "qld_tqqq_dd25_recover_sma50_rv40",
+        "start_rule": "2015-01-01",
+        "same_market_benchmark": "QQQ",
+        "equal_weight_benchmark": "QQQ/QLD/TQQQ",
+        "observations": 2857,
+        "skipped": false,
+        "start": "2015-01-02",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.3460565874793089,
+            "terminal_wealth": 29.055593936941307,
+            "max_drawdown": -0.6714519892398731,
+            "annual_vol": 0.4673012673606309,
+            "sharpe": 0.8715307141528048
+          },
+          "same_market_bh": {
+            "cagr": 0.19503882738435774,
+            "terminal_wealth": 7.538817885875649,
+            "max_drawdown": -0.3512252567482741,
+            "annual_vol": 0.21872368093430772,
+            "sharpe": 0.9244490201196256
+          },
+          "equal_weight_bh": {
+            "cagr": 0.31597475438945666,
+            "terminal_wealth": 22.487725280450434,
+            "max_drawdown": -0.6360343408068561,
+            "annual_vol": 0.43424097492105573,
+            "sharpe": 0.8510206977420046
+          },
+          "spy_bh": {
+            "cagr": 0.13880274781986457,
+            "terminal_wealth": 4.364894397825696,
+            "max_drawdown": -0.3369994047053615,
+            "annual_vol": 0.1767546395082126,
+            "sharpe": 0.8241320784304179
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "013_qld_tqqq_dd25_recover_sma50_rv40",
+        "source_dir": "013-2026-05-14-nasdaq-drawdown-rearm-booster",
+        "config": "qld_tqqq_dd25_recover_sma50_rv40",
+        "start_rule": "2020-01-01",
+        "same_market_benchmark": "QQQ",
+        "equal_weight_benchmark": "QQQ/QLD/TQQQ",
+        "observations": 1599,
+        "skipped": false,
+        "start": "2020-01-02",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.39052651613591705,
+            "terminal_wealth": 8.100402323000317,
+            "max_drawdown": -0.6714519892398736,
+            "annual_vol": 0.5467114506631002,
+            "sharpe": 0.8786922205673102
+          },
+          "same_market_bh": {
+            "cagr": 0.21787426483534666,
+            "terminal_wealth": 3.492753595110393,
+            "max_drawdown": -0.35122525674827443,
+            "annual_vol": 0.24968361016399312,
+            "sharpe": 0.9147242220616486
+          },
+          "equal_weight_bh": {
+            "cagr": 0.333082675307548,
+            "terminal_wealth": 6.197948000811607,
+            "max_drawdown": -0.6360343408068558,
+            "annual_vol": 0.4960250910962429,
+            "sharpe": 0.8293617530113699
+          },
+          "spy_bh": {
+            "cagr": 0.15718445149594085,
+            "terminal_wealth": 2.525250855958587,
+            "max_drawdown": -0.3369994047053616,
+            "annual_vol": 0.20407501047636814,
+            "sharpe": 0.8178491030258754
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "014_upro125_tlt25_sma200",
+        "source_dir": "014-2026-05-14-upro-tlt-gross-spread",
+        "config": "upro125_tlt25_sma200",
+        "start_rule": "full",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "UPRO/TLT/SHV",
+        "observations": 4246,
+        "skipped": false,
+        "start": "2009-06-26",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.17755574103566873,
+            "terminal_wealth": 15.70295929276621,
+            "max_drawdown": -0.6491504117466136,
+            "annual_vol": 0.44024870090060114,
+            "sharpe": 0.5951685814141812
+          },
+          "same_market_bh": {
+            "cagr": 0.1522684305000246,
+            "terminal_wealth": 10.89257040802119,
+            "max_drawdown": -0.33699940470536127,
+            "annual_vol": 0.17125082518251447,
+            "sharpe": 0.9136906246281296
+          },
+          "equal_weight_bh": {
+            "cagr": 0.15326280961062655,
+            "terminal_wealth": 11.052041037124255,
+            "max_drawdown": -0.3424958757566129,
+            "annual_vol": 0.1632683268183115,
+            "sharpe": 0.9554127927481578
+          },
+          "spy_bh": {
+            "cagr": 0.1522684305000246,
+            "terminal_wealth": 10.89257040802119,
+            "max_drawdown": -0.33699940470536127,
+            "annual_vol": 0.17125082518251447,
+            "sharpe": 0.9136906246281296
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "014_upro125_tlt25_sma200",
+        "source_dir": "014-2026-05-14-upro-tlt-gross-spread",
+        "config": "upro125_tlt25_sma200",
+        "start_rule": "2010-01-01",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "UPRO/TLT/SHV",
+        "observations": 4115,
+        "skipped": false,
+        "start": "2010-01-04",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.18362326029066045,
+            "terminal_wealth": 15.686636284947111,
+            "max_drawdown": -0.6491504117466136,
+            "annual_vol": 0.44719284810688714,
+            "sharpe": 0.6044366493599911
+          },
+          "same_market_bh": {
+            "cagr": 0.14332453212000829,
+            "terminal_wealth": 8.909869930219882,
+            "max_drawdown": -0.3369994047053614,
+            "annual_vol": 0.17143807229900024,
+            "sharpe": 0.8674063765008224
+          },
+          "equal_weight_bh": {
+            "cagr": 0.14490103157265333,
+            "terminal_wealth": 9.112619912909484,
+            "max_drawdown": -0.34249587575661355,
+            "annual_vol": 0.16355630070273952,
+            "sharpe": 0.9095033988131438
+          },
+          "spy_bh": {
+            "cagr": 0.14332453212000829,
+            "terminal_wealth": 8.909869930219882,
+            "max_drawdown": -0.3369994047053614,
+            "annual_vol": 0.17143807229900024,
+            "sharpe": 0.8674063765008224
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "014_upro125_tlt25_sma200",
+        "source_dir": "014-2026-05-14-upro-tlt-gross-spread",
+        "config": "upro125_tlt25_sma200",
+        "start_rule": "2015-01-01",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "UPRO/TLT/SHV",
+        "observations": 2857,
+        "skipped": false,
+        "start": "2015-01-02",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.2175161968360888,
+            "terminal_wealth": 9.312214897789405,
+            "max_drawdown": -0.5933446867700498,
+            "annual_vol": 0.44335637760218494,
+            "sharpe": 0.6700260112873035
+          },
+          "same_market_bh": {
+            "cagr": 0.13880274781986457,
+            "terminal_wealth": 4.364894397825696,
+            "max_drawdown": -0.3369994047053615,
+            "annual_vol": 0.1767546395082126,
+            "sharpe": 0.8241320784304179
+          },
+          "equal_weight_bh": {
+            "cagr": 0.12367357165524884,
+            "terminal_wealth": 3.750790787641161,
+            "max_drawdown": -0.34249587575661367,
+            "annual_vol": 0.17436804970731037,
+            "sharpe": 0.7562338773002801
+          },
+          "spy_bh": {
+            "cagr": 0.13880274781986457,
+            "terminal_wealth": 4.364894397825696,
+            "max_drawdown": -0.3369994047053615,
+            "annual_vol": 0.1767546395082126,
+            "sharpe": 0.8241320784304179
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      },
+      {
+        "label": "014_upro125_tlt25_sma200",
+        "source_dir": "014-2026-05-14-upro-tlt-gross-spread",
+        "config": "upro125_tlt25_sma200",
+        "start_rule": "2020-01-01",
+        "same_market_benchmark": "SPY",
+        "equal_weight_benchmark": "UPRO/TLT/SHV",
+        "observations": 1599,
+        "skipped": false,
+        "start": "2020-01-02",
+        "end": "2026-05-13",
+        "metrics": {
+          "strategy": {
+            "cagr": 0.25965005304814937,
+            "terminal_wealth": 4.3262293914437215,
+            "max_drawdown": -0.5933446867700503,
+            "annual_vol": 0.47025953305552914,
+            "sharpe": 0.7308845640501254
+          },
+          "same_market_bh": {
+            "cagr": 0.15718445149594085,
+            "terminal_wealth": 2.525250855958587,
+            "max_drawdown": -0.3369994047053616,
+            "annual_vol": 0.20407501047636814,
+            "sharpe": 0.8178491030258754
+          },
+          "equal_weight_bh": {
+            "cagr": 0.12404246606110614,
+            "terminal_wealth": 2.1000442397808716,
+            "max_drawdown": -0.3424958757566139,
+            "annual_vol": 0.20492470174045227,
+            "sharpe": 0.6733933905449299
+          },
+          "spy_bh": {
+            "cagr": 0.15718445149594085,
+            "terminal_wealth": 2.525250855958587,
+            "max_drawdown": -0.3369994047053616,
+            "annual_vol": 0.20407501047636814,
+            "sharpe": 0.8178491030258754
+          }
+        },
+        "economic_pass": true,
+        "fails": []
+      }
+    ],
+    "tested_configs": [
+      {
+        "label": "010_upro50_tlt25_gld25_quarterly",
+        "source_dir": "010-2026-05-14-levered-balanced-sleeve",
+        "column": "upro50_tlt25_gld25_quarterly",
+        "same_market": "SPY",
+        "equal_weight": [
+          "UPRO",
+          "TLT",
+          "GLD"
+        ]
+      },
+      {
+        "label": "011_sso75_tlt15_gld10_quarterly",
+        "source_dir": "011-2026-05-14-sso-balanced-sleeve-stress",
+        "column": "sso75_tlt15_gld10_quarterly",
+        "same_market": "SPY",
+        "equal_weight": [
+          "SSO",
+          "TLT",
+          "GLD"
+        ]
+      },
+      {
+        "label": "012_upro50_tmf30_gld20_quarterly",
+        "source_dir": "012-2026-05-14-hfea-levered-sleeve",
+        "column": "upro50_tmf30_gld20_quarterly",
+        "same_market": "SPY",
+        "equal_weight": [
+          "UPRO",
+          "TMF",
+          "GLD"
+        ]
+      },
+      {
+        "label": "013_qld_tqqq_dd25_recover_sma50_rv40",
+        "source_dir": "013-2026-05-14-nasdaq-drawdown-rearm-booster",
+        "column": "qld_tqqq_dd25_recover_sma50_rv40",
+        "same_market": "QQQ",
+        "equal_weight": [
+          "QQQ",
+          "QLD",
+          "TQQQ"
+        ]
+      },
+      {
+        "label": "014_upro125_tlt25_sma200",
+        "source_dir": "014-2026-05-14-upro-tlt-gross-spread",
+        "column": "upro125_tlt25_sma200",
+        "same_market": "SPY",
+        "equal_weight": [
+          "UPRO",
+          "TLT",
+          "SHV"
+        ]
+      }
+    ],
+    "inception_starts": [
+      "full",
+      "2010-01-01",
+      "2015-01-01",
+      "2020-01-01"
+    ],
+    "failed_window_count": 1
+  },
+  "benchmark": {
+    "primary": "per_config_same_market_and_equal_weight_opportunity_buy_hold",
+    "opportunity": "SPY_buy_hold"
+  },
+  "gates": {
+    "economic_inception_stress": false,
+    "mcpt_recomputed": false,
+    "pbo_recomputed": false,
+    "dsr_recomputed": false,
+    "prior_validation_failures_binding": true
+  },
+  "kill_switches": [
+    "one or more inception windows failed economic B&H gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/016-2026-05-14-inception-stress-economic-beaters/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/016-2026-05-14-inception-stress-economic-beaters/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/016-2026-05-14-inception-stress-economic-beaters/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/016-2026-05-14-inception-stress-economic-beaters/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/016-2026-05-14-inception-stress-economic-beaters/inception_stress.csv"
+  ],
+  "notes": "At least one audited inception window failed the pre-registered CAGR/terminal-wealth economic gate."
+}

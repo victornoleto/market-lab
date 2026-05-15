@@ -1,0 +1,162 @@
+{
+  "daily_files": [
+    {
+      "ticker": "SMH",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SMH.parquet",
+      "exists": true,
+      "rows": 6524,
+      "first": "2000-06-05 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "close",
+        "high",
+        "low",
+        "open",
+        "volume",
+        "adj_close",
+        "adj_high",
+        "adj_low",
+        "adj_open",
+        "adj_volume",
+        "divCash",
+        "splitFactor"
+      ],
+      "missing_bday_rate": 0.036052009456264744,
+      "has_close": true
+    },
+    {
+      "ticker": "SOXX",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SOXX.parquet",
+      "exists": true,
+      "rows": 6245,
+      "first": "2001-07-13 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03611668467356077,
+      "has_close": true
+    },
+    {
+      "ticker": "SOXL",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SOXL.parquet",
+      "exists": true,
+      "rows": 4069,
+      "first": "2010-03-11 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03578199052132702,
+      "has_close": true
+    },
+    {
+      "ticker": "TECL",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/TECL.parquet",
+      "exists": true,
+      "rows": 4369,
+      "first": "2008-12-30 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03596646072374232,
+      "has_close": true
+    },
+    {
+      "ticker": "XLK",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/XLK.parquet",
+      "exists": true,
+      "rows": 6889,
+      "first": "1998-12-22 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.036099062543724636,
+      "has_close": true
+    },
+    {
+      "ticker": "QQQ",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/QQQ.parquet",
+      "exists": true,
+      "rows": 6837,
+      "first": "1999-03-10 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.0358200535890566,
+      "has_close": true
+    },
+    {
+      "ticker": "SPY",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SPY.parquet",
+      "exists": true,
+      "rows": 8379,
+      "first": "1993-01-29 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03512206356517733,
+      "has_close": true
+    },
+    {
+      "ticker": "SHV",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SHV.parquet",
+      "exists": true,
+      "rows": 4865,
+      "first": "2007-01-11 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03567888999008917,
+      "has_close": true
+    }
+  ]
+}

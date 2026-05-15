@@ -1,0 +1,50 @@
+{
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/029-2026-05-14-economic-beater-gate-audit/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/029-2026-05-14-economic-beater-gate-audit/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/029-2026-05-14-economic-beater-gate-audit/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/029-2026-05-14-economic-beater-gate-audit/RESULTS.json"
+  ],
+  "benchmark": {
+    "opportunity": "SPY_buy_hold_context_where_saved",
+    "primary": "candidate_specific_phase3_primary_buy_hold_from_prior_results"
+  },
+  "best_config": null,
+  "gates": {
+    "artifact_completeness": true,
+    "dsr_recomputed": false,
+    "economic_beaters_all_blocked_by_failed_or_missing_strict_gates": true,
+    "mcpt_recomputed": false,
+    "pbo_recomputed": false,
+    "trial_reconciliation_to_memory": true,
+    "zero_promotional_statuses": true,
+    "zero_winner_true": true
+  },
+  "iteration": "029-2026-05-14-economic-beater-gate-audit",
+  "kill_switches": [
+    "prior economic beaters remain blocked by failed strict gates",
+    "audit-only iteration cannot create a promotional label"
+  ],
+  "mcpt_reps": {},
+  "metrics": {
+    "audit_type": "phase3_economic_beater_gate_audit",
+    "economic_beater_blocked_by_failed_gates_count": 17,
+    "economic_beater_not_validated_count": 17,
+    "memory_cumulative_n_trials_after": 312,
+    "memory_cumulative_n_trials_before": 312,
+    "parsed_iterations": 28,
+    "prior_n_trials_sum": 96,
+    "status_counts": {
+      "data_blocked": 1,
+      "economic_beater_not_validated": 17,
+      "fail": 10
+    },
+    "strict_winner_count": 0,
+    "winner_true_count": 0
+  },
+  "n_trials": 0,
+  "notes": "Conservative audit-only iteration. Public docs contain pre-existing future-state lines, so this audit follows user-supplied MEMORY state and does not rewrite prior artifacts.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

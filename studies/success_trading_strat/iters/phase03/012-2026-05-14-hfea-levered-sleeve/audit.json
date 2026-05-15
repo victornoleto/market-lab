@@ -1,0 +1,99 @@
+{
+  "daily_files": [
+    {
+      "ticker": "UPRO",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/UPRO.parquet",
+      "exists": true,
+      "rows": 4247,
+      "first": "2009-06-25 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.035868331441543666,
+      "has_close": true
+    },
+    {
+      "ticker": "TMF",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/TMF.parquet",
+      "exists": true,
+      "rows": 4287,
+      "first": "2009-04-16 00:00:00",
+      "last": "2026-04-30 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03576248313090413,
+      "has_close": true
+    },
+    {
+      "ticker": "GLD",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/GLD.parquet",
+      "exists": true,
+      "rows": 5404,
+      "first": "2004-11-18 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03586083853702049,
+      "has_close": true
+    },
+    {
+      "ticker": "SPY",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SPY.parquet",
+      "exists": true,
+      "rows": 8379,
+      "first": "1993-01-29 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03512206356517733,
+      "has_close": true
+    },
+    {
+      "ticker": "SHV",
+      "path": "/var/www/github/finances/market-lab/data/tiingo/daily/prices/SHV.parquet",
+      "exists": true,
+      "rows": 4865,
+      "first": "2007-01-11 00:00:00",
+      "last": "2026-05-13 00:00:00",
+      "timezone": "None",
+      "columns": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "adj_close",
+        "volume"
+      ],
+      "missing_bday_rate": 0.03567888999008917,
+      "has_close": true
+    }
+  ]
+}

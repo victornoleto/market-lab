@@ -1,0 +1,339 @@
+{
+  "iteration": "026-2026-05-14-phase3-gate-consolidation",
+  "parsed_iterations": 25,
+  "expected_prior_iterations": 25,
+  "missing_artifacts": [],
+  "status_counts": {
+    "data_blocked": 1,
+    "economic_beater_not_validated": 16,
+    "fail": 8
+  },
+  "n_trials_sum_from_prior_results": 92,
+  "memory_phase3_cumulative_before": 308,
+  "memory_phase3_total_iterations_before": 25,
+  "winner_true_count": 0,
+  "promotional_violation_count": 0,
+  "economic_or_promotional_blocked_count": 16,
+  "economic_or_promotional_blocked": [
+    {
+      "iteration": "001-2026-05-14-nasdaq-letf-vol-target",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 6,
+      "best_config": {
+        "name": "qld_vt35_rv21_dd25_half",
+        "risk_asset": "QLD",
+        "vol_lookback": 21,
+        "target_vol": 0.35,
+        "crash_drawdown": -0.25,
+        "crash_multiplier": 0.5
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "dsr"
+      ]
+    },
+    {
+      "iteration": "002-2026-05-14-sp500-letf-vol-target",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 6,
+      "best_config": {
+        "name": "upro_vt40_rv63_dd30_half",
+        "risk_asset": "UPRO",
+        "vol_lookback": 63,
+        "target_vol": 0.4,
+        "crash_drawdown": -0.3,
+        "crash_multiplier": 0.5
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "dsr",
+        "bootstrap"
+      ]
+    },
+    {
+      "iteration": "003-2026-05-14-semis-letf-vol-target",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 6,
+      "best_config": {
+        "name": "tecl_vt40_rv63",
+        "risk_asset": "TECL",
+        "vol_lookback": 63,
+        "target_vol": 0.4,
+        "crash_drawdown": null,
+        "crash_multiplier": 1.0
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "dsr"
+      ]
+    },
+    {
+      "iteration": "004-2026-05-14-nasdaq-crash-rearm",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 6,
+      "best_config": {
+        "name": "qqq_qld_rearm_dd35_sma100_h189",
+        "trigger_drawdown": -0.35,
+        "recovery_sma": 100,
+        "booster_hold": 189
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "dsr"
+      ]
+    },
+    {
+      "iteration": "005-2026-05-14-sp500-crash-rearm",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 6,
+      "best_config": {
+        "name": "spy_sso_rearm_dd35_sma100_h189",
+        "trigger_drawdown": -0.35,
+        "recovery_sma": 100,
+        "booster_hold": 189
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "pbo",
+        "dsr",
+        "bootstrap"
+      ]
+    },
+    {
+      "iteration": "006-2026-05-14-high-beta-relative-rotation",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 6,
+      "best_config": {
+        "name": "top2_m63",
+        "lookback": 63,
+        "top_k": 2,
+        "vol_adjust": false,
+        "vol_lookback": null
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "dsr"
+      ]
+    },
+    {
+      "iteration": "008-2026-05-14-drawdown-adaptive-high-beta",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 4,
+      "best_config": {
+        "name": "top2_m63_dd15_boost125_cap150",
+        "selector": "top_k_momentum",
+        "drawdown_trigger": -0.15,
+        "boost_gross": 1.25,
+        "cap_gross": 1.5,
+        "lookback": 63,
+        "top_k": 2
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "pbo",
+        "dsr"
+      ]
+    },
+    {
+      "iteration": "010-2026-05-14-levered-balanced-sleeve",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 4,
+      "best_config": {
+        "name": "upro50_tlt25_gld25_quarterly",
+        "weights": {
+          "UPRO": 0.5,
+          "TLT": 0.25,
+          "GLD": 0.25
+        },
+        "rebalance": "quarterly"
+      },
+      "gate_failures": [
+        "wf_mcpt",
+        "dsr"
+      ]
+    },
+    {
+      "iteration": "011-2026-05-14-sso-balanced-sleeve-stress",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 4,
+      "best_config": {
+        "name": "sso75_tlt15_gld10_quarterly",
+        "weights": {
+          "SSO": 0.75,
+          "TLT": 0.15,
+          "GLD": 0.1
+        },
+        "rebalance": "quarterly"
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "dsr",
+        "bootstrap"
+      ]
+    },
+    {
+      "iteration": "012-2026-05-14-hfea-levered-sleeve",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 4,
+      "best_config": {
+        "name": "upro50_tmf30_gld20_quarterly",
+        "weights": {
+          "UPRO": 0.5,
+          "TMF": 0.3,
+          "GLD": 0.2
+        },
+        "rebalance": "quarterly"
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "dsr",
+        "fwd_63d"
+      ]
+    },
+    {
+      "iteration": "013-2026-05-14-nasdaq-drawdown-rearm-booster",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 4,
+      "best_config": {
+        "name": "qld_tqqq_dd25_recover_sma50_rv40",
+        "base": "QLD",
+        "drawdown_trigger": -0.25,
+        "recovery_sma": 50,
+        "vol_cap": 0.4,
+        "booster_weights": {
+          "QLD": 0.5,
+          "TQQQ": 0.5
+        },
+        "cap_weights": {
+          "QLD": 1.0
+        }
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "dsr"
+      ]
+    },
+    {
+      "iteration": "014-2026-05-14-upro-tlt-gross-spread",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 4,
+      "best_config": {
+        "name": "upro125_tlt25_sma200",
+        "sma": 200,
+        "risk_on_weights": {
+          "UPRO": 1.25,
+          "TLT": -0.25,
+          "SHV": 0.0
+        }
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "dsr",
+        "bootstrap"
+      ]
+    },
+    {
+      "iteration": "018-2026-05-14-vxx-crash-rearm",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 4,
+      "best_config": {
+        "name": "qqq_tqqq_vxx95_norm70_h126",
+        "booster": "TQQQ",
+        "trigger_quantile": 0.95,
+        "norm_frac": 0.7,
+        "hold_days": 126
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "pbo",
+        "dsr"
+      ]
+    },
+    {
+      "iteration": "019-2026-05-14-letf-light-gross-rotation",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 4,
+      "best_config": {
+        "name": "top2_m126_g125",
+        "top_k": 2,
+        "lookback": 126,
+        "gross": 1.25
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "pbo",
+        "dsr",
+        "bootstrap"
+      ]
+    },
+    {
+      "iteration": "022-2026-05-14-qqq-core-qld-overlay",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 4,
+      "best_config": {
+        "name": "mom126_vol63_cap25",
+        "momentum_lookback": 126,
+        "vol_lookback": 63,
+        "vol_cap": 0.25,
+        "overlay": 0.5
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "pbo",
+        "dsr",
+        "bootstrap"
+      ]
+    },
+    {
+      "iteration": "024-2026-05-14-qld-migration-sleeve",
+      "status": "economic_beater_not_validated",
+      "winner": false,
+      "n_trials": 4,
+      "best_config": {
+        "name": "qld70_tlt15_gld15_dd25_boost50",
+        "base_qld": 0.7,
+        "base_tlt": 0.15,
+        "base_gld": 0.15,
+        "dd_trigger": -0.25,
+        "qld_boost": 0.5
+      },
+      "gate_failures": [
+        "is_mcpt",
+        "wf_mcpt",
+        "dsr"
+      ]
+    }
+  ],
+  "promotional_violations": [],
+  "winner_true": [],
+  "pre_existing_worktree_ambiguity": "Public docs and phase03 artifacts beyond the supplied MEMORY state were already modified before this iteration; this audit used MEMORY total_iterations=25 and latest 025."
+}

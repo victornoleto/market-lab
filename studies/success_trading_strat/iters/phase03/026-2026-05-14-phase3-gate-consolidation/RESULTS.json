@@ -1,0 +1,45 @@
+{
+  "iteration": "026-2026-05-14-phase3-gate-consolidation",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 0,
+  "mcpt_reps": {},
+  "best_config": null,
+  "winner": false,
+  "metrics": {
+    "audit_type": "phase3_prior_result_gate_consolidation",
+    "parsed_iterations": 25,
+    "status_counts": {
+      "data_blocked": 1,
+      "economic_beater_not_validated": 16,
+      "fail": 8
+    },
+    "prior_n_trials_sum": 92,
+    "economic_or_promotional_blocked_count": 16
+  },
+  "benchmark": {
+    "primary": "candidate_specific_phase3_primary_buy_hold_from_prior_results",
+    "opportunity": "SPY_buy_hold_context_where_saved"
+  },
+  "gates": {
+    "artifact_completeness": true,
+    "trial_reconciliation": true,
+    "zero_winner_true": true,
+    "zero_promotional_statuses_with_failed_gates": true,
+    "zero_economic_beaters_with_failed_strict_gates": false,
+    "prior_validation_failures_binding": true,
+    "mcpt_recomputed": false,
+    "pbo_recomputed": false,
+    "dsr_recomputed": false
+  },
+  "kill_switches": [
+    "prior economic beaters still have failed or missing strict gates"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/026-2026-05-14-phase3-gate-consolidation/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/026-2026-05-14-phase3-gate-consolidation/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/026-2026-05-14-phase3-gate-consolidation/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/026-2026-05-14-phase3-gate-consolidation/RESULTS.json"
+  ],
+  "notes": "Conservative consolidation audit only; no new strategy trials, no recomputation of MCPT/PBO/DSR, and no deploy implication. Prior failures remain binding."
+}

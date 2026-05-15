@@ -1,0 +1,61 @@
+{
+  "audit_type": "phase3_consolidation_after_20_iterations",
+  "candidate_or_paper_labels": [],
+  "cumulative_after_prior_phase3": 296,
+  "cumulative_before_phase3": 216,
+  "gates": {
+    "all_pre_registered": true,
+    "artifact_completeness": true,
+    "cumulative_trials_reconciled_216_to_296": true,
+    "dsr_recomputed": false,
+    "expected_prior_iterations_20": true,
+    "mcpt_recomputed": false,
+    "no_promotional_label_without_strict": true,
+    "pbo_recomputed": false,
+    "phase3_trial_sum_reconciled": true,
+    "prior_validation_failures_binding": true,
+    "schema_completeness": true,
+    "zero_candidate_or_paper_labels": true,
+    "zero_strict_winner": true,
+    "zero_winner_true": true
+  },
+  "iteration": "021-2026-05-14-phase3-consolidation-audit",
+  "kill_switches": [
+    "no strict winner found in 20 prior Phase 3 iterations"
+  ],
+  "missing_fields": {},
+  "missing_files": {},
+  "n_trials_sum": 80,
+  "prior_iteration_count": 20,
+  "prior_iterations": [
+    "001-2026-05-14-nasdaq-letf-vol-target",
+    "002-2026-05-14-sp500-letf-vol-target",
+    "003-2026-05-14-semis-letf-vol-target",
+    "004-2026-05-14-nasdaq-crash-rearm",
+    "005-2026-05-14-sp500-crash-rearm",
+    "006-2026-05-14-high-beta-relative-rotation",
+    "007-2026-05-14-crypto-equity-rotation",
+    "008-2026-05-14-drawdown-adaptive-high-beta",
+    "009-2026-05-14-high-beta-long-short",
+    "010-2026-05-14-levered-balanced-sleeve",
+    "011-2026-05-14-sso-balanced-sleeve-stress",
+    "012-2026-05-14-hfea-levered-sleeve",
+    "013-2026-05-14-nasdaq-drawdown-rearm-booster",
+    "014-2026-05-14-upro-tlt-gross-spread",
+    "015-2026-05-14-letf-light-dual-momentum",
+    "016-2026-05-14-inception-stress-economic-beaters",
+    "017-2026-05-14-rolling-window-economic-beaters",
+    "018-2026-05-14-vxx-crash-rearm",
+    "019-2026-05-14-letf-light-gross-rotation",
+    "020-2026-05-14-dynamic-risk-parity-letf"
+  ],
+  "promotional_without_strict": [],
+  "status_counts": {
+    "data_blocked": 1,
+    "economic_beater_not_validated": 14,
+    "fail": 5
+  },
+  "strict_winners": [],
+  "unregistered": [],
+  "winners": []
+}

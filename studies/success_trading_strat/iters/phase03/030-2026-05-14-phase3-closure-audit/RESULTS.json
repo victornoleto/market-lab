@@ -1,0 +1,54 @@
+{
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/030-2026-05-14-phase3-closure-audit/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/030-2026-05-14-phase3-closure-audit/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/030-2026-05-14-phase3-closure-audit/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/030-2026-05-14-phase3-closure-audit/RESULTS.json"
+  ],
+  "benchmark": {
+    "primary": "candidate_specific_phase3_primary_buy_hold_from_prior_results",
+    "same_asset_or_opportunity": "source_iteration_specific_where_saved",
+    "spy_opportunity": "source_iteration_specific_where_saved"
+  },
+  "best_config": null,
+  "gates": {
+    "artifact_completeness": true,
+    "dsr_recomputed": false,
+    "economic_beaters_all_blocked": true,
+    "mcpt_recomputed": false,
+    "pbo_recomputed": false,
+    "trial_reconciliation_to_memory": true,
+    "zero_promotional_statuses": true,
+    "zero_winner_true": true
+  },
+  "iteration": "030-2026-05-14-phase3-closure-audit",
+  "kill_switches": [
+    "final audit tests no executable strategy",
+    "prior economic beaters remain blocked by failed or missing strict gates",
+    "no automated promotion at Phase 3 cap"
+  ],
+  "mcpt_reps": {},
+  "metrics": {
+    "audit_type": "phase3_final_closure_audit",
+    "candidate_watchlist_count": 0,
+    "economic_beater_blocked_count": 17,
+    "economic_beater_not_validated_count": 17,
+    "memory_cumulative_n_trials_after": 312,
+    "memory_cumulative_n_trials_before": 312,
+    "paper_trade_candidate_count": 0,
+    "parsed_iterations": 29,
+    "prior_phase3_n_trials_sum": 96,
+    "status_counts": {
+      "data_blocked": 1,
+      "economic_beater_not_validated": 17,
+      "fail": 11
+    },
+    "strict_winner_count": 0,
+    "winner_true_count": 0
+  },
+  "n_trials": 0,
+  "notes": "Final Phase 3 closure audit at 30/30 iterations. No new trials, no deploy implication.",
+  "pre_registered": true,
+  "status": "fail",
+  "winner": false
+}

@@ -1,0 +1,351 @@
+{
+  "candidate_watchlist_count": 0,
+  "economic_beater_blocked_by_failed_gates_count": 17,
+  "economic_beater_not_validated_count": 17,
+  "iteration": "029-2026-05-14-economic-beater-gate-audit",
+  "missing_dirs": [],
+  "paper_trade_candidate_count": 0,
+  "parse_errors": [],
+  "parsed_iterations": 28,
+  "prior_n_trials_sum": 96,
+  "promotional_with_failed_gates_count": 0,
+  "rows": [
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "dsr",
+        "is_mcpt",
+        "wf_mcpt"
+      ],
+      "iteration": "001-2026-05-14-nasdaq-letf-vol-target",
+      "n_trials": 6,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "bootstrap",
+        "dsr",
+        "is_mcpt",
+        "wf_mcpt"
+      ],
+      "iteration": "002-2026-05-14-sp500-letf-vol-target",
+      "n_trials": 6,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "dsr",
+        "is_mcpt",
+        "wf_mcpt"
+      ],
+      "iteration": "003-2026-05-14-semis-letf-vol-target",
+      "n_trials": 6,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "dsr",
+        "is_mcpt",
+        "wf_mcpt"
+      ],
+      "iteration": "004-2026-05-14-nasdaq-crash-rearm",
+      "n_trials": 6,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "bootstrap",
+        "dsr",
+        "is_mcpt",
+        "pbo",
+        "wf_mcpt"
+      ],
+      "iteration": "005-2026-05-14-sp500-crash-rearm",
+      "n_trials": 6,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "dsr",
+        "is_mcpt",
+        "wf_mcpt"
+      ],
+      "iteration": "006-2026-05-14-high-beta-relative-rotation",
+      "n_trials": 6,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [],
+      "iteration": "007-2026-05-14-crypto-equity-rotation",
+      "n_trials": 0,
+      "status": "data_blocked",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "dsr",
+        "is_mcpt",
+        "pbo",
+        "wf_mcpt"
+      ],
+      "iteration": "008-2026-05-14-drawdown-adaptive-high-beta",
+      "n_trials": 4,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "bootstrap",
+        "dsr",
+        "is_mcpt",
+        "wf_mcpt",
+        "wf_windows"
+      ],
+      "iteration": "009-2026-05-14-high-beta-long-short",
+      "n_trials": 4,
+      "status": "fail",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "dsr",
+        "wf_mcpt"
+      ],
+      "iteration": "010-2026-05-14-levered-balanced-sleeve",
+      "n_trials": 4,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "bootstrap",
+        "dsr",
+        "is_mcpt",
+        "wf_mcpt"
+      ],
+      "iteration": "011-2026-05-14-sso-balanced-sleeve-stress",
+      "n_trials": 4,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "dsr",
+        "fwd_63d",
+        "is_mcpt",
+        "wf_mcpt"
+      ],
+      "iteration": "012-2026-05-14-hfea-levered-sleeve",
+      "n_trials": 4,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "dsr",
+        "is_mcpt",
+        "wf_mcpt"
+      ],
+      "iteration": "013-2026-05-14-nasdaq-drawdown-rearm-booster",
+      "n_trials": 4,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "bootstrap",
+        "dsr",
+        "is_mcpt",
+        "wf_mcpt"
+      ],
+      "iteration": "014-2026-05-14-upro-tlt-gross-spread",
+      "n_trials": 4,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "bootstrap",
+        "dsr",
+        "is_mcpt",
+        "pbo",
+        "wf_mcpt"
+      ],
+      "iteration": "015-2026-05-14-letf-light-dual-momentum",
+      "n_trials": 4,
+      "status": "fail",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [],
+      "iteration": "016-2026-05-14-inception-stress-economic-beaters",
+      "n_trials": 0,
+      "status": "fail",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [],
+      "iteration": "017-2026-05-14-rolling-window-economic-beaters",
+      "n_trials": 0,
+      "status": "fail",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "dsr",
+        "is_mcpt",
+        "pbo",
+        "wf_mcpt"
+      ],
+      "iteration": "018-2026-05-14-vxx-crash-rearm",
+      "n_trials": 4,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "bootstrap",
+        "dsr",
+        "is_mcpt",
+        "pbo",
+        "wf_mcpt"
+      ],
+      "iteration": "019-2026-05-14-letf-light-gross-rotation",
+      "n_trials": 4,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "bootstrap",
+        "dsr",
+        "fwd_63d",
+        "is_mcpt",
+        "wf_mcpt"
+      ],
+      "iteration": "020-2026-05-14-dynamic-risk-parity-letf",
+      "n_trials": 4,
+      "status": "fail",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [],
+      "iteration": "021-2026-05-14-phase3-consolidation-audit",
+      "n_trials": 0,
+      "status": "fail",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "bootstrap",
+        "dsr",
+        "is_mcpt",
+        "pbo",
+        "wf_mcpt"
+      ],
+      "iteration": "022-2026-05-14-qqq-core-qld-overlay",
+      "n_trials": 4,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "dsr",
+        "wf_mcpt"
+      ],
+      "iteration": "023-2026-05-14-semis-leadership-overlay",
+      "n_trials": 4,
+      "status": "fail",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "dsr",
+        "is_mcpt",
+        "wf_mcpt"
+      ],
+      "iteration": "024-2026-05-14-qld-migration-sleeve",
+      "n_trials": 4,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [],
+      "iteration": "025-2026-05-14-economic-beater-financing-stress",
+      "n_trials": 0,
+      "status": "fail",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [],
+      "iteration": "026-2026-05-14-phase3-gate-consolidation",
+      "n_trials": 0,
+      "status": "fail",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "dsr",
+        "is_mcpt",
+        "wf_mcpt"
+      ],
+      "iteration": "027-2026-05-14-qld-vol-throttle-sleeve",
+      "n_trials": 4,
+      "status": "economic_beater_not_validated",
+      "winner": false
+    },
+    {
+      "blocked_for_promotion": true,
+      "failed_hard_gates": [
+        "prior_dsr",
+        "prior_is_mcpt",
+        "prior_wf_mcpt",
+        "rolling_3y_pass_rate_ge_90pct",
+        "rolling_5y_pass_rate_ge_90pct"
+      ],
+      "iteration": "028-2026-05-14-qld-vol-throttle-stress",
+      "n_trials": 0,
+      "status": "fail",
+      "winner": false
+    }
+  ],
+  "status_counts": {
+    "data_blocked": 1,
+    "economic_beater_not_validated": 17,
+    "fail": 10
+  },
+  "strict_winner_count": 0,
+  "winner_true_count": 0
+}

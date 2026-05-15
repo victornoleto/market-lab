@@ -1,0 +1,139 @@
+{
+  "iteration": "017-2026-05-14-rolling-window-economic-beaters",
+  "status": "fail",
+  "pre_registered": true,
+  "n_trials": 0,
+  "mcpt_reps": {},
+  "best_config": null,
+  "winner": false,
+  "metrics": {
+    "audit_type": "rolling_3y_5y_economic_stress",
+    "window_lengths": {
+      "rolling_3y": 756,
+      "rolling_5y": 1260
+    },
+    "step_observations": 63,
+    "candidate_summary": {
+      "010_upro_tlt_gld": {
+        "config_name": "upro50_tlt25_gld25_quarterly",
+        "aligned_start": "2009-06-26",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4246,
+        "total_windows": 104,
+        "failed_windows": 8,
+        "worst_excess_cagr": -0.05571762061146157,
+        "worst_excess_terminal_wealth": -0.19353383827272141
+      },
+      "011_sso_tlt_gld": {
+        "config_name": "sso75_tlt15_gld10_quarterly",
+        "aligned_start": "2007-01-12",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4864,
+        "total_windows": 124,
+        "failed_windows": 21,
+        "worst_excess_cagr": -0.1972138187765481,
+        "worst_excess_terminal_wealth": -0.7360625682548909
+      },
+      "012_upro_tmf_gld": {
+        "config_name": "upro50_tmf30_gld20_quarterly",
+        "aligned_start": "2009-06-26",
+        "aligned_end": "2026-04-30",
+        "n_obs": 4237,
+        "total_windows": 104,
+        "failed_windows": 21,
+        "worst_excess_cagr": -0.20080090810809936,
+        "worst_excess_terminal_wealth": -0.7184507466692571
+      },
+      "013_nasdaq_rearm": {
+        "config_name": "qld_tqqq_dd25_recover_sma50_rv40",
+        "aligned_start": "2010-02-12",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4087,
+        "total_windows": 98,
+        "failed_windows": 52,
+        "worst_excess_cagr": -0.012362671618797894,
+        "worst_excess_terminal_wealth": -0.06732924106853577
+      },
+      "014_upro_tlt_spread": {
+        "config_name": "upro125_tlt25_sma200",
+        "aligned_start": "2009-06-26",
+        "aligned_end": "2026-05-13",
+        "n_obs": 4246,
+        "total_windows": 104,
+        "failed_windows": 26,
+        "worst_excess_cagr": -0.4564787523115522,
+        "worst_excess_terminal_wealth": -1.3350819140409982
+      }
+    },
+    "total_rows": 534,
+    "failed_rows": 128,
+    "pass_rows": 406
+  },
+  "benchmark": {
+    "primary": "candidate_specific_dual_primary_buy_hold",
+    "opportunity": "SPY_buy_hold_context",
+    "details": {
+      "010_upro_tlt_gld": {
+        "single": "SPY",
+        "equal_weight": [
+          "UPRO",
+          "TLT",
+          "GLD"
+        ]
+      },
+      "011_sso_tlt_gld": {
+        "single": "SPY",
+        "equal_weight": [
+          "SSO",
+          "TLT",
+          "GLD"
+        ]
+      },
+      "012_upro_tmf_gld": {
+        "single": "SPY",
+        "equal_weight": [
+          "UPRO",
+          "TMF",
+          "GLD"
+        ]
+      },
+      "013_nasdaq_rearm": {
+        "single": "QQQ",
+        "equal_weight": [
+          "QQQ",
+          "QLD",
+          "TQQQ"
+        ]
+      },
+      "014_upro_tlt_spread": {
+        "single": "SPY",
+        "equal_weight": [
+          "UPRO",
+          "TLT",
+          "SHV"
+        ]
+      }
+    }
+  },
+  "gates": {
+    "rolling_economic_cagr": false,
+    "rolling_economic_terminal_wealth": false,
+    "physical_daily_files": true,
+    "prior_validation_failures_binding": true,
+    "mcpt_recomputed": false,
+    "pbo_recomputed": false,
+    "dsr_recomputed": false
+  },
+  "kill_switches": [
+    "rolling economic gate failed in 128 candidate-window rows",
+    "prior strict validation failures remain binding"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/017-2026-05-14-rolling-window-economic-beaters/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/017-2026-05-14-rolling-window-economic-beaters/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/017-2026-05-14-rolling-window-economic-beaters/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/017-2026-05-14-rolling-window-economic-beaters/audit.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/017-2026-05-14-rolling-window-economic-beaters/rolling_windows.csv"
+  ],
+  "notes": "Rolling-window economic audit only; no new strategy trials and no deploy implication."
+}

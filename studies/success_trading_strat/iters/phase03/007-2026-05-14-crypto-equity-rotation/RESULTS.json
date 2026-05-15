@@ -1,0 +1,25 @@
+{
+  "iteration": "007-2026-05-14-crypto-equity-rotation",
+  "status": "data_blocked",
+  "pre_registered": true,
+  "n_trials": 0,
+  "mcpt_reps": {},
+  "best_config": null,
+  "winner": false,
+  "metrics": {},
+  "benchmark": {
+    "primary": "equal_weight_BTCUSD_ETHUSD_QQQ_GLD_buy_hold",
+    "opportunity": "SPY_buy_hold"
+  },
+  "gates": {},
+  "kill_switches": [
+    "missing required daily parquet: BTCUSD; missing required daily parquet: ETHUSD"
+  ],
+  "artifacts": [
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/007-2026-05-14-crypto-equity-rotation/PRE_REG.md",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/007-2026-05-14-crypto-equity-rotation/run_iteration.py",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/007-2026-05-14-crypto-equity-rotation/RESULTS.json",
+    "/var/www/github/finances/market-lab/studies/success_trading_strat/iters/phase03/007-2026-05-14-crypto-equity-rotation/audit.json"
+  ],
+  "notes": "missing required daily parquet: BTCUSD; missing required daily parquet: ETHUSD"
+}

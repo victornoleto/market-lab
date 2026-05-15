@@ -1,0 +1,34 @@
+[
+  {
+    "universe": "core_1986",
+    "n_assets": 19,
+    "common_start": "1986-12-12",
+    "common_end": "2026-04-17",
+    "common_rows": 9911,
+    "common_years": 39.35
+  },
+  {
+    "universe": "mf_1988",
+    "n_assets": 21,
+    "common_start": "1988-01-04",
+    "common_end": "2026-04-17",
+    "common_rows": 9645,
+    "common_years": 38.28
+  },
+  {
+    "universe": "global_1994",
+    "n_assets": 27,
+    "common_start": "1994-05-05",
+    "common_end": "2026-04-17",
+    "common_rows": 8042,
+    "common_years": 31.95
+  },
+  {
+    "universe": "full_2000",
+    "n_assets": 28,
+    "common_start": "2000-01-04",
+    "common_end": "2026-04-17",
+    "common_rows": 6611,
+    "common_years": 26.28
+  }
+]
