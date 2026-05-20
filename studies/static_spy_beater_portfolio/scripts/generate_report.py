@@ -44,18 +44,64 @@ def plot_frontier(df: pd.DataFrame, x: str, y: str, out: Path, *, maximize_x: bo
     plt.close(fig)
 
 
+SHORT_HORIZONS = ("1y", "3y", "5y")
+LONG_HORIZONS = ("10y", "15y", "20y")
+SHORT_LONG_METRICS = ("cagr_spy_spread", "wealth_spy_ratio_minus1", "mdd_minus_spy_mdd")
+
+
+def _horizon_score(horizon: dict[str, float], metrics: tuple[str, ...]) -> float:
+    values = [horizon.get(m, math.nan) for m in metrics]
+    valid = [v for v in values if not (v is None or (isinstance(v, float) and math.isnan(v)))]
+    return sum(valid) / len(valid) if valid else math.nan
+
+
+def _short_long_scores(rolling: dict[str, dict[str, float]]) -> tuple[float, float]:
+    short = [
+        _horizon_score(rolling[h], SHORT_LONG_METRICS) for h in SHORT_HORIZONS if h in rolling
+    ]
+    long = [
+        _horizon_score(rolling[h], SHORT_LONG_METRICS) for h in LONG_HORIZONS if h in rolling
+    ]
+    short_valid = [v for v in short if not math.isnan(v)]
+    long_valid = [v for v in long if not math.isnan(v)]
+    return (
+        sum(short_valid) / len(short_valid) if short_valid else math.nan,
+        sum(long_valid) / len(long_valid) if long_valid else math.nan,
+    )
+
+
+def _exposure_summary(top_payload: list[dict], k: int = 5) -> pd.DataFrame:
+    rows = []
+    for i, row in enumerate(top_payload[:k], start=1):
+        flat = {"rank": i, "fitness_value": row.get("fitness_value")}
+        for family, value in row.get("exposure", {}).items():
+            flat[family] = value
+        rows.append(flat)
+    return pd.DataFrame(rows).fillna(0.0)
+
+
 def generate(run_dir: Path, report_dir: Path, plot_dir: Path) -> Path:
     payload = json.loads((run_dir / "results.json").read_text(encoding="utf-8"))
     top = pd.read_csv(run_dir / "top.csv")
     plot_dir.mkdir(parents=True, exist_ok=True)
     report_dir.mkdir(parents=True, exist_ok=True)
+
+    # SPEC §Outputs lists a long-window vs short-window Pareto. Build virtual columns
+    # from per-candidate rolling metrics so the frontier plot can pick them up.
+    if payload.get("top"):
+        short_long = [_short_long_scores(row.get("rolling", {})) for row in payload["top"]]
+        # `top.csv` rows are in the same rank order as `payload["top"]` per run_ga.flatten_top.
+        if len(short_long) == len(top):
+            top["fit_short_window"] = [s for s, _ in short_long]
+            top["fit_long_window"] = [l for _, l in short_long]
+
     frontiers = [
         ("full_cagr", "full_mdd", True, True),
         ("full_cagr", "full_sharpe", True, True),
         ("full_cagr", "full_calmar", True, True),
         ("fit_relative_wealth_spy", "full_mdd", True, True),
         ("fit_relative_wealth_qqq", "full_mdd", True, True),
-        ("fit_balanced_spy_beater", "fit_min_regret", True, True),
+        ("fit_short_window", "fit_long_window", True, True),
     ]
     plot_lines = []
     for x, y, max_x, max_y in frontiers:
@@ -95,6 +141,8 @@ def generate(run_dir: Path, report_dir: Path, plot_dir: Path) -> Path:
             "weights",
         ]
     ].head(15).to_markdown(index=False)
+    exposure_df = _exposure_summary(payload.get("top", []), k=5)
+    exposure_md = exposure_df.to_markdown(index=False) if not exposure_df.empty else "No exposure rows."
     report = f"""# Static SPY-Beater Portfolio GA Report
 
 ## Run
@@ -107,6 +155,13 @@ def generate(run_dir: Path, report_dir: Path, plot_dir: Path) -> Path:
 - GA rolling step: `{payload['rolling_step']}` (`21` means monthly-sampled discovery windows)
 - Finalist exact re-rank: `{payload.get('finalist_exact', 0)}` portfolios
 - Benchmark rolling step: `{payload.get('benchmark_rolling_step', payload['rolling_step'])}`
+- Generations completed: `{payload.get('generations_completed', payload['generations'])}` / `{payload['generations']}`
+- Early stop: `{payload.get('stopped_early', False)}` (`{payload.get('stop_reason', 'completed_generations')}`)
+- Patience: `{payload.get('patience', 'n/a')}`, min_delta: `{payload.get('min_delta', 'n/a')}`
+- Log every: `{payload.get('log_every', 'n/a')}` generations
+- Eval log every: `{payload.get('eval_log_every', 'n/a')}` unique portfolios
+- Fast discovery: `{payload.get('fast_discovery', False)}`
+- Jobs: `{payload.get('jobs', 1)}`
 
 This is discovery output only. It is not a validated winner or a mandate change.
 GA search breadth must be carried into later DSR/PBO accounting
@@ -122,6 +177,10 @@ GA search breadth must be carried into later DSR/PBO accounting
 
 {top_md}
 
+## Effective Exposure Summary (Top 5)
+
+{exposure_md}
+
 ## Benchmark Portfolios
 
 {bench_md}
@@ -135,8 +194,10 @@ GA search breadth must be carried into later DSR/PBO accounting
 - `full_mdd` is less negative when better, so Pareto plots maximize it.
 - If `finalist_exact > 0`, `top.csv` and this report use the exact re-rank with all possible rolling windows.
 - `top_sampled.csv` preserves the faster GA discovery ranking.
+- If fast discovery was enabled, sampled GA rankings skipped rolling MDD/Calmar (set to NaN, not zero, so the weighted fitness ignores them honestly) and should only be used as search traces.
 - Relative wealth scores are rolling-window aggregate ratios minus 1 versus the named benchmark.
 - The rolling score combines mean, median and p10 to penalize bad-regime fragility.
+- Only `balanced_spy_beater`, `balanced_dual_beater`, `relative_wealth_*` and `min_regret` are CASHX-proof. The simple `*_robust` families are raw clipped spreads and can be maximized by defensive/cash-like portfolios `[testing_tuning, p.327-335]`.
 """
     report_path.write_text(report, encoding="utf-8")
     return report_path
