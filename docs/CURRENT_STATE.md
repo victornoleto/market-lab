@@ -56,6 +56,126 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
   mas é apenas validação de infraestrutura; nenhum winner/deploy e mandate §1
   inalterado `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`,
   `[advances_fin_ml, p.222-223]`.
+- Sweep discovery 2026-05-15 com 3 seeds × 2 universos (`core_1986`, `mf_1988`),
+  `balanced_spy_beater`, `fast-discovery`, `rolling_step=21` e re-rank exato top-200
+  convergiu em todas as seeds para a mesma família agressiva: `core_1986` escolheu
+  `40% TQQQSIM / 60% TMFSIM` (CAGR 20,66%, MDD -84,28%, terminal 1611×) e `mf_1988`
+  escolheu `35% TQQQSIM / 50% TMFSIM / 15% RSSTSIM` (CAGR 22,10%, MDD -81,21%,
+  terminal 2083×). Resultado é discovery-only: economicamente interessante como
+  fronteira alavancada, mas drawdown extremo bloqueia qualquer leitura promocional;
+  próximo passo natural é fitness/guardrail diversificado ou caps por família antes
+  de validação formal. Mandate §1 inalterado `[leverage_for_the_long_run, p.13]`,
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.222-223]`.
+- Iteração 2026-05-15 adicionou fitnesses guardrail `spy_beater_mdd_guard` e
+  `spy_beater_calmar_guard`: rejeitam candidatos com MDD full-period pior que
+  `SPYSIM`; a versão Calmar também exige CAGR full-period acima de `SPYSIM` e ranqueia
+  sobreviventes por Calmar/CAGR/wealth rolling. Novo universo `levered_hedge_core`
+  foca a hipótese equity alavancado + duration/gold/stacked. Smoke curto encontrou
+  estruturas `RSSTSIM/TMFSIM/GDESIM/QQQSIM` com CAGR ~17-18% e MDD ~-28% a -49%,
+  discovery-only e sem mudança no mandate `[testing_tuning, p.327-335]`,
+  `[leverage_for_the_long_run, p.13]`.
+- Após diagnóstico externo de underperformance recente tipo HFEA/TMF, o scoring passou
+  a salvar métricas `*_latest` da janela rolling mais recente e adicionou
+  `spy_beater_consistency_guard`: full-period CAGR/MDD guards + latest 3y acima de
+  `SPYSIM` + penalidade para p10 rolling ruim em 3y+. Novo universo
+  `levered_hedge_no_tmf` testa a hipótese sem `TMFSIM`. Smokes indicam queda material
+  de fitness quando consistência recente é exigida; leads no-TMF usam `RSSTSIM`,
+  `GDESIM`, `ZROZSIM`, `UGLSIM` e equity alavancado pequeno, ainda discovery-only
+  `[testing_tuning, p.327-335]`, `[risk_parity, p.80-81]`.
+- Run sério `levered_hedge_no_tmf_spy_beater_consistency_guard_seed20260534` avaliou
+  29.515 candidatos únicos e topou `35% GDESIM / 50% RSSTSIM / 5% TQQQSIM / 10% ZROZSIM`:
+  CAGR `17,97%`, MDD `-49,37%`, Calmar `0,364`, terminal `558×` vs `SPYSIM` CAGR
+  `11,46%`, MDD `-55,14%`, terminal `63,6×` no mesmo período 1988-2026. A janela
+  latest 10y/15y bate `SPYSIM`, mas p10 rolling MDD 10y/15y ainda fica ~`-2pp`, então
+  o status segue discovery-only; sem winner/deploy e mandate §1 inalterado
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.222-223]`.
+- Checagem externa Testfol.io 1987-2026 reforçou a tese B4-like: componente mensal
+  `47,5% SPYSIM / 25% GDESIM / 25% KMLMSIM / 25% ZROZSIM / 15% IEFSIM / -37,5% CASHX`
+  teve CAGR `13,81%`, MDD `-28,42%`, Calmar `0,486` e Ulcer `6,88`, contra `SPYSIM`
+  CAGR `11,58%`, MDD `-55,14%`, Calmar `0,210`. Mix similar com menos ZROZ retornou
+  mais (`14,50%`) mas com MDD `-41,59%`. Próxima otimização deve ser Pareto/local em
+  torno de B4-like com guardrails de MDD/rolling, não maximização de CAGR
+  `[risk_parity, p.80-81]`, `[testing_tuning, p.327-335]`.
+- Branch GA robusta recebeu `spy_beater_p10_mdd_guard`, exigindo p10 de MDD rolling
+  5y+ não pior que `SPYSIM`, e universos focados `lead_family_focused`/
+  `lead_family_no_3x_booster`. Refinamento local exato de 2.881 candidatos confirmou
+  `50% RSSTSIM / 35% GDESIM / 10% SPYSIM / 5% ZROZSIM` como melhor vizinho: CAGR
+  `16,81%`, MDD `-41,20%`, Calmar `0,408`, terminal `383×`. Leitura: para maior CAGR
+  aceitando MDD ~40%, a família `RSST/GDE/SPY/ZROZ` sem `TQQQ` é o lead robusto atual;
+  ainda discovery-only `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.222-223]`.
+- Relatório Pareto/regime Priority 1 gerado em
+  `studies/static_spy_beater_portfolio/results/pareto_regime_report/` comparou
+  candidatos fixos, sem nova otimização ampla. Resultado: `B4_original`/B4-like são a
+  âncora de estabilidade (B4 original CAGR `14,43%`, MDD `-27,92%`, Calmar `0,517`;
+  B4-like CAGR `13,75%`, MDD `-28,42%`, Calmar `0,484`, mas é referência stacked com
+  `-37,5% CASHX`, gross `1,75`, não long-only pura). `GA_robust` entrega CAGR
+  `16,81%` e terminal `383×`, mas compra `+3,06pp` CAGR versus B4-like com `~12,78pp`
+  de MDD adicional; `GA_aggressive` adiciona só `+1,16pp` CAGR versus robusto e piora
+  MDD em `~8,17pp`, enfraquecendo o booster `TQQQSIM`. Status segue discovery-only,
+  sem winner/deploy e mandate §1 inalterado `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`.
+- Priority 2 começou pela busca local Pareto B4-like em
+  `studies/static_spy_beater_portfolio/results/local_pareto_b4_like/`: grid local
+  streaming de `90.449` linhas (cap `6` sleeves), `62.441` factíveis e `313` Pareto,
+  sem GA amplo. A fronteira encontrou ponto stacked de maior retorno
+  `35% GDESIM / 40% RSSTSIM / 5% SPYSIM / 45% ZROZSIM / -25% CASHX` com CAGR
+  `17,35%`, MDD `-30,44%`, Calmar `0,570` e terminal `456×`, melhorando o B4-like
+  Testfol.io (`13,75%`, `-28,42%`, Calmar `0,484`) dentro do alvo aproximado de MDD.
+  Caveat bloqueante: p10 de riqueza relativa rolling 5y vs `SPYSIM` ainda negativo
+  (`-6,39%`) e a carteira é referência stacked (`gross=1,5`, `CASHX=-25%`), não
+  long-only pura. Próximo passo: relatório rolling/regime exato dos top B4-like locais
+  antes de qualquer validação; sem winner/deploy e mandate §1 inalterado
+  `[risk_parity, p.80-81]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.208-211]`.
+- Como margem externa não é operacionalmente disponível, a busca local foi repetida
+  com `CASHX >= 0` em `results/local_pareto_b4_no_margin/`: `37.752` linhas,
+  `37.476` factíveis e `272` Pareto. Melhor retorno factível sem caixa negativo:
+  `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM`, CAGR `15,70%`, MDD `-29,94%`, Calmar
+  `0,524`, terminal `265×`; custo de remover `CASHX` negativo é ~`1,65pp` CAGR vs
+  o ponto stacked-cash anterior. Caveat: p10 de riqueza relativa rolling 5y vs
+  `SPYSIM` ainda negativo (`-8,59%`); ainda discovery-only, próximo passo é
+  relatório rolling/regime exato dos top no-margin antes de validação. ETFs stacked
+  ainda carregam alavancagem interna (`GDESIM`/`RSSTSIM`), mas sem borrowing externo
+  via caixa negativo `[leverage_for_the_long_run, p.13]`, `[testing_tuning,
+  p.327-335]`.
+- O relatório Pareto/regime exato foi regenerado incluindo `B4_no_margin_lead` e
+  rolling 15y. Comparação direta: `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM` superou a
+  B4 original em CAGR (`15,70%` vs `14,43%`), Calmar (`0,524` vs `0,517`) e terminal
+  wealth (`265×` vs `174×`), ao custo de MDD ~`2,02pp` pior (`-29,94%` vs `-27,92%`).
+  Rolling relative-wealth p10 vs `SPYSIM` melhora contra B4 original em 3y/5y/10y/15y,
+  mas ainda fica negativo em 3y (`-9,84%`), 5y (`-8,59%`) e 10y (`-4,25%`), positivo
+  apenas em 15y (`+12,88%`). Leitura: lead prático mais forte que B4 equal-weight,
+  mas ainda discovery-only; próximo passo é sensibilidade/implementabilidade no-margin
+  antes de walk-forward/validação `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.196-202]`.
+- Pivot operacional: `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM` agora é o core/benchmark
+  interno do estudo, e o objetivo passou a ser encontrar algo melhor por dominância de
+  equity em janelas rolling, não por MDD mínimo. `README.md`, `SPEC.md` e
+  `NEXT_STEPS.md` foram atualizados; `core_beater_no_margin` foi criado com
+  `GDESIM/RSSTSIM/KMLMSIM/ZROZSIM`, ladders US/Nasdaq (`SPYSIM/SSOSIM/UPROSIM`,
+  `QQQSIM/QLDSIM/TQQQSIM`), `IEFSIM` e `CASHX`; `score_portfolio.py` adicionou o
+  benchmark `core_35_40_25` e a fitness `core_relative_wealth_dominance`. Smoke GA
+  `core_beater_no_margin_core_relative_wealth_dominance_seed20260535` avaliou `58`
+  portfolios e validou a infraestrutura, sem encontrar beater e sem claim de pesquisa.
+  Sem uso do token Testfol.io vazado; mandate §1 inalterado `[testing_tuning,
+  p.327-335]`, `[advances_fin_ml, p.222-223]`.
+- Probe fator/momentum 2026-05-16: `core_beater_factor_no_margin` adicionou `VBRSIM`,
+  `MTUMSIM` e `EFVSIM` ao universo no-margin, com `MTUMSIM` incorporado ao cache local
+  Testfol.io. Sweep de 3 seeds em `results/ga_core_factor_momentum_beater/` convergiu
+  em todas para o próprio core como rank 1 (`fitness=0,350000`) na janela comum
+  `1994-06-02..2026-04-17`; melhores challengers usaram `QLDSIM/TQQQSIM` pequenos e
+  pioraram MDD, enquanto `VBRSIM` ficou abaixo e `MTUMSIM` não entrou no top-10 exato.
+  Leitura: SCV/momentum não melhoraram a dominância rolling; manter `35/40/25` como
+  benchmark estático e seguir para sensibilidade/implementabilidade. Discovery-only,
+  sem winner/deploy e sem mudança no mandate `[ml_for_algo_trading, ch.4 p.82-93]`,
+  `[advances_fin_ml, p.222-223]`.
+- Relatório final do core criado em
+  `studies/static_spy_beater_portfolio/FINAL_REPORT_35_40_25_CORE.md`: consolida
+  `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM` como vencedor interno discovery-only do
+  estudo, rejeita challengers por trade-off ou restrição operacional e recomenda parar
+  broad static optimization em favor de drag/rebalance/start-date/remove-one-asset
+  checks. Sem deploy e sem mudança no mandate `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.222-223]`.
 
 ### studies/spy_beater_hunt/ 🛑 CLOSED 2026-04-30
 - 55 iters; **B4 Conservative (25 NTSX / 25 GDE / 25 RSST / 25 ZROZ)** declared deploy-ready (Sharpe 0.745 net).

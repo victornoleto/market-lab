@@ -11,6 +11,12 @@ The project is in maintenance mode. Active strategy research did not produce a
 candidate that cleared the full robustness stack, so no live deployment is
 authorized by this repository.
 
+Current discovery work in `studies/static_spy_beater_portfolio/` uses
+`35% GDE / 40% RSST / 25% ZROZ` (`GDESIM/RSSTSIM/ZROZSIM`) as its no-margin internal
+core benchmark. The study objective is to find static or later tactical portfolios
+that beat this core by rolling equity dominance, not by maximum drawdown alone. This
+is research-only and does not authorize capital allocation.
+
 See:
 
 - `docs/PUBLIC_SUMMARY.md` for the public-facing summary;

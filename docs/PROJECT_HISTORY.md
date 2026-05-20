@@ -174,7 +174,20 @@ Notable preserved study areas include:
   Initial work created the scaffold, universe audit, rolling scorer, GA runner and
   pareto report generator; the first `core_1986` smoke evaluated 7 portfolios for
   infrastructure only, with no winner/deploy claim `[testing_tuning, p.327-335]`,
-  `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`;
+  `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`. Later same-day
+  local B4-like work established `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM` as the
+  no-margin internal core benchmark (CAGR `15.70%`, MDD `-29.94%`), stronger than
+  the equal-weight B4 reference on CAGR/Calmar but still discovery-only. The study
+  then pivoted to finding portfolios that beat this core by rolling equity dominance,
+  with MDD treated as a guardrail rather than the main objective. A later
+  factor/momentum probe added `VBRSIM`, `MTUMSIM` and `EFVSIM`; 3 GA seeds over the
+  `1994-2026` common window all selected the original `35/40/25` core as exact rank 1,
+  while factor sleeves failed to improve rolling equity dominance. The result supports
+  retaining the core benchmark and moving to implementation/sensitivity checks, still
+  with no winner/deploy claim. `FINAL_REPORT_35_40_25_CORE.md` then consolidated this
+  internal research winner and documented that broad static optimization should stop in
+  favor of drag/rebalance/start-date/remove-one-asset sensitivity checks
+  `[ml_for_algo_trading, ch.4 p.82-93]`, `[advances_fin_ml, p.222-223]`;
 - `studies/spy_beater_hunt_v2/` for a new 2026-05-13 autonomous hunt whose explicit goal is to beat SPY buy-and-hold while preserving hard overfit gates. It uses a short `MEMORY.md` plus a clean-session `loop.sh` orchestrator for OpenCode/GPT-5.5 iterations; initial status is bootstrap/audit only, with no mandate allocation change `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`;
 - `studies/success_trading_strat/` for a 2026-05-14 research loop based on the
   Neurotrader/Masters strategy-development workflow: in-sample excellence,
