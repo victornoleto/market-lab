@@ -1,0 +1,28 @@
+{
+  "generated_at": "2026-05-22T14:19:30.929820+00:00",
+  "study": "lrs",
+  "phase": "phase_0",
+  "parameters": {
+    "filter": "SMA",
+    "lookback": 200,
+    "band_pct": 0.0,
+    "tax_rate": 0.15,
+    "tax_cadence": "annual_first_bar_next_year",
+    "off_leg_yield": 0.0,
+    "execution": "signal_close_T_exposure_T+1",
+    "commission_bps": 0.0,
+    "spread_bps": 0.0
+  },
+  "data": {
+    "source": "testfol.io synthetic (SPYSIM/SSOSIM/UPROSIM)",
+    "common_first_date": "1885-03-20",
+    "common_last_date": "2026-05-21",
+    "n_bars": 35358,
+    "data_hash_sha256_16": "1cacf1341e6c138f"
+  },
+  "curves": {
+    "start_date": "1885-12-31",
+    "end_date": "2026-05-21",
+    "n_days": 35158
+  }
+}

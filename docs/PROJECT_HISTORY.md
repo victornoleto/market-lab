@@ -164,6 +164,16 @@ Notable preserved study areas include:
   the conceptual caveat from the QLD audit remains. No candidate is validated or
   deployable without OOS/FWD/WF/bootstrap/PBO/DSR and cumulative trial accounting
   `[leverage_for_the_long_run, p.13]`, `[advances_fin_ml, p.222-223]`;
+- `studies/lrs/` for a 2026-05-22 clean restart of the SMA-regime + LETF rotation
+  lineage in a small, well-organized `phases/phase_N/` layout. Phase 0 establishes
+  the simplest baseline: when SPY closes above its 200-day SMA, rotate into `SSO`
+  (or `UPRO`) on the next bar; otherwise hold cash at 0%. The runner compares five
+  curves (B&H SPY/SSO/UPRO and LRS-SSO/LRS-UPRO) on the full common testfol.io
+  history (1885-12-31 → 2026-05-21, 141 years) with BR-style 15% IR applied once
+  per calendar year on realized gains. Discovery-only under mandate §1 — no
+  deploy claim — but the baseline gives later phases a clean reference for
+  layering frictions, walk-forward, alternative MA windows and a real-ETF
+  overlay `[leverage_for_the_long_run, p.13]`, `[leverage_for_the_long_run, p.21]`;
 - `studies/weekly_momentum/` for weekly cross-sectional momentum diagnostics, including controlled sweeps, walk-forward validation, PIT approximation, Tiingo delisted backfill, and a final rejection after DSR/bootstrap gates. A later ETF-specific post-close diagnostic improved WF metrics only when leveraged/inverse ETFs remained available, but still failed DSR; the branch was closed research-only with no further local sweeps `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`;
 - `studies/static_spy_beater_portfolio/` for a 2026-05-15 static-portfolio GA
   bootstrap. It searches long-only monthly-rebalanced ETF portfolios with 5%

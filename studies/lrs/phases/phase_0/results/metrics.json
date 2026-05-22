@@ -1,0 +1,67 @@
+{
+  "B&H SPY": {
+    "start_date": "1885-12-31",
+    "end_date": "2026-05-21",
+    "n_days": 35158,
+    "terminal_multiple": 333553.50162335316,
+    "cagr": 0.09544154018406648,
+    "max_drawdown": 0.8364674449411507,
+    "sharpe": 0.6085169449225712,
+    "sortino": 0.8660247490968788,
+    "n_switches": 0,
+    "n_tax_events": 0,
+    "total_tax_paid": 0.0
+  },
+  "B&H SSO": {
+    "start_date": "1885-12-31",
+    "end_date": "2026-05-21",
+    "n_days": 35158,
+    "terminal_multiple": 2341338.362598323,
+    "cagr": 0.11084981047919262,
+    "max_drawdown": 0.9842419366243931,
+    "sharpe": 0.47644416480357804,
+    "sortino": 0.6747079944354343,
+    "n_switches": 0,
+    "n_tax_events": 0,
+    "total_tax_paid": 0.0
+  },
+  "B&H UPRO": {
+    "start_date": "1885-12-31",
+    "end_date": "2026-05-21",
+    "n_days": 35158,
+    "terminal_multiple": 193360.86342448764,
+    "cagr": 0.09116865420786802,
+    "max_drawdown": 0.9990815265594883,
+    "sharpe": 0.43241952992209565,
+    "sortino": 0.6113496010177212,
+    "n_switches": 0,
+    "n_tax_events": 0,
+    "total_tax_paid": 0.0
+  },
+  "LRS-SSO": {
+    "start_date": "1885-12-31",
+    "end_date": "2026-05-21",
+    "n_days": 35158,
+    "terminal_multiple": 10517603.09196943,
+    "cagr": 0.12287658498105958,
+    "max_drawdown": 0.8036899002053675,
+    "sharpe": 0.6061862865283086,
+    "sortino": 0.849597627880591,
+    "n_switches": 811,
+    "n_tax_events": 57,
+    "total_tax_paid": 1558770.1615869128
+  },
+  "LRS-UPRO": {
+    "start_date": "1885-12-31",
+    "end_date": "2026-05-21",
+    "n_days": 35158,
+    "terminal_multiple": 410768608.13689286,
+    "cagr": 0.15276544027699202,
+    "max_drawdown": 0.928014161929201,
+    "sharpe": 0.5788416973595439,
+    "sortino": 0.8122862990733185,
+    "n_switches": 811,
+    "n_tax_events": 53,
+    "total_tax_paid": 57856496.087437026
+  }
+}
