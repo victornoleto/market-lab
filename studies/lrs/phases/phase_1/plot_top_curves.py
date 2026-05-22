@@ -193,51 +193,61 @@ def _render_overlay(
 
 
 # ---------------------------------------------------------------------------
-# Main
+# Public API (callable from run.py)
 # ---------------------------------------------------------------------------
 
 
-def main() -> int:
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
-    PLOTS_DIR.mkdir(parents=True, exist_ok=True)
+def render_top_k_comparison(
+    prices: pd.DataFrame,
+    start_date: pd.Timestamp,
+    sweep_top_df: pd.DataFrame,
+    *,
+    plots_dir: Path = PLOTS_DIR,
+    k_per_on_leg: int = TOP_K_PER_ONLEG,
+) -> list[dict]:
+    """Render the top-K equity-comparison plots and return the terminal table.
 
-    log.info("loading testfolio data (modern era from %s)...", MODERN_ERA_START.date())
-    modern = load_modern_data(MODERN_ERA_START, tickers=PHASE_1_TICKERS)
-    prices = modern.full
-    start_date = modern.scoring_start
+    Caller is responsible for having ``prices`` (the full DataFrame with the
+    six PHASE_1_TICKERS) and ``sweep_top_df`` (typically ``sweep_top20.csv``
+    loaded as a DataFrame). This function:
+
+    1. Re-simulates phase-0 references (SMA200/CASH) on both on-legs.
+    2. Re-simulates top-``k_per_on_leg`` phase-1 configs per on-leg, ranked
+       by final_score in the ``br_lei_14754`` scenario.
+    3. Renders ``top_k_equity_overlay.png`` and ``top_k_ratio_to_spy.png``
+       into ``plots_dir``.
+    4. Returns a list of dicts (one per curve) suitable for embedding as a
+       markdown table — ``[{"label", "kind", "tax_free_terminal",
+       "taxed_terminal", "taxed_ratio_to_spy"}, ...]``.
+    """
+    plots_dir.mkdir(parents=True, exist_ok=True)
 
     spy_rets = prices["SPYSIM"].pct_change()
     sso_rets = prices["SSOSIM"].pct_change()
     upro_rets = prices["UPROSIM"].pct_change()
 
-    # B&H references
     spy_eq = _bh_curve(spy_rets, start_date)
     sso_eq = _bh_curve(sso_rets, start_date)
     upro_eq = _bh_curve(upro_rets, start_date)
 
-    # Phase-0 references: SMA200/CASH on both on-legs
     log.info("simulating phase-0 references (SMA200/CASH)...")
-    p0_sso_taxed, p0_sso_free, p0_sso_sw = _simulate_config(
+    p0_sso_taxed, p0_sso_free, _ = _simulate_config(
         on_leg="SSO", filter_="SMA", lookback=200, risk_off="CASH",
         prices=prices, start_date=start_date,
     )
-    p0_upro_taxed, p0_upro_free, p0_upro_sw = _simulate_config(
+    p0_upro_taxed, p0_upro_free, _ = _simulate_config(
         on_leg="UPRO", filter_="SMA", lookback=200, risk_off="CASH",
         prices=prices, start_date=start_date,
     )
 
-    # Phase-1 top-K configs per on_leg (taxed scenario for ranking — most realistic)
-    log.info("reading sweep_top20.csv and re-simulating top-%d configs per on-leg...",
-             TOP_K_PER_ONLEG)
-    top_df = pd.read_csv(RESULTS_DIR / "sweep_top20.csv")
-    taxed_df = top_df[top_df["tax_scenario"] == "br_lei_14754"].copy()
-
+    log.info("re-simulating top-%d phase-1 configs per on-leg...", k_per_on_leg)
+    taxed_df = sweep_top_df[sweep_top_df["tax_scenario"] == "br_lei_14754"].copy()
     top_sso = taxed_df[taxed_df["on_leg"] == "SSO"].sort_values(
         "final_score", ascending=False
-    ).head(TOP_K_PER_ONLEG).reset_index(drop=True)
+    ).head(k_per_on_leg).reset_index(drop=True)
     top_upro = taxed_df[taxed_df["on_leg"] == "UPRO"].sort_values(
         "final_score", ascending=False
-    ).head(TOP_K_PER_ONLEG).reset_index(drop=True)
+    ).head(k_per_on_leg).reset_index(drop=True)
 
     p1_sso: list[tuple[str, pd.Series, pd.Series, dict]] = []
     for rank, row in top_sso.iterrows():
@@ -258,6 +268,69 @@ def main() -> int:
         label = f"P1 #{rank+1} UPRO/{row['filter']}{int(row['lookback'])}/{row['risk_off']}"
         p1_upro.append((label, taxed_eq, free_eq, {"rank": rank+1, "score": float(row["final_score"]), "n_sw": n_sw}))
         log.info("  %s  taxed_final=%+.4f  switches=%d", label, row["final_score"], n_sw)
+
+    # Render plots (delegates to the existing _render_overlay helper below).
+    _render_top_k_plots(
+        spy_eq=spy_eq, sso_eq=sso_eq, upro_eq=upro_eq,
+        p0_sso_taxed=p0_sso_taxed, p0_sso_free=p0_sso_free,
+        p0_upro_taxed=p0_upro_taxed, p0_upro_free=p0_upro_free,
+        p1_sso=p1_sso, p1_upro=p1_upro,
+        plots_dir=plots_dir,
+    )
+
+    # Build the terminal-multiples table for report.md.
+    def _terminal(eq: pd.Series) -> float:
+        return float(eq.dropna().iloc[-1])
+
+    spy_t = _terminal(spy_eq)
+    table: list[dict] = [
+        {"label": "B&H SPY",  "kind": "benchmark",
+         "tax_free_terminal": spy_t,             "taxed_terminal": spy_t,
+         "taxed_ratio_to_spy": 1.0},
+        {"label": "B&H SSO",  "kind": "benchmark",
+         "tax_free_terminal": _terminal(sso_eq), "taxed_terminal": _terminal(sso_eq),
+         "taxed_ratio_to_spy": _terminal(sso_eq) / spy_t},
+        {"label": "B&H UPRO", "kind": "benchmark",
+         "tax_free_terminal": _terminal(upro_eq), "taxed_terminal": _terminal(upro_eq),
+         "taxed_ratio_to_spy": _terminal(upro_eq) / spy_t},
+        {"label": "P0 LRS-SSO (SMA200/CASH)",  "kind": "phase0",
+         "tax_free_terminal": _terminal(p0_sso_free),  "taxed_terminal": _terminal(p0_sso_taxed),
+         "taxed_ratio_to_spy": _terminal(p0_sso_taxed) / spy_t},
+        {"label": "P0 LRS-UPRO (SMA200/CASH)", "kind": "phase0",
+         "tax_free_terminal": _terminal(p0_upro_free), "taxed_terminal": _terminal(p0_upro_taxed),
+         "taxed_ratio_to_spy": _terminal(p0_upro_taxed) / spy_t},
+    ]
+    for label, taxed_eq, free_eq, _meta in p1_sso:
+        table.append({
+            "label": label, "kind": "phase1",
+            "tax_free_terminal": _terminal(free_eq),
+            "taxed_terminal": _terminal(taxed_eq),
+            "taxed_ratio_to_spy": _terminal(taxed_eq) / spy_t,
+        })
+    for label, taxed_eq, free_eq, _meta in p1_upro:
+        table.append({
+            "label": label, "kind": "phase1",
+            "tax_free_terminal": _terminal(free_eq),
+            "taxed_terminal": _terminal(taxed_eq),
+            "taxed_ratio_to_spy": _terminal(taxed_eq) / spy_t,
+        })
+    return table
+
+
+def _render_top_k_plots(
+    *,
+    spy_eq: pd.Series,
+    sso_eq: pd.Series,
+    upro_eq: pd.Series,
+    p0_sso_taxed: pd.Series,
+    p0_sso_free: pd.Series,
+    p0_upro_taxed: pd.Series,
+    p0_upro_free: pd.Series,
+    p1_sso: list[tuple[str, pd.Series, pd.Series, dict]],
+    p1_upro: list[tuple[str, pd.Series, pd.Series, dict]],
+    plots_dir: Path,
+) -> None:
+    """Render top_k_equity_overlay.png and top_k_ratio_to_spy.png."""
 
     # ---------- Plot 1: equity overlay (tax-free vs taxed) ----------
 
@@ -285,7 +358,7 @@ def main() -> int:
             scenario_curves[label] = (eq, f"p1_upro_{meta['rank']}", _term(eq))
         panels[scenario_label] = scenario_curves
 
-    overlay_path = PLOTS_DIR / "top_k_equity_overlay.png"
+    overlay_path = plots_dir / "top_k_equity_overlay.png"
     log.info("rendering %s ...", overlay_path.name)
     _render_overlay(
         panels,
@@ -336,7 +409,7 @@ def main() -> int:
             scenario_curves[label] = (_ratio(eq, spy_eq), f"p1_upro_{meta['rank']}", _ratio_term(eq, spy_eq))
         ratio_panels[scenario_label] = scenario_curves
 
-    ratio_path = PLOTS_DIR / "top_k_ratio_to_spy.png"
+    ratio_path = plots_dir / "top_k_ratio_to_spy.png"
     log.info("rendering %s ...", ratio_path.name)
     _render_overlay(
         ratio_panels,
@@ -347,7 +420,34 @@ def main() -> int:
         reference_line=1.0,
     )
 
-    log.info("done. plots under %s", PLOTS_DIR)
+
+# ---------------------------------------------------------------------------
+# Standalone CLI entry point
+# ---------------------------------------------------------------------------
+
+
+def main() -> int:
+    """Re-run the top-K comparison off an existing ``sweep_top20.csv``.
+
+    Allows regenerating the plots without re-running the 4.5-minute sweep.
+    """
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+
+    log.info("loading testfolio data (modern era from %s)...", MODERN_ERA_START.date())
+    modern = load_modern_data(MODERN_ERA_START, tickers=PHASE_1_TICKERS)
+    prices = modern.full
+    start_date = modern.scoring_start
+
+    sweep_top_df = pd.read_csv(RESULTS_DIR / "sweep_top20.csv")
+    table = render_top_k_comparison(prices, start_date, sweep_top_df, plots_dir=PLOTS_DIR)
+
+    log.info("terminal multiples (sorted by taxed ratio to SPY):")
+    for row in sorted(table, key=lambda r: -r["taxed_ratio_to_spy"]):
+        log.info(
+            "  %-40s  tax-free=%8.1fx  taxed=%8.1fx  =%6.2fx SPY",
+            row["label"], row["tax_free_terminal"],
+            row["taxed_terminal"], row["taxed_ratio_to_spy"],
+        )
     return 0
 
 

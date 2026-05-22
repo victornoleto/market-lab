@@ -1,6 +1,6 @@
 # studies/lrs — Phase 1 Report (SMA/EMA × lookback × risk-off sweep)
 
-Generated: 2026-05-22T18:56:54.446059+00:00  ·  sweep: 1552 configs × 2 tax scenarios = 3104 score reports  ·  scoring window: 1980-01-02 → 2026-05-21 (11692 bars)
+Generated: 2026-05-22T19:55:30.689818+00:00  ·  sweep: 1552 configs × 2 tax scenarios = 3104 score reports  ·  scoring window: 1980-01-02 → 2026-05-21 (11692 bars)
 
 ## Sweep grid
 
@@ -108,11 +108,39 @@ Each panel's top config plus a cheap overfit-vs-plateau check: how many of its (
 | UPRO · tax_free | SMA | 295 | ZROZ | +0.4217 | 11 | 100% | +0.3597 |
 | UPRO · br_lei_14754 | SMA | 295 | ZROZ | +0.3572 | 11 | 100% | +0.2864 |
 
+## Top-K equity comparison vs phase-0 baseline
+
+Top-5 phase-1 winners per on-leg (ranked under the `br_lei_14754` scenario) re-simulated and compared against B&H benchmarks and the phase-0 SMA200/CASH baseline. Terminal multiples are over the full scoring window.
+
+| Strategy | Tax-free terminal | BR-tax terminal | × B&H SPY (taxed) |
+|---|---:|---:|---:|
+| B&H SPY | 217.2× | 217.2× | 1.00× |
+| B&H SSO | 690.0× | 690.0× | 3.18× |
+| B&H UPRO | 438.0× | 438.0× | 2.02× |
+| P0 LRS-SSO (SMA200/CASH) | 597.8× | 321.0× | 1.48× |
+| P0 LRS-UPRO (SMA200/CASH) | 1,835.4× | 955.6× | 4.40× |
+| **P1 #1 SSO/SMA295/ZROZ** | **8,558.5×** | **3,645.1×** | **16.78×** |
+| **P1 #2 SSO/SMA290/ZROZ** | **8,403.9×** | **3,570.2×** | **16.44×** |
+| **P1 #3 SSO/SMA305/ZROZ** | **6,754.4×** | **2,981.2×** | **13.73×** |
+| **P1 #4 SSO/SMA300/ZROZ** | **6,766.1×** | **2,966.8×** | **13.66×** |
+| **P1 #5 SSO/SMA315/ZROZ** | **6,809.9×** | **3,017.4×** | **13.89×** |
+| **P1 #1 UPRO/SMA295/ZROZ** | **20,355.9×** | **8,682.2×** | **39.98×** |
+| **P1 #2 UPRO/SMA290/ZROZ** | **20,786.6×** | **8,787.9×** | **40.46×** |
+| **P1 #3 UPRO/SMA305/ZROZ** | **13,686.5×** | **6,101.1×** | **28.09×** |
+| **P1 #4 UPRO/SMA300/ZROZ** | **14,521.3×** | **6,446.9×** | **29.68×** |
+| **P1 #5 UPRO/SMA310/ZROZ** | **14,281.0×** | **6,354.4×** | **29.26×** |
+
+Plots (two panels: tax-free left, BR-tax right; log scale):
+
+![top_k_equity_overlay](plots/top_k_equity_overlay.png)
+
+![top_k_ratio_to_spy](plots/top_k_ratio_to_spy.png)
+
 ## Caveats
 
 - **Discovery-only**: the top configs here ARE expected to be overfit to the 1980-2026 regime pattern. No PBO/DSR/walk-forward adjustment was applied. Phase-2 will validate top-N via honest walk-forward + block bootstrap on the regime parameters.
 - **No frictions modelled**: zero commission, zero spread, zero slippage. Whipsaw-heavy short-lookback configs will look better here than in production.
-- **Pre-1980 SMA warmup buffer** is used for the long lookbacks (up to 300 days). Pre-1980 bars do not enter scores.
+- **Pre-1980 SMA warmup buffer** is used for the long lookbacks (up to 500 days). Pre-1980 bars do not enter scores.
 - **Synthetic pre-inception data**: SSO/UPRO/GLD pre-2006/2009/2004 are testfol.io modelled series.
 - **No FX gain modelling** for USD/BRL; ranks of strategies are preserved because every strategy faces the same FX.
 
@@ -122,7 +150,8 @@ Each panel's top config plus a cheap overfit-vs-plateau check: how many of its (
 - [`results/sweep_top20.csv`](./results/sweep_top20.csv) — top-20 per panel.
 - [`results/sweep_summary.json`](./results/sweep_summary.json) — top-5 per panel for quick inspection.
 - [`results/manifest.json`](./results/manifest.json) — exact runtime config.
-- 4 heatmap PNGs under `plots/`.
+- 4 heatmap PNGs (per `on_leg × tax_scenario`) under `plots/`.
+- 2 top-K comparison PNGs (`top_k_equity_overlay.png`, `top_k_ratio_to_spy.png`) under `plots/`. Regenerate independently via `uv run python -m studies.lrs.phases.phase_1.plot_top_curves`.
 
 ## Citations
 

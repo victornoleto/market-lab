@@ -48,6 +48,7 @@ from studies.lrs.scripts.scoring import (
     score_strategy,
 )
 from studies.lrs.scripts.tax import simulate_rotation_with_annual_tax
+from studies.lrs.phases.phase_1.plot_top_curves import render_top_k_comparison
 
 log = logging.getLogger("studies.lrs.phase_1")
 
@@ -276,6 +277,7 @@ def _render_report(
     manifest: dict[str, Any],
     df: pd.DataFrame,
     top_df: pd.DataFrame,
+    top_k_table: list[dict] | None = None,
 ) -> str:
     lines: list[str] = []
     lines.append("# studies/lrs — Phase 1 Report (SMA/EMA × lookback × risk-off sweep)\n")
@@ -368,6 +370,29 @@ def _render_report(
             )
     lines.append("")
 
+    # Top-K equity-curve comparison + terminal multiples (only if we built it).
+    if top_k_table:
+        lines.append("## Top-K equity comparison vs phase-0 baseline\n")
+        lines.append(
+            "Top-5 phase-1 winners per on-leg (ranked under the `br_lei_14754` "
+            "scenario) re-simulated and compared against B&H benchmarks and "
+            "the phase-0 SMA200/CASH baseline. Terminal multiples are over "
+            "the full scoring window.\n"
+        )
+        lines.append("| Strategy | Tax-free terminal | BR-tax terminal | × B&H SPY (taxed) |")
+        lines.append("|---|---:|---:|---:|")
+        for row in top_k_table:
+            highlight = "**" if row["kind"] == "phase1" else ""
+            label = f"{highlight}{row['label']}{highlight}"
+            tf = f"{highlight}{row['tax_free_terminal']:,.1f}×{highlight}"
+            tx = f"{highlight}{row['taxed_terminal']:,.1f}×{highlight}"
+            rs = f"{highlight}{row['taxed_ratio_to_spy']:,.2f}×{highlight}"
+            lines.append(f"| {label} | {tf} | {tx} | {rs} |")
+        lines.append("")
+        lines.append("Plots (two panels: tax-free left, BR-tax right; log scale):\n")
+        lines.append("![top_k_equity_overlay](plots/top_k_equity_overlay.png)\n")
+        lines.append("![top_k_ratio_to_spy](plots/top_k_ratio_to_spy.png)\n")
+
     lines.append("## Caveats\n")
     lines.append(
         "- **Discovery-only**: the top configs here ARE expected to be overfit to the "
@@ -376,8 +401,8 @@ def _render_report(
         "regime parameters.\n"
         "- **No frictions modelled**: zero commission, zero spread, zero slippage. "
         "Whipsaw-heavy short-lookback configs will look better here than in production.\n"
-        "- **Pre-1980 SMA warmup buffer** is used for the long lookbacks (up to 300 days). "
-        "Pre-1980 bars do not enter scores.\n"
+        "- **Pre-1980 SMA warmup buffer** is used for the long lookbacks (up to "
+        f"{LOOKBACKS[-1]} days). Pre-1980 bars do not enter scores.\n"
         "- **Synthetic pre-inception data**: SSO/UPRO/GLD pre-2006/2009/2004 are testfol.io "
         "modelled series.\n"
         "- **No FX gain modelling** for USD/BRL; ranks of strategies are preserved because "
@@ -392,7 +417,10 @@ def _render_report(
         "- [`results/sweep_summary.json`](./results/sweep_summary.json) — top-5 per "
         "panel for quick inspection.\n"
         "- [`results/manifest.json`](./results/manifest.json) — exact runtime config.\n"
-        "- 4 heatmap PNGs under `plots/`.\n"
+        "- 4 heatmap PNGs (per `on_leg × tax_scenario`) under `plots/`.\n"
+        "- 2 top-K comparison PNGs (`top_k_equity_overlay.png`, "
+        "`top_k_ratio_to_spy.png`) under `plots/`. Regenerate independently via "
+        "`uv run python -m studies.lrs.phases.phase_1.plot_top_curves`.\n"
     )
 
     lines.append("## Citations\n")
@@ -474,6 +502,12 @@ def main() -> int:
             )
             log.info("  %s (%.1f KB)", out.name, out.stat().st_size / 1024)
 
+    # Top-K equity-curve comparison: re-simulates the top-5 phase-1 configs
+    # per on-leg + phase-0 baseline + B&H references, renders 2 plots and
+    # returns the terminal-multiples table for embedding in report.md.
+    log.info("rendering top-K equity comparison plots...")
+    top_k_table = render_top_k_comparison(prices, start_date, top_df, plots_dir=PLOTS_DIR)
+
     # Manifest.
     data_hash = hashlib.sha256(
         prices.values.tobytes() + b"|" + ",".join(prices.columns).encode()
@@ -526,7 +560,8 @@ def main() -> int:
 
     # Report.md
     REPORT_PATH.write_text(
-        _render_report(manifest, df, top_df), encoding="utf-8"
+        _render_report(manifest, df, top_df, top_k_table=top_k_table),
+        encoding="utf-8",
     )
     log.info("done. artifacts under %s", PHASE_DIR)
     return 0
