@@ -79,6 +79,7 @@ data/**/*.csv
 
 # Generated API/data snapshots kept local
 docs/_archive/reference_backups/
+docs/reference/*_response.json
 studies/myfxbook_reverse_engineering/data/catalog/pages/
 studies/myfxbook_reverse_engineering/data/catalog/systems_rank/raw_pages/
 studies/myfxbook_reverse_engineering/data/catalog/systems_rank/*.json
