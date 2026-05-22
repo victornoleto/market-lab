@@ -315,19 +315,58 @@ Concrete next steps:
    not step 5. Phase-1's step-5 grid may be missing the actual local
    optimum.
 
+## Equity-curve comparison vs phase-0 baseline
+
+Terminal multiples over 1980-01-02 → 2026-05-21 (B&H SPY = 217×):
+
+| Strategy | Tax-free | BR-tax | × B&H SPY (taxed) |
+|---|---:|---:|---:|
+| B&H SPY | 217.2× | 217.2× | 1.00× |
+| B&H SSO | 690.0× | 690.0× | 3.18× |
+| B&H UPRO | 438.0× | 438.0× | 2.02× |
+| P0 LRS-SSO (SMA200/CASH) | 597.8× | 321.0× | 1.48× |
+| P0 LRS-UPRO (SMA200/CASH) | 1,835.4× | 955.6× | 4.40× |
+| **P1 LRS-SSO (SMA295/ZROZ)** | **8,558.5×** | **3,645.1×** | **16.78×** |
+| **P1 LRS-UPRO (SMA295/ZROZ)** | **20,355.9×** | **8,682.2×** | **39.98×** |
+
+Reading this table:
+
+- **P1 SMA295/ZROZ is 11.4× the post-tax terminal of P0 SMA200/CASH for SSO**
+  (3,645× vs 321×), and 9.1× for UPRO (8,682× vs 956×).
+- **P1 LRS-UPRO ends 40× ahead of B&H SPY** under BR tax — a ~17% CAGR
+  vs SPY's 12.3%, sustained over 46 years.
+- **Tax cost is proportionally higher for P1** (~57% shrinkage from
+  tax-free to taxed) than for P0 (~47%), because P1's ZROZ off-leg
+  itself accumulates taxable gains when sold. But the absolute base
+  is so much higher that the post-tax winner still dominates.
+
+Plots:
+- [`plots/top_k_equity_overlay.png`](./plots/top_k_equity_overlay.png) —
+  log-scale equity overlay of top-5 phase-1 winners per on-leg vs
+  B&H benchmarks and the phase-0 SMA200/CASH baseline. Two panels:
+  tax-free (left) and BR-tax (right).
+- [`plots/top_k_ratio_to_spy.png`](./plots/top_k_ratio_to_spy.png) —
+  same curves divided by B&H SPY. Reference line at 1.0; above = beating
+  SPY, below = losing to SPY.
+
+Regenerate via `uv run python -m studies.lrs.phases.phase_1.plot_top_curves`.
+
 ## Files
 
 - [`run.py`](./run.py) — phase-1 sweep runner.
+- [`plot_top_curves.py`](./plot_top_curves.py) — top-K equity comparison plots
+  (reads `sweep_top20.csv`, re-simulates, renders the overlay + ratio plots).
 - [`report.md`](./report.md) — auto-generated tables + heatmap embeds.
-- [`results/sweep_full.csv`](./results/sweep_full.csv) — all 1,824 rows,
+- [`results/sweep_full.csv`](./results/sweep_full.csv) — all 3,104 rows,
   human-readable.
 - [`results/sweep_top20.csv`](./results/sweep_top20.csv) — top-20 per
   (on_leg × tax_scenario), 80 rows.
 - [`results/sweep_summary.json`](./results/sweep_summary.json) — top-5
   per panel for quick inspection.
 - [`results/manifest.json`](./results/manifest.json) — runtime config
-  including all 57 lookbacks, weights, data hash.
+  including all 97 lookbacks, weights, data hash.
 - 4 heatmap PNGs under [`plots/`](./plots/) — one per (on_leg × tax_scenario).
+- 2 top-K comparison PNGs under [`plots/`](./plots/) — overlay + ratio.
 
 ## Citations
 
