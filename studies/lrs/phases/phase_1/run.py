@@ -3,12 +3,12 @@
 Sweep all combinations of:
 
 * **Filter**: ``SMA`` or ``EMA``
-* **Lookback**: ``{20, 25, 30, ..., 300}`` (57 values, step 5)
+* **Lookback**: ``{20, 25, 30, ..., 500}`` (97 values, step 5)
 * **Risk-off**: ``CASH`` (0%), ``GLD`` (GLDSIM), ``IEF`` (IEFSIM), ``ZROZ`` (ZROZSIM)
 * **On-leg**: ``SSO`` (2×), ``UPRO`` (3×)
 * **Tax scenario**: ``tax_free`` and ``br_lei_14754`` (15% annual, Lei 14.754 art. 5°/6°)
 
-Total: ``2 × 57 × 4 × 2 = 912`` strategies × 2 scenarios = **1,824 score reports**.
+Total: ``2 × 97 × 4 × 2 = 1,552`` strategies × 2 scenarios = **3,104 score reports**.
 
 Each strategy is scored via :func:`studies.lrs.scripts.scoring.score_strategy`
 against the universal B&H SPY (tax-free) benchmark. Outputs full sweep CSV,
@@ -58,7 +58,11 @@ REPORT_PATH = PHASE_DIR / "report.md"
 
 # --- Sweep grid ---
 FILTERS: tuple[str, ...] = ("SMA", "EMA")
-LOOKBACKS: tuple[int, ...] = tuple(range(20, 305, 5))   # 20, 25, ..., 300 (57 values)
+# Lookbacks 20..500 step 5 (97 values). The 500-day ceiling was reached
+# after the original 20..300 grid put its winners at SMA290-300 — too close
+# to the edge to be a clean local maximum. Extending to 500 verifies the
+# peak rather than chasing the grid boundary.
+LOOKBACKS: tuple[int, ...] = tuple(range(20, 505, 5))   # 20, 25, ..., 500 (97 values)
 RISK_OFFS: tuple[str, ...] = ("CASH", "GLD", "IEF", "ZROZ")
 ON_LEGS: tuple[str, ...] = ("SSO", "UPRO")
 TAX_SCENARIOS: tuple[str, ...] = ("tax_free", "br_lei_14754")
@@ -96,6 +100,8 @@ class SweepRow:
     length_score_20y: float
     pct_outperforming_20y: float
     n_switches: int
+    switches_per_year: float        # n_switches / years_in_scoring_window
+    avg_regime_days: float          # scoring_bars / max(1, n_switches), the average days between regime flips
     n_tax_events: int
     total_tax_paid: float
 
@@ -113,6 +119,8 @@ class SweepRow:
             "length_score_20y": float(self.length_score_20y),
             "pct_outperforming_20y": float(self.pct_outperforming_20y),
             "n_switches": int(self.n_switches),
+            "switches_per_year": float(self.switches_per_year),
+            "avg_regime_days": float(self.avg_regime_days),
             "n_tax_events": int(self.n_tax_events),
             "total_tax_paid": float(self.total_tax_paid),
         }
@@ -149,6 +157,10 @@ def _run_sweep(
     """Run the full sweep. Returns one SweepRow per (config × scenario)."""
     rows: list[SweepRow] = []
     n_total = len(FILTERS) * len(LOOKBACKS) * len(RISK_OFFS) * len(ON_LEGS) * len(TAX_SCENARIOS)
+
+    # Scoring-window length in days/years for switches_per_year etc.
+    scoring_bars = int(len(prices.loc[start_date:]))
+    scoring_years = scoring_bars / 252.0
 
     # Pre-compute signals for every (filter, lookback). 114 signals total.
     log.info("precomputing %d signals (%d filters × %d lookbacks)...",
@@ -213,6 +225,8 @@ def _run_sweep(
                             length_score_20y=_length_score(report, 20),
                             pct_outperforming_20y=_pct_outperforming(report, 20),
                             n_switches=sim.n_switches,
+                            switches_per_year=sim.n_switches / scoring_years if scoring_years > 0 else 0.0,
+                            avg_regime_days=scoring_bars / max(1, sim.n_switches),
                             n_tax_events=len(sim.tax_events) if scenario == "br_lei_14754" else 0,
                             total_tax_paid=(sim.total_tax_paid if scenario == "br_lei_14754" else 0.0),
                         ))
@@ -311,7 +325,7 @@ def _render_report(
                 continue
             lines.append(f"### {on_leg} on-leg, {scenario}\n")
             lines.append(
-                "| # | filter | lookback | risk-off | final | 10y len | 15y len | 20y len | %win 20y | switches | tax events | tax drag |"
+                "| # | filter | LB | risk-off | final | 10y | 15y | 20y | %win 20y | switches/y | regime-d | tax drag |"
             )
             lines.append(
                 "|---:|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|"
@@ -321,8 +335,8 @@ def _render_report(
                     f"| {idx + 1} | {r['filter']} | {r['lookback']} | {r['risk_off']} | "
                     f"{r['final_score']:+.4f} | {r['length_score_10y']:+.3f} | "
                     f"{r['length_score_15y']:+.3f} | {r['length_score_20y']:+.3f} | "
-                    f"{r['pct_outperforming_20y']:.0%} | {int(r['n_switches'])} | "
-                    f"{int(r['n_tax_events'])} | {r['total_tax_paid']:.2f} |"
+                    f"{r['pct_outperforming_20y']:.0%} | {r['switches_per_year']:.1f} | "
+                    f"{r['avg_regime_days']:.0f} | {r['total_tax_paid']:.2f} |"
                 )
             lines.append("")
 
