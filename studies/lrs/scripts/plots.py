@@ -1,6 +1,7 @@
 """Plot helpers specific to the lrs scoring framework.
 
-Two plots that visualise the output of :mod:`studies.lrs.scripts.scoring`:
+Three plots that visualise the output of :mod:`studies.lrs.scripts.scoring`
+and sweep runs:
 
 * :func:`plot_score_timeline` — for each window length, a panel showing
   the per-window score across the dataset, both tax scenarios overlaid,
@@ -11,8 +12,12 @@ Two plots that visualise the output of :mod:`studies.lrs.scripts.scoring`:
   window length and tax scenario. Shows distribution shape, outliers and
   whether tax materially shifts the score.
 
-Both plots follow the lrs PNG conventions: headless backend, ≤200KB output,
-clear external legend.
+* :func:`plot_sweep_heatmap` — for a (on_leg × tax_scenario) panel, a grid
+  of heatmaps (one per risk-off asset) showing ``final_score`` as a
+  function of ``(filter, lookback)``. Used by phase-1 sweep runs.
+
+All plots follow the lrs PNG conventions: headless backend, clear external
+legend, ≤300KB typical output.
 """
 from __future__ import annotations
 
@@ -200,5 +205,112 @@ def plot_score_by_length(
     )
 
     fig.tight_layout(rect=(0.0, 0.08, 1.0, 0.95))
+    fig.savefig(out_path, dpi=80, bbox_inches="tight")
+    plt.close(fig)
+
+
+def plot_sweep_heatmap(
+    sweep_df: "pd.DataFrame",
+    out_path: Path,
+    *,
+    on_leg: str,
+    tax_scenario: str,
+    risk_offs: tuple[str, ...] = ("CASH", "GLD", "IEF", "ZROZ"),
+    filters: tuple[str, ...] = ("SMA", "EMA"),
+    title: str | None = None,
+    vmin: float = -0.35,
+    vmax: float = +0.35,
+) -> None:
+    """Render the 4-risk-off heatmap panel for one (on_leg, tax_scenario) cell.
+
+    Layout: 4 horizontal subplots, one per risk-off asset. Each subplot is a
+    ``filter (2 rows) × lookback (cols)`` heatmap coloured by ``final_score``.
+
+    Parameters
+    ----------
+    sweep_df : pd.DataFrame
+        Must have columns ``filter``, ``lookback``, ``on_leg``, ``risk_off``,
+        ``tax_scenario``, ``final_score``.
+    out_path : Path
+        Output PNG.
+    on_leg, tax_scenario : str
+        The cell of the sweep to plot (filters ``sweep_df``).
+    risk_offs : tuple[str, ...]
+        Column order (left-to-right subplots).
+    filters : tuple[str, ...]
+        Row order (top-to-bottom in each subplot).
+    title : str, optional
+        Overall figure title. Defaults to a descriptive one.
+    vmin, vmax : float
+        Colour scale. Symmetric around zero by default so blue/red split
+        on benchmark-tie.
+    """
+    import pandas as pd
+
+    sub = sweep_df[
+        (sweep_df["on_leg"] == on_leg) & (sweep_df["tax_scenario"] == tax_scenario)
+    ]
+    if sub.empty:
+        return
+
+    fig, axes = plt.subplots(1, len(risk_offs), figsize=(3.4 * len(risk_offs), 2.6), sharey=True)
+    axes = np.atleast_1d(axes)
+
+    # Determine common lookback axis.
+    lookbacks = sorted(sub["lookback"].unique())
+
+    cmap = plt.get_cmap("RdBu")  # red=negative, white=zero, blue=positive
+    for ax, risk_off in zip(axes, risk_offs):
+        cell = sub[sub["risk_off"] == risk_off]
+        if cell.empty:
+            ax.set_title(f"{risk_off}\n(no data)")
+            ax.axis("off")
+            continue
+        grid = (
+            cell.pivot(index="filter", columns="lookback", values="final_score")
+                .reindex(filters)
+                .reindex(columns=lookbacks)
+        )
+        im = ax.imshow(
+            grid.values,
+            aspect="auto",
+            cmap=cmap,
+            vmin=vmin,
+            vmax=vmax,
+            interpolation="nearest",
+        )
+        ax.set_title(f"off-leg: {risk_off}")
+        ax.set_yticks(range(len(filters)))
+        ax.set_yticklabels(filters)
+        # Lookback x-ticks: show every 10th value to avoid clutter.
+        n_lb = len(lookbacks)
+        tick_idx = list(range(0, n_lb, max(1, n_lb // 8)))
+        ax.set_xticks(tick_idx)
+        ax.set_xticklabels([str(lookbacks[i]) for i in tick_idx], fontsize=8, rotation=0)
+        ax.set_xlabel("lookback (days)")
+
+        # Mark the cell of the single best config in this risk-off panel.
+        best_idx = cell["final_score"].idxmax()
+        best = cell.loc[best_idx]
+        try:
+            row = filters.index(best["filter"])
+            col = lookbacks.index(best["lookback"])
+            ax.plot(col, row, marker="*", color="black", markersize=10,
+                    markeredgecolor="white", markeredgewidth=0.6)
+            ax.text(col, row + 0.32,
+                    f"{best['final_score']:+.3f}",
+                    color="black", fontsize=7, ha="center", va="top",
+                    bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none", alpha=0.7))
+        except (ValueError, KeyError):
+            pass
+
+    # Colorbar on the right side of the figure.
+    cbar = fig.colorbar(im, ax=axes, orientation="vertical", fraction=0.02, pad=0.02)
+    cbar.set_label("final_score", fontsize=9)
+
+    if title is None:
+        title = f"studies/lrs phase-1 — {on_leg} on-leg, {tax_scenario} scenario"
+    fig.suptitle(title, fontsize=11)
+
     fig.savefig(out_path, dpi=80, bbox_inches="tight")
     plt.close(fig)

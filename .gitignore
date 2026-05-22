@@ -125,11 +125,13 @@ studies/letf_rotation_hunt/reports/**/data/*.csv
 !studies/weekly_momentum/plots/phase5/*.png
 !studies/weekly_momentum/plots/phase5/*.csv
 
-# studies/lrs phase artifacts (canonical baseline output kept in-tree;
-# bulky CSVs of equity series stay ignored — regenerable from run.py)
+# studies/lrs phase artifacts (canonical phase output kept in-tree;
+# bulky CSVs of full equity series stay ignored — regenerable from run.py)
 !studies/lrs/phases/*/plots/
 !studies/lrs/phases/*/plots/*.png
 !studies/lrs/phases/*/results/metrics.json
+!studies/lrs/phases/*/results/sweep_full.csv
+!studies/lrs/phases/*/results/sweep_top20.csv
 
 # Heavy/generated binary artifacts
 *.parquet

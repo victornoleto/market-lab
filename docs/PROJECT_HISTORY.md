@@ -178,9 +178,19 @@ Notable preserved study areas include:
   1980-01-02 → 2026-05-21 (pre-1980 bars kept only for SMA-200 warmup).
   In the tax-free world LRS-UPRO leads (+0.124); under Lei 14.754 the
   ranking flips and B&H SSO leads (+0.031) because annual tax penalises
-  rotation turnover. Discovery-only under mandate §1 — no deploy claim
-  `[leverage_for_the_long_run, p.13]`, `[leverage_for_the_long_run, p.21]`,
-  Lei 14.754/2023 art. 5°/6°;
+  rotation turnover. Phase-1 then ran a 1,824-config sweep over filter
+  (SMA/EMA) × lookback (20-300 step 5) × risk-off (CASH/GLD/IEF/ZROZ) ×
+  on-leg (SSO/UPRO) × tax scenario. Headline finding: **the choice of
+  risk-off asset dominates filter/lookback choices** — ZROZ wins all
+  four panels, `SMA295/ZROZ` final score +0.43 tax-free and +0.35 under
+  Lei 14.754. CASH (phase-0's default) is the worst off-leg in every
+  panel. Top configs beat B&H SPY in 100% of 20-year rolling windows,
+  but 912 untested configurations is significant overfit exposure;
+  phase-2 will validate top-N via walk-forward + block bootstrap.
+  Discovery-only under mandate §1 — no deploy claim
+  `[leverage_for_the_long_run, p.13]`, `[leverage_for_the_long_run, p.14, Table 6]`,
+  `[leverage_for_the_long_run, p.21]`, Lei 14.754/2023 art. 5°/6°,
+  `[advances_fin_ml, p.208-211]`;
 - `studies/weekly_momentum/` for weekly cross-sectional momentum diagnostics, including controlled sweeps, walk-forward validation, PIT approximation, Tiingo delisted backfill, and a final rejection after DSR/bootstrap gates. A later ETF-specific post-close diagnostic improved WF metrics only when leveraged/inverse ETFs remained available, but still failed DSR; the branch was closed research-only with no further local sweeps `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`;
 - `studies/static_spy_beater_portfolio/` for a 2026-05-15 static-portfolio GA
   bootstrap. It searches long-only monthly-rebalanced ETF portfolios with 5%

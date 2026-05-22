@@ -37,6 +37,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import numpy as np
 import pandas as pd
 
 
@@ -70,6 +71,8 @@ def simulate_rotation_with_annual_tax(
     asset_returns: pd.Series,
     signal: pd.Series,
     tax_rate: float = 0.15,
+    *,
+    off_leg_returns: pd.Series | None = None,
 ) -> RotationSimResult:
     """Compound a 2-state rotation with BR-style annual realized-gain tax.
 
@@ -81,8 +84,14 @@ def simulate_rotation_with_annual_tax(
         Object-dtype series of ``"ON"``/``"OFF"``/NaN. Aligned with
         ``asset_returns`` by intersection.
     tax_rate : float
-        Fraction applied to year's positive realized gain. Default 0.15
-        (BR long-term IR on US-listed ETF capital gain).
+        Fraction applied to year's net positive realized gain. Default
+        0.15 (BR long-term IR on aplicações financeiras no exterior).
+    off_leg_returns : pd.Series, optional
+        Daily returns of the off-leg asset (e.g. GLDSIM, IEFSIM,
+        ZROZSIM). ``None`` (default) means cash with 0% yield, which
+        is the phase-0 behavior. When non-None, off-leg appreciation
+        also accumulates in equity and its lots are realized at every
+        leg transition.
 
     Returns
     -------
@@ -93,25 +102,45 @@ def simulate_rotation_with_annual_tax(
     Notes
     -----
     Exposure convention: signal at close of ``T`` controls position on
-    ``T+1`` (``signal.shift(1) == "ON"``) — no lookahead. A lot opens on
-    the first bar where exposure flips ``False → True`` (entry equity =
-    equity at close of the previous bar, since today's return has not
-    yet been applied). The lot closes on the first bar where exposure
-    flips ``True → False`` (exit equity = same — yesterday's close,
-    since today's return is zero on cash). Realized gain is attributed
-    to the year of the bar where the close transition is detected.
+    ``T+1`` (``signal.shift(1) == "ON"``) — no lookahead.
+
+    Lot model (generalised in phase-1): at any moment we hold either the
+    on-leg or the off-leg. We start in the off-leg (the first ON-bar
+    closes the degenerate off-leg lot and opens the on-leg lot). Each
+    leg transition closes the current leg's lot (realising signed gain
+    against its entry equity) and opens the new leg's lot at the same
+    equity level. Realised gains are attributed to the **calendar year
+    of the transition** and settled at the first bar of the following
+    year per Lei 14.754 art. 5°/6°.
+
+    The currently-open lot at end-of-data is **not** realised — held
+    positions defer tax (matches BR "ganho realizado" doctrine).
     """
     common = signal.index.intersection(asset_returns.index)
+    if off_leg_returns is not None:
+        common = common.intersection(off_leg_returns.index)
+    if len(common) == 0:
+        raise ValueError("no overlapping bars between signal, asset_returns, off_leg_returns")
+
+    cash_off_leg = off_leg_returns is None
     sig = signal.reindex(common)
-    rets = asset_returns.reindex(common).astype(float).fillna(0.0)
+    on_ret = asset_returns.reindex(common).astype(float).fillna(0.0).to_numpy()
+    if cash_off_leg:
+        off_ret = np.zeros(len(common), dtype=float)
+    else:
+        off_ret = off_leg_returns.reindex(common).astype(float).fillna(0.0).to_numpy()
     exposed = sig.shift(1).eq("ON").to_numpy(dtype=bool)
 
-    pretax = pd.Series(index=common, dtype=float)
-    post = pd.Series(index=common, dtype=float)
+    pretax_arr = np.empty(len(common), dtype=float)
+    post_arr = np.empty(len(common), dtype=float)
 
     eq_pre = 1.0
     eq_post = 1.0
-    lot_entry_eq_post: float | None = None
+    # We start in the off-leg at unit equity. The first ON transition (if any)
+    # closes this lot (with whatever off-leg gain has accumulated) and opens
+    # the on-leg lot at the same equity level.
+    lot_entry_eq_post = 1.0
+    is_in_on = False
     realized_by_year_post: dict[int, float] = {}
     tax_events: list[TaxEvent] = []
     n_switches = 0
@@ -120,8 +149,19 @@ def simulate_rotation_with_annual_tax(
     prev_year: int | None = None
 
     def _settle_year(year_to_settle: int, payment_ts: pd.Timestamp) -> None:
-        """Apply art. 6° netting to ``year_to_settle`` and debit tax if any."""
-        nonlocal eq_post, total_tax, loss_carry
+        """Apply art. 6° netting to ``year_to_settle`` and debit tax if any.
+
+        Tax-payment model (BR external-cash interpretation): tax is conceptually
+        paid from a separate BRL cash account that isn't part of the modelled
+        ETF equity. So the debit reduces ``eq_post`` but never reduces the
+        on-leg lot's basis — on-leg realised gains at close still reflect
+        the pure market move from purchase price to sale price. For non-cash
+        off-legs (gold / IEF / ZROZ) we DO reduce the off-leg lot's basis on
+        tax debits, because the off-leg position itself is conceptually being
+        partially liquidated to pay the tax — otherwise the next off→on
+        transition would record a phantom loss equal to the tax debit.
+        """
+        nonlocal eq_post, total_tax, loss_carry, lot_entry_eq_post
         gain_post = realized_by_year_post.pop(year_to_settle, 0.0)
         net = gain_post + loss_carry
         if net > 0:
@@ -135,6 +175,11 @@ def simulate_rotation_with_annual_tax(
         if tax > 0:
             eq_post -= tax
             total_tax += tax
+            # For non-cash off-leg holds (rare: only when in OFF state at year-end
+            # with off_leg_returns provided), adjust the off-leg lot basis so the
+            # next off→on transition doesn't register the tax debit as a loss.
+            if (not is_in_on) and (not cash_off_leg):
+                lot_entry_eq_post -= tax
         if tax > 0 or gain_post != 0.0 or loss_carry != 0.0:
             tax_events.append(TaxEvent(
                 year=year_to_settle,
@@ -152,42 +197,46 @@ def simulate_rotation_with_annual_tax(
     for i, ts in enumerate(common):
         year = ts.year
 
-        # 1. Year roll-over BEFORE today's transitions/return:
-        #    settle tax on whatever was realized strictly in prior years.
+        # 1. Year roll-over BEFORE today's transitions/return.
         if prev_year is not None and year != prev_year:
             _settle_year(prev_year, ts)
 
-        # 2. Detect exposure transition between i-1 and i.
-        was_exposed = exposed[i - 1] if i > 0 else False
-        is_exposed = exposed[i]
-        if is_exposed and not was_exposed:
-            # Opening — entry equity is yesterday's close.
-            lot_entry_eq_post = eq_post
-            n_switches += 1
-        elif not is_exposed and was_exposed:
-            # Closing — exit equity is yesterday's close. Attribute to today's year.
-            if lot_entry_eq_post is not None:
+        # 2. Detect leg transition between i-1 and i. Close current leg's
+        #    lot (realise signed gain), open new leg's lot at same equity.
+        #    For cash off-leg (`cash_off_leg=True`) we skip realising the
+        #    off-leg "lot" entirely — its basis would be 1:1 with cash so
+        #    realised would always equal exactly the year's tax debits
+        #    (creating phantom losses that incorrectly offset future gains).
+        is_exp = bool(exposed[i])
+        if is_exp != is_in_on:
+            closing_off_leg_to_on = (is_exp and not is_in_on)
+            skip_realize = closing_off_leg_to_on and cash_off_leg
+            if not skip_realize:
+                realized = eq_post - lot_entry_eq_post
                 realized_by_year_post[year] = (
-                    realized_by_year_post.get(year, 0.0) + (eq_post - lot_entry_eq_post)
+                    realized_by_year_post.get(year, 0.0) + realized
                 )
-                lot_entry_eq_post = None
+            lot_entry_eq_post = eq_post
+            is_in_on = is_exp
             n_switches += 1
 
-        # 3. Apply today's return if exposed.
-        if is_exposed:
-            r = rets.iloc[i]
-            eq_pre *= 1.0 + r
-            eq_post *= 1.0 + r
+        # 3. Apply today's return based on the leg we're currently in.
+        r = on_ret[i] if is_in_on else off_ret[i]
+        eq_pre *= 1.0 + r
+        eq_post *= 1.0 + r
 
-        pretax.iloc[i] = eq_pre
-        post.iloc[i] = eq_post
+        pretax_arr[i] = eq_pre
+        post_arr[i] = eq_post
         prev_year = year
 
-    # End-of-data: settle the trailing year if anything was realized
-    # or any loss carry-forward remains pending.
+    # End-of-data: settle the trailing year if anything was realised
+    # or any loss carry-forward remains pending. (Open lot is NOT realised.)
     if prev_year is not None and (prev_year in realized_by_year_post or loss_carry != 0.0):
         _settle_year(prev_year, common[-1])
-        post.iloc[-1] = eq_post
+        post_arr[-1] = eq_post
+
+    pretax = pd.Series(pretax_arr, index=common)
+    post = pd.Series(post_arr, index=common)
 
     return RotationSimResult(
         equity=post,

@@ -1,6 +1,6 @@
 # studies/lrs — Phase 0 Report (scoring-framework edition)
 
-Generated: 2026-05-22T17:20:22.894224+00:00  ·  data: testfol.io  ·  scoring window: 1980-01-02 → 2026-05-21 (11692 bars)
+Generated: 2026-05-22T18:33:40.180925+00:00  ·  data: testfol.io  ·  scoring window: 1980-01-02 → 2026-05-21 (11692 bars)
 
 ## Hypothesis
 
