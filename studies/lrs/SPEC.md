@@ -1,24 +1,30 @@
-# studies/lrs — Phase 0 Spec
+# studies/lrs — Spec
 
-## Hypothesis
+## Scope
 
-A trend-following regime filter on SPY can reduce the catastrophic drawdowns
-that make buy-and-hold leveraged ETFs (SSO/UPRO) unattractive, while
-preserving most of the up-leg compounding. Specifically:
+`studies/lrs/` evaluates **Leveraged Rotation Strategies** — variations of
+Gayed's SMA-regime filter on the S&P 500 with rotation into 2× and 3× LETF
+proxies (SSO, UPRO). This SPEC is the canonical reference for the lrs
+**scoring framework** that every phase uses.
 
-> When SPY closes above its 200-day simple moving average, a 2× or 3×
-> S&P-500 LETF outperforms unlevered SPY net of BR taxes; when SPY closes
-> below, holding cash dominates riding the LETF down.
+Discovery-only under Investment Mandate §1 — no deploy, capital stays
+100% in Plano C.
 
-Discovery-only output (no deploy claim) per Investment Mandate §1 — the
-capital allocation stays 100% Plano C; this study explores whether a
-future slot reactivation might be supported by this signal.
+## Modern-era window
 
-Citations: `[leverage_for_the_long_run, p.13]` (SMA200 cross signal as
-volatility-regime proxy); `[leverage_for_the_long_run, p.7, p.11]`
-(leverage rotation rationale).
+All scoring uses bars from **1980-01-01** onwards. Pre-1980 bars are kept
+in the loaded data only for SMA-200 warmup; they never enter a window
+score. Rationale:
 
-## Strategies (5 equity curves)
+- The 1929-32 Great Depression and the pre-Bretton-Woods monetary regime
+  dominate any leveraged-strategy drawdown picture and are not
+  representative of the post-1980 deep-and-liquid US equity market.
+- 1980+ gives ~45 years of relevant history with major regime variations
+  (1987 crash, dot-com, GFC, COVID) — enough for a 20-year rolling window
+  to have ~25 non-overlapping observations and ~300 monthly-stepped
+  windows.
+
+## Strategies
 
 | # | Name      | On-leg | Off-leg     | Signal                              |
 |---|-----------|--------|-------------|-------------------------------------|
@@ -30,56 +36,166 @@ volatility-regime proxy); `[leverage_for_the_long_run, p.7, p.11]`
 
 ## Parameters
 
-| Parameter            | Value                                | Citation                                          |
-|----------------------|--------------------------------------|---------------------------------------------------|
-| Data source          | testfol.io synthetic (SPYSIM / SSOSIM / UPROSIM, 1885-03-20 onwards) | testfol.io merged via `scripts/extract_testfolio_json.py` |
-| Period               | Full common history (intersection)   | —                                                 |
-| Filter               | SMA                                  | `[leverage_for_the_long_run, p.8, p.13]`          |
-| Lookback             | 200 trading days                     | `[leverage_for_the_long_run, p.13, Table 6]`      |
-| Hysteresis band      | 0% (strict cross)                    | `[leverage_for_the_long_run, p.13]`               |
-| Off-leg yield        | 0% (zero, literal cash)              | `[leverage_for_the_long_run, p.21]`               |
-| Execution lag        | Signal on close T → exposure on T+1  | Standard no-lookahead convention                  |
-| Commission / spread  | 0 bps (phase-0 isolates signal)      | Layered in later phases                           |
-| Tax rate             | 15% on year's net positive realized gain | `docs/investment-mandate.md` §1               |
-| Tax cadence          | Once annually, debited at first bar of following calendar year | DARF anual (BR Receita Federal)             |
-| Open-position M2M    | None (only closed lots taxed)        | Matches BR realized-gain rule                     |
-| Annual fees          | 0 (testfolio synth already includes Gayed fee drag for L=2/3) | testfol.io synthesis formula              |
+| Parameter            | Value                                            | Citation                                           |
+|----------------------|--------------------------------------------------|----------------------------------------------------|
+| Data source          | testfol.io synthetic (SPYSIM / SSOSIM / UPROSIM) | testfol.io merged via `scripts/extract_testfolio_json.py` |
+| Scoring window       | 1980-01-01 onwards (full common history sliced)  | this SPEC                                          |
+| Filter               | SMA                                              | `[leverage_for_the_long_run, p.8, p.13]`           |
+| Lookback             | 200 trading days                                 | `[leverage_for_the_long_run, p.13, Table 6]`       |
+| Hysteresis band      | 0% (strict cross)                                | `[leverage_for_the_long_run, p.13]`                |
+| Off-leg yield        | 0% (literal cash)                                | `[leverage_for_the_long_run, p.21]`                |
+| Execution lag        | Signal on close T → exposure on T+1              | Standard no-lookahead convention                   |
+| Commission / spread  | 0 bps (phase-0 isolates signal)                  | Layered in later phases                            |
+| Tax rate             | 15% on net annual realised gain                  | Lei 14.754/2023 art. 5°                            |
+| Tax cadence          | Annual, debited at first bar of next calendar year | DARF anual (BR Receita Federal)                  |
+| Loss carry-forward   | Indefinite across years                          | Lei 14.754/2023 art. 6°                            |
+| Open-position M2M    | None (only closed lots taxed)                    | Matches BR realised-gain rule                      |
 
-### B&H tax treatment
+## Scoring framework
 
-Buy-and-hold curves (rows 1-3) never close a lot during the backtest
-window, so no realized gain → no tax debited. A terminal-sale tax could
-be estimated (`0.15 × max(0, terminal_equity − 1)`) but is **not** subtracted
-from the equity curve: a BR investor experiences tax only on exit, and
-the strategy comparison should reflect the actual equity path each curve
-would follow under a held-forever assumption.
+### Two parallel scenarios per strategy
 
-### LRS lot accounting
+Every strategy is scored **twice**:
 
-* Each `OFF→ON` exposure transition opens a lot at the previous bar's
-  close equity (entry).
-* Each `ON→OFF` transition closes the lot at the previous bar's close
-  equity (exit). Realized gain = exit − entry (in equity units).
-* The realized gain is attributed to the calendar year of the transition
-  bar.
-* At the first bar of each new calendar year, the prior year's net
-  realized gain (if positive) is taxed at 15% and the equity is reduced
-  by that amount.
-* Any unsold lot at end-of-data is **not** taxed.
-* No carry-forward of losses across years (BR rule for non-day-trade
-  variable income).
+1. **`tax_free`** — pretend world; uses the pre-tax equity curve.
+2. **`br_lei_14754`** — Brazilian offshore-financial-asset regime under
+   Lei 14.754/2023 art. 5° (15% rate) and art. 6° (indefinite loss
+   carry-forward across years). Uses the post-tax equity curve.
+
+This lets us answer "best in a frictionless world" and "best for a BR
+investor with US-listed ETFs via Inter Internacional / IBKR" with one
+run.
+
+### Rolling windows
+
+For each window length L ∈ {1, 3, 5, 10, 15, 20} years, sample
+overlapping windows with a monthly step (~21 trading days). Within each
+window:
+
+- Both strategy and benchmark are **renormalised to 1.0** at the window
+  start.
+- The **benchmark is always B&H SPY (tax-free)** for every strategy —
+  it's the universal long-only retail reference for "did we beat the
+  market".
+
+### Window-score components
+
+Four signed components, each "positive ⇒ strategy beat benchmark on this
+axis":
+
+| Component             | Formula                                              | Weight | Squash |
+|-----------------------|------------------------------------------------------|-------:|--------|
+| `terminal_excess`     | `strategy_end / benchmark_end − 1`                   |   0.40 | `tanh` |
+| `time_above_excess`   | `2 · (fraction of bars where strat > bench − 0.5)`   |   0.25 | none   |
+| `sortino_excess`      | `Sortino(strat) − Sortino(bench)`                    |   0.20 | `tanh` |
+| `calmar_excess`       | `Calmar(strat) − Calmar(bench)`                      |   0.15 | `tanh` |
+
+Composite:
+```
+window_score = 0.40·tanh(terminal_excess)
+             + 0.25·time_above_excess
+             + 0.20·tanh(sortino_excess)
+             + 0.15·tanh(calmar_excess)
+```
+
+- `tanh` keeps each unbounded component in `(-1, +1)` so a single 20×
+  outlier window can't dominate the average.
+- `time_above` is the **winning fraction** (ties count as 0.5 — standard
+  head-to-head convention). A series scored against itself thus
+  contributes exactly 0 to the composite.
+- `Sortino` uses the downside-only convention from
+  `src/market_lab/backtest/metrics/performance.py::sortino` (`√(mean(min(r, 0)²))`),
+  matching the rest of the codebase.
+
+### Why these four, why these weights
+
+- **`terminal_excess` (40%)** — primary: at the end of the window, are
+  you richer than buying SPY? Direct answer to the user-stated goal "no
+  final o importante é sempre bater o benchmark."
+- **`time_above_excess` (25%)** — consistency: did you spend the window
+  ahead? Catches strategies that beat the benchmark only at one moment
+  and lag the rest of the time.
+- **`sortino_excess` (20%)** — risk-adjusted return with **only
+  downside** volatility penalised. User explicit preference: "podemos
+  considerar Sortino em vez de Sharpe."
+- **`calmar_excess` (15%)** — drawdown context, but discounted because
+  leveraged assets by construction have ugly Calmar.
+
+### Per-length aggregation
+
+For each window length L, collect every window's `window_score`:
+```
+length_score(L) = 0.60 · mean(window_scores) + 0.40 · p25(window_scores)
+```
+
+Rewards typical performance (mean) while penalising the worst quartile of
+regimes (p25) — heavier than median, lighter than absolute worst-case.
+
+### Final score across window lengths
+
+```
+final_score = Σ_L  weight(L) · length_score(L)
+
+where weight = {1y:0.05, 3y:0.10, 5y:0.15, 10y:0.20, 15y:0.25, 20y:0.25}
+```
+
+Long windows dominate (~70% combined) — they're the most informative
+for a long-horizon allocator — but short windows still inform the
+composite. The result lives in roughly `(-1, +1)`.
+
+### Companion statistics (reported alongside, not part of the score)
+
+- Full-window CAGR / Sortino / MDD / terminal multiple — context.
+- Per-length: window count, % windows where `window_score > 0`,
+  `mean / p25 / median / min` of `window_score`, `length_score`.
+- Number of switches, tax events, total tax drag (rotation curves under
+  the `br_lei_14754` scenario).
+
+## Tax model detail (Lei 14.754/2023)
+
+Implemented in `studies/lrs/scripts/tax.py`. Each `OFF→ON → ON→OFF`
+round-trip realises a signed gain. At year-end:
+
+1. `net_year_gain = year_realised_gain + loss_carry_forward_from_prior_years`
+2. If `net_year_gain > 0`: tax = `0.15 × net_year_gain`, carry-forward
+   resets to 0.
+3. If `net_year_gain ≤ 0`: tax = 0, carry-forward = `net_year_gain` (a
+   negative number rolled into the next year, indefinitely).
+
+The tax is debited from equity at the first bar of the following calendar
+year (or at the last bar of data for the trailing open year).
+
+**B&H curves never close a lot during the window**, so they realise zero
+gain and pay zero tax. Their `tax_free` and `br_lei_14754` curves are
+**identical** — this matches a BR investor holding forever and deferring
+tax until exit. The terminal-sale tax is not modelled because it would
+apply identically to every strategy on exit and wouldn't change ranks.
+
+### Caveats not modelled
+
+- **FX gain on USD/BRL**: real BR investors pay IR on currency
+  appreciation too. Strategy ranks are preserved under this approximation
+  because all strategies see the same FX series.
+- **Day-trade rule (20%)**: not applicable — swing/positional only.
+- **R$ 35k/month exemption**: doesn't apply to US-listed ETFs.
 
 ## Outputs
 
 Written under `studies/lrs/phases/phase_0/`:
 
-* `results/metrics.json` — per curve: dates, terminal multiple, CAGR,
-  MDD, Sharpe (ddof=0, rf=0), Sortino (target=0), n switches, n tax
-  events, total tax drag.
-* `results/equity.csv` — 5 curves keyed by date.
-* `results/manifest.json` — runtime configuration + data hash.
-* `plots/equity_overlay.png` — log-scale equity overlay.
-* `plots/ratio_to_spy.png` — strategy / SPY (log scale).
+* `results/scores.json` — aggregated per-(strategy × scenario × window-length)
+  scores (small).
+* `results/metrics.json` — companion full-window stats per
+  (strategy × scenario).
+* `results/equity.csv` — 10 curves (5 strategies × 2 scenarios), keyed by
+  date.
+* `results/manifest.json` — full runtime config (windows, weights, data hash).
+* `plots/equity_overlay.png` — log-scale equity overlay (taxed scenario).
+* `plots/ratio_to_spy.png` — strategy / SPY (log scale, taxed scenario).
+* `plots/score_timeline.png` — score over time, one panel per window length,
+  both scenarios overlaid.
+* `plots/score_by_length.png` — window-score distribution by length and
+  scenario (box plot).
 * `report.md` — narrative report regenerated by `run.py`.
 
 ## Run command
@@ -88,26 +204,15 @@ Written under `studies/lrs/phases/phase_0/`:
 uv run python -m studies.lrs.phases.phase_0.run
 ```
 
-## Caveats / known limitations
+## Out of scope
 
-* **Synthetic data pre-2006/2009**: SSOSIM/UPROSIM before the real
-  inception of SSO (2006-06-21) and UPRO (2009-06-25) are modelled via
-  Gayed's `r = L·r_SPX − fee/252` formula, not measured. Treat pre-IPO
-  bars as approximations.
-* **No frictions**: zero commission, zero spread, zero slippage. A
-  whipsaw-heavy signal will look better here than in production.
-* **Single regime test**: no walk-forward, no parameter sweep, no PBO/DSR.
-  Phase-0 is descriptive only — see Investment Mandate §5 for the gate
-  battery applied in later phases.
-* **Cash off-leg at 0%**: ignores Fed Funds yield. Material when FFR > 3%.
-  Layer CASHX in phase-1+ if signal proves out.
-* **BR tax simplification**: treats all years as long-term (15%);
-  ignores day-trade rule (20%) and the R$ 35k/month BR ETF exemption
-  (only applies to BR-domiciled tickers anyway). No FX gain tax.
+These belong in later phases:
 
-## Out of scope for phase-0
-
-Walk-forward, CPCV, PBO, DSR, alternative MA windows, EMA filter,
-hysteresis bands, alternative off-leg assets (gold, treasuries,
-CASHX), Tiingo real-ETF OOS overlay, regime stratification, any deploy
-verdict.
+- Walk-forward / CPCV / PBO / DSR robustness panels.
+- Commission, spread, slippage modelling.
+- Alternative MA windows (50, 100, 125), EMA filter, hysteresis bands.
+- Alternative off-leg assets (gold, treasuries, CASHX).
+- Tiingo real-ETF OOS overlay (2009+ post-inception sanity).
+- FX-gain tax modelling.
+- Regime stratification (bull/bear/sideways attribution).
+- Any deploy verdict or capital reallocation.

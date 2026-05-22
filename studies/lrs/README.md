@@ -4,18 +4,40 @@ Discovery-only study (Investment Mandate §1, 100% Plano C) that revisits
 the SMA-regime + leveraged-ETF rotation lineage from scratch, in a small
 and well-organized layout.
 
-Status: **Phase 0 (baseline)** complete. No deploy.
+Status: **Phase 0 (baseline)** complete under the lrs scoring framework.
+No deploy.
+
+## Scoring framework
+
+Every strategy is scored under two scenarios in parallel (`tax_free` and
+`br_lei_14754`) via a rolling-window composite over {1, 3, 5, 10, 15, 20}-year
+windows, monthly step. Within each window we measure:
+
+- **terminal_excess** (strategy_end / benchmark_end − 1) — 40% weight
+- **time_above_excess** (winning-fraction vs B&H SPY) — 25% weight
+- **sortino_excess** (Sortino-only-downside, not Sharpe) — 20% weight
+- **calmar_excess** (CAGR / |MDD|) — 15% weight, discounted because
+  leveraged assets always have ugly Calmar
+
+Per-length aggregation: `0.60·mean + 0.40·p25` (rewards typical, penalises
+worst quartile). Across-length weights: `1y=5%, 3y=10%, 5y=15%, 10y=20%,
+15y=25%, 20y=25%` — long windows dominate but short windows still inform.
+
+See `SPEC.md` for the full definition, citations and tax-model detail
+(Lei 14.754/2023 art. 5°/6°).
 
 ## Layout
 
 ```
 studies/lrs/
 ├── README.md                 # this file
-├── SPEC.md                   # phase-0 hypothesis, parameters, citations
-├── scripts/                  # phase-agnostic helpers (data loader, rotation, tax)
-│   ├── data.py
-│   ├── rotation.py
-│   └── tax.py
+├── SPEC.md                   # scoring framework, parameters, citations
+├── scripts/                  # phase-agnostic helpers
+│   ├── data.py               # testfolio loader + modern-era (1980+) slicer
+│   ├── rotation.py           # binary regime rotation
+│   ├── tax.py                # Lei 14.754 annual settlement with loss carry-forward
+│   ├── scoring.py            # rolling-window scoring framework (the standard)
+│   └── plots.py              # score timeline + score-by-length visualisations
 └── phases/
     └── phase_0/
         ├── run.py            # end-to-end runner for phase 0
@@ -25,7 +47,8 @@ studies/lrs/
 ```
 
 Each new phase gets its own folder under `phases/`. Generic glue lives
-in `scripts/` so phases reuse without duplicating.
+in `scripts/` so phases reuse without duplicating. The scoring framework
+in `scripts/scoring.py` is the canonical evaluator across every phase.
 
 ## Run phase 0
 

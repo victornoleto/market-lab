@@ -1,67 +1,102 @@
 {
   "B&H SPY": {
-    "start_date": "1885-12-31",
-    "end_date": "2026-05-21",
-    "n_days": 35158,
-    "terminal_multiple": 333553.50162335316,
-    "cagr": 0.09544154018406648,
-    "max_drawdown": 0.8364674449411507,
-    "sharpe": 0.6085169449225712,
-    "sortino": 0.8660247490968788,
-    "n_switches": 0,
-    "n_tax_events": 0,
-    "total_tax_paid": 0.0
+    "tax_free": {
+      "start_date": "1980-01-02",
+      "end_date": "2026-05-21",
+      "n_days": 11692,
+      "terminal_multiple": 217.1781148968257,
+      "cagr": 0.12297520975215748,
+      "max_drawdown": 0.5514127407707087,
+      "sortino": 1.0418612551870188
+    },
+    "br_lei_14754": {
+      "start_date": "1980-01-02",
+      "end_date": "2026-05-21",
+      "n_days": 11692,
+      "terminal_multiple": 217.1781148968257,
+      "cagr": 0.12297520975215748,
+      "max_drawdown": 0.5514127407707087,
+      "sortino": 1.0418612551870188
+    }
   },
   "B&H SSO": {
-    "start_date": "1885-12-31",
-    "end_date": "2026-05-21",
-    "n_days": 35158,
-    "terminal_multiple": 2341338.362598323,
-    "cagr": 0.11084981047919262,
-    "max_drawdown": 0.9842419366243931,
-    "sharpe": 0.47644416480357804,
-    "sortino": 0.6747079944354343,
-    "n_switches": 0,
-    "n_tax_events": 0,
-    "total_tax_paid": 0.0
+    "tax_free": {
+      "start_date": "1980-01-02",
+      "end_date": "2026-05-21",
+      "n_days": 11692,
+      "terminal_multiple": 690.0061549545526,
+      "cagr": 0.15130819467030832,
+      "max_drawdown": 0.8827206680616885,
+      "sortino": 0.8079771039985532
+    },
+    "br_lei_14754": {
+      "start_date": "1980-01-02",
+      "end_date": "2026-05-21",
+      "n_days": 11692,
+      "terminal_multiple": 690.0061549545526,
+      "cagr": 0.15130819467030832,
+      "max_drawdown": 0.8827206680616885,
+      "sortino": 0.8079771039985532
+    }
   },
   "B&H UPRO": {
-    "start_date": "1885-12-31",
-    "end_date": "2026-05-21",
-    "n_days": 35158,
-    "terminal_multiple": 193360.86342448764,
-    "cagr": 0.09116865420786802,
-    "max_drawdown": 0.9990815265594883,
-    "sharpe": 0.43241952992209565,
-    "sortino": 0.6113496010177212,
-    "n_switches": 0,
-    "n_tax_events": 0,
-    "total_tax_paid": 0.0
+    "tax_free": {
+      "start_date": "1980-01-02",
+      "end_date": "2026-05-21",
+      "n_days": 11692,
+      "terminal_multiple": 438.02142296847296,
+      "cagr": 0.14008582012729387,
+      "max_drawdown": 0.9830745411124205,
+      "sortino": 0.7306502824289484
+    },
+    "br_lei_14754": {
+      "start_date": "1980-01-02",
+      "end_date": "2026-05-21",
+      "n_days": 11692,
+      "terminal_multiple": 438.02142296847296,
+      "cagr": 0.14008582012729387,
+      "max_drawdown": 0.9830745411124205,
+      "sortino": 0.7306502824289484
+    }
   },
   "LRS-SSO": {
-    "start_date": "1885-12-31",
-    "end_date": "2026-05-21",
-    "n_days": 35158,
-    "terminal_multiple": 10517603.09196943,
-    "cagr": 0.12287658498105958,
-    "max_drawdown": 0.8036899002053675,
-    "sharpe": 0.6061862865283086,
-    "sortino": 0.849597627880591,
-    "n_switches": 811,
-    "n_tax_events": 57,
-    "total_tax_paid": 1558770.1615869128
+    "tax_free": {
+      "start_date": "1980-01-02",
+      "end_date": "2026-05-21",
+      "n_days": 11692,
+      "terminal_multiple": 597.8037761245797,
+      "cagr": 0.1477540643814086,
+      "max_drawdown": 0.5502327975511492,
+      "sortino": 0.9708290661232897
+    },
+    "br_lei_14754": {
+      "start_date": "1980-01-02",
+      "end_date": "2026-05-21",
+      "n_days": 11692,
+      "terminal_multiple": 321.04288151693044,
+      "cagr": 0.13247617096203745,
+      "max_drawdown": 0.557804118466145,
+      "sortino": 0.8837445446995336
+    }
   },
   "LRS-UPRO": {
-    "start_date": "1885-12-31",
-    "end_date": "2026-05-21",
-    "n_days": 35158,
-    "terminal_multiple": 410768608.13689286,
-    "cagr": 0.15276544027699202,
-    "max_drawdown": 0.928014161929201,
-    "sharpe": 0.5788416973595439,
-    "sortino": 0.8122862990733185,
-    "n_switches": 811,
-    "n_tax_events": 53,
-    "total_tax_paid": 57856496.087437026
+    "tax_free": {
+      "start_date": "1980-01-02",
+      "end_date": "2026-05-21",
+      "n_days": 11692,
+      "terminal_multiple": 1835.4329141245091,
+      "cagr": 0.17584485140142148,
+      "max_drawdown": 0.7320260431998209,
+      "sortino": 0.8811890277733673
+    },
+    "br_lei_14754": {
+      "start_date": "1980-01-02",
+      "end_date": "2026-05-21",
+      "n_days": 11692,
+      "terminal_multiple": 955.5929288305389,
+      "cagr": 0.15941765458257073,
+      "max_drawdown": 0.7367563345918704,
+      "sortino": 0.8229535001688916
+    }
   }
 }

@@ -1,0 +1,682 @@
+{
+  "B&H SPY": {
+    "tax_free": {
+      "strategy_name": "B&H SPY",
+      "tax_scenario": "tax_free",
+      "final_score": 0.0,
+      "per_length": {
+        "1": {
+          "length_years": 1,
+          "n_windows": 546,
+          "pct_outperforming": 0.0,
+          "mean_score": 0.0,
+          "p25_score": 0.0,
+          "median_score": 0.0,
+          "min_score": 0.0,
+          "length_score": 0.0
+        },
+        "3": {
+          "length_years": 3,
+          "n_windows": 522,
+          "pct_outperforming": 0.0,
+          "mean_score": 0.0,
+          "p25_score": 0.0,
+          "median_score": 0.0,
+          "min_score": 0.0,
+          "length_score": 0.0
+        },
+        "5": {
+          "length_years": 5,
+          "n_windows": 498,
+          "pct_outperforming": 0.0,
+          "mean_score": 0.0,
+          "p25_score": 0.0,
+          "median_score": 0.0,
+          "min_score": 0.0,
+          "length_score": 0.0
+        },
+        "10": {
+          "length_years": 10,
+          "n_windows": 438,
+          "pct_outperforming": 0.0,
+          "mean_score": 0.0,
+          "p25_score": 0.0,
+          "median_score": 0.0,
+          "min_score": 0.0,
+          "length_score": 0.0
+        },
+        "15": {
+          "length_years": 15,
+          "n_windows": 378,
+          "pct_outperforming": 0.0,
+          "mean_score": 0.0,
+          "p25_score": 0.0,
+          "median_score": 0.0,
+          "min_score": 0.0,
+          "length_score": 0.0
+        },
+        "20": {
+          "length_years": 20,
+          "n_windows": 318,
+          "pct_outperforming": 0.0,
+          "mean_score": 0.0,
+          "p25_score": 0.0,
+          "median_score": 0.0,
+          "min_score": 0.0,
+          "length_score": 0.0
+        }
+      }
+    },
+    "br_lei_14754": {
+      "strategy_name": "B&H SPY",
+      "tax_scenario": "br_lei_14754",
+      "final_score": 0.0,
+      "per_length": {
+        "1": {
+          "length_years": 1,
+          "n_windows": 546,
+          "pct_outperforming": 0.0,
+          "mean_score": 0.0,
+          "p25_score": 0.0,
+          "median_score": 0.0,
+          "min_score": 0.0,
+          "length_score": 0.0
+        },
+        "3": {
+          "length_years": 3,
+          "n_windows": 522,
+          "pct_outperforming": 0.0,
+          "mean_score": 0.0,
+          "p25_score": 0.0,
+          "median_score": 0.0,
+          "min_score": 0.0,
+          "length_score": 0.0
+        },
+        "5": {
+          "length_years": 5,
+          "n_windows": 498,
+          "pct_outperforming": 0.0,
+          "mean_score": 0.0,
+          "p25_score": 0.0,
+          "median_score": 0.0,
+          "min_score": 0.0,
+          "length_score": 0.0
+        },
+        "10": {
+          "length_years": 10,
+          "n_windows": 438,
+          "pct_outperforming": 0.0,
+          "mean_score": 0.0,
+          "p25_score": 0.0,
+          "median_score": 0.0,
+          "min_score": 0.0,
+          "length_score": 0.0
+        },
+        "15": {
+          "length_years": 15,
+          "n_windows": 378,
+          "pct_outperforming": 0.0,
+          "mean_score": 0.0,
+          "p25_score": 0.0,
+          "median_score": 0.0,
+          "min_score": 0.0,
+          "length_score": 0.0
+        },
+        "20": {
+          "length_years": 20,
+          "n_windows": 318,
+          "pct_outperforming": 0.0,
+          "mean_score": 0.0,
+          "p25_score": 0.0,
+          "median_score": 0.0,
+          "min_score": 0.0,
+          "length_score": 0.0
+        }
+      }
+    }
+  },
+  "B&H SSO": {
+    "tax_free": {
+      "strategy_name": "B&H SSO",
+      "tax_scenario": "tax_free",
+      "final_score": 0.03129748009811617,
+      "per_length": {
+        "1": {
+          "length_years": 1,
+          "n_windows": 546,
+          "pct_outperforming": 0.521978021978022,
+          "mean_score": -0.01868743168050019,
+          "p25_score": -0.1955781629808773,
+          "median_score": 0.010733157268585886,
+          "min_score": -0.5404345154147955,
+          "length_score": -0.08944372420065104
+        },
+        "3": {
+          "length_years": 3,
+          "n_windows": 522,
+          "pct_outperforming": 0.6379310344827587,
+          "mean_score": 0.04526958800847963,
+          "p25_score": -0.167330423718044,
+          "median_score": 0.11674810218062644,
+          "min_score": -0.52089039894786,
+          "length_score": -0.03977041668212982
+        },
+        "5": {
+          "length_years": 5,
+          "n_windows": 498,
+          "pct_outperforming": 0.6365461847389559,
+          "mean_score": 0.08814447726351833,
+          "p25_score": -0.22009523011824075,
+          "median_score": 0.17710169443635465,
+          "min_score": -0.5114563586251091,
+          "length_score": -0.03515140568918531
+        },
+        "10": {
+          "length_years": 10,
+          "n_windows": 438,
+          "pct_outperforming": 0.6118721461187214,
+          "mean_score": 0.1272000200459867,
+          "p25_score": -0.09613465460028092,
+          "median_score": 0.14212898840193494,
+          "min_score": -0.5311969700997162,
+          "length_score": 0.037866150187479644
+        },
+        "15": {
+          "length_years": 15,
+          "n_windows": 378,
+          "pct_outperforming": 0.708994708994709,
+          "mean_score": 0.14674825869509156,
+          "p25_score": -0.051778194106812656,
+          "median_score": 0.2032153302365626,
+          "min_score": -0.43987696728658443,
+          "length_score": 0.06733767757432986
+        },
+        "20": {
+          "length_years": 20,
+          "n_windows": 318,
+          "pct_outperforming": 0.7672955974842768,
+          "mean_score": 0.125481671725632,
+          "p25_score": 0.01789518639816304,
+          "median_score": 0.14549530768191546,
+          "min_score": -0.4176832737246492,
+          "length_score": 0.08244707759464441
+        }
+      }
+    },
+    "br_lei_14754": {
+      "strategy_name": "B&H SSO",
+      "tax_scenario": "br_lei_14754",
+      "final_score": 0.03129748009811617,
+      "per_length": {
+        "1": {
+          "length_years": 1,
+          "n_windows": 546,
+          "pct_outperforming": 0.521978021978022,
+          "mean_score": -0.01868743168050019,
+          "p25_score": -0.1955781629808773,
+          "median_score": 0.010733157268585886,
+          "min_score": -0.5404345154147955,
+          "length_score": -0.08944372420065104
+        },
+        "3": {
+          "length_years": 3,
+          "n_windows": 522,
+          "pct_outperforming": 0.6379310344827587,
+          "mean_score": 0.04526958800847963,
+          "p25_score": -0.167330423718044,
+          "median_score": 0.11674810218062644,
+          "min_score": -0.52089039894786,
+          "length_score": -0.03977041668212982
+        },
+        "5": {
+          "length_years": 5,
+          "n_windows": 498,
+          "pct_outperforming": 0.6365461847389559,
+          "mean_score": 0.08814447726351833,
+          "p25_score": -0.22009523011824075,
+          "median_score": 0.17710169443635465,
+          "min_score": -0.5114563586251091,
+          "length_score": -0.03515140568918531
+        },
+        "10": {
+          "length_years": 10,
+          "n_windows": 438,
+          "pct_outperforming": 0.6118721461187214,
+          "mean_score": 0.1272000200459867,
+          "p25_score": -0.09613465460028092,
+          "median_score": 0.14212898840193494,
+          "min_score": -0.5311969700997162,
+          "length_score": 0.037866150187479644
+        },
+        "15": {
+          "length_years": 15,
+          "n_windows": 378,
+          "pct_outperforming": 0.708994708994709,
+          "mean_score": 0.14674825869509156,
+          "p25_score": -0.051778194106812656,
+          "median_score": 0.2032153302365626,
+          "min_score": -0.43987696728658443,
+          "length_score": 0.06733767757432986
+        },
+        "20": {
+          "length_years": 20,
+          "n_windows": 318,
+          "pct_outperforming": 0.7672955974842768,
+          "mean_score": 0.125481671725632,
+          "p25_score": 0.01789518639816304,
+          "median_score": 0.14549530768191546,
+          "min_score": -0.4176832737246492,
+          "length_score": 0.08244707759464441
+        }
+      }
+    }
+  },
+  "B&H UPRO": {
+    "tax_free": {
+      "strategy_name": "B&H UPRO",
+      "tax_scenario": "tax_free",
+      "final_score": -0.1343341890589562,
+      "per_length": {
+        "1": {
+          "length_years": 1,
+          "n_windows": 546,
+          "pct_outperforming": 0.46886446886446886,
+          "mean_score": -0.03950312244818157,
+          "p25_score": -0.2822576716004478,
+          "median_score": -0.023452549195067184,
+          "min_score": -0.6435425253568782,
+          "length_score": -0.13660494210908808
+        },
+        "3": {
+          "length_years": 3,
+          "n_windows": 522,
+          "pct_outperforming": 0.578544061302682,
+          "mean_score": 0.019694361663846437,
+          "p25_score": -0.2862963978641003,
+          "median_score": 0.08768745986142024,
+          "min_score": -0.6325515852817248,
+          "length_score": -0.10270194214733228
+        },
+        "5": {
+          "length_years": 5,
+          "n_windows": 498,
+          "pct_outperforming": 0.570281124497992,
+          "mean_score": 0.04910129907285366,
+          "p25_score": -0.34292463539681395,
+          "median_score": 0.11031243494693585,
+          "min_score": -0.6235357269236401,
+          "length_score": -0.1077090747150134
+        },
+        "10": {
+          "length_years": 10,
+          "n_windows": 438,
+          "pct_outperforming": 0.4497716894977169,
+          "mean_score": 0.025191926466425377,
+          "p25_score": -0.29736653051509154,
+          "median_score": -0.04194057201029926,
+          "min_score": -0.6141650890786985,
+          "length_score": -0.1038314563261814
+        },
+        "15": {
+          "length_years": 15,
+          "n_windows": 378,
+          "pct_outperforming": 0.5132275132275133,
+          "mean_score": -0.009639407728241331,
+          "p25_score": -0.33435986578713406,
+          "median_score": 0.011035959393894883,
+          "min_score": -0.572760371531416,
+          "length_score": -0.13952759095179842
+        },
+        "20": {
+          "length_years": 20,
+          "n_windows": 318,
+          "pct_outperforming": 0.3490566037735849,
+          "mean_score": -0.10642491446026321,
+          "p25_score": -0.29465460359291173,
+          "median_score": -0.15803834553018797,
+          "min_score": -0.5624399753904757,
+          "length_score": -0.18171679011332265
+        }
+      }
+    },
+    "br_lei_14754": {
+      "strategy_name": "B&H UPRO",
+      "tax_scenario": "br_lei_14754",
+      "final_score": -0.1343341890589562,
+      "per_length": {
+        "1": {
+          "length_years": 1,
+          "n_windows": 546,
+          "pct_outperforming": 0.46886446886446886,
+          "mean_score": -0.03950312244818157,
+          "p25_score": -0.2822576716004478,
+          "median_score": -0.023452549195067184,
+          "min_score": -0.6435425253568782,
+          "length_score": -0.13660494210908808
+        },
+        "3": {
+          "length_years": 3,
+          "n_windows": 522,
+          "pct_outperforming": 0.578544061302682,
+          "mean_score": 0.019694361663846437,
+          "p25_score": -0.2862963978641003,
+          "median_score": 0.08768745986142024,
+          "min_score": -0.6325515852817248,
+          "length_score": -0.10270194214733228
+        },
+        "5": {
+          "length_years": 5,
+          "n_windows": 498,
+          "pct_outperforming": 0.570281124497992,
+          "mean_score": 0.04910129907285366,
+          "p25_score": -0.34292463539681395,
+          "median_score": 0.11031243494693585,
+          "min_score": -0.6235357269236401,
+          "length_score": -0.1077090747150134
+        },
+        "10": {
+          "length_years": 10,
+          "n_windows": 438,
+          "pct_outperforming": 0.4497716894977169,
+          "mean_score": 0.025191926466425377,
+          "p25_score": -0.29736653051509154,
+          "median_score": -0.04194057201029926,
+          "min_score": -0.6141650890786985,
+          "length_score": -0.1038314563261814
+        },
+        "15": {
+          "length_years": 15,
+          "n_windows": 378,
+          "pct_outperforming": 0.5132275132275133,
+          "mean_score": -0.009639407728241331,
+          "p25_score": -0.33435986578713406,
+          "median_score": 0.011035959393894883,
+          "min_score": -0.572760371531416,
+          "length_score": -0.13952759095179842
+        },
+        "20": {
+          "length_years": 20,
+          "n_windows": 318,
+          "pct_outperforming": 0.3490566037735849,
+          "mean_score": -0.10642491446026321,
+          "p25_score": -0.29465460359291173,
+          "median_score": -0.15803834553018797,
+          "min_score": -0.5624399753904757,
+          "length_score": -0.18171679011332265
+        }
+      }
+    }
+  },
+  "LRS-SSO": {
+    "tax_free": {
+      "strategy_name": "LRS-SSO",
+      "tax_scenario": "tax_free",
+      "final_score": 0.08191873993578667,
+      "per_length": {
+        "1": {
+          "length_years": 1,
+          "n_windows": 546,
+          "pct_outperforming": 0.4157509157509158,
+          "mean_score": -0.10898593560695655,
+          "p25_score": -0.38307429410920857,
+          "median_score": -0.08236170161754411,
+          "min_score": -0.7056404012938905,
+          "length_score": -0.21862127900785736
+        },
+        "3": {
+          "length_years": 3,
+          "n_windows": 522,
+          "pct_outperforming": 0.5057471264367817,
+          "mean_score": 0.000857872087339526,
+          "p25_score": -0.2136275984953443,
+          "median_score": 0.005001670992894914,
+          "min_score": -0.6538745567066256,
+          "length_score": -0.084936316145734
+        },
+        "5": {
+          "length_years": 5,
+          "n_windows": 498,
+          "pct_outperforming": 0.5963855421686747,
+          "mean_score": 0.06699831685779914,
+          "p25_score": -0.12507013607716172,
+          "median_score": 0.08990906657653244,
+          "min_score": -0.5286616331949222,
+          "length_score": -0.009829064316185208
+        },
+        "10": {
+          "length_years": 10,
+          "n_windows": 438,
+          "pct_outperforming": 0.7488584474885844,
+          "mean_score": 0.15877502477293082,
+          "p25_score": -0.0036769131830989127,
+          "median_score": 0.20001224872602874,
+          "min_score": -0.5176638757294961,
+          "length_score": 0.09379424959051892
+        },
+        "15": {
+          "length_years": 15,
+          "n_windows": 378,
+          "pct_outperforming": 0.8174603174603174,
+          "mean_score": 0.20571696804614914,
+          "p25_score": 0.07758677427769861,
+          "median_score": 0.20937609320148778,
+          "min_score": -0.40343674625433434,
+          "length_score": 0.1544648905387689
+        },
+        "20": {
+          "length_years": 20,
+          "n_windows": 318,
+          "pct_outperforming": 0.8427672955974843,
+          "mean_score": 0.22733529820950243,
+          "p25_score": 0.11342427863959346,
+          "median_score": 0.2581374532517196,
+          "min_score": -0.2614468385662044,
+          "length_score": 0.18177089038153882
+        }
+      }
+    },
+    "br_lei_14754": {
+      "strategy_name": "LRS-SSO",
+      "tax_scenario": "br_lei_14754",
+      "final_score": -0.06318771094861855,
+      "per_length": {
+        "1": {
+          "length_years": 1,
+          "n_windows": 546,
+          "pct_outperforming": 0.36813186813186816,
+          "mean_score": -0.14198754695112809,
+          "p25_score": -0.42617138695583334,
+          "median_score": -0.1238546028906774,
+          "min_score": -0.7114596524910343,
+          "length_score": -0.2556610829530102
+        },
+        "3": {
+          "length_years": 3,
+          "n_windows": 522,
+          "pct_outperforming": 0.4061302681992337,
+          "mean_score": -0.06776384039447587,
+          "p25_score": -0.3033571462825357,
+          "median_score": -0.0836546141524986,
+          "min_score": -0.6538745567066259,
+          "length_score": -0.1620011627496998
+        },
+        "5": {
+          "length_years": 5,
+          "n_windows": 498,
+          "pct_outperforming": 0.4979919678714859,
+          "mean_score": -0.017586173061294983,
+          "p25_score": -0.23260055827533835,
+          "median_score": -0.007159421501689724,
+          "min_score": -0.5537739611862373,
+          "length_score": -0.10359192714691233
+        },
+        "10": {
+          "length_years": 10,
+          "n_windows": 438,
+          "pct_outperforming": 0.593607305936073,
+          "mean_score": 0.03428983819014716,
+          "p25_score": -0.13668526187049104,
+          "median_score": 0.05022925897211192,
+          "min_score": -0.5397704131291211,
+          "length_score": -0.034100201834108126
+        },
+        "15": {
+          "length_years": 15,
+          "n_windows": 378,
+          "pct_outperforming": 0.544973544973545,
+          "mean_score": 0.05375852185620958,
+          "p25_score": -0.12475524518188344,
+          "median_score": 0.04844618181499618,
+          "min_score": -0.43119108128905237,
+          "length_score": -0.017646984959027633
+        },
+        "20": {
+          "length_years": 20,
+          "n_windows": 318,
+          "pct_outperforming": 0.5691823899371069,
+          "mean_score": 0.034211508056048556,
+          "p25_score": -0.12565691055789951,
+          "median_score": 0.030131261395501173,
+          "min_score": -0.45938920412280065,
+          "length_score": -0.02973585938953068
+        }
+      }
+    }
+  },
+  "LRS-UPRO": {
+    "tax_free": {
+      "strategy_name": "LRS-UPRO",
+      "tax_scenario": "tax_free",
+      "final_score": 0.1235029210869816,
+      "per_length": {
+        "1": {
+          "length_years": 1,
+          "n_windows": 546,
+          "pct_outperforming": 0.3992673992673993,
+          "mean_score": -0.10761556136020527,
+          "p25_score": -0.41311748306418944,
+          "median_score": -0.10103745786978609,
+          "min_score": -0.7547839503525788,
+          "length_score": -0.22981633004179897
+        },
+        "3": {
+          "length_years": 3,
+          "n_windows": 522,
+          "pct_outperforming": 0.5402298850574713,
+          "mean_score": 0.025274931097357744,
+          "p25_score": -0.18812808814233584,
+          "median_score": 0.033508360771959504,
+          "min_score": -0.709389437780926,
+          "length_score": -0.060086276598519686
+        },
+        "5": {
+          "length_years": 5,
+          "n_windows": 498,
+          "pct_outperforming": 0.6485943775100401,
+          "mean_score": 0.10659597359880554,
+          "p25_score": -0.140554771052883,
+          "median_score": 0.1318093259732044,
+          "min_score": -0.5504381577998527,
+          "length_score": 0.007735675738130117
+        },
+        "10": {
+          "length_years": 10,
+          "n_windows": 438,
+          "pct_outperforming": 0.7785388127853882,
+          "mean_score": 0.2265159711246078,
+          "p25_score": 0.050859123064933315,
+          "median_score": 0.2768842983947638,
+          "min_score": -0.5969834074103108,
+          "length_score": 0.15625323190073803
+        },
+        "15": {
+          "length_years": 15,
+          "n_windows": 378,
+          "pct_outperforming": 0.8306878306878307,
+          "mean_score": 0.2655086349862197,
+          "p25_score": 0.10951339231841076,
+          "median_score": 0.32091108619028036,
+          "min_score": -0.49901890771507906,
+          "length_score": 0.2031105379190961
+        },
+        "20": {
+          "length_years": 20,
+          "n_windows": 318,
+          "pct_outperforming": 0.8238993710691824,
+          "mean_score": 0.29430597337832687,
+          "p25_score": 0.1366783702153333,
+          "median_score": 0.3561961862337767,
+          "min_score": -0.28977915863763043,
+          "length_score": 0.23125493211312945
+        }
+      }
+    },
+    "br_lei_14754": {
+      "strategy_name": "LRS-UPRO",
+      "tax_scenario": "br_lei_14754",
+      "final_score": 0.020441700032090546,
+      "per_length": {
+        "1": {
+          "length_years": 1,
+          "n_windows": 546,
+          "pct_outperforming": 0.37545787545787546,
+          "mean_score": -0.12843907950946826,
+          "p25_score": -0.4434477586874489,
+          "median_score": -0.12643203732484914,
+          "min_score": -0.758366815117576,
+          "length_score": -0.2544425511806605
+        },
+        "3": {
+          "length_years": 3,
+          "n_windows": 522,
+          "pct_outperforming": 0.5,
+          "mean_score": -0.02294110825395439,
+          "p25_score": -0.2539495333530626,
+          "median_score": -0.0008943297803582131,
+          "min_score": -0.7093894377809298,
+          "length_score": -0.11534447829359767
+        },
+        "5": {
+          "length_years": 5,
+          "n_windows": 498,
+          "pct_outperforming": 0.5642570281124498,
+          "mean_score": 0.048181867844392275,
+          "p25_score": -0.20171888708133343,
+          "median_score": 0.07154830470609846,
+          "min_score": -0.5758492395529069,
+          "length_score": -0.051778434125898005
+        },
+        "10": {
+          "length_years": 10,
+          "n_windows": 438,
+          "pct_outperforming": 0.7031963470319634,
+          "mean_score": 0.14108989480805081,
+          "p25_score": -0.05620212953232455,
+          "median_score": 0.15539557131318113,
+          "min_score": -0.6110070444933398,
+          "length_score": 0.06217308507190067
+        },
+        "15": {
+          "length_years": 15,
+          "n_windows": 378,
+          "pct_outperforming": 0.7195767195767195,
+          "mean_score": 0.17298919554282208,
+          "p25_score": -0.060582925773729875,
+          "median_score": 0.20777877254991078,
+          "min_score": -0.515518388240661,
+          "length_score": 0.0795603470162013
+        },
+        "20": {
+          "length_years": 20,
+          "n_windows": 318,
+          "pct_outperforming": 0.7012578616352201,
+          "mean_score": 0.16456647625413853,
+          "p25_score": -0.04544634667183195,
+          "median_score": 0.19941496855484356,
+          "min_score": -0.4287642748920665,
+          "length_score": 0.08056134708375033
+        }
+      }
+    }
+  }
+}

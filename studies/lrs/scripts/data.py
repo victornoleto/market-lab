@@ -17,14 +17,22 @@ Citations
 * SPYSIM = S&P 500 total-return proxy; SSOSIM/UPROSIM = daily 2×/3× proxy
   via Gayed synthesis formula ``r = L·r_SPX − fee/252``
   ``[leverage_for_the_long_run, p.16]``.
+* Modern-era cutoff 1980-01-01: post-Bretton-Woods, post-1973-oil-shock,
+  stable monetary regime. Excludes the 1929-32 Great Depression, which
+  dominates any leveraged-strategy drawdown picture and is not informative
+  for a forward-looking allocator.
 """
 from __future__ import annotations
+
+from dataclasses import dataclass
 
 import pandas as pd
 
 from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 
 TICKERS = ("SPYSIM", "SSOSIM", "UPROSIM")
+
+MODERN_ERA_START = pd.Timestamp("1980-01-01")
 
 
 def load_phase0_data() -> pd.DataFrame:
@@ -41,3 +49,34 @@ def load_phase0_data() -> pd.DataFrame:
     df = pd.concat(series, axis=1, join="inner").dropna(how="any")
     df.index.name = "date"
     return df.astype(float)
+
+
+@dataclass(frozen=True)
+class ModernData:
+    """Result of :func:`load_modern_data`.
+
+    Attributes
+    ----------
+    full : pd.DataFrame
+        All available bars, including the pre-cutoff buffer needed for SMA
+        warmup. Use this to compute the regime signal.
+    scoring_start : pd.Timestamp
+        First trading day on or after the modern-era cutoff. All curves
+        and scores should be aligned to this index onwards.
+    """
+
+    full: pd.DataFrame
+    scoring_start: pd.Timestamp
+
+
+def load_modern_data(start: pd.Timestamp | str = MODERN_ERA_START) -> ModernData:
+    """Load testfolio data with a modern-era scoring start, preserving warmup.
+
+    The full DataFrame keeps pre-``start`` bars so the SMA200 signal has
+    its 200-day warmup; scoring code slices from ``scoring_start`` onwards
+    (the first trading day on or after the cutoff).
+    """
+    df = load_phase0_data()
+    cutoff = pd.Timestamp(start)
+    scoring_start = df.index[df.index.searchsorted(cutoff, side="left")]
+    return ModernData(full=df, scoring_start=scoring_start)
