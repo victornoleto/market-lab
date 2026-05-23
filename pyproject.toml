@@ -106,7 +106,6 @@ pythonpath = ["src", "."]
 norecursedirs = ["tests/_archive", "studies/_archive"]
 testpaths = [
     "tests",
-    "studies/letf_rotation_hunt/tests",
 ]
 markers = [
     "slow: end-to-end tests that dispatch full pipelines (typically 30-90s)",

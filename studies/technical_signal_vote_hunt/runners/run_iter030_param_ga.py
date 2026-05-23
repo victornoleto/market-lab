@@ -21,8 +21,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from studies.letf_rotation_hunt.core.data_loader import load_testfolio_series
-from studies.letf_rotation_hunt.core.signals import ar1_coefficient, realized_vol_gate, sma_gate, vote_of_k
+from market_lab.backtest.data.testfolio_loader import load_testfolio_series
+from studies._shared.signals import ar1_coefficient, realized_vol_gate, sma_gate, vote_of_k
 from studies.technical_signal_vote_hunt.runners.run_stage1_close_only_fast import _metrics_row_np
 
 REPO_ROOT = Path(__file__).resolve().parents[3]

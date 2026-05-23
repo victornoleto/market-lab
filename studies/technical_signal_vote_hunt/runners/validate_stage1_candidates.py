@@ -17,7 +17,7 @@ import pandas as pd
 
 from market_lab.backtest.validation.dsr import dsr
 from market_lab.backtest.validation.pbo import pbo
-from studies.letf_rotation_hunt.core.data_loader import load_testfolio_series
+from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 from studies.technical_signal_vote_hunt.core import STAGE1_BRANCHES, daily_returns
 from studies.technical_signal_vote_hunt.runners.run_stage1_close_only_fast import (
     _metrics_row_np,

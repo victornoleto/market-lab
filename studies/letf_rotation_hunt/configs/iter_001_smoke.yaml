@@ -1,7 +1,0 @@
-iter: "001-2026-05-06-T1a-smoke"
-tier: "T9"  # invalid tier to trigger error path
-hypothesis: "smoke test"
-primary_citation: "[leverage_for_the_long_run, p.13]"
-configs_tested: []
-datasets: ["lh_56y"]
-random_seed: 42

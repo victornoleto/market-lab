@@ -29,7 +29,7 @@ from typing import Literal
 
 import pandas as pd
 
-from studies.letf_rotation_hunt.core.scoring import compute_metrics as _compute_metrics
+from studies._shared.scoring import compute_metrics as _compute_metrics
 
 MarketFilterType = Literal["none", "sma", "ema"]
 

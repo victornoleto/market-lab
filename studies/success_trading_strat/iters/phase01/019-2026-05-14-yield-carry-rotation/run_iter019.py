@@ -26,7 +26,7 @@ if str(ROOT) not in sys.path:
 from market_lab.backtest.validation.bootstrap import stationary_bootstrap_trades
 from market_lab.backtest.validation.dsr import dsr, sharpe_annualized
 from market_lab.backtest.validation.pbo import pbo
-from studies.letf_rotation_hunt.core.data_loader_yields import (
+from market_lab.backtest.data.yields import (
     load_constant_maturity_yield,
     load_dividend_yield,
 )

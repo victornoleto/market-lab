@@ -1,4 +1,4 @@
-"""7-gate battery for letf_rotation_hunt per spec §3.5.
+"""7-gate battery for mandate §5 validation.
 
 Thin wrappers over the public validation utilities in
 ``src/market_lab/backtest/validation/`` (pbo, dsr, walk_forward, bootstrap).

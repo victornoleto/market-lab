@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 
 from market_lab.backtest.metrics.performance import cagr, calmar, max_drawdown, sharpe, sortino
-from studies.letf_rotation_hunt.core.data_loader import load_testfolio_series
+from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 from studies.technical_signal_vote_hunt.core import (
     STAGE1_BRANCHES,
     build_close_only_signals,
