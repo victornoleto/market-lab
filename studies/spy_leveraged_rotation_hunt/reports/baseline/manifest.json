@@ -1,7 +1,0 @@
-{
-  "off_leg": "CASHX",
-  "start": "1986-01-03",
-  "end": "2026-04-17",
-  "n_strategies": 9,
-  "report": "/var/www/github/finances/market-lab/studies/spy_leveraged_rotation_hunt/reports/baseline/REPORT.md"
-}

@@ -14,7 +14,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from studies.letf_rotation_hunt.core.data_loader import load_testfolio_series
+from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 
 STUDY = REPO_ROOT / "studies" / "spy_beater_hunt_v2"
 ITER_DIR = STUDY / "iterations"

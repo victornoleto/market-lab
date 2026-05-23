@@ -29,7 +29,7 @@ os.chdir(REPO_ROOT)
 from market_lab.backtest.metrics.performance import cagr, max_drawdown, sharpe, sortino
 from market_lab.backtest.validation.dsr import dsr
 from market_lab.backtest.validation.pbo import pbo
-from studies.letf_rotation_hunt.core.data_loader import load_testfolio_series
+from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 
 
 ITERATION = "004-2026-05-13-vol-targeted-lrs"

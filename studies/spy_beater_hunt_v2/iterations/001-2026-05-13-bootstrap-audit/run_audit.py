@@ -23,7 +23,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from market_lab.backtest.metrics.performance import cagr, max_drawdown, sharpe, sortino
-from studies.letf_rotation_hunt.core.data_loader import load_testfolio_series
+from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 
 
 ITERATION = "001-2026-05-13-bootstrap-audit"
