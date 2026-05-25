@@ -21,19 +21,22 @@ by `+1.27pp` CAGR while only deepening MDD by `~2.02pp`.
 | `RSSTSIM` | 40% | US equity + managed futures stack | 100% SPY + 100% MF |
 | `ZROZSIM` | 25% | Long zero-coupon Treasury convexity | 25+ year duration |
 
-Effective exposure per $1 portfolio:
+Effective exposure:
 
-| Family | Approx. notional |
+| Family | Approx. exposure |
 |---|---:|
-| US large equity | 0.715 |
-| Managed futures | 0.400 |
-| Gold | 0.315 |
-| Zero-coupon Treasury | 0.250 |
-| Embedded financing | -0.680 |
+| US large equity | 71.5% |
+| Managed futures | 40.0% |
+| Gold | 31.5% |
+| Zero-coupon Treasury | 25.0% |
+| Positive exposure | 168.0% |
+| Gross leverage | 1.68x |
 
-Long-only with gross weight `1.0` and no negative external `CASHX`. Negative financing
-above is embedded inside capital-efficient ETF simulations, not external margin
-`[leverage_for_the_long_run, p.13]`.
+Gross leverage is `168.0% / 100.0% = 1.68x`.
+
+Long-only with gross fund weight `1.0` and no negative external `CASHX`. The
+additional exposure is embedded inside capital-efficient ETF simulations, not
+external margin `[leverage_for_the_long_run, p.13]`.
 
 ## Key Metrics (1988-01-04 to 2026-04-17)
 
@@ -257,18 +260,18 @@ Implementation:      17.5% GDE   / 17.5% RSSX             / 22% RSST / 18% CTAP 
                      50/50 split of GDE sleeve              55/45 split of MF sleeve   unchanged
 ```
 
-Approximate effective exposure per `$1` portfolio (typical-vol regime):
+Approximate effective exposure (typical-vol regime):
 
 | Family | Backtest 35/40/25 | Implementation 17.5/17.5/22/18/25 | Delta |
 |---|---:|---:|---:|
-| US large equity | 0.715 | 0.733 | +1.8pp |
-| Managed futures (Newfound) | 0.400 | 0.220 | -18pp |
-| Managed futures (Simplify) | 0.000 | 0.180 | +18pp |
-| Gold | 0.315 | ~0.290 | ~-2pp |
-| Bitcoin | 0.000 | ~0.026-0.035 | new |
-| Zero-coupon Treasury | 0.250 | 0.250 | 0 |
-| Embedded financing | -0.680 | ~-0.715 | ~-3.5pp |
-| Gross | 1.680 | ~1.715 | +3.5pp |
+| US large equity | 71.5% | 73.3% | +1.8pp |
+| Managed futures (Newfound) | 40.0% | 22.0% | -18.0pp |
+| Managed futures (Simplify) | 0.0% | 18.0% | +18.0pp |
+| Gold | 31.5% | 29.0% | -2.0pp |
+| Bitcoin | 0.0% | 2.6-3.5% | new |
+| Zero-coupon Treasury | 25.0% | 25.0% | 0.0pp |
+| Positive exposure | 168.0% | 171.5% | +3.5pp |
+| Gross leverage | 1.68x | 1.72x | +0.04x |
 
 Total MF exposure unchanged at `40%`; total Gold drops `~2pp` to fund a `~3%`
 BTC sleeve. Slightly more gross leverage (`+3.5pp`) reflects RSSX gross `2.0` vs
@@ -661,6 +664,13 @@ This is **not** a formally validated strategy:
 - Fee/drag stress not yet applied at exact-core resolution.
 - Formal validation gates (PBO/DSR/walk-forward/bootstrap) were not run because this
   study selects an internal benchmark, not a deployable trading strategy
+  `[advances_fin_ml, p.208-211]`.
+- Monte Carlo sequence-risk simulation was added for the Reddit artifacts using
+  1,000 paired 20-year paths and 21-trading-day block bootstrap. This is useful
+  for path-ordering risk, but it is not proof that the ETF/proxy sleeve selection
+  is validated. If B4-v2, the 70/30 satellite blend, or any leveraged variant is
+  reframed as a deployable strategy, run MCPT/block-bootstrap at the exact
+  implementation level before any promotion `[testing_tuning, p.318-320]`,
   `[advances_fin_ml, p.208-211]`.
 
 ## Canonical Artifacts

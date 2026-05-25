@@ -11,11 +11,17 @@ The project is in maintenance mode. Active strategy research did not produce a
 candidate that cleared the full robustness stack, so no live deployment is
 authorized by this repository.
 
-Current discovery work in `studies/static_spy_beater_portfolio/` uses
-`35% GDE / 40% RSST / 25% ZROZ` (`GDESIM/RSSTSIM/ZROZSIM`) as its no-margin internal
-core benchmark. The study objective is to find static or later tactical portfolios
-that beat this core by rolling equity dominance, not by maximum drawdown alone. This
-is research-only and does not authorize capital allocation.
+Recent research consolidated `35% GDE / 40% RSST / 25% ZROZ`
+(`GDESIM/RSSTSIM/ZROZSIM`) as the no-margin B4-v2 research core, then closed that
+package as documentation/robustness work. The active follow-on study is
+`studies/spy_sso_upro_replacement/`, a static-first SPY replacement search that
+pivoted to explicit target leverage and benchmark-relative equity dominance after
+static near-misses failed strict rolling robustness. The practical after-tax rerun
+excludes daily updates, models annual Brazilian DARF with `AnnualDarfEngine`, and
+currently finds 3 monthly active risk-on/off dominance passes and 0 static passes;
+the lead is `SMA300 L2.75 off 60 ZROZ / 40 GLD monthly`. This remains
+research-only and does not authorize capital allocation `[testing_tuning,
+p.327-335]`, `[advances_fin_ml, p.208-211]`, `[leverage_for_the_long_run, p.13]`.
 
 See:
 

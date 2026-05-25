@@ -58,28 +58,14 @@ most important convention is that each study should contain its own hypothesis,
 scripts, outputs, reports and verdicts instead of writing to a global `reports/`
 folder.
 
-Notable preserved study areas include:
+Notable study areas include:
 
-- `studies/letf_rotation_hunt/` for LETF rotation research;
-- `studies/letf_rotation_hunt/runs/post_close/` for isolated post-close LETF
-  research loops that benchmark against the frozen T3d-K2 winner without
-  changing the closed study record or mandate allocation `[advances_fin_ml, p.222-223]`;
-- `studies/letf_rotation_hunt/reports/POST_CLOSE_LOOP_REPORT.md` for the
-  30-iteration post-close loop continuation. It documents the current research
-  winner `T35D60 + LRS1.20` (Sortino 1.3839, CAGR 36.68%, PBO 0.0357), while
-  preserving the mandate conclusion that no capital is reallocated;
-- `studies/letf_rotation_hunt/runs/post_close/031-2026-05-10-tqqq-cash-proxy-annual-tax/`
-  for the execution-realism diagnostic comparing taxed T3d-K2, a no-margin
-  `80% TQQQ + 20% CASHX` turbo proxy with annual 15% realized-gain tax, and
-  static SPY/NDX buy-and-hold. The proxy modestly beats taxed T3d-K2 but is not
-  deploy-equivalent to the iter 030 gross research result;
-- `studies/letf_rotation_hunt/runs/post_close/032-2026-05-10-taxed-underlying-riskon-variants/`
-  for tax-aware underlying/risk-on variants and plots comparing equity,
-  benchmark-relative equity, and rolling windows across TQQQ, SPY/SSO and
-  SPY/UPRO variants;
-- `studies/letf_rotation_hunt/reports/T3D_K2_TAX_AWARE_CONCLUSION.md` for the
-  consolidated T3d-K2 tax-aware conclusion: simple baseline, balanced iter 30
-  proxy, performance-first TQQQ variant, and rejected SPY transplants;
+- `/var/www/victor/finances/letf-lab/studies/letf_rotation_hunt/` for the
+  canonical LETF rotation research after the 2026-05-23 spin-off. This was
+  formerly `market-lab/studies/letf_rotation_hunt/` and includes the T3d-K2
+  closed-study anchor, the post-close `T35D60 + LRS1.20` research winner, the
+  no-margin/tax diagnostics, and the tax-aware T3d-K2 conclusion. No capital
+  reallocation followed from these results `[advances_fin_ml, p.222-223]`;
 - `studies/technical_signal_vote_hunt/` for a follow-on research scaffold that
   generalizes T3d-K2 into `n`-signal / `k`-vote technical-indicator grids across
   branch-native SPY and QQQ LETF variants. Stage 1 uses long-history testfolio
@@ -154,9 +140,10 @@ Notable preserved study areas include:
   remains economic sensitivity only, not a mandate winner, and the optimization
   branch should stop unless the next step is the pre-registered validation panel
   `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`;
-- `studies/spy_leveraged_rotation_hunt/` for a 2026-05-13 S&P 500 focused fork of
-  the technical-vote/LETF-rotation work. It compares clean `SPY` underlying
-  signals against `SSO` LETF self-signals for execution in `SSO/UPRO`. The initial
+- `/var/www/victor/finances/letf-lab/studies/spy_leveraged_rotation_hunt/`
+  for a 2026-05-13 S&P 500 focused fork of the technical-vote/LETF-rotation
+  work. It formerly lived under `market-lab/studies/` and compares clean `SPY`
+  underlying signals against `SSO` LETF self-signals for execution in `SSO/UPRO`. The initial
   baseline found no simple buy-hold/LRS/T3d transplant that beats `SPY buy_hold`
   on CAGR, Sharpe/Sortino and MaxDD simultaneously, while a controlled 6-evolution
   GA evaluated 7,008 unique candidates and found initial economic beaters. The
@@ -164,8 +151,9 @@ Notable preserved study areas include:
   the conceptual caveat from the QLD audit remains. No candidate is validated or
   deployable without OOS/FWD/WF/bootstrap/PBO/DSR and cumulative trial accounting
   `[leverage_for_the_long_run, p.13]`, `[advances_fin_ml, p.222-223]`;
-- `studies/lrs/` for a 2026-05-22 clean restart of the SMA-regime + LETF rotation
-  lineage in a small, well-organized `phases/phase_N/` layout. Phase 0 was
+- `/var/www/victor/finances/letf-lab/studies/lrs/` for a 2026-05-22 clean
+  restart of the SMA-regime + LETF rotation lineage in a small, well-organized
+  `phases/phase_N/` layout. It formerly lived under `market-lab/studies/`. Phase 0 was
   re-cast around a standardised scoring framework (cemented as the lrs
   evaluator for every later phase): each strategy is scored under two
   scenarios in parallel — tax-free and Brazil's **Lei 14.754/2023** (15%
@@ -215,6 +203,62 @@ Notable preserved study areas include:
   internal research winner and documented that broad static optimization should stop in
   favor of drag/rebalance/start-date/remove-one-asset sensitivity checks
   `[ml_for_algo_trading, ch.4 p.82-93]`, `[advances_fin_ml, p.222-223]`;
+- `studies/b4-v2/` for the 2026-05-25 public-draft and robustness package around
+  the no-margin B4-v2 core. It produced Reddit-ready writeups, standardized plots,
+  Monte Carlo sequence-risk summaries and `ROBUSTNESS_REPORT.md` with CSV audit
+  tables. The run confirmed `35% GDE / 40% RSST / 25% ZROZ` as the clean US anchor:
+  full-history return remains materially above SPY with much lower drawdown, while
+  post-2010 CAGR edge is narrower but drawdown remains better. `CTAP`/`RSSX`
+  implementation variants improved terminal wealth in the available proxy table, but
+  `RSSX` remains assumption-sensitive; global variants improved drawdown versus
+  `66/34 VTI/VEA` and `100% VT` but are diversification variants rather than a US-core
+  replacement. Exact rebalance-frequency and remove-one-sleeve tests remain blocked
+  until canonical sleeve-level returns are exported. No mandate allocation changed
+  and `CLOSING_SUMMARY.md` explicitly closes B4-v2 as a concluded research/documentation
+  package, not a direct SPY replacement for maximum return
+  `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.208-211]`, `[leverage_for_the_long_run, p.13]`;
+- `studies/spy_sso_upro_replacement/` for a 2026-05-25 static-first search for a
+  low-turnover SPY replacement using `SPYSIM`, `SSOSIM`, `UPROSIM`, `ZROZSIM`,
+  `GLDSIM`, `IEFSIM` and `CASHX`. Phase 1 evaluated a 5%-step static grid of
+  `72,427` candidates on the 1968-2026 Testfol.io common window, triaged monthly
+  portfolios, then recomputed finalists daily under monthly/quarterly/annual
+  rebalance. Monthly static candidates did not pass the preferred target, but
+  lower-frequency rebalance produced modest-leverage near-misses that pass the
+  10y+ rolling-hit target. The current lead is `80% SPY / 5% SSO / 5% UPRO /
+  5% ZROZ / 5% GLD` with quarterly rebalance: CAGR `11.47%`, MDD `-55.18%`,
+  minimum 10y+ hit rate `93.3%`, terminal wealth `1.37x` versus SPY. The strict
+  5y+ hit-rate target still fails, so the next work is Phase 1b implementation
+  sensitivity rather than deployment. Phase 1b then ran a 1%-step local grid of
+  `722,791` rows around the lead family, recomputed `1,260` exact cadence variants
+  and found `647` preferred 10y+ rows but still `0` strict 5y+ rows. The best
+  hit-rate row moved toward a very mild overlay (`89% SPY / 1% SSO / 4% UPRO /
+  3% ZROZ / 3% GLD`, quarterly; CAGR `11.24%`, MDD `-55.13%`, min 10y+ hit
+  `93.9%`, min 5y+ hit `79.8%`, terminal `1.21x` vs SPY). Conservative drag stress
+  was the key negative: among exact preferred finalists, `70` survived 10 bps/year,
+  but `0` survived 25 bps/year or 50 bps/year. The user then reframed the objective
+  from SPY-like drawdown to benchmark-relative equity dominance. The next run removed
+  redundant free `SPY/SSO/UPRO` mixes and used an explicit adjacent target-leverage
+  ladder (`1x-2x = SPY/SSO`, `2x-3x = SSO/UPRO`), ranking `portfolio_equity / SPY_equity`
+  with MDD as a diagnostic. This materially changed the result: `1,907` candidates,
+  `173` dominance-pass rows after a 10y warmup and `0` full-period dominance rows;
+  every pass was tactical SMA risk-on/risk-off, not static. The top row was
+  `SMA200 L3.00 off 60 ZROZ / 40 GLD daily`, CAGR `19.38%`, MDD `-63.28%`, terminal
+  `73.13x` versus SPY, minimum relative equity after 10y `1.31x`, and 10y+ rolling
+  hit `95.1%`. The practical after-tax selection then excluded daily updates,
+  used `AnnualDarfEngine` for Lei 14.754/2023 annual 15% realized-gain tax, and
+  audited cadence masks by event count (monthly `698`, quarterly `233`, annual
+  `59`). It evaluated `847` candidates: `280` active monthly/quarterly rows and
+  `567` static monthly/quarterly/annual rows. Only 3 active rows passed practical
+  after-tax dominance; static had 0 passes. The active lead became
+  `SMA300 L2.75 off 60 ZROZ / 40 GLD monthly` with after-tax CAGR `16.76%`, MDD
+  `-73.74%`, terminal `23.75x` versus after-tax SPY, minimum relative equity after
+  10y `1.28x`, and 10y+ hit `92.0%`. The best static row,
+  `static L3.00 E60% GLD annual`, improved terminal wealth (`3.75x`) but failed
+  dominance with min relative after 10y `0.68x` and 10y+ hit `53.1%`. No mandate
+  allocation changed
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`,
+  `[leverage_for_the_long_run, p.13]`;
 - `studies/spy_beater_hunt_v2/` for a new 2026-05-13 autonomous hunt whose explicit goal is to beat SPY buy-and-hold while preserving hard overfit gates. It uses a short `MEMORY.md` plus a clean-session `loop.sh` orchestrator for OpenCode/GPT-5.5 iterations; initial status is bootstrap/audit only, with no mandate allocation change `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`;
 - `studies/success_trading_strat/` for a 2026-05-14 research loop based on the
   Neurotrader/Masters strategy-development workflow: in-sample excellence,
@@ -484,6 +528,16 @@ Notable preserved study areas include:
   `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`;
 - `studies/_shared/` for reusable study infrastructure;
 - `studies/_archive/` for closed or historical work.
+
+## LETF Spin-Off
+
+On 2026-05-23 the three canonical LETF rotation study trees moved out of
+`market-lab` and into the sibling repository `/var/www/victor/finances/letf-lab`:
+`lrs/`, `letf_rotation_hunt/` and `spy_leveraged_rotation_hunt/`. The new repo
+keeps the CLI workbench and adds the FastAPI/Angular monitoring webapp. This
+repository now keeps only shared helpers, non-LETF studies, historical references
+and migration notes. See `MIGRATED.md` for the exact inventory and residual path
+references.
 
 ## Maintenance Mode
 
