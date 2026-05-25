@@ -80,6 +80,20 @@ Affected files:
 - `run_stage4_pareto_hybrid_search.py`
 - `run_repair_ga_evolutions.py`
 
+Two root-level maintenance scripts also still reference the removed
+`studies.letf_rotation_hunt` package and will fail unless pointed at
+`letf-lab` or retired:
+
+- `scripts/dsr_recompute_cumulative.py` imports
+  `studies.letf_rotation_hunt.core.gates.g2_dsr_p_value` and defaults to
+  `studies/letf_rotation_hunt/runs/original`.
+- `scripts/calibrate_carry_scalars.py` imports
+  `studies.letf_rotation_hunt.signals_carry` plus the old core data loader.
+
+These scripts are not part of routine market-lab tests after the spin-off. If
+they are needed again, port them to the shared market-lab helpers or run their
+canonical equivalents inside `/var/www/victor/finances/letf-lab`.
+
 ## What still stays in market-lab (shared infra, not LETF research)
 
 - `src/market_lab/backtest/strategies/letf_rotation.py` — still imported by

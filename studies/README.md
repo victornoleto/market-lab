@@ -1,185 +1,66 @@
-# studies/ — research loops and archive
+# studies/ - Research Index
 
-This directory holds strategy-research loops and an archive of closed studies.
-Study outputs should live with the study that generated them; the former
-top-level `reports/` directory was removed during the public-repo cleanup.
+This directory holds market-lab research studies, their scripts, outputs and
+verdicts. The repository remains in maintenance mode: no study here authorizes
+capital allocation or live trading without a future mandate override.
 
-## Active
+On 2026-05-23 the canonical LETF rotation work moved to the sibling repository
+`/var/www/victor/finances/letf-lab`. See `../MIGRATED.md` before reviving any
+LETF benchmark, runner or webapp work from this tree.
 
-### `long_term_portfolio/` (active 🟡 pending scoring rework)
-- **Mission**: find an efficient long-term portfolio whose net-of-tax
-  Sharpe beats SPY 1× b&h and VT 1× b&h on 2/3 datasets.
-- **Status**: 10 iters run (codex-cli, 2026-04-28). 0 winners — but
-  scoring.py uses iter-009 *gross* benchmarks vs candidate *net*-of-tax
-  → apples-to-oranges. Needs rework before next iter.
-- **Renamed from** `bestfolio_hunt_loop/` on 2026-04-28.
-- Entry: `BASE_MEMORY.md` (frontmatter shows `status:
-  pending_scoring_rework`), `PROMPT.md`, `README.md`, `RUN_WITH_CODEX.md`.
+## Current And Reference Studies
 
-### `global_factor_tilt_loop/` (FROZEN ❄️)
-- **Mission**: find global strategy beating VT 1× b&h + Plano C V3_1
-  v3.5 + V_HYBRID+MF on real data.
-- **Status**: 14 iters, 6 winners. iter 009 (HAA+Gold) = Sharpe Pareto
-  frontier (S=1.120 edu, gross-of-tax). iter 013 (HAA+ZROZ) = CAGR
-  frontier. iter 014 = annual-DARF rerun (proves rotation is tax-neutral
-  under Lei 14.754).
-- **Why kept active**: predecessor of `long_term_portfolio/`; iter 014's
-   `tax_engine_v2.py` is the canonical source for `_shared/tax_engine.py`.
-- Entry: `BASE_MEMORY.md`, `README.md`.
+| study | status | canonical read | notes |
+|---|---|---|---|
+| `static_spy_beater_portfolio/` | current discovery/reference | `FINAL_REPORT_35_40_25_CORE.md`, `MEMORY.md` | Internal no-margin benchmark is `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM`; discovery-only, no deploy. |
+| `spy_beater_hunt_v2/` | open state, no winner | `MEMORY.md`, `README.md` | 10/10 tested hypotheses failed; next iteration needs a distinct cited mechanism and strict trial budget. |
+| `long_term_portfolio/` | historical/reference, importable | `FINAL_REPORT_seven_portfolios.md`, `BASE_MEMORY.md` | Long-horizon allocation research; code is still used by tests and other studies. |
+| `spy_beater_hunt/` | closed legacy/reference, importable | `README.md`, `TOP_STRATEGIES.md`, `WINNER_AND_RANKING.md` | Legacy SPY-beater/static-stack research; preserved because tests and later studies import its helpers. |
+| `global_factor_tilt_loop/` | frozen/reference | `BASE_MEMORY.md`, `README.md` | Global factor/stacking loop with HAA/Gold and HAA/ZROZ frontiers; not active. |
 
-### `weekly_momentum/` (bootstrap 🌱)
-- **Mission**: test weekly cross-sectional momentum over cached Tiingo stocks
-  and ETFs.
-- **Final report**: `FINAL_REPORT.md` is the canonical closure document. Final
-  verdict: stop this family after Tiingo backfill plus expanded PIT rerun; no
-  valid/deployable strategy remains.
-- **Initial config**: rank by adjusted-close appreciation over 4 trading days
-  using Thursday close, hold top-1, sell Friday only if the winner changes,
-  and buy Monday/Tuesday via `settlement_delay_days`.
-- **Defensive filters**: stocks default to current S&P 500 constituents and the
-  strategy moves to cash when all ranked assets have non-positive momentum;
-  optional SPY/SMA market filter is available via `--market-filter-sma-days`.
-- **Outputs**: `results/{variation}/{config_slug}/` with CSV/JSON artifacts,
-  SPY benchmark, rolling 1/3/5/10y plots and deterministic `report.md`
-  (`REPORT_SPEC.md`). Walk-forward diagnostics live under `walk_forward/`.
-- **Deploy candidates**: 4 research-only candidates frozen in
-  `DEPLOY_CANDIDATES.md`; comparable validation panel generated under
-  `deploy_candidates/` before costs/slippage/taxes, PIT universe and
-  PBO/DSR/bootstrap gates.
-- **Phase 2**: `PHASE2_REPORT.md` promotes the fixed-aggressive neighborhood
-  (`lb80_k5_sma200`, `lb80_k5_sma250`) for further validation and keeps filtered
-  all-stocks WF as exploratory after PBO/DSR failures.
-- **Phase 3**: `PHASE3_REPORT.md` adds approximate PIT S&P membership. The
-  original `lb60_k3_sma200` lead weakens; `lb80_k5_sma200/sma250` remain the
-  only worthwhile research leads, still blocked by DSR/feed limitations.
-- **Final tested-strategy summary**: `STRATEGY_TESTED_SUMMARY.md` consolidates
-  every tested family, compares the top-6 decision-relevant variants versus SPY
-  with plots, and freezes the conclusion: no deployable strategy yet.
-- **Phase 4**: `PHASE4_REPORT.md` completed Tiingo online backfill and expanded
-  PIT loading. Coverage improved to 745/769 tickers and 240/260 likely
-  removed/renamed names, but the frozen `lb80/k5` leads weakened and fail
-  DSR/bootstrap; verdict is stop this stock weekly-momentum family.
-- **Phase 5 branch**: `phase5_dynamic_all_stocks/PHASE5_DYNAMIC_ALL_STOCKS_REPORT.md`
-  tests dynamic all-stocks WF with PIT tradability filters instead of S&P 500
-  membership. ADV5M is strong versus SPY/SPMO but still fails PBO/bootstrap.
-- **Deep dive**: `phase3/lb80_k5_sma250_deep_dive/DEEP_DIVE_REPORT.md` explains
-  DSR failure and evaluates every possible 1/3/5/10/15/20y entry window.
-- **ETF replication**: `ETF_STUDY_REPORT.md` preserves the same strategy family
-  on cached ETFs; initial verdict is weak versus SPY and needs ETF-specific
-  redesign before further promotion.
-- **Caveat**: current-cache universe implies survivorship bias unless replaced
-  with a point-in-time universe.
-- Entry: `README.md`, `core.py`, `data.py`, `run.py`.
+## Closed Studies Kept In Place
 
-### `qld_nasdaq_ath_gate/` (quick diagnostic 🌱)
-- **Mission**: test a fixed Nasdaq-100 high-watermark gate: hold `QLD` when
-  `QQQ` is above 85% of its trailing 46-week high; otherwise hold `CASHX`.
-- **Status**: initial deterministic report generated under `results/default/`
-  with equity, drawdown, signal-line, rolling Sharpe and 1/3/5/10y rolling
-  window plots.
-- **Caveat**: fast diagnostic only; no costs, taxes, slippage, PBO, DSR,
-  walk-forward, bootstrap or cross-library promotion gates.
-- Entry: `README.md`, `run.py`.
+These directories remain top-level because they still contain useful audit trails,
+reports, scripts or importable helpers. Do not move them without checking tests and
+imports first.
 
-## Shared infrastructure
+| study | status | canonical read | notes |
+|---|---|---|---|
+| `weekly_momentum/` | closed, no deploy | `FINAL_REPORT.md`, `README.md` | Stock and ETF weekly momentum failed DSR/PBO/bootstrap after PIT/backfill improvements `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`. |
+| `success_trading_strat/` | closed, no winner | `MEMORY.md` | Three phases, 312 cumulative trials, no strict winner or paper-trade candidate. |
+| `day_swing_strategy_hunt/` | closed/dead-end | `MEMORY.md`, latest `iterations/*/SUMMARY.md` | Reopen only with an explicit new multi-asset, literature-backed thesis or reliable carry/rates data. |
+| `bestfolio_meta_wf_hunt/` | closed/dead-end | `SPEC.md` | Iter 001 closed the bestfolio-style meta-WF branch; no iter 002 was run. |
+| `myfxbook_reverse_engineering/` | closed/no operable edge | `README.md`, `ROADMAP.md` | MyFxBook/HappyForex reverse-engineering code and tests are retained; no Plano A implication. |
+| `technical_signal_vote_hunt/` | closed/research-only LETF-adjacent | `README.md`, `reports/long_term_strategy_review/REPORT.md` | Generalized QQQ/SPY technical-vote LETF work; no honest winner after DSR/PBO, residual benchmarks now point to `letf-lab`. |
+| `qld_nasdaq_ath_gate/` | quick diagnostic, not validated | `README.md`, `results/default/report.md` | QQQ high-watermark gate into QLD/CASHX; no costs, taxes or robustness gates. Treat as LETF-adjacent historical evidence. |
 
-### `_shared/`
-- `tax_engine.py` — `AnnualDarfEngine` (Lei 14.754/2023). Used by all
-  net-of-tax analyses. See `_shared/README.md` for usage.
+## Migrated LETF Studies
 
-## Archive
+Canonical copies now live in `letf-lab`:
 
-### `_archive/strategy_hunt_loop/` (closed ✅ winner found)
-- **Mission**: beat SPY 1× b&h Sharpe ≥ 0.10 on 17y window.
-- **Status**: 78 iters, **1 strict winner (iter 079)** + 4 strong
-  deploy candidates. **Loop self-halted at iter 079.**
-- **Read**: `FINAL_REPORT.md` (1 100+ lines) — covers top strategies,
-  deploy guide for 4 portfolios (V0 IBKR margin, V1 NTSX+GDE 67/33, V2
-  2× LETF, V3 3× LETF), post-tax analysis, Lei 14.754 tax model,
-  broker decision matrix, **and the full "DON'T retest" consolidated
-  dead-ends section** (15 thematic groups covering 57 individual iter
-  closures).
-- 5 winning iters preserved verbatim under `WINNER/`:
-  iter 006 (vol-managed 60/40), 016 (static-stack VM hybrid), 035
-  (static-stack 90/60/30), 074 (016+064 ensemble), 079 (multi-asset
-  top-K momentum).
-- `deploy_studies/` retained — variant validators (iter 035 4-way,
-  iter 079 leveraged) + aporte simulation.
-- **Original 78 iter dirs deleted** (~248M, agg cleanup).
+| former market-lab path | new canonical path |
+|---|---|
+| `studies/lrs/` | `/var/www/victor/finances/letf-lab/studies/lrs/` |
+| `studies/letf_rotation_hunt/` | `/var/www/victor/finances/letf-lab/studies/letf_rotation_hunt/` |
+| `studies/spy_leveraged_rotation_hunt/` | `/var/www/victor/finances/letf-lab/studies/spy_leveraged_rotation_hunt/` |
 
-### `_archive/gold_swing_loop/` (paused ⏸️ structural ceiling)
-- **Mission**: beat gold-complex buy-hold Sharpe by ≥0.10 across hold
-  buckets and cost paths.
-- **Status**: 25 iters across 2 phases (15 v1 + 10 v2 relaxed). 0 winners.
-  Best score 50/100 (vol-regime-inverse axis, iters 011/012/013) —
-  swing-extended hold (22-44d) failed legacy ≤5d gate. Phase 2 relaxation
-  made scores LOWER on average — gold standalone is structurally limited.
-- **Read**: `FINAL_REPORT.md` — full top-K, what-was-tested per phase,
-  recommendation for future reactivation (pivot to gold-as-sleeve), state
-  preservation for resume.
-- **Original 25 iter dirs deleted**.
+Market-lab keeps only shared infrastructure and historical references that other
+non-LETF studies still import. If a runner needs iter030/T3d-K2 artifacts, either
+point it explicitly at `letf-lab` or copy a small canonical artifact bundle back
+under the consuming study with a clear README.
 
-### `_archive/ema_sma_threshold_*` (Phase 1 legacy ❌ all FAIL)
-4 dirs (`crash_protected`, `educational`, `nasdaq_real`, `spy_real`)
-covering the EMA/SMA threshold trend-follow + LETF + crash-signal sweep
-that opened the project. **0/4020 configs passed** the 7-gate cross-dataset
-battery. Documented in detail under
-`_archive/strategy_hunt_loop/DEAD_ENDS.md` "From iteration 001".
-- **Read**: `phase3_FINAL.md` (`crash_protected/`), `FINAL.md` (others).
-- **Heavy data deleted** (analyses/, configs/, deep_review/, sweep
-  runners). Final summary docs preserved.
+## Shared And Archive
 
-### `_archive/docs/`
-- `crashes_sp500_e_indicadores_preditivos.md` — historical research note
-  on SPY crash predictors.
-- `SPEC_crash_protection_evolution.md` — spec lineage doc for the
-  crash-protection family.
+| path | role |
+|---|---|
+| `_shared/` | Reusable study helpers such as tax, signals, scoring, plotting, gates and walk-forward utilities. |
+| `_archive/` | Historical studies already compacted or intentionally archived. |
 
----
+## Navigation Rules
 
-## How to navigate this directory
-
-### "I want a study report"
-
-Look inside the study directory first. Historical phase reports that used to
-live under top-level `reports/` now live under `studies/_archive/<phase>/reports/`.
-
-The consolidated dormant summary is `docs/DORMANT_SUMMARY.md`.
-
-### "I want to understand what was tried so far"
-Read `_archive/strategy_hunt_loop/FINAL_REPORT.md` first — it covers
-both the strategies that worked AND the major dead-end families. Then
-`_archive/gold_swing_loop/FINAL_REPORT.md` for the gold-standalone
-side. Skip `ema_sma_threshold_*` unless investigating Phase 1
-specifically.
-
-### "I want to continue the long-term-portfolio search"
-1. Read `long_term_portfolio/BASE_MEMORY.md` (frontmatter + log).
-2. Read `long_term_portfolio/RUN_WITH_CODEX.md` (operational).
-3. Read `_archive/strategy_hunt_loop/FINAL_REPORT.md` "DON'T retest"
-   section to skip 57 already-closed dead-end families.
-4. **Before relaunching**: rework `scoring.py` to use SPY/VT
-   net-of-tax benchmarks (not iter 009 gross). See BASE_MEMORY.md
-   `note:` field for the issue.
-
-### "I want to find a specific iter result"
-- Active loops: `long_term_portfolio/iterations/NNN-*/`,
-  `global_factor_tilt_loop/iterations/NNN-*/`.
-- Archived strategy_hunt_loop winners: `_archive/strategy_hunt_loop/WINNER/iter_NNN-*/`.
-- All other archived iter dirs: **DELETED** (raw data not preserved;
-  conclusions in FINAL_REPORT.md / DEAD_ENDS.md).
-
----
-
-## Disk footprint (post-cleanup, 2026-04-28)
-
-| dir | size | type |
-|---|---:|---|
-| `_archive/strategy_hunt_loop/` | 43M | docs + 5 winners + deploy_studies |
-| `_archive/gold_swing_loop/` | <1M | docs only |
-| `_archive/ema_sma_threshold_*` | <1M | summary docs only |
-| `_archive/docs/` | <1M | loose specs |
-| `_shared/` | <1M | tax engine |
-| `global_factor_tilt_loop/` | 50M | FROZEN, full state preserved |
-| `long_term_portfolio/` | 32M | active, 10 iter dirs |
-| **Total** | **~126M** | (was ~390M before cleanup) |
+- Latest public state: read `../docs/CURRENT_STATE.md`.
+- Historical narrative: read `../docs/PROJECT_HISTORY.md`.
+- LETF spin-off inventory: read `../MIGRATED.md`.
+- Study-specific truth: prefer each study's final report, `MEMORY.md`, `BASE_MEMORY.md` or `SPEC.md` over this index.
+- Validation gates remain hard-blocks unless the mandate changes: PBO, DSR, walk-forward, OOS/FWD stress, bootstrap and cross-library checks `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`.
+- When a public status changes, update `../docs/CURRENT_STATE.md`; update `../docs/PROJECT_HISTORY.md` too if the change is historical or narrative.
