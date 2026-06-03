@@ -2,10 +2,9 @@
 
 Thin wrappers over the public validation utilities in
 ``src/market_lab/backtest/validation/`` (pbo, dsr, walk_forward, bootstrap).
-Same contract as the canonical implementations in
-``studies/long_term_portfolio/run_iter.py:_gate_*`` (which spy_beater_hunt
-imports verbatim) but exposed as a standalone module so letf_rotation_hunt
-does not depend on long_term_portfolio internals.
+Same contract as the canonical implementations now preserved in
+``studies/return_stacked_core/run_iter.py:_gate_*`` but exposed as a standalone
+module so LETF research does not depend on RSC internals.
 
 Gate thresholds (LETF-relaxed where spec §3.5 documents the rationale):
 
@@ -95,7 +94,7 @@ def g1_pbo(per_cfg_returns: dict[str, pd.Series]) -> dict:
     Citation: [advances_fin_ml, p.208-211]; spec §3.5 (threshold < 0.5).
 
     Single-config iters skip-pass with NaN (PBO is non-informative for N=1) —
-    matches canon contract in long_term_portfolio.run_iter._gate_pbo.
+    matches canon contract in return_stacked_core.run_iter._gate_pbo.
 
     Parameters
     ----------

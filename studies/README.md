@@ -8,15 +8,16 @@ On 2026-05-23 the canonical LETF rotation work moved to the sibling repository
 `/var/www/victor/finances/letf-lab`. See `../MIGRATED.md` before reviving any
 LETF benchmark, runner or webapp work from this tree.
 
+## Canonical Summary
+
+Read `SUMMARY.md` first for the compact ledger of all local studies, migrated
+LETF lines, best leads, key metrics, verdicts and cleanup preservation rules.
+
 ## Current And Reference Studies
 
 | study | status | canonical read | notes |
 |---|---|---|---|
-| `static_spy_beater_portfolio/` | current discovery/reference | `FINAL_REPORT_35_40_25_CORE.md`, `MEMORY.md` | Internal no-margin benchmark is `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM`; discovery-only, no deploy. |
-| `spy_beater_hunt_v2/` | open state, no winner | `MEMORY.md`, `README.md` | 10/10 tested hypotheses failed; next iteration needs a distinct cited mechanism and strict trial budget. |
-| `long_term_portfolio/` | historical/reference, importable | `FINAL_REPORT_seven_portfolios.md`, `BASE_MEMORY.md` | Long-horizon allocation research; code is still used by tests and other studies. |
-| `spy_beater_hunt/` | closed legacy/reference, importable | `README.md`, `TOP_STRATEGIES.md`, `WINNER_AND_RANKING.md` | Legacy SPY-beater/static-stack research; preserved because tests and later studies import its helpers. |
-| `global_factor_tilt_loop/` | frozen/reference | `BASE_MEMORY.md`, `README.md` | Global factor/stacking loop with HAA/Gold and HAA/ZROZ frontiers; not active. |
+| `return_stacked_core/` | canonical consolidated RSC folder, concluded | `README.md`, `STRATEGY.md`, `EVOLUTION.md`, `ROBUSTNESS_REPORT.md` | Replaces `b4-v2/`, `static_spy_beater_portfolio/`, `spy_beater_hunt/`, `spy_beater_hunt_v2/`, `long_term_portfolio/` and `global_factor_tilt_loop/`. Current anchor is RSC-US `35% GDE / 40% RSST / 25% ZROZ`; RSC-Global is the diversification branch. Research-only, no deploy. |
 
 ## Closed Studies Kept In Place
 
@@ -59,6 +60,7 @@ under the consuming study with a clear README.
 ## Navigation Rules
 
 - Latest public state: read `../docs/CURRENT_STATE.md`.
+- Compact strategy/study ledger: read `SUMMARY.md`.
 - Historical narrative: read `../docs/PROJECT_HISTORY.md`.
 - LETF spin-off inventory: read `../MIGRATED.md`.
 - Study-specific truth: prefer each study's final report, `MEMORY.md`, `BASE_MEMORY.md` or `SPEC.md` over this index.

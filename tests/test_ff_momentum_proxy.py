@@ -16,7 +16,7 @@ REPO = Path(__file__).resolve().parents[1]
 
 def test_ff_momentum_proxy_loads_and_covers_pre_1988() -> None:
     """Series spans at minimum 1970-01-02 → 1987-12-30 (the splice window)."""
-    from studies.long_term_portfolio.ff_momentum_proxy import ff_momentum_proxy
+    from studies.return_stacked_core.ff_momentum_proxy import ff_momentum_proxy
 
     s = ff_momentum_proxy()
     assert isinstance(s, pd.Series)
@@ -32,7 +32,7 @@ def test_ff_momentum_proxy_daily_values_are_reasonable() -> None:
     during the 2007/2009 momentum crashes (~-19% daily). Anything beyond
     ±25% would indicate a percent-vs-decimal scaling bug.
     """
-    from studies.long_term_portfolio.ff_momentum_proxy import ff_momentum_proxy
+    from studies.return_stacked_core.ff_momentum_proxy import ff_momentum_proxy
 
     s = ff_momentum_proxy()
     assert s.between(-0.25, 0.25).all(), (
@@ -42,7 +42,7 @@ def test_ff_momentum_proxy_daily_values_are_reasonable() -> None:
 
 def test_ff_momentum_proxy_annualized_stats_are_sensible() -> None:
     """Vol in [4%, 25%]/yr; mean positive — momentum premium has been positive long-term."""
-    from studies.long_term_portfolio.ff_momentum_proxy import ff_momentum_proxy
+    from studies.return_stacked_core.ff_momentum_proxy import ff_momentum_proxy
 
     s = ff_momentum_proxy()
     window = s.loc["1970-01-02":"1987-12-30"]
@@ -54,7 +54,7 @@ def test_ff_momentum_proxy_annualized_stats_are_sensible() -> None:
 
 def test_ff_momentum_proxy_no_nans_in_splice_window() -> None:
     """No NaN/missing rows in 1970-01-02 → 1987-12-30."""
-    from studies.long_term_portfolio.ff_momentum_proxy import ff_momentum_proxy
+    from studies.return_stacked_core.ff_momentum_proxy import ff_momentum_proxy
 
     s = ff_momentum_proxy()
     window = s.loc["1970-01-02":"1987-12-30"]
@@ -64,7 +64,7 @@ def test_ff_momentum_proxy_no_nans_in_splice_window() -> None:
 
 def test_ff_momentum_proxy_handles_missing_files_gracefully() -> None:
     """If the source CSVs are missing, raises FileNotFoundError with helpful message."""
-    from studies.long_term_portfolio.ff_momentum_proxy import ff_momentum_proxy
+    from studies.return_stacked_core.ff_momentum_proxy import ff_momentum_proxy
 
     bogus = Path("/tmp/does_not_exist_ff_mom.csv")
     with pytest.raises(FileNotFoundError):

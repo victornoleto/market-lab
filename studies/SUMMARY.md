@@ -1,0 +1,81 @@
+# Studies Summary
+
+Canonical date: 2026-06-03.
+
+This file is the compact ledger for `studies/`. It preserves the research
+knowledge needed to shrink the repository without losing the conclusions. The
+full evidence remains in each study's canonical reports, memories and specs.
+
+No entry here authorizes live trading, paper trading, or a mandate change. The
+repository remains in maintenance mode with capital allocated outside this repo
+as documented in `../docs/investment-mandate.md`.
+
+## Current Champion
+
+| Item | Summary |
+|---|---|
+| Research champion | Return-Stacked Core US branch (RSC-US): `35% GDE / 40% RSST / 25% ZROZ`. |
+| Local simulation alias | `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM`. |
+| Best full-history metrics | CAGR `15.65%` vs SPY `11.35%`; MDD `-29.94%` vs SPY `-55.14%`. |
+| Role | Defensive return-stacked core and current benchmark for future evolution. |
+| Caveat | Strong long-horizon drawdown efficiency, but not a guaranteed CAGR beater in every modern start window. |
+| Status | Research-only, concluded/publication package; no deploy or mandate change. |
+| Canonical files | `return_stacked_core/README.md`, `return_stacked_core/STRATEGY.md`, `return_stacked_core/EVOLUTION.md`, `return_stacked_core/ROBUSTNESS_REPORT.md`. |
+| Rationale refs | `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`, `[leverage_for_the_long_run, p.13]`. |
+
+## Local Study Ledger
+
+| Study | Strategy family tested | Best lead or anchor | Key metrics | Verdict | Preserve |
+|---|---|---|---|---|---|
+| `return_stacked_core/` | Consolidated Return-Stacked Core lineage and research package replacing `b4-v2/`, `static_spy_beater_portfolio/`, `spy_beater_hunt/`, `spy_beater_hunt_v2/`, `long_term_portfolio/` and `global_factor_tilt_loop/`. | RSC-US `35% GDE / 40% RSST / 25% ZROZ`; RSC-Global `20% GDE / 15% NTSD / 20% RSST / 20% RSIT / 25% ZROZ`. | RSC-US full US: CAGR `15.65%`, MDD `-29.94%`; exact discovery window: CAGR `15.70%`, MDD `-29.94%`, Calmar `0.524`; old B4 `25/25/25/25` and B4+evo02 preserved as lineage; v2 hunt preserved as 10/10 no-winner. | Current champion/reference, research-only; broad static search should stop unless testing implementation sensitivity. | `README.md`, `STRATEGY.md`, `EVOLUTION.md`, `ROBUSTNESS_REPORT.md`, `us_core/`, `global_variant/`, `history/`, importable helpers. |
+| `spy_sso_upro_replacement/` | SPY replacement using `SPY/SSO/UPRO` target leverage plus `ZROZ/GLD/IEF/CASH`, static first then tactical dominance. | Practical after-tax active lead: `SMA300 L2.75 off 60 ZROZ / 40 GLD monthly`. | After-tax CAGR `16.76%`, MDD `-73.74%`, terminal/SPY `23.75x`, min relative equity after 10y `1.28x`, 10y+ hit `92.0%`; static branch has `0` practical passes. | Selection-only; active branch merits validation, static branch rejected for dominance objective. | `README.md`, `SPEC.md`, `REPORT.md`, `PHASE1B_REPORT.md`, `EQUITY_DOMINANCE_REPORT.md`, `PRACTICAL_TAXED_REPORT.md`, finalist CSVs. |
+| `success_trading_strat/` | Three-phase systematic trading hunt using IS-MCPT, WF-MCPT, PBO, DSR, WF, OOS/FWD, bootstrap and cross-lib gates. | No winner. Best diagnostics included VIX-managed QQQ, ETH Donchian, BTC vol-target momentum, OBV/KAMA/Ehlers and LETF buy-and-hold beaters, but all failed at least one gate. | Phase 3 closed at `30/30` iters and `cumulative_n_trials=312`; final audit: `17 economic_beater_not_validated`, `11 fail`, `1 data_blocked`, `0 winner`, `0 paper_trade_candidate`. | Closed no-winner. | `MEMORY.md`, `SPEC.md`, `PHASE2_INTRADAY_SWING_SPEC.md`, `PHASE3_BH_BEATER_SPEC.md`, phase closure summaries, consolidated reports. |
+| `weekly_momentum/` | Weekly cross-sectional momentum over stocks/ETFs, PIT approximation, Tiingo backfill, liquidity and ETF focus. | Post-Phase 4 S&P lead `lb80/k5/SMA250`; Phase 5 ADV5M branch had high gross metrics. | S&P lead CAGR `19.36%`, MDD `-37.77%`, Sharpe `0.817` vs SPY Sharpe `0.884`; ADV5M branch CAGR `48.09%`, MDD `-36.26%`, Sharpe `1.184`, PBO `0.579`, bootstrap low `-3.11%`; ETF focus PBO `0.313`, bootstrap low `+0.06%`, DSR `p=0.152`. | Closed no deploy after DSR/PBO/bootstrap and survivorship/PIT checks. | `FINAL_REPORT.md`, `README.md`, `reports/STRATEGY_TESTED_SUMMARY.md`, preserved evidence/plots. |
+| `technical_signal_vote_hunt/` | Generalized technical n-signal/k-vote LETF-adjacent research for SPY/QQQ branches, Stage 1-4, GA/local search, Tiingo and Testfol.io bridges. | Long-history anchor remains iter030 canonical QLD/ZROZ LRS1.20; `T20D90/T20D120` are economic sensitivities only. | iter030 canonical: CAGR `36.66%`, MDD `-55.48%`; Stage 3 validation `0/400 PASS`; Stage 2 validation `0/400 PASS`; GA parameter validation `0/7 PASS`, PBO panel `0.619`. | Closed/research-only; no honest winner after DSR/PBO. LETF canonical artifacts migrated to `letf-lab`. | `README.md`, `reports/long_term_strategy_review/REPORT.md`, `reports/research_direction_review/REPORT.md`, validation reports. |
+| `myfxbook_reverse_engineering/` | Reverse-engineering MyFxBook/HappyForex public systems, decoder/rule-mining/adversarial checks. | None operable. Older HMH-like prototype had stats but long blackout; later deterministic rules did not achieve fidelity. | 55 systems evaluated in Phase 1; 0 eligible for Phase 2. R1 v3 30-rule run: `2 LOW`, `28 NONE`, no `fidelity_score >= 0.60`. | Closed no operable edge; Plano A remains dormant. | `README.md`, `ROADMAP.md`, `_diagnostics/R1_FINAL_REPORT.md`, `_diagnostics/PIPELINE_V4_CLOSURE.md`, frozen rules docs. |
+| `qld_nasdaq_ath_gate/` | Quick diagnostic: QQQ high-watermark/ATH gate into QLD/CASHX using Testfol.io long history. | Fixed rule: risk-on `QQQSIM?L=2` when `QQQSIM` closes above `85%` of 46-week HWM, else `CASHX`. | 1986-2026: CAGR `23.42%`, MDD `-63.67%`, Sharpe `0.744`; QQQSIM CAGR `14.66%`, 2x alias CAGR `17.44%`, 3x alias CAGR `12.28%`. | Diagnostic only; no costs, taxes or robustness gates. | `README.md`, `results/default/report.md`, `run.py`. |
+| `day_swing_strategy_hunt/` | D1/H4 day/swing hunt across multi-asset, gold, crypto, FX/carry variants. | None. Best diagnostics: TSMOM D1 and crypto vol throttle. | TSMOM D1 best CAGR `13.35%`, PBO `0.557`, OOS bootstrap low `-10.64%`; crypto lead CAGR `33.02%`, MDD `-54.73%`, OOS bootstrap low `-19.66%`. | Closed dead-end; reopen only with new literature thesis or reliable carry/rates data. | `MEMORY.md`, `SPEC.md`, latest closure `SUMMARY.md`, iteration summaries. |
+| `bestfolio_meta_wf_hunt/` | Bestfolio-style walk-forward meta-allocator over previously gate-screened sleeves. | None; F1+SPLIT static remains the practical incumbent outside this dead-end. | Iter001 turnover `177-222%/yr`; 0/3 datasets cleared +0.05 Sharpe hurdle; DSR failed 2/3. | Closed after iter001; anti-pattern documented. | `SPEC.md` including closure section. |
+| `_shared/` | Shared study infrastructure. | `AnnualDarfEngine`, shared signals/scoring/plots/gates. | Canonical annual DARF model under Lei 14.754/2023, used by later studies. | Critical infra; do not delete blindly. | `README.md`, `tax_engine.py`, shared helper modules. |
+| `_archive/` | Compacted historical studies and old phase artifacts. | `strategy_hunt_loop` had legacy iter079 winner under old relaxed framing; `gold_swing_loop` no winner; `ema_sma_threshold` legacy. | Archive examples: iter035 static stack CAGR `19.60%`, MDD `46.18%` on 40y synth; gold loop best score `50`, no promising winner. | Historical/forensic only. | `_archive/*/FINAL_REPORT.md`, `_archive/*/WINNER_AND_RANKING.md`, archive summaries. |
+
+## Migrated LETF Lines
+
+The canonical LETF studies no longer live in this repository. They were extracted
+to `/var/www/victor/finances/letf-lab` on 2026-05-23. `market-lab` keeps only
+historical references and shared helpers. See `../MIGRATED.md` before reviving
+any LETF runner or benchmark.
+
+| Former local study | Current canonical location | Key preserved result | Status |
+|---|---|---|---|
+| `studies/lrs/` | `/var/www/victor/finances/letf-lab/studies/lrs/` | EQ5_3x closed all five mandate §5 gates after cross-lib check: PBO `0.041`, WF `5/6`, bootstrap 99.9% low `+10.83%`, DSR `p=0.011`, cross-lib delta `-1.593pp`. | Fully validated research artifact but dormant under maintenance-mode mandate. |
+| `studies/letf_rotation_hunt/` | `/var/www/victor/finances/letf-lab/studies/letf_rotation_hunt/` | T3d-K2 closed-study anchor; post-close iter030 `T35D60 + LRS1.20` economic research winner; no mandate allocation. | Migrated. |
+| `studies/spy_leveraged_rotation_hunt/` | `/var/www/victor/finances/letf-lab/studies/spy_leveraged_rotation_hunt/` | S&P-focused fork found early SSO/UPRO economic beaters, but not validated for deployment. | Migrated. |
+
+## Success Trading Strategy Family Ledger
+
+`success_trading_strat/` is the largest local no-winner trading hunt. The full
+per-iteration detail remains in `success_trading_strat/MEMORY.md`; this compact
+ledger records the strategy families so their negative knowledge is not lost.
+
+| Phase | Families tested | Best diagnostics | Why it failed |
+|---|---|---|---|
+| Phase 1, iters 003-010 | SMA/momentum SPY/QQQ, monthly ETF cross-sectional momentum, volatility-targeted static sleeves, RSI(2), VXX carry proxy, multi-asset EWMAC, ETF pair z-score. | Cross-sectional ETF momentum passed PBO/DSR but lost Sharpe/MCPT; RSI(2) reduced drawdown but failed Sharpe/MCPT; VXX carry improved Sharpe/MDD slightly but failed MCPT/PBO/DSR. | Benchmark Sharpe, IS/WF MCPT, PBO, DSR and bootstrap failures. |
+| Phase 1, iters 011-014 | VIX-managed equity, VIX floor stress, BTC/ETH Donchian, BTC/ETH vol-target momentum. | `qqq_vix15_w21` passed many gates but failed latest FWD stress; `eth_don20` had CAGR `66.12%`, Sharpe `1.364`, PBO `0.286`, DSR `p=0.00364`; `btc_mom63_vt20` had Sharpe `1.377`, MDD `-22.70%`. | FWD stress, WF count, MCPT and PBO failures. |
+| Phase 1, iters 015-030 | Realized-vol compression, credit risk appetite, Carver EWMAC, Ehlers cycle, yield/carry, turn-of-month, overnight decomposition, KAMA, OBV, A/D volume, breadth, sector risk appetite, commodity macro blocked, Gayed QQQ LETF, equity/Treasury correlation. | `qqq_obv21` improved Sharpe/MDD and passed PBO/DSR but failed MCPT; breadth passed WF/OOS/FWD but failed Sharpe/PBO/DSR plus survivorship caveat. | MCPT, DSR/PBO, benchmark Sharpe, bootstrap, data-blocked or survivorship blockers. |
+| Phase 2, daily swing/gold/equity | Gold Donchian/RSI/CCI/MACD/Keltner/relative strength/VIDYA/Bollinger/TRIX/ROC/Clenow/Force Index/Elder-Ray/ASI/regression/MFI/MA+ATR/swing-point/CMO/Fisher; SPY/QQQ gap, pullback, Bollinger, ADX, stochastic, price density, Williams %R. | Several reduced drawdown or improved Sharpe, e.g. `spy_pb3_m2_hold5` passed Sharpe/MCPT/PBO/WF/OOS but failed DSR/FWD/bootstrap; `spy_pd20_lt4_sma200` passed Sharpe/IS MCPT/DSR/WF/OOS/FWD/bootstrap/cross-lib but failed CAGR vs B&H, WF MCPT and PBO. | Mostly failed buy-and-hold economic floor, MCPT, DSR/PBO, WF sufficiency or FWD. Intraday tracks were blocked by absent 1h/15m data. |
+| Phase 3, buy-and-hold beaters | Nasdaq/S&P/semis LETF vol-targeting, crash rearm, high-beta rotation, crypto/equity rotation blocked, drawdown-adaptive sizing, long/short high-beta, balanced LETF sleeves, HFEA, `QLD/TLT/GLD`, `UPRO/TLT` spreads, VXX crash rearm, rolling/friction audits. | Many were economic beaters, e.g. `qld_vt35_rv21_dd25_half` CAGR `22.12%` vs QQQ `17.16%`; `tecl_vt40_rv63` CAGR `34.00%`; `upro50_tlt25_gld25_quarterly` CAGR `24.13%`; late `QLD/TLT/GLD` throttle CAGR `25.34%`. | Closed `0` winners: MCPT, DSR, PBO, bootstrap, rolling 3y/5y robustness and/or MDD guardrails failed. |
+
+## Cleanup Preservation Policy
+
+The smallest safe repository keeps conclusions, not every generated row.
+
+| Artifact type | Keep | Remove or regenerate |
+|---|---|---|
+| Canonical knowledge | `SUMMARY.md`, `README.md`, `MEMORY.md`, `BASE_MEMORY.md`, `SPEC.md`, `FINAL_REPORT.md`, `CLOSING_SUMMARY.md`, `WINNER_AND_RANKING.md`, key validation reports. | Duplicate narrative and old interim notes after their facts are summarized here. |
+| Study evidence | Final tables, finalist CSVs, audit hashes/metadata, scripts needed to regenerate. | Broad grid CSVs, GA populations, full candidate dumps, large plot folders when final reports already preserve the conclusion. |
+| Data caches | Small consolidated cache with metadata, e.g. `data/testfolio/cache/history.parquet` and `history.meta.json`. | Raw API JSON dumps and remote price caches when reproducible and summarized. |
+| Code | Shared infra used by tests/studies: validation, metrics, data loaders, tax engine and current study scripts. | Dormant runners pointing to migrated `letf-lab` paths, obsolete strategy modules only after import/tests are adjusted. |
+
+After any cleanup that changes public state, update `../docs/CURRENT_STATE.md`.
+If the cleanup changes the historical narrative, update `../docs/PROJECT_HISTORY.md`.

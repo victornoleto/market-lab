@@ -3,7 +3,8 @@
 Procedimento padrão pra rodar um cleanup agressivo no `market-lab` sem
 perder informação relevante. Baseado no cleanup de 2026-04-24
 (reduziu ~40% dos tests, removeu ~150 arquivos, zero regressão em
-core engine). Log forense daquele run: `docs/CLEANUP_2026-04-24_LOG.md`.
+core engine). Logs forenses: `docs/CLEANUP_2026-04-24_LOG.md`,
+`docs/CLEANUP_2026-05-05_LOG.md`, `docs/CLEANUP_2026-06-03_LOG.md`.
 
 Usar quando:
 - Há acúmulo visível de fases/experiments DORMANT (arquivos que não

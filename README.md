@@ -11,9 +11,11 @@ The project is in maintenance mode. Active strategy research did not produce a
 candidate that cleared the full robustness stack, so no live deployment is
 authorized by this repository.
 
-Recent research consolidated `35% GDE / 40% RSST / 25% ZROZ`
-(`GDESIM/RSSTSIM/ZROZSIM`) as the no-margin B4-v2 research core, then closed that
-package as documentation/robustness work. The active follow-on study is
+Recent research consolidated `studies/return_stacked_core/` as the canonical
+Return-Stacked Core (RSC) folder. The anchor is RSC-US
+`35% GDE / 40% RSST / 25% ZROZ` (`GDESIM/RSSTSIM/ZROZSIM`), with a documented
+RSC-Global diversification branch. It remains documentation/robustness work, not
+deployment authorization. The active follow-on study is
 `studies/spy_sso_upro_replacement/`, a static-first SPY replacement search that
 pivoted to explicit target leverage and benchmark-relative equity dominance after
 static near-misses failed strict rolling robustness. The practical after-tax rerun
@@ -29,6 +31,8 @@ See:
 - `docs/PROJECT_HISTORY.md` for the condensed project timeline;
 - `docs/CURRENT_STATE.md` for the latest technical snapshot;
 - `docs/investment-mandate.md` for validation and governance rules.
+- `studies/SUMMARY.md` for the compact ledger of tested strategies, metrics,
+  verdicts and cleanup-preservation rules.
 
 ## What Is Included
 

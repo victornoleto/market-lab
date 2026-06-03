@@ -1,4 +1,4 @@
-"""TDD tests for studies.spy_beater_hunt + TMF synth in long_term_portfolio.synths.
+"""TDD tests for studies.return_stacked_core.legacy_spy_beater + TMF synth in long_term_portfolio.synths.
 
 Covers:
 - TMF synth formula (3x TLT - daily decay) + cache loader
@@ -20,7 +20,7 @@ import pytest
 
 def test_tmf_synth_formula():
     """TMF = 3 * TLT - (1.5%/y / 252) per day."""
-    from studies.long_term_portfolio.synths import tmf_synth_returns
+    from studies.return_stacked_core.synths import tmf_synth_returns
 
     tlt = pd.Series(
         [0.01, 0.0, -0.005, 0.002],
@@ -37,7 +37,7 @@ def test_tmf_synth_formula():
 
 def test_tmf_synth_from_cache_smoke():
     """TMF synth from cache: should produce 1962+ daily series (TLTSIM window)."""
-    from studies.long_term_portfolio.synths import tmf_synth_returns_from_cache
+    from studies.return_stacked_core.synths import tmf_synth_returns_from_cache
 
     s = tmf_synth_returns_from_cache()
     assert isinstance(s, pd.Series)
@@ -50,7 +50,7 @@ def test_tmf_synth_from_cache_smoke():
 
 def test_tmf_synth_realistic_amplification():
     """TMF daily returns should be ~3x TLT in magnitude on the active days."""
-    from studies.long_term_portfolio.synths import tmf_synth_returns_from_cache
+    from studies.return_stacked_core.synths import tmf_synth_returns_from_cache
     from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 
     tlt = load_testfolio_series("TLTSIM").pct_change().dropna()
@@ -72,7 +72,7 @@ def test_gayed_gate_no_peek_ahead():
     Build a synthetic price series that crosses its SMA on a known day.
     Verify that the gate flips one day AFTER the cross.
     """
-    from studies.spy_beater_hunt.lrs_engine import gayed_200d_sma_gate
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import gayed_200d_sma_gate
 
     # 250 days of constant 100, then a sharp jump up.
     # SMA on day 250 = 100; price = 200 → cross. Gate should flip True on day 251.
@@ -95,7 +95,7 @@ def test_gayed_gate_no_peek_ahead():
 
 def test_gayed_gate_initial_window_false():
     """First `window` days have NaN SMA → gate fills False (defensive default)."""
-    from studies.spy_beater_hunt.lrs_engine import gayed_200d_sma_gate
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import gayed_200d_sma_gate
 
     prices = pd.Series(
         np.linspace(100.0, 150.0, 100),
@@ -108,7 +108,7 @@ def test_gayed_gate_initial_window_false():
 
 def test_gayed_gate_window_and_lag_param():
     """Verify window and lag_days are honoured."""
-    from studies.spy_beater_hunt.lrs_engine import gayed_200d_sma_gate
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import gayed_200d_sma_gate
 
     # 50d window
     prices = pd.Series(
@@ -128,7 +128,7 @@ def test_gayed_gate_window_and_lag_param():
 
 def test_ema_gate_no_peek_ahead():
     """EMA gate at time t uses signal at t-1 (T+1 lag enforced)."""
-    from studies.spy_beater_hunt.lrs_engine import ema_gate
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import ema_gate
 
     # Constant 100 then jump to 200; EMA reacts faster than SMA
     n_pre = 100
@@ -145,7 +145,7 @@ def test_ema_gate_no_peek_ahead():
 
 def test_ema_gate_smoother_than_sma():
     """EMA differs from SMA: react faster on trend changes."""
-    from studies.spy_beater_hunt.lrs_engine import ema_gate, gayed_200d_sma_gate
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import ema_gate, gayed_200d_sma_gate
 
     rng = np.random.default_rng(42)
     # Synthetic uptrend with noise
@@ -170,7 +170,7 @@ def test_ema_gate_smoother_than_sma():
 
 def test_threshold_band_no_flip_within_buffer():
     """Hysteresis: small fluctuations within the buffer band do NOT flip state."""
-    from studies.spy_beater_hunt.lrs_engine import threshold_band_gate
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import threshold_band_gate
 
     # Prices oscillate ±1.5% around 100 (buffer 2%) → no flips after initial
     n_pre = 100  # warm-up for SMA window=50
@@ -193,7 +193,7 @@ def test_threshold_band_no_flip_within_buffer():
 
 def test_threshold_band_flips_on_breakout():
     """When price breaks above MA*(1+buffer), gate flips ON."""
-    from studies.spy_beater_hunt.lrs_engine import threshold_band_gate
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import threshold_band_gate
 
     # 100 days at $100, then jump to $110 (10% > 2% buffer)
     n_pre = 100
@@ -210,7 +210,7 @@ def test_threshold_band_flips_on_breakout():
 
 def test_threshold_band_holds_state_in_band():
     """Once ON, stay ON until price drops below MA*(1-buffer)."""
-    from studies.spy_beater_hunt.lrs_engine import threshold_band_gate
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import threshold_band_gate
 
     # Step up then sit slightly below MA but inside band → stay ON
     idx = pd.date_range("2020-01-02", periods=200, freq="B")
@@ -231,7 +231,7 @@ def test_threshold_band_holds_state_in_band():
 def test_threshold_band_zero_buffer_matches_naive_gate():
     """buffer_pct=0 with hysteresis still has slightly different behavior at exact-cross days,
     but should match SMA gate within 5% of bars."""
-    from studies.spy_beater_hunt.lrs_engine import (
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import (
         gayed_200d_sma_gate,
         threshold_band_gate,
     )
@@ -254,7 +254,7 @@ def test_threshold_band_zero_buffer_matches_naive_gate():
 
 def test_threshold_band_ema_filter():
     """EMA filter type works without raising and produces sensible state."""
-    from studies.spy_beater_hunt.lrs_engine import threshold_band_gate
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import threshold_band_gate
 
     n = 200
     prices = pd.Series(
@@ -270,7 +270,7 @@ def test_threshold_band_ema_filter():
 
 def test_threshold_band_invalid_filter_raises():
     """filter_type other than 'sma'/'ema' raises ValueError."""
-    from studies.spy_beater_hunt.lrs_engine import threshold_band_gate
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import threshold_band_gate
 
     prices = pd.Series([100.0] * 100, index=pd.date_range("2020-01-02", periods=100, freq="B"))
     with pytest.raises(ValueError, match="filter_type"):
@@ -289,7 +289,7 @@ def test_momentum_gate_no_peek_ahead():
     Build a series where price drops below its lookback-ago value on a
     known day; gate should flip OFF one day AFTER (lag=1), not on cross day.
     """
-    from studies.spy_beater_hunt.lrs_engine import momentum_gate
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import momentum_gate
 
     # 100d rising trend (TSMOM ON), then 60d decline (TSMOM OFF after lookback)
     n = 200
@@ -308,7 +308,7 @@ def test_momentum_gate_no_peek_ahead():
 
 def test_momentum_gate_initial_lookback_false():
     """First `lookback_days` days have NaN past → gate fills False (defensive)."""
-    from studies.spy_beater_hunt.lrs_engine import momentum_gate
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import momentum_gate
 
     prices = pd.Series(
         np.linspace(100.0, 150.0, 30),
@@ -321,7 +321,7 @@ def test_momentum_gate_initial_lookback_false():
 
 def test_momentum_gate_lookback_param():
     """Verify lookback_days parameter is honoured (price > price[t-lookback])."""
-    from studies.spy_beater_hunt.lrs_engine import momentum_gate
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import momentum_gate
 
     # 30 flat days at 100, then 1 jump to 150, then 30 flat at 150
     n = 61
@@ -346,7 +346,7 @@ def test_momentum_gate_lookback_param():
 
 def test_lrs_returns_alternate_on_off():
     """LRS returns equal on_returns when gate=True, off_returns when gate=False."""
-    from studies.spy_beater_hunt.lrs_engine import lrs_strategy_returns
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import lrs_strategy_returns
 
     idx = pd.date_range("2020-01-02", periods=5, freq="B")
     on_returns = pd.Series([0.02, 0.01, 0.03, -0.01, 0.02], index=idx)
@@ -361,7 +361,7 @@ def test_lrs_returns_alternate_on_off():
 
 def test_lrs_returns_alignment_drops_misaligned_dates():
     """When inputs have different index coverage, LRS aligns on intersection."""
-    from studies.spy_beater_hunt.lrs_engine import lrs_strategy_returns
+    from studies.return_stacked_core.legacy_spy_beater.lrs_engine import lrs_strategy_returns
 
     on_returns = pd.Series(
         [0.01, 0.02], index=pd.to_datetime(["2020-01-02", "2020-01-03"])
@@ -391,7 +391,7 @@ def test_scoring_cagr_at_spy_mean_yields_30_proportional_pts():
 
     SPY mean (0.1380) → (0.1380 - 0.05) / 0.15 = 0.5867 → 30 × 0.5867 = 17.6 → 18 pts (round).
     """
-    from studies.spy_beater_hunt.scoring import compute_cagr_points
+    from studies.return_stacked_core.legacy_spy_beater.scoring import compute_cagr_points
 
     pts = compute_cagr_points(mean_cagr=0.1380)
     assert pts == 18  # round(17.6) = 18
@@ -399,7 +399,7 @@ def test_scoring_cagr_at_spy_mean_yields_30_proportional_pts():
 
 def test_scoring_cagr_below_floor_zero_pts():
     """CAGR ≤ 5% → 0 points."""
-    from studies.spy_beater_hunt.scoring import compute_cagr_points
+    from studies.return_stacked_core.legacy_spy_beater.scoring import compute_cagr_points
 
     assert compute_cagr_points(mean_cagr=0.04) == 0
     assert compute_cagr_points(mean_cagr=0.00) == 0
@@ -407,7 +407,7 @@ def test_scoring_cagr_below_floor_zero_pts():
 
 def test_scoring_cagr_above_ceiling_max_pts():
     """CAGR ≥ 20% → 30 points."""
-    from studies.spy_beater_hunt.scoring import compute_cagr_points
+    from studies.return_stacked_core.legacy_spy_beater.scoring import compute_cagr_points
 
     assert compute_cagr_points(mean_cagr=0.20) == 30
     assert compute_cagr_points(mean_cagr=0.25) == 30
@@ -419,7 +419,7 @@ def test_scoring_mdd_at_spy_mean_yields_proportional_pts():
     Post-2026-04-29 refactor: MDD floor 15%, ceiling 70% (was 10%/50%).
     SPY mean (0.5517) → (0.70 - 0.5517) / 0.55 = 0.2696 → 20 × 0.2696 = 5.39 → 5 pts.
     """
-    from studies.spy_beater_hunt.scoring import compute_mdd_points
+    from studies.return_stacked_core.legacy_spy_beater.scoring import compute_mdd_points
 
     pts = compute_mdd_points(mean_mdd=0.5517)
     assert pts == 5
@@ -427,15 +427,15 @@ def test_scoring_mdd_at_spy_mean_yields_proportional_pts():
 
 def test_scoring_mdd_above_ceiling_zero():
     """MDD ≥ 70% → 0 points (post-refactor ceiling)."""
-    from studies.spy_beater_hunt.scoring import compute_mdd_points
+    from studies.return_stacked_core.legacy_spy_beater.scoring import compute_mdd_points
 
     assert compute_mdd_points(mean_mdd=0.75) == 0
 
 
 def test_scoring_winner_requires_all_three_bars():
     """WINNER conditions: cagr_bar AND mdd_bar AND gates_bar all true."""
-    from studies.spy_beater_hunt.scoring import score_strategy_spy_beater
-    from studies.long_term_portfolio.scoring import DatasetMetrics, Gates
+    from studies.return_stacked_core.legacy_spy_beater.scoring import score_strategy_spy_beater
+    from studies.return_stacked_core.scoring import DatasetMetrics, Gates
 
     # All bars met scenario
     metrics = {
@@ -455,8 +455,8 @@ def test_scoring_winner_requires_all_three_bars():
 
 def test_scoring_winner_blocked_by_cagr_bar():
     """Mean CAGR < 13.80% blocks WINNER even if other bars met."""
-    from studies.spy_beater_hunt.scoring import score_strategy_spy_beater
-    from studies.long_term_portfolio.scoring import DatasetMetrics, Gates
+    from studies.return_stacked_core.legacy_spy_beater.scoring import score_strategy_spy_beater
+    from studies.return_stacked_core.scoring import DatasetMetrics, Gates
 
     metrics = {
         "lh_56y": DatasetMetrics(sharpe=0.9, cagr=0.10, mdd=0.30, dsr_p_value=0.04),
@@ -474,8 +474,8 @@ def test_scoring_winner_blocked_by_cagr_bar():
 
 def test_scoring_score_clamped_0_100():
     """Score is clamped to [0, 100] even with extreme inputs + bonuses."""
-    from studies.spy_beater_hunt.scoring import score_strategy_spy_beater
-    from studies.long_term_portfolio.scoring import DatasetMetrics, Gates
+    from studies.return_stacked_core.legacy_spy_beater.scoring import score_strategy_spy_beater
+    from studies.return_stacked_core.scoring import DatasetMetrics, Gates
 
     metrics = {
         "lh_56y": DatasetMetrics(sharpe=2.5, cagr=0.30, mdd=0.05, dsr_p_value=0.001),
@@ -503,7 +503,7 @@ def test_scoring_score_clamped_0_100():
 
 def test_realized_vol_formula():
     """Annualised rolling std with sqrt(252) scaling (default annualization)."""
-    from studies.spy_beater_hunt.vol_target_engine import realized_vol
+    from studies.return_stacked_core.legacy_spy_beater.vol_target_engine import realized_vol
 
     returns = pd.Series(
         [0.01, 0.02, -0.01, 0.005, 0.0],
@@ -519,7 +519,7 @@ def test_realized_vol_formula():
 
 def test_vol_target_weight_no_peek():
     """Weight at time t is shifted by lag_days from the realised vol input."""
-    from studies.spy_beater_hunt.vol_target_engine import vol_target_weight
+    from studies.return_stacked_core.legacy_spy_beater.vol_target_engine import vol_target_weight
 
     rv = pd.Series(
         [0.20, 0.10, 0.40, 0.20],
@@ -542,7 +542,7 @@ def test_vol_target_weight_no_peek():
 
 def test_vol_target_weight_underlying_factor():
     """Weight inversely scales with underlying_factor (SPY-equivalent target)."""
-    from studies.spy_beater_hunt.vol_target_engine import vol_target_weight
+    from studies.return_stacked_core.legacy_spy_beater.vol_target_engine import vol_target_weight
 
     rv = pd.Series([0.16] * 5, index=pd.date_range("2024-01-02", periods=5, freq="B"))
 
@@ -567,7 +567,7 @@ def test_vol_target_weight_underlying_factor():
 
 def test_vol_target_weight_clipping():
     """Weight clipped to [weight_min, weight_max]."""
-    from studies.spy_beater_hunt.vol_target_engine import vol_target_weight
+    from studies.return_stacked_core.legacy_spy_beater.vol_target_engine import vol_target_weight
 
     # Very low rv → high raw weight, clipped UP to weight_max
     rv_low = pd.Series([0.05] * 5, index=pd.date_range("2024-01-02", periods=5, freq="B"))
@@ -590,7 +590,7 @@ def test_vol_target_weight_clipping():
 
 def test_vol_target_strategy_returns_formula():
     """Strategy returns = weight × underlying + (1 − weight) × cash."""
-    from studies.spy_beater_hunt.vol_target_engine import vol_target_strategy_returns
+    from studies.return_stacked_core.legacy_spy_beater.vol_target_engine import vol_target_strategy_returns
 
     idx = pd.date_range("2024-01-02", periods=4, freq="B")
     underlying = pd.Series([0.01, 0.02, -0.01, 0.005], index=idx)
@@ -610,7 +610,7 @@ def test_vol_target_strategy_returns_formula():
 
 def test_vol_target_strategy_returns_alignment():
     """Aligns inputs on intersection of indices (drops misaligned dates)."""
-    from studies.spy_beater_hunt.vol_target_engine import vol_target_strategy_returns
+    from studies.return_stacked_core.legacy_spy_beater.vol_target_engine import vol_target_strategy_returns
 
     underlying = pd.Series(
         [0.01, 0.02, 0.03],
@@ -632,7 +632,7 @@ def test_vol_target_strategy_returns_alignment():
 
 def test_returns_from_spec_routes_vol_target_type():
     """``returns_from_spec`` dispatches type='vol_target' to the engine."""
-    from studies.spy_beater_hunt.run_iter import returns_from_spec
+    from studies.return_stacked_core.legacy_spy_beater.run_iter import returns_from_spec
 
     spec = {
         "type": "vol_target",
@@ -660,12 +660,12 @@ def test_resolve_tickers_routes_tmfsim_to_synth():
     """`portfolio_returns_from_config` must route TMFSIM to tmf_synth_returns_from_cache.
 
     iter 008 introduces HFEA (UPRO + TMF). TMFSIM is NOT in the testfolio
-    parquet cache; the synth lives at studies.long_term_portfolio.synths
+    parquet cache; the synth lives at studies.return_stacked_core.synths
     .tmf_synth_returns_from_cache (3× TLT − 1.5%/y daily-reset decay).
-    The dispatcher in studies.long_term_portfolio.run_iter must wire
+    The dispatcher in studies.return_stacked_core.run_iter must wire
     'TMFSIM' to that synth — without it, HFEA configs raise FileNotFoundError.
     """
-    from studies.long_term_portfolio.run_iter import portfolio_returns_from_config
+    from studies.return_stacked_core.run_iter import portfolio_returns_from_config
 
     # 100% TMFSIM portfolio: returns equal the synth output (within window).
     returns = portfolio_returns_from_config({"TMFSIM": 1.0}, "lh_56y")
@@ -697,7 +697,7 @@ def test_blend_spec_50_50_static_constituents():
 
     On dates where both constituents have data, blend_t = sum_i w_i * r_i_t.
     """
-    from studies.spy_beater_hunt.run_iter import returns_from_spec
+    from studies.return_stacked_core.legacy_spy_beater.run_iter import returns_from_spec
 
     spec_a = {"type": "static", "weights": {"SPYSIM": 1.0}}
     spec_b = {"type": "static", "weights": {"IEFSIM": 1.0}}
@@ -722,7 +722,7 @@ def test_blend_spec_50_50_static_constituents():
 
 def test_blend_spec_validates_weight_sum():
     """blend type must validate constituent weights sum to 1.0 (sanity guard)."""
-    from studies.spy_beater_hunt.run_iter import returns_from_spec
+    from studies.return_stacked_core.legacy_spy_beater.run_iter import returns_from_spec
 
     bad_spec = {
         "type": "blend",
@@ -743,7 +743,7 @@ def test_blend_spec_supports_nested_lrs_constituent():
     test verifies that nested LRS constituents resolve via returns_from_spec
     recursion.
     """
-    from studies.spy_beater_hunt.run_iter import returns_from_spec
+    from studies.return_stacked_core.legacy_spy_beater.run_iter import returns_from_spec
 
     a2_spec = {
         "type": "lrs",
@@ -781,7 +781,7 @@ def test_blend_spec_supports_nested_lrs_constituent():
 
 def test_classify_for_tax_per_spec_type():
     """static -> buy_hold; lrs/vol_target -> annual_realize; blend inherits."""
-    from studies.spy_beater_hunt.tax_layer import (
+    from studies.return_stacked_core.legacy_spy_beater.tax_layer import (
         TaxClassification,
         classify_for_tax,
     )
@@ -812,7 +812,7 @@ def test_net_returns_buy_hold_drag_smaller_than_annual_realize():
     compounding benefit. annual_realize pays DARF every year -> loses
     compounding on the tax money.
     """
-    from studies.spy_beater_hunt.tax_layer import net_returns_from_spec
+    from studies.return_stacked_core.legacy_spy_beater.tax_layer import net_returns_from_spec
 
     n_days = 10 * 252
     daily = (1.12) ** (1.0 / 252.0) - 1.0
@@ -836,7 +836,7 @@ def test_net_returns_buy_hold_drag_smaller_than_annual_realize():
 
 def test_net_returns_zero_gain_zero_darf():
     """If gross returns sum to zero gain, terminal DARF is zero."""
-    from studies.spy_beater_hunt.tax_layer import net_returns_from_spec
+    from studies.return_stacked_core.legacy_spy_beater.tax_layer import net_returns_from_spec
 
     n_days = 252
     # alternating +1% / -1% (approximately zero net)

@@ -180,43 +180,21 @@ Notable study areas include:
   `[leverage_for_the_long_run, p.21]`, Lei 14.754/2023 art. 5°/6°,
   `[advances_fin_ml, p.208-211]`;
 - `studies/weekly_momentum/` for weekly cross-sectional momentum diagnostics, including controlled sweeps, walk-forward validation, PIT approximation, Tiingo delisted backfill, and a final rejection after DSR/bootstrap gates. A later ETF-specific post-close diagnostic improved WF metrics only when leveraged/inverse ETFs remained available, but still failed DSR; the branch was closed research-only with no further local sweeps `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`;
-- `studies/static_spy_beater_portfolio/` for a 2026-05-15 static-portfolio GA
-  bootstrap. It searches long-only monthly-rebalanced ETF portfolios with 5%
-  weight increments across `core_1986`, `mf_1988`, `global_1994` and `full_2000`
-  universes. The scoring design combines full-period metrics with rolling
-  1/3/5/10/15/20y relative scores versus `SPYSIM` and `QQQSIM`, weighting 10-20y
-  windows most heavily and re-ranking GA finalists with all possible rolling starts.
-  Initial work created the scaffold, universe audit, rolling scorer, GA runner and
-  pareto report generator; the first `core_1986` smoke evaluated 7 portfolios for
-  infrastructure only, with no winner/deploy claim `[testing_tuning, p.327-335]`,
-  `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`. Later same-day
-  local B4-like work established `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM` as the
-  no-margin internal core benchmark (CAGR `15.70%`, MDD `-29.94%`), stronger than
-  the equal-weight B4 reference on CAGR/Calmar but still discovery-only. The study
-  then pivoted to finding portfolios that beat this core by rolling equity dominance,
-  with MDD treated as a guardrail rather than the main objective. A later
-  factor/momentum probe added `VBRSIM`, `MTUMSIM` and `EFVSIM`; 3 GA seeds over the
-  `1994-2026` common window all selected the original `35/40/25` core as exact rank 1,
-  while factor sleeves failed to improve rolling equity dominance. The result supports
-  retaining the core benchmark and moving to implementation/sensitivity checks, still
-  with no winner/deploy claim. `FINAL_REPORT_35_40_25_CORE.md` then consolidated this
-  internal research winner and documented that broad static optimization should stop in
-  favor of drag/rebalance/start-date/remove-one-asset sensitivity checks
-  `[ml_for_algo_trading, ch.4 p.82-93]`, `[advances_fin_ml, p.222-223]`;
-- `studies/b4-v2/` for the 2026-05-25 public-draft and robustness package around
-  the no-margin B4-v2 core. It produced Reddit-ready writeups, standardized plots,
-  Monte Carlo sequence-risk summaries and `ROBUSTNESS_REPORT.md` with CSV audit
-  tables. The run confirmed `35% GDE / 40% RSST / 25% ZROZ` as the clean US anchor:
-  full-history return remains materially above SPY with much lower drawdown, while
-  post-2010 CAGR edge is narrower but drawdown remains better. `CTAP`/`RSSX`
-  implementation variants improved terminal wealth in the available proxy table, but
-  `RSSX` remains assumption-sensitive; global variants improved drawdown versus
-  `66/34 VTI/VEA` and `100% VT` but are diversification variants rather than a US-core
-  replacement. Exact rebalance-frequency and remove-one-sleeve tests remain blocked
-  until canonical sleeve-level returns are exported. No mandate allocation changed
-  and `CLOSING_SUMMARY.md` explicitly closes B4-v2 as a concluded research/documentation
-  package, not a direct SPY replacement for maximum return
-  `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
+- `studies/return_stacked_core/` for the consolidated Return-Stacked Core (RSC)
+  folder created on 2026-06-03. It replaces six previously separate trees:
+  `b4-v2/`, `static_spy_beater_portfolio/`, `spy_beater_hunt/`,
+  `spy_beater_hunt_v2/`, `long_term_portfolio/` and `global_factor_tilt_loop/`.
+  The folder preserves the full intellectual path to RSC-US
+  `35% GDE / 40% RSST / 25% ZROZ`: original SPY-beater no-winner hunts, old B4
+  `25/25/25/25`, long-term static stack experiments, global factor-tilt evidence,
+  static optimizer discovery, publication/robustness plots, old-B4 deep dives,
+  B4+evo02 `70/30` satellite evidence and the RSC-Global branch
+  `20% GDE / 15% NTSD / 20% RSST / 20% RSIT / 25% ZROZ`. RSC-US remains the clean
+  US anchor (full-history CAGR about `15.65-15.70%`, MDD `-29.94%`), while
+  RSC-Global is a diversification variant rather than a replacement. `CTAP` and
+  `RSSX` remain optional implementation refinements. No mandate allocation changed,
+  and exact rebalance/remove-one checks remain blocked until a canonical sleeve-level
+  return matrix exists `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
   `[advances_fin_ml, p.208-211]`, `[leverage_for_the_long_run, p.13]`;
 - `studies/spy_sso_upro_replacement/` for a 2026-05-25 static-first search for a
   low-turnover SPY replacement using `SPYSIM`, `SSOSIM`, `UPROSIM`, `ZROZSIM`,
@@ -259,7 +237,6 @@ Notable study areas include:
   allocation changed
   `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`,
   `[leverage_for_the_long_run, p.13]`;
-- `studies/spy_beater_hunt_v2/` for a new 2026-05-13 autonomous hunt whose explicit goal is to beat SPY buy-and-hold while preserving hard overfit gates. It uses a short `MEMORY.md` plus a clean-session `loop.sh` orchestrator for OpenCode/GPT-5.5 iterations; initial status is bootstrap/audit only, with no mandate allocation change `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`;
 - `studies/success_trading_strat/` for a 2026-05-14 research loop based on the
   Neurotrader/Masters strategy-development workflow: in-sample excellence,
   in-sample MCPT, walk-forward and WF-MCPT, added on top of the repository's
@@ -516,16 +493,11 @@ Notable study areas include:
          did not change the no-deploy/no-winner verdict
          `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
          `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`;
-- `studies/long_term_portfolio/` for long-horizon allocation experiments;
-  On 2026-05-13, iter 058 combined the B4 core with repair-GA satellites under
-  monthly rebalance plus USD 10k initial / USD 1k monthly contributions. The
-  selected research allocation became `70% B4 + 30% evo02` after it beat 75/25
-  on CAGR, MDD, Sharpe and XIRR (20.01% CAGR / -21.60% MDD / 19.74% XIRR vs B4
-  14.62% / -28.38% / 14.17%). `75% B4 + 25% evo02` remains the more conservative
-  alternative and `75% B4 + 25% evo01` had the highest Sharpe. The focused
-  implementation guide lives at `studies/long_term_portfolio/B4_EVO02_70_30_IMPLEMENTATION.md`.
-  These are still research-only portfolio compositions until the GA sleeves clear hard validation
-  `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`;
+- the former `studies/long_term_portfolio/` evidence now preserved inside
+  `studies/return_stacked_core/history/`, including iter 058 `70% B4 + 30% evo02`
+  (20.01% CAGR / -21.60% MDD / 19.74% XIRR vs B4 14.62% / -28.38% / 14.17%).
+  These satellite compositions remain research-only until the GA sleeves clear hard
+  validation `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`;
 - `studies/_shared/` for reusable study infrastructure;
 - `studies/_archive/` for closed or historical work.
 
@@ -538,6 +510,21 @@ keeps the CLI workbench and adds the FastAPI/Angular monitoring webapp. This
 repository now keeps only shared helpers, non-LETF studies, historical references
 and migration notes. See `MIGRATED.md` for the exact inventory and residual path
 references.
+
+## Repository Slim-Down
+
+On 2026-06-03 the cleanup/restructuring pass started by creating
+`studies/SUMMARY.md`, a compact ledger of local studies, migrated LETF lines,
+best leads, key metrics, verdicts and preservation/removal rules. The goal is to
+make `market-lab` smaller and more direct while preserving the research record:
+canonical reports, memories, specs and finalist tables stay; broad grids, GA
+populations, caches and generated plots can be removed after their conclusions
+are summarized. No strategy was promoted and the maintenance-mode mandate did
+not change `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`.
+
+The same pass then consolidated six overlapping long-horizon/static-stack trees
+into `studies/return_stacked_core/`, preserving reports, plots, CSV tables,
+source ledgers and importable helpers while removing the old top-level folders.
 
 ## Maintenance Mode
 

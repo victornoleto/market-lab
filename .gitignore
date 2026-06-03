@@ -145,6 +145,13 @@ studies/letf_rotation_hunt/reports/**/data/*.csv
 db/*.sqlite*
 db/*.db
 
+# Preserved final evidence for the consolidated Return-Stacked Core study.
+!studies/return_stacked_core/
+!studies/return_stacked_core/**/
+!studies/return_stacked_core/**/*.csv
+!studies/return_stacked_core/**/*.png
+!studies/return_stacked_core/**/*.parquet
+
 # Logs and OS files
 logs/
 *.log

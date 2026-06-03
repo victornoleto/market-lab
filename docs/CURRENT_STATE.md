@@ -1,11 +1,11 @@
-# Estado atual — market-lab (2026-05-25)
+# Estado atual — market-lab (2026-06-03)
 
 > **Propósito:** onboard rápido para humanos e agentes. Este doc é o
 > snapshot vivo — a verdade canônica vive nos arquivos referenciados.
 
 ---
 
-## TL;DR (2026-05-25)
+## TL;DR (2026-06-03)
 
 🛑 **MAINTENANCE MODE** desde 2026-04-23 (mandate §1, §7).
 
@@ -14,6 +14,7 @@
 - **113/113 honest FAIL** acumulado entre 2026-04-08 e 2026-04-23 (Phase 3.5f-3.8 + D-MVP + E-MVP). Pattern previsto por López de Prado DSR + Aronson 6402-rule + Li-Ferreira 2025 Network Momentum.
 - **Sem hunt ativo de alocação;** estudos remanescentes são research-only e a revisão consolidada do mandato fica para 6-12 meses.
 - **LETF rotation spin-off concluído:** `studies/lrs/`, `studies/letf_rotation_hunt/` e `studies/spy_leveraged_rotation_hunt/` agora são canônicos em `/var/www/victor/finances/letf-lab`. `market-lab` mantém apenas infra compartilhada, referências históricas e estudos não migrados. Ver `MIGRATED.md`.
+- **Cleanup consolidation iniciado:** `studies/SUMMARY.md` agora é o ledger compacto de estratégias testadas, métricas, vereditos, arquivos canônicos e política de remoção de artefatos gerados. O objetivo é reduzir a codebase sem perda de conhecimento; mandate §1 segue inalterado.
 
 Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04-24_LOG.md` + `docs/CLEANUP_2026-05-05_LOG.md` para audit trail dos cleanups.
 
@@ -42,160 +43,34 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 
 ## Linhas exploratórias em studies/ (2026-05-25)
 
-### studies/static_spy_beater_portfolio/ 🌱 CURRENT DISCOVERY / INTERNAL BENCHMARK
-- Estado consolidado: `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM` é o benchmark interno no-margin do estudo, documentado em `FINAL_REPORT_35_40_25_CORE.md`. O resultado é discovery-only: não autoriza deploy, não muda o mandate e o próximo passo válido é sensibilidade de implementação (drag, rebalance, start-date, remove-one-asset), não nova busca ampla de CAGR `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.222-223]`.
-- Novo estudo iniciado em 2026-05-15 para buscar carteiras estáticas long-only,
-  rebalanceadas mensalmente, que batam `SPYSIM` e reportem comparação contra
-  `QQQSIM`, equal-weight do universo e B4 quando disponível. O design usa pesos em
-  múltiplos de 5%, universos `core_1986`, `mf_1988`, `global_1994` e `full_2000`,
-  fitness rolling 1/3/5/10/15/20y com maior peso para 10-20y, e GA discovery com
-  re-rank exato de finalistas em todas as janelas possíveis. Scaffold criado em
-  `studies/static_spy_beater_portfolio/` com `SPEC.md`, `MEMORY.md`, auditoria de
-  universo, scoring rolling, GA e report/pareto plots. Auditoria confirmou janelas
-  comuns: `core_1986` 1986-12-12..2026-04-17, `mf_1988` 1988-01-04..2026-04-17,
-  `global_1994` 1994-05-05..2026-04-17 e `full_2000` 2000-01-04..2026-04-17.
-  Smoke `core_1986_balanced_spy_beater_seed7` avaliou 7 portfolios e gerou relatório,
-  mas é apenas validação de infraestrutura; nenhum winner/deploy e mandate §1
-  inalterado `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`,
-  `[advances_fin_ml, p.222-223]`.
-- Sweep discovery 2026-05-15 com 3 seeds × 2 universos (`core_1986`, `mf_1988`),
-  `balanced_spy_beater`, `fast-discovery`, `rolling_step=21` e re-rank exato top-200
-  convergiu em todas as seeds para a mesma família agressiva: `core_1986` escolheu
-  `40% TQQQSIM / 60% TMFSIM` (CAGR 20,66%, MDD -84,28%, terminal 1611×) e `mf_1988`
-  escolheu `35% TQQQSIM / 50% TMFSIM / 15% RSSTSIM` (CAGR 22,10%, MDD -81,21%,
-  terminal 2083×). Resultado é discovery-only: economicamente interessante como
-  fronteira alavancada, mas drawdown extremo bloqueia qualquer leitura promocional;
-  próximo passo natural é fitness/guardrail diversificado ou caps por família antes
-  de validação formal. Mandate §1 inalterado `[leverage_for_the_long_run, p.13]`,
-  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.222-223]`.
-- Iteração 2026-05-15 adicionou fitnesses guardrail `spy_beater_mdd_guard` e
-  `spy_beater_calmar_guard`: rejeitam candidatos com MDD full-period pior que
-  `SPYSIM`; a versão Calmar também exige CAGR full-period acima de `SPYSIM` e ranqueia
-  sobreviventes por Calmar/CAGR/wealth rolling. Novo universo `levered_hedge_core`
-  foca a hipótese equity alavancado + duration/gold/stacked. Smoke curto encontrou
-  estruturas `RSSTSIM/TMFSIM/GDESIM/QQQSIM` com CAGR ~17-18% e MDD ~-28% a -49%,
-  discovery-only e sem mudança no mandate `[testing_tuning, p.327-335]`,
-  `[leverage_for_the_long_run, p.13]`.
-- Após diagnóstico externo de underperformance recente tipo HFEA/TMF, o scoring passou
-  a salvar métricas `*_latest` da janela rolling mais recente e adicionou
-  `spy_beater_consistency_guard`: full-period CAGR/MDD guards + latest 3y acima de
-  `SPYSIM` + penalidade para p10 rolling ruim em 3y+. Novo universo
-  `levered_hedge_no_tmf` testa a hipótese sem `TMFSIM`. Smokes indicam queda material
-  de fitness quando consistência recente é exigida; leads no-TMF usam `RSSTSIM`,
-  `GDESIM`, `ZROZSIM`, `UGLSIM` e equity alavancado pequeno, ainda discovery-only
-  `[testing_tuning, p.327-335]`, `[risk_parity, p.80-81]`.
-- Run sério `levered_hedge_no_tmf_spy_beater_consistency_guard_seed20260534` avaliou
-  29.515 candidatos únicos e topou `35% GDESIM / 50% RSSTSIM / 5% TQQQSIM / 10% ZROZSIM`:
-  CAGR `17,97%`, MDD `-49,37%`, Calmar `0,364`, terminal `558×` vs `SPYSIM` CAGR
-  `11,46%`, MDD `-55,14%`, terminal `63,6×` no mesmo período 1988-2026. A janela
-  latest 10y/15y bate `SPYSIM`, mas p10 rolling MDD 10y/15y ainda fica ~`-2pp`, então
-  o status segue discovery-only; sem winner/deploy e mandate §1 inalterado
-  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.222-223]`.
-- Checagem externa Testfol.io 1987-2026 reforçou a tese B4-like: componente mensal
-  `47,5% SPYSIM / 25% GDESIM / 25% KMLMSIM / 25% ZROZSIM / 15% IEFSIM / -37,5% CASHX`
-  teve CAGR `13,81%`, MDD `-28,42%`, Calmar `0,486` e Ulcer `6,88`, contra `SPYSIM`
-  CAGR `11,58%`, MDD `-55,14%`, Calmar `0,210`. Mix similar com menos ZROZ retornou
-  mais (`14,50%`) mas com MDD `-41,59%`. Próxima otimização deve ser Pareto/local em
-  torno de B4-like com guardrails de MDD/rolling, não maximização de CAGR
-  `[risk_parity, p.80-81]`, `[testing_tuning, p.327-335]`.
-- Branch GA robusta recebeu `spy_beater_p10_mdd_guard`, exigindo p10 de MDD rolling
-  5y+ não pior que `SPYSIM`, e universos focados `lead_family_focused`/
-  `lead_family_no_3x_booster`. Refinamento local exato de 2.881 candidatos confirmou
-  `50% RSSTSIM / 35% GDESIM / 10% SPYSIM / 5% ZROZSIM` como melhor vizinho: CAGR
-  `16,81%`, MDD `-41,20%`, Calmar `0,408`, terminal `383×`. Leitura: para maior CAGR
-  aceitando MDD ~40%, a família `RSST/GDE/SPY/ZROZ` sem `TQQQ` é o lead robusto atual;
-  ainda discovery-only `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.222-223]`.
-- Relatório Pareto/regime Priority 1 gerado em
-  `studies/static_spy_beater_portfolio/results/pareto_regime_report/` comparou
-  candidatos fixos, sem nova otimização ampla. Resultado: `B4_original`/B4-like são a
-  âncora de estabilidade (B4 original CAGR `14,43%`, MDD `-27,92%`, Calmar `0,517`;
-  B4-like CAGR `13,75%`, MDD `-28,42%`, Calmar `0,484`, mas é referência stacked com
-  `-37,5% CASHX`, gross `1,75`, não long-only pura). `GA_robust` entrega CAGR
-  `16,81%` e terminal `383×`, mas compra `+3,06pp` CAGR versus B4-like com `~12,78pp`
-  de MDD adicional; `GA_aggressive` adiciona só `+1,16pp` CAGR versus robusto e piora
-  MDD em `~8,17pp`, enfraquecendo o booster `TQQQSIM`. Status segue discovery-only,
-  sem winner/deploy e mandate §1 inalterado `[testing_tuning, p.327-335]`,
-  `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`.
-- Priority 2 começou pela busca local Pareto B4-like em
-  `studies/static_spy_beater_portfolio/results/local_pareto_b4_like/`: grid local
-  streaming de `90.449` linhas (cap `6` sleeves), `62.441` factíveis e `313` Pareto,
-  sem GA amplo. A fronteira encontrou ponto stacked de maior retorno
-  `35% GDESIM / 40% RSSTSIM / 5% SPYSIM / 45% ZROZSIM / -25% CASHX` com CAGR
-  `17,35%`, MDD `-30,44%`, Calmar `0,570` e terminal `456×`, melhorando o B4-like
-  Testfol.io (`13,75%`, `-28,42%`, Calmar `0,484`) dentro do alvo aproximado de MDD.
-  Caveat bloqueante: p10 de riqueza relativa rolling 5y vs `SPYSIM` ainda negativo
-  (`-6,39%`) e a carteira é referência stacked (`gross=1,5`, `CASHX=-25%`), não
-  long-only pura. Próximo passo: relatório rolling/regime exato dos top B4-like locais
-  antes de qualquer validação; sem winner/deploy e mandate §1 inalterado
-  `[risk_parity, p.80-81]`, `[testing_tuning, p.327-335]`,
+### studies/SUMMARY.md ✅ CANONICAL COMPACT LEDGER
+- Criado em 2026-06-03 para concentrar em um único arquivo o resumo de todas as
+  estratégias locais testadas/avaliadas, linhas LETF migradas, melhores leads,
+  métricas essenciais, vereditos, ponteiros canônicos e política de cleanup. Este
+  arquivo vira a primeira leitura para limpeza futura: preservar conhecimento nos
+  reports/memórias finais e remover apenas artefatos gerados/regeneráveis. Sem
+  deploy, sem paper trade e sem mudança no mandate `[testing_tuning, p.327-335]`,
   `[advances_fin_ml, p.208-211]`.
-- Como margem externa não é operacionalmente disponível, a busca local foi repetida
-  com `CASHX >= 0` em `results/local_pareto_b4_no_margin/`: `37.752` linhas,
-  `37.476` factíveis e `272` Pareto. Melhor retorno factível sem caixa negativo:
-  `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM`, CAGR `15,70%`, MDD `-29,94%`, Calmar
-  `0,524`, terminal `265×`; custo de remover `CASHX` negativo é ~`1,65pp` CAGR vs
-  o ponto stacked-cash anterior. Caveat: p10 de riqueza relativa rolling 5y vs
-  `SPYSIM` ainda negativo (`-8,59%`); ainda discovery-only, próximo passo é
-  relatório rolling/regime exato dos top no-margin antes de validação. ETFs stacked
-  ainda carregam alavancagem interna (`GDESIM`/`RSSTSIM`), mas sem borrowing externo
-  via caixa negativo `[leverage_for_the_long_run, p.13]`, `[testing_tuning,
-  p.327-335]`.
-- O relatório Pareto/regime exato foi regenerado incluindo `B4_no_margin_lead` e
-  rolling 15y. Comparação direta: `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM` superou a
-  B4 original em CAGR (`15,70%` vs `14,43%`), Calmar (`0,524` vs `0,517`) e terminal
-  wealth (`265×` vs `174×`), ao custo de MDD ~`2,02pp` pior (`-29,94%` vs `-27,92%`).
-  Rolling relative-wealth p10 vs `SPYSIM` melhora contra B4 original em 3y/5y/10y/15y,
-  mas ainda fica negativo em 3y (`-9,84%`), 5y (`-8,59%`) e 10y (`-4,25%`), positivo
-  apenas em 15y (`+12,88%`). Leitura: lead prático mais forte que B4 equal-weight,
-  mas ainda discovery-only; próximo passo é sensibilidade/implementabilidade no-margin
-  antes de walk-forward/validação `[testing_tuning, p.327-335]`,
-  `[advances_fin_ml, p.196-202]`.
-- Pivot operacional: `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM` agora é o core/benchmark
-  interno do estudo, e o objetivo passou a ser encontrar algo melhor por dominância de
-  equity em janelas rolling, não por MDD mínimo. `README.md`, `SPEC.md` e
-  `NEXT_STEPS.md` foram atualizados; `core_beater_no_margin` foi criado com
-  `GDESIM/RSSTSIM/KMLMSIM/ZROZSIM`, ladders US/Nasdaq (`SPYSIM/SSOSIM/UPROSIM`,
-  `QQQSIM/QLDSIM/TQQQSIM`), `IEFSIM` e `CASHX`; `score_portfolio.py` adicionou o
-  benchmark `core_35_40_25` e a fitness `core_relative_wealth_dominance`. Smoke GA
-  `core_beater_no_margin_core_relative_wealth_dominance_seed20260535` avaliou `58`
-  portfolios e validou a infraestrutura, sem encontrar beater e sem claim de pesquisa.
-  Sem uso do token Testfol.io vazado; mandate §1 inalterado `[testing_tuning,
-  p.327-335]`, `[advances_fin_ml, p.222-223]`.
-- Probe fator/momentum 2026-05-16: `core_beater_factor_no_margin` adicionou `VBRSIM`,
-  `MTUMSIM` e `EFVSIM` ao universo no-margin, com `MTUMSIM` incorporado ao cache local
-  Testfol.io. Sweep de 3 seeds em `results/ga_core_factor_momentum_beater/` convergiu
-  em todas para o próprio core como rank 1 (`fitness=0,350000`) na janela comum
-  `1994-06-02..2026-04-17`; melhores challengers usaram `QLDSIM/TQQQSIM` pequenos e
-  pioraram MDD, enquanto `VBRSIM` ficou abaixo e `MTUMSIM` não entrou no top-10 exato.
-  Leitura: SCV/momentum não melhoraram a dominância rolling; manter `35/40/25` como
-  benchmark estático e seguir para sensibilidade/implementabilidade. Discovery-only,
-  sem winner/deploy e sem mudança no mandate `[ml_for_algo_trading, ch.4 p.82-93]`,
-  `[advances_fin_ml, p.222-223]`.
-- Relatório final do core criado em
-  `studies/static_spy_beater_portfolio/FINAL_REPORT_35_40_25_CORE.md`: consolida
-  `35% GDESIM / 40% RSSTSIM / 25% ZROZSIM` como vencedor interno discovery-only do
-  estudo, rejeita challengers por trade-off ou restrição operacional e recomenda parar
-  broad static optimization em favor de drag/rebalance/start-date/remove-one-asset
-  checks. Sem deploy e sem mudança no mandate `[testing_tuning, p.327-335]`,
-  `[advances_fin_ml, p.222-223]`.
 
-### studies/b4-v2/ ✅ CONCLUDED / PUBLICATION DRAFT
-- Pacote B4-v2 2026-05-25 consolidou a versão publicável do core no-margin
-  `35% GDE / 40% RSST / 25% ZROZ`, posts Reddit, plots com paleta fixa, simulação
-  Monte Carlo de sequence-risk e `ROBUSTNESS_REPORT.md` com tabelas CSV em
-  `robustness_tables/`. Leitura: US `35/40/25` segue como âncora mais limpa
-  (1988-2026 CAGR `15,65%` vs SPY `11,35%`, MDD `-29,94%` vs `-55,14%`; pós-2010
-  o edge de CAGR é menor, mas drawdown segue materialmente melhor). Variantes com
-  `CTAP`/`RSSX` melhoram terminal wealth nos proxies pós-2010, mas `RSSX` fica
-  opcional/sensível à hipótese BTC. Variantes globais melhoram drawdown contra
-  `66/34 VTI/VEA` e `100% VT`, mas não substituem o core US por retorno absoluto.
-  Rebalance-frequency e remove-one-sleeve exatos seguem bloqueados até exportar
-  uma matriz canônica de retornos por sleeve; research-only, sem deploy e sem
-  mudança no mandate `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
+### studies/return_stacked_core/ ✅ CANONICAL CONSOLIDATED RSC FOLDER
+- Criado em 2026-06-03 para substituir seis árvores antigas:
+  `b4-v2/`, `static_spy_beater_portfolio/`, `spy_beater_hunt/`,
+  `spy_beater_hunt_v2/`, `long_term_portfolio/` e `global_factor_tilt_loop/`.
+- Nome consolidado: **Return-Stacked Core (RSC)**. Vertente canônica RSC-US:
+  `35% GDE / 40% RSST / 25% ZROZ`; vertente RSC-Global:
+  `20% GDE / 15% NTSD / 20% RSST / 20% RSIT / 25% ZROZ`.
+- Conhecimento preservado em `README.md`, `STRATEGY.md`, `EVOLUTION.md`,
+  `ROBUSTNESS_REPORT.md`, `us_core/`, `global_variant/`, `robustness_tables/`,
+  `history/`, `legacy_spy_beater/` e `legacy_algorithms/`. Isso inclui old B4
+  `25/25/25/25`, B4+evo02 `70/30`, os no-winner hunts, a linhagem global, plots
+  comparativos e source reports.
+- Leitura: RSC-US `35/40/25` segue como âncora mais limpa (1988-2026 CAGR
+  `15,65%` vs SPY `11,35%`, MDD `-29,94%` vs `-55,14%`; pós-2010 o edge de CAGR
+  é menor, mas drawdown segue materialmente melhor). `CTAP`/`RSSX` são refinamentos
+  opcionais de implementação; RSC-Global é diversificação, não substituto por
+  retorno absoluto. Research-only, sem deploy e sem mudança no mandate
+  `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
   `[advances_fin_ml, p.208-211]`, `[leverage_for_the_long_run, p.13]`.
-- Fechamento explícito em `studies/b4-v2/CLOSING_SUMMARY.md`: B4-v2 fica como
-  pacote de robustez/documentação concluído, não como substituto direto de SPY para
-  maximizar retorno.
 
 ### studies/spy_sso_upro_replacement/ 🌱 ACTIVE PRACTICAL-TAXED SPY REPLACEMENT
 - Novo estudo iniciado em 2026-05-25 para testar substituto estático/baixo-turnover
@@ -244,16 +119,6 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
   validação/stress estreito dos winners ainda é obrigatório e não há deploy nem
   mudança no mandate `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`,
   `[leverage_for_the_long_run, p.13]`.
-
-### studies/spy_beater_hunt/ 🛑 CLOSED 2026-04-30
-- 55 iters; **B4 Conservative (25 NTSX / 25 GDE / 25 RSST / 25 ZROZ)** declared deploy-ready (Sharpe 0.745 net).
-- Iters 040-055 = post-closure RSST-corrected validation.
-- Refs: `studies/spy_beater_hunt/{TOP_STRATEGIES,WINNER_AND_RANKING,BASE_MEMORY}.md`.
-
-### studies/spy_beater_hunt_v2/ 🌱 OPEN STATE / NO WINNER
-- Novo estudo iniciado em 2026-05-13 para buscar uma estratégia de longo prazo que bata SPY buy-and-hold e passe gates hard-block de overfit: PBO, DSR, WF, OOS, FWD, bootstrap e cross-lib `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`.
-- Loop autônomo preparado em `studies/spy_beater_hunt_v2/loop.sh`: cada iteração abre uma sessão limpa de OpenCode/GPT-5.5, lê `MEMORY.md`, pré-registra a hipótese e escreve artefatos em `iterations/`.
-- Estado atual: 10 iters completados, 0 winners. A próxima iteração só deve testar mecanismo distinto, citado e com trial budget estrito. Mandate §1 permanece 100% Plano C; sem deploy automático.
 
 ### studies/success_trading_strat/ 🛑 CLOSED / NO WINNER
 - Estado consolidado: Phase 3 fechou em 30/30 iterações, `cumulative_n_trials=312`, zero strict winners, zero paper-trade candidates e sem deploy. `MEMORY.md` é a leitura canônica curta; reviews preservados em `reports/`.
@@ -336,14 +201,15 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 - Refs: `studies/myfxbook_reverse_engineering/_diagnostics/PIPELINE_V4_CLOSURE.md`.
 - Cleanup 2026-05-05: bulk OHLC (1.8GB) + trades (406MB) deletados (regeneráveis via Dukascopy se reativar).
 
-### studies/long_term_portfolio/ 📚 HISTORICAL / REFERENCE
-- Long-horizon allocation study retained in place because tests and later studies import its helpers.
-- Canonical reads: `FINAL_REPORT_seven_portfolios.md`, `BASE_MEMORY.md`, and the 2026-05-13 iter 058 report for B4/evo02 research compositions.
-- No deploy authorization: GA/LETF-derived sleeves remain research-only until hard gates clear `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`.
-
-### studies/global_factor_tilt_loop/ ❄️ FROZEN / REFERENCE
-- 14 iters (6 winners). Iter 009 (HAA+Gold) remains the Sharpe Pareto reference; iter 013 (HAA+ZROZ) is the CAGR frontier; annual-DARF reruns preserve the tax-engine lineage.
-- Not active. Reopen only with an explicit new hypothesis and mandate-compatible scope.
+### Former long_term_portfolio/global_factor_tilt_loop 📚 FOLDED INTO RSC
+- `long_term_portfolio/` and `global_factor_tilt_loop/` were folded into
+  `studies/return_stacked_core/`. Their key reports, plots, source ledgers and
+  importable helpers now live under `history/`, `legacy_algorithms/` and the RSC
+  Python modules.
+- Preserved conclusions include old B4 `25/25/25/25`, B4+evo02 `70/30`, HAA+Gold
+  Sharpe frontier, HAA+ZROZ CAGR frontier and annual-DARF lineage. No deploy
+  authorization: GA/LETF-derived sleeves remain research-only until hard gates clear
+  `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`.
 
 ### LETF rotation studies -> migrated to letf-lab
 - `studies/lrs/`, `studies/letf_rotation_hunt/` and `studies/spy_leveraged_rotation_hunt/` were extracted to `/var/www/victor/finances/letf-lab` on 2026-05-23.
@@ -400,14 +266,14 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 - Revisão consolidada 2026-05-13 em `reports/long_term_strategy_review/REPORT.md`: após rerun do comparativo T/D, auditoria de tabelas e gate-check manual de `T20D90`, a melhor referência de longo prazo do estudo permanece **iter030 canonical QLD/ZROZ LRS1.20**. `T20D90` é o melhor challenger balanceado local e `T20D120` o melhor performance-first, mas ambos ficam research-only por DSR/PBO; Stage4 QLD/TQQQ continua modern-regime monitor, não anchor 1986+ `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`.
 - Audit 2026-05-13 em `reports/underlying_signal_audit/REPORT.md`: a família iter030/T20D90/T20D120 usa **QLD como ativo de sinal**, não QQQ. Forçar o mesmo algoritmo a usar `QQQ` como sinal degrada fortemente: iter030 CAGR 36.66%→28.38% e MDD -55.48%→-91.09%; T20D90 CAGR 38.99%→29.18% e MDD -55.48%→-93.72%; T20D120 CAGR 39.01%→30.22% e MDD -55.48%→-94.10%. Conclusão: classificar como **LETF self-regime**, não LRS-underlying puro `[leverage_for_the_long_run, p.5-7]`, `[leverage_for_the_long_run, p.13]`.
 - Repair GA evolutions 2026-05-13 em `reports/repair_ga_evolutions/REPORT.md`: 6 evoluções sequenciais completadas, >=82.623 candidatos únicos nos manifests finais. QQQ-signal foi reparado de MDD ~-91/-94% para leads com MDD -32/-40% e CAGR 27-32%, mas abaixo do QLD-self-signal. Melhor discovery econômico é `evo04_qld_simplify` (`QLD_s100_200_vw21_vt0.50_ar30_k2_T15D120_w1.00_lrs1.10_g0.50_rv90_0.80`): Sortino 1.3751, CAGR 43.42%, MDD -52.73%. Ainda é discovery-only; próxima etapa é validação pequena com DSR/PBO acumulados `[advances_fin_ml, p.222-223]`.
-- Long-term portfolio iter 058 (`studies/long_term_portfolio/iterations/058-2026-05-13-b4-evo02-satellite/`) testou 6 carteiras com rebalanceamento mensal, aporte inicial USD 10k e aportes mensais USD 1k. A escolha de pesquisa atual é **70% B4 + 30% evo02**: CAGR 20.01%, MDD -21.60%, Sharpe 1.2038 e XIRR 19.74% vs B4 puro CAGR 14.62%, MDD -28.38%, Sharpe 1.0234 e XIRR 14.17%. `75% B4 + 25% evo02` ficou como alternativa mais conservadora (CAGR 19.15%, MDD -22.58%); `75% B4 + 25% evo01` teve maior Sharpe (1.2272). Guia operacional criado em `studies/long_term_portfolio/B4_EVO02_70_30_IMPLEMENTATION.md`. Research-only; GA sleeves ainda exigem validação hard antes de qualquer claim `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`.
+- Long-term portfolio iter 058, now preserved in `studies/return_stacked_core/history/b4_evo02_70_30/`, testou 6 carteiras com rebalanceamento mensal, aporte inicial USD 10k e aportes mensais USD 1k. A escolha de pesquisa atual era **70% B4 + 30% evo02**: CAGR 20.01%, MDD -21.60%, Sharpe 1.2038 e XIRR 19.74% vs B4 puro CAGR 14.62%, MDD -28.38%, Sharpe 1.0234 e XIRR 14.17%. `75% B4 + 25% evo02` ficou como alternativa mais conservadora (CAGR 19.15%, MDD -22.58%); `75% B4 + 25% evo01` teve maior Sharpe (1.2272). Research-only; GA sleeves ainda exigem validação hard antes de qualquer claim `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`.
 
 ### studies/bestfolio_meta_wf_hunt/ 🛑 CLOSED 2026-04-29
 - iter 001 dead-end: walk-forward solver sobre sleeves gate-screened com Sharpe density tight = noise (turnover 177-222%/ano sem edge).
 - Lesson preservada (anti-pattern documentado).
 
 ### studies/_shared/ 🔒 CRITICAL INFRA
-- `tax_engine.py` (espelho byte-identical de `global_factor_tilt_loop/tax_engine_v2.py`). AnnualDarfEngine canônico Lei 14.754. Não tocar.
+- `tax_engine.py` preserva o AnnualDarfEngine canônico Lei 14.754 derivado da antiga linhagem `global_factor_tilt_loop`. Não tocar.
 
 ### studies/_archive/ 📦 PRESERVED
 - strategy_hunt_loop (78 iters, 1 strict winner iter 079); gold_swing_loop (25 iters, 0 winner, structural ceiling); ema_sma_threshold (Phase 1 legacy).
@@ -455,12 +321,13 @@ Sumário do mandate (`docs/investment-mandate.md` é canônico):
 
 ## Changelog
 
+- **2026-06-03:** cleanup parcial de consolidação: `studies/SUMMARY.md` criado como ledger compacto de estudos/estratégias, docs públicos apontam para ele, broad-grid CSVs gerados de `spy_sso_upro_replacement` foram removidos após preservação das conclusões, e seis árvores antigas (`b4-v2/`, `static_spy_beater_portfolio/`, `spy_beater_hunt/`, `spy_beater_hunt_v2/`, `long_term_portfolio/`, `global_factor_tilt_loop/`) foram consolidadas em `studies/return_stacked_core/` sem mudar o mandate.
 - **2026-05-13:** `studies/technical_signal_vote_hunt/` ganhou revisão consolidada de melhor estratégia de longo prazo. Rerun do T/D sensitivity e gate-check manual de `T20D90` confirmam a conclusão: iter030 canonical segue como anchor; `T20D90/T20D120` são sensibilidades econômicas, não winners; mandate §1 inalterado.
 - **2026-05-13:** `technical_signal_vote_hunt` adicionou audit de ativo de sinal: QLD-signal é parte essencial da performance da família iter030; variantes QQQ-signal mantêm CAGR alto mas sofrem MDD >90%, então a família deve ser rotulada como LETF self-regime, não LRS-underlying puro.
 - **2026-05-13:** `technical_signal_vote_hunt` adicionou repair GA suite com 6 evoluções. QQQ-signal repair encontrou alternativas conceitualmente limpas com MDD controlado; QLD-self-signal gerou novo challenger econômico `evo04`, mas sem validação honesta ainda.
 - **2026-05-13:** `studies/spy_leveraged_rotation_hunt/` bootstrapped e rodou baseline + GA discovery inicial para `SPY/SSO/UPRO`. Baselines simples não passam o screen econômico vs SPY; GA encontrou 5/6 melhores candidatos por evolução que batem SPY em CAGR, Sharpe/Sortino e MaxDD, liderados por `SSO` self-signal `evo05`, mas todos seguem discovery-only pendentes de OOS/FWD/WF/bootstrap/PBO/DSR.
 - **2026-05-12:** `studies/weekly_momentum/` ganhou e encerrou evolução ETF-specific pós-fechamento. `focused_full_universe` melhorou o WF para CAGR 11.29% / Sharpe 0.712 vs SPY 10.63% / 0.619, mas falha DSR (`p=0.152`); `focused_no_leveraged` caiu para CAGR 6.65% e falha DSR/bootstrap. Conclusão: lead diagnóstico dependente de alavancados, sem autorização de deploy e sem novos sweeps locais sem hipótese nova `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`.
-- **2026-05-13:** `studies/spy_beater_hunt_v2/` bootstrapped como novo hunt ativo para tentar bater SPY buy-and-hold com gates hard-block de overfit. Scaffold inclui `MEMORY.md`, `SPEC.md`, `LOOP_PROTOCOL.md`, `LOOP_PROMPT.md` e `loop.sh` para sessões limpas OpenCode/GPT-5.5. Primeira iteração deve ser auditoria/benchmark, sem deploy e sem mudança no mandate `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`.
+- **2026-05-13:** antigo `studies/spy_beater_hunt_v2/` bootstrapped como novo hunt ativo para tentar bater SPY buy-and-hold com gates hard-block de overfit. O estudo depois fechou 10/10 hipóteses sem winner e foi incorporado a `studies/return_stacked_core/EVOLUTION.md`; sem deploy e sem mudança no mandate `[advances_fin_ml, p.196-202]`, `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.222-223]`.
 - **2026-05-14:** `studies/success_trading_strat/` bootstrapped para aplicar o workflow Neurotrader/Masters de IS MCPT + WF MCPT sobre novas hipóteses de trading. Como ação urgente de último dia Tiingo, o estudo registrou audit/backup final: ETF/crypto/forex/NDX100 refresh, SPX500 best-effort parcial, 1.755 tickers no manifesto e backup `data/tiingo_backup_20260514-0311.tar.gz`; sem claim de estratégia e sem mudança no mandate `[testing_tuning, p.318-320]`, `[advances_fin_ml, p.196-202]`.
 - **2026-05-14:** `success_trading_strat` completou iteração 002 infrastructure-only com scaffold reutilizável de IS MCPT/WF-MCPT e testes focados. Próxima iteração pode testar a primeira família pequena pré-registrada; `cumulative_n_trials` segue 0.
 - **2026-05-14:** `success_trading_strat` completou iterações 003-004 com duas famílias pequenas de estratégia. Ambas fecharam `fail`: SMA/momentum diário falhou PBO/MCPT; cross-sectional ETF momentum mensal passou PBO/DSR, mas falhou MCPT, Sharpe vs benchmark e FWD stress. `cumulative_n_trials=8`; mandate §1 inalterado.

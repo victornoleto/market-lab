@@ -1,4 +1,4 @@
-"""TDD tests for studies.long_term_portfolio.synths.
+"""TDD tests for studies.return_stacked_core.synths.
 
 Each synth function gets:
 - a smoke test (returns non-empty Series with DatetimeIndex)
@@ -8,7 +8,7 @@ Each synth function gets:
 import numpy as np
 import pandas as pd
 
-from studies.long_term_portfolio.synths import _annual_drag_to_daily
+from studies.return_stacked_core.synths import _annual_drag_to_daily
 
 
 def test_annual_drag_to_daily_75bps():
@@ -19,7 +19,7 @@ def test_annual_drag_to_daily_75bps():
 
 def test_ntsd_synth_formula():
     """NTSD = 0.90 * SPYSIM + 0.60 * VEASIM - (75bps/y / 252) per day."""
-    from studies.long_term_portfolio.synths import ntsd_synth_returns
+    from studies.return_stacked_core.synths import ntsd_synth_returns
 
     spy = pd.Series([0.01, 0.0, -0.005], index=pd.date_range("2024-01-02", periods=3, freq="B"))
     vea = pd.Series([0.005, 0.001, -0.002], index=pd.date_range("2024-01-02", periods=3, freq="B"))
@@ -33,7 +33,7 @@ def test_ntsd_synth_formula():
 
 def test_ntsd_synth_inception_window():
     """NTSD synth real cache: should produce 1986+ daily series ~10000 rows."""
-    from studies.long_term_portfolio.synths import ntsd_synth_returns_from_cache
+    from studies.return_stacked_core.synths import ntsd_synth_returns_from_cache
 
     s = ntsd_synth_returns_from_cache()
     assert isinstance(s, pd.Series)
@@ -45,7 +45,7 @@ def test_ntsd_synth_inception_window():
 
 def test_avuv_synth_formula():
     """AVUV = VBRSIM + (75bps/y / 252) per day."""
-    from studies.long_term_portfolio.synths import factor_tilt_synth_returns
+    from studies.return_stacked_core.synths import factor_tilt_synth_returns
 
     vbr = pd.Series([0.01, 0.0, -0.005], index=pd.date_range("2024-01-02", periods=3, freq="B"))
     result = factor_tilt_synth_returns(vbr, tilt_premium_annual=0.0075)
@@ -56,7 +56,7 @@ def test_avuv_synth_formula():
 
 def test_avdv_synth_formula():
     """AVDV = VSSSIM + (100bps/y / 252)."""
-    from studies.long_term_portfolio.synths import factor_tilt_synth_returns
+    from studies.return_stacked_core.synths import factor_tilt_synth_returns
 
     vss = pd.Series([0.01], index=pd.date_range("2024-01-02", periods=1, freq="B"))
     result = factor_tilt_synth_returns(vss, tilt_premium_annual=0.0100)
@@ -67,7 +67,7 @@ def test_avdv_synth_formula():
 
 def test_avem_synth_formula():
     """AVEM = VWOSIM + (125bps/y / 252)."""
-    from studies.long_term_portfolio.synths import factor_tilt_synth_returns
+    from studies.return_stacked_core.synths import factor_tilt_synth_returns
 
     vwo = pd.Series([0.01], index=pd.date_range("2024-01-02", periods=1, freq="B"))
     result = factor_tilt_synth_returns(vwo, tilt_premium_annual=0.0125)
@@ -78,7 +78,7 @@ def test_avem_synth_formula():
 
 def test_avuv_synth_from_cache():
     """AVUV synth from VBRSIM cache: 1926+ window."""
-    from studies.long_term_portfolio.synths import avuv_synth_returns_from_cache
+    from studies.return_stacked_core.synths import avuv_synth_returns_from_cache
 
     s = avuv_synth_returns_from_cache()
     assert s.index[0].year <= 1927
@@ -87,7 +87,7 @@ def test_avuv_synth_from_cache():
 
 def test_avem_synth_from_cache_window():
     """AVEM synth from VWOSIM cache: 1994+ window (32y bottleneck)."""
-    from studies.long_term_portfolio.synths import avem_synth_returns_from_cache
+    from studies.return_stacked_core.synths import avem_synth_returns_from_cache
 
     s = avem_synth_returns_from_cache()
     assert s.index[0].year >= 1994
@@ -96,7 +96,7 @@ def test_avem_synth_from_cache_window():
 
 def test_spmo_synth_formula():
     """SPMO = SPYSIM + 0.60 * UMD_KF - (35bps/y / 252)."""
-    from studies.long_term_portfolio.synths import momentum_synth_returns
+    from studies.return_stacked_core.synths import momentum_synth_returns
 
     spy = pd.Series([0.01, 0.0], index=pd.date_range("2024-01-02", periods=2, freq="B"))
     umd = pd.Series([0.005, -0.001], index=pd.date_range("2024-01-02", periods=2, freq="B"))
@@ -111,7 +111,7 @@ def test_spmo_synth_formula():
 
 def test_idmo_synth_formula():
     """IDMO = VEASIM + 0.60 * UMD_KF - (60bps/y / 252)."""
-    from studies.long_term_portfolio.synths import momentum_synth_returns
+    from studies.return_stacked_core.synths import momentum_synth_returns
 
     vea = pd.Series([0.01], index=pd.date_range("2024-01-02", periods=1, freq="B"))
     umd = pd.Series([0.005], index=pd.date_range("2024-01-02", periods=1, freq="B"))
@@ -126,7 +126,7 @@ def test_idmo_synth_formula():
 
 def test_spmo_synth_no_free_lunch_check():
     """KILL #3: SPMO standalone Sharpe must be < 1.5 vs literature ~0.6-0.8."""
-    from studies.long_term_portfolio.synths import spmo_synth_returns_from_cache
+    from studies.return_stacked_core.synths import spmo_synth_returns_from_cache
 
     spmo = spmo_synth_returns_from_cache()
     annualized_sharpe = spmo.mean() / spmo.std() * np.sqrt(252)
@@ -135,7 +135,7 @@ def test_spmo_synth_no_free_lunch_check():
 
 def test_rsst_synth_formula():
     """RSST = SPYSIM + KMLMSIM - (60bps/y / 252)."""
-    from studies.long_term_portfolio.synths import rsst_synth_returns
+    from studies.return_stacked_core.synths import rsst_synth_returns
 
     spy = pd.Series([0.01], index=pd.date_range("2024-01-02", periods=1, freq="B"))
     kmlm = pd.Series([0.005], index=pd.date_range("2024-01-02", periods=1, freq="B"))
@@ -154,7 +154,7 @@ def test_rsst_synth_no_free_lunch_kill5():
     Absolute cap < 1.5 catches synth bugs (double-counted leverage, leakage) while
     allowing legitimate stacked-asset Sharpe (~0.9-1.0 expected for SPY+KMLM).
     """
-    from studies.long_term_portfolio.synths import rsst_synth_returns_from_cache
+    from studies.return_stacked_core.synths import rsst_synth_returns_from_cache
 
     rsst = rsst_synth_returns_from_cache()
     rsst_sharpe = rsst.mean() / rsst.std() * np.sqrt(252)
@@ -163,7 +163,7 @@ def test_rsst_synth_no_free_lunch_kill5():
 
 def test_dbmf_load_from_cache():
     """DBMFSIM cached: 1999+ daily window."""
-    from studies.long_term_portfolio.synths import dbmf_returns_from_cache
+    from studies.return_stacked_core.synths import dbmf_returns_from_cache
 
     dbmf = dbmf_returns_from_cache()
     assert dbmf.index[0].year >= 1999
@@ -173,5 +173,5 @@ def test_dbmf_load_from_cache():
 
 def test_cta_proxy_warning_in_docstring():
     """CTA Simplify proxy must explicitly flag INCOMPLETE in docstring."""
-    from studies.long_term_portfolio.synths import cta_simplify_proxy_returns
+    from studies.return_stacked_core.synths import cta_simplify_proxy_returns
     assert "INCOMPLETE" in cta_simplify_proxy_returns.__doc__

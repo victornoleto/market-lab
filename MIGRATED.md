@@ -45,7 +45,8 @@ shared locations so the non-LETF code keeps working after the deletion:
 Files rewritten:
 
 - 16 in `studies/technical_signal_vote_hunt/{runners,webapp}/`
-- 11 in `studies/spy_beater_hunt_v2/iterations/*/` and `reports/`
+- 11 in `studies/spy_beater_hunt_v2/iterations/*/` and `reports/` before the
+  2026-06-03 v2 compaction
 - 1 in `studies/success_trading_strat/iters/phase01/019-2026-05-14-yield-carry-rotation/`
 - 1 in `studies/weekly_momentum/core.py`
 
@@ -96,8 +97,9 @@ canonical equivalents inside `/var/www/victor/finances/letf-lab`.
 
 ## What still stays in market-lab (shared infra, not LETF research)
 
-- `src/market_lab/backtest/strategies/letf_rotation.py` — still imported by
-  `studies/spy_beater_hunt_v2/iterations/*` for cross-strategy comparisons.
+- `src/market_lab/backtest/strategies/letf_rotation.py` — formerly imported by
+  `studies/spy_beater_hunt_v2/iterations/*` for cross-strategy comparisons; those
+  iteration artifacts were compacted on 2026-06-03.
 - `src/market_lab/backtest/helpers/synthetic_letf.py` — referenced by
   `tests/cross_lib/`, `spx_tr_loader.py`, `testfolio_loader.py`.
 - `src/market_lab/backtest/grid/{letf_rotation_b1c,real_etf_*,ema_sma_threshold_grid}.py`

@@ -9,7 +9,7 @@ import pandas as pd
 
 MODULE_PATH = (
     Path(__file__).parents[1]
-    / "studies/long_term_portfolio/iterations/002-2026-04-28-0134-composite-momentum-standard/composite_momentum.py"
+    / "studies/return_stacked_core/legacy_algorithms/composite_momentum.py"
 )
 spec = importlib.util.spec_from_file_location("composite_momentum_iter002", MODULE_PATH)
 cms = importlib.util.module_from_spec(spec)

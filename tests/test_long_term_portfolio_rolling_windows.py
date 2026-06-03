@@ -14,7 +14,7 @@ def _synthetic_returns(n_years: float, seed: int = 42, mu: float = 0.10, sigma: 
 
 
 def test_rolling_sharpe_at_windows_returns_dict_keyed_by_years() -> None:
-    from studies.long_term_portfolio.rolling_windows import rolling_sharpe_at_windows
+    from studies.return_stacked_core.rolling_windows import rolling_sharpe_at_windows
 
     s = _synthetic_returns(40)
     out = rolling_sharpe_at_windows(s, [3, 5, 10, 30])
@@ -26,7 +26,7 @@ def test_rolling_sharpe_at_windows_returns_dict_keyed_by_years() -> None:
 
 def test_rolling_sharpe_skips_windows_too_long_for_data() -> None:
     """A 30y window on 17y of data → empty Series, not an error."""
-    from studies.long_term_portfolio.rolling_windows import rolling_sharpe_at_windows
+    from studies.return_stacked_core.rolling_windows import rolling_sharpe_at_windows
 
     s = _synthetic_returns(17)
     out = rolling_sharpe_at_windows(s, [3, 5, 10, 15, 20, 30])
@@ -41,7 +41,7 @@ def test_rolling_sharpe_skips_windows_too_long_for_data() -> None:
 
 def test_rolling_sharpe_values_match_manual_computation() -> None:
     """Spot-check: 5y rolling Sharpe at the end of 10y of data."""
-    from studies.long_term_portfolio.rolling_windows import rolling_sharpe_at_windows
+    from studies.return_stacked_core.rolling_windows import rolling_sharpe_at_windows
 
     s = _synthetic_returns(10, seed=1)
     out = rolling_sharpe_at_windows(s, [5])
@@ -52,7 +52,7 @@ def test_rolling_sharpe_values_match_manual_computation() -> None:
 
 def test_rolling_outperformance_pct_returns_fraction_and_count() -> None:
     """Returns a dict[window_years] -> {'pct_strat_wins': float, 'n_windows': int}."""
-    from studies.long_term_portfolio.rolling_windows import rolling_outperformance_pct
+    from studies.return_stacked_core.rolling_windows import rolling_outperformance_pct
 
     strat = _synthetic_returns(20, seed=1, mu=0.12)
     bench = _synthetic_returns(20, seed=1, mu=0.08)  # same noise, different mean
@@ -66,7 +66,7 @@ def test_rolling_outperformance_pct_returns_fraction_and_count() -> None:
 
 
 def test_rolling_outperformance_handles_window_too_long() -> None:
-    from studies.long_term_portfolio.rolling_windows import rolling_outperformance_pct
+    from studies.return_stacked_core.rolling_windows import rolling_outperformance_pct
 
     strat = _synthetic_returns(8)
     bench = _synthetic_returns(8, seed=99)
@@ -77,6 +77,6 @@ def test_rolling_outperformance_handles_window_too_long() -> None:
 
 
 def test_default_window_menu_is_3_5_10_15_20_30() -> None:
-    from studies.long_term_portfolio.rolling_windows import DEFAULT_WINDOWS_YEARS
+    from studies.return_stacked_core.rolling_windows import DEFAULT_WINDOWS_YEARS
 
     assert DEFAULT_WINDOWS_YEARS == [3, 5, 10, 15, 20, 30]

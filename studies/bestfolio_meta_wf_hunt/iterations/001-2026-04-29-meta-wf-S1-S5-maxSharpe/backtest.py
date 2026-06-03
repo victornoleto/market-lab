@@ -1,8 +1,7 @@
 """Iter 001 — meta walk-forward, max-Sharpe over S1-S5 universe.
 
-Loads daily gross_returns from 5 pre-validated sleeves in
-``studies/long_term_portfolio/iterations/`` and runs ``walk_forward_solve``
-per dataset (lh_56y / vt_real / ndx_real). Reports Sharpe/CAGR/MDD,
+Loads daily gross_returns from 5 pre-validated legacy sleeves and runs
+``walk_forward_solve`` per dataset (lh_56y / vt_real / ndx_real). Reports Sharpe/CAGR/MDD,
 Sharpe edge vs S1 (F1+SPLIT incumbent), DSR with cumulative n_trials,
 walk-forward 8-fold, bootstrap 99.9% CI.
 
@@ -41,7 +40,13 @@ from market_lab.backtest.validation.walk_forward import (  # noqa: E402
 )
 
 ITER_DIR = Path(__file__).resolve().parent
-LTP_ITERS = REPO_ROOT / "studies" / "long_term_portfolio" / "iterations"
+LEGACY_LTP_ITERS = (
+    REPO_ROOT
+    / "studies"
+    / "return_stacked_core"
+    / "history"
+    / "legacy_long_term_iterations"
+)
 
 DATASETS = ["lh_56y", "vt_real", "ndx_real"]
 
@@ -61,11 +66,17 @@ MAX_WEIGHT = 0.40
 EMBARGO_DAYS = 21
 BOOTSTRAP_N = 2000
 WF_N_WINDOWS = 8
-CUMULATIVE_N_TRIALS_PRIOR = 156  # long_term_portfolio cumulative through iter 043
+CUMULATIVE_N_TRIALS_PRIOR = 156  # legacy long-term loop cumulative through iter 043
 
 
 def _load_sleeve_returns(iter_dirname: str, config_slug: str) -> dict[str, pd.Series]:
-    path = LTP_ITERS / iter_dirname / "results.json"
+    path = LEGACY_LTP_ITERS / iter_dirname / "results.json"
+    if not path.exists():
+        raise FileNotFoundError(
+            f"missing legacy sleeve returns at {path}; this closed 2026-04-29 "
+            "iteration depended on generated long-term-loop outputs that are "
+            "not in the active tree after RSC consolidation"
+        )
     with path.open() as f:
         data = json.load(f)
     rs = data.get("returns_series", {})

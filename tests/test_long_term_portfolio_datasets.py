@@ -7,7 +7,7 @@ import pytest
 
 
 def test_dataset_registry_lists_expected_datasets() -> None:
-    from studies.long_term_portfolio.datasets import DATASETS
+    from studies.return_stacked_core.datasets import DATASETS
 
     # 2026-04-29: spy_real added for spy_beater_hunt (replaces vt_real/ndx_real
     # in that hunt; long_term_portfolio still uses lh_56y/vt_real/ndx_real).
@@ -17,7 +17,7 @@ def test_dataset_registry_lists_expected_datasets() -> None:
 
 
 def test_lh_56y_window_is_1970_to_2026() -> None:
-    from studies.long_term_portfolio.datasets import DATASETS
+    from studies.return_stacked_core.datasets import DATASETS
 
     meta = DATASETS["lh_56y"]
     assert meta["start"] == "1970-01-02"
@@ -25,7 +25,7 @@ def test_lh_56y_window_is_1970_to_2026() -> None:
 
 
 def test_load_prices_returns_dataframe_with_all_sim_columns() -> None:
-    from studies.long_term_portfolio.datasets import load_prices
+    from studies.return_stacked_core.datasets import load_prices
 
     df = load_prices("lh_56y")
     assert isinstance(df, pd.DataFrame)
@@ -38,7 +38,7 @@ def test_load_prices_returns_dataframe_with_all_sim_columns() -> None:
 
 def test_lh_56y_kmlmsim_column_has_no_nan_pre_1988() -> None:
     """The splice replaces pre-1988 NaNs with FF MoM proxy returns chained as equity."""
-    from studies.long_term_portfolio.datasets import load_prices
+    from studies.return_stacked_core.datasets import load_prices
 
     df = load_prices("lh_56y")
     pre_1988 = df.loc[:"1987-12-30", "KMLMSIM"]
@@ -51,8 +51,8 @@ def test_lh_56y_kmlmsim_column_has_no_nan_pre_1988() -> None:
 
 def test_lh_56y_kmlmsim_pct_change_pre_1988_matches_ff_proxy() -> None:
     """pct_change of spliced KMLMSIM column 1970-1987 should equal FF MoM proxy returns."""
-    from studies.long_term_portfolio.datasets import load_prices
-    from studies.long_term_portfolio.ff_momentum_proxy import ff_momentum_proxy
+    from studies.return_stacked_core.datasets import load_prices
+    from studies.return_stacked_core.ff_momentum_proxy import ff_momentum_proxy
 
     df = load_prices("lh_56y")
     spliced_returns = df["KMLMSIM"].pct_change().dropna()
@@ -65,7 +65,7 @@ def test_lh_56y_kmlmsim_pct_change_pre_1988_matches_ff_proxy() -> None:
 
 def test_lh_56y_kmlmsim_post_1988_matches_raw_kmlmsim() -> None:
     """post-1988 KMLMSIM in the spliced frame matches raw testfolio KMLMSIM up to scale."""
-    from studies.long_term_portfolio.datasets import load_prices
+    from studies.return_stacked_core.datasets import load_prices
     from market_lab.backtest.data.testfolio_loader import load_testfolio_series
 
     df = load_prices("lh_56y")
@@ -81,7 +81,7 @@ def test_lh_56y_kmlmsim_post_1988_matches_raw_kmlmsim() -> None:
 
 
 def test_load_prices_unknown_dataset_raises() -> None:
-    from studies.long_term_portfolio.datasets import load_prices
+    from studies.return_stacked_core.datasets import load_prices
 
     with pytest.raises(KeyError):
         load_prices("does_not_exist")
@@ -89,7 +89,7 @@ def test_load_prices_unknown_dataset_raises() -> None:
 
 def test_vt_real_and_ndx_real_windows_unchanged() -> None:
     """Continuity: live-data datasets keep their historical windows."""
-    from studies.long_term_portfolio.datasets import DATASETS
+    from studies.return_stacked_core.datasets import DATASETS
 
     assert DATASETS["vt_real"]["start"] == "2008-06-01"
     assert DATASETS["ndx_real"]["start"] == "2010-02-01"

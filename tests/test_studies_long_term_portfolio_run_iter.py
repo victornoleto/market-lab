@@ -1,8 +1,8 @@
-"""TDD tests for studies.long_term_portfolio.run_iter."""
+"""TDD tests for studies.return_stacked_core.run_iter."""
 import pandas as pd
 import pytest
 
-from studies.long_term_portfolio.run_iter import portfolio_returns_from_config
+from studies.return_stacked_core.run_iter import portfolio_returns_from_config
 
 
 def test_portfolio_returns_from_simple_config():
