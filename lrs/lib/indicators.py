@@ -88,6 +88,24 @@ def roc_gate(prices: pd.Series, lookback: int = 126) -> pd.Series:
     return _lagged_bool(roc > 0.0, prices.index)
 
 
+def ema_gate(prices: pd.Series, span: int = 200) -> pd.Series:
+    """Risk-on only when price is above its exponential moving average.
+
+    A REPLACEMENT for the SMA level gate (Gayed's regime rule
+    `[leverage_for_the_long_run, p.13]`), not an AND-filter. The EMA weights
+    recent prices more, with the smoothing constant tied to the span via
+    ``alpha = 2/(span+1)`` so the centre-of-mass / decay horizon scales with
+    ``span`` `[systematic_trading, p.283]`; it reacts faster than an SMA of the
+    same length.
+
+    Warmup uses ``min_periods=span`` for parity with the SMA(span) gate, and the
+    raw comparison is ``.shift(1)``-lagged so execution uses only the previous
+    close `[testing_tuning, p.327-335]`. Warmup/NaN -> ``False`` (risk-off).
+    """
+    ema = prices.ewm(span=span, min_periods=span, adjust=False).mean()
+    return _lagged_bool(prices > ema, prices.index)
+
+
 def trend_hysteresis_gate(
     prices: pd.Series,
     lookback: int = 200,
@@ -168,3 +186,81 @@ def adx_gate(prices: pd.Series, window: int = 14, threshold: float = 20.0) -> pd
     """
     adx = adx_close_only(prices, window)
     return _lagged_bool(adx > threshold, prices.index)
+
+
+# ---------------------------------------------------------------------------
+# Phase 3C theory-anchor & adaptive-window helpers
+# ---------------------------------------------------------------------------
+
+
+def autocorr(series: pd.Series, lag: int) -> float:
+    """Pearson autocorrelation of ``series`` at ``lag`` (no library dependency)."""
+    x = series.dropna().to_numpy(dtype=float)
+    if lag <= 0 or lag >= len(x):
+        return float("nan")
+    a = x[:-lag] - x[:-lag].mean()
+    b = x[lag:] - x[lag:].mean()
+    denom = float(np.sqrt((a * a).sum() * (b * b).sum()))
+    if denom == 0.0:
+        return float("nan")
+    return float((a * b).sum() / denom)
+
+
+def acf_decay_half_life(series: pd.Series, n_lags: int = 10) -> float:
+    """Half-life (in observations) of the autocorrelation decay.
+
+    Regresses ``log(rho_k)`` on ``k`` over the first ``n_lags`` lags with positive
+    autocorrelation; ``persistence = exp(slope)`` and ``half_life =
+    ln(0.5)/slope``. On squared returns this approximates GARCH(1,1) persistence
+    ``alpha+beta`` (the squared-return ACF decays at that geometric rate)
+    `[volatility_trading, p.39, p.53-54]`. Returns ``nan`` when there is no
+    positive, decaying autocorrelation to fit (e.g. near-white signed returns).
+    """
+    lags: list[int] = []
+    rhos: list[float] = []
+    for k in range(1, n_lags + 1):
+        r = autocorr(series, k)
+        if np.isfinite(r) and r > 0.0:
+            lags.append(k)
+            rhos.append(r)
+    if len(rhos) < 2:
+        return float("nan")
+    slope, _ = np.polyfit(np.asarray(lags, dtype=float), np.log(np.asarray(rhos)), 1)
+    if slope >= 0.0:
+        return float("nan")
+    return float(np.log(0.5) / slope)
+
+
+def ewma_span_from_half_life(half_life: float) -> float:
+    """Span of the EWMA whose half-life equals ``half_life``.
+
+    For an EWMA with ``alpha = 2/(span+1)`` the half-life is
+    ``ln(0.5)/ln(1-alpha)``; inverting, ``alpha = 1 - 0.5**(1/half_life)`` and
+    ``span = 2/alpha - 1`` `[systematic_trading, p.283]`.
+    """
+    if not np.isfinite(half_life) or half_life <= 0.0:
+        return float("nan")
+    alpha = 1.0 - 0.5 ** (1.0 / half_life)
+    return float(2.0 / alpha - 1.0)
+
+
+def adaptive_vol_window(
+    realized_vol: pd.Series,
+    w_base: int = 200,
+    vol_target: float = 0.15,
+    w_min: int = 50,
+    w_max: int = 400,
+) -> pd.Series:
+    """Volatility-scaled trend window (high vol -> shorter, low vol -> longer).
+
+    ``w_t = clip(round(w_base * vol_target / realized_vol_t), w_min, w_max)`` then
+    ``.shift(1)``-lagged so the window in force on day ``t`` uses only realized
+    vol known at ``t-1``; warmup/NaN -> ``w_base``. Reducing the lookback when
+    risk rises is conservative position-sizing logic `[systematic_trading,
+    p.137-148]`; the leverage-amplified cost of switching is reported explicitly
+    `[leverage_for_the_long_run, p.4-7]`.
+    """
+    rv = realized_vol.astype(float)
+    raw = (float(w_base) * float(vol_target) / rv).round()
+    w = raw.shift(1).fillna(float(w_base))
+    return w.clip(lower=w_min, upper=w_max).astype(int)

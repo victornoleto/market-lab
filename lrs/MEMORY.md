@@ -177,3 +177,127 @@ mandate validation gates.
 
 Validation status: not validated; diagnostic confirmation-vote phase only. No
 deployment, no paper-trade label, no mandate allocation change.
+
+## 2026-06-07 - Phase 3A-2 Alternative Regime Signals (Replacement) Executed
+
+Runner: `uv run python -m lrs.phases.phase03b_regime_signals.run`.
+
+Outputs:
+
+- `phases/phase03b_regime_signals/REPORT.md`, `README.md`.
+- `results/phase03b_regime_signals.csv`.
+- `phases/phase03b_regime_signals/plots/`.
+- New helper: `lrs/lib/indicators.ema_gate`. New tests:
+  `tests/test_lrs_phase03b.py`.
+
+Pre-registered grid (216 rows): SPY/QQQ x 3 branch-specific bases (identical to
+Phase 3A) x 6 regime forms x lag `0..5`. Each form REPLACES the SMA200 trend gate
+(`signal = G & vol_gate`), not ANDed onto it - the direct follow-up to the Phase
+3A insight that an AND-gate can only further restrict risk-on. Lookback held
+FIXED at 200 across all forms to isolate signal *form* from *window* (the window
+question is Phase 3C's). Forms: SMA200 control `[leverage_for_the_long_run,
+p.13]`, EMA200 `[systematic_trading, p.283]`, hyst200 band5%/8%
+`[trading_systems_methods, p.383]`, ROC200>0 `[stocks_on_the_move, p.58, p.60]`,
+Clenow200>0 `[stocks_on_the_move, p.70-77, p.98]`. Phase 2 scoring +
+`practical_pass` kept verbatim.
+
+Result summary (NEGATIVE for beats-both; EMA200 a QQQ-only near-tie):
+
+- Built-in sanity PASSED: SMA200 control reproduces Phase 2 across `36` matched
+  base+lag rows, max abs diff in after-tax CAGR/MDD `8.33e-17` (~0) vs
+  `lrs/results/phase02_target_leverage_vol.csv`.
+- Top score row is the SMA200 control: `SPY spy_top` L`2.00` lag `3`, after-tax
+  CAGR `15.44%`, MDD `-39.28%`, Calmar `0.393`, terminal `12.28x` - identical to
+  the Phase 2 / Phase 3A top.
+- Does any non-control form beat SMA200 on BOTH branches (by score)? NO
+  (QQQ: no, SPY: no).
+- EMA200 is the only competitive alternative, and only on QQQ: best-by-form score
+  `3.828` vs SMA200 `3.830` (near-tie). On `qqq_top` lag `0` EMA200 lifts CAGR
+  `+1.36pp` (20.82%) but worsens MDD `-3.57pp` (-46.15%), so score nets slightly
+  below the control. On SPY, EMA200 is clearly worse (`-1.59pp` CAGR AND
+  `-8.86pp` MDD on `spy_top`).
+- Hysteresis / ROC / Clenow as REPLACEMENT gates badly worsen drawdown on both
+  branches (best-by-form MDD `-50%` to `-74%`, warning/ruin tiers) while not
+  lifting CAGR - the leveraged-whipsaw cost: a noisier/stickier trend gate holds
+  levered exposure into drawdowns that the clean SMA200 level exits. This matches
+  the spin-off caution that leverage amplifies lookback/trend-switch cost
+  `[leverage_for_the_long_run, p.4-7]`.
+- Practical-pass rows: `64`; preferred `<=40%` MDD rows: `7`; QQQ practical-pass:
+  `36`.
+
+Interpretation: the SMA200 *level* is a robust regime gate for this leveraged
+geometry; no alternative *form* (at fixed window 200) beats it on both branches.
+Hysteresis is NOT promoted (it worsened MDD, not held risk-on usefully). Per the
+approved design, Phase 3C studies SMA + EMA only (hysteresis excluded), with the
+SMA200 level as control - answering "why 200?" via robustness map + theory anchor
++ gated adaptive `[trading_systems_methods, p.939]`, `[advances_fin_ml,
+p.208-211]`.
+
+Validation status: not validated; diagnostic regime-form phase only. No
+deployment, no paper-trade label, no mandate allocation change.
+
+## 2026-06-07 - Phase 3C Lookback Study Executed
+
+Runner: `uv run python -m lrs.phases.phase03c_lookback_study.run`.
+
+Outputs:
+
+- `phases/phase03c_lookback_study/REPORT.md`, `README.md`.
+- `results/phase03c_lookback_study.csv` (936 rows),
+  `results/phase03c_theory_anchor.csv`.
+- `phases/phase03c_lookback_study/plots/` (SPY/QQQ surfaces, score surface,
+  adaptive comparison).
+- New helpers: `lrs/lib/indicators.{autocorr,acf_decay_half_life,
+  ewma_span_from_half_life,adaptive_vol_window}`. New tests:
+  `tests/test_lrs_phase03c.py`.
+
+Question: *why SMA 200?* Pre-registered to avoid both overfit traps (blind trust
+vs sweep-and-pick-argmax). Studies SMA + EMA only (hysteresis not promoted in
+3A-2). Grid (936 rows): 13 windows `50..400` x {SMA, EMA} x 6 bases x lag `0..5`.
+Mechanism unchanged from 3A-2 (gate replaces SMA, `signal = G & vol_gate`, Phase 2
+scoring verbatim). Pre-registered plateau rule: contiguous Calmar band within 10%
+of band-best, width `>= 150` days, read at best-score lag per window. We did NOT
+promote the argmax `[trading_systems_methods, p.939]`, `[advances_fin_ml,
+p.208-211]`.
+
+Result summary (nuanced - fragile by strict rule, but adaptivity does NOT help):
+
+- **Part 1 robustness:** by the strict rule, BOTH primary SMA curves are narrow
+  peaks (fragile): SPY band `200-225` (width 25), QQQ band `175-225` (width 50);
+  both below the 150-day plateau threshold. EMA is even peakier (argmax 100).
+  Driver of the fragility is MDD/Calmar sensitivity on the leveraged sleeve: long
+  windows collapse to ~`-59%` MDD (SPY `>=275`, QQQ `>=250`) because a too-long
+  window exits the regime late into crashes. There IS a broad *adequate* region
+  (~`150-250`, tolerable/preferred MDD); within it, 200 is at/near the Calmar-best
+  (SPY argmax `200`; QQQ argmax `175`, with `225` ~tied) - but it is not a wide
+  flat plateau.
+- **Part 2 theory anchor (ex-ante):** vol-persistence half-life (squared-return
+  ACF decay ~ GARCH `alpha+beta`) is SHORT: SPY `10.9d`, QQQ `14.3d` -> EWMA span
+  ~`32/41`, `2xHL` ~`22/29` - far below the empirical adequate region. Signed-
+  return autocorrelation half-life is `n/a` (near-white): no daily momentum
+  horizon. So 200 is NOT a persistence-matched horizon; it is a slow regime/level
+  filter much longer than any autocorrelation timescale `[volatility_trading,
+  p.39, p.53-54]`, `[systematic_trading, p.283]`, `[stocks_on_the_move, p.58,
+  p.60]`.
+- **Part 3 adaptive (gated ON by fragility):** vol-scaled window
+  `w_t = clip(round(200 * 0.15 / RV63), 50, 400)`, `.shift(1)`-lagged. It does NOT
+  beat the fixed window net of turnover on either branch: SPY adaptive (mean W
+  234.5) CAGR `15.01%` / MDD `-52.84%` / Calmar `0.284` vs fixed-200
+  `15.44%`/`-39.28%`/`0.393`; QQQ adaptive (mean W 162.2) `20.13%`/`-46.18%`/
+  `0.436` vs fixed-200 `19.46%`/`-42.58%`/`0.457` and best-fixed-175
+  `20.92%`/`-43.32%`/`0.483`. This directly confirms the spin-off caution that
+  leverage amplifies lookback-switch cost `[leverage_for_the_long_run, p.4-7]`.
+- **Spin-off cross-check** (markers only, not inherited): single-asset optima SPY
+  ~`250-295`, QQQ ~`245`; 200 is the round popular number, not the empirical best
+  `[trading_systems_methods, p.27, p.917-919]`.
+
+Interpretation / "why 200?": 200 is a sound FIXED default sitting at/near the
+Calmar-best inside a broad adequate region `~175-225`; it is empirically adequate
+but neither a wide flat plateau nor theoretically anchored by persistence (those
+suggest ~3-6 weeks). Keep a fixed window in `~175-225`, AVOID windows `>=250`
+(late-exit MDD blowups under leverage), treat the Phase 2 exposure geometry as the
+real driver, and do NOT adopt adaptive windowing despite the fragility flag (it
+loses net of turnover). The pre-registered argmax was NOT promoted.
+
+Validation status: not validated; diagnostic lookback study only. No deployment,
+no paper-trade label, no mandate allocation change.

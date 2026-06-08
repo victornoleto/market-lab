@@ -106,6 +106,53 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
   BLOQUEADO: sem inverse tickers no cache. Sem deploy, sem paper-trade label,
   mandate §1 inalterado `[trading_systems_methods, p.939]`, `[advances_fin_ml,
   p.208-211]`.
+- Phase 3A-2 em `lrs/phases/phase03b_regime_signals/`: 216 linhas avaliadas
+  (SPY/QQQ x 3 bases por branch x 6 formas de regime x lag `0..5`). Diferente da
+  3A, cada forma SUBSTITUI o gate SMA200 (`signal = G & vol_gate`), não faz AND —
+  é o follow-up direto do insight da 3A. Lookback FIXO em 200 para isolar *forma*
+  de *janela* (a janela é a pergunta da Phase 3C). Formas: SMA200 controle,
+  EMA200, histerese band5%/8%, ROC200>0, Clenow200>0. Sanity PASSOU: a forma
+  SMA200 reproduz a Phase 2 em `36` linhas casadas, max abs diff after-tax
+  CAGR/MDD `8,33e-17` (~0). Resultado NEGATIVO para "bate as DUAS branches":
+  nenhuma forma supera a SMA200 por score em SPY e QQQ. Top geral segue o controle
+  SMA200 (`SPY spy_top` L`2,00` lag `3`, CAGR `15,44%`, MDD `-39,28%`). EMA200 é a
+  única alternativa competitiva e só em QQQ (score `3,828` vs `3,830`: `+1,36pp`
+  CAGR mas `-3,57pp` MDD em `qqq_top` lag `0`); em SPY a EMA perde em CAGR e MDD.
+  Histerese/ROC/Clenow como gate substituto pioram muito o drawdown nas duas
+  branches (MDD `-50%` a `-74%`, warning/ruin) — custo de whipsaw amplificado por
+  alavancagem: um gate de tendência mais ruidoso/"grudento" segura exposição
+  alavancada em quedas que o nível SMA200 limpo já sairia. Leitura: o *nível*
+  SMA200 é gate de regime robusto para esta geometria; histerese NÃO promovida.
+  Pela design aprovada, Phase 3C estuda só SMA + EMA (histerese excluída), com
+  SMA200 como controle. Sem deploy, sem paper-trade label, mandate §1 inalterado
+  `[leverage_for_the_long_run, p.13]`, `[leverage_for_the_long_run, p.4-7]`,
+  `[systematic_trading, p.283]`, `[trading_systems_methods, p.939]`,
+  `[advances_fin_ml, p.208-211]`.
+- Phase 3C em `lrs/phases/phase03c_lookback_study/`: responde "por que SMA 200?"
+  com regra de platô PRÉ-REGISTRADA (NÃO promove o argmax). 936 linhas (13 janelas
+  `50..400` x {SMA, EMA} x 6 bases x lag `0..5`); mecanismo da 3A-2 (gate
+  substitui SMA, `signal = G & vol_gate`, scoring Phase 2 verbatim). Platô robusto
+  = banda contígua de Calmar dentro de 10% do melhor, largura `>=150` dias, lida
+  no melhor lag por janela. Resultado matizado: pela regra estrita, AMBAS as
+  curvas SMA primárias são picos estreitos (frágeis): SPY `200-225`, QQQ
+  `175-225` (abaixo de 150). A fragilidade vem da sensibilidade de MDD/Calmar na
+  sleeve alavancada — janelas longas colapsam para ~`-59%` MDD (SPY `>=275`, QQQ
+  `>=250`, saída tardia do regime). Há uma região *adequada* ampla (~`150-250`,
+  MDD tolerable/preferred) onde 200 fica no/perto do Calmar-best. Âncora teórica
+  ex-ante: half-life de persistência de vol (ACF de retorno² ~ GARCH `α+β`) é
+  CURTA (SPY `10,9d`, QQQ `14,3d` → EWMA span ~`32/41`, `2×HL` ~`22/29`), muito
+  abaixo da janela empírica; autocorrelação de retorno assinado `n/a` (quase
+  ruído branco) — logo 200 NÃO é janela ancorada em persistência, é filtro de
+  regime/level lento. Part 3 (adaptativo, acionada pela fragilidade): janela
+  vol-scaled NÃO supera a fixa líquida de turnover em nenhuma branch (SPY Calmar
+  `0,284` vs `0,393`; QQQ `0,436` vs fixo-200 `0,457` / best-fixed-175 `0,483`),
+  confirmando o custo de troca de lookback amplificado por alavancagem. Veredito:
+  manter janela FIXA `~175-225` (200 é default sólido), EVITAR `>=250`, geometria
+  de exposição segue o driver real, e NÃO adotar adaptativo apesar do flag de
+  fragilidade; argmax não promovido. Sem deploy, sem paper-trade label, mandate §1
+  inalterado `[leverage_for_the_long_run, p.4-7]`, `[volatility_trading, p.39,
+  p.53-54]`, `[systematic_trading, p.283]`, `[trading_systems_methods, p.939]`,
+  `[advances_fin_ml, p.208-211]`.
 
 ### studies/SUMMARY.md ✅ CANONICAL COMPACT LEDGER
 - Criado em 2026-06-03 para concentrar em um único arquivo o resumo de todas as
