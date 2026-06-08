@@ -196,6 +196,48 @@ Notable study areas include:
   and exact rebalance/remove-one checks remain blocked until a canonical sleeve-level
   return matrix exists `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
   `[advances_fin_ml, p.208-211]`, `[leverage_for_the_long_run, p.13]`;
+- a 2026-06-05 follow-up in
+  `studies/return_stacked_core/us_core/reddit_leveraged_backtests/` compared 5
+  Reddit/Testfol.io leveraged portfolio payloads against RSC-US. The best raw
+  theoretical portfolio was 4-3-2-1 2x margin quarterly (CAGR `17.17%`, MDD
+  `-27.98%`, Calmar `0.614`) but it requires explicit borrowing via negative
+  cash. The best Reddit lead without explicit negative cash was the `mine`
+  QQQ/TLT/GLD 3x mix (CAGR `16.11%`, MDD `-27.65%`, Calmar `0.583`) but it depends
+  on synthetic 3x sleeves, especially Gold/TLT. The public verdict stayed
+  unchanged: RSC-US `35/40/25` remains the implementable return-stacked anchor;
+  the Reddit portfolios are seed ideas only unless translated to no-margin
+  return-stacked exposures and validated through the repo gates
+  `[systematic_trading, p.185-188]`, `[leverage_for_the_long_run, p.21]`,
+  `[advances_fin_ml, p.208-211]`;
+- a second 2026-06-05 follow-up in
+  `studies/return_stacked_core/us_core/factor_sleeve_diagnostics/` tested AVUV/SCV
+  and SPMO as small factor sleeves funded from lower effective GDE/ZROZ exposure.
+  Because Testfol.io did not accept `RSSTSIM`, the test used an effective-exposure
+  proxy with `SPYSIM`, `GLDSIM`, managed-futures sims, `ZROZSIM`, factor sleeves
+  and negative `CASHX` to represent embedded financing. Result: factor variants
+  increased CAGR/terminal only marginally (`15.11%` baseline proxy to at most
+  `15.33%`) while worsening MDD (`-27.47%` to as bad as `-31.08%`), beta,
+  correlation to SPY and Calmar. No AVUV/SPMO variant replaced RSC-US `35/40/25`;
+  factor sleeves remain sensitivity ideas rather than headline portfolio changes
+  `[ml_for_algo_trading, ch.7 p.190-191]`, `[stocks_on_the_move, p.60]`,
+  `[systematic_trading, p.185-188]`;
+- a third 2026-06-05 follow-up in
+  `studies/return_stacked_core/us_core/return_stacked_etf_universe/` screened the
+  broader return-stacked/capital-efficient ETF universe using public issuer/search
+  sources and three small no-Bearer Testfol.io wrapper payloads. The screen grouped
+  current core components, US equity + managed-futures substitutes, stock/bond
+  efficient-core funds, risk-parity products, bond/alt stacks, gold/inflation
+  satellites and crypto/income wrappers. Verdict: no newly found ETF replaces
+  RSC-US `35% GDE / 40% RSST / 25% ZROZ`; `CTAP` remains the only near-term
+  optional manager/process split for the managed-futures sleeve, `RSSX` remains a
+  small optional BTC-convexity sensitivity, and newer `MATE`/`JPFP`/`SPXP` products
+  are watchlist only because their histories are too short. A same-day CTAP cost
+  follow-up parsed Simplify holdings and estimated the visible non-SOFR drag at
+  roughly `1.80%` current net / `1.98%` gross before taxes, tracking and exact
+  collateral mechanics, so the CTAP split is documented as process diversification
+  rather than a fee-efficiency claim. No mandate allocation changed
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`,
+  `[systematic_trading, p.185-188]`, `[leverage_for_the_long_run, p.21]`;
 - `studies/spy_sso_upro_replacement/` for a 2026-05-25 static-first search for a
   low-turnover SPY replacement using `SPYSIM`, `SSOSIM`, `UPROSIM`, `ZROZSIM`,
   `GLDSIM`, `IEFSIM` and `CASHX`. Phase 1 evaluated a 5%-step static grid of
@@ -510,6 +552,55 @@ keeps the CLI workbench and adds the FastAPI/Angular monitoring webapp. This
 repository now keeps only shared helpers, non-LETF studies, historical references
 and migration notes. See `MIGRATED.md` for the exact inventory and residual path
 references.
+
+## LRS Restart
+
+On 2026-06-07 a new root-level `lrs/` folder reopened a research-only restart
+of the Gayed/SMA leverage-rotation line inside `market-lab`, while the prior
+canonical LETF study trees remain migrated to `/var/www/victor/finances/letf-lab`.
+The restart begins from the original rule: risk-on in leveraged equity when the
+underlying is above SMA200 and risk-off otherwise `[leverage_for_the_long_run,
+p.13]`. The operating design is weekly execution, lag sensitivity `n=0..5`,
+Brazil annual DARF modeling, later risk-off alternatives, sparse risk-on filters
+and a possible bear-market inverse-ETF sleeve.
+
+Phase 0 evaluated 24 baseline rows over SPY/QQQ 2x/3x branches with
+`risk-off=CASHX`. The top score row was `SPY_3x` lag `2`, after-tax CAGR
+`16.91%`, MDD `-88.33%`, Calmar `0.191`, terminal `8798.16x` vs after-tax SPY;
+the best QQQ row was `QQQ_3x` lag `0`, after-tax CAGR `21.34%`, MDD `-91.97%`,
+terminal `10.95x` vs after-tax QQQ. The conclusion is deliberately modest: the
+baseline has long-run return, but drawdown remains too severe, so the next phase
+should improve risk-off before adding indicator complexity. No deployment,
+paper-trading label or mandate allocation change followed `[leverage_for_the_long_run,
+p.4-7]`, `[advances_fin_ml, p.208-211]`.
+
+Phase 1 then changed only the defensive sleeve while preserving weekly SMA200
+signals and lag `n=0..5`. It evaluated 264 rows across cash, underlying,
+GLD/IEF/ZROZ, fixed defensive baskets and momentum off-legs. The result changed
+the local research direction: SPY 2x left ruin territory. The top score row was
+`SPY_2x` with risk-off `40 ZROZ / 40 GLD / 20 IEF`, lag `5`, after-tax CAGR
+`15.23%`, MDD `-41.34%`, Calmar `0.368`, terminal `11.03x` vs after-tax SPY.
+`34` rows met the restart's practical `<=50%` drawdown target while beating the
+underlying after tax, but they were all SPY 2x rows. SPY 3x remained warning-tier
+and QQQ 2x/3x remained ruin-tier, so the next acceptable path is lower target
+leverage, volatility throttling or bear-market sleeves before broad technical
+indicator votes. No deployment, paper-trading label or mandate allocation change
+followed `[leverage_for_the_long_run, p.4-7]`, `[systematic_trading, p.137-148]`.
+
+Phase 2 then changed exposure geometry before adding broad indicator votes. It
+evaluated 2,400 rows over SPY/QQQ, target leverage `1.25x..3.00x`, five selected
+risk-off sleeves, five realized-volatility filters and lag `n=0..5`. The top
+score row was `SPY` L`2.00` with risk-off `50 ZROZ / 25 GLD / 25 CASH`,
+`RV21 <= 30%`, lag `3`, after-tax CAGR `15.44%`, MDD `-39.28%`, Calmar `0.393`
+and terminal `12.28x` vs after-tax SPY. There were `875` practical-pass rows
+(`MDD >= -50%` plus after-tax underlying outperformance) and `394` preferred
+drawdown rows (`MDD >= -40%`). QQQ also left ruin territory: the best QQQ row
+was L`1.75`, risk-off `40 ZROZ / 40 GLD / 20 IEF`, `RV63 <= 40%`, lag `0`,
+after-tax CAGR `19.46%`, MDD `-42.58%`, Calmar `0.457` and terminal `5.82x` vs
+after-tax QQQ. This remains exposure-geometry discovery only; no deployment,
+paper-trading label or mandate allocation change followed
+`[leverage_for_the_long_run, p.4-7]`, `[systematic_trading, p.137-148]`,
+`[advances_fin_ml, p.208-211]`.
 
 ## Repository Slim-Down
 

@@ -1,11 +1,11 @@
-# Estado atual — market-lab (2026-06-03)
+# Estado atual — market-lab (2026-06-07)
 
 > **Propósito:** onboard rápido para humanos e agentes. Este doc é o
 > snapshot vivo — a verdade canônica vive nos arquivos referenciados.
 
 ---
 
-## TL;DR (2026-06-03)
+## TL;DR (2026-06-07)
 
 🛑 **MAINTENANCE MODE** desde 2026-04-23 (mandate §1, §7).
 
@@ -14,6 +14,7 @@
 - **113/113 honest FAIL** acumulado entre 2026-04-08 e 2026-04-23 (Phase 3.5f-3.8 + D-MVP + E-MVP). Pattern previsto por López de Prado DSR + Aronson 6402-rule + Li-Ferreira 2025 Network Momentum.
 - **Sem hunt ativo de alocação;** estudos remanescentes são research-only e a revisão consolidada do mandato fica para 6-12 meses.
 - **LETF rotation spin-off concluído:** `studies/lrs/`, `studies/letf_rotation_hunt/` e `studies/spy_leveraged_rotation_hunt/` agora são canônicos em `/var/www/victor/finances/letf-lab`. `market-lab` mantém apenas infra compartilhada, referências históricas e estudos não migrados. Ver `MIGRATED.md`.
+- **Novo restart research-only em `lrs/`:** linha SMA/LRS reaberta localmente para estudar Gayed do zero com execução semanal, lag operacional `n=0..5`, DARF anual e futuras fases de risk-off, filtros esparsos e bear-market inverse sleeve. Sem deploy e mandate §1 inalterado.
 - **Cleanup consolidation iniciado:** `studies/SUMMARY.md` agora é o ledger compacto de estratégias testadas, métricas, vereditos, arquivos canônicos e política de remoção de artefatos gerados. O objetivo é reduzir a codebase sem perda de conhecimento; mandate §1 segue inalterado.
 
 Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04-24_LOG.md` + `docs/CLEANUP_2026-05-05_LOG.md` para audit trail dos cleanups.
@@ -41,7 +42,70 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 
 ---
 
-## Linhas exploratórias em studies/ (2026-05-25)
+## Linhas exploratórias locais (2026-06-07)
+
+### lrs/ 🌱 ACTIVE RESTART / RESEARCH-ONLY
+- Criado em 2026-06-07 como restart local da família Gayed/LRS, apesar do
+  spin-off LETF canônico para `letf-lab`. Objetivo: recomeçar pelo baseline
+  original `price > SMA200 => leveraged risk-on; otherwise risk-off` e evoluir
+  com execução semanal, lag operacional `n=0..5`, modelo DARF anual, risk-off
+  alternativo, filtros risk-on esparsos e sleeve bear-market com inverse ETFs.
+- Phase 0 em `lrs/phases/phase00_gayed_baseline/`: 24 linhas avaliadas
+  (`SPY_2x`, `SPY_3x`, `QQQ_2x`, `QQQ_3x` x `n=0..5`) usando
+  `risk-off=CASHX`. Top score: `SPY_3x` lag `2`, after-tax CAGR `16,91%`, MDD
+  `-88,33%`, Calmar `0,191`, terminal `8798,16x` vs SPY after-tax. Melhor QQQ:
+  `QQQ_3x` lag `0`, after-tax CAGR `21,34%`, MDD `-91,97%`, terminal `10,95x`
+  vs QQQ after-tax. Leitura: baseline confirma retorno, mas drawdown segue em
+  território de ruin; Phase 1 deve priorizar risk-off antes de indicadores.
+  Overfit gates são diagnósticos para evolução, não stop-rule desta linha; sem
+  deploy e mandate §1 inalterado `[leverage_for_the_long_run, p.13]`,
+  `[leverage_for_the_long_run, p.4-7]`, `[advances_fin_ml, p.208-211]`.
+- Phase 1 em `lrs/phases/phase01_risk_off/`: 264 linhas avaliadas (4 branches x
+  11 risk-off sleeves x `n=0..5`) em janelas comuns por branch incluindo
+  `GLDSIM`/`IEFSIM`/`ZROZSIM` (SPY começa `1968-04-02`, QQQ `1986-01-03`). Top
+  score: `SPY_2x` com risk-off `40 ZROZ / 40 GLD / 20 IEF`, lag `5`, after-tax
+  CAGR `15,23%`, MDD `-41,34%`, Calmar `0,368`, terminal `11,03x` vs SPY
+  after-tax. `34` linhas bateram underlying after-tax com MDD `<=50%`, todas
+  SPY 2x nesta superfície. SPY 3x segue warning (`-61,04%` MDD no melhor caso) e
+  QQQ 2x/3x seguem em ruin territory. Próximo passo técnico: target leverage
+  menor/volatility throttle/bear sleeve antes de votos multi-indicador amplos
+  `[leverage_for_the_long_run, p.4-7]`, `[systematic_trading, p.137-148]`.
+- Phase 2 em `lrs/phases/phase02_target_leverage_vol/`: 2.400 linhas avaliadas
+  (SPY/QQQ x 8 target leverages x 5 risk-off sleeves x 5 filtros de volatilidade
+  x `n=0..5`). Top score: `SPY` L`2,00`, risk-off
+  `50 ZROZ / 25 GLD / 25 CASH`, `RV21 <= 30%`, lag `3`, after-tax CAGR
+  `15,44%`, MDD `-39,28%`, Calmar `0,393`, terminal `12,28x` vs SPY after-tax
+  (tier preferred). `875` linhas bateram underlying after-tax com MDD `<=50%` e
+  `394` chegaram a MDD `<=40%`. Melhor QQQ: L`1,75`, risk-off
+  `40 ZROZ / 40 GLD / 20 IEF`, `RV63 <= 40%`, lag `0`, after-tax CAGR `19,46%`,
+  MDD `-42,58%`, Calmar `0,457`, terminal `5,82x` vs QQQ after-tax. Leitura:
+  geometry de exposição resolveu parte relevante do drawdown antes de adicionar
+  indicadores; próxima fase deve usar essa base para voto risk-on pequeno ou
+  sleeve bear separado. Sem deploy e mandate §1 inalterado
+  `[leverage_for_the_long_run, p.4-7]`, `[systematic_trading, p.137-148]`,
+  `[advances_fin_ml, p.208-211]`.
+- Phase 3A em `lrs/phases/phase03_sparse_risk_on_vote/`: 324 linhas avaliadas
+  (SPY/QQQ x 3 bases por branch — top da Phase 2 + 2 vizinhos de 1 alavanca — x
+  9 filtros = `none` controle + 4 famílias x 2 variantes x `n=0..5`). Cada linha
+  faz AND de no máximo UM filtro de confirmação risk-on sobre o sinal base
+  (`sma & vol_gate & confirm_gate`), comparado contra o controle `none`; sem
+  vote-of-K. Scoring e `practical_pass` da Phase 2 mantidos verbatim. Resultado
+  NEGATIVO: o top geral é o controle `none` (`SPY` `spy_top` L`2,00` lag `3`,
+  after-tax CAGR `15,44%`, MDD `-39,28%` — reproduz a Phase 2 exatamente, sanity
+  check passou). Nenhum filtro bate `none` em nenhuma branch; Clenow/ROC/ADX
+  divergem mas reduzem CAGR (ADX é proxy close-only degradado, sem OHLC no cache,
+  não super-interpretado). Insight estrutural: a banda de histerese SMA é
+  IDÊNTICA a `none` em 36/36 configs — como AND-gate sobre `price > SMA200` só
+  pode restringir mais, e seu comportamento distinto (segurar numa queda abaixo
+  da SMA) vive nos dias em que a SMA já bloqueia; testá-la exige SUBSTITUIR o
+  gate SMA, não fazer AND. Leitura: complexidade de filtro risk-on não se
+  justifica — a geometria de exposição da Phase 2 é o driver real. Famílias e
+  fontes: Clenow slope x R² `[stocks_on_the_move, p.70-77, p.98]`, ROC
+  `[stocks_on_the_move, p.58, p.60]`, histerese `[trading_systems_methods,
+  p.383]`, ADX `[trading_systems_methods, p.387]`. Bear sleeve (Phase 3B) segue
+  BLOQUEADO: sem inverse tickers no cache. Sem deploy, sem paper-trade label,
+  mandate §1 inalterado `[trading_systems_methods, p.939]`, `[advances_fin_ml,
+  p.208-211]`.
 
 ### studies/SUMMARY.md ✅ CANONICAL COMPACT LEDGER
 - Criado em 2026-06-03 para concentrar em um único arquivo o resumo de todas as
@@ -71,6 +135,40 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
   retorno absoluto. Research-only, sem deploy e sem mudança no mandate
   `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
   `[advances_fin_ml, p.208-211]`, `[leverage_for_the_long_run, p.13]`.
+- Comparativo Reddit 2026-06-05 em
+  `studies/return_stacked_core/us_core/reddit_leveraged_backtests/`: 5 payloads
+  Testfol.io executados sem Bearer, 19 instâncias / 13 portfolios únicos. Melhor
+  bruto teórico: 4-3-2-1 2x margin quarterly, CAGR `17,17%`, MDD `-27,98%`,
+  Calmar `0,614`, mas depende de `CASHX=-100`/margem. Melhor lead Reddit sem
+  caixa negativo explícito: `mine` QQQ/TLT/GLD 3x, CAGR `16,11%`, MDD `-27,65%`,
+  Calmar `0,583`, mas depende de sleeves 3x sintéticos. Veredito: RSC-US
+  `35/40/25` continua anchor implementável; próxima hipótese válida seria
+  traduzir essas exposições para return-stacked/no-margin e validar gates
+  `[systematic_trading, p.185-188]`, `[leverage_for_the_long_run, p.21]`,
+  `[advances_fin_ml, p.208-211]`.
+- Diagnóstico factor-sleeve 2026-06-05 em
+  `studies/return_stacked_core/us_core/factor_sleeve_diagnostics/`: AVUV/SCV e
+  SPMO foram testados como pequenas sleeves financiadas por menor exposição
+  efetiva de GDE/ZROZ no proxy RSC. Resultado: fatores aumentam CAGR/terminal
+  marginalmente (`15,11%` baseline proxy → até `15,33%`), mas pioram MDD
+  (`-27,47%` → até `-31,08%`), beta/correlação com SPY e Calmar. Veredito:
+  nenhum variant domina; manter `35/40/25` como core headline
+  `[ml_for_algo_trading, ch.7 p.190-191]`, `[stocks_on_the_move, p.60]`,
+  `[systematic_trading, p.185-188]`.
+- Screen de universo ETF return-stacked/capital-efficient 2026-06-05 em
+  `studies/return_stacked_core/us_core/return_stacked_etf_universe/`: fontes
+  públicas Return Stacked, SignalBloom, WisdomTree/Simplify/UPAR snippets,
+  AlphaStacking `MATE`, JPMorgan `JPFP` e Direxion `SPXP`; 3 payloads Testfol.io
+  de wrappers live executados sem Bearer (`HTTP 200`). Veredito: nenhum ETF novo
+  substitui RSC-US `35/40/25`; `CTAP` continua apenas split opcional de
+  managed-futures, `RSSX` segue BTC-convexity pequena/opcional, `MATE`/`JPFP`/
+  `SPXP` entram só como watchlist por histórico curto, e crypto/income/single-name
+  leverage são rejeitados como core. Follow-up de custo CTAP: expense wrapper
+  `0,10%` atual / `0,28%` gross, `CTA` embutido `0,75%` e spread ponderado dos
+  swaps CTA `~94,5 bps` sobre SOFR; leitura: CTAP é split de processo/gestor,
+  não tese de fee menor. Mandate §1 inalterado
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`,
+  `[systematic_trading, p.185-188]`, `[leverage_for_the_long_run, p.21]`.
 
 ### studies/spy_sso_upro_replacement/ 🌱 ACTIVE PRACTICAL-TAXED SPY REPLACEMENT
 - Novo estudo iniciado em 2026-05-25 para testar substituto estático/baixo-turnover
@@ -321,6 +419,21 @@ Sumário do mandate (`docs/investment-mandate.md` é canônico):
 
 ## Changelog
 
+- **2026-06-05:** comparativo Reddit leveraged portfolios vs RSC-US adicionado em
+  `studies/return_stacked_core/us_core/reddit_leveraged_backtests/`. Resultado:
+  4-3-2-1 2x margin é o melhor backtest bruto, `mine` QQQ/TLT/GLD 3x é o melhor
+  lead Reddit sem caixa negativo explícito, mas RSC-US `35/40/25` permanece a
+  âncora implementável por construção return-stacked e comportamento pós-2010;
+  sem deploy e sem mudança no mandate.
+- **2026-06-05:** factor-sleeve diagnostics para AVUV/SCV e SPMO sobre o proxy
+  efetivo do RSC-US: nenhum variant domina o baseline; fator aumenta terminal
+  marginalmente, mas reduz Calmar e torna o portfolio mais equity-like. Sem
+  mudança no core.
+- **2026-06-05:** screen de universo ETF return-stacked/capital-efficient em
+  `studies/return_stacked_core/us_core/return_stacked_etf_universe/`: nenhum ETF
+  novo substitui RSC-US `35/40/25`; `CTAP` e `RSSX` seguem opcionais, enquanto
+  `MATE`/`JPFP`/`SPXP` ficam em watchlist por histórico curto. Sem mudança no
+  mandate.
 - **2026-06-03:** cleanup parcial de consolidação: `studies/SUMMARY.md` criado como ledger compacto de estudos/estratégias, docs públicos apontam para ele, broad-grid CSVs gerados de `spy_sso_upro_replacement` foram removidos após preservação das conclusões, e seis árvores antigas (`b4-v2/`, `static_spy_beater_portfolio/`, `spy_beater_hunt/`, `spy_beater_hunt_v2/`, `long_term_portfolio/`, `global_factor_tilt_loop/`) foram consolidadas em `studies/return_stacked_core/` sem mudar o mandate.
 - **2026-05-13:** `studies/technical_signal_vote_hunt/` ganhou revisão consolidada de melhor estratégia de longo prazo. Rerun do T/D sensitivity e gate-check manual de `T20D90` confirmam a conclusão: iter030 canonical segue como anchor; `T20D90/T20D120` são sensibilidades econômicas, não winners; mandate §1 inalterado.
 - **2026-05-13:** `technical_signal_vote_hunt` adicionou audit de ativo de sinal: QLD-signal é parte essencial da performance da família iter030; variantes QQQ-signal mantêm CAGR alto mas sofrem MDD >90%, então a família deve ser rotulada como LETF self-regime, não LRS-underlying puro.
