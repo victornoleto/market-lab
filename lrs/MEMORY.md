@@ -301,3 +301,61 @@ loses net of turnover). The pre-registered argmax was NOT promoted.
 
 Validation status: not validated; diagnostic lookback study only. No deployment,
 no paper-trade label, no mandate allocation change.
+
+## 2026-06-07 - Phase 4 Mandate Validation Gates Executed (DIAGNOSTIC; family closed)
+
+Runner: `uv run python -m lrs.phases.phase04_validation_gates.run`.
+
+Outputs:
+
+- `phases/phase04_validation_gates/REPORT.md`, `README.md`.
+- `results/phase04_validation_gates.csv`.
+- `phases/phase04_validation_gates/plots/` (gate heatmap, WF OOS spread).
+- New module `lrs/lib/validation.py` (thin wrappers over canonical
+  `market_lab.backtest.validation`; no `studies/` import). New tests:
+  `tests/test_lrs_phase04.py`.
+
+Diagnostic, not a promotion (per NEXT_STEPS). Ran the canonical mandate §5 gate
+suite on the 6 SMA200 bases (3 SPY + 3 QQQ, each at its best-score lag). DSR
+`n_trials = 3876` (direct lineage Phase 2 2400 + 3A 324 + 3A-2 216 + 3C 936; the
+spin-off `letf-lab` sweeps excluded, so the true count is higher). PBO trial
+matrix = the Phase 2 geometry grid at SMA200 (8 lev x 5 risk-off x 5 vol = 200
+configs/branch, fixed lag). WF: is 1764d / oos 756d / step 756d, >=8 windows,
+>=6/8 OOS windows must beat the underlying after-tax (per-window MDD diagnostic,
+no cap, per user decision).
+
+Result (NEGATIVE - family does NOT clear the gates):
+
+- **0/6 bases pass all seven gates.** Verdict: the LRS family does not clear the
+  mandate validation gates; recorded as research-only, negative-leaning, and
+  closed/shelved pending new literature or regime. No mandate change.
+- **G3 walk-forward is the universal binding gate (fails 6/6):** >=6/8 = >=75% of
+  rolling ~3y OOS windows must beat the underlying after-tax. Best is SPY
+  `spy_top`/`spy_alt_off` at `12/17` (70.6%), just below 75%; `spy_lower_lev`
+  `10/17`; QQQ `6-7/11`. The strategy beats the underlying most of the time, but
+  not in >=75% of long-horizon OOS windows.
+- **SPY is the least-rejected:** all 3 SPY bases PASS G1 PBO (`0.016`, very low)
+  AND G2 DSR (p `0.024-0.034 < 0.05`) even at n_trials=3876 - the 58y track
+  record is long enough that the Sharpe survives deflation. SPY's only failures
+  are G3 (WF, narrow) and `spy_lower_lev` also G4 (OOS).
+- **QQQ is clearly rejected:** fails G1 PBO (`0.643 > 0.5`), G2 DSR
+  (p `0.145-0.164`) AND G3 WF. Shorter (40y) history, higher overfit
+  susceptibility - consistent with QQQ's ruin-tier history and 3C fragility.
+- **G4-G7 broadly pass:** G5 FWD (post-2020) Sharpe>0 pass; G6 bootstrap 99.9% CI
+  low of annualized Sharpe `0.28-0.34 > 0` pass; G7 cross-lib CAGR delta ~`0` pass;
+  G4 OOS passes except `spy_lower_lev`.
+- Metrics (warning-only tiers, NOT gates): SPY `spy_top` CAGR `15.44%`, MDD
+  `-39.28%`, Sharpe `0.718`, Calmar `0.393`; QQQ `qqq_top` CAGR `19.46%`, MDD
+  `-42.58%`, Sharpe `0.725`.
+
+Interpretation: across the whole restart, exposure geometry (Phase 2) is the
+driver; no filter (3A), form (3A-2) or window/adaptive (3C) beats the SMA200-level
+base, and the base itself does not clear the mandate gates (binding: walk-forward
+robustness; QQQ also PBO/DSR). The LRS restart joins the repo's honest-FAIL ledger
+as a research-only line. SPY is the closest to validation (6/7 gates) but the
+walk-forward robustness gate is not met `[advances_fin_ml, p.208-211]`,
+`[advances_fin_ml, p.273-275]`, `[testing_tuning, p.318-320]`,
+`[leverage_for_the_long_run, p.4-7]`.
+
+Validation status: gates RUN; family does not pass; closed/shelved. No deployment,
+no paper-trade label, no mandate allocation change.

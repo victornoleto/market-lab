@@ -14,7 +14,7 @@
 - **113/113 honest FAIL** acumulado entre 2026-04-08 e 2026-04-23 (Phase 3.5f-3.8 + D-MVP + E-MVP). Pattern previsto por López de Prado DSR + Aronson 6402-rule + Li-Ferreira 2025 Network Momentum.
 - **Sem hunt ativo de alocação;** estudos remanescentes são research-only e a revisão consolidada do mandato fica para 6-12 meses.
 - **LETF rotation spin-off concluído:** `studies/lrs/`, `studies/letf_rotation_hunt/` e `studies/spy_leveraged_rotation_hunt/` agora são canônicos em `/var/www/victor/finances/letf-lab`. `market-lab` mantém apenas infra compartilhada, referências históricas e estudos não migrados. Ver `MIGRATED.md`.
-- **Novo restart research-only em `lrs/`:** linha SMA/LRS reaberta localmente para estudar Gayed do zero com execução semanal, lag operacional `n=0..5`, DARF anual e futuras fases de risk-off, filtros esparsos e bear-market inverse sleeve. Sem deploy e mandate §1 inalterado.
+- **Restart research-only em `lrs/` — CONCLUÍDO (Phase 4, 2026-06-07):** linha SMA/LRS reaberta localmente (Gayed do zero, execução semanal, lag `n=0..5`, DARF anual, risk-off, filtros, formas de regime, estudo de lookback) e levada até os gates de validação do mandate. **0/6 bases passaram** (gate vinculante = walk-forward; QQQ também PBO/DSR). Família encerrada/arquivada como research-only de viés negativo. Sem deploy e mandate §1 inalterado.
 - **Cleanup consolidation iniciado:** `studies/SUMMARY.md` agora é o ledger compacto de estratégias testadas, métricas, vereditos, arquivos canônicos e política de remoção de artefatos gerados. O objetivo é reduzir a codebase sem perda de conhecimento; mandate §1 segue inalterado.
 
 Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04-24_LOG.md` + `docs/CLEANUP_2026-05-05_LOG.md` para audit trail dos cleanups.
@@ -44,7 +44,11 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 
 ## Linhas exploratórias locais (2026-06-07)
 
-### lrs/ 🌱 ACTIVE RESTART / RESEARCH-ONLY
+### lrs/ 🔴 CONCLUÍDO / RESEARCH-ONLY (não passou nos gates do mandate)
+- **Conclusão (2026-06-07, Phase 4):** o restart LRS rodou os gates de validação
+  do mandate (diagnóstico) e **0/6 bases passaram** nos 7 gates. Família registrada
+  como linha research-only de viés negativo e **encerrada/arquivada** pendente de
+  literatura/regime novos. Mandate §1 inalterado. Ver bullet Phase 4 abaixo.
 - Criado em 2026-06-07 como restart local da família Gayed/LRS, apesar do
   spin-off LETF canônico para `letf-lab`. Objetivo: recomeçar pelo baseline
   original `price > SMA200 => leveraged risk-on; otherwise risk-off` e evoluir
@@ -153,6 +157,27 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
   inalterado `[leverage_for_the_long_run, p.4-7]`, `[volatility_trading, p.39,
   p.53-54]`, `[systematic_trading, p.283]`, `[trading_systems_methods, p.939]`,
   `[advances_fin_ml, p.208-211]`.
+- Phase 4 em `lrs/phases/phase04_validation_gates/`: gates de validação do mandate
+  (DIAGNÓSTICO, não promoção) sobre as 6 bases SMA200 (3 SPY + 3 QQQ, melhor lag
+  por base). Wrappers em `lrs/lib/validation.py` sobre o core canônico
+  `market_lab.backtest.validation` (sem import de studies/). DSR `n_trials=3876`
+  (linhagem Phase 2+3A+3A-2+3C); matriz PBO = grade de geometria Phase 2 em SMA200
+  (200 configs/branch); WF is1764/oos756/step756, `≥6/8` janelas OOS batendo o
+  underlying after-tax (MDD por janela diagnóstico, sem cap). Resultado NEGATIVO:
+  **0/6 bases passam nos 7 gates**. Gate vinculante universal = G3 walk-forward
+  (falha 6/6): `≥75%` das janelas OOS de ~3 anos precisam bater o underlying; o
+  melhor é SPY `12/17` (70,6%), logo abaixo. SPY é o menos-rejeitado: as 3 bases
+  SPY PASSAM G1 PBO (`0,016`) e G2 DSR (p `0,024-0,034 < 0,05`) mesmo com
+  n_trials=3876 (track record de 58 anos sobrevive à deflação); só falham G3 (WF,
+  por pouco) e `spy_lower_lev` também G4 (OOS). QQQ é claramente rejeitado: falha
+  G1 PBO (`0,643`), G2 DSR (p `0,145-0,164`) e G3. G4-G7 passam amplamente (G6
+  bootstrap 99,9% CI-low Sharpe `0,28-0,34>0`; G7 cross-lib ~`0`). Métricas
+  (tiers warning, não gates): SPY `spy_top` CAGR `15,44%`/MDD `-39,28%`/Sharpe
+  `0,718`; QQQ `qqq_top` CAGR `19,46%`/MDD `-42,58%`/Sharpe `0,725`. Veredito:
+  família LRS não passa nos gates → encerrada/arquivada como research-only. Sem
+  deploy, sem paper-trade label, mandate §1 inalterado `[advances_fin_ml,
+  p.208-211]`, `[advances_fin_ml, p.273-275]`, `[testing_tuning, p.318-320]`,
+  `[leverage_for_the_long_run, p.4-7]`.
 
 ### studies/SUMMARY.md ✅ CANONICAL COMPACT LEDGER
 - Criado em 2026-06-03 para concentrar em um único arquivo o resumo de todas as
