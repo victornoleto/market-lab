@@ -17,10 +17,22 @@ Conclusion: Use this report as an audit and communication layer over the existin
 | Global selected curves | `global_variant/series/global_selected_equity.csv` |
 | Monte Carlo summaries | `us_core/monte_carlo_sequence_risk.csv`, `global_variant/global_monte_carlo_sequence_risk.csv` |
 | CSV audit tables | `robustness_tables/` |
+| Adjusted RSC-US sleeve matrix | `us_core/series/return_stacked_core_sleeve_returns.parquet` |
 
 Executed analyses: start-date sensitivity, rolling relative wealth/CAGR spread, relative-underperformance episodes, fee/drag stress, named-regime stress and Monte Carlo sequence-risk summaries. Global sections are benchmarked against both `66/34 VTI/VEA` and `100% VT`.
 
-Not executed exactly: rebalance-frequency and remove-one-sleeve tests require sleeve-level daily return series for `RSSTSIM`, `ZROZSIM`, `CTAPSIM`, `RSSX_RP`, `NTSD`, `RSIT`, etc. The RSC folder currently preserves portfolio equity curves and limited remote price proxies, so exact rebalance/remove-one attribution would be under-specified. This is documented as a data blocker rather than approximated.
+Partially executed exactly after 2026-06-09: the RSC-US core sleeves now exist locally for `GDESIM`, adjusted `RSSTSIM`, and `ZROZSIM`. Exact CTAP/RSSX/global remove-one and threshold-band checks still require broader sleeve matrices. The large historical tables below remain based on saved portfolio curves unless explicitly labeled as the adjusted sleeve-matrix rerun.
+
+## Adjusted RSST Tracking Proxy Addendum
+
+The current local RSC-US core rerun uses `RSSTSIM = SPYSIM + 0.70*DBMFSIM + 0.30*KMLMSIM - (CASHX + 0.0200/252)`, equivalent to the user-provided Testfol.io payload `100% SPY + 70% DBMF + 30% KMLM - 100% CASHX?E=-2`. Because `DBMFSIM` starts in 2000, this addendum is a 2000+ comparison, not a replacement for the saved 1988 curve `[risk_parity, p.80-81]`, `[systematic_trading, p.185-188]`.
+
+| Portfolio | Window | CAGR | MDD | Sharpe | Sortino | Calmar | Terminal | Terminal/SPY |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| RSC-US `35/40/25` adjusted RSST proxy | 2000-01-04..2026-05-21 | 12.40% | -30.76% | 0.838 | 1.153 | 0.403 | 21.71x | 2.60x |
+| SPYSIM buy-hold | 2000-01-04..2026-05-21 | 8.39% | -55.14% | 0.514 | 0.653 | 0.152 | 8.34x | 1.00x |
+
+Reading: the adjusted RSST proxy lowers the headline CAGR versus the older saved RSC curve, but the core still beats SPYSIM materially on terminal wealth, drawdown and risk-adjusted metrics in the common 2000-2026 window.
 
 ## Executive Read
 

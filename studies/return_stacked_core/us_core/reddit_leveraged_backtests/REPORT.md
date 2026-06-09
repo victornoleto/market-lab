@@ -66,12 +66,12 @@ The derived comparison below uses equity curves from the Reddit responses and th
 | 4-3-2-1 unlevered | 1988-01-04..2026-05-21 | 10.62% | -15.85% | 0.670 | 48.1x | Highest Calmar, low-return defensive portfolio. |
 | 4-3-2-1 2x margin | 1988-01-04..2026-05-21 | 17.21% | -27.98% | 0.615 | 442.5x | Best raw growth/risk mix, but margin-only. |
 | Reddit mine QQQ/TLT/GLD 3x | 1988-01-04..2026-05-21 | 16.16% | -27.65% | 0.584 | 313.7x | Best Reddit non-negative-cash lead. |
-| RSC-US 35/40/25 | 1988-01-04..2026-04-17 | 15.65% | -29.94% | 0.523 | 261.3x | Current implementable anchor. |
+| RSC-US 35/40/25 | 1988-01-04..2026-04-17 | 15.65% | -29.94% | 0.523 | 261.3x | Saved historical anchor. |
 | B4 original 25/25/25/25 | 1988-01-04..2026-04-17 | 14.21% | -28.14% | 0.505 | 161.9x | Historical predecessor. |
 | Reddit v2 SPY-3x yearly | 1988-01-04..2026-05-21 | 15.27% | -62.31% | 0.245 | 233.8x | Drawdown too severe for the return. |
 | SPY buy-hold | 1988-01-04..2026-05-21 | 11.45% | -55.14% | 0.208 | 64.2x | Benchmark. |
 
-Using the official `metrics.csv` row instead of the saved full-equity series, RSC-US `35/40/25` is `15.72%` CAGR, `-29.94%` MDD and `270.7x` terminal through `2026-05-21`. That still leaves Reddit mine slightly ahead on raw full-window CAGR and MDD, but the margin 4-3-2-1 remains the only Reddit portfolio with a large full-window terminal edge over RSC.
+Using the official `metrics.csv` row instead of the saved full-equity series, the saved historical RSC-US `35/40/25` row is `15.72%` CAGR, `-29.94%` MDD and `270.7x` terminal through `2026-05-21`. That still leaves Reddit mine slightly ahead on raw full-window CAGR and MDD, but the margin 4-3-2-1 remains the only Reddit portfolio with a large full-window terminal edge over the saved RSC curve. The current adjusted `RSSTSIM` local rerun starts in 2000 and is tracked separately in `studies/return_stacked_core/README.md` `[risk_parity, p.80-81]`, `[systematic_trading, p.185-188]`.
 
 ## Post-2010 Practical Comparison
 

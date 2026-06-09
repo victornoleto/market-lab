@@ -9,16 +9,18 @@ or a mandate change. The repository remains under maintenance mode (see
 ## TL;DR
 
 **RSC-US = 35% GDESIM / 40% RSSTSIM / 25% ZROZSIM**, monthly rebalance, long-only,
-gross `1.0`, no negative external cash. Over `1988-01-04..2026-04-17` it beats SPY by
-`+4.24pp` CAGR with `~25.20pp` less full-period MDD, and beats the original B4 reference
-by `+1.27pp` CAGR while only deepening MDD by `~2.02pp`.
+gross `1.0`, no negative external cash. The current local sleeve rerun uses adjusted
+`RSSTSIM = SPYSIM + 0.70*DBMFSIM + 0.30*KMLMSIM - (CASHX + 0.0200/252)`. On the
+common `2000-01-04..2026-05-21` window, it beats SPYSIM by `+4.01pp` CAGR with
+`+24.38pp` less MDD. The older `1988-01-04..2026-04-17` saved-curve result remains
+historical context, not the same RSST proxy.
 
 ## Allocation
 
 | Sleeve | Weight | Role | Embedded exposure |
 |---|---:|---|---|
 | `GDESIM` | 35% | Capital-efficient US equity + gold stack | 90% SPY + 90% Gold |
-| `RSSTSIM` | 40% | US equity + managed futures stack | 100% SPY + 100% MF |
+| `RSSTSIM` | 40% | US equity + managed futures stack | 100% SPY + 70% DBMF + 30% KMLM - financing proxy |
 | `ZROZSIM` | 25% | Long zero-coupon Treasury convexity | 25+ year duration |
 
 Effective exposure:
@@ -38,7 +40,19 @@ Long-only with gross fund weight `1.0` and no negative external `CASHX`. The
 additional exposure is embedded inside capital-efficient ETF simulations, not
 external margin `[leverage_for_the_long_run, p.13]`.
 
-## Key Metrics (1988-01-04 to 2026-04-17)
+## Current Adjusted RSST Proxy Metrics (2000-01-04 to 2026-05-21)
+
+| Portfolio | CAGR | MDD | Sharpe | Sortino | Calmar | Terminal wealth |
+|---|---:|---:|---:|---:|---:|---:|
+| **RSC-US (35/40/25, adjusted RSST proxy)** | **12.40%** | **-30.76%** | **0.838** | **1.153** | **0.403** | **21.71x** |
+| SPYSIM buy-hold | 8.39% | -55.14% | 0.514 | 0.653 | 0.152 | 8.34x |
+
+Adjusted RSC terminal wealth is `2.60x` SPYSIM. This current local rerun starts in
+2000 because `DBMFSIM` is the limiting sleeve. It remains research-only and does
+not supersede mandate gates `[testing_tuning, p.327-335]`, `[advances_fin_ml,
+p.208-211]`.
+
+## Historical Saved-Curve Metrics (1988-01-04 to 2026-04-17)
 
 | Portfolio | CAGR | MDD | Sharpe | Sortino | Calmar | Ulcer | Terminal wealth |
 |---|---:|---:|---:|---:|---:|---:|---:|

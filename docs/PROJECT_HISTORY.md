@@ -192,10 +192,51 @@ Notable study areas include:
   `20% GDE / 15% NTSD / 20% RSST / 20% RSIT / 25% ZROZ`. RSC-US remains the clean
   US anchor (full-history CAGR about `15.65-15.70%`, MDD `-29.94%`), while
   RSC-Global is a diversification variant rather than a replacement. `CTAP` and
-  `RSSX` remain optional implementation refinements. No mandate allocation changed,
-  and exact rebalance/remove-one checks remain blocked until a canonical sleeve-level
-  return matrix exists `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
-  `[advances_fin_ml, p.208-211]`, `[leverage_for_the_long_run, p.13]`;
+  `RSSX` remain optional implementation refinements. No mandate allocation changed.
+  A 2026-06-09 partial canonical sleeve-return matrix for RSC-US core sleeves
+  (`GDESIM/RSSTSIM/ZROZSIM` plus source sleeves) now unlocks exact US-core reruns;
+  global/CTAP/RSSX sleeve matrices remain future artifacts. A same-day
+  `us_core/four_asset_grid/` diagnostic then downloaded a separate Testfol.io
+  payload for `NTSXSIM/GDESIM/ZROZSIM` plus `RSST70_30 = SPYSIM + 70% DBMFSIM +
+  30% KMLMSIM - CASHX?E=-2`, evaluated `1,771` monthly-rebalanced `5%`-step
+  portfolios, and ranked them by a Calmar/Sharpe/Sortino/CAGR/drawdown/volatility
+  fitness blend. An earlier `CASHX?E=2` run was invalidated as a financing-sign
+  error. The corrected top screen row is `40% GDESIM / 25% RSST70_30 / 35% ZROZSIM`
+  (CAGR `12.15%`, MDD `-27.80%`, Sharpe `0.851`, Calmar `0.437`), while B4
+  `25/25/25/25` scores lower (CAGR `11.23%`, MDD `-29.26%`) and the same-payload
+  RSC-like `35/40/25` has CAGR `12.29%` with MDD `-30.76%`. A follow-up corrected
+  `MARGIN_ANALYSIS.md` evaluated account-level IBKR-style leverage on the same top
+  row: `1.25x` reached CAGR `13.97%` / MDD `-34.14%`, `1.50x` reached CAGR `15.66%`
+  / MDD `-40.18%`, `2.00x` reached CAGR `18.69%` / MDD `-51.98%`, and `3.00x`
+  reached CAGR `23.13%` / MDD `-71.40%`. The practical reading became more
+  conservative: only `1.10x..1.25x` is worth any future research before real IBKR
+  maintenance/financing/liquidation/tax checks; `1.50x+` is stress diagnostic. A
+  subsequent corrected KMLM-only MF proxy diagnostic substituted `100% KMLMSIM` for
+  the `70/30` DBMF/KMLM mix to gain the longer `1987-2026` window. It produced 1x
+  CAGR `13.00%` / MDD `-26.70%`; at `1.25x` it reached CAGR `14.73%` with MDD
+  `-33.01%`. That result is useful as a long-window managed-futures lens, but does
+  not strengthen the case for external margin. A final same-day walk-forward
+  anti-overfit pass (`8y` IS -> `2y` OOS, step `2y`) then selected the best weights
+  only from prior data and held them in the next OOS block. It closed as a clear
+  warning: WF-selected CAGR `12.57%`, MDD `-34.47%`, Sharpe `0.821`, terminal
+  `8.37x`, versus fixed RSC-like `35/40/25` CAGR `12.63%`, MDD `-30.76%`, Sharpe
+  `0.840`, terminal `8.45x`. The dynamic WF optimizer beat RSC-like in only `3/9`
+  windows versus a `7/9` consistency threshold, selected `9/9` unique portfolios,
+  and had mean train/test fitness Spearman `0.144`. A complementary robustness pass
+  then ran WF sensitivity (`5y/1y`, `8y/2y`, `10y/2y`, `12y/3y`, expanding `8y/2y`),
+  top-decile stability and CPCV/PBO on all `1,771` weights. It rejected the grid as
+  a selection family: PBO `0.655`, CPCV beat RSC-like in only `7/28` splits versus a
+  `21/28` consistency threshold, selected `20` unique portfolios, and had mean
+  train/test Spearman `0.031`. The train top-decile map leaned toward high ZROZ and
+  low RSST, but RSC-like still won the small fixed-rule OOS comparison by terminal
+  wealth/CAGR. Therefore the full-sample top `40/25/35` remains a diagnostic screen,
+  not a promoted allocation, and the defensible long-term rule remains a fixed thesis
+  rather than grid reoptimization. This was implementation screening only; no mandate
+  allocation changed, and metrics are not validation-gate evidence
+  `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.208-211]`, `[leverage_for_the_long_run, p.13]`,
+  `[leverage_for_the_long_run, p.4-7]`, `[risk_parity, p.80-81]`,
+  `[systematic_trading, p.185-188]`;
 - a 2026-06-05 follow-up in
   `studies/return_stacked_core/us_core/reddit_leveraged_backtests/` compared 5
   Reddit/Testfol.io leveraged portfolio payloads against RSC-US. The best raw
@@ -600,6 +641,39 @@ after-tax CAGR `19.46%`, MDD `-42.58%`, Calmar `0.457` and terminal `5.82x` vs
 after-tax QQQ. This remains exposure-geometry discovery only; no deployment,
 paper-trading label or mandate allocation change followed
 `[leverage_for_the_long_run, p.4-7]`, `[systematic_trading, p.137-148]`,
+`[advances_fin_ml, p.208-211]`.
+
+Phases 3A, 3A-2 and 3C then tested whether the Phase 2 geometry could be improved
+by sparse confirmation filters, alternative regime forms or different SMA/EMA
+lookbacks. The answer was negative for standalone LRS: no filter/form/window
+reliably beat the SMA200-level base, and adaptive lookback lost net of turnover.
+Phase 4 ran the mandate-style gate suite on six SMA200 bases and closed with
+`0/6` passing all seven gates. Walk-forward robustness was the binding failure;
+QQQ also failed PBO and DSR. LRS standalone was recorded as research-only and
+closed, with no deployment, paper-trading label or mandate allocation change
+`[trading_systems_methods, p.939]`, `[advances_fin_ml, p.208-211]`,
+`[advances_fin_ml, p.273-275]`.
+
+On 2026-06-08/09 Phase 5 added a post-close core/satellite diagnostic and then
+reran it with a rebuilt RSC-US `35/40/25` sleeve matrix. The matrix lives at
+`studies/return_stacked_core/us_core/series/return_stacked_core_sleeve_returns.parquet`
+and now reconstructs `RSSTSIM` from the user-requested Testfol.io tracking proxy:
+`SPYSIM + 70% DBMFSIM + 30% KMLMSIM - (CASHX + 200 bps/year)`, equivalent to
+`100% SPY + 70% DBMF + 30% KMLM - 100% CASHX?E=-2`. A no-auth Testfol.io audit
+over the live RSST window showed terminal ratio `1.0025` and daily return
+correlation `0.9275` versus RSST. Because `DBMFSIM` starts in 2000, the rebuilt
+core window is now 2000+. Phase 5 tested `90/10`, `80/20` and `70/30` overlays
+with local LRS SPY, local LRS QQQ and saved T3d-K2 satellites, including
+underwater/recovery and relative-drawdown metrics. Result: `0/9` overlays passed
+the strict rebuilt-sleeve screen. The rebuilt RSC same-window benchmark itself
+was CAGR `12.40%`, MDD `-30.76%`, terminal `21.71x`, versus SPYSIM CAGR
+`8.39%`, MDD `-55.14%`, terminal `8.34x` (`2.60x` ending wealth). The
+highest-CAGR overlay was `70% RSC / 30% T3d-K2`, CAGR `14.24%`, MDD `-48.65%`.
+A separate `lrs/TOP20_BY_CAGR.md` ranked `4183` LRS rows by CAGR with
+no drawdown filter; top row was QQQ L`3.00`/ZROZ/RV63<=40%/lag5, CAGR `25.84%`,
+MDD `-71.05%`. These are diagnostic leads only; account-level tax/friction and
+mandate gates remain prerequisites before any promotion claim `[testing_tuning,
+p.327-335]`, `[systematic_trading, p.185-188]`, `[risk_parity, p.80-81]`,
 `[advances_fin_ml, p.208-211]`.
 
 ## Repository Slim-Down

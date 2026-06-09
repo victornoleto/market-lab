@@ -2,6 +2,26 @@
 
 Status: discovery-only support for the RSC-US implementation notes. This does not authorize deployment or change the mandate.
 
+## Current Adjusted RSST Tracking Proxy (2026-06-09)
+
+The local RSC-US sleeve matrix now rebuilds `RSSTSIM` as
+`SPYSIM + 0.70*DBMFSIM + 0.30*KMLMSIM - (CASHX + 0.0200/252)`, equivalent to the
+Testfol.io tracking payload `100% SPY + 70% DBMF + 30% KMLM - 100% CASHX?E=-2`.
+This is a tracking proxy for RSST, not a live ETF backfill; `DBMFSIM` constrains
+the common window to 2000+ `[risk_parity, p.80-81]`, `[systematic_trading,
+p.185-188]`.
+
+| Portfolio | Window | CAGR | MDD | Sharpe | Sortino | Calmar | Terminal |
+|---|---|---:|---:|---:|---:|---:|---:|
+| RSC-US `35/40/25` adjusted RSST proxy | 2000-01-04..2026-05-21 | 12.40% | -30.76% | 0.838 | 1.153 | 0.403 | 21.71x |
+| SPYSIM buy-hold | 2000-01-04..2026-05-21 | 8.39% | -55.14% | 0.514 | 0.653 | 0.152 | 8.34x |
+
+Relative to SPYSIM, the adjusted core ends at `2.60x`, adds `+4.01pp/year` CAGR,
+and improves MDD by `+24.38pp`. It was below SPYSIM on only `0.17%` of common-window
+days. The historical 1988 table below is retained as saved-curve context using the
+older RSC reconstruction; do not mix its metrics with this adjusted 2000+ RSST
+tracking proxy.
+
 ## Method
 
 `RSSX_RP = 100% SPY + 100% Gold/BTC risk-parity sleeve - 100% CASHX - 0.67% ER`.

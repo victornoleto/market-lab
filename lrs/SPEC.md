@@ -116,6 +116,28 @@ Candidate actions:
   `?L=-1/-2/-3` series when available;
 - cap inverse sizing because bear-market rallies create short-convexity risk.
 
+## Phase 5 - RSC Overlay Rebuilt-Sleeve Diagnostic
+
+Purpose: after standalone LRS fails validation gates, test whether a small LRS or
+T3d-style sleeve adds value as a satellite around RSC-US `35/40/25` instead of as
+a replacement.
+
+Rules:
+
+- Use the local RSC-US sleeve-return matrix for `GDESIM`, `RSSTSIM`, and
+  `ZROZSIM`; current `RSSTSIM` is the user-requested Testfol.io tracking proxy
+  `SPYSIM + 0.70*DBMFSIM + 0.30*KMLMSIM - (CASHX + 0.0200/252)`, equivalent to
+  `100% SPY + 70% DBMF + 30% KMLM - 100% CASHX?E=-2`, not a live ETF backfill
+  `[risk_parity, p.80-81]`, `[systematic_trading, p.185-188]`.
+- Test only small pre-specified satellite weights (`10%`, `20%`, `30%`) to avoid
+  re-opening a broad search.
+- Report time underwater, max recovery time, turnover and relative drawdown versus
+  RSC, because headline CAGR/MDD is not enough for sequence-risk assessment
+  `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`.
+- Treat monthly rebalancing as an allocation-control proxy, not account-level tax
+  implementation; exact promotion would require account-level tax/friction
+  recomputation and mandate gates `[systematic_trading, p.185-188]`.
+
 ## Score
 
 The primary score is after-tax and benchmark-relative. Reports must include:

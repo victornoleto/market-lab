@@ -41,7 +41,7 @@ It is monthly rebalanced, long-only at fund-weight level, with no negative
 external cash. The leverage is embedded inside capital-efficient ETFs, not via
 retail margin `[leverage_for_the_long_run, p.13]`.
 
-Headline backtest window: `1988-01-04..2026-04-17`.
+Historical saved-curve backtest window: `1988-01-04..2026-04-17`.
 
 | Portfolio | CAGR | MDD | Sharpe | Calmar | Terminal wealth |
 |---|---:|---:|---:|---:|---:|
@@ -49,8 +49,19 @@ Headline backtest window: `1988-01-04..2026-04-17`.
 | Old B4 `25/25/25/25` | `14.43%` | `-27.92%` | `1.018` | `0.517` | `174x` |
 | SPYSIM buy-hold | `11.46%` | `-55.14%` | `0.691` | `0.208` | `64x` |
 
-Interpretation: RSC-US is a strong long-horizon, drawdown-efficient SPY
-challenger. It is not a guaranteed modern-window CAGR maximizer.
+Current local rerun with the adjusted RSST tracking proxy starts in 2000 because
+`DBMFSIM` is the limiting sleeve. The core still dominates SPYSIM on the common
+window:
+
+| Portfolio | Window | CAGR | MDD | Sharpe | Sortino | Calmar | Terminal wealth |
+|---|---|---:|---:|---:|---:|---:|---:|
+| RSC-US `35/40/25` adjusted RSST proxy | `2000-01-04..2026-05-21` | `12.40%` | `-30.76%` | `0.838` | `1.153` | `0.403` | `21.71x` |
+| SPYSIM buy-hold | `2000-01-04..2026-05-21` | `8.39%` | `-55.14%` | `0.514` | `0.653` | `0.152` | `8.34x` |
+
+Adjusted RSC terminal wealth is `2.60x` SPYSIM on this common window; the CAGR
+spread is `+4.01pp/year`, and MDD improves by `+24.38pp`. Interpretation: RSC-US
+remains a strong long-horizon, drawdown-efficient SPY challenger, but the adjusted
+proxy should be read as a 2000+ tracking rerun, not as the old 1988 saved curve.
 
 ## Key Reports
 
@@ -79,6 +90,21 @@ Read in this order:
 | `legacy_spy_beater/` | Importable legacy helpers from the original SPY-beater hunt. |
 | `legacy_algorithms/` | BAA G12 and composite momentum scripts kept for tests/history. |
 
+## Sleeve-Return Artifacts
+
+| Artifact | Scope | Status |
+|---|---|---|
+| `us_core/series/return_stacked_core_sleeve_returns.parquet` | RSC-US core sleeves: `GDESIM`, `RSSTSIM`, `ZROZSIM`, plus source/helper sleeves. | Created 2026-06-09; revised to RSST tracking proxy. |
+| `export_sleeve_returns.py` | Deterministic exporter for the RSC-US sleeve matrix. | Rebuilds the parquet and metadata. |
+
+`RSSTSIM` is reconstructed as
+`SPYSIM + 0.70*DBMFSIM + 0.30*KMLMSIM - (CASHX + 0.0200/252)`, equivalent to the
+user-provided Testfol.io tracking payload `100% SPY + 70% DBMF + 30% KMLM - 100%
+CASHX?E=-2`. It is a repository tracking proxy, not a live ETF backfill. Because
+`DBMFSIM` starts in 2000, this matrix no longer reproduces the older saved RSC
+curve; expect non-trivial differences versus the historical 1988 saved series
+`[risk_parity, p.80-81]`, `[systematic_trading, p.185-188]`.
+
 ## Implementation Direction
 
 Current clean research expression:
@@ -102,9 +128,9 @@ sensitive, so local re-optimization remains constrained by multiple-testing risk
 
 ## Open Blockers
 
-The useful next engineering artifact is a canonical sleeve-level daily return
-matrix for `GDE`, `RSST`, `ZROZ`, `CTAP`, `RSSX_RP`, `NTSD`, `RSIT`, `NTSI`,
-`VTI`, `VEA` and `VT`.
+The useful next engineering artifact is a broader canonical sleeve-level daily
+return matrix for `CTAP`, `RSSX_RP`, `NTSD`, `RSIT`, `NTSI`, `VTI`, `VEA` and
+`VT`. The core US `GDE/RSST/ZROZ` matrix already exists.
 
 That matrix is required before exact checks for:
 

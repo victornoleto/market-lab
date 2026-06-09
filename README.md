@@ -14,8 +14,10 @@ authorized by this repository.
 Recent research consolidated `studies/return_stacked_core/` as the canonical
 Return-Stacked Core (RSC) folder. The anchor is RSC-US
 `35% GDE / 40% RSST / 25% ZROZ` (`GDESIM/RSSTSIM/ZROZSIM`), with a documented
-RSC-Global diversification branch. It remains documentation/robustness work, not
-deployment authorization. The active follow-on study is
+RSC-Global diversification branch. With the adjusted RSST tracking proxy, the
+2000-2026 local rerun is CAGR `12.40%`, MDD `-30.76%`, terminal `21.71x` versus
+SPYSIM CAGR `8.39%`, MDD `-55.14%`, terminal `8.34x`. It remains
+documentation/robustness work, not deployment authorization. The active follow-on study is
 `studies/spy_sso_upro_replacement/`, a static-first SPY replacement search that
 pivoted to explicit target leverage and benchmark-relative equity dominance after
 static near-misses failed strict rolling robustness. The practical after-tax rerun
@@ -25,15 +27,18 @@ the lead is `SMA300 L2.75 off 60 ZROZ / 40 GLD monthly`. This remains
 research-only and does not authorize capital allocation `[testing_tuning,
 p.327-335]`, `[advances_fin_ml, p.208-211]`, `[leverage_for_the_long_run, p.13]`.
 
-A new root-level `lrs/` restart opened on 2026-06-07 to study the Gayed/SMA LRS
-line again from first principles. It is research-only and not deployment
-authorization. Phase 2 now varies target leverage and realized-volatility
-throttles after the SMA200 weekly baseline and risk-off sweep. Current top score:
-`SPY` L`2.00`, risk-off `50 ZROZ / 25 GLD / 25 CASH`, `RV21 <= 30%`, lag `3`,
-after-tax CAGR `15.44%`, MDD `-39.28%`. Best QQQ: L`1.75`, risk-off
-`40 ZROZ / 40 GLD / 20 IEF`, `RV63 <= 40%`, lag `0`, after-tax CAGR `19.46%`,
-MDD `-42.58%` `[leverage_for_the_long_run, p.4-7]`, `[systematic_trading,
-p.137-148]`.
+A root-level `lrs/` restart ran on 2026-06-07/08 to study the Gayed/SMA LRS line
+again from first principles. Standalone LRS closed research-only: Phase 4 ran the
+mandate-style gate suite and `0/6` bases passed. Phase 5 now rebuilds RSC-US
+`35/40/25` using the user-requested RSST tracking proxy
+`SPYSIM + 70% DBMFSIM + 30% KMLMSIM - CASHX?E=-2`; under that proxy `0/9`
+overlays pass the strict screen. The highest-CAGR overlay is `70% RSC / 30%
+T3d-K2` (CAGR `14.24%`, MDD `-48.65%`) versus rebuilt RSC CAGR `12.40%`, MDD
+`-30.76%`. A separate `lrs/TOP20_BY_CAGR.md` ranks all LRS rows by CAGR ignoring
+drawdown; top row is QQQ L`3.00`/ZROZ/RV63<=40%/lag5, CAGR `25.84%`, MDD
+`-71.05%`. This is not deployment authorization: account-level tax/friction and
+full mandate gates are still required `[testing_tuning, p.327-335]`,
+`[advances_fin_ml, p.208-211]`.
 
 See:
 
