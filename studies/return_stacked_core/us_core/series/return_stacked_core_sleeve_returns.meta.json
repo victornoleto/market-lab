@@ -1,0 +1,68 @@
+{
+  "generated_by": "studies.return_stacked_core.export_sleeve_returns",
+  "source_remote_prices": "studies/return_stacked_core/us_core/series/remote_prices.parquet",
+  "source_testfolio_cache": "data/testfolio/cache/history.parquet",
+  "output_parquet": "studies/return_stacked_core/us_core/series/return_stacked_core_sleeve_returns.parquet",
+  "rows": 6635,
+  "columns": [
+    "GDESIM",
+    "RSSTSIM",
+    "ZROZSIM",
+    "SPYSIM",
+    "KMLMSIM",
+    "DBMFSIM",
+    "GLDSIM",
+    "CASHX"
+  ],
+  "first_date": "2000-01-04",
+  "last_date": "2026-05-21",
+  "non_null": {
+    "GDESIM": {
+      "first": "2000-01-04",
+      "last": "2026-05-21",
+      "n": 6635
+    },
+    "RSSTSIM": {
+      "first": "2000-01-04",
+      "last": "2026-05-21",
+      "n": 6635
+    },
+    "ZROZSIM": {
+      "first": "2000-01-04",
+      "last": "2026-05-21",
+      "n": 6635
+    },
+    "SPYSIM": {
+      "first": "2000-01-04",
+      "last": "2026-05-21",
+      "n": 6635
+    },
+    "KMLMSIM": {
+      "first": "2000-01-04",
+      "last": "2026-05-21",
+      "n": 6635
+    },
+    "DBMFSIM": {
+      "first": "2000-01-04",
+      "last": "2026-05-21",
+      "n": 6635
+    },
+    "GLDSIM": {
+      "first": "2000-01-04",
+      "last": "2026-05-21",
+      "n": 6635
+    },
+    "CASHX": {
+      "first": "2000-01-04",
+      "last": "2026-05-21",
+      "n": 6635
+    }
+  },
+  "rsst_formula": "RSSTSIM = SPYSIM + 0.70*DBMFSIM + 0.30*KMLMSIM - (CASHX + 0.0200/252)",
+  "rsst_tracking_payload": "Testfol.io no-auth audit: RSST vs 100% SPY + 70% DBMF + 30% KMLM - 100% CASHX?E=-2; 2023-09-06..2026-06-08 terminal ratio 1.002547, daily return corr 0.927530.",
+  "citations": [
+    "[risk_parity, p.80-81]",
+    "[systematic_trading, p.185-188]"
+  ],
+  "caveat": "Sleeve-return matrix for RSC reruns in this repository; RSSTSIM is a documented RSST tracking proxy, not a live RSST ETF backfill. DBMFSIM availability starts the core common window in 2000."
+}

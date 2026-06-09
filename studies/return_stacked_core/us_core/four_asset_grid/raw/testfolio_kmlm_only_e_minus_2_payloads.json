@@ -1,0 +1,251 @@
+[
+  {
+    "start_date": "1800-01-01",
+    "end_date": "2100-01-01",
+    "start_val": 10000,
+    "adj_inflation": false,
+    "target_currency": "USD",
+    "cashflow": 0,
+    "cashflow_freq": "Yearly",
+    "cashflow_offset": 0,
+    "match_first_portfolio_income_cashflows": false,
+    "one_time_cashflows": [],
+    "rolling_window": 60,
+    "withdrawal_surface_include": false,
+    "withdrawal_surface_projection": "NONE",
+    "withdrawal_surface_projection_min_years": 10,
+    "withdrawal_surface_start_years": 5,
+    "withdrawal_surface_end_years": 50,
+    "withdrawal_surface_step_years": 1,
+    "cashflow_legs": [],
+    "cashflow_type": null,
+    "backtests": [
+      {
+        "invest_dividends": true,
+        "rebalance_freq": "Monthly",
+        "rebalance_offset": 0,
+        "allocation": {
+          "SPYSIM": 25.0,
+          "KMLMSIM": 25.0,
+          "CASHX?E=-2": -25.0,
+          "GDESIM": 40.0,
+          "ZROZSIM": 35.0
+        },
+        "drag": 0,
+        "absolute_dev": 0,
+        "relative_dev": 0
+      },
+      {
+        "invest_dividends": true,
+        "rebalance_freq": "Monthly",
+        "rebalance_offset": 0,
+        "allocation": {
+          "SPYSIM": 27.5,
+          "KMLMSIM": 27.5,
+          "CASHX?E=-2": -37.5,
+          "GDESIM": 44.0,
+          "ZROZSIM": 38.5
+        },
+        "drag": 0,
+        "absolute_dev": 0,
+        "relative_dev": 0
+      },
+      {
+        "invest_dividends": true,
+        "rebalance_freq": "Monthly",
+        "rebalance_offset": 0,
+        "allocation": {
+          "SPYSIM": 30.0,
+          "KMLMSIM": 30.0,
+          "CASHX?E=-2": -50.0,
+          "GDESIM": 48.0,
+          "ZROZSIM": 42.0
+        },
+        "drag": 0,
+        "absolute_dev": 0,
+        "relative_dev": 0
+      },
+      {
+        "invest_dividends": true,
+        "rebalance_freq": "Monthly",
+        "rebalance_offset": 0,
+        "allocation": {
+          "SPYSIM": 31.25,
+          "KMLMSIM": 31.25,
+          "CASHX?E=-2": -56.25,
+          "GDESIM": 50.0,
+          "ZROZSIM": 43.75
+        },
+        "drag": 0,
+        "absolute_dev": 0,
+        "relative_dev": 0
+      },
+      {
+        "invest_dividends": true,
+        "rebalance_freq": "Monthly",
+        "rebalance_offset": 0,
+        "allocation": {
+          "SPYSIM": 32.5,
+          "KMLMSIM": 32.5,
+          "CASHX?E=-2": -62.5,
+          "GDESIM": 52.0,
+          "ZROZSIM": 45.5
+        },
+        "drag": 0,
+        "absolute_dev": 0,
+        "relative_dev": 0
+      }
+    ]
+  },
+  {
+    "start_date": "1800-01-01",
+    "end_date": "2100-01-01",
+    "start_val": 10000,
+    "adj_inflation": false,
+    "target_currency": "USD",
+    "cashflow": 0,
+    "cashflow_freq": "Yearly",
+    "cashflow_offset": 0,
+    "match_first_portfolio_income_cashflows": false,
+    "one_time_cashflows": [],
+    "rolling_window": 60,
+    "withdrawal_surface_include": false,
+    "withdrawal_surface_projection": "NONE",
+    "withdrawal_surface_projection_min_years": 10,
+    "withdrawal_surface_start_years": 5,
+    "withdrawal_surface_end_years": 50,
+    "withdrawal_surface_step_years": 1,
+    "cashflow_legs": [],
+    "cashflow_type": null,
+    "backtests": [
+      {
+        "invest_dividends": true,
+        "rebalance_freq": "Monthly",
+        "rebalance_offset": 0,
+        "allocation": {
+          "SPYSIM": 35.0,
+          "KMLMSIM": 35.0,
+          "CASHX?E=-2": -75.0,
+          "GDESIM": 56.0,
+          "ZROZSIM": 49.0
+        },
+        "drag": 0,
+        "absolute_dev": 0,
+        "relative_dev": 0
+      },
+      {
+        "invest_dividends": true,
+        "rebalance_freq": "Monthly",
+        "rebalance_offset": 0,
+        "allocation": {
+          "SPYSIM": 37.5,
+          "KMLMSIM": 37.5,
+          "CASHX?E=-2": -87.5,
+          "GDESIM": 60.0,
+          "ZROZSIM": 52.5
+        },
+        "drag": 0,
+        "absolute_dev": 0,
+        "relative_dev": 0
+      },
+      {
+        "invest_dividends": true,
+        "rebalance_freq": "Monthly",
+        "rebalance_offset": 0,
+        "allocation": {
+          "SPYSIM": 43.75,
+          "KMLMSIM": 43.75,
+          "CASHX?E=-2": -118.75,
+          "GDESIM": 70.0,
+          "ZROZSIM": 61.25
+        },
+        "drag": 0,
+        "absolute_dev": 0,
+        "relative_dev": 0
+      },
+      {
+        "invest_dividends": true,
+        "rebalance_freq": "Monthly",
+        "rebalance_offset": 0,
+        "allocation": {
+          "SPYSIM": 50.0,
+          "KMLMSIM": 50.0,
+          "CASHX?E=-2": -150.0,
+          "GDESIM": 80.0,
+          "ZROZSIM": 70.0
+        },
+        "drag": 0,
+        "absolute_dev": 0,
+        "relative_dev": 0
+      },
+      {
+        "invest_dividends": true,
+        "rebalance_freq": "Monthly",
+        "rebalance_offset": 0,
+        "allocation": {
+          "SPYSIM": 56.25,
+          "KMLMSIM": 56.25,
+          "CASHX?E=-2": -181.25,
+          "GDESIM": 90.0,
+          "ZROZSIM": 78.75
+        },
+        "drag": 0,
+        "absolute_dev": 0,
+        "relative_dev": 0
+      }
+    ]
+  },
+  {
+    "start_date": "1800-01-01",
+    "end_date": "2100-01-01",
+    "start_val": 10000,
+    "adj_inflation": false,
+    "target_currency": "USD",
+    "cashflow": 0,
+    "cashflow_freq": "Yearly",
+    "cashflow_offset": 0,
+    "match_first_portfolio_income_cashflows": false,
+    "one_time_cashflows": [],
+    "rolling_window": 60,
+    "withdrawal_surface_include": false,
+    "withdrawal_surface_projection": "NONE",
+    "withdrawal_surface_projection_min_years": 10,
+    "withdrawal_surface_start_years": 5,
+    "withdrawal_surface_end_years": 50,
+    "withdrawal_surface_step_years": 1,
+    "cashflow_legs": [],
+    "cashflow_type": null,
+    "backtests": [
+      {
+        "invest_dividends": true,
+        "rebalance_freq": "Monthly",
+        "rebalance_offset": 0,
+        "allocation": {
+          "SPYSIM": 62.5,
+          "KMLMSIM": 62.5,
+          "CASHX?E=-2": -212.5,
+          "GDESIM": 100.0,
+          "ZROZSIM": 87.5
+        },
+        "drag": 0,
+        "absolute_dev": 0,
+        "relative_dev": 0
+      },
+      {
+        "invest_dividends": true,
+        "rebalance_freq": "Monthly",
+        "rebalance_offset": 0,
+        "allocation": {
+          "SPYSIM": 75.0,
+          "KMLMSIM": 75.0,
+          "CASHX?E=-2": -275.0,
+          "GDESIM": 120.0,
+          "ZROZSIM": 105.0
+        },
+        "drag": 0,
+        "absolute_dev": 0,
+        "relative_dev": 0
+      }
+    ]
+  }
+]
