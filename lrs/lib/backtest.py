@@ -232,10 +232,23 @@ def simulate_weight_frame(
     asset_returns: pd.DataFrame,
     target_weights: pd.DataFrame,
     taxable: bool,
+    force_rebalance_mask: pd.Series | None = None,
 ) -> tuple[pd.Series, dict[str, float]]:
+    """Simulate a daily target-weight frame, rebalancing on target changes.
+
+    ``force_rebalance_mask`` (optional): dates marked True rebalance back to the
+    target even if it is unchanged, so a constant-weight frame can express a
+    periodically rebalanced static portfolio with its turnover taxed by the
+    engine. Default ``None`` preserves the original change-only behavior.
+    """
     columns = sorted(set(target_weights.columns) | set(asset_returns.columns))
     returns = asset_returns.reindex(index=target_weights.index, columns=columns).fillna(0.0)
     targets = target_weights.reindex(index=returns.index, columns=columns).fillna(0.0)
+    force_arr = (
+        force_rebalance_mask.reindex(returns.index).fillna(False).to_numpy(dtype=bool)
+        if force_rebalance_mask is not None
+        else None
+    )
 
     returns_arr = returns.to_numpy(dtype=np.float64)
     target_arr = targets.to_numpy(dtype=np.float64)
@@ -257,10 +270,10 @@ def simulate_weight_frame(
         equity_pre = float(values.sum())
         current_weights = values / equity_pre if equity_pre > 0 else np.zeros_like(values)
 
-        target_changed = previous_target is None or not np.allclose(
-            target,
-            previous_target,
-            atol=1e-10,
+        target_changed = (
+            previous_target is None
+            or (force_arr is not None and bool(force_arr[i]))
+            or not np.allclose(target, previous_target, atol=1e-10)
         )
         if target_changed:
             turnover = 0.5 * float(np.abs(target - current_weights).sum())

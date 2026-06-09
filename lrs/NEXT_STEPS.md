@@ -13,7 +13,8 @@ este documento antes de continuar a evolucao da estrategia em `lrs/`.
 6. `lrs/SPEC.md`.
 7. `lrs/MEMORY.md`.
 8. Este arquivo.
-9. Ultimo report: `lrs/phases/phase02_target_leverage_vol/REPORT.md`.
+9. `lrs/TOP20_BY_CAGR.md`.
+10. Ultimo report: `lrs/phases/phase05_rsc_overlay_proxy/REPORT.md`.
 
 ## Contexto Fixo
 
@@ -100,6 +101,48 @@ este documento antes de continuar a evolucao da estrategia em `lrs/`.
   exposicao da Phase 2 e o driver real `[trading_systems_methods, p.939]`,
   `[advances_fin_ml, p.208-211]`.
 
+### Phase 3A-2, 3C e 4 - Regime/Lookback/Gates (CONCLUIDAS 2026-06-07)
+
+- Arquivos: `lrs/phases/phase03b_regime_signals/REPORT.md`,
+  `lrs/phases/phase03c_lookback_study/REPORT.md`,
+  `lrs/phases/phase04_validation_gates/REPORT.md`.
+- Phase 3A-2 testou formas de regime substituindo SMA200; nenhuma bate SMA200 em
+  SPY e QQQ. EMA200 e QQQ-only near-tie, mas piora MDD.
+- Phase 3C respondeu "por que 200?": 200 e uma janela fixa adequada dentro da
+  regiao `~175-225`, mas nao e platao robusto amplo nem ancorada em persistencia;
+  adaptativo piora liquido de turnover.
+- Phase 4 rodou gates do mandate sobre 6 bases SMA200: **0/6 passam**. Gate
+  vinculante = walk-forward; QQQ tambem falha PBO/DSR. LRS standalone encerrado
+  como research-only negativo `[advances_fin_ml, p.208-211]`,
+  `[advances_fin_ml, p.273-275]`.
+
+### Phase 5 - RSC Overlay Rebuilt-Sleeve Diagnostic (CONCLUIDA 2026-06-08/09)
+
+- Arquivo: `lrs/phases/phase05_rsc_overlay_proxy/REPORT.md`.
+- CSV: `lrs/results/phase05_rsc_overlay_proxy.csv`.
+- Plots: `lrs/phases/phase05_rsc_overlay_proxy/plots/`.
+- Testes: `tests/test_lrs_phase05.py`.
+- Objetivo: testar se LRS/T3d faz sentido como satelite pequeno sobre RSC-US
+  `35/40/25`, usando metricas de underwater/recovery e drawdown relativo.
+- Fonte RSC: matriz local
+  `studies/return_stacked_core/us_core/series/return_stacked_core_sleeve_returns.parquet`
+  com `GDESIM`, `RSSTSIM`, `ZROZSIM` e sleeves auxiliares. `RSSTSIM` = `SPYSIM +
+  0.70*DBMFSIM + 0.30*KMLMSIM - (CASHX + 0.0200/252)`, equivalente local ao
+  payload `100% SPY + 70% DBMF + 30% KMLM - 100% CASHX?E=-2`; proxy documentado,
+  nao backfill de ETF live
+  `[risk_parity, p.80-81]`, `[systematic_trading, p.185-188]`.
+- Resultado: `0/9` overlays passam o screen rebuilt-sleeve estrito. Maior CAGR de
+  overlay: `70% RSC / 30% T3d-K2`, CAGR `14.24%`, MDD `-48.65%`, Calmar `0.293`,
+  vs RSC reconstruido CAGR `12.40%`, MDD `-30.76%`, Calmar `0.403`.
+- Top-20 independente de drawdown: `lrs/TOP20_BY_CAGR.md` e
+  `lrs/results/top20_by_cagr.csv` ranqueiam `4183` rows por CAGR desc. Top row:
+  `QQQ L3.00 / ZROZ / RV63<=40% / lag5`, CAGR `25.84%`, MDD `-71.05%`.
+- Leitura: nao ha overlay strict com o RSST proxy revisado. A proxima acao depende
+  de escolha explicita do usuario sobre qual row/lead quer seguir; depois disso,
+  tax/friction account-level + gates honestos continuam obrigatorios
+  `[testing_tuning, p.327-335]`, `[systematic_trading, p.185-188]`,
+  `[advances_fin_ml, p.208-211]`.
+
 ## Regras Para Continuar
 
 - Nao declarar winner, paper-trade candidate ou deploy candidate sem rodar os
@@ -115,10 +158,59 @@ este documento antes de continuar a evolucao da estrategia em `lrs/`.
 - Atualizar `lrs/MEMORY.md` apos cada phase executada.
 - Atualizar `docs/CURRENT_STATE.md` e, se a conclusao mudar a narrativa publica,
   `docs/PROJECT_HISTORY.md`.
-- Nao tocar nas mudancas nao relacionadas em `studies/return_stacked_core/...`
-  salvo pedido explicito do usuario.
+- A matriz RSC-US core ja foi exportada; nao chamar `RSSTSIM` de ETF live nem
+  afirmar match exato com a curva RSC salva antiga. O proxy atual começa em 2000
+  por causa de `DBMFSIM`.
 
-## Proximo Trabalho Recomendado
+### Phase 6 Round - 6C/6B/6D/6A (CONCLUIDA 2026-06-09)
+
+- Pergunta do usuario: "existe estrategia LRS que valha ceder parte de um
+  portfolio 100% static?" Decisoes: benchmarks RSC-US + SSO B&H + SPY B&H,
+  teto MDD `-50%`, 4 frentes aprovadas. Ordem de execucao: 6C -> 6B -> 6D -> 6A.
+- **6C forense WF (+0 trials):** 84 janelas persistidas
+  (`lrs/results/phase06c_wf_forensics.csv`). Headline pre-registrado (>=2/3 das
+  falhas em `bull_low`): NO (48,5%), mas 90,9% das falhas sao bull;
+  `bear_high` beat 100% (+154pp medio), `bear_mid` 0% (whipsaw alavancado).
+  Edge concentrado em crise profunda.
+- **6B vol-targeting continuo (+72 -> 3948):** SPY FAIL (WF 12/17 = baseline);
+  QQQ SUCCESS diagnostico (sigma 40%/RV21/lag1: WF 7/11 vs 6/11, CAGR 19,14%,
+  MDD -42,18%). Vira satelite na 6A.
+- **6D sleeve inversa (+36 -> 3984):** FAIL nas duas branches; todo `f` piora
+  CAGR e MDD. Sanity f=0 reproduz Phase 4 (~5.6e-17).
+- **6A fronteira after-tax (+21 -> 4005), REVISADA 2026-06-09:** correcao do
+  usuario - core static rebalanceia via aportes, sem DARF intermediario; DARF
+  so na liquidacao final. Satelites LRS mantem DARF anual (giro semanal vende
+  de verdade). Janela 2000+. Benchmarks: RSC `11,74% / -30,76% / Calmar 0,382`;
+  SSO B&H `9,01% / -88,27%`; SPY B&H `7,81% / -55,14%`. **18/18 mixes passam o
+  teto -50%; 13 batem o RSC em CAGR E Calmar.** Top Calmar:
+  `mix_lrs_spy_headline_20` (12,12%, MDD -25,18%, Calmar 0,481). Maior CAGR
+  unified: `mix_lrs_qqq_voltarget_30` (12,83%, -27,67%).
+- **6A Part 2 - simulacao de aportes (+0 trials):** 10k inicial + 1k/mes,
+  comprando so o componente mais abaixo do target (minimo de ordens), sem
+  vendas, DARF final por componente gross. **Todos os 18 mixes batem 100% RSC
+  em IRR** (RSC 13,72%, terminal $2,96M em $326k aportados).
+  `mix_lrs_qqq_voltarget_30`: IRR 15,21% ($3,87M) com path MDD -28,4% ~= RSC.
+  `mix_t3d_k2_saved_30` topa IRR (17,66%, $6,0M) mas path MDD -50,3%. SSO B&H:
+  IRR 15,81% mas path MDD -80,8% (ruin). CSVs:
+  `lrs/results/phase06a_aftertax_frontier.csv` e
+  `lrs/results/phase06a_contribution_sim.csv`.
+
+## Proximo Trabalho Recomendado Atual
+
+A Phase 6A entrega a tabela de decisao que a pergunta do usuario pedia
+(`lrs/phases/phase06a_aftertax_frontier/REPORT.md`). A ordem honesta agora e:
+
+1. Usuario escolher UM mix da tabela rankeada da 6A (ex.: 75/25 RSC x SPY
+   headline, ou 70/30 RSC x QQQ vol-target), ou declarar que nenhum compensa.
+2. Pre-registrar a fase de validacao desse mix unico: rodar a suite completa de
+   gates do mandate (PBO/DSR/WF/OOS/FWD/bootstrap/xlib) sobre o MIX (nao sobre o
+   satelite isolado), com `n_trials >= 4005` cobrindo toda a linhagem.
+3. Se (e somente se) os gates passarem, levar ao processo de decisao do mandate
+   (SS7 overrides). Sem isso, a 6A fica como diagnostico/decision-table.
+4. Nao reabrir grid amplo; nao adicionar familias novas de mecanismo sem
+   pre-registro (6B/6D ja cobriram as duas candidatas remanescentes; 6D FAIL).
+
+## Historico De Trabalho Recomendado Anterior
 
 ### Phase 3A - Small Risk-On Vote Sobre A Geometria Phase 2 (CONCLUIDA)
 

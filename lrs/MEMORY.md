@@ -359,3 +359,194 @@ walk-forward robustness gate is not met `[advances_fin_ml, p.208-211]`,
 
 Validation status: gates RUN; family does not pass; closed/shelved. No deployment,
 no paper-trade label, no mandate allocation change.
+
+## 2026-06-08/09 - Phase 5 RSC Overlay Rebuilt-Sleeve Diagnostic Executed
+
+Runner: `uv run python -m lrs.phases.phase05_rsc_overlay_proxy.run`.
+
+Outputs:
+
+- `phases/phase05_rsc_overlay_proxy/REPORT.md`, `README.md`.
+- `results/phase05_rsc_overlay_proxy.csv`.
+- `phases/phase05_rsc_overlay_proxy/plots/`.
+- New RSC sleeve artifact:
+  `studies/return_stacked_core/us_core/series/return_stacked_core_sleeve_returns.parquet`
+  plus `.meta.json`.
+- New exporter: `studies/return_stacked_core/export_sleeve_returns.py`.
+- New tests: `tests/test_lrs_phase05.py`,
+  `tests/test_return_stacked_core_sleeve_returns.py`.
+- Top-20 return-first ranking: `TOP20_BY_CAGR.md`,
+  `results/top20_by_cagr.csv`; generator `lrs/top20_by_cagr.py`.
+
+Purpose: answer whether the failed standalone LRS line has value as a small
+satellite around RSC-US `35/40/25`, after the Reddit feedback emphasized
+benchmarks, underwater/recovery and sizing. The first proxy pass used the saved
+RSC curve; the follow-up found local `GDESIM`, `KMLMSIM`, `DBMFSIM` and related
+remote prices in `studies/return_stacked_core/us_core/series/remote_prices.parquet`
+and exported a RSC-US sleeve-return matrix. The first local formula matched the
+saved RSC curve; the user then requested the Testfol.io tracking payload formula:
+`RSSTSIM = SPYSIM + 0.70*DBMFSIM + 0.30*KMLMSIM - (CASHX + 0.0200/252)`, equivalent
+to `100% SPY + 70% DBMF + 30% KMLM - 100% CASHX?E=-2`. A no-auth endpoint audit
+over 2023-09-06..2026-06-08 showed terminal ratio `1.002547` and daily return
+correlation `0.927530` versus live RSST. Because `DBMFSIM` starts in 2000, the
+RSC diagnostic window is now 2000+ `[testing_tuning, p.327-335]`, `[risk_parity,
+p.80-81]`, `[systematic_trading, p.185-188]`.
+
+Candidate set: rebuilt `100% RSC` baseline plus `90/10`, `80/20`, `70/30` monthly
+rebalanced overlays for three satellites: local `lrs_spy_headline`, local
+`lrs_qqq_headline`, and saved `t3d_k2_saved`. Strict screen requires higher CAGR
+than same-window RSC, no worse MDD, no worse Calmar, no worse time underwater and
+no worse max recovery time. It is not a mandate gate.
+
+Result summary:
+
+- With the revised RSST proxy, `0/9` overlays pass the strict rebuilt-sleeve
+  screen.
+- Highest-CAGR overlay overall: `70% RSC / 30% T3d-K2`, CAGR `14.24%`, MDD
+  `-48.65%`, Calmar `0.293`, vs rebuilt RSC CAGR `12.40%`, MDD `-30.76%`, Calmar
+  `0.403`; this is a growth-for-drawdown trade-off, not strict improvement.
+- Standalone references on the 2000+ common window: T3d-K2 CAGR `14.65%`, MDD
+  `-84.04%`; local QQQ LRS CAGR `13.64%`, MDD `-42.56%`; local SPY LRS CAGR
+  `12.09%`, MDD `-39.28%`.
+- Top-20 CAGR-independent ranking scanned `4183` rows. Top row: `QQQ L3.00 / ZROZ /
+  RV63<=40% / lag5`, after-tax CAGR `25.84%`, MDD `-71.05%`, Calmar `0.364`.
+
+Interpretation: Phase 5 no longer supplies a strict overlay pass under the revised
+RSST tracking proxy. The useful output is now diagnostic: an explicit RSST proxy,
+the overlay table, and a return-first Top-20 for user selection. It does **not**
+reverse Phase 4's standalone gate failure, and it does not promote anything. Any
+future claim needs user-chosen pre-registration, account-level tax/friction plus
+mandate gates with honest trial accounting that includes the prior LRS lineage
+`[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`.
+
+Validation status: rebuilt-sleeve diagnostic only; no PBO/DSR/WF/OOS/FWD/bootstrap/xlib
+run for overlays; no deployment, no paper-trade label, no mandate allocation
+change.
+
+## 2026-06-09 - Phase 6 Round Executed (6C forensics, 6B vol-target, 6D inverse, 6A after-tax frontier)
+
+User question driving the round: "is any LRS strategy interesting enough to be
+worth giving up part of a 100%-static position?" User decisions: benchmarks =
+RSC-US 35/40/25 + SSO B&H + SPY B&H; portfolio MDD floor `-50%`; all four
+fronts approved. Run order 6C -> 6B -> 6D -> 6A (directory names sort
+differently; READMEs are the authority).
+
+Runners:
+
+- `uv run python -m lrs.phases.phase06c_wf_forensics.run`
+- `uv run python -m lrs.phases.phase06b_vol_target_continuous.run`
+- `uv run python -m lrs.phases.phase06d_inverse_sleeve.run`
+- `uv run python -m lrs.phases.phase06a_aftertax_frontier.run`
+
+Outputs: per-phase `README.md` (pre-registration), `REPORT.md`, `plots/`, CSVs
+in `lrs/results/phase06{a,b,c,d}_*.csv`, tests `tests/test_lrs_phase06{a,b,c,d}.py`.
+Lib change (additive, regression-guarded): `force_rebalance_mask` parameter in
+`lrs/lib/backtest.simulate_weight_frame` so a static core can be
+monthly-rebalanced with its turnover taxed by `AnnualDarfEngine`.
+
+### Phase 6C - WF forensics (+0 trials)
+
+84 base-windows persisted (3x17 SPY + 3x11 QQQ; beat counts reproduce Phase 4
+exactly). Pre-registered headline question (>=2/3 of failing windows in
+`bull_low`): **NO** (48.5%). But 90.9% of failures are in `bull` cells, and the
+regime table is sharply structured: `bear_high` beat rate 100% (mean rel ret
++154pp), `bear_mid` 0% (-18.8pp, leveraged whipsaw without a deep crash),
+`bull` cells 59-75%. Reading: the edge is concentrated in deep-crisis regimes;
+the WF miss is mostly the structural cost of timing in bull windows plus
+mid-vol bear whipsaw `[leverage_for_the_long_run, p.7-8]`, `[testing_tuning,
+p.318-320]`.
+
+### Phase 6B - continuous vol-targeting (+72 trials -> 3948)
+
+`L_t = clip(sigma_target / RV_t, 0, L_max)` quantized to the 0.25 ladder with
+inertia, replacing the binary vol gate `[systematic_trading, p.137-148, p.159,
+p.174]`. Screen (best row per branch by WF beats, tie Calmar): **SPY FAIL**
+(WF 12/17 = baseline, not strictly greater; CAGR 14.55%, MDD -37.17%); **QQQ
+SUCCESS** (sigma 40% / RV21 / lag 1: WF 7/11 vs baseline 6/11, CAGR 19.14%,
+MDD -42.18%). Honest note: 7/11 equals what `qqq_alt_vol` already reached in
+Phase 4 with a binary RV21<=30% gate, and is still far from the 9/11 gate
+level. SUCCESS = diagnostic lead for 6A's satellite set only.
+
+### Phase 6D - capped inverse sleeve (+36 trials -> 3984)
+
+Inverse synthesized in memory (`r_inv = -r_u - 0.0095/252`, cache untouched)
+`[leverage_for_the_long_run, p.16, fn.22-23]`; `risk_off' = (1-f)*risk_off +
+f*{INV}`, f in {10%, 15%, 25%} `[trading_systems_methods, p.354]`. Sanity f=0
+reproduces Phase 4 metrics (max abs dev ~5.6e-17). Screen at the committed
+headline lag: **FAIL on both branches** - every f worsens CAGR AND MDD (SPY
+best-f 10%: 14.85% / -40.26% vs headline 15.44% / -39.28%; QQQ best-f 10%:
+18.59% / -43.19% vs 19.46% / -42.58%). Consistent with the low prior from
+3A/3A-2: added mechanisms keep losing to the clean geometry.
+
+### Phase 6A - after-tax frontier vs 3 benchmarks (+21 trials -> 4005)
+
+Window 2000-01-04..2026-05-21. BOTH legs after-tax for unified-engine rows
+(core monthly rebalance turnover taxed via `force_rebalance_mask`); T3d rows
+are `two_account_approx` (legs already after-tax, inter-leg rebalance tax not
+modeled). Satellites: `lrs_spy_headline` (binary, lag 3), `lrs_qqq_voltarget`
+(6B winner), `t3d_k2_saved`. Benchmarks after-tax: RSC `11.25% / -30.76% /
+Calmar 0.366`; SSO B&H `9.01% / -88.27% / 0.102`; SPY B&H `7.81% / -55.14% /
+0.142`.
+
+Key result: **18/18 mixes pass the MDD>=-50% constraint; 13 beat after-tax RSC
+on BOTH CAGR and Calmar.** Top by Calmar: `mix_lrs_spy_headline_25` CAGR
+`11.65%` (+0.40pp vs RSC), MDD `-26.32%` (+4.44pp better), Calmar `0.442`.
+Best CAGR among unified-engine mixes: `mix_lrs_qqq_voltarget_30` `12.19%`
+(+0.94pp), MDD `-28.31%` (still better than RSC). T3d mixes give the highest
+CAGR (up to `13.43%` at 30%) but trade MDD down to `-48.66%` fast. The
+once-gross RSC advantage shrinks after tax (12.40% gross -> 11.25% after-tax),
+and small satellites add CAGR while REDUCING portfolio MDD via diversification
+`[systematic_trading, p.185-188]`.
+
+Caveats (explicit): satellites individually failed (or never ran) the mandate
+gates; mix-level improvements are in-sample diagnostics built from configs
+selected by the prior lineage; T3d rows carry the two-account approximation;
+none of this is promotion. Any promotion claim requires the full mandate SS5
+suite on the chosen mix with `n_trials >= 4005` `[advances_fin_ml, p.208-211]`,
+`[advances_fin_ml, p.273-275]`.
+
+Validation status: diagnostic round only; no PBO/DSR/WF/OOS/FWD/bootstrap/xlib
+on mixes; no deployment, no paper-trade label, no mandate allocation change.
+
+## 2026-06-09 - Phase 6A REVISED (user tax-model correction; supersedes the 6A numbers above)
+
+User correction: static portfolios are rebalanced with **new contributions
+(aportes), not sells** - the core realizes no gains along the way and pays no
+intermediate DARF. The first 6A run (unified engine taxing the core's monthly
+rebalance turnover) overstated the core's tax drag. Revised per-leg model:
+core = gross monthly rebalance + 15% DARF at final liquidation only; LRS
+satellites = full `AnnualDarfEngine` (weekly rotation genuinely sells); B&H
+benchmarks = final DARF only; mixes = two-account convention with
+contribution-funded (tax-free) re-truing, disclosed in `tax_method`
+`[testing_tuning, p.327-335]`. The `force_rebalance_mask` lib extension stays
+(generic, regression-guarded) but is no longer used by 6A.
+
+Also added Part 2 per the user's request: contribution simulation - start
+USD 10k, +USD 1k on the first trading day of each month, each month buying
+ONLY the single most-underweight component (minimal-trades policy for
+broker-cost/tax optimization), no sells, final DARF on gross components with
+cost-basis tracking; satellite component exempt (its series is already
+after-tax) `[systematic_trading, p.185-188]`. +0 trials (same mixes, different
+accounting lens); ledger stays 4005.
+
+Revised Part 1 (time-weighted, 2000-01-04..2026-05-21): RSC after-tax
+`11.74% / -30.76% / Calmar 0.382` (vs 12.40% gross; the wrong v1 model said
+11.25%); SSO B&H `9.01% / -88.27%`; SPY B&H `7.81% / -55.14%`. **18/18 mixes
+pass MDD>=-50%; 13 beat RSC on BOTH CAGR and Calmar.** Top Calmar:
+`mix_lrs_spy_headline_20` `12.12% / -25.18% / 0.481`. Best CAGR unified:
+`mix_lrs_qqq_voltarget_30` `12.83% / -27.67% / 0.464`.
+
+Part 2 (money-weighted, $326k contributed over 26.4y): **all 18 mixes beat
+100% RSC on IRR** (RSC `13.72%`, terminal $2.96M). `mix_lrs_qqq_voltarget_30`
+IRR `15.21%` ($3.87M) with path MDD `-28.4%` ~= RSC's `-27.6%`.
+`mix_t3d_k2_saved_30` tops IRR `17.66%` ($6.00M) but path MDD `-50.3%`
+(breaches the floor even with inflow softening). SSO B&H IRR `15.81%` ($4.31M)
+- DCA flatters volatile B&H on IRR - but path MDD `-80.8%` is ruin-tier. SPY
+B&H `10.72%` ($1.75M). Caveats: path MDD is mechanically softened by inflows;
+the `final_tax` column excludes satellite-internal DARF (already in its
+series); T3d remains a saved external curve.
+
+Validation status unchanged: diagnostic decision-table only; no gates run on
+mixes; no deployment, no paper-trade label, no mandate change. Any promotion
+claim needs the full SS5 suite on the chosen mix with `n_trials >= 4005`
+`[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`.

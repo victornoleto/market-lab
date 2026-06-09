@@ -15,9 +15,12 @@ promotion claim must still clear the repository mandate gates
 1. `SPEC.md` - scope, score, phases and constraints.
 2. `MEMORY.md` - live ledger of decisions and results.
 3. `NEXT_STEPS.md` - clean-session handoff and next verification checklist.
-4. `phases/phase02_target_leverage_vol/REPORT.md` - latest phase report.
-5. `results/phase02_target_leverage_vol.csv` - latest machine-readable table.
-6. Earlier phase reports under `phases/phase00_*` and `phases/phase01_*`.
+4. `phases/phase06a_aftertax_frontier/REPORT.md` - latest phase report (the
+   after-tax decision table the round was built for).
+5. `results/phase06a_aftertax_frontier.csv` - latest machine-readable table.
+6. `TOP20_BY_CAGR.md` - return-first ranking requested by the user.
+7. Earlier phase reports under `phases/phase00_*` .. `phases/phase06d_*`
+   (Phase 6 run order: 6C -> 6B -> 6D -> 6A; READMEs are the authority).
 
 ## Current Status
 
@@ -32,14 +35,28 @@ The restart starts from the original LRS idea only:
 - tax: annual Brazilian DARF model via `AnnualDarfEngine`.
 
 Phase 1 added risk-off alternatives. Phase 2 then varied target leverage and
-simple realized-volatility throttles before broad indicator work.
+simple realized-volatility throttles before broad indicator work. Phases 3A,
+3A-2 and 3C tested filters, regime forms and lookbacks; none improved the
+standalone base enough. Phase 4 ran mandate-style validation gates and closed
+standalone LRS as research-only: `0/6` bases passed all gates.
 
-Latest result: Phase 2 evaluated 2,400 rows. The top score row is `SPY` target
-leverage `2.00`, risk-off `50 ZROZ / 25 GLD / 25 CASH`, `RV21 <= 30%`, lag `3`,
-after-tax CAGR `15.44%`, MDD `-39.28%` and Calmar `0.393`. Best QQQ is target
-leverage `1.75`, risk-off `40 ZROZ / 40 GLD / 20 IEF`, `RV63 <= 40%`, lag `0`,
-after-tax CAGR `19.46%`, MDD `-42.58%` and Calmar `0.457`. This is still
-research-only and not deployment-ready.
+Latest result: the Phase 6 round (run order 6C -> 6B -> 6D -> 6A, 2026-06-09)
+answered the user's actual question - "is any mix worth giving up part of a
+100%-static position?". 6C showed the walk-forward failures are bull-window
+concentrated (90.9%) with `bear_high` beat rate 100%; 6B's continuous
+vol-targeting was a QQQ-only diagnostic SUCCESS (WF 7/11 vs 6/11); 6D's capped
+inverse sleeve FAILED on both branches. Phase 6A (REVISED after the user's tax
+correction: static cores rebalance via contributions -> no intermediate DARF,
+final-liquidation DARF only; LRS satellites keep the annual engine) built the
+after-tax frontier on 2000+: RSC is `11.74% / -30.76% / Calmar 0.382` and **13
+of 18 mixes beat it on both CAGR and Calmar while reducing MDD** - top by
+Calmar `80/20 RSC x SPY-headline` (`12.12%`, `-25.18%`, `0.481`). Part 2 (10k +
+1k/month contributions, buy-most-underweight, no sells): **all 18 mixes beat
+100% RSC on money-weighted IRR** (RSC `13.72%`; `70/30 RSC x QQQ-voltarget`
+`15.21%` at RSC-like path risk). This is a decision table, not a promotion:
+any chosen mix still requires the full mandate gate suite with `n_trials >=
+4005` `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`,
+`[advances_fin_ml, p.273-275]`.
 
 ## Plot Convention
 

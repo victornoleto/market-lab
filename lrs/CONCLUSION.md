@@ -205,6 +205,49 @@ p.80-81]`, `[advances_fin_ml, p.208-211]`.
 
 ---
 
+## 7.1 Adendo — Rodada Phase 6 (2026-06-09): fronteira after-tax muda a leitura do mix
+
+A rodada 6C/6B/6D/6A (pré-registrada, research-only) respondeu a pergunta que a
+Phase 5 não respondia: **"existe mix static×satélite que compense ceder parte do
+100% static, com MDD ≤ −50%?"** — contra 3 benchmarks, com modelo fiscal
+corrigido pelo usuário: o core static rebalanceia **via aportes** (sem DARF
+intermediário; 15% só na liquidação final), enquanto o satélite LRS mantém o
+engine DARF anual porque o giro semanal vende de verdade.
+
+- **6C (forense WF, +0 trials):** as falhas do gate vinculante são 90,9% em
+  janelas bull; `bear_high` tem beat rate 100% (+154pp médio) e `bear_mid` 0%
+  (whipsaw alavancado). O edge é de crise profunda — coerente com satélite
+  pequeno, não standalone `[leverage_for_the_long_run, p.7-8]`.
+- **6B (vol-targeting contínuo, +72):** SPY FAIL; QQQ SUCCESS diagnóstico
+  (σ40%/RV21/lag1: WF 7/11 vs 6/11) `[systematic_trading, p.137-148]`.
+- **6D (sleeve inversa capada, +36):** FAIL nas duas branches — todo `f` piora
+  CAGR e MDD `[trading_systems_methods, p.354]`.
+- **6A (fronteira after-tax, +21 → linhagem 4005; REVISADA):** na janela 2000+,
+  o RSC after-tax é `11,74% / −30,76% / Calmar 0,382` (12,40% gross; só DARF de
+  liquidação final). Mesmo assim, **13/18 mixes batem o RSC em CAGR E Calmar
+  reduzindo MDD**: top Calmar `80/20 RSC×SPY-headline` (`12,12%`, `−25,18%`,
+  `0,481`); maior CAGR unified `70/30 RSC×QQQ-voltarget` (`12,83%`, `−27,67%`).
+- **6A Part 2 (simulação de aportes, +0 trials):** 10k + 1k/mês, comprando só o
+  componente mais abaixo do target (mínimo de ordens, à la IBKR), sem vendas.
+  **Todos os 18 mixes batem 100% RSC em IRR money-weighted** (RSC `13,72%`,
+  terminal $2,96M em $326k aportados). Destaque: `70/30 RSC×QQQ-voltarget` IRR
+  `15,21%` ($3,87M) com path MDD `−28,4%` ≈ RSC (`−27,6%`). `mix_t3d_30` topa
+  IRR (`17,66%`, $6,0M) mas path MDD `−50,3%`; SSO B&H tem IRR alto (`15,81%`)
+  inflado pelo DCA, com path MDD `−80,8%` (ruin) `[systematic_trading,
+  p.185-188]`.
+
+**Leitura honesta:** a conclusão da seção 7 ("RSC domina sem ambiguidade") era
+verdadeira para **substituição total** — e continua. O que muda é a margem: para
+**mixes pequenos (5–30%)**, a diversificação do satélite melhora o portfolio nas
+três métricas ao mesmo tempo (time-weighted) e em IRR no cenário real de aportes
+— o que reabre a decisão do usuário sobre ceder parte da posição static. Isso
+**não é promoção**: os satélites individualmente reprovaram (ou nunca rodaram)
+os gates; qualquer claim exige a suíte completa do mandate sobre o MIX escolhido
+com `n_trials >= 4005` `[advances_fin_ml, p.208-211]`, `[advances_fin_ml,
+p.273-275]`. Tabela de decisão: `lrs/phases/phase06a_aftertax_frontier/REPORT.md`.
+
+---
+
 ## 8. Referências
 
 - `lrs/phases/phase0{0,1}_*`, `phase02_target_leverage_vol`,

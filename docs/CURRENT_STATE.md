@@ -1,11 +1,11 @@
-# Estado atual — market-lab (2026-06-07)
+# Estado atual — market-lab (2026-06-09)
 
 > **Propósito:** onboard rápido para humanos e agentes. Este doc é o
 > snapshot vivo — a verdade canônica vive nos arquivos referenciados.
 
 ---
 
-## TL;DR (2026-06-07)
+## TL;DR (2026-06-09)
 
 🛑 **MAINTENANCE MODE** desde 2026-04-23 (mandate §1, §7).
 
@@ -14,14 +14,19 @@
 - **113/113 honest FAIL** acumulado entre 2026-04-08 e 2026-04-23 (Phase 3.5f-3.8 + D-MVP + E-MVP). Pattern previsto por López de Prado DSR + Aronson 6402-rule + Li-Ferreira 2025 Network Momentum.
 - **Sem hunt ativo de alocação;** estudos remanescentes são research-only e a revisão consolidada do mandato fica para 6-12 meses.
 - **LETF rotation spin-off concluído:** `studies/lrs/`, `studies/letf_rotation_hunt/` e `studies/spy_leveraged_rotation_hunt/` agora são canônicos em `/var/www/victor/finances/letf-lab`. `market-lab` mantém apenas infra compartilhada, referências históricas e estudos não migrados. Ver `MIGRATED.md`.
-- **Restart research-only em `lrs/` — CONCLUÍDO (Phase 4, 2026-06-07):** linha SMA/LRS reaberta localmente (Gayed do zero, execução semanal, lag `n=0..5`, DARF anual, risk-off, filtros, formas de regime, estudo de lookback) e levada até os gates de validação do mandate. **0/6 bases passaram** (gate vinculante = walk-forward; QQQ também PBO/DSR). Família encerrada/arquivada como research-only de viés negativo. Sem deploy e mandate §1 inalterado.
+- **Restart research-only em `lrs/` — standalone CONCLUÍDO (Phase 4) + overlay rebuilt-sleeve (Phase 5):** linha SMA/LRS reaberta localmente (Gayed do zero, execução semanal, lag `n=0..5`, DARF anual, risk-off, filtros, formas de regime, estudo de lookback) e levada até os gates de validação do mandate. **0/6 bases standalone passaram** (gate vinculante = walk-forward; QQQ também PBO/DSR). Phase 5 reconstruiu RSC-US `35/40/25` via matriz local `GDESIM/RSSTSIM/ZROZSIM` com RSST tracking proxy `SPYSIM + 70% DBMFSIM + 30% KMLMSIM - CASHX?E=-2`; `0/9` overlays passaram screen estrito. Um Top-20 CAGR bruto independente de drawdown foi gerado em `lrs/TOP20_BY_CAGR.md`. Sem deploy e mandate §1 inalterado.
+- **RSC four-asset grid corrigido:** `studies/return_stacked_core/us_core/four_asset_grid/` baixou payload Testfol.io com `NTSXSIM/GDESIM/ZROZSIM` e `RSST70_30 = SPYSIM + 70% DBMFSIM + 30% KMLMSIM - CASHX?E=-2` (`CASHX?E=2` anterior invalidado por erro de sinal), depois avaliou `1.771` portfolios mensais em passos de `5%`. Top por fitness rank-based: `40% GDESIM / 25% RSST70_30 / 35% ZROZSIM`, CAGR `12,15%`, MDD `-27,80%`, Sharpe `0,851`, Calmar `0,437`. É screen research-only; não é promoção nem gate validado.
+- **WF anti-overfit do grid RSC:** `WF_REPORT.md` usa `8y` IS -> `2y` OOS, rolando `2y`, com os mesmos `1.771` portfolios. A seleção WF combinada ficou CAGR `12,57%`, MDD `-34,47%`, Sharpe `0,821`, terminal `8,37x`, mas bateu o RSC-like fixo `35/40/25` em só `3/9` janelas (requisito `7/9`). `9/9` seleções foram únicas; Spearman médio IS->OOS `0,144`. Veredito: full-sample top é overfit-prone; manter como diagnóstico, não como proporção promovida.
+- **Robustez CPCV/PBO do grid RSC:** `ROBUSTNESS_REPORT.md` roda WF sensitivity, top-decile stability e CPCV/PBO. PBO do grid completo = `0,655` (`reject`); CPCV bate RSC-like em só `7/28` splits (requisito `21/28`); Spearman médio CPCV IS->OOS `0,031`; nenhuma sensibilidade WF atingiu 75% de consistência. Entre regras fixas testadas no OOS default, `35/40/25` foi a melhor por terminal/CAGR (`12,63%`, MDD `-30,76%`). Conclusão: não otimizar pesos; usar tese fixa se for seguir.
+- **Margin overlay IBKR corrigido:** sobre o novo top four-asset, sweep `CASHX?E=-2` mostra `1,25x` CAGR `13,97%`/MDD `-34,14%`, `1,50x` CAGR `15,66%`/MDD `-40,18%`, `2,00x` CAGR `18,69%`/MDD `-51,98%` e `3,00x` CAGR `23,13%`/MDD `-71,40%`. Leitura: a correção removeu o headline atrativo; se retomado, pesquisar só `1,10x..1,25x` com requisitos reais de margem/financing/liquidação/tax.
+- **KMLM-only MF proxy corrigido:** trocar o sleeve MF por `100% KMLMSIM` com `CASHX?E=-2` estende a janela para `1987-2026`: 1x CAGR `13,00%`, MDD `-26,70%`; `1,25x` CAGR `14,73%`, MDD `-33,01%`; `1,50x` CAGR `16,35%`, MDD `-38,92%`. Leitura: útil como lente de janela longa, mas NÃO muda a conclusão conservadora contra margem externa.
 - **Cleanup consolidation iniciado:** `studies/SUMMARY.md` agora é o ledger compacto de estratégias testadas, métricas, vereditos, arquivos canônicos e política de remoção de artefatos gerados. O objetivo é reduzir a codebase sem perda de conhecimento; mandate §1 segue inalterado.
 
 Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04-24_LOG.md` + `docs/CLEANUP_2026-05-05_LOG.md` para audit trail dos cleanups.
 
 ---
 
-## Status por linha de pesquisa (2026-05-25)
+## Status por linha de pesquisa (2026-06-09)
 
 ### Plano C — buy-hold passivo factor-tilted ✅ ATIVO
 - **Status:** sole winner. 100% do capital. Zero alterações.
@@ -42,13 +47,39 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 
 ---
 
-## Linhas exploratórias locais (2026-06-07)
+## Linhas exploratórias locais (2026-06-09)
 
-### lrs/ 🔴 CONCLUÍDO / RESEARCH-ONLY (não passou nos gates do mandate)
-- **Conclusão (2026-06-07, Phase 4):** o restart LRS rodou os gates de validação
-  do mandate (diagnóstico) e **0/6 bases passaram** nos 7 gates. Família registrada
-  como linha research-only de viés negativo e **encerrada/arquivada** pendente de
-  literatura/regime novos. Mandate §1 inalterado. Ver bullet Phase 4 abaixo.
+### lrs/ 🟡 STANDALONE ENCERRADO / FRONTEIRA AFTER-TAX (Phase 6) GERADA (research-only)
+- **Conclusão atual (2026-06-09, rodada Phase 6 = 6C→6B→6D→6A, 6A revisada):**
+  responde a pergunta do usuário "vale ceder parte de um portfolio 100% static?"
+  na janela 2000+, benchmarks RSC-US 35/40/25, SSO B&H e SPY B&H. Modelo fiscal
+  corrigido pelo usuário: core static rebalanceia **via aportes** → sem DARF
+  intermediário, 15% só na liquidação final; satélites LRS mantêm DARF anual
+  (giro semanal vende). **6C** (forense WF, +0 trials): falhas do gate
+  vinculante são 90,9% bull; `bear_high` beat 100%, `bear_mid` 0% — edge de
+  crise profunda. **6B** (vol-targeting contínuo, +72): SPY FAIL, QQQ SUCCESS
+  diagnóstico (σ40%/RV21/lag1, WF 7/11 vs 6/11). **6D** (sleeve inversa capada,
+  +36): FAIL nas duas branches. **6A** (fronteira, +21 → linhagem n_trials
+  4005): RSC after-tax `11,74% / −30,76% / Calmar 0,382`; **13/18 mixes batem o
+  RSC em CAGR E Calmar reduzindo MDD** — top Calmar `80/20 RSC×SPY-headline`
+  (`12,12%`, `−25,18%`, `0,481`); maior CAGR unified `70/30 RSC×QQQ-voltarget`
+  (`12,83%`, `−27,67%`). **6A Part 2** (aportes 10k + 1k/mês, compra só o
+  componente mais abaixo do target, sem vendas): **todos os 18 mixes batem 100%
+  RSC em IRR** (RSC 13,72%; `70/30 RSC×QQQ-voltarget` 15,21% com path MDD ≈
+  RSC; T3d 30% topa 17,66% mas path MDD −50,3%; SSO B&H IRR 15,81% com path MDD
+  −80,8% ruin). É tabela de decisão, não promoção: o mix escolhido ainda
+  precisaria da suíte completa de gates com `n_trials >= 4005`. Mandate §1
+  inalterado.
+- **Conclusão anterior (2026-06-08/09, Phase 5):** LRS standalone continua encerrado
+  após Phase 4 (**0/6 bases passaram** nos 7 gates; gate vinculante = WF), mas a
+  Phase 5 agora reconstrói RSC-US `35/40/25` a partir da matriz local de sleeves
+  `GDESIM/RSSTSIM/ZROZSIM`, com `RSSTSIM = SPYSIM + 70% DBMFSIM + 30% KMLMSIM -
+  (CASHX + 200 bps/ano)` como tracking proxy do cURL Testfol.io. Com essa fórmula,
+  `0/9` overlays passam o screen estrito; o maior CAGR de overlay é `70% RSC / 30%
+  T3d-K2`, CAGR `14,24%`, MDD `-48,65%`, vs RSC reconstruído `12,40%`, MDD
+  `-30,76%`. Também foi gerado `lrs/TOP20_BY_CAGR.md`: top row `QQQ L3.00 / ZROZ /
+  RV63<=40% / lag5`, CAGR `25,84%`, MDD `-71,05%`. Isso não é promoção: falta
+  tax/friction account-level e gates de mandato. Mandate §1 inalterado.
 - Criado em 2026-06-07 como restart local da família Gayed/LRS, apesar do
   spin-off LETF canônico para `letf-lab`. Objetivo: recomeçar pelo baseline
   original `price > SMA200 => leveraged risk-on; otherwise risk-off` e evoluir
@@ -178,6 +209,22 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
   deploy, sem paper-trade label, mandate §1 inalterado `[advances_fin_ml,
   p.208-211]`, `[advances_fin_ml, p.273-275]`, `[testing_tuning, p.318-320]`,
   `[leverage_for_the_long_run, p.4-7]`.
+- Phase 5 em `lrs/phases/phase05_rsc_overlay_proxy/`: diagnóstico pós-fechamento
+  para responder se LRS/T3d tem valor como satélite pequeno sobre RSC-US
+  `35/40/25`. Usa matriz canônica local de sleeves em
+  `studies/return_stacked_core/us_core/series/return_stacked_core_sleeve_returns.parquet`
+  (`GDESIM`, `RSSTSIM = SPYSIM + 70% DBMFSIM + 30% KMLMSIM - (CASHX + 200 bps/ano)`,
+  `ZROZSIM`), satélites LRS locais after-tax, e curva T3d-K2 salva em
+  `/var/www/victor/finances/letf-lab`.
+  Testou `9` overlays (`90/10`, `80/20`, `70/30` para satélites SPY LRS, QQQ LRS,
+  T3d-K2) com rebalanceamento mensal diagnóstico e métricas de
+  underwater/recovery. Resultado: `0/9` passam screen estrito. Maior CAGR de overlay:
+  `70/30 T3d`, CAGR `14,24%`, MDD `-48,65%`, Calmar `0,293`, vs RSC reconstruído
+  CAGR `12,40%`, MDD `-30,76%`, Calmar `0,403`. Veredito: nenhum overlay estrito;
+  a decisão seguinte deve vir do Top-20 CAGR bruto ou de nova escolha explícita do
+  usuário, com account-level tax/friction + gates com `n_trials` honesto
+  `[testing_tuning, p.327-335]`, `[systematic_trading, p.185-188]`,
+  `[advances_fin_ml, p.208-211]`.
 
 ### studies/SUMMARY.md ✅ CANONICAL COMPACT LEDGER
 - Criado em 2026-06-03 para concentrar em um único arquivo o resumo de todas as
@@ -207,6 +254,68 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
   retorno absoluto. Research-only, sem deploy e sem mudança no mandate
   `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
   `[advances_fin_ml, p.208-211]`, `[leverage_for_the_long_run, p.13]`.
+- Rerun atual com `RSSTSIM` ajustado (`SPY + 70% DBMF + 30% KMLM - CASHX?E=-2`)
+  começa em 2000 por causa de `DBMFSIM`: RSC-US `35/40/25` CAGR `12,40%`, MDD
+  `-30,76%`, Sharpe `0,838`, Calmar `0,403`, terminal `21,71x`; SPYSIM same-window
+  CAGR `8,39%`, MDD `-55,14%`, Sharpe `0,514`, Calmar `0,152`, terminal `8,34x`.
+  RSC termina em `2,60x` SPYSIM, com `+4,01pp/ano` de CAGR e `+24,38pp` de melhora
+  em MDD `[risk_parity, p.80-81]`, `[systematic_trading, p.185-188]`.
+- Matriz parcial de sleeves RSC-US adicionada em 2026-06-09:
+  `us_core/series/return_stacked_core_sleeve_returns.parquet` com `GDESIM`,
+  `RSSTSIM`, `ZROZSIM`, `SPYSIM`, `KMLMSIM`, `DBMFSIM`, `GLDSIM`, `CASHX`. Ela
+  usa `RSSTSIM` como tracking proxy do payload Testfol.io (`SPY + 70% DBMF + 30%
+  KMLM - CASHX?E=-2`), começa em 2000 por causa de `DBMFSIM`, e não reproduz a
+  curva salva antiga de forma de-minimis; ainda não cobre todos os sleeves globais/CTAP/RSSX
+  `[risk_parity, p.80-81]`, `[systematic_trading, p.185-188]`.
+- Four-asset grid 2026-06-09 em
+  `us_core/four_asset_grid/`: payload Testfol.io separado com `NTSXSIM`,
+  `GDESIM`, `ZROZSIM` e `RSST70_30 = SPYSIM + 70% DBMFSIM + 30% KMLMSIM -
+  CASHX?E=-2`. O run anterior com `CASHX?E=2` foi invalidado por erro de sinal do
+  financing leg. Grid mensal `5%` sobre `[a,b,c,d]` gerou `1.771` portfolios. Top
+  fitness rank-based corrigido: `40% GDESIM / 25% RSST70_30 / 35% ZROZSIM`, CAGR
+  `12,15%`, MDD `-27,80%`, Sharpe `0,851`, Calmar `0,437`. Referências corrigidas:
+  B4 `25/25/25/25` CAGR `11,23%`, MDD `-29,26%`; RSC-like `35/40/25` CAGR
+  `12,29%`, MDD `-30,76%`. Veredito: screen de implementação, não promoção;
+  métricas não substituem gates de validação `[testing_tuning, p.327-335]`,
+  `[systematic_trading, p.185-188]`, `[advances_fin_ml, p.208-211]`.
+- Walk-forward anti-overfit em `us_core/four_asset_grid/WF_REPORT.md`: otimiza os
+  mesmos `1.771` pesos somente dentro de cada janela IS (`8y`) e aplica o peso
+  escolhido no OOS seguinte (`2y`, step `2y`). Resultado combinado OOS da seleção
+  WF: CAGR `12,57%`, MDD `-34,47%`, Sharpe `0,821`, terminal `8,37x`. O RSC-like
+  fixo `35/40/25` no mesmo OOS fica CAGR `12,63%`, MDD `-30,76%`, Sharpe `0,840`,
+  terminal `8,45x`. A seleção WF bate o RSC-like em só `3/9` janelas (precisaria
+  `7/9` para a leitura de 75%), escolhe `9/9` portfolios diferentes e tem Spearman
+  médio IS->OOS `0,144`. Veredito: escolher a melhor proporção pelo full backtest
+  é overfit-prone; `40/25/35` fica como top screen, não como alocação promovida
+  `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.208-211]`.
+- Robustez complementar em `us_core/four_asset_grid/ROBUSTNESS_REPORT.md`: sensibilidade
+  WF (`5y/1y`, `8y/2y`, `10y/2y`, `12y/3y`, expanding `8y/2y`), top-decile
+  stability e CPCV/PBO sobre os `1.771` pesos. Nenhum cenário WF atinge 75% de
+  consistência contra RSC-like; PBO = `0,655` (`reject`); CPCV seleciona `20`
+  portfolios únicos em `28` splits, bate RSC-like em só `7/28` (requisito `21/28`),
+  mediana rank OOS `44,41%` e Spearman médio IS->OOS `0,031`. O mapa top-decile
+  de treino não inclui RSC-like em nenhuma das `8y` janelas, mas isso justamente
+  confirma que o rank IS não prediz OOS. No comparativo de regras fixas default,
+  `35/40/25` é o melhor por OOS terminal/CAGR: CAGR `12,63%`, MDD `-30,76%`, Sharpe
+  `0,840`, terminal `8,45x`; `40/30/30` vem perto, mas inferior em terminal.
+  Veredito: grid útil para vizinhança/stress, não para otimização de pesos
+  `[advances_fin_ml, p.208-211]`, `[testing_tuning, p.318-320]`,
+  `[systematic_trading, p.185-188]`.
+- Margin overlay analysis corrigida em `us_core/four_asset_grid/MARGIN_ANALYSIS.md`:
+  sweep exato sobre o novo top com `CASHX?E=-2` mostra `1,25x` CAGR `13,97%`/MDD
+  `-34,14%`, `1,50x` CAGR `15,66%`/MDD `-40,18%`, `2,00x` CAGR `18,69%`/MDD
+  `-51,98%` e `3,00x` CAGR `23,13%`/MDD `-71,40%`. Veredito prático: a correção
+  removeu o caso atrativo de margem; se retomado, testar só `1,10x..1,25x` com
+  requisitos reais da IBKR, financiamento, liquidação forçada, tax/friction e
+  gates; `1,50x+` permanece stress diagnóstico `[systematic_trading, p.185-188]`,
+  `[leverage_for_the_long_run, p.4-7]`, `[testing_tuning, p.327-335]`.
+- KMLM-only analysis corrigida em `us_core/four_asset_grid/KMLM_ONLY_ANALYSIS.md`:
+  substitui o MF proxy por `100% KMLMSIM` com `CASHX?E=-2` para ganhar janela
+  `1987-2026`. Resultado: 1x CAGR `13,00%`, MDD `-26,70%`, Sharpe `0,706`, Calmar
+  `0,487`; `1,25x` CAGR `14,73%`, MDD `-33,01%`; `1,50x` CAGR `16,35%`, MDD
+  `-38,92%`. Leitura: útil como lente de janela longa, mas não fortalece o caso
+  de margem externa `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`.
 - Comparativo Reddit 2026-06-05 em
   `studies/return_stacked_core/us_core/reddit_leveraged_backtests/`: 5 payloads
   Testfol.io executados sem Bearer, 19 instâncias / 13 portfolios únicos. Melhor
@@ -491,6 +600,15 @@ Sumário do mandate (`docs/investment-mandate.md` é canônico):
 
 ## Changelog
 
+- **2026-06-08/09:** `lrs/` Phase 5 RSC overlay rebuilt-sleeve rodada e ajustada
+  para o RSST tracking proxy `SPY + 70% DBMF + 30% KMLM - CASHX?E=-2`. Standalone
+  LRS segue reprovado pela Phase 4 (`0/6` gates); com o novo proxy, `0/9` overlays
+  passam strict. Maior CAGR de overlay: `70% RSC / 30% T3d-K2`, CAGR `14,24%`, MDD
+  `-48,65%`; RSC reconstruído: CAGR `12,40%`, MDD `-30,76%`. Também foi gerado
+  `lrs/TOP20_BY_CAGR.md`, ranking de `4183` rows por CAGR sem filtro de drawdown;
+  top row `QQQ L3.00 / ZROZ / RV63<=40% / lag5`, CAGR `25,84%`, MDD `-71,05%`.
+  Sem deploy e sem mudança no mandate; próximo passo exigiria escolha explícita,
+  tax/friction account-level + gates.
 - **2026-06-05:** comparativo Reddit leveraged portfolios vs RSC-US adicionado em
   `studies/return_stacked_core/us_core/reddit_leveraged_backtests/`. Resultado:
   4-3-2-1 2x margin é o melhor backtest bruto, `mine` QQQ/TLT/GLD 3x é o melhor
