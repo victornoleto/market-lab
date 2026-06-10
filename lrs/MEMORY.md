@@ -722,3 +722,35 @@ vol-target).
 
 Validation status: not validated; diagnostic phase only. No deployment, no
 paper-trade label, no mandate change.
+
+## 2026-06-09 - Phase 7E Managed-Futures Risk-Off Sleeve Executed (LOW-POWER)
+
+Runner: `uv run python -m lrs.phases.phase07e_mf_risk_off.run`.
+
+Outputs: `phases/phase07e_mf_risk_off/{README.md,REPORT.md,plots/}`,
+`results/phase07e_mf_risk_off.csv`, tests `tests/test_lrs_phase07e.py`.
+
+Pre-registered grid (60 rows, ledger 4293 + 60 = 4353): headline bases with 5
+risk-off sleeves (control / 100% DBMF / 50-50 / 70 DBMF-30 KMLM / 50 base-50
+MF-blend) x lag 0..5, DBMFSIM/KMLMSIM read-only from the RSC sleeve matrix
+`[evidence_based_ta, p.380-384, p.398]`, `[risk_parity, p.80-81]`. DECLARED
+LOW-POWER: 2000+ window, only 6 WF windows. Sanity: control rerun max abs
+diff 0 both branches.
+
+Result summary (SPY weak SUCCESS; QQQ FAIL):
+
+- **SPY SUCCESS (weak lead):** `100% DBMF / lag 4`: WF 5/6 vs control 4/6,
+  CAGR 13.45%, MDD **-31.55%** vs control -39.28% - the MF sleeve materially
+  compresses drawdown on the 2000+ window.
+- **QQQ FAIL:** best `50 base / 50 DBMF / lag 3` WF 4/6 vs control 5/6.
+- KMLMSIM reaches back to 1988; a KMLM-only longer-window variant is possible
+  future work (not run - outside the pre-registered grid).
+
+Interpretation: managed futures as risk-off is a promising defensive
+complement on SPY (drawdown compression), but the 6-window evidence is weak by
+construction and does NOT feed 7F (incompatible window). It is a candidate
+ingredient for a future pre-registered round if the 7-round survivors go to
+Phase 8 `[advances_fin_ml, p.208-211]`.
+
+Validation status: not validated; diagnostic low-power phase only. No
+deployment, no paper-trade label, no mandate change.
