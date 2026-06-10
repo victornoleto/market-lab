@@ -692,3 +692,33 @@ otherwise it needs a fresh pre-registration in a future round.
 
 Validation status: not validated; diagnostic phase only. No deployment, no
 paper-trade label, no mandate change.
+
+## 2026-06-09 - Phase 7D Quadratic Vol-Targeting sigma^2/RV^2 Executed
+
+Runner: `uv run python -m lrs.phases.phase07d_vol_target_quadratic.run`.
+
+Outputs: `phases/phase07d_vol_target_quadratic/{README.md,REPORT.md,plots/}`,
+`results/phase07d_vol_target_quadratic.csv`, tests `tests/test_lrs_phase07d.py`.
+
+Pre-registered grid (72 rows, ledger 4221 + 72 = 4293): single variation on
+Phase 6B - leverage scalar squared to the continuous-Kelly inverse-variance
+form `L_t = clip(sigma^2/RV^2, 0, L_max)` `[volatility_trading, p.135, p.138]`,
+cap = fractional Kelly `[volatility_trading, p.139-140]`; 6B ladder/inertia/
+gate/tax verbatim. 2 branches x sigma {30,35,40%} x RV {21,63} x lag 0..5.
+Control per branch = better of {binary headline, 6B linear best}.
+
+Result summary (QQQ SUCCESS - first QQQ WF lift of the restart; SPY FAIL):
+
+- **QQQ SUCCESS:** best `sigma 40% / RV21 / lag 2` WF **8/11 (72.7%)** vs
+  control 7/11, CAGR 19.53% (above the 19.46% headline), MDD -42.63% (within
+  the floor). The harder vol response does flip an extra OOS window.
+- **SPY FAIL (honest):** best `sigma 40% / RV21 / lag 3` WF 12/17 - ties the
+  control, not strictly greater. CAGR 15.34%, MDD -39.28%.
+
+Round status after 7D: 7A SPY SUCCESS + 7D QQQ SUCCESS = 2 successes among
+{7A, 7B, 7C, 7D} -> the pre-registered 7F composition condition IS met
+(compose the two winning mechanisms: 7A ensemble fraction x 7D quadratic
+vol-target).
+
+Validation status: not validated; diagnostic phase only. No deployment, no
+paper-trade label, no mandate change.
