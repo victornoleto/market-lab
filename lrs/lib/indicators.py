@@ -188,6 +188,29 @@ def adx_gate(prices: pd.Series, window: int = 14, threshold: float = 20.0) -> pd
     return _lagged_bool(adx > threshold, prices.index)
 
 
+def sma_ensemble_fraction(prices: pd.Series, windows: list[int]) -> pd.Series:
+    """Fraction of SMA-level signals that are risk-on (continuous in [0, 1]).
+
+    ``f_t = (1/N) * sum_w 1[price.shift(1) > SMA_w.shift(1)]`` - a combined
+    forecast over N copies of the same rule at different speeds, replacing the
+    single-window argmax with an average `[systematic_trading, p.118-119,
+    p.129-133]`. The paper itself shows every tested MA window carries a similar
+    Sharpe (0.58-0.68) `[leverage_for_the_long_run, p.14, Table 6]`, so equal
+    weighting needs no fitted forecast weights. Each member uses the exact
+    `build_sma_signal` convention (one-bar shift, warmup -> False/0)
+    `[testing_tuning, p.327-335]`; the OR-fractional combination is structurally
+    distinct from the single-window gates Phase 3C rejected.
+    """
+    if not windows:
+        raise ValueError("windows must be non-empty")
+    total = pd.Series(0.0, index=prices.index)
+    for window in windows:
+        sma = prices.rolling(int(window)).mean()
+        member = (prices.shift(1) > sma.shift(1)).fillna(False).astype(float)
+        total = total + member
+    return total / float(len(windows))
+
+
 # ---------------------------------------------------------------------------
 # Phase 3C theory-anchor & adaptive-window helpers
 # ---------------------------------------------------------------------------

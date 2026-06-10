@@ -550,3 +550,53 @@ Validation status unchanged: diagnostic decision-table only; no gates run on
 mixes; no deployment, no paper-trade label, no mandate change. Any promotion
 claim needs the full SS5 suite on the chosen mix with `n_trials >= 4005`
 `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`.
+
+## 2026-06-09 - Phase 7A Ensemble Multi-Lookback Fractional Position Executed
+
+Phase 7 round opened (user approved all fronts + the GTT/UNRATE citation
+exception): 7A ensemble -> 7B multi-asset portfolio -> 7C macro gate ->
+7D vol^2 targeting -> 7E managed-futures risk-off -> 7F conditional
+composition -> Phase 8 final gates on user-chosen configs. Round criterion is
+WF beats vs paired control, not CAGR.
+
+Runner: `uv run python -m lrs.phases.phase07a_ensemble_lookback.run`.
+
+Outputs:
+
+- `phases/phase07a_ensemble_lookback/README.md` (pre-registration), `REPORT.md`.
+- `results/phase07a_ensemble_lookback.csv`.
+- `phases/phase07a_ensemble_lookback/plots/`.
+- New helper: `lrs/lib/indicators.sma_ensemble_fraction`. New tests:
+  `tests/test_lrs_phase07a.py`.
+
+Pre-registered grid (72 rows, ledger 4005 + 72 = 4077): 6 Phase 4 bases x 2
+window sets (`narrow {150,175,200,225}`, `wide {100,150,200,250,300}`) x lag
+0..5. Mechanism: fractional position `f_t = (1/N) sum_w 1[P>SMA_w]` (combined
+forecast over rule speeds `[systematic_trading, p.118-119, p.129-133]`; equal
+weights justified by the paper's own window-robustness table
+`[leverage_for_the_long_run, p.14, Table 6]`), scaled by the base's binary vol
+gate; geometry/cadence/tax verbatim. Built-in sanity PASSED: degenerate `{200}`
+reproduces the binary base with max abs diff `0` on both branches.
+
+Result summary (SPY SUCCESS - first WF lift of the restart; QQQ FAIL):
+
+- **SPY SUCCESS:** best row `spy_alt_off / narrow / lag 2` WF **13/17 (76.5%)**
+  vs best binary baseline 12/17 - the first mechanism in the whole restart to
+  reach the G3 walk-forward gate level (>=75%) on SPY. CAGR 14.49% (within the
+  pre-registered 1pp tolerance of the 15.44% headline), MDD -43.16% (tolerable
+  tier, worse than headline's -39.28%), turnover 13.7/y.
+- **QQQ FAIL (honest):** best row `qqq_alt_vol / narrow / lag 0` WF 7/11 - ties
+  the best binary baseline (`qqq_alt_vol` 7/11), not strictly greater. CAGR
+  19.26%, MDD -43.76%.
+- The narrow set beats the wide set on both branches (the 100/300 members hurt
+  more than the diversification helps under leverage).
+
+Interpretation: averaging window speeds is the first mechanism that moves the
+binding WF gate on SPY, consistent with the 6C diagnosis that part of the WF
+miss is window-luck/whipsaw. SPY's 13/17 SUCCESS feeds the 7F composition slot.
+NOT a gate pass claim: G3 at the gate level would also require the full suite
+(PBO/DSR/etc.) with the updated ledger; that is Phase 8's job on user-chosen
+configs `[advances_fin_ml, p.208-211]`, `[trading_systems_methods, p.939]`.
+
+Validation status: not validated; diagnostic phase only. No deployment, no
+paper-trade label, no mandate change.
