@@ -600,3 +600,49 @@ configs `[advances_fin_ml, p.208-211]`, `[trading_systems_methods, p.939]`.
 
 Validation status: not validated; diagnostic phase only. No deployment, no
 paper-trade label, no mandate change.
+
+## 2026-06-09 - Phase 7B Multi-Asset Portfolio of SMA200 Rotations Executed
+
+Runner: `uv run python -m lrs.phases.phase07b_multiasset_portfolio.run`.
+
+Outputs: `phases/phase07b_multiasset_portfolio/{README.md,REPORT.md,plots/}`,
+`results/phase07b_multiasset_portfolio.csv`, new helper
+`lrs/lib/backtest.synth_leveraged_returns` (in-memory 2x synthesis,
+`r = L*r_u - (L-1)*r_cash - 0.95%/252` `[leverage_for_the_long_run, p.16,
+fn.22-23]`), tests `tests/test_lrs_phase07b.py`.
+
+Pre-registered grid (72 rows, ledger 4077 + 72 = 4149): EW portfolio of
+single-asset SMA200 rotations with UNIFORM grammar (shared L {1.75, 2.00},
+ZROZ risk-off, shared vol gate {none, RV63<=40%}, lag 0..5), compositions
+`EW5 {SPY,QQQ,IWM,XLK,GLD}`, `EW4 {SPY,IWM,XLK,GLD}`, `EW3 {SPY,QQQ,GLD}`
+`[systematic_trading, p.42]`, `[systematic_trading, p.170-171]`, `[risk_parity,
+p.80-81]`. IWM/XLK/GLD legs are synthetic-2x (disclosed limitation). Windows:
+EW5/EW3 1986+ (11 WF windows), EW4 1979+ (13). Benchmark = EW underlying B&H
+after-tax (final DARF only); controls = standalone legs vs their own
+underlying. Built-in sanity PASSED after fix: degenerate {SPY} vs
+`phase04.simulate_returns` rebuilt on the same window, max abs diff `0` (the
+first sanity attempt compared different windows - a check bug, not a mechanism
+bug; the DARF engine is path-dependent).
+
+Result summary (honest FAIL 0/3 on the strict screen; structurally
+informative):
+
+- **EW5 best** (`L2.00/none/lag2`): WF **9/11 (81.8%)** vs EW bench - above
+  the 75% G3 level - but TIES the best standalone leg (XLK 9/11, identifiable
+  only ex-post) and MDD `-53.08%` breaches the -50% floor. FAIL (strict > and
+  MDD).
+- **EW3 best** (`L2.00/none/lag1`): WF 8/11 (72.7%) ties QQQ leg; CAGR 18.19%
+  vs bench 12.16%; MDD `-47.50%` passes. FAIL (WF tie, not strict).
+- **EW4 best**: WF 8/13 (61.5%), MDD -57.38%. FAIL.
+- Structural reading: diversification across rotations does NOT lift WF above
+  the best member, but it MATCHES the ex-post-best leg ex-ante while crushing
+  leg-level MDD (portfolio -47..-57% vs legs -66..-86%). All best rows used
+  vol gate `none`.
+
+Interpretation: the EW-of-rotations family fails the pre-registered strict
+screen and does not feed 7F on its own. The diversification benefit shows up
+in MDD and in not having to pick the winning leg ex-ante - relevant context for
+any future mix discussion, but not a WF unlock `[advances_fin_ml, p.208-211]`.
+
+Validation status: not validated; diagnostic phase only. No deployment, no
+paper-trade label, no mandate change.

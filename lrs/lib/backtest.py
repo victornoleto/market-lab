@@ -323,6 +323,29 @@ def simulate_weight_frame(
     return pd.Series(out, index=dates, name="taxed" if taxable else "gross"), summary
 
 
+def synth_leveraged_returns(
+    underlying_returns: pd.Series,
+    leverage: float,
+    cash_returns: pd.Series,
+    fee_annual: float = 0.0095,
+) -> pd.Series:
+    """In-memory synthetic daily-reset leveraged-ETF returns (cache untouched).
+
+    ``r_L = L * r_u - (L - 1) * r_cash - fee_annual / 252``: daily re-leveraged
+    exposure, financing the borrowed ``(L - 1)`` at the cash rate, minus the
+    expense ratio. The fee level follows the paper's synthetic-LETF convention
+    (1%/yr approximated, 0.95% actual UPRO ER as of 2021)
+    `[leverage_for_the_long_run, p.16, fn.22-23]`; the explicit financing leg
+    matches the Testfol.io convention behind the cached ``*SIM`` leveraged
+    series. Used only for legs with no leveraged proxy in the cache.
+    """
+    if leverage < 1.0:
+        raise ValueError(f"synthetic leverage must be >= 1: {leverage}")
+    cash = cash_returns.reindex(underlying_returns.index).fillna(0.0)
+    fee_daily = fee_annual / float(TRADING_DAYS)
+    return leverage * underlying_returns - (leverage - 1.0) * cash - fee_daily
+
+
 def metrics_from_returns(returns: pd.Series, periods_per_year: int = TRADING_DAYS) -> Metrics:
     clean = returns.dropna().astype(float)
     if clean.empty:
