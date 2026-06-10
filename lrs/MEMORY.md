@@ -754,3 +754,47 @@ Phase 8 `[advances_fin_ml, p.208-211]`.
 
 Validation status: not validated; diagnostic low-power phase only. No
 deployment, no paper-trade label, no mandate change.
+
+## 2026-06-09 - Phase 7F Composition Executed; Phase 7 Round CLOSED
+
+Runner: `uv run python -m lrs.phases.phase07f_composition.run`.
+
+Outputs: `phases/phase07f_composition/{README.md,REPORT.md,plots/}`,
+`results/phase07f_composition.csv`, tests `tests/test_lrs_phase07f.py`.
+
+Pre-registered grid (24 rows, ledger 4353 + 24 = **4377 final**): composition
+of the two round winners with FROZEN parameters - 7A ensemble fraction
+(narrow {150,175,200,225}) x 7D quadratic vol-target (sigma 40%/RV21) - in two
+variants (`ens_x_quad`, `ens_x_quad_gated`), lag 0..5 only. Sanity PASSED
+(f==1 reproduces the pure quadratic ladder pipeline, max abs diff 0).
+
+Result (honest FAIL 0/2): SPY best `ens_x_quad_gated/lag2` WF 12/17 vs round
+best 13/17; QQQ best `ens_x_quad/lag0` WF 6/11 vs round best 8/11. The two
+mechanisms do NOT stack - smoothing the signal dilutes the sizing edge and
+vice versa. The round survivors remain the SINGLE-mechanism winners.
+
+### Phase 7 round consolidated verdict (ledger 4005 -> 4377)
+
+| Phase | Mechanism | Screen | Key number |
+|---|---|---|---|
+| 7A | Ensemble multi-lookback fraction | **SPY SUCCESS** / QQQ FAIL | SPY WF **13/17 (76.5%)** vs 12/17 - first row at the G3 75% level in the restart; CAGR 14.49%, MDD -43.16% |
+| 7B | EW multi-asset rotation portfolio | FAIL 0/3 | EW5 WF 9/11 but ties ex-post-best leg; MDD -53% |
+| 7C | Macro GTT/UNRATE gate | FAIL 0/2 (MDD) | Biggest WF lift ever (SPY 14/17, QQQ 10/11) but zero rows hold MDD >= -50% |
+| 7D | Quadratic vol-target sigma^2/RV^2 | SPY FAIL / **QQQ SUCCESS** | QQQ WF **8/11 (72.7%)** vs 7/11; CAGR 19.53% > headline; MDD -42.63% |
+| 7E | Managed-futures risk-off (low-power) | **SPY weak SUCCESS** / QQQ FAIL | 100% DBMF: WF 5/6 vs 4/6, MDD -31.6% vs -39.3% (6 windows only) |
+| 7F | Composition 7A x 7D (frozen params) | FAIL 0/2 | Mechanisms do not stack (SPY 12/17, QQQ 6/11) |
+
+Round survivors for a possible Phase 8 (user must pick; NOT auto-promoted):
+
+- **SPY candidate:** 7A ensemble `spy_alt_off / narrow {150,175,200,225} /
+  lag 2` - after-tax CAGR 14.49%, MDD -43.16%, WF 13/17 (76.5%, nominally at
+  the G3 level).
+- **QQQ candidate:** 7D quadratic `sigma 40% / RV21 / lag 2` - after-tax CAGR
+  19.53%, MDD -42.63%, WF 8/11 (72.7%, still below the 9/11 G3 level).
+
+Phase 8 (pre-registered in the round plan): run the FULL mandate SS5 gate
+suite (PBO matrix = winning family grid per branch, DSR n_trials = 4377, WF
+identical to Phase 4, OOS/FWD/bootstrap/xlib) on at most 2 user-chosen
+configs. QQQ at 8/11 would FAIL G3 as-is; SPY at 13/17 nominally clears G3 but
+must survive the other six gates with the bigger ledger. Until then: nothing
+is validated, nothing is promoted, mandate SS1 unchanged.

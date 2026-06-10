@@ -21,6 +21,7 @@
 - **Margin overlay IBKR corrigido:** sobre o novo top four-asset, sweep `CASHX?E=-2` mostra `1,25x` CAGR `13,97%`/MDD `-34,14%`, `1,50x` CAGR `15,66%`/MDD `-40,18%`, `2,00x` CAGR `18,69%`/MDD `-51,98%` e `3,00x` CAGR `23,13%`/MDD `-71,40%`. Leitura: a correção removeu o headline atrativo; se retomado, pesquisar só `1,10x..1,25x` com requisitos reais de margem/financing/liquidação/tax.
 - **KMLM-only MF proxy corrigido:** trocar o sleeve MF por `100% KMLMSIM` com `CASHX?E=-2` estende a janela para `1987-2026`: 1x CAGR `13,00%`, MDD `-26,70%`; `1,25x` CAGR `14,73%`, MDD `-33,01%`; `1,50x` CAGR `16,35%`, MDD `-38,92%`. Leitura: útil como lente de janela longa, mas NÃO muda a conclusão conservadora contra margem externa.
 - **Cleanup consolidation iniciado:** `studies/SUMMARY.md` agora é o ledger compacto de estratégias testadas, métricas, vereditos, arquivos canônicos e política de remoção de artefatos gerados. O objetivo é reduzir a codebase sem perda de conhecimento; mandate §1 segue inalterado.
+- **Rodada Phase 7 do `lrs/` (2026-06-09) concluída:** 6 fases pré-registradas (7A ensemble multi-lookback, 7B portfólio multi-asset EW, 7C macro gate GTT/UNRATE, 7D vol-targeting quadrático, 7E risk-off managed futures, 7F composição), ledger de trials 4005 → **4377**. Sobreviventes: **7A-SPY** (ensemble `{150..225}`, WF **13/17 = 76,5%**, primeira linha do restart no nível do gate G3) e **7D-QQQ** (σ²/RV² σ40/RV21, WF 8/11, CAGR 19,53% > headline). 7C entregou o maior lift de WF já visto (SPY 14/17, QQQ 10/11) mas nenhuma row segura MDD ≥ −50%; 7F provou que os mecanismos não se somam. Phase 8 (suíte completa de gates sobre ≤2 configs escolhidas pelo usuário) fica pendente de decisão. Research-only; mandate §1 inalterado.
 
 Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04-24_LOG.md` + `docs/CLEANUP_2026-05-05_LOG.md` para audit trail dos cleanups.
 
@@ -49,8 +50,27 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 
 ## Linhas exploratórias locais (2026-06-09)
 
-### lrs/ 🟡 STANDALONE ENCERRADO / FRONTEIRA AFTER-TAX (Phase 6) GERADA (research-only)
-- **Conclusão atual (2026-06-09, rodada Phase 6 = 6C→6B→6D→6A, 6A revisada):**
+### lrs/ 🟡 RODADA PHASE 7 CONCLUÍDA — 2 sobreviventes aguardando decisão de Phase 8 (research-only)
+- **Conclusão atual (2026-06-09, rodada Phase 7 = 7A→7B→7C→7D→7E→7F; ledger 4005→4377):**
+  rodada pré-registrada para atacar o gate vinculante (G3 walk-forward) com 6
+  famílias de mecanismo, uma por fase. Vereditos: **7A ensemble multi-lookback
+  fracionário = SPY SUCCESS** (`spy_alt_off / narrow {150,175,200,225} / lag 2`:
+  WF **13/17 = 76,5%** vs 12/17 — primeira linha do restart a alcançar o nível
+  do G3; CAGR 14,49%, MDD −43,16%); **7B portfólio EW de rotações = FAIL 0/3**
+  (EW5 WF 9/11 mas empata a melhor leg ex-post e MDD −53%); **7C macro gate
+  GTT/UNRATE = FAIL 0/2 por MDD** (maior lift de WF do restart: SPY 14/17, QQQ
+  10/11, CAGR acima do headline — mas zero rows seguram MDD ≥ −50%; exceção de
+  citação aprovada pelo usuário, lag de publicação honesto 25 td, caveat
+  vintage); **7D vol-targeting quadrático σ²/RV² = QQQ SUCCESS** (σ40/RV21/lag2:
+  WF 8/11 vs 7/11, CAGR 19,53% > headline, MDD −42,63%); **7E risk-off managed
+  futures = SPY weak SUCCESS low-power** (100% DBMF: WF 5/6, MDD −31,6% vs
+  −39,3%, só 6 janelas 2000+); **7F composição 7A×7D = FAIL 0/2** (mecanismos
+  não se somam). Próximo passo honesto = Phase 8: usuário escolhe ≤2 configs
+  (candidatos naturais: 7A-SPY e 7D-QQQ) e roda a suíte completa SS5 com
+  `n_trials = 4377`. QQQ a 8/11 falharia o G3 como está; SPY a 13/17 passa o G3
+  nominalmente mas precisa sobreviver aos outros 6 gates. Nada validado, nada
+  promovido; mandate §1 inalterado.
+- **Conclusão anterior (2026-06-09, rodada Phase 6 = 6C→6B→6D→6A, 6A revisada):**
   responde a pergunta do usuário "vale ceder parte de um portfolio 100% static?"
   na janela 2000+, benchmarks RSC-US 35/40/25, SSO B&H e SPY B&H. Modelo fiscal
   corrigido pelo usuário: core static rebalanceia **via aportes** → sem DARF

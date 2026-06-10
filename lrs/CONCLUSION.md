@@ -248,6 +248,36 @@ p.273-275]`. Tabela de decisão: `lrs/phases/phase06a_aftertax_frontier/REPORT.m
 
 ---
 
+## 7.2 Adendo — Rodada Phase 7 (2026-06-09): atacando o gate vinculante (WF)
+
+A rodada 7A→7B→7C→7D→7E→7F (pré-registrada, research-only, ledger 4005→**4377**)
+atacou diretamente o gate que reprovou tudo até aqui — o walk-forward — com seis
+famílias de mecanismo, uma por fase, critério pré-registrado = WF beats vs
+controle pareado:
+
+| Fase | Mecanismo | Veredito | Número-chave |
+|---|---|---|---|
+| 7A | Ensemble multi-lookback fracionário `[systematic_trading, p.118-133]` | **SPY SUCCESS** | WF **13/17 (76,5%)** vs 12/17 — primeira linha do restart no nível do G3; CAGR 14,49%, MDD −43,16% |
+| 7B | Portfólio EW de rotações (SPY/QQQ/IWM/XLK/GLD) | FAIL 0/3 | EW5 WF 9/11, mas empata a melhor leg ex-post; MDD −53% |
+| 7C | Macro gate GTT/UNRATE (exceção de citação aprovada) | FAIL 0/2 (MDD) | Maior lift de WF do restart: SPY 14/17, QQQ **10/11**; zero rows com MDD ≥ −50% |
+| 7D | Vol-targeting quadrático σ²/RV² `[volatility_trading, p.135-140]` | **QQQ SUCCESS** | WF 8/11 vs 7/11; CAGR 19,53% > headline; MDD −42,63% |
+| 7E | Risk-off managed futures (DBMF/KMLM, 2000+, low-power) | SPY weak SUCCESS | 100% DBMF: WF 5/6, MDD −31,6% vs −39,3% (6 janelas) |
+| 7F | Composição 7A×7D (parâmetros congelados) | FAIL 0/2 | Mecanismos não se somam (SPY 12/17, QQQ 6/11) |
+
+**Leitura honesta:** (1) o custo de timing em janelas bull É tratável — o gate
+macro 7C praticamente zera as falhas de WF, mas devolve exatamente o drawdown
+que a SMA200 protegia; o trade-off WF×MDD é estrutural nesta família. (2) Os
+ganhos sustentáveis vieram de mecanismos *suaves*: média de janelas (7A) e
+sizing contínuo por variância (7D) — e eles **não** se compõem (7F). (3) O
+nível nominal do G3 foi alcançado em SPY pela primeira vez (13/17 = 76,5% ≥
+75%), mas isso NÃO é gate pass: a Phase 8 exigiria a suíte completa
+(PBO/DSR/WF/OOS/FWD/bootstrap/xlib) com `n_trials = 4377` sobre ≤2 configs
+escolhidas pelo usuário. QQQ a 8/11 falharia o G3 como está. Nada validado,
+nada promovido; mandate §1 inalterado `[advances_fin_ml, p.208-211]`,
+`[advances_fin_ml, p.273-275]`.
+
+---
+
 ## 8. Referências
 
 - `lrs/phases/phase0{0,1}_*`, `phase02_target_leverage_vol`,

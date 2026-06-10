@@ -195,10 +195,58 @@ este documento antes de continuar a evolucao da estrategia em `lrs/`.
   `lrs/results/phase06a_aftertax_frontier.csv` e
   `lrs/results/phase06a_contribution_sim.csv`.
 
+### Phase 7 Round - 7A/7B/7C/7D/7E/7F (CONCLUIDA 2026-06-09)
+
+- Pergunta do usuario: "encontrar estrategia LETF que SUPERE a LRS 200d SMA";
+  criterio pre-registrado da rodada = WF beats vs controle pareado (o gate
+  vinculante), nao CAGR. Usuario aprovou todas as frentes + a excecao de
+  citacao do gate macro (fonte blog). Ledger de trials: 4005 -> **4377**.
+- **7A ensemble multi-lookback fracionario (+72):** SPY SUCCESS
+  (`spy_alt_off / narrow {150,175,200,225} / lag 2`: WF **13/17 = 76,5%** vs
+  12/17 - primeira linha do restart no nivel do G3; CAGR 14,49%, MDD -43,16%);
+  QQQ FAIL (7/11 empate).
+- **7B portfolio EW de rotacoes multi-asset (+72):** FAIL 0/3 (EW5 WF 9/11
+  empata a melhor leg ex-post; MDD -53%). Diversificacao aparece no MDD, nao
+  no WF.
+- **7C macro gate GTT/UNRATE (+72):** FAIL 0/2 pelo criterio de MDD, com o
+  maior lift de WF do restart (SPY 14/17, QQQ 10/11; CAGR > headline; zero
+  rows com MDD >= -50%). Ingest novo `scripts/data_sprint/ingest_unrate_fred.py`
+  + `UNRATE_LAG_TD = 25` em `macro_data_loader`. EXCEPTION de citacao
+  documentada no README da fase.
+- **7D vol-targeting quadratico sigma^2/RV^2 (+72):** QQQ SUCCESS
+  (σ40/RV21/lag2: WF 8/11 vs 7/11, CAGR 19,53% > headline, MDD -42,63%);
+  SPY FAIL (12/17 empate).
+- **7E risk-off managed futures (+60, low-power 2000+):** SPY weak SUCCESS
+  (100% DBMF: WF 5/6 vs 4/6, MDD -31,6% vs -39,3%); QQQ FAIL. So 6 janelas.
+- **7F composicao 7A x 7D (+24, parametros congelados):** FAIL 0/2 - os
+  mecanismos nao se somam (SPY 12/17 vs 13; QQQ 6/11 vs 8).
+
 ## Proximo Trabalho Recomendado Atual
 
+A rodada Phase 7 fecha com dois sobreviventes single-mechanism. A ordem
+honesta agora e:
+
+1. Usuario escolher ate 2 configs para a Phase 8 (candidatos naturais:
+   **7A-SPY** `spy_alt_off/narrow/lag2` e **7D-QQQ** `σ40/RV21/lag2`), ou
+   declarar que nenhum justifica a validacao.
+2. Phase 8 (pre-registrada na rodada): suite completa SS5
+   (PBO matrix = grid da familia vencedora por branch, DSR com
+   `n_trials = 4377`, WF identico a Phase 4, OOS/FWD/bootstrap/xlib) sobre as
+   configs escolhidas. Nota honesta: QQQ a 8/11 falharia o G3 como esta; SPY a
+   13/17 passa o G3 nominalmente mas precisa dos outros 6 gates.
+3. Se (e somente se) 7/7 gates passarem em >=1 branch, levar ao processo de
+   decisao do mandate (SS7 overrides). Caso contrario, familia re-fechada com
+   ledger atualizado.
+4. Pendencias de rodadas anteriores que continuam validas: escolha de mix da
+   6A (decision table), e a variante KMLM-only de janela longa do 7E como
+   possivel pre-registro futuro.
+5. Nao reabrir grid amplo; nao adicionar familias novas de mecanismo sem
+   pre-registro.
+
+## Historico De Trabalho Recomendado Anterior (Phase 6A)
+
 A Phase 6A entrega a tabela de decisao que a pergunta do usuario pedia
-(`lrs/phases/phase06a_aftertax_frontier/REPORT.md`). A ordem honesta agora e:
+(`lrs/phases/phase06a_aftertax_frontier/REPORT.md`). A ordem honesta era:
 
 1. Usuario escolher UM mix da tabela rankeada da 6A (ex.: 75/25 RSC x SPY
    headline, ou 70/30 RSC x QQQ vol-target), ou declarar que nenhum compensa.
