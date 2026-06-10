@@ -927,3 +927,31 @@ Result (honest FAIL 0/2 - the cleanest negative of the whole restart):
 
 Validation status: return-first diagnostic; family FAIL and closed. No
 deployment, no paper-trade label, no mandate change.
+
+## 2026-06-10 - Study CLOSED; final consolidated report generated
+
+User decision: conclude the LRS study. Generator `lrs/final_report.py` (+0
+trials - finalists recomputed on committed configs only) produced:
+
+- **`lrs/REPORT.md`** - the definitive study report: one-page verdict,
+  Phase 8 validation status, finalist table in BOTH lenses (time-weighted
+  after-tax AND money-weighted contribution sim 10k + 1k/month, 6A Part 2
+  precedent), operational fiches for the three finalists, the 18-step
+  timeline with the honest DSR-lineage ledger (final **4569**; P0/P1/P5 rows
+  exist outside the lineage convention), and the plot index.
+- **`lrs/plots/`** - 10-figure pack: equity/DD per branch, all-trials
+  frontier map (~4.9k rows scanned from `lrs/results/*.csv`), WF-evolution
+  bars (the binding-gate story: SPY 12->13->14(MDD fail); QQQ 7->8->10(MDD
+  fail)), trial-ledger timeline, Phase 8 gate heatmap, exposure series,
+  rolling-10y spreads, decade returns, contribution-sim curves.
+- Finalists (research-only, none promoted): F1 `spy_7a_ensemble` 14.49% /
+  -43.16% / IRR 15.05%; F2 `spy_p9_cap2.5x` 16.81% / -47.47% / IRR 17.64%;
+  F3 `qqq_l2_binary` 21.11% / -45.93% / IRR 21.12%. Benchmarks same lenses:
+  SPY B&H 10.56% (IRR 11.14%), QQQ B&H 14.36% (IRR 14.28%), LRS headline
+  15.44% (IRR 16.13%).
+
+Study verdict (recorded in REPORT.md SS1-SS2): leveraged-rotation timing
+geometry is real - the binding walk-forward gate was unlocked - but the edge
+is too small to survive honest multiple-testing accounting; the line stays
+closed pending genuinely new literature or regime. No deployment, no
+paper-trade label, no mandate change `[advances_fin_ml, p.273-275]`.

@@ -12,17 +12,19 @@ promotion claim must still clear the repository mandate gates
 
 ## Read Order
 
-1. `SPEC.md` - scope, score, phases and constraints.
-2. `MEMORY.md` - live ledger of decisions and results.
-3. `NEXT_STEPS.md` - clean-session handoff and next verification checklist.
-4. `phases/phase07f_composition/REPORT.md` + the 7A/7D reports - the Phase 7
-   round survivors awaiting the user's Phase 8 pick.
-5. `phases/phase06a_aftertax_frontier/REPORT.md` - the after-tax mix decision
+1. **`REPORT.md` - the consolidated FINAL report of the whole study (Phases
+   0-10): verdicts, finalists, operational fiches, contribution lens and the
+   full plot pack under `plots/`.** Start here.
+2. `SPEC.md` - scope, score, phases and constraints.
+3. `MEMORY.md` - live ledger of decisions and results.
+4. `NEXT_STEPS.md` - clean-session handoff (study CLOSED state).
+5. `phases/phase08_final_gates/REPORT.md` - the validation verdict (FAIL 0/2).
+6. `phases/phase06a_aftertax_frontier/REPORT.md` - the after-tax mix decision
    table from the Phase 6 round.
-6. `TOP20_BY_CAGR.md` - return-first ranking requested by the user.
-7. Earlier phase reports under `phases/phase00_*` .. `phases/phase07f_*`
-   (Phase 6 run order: 6C -> 6B -> 6D -> 6A; Phase 7 order: 7A -> 7B -> 7C ->
-   7D -> 7E -> 7F; READMEs are the authority).
+7. `TOP20_BY_CAGR.md` - return-first ranking requested by the user.
+8. Phase reports under `phases/phase00_*` .. `phases/phase10_*` (Phase 6 run
+   order: 6C -> 6B -> 6D -> 6A; Phase 7 order: 7A -> .. -> 7F; READMEs are
+   the authority).
 
 ## Current Status
 

@@ -234,11 +234,25 @@ este documento antes de continuar a evolucao da estrategia em `lrs/`.
 - Regra pre-registrada aplicada: ambos re-fechados, sem re-runs nem ajuste de
   threshold. Linha LRS volta para a prateleira.
 
+### Phases 9, 10 e Consolidacao Final (CONCLUIDAS 2026-06-10)
+
+- **Phase 9 (teto 3x, +48 -> 4425):** SPY lead return-first
+  (`L_max 2.50/sigma40/RV21/lag3`: 16,81% / -47,47%, WF 12/17); QQQ FAIL
+  (zero rows no teto -50%). Escalar pinado no cap ~99% dos dias - o ganho vem
+  da alavancagem, nao do sizing.
+- **Phase 10 (buy-the-dip ladder, +144 -> 4569):** FAIL 0/2 - o negativo mais
+  limpo do restart. Zero rows entre 144 seguram MDD >= -50% (8 ruinas
+  totais); a tese Gayed sobrevive a propria inversao.
+- **Consolidacao final:** `lrs/REPORT.md` (gerado por `lrs/final_report.py`)
+  + 10 plots em `lrs/plots/` - relatorio definitivo do estudo com finalistas,
+  fichas operacionais e lente de aportes. ESTUDO ENCERRADO.
+
 ## Proximo Trabalho Recomendado Atual
 
-A linha standalone/satelite LRS esta RE-FECHADA apos a Phase 8 (0/2 na suite
-completa; vinculante agora = DSR no SPY, PBO/DSR/WF no QQQ). O que resta de
-honesto:
+**O estudo LRS esta ENCERRADO (2026-06-10).** Relatorio definitivo:
+`lrs/REPORT.md`. A linha standalone/satelite LRS esta RE-FECHADA apos a
+Phase 8 (0/2 na suite completa; vinculante agora = DSR no SPY, PBO/DSR/WF no
+QQQ). O que resta de honesto:
 
 1. Nao reabrir a familia sem literatura ou regime genuinamente novos - o
    resultado da linha inteira e: a geometria de timing e real, mas o edge e
