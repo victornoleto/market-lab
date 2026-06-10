@@ -884,3 +884,46 @@ full SS5 suite at ledger 4425 for any promotion-grade claim - where DSR
 already killed a stronger risk-adjusted candidate (7A, p 0.052) - so its
 realistic validation odds are LOW and recorded as such. No deployment, no
 paper-trade label, no mandate change `[advances_fin_ml, p.273-275]`.
+
+## 2026-06-10 - Phase 10 Drawdown-Contingent Leverage Ladder ("Buy the Dip") Executed (FAIL 0/2)
+
+User-proposed family (2026-06-10): lower leverage most of the time, ESCALATE
+leverage when the underlying's drawdown crosses a threshold, de-escalate on
+recovery - the contrarian opposite of every mechanism tested so far.
+
+Runner: `uv run python -m lrs.phases.phase10_dip_leverage_ladder.run`.
+
+Outputs: `phases/phase10_dip_leverage_ladder/{README.md,REPORT.md,plots/}`,
+`results/phase10_dip_leverage_ladder.csv`, tests `tests/test_lrs_phase10.py`.
+
+Pre-registered grid (144 rows, ledger 4425 + 144 = **4569**): 2 branches x
+2 profiles {(1.0->2.0), (1.5->3.0)} x triggers {-10%, -20%, -30%} x exits
+{ath, half-recovery} x lag 0..5; DD measured on the underlying; no SMA/vol
+gate (clean isolation). Citable tension recorded upfront: equity indices =
+countertrend-matching `[trading_systems_methods, p.13]` VS dips = high-vol
+regimes where leveraged compounding dies `[leverage_for_the_long_run,
+p.7-9]`. Sanity PASSED (never-fires trigger == constant L_base, diff 0).
+
+Result (honest FAIL 0/2 - the cleanest negative of the whole restart):
+
+- **ZERO rows among 144 hold the -50% floor.** Trial MDD range: -69.8%
+  (best: SPY -30%/1.0->2.0) to **-102.7%**; 8 configs are literal total ruin
+  (terminal <= 0 via leveraged riding of long bears + DARF timing).
+- **The CAGR does not pay for the risk either:** best SPY dip row 12.65% vs
+  LRS headline 15.44% (-39.3% MDD); best QQQ dip row 14.86% (at -98.9% MDD!)
+  vs plain QQQ B&H 14.36%. Most QQQ dip rows UNDERPERFORM unlevered B&H.
+- Mechanism anatomy: the trigger escalates early in every long bear (1929-32
+  SPY -86%, 1973-74, 2000-02 QQQ -83%, 2008) and rides max leverage to the
+  bottom. Deeper triggers reduce episodes (6 vs 22) but cannot avoid the
+  catastrophic ones - you cannot know ex-ante which -20% becomes -80%.
+- Answer to the user's question "what dip level is interesting to buy with
+  leverage?": **none on this grid.** The Gayed thesis survives its direct
+  inversion test: dips are exactly when leverage must be LOW
+  `[leverage_for_the_long_run, p.7-9]`.
+- Nuance preserved: dip-buying DOES work in this repo's data in ONE form -
+  contribution flows (6A Part 2 buy-most-underweight DCA), where new money
+  buys dips with no path-risk on the existing position. What fails is
+  escalating LEVERAGE on existing capital.
+
+Validation status: return-first diagnostic; family FAIL and closed. No
+deployment, no paper-trade label, no mandate change.
