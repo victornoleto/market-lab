@@ -840,3 +840,47 @@ its edge is too small to survive honest multiple-testing accounting
 
 Validation status: gates RUN on the two survivors; 0/2 pass; line CLOSED
 again. No deployment, no paper-trade label, no mandate change.
+
+## 2026-06-10 - Phase 9 Quadratic Vol-Targeting with 3x Ceiling (user-directed, return-first)
+
+User request after the Phase 8 closure: "ganhos maiores" using TQQQ/UPRO.
+Phase 9 is a user-directed, return-first exploration of ONE variation inside
+the 7D family - it does NOT reverse Phase 8's verdict.
+
+Runner: `uv run python -m lrs.phases.phase09_vol_target_3x_ceiling.run`.
+
+Outputs: `phases/phase09_vol_target_3x_ceiling/{README.md,REPORT.md,plots/}`,
+`results/phase09_vol_target_3x_ceiling.csv`, tests `tests/test_lrs_phase09.py`.
+
+Pre-registered grid (48 rows, ledger 4377 + 48 = **4425**): 2 branches x
+L_max {2.50, 3.00} x sigma {40%, 45%} x RV21 x lag 0..5; ladder rungs above
+2x use the cached UPROSIM/TQQQSIM `[volatility_trading, p.135, p.138-140]`.
+Return-first screen: best CAGR among MDD >= -50% rows; SUCCESS = CAGR > 7D
+winner AND floor held AND WF not worse. Sanity PASSED (7D winners reproduced,
+~2.8e-17).
+
+Result (SPY SUCCESS / QQQ FAIL):
+
+- **SPY SUCCESS:** `L_max 2.50 / sigma 40% / RV21 / lag 3` - CAGR **16.81%**
+  (+1.47pp vs 7D winner 15.34%; +1.37pp vs binary headline), MDD **-47.47%**
+  (tolerable tier, inside the floor), WF 12/17 (unchanged), Sharpe 0.675,
+  Calmar 0.354, turnover 6.1/y. All L_max 3.00 SPY rows BREACH the floor
+  (-53.8% to -64.2%).
+- **QQQ FAIL:** ZERO rows inside the -50% floor (best floor-breacher: L3.00
+  sigma40 lag1, 24.74% / -61.76%). Confirms the Phase 2 frontier: QQQ above
+  ~2x effective leverage is ruin-adjacent under every variation tested.
+  Diagnostic curiosity (NOT a candidate): L3.00/sigma45/lag2 reached WF 9/11
+  (the G3 level) at -67% MDD.
+- **Honest mechanical reading:** with sigma 40-45%, the quadratic scalar is
+  PINNED at the cap ~99% of risk-on days (SPY RV21 rarely exceeds 40%), so
+  the winning config behaves like constant-2.5x with crash de-leveraging.
+  Versus the Phase 2 binary L2.50 best-Calmar row (17.38% / -48.54% / 0.358)
+  it is roughly a wash (16.81% / -47.47% / 0.354) - the quadratic form adds
+  no edge at this leverage on SPY, consistent with 7D's SPY FAIL. The CAGR
+  gain comes from the LEVERAGE, not the sizing rule.
+
+Status: return-first diagnostic lead only. The SPY 2.5x config would face the
+full SS5 suite at ledger 4425 for any promotion-grade claim - where DSR
+already killed a stronger risk-adjusted candidate (7A, p 0.052) - so its
+realistic validation odds are LOW and recorded as such. No deployment, no
+paper-trade label, no mandate change `[advances_fin_ml, p.273-275]`.
