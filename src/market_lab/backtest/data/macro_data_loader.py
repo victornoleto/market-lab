@@ -47,6 +47,10 @@ EBP_LAG_TD = 21
 TERM_SPREAD_LAG_TD = 1
 CAPE_LAG_TD = 32
 VIX_LAG_TD = 0
+# UNRATE: BLS Employment Situation for reference month m is released on the
+# first Friday of month m+1 (~23 trading days after the FRED first-of-month
+# stamp); 25 adds a 2-day buffer. Vintage caveat: FRED serves revised data.
+UNRATE_LAG_TD = 25
 
 __all__ = [
     "DEFAULT_CACHE",
@@ -54,6 +58,8 @@ __all__ = [
     "TERM_SPREAD_LAG_TD",
     "CAPE_LAG_TD",
     "VIX_LAG_TD",
+    "UNRATE_LAG_TD",
+    "load_unrate_monthly",
     "apply_publish_lag",
     "align_monthly_to_daily",
     "resample_to_daily_with_lag",
@@ -165,6 +171,32 @@ def load_cape_monthly(*, cache_dir: Path = DEFAULT_CACHE) -> pd.Series:
     s = df["CAPE"].astype(float).copy()
     s.index = pd.DatetimeIndex(df.index).tz_localize(None)
     s.name = "cape"
+    return s.sort_index().dropna()
+
+
+def load_unrate_monthly(*, cache_dir: Path = DEFAULT_CACHE) -> pd.Series:
+    """UNRATE monthly (civilian unemployment rate, SA), first-of-month stamps.
+
+    Source: FRED ``UNRATE`` via ``scripts/data_sprint/ingest_unrate_fred.py``.
+    Use :data:`UNRATE_LAG_TD` with :func:`resample_to_daily_with_lag` for the
+    honest publication alignment (BLS releases ~first Friday of the following
+    month). Vintage caveat: FRED serves the latest revised series, not
+    point-in-time ALFRED data.
+    """
+    path = cache_dir / "unrate_monthly.parquet"
+    if not path.exists():
+        raise FileNotFoundError(
+            f"UNRATE cache not found at {path}. "
+            "Run scripts/data_sprint/ingest_unrate_fred.py first."
+        )
+    df = pd.read_parquet(path)
+    if "unrate" not in df.columns:
+        raise ValueError(
+            f"UNRATE parquet missing 'unrate' column; got {df.columns.tolist()}"
+        )
+    s = df["unrate"].astype(float).copy()
+    s.index = pd.DatetimeIndex(df.index).tz_localize(None)
+    s.name = "unrate"
     return s.sort_index().dropna()
 
 

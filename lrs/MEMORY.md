@@ -646,3 +646,49 @@ any future mix discussion, but not a WF unlock `[advances_fin_ml, p.208-211]`.
 
 Validation status: not validated; diagnostic phase only. No deployment, no
 paper-trade label, no mandate change.
+
+## 2026-06-09 - Phase 7C Macro Growth-Trend-Timing Gate (UNRATE) Executed
+
+Runner: `uv run python -m lrs.phases.phase07c_macro_gtt_gate.run`.
+
+Outputs: `phases/phase07c_macro_gtt_gate/{README.md,REPORT.md,plots/}`,
+`results/phase07c_macro_gtt_gate.csv`, new data ingest
+`scripts/data_sprint/ingest_unrate_fred.py` ->
+`data/external/macro/unrate_monthly.parquet` (FRED UNRATE 1948+, no auth),
+loader extension `macro_data_loader.{UNRATE_LAG_TD,load_unrate_monthly}`,
+tests `tests/test_lrs_phase07c.py`.
+
+CITATION EXCEPTION (user-approved 2026-06-09): rule `UNRATE > SMA12m(UNRATE)`
+from the Philosophical Economics "Growth-Trend Timing" essay (blog, no book
+source); family anchored on `[leverage_for_the_long_run, p.9]` (S&P below
+200dma 68.2% of recession time vs 19.4% of expansion time). Honest alignment:
+publish lag committed at **25 trading days** (BLS first-Friday-next-month),
+more conservative than the 10 td sketched in the round plan; FRED revised-data
+vintage caveat recorded `[advances_fin_ml, p.31-34]`.
+
+Pre-registered grid (72 rows, ledger 4149 + 72 = 4221): 6 bases x 2 override
+scopes (`trend_only` keeps the vol gate alive in expansions; `trend_and_vol`
+holds full target leverage) x lag 0..5. Sanity PASSED: macro_risk forced True
+reproduces the binary base, max abs diff `0` both branches.
+
+Result summary (honest FAIL 0/2 - MDD is the binding criterion, NOT WF):
+
+- **Largest WF lift of the whole restart:** SPY best `spy_top/trend_only/lag0`
+  WF **14/17 (82.4%)** vs baseline 12/17, CAGR 16.56% (> headline); QQQ best
+  `qqq_lower_lev/trend_only/lag4` WF **10/11 (90.9%)** vs 7/11, CAGR 21.76%
+  (> headline). Both clear the G3 75% level by a wide margin.
+- **But the MDD floor breaks on both:** SPY -58.87%, QQQ -52.14% (< -50%).
+  Sweep check: **zero rows in the entire 72-row grid combine WF > baseline
+  with MDD >= -50%** - the trade-off is structural, exactly the pre-registered
+  risk (non-recession crashes held at leverage; 1987-style windows).
+- Screen verdict: FAIL on criterion 3 (MDD) for both branches.
+
+Interpretation: the GTT mechanism does exactly what the 6C forensics predicted
+(removing expansion-window timing cost fixes the WF gate) but reintroduces the
+drawdown the SMA gate was protecting against. The obvious follow-up - macro
+gate composed with a smoother in-expansion exposure (7A ensemble or
+vol-target) - belongs to 7F only if the >=2-SUCCESS pre-condition is met;
+otherwise it needs a fresh pre-registration in a future round.
+
+Validation status: not validated; diagnostic phase only. No deployment, no
+paper-trade label, no mandate change.
