@@ -21,7 +21,8 @@
 - **Margin overlay IBKR corrigido:** sobre o novo top four-asset, sweep `CASHX?E=-2` mostra `1,25x` CAGR `13,97%`/MDD `-34,14%`, `1,50x` CAGR `15,66%`/MDD `-40,18%`, `2,00x` CAGR `18,69%`/MDD `-51,98%` e `3,00x` CAGR `23,13%`/MDD `-71,40%`. Leitura: a correção removeu o headline atrativo; se retomado, pesquisar só `1,10x..1,25x` com requisitos reais de margem/financing/liquidação/tax.
 - **KMLM-only MF proxy corrigido:** trocar o sleeve MF por `100% KMLMSIM` com `CASHX?E=-2` estende a janela para `1987-2026`: 1x CAGR `13,00%`, MDD `-26,70%`; `1,25x` CAGR `14,73%`, MDD `-33,01%`; `1,50x` CAGR `16,35%`, MDD `-38,92%`. Leitura: útil como lente de janela longa, mas NÃO muda a conclusão conservadora contra margem externa.
 - **Cleanup consolidation iniciado:** `studies/SUMMARY.md` agora é o ledger compacto de estratégias testadas, métricas, vereditos, arquivos canônicos e política de remoção de artefatos gerados. O objetivo é reduzir a codebase sem perda de conhecimento; mandate §1 segue inalterado.
-- **Rodada Phase 7 do `lrs/` (2026-06-09) concluída:** 6 fases pré-registradas (7A ensemble multi-lookback, 7B portfólio multi-asset EW, 7C macro gate GTT/UNRATE, 7D vol-targeting quadrático, 7E risk-off managed futures, 7F composição), ledger de trials 4005 → **4377**. Sobreviventes: **7A-SPY** (ensemble `{150..225}`, WF **13/17 = 76,5%**, primeira linha do restart no nível do gate G3) e **7D-QQQ** (σ²/RV² σ40/RV21, WF 8/11, CAGR 19,53% > headline). 7C entregou o maior lift de WF já visto (SPY 14/17, QQQ 10/11) mas nenhuma row segura MDD ≥ −50%; 7F provou que os mecanismos não se somam. Phase 8 (suíte completa de gates sobre ≤2 configs escolhidas pelo usuário) fica pendente de decisão. Research-only; mandate §1 inalterado.
+- **Rodada Phase 7 do `lrs/` (2026-06-09) concluída:** 6 fases pré-registradas (7A ensemble multi-lookback, 7B portfólio multi-asset EW, 7C macro gate GTT/UNRATE, 7D vol-targeting quadrático, 7E risk-off managed futures, 7F composição), ledger de trials 4005 → **4377**. Sobreviventes: **7A-SPY** (ensemble `{150..225}`, WF **13/17 = 76,5%**, primeira linha do restart no nível do gate G3) e **7D-QQQ** (σ²/RV² σ40/RV21, WF 8/11, CAGR 19,53% > headline). 7C entregou o maior lift de WF já visto (SPY 14/17, QQQ 10/11) mas nenhuma row segura MDD ≥ −50%; 7F provou que os mecanismos não se somam. Research-only; mandate §1 inalterado.
+- **Phase 8 do `lrs/` (2026-06-10): FAIL 0/2 — linha RE-FECHADA.** Suíte SS5 completa (`n_trials = 4377`, PBO matrix = grid da família por branch, +0 trials) sobre os dois sobreviventes escolhidos pelo usuário. `spy_7a_ensemble` faz **6/7**: o walk-forward (gate vinculante histórico) **passa pela primeira vez** (13/17), mas o DSR falha em p `0,052` vs `0,05` — e como o ledger exclui o letf-lab, o p honesto é maior. `qqq_7d_quadratic` faz 4/7 (PBO 0,651, DSR p 0,138, WF 8/11). Regra pré-registrada aplicada: sem re-runs nem ajuste de threshold, ambos re-fechados. Veredito da linha: a geometria de timing é real, mas o edge não sobrevive ao accounting honesto de múltiplos testes. Mandate §1 inalterado.
 
 Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04-24_LOG.md` + `docs/CLEANUP_2026-05-05_LOG.md` para audit trail dos cleanups.
 
@@ -50,8 +51,23 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 
 ## Linhas exploratórias locais (2026-06-09)
 
-### lrs/ 🟡 RODADA PHASE 7 CONCLUÍDA — 2 sobreviventes aguardando decisão de Phase 8 (research-only)
-- **Conclusão atual (2026-06-09, rodada Phase 7 = 7A→7B→7C→7D→7E→7F; ledger 4005→4377):**
+### lrs/ 🔴 LINHA RE-FECHADA após Phase 8 (2026-06-10) — FAIL 0/2 na suíte completa (research-only)
+- **Conclusão atual (2026-06-10, Phase 8 = suíte final SS5 nos 2 sobreviventes):**
+  usuário escolheu validar `spy_7a_ensemble` (7A: `spy_alt_off / narrow
+  {150,175,200,225} / lag 2`) e `qqq_7d_quadratic` (7D: `σ40%/RV21/lag2`).
+  Suíte completa com `n_trials = 4377`, PBO matrix = grid da família por
+  branch (36 configs cada), +0 trials, sanity ~1e-17 vs CSVs da Phase 7.
+  **Resultado: 0/2 passam.** `spy_7a_ensemble` = **6/7**: G3 walk-forward
+  (gate vinculante desde a Phase 4) **PASSA pela primeira vez** (13/17), G1
+  PBO 0,397 ✅, G4-G7 ✅, mas **G2 DSR p = 0,052 vs 0,05 ❌** — margem de
+  0,002 com undercount honesto (letf-lab fora do ledger ⇒ p verdadeiro
+  maior). `qqq_7d_quadratic` = 4/7 (PBO 0,651 ❌, DSR p 0,138 ❌, WF 8/11 ❌ —
+  o prior registrado). Regra pré-registrada: sem re-runs, sem ajuste de
+  threshold, ambos re-fechados. Veredito da linha inteira: timing geometry é
+  real (o WF foi destravado), mas o edge é pequeno demais para sobreviver à
+  deflação por múltiplos testes `[advances_fin_ml, p.273-275]`. Mandate §1
+  inalterado.
+- **Conclusão anterior (2026-06-09, rodada Phase 7 = 7A→7B→7C→7D→7E→7F; ledger 4005→4377):**
   rodada pré-registrada para atacar o gate vinculante (G3 walk-forward) com 6
   famílias de mecanismo, uma por fase. Vereditos: **7A ensemble multi-lookback
   fracionário = SPY SUCCESS** (`spy_alt_off / narrow {150,175,200,225} / lag 2`:

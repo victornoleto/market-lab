@@ -42,18 +42,24 @@ simple realized-volatility throttles before broad indicator work. Phases 3A,
 standalone base enough. Phase 4 ran mandate-style validation gates and closed
 standalone LRS as research-only: `0/6` bases passed all gates.
 
-Latest result: the Phase 7 round (7A -> 7B -> 7C -> 7D -> 7E -> 7F,
-2026-06-09; trial ledger 4005 -> 4377) attacked the binding walk-forward gate
-with six pre-registered mechanism families. Survivors: **7A ensemble
-multi-lookback** on SPY (`spy_alt_off / narrow {150,175,200,225} / lag 2`, WF
-**13/17 = 76.5%** - the restart's first row at the G3 level; CAGR 14.49%, MDD
--43.16%) and **7D quadratic vol-targeting** on QQQ (`sigma 40% / RV21 / lag 2`,
-WF 8/11, CAGR 19.53%, MDD -42.63%). 7B (EW multi-asset portfolio), 7C (macro
-GTT/UNRATE - biggest WF lift but breaks the MDD floor), and 7F (composition)
-all failed their pre-registered screens honestly; 7E (managed-futures
-risk-off) is a weak low-power SPY lead. Next honest step is Phase 8: the full
-mandate gate suite with `n_trials = 4377` on at most 2 user-chosen configs.
-Nothing is validated or promoted.
+Latest result: **Phase 8 (2026-06-10) closed the line again - FAIL 0/2 on the
+full mandate suite.** The Phase 7 round (7A..7F, ledger 4005 -> 4377) had
+produced two survivors: the 7A SPY ensemble (`spy_alt_off / narrow
+{150,175,200,225} / lag 2`) and the 7D QQQ quadratic vol-target (`sigma 40% /
+RV21 / lag 2`). Under the full suite with `n_trials = 4377`:
+`spy_7a_ensemble` scores **6/7** - the walk-forward gate (the restart's
+universal binding gate) PASSES for the first time (13/17), but DSR fails at
+p `0.052` vs `0.05` (and the excluded letf-lab lineage means the honest p is
+higher); `qqq_7d_quadratic` scores 4/7 (PBO 0.651, DSR 0.138, WF 8/11). Per
+the pre-registered rule both configs are re-closed: the timing geometry is
+real, but the edge is too small to survive honest multiple-testing
+accounting. No deployment, no paper-trade label, no mandate change.
+
+Previous round summary: the Phase 7 round attacked the binding walk-forward
+gate with six pre-registered mechanism families; 7B (EW multi-asset
+portfolio), 7C (macro GTT/UNRATE - biggest WF lift but breaks the MDD floor)
+and 7F (composition) failed honestly; 7E (managed-futures risk-off) is a weak
+low-power SPY lead.
 
 Previous round: the Phase 6 round (run order 6C -> 6B -> 6D -> 6A, 2026-06-09)
 answered the user's actual question - "is any mix worth giving up part of a

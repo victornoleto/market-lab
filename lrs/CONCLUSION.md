@@ -278,6 +278,31 @@ nada promovido; mandate §1 inalterado `[advances_fin_ml, p.208-211]`,
 
 ---
 
+## 7.3 Adendo — Phase 8 (2026-06-10): suíte completa nos sobreviventes; linha RE-FECHADA
+
+O usuário escolheu validar os dois sobreviventes naturais da rodada 7. Suíte
+SS5 completa, `n_trials = 4377`, PBO matrix = grid da família por branch,
++0 trials:
+
+| Config | G1 PBO | G2 DSR p | G3 WF | G4-G7 | **Geral** |
+|---|---|---|---|---|---|
+| `spy_7a_ensemble` (7A, narrow/lag2) | 0,397 ✅ | **0,052 ❌** | **13/17 ✅** | ✅✅✅✅ | **FAIL 6/7** |
+| `qqq_7d_quadratic` (7D, σ40/RV21/lag2) | 0,651 ❌ | 0,138 ❌ | 8/11 ❌ | ✅✅✅✅ | **FAIL 4/7** |
+
+**Leitura final da linha:** a rodada 7 conseguiu o que nenhuma fase anterior
+conseguiu — o gate vinculante (walk-forward) **passou** no SPY pela primeira
+vez. Mas o Sharpe não sobrevive à deflação contra a busca de 4.377 trials que
+o produziu (p 0,052 vs 0,05; com o letf-lab excluído do ledger, o p honesto é
+ainda maior). Pela regra pré-registrada e pelo mandate ("quase lá" não passa):
+sem re-runs, sem ajuste de threshold, ambos re-fechados. O veredito honesto da
+linha inteira: **a geometria de timing é real, mas o edge é pequeno demais
+para sobreviver ao accounting honesto de múltiplos testes**
+`[advances_fin_ml, p.273-275]`, `[advances_fin_ml, p.208-211]`. O RSC-US
+estático segue como âncora limpa (seção 7), e a tabela de decisão da 6A
+continua disponível para a discussão de mix — fora do escopo desta linha.
+
+---
+
 ## 8. Referências
 
 - `lrs/phases/phase0{0,1}_*`, `phase02_target_leverage_vol`,

@@ -676,6 +676,36 @@ mandate gates remain prerequisites before any promotion claim `[testing_tuning,
 p.327-335]`, `[systematic_trading, p.185-188]`, `[risk_parity, p.80-81]`,
 `[advances_fin_ml, p.208-211]`.
 
+On 2026-06-09 the Phase 6 round (6C walk-forward forensics, 6B continuous
+vol-targeting, 6D capped inverse sleeve, 6A after-tax frontier with a
+user-corrected contribution-based tax model) produced the static-vs-satellite
+decision table: 13 of 18 small mixes beat the after-tax RSC core on both CAGR
+and Calmar, and all 18 beat it on money-weighted IRR under monthly
+contributions — a decision table, not a promotion.
+
+On 2026-06-09/10 the Phase 7 round attacked the binding walk-forward gate
+directly with six pre-registered mechanism families (trial ledger 4005 →
+4377): a fractional multi-lookback ensemble, an equal-weight multi-asset
+portfolio of rotations, a macro Growth-Trend-Timing gate on UNRATE (a
+user-approved citation exception anchored on the paper's recession/200dma
+asymmetry `[leverage_for_the_long_run, p.9]`), quadratic inverse-variance
+vol-targeting `[volatility_trading, p.135, p.138-140]`, a managed-futures
+risk-off sleeve, and the composition of the two winners. The ensemble lifted
+SPY to WF `13/17` (the restart's first config at the 75% gate level) and the
+quadratic sizing lifted QQQ to `8/11`; the macro gate produced the largest WF
+lift ever seen (SPY `14/17`, QQQ `10/11`) but no row held the `-50%` drawdown
+floor, and the winning mechanisms did not stack. **Phase 8 then ran the full
+mandate suite on the two user-chosen survivors and both failed**: the SPY
+ensemble scored 6/7 — the historical binding walk-forward gate passed for the
+first time, but the Deflated Sharpe Ratio failed at p `0.052` vs `0.05`
+against the 4,377-trial lineage (an honest undercount, since the letf-lab
+sweeps are excluded); the QQQ config failed PBO, DSR and WF. Per the
+pre-registered rule both were re-closed without re-runs. The line's final
+verdict: leveraged-rotation timing geometry is real — the round genuinely
+moved the binding gate — but the edge is too small to survive honest
+multiple-testing accounting `[advances_fin_ml, p.273-275]`,
+`[advances_fin_ml, p.208-211]`.
+
 ## Repository Slim-Down
 
 On 2026-06-03 the cleanup/restructuring pass started by creating

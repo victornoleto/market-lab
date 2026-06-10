@@ -221,26 +221,36 @@ este documento antes de continuar a evolucao da estrategia em `lrs/`.
 - **7F composicao 7A x 7D (+24, parametros congelados):** FAIL 0/2 - os
   mecanismos nao se somam (SPY 12/17 vs 13; QQQ 6/11 vs 8).
 
+### Phase 8 - Suite Final de Gates (CONCLUIDA 2026-06-10; FAIL 0/2)
+
+- Usuario escolheu os dois sobreviventes naturais. Suite SS5 completa com
+  `n_trials = 4377`, PBO matrix = grid da familia por branch (36 configs
+  cada), +0 trials. Sanity: rows da Phase 7 reproduzidas (~1e-17).
+- **`spy_7a_ensemble`: 6/7.** G3 walk-forward PASSA pela primeira vez no
+  restart (13/17). FAIL apenas no G2 DSR: p `0.052` vs `0.05` - margem 0.002,
+  e o ledger exclui letf-lab (p honesto seria maior). "Quase la" nao passa.
+- **`qqq_7d_quadratic`: 4/7.** FAIL G1 PBO (0.651), G2 DSR (p 0.138), G3 WF
+  (8/11) - exatamente o prior registrado.
+- Regra pre-registrada aplicada: ambos re-fechados, sem re-runs nem ajuste de
+  threshold. Linha LRS volta para a prateleira.
+
 ## Proximo Trabalho Recomendado Atual
 
-A rodada Phase 7 fecha com dois sobreviventes single-mechanism. A ordem
-honesta agora e:
+A linha standalone/satelite LRS esta RE-FECHADA apos a Phase 8 (0/2 na suite
+completa; vinculante agora = DSR no SPY, PBO/DSR/WF no QQQ). O que resta de
+honesto:
 
-1. Usuario escolher ate 2 configs para a Phase 8 (candidatos naturais:
-   **7A-SPY** `spy_alt_off/narrow/lag2` e **7D-QQQ** `σ40/RV21/lag2`), ou
-   declarar que nenhum justifica a validacao.
-2. Phase 8 (pre-registrada na rodada): suite completa SS5
-   (PBO matrix = grid da familia vencedora por branch, DSR com
-   `n_trials = 4377`, WF identico a Phase 4, OOS/FWD/bootstrap/xlib) sobre as
-   configs escolhidas. Nota honesta: QQQ a 8/11 falharia o G3 como esta; SPY a
-   13/17 passa o G3 nominalmente mas precisa dos outros 6 gates.
-3. Se (e somente se) 7/7 gates passarem em >=1 branch, levar ao processo de
-   decisao do mandate (SS7 overrides). Caso contrario, familia re-fechada com
-   ledger atualizado.
-4. Pendencias de rodadas anteriores que continuam validas: escolha de mix da
-   6A (decision table), e a variante KMLM-only de janela longa do 7E como
-   possivel pre-registro futuro.
-5. Nao reabrir grid amplo; nao adicionar familias novas de mecanismo sem
+1. Nao reabrir a familia sem literatura ou regime genuinamente novos - o
+   resultado da linha inteira e: a geometria de timing e real, mas o edge e
+   pequeno demais para sobreviver ao accounting honesto de multiplos testes
+   (`n_trials = 4377`) `[advances_fin_ml, p.273-275]`.
+2. Pendencia que continua valida: escolha de mix da 6A (decision table
+   static x satelite) - decisao do usuario, fora do escopo de gates desta
+   linha.
+3. Leads fracos arquivados para eventual pre-registro futuro: 7E KMLM-only de
+   janela longa (1988+); 7C macro gate como redutor de alavancagem (nao como
+   switch binario) se um dia houver fonte citavel para a regra de MDD.
+4. Nao reabrir grid amplo; nao adicionar familias novas de mecanismo sem
    pre-registro.
 
 ## Historico De Trabalho Recomendado Anterior (Phase 6A)

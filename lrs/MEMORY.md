@@ -798,3 +798,45 @@ identical to Phase 4, OOS/FWD/bootstrap/xlib) on at most 2 user-chosen
 configs. QQQ at 8/11 would FAIL G3 as-is; SPY at 13/17 nominally clears G3 but
 must survive the other six gates with the bigger ledger. Until then: nothing
 is validated, nothing is promoted, mandate SS1 unchanged.
+
+## 2026-06-10 - Phase 8 Final Gate Suite Executed (FAIL 0/2; family RE-CLOSED)
+
+User decision (2026-06-10): validate the two natural survivors.
+
+Runner: `uv run python -m lrs.phases.phase08_final_gates.run`.
+
+Outputs: `phases/phase08_final_gates/{README.md,REPORT.md,plots/}`,
+`results/phase08_final_gates.csv`, tests `tests/test_lrs_phase08.py`.
+
+Setup (pre-registered): canonical SS5 suite via `lrs/lib/validation.
+run_gate_suite`, Phase 4 WF geometry verbatim; PBO matrix = winning family
+grid per branch (7A SPY grid 36 configs; 7D QQQ grid 36 configs); DSR
+`n_trials = 4377` (full in-repo lineage through 7F; letf-lab excluded =
+honest undercount). **+0 trials; ledger stays 4377.** Sanity PASSED: both
+configs reproduce their committed Phase 7 CSV rows (max abs diff ~1e-17).
+
+Result (FAIL 0/2 - per the pre-registered rule, both configs re-closed):
+
+- **`spy_7a_ensemble` (spy_alt_off / narrow / lag 2): 6/7 - FAIL on G2 DSR
+  only.** G1 PBO 0.397 PASS; **G2 DSR p = 0.052 vs alpha 0.05 FAIL** (the
+  margin is 0.002, and the excluded letf-lab lineage means the honest p is
+  HIGHER, not lower - this is a real fail, not noise); **G3 WF 13/17 PASS -
+  the first time the restart's universal binding gate passes**; G4 OOS, G5
+  FWD, G6 bootstrap (CI low > 0), G7 cross-lib all PASS.
+- **`qqq_7d_quadratic` (sigma 40 / RV21 / lag 2): 4/7 - FAIL G1/G2/G3.** PBO
+  0.651, DSR p 0.138, WF 8/11 (72.7% < 75%) - exactly the recorded honest
+  prior. G4-G7 PASS.
+
+Interpretation: the Phase 7 round genuinely moved the binding gate - the SPY
+ensemble is the first config in the whole restart to clear the walk-forward
+bar - but the Sharpe does not survive deflation against the 4377-trial search
+that produced it. Per the mandate ("quase la" nao passa) and the
+pre-registered verdict rule: no re-runs, no threshold adjustment, both configs
+re-closed; the LRS line returns to the shelf pending genuinely new literature
+or regime. The honest summary of the whole line: timing geometry is real but
+its edge is too small to survive honest multiple-testing accounting
+`[advances_fin_ml, p.273-275]`, `[advances_fin_ml, p.208-211]`,
+`[testing_tuning, p.327-335]`.
+
+Validation status: gates RUN on the two survivors; 0/2 pass; line CLOSED
+again. No deployment, no paper-trade label, no mandate change.
