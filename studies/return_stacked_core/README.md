@@ -78,6 +78,7 @@ Read in this order:
 | `discussion/REPORT.md` | Discussion-package conclusions: allocation plateau (is 35/40/25 best?), regime/decorrelation evidence, ablation verdicts (no-ZROZ, SSO/UPRO, HFEA, RSSX, RSSY). |
 | `discussion/REPORT_GLOBAL.md` | Global-variant conclusions vs VT: globalness price curve, 20/15/20/20/25 outside the Sharpe plateau, RSIT-first design rules, three-tier recommendation. |
 | `evolution/REPORT.md` | Pre-registered 8-round hunt for higher CAGR with MDD ≤ 30% (~74k unique static trials + ~132k band/ballast configs + deep-validation battery): **terminal honest FAIL, nothing promoted**. Unique near-miss `45/25/30 + 20% bands` (5/6 gates, 2/4 battery): beats CORE in 61/68 quarterly starts but the edge evaporates under 63d-block bootstrap (trend-sequence harvest) and ZROZ<30% neighbors are cap-fragile. |
+| `evolution/TESTS_SUMMARY.md` | PT-BR companion: every test executed (e00-e11), per-round numbers and the final conclusion in one document. |
 
 ## Preserved Assets
 
