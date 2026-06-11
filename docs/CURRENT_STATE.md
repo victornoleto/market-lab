@@ -1,11 +1,11 @@
-# Estado atual — market-lab (2026-06-09)
+# Estado atual — market-lab (2026-06-11)
 
 > **Propósito:** onboard rápido para humanos e agentes. Este doc é o
 > snapshot vivo — a verdade canônica vive nos arquivos referenciados.
 
 ---
 
-## TL;DR (2026-06-09)
+## TL;DR (2026-06-11)
 
 🛑 **MAINTENANCE MODE** desde 2026-04-23 (mandate §1, §7).
 
@@ -26,6 +26,8 @@
 - **Estudo `lrs/` ENCERRADO (2026-06-10) com relatório consolidado:** `lrs/REPORT.md` (gerado por `lrs/final_report.py`) + 10 plots em `lrs/plots/` — veredito, status de validação (Phase 8 FAIL 0/2), 3 finalistas research-only nas lentes time-weighted e de aportes (F1 ensemble 14,5%/IRR 15,1%; F2 cap-2.5x 16,8%/IRR 17,6%; F3 QQQ-L2 21,1%/IRR 21,1%), fichas operacionais e linha do tempo do ledger (4569). Nada promovido; mandate §1 inalterado.
 - **Phase 10 do `lrs/` (2026-06-10, user-directed, ledger 4425 → 4569): FAIL 0/2 — o negativo mais limpo do restart.** Família contrária "buy the dip" (L_base normal, escala para L_dip quando o DD do underlying cruza −10/−20/−30%, desescala na recuperação): **zero rows entre 144 seguram MDD ≥ −50%** (faixa −69,8% a −102,7%; 8 configs = ruína total). O CAGR também não paga (melhor SPY 12,65% vs headline 15,44%; maioria das rows QQQ perde do B&H sem alavancagem). O trigger escala cedo em todo bear longo (1929-32, 2000-02) e cavalga alavancagem máxima até o fundo. A tese Gayed sobrevive ao teste da sua inversão direta: dip = regime de alta vol = alavancagem deve ser BAIXA. Nuance preservada: dip-buying funciona no repo só como fluxo de aportes (6A Part 2), não como escalada de leverage sobre capital existente. Mandate §1 inalterado.
 - **Phase 9 do `lrs/` (2026-06-10, user-directed return-first, ledger 4377 → 4425):** teto da família 7D elevado para 2.5x/3.0x (degraus UPRO/TQQQ). **SPY SUCCESS no screen return-first:** `L_max 2.50 / σ40 / RV21 / lag 3` = CAGR 16,81% (+1,4pp), MDD −47,47%, WF 12/17 mantido. **QQQ FAIL: zero rows dentro do teto −50%** (melhor: 24,7% / −61,8%) — QQQ acima de ~2x efetivo é ruin-adjacent em toda variação testada. Leitura mecânica honesta: com σ40-45 o escalar fica pinado no cap ~99% dos dias — o ganho vem da alavancagem, não do sizing (empata com a row binária L2.50 da Phase 2). Diagnóstico return-first, sem promoção; odds de validação SS5 registradas como baixas (DSR já matou candidato mais forte). Mandate §1 inalterado.
+
+- **RSC discussion package (2026-06-11) concluído:** `studies/return_stacked_core/discussion/` — pipeline determinístico (s00 anchor gate → s07 figures) com análise de regimes (15 episódios 1970-2026), descorrelação condicional (piores meses do SPY: GLD +1,8%/MF +2,4%/ZROZ +3,8% ao mês), scan completo do simplex GDE/RSST/ZROZ (231 nós: platô contíguo de 60 nós ≥95% do Sharpe máximo; `35/40/25` dentro do platô em 8/8 datas de início — "o argmax anda, o platô não"), ablations (sem-ZROZ, NTSX swap, SSO/UPRO, HFEA −69% MDD vs CORE −31%, RSSX BTC-driven, RSSY carry proxy AQR reduz Sharpe) e 3 posts Reddit prontos (master + r/ETFs + r/LETFs) com 12 figuras. Caveat #1 documentado: sensibilidade ao proxy de MF (GFC −23,1% no tracking proxy vs −13,8% na curva 1988 antiga). Research-only; mandate §1 inalterado.
 
 Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04-24_LOG.md` + `docs/CLEANUP_2026-05-05_LOG.md` para audit trail dos cleanups.
 

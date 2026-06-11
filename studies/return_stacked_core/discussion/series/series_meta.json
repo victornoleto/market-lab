@@ -1,0 +1,59 @@
+{
+  "generated_utc": "2026-06-11T04:55:51Z",
+  "series": {
+    "primary_returns": {
+      "window": "2000-01-04..2026-05-21",
+      "columns": [
+        "BTCSIM",
+        "CASHX",
+        "DBMFSIM",
+        "GDESIM",
+        "GLDSIM",
+        "IEFSIM",
+        "KMLMSIM",
+        "MFBLEND",
+        "NTSXSIM",
+        "RSSTSIM",
+        "SPYSIM",
+        "SSOSIM",
+        "UPROSIM",
+        "ZROZSIM"
+      ],
+      "source": "sleeve matrix + cache (SSO/UPRO/IEF) + remote (NTSX/BTC) + MFBLEND"
+    },
+    "RSSXSIM": {
+      "formula": "1.0*SPYSIM + 0.8*GLDSIM + 0.2*BTCSIM - 0.8*CASHX (daily returns)",
+      "source_spec": "scripts/build_stacked_sim_proxies.py PROXIES['RSSXSIM']",
+      "window_start": "2010-07-20",
+      "caveat": "BTCSIM history starts 2010-07; structural survivorship and non-stationarity bias \u2014 assumption-heavy proxy, not evidence."
+    },
+    "TLTPROXY": {
+      "formula": "0.5*ZROZSIM + 0.5*IEFSIM (daily returns)",
+      "rationale": "duration blend ~17y matches TLT; cache has no TLTSIM"
+    },
+    "TMFSIM_D": {
+      "formula": "3*TLTPROXY - 2*CASHX - 0.0106/252 (daily reset)",
+      "citation": "[leverage_for_the_long_run, ch.3-4]",
+      "note": "financing-explicit; synths.tmf_synth_returns omits the 2x cash borrow and is not used (decision documented in METHODS.md)"
+    },
+    "extended": {
+      "status": "BUILT",
+      "fidelity": "LOW",
+      "window": "1970-01-02..2026-05-21",
+      "RSST_EXT": "SPYSIM + 1.0*KMLM_SPLICED - (CASHX + 0.0200/252)",
+      "RSST_EXT_HAIRCUT": "same, with pre-1988 MF excess over CASHX scaled x0.5 (UMD splice overstates MF Sharpe ~3x)",
+      "caveats": [
+        "KMLM pre-1988 = Ken French UMD + RF academic momentum proxy",
+        "gold price administered until 1971-08 (Bretton Woods)",
+        "[stocks_on_the_move, p.21-30] momentum-as-trend-proxy rationale"
+      ]
+    },
+    "rssy_monthly": {
+      "status": "BUILT",
+      "formula": "RSSYSIM = SPYSIM_M + CARRY_SCALED - 0.0200/12; CARRY_SCALED = AQR 'All Macro Carry' x 2.229 (10% ann-vol target, full-sample in-sample scalar \u2014 disclosed)",
+      "window": "2000-01-31..2026-02-28",
+      "frequency": "MONTHLY-NATIVE \u2014 never mix into daily tables",
+      "attribution": "AQR Capital Management, 'Century of Factor Premia' dataset, AQR Data Library (research use with attribution)"
+    }
+  }
+}
