@@ -1,0 +1,3 @@
+# Full per-menu grids are deterministic and large (~11 MB total);
+# rebuild with `uv run python studies/return_stacked_core/evolution/make_all.py --only e01`.
+tables/grid_*.csv
