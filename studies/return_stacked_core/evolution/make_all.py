@@ -18,6 +18,10 @@ from studies.return_stacked_core.evolution import (
     e05_bands,
     e06_band_gauntlet,
     e07_band_simplex,
+    e08_band_menus,
+    e09_band_5asset,
+    e10_ballast,
+    e11_deep_validation,
 )
 
 STEPS = {
@@ -29,6 +33,10 @@ STEPS = {
     "e05": e05_bands.main,
     "e06": e06_band_gauntlet.main,
     "e07": e07_band_simplex.main,
+    "e08": e08_band_menus.main,
+    "e09": e09_band_5asset.main,
+    "e10": e10_ballast.main,
+    "e11": e11_deep_validation.main,
 }
 
 

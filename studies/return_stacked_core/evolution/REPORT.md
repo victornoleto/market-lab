@@ -2,134 +2,132 @@
 
 Date: 2026-06-11. Status: **discovery-only research** (no deployment, no
 capital/mandate change; maintenance mode per `docs/investment-mandate.md` §1).
-Pre-registration: `PLAN.md` (criteria fixed before any run; five rounds, each
-amendment registered before running). Rebuild:
+Pre-registration: `PLAN.md` — **eight rounds**, every amendment registered
+before running, no threshold ever adjusted after seeing results. Rebuild:
 `uv run python studies/return_stacked_core/evolution/make_all.py`.
 
 Charter (user, 2026-06-11): find a portfolio/adjustment to RSC-US
-`35% GDE / 40% RSST / 25% ZROZ` (monthly rebalance; 12.52% CAGR / −30.76%
-MDD / 0.847 Sharpe on `2000-01-04..2026-05-21`) with **higher CAGR and
-MDD ≤ 30%**, calling it better only if *definitively* better.
+`35% GDE / 40% RSST / 25% ZROZ` (monthly; 12.52% CAGR / −30.76% MDD / 0.847
+Sharpe on `2000-01-04..2026-05-21`) with **higher CAGR and MDD ≤ 30%**,
+calling it better only if *definitively* better.
 
 ---
 
-## Verdict
+## Terminal verdict — **honest FAIL, fully exhausted.**
 
-**Under the pre-registered gates: 0 finalists in five mechanism rounds
-(95,601 trials, 74,193 unique static portfolios + 723 band/frequency
-configs).** Weight re-allocation, new stacked sleeves (RSBT/RSSB), unbundled
-diversifiers (GLD/KMLM/QQQ), leveraged carriers (SSO/UPRO) and calendar
-frequency all fail robustness — every static CAGR gain inside the cap is a
-start-date artifact of the 2000s gold decade
-`[advances_fin_ml, p.208-211]`, `[testing_tuning, p.327-335]`.
+Eight pre-registered rounds, **95,601 static portfolio trials (74,193
+unique) + ~131,000 band/frequency/ballast configurations + a 4-test
+deep-validation battery**, across every mechanism family expressible with
+the available 25-year data: weight re-allocation, new stacked sleeves
+(RSBT/RSSB), unbundled diversifiers (GLD/KMLM/QQQ), leveraged carriers
+(SSO/UPRO), plain ballast (IEF/CASHX), calendar frequency, and
+tolerance-band rebalancing.
 
-**The chartered question has exactly one defensible answer, and it is not a
-new allocation — it is a rebalancing-rule change:**
+**Nothing passes all pre-registered gates. Nothing is promoted.**
 
-### Best candidate found: `45/25/30 GDE/RSST/ZROZ + 20% tolerance bands` — 5 of 6 gates, NOT a validated winner
+The search converged on exactly ONE maximal candidate —
+`45/25/30 GDE/RSST/ZROZ + 20% tolerance bands` — unique across all spaces
+(the only G1-passing plateau node in the 3-, 4- and 5-asset band simplices
+and the ballast menus). It scores **5/6 gauntlet gates + 2/4 battery
+tests** and is NOT promoted. Two findings kill it under the study's own
+rules:
 
-Rebalance to target only when a sleeve drifts beyond ±20% (relative) of its
-target weight, checked daily — risk-triggered momentum harvesting instead of
-calendar resets `[systematic_trading, p.137-148]`. Scorecard vs the current
-portfolio (CORE 35/40/25 monthly):
+1. **G2 neighborhood cap-fragility:** its ZROZ ≤ 25% weight neighbors
+   breach −32% MDD under bands (−33.0/−33.6%) — under tolerance bands,
+   ZROZ < 30% is structurally cap-unsafe.
+2. **B3 bootstrap (decisive):** on 1,000 joint 63-day-block resampled
+   paths, the CAGR spread vs CORE is positive in only 83.8% (needed 95%)
+   and the MDD advantage drops to a coin flip (50.4%). **The band edge
+   lives in the multi-month trend structure of the specific historical
+   sequence** — destroy long-trend autocorrelation and it evaporates. It
+   is a trend-persistence harvest, not a distribution-level property
+   `[advances_fin_ml, p.222-223]`.
 
-| Lens | 45/25/30 b20 | CORE monthly | Δ |
-|---|---|---|---|
-| 2000+ CAGR | **13.39%** | 12.52% | **+0.87pp** (above the +0.75pp tier-1 bar) |
-| 2000+ MDD | **−29.52%** | −30.76% | +1.24pp, **inside the cap** (CORE is not) |
-| 2000+ Sharpe | 0.890 | 0.847 | +0.043 |
-| 1988+ CAGR (KMLM-only lens) | 13.63% | 13.66% | −0.03pp ≈ tie |
-| 1988+ MDD | **−29.16%** | −32.36% | +3.20pp, inside the cap |
-| G1 start-dates beaten | **7/8** (2000-2014 biennial) | — | gate pass |
-| G4 rolling-5y windows beaten | **73%** | — | gate pass |
-| Band plateau (b15/b25 also in-cap & > CORE) | ✓ 13.13% / 13.13% | — | not band-luck |
-| G3 drag stress | n/a (uses only the three core funds) | — | trivially pass |
-| Turnover | **1.44 rebalances/yr** (38 in 26.4y) | 12/yr | gross comparison is conservative — fewer taxable events |
-| **G2 weight-neighborhood** | **✗ FAIL** | — | see below |
+What the candidate DOES survive (recorded, because it is the strongest
+near-miss in the study): B1 dense starts — beats CORE-monthly CAGR in
+**61/68 quarterly starts (89.7%)**; B4 weekly trigger cadence (13.08% /
+−29.87%); G1 7/8 biennial starts; G4 73% of rolling 5y windows; CAGR
+> CORE at **all 21 bands 10-30%** (13.0-13.4%) with the cap grazed by
+5-25bps at bands 12-18% and held comfortably at 22-30%
+(`tables/deepval_b2_bands.csv`); 1988+ window ties CORE CAGR (13.63% vs
+13.66%) with MDD 3.2pp shallower; turnover 1.44 rebalances/yr vs 12.
+Anyone revisiting this must start from the two kill-findings above, treat
+*ZROZ ≥ 30% target* as a hard rule, and accept that the edge is
+conditional on believing multi-month trend persistence — the same premise,
+explicitly, as the RSST/KMLM sleeves themselves.
 
-**The one failed gate, exactly:** two of its six ±5pp weight neighbors —
-`50/25/25` and `45/30/25`, i.e. the ZROZ ≤ 25% direction — breach the −32%
-neighbor-MDD floor under bands (−33.6% / −33.0%). The boundary is
-interpretable, consistent across bands 15/20/25, and operationally
-meaningful: **under tolerance bands, ZROZ < 30% is cap-fragile.** Per the
-pre-registered rule (no post-hoc threshold adjustment — same discipline that
-re-closed `lrs/` Phase 8 at DSR p = 0.052), the candidate is **not** a
-finalist. Anyone acting on it anyway must treat *ZROZ ≥ 30% at target* as a
-hard operating rule and accept that the claim rests on a 26-year simulated
-window with the study's proxy caveats.
-
-No other (node, band) combination does better: the full 231-node simplex ×
-bands {15, 20, 25} gauntlet (`tables/band_simplex.csv`) yields 6 screen
-passes, of which only `40/25/35` and `45/20/35` have safe neighborhoods —
-and those fail G1 (2/8, 4/8): deeper ZROZ buys neighborhood safety but gives
-the CAGR edge back. The cap, the neighborhood floor and the start-date gate
-form a three-way squeeze with exactly zero joint solutions.
+**Why the goal is unsatisfiable in this space:** the cap (MDD ≤ 30%), the
+neighborhood safety floor, and the start-date gate form a three-way squeeze
+with zero joint solutions. Beating CORE from the 2010/2014 starts
+(13.6-14.7% bar) requires a gold/trend tilt; every such tilt either breaks
+the cap, has cap-fragile neighbors, or loses the 1988-2000 regime. CORE
+35/40/25 sits where it does precisely because it balances the regimes the
+tilts trade against each other — the plateau is already priced
+`[risk_parity, ch.5]`, `[advances_fin_ml, p.208-211]`,
+`[testing_tuning, p.327-335]`.
 
 ---
 
 ## Round-by-round (all pre-registered in PLAN.md)
 
-| Round | Mechanism | Trials | Result |
-|---|---|---:|---|
-| 1 | New stacked sleeves (RSBT/RSSB) + unbundled GLD/KMLM/QQQ, menus A-G | 30,107 | 271 screen / **0 gauntlet** |
-| 2 | Coverage closure: GLD+KMLM menu, 8-asset 10%-step universe | +30,074 | 408 screen / **0 gauntlet** |
-| 3 | Leveraged carriers SSO/UPRO + decoupled diversifiers, menus J-O | +35,420 | carriers **dominated** (best in-cap nodes are the SSO/UPRO=0 corners); 413 screen / **0 gauntlet** |
-| 4 | Calendar frequency (M4) + tolerance bands (e05) | 95 configs | calendar = offset luck; **bands = real parameter plateau** (+0.2-0.7pp on 4 of 5 structures, 16/30 plateau improvements) |
-| 5 | Full simplex × bands {15/20/25} gauntlet (e07) | 693 configs | 6 screen / **0 finalists**; `45/25/30 b20` fails only G2 |
+| Round | Mechanism | Scope | Result |
+|---|---|---|---|
+| 1 | New stacked sleeves (RSBT/RSSB) + unbundled GLD/KMLM/QQQ | 30,107 trials | 271 screen / 0 gauntlet |
+| 2 | Coverage closure (GLD+KMLM menu, 8-asset 10%-step) | +30,074 | 408 screen / 0 gauntlet |
+| 3 | Leveraged carriers SSO/UPRO + decoupled diversifiers | +35,420 | carriers dominated; 0 gauntlet |
+| 4 | Calendar frequency + tolerance bands | 95 configs | calendar = offset luck; **bands = real parameter plateau** |
+| 5 | Full 3-asset simplex × bands {15/20/25}, full gauntlet | 693 configs | 0 finalists; `45/25/30 b20` fails only G2 |
+| 6 | 4- and 5-asset simplices × bands (RSBT/KMLM/GLD) | ~74,000 configs | G1∩G2 = 0 everywhere; unique near-miss unchanged |
+| 7 | Plain ballast IEF/CASHX (+GLD), monthly AND bands | ~57,000 configs | 0 finalists; ballast dilutes G1 instantly |
+| 8 | Deep-validation battery on the unique candidate | 4 tests | **2/4 — B2 (band continuum) and B3 (bootstrap) FAIL → terminal honest FAIL** |
 
 Supporting facts preserved:
 
-- **G1 bar (CORE-monthly CAGR per start):** 12.5% (2000) → 13.6% (2002-2006)
-  → 14.7% (2010, 2014). The gold-tilt static candidates beat the early
-  starts and lose the late ones; band candidates are the only family that
-  cleared 7/8.
-- **1988+ diagnostic:** every Round 1-3 near-miss loses to CORE-1988
-  (13.66%) by 0.4-1.4pp. The band candidate ties it. `tables/longwindow_1988.csv`.
-- **Annual rebalance = MDD knob, not CAGR knob:** CORE annual keeps MDD
-  in-cap at all 12 offsets on 2000+ (worst −29.79%) but NOT on 1988+
-  (worst −31.81%); min-across-offsets CAGR never beats monthly.
-  `tables/rebalance_freq.csv`, `tables/annual_1988.csv`.
-- **EW 33/33/33 under wide bands** is the defensive standout: b50 = 12.94% /
-  −24.69% (2000+) and 14.24% / −24.73% (1988+!) — but G1 2/8 on 2000+
-  (it loses the gold-decade starts to CORE). For a *drawdown-first* mandate
-  it is the most interesting row in the study. `tables/bands.csv`.
-- **RSBT (real ETF, bonds+trend)**: standalone 6.40% / −28.5% vs ZROZ
-  5.54% / −62.9%; legit implementation diversifier (CTAP tier), not a CAGR
-  play `[risk_parity, ch.5]`.
+- **G1 bar (CORE-monthly CAGR per start):** 12.5% (2000) → 13.6%
+  (2002-2006) → 14.7% (2010, 2014). Only band candidates ever cleared 7/8.
+- **1988+ diagnostic:** every static near-miss loses to CORE-1988 (13.66%)
+  by 0.4-1.4pp; the band candidate ties it. `tables/longwindow_1988.csv`.
+- **Annual rebalance = MDD knob, not CAGR knob:** keeps CORE in-cap at all
+  12 offsets on 2000+ (worst −29.79%) but NOT on 1988+ (−31.81%);
+  min-across-offsets CAGR never beats monthly. `tables/rebalance_freq.csv`.
+- **EW 33/33/33 b50** is the drawdown-first standout: 12.94% / −24.69%
+  (2000+) and 14.24% / −24.73% (1988+) — but G1 2/8 (loses gold-decade
+  starts). `tables/bands.csv`.
+- **RSBT (real ETF, bonds+trend):** standalone 6.40% / −28.5% vs ZROZ
+  5.54% / −62.9%; implementation diversifier (CTAP tier), not a CAGR play.
 
 ## Multiple-testing accounting
 
 | Item | Count |
 |---|---:|
 | Static grid trials (raw / deduped) | 95,601 / 74,193 |
-| Band + frequency configs (e03/e05/e06/e07) | 723 |
-| Screen survivors (static C1 ∧ C2') | 413 |
-| Pre-registered tier-1 (CAGR ≥ +0.75pp), static | 0 |
-| Gauntlet finalists (all rounds) | **0** |
-| Best candidate gate score | `45/25/30 b20`: 5/6 (G2 fail, G5 = 3bps tie diagnostic) |
-
-The verdict language is calibrated to this count: with ~75k trials, only the
-gauntlet separates signal from selection bias, and nothing passed it whole
-`[advances_fin_ml, p.208-211]`.
+| Band/frequency/ballast configs (e03, e05-e10) | ~131,700 |
+| Battery tests on the unique candidate (e11) | 4 (B1 ✓, B2 ✗, B3 ✗, B4 ✓) |
+| Gauntlet finalists, any round | **0** |
+| Promoted | **nothing** |
 
 ## Files
 
 | File | Contents |
 |---|---|
-| `PLAN.md` | Pre-registration, Rounds 1-5 amendments (each before running) |
+| `PLAN.md` | Pre-registration, Rounds 1-8 amendments (each before running) |
 | `evo_data.py` / `evo_engine.py` | Sleeve construction + offset/band engines (reuses `discussion/engine.py`) |
-| `e00..e07_*.py`, `make_all.py` | Deterministic pipeline |
+| `e00..e11_*.py`, `make_all.py` | Deterministic pipeline (e11 bootstrap uses fixed seed 42) |
 | `tables/verification.csv` | Anchor gate (CORE + 45/25/30 reproduce to 1e-6) |
 | `tables/grid_[A-O].csv` | Per-menu static metrics (gitignored ~20 MB, rebuild via `make_all.py --only e01`) |
 | `tables/candidates.csv` / `gauntlet.csv` / `finalists.csv` | Static screen → gauntlet (finalists empty) |
 | `tables/rebalance_freq.csv` / `bands.csv` / `bands_verdicts.csv` / `annual_1988.csv` | Round 4 |
-| `tables/band_gauntlet.csv` / `band_simplex.csv` | Round 5 (the headline tables) |
+| `tables/band_gauntlet.csv` / `band_simplex.csv` | Round 5 |
+| `tables/band_menus_4asset.csv` / `band_menus_5asset.csv` | Round 6 |
+| `tables/ballast_menus.csv` | Round 7 |
+| `tables/deepval_*.csv` | Round 8 battery (B1 starts, B2 bands, B3 bootstrap, summary) |
 | `tables/longwindow_1988.csv` | G5 diagnostic |
 | `tables/n_trials.txt` | Trial accounting |
 
 Caveats (inherited, repeat in any external claim): MF-proxy sensitivity is
-caveat #1 of the discussion package; RSBT/RSSB are tracking proxies with the
-repo's 200bps financing convention; all numbers simulated, gross of
-taxes/fees (the band candidate's 8× lower turnover makes the gross
-comparison conservative in its favor); band triggers were evaluated daily
-with the same reset-before-return convention as the calendar engine.
+caveat #1 of the discussion package; RSBT/RSSB are tracking proxies with
+the repo's 200bps financing convention; all numbers simulated, gross of
+taxes/fees; band triggers evaluated daily (B4 stresses weekly) with the
+same reset-before-return convention as the calendar engine; B3 bootstrap
+deliberately destroys >63-day autocorrelation — it is a strict test that
+prices the trend-harvest mechanism at zero.

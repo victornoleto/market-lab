@@ -146,6 +146,72 @@ keeps the pre-registered CAGR ≥ CORE + 0.75pp; the honorable tier keeps
 CAGR > CORE. Trial accounting continues (693 node-band configs + start
 sub-sims). No further rounds after this one regardless of outcome.
 
+**Round 6 amendment (2026-06-11, pre-registered BEFORE running; overrides
+the Round-5 closure clause):** the closure clause is overridden by the
+standing user directive ("tente ... até encontrarmos algo definitivamente
+melhor") — recorded openly as directive-driven continuation, with the
+data-dredging risk acknowledged and ALL gates and thresholds unchanged.
+Round 5 left the band mechanism only partially explored: the 3-asset
+simplex. Its G2 failure mode (the ZROZ−5→GDE+5 neighbor breaching −32%)
+changes composition when the candidate holds a 4th defensive sleeve, so the
+natural completion is the **4-asset simplices under bands**:
+
+| Menu | Assets | Bands | Nodes |
+|---|---|---|---:|
+| A×band | GDE, RSST, ZROZ, RSBT | 15/20/25 (gauntlet at 20) | 1,771 |
+| D×band | GDE, RSST, ZROZ, KMLM | 15/20/25 (gauntlet at 20) | 1,771 |
+
+FINALIST rule identical to Round 5 (G1 ≥7/8, G2 same-band ±5pp neighbors
+within the menu, G3 +50bps drag on RSBT/KMLM, G4 ≥60%, band plateau at
+15/25; G5 recorded). Tier-1 keeps CAGR ≥ 13.27%. If this round is also
+empty, one final extension to the 5-asset band menus (F, H) is allowed
+under the same rule, after which the band route is closed for good.
+
+**Round 7 amendment (2026-06-11, pre-registered BEFORE running; user
+explicitly directed continuation):** Rounds 1-6 never included **plain
+IEFSIM or CASHX as ballast sleeves** — a genuine coverage gap, not a
+re-tune. Economic rationale: every G2 neighbor breach traces to the
+2022-form regime where GDE and ZROZ fall TOGETHER; intermediate duration
+(IEF: −15% in 2022, −23.9% standalone MDD vs ZROZ −62.9%) and cash are the
+rate-shock-proof ballast forms, and the repo's own LRS Phase-1 risk-off
+optimum was `40 ZROZ / 40 GLD / 20 IEF` — ballast-FORM diversification
+`[risk_parity, ch.5]`, `[systematic_trading, p.137-148]`. Menus, each
+evaluated BOTH monthly and band-20 (plateau at 15/25), all gates unchanged:
+
+| Menu | Assets | Step | Nodes |
+|---|---|---|---:|
+| P | GDE, RSST, ZROZ, IEF | 5% | 1,771 |
+| Q | GDE, RSST, ZROZ, CASHX | 5% | 1,771 |
+| R | GDE, RSST, ZROZ, IEF, GLD | 5% | 10,626 |
+
+G3 drag applies to sleeves outside {GDE,RSST,ZROZ} except CASHX (cash has
+no tracking-proxy uncertainty). Same FINALIST rule. Trial accounting
+continues. If P/Q/R are empty in both modes, the ballast route closes and
+the study's terminal verdict stands.
+
+**Round 8 amendment (2026-06-11, pre-registered BEFORE running):** Rounds
+1-7 establish that `45/25/30 b20` is the UNIQUE G1-passing plateau node in
+every space searched, failing only G2 via the fixed 3-asset neighbors
+(invariant to added sleeves). Final step: a deep-validation battery on this
+single candidate vs CORE-monthly. Thresholds fixed now; if ANY fails, the
+study ends in full honest FAIL; if ALL pass, the candidate is delivered as
+the study's terminal answer at its exact evidence tier (5/6 pre-registered
+gates + battery), with the G2 boundary converted into an explicit hard
+operating rule (ZROZ target ≥ 30%) — and NO capital/mandate change.
+
+- **B1 dense start grid:** quarterly starts 2000Q1..2016Q4 (68 starts);
+  candidate beats CORE-monthly CAGR in ≥ 80%.
+- **B2 band continuum:** bands 10..30% step 1% (21 values); CAGR > CORE
+  AND MDD ≥ −30% in ≥ 15/21 including a contiguous run ≥ 8.
+- **B3 joint block bootstrap:** stationary-style fixed blocks of 63 td,
+  n = 1000 paths, seed = 42, candidate and CORE on the SAME resampled
+  paths (CORE rebalanced every 21 td as the monthly analog); requires
+  (i) CAGR spread > 0 in ≥ 95% of paths, (ii) candidate MDD ≤ 30% in
+  ≥ 60% of paths AND median ≤ 30%, (iii) candidate MDD shallower than
+  CORE in ≥ 80% of paths `[advances_fin_ml, p.222-223]`.
+- **B4 trigger-cadence stress:** weekly-checked band (not daily) still
+  CAGR > CORE and MDD ≥ −30%.
+
 ## Success criteria (fixed now, before any run)
 
 Screen (full primary window `2000-01-04..2026-05-21`):
