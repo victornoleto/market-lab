@@ -12,9 +12,15 @@ import pandas as pd
 
 from studies.return_stacked_core.evolution import evo_data, evo_engine
 
-ALL_ASSETS = ["GDESIM", "RSSTSIM", "ZROZSIM", "RSBTSIM", "RSSBSIM", "GLDSIM", "KMLMSIM", "QQQSIM"]
+# SSOSIM/UPROSIM appended at the END so Round 1/2 signatures stay identical.
+ALL_ASSETS = [
+    "GDESIM", "RSSTSIM", "ZROZSIM", "RSBTSIM", "RSSBSIM", "GLDSIM",
+    "KMLMSIM", "QQQSIM", "SSOSIM", "UPROSIM",
+]
+ROUND12_ASSETS = ALL_ASSETS[:8]
 
-# menu -> (assets, step_pct). H/I are the pre-registered Round 2 amendment.
+# menu -> (assets, step_pct). H/I = Round 2 amendment; J..O = Round 3
+# leveraged-carrier amendment (PLAN.md).
 MENUS = {
     "A": (["GDESIM", "RSSTSIM", "ZROZSIM", "RSBTSIM"], 5),
     "B": (["GDESIM", "RSSTSIM", "ZROZSIM", "GLDSIM"], 5),
@@ -24,7 +30,12 @@ MENUS = {
     "F": (["GDESIM", "RSSTSIM", "ZROZSIM", "RSBTSIM", "GLDSIM"], 5),
     "G": (["GDESIM", "RSSTSIM", "ZROZSIM", "RSBTSIM", "QQQSIM"], 5),
     "H": (["GDESIM", "RSSTSIM", "ZROZSIM", "GLDSIM", "KMLMSIM"], 5),
-    "I": (ALL_ASSETS, 10),
+    "I": (ROUND12_ASSETS, 10),
+    "J": (["SSOSIM", "GDESIM", "ZROZSIM", "RSBTSIM"], 5),
+    "K": (["SSOSIM", "GLDSIM", "KMLMSIM", "ZROZSIM"], 5),
+    "L": (["SSOSIM", "GDESIM", "RSSTSIM", "ZROZSIM", "RSBTSIM"], 5),
+    "M": (["SSOSIM", "GLDSIM", "KMLMSIM", "ZROZSIM", "RSBTSIM"], 5),
+    "O": (["UPROSIM", "GLDSIM", "KMLMSIM", "ZROZSIM", "RSBTSIM"], 5),
 }
 
 

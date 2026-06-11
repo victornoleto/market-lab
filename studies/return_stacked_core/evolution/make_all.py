@@ -15,6 +15,9 @@ from studies.return_stacked_core.evolution import (
     e02_gauntlet,
     e03_rebalance,
     e04_longwindow,
+    e05_bands,
+    e06_band_gauntlet,
+    e07_band_simplex,
 )
 
 STEPS = {
@@ -23,6 +26,9 @@ STEPS = {
     "e02": e02_gauntlet.main,
     "e03": e03_rebalance.main,
     "e04": e04_longwindow.main,
+    "e05": e05_bands.main,
+    "e06": e06_band_gauntlet.main,
+    "e07": e07_band_simplex.main,
 }
 
 

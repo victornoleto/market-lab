@@ -90,6 +90,62 @@ threshold adjustment — all criteria below unchanged):
 If Round 2 also yields no finalist, the verdict is a documented honest FAIL
 of the static-allocation route within the MDD ≤ 30% cap.
 
+**Round 3 amendment (2026-06-11, pre-registered after Round 2 = 0 finalists,
+BEFORE running):** the one static corner not yet covered as a *grid* is a
+leveraged-equity **carrier** (SSO 2x / UPRO 3x, leverage embedded in the
+fund, no external margin `[leverage_for_the_long_run, p.13]`) delivering the
+equity exposure in fewer dollars, with the freed budget buying *unbundled*
+diversifier notional (GLD/KMLM/ZROZ/RSBT). The `discussion/` ablations only
+tested 100% SSO/UPRO and ONE fixed DIY-SSO mix — never the simplex. This is
+mechanism-distinct from Rounds 1-2 (equity decoupled from the diversifiers
+attached inside GDE/RSST). HFEA's documented failure mode (one hedge, 3x)
+does not apply a priori to a 4-diversifier ballast `[risk_parity, ch.5]`.
+
+| Menu | Assets | Step | Nodes |
+|---|---|---|---:|
+| J | SSO, GDE, ZROZ, RSBT | 5% | 1,771 |
+| K | SSO, GLD, KMLM, ZROZ | 5% | 1,771 |
+| L | SSO, GDE, RSST, ZROZ, RSBT | 5% | 10,626 |
+| M | SSO, GLD, KMLM, ZROZ, RSBT | 5% | 10,626 |
+| O | UPRO, GLD, KMLM, ZROZ, RSBT | 5% | 10,626 |
+
+QLD is skipped: menu C already showed the QQQ flavor fails the 2000-2008
+starts and a 2x wrapper only amplifies that. All criteria, gates and
+thresholds remain EXACTLY as pre-registered above. If Round 3 also yields
+no finalist, every implementable static expression (1x sleeves, embedded-2x
+stacks, 2x/3x LETF carriers) is exhausted and the honest-FAIL verdict is
+final for the static route.
+
+**Round 4 amendment (2026-06-11, pre-registered after Round 3 = 0 finalists,
+BEFORE running):** last untested static mechanism = **threshold/tolerance-band
+rebalancing** (also an explicit Open Blocker in the study `README.md`):
+rebalance to target only when any sleeve's weight drifts beyond a relative
+band of its target. Mechanism: harvests sleeve momentum/autocorrelation like
+low-frequency rebalancing, but risk-triggered instead of calendar-triggered
+`[systematic_trading, p.137-148]`. Bands swept: 10%, 15%, 20%, 25%, 33%, 50%
+relative; portfolios: CORE, EW, 45/25/30, the two Round-1 near-miss
+structures. Verdict rule (mirrors M4): a band only counts as an improvement
+if CAGR > monthly AND MDD ≤ 30% AND the same holds for both neighboring band
+values (parameter plateau, no band-luck) `[testing_tuning, p.327-335]`.
+Also recorded: annual-rebalance variants on the 1988+ window (does the
+annual MDD knob hold out-of-window?). If Round 4 yields no qualifying
+improvement, the static route is closed with NO further amendments.
+
+**Round 5 amendment (2026-06-11, pre-registered after Round 4 found a
+band-mechanism parameter plateau and e06 left `45/25/30 b20` failing ONLY
+the G2 weight-neighborhood — via the interpretable ZROZ < 30% boundary):**
+sweep the FULL {GDE,RSST,ZROZ} simplex (231 nodes, 5% step) under
+tolerance-band rebalancing, bands {15%, 20%, 25%}, through the complete
+gauntlet. FINALIST rule (fixed before running): a node is definitively
+better only if, at band 20%, it passes G1 (≥7/8 starts vs CORE-monthly),
+G2 (all ±5pp neighbors at the SAME band: MDD ≥ −32%, mean CAGR >
+CORE-monthly), G3 (n/a for pure-core sleeves; else +50bps), G4 (≥60%
+rolling-5y) — AND passes C1∧C2' at bands 15% and 25% too (band plateau,
+no band-luck). G5 (1988+) stays a recorded diagnostic. Tier-1 "definitive"
+keeps the pre-registered CAGR ≥ CORE + 0.75pp; the honorable tier keeps
+CAGR > CORE. Trial accounting continues (693 node-band configs + start
+sub-sims). No further rounds after this one regardless of outcome.
+
 ## Success criteria (fixed now, before any run)
 
 Screen (full primary window `2000-01-04..2026-05-21`):
