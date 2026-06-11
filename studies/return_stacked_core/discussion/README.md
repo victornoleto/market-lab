@@ -73,6 +73,12 @@ Global suite (2026-06-11, benchmark VT — see `REPORT_GLOBAL.md`):
   / NTSD last (−74% in GFC), NTSI over NTSD, ZROZ 25-30%, never RSSB-for-ZROZ.
 - 1970+ counterweight: half-intl (27.5/7.5/30/10/25) ties the US core's 56y
   Sharpe (0.894 vs 0.893) — the 2000+ cost is partly US-dominance-era artifact.
+- Ratio-constrained (g08, fixed 60/40 / 66/34 US-intl equity): best in-band
+  shapes agree on NTSD=0, all intl via RSIT, ZROZ 30-35. Recommended 66/34
+  expression: **30 GDE / 15 RSST / 20 RSIT / 35 ZROZ** (4 funds, beats
+  CORE-GLOBAL on CAGR/MDD/Sharpe in both modern windows at same geography);
+  60/40: 30/10 RSST/25 RSIT/35. MF-heavy alternative for stagflation-weighted
+  views: 20/5/25/20/30. See `REPORT_GLOBAL.md` §6.
 
 ## Risk register
 

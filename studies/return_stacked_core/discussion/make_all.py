@@ -43,6 +43,7 @@ GLOBAL_STEPS = [
     ("g05", "g05_global_ablations"),
     ("g06", "g06_global_extended_1970"),
     ("g07", "g07_global_figures"),
+    ("g08", "g08_global_ratio_constrained"),
 ]
 NETWORK_STEPS = [("s01b", "s01b_fetch_aqr_carry")]
 

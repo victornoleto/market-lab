@@ -141,6 +141,48 @@ the global tilt is free insurance; if it looks like 2009-2026 again, it costs
    not a data call; the data only prices it (−0.05 to −0.10 Sharpe vs the
    half-intl dose).
 
+## 6. Ratio-constrained best: fixed 60/40 and 66/34 US/intl equity (g08)
+
+User-chartered follow-up: the best mix subject to a fixed look-through equity
+geography (band ±2.5pp; exposures: GDE 0.90 US, NTSD 0.90 US + 0.60 intl,
+RSST 1.00 US, RSIT 1.00 intl). ~1,000-1,140 of the 10,626 nodes fall in each
+band (`tables/global_ratio_constrained.csv`, fig g10). Note the canonical
+CORE-GLOBAL (us_share 64.0%) sits inside the 66/34 band — and ranks only
+~125th-513th of 1,140 in-band nodes across start dates.
+
+Per-window in-band argmaxes disagree on the GDE↔RSST split (gold-decade vs
+KMLM-era artifact — same start-date lesson as everywhere else), but **every
+top row of every window agrees on three structural elements**:
+
+1. **NTSD ≈ 0-5** — the levered US+intl equity sleeve never earns a slot;
+2. **RSIT = 20-25** — ALL international equity enters through the MF-stacked
+   wrapper;
+3. **ZROZ = 30-35** — the ratio constraint wants *more* duration than the
+   canonical 25 (consistent with `evolution/REPORT.md`'s ZROZ ≥ 30 rule).
+
+Triangulating nodes that are top-tier in BOTH modern windows (Sharpe / MDD):
+
+| Node (GDE/NTSD/RSST/RSIT/ZROZ) | us_share | MF | 2000+ | 1988+ | 1970+ (LOW fid.) |
+|---|---|---|---|---|---|
+| 40/0/5/20/35 (2000+ argmax) | 67% | 25% | 0.827 / −29.7% | 0.858 / −28.8% | 0.845 / −46.9% |
+| **30/0/15/20/35 (recommended 66/34)** | 68% | 35% | 0.820 / **−28.4%** | 0.878 / **−27.1%** | 0.861 / −44.2% |
+| 20/5/25/20/30 (1988+ argmax, MF-heavy) | 67% | 45% | 0.786 / −30.7% | 0.883 / −31.2% | 0.882 / **−38.8%** |
+| 30/0/10/25/35 (recommended 60/40) | 60% | 35% | 0.808 / −29.2% | 0.862 / −28.0% | 0.856 / −44.6% |
+| CORE-GLOBAL 20/15/20/20/25 (reference) | 64% | 40% | 0.746 / −36.8% | 0.859 / −35.0% | 0.878 / −37.0% |
+
+**Verdict:** under the 66/34 constraint the recommended expression is
+**30% GDE / 15% RSST / 20% RSIT / 35% ZROZ** (a FOUR-fund portfolio — NTSD
+drops out entirely); under 60/40, **30% GDE / 10% RSST / 25% RSIT / 35%
+ZROZ**. Both beat the canonical CORE-GLOBAL on CAGR, MDD and Sharpe in both
+modern windows while holding the same geography — the entire improvement
+comes from re-routing NTSD's 15% into GDE/ZROZ and keeping intl exclusively
+inside RSIT. Trade-off knob: total MF. The 2000+-optimal shapes carry only
+25-35% MF and pay for it in the 1970s (MDD −44/−47% extended); whoever
+weighs the stagflation regime heavily should shift 10pp from GDE to RSST
+(→ 20/5/25/20/30 shape, extended MDD −38.8%). As always: these are plateau
+representatives of the in-band top set, not argmax promotions
+`[advances_fin_ml, p.208-211]`, `[testing_tuning, p.327-335]`.
+
 **Caveats:** intl sims (VEA/VXUS/VT) are index reconstructions pre-inception;
 the MF-proxy sensitivity caveat from the US study applies unchanged (KMLM-only
 sleeves on 1988+, MFBLEND on 2000+); financing convention documented in g00
