@@ -12,6 +12,7 @@ really are, whether `35% GDE / 40% RSST / 25% ZROZ` sits on a robust plateau
 
 | File | Purpose |
 |---|---|
+| `REPORT.md` | **Consolidated conclusions — explicit answers to the three chartered questions** (best allocation? regime behavior/decorrelation? alternative allocations?) |
 | `POST.md` | Master Reddit post (English, full version) |
 | `POST_rETFs.md` / `POST_rLETFs.md` | Sub-tuned variants (gentler / HFEA-forward) |
 | `IMAGE_CAPTIONS.md` | Gallery captions, post order |

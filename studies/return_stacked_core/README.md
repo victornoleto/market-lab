@@ -75,6 +75,7 @@ Read in this order:
 | `ROBUSTNESS_REPORT.md` | Start-date, rolling, drag, regime and Monte Carlo diagnostics. |
 | `us_core/REPORT.md` | Publication-style US package with plots and source series. |
 | `global_variant/REPORT.md` | Global branch package and candidate comparison. |
+| `discussion/REPORT.md` | Discussion-package conclusions: allocation plateau (is 35/40/25 best?), regime/decorrelation evidence, ablation verdicts (no-ZROZ, SSO/UPRO, HFEA, RSSX, RSSY). |
 
 ## Preserved Assets
 
