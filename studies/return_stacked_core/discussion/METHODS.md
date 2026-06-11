@@ -48,6 +48,34 @@ verified broken 2026-06-10); `discussion_data.py` merges the stores directly.
 | RSST_EXT(_HAIRCUT) | `SPY + KMLM_SPLICED − (CASHX + 0.0200/252)`; haircut = pre-1988 MF excess over CASHX × 0.5 | extended window only, fidelity LOW |
 | MFBLEND | `0.7·DBMF + 0.3·KMLM` | RSST's internal MF sleeve, used standalone in DIY configs |
 
+## 3-G. Global variant (g00..g07, benchmark VT)
+
+Data: `global_variant/series/remote_prices.parquet` (VTSIM/VEASIM/VXUSSIM
+1969-12+, VTISIM 1926+, VWOSIM 1994+) + the same cache/sleeve stores. Saved
+curves (`global_selected_equity.csv`) anchor g00: VT reproduces exactly
+(8.77%/−58.35%/0.562 on 1988+); the canonical "Global simple" curve reproduces
+at corr 1.0000 with a **−0.60pp/yr CAGR delta** from this study's financing
+standard (2%/yr spread on 100%-stack legs vs the old payload's lighter drag) —
+documented, gated at ±0.9pp.
+
+| Series | Formula (daily returns) | Notes |
+|---|---|---|
+| NTSDSIM | `0.9·SPY + 0.6·VEA − 0.5·CASHX` | per global_variant/REPORT.md |
+| NTSISIM | `0.9·VEA + 0.6·IEF − 0.5·CASHX` | |
+| NTSGSIM | `0.9·VT + 0.6·IEF − 0.5·CASHX` | |
+| RSITSIM | `VXUS + MF − (CASHX + 0.0200/252)` | MF = MFBLEND (2000+), KMLM (1988+, `RSIT_KM`), KMLM_SPLICED (1970+) |
+| RSSBSIM | `VT + IEF − (CASHX + 0.0200/252)` | |
+| RSST_KM / RSST_EXTG | `SPY + KMLM[_SPLICED] − (CASHX + 0.0200/252)` | window-matched RSST analogs |
+
+Windows: primary 2000+ (cross-comparable with the US tables), canonical 1988+
+(MEDIUM fidelity — KMLM-only MF), extended 1970+ (LOW fidelity). The 5-asset
+simplex {GDE, NTSD, RSST, RSIT, ZROZ} has 10,626 nodes (5% grid), simulated in
+2,048-portfolio chunks; plateau methodology identical to §5, plus the
+**globalness price curve** (max Sharpe s.t. NTSD+RSIT ≥ floor — a constrained
+descriptive map, still not a selection device `[advances_fin_ml, p.222-223]`).
+Additional limitation: pre-inception VT/VEA/VXUS are index reconstructions;
+EM (VWOSIM) starts 1994.
+
 ## 4. Episode methodology (s02)
 
 Full-period equity curves sliced at episode boundaries (`first trading day ≥

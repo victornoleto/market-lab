@@ -76,6 +76,7 @@ Read in this order:
 | `us_core/REPORT.md` | Publication-style US package with plots and source series. |
 | `global_variant/REPORT.md` | Global branch package and candidate comparison. |
 | `discussion/REPORT.md` | Discussion-package conclusions: allocation plateau (is 35/40/25 best?), regime/decorrelation evidence, ablation verdicts (no-ZROZ, SSO/UPRO, HFEA, RSSX, RSSY). |
+| `discussion/REPORT_GLOBAL.md` | Global-variant conclusions vs VT: globalness price curve, 20/15/20/20/25 outside the Sharpe plateau, RSIT-first design rules, three-tier recommendation. |
 
 ## Preserved Assets
 

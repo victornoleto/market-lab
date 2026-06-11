@@ -155,3 +155,98 @@ def load_carry_monthly() -> pd.Series:
 def monthly_returns(daily: pd.DataFrame | pd.Series) -> pd.DataFrame | pd.Series:
     """Compound daily simple returns into calendar-month returns."""
     return (1.0 + daily).resample("ME").prod() - 1.0
+
+
+# --------------------------------------------------------------------------
+# Global variant (benchmark: VT). Proxy formulas follow
+# global_variant/REPORT.md; financing follows THIS study's standard:
+# 2%/yr spread on 100%-stack legs (RSST tracking convention), plain CASHX on
+# 90/60-style legs (proxies.py blueprint). Composition verified corr=1.0000
+# vs the saved global curves; level deltas vs the old testfol payloads are
+# documented in g00 [leverage_for_the_long_run, p.13].
+# --------------------------------------------------------------------------
+
+GLOBAL_REMOTE_PARQUET = STUDY_DIR / "global_variant/series/remote_prices.parquet"
+SAVED_GLOBAL_CURVES = STUDY_DIR / "global_variant/series/global_selected_equity.csv"
+GLOBAL_1988_START = "1988-01-04"
+
+
+def load_global_remote_returns(columns: list[str]) -> pd.DataFrame:
+    prices = pd.read_parquet(GLOBAL_REMOTE_PARQUET, columns=columns)
+    return _pct(prices)
+
+
+def load_saved_global_curves() -> pd.DataFrame:
+    df = pd.read_csv(SAVED_GLOBAL_CURVES, parse_dates=["date"]).set_index("date")
+    return df.sort_index()
+
+
+def _compose_global_sleeves(base: pd.DataFrame, mf: pd.Series) -> pd.DataFrame:
+    """Add NTSD/NTSI/NTSG/RSIT/RSSB columns composed from base legs.
+
+    base must contain SPYSIM, VEASIM, VXUSSIM, VTSIM, IEFSIM, CASHX daily
+    returns; ``mf`` is the managed-futures sleeve return series (MFBLEND on
+    the primary window, KMLM-only on 1988+, KMLM_SPLICED on 1970+).
+    """
+    out = base.copy()
+    cash = out["CASHX"]
+    drag = FINANCING_SPREAD_ANNUAL / TRADING_DAYS
+    out["NTSDSIM"] = 0.9 * out["SPYSIM"] + 0.6 * out["VEASIM"] - 0.5 * cash
+    out["NTSISIM"] = 0.9 * out["VEASIM"] + 0.6 * out["IEFSIM"] - 0.5 * cash
+    out["NTSGSIM"] = 0.9 * out["VTSIM"] + 0.6 * out["IEFSIM"] - 0.5 * cash
+    out["RSITSIM"] = out["VXUSSIM"] + mf - (cash + drag)
+    out["RSSBSIM"] = out["VTSIM"] + out["IEFSIM"] - (cash + drag)
+    return out
+
+
+def load_global_primary_returns() -> pd.DataFrame:
+    """Global daily returns on the sleeve-matrix calendar (2000+), benchmark VT.
+
+    MF sleeve = MFBLEND (0.7 DBMF + 0.3 KMLM) — same fidelity standard as the
+    US discussion primary window. Adds VTISIM/VWOSIM for benchmark blends and
+    the optional EM-beta ablation row.
+    """
+    base = load_primary_returns()
+    glob = load_global_remote_returns(
+        ["VTSIM", "VEASIM", "VXUSSIM", "VTISIM", "VWOSIM"]
+    )
+    out = base.join(glob, how="left")
+    return _compose_global_sleeves(out, out["MFBLEND"])
+
+
+def load_global_1988_returns() -> pd.DataFrame:
+    """Global matrix on 1988-01-04..2026-05-21 — the canonical global window.
+
+    MF sleeve = KMLM only (DBMF starts 2000): MEDIUM fidelity, matches the
+    formulas in global_variant/REPORT.md. RSST_KM mirrors RSST with the
+    KMLM-only stack.
+    """
+    cache = load_cache_returns(
+        ["SPYSIM", "GLDSIM", "ZROZSIM", "IEFSIM", "CASHX", "SSOSIM", "UPROSIM"]
+    )
+    glob = load_global_remote_returns(
+        ["VTSIM", "VEASIM", "VXUSSIM", "VTISIM", "VWOSIM", "KMLMSIM", "GDESIM"]
+    )
+    out = cache.join(glob, how="left")
+    drag = FINANCING_SPREAD_ANNUAL / TRADING_DAYS
+    out["RSST_KM"] = out["SPYSIM"] + out["KMLMSIM"] - (out["CASHX"] + drag)
+    out = _compose_global_sleeves(out, out["KMLMSIM"])
+    out = out.rename(columns={"RSITSIM": "RSIT_KM"})
+    return out.loc[GLOBAL_1988_START:PRIMARY_END]
+
+
+def load_global_extended_returns() -> pd.DataFrame:
+    """Global matrix 1970-01-02..2026-05-21, LOW fidelity (UMD splice pre-1988).
+
+    Same caveats as load_extended_returns, plus: the VT/VEA/VXUS sims that far
+    back are index reconstructions. Raises FileNotFoundError without the Ken
+    French CSVs.
+    """
+    ext = load_extended_returns()  # SPY/GLD/ZROZ/IEF/CASHX/SSO/UPRO/GDE/NTSX/KMLM_SPLICED
+    glob = load_global_remote_returns(["VTSIM", "VEASIM", "VXUSSIM", "VTISIM"])
+    out = ext.join(glob, how="left")
+    drag = FINANCING_SPREAD_ANNUAL / TRADING_DAYS
+    out["RSST_EXTG"] = out["SPYSIM"] + out["KMLM_SPLICED"] - (out["CASHX"] + drag)
+    out = _compose_global_sleeves(out, out["KMLM_SPLICED"])
+    out = out.rename(columns={"RSITSIM": "RSIT_EXTG"})
+    return out.loc[EXTENDED_START:PRIMARY_END]

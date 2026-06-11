@@ -38,3 +38,27 @@ Gallery order matches the master POST.md. All series simulated; see METHODS.md.
 12. **12_ablation_summary.png** — Every ablation variant as CAGR vs MDD; star =
     core. Dropping ZROZ moves right (deeper drawdowns); LETF baselines sit far
     right at lower CAGR (vol drag).
+
+## Global suite (benchmark VT)
+
+- **g01_global_components_equity_log.png** — Global building blocks vs VT,
+  2000-2026, log. US vs intl equity curves nearly rhyme; the diversifiers don't.
+- **g02_global_portfolios_vs_vt.png** — CORE-GLOBAL, half-intl and US core vs
+  VT and 66/34. Every stacked tier compounds far above the global benchmark.
+- **g03_global_underwater.png** — Drawdowns: VT −58%, CORE-GLOBAL −37%,
+  US CORE −31%.
+- **g04/g05_global_episode_bars_*.png** — Per-episode bars vs VT. NTSD −74% in
+  the GFC vs RSIT −48% is the sleeve-design exhibit; RSIT −2% in 2022.
+- **g06_global_rolling_corr.png** — SPY~VEA/VXUS rolling correlation pinned
+  near +0.9: geography is not decorrelation.
+- **g07_vt_down_months.png** — In VT's worst-decile months, VEA/VXUS/VWO fall
+  MORE than VT; gold/MF/ZROZ are the only positive sleeves.
+- **g08_intl_price_curve.png** — Best achievable Sharpe vs required
+  international allocation: ~−0.01 Sharpe per +5pp intl (primary window);
+  CORE-GLOBAL's 35% intl marked.
+- **g09_global_frontier.png** — All 10,626 global mixes, colored by intl
+  weight: brighter (more intl) = lower CAGR at similar drawdown.
+- **g11_global_extended_1970.png** — LOW-fidelity 1970 extension: at moderate
+  intl weight the 56y Sharpe ties the US core (the honest counterweight).
+- **g12_global_ablation_summary.png** — Global ablations vs CORE-GLOBAL
+  (star); RSSB-for-ZROZ and 100% sleeves at the bad corner.

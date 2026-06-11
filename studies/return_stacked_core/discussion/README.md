@@ -13,6 +13,7 @@ really are, whether `35% GDE / 40% RSST / 25% ZROZ` sits on a robust plateau
 | File | Purpose |
 |---|---|
 | `REPORT.md` | **Consolidated conclusions — explicit answers to the three chartered questions** (best allocation? regime behavior/decorrelation? alternative allocations?) |
+| `REPORT_GLOBAL.md` | **Global variant conclusions (benchmark VT)** — globalness price curve, plateau verdict on 20/15/20/20/25, RSIT-first design rules, three-tier recommendation |
 | `POST.md` | Master Reddit post (English, full version) |
 | `POST_rETFs.md` / `POST_rLETFs.md` | Sub-tuned variants (gentler / HFEA-forward) |
 | `IMAGE_CAPTIONS.md` | Gallery captions, post order |
@@ -24,8 +25,9 @@ really are, whether `35% GDE / 40% RSST / 25% ZROZ` sits on a robust plateau
 ## How to re-run
 
 ```bash
-uv run python studies/return_stacked_core/discussion/make_all.py            # full offline rebuild (s00..s07)
-uv run python studies/return_stacked_core/discussion/make_all.py --only s04 # single step
+uv run python studies/return_stacked_core/discussion/make_all.py                # US suite (s00..s07)
+uv run python studies/return_stacked_core/discussion/make_all.py --suite global # global suite (g00..g07, needs s01 once)
+uv run python studies/return_stacked_core/discussion/make_all.py --only s04     # single step
 ```
 
 Pipeline: `s00` anchor gate (aborts unless the canonical RSC numbers reproduce)
@@ -59,6 +61,18 @@ External data (already fetched & committed where allowed):
   didn't defend in 2008/2022 the way trend did.
 - RSSX (2010-07+): Sharpe 1.47 vs core 1.04 on the same window — entirely
   BTC's decade; RSSX −41% in 2022 (worse than SPY). Satellite at most.
+
+Global suite (2026-06-11, benchmark VT — see `REPORT_GLOBAL.md`):
+
+- 10,626-node 5-asset scan: the unconstrained optimum is US-only in every
+  window; CORE-GLOBAL 20/15/20/20/25 sits OUTSIDE the Sharpe plateau (0/8
+  start dates in). Globalness price: ~−0.01 Sharpe per +5pp intl sleeves.
+- Intl equity is not a crisis diversifier: SPY~VXUS monthly corr 0.854; in
+  VT's worst-decile months VEA/VXUS/VWO fall MORE than VT.
+- Design rules if going global: intl total 10-20%, RSIT first (−2% in 2022)
+  / NTSD last (−74% in GFC), NTSI over NTSD, ZROZ 25-30%, never RSSB-for-ZROZ.
+- 1970+ counterweight: half-intl (27.5/7.5/30/10/25) ties the US core's 56y
+  Sharpe (0.894 vs 0.893) — the 2000+ cost is partly US-dominance-era artifact.
 
 ## Risk register
 

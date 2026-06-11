@@ -33,19 +33,35 @@ STEPS = [
     ("s06", "s06_extended_1970"),
     ("s07", "s07_figures"),
 ]
+# Global suite (benchmark VT) — depends on s01 (primary matrix) having run.
+GLOBAL_STEPS = [
+    ("g00", "g00_verify_global_anchor"),
+    ("g01", "g01_build_global_series"),
+    ("g02", "g02_global_episodes"),
+    ("g03", "g03_global_correlations"),
+    ("g04", "g04_global_simplex"),
+    ("g05", "g05_global_ablations"),
+    ("g06", "g06_global_extended_1970"),
+    ("g07", "g07_global_figures"),
+]
 NETWORK_STEPS = [("s01b", "s01b_fetch_aqr_carry")]
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--only", help="run a single step (e.g. s04)")
+    parser.add_argument("--only", help="run a single step (e.g. s04 or g04)")
     parser.add_argument("--with-network", action="store_true",
                         help="also run s01b (AQR fetch) before s01")
+    parser.add_argument("--suite", choices=["us", "global", "all"], default="us",
+                        help="us = s00..s07 (default), global = g00..g07, all = both")
     args = parser.parse_args(argv)
 
-    steps = list(STEPS)
-    if args.with_network:
+    steps = {"us": list(STEPS), "global": list(GLOBAL_STEPS),
+             "all": list(STEPS) + list(GLOBAL_STEPS)}[args.suite]
+    if args.with_network and args.suite != "global":
         steps = steps[:1] + NETWORK_STEPS + steps[1:]
+    if args.only and args.only.startswith("g"):
+        steps = list(GLOBAL_STEPS)
     if args.only:
         steps = [(sid, mod) for sid, mod in steps if sid == args.only]
         if not steps:

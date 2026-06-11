@@ -1,0 +1,47 @@
+{
+  "generated_utc": "2026-06-11T05:44:29Z",
+  "financing_standard": "2%/yr spread on 100%-stack legs (RSST tracking convention), plain CASHX on 90/60 legs; g00 documents -0.60pp/yr CAGR vs the old saved testfol payload",
+  "series": {
+    "global_primary_returns": {
+      "window": "2000-01-04..2026-05-21",
+      "mf_sleeve": "MFBLEND (0.7 DBMF + 0.3 KMLM)",
+      "fidelity": "primary standard",
+      "columns": [
+        "BTCSIM",
+        "CASHX",
+        "DBMFSIM",
+        "GDESIM",
+        "GLDSIM",
+        "IEFSIM",
+        "KMLMSIM",
+        "MFBLEND",
+        "NTSDSIM",
+        "NTSGSIM",
+        "NTSISIM",
+        "NTSXSIM",
+        "RSITSIM",
+        "RSSBSIM",
+        "RSSTSIM",
+        "SPYSIM",
+        "SSOSIM",
+        "UPROSIM",
+        "VEASIM",
+        "VTISIM",
+        "VTSIM",
+        "VWOSIM",
+        "VXUSSIM",
+        "ZROZSIM"
+      ]
+    },
+    "global_1988_returns": {
+      "window": "1988-01-04..2026-05-21",
+      "mf_sleeve": "KMLM only (DBMF starts 2000)",
+      "fidelity": "MEDIUM \u2014 canonical global window"
+    },
+    "global_extended_returns": {
+      "window": "1970-01-02..2026-05-21",
+      "mf_sleeve": "KMLM_SPLICED (UMD+RF pre-1988)",
+      "fidelity": "LOW \u2014 academic splice + index reconstructions"
+    }
+  }
+}
