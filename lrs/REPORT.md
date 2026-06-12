@@ -1,15 +1,17 @@
-# LRS — Relatório Final do Estudo (Phases 0-10)
+# LRS — Relatório Final do Estudo (Phases 0-11)
 
-> **Status: research-only / ENCERRADO (2026-06-10).** Nada neste relatório
+> **Status: research-only / ENCERRADO (2026-06-12).** Nada neste relatório
 > autoriza deploy, paper-trade ou mudança de mandato. Mandate §1 (maintenance
 > mode) inalterado. A suíte de validação foi executada (Phase 8): **0/2
-> finalistas passam os 7 gates**; a linha está fechada salvo literatura ou
-> regime genuinamente novos. Gerado por `lrs/final_report.py`.
+> finalistas passam os 7 gates**; o mix RSC×LRS escolhido depois na Phase 11
+> também falhou (**0/1**, PBO/DSR/WF). A linha está fechada salvo literatura ou
+> regime genuinamente novos. Base gerada por `lrs/final_report.py`, com adendo
+> Phase 11 em `lrs/phases/phase11_mix_final_gates/REPORT.md`.
 
 ## 1. O estudo em uma página
 
 Pergunta original: *existe estratégia com ETFs alavancados que supere a LRS
-200d SMA?* Resposta após 4569 trials pré-registrados em 18 etapas:
+200d SMA?* Resposta após 4569 trials pré-registrados em 19 etapas:
 
 - **Sim, em mecanismo:** o ensemble multi-lookback (7A) destravou o gate
   vinculante walk-forward no SPY pela primeira vez (13/17 = 76,5% ≥ 75%)
@@ -19,6 +21,10 @@ Pergunta original: *existe estratégia com ETFs alavancados que supere a LRS
   época; ledger final 4569), o SPY ensemble fez 6/7 e morreu no DSR
   por p `0,052` vs `0,05` — com undercount honesto (letf-lab fora do ledger).
   "Quase lá" não passa `[advances_fin_ml, p.273-275]`.
+- **Não, no mix RSC×satélite:** a Phase 11 validou o top Calmar da fronteira 6A
+  (`80% RSC / 20% lrs_spy_headline`) com `n_trials = 4569`, PBO nos 18 mixes e
+  WF `5y/2y`; falhou PBO `0,933`, DSR p `0,306` e WF `6/10`
+  `[advances_fin_ml, p.208-211]`.
 - **Drivers reais** (na ordem em que foram descobertos): geometria de
   exposição (alavancagem-alvo 1.75-2x + risk-off diversificado ZROZ/GLD/IEF +
   throttle de vol) `[leverage_for_the_long_run, p.4-7]`; suavização entre
@@ -37,13 +43,14 @@ Pergunta original: *existe estratégia com ETFs alavancados que supere a LRS
 |---|---|---|---|---|---|
 | `spy_7a_ensemble` | 0,397 ✅ | **0,052 ❌** | 13/17 ✅ | ✅✅✅✅ | **FAIL 6/7** |
 | `qqq_7d_quadratic` | 0,651 ❌ | 0,138 ❌ | 8/11 ❌ | ✅✅✅✅ | **FAIL 4/7** |
+| `mix_lrs_spy_headline_20` | 0,933 ❌ | 0,306 ❌ | 6/10 ❌ | ✅✅✅✅ | **FAIL 4/7** |
 
 Veredito da linha: **a geometria de timing alavancado é real — o gate
 vinculante foi destravado — mas o edge é pequeno demais para sobreviver ao
 accounting honesto de múltiplos testes.** O RSC-US 35/40/25 estático segue
 como âncora limpa do repo; a tabela de mix da 6A continua disponível para a
-decisão static×satélite `[risk_parity, p.80-81]`, `[advances_fin_ml,
-p.208-211]`.
+decisão static×satélite, mas o lead natural dessa tabela também falhou a Phase
+11 `[risk_parity, p.80-81]`, `[advances_fin_ml, p.208-211]`.
 
 ## 3. Finalistas — lente time-weighted e lente de aportes
 
@@ -125,6 +132,23 @@ decisão pessoal fora do mandate (§7); nenhum é candidato a deploy do repo.
 | P8 final gates | +0 | FAIL 0/2 |
 | P9 3x ceiling | +48 | SPY lead |
 | P10 dip ladder | +144 | FAIL 0/2 |
+| P11 mix final gates | +0 | FAIL 0/1 |
+
+
+## 5.1 Adendo Phase 11 — mix RSC×LRS escolhido da 6A
+
+O candidato `mix_lrs_spy_headline_20` era a melhor lacuna remanescente após a
+Phase 6A: `80%` RSC after-tax + `20%` `lrs_spy_headline`, com CAGR `12,12%`, MDD
+`−25,18%` e Calmar `0,481`, contra RSC after-tax `11,74%`, `−30,76%`, `0,382`.
+A validação formal usou `n_trials = 4569`, PBO sobre os 18 mixes Phase 6A, WF
+`5y/2y` para preservar `>=8` janelas na janela 2000+, e +0 trials. Resultado:
+**FAIL 0/1**: PBO `0,933`, DSR p `0,306`, WF `6/10`; OOS/FWD/bootstrap/xlib
+passaram. Stress DSR incluindo RSC evolution raw trials: p `0,582`; WF 7y/3y
+diagnóstico: `5/6`. Relatório: `lrs/phases/phase11_mix_final_gates/REPORT.md`.
+
+Veredito: a melhora local de CAGR/MDD/Calmar não é robusta o bastante para
+promover o mix. Sem re-runs, sem ajuste de threshold, sem deploy
+`[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`.
 
 
 ## 6. Plots
@@ -145,7 +169,7 @@ decisão pessoal fora do mandate (§7); nenhum é candidato a deploy do repo.
 
 ## 7. Referências
 
-Fases e memórias: `lrs/phases/phase00_*..phase10_*`, `lrs/MEMORY.md`,
+Fases e memórias: `lrs/phases/phase00_*..phase11_*`, `lrs/MEMORY.md`,
 `lrs/CONCLUSION.md` (comparação com RSC), `lrs/NEXT_STEPS.md`. Citações-chave:
 `[leverage_for_the_long_run, p.4-9, p.13-16]`, `[systematic_trading,
 p.118-133, p.137-148]`, `[volatility_trading, p.135-140]`,

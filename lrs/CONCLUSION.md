@@ -303,12 +303,35 @@ continua disponível para a discussão de mix — fora do escopo desta linha.
 
 ---
 
+## 7.4 Adendo — Phase 11 (2026-06-12): suíte completa no mix 6A escolhido
+
+O próximo lead natural da 6A era `mix_lrs_spy_headline_20`: `80%` RSC after-tax
++ `20%` `lrs_spy_headline`. A linha reproduziu o ganho local contra `bench_rsc`
+(`12,12%` CAGR, MDD `−25,18%`, Calmar `0,481` vs RSC `11,74%`, `−30,76%`,
+`0,382`), mas a suíte formal falhou:
+
+| Config | G1 PBO | G2 DSR p | G3 WF | G4-G7 | **Geral** |
+|---|---|---|---|---|---|
+| `mix_lrs_spy_headline_20` | 0,933 ❌ | 0,306 ❌ | 6/10 ❌ | ✅✅✅✅ | **FAIL 4/7** |
+
+Pré-registro: +0 trials, `n_trials = 4569`, PBO = todos os 18 mixes Phase 6A,
+WF `5y/2y` para preservar `>=8` janelas na janela 2000+. Diagnósticos extras:
+DSR stress incluindo os trials raw do RSC evolution = p `0,582`; WF 7y/3y
+low-power = `5/6`. Relatório: `lrs/phases/phase11_mix_final_gates/REPORT.md`.
+
+**Leitura:** a fronteira 6A gerou uma melhoria local útil como diagnóstico, mas
+o lead não sobrevive a PBO/DSR/WF. A tabela de mix fica arquivada; nada é
+promovido e o mandate §1 permanece inalterado `[advances_fin_ml, p.208-211]`,
+`[advances_fin_ml, p.273-275]`, `[testing_tuning, p.318-320]`.
+
+---
+
 ## 8. Referências
 
 - `lrs/phases/phase0{0,1}_*`, `phase02_target_leverage_vol`,
   `phase03_sparse_risk_on_vote`, `phase03b_regime_signals`,
   `phase03c_lookback_study`, `phase04_validation_gates`,
-  `phase05_rsc_overlay_proxy` (REPORT.md + results CSV).
+  `phase05_rsc_overlay_proxy`, `phase11_mix_final_gates` (REPORT.md + results CSV).
 - `lrs/SPEC.md`, `lrs/MEMORY.md`, `lrs/NEXT_STEPS.md`.
 - `studies/return_stacked_core/us_core/REPORT.md`,
   `studies/return_stacked_core/README.md`.

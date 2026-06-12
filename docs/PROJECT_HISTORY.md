@@ -706,6 +706,28 @@ moved the binding gate — but the edge is too small to survive honest
 multiple-testing accounting `[advances_fin_ml, p.273-275]`,
 `[advances_fin_ml, p.208-211]`.
 
+On 2026-06-12 Phase 11 validated the remaining Phase 6A mix lead,
+`mix_lrs_spy_headline_20` (`80%` after-tax RSC and `20%` `lrs_spy_headline`),
+without adding search trials. The local Phase 6A improvement reproduced (CAGR
+`12.12%`, MDD `-25.18%`, Calmar `0.481` versus RSC `11.74%`, `-30.76%`,
+`0.382`), but the formal suite failed: PBO `0.933`, DSR p `0.306`, walk-forward
+`6/10`, with OOS/FWD/bootstrap/xlib passing. The PBO matrix used all 18 Phase 6A
+mixes, DSR used the final `4569`-trial LRS ledger, and 7y/3y WF was retained only
+as a low-power diagnostic (`5/6`). Result: no mix promotion, no threshold change,
+no mandate change `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`,
+`[testing_tuning, p.318-320]`.
+
+Also on 2026-06-12 a user-provided no-auth Testfol.io payload tested two static
+monthly SPY-relative mixes: P2 (`50%` 2x SPY-like + `12.5%` each ZROZ/VBR/GLD/KMLM)
+and P3 (`34%` 3x SPY-like + `16.5%` each diversifier). On the 1987-12-31 to
+2026-06-11 KMLM-limited window they beat SPY by ending wealth (`1.86x` and
+`2.32x`) with MDD roughly SPY-like (`-56%` to `-58%`), but on the repo-comparable
+2000+ window they produced CAGR `10.30%` and `10.93%` with `-56%` to `-58%` MDD,
+below the local RSC gross CAGR `12.38%` and far worse than its `-30.76%` MDD.
+Verdict: useful SPY-relative diagnostic, not worth replacing the current
+drawdown profile `[leverage_for_the_long_run, p.13]`, `[volatility_trading,
+p.135, p.138-140]`.
+
 ## Repository Slim-Down
 
 On 2026-06-03 the cleanup/restructuring pass started by creating

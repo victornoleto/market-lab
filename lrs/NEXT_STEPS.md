@@ -14,7 +14,7 @@ este documento antes de continuar a evolucao da estrategia em `lrs/`.
 7. `lrs/MEMORY.md`.
 8. Este arquivo.
 9. `lrs/TOP20_BY_CAGR.md`.
-10. Ultimo report: `lrs/phases/phase05_rsc_overlay_proxy/REPORT.md`.
+10. Ultimo report: `lrs/phases/phase11_mix_final_gates/REPORT.md`.
 
 ## Contexto Fixo
 
@@ -234,7 +234,7 @@ este documento antes de continuar a evolucao da estrategia em `lrs/`.
 - Regra pre-registrada aplicada: ambos re-fechados, sem re-runs nem ajuste de
   threshold. Linha LRS volta para a prateleira.
 
-### Phases 9, 10 e Consolidacao Final (CONCLUIDAS 2026-06-10)
+### Phases 9, 10, 11 e Consolidacao Final (CONCLUIDAS 2026-06-12)
 
 - **Phase 9 (teto 3x, +48 -> 4425):** SPY lead return-first
   (`L_max 2.50/sigma40/RV21/lag3`: 16,81% / -47,47%, WF 12/17); QQQ FAIL
@@ -246,21 +246,26 @@ este documento antes de continuar a evolucao da estrategia em `lrs/`.
 - **Consolidacao final:** `lrs/REPORT.md` (gerado por `lrs/final_report.py`)
   + 10 plots em `lrs/plots/` - relatorio definitivo do estudo com finalistas,
   fichas operacionais e lente de aportes. ESTUDO ENCERRADO.
+- **Phase 11 (mix final gates, +0 -> 4569):** FAIL 0/1 no lead 6A
+  `mix_lrs_spy_headline_20` (`80% RSC / 20% lrs_spy_headline`). Reproduziu a
+  melhora local (12,12% / -25,18% / Calmar 0,481 vs RSC 11,74% / -30,76% /
+  0,382), mas falhou PBO 0,933, DSR p 0,306 e WF 6/10; G4-G7 passaram.
 
 ## Proximo Trabalho Recomendado Atual
 
-**O estudo LRS esta ENCERRADO (2026-06-10).** Relatorio definitivo:
-`lrs/REPORT.md`. A linha standalone/satelite LRS esta RE-FECHADA apos a
-Phase 8 (0/2 na suite completa; vinculante agora = DSR no SPY, PBO/DSR/WF no
-QQQ). O que resta de honesto:
+**O estudo LRS esta ENCERRADO (2026-06-12).** Relatorio definitivo:
+`lrs/REPORT.md`; ultimo gate report:
+`lrs/phases/phase11_mix_final_gates/REPORT.md`. A linha standalone/satelite LRS
+esta RE-FECHADA apos a Phase 8 (0/2) e a pendencia de mix da 6A tambem foi
+fechada pela Phase 11 (0/1). O que resta de honesto:
 
 1. Nao reabrir a familia sem literatura ou regime genuinamente novos - o
    resultado da linha inteira e: a geometria de timing e real, mas o edge e
    pequeno demais para sobreviver ao accounting honesto de multiplos testes
-   (`n_trials = 4377`) `[advances_fin_ml, p.273-275]`.
-2. Pendencia que continua valida: escolha de mix da 6A (decision table
-   static x satelite) - decisao do usuario, fora do escopo de gates desta
-   linha.
+   (`n_trials = 4569`) `[advances_fin_ml, p.273-275]`.
+2. Nao promover mixes da 6A: o lead natural `mix_lrs_spy_headline_20` falhou
+   PBO/DSR/WF na Phase 11. A tabela permanece como diagnostico historico, nao
+   como backlog ativo `[advances_fin_ml, p.208-211]`.
 3. Leads fracos arquivados para eventual pre-registro futuro: 7E KMLM-only de
    janela longa (1988+); 7C macro gate como redutor de alavancagem (nao como
    switch binario) se um dia houver fonte citavel para a regra de MDD.
@@ -269,8 +274,10 @@ QQQ). O que resta de honesto:
 
 ## Historico De Trabalho Recomendado Anterior (Phase 6A)
 
-A Phase 6A entrega a tabela de decisao que a pergunta do usuario pedia
-(`lrs/phases/phase06a_aftertax_frontier/REPORT.md`). A ordem honesta era:
+A Phase 6A entregou a tabela de decisao que a pergunta do usuario pedia
+(`lrs/phases/phase06a_aftertax_frontier/REPORT.md`). A ordem honesta foi cumprida
+na Phase 11 para o lead natural (`mix_lrs_spy_headline_20`) e falhou. A ordem
+historica era:
 
 1. Usuario escolher UM mix da tabela rankeada da 6A (ex.: 75/25 RSC x SPY
    headline, ou 70/30 RSC x QQQ vol-target), ou declarar que nenhum compensa.
