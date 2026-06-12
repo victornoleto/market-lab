@@ -127,3 +127,69 @@ the trend sleeve.
 MF-proxy-sensitive — CORE's GFC return is −23.1% with the current tracking
 proxy vs −13.8% on the old 1988 saved curve
 (`tables/episodes_crosscheck.csv`). Directionally honest, not precise.
+
+---
+
+## Addendum (2026-06-11) — CORE vs unlevered "safe" portfolios
+
+User-chartered comparison against five classic low-drawdown unlevered mixes,
+all computed by the same Testfol.io engine on the common window
+**2000-01-03..2026-06-11** (26.4y; data: `tables/safe_portfolios_metrics.csv`,
+curves: `series/safe_portfolios_equity.csv`, re-fetch:
+`s08_safe_portfolios_fetch.py` — optional network step):
+
+| Portfolio (yearly reb.) | CAGR | MDD | Vol | Sharpe | $1 → |
+|---|---|---|---|---|---|
+| B1 — 21 VUG/21 VBR/26 TLT/16 GLD/10 KMLM/6 cash | 8.46% | **−17.3%** | 8.5% | **1.000** | $8.6 |
+| B2 — Golden Butterfly | 8.17% | −19.5% | 8.5% | 0.973 | $8.0 |
+| B3 — Permanent Portfolio | 7.08% | **−16.8%** | 7.1% | **1.006** | $6.1 |
+| B4 — All Weather | 6.85% | −23.4% | 7.9% | 0.884 | $5.8 |
+| B5 — 25 REIT/25 BND/25 GLD + 25 equity | 8.65% | −33.9% | 11.2% | 0.800 | $9.0 |
+| **CORE 35/40/25 (monthly reb.)** | **12.30%** | −30.2% | 15.3% | 0.835 | **$21.5** |
+| 100% SPY | 8.33% | −55.1% | 19.3% | 0.512 | $8.3 |
+
+What they teach:
+
+1. **Same thesis, undiluted vs diluted.** Every safe mix holds our
+   diversifiers (gold in all five, duration in all five, trend only in B1)
+   with equity cut to 20-42%. Their −17/−23% MDDs come from 58-80% defensive
+   ballast. They independently validate the RSC sleeve selection
+   `[risk_parity, ch.5]`.
+2. **Risk-efficiency is THEIR edge, not ours**: unlevered Sharpe 0.97-1.01
+   (Permanent Portfolio is the king) vs CORE 0.835. The price is growth:
+   CAGR ≈ SPY or below; $1 → $6-9 in 26 years vs CORE's $21.5.
+3. **B5 is the cautionary row**: REITs are equity in disguise (−34% MDD,
+   crushed in the GFC) — diversification by asset *name* is not
+   decorrelation.
+4. Episodes: GFC — Permanent −3.8%, B1 −11.7% vs CORE −23.2%; AI bull —
+   safe mixes +43-64% vs CORE +96%, SPY +113%. 2022 compressed everyone to
+   −15/−21% (gold+duration suffer together; only trend offsets).
+
+**Is return stacking superior? Two decisive tests** (same table):
+
+- **Dilution test (matched MDD)** — CORE blended with T-bills: at Golden
+  Butterfly's −19.5%, diluted CORE earns 8.42% vs 8.17% (narrow win); at All
+  Weather's −23.4%, 9.96% vs 6.85% (big win); at Permanent's −16.8%, ~7.6%
+  vs 7.08% (win); at B1's −17.3%, 7.90% vs **8.46% — B1 wins**. At the
+  deep-safety end, a well-built unlevered mix beats the diluted stack.
+- **Leverage test (matched gross, 1.65×, financed at cash+2% — the repo
+  payload convention)**: B1 × 1.65 = 11.04% / −30.1% / Sharpe 0.813 vs CORE
+  12.30% / −30.2% / 0.835 → **CORE wins at the same risk and the same
+  leverage**. B1's unlevered Sharpe edge evaporates once it pays real
+  financing — which is exactly what return-stacked ETFs pay, embedded
+  `[leverage_for_the_long_run, p.13]`.
+
+**Conclusion: return stacking's superiority is conditional on the
+objective.** For long-run compounding (~12% CAGR at MDD ≤ ~30%) none of the
+safe mixes can get there unlevered, and at matched leverage our recipe still
+wins. For a true MDD ≤ −20% objective, a B1/Golden-Butterfly-style unlevered
+portfolio is the better tool than diluting CORE — simpler, no fund-stack
+risk, higher Sharpe. Return stacking is not a Sharpe machine; it is a
+**capital-efficiency technology**: it adds the diversifiers without giving
+up the equity. The safe portfolios hold the same diversifiers by giving the
+equity up — and the compounded difference over 26 years is $21.5 vs $8.
+
+Caveats: all simulated; the 2000+ window contains the gold decade (every mix
+here holds 16-25% gold); B1 is itself a backtest-discovered allocation, so
+its Sharpe carries selection bias `[advances_fin_ml, p.208-211]`; yearly
+rebalance for the safe mixes (their convention) vs monthly for CORE (ours).

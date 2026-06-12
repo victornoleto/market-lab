@@ -79,6 +79,14 @@ Global suite (2026-06-11, benchmark VT — see `REPORT_GLOBAL.md`):
   CORE-GLOBAL on CAGR/MDD/Sharpe in both modern windows at same geography);
   60/40: 30/10 RSST/25 RSIT/35. MF-heavy alternative for stagflation-weighted
   views: 20/5/25/20/30. See `REPORT_GLOBAL.md` §6.
+- Safe-portfolio benchmark (s08, REPORT.md Addendum): vs Golden Butterfly /
+  Permanent / All Weather / VUG-VBR-TLT-GLD-KMLM barbell — unlevered Sharpe
+  is THEIR edge (0.97-1.01 vs CORE 0.835), growth is ours ($21.5 vs $6-9 per
+  $1 over 26y). Matched-leverage test: B1 ×1.65 (cash+2%) = 11.0%/−30.1%/0.813
+  vs CORE 12.3%/−30.2%/0.835 — CORE wins at same risk/leverage. Matched-MDD
+  dilution: CORE+T-bills beats GB/PP/AW but loses to B1 at the −17% end.
+  Verdict: return stacking = capital-efficiency technology, superior
+  conditional on a growth objective, not a Sharpe machine.
 
 ## Risk register
 
