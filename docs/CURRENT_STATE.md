@@ -1,11 +1,11 @@
-# Estado atual — market-lab (2026-06-12)
+# Estado atual — market-lab (2026-06-13)
 
 > **Propósito:** onboard rápido para humanos e agentes. Este doc é o
 > snapshot vivo — a verdade canônica vive nos arquivos referenciados.
 
 ---
 
-## TL;DR (2026-06-12)
+## TL;DR (2026-06-13)
 
 🛑 **MAINTENANCE MODE** desde 2026-04-23 (mandate §1, §7).
 
@@ -28,6 +28,7 @@
 - **Phase 10 do `lrs/` (2026-06-10, user-directed, ledger 4425 → 4569): FAIL 0/2 — o negativo mais limpo do restart.** Família contrária "buy the dip" (L_base normal, escala para L_dip quando o DD do underlying cruza −10/−20/−30%, desescala na recuperação): **zero rows entre 144 seguram MDD ≥ −50%** (faixa −69,8% a −102,7%; 8 configs = ruína total). O CAGR também não paga (melhor SPY 12,65% vs headline 15,44%; maioria das rows QQQ perde do B&H sem alavancagem). O trigger escala cedo em todo bear longo (1929-32, 2000-02) e cavalga alavancagem máxima até o fundo. A tese Gayed sobrevive ao teste da sua inversão direta: dip = regime de alta vol = alavancagem deve ser BAIXA. Nuance preservada: dip-buying funciona no repo só como fluxo de aportes (6A Part 2), não como escalada de leverage sobre capital existente. Mandate §1 inalterado.
 - **Phase 9 do `lrs/` (2026-06-10, user-directed return-first, ledger 4377 → 4425):** teto da família 7D elevado para 2.5x/3.0x (degraus UPRO/TQQQ). **SPY SUCCESS no screen return-first:** `L_max 2.50 / σ40 / RV21 / lag 3` = CAGR 16,81% (+1,4pp), MDD −47,47%, WF 12/17 mantido. **QQQ FAIL: zero rows dentro do teto −50%** (melhor: 24,7% / −61,8%) — QQQ acima de ~2x efetivo é ruin-adjacent em toda variação testada. Leitura mecânica honesta: com σ40-45 o escalar fica pinado no cap ~99% dos dias — o ganho vem da alavancagem, não do sizing (empata com a row binária L2.50 da Phase 2). Diagnóstico return-first, sem promoção; odds de validação SS5 registradas como baixas (DSR já matou candidato mais forte). Mandate §1 inalterado.
 - **Diagnóstico Testfol.io do usuário (2026-06-12):** dois mixes estáticos mensais com exposição efetiva ~1x a SPY via 50% SSO-like ou 34% UPRO-like + ZROZ/VBR/GLD/KMLM batem SPY em 1988-2026 (P2 CAGR `13,33%`, MDD `−56,16%`, final/SPY `1,86x`; P3 CAGR `13,98%`, MDD `−57,96%`, final/SPY `2,32x`), mas no 2000+ ficam abaixo do RSC local bruto (`10,30-10,93%` CAGR e `−56-58%` MDD vs RSC `12,38%` e `−30,76%`). Veredito: bom diagnóstico SPY-relative, ruim como troca do perfil atual de MDD `~−30%`; `studies/spy_sso_upro_replacement/USER_TESTFOLIO_STATIC_MIX_DIAGNOSTIC_2026-06-12.md`.
+- **HAA Hybrid Asset Allocation scaffold (2026-06-13) criado + yfinance screen executado:** `studies/haa_hybrid_asset_allocation/` implementa a regra HAA canonical ETF e adaptações `only_stocks`/`stocks_plus_etfs` com momentum 13612U + canário TIP `[stocks_on_the_move, p.60]`. Como o cache Tiingo foi perdido, o runner agora aceita `--source yfinance` só com `--allow-biased-yfinance` e marca todas as rows como `promotion_eligible=false`. Screen consolidado `max-assets=20`: canonical ETF yfinance CAGR `9,39%`/MDD `−15,19%`; melhor ETF broad top4 `12,41%`/`−30,05%`; stock top10 `14,59%`/`−30,86%`; mixed top10 `12,12%`/`−25,18%`. PBO do painel yfinance `0,631` falha; Testfol.io long-history segue bloqueado por falta de `DBC/TIP/TLT/VEA/VWO` sims e sem token local. Sem deploy e mandate §1 inalterado `[advances_fin_ml, p.208-211]`.
 
 - **RSC evolution hunt (2026-06-11, user-directed, 8 rodadas pré-registradas): FAIL honesto TERMINAL — nada passa todos os gates; candidato único morto pela bateria profunda.** `studies/return_stacked_core/evolution/` — hunt por CAGR maior que o CORE `35/40/25` mantendo MDD ≤ 30%; PLAN.md pré-registrado, emendas antes de cada rodada, zero ajuste de threshold pós-resultado. R1-R3: 95.601 trials estáticos (74.193 únicos; sleeves novos RSBT/RSSB/GLD/KMLM/QQQ + carriers SSO/UPRO **dominados**) → 0 finalistas, todo ganho in-cap é artefato da década do ouro (todos perdem do CORE-1988). R4: frequência de calendário = sorte de offset; **bandas de tolerância = platô de parâmetro real**. R5-R7: simplexes 3/4/5-ativos × bandas + lastro IEF/CASHX (~132k configs) → **G1∩G2 = ∅ em todo o espaço**; candidato máximo ÚNICO = `45/25/30 + banda 20%` (5/6 gates: 13,39%/−29,52%, G1 7/8, G4 73%, 1988+ empata CORE com MDD 3,2pp mais raso, turnover 1,44/ano; falha G2: vizinhos ZROZ ≤ 25% furam −32% — **ZROZ ≥ 30% é fronteira dura sob bandas**). R8 bateria profunda no candidato único: **2/4 — FAIL terminal**: B1 ✓ (bate CORE em 61/68 starts trimestrais), B4 ✓ (cadência semanal), mas B2 ✗ (contínuo de bandas: cap raspado por 5-25bps nas bandas 12-18%; CAGR > CORE em todas as 21) e **B3 ✗ decisivo** (bootstrap conjunto de blocos 63d: spread > 0 em só 83,8% dos paths, vantagem de MDD vira moeda — o edge da banda é colheita da estrutura de tendência multi-mês da sequência histórica específica, não propriedade distribucional). Squeeze provado: cap × vizinhança × starts não tem solução conjunta — o platô do CORE já está precificado. Resíduo: EW 33/33/33 b50 = standout drawdown-first (12,94%/−24,7% e 14,24%/−24,7% em 1988+, G1 2/8); RSBT = diversificador de implementação (tier CTAP); rebalance anual = knob de MDD em 2000+ mas não em 1988+. Research-only; mandate §1 inalterado.
 - **RSC discussion — suite GLOBAL (2026-06-11, benchmark VT) concluída:** pipeline g00→g07 em `studies/return_stacked_core/discussion/` (gate: VT reproduz exato a curva salva; composição do canônico global corr 1.0000, delta de financiamento −0,60pp/ano documentado). Scan de 10.626 nós no simplex {GDE,NTSD,RSST,RSIT,ZROZ}: **o ótimo irrestrito é US-only em todas as janelas e o CORE-GLOBAL 20/15/20/20/25 fica FORA do platô de Sharpe (0/8 datas de início)**; curva de preço da globalness ≈ −0,01 Sharpe por +5pp de mangas internacionais; equity internacional não é diversificador de crise (corr mensal SPY~VXUS 0,854; nos piores meses do VT, VEA/VXUS/VWO caem MAIS que o VT). Regras de desenho se for global: 10-20% intl via RSIT primeiro (−2% em 2022) e NTSD por último (−74% no GFC), ZROZ 25-30%, nunca RSSB no lugar de ZROZ. Contrapeso honesto: na janela 1970+ o half-intl (27.5/7.5/30/10/25) empata o Sharpe de 56 anos do US core. Verdict em 3 tiers em `discussion/REPORT_GLOBAL.md`; todos os tiers esmagam o VT (+3,6 a +5,3pp CAGR, MDD 21-28pp mais raso). Add-on g08 (ratio fixo 60/40 e 66/34 US/intl, banda ±2,5pp sobre o grid): os tops in-band concordam em NTSD=0, intl 100% via RSIT e ZROZ 30-35; expressão recomendada 66/34 = **30 GDE / 15 RSST / 20 RSIT / 35 ZROZ** (4 fundos; bate o CORE-GLOBAL em CAGR/MDD/Sharpe nas duas janelas modernas com a mesma geografia), 60/40 = 30/10/25/35; alternativa MF-heavy para quem pesa estagflação: 20/5/25/20/30 (REPORT_GLOBAL §6). Add-on s08 (benchmark vs portfólios "safe" unlevered — Golden Butterfly/Permanent/All Weather/barbell VUG-VBR-TLT-GLD-KMLM, mesma engine testfol.io, janela comum 2000+): Sharpe unlevered é a vantagem DELES (0,97-1,01 vs CORE 0,835), crescimento é a nossa ($21,5 vs $6-9 por $1 em 26 anos); no teste de alavancagem igualada (B1 ×1,65 a cash+2%) o CORE vence no mesmo risco (12,3%/−30,2%/0,835 vs 11,0%/−30,1%/0,813); na diluição a MDD igualado o CORE+T-bills bate GB/PP/AW mas perde para o barbell B1 no extremo −17%. Verdict: return stacking = tecnologia de eficiência de capital, superior condicional a objetivo de crescimento (REPORT.md Addendum). Research-only; mandate §1 inalterado.
@@ -37,7 +38,7 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 
 ---
 
-## Status por linha de pesquisa (2026-06-12)
+## Status por linha de pesquisa (2026-06-13)
 
 ### Plano C — buy-hold passivo factor-tilted ✅ ATIVO
 - **Status:** sole winner. 100% do capital. Zero alterações.
@@ -58,7 +59,30 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 
 ---
 
-## Linhas exploratórias locais (2026-06-12)
+## Linhas exploratórias locais (2026-06-13)
+
+### studies/haa_hybrid_asset_allocation/ 🌱 ACTIVE SCREEN / TESTFOLIO+TIINGO BLOCKED
+- Criado em 2026-06-13 para testar HAA canonical ETF e adaptações `only_stocks` e
+  `stocks_plus_etfs`. Regra: momentum 13612U equal-weighted 1/3/6/12m, canário
+  `TIP`, defensivos `BIL/IEF`, rebalance mensal e pesos aplicados só a retornos
+  posteriores `[stocks_on_the_move, p.60]`, `[stocks_on_the_move, p.98-99]`,
+  `[advances_fin_ml, p.31-34]`.
+- Implementação/teste: `haa.py`, `run.py`, `SPEC.md`, `DATA_AUDIT.md`, `REPORT.md`,
+  `results/results.json`; `uv run pytest tests/test_haa_hybrid_asset_allocation.py`
+  passa com `7 passed`.
+- Testfol.io: `BIL -> CASHX` implementado; `VNQSIM` não existe no cache/API sample,
+  então foi adicionada a variante não-canônica `haa_balanced_g8_t4_no_vnq_proxy`.
+  O pull via `scripts/testfolio_pull.py` não rodou porque não havia token local
+  utilizável em `.testfolio_token`/`TESTFOLIO_TOKEN`. O cache atual ainda falta
+  `DBC/TIP/TLT/VEA/VWO`, então long-history HAA segue bloqueado.
+- yfinance: permitido apenas com `--allow-biased-yfinance`; todas as rows saem com
+  `promotion_eligible=false` por current-universe/survivorship bias
+  `[advances_fin_ml, p.208-211]`. Screen consolidado `--variant all --source
+  yfinance --max-assets 20`: canonical ETF after-tax CAGR `9,39%`, MDD `−15,19%`,
+  Sharpe `0,858`; `haa_bestfolio_no_qqq_seed_yf` `9,76%`/`−13,97%`; melhor broad
+  ETF top4 `12,41%`/`−30,05%`; stock top10 `14,59%`/`−30,86%`; mixed top10
+  `12,12%`/`−25,18%`. PBO do painel = `0,631` (fail), logo nem como painel
+  yfinance enviesado há validação. Sem deploy, mandate §1 inalterado.
 
 ### lrs/ 🔴 LINHA RE-FECHADA; Phase 11 mix também FAIL (research-only)
 - **Conclusão posterior (2026-06-12, Phase 11 = suíte final SS5 no mix Phase 6A):**

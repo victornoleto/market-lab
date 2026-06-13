@@ -279,6 +279,24 @@ Notable study areas include:
   rather than a fee-efficiency claim. No mandate allocation changed
   `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`,
   `[systematic_trading, p.185-188]`, `[leverage_for_the_long_run, p.21]`;
+- `studies/haa_hybrid_asset_allocation/` for a 2026-06-13 research-only scaffold
+  around Keller/Keuning HAA. It implements the canonical ETF rule and requested
+  `only_stocks` / `stocks_plus_etfs` adaptations using equal-weighted 1/3/6/12m
+  momentum, TIP canary, `BIL/IEF` defensive selection and month-end execution
+  without same-close look-ahead `[stocks_on_the_move, p.60]`,
+  `[stocks_on_the_move, p.98-99]`, `[advances_fin_ml, p.31-34]`. The first
+  storage-preferred run was data-blocked: the local Testfol.io cache lacked HAA
+  sims and the Tiingo price parquet directory was absent despite a `1,753`-ticker
+  manifest. A follow-up added explicit, non-silent yfinance support with
+  `--allow-biased-yfinance`, `promotion_eligible=false` and no winner label. The
+  consolidated yfinance screen (`max-assets=20`) produced diagnostic rows only:
+  canonical ETF CAGR `9.39%` / MDD `-15.19%`, broad ETF top4 `12.41%` / `-30.05%`,
+  stock top10 `14.59%` / `-30.86%`, mixed top10 `12.12%` / `-25.18%`, and panel
+  PBO `0.631` fail. Testfol.io `BIL -> CASHX` was implemented, but long-history
+  HAA still needs the missing `DBC/TIP/TLT/VEA/VWO` sims; the pasted Bearer token
+  was not persisted. Stock/mixed yfinance remains current-universe biased
+  `[advances_fin_ml, p.208-211]`. No deployment, paper-trade label or mandate
+  allocation changed;
 - `studies/spy_sso_upro_replacement/` for a 2026-05-25 static-first search for a
   low-turnover SPY replacement using `SPYSIM`, `SSOSIM`, `UPROSIM`, `ZROZSIM`,
   `GLDSIM`, `IEFSIM` and `CASHX`. Phase 1 evaluated a 5%-step static grid of

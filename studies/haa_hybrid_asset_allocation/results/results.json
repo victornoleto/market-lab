@@ -1,0 +1,3855 @@
+{
+  "results": [
+    {
+      "config": {
+        "name": "haa_balanced_g8_t4_yf",
+        "offensive_assets": [
+          "SPY",
+          "IWM",
+          "VEA",
+          "VWO",
+          "VNQ",
+          "DBC",
+          "IEF",
+          "TLT"
+        ],
+        "canary_asset": "TIP",
+        "defensive_assets": [
+          "BIL",
+          "IEF"
+        ],
+        "top_n": 4,
+        "lookback_months": [
+          1,
+          3,
+          6,
+          12
+        ],
+        "min_offensive_assets": 4
+      },
+      "source": "yfinance",
+      "promotion_eligible": false,
+      "data_caveat": "yfinance current-universe/survivorship-biased screen only",
+      "gross_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.10611264789495012,
+        "mdd": -0.14443701696935934,
+        "vol": 0.11153874944512154,
+        "sharpe": 0.9602138204994274,
+        "sortino": 1.3627036292874644,
+        "calmar": 0.7346638010217332,
+        "terminal": 8.666873350632498
+      },
+      "after_tax_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.09392869874336407,
+        "mdd": -0.15193711518471828,
+        "vol": 0.11190027779049531,
+        "sharpe": 0.8584598291190156,
+        "sortino": 1.2099314947593955,
+        "calmar": 0.6182077277771781,
+        "terminal": 6.836912806148394
+      },
+      "tax_summary": {
+        "port_value": 68369.13,
+        "cost_basis": 58782.09,
+        "unrealized_gain": 9587.04,
+        "loss_carryforward": 0.0,
+        "total_darf_paid": 7317.31,
+        "settled_years": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "events": [
+          {
+            "year": 2004,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10000.0
+          },
+          {
+            "year": 2005,
+            "annual_gross_gain": 135.19,
+            "loss_carryforward_in": 0.0,
+            "taxable": 135.19,
+            "darf": 20.28,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10441.27
+          },
+          {
+            "year": 2006,
+            "annual_gross_gain": 1453.31,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1453.31,
+            "darf": 218.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 12553.4
+          },
+          {
+            "year": 2007,
+            "annual_gross_gain": 1585.89,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1585.89,
+            "darf": 237.88,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 13276.38
+          },
+          {
+            "year": 2008,
+            "annual_gross_gain": 441.64,
+            "loss_carryforward_in": 0.0,
+            "taxable": 441.64,
+            "darf": 66.25,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 14680.7
+          },
+          {
+            "year": 2009,
+            "annual_gross_gain": 1188.35,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1188.35,
+            "darf": 178.25,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 16039.51
+          },
+          {
+            "year": 2010,
+            "annual_gross_gain": 2728.16,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2728.16,
+            "darf": 409.22,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 18624.75
+          },
+          {
+            "year": 2011,
+            "annual_gross_gain": 1091.59,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1091.59,
+            "darf": 163.74,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 18861.29
+          },
+          {
+            "year": 2012,
+            "annual_gross_gain": 1432.16,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1432.16,
+            "darf": 214.82,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 20735.97
+          },
+          {
+            "year": 2013,
+            "annual_gross_gain": 2913.23,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2913.23,
+            "darf": 436.99,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 22175.26
+          },
+          {
+            "year": 2014,
+            "annual_gross_gain": -758.77,
+            "loss_carryforward_in": 0.0,
+            "taxable": -758.77,
+            "darf": 0.0,
+            "loss_carryforward_out": -758.77,
+            "port_value_after": 22562.5
+          },
+          {
+            "year": 2015,
+            "annual_gross_gain": -289.61,
+            "loss_carryforward_in": -758.77,
+            "taxable": -1048.38,
+            "darf": 0.0,
+            "loss_carryforward_out": -1048.38,
+            "port_value_after": 21948.41
+          },
+          {
+            "year": 2016,
+            "annual_gross_gain": 1643.86,
+            "loss_carryforward_in": 0.0,
+            "taxable": 595.48,
+            "darf": 89.32,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 24466.6
+          },
+          {
+            "year": 2017,
+            "annual_gross_gain": 3648.34,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3648.34,
+            "darf": 547.25,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 27543.26
+          },
+          {
+            "year": 2018,
+            "annual_gross_gain": 2701.1,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2701.1,
+            "darf": 405.16,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 29512.55
+          },
+          {
+            "year": 2019,
+            "annual_gross_gain": 708.08,
+            "loss_carryforward_in": 0.0,
+            "taxable": 708.08,
+            "darf": 106.21,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 31413.44
+          },
+          {
+            "year": 2020,
+            "annual_gross_gain": 3672.57,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3672.57,
+            "darf": 550.89,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 38571.0
+          },
+          {
+            "year": 2021,
+            "annual_gross_gain": 9504.7,
+            "loss_carryforward_in": 0.0,
+            "taxable": 9504.7,
+            "darf": 1425.71,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 46326.92
+          },
+          {
+            "year": 2022,
+            "annual_gross_gain": 3424.44,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3424.44,
+            "darf": 513.67,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 47555.21
+          },
+          {
+            "year": 2023,
+            "annual_gross_gain": 1720.66,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1720.66,
+            "darf": 258.1,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 51515.66
+          },
+          {
+            "year": 2024,
+            "annual_gross_gain": 3041.82,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3041.82,
+            "darf": 456.27,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 51592.35
+          },
+          {
+            "year": 2025,
+            "annual_gross_gain": 894.52,
+            "loss_carryforward_in": 0.0,
+            "taxable": 894.52,
+            "darf": 134.18,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 58978.63
+          },
+          {
+            "year": 2026,
+            "annual_gross_gain": 5900.85,
+            "loss_carryforward_in": 0.0,
+            "taxable": 5900.85,
+            "darf": 885.13,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 68369.13
+          }
+        ]
+      },
+      "gate_details": {
+        "n_trials": 12,
+        "dsr_p_value": 0.011341329220779128,
+        "walk_forward": {
+          "n_windows": 8,
+          "positive_windows": 8,
+          "max_oos_mdd": 0.15193711518471778,
+          "oos_returns": [
+            0.1647936312969076,
+            0.3031424322231626,
+            0.15114587211172847,
+            0.07098473364935454,
+            0.28249597394856396,
+            0.4636050544533641,
+            0.11863110221434847,
+            0.36033625143662396
+          ],
+          "oos_mdds": [
+            0.12628250628214893,
+            0.1300640153116063,
+            0.07194404753635009,
+            0.07590809336630391,
+            0.0978622879521672,
+            0.07503734702406108,
+            0.09629305771831621,
+            0.15193711518471778
+          ],
+          "pass_gate": true
+        },
+        "oos_sharpe": 1.1015635073152894,
+        "fwd_sharpe": 1.1105951641033596,
+        "bootstrap_999_ci_low_sharpe": 0.372009164289158,
+        "xlib_cagr_delta_pp": 0.0
+      },
+      "gates": {
+        "dsr_p_lt_0_05": true,
+        "wf_6_of_8_positive": true,
+        "oos_sharpe_positive": true,
+        "fwd_sharpe_positive": true,
+        "bootstrap_999_low_gt_0": true,
+        "xlib_delta_lte_3pp": true,
+        "n_passed_ex_pbo": 6
+      }
+    },
+    {
+      "config": {
+        "name": "haa_balanced_g8_t4_no_vnq_proxy_yf",
+        "offensive_assets": [
+          "SPY",
+          "IWM",
+          "VEA",
+          "VWO",
+          "DBC",
+          "IEF",
+          "TLT"
+        ],
+        "canary_asset": "TIP",
+        "defensive_assets": [
+          "BIL",
+          "IEF"
+        ],
+        "top_n": 4,
+        "lookback_months": [
+          1,
+          3,
+          6,
+          12
+        ],
+        "min_offensive_assets": 4
+      },
+      "source": "yfinance",
+      "promotion_eligible": false,
+      "data_caveat": "yfinance current-universe/survivorship-biased screen only",
+      "gross_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.09721575374653124,
+        "mdd": -0.14740397295577903,
+        "vol": 0.10837228540234699,
+        "sharpe": 0.9104981976778395,
+        "sortino": 1.2897735706317017,
+        "calmar": 0.6595192232416681,
+        "terminal": 7.290564964080245
+      },
+      "after_tax_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.08608111221429326,
+        "mdd": -0.14946060637577407,
+        "vol": 0.10867727266166002,
+        "sharpe": 0.8143672811826409,
+        "sortino": 1.1460514742762333,
+        "calmar": 0.5759451557279783,
+        "terminal": 5.860137148156249
+      },
+      "tax_summary": {
+        "port_value": 58601.37,
+        "cost_basis": 50480.97,
+        "unrealized_gain": 8120.4,
+        "loss_carryforward": 0.0,
+        "total_darf_paid": 6072.15,
+        "settled_years": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "events": [
+          {
+            "year": 2004,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10000.0
+          },
+          {
+            "year": 2005,
+            "annual_gross_gain": 81.77,
+            "loss_carryforward_in": 0.0,
+            "taxable": 81.77,
+            "darf": 12.27,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10437.05
+          },
+          {
+            "year": 2006,
+            "annual_gross_gain": 926.09,
+            "loss_carryforward_in": 0.0,
+            "taxable": 926.09,
+            "darf": 138.91,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 11794.49
+          },
+          {
+            "year": 2007,
+            "annual_gross_gain": 1938.31,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1938.31,
+            "darf": 290.75,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 13120.12
+          },
+          {
+            "year": 2008,
+            "annual_gross_gain": 804.76,
+            "loss_carryforward_in": 0.0,
+            "taxable": 804.76,
+            "darf": 120.71,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 14876.56
+          },
+          {
+            "year": 2009,
+            "annual_gross_gain": 907.81,
+            "loss_carryforward_in": 0.0,
+            "taxable": 907.81,
+            "darf": 136.17,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 16172.51
+          },
+          {
+            "year": 2010,
+            "annual_gross_gain": 1639.83,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1639.83,
+            "darf": 245.97,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 17517.16
+          },
+          {
+            "year": 2011,
+            "annual_gross_gain": 1367.57,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1367.57,
+            "darf": 205.14,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 18089.43
+          },
+          {
+            "year": 2012,
+            "annual_gross_gain": 719.73,
+            "loss_carryforward_in": 0.0,
+            "taxable": 719.73,
+            "darf": 107.96,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 19137.85
+          },
+          {
+            "year": 2013,
+            "annual_gross_gain": 2261.07,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2261.07,
+            "darf": 339.16,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 20038.1
+          },
+          {
+            "year": 2014,
+            "annual_gross_gain": -741.79,
+            "loss_carryforward_in": 0.0,
+            "taxable": -741.79,
+            "darf": 0.0,
+            "loss_carryforward_out": -741.79,
+            "port_value_after": 20603.4
+          },
+          {
+            "year": 2015,
+            "annual_gross_gain": 806.03,
+            "loss_carryforward_in": 0.0,
+            "taxable": 64.24,
+            "darf": 9.64,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 20727.28
+          },
+          {
+            "year": 2016,
+            "annual_gross_gain": 1418.01,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1418.01,
+            "darf": 212.7,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 23029.37
+          },
+          {
+            "year": 2017,
+            "annual_gross_gain": 3485.58,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3485.58,
+            "darf": 522.84,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 25917.58
+          },
+          {
+            "year": 2018,
+            "annual_gross_gain": 1940.83,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1940.83,
+            "darf": 291.12,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 27267.48
+          },
+          {
+            "year": 2019,
+            "annual_gross_gain": 315.83,
+            "loss_carryforward_in": 0.0,
+            "taxable": 315.83,
+            "darf": 47.37,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 28478.06
+          },
+          {
+            "year": 2020,
+            "annual_gross_gain": 2969.91,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2969.91,
+            "darf": 445.49,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 34700.02
+          },
+          {
+            "year": 2021,
+            "annual_gross_gain": 7876.84,
+            "loss_carryforward_in": 0.0,
+            "taxable": 7876.84,
+            "darf": 1181.53,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 39790.7
+          },
+          {
+            "year": 2022,
+            "annual_gross_gain": 614.61,
+            "loss_carryforward_in": 0.0,
+            "taxable": 614.61,
+            "darf": 92.19,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 40451.41
+          },
+          {
+            "year": 2023,
+            "annual_gross_gain": 2300.72,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2300.72,
+            "darf": 345.11,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 43963.93
+          },
+          {
+            "year": 2024,
+            "annual_gross_gain": 3473.39,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3473.39,
+            "darf": 521.01,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 44480.9
+          },
+          {
+            "year": 2025,
+            "annual_gross_gain": 401.18,
+            "loss_carryforward_in": 0.0,
+            "taxable": 401.18,
+            "darf": 60.18,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 50541.63
+          },
+          {
+            "year": 2026,
+            "annual_gross_gain": 4972.91,
+            "loss_carryforward_in": 0.0,
+            "taxable": 4972.91,
+            "darf": 745.94,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 58601.37
+          }
+        ]
+      },
+      "gate_details": {
+        "n_trials": 12,
+        "dsr_p_value": 0.018778451038548027,
+        "walk_forward": {
+          "n_windows": 8,
+          "positive_windows": 8,
+          "max_oos_mdd": 0.1494606063757731,
+          "oos_returns": [
+            0.2044920092330802,
+            0.2440460153323183,
+            0.08739624539262225,
+            0.11144875343960936,
+            0.24362671393978874,
+            0.4115421086582429,
+            0.07579626691299413,
+            0.36941482164015227
+          ],
+          "oos_mdds": [
+            0.12940457190996663,
+            0.1474039729557793,
+            0.05827149389966258,
+            0.05388295361759388,
+            0.09786226040913673,
+            0.07791434629498202,
+            0.12212906505111719,
+            0.1494606063757731
+          ],
+          "pass_gate": true
+        },
+        "oos_sharpe": 1.0257159556854862,
+        "fwd_sharpe": 1.0369829430070858,
+        "bootstrap_999_ci_low_sharpe": 0.36168035698111983,
+        "xlib_cagr_delta_pp": 0.0
+      },
+      "gates": {
+        "dsr_p_lt_0_05": true,
+        "wf_6_of_8_positive": true,
+        "oos_sharpe_positive": true,
+        "fwd_sharpe_positive": true,
+        "bootstrap_999_low_gt_0": true,
+        "xlib_delta_lte_3pp": true,
+        "n_passed_ex_pbo": 6
+      }
+    },
+    {
+      "config": {
+        "name": "haa_bestfolio_no_qqq_seed_yf",
+        "offensive_assets": [
+          "SPY",
+          "IWM",
+          "VEA",
+          "VWO",
+          "VNQ",
+          "DBC",
+          "GLD",
+          "IEF",
+          "TLT"
+        ],
+        "canary_asset": "TIP",
+        "defensive_assets": [
+          "BIL",
+          "IEF"
+        ],
+        "top_n": 4,
+        "lookback_months": [
+          1,
+          3,
+          6,
+          12
+        ],
+        "min_offensive_assets": 4
+      },
+      "source": "yfinance",
+      "promotion_eligible": false,
+      "data_caveat": "yfinance current-universe/survivorship-biased screen only",
+      "gross_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.11092629092148032,
+        "mdd": -0.13965509406886187,
+        "vol": 0.11438582001164987,
+        "sharpe": 0.9771137564181984,
+        "sortino": 1.3837098508568864,
+        "calmar": 0.7942874669991214,
+        "terminal": 9.511398305659824
+      },
+      "after_tax_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.09762497652323887,
+        "mdd": -0.13965509406886079,
+        "vol": 0.11490469466082182,
+        "sharpe": 0.8683594818784024,
+        "sortino": 1.2196899966096486,
+        "calmar": 0.6990434339266005,
+        "terminal": 7.349010908355661
+      },
+      "tax_summary": {
+        "port_value": 73490.11,
+        "cost_basis": 67951.55,
+        "unrealized_gain": 5538.56,
+        "loss_carryforward": 0.0,
+        "total_darf_paid": 8692.73,
+        "settled_years": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "events": [
+          {
+            "year": 2004,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10000.0
+          },
+          {
+            "year": 2005,
+            "annual_gross_gain": 135.19,
+            "loss_carryforward_in": 0.0,
+            "taxable": 135.19,
+            "darf": 20.28,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10495.49
+          },
+          {
+            "year": 2006,
+            "annual_gross_gain": 1887.76,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1887.76,
+            "darf": 283.16,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 12562.66
+          },
+          {
+            "year": 2007,
+            "annual_gross_gain": 863.92,
+            "loss_carryforward_in": 0.0,
+            "taxable": 863.92,
+            "darf": 129.59,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 13710.69
+          },
+          {
+            "year": 2008,
+            "annual_gross_gain": 1233.68,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1233.68,
+            "darf": 185.05,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 14611.22
+          },
+          {
+            "year": 2009,
+            "annual_gross_gain": 1605.57,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1605.57,
+            "darf": 240.84,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 16368.14
+          },
+          {
+            "year": 2010,
+            "annual_gross_gain": 1558.02,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1558.02,
+            "darf": 233.7,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 18621.53
+          },
+          {
+            "year": 2011,
+            "annual_gross_gain": 2325.7,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2325.7,
+            "darf": 348.85,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 19185.46
+          },
+          {
+            "year": 2012,
+            "annual_gross_gain": 624.98,
+            "loss_carryforward_in": 0.0,
+            "taxable": 624.98,
+            "darf": 93.75,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 21012.26
+          },
+          {
+            "year": 2013,
+            "annual_gross_gain": 3040.78,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3040.78,
+            "darf": 456.12,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 22457.38
+          },
+          {
+            "year": 2014,
+            "annual_gross_gain": -782.25,
+            "loss_carryforward_in": 0.0,
+            "taxable": -782.25,
+            "darf": 0.0,
+            "loss_carryforward_out": -782.25,
+            "port_value_after": 22849.54
+          },
+          {
+            "year": 2015,
+            "annual_gross_gain": -871.99,
+            "loss_carryforward_in": -782.25,
+            "taxable": -1654.25,
+            "darf": 0.0,
+            "loss_carryforward_out": -1654.25,
+            "port_value_after": 21648.22
+          },
+          {
+            "year": 2016,
+            "annual_gross_gain": 1793.56,
+            "loss_carryforward_in": 0.0,
+            "taxable": 139.31,
+            "darf": 20.9,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 24413.23
+          },
+          {
+            "year": 2017,
+            "annual_gross_gain": 3739.12,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3739.12,
+            "darf": 560.87,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 27468.4
+          },
+          {
+            "year": 2018,
+            "annual_gross_gain": 2679.11,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2679.11,
+            "darf": 401.87,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 29434.52
+          },
+          {
+            "year": 2019,
+            "annual_gross_gain": 747.6,
+            "loss_carryforward_in": 0.0,
+            "taxable": 747.6,
+            "darf": 112.14,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 30995.67
+          },
+          {
+            "year": 2020,
+            "annual_gross_gain": 3295.04,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3295.04,
+            "darf": 494.26,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 38415.18
+          },
+          {
+            "year": 2021,
+            "annual_gross_gain": 9709.62,
+            "loss_carryforward_in": 0.0,
+            "taxable": 9709.62,
+            "darf": 1456.44,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 46103.26
+          },
+          {
+            "year": 2022,
+            "annual_gross_gain": 4300.99,
+            "loss_carryforward_in": 0.0,
+            "taxable": 4300.99,
+            "darf": 645.15,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 47347.8
+          },
+          {
+            "year": 2023,
+            "annual_gross_gain": 1162.22,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1162.22,
+            "darf": 174.33,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 50709.54
+          },
+          {
+            "year": 2024,
+            "annual_gross_gain": 3871.77,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3871.77,
+            "darf": 580.77,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 52506.09
+          },
+          {
+            "year": 2025,
+            "annual_gross_gain": 5231.14,
+            "loss_carryforward_in": 0.0,
+            "taxable": 5231.14,
+            "darf": 784.67,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 64150.82
+          },
+          {
+            "year": 2026,
+            "annual_gross_gain": 9800.04,
+            "loss_carryforward_in": 0.0,
+            "taxable": 9800.04,
+            "darf": 1470.01,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 73490.11
+          }
+        ]
+      },
+      "gate_details": {
+        "n_trials": 12,
+        "dsr_p_value": 0.010110745230844653,
+        "walk_forward": {
+          "n_windows": 8,
+          "positive_windows": 8,
+          "max_oos_mdd": 0.13965509406886115,
+          "oos_returns": [
+            0.2262387087024722,
+            0.27390008273363176,
+            0.15371054968026576,
+            0.05228523111565142,
+            0.26868584189406985,
+            0.4809045729345516,
+            0.10255025133024032,
+            0.49994925312980065
+          ],
+          "oos_mdds": [
+            0.13965509406886115,
+            0.1360294955214828,
+            0.07249519450726091,
+            0.09999576174811542,
+            0.09786238254271194,
+            0.08976682185977322,
+            0.09700819874988119,
+            0.13923169876967437
+          ],
+          "pass_gate": true
+        },
+        "oos_sharpe": 1.205299397946495,
+        "fwd_sharpe": 1.2138743152960763,
+        "bootstrap_999_ci_low_sharpe": 0.3644239777436005,
+        "xlib_cagr_delta_pp": 0.0
+      },
+      "gates": {
+        "dsr_p_lt_0_05": true,
+        "wf_6_of_8_positive": true,
+        "oos_sharpe_positive": true,
+        "fwd_sharpe_positive": true,
+        "bootstrap_999_low_gt_0": true,
+        "xlib_delta_lte_3pp": true,
+        "n_passed_ex_pbo": 6
+      }
+    },
+    {
+      "config": {
+        "name": "haa_only_etfs_yf_top4",
+        "offensive_assets": [
+          "AGG",
+          "AIS",
+          "DBA",
+          "DIA",
+          "DRAM",
+          "EDV",
+          "EEM",
+          "EFA",
+          "ETHA",
+          "FMTM",
+          "GLD",
+          "HYG",
+          "IBIT",
+          "IVV",
+          "IWM",
+          "LQD",
+          "MTUM",
+          "POW",
+          "QLD",
+          "QQQ"
+        ],
+        "canary_asset": "TIP",
+        "defensive_assets": [
+          "BIL",
+          "IEF"
+        ],
+        "top_n": 4,
+        "lookback_months": [
+          1,
+          3,
+          6,
+          12
+        ],
+        "min_offensive_assets": 4
+      },
+      "source": "yfinance",
+      "promotion_eligible": false,
+      "data_caveat": "yfinance current-universe/survivorship-biased screen only",
+      "gross_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.14032418332663288,
+        "mdd": -0.2910136371321623,
+        "vol": 0.16311127050266447,
+        "sharpe": 0.887014280767371,
+        "sortino": 1.2550977195270694,
+        "calmar": 0.48219109148794087,
+        "terminal": 16.639126808140407
+      },
+      "after_tax_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.12412925425525678,
+        "mdd": -0.30048050881122074,
+        "vol": 0.1636586616941016,
+        "sharpe": 0.7971653193903576,
+        "sortino": 1.1210650147261134,
+        "calmar": 0.4131025161876372,
+        "terminal": 12.249349773867323
+      },
+      "tax_summary": {
+        "port_value": 122493.5,
+        "cost_basis": 102399.19,
+        "unrealized_gain": 20094.31,
+        "loss_carryforward": 0.0,
+        "total_darf_paid": 13859.88,
+        "settled_years": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "events": [
+          {
+            "year": 2004,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10000.0
+          },
+          {
+            "year": 2005,
+            "annual_gross_gain": -106.69,
+            "loss_carryforward_in": 0.0,
+            "taxable": -106.69,
+            "darf": 0.0,
+            "loss_carryforward_out": -106.69,
+            "port_value_after": 10656.41
+          },
+          {
+            "year": 2006,
+            "annual_gross_gain": 2440.29,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2333.59,
+            "darf": 350.04,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 12693.79
+          },
+          {
+            "year": 2007,
+            "annual_gross_gain": 1370.41,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1370.41,
+            "darf": 205.56,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 15189.16
+          },
+          {
+            "year": 2008,
+            "annual_gross_gain": -676.45,
+            "loss_carryforward_in": 0.0,
+            "taxable": -676.45,
+            "darf": 0.0,
+            "loss_carryforward_out": -676.45,
+            "port_value_after": 13202.65
+          },
+          {
+            "year": 2009,
+            "annual_gross_gain": 2563.8,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1887.35,
+            "darf": 283.1,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 17347.92
+          },
+          {
+            "year": 2010,
+            "annual_gross_gain": 983.41,
+            "loss_carryforward_in": 0.0,
+            "taxable": 983.41,
+            "darf": 147.51,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 17644.07
+          },
+          {
+            "year": 2011,
+            "annual_gross_gain": 1621.11,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1621.11,
+            "darf": 243.17,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 18053.63
+          },
+          {
+            "year": 2012,
+            "annual_gross_gain": 788.08,
+            "loss_carryforward_in": 0.0,
+            "taxable": 788.08,
+            "darf": 118.21,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 19335.99
+          },
+          {
+            "year": 2013,
+            "annual_gross_gain": 3179.68,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3179.68,
+            "darf": 476.95,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 21316.43
+          },
+          {
+            "year": 2014,
+            "annual_gross_gain": 810.91,
+            "loss_carryforward_in": 0.0,
+            "taxable": 810.91,
+            "darf": 121.64,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 23860.02
+          },
+          {
+            "year": 2015,
+            "annual_gross_gain": 1357.41,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1357.41,
+            "darf": 203.61,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 24158.58
+          },
+          {
+            "year": 2016,
+            "annual_gross_gain": 1778.83,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1778.83,
+            "darf": 266.82,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 26288.54
+          },
+          {
+            "year": 2017,
+            "annual_gross_gain": 4116.19,
+            "loss_carryforward_in": 0.0,
+            "taxable": 4116.19,
+            "darf": 617.43,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 30873.34
+          },
+          {
+            "year": 2018,
+            "annual_gross_gain": 7499.31,
+            "loss_carryforward_in": 0.0,
+            "taxable": 7499.31,
+            "darf": 1124.9,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 36605.5
+          },
+          {
+            "year": 2019,
+            "annual_gross_gain": -286.58,
+            "loss_carryforward_in": 0.0,
+            "taxable": -286.58,
+            "darf": 0.0,
+            "loss_carryforward_out": -286.58,
+            "port_value_after": 38379.05
+          },
+          {
+            "year": 2020,
+            "annual_gross_gain": 7269.6,
+            "loss_carryforward_in": 0.0,
+            "taxable": 6983.02,
+            "darf": 1047.45,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 53169.68
+          },
+          {
+            "year": 2021,
+            "annual_gross_gain": 19746.31,
+            "loss_carryforward_in": 0.0,
+            "taxable": 19746.31,
+            "darf": 2961.95,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 64281.25
+          },
+          {
+            "year": 2022,
+            "annual_gross_gain": -3345.44,
+            "loss_carryforward_in": 0.0,
+            "taxable": -3345.44,
+            "darf": 0.0,
+            "loss_carryforward_out": -3345.44,
+            "port_value_after": 61389.77
+          },
+          {
+            "year": 2023,
+            "annual_gross_gain": 6089.74,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2744.3,
+            "darf": 411.65,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 71155.62
+          },
+          {
+            "year": 2024,
+            "annual_gross_gain": 14982.62,
+            "loss_carryforward_in": 0.0,
+            "taxable": 14982.62,
+            "darf": 2247.39,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 79432.79
+          },
+          {
+            "year": 2025,
+            "annual_gross_gain": 6705.83,
+            "loss_carryforward_in": 0.0,
+            "taxable": 6705.83,
+            "darf": 1005.87,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 88957.95
+          },
+          {
+            "year": 2026,
+            "annual_gross_gain": 13510.83,
+            "loss_carryforward_in": 0.0,
+            "taxable": 13510.83,
+            "darf": 2026.62,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 122493.5
+          }
+        ]
+      },
+      "gate_details": {
+        "n_trials": 12,
+        "dsr_p_value": 0.022792025098398283,
+        "walk_forward": {
+          "n_windows": 8,
+          "positive_windows": 8,
+          "max_oos_mdd": 0.3004805088112199,
+          "oos_returns": [
+            0.15873854776985596,
+            0.19628246171523656,
+            0.18043634210734383,
+            0.16942197697217387,
+            0.4451459260262187,
+            0.6951982194137756,
+            0.10804264684631693,
+            0.6713873305492366
+          ],
+          "oos_mdds": [
+            0.3004805088112199,
+            0.2281379871916492,
+            0.08871230257912284,
+            0.06978212055552171,
+            0.1332948880325327,
+            0.2204734855510882,
+            0.19313707695021987,
+            0.19825389615643474
+          ],
+          "pass_gate": true
+        },
+        "oos_sharpe": 0.9860004786198263,
+        "fwd_sharpe": 0.996834881456244,
+        "bootstrap_999_ci_low_sharpe": 0.28817539746917964,
+        "xlib_cagr_delta_pp": 0.0
+      },
+      "gates": {
+        "dsr_p_lt_0_05": true,
+        "wf_6_of_8_positive": true,
+        "oos_sharpe_positive": true,
+        "fwd_sharpe_positive": true,
+        "bootstrap_999_low_gt_0": true,
+        "xlib_delta_lte_3pp": true,
+        "n_passed_ex_pbo": 6
+      }
+    },
+    {
+      "config": {
+        "name": "haa_only_etfs_yf_top10",
+        "offensive_assets": [
+          "AGG",
+          "AIS",
+          "DBA",
+          "DIA",
+          "DRAM",
+          "EDV",
+          "EEM",
+          "EFA",
+          "ETHA",
+          "FMTM",
+          "GLD",
+          "HYG",
+          "IBIT",
+          "IVV",
+          "IWM",
+          "LQD",
+          "MTUM",
+          "POW",
+          "QLD",
+          "QQQ"
+        ],
+        "canary_asset": "TIP",
+        "defensive_assets": [
+          "BIL",
+          "IEF"
+        ],
+        "top_n": 10,
+        "lookback_months": [
+          1,
+          3,
+          6,
+          12
+        ],
+        "min_offensive_assets": 10
+      },
+      "source": "yfinance",
+      "promotion_eligible": false,
+      "data_caveat": "yfinance current-universe/survivorship-biased screen only",
+      "gross_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.09605761479926311,
+        "mdd": -0.17770031392738983,
+        "vol": 0.11016678629109164,
+        "sharpe": 0.8878815633620745,
+        "sortino": 1.256381944923573,
+        "calmar": 0.5405596235385,
+        "terminal": 7.127549314512722
+      },
+      "after_tax_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.08520872441544891,
+        "mdd": -0.17770031392738958,
+        "vol": 0.11049446455745882,
+        "sharpe": 0.7955258609294175,
+        "sortino": 1.1184579517093816,
+        "calmar": 0.4795080128573447,
+        "terminal": 5.76016707945003
+      },
+      "tax_summary": {
+        "port_value": 57601.67,
+        "cost_basis": 48130.33,
+        "unrealized_gain": 9471.34,
+        "loss_carryforward": 0.0,
+        "total_darf_paid": 5719.55,
+        "settled_years": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "events": [
+          {
+            "year": 2004,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10000.0
+          },
+          {
+            "year": 2005,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10263.84
+          },
+          {
+            "year": 2006,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10522.08
+          },
+          {
+            "year": 2007,
+            "annual_gross_gain": 633.69,
+            "loss_carryforward_in": 0.0,
+            "taxable": 633.69,
+            "darf": 95.05,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 11046.94
+          },
+          {
+            "year": 2008,
+            "annual_gross_gain": -163.37,
+            "loss_carryforward_in": 0.0,
+            "taxable": -163.37,
+            "darf": 0.0,
+            "loss_carryforward_out": -163.37,
+            "port_value_after": 11021.89
+          },
+          {
+            "year": 2009,
+            "annual_gross_gain": 906.09,
+            "loss_carryforward_in": 0.0,
+            "taxable": 742.72,
+            "darf": 111.41,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 12925.11
+          },
+          {
+            "year": 2010,
+            "annual_gross_gain": 1272.15,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1272.15,
+            "darf": 190.82,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 14022.49
+          },
+          {
+            "year": 2011,
+            "annual_gross_gain": 1388.21,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1388.21,
+            "darf": 208.23,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 14162.66
+          },
+          {
+            "year": 2012,
+            "annual_gross_gain": 1184.27,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1184.27,
+            "darf": 177.64,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 15397.09
+          },
+          {
+            "year": 2013,
+            "annual_gross_gain": 1517.65,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1517.65,
+            "darf": 227.65,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 16285.67
+          },
+          {
+            "year": 2014,
+            "annual_gross_gain": 138.71,
+            "loss_carryforward_in": 0.0,
+            "taxable": 138.71,
+            "darf": 20.81,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 17237.3
+          },
+          {
+            "year": 2015,
+            "annual_gross_gain": 695.14,
+            "loss_carryforward_in": 0.0,
+            "taxable": 695.14,
+            "darf": 104.27,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 17490.12
+          },
+          {
+            "year": 2016,
+            "annual_gross_gain": 1240.53,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1240.53,
+            "darf": 186.08,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 19126.41
+          },
+          {
+            "year": 2017,
+            "annual_gross_gain": 3093.49,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3093.49,
+            "darf": 464.02,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 22120.01
+          },
+          {
+            "year": 2018,
+            "annual_gross_gain": 2537.31,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2537.31,
+            "darf": 380.6,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 24065.96
+          },
+          {
+            "year": 2019,
+            "annual_gross_gain": 1013.84,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1013.84,
+            "darf": 152.08,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 26937.83
+          },
+          {
+            "year": 2020,
+            "annual_gross_gain": 3822.93,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3822.93,
+            "darf": 573.44,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 32687.0
+          },
+          {
+            "year": 2021,
+            "annual_gross_gain": 5683.97,
+            "loss_carryforward_in": 0.0,
+            "taxable": 5683.97,
+            "darf": 852.6,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 37344.64
+          },
+          {
+            "year": 2022,
+            "annual_gross_gain": 146.19,
+            "loss_carryforward_in": 0.0,
+            "taxable": 146.19,
+            "darf": 21.93,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 36053.64
+          },
+          {
+            "year": 2023,
+            "annual_gross_gain": 2959.69,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2959.69,
+            "darf": 443.95,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 39211.0
+          },
+          {
+            "year": 2024,
+            "annual_gross_gain": 7123.38,
+            "loss_carryforward_in": 0.0,
+            "taxable": 7123.38,
+            "darf": 1068.51,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 44044.88
+          },
+          {
+            "year": 2025,
+            "annual_gross_gain": 102.39,
+            "loss_carryforward_in": 0.0,
+            "taxable": 102.39,
+            "darf": 15.36,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 48356.89
+          },
+          {
+            "year": 2026,
+            "annual_gross_gain": 2834.05,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2834.05,
+            "darf": 425.11,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 57601.67
+          }
+        ]
+      },
+      "gate_details": {
+        "n_trials": 12,
+        "dsr_p_value": 0.023298350606907103,
+        "walk_forward": {
+          "n_windows": 8,
+          "positive_windows": 8,
+          "max_oos_mdd": 0.17770031392738922,
+          "oos_returns": [
+            0.11574388710594974,
+            0.2646207870986854,
+            0.10665451534557602,
+            0.14515082629258136,
+            0.3164819634444589,
+            0.4887196958183453,
+            0.041117845218685556,
+            0.44076048688192704
+          ],
+          "oos_mdds": [
+            0.17692463335249417,
+            0.11423710676850794,
+            0.06023888328145541,
+            0.04831662392628692,
+            0.09643544895864288,
+            0.17770031392738922,
+            0.13616524461860163,
+            0.16701476539449636
+          ],
+          "pass_gate": true
+        },
+        "oos_sharpe": 0.9074588760562353,
+        "fwd_sharpe": 0.9136095336404781,
+        "bootstrap_999_ci_low_sharpe": 0.2803248051104562,
+        "xlib_cagr_delta_pp": 0.0
+      },
+      "gates": {
+        "dsr_p_lt_0_05": true,
+        "wf_6_of_8_positive": true,
+        "oos_sharpe_positive": true,
+        "fwd_sharpe_positive": true,
+        "bootstrap_999_low_gt_0": true,
+        "xlib_delta_lte_3pp": true,
+        "n_passed_ex_pbo": 6
+      }
+    },
+    {
+      "config": {
+        "name": "haa_only_etfs_yf_top20",
+        "offensive_assets": [
+          "AGG",
+          "AIS",
+          "DBA",
+          "DIA",
+          "DRAM",
+          "EDV",
+          "EEM",
+          "EFA",
+          "ETHA",
+          "FMTM",
+          "GLD",
+          "HYG",
+          "IBIT",
+          "IVV",
+          "IWM",
+          "LQD",
+          "MTUM",
+          "POW",
+          "QLD",
+          "QQQ"
+        ],
+        "canary_asset": "TIP",
+        "defensive_assets": [
+          "BIL",
+          "IEF"
+        ],
+        "top_n": 20,
+        "lookback_months": [
+          1,
+          3,
+          6,
+          12
+        ],
+        "min_offensive_assets": 20
+      },
+      "source": "yfinance",
+      "promotion_eligible": false,
+      "data_caveat": "yfinance current-universe/survivorship-biased screen only",
+      "gross_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.031526461111038406,
+        "mdd": -0.104013437324754,
+        "vol": 0.05482711219872417,
+        "sharpe": 0.5935695087066901,
+        "sortino": 0.8683960930246816,
+        "calmar": 0.3030998871098309,
+        "terminal": 1.943798150392236
+      },
+      "after_tax_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.027651653561901357,
+        "mdd": -0.12149013565872425,
+        "vol": 0.055615556564494406,
+        "sharpe": 0.518274720432854,
+        "sortino": 0.7464753043067821,
+        "calmar": 0.22760410474457876,
+        "terminal": 1.7933011529172496
+      },
+      "tax_summary": {
+        "port_value": 17933.01,
+        "cost_basis": 17769.88,
+        "unrealized_gain": 163.13,
+        "loss_carryforward": -30.9,
+        "total_darf_paid": 1170.12,
+        "settled_years": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "events": [
+          {
+            "year": 2004,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10000.0
+          },
+          {
+            "year": 2005,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10263.84
+          },
+          {
+            "year": 2006,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10522.09
+          },
+          {
+            "year": 2007,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 11614.15
+          },
+          {
+            "year": 2008,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 13695.11
+          },
+          {
+            "year": 2009,
+            "annual_gross_gain": 2740.16,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2740.16,
+            "darf": 411.02,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 12267.61
+          },
+          {
+            "year": 2010,
+            "annual_gross_gain": -525.34,
+            "loss_carryforward_in": 0.0,
+            "taxable": -525.34,
+            "darf": 0.0,
+            "loss_carryforward_out": -525.34,
+            "port_value_after": 12928.03
+          },
+          {
+            "year": 2011,
+            "annual_gross_gain": 686.33,
+            "loss_carryforward_in": 0.0,
+            "taxable": 160.98,
+            "darf": 24.15,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 14950.23
+          },
+          {
+            "year": 2012,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 15498.0
+          },
+          {
+            "year": 2013,
+            "annual_gross_gain": 2232.27,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2232.27,
+            "darf": 334.84,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 14743.84
+          },
+          {
+            "year": 2014,
+            "annual_gross_gain": -419.9,
+            "loss_carryforward_in": 0.0,
+            "taxable": -419.9,
+            "darf": 0.0,
+            "loss_carryforward_out": -419.9,
+            "port_value_after": 15274.4
+          },
+          {
+            "year": 2015,
+            "annual_gross_gain": 540.34,
+            "loss_carryforward_in": 0.0,
+            "taxable": 120.45,
+            "darf": 18.07,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 15254.75
+          },
+          {
+            "year": 2016,
+            "annual_gross_gain": 276.01,
+            "loss_carryforward_in": 0.0,
+            "taxable": 276.01,
+            "darf": 41.4,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 15387.8
+          },
+          {
+            "year": 2017,
+            "annual_gross_gain": -393.9,
+            "loss_carryforward_in": 0.0,
+            "taxable": -393.9,
+            "darf": 0.0,
+            "loss_carryforward_out": -393.9,
+            "port_value_after": 15148.21
+          },
+          {
+            "year": 2018,
+            "annual_gross_gain": -25.63,
+            "loss_carryforward_in": -393.9,
+            "taxable": -419.53,
+            "darf": 0.0,
+            "loss_carryforward_out": -419.53,
+            "port_value_after": 15111.99
+          },
+          {
+            "year": 2019,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": -419.53,
+            "taxable": -419.53,
+            "darf": 0.0,
+            "loss_carryforward_out": -419.53,
+            "port_value_after": 16325.41
+          },
+          {
+            "year": 2020,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": -419.53,
+            "taxable": -419.53,
+            "darf": 0.0,
+            "loss_carryforward_out": -419.53,
+            "port_value_after": 17959.05
+          },
+          {
+            "year": 2021,
+            "annual_gross_gain": 2213.1,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1793.57,
+            "darf": 269.04,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 17069.8
+          },
+          {
+            "year": 2022,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 17309.55
+          },
+          {
+            "year": 2023,
+            "annual_gross_gain": -11.82,
+            "loss_carryforward_in": 0.0,
+            "taxable": -11.82,
+            "darf": 0.0,
+            "loss_carryforward_out": -11.82,
+            "port_value_after": 17917.58
+          },
+          {
+            "year": 2024,
+            "annual_gross_gain": 370.49,
+            "loss_carryforward_in": 0.0,
+            "taxable": 358.67,
+            "darf": 53.8,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 17595.86
+          },
+          {
+            "year": 2025,
+            "annual_gross_gain": 118.67,
+            "loss_carryforward_in": 0.0,
+            "taxable": 118.67,
+            "darf": 17.8,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 17825.93
+          },
+          {
+            "year": 2026,
+            "annual_gross_gain": -30.9,
+            "loss_carryforward_in": 0.0,
+            "taxable": -30.9,
+            "darf": 0.0,
+            "loss_carryforward_out": -30.9,
+            "port_value_after": 17933.01
+          }
+        ]
+      },
+      "gate_details": {
+        "n_trials": 12,
+        "dsr_p_value": 0.23194269057588057,
+        "walk_forward": {
+          "n_windows": 8,
+          "positive_windows": 6,
+          "max_oos_mdd": 0.10401343732475372,
+          "oos_returns": [
+            0.2316369571007808,
+            0.13490264049000866,
+            -0.011145494469148476,
+            0.05330228316244234,
+            -0.00426962345609827,
+            0.13841165548099887,
+            0.013887010425491564,
+            0.0061730740243568505
+          ],
+          "oos_mdds": [
+            0.10401343732475372,
+            0.08270968472134535,
+            0.07236665111977249,
+            0.06638279421319479,
+            0.042547481036557075,
+            0.046756850284431266,
+            0.03491269023196198,
+            0.0733277151282895
+          ],
+          "pass_gate": true
+        },
+        "oos_sharpe": 0.34718243952572836,
+        "fwd_sharpe": 0.36362998662069146,
+        "bootstrap_999_ci_low_sharpe": -0.06484840568593969,
+        "xlib_cagr_delta_pp": 0.0
+      },
+      "gates": {
+        "dsr_p_lt_0_05": false,
+        "wf_6_of_8_positive": true,
+        "oos_sharpe_positive": true,
+        "fwd_sharpe_positive": true,
+        "bootstrap_999_low_gt_0": false,
+        "xlib_delta_lte_3pp": true,
+        "n_passed_ex_pbo": 4
+      }
+    },
+    {
+      "config": {
+        "name": "haa_only_stocks_yf_top4_available18",
+        "offensive_assets": [
+          "A",
+          "AA",
+          "AAL",
+          "AAMI",
+          "AAON",
+          "AAP",
+          "AAPL",
+          "AAT",
+          "ABBV",
+          "ABCB",
+          "ABG",
+          "ABM",
+          "ABNB",
+          "ABR",
+          "ABT",
+          "ACA",
+          "ACAD",
+          "ACGL"
+        ],
+        "canary_asset": "TIP",
+        "defensive_assets": [
+          "BIL",
+          "IEF"
+        ],
+        "top_n": 4,
+        "lookback_months": [
+          1,
+          3,
+          6,
+          12
+        ],
+        "min_offensive_assets": 4
+      },
+      "source": "yfinance",
+      "promotion_eligible": false,
+      "data_caveat": "yfinance current-universe/survivorship-biased screen only",
+      "gross_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.176222879972749,
+        "mdd": -0.5074272688670713,
+        "vol": 0.25757290173957215,
+        "sharpe": 0.7573142843918427,
+        "sortino": 1.1496991395273222,
+        "calmar": 0.3472869725078046,
+        "terminal": 32.31268449674152
+      },
+      "after_tax_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.15579355229097636,
+        "mdd": -0.510121026145012,
+        "vol": 0.2586032452946263,
+        "sharpe": 0.6875715850533091,
+        "sortino": 1.0378196573992327,
+        "calmar": 0.3054050790031324,
+        "terminal": 22.204254760516665
+      },
+      "tax_summary": {
+        "port_value": 222042.55,
+        "cost_basis": 213879.13,
+        "unrealized_gain": 8163.41,
+        "loss_carryforward": 0.0,
+        "total_darf_paid": 30581.87,
+        "settled_years": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "events": [
+          {
+            "year": 2004,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10000.0
+          },
+          {
+            "year": 2005,
+            "annual_gross_gain": 1954.19,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1954.19,
+            "darf": 293.13,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 13392.05
+          },
+          {
+            "year": 2006,
+            "annual_gross_gain": 3852.86,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3852.86,
+            "darf": 577.93,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 16078.2
+          },
+          {
+            "year": 2007,
+            "annual_gross_gain": 589.29,
+            "loss_carryforward_in": 0.0,
+            "taxable": 589.29,
+            "darf": 88.39,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 16075.04
+          },
+          {
+            "year": 2008,
+            "annual_gross_gain": -3746.66,
+            "loss_carryforward_in": 0.0,
+            "taxable": -3746.66,
+            "darf": 0.0,
+            "loss_carryforward_out": -3746.66,
+            "port_value_after": 12510.0
+          },
+          {
+            "year": 2009,
+            "annual_gross_gain": -841.1,
+            "loss_carryforward_in": -3746.66,
+            "taxable": -4587.76,
+            "darf": 0.0,
+            "loss_carryforward_out": -4587.76,
+            "port_value_after": 12570.31
+          },
+          {
+            "year": 2010,
+            "annual_gross_gain": 6679.96,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2092.2,
+            "darf": 313.83,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 21458.54
+          },
+          {
+            "year": 2011,
+            "annual_gross_gain": 1767.98,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1767.98,
+            "darf": 265.2,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 20292.34
+          },
+          {
+            "year": 2012,
+            "annual_gross_gain": 4430.26,
+            "loss_carryforward_in": 0.0,
+            "taxable": 4430.26,
+            "darf": 664.54,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 31752.84
+          },
+          {
+            "year": 2013,
+            "annual_gross_gain": 29657.86,
+            "loss_carryforward_in": 0.0,
+            "taxable": 29657.86,
+            "darf": 4448.68,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 49088.54
+          },
+          {
+            "year": 2014,
+            "annual_gross_gain": 185.35,
+            "loss_carryforward_in": 0.0,
+            "taxable": 185.35,
+            "darf": 27.8,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 54220.26
+          },
+          {
+            "year": 2015,
+            "annual_gross_gain": 3175.04,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3175.04,
+            "darf": 476.26,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 57300.52
+          },
+          {
+            "year": 2016,
+            "annual_gross_gain": 3535.21,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3535.21,
+            "darf": 530.28,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 62333.7
+          },
+          {
+            "year": 2017,
+            "annual_gross_gain": 10294.08,
+            "loss_carryforward_in": 0.0,
+            "taxable": 10294.08,
+            "darf": 1544.11,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 69218.26
+          },
+          {
+            "year": 2018,
+            "annual_gross_gain": 8473.07,
+            "loss_carryforward_in": 0.0,
+            "taxable": 8473.07,
+            "darf": 1270.96,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 78745.2
+          },
+          {
+            "year": 2019,
+            "annual_gross_gain": 24314.5,
+            "loss_carryforward_in": 0.0,
+            "taxable": 24314.5,
+            "darf": 3647.17,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 111420.04
+          },
+          {
+            "year": 2020,
+            "annual_gross_gain": 23902.15,
+            "loss_carryforward_in": 0.0,
+            "taxable": 23902.15,
+            "darf": 3585.32,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 148036.75
+          },
+          {
+            "year": 2021,
+            "annual_gross_gain": 58370.31,
+            "loss_carryforward_in": 0.0,
+            "taxable": 58370.31,
+            "darf": 8755.55,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 182966.42
+          },
+          {
+            "year": 2022,
+            "annual_gross_gain": 2332.25,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2332.25,
+            "darf": 349.84,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 188336.81
+          },
+          {
+            "year": 2023,
+            "annual_gross_gain": -1312.12,
+            "loss_carryforward_in": 0.0,
+            "taxable": -1312.12,
+            "darf": 0.0,
+            "loss_carryforward_out": -1312.12,
+            "port_value_after": 194560.38
+          },
+          {
+            "year": 2024,
+            "annual_gross_gain": 12620.08,
+            "loss_carryforward_in": 0.0,
+            "taxable": 11307.96,
+            "darf": 1696.19,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 198482.13
+          },
+          {
+            "year": 2025,
+            "annual_gross_gain": -9890.09,
+            "loss_carryforward_in": 0.0,
+            "taxable": -9890.09,
+            "darf": 0.0,
+            "loss_carryforward_out": -9890.09,
+            "port_value_after": 193324.86
+          },
+          {
+            "year": 2026,
+            "annual_gross_gain": 23534.66,
+            "loss_carryforward_in": 0.0,
+            "taxable": 13644.57,
+            "darf": 2046.69,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 222042.55
+          }
+        ]
+      },
+      "gate_details": {
+        "n_trials": 12,
+        "dsr_p_value": 0.059741104889231234,
+        "walk_forward": {
+          "n_windows": 8,
+          "positive_windows": 7,
+          "max_oos_mdd": 0.5101210261450132,
+          "oos_returns": [
+            -0.18317495354542246,
+            0.820877099703178,
+            1.2287459600991815,
+            0.20845206473110744,
+            0.37242344791381865,
+            1.0818675472204031,
+            0.004317769195823606,
+            0.24287199358620581
+          ],
+          "oos_mdds": [
+            0.5101210261450132,
+            0.29267023436482115,
+            0.23621888515692505,
+            0.1470098831022726,
+            0.1281647532953837,
+            0.3128089143916004,
+            0.11591079410862944,
+            0.38759982142612176
+          ],
+          "pass_gate": true
+        },
+        "oos_sharpe": 0.5584809340301305,
+        "fwd_sharpe": 0.5388273373661213,
+        "bootstrap_999_ci_low_sharpe": 0.11729651557160974,
+        "xlib_cagr_delta_pp": 0.0
+      },
+      "gates": {
+        "dsr_p_lt_0_05": false,
+        "wf_6_of_8_positive": true,
+        "oos_sharpe_positive": true,
+        "fwd_sharpe_positive": true,
+        "bootstrap_999_low_gt_0": true,
+        "xlib_delta_lte_3pp": true,
+        "n_passed_ex_pbo": 5
+      }
+    },
+    {
+      "config": {
+        "name": "haa_only_stocks_yf_top10_available18",
+        "offensive_assets": [
+          "A",
+          "AA",
+          "AAL",
+          "AAMI",
+          "AAON",
+          "AAP",
+          "AAPL",
+          "AAT",
+          "ABBV",
+          "ABCB",
+          "ABG",
+          "ABM",
+          "ABNB",
+          "ABR",
+          "ABT",
+          "ACA",
+          "ACAD",
+          "ACGL"
+        ],
+        "canary_asset": "TIP",
+        "defensive_assets": [
+          "BIL",
+          "IEF"
+        ],
+        "top_n": 10,
+        "lookback_months": [
+          1,
+          3,
+          6,
+          12
+        ],
+        "min_offensive_assets": 10
+      },
+      "source": "yfinance",
+      "promotion_eligible": false,
+      "data_caveat": "yfinance current-universe/survivorship-biased screen only",
+      "gross_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.16511830850389564,
+        "mdd": -0.29601410703070463,
+        "vol": 0.1657936037144184,
+        "sharpe": 1.0047839929898694,
+        "sortino": 1.4883639532038426,
+        "calmar": 0.5578055389325361,
+        "terminal": 26.37311123538034
+      },
+      "after_tax_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.14588006009474053,
+        "mdd": -0.30863139410550305,
+        "vol": 0.1670740951584399,
+        "sharpe": 0.8986873107408618,
+        "sortino": 1.3179805479859925,
+        "calmar": 0.47266759921666507,
+        "terminal": 18.46413827321688
+      },
+      "tax_summary": {
+        "port_value": 184641.38,
+        "cost_basis": 163147.04,
+        "unrealized_gain": 21494.35,
+        "loss_carryforward": -15852.07,
+        "total_darf_paid": 25349.87,
+        "settled_years": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "events": [
+          {
+            "year": 2004,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10000.0
+          },
+          {
+            "year": 2005,
+            "annual_gross_gain": 657.86,
+            "loss_carryforward_in": 0.0,
+            "taxable": 657.86,
+            "darf": 98.68,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 12321.26
+          },
+          {
+            "year": 2006,
+            "annual_gross_gain": 4125.98,
+            "loss_carryforward_in": 0.0,
+            "taxable": 4125.98,
+            "darf": 618.9,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 15775.1
+          },
+          {
+            "year": 2007,
+            "annual_gross_gain": 1567.97,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1567.97,
+            "darf": 235.2,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 16307.81
+          },
+          {
+            "year": 2008,
+            "annual_gross_gain": -1450.51,
+            "loss_carryforward_in": 0.0,
+            "taxable": -1450.51,
+            "darf": 0.0,
+            "loss_carryforward_out": -1450.51,
+            "port_value_after": 15654.73
+          },
+          {
+            "year": 2009,
+            "annual_gross_gain": 1090.17,
+            "loss_carryforward_in": -1450.51,
+            "taxable": -360.34,
+            "darf": 0.0,
+            "loss_carryforward_out": -360.34,
+            "port_value_after": 17675.02
+          },
+          {
+            "year": 2010,
+            "annual_gross_gain": 5220.86,
+            "loss_carryforward_in": 0.0,
+            "taxable": 4860.52,
+            "darf": 729.08,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 23814.93
+          },
+          {
+            "year": 2011,
+            "annual_gross_gain": 2439.86,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2439.86,
+            "darf": 365.98,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 24440.36
+          },
+          {
+            "year": 2012,
+            "annual_gross_gain": 5282.88,
+            "loss_carryforward_in": 0.0,
+            "taxable": 5282.88,
+            "darf": 792.43,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 35596.04
+          },
+          {
+            "year": 2013,
+            "annual_gross_gain": 21270.46,
+            "loss_carryforward_in": 0.0,
+            "taxable": 21270.46,
+            "darf": 3190.57,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 46390.56
+          },
+          {
+            "year": 2014,
+            "annual_gross_gain": -2416.43,
+            "loss_carryforward_in": 0.0,
+            "taxable": -2416.43,
+            "darf": 0.0,
+            "loss_carryforward_out": -2416.43,
+            "port_value_after": 50781.52
+          },
+          {
+            "year": 2015,
+            "annual_gross_gain": 5483.39,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3066.95,
+            "darf": 460.04,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 52878.68
+          },
+          {
+            "year": 2016,
+            "annual_gross_gain": 6259.32,
+            "loss_carryforward_in": 0.0,
+            "taxable": 6259.32,
+            "darf": 938.9,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 60936.2
+          },
+          {
+            "year": 2017,
+            "annual_gross_gain": 8409.06,
+            "loss_carryforward_in": 0.0,
+            "taxable": 8409.06,
+            "darf": 1261.36,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 68417.8
+          },
+          {
+            "year": 2018,
+            "annual_gross_gain": 5189.16,
+            "loss_carryforward_in": 0.0,
+            "taxable": 5189.16,
+            "darf": 778.37,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 72359.65
+          },
+          {
+            "year": 2019,
+            "annual_gross_gain": 11298.84,
+            "loss_carryforward_in": 0.0,
+            "taxable": 11298.84,
+            "darf": 1694.83,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 95279.35
+          },
+          {
+            "year": 2020,
+            "annual_gross_gain": 20460.82,
+            "loss_carryforward_in": 0.0,
+            "taxable": 20460.82,
+            "darf": 3069.12,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 122611.96
+          },
+          {
+            "year": 2021,
+            "annual_gross_gain": 44894.17,
+            "loss_carryforward_in": 0.0,
+            "taxable": 44894.17,
+            "darf": 6734.13,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 159584.47
+          },
+          {
+            "year": 2022,
+            "annual_gross_gain": 7844.0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 7844.0,
+            "darf": 1176.6,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 156431.93
+          },
+          {
+            "year": 2023,
+            "annual_gross_gain": -88.43,
+            "loss_carryforward_in": 0.0,
+            "taxable": -88.43,
+            "darf": 0.0,
+            "loss_carryforward_out": -88.43,
+            "port_value_after": 175481.94
+          },
+          {
+            "year": 2024,
+            "annual_gross_gain": 21459.67,
+            "loss_carryforward_in": 0.0,
+            "taxable": 21371.23,
+            "darf": 3205.68,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 175656.61
+          },
+          {
+            "year": 2025,
+            "annual_gross_gain": -26192.0,
+            "loss_carryforward_in": 0.0,
+            "taxable": -26192.0,
+            "darf": 0.0,
+            "loss_carryforward_out": -26192.0,
+            "port_value_after": 158864.58
+          },
+          {
+            "year": 2026,
+            "annual_gross_gain": 10339.94,
+            "loss_carryforward_in": -26192.0,
+            "taxable": -15852.07,
+            "darf": 0.0,
+            "loss_carryforward_out": -15852.07,
+            "port_value_after": 184641.38
+          }
+        ]
+      },
+      "gate_details": {
+        "n_trials": 12,
+        "dsr_p_value": 0.006282421903001323,
+        "walk_forward": {
+          "n_windows": 8,
+          "positive_windows": 8,
+          "max_oos_mdd": 0.30863139410550383,
+          "oos_returns": [
+            0.039827815009785494,
+            0.558317052380124,
+            0.785362986019901,
+            0.2715180877823222,
+            0.3191267822296242,
+            0.9357674464564136,
+            0.06481490587859962,
+            0.08168045649032529
+          ],
+          "oos_mdds": [
+            0.23022229581267423,
+            0.18300743526124452,
+            0.09804973856359468,
+            0.08625303212834198,
+            0.10639511934007188,
+            0.21025991010483513,
+            0.12724569516536863,
+            0.30863139410550383
+          ],
+          "pass_gate": true
+        },
+        "oos_sharpe": 0.6666316988666199,
+        "fwd_sharpe": 0.6540127327300034,
+        "bootstrap_999_ci_low_sharpe": 0.33544190688132536,
+        "xlib_cagr_delta_pp": 0.0
+      },
+      "gates": {
+        "dsr_p_lt_0_05": true,
+        "wf_6_of_8_positive": true,
+        "oos_sharpe_positive": true,
+        "fwd_sharpe_positive": true,
+        "bootstrap_999_low_gt_0": true,
+        "xlib_delta_lte_3pp": true,
+        "n_passed_ex_pbo": 6
+      }
+    },
+    {
+      "config": {
+        "name": "haa_stocks_plus_etfs_yf_top4",
+        "offensive_assets": [
+          "A",
+          "AA",
+          "AAL",
+          "AAMI",
+          "AAON",
+          "AAP",
+          "AAPL",
+          "AAT",
+          "ABBV",
+          "ABCB",
+          "AGG",
+          "AIS",
+          "DBA",
+          "DIA",
+          "DRAM",
+          "EDV",
+          "EEM",
+          "EFA",
+          "ETHA",
+          "FMTM"
+        ],
+        "canary_asset": "TIP",
+        "defensive_assets": [
+          "BIL",
+          "IEF"
+        ],
+        "top_n": 4,
+        "lookback_months": [
+          1,
+          3,
+          6,
+          12
+        ],
+        "min_offensive_assets": 4
+      },
+      "source": "yfinance",
+      "promotion_eligible": false,
+      "data_caveat": "yfinance current-universe/survivorship-biased screen only",
+      "gross_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.14986499694658395,
+        "mdd": -0.45526247168391426,
+        "vol": 0.2047767390951491,
+        "sharpe": 0.784776463257157,
+        "sortino": 1.1213538873727347,
+        "calmar": 0.3291837264606212,
+        "terminal": 19.888992791464226
+      },
+      "after_tax_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.13281072030437646,
+        "mdd": -0.47186371686830997,
+        "vol": 0.20563805911317767,
+        "sharpe": 0.7096707928874135,
+        "sortino": 1.0084421076224057,
+        "calmar": 0.281459912166635,
+        "terminal": 14.442920098206322
+      },
+      "tax_summary": {
+        "port_value": 144429.2,
+        "cost_basis": 114994.35,
+        "unrealized_gain": 29434.85,
+        "loss_carryforward": -6909.49,
+        "total_darf_paid": 16785.58,
+        "settled_years": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "events": [
+          {
+            "year": 2004,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10000.0
+          },
+          {
+            "year": 2005,
+            "annual_gross_gain": 2075.62,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2075.62,
+            "darf": 311.34,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 14193.97
+          },
+          {
+            "year": 2006,
+            "annual_gross_gain": 4003.73,
+            "loss_carryforward_in": 0.0,
+            "taxable": 4003.73,
+            "darf": 600.56,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 16655.23
+          },
+          {
+            "year": 2007,
+            "annual_gross_gain": 4211.25,
+            "loss_carryforward_in": 0.0,
+            "taxable": 4211.25,
+            "darf": 631.69,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 20095.9
+          },
+          {
+            "year": 2008,
+            "annual_gross_gain": -5783.17,
+            "loss_carryforward_in": 0.0,
+            "taxable": -5783.17,
+            "darf": 0.0,
+            "loss_carryforward_out": -5783.17,
+            "port_value_after": 14347.25
+          },
+          {
+            "year": 2009,
+            "annual_gross_gain": 152.41,
+            "loss_carryforward_in": -5783.17,
+            "taxable": -5630.75,
+            "darf": 0.0,
+            "loss_carryforward_out": -5630.75,
+            "port_value_after": 15266.56
+          },
+          {
+            "year": 2010,
+            "annual_gross_gain": 3992.35,
+            "loss_carryforward_in": -5630.75,
+            "taxable": -1638.4,
+            "darf": 0.0,
+            "loss_carryforward_out": -1638.4,
+            "port_value_after": 20221.16
+          },
+          {
+            "year": 2011,
+            "annual_gross_gain": 401.86,
+            "loss_carryforward_in": -1638.4,
+            "taxable": -1236.54,
+            "darf": 0.0,
+            "loss_carryforward_out": -1236.54,
+            "port_value_after": 19824.43
+          },
+          {
+            "year": 2012,
+            "annual_gross_gain": 3632.98,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2396.44,
+            "darf": 359.47,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 23236.59
+          },
+          {
+            "year": 2013,
+            "annual_gross_gain": 6562.7,
+            "loss_carryforward_in": 0.0,
+            "taxable": 6562.7,
+            "darf": 984.4,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 27868.34
+          },
+          {
+            "year": 2014,
+            "annual_gross_gain": 1816.58,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1816.58,
+            "darf": 272.49,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 30810.81
+          },
+          {
+            "year": 2015,
+            "annual_gross_gain": -914.38,
+            "loss_carryforward_in": 0.0,
+            "taxable": -914.38,
+            "darf": 0.0,
+            "loss_carryforward_out": -914.38,
+            "port_value_after": 30189.43
+          },
+          {
+            "year": 2016,
+            "annual_gross_gain": 2204.35,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1289.97,
+            "darf": 193.5,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 34594.38
+          },
+          {
+            "year": 2017,
+            "annual_gross_gain": 9095.71,
+            "loss_carryforward_in": 0.0,
+            "taxable": 9095.71,
+            "darf": 1364.36,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 39726.08
+          },
+          {
+            "year": 2018,
+            "annual_gross_gain": 1008.87,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1008.87,
+            "darf": 151.33,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 42314.18
+          },
+          {
+            "year": 2019,
+            "annual_gross_gain": 3223.97,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3223.97,
+            "darf": 483.6,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 46722.85
+          },
+          {
+            "year": 2020,
+            "annual_gross_gain": 14328.01,
+            "loss_carryforward_in": 0.0,
+            "taxable": 14328.01,
+            "darf": 2149.2,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 70258.9
+          },
+          {
+            "year": 2021,
+            "annual_gross_gain": 31988.28,
+            "loss_carryforward_in": 0.0,
+            "taxable": 31988.28,
+            "darf": 4798.24,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 93646.12
+          },
+          {
+            "year": 2022,
+            "annual_gross_gain": 11101.74,
+            "loss_carryforward_in": 0.0,
+            "taxable": 11101.74,
+            "darf": 1665.26,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 101355.93
+          },
+          {
+            "year": 2023,
+            "annual_gross_gain": -1433.98,
+            "loss_carryforward_in": 0.0,
+            "taxable": -1433.98,
+            "darf": 0.0,
+            "loss_carryforward_out": -1433.98,
+            "port_value_after": 113976.17
+          },
+          {
+            "year": 2024,
+            "annual_gross_gain": 20234.95,
+            "loss_carryforward_in": 0.0,
+            "taxable": 18800.97,
+            "darf": 2820.15,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 119049.46
+          },
+          {
+            "year": 2025,
+            "annual_gross_gain": -19320.4,
+            "loss_carryforward_in": 0.0,
+            "taxable": -19320.4,
+            "darf": 0.0,
+            "loss_carryforward_out": -19320.4,
+            "port_value_after": 99829.61
+          },
+          {
+            "year": 2026,
+            "annual_gross_gain": 12410.9,
+            "loss_carryforward_in": -19320.4,
+            "taxable": -6909.49,
+            "darf": 0.0,
+            "loss_carryforward_out": -6909.49,
+            "port_value_after": 144429.2
+          }
+        ]
+      },
+      "gate_details": {
+        "n_trials": 12,
+        "dsr_p_value": 0.054289222639646084,
+        "walk_forward": {
+          "n_windows": 8,
+          "positive_windows": 7,
+          "max_oos_mdd": 0.4718637168683084,
+          "oos_returns": [
+            -0.13062616171789676,
+            0.42208271580931567,
+            0.3497718275335737,
+            0.164196985021819,
+            0.29217653434627566,
+            1.080962211831059,
+            0.16879559339065686,
+            0.30258944536988985
+          ],
+          "oos_mdds": [
+            0.4718637168683084,
+            0.18057227060067302,
+            0.14905070498360556,
+            0.10894717491462712,
+            0.13020483310488437,
+            0.17663375699224487,
+            0.1201934389628919,
+            0.41716326808278464
+          ],
+          "pass_gate": true
+        },
+        "oos_sharpe": 0.8728641714687303,
+        "fwd_sharpe": 0.8731541319484145,
+        "bootstrap_999_ci_low_sharpe": 0.135090321456005,
+        "xlib_cagr_delta_pp": 0.0
+      },
+      "gates": {
+        "dsr_p_lt_0_05": false,
+        "wf_6_of_8_positive": true,
+        "oos_sharpe_positive": true,
+        "fwd_sharpe_positive": true,
+        "bootstrap_999_low_gt_0": true,
+        "xlib_delta_lte_3pp": true,
+        "n_passed_ex_pbo": 5
+      }
+    },
+    {
+      "config": {
+        "name": "haa_stocks_plus_etfs_yf_top10",
+        "offensive_assets": [
+          "A",
+          "AA",
+          "AAL",
+          "AAMI",
+          "AAON",
+          "AAP",
+          "AAPL",
+          "AAT",
+          "ABBV",
+          "ABCB",
+          "AGG",
+          "AIS",
+          "DBA",
+          "DIA",
+          "DRAM",
+          "EDV",
+          "EEM",
+          "EFA",
+          "ETHA",
+          "FMTM"
+        ],
+        "canary_asset": "TIP",
+        "defensive_assets": [
+          "BIL",
+          "IEF"
+        ],
+        "top_n": 10,
+        "lookback_months": [
+          1,
+          3,
+          6,
+          12
+        ],
+        "min_offensive_assets": 10
+      },
+      "source": "yfinance",
+      "promotion_eligible": false,
+      "data_caveat": "yfinance current-universe/survivorship-biased screen only",
+      "gross_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.13652440029536406,
+        "mdd": -0.2313167698523293,
+        "vol": 0.13200649782386642,
+        "sharpe": 1.0357496544047662,
+        "sortino": 1.5011946538947478,
+        "calmar": 0.5902053724099645,
+        "terminal": 15.491423059872611
+      },
+      "after_tax_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.12124471891964106,
+        "mdd": -0.251780655875214,
+        "vol": 0.13285379352926763,
+        "sharpe": 0.9280794298959737,
+        "sortino": 1.3327591703797022,
+        "calmar": 0.48154898357136555,
+        "terminal": 11.593642423201588
+      },
+      "tax_summary": {
+        "port_value": 115936.42,
+        "cost_basis": 98832.88,
+        "unrealized_gain": 17103.54,
+        "loss_carryforward": 0.0,
+        "total_darf_paid": 13324.93,
+        "settled_years": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "events": [
+          {
+            "year": 2004,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10000.0
+          },
+          {
+            "year": 2005,
+            "annual_gross_gain": 938.36,
+            "loss_carryforward_in": 0.0,
+            "taxable": 938.36,
+            "darf": 140.75,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 12243.11
+          },
+          {
+            "year": 2006,
+            "annual_gross_gain": 2733.29,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2733.29,
+            "darf": 409.99,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 14689.68
+          },
+          {
+            "year": 2007,
+            "annual_gross_gain": 1863.1,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1863.1,
+            "darf": 279.46,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 16483.2
+          },
+          {
+            "year": 2008,
+            "annual_gross_gain": -787.73,
+            "loss_carryforward_in": 0.0,
+            "taxable": -787.73,
+            "darf": 0.0,
+            "loss_carryforward_out": -787.73,
+            "port_value_after": 15403.66
+          },
+          {
+            "year": 2009,
+            "annual_gross_gain": 423.08,
+            "loss_carryforward_in": -787.73,
+            "taxable": -364.66,
+            "darf": 0.0,
+            "loss_carryforward_out": -364.66,
+            "port_value_after": 17140.71
+          },
+          {
+            "year": 2010,
+            "annual_gross_gain": 3568.01,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3203.35,
+            "darf": 480.5,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 21337.89
+          },
+          {
+            "year": 2011,
+            "annual_gross_gain": 1865.84,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1865.84,
+            "darf": 279.88,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 21163.91
+          },
+          {
+            "year": 2012,
+            "annual_gross_gain": 3469.26,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3469.26,
+            "darf": 520.39,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 24622.11
+          },
+          {
+            "year": 2013,
+            "annual_gross_gain": 4475.81,
+            "loss_carryforward_in": 0.0,
+            "taxable": 4475.81,
+            "darf": 671.37,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 27562.19
+          },
+          {
+            "year": 2014,
+            "annual_gross_gain": 168.94,
+            "loss_carryforward_in": 0.0,
+            "taxable": 168.94,
+            "darf": 25.34,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 30047.14
+          },
+          {
+            "year": 2015,
+            "annual_gross_gain": 131.8,
+            "loss_carryforward_in": 0.0,
+            "taxable": 131.8,
+            "darf": 19.77,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 28865.85
+          },
+          {
+            "year": 2016,
+            "annual_gross_gain": 2569.61,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2569.61,
+            "darf": 385.44,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 31771.41
+          },
+          {
+            "year": 2017,
+            "annual_gross_gain": 5631.51,
+            "loss_carryforward_in": 0.0,
+            "taxable": 5631.51,
+            "darf": 844.73,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 38058.43
+          },
+          {
+            "year": 2018,
+            "annual_gross_gain": 1541.04,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1541.04,
+            "darf": 231.16,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 38364.97
+          },
+          {
+            "year": 2019,
+            "annual_gross_gain": 830.29,
+            "loss_carryforward_in": 0.0,
+            "taxable": 830.29,
+            "darf": 124.54,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 42086.18
+          },
+          {
+            "year": 2020,
+            "annual_gross_gain": 6831.3,
+            "loss_carryforward_in": 0.0,
+            "taxable": 6831.3,
+            "darf": 1024.7,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 59282.6
+          },
+          {
+            "year": 2021,
+            "annual_gross_gain": 27615.24,
+            "loss_carryforward_in": 0.0,
+            "taxable": 27615.24,
+            "darf": 4142.29,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 77559.8
+          },
+          {
+            "year": 2022,
+            "annual_gross_gain": 3926.47,
+            "loss_carryforward_in": 0.0,
+            "taxable": 3926.47,
+            "darf": 588.97,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 77593.16
+          },
+          {
+            "year": 2023,
+            "annual_gross_gain": -531.21,
+            "loss_carryforward_in": 0.0,
+            "taxable": -531.21,
+            "darf": 0.0,
+            "loss_carryforward_out": -531.21,
+            "port_value_after": 82642.94
+          },
+          {
+            "year": 2024,
+            "annual_gross_gain": 17339.4,
+            "loss_carryforward_in": 0.0,
+            "taxable": 16808.19,
+            "darf": 2521.23,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 92183.47
+          },
+          {
+            "year": 2025,
+            "annual_gross_gain": -4033.07,
+            "loss_carryforward_in": 0.0,
+            "taxable": -4033.07,
+            "darf": 0.0,
+            "loss_carryforward_out": -4033.07,
+            "port_value_after": 91891.88
+          },
+          {
+            "year": 2026,
+            "annual_gross_gain": 8262.55,
+            "loss_carryforward_in": 0.0,
+            "taxable": 4229.48,
+            "darf": 634.42,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 115936.42
+          }
+        ]
+      },
+      "gate_details": {
+        "n_trials": 12,
+        "dsr_p_value": 0.004581663499499178,
+        "walk_forward": {
+          "n_windows": 8,
+          "positive_windows": 8,
+          "max_oos_mdd": 0.2517806558752137,
+          "oos_returns": [
+            0.03221120500191543,
+            0.4026344488833866,
+            0.2702805058643223,
+            0.11451751959155665,
+            0.2960508044413379,
+            0.8450527573923863,
+            0.04745833551771672,
+            0.4175259777352367
+          ],
+          "oos_mdds": [
+            0.20959610860488095,
+            0.134878951500158,
+            0.062247003005383564,
+            0.07474773385062025,
+            0.10768035442380547,
+            0.09557129327027998,
+            0.12032061175526344,
+            0.2517806558752137
+          ],
+          "pass_gate": true
+        },
+        "oos_sharpe": 1.1225143823598278,
+        "fwd_sharpe": 1.1284469003200122,
+        "bootstrap_999_ci_low_sharpe": 0.31370314610916217,
+        "xlib_cagr_delta_pp": 0.0
+      },
+      "gates": {
+        "dsr_p_lt_0_05": true,
+        "wf_6_of_8_positive": true,
+        "oos_sharpe_positive": true,
+        "fwd_sharpe_positive": true,
+        "bootstrap_999_low_gt_0": true,
+        "xlib_delta_lte_3pp": true,
+        "n_passed_ex_pbo": 6
+      }
+    },
+    {
+      "config": {
+        "name": "haa_stocks_plus_etfs_yf_top20",
+        "offensive_assets": [
+          "A",
+          "AA",
+          "AAL",
+          "AAMI",
+          "AAON",
+          "AAP",
+          "AAPL",
+          "AAT",
+          "ABBV",
+          "ABCB",
+          "AGG",
+          "AIS",
+          "DBA",
+          "DIA",
+          "DRAM",
+          "EDV",
+          "EEM",
+          "EFA",
+          "ETHA",
+          "FMTM"
+        ],
+        "canary_asset": "TIP",
+        "defensive_assets": [
+          "BIL",
+          "IEF"
+        ],
+        "top_n": 20,
+        "lookback_months": [
+          1,
+          3,
+          6,
+          12
+        ],
+        "min_offensive_assets": 20
+      },
+      "source": "yfinance",
+      "promotion_eligible": false,
+      "data_caveat": "yfinance current-universe/survivorship-biased screen only",
+      "gross_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.03152632456290161,
+        "mdd": -0.10401349491262817,
+        "vol": 0.054827009749559334,
+        "sharpe": 0.5935681003667382,
+        "sortino": 0.8683939146674913,
+        "calmar": 0.30309840650373177,
+        "terminal": 1.94379264069945
+      },
+      "after_tax_metrics": {
+        "start": "2004-12-31",
+        "end": "2026-06-12",
+        "n_obs": 5396,
+        "years": 21.41269841269841,
+        "cagr": 0.027651535300308394,
+        "mdd": -0.12149033140715235,
+        "vol": 0.05561546428203466,
+        "sharpe": 0.518273418727687,
+        "sortino": 0.746473160705313,
+        "calmar": 0.22760276459893253,
+        "terminal": 1.7932967339384596
+      },
+      "tax_summary": {
+        "port_value": 17932.97,
+        "cost_basis": 17769.84,
+        "unrealized_gain": 163.13,
+        "loss_carryforward": -30.89,
+        "total_darf_paid": 1170.11,
+        "settled_years": [
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "events": [
+          {
+            "year": 2004,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10000.0
+          },
+          {
+            "year": 2005,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10263.83
+          },
+          {
+            "year": 2006,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 10522.08
+          },
+          {
+            "year": 2007,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 11614.16
+          },
+          {
+            "year": 2008,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 13695.11
+          },
+          {
+            "year": 2009,
+            "annual_gross_gain": 2740.16,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2740.16,
+            "darf": 411.02,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 12267.61
+          },
+          {
+            "year": 2010,
+            "annual_gross_gain": -525.35,
+            "loss_carryforward_in": 0.0,
+            "taxable": -525.35,
+            "darf": 0.0,
+            "loss_carryforward_out": -525.35,
+            "port_value_after": 12928.03
+          },
+          {
+            "year": 2011,
+            "annual_gross_gain": 686.33,
+            "loss_carryforward_in": 0.0,
+            "taxable": 160.98,
+            "darf": 24.15,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 14950.23
+          },
+          {
+            "year": 2012,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 15498.0
+          },
+          {
+            "year": 2013,
+            "annual_gross_gain": 2232.26,
+            "loss_carryforward_in": 0.0,
+            "taxable": 2232.26,
+            "darf": 334.84,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 14743.84
+          },
+          {
+            "year": 2014,
+            "annual_gross_gain": -419.88,
+            "loss_carryforward_in": 0.0,
+            "taxable": -419.88,
+            "darf": 0.0,
+            "loss_carryforward_out": -419.88,
+            "port_value_after": 15274.41
+          },
+          {
+            "year": 2015,
+            "annual_gross_gain": 540.34,
+            "loss_carryforward_in": 0.0,
+            "taxable": 120.46,
+            "darf": 18.07,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 15254.77
+          },
+          {
+            "year": 2016,
+            "annual_gross_gain": 276.02,
+            "loss_carryforward_in": 0.0,
+            "taxable": 276.02,
+            "darf": 41.4,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 15387.8
+          },
+          {
+            "year": 2017,
+            "annual_gross_gain": -393.9,
+            "loss_carryforward_in": 0.0,
+            "taxable": -393.9,
+            "darf": 0.0,
+            "loss_carryforward_out": -393.9,
+            "port_value_after": 15148.2
+          },
+          {
+            "year": 2018,
+            "annual_gross_gain": -25.66,
+            "loss_carryforward_in": -393.9,
+            "taxable": -419.56,
+            "darf": 0.0,
+            "loss_carryforward_out": -419.56,
+            "port_value_after": 15111.97
+          },
+          {
+            "year": 2019,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": -419.56,
+            "taxable": -419.56,
+            "darf": 0.0,
+            "loss_carryforward_out": -419.56,
+            "port_value_after": 16325.39
+          },
+          {
+            "year": 2020,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": -419.56,
+            "taxable": -419.56,
+            "darf": 0.0,
+            "loss_carryforward_out": -419.56,
+            "port_value_after": 17959.03
+          },
+          {
+            "year": 2021,
+            "annual_gross_gain": 2213.11,
+            "loss_carryforward_in": 0.0,
+            "taxable": 1793.55,
+            "darf": 269.03,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 17069.77
+          },
+          {
+            "year": 2022,
+            "annual_gross_gain": 0,
+            "loss_carryforward_in": 0.0,
+            "taxable": 0.0,
+            "darf": 0.0,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 17309.52
+          },
+          {
+            "year": 2023,
+            "annual_gross_gain": -11.84,
+            "loss_carryforward_in": 0.0,
+            "taxable": -11.84,
+            "darf": 0.0,
+            "loss_carryforward_out": -11.84,
+            "port_value_after": 17917.54
+          },
+          {
+            "year": 2024,
+            "annual_gross_gain": 370.49,
+            "loss_carryforward_in": 0.0,
+            "taxable": 358.66,
+            "darf": 53.8,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 17595.82
+          },
+          {
+            "year": 2025,
+            "annual_gross_gain": 118.66,
+            "loss_carryforward_in": 0.0,
+            "taxable": 118.66,
+            "darf": 17.8,
+            "loss_carryforward_out": 0.0,
+            "port_value_after": 17825.89
+          },
+          {
+            "year": 2026,
+            "annual_gross_gain": -30.89,
+            "loss_carryforward_in": 0.0,
+            "taxable": -30.89,
+            "darf": 0.0,
+            "loss_carryforward_out": -30.89,
+            "port_value_after": 17932.97
+          }
+        ]
+      },
+      "gate_details": {
+        "n_trials": 12,
+        "dsr_p_value": 0.2319445308228365,
+        "walk_forward": {
+          "n_windows": 8,
+          "positive_windows": 6,
+          "max_oos_mdd": 0.10401349491262847,
+          "oos_returns": [
+            0.2316368475498649,
+            0.13490323845076313,
+            -0.011144757215465706,
+            0.053301945136889683,
+            -0.004271797416837919,
+            0.13841196382754295,
+            0.01388605778421681,
+            0.006172822513351717
+          ],
+          "oos_mdds": [
+            0.10401349491262847,
+            0.08270977106379641,
+            0.07236630972478632,
+            0.06638223882062384,
+            0.04254992335066455,
+            0.04675641075979767,
+            0.034912696165524455,
+            0.07332800164738104
+          ],
+          "pass_gate": true
+        },
+        "oos_sharpe": 0.34717819852615095,
+        "fwd_sharpe": 0.36362485338664674,
+        "bootstrap_999_ci_low_sharpe": -0.0648701983879323,
+        "xlib_cagr_delta_pp": 0.0
+      },
+      "gates": {
+        "dsr_p_lt_0_05": false,
+        "wf_6_of_8_positive": true,
+        "oos_sharpe_positive": true,
+        "fwd_sharpe_positive": true,
+        "bootstrap_999_low_gt_0": false,
+        "xlib_delta_lte_3pp": true,
+        "n_passed_ex_pbo": 4
+      }
+    }
+  ],
+  "pbo": {
+    "pbo": 0.6309523809523809,
+    "n_combinations": 252,
+    "pass_gate": false
+  },
+  "errors": [
+    "haa_only_stocks_yf_top20 (yfinance): only 18 offensive yfinance assets remain after missing ['ABMD', 'ACAS']; top_n=20"
+  ]
+}
