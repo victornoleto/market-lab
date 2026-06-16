@@ -143,6 +143,58 @@ Relatórios completos: `universes/us_stocks/from_1990/reports/` e `from_2000/rep
 
 ---
 
+## Universo BR (`br_stocks`) — rodado 2026-06-16 (janela efetiva 2009-2026)
+
+Funil completo broad→evolution→validate, benchmark `BOVA11.SA`, **sem código novo**
+(só `--universe br_stocks` sobre os defaults de `base.yaml`). Chamado com `--start 2000-01-01`,
+mas o **BOVA11 só existe desde 2009** — então a relative equity e os gates medem de fato
+**2009-2026** (um recorte pós-GFC, em grande parte de bull do BR).
+
+- **Cobertura:** `145/279` BR stocks passam os filtros de survivorship.
+- **Trial count honesto:** `840` broad + `120` evolution = `960`.
+
+### Veredito: FAIL — set-PBO `0,718` > 0,5
+
+`validate` deu **`overall_pass=False`**. O bloqueador é o **set-PBO `0,718`** (hard-block
+`[advances_fin_ml, p.208-211]`). 6 dos 12 finalistas passam os gates *per-config*
+(família `vol_adjusted_13612 lb6_12 top3 reb1 + market_sma200_daily`: DSR p≈`0,012`, WF `8/8`,
+bootstrap CI-low Sharpe `0,49–0,62`, cross-lib Δ≈`0,02pp`), mas o set-PBO derruba o conjunto.
+**Diferença vs us_stocks:** lá o edge passou os gates estatísticos e travou só no survivorship;
+no BR o edge **não sobrevive ao PBO** — universo pequeno + survivorship pior.
+
+### Nota de honestidade — a armadilha do "gráfico espetacular"
+
+Vários plots de relative equity parecem espetaculares — ex.: `raw_13612 inverse_vol lb6 top5 reb1`
+termina **38,5×** sobre o BOVA11 (CAGR after-tax `34,0%` vs BOVA `8,0%`). **Não promover isso.**
+Três fatos desmontam a leitura:
+
+1. **"A maior" não é — e o padrão é o problema.** As variantes `top3` da mesma família chegam a
+   **76× e 66×**. Quanto **mais concentrada** a carteira (top3 > top5 > top20), maior a relative
+   equity — assinatura de **survivorship + concentração**, não de edge: com 145 nomes vivos e
+   **zero delisted** no feed, uma carteira de 3-5 ações pega só os sobreviventes vencedores.
+2. **Drawdown absoluto é pior que o do Ibovespa, não melhor.** MDD da estratégia **−57,7%** vs
+   BOVA11 buy&hold **−49,7%** (mesma janela). O painel "relative equity" do plot **não** é
+   drawdown — ele só sobe porque a estratégia acumula mais que o índice; é fácil confundir os dois.
+3. **Bruto de custo, turnover alto.** top5 mensal = ~5,6× de turnover/ano em small/mid cap da B3;
+   o spread real come boa parte dos 34%.
+
+| Config | terminal_relative | CAGR a.t. | MDD a.t. | Sharpe |
+|---|---|---|---|---|
+| raw_13612 inv_vol lb6 **top3** | **76,1×** | 39,5% | −60,5% | 1,19 |
+| raw_13612 inv_vol lb6_12 **top3** | 66,2× | 38,4% | −66,4% | 1,09 |
+| raw_13612 inv_vol lb6 **top5** (o plot citado) | 38,5× | 34,0% | −57,7% | 1,20 |
+| `BOVA11.SA` buy&hold (ref) | 1,0× | 8,0% | −49,7% | — |
+
+`promotion_eligible=false` em toda linha. Artefatos: `universes/br_stocks/from_2000/{reports,results,plots}`.
+
+### Pendências (menor prioridade dado o FAIL de PBO)
+
+- `--start 2010-01-01` (robustez de regime); `br_stocks.yaml` afinado p/ liquidez/ticks da B3
+  (rodado com os defaults de `base.yaml`).
+- `topn_view.py`/`drawdown_sweep.py` no BR **não** rodados (o set-PBO já reprovou o conjunto).
+
+---
+
 ## Estratégias recomendadas (top_n 3-10, gerenciáveis na mão)
 
 `top_n=15/20` domina os tops irrestritos, mas é chato de executar manualmente.

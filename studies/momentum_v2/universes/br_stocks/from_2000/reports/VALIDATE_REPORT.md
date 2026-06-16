@@ -1,0 +1,28 @@
+# Validate Gates — `br_stocks`
+
+Status: **research-only**, `promotion_eligible=false`. The Postgres universe plus survivorship filters *mitigate* but do not *eliminate* bias — the yfinance feed never captured most fully delisted names, so historical screens stay inflated `[advances_fin_ml, p.208-211]`. Main rankings are after Brazil's annual 15% realized-gain tax, gross of transaction costs/slippage. Benchmark: SPY.
+
+Hard gates (zero bypass) `[advances_fin_ml, p.208-211, p.273-275]`: PBO<0.5, DSR p<0.05, WF>=6/8 profitable windows, bootstrap CI-low Sharpe>0, cross-library CAGR within +/-3pp. MDD is a warning-only tier (mandate §5), so it does **not** block the WF gate here. A FAIL is still the honest, expected outcome for survivorship-biased screens.
+
+## Verdict
+
+- Honest trial count: `960`
+- Set PBO: `0.718` (pass=False)
+- **Overall: FAIL**
+
+## Per-config gates
+
+| Name | DSR p | DSR | WF | Boot CI low | xlib Δpp | All gates |
+|---|---|---|---|---|---|---|
+| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_top5_reb1_off0_fixed_none | 1.0000 | FAIL | 8/8 pass | 0.214 | 0.018 | FAIL |
+| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_top5_reb1_off0_staggered_none | 1.0000 | FAIL | 8/8 pass | 0.214 | 0.018 | FAIL |
+| evo_momv2_br_stocks_vol_adjusted_13612_lb6_top5_reb1_off0_fixed_none | 1.0000 | FAIL | 8/8 pass | 0.214 | 0.018 | FAIL |
+| evo_momv2_br_stocks_vol_adjusted_13612_lb6_top5_reb1_off0_staggered_none | 1.0000 | FAIL | 8/8 pass | 0.214 | 0.018 | FAIL |
+| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_12_top5_reb1_off0_fixed_stock_sma100 | 1.0000 | FAIL | 8/8 pass | 0.215 | 0.021 | FAIL |
+| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_12_top5_reb1_off0_staggered_stock_sma100 | 1.0000 | FAIL | 8/8 pass | 0.215 | 0.021 | FAIL |
+| evo_momv2_br_stocks_vol_adjusted_13612_lb6_12_top3_reb1_off0_fixed_market_sma200_daily | 0.0119 | pass | 8/8 pass | 0.618 | 0.021 | PASS |
+| evo_momv2_br_stocks_vol_adjusted_13612_lb6_12_top3_reb1_off0_staggered_market_sma200_daily | 0.0119 | pass | 8/8 pass | 0.618 | 0.021 | PASS |
+| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_12_top3_reb1_off0_fixed_market_sma200_daily | 0.0119 | pass | 8/8 pass | 0.618 | 0.021 | PASS |
+| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_12_top3_reb1_off0_staggered_market_sma200_daily | 0.0119 | pass | 8/8 pass | 0.618 | 0.021 | PASS |
+| evo_momv2_br_stocks_vol_adjusted_13612_lb6_12_top3_reb1_off0_fixed_market_sma200_daily_stock_sma100 | 0.0167 | pass | 8/8 pass | 0.491 | 0.021 | PASS |
+| evo_momv2_br_stocks_vol_adjusted_13612_lb6_12_top3_reb1_off0_staggered_market_sma200_daily_stock_sma100 | 0.0167 | pass | 8/8 pass | 0.491 | 0.021 | PASS |

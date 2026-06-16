@@ -35,19 +35,32 @@ done
   exclusão por nome/alavancagem.
 - Rodar `topn_view.py` e `drawdown_sweep.py` nas mesmas janelas para comparar com us_stocks.
 
-## 2. Universo BR — `br_stocks`
+## 2. Universo BR — `br_stocks` ✅ RODADO (2026-06-16, janela 2000)
+
+Funil completo executado na janela 2000-01-01 (broad+evolution+validate, `--cache-panels`):
 
 ```bash
-uv run python studies/momentum_v2/run.py --universe br_stocks --phase broad --start 2000-01-01 --cache-panels
-# (+ evolution/validate; e talvez --start 2010-01-01)
+uv run python studies/momentum_v2/run.py --universe br_stocks --phase broad     --start 2000-01-01 --cache-panels
+uv run python studies/momentum_v2/run.py --universe br_stocks --phase evolution --start 2000-01-01 --cache-panels
+uv run python studies/momentum_v2/run.py --universe br_stocks --phase validate  --start 2000-01-01 --cache-panels
 ```
 
-- Benchmark já = `BOVA11.SA` (config); filtros via chave `br_stock`. Tax model BR já é o default.
+- **Veredito: `overall_pass=False` — set-PBO `0,718` > 0,5** (hard-block). `145/279` tickers
+  passam filtros; `840` broad + `120` evolution = trial count honesto `960`. 6/12 finalistas
+  passam os gates *per-config* (família `vol_adjusted_13612 lb6_12 top3 reb1 + market_sma200_daily`:
+  DSR p≈`0,012`, WF `8/8`, bootstrap CI-low Sharpe `0,49–0,62`), mas o set-PBO derruba o conjunto.
+  Ao contrário de us_stocks (passou os gates, travou só no survivorship), aqui o edge **não
+  sobrevive ao PBO** — universo pequeno + survivorship pior. Artefatos: `universes/br_stocks/from_2000/`.
+- Benchmark = `BOVA11.SA` (config); filtros via chave `br_stock`. Tax model BR já é o default.
 - **Janela 1990 não se aplica** (cobertura BR começa ~2000; BOVA11 desde 2008). Usar 2000+ / 2010+.
-- Cobertura: ~279 BR stocks no DB — universo pequeno; revisar `min_median_dollar_volume`
-  e `min_price` para a realidade da B3 (liquidez/ticks menores) antes de concluir.
 - **Survivorship é ainda pior no BR** (cobertura yfinance limitada + poucos delisted) —
-  tratar como diagnóstico, não esperar promoção.
+  diagnóstico confirmado, sem promoção (como esperado).
+
+### Pendente (menor prioridade, dado o FAIL de PBO)
+- Rodar `--start 2010-01-01` (robustez de regime).
+- Revisar `min_median_dollar_volume`/`min_price` para a realidade da B3 (liquidez/ticks menores) —
+  rodado com os defaults de `base.yaml`; um `br_stocks.yaml` afinado não existe ainda.
+- `topn_view.py` / `drawdown_sweep.py` no universo BR (não rodados — PBO já reprovou o conjunto).
 
 ## 3. Resolver o survivorship bias (o teto real)
 

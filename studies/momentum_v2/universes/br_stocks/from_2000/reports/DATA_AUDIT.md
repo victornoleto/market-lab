@@ -1,0 +1,29 @@
+# Data Audit — `br_stocks`
+
+Status: **research-only**, `promotion_eligible=false`. The Postgres universe plus survivorship filters *mitigate* but do not *eliminate* bias — the yfinance feed never captured most fully delisted names, so historical screens stay inflated `[advances_fin_ml, p.208-211]`. Main rankings are after Brazil's annual 15% realized-gain tax, gross of transaction costs/slippage. Benchmark: SPY.
+
+## Database coverage
+
+| country | asset_class | n_tickers | first_date | last_date | n_active | n_with_error |
+|---|---|---|---|---|---|---|
+| br | etf | 27 | 2007-01-29 | 2026-06-15 | 26 | 1 |
+| br | stock | 279 | 2000-01-03 | 2026-06-15 | 279 | 0 |
+| global | crypto | 12 | 2014-09-17 | 2026-06-16 | 12 | 0 |
+| us | etf | 5348 | 1986-04-03 | 2026-06-15 | 5341 | 7 |
+| us | stock | 7438 | 1962-01-02 | 2026-06-15 | 7136 | 302 |
+
+## Filter attrition
+
+- Start: `2000-01-01`
+- Tickers loaded: `279` -> passed filters: `145` (52.0%).
+- Expanding-universe caveat: filters (min history) plus sparse early coverage mean the tradable set in early years is much smaller than today; cross-era CAGR comparisons are affected.
+
+### Top rejection reasons
+
+| reason | n |
+|---|---|
+| liquidity | 47 |
+| price,liquidity | 43 |
+| price | 42 |
+| history,price | 1 |
+| history,price,liquidity | 1 |
