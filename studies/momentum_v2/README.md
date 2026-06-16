@@ -270,9 +270,12 @@ uv run python studies/momentum_v2/topn_view.py --universe us_stocks --start 1990
 
 ## Próximos passos
 
+Comandos, hipóteses e providers de dados detalhados em **`TODO.md`**.
+
 1. **Atacar o survivorship** (único teto que sobrou): membership point-in-time do S&P 500 +
-   preços de empresas delisted. Sem isso, nenhum PASS aqui vira promovível.
-2. Rodar outros universos (`us_etfs`, `br_stocks`, `us_mixed`) — só `--universe`, sem código novo.
+   preços de empresas delisted. Sem isso, nenhum PASS aqui vira promovível. `TODO.md` lista
+   providers candidatos (Norgate, Sharadar, EODHD, …).
+2. Rodar outros universos (`us_etfs`, `us_mixed`, `br_stocks`) — só `--universe`, sem código novo.
 3. Arquivar `momentum/` e `momentum_13612_universes/` (mantidos como referência read-only;
    este estudo os consolida e supera).
 
