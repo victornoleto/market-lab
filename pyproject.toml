@@ -44,6 +44,7 @@ dependencies = [
     "hmmlearn>=0.3",             # HMM regime gate [advances_fin_ml, ch.3]
     "tabulate>=0.9",             # pandas.DataFrame.to_markdown() in report renderers
     "pyyaml>=6.0",               # yaml.safe_load for letf_rotation_hunt run_iter configs
+    "plotly>=5.0",
 ]
 
 [project.optional-dependencies]

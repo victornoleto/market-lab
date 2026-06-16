@@ -1,0 +1,83 @@
+# ---------------------------------------------------------------------------
+# Premissas do estudo "Investir no Exterior — Brasil vs. Dólar".
+#
+# TODAS as premissas numéricas vivem aqui para serem auditáveis e ajustáveis.
+# Fontes (URLs/leis) catalogadas em SPEC.md. Valores de mercado de jun/2026.
+# IOF e alíquota de ETF estão MARCADOS como voláteis/incertos (2025-2026).
+# ---------------------------------------------------------------------------
+
+janela:
+  inicio_sp500: "2004-01-01"   # limitado pelo USD/BRL (BRL=X começa 2003-12)
+  inicio_mundo: "2008-07-01"   # limitado pelo VT (começa 2008-06-26)
+  fim: null                    # null = hoje
+
+# Aportes (em BRL) usados nas simulações
+aportes:
+  inicial_brl: 100000.0        # aporte único (lump-sum)
+  mensal_brl: 1000.0           # aporte mensal (DCA)
+  # tamanhos de capital para a análise de sensibilidade (lump-sum)
+  sensibilidade_brl: [10000.0, 100000.0, 1000000.0]
+
+# Proxies de índice (gross). Somamos de volta a taxa do ETF-proxy para
+# aproximar o retorno PURO do índice; cada instrumento desconta a SUA taxa.
+proxies:
+  sp500:
+    ticker: "SPY"
+    taxa_proxy: 0.000945       # ER do SPY (0,0945%) — somado de volta
+  mundo:
+    ticker: "VT"
+    taxa_proxy: 0.0007         # ER do VT (0,07%) — somado de volta
+
+# Instrumentos comparados.
+#   exposicao: sp500 | mundo
+#   taxa_adm: taxa de administração anual
+#   retencao_dividendos: retenção na fonte sobre dividendos DENTRO do fundo
+#     (0,30 = wrap de ETF US-domiciliado, sem tratado; 0,15 = wrap UCITS irlandês)
+#   listagem: B3 (cotado em BRL, acumula) | US (cotado em USD, distribui)
+#   ticker_real: para validação sintético × real (quando há histórico)
+# acumula=true => não distribui dividendos (sem IR anual de dividendos no Brasil;
+#   só a retenção interna na fonte). Vale para ETFs B3 e UCITS irlandeses.
+# listagem: B3 (cotado em BRL) | US (cotado em USD, comprado lá fora) — UCITS
+#   irlandês entra como US (comprado em USD na IBKR), mas acumula e retém só 15%.
+instrumentos:
+  IVVB11: { exposicao: sp500, taxa_adm: 0.0023, retencao_dividendos: 0.30, listagem: B3, acumula: true,  ticker_real: "IVVB11.SA", nome: "IVVB11 (iShares S&P 500 BRL)" }
+  WRLD11: { exposicao: mundo, taxa_adm: 0.0036, retencao_dividendos: 0.30, listagem: B3, acumula: true,  ticker_real: "WRLD11.SA", nome: "WRLD11 (Investo FTSE Global, wrap VT)" }
+  VWRA11: { exposicao: mundo, taxa_adm: 0.0030, retencao_dividendos: 0.15, listagem: B3, acumula: true,  ticker_real: "VWRA11.SA", nome: "VWRA11 (B3, wrap do UCITS irlandês)" }
+  ACWI11: { exposicao: mundo, taxa_adm: 0.0030, retencao_dividendos: 0.20, listagem: B3, acumula: true,  ticker_real: "ACWI11.SA", nome: "ACWI11 (Trend MSCI ACWI)" }
+  VOO:    { exposicao: sp500, taxa_adm: 0.0003, retencao_dividendos: 0.30, listagem: US, acumula: false, nome: "VOO (Vanguard S&P 500, US)" }
+  VT:     { exposicao: mundo, taxa_adm: 0.0007, retencao_dividendos: 0.30, listagem: US, acumula: false, nome: "VT (Vanguard Total World, US)" }
+  CSPX:   { exposicao: sp500, taxa_adm: 0.0007, retencao_dividendos: 0.15, listagem: US, acumula: true,  nome: "CSPX (iShares S&P 500 UCITS irlandês)" }
+  VWRA:   { exposicao: mundo, taxa_adm: 0.0022, retencao_dividendos: 0.15, listagem: US, acumula: true,  nome: "VWRA (Vanguard FTSE All-World UCITS irlandês)" }
+
+# Canais de câmbio. spread = markup sobre a taxa comercial; iof_ida na remessa
+# de investimento; iof_volta no repatriamento. fixo_usd / fixo_pct = tarifas.
+canais_cambio:
+  inter_digital: { nome: "Inter (Digital/One)",       spread: 0.015,  fixo_usd: 0.0,  fixo_pct: 0.0,    iof_ida: 0.011, iof_volta: 0.0038 }
+  inter_black:   { nome: "Inter Black",               spread: 0.0125, fixo_usd: 0.0,  fixo_pct: 0.0,    iof_ida: 0.011, iof_volta: 0.0038 }
+  inter_win:     { nome: "Inter WIN (>= R$1M)",        spread: 0.0099, fixo_usd: 0.0,  fixo_pct: 0.0,    iof_ida: 0.011, iof_volta: 0.0038 }
+  transfer_bank: { nome: "Transfer Bank (p/ IBKR)",    spread: 0.003,  fixo_usd: 0.0,  fixo_pct: 0.0,    iof_ida: 0.011, iof_volta: 0.0038 }
+  wise:          { nome: "Wise",                       spread: 0.005,  fixo_usd: 6.96, fixo_pct: 0.0053, iof_ida: 0.011, iof_volta: 0.0038 }
+  remessa:       { nome: "Remessa Online",             spread: 0.011,  fixo_usd: 0.0,  fixo_pct: 0.0,    iof_ida: 0.011, iof_volta: 0.0038 }
+
+# Custos B3 (caminho Brasil)
+b3:
+  emolumentos: 0.00032         # emolumentos + liquidação ~0,03%
+  corretagem: 0.0             # zero-corretagem (Inter/Rico/C6/NuInvest/etc.)
+
+# Tributação
+tributos:
+  etf_b3_ganho_capital: 0.15   # ETF de renda variável B3 (base; sensib. 0.175)
+  etf_b3_isencao_brl: 0.0      # SEM isenção de R$20k para ETFs
+  etf_b3_ganho_capital_sensibilidade: 0.175
+  exterior_ganho_capital: 0.15 # Lei 14.754/2023 (ganho em BRL, inclui câmbio)
+  exterior_dividendo: 0.15     # Lei 14.754/2023 sobre dividendos
+  credito_imposto_exterior: true  # crédito da retenção US (30%) contra o IR BR (15%);
+                                  # excesso (15pp) é perdido => retenção efetiva = 30%.
+                                  # false = cascata pessimista 30% + 15%.
+
+# Cenários: caminho -> canal de câmbio + instrumentos
+cenarios:
+  brasil:     { rotulo: "Brasil — ETF na B3 (sem corretagem)",        canal: null,          instrumentos: [IVVB11, WRLD11, VWRA11] }
+  inter:      { rotulo: "Inter — Conta Global (ETF US)",              canal: inter_digital, instrumentos: [VOO, VT] }
+  ibkr:       { rotulo: "Interactive Brokers — ETF US",               canal: transfer_bank, instrumentos: [VOO, VT] }
+  ibkr_ucits: { rotulo: "Interactive Brokers — UCITS irlandês",       canal: transfer_bank, instrumentos: [CSPX, VWRA] }
