@@ -161,3 +161,6 @@ Thumbs.db
 # Jupyter
 *.ipynb
 .ipynb_checkpoints/
+
+# momentum_v2 regenerable Postgres panel cache (large parquet)
+studies/momentum_v2/universes/**/cache/

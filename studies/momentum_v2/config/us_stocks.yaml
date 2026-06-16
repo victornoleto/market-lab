@@ -1,0 +1,13 @@
+# US stocks overrides on top of base.yaml.
+# Tighter liquidity/history floor than the default to keep the tradable set
+# sane; benchmark is SPY (S&P 500 proxy).
+
+run:
+  benchmark_by_universe:
+    us_stocks: SPY
+
+filters:
+  us_stock:
+    min_history_months: 60
+    min_price: 5.0
+    min_median_dollar_volume: 5000000

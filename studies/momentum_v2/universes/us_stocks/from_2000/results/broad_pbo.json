@@ -1,0 +1,164 @@
+{
+  "rows": [
+    {
+      "group": "all",
+      "pbo": 0.18253968253968253,
+      "n_configs": 840,
+      "n_configs_total": 840,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:clenow_trend",
+      "pbo": 0.07539682539682539,
+      "n_configs": 20,
+      "n_configs_total": 20,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:clenow_trend_abs_cash",
+      "pbo": 0.07539682539682539,
+      "n_configs": 20,
+      "n_configs_total": 20,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:clenow_trend_inverse_vol",
+      "pbo": 0.1984126984126984,
+      "n_configs": 20,
+      "n_configs_total": 20,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:composite_mom_lowvol",
+      "pbo": 0.7619047619047619,
+      "n_configs": 80,
+      "n_configs_total": 80,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:composite_mom_lowvol_abs_cash",
+      "pbo": 0.7619047619047619,
+      "n_configs": 80,
+      "n_configs_total": 80,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:composite_mom_lowvol_inverse_vol",
+      "pbo": 0.7579365079365079,
+      "n_configs": 80,
+      "n_configs_total": 80,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_12_1",
+      "pbo": 0.2777777777777778,
+      "n_configs": 20,
+      "n_configs_total": 20,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_12_1_abs_cash",
+      "pbo": 0.2777777777777778,
+      "n_configs": 20,
+      "n_configs_total": 20,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_12_1_inverse_vol",
+      "pbo": 0.24603174603174602,
+      "n_configs": 20,
+      "n_configs_total": 20,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612",
+      "pbo": 0.2896825396825397,
+      "n_configs": 80,
+      "n_configs_total": 80,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612_abs_cash",
+      "pbo": 0.2896825396825397,
+      "n_configs": 80,
+      "n_configs_total": 80,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612_inverse_vol",
+      "pbo": 0.14682539682539683,
+      "n_configs": 80,
+      "n_configs_total": 80,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:vol_adjusted_13612",
+      "pbo": 0.3134920634920635,
+      "n_configs": 80,
+      "n_configs_total": 80,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:vol_adjusted_13612_abs_cash",
+      "pbo": 0.3134920634920635,
+      "n_configs": 80,
+      "n_configs_total": 80,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:vol_adjusted_13612_inverse_vol",
+      "pbo": 0.3055555555555556,
+      "n_configs": 80,
+      "n_configs_total": 80,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    }
+  ]
+}

@@ -17,11 +17,19 @@ from market_lab.backtest.data.br_tickers import (
     sector_of,
 )
 from market_lab.backtest.data.yfinance_source import YFinanceSource
+from market_lab.backtest.data.postgres_source import (
+    UNIVERSE_SQL,
+    PostgresSource,
+    PricePanel,
+)
 from market_lab.backtest.data.wikipedia_spx import WikipediaSPX, constituents_on
 
 __all__ = [
     "IBRX100_TICKERS",
     "SECTOR_MAP",
+    "UNIVERSE_SQL",
+    "PostgresSource",
+    "PricePanel",
     "UniverseConfig",
     "WikipediaSPX",
     "YFinanceSource",
