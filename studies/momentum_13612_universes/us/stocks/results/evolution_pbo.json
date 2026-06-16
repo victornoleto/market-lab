@@ -1,0 +1,84 @@
+{
+  "rows": [
+    {
+      "group": "all",
+      "pbo": 0.0,
+      "n_configs": 72,
+      "n_obs": 8022,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "universe:us_stocks",
+      "pbo": 0.0,
+      "n_configs": 72,
+      "n_obs": 8022,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:composite_mom_lowvol",
+      "pbo": 0.7103174603174603,
+      "n_configs": 24,
+      "n_obs": 8022,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:raw_13612",
+      "pbo": 0.7222222222222222,
+      "n_configs": 12,
+      "n_obs": 8147,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:raw_inverse_vol",
+      "pbo": 0.623015873015873,
+      "n_configs": 12,
+      "n_obs": 8147,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:vol_adjusted_13612",
+      "pbo": 0.7777777777777778,
+      "n_configs": 24,
+      "n_obs": 8147,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "us_stocks:composite_mom_lowvol",
+      "pbo": 0.7103174603174603,
+      "n_configs": 24,
+      "n_obs": 8022,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "us_stocks:raw_13612",
+      "pbo": 0.7222222222222222,
+      "n_configs": 12,
+      "n_obs": 8147,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "us_stocks:raw_inverse_vol",
+      "pbo": 0.623015873015873,
+      "n_configs": 12,
+      "n_obs": 8147,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "us_stocks:vol_adjusted_13612",
+      "pbo": 0.7777777777777778,
+      "n_configs": 24,
+      "n_obs": 8147,
+      "n_combinations": 252,
+      "pass": false
+    }
+  ]
+}
