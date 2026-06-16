@@ -1,11 +1,11 @@
-# Estado atual — market-lab (2026-06-13)
+# Estado atual — market-lab (2026-06-16)
 
 > **Propósito:** onboard rápido para humanos e agentes. Este doc é o
 > snapshot vivo — a verdade canônica vive nos arquivos referenciados.
 
 ---
 
-## TL;DR (2026-06-13)
+## TL;DR (2026-06-16)
 
 🛑 **MAINTENANCE MODE** desde 2026-04-23 (mandate §1, §7).
 
@@ -29,6 +29,14 @@
 - **Phase 9 do `lrs/` (2026-06-10, user-directed return-first, ledger 4377 → 4425):** teto da família 7D elevado para 2.5x/3.0x (degraus UPRO/TQQQ). **SPY SUCCESS no screen return-first:** `L_max 2.50 / σ40 / RV21 / lag 3` = CAGR 16,81% (+1,4pp), MDD −47,47%, WF 12/17 mantido. **QQQ FAIL: zero rows dentro do teto −50%** (melhor: 24,7% / −61,8%) — QQQ acima de ~2x efetivo é ruin-adjacent em toda variação testada. Leitura mecânica honesta: com σ40-45 o escalar fica pinado no cap ~99% dos dias — o ganho vem da alavancagem, não do sizing (empata com a row binária L2.50 da Phase 2). Diagnóstico return-first, sem promoção; odds de validação SS5 registradas como baixas (DSR já matou candidato mais forte). Mandate §1 inalterado.
 - **Diagnóstico Testfol.io do usuário (2026-06-12):** dois mixes estáticos mensais com exposição efetiva ~1x a SPY via 50% SSO-like ou 34% UPRO-like + ZROZ/VBR/GLD/KMLM batem SPY em 1988-2026 (P2 CAGR `13,33%`, MDD `−56,16%`, final/SPY `1,86x`; P3 CAGR `13,98%`, MDD `−57,96%`, final/SPY `2,32x`), mas no 2000+ ficam abaixo do RSC local bruto (`10,30-10,93%` CAGR e `−56-58%` MDD vs RSC `12,38%` e `−30,76%`). Veredito: bom diagnóstico SPY-relative, ruim como troca do perfil atual de MDD `~−30%`; `studies/spy_sso_upro_replacement/USER_TESTFOLIO_STATIC_MIX_DIAGNOSTIC_2026-06-12.md`.
 - **HAA Hybrid Asset Allocation scaffold (2026-06-13) criado + yfinance screen executado:** `studies/haa_hybrid_asset_allocation/` implementa a regra HAA canonical ETF e adaptações `only_stocks`/`stocks_plus_etfs` com momentum 13612U + canário TIP `[stocks_on_the_move, p.60]`. Como o cache Tiingo foi perdido, o runner agora aceita `--source yfinance` só com `--allow-biased-yfinance` e marca todas as rows como `promotion_eligible=false`. Screen consolidado `max-assets=20`: canonical ETF yfinance CAGR `9,39%`/MDD `−15,19%`; melhor ETF broad top4 `12,41%`/`−30,05%`; stock top10 `14,59%`/`−30,86%`; mixed top10 `12,12%`/`−25,18%`. PBO do painel yfinance `0,631` falha; Testfol.io long-history segue bloqueado por falta de `DBC/TIP/TLT/VEA/VWO` sims e sem token local. Sem deploy e mandate §1 inalterado `[advances_fin_ml, p.208-211]`.
+- **Momentum 13612 universes atualizado (2026-06-16):** `studies/momentum_13612_universes/` separa o 13612U puro de HAA: rank mensal 1/3/6/12, top-N, sem canário; BR stocks têm hook Postgres 1m configurável. Stocks-only S&P 500 atual completo gerou `792` configs after-tax desde 2000; melhor Sharpe = `raw_inverse_vol_top3_reb3_off0`, CAGR `65,67%`, MDD `−78,50%`, Sharpe `1,359`, PBO `0,321`, mas drawdown/viés current-universe tornam a linha não investível. O heatmap 1990+ (`4.092` rows) mostrou sinal forte porém enviesado: melhor Sharpe `raw_equal_lb6_top5_reb3_off0` (`59,32%`/`−59,04%`/`1,380`), região balanceada `vol_adjusted_lb6_top5_reb3_off0` (`35,18%`/`−43,98%`/`1,110`) e defensiva `composite_lb12_top15_reb12_off6` (`16,90%`/`−34,44%`/`0,897`). A evolução de `72` finalistas confirmou três zonas: agressiva `55,88%`/`−62,36%`/Sharpe `1,401`; constrained `CAGR>=15% & MDD>=−40%` em `balanced_voladj_lb6_top5_q + market_sma200_monthly + staggered` (`26,89%`/`−39,35%`/`1,085`); defensiva `MDD>=−30%` em `defensive_composite_lb6_12_top20_y + market_sma200_daily + staggered` (`11,12%`/`−24,15%`/`0,859`). PBO geral da evolução é `0,000`, mas PBO por mecanismo falha (`0,623..0,778`) e a seleção é pós-heatmap. ETF staggered testou `18` configs e falhou (`10,15%`/`−30,24%`/`0,683`, PBO `0,663`). Conclusão: 13612 tem sinal diagnóstico, mas nada é promoção; tudo segue `promotion_eligible=false`, sem deploy e mandate §1 inalterado `[stocks_on_the_move, p.60]`, `[stocks_on_the_move, p.66-67, p.81-82, p.98-99]`, `[leverage_for_the_long_run, p.9, p.13, p.16]`, `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`.
+- **Momentum 13612 PIT-ish follow-up:** `run_stocks_heatmap.py` e `run_stocks_evolution.py` agora aceitam `--us-stock-universe sp500_wikipedia_pit`. O ranking de cada rebalance é mascarado pelos constituintes S&P 500 reconstruídos via tabela de mudanças da Wikipedia, reduzindo vazamento de constituintes atuais. Smoke em memória `2020-2021` com `20` tickers confirmou o caminho e mostrou o residual esperado: `ABMD`/`ADS`/`AGN` entram no membership reconstruído, mas yfinance não entrega preço. O primeiro rerun PIT-ish completo sem filtro gerou CAGR absurdo porque a estratégia segurou `CFC`/`TIE` em dias com retornos ajustados impossíveis no cache yfinance; por isso os runners stocks-only ganharam `--max-abs-daily-return`. Rerun focado com `--max-abs-daily-return 10` (`lb6`, top5, trimestral, offsets 0/1/2, start 2000) removeu `9` séries quebradas (`BMC/CBE/CFC/CPWR/MEE/MI/PTV/RSH/TIE`) e reduziu o melhor resultado para `29,35%` CAGR, MDD `−65,68%`, Sharpe `0,880`, terminal/SPY `92,4x`; offsets 1/2: `28,15%`/`−67,45%`/`0,859` e `21,01%`/`−77,34%`/`0,692`. Leitura: sinal ainda forte, mas drawdown ruin-level e sem delisting returns; é mitigação diagnóstica de survivorship, não dataset PIT/delisted real nem promoção `[advances_fin_ml, p.31-34]`, `[advances_fin_ml, p.208-211]`.
+- **yfinance → Postgres local cache scaffold (2026-06-15):** `data/yfinance/sync.py` cria `yf_tickers`/`yf_daily_prices` na database local `stocks`, com BR stocks vindos de `data/yfinance/br.txt` (`279` tickers), US stocks/ETFs vindos dos diretórios Nasdaq Trader e crypto curado como `country='global'`. Sync completo auditado em 2026-06-16: US `12.786` tickers totais (`7.438` stocks, `5.348` ETFs), BR `306` (`279` stocks, `27` ETFs) e crypto `12`; ativos sem erro relevante: `7.136` US stocks, `5.341` US ETFs, `279` BR stocks, `26` BR ETFs e `12` crypto. Índices otimizados: PK `(ticker_id,date)`, cross-section `(date,ticker_id) INCLUDE (adj_close,close,volume)`, `(ticker_id,date DESC)`, BRIN em `date` e filtro `(country,asset_class,active)`. Isso acelera screens locais, mas yfinance/current-universe continua screen-only/survivorship-biased e não promove estratégia sem PIT/delisted audit `[advances_fin_ml, p.208-211]`.
+- **Novo fork `studies/momentum/` (2026-06-16):** scaffold criado para testar momentum de longo prazo diretamente sobre `yf_tickers`/`yf_daily_prices` em Postgres, evitando fetch online no backtest. O desenho usa YAML editável (`config/default.yaml`) para filtros de histórico/preço/liquidez/staleness e grid de universos/top-N/rebalance/score/weighting. Mecanismos: `raw_13612`, `mom_12_1`, `mom_3_6_12`, `clenow_trend`, `vol_adjusted`, `mom_lowvol_composite`; pesos `equal`, `inverse_vol`, `capped_inverse_vol`; offsets explícitos e staggered. Implementação modular (`data.py`, `filters.py`, `features.py`, `strategies.py`, `grid.py`, `validation.py`, `report.py`, `plots.py`, `run.py`) com PBO/DSR/WF/OOS/FWD/bootstrap/rolling windows/cross-check holdings-loop e PNGs de diagnóstico. Testes focados: `uv run pytest tests/test_momentum_study.py tests/test_yfinance_postgres_sync.py tests/test_yfinance_source.py` → `21 passed`; lint `uv run ruff check studies/momentum tests/test_momentum_study.py data/yfinance/sync.py tests/test_yfinance_postgres_sync.py tests/test_yfinance_source.py` → pass. Auditoria completa: passaram filtros YAML `2.301` US stocks, `1.112` US ETFs, `183` BR stocks, `22` BR ETFs e `12` crypto. Smoke full-universe limitado (`--limit-configs 20`, sem `--max-symbols`) rodou `20/20`, gerou `14` PNGs e não teve skips de benchmark; PBO geral `0,437`, mas mecanismos falham PBO (`0,627`/`0,984`) e todos os top rows têm MDD ruin-adjacent (`−94%..−100%`). Research-only; yfinance/current-universe segue não-promovível `[stocks_on_the_move, p.60]`, `[stocks_on_the_move, p.70-77]`, `[systematic_trading, p.137-148]`, `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`.
+- **Consolidação `studies/momentum_v2/` (2026-06-16):** mescla o melhor dos dois forks numa pasta só, organizada por universo. Pega a *inteligência de ranking/diagnóstico* do `momentum_13612_universes/` (dominância rolante `equity/equity_benchmark` em janelas {3,5,10,15,20}a, overlays MA SPY-SMA200 mensal/diário + stock-SMA100 + combos, staggered offsets, MDD por crise, funil broad→evolution→validate) e a *fundação de dados/validação* do `momentum/` (loader Postgres promovido para `src/market_lab/backtest/data/postgres_source.py` como `PostgresSource`, filtros de survivorship, config YAML, gates compartilhados). Decisões: funil em 3 fases; janela `1990` primária + `2000` robustez; loader Postgres compartilhado/testado. Saída namespaced por janela em `universes/us_stocks/from_<ano>/{results,plots,reports,cache}` (`--cache-panels` reusa um load de Postgres entre as 3 fases). **Run canônico (2026-06-16):** universo cheio `2301/7136` US stocks passam filtros; duas janelas, cada uma `840` configs broad + `144` evolution (trial count honesto `984`). **Lente de seleção = Sharpe + Calmar** (decisão do usuário; substituiu a dominância rolante, que segue como coluna reportada). **WF deixou de bloquear por MDD:** o cap de `−25%` por janela embutido no WF era mais estrito que o próprio mandate (§5: "CAGR/MDD são tiers, não bloqueantes"); alinhado para WF puro `≥6/8` lucrativo. Também corrigido um bug no check cross-lib (comparava a curva com overlay contra a holdings-loop da base, estratégias diferentes; agora compara a MESMA base vetorizada vs loop). **Com isso, as DUAS janelas passam os gates estatísticos (`overall_pass=True`):** 1990 set-PBO `0,000`, finalistas `clenow_trend lb1_3_6_12 top15/top20 reb1` (DSR p≈`0`, WF `8/8`, bootstrap CI-low Sharpe ~`0,85`); 2000 set-PBO `0,357`, finalistas `raw_13612 lb6 top20 reb3` (fixed/staggered) + `…inverse_vol lb1_3_6_12 top20 reb3` (DSR p≈`0`, WF `8/8`, bootstrap ~`0,67–0,78`). **Mas `promotion_eligible=false` permanece:** o edge sobrevive aos gates honestos, e o bloqueador remanescente é a *qualidade de dados* (survivorship — yfinance nunca capturou as empresas que faliram), não a estatística. Próximo passo real para confiar nisso = reduzir o viés (membership PIT + preços de delisted), não mais tuning. Nota de honestidade: relaxar o MDD foi alinhamento ao mandate (não threshold-fitting pós-resultado); a dominância rolante também era regime-estável (mesma família nas 2 janelas). Testes `tests/test_postgres_source.py` + `tests/test_momentum_v2.py` (`25 passed`). `momentum/` e `momentum_13612_universes/` mantidos como referência read-only; **mandate §1 inalterado** (research-only, sem deploy) `[stocks_on_the_move, p.60]`, `[stocks_on_the_move, p.66-67, p.81-82, p.98-99]`, `[systematic_trading, p.137-148]`, `[leverage_for_the_long_run, p.9, p.13, p.16]`, `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`. Spec: `docs/specs/momentum_v2.md`.
+- **momentum_v2 — sweep de redução de drawdown (2026-06-16):** investigando como melhorar os MDDs full (~−63%) dos picks top_n 3-10. Confirmado que a "estratégia do SMA do SPY" das pastas antigas (`market_regime` em `momentum_13612_universes/run_stocks_evolution.py`) é o gate de regime SMA200 do SPY, já portado como overlay no `momentum_v2`. **Achado principal:** a alavanca que mais corta o MDD full **não** é o SMA do SPY, é **vol-targeting** (escala a exposição pela vol realizada da carteira, só de-risk, lag anti-look-ahead; novo em `overlays.vol_target_returns`). No pick destaque `clenow_trend top10 reb1` (1990, after-tax): vol-target 15% leva o MDD full de `−63,0%` → `−25,2%` **melhorando** Sharpe (`1,20→1,27`) e Calmar (`0,81→0,83`), ao custo de CAGR (`51%→21%` — a parte volátil). O SPY SMA200 corta o MDD de **crise** (GFC `−59%→−18%`) mas não o MDD full em 1990 (corta pra −46% em 2000); low-vol composite corta MDD mas derruba Sharpe (0,61); diversificação top3→top10 ajuda pouco dentro de 3-10. Recomendação: vol-target 15-20% como redutor de drawdown, SMA200 como proteção de crise complementar (combo ainda não medido). Ferramentas novas: `studies/momentum_v2/{drawdown_sweep.py, topn_view.py}` (recorte por holdings + sweep de alavancas), relatórios `reports/{TOPN_3_10,DRAWDOWN_SWEEP}.md` nas duas janelas. Testes `tests/test_momentum_v2.py` `16 passed` (inclui vol-target). Segue `promotion_eligible=false` (survivorship é o teto, independente do drawdown); mandate §1 inalterado `[systematic_trading, p.137-148]`, `[advances_fin_ml, p.31-34]`, `[stocks_on_the_move, p.66-67]`, `[leverage_for_the_long_run, p.9, p.13, p.16]`.
+- **Factor core comparison RSC vs Avantis/SPMO (2026-06-13/14):** novo estudo `studies/return_stacked_core/factor_core_comparison/` compara, research-only, o payload live curto do usuário `60% AVUS / 20% AVUV / 20% SPMO` contra RSC-US tracking (`SPY/GDE/ZROZ/DBMF/KMLM/CASHX?E=-2`). Janela comum `2022-03-17..2026-06-12`: yearly rebalance fator CAGR `16,58%`, MDD `−20,47%`, terminal `1,916` vs RSC CAGR `13,39%`, MDD `−20,23%`, terminal `1,703` (`1,125x`); monthly sensitivity fator terminal `1,919` vs RSC `1,650` (`1,163x`). `LONG_TERM_FACTOR_CORE.md` consolida a análise comparativa: RSC segue research-only; core patrimonial analítico = equity global factor-aware, com Candidate C (`45 AVUS / 10 AVUV / 10 SPMO / 20 AVDE / 5 AVDV / 10 AVEM`) como default analítico, Candidate B (`65 AVUS / 25 AVDE / 10 AVEM`) como opção mais simples e Candidate F (`... / 5 IDMO / 3 EEMO`) como sensibilidade de momentum global. Sem deploy nem mudança mandate §1 `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`.
+- **Novo estudo educacional `studies/investir_exterior/` (2026-06-16):** primeira peça do repo que **não** é estratégia — compara *formas* de investir no exterior (ETF na B3 vs mandar dólar para fora via Inter/IBKR), não busca alpha e não passa por gates. Modelo determinístico de fricção (taxa adm, spread, IOF 1,1%/0,38%, retenção de dividendos 30%/15%, IR Lei 14.754, estate tax) sobre proxies de longo histórico (SPY desde 2004, VT desde 2008, USD/BRL `BRL=X`); ETFs B3 reconstruídos sinteticamente e **validados** contra a cota real (gap de CAGR `+0,30..0,70pp`). **Quatro caminhos** por exposição: ETF na B3, ETF US via Inter, ETF US via IBKR e **UCITS irlandês via IBKR** (CSPX/VWRA). Achados principais: no S&P 500 (~22a) o **UCITS irlandês CSPX ganha de todos** (`11,51%` > VOO/IBKR `11,27%` > IVVB11 `11,17%` ≈ VOO/Inter `11,15%`), porque o ETF brasileiro de S&P (IVVB11) embrulha um fundo *americano* (30% de retenção) e não há equivalente irlandês na B3; no índice global (~18a) o `VWRA11` da B3 (`14,82%`) empata/ganha do VWRA irlandês direto na IBKR (`14,78%`), pois já embrulha o mesmo UCITS irlandês (15%) e evita o câmbio. A decomposição mostra que retenção de dividendos + IR na saída dominam o custo de longo prazo, não o spread de câmbio; o UCITS irlandês ainda evita o imposto sucessório dos EUA. Saídas em português, para r/investimentos, em dois formatos a partir da mesma simulação: **HTML interativo** (Plotly via CDN, fonte IBM Plex Sans, escala log, `outputs/relatorio.html`) e **Markdown** com pasta `plots/` de PNGs (`outputs/relatorio.md`). Citações por fonte/lei (não por livro — ver nota da Regra 2 em `SPEC.md`). `plotly>=5.0` adicionado às deps. `tests/test_investir_exterior.py` → `15 passed`; baseline (19 falhas pré-existentes de caches externos) inalterada. Fora do framework A/B/C/D; mandate §1 inalterado.
 
 - **RSC evolution hunt (2026-06-11, user-directed, 8 rodadas pré-registradas): FAIL honesto TERMINAL — nada passa todos os gates; candidato único morto pela bateria profunda.** `studies/return_stacked_core/evolution/` — hunt por CAGR maior que o CORE `35/40/25` mantendo MDD ≤ 30%; PLAN.md pré-registrado, emendas antes de cada rodada, zero ajuste de threshold pós-resultado. R1-R3: 95.601 trials estáticos (74.193 únicos; sleeves novos RSBT/RSSB/GLD/KMLM/QQQ + carriers SSO/UPRO **dominados**) → 0 finalistas, todo ganho in-cap é artefato da década do ouro (todos perdem do CORE-1988). R4: frequência de calendário = sorte de offset; **bandas de tolerância = platô de parâmetro real**. R5-R7: simplexes 3/4/5-ativos × bandas + lastro IEF/CASHX (~132k configs) → **G1∩G2 = ∅ em todo o espaço**; candidato máximo ÚNICO = `45/25/30 + banda 20%` (5/6 gates: 13,39%/−29,52%, G1 7/8, G4 73%, 1988+ empata CORE com MDD 3,2pp mais raso, turnover 1,44/ano; falha G2: vizinhos ZROZ ≤ 25% furam −32% — **ZROZ ≥ 30% é fronteira dura sob bandas**). R8 bateria profunda no candidato único: **2/4 — FAIL terminal**: B1 ✓ (bate CORE em 61/68 starts trimestrais), B4 ✓ (cadência semanal), mas B2 ✗ (contínuo de bandas: cap raspado por 5-25bps nas bandas 12-18%; CAGR > CORE em todas as 21) e **B3 ✗ decisivo** (bootstrap conjunto de blocos 63d: spread > 0 em só 83,8% dos paths, vantagem de MDD vira moeda — o edge da banda é colheita da estrutura de tendência multi-mês da sequência histórica específica, não propriedade distribucional). Squeeze provado: cap × vizinhança × starts não tem solução conjunta — o platô do CORE já está precificado. Resíduo: EW 33/33/33 b50 = standout drawdown-first (12,94%/−24,7% e 14,24%/−24,7% em 1988+, G1 2/8); RSBT = diversificador de implementação (tier CTAP); rebalance anual = knob de MDD em 2000+ mas não em 1988+. Research-only; mandate §1 inalterado.
 - **RSC discussion — suite GLOBAL (2026-06-11, benchmark VT) concluída:** pipeline g00→g07 em `studies/return_stacked_core/discussion/` (gate: VT reproduz exato a curva salva; composição do canônico global corr 1.0000, delta de financiamento −0,60pp/ano documentado). Scan de 10.626 nós no simplex {GDE,NTSD,RSST,RSIT,ZROZ}: **o ótimo irrestrito é US-only em todas as janelas e o CORE-GLOBAL 20/15/20/20/25 fica FORA do platô de Sharpe (0/8 datas de início)**; curva de preço da globalness ≈ −0,01 Sharpe por +5pp de mangas internacionais; equity internacional não é diversificador de crise (corr mensal SPY~VXUS 0,854; nos piores meses do VT, VEA/VXUS/VWO caem MAIS que o VT). Regras de desenho se for global: 10-20% intl via RSIT primeiro (−2% em 2022) e NTSD por último (−74% no GFC), ZROZ 25-30%, nunca RSSB no lugar de ZROZ. Contrapeso honesto: na janela 1970+ o half-intl (27.5/7.5/30/10/25) empata o Sharpe de 56 anos do US core. Verdict em 3 tiers em `discussion/REPORT_GLOBAL.md`; todos os tiers esmagam o VT (+3,6 a +5,3pp CAGR, MDD 21-28pp mais raso). Add-on g08 (ratio fixo 60/40 e 66/34 US/intl, banda ±2,5pp sobre o grid): os tops in-band concordam em NTSD=0, intl 100% via RSIT e ZROZ 30-35; expressão recomendada 66/34 = **30 GDE / 15 RSST / 20 RSIT / 35 ZROZ** (4 fundos; bate o CORE-GLOBAL em CAGR/MDD/Sharpe nas duas janelas modernas com a mesma geografia), 60/40 = 30/10/25/35; alternativa MF-heavy para quem pesa estagflação: 20/5/25/20/30 (REPORT_GLOBAL §6). Add-on s08 (benchmark vs portfólios "safe" unlevered — Golden Butterfly/Permanent/All Weather/barbell VUG-VBR-TLT-GLD-KMLM, mesma engine testfol.io, janela comum 2000+): Sharpe unlevered é a vantagem DELES (0,97-1,01 vs CORE 0,835), crescimento é a nossa ($21,5 vs $6-9 por $1 em 26 anos); no teste de alavancagem igualada (B1 ×1,65 a cash+2%) o CORE vence no mesmo risco (12,3%/−30,2%/0,835 vs 11,0%/−30,1%/0,813); na diluição a MDD igualado o CORE+T-bills bate GB/PP/AW mas perde para o barbell B1 no extremo −17%. Verdict: return stacking = tecnologia de eficiência de capital, superior condicional a objetivo de crescimento (REPORT.md Addendum). Research-only; mandate §1 inalterado.
@@ -38,7 +46,7 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 
 ---
 
-## Status por linha de pesquisa (2026-06-13)
+## Status por linha de pesquisa (2026-06-16)
 
 ### Plano C — buy-hold passivo factor-tilted ✅ ATIVO
 - **Status:** sole winner. 100% do capital. Zero alterações.
@@ -59,7 +67,153 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
 
 ---
 
-## Linhas exploratórias locais (2026-06-13)
+## Linhas exploratórias locais (2026-06-16)
+
+### data/yfinance/ 🌱 LOCAL POSTGRES CACHE SCAFFOLD
+- Criado em 2026-06-15 para sincronizar yfinance diário em Postgres local e
+  acelerar backtests/screeners sem chamadas repetidas ao Yahoo. CLI:
+  `data/yfinance/sync.py`; docs: `data/yfinance/README.md`; env:
+  `YFINANCE_DATABASE_URL`, `YFINANCE_SCHEMA`, `YFINANCE_UNIVERSE`,
+  `YFINANCE_PERIOD`, `YFINANCE_BR_TICKERS_FILE`.
+- Universos: BR stocks por `data/yfinance/br.txt`, BR ETFs por lista curada, US
+  stocks/ETFs pelos diretórios públicos Nasdaq Trader e crypto por lista curada
+  USD com `country='global'`. Sync completo auditado: US `12.786` tickers
+  (`7.438` stocks, `5.348` ETFs), BR `306` (`279` stocks, `27` ETFs) e crypto
+  `12`; ativos carregáveis/ativos após erros: `7.136` US stocks, `5.341` US ETFs,
+  `279` BR stocks, `26` BR ETFs e `12` crypto. Tabelas: `yf_tickers` e
+  `yf_daily_prices`, com upsert idempotente e índices para leitura por ticker/range
+  e cross-section por data.
+- Verificação offline: `uv run pytest tests/test_yfinance_postgres_sync.py
+  tests/test_yfinance_source.py` → `13 passed`; lint: `uv run ruff check
+  data/yfinance/sync.py tests/test_yfinance_postgres_sync.py` → pass. Smoke real
+  inicial de banco: `RAIZ4.SA` (`--universe br-stocks --limit 1 --period max`) gravou
+  `1.211` barras em `stocks`; auditoria posterior confirmou cobertura até
+  2026-06-15/16 conforme `studies/momentum/DATA_AUDIT.md`. Limitação
+  permanente: yfinance/current-universe é screen-only por survivorship/PIT gaps;
+  nenhum resultado vira promoção sem auditoria de delisted/PIT
+  `[advances_fin_ml, p.208-211]`.
+
+### studies/momentum/ 🌱 POSTGRES-BACKED MOMENTUM RESEARCH SCAFFOLD
+- Criado em 2026-06-16 como fork limpo de `studies/momentum_13612_universes/`,
+  agora com fonte única em Postgres local (`yf_tickers`/`yf_daily_prices`) para
+  acelerar grids sem chamadas repetidas ao yfinance. CLI: `studies/momentum/run.py`;
+  config editável: `studies/momentum/config/default.yaml`; docs:
+  `README.md` e `SPEC.md`.
+- Filtros configuráveis por YAML: `min_history_months`, `min_price`,
+  `min_median_dollar_volume`, `liquidity_lookback_days`,
+  `min_trading_days_per_year` e `max_stale_days`, com overrides por
+  `us_stock/us_etf/br_stock/br_etf/crypto`. Universos iniciais:
+  `us_stocks`, `us_etfs`, `br_stocks`, `br_etfs`, `crypto` e suporte a
+  `us_mixed/br_mixed/global_mixed`.
+- Mecanismos implementados: 13612U, 12-1, 3/6/12, Clenow slope×R²,
+  momentum/vol, composite momentum+low-vol; pesos equal, inverse-vol e capped
+  inverse-vol; absolute filter e staggered offsets. Validação scaffold inclui
+  PBO, DSR, WF, OOS, FWD, bootstrap, rolling windows e cross-check
+  vectorized-vs-holdings loop `[stocks_on_the_move, p.60]`,
+  `[stocks_on_the_move, p.70-77]`, `[systematic_trading, p.137-148]`,
+  `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`. `broad` agora
+  é modo screen otimizado: retornos diários pré-computados, matrizes estreitas por
+  config, bootstrap/cross-check adiados para `validate`, PBO amplo amostrado por
+  `broad_pbo_max_configs` e cache opcional de painel filtrado via `--cache-panels`.
+  O run padrão gera PNGs em `studies/momentum/plots/` e manifesto em
+  `results/plot_manifest.json`; use `--no-plots` para rodar só JSON/CSV.
+- Verificação offline: `uv run pytest tests/test_momentum_study.py
+  tests/test_yfinance_postgres_sync.py tests/test_yfinance_source.py` → `23 passed`;
+  lint: `uv run ruff check studies/momentum tests/test_momentum_study.py
+  data/yfinance/sync.py tests/test_yfinance_postgres_sync.py tests/test_yfinance_source.py` → pass.
+  Auditoria completa do Postgres: passaram filtros YAML `2.301` US stocks,
+  `1.112` US ETFs, `183` BR stocks, `22` BR ETFs e `12` crypto. Config dedicada
+  `config/us_stocks.yaml` roda apenas `us_stocks`. Run controlado com universo
+  completo (`--limit-configs 200`, sem `--max-symbols`) simulou `200/200`, gerou
+  `22` PNGs e não teve skips de benchmark. Tempo caiu de `6m51s` para `2m36s`
+  sem cache e `1m36s` com cache hit. Full run `us_stocks` posterior simulou
+  `7.488/7.488` em `1h02m06s` e gerou `25` plots; relatório conclusivo em
+  `US_STOCKS_FULL_RUN_SUMMARY.md`. Top Sharpe: `mom_3_6_12+equal` top50 mensal,
+  CAGR `46,91%`, excesso vs SPY `38,60%`, MDD `−55,54%`, Sharpe `1,327`, DSR p
+  `0,0009`, WF `8/8`. PBO geral broad `0,052` amostrado `1000/7488`; melhores
+  famílias PBO = `mom_3_6_12` e `raw_13612`. Porém zero rows mantêm MDD melhor que
+  `−35%`, só `6` rows têm DSR<0,05/WF≥6/8/MDD≥−50%, e nenhuma passa esse corte
+  com MDD≥−45%. Leitura: sinal forte diagnóstico, mas ainda screen-only,
+  current-universe biased e drawdown-heavy.
+  Research-only; sem deploy e mandate §1 inalterado.
+
+### studies/momentum_13612_universes/ 🌱 ACTIVE SCREEN / US YFINANCE SMOKE + BR POSTGRES HOOK
+- Criado em 2026-06-15 para testar o 13612U puro em 6 universos: US stocks, US
+  ETFs, US mixed, BR stocks, BR ETFs e BR mixed. Regra: rank mensal pelo retorno
+  médio 1/3/6/12 meses, top-N equal-weight, sem filtro absoluto/cash, com pesos
+  aplicados apenas aos retornos seguintes `[stocks_on_the_move, p.60]`,
+  `[stocks_on_the_move, p.98-99]`, `[advances_fin_ml, p.31-34]`.
+- Implementação/teste: `core.py`, `universes.py`, `run.py`, `run_extensive.py`,
+  `run_etf_staggered.py`, `run_stocks_heatmap.py`, `run_stocks_evolution.py`,
+  `run_stocks_strategy_analysis.py`,
+  `SPEC.md`, `DATA_AUDIT.md`, `REPORT.md`, `us/base_results.json`,
+  `docs/specs/momentum_13612_universes.md`; testes focados `uv run pytest
+  tests/test_momentum_13612_universes.py tests/test_wikipedia_spx.py` passam com
+  `28 passed`.
+- Data policy: US `auto` usa Tiingo parquets se restaurados; caso contrário
+  yfinance exige `--allow-biased-yfinance`. yfinance stock default = S&P 500
+  atual; yfinance ETF default = lista curada líquida. BR stocks usam Postgres 1m
+  via tabela/colunas configuráveis (`MARKET_LAB_BR_1M_*` ou CLI), colapsando para
+  close diário pelo último bar intraday; `.SA` é removido por default no match.
+  `sp500_wikipedia_pit` está disponível nos runners stocks-only como mitigação
+  PIT-ish: mascara cada rebalance por constituintes S&P 500 reconstruídos via
+  Wikipedia, mas segue bloqueado para promoção por cobertura incompleta e ausência
+  de delisting returns em yfinance `[advances_fin_ml, p.208-211]`. Para esse modo,
+  usar `--max-abs-daily-return 10` quando yfinance inserir saltos impossíveis em
+  tickers históricos/reutilizados; isso é filtro de qualidade de dados
+  `[advances_fin_ml, p.31-34]`.
+- Extensive/staggered/evolution US screens executados. O broad grid original
+  (`2.376` rows, yfinance current universes, start 2010) mostrou top-N reduzindo
+  risco e ETF raw inverse-vol top5 anual com CAGR `22,60%`/MDD `−24,69%`/Sharpe
+  `1,248`, mas os subgrupos stocks/mixed falharam PBO e tudo era não-promovível.
+  O rerun stocks-only pedido pelo usuário (`--max-us-stocks 9999`, start
+  `2000-01-01`) agora vive em `studies/momentum_13612_universes/us/stocks/`:
+  `792` configs, melhor Sharpe after-tax `raw_inverse_vol_top3_reb3_off0`, CAGR
+  `65,67%`, MDD `−78,50%`, Sharpe `1,359`, PBO `0,321`; leitura = retorno
+  inflado/ruin-adjacent em universo atual.
+- Heatmap stocks-only (`HEATMAP.html`) expandiu start para `1990-01-01`, lookbacks
+  `3/6/12/3_6_12/6_12/1_3_6_12` e `4.092` configs: melhor Sharpe =
+  `raw_equal_lb6_top5_reb3_off0`, CAGR `59,32%`, MDD `−59,04%`, Sharpe `1,380`;
+  região balanceada = `vol_adjusted_lb6_top5_reb3_off0`, CAGR `35,18%`, MDD
+  `−43,98%`, Sharpe `1,110`; região defensiva = `composite_lb12_top15_reb12_off6`,
+  CAGR `16,90%`, MDD `−34,44%`, Sharpe `0,897`.
+- Deep dive focado em `raw_abs_cash_lb6_top5_reb3_off0` gerou
+  `us/stocks/ANALYSIS_raw_abs_cash_lb6_top5_reb3_off0.md` e confirmou que, nesse
+  path, o filtro absoluto/cash não alterou holdings: `0` dias/rebalances
+  diferentes vs `raw_equal_lb6_top5_reb3_off0`, exposição diária `100%`. Rerun
+  pinado em `2026-06-15`: CAGR `59,66%`, MDD `−59,04%`, Sharpe `1,386`,
+  `rolling_rel_score` `96,28%`; plots log agora comparam target vs SPY, Top-20
+  Sharpe, Top-20 Rolling Relative e blends `5/10/20/30%` com SPY. Conclusão de
+  sleeve: embora os blends melhorem CAGR/terminal no backtest enviesado, peso real
+  recomendado continua `0%` até PIT/delisted + validação independente; não é uma
+  melhoria de cash filter `[stocks_on_the_move, p.60]`, `[advances_fin_ml,
+  p.208-211]`, `[advances_fin_ml, p.273-275]`.
+- Finalist evolution (`EVOLUTION_REPORT.md`) testou `72` rows pós-heatmap com
+  offsets fixed/staggered e overlays SPY SMA200 mensal/diário + stock SMA100
+  `[stocks_on_the_move, p.66-67, p.81-82, p.98-99]`,
+  `[leverage_for_the_long_run, p.9, p.13, p.16]`. Melhor Sharpe continua agressivo:
+  `evo_aggressive_raw_lb6_top5_q_staggered_off0_stock_sma100`, CAGR `55,88%`, MDD
+  `−62,36%`, Sharpe `1,401`. Melhor row com CAGR `>=15%` e MDD `>=−40%`:
+  `evo_balanced_voladj_lb6_top5_q_staggered_off0_market_sma200_monthly`, CAGR
+  `26,89%`, MDD `−39,35%`, Sharpe `1,085`, GFC MDD `−17,46%`. Melhor Sharpe com
+  MDD `>=−30%`: `evo_defensive_composite_lb6_12_top20_y_staggered_off6_market_sma200_daily`,
+  CAGR `11,12%`, MDD `−24,15%`, Sharpe `0,859`. PBO all `0,000`, mas PBO por
+  mecanismo falha (`0,623..0,778`) e a seleção é pós-heatmap.
+- Rolling relative dominance adicionado como métrica compartilhada: para cada
+  row, janelas mensais `3/5/10/15/20y` resetam estratégia e SPY para `1,0` no
+  início, medem `%` do tempo com `equity_strategy/equity_SPY >= 1,0`, guardam
+  mean/p25/min por horizonte e calculam `rolling_rel_score` ponderado
+  `10/15/25/25/25`. Não há horizonte 30y. A métrica é diagnóstico de dominância
+  de curva relativa, não gate de promoção `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.273-275]`.
+- ETF-only staggered (`us/etfs/REPORT_ETF_STAGGERED.md`) testou `18` configs sem
+  escolher o melhor offset: top `{3,5,10}`, rebalance `{3,6,12}`, sleeves
+  equal-capital por offset, ranking after-tax. Melhor Sharpe:
+  `raw_inverse_vol_top10_reb3_staggered`, CAGR `10,15%`, MDD `−30,24%`, Sharpe
+  `0,683`, turnover `2,19x/ano`; nenhum row manteve MDD acima de `−30%`; PBO
+  `0,663` FAIL. Conclusão: não há candidato útil; 13612 fica como diagnóstico
+  research-only `[stocks_on_the_move, p.60]`, `[advances_fin_ml, p.208-211]`,
+  `[advances_fin_ml, p.273-275]`.
 
 ### studies/haa_hybrid_asset_allocation/ 🌱 ACTIVE SCREEN / TESTFOLIO+TIINGO BLOCKED
 - Criado em 2026-06-13 para testar HAA canonical ETF e adaptações `only_stocks` e
@@ -415,6 +569,25 @@ Ver `docs/investment-mandate.md` para regras canônicas, e `docs/CLEANUP_2026-04
   nenhum variant domina; manter `35/40/25` como core headline
   `[ml_for_algo_trading, ch.7 p.190-191]`, `[stocks_on_the_move, p.60]`,
   `[systematic_trading, p.185-188]`.
+- Factor core comparison 2026-06-13 em
+  `studies/return_stacked_core/factor_core_comparison/`: compara standalone factor
+  core live ETF (`60% AVUS / 20% AVUV / 20% SPMO`) contra RSC-US tracking
+  (`40% SPY / 35% GDE / 25% ZROZ / 28% DBMF / 12% KMLM / -40% CASHX?E=-2`) no
+  payload Testfol.io do usuário, sem persistir Authorization/Bearer. Na janela
+  comum `2022-03-17..2026-06-12`, o yearly factor mix faz CAGR `16,58%`, MDD
+  `-20,47%`, terminal `1,916`, contra RSC tracking CAGR `13,39%`, MDD `-20,23%`,
+  terminal `1,703` (`1,125x`). A sensibilidade monthly preserva a conclusão:
+  factor terminal `1,919` contra RSC `1,650` (`1,163x`). Veredito: diagnóstico
+  live curto favorável ao fator, principalmente por SPMO, mas insuficiente para
+  validação de longo prazo ou mudança de alocação. Memo analítico 2026-06-14
+  `LONG_TERM_FACTOR_CORE.md` compara `AVUS/AVDE/AVEM` contra `VTI/VEA/VWO`, define
+  faixas core/SCV/momentum e trata `65/25/10` US/dev/EM como default prático;
+  Candidate C (`45 AVUS / 10 AVUV / 10 SPMO / 20 AVDE / 5 AVDV / 10 AVEM`) é o
+  default analítico, Candidate B (`65 AVUS / 25 AVDE / 10 AVEM`) é o simples,
+  Candidate F adiciona `IDMO/EEMO` como sensibilidade de momentum global, e RSC
+  permanece referência/satélite research-only. Próximos passos honestos são
+  `proxy_long` e casos globais fixos/pre-registrados `[testing_tuning, p.327-335]`,
+  `[advances_fin_ml, p.208-211]`.
 - Screen de universo ETF return-stacked/capital-efficient 2026-06-05 em
   `studies/return_stacked_core/us_core/return_stacked_etf_universe/`: fontes
   públicas Return Stacked, SignalBloom, WisdomTree/Simplify/UPAR snippets,

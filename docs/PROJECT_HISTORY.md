@@ -180,6 +180,76 @@ Notable study areas include:
   `[leverage_for_the_long_run, p.21]`, Lei 14.754/2023 art. 5°/6°,
   `[advances_fin_ml, p.208-211]`;
 - `studies/weekly_momentum/` for weekly cross-sectional momentum diagnostics, including controlled sweeps, walk-forward validation, PIT approximation, Tiingo delisted backfill, and a final rejection after DSR/bootstrap gates. A later ETF-specific post-close diagnostic improved WF metrics only when leveraged/inverse ETFs remained available, but still failed DSR; the branch was closed research-only with no further local sweeps `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`;
+- `studies/momentum_13612_universes/` for the 2026-06-15/16 pure 13612U monthly
+  cross-sectional scaffold across US/BR stocks, ETFs and mixed universes. It
+  deliberately separates the raw 1/3/6/12 ranker from HAA's TIP canary/defensive
+  sleeve, adds a configurable BR Postgres 1m daily-close loader, and keeps
+  yfinance/current-list rows screen-only until PIT/delisted and corporate-action
+  audits exist. The first extensive US-only grid tested 2,376 configs over six
+  mechanisms (raw, 13612/vol, Clenow trend, momentum+low-vol composite,
+  inverse-vol weights and cash filter), top-N `{1,3,5,10,15,20}`, and rebalance
+  frequencies `{1,3,6,12}` with all offsets. It confirmed top-N diversification
+  lowers median vol/MDD, and risk-shaped scores lower MDD further at the cost of
+  CAGR, but stock/mixed PBO subgroups failed and all rows remained non-promotable.
+  A user-directed stocks-only rerun on the full current S&P 500 from 2000 showed
+  extreme after-tax headline metrics (best Sharpe row CAGR `65.67%`, MDD
+  `-78.50%`, Sharpe `1.359`) that were ruin-adjacent and current-universe biased.
+  A 1990+ stocks heatmap then mapped 4,092 rows and found `lb6` as the strongest
+  Sharpe region, with an aggressive best row `59.32%`/`-59.04%`/Sharpe `1.380`, a
+  balanced vol-adjusted row `35.18%`/`-43.98%`/`1.110`, and a defensive composite
+  row `16.90%`/`-34.44%`/`0.897`. A focused deep dive into
+  `raw_abs_cash_lb6_top5_reb3_off0` then showed the absolute/cash filter did not
+  change that path at all (`0` differing days/rebalances versus raw equal-weight),
+  so the result is an aggressive raw momentum artifact rather than a cash-filter
+  improvement. Added log-scale comparisons against SPY and heatmap Top-20 rows,
+  plus `5/10/20/30%` SPY-blend diagnostics, did not change the conclusion: real
+  allocation weight remains `0%` until PIT/delisted and independent validation
+  exist `[stocks_on_the_move, p.60]`, `[advances_fin_ml, p.208-211]`,
+  `[advances_fin_ml, p.273-275]`. The
+  follow-up finalist evolution tested `72`
+  post-heatmap rows with fixed/staggered offsets plus SPY SMA200 and stock SMA100
+  overlays; it found a constrained `CAGR>=15%` and `MDD>=-40%` row at `26.89%`,
+  `-39.35%`, Sharpe `1.085`, but mechanism-level PBO failed (`0.623..0.778`) and
+  selection was post-heatmap. A follow-up then added `sp500_wikipedia_pit` to the
+  stock heatmap/evolution runners: each rebalance can now mask ranking candidates
+  to a Wikipedia selected-changes reconstruction of S&P 500 membership. This
+  reduces current-constituent leakage, but remains diagnostic because Wikipedia is
+  incomplete and yfinance still misses removed/delisted prices and delisting
+  returns `[advances_fin_ml, p.208-211]`. The first full PIT-ish rerun was then
+  invalidated by yfinance adjusted-close artifacts in historical tickers (`CFC`,
+  `TIE`), so an explicit `--max-abs-daily-return` data-quality guard was added for
+  stocks-only diagnostics `[advances_fin_ml, p.31-34]`. With that guard at `10`, a
+  focused `lb6` top5 quarterly rerun from 2000 dropped `9` broken yfinance series
+  and reduced the best row to CAGR `29.35%`, MDD `-65.68%`, Sharpe `0.880`; signal
+  remained visible but non-promotable due to ruin-level drawdown and missing true
+  delisted returns. The cleaner ETF-only staggered-offset hypothesis
+  then combined all rebalance offsets as equal-capital sleeves over top `{3,5,10}`
+  and rebalance `{3,6,12}`; it failed economically/statistically (best row CAGR
+  `10.15%`, MDD `-30.24%`, Sharpe `0.683`, PBO `0.663`). Conclusion: 13612 is
+  useful diagnostics, not a promotable strategy in this data setup
+  `[stocks_on_the_move, p.60]`, `[stocks_on_the_move, p.66-67, p.81-82, p.98-99]`,
+  `[leverage_for_the_long_run, p.9, p.13, p.16]`, `[systematic_trading, p.137-148]`,
+  `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`;
+- `studies/momentum/` for the 2026-06-16 Postgres-backed momentum fork requested
+  after the local `yf_tickers`/`yf_daily_prices` cache was created. Unlike
+  `momentum_13612_universes`, this scaffold reads the local Postgres cache only,
+  keeps filters and grids in `config/default.yaml`, and separates data loading,
+  filters, feature precomputation, strategies, grid generation, validation,
+  reporting and plotting into small modules. Initial mechanisms include 13612U, 12-1,
+  3/6/12, Clenow slope×R², momentum/vol and momentum+low-vol composite, with
+  equal/inverse-vol/capped-inverse-vol weights, absolute filters and staggered
+  offsets. The validation scaffold includes PBO, DSR, walk-forward, OOS/FWD,
+  bootstrap, rolling-window and vectorized-vs-holdings-loop checks. It remains
+  research-only because the underlying yfinance/current-universe cache still
+  lacks PIT/delisted/corporate-action audit. The first full `us_stocks` broad run
+  (`7.488/7.488` configs over `2.301` filtered symbols) found a strong but
+  drawdown-heavy current-universe signal: top Sharpe `mom_3_6_12+equal` top50
+  monthly at CAGR `46.91%`, MDD `-55.54%`, Sharpe `1.327`, DSR p `0.0009`, WF
+  `8/8`; PBO broad `0.052` sampled `1000/7488`. Risk cuts were decisive: no row
+  had MDD better than `-35%`, and only six rows combined DSR<0.05, WF>=6/8 and
+  MDD>=-50%. The conclusion stayed diagnostic-only `[stocks_on_the_move, p.60]`,
+  `[stocks_on_the_move, p.70-77]`, `[systematic_trading, p.137-148]`,
+  `[advances_fin_ml, p.208-211]`, `[advances_fin_ml, p.273-275]`;
 - `studies/return_stacked_core/` for the consolidated Return-Stacked Core (RSC)
   folder created on 2026-06-03. It replaces six previously separate trees:
   `b4-v2/`, `static_spy_beater_portfolio/`, `spy_beater_hunt/`,
@@ -262,6 +332,25 @@ Notable study areas include:
   factor sleeves remain sensitivity ideas rather than headline portfolio changes
   `[ml_for_algo_trading, ch.7 p.190-191]`, `[stocks_on_the_move, p.60]`,
   `[systematic_trading, p.185-188]`;
+- a 2026-06-13 follow-up in
+  `studies/return_stacked_core/factor_core_comparison/` separated a different
+  question: standalone Avantis/SPMO factor core versus RSC-US tracking, using the
+  user's short live Testfol.io payload and sanitized saved artifacts only. The fixed
+  `60% AVUS / 20% AVUV / 20% SPMO` mix beat the RSC tracking payload over the common
+  `2022-03-17..2026-06-12` window: yearly rebalance CAGR `16.58%`, MDD `-20.47%`,
+  terminal `1.916` versus RSC CAGR `13.39%`, MDD `-20.23%`, terminal `1.703`
+  (`1.125x`), and monthly sensitivity terminal `1.919` versus RSC `1.650`
+  (`1.163x`). The result confirms the user's live-window observation, mostly due to
+  SPMO strength, but stays research-only because sub-5-year implementation evidence
+  is not long-horizon validation and weights/rebalance should not be optimized from
+  the same sample. A 2026-06-14 analytical memo, `LONG_TERM_FACTOR_CORE.md`, then
+  compared Avantis-style ETF core sleeves against Vanguard market-cap cores,
+  factor-tilt bands and global allocation choices. Its default analytical candidate
+  is `45% AVUS / 10% AVUV / 10% SPMO / 20% AVDE / 5% AVDV / 10% AVEM`, with
+  `65% AVUS / 25% AVDE / 10% AVEM` as the simpler variant, plus a later
+  `IDMO/EEMO` global-momentum sensitivity. RSC was retained as research-only
+  reference/satellite rather than core. No mandate allocation changed
+  `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`;
 - a third 2026-06-05 follow-up in
   `studies/return_stacked_core/us_core/return_stacked_etf_universe/` screened the
   broader return-stacked/capital-efficient ETF universe using public issuer/search
@@ -760,6 +849,44 @@ not change `[testing_tuning, p.327-335]`, `[advances_fin_ml, p.208-211]`.
 The same pass then consolidated six overlapping long-horizon/static-stack trees
 into `studies/return_stacked_core/`, preserving reports, plots, CSV tables,
 source ledgers and importable helpers while removing the old top-level folders.
+
+## Postgres-Backed Momentum Consolidation
+
+A local Postgres cache (`yf_tickers`/`yf_daily_prices`, ~13k US/BR/crypto tickers
+synced from yfinance) replaced repeated online fetches for momentum research. Two
+parallel forks grew from it — `studies/momentum_13612_universes/` (the
+ranking/diagnostic engine: rolling relative-equity dominance, moving-average
+overlays, staggered offsets, crisis-window drawdowns, a broad→evolution→validate
+funnel) and `studies/momentum/` (the Postgres data layer, survivorship filters and
+validation gates). These were merged into one universe-organized study,
+`studies/momentum_v2/`, with the Postgres loader promoted to a shared, tested
+`PostgresSource` data source. The study stays research-only: the Postgres universe
+plus filters mitigate but cannot eliminate survivorship bias, so every result is
+`promotion_eligible=false` until a point-in-time membership/delisted feed exists
+`[advances_fin_ml, p.208-211]`.
+
+The canonical us_stocks run (2301 filtered tickers, windows 1990 and 2000) was
+revealing. The first pass failed the validate gates in both windows, but the only
+binding failure in 1990 was a −25% per-window drawdown cap bundled into the
+walk-forward gate — a constraint stricter than the project's own mandate, which
+treats drawdown as a warning-only tier, not a hard gate. After aligning the gate
+with the mandate (walk-forward = purely ≥6/8 profitable windows), selecting
+finalists by Sharpe and Calmar, and fixing a cross-library check that had compared
+an overlaid curve against its non-overlaid reference, **both windows passed every
+honest statistical gate** (PBO, deflated Sharpe, walk-forward, bootstrap,
+cross-library) with an honest trial count of 984. The gate-passing finalists were
+Clenow-trend momentum (1990) and raw 13612 momentum at top-20 (2000); the
+rolling-dominance lens was independently regime-stable, and the moving-average
+overlays reproduced their crisis protection (GFC drawdown cut from roughly −56% to
+−12%/−20%).
+
+The result is therefore a research-only PASS: the momentum edge survives honest
+multiple-testing accounting, and the remaining blocker is data quality, not
+statistics. Because the yfinance feed never captured fully delisted names, the
+returns are still survivorship-inflated, so every row stays
+`promotion_eligible=false` and the only credible next step is a point-in-time
+membership and delisted-price feed rather than further tuning. The maintenance-mode
+mandate did not change.
 
 ## Maintenance Mode
 
