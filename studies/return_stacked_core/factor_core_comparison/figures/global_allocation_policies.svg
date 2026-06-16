@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="370" viewBox="0 0 920 370" role="img" aria-labelledby="title desc">
+  <title id="title">Global allocation policies</title>
+  <desc id="desc">Stacked bars comparing US, developed ex-US and emerging markets weights across four global allocation policies.</desc>
+  <rect width="920" height="370" fill="#ffffff"/>
+  <text x="40" y="42" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Global Allocation Policies</text>
+  <text x="40" y="68" font-family="Arial, sans-serif" font-size="13" fill="#4b5563">VT-like market cap is the neutral reference; 65/25/10 is the practical default.</text>
+  <rect x="40" y="92" width="14" height="14" fill="#4e79a7"/>
+  <text x="60" y="104" font-family="Arial, sans-serif" font-size="13" fill="#111827">US</text>
+  <rect x="100" y="92" width="14" height="14" fill="#a0cbe8"/>
+  <text x="120" y="104" font-family="Arial, sans-serif" font-size="13" fill="#111827">Developed ex-US</text>
+  <rect x="250" y="92" width="14" height="14" fill="#e15759"/>
+  <text x="270" y="104" font-family="Arial, sans-serif" font-size="13" fill="#111827">EM</text>
+  <g font-family="Arial, sans-serif" font-size="13" fill="#111827">
+    <text x="40" y="145">US-heavy</text>
+    <rect x="210" y="128" width="450" height="24" fill="#4e79a7"/>
+    <rect x="660" y="128" width="120" height="24" fill="#a0cbe8"/>
+    <rect x="780" y="128" width="30" height="24" fill="#e15759"/>
+    <text x="820" y="145">75 / 20 / 5</text>
+    <text x="435" y="145" fill="#ffffff" text-anchor="middle">75%</text>
+    <text x="40" y="195">Moderate global</text>
+    <rect x="210" y="178" width="390" height="24" fill="#4e79a7"/>
+    <rect x="600" y="178" width="150" height="24" fill="#a0cbe8"/>
+    <rect x="750" y="178" width="60" height="24" fill="#e15759"/>
+    <text x="820" y="195">65 / 25 / 10</text>
+    <text x="405" y="195" fill="#ffffff" text-anchor="middle">65%</text>
+    <text x="40" y="245">VT-like</text>
+    <rect x="210" y="228" width="360" height="24" fill="#4e79a7"/>
+    <rect x="570" y="228" width="180" height="24" fill="#a0cbe8"/>
+    <rect x="750" y="228" width="60" height="24" fill="#e15759"/>
+    <text x="820" y="245">60 / 30 / 10</text>
+    <text x="390" y="245" fill="#ffffff" text-anchor="middle">60%</text>
+    <text x="40" y="295">Ex-US heavy</text>
+    <rect x="210" y="278" width="315" height="24" fill="#4e79a7"/>
+    <rect x="525" y="278" width="210" height="24" fill="#a0cbe8"/>
+    <rect x="735" y="278" width="75" height="24" fill="#e15759"/>
+    <text x="820" y="295">52.5 / 35 / 12.5</text>
+    <text x="367" y="295" fill="#ffffff" text-anchor="middle">52.5%</text>
+  </g>
+  <text x="40" y="342" font-family="Arial, sans-serif" font-size="12" fill="#6b7280">Figure: The default keeps meaningful ex-US exposure without mechanically matching the global market portfolio.</text>
+</svg>
