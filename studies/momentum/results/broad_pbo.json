@@ -1,0 +1,744 @@
+{
+  "rows": [
+    {
+      "group": "all",
+      "pbo": 0.051587301587301584,
+      "n_configs": 1000,
+      "n_configs_total": 7488,
+      "sampled": true,
+      "n_obs": 6153,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "universe:us_stocks",
+      "pbo": 0.051587301587301584,
+      "n_configs": 1000,
+      "n_configs_total": 7488,
+      "sampled": true,
+      "n_obs": 6153,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:clenow_trend+capped_inverse_vol",
+      "pbo": 0.5238095238095238,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6297,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:clenow_trend+capped_inverse_vol+abs",
+      "pbo": 0.5238095238095238,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6297,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:clenow_trend+capped_inverse_vol+abs+staggered",
+      "pbo": 0.7301587301587301,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6527,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:clenow_trend+capped_inverse_vol+staggered",
+      "pbo": 0.7301587301587301,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6527,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:clenow_trend+equal",
+      "pbo": 0.43253968253968256,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6297,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:clenow_trend+equal+abs",
+      "pbo": 0.43253968253968256,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6297,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:clenow_trend+equal+abs+staggered",
+      "pbo": 0.6785714285714286,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6527,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:clenow_trend+equal+staggered",
+      "pbo": 0.6785714285714286,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6527,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:clenow_trend+inverse_vol",
+      "pbo": 0.5238095238095238,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6297,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:clenow_trend+inverse_vol+abs",
+      "pbo": 0.5238095238095238,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6297,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:clenow_trend+inverse_vol+abs+staggered",
+      "pbo": 0.6468253968253969,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6527,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:clenow_trend+inverse_vol+staggered",
+      "pbo": 0.6468253968253969,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6527,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_12_1+capped_inverse_vol",
+      "pbo": 0.48412698412698413,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6153,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_12_1+capped_inverse_vol+abs",
+      "pbo": 0.48412698412698413,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6153,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_12_1+capped_inverse_vol+abs+staggered",
+      "pbo": 0.5,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_12_1+capped_inverse_vol+staggered",
+      "pbo": 0.5,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_12_1+equal",
+      "pbo": 0.2976190476190476,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6153,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_12_1+equal+abs",
+      "pbo": 0.2976190476190476,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6153,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_12_1+equal+abs+staggered",
+      "pbo": 0.376984126984127,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_12_1+equal+staggered",
+      "pbo": 0.376984126984127,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_12_1+inverse_vol",
+      "pbo": 0.503968253968254,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6153,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_12_1+inverse_vol+abs",
+      "pbo": 0.503968253968254,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6153,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_12_1+inverse_vol+abs+staggered",
+      "pbo": 0.4642857142857143,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_12_1+inverse_vol+staggered",
+      "pbo": 0.4642857142857143,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_3_6_12+capped_inverse_vol",
+      "pbo": 0.023809523809523808,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6338,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_3_6_12+capped_inverse_vol+abs",
+      "pbo": 0.023809523809523808,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6338,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_3_6_12+capped_inverse_vol+abs+staggered",
+      "pbo": 0.04365079365079365,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6570,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_3_6_12+capped_inverse_vol+staggered",
+      "pbo": 0.04365079365079365,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6570,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_3_6_12+equal",
+      "pbo": 0.051587301587301584,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6338,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_3_6_12+equal+abs",
+      "pbo": 0.051587301587301584,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6338,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_3_6_12+equal+abs+staggered",
+      "pbo": 0.023809523809523808,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6570,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_3_6_12+equal+staggered",
+      "pbo": 0.023809523809523808,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6570,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_3_6_12+inverse_vol",
+      "pbo": 0.023809523809523808,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6338,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_3_6_12+inverse_vol+abs",
+      "pbo": 0.023809523809523808,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6338,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_3_6_12+inverse_vol+abs+staggered",
+      "pbo": 0.015873015873015872,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6570,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_3_6_12+inverse_vol+staggered",
+      "pbo": 0.015873015873015872,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6570,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:mom_lowvol_composite+capped_inverse_vol",
+      "pbo": 0.6984126984126984,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6275,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_lowvol_composite+capped_inverse_vol+abs",
+      "pbo": 0.6984126984126984,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6275,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_lowvol_composite+capped_inverse_vol+abs+staggered",
+      "pbo": 0.75,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6507,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_lowvol_composite+capped_inverse_vol+staggered",
+      "pbo": 0.75,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6507,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_lowvol_composite+equal",
+      "pbo": 0.753968253968254,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6275,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_lowvol_composite+equal+abs",
+      "pbo": 0.753968253968254,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6275,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_lowvol_composite+equal+abs+staggered",
+      "pbo": 0.75,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6507,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_lowvol_composite+equal+staggered",
+      "pbo": 0.75,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6507,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_lowvol_composite+inverse_vol",
+      "pbo": 0.6865079365079365,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6275,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_lowvol_composite+inverse_vol+abs",
+      "pbo": 0.6865079365079365,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6275,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_lowvol_composite+inverse_vol+abs+staggered",
+      "pbo": 0.6904761904761905,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6507,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:mom_lowvol_composite+inverse_vol+staggered",
+      "pbo": 0.6904761904761905,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6507,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:raw_13612+capped_inverse_vol",
+      "pbo": 0.031746031746031744,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612+capped_inverse_vol+abs",
+      "pbo": 0.031746031746031744,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612+capped_inverse_vol+abs+staggered",
+      "pbo": 0.24206349206349206,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6613,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612+capped_inverse_vol+staggered",
+      "pbo": 0.24206349206349206,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6613,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612+equal",
+      "pbo": 0.03571428571428571,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612+equal+abs",
+      "pbo": 0.03571428571428571,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612+equal+abs+staggered",
+      "pbo": 0.20634920634920634,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6613,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612+equal+staggered",
+      "pbo": 0.20634920634920634,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6613,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612+inverse_vol",
+      "pbo": 0.027777777777777776,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612+inverse_vol+abs",
+      "pbo": 0.027777777777777776,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6380,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612+inverse_vol+abs+staggered",
+      "pbo": 0.14285714285714285,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6613,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:raw_13612+inverse_vol+staggered",
+      "pbo": 0.14285714285714285,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6613,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:vol_adjusted+capped_inverse_vol",
+      "pbo": 0.6547619047619048,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6275,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:vol_adjusted+capped_inverse_vol+abs",
+      "pbo": 0.6547619047619048,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6275,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:vol_adjusted+capped_inverse_vol+abs+staggered",
+      "pbo": 0.7579365079365079,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6507,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:vol_adjusted+capped_inverse_vol+staggered",
+      "pbo": 0.7579365079365079,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6507,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:vol_adjusted+equal",
+      "pbo": 0.4365079365079365,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6275,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:vol_adjusted+equal+abs",
+      "pbo": 0.4365079365079365,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6275,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:vol_adjusted+equal+abs+staggered",
+      "pbo": 0.40476190476190477,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6507,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:vol_adjusted+equal+staggered",
+      "pbo": 0.40476190476190477,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6507,
+      "n_combinations": 252,
+      "pass": true
+    },
+    {
+      "group": "mechanism:vol_adjusted+inverse_vol",
+      "pbo": 0.6587301587301587,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6275,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:vol_adjusted+inverse_vol+abs",
+      "pbo": 0.6587301587301587,
+      "n_configs": 176,
+      "n_configs_total": 176,
+      "sampled": false,
+      "n_obs": 6275,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:vol_adjusted+inverse_vol+abs+staggered",
+      "pbo": 0.503968253968254,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6507,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:vol_adjusted+inverse_vol+staggered",
+      "pbo": 0.503968253968254,
+      "n_configs": 32,
+      "n_configs_total": 32,
+      "sampled": false,
+      "n_obs": 6507,
+      "n_combinations": 252,
+      "pass": false
+    }
+  ]
+}

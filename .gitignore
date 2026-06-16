@@ -164,3 +164,6 @@ Thumbs.db
 
 # momentum_v2 regenerable Postgres panel cache (large parquet)
 studies/momentum_v2/universes/**/cache/
+
+# momentum/ broad results dump is 270MB and regenerable (CSV already ignored)
+studies/momentum/results/broad_results.json

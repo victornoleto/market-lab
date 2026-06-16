@@ -1,0 +1,29 @@
+{
+  "plots": [
+    "plots/all_configs_cagr_vs_mdd.png",
+    "plots/boxplot_sharpe_by_universe.png",
+    "plots/median_mdd_by_topn_rebalance.png",
+    "plots/finalists/mom_us_stocks_mom_3_6_12_equal_top50_reb1_off0.png",
+    "plots/finalists/mom_us_stocks_mom_3_6_12_equal_top50_reb1_off0_stag.png",
+    "plots/finalists/mom_us_stocks_mom_3_6_12_equal_top50_reb1_off0_abs.png",
+    "plots/finalists/mom_us_stocks_mom_3_6_12_equal_top50_reb1_off0_abs_stag.png",
+    "plots/finalists/mom_us_stocks_mom_3_6_12_equal_top50_reb3_off0_stag.png",
+    "plots/finalists/mom_us_stocks_mom_3_6_12_equal_top50_reb3_off0_abs_stag.png",
+    "plots/finalists/mom_us_stocks_raw_13612_equal_top50_reb3_off0_stag.png",
+    "plots/finalists/mom_us_stocks_raw_13612_equal_top50_reb3_off0_abs_stag.png",
+    "plots/finalists/mom_us_stocks_raw_13612_equal_top5_reb3_off1.png",
+    "plots/finalists/mom_us_stocks_raw_13612_equal_top5_reb3_off1_abs.png",
+    "plots/finalists/mom_us_stocks_raw_13612_equal_top3_reb6_off0_stag.png",
+    "plots/finalists/mom_us_stocks_raw_13612_equal_top3_reb6_off0_abs_stag.png",
+    "plots/finalists/mom_us_stocks_mom_12_1_equal_top3_reb6_off5.png",
+    "plots/finalists/mom_us_stocks_mom_12_1_equal_top3_reb6_off5_abs.png",
+    "plots/finalists/mom_us_stocks_raw_13612_equal_top1_reb12_off0_stag.png",
+    "plots/finalists/mom_us_stocks_raw_13612_equal_top1_reb12_off0_abs_stag.png",
+    "plots/finalists/mom_us_stocks_raw_13612_inverse_vol_top1_reb12_off0_stag.png",
+    "plots/finalists/mom_us_stocks_raw_13612_inverse_vol_top1_reb12_off0_abs_stag.png",
+    "plots/finalists/mom_us_stocks_raw_13612_capped_inverse_vol_top1_reb12_off0_stag.png",
+    "plots/finalists/mom_us_stocks_raw_13612_capped_inverse_vol_top1_reb12_off0_abs_stag.png",
+    "plots/finalists/mom_us_stocks_mom_3_6_12_equal_top3_reb6_off3.png",
+    "plots/finalists/mom_us_stocks_mom_3_6_12_equal_top3_reb6_off3_abs.png"
+  ]
+}
