@@ -27,10 +27,10 @@ filters:
   default:
     min_history_months: 36
     min_price: 5.0
-    min_median_dollar_volume: 1000000
+    min_median_dollar_volume: 3000000   # tradeable-liquidity floor for small/mid caps `[stocks_on_the_move, p.98-99]`
     liquidity_lookback_days: 252
-    min_trading_days_per_year: 180
-    max_stale_days: 14
+    min_trading_days_per_year: 200       # quote continuity (was 180)
+    max_stale_days: 10                   # fresher quotes (was 14)
 
 features:
   vol_window_days: 126
@@ -38,8 +38,8 @@ features:
 
 # Broad-phase grid. Each axis is an explicit tested degree of freedom
 # `[advances_fin_ml, p.273-275]`. rebalance_offsets: 0 keeps the grid tractable;
-# set to `all` to expand every offset. top_n excludes 1 (too volatile) and 50
-# (unmanageable by hand) per the study brief.
+# set to `all` to expand every offset. top_n spans 1..15 (1 = concentrated extreme;
+# <=15 stays hand-manageable); 20+ excluded as unmanageable by hand per the study brief.
 grid:
   score_modes:
     - raw_13612            # `[stocks_on_the_move, p.60]`
@@ -48,19 +48,19 @@ grid:
     - clenow_trend         # `[stocks_on_the_move, p.70-77, p.98]`
     - composite_mom_lowvol
   lookback_profiles: ["1_3_6_12", "3_6_12", "6_12", "6"]
-  top_n: [3, 5, 10, 15, 20]
-  rebalance_months: [1, 3, 6, 12]
+  top_n: [1, 3, 5, 10, 15]
+  rebalance_months: [1, 2, 3, 4, 6, 12]
   rebalance_offsets: [0]
   weight_modes: [equal, inverse_vol]
   absolute_filter: [false, true]
 
 # Evolution phase: overlays + staggering applied to the strongest broad finalists.
 # selection_metrics drives which broad/evolution rows become finalists — union of
-# the top-`max_finalists` by each metric (deduped). Set to Sharpe + Calmar per the
-# return/risk-adjusted objective; use ["rolling_rel_score"] for the dominance lens.
+# the top-`max_finalists` by each metric (deduped). Primary lens = rolling dominance
+# (equity/equity_benchmark over rolling windows) per the study objective `[testing_tuning, p.327-335]`.
 evolution:
   max_finalists: 6
-  selection_metrics: [after_tax_sharpe, after_tax_calmar]
+  selection_metrics: [rolling_rel_score]
   # overlays/offset_modes default to the full sets in overlays.py.
 
 validation:

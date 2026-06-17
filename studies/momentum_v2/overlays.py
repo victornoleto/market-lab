@@ -19,6 +19,7 @@ import pandas as pd
 from studies.momentum_v2.core import (
     TRADING_DAYS_PER_YEAR,
     EligibleByDate,
+    PanelCache,
     ScoreBundle,
     SimulationResult,
     StrategyConfig,
@@ -107,6 +108,28 @@ def stock_trend_ok(prices: pd.DataFrame, window_days: int = 100) -> pd.DataFrame
     return (daily > sma).resample("ME").last().fillna(False).astype(bool)
 
 
+def stock_above_ma(prices: pd.DataFrame, window_days: int = 50, kind: str = "sma") -> pd.DataFrame:
+    """Daily per-stock boolean: ``price > moving average`` (SMA or EMA).
+
+    Generalizes the SMA trend filter to a configurable window and EMA. No look-ahead:
+    the decision on day *t* (close) gates the position carried into *t+1* — same
+    convention as the daily market regime gate `[stocks_on_the_move, p.98-99]`.
+    """
+    daily = canonicalize_columns(prices).sort_index().astype(float)
+    if kind == "ema":
+        ma = daily.ewm(span=window_days, min_periods=window_days).mean()
+    elif kind == "sma":
+        ma = daily.rolling(window_days, min_periods=window_days).mean()
+    else:
+        raise ValueError(f"kind must be 'sma' or 'ema', got {kind!r}")
+    return (daily > ma).fillna(False).astype(bool)
+
+
+def stock_above_ma_monthly(prices: pd.DataFrame, window_days: int = 200, kind: str = "sma") -> pd.DataFrame:
+    """Month-end snapshot of :func:`stock_above_ma` — the buy-eligibility (entry) mask."""
+    return stock_above_ma(prices, window_days, kind).resample("ME").last().fillna(False).astype(bool)
+
+
 def monthly_weights_with_overlay(
     bundle: ScoreBundle,
     config: StrategyConfig,
@@ -170,9 +193,14 @@ def simulate_evolved(
     monthly_market_ok: pd.Series,
     monthly_stock_ok: pd.DataFrame,
     eligible_by_date: EligibleByDate | None = None,
+    panel: PanelCache | None = None,
 ) -> SimulationResult:
-    """Simulate one evolved finalist with fixed or staggered offsets + overlay."""
-    daily = canonicalize_columns(prices).sort_index()
+    """Simulate one evolved finalist with fixed or staggered offsets + overlay.
+
+    ``panel`` (optional) supplies the once-per-phase canonical daily frame and
+    daily returns; without it they are computed here as before (bit-identical).
+    """
+    daily = panel.daily if panel is not None else canonicalize_columns(prices).sort_index()
     offsets = range(config.rebalance_months) if offset_mode == "staggered" else (config.rebalance_offset,)
     sleeve_frames: list[pd.DataFrame] = []
     for offset in offsets:
@@ -198,7 +226,10 @@ def simulate_evolved(
             fill_value=0.0,
         )
     daily_weights /= float(len(sleeve_frames))
-    asset_returns = daily[daily_weights.columns].pct_change(fill_method=None).fillna(0.0)
+    asset_returns = (
+        panel.asset_returns[daily_weights.columns] if panel is not None
+        else daily[daily_weights.columns].pct_change(fill_method=None).fillna(0.0)
+    )
     gross = (daily_weights.shift(1).fillna(0.0) * asset_returns).sum(axis=1)
     active = daily_weights.sum(axis=1) > 0.0
     if not active.any():

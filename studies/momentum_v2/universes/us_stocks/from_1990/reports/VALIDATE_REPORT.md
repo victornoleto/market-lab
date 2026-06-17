@@ -6,23 +6,17 @@ Hard gates (zero bypass) `[advances_fin_ml, p.208-211, p.273-275]`: PBO<0.5, DSR
 
 ## Verdict
 
-- Honest trial count: `984`
-- Set PBO: `0.000` (pass=True)
+- Honest trial count: `1332`
+- Set PBO: `0.425` (pass=True)
 - **Overall: PASS**
 
 ## Per-config gates
 
 | Name | DSR p | DSR | WF | Boot CI low | xlib Δpp | All gates |
 |---|---|---|---|---|---|---|
-| evo_momv2_us_stocks_clenow_trend_lb1_3_6_12_top15_reb1_off0_fixed_none | 0.0000 | pass | 8/8 pass | 0.851 | 0.007 | PASS |
-| evo_momv2_us_stocks_clenow_trend_lb1_3_6_12_top15_reb1_off0_staggered_none | 0.0000 | pass | 8/8 pass | 0.851 | 0.007 | PASS |
-| evo_momv2_us_stocks_clenow_trend_abs_cash_lb1_3_6_12_top15_reb1_off0_fixed_none | 0.0000 | pass | 8/8 pass | 0.851 | 0.007 | PASS |
-| evo_momv2_us_stocks_clenow_trend_abs_cash_lb1_3_6_12_top15_reb1_off0_staggered_none | 0.0000 | pass | 8/8 pass | 0.851 | 0.007 | PASS |
-| evo_momv2_us_stocks_clenow_trend_lb1_3_6_12_top20_reb1_off0_fixed_none | 0.0000 | pass | 8/8 pass | 0.871 | 0.007 | PASS |
-| evo_momv2_us_stocks_clenow_trend_lb1_3_6_12_top20_reb1_off0_staggered_none | 0.0000 | pass | 8/8 pass | 0.871 | 0.007 | PASS |
-| evo_momv2_us_stocks_raw_13612_abs_cash_lb6_top10_reb1_off0_staggered_none | 0.0002 | pass | 8/8 pass | 0.741 | 0.009 | PASS |
-| evo_momv2_us_stocks_raw_13612_abs_cash_lb6_top10_reb1_off0_fixed_none | 0.0002 | pass | 8/8 pass | 0.741 | 0.009 | PASS |
-| evo_momv2_us_stocks_raw_13612_lb6_top10_reb1_off0_fixed_none | 0.0002 | pass | 8/8 pass | 0.741 | 0.009 | PASS |
-| evo_momv2_us_stocks_raw_13612_lb6_top10_reb1_off0_staggered_none | 0.0002 | pass | 8/8 pass | 0.741 | 0.009 | PASS |
-| evo_momv2_us_stocks_raw_13612_abs_cash_lb6_top5_reb3_off0_staggered_none | 0.0237 | pass | 8/8 pass | 0.613 | 0.010 | PASS |
-| evo_momv2_us_stocks_raw_13612_lb6_top5_reb3_off0_staggered_none | 0.0237 | pass | 8/8 pass | 0.613 | 0.010 | PASS |
+| evo_momv2_us_stocks_raw_13612_lb6_top15_reb2_off0_staggered_none | 0.0000 | pass | 8/8 pass | 0.852 | 0.008 | PASS |
+| evo_momv2_us_stocks_raw_13612_abs_cash_lb6_top15_reb2_off0_staggered_none | 0.0000 | pass | 8/8 pass | 0.852 | 0.008 | PASS |
+| evo_momv2_us_stocks_clenow_trend_lb1_3_6_12_top10_reb2_off0_staggered_none | 0.0000 | pass | 8/8 pass | 0.871 | 0.009 | PASS |
+| evo_momv2_us_stocks_clenow_trend_abs_cash_lb1_3_6_12_top10_reb2_off0_staggered_none | 0.0000 | pass | 8/8 pass | 0.871 | 0.009 | PASS |
+| evo_momv2_us_stocks_clenow_trend_lb1_3_6_12_top10_reb2_off0_fixed_none | 0.0005 | pass | 8/8 pass | 0.797 | 0.009 | PASS |
+| evo_momv2_us_stocks_clenow_trend_abs_cash_lb1_3_6_12_top10_reb2_off0_fixed_none | 0.0005 | pass | 8/8 pass | 0.797 | 0.009 | PASS |

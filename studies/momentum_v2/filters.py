@@ -64,6 +64,10 @@ def apply_filters(
     if prices.empty:
         return FilterResult(prices, volumes, metadata, pd.DataFrame())
     clean_prices = prices.sort_index().astype(float)
+    # Non-positive adj_close is invalid (yfinance back-adjustment artifacts can go <=0);
+    # treat as missing so momentum/vol/returns never see a negative price, which would
+    # otherwise produce returns < -1 and break power-based metrics `[advances_fin_ml, p.208-211]`.
+    clean_prices = clean_prices.where(clean_prices > 0.0)
     clean_volumes = volumes.reindex_like(clean_prices).astype(float)
     effective_as_of = pd.Timestamp(as_of) if as_of else pd.Timestamp(clean_prices.index.max())
     rows: list[dict[str, object]] = []

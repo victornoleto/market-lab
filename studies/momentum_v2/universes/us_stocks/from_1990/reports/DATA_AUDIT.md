@@ -15,22 +15,22 @@ Status: **research-only**, `promotion_eligible=false`. The Postgres universe plu
 ## Filter attrition
 
 - Start: `1990-01-01`
-- Tickers loaded: `7136` -> passed filters: `2301` (32.2%).
+- Tickers loaded: `7136` -> passed filters: `2300` (32.2%).
 - Expanding-universe caveat: filters (min history) plus sparse early coverage mean the tradable set in early years is much smaller than today; cross-era CAGR comparisons are affected.
 
 ### Top rejection reasons
 
 | reason | n |
 |---|---|
-| liquidity | 1509 |
-| history,liquidity | 1055 |
+| liquidity | 1507 |
+| history,liquidity | 1057 |
 | price,liquidity | 893 |
 | history,price,liquidity | 845 |
-| history | 363 |
+| history | 364 |
 | price | 126 |
 | history,price | 26 |
 | liquidity,sparse | 4 |
 | history,liquidity,sparse | 3 |
 | history,price,liquidity,sparse | 3 |
-| liquidity,stale | 3 |
+| liquidity,stale | 2 |
 | history,liquidity,sparse,stale | 2 |

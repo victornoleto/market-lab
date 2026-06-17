@@ -6,23 +6,17 @@ Hard gates (zero bypass) `[advances_fin_ml, p.208-211, p.273-275]`: PBO<0.5, DSR
 
 ## Verdict
 
-- Honest trial count: `960`
-- Set PBO: `0.718` (pass=False)
+- Honest trial count: `1332`
+- Set PBO: `0.198` (pass=True)
 - **Overall: FAIL**
 
 ## Per-config gates
 
 | Name | DSR p | DSR | WF | Boot CI low | xlib Δpp | All gates |
 |---|---|---|---|---|---|---|
-| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_top5_reb1_off0_fixed_none | 1.0000 | FAIL | 8/8 pass | 0.214 | 0.018 | FAIL |
-| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_top5_reb1_off0_staggered_none | 1.0000 | FAIL | 8/8 pass | 0.214 | 0.018 | FAIL |
-| evo_momv2_br_stocks_vol_adjusted_13612_lb6_top5_reb1_off0_fixed_none | 1.0000 | FAIL | 8/8 pass | 0.214 | 0.018 | FAIL |
-| evo_momv2_br_stocks_vol_adjusted_13612_lb6_top5_reb1_off0_staggered_none | 1.0000 | FAIL | 8/8 pass | 0.214 | 0.018 | FAIL |
-| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_12_top5_reb1_off0_fixed_stock_sma100 | 1.0000 | FAIL | 8/8 pass | 0.215 | 0.021 | FAIL |
-| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_12_top5_reb1_off0_staggered_stock_sma100 | 1.0000 | FAIL | 8/8 pass | 0.215 | 0.021 | FAIL |
-| evo_momv2_br_stocks_vol_adjusted_13612_lb6_12_top3_reb1_off0_fixed_market_sma200_daily | 0.0119 | pass | 8/8 pass | 0.618 | 0.021 | PASS |
-| evo_momv2_br_stocks_vol_adjusted_13612_lb6_12_top3_reb1_off0_staggered_market_sma200_daily | 0.0119 | pass | 8/8 pass | 0.618 | 0.021 | PASS |
-| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_12_top3_reb1_off0_fixed_market_sma200_daily | 0.0119 | pass | 8/8 pass | 0.618 | 0.021 | PASS |
-| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_12_top3_reb1_off0_staggered_market_sma200_daily | 0.0119 | pass | 8/8 pass | 0.618 | 0.021 | PASS |
-| evo_momv2_br_stocks_vol_adjusted_13612_lb6_12_top3_reb1_off0_fixed_market_sma200_daily_stock_sma100 | 0.0167 | pass | 8/8 pass | 0.491 | 0.021 | PASS |
-| evo_momv2_br_stocks_vol_adjusted_13612_lb6_12_top3_reb1_off0_staggered_market_sma200_daily_stock_sma100 | 0.0167 | pass | 8/8 pass | 0.491 | 0.021 | PASS |
+| evo_momv2_br_stocks_vol_adjusted_13612_lb6_12_top5_reb1_off0_fixed_none | 1.0000 | FAIL | 8/8 pass | 0.216 | 0.021 | FAIL |
+| evo_momv2_br_stocks_vol_adjusted_13612_lb6_12_top5_reb1_off0_staggered_none | 1.0000 | FAIL | 8/8 pass | 0.216 | 0.021 | FAIL |
+| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_12_top5_reb1_off0_fixed_none | 1.0000 | FAIL | 8/8 pass | 0.216 | 0.021 | FAIL |
+| evo_momv2_br_stocks_vol_adjusted_13612_abs_cash_lb6_12_top5_reb1_off0_staggered_none | 1.0000 | FAIL | 8/8 pass | 0.216 | 0.021 | FAIL |
+| evo_momv2_br_stocks_composite_mom_lowvol_lb1_3_6_12_top10_reb2_off0_fixed_none | 1.0000 | FAIL | 8/8 pass | 0.221 | 0.014 | FAIL |
+| evo_momv2_br_stocks_composite_mom_lowvol_abs_cash_lb1_3_6_12_top10_reb2_off0_fixed_none | 1.0000 | FAIL | 8/8 pass | 0.221 | 0.014 | FAIL |

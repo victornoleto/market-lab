@@ -1,340 +1,173 @@
-# Momentum v2 — estudo consolidado de momentum cross-sectional
+# Momentum v2 — funil de momentum cross-sectional (research-only)
 
-Estudo **research-only** que mescla os dois forks anteriores de momentum numa pasta
-só, organizada por universo:
+Funil `broad → evolution → validate` por universo: a cada fim de mês rankeia o universo por um
+score de momentum, segura o top-N (equal ou inverse-vol), aplica os gates honestos do mandate
+`[advances_fin_ml, p.208-211, p.273-275]`. Seleção de finalistas pela dominância rolante
+`equity/equity_benchmark` (`rolling_rel_score`) `[testing_tuning, p.327-335]`. **Tudo
+`promotion_eligible=false`** — após imposto BR 15%, bruto de custos, benchmark por universo.
 
-- de `studies/momentum_13612_universes/` veio a *inteligência de ranking/diagnóstico*
-  (dominância rolante `equity/equity_benchmark`, overlays de média móvel, staggered
-  offsets, MDD por janela de crise, funil broad→evolution→validate);
-- de `studies/momentum/` veio a *fundação de dados/validação* (loader Postgres,
-  filtros de survivorship, config YAML, gates honestos).
+## TL;DR (2026-06-17)
 
-O loader Postgres foi promovido para `src/market_lab/backtest/data/postgres_source.py`
-(`PostgresSource`), compartilhado e testado ao lado de `YFinanceSource`/`TiingoSource`.
+- **EUA — duas famílias lideram as DUAS janelas (1990 e 2000):** `clenow_trend` (lb1_3_6_12, top10, reb2)
+  e `raw_13612` (lb6, top15). PBO-broad robusto (N≈1000) passa nas duas (**0.02 / 0.14**); gates por-config 6/6.
+- **BR — NÃO confirma:** as mesmas famílias caem para rank **#53 / #38** de 1260; quem lidera é
+  `vol_adjusted_13612` e `composite_mom_lowvol`. **PBO-broad = 0.853 → FAIL**, 0/6 nos gates. O edge **não
+  é universal — é específico dos EUA**.
+- **Teto que prende tudo:** survivorship. CAGRs brutos de 25–63% e curvas $1→$1.5M são inflados (yfinance
+  sem delisted); PBO/DSR/WF não corrigem. Nada promovível — **research-only**.
+- **Refinamentos não furam a parede:** sweep de tamanho (n=10–50), custos e filtros de média móvel
+  (entrada + stop intra-período) — nenhum melhora o risco-ajustado; o único que corta o drawdown
+  (stop MM50: −66%→−43%) sacrifica retorno demais (Sharpe/Calmar pioram). Detalhe abaixo.
 
----
+## As duas famílias (EUA) — dominância atemporal entre janelas
 
-## Resumo executivo — o que foi validado e verificado
+| Família | Config | US 1990 (`rolling_rel` / rank / CAGR) | US 2000 |
+|---|---|---|---|
+| **clenow_trend** `[stocks_on_the_move, p.70-77]` | `lb1_3_6_12 · top10 · reb2` | 0.954 · #1 · 58% | 0.952 · #1 · 60% |
+| **raw_13612** `[stocks_on_the_move, p.60]` | `lb6 · top15` | 0.953 · #2 · 50% | 0.948 · #2 · 46% |
 
-**Veredito em uma linha:** o edge de momentum é estatisticamente sólido (passa todos os
-gates honestos nas duas janelas), mas **`promotion_eligible=false`** — o teto remanescente
-é *qualidade de dados* (survivorship), não estatística.
+Mesmos parâmetros, scores quase idênticos, #1 e #2 nas duas janelas — o ranking é estável no tempo.
+Ambas passam 6/6 nos gates por-config (DSR / WF / bootstrap / xlib) em 1990 **e** 2000.
 
-### Checklist de validação / verificação
+| ![clenow EUA](universes/us_stocks/from_1990/plots/focus/clenow_trend_lb1_3_6_12_top10_reb2_vs_SPY.png) |
+|:--:|
+| `clenow_trend` top10 — EUA 1990 (equity \| drawdown \| equity relativa). O eixo `1e6` = survivorship. |
 
-- ✅ **Engine consolidado + testado:** `core`/`dominance`/`overlays`/`filters`/`grid`/
-  `config`/`validation`/`report`/`plots`/`run` + `PostgresSource` promovido a `src/`.
-  **28 testes** (`tests/test_postgres_source.py` 12 + `tests/test_momentum_v2.py` 16), ruff limpo.
-- ✅ **Run canônico us-stocks completo:** `2301/7136` tickers passam filtros; janelas
-  **1990 (primária) + 2000 (robustez)**; `840` broad + `144` evolution cada — trial count
-  honesto **`984`**.
-- ✅ **Gates honestos PASS nas duas janelas** (PBO/DSR/WF/bootstrap/cross-lib): 1990 set-PBO
-  `0,000`, 2000 `0,357`; DSR p≈0; WF 8/8; bootstrap CI-low Sharpe > 0.
-- ✅ **Cross-library check** (vetorizado vs holdings-loop independente) bate em Δ≈`0,01pp`.
-- ✅ **Recorte top_n 3-10** (gerenciável na mão) com recomendação por Sharpe/Calmar (`topn_view.py`).
-- ✅ **Sweep de drawdown** (`drawdown_sweep.py`): **vol-targeting** corta MDD full `−63%→−25%`
-  *melhorando* Sharpe/Calmar; **SMA200 do SPY** = proteção de crise (GFC `−59%→−18%`).
-- ⬜ **Pendente (o teto):** dados point-in-time + preços de delisted para remover survivorship.
-  Só então qualquer PASS aqui pode virar promovível.
+| ![raw EUA](universes/us_stocks/from_1990/plots/focus/raw_13612_lb6_top15_reb1_vs_SPY.png) |
+|:--:|
+| `raw_13612` lb6 top15 — EUA 1990. |
 
-### Mapa do estudo (arquivos)
+## Custos e turnover (líquido)
 
-| Arquivo | O que faz |
-|---|---|
-| `run.py` | funil broad→evolution→validate por universo/janela (`--cache-panels`, saída namespaced) |
-| `core.py` | scoring (5 modes) + perfis de lookback + simulação shifted-weight + tax BR + métricas |
-| `dominance.py` | dominância rolante `equity/equity_benchmark` + MDD de crise + WF diagnóstico |
-| `overlays.py` | overlays SMA200 (mensal/diário) + stock-SMA100 + staggering + **`vol_target_returns`** |
-| `filters.py` | filtros de survivorship (histórico/preço/liquidez/staleness) + diagnóstico |
-| `grid.py` · `config.py` · `validation.py` · `report.py` · `plots.py` | grade, config YAML, gates+result rows, relatórios markdown/json, plots |
-| `topn_view.py` | recorte por nº de holdings (`top_n`) re-rankeado por dominância/Sharpe/Calmar |
-| `drawdown_sweep.py` | sweep de alavancas de drawdown (SMA200, vol-target, referências) |
-| `src/market_lab/backtest/data/postgres_source.py` | data source Postgres compartilhada (`PostgresSource`) |
+As duas famílias **giram muito** — turnover anual ~370–530%, holding ~2–3 meses — e o backtest é
+**bruto de custos**. O engine agora aceita um custo linear (`cost_bps` por unidade negociada) e um
+buffer de ranking opcional (`rank_buffer`, histerese tipo Clenow `[stocks_on_the_move, p.98-99]`).
+After-tax, EUA 1990:
 
-### Artefatos por janela — `universes/us_stocks/from_{1990,2000}/`
+| Família | turnover | @0 | @25bps | @50bps | @100bps |
+|---|---|---|---|---|---|
+| `clenow_trend` top10 reb2 | 4.18 | 58.2% | 55.2% | 52.3% | 46.5% |
+| `raw_13612` top15 reb1 | 5.34 | 50.1% | 46.5% | 43.0% | 36.1% |
+| `raw_13612` top15 reb1 **+buffer** | 3.66 | 52.1% | 49.6% | 47.1% | 42.2% |
 
-- `reports/`: `BROAD_REPORT`, `EVOLUTION_REPORT`, `VALIDATE_REPORT`, `DATA_AUDIT`, `TOPN_3_10`, `DRAWDOWN_SWEEP`.
-- `results/`: `broad_results`/`evolution_results` (csv+json), `*_pbo.json`, `validate_verdict.json`, `filter_diagnostics.csv`.
-- `plots/`: ~48 PNGs (`broad/` + heatmaps, `evolution/`, `topn_3_10/`, `drawdown_sweep/`).
+1. **Custos mordem, mas não explicam a implausibilidade.** A 50 bps o drag é ~5–7 pp; a 100 bps
+   ~10–14 pp. O CAGR segue alto porque a base é inflada por survivorship — não porque custo seja
+   pequeno (em small/mid caps, 50–100 bps round-trip é plausível).
+2. **O buffer ajuda onde o giro é maior.** Em `raw_13612` (mensal, turnover 5.34) ele corta o giro
+   ~31% (→3.66) **e** melhora o retorno (evita whipsaw): a 100 bps, 36.1%→42.2%. Em `clenow_trend`
+   (reb2, giro menor) ele custa sinal e **não** compensa — redução de turnover não é ganho grátis.
+3. **Melhor config líquida:** `raw_13612 top15 reb1 + buffer`, que domina a versão sem buffer em
+   todos os níveis de custo. Continua research-only/survivorship-capped — não é recomendação de deploy.
 
-> **Versionamento:** por política do repo (`.gitignore`), `plots/*.png`, `results/*.csv`
-> e o `cache/` de painel **não** são commitados (regeneráveis). Versionados: código,
-> config, `reports/*.md` e `results/*.json`. As imagens deste README renderizam no
-> working tree local; regenere com os comandos da seção "Como rodar" / `drawdown_sweep.py`.
+`cost_bps` e `rank_buffer` têm default 0 (= comportamento anterior, bit-idêntico).
 
-Detalhes de cada item nas seções abaixo.
+## Tamanho de portfólio e filtros de média móvel (refinamentos testados)
 
----
+Testados só nas 2 famílias (hipóteses declaradas, não busca de grid). Nenhum fura a parede do drawdown.
 
-## Conclusão (o veredito, sem rodeios)
+- **Tamanho (n = 10→50, reb2):** n↑ ⇒ CAGR↓ **e** Sharpe↑ (pico ~n=40–50), turnover↓ — tradeoff
+  concentração×diversificação. Mas o **MDD estaciona em ~−58% em qualquer n** (crash de momentum é
+  sistêmico, não diversificável) e o `rolling_rel` é ~plano. Diversificar **não cura** o drawdown.
+- **Filtro de entrada (preço > MM200 no rebalance):** ~neutro — momentum e "acima da MM" são quase a
+  mesma coisa (EMA200 ajuda o `raw_13612` à margem).
+- **Stop intra-período por-ação** (mecanismo novo, mira o drawdown): *gate* (re-entra) sofre whipsaw —
+  turnover dispara 6–7× e o CAGR líquido vira ~0. *stop MM50* (caixa até o rebalance) é **a única coisa
+  que corta a parede** — MDD −66%→**−43%** (1990 e 2000) — **mas** o CAGR despenca (49–58%→16–20%) e
+  Sharpe/Calmar/dominância **pioram**: troca mais retorno do que risco. (MM20 é apertada demais: CAGR ~3%.)
 
-**Positivo na estatística, bloqueado nos dados.** Não é um "sim" nem um "não" binário —
-são duas coisas diferentes:
+**Conclusão:** o stop MM50 é uma escolha de *perfil conservador* (drawdown mais segurável, ~15% CAGR
+líquido), não uma melhora risco-ajustada. Reforça o veredito: o teto é survivorship, não a forma da regra.
+Engine: `stock_above_ma` (`overlays.py`); experimento: `ma_overlay_test.py`.
 
-1. **O edge de momentum é real e passa os gates honestos.** No run canônico (us-stocks,
-   universo cheio), as **duas janelas independentes (1990 e 2000) passam todos os gates
-   estatísticos** — PBO, DSR, walk-forward, bootstrap e cross-library — com trial count
-   honesto de `984`. Isso é diferente do padrão histórico do projeto, onde os edges
-   morriam nos gates. Aqui ele sobrevive.
+## Cross-universo: BR não confirma o edge
 
-2. **Mas continua `promotion_eligible=false`** — não por estatística, e sim por
-   **qualidade de dados**. O feed yfinance nunca baixou as empresas que faliram/sumiram,
-   então o universo histórico é *survivorship-biased* e os CAGRs (~40-60%) estão
-   inflados. Esse é o teto que sobrou `[advances_fin_ml, p.208-211]`.
+Re-rodado em `br_stocks` (janela efetiva 2009–2026, benchmark BOVA11.SA, 132 ativos). As duas famílias
+**não lideram** e o PBO robusto reprova:
 
-> **Por que "passa nos gates" ≠ "deployável":** os gates medem se o resultado é robusto
-> a *overfitting/multiple-testing* (PBO/DSR), consistente *out-of-sample* (WF/bootstrap)
-> e *implementado sem bug* (cross-lib). Eles **não** medem se os *dados* são fiéis à
-> realidade. Com survivorship bias, mesmo um edge estatisticamente sólido tem magnitude
-> superestimada. Por isso o próximo passo para confiar nisso é **dado limpo** (membership
-> point-in-time + preços de delisted), não mais tuning de estratégia.
+| | Família | `rolling_rel` | rank/1260 | CAGR | Sharpe |
+|---|---|---|---|---|---|
+| Lidera BR | `vol_adjusted_13612` lb6_12 top5 reb1 | 0.970 | #1 | 34% | 1.34 |
+| Lidera BR | `composite_mom_lowvol` lb1_3_6_12 top10 reb2 | 0.970 | #3 | 25% | 1.26 |
+| Foco (EUA) | `raw_13612` lb6 top15 reb2 | 0.964 | **#38** | 25% | 1.08 |
+| Foco (EUA) | `clenow_trend` lb1_3_6_12 top15 reb2 | 0.963 | **#53** | 24% | 1.06 |
 
-Nada aqui muda o mandate §1 (maintenance mode, capital fora deste repo).
+| ![clenow BR](universes/br_stocks/from_2000/plots/focus/clenow_trend_lb1_3_6_12_top15_reb2_vs_BOVA11.SA.png) |
+|:--:|
+| `clenow_trend` — BR (vs BOVA11): dominância mais fraca e mais curta que nos EUA. |
 
----
+**Veredito BR: FAIL** — PBO-broad **0.853**, validate overall=False (0/6 gates). A família vencedora muda
+de mercado, então a dominância dos EUA **não generaliza**.
+
+### Por que a top-2 dos EUA não lidera o BR
+
+**Em boa parte não é diferença econômica — é ruído de amostra pequena.** O BR reprova no PBO robusto
+(0.853) e o topo é um cluster apertado: a dupla dos EUA fica em `rolling_rel` 0.963–0.964 vs 0.970 das
+líderes (~0,6pp), e isso só vira rank #38/#53 porque centenas de configs se amontoam perto do teto —
+"quem é #1" no BR não é um ordenamento estável.
+
+Ainda assim, três fatores estruturais tendem a favorecer as variantes **conscientes de volatilidade**
+(`vol_adjusted_13612`, `composite_mom_lowvol`) sobre o momentum/trend puro dos EUA:
+
+1. **Dispersão de vol, não o nível.** A vol anualizada mediana é quase igual (EUA 39,7% / BR 39,3%), mas
+   os EUA têm cauda bem mais gorda (p75 54% vs 46%, IQR ~1,8×). Momentum puro se alimenta dessa cauda de
+   nomes ultra-voláteis que — por survivorship — sobreviveram com retornos enormes (daí a curva $1→$1,5M).
+   O BR é mais comprimido e raso (132 vs 2300 nomes), então penalizar/normalizar a vol deixa de custar
+   caro e passa à frente num pelotão apertado; o anômalo de baixa-vol também é mais forte em emergentes
+   menos arbitrados `[systematic_trading, p.137-148]`.
+2. **Regime e horizonte.** Os EUA cobrem múltiplos ciclos (dotcom, GFC), onde a qualidade-de-tendência do
+   Clenow (slope×R²) reaparece `[stocks_on_the_move, p.70-77]`; o BR é só pós-GFC (2009–2026, ciclo de
+   commodities + recessão 2014-16), janela única e mais chicoteada, onde trend puro toma mais whipsaw.
+3. **Métrica de seleção.** `rolling_rel_score` premia consistência de `equity/equity_benchmark`; num
+   universo fino e volátil-por-nome, as famílias vol-aware entregam equity relativa mais estável e ganham
+   a métrica de consistência por margem pequena.
+
+**Resumo:** as vol-aware "vencem" o BR mais por estabilidade num ranking que **não passa no PBO** do que
+por um prêmio econômico sólido — coerente com o veredito geral: o edge é específico dos EUA (e inflado por
+survivorship), e o BR não tem um momentum robusto, então a troca de família no topo é, sobretudo, ruído.
+
+## Leitura honesta: PBO + survivorship
+
+PBO em três níveis; só o de N≈1000 é estatisticamente confiável:
+
+| PBO | N | US 1990 | US 2000 | BR |
+|---|---|---|---|---|
+| **Broad (robusto)** | ≈1000 | 0.020 ✅ | 0.139 ✅ | **0.853 ❌** |
+| Validate (set) | 6 | 0.425 ✅ | 0.548 ❌ | 0.198 (0/6 por-config) |
+
+O set-PBO de N=6 é ruído (`pbo.py`, `MIN_HONEST_N_CONFIGS=4`) e oscila com a receita de seleção — não
+gatilhe decisão nele. O sinal honesto: **EUA passa o PBO robusto, BR não.** E mesmo o PASS dos EUA está
+**inflado por survivorship** — `rolling_rel≈0.95` e CAGRs de 47–63% não são atingíveis; PBO/DSR/WF não
+corrigem isso `[advances_fin_ml, p.208-211]`. **`promotion_eligible=false`** (mandate §1/§5).
 
 ## Funil em 3 fases
 
-| Fase | O que faz | Promoção? |
-|---|---|---|
-| **broad** | Grade ampla diagnóstica (score × lookback × top-N × rebalance/offset × peso × abs-filter). Métricas após imposto BR 15%, dominância rolante, MDD de crise, turnover. | Não — é um mapa. |
-| **evolution** | Pega os melhores finalistas do broad (por **Sharpe + Calmar**) e cruza com overlays de MM (SPY SMA200 mensal/diário, stock SMA100, combos) × offsets fixed/staggered. | Não — diagnóstico de stress. |
-| **validate** | Gates duros no conjunto pequeno, com trial count honesto (broad + evolution). | Sim, mas `promotion_eligible=false` por survivorship. |
-
-Score modes: `raw_13612` `[stocks_on_the_move, p.60]`, `mom_12_1`, `vol_adjusted_13612`
-`[systematic_trading, p.137-148]`, `clenow_trend` `[stocks_on_the_move, p.70-77, p.98]`,
-`composite_mom_lowvol`. Overlays seguem Clenow `[stocks_on_the_move, p.66-67, p.81-82]` e
-Gayed `[leverage_for_the_long_run, p.9, p.13, p.16]`. Simulação shifted-weight evita
-look-ahead `[advances_fin_ml, p.31-34]`.
-
----
-
-## Resultados do run canônico (2026-06-16)
-
-Universo: `2301/7136` US stocks passam os filtros. Duas janelas, cada uma `840` configs
-broad + `144` evolution (trial count honesto `984`). Benchmark = SPY.
-
-**SPY buy-and-hold (referência):** 1990+ CAGR `10,82%` / MDD `−55,19%` / Sharpe `0,65`;
-2000+ CAGR `8,83%` / MDD `−55,19%` / Sharpe `0,54`.
-
-**Melhores do broad (research-only, números inflados por survivorship):**
-
-| Janela | Lente | Estratégia | CAGR | MDD | Sharpe | Calmar |
-|---|---|---|---|---|---|---|
-| 1990 | Sharpe | `clenow_trend lb1_3_6_12 top15 reb1` | 46,4% | −58,3% | 1,21 | 0,80 |
-| 1990 | Calmar | `raw_13612 lb6 top10 reb1` | 58,3% | −65,8% | 0,93 | 0,89 |
-| 2000 | Sharpe | `raw_13612 inverse_vol lb1_3_6_12 top20 reb3` | 43,3% | −64,7% | 1,16 | 0,67 |
-| 2000 | Calmar | `raw_13612 lb6 top5 reb6` | 68,7% | −66,8% | 0,79 | 1,03 |
-
-**Validate (gates honestos) — `overall_pass=True` nas duas janelas:**
-
-| Janela | set-PBO | Finalistas que passam todos os gates | DSR p | WF | Bootstrap CI-low Sharpe |
-|---|---|---|---|---|---|
-| 1990 | `0,000` | `clenow_trend lb1_3_6_12 top15/top20 reb1` (sem overlay) | ≈0 | 8/8 | ~0,85 |
-| 2000 | `0,357` | `raw_13612 lb6 top20 reb3` (fixed/staggered) + `…inverse_vol lb1_3_6_12 top20 reb3` | ≈0 | 8/8 | ~0,67–0,78 |
-
-Achados adicionais que se mantêm:
-- **Dominância rolante regime-estável:** as duas janelas elegem independentemente a mesma
-  família `raw_13612 inverse_vol lb6 top20 reb3` como melhor dominância (~95,5%).
-- **Overlays de MM protegem em crise:** cortam o MDD da GFC de ~`−56%` para `−12%` (1990) /
-  `−20%` (2000), ao custo de CAGR.
-
-Relatórios completos: `universes/us_stocks/from_1990/reports/` e `from_2000/reports/`.
-
----
-
-## Universo BR (`br_stocks`) — rodado 2026-06-16 (janela efetiva 2009-2026)
-
-Funil completo broad→evolution→validate, benchmark `BOVA11.SA`, **sem código novo**
-(só `--universe br_stocks` sobre os defaults de `base.yaml`). Chamado com `--start 2000-01-01`,
-mas o **BOVA11 só existe desde 2009** — então a relative equity e os gates medem de fato
-**2009-2026** (um recorte pós-GFC, em grande parte de bull do BR).
-
-- **Cobertura:** `145/279` BR stocks passam os filtros de survivorship.
-- **Trial count honesto:** `840` broad + `120` evolution = `960`.
-
-### Veredito: FAIL — set-PBO `0,718` > 0,5
-
-`validate` deu **`overall_pass=False`**. O bloqueador é o **set-PBO `0,718`** (hard-block
-`[advances_fin_ml, p.208-211]`). 6 dos 12 finalistas passam os gates *per-config*
-(família `vol_adjusted_13612 lb6_12 top3 reb1 + market_sma200_daily`: DSR p≈`0,012`, WF `8/8`,
-bootstrap CI-low Sharpe `0,49–0,62`, cross-lib Δ≈`0,02pp`), mas o set-PBO derruba o conjunto.
-**Diferença vs us_stocks:** lá o edge passou os gates estatísticos e travou só no survivorship;
-no BR o edge **não sobrevive ao PBO** — universo pequeno + survivorship pior.
-
-### Nota de honestidade — a armadilha do "gráfico espetacular"
-
-Vários plots de relative equity parecem espetaculares — ex.: `raw_13612 inverse_vol lb6 top5 reb1`
-termina **38,5×** sobre o BOVA11 (CAGR after-tax `34,0%` vs BOVA `8,0%`). **Não promover isso.**
-Três fatos desmontam a leitura:
-
-1. **"A maior" não é — e o padrão é o problema.** As variantes `top3` da mesma família chegam a
-   **76× e 66×**. Quanto **mais concentrada** a carteira (top3 > top5 > top20), maior a relative
-   equity — assinatura de **survivorship + concentração**, não de edge: com 145 nomes vivos e
-   **zero delisted** no feed, uma carteira de 3-5 ações pega só os sobreviventes vencedores.
-2. **Drawdown absoluto é pior que o do Ibovespa, não melhor.** MDD da estratégia **−57,7%** vs
-   BOVA11 buy&hold **−49,7%** (mesma janela). O painel "relative equity" do plot **não** é
-   drawdown — ele só sobe porque a estratégia acumula mais que o índice; é fácil confundir os dois.
-3. **Bruto de custo, turnover alto.** top5 mensal = ~5,6× de turnover/ano em small/mid cap da B3;
-   o spread real come boa parte dos 34%.
-
-| Config | terminal_relative | CAGR a.t. | MDD a.t. | Sharpe |
-|---|---|---|---|---|
-| raw_13612 inv_vol lb6 **top3** | **76,1×** | 39,5% | −60,5% | 1,19 |
-| raw_13612 inv_vol lb6_12 **top3** | 66,2× | 38,4% | −66,4% | 1,09 |
-| raw_13612 inv_vol lb6 **top5** (o plot citado) | 38,5× | 34,0% | −57,7% | 1,20 |
-| `BOVA11.SA` buy&hold (ref) | 1,0× | 8,0% | −49,7% | — |
-
-`promotion_eligible=false` em toda linha. Artefatos: `universes/br_stocks/from_2000/{reports,results,plots}`.
-
-### Pendências (menor prioridade dado o FAIL de PBO)
-
-- `--start 2010-01-01` (robustez de regime); `br_stocks.yaml` afinado p/ liquidez/ticks da B3
-  (rodado com os defaults de `base.yaml`).
-- `topn_view.py`/`drawdown_sweep.py` no BR **não** rodados (o set-PBO já reprovou o conjunto).
-
----
-
-## Estratégias recomendadas (top_n 3-10, gerenciáveis na mão)
-
-`top_n=15/20` domina os tops irrestritos, mas é chato de executar manualmente.
-Recortando para `top_n ∈ {3,5,10}` (504 de 840 configs por janela; `TOPN_3_10.md`),
-o sinal quase não piora — reduzir de top20 → top10 custa pouquíssimo em
-dominância/Sharpe. Três picks, com métricas nas duas janelas (research-only,
-após imposto BR 15%, bruto de custos):
-
-| Perfil | Estratégia | Holdings | Rebal | CAGR 1990 / 2000 | MDD 1990 / 2000 | Sharpe 1990 / 2000 | Calmar 1990 / 2000 |
-|---|---|---|---|---|---|---|---|
-| Melhor Sharpe + regime-estável | `clenow_trend lb1_3_6_12 top10 reb1` | 10 | mensal | 51,1% / 47,5% | −63,0% / −58,9% | **1,20 / 1,13** | 0,81 / 0,81 |
-| Menos nomes | `clenow_trend lb1_3_6_12 top5 reb1` | 5 | mensal | 59,1% / 54,5% | −67,8% / −63,1% | 1,12 / 1,06 | 0,87 / 0,86 |
-| Calmar / menos esforço | `raw_13612 lb6 top5 reb6` | 5 | semestral | 62,4% / 68,7% | −71,3% / −66,8% | 0,79 / 0,79 | 0,87 / **1,03** |
-
-`clenow_trend lb1_3_6_12 top10 reb1` é o destaque: **#1 por dominância E por Sharpe
-nas duas janelas** — momentum de trend suave (Clenow), 10 nomes, rebalance mensal.
-
-### Plots vs SPY (equity / drawdown / equity relativa)
-
-Pick destaque — `clenow_trend top10 reb1`, mostrando estabilidade entre regimes:
-
-![clenow top10 — 1990](universes/us_stocks/from_1990/plots/topn_3_10/momv2_us_stocks_clenow_trend_lb1_3_6_12_top10_reb1_off0_vs_SPY.png)
-![clenow top10 — 2000](universes/us_stocks/from_2000/plots/topn_3_10/momv2_us_stocks_clenow_trend_lb1_3_6_12_top10_reb1_off0_vs_SPY.png)
-
-Menos nomes — `clenow_trend top5 reb1` (1990):
-
-![clenow top5 — 1990](universes/us_stocks/from_1990/plots/topn_3_10/momv2_us_stocks_clenow_trend_lb1_3_6_12_top5_reb1_off0_vs_SPY.png)
-
-Calmar / menos esforço — `raw_13612 lb6 top5 reb6` (2000):
-
-![raw top5 reb6 — 2000](universes/us_stocks/from_2000/plots/topn_3_10/momv2_us_stocks_raw_13612_lb6_top5_reb6_off0_vs_SPY.png)
-
-Demais plots (top picks por lente, ambas as janelas) em
-`universes/us_stocks/from_<ano>/plots/topn_3_10/` e listados em `TOPN_3_10.md`.
-Lembrete: MDDs fundos (~−60% a −71%) e CAGRs inflados por survivorship — leitura é
-por Sharpe/Calmar, `promotion_eligible=false`.
-
----
-
-## Reduzindo o drawdown (sweep de alavancas)
-
-Os MDDs full de ~−63% são melhoráveis — e a alavanca vencedora **não** é o SMA do
-SPY, é **vol-targeting** (escalar a exposição pela vol realizada da carteira, só
-de-risk, lag anti-look-ahead `[systematic_trading, p.137-148]`,
-`[advances_fin_ml, p.31-34]`). Sweep completo em `reports/DRAWDOWN_SWEEP.md`.
-Pick destaque `clenow_trend top10 reb1`, janela 1990 (after-tax):
-
-| Alavanca | CAGR | **MDD full** | GFC MDD | Vol | Sharpe | Calmar |
-|---|---|---|---|---|---|---|
-| baseline (sem overlay) | 51,1% | **−63,0%** | −58,9% | 41,6% | 1,20 | 0,81 |
-| **vol-target 15%** | 20,9% | **−25,2%** | −23,7% | 16,0% | **1,27** | **0,83** |
-| vol-target 20% | 27,9% | −32,6% | −30,5% | 21,3% | 1,26 | 0,85 |
-| vol-target 25% | 34,0% | −39,6% | −36,9% | 26,3% | 1,24 | 0,86 |
-| SPY SMA200 mensal | 40,9% | −63,0% | **−17,6%** | 36,2% | 1,13 | 0,65 |
-
-Leitura:
-- **Vol-targeting corta o MDD full** de −63% → −25% (alvo 15%) e ainda **melhora
-  Sharpe (1,20→1,27) e Calmar (0,81→0,83)** na janela 1990. De-risca em qualquer
-  regime de alta vol — inclusive os momentum-crashes que o filtro de mercado não vê.
-  O custo é CAGR (era justamente a parte volátil/inflada). Padrão se repete em 2000.
-- **SPY SMA200** = proteção de **crise** (GFC −59%→−18%), mas não mexe no MDD full em
-  1990 (em 2000 corta pra −46% e dá o melhor Calmar). Bom como complemento, não como
-  redutor principal de MDD.
-- **Low-vol composite** corta MDD (−40%) mas derruba Sharpe (0,61) — troca ruim.
-  **Diversificação** (top3→top10) ajuda pouco dentro de 3-10 (−76% → −63%).
-
-**Recomendação:** se o objetivo é cortar drawdown mantendo retorno ajustado a risco,
-**vol-target 15-20%** é a alavanca; combinar com SMA200 (proteção de crise) é o
-próximo teste natural (combo ainda não medido). Custo = CAGR menor.
-
-### Plots — `clenow top10`, 1990 (baseline → SMA200 → vol-target)
-
-![baseline](universes/us_stocks/from_1990/plots/drawdown_sweep/clenow_trend_lb1_3_6_12_top10_reb1__baseline__sem_overlay__vs_SPY.png)
-![SMA200 mensal](universes/us_stocks/from_1990/plots/drawdown_sweep/clenow_trend_lb1_3_6_12_top10_reb1__SMA200_market_sma200_monthly_vs_SPY.png)
-![vol-target 15%](universes/us_stocks/from_1990/plots/drawdown_sweep/clenow_trend_lb1_3_6_12_top10_reb1__vol-target_15pct_vs_SPY.png)
-
-Gerar/atualizar: `uv run python studies/momentum_v2/drawdown_sweep.py --universe us_stocks --start 1990-01-01`.
-Continua `promotion_eligible=false` (survivorship é o teto, independente do drawdown).
-
----
-
-## Decisões de design relevantes (e notas de honestidade)
-
-- **Lente de seleção = Sharpe + Calmar** (`evolution.selection_metrics`), por escolha do
-  objetivo retorno/risco. A dominância rolante segue reportada como coluna; ela também era
-  regime-estável, então o resultado não depende de uma única métrica.
-- **WF não bloqueia por MDD.** O cap de `−25%`/janela embutido no walk-forward era *mais
-  estrito que o mandate* (§5: "CAGR/MDD são tiers, não bloqueantes"). Foi alinhado para WF
-  puro `≥6/8` lucrativo. Isso foi alinhamento ao mandate, **não** threshold-fitting depois
-  de ver o FAIL inicial.
-- **Cross-library check corrigido.** Antes comparava a curva *com overlay* contra a
-  holdings-loop da *base* (estratégias diferentes → Δ falso). Agora compara a **mesma**
-  base de dois jeitos (vetorizado vs holdings-loop), validando o engine `[advances_fin_ml,
-  p.31-34]`.
-
----
+1. **broad** — grid de 1260 configs (5 score modes × 4 lookbacks × top-k {1,3,5,10,15} × rebalance
+   {1,2,3,4,6,12} × {equal,inverse_vol} × {±abs_cash}); mapa diagnóstico + PBO sobre N≈1000.
+2. **evolution** — top-6 finalistas por `rolling_rel_score` × overlays (SMA200/SMA100) × offsets fixo/staggered.
+3. **validate** — gates duros sobre os finalistas: PBO<0.5, DSR p<0.05, WF≥6/8, bootstrap CI-low>0, xlib ±3pp.
 
 ## Como rodar
 
 ```bash
-# auditar cobertura/filtros (sem rodar o grid)
-uv run python studies/momentum_v2/run.py --universe us_stocks --audit-only
-
-# funil completo, janela primária 1990 (--cache-panels reusa 1 load de Postgres entre as fases)
-uv run python studies/momentum_v2/run.py --universe us_stocks --phase broad     --start 1990-01-01 --cache-panels
-uv run python studies/momentum_v2/run.py --universe us_stocks --phase evolution --start 1990-01-01 --cache-panels
+# funil completo (--jobs paraleliza broad/evolution via fork Pool, resultado bit-idêntico; --cache-panels reusa 1 load de Postgres)
+uv run python studies/momentum_v2/run.py --universe us_stocks --phase broad     --start 1990-01-01 --cache-panels --jobs 16
+uv run python studies/momentum_v2/run.py --universe us_stocks --phase evolution --start 1990-01-01 --cache-panels --jobs 16
 uv run python studies/momentum_v2/run.py --universe us_stocks --phase validate  --start 1990-01-01 --cache-panels
-
-# robustez de regime: repetir com --start 2000-01-01
-# outros universos depois: --universe us_etfs | br_stocks | us_mixed ...
+# robustez de regime: --start 2000-01-01 ; outros universos: --universe br_stocks | us_etfs | ...
+# snapshot para o web-app (portfólio atual/histórico/contribuição por estratégia):
+uv run python studies/momentum_v2/portfolio_export.py --universe us_stocks --start 1990-01-01
 ```
 
-Saída namespaced por janela: `universes/<universe>/from_<ano>/{results,plots,reports,cache}`,
-com schema idêntico entre universos.
+Saída por janela: `universes/<universe>/from_<ano>/{results,plots,reports,cache,portfolio}`.
 
-Recorte por nº de holdings (executabilidade manual) — re-rankeia o `broad_results.csv`
-restrito a um intervalo de `top_n`, por dominância, Sharpe e Calmar:
+## Web-app
 
-```bash
-uv run python studies/momentum_v2/topn_view.py --universe us_stocks --start 1990-01-01 --min-top-n 3 --max-top-n 10 --k 20
-# escreve reports/TOPN_3_10.md
-```
+Visualização/comparação/explicação das estratégias + portfólio atual e histórico (entradas/saídas,
+contribuição por ticker, equity/drawdown): **[`webapp/`](webapp/README.md)** (FastAPI + React, deployável).
 
----
+## Próximos passos · Status
 
-## Próximos passos
+1. **Atacar survivorship** (único teto restante) — membership point-in-time + preços de delisted (providers em `TODO.md`). Sem isso nenhum PASS vira promovível.
+2. Tornar o set-PBO da validate honesto (alargar finalistas) ou gatilhar pelo PBO-broad.
 
-Comandos, hipóteses e providers de dados detalhados em **`TODO.md`**.
-
-1. **Atacar o survivorship** (único teto que sobrou): membership point-in-time do S&P 500 +
-   preços de empresas delisted. Sem isso, nenhum PASS aqui vira promovível. `TODO.md` lista
-   providers candidatos (Norgate, Sharadar, EODHD, …).
-2. Rodar outros universos (`us_etfs`, `us_mixed`, `br_stocks`) — só `--universe`, sem código novo.
-3. Arquivar `momentum/` e `momentum_13612_universes/` (mantidos como referência read-only;
-   este estudo os consolida e supera).
-
----
-
-## Status e disclaimers
-
-Research-only. `promotion_eligible=false` em toda linha. Rankings são após imposto BR 15%
-de ganho realizado, **brutos** de custos de transação/slippage. Benchmark sempre SPY.
-Mandate §1 inalterado — sem deploy. Spec técnica: `../../docs/specs/momentum_v2.md`.
+Research-only, `promotion_eligible=false`, mandate §1 inalterado — sem deploy. Spec: `../../docs/specs/momentum_v2.md`.

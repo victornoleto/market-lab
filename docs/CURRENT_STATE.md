@@ -1,14 +1,15 @@
-# Estado atual — market-lab (2026-06-16)
+# Estado atual — market-lab (2026-06-17)
 
 > **Propósito:** onboard rápido para humanos e agentes. Este doc é o
 > snapshot vivo — a verdade canônica vive nos arquivos referenciados.
 
 ---
 
-## TL;DR (2026-06-16)
+## TL;DR (2026-06-17)
 
 🛑 **MAINTENANCE MODE** desde 2026-04-23 (mandate §1, §7).
 
+- **(2026-06-17) momentum_v2 — re-run full us_stocks + portfolio web-app (research-only):** grid novo (top-k {1,3,5,10,15} × rebalance {1,2,3,4,6,12}, seleção por `rolling_rel_score`, filtros de liquidez apertados $5M ADV/60m). Veredito honesto **não-robusto**: janela **1990 PASS** (set-PBO 0.425), janela **2000 FAIL** (set-PBO 0.548) — PBO no limiar 0.5 = instabilidade de N pequeno; CAGRs brutos ~47-63% são **artefato de survivorship** (yfinance sem delistados). **Não é edge promovível; `promotion_eligible=false`.** Funil paralelizado (~7× via `multiprocessing` fork Pool, bit-idêntico) + bugfix (preços `adj_close`≤0 → NaN). Novo `studies/momentum_v2/webapp/` (FastAPI + React/Vite/uplot, deployável, path-traversal-safe) serve portfólio atual/histórico/contribuição. Baseline de testes 975→984. Ver `studies/momentum_v2/README.md`.
 - **Capital:** 100% **Plano C** passivo factor-tilted. Documentação pessoal movida para `victor-ia/verticals/investments/`.
 - **Strategies A/B/D:** **DORMANT** (0% capital, infra retida).
 - **113/113 honest FAIL** acumulado entre 2026-04-08 e 2026-04-23 (Phase 3.5f-3.8 + D-MVP + E-MVP). Pattern previsto por López de Prado DSR + Aronson 6402-rule + Li-Ferreira 2025 Network Momentum.

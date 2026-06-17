@@ -92,6 +92,7 @@ studies/**/plots*/
 studies/**/*_plots/
 studies/**/post_plots/
 studies/**/live_strategy_plots/
+studies/**/portfolio/
 studies/**/results.json
 studies/**/verdict.json
 studies/**/metrics.json

@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -36,6 +37,7 @@ from studies.momentum_v2.core import (  # noqa: E402
     LookbackProfile,
     StrategyConfig,
     apply_br_foreign_annual_tax,
+    build_panel_cache,
     canonicalize_columns,
     metrics_from_returns,
     precompute_scores,
@@ -125,6 +127,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--no-plots", action="store_true")
     parser.add_argument("--max-plots", type=int, default=12)
     parser.add_argument("--progress-every", type=int, default=200)
+    parser.add_argument(
+        "--jobs", type=int, default=None,
+        help="Parallel workers for the broad/evolution config loops "
+             "(default min(16, cpus); 1 = serial). Results are identical regardless.",
+    )
     parser.add_argument(
         "--cache-panels", action="store_true",
         help="Cache the filtered price panel per window so phases reuse one Postgres load",
@@ -247,6 +254,97 @@ def _config_from_row(row: pd.Series, assets: tuple[str, ...], features: dict) ->
     )
 
 
+# --- parallel config-loop execution -----------------------------------------
+# The broad/evolution config loops are the dominant cost (~99% of broad) and are
+# embarrassingly parallel. Workers run in fork()ed processes so the ~120MB price
+# panel is shared copy-on-write (measured peak ~+1MB/worker) instead of pickled
+# per task. ``Pool.map`` preserves submission order, so rows/returns_by_name keep
+# the exact config insertion order -> results are bit-identical to the serial loop
+# and to each other regardless of worker count. PBO `[advances_fin_ml, p.208-211]`
+# only order-depends on exact Sharpe ties (none in practice), and the bootstrap RNG
+# is call-local (seed 42 in validation.py), so determinism is unaffected.
+
+_SHARED: dict = {}
+
+
+def _resolve_jobs(args: argparse.Namespace) -> int:
+    """Worker count: explicit --jobs, else min(16, cpus) (measured speedup plateau)."""
+    if args.jobs is not None:
+        return max(1, int(args.jobs))
+    return min(16, os.cpu_count() or 1)
+
+
+def _map_configs(worker, n: int, jobs: int) -> list:
+    """Run ``worker(i)`` for i in range(n), order-preserving: fork Pool or serial."""
+    if jobs <= 1 or n <= 1:
+        return [worker(i) for i in range(n)]
+    import multiprocessing as mp
+
+    try:
+        ctx = mp.get_context("fork")  # fork -> panel shared COW; spawn would pickle it per task
+    except ValueError:  # non-fork platform (e.g. Windows): stay correct, lose the speedup
+        return [worker(i) for i in range(n)]
+    with ctx.Pool(jobs) as pool:
+        return pool.map(worker, range(n), chunksize=1)  # chunksize=1 balances heavy reb=1 configs
+
+
+def _collect(results: list) -> tuple[list[dict], dict[str, pd.Series]]:
+    """Rebuild (rows, returns_by_name) in config order, skipping empty simulations."""
+    rows: list[dict] = []
+    returns_by_name: dict[str, pd.Series] = {}
+    for res in results:
+        if res is None:
+            continue
+        name, row, ranked_returns = res
+        rows.append(row)
+        returns_by_name[name] = ranked_returns
+    return rows, returns_by_name
+
+
+def _broad_worker(i: int):
+    s = _SHARED
+    config_i = s["configs"][i]
+    simulation = simulate_config(
+        s["prices"], s["bundles"][config_i.lookback.label], config_i,
+        eligible_by_date=s["eligible"], panel=s["panel"],
+    )
+    if simulation.returns.empty:
+        return None
+    tax = apply_br_foreign_annual_tax(simulation.returns, simulation.daily_weights)
+    row = result_row(
+        config_i, simulation, s["benchmark"], n_trials=s["n_trials"],
+        benchmark_symbol=s["benchmark_symbol"], ranked_returns=tax.returns, tax_summary=tax.summary,
+    )
+    return (config_i.name, row, tax.returns)
+
+
+def _evolution_worker(i: int):
+    s = _SHARED
+    base_cfg, overlay, offset_mode = s["planned"][i]
+    evolved_name = f"evo_{base_cfg.name}_{offset_mode}_{overlay}"
+    evolved_cfg = StrategyConfig(
+        name=evolved_name, universe=s["universe"], assets=s["assets"], top_n=base_cfg.top_n,
+        rebalance_months=base_cfg.rebalance_months, rebalance_offset=base_cfg.rebalance_offset,
+        score_mode=base_cfg.score_mode, lookback=base_cfg.lookback, weight_mode=base_cfg.weight_mode,
+        absolute_filter=base_cfg.absolute_filter, vol_window_days=base_cfg.vol_window_days,
+        trend_window_days=base_cfg.trend_window_days,
+    )
+    simulation = simulate_evolved(
+        s["prices"], s["bundles"][base_cfg.lookback.label], evolved_cfg, overlay, offset_mode,
+        s["daily_market_ok"], s["monthly_market_ok"], s["monthly_stock_ok"],
+        eligible_by_date=s["eligible"], panel=s["panel"],
+    )
+    if simulation.returns.empty:
+        return None
+    tax = apply_br_foreign_annual_tax(simulation.returns, simulation.daily_weights)
+    row = result_row(
+        evolved_cfg, simulation, s["benchmark"], n_trials=s["n_trials"], benchmark_symbol=s["benchmark_symbol"],
+        ranked_returns=tax.returns, tax_summary=tax.summary,
+        extra={"base_name": base_cfg.name, "overlay": overlay, "offset_mode": offset_mode},
+    )
+    return (evolved_name, row, tax.returns)
+
+
 # --- phases -----------------------------------------------------------------
 
 def run_audit(config: dict, universe: str, args: argparse.Namespace) -> int:
@@ -286,21 +384,14 @@ def run_broad(config: dict, universe: str, args: argparse.Namespace) -> int:
     n_trials = len(configs)
     print(f"[broad] {universe}: {len(assets)} assets, {n_trials} configs from {start}")
 
-    rows: list[dict] = []
-    returns_by_name: dict[str, pd.Series] = {}
-    for i, config_i in enumerate(configs, start=1):
-        bundle = bundles[config_i.lookback.label]
-        simulation = simulate_config(result.prices, bundle, config_i, eligible_by_date=eligible)
-        if simulation.returns.empty:
-            continue
-        tax = apply_br_foreign_annual_tax(simulation.returns, simulation.daily_weights)
-        rows.append(result_row(
-            config_i, simulation, benchmark, n_trials=n_trials,
-            benchmark_symbol=benchmark_symbol, ranked_returns=tax.returns, tax_summary=tax.summary,
-        ))
-        returns_by_name[config_i.name] = tax.returns
-        if i % max(args.progress_every, 1) == 0:
-            print(f"  simulated {i}/{n_trials}", flush=True)
+    _SHARED.update(
+        prices=result.prices, bundles=bundles, benchmark=benchmark, n_trials=n_trials,
+        benchmark_symbol=benchmark_symbol, eligible=eligible, configs=configs,
+        panel=build_panel_cache(result.prices),
+    )
+    jobs = _resolve_jobs(args)
+    print(f"[broad] simulating {n_trials} configs (jobs={jobs})", flush=True)
+    rows, returns_by_name = _collect(_map_configs(_broad_worker, len(configs), jobs))
 
     results = pd.DataFrame(rows)
     reportlib.write_results(results, results_dir, "broad_results")
@@ -370,33 +461,16 @@ def run_evolution(config: dict, universe: str, args: argparse.Namespace) -> int:
     planned = [(c, overlay, offset_mode) for c in finalist_configs for overlay in OVERLAYS for offset_mode in OFFSET_MODES]
     n_trials = len(planned)
     print(f"[evolution] {universe}: {len(finalist_configs)} finalists x {len(OVERLAYS)} overlays x {len(OFFSET_MODES)} offsets = {n_trials}")
-    rows: list[dict] = []
-    returns_by_name: dict[str, pd.Series] = {}
-    for i, (base_cfg, overlay, offset_mode) in enumerate(planned, start=1):
-        evolved_name = f"evo_{base_cfg.name}_{offset_mode}_{overlay}"
-        evolved_cfg = StrategyConfig(
-            name=evolved_name, universe=universe, assets=assets, top_n=base_cfg.top_n,
-            rebalance_months=base_cfg.rebalance_months, rebalance_offset=base_cfg.rebalance_offset,
-            score_mode=base_cfg.score_mode, lookback=base_cfg.lookback, weight_mode=base_cfg.weight_mode,
-            absolute_filter=base_cfg.absolute_filter, vol_window_days=base_cfg.vol_window_days,
-            trend_window_days=base_cfg.trend_window_days,
-        )
-        simulation = simulate_evolved(
-            result.prices, bundles[base_cfg.lookback.label], evolved_cfg, overlay, offset_mode,
-            daily_market_ok, monthly_market_ok, monthly_stock_ok,
-            eligible_by_date=eligible,
-        )
-        if simulation.returns.empty:
-            continue
-        tax = apply_br_foreign_annual_tax(simulation.returns, simulation.daily_weights)
-        rows.append(result_row(
-            evolved_cfg, simulation, benchmark, n_trials=n_trials, benchmark_symbol=benchmark_symbol,
-            ranked_returns=tax.returns, tax_summary=tax.summary,
-            extra={"base_name": base_cfg.name, "overlay": overlay, "offset_mode": offset_mode},
-        ))
-        returns_by_name[evolved_name] = tax.returns
-        if i % max(args.progress_every // 4 or 1, 1) == 0:
-            print(f"  simulated {i}/{n_trials}", flush=True)
+    _SHARED.update(
+        prices=result.prices, bundles=bundles, benchmark=benchmark, n_trials=n_trials,
+        benchmark_symbol=benchmark_symbol, eligible=eligible, planned=planned,
+        universe=universe, assets=assets, daily_market_ok=daily_market_ok,
+        monthly_market_ok=monthly_market_ok, monthly_stock_ok=monthly_stock_ok,
+        panel=build_panel_cache(result.prices),
+    )
+    jobs = _resolve_jobs(args)
+    print(f"[evolution] simulating {n_trials} trials (jobs={jobs})", flush=True)
+    rows, returns_by_name = _collect(_map_configs(_evolution_worker, len(planned), jobs))
 
     results = pd.DataFrame(rows)
     reportlib.write_results(results, results_dir, "evolution_results")

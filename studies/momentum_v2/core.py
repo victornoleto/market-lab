@@ -90,10 +90,13 @@ class StrategyConfig:
     absolute_filter: bool = False
     vol_window_days: int = 126
     trend_window_days: int = 126
+    rank_buffer: int = 0  # 0 = pick top_n fresh each rebalance; >0 = hysteresis band (turnover cut)
 
     def __post_init__(self) -> None:
         if self.top_n <= 0:
             raise ValueError("top_n must be positive")
+        if self.rank_buffer < 0:
+            raise ValueError("rank_buffer must be >= 0")
         if self.rebalance_months <= 0:
             raise ValueError("rebalance_months must be positive")
         if not 0 <= self.rebalance_offset < self.rebalance_months:
@@ -130,6 +133,26 @@ class SimulationResult:
     daily_weights: pd.DataFrame
     rebalance_weights: pd.DataFrame
     turnover: dict[str, float]
+
+
+@dataclass(frozen=True)
+class PanelCache:
+    """Per-phase precompute of the daily panel reused by every config.
+
+    ``canonicalize_columns(prices).sort_index()`` and the full-panel
+    ``pct_change`` are identical for every config in a phase, so computing them
+    once (and, under fork, sharing them copy-on-write) instead of per config is a
+    pure speedup with bit-identical results.
+    """
+
+    daily: pd.DataFrame
+    asset_returns: pd.DataFrame
+
+
+def build_panel_cache(prices: pd.DataFrame) -> "PanelCache":
+    """Canonical sorted daily panel + its daily returns, computed once per phase."""
+    daily = canonicalize_columns(prices).sort_index()
+    return PanelCache(daily=daily, asset_returns=daily.pct_change(fill_method=None).fillna(0.0))
 
 
 @dataclass(frozen=True)
@@ -314,6 +337,8 @@ def monthly_weights(
     scores = bundle.scores[config.score_mode].reindex(columns=assets)
     monthly_vol = bundle.monthly_vol.reindex(columns=assets)
     weights = pd.DataFrame(0.0, index=scores.index, columns=assets)
+    buffer = max(int(config.rank_buffer), 0)
+    held: list[str] = []  # carried across rebalances only when a ranking buffer is active
 
     for rebalance_date in scores.index:
         if not is_rebalance_month(rebalance_date, config.rebalance_months, config.rebalance_offset):
@@ -327,9 +352,22 @@ def monthly_weights(
         ranked = rank_scores(row)
         if len(ranked) < config.top_n:
             continue
-        chosen = ranked[: config.top_n]
-        if config.absolute_filter:
-            chosen = [asset for asset in chosen if float(row[asset]) > 0.0]
+        if buffer > 0:
+            # Hysteresis: keep a held name until it drops out of the top (top_n + buffer); only then
+            # replace it with the best non-held candidate. Cuts turnover `[stocks_on_the_move, p.98-99]`.
+            pool = [a for a in ranked if float(row[a]) > 0.0] if config.absolute_filter else ranked
+            keep_set = set(pool[: config.top_n + buffer])
+            chosen = [a for a in held if a in keep_set][: config.top_n]
+            for asset in pool:
+                if len(chosen) >= config.top_n:
+                    break
+                if asset not in chosen:
+                    chosen.append(asset)
+            held = list(chosen)
+        else:
+            chosen = ranked[: config.top_n]
+            if config.absolute_filter:
+                chosen = [asset for asset in chosen if float(row[asset]) > 0.0]
         if not chosen:
             continue
         if config.weight_mode == "inverse_vol":
@@ -352,9 +390,23 @@ def daily_weights_from_monthly(prices: pd.DataFrame, monthly_weights_frame: pd.D
     return weights.reindex(columns=monthly_weights_frame.columns, fill_value=0.0)
 
 
-def _returns_from_daily_weights(daily: pd.DataFrame, daily_weights: pd.DataFrame, name: str) -> pd.Series:
-    asset_returns = daily[daily_weights.columns].pct_change(fill_method=None).fillna(0.0)
-    gross = (daily_weights.shift(1).fillna(0.0) * asset_returns).sum(axis=1)
+def _returns_from_daily_weights(
+    daily: pd.DataFrame,
+    daily_weights: pd.DataFrame,
+    name: str,
+    asset_returns: pd.DataFrame | None = None,
+    cost_bps: float = 0.0,
+) -> pd.Series:
+    # asset_returns precomputed (PanelCache) is identical to recomputing it here
+    # column-by-column; selecting the same columns keeps the sum bit-identical.
+    cols = daily_weights.columns
+    rets = asset_returns[cols] if asset_returns is not None else daily[cols].pct_change(fill_method=None).fillna(0.0)
+    gross = (daily_weights.shift(1).fillna(0.0) * rets).sum(axis=1)
+    if cost_bps > 0.0:
+        # Linear transaction cost: cost_bps per unit of weight traded (buys+sells), charged on the
+        # day weights change (no look-ahead). cost_bps=0 -> gross returns unchanged (bit-identical).
+        traded = daily_weights.diff().abs().sum(axis=1).fillna(0.0)
+        gross = gross - (cost_bps / 10000.0) * traded
     active = daily_weights.sum(axis=1) > 0.0
     if not active.any():
         return gross.iloc[0:0].rename(name)
@@ -367,15 +419,26 @@ def simulate_config(
     bundle: ScoreBundle,
     config: StrategyConfig,
     eligible_by_date: EligibleByDate | None = None,
+    panel: PanelCache | None = None,
+    cost_bps: float = 0.0,
 ) -> SimulationResult:
-    """Simulate one configuration with a single (fixed) rebalance offset."""
-    daily = canonicalize_columns(prices).sort_index()
+    """Simulate one configuration with a single (fixed) rebalance offset.
+
+    ``panel`` (optional) supplies the once-per-phase canonical daily frame and
+    daily returns; without it they are computed here as before (bit-identical).
+    ``cost_bps`` (optional) charges a linear transaction cost per unit traded;
+    0 = gross of costs (default, unchanged).
+    """
+    daily = panel.daily if panel is not None else canonicalize_columns(prices).sort_index()
     rebalance_weights = monthly_weights(bundle, config, eligible_by_date=eligible_by_date)
     if rebalance_weights.empty:
         empty = pd.Series(dtype=float, name=config.name)
         return SimulationResult(empty, pd.DataFrame(), rebalance_weights, empty_turnover())
     daily_weights = daily_weights_from_monthly(daily, rebalance_weights)
-    returns = _returns_from_daily_weights(daily, daily_weights, config.name)
+    returns = _returns_from_daily_weights(
+        daily, daily_weights, config.name,
+        asset_returns=panel.asset_returns if panel is not None else None, cost_bps=cost_bps,
+    )
     return SimulationResult(
         returns=returns,
         daily_weights=daily_weights,
@@ -673,18 +736,23 @@ def metrics_from_returns(
         }
     equity = equity_from_returns(clean, start_value=1.0)
     years = len(clean) / periods_per_year
+    # A return <= -1 (only reachable from corrupt non-positive prices) drives equity
+    # non-positive and makes the power-based metrics complex; guard so one bad config
+    # returns total-loss sentinels instead of aborting a whole (parallel) run.
+    eq = equity.to_numpy(dtype=float)
+    ok = bool(np.isfinite(eq).all() and (eq > 0.0).all())
     return {
         "start": str(clean.index[0].date()),
         "end": str(clean.index[-1].date()),
         "n_obs": int(len(clean)),
         "years": float(years),
-        "cagr": float(cagr(equity, periods_per_year)),
-        "mdd": -float(max_drawdown(equity)),
+        "cagr": float(cagr(equity, periods_per_year)) if ok else -1.0,
+        "mdd": -float(max_drawdown(equity)) if ok else -1.0,
         "vol": float(volatility(clean, periods_per_year)),
         "sharpe": float(sharpe(clean, periods_per_year)),
         "sortino": float(sortino(clean, periods_per_year)),
-        "calmar": float(calmar(equity, periods_per_year)),
-        "terminal": float(equity.iloc[-1]),
+        "calmar": float(calmar(equity, periods_per_year)) if ok else -1.0,
+        "terminal": float(equity.iloc[-1]) if ok else 0.0,
     }
 
 

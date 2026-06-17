@@ -44,13 +44,24 @@ def plot_strategy_vs_benchmark(
     dd = aligned / aligned.cummax() - 1.0
     ratio = aligned["Strategy"] / aligned[benchmark_symbol]
 
-    fig, axes = plt.subplots(3, 1, figsize=(12, 10), sharex=True)
+    # Three panels side-by-side (equity | drawdown | relative-equity) in one figure.
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5), sharex=True)
     aligned.plot(ax=axes[0], linewidth=1.2)
     axes[0].set_title(f"{name}: after-tax equity vs {benchmark_symbol}")
     axes[0].set_ylabel("Growth of $1")
     axes[0].grid(True, alpha=0.3)
-    dd.plot(ax=axes[1], linewidth=1.1)
-    axes[1].set_title("Drawdown")
+    # Drawdown DIFFERENCE (strategy − benchmark) as a signed area: below 0 (strategy fell
+    # more than the benchmark = worse) filled red; above 0 (fell less = better) filled blue.
+    dd_diff = (dd["Strategy"] - dd[benchmark_symbol]).to_numpy(dtype=float)
+    x = dd.index
+    axes[1].fill_between(x, dd_diff, 0.0, where=dd_diff <= 0, color="#d62728", alpha=0.35,
+                         interpolate=True, label="pior (caiu mais)")
+    axes[1].fill_between(x, dd_diff, 0.0, where=dd_diff >= 0, color="#1f77b4", alpha=0.35,
+                         interpolate=True, label="melhor (caiu menos)")
+    axes[1].axhline(0.0, color="gray", linewidth=0.8)
+    axes[1].set_title(f"Drawdown Δ vs {benchmark_symbol} (azul=melhor · vermelho=pior)")
+    axes[1].set_ylabel("DD estratégia − DD benchmark")
+    axes[1].legend(fontsize=7, loc="lower left")
     axes[1].grid(True, alpha=0.3)
     ratio.plot(ax=axes[2], color="black", linewidth=1.1)
     axes[2].axhline(1.0, color="gray", linestyle="--", linewidth=1.0)
