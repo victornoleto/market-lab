@@ -62,11 +62,36 @@ uv run python studies/momentum_v2/run.py --universe br_stocks --phase validate  
   rodado com os defaults de `base.yaml`; um `br_stocks.yaml` afinado não existe ainda.
 - `topn_view.py` / `drawdown_sweep.py` no universo BR (não rodados — PBO já reprovou o conjunto).
 
-## 3. Resolver o survivorship bias (o teto real)
+## 3. Survivorship bias — ✅ DIAGNÓSTICO GRÁTIS RODADO (2026-06-17)
 
-É o **único bloqueador** que sobrou: o feed yfinance/current-universe não tem as
-empresas que faliram/saíram, então os CAGRs estão inflados e nada é promovível
-`[advances_fin_ml, p.208-211]`. Resolver exige **duas** coisas:
+**Veredito: o "edge" do us_stocks era, em boa parte, artefato do pool de sobreviventes.**
+Antes de pagar dados premium, testou-se de graça se o edge sobrevive a um universo
+point-in-time realista (membership S&P 500 via `fja05680/sp500`, MIT, alimentando o hook
+`eligible_by_date`). Modo novo: `run.py --membership {none,sp500,ipo_delist}` + `membership.py`.
+
+| Janela 2000 | `overall_pass` | set-PBO | melhor Sharpe | CAGR | Calmar |
+|---|---|---|---|---|---|
+| `none` (pool de sobreviventes) | True | 0,357 | 1,163 | 43,3% | 0,669 |
+| `sp500` (PIT, ainda survivor-priced) | **False** | **0,639** | 0,775 | **22,0%** | 0,296 |
+
+Só trocar para o universo realista do S&P 500 — **sem nem adicionar os mortos** — corta o CAGR
+pela metade e reprova o PBO (0,64 > 0,5, hard-block). E o `sp500` ainda é *otimista* (só
+`~244/497` membros/mês têm preço na DB; os ~253 ausentes são os delisted). Adicionar os mortos
+(via Tiingo) só **pioraria** → o FAIL é robusto.
+
+**Decisão:** o backfill de preços delisted (Tiingo free, antes deferido) **não vale** — e dados
+premium (Norgate/Sharadar/EODHD) quase certamente só confirmariam o FAIL. Questão fechada de graça;
+`promotion_eligible=false` permanece, mandate §1 inalterado. Artefatos: `universes/us_stocks/from_2000_sp500/`.
+
+Pendente menor: `ipo_delist` precisa de uma key grátis do Alpha Vantage (`data/listing_status_active.csv`)
+— é secundário e não muda o veredito. O texto abaixo (providers/passos) fica como **referência histórica**.
+
+---
+
+### Contexto original (referência)
+
+O feed yfinance/current-universe não tem as empresas que faliram/saíram, então os CAGRs
+estão inflados `[advances_fin_ml, p.208-211]`. Resolver de verdade exigiria **duas** coisas:
 
 1. **Preços de tickers delisted/mortos** (retornos até o delisting, ajustados).
 2. **Membership point-in-time do índice** (quais tickers eram negociáveis/no índice

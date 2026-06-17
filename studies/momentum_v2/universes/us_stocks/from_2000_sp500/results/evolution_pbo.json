@@ -1,0 +1,74 @@
+{
+  "rows": [
+    {
+      "group": "all",
+      "pbo": 0.6428571428571429,
+      "n_configs": 132,
+      "n_configs_total": 132,
+      "sampled": false,
+      "n_obs": 5755,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:raw_13612",
+      "pbo": 0.6706349206349206,
+      "n_configs": 36,
+      "n_configs_total": 36,
+      "sampled": false,
+      "n_obs": 5755,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:raw_13612_abs_cash",
+      "pbo": 0.8015873015873016,
+      "n_configs": 24,
+      "n_configs_total": 24,
+      "sampled": false,
+      "n_obs": 5755,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:raw_13612_inverse_vol",
+      "pbo": 0.623015873015873,
+      "n_configs": 36,
+      "n_configs_total": 36,
+      "sampled": false,
+      "n_obs": 5755,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:vol_adjusted_13612",
+      "pbo": 0.8968253968253969,
+      "n_configs": 12,
+      "n_configs_total": 12,
+      "sampled": false,
+      "n_obs": 5755,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:vol_adjusted_13612_abs_cash",
+      "pbo": 0.9007936507936508,
+      "n_configs": 12,
+      "n_configs_total": 12,
+      "sampled": false,
+      "n_obs": 5755,
+      "n_combinations": 252,
+      "pass": false
+    },
+    {
+      "group": "mechanism:vol_adjusted_13612_inverse_vol",
+      "pbo": 0.8849206349206349,
+      "n_configs": 12,
+      "n_configs_total": 12,
+      "sampled": false,
+      "n_obs": 5755,
+      "n_combinations": 252,
+      "pass": false
+    }
+  ]
+}

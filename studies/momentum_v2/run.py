@@ -60,10 +60,44 @@ from studies.momentum_v2.validation import (  # noqa: E402
 STUDY_DIR = Path(__file__).resolve().parent
 
 
-def window_tag(start: str | None) -> str:
-    """Output namespace for one start window, e.g. ``from_1990``."""
+def window_tag(start: str | None, membership: str = "none") -> str:
+    """Output namespace for one start window, e.g. ``from_1990`` (``from_2000_sp500``
+    when a point-in-time membership mask is active, so masked runs never overwrite
+    the unmasked baseline)."""
     year = str(start)[:4] if start else "all"
-    return f"from_{year}"
+    tag = f"from_{year}"
+    return tag if membership == "none" else f"{tag}_{membership}"
+
+
+def load_membership(args: argparse.Namespace, prices: pd.DataFrame):
+    """Build the point-in-time eligibility mask for ``--membership`` (None when off)."""
+    if args.membership == "none":
+        return None
+    from studies.momentum_v2 import membership as memb  # local: optional dependency path
+    data_dir = STUDY_DIR / "data"
+    if args.membership == "sp500":
+        csv = data_dir / "sp500_ticker_start_end.csv"
+        if not csv.exists():
+            raise SystemExit(
+                f"[membership] sp500 needs {csv} -- fetch (free, MIT):\n"
+                "  curl -sL https://raw.githubusercontent.com/fja05680/sp500/master/"
+                f"sp500_ticker_start_end.csv -o {csv}"
+            )
+        eligible = memb.build_sp500_eligibility(csv, prices.index)
+    else:  # ipo_delist
+        av_csv = data_dir / "listing_status_active.csv"
+        if not av_csv.exists():
+            raise SystemExit(
+                "[membership] ipo_delist needs studies/momentum_v2/data/listing_status_active.csv "
+                "-- fetch it with your free ALPHAVANTAGE_API_KEY (see README)."
+            )
+        eligible = memb.build_ipo_delist_eligibility(av_csv, tuple(prices.columns), prices.index)
+    sample = next(iter(eligible.values())) if eligible else set()
+    priced = {str(c).upper() for c in prices.columns}
+    overlap = len(sample & priced)  # the universe actually rankable = members ∩ our prices
+    print(f"[membership] {args.membership}: {len(eligible)} months, ~{overlap}/{len(priced)} priced "
+          f"tickers rankable/month (sample set={len(sample)})", flush=True)
+    return eligible
 
 
 def universe_dirs(universe: str, window: str) -> tuple[Path, Path, Path, Path]:
@@ -81,6 +115,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--phase", choices=["broad", "evolution", "validate"], default="broad")
     parser.add_argument("--start", default=None, help="Override config start (e.g. 2000-01-01)")
     parser.add_argument("--end", default=None)
+    parser.add_argument(
+        "--membership", choices=["none", "sp500", "ipo_delist"], default="none",
+        help="Point-in-time eligibility mask (survivorship diagnostic). none = current behaviour.",
+    )
     parser.add_argument("--audit-only", action="store_true")
     parser.add_argument("--max-symbols", type=int, default=None)
     parser.add_argument("--limit-configs", type=int, default=None, help="Cap broad grid (fast iteration)")
@@ -139,7 +177,7 @@ def _load_panel(config: dict, universe: str, args: argparse.Namespace):
     cfg.load_env_file()
     start = effective_start(config, args)
     end = args.end or config["run"].get("end")
-    window = window_tag(start)
+    window = window_tag(start, args.membership)
     base, _results, _plots, _reports = universe_dirs(universe, window)
     cache_dir = base / "cache"
     benchmark_symbol = cfg.benchmark_symbol(config)
@@ -234,6 +272,7 @@ def run_broad(config: dict, universe: str, args: argparse.Namespace) -> int:
         print(f"[broad] too few assets after filter ({result.prices.shape[1]}); aborting.")
         return 1
     assets = tuple(result.prices.columns)
+    eligible = load_membership(args, result.prices)
     features = config.get("features", {})
     profiles = lookback_profiles(config["grid"])
     bundles = _build_bundles(result.prices, assets, profiles, features)
@@ -251,7 +290,7 @@ def run_broad(config: dict, universe: str, args: argparse.Namespace) -> int:
     returns_by_name: dict[str, pd.Series] = {}
     for i, config_i in enumerate(configs, start=1):
         bundle = bundles[config_i.lookback.label]
-        simulation = simulate_config(result.prices, bundle, config_i)
+        simulation = simulate_config(result.prices, bundle, config_i, eligible_by_date=eligible)
         if simulation.returns.empty:
             continue
         tax = apply_br_foreign_annual_tax(simulation.returns, simulation.daily_weights)
@@ -297,7 +336,7 @@ def run_broad(config: dict, universe: str, args: argparse.Namespace) -> int:
 
 
 def run_evolution(config: dict, universe: str, args: argparse.Namespace) -> int:
-    window = window_tag(effective_start(config, args))
+    window = window_tag(effective_start(config, args), args.membership)
     base, results_dir, plots_dir, reports = universe_dirs(universe, window)
     broad_path = results_dir / "broad_results.csv"
     if not broad_path.exists():
@@ -327,6 +366,7 @@ def run_evolution(config: dict, universe: str, args: argparse.Namespace) -> int:
         for c in finalist_configs
     }
 
+    eligible = load_membership(args, result.prices)
     planned = [(c, overlay, offset_mode) for c in finalist_configs for overlay in OVERLAYS for offset_mode in OFFSET_MODES]
     n_trials = len(planned)
     print(f"[evolution] {universe}: {len(finalist_configs)} finalists x {len(OVERLAYS)} overlays x {len(OFFSET_MODES)} offsets = {n_trials}")
@@ -344,6 +384,7 @@ def run_evolution(config: dict, universe: str, args: argparse.Namespace) -> int:
         simulation = simulate_evolved(
             result.prices, bundles[base_cfg.lookback.label], evolved_cfg, overlay, offset_mode,
             daily_market_ok, monthly_market_ok, monthly_stock_ok,
+            eligible_by_date=eligible,
         )
         if simulation.returns.empty:
             continue
@@ -381,7 +422,7 @@ def run_evolution(config: dict, universe: str, args: argparse.Namespace) -> int:
 
 
 def run_validate(config: dict, universe: str, args: argparse.Namespace) -> int:
-    window = window_tag(effective_start(config, args))
+    window = window_tag(effective_start(config, args), args.membership)
     base, results_dir, _plots, reports = universe_dirs(universe, window)
     evo_path = results_dir / "evolution_results.csv"
     broad_path = results_dir / "broad_results.csv"
@@ -403,6 +444,7 @@ def run_validate(config: dict, universe: str, args: argparse.Namespace) -> int:
     monthly_stock_ok = stock_trend_ok(result.prices)
 
     val = config["validation"]
+    eligible = load_membership(args, result.prices)
     n_trials = n_broad + len(evo)  # honest count across the whole funnel
     returns_by_name: dict[str, pd.Series] = {}
     xlib_delta: dict[str, float] = {}
@@ -426,6 +468,7 @@ def run_validate(config: dict, universe: str, args: argparse.Namespace) -> int:
         simulation = simulate_evolved(
             result.prices, bundle, evolved_cfg, overlay, offset_mode,
             daily_market_ok, monthly_market_ok, monthly_stock_ok,
+            eligible_by_date=eligible,
         )
         if simulation.returns.empty:
             continue
