@@ -82,6 +82,14 @@ myfxbook_decoder = [
     "wittgenstein>=0.3",
     "lightgbm>=4.0",            # Task 005 (adversarial validator) + 015 (LightGBM miner) [advances_fin_ml, ch.5]
 ]
+# Optional — install only to run the momentum_v2 portfolio web-app backend:
+#   uv pip install -e '.[webapp]'
+# FastAPI/uvicorn are NOT runtime deps of the funnel or the 975-test baseline; the
+# app is a research-dissemination + personal-tracking tool (promotion_eligible=false).
+webapp = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.29",
+]
 
 [dependency-groups]
 dev = [
