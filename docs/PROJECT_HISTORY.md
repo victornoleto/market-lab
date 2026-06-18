@@ -301,11 +301,43 @@ Notable study areas include:
   low RSST, but RSC-like still won the small fixed-rule OOS comparison by terminal
   wealth/CAGR. Therefore the full-sample top `40/25/35` remains a diagnostic screen,
   not a promoted allocation, and the defensible long-term rule remains a fixed thesis
-  rather than grid reoptimization. This was implementation screening only; no mandate
-  allocation changed, and metrics are not validation-gate evidence
+  rather than grid reoptimization. A later 2026-06-17
+  `us_core/unstacked_equity_diversifier_grid/` diagnostic tested the user's
+  no-return-stacked alternative: keep effective S&P exposure near `100%` through
+  `SPYSIM?L=2&E=0.91` / `SPYSIM?L=3&E=0.91`, then allocate leftover capital to
+  `CASH/GOLD/ZROZ/MF` sleeves downloaded one by one from Testfol.io. It was useful
+  versus SPY but did not improve the RSC profile: the user-like `UPRO/ZROZ/KMLM/GOLD`
+  row reached CAGR `13.38%` with MDD `-46.65%` from 1988+, but only `0.70x` terminal
+  wealth versus the RSC-like reference on the common window; 2000+ grids failed PBO
+  (`0.714..0.794`) and kept drawdowns around `-46%..-50%`. The only PBO-below-0.5
+  case was KMLM-only long-window (`0.480`), but it failed WF positive-window
+  consistency. Fixed GDE/RSST/ZROZ completion rows were more usable as references:
+  `25% ZROZ / 25% RSST70_30 / 30% GDE + 16% UPRO + 4% ZROZ` reached CAGR `12.40%`,
+  MDD `-45.37%`, terminal `1.04x` versus RSC, while the cleaner `16% UPRO + 4% CASH`
+  row was `12.17%`/`-46.18%`/`0.98x`. A fully allocated `20% UPRO` version lifted
+  effective equity to `112%` and reached `12.57%`/`-51.92%`/`1.08x`, buying modest
+  terminal wealth with a much worse drawdown and lower Sharpe/Calmar. These rows still
+  lost to RSC-like on risk-adjusted profile. This was implementation screening only; no mandate allocation changed,
+  and metrics are not validation-gate evidence
   `[testing_tuning, p.318-320]`, `[testing_tuning, p.327-335]`,
   `[advances_fin_ml, p.208-211]`, `[leverage_for_the_long_run, p.13]`,
   `[leverage_for_the_long_run, p.4-7]`, `[risk_parity, p.80-81]`,
+  `[systematic_trading, p.185-188]`;
+- a later 2026-06-17
+  `studies/return_stacked_core/us_core/fixed_portfolio_rolling_spy_comparison/`
+  study ran the user's fixed portfolios against SPY buy-and-hold over every
+  monthly rolling `3/5/10/15/20y` window available on the common 2000-2026 data
+  span (`7,632` portfolio-window rows). The duration-weighted rolling ranking
+  favored `16% UPRO / 29% ZROZ / 25% RSST70_30 / 30% GDE`: weighted geometric
+  terminal ratio `1.75x` versus SPY, hit rate `97.37%`, time above SPY `93.17%`,
+  p25 terminal `1.50x`, weighted mean relative MDD `-19.97%`. The best full
+  common-period terminal result was the unlevered `25% RSST70_30 / 50% GDE /
+  25% ZROZ` row (`3.04x` terminal vs SPY, CAGR `12.99%`), but it had weaker
+  rolling hit/relative-drawdown behavior. The best relative-pain SSO analogue was
+  `24% SSO / 21% ZROZ / 25% RSST70_30 / 30% GDE` (`1.67x`, hit `97.62%`, weighted
+  mean relative MDD `-16.52%`). Because the rolling windows overlap, these are
+  investor-experience/path-dependence diagnostics rather than independent
+  validation trials; no mandate allocation changed `[testing_tuning, p.318-320]`,
   `[systematic_trading, p.185-188]`;
 - a 2026-06-05 follow-up in
   `studies/return_stacked_core/us_core/reddit_leveraged_backtests/` compared 5
